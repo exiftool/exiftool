@@ -324,9 +324,8 @@ sub SetPropertyPath($$;$$$$)
     # add required properties if this is a list
     push @propList, "rdf:$listType", 'rdf:li 10' if $listType and $listType ne '1';
     # set PropertyPath for all flattened tags of this structure if necessary
-    # (note: don't do this for variable-namespace structures (undef NAMESPACE))
     my $strTable = $$tagInfo{Struct};
-    if ($strTable and $$strTable{NAMESPACE} and not ($parentID and
+    if ($strTable and not ($parentID and
         # must test NoSubStruct flag to avoid infinite recursion
         (($$tagTablePtr{$parentID} and $$tagTablePtr{$parentID}{NoSubStruct}) or
         length $parentID > 500))) # avoid deep recursion

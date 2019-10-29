@@ -197,7 +197,7 @@ sub ProcessEXR($$)
                     $name = 'Invalid';
                 }
             }
-            $tagInfo = { Name => $name, WasAdded => 1 };
+            $tagInfo = { Name => $name };
             AddTagToTable($tagTablePtr, $tag, $tagInfo);
             $et->VPrint(0, $$et{INDENT}, "[adding $tag]\n");
         }

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23129 tags, with 15114 unique tag names.
+They contain a total of 23150 tags, with 15135 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -2925,9 +2925,9 @@ These tags belong to the ExifTool XMP-iptcCore family 1 group.
 
 =head3 XMP iptcExt Tags
 
-IPTC Extension namespace tags.  The actual namespace prefix is
-"Iptc4xmpExt", but ExifTool shortens this for the family 1 group name. (see
-L<http://www.iptc.org/IPTC4XMP/>)
+This table contains tags defined by the IPTC Extension schema version 1.5.
+The actual namespace prefix is "Iptc4xmpExt", but ExifTool shortens this for
+the family 1 group name. (see L<http://www.iptc.org/IPTC4XMP/>)
 
 These tags belong to the ExifTool XMP-iptcExt family 1 group.
 
@@ -3011,6 +3011,26 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   GenreCvTermName                               lang-alt_+
   GenreCvTermRefinedAbout                       string_+
   Headline                                      lang-alt/
+  ImageRegion                                   ImageRegion Struct+
+  ImageRegionName                               lang-alt_+
+  ImageRegionCtype                              Entity Struct_+
+  ImageRegionCtypeIdentifier                    string_+
+  ImageRegionCtypeName                          lang-alt_+
+  ImageRegionBoundary                           RegionBoundary Struct_+
+  ImageRegionBoundaryH                          real_+
+  ImageRegionBoundaryRx                         real_+
+  ImageRegionBoundaryShape                      string_+
+  ImageRegionBoundaryUnit                       string_+
+  ImageRegionBoundaryVertices                   BoundaryPoint Struct_+
+  ImageRegionBoundaryVerticesX                  real_+
+  ImageRegionBoundaryVerticesY                  real_+
+  ImageRegionBoundaryW                          real_+
+  ImageRegionBoundaryX                          real_+
+  ImageRegionBoundaryY                          real_+
+  ImageRegionID                                 string_+
+  ImageRegionRole                               Entity Struct_+
+  ImageRegionRoleIdentifier                     string_+
+  ImageRegionRoleName                           lang-alt_+
   IPTCLastEdited                                date
   LinkedEncRightsExpr                           LEREDetails Struct+
   LinkedEncodedRightsExpr                       string_+
@@ -3073,7 +3093,7 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   PublicationEventIdentifier                    string_+
   PublicationEventName                          string_+
   Rating                                        Rating Struct+
-  RatingRatingRegion                            LocationDetails Struct_+
+  RatingRegion                                  LocationDetails Struct_+
   RatingRegionCity                              string_+
   RatingRegionCountryCode                       string_+
   RatingRegionCountryName                       string_+
@@ -3234,6 +3254,41 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   Identifier                                    string
   Name                                          string
   Number                                        string
+
+=head3 XMP ImageRegion Struct
+
+As well as the fields defined below, this structure may contain any
+top-level XMP tags, but since they aren't pre-defined the only way to add
+these tags is to write ImageRegion as a structure with these tags as new
+fields.
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Name                                          lang-alt
+  RegionBoundary                                RegionBoundary Struct
+  RCtype                                        Entity Struct+
+  RId                                           string
+  RRole                                         Entity Struct+
+
+=head3 XMP RegionBoundary Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  RbH                                           real
+  RbRx                                          real
+  RbShape                                       string
+  RbUnit                                        string
+  RbVertices                                    BoundaryPoint Struct+
+  RbW                                           real
+  RbX                                           real
+  RbY                                           real
+
+=head3 XMP BoundaryPoint Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  RbX                                           real
+  RbY                                           real
 
 =head3 XMP LEREDetails Struct
 
@@ -4334,6 +4389,7 @@ These tags belong to the ExifTool XMP-xmpMM family 1 group.
   ManifestReferenceVersionID                    string_+
   OriginalDocumentID                            string
   Pantry                                        PantryItem Struct+
+  PantryInstanceID                              string_+
   PreservedFileName                             string
   RenditionClass                                string
   RenditionOf                                   ResourceRef Struct

@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.27';
+$VERSION = '3.28';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2677,8 +2677,6 @@ sub AddFlattenedTags($;$$)
             $$tagInfo{Struct} = $strTable;  # replace old-style name with HASH ref
             delete $$tagInfo{SubDirectory}; # deprecated use of SubDirectory in Struct tags
         }
-        # do not add flattened tags to variable-namespace structures
-        next if exists $$strTable{NAMESPACE} and not defined $$strTable{NAMESPACE};
 
         # get prefix for flattened tag names
         my $flat = (defined $$tagInfo{FlatName} ? $$tagInfo{FlatName} : $$tagInfo{Name});
@@ -2720,6 +2718,7 @@ sub AddFlattenedTags($;$$)
                 # generate new flattened tag information based on structure field
                 my $flatName = $flat . $flatField;
                 $flatInfo = { %$fieldInfo, Name => $flatName, Flat => 0 };
+                $$flatInfo{FlatName} = $flatName if $$fieldInfo{FlatName};
                 # make a copy of the Groups hash if necessary
                 $$flatInfo{Groups} = { %{$$fieldInfo{Groups}} } if $$fieldInfo{Groups};
                 # add new flattened tag to table
@@ -3027,14 +3026,6 @@ NoLoop:
             $ti = $$tagTablePtr{$t} or next;
             next unless ref $ti eq 'HASH' and $$ti{Struct};
             $addedFlat = AddFlattenedTags($tagTablePtr, $t);
-            if ($tagInfo) {
-                # all done if we just wanted to initialize the flattened tag
-                if ($$tagInfo{Flat}) {
-                    warn "Orphan tagInfo with Flat flag set: $$tagInfo{Name}\n";
-                    delete $$tagInfo{Flat};
-                }
-                last NoLoop;
-            }
             # all done if we generated the tag we are looking for
             $tagInfo = $$tagTablePtr{$tagID} and last NoLoop if $addedFlat;
         }
@@ -3092,11 +3083,8 @@ NoLoop:
                     }
                     last unless $sti;
                 }
-                $tagInfo = {
-                    %$sti,
-                    Name => $flat . $$sti{Name},
-                    WasAdded => 1,
-                };
+                # generate new tagInfo hash based on existing top-level tag
+                $tagInfo = { %$sti, Name => $flat . $$sti{Name} };
                 # be careful not to copy elements we shouldn't...
                 delete $$tagInfo{Description}; # Description will be different
                 # can't copy group hash because group 1 will be different and
@@ -3106,7 +3094,8 @@ NoLoop:
                 last;
             }
         }
-        $tagInfo or $tagInfo = { Name => $name, WasAdded => 1, Priority => 0 };
+        # generate a default tagInfo hash if necessary
+        $tagInfo or $tagInfo = { Name => $name, IsDefault => 1, Priority => 0 };
 
         # add tag Namespace entry for tags in variable-namespace tables
         $$tagInfo{Namespace} = $xns if $xns;
@@ -3175,7 +3164,7 @@ NoLoop:
     $val = $et->Decode($val, 'UTF8');
     # convert rational and date values to a more sensible format
     my $fmt = $$tagInfo{Writable};
-    my $new = $$tagInfo{WasAdded} && $$et{OPTIONS}{XMPAutoConv};
+    my $new = $$tagInfo{IsDefault} && $$et{OPTIONS}{XMPAutoConv};
     if ($fmt or $new) {
         $rawVal = $val; # save raw value for verbose output
         if (($new or $fmt eq 'rational') and ConvertRational($val)) {

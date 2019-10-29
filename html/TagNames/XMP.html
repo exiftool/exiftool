@@ -6188,9 +6188,9 @@ shortens this for the family 1 group name. (see
 </table></td></tr></table></blockquote>
 
 <h2><a name='iptcExt'>XMP iptcExt Tags</a></h2>
-<p>IPTC Extension namespace tags.  The actual namespace prefix is
-&quot;Iptc4xmpExt&quot;, but ExifTool shortens this for the family 1 group name. (see
-<a href="http://www.iptc.org/IPTC4XMP/">http://www.iptc.org/IPTC4XMP/</a>)</p>
+<p>This table contains tags defined by the IPTC Extension schema version 1.5.
+The actual namespace prefix is &quot;Iptc4xmpExt&quot;, but ExifTool shortens this for
+the family 1 group name. (see <a href="http://www.iptc.org/IPTC4XMP/">http://www.iptc.org/IPTC4XMP/</a>)</p>
 
 <p>These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <blockquote>
@@ -6561,6 +6561,114 @@ shortens this for the family 1 group name. (see
 <td class=c title=' / = Avoid'>lang-alt/</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>ImageRegion</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#ImageRegion'>ImageRegion Struct</a></td></tr>
+<tr class=b>
+<td>ImageRegionName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ImageRegionCtype</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='XMP.html#Entity'>Entity Struct</a>
+  <br><span class='n s'>(ImageRegionRCtype)</span></td></tr>
+<tr class=b>
+<td>ImageRegionCtypeIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ImageRegionRCtypeIdentifier)</span></span></td></tr>
+<tr>
+<td>ImageRegionCtypeName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td><span class=s><span class=n>(ImageRegionRCtypeName)</span></span></td></tr>
+<tr class=b>
+<td>ImageRegionBoundary</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='XMP.html#RegionBoundary'>RegionBoundary Struct</a>
+  <br><span class='n s'>(ImageRegionRegionBoundary)</span></td></tr>
+<tr>
+<td>ImageRegionBoundaryH</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td><span class=s><span class=n>(ImageRegionRegionBoundaryRbH)</span></span></td></tr>
+<tr class=b>
+<td>ImageRegionBoundaryRx</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td><span class=s><span class=n>(ImageRegionRegionBoundaryRbRx)</span></span></td></tr>
+<tr>
+<td>ImageRegionBoundaryShape</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ImageRegionRegionBoundaryRbShape)</span>
+  <br>&#39;circle&#39; = Circle
+  <br>&#39;polygon&#39; = Polygon
+  <br>&#39;rectangle&#39; = Rectangle</span></td></tr>
+<tr class=b>
+<td>ImageRegionBoundaryUnit</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ImageRegionRegionBoundaryRbUnit)</span>
+  <br>&#39;pixel&#39; = Pixel
+  <br>&#39;relative&#39; = Relative</span></td></tr>
+<tr>
+<td>ImageRegionBoundaryVertices</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='XMP.html#BoundaryPoint'>BoundaryPoint Struct</a>
+  <br><span class='n s'>(ImageRegionRegionBoundaryRbVertices)</span></td></tr>
+<tr class=b>
+<td>ImageRegionBoundaryVerticesX</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td><span class=s><span class=n>(ImageRegionRegionBoundaryRbVerticesRbX)</span></span></td></tr>
+<tr>
+<td>ImageRegionBoundaryVerticesY</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td><span class=s><span class=n>(ImageRegionRegionBoundaryRbVerticesRbY)</span></span></td></tr>
+<tr class=b>
+<td>ImageRegionBoundaryW</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td><span class=s><span class=n>(ImageRegionRegionBoundaryRbW)</span></span></td></tr>
+<tr>
+<td>ImageRegionBoundaryX</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td><span class=s><span class=n>(ImageRegionRegionBoundaryRbX)</span></span></td></tr>
+<tr class=b>
+<td>ImageRegionBoundaryY</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td><span class=s><span class=n>(ImageRegionRegionBoundaryRbY)</span></span></td></tr>
+<tr>
+<td>ImageRegionID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ImageRegionRId)</span></span></td></tr>
+<tr class=b>
+<td>ImageRegionRole</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='XMP.html#Entity'>Entity Struct</a>
+  <br><span class='n s'>(ImageRegionRRole)</span></td></tr>
+<tr>
+<td>ImageRegionRoleIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ImageRegionRRoleIdentifier)</span></span></td></tr>
+<tr class=b>
+<td>ImageRegionRoleName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td><span class=s><span class=n>(ImageRegionRRoleName)</span></span></td></tr>
+<tr>
 <td>IPTCLastEdited</td>
 <td class=c>date</td>
 <td>&nbsp;</td></tr>
@@ -6856,10 +6964,11 @@ shortens this for the family 1 group name. (see
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#Rating'>Rating Struct</a></td></tr>
 <tr>
-<td>RatingRatingRegion</td>
+<td>RatingRegion</td>
 <td class=c title=' _ = Flattened
  + = List'>struct_+</td>
-<td>--&gt; <a href='XMP.html#LocationDetails'>LocationDetails Struct</a></td></tr>
+<td>--&gt; <a href='XMP.html#LocationDetails'>LocationDetails Struct</a>
+  <br><span class='n s'>(RatingRatingRegion)</span></td></tr>
 <tr class=b>
 <td>RatingRegionCity</td>
 <td class=c title=' _ = Flattened
@@ -7445,6 +7554,97 @@ shortens this for the family 1 group name. (see
 <tr>
 <td>Number</td>
 <td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ImageRegion'>XMP ImageRegion Struct</a></h2>
+<p>As well as the fields defined below, this structure may contain any
+top-level XMP tags, but since they aren&#39;t pre-defined the only way to add
+these tags is to write ImageRegion as a structure with these tags as new
+fields.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Name</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RegionBoundary</td>
+<td class=c>RegionBoundary</td>
+<td>--&gt; <a href='XMP.html#RegionBoundary'>RegionBoundary Struct</a></td></tr>
+<tr>
+<td>RCtype</td>
+<td class=c title=' + = List'>Entity+</td>
+<td>--&gt; <a href='XMP.html#Entity'>Entity Struct</a></td></tr>
+<tr class=b>
+<td>RId</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RRole</td>
+<td class=c title=' + = List'>Entity+</td>
+<td>--&gt; <a href='XMP.html#Entity'>Entity Struct</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='RegionBoundary'>XMP RegionBoundary Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>RbH</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RbRx</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RbShape</td>
+<td class=c>string</td>
+<td><span class=s>circle = Circle
+  <br>polygon = Polygon
+  <br>rectangle = Rectangle</span></td></tr>
+<tr class=b>
+<td>RbUnit</td>
+<td class=c>string</td>
+<td><span class=s>pixel = Pixel
+  <br>relative = Relative</span></td></tr>
+<tr>
+<td>RbVertices</td>
+<td class=c title=' + = List'>BoundaryPoint+</td>
+<td>--&gt; <a href='XMP.html#BoundaryPoint'>BoundaryPoint Struct</a></td></tr>
+<tr class=b>
+<td>RbW</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RbX</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RbY</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='BoundaryPoint'>XMP BoundaryPoint Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>RbX</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RbY</td>
+<td class=c>real</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -11221,183 +11421,188 @@ namespace prefixes are found, they are translated to the newer &quot;xmp&quot;,
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#PantryItem'>PantryItem Struct</a></td></tr>
 <tr class=b>
+<td>PantryInstanceID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>PreservedFileName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RenditionClass</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RenditionOf</td>
 <td class=c>struct</td>
 <td>--&gt; <a href='XMP.html#ResourceRef'>ResourceRef Struct</a></td></tr>
-<tr>
+<tr class=b>
 <td>RenditionOfAlternatePaths</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RenditionOfDocumentID</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RenditionOfFilePath</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RenditionOfFromPart</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RenditionOfInstanceID</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RenditionOfLastModifyDate</td>
 <td class=c title=' _ = Flattened'>date_</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RenditionOfLastURL</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RenditionOfLinkCategory</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RenditionOfLinkForm</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RenditionOfManager</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RenditionOfManagerVariant</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RenditionOfManageTo</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RenditionOfManageUI</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RenditionOfMaskMarkers</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s>&#39;All&#39; = All
   <br>&#39;None&#39; = None</span></td></tr>
-<tr>
+<tr class=b>
 <td>RenditionOfOriginalDocumentID</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RenditionOfPartMapping</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RenditionOfPlacedResolutionUnit</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RenditionOfPlacedXResolution</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RenditionOfPlacedYResolution</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RenditionOfRenditionClass</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RenditionOfRenditionParams</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RenditionOfToPart</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RenditionOfVersionID</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RenditionParams</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SaveID</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Subject</td>
 <td class=c title=' / = Avoid
  + = List'>string/+</td>
 <td><span class=s><span class=n>(undocumented)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>VersionID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Versions</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#Version'>Version Struct</a></td></tr>
-<tr>
+<tr class=b>
 <td>VersionsComments</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>VersionsEvent</td>
 <td class=c title=' _ = Flattened
  + = List'>struct_+</td>
 <td>--&gt; <a href='XMP.html#ResourceEvent'>ResourceEvent Struct</a></td></tr>
-<tr>
+<tr class=b>
 <td>VersionsEventAction</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>VersionsEventChanged</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>VersionsEventInstanceID</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>VersionsEventParameters</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>VersionsEventSoftwareAgent</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>VersionsEventWhen</td>
 <td class=c title=' _ = Flattened
  + = List'>date_+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>VersionsModifier</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>VersionsModifyDate</td>
 <td class=c title=' _ = Flattened
  + = List'>date_+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>VersionsVersion</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
@@ -12214,7 +12419,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 17, 2019</i>
+<br><i>Last revised Oct 25, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

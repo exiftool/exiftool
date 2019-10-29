@@ -7,6 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 29, 2019 - Version 11.74
+
+  - Added support for new XMP IPTC Extension version 1.5 tags
+  - Added a new Nikon LensID (thanks LibRaw)
+  - Decode GPS track from Auto-Vox dashcam MOV videos
+  - Improved Russian translations (thanks Andrei Korzhyts)
+  - Enhanced convert_regions.config to support new IPTC Extension 1.5 ImageRegion
+  - Changed the way the FlatName element works when used in a structure element
+    (the structure name is now added as a prefix to the flattened tag name)
+  - Patched gpx.fmt and gpx_wpt.fmt to support sub-seconds in GPSDateTime value
+
 Oct. 23, 2019 - Version 11.73
 
   - Decode timed metadata from Parrot drone videos

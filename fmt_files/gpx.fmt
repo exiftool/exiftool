@@ -10,6 +10,7 @@
 # Revisions:    2010/02/05 - P. Harvey created
 #               2018/01/04 - PH Added IF to be sure position exists
 #               2018/01/06 - PH Use DateFmt function instead of -d option
+#               2019/10/24 - PH Preserve sub-seconds in GPSDateTime value
 #
 # Notes:     1) Input file(s) must contain GPSLatitude and GPSLongitude.
 #            2) The -ee option is to extract the full track from video files.
@@ -28,7 +29,7 @@
 #[IF]  $gpslatitude $gpslongitude
 #[BODY]<trkpt lat="$gpslatitude#" lon="$gpslongitude#">
 #[BODY]  <ele>$gpsaltitude#</ele>
-#[BODY]  <time>${gpsdatetime#;DateFmt("%Y-%m-%dT%H:%M:%SZ")}</time>
+#[BODY]  <time>${gpsdatetime#;my ($ss)=/\.\d+/g;DateFmt("%Y-%m-%dT%H:%M:%SZ");s/Z/${ss}Z/ if $ss}</time>
 #[BODY]</trkpt>
 #[TAIL]</trkseg>
 #[TAIL]</trk>

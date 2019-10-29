@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/XMP.t".
 
 BEGIN {
-    $| = 1; print "1..53\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..54\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -675,6 +675,25 @@ my $testnum = 1;
     $exifTool->SetNewValue('Custom1-fr' => 'a-fr,,c-fr,d-fr,,f-fr', AddValue => 1);
     $exifTool->WriteInfo('t/images/XMP9.xmp', $testfile);
     print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
+    print "ok $testnum\n";
+}
+
+# test 54: Write flattened tag and extension in a variable-namespace structure
+{
+    ++$testnum;
+    $testfile = "t/${testname}_${testnum}_failed.xmp";
+    unlink $testfile;
+    my $exifTool = new Image::ExifTool;
+    $exifTool->SetNewValue(ImageRegionCtypeIdentifier => 'x');
+    $exifTool->SetNewValue(ImageRegion => '{Flash={Fired=True,Return#=3}}');
+    $exifTool->WriteInfo(undef, $testfile);
+    $exifTool->Options(Struct => 1);
+    my $info = $exifTool->ImageInfo($testfile, 'XMP-iptcExt:all');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
     print "ok $testnum\n";
 }
 

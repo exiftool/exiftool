@@ -575,7 +575,7 @@ sub SaveMetaKeys($$$)
                 } else {
                     $str = '';
                 }
-                $et->VPrint(1, $$et{INDENT}."- Tag '".PrintableTagID($tag)."' ($len bytes)$str\n");
+                $et->VPrint(1, $$et{INDENT}."- Tag '".PrintableTagID($tag,2)."' ($len bytes)$str\n");
                 $et->VerboseDump(\$val);
             }
         }
@@ -1433,32 +1433,6 @@ sub Process_3gf($$$)
 }
 
 #------------------------------------------------------------------------------
-# Process DuDuBell M1 dashcam / VSYS M6L 'gsen' atom (ref PH)
-# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
-# Returns: 1 on success
-sub Process_gsen($$$)
-{
-    my ($et, $dirInfo, $tagTbl) = @_;
-    my $dataPt = $$dirInfo{DataPt};
-    my $dirLen = $$dirInfo{DirLen};
-    my $recLen = 3;     # 3-byte record length
-    $et->VerboseDir('gsen', undef, $dirLen);
-    if ($dirLen > $recLen and not $et->Options('ExtractEmbedded')) {
-        $dirLen = $recLen;
-        EEWarn($et);
-    }
-    my $pos;
-    for ($pos=0; $pos+$recLen<=$dirLen; $pos+=$recLen) {
-        $$et{DOC_NUM} = ++$$et{DOC_COUNT};
-        my @acc = map { $_ /= 16 } unpack "x${pos}c3", $$dataPt;
-        $et->HandleTag($tagTbl, Accelerometer => "@acc");
-        # (there are no associated timestamps, but these are sampled at 5 Hz in my test video)
-    }
-    delete $$et{DOC_NUM};
-    return 1;
-}
-
-#------------------------------------------------------------------------------
 # Process DuDuBell M1 dashcam / VSYS M6L 'gps0' atom (ref PH)
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
@@ -1486,7 +1460,7 @@ sub Process_gps0($$$)
         $lat = $deg + ($lat - $deg * 100) / 60;
         $deg = int($lon / 100);
         $lon = $deg + ($lon - $deg * 100) / 60;
-        my @a = unpack('C*', substr($$dataPt,$pos+22, 6));  # unpack date/time
+        my @a = unpack('C*', substr($$dataPt, $pos+22, 6)); # unpack date/time
         $a[0] += 2000;
         $et->HandleTag($tagTbl, GPSDateTime  => sprintf("%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ", @a));
         $et->HandleTag($tagTbl, GPSLatitude  => $lat);
@@ -1498,6 +1472,129 @@ sub Process_gps0($$$)
         $et->HandleTag($tagTbl, GPSAltitude  => Get32s($dataPt, $pos + 0x10));
         # yet to be decoded:
         # 0x1d - int8u[3] seen: "1 1 0"
+    }
+    delete $$et{DOC_NUM};
+    SetByteOrder('MM');
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process DuDuBell M1 dashcam / VSYS M6L 'gsen' atom (ref PH)
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub Process_gsen($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dirLen = $$dirInfo{DirLen};
+    my $recLen = 3;     # 3-byte record length
+    $et->VerboseDir('gsen', undef, $dirLen);
+    if ($dirLen > $recLen and not $et->Options('ExtractEmbedded')) {
+        $dirLen = $recLen;
+        EEWarn($et);
+    }
+    my $pos;
+    for ($pos=0; $pos+$recLen<=$dirLen; $pos+=$recLen) {
+        $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        my @acc = map { $_ /= 16 } unpack "x${pos}c3", $$dataPt;
+        $et->HandleTag($tagTbl, Accelerometer => "@acc");
+        # (there are no associated timestamps, but these are sampled at 5 Hz in my test video)
+    }
+    delete $$et{DOC_NUM};
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process RIFF-format trailer written by Auto-Vox dashcam (ref PH)
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+# Note: This trailer is basically RIFF chunks added to a QuickTime-format file (augh!),
+#       but there are differences in the record formats so we can't just call
+#       ProcessRIFF to process the gps0 and gsen atoms using the routines above
+sub ProcessRIFFTrailer($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $raf = $$dirInfo{RAF};
+    my $verbose = $et->Options('Verbose');
+    my ($buff, $pos);
+    SetByteOrder('II');
+    for (;;) {
+        last unless $raf->Read($buff, 8) == 8;
+        my ($tag, $len) = unpack('a4V', $buff);
+        last if $tag eq "\0\0\0\0";
+        unless ($tag =~ /^[\w ]{4}/ and $len < 0x2000000) {
+            $et->Warn('Bad RIFF trailer');
+            last;
+        }
+        $raf->Read($buff, $len) == $len or $et->Warn("Truncated $tag record in RIFF trailer"), last;
+        if ($verbose) {
+            $et->VPrint(0, "  - RIFF trailer '${tag}' ($len bytes)\n");
+            $et->VerboseDump(\$buff, Addr => $raf->Tell() - $len) if $verbose > 2;
+            $$et{INDENT} .= '| ';
+            $et->VerboseDir($tag, undef, $len) if $tag =~ /^(gps0|gsen)$/;
+        }
+        if ($tag eq 'gps0') {
+            # (similar to record decoded in Process_gps0, but with some differences)
+            # 0000: 41 49 54 47 74 46 94 f6 c6 c5 b4 40 34 a2 b4 37 [AITGtF.....@4..7]
+            # 0010: f8 7b 8a 40 ff ff 00 00 38 00 77 0a 1a 0c 12 28 [.{.@....8.w....(]
+            # 0020: 8d 01 02 40 29 07 00 00                         [...@)...]
+            # 0x00 - undef[4] 'AITG'
+            # 0x04 - double   latitude  (always positive)
+            # 0x0c - double   longitude (always positive)
+            # 0x14 - ?        seen hex "ff ff 00 00" (altitude in Process_gps0 record below)
+            # 0x18 - int16u   speed in knots (different than km/hr in Process_gps0)
+            # 0x1a - int8u[6] yr-1900,mon,day,hr,min,sec (different than -2000 in Process_gps0)
+            # 0x20 - int8u    direction in degrees / 2
+            # 0x21 - int8u    guessing that this is 1=N, 2=S - PH
+            # 0x22 - int8u    guessing that this is 1=E, 2=W - PH
+            # 0x23 - ?        seen hex "40"
+            # 0x24 - in32u    time since start of video (ms)
+            my $recLen = 0x28;
+            for ($pos=0; $pos+$recLen<$len; $pos+=$recLen) {
+                substr($buff, $pos, 4) eq 'AITG' or $et->Warn('Unrecognized gps0 record'), last;
+                $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                # lat/long are in DDDMM.MMMM format
+                my $lat = GetDouble(\$buff, $pos+4);
+                my $lon = GetDouble(\$buff, $pos+12);
+                $et->Warn('Bad gps0 record') and last if abs($lat) > 9000 or abs($lon) > 18000;
+                my $deg = int($lat / 100);
+                $lat = $deg + ($lat - $deg * 100) / 60;
+                $deg = int($lon / 100);
+                $lon = $deg + ($lon - $deg * 100) / 60;
+                $lat = -$lat if Get8u(\$buff, $pos+0x21) == 2;   # wild guess
+                $lon = -$lon if Get8u(\$buff, $pos+0x22) == 2;   # wild guess
+                my @a = unpack('C*', substr($buff, $pos+26, 6)); # unpack date/time
+                $a[0] += 1900; # (different than Proces_gps0)
+                $et->HandleTag($tagTbl, SampleTime => Get32u(\$buff, $pos + 0x24) / 1000);
+                $et->HandleTag($tagTbl, GPSDateTime  => sprintf("%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ", @a));
+                $et->HandleTag($tagTbl, GPSLatitude  => $lat);
+                $et->HandleTag($tagTbl, GPSLongitude => $lon);
+                $et->HandleTag($tagTbl, GPSSpeed     => Get16u(\$buff, $pos+0x18) * $knotsToKph);
+                $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
+                $et->HandleTag($tagTbl, GPSTrack     => Get8u(\$buff, $pos+0x20) * 2);
+                $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
+            }
+        } elsif ($tag eq 'gsen') {
+            # (similar to record decoded in Process_gsen)
+            # 0000: 41 49 54 53 1a 0d 05 ff c8 00 00 00 [AITS........]
+            # 0x00 - undef[4] 'AITS'
+            # 0x04 - int8s[3] accelerometer readings
+            # 0x07 - ?        seen hex "ff"
+            # 0x08 - in32u    time since start of video (ms)
+            my $recLen = 0x0c;
+            for ($pos=0; $pos+$recLen<$len; $pos+=$recLen) {
+                substr($buff, $pos, 4) eq 'AITS' or $et->Warn('Unrecognized gsen record'), last;
+                $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                my @acc = map { $_ /= 24 } unpack('x'.($pos+4).'c3', $buff);
+                $et->HandleTag($tagTbl, SampleTime => Get32u(\$buff, $pos + 8) / 1000);
+                # 0=+Up, 1=+Right, 3=+Forward (calibration of 24 counts/g is a wild guess - PH)
+                $et->HandleTag($tagTbl, Accelerometer => "@acc");
+            }
+        }
+        # also seen, but not decoded:
+        # gpsa (8 bytes): hex "01 20 00 00 08 03 02 08 "  
+        # gsea (20 bytes): all zeros
+        $$et{INDENT} = substr($$et{INDENT}, 0, -2) if $verbose;
     }
     delete $$et{DOC_NUM};
     SetByteOrder('MM');

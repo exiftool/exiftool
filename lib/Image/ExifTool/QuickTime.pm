@@ -44,7 +44,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.37';
+$VERSION = '2.38';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -59,6 +59,7 @@ sub Process_mebx($$$);
 sub Process_3gf($$$);
 sub Process_gps0($$$);
 sub Process_gsen($$$);
+sub ProcessRIFFTrailer($$$);
 sub ProcessTTAD($$$);
 sub ProcessNMEA($$$);
 sub SaveMetaKeys($$$);
@@ -8293,7 +8294,7 @@ sub ProcessMOV($$;$)
                     my $str = $$dirInfo{DirName} . ' with ' . ($raf->Tell() - $pos) . ' bytes';
                     $et->VPrint(0,"$$et{INDENT}\[Terminator found in $str remaining]");
                 } else {
-                    my $t = PrintableTagID($tag);
+                    my $t = PrintableTagID($tag,2);
                     $et->VPrint(0,"$$et{INDENT}Tag '${t}' extends to end of file");
                 }
                 last;
@@ -8394,9 +8395,21 @@ sub ProcessMOV($$;$)
         }
         # load values only if associated with a tag (or verbose) and not too big
         if ($size > 0x2000000) {    # start to get worried above 32 MB
+            # check for RIFF trailer (written by Auto-Vox dashcam)
+            if ($buff =~ /^(gpsa|gps0|gsen|gsea)...\0/s) { # (yet seen only gpsa as first record)
+                $et->VPrint(0, "Found RIFF trailer");
+                if ($et->Options('ExtractEmbedded')) {
+                    $raf->Seek(-8, 1) or last;  # seek back to start of trailer
+                    my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+                    ProcessRIFFTrailer($et, { RAF => $raf }, $tbl);
+                } else {
+                    EEWarn($et);
+                }
+                last;
+            }
             $ignore = 1;
             if ($tagInfo and not $$tagInfo{Unknown} and not $eeTag) {
-                my $t = PrintableTagID($tag);
+                my $t = PrintableTagID($tag,2);
                 if ($size > 0x8000000) {
                     $et->Warn("Skipping '${t}' atom > 128 MB", 1);
                 } else {
@@ -8444,7 +8457,7 @@ ItemID:         foreach $id (keys %$items) {
             my $val;
             my $missing = $size - $raf->Read($val, $size);
             if ($missing) {
-                my $t = PrintableTagID($tag);
+                my $t = PrintableTagID($tag,2);
                 $et->Warn("Truncated '${t}' data (missing $missing bytes)");
                 last;
             }
@@ -8721,7 +8734,7 @@ ItemID:         foreach $id (keys %$items) {
                 Extra => sprintf(' at offset 0x%.4x', $raf->Tell()),
             ) if $verbose;
             if ($size and (not $raf->Seek($size-1, 1) or $raf->Read($buff, 1) != 1)) {
-                my $t = PrintableTagID($tag);
+                my $t = PrintableTagID($tag,2);
                 $et->Warn("Truncated '${t}' data");
                 last;
             }

@@ -233,7 +233,7 @@ Key:
                 # create new structure field if necessary
                 $fieldInfo or $fieldInfo = $$strTable{$tag} = {
                     %$tagInfo, # (also copies the necessary TagID and PropertyPath)
-                    Namespace => $$tagInfo{Table}{NAMESPACE},
+                    Namespace => $$tagInfo{Namespace} || $$tagInfo{Table}{NAMESPACE},
                     LangCode  => $langCode,
                 };
                 # delete stuff we don't need (shouldn't cause harm, but better safe than sorry)
@@ -398,7 +398,11 @@ sub DeleteStruct($$$$$)
         my $verbose = $et->Options('Verbose');
         @delPaths = sort @delPaths if $verbose > 1;
         foreach $p (@delPaths) {
-            $et->VerboseValue("- XMP-$p", $$capture{$p}[0]) if $verbose > 1;
+            if ($verbose > 1) {
+                my $p2 = $p;
+                $p2 =~ s/^(\w+)/$stdXlatNS{$1} || $1/e;
+                $et->VerboseValue("- XMP-$p2", $$capture{$p}[0]);
+            }
             delete $$capture{$p};
             $deleted = 1;
             ++$$changed;
@@ -462,7 +466,9 @@ sub AddNewTag($$$$$$)
     $$capture{$path} = [ $val, \%attrs ];
     # print verbose message
     if ($et and $et->Options('Verbose') > 1) {
-        $et->VerboseValue("+ XMP-$path", $val);
+        my $p = $path;
+        $p =~ s/^(\w+)/$stdXlatNS{$1} || $1/e;
+        $et->VerboseValue("+ XMP-$p", $val);
     }
 }
 
@@ -551,7 +557,11 @@ sub AddNewStruct($$$$$$)
         my $path = $basePath . '/' . ConformPathToNamespace($et, "rdf:type");
         unless ($$capture{$path}) {
             $$capture{$path} = [ '', { 'rdf:resource' => $$strTable{TYPE} } ];
-            $et->VerboseValue("+ XMP-$path", $$strTable{TYPE}) if $verbose > 1;
+            if ($verbose > 1) {
+                my $p = $path;
+                $p =~ s/^(\w+)/$stdXlatNS{$1} || $1/e;
+                $et->VerboseValue("+ XMP-$p", $$strTable{TYPE});
+            }
         }
     }
     return $changed;

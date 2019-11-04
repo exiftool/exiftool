@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
-[File, System, Image] FileName - File Name: OpenEXR.exr
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 395 bytes
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: OpenEXR.exr
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 395 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2011:12:10 14:34:35-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:41-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: EXR
-[File, File, Image] FileTypeExtension - File Type Extension: exr
-[File, File, Image] MIMEType - MIME Type: image/x-exr
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 09:54:26-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: EXR
+[File, File, Other] FileTypeExtension - File Type Extension: exr
+[File, File, Other] MIMEType - MIME Type: image/x-exr
 [File, File, Image] ImageWidth - Image Width: 3
 [File, File, Image] ImageHeight - Image Height: 2
 [OpenEXR, OpenEXR, Image] _ver - EXR Version: 2

@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
-[File, System, Image] FileName - File Name: XMP4.xmp
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 2.4 kB
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: XMP4.xmp
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 2.4 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2009:05:24 11:19:39-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:35-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:55-05:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: XMP
-[File, File, Image] FileTypeExtension - File Type Extension: xmp
-[File, File, Image] MIMEType - MIME Type: application/rdf+xml
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:46-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: XMP
+[File, File, Other] FileTypeExtension - File Type Extension: xmp
+[File, File, Other] MIMEType - MIME Type: application/rdf+xml
 [XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 7.77
 [XMP, XMP-iptcExt, Location] LocationCreated - Location Created: [{City=one,CountryCode=1},{City=two,CountryCode=2},{City=three},{CountryCode=4}]
 [XMP, XMP-dc, Author] contributor - Contributor: me

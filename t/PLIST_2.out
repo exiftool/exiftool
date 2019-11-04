@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
-[File, System, Image] FileName - File Name: PLIST-xml.plist
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 795 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:02:22 15:51:35-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:35-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:28-05:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: PLIST
-[File, File, Image] FileTypeExtension - File Type Extension: plist
-[File, File, Image] MIMEType - MIME Type: application/xml
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: PLIST-xml.plist
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 795 bytes
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:02:22 08:21:12-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:46-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: PLIST
+[File, File, Other] FileTypeExtension - File Type Extension: plist
+[File, File, Other] MIMEType - MIME Type: application/xml
 [PLIST, XML, Document] TestArray - Test Array: one, two, three
 [PLIST, XML, Document] TestBoolean - Test Boolean: True
 [PLIST, XML, Document] TestData - Test Data: (Binary data 12 bytes)

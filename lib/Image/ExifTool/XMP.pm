@@ -2428,14 +2428,14 @@ sub UnescapeChar($$;$)
 
 #------------------------------------------------------------------------------
 # Does a string contain valid UTF-8 characters?
-# Inputs: 0) string reference
+# Inputs: 0) string reference, 1) true to allow last character to be truncated
 # Returns: 0=regular ASCII, -1=invalid UTF-8, 1=valid UTF-8 with maximum 16-bit
 #          wide characters, 2=valid UTF-8 requiring 32-bit wide characters
 # Notes: Changes current string position
 # (see http://www.fileformat.info/info/unicode/utf8.htm for help understanding this)
-sub IsUTF8($)
+sub IsUTF8($;$)
 {
-    my $strPt = shift;
+    my ($strPt, $trunc) = @_;
     pos($$strPt) = 0; # start at beginning of string
     return 0 unless $$strPt =~ /([\x80-\xff])/g;
     my $rtnVal = 1;
@@ -2457,7 +2457,11 @@ sub IsUTF8($)
             # were required in the UTF-8 character
             $rtnVal = 2;
         }
-        return -1 unless $$strPt =~ /\G([\x80-\xbf]{$n})/g;
+        my $pos = pos $$strPt;
+        unless ($$strPt =~ /\G([\x80-\xbf]{$n})/g) {
+            return $rtnVal if $trunc and $pos + $n > length $$strPt;
+            return -1;
+        }
         # the following is ref https://www.cl.cam.ac.uk/%7Emgk25/ucs/utf8_check.c
         if ($n == 2) {
             return -1 if ($ch == 0xe0 and (ord($1) & 0xe0) == 0x80) or

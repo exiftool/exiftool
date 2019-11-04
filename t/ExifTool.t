@@ -146,8 +146,9 @@ my $testnum = 1;
     $exifTool->ExtractInfo('t/images/Canon.jpg');
     my @groups = $exifTool->GetGroups(2);
     my $not;
-    foreach ('Camera','ExifTool','Image','Time') {
-        $_ eq shift @groups or $not = 1;
+    foreach ('Camera','ExifTool','Image','Other','Time') {
+        my $g = shift @groups || '';
+        $_ eq $g or warn("\nWrong group: $_ ne $g\n"), $not = 1;
     }
     @groups and $not = 1;
     print 'not ' if $not;

@@ -277,17 +277,41 @@ the ExtractEmbedded option is used.</p>
 <tr>
 <td>Accelerometer</td>
 <td class=c>no</td>
-<td><span class=s><span class=n>(right/up/backward acceleration in units of g)</span></span></td></tr>
+<td><span class=s><span class=n>(3-axis acceleration in units of g)</span></span></td></tr>
 <tr class=b>
-<td>AngularVelocity</td>
+<td>AccelerometerData</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>AngularVelocity</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>CTMD</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#CTMD'>Canon CTMD Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>CameraDateTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Car</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Distance</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ExposureCompensation</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ExposureTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>FNumber</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -342,9 +366,17 @@ the ExtractEmbedded option is used.</p>
 <td><span class=s>&#39;M&#39; = Magnetic North
   <br>&#39;T&#39; = True North</span></td></tr>
 <tr>
+<td>GSensor</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>INSV</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#INSV_MakerNotes'>QuickTime INSV_MakerNotes Tags</a></td></tr>
+<tr>
+<td>ISO</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td>JpgFromRaw</td>
 <td class=c>no</td>
@@ -400,6 +432,10 @@ the ExtractEmbedded option is used.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>VerticalSpeed</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>camm0
   <br>camm1
   <br>camm2
@@ -417,27 +453,27 @@ the ExtractEmbedded option is used.</p>
   <br>--&gt; <a href='QuickTime.html#camm5'>QuickTime camm5 Tags</a>
   <br>--&gt; <a href='QuickTime.html#camm6'>QuickTime camm6 Tags</a>
   <br>--&gt; <a href='QuickTime.html#camm7'>QuickTime camm7 Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>fdsc</td>
 <td class=c>-</td>
 <td>--&gt; <a href='GoPro.html#fdsc'>GoPro fdsc Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>gpmd</td>
 <td class=c>-</td>
 <td>--&gt; <a href='GoPro.html#GPMF'>GoPro GPMF Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>mebx</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Keys'>QuickTime Keys Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>mett</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Parrot.html#mett'>Parrot mett Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>rtmd</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#rtmd'>Sony rtmd Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>tx3g</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#tx3g'>QuickTime tx3g Tags</a></td></tr>
@@ -7863,7 +7899,7 @@ on the command line), or the PREFERRED level must be changed via
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 23, 2019</i>
+<br><i>Last revised Oct 31, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.62
-[File, System, Image] FileName - File Name: Nikon_4_failed.jpg
-[File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 6.8 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:08:12 12:07:43-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:08:12 12:07:43-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:08:12 12:07:43-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: JPEG
-[File, File, Image] FileTypeExtension - File Type Extension: jpg
-[File, File, Image] MIMEType - MIME Type: image/jpeg
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: Nikon_4_failed.jpg
+[File, System, Other] Directory - Directory: t
+[File, System, Other] FileSize - File Size: 6.8 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:01 10:15:33-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:33-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:01 10:15:33-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: JPEG
+[File, File, Other] FileTypeExtension - File Type Extension: jpg
+[File, File, Other] MIMEType - MIME Type: image/jpeg
 [File, File, Image] ExifByteOrder - Exif Byte Order: Big-endian (Motorola, MM)
 [File, File, Image] ImageWidth - Image Width: 8
 [File, File, Image] ImageHeight - Image Height: 8
@@ -137,7 +137,7 @@
 [MakerNotes, Nikon, Camera] 169 - Image Optimization: Custom
 [MakerNotes, Nikon, Camera] 170 - Saturation: Enhanced
 [MakerNotes, Nikon, Camera] 171 - Vari Program: 
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.62
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.75
 [XMP, XMP-aux, Camera] FlashCompensation - Flash Compensation: 0
 [XMP, XMP-aux, Camera] Lens - Lens: 18-70mm f/3.5-4.5
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: Y, Cb, Cr, -

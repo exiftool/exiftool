@@ -120,24 +120,24 @@
   BPG   r     | FLIF  r/w   | MKA   r     | PFB   r     | TORRENT r
   BTF   r     | FLV   r     | MKS   r     | PFM   r     | TTC   r
   CHM   r     | FPF   r     | MKV   r     | PGF   r     | TTF   r
-  COS   r     | FPX   r     | MNG   r/w   | PGM   r/w   | VCF   r
-  CR2   r/w   | GIF   r/w   | MOBI  r     | PLIST r     | VRD   r/w/c
-  CR3   r/w   | GPR   r/w   | MODD  r     | PICT  r     | VSD   r
-  CRM   r/w   | GZ    r     | MOI   r     | PMP   r     | WAV   r
-  CRW   r/w   | HDP   r/w   | MOS   r/w   | PNG   r/w   | WDP   r/w
-  CS1   r/w   | HDR   r     | MOV   r/w   | PPM   r/w   | WEBP  r
-  DCM   r     | HEIC  r/w   | MP3   r     | PPT   r     | WEBM  r
-  DCP   r/w   | HEIF  r/w   | MP4   r/w   | PPTX  r     | WMA   r
-  DCR   r     | HTML  r     | MPC   r     | PS    r/w   | WMV   r
-  DFONT r     | ICC   r/w/c | MPG   r     | PSB   r/w   | WTV   r
-  DIVX  r     | ICS   r     | MPO   r/w   | PSD   r/w   | WV    r
-  DJVU  r     | IDML  r     | MQV   r/w   | PSP   r     | X3F   r/w
-  DLL   r     | IIQ   r/w   | MRW   r/w   | QTIF  r/w   | XCF   r
-  DNG   r/w   | IND   r/w   | MXF   r     | R3D   r     | XLS   r
-  DOC   r     | INSV  r     | NEF   r/w   | RA    r     | XLSX  r
-  DOCX  r     | INX   r     | NRW   r/w   | RAF   r/w   | XMP   r/w/c
-  DPX   r     | ISO   r     | NUMBERS r   | RAM   r     | ZIP   r
-  DR4   r/w/c | ITC   r     | O     r     | RAR   r     |
+  COS   r     | FPX   r     | MNG   r/w   | PGM   r/w   | TXT   r
+  CR2   r/w   | GIF   r/w   | MOBI  r     | PLIST r     | VCF   r
+  CR3   r/w   | GPR   r/w   | MODD  r     | PICT  r     | VRD   r/w/c
+  CRM   r/w   | GZ    r     | MOI   r     | PMP   r     | VSD   r
+  CRW   r/w   | HDP   r/w   | MOS   r/w   | PNG   r/w   | WAV   r
+  CS1   r/w   | HDR   r     | MOV   r/w   | PPM   r/w   | WDP   r/w
+  DCM   r     | HEIC  r/w   | MP3   r     | PPT   r     | WEBP  r
+  DCP   r/w   | HEIF  r/w   | MP4   r/w   | PPTX  r     | WEBM  r
+  DCR   r     | HTML  r     | MPC   r     | PS    r/w   | WMA   r
+  DFONT r     | ICC   r/w/c | MPG   r     | PSB   r/w   | WMV   r
+  DIVX  r     | ICS   r     | MPO   r/w   | PSD   r/w   | WTV   r
+  DJVU  r     | IDML  r     | MQV   r/w   | PSP   r     | WV    r
+  DLL   r     | IIQ   r/w   | MRW   r/w   | QTIF  r/w   | X3F   r/w
+  DNG   r/w   | IND   r/w   | MXF   r     | R3D   r     | XCF   r
+  DOC   r     | INSV  r     | NEF   r/w   | RA    r     | XLS   r
+  DOCX  r     | INX   r     | NRW   r/w   | RAF   r/w   | XLSX  r
+  DPX   r     | ISO   r     | NUMBERS r   | RAM   r     | XMP   r/w/c
+  DR4   r/w/c | ITC   r     | O     r     | RAR   r     | ZIP   r
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -649,7 +649,7 @@
 
 <p>Print output in the format specified by the given file or string. The argument is interpreted as a string unless a file of that name exists, in which case the string is loaded from the contents of the file. Tag names in the format file or string begin with a <code>$</code> symbol and may contain a leading group names and/or a trailing <code>#</code>. Case is not significant. Braces <code>{}</code> may be used around the tag name to separate it from subsequent text. Use <code>$$</code> to represent a <code>$</code> symbol, and <code>$/</code> for a newline.</p>
 
-<p>Multiple <b>-p</b> options may be used, each contributing a line (or more) of text to the output. Lines beginning with <code>#[HEAD]</code> and <code>#[TAIL]</code> are output before the first processed file and after the last processed file respectively. Lines beginning with <code>#[SECT]</code> and <code>#[ENDS]</code> are output around each section of files. A section is defined as a group of consecutive files with the same section header (eg. files are grouped by directory if <code>#[SECT]</code> contains <code>$directory</code>). Lines beginning with <code>#[BODY]</code> and lines not beginning with <code>#</code> are output for each processed file. Lines beginning with <code>#[IF]</code> are not output, but all BODY lines are skipped if any tag on an IF line doesn&#39;t exist. Other lines beginning with <code>#</code> are ignored. For example, this format file:</p>
+<p>Multiple <b>-p</b> options may be used, each contributing a line (or more) of text to the output. Lines beginning with <code>#[HEAD]</code> and <code>#[TAIL]</code> are output before the first processed file and after the last processed file respectively. Lines beginning with <code>#[SECT]</code> and <code>#[ENDS]</code> are output before and after each section of files. A section is defined as a group of consecutive files with the same section header (eg. files are grouped by directory if <code>#[SECT]</code> contains <code>$directory</code>). Lines beginning with <code>#[BODY]</code> and lines not beginning with <code>#</code> are output for each processed file. Lines beginning with <code>#[IF]</code> are not output, but all BODY lines are skipped if any tag on an IF line doesn&#39;t exist. Other lines beginning with <code>#</code> are ignored. For example, this format file:</p>
 
 <pre><code>    # this is a comment line
     #[HEAD]-- Generated by ExifTool $exifToolVersion --
@@ -663,7 +663,7 @@
 
 <p>produces output like this:</p>
 
-<pre><code>    -- Generated by ExifTool 11.74 --
+<pre><code>    -- Generated by ExifTool 11.75 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38

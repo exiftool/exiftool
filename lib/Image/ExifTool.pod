@@ -86,24 +86,24 @@ supported by ExifTool (r = read, w = write, c = create):
   BPG   r     | FLIF  r/w   | MKA   r     | PFB   r     | TORRENT r
   BTF   r     | FLV   r     | MKS   r     | PFM   r     | TTC   r
   CHM   r     | FPF   r     | MKV   r     | PGF   r     | TTF   r
-  COS   r     | FPX   r     | MNG   r/w   | PGM   r/w   | VCF   r
-  CR2   r/w   | GIF   r/w   | MOBI  r     | PLIST r     | VRD   r/w/c
-  CR3   r/w   | GPR   r/w   | MODD  r     | PICT  r     | VSD   r
-  CRM   r/w   | GZ    r     | MOI   r     | PMP   r     | WAV   r
-  CRW   r/w   | HDP   r/w   | MOS   r/w   | PNG   r/w   | WDP   r/w
-  CS1   r/w   | HDR   r     | MOV   r/w   | PPM   r/w   | WEBP  r
-  DCM   r     | HEIC  r/w   | MP3   r     | PPT   r     | WEBM  r
-  DCP   r/w   | HEIF  r/w   | MP4   r/w   | PPTX  r     | WMA   r
-  DCR   r     | HTML  r     | MPC   r     | PS    r/w   | WMV   r
-  DFONT r     | ICC   r/w/c | MPG   r     | PSB   r/w   | WTV   r
-  DIVX  r     | ICS   r     | MPO   r/w   | PSD   r/w   | WV    r
-  DJVU  r     | IDML  r     | MQV   r/w   | PSP   r     | X3F   r/w
-  DLL   r     | IIQ   r/w   | MRW   r/w   | QTIF  r/w   | XCF   r
-  DNG   r/w   | IND   r/w   | MXF   r     | R3D   r     | XLS   r
-  DOC   r     | INSV  r     | NEF   r/w   | RA    r     | XLSX  r
-  DOCX  r     | INX   r     | NRW   r/w   | RAF   r/w   | XMP   r/w/c
-  DPX   r     | ISO   r     | NUMBERS r   | RAM   r     | ZIP   r
-  DR4   r/w/c | ITC   r     | O     r     | RAR   r     |
+  COS   r     | FPX   r     | MNG   r/w   | PGM   r/w   | TXT   r
+  CR2   r/w   | GIF   r/w   | MOBI  r     | PLIST r     | VCF   r
+  CR3   r/w   | GPR   r/w   | MODD  r     | PICT  r     | VRD   r/w/c
+  CRM   r/w   | GZ    r     | MOI   r     | PMP   r     | VSD   r
+  CRW   r/w   | HDP   r/w   | MOS   r/w   | PNG   r/w   | WAV   r
+  CS1   r/w   | HDR   r     | MOV   r/w   | PPM   r/w   | WDP   r/w
+  DCM   r     | HEIC  r/w   | MP3   r     | PPT   r     | WEBP  r
+  DCP   r/w   | HEIF  r/w   | MP4   r/w   | PPTX  r     | WEBM  r
+  DCR   r     | HTML  r     | MPC   r     | PS    r/w   | WMA   r
+  DFONT r     | ICC   r/w/c | MPG   r     | PSB   r/w   | WMV   r
+  DIVX  r     | ICS   r     | MPO   r/w   | PSD   r/w   | WTV   r
+  DJVU  r     | IDML  r     | MQV   r/w   | PSP   r     | WV    r
+  DLL   r     | IIQ   r/w   | MRW   r/w   | QTIF  r/w   | X3F   r/w
+  DNG   r/w   | IND   r/w   | MXF   r     | R3D   r     | XCF   r
+  DOC   r     | INSV  r     | NEF   r/w   | RA    r     | XLS   r
+  DOCX  r     | INX   r     | NRW   r/w   | RAF   r/w   | XLSX  r
+  DPX   r     | ISO   r     | NUMBERS r   | RAM   r     | XMP   r/w/c
+  DR4   r/w/c | ITC   r     | O     r     | RAR   r     | ZIP   r
 
   Meta Information
   ----------------------+----------------------+---------------------

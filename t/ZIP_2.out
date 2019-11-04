@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.93
-[File, System, Image] FileName - File Name: ZIP.zip
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 167 bytes
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: ZIP.zip
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 167 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2008:09:04 10:47:13-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2018:04:10 13:11:44-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:04:10 08:38:05-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: ZIP
-[File, File, Image] FileTypeExtension - File Type Extension: zip
-[File, File, Image] MIMEType - MIME Type: application/zip
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:46-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: ZIP
+[File, File, Other] FileTypeExtension - File Type Extension: zip
+[File, File, Other] MIMEType - MIME Type: application/zip
 [ZIP, ZIP, Other] 2 - Zip Required Version: 10
 [ZIP, ZIP, Other] 3 - Zip Bit Flag: 0
 [ZIP, ZIP, Other] 4 - Zip Compression: None

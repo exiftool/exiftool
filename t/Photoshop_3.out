@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
-[File, System, Image] FileName - File Name: Photoshop_3_failed.psd
-[File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 16 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:07:03 12:16:57-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 12:16:57-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:03 12:16:57-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: PSD
-[File, File, Image] FileTypeExtension - File Type Extension: psd
-[File, File, Image] MIMEType - MIME Type: application/vnd.adobe.photoshop
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: Photoshop_3_failed.psd
+[File, System, Other] Directory - Directory: t
+[File, System, Other] FileSize - File Size: 16 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:01 10:15:39-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:39-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:01 10:15:39-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: PSD
+[File, File, Other] FileTypeExtension - File Type Extension: psd
+[File, File, Other] MIMEType - MIME Type: application/vnd.adobe.photoshop
 [File, File, Image] CurrentIPTCDigest - Current IPTC Digest: 01c26dbee9b75ddbe23315cf1b5e1486
 [File, File, Image] ExifByteOrder - Exif Byte Order: Big-endian (Motorola, MM)
 [Photoshop, Photoshop, Image] 6 - Num Channels: 3
@@ -51,7 +51,7 @@
 [IPTC, IPTC, Author] 85 - By-line Title: Supreme leader
 [IPTC, IPTC, Other] 5 - Object Name: Test Picture
 [IPTC, IPTC, Author] 116 - Copyright Notice: Free for all
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.55
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.75
 [XMP, XMP-rdf, Document] about - About: uuid:c197d41e-f8f7-11d9-b03e-c023c3939af5
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [XMP, XMP-dc, Image] description - Description: This is a teeny weeny white square

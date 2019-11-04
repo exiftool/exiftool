@@ -1,0 +1,46 @@
+#------------------------------------------------------------------------------
+# File:         kml.fmt
+#
+# Description:  Example ExifTool print format file for generating a
+#               track in Google Earth KML format from a collection of
+#               geotagged images or timed GPS from video files
+#
+# Usage:        From a collection of images:
+#
+#                 exiftool -p kml.fmt -r DIR [...] > out.kml
+#
+#               From video files:
+#
+#                 exiftool -p kml.fmt -ee FILEorDIR [...] > out.kml
+#
+# Requires:     ExifTool version 10.41 or later
+#
+# Revisions:    2019/10/29 - P. Harvey created
+#
+# Notes:     1) Input files must contain GPSLatitude and GPSLongitude.
+#            2) The -fileOrder option may be used to control the order of the
+#               waypoints when processing multiple still-image files, or the
+#               order of the tracks when processing multiple video files.
+#------------------------------------------------------------------------------
+#[HEAD]<?xml version="1.0" encoding="UTF-8"?>
+#[HEAD]<kml xmlns="http://earth.google.com/kml/2.0">
+#[HEAD]  <Document>
+#[HEAD]    <name>My Track</name>
+#[HEAD]    <open>1</open>
+#[SECT]    <Placemark>
+#[SECT]    <name>${main:directory;$_=$self->GetValue('FileName') if $self->Options('ExtractEmbedded')}</name>
+#[SECT]      <Style>
+#[SECT]        <LineStyle>
+#[SECT]          <color>#ff4499ff</color>
+#[SECT]          <width>3</width>
+#[SECT]        </LineStyle>
+#[SECT]      </Style>
+#[SECT]      <LineString>
+#[SECT]        <altitudeMode>clampToGround</altitudeMode>
+#[SECT]        <coordinates>
+#[BODY]$gpslongitude#,$gpslatitude#,0
+#[ENDS]        </coordinates>
+#[ENDS]      </LineString>
+#[ENDS]    </Placemark>
+#[TAIL]  </Document>
+#[TAIL]</kml>

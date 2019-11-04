@@ -1,15 +1,15 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
 [ExifTool, ExifTool, ExifTool] Warning - Warning: [minor] Ignored extra byte at start of EXIF extension
-[File, System, Image] FileName - File Name: BPG.bpg
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 1863 bytes
+[File, System, Other] FileName - File Name: BPG.bpg
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 1863 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2016:07:07 11:08:36-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:11-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: BPG
-[File, File, Image] FileTypeExtension - File Type Extension: bpg
-[File, File, Image] MIMEType - MIME Type: image/bpg
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:11:40-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: BPG
+[File, File, Other] FileTypeExtension - File Type Extension: bpg
+[File, File, Other] MIMEType - MIME Type: image/bpg
 [File, File, Image] 4 - Pixel Format: 4:2:2 (chroma at 0.5, 0)
 [File, File, Image] 4.1 - Alpha: No Alpha Plane
 [File, File, Image] 4.2 - Bit Depth: 8

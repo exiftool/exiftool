@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.62
-[File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 3.8 kB
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: JPEG
-[File, File, Image] FileTypeExtension - File Type Extension: jpg
-[File, File, Image] MIMEType - MIME Type: image/jpeg
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] Directory - Directory: t
+[File, System, Other] FileSize - File Size: 3.8 kB
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: JPEG
+[File, File, Other] FileTypeExtension - File Type Extension: jpg
+[File, File, Other] MIMEType - MIME Type: image/jpeg
 [File, File, Image] ExifByteOrder - Exif Byte Order: Big-endian (Motorola, MM)
 [File, File, Image] CurrentIPTCDigest - Current IPTC Digest: f61c7c28aa8bb54215cff2f36f256b2a
 [File, File, Image] ImageWidth - Image Width: 8
@@ -21,7 +21,7 @@
 [IPTC, IPTC, Other] 25 - Keywords: A
 [IPTC, IPTC, Location] 90 - City: A
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.62
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.75
 [XMP, XMP-iptcExt, Location] LocationCreatedCity - Location Created City: A
 [XMP, XMP-dc, Image] subject - Subject: A
 [XMP, XMP-dc, Image] title - Title: A

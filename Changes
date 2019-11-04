@@ -7,12 +7,23 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 4, 2019 - Version 11.75
+
+  - Added ability to read some basic characteristics of TXT files
+  - Added kml_track.fmt to the fmt_files of the full distribution
+  - Added built-in support for decoding GPS from the four video subtitle text
+    formats that were previously handled by separate config files, and removed
+    these config files from the distribution
+  - Derive GPSDateTime from CreateDate and SampleTime if not already available
+    when extracting timed GPS metadata from QuickTime-format videos
+  - Changed family 2 groups of some Extra tags
+
 Oct. 29, 2019 - Version 11.74
 
   - Added support for new XMP IPTC Extension version 1.5 tags
   - Added a new Nikon LensID (thanks LibRaw)
   - Decode GPS track from Auto-Vox dashcam MOV videos
-  - Improved Russian translations (thanks Andrei Korzhyts)
+  - Improved Russian translations (thanks Andrei Korzhyts and Alexander)
   - Enhanced convert_regions.config to support new IPTC Extension 1.5 ImageRegion
   - Changed the way the FlatName element works when used in a structure element
     (the structure name is now added as a prefix to the flattened tag name)

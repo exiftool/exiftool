@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
-[File, System, Image] FileName - File Name: PhotoCD.pcd
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 4.0 kB
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: PhotoCD.pcd
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 4.0 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2012:05:07 13:11:08-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:41-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: PCD
-[File, File, Image] FileTypeExtension - File Type Extension: pcd
-[File, File, Image] MIMEType - MIME Type: image/x-photo-cd
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:46-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: PCD
+[File, File, Other] FileTypeExtension - File Type Extension: pcd
+[File, File, Other] MIMEType - MIME Type: image/x-photo-cd
 [PhotoCD, PhotoCD, Image] 7 - Specification Version: 0.6
 [PhotoCD, PhotoCD, Image] 9 - Authoring Software Release: 7.61
 [PhotoCD, PhotoCD, Image] 11 - Image Magnification Descriptor: 1.0

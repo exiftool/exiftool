@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23150 tags, with 15135 unique tag names.
+They contain a total of 23164 tags, with 15143 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -24663,9 +24663,15 @@ the ExtractEmbedded option is used.
   Tag Name                                      Writable
   --------                                      --------
   Accelerometer                                 no
+  AccelerometerData                             no
   AngularVelocity                               no
   CTMD                                          Canon CTMD
   CameraDateTime                                no
+  Car                                           no
+  Distance                                      no
+  ExposureCompensation                          no
+  ExposureTime                                  no
+  FNumber                                       no
   FrameNumber                                   no
   GPSAltitude                                   no
   GPSDOP                                        no
@@ -24678,7 +24684,9 @@ the ExtractEmbedded option is used.
   GPSTimeStamp                                  no
   GPSTrack                                      no
   GPSTrackRef                                   no
+  GSensor                                       no
   INSV                                          QuickTime INSV_MakerNotes
+  ISO                                           no
   JpgFromRaw                                    no
   PreviewInfo                                   QuickTime PreviewInfo
   RVMI_gReV                                     QuickTime RVMI_gReV
@@ -24693,6 +24701,7 @@ the ExtractEmbedded option is used.
   Unknown02?                                    no
   Unknown03?                                    no
   UserLabel                                     no
+  VerticalSpeed                                 no
   camm0                                         QuickTime camm0
   camm1                                         QuickTime camm1
   camm2                                         QuickTime camm2
@@ -33216,6 +33225,21 @@ name.  See L<http://tools.ietf.org/html/rfc5545> for the official iCalendar
   'X-wr-calname'        CalendarName            no
   'X-wr-relcalid'       CalendarID              no
   'X-wr-timezone'       TimeZone2               no
+
+=head2 Text Tags
+
+Although basic text files contain no metadata, the following tags are
+determined from a simple analysis of the text data.  LineCount and WordCount
+are generated only for 8-bit character sets if the FastScan option is not
+used.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  ByteOrderMark                                 no
+  LineCount                                     no
+  MIMEEncoding                                  no
+  Newlines                                      no
+  WordCount                                     no
 
 =head2 RSRC Tags
 

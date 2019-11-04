@@ -89,20 +89,34 @@ my %insvLimit = (
         the ExtractEmbedded option is used.
     },
     VARS => { NO_ID => 1 },
-    GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")' },
+    GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
     GPSLongitude => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
     GPSAltitude  => { PrintConv => '(sprintf("%.4f", $val) + 0) . " m"' }, # round to 4 decimals
     GPSSpeed     => { PrintConv => 'sprintf("%.4f", $val) + 0' },   # round to 4 decimals
     GPSSpeedRef  => { PrintConv => { K => 'km/h', M => 'mph', N => 'knots' } },
     GPSTrack     => { PrintConv => 'sprintf("%.4f", $val) + 0' },    # round to 4 decimals
     GPSTrackRef  => { PrintConv => { M => 'Magnetic North', T => 'True North' } },
-    GPSDateTime  => { PrintConv => '$self->ConvertDateTime($val)', Groups => { 2 => 'Time' } },
+    GPSDateTime  => {
+        Groups => { 2 => 'Time' },
+        Description => 'GPS Date/Time',
+        RawConv => '$$self{FoundGPSDateTime} = 1; $val',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
     GPSTimeStamp => { PrintConv => 'Image::ExifTool::GPS::PrintTimeStamp($val)', Groups => { 2 => 'Time' } },
     GPSSatellites=> { },
     GPSDOP       => { Description => 'GPS Dilution Of Precision' },
+    Distance     => { PrintConv => '"$val m"' },
+    VerticalSpeed=> { PrintConv => '"$val m/s"' },
+    FNumber      => { PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)', Groups => { 2 => 'Camera' } },
+    ExposureTime => { PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)', Groups => { 2 => 'Camera' } },
+    ExposureCompensation => { PrintConv => 'Image::ExifTool::Exif::PrintFraction($val)', Groups => { 2 => 'Camera' } },
+    ISO          => { Groups => { 2 => 'Camera' } },
     CameraDateTime=>{ PrintConv => '$self->ConvertDateTime($val)', Groups => { 2 => 'Time' } },
-    Accelerometer=> { Notes => 'right/up/backward acceleration in units of g' },
+    Accelerometer=> { Notes => '3-axis acceleration in units of g' },
+    AccelerometerData => { },
     AngularVelocity => { },
+    GSensor      => { },
+    Car          => { },
     RawGSensor   => {
         # (same as GSensor, but offset by some unknown value)
         ValueConv => 'my @a=split " ",$val; $_/=1000 foreach @a; "@a"',
@@ -323,6 +337,7 @@ my %insvLimit = (
     4 => {
         Name => 'GPSLatitude',
         Format => 'double',
+        RawConv => '$$self{FoundGPSLatitude} = 1; $val',
         ValueConv => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
     },
@@ -346,8 +361,10 @@ my %insvLimit = (
     FIRST_ENTRY => 0,
     0x04 => {
         Name => 'GPSDateTime',
+        Description => 'GPS Date/Time',
         Groups => { 2 => 'Time' },
         Format => 'double',
+        RawConv => '$$self{FoundGPSDateTime} = 1; $val',
         ValueConv => q{
             my $str = ConvertUnixTime($val);
             my $frac = $val - int($val);
@@ -373,6 +390,7 @@ my %insvLimit = (
     0x10 => {
         Name => 'GPSLatitude',
         Format => 'double',
+        RawConv => '$$self{FoundGPSLatitude} = 1; $val',
         ValueConv => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
     },
@@ -429,6 +447,7 @@ my %insvLimit = (
     4 => {
         Name => 'GPSLatitude',
         Format => 'int32s',
+        RawConv => '$$self{FoundGPSLatitude} = 1; $val',
         ValueConv => 'Image::ExifTool::GPS::ToDegrees($val/1e6, 1)',
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
     },
@@ -474,6 +493,7 @@ my %insvLimit = (
     NOTES => 'Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.',
     Lat => {
         Name => 'GPSLatitude',
+        RawConv => '$$self{FoundGPSLatitude} = 1; $val',
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
     },
     Lon => {
@@ -603,14 +623,53 @@ sub FoundSomething($$;$$)
 }
 
 #------------------------------------------------------------------------------
-# Parse textual metadata
-# Inputs: 0) ExifTool ref, 1) tag table ref, 2) data ref
-sub ParseText($$$)
+# Approximate GPSDateTime value from sample time and CreateDate
+# Inputs: 0) ExifTool ref, 1) tag table ptr, 2) sample time (ms)
+#         3) true if CreateDate is at end of video
+# Notes: Uses ExifTool CreateDateAtEnd as flag to subtract video duration
+sub SetGPSDateTime($$$)
+{
+    my ($et, $tagTbl, $sampleTime) = @_;
+    my $value = $$et{VALUE};
+    if (defined $sampleTime and $$value{CreateDate}) {
+        $sampleTime += $$value{CreateDate}; # adjust sample time to seconds since the epoch
+        if ($$et{CreateDateAtEnd}) {        # adjust if CreateDate is at end of video
+            return unless $$value{TimeScale} and $$value{Duration};
+            $sampleTime -= $$value{Duration} / $$value{TimeScale};
+            $et->WarnOnce('Approximating GPSDateTime as CreateDate - Duration + SampleTime', 1);
+        } else {
+            $et->WarnOnce('Approximating GPSDateTime as CreateDate + SampleTime', 1);
+        }
+        unless ($et->Options('QuickTimeUTC')) {
+            my $tzOff = $$et{tzOff};    # use previously calculated offset
+            unless (defined $tzOff) {
+                # adjust to UTC, assuming time is local
+                my @tm = localtime $$value{CreateDate};
+                my @gm = gmtime $$value{CreateDate};
+                $tzOff = $$et{tzOff} = Image::ExifTool::GetTimeZone(\@tm, \@gm) * 60;
+            }
+            $sampleTime -= $tzOff;  # shift from local time to UTC
+        }
+        $et->HandleTag($tagTbl, GPSDateTime => Image::ExifTool::ConvertUnixTime($sampleTime,0,3) . 'Z');
+    }
+}
+
+#------------------------------------------------------------------------------
+# Process subtitle 'text'
+# Inputs: 0) ExifTool ref, 1) tag table ref, 2) data ref, 3) optional sample time
+sub Process_text($$$)
 {
     my ($et, $tagTbl, $buffPt) = @_;
+    my ($found, $val, %tags, $tag);
+
+    return if $$et{NoMoreTextDecoding};
+
     while ($$buffPt =~ /\$(\w+)([^\$]*)/g) {
         my ($tag, $dat) = ($1, $2);
         if ($tag =~ /^[A-Z]{2}RMC$/ and $dat =~ /^,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/) {
+            my $year = $15 + ($15 >= 70 ? 1900 : 2000);
+            my $str = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $year, $14, $13, $1, $2, $3);
+            $et->HandleTag($tagTbl, GPSDateTime  => $str);
             $et->HandleTag($tagTbl, GPSLatitude  => (($5 || 0) + $6/60) * ($7 eq 'N' ? 1 : -1));
             $et->HandleTag($tagTbl, GPSLongitude => (($8 || 0) + $9/60) * ($10 eq 'E' ? 1 : -1));
             if (length $11) {
@@ -621,23 +680,126 @@ sub ParseText($$$)
                 $et->HandleTag($tagTbl, GPSTrack => $11);
                 $et->HandleTag($tagTbl, GPSTrackRef => 'T');
             }
-            my $year = $15 + ($15 >= 70 ? 1900 : 2000);
-            my $str = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $year, $14, $13, $1, $2, $3);
-            $et->HandleTag($tagTbl, GPSDateTime => $str);
+            $found = 1;
         } elsif ($tag eq 'BEGINGSENSOR' and $dat =~ /^:([-+]\d+\.\d+):([-+]\d+\.\d+):([-+]\d+\.\d+)/) {
             $et->HandleTag($tagTbl, Accelerometer => "$1 $2 $3");
+            $found = 1;
         } elsif ($tag eq 'TIME' and $dat =~ /^:(\d+)/) {
             $et->HandleTag($tagTbl, TimeCode => $1 / ($$et{MediaTS} || 1));
+            $found = 1;
         } elsif ($tag eq 'BEGIN') {
             $et->HandleTag($tagTbl, Text => $dat) if length $dat;
+            $found = 1;
         } elsif ($tag ne 'END') {
             $et->HandleTag($tagTbl, Text => "\$$tag$dat");
+            $found = 1;
         }
+    }
+    return if $found;
+
+    # check for BlueSkySea enciphered binary GPS data
+    if ($$buffPt =~ /^\0\0..\xaa\xaa/s and length $$buffPt >= 282) {
+        $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 8, 14)));
+        if ($val =~ /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/) {
+            $tags{GPSDateTime} = "$1:$2:$3 $4:$5:$6";
+            $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 38, 9)));
+            if ($val =~ /^([NS])(\d{2})(\d+$)$/) {
+                $tags{GPSLatitude} = ($2 + $3 / 600000) * ($1 eq 'S' ? -1 : 1);
+            }
+            $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 47, 10)));
+            if ($val =~ /^([EW])(\d{3})(\d+$)$/) {
+                $tags{GPSLongitude} = ($2 + $3 / 600000) * ($1 eq 'W' ? -1 : 1);
+            }
+            $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 62, 3)));
+            $tags{GPSSpeed} = $val + 0 if $val =~ /^\d+$/;
+            $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 0xad, 12)));
+            # the first X,Y,Z accelerometer readings from the AccelerometerData
+            if ($val =~ /^([-+]\d{3})([-+]\d{3})([-+]\d{3})$/) {
+                $tags{Accelerometer} = "$1 $2 $3";
+            }
+            $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 0xba, 96)));
+            my $order = GetByteOrder();
+            SetByteOrder('II');
+            $val = ReadValue(\$val, 0, 'float');
+            SetByteOrder($order);
+            $tags{AccelerometerData} = $val;
+        }
+    }
+
+    # check for DJI telemetry data, eg:
+    # "F/3.5, SS 1000, ISO 100, EV 0, GPS (8.6499, 53.1665, 18), D 24.26m,
+    #  H 6.00m, H.S 2.10m/s, V.S 0.00m/s \n"
+    if (not %tags and $$buffPt =~ /GPS \(([-+]?\d*\.\d+),\s*([-+]?\d*\.\d+)/) {
+        $$et{CreateDateAtEnd} = 1;  # set flag indicating the file creation date is at the end
+        $tags{GPSLatitude} = $2;
+        $tags{GPSLongitude} = $1;
+        $tags{GPSAltitude} = $1 if $$buffPt =~ /,\s*H\s+([-+]?\d+\.?\d*)m/;
+        if ($$buffPt =~ /,\s*H.S\s+([-+]?\d+\.?\d*)/) {
+            $tags{GPSSpeed} = $1 * $mpsToKph;
+            $tags{GPSSpeedRef} = 'K';
+        }
+        $tags{Distance} = $1 * $mpsToKph if $$buffPt =~ /,\s*D\s+(\d+\.?\d*)m/;
+        $tags{VerticalSpeed} = $1 if $$buffPt =~ /,\s*V.S\s+([-+]?\d+\.?\d*)/;
+        $tags{FNumber} = $1 if $$buffPt =~ /\bF\/(\d+\.?\d*)/;
+        $tags{ExposureTime} = 1 / $1 if $$buffPt =~ /\bSS\s+(\d+\.?\d*)/;
+        $tags{ExposureCompensation} = ($1 / ($2 || 1)) if $$buffPt =~ /\bEV\s+([-+]?\d+\.?\d*)(\/\d+)?/;
+        $tags{ISO} = $1 if $$buffPt =~ /\bISO\s+(\d+\.?\d*)/;
+    }
+
+    # check for Mini 0806 dashcam GPS, eg:
+    # "A,270519,201555.000,3356.8925,N,08420.2071,W,000.0,331.0M,+01.84,-09.80,-00.61;\n"
+    if (not %tags and $$buffPt =~ /^A,(\d{2})(\d{2})(\d{2}),(\d{2})(\d{2})(\d{2}(\.\d+)?)/) {
+        $tags{GPSDateTime} = "20$3:$2:$1 $4:$5:$6Z";
+        if ($$buffPt =~ /^A,.*?,.*?,(\d{2})(\d+\.\d+),([NS])/) {
+            $tags{GPSLatitude} = ($1 + $2/60) * ($3 eq 'S' ? -1 : 1);
+        }
+        if ($$buffPt =~ /^A,.*?,.*?,.*?,.*?,(\d{3})(\d+\.\d+),([EW])/) {
+            $tags{GPSLongitude} = ($1 + $2/60) * ($3 eq 'W' ? -1 : 1);
+        }
+        my @a = split ',', $$buffPt;
+        $tags{GPSAltitude} = $a[8] if $a[8] and $a[8] =~ s/M$//;
+        $tags{GPSSpeed} = $a[7] if $a[7] and $a[7] =~ /^\d+\.\d+$/; # (NC)
+        $tags{Accelerometer} = "$a[9] $a[10] $a[11]" if $a[11] and $a[11] =~ s/;\s*$//;
+    }
+
+    # check for Thinkware format, eg:
+    # "gsensori,4,512,-67,-12,100;GNRMC,161313.00,A,4529.87489,N,07337.01215,W,6.225,35.34,310819,,,A*52..;
+    #  CAR,0,0,0,0.0,0,0,0,0,0,0,0,0"
+    unless (%tags) {
+        if ($$buffPt =~ /[A-Z]{2}RMC,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/ and
+            # do some basic sanity checks on the date
+            $13 <= 31 and $14 <= 12 and $15 <= 99)
+        {
+            my $year = $15 + ($15 >= 70 ? 1900 : 2000);
+            $tags{GPSDateTime} = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $year, $14, $13, $1, $2, $3);
+            $tags{GPSLatitude} = (($5 || 0) + $6/60) * ($7 eq 'N' ? 1 : -1);
+            $tags{GPSLongitude} = (($8 || 0) + $9/60) * ($10 eq 'E' ? 1 : -1);
+            if (length $11) {
+                $tags{GPSSpeed} = $11 * $knotsToKph;
+                $tags{GPSSpeedRef} = 'K';
+            }
+            if (length $12) {
+                $tags{GPSTrack} = $12;
+                $tags{GPSTrackRef} = 'T';
+            }
+        }
+        $tags{GSensor} = $1 if $$buffPt =~ /\bgsensori,(.*?)(;|$)/;
+        $tags{Car} = $1 if $$buffPt =~ /\bCAR,(.*?)(;|$)/;
+    }
+    if (%tags) {
+        foreach $tag (sort keys %tags) {
+            $et->HandleTag($tagTbl, $tag => $tags{$tag});
+        }
+        $$et{UnknownTextCount} = 0;
+    } else {
+        $$et{UnknownTextCount} = ($$et{UnknownTextCount} || 0) + 1;
+        # give up trying to decode useful information if we haven't found anything for a while
+        $$et{NoMoreTextDecoding} = 1 if $$et{UnknownTextCount} > 100;
     }
 }
 
 #------------------------------------------------------------------------------
-# Exract embedded metadata from media samples
+# Extract embedded metadata from media samples
 # Inputs: 0) ExifTool ref
 # Notes: Also accesses ExifTool RAF*, SET_GROUP1, HandlerType, MetaFormat,
 #        ee*, and avcC elements (* = must exist)
@@ -729,6 +891,10 @@ sub ProcessSamples($)
     # loop through all samples
     for ($i=0; $i<@$start and $i<@$size; ++$i) {
 
+        # initialize our flags for setting GPSDateTime
+        delete $$et{FoundGPSLatitude};
+        delete $$et{FoundGPSDateTime};
+
         # read the sample data
         my $size = $$size[$i];
         next unless $raf->Seek($$start[$i], 0) and $raf->Read($buff, $size) == $size;
@@ -786,14 +952,14 @@ sub ProcessSamples($)
                     $et->HandleTag($tagTbl, GPSLongitude => Get32s(\$buff, 16) * 180/0x80000000);
                     $et->HandleTag($tagTbl, GPSSpeed => Get16u(\$buff, 8));
                     $et->HandleTag($tagTbl, GPSSpeedRef => 'M');
-                    next;
+                    SetGPSDateTime($et, $tagTbl, $time[$i]);
+                    next; # all done (don't store/process as text)
                 }
                 unless (defined $val) {
                     $et->HandleTag($tagTbl, Text => $buff); # just store any other text
-                    next;
                 }
             }
-            ParseText($et, $tagTbl, \$buff);
+            Process_text($et, $tagTbl, \$buff);
 
         } elsif ($processByMetaFormat{$type}) {
 
@@ -814,7 +980,7 @@ sub ProcessSamples($)
                     # "X0000.0000Y0000.0000Z0000.0000G0000.0000$GPRMC,000125,V,,,,,000.0,,280908,002.1,N*71~, 794021  \x0a"
                     FoundSomething($et, $tagTbl, $time[$i], $dur[$i]);
                     $et->HandleTag($tagTbl, Accelerometer => "$1 $2 $3 $4") if $buff =~ /X(.*?)Y(.*?)Z(.*?)G(.*?)\$/;
-                    ParseText($et, $tagTbl, \$buff);
+                    Process_text($et, $tagTbl, \$buff);
                 }
             } elsif ($verbose) {
                 $et->VPrint(0, "Unknown meta format ($metaFormat)");
@@ -845,6 +1011,8 @@ sub ProcessSamples($)
                 );
             }
         }
+        # generate approximate GPSDateTime if necessary
+        SetGPSDateTime($et, $tagTbl, $time[$i]) if $$et{FoundGPSLatitude} and not $$et{FoundGPSDateTime};
     }
     if ($verbose) {
         $$et{INDENT} = $oldIndent;
@@ -936,7 +1104,7 @@ sub ProcessFreeGPS($$$)
         SetByteOrder('II');
         $lat = GetFloat($dataPt, 0x2c);
         $lon = GetFloat($dataPt, 0x30);
-        $spd = GetFloat($dataPt, 0x34) * 1.852; # (convert knots to km/h)
+        $spd = GetFloat($dataPt, 0x34) * $knotsToKph; # (convert knots to km/h)
         $trk = GetFloat($dataPt, 0x38);
         SetByteOrder('MM');
 
@@ -1592,7 +1760,7 @@ sub ProcessRIFFTrailer($$$)
             }
         }
         # also seen, but not decoded:
-        # gpsa (8 bytes): hex "01 20 00 00 08 03 02 08 "  
+        # gpsa (8 bytes): hex "01 20 00 00 08 03 02 08 "
         # gsea (20 bytes): all zeros
         $$et{INDENT} = substr($$et{INDENT}, 0, -2) if $verbose;
     }
@@ -1728,9 +1896,9 @@ sub ProcessTTAD($$$)
             FoundSomething($et, $tagTbl, $sampleTime / 1000);
             my $t = GetDouble($dataPt, $pos);
             $et->HandleTag($tagTbl, GPSDateTime  => Image::ExifTool::ConvertUnixTime($t,undef,3).'Z');
-            $et->HandleTag($tagTbl, GPSAltitude  => GetDouble($dataPt, $pos+0x14));
             $et->HandleTag($tagTbl, GPSLatitude  => GetDouble($dataPt, $pos+0x1c));
             $et->HandleTag($tagTbl, GPSLongitude => GetDouble($dataPt, $pos+0x24));
+            $et->HandleTag($tagTbl, GPSAltitude  => GetDouble($dataPt, $pos+0x14));
             $et->HandleTag($tagTbl, GPSSpeed     => GetDouble($dataPt, $pos+0x0c) * $mpsToKph);
             $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
             $et->HandleTag($tagTbl, GPSTrack     => GetDouble($dataPt, $pos+0x30));

@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
-[File, System, Image] FileName - File Name: Jpeg2000.jp2
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 2028 bytes
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: Jpeg2000.jp2
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 2028 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2016:10:11 07:20:47-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:19-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: JP2
-[File, File, Image] FileTypeExtension - File Type Extension: jp2
-[File, File, Image] MIMEType - MIME Type: image/jp2
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:08-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: JP2
+[File, File, Other] FileTypeExtension - File Type Extension: jp2
+[File, File, Other] MIMEType - MIME Type: image/jp2
 [File, File, Image] ExifByteOrder - Exif Byte Order: Little-endian (Intel, II)
 [File, File, Image] ExifByteOrder - Exif Byte Order: Big-endian (Motorola, MM)
 [Jpeg2000, Jpeg2000, Video] 0 - Major Brand: JPEG 2000 Image (.JP2)

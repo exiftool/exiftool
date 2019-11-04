@@ -1,7 +1,7 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.63
-[File, File, Image] FileType - File Type: PNG
-[File, File, Image] FileTypeExtension - File Type Extension: png
-[File, File, Image] MIMEType - MIME Type: image/png
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, File, Other] FileType - File Type: PNG
+[File, File, Other] FileTypeExtension - File Type Extension: png
+[File, File, Other] MIMEType - MIME Type: image/png
 [File, File, Image] ExifByteOrder - Exif Byte Order: Little-endian (Intel, II)
 [PNG, PNG, Image] 0 - Image Width: 16
 [PNG, PNG, Image] 4 - Image Height: 16
@@ -25,7 +25,7 @@
 [PNG, PNG-pHYs, Image] 0 - Pixels Per Unit X: 1234
 [PNG, PNG-pHYs, Image] 4 - Pixels Per Unit Y: 2834
 [PNG, PNG-pHYs, Image] 8 - Pixel Units: meters
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.63
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.75
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [XMP, XMP-dc, Image] description - Description: UTF-16 (big-endian) encoded XMP
 [XMP, XMP-dc, Author] rights - Rights: Copyright 2004 Phil Harvey

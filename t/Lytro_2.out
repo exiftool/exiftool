@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.56
-[File, System, Image] FileName - File Name: Lytro.lfp
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 4.3 kB
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: Lytro.lfp
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 4.3 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2014:07:17 10:05:03-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:17 09:03:46-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:12 07:28:42-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: LFP
-[File, File, Image] FileTypeExtension - File Type Extension: lfp
-[File, File, Image] MIMEType - MIME Type: image/x-lytro-lfp
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:16-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: LFP
+[File, File, Other] FileTypeExtension - File Type Extension: lfp
+[File, File, Other] MIMEType - MIME Type: image/x-lytro-lfp
 [Lytro, Lytro, Camera] JSONMetadata - JSON Metadata: [(Binary data 778 bytes),(Binary data 3155 bytes),(Binary data 131 bytes)]
 [Lytro, Lytro, Image] PictureDerivationArray - Picture Derivation Array: sha1-f58530c3902263bfc1d411cac2b965d635fb6287
 [Lytro, Lytro, Image] PictureFrameArrayFrameImageRef - Picture Frame Array Frame Image Ref: sha1-0360f825e6eed3c7c470fb79a755a54df07fae84

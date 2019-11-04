@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
-[File, System, Image] FileName - File Name: XMP.xml
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 6.0 kB
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: XMP.xml
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 6.0 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2009:03:03 13:49:24-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:38-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: XMP
-[File, File, Image] FileTypeExtension - File Type Extension: xmp
-[File, File, Image] MIMEType - MIME Type: application/rdf+xml
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:30-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: XMP
+[File, File, Other] FileTypeExtension - File Type Extension: xmp
+[File, File, Other] MIMEType - MIME Type: application/rdf+xml
 [XMP, XMP-rdf, Document] about - About: t/images/Nikon.jpg
 [XML, XML-ExifTool, Unknown] ExifTool:ExifToolVersion - Exif Tool Version: 7.62
 [XML, XML-File, Unknown] File:FileName - File Name: Nikon.jpg

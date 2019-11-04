@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
-[File, System, Image] FileName - File Name: Torrent.torrent
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 837 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:09:06 11:36:26-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:35-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:55-05:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: Torrent
-[File, File, Image] FileTypeExtension - File Type Extension: torrent
-[File, File, Image] MIMEType - MIME Type: application/x-bittorrent
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: Torrent.torrent
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 837 bytes
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:09:06 11:33:59-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:46-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: Torrent
+[File, File, Other] FileTypeExtension - File Type Extension: torrent
+[File, File, Other] MIMEType - MIME Type: application/x-bittorrent
 [Torrent, Torrent, Document] announce - Announce: udp://tracker.bogus.com:80/announce
 [Torrent, Torrent, Document] announce-list1 - Announce List 1: udp://tracker.bogus.com:80/announce
 [Torrent, Torrent, Document] announce-list2 - Announce List 2: udp://tracker.bogus2.com:80/announce

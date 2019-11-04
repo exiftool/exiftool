@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.99
-[File, System, Image] FileName - File Name: ExifTool.jpg
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 25 kB
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: ExifTool.jpg
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 25 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2014:09:23 09:15:01-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:07:23 08:10:43-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:06:26 10:50:09-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: JPEG
-[File, File, Image] FileTypeExtension - File Type Extension: jpg
-[File, File, Image] MIMEType - MIME Type: image/jpeg
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:22-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: JPEG
+[File, File, Other] FileTypeExtension - File Type Extension: jpg
+[File, File, Other] MIMEType - MIME Type: image/jpeg

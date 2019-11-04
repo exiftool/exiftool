@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.96
-[File, System, Image] FileName - File Name: CanonVRD.vrd
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 1768 bytes
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: CanonVRD.vrd
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 1768 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:11:07 22:13:23-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:05:18 16:16:03-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:02-05:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: VRD
-[File, File, Image] FileTypeExtension - File Type Extension: vrd
-[File, File, Image] MIMEType - MIME Type: application/unknown
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:11:10-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: VRD
+[File, File, Other] FileTypeExtension - File Type Extension: vrd
+[File, File, Other] MIMEType - MIME Type: application/unknown
 [CanonVRD, CanonVRD, Image] 2 - VRD Version: 2.0.0
 [CanonVRD, CanonVRD, Image] 6 - WB Adj RGGB Levels: 1856 832 832 928
 [CanonVRD, CanonVRD, Image] 24 - White Balance Adj: Manual (Click)

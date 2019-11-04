@@ -151,12 +151,13 @@ BitsPerSample : 8
 ColorComponents : 3
 EncodingProcess : Baseline DCT, Huffman coding
 ExifByteOrder : Little-endian (Intel, II)
-FileType : JPEG
-FileTypeExtension : jpg
 ImageHeight : 8
 ImageWidth : 8
-MIMEType : image/jpeg
 YCbCrSubSampling : YCbCr4:2:0 (2 2)
+---- File:Other ----
+FileType : JPEG
+FileTypeExtension : jpg
+MIMEType : image/jpeg
 ---- IFD0:Camera ----
 Make : Canon
 Model : Canon EOS DIGITAL REBEL
@@ -173,12 +174,12 @@ InteropIndex : THM - DCF thumbnail file
 InteropVersion : 0100
 RelatedImageHeight : 2048
 RelatedImageWidth : 3072
----- System:Image ----
+---- System:Other ----
 Directory : t/images
 FileName : Canon.jpg
 FilePermissions : rw-r--r--
 FileSize : 2.6 kB
 ---- System:Time ----
-FileAccessDate : 2015:04:18 07:17:39-04:00
-FileInodeChangeDate : 2015:03:07 15:31:02-05:00
+FileAccessDate : 2019:11:01 10:15:22-04:00
+FileInodeChangeDate : 2019:10:29 08:21:01-04:00
 FileModifyDate : 2006:10:03 15:10:31-04:00

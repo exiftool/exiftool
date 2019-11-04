@@ -1,15 +1,15 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
 [ExifTool, ExifTool, ExifTool] Warning - Warning: [minor] The ExtractEmbedded option may find more tags in the video data
-[File, System, Image] FileName - File Name: M2TS.mts
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 1344 bytes
+[File, System, Other] FileName - File Name: M2TS.mts
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 1344 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2009:07:08 13:57:28-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:41-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: M2TS
-[File, File, Image] FileTypeExtension - File Type Extension: mts
-[File, File, Image] MIMEType - MIME Type: video/m2ts
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:16-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: M2TS
+[File, File, Other] FileTypeExtension - File Type Extension: mts
+[File, File, Other] MIMEType - MIME Type: video/m2ts
 [M2TS, M2TS, Video] VideoStreamType - Video Stream Type: H.264 Video
 [M2TS, M2TS, Video] AudioStreamType - Audio Stream Type: A52/AC-3 Audio
 [M2TS, AC3, Audio] AudioBitrate - Audio Bitrate: 256 kbps

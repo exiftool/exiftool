@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.62
-[File, System, Image] FileName - File Name: CanonRaw_4_failed.crw
-[File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 13 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:08:12 12:07:27-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:08:12 12:07:27-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:08:12 12:07:27-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: CRW
-[File, File, Image] FileTypeExtension - File Type Extension: crw
-[File, File, Image] MIMEType - MIME Type: image/x-canon-crw
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: CanonRaw_4_failed.crw
+[File, System, Other] Directory - Directory: t
+[File, System, Other] FileSize - File Size: 13 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:01 10:15:18-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:17-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:01 10:15:18-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: CRW
+[File, File, Other] FileTypeExtension - File Type Extension: crw
+[File, File, Other] MIMEType - MIME Type: image/x-canon-crw
 [MakerNotes, CanonRaw, Camera] 8197 - Raw Data: (Binary data 22 bytes)
 [MakerNotes, CanonRaw, Preview] 8199 - Jpg From Raw: (Binary data 16 bytes)
 [MakerNotes, CanonRaw, Image] 0 - File Format: CRW
@@ -142,7 +142,7 @@
 [MakerNotes, CanonRaw, Image] 3 - Raw Jpg Width: 2048
 [MakerNotes, CanonRaw, Image] 4 - Raw Jpg Height: 1360
 [MakerNotes, CanonRaw, Camera] 6203 - Serial Number Format: Format 1
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.62
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.75
 [XMP, XMP-aux, Camera] Lens - Lens: 18.0 - 55.0 mm
 [XMP, XMP-crs, Image] Temperature - Color Temperature: 5200
 [XMP, XMP-dc, Image] description - Description: CRW with embedded XMP

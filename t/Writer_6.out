@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
-[File, System, Image] FileName - File Name: Writer_6_failed.jpg
-[File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 5.7 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:07:03 12:17:03-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 12:17:03-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:03 12:17:03-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: JPEG
-[File, File, Image] FileTypeExtension - File Type Extension: jpg
-[File, File, Image] MIMEType - MIME Type: image/jpeg
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: Writer_6_failed.jpg
+[File, System, Other] Directory - Directory: t
+[File, System, Other] FileSize - File Size: 5.7 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:01 10:15:47-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:47-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:01 10:15:47-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: JPEG
+[File, File, Other] FileTypeExtension - File Type Extension: jpg
+[File, File, Other] MIMEType - MIME Type: image/jpeg
 [File, File, Image] ExifByteOrder - Exif Byte Order: Little-endian (Intel, II)
 [File, File, Image] CurrentIPTCDigest - Current IPTC Digest: 27e2cf0c32f8cb445eccf7006bfc9af5
 [File, File, Image] ImageWidth - Image Width: 8
@@ -161,7 +161,7 @@
 [MakerNotes, Canon, Camera] 0 - Canon 0x0000: 0 0 0 0 0 0 3072000 892 2048000 595 65540 262146
 [IPTC, IPTC, Other] 15 - Category: IPT
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.55
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.75
 [XMP, XMP-dc, Image] description - Description: New description
 [XMP, XMP-exif, Camera] Contrast - Contrast: High
 [Composite, Composite, Camera] Canon::DriveMode - Drive Mode: Continuous Shooting

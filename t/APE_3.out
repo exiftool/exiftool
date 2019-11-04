@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
-[File, System, Image] FileName - File Name: APE.mpc
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 2.5 kB
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: APE.mpc
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 2.5 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:11:14 15:06:40-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:11-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: MPC
-[File, File, Image] FileTypeExtension - File Type Extension: mpc
-[File, File, Image] MIMEType - MIME Type: audio/x-musepack
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:11:40-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: MPC
+[File, File, Other] FileTypeExtension - File Type Extension: mpc
+[File, File, Other] MIMEType - MIME Type: audio/x-musepack
 [File, File, Image] ID3Size - ID3 Size: 391
 [MPC, MPC, Audio] Bit032-063 - Total Frames: 102
 [MPC, MPC, Audio] Bit080-081 - Sample Rate: 44100

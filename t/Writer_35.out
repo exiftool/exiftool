@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.74
-[File, System, Image] FileName - File Name: Writer_35_failed.jpg
-[File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 9.5 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2018:01:08 13:16:13-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2018:01:08 13:16:13-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:01:08 13:16:13-05:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: JPEG
-[File, File, Image] FileTypeExtension - File Type Extension: jpg
-[File, File, Image] MIMEType - MIME Type: image/jpeg
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: Writer_35_failed.jpg
+[File, System, Other] Directory - Directory: t
+[File, System, Other] FileSize - File Size: 9.5 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:01 10:15:49-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:49-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:01 10:15:49-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: JPEG
+[File, File, Other] FileTypeExtension - File Type Extension: jpg
+[File, File, Other] MIMEType - MIME Type: image/jpeg
 [File, File, Image] ExifByteOrder - Exif Byte Order: Little-endian (Intel, II)
 [File, File, Image] CurrentIPTCDigest - Current IPTC Digest: d624fa41e4169333a86729e3c275f95a
 [File, File, Image] Comment - Comment: © PhotoStudio Unicode comment;;
@@ -83,7 +83,7 @@
 [Photoshop, Photoshop, Author] 1035 - URL: http://owl.phy.queensu.ca/~phil/exiftool/
 [Photoshop, Photoshop, Image] 1037 - Global Angle: 30
 [Photoshop, Photoshop, Image] 1049 - Global Altitude: 30
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.74
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.75
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [XMP, XMP-dc, Image] description - Description: UTF-16 (big-endian) encoded XMP
 [XMP, XMP-dc, Author] rights - Rights: Copyright 2004 Phil Harvey

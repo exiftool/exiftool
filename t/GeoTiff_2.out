@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
-[File, System, Image] FileName - File Name: GeoTiff.tif
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 2.6 kB
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: GeoTiff.tif
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 2.6 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2005:11:14 14:47:21-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:41-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: TIFF
-[File, File, Image] FileTypeExtension - File Type Extension: tif
-[File, File, Image] MIMEType - MIME Type: image/tiff
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:16-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: TIFF
+[File, File, Other] FileTypeExtension - File Type Extension: tif
+[File, File, Other] MIMEType - MIME Type: image/tiff
 [File, File, Image] ExifByteOrder - Exif Byte Order: Big-endian (Motorola, MM)
 [EXIF, IFD0, Image] 256 - Image Width: 25
 [EXIF, IFD0, Image] 257 - Image Height: 24

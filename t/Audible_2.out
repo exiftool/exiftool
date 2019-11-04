@@ -1,14 +1,14 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
-[File, System, Image] FileName - File Name: Audible.aa
-[File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 1322 bytes
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[File, System, Other] FileName - File Name: Audible.aa
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 1322 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:10 06:46:11-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:29 20:10:38-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
-[File, System, Image] FilePermissions - File Permissions: rw-r--r--
-[File, File, Image] FileType - File Type: AA
-[File, File, Image] FileTypeExtension - File Type Extension: aa
-[File, File, Image] MIMEType - MIME Type: audio/audible
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:11:40-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, File, Other] FileType - File Type: AA
+[File, File, Other] FileTypeExtension - File Type Extension: aa
+[File, File, Other] MIMEType - MIME Type: audio/audible
 [Audible, Audible, Audio] product_id - Product Id: BK_ADBL_123456a_mp332
 [Audible, Audible, Audio] parent_id - Parent Id: BK_ADBL_123456
 [Audible, Audible, Audio] title - Title: Test: This is the title of the big book (Unabridged)

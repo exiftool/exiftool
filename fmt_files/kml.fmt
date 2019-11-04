@@ -38,12 +38,12 @@
 #[HEAD]      </IconStyle>
 #[HEAD]    </Style>
 #[SECT]    <Folder>
-#[SECT]      <name>$directory</name>
+#[SECT]      <name>$main:directory</name>
 #[SECT]      <open>0</open>
 #[IF]  $gpslatitude $gpslongitude
 #[BODY]      <Placemark>
 #[BODY]        <description><![CDATA[<br/><table><tr><td>
-#[BODY]        <img src='$directory/$filename'
+#[BODY]        <img src='$main:directory/$main:filename'
 #[BODY]          width='$imagewidth' height='$imageheight'>
 #[BODY]        </td></tr></table>]]></description>
 #[BODY]        <Snippet/>

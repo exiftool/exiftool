@@ -65,12 +65,12 @@ my %addUnits = (
     PROCESS_PROC => \&ProcessGoPro,
     GROUPS => { 2 => 'Camera' },
     NOTES => q{
-        Tags extracted from the GPMF box of GoPro MP4 videos, the APP6 "GoPro" segment
-        of JPEG files, and from the "gpmd" timed metadata if the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option
-        is enabled.  Many more tags exist, but are currently unknown and extracted only
-        with the L<Unknown|../ExifTool.html#Unknown> (-u) option. Please let me know if you discover the meaning of any of
-        these unknown tags. See L<https://github.com/gopro/gpmf-parser> for details
-        about this format.
+        Tags extracted from the GPMF box of GoPro MP4 videos, the APP6 "GoPro"
+        segment of JPEG files, and from the "gpmd" timed metadata if the
+        L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> (-ee) option is enabled.  Many more tags exist, but are
+        currently unknown and extracted only with the L<Unknown|../ExifTool.html#Unknown> (-u) option. Please
+        let me know if you discover the meaning of any of these unknown tags. See
+        L<https://github.com/gopro/gpmf-parser> for details about this format.
     },
     ACCL => { #2 (gpmd)
         Name => 'Accelerometer',
@@ -471,7 +471,7 @@ my %addUnits = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     NOTES => q{
         Tags extracted from the MP4 "fdsc" timed metadata when the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded>
-        option is used.
+        (-ee) option is used.
     },
     0x08 => { Name => 'FirmwareVersion',    Format => 'string[15]' },
     0x17 => { Name => 'SerialNumber',       Format => 'string[16]' },

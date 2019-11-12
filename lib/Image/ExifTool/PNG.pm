@@ -115,9 +115,9 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
         location of text-type chunks (tEXt, zTXt and iTXt).  However, certain
         utilities (including some Apple and Adobe utilities) won't read the XMP iTXt
         chunk if it comes after the IDAT chunk, and at least one utility won't read
-        other text chunks like this.  For this reason, ExifTool 11.63 and later
-        create new text chunks (including XMP) before IDAT, and will move existing
-        text chunks up from after IDAT.
+        other text chunks here.  For this reason, when writing, ExifTool 11.63 and
+        later create new text chunks (including XMP) before IDAT, and move existing
+        text chunks to before IDAT.
     },
     bKGD => {
         Name => 'BackgroundColor',

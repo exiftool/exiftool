@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.28';
+$VERSION = '3.29';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -951,7 +951,7 @@ my %sPantryItem = (
         This structure must have an InstanceID field, but may also contain any other
         XMP properties.
     },
-    InstanceID => { Namespace => 'xmpMM' },
+    InstanceID => { Namespace => 'xmpMM', List => 0 },
 );
 
 # XMP Media Management namespace properties (xmpMM, xapMM)

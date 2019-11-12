@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23164 tags, with 15143 unique tag names.
+They contain a total of 23172 tags, with 15146 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -2671,6 +2671,8 @@ These tags belong to the ExifTool XMP-GCamera family 1 group.
   --------                                      --------
   BurstID                                       string
   BurstPrimary                                  string
+  DisableAutoCreation                           string+
+  HDRPMakerNote                                 string
   PortraitNote                                  string
   PortraitRequest                               string
   PortraitVersion                               string
@@ -3257,10 +3259,10 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
 
 =head3 XMP ImageRegion Struct
 
-As well as the fields defined below, this structure may contain any
-top-level XMP tags, but since they aren't pre-defined the only way to add
-these tags is to write ImageRegion as a structure with these tags as new
-fields.
+This structure is new in the IPTC Extension version 1.5 specification.  As
+well as the fields defined below, this structure may contain any top-level
+XMP tags, but since they aren't pre-defined the only way to add these tags
+is to write ImageRegion as a structure with these tags as new fields.
 
   Field Name                                    Writable
   ----------                                    --------
@@ -4389,7 +4391,7 @@ These tags belong to the ExifTool XMP-xmpMM family 1 group.
   ManifestReferenceVersionID                    string_+
   OriginalDocumentID                            string
   Pantry                                        PantryItem Struct+
-  PantryInstanceID                              string_+
+  PantryInstanceID                              string_
   PreservedFileName                             string
   RenditionClass                                string
   RenditionOf                                   ResourceRef Struct
@@ -17228,9 +17230,9 @@ not valid for panorama images.
 
 =head3 Sony Tag2010e Tags
 
-Valid for SLT-A58/A99, ILCE-3000/3500, NEX-3N/5R/5T/6/VG30E/VG900, DSC-RX100,
-DSC-RX1/RX1R. Also valid for DSC-HX300/HX50V/TX30/WX60/WX200/WX300, but not
-for panorama images.
+Valid for SLT-A58/A99, ILCE-3000/3500, NEX-3N/5R/5T/6/VG30E/VG900,
+DSC-RX100, DSC-RX1/RX1R. Also valid for DSC-HX300/HX50V/TX30/WX60/WX200/
+WX300, but not for panorama images.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -17380,7 +17382,8 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.
 
 =head3 Sony Tag2010i Tags
 
-Valid for ILCE-6100/6400/6600/7M3/7RM3/7RM4/9, DSC-RX0M2/RX10M4/RX100M6/RX100M5A/RX100M7/HX99.
+Valid for ILCE-6100/6400/6600/7M3/7RM3/7RM4/9/9M2, DSC-RX0M2/RX10M4/RX100M6/
+RX100M5A/RX100M7/HX99.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -17533,6 +17536,7 @@ substitution cipher, but the deciphered values are listed below.
     263    LensType2                            int16u
     265    LensType                             int16u
     267    DistortionCorrParamsPresent          int8u
+    276    APS-CSizeCapture                     int8u
     277    LensSpecFeatures                     undef[2]
     278    LensSpecFeatures                     undef[2]
     416    ShutterCount3                        int32u
@@ -17541,8 +17545,8 @@ substitution cipher, but the deciphered values are listed below.
 
 =head3 Sony Tag9050b Tags
 
-Valid from July 2015 for ILCE-6100/6300/6400/6500/6600/7M3/7RM2/7RM3/7RM4/7SM2/9,
-ILCA-99M2.
+Valid from July 2015 for ILCE-6100/6300/6400/6500/6600/7M3/7RM2/7RM3/7RM4/
+7SM2/9/9M2, ILCA-99M2.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -17567,13 +17571,18 @@ ILCA-99M2.
     263    LensType2                            int16u
     265    LensType                             int16u
     267    DistortionCorrParamsPresent          int8u
+    276    APS-CSizeCapture                     int8u
     278    LensSpecFeatures                     undef[2]
     415    ShutterCount3                        int32u
     459    ShutterCount3                        int32u
     461    ShutterCount3                        int32u
+    491    APS-CSizeCapture                     int8u
     493    LensSpecFeatures                     undef[2]
+    494    APS-CSizeCapture                     int8u
     496    LensSpecFeatures                     undef[2]
+    538    APS-CSizeCapture                     int8u
     540    LensSpecFeatures                     undef[2]
+           APS-CSizeCapture                     int8u
     542    LensSpecFeatures                     undef[2]
 
 =head3 Sony Tag9400a Tags
@@ -17614,9 +17623,9 @@ DSC-HX50V, DSC-QX10/QX100.
 =head3 Sony Tag9400c Tags
 
 Valid for DSC-HX60V/HX80/HX90V/HX99/HX350/HX400V/QX30/RX0/RX1RM2/RX10/
-RX10M2/RX10M3/RX10M4/RX100M3/RX100M4/RX100M5/RX100M5A/RX100M6/RX100M7/
-WX220/WX350/WX500, ILCE-7/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/9/5000/5100/
-6000/6100/6300/6400/6500/6600/QX1, ILCA-68/77M2/99M2.
+RX10M2/RX10M3/RX10M4/RX100M3/RX100M4/RX100M5/RX100M5A/RX100M6/RX100M7/WX220/
+WX350/WX500, ILCE-7/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/9/9M2/5000/5100/6000/
+6100/6300/6400/6500/6600/QX1, ILCA-68/77M2/99M2.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -17715,8 +17724,8 @@ Valid for SLT, NEX, ILCE-3000/3500 and several DSC models.
 
 Valid for DSC-HX60V/HX80/HX90V/HX99/HX350/HX400V/QX30/RX0/RX10/RX10M2/
 RX10M3/RX10M4/RX100M3/RX100M4/RX100M5/RX100M5A/RX100M6/RX100M7/WX220/WX350,
-ILCE-7/7M2/7M3/7R/7RM2/7RM3/7RM4/7S/7SM2/9/5000/5100/6000/6100/6300/6400/
-6500/6600/QX1, ILCA-68/77M2/99M2.
+ILCE-7/7M2/7M3/7R/7RM2/7RM3/7RM4/7S/7SM2/9/9M2/5000/5100/6000/6100/6300/
+6400/6500/6600/QX1, ILCA-68/77M2/99M2.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -19349,12 +19358,12 @@ L<http://www.scalado.com/>.)
 
 =head3 GoPro GPMF Tags
 
-Tags extracted from the GPMF box of GoPro MP4 videos, the APP6 "GoPro" segment
-of JPEG files, and from the "gpmd" timed metadata if the ExtractEmbedded option
-is enabled.  Many more tags exist, but are currently unknown and extracted only
-with the Unknown (-u) option. Please let me know if you discover the meaning of any of
-these unknown tags. See L<https://github.com/gopro/gpmf-parser> for details
-about this format.
+Tags extracted from the GPMF box of GoPro MP4 videos, the APP6 "GoPro"
+segment of JPEG files, and from the "gpmd" timed metadata if the
+ExtractEmbedded (-ee) option is enabled.  Many more tags exist, but are
+currently unknown and extracted only with the Unknown (-u) option. Please
+let me know if you discover the meaning of any of these unknown tags. See
+L<https://github.com/gopro/gpmf-parser> for details about this format.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -19474,7 +19483,7 @@ Battery status information found in GoPro Karma videos.
 =head3 GoPro fdsc Tags
 
 Tags extracted from the MP4 "fdsc" timed metadata when the ExtractEmbedded
-option is used.
+(-ee) option is used.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -22653,9 +22662,9 @@ Also according to the PNG specification, there is no restriction on the
 location of text-type chunks (tEXt, zTXt and iTXt).  However, certain
 utilities (including some Apple and Adobe utilities) won't read the XMP iTXt
 chunk if it comes after the IDAT chunk, and at least one utility won't read
-other text chunks like this.  For this reason, ExifTool 11.63 and later
-create new text chunks (including XMP) before IDAT, and will move existing
-text chunks up from after IDAT.
+other text chunks here.  For this reason, when writing, ExifTool 11.63 and
+later create new text chunks (including XMP) before IDAT, and move existing
+text chunks to before IDAT.
 
   Tag ID             Tag Name                   Writable
   ------             --------                   --------
@@ -33230,8 +33239,11 @@ name.  See L<http://tools.ietf.org/html/rfc5545> for the official iCalendar
 
 Although basic text files contain no metadata, the following tags are
 determined from a simple analysis of the text data.  LineCount and WordCount
-are generated only for 8-bit character sets if the FastScan option is not
-used.
+are generated only for 8-bit encodings, but the FastScan (-fast) option may
+be used to limit processing to the first 64 kB, in which case these two tags
+are not produced.  To avoid long processing delays, ExifTool will issue a
+minor warning and process only the first 64 kB of any file larger than 20 MB
+unless the IgnoreMinorErrors (-m) option is used.
 
   Tag Name                                      Writable
   --------                                      --------

@@ -22,9 +22,9 @@ this data as additional PNG chunks.</p>
 location of text-type chunks (tEXt, zTXt and iTXt).  However, certain
 utilities (including some Apple and Adobe utilities) won&#39;t read the XMP iTXt
 chunk if it comes after the IDAT chunk, and at least one utility won&#39;t read
-other text chunks like this.  For this reason, ExifTool 11.63 and later
-create new text chunks (including XMP) before IDAT, and will move existing
-text chunks up from after IDAT.</p>
+other text chunks here.  For this reason, when writing, ExifTool 11.63 and
+later create new text chunks (including XMP) before IDAT, and move existing
+text chunks to before IDAT.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -585,7 +585,7 @@ when any of these tags is written, and may only be deleted as a group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 22, 2019</i>
+<br><i>Last revised Nov 4, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -2927,14 +2927,16 @@ Conv: for (;;) {
 }
 
 #------------------------------------------------------------------------------
-# convert tag names to values in a string (eg. '${EXIF:ISO}x $$' --> '100x $')
+# Convert tag names to values or variables in a string
+# (eg. '${EXIF:ISO}x $$' --> '100x $' without hash ref, or "$info{'EXIF:ISO'}x $" with)
 # Inputs: 0) ExifTool object ref, 1) reference to list of found tags
 #         2) string with embedded tag names, 3) Options:
 #               undef    - set missing tags to ''
 #              'Error'   - issue minor error on missing tag (and return undef)
 #              'Warn'    - issue minor warning on missing tag (and return undef)
 #              'Silent'  - just return undef on missing tag (no errors/warnings)
-#               Hash ref - hash for return of tag/value pairs
+#               Hash ref - defined to interpolate as variables in string instead of values
+#                          --> receives tag/value pairs for interpolation of the variables
 #         4) document group name if extracting from a specific document
 #         5) hash ref to cache tag keys for subsequent calls in document loop
 # Returns: string with embedded tag values (or '$info{TAGNAME}' entries with Hash ref option)

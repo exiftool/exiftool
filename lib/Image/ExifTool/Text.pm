@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 # Text tags
 %Image::ExifTool::Text::Main = (
@@ -24,8 +24,11 @@ $VERSION = '1.00';
     NOTES => q{
         Although basic text files contain no metadata, the following tags are
         determined from a simple analysis of the text data.  LineCount and WordCount
-        are generated only for 8-bit character sets if the FastScan option is not
-        used.
+        are generated only for 8-bit encodings, but the L<FastScan|../ExifTool.html#FastScan> (-fast) option may
+        be used to limit processing to the first 64 kB, in which case these two tags
+        are not produced.  To avoid long processing delays, ExifTool will issue a
+        minor warning and process only the first 64 kB of any file larger than 20 MB
+        unless the L<IgnoreMinorErrors|../ExifTool.html#IgnoreMinorErrors> (-m) option is used.
     },
     MIMEEncoding => { Groups => { 2 => 'Other' } },
     Newlines => {
@@ -49,13 +52,22 @@ sub ProcessTXT($$)
 {
     my ($et, $dirInfo) = @_;
     my $dataPt = $$dirInfo{TestBuff};
+    my $raf = $$dirInfo{RAF};
     my $fast = $et->Options('FastScan') || 0;
-    my ($buff, $enc, $isBOM);
+    my ($buff, $enc, $isBOM, $isUTF8);
     my $nl = '';
 
     return 0 unless length $$dataPt; # can't call it a text file if it has no text
 
-    if ($$dataPt =~ /[\0-\x06\x0e-\x1f\x7f\xff]/) {
+    # read more from the file if necessary
+    if ($fast < 3 and length($$dataPt) == $Image::ExifTool::testLen) {
+        $raf->Read($buff, 65536) or return 0;
+        $dataPt = \$buff;
+    }
+#
+# make our best guess at the character encoding (EBCDIC is not supported)
+#
+    if ($$dataPt =~ /([\0-\x06\x0e-\x1a\x1c-\x1f\x7f])/) {
         # file contains weird control characters, could be multi-byte Unicode
         if ($$dataPt =~ /^(\xff\xfe\0\0|\0\0\xfe\xff)/) {
             if ($1 eq "\xff\xfe\0\0") {
@@ -79,9 +91,10 @@ sub ProcessTXT($$)
         $nl =~ tr/\0//d;    # remove nulls from newline sequence
         $isBOM = 1;         # (we don't recognize UTF-16/UTF-32 without one)
     } else {
-        if ($$dataPt !~ /[\x80-\xff]/) {
+        $isUTF8 = Image::ExifTool::XMP::IsUTF8($dataPt, 1);
+        if ($isUTF8 == 0) {
             $enc = 'us-ascii';
-        } elsif (Image::ExifTool::XMP::IsUTF8($dataPt,1) > 0) {
+        } elsif ($isUTF8 > 0) {
             $enc = 'utf-8';
             $isBOM = ($$dataPt =~ /^\xef\xbb\xbf/ ? 1 : 0);
         } elsif ($$dataPt !~ /[\x80-\x9f]/) {
@@ -93,28 +106,51 @@ sub ProcessTXT($$)
     }
     
     my $tagTablePtr = GetTagTable('Image::ExifTool::Text::Main');
+
     $et->SetFileType();
     $et->HandleTag($tagTablePtr, MIMEEncoding => $enc);
-    return 1 if $fast == 3;
+
+    return 1 if $fast == 3 or not $raf->Seek(0,0);
+
     $et->HandleTag($tagTablePtr, ByteOrderMark => $isBOM) if defined $isBOM;
     $et->HandleTag($tagTablePtr, Newlines => $nl);
-    unless ($enc =~ /^utf-(16|32)/ or $fast) {
-        my $raf = $$dirInfo{RAF};
-        my ($lines, $words) = (0, 0);
-        my $oldNL = $/;
-        $/ = $nl if $nl;
-        while ($raf->ReadLine($buff)) {
-            if (not $nl and $buff =~ /(\r\n|\r|\n)$/) {
-                # (the first line must have been longer than 1024 characters)
-                $$et{VALUE}{Newlines} = $nl = $1;
-            }
-            ++$lines;
-            ++$words while $buff =~ /\S+/g;
+
+    return 1 if $fast or not defined $isUTF8;
+    return 1 if $$et{VALUE}{FileSize} and $$et{VALUE}{FileSize} > 20000000 and
+        $et->Warn('Not counting lines/words in text file larger than 20 MB', 2);
+#
+# count lines/words and check encoding of the rest of the file
+#
+    my ($lines, $words) = (0, 0);
+    my $oldNL = $/;
+    $/ = $nl if $nl;
+    while ($raf->ReadLine($buff)) {
+        ++$lines;
+        ++$words while $buff =~ /\S+/g;
+        if (not $nl and $buff =~ /(\r\n|\r|\n)$/) {
+            # (the first line must have been longer than 1024 characters)
+            $$et{VALUE}{Newlines} = $nl = $1;
         }
-        $/ = $oldNL;
-        $et->HandleTag($tagTablePtr, LineCount => $lines);
-        $et->HandleTag($tagTablePtr, WordCount => $words);
+        next if $raf->Tell() < 65536;
+        # continue to check encoding after the first 64 kB
+        if ($isUTF8 >= 0) { # (if ascii or utf8)
+            $isUTF8 = Image::ExifTool::XMP::IsUTF8(\$buff);
+            if ($isUTF8 > 0) {
+                $enc = 'utf-8';
+            } elsif ($isUTF8 < 0) {
+                $enc = $buff =~ /[\x80-\x9f]/ ? 'unknown-8bit' : 'iso-8859-1';
+            }
+        } elsif ($enc eq 'iso-8859-1' and $buff =~ /[\x80-\x9f]/) {
+            $enc = 'unknown-8bit';
+        }
     }
+    if ($$et{VALUE}{MIMEEncoding} ne $enc) {
+        $$et{VALUE}{MIMEEncoding} = $enc;
+        $et->VPrint(0,"  MIMEEncoding [override] = $enc\n");
+    }
+    $/ = $oldNL;
+    $et->HandleTag($tagTablePtr, LineCount => $lines);
+    $et->HandleTag($tagTablePtr, WordCount => $words);
     return 1;
 }
 

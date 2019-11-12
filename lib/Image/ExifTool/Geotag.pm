@@ -12,6 +12,7 @@
 #               2015/05/30 - PH Read Bramor gEO log files
 #               2016/07/13 - PH Added ability to geotag date/time only
 #               2019/07/02 - PH Added ability to read IMU CSV files
+#               2019/11/10 - PH Also write pitch to CameraElevationAngle
 #
 # References:   1) http://www.topografix.com/GPX/1/1/
 #               2) http://www.gpsinformation.org/dale/nmea.htm#GSA
@@ -25,7 +26,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 
-$VERSION = '1.60';
+$VERSION = '1.61';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -1106,6 +1107,7 @@ Category:       foreach $category (qw{pos track alt orient atemp}) {
             }
             @r = $et->SetNewValue(GPSImgDirection => $$tFix{dir}, %opts);
             @r = $et->SetNewValue(GPSImgDirectionRef => (defined $$tFix{dir} ? 'T' : undef), %opts);
+            @r = $et->SetNewValue(CameraElevationAngle => $$tFix{pitch}, %opts);
             # Note: GPSPitch and GPSRoll are non-standard, and must be user-defined
             @r = $et->SetNewValue(GPSPitch => $$tFix{pitch}, %opts);
             @r = $et->SetNewValue(GPSRoll => $$tFix{roll}, %opts);
@@ -1143,7 +1145,8 @@ Category:       foreach $category (qw{pos track alt orient atemp}) {
         foreach (qw(GPSLatitude GPSLatitudeRef GPSLongitude GPSLongitudeRef
                     GPSAltitude GPSAltitudeRef GPSDateStamp GPSTimeStamp GPSDateTime
                     GPSTrack GPSTrackRef GPSSpeed GPSSpeedRef GPSImgDirection
-                    GPSImgDirectionRef GPSPitch GPSRoll AmbientTemperature))
+                    GPSImgDirectionRef GPSPitch GPSRoll CameraElevationAngle
+                    AmbientTemperature))
         {
             my @r = $et->SetNewValue($_, undef, %opts);
         }
@@ -1337,8 +1340,8 @@ in the tag name documentation).
 
 =head1 NOTES
 
-To take advantage of attitude information in the PTNTHPR NMEA sentence, two
-user-defined tags, GPSPitch and GPSRoll, must be active.
+To take advantage of attitude information in the PTNTHPR NMEA sentence, the
+user-defined tag GPSRoll, must be active.
 
 =head1 AUTHOR
 

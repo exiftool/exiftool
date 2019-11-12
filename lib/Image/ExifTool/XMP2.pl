@@ -458,10 +458,10 @@ my %sImageRegion = ( # new in 1.5
     STRUCT_NAME => 'ImageRegion',
     NAMESPACE   => undef,   # undefined to allow variable-namespace extensions
     NOTES => q{
-        As well as the fields defined below, this structure may contain any
-        top-level XMP tags, but since they aren't pre-defined the only way to add
-        these tags is to write ImageRegion as a structure with these tags as new
-        fields.
+        This structure is new in the IPTC Extension version 1.5 specification.  As
+        well as the fields defined below, this structure may contain any top-level
+        XMP tags, but since they aren't pre-defined the only way to add these tags
+        is to write ImageRegion as a structure with these tags as new fields.
     },
     RegionBoundary => { Namespace => 'Iptc4xmpExt', FlatName => 'Boundary', Struct => \%sRegionBoundary },
     rId    => { Namespace => 'Iptc4xmpExt', FlatName => 'ID' },
@@ -1770,6 +1770,14 @@ my %sSubVersion = (
     PortraitVersion => { },
     SpecialTypeID   => { List => 'Bag' },
     PortraitNote    => { },
+    DisableAutoCreation => { List => 'Bag' },
+    hdrp_makernote => {
+        Name => 'HDRPMakerNote',
+        # decoded data starts with the following bytes, but nothing yet is known about its contents:
+        # 48 44 52 50 02 ef 64 35 6d 5e 70 1e 2c ea e3 4c [HDRP..d5m^p.,..L]
+        ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
+        ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
+    },
 );
 
 # Google creations namespace (ref PH)

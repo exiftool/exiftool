@@ -39,7 +39,7 @@ is available):</p>
 GPSLatitudeRef     GPSLongitudeRef   GPSAltitudeRef       GPSTimeStamp
 GPSTrack           GPSSpeed          GPSImgDirection      GPSPitch        
 GPSTrackRef        GPSSpeedRef       GPSImgDirectionRef   GPSRoll
-AmbientTemperature
+AmbientTemperature CameraElevationAngle
 </pre>
 
 <blockquote class=lt><i>Note: GPSPitch and GPSRoll are not standard tags, and
@@ -369,12 +369,13 @@ config file.)</p>
 some Honeywell digital compasses. This is a proprietary NMEA sentence which
 contains information about heading, pitch and roll angles.  When this
 information is available, the heading is written to GPSImgDirection (and
-GPSImgDirectionRef is set to "T"), but no standard GPS tags exist for pitch and
-roll.  Regardless, ExifTool attempts to write GPSPitch and GPSRoll tags. For
-this information to be stored, appropriate user-defined tags must be created. 
-Below is a simple config file which defines the necessary EXIF GPS tags.
-Corresponding XMP-exif tags may also be created. See the
-<a href="config.html">config file documentation</a> for more information.</p>
+GPSImgDirectionRef is set to "T"), and pitch to CameraElevationAngle, but no
+standard tag exists for roll.  Regardless, ExifTool attempts to write
+GPSRoll (and GPSPitch). For these tags to be written, appropriate
+user-defined tags must be created.  Below is a simple config file which
+defines the necessary EXIF GPS tags. Corresponding XMP-exif tags may also be
+created. See the <a href="config.html">config file documentation</a> for
+more information.</p>
 
 <pre>%Image::ExifTool::UserDefined = (
     'Image::ExifTool::GPS::Main' => {

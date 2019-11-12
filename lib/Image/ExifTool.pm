@@ -25,9 +25,9 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             $psAPP13hdr $psAPP13old @loadAllTables %UserDefined $evalWarning
             %noWriteFile %magicNumber @langs $defaultLang %langName %charsetName
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
-            %jpegMarker %specialTags %fileTypeLookup);
+            %jpegMarker %specialTags %fileTypeLookup $testLen);
 
-$VERSION = '11.75';
+$VERSION = '11.76';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -569,10 +569,12 @@ my %fileDescription = (
     BZ2  => 'application/bzip2',
    'Canon 1D RAW' => 'image/x-raw', # (uses .TIF file extension)
     CHM  => 'application/x-chm',
+    COS  => 'application/octet-stream', #PH (NC)
     CR2  => 'image/x-canon-cr2',
     CR3  => 'image/x-canon-cr3',
     CRM  => 'video/x-canon-crm',
     CRW  => 'image/x-canon-crw',
+    DCP  => 'application/octet-stream', #PH (NC)
     DCR  => 'image/x-kodak-dcr',
     DCX  => 'image/dcx',
     DEX  => 'application/octet-stream',
@@ -588,6 +590,7 @@ my %fileDescription = (
     DOTM => 'application/vnd.ms-word.template.macroEnabledTemplate',
     DOTX => 'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
     DPX  => 'image/x-dpx',
+    DR4  => 'application/octet-stream', #PH (NC)
     DS2  => 'audio/x-ds2',
     DSS  => 'audio/x-dss',
     DV   => 'video/x-dv',
@@ -605,8 +608,10 @@ my %fileDescription = (
     FLA  => 'application/vnd.adobe.fla',
     FLAC => 'audio/flac',
     FLIF => 'image/flif',
+    FLIR => 'image/x-flir-fff', #PH (NC)
     FLV  => 'video/x-flv',
     Font => 'application/x-font-type1', # covers PFA, PFB and PFM (not sure about PFM)
+    FPF  => 'image/x-flir-fpf', #PH (NC)
     FPX  => 'image/vnd.fpx',
     GIF  => 'image/gif',
     GPR  => 'image/x-gopro-gpr',
@@ -629,6 +634,7 @@ my %fileDescription = (
     JPM  => 'image/jpm',
     JPX  => 'image/jpx',
     JSON => 'application/json',
+    JXR  => 'image/jxr',
     K25  => 'image/x-kodak-k25',
     KDC  => 'image/x-kodak-kdc',
     KEY  => 'application/x-iwork-keynote-sffkey',
@@ -646,6 +652,7 @@ my %fileDescription = (
     MKV  => 'video/x-matroska',
     MNG  => 'video/mng',
     MOBI => 'application/x-mobipocket-ebook',
+    MOI  => 'application/octet-stream', #PH (NC)
     MOS  => 'image/x-raw',
     MOV  => 'video/quicktime',
     MP3  => 'audio/mpeg',
@@ -682,6 +689,7 @@ my %fileDescription = (
     PHP  => 'application/x-httpd-php',
     PICT => 'image/pict',
     PLIST=> 'application/xml', # (binary PLIST format is 'application/x-plist', recognized at run time)
+    PMP  => 'image/x-sony-pmp', #PH (NC)
     PNG  => 'image/png',
     POT  => 'application/vnd.ms-powerpoint',
     POTM => 'application/vnd.ms-powerpoint.template.macroEnabled',
@@ -714,6 +722,7 @@ my %fileDescription = (
     RW2  => 'image/x-panasonic-rw2',
     RWL  => 'image/x-leica-rwl',
     RWZ  => 'image/x-rawzor', #(duplicated in Rawzor.pm)
+    SEQ  => 'image/x-flir-seq', #PH (NC)
     SKETCH => 'application/sketch',
     SR2  => 'image/x-sony-sr2',
     SRF  => 'image/x-sony-srf',
@@ -728,6 +737,7 @@ my %fileDescription = (
     TTF  => 'application/x-font-ttf',
     TXT  => 'text/plain',
     VCard=> 'text/vcard',
+    VRD  => 'application/octet-stream', #PH (NC)
     VSD  => 'application/x-visio',
     WDP  => 'image/vnd.ms-photo',
     WEBM => 'video/webm',
@@ -814,8 +824,10 @@ my %moduleName = (
     XCF  => 'GIMP',
 );
 
+$testLen = 1024;    # number of bytes to read when testing for magic number
+
 # quick "magic number" file test used to avoid loading module unnecessarily:
-# - regular expression evaluated on first 1024 bytes of file
+# - regular expression evaluated on first $testLen bytes of file
 # - must match beginning at first byte in file
 # - this test must not be more stringent than module logic
 %magicNumber = (
@@ -2470,7 +2482,6 @@ sub ExtractInfo($;@)
         my ($buff, $seekErr);
         my %dirInfo = ( RAF => $raf, Base => $pos, TestBuff => \$buff );
         # read start of file for testing
-        my $testLen = 1024;
         $raf->Read($buff, $testLen) or $buff = '';
         $raf->Seek($pos, 0) or $seekErr = 1;
         until ($seekErr) {

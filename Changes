@@ -7,6 +7,15 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 12, 2019 - Version 11.76
+
+  - Added support for the Sony ILCE-9M2 (thanks Jos Roost)
+  - Added a couple of new XMP-GCamera tags
+  - Added MIMEType values for some formats that previously reported
+    "application/unknown"
+  - Enhanced -geotag feature to write pitch to CameraElevationAngle if available
+  - Improved determination of MIMEEncoding for TXT files
+
 Nov. 4, 2019 - Version 11.75
 
   - Added ability to read some basic characteristics of TXT files

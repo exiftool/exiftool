@@ -10,8 +10,11 @@
 <h2 class=top>Text Tags</h2>
 <p>Although basic text files contain no metadata, the following tags are
 determined from a simple analysis of the text data.  LineCount and WordCount
-are generated only for 8-bit character sets if the FastScan option is not
-used.</p>
+are generated only for 8-bit encodings, but the <a href="../ExifTool.html#FastScan">FastScan</a> (-fast) option may
+be used to limit processing to the first 64 kB, in which case these two tags
+are not produced.  To avoid long processing delays, ExifTool will issue a
+minor warning and process only the first 64 kB of any file larger than 20 MB
+unless the <a href="../ExifTool.html#IgnoreMinorErrors">IgnoreMinorErrors</a> (-m) option is used.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -44,7 +47,7 @@ used.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 4, 2019</i>
+<br><i>Last revised Nov 8, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

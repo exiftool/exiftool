@@ -697,8 +697,40 @@ sub Process_text($$$)
     }
     return if $found;
 
-    # check for BlueSkySea enciphered binary GPS data
-    if ($$buffPt =~ /^\0\0..\xaa\xaa/s and length $$buffPt >= 282) {
+    # check for enciphered binary GPS data
+    # BlueSkySea:
+    #   0000: 00 00 aa aa aa aa 54 54 98 9a 9b 93 9a 92 98 9a [......TT........]
+    #   0010: 9a 9d 9f 9b 9f 9d aa aa aa aa aa aa aa aa aa aa [................]
+    #   0020: aa aa aa aa aa a9 e4 9e 92 9f 9b 9f 92 9d 99 ef [................]
+    #   0030: 9a 9a 98 9b 93 9d 9d 9c 93 aa aa aa aa aa 9a 99 [................]
+    #   0040: 9b aa aa aa aa aa aa aa aa aa aa aa aa aa aa aa [................]
+    #   [...]
+    #  decrypted:
+    #   0000: aa aa 00 00 00 00 fe fe 32 30 31 39 30 38 32 30 [........20190820]
+    #   0010: 30 37 35 31 35 37 00 00 00 00 00 00 00 00 00 00 [075157..........]
+    #   0020: 00 00 00 00 00 03 4e 34 38 35 31 35 38 37 33 45 [......N48515873E]
+    #   0030: 30 30 32 31 39 37 37 36 39 00 00 00 00 00 30 33 [002197769.....03]
+    #   0040: 31 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [1...............]
+    #   [...]
+    # Ambarella A12:
+    #   0000: 00 00 f2 e1 f0 ee 54 54 98 9a 9b 93 9b 9b 9b 9c [......TT........]
+    #   0010: 9b 9a 9a 93 9a 9b a6 9a 9b 9b 93 9b 9a 9b 9c 9a [................]
+    #   0020: 9d 9a 92 9f 93 a9 e4 9f 9f 9e 9f 9b 9b 9c 9d ef [................]
+    #   0030: 9a 99 9d 9e 99 9a 9a 9e 9b 81 9a 9b 9f 9d 9a 9a [................]
+    #   0040: 9a 87 9a 9a 9a 87 9a 98 99 87 9a 9a 99 87 9a 9a [................]
+    #   [...]
+    #  decrypted:
+    #   0000: aa aa 58 4b 5a 44 fe fe 32 30 31 39 31 31 31 36 [..XKZD..20191116]
+    #   0010: 31 30 30 39 30 31 0c 30 31 31 39 31 30 31 36 30 [100901.011910160]
+    #   0020: 37 30 38 35 39 03 4e 35 35 34 35 31 31 36 37 45 [70859.N55451167E]
+    #   0030: 30 33 37 34 33 30 30 34 31 2b 30 31 35 37 30 30 [037430041+015700]
+    #   0040: 30 2d 30 30 30 2d 30 32 33 2d 30 30 33 2d 30 30 [0-000-023-003-00]
+    #   [...]
+    #   0100: aa 55 57 ed ed 45 58 54 44 00 01 30 30 30 30 31 [.UW..EXTD..00001]
+    #   0110: 31 30 38 30 30 30 58 00 58 00 58 00 58 00 58 00 [108000X.X.X.X.X.]
+    #   0120: 58 00 58 00 58 00 58 00 00 00 00 00 00 00 00 00 [X.X.X.X.........]
+    #   0130: 00 00 00 00 00 00 00                            [.......]
+    if ($$buffPt =~ /^\0\0(..\xaa\xaa|\xf2\xe1\xf0\xee)/s and length $$buffPt >= 282) {
         $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 8, 14)));
         if ($val =~ /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/) {
             $tags{GPSDateTime} = "$1:$2:$3 $4:$5:$6";
@@ -710,19 +742,31 @@ sub Process_text($$$)
             if ($val =~ /^([EW])(\d{3})(\d+$)$/) {
                 $tags{GPSLongitude} = ($2 + $3 / 600000) * ($1 eq 'W' ? -1 : 1);
             }
-            $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 62, 3)));
-            $tags{GPSSpeed} = $val + 0 if $val =~ /^\d+$/;
-            $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 0xad, 12)));
-            # the first X,Y,Z accelerometer readings from the AccelerometerData
-            if ($val =~ /^([-+]\d{3})([-+]\d{3})([-+]\d{3})$/) {
-                $tags{Accelerometer} = "$1 $2 $3";
+            $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 0x39, 5)));
+            $tags{GPSAltitude} = $val + 0 if $val =~ /^[-+]\d+$/;
+            $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 0x3e, 3)));
+            if ($val =~ /^\d+$/) {
+                $tags{GPSSpeed} = $val + 0;
+                $tags{GPSSpeedRef} = 'K';
             }
-            $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 0xba, 96)));
-            my $order = GetByteOrder();
-            SetByteOrder('II');
-            $val = ReadValue(\$val, 0, 'float');
-            SetByteOrder($order);
-            $tags{AccelerometerData} = $val;
+            if ($$buffPt =~ /^\0\0..\xaa\xaa/s) { # (BlueSkySea)
+                $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 0xad, 12)));
+                # the first X,Y,Z accelerometer readings from the AccelerometerData
+                if ($val =~ /^([-+]\d{3})([-+]\d{3})([-+]\d{3})$/) {
+                    $tags{Accelerometer} = "$1 $2 $3";
+                    $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 0xba, 96)));
+                    my $order = GetByteOrder();
+                    SetByteOrder('II');
+                    $val = ReadValue(\$val, 0, 'float');
+                    SetByteOrder($order);
+                    $tags{AccelerometerData} = $val;
+                }
+            } else { # (Ambarella)
+                my @acc;
+                $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 0x41, 195)));
+                push @acc, $1, $2, $3 while $val =~ /\G([-+]\d{3})([-+]\d{3})([-+]\d{3})/g;
+                $tags{Accelerometer} = "@acc" if @acc;
+            }
         }
     }
 

@@ -525,6 +525,13 @@ by adding user-defined lenses)</span></span></td></tr>
   <br>Nikon:LensType</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>LensType</td>
+<td class=c>no</td>
+<td class=n>LensTypeMake
+  <br>LensTypeModel</td>
+<td>--&gt; <a href='Composite.html#LensType'>Composite LensType Values</a>
+  <br><span class='n s'>(based on tags found in some Panasonic RW2 images)</span></td></tr>
+<tr>
 <td>LightValue</td>
 <td class=c>no</td>
 <td class=n>Aperture
@@ -532,7 +539,7 @@ by adding user-defined lenses)</span></span></td></tr>
   <br>ISO</td>
 <td><span class=s><span class=n>(calculated LV = 2 * log2(Aperture) - log2(ShutterSpeed) - log2(ISO/100);
 similar to exposure value but normalized to ISO 100)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>MPImage</td>
 <td class=c>no</td>
 <td class=n>MPImageStart
@@ -541,29 +548,29 @@ similar to exposure value but normalized to ISO 100)</span></span></td></tr>
 <td><span class=s><span class=n>(the first MPF &quot;Large Thumbnail&quot; is extracted as PreviewImage, and the rest
 of the embedded MPF images are extracted as MPImage#.  The <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded</a>
 option may be used to extract information from these embedded images.)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>Megapixels</td>
 <td class=c>no</td>
 <td class=n>ImageSize</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>OriginalDecisionData</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=n>OriginalDecisionDataOffset</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>OtherImage</td>
 <td class=c>yes</td>
 <td class=n>OtherImageStart
   <br>OtherImageLength</td>
 <td><span class=s><span class=n>(this tag is writable, and may be used to update existing embedded images,
 but not create or delete them)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PeakSpectralSensitivity</td>
 <td class=c>no</td>
 <td class=n>FLIR:PlanckB</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>PreviewImage</td>
 <td class=c>yes</td>
 <td class=n>PreviewImageStart
@@ -573,18 +580,18 @@ but not create or delete them)</span></span></td></tr>
   <br>PreviewImageLength (1)</td>
 <td><span class=s><span class=n>(this tag is writable, and may be used to update existing embedded images,
 but not create or delete them)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PreviewImage</td>
 <td class=c>no</td>
 <td class=n>ScreenNail</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>PreviewImageSize</td>
 <td class=c>no</td>
 <td class=n>PreviewImageWidth
   <br>PreviewImageHeight</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RedBalance</td>
 <td class=c>no</td>
 <td class=n>WB_RGGBLevels
@@ -599,37 +606,37 @@ but not create or delete them)</span></span></td></tr>
   <br>WBRedLevel
   <br>WBGreenLevel</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RedEyeReduction</td>
 <td class=c>no</td>
 <td class=n>CanonFlashMode
   <br>FlashBits</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td>RicohPitch</td>
 <td class=c>no</td>
 <td class=n>Ricoh:Accelerometer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RicohRoll</td>
 <td class=c>no</td>
 <td class=n>Ricoh:Accelerometer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Rotation</td>
 <td class=c>yes</td>
 <td class=n>QuickTime:MatrixStructure
   <br>QuickTime:HandlerType</td>
 <td><span class=s><span class=n>(writing this tag updates QuickTime MatrixStructure for all tracks with a
 non-zero image size)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RunTimeSincePowerUp</td>
 <td class=c>no</td>
 <td class=n>Apple:RunTimeValue
   <br>Apple:RunTimeScale</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ScaleFactor35efl</td>
 <td class=c>no</td>
 <td class=n>FocalLength
@@ -650,56 +657,56 @@ non-zero image size)</span></span></td></tr>
   <br>ImageHeight</td>
 <td><span class=s><span class=n>(this value and any derived values may be incorrect if the image has been
 resized)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ShootingMode</td>
 <td class=c>no</td>
 <td class=n>CanonExposureMode
   <br>EasyMode
   <br>BulbDuration</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ShutterCurtainHack</td>
 <td class=c>no</td>
 <td class=n>FlashBits
   <br>ShutterCurtainSync</td>
 <td><span class=s>0 = 1st-curtain sync
   <br>1 = 2nd-curtain sync</span></td></tr>
-<tr class=b>
+<tr>
 <td>ShutterSpeed</td>
 <td class=c>no</td>
 <td class=n>ExposureTime
   <br>ShutterSpeedValue
   <br>BulbDuration</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SingleShotDepthMapTiff</td>
 <td class=c>no</td>
 <td class=n>SingleShotDepthMap
   <br>SegWidth
   <br>SegHeight</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SubSecCreateDate</td>
 <td class=c>yes</td>
 <td class=n>EXIF:CreateDate
   <br>SubSecTimeDigitized
   <br>OffsetTimeDigitized</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SubSecDateTimeOriginal</td>
 <td class=c>yes</td>
 <td class=n>EXIF:DateTimeOriginal
   <br>SubSecTimeOriginal
   <br>OffsetTimeOriginal</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SubSecModifyDate</td>
 <td class=c>yes</td>
 <td class=n>EXIF:ModifyDate
   <br>SubSecTime
   <br>OffsetTime</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ThumbnailImage</td>
 <td class=c>yes</td>
 <td class=n>ThumbnailOffset
@@ -708,7 +715,7 @@ resized)</span></span></td></tr>
 only create a thumbnail in IFD1 of certain types of files.  Note that for
 this and other Composite embedded-image tags the family 0 and 1 groups match
 those of the originating tags)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ThumbnailTIFF</td>
 <td class=c>no</td>
 <td class=n>SubfileType
@@ -724,13 +731,13 @@ those of the originating tags)</span></span></td></tr>
   <br>PlanarConfiguration
   <br>Orientation</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>VolumeSize</td>
 <td class=c>no</td>
 <td class=n>ISO:VolumeBlockCount
   <br>ISO:VolumeBlockSize</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>WB_RGBLevels</td>
 <td class=c>no</td>
 <td class=n>KDC_IFD:WhiteBalance
@@ -742,7 +749,7 @@ those of the originating tags)</span></span></td></tr>
   <br>WB_RGBLevels5
   <br>WB_RGBLevelsShade</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>WB_RGBLevels</td>
 <td class=c>no</td>
 <td class=n>KodakIFD:WhiteBalance
@@ -757,7 +764,7 @@ those of the originating tags)</span></span></td></tr>
   <br>KodakIFD:ColorTemperature
   <br>Kodak:WB_RGBLevels</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>WB_RGGBLevels</td>
 <td class=c>no</td>
 <td class=n>Canon:WhiteBalance
@@ -772,13 +779,13 @@ those of the originating tags)</span></span></td></tr>
   <br>WB_RGGBLevelsShade
   <br>WB_RGGBLevelsKelvin</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>WB_RGGBLevels</td>
 <td class=c>no</td>
 <td class=n>WB_RGGBLevelsUncorrected
   <br>WB_RGGBLevelsBlack</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ZoomedPreviewImage</td>
 <td class=c>no</td>
 <td class=n>ZoomedPreviewStart
@@ -786,9 +793,141 @@ those of the originating tags)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='LensType'>Composite LensType Values</a></h2>
+<p>The numerical values below are given in hexadecimal.  (Prior to ExifTool
+9.15 these were in decimal.)</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>LensType</th></tr>
+<tr><td>'0 00 00'</td><td>= None</td>
+</tr><tr><td>'0 01 00'</td><td>= Olympus Zuiko Digital ED 50mm F2.0 Macro</td>
+</tr><tr><td>'0 01 01'</td><td>= Olympus Zuiko Digital 40-150mm F3.5-4.5</td>
+</tr><tr><td>'0 01 10'</td><td>= Olympus M.Zuiko Digital ED 14-42mm F3.5-5.6</td>
+</tr><tr><td>'0 02 00'</td><td>= Olympus Zuiko Digital ED 150mm F2.0</td>
+</tr><tr><td>'0 02 10'</td><td>= Olympus M.Zuiko Digital 17mm F2.8 Pancake</td>
+</tr><tr><td>'0 03 00'</td><td>= Olympus Zuiko Digital ED 300mm F2.8</td>
+</tr><tr><td>'0 03 10'</td><td>= Olympus M.Zuiko Digital ED 14-150mm F4.0-5.6 [II]</td>
+</tr><tr><td>'0 04 10'</td><td>= Olympus M.Zuiko Digital ED 9-18mm F4.0-5.6</td>
+</tr><tr><td>'0 05 00'</td><td>= Olympus Zuiko Digital 14-54mm F2.8-3.5</td>
+</tr><tr><td>'0 05 01'</td><td>= Olympus Zuiko Digital Pro ED 90-250mm F2.8</td>
+</tr><tr><td>'0 05 10'</td><td>= Olympus M.Zuiko Digital ED 14-42mm F3.5-5.6 L</td>
+</tr><tr><td>'0 06 00'</td><td>= Olympus Zuiko Digital ED 50-200mm F2.8-3.5</td>
+</tr><tr><td>'0 06 01'</td><td>= Olympus Zuiko Digital ED 8mm F3.5 Fisheye</td>
+</tr><tr><td>'0 06 10'</td><td>= Olympus M.Zuiko Digital ED 40-150mm F4.0-5.6</td>
+</tr><tr><td>'0 07 00'</td><td>= Olympus Zuiko Digital 11-22mm F2.8-3.5</td>
+</tr><tr><td>'0 07 01'</td><td>= Olympus Zuiko Digital 18-180mm F3.5-6.3</td>
+</tr><tr><td>'0 07 10'</td><td>= Olympus M.Zuiko Digital ED 12mm F2.0</td>
+</tr><tr><td>'0 08 01'</td><td>= Olympus Zuiko Digital 70-300mm F4.0-5.6</td>
+</tr><tr><td>'0 08 10'</td><td>= Olympus M.Zuiko Digital ED 75-300mm F4.8-6.7</td>
+</tr><tr><td>'0 09 10'</td><td>= Olympus M.Zuiko Digital 14-42mm F3.5-5.6 II</td>
+</tr><tr><td>'0 10 01'</td><td>= Kenko Tokina Reflex 300mm F6.3 MF Macro</td>
+</tr><tr><td>'0 10 10'</td><td>= Olympus M.Zuiko Digital ED 12-50mm F3.5-6.3 EZ</td>
+</tr><tr><td>'0 11 10'</td><td>= Olympus M.Zuiko Digital 45mm F1.8</td>
+</tr><tr><td>'0 12 10'</td><td>= Olympus M.Zuiko Digital ED 60mm F2.8 Macro</td>
+</tr><tr><td>'0 13 10'</td><td>= Olympus M.Zuiko Digital 14-42mm F3.5-5.6 II R</td>
+</tr><tr><td>'0 14 10'</td><td>= Olympus M.Zuiko Digital ED 40-150mm F4.0-5.6 R</td>
+</tr><tr><td>'0 15 00'</td><td>= Olympus Zuiko Digital ED 7-14mm F4.0</td>
+</tr><tr><td>'0 15 10'</td><td>= Olympus M.Zuiko Digital ED 75mm F1.8</td>
+</tr><tr><td>'0 16 10'</td><td>= Olympus M.Zuiko Digital 17mm F1.8</td>
+</tr><tr><td>'0 17 00'</td><td>= Olympus Zuiko Digital Pro ED 35-100mm F2.0</td>
+</tr><tr><td>'0 18 00'</td><td>= Olympus Zuiko Digital 14-45mm F3.5-5.6</td>
+</tr><tr><td>'0 18 10'</td><td>= Olympus M.Zuiko Digital ED 75-300mm F4.8-6.7 II</td>
+</tr><tr><td>'0 19 10'</td><td>= Olympus M.Zuiko Digital ED 12-40mm F2.8 Pro</td>
+</tr><tr><td>'0 20 00'</td><td>= Olympus Zuiko Digital 35mm F3.5 Macro</td>
+</tr><tr><td>'0 20 10'</td><td>= Olympus M.Zuiko Digital ED 40-150mm F2.8 Pro</td>
+</tr><tr><td>'0 21 10'</td><td>= Olympus M.Zuiko Digital ED 14-42mm F3.5-5.6 EZ</td>
+</tr><tr><td>'0 22 00'</td><td>= Olympus Zuiko Digital 17.5-45mm F3.5-5.6</td>
+</tr><tr><td>'0 22 10'</td><td>= Olympus M.Zuiko Digital 25mm F1.8</td>
+</tr><tr><td>'0 23 00'</td><td>= Olympus Zuiko Digital ED 14-42mm F3.5-5.6</td>
+</tr><tr><td>'0 23 10'</td><td>= Olympus M.Zuiko Digital ED 7-14mm F2.8 Pro</td>
+</tr><tr><td>'0 24 00'</td><td>= Olympus Zuiko Digital ED 40-150mm F4.0-5.6</td>
+</tr><tr><td>'0 24 10'</td><td>= Olympus M.Zuiko Digital ED 300mm F4.0 IS Pro</td>
+</tr><tr><td>'0 25 10'</td><td>= Olympus M.Zuiko Digital ED 8mm F1.8 Fisheye Pro</td>
+</tr><tr><td>'0 26 10'</td><td>= Olympus M.Zuiko Digital ED 12-100mm F4.0 IS Pro</td>
+</tr><tr><td>'0 27 10'</td><td>= Olympus M.Zuiko Digital ED 30mm F3.5 Macro</td>
+</tr><tr><td>'0 28 10'</td><td>= Olympus M.Zuiko Digital ED 25mm F1.2 Pro</td>
+</tr><tr><td>'0 29 10'</td><td>= Olympus M.Zuiko Digital ED 17mm F1.2 Pro</td>
+</tr><tr><td>'0 30 00'</td><td>= Olympus Zuiko Digital ED 50-200mm F2.8-3.5 SWD</td>
+</tr><tr><td>'0 30 10'</td><td>= Olympus M.Zuiko Digital ED 45mm F1.2 Pro</td>
+</tr><tr><td>'0 31 00'</td><td>= Olympus Zuiko Digital ED 12-60mm F2.8-4.0 SWD</td>
+</tr><tr><td>'0 32 00'</td><td>= Olympus Zuiko Digital ED 14-35mm F2.0 SWD</td>
+</tr><tr><td>'0 32 10'</td><td>= Olympus M.Zuiko Digital ED 12-200mm F3.5-6.3</td>
+</tr><tr><td>'0 33 00'</td><td>= Olympus Zuiko Digital 25mm F2.8</td>
+</tr><tr><td>'0 34 00'</td><td>= Olympus Zuiko Digital ED 9-18mm F4.0-5.6</td>
+</tr><tr><td>'0 35 00'</td><td>= Olympus Zuiko Digital 14-54mm F2.8-3.5 II</td>
+</tr><tr><td>'1 01 00'</td><td>= Sigma 18-50mm F3.5-5.6 DC</td>
+</tr><tr><td>'1 01 10'</td><td>= Sigma 30mm F2.8 EX DN</td>
+</tr><tr><td>'1 02 00'</td><td>= Sigma 55-200mm F4.0-5.6 DC</td>
+</tr><tr><td>'1 02 10'</td><td>= Sigma 19mm F2.8 EX DN</td>
+</tr><tr><td>'1 03 00'</td><td>= Sigma 18-125mm F3.5-5.6 DC</td>
+</tr><tr><td>'1 03 10'</td><td>= Sigma 30mm F2.8 DN | A</td>
+</tr><tr><td>'1 04 00'</td><td>= Sigma 18-125mm F3.5-5.6 DC</td>
+</tr><tr><td>'1 04 10'</td><td>= Sigma 19mm F2.8 DN | A</td>
+</tr><tr><td>'1 05 00'</td><td>= Sigma 30mm F1.4 EX DC HSM</td>
+</tr><tr><td>'1 05 10'</td><td>= Sigma 60mm F2.8 DN | A</td>
+</tr><tr><td>'1 06 00'</td><td>= Sigma APO 50-500mm F4.0-6.3 EX DG HSM</td>
+</tr><tr><td>'1 06 10'</td><td>= Sigma 30mm F1.4 DC DN | C</td>
+</tr><tr><td>'1 07 00'</td><td>= Sigma Macro 105mm F2.8 EX DG</td>
+</tr><tr><td>'1 07 10'</td><td>= Sigma 16mm F1.4 DC DN | C (017)</td>
+</tr><tr><td>'1 08 00'</td><td>= Sigma APO Macro 150mm F2.8 EX DG HSM</td>
+</tr><tr><td>'1 09 00'</td><td>= Sigma 18-50mm F2.8 EX DC Macro</td>
+</tr><tr><td>'1 10 00'</td><td>= Sigma 24mm F1.8 EX DG Aspherical Macro</td>
+</tr><tr><td>'1 11 00'</td><td>= Sigma APO 135-400mm F4.5-5.6 DG</td>
+</tr><tr><td>'1 12 00'</td><td>= Sigma APO 300-800mm F5.6 EX DG HSM</td>
+</tr><tr><td>'1 13 00'</td><td>= Sigma 30mm F1.4 EX DC HSM</td>
+</tr><tr><td>'1 14 00'</td><td>= Sigma APO 50-500mm F4.0-6.3 EX DG HSM</td>
+</tr><tr><td>'1 15 00'</td><td>= Sigma 10-20mm F4.0-5.6 EX DC HSM</td>
+</tr><tr><td>'1 16 00'</td><td>= Sigma APO 70-200mm F2.8 II EX DG Macro HSM</td>
+</tr><tr><td>'1 17 00'</td><td>= Sigma 50mm F1.4 EX DG HSM</td>
+</tr><tr><td>'2 01 00'</td><td>= Leica D Vario Elmarit 14-50mm F2.8-3.5 Asph.</td>
+</tr><tr><td>'2 01 10'</td><td>= Lumix G Vario 14-45mm F3.5-5.6 Asph. Mega OIS</td>
+</tr><tr><td>'2 02 00'</td><td>= Leica D Summilux 25mm F1.4 Asph.</td>
+</tr><tr><td>'2 02 10'</td><td>= Lumix G Vario 45-200mm F4.0-5.6 Mega OIS</td>
+</tr><tr><td>'2 03 00'</td><td>= Leica D Vario Elmar 14-50mm F3.8-5.6 Asph. Mega OIS</td>
+</tr><tr><td>'2 03 01'</td><td>= Leica D Vario Elmar 14-50mm F3.8-5.6 Asph.</td>
+</tr><tr><td>'2 03 10'</td><td>= Lumix G Vario HD 14-140mm F4.0-5.8 Asph. Mega OIS</td>
+</tr><tr><td>'2 04 00'</td><td>= Leica D Vario Elmar 14-150mm F3.5-5.6</td>
+</tr><tr><td>'2 04 10'</td><td>= Lumix G Vario 7-14mm F4.0 Asph.</td>
+</tr><tr><td>'2 05 10'</td><td>= Lumix G 20mm F1.7 Asph.</td>
+</tr><tr><td>'2 06 10'</td><td>= Leica DG Macro-Elmarit 45mm F2.8 Asph. Mega OIS</td>
+</tr><tr><td>'2 07 10'</td><td>= Lumix G Vario 14-42mm F3.5-5.6 Asph. Mega OIS</td>
+</tr><tr><td>'2 08 10'</td><td>= Lumix G Fisheye 8mm F3.5</td>
+</tr><tr><td>'2 09 10'</td><td>= Lumix G Vario 100-300mm F4.0-5.6 Mega OIS</td>
+</tr><tr><td>'2 10 10'</td><td>= Lumix G 14mm F2.5 Asph.</td>
+</tr><tr><td>'2 11 10'</td><td>= Lumix G 12.5mm F12 3D</td>
+</tr><tr><td>'2 12 10'</td><td>= Leica DG Summilux 25mm F1.4 Asph.</td>
+</tr><tr><td>'2 13 10'</td><td>= Lumix G X Vario PZ 45-175mm F4.0-5.6 Asph. Power OIS</td>
+</tr><tr><td>'2 14 10'</td><td>= Lumix G X Vario PZ 14-42mm F3.5-5.6 Asph. Power OIS</td>
+</tr><tr><td>'2 15 10'</td><td>= Lumix G X Vario 12-35mm F2.8 Asph. Power OIS</td>
+</tr><tr><td>'2 16 10'</td><td>= Lumix G Vario 45-150mm F4.0-5.6 Asph. Mega OIS</td>
+</tr><tr><td>'2 17 10'</td><td>= Lumix G X Vario 35-100mm F2.8 Power OIS</td>
+</tr><tr><td>'2 18 10'</td><td>= Lumix G Vario 14-42mm F3.5-5.6 II Asph. Mega OIS</td>
+</tr><tr><td>'2 19 10'</td><td>= Lumix G Vario 14-140mm F3.5-5.6 Asph. Power OIS</td>
+</tr><tr><td>'2 20 10'</td><td>= Lumix G Vario 12-32mm F3.5-5.6 Asph. Mega OIS</td>
+</tr><tr><td>'2 21 10'</td><td>= Leica DG Nocticron 42.5mm F1.2 Asph. Power OIS</td>
+</tr><tr><td>'2 22 10'</td><td>= Leica DG Summilux 15mm F1.7 Asph.</td>
+</tr><tr><td>'2 23 10'</td><td>= Lumix G Vario 35-100mm F4.0-5.6 Asph. Mega OIS</td>
+</tr><tr><td>'2 24 10'</td><td>= Lumix G Macro 30mm F2.8 Asph. Mega OIS</td>
+</tr><tr><td>'2 25 10'</td><td>= Lumix G 42.5mm F1.7 Asph. Power OIS</td>
+</tr><tr><td>'2 26 10'</td><td>= Lumix G 25mm F1.7 Asph.</td>
+</tr><tr><td>'2 27 10'</td><td>= Leica DG Vario-Elmar 100-400mm F4.0-6.3 Asph. Power OIS</td>
+</tr><tr><td>'2 28 10'</td><td>= Lumix G Vario 12-60mm F3.5-5.6 Asph. Power OIS</td>
+</tr><tr><td>'2 29 10'</td><td>= Leica DG Summilux 12mm F1.4 Asph.</td>
+</tr><tr><td>'2 30 10'</td><td>= Leica DG Vario-Elmarit 12-60mm F2.8-4 Asph. Power OIS</td>
+</tr><tr><td>'2 33 10'</td><td>= Lumix G X Vario 12-35mm F2.8 II Asph. Power OIS</td>
+</tr><tr><td>'2 35 10'</td><td>= Leica DG Vario-Elmarit 8-18mm F2.8-4 Asph.</td>
+</tr><tr><td>'2 36 10'</td><td>= Leica DG Elmarit 200mm F2.8 Power OIS</td>
+</tr><tr><td>'2 37 10'</td><td>= Leica DG Vario-Elmarit 50-200mm F2.8-4 Asph. Power OIS</td>
+</tr><tr><td>'2 38 10'</td><td>= Leica DG Vario-Summilux 10-25mm F1.7 Asph.</td>
+</tr><tr><td>'3 01 00'</td><td>= Leica D Vario Elmarit 14-50mm F2.8-3.5 Asph.</td>
+</tr><tr><td>'3 02 00'</td><td>= Leica D Summilux 25mm F1.4 Asph.</td>
+</tr><tr><td>'5 01 10'</td><td>= Tamron 14-150mm F3.5-5.8 Di III</td>
+</tr></table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 23, 2019</i>
+<br><i>Last revised Nov 27, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

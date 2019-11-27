@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.23';
+$VERSION = '1.24';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -500,7 +500,25 @@ my %panasonicWhiteBalance = ( #forum9396
         Writable => 'int32u',
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
-    # 1201 - LensStyle? ref forum9394
+    # Note: LensTypeMake and LensTypeModel are combined into a Composite LensType tag
+    # defined in Olympus.pm which has the same values as Olympus:LensType
+    0x1201 => {
+        Name => 'LensTypeMake',
+        Condition => '$format eq "int16u"',
+        Writable => 'int16u',
+    },
+    0x1202 => {
+        Name => 'LensTypeModel',
+        Condition => '$format eq "int16u"',
+        Writable => 'int16u',
+        RawConv => q{
+            return undef unless $val;
+            require Image::ExifTool::Olympus; # (to load Composite LensID)
+            return $val;
+        },
+        ValueConv => '$_=sprintf("%.4x",$val); s/(..)(..)/$2 $1/; $_',
+        ValueConvInv => '$val =~ s/(..) (..)/$2$1/; hex($val)',
+    },
     0x1203 => { #4
         Name => 'FocalLengthIn35mmFormat',
         Writable => 'int16u',

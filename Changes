@@ -4,8 +4,21 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
+(I'll be away from Nov 16-24, 2019 so don't expect any updates
+or email/forum responses during this period. - PH)
+
 Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+Nov. 27, 2019 - Version 11.77
+
+  - Added a new Nikon LensID (thanks Joe Schonberg)
+  - Added a number of new Olympus LensType values (thanks LibRaw)
+  - Added a new Canon LensType
+  - Decode timed GPS from Ambarella A12 dash cam MP4 videos
+  - Decode a number of new Sigma tags (thanks LibRaw)
+  - Decode a couple of new PanasonicRaw tags (thanks LibRaw)
+  - Enhanced -fileOrder option to add -fast feature
 
 Nov. 12, 2019 - Version 11.76
 

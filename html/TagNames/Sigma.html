@@ -368,6 +368,21 @@ models report the maximum aperture here)</span></span></td></tr>
 <td>Firmware</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0x011f = 287'>0x011f</td>
+<td>CameraCalibration</td>
+<td class=c>float[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0120 = 288'>0x0120</td>
+<td>WBSettings</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Sigma.html#WBSettings'>Sigma WBSettings Tags</a></td></tr>
+<tr>
+<td title='0x0121 = 289'>0x0121</td>
+<td>WBSettings2</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Sigma.html#WBSettings2'>Sigma WBSettings2 Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='LensType'>Sigma LensType Values</a></h2>
@@ -571,9 +586,125 @@ LensID tag when attempting to identify the specific lens model.</p>
 <td class=b>&nbsp;</td><td class=b>&nbsp;</td>
 </tr></table></td></tr></table></blockquote>
 
+<h2><a name='WBSettings'>Sigma WBSettings Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>WB_RGBLevelsAuto</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>WB_RGBLevelsDaylight</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>WB_RGBLevelsShade</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>WB_RGBLevelsOvercast</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>WB_RGBLevelsIncandescent</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='15 = 0xf'>15</td>
+<td>WB_RGBLevelsFluorescent</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='18 = 0x12'>18</td>
+<td>WB_RGBLevelsFlash</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='21 = 0x15'>21</td>
+<td>WB_RGBLevelsCustom1</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>WB_RGBLevelsCustom2</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='27 = 0x1b'>27</td>
+<td>WB_RGBLevelsCustom3</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='WBSettings2'>Sigma WBSettings2 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>WB_RGBLevelsUnknown0?</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>WB_RGBLevelsUnknown1?</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>WB_RGBLevelsUnknown2?</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>WB_RGBLevelsUnknown3?</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>WB_RGBLevelsUnknown4?</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='15 = 0xf'>15</td>
+<td>WB_RGBLevelsUnknown5?</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='18 = 0x12'>18</td>
+<td>WB_RGBLevelsUnknown6?</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='21 = 0x15'>21</td>
+<td>WB_RGBLevelsUnknown7?</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>WB_RGBLevelsUnknown8?</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='27 = 0x1b'>27</td>
+<td>WB_RGBLevelsUnknown9?</td>
+<td class=c>float[3]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 22, 2019</i>
+<br><i>Last revised Nov 25, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -25,7 +25,7 @@ $VERSION = '1.01';
         Although basic text files contain no metadata, the following tags are
         determined from a simple analysis of the text data.  LineCount and WordCount
         are generated only for 8-bit encodings, but the L<FastScan|../ExifTool.html#FastScan> (-fast) option may
-        be used to limit processing to the first 64 kB, in which case these two tags
+        be used to limit processing to the first 64 kB in which case these two tags
         are not produced.  To avoid long processing delays, ExifTool will issue a
         minor warning and process only the first 64 kB of any file larger than 20 MB
         unless the L<IgnoreMinorErrors|../ExifTool.html#IgnoreMinorErrors> (-m) option is used.

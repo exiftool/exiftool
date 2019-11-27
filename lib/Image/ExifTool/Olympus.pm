@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.61';
+$VERSION = '2.62';
 
 sub PrintLensInfo($$$);
 
@@ -169,6 +169,13 @@ my %olympusLensTypes = (
     '2 26 10' => 'Lumix G 25mm F1.7 Asph.', #NJ
     '2 27 10' => 'Leica DG Vario-Elmar 100-400mm F4.0-6.3 Asph. Power OIS', #NJ
     '2 28 10' => 'Lumix G Vario 12-60mm F3.5-5.6 Asph. Power OIS', #NJ
+    '2 29 10' => 'Leica DG Summilux 12mm F1.4 Asph.', #IB
+    '2 30 10' => 'Leica DG Vario-Elmarit 12-60mm F2.8-4 Asph. Power OIS', #IB
+    '2 33 10' => 'Lumix G X Vario 12-35mm F2.8 II Asph. Power OIS', #IB
+    '2 35 10' => 'Leica DG Vario-Elmarit 8-18mm F2.8-4 Asph.', #IB
+    '2 36 10' => 'Leica DG Elmarit 200mm F2.8 Power OIS', #IB
+    '2 37 10' => 'Leica DG Vario-Elmarit 50-200mm F2.8-4 Asph. Power OIS', #IB
+    '2 38 10' => 'Leica DG Vario-Summilux 10-25mm F1.7 Asph.', #IB
     '3 01 00' => 'Leica D Vario Elmarit 14-50mm F2.8-3.5 Asph.', #11
     '3 02 00' => 'Leica D Summilux 25mm F1.4 Asph.', #11
     # Tamron lenses
@@ -3907,6 +3914,17 @@ my %indexInfo = (
             @grps = $self->GetGroup($$val{0});  # set groups from input tag
             Image::ExifTool::Exif::ExtractImage($self,$val[0],$val[1],"ZoomedPreviewImage");
         },
+    },
+    # this is actually for PanasonicRaw tags, but it uses the lens lookup here
+    LensType => {
+        Require => {
+            0 => 'LensTypeMake',
+            1 => 'LensTypeModel',
+        },
+        Notes => 'based on tags found in some Panasonic RW2 images',
+        SeparateTable => 'LensType',
+        ValueConv => '"$val[0] $val[1]"',
+        PrintConv => \%olympusLensTypes,
     },
 );
 

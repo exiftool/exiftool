@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.29';
+$VERSION = '1.30';
 
 # sigma LensType lookup (ref IB)
 %sigmaLensTypes = (
@@ -762,7 +762,61 @@ $VERSION = '1.29';
     0x0087 => 'ResolutionMode', #PH (Quattro models)
     0x0088 => 'WhiteBalance', #PH (Quattro models)
     0x008c => 'Firmware', #PH (Quattro models)
+    0x011f => { #IB (FP DNG images)
+        Name => 'CameraCalibration',
+        Writable => 'float',
+        Count => 9,
+    },
+    0x0120 => { #IB (FP DNG images)
+        Name => 'WBSettings',
+        SubDirectory => { TagTable => 'Image::ExifTool::Sigma::WBSettings' },
+    },
+    0x0121 => { #IB (FP DNG images)
+        Name => 'WBSettings2',
+        SubDirectory => { TagTable => 'Image::ExifTool::Sigma::WBSettings2' },
+    },
 );
+
+# WB settings (ref IB)
+%Image::ExifTool::Sigma::WBSettings = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    WRITABLE => 1,
+    FORMAT => 'float',
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    0  => { Name => 'WB_RGBLevelsAuto',         Format => 'float[3]' },
+    3  => { Name => 'WB_RGBLevelsDaylight',     Format => 'float[3]' },
+    6  => { Name => 'WB_RGBLevelsShade',        Format => 'float[3]' },
+    9  => { Name => 'WB_RGBLevelsOvercast',     Format => 'float[3]' },
+    12 => { Name => 'WB_RGBLevelsIncandescent', Format => 'float[3]' },
+    15 => { Name => 'WB_RGBLevelsFluorescent',  Format => 'float[3]' },
+    18 => { Name => 'WB_RGBLevelsFlash',        Format => 'float[3]' },
+    21 => { Name => 'WB_RGBLevelsCustom1',      Format => 'float[3]' },
+    24 => { Name => 'WB_RGBLevelsCustom2',      Format => 'float[3]' },
+    27 => { Name => 'WB_RGBLevelsCustom3',      Format => 'float[3]' },
+);
+
+# WB settings (ref IB)
+%Image::ExifTool::Sigma::WBSettings2 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    WRITABLE => 1,
+    FORMAT => 'float',
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    0  => { Name => 'WB_RGBLevelsUnknown0', Unknown => 1, Format => 'float[3]' },
+    3  => { Name => 'WB_RGBLevelsUnknown1', Unknown => 1, Format => 'float[3]' },
+    6  => { Name => 'WB_RGBLevelsUnknown2', Unknown => 1, Format => 'float[3]' },
+    9  => { Name => 'WB_RGBLevelsUnknown3', Unknown => 1, Format => 'float[3]' },
+    12 => { Name => 'WB_RGBLevelsUnknown4', Unknown => 1, Format => 'float[3]' },
+    15 => { Name => 'WB_RGBLevelsUnknown5', Unknown => 1, Format => 'float[3]' },
+    18 => { Name => 'WB_RGBLevelsUnknown6', Unknown => 1, Format => 'float[3]' },
+    21 => { Name => 'WB_RGBLevelsUnknown7', Unknown => 1, Format => 'float[3]' },
+    24 => { Name => 'WB_RGBLevelsUnknown8', Unknown => 1, Format => 'float[3]' },
+    27 => { Name => 'WB_RGBLevelsUnknown9', Unknown => 1, Format => 'float[3]' },
+);
+
 
 1;  # end
 

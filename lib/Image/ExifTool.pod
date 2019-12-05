@@ -3,7 +3,7 @@
 #
 # Description:  Read and write meta information
 #
-# URL:          http://owl.phy.queensu.ca/~phil/exiftool/
+# URL:          https://exiftool.org/
 #
 # Legal:        Copyright (c) 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
 #               This library is free software; you can redistribute it and/or
@@ -1429,8 +1429,8 @@ name for each value, or call with a reference to the list of values.
     # write structured information as a serialized string
     $exifTool->SetNewValue('XMP:Flash'=>'{mode=on,fired=true,return=not}');
 
-(See L<http://owl.phy.queensu.ca/~phil/exiftool/struct.html#Serialize> for
-a description of the structure serialization technique.)
+(See L<https://exiftool.org/struct.html#Serialize> for a description of the
+structure serialization technique.)
 
 =over 4
 

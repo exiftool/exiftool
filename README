@@ -1,4 +1,4 @@
-ExifTool by Phil Harvey (phil at owl.phy.queensu.ca)
+ExifTool by Phil Harvey (philharvey66 at gmail.com)
 ----------------------------------------------------------------------------
 
 ExifTool is a customizable set of Perl modules plus a full-featured
@@ -76,7 +76,7 @@ See html/index.html for more details about ExifTool features.
 
 ExifTool can be downloaded from
 
-  https://owl.phy.queensu.ca/~phil/exiftool/
+  https://exiftool.org/
 
 RUNNING
 
@@ -104,8 +104,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-11.77.tar.gz | tar -xf -
-  cd Image-ExifTool-11.77
+  gzip -dc Image-ExifTool-11.78.tar.gz | tar -xf -
+  cd Image-ExifTool-11.78
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 

@@ -6,7 +6,7 @@
 # Revisions:    2009/03/24 - P. Harvey Created
 #               2009/05/12 - PH Added RWL file type (same format as RW2)
 #
-# References:   1) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,1542.0.html
+# References:   1) https://exiftool.org/forum/index.php/topic,1542.0.html
 #               2) http://www.cybercom.net/~dcoffin/dcraw/
 #               3) http://syscall.eu/#pana
 #               4) Klaus Homeister private communication
@@ -502,12 +502,18 @@ my %panasonicWhiteBalance = ( #forum9396
     },
     # Note: LensTypeMake and LensTypeModel are combined into a Composite LensType tag
     # defined in Olympus.pm which has the same values as Olympus:LensType
-    0x1201 => {
+    0x1201 => { #IB
         Name => 'LensTypeMake',
         Condition => '$format eq "int16u"',
         Writable => 'int16u',
+        # when format is int16u, these values have been observed:
+        #  0 - Olympus or unknown lens
+        #  2 - Leica or Lumix lens
+        # when format is int32u (S models), these values have been observed (ref IB):
+        #  256 - Leica lens
+        #  257 - Lumix lens
     },
-    0x1202 => {
+    0x1202 => { #IB
         Name => 'LensTypeModel',
         Condition => '$format eq "int16u"',
         Writable => 'int16u',

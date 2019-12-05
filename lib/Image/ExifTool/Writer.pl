@@ -5,7 +5,7 @@
 #
 # Notes:        Also contains some less used ExifTool functions
 #
-# URL:          http://owl.phy.queensu.ca/~phil/exiftool/
+# URL:          https://exiftool.org/
 #
 # Revisions:    12/16/2004 - P. Harvey Created
 #------------------------------------------------------------------------------
@@ -4715,6 +4715,11 @@ TryLib: for ($lib=$strptimeLib; ; $lib='') {
             } elsif ($lib eq 'POSIX::strptime') {
                 @a = eval { POSIX::strptime($val, $fmt) };
             } else {
+                # protect against a negative epoch time, it can cause a hard crash in Windows
+                if ($^O eq 'MSWin32' and $fmt =~ /%s/ and $val =~ /-\d/) {
+                    warn "Can't convert negative epoch time\n";
+                    return undef;
+                }
                 @a = eval {
                     my $t = Time::Piece->strptime($val, $fmt);
                     return ($t->sec, $t->min, $t->hour, $t->mday, $t->_mon, $t->_year);

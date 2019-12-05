@@ -892,7 +892,7 @@ under the same terms as Perl itself.
 
 =item L<http://xyrion.org/ciff/>
 
-=item L<http://owl.phy.queensu.ca/~phil/exiftool/canon_raw.html>
+=item L<https://exiftool.org/canon_raw.html>
 
 =back
 

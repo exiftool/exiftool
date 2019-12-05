@@ -14,7 +14,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.47';
+$VERSION = '1.48';
 
 sub ProcessMIE($$);
 sub ProcessMIEGroup($$$);
@@ -155,8 +155,8 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         4) ExifTool writes compressed metadata to MIE files if the L<Compress|../ExifTool.html#Compress> (-z)
         option is used and Compress::Zlib is available.
 
-        See L<http://owl.phy.queensu.ca/~phil/exiftool/MIE1.1-20070121.pdf> for the
-        official MIE specification.
+        See L<https://exiftool.org/MIE1.1-20070121.pdf> for the official MIE
+        specification.
     },
    '0Type' => {
         Name => 'SubfileType',
@@ -1242,8 +1242,7 @@ sub WriteMIEGroup($$$)
                     # write new value if creating, or if List and list existed, or
                     # if tag was previously deleted
                     next unless $$nvHash{IsCreating} or
-                        (($newTag eq $lastTag and ($$newInfo{List} or $deletedTag eq $lastTag)
-                        and not $$nvHash{EditOnly}));
+                        ($newTag eq $lastTag and ($$newInfo{List} or $deletedTag eq $lastTag));
                 }
                 # get the new value to write (undef to delete)
                 push @newVals, $et->GetNewValue($nvHash);
@@ -2555,7 +2554,7 @@ copyright Phil Harvey, and is covered by the same free-use license.
 
 =over 4
 
-=item L<http://owl.phy.queensu.ca/~phil/exiftool/MIE1.1-20070121.pdf>
+=item L<https://exiftool.org/MIE1.1-20070121.pdf>
 
 =back
 

@@ -36,26 +36,26 @@
  </rdf:Description>
 
  <rdf:Description rdf:about='http://www.w3.org/TR/rdf-syntax-grammar'
-  xmlns:ph='http://owl.phy.queensu.ca/ph/1.0/'>
+  xmlns:ph='https://exiftool.org/ph/1.0/'>
   <ph:programmer rdf:parseType='Resource'>
    <ph:exclamation>doh!</ph:exclamation>
    <ph:food>cookies</ph:food>
    <ph:fullName>Phil Harvey</ph:fullName>
-   <ph:homePage rdf:resource='http://owl.phy.queensu.ca/~phil/'/>
+   <ph:homePage rdf:resource='https://exiftool.org/'/>
    <ph:state>confusion</ph:state>
   </ph:programmer>
   <ph:supervisor rdf:parseType='Resource'>
    <ph:exclamation>doh!</ph:exclamation>
    <ph:food>cookies</ph:food>
    <ph:fullName>Phil Harvey</ph:fullName>
-   <ph:homePage rdf:resource='http://owl.phy.queensu.ca/~phil/'/>
+   <ph:homePage rdf:resource='https://exiftool.org/'/>
    <ph:state>confusion</ph:state>
   </ph:supervisor>
   <ph:tester rdf:parseType='Resource'>
    <ph:exclamation>doh!</ph:exclamation>
    <ph:food>cookies</ph:food>
    <ph:fullName>Phil Harvey</ph:fullName>
-   <ph:homePage rdf:resource='http://owl.phy.queensu.ca/~phil/'/>
+   <ph:homePage rdf:resource='https://exiftool.org/'/>
    <ph:state>confusion</ph:state>
   </ph:tester>
  </rdf:Description>

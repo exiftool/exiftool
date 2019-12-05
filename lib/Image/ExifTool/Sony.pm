@@ -1828,13 +1828,13 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             259 => 'DSLR-A200',
             260 => 'DSLR-A350',
             261 => 'DSLR-A300',
-            262 => 'DSLR-A900 (APS-C mode)', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3994.0.html
+            262 => 'DSLR-A900 (APS-C mode)', #https://exiftool.org/forum/index.php/topic,3994.0.html
             263 => 'DSLR-A380/A390', #PH (A390)
             264 => 'DSLR-A330',
             265 => 'DSLR-A230',
             266 => 'DSLR-A290', #PH
             269 => 'DSLR-A850',
-            270 => 'DSLR-A850 (APS-C mode)', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3994.0.html
+            270 => 'DSLR-A850 (APS-C mode)', #https://exiftool.org/forum/index.php/topic,3994.0.html
             273 => 'DSLR-A550',
             274 => 'DSLR-A500', #PH
             275 => 'DSLR-A450', #http://dev.exiv2.org/issues/show/0000611
@@ -1843,7 +1843,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             280 => 'SLT-A33', #PH
             281 => 'SLT-A55 / SLT-A55V', #PH (A55 NC)
             282 => 'DSLR-A560', #PH
-            283 => 'DSLR-A580', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,2881.0.html
+            283 => 'DSLR-A580', #https://exiftool.org/forum/index.php/topic,2881.0.html
             284 => 'NEX-C3', #PH
             285 => 'SLT-A35', #JR
             286 => 'SLT-A65 / SLT-A65V', #PH
@@ -9767,7 +9767,7 @@ my %isoSetting2010 = (
         # For DSLR-A550 and newer, NEX/ILCE/SLT/ILCA (only A65V/A77V are missing ...):
         #     seen FocusPosition2 with values from 80 - 255 (and 21 for Touit 12mm...)
         # Formula from minolta.pm (WBInfoA100 - 0x49bb) gives mostly correct/acceptable distance indications.
-            # (http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3688.0.html)
+            # (https://exiftool.org/forum/index.php/topic,3688.0.html)
             # if this value is the 35mm equivalent magnification, then the formula could
             # be (1.5 * 2**($val/16-5)+1) * FocalLength, but this tends to underestimate
             # distance by about 18% (ref 20) (255=inf)

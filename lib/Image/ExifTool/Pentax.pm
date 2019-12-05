@@ -37,11 +37,11 @@
 #              22) Bozi (K10D, http://www.cpanforum.com/posts/8480)
 #              23) Akos Szalkai (https://rt.cpan.org/Ticket/Display.html?id=43743)
 #              24) Albert Bogner private communication
-#              26) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3444.0.html
-#              27) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3833.0.html
-#              28) Klaus Homeister http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4803.0.html
+#              26) https://exiftool.org/forum/index.php/topic,3444.0.html
+#              27) https://exiftool.org/forum/index.php/topic,3833.0.html
+#              28) Klaus Homeister https://exiftool.org/forum/index.php/topic,4803.0.html
 #              29) Louis Granboulan private communication (K-5II)
-#              30) http://u88.n24.queensu.ca/exiftool/forum/index.php?topic=5433
+#              30) https://exiftool.org/forum/index.php?topic=5433
 #              31) Andras Salamon private communication (K-70)
 #              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication

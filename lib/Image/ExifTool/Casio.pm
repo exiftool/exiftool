@@ -11,7 +11,7 @@
 #               3) http://homepage3.nifty.com/kamisaka/makernote/makernote_casio.htm
 #               4) http://gvsoft.homedns.org/exif/makernote-casio-type1.html
 #               5) Robert Chi private communication (EX-F1)
-#               6) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3701.html
+#               6) https://exiftool.org/forum/index.php/topic,3701.html
 #               JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
 

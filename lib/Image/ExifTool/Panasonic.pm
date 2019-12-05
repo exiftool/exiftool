@@ -20,9 +20,9 @@
 #              14) Carl Bretteville private communication (M9)
 #              15) Zdenek Mihula private communication (TZ8)
 #              16) Olaf Ulrich private communication
-#              17) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4922.0.html
+#              17) https://exiftool.org/forum/index.php/topic,4922.0.html
 #              18) Thomas Modes private communication (G6)
-#              19) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5533.0.html
+#              19) https://exiftool.org/forum/index.php/topic,5533.0.html
 #              20) Bernd-Michael Kemper private communication (DMC-GX80/85)
 #              21) Klaus Homeister forum post
 #              22) Daniel Beichl private communication (G9)

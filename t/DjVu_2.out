@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.78
 [File, System, Other] FileName - File Name: DjVu.djvu
 [File, System, Other] Directory - Directory: t/images
-[File, System, Other] FileSize - File Size: 955 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2008:11:11 11:15:11-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:16-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FileSize - File Size: 930 bytes
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:12:04 09:57:39-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:12:04 10:11:39-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:12:04 09:57:39-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: DJVU (multi-page)
 [File, File, Other] FileTypeExtension - File Type Extension: djvu
@@ -21,15 +21,15 @@
 [DjVu, DjVu-Meta, Author] Author - Author: Phil Harvey
 [DjVu, DjVu-Meta, Image] Title - Title: DjVu Metadata Sample
 [DjVu, DjVu-Meta, Image] Subject - Subject: ExifTool DjVu test image
+[DjVu, DjVu-Meta, Image] Creator - Creator: ExifTool
 [DjVu, DjVu-Meta, Time] CreationDate - Create Date: 2008:09:23 12:31:34-04:00
 [DjVu, DjVu-Meta, Time] ModDate - Modify Date: 2008:11:11 09:17:10-05:00
 [DjVu, DjVu-Meta, Image] Keywords - Keywords: ExifTool, Test, DjVu, XMP
 [DjVu, DjVu-Meta, Image] Producer - Producer: djvused
-[DjVu, DjVu-Meta, Image] Trapped - Trapped: Unknown
-[DjVu, DjVu-Meta, Image] Creator - Creator: ExifTool
-[DjVu, DjVu-Meta, Image] url - URL: http://owl.phy.queensu.ca/~phil/exiftool/
 [DjVu, DjVu-Meta, Image] note - Note: Must escape double quotes (") and backslashes (\)
+[DjVu, DjVu-Meta, Image] Trapped - Trapped: Unknown
 [DjVu, DjVu-Meta, Image] annote - Annotation: Did you get this?
+[DjVu, DjVu-Meta, Image] url - URL: https://exiftool.org/
 [XMP, XMP-album, Image] Notes - Notes: Must escape double quotes (") and backslashes (\)
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [XMP, XMP-dc, Image] description - Description: ExifTool DjVu test image

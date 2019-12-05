@@ -1,4 +1,4 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.78
 [File, File, Other] FileType - File Type: PNG
 [File, File, Other] FileTypeExtension - File Type Extension: png
 [File, File, Other] MIMEType - MIME Type: image/png
@@ -19,13 +19,13 @@
 [PNG, PNG, Image] Software - Software: Adobe Photoshop 7.0
 [PNG, PNG, Image] Source - Source: I'm the source
 [PNG, PNG, Image] Title - Title: Test IPTC picture
-[PNG, PNG, Image] URL - URL: http://owl.phy.queensu.ca/~phil/exiftool/
+[PNG, PNG, Image] URL - URL: https://exiftool.org/
 [PNG, PNG, Time] create-date - Create Date: 2001:05:19 18:36:41
 [PNG, PNG, Time] tIME - Modify Date: 2004:02:26 09:36:46
 [PNG, PNG-pHYs, Image] 0 - Pixels Per Unit X: 1234
 [PNG, PNG-pHYs, Image] 4 - Pixels Per Unit Y: 2834
 [PNG, PNG-pHYs, Image] 8 - Pixel Units: meters
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.75
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.78
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [XMP, XMP-dc, Image] description - Description: UTF-16 (big-endian) encoded XMP
 [XMP, XMP-dc, Author] rights - Rights: Copyright 2004 Phil Harvey
@@ -53,7 +53,7 @@
 [XMP, XMP-xmpBJ, Other] JobRefName - Job Ref Name: My Job
 [XMP, XMP-xmpMM, Other] DocumentID - Document ID: adobe:docid:photoshop:4cc7b857-69d0-11d8-8ac4-bb59c92f0d9a
 [XMP, XMP-xmpRights, Author] Marked - Marked: False
-[XMP, XMP-xmpRights, Author] WebStatement - Web Statement: http://owl.phy.queensu.ca/~phil/exiftool/
+[XMP, XMP-xmpRights, Author] WebStatement - Web Statement: https://exiftool.org/
 [IPTC, IPTC, Other] 0 - Application Record Version: 2
 [IPTC, IPTC, Other] 5 - Object Name: Test IPTC picture
 [IPTC, IPTC, Other] 10 - Urgency: 8 (least urgent)
@@ -75,7 +75,7 @@
 [IPTC, IPTC, Other] 120 - Caption-Abstract: A witty caption
 [IPTC, IPTC, Author] 122 - Writer-Editor: I wrote it
 [Photoshop, Photoshop, Author] 1034 - Copyright Flag: False
-[Photoshop, Photoshop, Author] 1035 - URL: http://owl.phy.queensu.ca/~phil/exiftool/
+[Photoshop, Photoshop, Author] 1035 - URL: https://exiftool.org/
 [Photoshop, Photoshop, Image] 1037 - Global Angle: 30
 [Photoshop, Photoshop, Image] 1049 - Global Altitude: 30
 [EXIF, IFD0, Image] 270 - Image Description: A witty caption

@@ -3204,7 +3204,7 @@ my %indexInfo = (
         Writable => 'int16s',
         RawConv => '($val and $val ne "-32768") ? $val : undef', # ignore 0 and -32768
         # ValueConv => '-2*(($val/135)**2)+55', #11
-        ValueConv => '84 - 3 * $val / 26', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5423.0.html
+        ValueConv => '84 - 3 * $val / 26', #https://exiftool.org/forum/index.php/topic,5423.0.html
         ValueConvInv => 'int((84 - $val) * 26 / 3 + 0.5)',
         PrintConv => 'sprintf("%.1f C",$val)',
         PrintConvInv => '$val=~s/ ?C$//; $val',

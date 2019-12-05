@@ -6,7 +6,7 @@
 -->
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:dd="http://purl.org/dc/elements/1.1/"
-         xmlns:ph="http://owl.phy.queensu.ca/ph/1.0/"
+         xmlns:ph="https://exiftool.org/ph/1.0/"
          xmlns:xxx="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/"
          xmlns:pdfx="http://ns.adobe.com/pdfx/1.3/"
          xmlns:stMfs='http://ns.adobe.com/xap/1.0/sType/ManifestItem#'
@@ -44,7 +44,7 @@
 
  <rdf:Description rdf:nodeID="abc"
          ph:fullName="Phil Harvey">
-  <ph:homePage rdf:resource="http://owl.phy.queensu.ca/~phil/"/>
+  <ph:homePage rdf:resource="https://exiftool.org/"/>
  </rdf:Description>
 
  <rdf:Description>

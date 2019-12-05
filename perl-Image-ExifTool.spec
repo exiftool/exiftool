@@ -1,10 +1,10 @@
 Summary: perl module for image data extraction
 Name: perl-Image-ExifTool
-Version: 11.77
+Version: 11.78
 Release: 1
 License: Artistic/GPL
 Group: Development/Libraries/Perl
-URL: http://owl.phy.queensu.ca/~phil/exiftool/
+URL: https://exiftool.org/
 Source0: Image-ExifTool-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 

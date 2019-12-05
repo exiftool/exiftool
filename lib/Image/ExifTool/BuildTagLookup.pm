@@ -58,7 +58,7 @@ my $docType = q{<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 };
 
-my $homePage = 'http://owl.phy.queensu.ca/~phil/exiftool';
+my $homePage = 'https://exiftool.org';
 
 # tweak the ordering of tables in the documentation
 my %tweakOrder = (
@@ -323,7 +323,7 @@ to 0 via the API or with --struct on the command line to copy only flattened
 tags, or enabled by setting Struct to 1 via the API or with -struct on the
 command line to copy only as structures.  When writing, the L<Struct|../ExifTool.html#Struct> option
 has no effect, and both structured and flattened tags may be written.  See
-L<http://owl.phy.queensu.ca/~phil/exiftool/struct.html> for more details.
+L<https://exiftool.org/struct.html> for more details.
 
 Individual languages for C<lang-alt> tags are accessed by suffixing the tag
 name with a '-', followed by an RFC 3066 language code (eg. "XMP:Title-fr",
@@ -354,7 +354,7 @@ recommended if possible.
 For structures, the heading of the first column is B<Field Name>.  Field
 names are very similar to tag names, except they are used to identify fields
 inside structures instead of stand-alone tags.  See
-L<the Field Name section of the Structured Information documentation|http://owl.phy.queensu.ca/~phil/exiftool/struct.html#Fields> for more
+L<the Field Name section of the Structured Information documentation|https://exiftool.org/struct.html#Fields> for more
 details.
 
 ExifTool will extract XMP information even if it is not listed in these
@@ -528,8 +528,8 @@ These tags apply to CRW-format Canon RAW files and information in the APP0
 length of the information is preserved (and the new information is truncated
 or padded as required) unless B<Writable> is C<resize>. Currently, only
 JpgFromRaw and ThumbnailImage are allowed to change size.  See
-L<http://owl.phy.queensu.ca/~phil/exiftool/canon_raw.html> for a description
-of the Canon CRW format.
+L<https://exiftool.org/canon_raw.html> for a description of the Canon CRW
+format.
 
 CRW images also support the addition of a CanonVRD trailer, which in turn
 supports XMP.  This trailer is created automatically if necessary when
@@ -1732,9 +1732,9 @@ sub Doc2Html($)
     $doc =~ s/B&lt;(.*?)&gt;/<b>$1<\/b>/sg;
     $doc =~ s/C&lt;(.*?)&gt;/<code>$1<\/code>/sg;
     $doc =~ s/I&lt;(.*?)&gt;/<i>$1<\/i>/sg;
-    # L<some text|http://owl.phy.queensu.ca/~phil/exiftool/struct.html#Fields> --> <a href="../struct.html#Fields">some text</a>
+    # L<some text|https://exiftool.org/struct.html#Fields> --> <a href="../struct.html#Fields">some text</a>
     $doc =~ s{L&lt;([^&]+?)\|\Q$homePage\E/(.*?)&gt;}{<a href="../$2">$1<\/a>}sg;
-    # L<http://owl.phy.queensu.ca/~phil/exiftool/struct.html> --> <a href="http://owl.phy.queensu.ca/~phil/exiftool/struct.html">http://owl.phy.queensu.ca/~phil/exiftool/struct.html</a>
+    # L<https://exiftool.org/struct.html> --> <a href="https://exiftool.org/struct.html">https://exiftool.org/struct.html</a>
     $doc =~ s{L&lt;\Q$homePage\E/(.*?)&gt;}{<a href="../$1">$1<\/a>}sg;
     # L<XMP DICOM Tags|Image::ExifTool::TagNames/XMP DICOM Tags> --> <a href="XMP.html#DICOM">XMP DICOM Tags</a>
     # (specify "Image::ExifTool::TagNames" to link to another html file)

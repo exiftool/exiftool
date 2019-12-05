@@ -22,7 +22,7 @@ ADR;type=WORK:;;Work St.;City;ON;K0K0K0;Canada
 ADR;type=OTHER;GEO="geo:12.3457,78.910";LABEL=Test\nLabel:;;Other Rd.;City;ON;K0K0K0;Canada
 NOTE:This is "a"\, comma\, \\backslash\nnewline\nnote!
 NOTE;LANGUAGE=fr:Oui!
-item2.URL;type=pref:http://exiftool.com
+item2.URL;type=pref:https://exiftool.org/
 item2.X-ABLabel:_$!<HomePage>!$_
 BDAY:1900-01-02
 X-AIM;type=HOME;type=pref:AIMName

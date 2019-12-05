@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.78
 [File, System, Other] FileName - File Name: VCard.vcf
 [File, System, Other] Directory - Directory: t/images
-[File, System, Other] FileSize - File Size: 1689 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:07 07:11:19-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:46-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Other] FileSize - File Size: 1691 bytes
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:12:04 11:06:35-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:12:04 11:06:39-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:12:04 11:06:35-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: VCard
 [File, File, Other] FileTypeExtension - File Type Extension: vcf
@@ -34,7 +34,7 @@
 [VCard, VCard, Document] AdrOtherLabel - Address Other Label: Test;Label
 [VCard, VCard, Document] Note - Note: This is "a", comma, \backslash;newline;note!
 [VCard, VCard, Document] Note-fr - Note (fr): Oui!
-[VCard, Item2, Document] UrlPref - URL Pref: http://exiftool.com
+[VCard, Item2, Document] UrlPref - URL Pref: https://exiftool.org/
 [VCard, Item2, Document] X-ablabel - AB Label: HomePage
 [VCard, VCard, Time] Bday - Birthday: 1900:01:02
 [VCard, VCard, Document] X-aimHomePref - AIM Home Pref: AIMName

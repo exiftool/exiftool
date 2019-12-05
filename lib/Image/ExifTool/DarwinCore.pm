@@ -6,7 +6,7 @@
 # Revisions:    2013-01-28 - P. Harvey Created
 #
 # References:   1) http://rs.tdwg.org/dwc/index.htm
-#               2) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4442.0/all.html
+#               2) https://exiftool.org/forum/index.php/topic,4442.0/all.html
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::DarwinCore;

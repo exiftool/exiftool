@@ -1424,7 +1424,7 @@ my %sSubVersion = (
 );
 
 # Microsoft ExpressionMedia namespace properties (expressionmedia)
-# (ref http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4235.0.html)
+# (ref https://exiftool.org/forum/index.php/topic,4235.0.html)
 %Image::ExifTool::XMP::ExpressionMedia = (
     %xmpTableDefaults,
     GROUPS => { 1 => 'XMP-expressionmedia', 2 => 'Image' },
@@ -1617,7 +1617,7 @@ my %sSubVersion = (
 );
 
 # Google panorama namespace properties
-# (ref http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4569.0.html)
+# (ref https://exiftool.org/forum/index.php/topic,4569.0.html)
 %Image::ExifTool::XMP::GPano = (
     %xmpTableDefaults,
     GROUPS => { 1 => 'XMP-GPano', 2 => 'Image' },

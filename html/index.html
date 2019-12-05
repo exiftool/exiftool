@@ -11,6 +11,13 @@
   preview, geotag, geocode, Perl, library, module, RAW, NEF, CR2, MRW, JPEG, TIFF,
   ID3, Windows, OSX, Unix">
 <link rel=stylesheet type='text/css' href='style.css' title='Style'>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#b6ad56">
+<meta name="msapplication-TileColor" content="#ffc40d">
+<meta name="theme-color" content="#ffffff">
 <style type="text/css">
 <!--
 body        { margin: 0 .5em; color: black; background: white;
@@ -39,13 +46,13 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 <body>
 <h1><a name="top">ExifTool by Phil Harvey</a></h1>
 <h2 class='tight red'><b>Read</b>, <b>Write</b> and <b>Edit</b> Meta Information!</h2>
-<p><b>Also available</b> --> <a href="fix_corrupted_nef.html">>Utility to fix Nikon NEF images corrupted by Nikon software</a></p>
+<p><b>Also available</b> --> <a href="https://exiftool.org/fix_corrupted_nef.html">Utility to fix Nikon NEF images corrupted by Nikon software</a></p>
 <div class=wide><table class=links><tr>
 <th><a href="install.html" class=wt>&nbsp;Installing&nbsp;</a></th>
 <th><a href="TagNames/index.html" class=wt>&nbsp;Tag&nbsp;Names&nbsp;</a></th>
 <th><a href="#links" class=wt>&nbsp;Resources&nbsp;</a></th>
 <th><a href="history.html" class=wt>&nbsp;History&nbsp;</a></th>
-<th><a href="https://sourceforge.net/p/exiftool/discussion/" class=wt>&nbsp;Forum&nbsp;</a></th>
+<th><a href="https://exiftool.org/forum/" class=wt>&nbsp;Forum&nbsp;</a></th>
 <th class=rt><a href="faq.html" class=wt>&nbsp;FAQ&nbsp;</a></th>
 </tr></table></div>
 <div class=index>
@@ -74,9 +81,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-11.77.tar.gz/download">
-Download        Version 11.77</a> (4.5 MB) -
-<a href="history.html">Nov. 27, 2019</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-11.78.tar.gz/download">
+Download        Version 11.78</a> (4.5 MB) -
+<a href="history.html">Dec. 5, 2019</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -128,8 +135,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-11.77.zip/download">
-         exiftool-11.77.zip</a> (6.2 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-11.78.zip/download">
+         exiftool-11.78.zip</a> (6.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -141,13 +148,13 @@ of Windows.</p>
 <p><i>(Note: Oliver Betz provides an
 <a href="https://oliverbetz.de/pages/Artikel/ExifTool-for-Windows">alternate ExifTool Windows installer</a>
 that avoids some problems of the self-extracting archive version above.  Please post
-<a href="http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,10128.0.html">here</a>
+<a href="https://exiftool.org/forum/index.php/topic,10128.0.html">here</a>
 if you have any problems/comments with this version.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-11.77.dmg</a> (2.9 MB)</b></td></tr></table></blockquote>
+         ExifTool-11.78.dmg</a> (2.9 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -157,10 +164,10 @@ Terminal window to run exiftool and read the application documentation.</p>
 installing ExifTool on Windows, MacOS and Unix systems.</p>
 
 <ul>
-<li><a href="https://owl.phy.queensu.ca/~phil/exiftool/checksums.txt">Click here
+<li><a href="https://exiftool.org/checksums.txt">Click here
 for the SHA1 and MD5 checksums to verify these distribution packages</a>.</li>
 <li>The version number of the latest ExifTool release may be found
-<a href="http://owl.phy.queensu.ca/~phil/exiftool/ver.txt">here</a>.</li>
+<a href="https://exiftool.org/ver.txt">here</a>.</li>
 </ul>
 
 <h2><a name="features">Features</a></h2>
@@ -215,7 +222,7 @@ for the SHA1 and MD5 checksums to verify these distribution packages</a>.</li>
 <li>Ability to <a href="config.html">add custom user-defined tags</a></li>
 <li><a href="TagNames/MWG.html">Support for MWG</a> (Metadata Working Group) recommendations</li>
 <li>Recognizes <a href="TagNames/index.html">thousands of different tags</a></li>
-<li>Tested with images from <a href="models.html">thousands of different camera models</a></li>
+<li>Tested with images from <a href="https://exiftool.org/models.html">thousands of different camera models</a></li>
 <li>Advanced <a href="verbose.html">verbose</a> and <a href="htmldump.html">HTML-based
     hex dump</a> outputs</li>
 </ul>
@@ -1065,7 +1072,7 @@ exiftool -AllDates-=1 <i>DIR</i>
 
 <p>See
 <a href="Shift.html">Image::ExifTool::Shift.pl</a>
-(<a href="http://owl.phy.queensu.ca/~phil/exiftool/Shift.pdf">download in PDF format</a>)
+(<a href="https://exiftool.org/Shift.pdf">download in PDF format</a>)
 for details about the syntax of the time shift string.</p>
 
 <p><b>Note:</b> Not all date/time information is covered by the AllDates
@@ -1171,14 +1178,14 @@ binary data.  The simple script above does not handle this case.</p>
 
 <h2><a name="links">Additional Documentation and Resources</a></h2>
 <ul>
-<li><a href="http://owl.phy.queensu.ca/~phil/exiftool/">ExifTool Home Page</a></li>
+<li><a href="https://exiftool.org/">ExifTool Home Page</a></li>
 <li><a href="faq.html">ExifTool FAQ</a></li>
-<li><a href="https://sourceforge.net/p/exiftool/discussion/">ExifTool Forum</a></li>
-<li><a href="TagNames/index.html">ExifTool Tag Names</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/TagNames.pdf">download in PDF format</a>)</li>
-<li><a href="history.html">ExifTool Revision History</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">RSS feed</a>)</li>
-<li><a href="exiftool_pod.html">exiftool Application Documentation</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/exiftool_pod.pdf">download in PDF format</a>)</li>
-<li><a href="ExifTool.html">Image::ExifTool API Documentation</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/ExifTool.pdf">download in PDF format</a>)</li>
-<li><a href="Shift.html">Date/Time Shift Module</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/Shift.pdf">download in PDF format</a>)</li>
+<li><a href="https://exiftool.org/forum/">ExifTool Forum</a></li>
+<li><a href="TagNames/index.html">ExifTool Tag Names</a> (<a href="https://exiftool.org/TagNames.pdf">download in PDF format</a>)</li>
+<li><a href="history.html">ExifTool Revision History</a> (<a href="https://exiftool.org/rss.xml">RSS feed</a>)</li>
+<li><a href="exiftool_pod.html">exiftool Application Documentation</a> (<a href="https://exiftool.org/exiftool_pod.pdf">download in PDF format</a>)</li>
+<li><a href="ExifTool.html">Image::ExifTool API Documentation</a> (<a href="https://exiftool.org/ExifTool.pdf">download in PDF format</a>)</li>
+<li><a href="Shift.html">Date/Time Shift Module</a> (<a href="https://exiftool.org/Shift.pdf">download in PDF format</a>)</li>
 <li><a href="config.html">Sample ExifTool Configuration File</a> (custom user-defined tags)</li>
 <li><a href="metafiles.html">Working with Metadata Sidecar Files</a></li>
 <li><a href="struct.html">Reading/Writing Structured Information</a></li>
@@ -1190,8 +1197,8 @@ binary data.  The simple script above does not handle this case.</p>
 <li><a href="MIE1.1-20070121.pdf">MIE 1.1 File Format Specification (pdf)</a></li>
 <li><a href="https://github.com/exiftool/exiftool">ExifTool source code on GitHub</a></li>
 <li><a href="https://sourceforge.net/projects/exiftool/">ExifTool SourceForge project page</a> (<a href="https://sourceforge.net/p/exiftool/discussion/">alternate discussion forum</a>)</li>
-<li><a href="http://owl.phy.queensu.ca/~phil/exiftool/sample_images.html">JPEG Image Samples</a> (and
-    <a href="http://owl.phy.queensu.ca/~phil/exiftool/makernote_types.html">Table of Makernote Types</a>)</li>
+<li><a href="https://exiftool.org/sample_images.html">JPEG Image Samples</a> (and
+    <a href="https://exiftool.org/makernote_types.html">Table of Makernote Types</a>)</li>
 <li><a href="https://metacpan.org/release/Image-ExifTool">Image::ExifTool at MetaCPAN</a></li>
 <li><a href="https://rt.cpan.org/Public/Dist/Display.html?Name=Image-ExifTool">ExifTool Bug Reports</a> (CPAN Request Tracker)</li>
 <li><a href="http://www.cpantesters.org/distro/I/Image-ExifTool.html">ExifTool Test Reports</a> (CPAN Testers)</li>
@@ -1214,7 +1221,7 @@ binary data.  The simple script above does not handle this case.</p>
 <p><b><a name="related_win">Windows</a></b></p>
 <ul>
 <li><a href="https://oliverbetz.de/pages/Artikel/ExifTool-for-Windows">Alternate ExifTool Windows Installer and Portable Package</a> by Oliver Betz</li>
-<li><a href="http://u88.n24.queensu.ca/~bogdan/">ExifTool GUI for Windows</a>: GUI for viewing meta information with some editing features</li>
+<li><a href="https://exiftool.org/gui/">ExifTool GUI for Windows</a>: GUI for viewing meta information with some editing features</li>
 <li><a href="https://www.logipole.com/metadata++-en.htm">Metadata++</a>: View, edit, extract, copy metadata metadata</li>
 <!-- dead <li><a href="http://www.thezeal.com/software/?Exif_Stats_Utility">Exif Stats Utility</a>: Analyzes images to tabulate apertures, exposure times, etc</li> -->
 <li><a href="http://aeropic.free.fr/H&amp;B/AUTO_ISO_patcher/">Auto ISO Tool</a>: GUI front-end for ExifTool to patch Canon ISO information</li>
@@ -1241,9 +1248,9 @@ binary data.  The simple script above does not handle this case.</p>
 
 <p><b><a name="related_mac">MacOS</a></b></p>
 <ul>
-<li><a href="http://owl.phy.queensu.ca/~phil/exiftool/Extract%20Preview.sit">Download</a>
+<li><a href="https://exiftool.org/Extract%20Preview.sit">Download</a>
 a stand-alone PPC droplet to extract preview images from RAW files (thanks to Brett Gross)</li>
-<li><a href="http://owl.phy.queensu.ca/~phil/exiftool/List_Exif_Metadata.zip">Download</a>
+<li><a href="https://exiftool.org/List_Exif_Metadata.zip">Download</a>
 three droplets to extract information [exiftool must be installed] (thanks to Rob Lewis)</li>
 <!-- dead <li><a href="http://macfidelity.de/tierprogramm/">Tierprogramm</a>: Droplet to perform some basic operations</li> -->
 <li><a href="http://frozentime.se/photos/macmetamod.html">MacMetaMod</a>: Droplet for adding Keywords to images</li>
@@ -1271,7 +1278,7 @@ three droplets to extract information [exiftool must be installed] (thanks to Ro
 <!-- dead <li><a href="http://beam.at/aenima">Photo related scripts</a>: Includes EXIFInfo script to provide statistics from EXIF data</li> -->
 <li><a href="http://hugin.sourceforge.net/">Hugin</a>: Panorama photo stitcher</li>
 <li><a href="https://savannah.nongnu.org/projects/fotopreprocessor/">FotoPreProcessor</a>: PyQt4-based frontend for exiftool to graphically edit metadata</li>
-<li><a href="http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4715.0.html">ExZenToo</a>: Script for basic ExifTool GUI using Zenity</li>
+<li><a href="https://exiftool.org/forum/index.php/topic,4715.0.html">ExZenToo</a>: Script for basic ExifTool GUI using Zenity</li>
 <li><a href="https://github.com/Glutanimate/PDFMtEd">PDFMted</a>: A set of bash scripts for easy viewing and editing of PDF metadata</li>
 <li><a href="https://github.com/HeLiBloks/exiftool-zsh-completion">exiftool-zsh-completion</a>: zsh completion for exiftool</li>
 <li><a href="https://sourceforge.net/projects/image-metawriter/">Image MetaWriter</a>: Batch processing Linux command-line program for adding metadata to images</li>
@@ -1290,7 +1297,7 @@ three droplets to extract information [exiftool must be installed] (thanks to Ro
 <li><a href="http://www.xnview.com/en/xnview.html">XnView</a>: View and convert graphic files</li>
 <li><a href="http://sourceforge.net/projects/mapivi/">Mapivi</a>: Open-source and cross-platform picture manager</li>
 <li><a href="http://www.resourcespace.org/">ResourceSpace</a>: Open source digital asset management system</li>
-<li><a href="fix_corrupted_nef.html">>fix_corrupted_nef</a>: Utility to fix Nikon D4/D600/D800/D800E NEF images corrupted by Nikon Transfer 1</li>
+<li><a href="https://exiftool.org/fix_corrupted_nef.html">fix_corrupted_nef</a>: Utility to fix Nikon D4/D600/D800/D800E NEF images corrupted by Nikon Transfer 1</li>
 <li><a href="https://hvdwolf.github.io/pyExifToolGUI/">pyExifToolGUI</a>: Python-based graphical frontend for ExifTool</li>
 <li><a href="https://github.com/avpreserve/mdqc">MDQC</a>: <a href="http://www.avpreserve.com/avpsresources/tools/">AVPreserve tool</a> for metadata quality control across large numbers of digital assets</li>
 <li><a href="http://fastphototagger.sourceforge.net/about.html">FastPhotoTagger</a>: Add metadata to images (requires Java runtime engine)</li>
@@ -1319,33 +1326,33 @@ three droplets to extract information [exiftool must be installed] (thanks to Ro
 
 <p><b><a name="related_prog">Programming</a></b></p>
 <ul>
-<li><a href="http://owl.phy.queensu.ca/~phil/cpp_exiftool/">C++ ExifTool</a>: Performance-oriented C++ interface for the exiftool application (by Phil Harvey)</li>
-<li><a href="http://owl.phy.queensu.ca/~phil/exiftool/get_tags.sit">Download</a> sample AppleScript to extract tags into AppleScript record (thanks to Rob Lewis)</li>
-<li><a href="http://owl.phy.queensu.ca/~phil/exiftool/ExifToolWrapper.zip">Download</a> example of a simple Visual C++ wrapper for exiftool (thanks Mark Borg and &#40643;&#29790;&#26124;)</li>
-<li><a href="http://owl.phy.queensu.ca/~phil/exiftool/ExifToolWrapper_cs.zip">Download</a> C# version of simple exiftool wrapper (thanks Willem Semmelink)</li>
-<li><a href="http://owl.phy.queensu.ca/~phil/exiftool/modExiftool_101.zip">Download</a> Visual Basic 6.0 example script v1.01 for reading tags with exiftool (thanks Michael Wandel)</li>
-<li><a href="http://owl.phy.queensu.ca/~phil/exiftool/vb_sample.html">Sample VB.NET subroutine</a> to extract a preview image (thanks Claus Beckmann)</li>
-<li><a href="http://owl.phy.queensu.ca/~phil/exiftool/TC_Extractor.txt">Sample VBA for Mac code</a> to extract start timecode from a WAV file (thanks Adam Newns)</li>
-<li><a href="http://owl.phy.queensu.ca/~phil/exiftool/tagInfoSql.zip">tagInfoSql</a>: SQLite database of ExifTool tag repository, including Perl script (thanks Wernfried)</li>
-<li><a href="http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5857.0.html">ExifToolIO</a>: .NET wrapper for ExifTool, optimized for speed (using VB.NET)</li>
-<li><a href="http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5262.0.html">ExifToolWrapper</a>: .NET wrapper for ExifTool (using C#)</li>
+<li><a href="https://exiftool.org/cpp_exiftool/">C++ ExifTool</a>: Performance-oriented C++ interface for the exiftool application (by Phil Harvey)</li>
+<li><a href="https://exiftool.org/get_tags.sit">Download</a> sample AppleScript to extract tags into AppleScript record (thanks to Rob Lewis)</li>
+<li><a href="https://exiftool.org/ExifToolWrapper.zip">Download</a> example of a simple Visual C++ wrapper for exiftool (thanks Mark Borg and &#40643;&#29790;&#26124;)</li>
+<li><a href="https://exiftool.org/ExifToolWrapper_cs.zip">Download</a> C# version of simple exiftool wrapper (thanks Willem Semmelink)</li>
+<li><a href="https://exiftool.org/modExiftool_101.zip">Download</a> Visual Basic 6.0 example script v1.01 for reading tags with exiftool (thanks Michael Wandel)</li>
+<li><a href="https://exiftool.org/vb_sample.html">Sample VB.NET subroutine</a> to extract a preview image (thanks Claus Beckmann)</li>
+<li><a href="https://exiftool.org/TC_Extractor.txt">Sample VBA for Mac code</a> to extract start timecode from a WAV file (thanks Adam Newns)</li>
+<li><a href="https://exiftool.org/tagInfoSql.zip">tagInfoSql</a>: SQLite database of ExifTool tag repository, including Perl script (thanks Wernfried)</li>
+<li><a href="https://exiftool.org/forum/index.php/topic,5857.0.html">ExifToolIO</a>: .NET wrapper for ExifTool, optimized for speed (using VB.NET)</li>
+<li><a href="https://exiftool.org/forum/index.php/topic,5262.0.html">ExifToolWrapper</a>: .NET wrapper for ExifTool (using C#)</li>
 <li><a href="http://gitorious.org/mini_exiftool">MiniExiftool</a>: Ruby library wrapper for ExifTool</li>
 <li><a href="https://github.com/mceachen/exiftoolr">exiftoolr</a>: Ruby wrapper for ExifTool</li>
 <li><a href="http://smarnach.github.com/pyexiftool/">pyexiftool</a>: Python wrapper for ExifTool</li>
 <li><a href="https://github.com/guinslym/pyexifinfo">PyExifInfo</a>: Another Python wrapper for ExifTool</li>
 <li><a href="https://github.com/romainneutron/PHPExiftool">PHPExiftool</a>: PHP wrapper for ExifTool (in development)</li>
-<li><a href="http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5381.0.html">ExifTool_PHP_StayOpen</a>: ExifTool PHP fast processing script using -stayOpen and Gearman</li>
+<li><a href="https://exiftool.org/forum/index.php/topic,5381.0.html">ExifTool_PHP_StayOpen</a>: ExifTool PHP fast processing script using -stayOpen and Gearman</li>
 <li><a href="http://sourceforge.net/projects/moss/">Moss</a>: Collection of Java utilities which includes an exiftool interface</li>
 <li><a href="http://im4java.sourceforge.net">im4java</a>: Java interface to ImageMagick, ExifTool, and other image utilities</li>
 <li><a href="https://github.com/mjeanroy/exiftool">Java ExifTool</a>: Enhanced Java Integration for ExifTool</li>
 <li><a href="https://bitbucket.org/P_W999/j-exiftool/wiki/Home">J-ExifTool</a>: Open-source, cross platform Java7 library to read/write Exif tags in images</li>
 <li><a href="https://github.com/mceachen/exiftool-vendored">exiftool-vendored</a>: Blazing-fast, cross-platform Node.js access to ExifTool</li>
-<li><a href="http://u88.n24.queensu.ca/~bogdan/articles/delphi01.html">How to call ExifTool from Delphi</a>, by Bogdan Hrastnik</li>
+<li><a href="https://exiftool.org/gui/articles/delphi01.html">How to call ExifTool from Delphi</a>, by Bogdan Hrastnik</li>
 </ul>
 
 <h3><a name="other_links">Other Links</a></h3>
 <ul>
-<li><a href="https://web.archive.org/web/20150419003745/http://www.ebv4linux.de/modules.php?name=News&amp;file=article&amp;sid=26">An interview with Phil Harvey</a> (in German), (<a href="http://owl.phy.queensu.ca/~phil/exiftool/PhilHarveyInterview.pdf">English translation in PDF format</a>)</li>
+<li><a href="https://web.archive.org/web/20150419003745/http://www.ebv4linux.de/modules.php?name=News&amp;file=article&amp;sid=26">An interview with Phil Harvey</a> (in German), (<a href="https://exiftool.org/PhilHarveyInterview.pdf">English translation in PDF format</a>)</li>
 </ul>
 
 <h2><a name="boldly">Boldly Go where No Man has Gone Before...</a></h2>
@@ -1355,7 +1362,7 @@ models.  (To see this information, run exiftool with the <code>-U</code>
 option.)  In this area, ExifTool is very much a collaborative effort, and
 development relies heavily on the input from camera owners to help decode new
 meta information.  If you manage to figure out what any of it means, send me an
-e-mail (phil at owl.phy.queensu.ca) and I'll <b>add your new discoveries to
+e-mail (philharvey66 at gmail.com) and I'll <b>add your new discoveries to
 ExifTool</b>.  Many thanks to all who have helped so far...</p>
 
 <h2><a name="ack">Acknowledgements</a></h2>
@@ -1394,7 +1401,7 @@ to the code:</p>
 <li>Warren Hatch for decoding many Nikon tags</li>
 <li>Jos Roost for decoding many Sony tags for various models</li>
 <li>Iliah Borg and <a href="http://www.libraw.org/">LibRaw</a> for decoding many raw development tags</li>
-<li>Bryan K. Williams and Hayo Baan for their help with the <a href="https://sourceforge.net/p/exiftool/discussion/">ExifTool Forum</a></li>
+<li>Bryan K. Williams and Hayo Baan for their help with the <a href="https://exiftool.org/forum/">ExifTool Forum</a></li>
 </ul>
 
 <h2><a name="license">License</a></h2>
@@ -1414,7 +1421,7 @@ but thank you very much if you decide to make a contribution:</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="POST">
 <input type="hidden" name="cmd" value="_donations">
 <input type="hidden" name="business" value="philharvey66@gmail.com">
-<input type="hidden" name="return" value="http://owl.phy.queensu.ca/~phil/exiftool/">
+<input type="hidden" name="return" value="https://exiftool.org/">
 <input type="hidden" name="item_name" value="ExifTool Donation">
 <input type="hidden" name="no_shipping" value="1">
 $<input name="amount" value="0.00" size="6">
@@ -1425,12 +1432,12 @@ $<input name="amount" value="0.00" size="6">
 </table>
 </blockquote>
 <p><i class=lt>(Your generous donations have provided the funds used to purchase the
-<a href="https://sourceforge.net/p/exiftool/discussion/">ExifTool Forum</a> server.)</i></p>
+<a href="https://exiftool.org/forum/">ExifTool Forum</a> server.)</i></p>
 
 <h2><a name="contact">Contact Me</a></h2>
 
 <p>If you have any comments, suggestions or questions, please post to the
-<a href="https://sourceforge.net/p/exiftool/discussion/">ExifTool Forum</a> so
+<a href="https://exiftool.org/forum/">ExifTool Forum</a> so
 other people may benefit from your experiences.  (I check the forum at least as
 often as my email.)  Otherwise, if you must contact me directly, my e-mail
 address is on the first line of the README file in the full distribution. 
@@ -1441,7 +1448,7 @@ Thanks. &nbsp; - <i>Phil Harvey</i></p>
 <th><a href="TagNames/index.html" class=wt>&nbsp;Tag&nbsp;Names&nbsp;</a></th>
 <th><a href="#links" class=wt>&nbsp;Resources&nbsp;</a></th>
 <th><a href="history.html" class=wt>&nbsp;History&nbsp;</a></th>
-<th><a href="https://sourceforge.net/p/exiftool/discussion/" class=wt>&nbsp;Forum&nbsp;</a></th>
+<th><a href="https://exiftool.org/forum/" class=wt>&nbsp;Forum&nbsp;</a></th>
 <th class=rt><a href="faq.html" class=wt>&nbsp;FAQ&nbsp;</a></th>
 </tr></table></div>
 </body>

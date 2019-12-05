@@ -1,7 +1,7 @@
 ---
 abstract: 'Read and write meta information'
 author:
-  - 'Phil Harvey (phil@owl.phy.queensu.ca)'
+  - 'Phil Harvey (philharvey66 at gmail.com)'
 build_requires:
   ExtUtils::MakeMaker: '0'
 configure_requires:
@@ -28,5 +28,5 @@ recommends:
   Time::HiRes: '0'
 requires:
   perl: '5.004'
-version: '11.77'
+version: '11.78'
 x_serialization_backend: 'CPAN::Meta::YAML version 0.018'

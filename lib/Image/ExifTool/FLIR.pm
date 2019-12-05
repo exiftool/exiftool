@@ -5,12 +5,12 @@
 #
 # Revisions:    2013/03/28 - P. Harvey Created
 #
-# References:   1) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4898.0.html
+# References:   1) https://exiftool.org/forum/index.php/topic,4898.0.html
 #               2) http://www.nuage.ch/site/flir-i7-some-analysis/
 #               3) http://www.workswell.cz/manuals/flir/hardware/A3xx_and_A6xx_models/Streaming_format_ThermoVision.pdf
 #               4) http://support.flir.com/DocDownload/Assets/62/English/1557488%24A.pdf
 #               5) http://code.google.com/p/dvelib/source/browse/trunk/flirPublicFormat/fpfConverter/Fpfimg.h?spec=svn3&r=3
-#               6) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5538.0.html
+#               6) https://exiftool.org/forum/index.php/topic,5538.0.html
 #               JD) Jens Duttke private communication
 #
 # Glossary:     FLIR = Forward Looking Infra Red
@@ -378,7 +378,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     NOTES => q{
         FLIR camera information.  The Planck tags are variables used in the
         temperature calculation.  See
-        L<http://u88.n24.queensu.ca/exiftool/forum/index.php?topic=4898.msg23972#msg23972>
+        L<https://exiftool.org/forum/index.php?topic=4898.msg23972#msg23972>
         for details.
     },
     0x00 => {
@@ -715,7 +715,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
 );
 
 # humidity meter information
-# (ref http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5325.0.html)
+# (ref https://exiftool.org/forum/index.php/topic,5325.0.html)
 # The %Image::ExifTool::UserDefined hash defines new tags to be added to existing tables.
 %Image::ExifTool::FLIR::MeterLink = (
     GROUPS => { 0 => 'APP1', 2 => 'Image' },
@@ -1604,7 +1604,7 @@ under the same terms as Perl itself.
 
 =over 4
 
-=item L<http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4898.0.html>
+=item L<https://exiftool.org/forum/index.php/topic,4898.0.html>
 
 =item L<http://www.nuage.ch/site/flir-i7-some-analysis/>
 
@@ -1614,7 +1614,7 @@ under the same terms as Perl itself.
 
 =item L<http://code.google.com/p/dvelib/source/browse/trunk/flirPublicFormat/fpfConverter/Fpfimg.h?spec=svn3&r=3>
 
-=item L<http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5538.0.html>
+=item L<https://exiftool.org/forum/index.php/topic,5538.0.html>
 
 =back
 

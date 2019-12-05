@@ -4,21 +4,27 @@
 <head>
   <title>ExifTool Version History</title>
 <link rel=stylesheet type='text/css' href='style.css' title='Style'>
-<link rel=alternate type='application/rss+xml' title='RSS Feed for ExifTool updates' href='http://owl.phy.queensu.ca/~phil/exiftool/rss.xml'>
+<link rel=alternate type='application/rss+xml' title='RSS Feed for ExifTool updates' href='https://exiftool.org/rss.xml'>
 </head>
 <body>
 <h1 class='up'>ExifTool Version History</h1>
 
-<p>RSS feed: <a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">http://owl.phy.queensu.ca/~phil/exiftool/rss.xml</a></p>
-
-<p><i class=red>(I'll be away from Nov 16-24, 2019 so don't expect any updates
-or email/forum responses during this period. - PH)</i></p>
+<p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
 <p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-11.70.tar.gz">Version 11.70</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">CPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v11.78'><b>Dec. 5, 2019 - Version 11.78</b></a>
+<ul>
+<li>Added a new Nikon LensID (thanks Chris)
+<li>Added two new FujiFilm SceneRecognition values
+<li>Patched to avoid crash in Windows when writing a negative epoch time using
+    the "-d %s" option
+<li>Fixed problem editing MIE tags when using the "-wm w" option
+</ul>
 
 <a name='v11.77'><b>Nov. 27, 2019 - Version 11.77</b></a>
 <ul>

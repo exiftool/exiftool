@@ -1159,7 +1159,7 @@ to 0 via the API or with --struct on the command line to copy only flattened
 tags, or enabled by setting Struct to 1 via the API or with -struct on the
 command line to copy only as structures.  When writing, the Struct option
 has no effect, and both structured and flattened tags may be written.  See
-L<http://owl.phy.queensu.ca/~phil/exiftool/struct.html> for more details.
+L<https://exiftool.org/struct.html> for more details.
 
 Individual languages for C<lang-alt> tags are accessed by suffixing the tag
 name with a '-', followed by an RFC 3066 language code (eg. "XMP:Title-fr",
@@ -1190,7 +1190,7 @@ recommended if possible.
 For structures, the heading of the first column is B<Field Name>.  Field
 names are very similar to tag names, except they are used to identify fields
 inside structures instead of stand-alone tags.  See
-L<http://owl.phy.queensu.ca/~phil/exiftool/struct.html#Fields> for more
+L<https://exiftool.org/struct.html#Fields> for more
 details.
 
 ExifTool will extract XMP information even if it is not listed in these
@@ -8635,7 +8635,7 @@ Information found in FFF-format .CRS correction image files.
 
 FLIR camera information.  The Planck tags are variables used in the
 temperature calculation.  See
-L<http://u88.n24.queensu.ca/exiftool/forum/index.php?topic=4898.msg23972#msg23972>
+L<https://exiftool.org/forum/index.php?topic=4898.msg23972#msg23972>
 for details.
 
   Index1   Tag Name                             Writable
@@ -18391,8 +18391,8 @@ These tags apply to CRW-format Canon RAW files and information in the APP0
 length of the information is preserved (and the new information is truncated
 or padded as required) unless B<Writable> is C<resize>. Currently, only
 JpgFromRaw and ThumbnailImage are allowed to change size.  See
-L<http://owl.phy.queensu.ca/~phil/exiftool/canon_raw.html> for a description
-of the Canon CRW format.
+L<https://exiftool.org/canon_raw.html> for a description of the Canon CRW
+format.
 
 CRW images also support the addition of a CanonVRD trailer, which in turn
 supports XMP.  This trailer is created automatically if necessary when
@@ -21998,8 +21998,8 @@ written.
 4) ExifTool writes compressed metadata to MIE files if the Compress (-z)
 option is used and Compress::Zlib is available.
 
-See L<http://owl.phy.queensu.ca/~phil/exiftool/MIE1.1-20070121.pdf> for the
-official MIE specification.
+See L<https://exiftool.org/MIE1.1-20070121.pdf> for the official MIE
+specification.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------

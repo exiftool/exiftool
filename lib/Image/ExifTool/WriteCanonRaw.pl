@@ -632,6 +632,6 @@ under the same terms as Perl itself.
 
 L<Image::ExifTool::CanonRaw(3pm)|Image::ExifTool::CanonRaw>,
 L<Image::ExifTool(3pm)|Image::ExifTool>,
-L<http://owl.phy.queensu.ca/~phil/exiftool/canon_raw.html>
+L<https://exiftool.org/canon_raw.html>
 
 =cut

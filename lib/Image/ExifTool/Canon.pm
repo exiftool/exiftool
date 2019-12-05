@@ -63,8 +63,8 @@
 #              47) http://www.exiv2.org/
 #              48) Tomasz A. Kawecki private communication (550D, firmware 1.0.6, 1.0.8)
 #              49) http://www.listware.net/201101/digikam-users/49795-digikam-users-re-lens-recognition.html
-#              50) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3833.0.html
-#              51) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4110.0.html
+#              50) https://exiftool.org/forum/index.php/topic,3833.0.html
+#              51) https://exiftool.org/forum/index.php/topic,4110.0.html
 #              52) Kai Harrekilde-Petersen private communication
 #              53) Anton Reiser private communication
 #              54) https://github.com/lclevy/canon_cr3
@@ -2069,7 +2069,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             4 => 'Continuous, Low', #PH
             5 => 'Continuous, High', #PH
             6 => 'Silent Single', #PH
-            # ref A: http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5701.msg27843.html#msg27843
+            # ref A: https://exiftool.org/forum/index.php/topic,5701.msg27843.html#msg27843
             9 => 'Single, Silent', #A
             10 => 'Continuous, Silent', #A
             # 11 - seen for SX260

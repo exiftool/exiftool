@@ -152,7 +152,7 @@ my %sRegions = (
     Rectangle         => { },
     PersonDisplayName => { },
     PersonEmailDigest => { },
-    PersonLiveIdCID   => { },  # (see http://130.15.24.88/exiftool/forum/index.php?topic=4274.msg20368#msg20368)
+    PersonLiveIdCID   => { },  # (see https://exiftool.org/forum/index.php?topic=4274.msg20368#msg20368)
     PersonSourceID    => { },
 );
 %Image::ExifTool::Microsoft::MP = (

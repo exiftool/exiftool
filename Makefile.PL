@@ -43,7 +43,7 @@ WriteMakefile(
     EXE_FILES     => [ 'exiftool' ],
     ($] >= 5.005 ?
         (ABSTRACT_FROM => $ExifTool_pod,
-         AUTHOR        => 'Phil Harvey (phil@owl.phy.queensu.ca)',
+         AUTHOR        => 'Phil Harvey (philharvey66 at gmail.com)',
         ) : ()),
     (($ExtUtils::MakeMaker::VERSION gt '6.30') ?
         (LICENSE => 'perl') : ()),    

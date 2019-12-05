@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.78
 [File, System, Other] FileName - File Name: MIE_3_failed.mie
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 6.1 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:01 10:15:30-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:30-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:01 10:15:30-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:12:04 10:14:43-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:12:04 10:14:43-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:12:04 10:14:43-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: MIE
 [File, File, Other] FileTypeExtension - File Type Extension: mie
@@ -57,7 +57,7 @@
 [MIE, MIE-Doc, Document] References - References: http://www.columbia.edu/kermit/utf8.html (Comment strings)
 [MIE, MIE-Doc, Document] Software - Software: Adobe Photoshop 7.0
 [MIE, MIE-Doc, Document] Title - Title: Test IPTC picture
-[MIE, MIE-Doc, Document] URL - URL: http://owl.phy.queensu.ca/~phil/exiftool/
+[MIE, MIE-Doc, Document] URL - URL: https://exiftool.org/
 [MIE, MIE-Geo, Location] City - City: Kingston
 [MIE, MIE-Geo, Location] Country - Country: Canada
 [MIE, MIE-Geo, Location] State - State: Ont
@@ -103,7 +103,7 @@
 [EXIF, IFD1, Image] 282 - X Resolution: 300
 [EXIF, IFD1, Image] 283 - Y Resolution: 300
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
-[EXIF, IFD1, Image] 513 - Thumbnail Offset: 3063
+[EXIF, IFD1, Image] 513 - Thumbnail Offset: 3043
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
 [EXIF, IFD1, Preview] Exif::ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, Nikon, Camera] 1 - Maker Note Version: 1.00
@@ -127,7 +127,7 @@
 [PrintIM, PrintIM, Printing] PrintIMVersion - PrintIM Version: 0100
 [IPTC, IPTC, Other] 25 - Keywords: cool
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.75
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.78
 [XMP, XMP-dc, Author] creator - Creator: phil
 [Composite, Composite, Image] Exif::Aperture - Aperture: 9.4
 [Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/213

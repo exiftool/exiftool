@@ -7,6 +7,16 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Dec. 12, 2019 - Version 11.79
+
+  - Added support for AVIF files
+  - Added new Canon, Sigma and Sony LensType values (thanks LibRaw)
+  - Made PDF 2.0 writable at your own risk with the -m option
+  - Enhanced -validate feature to warn about duplicate languages in an XMP
+    lang-alt list
+  - Fixed inconsistency between documentation and ExifTool capabilities for
+    "Writable" status of some tags
+
 Dec. 5, 2019 - Version 11.78
 
   - Added a new Nikon LensID (thanks Chris)

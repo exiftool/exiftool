@@ -113,6 +113,7 @@ my %formatOK = (
     %Image::ExifTool::Exif::formatNumber,
     0 => 1,
     1 => 1,
+    2 => 1, # (writable for docs only)
     real    => 1,
     integer => 1,
     date    => 1,
@@ -943,6 +944,10 @@ TagID:  foreach $tagID (@keys) {
                 } elsif (not $$tagInfo{SubDirectory}) {
                     $writable = $$table{WRITABLE};
                 }
+                # in general, we can't write unless we have a WRITE_PROC
+                if ($writable and not ($$table{WRITE_PROC} or $tableName =~ /Shortcuts/ or $writable eq '2')) {
+                    undef $writable;
+                }
                 # validate some characteristics of obvious date/time tags
                 my @g = $et->GetGroup($tagInfo);
                 if ($$tagInfo{List} and $g[2] eq 'Time' and $writable and not $$tagInfo{Protected} and
@@ -1260,16 +1265,20 @@ TagID:  foreach $tagID (@keys) {
                     }
                 }
                 if ($subdir and not $$tagInfo{SeparateTable}) {
-                    # subdirectories are only writable if specified explicitly
-                    my $tw = $$tagInfo{Writable};
-                    $writable = 'yes' if $tw and $writable eq '1';
-                    $writable = '-' . ($tw ? $writable : '');
-                    $writable .= '!' if $tw and ($$tagInfo{Protected} || 0) & 0x01;
-                    $writable .= '+' if $$tagInfo{List};
-                    if (defined $$tagInfo{Permanent}) {
-                        $writable .= '^' unless $$tagInfo{Permanent};
-                    } elsif (defined $$table{PERMANENT}) {
-                        $writable .= '^' unless $$table{PERMANENT};
+                    if ($writable) {
+                        # subdirectories are only writable if specified explicitly
+                        my $tw = $$tagInfo{Writable};
+                        $writable = 'yes' if $tw and $writable eq '1' or $writable eq '2';
+                        $writable = '-' . ($tw ? $writable : '');
+                        $writable .= '!' if $tw and ($$tagInfo{Protected} || 0) & 0x01;
+                        $writable .= '+' if $$tagInfo{List};
+                        if (defined $$tagInfo{Permanent}) {
+                            $writable .= '^' unless $$tagInfo{Permanent};
+                        } elsif (defined $$table{PERMANENT}) {
+                            $writable .= '^' unless $$table{PERMANENT};
+                        }
+                    } else {
+                        $writable = '-';
                     }
                 } else {
                     # not writable if we can't do the inverse conversions
@@ -1290,7 +1299,7 @@ TagID:  foreach $tagID (@keys) {
                     if (not $writable) {
                         $writable = 'no';
                     } else {
-                        $writable eq '1' and $writable = $format ? $format : 'yes';
+                        $writable = $format ? $format : 'yes' if $writable eq '1' or $writable eq '2';
                         my $count = $$tagInfo{Count} || 1;
                         # adjust count to Writable size if different than Format
                         if ($writable and $format and $writable ne $format and

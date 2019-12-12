@@ -6864,6 +6864,7 @@ sub WriteBinaryData($$$)
 sub WriteTIFF($$$)
 {
     my ($self, $dirInfo, $tagTablePtr) = @_;
+    $self or return 1;    # allow dummy access
     my $buff = '';
     $$dirInfo{OutFile} = \$buff;
     return $buff if $self->ProcessTIFF($dirInfo, $tagTablePtr) > 0;

@@ -16,7 +16,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 
-$VERSION = '1.22';
+$VERSION = '1.23';
 
 sub RecoverTruncatedIPTC($$$);
 sub ListToString($);
@@ -29,6 +29,7 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
 %Image::ExifTool::MWG::Composite = (
     GROUPS => { 0 => 'Composite', 1 => 'MWG', 2 => 'Image' },
     VARS => { NO_ID => 1 },
+    WRITE_PROC => \&Image::ExifTool::DummyWriteProc,
     NOTES => q{
         The table below lists special Composite tags which are used to access other
         tags based on the MWG 2.0 recommendations.  These tags are only accessible

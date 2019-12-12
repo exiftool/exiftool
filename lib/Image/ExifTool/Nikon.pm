@@ -1321,6 +1321,7 @@ my %binaryDataAttrs = (
              16 => 'Electronic',
            # 33 => ? seen for 1J2
              48 => 'Electronic Front Curtain',
+           # 81 => ? seen for Z50
         },
     },
     0x0035 => { #32
@@ -4492,8 +4493,6 @@ my %nikonFocalConversions = (
             12 => 'Nikkor Z DX 50-250mm f/4.5-6.3 VR',
             13 => 'Nikkor Z 24-70mm f/2.8 S',
             14 => 'Nikkor Z 85mm f/1.8 S',
-            # missing from this list:
-            # Nikkor Z 58mm f/0.95 S Noct (coming soon)
         },
     },
     0x36 => {

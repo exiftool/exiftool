@@ -115,13 +115,13 @@ syntax are:
 <code>"-EXIF:Artist&lt;-XMP:Creator"</code>) This is <b>wrong</b>, and the tag will
 not be copied.  (It should be <code>"-EXIF:Artist&lt;XMP:Creator"</code>.)</li>
 <li>Adding a leading "<code>$</code>" when copying a simple tag. (eg.
-<code>"-comment&lt;$filename"</code>). This is not necessary and it is less
-efficient for ExifTool to process the source string than it is to copy the tag
-directly.  Also, values of list-type and shortcut tags are concatenated in the
-string rather than being copied individually, and wildcards are not allowed.
-Another difference is that a minor warning is generated if a tag doesn't exist
-when interpolating its value in a string (with "<code>$</code>"), but isn't when
-copying the tag directly.</li>
+<code>"-comment&lt;$filename"</code>). This is usually not necessary <i>(see
+exception below)</i> and it is less efficient for ExifTool to process the source
+string than it is to copy the tag directly.  Also, values of list-type and
+shortcut tags are concatenated in the string rather than being copied
+individually, and wildcards are not allowed. Another difference is that a minor
+warning is generated if a tag doesn't exist when interpolating its value in a
+string (with "<code>$</code>"), but isn't when copying the tag directly.</li>
 <li>Using "<code>=</code>" instead of "<code>&lt;</code>" to copy a tag, or
 using "<code>&lt;</code>" instead of "<code>=</code>" to assign a value.
 <table class=box><tr><td>"<code>&lt;</code>" is used for copying, in which case the
@@ -135,10 +135,19 @@ a string that is written directly to the destination tag.<br>
 (And the combination "<code>&lt;=</code>" is used to assign a tag value from the contents of a file.)<br>
 </td></tr></table></li>
 </ol>
+An exception to rule "b" above occurs when trying to copy the value of one tag
+to a group of differnt tags, for example:
+<pre>exiftool "-time:all&lt;datetimeoriginal" FILE  <span class=blk>(WRONG!)</span></pre>
+The above command doesn't work because the destination tag name of "All" writes
+to the tag with the same name as the source (ie. only "DateTimeOriginal").  However,
+when interpolated in a string the  group identity of the tag is lost, so the following
+command will write to all tags in the Time group:
+<pre>exiftool "-time:all&lt;$datetimeoriginal" FILE</pre>
+(Note that single quotes would be necessary in the above command under Mac/Linux.)
 </blockquote>
 
 <hr>
-<i>Last revised Jun. 17, 2017</i>
+<i>Last revised Dec. 11, 2019</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

@@ -20,7 +20,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 # road map of directory locations in GIF images
 my %gifMap = (
@@ -42,7 +42,7 @@ my %gifMap = (
     Comment    => {
         # for documentation only -- flag as writable for the docs, but
         # it won't appear in the TagLookup because there is no WRITE_PROC
-        Writable => 1,
+        Writable => 2,
     },
     Duration   => {
         Notes => 'duration of a single animation iteration',
@@ -67,12 +67,12 @@ my %gifMap = (
     'XMP Data/XMP' => { #2
         Name => 'XMP',
         IncludeLengthBytes => 1, # length bytes are included in the data
-        Writable => 1,
+        Writable => 2,
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::Main' },
     },
     'ICCRGBG1/012' => { #4
         Name => 'ICC_Profile',
-        Writable => 1,
+        Writable => 2,
         SubDirectory => { TagTable => 'Image::ExifTool::ICC_Profile::Main' },
     },
     'MIDICTRL/Jon' => { #5

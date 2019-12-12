@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.28';
+$VERSION = '4.29';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -220,7 +220,8 @@ $VERSION = '4.28';
     112 => 'Sigma 28mm f/1.5 FF High-speed Prime or other Sigma Lens', #IB
     112.1 => 'Sigma 40mm f/1.5 FF High-speed Prime', #IB
     112.2 => 'Sigma 105mm f/1.5 FF High-speed Prime', #IB
-    117 => 'Tamron 35-150mm f/2.8-4.0 Di VC OSD', #IB (A043)
+    117 => 'Tamron 35-150mm f/2.8-4.0 Di VC OSD or other Tamron Lens', #IB (A043)
+    117.1 => 'Tamron SP 35mm f/1.4 Di USD', #https://github.com/Exiv2/exiv2/issues/1064
     124 => 'Canon MP-E 65mm f/2.8 1-5x Macro Photo', #9
     125 => 'Canon TS-E 24mm f/3.5L',
     126 => 'Canon TS-E 45mm f/2.8', #15

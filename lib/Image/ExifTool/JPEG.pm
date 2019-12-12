@@ -196,7 +196,7 @@ sub ProcessJPEG_HDR($$$);
     APP14 => {
         Name => 'Adobe',
         Condition => '$$valPt =~ /^Adobe/',
-        Writable => 1,  # (for docs only)
+        Writable => 2,  # (for docs only)
         SubDirectory => { TagTable => 'Image::ExifTool::JPEG::Adobe' },
     },
     APP15 => {
@@ -209,7 +209,7 @@ sub ProcessJPEG_HDR($$$);
         Name => 'Comment',
         # note: flag as writable for documentation, but it won't show up
         # in the TagLookup as writable because there is no WRITE_PROC
-        Writable => 1,
+        Writable => 2,
     },
     SOF => {
         Name => 'StartOfFrame',
@@ -249,7 +249,7 @@ sub ProcessJPEG_HDR($$$);
       }, {
         Name => 'PreviewImage',
         Condition => '$$valPt =~ /^\xff\xd8\xff/',
-        Writable => 1,  # (for docs only)
+        Writable => 2,  # (for docs only)
       }, {
         Name => 'EmbeddedVideo',
         Notes => 'extracted only when ExtractEmbedded option is used',
@@ -267,6 +267,7 @@ sub ProcessJPEG_HDR($$$);
     0xc4a5 => {
         Name => 'PrintIM',
         # must set Writable here so this tag will be saved with MakerNotes option
+        # (but it isn't actually writable because there is no WRITE_PROC)
         Writable => 'undef',
         Description => 'Print Image Matching',
         SubDirectory => {

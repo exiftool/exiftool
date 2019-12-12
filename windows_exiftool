@@ -10,7 +10,7 @@
 use strict;
 require 5.004;
 
-my $version = '11.78';
+my $version = '11.79';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -4299,45 +4299,46 @@ DESCRIPTION
 
       File Types
       ------------+-------------+-------------+-------------+------------
-      3FR   r     | DSS   r     | J2C   r     | ODP   r     | RAW   r/w
-      3G2   r/w   | DV    r     | JNG   r/w   | ODS   r     | RIFF  r
-      3GP   r/w   | DVB   r/w   | JP2   r/w   | ODT   r     | RSRC  r
-      A     r     | DVR-MS r    | JPEG  r/w   | OFR   r     | RTF   r
-      AA    r     | DYLIB r     | JSON  r     | OGG   r     | RW2   r/w
-      AAE   r     | EIP   r     | K25   r     | OGV   r     | RWL   r/w
-      AAX   r/w   | EPS   r/w   | KDC   r     | OPUS  r     | RWZ   r
-      ACR   r     | EPUB  r     | KEY   r     | ORF   r/w   | RM    r
-      AFM   r     | ERF   r/w   | LA    r     | OTF   r     | SEQ   r
-      AI    r/w   | EXE   r     | LFP   r     | PAC   r     | SKETCH r
-      AIFF  r     | EXIF  r/w/c | LNK   r     | PAGES r     | SO    r
-      APE   r     | EXR   r     | LRV   r/w   | PBM   r/w   | SR2   r/w
-      ARQ   r/w   | EXV   r/w/c | M2TS  r     | PCD   r     | SRF   r
-      ARW   r/w   | F4A/V r/w   | M4A/V r/w   | PCX   r     | SRW   r/w
-      ASF   r     | FFF   r/w   | MAX   r     | PDB   r     | SVG   r
-      AVI   r     | FITS  r     | MEF   r/w   | PDF   r/w   | SWF   r
-      AZW   r     | FLA   r     | MIE   r/w/c | PEF   r/w   | THM   r/w
-      BMP   r     | FLAC  r     | MIFF  r     | PFA   r     | TIFF  r/w
-      BPG   r     | FLIF  r/w   | MKA   r     | PFB   r     | TORRENT r
-      BTF   r     | FLV   r     | MKS   r     | PFM   r     | TTC   r
-      CHM   r     | FPF   r     | MKV   r     | PGF   r     | TTF   r
-      COS   r     | FPX   r     | MNG   r/w   | PGM   r/w   | TXT   r
-      CR2   r/w   | GIF   r/w   | MOBI  r     | PLIST r     | VCF   r
-      CR3   r/w   | GPR   r/w   | MODD  r     | PICT  r     | VRD   r/w/c
-      CRM   r/w   | GZ    r     | MOI   r     | PMP   r     | VSD   r
-      CRW   r/w   | HDP   r/w   | MOS   r/w   | PNG   r/w   | WAV   r
-      CS1   r/w   | HDR   r     | MOV   r/w   | PPM   r/w   | WDP   r/w
-      DCM   r     | HEIC  r/w   | MP3   r     | PPT   r     | WEBP  r
-      DCP   r/w   | HEIF  r/w   | MP4   r/w   | PPTX  r     | WEBM  r
-      DCR   r     | HTML  r     | MPC   r     | PS    r/w   | WMA   r
-      DFONT r     | ICC   r/w/c | MPG   r     | PSB   r/w   | WMV   r
-      DIVX  r     | ICS   r     | MPO   r/w   | PSD   r/w   | WTV   r
-      DJVU  r     | IDML  r     | MQV   r/w   | PSP   r     | WV    r
-      DLL   r     | IIQ   r/w   | MRW   r/w   | QTIF  r/w   | X3F   r/w
-      DNG   r/w   | IND   r/w   | MXF   r     | R3D   r     | XCF   r
-      DOC   r     | INSV  r     | NEF   r/w   | RA    r     | XLS   r
-      DOCX  r     | INX   r     | NRW   r/w   | RAF   r/w   | XLSX  r
-      DPX   r     | ISO   r     | NUMBERS r   | RAM   r     | XMP   r/w/c
-      DR4   r/w/c | ITC   r     | O     r     | RAR   r     | ZIP   r
+      3FR   r     | DSS   r     | JNG   r/w   | ODT   r     | RTF   r
+      3G2   r/w   | DV    r     | JP2   r/w   | OFR   r     | RW2   r/w
+      3GP   r/w   | DVB   r/w   | JPEG  r/w   | OGG   r     | RWL   r/w
+      A     r     | DVR-MS r    | JSON  r     | OGV   r     | RWZ   r
+      AA    r     | DYLIB r     | K25   r     | OPUS  r     | RM    r
+      AAE   r     | EIP   r     | KDC   r     | ORF   r/w   | SEQ   r
+      AAX   r/w   | EPS   r/w   | KEY   r     | OTF   r     | SKETCH r
+      ACR   r     | EPUB  r     | LA    r     | PAC   r     | SO    r
+      AFM   r     | ERF   r/w   | LFP   r     | PAGES r     | SR2   r/w
+      AI    r/w   | EXE   r     | LNK   r     | PBM   r/w   | SRF   r
+      AIFF  r     | EXIF  r/w/c | LRV   r/w   | PCD   r     | SRW   r/w
+      APE   r     | EXR   r     | M2TS  r     | PCX   r     | SVG   r
+      ARQ   r/w   | EXV   r/w/c | M4A/V r/w   | PDB   r     | SWF   r
+      ARW   r/w   | F4A/V r/w   | MAX   r     | PDF   r/w   | THM   r/w
+      ASF   r     | FFF   r/w   | MEF   r/w   | PEF   r/w   | TIFF  r/w
+      AVI   r     | FITS  r     | MIE   r/w/c | PFA   r     | TORRENT r
+      AVIF  r/w   | FLA   r     | MIFF  r     | PFB   r     | TTC   r
+      AZW   r     | FLAC  r     | MKA   r     | PFM   r     | TTF   r
+      BMP   r     | FLIF  r/w   | MKS   r     | PGF   r     | TXT   r
+      BPG   r     | FLV   r     | MKV   r     | PGM   r/w   | VCF   r
+      BTF   r     | FPF   r     | MNG   r/w   | PLIST r     | VRD   r/w/c
+      CHM   r     | FPX   r     | MOBI  r     | PICT  r     | VSD   r
+      COS   r     | GIF   r/w   | MODD  r     | PMP   r     | WAV   r
+      CR2   r/w   | GPR   r/w   | MOI   r     | PNG   r/w   | WDP   r/w
+      CR3   r/w   | GZ    r     | MOS   r/w   | PPM   r/w   | WEBP  r
+      CRM   r/w   | HDP   r/w   | MOV   r/w   | PPT   r     | WEBM  r
+      CRW   r/w   | HDR   r     | MP3   r     | PPTX  r     | WMA   r
+      CS1   r/w   | HEIC  r/w   | MP4   r/w   | PS    r/w   | WMV   r
+      DCM   r     | HEIF  r/w   | MPC   r     | PSB   r/w   | WTV   r
+      DCP   r/w   | HTML  r     | MPG   r     | PSD   r/w   | WV    r
+      DCR   r     | ICC   r/w/c | MPO   r/w   | PSP   r     | X3F   r/w
+      DFONT r     | ICS   r     | MQV   r/w   | QTIF  r/w   | XCF   r
+      DIVX  r     | IDML  r     | MRW   r/w   | R3D   r     | XLS   r
+      DJVU  r     | IIQ   r/w   | MXF   r     | RA    r     | XLSX  r
+      DLL   r     | IND   r/w   | NEF   r/w   | RAF   r/w   | XMP   r/w/c
+      DNG   r/w   | INSV  r     | NRW   r/w   | RAM   r     | ZIP   r
+      DOC   r     | INX   r     | NUMBERS r   | RAR   r     |
+      DOCX  r     | ISO   r     | O     r     | RAW   r/w   |
+      DPX   r     | ITC   r     | ODP   r     | RIFF  r     |
+      DR4   r/w/c | J2C   r     | ODS   r     | RSRC  r     |
 
       Meta Information
       ----------------------+----------------------+---------------------
@@ -4886,7 +4887,7 @@ OPTIONS
              QuickTime  Internal encoding of QuickTime strings       MacRoman
              RIFF       Internal encoding of RIFF strings            0
 
-         See <http://exiftool.org/faq.html#Q10> for more information about
+         See <https://exiftool.org/faq.html#Q10> for more information about
          coded character sets, and the Image::ExifTool Options for more
          details about the -charset settings.
 
@@ -5204,7 +5205,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 11.78 --
+             -- Generated by ExifTool 11.79 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38
@@ -5291,7 +5292,7 @@ OPTIONS
          (-X) and JSON (-j) output formats. For other output formats, XMP
          structures and lists are serialized into the same format as when
          writing structured information (see
-         <http://exiftool.org/struct.html> for details). When copying,
+         <https://exiftool.org/struct.html> for details). When copying,
          structured tags are copied by default unless --struct is used to
          disable this feature (although flattened tags may still be copied
          by specifying them individually unless -struct is used). These
@@ -5558,7 +5559,8 @@ OPTIONS
          When used with -ee, the -p option is evaluated for each embedded
          document as if it were a separate input file. This allows, for
          example, generation of GPS track logs from timed metadata in
-         videos. See <http://exiftool.org/geotag.html#Inverse> for examples.
+         videos. See <https://exiftool.org/geotag.html#Inverse> for
+         examples.
 
     -ext[+] *EXT*, --ext *EXT* (-extension)
          Process only files with (-ext) or without (--ext) a specified
@@ -5611,8 +5613,8 @@ OPTIONS
          information. -fast3 avoids extracting metadata from the file, and
          returns only pseudo System tags, but still reads the file header to
          obtain an educated guess at FileType. -fast4 doesn't even read the
-         file header, and determines FileType based only on the file
-         extension. Has no effect when writing.
+         file header, and returns only System tags and a FileType based on
+         the file extension. Has no effect when writing.
 
          Note that a separate -fast setting may be used for evaluation of a
          -if condition, or when ordering files with the -fileOrder option.
@@ -6103,7 +6105,7 @@ OPTIONS
          directory or the exiftool application directory unless an absolute
          path is specified. Loading of the default config file may be
          disabled by setting *CFGFILE* to an empty string (ie. ""). See
-         <http://exiftool.org/config.html> and config_files/example.config
+         <https://exiftool.org/config.html> and config_files/example.config
          in the full ExifTool distribution for details about the
          configuration file syntax.
 
@@ -6297,7 +6299,7 @@ WINDOWS UNICODE FILE NAMES
     i/o routines, thus providing support for most Unicode file names (see
     note 4). But note that it is not trivial to pass properly encoded file
     names on the Windows command line (see
-    <http://exiftool.org/faq.html#Q18> for details), so placing them in a
+    <https://exiftool.org/faq.html#Q18> for details), so placing them in a
     UTF-8 encoded -@ argfile and using "-charset filename=utf8" is
     recommended if possible.
 
@@ -6540,7 +6542,7 @@ WRITING EXAMPLES
 
     exiftool -hierarchicalkeywords="{keyword=one,children={keyword=B}}"
          Write structured XMP information. See
-         <http://exiftool.org/struct.html> for more details.
+         <https://exiftool.org/struct.html> for more details.
 
     exiftool -trailer:all= image.jpg
          Delete any trailer found after the end of image (EOI) in a JPEG
@@ -6675,7 +6677,7 @@ RENAMING EXAMPLES
     date/time parser. (And further note that in a Windows batch file, all
     '%' characters must also be escaped, so in this extreme case "%%%%f" is
     necessary to pass a simple "%f" through the two levels of parsing.) See
-    <http://exiftool.org/filename.html> for additional documentation and
+    <https://exiftool.org/filename.html> for additional documentation and
     examples.
 
     exiftool -filename=new.jpg dir/old.jpg
@@ -6724,7 +6726,7 @@ GEOTAGGING EXAMPLES
     ExifTool implements geotagging via 3 special tags: Geotag (which for
     convenience is also implemented as an exiftool option), Geosync and
     Geotime. The examples below highlight some geotagging features. See
-    <http://exiftool.org/geotag.html> for additional documentation.
+    <https://exiftool.org/geotag.html> for additional documentation.
 
     exiftool -geotag track.log a.jpg
          Geotag an image ("a.jpg") from position information in a GPS track

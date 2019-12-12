@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.29';
+$VERSION = '3.30';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -62,7 +62,7 @@ sub EncodeBase64($;$);
 sub SaveBlankInfo($$$;$);
 sub ProcessBlankInfo($$$;$);
 sub ValidateXMP($;$);
-sub ValidateProperty($$);
+sub ValidateProperty($$;$);
 sub UnescapeChar($$;$);
 sub AddFlattenedTags($;$$);
 sub FormatXMPDate($);
@@ -3607,7 +3607,7 @@ sub ParseXMPElement($$$;$$$$)
                         # ignore et:desc, and et:val if preceded by et:prt
                         --$count;
                     } else {
-                        ValidateProperty($et, $propList) if $$et{XmpValidate};
+                        ValidateProperty($et, $propList, \%attrs) if $$et{XmpValidate};
                         &$foundProc($et, $tagTablePtr, $propList, $val, \%attrs);
                     }
                 }
@@ -3681,6 +3681,7 @@ sub ProcessXMP($$;$)
     $$et{definedNS} = { };
     delete $$et{XmpAbout};
     delete $$et{XmpValidate};   # don't validate by default
+    delete $$et{XmpValidateLangAlt};
 
     # ignore non-standard XMP while in strict MWG compatibility mode
     if (($Image::ExifTool::MWG::strict or $$et{OPTIONS}{Validate}) and

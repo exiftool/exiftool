@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen);
 
-$VERSION = '11.78';
+$VERSION = '11.79';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -235,6 +235,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     ASF  => ['ASF',  'Microsoft Advanced Systems Format'],
     AVC  => ['AVC',  'Advanced Video Connection'], # (extensions are actually _AU,_AD,_IM,_ID)
     AVI  => ['RIFF', 'Audio Video Interleaved'],
+    AVIF => ['MOV',  'AV1 Image File Format'],
     AZW  =>  'MOBI', # (see http://wiki.mobileread.com/wiki/AZW)
     AZW3 =>  'MOBI',
     BMP  => ['BMP',  'Windows Bitmap'],

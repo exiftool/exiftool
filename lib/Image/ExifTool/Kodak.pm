@@ -25,7 +25,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.46';
+$VERSION = '1.47';
 
 sub ProcessKodakIFD($$$);
 sub ProcessKodakText($$$);
@@ -375,6 +375,8 @@ sub WriteKodakIFD($$$);
 %Image::ExifTool::Kodak::Type5 = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     NOTES => q{
         These tags are used by the CX4200, CX4210, CX4230, CX4300, CX4310, CX6200
         and CX6230.
@@ -442,6 +444,8 @@ sub WriteKodakIFD($$$);
 %Image::ExifTool::Kodak::Type6 = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     NOTES => 'These tags are used by the DX3215 and DX3700.',
     WRITABLE => 1,
     FIRST_ENTRY => 0,

@@ -298,14 +298,15 @@ sub WritePDF($$)
     # not a valid PDF file unless we got a version number
     # (note: can't just check $$info{PDFVersion} due to possibility of XMP-pdf:PDFVersion)
     my $vers = $newTool->GetInfo('PDF:PDFVersion');
-    ($pdfVer) = values %$vers;
+    # take highest version number if multiple versions in an incremental save
+    ($pdfVer) = sort { $b <=> $a } values %$vers;
     $pdfVer or $et->Error('Missing PDF:PDFVersion'), return 0;
     # check version number
-    if ($pdfVer > 1.7) {
-        if ($pdfVer >= 2.0) {
-            $et->Error("Can't yet write PDF version $pdfVer"); # (future major version changes)
-            return 1;
-        }
+    if ($pdfVer >= 2.0 and
+        $et->Error("Write PDF $pdfVer at your own risk (ISO charges for the spec.)", 1))
+    {
+        return 1;
+    } elsif ($pdfVer > 1.7) {
         $et->Warn("ExifTool is untested with PDF version $pdfVer files", 1);
     }
     # fail if we had any serious errors while extracting information

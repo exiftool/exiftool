@@ -44,7 +44,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.38';
+$VERSION = '2.39';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -104,6 +104,7 @@ my %mimeLookup = (
     HEIC => 'image/heic',
     HEVC => 'image/heic-sequence',
     HEIF => 'image/heif',
+    AVIF => 'image/avif', #PH (NC)
     CRX  => 'video/x-canon-crx',    # (will get overridden)
 );
 
@@ -203,6 +204,7 @@ my %ftypLookup = (
     'hevc' => 'High Efficiency Image Format HEVC sequence (.HEICS)', # image/heic-sequence
     'mif1' => 'High Efficiency Image Format still image (.HEIF)', # image/heif
     'msf1' => 'High Efficiency Image Format sequence (.HEIFS)', # image/heif-sequence
+    'avif' => 'AV1 Image File Format (.AVIF)', # image/avif
     'crx ' => 'Canon Raw (.CRX)', #PH (CR3 or CRM; use Canon CompressorVersion to decide)
 );
 
@@ -2476,8 +2478,8 @@ my %eeBox = (
             Start => 4,
         },
     },{
-        Name => 'Unknown_colr',
-        Flags => ['Binary','Unknown','Hidden'],
+        Name => 'ColorRepresentation',
+        ValueConv => 'join(" ", substr($val,0,4), unpack("x4n*",$val))',
     }],
     irot => {
         Name => 'Rotation',
@@ -7836,8 +7838,8 @@ sub HandleItemInfo($)
             $buff = $val . $buff if length $val;
             next unless length $buff;   # ignore empty directories
             my ($start, $subTable, $proc);
-            if ($name eq 'EXIF') {
-                $start = 10;
+            if ($name eq 'EXIF' and length $buff >= 4) {
+                $start = 4 + unpack('N', $buff); # skip "Exif\0\0" header if it exists
                 $subTable = GetTagTable('Image::ExifTool::Exif::Main');
                 $proc = \&Image::ExifTool::ProcessTIFF;
             } else {

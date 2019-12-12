@@ -90,11 +90,11 @@ sub ValidateXMP($;$)
 
 #------------------------------------------------------------------------------
 # Validate XMP property
-# Inputs: 0) ExifTool ref, 1) validate hash ref
+# Inputs: 0) ExifTool ref, 1) validate hash ref, 2) attribute hash ref
 # - issues warnings if problems detected
-sub ValidateProperty($$)
+sub ValidateProperty($$;$)
 {
-    my ($et, $propList) = @_;
+    my ($et, $propList, $attr) = @_;
 
     if ($$et{XmpValidate} and @$propList > 2) {
         if ($$propList[0] =~ /^x:x[ma]pmeta$/ and
@@ -105,10 +105,23 @@ sub ValidateProperty($$)
                 if ($$propList[-1] =~ /^rdf:(Bag|Seq|Alt)$/) {
                     $et->Warn("Ignored empty $$propList[-1] list for $$propList[-2]", 1);
                 } else {
+                    if ($$propList[-2] eq 'rdf:Alt' and $attr) {
+                        my $lang = $$attr{'xml:lang'};
+                        if ($lang and @$propList >= 5) {
+                            my $langPath = join('/', @$propList[3..($#$propList-2)]);
+                            my $valLang = $$et{XmpValidateLangAlt} || ($$et{XmpValidateLangAlt} = { });
+                            $$valLang{$langPath} or $$valLang{$langPath} = { };
+                            if ($$valLang{$langPath}{$lang}) {
+                                $et->WarnOnce("Duplicate language ($lang) in lang-alt list: $langPath");
+                            } else {
+                                $$valLang{$langPath}{$lang} = 1;
+                            }
+                        }
+                    }
                     my $xmpValidate = $$et{XmpValidate};
                     my $path = join('/', @$propList[3..$#$propList]);
                     if (defined $$xmpValidate{$path}) {
-                        $et->Warn("Duplicate XMP property: $path") if defined $$xmpValidate{$path};
+                        $et->Warn("Duplicate XMP property: $path");
                     } else {
                         $$xmpValidate{$path} = 1;
                     }

@@ -2118,7 +2118,7 @@ sub ReadPDF($$)
     $$et{PDFBase} = length $1 and $et->Warn('PDF header is not at start of file',1);
     $pdfVer = $2;
     $et->SetFileType();   # set the FileType tag
-    $et->Warn("May not be able to read a PDF version $pdfVer file") if $pdfVer >= 2.0;
+    $et->Warn("The PDF $pdfVer specification is held hostage by the ISO") if $pdfVer >= 2.0;
     # store PDFVersion tag
     my $tagTablePtr = GetTagTable('Image::ExifTool::PDF::Root');
     $et->HandleTag($tagTablePtr, 'Version', $pdfVer);

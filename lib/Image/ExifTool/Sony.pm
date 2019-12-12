@@ -175,6 +175,7 @@ sub PrintInvLensSpec($;$$);
 
     49457 => 'Tamron 28-75mm F2.8 Di III RXD', #JR (Model A036)
     49458 => 'Tamron 17-28mm F2.8 Di III RXD', #JR (Model A046)
+    49459 => 'Tamron 35mm F2.8 Di III OSD M1:2', #IB (Model F053)
 
     49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
     49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)

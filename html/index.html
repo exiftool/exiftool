@@ -81,9 +81,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-11.78.tar.gz/download">
-Download        Version 11.78</a> (4.5 MB) -
-<a href="history.html">Dec. 5, 2019</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-11.79.tar.gz/download">
+Download        Version 11.79</a> (4.5 MB) -
+<a href="history.html">Dec. 12, 2019</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -135,8 +135,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-11.78.zip/download">
-         exiftool-11.78.zip</a> (6.2 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-11.79.zip/download">
+         exiftool-11.79.zip</a> (6.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -154,7 +154,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-11.78.dmg</a> (2.9 MB)</b></td></tr></table></blockquote>
+         ExifTool-11.79.dmg</a> (2.9 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -292,6 +292,7 @@ for each file format.</p>
 <tr><td>ARW</td><td>R/W</td><td>Sony Alpha RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W <a href="TagNames/Sony.html">Sony</a> <a href="TagNames/SonyIDC.html">SonyIDC</a></td></tr>
 <tr><td><a href="TagNames/ASF.html">ASF</a></td><td>R</td><td>Microsoft Advanced Systems Format</td><td>-</td><td>-</td><td>R</td><td>-</td><td>R <a href="TagNames/ASF.html">ASF</a></td></tr>
 <tr><td>AVI</td><td>R</td><td>Audio Video Interleaved (<a href="TagNames/RIFF.html">RIFF</a>-based)</td><td>R<span class=sup>3</span></td><td>-</td><td>R</td><td>-</td><td>R <a href="TagNames/RIFF.html">RIFF</a></td></tr>
+<tr><td>AVIF</td><td>R/W</td><td>AV1 Image File Format (<a href="TagNames/QuickTime.html">QuickTime</a>-based)</td><td>R/W/C</td><td>-</td><td>R/W/C</td><td>R/W</td><td>R/W <a href="TagNames/QuickTime.html">QuickTime</a></td></tr>
 <tr><td><a href="TagNames/BMP.html">BMP, DIB</a></td><td>R</td><td>Windows BitMaP / Device Independent Bitmap</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/BMP.html">BMP</a></td></tr>
 <tr><td><a href="TagNames/BPG.html">BPG</a></td><td>R</td><td>Better Portable Graphics</td><td>R</td><td>-</td><td>R</td><td>R</td><td>R <a href="TagNames/BPG.html">BPG</a></td></tr>
 <tr><td><a href="TagNames/EXIF.html">BTF</a></td><td>R</td><td>BigTIFF (64-bit Tagged Image File Format)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>-</td></tr>
@@ -1140,7 +1141,8 @@ tags are excluded individually.</p>
 extracting information from JPEG images which are piped across a slow network
 connection.  However, with this option any information in a JPEG trailer is not
 extracted.  For more substantial speed benefits, <code>-fast2</code> may be
-used to also avoid extracting MakerNote information if this is not required.</p>
+used to also avoid extracting MakerNote information if this is not required,
+or <code>-fast4</code> if only pseudo System tags are required.</p>
 
 <p>When writing, avoid copying tags (with <code>-tagsFromFile</code>) or using
 the <code>-if</code> or <code>-fileOrder</code> option because these will add

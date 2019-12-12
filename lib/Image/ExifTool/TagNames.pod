@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23196 tags, with 15164 unique tag names.
+They contain a total of 23197 tags, with 15164 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -2848,15 +2848,15 @@ These tags belong to the ExifTool XMP-ics family 1 group.
   LabelName1                                    string_+
   ParentReference1                              string_+
   Reference1                                    string_+
-  SubLables1                                    TagStructure Struct_+
+  SubLabels1                                    TagStructure Struct_+
   LabelName2                                    string_+
   ParentReference2                              string_+
   Reference2                                    string_+
-  SubLables2                                    TagStructure Struct_+
+  SubLabels2                                    TagStructure Struct_+
   LabelName3                                    string_+
   ParentReference3                              string_+
   Reference3                                    string_+
-  SubLables3                                    TagStructure Struct_+
+  SubLabels3                                    TagStructure Struct_+
   LabelName4                                    string_+
   ParentReference4                              string_+
   Reference4                                    string_+
@@ -10620,7 +10620,7 @@ they don't appear in these tables.
 
   Tag ID                          Tag Name      Writable
   ------                          --------      --------
-  'JPEG_preview_data'             PreviewImage  undef
+  'JPEG_preview_data'             PreviewImage  no
   'JPEG_preview_info'             PreviewInfo   no
   'PDA_histogram_data'            PDAHistogram  no
   'back_serial_number'            BackSerial    no
@@ -12522,25 +12522,25 @@ videos from some Nikon cameras.
   0x120001d    GPSDateStamp                     no
   0x2000001    MakerNoteVersion                 no
   0x2000005    WhiteBalance                     no
-  0x2000007    FocusMode                        string
+  0x2000007    FocusMode                        no
   0x200000b    WhiteBalanceFineTune             no
-  0x200001b    CropHiSpeed                      int16u[7]
+  0x200001b    CropHiSpeed                      no
   0x200001e    ColorSpace                       no
   0x200001f    VRInfo                           Nikon VRInfo
-  0x2000022    ActiveD-Lighting                 int16u
+  0x2000022    ActiveD-Lighting                 no
   0x2000023    PictureControlData               Nikon PictureControl
                                                 Nikon PictureControl2
                                                 Nikon PictureControl3
                                                 Nikon PictureControlUnknown
   0x2000024    WorldTime                        Nikon WorldTime
   0x2000025    ISOInfo                          Nikon ISOInfo
-  0x200002a    VignetteControl                  int16u
+  0x200002a    VignetteControl                  no
   0x200002c    UnknownInfo                      Nikon UnknownInfo
   0x2000032    UnknownInfo2                     Nikon UnknownInfo2
   0x2000039    LocationInfo                     Nikon LocationInfo
   0x2000083    LensType                         no
   0x2000084    Lens                             no
-  0x2000087    FlashMode                        int8u
+  0x2000087    FlashMode                        no
   0x2000098    LensData0100                     Nikon LensData00
                LensData0101                     Nikon LensData01
                LensData0201                     Nikon LensData01
@@ -12557,8 +12557,8 @@ videos from some Nikon cameras.
                FlashInfo0106                    Nikon FlashInfo0106
                FlashInfo0107                    Nikon FlashInfo0107
                FlashInfoUnknown                 Nikon FlashInfoUnknown
-  0x20000ab    VariProgram                      string
-  0x20000b1    HighISONoiseReduction            int16u
+  0x20000ab    VariProgram                      no
+  0x20000b1    HighISONoiseReduction            no
   0x20000b7    AFInfo2                          Nikon AFInfo2
   0x20000c3    BarometerInfo                    Nikon BarometerInfo
 
@@ -15609,7 +15609,7 @@ Tags extracted from the maker notes of AVI videos from the Optio S1.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  0x0000   MakerNoteVersion                     undef[4]
+  0x0000   MakerNoteVersion                     no
 
 =head3 Pentax PENT Tags
 
@@ -16296,7 +16296,7 @@ cameras.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  0x0207   RicohModel                           string
+  0x0207   RicohModel                           no
   0x0300   RicohMake                            no
 
 =head3 Ricoh Text Tags
@@ -18737,25 +18737,25 @@ Lens distortion correction information.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  0x1001   MultishotOn                          int32u
-  0x1100   FocusStepNear                        int16s
-  0x1101   FocusStepCount                       int16s
-  0x1102   FlashFired                           int32u
-  0x1105   ZoomPosition                         int32u
-  0x1200   LensAttached                         int32u
-  0x1201   LensTypeMake                         int16u
-  0x1202   LensTypeModel                        int16u
-  0x1203   FocalLengthIn35mmFormat              int16u
-  0x1305   HighISOMode                          int16u
-  0x3200   WB_CFA0_LevelDaylight                int16u
-  0x3201   WB_CFA1_LevelDaylight                int16u
-  0x3202   WB_CFA2_LevelDaylight                int16u
-  0x3203   WB_CFA3_LevelDaylight                int16u
-  0x3300   WhiteBalanceSet                      int8u
-  0x3420   WB_RedLevelAuto                      int16u
-  0x3421   WB_BlueLevelAuto                     int16u
-  0x3501   Orientation                          int8u
-  0x3600   WhiteBalanceDetected                 int8u
+  0x1001   MultishotOn                          no
+  0x1100   FocusStepNear                        no
+  0x1101   FocusStepCount                       no
+  0x1102   FlashFired                           no
+  0x1105   ZoomPosition                         no
+  0x1200   LensAttached                         no
+  0x1201   LensTypeMake                         no
+  0x1202   LensTypeModel                        no
+  0x1203   FocalLengthIn35mmFormat              no
+  0x1305   HighISOMode                          no
+  0x3200   WB_CFA0_LevelDaylight                no
+  0x3201   WB_CFA1_LevelDaylight                no
+  0x3202   WB_CFA2_LevelDaylight                no
+  0x3203   WB_CFA3_LevelDaylight                no
+  0x3300   WhiteBalanceSet                      no
+  0x3420   WB_RedLevelAuto                      no
+  0x3421   WB_BlueLevelAuto                     no
+  0x3501   Orientation                          no
+  0x3600   WhiteBalanceDetected                 no
 
 =head2 SigmaRaw Tags
 
@@ -25201,6 +25201,7 @@ defined in this table.
   'auxC'   AuxiliaryImageType                   no
   'clap'   CleanAperture                        no
   'colr'   ICC_Profile                          ICC_Profile
+           ColorRepresentation                  no
   'hvcC'   HEVCConfiguration                    QuickTime HEVCConfig
   'irot'   Rotation                             int8u
   'ispe'   ImageSpatialExtent                   no
@@ -25928,12 +25929,12 @@ Tags found in TomTom Bandit Action Cam MP4 videos.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0001   Title                                no
-  0x0003   ProductionDate                       yes
+  0x0003   ProductionDate                       no
   0x0004   Software                             no
   0x0005   Product                              no
   0x000a   TrackProperty                        no
-  0x000b   TimeZone                             yes
-  0x000c   ModifyDate                           yes
+  0x000b   TimeZone                             no
+  0x000c   ModifyDate                           no
 
 =head3 QuickTime MovieHeader Tags
 

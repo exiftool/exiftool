@@ -1174,6 +1174,7 @@ from the associated SampleTime)</span></span></td></tr>
   <br>&#39;XAVC&#39; = Sony XAVC
   <br>&#39;aax &#39; = Audible Enhanced Audiobook (.AAX)
   <br>&#39;avc1&#39; = MP4 Base w/ AVC ext [ISO 14496-12:2005]
+  <br>&#39;avif&#39; = AV1 Image File Format (.AVIF)
   <br>&#39;caqv&#39; = Casio Digital Camera
   <br>&#39;crx &#39; = Canon Raw (.CRX)
   <br>&#39;da0a&#39; = DMB MAF w/ MPEG Layer II aud, MOT slides, DLS, JPG/PNG/MNG images
@@ -4694,8 +4695,9 @@ defined in this table.</p>
 <td><span class=s><span class=n>(4 numbers: width, height, left and top)</span></span></td></tr>
 <tr>
 <td>'colr'</td>
-<td>ICC_Profile</td>
-<td class=c>-</td>
+<td>ICC_Profile
+  <br>ColorRepresentation</td>
+<td class=c>-<br>no</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
 <tr class=b>
 <td>'hvcC'</td>
@@ -7525,7 +7527,7 @@ on the command line), or the PREFERRED level must be changed via
 <tr class=b>
 <td title='0x0003 = 3'>0x0003</td>
 <td>ProductionDate</td>
-<td class=c>yes</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0004 = 4'>0x0004</td>
@@ -7550,12 +7552,12 @@ on the command line), or the PREFERRED level must be changed via
 <tr class=b>
 <td title='0x000b = 11'>0x000b</td>
 <td>TimeZone</td>
-<td class=c>yes</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x000c = 12'>0x000c</td>
 <td>ModifyDate</td>
-<td class=c>yes</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -7899,7 +7901,7 @@ on the command line), or the PREFERRED level must be changed via
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 31, 2019</i>
+<br><i>Last revised Dec 11, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.30';
+$VERSION = '1.31';
 
 # sigma LensType lookup (ref IB)
 %sigmaLensTypes = (
@@ -227,7 +227,8 @@ $VERSION = '1.30';
     0x1009 => 'Sigma 14mm F4', #NJ (DP0 Quattro kit)
     # L-mount lenses?:
     0x6001 => 'Sigma 150-600mm F5-6.3 DG OS HSM | S', #PH (NC, fp)
-    0x6003 => 'Sigma 45mm F2.8 DG DN | C',#PH (NC, fp)
+    0x6003 => 'Sigma 45mm F2.8 DG DN | C', #PH (NC, fp)
+    0x6006 => 'Sigma 50mm F1.4 DG HSM | A', #IB (014)
     0x8005 => 'Sigma 35mm F1.4 DG HSM | A', #PH (012)
     0x8009 => 'Sigma 18-35mm F1.8 DC HSM | A', #PH
     0x8900 => 'Sigma 70-300mm F4-5.6 DG OS', #PH (SD15)

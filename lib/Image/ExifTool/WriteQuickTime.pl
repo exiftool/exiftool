@@ -37,7 +37,7 @@ my %mp4Map = (
     Track     => 'Movie',
 );
 my %heicMap = (
-    # HEIC ('ftyp' compatible brand 'heic' or 'mif1') -> XMP/EXIF in top level 'meta'
+    # HEIC/HEIF/AVIF ('ftyp' compatible brand 'heic','mif1','avif') -> XMP/EXIF in top level 'meta'
     Meta         => 'MOV',
     ItemInformation => 'Meta',
     ItemPropertyContainer => 'Meta',
@@ -494,7 +494,11 @@ sub WriteItemInfo($$$)
             $buff = $val . $buff if length $val;
             my ($hdr, $subTable, $proc);
             if ($name eq 'EXIF') {
-                $hdr = "\0\0\0\x06Exif\0\0";
+                if (length($buff) < 4 or length($buff) < 4 + unpack('N',$buff)) {
+                    $et->Warn('Invalid Exif header');
+                    next;
+                }
+                $hdr = substr($buff, 0, 4 + unpack('N',$buff));
                 $subTable = GetTagTable('Image::ExifTool::Exif::Main');
                 $proc = \&Image::ExifTool::WriteTIFF;
             } else {
@@ -1755,7 +1759,7 @@ sub WriteMOV($$)
     {
         if ($buff =~ /^crx /) {
             $ftype = 'CR3',
-        } elsif ($buff =~ /^(heic|mif1|msf1|heix|hevc|hevx)/) {
+        } elsif ($buff =~ /^(heic|mif1|msf1|heix|hevc|hevx|avif)/) {
             $ftype = 'HEIC';
         } else {
             $ftype = 'MP4';

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen);
 
-$VERSION = '11.79';
+$VERSION = '11.80';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -3401,7 +3401,8 @@ sub BuildCompositeTags($)
     my $compTable = GetTagTable('Image::ExifTool::Composite');
     my @tagList = sort keys %$compTable;
     my $rawValue = $$self{VALUE};
-    my (%tagsUsed, %cache, $allBuilt);
+    my $compKeys = $$self{COMP_KEYS};
+    my (%cache, $allBuilt);
 
     for (;;) {
         my (%notBuilt, $tag, @deferredTags);
@@ -3503,6 +3504,11 @@ COMPOSITE_TAG:
                 if ($docNum) {
                     if ($found) {
                         $$self{DOC_NUM} = $docNum;
+                        # save pointers to all used tag keys
+                        foreach (keys %tagKey) {
+                            $$compKeys{$_} or $$compKeys{$_} = [ ];
+                            push @{$$compKeys{$tagKey{$_}}}, [ \%tagKey, $_ ];
+                        }
                         $self->FoundTag($tagInfo, \%tagKey);
                         delete $$self{DOC_NUM};
                     }
@@ -3516,19 +3522,14 @@ COMPOSITE_TAG:
                         # can be replaced (also eliminates keys with
                         # instance numbers which can't be replaced either)
                         next unless $compositeID{$tagKey{$_}};
-                        my $keyRef = \$tagKey{$_};
-                        $tagsUsed{$$keyRef} or $tagsUsed{$$keyRef} = [ ];
-                        push @{$tagsUsed{$$keyRef}}, $keyRef;
+                    }
+                    # save pointers to all used tag keys
+                    foreach (keys %tagKey) {
+                        $$compKeys{$_} or $$compKeys{$_} = [ ];
+                        push @{$$compKeys{$tagKey{$_}}}, [ \%tagKey, $_ ];
                     }
                     # save reference to tag key lookup as value for Composite tag
                     my $key = $self->FoundTag($tagInfo, \%tagKey);
-                    # check to see if we just replaced one of the tag keys we Require'd
-                    if (defined $key and $tagsUsed{$key}) {
-                        foreach (@{$tagsUsed{$key}}) {
-                            $$_ = $$self{MOVED_KEY};    # replace with new tag key
-                        }
-                        delete $tagsUsed{$key};         # can't be replaced again
-                    }
                 } elsif (not defined $found) {
                     delete $notBuilt{$tagName}; # tag can't be built anyway
                 }
@@ -3733,6 +3734,7 @@ sub Init($)
     $$self{WRITTEN}    = { };       # list of tags written (selected tags only)
     $$self{FORCE_WRITE}= { };       # ForceWrite lookup (set from ForceWrite tag)
     $$self{FOUND_DIR}  = { };       # hash of directory names found in file
+    $$self{COMP_KEYS}  = { };       # lookup for tag keys used in Composite tags
     $$self{PATH}       = [ ];       # current subdirectory path in file when reading
     $$self{NUM_FOUND}  = 0;         # total number of tags found (incl. duplicates)
     $$self{CHANGED}    = 0;         # number of tags changed (writer only)
@@ -7867,10 +7869,12 @@ sub FoundTag($$$;@)
         } else {
             $priority = 1;  # the normal default
         }
-        if ($priority >= $oldPriority and not $$self{DOC_NUM} and not $noListDel) {
+        if ($priority >= $oldPriority and (not $$self{DOC_NUM} or
+            ($$self{TAG_EXTRA}{$tag} and $$self{TAG_EXTRA}{$tag}{G3} and
+             $$self{DOC_NUM} eq $$self{TAG_EXTRA}{$tag}{G3})) and not $noListDel)
+        {
             # move existing tag out of the way since this tag is higher priority
             # (NOTE: any new members added here must also be added to DeleteTag())
-            $$self{MOVED_KEY} = $nextTag;  # used in BuildCompositeTags()
             $$self{PRIORITY}{$nextTag} = $$self{PRIORITY}{$tag};
             $$valueHash{$nextTag} = $$valueHash{$tag};
             $$self{FILE_ORDER}{$nextTag} = $$self{FILE_ORDER}{$tag};
@@ -7884,6 +7888,12 @@ sub FoundTag($$$;@)
             delete $$self{BOTH}{$tag};
             # update tag key for list if necessary
             $$self{LIST_TAGS}{$oldInfo} = $nextTag if $$self{LIST_TAGS}{$oldInfo};
+            # update this key if used in a Composite tag
+            if ($$self{COMP_KEYS}{$tag}) {
+                $$_[0]{$$_[1]} = $nextTag foreach @{$$self{COMP_KEYS}{$tag}};
+                $$self{COMP_KEYS}{$nextTag} = $$self{COMP_KEYS}{$tag};
+                delete $$self{COMP_KEYS}{$tag};
+            }
         } else {
             $tag = $nextTag;        # don't override the existing tag
         }
@@ -8338,7 +8348,8 @@ sub ProcessBinaryData($$$)
         # hook to allow format, etc to be set dynamically
         if (defined $$tagInfo{Hook}) {
             my $oldVarSize = $varSize;
-            #### eval Hook ($format, $varSize, $size)
+            my $pos = $entry + $offset;
+            #### eval Hook ($format, $varSize, $size, $dataPt, $pos)
             eval $$tagInfo{Hook};
             # save variable size data if required for writing (in case changed by Hook)
             if ($$dirInfo{VarFormatData}) {

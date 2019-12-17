@@ -82,6 +82,8 @@ my %qtFormat = (
 );
 my $undLang = 0x55c4;   # numeric code for default ('und') language
 
+my $maxReadLen = 100000000; # maximum size of atom to read into memory (100 MB)
+
 # boxes that may exist in an "empty" Meta box:
 my %emptyMeta = (
     hdlr => 'Handler', 'keys' => 'Keys', lang => 'Language', ctry => 'Country', free => 'Free',
@@ -849,17 +851,35 @@ sub WriteQuickTime($$$)
         }
 
         # read the atom data
+        my $got;
         if (not $size) {
             $buff = '';
-        } elsif ($size > 100000000) {
-            my $mb = int($size / 0x100000 + 0.5);
-            $tag = PrintableTagID($tag,3);
-            $et->Error("'${tag}' atom is too large for rewriting ($mb MB)");
-            return $rtnVal;
-        } elsif ($raf->Read($buff, $size) != $size) {
-            $tag = PrintableTagID($tag,3);
-            $et->Error("Truncated $tag atom");
-            return $rtnVal;
+            $got = 0;
+        } else {
+            # read the atom data (but only first 64kB if data is huge)
+            $got = $raf->Read($buff, $size > $maxReadLen ? 0x10000 : $size);
+        }
+        if ($got != $size) {
+            # ignore up to 256 bytes of garbage at end of file
+            if ($got <= 256 and $size >= 1024 and $tag ne 'mdat') {
+                my $bytes = $got + length $hdr;
+                if ($$et{OPTIONS}{IgnoreMinorErrors}) {
+                    $et->Warn("Deleted garbage at end of file ($bytes bytes)");
+                    $buff = $hdr = '';
+                } else {
+                    $et->Error("Possible garbage at end of file ($bytes bytes)", 1);
+                    return $rtnVal;
+                }
+            } else {
+                $tag = PrintableTagID($tag,3);
+                if ($size > $maxReadLen and $got == 0x10000) {
+                    my $mb = int($size / 0x100000 + 0.5);
+                    $et->Error("'${tag}' atom is too large for rewriting ($mb MB)");
+                } else {
+                    $et->Error("Truncated '${tag}' atom");
+                }
+                return $rtnVal;
+            }
         }
         # save the handler type for this track
         if ($tag eq 'hdlr' and length $buff >= 12) {

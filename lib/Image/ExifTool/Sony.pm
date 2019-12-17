@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.18';
+$VERSION = '3.19';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -176,6 +176,7 @@ sub PrintInvLensSpec($;$$);
     49457 => 'Tamron 28-75mm F2.8 Di III RXD', #JR (Model A036)
     49458 => 'Tamron 17-28mm F2.8 Di III RXD', #JR (Model A046)
     49459 => 'Tamron 35mm F2.8 Di III OSD M1:2', #IB (Model F053)
+    49460 => 'Tamron 24mm F2.8 Di III OSD M1:2', #JR (Model F051)
 
     49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
     49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)
@@ -215,6 +216,7 @@ sub PrintInvLensSpec($;$$);
     50999 => 'Voigtlander COLOR-SKOPAR 21mm F3.5 Aspherical', #IB
     51000 => 'Voigtlander NOKTON 50mm F1.2 Aspherical', #JR
     51001 => 'Voigtlander NOKTON 21mm F1.4 Aspherical', #JR
+    51002 => 'Voigtlander APO-LANTHAR 50mm F2 Aspherical', #JR
 
     # lenses listed in the Sigma MC-11 list, but not yet seen:
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)
@@ -225,6 +227,7 @@ sub PrintInvLensSpec($;$$);
     51505.1 => 'Samyang AF 35mm F2.8', #PH (also 32794)
     51507 => 'Samyang AF 35mm F1.4', #IB
     51508 => 'Samyang AF 45mm F1.8',
+    51510 => 'Samyang AF 18mm F2.8', #JR
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)

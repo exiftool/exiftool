@@ -186,7 +186,7 @@ my %xmpNS = (
 );
 
 # build reverse namespace lookup
-my %uri2ns;
+my %uri2ns = ( 'http://ns.exiftool.org/1.0/' => 'et' ); # (allow exiftool.org as well as exiftool.ca)
 {
     my $ns;
     foreach $ns (keys %nsURI) {
@@ -3103,7 +3103,7 @@ NoLoop:
 
         # add tag Namespace entry for tags in variable-namespace tables
         $$tagInfo{Namespace} = $xns if $xns;
-        if ($$et{curURI}{$ns} and $$et{curURI}{$ns} =~ m{^http://ns.exiftool.ca/(.*?)/(.*?)/}) {
+        if ($$et{curURI}{$ns} and $$et{curURI}{$ns} =~ m{^http://ns.exiftool.(?:ca|org)/(.*?)/(.*?)/}) {
             my %grps = ( 0 => $1, 1 => $2 );
             # apply a little magic to recover original group names
             # from this exiftool-written RDF/XML file

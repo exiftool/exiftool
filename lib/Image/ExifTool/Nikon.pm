@@ -61,7 +61,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.75';
+$VERSION = '3.76';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -4493,6 +4493,7 @@ my %nikonFocalConversions = (
             12 => 'Nikkor Z DX 50-250mm f/4.5-6.3 VR',
             13 => 'Nikkor Z 24-70mm f/2.8 S',
             14 => 'Nikkor Z 85mm f/1.8 S',
+            15 => 'Nikkor Z 24mm f/1.8 S', #IB
         },
     },
     0x36 => {

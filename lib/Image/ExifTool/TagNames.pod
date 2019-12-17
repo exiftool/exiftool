@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23197 tags, with 15164 unique tag names.
+They contain a total of 23192 tags, with 15163 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -16054,17 +16054,10 @@ as the Galaxy S4 and Tab S.
 
 =head3 Samsung DualShotExtra Tags
 
-These tags tested only for DualShotVersion numbers 1, 4 and 5.
-
   Index4   Tag Name                             Writable
   ------   --------                             --------
-      0    DualShotVersion                      no
-      9    DepthMapWidth                        no
-     10    DepthMapHeight                       no
      16    DepthMapWidth                        no
      17    DepthMapHeight                       no
-     18    DepthMapWidth                        no
-     19    DepthMapHeight                       no
 
 =head3 Samsung SingleShotMeta Tags
 

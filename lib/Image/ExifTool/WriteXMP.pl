@@ -859,7 +859,7 @@ sub WriteXMP($$;$)
 #
     if (%{$$et{DEL_GROUP}} and (grep /^XMP-.+$/, keys %{$$et{DEL_GROUP}} or
         # (logic is a bit more complex for group names in exiftool XML files)
-        grep m{^http://ns.exiftool.ca/}, values %nsUsed))
+        grep m{^http://ns.exiftool.(?:ca|org)/}, values %nsUsed))
     {
         my $del = $$et{DEL_GROUP};
         my $path;
@@ -870,7 +870,7 @@ sub WriteXMP($$;$)
             $ns = $stdXlatNS{$ns} if $stdXlatNS{$ns};
             my ($grp, @g);
             # no "XMP-" added to most groups in exiftool RDF/XML output file
-            if ($nsUsed{$ns} and (@g = ($nsUsed{$ns} =~ m{^http://ns.exiftool.ca/(.*?)/(.*?)/}))) {
+            if ($nsUsed{$ns} and (@g = ($nsUsed{$ns} =~ m{^http://ns.exiftool.(?:ca|org)/(.*?)/(.*?)/}))) {
                 if ($g[1] =~ /^\d/) {
                     $grp = "XML-$g[0]";
                     #(all XML-* groups stored as uppercase DEL_GROUP key)
@@ -1461,7 +1461,7 @@ sub WriteXMP($$;$)
             my @ns = sort keys %nsCur;
             $long[-2] .= "$nl$sp<$prop rdf:about='${about}'";
             # generate et:toolkit attribute if this is an exiftool RDF/XML output file
-            if (@ns and $nsCur{$ns[0]} =~ m{^http://ns.exiftool.ca/}) {
+            if (@ns and $nsCur{$ns[0]} =~ m{^http://ns.exiftool.(?:ca|org)/}) {
                 $long[-2] .= "\n$sp${sp}xmlns:et='http://ns.exiftool.ca/1.0/'" .
                             " et:toolkit='Image::ExifTool $Image::ExifTool::VERSION'";
             }

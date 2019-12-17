@@ -44,6 +44,8 @@ value.</p>
 
 <tr><td>CHECK_WARN</td><td>Used to return CHECK_PROC warnings</td></tr>
 
+<tr><td>COMP_KEYS</td><td>Lookup for tag keys used in Composite tags</td></tr>
+
 <tr><td>Compression</td><td>Compression for current EXIF IFD (or '' if no Compression tag).
     Valid only in EXIF directories for tags after 0x0103.</td></tr>
     
@@ -70,7 +72,7 @@ value.</p>
     extracting, or 0 if none were processed</td></tr>
 
 <tr><td>DOC_NUM</td><td>Current document number while extracting (0, '' or undef for the
-    main document)</td></tr>
+    main document).  May contain a hyphen for sub-subdocuments (eg. '2-3-2').</td></tr>
 
 <tr><td>DoneID3</td><td>Set to 1 if audio file was scanned for ID3,
     or 2 if there was an ID3v1 trailer found</td></tr>

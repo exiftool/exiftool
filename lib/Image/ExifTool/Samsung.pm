@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.47';
+$VERSION = '1.48';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -1001,35 +1001,34 @@ my %formatMinMax = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     FIRST_ENTRY => 0,
     FORMAT => 'int32u',
-    NOTES => 'These tags tested only for DualShotVersion numbers 1, 4 and 5.',
-    0 => {
-        Name => 'DualShotVersion',
-        Format => 'int16u',
-        RawConv => '$$self{DualShotVersion} = $val',
-    },
-    9 => {
-        Name => 'DepthMapWidth',
-        Condition => '$$self{DualShotVersion} < 4',
-    },
-    10 => {
-        Name => 'DepthMapHeight',
-        Condition => '$$self{DualShotVersion} < 4',
+    # This is a pain, but the DepthMapWidth/Height move around in this record.
+    # In all of my samples so far, the bytes "01 00 ff ff" precede these tags.
+    # I have seen this byte sequence at offsets 32, 60, 64 and 68, so look for
+    # it in bytes 32-95, and use its location to adjust the tag positions
+    8 => {
+        Name => 'DualShotDummy',
+        Format => 'undef[64]',
+        Hidden => 1,
+        Hook => q{
+            if ($size >= 96) {
+                my $tmp = substr($$dataPt, $pos, 64);
+                if ($tmp =~ /\x01\0\xff\xff/g and not pos($tmp) % 4) {
+                    $$self{DepthMapTagPos} = pos($tmp);
+                    $varSize += $$self{DepthMapTagPos} - 32;
+                }
+            }
+        },
+        RawConv => 'undef', # not a real tag
     },
     16 => {
         Name => 'DepthMapWidth',
-        Condition => '$$self{DualShotVersion} == 4',
+        Condition => '$$self{DepthMapTagPos}',
+        Notes => 'index varies depending on model',
     },
     17 => {
         Name => 'DepthMapHeight',
-        Condition => '$$self{DualShotVersion} == 4',
-    },
-    18 => {
-        Name => 'DepthMapWidth',
-        Condition => '$$self{DualShotVersion} > 4',
-    },
-    19 => {
-        Name => 'DepthMapHeight',
-        Condition => '$$self{DualShotVersion} > 4',
+        Condition => '$$self{DepthMapTagPos}',
+        Notes => 'index varies depending on model',
     },
 );
 

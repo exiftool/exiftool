@@ -7422,7 +7422,6 @@ my %tagExists = (
 	'dualcameraimage' => 1,
 	'dualcameraimagename' => 1,
 	'dualshotextra' => 1,
-	'dualshotversion' => 1,
 	'ducky' => 1,
 	'duedate' => 1,
 	'dummycolsleft' => 1,

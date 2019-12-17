@@ -910,13 +910,15 @@ numerical, and generated automatically otherwise.
 
   Hook          : [BinaryData tags only] Expression to be evaluated when
                   extracting tag to allow dynamic Format, etc for BinaryData
-                  tags.  May access $self, and $size (the full size of the
-                  binary data block), and assign a new value to $format to
-                  dynamically set the tag format, and/or increment $varSize to
-                  add a byte offset to subsequent tags.  $varSize may be set to
-                  a large number to effectively abort processing of the
-                  directory after this tag.  Must have corresponding DATAMEMBER
-                  entry in writable tables.  Must not have Unknown set.
+                  tags.  May access $self, $size (the full size of the binary
+                  data record), $dataPt (reference to the data block), and $pos
+                  (position of this tag in the data block), and assign a new
+                  value to $format to dynamically set the tag format, and/or
+                  increment $varSize to add a byte offset to subsequent tags. 
+                  $varSize may be set to a large number to effectively abort
+                  processing of the directory after this tag.  Must have
+                  corresponding DATAMEMBER entry in writable tables.  Must not
+                  have Unknown set.
 
   LargeTag      : [BinaryData tags only] Flag to indicate that the data for this
                   tag is large, and that it shouldn't be stored in the %val

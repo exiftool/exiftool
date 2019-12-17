@@ -140,8 +140,8 @@ to a group of differnt tags, for example:
 <pre>exiftool "-time:all&lt;datetimeoriginal" FILE  <span class=blk>(WRONG!)</span></pre>
 The above command doesn't work because the destination tag name of "All" writes
 to the tag with the same name as the source (ie. only "DateTimeOriginal").  However,
-when interpolated in a string the  group identity of the tag is lost, so the following
-command will write to all tags in the Time group:
+when interpolated in a string the identity of the source tag is lost, so the
+following command will write to all tags in the Time group:
 <pre>exiftool "-time:all&lt;$datetimeoriginal" FILE</pre>
 (Note that single quotes would be necessary in the above command under Mac/Linux.)
 </blockquote>

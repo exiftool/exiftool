@@ -7,6 +7,19 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Dec. 17, 2019 - Version 11.80
+
+  - Added a new Canon LensType
+  - Added a new Nikon Z LensID (thanks LibRaw)
+  - Added a few new Sony LensType values (thanks Jos Roost)
+  - Attempt to improve reliability of Samsung DepthMapWidth/Height decoding
+  - Updated a number of Canon-mount Tamron lens names to include the Tamron
+    model number
+  - Patched MOV/MP4 writer to allow a small amount of garbage at the end of a
+    file to be deleted when writing with the -m option
+  - Fixed bug where some Composite tags may not have taken priority over other
+    tags as they should have
+
 Dec. 12, 2019 - Version 11.79
 
   - Added support for AVIF files

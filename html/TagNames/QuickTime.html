@@ -116,17 +116,17 @@ for the official specification.
 <td>&nbsp;</td></tr>
 <tr>
 <td>'mdat'</td>
-<td>MovieData?</td>
+<td>MediaData?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'mdat-offset'</td>
-<td>MovieDataOffset</td>
+<td>MediaDataOffset</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'mdat-size'</td>
-<td>MovieDataSize</td>
+<td>MediaDataSize</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(not a real tag ID, this tag represents the size of the &#39;mdat&#39; data in bytes
 and is used in the AvgBitrate calculation)</span></span></td></tr>
@@ -267,7 +267,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Stream'>QuickTime Stream Tags</a></h2>
-<p>Timed metadata extracted from QuickTime movie data and some AVI videos when
+<p>Timed metadata extracted from QuickTime media data and some AVI videos when
 the ExtractEmbedded option is used.</p>
 <blockquote>
 <table class=frame><tr><td>
@@ -4689,44 +4689,111 @@ defined in this table.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'av1C'</td>
+<td>AV1Configuration</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#AV1Config'>QuickTime AV1Config Tags</a></td></tr>
+<tr>
 <td>'clap'</td>
 <td>CleanAperture</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(4 numbers: width, height, left and top)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'colr'</td>
 <td>ICC_Profile
   <br>ColorRepresentation</td>
 <td class=c>-<br>no</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'hvcC'</td>
 <td>HEVCConfiguration</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#HEVCConfig'>QuickTime HEVCConfig Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'irot'</td>
 <td>Rotation</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'ispe'</td>
 <td>ImageSpatialExtent</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'pasp'</td>
 <td>PixelAspectRatio</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'pixi'</td>
 <td>ImagePixelDepth</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'rloc'</td>
 <td>RelativeLocation</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AV1Config'>QuickTime AV1Config Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>AV1ConfigurationVersion</td>
+<td class=c>no</td>
+<td><span class=s>[val &amp; 0x7f]</span></td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>SeqProfile?</td>
+<td class=c>no</td>
+<td><span class=s>[val &gt;&gt; 5 &amp; 0x7]</span></td></tr>
+<tr>
+<td class=r title='1 = 0x1'>1.1</td>
+<td>SeqLevelIdx0?</td>
+<td class=c>no</td>
+<td><span class=s>[val &amp; 0x1f]</span></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>SeqTier0?</td>
+<td class=c>no</td>
+<td><span class=s>[val &gt;&gt; 7 &amp; 0x1]</span></td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2.1</td>
+<td>HighBitDepth?</td>
+<td class=c>no</td>
+<td><span class=s>[val &gt;&gt; 6 &amp; 0x1]</span></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2.2</td>
+<td>TwelveBit?</td>
+<td class=c>no</td>
+<td><span class=s>[val &gt;&gt; 5 &amp; 0x1]</span></td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2.3</td>
+<td>ChromaFormat</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(bits: 0x04 = Monochrome, 0x02 = SubSamplingX, 0x01 = SubSamplingY)</span>
+  <br>[val &gt;&gt; 2 &amp; 0x7]
+  <br>0 = YUV 4:4:4
+  <br>2 = YUV 4:2:2
+  <br>3 = YUV 4:2:0
+  <br>7 = Monochrome 4:0:0</span></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2.4</td>
+<td>ChromaSamplePosition</td>
+<td class=c>no</td>
+<td><span class=s>[val &amp; 0x3]
+  <br>0 = Unknown
+  <br>1 = Vertical
+  <br>2 = Colocated
+  <br>3 = (reserved)</span></td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>InitialDelaySamples?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -7901,7 +7968,7 @@ on the command line), or the PREFERRED level must be changed via
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 11, 2019</i>
+<br><i>Last revised Jan 2, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

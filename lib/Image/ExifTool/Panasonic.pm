@@ -36,7 +36,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.06';
+$VERSION = '2.07';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -253,7 +253,7 @@ my %shootingMode = (
     83 => 'Clear Night Portrait', #18
     84 => 'Soft Image of a Flower', #18
     85 => 'Appetizing Food', #18
-    86 => 'Cute Desert', #18
+    86 => 'Cute Dessert', #18
     87 => 'Freeze Animal Motion', #18
     88 => 'Clear Sports Shot', #18
     89 => 'Monochrome', #18
@@ -2637,7 +2637,7 @@ Panasonic and Leica maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

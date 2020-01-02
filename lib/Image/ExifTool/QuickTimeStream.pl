@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 # File:         QuickTimeStream.pl
 #
-# Description:  Extract embedded information from QuickTime movie data
+# Description:  Extract embedded information from QuickTime media data
 #
 # Revisions:    2018-01-03 - P. Harvey Created
 #
@@ -85,7 +85,7 @@ my %insvLimit = (
 %Image::ExifTool::QuickTime::Stream = (
     GROUPS => { 2 => 'Location' },
     NOTES => q{
-        Timed metadata extracted from QuickTime movie data and some AVI videos when
+        Timed metadata extracted from QuickTime media data and some AVI videos when
         the ExtractEmbedded option is used.
     },
     VARS => { NO_ID => 1 },
@@ -2069,9 +2069,9 @@ sub ProcessINSVTrailer($)
 }
 
 #------------------------------------------------------------------------------
-# Scan movie data for "freeGPS" metadata if not found already (ref PH)
+# Scan media data for "freeGPS" metadata if not found already (ref PH)
 # Inputs: 0) ExifTool ref
-sub ScanMovieData($)
+sub ScanMediaData($)
 {
     my $et = shift;
     my $raf = $$et{RAF} or return;
@@ -2079,9 +2079,9 @@ sub ScanMovieData($)
     my ($pos, $buf2) = (0, '');
 
     # don't rescan for freeGPS if we already found embedded metadata
-    my $dataPos = $$et{VALUE}{MovieDataOffset};
+    my $dataPos = $$et{VALUE}{MediaDataOffset};
     if ($dataPos and not $$et{DOC_COUNT}) {
-        $dataLen = $$et{VALUE}{MovieDataSize};
+        $dataLen = $$et{VALUE}{MediaDataSize};
         if ($dataLen) {
             if ($raf->Seek($dataPos, 0)) {
                 $$et{FreeGPS2} = { };   # initialize variable space for FreeGPS2()
@@ -2091,7 +2091,7 @@ sub ScanMovieData($)
         }
     }
 
-    # loop through 'mdat' movie data looking for GPS information
+    # loop through 'mdat' media data looking for GPS information
     while ($dataLen) {
         last if $pos + $gpsBlockSize > $dataLen;
         last unless $raf->Read($buff, $gpsBlockSize);
@@ -2156,7 +2156,7 @@ __END__
 
 =head1 NAME
 
-Image::ExifTool::QuickTime - Extract embedded information from movie data
+Image::ExifTool::QuickTime - Extract embedded information from media data
 
 =head1 SYNOPSIS
 
@@ -2165,11 +2165,11 @@ These routines are autoloaded by Image::ExifTool::QuickTime.
 =head1 DESCRIPTION
 
 This file contains routines used by Image::ExifTool to extract embedded
-information like GPS tracks from MOV, MP4 and INSV movie data.
+information like GPS tracks from MOV, MP4 and INSV media data.
 
 =head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -890,7 +890,7 @@ sub WriteQuickTime($$$)
         # if this atom stores offsets, save its location so we can fix up offsets later
         # (are there any other atoms that may store absolute file offsets?)
         if ($tag =~ /^(stco|co64|iloc|mfra|moof|sidx|saio|gps |CTBO|uuid)$/) {
-            # (note that we only need to do this if the movie data is stored in this file)
+            # (note that we only need to do this if the media data is stored in this file)
             my $flg = $$et{QtDataFlg};
             if ($tag eq 'mfra' or $tag eq 'moof') {
                 $et->Error("Can't yet handle movie fragments when writing");
@@ -918,7 +918,7 @@ sub WriteQuickTime($$$)
                 $et->Error("Can't locate data reference to update offsets for $grp");
                 return $rtnVal;
             } elsif ($flg == 3) {
-                $et->Error("Can't write files with mixed internal/external movie data");
+                $et->Error("Can't write files with mixed internal/external media data");
                 return $rtnVal;
             } elsif ($flg == 1) {
                 # must update offsets since the data is in this file
@@ -1509,10 +1509,10 @@ sub WriteQuickTime($$$)
     if (not @mdat) {
         foreach $co (@$off) {
             next if $$co[0] eq 'uuid';
-            $et->Error('Movie data referenced but not found');
+            $et->Error('Media data referenced but not found');
             return $rtnVal;
         }
-        $et->Warn('No movie data', 1);
+        $et->Warn('No media data', 1);
     }
 
     # edit mdat blocks as required
@@ -1711,7 +1711,7 @@ sub WriteQuickTime($$$)
                 last;
             }
             unless ($ok) {
-                $et->Error("Chunk offset in $tag atom is outside movie data");
+                $et->Error("Chunk offset in $tag atom is outside media data");
                 return $rtnVal;
             }
         }
@@ -1723,7 +1723,7 @@ sub WriteQuickTime($$$)
     # write the metadata
     Write($outfile, $outBuff) or $rtnVal = 0;
 
-    # write the movie data
+    # write the media data
     foreach $mdat (@mdat) {
         Write($outfile, $$mdat[2]) or $rtnVal = 0;  # write mdat header
         if ($$mdat[4]) {
@@ -1821,7 +1821,7 @@ QuickTime-based file formats like MOV and MP4.
 
 =head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

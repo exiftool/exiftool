@@ -4763,7 +4763,7 @@ TryLib: for ($lib=$strptimeLib; ; $lib='') {
                 if (not $tz) {
                     if (eval { require Time::Local }) {
                         # determine timezone offset for this time
-                        my @args = ($a[4],$a[3],$a[2],$a[1],$a[0]-1,$yr-1900);
+                        my @args = ($a[4],$a[3],$a[2],$a[1],$a[0]-1,$yr);
                         my $diff = Time::Local::timegm(@args) - TimeLocal(@args);
                         $tz = TimeZoneString($diff / 60);
                     } else {
@@ -6890,7 +6890,7 @@ used routines.
 
 =head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

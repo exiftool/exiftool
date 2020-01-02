@@ -631,10 +631,9 @@ new XMP tags which are listed in the subsequent tables below.  See
 L<http://www.metadataworkinggroup.org/> for the official MWG specification.
 },
     MacOS => q{
-On MacOS systems, there are a number of additional tags with names beginning
-with "MDItem" and "XAttr" that may be extracted.  These tags are not
-extracted by default -- they must be specifically requested or enabled via
-an API option.
+On MacOS systems, the there are additional MDItem and XAttr Finder tags that
+may be extracted.  These tags are not extracted by default -- they must be
+specifically requested or enabled via an API option.
 
 The tables below list some of the tags that may be extracted, but ExifTool
 will extract all available information even for tags not listed.
@@ -651,7 +650,7 @@ L<Image::ExifTool::BuildTagLookup|Image::ExifTool::BuildTagLookup>.
 
 ~head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
@@ -2715,7 +2714,7 @@ Returned list of writable pseudo tags.
 
 =head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

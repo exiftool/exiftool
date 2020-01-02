@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.26';
+$VERSION = '4.27';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -4153,8 +4153,8 @@ my %subSecConv = (
         my $v;
         if (defined $val[1] and $val[1]=~/^(\d+)/) {
             my $subSec = $1;
-            # be careful here just in case the time already contains a timezone (contrary to spec)
-            undef $v unless ($v = $val[0]) =~ s/( \d{2}:\d{2}:\d{2})/$1\.$subSec/;
+            # be careful here just in case the time already contains sub-seconds or a timezone (contrary to spec)
+            undef $v unless ($v = $val[0]) =~ s/( \d{2}:\d{2}:\d{2})(?!\.\d+)/$1\.$subSec/;
         }
         if (defined $val[2] and $val[0]!~/[-+]/ and $val[2]=~/^([-+])(\d{1,2}):(\d{2})/) {
             $v = ($v || $val[0]) . sprintf('%s%.2d:%.2d', $1, $2, $3);
@@ -6505,7 +6505,7 @@ EXIF and TIFF meta information.
 
 =head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23192 tags, with 15163 unique tag names.
+They contain a total of 23201 tags, with 15170 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -24646,9 +24646,9 @@ for the official specification.
   'gps0'               GPSTrack                 QuickTime Stream
   'gsen'               GSensor                  QuickTime Stream
   'junk'               Junk?                    no
-  'mdat'               MovieData?               no
-  'mdat-offset'        MovieDataOffset          no
-  'mdat-size'          MovieDataSize            no
+  'mdat'               MediaData?               no
+  'mdat-offset'        MediaDataOffset          no
+  'mdat-size'          MediaDataSize            no
   'meco'               OtherMeta                QuickTime OtherMeta
   'meta'               Meta                     QuickTime Meta
   'moof'               MovieFragment            QuickTime MovieFragment
@@ -24694,7 +24694,7 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
 
 =head3 QuickTime Stream Tags
 
-Timed metadata extracted from QuickTime movie data and some AVI videos when
+Timed metadata extracted from QuickTime media data and some AVI videos when
 the ExtractEmbedded option is used.
 
   Tag Name                                      Writable
@@ -25192,6 +25192,7 @@ defined in this table.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'auxC'   AuxiliaryImageType                   no
+  'av1C'   AV1Configuration                     QuickTime AV1Config
   'clap'   CleanAperture                        no
   'colr'   ICC_Profile                          ICC_Profile
            ColorRepresentation                  no
@@ -25201,6 +25202,20 @@ defined in this table.
   'pasp'   PixelAspectRatio                     int32u
   'pixi'   ImagePixelDepth                      no
   'rloc'   RelativeLocation                     no
+
+=head3 QuickTime AV1Config Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    AV1ConfigurationVersion              no
+      1    SeqProfile?                          no
+    1.1    SeqLevelIdx0?                        no
+      2    SeqTier0?                            no
+    2.1    HighBitDepth?                        no
+    2.2    TwelveBit?                           no
+    2.3    ChromaFormat                         no
+    2.4    ChromaSamplePosition                 no
+      3    InitialDelaySamples?                 no
 
 =head3 QuickTime HEVCConfig Tags
 
@@ -33540,10 +33555,9 @@ Tags extracted from ISO 9660 disk images.
 
 =head2 MacOS Tags
 
-On MacOS systems, there are a number of additional tags with names beginning
-with "MDItem" and "XAttr" that may be extracted.  These tags are not
-extracted by default -- they must be specifically requested or enabled via
-an API option.
+On MacOS systems, the there are additional MDItem and XAttr Finder tags that
+may be extracted.  These tags are not extracted by default -- they must be
+specifically requested or enabled via an API option.
 
 The tables below list some of the tags that may be extracted, but ExifTool
 will extract all available information even for tags not listed.
@@ -33820,7 +33834,7 @@ values, may created via the ExifTool configuration file.
                        MPEG:VBRFrames
   AutoFocus            Nikon:PhaseDetectAF      no
                        Nikon:ContrastDetectAF
-  AvgBitrate           QuickTime::MovieDataSize no
+  AvgBitrate           QuickTime::MediaDataSize no
                        QuickTime::Duration
   BlueBalance          WB_RGGBLevels            no
                        WB_RGBGLevels
@@ -34609,7 +34623,7 @@ L<Image::ExifTool::BuildTagLookup|Image::ExifTool::BuildTagLookup>.
 
 =head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

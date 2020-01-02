@@ -6411,6 +6411,8 @@ my %tagExists = (
 	'autosummary' => 1,
 	'aux' => 1,
 	'auxiliaryimagetype' => 1,
+	'av1configuration' => 1,
+	'av1configurationversion' => 1,
 	'avcconfiguration' => 1,
 	'averagebitrate' => 1,
 	'averageframerate' => 1,
@@ -6823,6 +6825,7 @@ my %tagExists = (
 	'children' => 1,
 	'chmversion' => 1,
 	'chromaformat' => 1,
+	'chromasampleposition' => 1,
 	'chromaticaberrationparams' => 1,
 	'chromaticadaptation' => 1,
 	'chromaticities' => 1,
@@ -8024,6 +8027,7 @@ my %tagExists = (
 	'hevcconfiguration' => 1,
 	'hevcconfigurationversion' => 1,
 	'hiddenslides' => 1,
+	'highbitdepth' => 1,
 	'highisomode' => 1,
 	'highlightdata' => 1,
 	'highlightendpoints' => 1,
@@ -8199,6 +8203,7 @@ my %tagExists = (
 	'indexparameters' => 1,
 	'info' => 1,
 	'ingrreserved' => 1,
+	'initialdelaysamples' => 1,
 	'initialdisplayeffect' => 1,
 	'initializationvector' => 1,
 	'initializeddatasize' => 1,
@@ -8778,6 +8783,8 @@ my %tagExists = (
 	'mediacreated' => 1,
 	'mediacredits' => 1,
 	'mediadata' => 1,
+	'mediadataoffset' => 1,
+	'mediadatasize' => 1,
 	'mediaduration' => 1,
 	'mediaflags' => 1,
 	'mediaheader' => 1,
@@ -8905,9 +8912,6 @@ my %tagExists = (
 	'movableinfo' => 1,
 	'moveobjects' => 1,
 	'movie' => 1,
-	'moviedata' => 1,
-	'moviedataoffset' => 1,
-	'moviedatasize' => 1,
 	'moviefragment' => 1,
 	'movieheader' => 1,
 	'movieheaderversion' => 1,
@@ -9935,6 +9939,9 @@ my %tagExists = (
 	'sensorid' => 1,
 	'sensorinfo' => 1,
 	'sensorrightborder' => 1,
+	'seqlevelidx0' => 1,
+	'seqprofile' => 1,
+	'seqtier0' => 1,
 	'sequenceframenumber' => 1,
 	'sequencenumberrandomoffset' => 1,
 	'serialinfo' => 1,
@@ -10470,6 +10477,7 @@ my %tagExists = (
 	'tungmat7' => 1,
 	'tungmat8' => 1,
 	'tungmat9' => 1,
+	'twelvebit' => 1,
 	'tx3g' => 1,
 	'typeoforiginal' => 1,
 	'typist' => 1,
@@ -11166,7 +11174,7 @@ Provides a fast, case insensitive lookup for tag names.
 
 =head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

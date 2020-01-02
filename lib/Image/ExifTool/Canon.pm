@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.30';
+$VERSION = '4.31';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -921,6 +921,8 @@ $VERSION = '4.30';
     0x80000433 => 'EOS RP',
     0x80000436 => 'EOS SL3 / 250D / Kiss X10', #25
     0x80000437 => 'EOS 90D', #IB
+    0x80000520 => 'EOS D2000C', #IB
+    0x80000560 => 'EOS D6000C', #PH (guess)
 );
 
 my %canonQuality = (
@@ -9632,7 +9634,7 @@ Canon maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

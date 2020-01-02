@@ -141,6 +141,7 @@ sub ProcessJPEG_HDR($$$);
         Name => 'GoPro',
         Condition => '$$valPt =~ /^GoPro\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
+      # also seen Motorola APP6 "MMIMETA\0", with sub-types: AL3A,ALED,MMI0,MOTD,QC3A
     }],
     APP7 => [{
         Name => 'Pentax',
@@ -618,7 +619,7 @@ segments are included in the Image::ExifTool module itself.
 
 =head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

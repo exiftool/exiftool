@@ -1666,10 +1666,25 @@ shifted date/time value to be copied to another tag.  So this is the proper
 technique for shifting a date/time value when copying:
 
 <pre>exiftool "-datetimeoriginal&lt;filemodifydate" -globaltimeshift -2 image.jpg</pre>
+
+An alternative is to use the ShiftTime function of the
+<a href="exiftool_pod.html#Advanced-formatting-feature">advanced formatting feature</a>:
+
+<pre>exiftool '-datetimeoriginal&lt;${filemodifydate;ShiftTime("-2")}' image.jpg</pre>
+
+(Note: Swap the single and double quotes when running this command under Windows.)
+</blockquote><blockquote class=prog>
+<b>Programmers</b>: Here are the equivalent ExifTool API function calls:
+<pre><span class='blk'># using the GlobalTimeShift option</span>
+$exiftool->Options(GlobalTimeShift => '-2');
+$exifTool->SetNewValuesFromFile($src, 'datetimeoriginal&lt;filemodifydate');
+
+<span class='blk'># using ShiftTime in an advanced formatting expression</span>
+$exifTool->SetNewValuesFromFile($src, 'datetimeoriginal&lt;${filemodifydate;ShiftTime("-2")}');</pre>
 </blockquote>
 
 <hr>
-<i>Last revised Aug. 22, 2019</i>
+<i>Last revised Dec. 20, 2019</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

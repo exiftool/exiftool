@@ -61,7 +61,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.76';
+$VERSION = '3.77';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -602,6 +602,7 @@ sub GetAFPointGrid($$;$);
     '00 40 18 2B 2C 34 00 06' => 'Tokina AT-X 107 AF DX Fisheye (AF 10-17mm f/3.5-4.5)',
     '00 48 1C 29 24 24 00 06' => 'Tokina AT-X 116 PRO DX (AF 11-16mm f/2.8)',
     '7A 48 1C 29 24 24 7E 06' => 'Tokina AT-X 116 PRO DX II (AF 11-16mm f/2.8)',
+    '80 48 1C 29 24 24 7A 06' => 'Tokina atx-i 11-16mm F2.8 CF', #exiv2 issue 1078
     '7A 48 1C 30 24 24 7E 06' => 'Tokina AT-X 11-20 F2.8 PRO DX (AF 11-20mm f/2.8)',
     '00 3C 1F 37 30 30 00 06' => 'Tokina AT-X 124 AF PRO DX (AF 12-24mm f/4)',
     '7A 3C 1F 37 30 30 7E 06.2' => 'Tokina AT-X 124 AF PRO DX II (AF 12-24mm f/4)',
@@ -9581,7 +9582,7 @@ Nikon maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

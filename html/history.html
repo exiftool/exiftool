@@ -17,6 +17,20 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.81'><b>Jan. 2, 2020 - Version 11.81</b></a>
+<ul>
+<li>Added a new Nikon LensID
+<li>Added two new CanonModelID's (thanks LibRaw)
+<li>Decode AVIF AV1 configuration record
+<li>Changed names of QuickTime MovieData tags to "MediaData"
+<li>Patched to use 4-digit years in Time::Local calls
+<li>Patched Composite sub-second date/time tags to do additional validation of
+    source EXIF date/time tags before adding sub seconds
+<li>Fixed problem where -json output could produce invalid JSON when -struct was
+    used and the structure field names contained special characters
+<li>Fixed spelling in a Panasonic SceneMode value (thanks Hubert)
+</ul>
+
 <a name='v11.80'><b>Dec. 17, 2019 - Version 11.80</b></a>
 <ul>
 <li>Added a new Canon LensType

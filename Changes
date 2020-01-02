@@ -7,6 +7,19 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Jan. 2, 2020 - Version 11.81
+
+  - Added a new Nikon LensID
+  - Added two new CanonModelID's (thanks LibRaw)
+  - Decode AVIF AV1 configuration record
+  - Changed names of QuickTime MovieData tags to "MediaData"
+  - Patched to use 4-digit years in Time::Local calls
+  - Patched Composite sub-second date/time tags to do additional validation of
+    source EXIF date/time tags before adding sub seconds
+  - Fixed problem where -json output could produce invalid JSON when -struct was
+    used and the structure field names contained special characters
+  - Fixed spelling in a Panasonic SceneMode value (thanks Hubert)
+
 Dec. 17, 2019 - Version 11.80
 
   - Added a new Canon LensType

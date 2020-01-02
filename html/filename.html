@@ -300,7 +300,8 @@ FileModifyDate (which always exists) is used as a fallback.</blockquote>
 <p>Date format codes are used in the argument to the <code>-d</code> option to
 represent components of the date/time string.  The codes listed below are common
 to most systems, but additional codes may be available on your specific system
--- see your <i>strftime</i> man page for details.</p>
+-- see your <i>strftime</i> man page for details.  The default EXIF date/time
+formatting is equivalent to '<code>%Y:%m:%d %H:%M:%S</code>'.</p>
 <blockquote><table>
 <tr><th>%a</th><td>- abbreviated locale weekday name</td></tr>
 <tr><th>%A</th><td>- full locale weekday name</td></tr>

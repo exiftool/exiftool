@@ -242,7 +242,7 @@ sub IptcTime($)
             if ($date and $date =~ /^(\d{4}):(\d{2}):(\d{2})\s*$/ and eval { require Time::Local }) {
                 # we were given a date too, so determine the local timezone
                 # offset at the specified date/time
-                my @d = ($3,$2-1,$1-1900);
+                my @d = ($3,$2-1,$1);
                 $val =~ /(\d{2})(\d{2})(\d{2})/;
                 @tm = ($3,$2,$1,@d);
                 $time = Image::ExifTool::TimeLocal(@tm);
@@ -715,7 +715,7 @@ seldom-used routines.
 
 =head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

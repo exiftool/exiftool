@@ -8,7 +8,7 @@
 # Revisions:    Nov. 12/2003 - P. Harvey Created
 #               (See html/history.html for revision history)
 #
-# Legal:        Copyright (c) 2003-2019, Phil Harvey (philharvey66 at gmail.com)
+# Legal:        Copyright (c) 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen);
 
-$VERSION = '11.80';
+$VERSION = '11.81';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -53,7 +53,7 @@ Exporter::export_ok_tags(keys %EXPORT_TAGS);
 # test for problems that can arise if encoding.pm is used
 { my $t = "\xff"; die "Incompatible encoding!\n" if ord($t) != 0xff; }
 
-# The following functions defined in Image::ExifTool::Writer are declared
+# The following functions defined in Image::ExifTool::Writer.pl are declared
 # here so their prototypes will be available.  These Writer routines will be
 # autoloaded when any of them is called.
 sub SetNewValue($;$$%);
@@ -5445,7 +5445,6 @@ sub ConvertDateTime($$)
             shift @a while @a > 6;      # remove superfluous entries
             unshift @a, 1 while @a < 3; # add month and day if necessary
             unshift @a, 0 while @a < 6; # add h,m,s if necessary
-            $a[5] -= 1900;              # base year is 1900
             $a[4] -= 1;                 # base month is 1
             # parse %z and %s ourself (to handle time zones properly)
             if ($fmt =~ /%[sz]/) {
@@ -5460,6 +5459,7 @@ sub ConvertDateTime($$)
                     $fmt =~ s/(^|[^%])((%%)*)%s/$1$2$s/g;   # convert '%s' format codes
                 }
             }
+            $a[5] -= 1900;  # strftime year starts from 1900
             $date = POSIX::strftime($fmt, @a);  # generate the formatted date/time
         } elsif ($$self{OPTIONS}{StrictDate}) {
             undef $date;
@@ -5600,7 +5600,6 @@ sub GetUnixTime($;$)
         $tzSec = ($2 * 60 + $3) * ($1 eq '-' ? -60 : 60) if $1;
         undef $isLocal; # convert using GMT corrected for specified timezone
     }
-    $tm[0] -= 1900;     # convert year
     $tm[1] -= 1;        # convert month
     @tm = reverse @tm;  # change to order required by timelocal()
     return $isLocal ? TimeLocal(@tm) : Time::Local::timegm(@tm) - $tzSec;

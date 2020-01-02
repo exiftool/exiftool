@@ -218,7 +218,7 @@ sub LoadTrackLog($$;$)
                 next;
             } elsif (/^HFDTE(\d{2})(\d{2})(\d{2})/) {
                 my $year = $3 + ($3 >= 70 ? 1900 : 2000);
-                $dateFlarm = Time::Local::timegm(0,0,0,$1,$2-1,$year-1900);
+                $dateFlarm = Time::Local::timegm(0,0,0,$1,$2-1,$year);
                 $nmeaStart = 'B' ;
                 $format = 'IGC';
                 next;
@@ -364,7 +364,7 @@ sub LoadTrackLog($$;$)
             /^TP,D,\s*([-+]?\d+\.\d*),\s*([-+]?\d+\.\d*),\s*(\d+)\/(\d+)\/(\d{4}),\s*(\d+):(\d+):(\d+)/ or next;
             $$fix{lat} = $1;
             $$fix{lon} = $2;
-            $time = Time::Local::timegm($8,$7,$6,$4,$3-1,$5-1900);
+            $time = Time::Local::timegm($8,$7,$6,$4,$3-1,$5);
 DoneFix:    $isDate = 1;
             $$points{$time} = $fix;
             push @fixTimes, $time;
@@ -384,7 +384,7 @@ DoneFix:    $isDate = 1;
             next unless @d == 3 and @t == 3;
             @$fix{qw(lat lon alt track dir pitch roll)} = @parts[2,3,4,5,8,9,10];
             # (add the seconds afterwards in case some models have decimal seconds)
-            $time = Time::Local::timegm(0,$t[1],$t[0],$d[0],$d[1]-1,$d[2]-1900) + $t[2];
+            $time = Time::Local::timegm(0,$t[1],$t[0],$d[0],$d[1]-1,$d[2]) + $t[2];
             # set necessary flags for extra available information
             @$has{qw(alt track orient)} = (1,1,1);
             goto DoneFix;   # save this fix
@@ -399,7 +399,7 @@ DoneFix:    $isDate = 1;
                 last unless defined $val;
                 if ($label =~ /^Date/i) {
                     if ($val =~ m{^(\d{2})/(\d{2})/(\d{4})$}) {
-                        $date = Time::Local::timegm(0,0,0,$1,$2-1,$3-1900);
+                        $date = Time::Local::timegm(0,0,0,$1,$2-1,$3);
                     }
                 } elsif ($label =~ /^Time/i) {
                     if ($val =~ /^(\d{1,2}):(\d{2}):(\d{2}(\.\d+)?)/) {
@@ -470,7 +470,7 @@ DoneFix:    $isDate = 1;
             $fix{track} = $12 if length $12;
             my $year = $15 + ($15 >= 70 ? 1900 : 2000);
             $secs = (($1 * 60) + $2) * 60 + $3;
-            $date = Time::Local::timegm(0,0,0,$13,$14-1,$year-1900);
+            $date = Time::Local::timegm(0,0,0,$13,$14-1,$year);
 #
 # NMEA GGA sentence (no date)
 #
@@ -513,7 +513,7 @@ DoneFix:    $isDate = 1;
             #  $GPZDA,hhmmss.ss,DD,MM,YYYY,tzh,tzm (hhmmss in UTC)
             /^\$[A-Z]{2}ZDA,(\d{2})(\d{2})(\d{2}(\.\d*)?),(\d+),(\d+),(\d+)/ or next;
             $secs = (($1 * 60) + $2) * 60 + $3;
-            $date = Time::Local::timegm(0,0,0,$5,$6-1,$7-1900);
+            $date = Time::Local::timegm(0,0,0,$5,$6-1,$7);
 #
 # Magellan eXplorist PMGNTRK (Proprietary MaGellaN TRacK) sentence (optional date)
 #
@@ -529,7 +529,7 @@ DoneFix:    $isDate = 1;
                 next if $13 > 31 or $14 > 12 or $15 > 99;   # validate day/month/year
                 # optional date is available in PMGNTRK sentence
                 my $year = $15 + ($15 >= 70 ? 1900 : 2000);
-                $date = Time::Local::timegm(0,0,0,$13,$14-1,$year-1900);
+                $date = Time::Local::timegm(0,0,0,$13,$14-1,$year);
             }
 #
 # Honeywell HMR3000 PTNTHPR (Heading Pitch Roll) sentence (no date)
@@ -718,7 +718,7 @@ sub GetTime($)
 {
     my $timeStr = shift;
     $timeStr =~ /^(\d{4})-(\d+)-(\d+)T(\d+):(\d+):(\d+)(\.\d+)?(.*)/ or return undef;
-    my $time = Time::Local::timegm($6,$5,$4,$3,$2-1,$1-1900);
+    my $time = Time::Local::timegm($6,$5,$4,$3,$2-1,$1);
     $time += $7 if $7;  # add fractional seconds
     my $tz = $8;
     # adjust for time zone (otherwise assume UTC)
@@ -883,7 +883,7 @@ sub SetGeoValues($$;$)
             last;
         }
         if ($tz) {
-            $time = Time::Local::timegm($sec,$min,$hr,$day,$mon-1,$year-1900);
+            $time = Time::Local::timegm($sec,$min,$hr,$day,$mon-1,$year);
             # use timezone from date/time value
             if ($tz ne 'Z') {
                 my $tzmin = $t1 * 60 + $t2;
@@ -891,7 +891,7 @@ sub SetGeoValues($$;$)
             }
         } else {
             # assume local timezone
-            $time = Image::ExifTool::TimeLocal($sec,$min,$hr,$day,$mon-1,$year-1900);
+            $time = Image::ExifTool::TimeLocal($sec,$min,$hr,$day,$mon-1,$year);
         }
         # add fractional seconds
         $time += $fs if $fs and $fs ne '.';
@@ -1345,7 +1345,7 @@ user-defined tag GPSRoll, must be active.
 
 =head1 AUTHOR
 
-Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

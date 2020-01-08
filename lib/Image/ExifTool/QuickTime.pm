@@ -45,7 +45,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.40';
+$VERSION = '2.41';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -8199,6 +8199,7 @@ sub ProcessKeys($$$)
         }
         my ($newInfo, $msg);
         if ($tagInfo) {
+            # copy tag information into new Keys tag
             $newInfo = {
                 Name      => $$tagInfo{Name},
                 Format    => $$tagInfo{Format},
@@ -8207,7 +8208,7 @@ sub ProcessKeys($$$)
                 PrintConv => $$tagInfo{PrintConv},
                 PrintConvInv => $$tagInfo{PrintConvInv},
                 Writable  => defined $$tagInfo{Writable} ? $$tagInfo{Writable} : 1,
-                KeysInfo  => $tagInfo,
+                SubDirectory => $$tagInfo{SubDirectory},
             };
             my $groups = $$tagInfo{Groups};
             $$newInfo{Groups} = $groups ? { %$groups } : { };

@@ -302,12 +302,9 @@ sub WritePDF($$)
     ($pdfVer) = sort { $b <=> $a } values %$vers;
     $pdfVer or $et->Error('Missing PDF:PDFVersion'), return 0;
     # check version number
-    if ($pdfVer >= 2.0 and
-        $et->Error("Write PDF $pdfVer at your own risk (ISO charges for the spec.)", 1))
-    {
-        return 1;
-    } elsif ($pdfVer > 1.7) {
-        $et->Warn("ExifTool is untested with PDF version $pdfVer files", 1);
+    if ($pdfVer > 1.7) {
+        $et->Warn("The PDF $pdfVer specification is not freely available", 1);
+        # (so writing by ExifTool is based on trial and error)
     }
     # fail if we had any serious errors while extracting information
     if ($capture{Error} or $$info{Error}) {

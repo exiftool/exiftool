@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.31';
+$VERSION = '4.32';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -570,6 +570,7 @@ $VERSION = '4.31';
     61182.4 => 'Canon RF 85mm F1.2L USM', #IB
     61182.5 => 'Canon RF 24-240mm F4-6.3 IS USM', #IB
     61182.6 => 'Canon RF 24-70mm F2.8 L IS USM', #PH
+    61182.7 => 'Canon RF 15-35mm F2.8 L IS USM', #PH
     65535 => 'n/a',
 );
 
@@ -900,7 +901,7 @@ $VERSION = '4.31';
     0x80000325 => 'EOS 70D',
     0x80000326 => 'EOS Rebel T5i / 700D / Kiss X7i',
     0x80000327 => 'EOS Rebel T5 / 1200D / Kiss X70 / Hi',
-    0x80000328 => 'EOS-1D X MARK II', #42
+    0x80000328 => 'EOS-1D X Mark II', #42
     0x80000331 => 'EOS M',
     0x80000350 => 'EOS 80D', #42
     0x80000355 => 'EOS M2',
@@ -917,6 +918,7 @@ $VERSION = '4.31';
     0x80000417 => 'EOS Rebel SL2 / 200D / Kiss X9', #IB/42
     0x80000422 => 'EOS Rebel T100 / 4000D / 3000D', #IB (3000D in China; Kiss? - PH)
     0x80000424 => 'EOS R', #IB
+    0x80000428 => 'EOS-1D X Mark III', #IB
     0x80000432 => 'EOS Rebel T7 / 2000D / 1500D / Kiss X90', #IB
     0x80000433 => 'EOS RP',
     0x80000436 => 'EOS SL3 / 250D / Kiss X10', #25

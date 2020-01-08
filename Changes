@@ -7,6 +7,15 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Jan. 8, 2020 - Version 11.82
+
+  - Added a new Canon LensType
+  - Added a new CanonModelID (thanks LibRaw)
+  - Added ability to process SubDirectories in QuickTime Keys tags
+  - Removed minor error when writing PDF 2.0 files
+  - Fixed problem where trailing null bytes were removed from binary values in
+    the -php output when the -b option was used
+
 Jan. 2, 2020 - Version 11.81
 
   - Added a new Nikon LensID

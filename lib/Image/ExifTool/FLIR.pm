@@ -1400,7 +1400,6 @@ sub ProcessMeasInfo($$$)
     my $dirStart = $$dirInfo{DirStart} || 0;
     my $dataPos = $$dirInfo{DataPos};
     my $dirEnd = $dirStart + $$dirInfo{DirLen};
-    my $verbose = $et->Options('Verbose');
 
     my $pos = $dirStart + 12;
     return 0 if $pos > $dirEnd;

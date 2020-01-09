@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23201 tags, with 15170 unique tag names.
+They contain a total of 23207 tags, with 15173 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1459,55 +1459,55 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   ChromaticAberrationB                          integer/
   ChromaticAberrationR                          integer/
   CircularGradientBasedCorrections              Correction Struct+
-  CircGradBasedCorrActive                       boolean_
-  CircGradBasedCorrAmount                       real_
+  CircGradBasedCorrActive                       boolean/_
+  CircGradBasedCorrAmount                       real/_
   CircGradBasedCorrMasks                        CorrectionMask Struct_+
-  CircGradBasedCorrMaskAlpha                    real_
-  CircGradBasedCorrMaskAngle                    real_
-  CircGradBasedCorrMaskBottom                   real_
-  CircGradBasedCorrMaskCenterValue              real_
-  CircGradBasedCorrMaskCenterWeight             real_
+  CircGradBasedCorrMaskAlpha                    real/_
+  CircGradBasedCorrMaskAngle                    real/_
+  CircGradBasedCorrMaskBottom                   real/_
+  CircGradBasedCorrMaskCenterValue              real/_
+  CircGradBasedCorrMaskCenterWeight             real/_
   CircGradBasedCorrMaskDabs                     string/_
-  CircGradBasedCorrMaskFeather                  real_
-  CircGradBasedCorrMaskFlipped                  boolean_
-  CircGradBasedCorrMaskFlow                     real_
-  CircGradBasedCorrMaskFullX                    real_
-  CircGradBasedCorrMaskFullY                    real_
-  CircGradBasedCorrMaskLeft                     real_
-  CircGradBasedCorrMaskValue                    real_
-  CircGradBasedCorrMaskMidpoint                 real_
-  CircGradBasedCorrMaskPerimeterValue           real_
-  CircGradBasedCorrMaskRadius                   real_
-  CircGradBasedCorrMaskRight                    real_
-  CircGradBasedCorrMaskRoundness                real_
-  CircGradBasedCorrMaskSizeX                    real_
-  CircGradBasedCorrMaskSizeY                    real_
-  CircGradBasedCorrMaskTop                      real_
-  CircGradBasedCorrMaskVersion                  integer_
-  CircGradBasedCorrMaskWhat                     string_
-  CircGradBasedCorrMaskX                        real_
-  CircGradBasedCorrMaskY                        real_
-  CircGradBasedCorrMaskZeroX                    real_
-  CircGradBasedCorrMaskZeroY                    real_
-  CircGradBasedCorrBrightness                   real_
-  CircGradBasedCorrClarity                      real_
-  CircGradBasedCorrClarity2012                  real_
-  CircGradBasedCorrContrast                     real_
-  CircGradBasedCorrContrast2012                 real_
-  CircGradBasedCorrDefringe                     real_
-  CircGradBasedCorrExposure                     real_
-  CircGradBasedCorrExposure2012                 real_
-  CircGradBasedCorrHighlights2012               real_
-  CircGradBasedCorrLuminanceNoise               real_
-  CircGradBasedCorrMoire                        real_
-  CircGradBasedCorrSaturation                   real_
-  CircGradBasedCorrShadows2012                  real_
-  CircGradBasedCorrSharpness                    real_
-  CircGradBasedCorrTemperature                  real_
-  CircGradBasedCorrTint                         real_
-  CircGradBasedCorrHue                          real_
-  CircGradBasedCorrSaturation                   real_
-  CircGradBasedCorrWhat                         string_
+  CircGradBasedCorrMaskFeather                  real/_
+  CircGradBasedCorrMaskFlipped                  boolean/_
+  CircGradBasedCorrMaskFlow                     real/_
+  CircGradBasedCorrMaskFullX                    real/_
+  CircGradBasedCorrMaskFullY                    real/_
+  CircGradBasedCorrMaskLeft                     real/_
+  CircGradBasedCorrMaskValue                    real/_
+  CircGradBasedCorrMaskMidpoint                 real/_
+  CircGradBasedCorrMaskPerimeterValue           real/_
+  CircGradBasedCorrMaskRadius                   real/_
+  CircGradBasedCorrMaskRight                    real/_
+  CircGradBasedCorrMaskRoundness                real/_
+  CircGradBasedCorrMaskSizeX                    real/_
+  CircGradBasedCorrMaskSizeY                    real/_
+  CircGradBasedCorrMaskTop                      real/_
+  CircGradBasedCorrMaskVersion                  integer/_
+  CircGradBasedCorrMaskWhat                     string/_
+  CircGradBasedCorrMaskX                        real/_
+  CircGradBasedCorrMaskY                        real/_
+  CircGradBasedCorrMaskZeroX                    real/_
+  CircGradBasedCorrMaskZeroY                    real/_
+  CircGradBasedCorrBrightness                   real/_
+  CircGradBasedCorrClarity                      real/_
+  CircGradBasedCorrClarity2012                  real/_
+  CircGradBasedCorrContrast                     real/_
+  CircGradBasedCorrContrast2012                 real/_
+  CircGradBasedCorrDefringe                     real/_
+  CircGradBasedCorrExposure                     real/_
+  CircGradBasedCorrExposure2012                 real/_
+  CircGradBasedCorrHighlights2012               real/_
+  CircGradBasedCorrLuminanceNoise               real/_
+  CircGradBasedCorrMoire                        real/_
+  CircGradBasedCorrSaturation                   real/_
+  CircGradBasedCorrShadows2012                  real/_
+  CircGradBasedCorrSharpness                    real/_
+  CircGradBasedCorrTemperature                  real/_
+  CircGradBasedCorrTint                         real/_
+  CircGradBasedCorrHue                          real/_
+  CircGradBasedCorrSaturation                   real/_
+  CircGradBasedCorrWhat                         string/_
   Clarity                                       integer/
   Clarity2012                                   integer/
   ColorNoiseReduction                           integer/
@@ -1544,55 +1544,55 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   Exposure2012                                  real/
   FillLight                                     integer/
   GradientBasedCorrections                      Correction Struct+
-  GradientBasedCorrActive                       boolean_
-  GradientBasedCorrAmount                       real_
+  GradientBasedCorrActive                       boolean/_
+  GradientBasedCorrAmount                       real/_
   GradientBasedCorrMasks                        CorrectionMask Struct_+
-  GradientBasedCorrMaskAlpha                    real_
-  GradientBasedCorrMaskAngle                    real_
-  GradientBasedCorrMaskBottom                   real_
-  GradientBasedCorrMaskCenterValue              real_
-  GradientBasedCorrMaskCenterWeight             real_
+  GradientBasedCorrMaskAlpha                    real/_
+  GradientBasedCorrMaskAngle                    real/_
+  GradientBasedCorrMaskBottom                   real/_
+  GradientBasedCorrMaskCenterValue              real/_
+  GradientBasedCorrMaskCenterWeight             real/_
   GradientBasedCorrMaskDabs                     string/_
-  GradientBasedCorrMaskFeather                  real_
-  GradientBasedCorrMaskFlipped                  boolean_
-  GradientBasedCorrMaskFlow                     real_
-  GradientBasedCorrMaskFullX                    real_
-  GradientBasedCorrMaskFullY                    real_
-  GradientBasedCorrMaskLeft                     real_
-  GradientBasedCorrMaskValue                    real_
-  GradientBasedCorrMaskMidpoint                 real_
-  GradientBasedCorrMaskPerimeterValue           real_
-  GradientBasedCorrMaskRadius                   real_
-  GradientBasedCorrMaskRight                    real_
-  GradientBasedCorrMaskRoundness                real_
-  GradientBasedCorrMaskSizeX                    real_
-  GradientBasedCorrMaskSizeY                    real_
-  GradientBasedCorrMaskTop                      real_
-  GradientBasedCorrMaskVersion                  integer_
-  GradientBasedCorrMaskWhat                     string_
-  GradientBasedCorrMaskX                        real_
-  GradientBasedCorrMaskY                        real_
-  GradientBasedCorrMaskZeroX                    real_
-  GradientBasedCorrMaskZeroY                    real_
-  GradientBasedCorrBrightness                   real_
-  GradientBasedCorrClarity                      real_
-  GradientBasedCorrClarity2012                  real_
-  GradientBasedCorrContrast                     real_
-  GradientBasedCorrContrast2012                 real_
-  GradientBasedCorrDefringe                     real_
-  GradientBasedCorrExposure                     real_
-  GradientBasedCorrExposure2012                 real_
-  GradientBasedCorrHighlights2012               real_
-  GradientBasedCorrLuminanceNoise               real_
-  GradientBasedCorrMoire                        real_
-  GradientBasedCorrSaturation                   real_
-  GradientBasedCorrShadows2012                  real_
-  GradientBasedCorrSharpness                    real_
-  GradientBasedCorrTemperature                  real_
-  GradientBasedCorrTint                         real_
-  GradientBasedCorrHue                          real_
-  GradientBasedCorrSaturation                   real_
-  GradientBasedCorrWhat                         string_
+  GradientBasedCorrMaskFeather                  real/_
+  GradientBasedCorrMaskFlipped                  boolean/_
+  GradientBasedCorrMaskFlow                     real/_
+  GradientBasedCorrMaskFullX                    real/_
+  GradientBasedCorrMaskFullY                    real/_
+  GradientBasedCorrMaskLeft                     real/_
+  GradientBasedCorrMaskValue                    real/_
+  GradientBasedCorrMaskMidpoint                 real/_
+  GradientBasedCorrMaskPerimeterValue           real/_
+  GradientBasedCorrMaskRadius                   real/_
+  GradientBasedCorrMaskRight                    real/_
+  GradientBasedCorrMaskRoundness                real/_
+  GradientBasedCorrMaskSizeX                    real/_
+  GradientBasedCorrMaskSizeY                    real/_
+  GradientBasedCorrMaskTop                      real/_
+  GradientBasedCorrMaskVersion                  integer/_
+  GradientBasedCorrMaskWhat                     string/_
+  GradientBasedCorrMaskX                        real/_
+  GradientBasedCorrMaskY                        real/_
+  GradientBasedCorrMaskZeroX                    real/_
+  GradientBasedCorrMaskZeroY                    real/_
+  GradientBasedCorrBrightness                   real/_
+  GradientBasedCorrClarity                      real/_
+  GradientBasedCorrClarity2012                  real/_
+  GradientBasedCorrContrast                     real/_
+  GradientBasedCorrContrast2012                 real/_
+  GradientBasedCorrDefringe                     real/_
+  GradientBasedCorrExposure                     real/_
+  GradientBasedCorrExposure2012                 real/_
+  GradientBasedCorrHighlights2012               real/_
+  GradientBasedCorrLuminanceNoise               real/_
+  GradientBasedCorrMoire                        real/_
+  GradientBasedCorrSaturation                   real/_
+  GradientBasedCorrShadows2012                  real/_
+  GradientBasedCorrSharpness                    real/_
+  GradientBasedCorrTemperature                  real/_
+  GradientBasedCorrTint                         real/_
+  GradientBasedCorrHue                          real/_
+  GradientBasedCorrSaturation                   real/_
+  GradientBasedCorrWhat                         string/_
   GrainAmount                                   integer/
   GrainFrequency                                integer/
   GrainSize                                     integer/
@@ -1639,6 +1639,8 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   LensProfileName                               string/
   LensProfileSetup                              string/
   LensProfileVignettingScale                    integer/
+  Look                                          Look Struct
+  LookName                                      string/_
   LuminanceAdjustmentAqua                       integer/
   LuminanceAdjustmentBlue                       integer/
   LuminanceAdjustmentGreen                      integer/
@@ -1654,56 +1656,57 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   NegativeCacheLargePreviewSize                 integer/
   NegativeCacheMaximumSize                      real/
   NegativeCachePath                             string/
+  OverrideLookVignette                          boolean/
   PaintBasedCorrections                         Correction Struct+
-  PaintCorrectionActive                         boolean_
-  PaintCorrectionAmount                         real_
+  PaintCorrectionActive                         boolean/_
+  PaintCorrectionAmount                         real/_
   PaintBasedCorrectionMasks                     CorrectionMask Struct_+
-  PaintCorrectionMaskAlpha                      real_
-  PaintCorrectionMaskAngle                      real_
-  PaintCorrectionMaskBottom                     real_
-  PaintCorrectionMaskCenterValue                real_
-  PaintCorrectionMaskCenterWeight               real_
+  PaintCorrectionMaskAlpha                      real/_
+  PaintCorrectionMaskAngle                      real/_
+  PaintCorrectionMaskBottom                     real/_
+  PaintCorrectionMaskCenterValue                real/_
+  PaintCorrectionMaskCenterWeight               real/_
   PaintCorrectionMaskDabs                       string/_
-  PaintCorrectionMaskFeather                    real_
-  PaintCorrectionMaskFlipped                    boolean_
-  PaintCorrectionMaskFlow                       real_
-  PaintCorrectionMaskFullX                      real_
-  PaintCorrectionMaskFullY                      real_
-  PaintCorrectionMaskLeft                       real_
-  PaintCorrectionMaskValue                      real_
-  PaintCorrectionMaskMidpoint                   real_
-  PaintCorrectionMaskPerimeterValue             real_
-  PaintCorrectionMaskRadius                     real_
-  PaintCorrectionMaskRight                      real_
-  PaintCorrectionMaskRoundness                  real_
-  PaintCorrectionMaskSizeX                      real_
-  PaintCorrectionMaskSizeY                      real_
-  PaintCorrectionMaskTop                        real_
-  PaintCorrectionMaskVersion                    integer_
-  PaintCorrectionMaskWhat                       string_
-  PaintCorrectionMaskX                          real_
-  PaintCorrectionMaskY                          real_
-  PaintCorrectionMaskZeroX                      real_
-  PaintCorrectionMaskZeroY                      real_
-  PaintCorrectionBrightness                     real_
-  PaintCorrectionClarity                        real_
-  PaintCorrectionClarity2012                    real_
-  PaintCorrectionContrast                       real_
-  PaintCorrectionContrast2012                   real_
-  PaintCorrectionDefringe                       real_
-  PaintCorrectionExposure                       real_
-  PaintCorrectionExposure2012                   real_
-  PaintCorrectionHighlights2012                 real_
-  PaintCorrectionLuminanceNoise                 real_
-  PaintCorrectionMoire                          real_
-  PaintCorrectionSaturation                     real_
-  PaintCorrectionShadows2012                    real_
-  PaintCorrectionSharpness                      real_
-  PaintCorrectionTemperature                    real_
-  PaintCorrectionTint                           real_
-  PaintCorrectionHue                            real_
-  PaintCorrectionSaturation                     real_
-  PaintCorrectionWhat                           string_
+  PaintCorrectionMaskFeather                    real/_
+  PaintCorrectionMaskFlipped                    boolean/_
+  PaintCorrectionMaskFlow                       real/_
+  PaintCorrectionMaskFullX                      real/_
+  PaintCorrectionMaskFullY                      real/_
+  PaintCorrectionMaskLeft                       real/_
+  PaintCorrectionMaskValue                      real/_
+  PaintCorrectionMaskMidpoint                   real/_
+  PaintCorrectionMaskPerimeterValue             real/_
+  PaintCorrectionMaskRadius                     real/_
+  PaintCorrectionMaskRight                      real/_
+  PaintCorrectionMaskRoundness                  real/_
+  PaintCorrectionMaskSizeX                      real/_
+  PaintCorrectionMaskSizeY                      real/_
+  PaintCorrectionMaskTop                        real/_
+  PaintCorrectionMaskVersion                    integer/_
+  PaintCorrectionMaskWhat                       string/_
+  PaintCorrectionMaskX                          real/_
+  PaintCorrectionMaskY                          real/_
+  PaintCorrectionMaskZeroX                      real/_
+  PaintCorrectionMaskZeroY                      real/_
+  PaintCorrectionBrightness                     real/_
+  PaintCorrectionClarity                        real/_
+  PaintCorrectionClarity2012                    real/_
+  PaintCorrectionContrast                       real/_
+  PaintCorrectionContrast2012                   real/_
+  PaintCorrectionDefringe                       real/_
+  PaintCorrectionExposure                       real/_
+  PaintCorrectionExposure2012                   real/_
+  PaintCorrectionHighlights2012                 real/_
+  PaintCorrectionLuminanceNoise                 real/_
+  PaintCorrectionMoire                          real/_
+  PaintCorrectionSaturation                     real/_
+  PaintCorrectionShadows2012                    real/_
+  PaintCorrectionSharpness                      real/_
+  PaintCorrectionTemperature                    real/_
+  PaintCorrectionTint                           real/_
+  PaintCorrectionHue                            real/_
+  PaintCorrectionSaturation                     real/_
+  PaintCorrectionWhat                           string/_
   ParametricDarks                               integer/
   ParametricHighlights                          integer/
   ParametricHighlightSplit                      integer/
@@ -1731,42 +1734,42 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   RedHue                                        integer/
   RedSaturation                                 integer/
   RetouchAreas                                  RetouchArea Struct+
-  RetouchAreaFeather                            real_
+  RetouchAreaFeather                            real/_
   RetouchAreaMasks                              CorrectionMask Struct_+
-  RetouchAreaMaskAlpha                          real_
-  RetouchAreaMaskAngle                          real_
-  RetouchAreaMaskBottom                         real_
-  RetouchAreaMaskCenterValue                    real_
-  RetouchAreaMaskCenterWeight                   real_
+  RetouchAreaMaskAlpha                          real/_
+  RetouchAreaMaskAngle                          real/_
+  RetouchAreaMaskBottom                         real/_
+  RetouchAreaMaskCenterValue                    real/_
+  RetouchAreaMaskCenterWeight                   real/_
   RetouchAreaMaskDabs                           string/_
-  RetouchAreaMaskFeather                        real_
-  RetouchAreaMaskFlipped                        boolean_
-  RetouchAreaMaskFlow                           real_
-  RetouchAreaMaskFullX                          real_
-  RetouchAreaMaskFullY                          real_
-  RetouchAreaMaskLeft                           real_
-  RetouchAreaMaskValue                          real_
-  RetouchAreaMaskMidpoint                       real_
-  RetouchAreaMaskPerimeterValue                 real_
-  RetouchAreaMaskRadius                         real_
-  RetouchAreaMaskRight                          real_
-  RetouchAreaMaskRoundness                      real_
-  RetouchAreaMaskSizeX                          real_
-  RetouchAreaMaskSizeY                          real_
-  RetouchAreaMaskTop                            real_
-  RetouchAreaMaskVersion                        integer_
-  RetouchAreaMaskWhat                           string_
-  RetouchAreaMaskX                              real_
-  RetouchAreaMaskY                              real_
-  RetouchAreaMaskZeroX                          real_
-  RetouchAreaMaskZeroY                          real_
-  RetouchAreaMethod                             string_
-  RetouchAreaOffsetY                            real_
-  RetouchAreaOpacity                            real_
-  RetouchAreaSeed                               integer_
-  RetouchAreaSourceState                        string_
-  RetouchAreaSourceX                            real_
-  RetouchAreaSpotType                           string_
+  RetouchAreaMaskFeather                        real/_
+  RetouchAreaMaskFlipped                        boolean/_
+  RetouchAreaMaskFlow                           real/_
+  RetouchAreaMaskFullX                          real/_
+  RetouchAreaMaskFullY                          real/_
+  RetouchAreaMaskLeft                           real/_
+  RetouchAreaMaskValue                          real/_
+  RetouchAreaMaskMidpoint                       real/_
+  RetouchAreaMaskPerimeterValue                 real/_
+  RetouchAreaMaskRadius                         real/_
+  RetouchAreaMaskRight                          real/_
+  RetouchAreaMaskRoundness                      real/_
+  RetouchAreaMaskSizeX                          real/_
+  RetouchAreaMaskSizeY                          real/_
+  RetouchAreaMaskTop                            real/_
+  RetouchAreaMaskVersion                        integer/_
+  RetouchAreaMaskWhat                           string/_
+  RetouchAreaMaskX                              real/_
+  RetouchAreaMaskY                              real/_
+  RetouchAreaMaskZeroX                          real/_
+  RetouchAreaMaskZeroY                          real/_
+  RetouchAreaMethod                             string/_
+  RetouchAreaOffsetY                            real/_
+  RetouchAreaOpacity                            real/_
+  RetouchAreaSeed                               integer/_
+  RetouchAreaSourceState                        string/_
+  RetouchAreaSourceX                            real/_
+  RetouchAreaSpotType                           string/_
   RetouchInfo                                   string/+
   Saturation                                    integer/
   SaturationAdjustmentAqua                      integer/
@@ -1887,6 +1890,12 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   Y                                             real
   ZeroX                                         real
   ZeroY                                         real
+
+=head3 XMP Look Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Name                                          string
 
 =head3 XMP RetouchArea Struct
 
@@ -2157,6 +2166,8 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   LensProfileName                               string
   LensProfileSetup                              string
   LensProfileVignettingScale                    integer
+  Look                                          Look Struct
+  LookName                                      string_
   LuminanceAdjustmentAqua                       integer
   LuminanceAdjustmentBlue                       integer
   LuminanceAdjustmentGreen                      integer
@@ -2172,6 +2183,7 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   NegativeCacheLargePreviewSize                 integer
   NegativeCacheMaximumSize                      real
   NegativeCachePath                             string
+  OverrideLookVignette                          boolean
   PaintBasedCorrections                         Correction Struct+
   PaintCorrectionActive                         boolean_
   PaintCorrectionAmount                         real_
@@ -3594,20 +3606,20 @@ These tags belong to the ExifTool XMP-prism family 1 group.
   AggregateIssueNumber                          integer/
   AggregationType                               string/+
   AlternateTitle                                prismAlternateTitle Struct+
-  AlternateTitleA-lang                          string_+
-  AlternateTitleA-platform                      string_+
-  AlternateTitleText                            string_+
+  AlternateTitleA-lang                          string/_+
+  AlternateTitleA-platform                      string/_+
+  AlternateTitleText                            string/_+
   BlogTitle                                     string/
   BlogURL                                       string/
   BookEdition                                   string/
   ByteCount                                     integer/
   Channel                                       prismChannel Struct+
-  ChannelA-lang                                 string_+
-  ChannelChannel                                string_+
-  ChannelSubchannel1                            string_+
-  ChannelSubchannel2                            string_+
-  ChannelSubchannel3                            string_+
-  ChannelSubchannel4                            string_+
+  ChannelA-lang                                 string/_+
+  ChannelChannel                                string/_+
+  ChannelSubchannel1                            string/_+
+  ChannelSubchannel2                            string/_+
+  ChannelSubchannel3                            string/_+
+  ChannelSubchannel4                            string/_+
   ComplianceProfile                             string/
   ContentType                                   string/
   CopyrightYear                                 string/
@@ -3626,9 +3638,9 @@ These tags belong to the ExifTool XMP-prism family 1 group.
   Genre                                         string/+
   HasAlternative                                string/+
   HasCorrection                                 prismHasCorrection Struct
-  HasCorrectionA-lang                           string_
-  HasCorrectionA-platform                       string_
-  HasCorrectionText                             string_
+  HasCorrectionA-lang                           string/_
+  HasCorrectionA-platform                       string/_
+  HasCorrectionText                             string/_
   HasTranslation                                string/+
   Industry                                      string/+
   IsAlternativeOf                               string/+
@@ -3642,8 +3654,8 @@ These tags belong to the ExifTool XMP-prism family 1 group.
   IsTranslationOf                               string/
   Keyword                                       string/+
   KillDate                                      prismKillDate Struct
-  KillDateA-platform                            string_
-  KillDateDate                                  date_
+  KillDateA-platform                            string/_
+  KillDateDate                                  date/_
   Link                                          string/+
   Location                                      string/+
   ModificationDate                              date/
@@ -3651,14 +3663,14 @@ These tags belong to the ExifTool XMP-prism family 1 group.
   Number                                        string/
   Object                                        string/+
   OffSaleDate                                   prismOffSaleDate Struct+
-  OffSaleDateA-platform                         string_+
-  OffSaleDateDate                               date_+
+  OffSaleDateA-platform                         string/_+
+  OffSaleDateDate                               date/_+
   OnSaleDate                                    prismOnSaleDate Struct+
-  OnSaleDateA-platform                          string_+
-  OnSaleDateDate                                date_+
+  OnSaleDateA-platform                          string/_+
+  OnSaleDateDate                                date/_+
   OnSaleDay                                     prismOnSaleDay Struct+
-  OnSaleDayA-platform                           string_+
-  OnSaleDayDay                                  string_+
+  OnSaleDayA-platform                           string/_+
+  OnSaleDayDay                                  string/_+
   Organization                                  string/+
   OriginPlatform                                string/+
   PageCount                                     integer/
@@ -3669,11 +3681,11 @@ These tags belong to the ExifTool XMP-prism family 1 group.
   ProductCode                                   string/
   Profession                                    string/
   PublicationDate                               prismPublicationDate Struct+
-  PublicationDateA-platform                     string_+
-  PublicationDateDate                           date_+
+  PublicationDateA-platform                     string/_+
+  PublicationDateDate                           date/_+
   PublicationDisplayDate                        prismPublicationDate Struct+
-  PublicationDisplayDateA-platform              string_+
-  PublicationDisplayDateDate                    date_+
+  PublicationDisplayDateA-platform              string/_+
+  PublicationDisplayDateDate                    date/_+
   PublicationName                               string/
   PublishingFrequency                           string/
   Rating                                        string/
@@ -3696,8 +3708,8 @@ These tags belong to the ExifTool XMP-prism family 1 group.
   Ticker                                        string/+
   TimePeriod                                    string/
   URL                                           prismUrl Struct+
-  URLA-platform                                 string_+
-  URLUrl                                        string_+
+  URLA-platform                                 string/_+
+  URLUrl                                        string/_+
   UspsNumber                                    string/
   VersionIdentifier                             string/
   Volume                                        string/

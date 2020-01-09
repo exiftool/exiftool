@@ -7,6 +7,13 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Jan. 9, 2020 - Version 11.83
+
+  - Added a couple of new XMP-crs tags (thanks Herb)
+  - Fixed bug introduced in 11.82 with -php -b -D output
+  - Fixed problem where some flattened XMP tags could be written when they
+    should be avoided
+
 Jan. 8, 2020 - Version 11.82
 
   - Added a new Canon LensType

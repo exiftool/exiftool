@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen);
 
-$VERSION = '11.82';
+$VERSION = '11.83';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -7609,6 +7609,9 @@ sub AddTagToTable($$;$$)
     $$tagInfo{GotGroups} = 1,
     $$tagInfo{Table} = $tagTablePtr;
     $$tagInfo{TagID} = $tagID;
+    if (defined $$tagTablePtr{AVOID} and not defined $$tagInfo{Avoid}) {
+        $$tagInfo{Avoid} = $$tagTablePtr{AVOID};
+    }
 
     my $name = $$tagInfo{Name};
     $name = $tagID unless defined $name;

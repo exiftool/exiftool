@@ -1471,6 +1471,15 @@ my %sPantryItem = (
     UprightFourSegmentsCount            => { Writable => 'integer' },
     AutoTone                            => { Writable => 'boolean' },
     Texture                             => { Writable => 'integer' },
+    # more stuff (ref forum10721)
+    OverrideLookVignette                => { Writable => 'boolean' },
+    Look => {
+        Struct => {
+            STRUCT_NAME => 'Look',
+            NAMESPACE   => 'crs',
+            Name   => { },
+        }
+    },
 );
 
 # Tiff namespace properties (tiff)
@@ -2017,6 +2026,7 @@ my %sPantryItem = (
         PrintConvInv => '$val=~s/\s*m$//; $val',
     },
     NativeDigest => { }, #PH
+    # new Exif
 );
 
 # Exif extended properties (exifEX, ref 12)

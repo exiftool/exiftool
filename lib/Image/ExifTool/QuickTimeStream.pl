@@ -1217,7 +1217,7 @@ sub ProcessFreeGPS2($$$)
     my ($et, $dirInfo, $tagTbl) = @_;
     my $dataPt = $$dirInfo{DataPt};
     my $dirLen = $$dirInfo{DirLen};
-    my ($yr, $mon, $day, $hr, $min, $sec, $pos);
+    my ($yr, $mon, $day, $hr, $min, $sec, $pos, @acc);
     my ($lat, $latRef, $lon, $lonRef, $spd, $trk, $alt, $ddd, $unk);
 
     return 0 if $dirLen < 82;   # minimum size of block with a single GPS record
@@ -1356,12 +1356,14 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
         # 0x70 - int32u year - 2000
         # 0x74 - int32u month
         # 0x78 - int32u day
+        # 0x7c - int32s[3] accelerometer * 1000
         ($latRef, $lonRef) = ($1, $2);
-        ($hr,$min,$sec,$yr,$mon,$day) = unpack('x48V3x52V3', $$dataPt);
+        ($hr,$min,$sec,$yr,$mon,$day,@acc) = unpack('x48V3x52V6', $$dataPt);
         $lat = GetDouble($dataPt, 0x40);
         $lon = GetDouble($dataPt, 0x50);
         $spd = GetDouble($dataPt, 0x60) * $knotsToKph;
         $trk = GetDouble($dataPt, 0x68);
+        map { $_ = $_ - 4294967296 if $_ >= 0x80000000; $_ /= 1000 } @acc;
 
     } elsif ($$dataPt =~ /^.{72}A([NS])([EW])/s) {
 
@@ -1481,6 +1483,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
     if (defined $alt) {
         $et->HandleTag($tagTbl, GPSAltitude  => $alt);
     }
+    $et->HandleTag($tagTbl, Accelerometer => "@acc") if @acc;
     return 1;
 }
 

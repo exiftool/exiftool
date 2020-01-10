@@ -343,7 +343,7 @@ sub SetMacOSTags($$$)
             next unless $overwrite;
             if ($overwrite < 0) {
                 my $operation = $$nvHash{Shift} ? 'Shifting' : 'Conditional replacement';
-                $et->Warn("$operation of $tag not yet supported");
+                $et->Warn("$operation of MacOS $tag not yet supported");
                 next;
             }
         }

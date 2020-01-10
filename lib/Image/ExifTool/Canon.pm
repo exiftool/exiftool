@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.32';
+$VERSION = '4.33';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -1592,7 +1592,10 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         ValueConv => 'unpack("H*", $val)',
         ValueConvInv => 'pack("H*", $val)',
     },
-    # 0x29 - WBInfo (ref IB, offset 0x6 is int32u[4] WB_GRBGLevels as shot for PowerShot G9)
+    0x29 => { #IB (G9)
+        Name => 'WBInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::WBInfo' },
+    },
     # 0x2d - changes with categories (ref 31)
     0x2f => { #PH (G12)
         Name => 'FaceDetect3',
@@ -6429,6 +6432,25 @@ my %ciMaxFocal = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     0x01 => 'FaceWidth',
     0x02 => 'FacesDetected',
+);
+
+# G9 white balance information (MakerNotes tag 0x29) (ref IB)
+%Image::ExifTool::Canon::WBInfo = (
+    %binaryDataAttrs,
+    NOTES => 'WB tags for the Canon G9.',
+    FORMAT => 'int32u',
+    FIRST_ENTRY => 1,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    0x02 => { Name => 'WB_GRGBLevelsAuto',        Format => 'int32s[4]' },
+    0x0a => { Name => 'WB_GRGBLevelsDaylight',    Format => 'int32s[4]' },
+    0x12 => { Name => 'WB_GRGBLevelsCloudy',      Format => 'int32s[4]' },
+    0x1a => { Name => 'WB_GRGBLevelsTungsten',    Format => 'int32s[4]' },
+    0x22 => { Name => 'WB_GRGBLevelsFluorescent', Format => 'int32s[4]' },
+    0x2a => { Name => 'WB_GRGBLevelsFluorHigh',   Format => 'int32s[4]' },
+    0x32 => { Name => 'WB_GRGBLevelsFlash',       Format => 'int32s[4]' },
+    0x3a => { Name => 'WB_GRGBLevelsUnderwater',  Format => 'int32s[4]' },
+    0x42 => { Name => 'WB_GRGBLevelsCustom1',     Format => 'int32s[4]' },
+    0x4a => { Name => 'WB_GRGBLevelsCustom2',     Format => 'int32s[4]' },
 );
 
 # yet more face detect information (MakerNotes tag 0x2f) - PH (G12)

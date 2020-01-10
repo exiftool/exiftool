@@ -4,13 +4,22 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
+(I'll be on vacation Jan 14-23/2020, so don't expect any email or
+forum responses from me during this period - PH)
+
 Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+Jan. 10, 2020 - Version 11.84
+
+  - Decode accelerometer data from timed metadata of more dashcam videos
+  - Decode Canon G9 white balance tags (thanks LibRaw)
+  - Recognize INSP files
 
 Jan. 9, 2020 - Version 11.83
 
   - Added a couple of new XMP-crs tags (thanks Herb)
-  - Fixed bug introduced in 11.82 with -php -b -D output
+  - Fixed bug introduced in 11.82 with the -php -D output
   - Fixed problem where some flattened XMP tags could be written when they
     should be avoided
 
@@ -19,7 +28,7 @@ Jan. 8, 2020 - Version 11.82
   - Added a new Canon LensType
   - Added a new CanonModelID (thanks LibRaw)
   - Added ability to process SubDirectories in QuickTime Keys tags
-  - Removed minor error when writing PDF 2.0 files
+  - Removed minor error when writing PDF 2.0 files (github issue #30)
   - Fixed problem where trailing null bytes were removed from binary values in
     the -php output when the -b option was used
 
@@ -33,7 +42,8 @@ Jan. 2, 2020 - Version 11.81
   - Patched Composite sub-second date/time tags to do additional validation of
     source EXIF date/time tags before adding sub seconds
   - Fixed problem where -json output could produce invalid JSON when -struct was
-    used and the structure field names contained special characters
+    used and the structure field names contained special characters (github
+    issue #32)
   - Fixed spelling in a Panasonic SceneMode value (thanks Hubert)
 
 Dec. 17, 2019 - Version 11.80
@@ -53,7 +63,7 @@ Dec. 12, 2019 - Version 11.79
 
   - Added support for AVIF files
   - Added new Canon, Sigma and Sony LensType values (thanks LibRaw)
-  - Made PDF 2.0 writable at your own risk with the -m option
+  - Made PDF 2.0 writable at your own risk with the -m option (github issue #30)
   - Enhanced -validate feature to warn about duplicate languages in an XMP
     lang-alt list
   - Fixed inconsistency between documentation and ExifTool capabilities for
@@ -139,7 +149,7 @@ Oct. 16, 2019 - Version 11.71
 Oct. 10, 2019 - Version 11.70 (production release)
 
   - Added a new CanonModelID (thanks Laurent Clevy)
-  - Improved identification of Office Open XML files
+  - Improved identification of Office Open XML files (github issue #27)
   - Removed RAF version check when writing FujiFilm RAF files
   - Limited the number of accelerometer records that ExifTool will read by
     default with the -ee option from INSV files to avoid excessive processing
@@ -221,6 +231,7 @@ Aug. 20, 2019 - Version 11.63 - "PNG Early Text"
   - Added a few new Sigma lenses (thanks LibRaw)
   - Improved handling of Canon CNTH atom in MOV/MP4 videos
   - Changed PNG writer to place all text chunks before IDAT (not just XMP)
+    (github issue #23)
   - Issue minor warning for any text chunk after PNG IDAT (not just XMP)
   - Enhanced ForceWrite feature to allow "PNG" to be specified (to move existing
     text chunks to before IDAT without editing any metadata)
@@ -377,7 +388,7 @@ June 17, 2019 - Version 11.52
   - Fixed problem where reading a large, corrupt AIFF file may could take an
     excessively long time
   - API Changes:
-      - Enhanced Compact option to add levels 3, 4 and 5
+      - Enhanced Compact option to add levels 3, 4 and 5 (github issue #16)
 
 June 13, 2019 - Version 11.51
 
@@ -515,7 +526,7 @@ May 3, 2019 - Version 11.39 - "Create QuickTime tags"
   - Decode Canon EOS D60 black levels
   - Split off some QuickTime tags into different family 1 groups
   - Fixed "Chunk offset outside movie data" error when writing some HEIC files
-  - Fixed decoding of Pentax AutoBracketing for K-1 and K-5
+  - Fixed decoding of Pentax AutoBracketing for K-1 and K-5 (github issue #15)
   - Fixed some QuickTime family 2 group names
   - Fixed bug introduced in 11.38 that broke extraction of thumbnail images from
     Canon MOV videos

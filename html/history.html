@@ -11,16 +11,26 @@
 
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
+<p><i class=red>(I'll be on vacation Jan 14-23/2020, so don't expect any email or
+forum responses from me during this period - PH)</i></p>
+
 <p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-11.70.tar.gz">Version 11.70</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">CPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.84'><b>Jan. 10, 2020 - Version 11.84</b></a>
+<ul>
+<li>Decode accelerometer data from timed metadata of more dashcam videos
+<li>Decode Canon G9 white balance tags (thanks LibRaw)
+<li>Recognize INSP files
+</ul>
+
 <a name='v11.83'><b>Jan. 9, 2020 - Version 11.83</b></a>
 <ul>
 <li>Added a couple of new XMP-crs tags (thanks Herb)
-<li>Fixed bug introduced in 11.82 with -php -b -D output
+<li>Fixed bug introduced in 11.82 with the -php -D output
 <li>Fixed problem where some flattened XMP tags could be written when they
     should be avoided
 </ul>
@@ -30,7 +40,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added a new Canon LensType
 <li>Added a new CanonModelID (thanks LibRaw)
 <li>Added ability to process SubDirectories in QuickTime Keys tags
-<li>Removed minor error when writing PDF 2.0 files
+<li>Removed minor error when writing PDF 2.0 files (github issue #30)
 <li>Fixed problem where trailing null bytes were removed from binary values in
     the -php output when the -b option was used
 </ul>
@@ -45,7 +55,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Patched Composite sub-second date/time tags to do additional validation of
     source EXIF date/time tags before adding sub seconds
 <li>Fixed problem where -json output could produce invalid JSON when -struct was
-    used and the structure field names contained special characters
+    used and the structure field names contained special characters (github
+    issue #32)
 <li>Fixed spelling in a Panasonic SceneMode value (thanks Hubert)
 </ul>
 
@@ -67,7 +78,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <ul>
 <li>Added support for AVIF files
 <li>Added new Canon, Sigma and Sony LensType values (thanks LibRaw)
-<li>Made PDF 2.0 writable at your own risk with the -m option
+<li>Made PDF 2.0 writable at your own risk with the -m option (github issue #30)
 <li>Enhanced -validate feature to warn about duplicate languages in an XMP
     lang-alt list
 <li>Fixed inconsistency between documentation and ExifTool capabilities for
@@ -164,7 +175,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <a name='v11.70'><b>Oct. 10, 2019 - Version 11.70</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added a new CanonModelID (thanks Laurent Cl&eacute;vy)
-<li>Improved identification of Office Open XML files
+<li>Improved identification of Office Open XML files (github issue #27)
 <li>Removed RAF version check when writing FujiFilm RAF files
 <li>Limited the number of accelerometer records that ExifTool will read by
     default with the -ee option from INSV files to avoid excessive processing

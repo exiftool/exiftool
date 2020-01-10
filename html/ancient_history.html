@@ -91,6 +91,7 @@
 <li>Added a few new Sigma lenses (thanks LibRaw)
 <li>Improved handling of Canon CNTH atom in MOV/MP4 videos
 <li>Changed PNG writer to place all text chunks before IDAT (not just XMP)
+    (github issue #23)
 <li>Issue minor warning for any text chunk after PNG IDAT (not just XMP)
 <li>Enhanced ForceWrite feature to allow "PNG" to be specified (to move existing
     text chunks to before IDAT without editing any metadata)
@@ -269,7 +270,7 @@
     excessively long time
 <li>API Changes:
     <ul>
-    <li>Enhanced <a href="ExifTool.html#Compact">Compact option</a> to add levels 3, 4 and 5
+    <li>Enhanced <a href="ExifTool.html#Compact">Compact option</a> to add levels 3, 4 and 5 (github issue #16)
     </ul>
 </ul>
 
@@ -423,7 +424,7 @@
 <li>Decode Canon EOS D60 black levels
 <li>Split off some QuickTime tags into different family 1 groups
 <li>Fixed "Chunk offset outside movie data" error when writing some HEIC files
-<li>Fixed decoding of Pentax AutoBracketing for K-1 and K-5
+<li>Fixed decoding of Pentax AutoBracketing for K-1 and K-5 (github issue #15)
 <li>Fixed some QuickTime family 2 group names
 <li>Fixed bug introduced in 11.38 that broke extraction of thumbnail images from
     Canon MOV videos

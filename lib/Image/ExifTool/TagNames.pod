@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23207 tags, with 15173 unique tag names.
+They contain a total of 23217 tags, with 15179 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -5411,6 +5411,7 @@ boot, not including standby time.
   0x0026   CanonAFInfo2                         Canon AFInfo2
   0x0027   ContrastInfo                         Canon ContrastInfo
   0x0028   ImageUniqueID                        int8u
+  0x0029   WBInfo                               Canon WBInfo
   0x002f   FaceDetect3                          Canon FaceDetect3
   0x0035   TimeInfo                             Canon TimeInfo
   0x0038   BatteryType                          undef
@@ -6519,6 +6520,23 @@ may be 7, 9, 11, 19, 31, 45 or 61, depending on the camera model.
   Index2   Tag Name                             Writable
   ------   --------                             --------
       4    IntelligentContrast                  int16u
+
+=head3 Canon WBInfo Tags
+
+WB tags for the Canon G9.
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      2    WB_GRGBLevelsAuto                    int32s[4]
+     10    WB_GRGBLevelsDaylight                int32s[4]
+     18    WB_GRGBLevelsCloudy                  int32s[4]
+     26    WB_GRGBLevelsTungsten                int32s[4]
+     34    WB_GRGBLevelsFluorescent             int32s[4]
+     42    WB_GRGBLevelsFluorHigh               int32s[4]
+     50    WB_GRGBLevelsFlash                   int32s[4]
+     58    WB_GRGBLevelsUnderwater              int32s[4]
+     66    WB_GRGBLevelsCustom1                 int32s[4]
+     74    WB_GRGBLevelsCustom2                 int32s[4]
 
 =head3 Canon FaceDetect3 Tags
 

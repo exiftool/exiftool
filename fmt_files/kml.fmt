@@ -13,7 +13,6 @@
 #               2017/02/02 - PH Organize into folders based on file directory
 #               2018/01/03 - PH Added IF to be sure position exists
 #               2020/01/11 - F. Kotov Limited image preview size to 500px. 
-#                            Changed xlmns to match KML written by Google Earth.
 #                            Removed unnecessary table from placemark description.
 #
 # Notes:     1) Input files must contain GPSLatitude and GPSLongitude.
@@ -28,7 +27,7 @@
 #               generated placemarks when processing multiple files.
 #------------------------------------------------------------------------------
 #[HEAD]<?xml version="1.0" encoding="UTF-8"?>
-#[HEAD]<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+#[HEAD]<kml xmlns="http://earth.google.com/kml/2.0">
 #[HEAD]  <Document>
 #[HEAD]    <name>My Photos</name>
 #[HEAD]    <open>1</open>
@@ -46,7 +45,7 @@
 #[IF]  $gpslatitude $gpslongitude
 #[BODY]      <Placemark>
 #[BODY]        <description>
-#[BODY]         <![CDATA[<img src='$main:directory/$main:filename' style="max-width:500px;"> ]]>
+#[BODY]         <![CDATA[<img src='$main:directory/$main:filename' style="max-width:500px;max-height:500px;"> ]]>
 #[BODY]        </description>
 #[BODY]        <name>$filename</name>
 #[BODY]        <styleUrl>#Photo</styleUrl>

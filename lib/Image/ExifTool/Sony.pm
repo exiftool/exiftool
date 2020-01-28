@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.19';
+$VERSION = '3.20';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -205,6 +205,7 @@ sub PrintInvLensSpec($;$$);
     50514 => 'Sigma 45mm F2.8 DG DN | C', #IB/JR (019)
     50515 => 'Sigma 35mm F1.2 DG DN | A', #IB/JR (019)
     50516 => 'Sigma 14-24mm F2.8 DG DN | A', #IB/JR (019)
+    50517 => 'Sigma 24-70mm F2.8 DG DN | A', #JR (019)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
@@ -228,6 +229,7 @@ sub PrintInvLensSpec($;$$);
     51507 => 'Samyang AF 35mm F1.4', #IB
     51508 => 'Samyang AF 45mm F1.8',
     51510 => 'Samyang AF 18mm F2.8', #JR
+
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)

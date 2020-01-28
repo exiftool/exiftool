@@ -1604,6 +1604,8 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             TagTable => 'Image::ExifTool::Canon::FaceDetect3',
         },
     },
+    # 0x32 - if length is 768, starting at offset 4 there are 6 RGGB 1/val int16 records:
+    #        daylight,cloudy,tungsten,fluorescent,flash,kelvin (D30 2001, ref IB)
     0x35 => { #PH
         Name => 'TimeInfo',
         SubDirectory => {

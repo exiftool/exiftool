@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.29';
+$VERSION = '1.30';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
@@ -248,13 +248,16 @@ sub ProcessJPEG_HDR($$$);
         Condition => '$$valPt =~ /QDIOBS$/',
         SubDirectory => { TagTable => 'Image::ExifTool::Samsung::Trailer' },
       }, {
-        Name => 'PreviewImage',
-        Condition => '$$valPt =~ /^\xff\xd8\xff/',
-        Writable => 2,  # (for docs only)
-      }, {
         Name => 'EmbeddedVideo',
         Notes => 'extracted only when ExtractEmbedded option is used',
         Condition => '$$valPt =~ /^.{4}ftyp/s',
+      }, {
+        Name => 'Insta360',
+        Condition => '$$valPt =~ /8db42d694ccc418790edff439fe026bf$/',
+      }, {
+        Name => 'PreviewImage',
+        Condition => '$$valPt =~ /^\xff\xd8\xff/',
+        Writable => 2,  # (for docs only)
     }],
 );
 

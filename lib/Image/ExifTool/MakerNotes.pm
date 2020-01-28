@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '2.09';
+$VERSION = '2.10';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -691,7 +691,6 @@ my $debug;          # set to 1 to enable debugging code
         SubDirectory => {
             TagTable => 'Image::ExifTool::Panasonic::Leica9',
             Start => '$valuePtr + 8',
-            Base => '$start - 8',
             ByteOrder => 'Unknown',
         },
     },

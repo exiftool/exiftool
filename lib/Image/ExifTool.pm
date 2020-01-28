@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen);
 
-$VERSION = '11.84';
+$VERSION = '11.85';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -5748,6 +5748,8 @@ sub IdentifyTrailer($;$)
             $type = 'MIE';
         } elsif ($buff =~ /\0\0(QDIOBS|SEFT)$/) {
             $type = 'Samsung';
+        } elsif ($buff =~ /8db42d694ccc418790edff439fe026bf$/s) {
+            $type = 'Insta360';
         }
         last;
     }
@@ -5779,9 +5781,14 @@ sub ProcessTrailers($$)
     my $path = $$self{PATH};
 
     for (;;) { # loop through all trailers
-        require "Image/ExifTool/$dirName.pm";
-        my $proc = "Image::ExifTool::${dirName}::Process$dirName";
-        my $outBuff;
+        my ($proc, $outBuff);
+        if ($dirName eq 'Insta360') {
+            require "Image/ExifTool/QuickTimeStream.pl";
+            $proc = 'Image::ExifTool::QuickTime::ProcessInsta360';
+        } else {
+            require "Image/ExifTool/$dirName.pm";
+            $proc = "Image::ExifTool::${dirName}::Process$dirName";
+        }
         if ($outfile) {
             # write to local buffer so we can add trailer in proper order later
             $$outfile and $$dirInfo{OutFile} = \$outBuff, $outBuff = '';
@@ -5796,8 +5803,9 @@ sub ProcessTrailers($$)
         push @$path, 'Trailer', $dirName;
 
         # read or write this trailer
-        # (proc takes Offset as offset from end of trailer to end of file,
-        #  and returns DataPos and DirLen, and Fixup if applicable)
+        # (proc takes Offset as positive offset from end of trailer to end of file,
+        #  and returns DataPos and DirLen, and Fixup if applicable, and updates
+        #  OutFile when writing)
         no strict 'refs';
         my $result = &$proc($self, $dirInfo);
         use strict 'refs';

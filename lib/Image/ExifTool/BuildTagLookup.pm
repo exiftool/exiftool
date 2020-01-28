@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.31';
+$VERSION = '3.32';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -449,13 +449,13 @@ language code to write the default language without deleting alternate
 languages.  Note that "eng" is treated as a default language when reading,
 but not when writing.
 
-According to the specification, many QuickTime date/time tags should be
-stored as UTC.  Unfortunately, digital cameras often store local time values
-instead (presumably because they don't know the time zone).  For this
-reason, by default ExifTool does not assume a time zone for these values.
-However, if the L<QuickTimeUTC|../ExifTool.html#QuickTimeUTC> API option is set, then ExifTool will assume
-these values are properly stored as UTC, and will convert them to local time
-when extracting.
+According to the specification, integer-format QuickTime date/time tags
+should be stored as UTC.  Unfortunately, digital cameras often store local
+time values instead (presumably because they don't know the time zone).  For
+this reason, by default ExifTool does not assume a time zone for these
+values.  However, if the L<QuickTimeUTC|../ExifTool.html#QuickTimeUTC> API option is set, then ExifTool will
+assume these values are properly stored as UTC, and will convert them to
+local time when extracting.
 
 See
 L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/>

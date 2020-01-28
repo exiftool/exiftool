@@ -8233,6 +8233,7 @@ my %tagExists = (
 	'insertmode' => 1,
 	'insetnwpixelx' => 1,
 	'insetnwpixely' => 1,
+	'insta360' => 1,
 	'institution' => 1,
 	'instructionset' => 1,
 	'insv' => 1,

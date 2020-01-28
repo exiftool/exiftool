@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.75';
+$VERSION = '1.76';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -302,6 +302,7 @@ my %faceCategories = (
         PrintConv => {
             0 => 'Auto',
             1 => 'Manual',
+            65535 => 'Movie', #forum10766
         },
     },
     0x1022 => { #8/forum6579

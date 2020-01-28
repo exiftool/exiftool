@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.29';
+$VERSION = '3.30';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -178,6 +178,7 @@ sub DecodeAFPoints($$$$;$);
     '4 2' => 'smc PENTAX-FA 80-320mm F4.5-5.6',
     '4 3' => 'smc PENTAX-FA 43mm F1.9 Limited',
     '4 6' => 'smc PENTAX-FA 35-80mm F4-5.6',
+    '4 8' => 'Irix 150mm F2.8 Macro', #exiv2 issue 1084
     '4 9' => 'Irix 11mm F4 Firefly', #27
     '4 10' => 'Irix 15mm F2.4', #27
     '4 12' => 'smc PENTAX-FA 50mm F1.4', #17
@@ -336,6 +337,7 @@ sub DecodeAFPoints($$$$;$);
     '8 62' => 'HD PENTAX-D FA 24-70mm F2.8 ED SDM WR', #PH
     '8 63' => 'HD PENTAX-D FA 15-30mm F2.8 ED SDM WR', #PH
     '8 64' => 'HD PENTAX-D FA* 50mm F1.4 SDM AW', #27
+    '8 65' => 'HD PENTAX-D FA 70-210mm F4 ED SDM WR', #PH
     '8 196' => 'HD PENTAX-DA* 11-18mm F2.8 ED DC AW', #29
     '8 197' => 'HD PENTAX-DA 55-300mm F4.5-6.3 ED PLM WR RE', #29
     '8 198' => 'smc PENTAX-DA L 18-50mm F4-5.6 DC WR RE', #29

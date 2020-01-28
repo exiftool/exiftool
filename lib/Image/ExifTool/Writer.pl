@@ -135,8 +135,8 @@ my %rawType = (
 my @delGroups = qw(
     Adobe AFCP APP0 APP1 APP2 APP3 APP4 APP5 APP6 APP7 APP8 APP9 APP10 APP11
     APP12 APP13 APP14 APP15 CanonVRD CIFF Ducky EXIF ExifIFD File FlashPix
-    FotoStation GlobParamIFD GPS ICC_Profile IFD0 IFD1 InteropIFD IPTC ItemList
-    JFIF Jpeg2000 Keys MakerNotes Meta MetaIFD MIE MPF NikonCapture PDF
+    FotoStation GlobParamIFD GPS ICC_Profile IFD0 IFD1 Insta360 InteropIFD IPTC
+    ItemList JFIF Jpeg2000 Keys MakerNotes Meta MetaIFD MIE MPF NikonCapture PDF
     PDF-update PhotoMechanic Photoshop PNG PNG-pHYs PrintIM QuickTime RMETA RSRC
     SubIFD Trailer UserData XML XML-* XMP XMP-*
 );

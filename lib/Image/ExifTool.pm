@@ -19,6 +19,7 @@ use strict;
 require 5.004;  # require 5.004 for UNIVERSAL::isa (otherwise 5.002 would do)
 require Exporter;
 use File::RandomAccess;
+use overload ();
 
 use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %allTables @tableOrder $exifAPP1hdr $xmpAPP1hdr $xmpExtAPP1hdr
@@ -4046,7 +4047,7 @@ sub ParseArguments($;@)
     # handle our input arguments
     while (@_) {
         my $arg = shift;
-        if (ref $arg) {
+        if (ref $arg && !overload::Method($arg, q[""])) {
             if (ref $arg eq 'ARRAY') {
                 $$self{IO_TAG_LIST} = $arg;
                 foreach (@$arg) {

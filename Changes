@@ -7,6 +7,18 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.85. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 4, 2020 - Version 11.86
+
+  - Added support for DNG version 1.5
+  - Added config_files/acdsee.config to the full distribution (thanks StarGeek)
+  - Added a new Sony LensType (thanks Jos Roost and LibRaw)
+  - Decode two more bits in Nikon LensType (thanks LibRaw)
+  - Decode QuickTime MovieFragmentSequence
+  - Patched HEIC writer to add missing iref box if necessary
+  - Fixed typo in a Canon LensType value
+  - API Changes:
+      - Patched ImageInfo() to recognize a stringified object as a file name
+
 Jan. 28, 2020 - Version 11.85 (production release)
 
   - Added a new Sony LensType (thanks Jos Roost)

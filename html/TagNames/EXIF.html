@@ -64,7 +64,7 @@ for the official EXIF 2.32 specification.
 <td class=c title=' ! = Unsafe'>int32u!</td>
 <td class=c>IFD0</td>
 <td><span class=s><span class=n>(called NewSubfileType by the TIFF specification)</span>
-  <br>0x0 = Full-resolution Image
+  <br>0x0 = Full-resolution image
   <br>0x1 = Reduced-resolution image
   <br>0x2 = Single page of multi-page image
   <br>0x3 = Single page of multi-page reduced-resolution image
@@ -72,6 +72,9 @@ for the official EXIF 2.32 specification.
   <br>0x5 = Transparency mask of reduced-resolution image
   <br>0x6 = Transparency mask of multi-page image
   <br>0x7 = Transparency mask of reduced-resolution multi-page image
+  <br>0x8 = Depth map
+  <br>0x9 = Depth map of reduced-resolution image
+  <br>0x10 = Enhanced image data
   <br>0x10001 = Alternate reduced-resolution image
   <br>0xffffffff = invalid
   <br>Bit 0 = Reduced resolution
@@ -133,7 +136,8 @@ for the official EXIF 2.32 specification.
   <br>32844 = Pixar LogL
   <br>32845 = Pixar LogLuv
   <br>32892 = Sequential Color Filter
-  <br>34892 = Linear Raw</td></tr></table>
+  <br>34892 = Linear Raw
+  <br>51177 = Depth Map</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x0107 = 263'>0x0107</td>
@@ -382,8 +386,15 @@ it is JpgFromRawLength)</span></span></td></tr>
 <td>Predictor</td>
 <td class=c title=' ! = Unsafe'>int16u!</td>
 <td class=c>IFD0</td>
-<td><span class=s>1 = None
-  <br>2 = Horizontal differencing</span></td></tr>
+<td><table class=cols><tr>
+  <td>1 = None
+  <br>2 = Horizontal differencing
+  <br>3 = Floating point
+  <br>34892 = Horizontal difference X2
+  <br>34893 = Horizontal difference X4
+  <br>34894 = Floating point X2
+  <br>34895 = Floating point X4</td></tr></table>
+</td></tr>
 <tr>
 <td title='0x013e = 318'>0x013e</td>
 <td><u>WhitePoint</u></td>
@@ -3439,6 +3450,48 @@ one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</sp
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#NEFInfo'>Nikon NEFInfo Tags</a></td></tr>
 <tr>
+<td title='0xc7e9 = 51177'>0xc7e9</td>
+<td>DepthFormat</td>
+<td class=c title=' ! = Unsafe'>int16u!</td>
+<td class=c>IFD0</td>
+<td><span class=s><span class=n>(tags 0xc7e9-0xc7ee added by DNG 1.5.0.0)</span>
+  <br>0 = Unknown
+  <br>1 = Linear
+  <br>2 = Inverse</span></td></tr>
+<tr class=b>
+<td title='0xc7ea = 51178'>0xc7ea</td>
+<td>DepthNear</td>
+<td class=c title=' ! = Unsafe'>rational64u!</td>
+<td class=c>IFD0</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc7eb = 51179'>0xc7eb</td>
+<td>DepthFar</td>
+<td class=c title=' ! = Unsafe'>rational64u!</td>
+<td class=c>IFD0</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc7ec = 51180'>0xc7ec</td>
+<td>DepthUnits</td>
+<td class=c title=' ! = Unsafe'>int16u!</td>
+<td class=c>IFD0</td>
+<td><span class=s>0 = Unknown
+  <br>1 = Meters</span></td></tr>
+<tr>
+<td title='0xc7ed = 51181'>0xc7ed</td>
+<td>DepthMeasureType</td>
+<td class=c title=' ! = Unsafe'>int16u!</td>
+<td class=c>IFD0</td>
+<td><span class=s>0 = Unknown
+  <br>1 = Optical Axis
+  <br>2 = Optical Ray</span></td></tr>
+<tr class=b>
+<td title='0xc7ee = 51182'>0xc7ee</td>
+<td>EnhanceParams</td>
+<td class=c title=' ! = Unsafe'>string!</td>
+<td class=c>IFD0</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0xea1c = 59932'>0xea1c</td>
 <td>Padding</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
@@ -3668,7 +3721,7 @@ these unless they already exist in the file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 22, 2019</i>
+<br><i>Last revised Feb 3, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

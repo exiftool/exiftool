@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.86
 [File, System, Other] FileName - File Name: Nikon.nef
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 6.0 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2007:01:05 13:00:46-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:13-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:02:04 08:34:50-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:01:28 10:35:42-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: NEF
 [File, File, Other] FileTypeExtension - File Type Extension: nef
@@ -38,7 +38,7 @@
 [EXIF, SubIFD, Image] 296 - Resolution Unit: inches
 [EXIF, SubIFD, Image] 513 - Jpg From Raw Start: 1120
 [EXIF, SubIFD, Image] 514 - Jpg From Raw Length: 29
-[EXIF, SubIFD1, Image] 254 - Subfile Type: Full-resolution Image
+[EXIF, SubIFD1, Image] 254 - Subfile Type: Full-resolution image
 [EXIF, SubIFD1, Image] 256 - Image Width: 3040
 [EXIF, SubIFD1, Image] 257 - Image Height: 2014
 [EXIF, SubIFD1, Image] 258 - Bits Per Sample: 12

@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.27';
+$VERSION = '4.28';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -264,6 +264,7 @@ sub BINARY_DATA_LIMIT { return 10 * 1024 * 1024; }
     32845 => 'Pixar LogLuv', #3
     32892 => 'Sequential Color Filter', #JR (Sony ARQ)
     34892 => 'Linear Raw', #2
+    51177 => 'Depth Map', # (DNG 1.5)
 );
 
 %orientation = (
@@ -278,7 +279,7 @@ sub BINARY_DATA_LIMIT { return 10 * 1024 * 1024; }
 );
 
 %subfileType = (
-    0 => 'Full-resolution Image',
+    0 => 'Full-resolution image',
     1 => 'Reduced-resolution image',
     2 => 'Single page of multi-page image',
     3 => 'Single page of multi-page reduced-resolution image',
@@ -286,14 +287,17 @@ sub BINARY_DATA_LIMIT { return 10 * 1024 * 1024; }
     5 => 'Transparency mask of reduced-resolution image',
     6 => 'Transparency mask of multi-page image',
     7 => 'Transparency mask of reduced-resolution multi-page image',
+    8 => 'Depth map', # (DNG 1.5)
+    9 => 'Depth map of reduced-resolution image', # (DNG 1.5)
+    16 => 'Enhanced image data', # (DNG 1.5)
     0x10001 => 'Alternate reduced-resolution image', # (DNG 1.2)
     0xffffffff => 'invalid', #(found in E5700 NEF's)
     BITMASK => {
         0 => 'Reduced resolution',
         1 => 'Single page',
         2 => 'Transparency mask',
-        3 => 'TIFF/IT final page', #20
-        4 => 'TIFF-FX mixed raster content', #20
+        3 => 'TIFF/IT final page', #20 (repurposed as DepthMap repurposes by DNG 1.5)
+        4 => 'TIFF-FX mixed raster content', #20 (repurposed as EnhancedImageData by DNG 1.5)
     },
 );
 
@@ -850,6 +854,11 @@ my %opcodeInfo = (
         PrintConv => {
             1 => 'None',
             2 => 'Horizontal differencing',
+            3 => 'Floating point', # (DNG 1.5)
+            34892 => 'Horizontal difference X2', # (DNG 1.5)
+            34893 => 'Horizontal difference X4', # (DNG 1.5)
+            34894 => 'Floating point X2', # (DNG 1.5)
+            34895 => 'Floating point X4', # (DNG 1.5)
         },
     },
     0x13e => {
@@ -3964,6 +3973,57 @@ my %opcodeInfo = (
         },
     },
     # 0xc7d6 - int8u: 1 (SubIFD1 of Nikon Z6/Z7 NEF)
+    0xc7e9 => { # DNG 1.5
+        Name => 'DepthFormat',
+        Writable => 'int16u',
+        Notes => 'tags 0xc7e9-0xc7ee added by DNG 1.5.0.0',
+        Protected => 1,
+        WriteGroup => 'IFD0',
+        PrintConv => {
+            0 => 'Unknown',
+            1 => 'Linear',
+            2 => 'Inverse',
+        },
+    },
+    0xc7ea => { # DNG 1.5
+        Name => 'DepthNear',
+        Writable => 'rational64u',
+        Protected => 1,
+        WriteGroup => 'IFD0',
+    },
+    0xc7eb => { # DNG 1.5
+        Name => 'DepthFar',
+        Writable => 'rational64u',
+        Protected => 1,
+        WriteGroup => 'IFD0',
+    },
+    0xc7ec => { # DNG 1.5
+        Name => 'DepthUnits',
+        Writable => 'int16u',
+        Protected => 1,
+        WriteGroup => 'IFD0',
+        PrintConv => {
+            0 => 'Unknown',
+            1 => 'Meters',
+        },
+    },
+    0xc7ed => { # DNG 1.5
+        Name => 'DepthMeasureType',
+        Writable => 'int16u',
+        Protected => 1,
+        WriteGroup => 'IFD0',
+        PrintConv => {
+            0 => 'Unknown',
+            1 => 'Optical Axis',
+            2 => 'Optical Ray',
+        },
+    },
+    0xc7ee => { # DNG 1.5
+        Name => 'EnhanceParams',
+        Writable => 'string',
+        Protected => 1,
+        WriteGroup => 'IFD0',
+    },
     0xea1c => { #13
         Name => 'Padding',
         Binary => 1,

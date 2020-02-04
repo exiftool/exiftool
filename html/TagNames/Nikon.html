@@ -308,7 +308,9 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>Bit 2 = G
   <br>Bit 3 = VR
   <br>Bit 4 = 1
-  <br>Bit 6 = E</span></td></tr>
+  <br>Bit 5 = FT-1
+  <br>Bit 6 = E
+  <br>Bit 7 = AF-P</span></td></tr>
 <tr>
 <td title='0x0084 = 132'>0x0084</td>
 <td>Lens</td>
@@ -789,7 +791,7 @@ edit versions, otherwise this is extracted as a binary data block)</span>
 <td title='0x00fe = 254'>0x00fe</td>
 <td>SubfileType</td>
 <td class=c>no</td>
-<td><span class=s>0x0 = Full-resolution Image
+<td><span class=s>0x0 = Full-resolution image
   <br>0x1 = Reduced-resolution image
   <br>0x2 = Single page of multi-page image
   <br>0x3 = Single page of multi-page reduced-resolution image
@@ -797,6 +799,9 @@ edit versions, otherwise this is extracted as a binary data block)</span>
   <br>0x5 = Transparency mask of reduced-resolution image
   <br>0x6 = Transparency mask of multi-page image
   <br>0x7 = Transparency mask of reduced-resolution multi-page image
+  <br>0x8 = Depth map
+  <br>0x9 = Depth map of reduced-resolution image
+  <br>0x10 = Enhanced image data
   <br>0x10001 = Alternate reduced-resolution image
   <br>0xffffffff = invalid
   <br>Bit 0 = Reduced resolution
@@ -7127,7 +7132,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 2, 2020</i>
+<br><i>Last revised Feb 3, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

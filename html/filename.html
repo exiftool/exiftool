@@ -26,8 +26,8 @@ directory is created if it doesn't already exist.</p>
 <p>Writing the <b>FileName</b> tag renames a file.  If the new <b>FileName</b>
 has a directory specification (ie. contains a '<code>/</code>' character), then
 the file is also moved to the specified directory (see
-<a href="#ex6">example 6</a> below).  Existing files will not be overwritten
-(but see "Warning" below).</p>
+<a href="#ex6">example 6</a> below), and the directory is created if necessary.
+Existing files will not be overwritten (but see "Warning" below).</p>
 
 <p>The write-only <b>TestName</b> tag provides a mechanism for dry-run testing
 of the rename feature.  Writing <b>TestName</b> displays the old and new names

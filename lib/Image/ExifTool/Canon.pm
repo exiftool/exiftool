@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.33';
+$VERSION = '4.34';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -401,7 +401,7 @@ $VERSION = '4.33';
     195 => 'Canon EF 35-105mm f/4.5-5.6 USM', #32
     196 => 'Canon EF 75-300mm f/4-5.6 USM', #15/32
     197 => 'Canon EF 75-300mm f/4-5.6 IS USM or Sigma Lens',
-    197.1 => 'Sigma 18-300mm f/3.5-6.3 DC Macro OS HS', #50
+    197.1 => 'Sigma 18-300mm f/3.5-6.3 DC Macro OS HSM', #50
     198 => 'Canon EF 50mm f/1.4 USM or Other Lens',
     198.1 => 'Zeiss Otus 55mm f/1.4 ZE', #JR (seen only on Sony camera)
     198.2 => 'Zeiss Otus 85mm f/1.4 ZE', #JR (NC)

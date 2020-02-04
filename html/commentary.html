@@ -264,7 +264,14 @@ information could be decoded properly.  These changes would allow some
 unknown information to be interpreted, which would make it possible for
 information added by 3rd parties to be useful.</p>
 
-<p>I only have 3 problems with the QuickTime specification:</p>
+<p>... but there are some significant problems with the QuickTime specification:</p>
+
+<p>0) The biggest problem with some QuickTime-based files (ie. MOV, MP4,
+HEIC) is that atoms may store absolute offsets into the media data, and
+these pointers are easily invalidated by editing the file.  This puts a huge
+burdon on the editing application to update all necessary pointers, and
+makes it much, much harder than it should be to edit these files (it takes
+significant effort to just determine which atoms may containing pointers).</p>
 
 <p>1) The metadata organization is a mess because tags may be stored in more
 than one location (eg. UserData vs. InfoList), and conflicting metadata
@@ -323,7 +330,7 @@ offers a number of other features:</p>
 
 <hr>
 <i>Created Nov. 15, 2005</i><br>
-<i>Last revised July 31, 2019</i>
+<i>Last revised Feb 4, 2020</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

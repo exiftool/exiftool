@@ -31,7 +31,7 @@ uninstalling ExifTool on your specific platform:</p>
 
 <ul>
 <li><a href="#Windows">Windows</a></li>
-<li><a href="#OSX">Macintosh OS X</a></li>
+<li><a href="#OSX">MacOS</a></li>
 <li><a href="#Unix">Unix Platforms</a></li>
 </ul>
 
@@ -52,10 +52,10 @@ documentation or some other files of the full distribution.</p>
 <h3>Stand-Alone Executable</h3>
 <ol>
 <li><b>Download</b> the <b>Windows Executable</b> from the <a href="index.html">ExifTool home page</a>.
-<br><span class=lt>(The file you download should be named "<code>exiftool-11.85.zip</code>".)</span></li>
+<br><span class=lt>(The file you download should be named "<code>exiftool-11.86.zip</code>".)</span></li>
 <li><b>Extract "<code>exiftool(-k).exe</code>"</b> from the
 "<code>.zip</code>" file, and place it <b>on your Desktop</b>.
-<br><span class=lt>(Double-click on "<code>exiftool-11.85.zip</code>" to open
+<br><span class=lt>(Double-click on "<code>exiftool-11.86.zip</code>" to open
 the archive, then drag "<code>exiftool(-k).exe</code>" to your Desktop.)</span></li>
 </ol>
 <p>You can now double-click on "<code>exiftool(-k).exe</code>" to read the
@@ -107,7 +107,7 @@ can be downloaded from
 <a href="http://www.activestate.com/activeperl/">activeperl.com</a>.)</p>
 <ol>
 <li><b>Download</b> the <b>Image-ExifTool distribution</b> from the <a href="index.html">ExifTool home page</a>
-<br><span class=lt>(The file you download should be named "<code>Image-ExifTool-11.85.tar.gz</code>".)</span></li>
+<br><span class=lt>(The file you download should be named "<code>Image-ExifTool-11.86.tar.gz</code>".)</span></li>
 <li><b>Extract the ExifTool files</b> from the archive.
 <br><span class=lt>(The archive is a gzipped tar file, and can be opened with
 various Windows utilities, including WinZip.)</span></li>
@@ -132,7 +132,7 @@ contains anything else.</li>
 </ol>
 
 <hr>
-<h2><a name="OSX">Macintosh OS X</a></h2>
+<h2><a name="OSX">MacOS</a></h2>
 
 <p>If you have installed the BSDSDK package from the Xcode Developer Tools
 (<i>ie. if you have the</i> "<code>make</code>" <i>utility</i>), you should
@@ -140,22 +140,22 @@ follow the install procedure for <a href="#Unix">Unix platforms</a> in the next
 section instead of the steps below. The Unix install has the advantage of making
 the ExifTool library available for your Perl scripts, as well as installing the
 man pages and POD documentation.</p>
-<p>Otherwise, you have a choice of two packages to install: The OS X package, or
+<p>Otherwise, you have a choice of two packages to install: The MacOS package, or
 the full Perl distribution.  Both of the procedures below install the ExifTool
-files in the same location.  Installing from the OS X package is easier, but the
+files in the same location.  Installing from the MacOS package is easier, but the
 full distribution includes HTML documentation and some other files not included
-in the OS X package.  Both versions run natively on PPC and Intel Macs.</p>
+in the MacOS package.  Both versions run natively on PPC and Intel Macs.</p>
 
-<h3>OS X Package</h3>
+<h3>MacOS Package</h3>
 <ol>
-<li><b>Download</b> the <b>ExifTool OS X Package</b> from the <a href="index.html">ExifTool home page</a>.
-<br><span class=lt>(The file you download should be named "<code>ExifTool-11.85.dmg</code>".)</span></li>
-<li><b>Install</b> as a normal <b>OS X package</b>.
+<li><b>Download</b> the <b>ExifTool MacOS Package</b> from the <a href="index.html">ExifTool home page</a>.
+<br><span class=lt>(The file you download should be named "<code>ExifTool-11.86.dmg</code>".)</span></li>
+<li><b>Install</b> as a normal <b>MacOS package</b>.
 <br><span class=lt>(Open the disk image, double-click on the install package, and follow the instructions.)
 </span></li>
 </ol>
 <p>You can now run exiftool by typing "<code>exiftool</code>" in a Terminal window.</p>
-<p>If this doesn't work, then it is likely you have an older version of OS X for which
+<p>If this doesn't work, then it is likely you have an older version of MacOS for which
 /usr/local/bin isn't in the default PATH.  To fix this, add the following line to your
 ~/.profile settings using a text editor:</p>
 <blockquote><code>export PATH=$PATH:/usr/local/bin</code></blockquote>
@@ -164,12 +164,12 @@ in the OS X package.  Both versions run natively on PPC and Intel Macs.</p>
 <ol>
 <li><b>Download</b> the <b>Image-ExifTool distribution</b> from the <a href="index.html">ExifTool home page</a>
 to your Desktop.
-<br><span class=lt>(The file you download should be named "<code>Image-ExifTool-11.85.tar.gz</code>".)</span></li>
+<br><span class=lt>(The file you download should be named "<code>Image-ExifTool-11.86.tar.gz</code>".)</span></li>
 <li><b>Launch</b> the <b>Terminal</b> application from the Utilities folder in your Applications folder.</li>
 <li>In the Terminal window, <b>type the following</b>:
 <pre class='code'>    cd ~/Desktop
-    tar -xzf Image-ExifTool-11.85.tar.gz
-    cd Image-ExifTool-11.85
+    tar -xzf Image-ExifTool-11.86.tar.gz
+    cd Image-ExifTool-11.86
     sudo cp -r exiftool lib /usr/local/bin
 </pre>
 <span class=lt>(Note: The last step above will require you to enter your
@@ -177,15 +177,15 @@ password.)</span></li>
 </ol>
 <p>You can now run exiftool by typing "<code>exiftool</code>" in a Terminal window.</p>
 
-<p class=lt><b>Notes:</b></p><ul class=lt><li>Both OS X installation techniques outlined above place
+<p class=lt><b>Notes:</b></p><ul class=lt><li>Both MacOS installation techniques outlined above place
 exiftool and its lib directory in /usr/local/bin, while the standard Unix
 "<code>make install</code>" described below puts "<code>exiftool</code>" in
 /usr/local/bin and the individual libraries in /Library/Perl/#.#.#, where "#.#.#" is
 your Perl version. If both sets of libraries exist, /usr/local/bin/lib takes
 precedence for exiftool, but /Library/Perl/#.#.# is the default for any other
 Perl scripts.</li>
-<li>In OS X 10.8 or later, you may see this message when you try to open the install package:
-<blockquote class=red>"ExifTool-11.85.pkg" can't be opened because it is from an
+<li>In MacOS 10.8 or later, you may see this message when you try to open the install package:
+<blockquote class=red>"ExifTool-11.86.pkg" can't be opened because it is from an
 unidentified developer.</blockquote> The solution is to control-click on the pkg
 then select "Open" from the pop-up menu instead of just double-clicking.  An alternative
 is to lower the security settings by changing "Allow applications downloaded from" to
@@ -199,7 +199,7 @@ for a full description.)</li></ul>
 <li>Launch the "Terminal" application from the Applications Utilities folder.</li>
 <li>Type "<code>open /usr/local/bin</code>" (without the quotes) in the Terminal
 window, then press RETURN. (This opens a folder that you normally can't access
-from OS X.)</li>
+from MacOS.)</li>
 <li>Drag "<code>exiftool</code>" and "<code>lib</code>" into the trash from the
 "<code>bin</code>" folder you opened. You should first confirm that
 "<code>lib</code>" contains only two sub-folders: "<code>File</code>" and
@@ -212,11 +212,11 @@ have the wrong "<code>lib</code>" folder.</li>
 
 <ol>
 <li><b>Download</b> the <b>Image-ExifTool distribution</b> from the <a href="index.html">ExifTool home page</a>
-<br><span class=lt>(The file you download should be named "<code>Image-ExifTool-11.85.tar.gz</code>".)</span></li>
+<br><span class=lt>(The file you download should be named "<code>Image-ExifTool-11.86.tar.gz</code>".)</span></li>
 <li><b>Unpack the distribution</b> and <b>make it your current directory</b> by typing:
 <pre class='code'>    cd <i>&lt;your download directory&gt;</i>
-    gzip -dc Image-ExifTool-11.85.tar.gz | tar -xf -
-    cd Image-ExifTool-11.85
+    gzip -dc Image-ExifTool-11.86.tar.gz | tar -xf -
+    cd Image-ExifTool-11.86
 </pre>
 <span class=lt>(At this point you may run exiftool by typing
 "<code>./exiftool <i>&lt;image file name&gt;</i></code>".)</span></li>

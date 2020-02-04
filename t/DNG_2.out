@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.86
 [File, System, Other] FileName - File Name: DNG.dng
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 13 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:02:26 09:30:53-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 09:54:20-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:02:04 08:34:38-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:01:28 10:35:42-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: DNG
 [File, File, Other] FileTypeExtension - File Type Extension: dng
@@ -26,7 +26,7 @@
 [EXIF, IFD0, Image] 284 - Planar Configuration: Chunky
 [EXIF, IFD0, Time] 306 - Modify Date: 2005:08:03 18:59:18
 [EXIF, IFD0, Author] 315 - Artist: unknown
-[EXIF, SubIFD, Image] 254 - Subfile Type: Full-resolution Image
+[EXIF, SubIFD, Image] 254 - Subfile Type: Full-resolution image
 [EXIF, SubIFD, Image] 256 - Image Width: 3516
 [EXIF, SubIFD, Image] 257 - Image Height: 2328
 [EXIF, SubIFD, Image] 258 - Bits Per Sample: 16

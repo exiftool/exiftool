@@ -105,8 +105,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-11.85.tar.gz | tar -xf -
-  cd Image-ExifTool-11.85
+  gzip -dc Image-ExifTool-11.86.tar.gz | tar -xf -
+  cd Image-ExifTool-11.86
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -189,6 +189,7 @@ distribution package:
     xmp2iptc.args             - Arguments for converting XMP to IPTC
     xmp2pdf.args              - Arguments for converting XMP to PDF
   config_files/             - Sample ExifTool configuration files:
+    acdsee.config             - Definitions for writing ACDSEE XMP regions
     age.config                - Calculate Age of person in photo
     bibble.config             - Definitions for writing Bibble XMP tags
     convert_regions.config    - Convert between MWG, MP and IPTC regions

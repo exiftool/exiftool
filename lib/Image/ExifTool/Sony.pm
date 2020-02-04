@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.20';
+$VERSION = '3.21';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -177,6 +177,7 @@ sub PrintInvLensSpec($;$$);
     49458 => 'Tamron 17-28mm F2.8 Di III RXD', #JR (Model A046)
     49459 => 'Tamron 35mm F2.8 Di III OSD M1:2', #IB (Model F053)
     49460 => 'Tamron 24mm F2.8 Di III OSD M1:2', #JR (Model F051)
+    49461 => 'Tamron 20mm F2.8 Di III OSD M1:2', #JR (Model F050)
 
     49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
     49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)

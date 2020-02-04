@@ -268,7 +268,9 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 
 <h2><a name='Stream'>QuickTime Stream Tags</a></h2>
 <p>Timed metadata extracted from QuickTime media data and some AVI videos when
-the ExtractEmbedded option is used.</p>
+the ExtractEmbedded option is used.  Although most of these tags are
+combined into the single table below, ExifTool currently reads 37 different
+formats of timed GPS metadata from video files.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -4930,10 +4932,28 @@ defined in this table.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Meta'>QuickTime Meta Tags</a></td></tr>
 <tr class=b>
+<td>'mfhd'</td>
+<td>MovieFragmentHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#MovieFragHdr'>QuickTime MovieFragHdr Tags</a></td></tr>
+<tr>
 <td>'traf'</td>
 <td>TrackFragment</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#TrackFragment'>QuickTime TrackFragment Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MovieFragHdr'>QuickTime MovieFragHdr Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>MovieFragmentSequence</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='TrackFragment'>QuickTime TrackFragment Tags</a></h2>
@@ -7968,7 +7988,7 @@ on the command line), or the PREFERRED level must be changed via
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 28, 2020</i>
+<br><i>Last revised Feb 4, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

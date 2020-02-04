@@ -449,7 +449,7 @@ sub WriteKeys($$$)
 sub WriteItemInfo($$$)
 {
     my ($et, $dirInfo, $outfile) = @_;
-    my $boxPos = $$dirInfo{BoxPos};
+    my $boxPos = $$dirInfo{BoxPos};     # hash of [length,position] for each box
     my $raf = $$et{RAF};
     my $items = $$et{ItemInfo};
     my (%did, @mdatEdit, $name);
@@ -549,8 +549,11 @@ sub WriteItemInfo($$$)
     my ($countNew, %add, %usedID);
     foreach $name ('EXIF','XMP') {
         next if $did{$name} or not $$et{ADD_DIRS}{$name};
-        unless ($$boxPos{iinf} and $$boxPos{iref} and $$boxPos{iloc}) {
-            $et->Warn("Can't create $name. Missing expected box");
+        my @missing;
+        $$boxPos{$_} or push @missing, $_ foreach qw(iinf iloc);
+        if (@missing) {
+            my $str = @missing > 1 ? join(' and ', @missing) . ' boxes' : "@missing box";
+            $et->Warn("Can't create $name. Missing expected $str");
             last;
         }
         my $primary = $$et{PrimaryItem};
@@ -577,6 +580,14 @@ sub WriteItemInfo($$$)
         my $changed = $$et{CHANGED};
         my $newVal = $et->WriteDirectory(\%dirInfo, $subTable, $proc);
         if (defined $newVal and $changed ne $$et{CHANGED}) {
+            my $irefVer;
+            if ($$boxPos{iref}) {
+                $irefVer = Get8u($outfile, $$boxPos{iref}[0] + 8);
+            } else {
+                # create iref box after end of iinf box (and save version in boxPos list)
+                $irefVer = ($primary > 0xffff ? 1 : 0);
+                $$boxPos{iref} = [ $$boxPos{iinf}[0] + $$boxPos{iinf}[1], 0, $irefVer ];
+            }
             $newVal = $hdr . $newVal if length $hdr;
             # add new infe to iinf
             $add{iinf} = $add{iref} = $add{iloc} = '' unless defined $add{iinf};
@@ -598,7 +609,6 @@ sub WriteItemInfo($$$)
                 $add{iinf} .= pack('Na4CCCCNn', $n, 'infe', 3, 0, 0, 1, $id, 0) . $type . $mime;
             }
             # add new cdsc to iref
-            my $irefVer = Get8u($outfile, $$boxPos{iref}[0] + 8);
             if ($irefVer) {
                 $add{iref} .= pack('Na4NnN', 18, 'cdsc', $id, 1, $primary);
             } else {
@@ -655,15 +665,22 @@ sub WriteItemInfo($$$)
         foreach $tag (sort { $$boxPos{$a}[0] <=> $$boxPos{$b}[0] } keys %$boxPos) {
             next unless $add{$tag};
             my $pos = $$boxPos{$tag}[0] + $added;
-            my $n = Get32u($outfile, $pos);
-            Set32u($n + length($add{$tag}), $outfile, $pos);        # increase box size
+            unless ($$boxPos{$tag}[1]) {
+                $tag eq 'iref' or $et->Error('Internal error adding iref box'), last;
+                # create new iref box
+                $add{$tag} = Set32u(12 + length $add{$tag}) . $tag .
+                             Set8u($$boxPos{$tag}[2]) . "\0\0\0" . $add{$tag};
+            } else {
+                my $n = Get32u($outfile, $pos);
+                Set32u($n + length($add{$tag}), $outfile, $pos);    # increase box size
+            }
             if ($tag eq 'iinf') {
                 my $iinfVer = Get8u($outfile, $pos + 8);
                 if ($iinfVer == 0) {
-                    $n = Get16u($outfile, $pos + 12);
+                    my $n = Get16u($outfile, $pos + 12);
                     Set16u($n + $countNew, $outfile, $pos + 12);    # incr count
                 } else {
-                    $n = Get32u($outfile, $pos + 12);
+                    my $n = Get32u($outfile, $pos + 12);
                     Set32u($n + $countNew, $outfile, $pos + 12);    # incr count
                 }
             } elsif ($tag eq 'iref') {
@@ -671,10 +688,10 @@ sub WriteItemInfo($$$)
             } elsif ($tag eq 'iloc') {
                 my $ilocVer = Get8u($outfile, $pos + 8);
                 if ($ilocVer < 2) {
-                    $n = Get16u($outfile, $pos + 14);
+                    my $n = Get16u($outfile, $pos + 14);
                     Set16u($n + $countNew, $outfile, $pos + 14);    # incr count
                 } else {
-                    $n = Get32u($outfile, $pos + 14);
+                    my $n = Get32u($outfile, $pos + 14);
                     Set32u($n + $countNew, $outfile, $pos + 14);    # incr count
                 }
                 # must also update pointer locations in this box

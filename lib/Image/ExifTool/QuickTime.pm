@@ -45,7 +45,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.41';
+$VERSION = '2.42';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -1064,7 +1064,10 @@ my %eeBox = (
     PROCESS_PROC => \&ProcessMOV,
     WRITE_PROC => \&WriteQuickTime,
     GROUPS => { 2 => 'Video' },
-    # mfhd - movie fragment header
+    mfhd => {
+        Name => 'MovieFragmentHeader',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::MovieFragHdr' },
+    },
     traf => {
         Name => 'TrackFragment',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::TrackFragment' },
@@ -1073,6 +1076,14 @@ my %eeBox = (
         Name => 'Meta',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Meta' },
     },
+);
+
+# (ref CFFMediaFormat-2_1.pdf)
+%Image::ExifTool::QuickTime::MovieFragHdr = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Video' },
+    FORMAT => 'int32u',
+    1 => 'MovieFragmentSequence',
 );
 
 # (ref CFFMediaFormat-2_1.pdf)

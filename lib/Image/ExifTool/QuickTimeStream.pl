@@ -86,7 +86,9 @@ my %insvLimit = (
     GROUPS => { 2 => 'Location' },
     NOTES => q{
         Timed metadata extracted from QuickTime media data and some AVI videos when
-        the ExtractEmbedded option is used.
+        the ExtractEmbedded option is used.  Although most of these tags are
+        combined into the single table below, ExifTool currently reads 37 different
+        formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
@@ -2037,9 +2039,9 @@ sub ProcessInsta360($;$)
         $et->DumpTrailer($dirInfo) if $verbose or $$et{HTML_DUMP};
     }
     unless ($et->Options('ExtractEmbedded')) {
-    	# can arrive here when reading Insta360 trailer on JPEG image (INSP file)
-    	$et->WarnOnce('Use ExtractEmbedded option to extract timed metadata from Insta360 trailer',3);
-    	return 1;
+        # can arrive here when reading Insta360 trailer on JPEG image (INSP file)
+        $et->WarnOnce('Use ExtractEmbedded option to extract timed metadata from Insta360 trailer',3);
+        return 1;
     }
 
     my $unknown = $et->Options('Unknown');

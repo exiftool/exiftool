@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23218 tags, with 15180 unique tag names.
+They contain a total of 23225 tags, with 15187 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -901,6 +901,12 @@ for the official EXIF 2.32 specification.
   0xc7aa   CacheVersion              SubIFD2    int32u!
   0xc7b5   DefaultUserCrop           SubIFD     rational64u[4]!
   0xc7d5   NikonNEFInfo              -          Nikon NEFInfo
+  0xc7e9   DepthFormat               IFD0       int16u!
+  0xc7ea   DepthNear                 IFD0       rational64u!
+  0xc7eb   DepthFar                  IFD0       rational64u!
+  0xc7ec   DepthUnits                IFD0       int16u!
+  0xc7ed   DepthMeasureType          IFD0       int16u!
+  0xc7ee   EnhanceParams             IFD0       string!
   0xea1c   Padding                   ExifIFD    undef!
   0xea1d   OffsetSchema              ExifIFD    int32s!
   0xfde8   OwnerName                 ExifIFD    string/
@@ -24726,7 +24732,9 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
 =head3 QuickTime Stream Tags
 
 Timed metadata extracted from QuickTime media data and some AVI videos when
-the ExtractEmbedded option is used.
+the ExtractEmbedded option is used.  Although most of these tags are
+combined into the single table below, ExifTool currently reads 37 different
+formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -25280,7 +25288,14 @@ defined in this table.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'meta'   Meta                                 QuickTime Meta
+  'mfhd'   MovieFragmentHeader                  QuickTime MovieFragHdr
   'traf'   TrackFragment                        QuickTime TrackFragment
+
+=head3 QuickTime MovieFragHdr Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      1    MovieFragmentSequence                no
 
 =head3 QuickTime TrackFragment Tags
 

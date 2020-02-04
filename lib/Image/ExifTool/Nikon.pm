@@ -61,7 +61,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.77';
+$VERSION = '3.78';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1369,14 +1369,15 @@ my %binaryDataAttrs = (
                 2 => 'G',
                 3 => 'VR',
                 4 => '1', #PH
-                # bit 5 set for FT-1 adapter? - PH
+                5 => 'FT-1', #PH/IB
                 6 => 'E', #PH (electromagnetic aperture mechanism)
-                # bit 7 set for AF-P lenses? - PH
+                7 => 'AF-P', #PH/IB
             }) : 'AF';
             # remove commas and change "D G" to just "G"
             s/,//g; s/\bD G\b/G/;
-            s/ E\b// and s/^(G )?/E /;  # put "E" at the start instead of "G"
-            s/ 1// and $_ = "1 $_";     # put "1" at start
+            s/ E\b// and s/^(G )?/E /;      # put "E" at the start instead of "G"
+            s/ 1// and $_ = "1 $_";         # put "1" at start
+            s/FT-1 // and $_ .= ' FT-1';    # put "FT-1" at end
             return $_;
         ],
         PrintConvInv => q[
@@ -1386,6 +1387,8 @@ my %binaryDataAttrs = (
             $bits |= 0x06 if $val =~ /\bG\b/i;  # bits 1 and 2
             $bits |= 0x08 if $val =~ /\bVR\b/i; # bit 3
             $bits |= 0x10 if $val =~ /\b1\b/;   # bit 4
+            $bits |= 0x20 if $val =~ /\bFT-1/i; # bit 5
+            $bits |= 0x80 if $val =~ /\bAF-P/i; # bit 7 (not used by all models)
             $bits |= 0x46 if $val =~ /\bE\b/i;  # bits 1, 2 and 6
             return $bits;
         ],

@@ -19,6 +19,7 @@ use strict;
 require 5.004;  # require 5.004 for UNIVERSAL::isa (otherwise 5.002 would do)
 require Exporter;
 use File::RandomAccess;
+use overload;
 
 use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %allTables @tableOrder $exifAPP1hdr $xmpAPP1hdr $xmpExtAPP1hdr
@@ -27,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen);
 
-$VERSION = '11.85';
+$VERSION = '11.86';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -4046,7 +4047,7 @@ sub ParseArguments($;@)
     # handle our input arguments
     while (@_) {
         my $arg = shift;
-        if (ref $arg) {
+        if (ref $arg and not overload::Method($arg, q[""])) {
             if (ref $arg eq 'ARRAY') {
                 $$self{IO_TAG_LIST} = $arg;
                 foreach (@$arg) {
@@ -7282,8 +7283,8 @@ sub DoProcessTIFF($$;$)
     # check DNG version
     if ($$self{DNGVersion}) {
         my $ver = $$self{DNGVersion};
-        # currently support up to DNG version 1.4
-        unless ($ver =~ /^(\d+) (\d+)/ and "$1.$2" <= 1.4) {
+        # currently support up to DNG version 1.5
+        unless ($ver =~ /^(\d+) (\d+)/ and "$1.$2" <= 1.5) {
             $ver =~ tr/ /./;
             $self->Error("DNG Version $ver not yet tested", 1);
         }

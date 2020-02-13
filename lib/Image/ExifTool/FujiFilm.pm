@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.76';
+$VERSION = '1.77';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -374,6 +374,7 @@ my %faceCategories = (
             0x1a => 'Portrait 2', #PH (NC, T500, maybe "Smile & Shoot"?)
             0x1b => 'Dog Face Detection', #7
             0x1c => 'Cat Face Detection', #7
+            0x30 => 'HDR', #forum10799
             0x40 => 'Advanced Filter',
             0x100 => 'Aperture-priority AE',
             0x200 => 'Shutter speed priority AE',
@@ -465,6 +466,7 @@ my %faceCategories = (
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val + 0',
     },
+    # 0x104b - BWAdjustment for Green->Magenta (forum10800)
     0x104d => { #forum9634
         Name => 'CropMode',
         Writable => 'int16u',
@@ -514,9 +516,9 @@ my %faceCategories = (
         SubDirectory => { TagTable => 'Image::ExifTool::FujiFilm::DriveSettings' },
     },
     # (0x1150-0x1152 exist only for Pro Low-light and Pro Focus PictureModes)
-    # 0x1150 - Pro Low-light - val=1; Pro Focus - val=2 (ref 7)
-    # 0x1151 - Pro Low-light - val=4 (number of pictures taken?); Pro Focus - val=2,3 (ref 7)
-    # 0x1152 - Pro Low-light - val=1,3,4 (stacked pictures used?); Pro Focus - val=1,2 (ref 7)
+    # 0x1150 - Pro Low-light - val=1; Pro Focus - val=2 (ref 7); HDR - val=128 (forum10799)
+    # 0x1151 - Pro Low-light - val=4 (number of pictures taken?); Pro Focus - val=2,3 (ref 7); HDR - val=3 (forum10799)
+    # 0x1152 - Pro Low-light - val=1,3,4 (stacked pictures used?); Pro Focus - val=1,2 (ref 7); HDR - val=3 (forum10799)
     0x1153 => { #forum7668
         Name => 'PanoramaAngle',
         Writable => 'int16u',
@@ -625,7 +627,7 @@ my %faceCategories = (
         Writable => 'int16u',
         PrintHex => 1,
         PrintConv => {
-            0x000 => 'Auto (100-400%)',
+            0x000 => 'Auto',
             0x001 => 'Manual', #(ref http://forum.photome.de/viewtopic.php?f=2&t=353)
             0x100 => 'Standard (100%)',
             0x200 => 'Wide1 (230%)',
@@ -636,6 +638,7 @@ my %faceCategories = (
     0x1403 => { #2 (only valid for manual DR, ref 6)
         Name => 'DevelopmentDynamicRange',
         Writable => 'int16u',
+        # (shows 200, 400 or 800 for HDR200,HDR400,HDR800, ref forum10799)
     },
     0x1404 => { #2
         Name => 'MinFocalLength',
@@ -661,6 +664,15 @@ my %faceCategories = (
         Writable => 'int16u',
         PrintConv => '"$val%"',
         PrintConvInv => '$val=~s/\s*\%$//; $val',
+    },
+    0x104e => { #forum10800 (X-Pro3)
+        Name => 'ColorChromeFXBlue',
+        Writable => 'int32s',
+        PrintConv => {
+            0 => 'Off',
+            32 => 'Weak', # (NC)
+            64 => 'Strong',
+        },
     },
     0x1422 => { #8
         Name => 'ImageStabilization',
@@ -721,7 +733,11 @@ my %faceCategories = (
     0x1444 => { #12 (X-T3, only exists if DRangePriority is 'Auto')
         Name => 'DRangePriorityAuto',
         Writable => 'int16u',
-        PrintConv => { 1 => 'Weak', 2 => 'Strong' },
+        PrintConv => {
+            1 => 'Weak',
+            2 => 'Strong',
+            3 => 'Plus',    #forum10799
+        },
     },
     0x1445 => { #12 (X-T3, only exists if DRangePriority is 'Fixed')
         Name => 'DRangePriorityFixed',

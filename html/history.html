@@ -17,12 +17,23 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.87'><b>Feb. 13, 2020 - Version 11.87</b></a>
+<ul>
+<li>Added read support for CSV files
+<li>Added "--" option to indicate the end of options
+<li>Added ability to read/write/copy/delete the JPEG trailer as a block
+<li>Added new Olympus CameraType and LensType values (thanks LibRaw)
+<li>Decode a few more FujiFilm tags
+<li>Enhanced -fast option (API <a href="ExifTool.html#FastScan">FastScan</a>) to bypass PNG CRC validation when
+    writing
+</ul>
+
 <a name='v11.86'><b>Feb. 4, 2020 - Version 11.86</b></a>
 <ul>
 <li>Added support for DNG version 1.5
 <li>Added config_files/acdsee.config to the full distribution (thanks StarGeek)
 <li>Added a new Sony LensType (thanks Jos Roost and LibRaw)
-<li>Decode two more bits in Nikon LensType (thanks LibRaw)
+<li>Decode two more bits from Nikon LensType (thanks LibRaw)
 <li>Decode QuickTime MovieFragmentSequence
 <li>Patched HEIC writer to add missing iref box if necessary
 <li>Fixed typo in a Canon LensType value

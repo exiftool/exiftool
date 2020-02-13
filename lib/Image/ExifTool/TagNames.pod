@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23225 tags, with 15187 unique tag names.
+They contain a total of 23231 tags, with 15193 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -9048,6 +9048,7 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1048   ColorChromeEffect                    int32s
   0x1049   BWAdjustment                         int8s
   0x104d   CropMode                             int16u
+  0x104e   ColorChromeFXBlue                    int32s
   0x1050   ShutterType                          int16u
   0x1100   AutoBracketing                       int16u
   0x1101   SequenceNumber                       int16u
@@ -22731,6 +22732,11 @@ other text chunks here.  For this reason, when writing, ExifTool 11.63 and
 later create new text chunks (including XMP) before IDAT, and move existing
 text chunks to before IDAT.
 
+The PNG format contains CRC checksums that are validated when reading with
+either the Verbose or Validate option.  When writing, these checksums are
+validated by default, but the FastScan option may be used to bypass this
+check if speed is more of a concern.
+
   Tag ID             Tag Name                   Writable
   ------             --------                   --------
   'IHDR'             ImageHeader                PNG ImageHeader
@@ -33328,19 +33334,24 @@ name.  See L<http://tools.ietf.org/html/rfc5545> for the official iCalendar
 =head2 Text Tags
 
 Although basic text files contain no metadata, the following tags are
-determined from a simple analysis of the text data.  LineCount and WordCount
-are generated only for 8-bit encodings, but the FastScan (-fast) option may
-be used to limit processing to the first 64 kB in which case these two tags
-are not produced.  To avoid long processing delays, ExifTool will issue a
-minor warning and process only the first 64 kB of any file larger than 20 MB
-unless the IgnoreMinorErrors (-m) option is used.
+determined from a simple analysis of the data in TXT and CSV files.
+Statistics are generated only for 8-bit encodings, but the FastScan (-fast)
+option may be used to limit processing to the first 64 kB in which case some
+tags are not produced.  To avoid long processing delays, ExifTool will issue
+a minor warning and process only the first 64 kB of any file larger than 20
+MB unless the IgnoreMinorErrors (-m)
+option is used.
 
   Tag Name                                      Writable
   --------                                      --------
   ByteOrderMark                                 no
+  ColumnCount                                   no
+  Delimiter                                     no
   LineCount                                     no
   MIMEEncoding                                  no
   Newlines                                      no
+  Quoting                                       no
+  RowCount                                      no
   WordCount                                     no
 
 =head2 RSRC Tags
@@ -33852,6 +33863,7 @@ FileName.
   SymLink                    -                  yes!
   TestName                   -                  yes!
   ThumbnailImage             File               no
+  Trailer                    File               yes!
   Validate                   ExifTool           no
   Warning                    ExifTool           no
   XMP                        XMP                yes!

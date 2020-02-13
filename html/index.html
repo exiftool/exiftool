@@ -81,9 +81,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-11.86.tar.gz/download">
-Download        Version 11.86</a> (4.5 MB) -
-<a href="history.html">Feb. 4, 2020</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-11.87.tar.gz/download">
+Download        Version 11.87</a> (4.5 MB) -
+<a href="history.html">Feb. 13, 2020</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -135,8 +135,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-11.86.zip/download">
-         exiftool-11.86.zip</a> (6.2 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-11.87.zip/download">
+         exiftool-11.87.zip</a> (6.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -154,7 +154,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-11.86.dmg</a> (2.9 MB)</b></td></tr></table></blockquote>
+         ExifTool-11.87.dmg</a> (2.9 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -303,6 +303,7 @@ for each file format.</p>
 <tr><td>CRM</td><td>R/W</td><td>Canon RAW Movie (<a href="TagNames/QuickTime.html">QuickTime</a>-based)</td><td>R/W/C</td><td>-</td><td>R/W/C</td><td>-</td><td>R/W <a href="TagNames/Canon.html">Canon</a> <a href="TagNames/QuickTime.html">QuickTime</a></td></tr>
 <tr><td><a href="TagNames/CanonRaw.html">CRW, CIFF</a></td><td>R/W</td><td>Canon RAW Camera Image File Format (<a href="canon_raw.html">CRW spec</a>)</td><td>-</td><td>-</td><td>R/W/C</td><td>-</td><td>R/W <a href="TagNames/CanonRaw.html">CanonRaw</a>, R/W/C <a href="TagNames/CanonVRD.html">CanonVRD</a><span class=sup>2</span></td></tr>
 <tr><td>CS1</td><td>R/W</td><td>Sinar CaptureShop 1-shot RAW (<a href="TagNames/Photoshop.html">PSD</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R <a href="TagNames/Photoshop.html">Photoshop</a></td></tr>
+<tr><td>CSV</td><td>R</td><td>Comma-Separated Value files</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Text.html">Text</a></td></tr>
 <tr><td><a href="TagNames/DICOM.html">DCM, DC3, DIC, DICM</a></td><td>R</td><td>DICOM - Digital Imaging and Communications in Medicine</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/DICOM.html">DICOM</a></td></tr>
 <tr><td>DCP</td><td>R/W</td><td>DNG Camera Profile (<a href="TagNames/DNG.html">DNG</a>-like)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>-</td></tr>
 <tr><td>DCR</td><td>R</td><td>Kodak Digital Camera RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>-</td></tr>
@@ -959,7 +960,7 @@ for other formats the results are less complete:
 <li>PNG - Only XMP, EXIF, ICC_Profile and native PNG textual data chunks are removed.</li>
 <li>PDF - The original metadata is never actually removed.</li>
 <li>PS - Only XMP and some native PostScript tags may be deleted.</li>
-<li>MOV/MP4 - Only XMP is deleted.</li>
+<li>MOV/MP4 - Most top-level metadata is removed.</li>
 <li>RAW formats - It is not recommended to remove all metadata from RAW images
 because this will likely remove some proprietary information that is necessary
 for proper rendering of the image.</li>
@@ -1038,11 +1039,11 @@ copying arguments like <code>"-DSTTAG&lt;STR"</code>) have the ability to
 execute Perl code from external files or within command-line arguments.  This
 may be a security problem if ExifTool is executed from another application that
 blindly passes untrusted file names on the command line (since they may be
-interpreted as ExifTool options if they begin with a dash).  To be secure, the
-calling application must ensure that input file names do not start with a dash
-(U+002D) or a Unicode minus sign (U+2212).  The easiest way to accomplish this
-is to prefix input file names with a known directory name, eg.)
-<code>"./FILENAME"</code>.</p>
+interpreted as ExifTool options if they begin with a dash).  To be secure the
+calling application must either place file names after the "<code>--</code>"
+option, or ensure that input file names do not start with a dash (U+002D) or a
+Unicode minus sign (U+2212).  One way to accomplish this is to prefix input file
+names with a known directory name, eg.) <code>"./FILENAME"</code>.</p>
 
 <h2><a name="shift">Date/Time Shift Feature</a></h2>
 

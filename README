@@ -14,34 +14,35 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | DSS   r     | J2C   r     | ODS   r     | RSRC  r
-  3G2   r/w   | DV    r     | JNG   r/w   | ODT   r     | RTF   r
-  3GP   r/w   | DVB   r/w   | JP2   r/w   | OFR   r     | RW2   r/w
-  A     r     | DVR-MS r    | JPEG  r/w   | OGG   r     | RWL   r/w
-  AA    r     | DYLIB r     | JSON  r     | OGV   r     | RWZ   r
-  AAE   r     | EIP   r     | K25   r     | OPUS  r     | RM    r
-  AAX   r/w   | EPS   r/w   | KDC   r     | ORF   r/w   | SEQ   r
-  ACR   r     | EPUB  r     | KEY   r     | OTF   r     | SKETCH r
-  AFM   r     | ERF   r/w   | LA    r     | PAC   r     | SO    r
-  AI    r/w   | EXE   r     | LFP   r     | PAGES r     | SR2   r/w
-  AIFF  r     | EXIF  r/w/c | LNK   r     | PBM   r/w   | SRF   r
-  APE   r     | EXR   r     | LRV   r/w   | PCD   r     | SRW   r/w
-  ARQ   r/w   | EXV   r/w/c | M2TS  r     | PCX   r     | SVG   r
-  ARW   r/w   | F4A/V r/w   | M4A/V r/w   | PDB   r     | SWF   r
-  ASF   r     | FFF   r/w   | MAX   r     | PDF   r/w   | THM   r/w
-  AVI   r     | FITS  r     | MEF   r/w   | PEF   r/w   | TIFF  r/w
-  AVIF  r/w   | FLA   r     | MIE   r/w/c | PFA   r     | TORRENT r
-  AZW   r     | FLAC  r     | MIFF  r     | PFB   r     | TTC   r
-  BMP   r     | FLIF  r/w   | MKA   r     | PFM   r     | TTF   r
-  BPG   r     | FLV   r     | MKS   r     | PGF   r     | TXT   r
-  BTF   r     | FPF   r     | MKV   r     | PGM   r/w   | VCF   r
-  CHM   r     | FPX   r     | MNG   r/w   | PLIST r     | VRD   r/w/c
-  COS   r     | GIF   r/w   | MOBI  r     | PICT  r     | VSD   r
-  CR2   r/w   | GPR   r/w   | MODD  r     | PMP   r     | WAV   r
-  CR3   r/w   | GZ    r     | MOI   r     | PNG   r/w   | WDP   r/w
-  CRM   r/w   | HDP   r/w   | MOS   r/w   | PPM   r/w   | WEBP  r
-  CRW   r/w   | HDR   r     | MOV   r/w   | PPT   r     | WEBM  r
-  CS1   r/w   | HEIC  r/w   | MP3   r     | PPTX  r     | WMA   r
+  3FR   r     | DR4   r/w/c | ITC   r     | ODP   r     | RIFF  r
+  3G2   r/w   | DSS   r     | J2C   r     | ODS   r     | RSRC  r
+  3GP   r/w   | DV    r     | JNG   r/w   | ODT   r     | RTF   r
+  A     r     | DVB   r/w   | JP2   r/w   | OFR   r     | RW2   r/w
+  AA    r     | DVR-MS r    | JPEG  r/w   | OGG   r     | RWL   r/w
+  AAE   r     | DYLIB r     | JSON  r     | OGV   r     | RWZ   r
+  AAX   r/w   | EIP   r     | K25   r     | OPUS  r     | RM    r
+  ACR   r     | EPS   r/w   | KDC   r     | ORF   r/w   | SEQ   r
+  AFM   r     | EPUB  r     | KEY   r     | OTF   r     | SKETCH r
+  AI    r/w   | ERF   r/w   | LA    r     | PAC   r     | SO    r
+  AIFF  r     | EXE   r     | LFP   r     | PAGES r     | SR2   r/w
+  APE   r     | EXIF  r/w/c | LNK   r     | PBM   r/w   | SRF   r
+  ARQ   r/w   | EXR   r     | LRV   r/w   | PCD   r     | SRW   r/w
+  ARW   r/w   | EXV   r/w/c | M2TS  r     | PCX   r     | SVG   r
+  ASF   r     | F4A/V r/w   | M4A/V r/w   | PDB   r     | SWF   r
+  AVI   r     | FFF   r/w   | MAX   r     | PDF   r/w   | THM   r/w
+  AVIF  r/w   | FITS  r     | MEF   r/w   | PEF   r/w   | TIFF  r/w
+  AZW   r     | FLA   r     | MIE   r/w/c | PFA   r     | TORRENT r
+  BMP   r     | FLAC  r     | MIFF  r     | PFB   r     | TTC   r
+  BPG   r     | FLIF  r/w   | MKA   r     | PFM   r     | TTF   r
+  BTF   r     | FLV   r     | MKS   r     | PGF   r     | TXT   r
+  CHM   r     | FPF   r     | MKV   r     | PGM   r/w   | VCF   r
+  COS   r     | FPX   r     | MNG   r/w   | PLIST r     | VRD   r/w/c
+  CR2   r/w   | GIF   r/w   | MOBI  r     | PICT  r     | VSD   r
+  CR3   r/w   | GPR   r/w   | MODD  r     | PMP   r     | WAV   r
+  CRM   r/w   | GZ    r     | MOI   r     | PNG   r/w   | WDP   r/w
+  CRW   r/w   | HDP   r/w   | MOS   r/w   | PPM   r/w   | WEBP  r
+  CS1   r/w   | HDR   r     | MOV   r/w   | PPT   r     | WEBM  r
+  CSV   r     | HEIC  r/w   | MP3   r     | PPTX  r     | WMA   r
   DCM   r     | HEIF  r/w   | MP4   r/w   | PS    r/w   | WMV   r
   DCP   r/w   | HTML  r     | MPC   r     | PSB   r/w   | WTV   r
   DCR   r     | ICC   r/w/c | MPG   r     | PSD   r/w   | WV    r
@@ -53,7 +54,6 @@ supported by ExifTool (r = read, w = write, c = create):
   DOC   r     | INSV  r     | NRW   r/w   | RAM   r     | ZIP   r
   DOCX  r     | INX   r     | NUMBERS r   | RAR   r     |
   DPX   r     | ISO   r     | O     r     | RAW   r/w   |
-  DR4   r/w/c | ITC   r     | ODP   r     | RIFF  r     |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -105,8 +105,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-11.86.tar.gz | tar -xf -
-  cd Image-ExifTool-11.86
+  gzip -dc Image-ExifTool-11.87.tar.gz | tar -xf -
+  cd Image-ExifTool-11.87
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -189,7 +189,7 @@ distribution package:
     xmp2iptc.args             - Arguments for converting XMP to IPTC
     xmp2pdf.args              - Arguments for converting XMP to PDF
   config_files/             - Sample ExifTool configuration files:
-    acdsee.config             - Definitions for writing ACDSEE XMP regions
+    acdsee.config             - Definitions for writing ACDSee XMP regions
     age.config                - Calculate Age of person in photo
     bibble.config             - Definitions for writing Bibble XMP tags
     convert_regions.config    - Convert between MWG, MP and IPTC regions

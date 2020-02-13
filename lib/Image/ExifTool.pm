@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen);
 
-$VERSION = '11.86';
+$VERSION = '11.87';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -251,6 +251,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     CRM  => ['MOV',  'Canon RAW Movie'],
     CRW  => ['CRW',  'Canon RAW format'],
     CS1  => ['PSD',  'Sinar CaptureShop 1-Shot RAW'],
+    CSV  => ['TXT',  'Comma-Separated Values'],
     DC3  =>  'DICM',
     DCM  =>  'DICM',
     DCP  => ['TIFF', 'DNG Camera Profile'],
@@ -577,6 +578,7 @@ my %fileDescription = (
     CR3  => 'image/x-canon-cr3',
     CRM  => 'video/x-canon-crm',
     CRW  => 'image/x-canon-crw',
+    CSV  => 'text/csv',
     DCP  => 'application/octet-stream', #PH (NC)
     DCR  => 'image/x-kodak-dcr',
     DCX  => 'image/dcx',
@@ -1711,7 +1713,13 @@ my %systemTagsNotes = (
             multiple values may be separated with commas, eg. C<-ForceWrite=exif,xmp>
         },
     },
-    EmbeddedVideo => { Groups => { 2 => 'Video' } },
+    EmbeddedVideo => { Groups => { 0 => 'Trailer', 2 => 'Video' } },
+    Trailer => {
+        Groups => { 0 => 'Trailer' },
+        Notes => 'the full JPEG trailer data block.  Extracted only if specifically requested',
+        Writable => 1,
+        Protected => 1,
+    },
 );
 
 # YCbCrSubSampling values (used by JPEG SOF, EXIF and XMP)
@@ -6093,6 +6101,20 @@ sub ProcessJPEG($$)
             } else {
                 $self->Warn('Missing JPEG SOS');
             }
+            if ($$self{REQ_TAG_LOOKUP}{trailer}) {
+                # read entire trailer into memory
+                if ($raf->Seek(0,2)) {
+                    my $len = $raf->Tell() - $pos;
+                    if ($len) {
+                        my $buff;
+                        $raf->Seek($pos, 0);
+                        $self->FoundTag(Trailer => \$buff) if $raf->Read($buff,$len) == $len;
+                        $raf->Seek($pos, 0);
+                    }
+                } else {
+                    $self->Warn('Error seeking in file');
+                }
+            }
             # we are here because we are looking for trailer information
             if ($wantTrailer) {
                 my $start = $$self{PreviewImageStart};
@@ -6213,7 +6235,7 @@ sub ProcessJPEG($$)
                 next if $trailInfo or $wantTrailer or $verbose > 2 or $htmlDump;
             }
             # must scan to EOI if Validate or JpegCompressionFactor used
-            next if $$options{Validate} or $calcImageLen;
+            next if $$options{Validate} or $calcImageLen or $$self{REQ_TAG_LOOKUP}{trailer};
             # nothing interesting to parse after start of scan (SOS)
             $success = 1;
             last;   # all done parsing file

@@ -7,12 +7,22 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.85. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 13, 2020 - Version 11.87
+
+  - Added read support for CSV files
+  - Added "--" option to indicate the end of options
+  - Added ability to read/write/copy/delete the JPEG trailer as a block
+  - Added new Olympus CameraType and LensType values (thanks LibRaw)
+  - Decode a few more FujiFilm tags
+  - Enhanced -fast option (API FastScan) to bypass PNG CRC validation when
+    writing
+
 Feb. 4, 2020 - Version 11.86
 
   - Added support for DNG version 1.5
   - Added config_files/acdsee.config to the full distribution (thanks StarGeek)
   - Added a new Sony LensType (thanks Jos Roost and LibRaw)
-  - Decode two more bits in Nikon LensType (thanks LibRaw)
+  - Decode two more bits from Nikon LensType (thanks LibRaw)
   - Decode QuickTime MovieFragmentSequence
   - Patched HEIC writer to add missing iref box if necessary
   - Fixed typo in a Canon LensType value

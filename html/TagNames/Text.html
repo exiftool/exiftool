@@ -9,12 +9,13 @@
 <body>
 <h2 class=top>Text Tags</h2>
 <p>Although basic text files contain no metadata, the following tags are
-determined from a simple analysis of the text data.  LineCount and WordCount
-are generated only for 8-bit encodings, but the <a href="../ExifTool.html#FastScan">FastScan</a> (-fast) option may
-be used to limit processing to the first 64 kB in which case these two tags
-are not produced.  To avoid long processing delays, ExifTool will issue a
-minor warning and process only the first 64 kB of any file larger than 20 MB
-unless the <a href="../ExifTool.html#IgnoreMinorErrors">IgnoreMinorErrors</a> (-m) option is used.</p>
+determined from a simple analysis of the data in TXT and CSV files.
+Statistics are generated only for 8-bit encodings, but the <a href="../ExifTool.html#FastScan">FastScan</a> (-fast)
+option may be used to limit processing to the first 64 kB in which case some
+tags are not produced.  To avoid long processing delays, ExifTool will issue
+a minor warning and process only the first 64 kB of any file larger than 20
+MB unless the <a href="../ExifTool.html#IgnoreMinorErrors">IgnoreMinorErrors</a> (-m)
+option is used.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -26,6 +27,16 @@ unless the <a href="../ExifTool.html#IgnoreMinorErrors">IgnoreMinorErrors</a> (-
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
 <tr class=b>
+<td>ColumnCount</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Delimiter</td>
+<td class=c>no</td>
+<td><span class=s>&quot;\x09&quot; = Tab
+  <br>&#39;,&#39; = Comma
+  <br>&#39;;&#39; = Semicolon</span></td></tr>
+<tr class=b>
 <td>LineCount</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
@@ -36,9 +47,20 @@ unless the <a href="../ExifTool.html#IgnoreMinorErrors">IgnoreMinorErrors</a> (-
 <tr class=b>
 <td>Newlines</td>
 <td class=c>no</td>
-<td><span class=s>&quot;\x0a&quot; = Unix LF
+<td><span class=s>&#39;&#39; = (none)
+  <br>&quot;\x0a&quot; = Unix LF
   <br>&quot;\x0d&quot; = Macintosh CR
   <br>&quot;\x0d\x0a&quot; = Windows CRLF</span></td></tr>
+<tr>
+<td>Quoting</td>
+<td class=c>no</td>
+<td><span class=s>&#39;&#39; = (none)
+  <br>&#39;&quot;&#39; = Double quotes
+  <br>&#39;&#39;&#39; = Single quotes</span></td></tr>
+<tr class=b>
+<td>RowCount</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr>
 <td>WordCount</td>
 <td class=c>no</td>
@@ -47,7 +69,7 @@ unless the <a href="../ExifTool.html#IgnoreMinorErrors">IgnoreMinorErrors</a> (-
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 13, 2019</i>
+<br><i>Last revised Feb 13, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

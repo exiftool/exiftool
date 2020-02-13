@@ -25,6 +25,11 @@ chunk if it comes after the IDAT chunk, and at least one utility won&#39;t read
 other text chunks here.  For this reason, when writing, ExifTool 11.63 and
 later create new text chunks (including XMP) before IDAT, and move existing
 text chunks to before IDAT.</p>
+
+<p>The PNG format contains CRC checksums that are validated when reading with
+either the <a href="../ExifTool.html#Verbose">Verbose</a> or <a href="../ExifTool.html#Validate">Validate</a> option.  When writing, these checksums are
+validated by default, but the <a href="../ExifTool.html#FastScan">FastScan</a> option may be used to bypass this
+check if speed is more of a concern.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -585,7 +590,7 @@ when any of these tags is written, and may only be deleted as a group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 4, 2019</i>
+<br><i>Last revised Feb 10, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

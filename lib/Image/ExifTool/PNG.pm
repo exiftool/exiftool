@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.53';
+$VERSION = '1.54';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -118,6 +118,11 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
         other text chunks here.  For this reason, when writing, ExifTool 11.63 and
         later create new text chunks (including XMP) before IDAT, and move existing
         text chunks to before IDAT.
+
+        The PNG format contains CRC checksums that are validated when reading with
+        either the L<Verbose|../ExifTool.html#Verbose> or L<Validate|../ExifTool.html#Validate> option.  When writing, these checksums are
+        validated by default, but the L<FastScan|../ExifTool.html#FastScan> option may be used to bypass this
+        check if speed is more of a concern.
     },
     bKGD => {
         Name => 'BackgroundColor',
@@ -1248,7 +1253,8 @@ sub ProcessPNG($$)
     my $datChunk = '';
     my $datCount = 0;
     my $datBytes = 0;
-    my ($n, $sig, $err, $hbuf, $dbuf, $cbuf, $fastScan);
+    my $fastScan = $et->Options('FastScan');
+    my ($n, $sig, $err, $hbuf, $dbuf, $cbuf);
     my ($wasHdr, $wasEnd, $wasDat, $doTxt, @txtOffset);
 
     # check to be sure this is a valid PNG/MNG/JNG image
@@ -1264,7 +1270,6 @@ sub ProcessPNG($$)
         # initialize with same directories, with PNG tags taking priority
         $et->InitWriteDirs(\%pngMap,'PNG');
     } else {
-        $fastScan = $et->Options('FastScan');
         # disable buffering in FastScan mode
         $$raf{NoBuffer} = 1 if $fastScan;
     }
@@ -1427,7 +1432,7 @@ sub ProcessPNG($$)
             $et->Warn("Corrupted $fileType image") unless $wasEnd;
             last;
         }
-        if ($verbose or $validate or $outfile) {
+        if ($verbose or $validate or ($outfile and not $fastScan)) {
             # check CRC when in verbose mode (since we don't care about speed)
             my $crc = CalculateCRC(\$hbuf, undef, 4);
             $crc = CalculateCRC(\$dbuf, $crc);

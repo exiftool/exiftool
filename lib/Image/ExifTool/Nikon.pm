@@ -3524,7 +3524,7 @@ my %binaryDataAttrs = (
             Name => 'AFPointsUsed',
             Condition => '$$self{PhaseDetectAF} == 5',
             Notes => q{
-                newer models with 135-point AF -- 9 rows (B-J) and 15 colums (1-15).  Center
+                newer models with 135-point AF -- 9 rows (B-J) and 15 columns (1-15). Center
                 point is F8
             },
             Format => 'undef[21]',

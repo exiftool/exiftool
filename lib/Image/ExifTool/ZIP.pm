@@ -397,7 +397,7 @@ sub ProcessZIP($$)
     my $tagTablePtr = GetTagTable('Image::ExifTool::ZIP::Main');
     my $docNum = 0;
 
-    # use Archive::Zip if avilable
+    # use Archive::Zip if available
     for (;;) {
         unless (eval { require Archive::Zip } and eval { require IO::File }) {
             if ($$et{FILE_EXT} and $$et{FILE_EXT} ne 'ZIP') {

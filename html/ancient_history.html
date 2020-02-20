@@ -332,7 +332,7 @@
 <li>Added ability to write CanonVRD tags in CR3 images
 <li>Decode a couple more tags from Canon CR3 images
 <li>Enhanced Validate option to check for duplicate QuickTime atoms
-<li>Relaxed contraints when writing IPTC date tags to allow use of separators
+<li>Relaxed constraints when writing IPTC date tags to allow use of separators
     other than a colon
 <li>Fixed CR3 writing to update CTBO table with any changed offsets or sizes
     (although this table doesn't seem to be used by any RAW viewer, it may be
@@ -1525,7 +1525,7 @@
 <li>Decode a new Panasonic tag
 <li>Fixed problem decoding Sony VariableLowPassFilter values (thanks Jos Roost)
 <li>Fixed problem setting XMP:About when creating new XMP in a file
-<li>Fixed an incorect Pentax DriveMode value (thanks Andras Salamon)
+<li>Fixed an incorrect Pentax DriveMode value (thanks Andras Salamon)
 <li>API Changes
     <ul>
     <li>Allow access to the advanced formatting expression via a new ExifTool
@@ -2100,7 +2100,7 @@
 <ul>
 <li>Added ability to extract OS X system metadata ("MDItem" tags)
 <li>Added a value conversion for GoogleTrackDuration
-<li>Enchanced the -i option to allow full path names to be specified
+<li>Enhanced the -i option to allow full path names to be specified
 <li>Fixed a potential runtime error when writing corrupted JPEG images
 <li>API Changes:
     <ul>
@@ -3554,7 +3554,7 @@
 <li>Decode new Canon 6D CustomFunctions
 <li>Improved calculation of ScaleFactor35efl for Canon cameras
 <li>Changed priority of PDF Info tags so tags from most recent Info dictionary
-    take precedence (to partially accomodate the questionable Acrobat Pro
+    take precedence (to partially accommodate the questionable Acrobat Pro
     incremental update technique)
 <li>Changed some verbose warnings when attempting to write "unsafe" tags
 <li>Changed behaviour so that "unsafe" tags are not copied for any tag specified
@@ -3940,7 +3940,7 @@
 <li>Decode some new CanonVRD DLO tags
 <li>Changed decoding of CanonVRD VRDVersion tag
 <li>Changed formatting of a Pentax LensType for consistency with other lenses
-<li>Patched decoding of Reconyx:DateTimeOriginal to accomodate values written
+<li>Patched decoding of Reconyx:DateTimeOriginal to accommodate values written
     with an incorrect byte order by some models
 </ul>
 
@@ -4570,7 +4570,7 @@
 
 <a name='v8.46'><b>Jan. 22, 2011 - Version 8.46</b></a>
 <ul>
-<li>Simpified definition of user-defined XMP structures: flattened tags are now
+<li>Simplified definition of user-defined XMP structures: flattened tags are now
     automatically generated, and UserDefined::xmpStruct is no longer needed (but
     backward compatibility is maintained with the old-style definitions)
 <li>Added ability to handle multi-dimensional arrays in structured output
@@ -5694,7 +5694,7 @@
 <li>Decode large preview in APP2 of images from newer Samsung models
 <li>Extract FujiFilm PreviewImage from improperly written FPXR segment
 <li>Improved decoding of Nikon WB levels for some models
-<li>Reduced memory useage when writing DNG and some other RAW image files
+<li>Reduced memory usage when writing DNG and some other RAW image files
 <li>Changed format of Canon D30 SerialNumber to remove the hyphen and add
     leading 0's if less than 9 characters (now same format as printed on camera)
 <li>Changed writing of GPSTimeStamp and GPSDateStamp to adjust date/time to UTC
@@ -6435,7 +6435,7 @@
 <li>Renamed Pentax ModelRevision tag to ProductionCode and improved print
     conversion to indicate if camera has been serviced
 <li>Added check to prevent EXIF tags from being written to JPEG images if they
-    would obviously exceed the maximimum JPEG segment size limit
+    would obviously exceed the maximum JPEG segment size limit
 <li>Relaxed error checks when writing JPEG images to allow MakerNotes to be
     rebuilt if the MakerNote IFD is not contained within the MakerNotes data
 <li>Fixed decoding of Pentax ExternalFlashGuideNumber when AF360 is used with
@@ -7679,7 +7679,7 @@
 <a name='v6.41'><b>Sept. 18, 2006 - Version 6.41</b></a>
 <ul>
 <li>Fixed calculation of Canon ISO in some images and renamed ShotISO to BaseISO
-<li>Minor improvment to order of operations when deleting multiple groups and
+<li>Minor improvement to order of operations when deleting multiple groups and
     adding back information in batch mode
 </ul>
 
@@ -7822,7 +7822,7 @@
 <li>Added read/write support for WDP (Windows Media Photo) images
 <li>Improved algorithm to recognize maker notes offsets which need fixing
 <li>Properly handle maker notes which have value offsets relative to the
-    individial IFD entries (Kyocera, Rollei and some Konica and Toshiba models)
+    individual IFD entries (Kyocera, Rollei and some Konica and Toshiba models)
 <li>Decode a couple of new Sigma lens values in Canon LensType
 <li>Decreased block size for buffered files to improve performance over slow
     pipes
@@ -8122,7 +8122,7 @@
 <li>Added Canon maker note footer when rewriting Canon maker notes
 <li>Attempt to fix problem where ScaleFactor35efl was calculated incorrectly for
     some Canon images
-<li>Reduce memory useage and speed up writing of large TIFF images
+<li>Reduce memory usage and speed up writing of large TIFF images
 <li>Fixed problem with binary data offsets in verbose dump
 <li>Fixed problem writing Comment if 'File' group specified
 <li>Fixed bug which could cause formatting error in htmlDump output
@@ -8383,7 +8383,7 @@
 
 <a name='v5.70'><b>Oct. 23, 2005 - Version 5.70</b></a>
 <ul>
-<li>Significant internal changes to improve speed and reduce memory useage
+<li>Significant internal changes to improve speed and reduce memory usage
 <li>Fixed a bug introduced in version 5.63 which caused incorrect XMP GPS
     coordinates to be returned
 <li>Changed handling of Kodak date records
@@ -8446,7 +8446,7 @@
 <li>Decode a few more Photoshop tags
 <li>Issue an error if there is extra data after the normal end of file when
     rewriting TIFF images (avoids possible data loss if attempting to write an
-    unsuported RAW image with a TIFF-like data structure)
+    unsupported RAW image with a TIFF-like data structure)
 <li>Added ability to replace existing tags with user defined tags
 <li>Denote minor errors/warnings by adding '[minor]' to the message (these are
     the errors which can be ignored with the -m option)
@@ -9257,7 +9257,7 @@
     specific IPTC tag values with 'TAG-=VALUE'
 <li>Made EXIF SceneType writable
 <li>Renamed Nikon ISOUsed tag to ISO
-<li>Added documention of Canon RAW (CRW) file format
+<li>Added documentation of Canon RAW (CRW) file format
 </ul>
 
 <a name='v4.41'><b>Jan. 27, 2005 - Version 4.41</b></a>
@@ -9831,7 +9831,7 @@
 <li>Optimized a few routines to speed things up a bit
 <li>API Changes:
     <ul>
-    <li>Changed GetDescription() documention to indicate it is called with an
+    <li>Changed GetDescription() documentation to indicate it is called with an
         ExifTool object (this is still optional, but will be mandatory with the
         next version)
     </ul>

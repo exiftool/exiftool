@@ -19,6 +19,7 @@ config_files/acdsee.config
 config_files/age.config
 config_files/bibble.config
 config_files/convert_regions.config
+config_files/depthmap.config
 config_files/example.config
 config_files/fotoware.config
 config_files/gps2utm.config
@@ -793,6 +794,7 @@ t/Text_3.out
 t/Text_4.out
 t/Text_5.out
 t/Text_6.out
+t/Text_7.out
 t/Torrent.t
 t/Torrent_2.out
 t/Unknown.t
@@ -1057,6 +1059,7 @@ t/images/Sigma.x3f
 t/images/SigmaDP2.x3f
 t/images/Sony.jpg
 t/images/Sony.pmp
+t/images/Text.csv
 t/images/Text1.txt
 t/images/Text2.txt
 t/images/Text3.txt

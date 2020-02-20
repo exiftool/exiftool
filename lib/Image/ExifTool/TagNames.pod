@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23231 tags, with 15193 unique tag names.
+They contain a total of 23338 tags, with 15293 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1225,6 +1225,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   creatorAtom                                   XMP creatorAtom
   crs                                           XMP crs
   dc                                            XMP dc
+  Device                                        XMP Device
   dex                                           XMP dex
   DICOM                                         XMP DICOM
   digiKam                                       XMP digiKam
@@ -2390,6 +2391,291 @@ These tags belong to the ExifTool XMP-dc family 1 group.
   Title                                         lang-alt
   Type                                          string+
 
+=head3 XMP Device Tags
+
+Google depth-map Device tags.  See
+L<https://developer.android.com/training/camera2/Dynamic-depth-v1.0.pdf> for
+the specification.
+
+These tags belong to the ExifTool XMP-Device family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AppInfo                                       AppInfo Struct
+  AppInfoApplication                            string_
+  AppInfoItemURI                                string_
+  AppInfoVersion                                string_
+  Cameras                                       DeviceCameras Struct+
+  Camera                                        DeviceCamera Struct_+
+  CameraAppInfo                                 AppInfo Struct_+
+  CameraAppInfoApplication                      string_+
+  CameraAppInfoItemURI                          string_+
+  CameraAppInfoVersion                          string_+
+  CameraDepthMap                                DeviceDepthMap Struct_+
+  CameraDepthMapConfidenceURI                   string_+
+  CameraDepthMapDepthURI                        string_+
+  CameraDepthMapFar                             real_+
+  CameraDepthMapFocalTable                      string_+
+  CameraDepthMapFocalTableEntryCount            integer_+
+  CameraDepthMapFormat                          string_+
+  CameraDepthMapItemSemantic                    string_+
+  CameraDepthMapMeasureType                     string_+
+  CameraDepthMapNear                            real_+
+  CameraDepthMapSoftware                        string_+
+  CameraDepthMapUnits                           string_+
+  CameraImage                                   DeviceImage Struct_+
+  CameraImageItemSemantic                       string_+
+  CameraImageItemURI                            string_+
+  CameraImagingModel                            DeviceImagingModel Struct_+
+  CameraImagingModelDistortion                  string_+
+  CameraImagingModelDistortionCount             integer_+
+  CameraImagingModelFocalLengthX                real_+
+  CameraImagingModelFocalLengthY                real_+
+  CameraImagingModelImageHeight                 integer_+
+  CameraImagingModelImageWidth                  integer_+
+  CameraImagingModelPixelAspectRatio            real_+
+  CameraImagingModelPrincipalPointX             real_+
+  CameraImagingModelPrincipalPointY             real_+
+  CameraImagingModelSkew                        real_+
+  CameraLightEstimate                           DeviceLightEstimate Struct_+
+  CameraLightEstimateColorCorrectionB           real_+
+  CameraLightEstimateColorCorrectionG           real_+
+  CameraLightEstimateColorCorrectionR           real_+
+  CameraLightEstimatePixelIntensity             real_+
+  CameraPointCloud                              DevicePointCloud Struct_+
+  CameraPointCloudMetric                        boolean_+
+  CameraPointCloudPointCloud                    integer_+
+  CameraPointCloudPoints                        string_+
+  CameraPose                                    Pose Struct_+
+  CameraPosePositionX                           real_+
+  CameraPosePositionY                           real_+
+  CameraPosePositionZ                           real_+
+  CameraPoseRotationW                           real_+
+  CameraPoseRotationX                           real_+
+  CameraPoseRotationY                           real_+
+  CameraPoseRotationZ                           real_+
+  CameraPoseTimestamp                           integer_+
+  CameraTrait                                   string_+
+  CameraVendorInfo                              VendorInfo Struct_+
+  CameraVendorInfoManufacturer                  string_+
+  CameraVendorInfoModel                         string_+
+  CameraVendorInfoNotes                         string_+
+  Container                                     DeviceContainer Struct
+  ContainerDirectory                            DeviceDirectory Struct_+
+  ContainerDirectoryItem                        DeviceItem Struct_+
+  ContainerDirectoryItemDataURI                 string_+
+  ContainerDirectoryItemLength                  integer_+
+  ContainerDirectoryItemMime                    string_+
+  ContainerDirectoryItemPadding                 integer_+
+  EarthPos                                      EarthPose Struct
+  EarthPosAltitude                              real_
+  EarthPosLatitude                              real_
+  EarthPosLongitude                             real_
+  EarthPosRotationW                             real_
+  EarthPosRotationX                             real_
+  EarthPosRotationY                             real_
+  EarthPosRotationZ                             real_
+  EarthPosTimestamp                             integer_
+  Planes                                        DevicePlanes Struct+
+  Plane                                         DevicePlane Struct_+
+  PlaneBoundary                                 string_+
+  PlaneBoundaryVertexCount                      integer_+
+  PlaneExtentX                                  real_+
+  PlaneExtentZ                                  real_+
+  PlanePose                                     Pose Struct_+
+  PlanePosePositionX                            real_+
+  PlanePosePositionY                            real_+
+  PlanePosePositionZ                            real_+
+  PlanePoseRotationW                            real_+
+  PlanePoseRotationX                            real_+
+  PlanePoseRotationY                            real_+
+  PlanePoseRotationZ                            real_+
+  PlanePoseTimestamp                            integer_+
+  Pose                                          Pose Struct
+  PosePositionX                                 real_
+  PosePositionY                                 real_
+  PosePositionZ                                 real_
+  PoseRotationW                                 real_
+  PoseRotationX                                 real_
+  PoseRotationY                                 real_
+  PoseRotationZ                                 real_
+  PoseTimestamp                                 integer_
+  Profiles                                      DeviceProfiles Struct+
+  Profile                                       DeviceProfile Struct_+
+  ProfileCameraIndices                          integer_+
+  ProfileType                                   string_+
+  VendorInfo                                    VendorInfo Struct
+  VendorInfoManufacturer                        string_
+  VendorInfoModel                               string_
+  VendorInfoNotes                               string_
+
+=head3 XMP AppInfo Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Application                                   string
+  ItemURI                                       string
+  Version                                       string
+
+=head3 XMP DeviceCameras Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Camera                                        DeviceCamera Struct
+
+=head3 XMP DeviceCamera Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  AppInfo                                       AppInfo Struct
+  DepthMap                                      DeviceDepthMap Struct
+  Image                                         DeviceImage Struct
+  ImagingModel                                  DeviceImagingModel Struct
+  LightEstimate                                 DeviceLightEstimate Struct
+  PointCloud                                    DevicePointCloud Struct
+  Pose                                          Pose Struct
+  Trait                                         string
+  VendorInfo                                    VendorInfo Struct
+
+=head3 XMP DeviceDepthMap Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  ConfidenceURI                                 string
+  DepthURI                                      string
+  Far                                           real
+  FocalTable                                    string
+  FocalTableEntryCount                          integer
+  Format                                        string
+  ItemSemantic                                  string
+  MeasureType                                   string
+  Near                                          real
+  Software                                      string
+  Units                                         string
+
+=head3 XMP DeviceImage Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  ItemSemantic                                  string
+  ItemURI                                       string
+
+=head3 XMP DeviceImagingModel Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Distortion                                    string
+  DistortionCount                               integer
+  FocalLengthX                                  real
+  FocalLengthY                                  real
+  ImageHeight                                   integer
+  ImageWidth                                    integer
+  PixelAspectRatio                              real
+  PrincipalPointX                               real
+  PrincipalPointY                               real
+  Skew                                          real
+
+=head3 XMP DeviceLightEstimate Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  ColorCorrectionB                              real
+  ColorCorrectionG                              real
+  ColorCorrectionR                              real
+  PixelIntensity                                real
+
+=head3 XMP DevicePointCloud Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Metric                                        boolean
+  PointCloud                                    integer
+  Points                                        string
+
+=head3 XMP Pose Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  PositionX                                     real
+  PositionY                                     real
+  PositionZ                                     real
+  RotationW                                     real
+  RotationX                                     real
+  RotationY                                     real
+  RotationZ                                     real
+  Timestamp                                     integer
+
+=head3 XMP VendorInfo Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Manufacturer                                  string
+  Model                                         string
+  Notes                                         string
+
+=head3 XMP DeviceContainer Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Directory                                     DeviceDirectory Struct+
+
+=head3 XMP DeviceDirectory Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Item                                          DeviceItem Struct
+
+=head3 XMP DeviceItem Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  DataURI                                       string
+  Length                                        integer
+  Mime                                          string
+  Padding                                       integer
+
+=head3 XMP EarthPose Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Altitude                                      real
+  Latitude                                      real
+  Longitude                                     real
+  RotationW                                     real
+  RotationX                                     real
+  RotationY                                     real
+  RotationZ                                     real
+  Timestamp                                     integer
+
+=head3 XMP DevicePlanes Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Plane                                         DevicePlane Struct
+
+=head3 XMP DevicePlane Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Boundary                                      string
+  BoundaryVertexCount                           integer
+  ExtentX                                       real
+  ExtentZ                                       real
+  Pose                                          Pose Struct
+
+=head3 XMP DeviceProfiles Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Profile                                       DeviceProfile Struct
+
+=head3 XMP DeviceProfile Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  CameraIndices                                 integer+
+  Type                                          string
+
 =head3 XMP dex Tags
 
 Description Explorer namespace tags.  These tags are not very common.  The
@@ -3541,7 +3827,7 @@ These tags belong to the ExifTool XMP-photoshop family 1 group.
 
 =head3 XMP PixelLive Tags
 
-PixelLive namespace tags.  These tags are not writable becase they are very
+PixelLive namespace tags.  These tags are not writable because they are very
 uncommon and I haven't been able to locate a reference which gives the
 namespace URI.
 
@@ -22785,7 +23071,7 @@ check if speed is more of a concern.
 
 =head3 PNG AnimationControl Tags
 
-Tags found in the Animation Conrol chunk.  See
+Tags found in the Animation Control chunk.  See
 L<https://wiki.mozilla.org/APNG_Specification> for details.
 
   Index4   Tag Name                             Writable

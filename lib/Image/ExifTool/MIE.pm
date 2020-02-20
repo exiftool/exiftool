@@ -1339,7 +1339,7 @@ sub WriteMIEGroup($$$)
                     $extLen = Set32u($len);
                     $len = 254;
                 } else {
-                    $et->Warn("Can't write $newTag (DataLength > 2GB not yet suppported)");
+                    $et->Warn("Can't write $newTag (DataLength > 2GB not yet supported)");
                     last; # don't write this tag
                 }
                 # write this element (with leading MIE group element if not done already)

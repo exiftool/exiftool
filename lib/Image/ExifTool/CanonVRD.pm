@@ -13,7 +13,7 @@
 #               2018/03/13 - PH Update to DPP 4.8.20
 #
 # References:   1) Bogdan private communication (Canon DPP v3.4.1.1)
-#               2) Gert Kello private communiation (DPP 3.8)
+#               2) Gert Kello private communication (DPP 3.8)
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::CanonVRD;

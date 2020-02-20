@@ -2224,7 +2224,7 @@ sub ProcessFPX($$)
         my $rSib = Get32u(\$dir, $pos + 0x48);  # right sibling
         my $chld = Get32u(\$dir, $pos + 0x4c);  # child directory
 
-        # save information about object hierachy
+        # save information about object hierarchy
         my ($obj, $sub);
         $obj = $hier{$index} or $obj = $hier{$index} = { };
         $$obj{Left} = $lSib unless $lSib == FREE_SECT;

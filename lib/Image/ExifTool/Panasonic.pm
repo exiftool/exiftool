@@ -2449,7 +2449,7 @@ sub ProcessLeicaLEIC($$$)
 #------------------------------------------------------------------------------
 # Process MakerNote trailer written by Leica S2
 # Inputs: 0) ExifTool object ref, 1) new absolute position of Leica trailer when writing
-# Returns: On success: 1 when reading, directory data when writing; othewise undef
+# Returns: On success: 1 when reading, directory data when writing; otherwise undef
 # Notes:
 # - may be called twice for a file if the first call doesn't succeed
 # - must leave RAF position unchanged

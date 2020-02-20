@@ -8,7 +8,7 @@
 #
 # Requires:     ExifTool version 10.49 or later
 #
-# Revisons:     2010/03/13 - Peter Grimm created
+# Revisions:    2010/03/13 - Peter Grimm created
 #               2018/01/04 - PH Added IF to be sure position exists
 #               2018/01/06 - PH Use DateFmt function instead of -d option
 #               2019/10/24 - PH Preserve sub-seconds in GPSDateTime value

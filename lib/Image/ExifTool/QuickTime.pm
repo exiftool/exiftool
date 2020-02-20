@@ -6295,7 +6295,7 @@ my %eeBox = (
         #   tsas - temporal sublayer sample
         #   stsa - step-wise temporal layer access
         #   avss - AVC sample
-        #   tscl - temporal layer scaleability
+        #   tscl - temporal layer scalability
         #   sync - sync sample
     },
     subs => {
@@ -7391,7 +7391,7 @@ sub FixWrongFormat($)
 #------------------------------------------------------------------------------
 # Convert ISO 6709 string to standard lag/lon format
 # Inputs: 0) ISO 6709 string (lat, lon, and optional alt)
-# Returns: position in decimal degress with altitude if available
+# Returns: position in decimal degrees with altitude if available
 # Notes: Wikipedia indicates altitude may be in feet -- how is this specified?
 sub ConvertISO6709($)
 {
@@ -7610,7 +7610,12 @@ sub PrintableTagID($;$)
 #  ConstructionMethod - offset type: 0=file, 1=idat, 2=item
 #  DataReferenceIndex - 0 for "this file", otherwise index in dref box
 #  BaseOffset         - base for file offsets
-#  Extents            - list of index,offset,length,nlen,lenPt details for data in file
+#  Extents            - list of details for data in file:
+#                           0) index  (extent_index)
+#                           1) offset (extent_offset)
+#                           2) length (extent_length)
+#                           3) nlen   (length_size)
+#                           4) lenPt  (pointer to length word)
 # infe:
 #  ProtectionIndex    - index if item is protected (0 for unprotected)
 #  Name               - item name
@@ -8514,7 +8519,7 @@ ItemID:         foreach $id (keys %$items) {
                             last ItemID;
                         } elsif ($$item{DocNum}) {
                             # this property is already associated with an item that has
-                            # an ExifTool document number, so use the lowest assocated DocNum
+                            # an ExifTool document number, so use the lowest associated DocNum
                             $docNum = $$item{DocNum} if not defined $docNum or $docNum > $$item{DocNum};
                         } elsif (not defined $lowest or $lowest > $id) {
                             # keep track of the lowest associated item ID

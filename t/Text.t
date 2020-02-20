@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/Text.t".
 
 BEGIN {
-    $| = 1; print "1..6\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..7\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -16,13 +16,14 @@ print "ok 1\n";
 my $testname = 'Text';
 my $testnum = 1;
 
-# tests 2-6: Test various types of text files
+# tests 2-7: Test various types of text files
 {
     my $exifTool = new Image::ExifTool;
     my $i;
-    for (my $i=1; $i<=5; ++$i) {
+    for (my $i=1; $i<=6; ++$i) {
         ++$testnum;
-        my $info = $exifTool->ImageInfo("t/images/Text$i.txt", '-system:all');
+        my $fname = 't/images/' . ($i < 6 ? "Text$i.txt" : 'Text.csv');
+        my $info = $exifTool->ImageInfo($fname, '-system:all');
         print 'not ' unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";
     }

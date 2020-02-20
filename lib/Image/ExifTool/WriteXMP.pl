@@ -506,7 +506,7 @@ sub ConformPathToNamespace($$)
         next if $$nsUsed{$ns};
         my $uri = $nsURI{$ns};
         unless ($uri) {
-            warn "No URI for namepace prefix $ns!\n";
+            warn "No URI for namespace prefix $ns!\n";
             next;
         }
         my $ns2;

@@ -5495,7 +5495,7 @@ my %faceInfo = (
         PrintConv => {
             191 => 'On (191)', # seen a few times with moving subject, continuous drive, bracketing
             207 => 'On (207)', # seen once with RemoteCommander
-            210 => 'On (210)', # seen a few times with continous drive
+            210 => 'On (210)', # seen a few times with continuous drive
             213 => 'On',
             246 => 'Off',
         },

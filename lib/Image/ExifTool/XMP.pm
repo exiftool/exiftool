@@ -183,6 +183,7 @@ my %xmpNS = (
     dwc       => 'http://rs.tdwg.org/dwc/index.htm',
     GettyImagesGIFT => 'http://xmp.gettyimages.com/gift/1.0/',
     LImage    => 'http://ns.leiainc.com/photos/1.0/image/',
+    Profile   => 'http://ns.google.com/photos/dd/1.0/profile/',
 );
 
 # build reverse namespace lookup
@@ -777,6 +778,10 @@ my %sRetouchArea = (
     LImage => {
         Name => 'LImage',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::LImage' },
+    },
+    Device => {
+        Name => 'Device',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::Device' },
     },
 );
 
@@ -2244,7 +2249,7 @@ my %sPantryItem = (
 
 # Composite XMP tags
 %Image::ExifTool::XMP::Composite = (
-    # get latitude/logitude reference from XMP lat/long tags
+    # get latitude/longitude reference from XMP lat/long tags
     # (used to set EXIF GPS position from XMP tags)
     GPSLatitudeRef => {
         Require => 'XMP-exif:GPSLatitude',

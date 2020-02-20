@@ -13,7 +13,7 @@ use strict;
 
 #------------------------------------------------------------------------------
 # Calculate CRC or update running CRC (ref 1)
-# Inputs: 0) data reference, 1) running crc to update (undef intially)
+# Inputs: 0) data reference, 1) running crc to update (undef initially)
 #         2) data position (undef for 0), 3) data length (undef for all data),
 # Returns: updated CRC
 my @crcTable;

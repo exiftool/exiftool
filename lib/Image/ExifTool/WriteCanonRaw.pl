@@ -454,7 +454,7 @@ sub WriteCanonRaw($$$)
                 # pad with original garbage in case it contained something useful
                 $value .= substr($buff, $pt+2+8-$len, 8-$len);
             } elsif ($len > 8) {   # this shouldn't happen
-                warn "Value too long! -- trucated\n";
+                warn "Value too long! -- truncated\n";
                 $value = substr($value, 0, 8);
             }
             # create new directory entry

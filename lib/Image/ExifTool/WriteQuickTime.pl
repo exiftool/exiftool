@@ -532,7 +532,7 @@ sub WriteItemInfo($$$)
                     } elsif ($n <= 0xffffffff) {
                         Set32u($n, $outfile, $$boxPos{iloc}[0] + 8 + $lenPt);
                     } else {
-                        $et->Error("Can't yet promote iloc offset to 64 bits");
+                        $et->Error("Can't yet promote iloc length to 64 bits");
                         return ();
                     }
                     $n = 0;
@@ -621,18 +621,21 @@ sub WriteItemInfo($$$)
             my $nlen = ($siz >> 8) & 0x0f;
             my $nbas = ($siz >> 4) & 0x0f;
             my $nind = $siz & 0x0f;
-            my $p;
+            my ($pbas, $poff);
             if ($ilocVer == 0) {
                 # set offset to 0 as flag that this is a new idat chunk being added
-                $p = length($add{iloc}) + 4 + $nbas + 2;
+                $pbas = length($add{iloc}) + 4;
+                $poff = $pbas + $nbas + 2;
                 $add{iloc} .= pack('nn',$id,0) . SetVarInt(0,$nbas) . Set16u(1) .
                             SetVarInt(0,$noff) . SetVarInt(length($newVal),$nlen);
             } elsif ($ilocVer == 1) {
-                $p = length($add{iloc}) + 6 + $nbas + 2 + $nind;
+                $pbas = length($add{iloc}) + 6;
+                $poff = $pbas + $nbas + 2 + $nind;
                 $add{iloc} .= pack('nnn',$id,0,0) . SetVarInt(0,$nbas) . Set16u(1) . SetVarInt(0,$nind) .
                             SetVarInt(0,$noff) . SetVarInt(length($newVal),$nlen);
             } elsif ($ilocVer == 2) {
-                $p = length($add{iloc}) + 8 + $nbas + 2 + $nind;
+                $pbas = length($add{iloc}) + 8;
+                $poff = $pbas + $nbas + 2 + $nind;
                 $add{iloc} .= pack('Nnn',$id,0,0) . SetVarInt(0,$nbas) . Set16u(1) . SetVarInt(0,$nind) .
                             SetVarInt(0,$noff) . SetVarInt(length($newVal),$nlen);
             } else {
@@ -643,9 +646,19 @@ sub WriteItemInfo($$$)
             my $off = $$dirInfo{ChunkOffset} or $et->Warn('Internal error. Missing ChunkOffset'), last;
             my $newOff;
             if ($noff == 4) {
-                $newOff = [ 'stco_iloc', $$boxPos{iloc}[0] + $$boxPos{iloc}[1] + $p, $noff, 0, $id ];
+                $newOff = [ 'stco_iloc', $$boxPos{iloc}[0] + $$boxPos{iloc}[1] + $poff, $noff, 0, $id ];
             } elsif ($noff == 8) {
-                $newOff = [ 'co64_iloc', $$boxPos{iloc}[0] + $$boxPos{iloc}[1] + $p, $noff, 0, $id ];
+                $newOff = [ 'co64_iloc', $$boxPos{iloc}[0] + $$boxPos{iloc}[1] + $poff, $noff, 0, $id ];
+            } elsif ($noff == 0) {
+                # offset_size is zero, so store the offset in base_offset instead
+                if ($nbas == 4) {
+                    $newOff = [ 'stco_iloc', $$boxPos{iloc}[0] + $$boxPos{iloc}[1] + $pbas, $nbas, 0, $id ];
+                } elsif ($nbas == 8) {
+                    $newOff = [ 'co64_iloc', $$boxPos{iloc}[0] + $$boxPos{iloc}[1] + $pbas, $nbas, 0, $id ];
+                } else {
+                    $et->Warn("Can't create $name. Invalid iloc offset+base size");
+                    last;
+                }
             } else {
                 $et->Warn("Can't create $name. Invalid iloc offset size");
                 last;
@@ -1093,7 +1106,7 @@ sub WriteQuickTime($$$)
                                         my $newVal = $et->GetNewValue($nvHash);
                                         next unless defined $newVal;
                                         my $prVal = $newVal;
-                                        my $flags = FormatQTValue($et, \$newVal, $$tagInfo{Format});
+                                        my $flags = FormatQTValue($et, \$newVal, $format);
                                         next unless defined $newVal;
                                         my ($ctry, $lang) = (0, $undLang);
                                         if ($$ti{LangCode}) {
@@ -1149,7 +1162,6 @@ sub WriteQuickTime($$$)
                                     $val =~ s/\0$// unless $$tagInfo{Binary};
                                     $flags = 0x01;  # write all strings as UTF-8
                                 } else {
-                                    $format = $$tagInfo{Format};
                                     if ($format) {
                                         # update flags for the format we are writing
                                         $flags = $qtFormat{$format} if $qtFormat{$format};
@@ -1171,7 +1183,7 @@ sub WriteQuickTime($$$)
                                     }
                                     my $prVal = $newVal;
                                     # format new value for writing (and get new flags)
-                                    $flags = FormatQTValue($et, \$newVal, $$tagInfo{Format});
+                                    $flags = FormatQTValue($et, \$newVal, $format);
                                     my $grp = $et->GetGroup($langInfo, 1);
                                     $et->VerboseValue("- $grp:$$langInfo{Name}", $val);
                                     $et->VerboseValue("+ $grp:$$langInfo{Name}", $prVal);
@@ -1245,11 +1257,14 @@ sub WriteQuickTime($$$)
                                 } else {
                                     $newData = pack('nn', length($newData), $lang) . $newData;
                                 }
-                            } elsif (not $$tagInfo{Format} or $$tagInfo{Format} =~ /^string/ and
-                                    not $$tagInfo{Binary} and not $$tagInfo{ValueConv})
+                            } elsif (not $format or $format =~ /^string/ and
+                                     not $$tagInfo{Binary} and not $$tagInfo{ValueConv})
                             {
                                 # write all strings as UTF-8
                                 $newData = $et->Encode($newData, 'UTF8');
+                            } elsif ($format and not $$tagInfo{Binary}) {
+                                # format new value for writing
+                                $newData = WriteValue($newData, $format);
                             }
                         }
                         $$didTag{$nvHash} = 1;   # set flag so we don't add this tag again

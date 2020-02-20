@@ -64,7 +64,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
         Name => 'ImageTemperatureMax',
         %temperatureInfo,
         Notes => q{
-            these temperatures may be in Celcius, Kelvin or Fahrenheit, but there is no
+            these temperatures may be in Celsius, Kelvin or Fahrenheit, but there is no
             way to tell which
         },
     },
@@ -754,7 +754,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     96 => {
         Name => 'Reading1Value',
         Format => 'double',
-        # convert Kelvin -> Celcius and kg/kg -> g/kg
+        # convert Kelvin -> Celsius and kg/kg -> g/kg
         ValueConv => q{
             return $val - 273.15 if $$self{Reading1Units} == 0x0d and $$self{Reading1Description} != 11;
             return $val *= 1000 if $$self{Reading1Units} == 0x24;
@@ -794,7 +794,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     196 => {
         Name => 'Reading2Value',
         Format => 'double',
-        # convert Kelvin -> Celcius and kg/kg -> g/kg
+        # convert Kelvin -> Celsius and kg/kg -> g/kg
         ValueConv => q{
             return $val - 273.15 if $$self{Reading2Units} == 0x0d and $$self{Reading2Description} != 11;
             return $val *= 1000 if $$self{Reading2Units} == 0x24;
@@ -833,7 +833,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     296 => {
         Name => 'Reading3Value',
         Format => 'double',
-        # convert Kelvin -> Celcius and kg/kg -> g/kg
+        # convert Kelvin -> Celsius and kg/kg -> g/kg
         ValueConv => q{
             return $val - 273.15 if $$self{Reading3Units} == 0x0d and $$self{Reading3Description} != 11;
             return $val *= 1000 if $$self{Reading3Units} == 0x24;
@@ -873,7 +873,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     396 => {
         Name => 'Reading4Value',
         Format => 'double',
-        # convert Kelvin -> Celcius and kg/kg -> g/kg
+        # convert Kelvin -> Celsius and kg/kg -> g/kg
         ValueConv => q{
             return $val - 273.15 if $$self{Reading4Units} == 0x0d and $$self{Reading4Description} != 11;
             return $val *= 1000 if $$self{Reading4Units} == 0x24;

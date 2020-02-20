@@ -202,7 +202,7 @@ sub ProcessAIFF($$)
         $et->SetFileType('DJVU');
         return 1 if $fast3;
         $tagTablePtr = GetTagTable('Image::ExifTool::DjVu::Main');
-        # modifiy FileType to indicate a multi-page document
+        # modify FileType to indicate a multi-page document
         $$et{VALUE}{FileType} .= " (multi-page)" if $buf2 eq 'DJVM';
         $type = 'DjVu';
     } else {

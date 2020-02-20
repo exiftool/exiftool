@@ -545,7 +545,7 @@ my %unicodeString = (
         PrintConv => 'sprintf("%d%%",$val)',
     },
     # tags extracted from additional layer information (tag ID's are real)
-    # - must be able to accomodate a blank entry to preserve the list ordering
+    # - must be able to accommodate a blank entry to preserve the list ordering
     luni => {
         Name => 'LayerUnicodeNames',
         List => 1,

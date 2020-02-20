@@ -121,7 +121,7 @@ my $testnum = 1;
     print "ok $testnum\n";
 }
 
-# tests 12/13: check precidence of tags extracted from groups
+# tests 12/13: check precedence of tags extracted from groups
 # (Note: these tests should produce the same output as 7/8,
 #  so the .out files from tests 7/8 are used)
 {

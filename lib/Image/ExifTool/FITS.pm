@@ -73,7 +73,7 @@ sub ProcessFITS($$)
             # add to tag table if necessary
             unless ($$tagTablePtr{$tag}) {
                 my $name = ucfirst lc $tag; # make tag name lower case with leading capital
-                $name =~ s/_(.)/\U$1/g;     # remove all '_' and capitalize subsquent letter
+                $name =~ s/_(.)/\U$1/g;     # remove all '_' and capitalize subsequent letter
                 AddTagToTable($tagTablePtr, $tag, { Name => $name });
             }
         }

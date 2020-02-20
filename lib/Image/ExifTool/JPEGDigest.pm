@@ -283,7 +283,7 @@ my %PrintConv = ( #JD
     '42bfe52476bf07f1ed0e6451903cc9ee:111111' => 'Adobe Lightroom, Quality 85% - 92%',
     '4c3c425b4024b68c0de03904a825bc35:111111' => 'Adobe Lightroom, Quality 93% - 100%',
 
-    # Tested with Adobe Photoshop CS2 Version 9.0.2 (Win) - "Save as..." (RGB/CYMK)
+    # Tested with Adobe Photoshop CS2 Version 9.0.2 (Win) - "Save as..." (RGB/CMYK)
     '683506a889c78d9bc230a0c7ee5f62f3:221111' => 'Adobe Photoshop, Quality 0',
     'bc490651af6592cd1dbbbc4fa2cfa1fb:221111' => 'Adobe Photoshop, Quality 1',
     'ce4286d9f07999524c3c7472b065c5ab:221111' => 'Adobe Photoshop, Quality 2',

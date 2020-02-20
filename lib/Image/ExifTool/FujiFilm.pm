@@ -4,7 +4,7 @@
 # Description:  Read/write FujiFilm maker notes and RAF images
 #
 # Revisions:    11/25/2003 - P. Harvey Created
-#               11/14/2007 - PH Added abilty to write RAF images
+#               11/14/2007 - PH Added ability to write RAF images
 #
 # References:   1) http://park2.wakwak.com/~tsuruzoh/Computer/Digicams/exif-e.html
 #               2) http://homepage3.nifty.com/kamisaka/makernote/makernote_fuji.htm (2007/09/11)

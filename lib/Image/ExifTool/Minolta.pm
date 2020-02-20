@@ -1838,7 +1838,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     },
 );
 
-# Image stabilization inforamtion used by the Sony DSLR-A100 (ref 20)
+# Image stabilization information used by the Sony DSLR-A100 (ref 20)
 %Image::ExifTool::Minolta::ISInfoA100 = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     WRITE_PROC => \&Image::ExifTool::WriteBinaryData,

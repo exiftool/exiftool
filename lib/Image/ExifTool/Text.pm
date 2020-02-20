@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 # Text tags
 %Image::ExifTool::Text::Main = (
@@ -44,7 +44,7 @@ $VERSION = '1.02';
     ByteOrderMark => { PrintConv => { 0 => 'No', 1 => 'Yes' } },
     LineCount => { },
     WordCount => { },
-    Delimiter => { PrintConv => { ',' => 'Comma', ';' => 'Semicolon', "\t" => 'Tab' }},
+    Delimiter => { PrintConv => { '' => '(none)', ',' => 'Comma', ';' => 'Semicolon', "\t" => 'Tab' }},
     Quoting   => { PrintConv => { '' => '(none)', '"' => 'Double quotes', "'" => 'Single quotes' }},
     RowCount  => { },
     ColumnCount => { },
@@ -139,15 +139,18 @@ sub ProcessTXT($$)
                 } elsif ($count{"\t"}) {
                     $delim = "\t";
                 } else {
-                    last;   # can't identify this as a CSV file
+                    $delim = '';
+                    $ncols = 1;
                 }
-                # account for delimiters in quotes (simplistically)
-                while ($buff =~ /(^|$delim)(["'])(.*?)\2(?=$delim|$)/sg) {
-                    $quot = $2;
-                    my $field = $3;
-                    $count{$delim} -= () = $field =~ /$delim/g;
+                unless ($ncols) {
+                    # account for delimiters in quotes (simplistically)
+                    while ($buff =~ /(^|$delim)(["'])(.*?)\2(?=$delim|$)/sg) {
+                        $quot = $2;
+                        my $field = $3;
+                        $count{$delim} -= () = $field =~ /$delim/g;
+                    }
+                    $ncols = $count{$delim} + 1;
                 }
-                $ncols = $count{$delim};
             } elsif (not $quot) {
                 $quot = $2 if $buff =~ /(^|$delim)(["'])(.*?)\2(?=$delim|$)/sg;
             }
@@ -156,13 +159,11 @@ sub ProcessTXT($$)
                 last;
             }
         }
-        if (defined $delim) {
-            $et->HandleTag($tagTablePtr, Delimiter => $delim);
-            $et->HandleTag($tagTablePtr, Quoting => ($quot || ''));
-            $et->HandleTag($tagTablePtr, ColumnCount => $ncols);
-            $et->HandleTag($tagTablePtr, RowCount => $nrows) if $nrows;
-            return 1;
-        }
+        $et->HandleTag($tagTablePtr, Delimiter => ($delim || ''));
+        $et->HandleTag($tagTablePtr, Quoting => ($quot || ''));
+        $et->HandleTag($tagTablePtr, ColumnCount => $ncols);
+        $et->HandleTag($tagTablePtr, RowCount => $nrows) if $nrows;
+        return 1;
     }
     return 1 if $$et{VALUE}{FileSize} and $$et{VALUE}{FileSize} > 20000000 and
         $et->Warn('Not counting lines/words in text file larger than 20 MB', 2);
@@ -176,7 +177,7 @@ sub ProcessTXT($$)
         ++$lines;
         ++$words while $buff =~ /\S+/g;
         if (not $nl and $buff =~ /(\r\n|\r|\n)$/) {
-            # (the first line must have been longer than 1024 characters)
+            # (the first line must have been longer than 64 kB)
             $$et{VALUE}{Newlines} = $nl = $1;
         }
         next if $raf->Tell() < 65536;

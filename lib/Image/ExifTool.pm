@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen);
 
-$VERSION = '11.87';
+$VERSION = '11.88';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1045,7 +1045,7 @@ my %systemTagsNotes = (
     # accept either scalar or scalar reference
     RawConv => '$self->ValidateImage(ref $val ? $val : \$val, $tag)',
     # we allow preview image to be set to '', but we don't want a zero-length value
-    # in the IFD, so set it temorarily to 'none'.  Note that the length is <= 4,
+    # in the IFD, so set it temporarily to 'none'.  Note that the length is <= 4,
     # so this value will fit in the IFD so the preview fixup won't be generated.
     ValueConvInv => '$val eq "" and $val="none"; $val',
 );
@@ -3258,7 +3258,7 @@ sub GetDescription($$)
 # Returns: Scalar context: group name (for family 0 if not otherwise specified)
 #          List context: group name if family specified, otherwise list of
 #          group names for each family.  Returns '' for undefined tag.
-# Notes: Mutiple families may be specified with ':' in family argument (eg. '1:2')
+# Notes: Multiple families may be specified with ':' in family argument (eg. '1:2')
 sub GetGroup($$;$)
 {
     local $_;
@@ -5612,7 +5612,10 @@ sub GetUnixTime($;$)
     }
     $tm[1] -= 1;        # convert month
     @tm = reverse @tm;  # change to order required by timelocal()
-    return $isLocal ? TimeLocal(@tm) : Time::Local::timegm(@tm) - $tzSec;
+    my $val = $isLocal ? TimeLocal(@tm) : Time::Local::timegm(@tm) - $tzSec;
+    # handle fractional seconds
+    $val += $1 if $tzStr and $tzStr =~ /^(\.\d+)/;
+    return $val;
 }
 
 #------------------------------------------------------------------------------
@@ -7103,7 +7106,7 @@ sub DoProcessTIFF($$;$)
         # don't process file if FastScan == 3
         return 1 if not $outfile and $$self{OPTIONS}{FastScan} and $$self{OPTIONS}{FastScan} == 3;
     }
-    # (accomodate CR3 images which have a TIFF directory with ExifIFD at the top level)
+    # (accommodate CR3 images which have a TIFF directory with ExifIFD at the top level)
     my $ifdName = ($$dirInfo{DirName} and $$dirInfo{DirName} =~ /^(ExifIFD|GPS)$/) ? $1 : 'IFD0';
     if (not $tagTablePtr or $$tagTablePtr{GROUPS}{0} eq 'EXIF') {
         $self->FoundTag('ExifByteOrder', $byteOrder) unless $outfile;

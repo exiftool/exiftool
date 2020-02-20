@@ -418,7 +418,7 @@ Record: for ($rec=0; ; ++$rec) {
             my $num = Get32u($dataPt, $pos);
             $$dirInfo{Pos} = $pos + 4;
             my ($i, @vals);
-            # add array index to compount tag name
+            # add array index to compound tag name
             my $structName = $$dirInfo{StructName};
             for ($i=0; $i<$num; ++$i) {
                 $$dirInfo{StructName} = $structName . $i if defined $structName;

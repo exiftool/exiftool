@@ -616,7 +616,7 @@ sub ProcessAdobeIFD($$$)
 
     # parse the mutilated IFD.  This is similar to a TIFF IFD, except:
     # - data follows directly after Count entry in IFD
-    # - byte order of IFD entires is always big-endian, but byte order of data changes
+    # - byte order of IFD entries is always big-endian, but byte order of data changes
     SetByteOrder('MM');     # IFD structure is always big-endian
     my $entries = Get16u($dataPt, $pos + 2);
     $et->VerboseDir($dirInfo, $entries);

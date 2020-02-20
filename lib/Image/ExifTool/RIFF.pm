@@ -142,7 +142,7 @@ my %code2charset = (
     0x64 => 'APICOM G.726 ADPCM',
     0x65 => 'APICOM G.722 ADPCM',
     0x66 => 'Microsoft DSAT', #6
-    0x67 => 'Micorsoft DSAT DISPLAY', #6
+    0x67 => 'Microsoft DSAT DISPLAY', #6
     0x69 => 'Voxware Byte Aligned', #7
     0x70 => 'Voxware AC8', #7
     0x71 => 'Voxware AC10', #7
@@ -339,7 +339,7 @@ my %code2charset = (
         these files, information is extracted from subsequent RIFF chunks as
         sub-documents, but the Duration is calculated for the full video.
     },
-    # (not 100% sure that the concatination technique mentioned above is valid - PH)
+    # (not 100% sure that the concatenation technique mentioned above is valid - PH)
    'fmt ' => {
         Name => 'AudioFormat',
         SubDirectory => { TagTable => 'Image::ExifTool::RIFF::AudioFormat' },

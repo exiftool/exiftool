@@ -15,6 +15,7 @@
 #               9) http://www.w3.org/TR/SVG11/
 #               11) http://www.extensis.com/en/support/kb_article.jsp?articleNumber=6102211
 #               12) XMPSpecificationPart3_May2013, page 58
+#               13) https://developer.android.com/training/camera2/Dynamic-depth-v1.0.pdf
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::XMP;
@@ -75,6 +76,65 @@ my %sTimecode = (
     },
     timeValue   => { },
     value       => { Writable => 'integer', Notes => 'only in XMP 2008 spec; an error?' },
+);
+my %sPose = (
+    STRUCT_NAME => 'Pose',
+    NAMESPACE => { Pose => 'http://ns.google.com/photos/dd/1.0/pose/' },
+    PositionX => { Writable => 'real', Groups => { 2 => 'Location' } },
+    PositionY => { Writable => 'real', Groups => { 2 => 'Location' } },
+    PositionZ => { Writable => 'real', Groups => { 2 => 'Location' } },
+    RotationX => { Writable => 'real', Groups => { 2 => 'Location' } },
+    RotationY => { Writable => 'real', Groups => { 2 => 'Location' } },
+    RotationZ => { Writable => 'real', Groups => { 2 => 'Location' } },
+    RotationW => { Writable => 'real', Groups => { 2 => 'Location' } },
+    Timestamp => {
+        Writable => 'integer',
+        Shift => 'Time',
+        Groups => { 2 => 'Time' },
+        ValueConv => 'ConvertUnixTime($val / 1000, 1, 3)',
+        ValueConvInv => 'int(GetUnixTime($val, 1) * 1000)',
+        PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val,undef,1)',
+    },
+);
+my %sEarthPose = (
+    STRUCT_NAME => 'EarthPose',
+    NAMESPACE => { EarthPose => 'http://ns.google.com/photos/dd/1.0/earthpose/' },
+    Latitude  => { Writable => 'real', Groups => { 2 => 'Location' }, %latConv },
+    Longitude => { Writable => 'real', Groups => { 2 => 'Location' }, %longConv },
+    Altitude  => {
+        Writable => 'real',
+        Groups => { 2 => 'Location' },
+        PrintConv => '"$val m"',
+        PrintConvInv => '$val=~s/\s*m$//;$val',
+    },
+    RotationX => { Writable => 'real', Groups => { 2 => 'Location' } },
+    RotationY => { Writable => 'real', Groups => { 2 => 'Location' } },
+    RotationZ => { Writable => 'real', Groups => { 2 => 'Location' } },
+    RotationW => { Writable => 'real', Groups => { 2 => 'Location' } },
+    Timestamp => {
+        Writable => 'integer',
+        Shift => 'Time',
+        Groups => { 2 => 'Time' },
+        ValueConv => 'ConvertUnixTime($val / 1000, 1, 3)',
+        ValueConvInv => 'int(GetUnixTime($val, 1) * 1000)',
+        PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val,undef,1)',
+    },
+);
+my %sVendorInfo = (
+    STRUCT_NAME => 'VendorInfo',
+    NAMESPACE   => { VendorInfo => 'http://ns.google.com/photos/dd/1.0/vendorinfo/' },
+    Model => { },
+    Manufacturer => { },
+    Notes => { },
+);
+my %sAppInfo = (
+    STRUCT_NAME => 'AppInfo',
+    NAMESPACE   => { AppInfo => 'http://ns.google.com/photos/dd/1.0/appinfo/' },
+    Application => { },
+    Version => { },
+    ItemURI => { },
 );
 
 # camera-raw defaults
@@ -1167,7 +1227,7 @@ my %prismPublicationDate = (
     NAMESPACE => 'PixelLive',
     AVOID => 1,
     NOTES => q{
-        PixelLive namespace tags.  These tags are not writable becase they are very
+        PixelLive namespace tags.  These tags are not writable because they are very
         uncommon and I haven't been able to locate a reference which gives the
         namespace URI.
     },
@@ -1787,6 +1847,158 @@ my %sSubVersion = (
     NAMESPACE => 'GCreations',
     NOTES => 'Google creations tags.',
     CameraBurstID  => { },
+);
+
+# Google depth-map Device namespace (ref 13)
+%Image::ExifTool::XMP::Device = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-Device', 2 => 'Camera' },
+    NAMESPACE => { Device => 'http://ns.google.com/photos/dd/1.0/device/' },
+    NOTES => q{
+        Google depth-map Device tags.  See
+        L<https://developer.android.com/training/camera2/Dynamic-depth-v1.0.pdf> for
+        the specification.
+    },
+    Container => {
+        Struct => {
+            STRUCT_NAME => 'DeviceContainer',
+            NAMESPACE   => { Container => 'http://ns.google.com/photos/dd/1.0/container/' },
+            Directory => {
+                List => 'Seq',
+                Struct => {
+                    STRUCT_NAME => 'DeviceDirectory',
+                    NAMESPACE   => { Container => 'http://ns.google.com/photos/dd/1.0/container/' },
+                    Item => {
+                        Struct => {
+                            STRUCT_NAME => 'DeviceItem',
+                            NAMESPACE => { Item => 'http://ns.google.com/photos/dd/1.0/item/' },
+                            Mime    => { },
+                            Length  => { Writable => 'integer' },
+                            Padding => { Writable => 'integer' },
+                            DataURI => { },
+                        },
+                    },
+                },
+            }
+        },
+    },
+    Profiles => {
+        List => 'Seq',
+        FlatName => '',
+        Struct => {
+            STRUCT_NAME => 'DeviceProfiles',
+            NAMESPACE => { Device => 'http://ns.google.com/photos/dd/1.0/device/' },
+            Profile => {
+                Struct => {
+                    STRUCT_NAME => 'DeviceProfile',
+                    NAMESPACE => { Profile => 'http://ns.google.com/photos/dd/1.0/profile/' },
+                    CameraIndices => { List => 'Seq', Writable => 'integer' },
+                    Type => { },
+                },
+            },
+        },
+    },
+    Cameras => {
+        List => 'Seq',
+        FlatName => '',
+        Struct => {
+            STRUCT_NAME => 'DeviceCameras',
+            NAMESPACE => { Device => 'http://ns.google.com/photos/dd/1.0/device/' },
+            Camera => {
+                Struct => {
+                    STRUCT_NAME => 'DeviceCamera',
+                    NAMESPACE => { Camera => 'http://ns.google.com/photos/dd/1.0/camera/' },
+                    DepthMap => {
+                        Struct => {
+                            STRUCT_NAME => 'DeviceDepthMap',
+                            NAMESPACE => { DepthMap => 'http://ns.google.com/photos/dd/1.0/depthmap/' },
+                            ConfidenceURI => { },
+                            DepthURI    => { },
+                            Far         => { Writable => 'real' },
+                            Format      => { },
+                            ItemSemantic=> { },
+                            MeasureType => { },
+                            Near        => { Writable => 'real' },
+                            Units       => { },
+                            Software    => { },
+                            FocalTableEntryCount => { Writable => 'integer' },
+                            FocalTable  => { }, # (base64)
+                        },
+                    },
+                    Image => {
+                        Struct => {
+                            STRUCT_NAME => 'DeviceImage',
+                            NAMESPACE => { Image => 'http://ns.google.com/photos/dd/1.0/image/' },
+                            ItemSemantic=> { },
+                            ItemURI     => { },
+                        },
+                    },
+                    ImagingModel => {
+                        Struct => {
+                            STRUCT_NAME => 'DeviceImagingModel',
+                            NAMESPACE => { ImagingModel => 'http://ns.google.com/photos/dd/1.0/imagingmodel/' },
+                            Distortion      => { }, # (base64)
+                            DistortionCount => { Writable => 'integer' },
+                            FocalLengthX    => { Writable => 'real' },
+                            FocalLengthY    => { Writable => 'real' },
+                            ImageHeight     => { Writable => 'integer' },
+                            ImageWidth      => { Writable => 'integer' },
+                            PixelAspectRatio=> { Writable => 'real' },
+                            PrincipalPointX => { Writable => 'real' },
+                            PrincipalPointY => { Writable => 'real' },
+                            Skew            => { Writable => 'real' },
+                        },
+                    },
+                    PointCloud => {
+                        Struct => {
+                            STRUCT_NAME => 'DevicePointCloud',
+                            NAMESPACE => { PointCloud => 'http://ns.google.com/photos/dd/1.0/pointcloud/' },
+                            PointCloud  => { Writable => 'integer' },
+                            Points      => { },
+                            Metric      => { Writable => 'boolean' },
+                        },
+                    },
+                    Pose => { Struct => \%sPose },
+                    LightEstimate => {
+                        Struct => {
+                            STRUCT_NAME => 'DeviceLightEstimate',
+                            NAMESPACE => { LightEstimate => 'http://ns.google.com/photos/dd/1.0/lightestimate/' },
+                            ColorCorrectionR => { Writable => 'real' },
+                            ColorCorrectionG => { Writable => 'real' },
+                            ColorCorrectionB => { Writable => 'real' },
+                            PixelIntensity   => { Writable => 'real' },
+                        },
+                    },
+                    VendorInfo => { Struct => \%sVendorInfo },
+                    AppInfo    => { Struct => \%sAppInfo },
+                    Trait => { },
+                },
+            },
+        },
+    },
+    VendorInfo  => { Struct => \%sVendorInfo },
+    AppInfo     => { Struct => \%sAppInfo },
+    EarthPos    => { Struct => \%sEarthPose },
+    Pose        => { Struct => \%sPose },
+    Planes => {
+        List => 'Seq',
+        FlatName => '',
+        Struct => {
+            STRUCT_NAME => 'DevicePlanes',
+            NAMESPACE => { Device => 'http://ns.google.com/photos/dd/1.0/device/' },
+            Plane => {
+                Struct => {
+                    STRUCT_NAME => 'DevicePlane',
+                    NAMESPACE => { Plane => 'http://ns.google.com/photos/dd/1.0/plane/' },
+                    Pose    => { Struct => \%sPose },
+                    ExtentX => { Writable => 'real' },
+                    ExtentZ => { Writable => 'real' },
+                    BoundaryVertexCount => { Writable => 'integer' },
+                    Boundary => { },
+                },
+            },
+        },
+    },
 );
 
 # Getty Images namespace (ref PH)

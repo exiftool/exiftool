@@ -7,6 +7,18 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.85. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 20, 2020 - Version 11.88
+
+  - Added write support for new Google depth-map XMP tags
+  - Added config_files/depthmap.config to the distribution
+  - Added minor error when attempting to write FFF images due to incompatibility
+    with Hasselblad Phocus software
+  - Patched to avoid "Invalid iloc offset size" error when writing some
+    QuickTime-based files
+  - Fixed incorrect ColumnCount for CSV files
+  - Fixed various spelling errors (thanks Jens Schleusener)
+  - Fixed bug writing QuickTime:Rotation in HEIC files
+
 Feb. 13, 2020 - Version 11.87
 
   - Added read support for CSV files
@@ -473,7 +485,7 @@ May 31, 2019 - Version 11.46 - "CR3 update"
   - Added ability to write CanonVRD tags in CR3 images
   - Decode a couple more tags from Canon CR3 images
   - Enhanced Validate option to check for duplicate QuickTime atoms
-  - Relaxed contraints when writing IPTC date tags to allow use of separators
+  - Relaxed constraints when writing IPTC date tags to allow use of separators
     other than a colon
   - Fixed CR3 writing to update CTBO table with any changed offsets or sizes
     (although this table doesn't seem to be used by any RAW viewer, it may be
@@ -1541,7 +1553,7 @@ Apr. 10, 2017 - Version 10.49
   - Decode a new Panasonic tag
   - Fixed problem decoding Sony VariableLowPassFilter values (thanks Jos Roost)
   - Fixed problem setting XMP:About when creating new XMP in a file
-  - Fixed an incorect Pentax DriveMode value (thanks Andras Salamon)
+  - Fixed an incorrect Pentax DriveMode value (thanks Andras Salamon)
   - API Changes
       - Allow access to the advanced formatting expression via a new ExifTool
         "FMT_EXPR" member variable
@@ -2060,7 +2072,7 @@ Jan. 4, 2016 - Version 10.09
 
   - Added ability to extract OS X system metadata ("MDItem" tags)
   - Added a value conversion for GoogleTrackDuration
-  - Enchanced the -i option to allow full path names to be specified
+  - Enhanced the -i option to allow full path names to be specified
   - Fixed a potential runtime error when writing corrupted JPEG images
   - API Changes:
       - Added MDItemTags option
@@ -3379,7 +3391,7 @@ Jan. 18, 2013 - Version 9.14
   - Decode new Canon 6D CustomFunctions
   - Improved calculation of ScaleFactor35efl for Canon cameras
   - Changed priority of PDF Info tags so tags from most recent Info dictionary
-    take precedence (to partially accomodate the questionable Acrobat Pro
+    take precedence (to partially accommodate the questionable Acrobat Pro
     incremental update technique)
   - Changed some verbose warnings when attempting to write "unsafe" tags
   - Changed behaviour so that "unsafe" tags are not copied for any tag specified
@@ -3725,7 +3737,7 @@ Apr. 3, 2012 - Version 8.86
   - Decode some new CanonVRD DLO tags
   - Changed decoding of CanonVRD VRDVersion tag
   - Changed formatting of a Pentax LensType for consistency with other lenses
-  - Patched decoding of Reconyx:DateTimeOriginal to accomodate values written
+  - Patched decoding of Reconyx:DateTimeOriginal to accommodate values written
     with an incorrect byte order by some models
 
 Mar. 25, 2012 - Version 8.85 (production release)
@@ -4293,7 +4305,7 @@ Jan. 29, 2011 - Version 8.47
 
 Jan. 22, 2011 - Version 8.46
 
-  - Simpified definition of user-defined XMP structures: flattened tags are now
+  - Simplified definition of user-defined XMP structures: flattened tags are now
     automatically generated, and UserDefined::xmpStruct is no longer needed (but
     backward compatibility is maintained with the old-style definitions)
   - Added ability to handle multi-dimensional arrays in structured output
@@ -5316,7 +5328,7 @@ June 7, 2009 - Version 7.77
   - Decode large preview in APP2 of images from newer Samsung models
   - Extract FujiFilm PreviewImage from improperly written FPXR segment
   - Improved decoding of Nikon WB levels for some models
-  - Reduced memory useage when writing DNG and some other RAW image files
+  - Reduced memory usage when writing DNG and some other RAW image files
   - Changed format of Canon D30 SerialNumber to remove the hyphen and add
     leading 0's if less than 9 characters (now same format as printed on camera)
   - Changed writing of GPSTimeStamp and GPSDateStamp to adjust date/time to UTC
@@ -5979,7 +5991,7 @@ May 28, 2008 - Version 7.29
   - Renamed Pentax ModelRevision tag to ProductionCode and improved print
     conversion to indicate if camera has been serviced
   - Added check to prevent EXIF tags from being written to JPEG images if they
-    would obviously exceed the maximimum JPEG segment size limit
+    would obviously exceed the maximum JPEG segment size limit
   - Relaxed error checks when writing JPEG images to allow MakerNotes to be
     rebuilt if the MakerNote IFD is not contained within the MakerNotes data
   - Fixed decoding of Pentax ExternalFlashGuideNumber when AF360 is used with
@@ -7113,7 +7125,7 @@ Sept. 21, 2006 - Version 6.42 (production release)
 Sept. 18, 2006 - Version 6.41
 
   - Fixed calculation of Canon ISO in some images and renamed ShotISO to BaseISO
-  - Minor improvment to order of operations when deleting multiple groups and
+  - Minor improvement to order of operations when deleting multiple groups and
     adding back information in batch mode
 
 Sept. 14, 2006 - Version 6.40
@@ -7238,7 +7250,7 @@ June 19, 2006 - Version 6.25
   - Added read/write support for WDP (Windows Media Photo) images
   - Improved algorithm to recognize maker notes offsets which need fixing
   - Properly handle maker notes which have value offsets relative to the
-    individial IFD entries (Kyocera, Rollei and some Konica and Toshiba models)
+    individual IFD entries (Kyocera, Rollei and some Konica and Toshiba models)
   - Decode a couple of new Sigma lens values in Canon LensType
   - Decreased block size for buffered files to improve performance over slow
     pipes
@@ -7496,7 +7508,7 @@ Feb. 1, 2006 - Version 5.99
   - Added Canon maker note footer when rewriting Canon maker notes
   - Attempt to fix problem where ScaleFactor35efl was calculated incorrectly for
     some Canon images
-  - Reduce memory useage and speed up writing of large TIFF images
+  - Reduce memory usage and speed up writing of large TIFF images
   - Fixed problem with binary data offsets in verbose dump
   - Fixed problem writing Comment if 'File' group specified
   - Fixed bug which could cause formatting error in htmlDump output
@@ -7722,7 +7734,7 @@ Oct. 24, 2005 - Version 5.71
 
 Oct. 23, 2005 - Version 5.70
 
-  - Significant internal changes to improve speed and reduce memory useage
+  - Significant internal changes to improve speed and reduce memory usage
   - Fixed a bug introduced in version 5.63 which caused incorrect XMP GPS
     coordinates to be returned
   - Changed handling of Kodak date records
@@ -7776,7 +7788,7 @@ Oct. 7, 2005 - Version 5.65
   - Decode a few more Photoshop tags
   - Issue an error if there is extra data after the normal end of file when
     rewriting TIFF images (avoids possible data loss if attempting to write an
-    unsuported RAW image with a TIFF-like data structure)
+    unsupported RAW image with a TIFF-like data structure)
   - Added ability to replace existing tags with user defined tags
   - Denote minor errors/warnings by adding '[minor]' to the message (these are
     the errors which can be ignored with the -m option)
@@ -8483,7 +8495,7 @@ Jan. 28, 2005 - Version 4.42
     specific IPTC tag values with 'TAG-=VALUE'
   - Made EXIF SceneType writable
   - Renamed Nikon ISOUsed tag to ISO
-  - Added documention of Canon RAW (CRW) file format
+  - Added documentation of Canon RAW (CRW) file format
 
 Jan. 27, 2005 - Version 4.41
 
@@ -8966,7 +8978,7 @@ Mar. 26, 2004 - Version 3.27
 
   - Optimized a few routines to speed things up a bit
   - API Changes:
-      - Changed GetDescription() documention to indicate it is called with an
+      - Changed GetDescription() documentation to indicate it is called with an
         ExifTool object (this is still optional, but will be mandatory with the
         next version)
 

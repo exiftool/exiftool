@@ -745,7 +745,7 @@ TAG: foreach $tagInfo (@matchingTags) {
         }
         $writeGroup{$tagInfo} = $writeGroup;
     }
-    # sort tag info list in reverse order of priority (higest number last)
+    # sort tag info list in reverse order of priority (highest number last)
     # so we get the highest priority error message in the end
     @tagInfoList = sort { $tagPriority{$a} <=> $tagPriority{$b} } @tagInfoList;
     # must write any tags which also write other tags first
@@ -857,7 +857,7 @@ TAG: foreach $tagInfo (@matchingTags) {
             # check to make sure this is a List or Shift tag if adding
             if ($addValue and not ($shift or $$tagInfo{List})) {
                 if ($addValue eq '2') {
-                    undef $addValue;    # quitely reset this option
+                    undef $addValue;    # quietly reset this option
                 } else {
                     $err = "Can't add $wgrp1:$tag (not a List type)";
                     $verbose > 2 and print $out "$err\n";
@@ -1338,13 +1338,13 @@ sub SetNewValuesFromFile($$;@)
         foreach $tag (@tags) {
             # don't try to set errors or warnings
             next if $tag =~ /^(Error|Warning)\b/;
-            # get approprite value type if necessary
+            # get appropriate value type if necessary
             if ($opts{SrcType} and $opts{SrcType} ne $srcType) {
                 $$info{$tag} = $srcExifTool->GetValue($tag, $opts{SrcType});
             }
             # set value for this tag
             my ($n, $e) = $self->SetNewValue($tag, $$info{$tag}, %opts);
-            # delete this tag if we could't set it
+            # delete this tag if we couldn't set it
             $n or delete $$info{$tag};
         }
         return $info;
@@ -2305,6 +2305,10 @@ sub WriteInfo($$;$$)
                     $fileType = $tiffType;
                     undef $rtnVal;
                 } else {
+                    if ($tiffType eq 'FFF') {
+                        # (see https://exiftool.org/forum/index.php?topic=10848.0)
+                        $self->Error('Phocus may not properly update previews of edited FFF images', 1);
+                    }
                     $dirInfo{Parent} = $tiffType;
                     $rtnVal = $self->ProcessTIFF(\%dirInfo);
                 }
@@ -5877,7 +5881,7 @@ sub WriteJPEG($$)
                 HexDump($segDataPt, undef, %dumpParms);
             }
         }
-        # group delete of APP segements
+        # group delete of APP segments
         if ($$delGroup{$dirName}) {
             $verbose and print $out "  Deleting $dirName segment\n";
             ++$$self{CHANGED};

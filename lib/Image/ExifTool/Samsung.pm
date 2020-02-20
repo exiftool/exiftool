@@ -11,7 +11,7 @@
 #               4) Jaroslav Stepanek via rt.cpan.org
 #               5) Nick Livchits private communication
 #               6) Sreerag Raghavan private communication (SM-C200)
-#               IB) Iliah Borg private communcation (LibRaw)
+#               IB) Iliah Borg private communication (LibRaw)
 #               NJ) Niels Kristian Bech Jensen private communication
 #------------------------------------------------------------------------------
 

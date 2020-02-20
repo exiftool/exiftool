@@ -153,7 +153,7 @@ sub UnescapeRTF($$$)
         $val =~ tr/\n\r//d; # ignore CR's and LF's
         return $val;
     }
-    # CR/LF is signficant if it terminates a control sequence (so change these to a space)
+    # CR/LF is significant if it terminates a control sequence (so change these to a space)
     # (was $val =~ s/(^|[^\\])((?:\\\\)*)(\\[a-zA-Z]+(?:-?\d+)?)[\n\r]/$1$2$3 /g;)
     $val =~ s/\\(?:([a-zA-Z]+(?:-?\d+)?)[\n\r]|(.))/'\\'.($1 ? "$1 " : $2)/sge;
     # protect the newline control sequence by converting to a \par command

@@ -619,7 +619,7 @@ my %unreg = ( Notes => 'unregistered' );
     GROUPS => { 2 => 'Image' },
     FORMAT => 'int32u',
     NOTES => q{
-        Tags found in the Animation Conrol chunk.  See
+        Tags found in the Animation Control chunk.  See
         L<https://wiki.mozilla.org/APNG_Specification> for details.
     },
     0 => {

@@ -68,7 +68,7 @@ $VERSION = '1.04';
     },
     # 0x000c - rational64s[2]: eg) "0.1640625 0.19921875"
     # 0x000d - int32s: 0,1,6,20,24,32,40
-    # 0x000e - int32s: 0,1,4,12 (Orienation? 0=landscape? 4=portrait? ref 1)
+    # 0x000e - int32s: 0,1,4,12 (Orientation? 0=landscape? 4=portrait? ref 1)
     # 0x000f - int32s: 2,3
     # 0x0010 - int32s: 1
     0x0011 => {

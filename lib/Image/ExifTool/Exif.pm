@@ -437,7 +437,7 @@ my %opcodeInfo = (
         Writable => 'int32u',
         WriteGroup => 'IFD0',
         # Note: priority 0 tags automatically have their priority increased for the
-        # priority direcory (the directory with a SubfileType of "Full-resolution image")
+        # priority directory (the directory with a SubfileType of "Full-resolution image")
         Priority => 0,
     },
     0x101 => {
@@ -3284,7 +3284,7 @@ my %opcodeInfo = (
             Groups => { 1 => 'SR2' },
             Flags => 'SubIFD',
             Format => 'int32u',
-            # some utilites have problems unless this is int8u format:
+            # some utilities have problems unless this is int8u format:
             # - Adobe Camera Raw 5.3 gives an error
             # - Apple Preview 10.5.8 gets the wrong white balance
             FixFormat => 'int8u', # (stupid Sony)
@@ -4068,7 +4068,7 @@ my %opcodeInfo = (
 
     # tags in the range 0xfde8-0xfe58 have been observed in PS7 files
     # generated from RAW images.  They are all strings with the
-    # tag name at the start of the string.  To accomodate these types
+    # tag name at the start of the string.  To accommodate these types
     # of tags, all tags with values above 0xf000 are handled specially
     # by ProcessExif().
     0xfde8 => {

@@ -105,8 +105,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-11.87.tar.gz | tar -xf -
-  cd Image-ExifTool-11.87
+  gzip -dc Image-ExifTool-11.88.tar.gz | tar -xf -
+  cd Image-ExifTool-11.88
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -193,6 +193,7 @@ distribution package:
     age.config                - Calculate Age of person in photo
     bibble.config             - Definitions for writing Bibble XMP tags
     convert_regions.config    - Convert between MWG, MP and IPTC regions
+    depthmap.config           - Extract Google DepthMap images
     example.config            - General example showing config features
     fotoware.config           - Definitions for writing Fotoware XMP tags
     gps2utm.config            - Generate UTM coordinate tags from GPS info
@@ -201,7 +202,7 @@ distribution package:
     picasa_faces.config       - Convert from Picasa to MWG/MP face regions
     rotate_regions.config     - Rotate MWG and MP region tags
     tiff_version.config       - Determine the version of a TIFF file
-    time_zone.config          - Calcuate time zone from EXIF tags
+    time_zone.config          - Calculate time zone from EXIF tags
   exiftool                  - The exiftool application (Perl script)
   fmt_files/                - Output formatting example files:
     gpx.fmt                   - Format file for creating GPX track

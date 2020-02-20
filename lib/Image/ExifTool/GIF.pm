@@ -466,7 +466,7 @@ Block:
         } elsif ($a == 0xf9 and $length == 4) {     # graphic control extension
 
             last unless $raf->Read($buff, $length) == $length;
-            # sum the indivual delay times
+            # sum the individual delay times
             my $delay = Get16u(\$buff, 1);
             $delayTime += $delay;
             $verbose and printf $out "Graphic Control: delay=%.2f\n", $delay / 100;

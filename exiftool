@@ -1815,7 +1815,7 @@ if (defined $deleteOrig) {
         printf($o "%5d image files %s\n", $countCopyWr, $overwriteOrig ? 'moved' : 'copied') if $countCopyWr;
         printf($o "%5d files weren't updated due to errors\n", $countBadWr) if $countBadWr;
         printf($o "%5d files weren't created due to errors\n", $countBadCr) if $countBadCr;
-        printf($o "%5d image files read\n", $count) if $tot>1 or ($countDir and not $totWr);
+        printf($o "%5d image files read\n", $count) if ($tot>1 or ($countDir and not $totWr)) and not ($json || $xml || $html);
         printf($o "%5d files could not be read\n", $countBad) if $countBad;
         printf($o "%5d output files created\n", scalar(keys %created)) if $textOut;
         printf($o "%5d output files appended\n", scalar(keys %appended)) if %appended;

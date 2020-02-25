@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23338 tags, with 15293 unique tag names.
+They contain a total of 23351 tags, with 15303 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1160,7 +1160,7 @@ When reading, C<struct> tags are extracted only if the Struct (-struct)
 option is used.  Otherwise the corresponding I<Flattened> tags, indicated by
 an underline (C<_>) after the B<Writable> type, are extracted.  When
 copying, by default both structured and flattened tags are available, but
-the flattened tags are considered "unsafe" so they they aren't copied unless
+the flattened tags are considered "unsafe" so they aren't copied unless
 specified explicitly.  The Struct option may be disabled by setting Struct
 to 0 via the API or with --struct on the command line to copy only flattened
 tags, or enabled by setting Struct to 1 via the API or with -struct on the
@@ -2897,6 +2897,19 @@ These tags belong to the ExifTool XMP-exifEX family 1 group.
   SerialNumber                                  string
   CameraElevationAngle                          rational
   OwnerName                                     string
+  CompositeImage                                integer
+  CompositeImageCount                           integer+
+  CompositeImageExposureTimes                   CompImageExp Struct
+  CompImageMaxExposureAll                       rational_
+  CompImageMaxExposureUsed                      rational_
+  CompImageMinExposureAll                       rational_
+  CompImageMinExposureUsed                      rational_
+  CompImageImagesPerSequence                    integer_
+  CompImageNumSequences                         integer_
+  CompImageSumExposureAll                       rational_
+  CompImageSumExposureUsed                      rational_
+  CompImageTotalExposurePeriod                  rational_
+  CompImageValues                               rational_+
   Gamma                                         rational
   Humidity                                      rational
   InteropIndex                                  string
@@ -2914,6 +2927,21 @@ These tags belong to the ExifTool XMP-exifEX family 1 group.
   StandardOutputSensitivity                     integer
   AmbientTemperature                            rational
   WaterDepth                                    rational
+
+=head3 XMP CompImageExp Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  MaxExposureTimesOfAll                         rational
+  MaxExposureTimesOfUsed                        rational
+  MinExposureTimesOfAll                         rational
+  MinExposureTimesOfUsed                        rational
+  NumberOfImagesInSequences                     integer
+  NumberOfSequences                             integer
+  SumOfExposureTimesOfAll                       rational
+  SumOfExposureTimesOfUsed                      rational
+  TotalExposurePeriod                           rational
+  Values                                        rational+
 
 =head3 XMP ExpressionMedia Tags
 

@@ -4074,7 +4074,7 @@ sub WriteDirectory($$$;$)
                 $self->Warn("Can't write EXIF as a block to $$self{FILE_TYPE} file");
                 last;
             }
-            # this can happen if we call WriteDirectory for an EXIF directory without  going
+            # this can happen if we call WriteDirectory for an EXIF directory without going
             # through WriteTIFF as the WriteProc (which happens if conditionally replacing
             # the EXIF block and the condition fails), but we never want to do a block write
             # in this case because the EXIF block would end up with two TIFF headers
@@ -4798,19 +4798,20 @@ TryLib: for ($lib=$strptimeLib; ; $lib='') {
 
 #------------------------------------------------------------------------------
 # Set byte order according to our current preferences
-# Inputs: 0) ExifTool object ref
+# Inputs: 0) ExifTool object ref, 1) default byte order
 # Returns: new byte order ('II' or 'MM') and sets current byte order
 # Notes: takes the first of the following that is valid:
 #  1) ByteOrder option
 #  2) new value for ExifByteOrder
-#  3) makenote byte order from last file read
-#  4) big endian
-sub SetPreferredByteOrder($)
+#  3) default byte order passed to this routine
+#  4) makenote byte order from last file read
+#  5) big endian
+sub SetPreferredByteOrder($;$)
 {
-    my $self = shift;
+    my ($self, $default) = @_;
     my $byteOrder = $self->Options('ByteOrder') ||
                     $self->GetNewValue('ExifByteOrder') ||
-                    $$self{MAKER_NOTE_BYTE_ORDER} || 'MM';
+                    $default || $$self{MAKER_NOTE_BYTE_ORDER} || 'MM';
     unless (SetByteOrder($byteOrder)) {
         warn "Invalid byte order '${byteOrder}'\n" if $self->Options('Verbose');
         $byteOrder = $$self{MAKER_NOTE_BYTE_ORDER} || 'MM';

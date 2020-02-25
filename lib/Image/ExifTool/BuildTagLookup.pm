@@ -318,7 +318,7 @@ When reading, C<struct> tags are extracted only if the L<Struct|../ExifTool.html
 option is used.  Otherwise the corresponding I<Flattened> tags, indicated by
 an underline (C<_>) after the B<Writable> type, are extracted.  When
 copying, by default both structured and flattened tags are available, but
-the flattened tags are considered "unsafe" so they they aren't copied unless
+the flattened tags are considered "unsafe" so they aren't copied unless
 specified explicitly.  The L<Struct|../ExifTool.html#Struct> option may be disabled by setting Struct
 to 0 via the API or with --struct on the command line to copy only flattened
 tags, or enabled by setting Struct to 1 via the API or with -struct on the

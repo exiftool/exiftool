@@ -536,13 +536,13 @@ since padding is never written for stand-alone XMP files.  Also note that
 'OneDesc' is not recommended when writing XMP larger than 64 kB to a JPG
 file because it interferes with ExifTool's technique of splitting off the
 large description elements into the extended XMP.  Case is not significant
-for any of these options.  Default is undef.
+for any of these options.  Aliases are given in brackets.  Default is undef.
 
-  NoPadding - Avoid 2 kB of recommended padding at end of XMP
-  NoIndent  - Avoid spaces to indent lines for readability
-  NoNewline - Avoid unnecessary newlines
+  NoPadding - Avoid 2 kB of recommended padding at end of XMP (NoPad)
+  NoIndent  - No spaces to indent lines (NoSpace, NoSpaces)
+  NoNewline - Avoid unnecessary newlines (NoNewlines)
   Shorthand - Use XMP Shorthand format
-  OneDesc   - Combine XMP properties into a single rdf:Description
+  OneDesc   - Combine properties into a single rdf:Description (OneDescr)
   AllSpace  - Equivalent to 'NoPadding,NoIndent,NoNewline'
   AllFormat - Equivalent to 'Shorthand,OneDesc'
   All       - Equivalent to 'AllSpace,AllFormat'

@@ -17,9 +17,20 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.89'><b>Feb. 25, 2020 - Version 11.89</b></a>
+<ul>
+<li>Added support for Exif 2.32 for XMP
+<li>Recognize the HIF file extension
+<li>Improved verbose output for QuickTime iref items
+<li>Patched to use same byte ordering as IFD0 by default when creating new GPS
+    metadata in Canon CR3 files
+<li>Patched to add missing newline that could occur in XMP with the API <a href="ExifTool.html#Compact">Compact</a>
+    Shorthand option
+</ul>
+
 <a name='v11.88'><b>Feb. 20, 2020 - Version 11.88</b></a>
 <ul>
-<li>Added write support for new Google depth-map XMP tags
+<li>Added write support for new <a href="TagNames/XMP.html#Device">Google depth-map XMP tags</a>
 <li>Added config_files/depthmap.config to the distribution
 <li>Added minor error when attempting to write FFF images due to incompatibility
     with Hasselblad Phocus software

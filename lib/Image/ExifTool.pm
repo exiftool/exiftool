@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen);
 
-$VERSION = '11.88';
+$VERSION = '11.89';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -110,7 +110,7 @@ sub CheckBinaryData($$$);
 sub WriteTIFF($$$);
 sub PackUTF8(@);
 sub UnpackUTF8($);
-sub SetPreferredByteOrder($);
+sub SetPreferredByteOrder($;$);
 sub CopyBlock($$$);
 sub CopyFileAttrs($$$);
 sub TimeNow(;$$);
@@ -319,6 +319,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     HDR  => ['HDR',  'Radiance RGBE High Dynamic Range'],
     HEIC => ['MOV',  'High Efficiency Image Format still image'],
     HEIF => ['MOV',  'High Efficiency Image Format'],
+    HIF  =>  'HEIF',
     HTM  =>  'HTML',
     HTML => ['HTML', 'HyperText Markup Language'],
     ICAL =>  'ICS',
@@ -2098,6 +2099,7 @@ sub Options($$;@)
                     /^(.*:)?([-\w?*]*)#?$/ or next;
                     push @{$$options{$param}}, lc($2) if $2;
                     next unless $1;
+                    # add requested groups with trailing colon
                     push @{$$options{$param}}, lc($_).':' foreach split /:/, $1;
                 }
             } else {
@@ -7015,8 +7017,13 @@ sub DoProcessTIFF($$;$)
         $$self{EXIF_DATA} = '';
     }
     unless (defined $$self{EXIF_DATA}) {
+        # set default byte order for creating new GPS in CR3 images
+        my $defaultByteOrder;
+        if ($$dirInfo{DirName} and $$dirInfo{DirName} eq 'GPS') {
+            $defaultByteOrder = $$self{SaveExifByteOrder};
+        }
         # create TIFF information from scratch
-        if ($self->SetPreferredByteOrder() eq 'MM') {
+        if ($self->SetPreferredByteOrder($defaultByteOrder) eq 'MM') {
             $$self{EXIF_DATA} = "MM\0\x2a\0\0\0\x08";
         } else {
             $$self{EXIF_DATA} = "II\x2a\0\x08\0\0\0";

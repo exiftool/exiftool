@@ -7,6 +7,16 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.85. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 25, 2020 - Version 11.89
+
+  - Added support for Exif 2.32 for XMP
+  - Recognize the HIF file extension
+  - Improved verbose output for QuickTime iref items
+  - Patched to use same byte ordering as IFD0 by default when creating new GPS
+    metadata in Canon CR3 files
+  - Patched to add missing newline that could occur in XMP with the API Compact
+    Shorthand option
+
 Feb. 20, 2020 - Version 11.88
 
   - Added write support for new Google depth-map XMP tags

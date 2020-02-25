@@ -699,7 +699,7 @@ sub CloseProperty($$$$)
         if (length $$short[-1]) {
             if (length $$long[-1]) {
                 # require a new Description if both longhand and shorthand properties
-                $$long[-2] .= ">$pad<$rdfDesc";
+                $$long[-2] .= ">$nl$pad<$rdfDesc";
                 $$short[-1] .= ">$nl";
                 $$long[-1] .= "$pad</$rdfDesc>$nl";
             } else {

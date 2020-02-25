@@ -522,6 +522,9 @@ sub WriteExif($$$)
     my $name = $$dirInfo{Name};
     $name = $dirName unless $name and $dirName eq 'MakerNotes' and $name !~ /^MakerNote/;
 
+    # save byte order of existing EXIF
+    $$et{SaveExifByteOrder} = GetByteOrder() if $dirName eq 'IFD0' or $dirName eq 'ExifIFD';
+
     # set encoding for strings
     $strEnc = $et->Options('CharsetEXIF') if $$tagTablePtr{GROUPS}{0} eq 'EXIF';
 

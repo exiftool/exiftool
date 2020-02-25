@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.30';
+$VERSION = '3.31';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2118,6 +2118,35 @@ my %sPantryItem = (
     WaterDepth          => { Writable => 'rational' },
     Acceleration        => { Writable => 'rational' },
     CameraElevationAngle=> { Writable => 'rational' },
+    # new in Exif 2.32 (according to the spec, these should use a different namespace
+    # URI, but the same namespace prefix... Exactly how is that supposed to work?!!
+    # -- I'll just stick with the same URI)
+    CompositeImage => { Writable => 'integer',
+        PrintConv => {
+            0 => 'Unknown',
+            1 => 'Not a Composite Image',
+            2 => 'General Composite Image',
+            3 => 'Composite Image Captured While Shooting',
+        },
+    },
+    CompositeImageCount => { List => 'Seq', Writable => 'integer' },
+    CompositeImageExposureTimes => {
+        FlatName => 'CompImage',
+        Struct => {
+            STRUCT_NAME => 'CompImageExp',
+            NAMESPACE => 'exifEX',
+            TotalExposurePeriod     => { Writable => 'rational' },
+            SumOfExposureTimesOfAll => { Writable => 'rational', FlatName => 'SumExposureAll' },
+            SumOfExposureTimesOfUsed=> { Writable => 'rational', FlatName => 'SumExposureUsed' },
+            MaxExposureTimesOfAll   => { Writable => 'rational', FlatName => 'MaxExposureAll' },
+            MaxExposureTimesOfUsed  => { Writable => 'rational', FlatName => 'MaxExposureUsed' },
+            MinExposureTimesOfAll   => { Writable => 'rational', FlatName => 'MinExposureAll'  },
+            MinExposureTimesOfUsed  => { Writable => 'rational', FlatName => 'MinExposureUsed' },
+            NumberOfSequences       => { Writable => 'integer',  FlatName => 'NumSequences' },
+            NumberOfImagesInSequences=>{ Writable => 'integer',  FlatName => 'ImagesPerSequence' },
+            Values =>   { List => 'Seq', Writable => 'rational' },
+        },
+    },
 );
 
 # Auxiliary namespace properties (aux) - not fully documented (ref PH)

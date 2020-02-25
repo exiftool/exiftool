@@ -227,6 +227,15 @@ some original A100 firmware 1.00 images, but no longer crashes if the images are
 first edited with ExifTool (probably because ExifTool fixes the above mentioned
 problems when it rewrites the image).</p>
 
+<p><a name="Hasselblad"><b>Hasselblad:</b></a> Many Hasselblad camera models
+write TIFF-format FFF raw files which contain a double-referenced
+reduced-resolution image that is referenced from both IFD0 and IFD1.Immediately
+following the data for this image is an unreferenced data block that the
+Hasselblad Phocus software uses for an updated preview to reflect the raw
+development settings.  This unreferenced data is lost if the FFF file is edited
+using a TIFF-compatible algorithm, which results in the Phocus no longer
+updating the preview when the settings are changed.</p>
+
 <p><a name="LeicaDNG"><b>Leica DNG:</b></a> The makernote offsets for the M8 are relative to the start
 of the makernote IFD in JPEG images, but relative to the start of the makernote
 header (8 bytes earlier) in DNG images.  <i>[2009-09-09: This is fixed for the
@@ -278,7 +287,7 @@ are absolute.  What a mess!</p>
 
 <hr>
 <i>Created Mar. 25, 2005</i>
-<br><i>Last revised Jan. 11, 2019</i>
+<br><i>Last revised Feb. 24, 2020</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

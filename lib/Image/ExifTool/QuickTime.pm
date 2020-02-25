@@ -45,7 +45,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.42';
+$VERSION = '2.43';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -205,6 +205,7 @@ my %ftypLookup = (
     'hevc' => 'High Efficiency Image Format HEVC sequence (.HEICS)', # image/heic-sequence
     'mif1' => 'High Efficiency Image Format still image (.HEIF)', # image/heif
     'msf1' => 'High Efficiency Image Format sequence (.HEIFS)', # image/heif-sequence
+    'heix' => 'High Efficiency Image Format still image (.HEIF)', # image/heif (ref PH, Canon 1DXmkIII)
     'avif' => 'AV1 Image File Format (.AVIF)', # image/avif
     'crx ' => 'Canon Raw (.CRX)', #PH (CR3 or CRM; use Canon CompressorVersion to decide)
 );
@@ -7725,7 +7726,6 @@ sub ParseContentDescribes($$)
     }
     # add all referenced item ID's to a "RefersTo" lookup
     $$et{ItemInfo}{$id}{RefersTo}{$_} = 1 foreach @to;
-    $et->VPrint(1, "$$et{INDENT}  Item $id describes: @to\n") unless $$et{IsWriting};
     return undef;
 }
 
@@ -8558,6 +8558,18 @@ ItemID:         foreach $id (keys %$items) {
                     Format  => $tagInfo ? $$tagInfo{Format} : undef,
                     Index   => $index,
                 );
+                # print iref item ID numbers
+                if ($dirID eq 'iref') {
+                    my ($id, $count, @to);
+                    if ($$et{ItemRefVersion}) {
+                        ($id, $count, @to) = unpack('NnN*', $val) if length $val >= 10;
+                    } else {
+                        ($id, $count, @to) = unpack('nnn*', $val) if length $val >= 6;
+                    }
+                    defined $id or $id = '<err>', $count = 0;
+                    $id .= " (wrong count: $count)" if $count != @to;
+                    $et->VPrint(1, "$$et{INDENT}  Item $id refers to: @to\n");
+                }
             }
             # extract metadata from stream if ExtractEmbedded option is enabled
             if ($eeTag) {

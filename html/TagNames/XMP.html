@@ -36,7 +36,7 @@ languages.</p>
 option is used.  Otherwise the corresponding <i>Flattened</i> tags, indicated by
 an underline (<code>_</code>) after the <b>Writable</b> type, are extracted.  When
 copying, by default both structured and flattened tags are available, but
-the flattened tags are considered &quot;unsafe&quot; so they they aren&#39;t copied unless
+the flattened tags are considered &quot;unsafe&quot; so they aren&#39;t copied unless
 specified explicitly.  The <a href="../ExifTool.html#Struct">Struct</a> option may be disabled by setting Struct
 to 0 via the API or with --struct on the command line to copy only flattened
 tags, or enabled by setting Struct to 1 via the API or with -struct on the
@@ -6435,62 +6435,118 @@ Composite:GPSDateTime when copying from EXIF)</span></span></td></tr>
 <td class=c>string</td>
 <td><span class=s><span class=n>(called CameraOwnerName by the spec)</span></span></td></tr>
 <tr>
+<td>CompositeImage</td>
+<td class=c>integer</td>
+<td><span class=s>0 = Unknown
+  <br>1 = Not a Composite Image
+  <br>2 = General Composite Image
+  <br>3 = Composite Image Captured While Shooting</span></td></tr>
+<tr class=b>
+<td>CompositeImageCount</td>
+<td class=c title=' + = List'>integer+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CompositeImageExposureTimes</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='XMP.html#CompImageExp'>CompImageExp Struct</a></td></tr>
+<tr class=b>
+<td>CompImageMaxExposureAll</td>
+<td class=c title=' _ = Flattened'>rational_</td>
+<td><span class=s><span class=n>(CompositeImageExposureTimesMaxExposureTimesOfAll)</span></span></td></tr>
+<tr>
+<td>CompImageMaxExposureUsed</td>
+<td class=c title=' _ = Flattened'>rational_</td>
+<td><span class=s><span class=n>(CompositeImageExposureTimesMaxExposureTimesOfUsed)</span></span></td></tr>
+<tr class=b>
+<td>CompImageMinExposureAll</td>
+<td class=c title=' _ = Flattened'>rational_</td>
+<td><span class=s><span class=n>(CompositeImageExposureTimesMinExposureTimesOfAll)</span></span></td></tr>
+<tr>
+<td>CompImageMinExposureUsed</td>
+<td class=c title=' _ = Flattened'>rational_</td>
+<td><span class=s><span class=n>(CompositeImageExposureTimesMinExposureTimesOfUsed)</span></span></td></tr>
+<tr class=b>
+<td>CompImageImagesPerSequence</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td><span class=s><span class=n>(CompositeImageExposureTimesNumberOfImagesInSequences)</span></span></td></tr>
+<tr>
+<td>CompImageNumSequences</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td><span class=s><span class=n>(CompositeImageExposureTimesNumberOfSequences)</span></span></td></tr>
+<tr class=b>
+<td>CompImageSumExposureAll</td>
+<td class=c title=' _ = Flattened'>rational_</td>
+<td><span class=s><span class=n>(CompositeImageExposureTimesSumOfExposureTimesOfAll)</span></span></td></tr>
+<tr>
+<td>CompImageSumExposureUsed</td>
+<td class=c title=' _ = Flattened'>rational_</td>
+<td><span class=s><span class=n>(CompositeImageExposureTimesSumOfExposureTimesOfUsed)</span></span></td></tr>
+<tr class=b>
+<td>CompImageTotalExposurePeriod</td>
+<td class=c title=' _ = Flattened'>rational_</td>
+<td><span class=s><span class=n>(CompositeImageExposureTimesTotalExposurePeriod)</span></span></td></tr>
+<tr>
+<td>CompImageValues</td>
+<td class=c title=' _ = Flattened
+ + = List'>rational_+</td>
+<td><span class=s><span class=n>(CompositeImageExposureTimesValues)</span></span></td></tr>
+<tr class=b>
 <td>Gamma</td>
 <td class=c>rational</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Humidity</td>
 <td class=c>rational</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>InteropIndex</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(called InteroperabilityIndex by the spec)</span>
   <br>&#39;R03&#39; = R03 - DCF option file (Adobe RGB)
   <br>&#39;R98&#39; = R98 - DCF basic file (sRGB)
   <br>&#39;THM&#39; = THM - DCF thumbnail file</span></td></tr>
-<tr class=b>
+<tr>
 <td>ISOSpeed</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ISOSpeedLatitudeyyy</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ISOSpeedLatitudezzz</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LensMake</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LensModel</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LensSerialNumber</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LensInfo</td>
 <td class=c title=' + = List'>rational+</td>
 <td><span class=s><span class=n>(called LensSpecification by the spec; unfortunately the EXIF 2.3 for XMP specification defined this new tag
 instead of using the existing XMP-aux:LensInfo)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PhotographicSensitivity</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Pressure</td>
 <td class=c>rational</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RecommendedExposureIndex</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SensitivityType</td>
 <td class=c>integer</td>
 <td><span class=s>0 = Unknown
@@ -6501,17 +6557,65 @@ instead of using the existing XMP-aux:LensInfo)</span></span></td></tr>
   <br>5 = Standard Output Sensitivity and ISO Speed
   <br>6 = Recommended Exposure Index and ISO Speed
   <br>7 = Standard Output Sensitivity, Recommended Exposure Index and ISO Speed</span></td></tr>
-<tr>
+<tr class=b>
 <td>StandardOutputSensitivity</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>AmbientTemperature</td>
 <td class=c>rational</td>
 <td><span class=s><span class=n>(called Temperature by the spec)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>WaterDepth</td>
 <td class=c>rational</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CompImageExp'>XMP CompImageExp Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>MaxExposureTimesOfAll</td>
+<td class=c>rational</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MaxExposureTimesOfUsed</td>
+<td class=c>rational</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MinExposureTimesOfAll</td>
+<td class=c>rational</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MinExposureTimesOfUsed</td>
+<td class=c>rational</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>NumberOfImagesInSequences</td>
+<td class=c>integer</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>NumberOfSequences</td>
+<td class=c>integer</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SumOfExposureTimesOfAll</td>
+<td class=c>rational</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SumOfExposureTimesOfUsed</td>
+<td class=c>rational</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>TotalExposurePeriod</td>
+<td class=c>rational</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Values</td>
+<td class=c title=' + = List'>rational+</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -13651,7 +13755,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 20, 2020</i>
+<br><i>Last revised Feb 25, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

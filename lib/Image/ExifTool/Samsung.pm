@@ -960,6 +960,8 @@ my %formatMinMax = (
    # 0x08e0-name - seen 'Panorama_Shot_Info'
    # 0x08e0 - string, seen 'PanoramaShot'
    # 0x08e1-name - seen 'Motion_Panorama_Info'
+   # 0x0910-name - seen 'Front_Cam_Selfie_Info'
+   # 0x0910 - string, seen 'Front_Cam_Selfie_Info'
    # 0x09e0-name - seen 'Burst_Shot_Info'
    # 0x09e0 - string, seen '489489125'
    # 0x0a01-name - seen 'Image_UTC_Data'

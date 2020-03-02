@@ -944,6 +944,57 @@ my %afPoints153 = (
     31 => 'B8',  62 => 'H13', 93 => 'C17', 124 => 'G4',
 );
 
+# AF point indices for models with 81 focus points, eg. Z6/Z7 (ref AD)
+# - 9 rows (A-I) with 9 columns (1-9), center is E5
+# NOTE: the AF points start 2 bytes into the data, so the map starts
+#       at 17 instead of 1
+#
+#        7   6   5   4   3   2   1   0
+# 00 : [H5][G5][F5][A5][B5][C5][D5][E5]
+# 01 : [G6][F6][A6][B6][C6][D6][E6][I5]
+# 02 : [F4][A4][B4][C4][D4][E4][I6][H6]
+# 03 : [A7][B7][C7][D7][E7][I4][H4][G4]
+# 04 : [B3][C3][D3][E3][I7][H7][G7][F7]
+# 05 : [C8][D8][E8][I3][H3][G3][F3][A3]
+# 06 : [D2][E2][I8][H8][G8][F8][A8][B8]
+# 07 : [E9][I2][H2][G2][F2][A2][B2][C2]
+# 08 : [I9][H9][G9][F9][A9][B9][C9][D9]
+# 09 : [H1][G1][F1][A1][B1][C1][D1][E1]
+# 0a : [  ][  ][  ][  ][  ][  ][  ][I1]
+my %afPoints81 = (
+     17 => 'E5', 48 => 'A7', 79 => 'I2',
+     18 => 'D5', 49 => 'F7', 80 => 'E9',
+     19 => 'C5', 50 => 'G7', 81 => 'D9',
+     20 => 'B5', 51 => 'H7', 82 => 'C9',
+     21 => 'A5', 52 => 'I7', 83 => 'B9',
+     22 => 'F5', 53 => 'E3', 84 => 'A9',
+     23 => 'G5', 54 => 'D3', 85 => 'F9',
+     24 => 'H5', 55 => 'C3', 86 => 'G9',
+     25 => 'I5', 56 => 'B3', 87 => 'H9',
+     26 => 'E6', 57 => 'A3', 88 => 'I9',
+     27 => 'D6', 58 => 'F3', 89 => 'E1',
+     28 => 'C6', 59 => 'G3', 90 => 'D1',
+     29 => 'B6', 60 => 'H3', 91 => 'C1',
+     30 => 'A6', 61 => 'I3', 92 => 'B1',
+     31 => 'F6', 62 => 'E8', 93 => 'A1',
+     32 => 'G6', 63 => 'D8', 94 => 'F1',
+     33 => 'H6', 64 => 'C8', 95 => 'G1',
+     34 => 'I6', 65 => 'B8', 96 => 'H1',
+     35 => 'E4', 66 => 'A8', 97 => 'I1',
+     36 => 'D4', 67 => 'F8',
+     37 => 'C4', 68 => 'G8',
+     38 => 'B4', 69 => 'H8',
+     39 => 'A4', 70 => 'I8',
+     40 => 'F4', 71 => 'E2',
+     41 => 'G4', 72 => 'D2',
+     42 => 'H4', 73 => 'C2',
+     43 => 'I4', 74 => 'B2',
+     44 => 'E7', 75 => 'A2',
+     45 => 'D7', 76 => 'F2',
+     46 => 'C7', 77 => 'G2',
+     47 => 'B7', 78 => 'H2',
+);
+
 my %cropHiSpeed = ( #IB
     0 => 'Off',
     1 => '1.3x Crop', # (1.3x Crop, Large)
@@ -3558,6 +3609,20 @@ my %binaryDataAttrs = (
             ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
             PrintConv => sub { PrintAFPoints(shift, \%afPoints153); },
             PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints153); },
+        },
+        { #AD (Z6/Z7)
+            Name => 'AFPointsUsed',
+            Condition => '$$self{PhaseDetectAF} == 8 and $$self{Model} =~ /^NIKON (Z 6|Z 7)$/',
+            Notes => q{
+                models with 81-selectable point AF -- 9 rows (A-I) and 9 columns
+                (1-9) for phase detect AF points. Center point is E5
+                these 2 models have a two-byte prefix which is skipped
+            },
+            Format => 'undef[13]',
+            ValueConv => 'join(" ", unpack("H2"x13, $val))',
+            ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
+            PrintConv => sub { PrintAFPoints(shift, \%afPoints81); },
+            PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints81); },
         },
         { #PH (Z7) (NC)
             Name => 'AFPointsUsed',

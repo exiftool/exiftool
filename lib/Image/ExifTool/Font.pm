@@ -117,7 +117,7 @@ my %ttCharset = (
   #  0x048c - no ISO equivalent
   #  0x081a/0x83c - sr-SP
   #  0x0c0a - modern?
-  #  0x2409 - Carribbean country code not found in ISO 3166-1
+  #  0x2409 - Caribbean country code not found in ISO 3166-1
   Windows => {
     0x0401 => 'ar-SA', 0x0438 => 'fo',    0x0481 => 'mi',    0x1409 => 'en-NZ',
     0x0402 => 'bg',    0x0439 => 'hi',    0x0482 => 'oc',    0x140a => 'es-CR',

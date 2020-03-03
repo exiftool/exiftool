@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.64';
+$VERSION = '2.65';
 
 sub PrintLensInfo($$$);
 
@@ -172,7 +172,9 @@ my %olympusLensTypes = (
     '2 28 10' => 'Lumix G Vario 12-60mm F3.5-5.6 Asph. Power OIS', #NJ
     '2 29 10' => 'Leica DG Summilux 12mm F1.4 Asph.', #IB
     '2 30 10' => 'Leica DG Vario-Elmarit 12-60mm F2.8-4 Asph. Power OIS', #IB
+    '2 32 10' => 'Lumix G Vario 100-300mm F4.0-5.6 II', #PH
     '2 33 10' => 'Lumix G X Vario 12-35mm F2.8 II Asph. Power OIS', #IB
+    '2 34 10' => 'Lumix G Vario 35-100mm F2.8 II', #forum3833
     '2 35 10' => 'Leica DG Vario-Elmarit 8-18mm F2.8-4 Asph.', #IB
     '2 36 10' => 'Leica DG Elmarit 200mm F2.8 Power OIS', #IB
     '2 37 10' => 'Leica DG Vario-Elmarit 50-200mm F2.8-4 Asph. Power OIS', #IB

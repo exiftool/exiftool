@@ -362,7 +362,7 @@ sub WriteKeys($$$)
     my $pos = 8;
     my $newTags = $et->GetNewTagInfoHash($tagTablePtr);
     my $newData = substr($$dataPt, 0, $pos);
-        
+
     my $newIndex = 1;
     my $index = 1;
     while ($pos < $dirLen - 4) {
@@ -916,7 +916,7 @@ sub WriteQuickTime($$$)
             my $hdlr = substr($buff,8,4);
             $$et{HandlerType} = $hdlr if $hdlr =~ /^(vide|soun)$/;
         }
-        
+
         # if this atom stores offsets, save its location so we can fix up offsets later
         # (are there any other atoms that may store absolute file offsets?)
         if ($tag =~ /^(stco|co64|iloc|mfra|moof|sidx|saio|gps |CTBO|uuid)$/) {
@@ -1750,7 +1750,7 @@ sub WriteQuickTime($$$)
     }
 
     # switch back to actual output file
-    $outfile = $$dirInfo{OutFile};  
+    $outfile = $$dirInfo{OutFile};
 
     # write the metadata
     Write($outfile, $outBuff) or $rtnVal = 0;
@@ -1778,7 +1778,7 @@ sub WriteQuickTime($$$)
 
     # write the stuff that must come last
     Write($outfile, $writeLast) or $rtnVal = 0 if $writeLast;
-    
+
     return $rtnVal;
 }
 

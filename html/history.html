@@ -17,13 +17,27 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.90'><b>Mar. 3, 2020 - Version 11.90</b></a>
+<ul>
+<li>Added a new Sony LensType (thanks LibRaw and Jos Roost)
+<li>Aded two new Olypus LensType values
+<li>Added a new Canon LensType
+<li>Added some new Canon RecordMode values
+<li>Added some new QuickTime GeneralProfileIDC values
+<li>Added new values for a couple of FujiFilm tags
+<li>Added a number of new QuickTime GenreID values
+<li>Decode Nikon Z6/Z7 phase-detect AF points (thanks Andy Dragon)
+<li>Patched to avoid possible "Undefined subroutine" error in MacOS 10.15
+<li>Fixed incorrect offsets in -htmlDump output for some file types
+</ul>
+
 <a name='v11.89'><b>Feb. 25, 2020 - Version 11.89</b></a>
 <ul>
 <li>Added support for Exif 2.32 for XMP
 <li>Recognize the HIF file extension
 <li>Improved verbose output for QuickTime iref items
-<li>Patched to use same byte ordering as IFD0 by default when creating new GPS
-    metadata in Canon CR3 files
+<li>Patched to create new GPS metadata in Canon CR3 images using a default byte
+    order that is the same as existing EXIF boxes
 <li>Patched to add missing newline that could occur in XMP with the API <a href="ExifTool.html#Compact">Compact</a>
     Shorthand option
 </ul>

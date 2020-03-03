@@ -524,7 +524,6 @@ $VERSION = '1.31';
         Name => 'LensType',
         Condition => '$$self{MakerNoteSigmaVer} >= 3 and $format eq "string"',
         Notes => 'some newer models only',
-        
         ValueConv => '$val =~ /^[0-9a-f]+$/i ? hex($val) : $val',
         # (truncate decimal part and convert hex)
         ValueConvInv => '$val=~s/\.\d+$//;$val=~/^0x/ and $val=hex($val);IsInt($val) ? sprintf("%x",$val) : $val',

@@ -28,5 +28,5 @@ recommends:
   Time::HiRes: '0'
 requires:
   perl: '5.004'
-version: '11.89'
+version: '11.90'
 x_serialization_backend: 'CPAN::Meta::YAML version 0.018'

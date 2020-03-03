@@ -48,6 +48,7 @@
 #              35) David Puschel private communication
 #              36) Hayo Baann (forum10207)
 #              37) Tom Lachecki, private communication
+#              38) https://github.com/exiftool/exiftool/pull/40 (and forum10893)
 #              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #              NJ) Niels Kristian Bech Jensen private communication
@@ -61,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.78';
+$VERSION = '3.79';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -942,6 +943,43 @@ my %afPoints153 = (
     29 => 'D8',  60 => 'F13', 91 => 'E17', 122 => 'A4',  153 => 'I1',
     30 => 'C8',  61 => 'G13', 92 => 'D17', 123 => 'F4',
     31 => 'B8',  62 => 'H13', 93 => 'C17', 124 => 'G4',
+);
+
+# AF point indices for models with 81 focus points, eg. Z6/Z7/Z50 (ref 38)
+# - 9 rows (A-I) with 9 columns (1-9), center is E5
+# NOTE: the AF points start 2 bytes into the data, so the map starts
+#       at 17 instead of 1
+#
+#        7   6   5   4   3   2   1   0
+# 00 : [H5][G5][F5][A5][B5][C5][D5][E5]
+# 01 : [G6][F6][A6][B6][C6][D6][E6][I5]
+# 02 : [F4][A4][B4][C4][D4][E4][I6][H6]
+# 03 : [A7][B7][C7][D7][E7][I4][H4][G4]
+# 04 : [B3][C3][D3][E3][I7][H7][G7][F7]
+# 05 : [C8][D8][E8][I3][H3][G3][F3][A3]
+# 06 : [D2][E2][I8][H8][G8][F8][A8][B8]
+# 07 : [E9][I2][H2][G2][F2][A2][B2][C2]
+# 08 : [I9][H9][G9][F9][A9][B9][C9][D9]
+# 09 : [H1][G1][F1][A1][B1][C1][D1][E1]
+# 0a : [  ][  ][  ][  ][  ][  ][  ][I1]
+my %afPoints81 = (
+     17 => 'E5',  34 => 'I6',  51 => 'H7',  68 => 'G8',  85 => 'F9',
+     18 => 'D5',  35 => 'E4',  52 => 'I7',  69 => 'H8',  86 => 'G9',
+     19 => 'C5',  36 => 'D4',  53 => 'E3',  70 => 'I8',  87 => 'H9',
+     20 => 'B5',  37 => 'C4',  54 => 'D3',  71 => 'E2',  88 => 'I9',
+     21 => 'A5',  38 => 'B4',  55 => 'C3',  72 => 'D2',  89 => 'E1',
+     22 => 'F5',  39 => 'A4',  56 => 'B3',  73 => 'C2',  90 => 'D1',
+     23 => 'G5',  40 => 'F4',  57 => 'A3',  74 => 'B2',  91 => 'C1',
+     24 => 'H5',  41 => 'G4',  58 => 'F3',  75 => 'A2',  92 => 'B1',
+     25 => 'I5',  42 => 'H4',  59 => 'G3',  76 => 'F2',  93 => 'A1',
+     26 => 'E6',  43 => 'I4',  60 => 'H3',  77 => 'G2',  94 => 'F1',
+     27 => 'D6',  44 => 'E7',  61 => 'I3',  78 => 'H2',  95 => 'G1',
+     28 => 'C6',  45 => 'D7',  62 => 'E8',  79 => 'I2',  96 => 'H1',
+     29 => 'B6',  46 => 'C7',  63 => 'D8',  80 => 'E9',  97 => 'I1',
+     30 => 'A6',  47 => 'B7',  64 => 'C8',  81 => 'D9',
+     31 => 'F6',  48 => 'A7',  65 => 'B8',  82 => 'C9',
+     32 => 'G6',  49 => 'F7',  66 => 'A8',  83 => 'B9',
+     33 => 'H6',  50 => 'G7',  67 => 'F8',  84 => 'A9',
 );
 
 my %cropHiSpeed = ( #IB
@@ -3314,7 +3352,7 @@ my %binaryDataAttrs = (
             5 => 'On (5)', #PH (1S2[128/129], 1J4/1V3[129])
             6 => 'On (105-point)', #PH (1J4/1V3[128/130])
             7 => 'On (153-point)', #PH (D5/D500/D850)
-            8 => 'On (8)', #PH (Z7)
+            8 => 'On (81-point)', #38
         },
     },
     7 => [
@@ -3559,18 +3597,18 @@ my %binaryDataAttrs = (
             PrintConv => sub { PrintAFPoints(shift, \%afPoints153); },
             PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints153); },
         },
-        { #PH (Z7) (NC)
+        { #38 (Z6/Z7/Z50)
             Name => 'AFPointsUsed',
-            Condition => '$$self{PhaseDetectAF} == 8',
+            Condition => '$$self{PhaseDetectAF} == 8 and $$self{Model} =~ /^NIKON Z/',
             Notes => q{
-                models with 493-point AF -- 17 rows (A-Q) and 29 columns (1-29). Center
-                point is I15
+                models with 81-selectable point AF -- 9 rows (A-I) and 9 columns (1-9) for
+                phase detect AF points. Center point is E5
             },
-            Format => 'undef[62]',
-            ValueConv => 'join(" ", unpack("H2"x62, $val))',
+            Format => 'undef[13]',
+            ValueConv => 'join(" ", unpack("H2"x13, $val))',
             ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
-            PrintConv => sub { PrintAFPointsGrid(shift, 29); },
-            PrintConvInv => sub { PrintAFPointsGridInv(shift, 29, 62); },
+            PrintConv => sub { PrintAFPoints(shift, \%afPoints81); },
+            PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints81); },
         },
         { #PH
             Name => 'AFPointsUsed',
@@ -4659,7 +4697,7 @@ my %nikonFocalConversions = (
         Priority => 0,
     },
     # note: DecryptLen currently set to 0x251
-    
+
     # 0x55c - int16u[2400] TiffMeteringImage2: 60x40 image (ShotInfoVersion 0800, ref JR)
     # 0x181c - int16u[1200] TiffMeteringImage?: 60x20 image for some NEF's (ShotInfoVersion 0800, ref JR)
     # 0x217c - int16u[2400] TiffMeteringImage3: 60x40 image (ShotInfoVersion 0800, ref JR)

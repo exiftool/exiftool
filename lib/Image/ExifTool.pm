@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen);
 
-$VERSION = '11.89';
+$VERSION = '11.90';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -7029,8 +7029,8 @@ sub DoProcessTIFF($$;$)
             $$self{EXIF_DATA} = "II\x2a\0\x08\0\0\0";
         }
     }
-    $$self{FIRST_EXIF_POS} = $base + $$self{BASE} unless defined $$self{FIRST_EXIF_POS};
     $$self{EXIF_POS} = $base + $$self{BASE};
+    $$self{FIRST_EXIF_POS} = $$self{EXIF_POS} unless defined $$self{FIRST_EXIF_POS};
     $dataPt = \$$self{EXIF_DATA};
 
     # set byte ordering

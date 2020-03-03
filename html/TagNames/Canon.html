@@ -409,7 +409,8 @@
 <td>ColorSpace</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = sRGB
-  <br>2 = Adobe RGB</span></td></tr>
+  <br>2 = Adobe RGB
+  <br>65535 = n/a</span></td></tr>
 <tr>
 <td title='0x00b6 = 182'>0x00b6</td>
 <td>PreviewImageInfo</td>
@@ -1004,15 +1005,17 @@
   <td>1 = JPEG
   <br>2 = CRW+THM
   <br>3 = AVI+THM
-  <br>4 = TIF</td><td>&nbsp;&nbsp;</td>
-  <td>5 = TIF+JPEG
-  <br>6 = CR2
+  <br>4 = TIF
+  <br>5 = TIF+JPEG</td><td>&nbsp;&nbsp;</td>
+  <td>6 = CR2
   <br>7 = CR2+JPEG
-  <br>9 = MOV</td><td>&nbsp;&nbsp;</td>
-  <td>10 = MP4
-  <br>11 = CRM
-  <br>12 = CR3
-  <br>13 = CR3+JPEG</td></tr></table>
+  <br>9 = MOV
+  <br>10 = MP4
+  <br>11 = CRM</td><td>&nbsp;&nbsp;</td>
+  <td>12 = CR3
+  <br>13 = CR3+JPEG
+  <br>14 = HIF
+  <br>15 = CR3+HIF</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='10 = 0xa'>10</td>
@@ -1770,6 +1773,7 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>749</td><td>= Tamron 100-400mm f/4.5-6.3 Di VC USD A035E + 2x</td>
 </tr><tr><td>750</td><td>= Canon EF 35mm f/1.4L II USM or Tamron Lens</td>
 </tr><tr><td>750.1</td><td>= Tamron SP 85mm f/1.8 Di VC USD (F016)</td>
+</tr><tr><td>750.2</td><td>= Tamron SP 45mm f/1.8 Di VC USD (F013)</td>
 </tr><tr><td>751</td><td>= Canon EF 16-35mm f/2.8L III USM</td>
 </tr><tr><td>752</td><td>= Canon EF 24-105mm f/4L IS II USM</td>
 </tr><tr><td>753</td><td>= Canon EF 85mm f/1.4L IS USM</td>
@@ -10600,7 +10604,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 31, 2020</i>
+<br><i>Last revised Feb 26, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -7,13 +7,26 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.85. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 3, 2020 - Version 11.90
+
+  - Added a new Sony LensType (thanks LibRaw and Jos Roost)
+  - Aded two new Olypus LensType values
+  - Added a new Canon LensType
+  - Added some new Canon RecordMode values
+  - Added some new QuickTime GeneralProfileIDC values
+  - Added new values for a couple of FujiFilm tags
+  - Added a number of new QuickTime GenreID values
+  - Decode Nikon Z6/Z7 phase-detect AF points (thanks Andy Dragon)
+  - Patched to avoid possible "Undefined subroutine" error in MacOS 10.15
+  - Fixed incorrect offsets in -htmlDump output for some file types
+
 Feb. 25, 2020 - Version 11.89
 
   - Added support for Exif 2.32 for XMP
   - Recognize the HIF file extension
   - Improved verbose output for QuickTime iref items
-  - Patched to use same byte ordering as IFD0 by default when creating new GPS
-    metadata in Canon CR3 files
+  - Patched to create new GPS metadata in Canon CR3 images using a default byte
+    order that is the same as existing EXIF boxes
   - Patched to add missing newline that could occur in XMP with the API Compact
     Shorthand option
 
@@ -8944,7 +8957,7 @@ Apr. 6, 2004 - Version 3.37
 Apr. 6, 2004 - Version 3.36
 
   - Added support for Sanyo and Minolta maker notes
-  - Added skeleton for interpeting Sony maker notes
+  - Added skeleton for interpreting Sony maker notes
   - Interpret Pentax PrintIM
 
 Apr. 6, 2004 - Version 3.35

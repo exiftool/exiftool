@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.34';
+$VERSION = '4.35';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -524,6 +524,7 @@ $VERSION = '4.34';
     749 => 'Tamron 100-400mm f/4.5-6.3 Di VC USD A035E + 2x', #IB
     750 => 'Canon EF 35mm f/1.4L II USM or Tamron Lens', #42
     750.1 => 'Tamron SP 85mm f/1.8 Di VC USD (F016)', #Exiv2#1072
+    750.2 => 'Tamron SP 45mm f/1.8 Di VC USD (F013)', #PH
     751 => 'Canon EF 16-35mm f/2.8L III USM', #42
     752 => 'Canon EF 24-105mm f/4L IS II USM', #42
     753 => 'Canon EF 85mm f/1.4L IS USM', #42
@@ -1796,6 +1797,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         PrintConv => {
             1 => 'sRGB',
             2 => 'Adobe RGB',
+            65535 => 'n/a',
         },
     },
     0xb6 => {
@@ -2059,7 +2061,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     4 => {
         Name => 'CanonFlashMode',
         PrintConv => {
-            -1 => "n/a", # (PH, EOS M MOV video)
+            -1 => 'n/a', # (PH, EOS M MOV video)
             0 => 'Off',
             1 => 'Auto',
             2 => 'On',
@@ -2120,6 +2122,8 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             11 => 'CRM', #PH (C200 CRM)
             12 => 'CR3', #PH (EOS R)
             13 => 'CR3+JPEG', #PH (EOS R)
+            14 => 'HIF', #PH (NC)
+            15 => 'CR3+HIF', #PH (1DXmkIII)
         },
     },
     10 => {

@@ -15,7 +15,11 @@ package Image::ExifTool::QuickTime;
 
 use strict;
 
+use Image::ExifTool qw(:DataAccess :Utils);
+use Image::ExifTool::QuickTime;
+
 sub Process_tx3g($$$);
+sub Process_mebx($$$);
 sub ProcessFreeGPS($$$);
 sub ProcessFreeGPS2($$$);
 

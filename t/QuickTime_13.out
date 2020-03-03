@@ -1,4 +1,4 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.81
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.90
 [QuickTime, QuickTime, Video] 0 - Major Brand: High Efficiency Image Format still image (.HEIF)
 [QuickTime, QuickTime, Video] 1 - Minor Version: 0.0.0
 [QuickTime, QuickTime, Video] 2 - Compatible Brands: mif1, heic, hevc
@@ -7,7 +7,7 @@
 [QuickTime, QuickTime, Video] 0 - HEVC Configuration Version: 1
 [QuickTime, QuickTime, Video] 1 - General Profile Space: Conforming
 [QuickTime, QuickTime, Video] 1.1 - General Tier Flag: Main Tier
-[QuickTime, QuickTime, Video] 1.2 - General Profile IDC: Main Profile
+[QuickTime, QuickTime, Video] 1.2 - General Profile IDC: Main
 [QuickTime, QuickTime, Video] 2 - Gen Profile Compatibility Flags: Main 10, Main
 [QuickTime, QuickTime, Video] 6 - Constraint Indicator Flags: 144 0 0 0 0 0
 [QuickTime, QuickTime, Video] 12 - General Level IDC: 120 (level 4.0)
@@ -24,7 +24,7 @@
 [QuickTime, QuickTime, Video] 0 - HEVC Configuration Version: 1
 [QuickTime, QuickTime, Video] 1 - General Profile Space: Conforming
 [QuickTime, QuickTime, Video] 1.1 - General Tier Flag: Main Tier
-[QuickTime, QuickTime, Video] 1.2 - General Profile IDC: Main Profile
+[QuickTime, QuickTime, Video] 1.2 - General Profile IDC: Main
 [QuickTime, QuickTime, Video] 2 - Gen Profile Compatibility Flags: Main 10, Main
 [QuickTime, QuickTime, Video] 6 - Constraint Indicator Flags: 144 0 0 0 0 0
 [QuickTime, QuickTime, Video] 12 - General Level IDC: 60 (level 2.0)
@@ -42,7 +42,7 @@
 [QuickTime, QuickTime, Video] mdat-offset - Media Data Offset: 705
 [QuickTime, QuickTime, Video] mdat-size - Media Data Size: 18
 [QuickTime, QuickTime, Video] mdat-offset - Media Data Offset: 3796
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.81
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.90
 [XMP, XMP-dc, Image] subject - Subject: a subject, another subject
 [EXIF, IFD0, Image] 282 - X Resolution: 72
 [EXIF, IFD0, Image] 283 - Y Resolution: 72

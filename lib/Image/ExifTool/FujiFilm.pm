@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.77';
+$VERSION = '1.78';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -145,6 +145,8 @@ my %faceCategories = (
         Writable => 'int16u',
         PrintConv => {
             0x0   => 'Auto',
+            0x1   => 'Auto (white priority)', #forum10890
+            0x2   => 'Auto (ambiance priority)', #forum10890
             0x100 => 'Daylight',
             0x200 => 'Cloudy',
             0x300 => 'Daylight Fluorescent',
@@ -620,6 +622,7 @@ my %faceCategories = (
             0x600 => 'Classic Chrome', #forum6109
             0x700 => 'Eterna', #12
             0x800 => 'Classic Negative', #forum10536
+            0x900 => 'Bleach Bypass', #forum10890
         },
     },
     0x1402 => { #2

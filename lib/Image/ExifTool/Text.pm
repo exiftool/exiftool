@@ -110,7 +110,7 @@ sub ProcessTXT($$)
         }
         $nl = $1 if $$dataPt =~ /(\r\n|\r|\n)/;
     }
-    
+
     my $tagTablePtr = GetTagTable('Image::ExifTool::Text::Main');
 
     $et->SetFileType();

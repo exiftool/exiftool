@@ -92,7 +92,7 @@ my %isDatChunk = ( IDAT => 1, JDAT => 1, JDAA => 1 );
 my %isTxtChunk = ( tEXt => 1, zTXt => 1, iTXt => 1 );
 
 # chunks that we shouldn't move other chunks across (ref 3)
-my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND => 1, 
+my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND => 1,
                    DHDR => 1, BASI => 1, CLON => 1, PAST => 1, SHOW => 1, MAGN => 1 );
 
 # PNG chunks

@@ -1328,7 +1328,7 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
     },
     0x0109 => {
         Name => 'UsableShootingModes',
-        Count => 2,
+        Count => 2, # (Count is 1 for 1DXmkIII -- need to decode this)
         PrintConv => [
             \%disableEnable,
             'sprintf("Flags 0x%x",$val)', # (M, Tv, Av, P, Bulb)
@@ -1340,7 +1340,7 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
     },
     0x010a => {
         Name => 'UsableMeteringModes',
-        Count => 2,
+        Count => 2, # (Count is 1 for 1DXmkIII -- need to decode this)
         PrintConv => [
             \%disableEnable,
             'sprintf("Flags 0x%x",$val)', # (evaluative,partial,spot,center-weighted average)
@@ -2094,7 +2094,7 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
     },
     0x0612 => { # (1DX)
         Name => 'RestrictDriveModes',
-        Count => 2,
+        Count => 2, # (Count is 1 for 1DXmkIII -- need to decode this)
         PrintConv => [
             \%disableEnable,
             'sprintf("Flags 0x%x",$val)', # (Single,Cont Hi,Cont Lo,Timer 10,Timer 2,Silent,Super Hi)

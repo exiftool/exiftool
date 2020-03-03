@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.21';
+$VERSION = '3.22';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -142,6 +142,7 @@ sub PrintInvLensSpec($;$$);
     32853 => 'Sony E 16-55mm F2.8 G', #IB/JR
     32854 => 'Sony E 70-350mm F4.5-6.3 G OSS', #IB/JR
     32858 => 'Sony FE 35mm F1.8', #JR/IB
+    32859 => 'Sony FE 20mm F1.8 G', #IB/JR
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)

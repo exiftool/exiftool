@@ -228,7 +228,7 @@ sub ProcessXCF($$)
 
     # skip over precision for XCV version 4 or later
     $raf->Seek(4, 1) if $$et{XCFVersion} =~ /^v0*(\d+)/ and $1 >= 4;
-     
+
     # loop through image properties
     for (;;) {
         $raf->Read($buff, 8) == 8 or last;

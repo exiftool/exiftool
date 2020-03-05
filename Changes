@@ -7,10 +7,17 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.85. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 5, 2020 - Version 11.91
+
+  - Decode a couple of new Panasonic tags
+  - Documented -ec option (available since version 11.54)
+  - Reverted -htmlDump fix of 11.90 because it broke more than it fixed, and
+    instead applied a targeted patch to fix this problem for RW2 files
+
 Mar. 3, 2020 - Version 11.90
 
   - Added a new Sony LensType (thanks LibRaw and Jos Roost)
-  - Aded two new Olypus LensType values
+  - Added two new Olympus LensType values
   - Added a new Canon LensType
   - Added some new Canon RecordMode values
   - Added some new QuickTime GeneralProfileIDC values

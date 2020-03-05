@@ -26,9 +26,9 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             $psAPP13hdr $psAPP13old @loadAllTables %UserDefined $evalWarning
             %noWriteFile %magicNumber @langs $defaultLang %langName %charsetName
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
-            %jpegMarker %specialTags %fileTypeLookup $testLen);
+            %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '11.90';
+$VERSION = '11.91';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -8519,7 +8519,8 @@ until ($Image::ExifTool::noConfig) {
         $file = $config;
     }
     # also check executable directory unless path is absolute
-    -r $file or $config =~ /^\// or $file = ($0 =~ /(.*[\\\/])/ ? $1 : './') . $config;
+    $exePath = $0 unless defined $exePath; # (undocumented $exePath setting)
+    -r $file or $config =~ /^\// or $file = ($exePath =~ /(.*[\\\/])/ ? $1 : './') . $config;
     unless (-r $file) {
         warn("Config file not found\n") if defined $Image::ExifTool::configFile;
         last;

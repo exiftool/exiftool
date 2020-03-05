@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.28';
+$VERSION = '4.29';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1655,7 +1655,7 @@ my %opcodeInfo = (
     0x82aa => 'MDPrepDate', #3
     0x82ab => 'MDPrepTime', #3
     0x82ac => 'MDFileUnits', #3
-    0x830e => { #30
+    0x830e => { #30 (GeoTiff)
         Name => 'PixelScale',
         Writable => 'double',
         WriteGroup => 'IFD0',
@@ -1687,14 +1687,14 @@ my %opcodeInfo = (
     },
     0x847e => 'IntergraphPacketData', #3
     0x847f => 'IntergraphFlagRegisters', #3
-    0x8480 => { #30 (obsolete)
+    0x8480 => { #30 (GeoTiff, obsolete)
         Name => 'IntergraphMatrix',
         Writable => 'double',
         WriteGroup => 'IFD0',
         Count => -1,
     },
     0x8481 => 'INGRReserved', #20
-    0x8482 => { #30
+    0x8482 => { #30 (GeoTiff)
         Name => 'ModelTiePoint',
         Groups => { 2 => 'Location' },
         Writable => 'double',
@@ -1762,7 +1762,7 @@ my %opcodeInfo = (
     },
     0x85b8 => 'PixelMagicJBIGOptions', #20
     0x85d7 => 'JPLCartoIFD', #exifprobe (NC)
-    0x85d8 => { #30
+    0x85d8 => { #30 (GeoTiff)
         Name => 'ModelTransform',
         Groups => { 2 => 'Location' },
         Writable => 'double',
@@ -6152,8 +6152,8 @@ sub ProcessExif($$$)
                           "Format: $fstr\nSize: $size bytes\n";
                 if ($size > 4) {
                     my $offPt = Get32u($dataPt,$entry+8);
-                    # (test this with ../pics/{CanonEOS-1DXMarkIII.hif,PanasonicDC-G9.rw2})
-                    my $actPt = $valuePtr + $valueDataPos + $base + $$et{BASE};
+                    # (test this with ../pics/{CanonEOS-1D_XMarkIII.hif,PanasonicDC-G9.rw2})
+                    my $actPt = $valuePtr + $valueDataPos + $base - ($$et{EXIF_POS} || 0) + ($$et{BASE_FUDGE} || 0);
                     $tip .= sprintf("Value offset: 0x%.4x\n", $offPt);
                     # highlight tag name (red for bad size)
                     my $style = ($bad or not defined $tval) ? 'V' : 'H';
@@ -6181,7 +6181,7 @@ sub ProcessExif($$$)
                     } elsif ($tagInfo and Image::ExifTool::IsInt($tval)) {
                         if ($$tagInfo{IsOffset} or $$tagInfo{SubIFD}) {
                             $tval = sprintf('0x%.4x', $tval);
-                            my $actPt = $val + $base + $$et{BASE};
+                            my $actPt = $val + $base - ($$et{EXIF_POS} || 0) + ($$et{BASE_FUDGE} || 0);
                             if ($actPt != $val) {
                                 $tval .= sprintf("\nActual offset: 0x%.4x", $actPt);
                                 my $sign = $actPt < $val ? '-' : '';

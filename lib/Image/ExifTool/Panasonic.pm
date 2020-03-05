@@ -36,7 +36,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.07';
+$VERSION = '2.08';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1269,6 +1269,25 @@ my %shootingMode = (
         Name => 'DiffractionCorrection',
         Writable => 'int16u',
         PrintConv => { 0 => 'Off', 1 => 'Auto' },
+    },
+    # Note: LensTypeMake and LensTypeModel are combined into a Composite LensType tag
+    # defined in Olympus.pm which has the same values as Olympus:LensType
+    0xc4 => { #PH
+        Name => 'LensTypeMake',
+        Condition => '$format eq "int16u"',
+        Writable => 'int16u',
+    },
+    0xc5 => { #PH
+        Name => 'LensTypeModel',
+        Condition => '$format eq "int16u"',
+        Writable => 'int16u',
+        RawConv => q{
+            return undef unless $val;
+            require Image::ExifTool::Olympus; # (to load Composite LensID)
+            return $val;
+        },
+        ValueConv => '$_=sprintf("%.4x",$val); s/(..)(..)/$2 $1/; $_',
+        ValueConvInv => '$val =~ s/(..) (..)/$2$1/; hex($val)',
     },
     0xd1 => { #PH
         Name => 'ISO',

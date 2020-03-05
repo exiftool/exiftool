@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23351 tags, with 15303 unique tag names.
+They contain a total of 23353 tags, with 15303 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -14972,6 +14972,8 @@ These tags are used in Panasonic/Leica cameras.
   0x00b9   RedEyeRemoval                        int16u
   0x00bb   VideoBurstMode                       int32u
   0x00bc   DiffractionCorrection                int16u
+  0x00c4   LensTypeMake                         int16u
+  0x00c5   LensTypeModel                        int16u
   0x00d1   ISO                                  int32u
   0x00d6   NoiseReductionStrength               rational64s
   0x0e00   PrintIM                              PrintIM
@@ -34859,7 +34861,8 @@ implements this policy and changes EXIF:Artist to a list-type tag.
 
 Image region metadata defined by the MWG 2.0 specification.  These tags
 may be accessed without the need to load the MWG Composite tags above.  See
-L<http://www.metadataworkinggroup.org/> for the official specification.
+L<https://web.archive.org/web/20181006115950/http://www.metadataworkinggroup.org/specs/>
+for the official specification.
 
 These tags belong to the ExifTool XMP-mwg-rs family 1 group.
 
@@ -34927,8 +34930,9 @@ conversion).
 Hierarchical keywords metadata defined by the MWG 2.0 specification.
 ExifTool unrolls keyword structures to an arbitrary depth of 6 to allow
 individual levels to be accessed with different tag names, and to avoid
-infinite recursion.  See L<http://www.metadataworkinggroup.org/> for the
-official specification.
+infinite recursion.  See
+L<https://web.archive.org/web/20181006115950/http://www.metadataworkinggroup.org/specs/>
+for the official specification.
 
 These tags belong to the ExifTool XMP-mwg-kw family 1 group.
 
@@ -34971,7 +34975,8 @@ These tags belong to the ExifTool XMP-mwg-kw family 1 group.
 =head3 MWG Collections Tags
 
 Collections metadata defined by the MWG 2.0 specification.  See
-L<http://www.metadataworkinggroup.org/> for the official specification.
+L<https://web.archive.org/web/20181006115950/http://www.metadataworkinggroup.org/specs/>
+for the official specification.
 
 These tags belong to the ExifTool XMP-mwg-coll family 1 group.
 

@@ -17,10 +17,18 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.91'><b>Mar. 5, 2020 - Version 11.91</b></a>
+<ul>
+<li>Decode a couple of new Panasonic tags
+<li>Documented -ec option (available since version 11.54)
+<li>Reverted -htmlDump fix of 11.90 because it broke more than it fixed, and
+    instead applied a targeted patch to fix this problem for RW2 files
+</ul>
+
 <a name='v11.90'><b>Mar. 3, 2020 - Version 11.90</b></a>
 <ul>
 <li>Added a new Sony LensType (thanks LibRaw and Jos Roost)
-<li>Aded two new Olypus LensType values
+<li>Added two new Olympus LensType values
 <li>Added a new Canon LensType
 <li>Added some new Canon RecordMode values
 <li>Added some new QuickTime GeneralProfileIDC values
@@ -91,174 +99,6 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Decode Insta360 trailer from INSP images and made Insta360 a deletable group
 <li>Patched kml.fmt file to limit maximum image size (thanks Fedor Kotov)
 <li>Fixed problem decoding values from Leica M10 and S maker notes
-</ul>
-
-<a name='v11.84'><b>Jan. 10, 2020 - Version 11.84</b></a>
-<ul>
-<li>Decode accelerometer data from timed metadata of more dashcam videos
-<li>Decode Canon G9 white balance tags (thanks LibRaw)
-<li>Recognize INSP files
-</ul>
-
-<a name='v11.83'><b>Jan. 9, 2020 - Version 11.83</b></a>
-<ul>
-<li>Added a couple of new XMP-crs tags (thanks Herb)
-<li>Fixed bug introduced in 11.82 with the -php -D output
-<li>Fixed problem where some flattened XMP tags could be written when they
-    should be avoided
-</ul>
-
-<a name='v11.82'><b>Jan. 8, 2020 - Version 11.82</b></a>
-<ul>
-<li>Added a new Canon LensType
-<li>Added a new CanonModelID (thanks LibRaw)
-<li>Added ability to process SubDirectories in QuickTime Keys tags
-<li>Removed minor error when writing PDF 2.0 files (github issue #30)
-<li>Fixed problem where trailing null bytes were removed from binary values in
-    the -php output when the -b option was used
-</ul>
-
-<a name='v11.81'><b>Jan. 2, 2020 - Version 11.81</b></a>
-<ul>
-<li>Added a new Nikon LensID
-<li>Added two new CanonModelID's (thanks LibRaw)
-<li>Decode AVIF AV1 configuration record
-<li>Changed names of QuickTime MovieData tags to "MediaData"
-<li>Patched to use 4-digit years in Time::Local calls
-<li>Patched Composite sub-second date/time tags to do additional validation of
-    source EXIF date/time tags before adding sub seconds
-<li>Fixed problem where -json output could produce invalid JSON when -struct was
-    used and the structure field names contained special characters (github
-    issue #32)
-<li>Fixed spelling in a Panasonic SceneMode value (thanks Hubert)
-</ul>
-
-<a name='v11.80'><b>Dec. 17, 2019 - Version 11.80</b></a>
-<ul>
-<li>Added a new Canon LensType
-<li>Added a new Nikon Z LensID (thanks LibRaw)
-<li>Added a few new Sony LensType values (thanks Jos Roost)
-<li>Attempt to improve reliability of Samsung DepthMapWidth/Height decoding
-<li>Updated a number of Canon-mount Tamron lens names to include the Tamron
-    model number
-<li>Patched MOV/MP4 writer to allow a small amount of garbage at the end of a
-    file to be deleted when writing with the -m option
-<li>Fixed bug where some Composite tags may not have taken priority over other
-    tags as they should have
-</ul>
-
-<a name='v11.79'><b>Dec. 12, 2019 - Version 11.79</b></a>
-<ul>
-<li>Added support for AVIF files
-<li>Added new Canon, Sigma and Sony LensType values (thanks LibRaw)
-<li>Made PDF 2.0 writable at your own risk with the -m option (github issue #30)
-<li>Enhanced -validate feature to warn about duplicate languages in an XMP
-    lang-alt list
-<li>Fixed inconsistency between documentation and ExifTool capabilities for
-    "Writable" status of some tags
-</ul>
-
-<a name='v11.78'><b>Dec. 5, 2019 - Version 11.78</b></a>
-<ul>
-<li>Added a new Nikon LensID (thanks Chris)
-<li>Added two new FujiFilm SceneRecognition values
-<li>Patched to avoid crash in Windows when writing a negative epoch time using
-    the "-d %s" option
-<li>Fixed problem editing MIE tags when using the "-wm w" option
-</ul>
-
-<a name='v11.77'><b>Nov. 27, 2019 - Version 11.77</b></a>
-<ul>
-<li>Added a new Nikon LensID (thanks Joe Sch&ouml;nberg)
-<li>Added a number of new Olympus LensType values (thanks LibRaw)
-<li>Added a new Canon LensType
-<li>Decode timed GPS from Ambarella A12 dash cam MP4 videos
-<li>Decode a number of new Sigma tags (thanks LibRaw)
-<li>Decode a couple of new PanasonicRaw tags (thanks LibRaw)
-<li>Enhanced -fileOrder option to add -fast feature
-</ul>
-
-<a name='v11.76'><b>Nov. 12, 2019 - Version 11.76</b></a>
-<ul>
-<li>Added support for the Sony ILCE-9M2 (thanks Jos Roost)
-<li>Added a couple of new XMP-GCamera tags
-<li>Added MIMEType values for some formats that previously reported
-    "application/unknown"
-<li>Enhanced -geotag feature to write pitch to CameraElevationAngle if available
-<li>Improved determination of MIMEEncoding for TXT files
-</ul>
-
-<a name='v11.75'><b>Nov. 4, 2019 - Version 11.75</b></a>
-<ul>
-<li>Added ability to read some basic characteristics of TXT files
-<li>Added kml_track.fmt to the fmt_files of the full distribution
-<li>Added built-in support for decoding GPS from the four video subtitle text
-    formats that were previously handled by separate config files, and removed
-    these config files from the distribution
-<li>Derive GPSDateTime from CreateDate and SampleTime if not already available
-    when extracting timed GPS metadata from QuickTime-format videos
-<li>Changed family 2 groups of some Extra tags
-</ul>
-
-<a name='v11.74'><b>Oct. 29, 2019 - Version 11.74</b></a>
-<ul>
-<li>Added support for new XMP IPTC Extension version 1.5 tags
-<li>Added a new Nikon LensID (thanks LibRaw)
-<li>Decode GPS track from Auto-Vox dashcam MOV videos
-<li>Improved Russian translations (thanks Andrei Korzhyts and Alexander)
-<li>Enhanced convert_regions.config to support new IPTC Extension 1.5 ImageRegion
-<li>Changed the way the FlatName element works when used in a structure element
-    (the structure name is now added as a prefix to the flattened tag name)
-<li>Patched gpx.fmt and gpx_wpt.fmt to support sub-seconds in GPSDateTime value
-</ul>
-
-<a name='v11.73'><b>Oct. 23, 2019 - Version 11.73</b></a>
-<ul>
-<li>Decode timed metadata from Parrot drone videos
-<li>Patched dji.config file to properly handle time zones
-<li>Fixed bug which caused runtime error when reading timed metadata from Cobra
-    Dash Cam AVI videos
-</ul>
-
-<a name='v11.72'><b>Oct. 22, 2019 - Version 11.72</b></a>
-<ul>
-<li>Added warning messages for corrupted Photoshop document data
-<li>Added a new Olympus CameraType
-<li>Added a new Canon LensType
-<li>Decode more Sigma tags
-<li>Improved Russian translations (thanks Alexander)
-<li>Updated decoding of some CanonCustom settings for recent models
-<li>Documented DNG OpcodeList values
-</ul>
-
-<a name='v11.71'><b>Oct. 16, 2019 - Version 11.71</b></a>
-<ul>
-<li>Added a new Sony LensType (thanks Jos Roost)
-<li>Added a few new Nikon Z LensID's
-<li>Added a simple print conversion for DNG OpcodeList tags (note that due to
-    this, these tags must now be copied using the -n option)
-<li>Fixed problems determining some video parameters for DV files
-<li>Changed behaviour of -sep option when writing empty list items
-<li>API Changes:
-    <ul>
-    <li>Changed <a href="ExifTool.html#ListSplit">ListSplit option</a> to preserve empty list items
-    </ul>
-</ul>
-
-<a name='v11.70'><b>Oct. 10, 2019 - Version 11.70</b></a> <span class=grn>(production release)</span>
-<ul>
-<li>Added a new CanonModelID (thanks Laurent Cl&eacute;vy)
-<li>Improved identification of Office Open XML files (github issue #27)
-<li>Removed RAF version check when writing FujiFilm RAF files
-<li>Limited the number of accelerometer records that ExifTool will read by
-    default with the -ee option from INSV files to avoid excessive processing
-    times and memory usage
-<li>Patched Windows version to allow reading of shared files with Unicode names
-    (thanks Eriksson)
-<li>Patched to avoid converting some bad GPS coordinates (thanks Csaba Toth)
-<li>Fixed verbose output to include YCbCrSubSampling for JPEG files
-<li>Fixed conversion and group names for the new FujiFilm tag added in 11.68
-<li>Fixed format of GeoTiffDirectory and GeoTiffDoubleParams when writing
 </ul>
 
 <a name='ancient' href="ancient_history.html"><b>History of older versions</b> (back to 1.00) --></a><br><br>

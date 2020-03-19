@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23353 tags, with 15303 unique tag names.
+They contain a total of 23357 tags, with 15304 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -15167,13 +15167,16 @@ images.
 
 =head3 Panasonic Leica9 Tags
 
-This information is written by the Leica S (Typ 007).
+This information is written by the Leica S (Typ 007) and M10 models.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0304   FocusDistance                        int32u
   0x0311   ExternalSensorBrightnessValue        rational64s
   0x0312   MeasuredLV                           rational64s
+  0x034c   UserProfile                          string
+  0x0359   ISOSelected                          int32s
+  0x035a   FNumber                              int32s
 
 =head3 Panasonic Type2 Tags
 
@@ -26176,6 +26179,7 @@ the config file.
   'titl'       Title                            string/
   'urat'       UserRating                       no
   'vndr'       Vendor                           string
+  'vrot'       AccelerometerData                no
   'yrrc'       Year                             no
   "\xa9ART"    Artist                           string
   "\xa9TIM"    StartTimecode                    string

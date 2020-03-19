@@ -183,6 +183,7 @@ my %olympusLensTypes = (
     '3 02 00' => 'Leica D Summilux 25mm F1.4 Asph.', #11
     # Tamron lenses
     '5 01 10' => 'Tamron 14-150mm F3.5-5.8 Di III', #NJ (model C001)
+  # '65535 07 40' - Seen for LUMIX S 16-35/F4 on Panasonic DC-S1H (ref PH)
 );
 
 # lookup for Olympus camera types (ref PH)

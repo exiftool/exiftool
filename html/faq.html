@@ -1081,7 +1081,7 @@ any previously existing keywords:
 List items are assigned separately as above, NOT all together, because this
 would represent a single keyword:
 
-<pre>exiftool -keywords="one, two, three" test.jpg  <span class=blk>(WRONG!)</span>
+<pre>exiftool -keywords="one, two, three" test.jpg  <i class=blk>(WRONG!)</i>
 </pre>
 
 The <code>-sep</code> option may be used to split values of list-type tags into
@@ -1157,7 +1157,7 @@ original file):
 However, this is not the case if the tag is interpolated within a format string
 (ie. has a leading "<code>$</code>" symbol), like this
 
-<pre>exiftool "-keywords&lt;$subject" DIR  <span class=blk>(WRONG!)</span></pre>
+<pre>exiftool "-keywords&lt;$subject" DIR  <i class=blk>(WRONG!)</i></pre>
 
 but here the <code>-sep</code> option may be used to split the list back into
 separate items:
@@ -1168,7 +1168,7 @@ Note there is a complication when <b>copying multiple tags to a single list</b>
 tag:  Here, any assignment to a tag overrides earlier assignments to the same
 tag in the command.  For instance, this command:
 
-<pre>exiftool "-keywords&lt;filename" "-keywords&lt;comment" DIR  <span class=blk>(WRONG!)</span>
+<pre>exiftool "-keywords&lt;filename" "-keywords&lt;comment" DIR  <i class=blk>(WRONG!)</i>
 </pre>
 
 writes only the value from the Comment tag.  This may seem strange, but it prevents
@@ -1397,11 +1397,15 @@ newline (CR/LF in Windows) into the command line.  A linefeed (LF) may be
 inserted with CTRL-T, but I have found no way to insert a carriage return
 (CR).]</i><br><br>
 </li>
-<li>Use the <code>-E</code> option to allow HTML character entities (Note:
-In Windows a newline is "<code>&amp;#xd;&amp;#xa;</code>" instead of just
-"<code>&amp;#xa;</code>"):
-<pre>exiftool -E "-comment=line 1&amp;#xa;line 2" image.jpg
-</pre></li>
+<li>Use the <code>-ec</code> or <code>-E</code> option to allow C-style escape
+sequences or HTML character entities (Note:
+In Windows a newline is "<code>\r\n</code>" or "<code>&amp;#xd;&amp;#xa;</code>"
+instead of just "<code>\n</code>" or "<code>&amp;#xa;</code>").  For example,
+using C-style escape sequences:
+<pre>exiftool -ec "-comment=line 1\nline 2" image.jpg</pre>
+or using HTML character entities:
+<pre>exiftool -E "-comment=line 1&amp;#xa;line 2" image.jpg</pre>
+</li>
 <li>Write the tag from the contents of a separate text file:
 <pre>exiftool "-comment&lt;=file.txt" image.jpg
 </pre></li>
@@ -1413,8 +1417,8 @@ processing pass to read tags from the file, but most of this delay may be
 avoided with the <code>-fast3</code> option.)
 <pre>exiftool '-comment&lt;line 1$/line 2' image.jpg
 </pre></li>
-<li>Use the "<code>#[CSTR]</code>" feature to allow C-style escape sequences in
-a <code>-@</code> argfile.  For example, this command:
+<li>Use the "<code>#[CSTR]</code>" feature to allow C-style escape sequences
+for a specific line in a <code>-@</code> argfile.  For example, this command:
 <pre>exiftool -@ test.args image.jpg</pre>
 with this "test.args" file:
 <pre>#[CSTR]-comment=line 1\nline 2</pre></li>
@@ -1657,7 +1661,7 @@ tag value without running a second command.  For example, this is <b>wrong</b>
 because the copy operation is superseded by the shift, and the result is that
 the existing DateTimeOriginal is shifted back by two hours:
 
-<pre>exiftool "-datetimeoriginal&lt;filemodifydate" -datetimeoriginal-=2 image.jpg  <span class=blk>(WRONG!)</span>
+<pre>exiftool "-datetimeoriginal&lt;filemodifydate" -datetimeoriginal-=2 image.jpg  <i class=blk>(WRONG!)</i>
 </pre>
 
 The <code>-globalTimeShift</code> option fills this niche -- it shifts all
@@ -1684,7 +1688,7 @@ $exifTool->SetNewValuesFromFile($src, 'datetimeoriginal&lt;${filemodifydate;Shif
 </blockquote>
 
 <hr>
-<i>Last revised Dec. 20, 2019</i>
+<i>Last revised Mar. 6, 2020</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

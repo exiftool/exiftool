@@ -21,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.15';
+$VERSION = '1.16';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -52,6 +52,10 @@ my %resourceType = (
 );
 
 my %languageCode = (
+    Notes => q{
+        See L<https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-lcid>
+        for the full list of Microsoft language codes.
+    },
     '0000' => 'Neutral',
     '007F' => 'Invariant',
     '0400' => 'Process default',
@@ -397,7 +401,7 @@ my %languageCode = (
         existing StringFileInfo tags even if not listed in this table.
     },
     LanguageCode => {
-        Notes => 'extracted from the StringFileInfo value',
+        Notes => 'Windows code page; extracted from the StringFileInfo value',
         # ref http://techsupt.winbatch.com/TS/T000001050F49.html
         # (also see http://support.bigfix.com/fixlet/documents/WinInspectors-2006-08-10.pdf)
         # (also see ftp://ftp.dyu.edu.tw/pub/cpatch/faq/tech/tech_nlsnt.txt)

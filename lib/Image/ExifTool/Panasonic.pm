@@ -26,6 +26,7 @@
 #              20) Bernd-Michael Kemper private communication (DMC-GX80/85)
 #              21) Klaus Homeister forum post
 #              22) Daniel Beichl private communication (G9)
+#              23) Tim Gray private communication (M10 Monochrom)
 #              JD) Jens Duttke private communication (TZ3,FZ30,FZ50)
 #------------------------------------------------------------------------------
 
@@ -36,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.08';
+$VERSION = '2.09';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1274,7 +1275,7 @@ my %shootingMode = (
     # defined in Olympus.pm which has the same values as Olympus:LensType
     0xc4 => { #PH
         Name => 'LensTypeMake',
-        Condition => '$format eq "int16u"',
+        Condition => '$format eq "int16u" and $$valPt ne "\xff\xff"',   # (ignore make 65535 for now)
         Writable => 'int16u',
     },
     0xc5 => { #PH
@@ -1968,7 +1969,7 @@ my %shootingMode = (
     WRITE_PROC => \&Image::ExifTool::Exif::WriteExif,
     CHECK_PROC => \&Image::ExifTool::Exif::CheckExif,
     GROUPS => { 0 => 'MakerNotes', 1 => 'Leica', 2 => 'Camera' },
-    NOTES => 'This information is written by the Leica S (Typ 007).',
+    NOTES => 'This information is written by the Leica S (Typ 007) and M10 models.',
     0x304 => {
         Name => 'FocusDistance',
         Notes => 'focus distance in mm for most models, but cm for others',
@@ -1989,6 +1990,27 @@ my %shootingMode = (
         PrintConvInv => '$val',
     },
     # 0x340 - ImageUniqueID
+    0x34c => { #23
+        Name => 'UserProfile',
+        Writable => 'string',
+    },
+    0x359 => { #23
+        Name => 'ISOSelected',
+        Writable => 'int32s',
+        PrintConv => {
+            0 => 'Auto',
+            OTHER => sub { return shift; },
+        },
+    },
+    0x35a => { #23
+        Name => 'FNumber',
+        Writable => 'int32s',
+        ValueConv => '$val / 1000',
+        ValueConvInv => '$val * 1000',
+        PrintConv => 'sprintf("%.1f", $val)',
+        PrintConvInv => '$val',
+    },
+    # 0x357 int32u - 0=DNG, 3162=JPG (ref 23)
 );
 
 # Type 2 tags (ref PH)

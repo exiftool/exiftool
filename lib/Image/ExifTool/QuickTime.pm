@@ -35,6 +35,7 @@
 #   23) http://atomicparsley.sourceforge.net/mpeg-4files.html
 #   24) https://github.com/sergiomb2/libmp4v2/wiki/iTunesMetadata
 #   25) https://cconcolato.github.io/mp4ra/atoms.html
+#   26) https://github.com/SamsungVR/android_upload_sdk/blob/master/SDKLib/src/main/java/com/samsung/msca/samsungvr/sdk/UserVideo.java
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::QuickTime;
@@ -45,7 +46,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.44';
+$VERSION = '2.45';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -2064,6 +2065,20 @@ my %eeBox = (
         Name => 'TomTomMetaData',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::TomTom' },
     },
+    # ---- Samsung Gear 360 ----
+    vrot => {
+        Name => 'AccelerometerData',
+        Notes => q{
+            accelerometer readings for each frame of the video, expressed as sets of
+            yaw, pitch and roll angles in degrees
+        },
+        Format => 'rational64s',
+        ValueConv => '$val =~ s/^-?\d+ //; \$val', # (ignore leading version/size words)
+    },
+    # m360 - 8 bytes "0 0 0 0 0 0 0 1"
+    # opax - 164 bytes unknown (center and affine arrays? ref 26)
+    # opai - 32 bytes (maybe contains a serial number starting at byte 16? - PH) (rgb gains, degamma, gamma? ref 26)
+    # intv - 16 bytes all zero
     # ---- Unknown ----
     # CDET - 128 bytes (unknown origin)
     # mtyp - 4 bytes all zero (some drone video)

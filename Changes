@@ -7,6 +7,16 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.85. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 19, 2020 - Version 11.92
+
+  - Added a new Nikon LensID (thanks Wolfgang Exler)
+  - Decode a few new Leica tags (thanks Tim Gray)
+  - Decode CameraAngles from Samsung Gear 360 videos
+  - Fixed a couple of problems decoding timed GPS metadata from NextBase dashcam
+    videos
+  - Fixed problem where -X option could produce invalid XML when reading
+    corrupted XMP
+
 Mar. 5, 2020 - Version 11.91
 
   - Decode a couple of new Panasonic tags

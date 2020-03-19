@@ -675,9 +675,9 @@ sub Process_text($$$)
 
     while ($$buffPt =~ /\$(\w+)([^\$]*)/g) {
         my ($tag, $dat) = ($1, $2);
-        if ($tag =~ /^[A-Z]{2}RMC$/ and $dat =~ /^,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/) {
+        if ($tag =~ /^[A-Z]{2}RMC$/ and $dat =~ /^,(\d{2})(\d{2})(\d+)(\.\d*)?,A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/) {
             my $year = $15 + ($15 >= 70 ? 1900 : 2000);
-            my $str = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $year, $14, $13, $1, $2, $3);
+            my $str = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d%sZ', $year, $14, $13, $1, $2, $3, $4 || '');
             $et->HandleTag($tagTbl, GPSDateTime  => $str);
             $et->HandleTag($tagTbl, GPSLatitude  => (($5 || 0) + $6/60) * ($7 eq 'N' ? 1 : -1));
             $et->HandleTag($tagTbl, GPSLongitude => (($8 || 0) + $9/60) * ($10 eq 'E' ? 1 : -1));
@@ -686,7 +686,7 @@ sub Process_text($$$)
                 $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
             }
             if (length $12) {
-                $et->HandleTag($tagTbl, GPSTrack => $11);
+                $et->HandleTag($tagTbl, GPSTrack => $12);
                 $et->HandleTag($tagTbl, GPSTrackRef => 'T');
             }
             $found = 1;

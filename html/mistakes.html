@@ -26,7 +26,7 @@ ol.index    { margin: 0; padding: 0 0 0 2em }
 <a name="M1"></a>
 <h3>1. Missing Duplicate Tags</h3>
 <blockquote>By default, ExifTool will suppress duplicate tags in the output.
-Often this is desireable but sometimes one can be fooled into thinking
+Often this is desirable but sometimes one can be fooled into thinking
 that information doesn't exist when it is just hidden by another tag
 with the same name.  For instance, the following command won't necessarily
 return all of the EXIF tags:
@@ -136,7 +136,7 @@ a string that is written directly to the destination tag.<br>
 </td></tr></table></li>
 </ol>
 An exception to rule "b" above occurs when trying to copy the value of one tag
-to a group of differnt tags, for example:
+to a group of different tags, for example:
 <pre>exiftool "-time:all&lt;datetimeoriginal" FILE  <span class=blk>(WRONG!)</span></pre>
 The above command doesn't work because the destination tag name of "All" writes
 to the tag with the same name as the source (ie. only "DateTimeOriginal").  However,

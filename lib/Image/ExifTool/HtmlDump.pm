@@ -97,7 +97,8 @@ var YTOP = 20;  // y offset when above cursor
 var safari1 = navigator.userAgent.indexOf("Safari/312.6") >= 0;
 var ie6 = navigator.userAgent.toLowerCase().indexOf('msie 6') >= 0;
 var mspan = new Array;
-var hlist, tt, tb;
+var clicked = 0;
+var hlist, tt, tb, firstOutEvt, lastInEvt;
 
 function GetElementsByClass(classname, tagname) {
   var found = new Array();
@@ -113,6 +114,18 @@ function GetElementsByClass(classname, tagname) {
     }
   }
   return found;
+}
+
+// click mouse
+function doClick(e)
+{
+  clicked ^= 1;
+  if (clicked) {
+    firstOutEvt = lastInEvt = undefined;
+  } else {
+    if (firstOutEvt) high(firstOutEvt, 0);
+    if (lastInEvt) high(lastInEvt, 1);
+  }
 }
 
 // move tooltip
@@ -162,6 +175,12 @@ function move(e)
 
 // highlight/unhighlight text
 function high(e,on) {
+  if (on) {
+    lastInEvt = e;
+  } else {
+    if (!firstOutEvt) firstOutEvt = e;
+  }
+  if (clicked) return;
   var targ;
   if (e.target) targ = e.target;
   else if (e.srcElement) targ = e.srcElement;
@@ -226,7 +245,7 @@ Enable JavaScript for active highlighting and information tool tips!
 <table class=dump cellspacing=0 cellpadding=2>
 <tr><td valign='top'><pre>];
 
-my $preMouse = q(<pre onmouseover="high(event,1)" onmouseout="high(event,0)" onmousemove="move(event)">);
+my $preMouse = q(<pre onmouseover="high(event,1)" onmouseout="high(event,0)" onmousemove="move(event)" onmousedown="doClick(event)">);
 
 #------------------------------------------------------------------------------
 # New - create new HtmlDump object

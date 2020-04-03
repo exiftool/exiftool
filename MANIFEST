@@ -26,6 +26,7 @@ config_files/gps2utm.config
 config_files/nksc.config
 config_files/photoshop_paths.config
 config_files/picasa_faces.config
+config_files/pix4d.config
 config_files/rotate_regions.config
 config_files/tiff_version.config
 config_files/time_zone.config
@@ -220,6 +221,7 @@ lib/Image/ExifTool/Charset.pm
 lib/Image/ExifTool/Charset/Arabic.pm
 lib/Image/ExifTool/Charset/Baltic.pm
 lib/Image/ExifTool/Charset/Cyrillic.pm
+lib/Image/ExifTool/Charset/DOSCyrillic.pm
 lib/Image/ExifTool/Charset/DOSLatin1.pm
 lib/Image/ExifTool/Charset/DOSLatinUS.pm
 lib/Image/ExifTool/Charset/Greek.pm

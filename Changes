@@ -7,11 +7,30 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.85. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 3, 2020 - Version 11.93
+
+  - Added new config file to the distribution for writing Pix4D XMP-Camera tags
+    (config_files/pix4d.config)
+  - Added support for the DOSCyrillic (cp866) character set
+  - Added IO::String to the Windows EXE version
+  - Improved identification of Canon RF lenses (thanks LibRaw)
+  - Enhanced -htmlDump output to add "File offset" entry for EXIF tags and
+    ability lock highlighted selection by clicking the mouse
+  - Enhanced -srcfile option to generate OriginalFileName and OriginalDirectory
+    UserParam tags
+  - Patched HEIC writer to add missing pitm box if necessary
+  - Fixed problem adding back EXIF after deleting it from HEIC file
+  - Fixed minor problem with incorrect number of bytes being reported for
+    invalid header in corrupt files
+  - API Changes:
+      - Enhanced UserParam  option to allow parameters to be extracted as if
+        they were a normal tag
+
 Mar. 19, 2020 - Version 11.92
 
   - Added a new Nikon LensID (thanks Wolfgang Exler)
   - Decode a few new Leica tags (thanks Tim Gray)
-  - Decode CameraAngles from Samsung Gear 360 videos
+  - Decode AccelerometerData from Samsung Gear 360 videos
   - Fixed a couple of problems decoding timed GPS metadata from NextBase dashcam
     videos
   - Fixed problem where -X option could produce invalid XML when reading

@@ -59,6 +59,7 @@ my %unicode2byte = (
     Latin2       => 0x101,
     DOSLatinUS   => 0x101,
     DOSLatin1    => 0x101,
+    DOSCyrillic  => 0x101,
     MacCroatian  => 0x101,
     MacCyrillic  => 0x101,
     MacGreek     => 0x101,
@@ -407,11 +408,11 @@ This module contains routines used by ExifTool to translate special
 character sets.  Currently, the following character sets are supported:
 
   UTF8, UTF16, UCS2, UCS4, Arabic, Baltic, Cyrillic, Greek, Hebrew, JIS,
-  Latin, Latin2, DOSLatinUS, DOSLatin1, MacArabic, MacChineseCN,
-  MacChineseTW, MacCroatian, MacCyrillic, MacGreek, MacHebrew, MacIceland,
-  MacJapanese, MacKorean, MacLatin2, MacRSymbol, MacRoman, MacRomanian,
-  MacThai, MacTurkish, PDFDoc, RSymbol, ShiftJIS, Symbol, Thai, Turkish,
-  Vietnam
+  Latin, Latin2, DOSLatinUS, DOSLatin1, DOSCyrillic, MacArabic,
+  MacChineseCN, MacChineseTW, MacCroatian, MacCyrillic, MacGreek, MacHebrew,
+  MacIceland, MacJapanese, MacKorean, MacLatin2, MacRSymbol, MacRoman,
+  MacRomanian, MacThai, MacTurkish, PDFDoc, RSymbol, ShiftJIS, Symbol, Thai,
+  Turkish, Vietnam
 
 However, only some of these character sets are available to the user via
 ExifTool options -- the multi-byte character sets are used only internally

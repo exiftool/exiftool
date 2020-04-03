@@ -457,94 +457,98 @@ sub WriteItemInfo($$$)
     return () unless $items and $raf;
 
     # extract information from EXIF/XMP metadata items
-    if ($items and $raf) {
-        my $curPos = $raf->Tell();
-        my $primary = $$et{PrimaryItem} || 0;
-        my $id;
-        foreach $id (sort { $a <=> $b } keys %$items) {
-            my $item = $$items{$id};
-            # only edit primary EXIF/XMP metadata
-            next unless $$item{RefersTo} and $$item{RefersTo}{$primary};
-            my $type = $$item{ContentType} || $$item{Type} || next;
-            # get ExifTool name for this item
-            $name = { Exif => 'EXIF', 'application/rdf+xml' => 'XMP' }->{$type};
-            next unless $name;  # only care about EXIF and XMP
-            next unless $$et{EDIT_DIRS}{$name};
-            $did{$name} = 1;    # set flag to prevent creating this metadata
-            my ($warn, $extent, $buff, @edit);
-            $warn = 'Missing iloc box' unless $$boxPos{iloc};
-            $warn = "No Extents for $type item" unless $$item{Extents} and @{$$item{Extents}};
-            $warn = "Can't currently decode encoded $type metadata" if $$item{ContentEncoding};
-            $warn = "Can't currently decode protected $type metadata" if $$item{ProtectionIndex};
-            $warn = "Can't currently extract $type with construction method $$item{ConstructionMethod}" if $$item{ConstructionMethod};
-            $warn = "$type metadata is not this file" if $$item{DataReferenceIndex};
-            $warn and $et->Warn($warn), next;
-            my $base = $$item{BaseOffset} || 0;
-            my $val = '';
-            foreach $extent (@{$$item{Extents}}) {
-                $val .= $buff if defined $buff;
-                my $pos = $$extent[1] + $base;
-                if ($$extent[2]) {
-                    $raf->Seek($pos, 0) or last;
-                    $raf->Read($buff, $$extent[2]) or last;
-                } else {
-                    $buff = '';
-                }
-                push @edit, [ $pos, $pos + $$extent[2] ];   # replace or delete this if changed
-            }
-            next unless defined $buff;
-            $buff = $val . $buff if length $val;
-            my ($hdr, $subTable, $proc);
-            if ($name eq 'EXIF') {
-                if (length($buff) < 4 or length($buff) < 4 + unpack('N',$buff)) {
-                    $et->Warn('Invalid Exif header');
-                    next;
-                }
-                $hdr = substr($buff, 0, 4 + unpack('N',$buff));
-                $subTable = GetTagTable('Image::ExifTool::Exif::Main');
-                $proc = \&Image::ExifTool::WriteTIFF;
+    my $primary = $$et{PrimaryItem};
+    my $curPos = $raf->Tell();
+    my $id;
+    foreach $id (sort { $a <=> $b } keys %$items) {
+        $primary = $id unless defined $primary; # assume primary is lowest-number item if pitm missing
+        my $item = $$items{$id};
+        # only edit primary EXIF/XMP metadata
+        next unless $$item{RefersTo} and $$item{RefersTo}{$primary};
+        my $type = $$item{ContentType} || $$item{Type} || next;
+        # get ExifTool name for this item
+        $name = { Exif => 'EXIF', 'application/rdf+xml' => 'XMP' }->{$type};
+        next unless $name;  # only care about EXIF and XMP
+        next unless $$et{EDIT_DIRS}{$name};
+        $did{$name} = 1;    # set flag to prevent creating this metadata
+        my ($warn, $extent, $buff, @edit);
+        $warn = 'Missing iloc box' unless $$boxPos{iloc};
+        $warn = "No Extents for $type item" unless $$item{Extents} and @{$$item{Extents}};
+        $warn = "Can't currently decode encoded $type metadata" if $$item{ContentEncoding};
+        $warn = "Can't currently decode protected $type metadata" if $$item{ProtectionIndex};
+        $warn = "Can't currently extract $type with construction method $$item{ConstructionMethod}" if $$item{ConstructionMethod};
+        $warn = "$type metadata is not this file" if $$item{DataReferenceIndex};
+        $warn and $et->Warn($warn), next;
+        my $base = $$item{BaseOffset} || 0;
+        my $val = '';
+        foreach $extent (@{$$item{Extents}}) {
+            $val .= $buff if defined $buff;
+            my $pos = $$extent[1] + $base;
+            if ($$extent[2]) {
+                $raf->Seek($pos, 0) or last;
+                $raf->Read($buff, $$extent[2]) or last;
             } else {
-                $hdr = '';
-                $subTable = GetTagTable('Image::ExifTool::XMP::Main');
+                $buff = '';
             }
-            my %dirInfo = (
-                DataPt   => \$buff,
-                DataLen  => length $buff,
-                DirStart => length $hdr,
-                DirLen   => length($buff) - length $hdr,
-            );
-            my $changed = $$et{CHANGED};
-            my $newVal = $et->WriteDirectory(\%dirInfo, $subTable, $proc);
-            if (defined $newVal and $changed ne $$et{CHANGED} and
-                # nothing changed if deleting an empty directory
-                ($dirInfo{DirLen} or length $newVal))
-            {
-                $newVal = $hdr . $newVal if length $hdr and length $newVal;
-                $edit[0][2] = \$newVal;     # replace the old chunk with the new data
-                $edit[0][3] = $id;          # mark this chunk with the item ID
-                push @mdatEdit, @edit;
-                # update item extent_length
-                my $n = length $newVal;
-                foreach $extent (@{$$item{Extents}}) {
-                    my ($nlen, $lenPt) = @$extent[3,4];
-                    if ($nlen == 8) {
-                        Set64u($n, $outfile, $$boxPos{iloc}[0] + 8 + $lenPt);
-                    } elsif ($n <= 0xffffffff) {
-                        Set32u($n, $outfile, $$boxPos{iloc}[0] + 8 + $lenPt);
-                    } else {
-                        $et->Error("Can't yet promote iloc length to 64 bits");
-                        return ();
-                    }
-                    $n = 0;
-                }
-                if (@{$$item{Extents}} != 1) {
-                    $et->Error("Can't yet handle $name in multiple parts. Please submit sample for testing");
-                }
-            }
-            $$et{CHANGED} = $changed;   # (will set this later if successful in editing mdat)
+            push @edit, [ $pos, $pos + $$extent[2] ];   # replace or delete this if changed
         }
-        $raf->Seek($curPos, 0);     # seek back to original position
+        next unless defined $buff;
+        $buff = $val . $buff if length $val;
+        my ($hdr, $subTable, $proc);
+        if ($name eq 'EXIF') {
+            if (not length $buff) {
+                # create EXIF from scratch
+                $hdr = "\0\0\0\x06Exif\0\0";
+            } elsif (length($buff) >= 4 and length($buff) >= 4 + unpack('N',$buff)) {
+                $hdr = substr($buff, 0, 4 + unpack('N',$buff));
+            } else {
+                $et->Warn('Invalid Exif header');
+                next;
+            }
+            $subTable = GetTagTable('Image::ExifTool::Exif::Main');
+            $proc = \&Image::ExifTool::WriteTIFF;
+        } else {
+            $hdr = '';
+            $subTable = GetTagTable('Image::ExifTool::XMP::Main');
+        }
+        my %dirInfo = (
+            DataPt   => \$buff,
+            DataLen  => length $buff,
+            DirStart => length $hdr,
+            DirLen   => length($buff) - length $hdr,
+        );
+        my $changed = $$et{CHANGED};
+        my $newVal = $et->WriteDirectory(\%dirInfo, $subTable, $proc);
+        if (defined $newVal and $changed ne $$et{CHANGED} and
+            # nothing changed if deleting an empty directory
+            ($dirInfo{DirLen} or length $newVal))
+        {
+            $newVal = $hdr . $newVal if length $hdr and length $newVal;
+            $edit[0][2] = \$newVal;     # replace the old chunk with the new data
+            $edit[0][3] = $id;          # mark this chunk with the item ID
+            push @mdatEdit, @edit;
+            # update item extent_length
+            my $n = length $newVal;
+            foreach $extent (@{$$item{Extents}}) {
+                my ($nlen, $lenPt) = @$extent[3,4];
+                if ($nlen == 8) {
+                    Set64u($n, $outfile, $$boxPos{iloc}[0] + 8 + $lenPt);
+                } elsif ($n <= 0xffffffff) {
+                    Set32u($n, $outfile, $$boxPos{iloc}[0] + 8 + $lenPt);
+                } else {
+                    $et->Error("Can't yet promote iloc length to 64 bits");
+                    return ();
+                }
+                $n = 0;
+            }
+            if (@{$$item{Extents}} != 1) {
+                $et->Error("Can't yet handle $name in multiple parts. Please submit sample for testing");
+            }
+        }
+        $$et{CHANGED} = $changed;   # (will set this later if successful in editing mdat)
     }
+    $raf->Seek($curPos, 0);     # seek back to original position
+
     # add necessary metadata types if they didn't already exist
     my ($countNew, %add, %usedID);
     foreach $name ('EXIF','XMP') {
@@ -556,10 +560,18 @@ sub WriteItemInfo($$$)
             $et->Warn("Can't create $name. Missing expected $str");
             last;
         }
-        my $primary = $$et{PrimaryItem};
-        unless (defined $primary) {
-            $et->Warn("Can't create $name. No primary item reference");
-            last;
+        unless (defined $$et{PrimaryItem}) {
+            unless (defined $primary) {
+                $et->Warn("Can't create $name. No items to reference");
+                last;
+            }
+            # add new primary item reference box after hdrl box
+            if ($primary < 0x10000) {
+                $add{hdlr} = pack('Na4Nn', 14, 'pitm', 0, $primary);
+            } else {
+                $add{hdlr} = pack('Na4CCCCN', 16, 'pitm', 1, 0, 0, 0, $primary);
+            }
+            $et->Warn("Added missing PrimaryItemReference (for item $primary)", 1);
         }
         my $buff = '';
         my ($hdr, $subTable, $proc);
@@ -585,7 +597,7 @@ sub WriteItemInfo($$$)
                 $irefVer = Get8u($outfile, $$boxPos{iref}[0] + 8);
             } else {
                 # create iref box after end of iinf box (and save version in boxPos list)
-                $irefVer = ($primary > 0xffff ? 1 : 0);
+                $irefVer = ($primary < 0x10000 ? 0 : 1);
                 $$boxPos{iref} = [ $$boxPos{iinf}[0] + $$boxPos{iinf}[1], 0, $irefVer ];
             }
             $newVal = $hdr . $newVal if length $hdr;
@@ -672,7 +684,8 @@ sub WriteItemInfo($$$)
         }
     }
     if ($countNew) {
-        # insert new entries into iinf, iref and iloc boxes
+        # insert new entries into iinf, iref and iloc boxes,
+        # and add new pitm box after hdlr if necessary
         my $added = 0;
         my $tag;
         foreach $tag (sort { $$boxPos{$a}[0] <=> $$boxPos{$b}[0] } keys %$boxPos) {
@@ -683,7 +696,7 @@ sub WriteItemInfo($$$)
                 # create new iref box
                 $add{$tag} = Set32u(12 + length $add{$tag}) . $tag .
                              Set8u($$boxPos{$tag}[2]) . "\0\0\0" . $add{$tag};
-            } else {
+            } elsif ($tag ne 'hdlr') {
                 my $n = Get32u($outfile, $pos);
                 Set32u($n + length($add{$tag}), $outfile, $pos);    # increase box size
             }
@@ -711,10 +724,10 @@ sub WriteItemInfo($$$)
                 if ($added) {
                     $$_[1] += $added foreach @{$$dirInfo{ChunkOffset}};
                 }
-            } else {
+            } elsif ($tag ne 'hdlr') {
                 next;
             }
-            # add new entries to this box
+            # add new entries to this box (or add pitm after hdlr)
             substr($$outfile, $pos + $$boxPos{$tag}[1], 0) = $add{$tag};
             $added += length $add{$tag};    # positions are shifted by length of new entries
         }

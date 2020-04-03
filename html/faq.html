@@ -480,16 +480,17 @@ Valid <code>CHARSET</code> values are (with aliases given in brackets, case is
 not significant):
 
 <blockquote><table class=clear>
-<tr><td>UTF8</td><td>(cp65001, UTF&#8209;8)</td><td>Thai</td><td>(cp874)</td></tr>
-<tr><td>Latin</td><td>(cp1252, Latin1)</td><td>MacRoman</td><td>(cp10000, Mac, Roman)</td></tr>
-<tr><td>Latin2</td><td>(cp1250)</td><td>MacLatin2</td><td>(cp10029)</td></tr>
-<tr><td>Cyrillic</td><td>(cp1251,&nbsp;Russian)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>MacCyrillic</td><td>(cp10007)</td></tr>
-<tr><td>Greek</td><td>(cp1253)</td><td>MacGreek</td><td>(cp10006)</td></tr>
-<tr><td>Turkish</td><td>(cp1254)</td><td>MacTurkish</td><td>(cp10081)</td></tr>
-<tr><td>Hebrew</td><td>(cp1255)</td><td>MacRomanian</td><td>(cp10010)</td></tr>
-<tr><td>Arabic</td><td>(cp1256)</td><td>MacIceland</td><td>(cp10079)</td></tr>
-<tr><td>Baltic</td><td>(cp1257)</td><td>MacCroatian</td><td>(cp10082)</td></tr>
-<tr><td>Vietnam</td><td>(cp1258)</td></tr>
+<tr><td>UTF8</td><td>(cp65001, UTF&#8209;8)</td><td>DOSLatinUS</td><td>(cp437)</td></tr>
+<tr><td>Latin</td><td>(cp1252, Latin1)</td><td>DOSLatin1</td><td>(cp850)</td></tr>
+<tr><td>Latin2</td><td>(cp1250)</td><td>DOSCyrillic</td><td>(cp866)</td></tr>
+<tr><td>Cyrillic</td><td>(cp1251,&nbsp;Russian)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>MacRoman</td><td>(cp10000, Mac, Roman)</td></tr>
+<tr><td>Greek</td><td>(cp1253)</td><td>MacLatin2</td><td>(cp10029)</td></tr>
+<tr><td>Turkish</td><td>(cp1254)</td><td>MacCyrillic</td><td>(cp10007)</td></tr>
+<tr><td>Hebrew</td><td>(cp1255)</td><td>MacGreek</td><td>(cp10006)</td></tr>
+<tr><td>Arabic</td><td>(cp1256)</td><td>MacTurkish</td><td>(cp10081)</td></tr>
+<tr><td>Baltic</td><td>(cp1257)</td><td>MacRomanian</td><td>(cp10010)</td></tr>
+<tr><td>Vietnam</td><td>(cp1258)</td><td>MacIceland</td><td>(cp10079)</td></tr>
+<tr><td>Thai</td><td>(cp874)</td><td>MacCroatian</td><td>(cp10082)</td></tr>
 </table></blockquote>
 
 The <code>-L</code> option is equivalent to "<code>-charset Latin</code>",
@@ -584,7 +585,7 @@ references are converted. When writing, ExifTool always encodes XMP as
 UTF&#8209;8, converting the following 5 characters to XML character references:
 <code>&amp; &lt; &gt; &#39; &quot;</code>. By default no further conversion is
 performed, however the <code>-charset</code> or <code>-L</code> option may be
-used used to convert text to/from a specified external character set when
+used to convert text to/from a specified external character set when
 reading/writing.</blockquote>
 
 <blockquote><a name="png"><b>PNG</b></a>:
@@ -684,7 +685,7 @@ directory then rename it to "<code>.ExifTool_config</code>".
 <blockquote class=lt><b>Note</b>: The config file must be renamed at the
 command line because neither the Windows nor Mac GUI allow a file name to
 begin with a "<code>.</code>".  To do this in Windows, run "cmd.exe" and type
-the following (pressing <i>RETURN</i> at the end of each line):
+the following (pressing <i>ENTER</i> at the end of each line):
 <pre>cd %HOMEPATH%
 rename ExifTool_config .ExifTool_config
 </pre>
@@ -1203,7 +1204,7 @@ change the the Windows console to UTF&#8209;8, follow these steps:
 Start menu and enter "cmd").</li>
 <li>Change the font in the console Properties to any True Type font (eg. "TT
 Lucida Console").</li>
-<li>Type "<code>chcp 65001</code>" then press RETURN at the command prompt.</li>
+<li>Type "<code>chcp 65001</code>" then press ENTER at the command prompt.</li>
 </ol>
 
 The console should now be able to display UTF&#8209;8 characters (cp65001).  But

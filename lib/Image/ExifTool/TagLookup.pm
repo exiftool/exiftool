@@ -5056,6 +5056,7 @@ my %tagLookup = (
 	'reverseshutterspeedaperture' => { 273 => '5.3' },
 	'revision' => { 466 => 'revision' },
 	'rflensmffocusringsensitivity' => { 81 => 0x714 },
+	'rflenstype' => { 55 => 0x3d },
 	'rgbcurvelimits' => { 105 => 0x238 },
 	'rgbcurvepoints' => { 104 => 0x7, 105 => 0x20e },
 	'richtextcomment' => { 471 => 'RichTextComment' },

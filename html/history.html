@@ -17,11 +17,33 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.93'><b>Apr. 3, 2020 - Version 11.93</b></a>
+<ul>
+<li>Added new config file to the distribution for writing Pix4D XMP-Camera tags
+    (config_files/pix4d.config)
+<li>Added support for the DOSCyrillic (cp866) character set
+<li>Added IO::String to the Windows EXE version
+<li>Improved identification of Canon RF lenses (thanks LibRaw)
+<li>Enhanced -htmlDump output to add "File offset" entry for EXIF tags and
+    ability lock highlighted selection by clicking the mouse
+<li>Enhanced -srcfile option to generate OriginalFileName and OriginalDirectory
+    UserParam tags
+<li>Patched HEIC writer to add missing pitm box if necessary
+<li>Fixed problem adding back EXIF after deleting it from HEIC file
+<li>Fixed minor problem with incorrect number of bytes being reported for
+    invalid header in corrupt files
+<li>API Changes:
+    <ul>
+    <li>Enhanced UserParam  option to allow parameters to be extracted as if
+        they were a normal tag
+    </ul>
+</ul>
+
 <a name='v11.92'><b>Mar. 19, 2020 - Version 11.92</b></a>
 <ul>
 <li>Added a new Nikon LensID (thanks Wolfgang Exler)
 <li>Decode a few new Leica tags (thanks Tim Gray)
-<li>Decode CameraAngles from Samsung Gear 360 videos
+<li>Decode AccelerometerData from Samsung Gear 360 videos
 <li>Fixed a couple of problems decoding timed GPS metadata from NextBase dashcam
     videos
 <li>Fixed problem where -X option could produce invalid XML when reading

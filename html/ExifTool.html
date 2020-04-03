@@ -455,6 +455,7 @@ distribution for examples.</p>
     <tr><td valign=top align=right>Thai</td><td>(cp874)</td></tr>
     <tr><td valign=top align=right>DOSLatinUS</td><td>(cp437)</td></tr>
     <tr><td valign=top align=right>DOSLatin1</td><td>(cp850)</td></tr>
+    <tr><td valign=top align=right>DOSCyrillic</td><td>(cp866)</td></tr>
     <tr><td valign=top align=right>MacRoman</td><td>(cp10000, Mac, Roman)</td></tr>
     <tr><td valign=top align=right>MacLatin2</td><td>(cp10029)</td></tr>
     <tr><td valign=top align=right>MacCyrillic</td><td>(cp10007)</td></tr>
@@ -852,8 +853,10 @@ distribution for examples.</p>
     <i>PARAM</i> is the user-defined parameter name (case insensitive). These parameters
     may be accessed in tag name expressions by prefixing the parameter name with a dollar
     sign just like normal tags, or via the API by calling <code>Options('UserParam','PARAM')</code>.
-    If called without no additional arguments, <code>Options('UserParam')</code> returns
-    a reference to the hash of all user parameters (with lower-case names).
+    Appending a hash tag (<code>#</code>) to the parameter name also causes the parameter
+    to be extracted as a normal tag (in the UserParam group).  If called without
+    additional arguments, <code>Options('UserParam')</code> returns a reference to the
+    hash of all user parameters (with lower-case names).
 </td>
     <td><table class=clear>
     <tr><td valign=top><i>PARAM</i></td><td valign=top>-</td><td>Get parameter</td></tr>

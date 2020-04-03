@@ -468,6 +468,7 @@ below, case is not significant:
   Thai         cp874            Windows Thai
   DOSLatinUS   cp437            DOS Latin US
   DOSLatin1    cp850            DOS Latin1
+  DOSCyrillic  cp866            DOS Cyrillic
   MacRoman     cp10000, Roman   Macintosh Roman
   MacLatin2    cp10029          Macintosh Latin2 (Central Europe)
   MacCyrillic  cp10007          Macintosh Cyrillic
@@ -971,9 +972,11 @@ Where I<PARAM> is the user-defined parameter name (case insensitive).
 
 User-defined parameters may be accessed in tag name expressions by prefixing
 the parameter name with a dollar sign just like normal tags, or via the API
-by calling C<Options('UserParam','PARAM')>.  If called without no additional
-arguments, C<Options('UserParam')> returns a reference to the hash of all
-user parameters (with lower-case names).
+by calling C<Options('UserParam','PARAM')>.  Appending a hash tag (C<#>) to
+the parameter name also causes the parameter to be extracted as a normal tag
+(in the UserParam group).  If called without additional arguments,
+C<Options('UserParam')> returns a reference to the hash of all user
+parameters (with lower-case names).
 
 =item Validate
 
@@ -2590,7 +2593,7 @@ character references are converted.  When writing, ExifTool always encodes
 XMP as UTF-8, converting the following 5 characters to XML character
 references: E<amp> E<lt> E<gt> E<39> E<quot>.  By default no further
 conversion is performed, however if the L</Charset> option is other than
-'UTF8' then text is converted to/from a specified character set when
+'UTF8' then text is converted to/from the specified character set when
 reading/writing.
 
 =head2 PNG

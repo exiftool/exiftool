@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.35';
+$VERSION = '4.36';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -6675,6 +6675,24 @@ my %ciMaxFocal = (
     25 => { #PH
         Name => 'FlashExposureLock',
         PrintConv => \%offOn,
+    },
+    0x3d => { #IB
+        Name => 'RFLensType',
+        Format => 'int16u',
+        PrintConv => {
+            0 => 'n/a',
+            257 => 'Canon RF 50mm F1.2L USM',
+            258 => 'Canon RF 24-105mm F4L IS USM',
+            259 => 'Canon RF 28-70mm F2L USM',
+            260 => 'Canon RF 35mm F1.8 MACRO IS STM',
+            261 => 'Canon RF 85mm F1.2L USM',
+            262 => 'Canon RF 85mm F1.2L USM DS',
+            263 => 'Canon RF 24-70mm F2.8L IS USM',
+            264 => 'Canon RF 15-35mm F2.8L IS USM',
+            265 => 'Canon RF 24-240mm F4-6.3 IS USM',
+            266 => 'Canon RF 70-200mm F2.8L IS USM',
+            274 => 'Canon RF 24-105mm F4-7.1 IS STM',
+        },
     },
 );
 

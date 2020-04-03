@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23357 tags, with 15304 unique tag names.
+They contain a total of 23358 tags, with 15305 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -6895,6 +6895,7 @@ WB tags for the Canon G9.
      20    FocusDistanceUpper                   int16u
      21    FocusDistanceLower                   int16u
      25    FlashExposureLock                    int16s
+     61    RFLensType                           int16u
 
 =head3 Canon SerialInfo Tags
 
@@ -34380,6 +34381,7 @@ values, may created via the ExifTool configuration file.
                        LensType2
                        LensType3
                        LensFocalLength
+                       RFLensType
   LensID               Nikon:LensIDNumber       no
                        LensFStops
                        MinFocalLength

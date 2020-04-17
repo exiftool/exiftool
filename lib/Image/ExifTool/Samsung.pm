@@ -976,7 +976,7 @@ my %formatMinMax = (
     '0x0a30-name' => 'EmbeddedVideoType', # ("MotionPhoto_Data")
     '0x0a30' => { Name => 'EmbeddedVideoFile', Groups => { 2 => 'Video' }, Binary => 1 }, #forum7161
    # 0x0aa1-name - seen 'MCC_Data'
-   # 0x0aa1 - seen '234','222'
+   # 0x0aa1 - seen '234','222','429'
    # 0x0ab0-name - seen 'DualShot_Meta_Info'
     '0x0ab1-name' => 'DepthMapName', # seen 'DualShot_DepthMap_1' (SM-N950U)
     '0x0ab1' => { Name => 'DepthMapData', Binary => 1 },

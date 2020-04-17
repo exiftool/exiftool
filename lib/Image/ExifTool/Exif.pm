@@ -5823,7 +5823,7 @@ sub ProcessExif($$$)
     $$et{Compression} = $$et{SubfileType} = '';
 
     # loop through all entries in an EXIF directory (IFD)
-    my ($index, $valEnd, $offList, $offHash, $mapFmt);
+    my ($index, $valEnd, $offList, $offHash, $mapFmt, @valPos);
     $mapFmt = $$tagTablePtr{VARS}{MAP_FORMAT} if $$tagTablePtr{VARS};
 
     my ($warnCount, $lastID) = (0, -1);
@@ -5883,17 +5883,23 @@ sub ProcessExif($$$)
             }
             $valuePtr = Get32u($dataPt, $valuePtr);
             if ($validate and not $inMakerNotes) {
-                $et->Warn(sprintf('Odd offset for %s %s',$dir,TagName($tagID,$tagInfo)), 1) if $valuePtr & 0x01;
+                my $tagName = TagName($tagID, $tagInfo);
+                $et->Warn("Odd offset for $dir $tagName", 1) if $valuePtr & 0x01;
                 if ($valuePtr < 8 || ($valuePtr + $size > length($$dataPt) and
                                       $valuePtr + $size > $$et{VALUE}{FileSize}))
                 {
-                    $et->Warn(sprintf('Invalid offset for %s %s',$dir,TagName($tagID,$tagInfo)));
+                    $et->Warn("Invalid offset for $dir $tagName");
                     ++$warnCount;
                     next;
                 }
                 if ($valuePtr + $size > $dirStart + $dataPos and $valuePtr < $dirEnd + $dataPos + 4) {
-                    $et->Warn(sprintf('Value for %s %s overlaps IFD', $dir, TagName($tagID,$tagInfo)));
+                    $et->Warn("Value for $dir $tagName overlaps IFD");
                 }
+                foreach (@valPos) {
+                    next if $$_[0] >= $valuePtr + $size or $$_[0] + $$_[1] <= $valuePtr;
+                    $et->Warn("Value for $dir $tagName overlaps $$_[2]");
+                }
+                push @valPos, [ $valuePtr, $size, $tagName ];
             }
             # fix valuePtr if necessary
             if ($$dirInfo{FixOffsets}) {

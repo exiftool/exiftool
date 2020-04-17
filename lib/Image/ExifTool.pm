@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '11.93';
+$VERSION = '11.94';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1218,7 +1218,8 @@ my %systemTagsNotes = (
             creation date/time is preserved by default when writing if Win32API::File
             and Win32::API are available.  On Mac, this tag is extracted only if it or
             the MacOS group is specifically requested or the L<RequestAll|../ExifTool.html#RequestAll> API option is
-            set to 2 or higher.  Requires "setfile" for writing on Mac
+            set to 2 or higher.  Requires "setfile" for writing on Mac, which may be
+            installed by typing C<xcode-select --install> in the Terminal
         },
         Groups => { 1 => 'System', 2 => 'Time' },
         Writable => 1,
@@ -2695,10 +2696,15 @@ sub ExtractInfo($;@)
 
     # add user-defined parameters that ended with '!'
     if (%{$$options{UserParam}}) {
-        $self->VPrint(0, "UserParam tags:\n");
+        my $doMsg = $$options{Verbose};
         my $table = GetTagTable('Image::ExifTool::UserParam');
         foreach (sort keys %{$$options{UserParam}}) {
-            $self->HandleTag($table, $_, $$options{UserParam}{$_}) if /#$/;
+            next unless /#$/;
+            if ($doMsg) {
+                $self->VPrint(0, "UserParam tags:\n");
+                undef $doMsg;
+            }
+            $self->HandleTag($table, $_, $$options{UserParam}{$_});
         }
     }
 

@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.80';
+$VERSION = '3.81';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -544,6 +544,7 @@ sub GetAFPointGrid($$;$);
     '07 46 2B 44 24 30 03 02' => 'Tamron SP AF 17-35mm f/2.8-4 Di LD Aspherical (IF) (A05)',
     'CB 3C 2B 44 24 31 DF 46' => 'Tamron 17-35mm f/2.8-4 Di OSD (A037)', #IB
     '00 53 2B 50 24 24 00 06' => 'Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16)', #PH
+    '7C 54 2B 50 24 24 00 06' => 'Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16)', #PH (https://github.com/Exiv2/exiv2/issues/1155)
     '00 54 2B 50 24 24 00 06' => 'Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16NII)',
     'FB 54 2B 50 24 24 84 06' => 'Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16NII)', #https://exiftool.org/forum/index.php/topic,3787.0.html
     'F3 54 2B 50 24 24 84 0E' => 'Tamron SP AF 17-50mm f/2.8 XR Di II VC LD Aspherical (IF) (B005)',
@@ -1692,10 +1693,7 @@ my %binaryDataAttrs = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD850',
                 DecryptStart => 4,
-                # initially only decrypt enough to extract CustomSettingsOffset
-                DecryptLen => 0x58,
-                # then decrypt through to the end of the custom settings
-                DecryptMore => 'Get32u(\$data, 0x58) + 90 + 4',
+                DecryptLen => 0x2f07,
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -6693,7 +6691,34 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD850',
         },
     },
-    # note: DecryptLen currently set to 94 bytes after CustomSettingsOffset
+    0x2efb => { #28
+        Name => 'RollAngle',
+        Format => 'fixed32u',
+        Notes => 'converted to degrees of clockwise camera roll',
+        ValueConv => '$val <= 180 ? $val : $val - 360',
+        ValueConvInv => '$val >= 0 ? $val : $val + 360',
+        PrintConv => 'sprintf("%.1f", $val)',
+        PrintConvInv => '$val',
+    },
+    0x2eff => { #28
+        Name => 'PitchAngle',
+        Format => 'fixed32u',
+        Notes => 'converted to degrees of upward camera tilt',
+        ValueConv => '$val <= 180 ? $val : $val - 360',
+        ValueConvInv => '$val >= 0 ? $val : $val + 360',
+        PrintConv => 'sprintf("%.1f", $val)',
+        PrintConvInv => '$val',
+    },
+    0x2f03 => { #28
+        Name => 'YawAngle',
+        Format => 'fixed32u',
+        Notes => 'the camera yaw angle when shooting in portrait orientation',
+        ValueConv => '$val <= 180 ? $val : $val - 360',
+        ValueConvInv => '$val >= 0 ? $val : $val + 360',
+        PrintConv => 'sprintf("%.1f", $val)',
+        PrintConvInv => '$val',
+    },
+    # note: DecryptLen currently set to 0x2f07
 );
 # shot information for the D4 firmware 1.00g (ref PH)
 %Image::ExifTool::Nikon::ShotInfoD4 = (

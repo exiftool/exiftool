@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23358 tags, with 15305 unique tag names.
+They contain a total of 23363 tags, with 15305 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -12218,6 +12218,9 @@ These tags are extracted from encrypted data in images from the D850.
    4029    PhotoShootingMenuBank                int8u & 0x03
    4031    PrimarySlot                          int8u & 0x80
    4152    CustomSettingsD850                   NikonCustom SettingsD850
+  12027    RollAngle                            fixed32u
+  12031    PitchAngle                           fixed32u
+  12035    YawAngle                             fixed32u
 
 =head3 Nikon ShotInfoD5000 Tags
 
@@ -15326,6 +15329,7 @@ These tags are used in Pentax/Asahi cameras.
   0x0080   AspectRatio                          yes
   0x0082   BlurControl                          int8u[4]
   0x0085   HDR                                  int8u[4]
+  0x0087   ShutterType                          int8u
   0x0088   NeutralDensityFilter                 int8u[n]
   0x008b   ISO                                  int32u
   0x0092   IntervalShooting                     int16u[2]
@@ -25496,6 +25500,7 @@ API QuickTimeHandler option may be used to include an 'mdir' Handler box.
   "\xa9too"    Encoder                          string
   "\xa9trk"    Track                            string
   "\xa9wrt"    Composer                         string
+  "\xa9xyz"    GPSCoordinates                   string
 
 =head3 QuickTime iTunesInfo Tags
 

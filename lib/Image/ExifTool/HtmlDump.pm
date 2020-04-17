@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool;    # only for FinishTiffDump()
 use Image::ExifTool::HTML qw(EscapeHTML);
 
-$VERSION = '1.37';
+$VERSION = '1.38';
 
 sub DumpTable($$$;$$$$$$);
 sub Open($$$;@);
@@ -119,10 +119,12 @@ function GetElementsByClass(classname, tagname) {
 // click mouse
 function doClick(e)
 {
-  clicked ^= 1;
-  if (clicked) {
+  if (!clicked) {
     firstOutEvt = lastInEvt = undefined;
+    high(e, 2);
+    clicked = 1;
   } else {
+    clicked = 0;
     if (firstOutEvt) high(firstOutEvt, 0);
     if (lastInEvt) high(lastInEvt, 1);
   }
@@ -228,7 +230,7 @@ function high(e,on) {
       }
       for (var i=0; i<hlist.length; ++i) {
         for (var j=0; j<hlist[i].length; ++j) {
-          hlist[i][j].style.background = '#ffcc99';
+          hlist[i][j].style.background = on == 2 ? '#ffbbbb' : '#ffcc99';
         }
       }
     }

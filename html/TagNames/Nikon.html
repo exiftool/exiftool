@@ -2682,6 +2682,21 @@ different for other firmware versions.</p>
 <td>CustomSettingsD850</td>
 <td class=c>-</td>
 <td>--&gt; <a href='NikonCustom.html#SettingsD850'>NikonCustom SettingsD850 Tags</a></td></tr>
+<tr>
+<td class=r title='12027 = 0x2efb'>12027</td>
+<td>RollAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
+<tr class=b>
+<td class=r title='12031 = 0x2eff'>12031</td>
+<td>PitchAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
+<tr>
+<td class=r title='12035 = 0x2f03'>12035</td>
+<td>YawAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoD5000'>Nikon ShotInfoD5000 Tags</a></h2>
@@ -6919,6 +6934,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 </tr><tr><td>'7A 48 5C 80 24 24 4B 06'</td><td>= Sigma 70-200mm F2.8 EX APO DG Macro HSM II</td>
 </tr><tr><td>'7A 54 6E 8E 24 24 4B 02'</td><td>= Sigma APO 120-300mm F2.8 EX DG HSM</td>
 </tr><tr><td>'7B 48 80 98 30 30 80 0E'</td><td>= AF-S VR Zoom-Nikkor 200-400mm f/4G IF-ED</td>
+</tr><tr><td>'7C 54 2B 50 24 24 00 06'</td><td>= Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16)</td>
 </tr><tr><td>'7D 48 2B 53 24 24 82 06'</td><td>= AF-S DX Zoom-Nikkor 17-55mm f/2.8G IF-ED</td>
 </tr><tr><td>'7F 40 2D 5C 2C 34 84 06'</td><td>= AF-S DX Zoom-Nikkor 18-70mm f/3.5-4.5G IF-ED</td>
 </tr><tr><td>'7F 48 2B 5C 24 34 1C 06'</td><td>= Sigma 17-70mm F2.8-4.5 DC Macro Asp. IF</td>
@@ -7133,7 +7149,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 19, 2020</i>
+<br><i>Last revised Apr 17, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -46,7 +46,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.45';
+$VERSION = '2.46';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -5896,6 +5896,14 @@ my %eeBox = (
     GUID => 'GUID',
     AACR => { Name => 'Unknown_AACR', Unknown => 1 }, # eg: "CR!1T1H1QH6WX7T714G2BMFX3E9MC4S"
     # ausr - 30 bytes (User Alias?)
+    "\xa9xyz" => { #PH (written by Google Photos)
+        Name => 'GPSCoordinates',
+        Groups => { 2 => 'Location' },
+        ValueConv => \&ConvertISO6709,
+        ValueConvInv => \&ConvInvISO6709,
+        PrintConv => \&PrintGPSCoordinates,
+        PrintConvInv => \&PrintInvGPSCoordinates,
+    },
 );
 
 # tag decoded from timed face records
@@ -8953,7 +8961,9 @@ ItemID:         foreach $id (keys %$items) {
                         SetByteOrder('II');
                     }
                     my $oldGroup1 = $$et{SET_GROUP1};
-                    if ($$tagInfo{Name} eq 'Track') {
+                    if ($$tagInfo{SubDirectory} and $$tagInfo{SubDirectory}{TagTable} and
+                        $$tagInfo{SubDirectory}{TagTable} eq 'Image::ExifTool::QuickTime::Track')
+                    {
                         $track or $track = 0;
                         $$et{SET_GROUP1} = 'Track' . (++$track);
                     }

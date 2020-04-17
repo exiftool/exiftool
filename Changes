@@ -7,6 +7,19 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.85. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 17, 2020 - Version 11.94
+
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Added additional Validate test for overlapping EXIF values
+  - Added a new Nikon LensID
+  - Added support for QuickTime ItemList:GPSCoordinates
+  - Decode a few more Nikon tags (thanks Warren Hatch)
+  - Decode Pentax ShutterType
+  - Changed color of locked highlighted selection in -htmlDump output
+  - Fixed problem reading PDF files written by Microsoft Print-to-PDF
+  - Fixed problem where -X output would produce invalid XML for MP4 files
+    containing an HTCTrack
+
 Apr. 3, 2020 - Version 11.93
 
   - Added new config file to the distribution for writing Pix4D XMP-Camera tags
@@ -24,7 +37,7 @@ Apr. 3, 2020 - Version 11.93
     invalid header in corrupt files
   - API Changes:
       - Enhanced UserParam  option to allow parameters to be extracted as if
-        they were a normal tag
+        they were normal tags
 
 Mar. 19, 2020 - Version 11.92
 

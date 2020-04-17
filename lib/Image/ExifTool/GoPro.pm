@@ -106,7 +106,7 @@ my %addUnits = (
   # BRID (GPMF) - seen: 0 (fmt B)
   # BROD (GPMF) - seen: 'ASK','' (fmt c)
     CASN => 'CameraSerialNumber', #PH (GPMF - seen: 'C3221324545448', fmt c)
-  # CINF (GPMF) - seen: 0x67376be7709bc8876a8baf3940908618 (fmt B) (Camera INFormation?)
+  # CINF (GPMF) - seen: 0x67376be7709bc8876a8baf3940908618, 0xe230988539b30cf5f016627ae8fc5395 (fmt B) (Camera INFormation?)
   # CMOD (GPMF) - seen: 12,13,17 [13 time-laps video, 17 JPEG] (fmt B)
     CYTS => { #PH (Karma)
         Name => 'CoyoteStatus',
@@ -215,7 +215,7 @@ my %addUnits = (
         RawConv => '$val', # necessary to use scaled value instead of raw data as subdir data
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::KBAT' },
     },
-  # LINF (GPMF) - seen: LAJ7061916601668 (fmt c) (Lens INFormation?)
+  # LINF (GPMF) - seen: LAJ7061916601668, C3341326002180 (fmt c) (Lens INFormation?)
     LNED => { #PH (Karma)
         Name => 'LocalPositionNED',
         # UNIT=s,m,m,m,m/s,m/s,m/s
@@ -243,8 +243,9 @@ my %addUnits = (
     PHDR => 'HDRSetting', #PH (APP6 - seen: 0)
     PIMN => 'AutoISOMin', #PH (GPMF - seen: 100, fmt L)
     PIMX => 'AutoISOMax', #PH (GPMF - seen: 1600, fmt L)
-  # PRAW (APP6) - seen: 0, 'N' (fmt c)
+  # PRAW (APP6) - seen: 0, 'N', 'Y' (fmt c)
     PRES => 'PhotoResolution', #PH (APP6 - seen: '12MP_W')
+  # PRJT (APP6) - seen: 'GPRO' (fmt F, Hero8)
     PRTN => { #PH (GPMF - seen: 'N', fmt c)
         Name => 'ProTune',
         PrintConv => {
@@ -256,6 +257,7 @@ my %addUnits = (
     PTEV => 'ExposureCompensation', #PH (GPMF - seen: '0.0', fmt c)
     PTSH => 'Sharpness', #PH (GPMF - seen: 'HIGH', fmt c)
     PTWB => 'WhiteBalance', #PH (GPMF - seen: 'AUTO', fmt c)
+  # PVUL (APP6) - seen: 'F' (fmt c, Hero8)
     RATE => 'Rate', #PH (GPMF - seen: '0_5SEC', fmt c; APP6 - seen: '4_1SEC')
     RMRK => { #2 (gpmd)
         Name => 'Comments',
@@ -293,6 +295,7 @@ my %addUnits = (
         ValueConv => '$self->Decode($val, "Latin")',
     },
   # SMTR (GPMF) - seen: 'N' (fmt c)
+  # SOFF (APP6) - seen: 0 (fmt L, Hero8)
     STMP => { #1 (gpmd)
         Name => 'TimeStamp',
         ValueConv => '$val / 1e6',
@@ -335,6 +338,7 @@ my %addUnits = (
         Unknown => 1,
         ValueConv => '$self->Decode($val, "Latin")',
     },
+  # VERS (APP6) - seen: '7 6 4' (fmt B, Hero8)
     VFOV => { #PH (GPMF - seen: 'W', fmt c)
         Name => 'FieldOfView',
         PrintConv => {
@@ -356,6 +360,7 @@ my %addUnits = (
         Name => 'WhiteBalanceRGB',
         Binary => 1,
     },
+  # ZFOV (APP6) - seen: 148.34 (fmt f, Hero8)
 );
 
 # GoPro GPS5 tags (ref 2) (Hero5,Hero6)

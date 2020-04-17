@@ -44,6 +44,7 @@ ol.index { margin: 0; padding: 0 0 0 2em }
 <li><a href="#Q26">Import from database</a></li>
 <li><a href="#Q27">Windows .BAT file problems</a></li>
 <li><a href="#Q28">Copying a shifted date/time</a></li>
+<li><a href="#Q29">ARGFILE options</a></li>
 </ol>
 </div>
 
@@ -1640,7 +1641,7 @@ an empty string, in which case the tag is deleted).</blockquote>
 for more details.</blockquote>
 
 <a name="Q27"></a>
-<p>27. <b>"My ExifTool command doesn't work from a Windows .BAT file."</b></p>
+<p>27. <b>"My ExifTool command doesn't work from a Windows .BAT file"</b></p>
 
 <blockquote>In a Windows .BAT file the "<code>%</code>" character is
 significant, so all "<code>%</code>" characters in ExifTool commands must be
@@ -1688,8 +1689,24 @@ $exifTool->SetNewValuesFromFile($src, 'datetimeoriginal&lt;filemodifydate');
 $exifTool->SetNewValuesFromFile($src, 'datetimeoriginal&lt;${filemodifydate;ShiftTime("-2")}');</pre>
 </blockquote>
 
+<a name="Q29"></a>
+<p>29. <b>"My options don't work in a <code>-@</code> ARGFILE"</b></p>
+
+<blockquote>The ExifTool application has the ability to read options from an
+ARGFILE using the <code>-@</code> option.  The parsing of these arguments is
+different from the command line.  Arguments in this file are separated by
+newline characters instead of spaces.  Also, arguments should not be quoted.
+For example, on the command line you may have:
+
+<pre>-d "%Y:%m:%d %H:%M:%S"</pre>
+
+but in an ARGFILE, this should be
+
+<pre>-d
+%Y:%m:%d %H:%M:%S</pre></blockquote>
+
 <hr>
-<i>Last revised Mar. 6, 2020</i>
+<i>Last revised Apr. 16, 2020</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

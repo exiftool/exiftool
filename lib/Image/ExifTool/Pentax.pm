@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.30';
+$VERSION = '3.31';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -2552,6 +2552,14 @@ my %binaryDataAttrs = (
     },
     # 0x0086 - int8u: 0, 111[Sport,Pet] (Q) - related to Tracking FocusMode?
     # 0x0087 - int8u: 0 (Q)
+    0x0087 => { #PH
+        Name => 'ShutterType',
+        Writable => 'int8u',
+        PrintConv => {
+            0 => 'Normal', # ('Mechanical' if the camera has a mechanical shutter)
+            1 => 'Electronic', # (KP)
+        },
+    },
     0x0088 => { #PH
         Name => 'NeutralDensityFilter',
         Writable => 'int8u',

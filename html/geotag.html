@@ -18,6 +18,7 @@ pre   { color: #800; margin-left: 4em }
 <br>&nbsp; - <a href="#geotag">Geotag</a>
 <br>&nbsp; - <a href="#geosync">Geosync</a>
 <br>&nbsp; - <a href="#geotime">Geotime</a>
+<br><a href="#CSVFormat">CSV File Format</a>
 <br><a href="#Examples">Examples</a>
 <br><a href="#Options">Options</a>
 <br><a href="#Orient">Orientation</a>
@@ -58,6 +59,7 @@ must be <a href="#Orient">user-defined</a>.</i></blockquote>
 <li>Bramor gEO log</li>
 <li>Winplus Beacon .TXT</li>
 <li>GPS/IMU .CSV</li>
+<li><a href="#CSVFormat">ExifTool .CSV file</a></li>
 </ul>
 
 <a name="Implementation"></a>
@@ -219,6 +221,33 @@ be specified when geotagging via the API (the default value of
 <code>Geosync</code> (the exiftool application reorders the assignments to
 ensure this).
 </blockquote>
+
+<a name="CSVFormat"></a>
+<h3>ExifTool CSV Log File Format</h3>
+
+<p>ExifTool supports input log files in CSV format with the first row containing
+headings in the form of ExifTool tag names or descriptions.  Valid column
+headings are:</p>
+
+<blockquote><table class='norm'>
+<tr><th>Column Heading</th><th>Description</th></tr>
+<tr><td>GPSDateTime</td><td>Date and time in standard EXIF format, or other
+format specified by the <code>-d</code> option if used.<br>Time is assumed to be
+in UTC unless the values contain another time zone</td></tr>
+<tr><td>GPSDateStamp</td><td>Date in standard EXIF format</td></tr>
+<tr><td>GPSTimeStamp</td><td>Time in EXIF format.  UTC is assumed unless
+the values include a time zone</td></tr>
+<tr><td>GPSLatitude</td><td>Latitude in flexible ExifTool format (see <a href="faq.html#Q14">FAQ 14</a>)</td></tr>
+<tr><td>GPSLongitude</td><td>Longitude in flexible ExifTool format (see <a href="faq.html#Q14">FAQ 14</a>)</td></tr>
+<tr><td>GPSAltitude</td><td>Altitude in meters relative to sea level (negative for below sea level)</td></tr>
+<tr><td>GPSTrack</td><td>Compass heading in degrees true</td></tr>
+<tr><td>GPSPitch or<br>CameraElevationAngle</td><td>Pitch angle in degrees with positive pitch upwards</td></tr>
+<tr><td>GPSRoll</td><td>Roll angle in degrees</td></tr>
+</table></blockquote>
+
+<p>Required columns are GPSDateTime (or GPSDateStamp and GPSTimeStamp),
+GPSLatitude and GPSLongitude.  All other columns are optional, and unrecognized
+columns are ignored.</p>
 
 <a name="Examples"></a>
 <h3>Examples</h3>
@@ -538,15 +567,16 @@ one or more geotagged images:</p>
 <pre>#------------------------------------------------------------------------------
 # File:         gpx.fmt
 #
-# Description:  Example ExifTool print format file for generating GPX track log
+# Description:  Example ExifTool print format file to generate a GPX track log
 #
-# Usage:        exiftool -p gpx.fmt -ee FILE [...] > out.gpx
+# Usage:        exiftool -p gpx.fmt -ee FILE [...] &gt; out.gpx
 #
 # Requires:     ExifTool version 10.49 or later
 #
 # Revisions:    2010/02/05 - P. Harvey created
-#               2018/01/03 - PH Added IF to be sure position exists
+#               2018/01/04 - PH Added IF to be sure position exists
 #               2018/01/06 - PH Use DateFmt function instead of -d option
+#               2019/10/24 - PH Preserve sub-seconds in GPSDateTime value
 #
 # Notes:     1) Input file(s) must contain GPSLatitude and GPSLongitude.
 #            2) The -ee option is to extract the full track from video files.
@@ -565,7 +595,7 @@ one or more geotagged images:</p>
 #[IF]  $gpslatitude $gpslongitude
 #[BODY]&lt;trkpt lat="$gpslatitude#" lon="$gpslongitude#"&gt;
 #[BODY]  &lt;ele&gt;$gpsaltitude#&lt;/ele&gt;
-#[BODY]  &lt;time&gt;${gpsdatetime#;DateFmt("%Y-%m-%dT%H:%M:%SZ")}&lt;/time&gt;
+#[BODY]  &lt;time&gt;${gpsdatetime#;my ($ss)=/\.\d+/g;DateFmt("%Y-%m-%dT%H:%M:%SZ");s/Z/${ss}Z/ if $ss}&lt;/time&gt;
 #[BODY]&lt;/trkpt&gt;
 #[TAIL]&lt;/trkseg&gt;
 #[TAIL]&lt;/trk&gt;
@@ -631,7 +661,8 @@ in ExifTool 10.41 to divide the placemarks into folders based on directory name:
 # Revisions:    2010/02/05 - P. Harvey created
 #               2013/02/05 - PH Fixed camera icon to work with new Google Earth
 #               2017/02/02 - PH Organize into folders based on file directory
-#               2018/01/03 - PH Added IF to be sure position exists
+#               2018/01/04 - PH Added IF to be sure position exists
+#               2020/01/11 - F. Kotov Limited image preview size to 500px
 #
 # Notes:     1) Input files must contain GPSLatitude and GPSLongitude.
 #            2) Add the -ee option to extract the full track from video files.
@@ -658,14 +689,13 @@ in ExifTool 10.41 to divide the placemarks into folders based on directory name:
 #[HEAD]      &lt;/IconStyle&gt;
 #[HEAD]    &lt;/Style&gt;
 #[SECT]    &lt;Folder&gt;
-#[SECT]      &lt;name&gt;$directory&lt;/name&gt;
+#[SECT]      &lt;name&gt;$main:directory&lt;/name&gt;
 #[SECT]      &lt;open&gt;0&lt;/open&gt;
 #[IF]  $gpslatitude $gpslongitude
 #[BODY]      &lt;Placemark&gt;
-#[BODY]        &lt;description&gt;&lt;![CDATA[&lt;br/&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;
-#[BODY]        &lt;img src='$directory/$filename'
-#[BODY]          width='$imagewidth' height='$imageheight'&gt;
-#[BODY]        &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;]]&gt;&lt;/description&gt;
+#[BODY]        &lt;description&gt;&lt;![CDATA[&lt;img src='$main:directory/$main:filename'
+#[BODY]          style='max-width:500px;max-height:500px;'&gt; ]]&gt;
+#[BODY]        &lt;/description&gt;
 #[BODY]        &lt;Snippet/&gt;
 #[BODY]        &lt;name&gt;$filename&lt;/name&gt;
 #[BODY]        &lt;styleUrl&gt;#Photo&lt;/styleUrl&gt;
@@ -686,7 +716,7 @@ forum post</a> for more useful tips about creating KML files.</p>
 
 <hr>
 <i>Created Apr. 2, 2009</i><br>
-<i>Last revised Jul. 22, 2019</i>
+<i>Last revised Apr. 21, 2020</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

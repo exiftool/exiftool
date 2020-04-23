@@ -25,8 +25,9 @@ package Image::ExifTool::Geotag;
 use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
+use Image::ExifTool::GPS;
 
-$VERSION = '1.61';
+$VERSION = '1.62';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -229,9 +230,41 @@ sub LoadTrackLog($$;$)
                 $format = 'Winplus';
             } elsif (/^\s*\d+\s+.*\sypr\s*$/ and (@tmp=split) == 12) {
                 $format = 'Bramor';
-            } elsif (/\bDate\b/i and /\bTime\b/ and ',') {
+            } elsif (/\b(GPS)?Date/i and /\b(GPS)?(Date)?Time/i and /,/) {
+                chomp;
                 @csvHeadings = split ',';
                 $format = 'CSV';
+                # convert recognized headings to our parameter names
+                foreach (@csvHeadings) {
+                    my $param;
+                    s/^GPS ?//; # remove leading "GPS" to simplify regex patterns
+                    if (/^Date ?Time/i) { # ExifTool addition
+                        $param = 'datetime';
+                    } elsif (/^Date/i) {
+                        $param = 'date';
+                    } elsif (/^Time/i) {
+                        $param = 'time';
+                    } elsif (/^(Pos)?Lat/i) {
+                        $param = 'lat';
+                    } elsif (/^(Pos)?Lon/i) {
+                        $param = 'lon';
+                    } elsif (/^(Pos)?Alt/i) {
+                        $param = 'alt';
+                    } elsif (/^(Angle)?(Heading|Track)/i) {
+                        $param = 'track';
+                    } elsif (/^(Angle)?Pitch/i or /^Camera ?Elevation ?Angle/i) {
+                        $param = 'pitch';
+                    } elsif (/^(Angle)?Roll/i) {
+                        $param = 'roll';
+                    }
+                    if ($param) {
+                        $et->VPrint(2, "CSV column '${_}' is $param\n");
+                        $_ = $param;
+                    } else {
+                        $et->VPrint(2, "CSV column '${_}' ignored\n");
+                        $_ = '';    # ignore this column
+                    }
+                }
                 next;
             } else {
                 # search only first 50 lines of file for a valid fix
@@ -388,35 +421,50 @@ DoneFix:    $isDate = 1;
             # set necessary flags for extra available information
             @$has{qw(alt track orient)} = (1,1,1);
             goto DoneFix;   # save this fix
+        } elsif ($format eq 'CSV') {
+            chomp;
+            my @vals = split ',';
 #
 # CSV format output of GPS/IMU POS system
+#   Date*           - date in DD/MM/YYYY format
+#   Time*           - time in HH:MM:SS.SSS format
+#   [Pos]Lat*       - latitude in decimal degrees
+#   [Pos]Lon*       - longitude in decimal degrees
+#   [Pos]Alt*       - altitude in m relative to sea level
+#   [Angle]Heading* - GPSTrack in degrees true
+#   [Angle]Pitch*   - pitch angle in degrees
+#   [Angle]Roll*    - roll angle in degrees
+# (ExifTool enhancements allow for standard tag names or descriptions as the column headings,
+#  add support for time zones and flexible coordinates, and allow a new DateTime column)
 #
-        } elsif ($format eq 'CSV') {
-            my @vals = split ',';
-            my ($label, $date, $secs);
-            foreach $label (@csvHeadings) {
+            my ($param, $date, $secs);
+            foreach $param (@csvHeadings) {
                 my $val = shift @vals;
                 last unless defined $val;
-                if ($label =~ /^Date/i) {
+                next unless $param;
+                if ($param eq 'datetime') {
+                    local $SIG{'__WARN__'} = sub { };
+                    my $dateTime = $et->InverseDateTime($val);
+                    if ($dateTime) {
+                        $date = Image::ExifTool::GetUnixTime($val, 2);
+                        $secs = 0;
+                    }
+                } elsif ($param eq 'date') {
                     if ($val =~ m{^(\d{2})/(\d{2})/(\d{4})$}) {
                         $date = Time::Local::timegm(0,0,0,$1,$2-1,$3);
+                    } elsif ($val =~ /(\d{4}).*?(\d{2}).*?(\d{2})/) {
+                        $date = Time::Local::timegm(0,0,0,$3,$2-1,$1);
                     }
-                } elsif ($label =~ /^Time/i) {
-                    if ($val =~ /^(\d{1,2}):(\d{2}):(\d{2}(\.\d+)?)/) {
+                } elsif ($param eq 'time') {
+                    if ($val =~ /^(\d{1,2}):(\d{2}):(\d{2}(\.\d+)?).*?(([-+])(\d{1,2}):?(\d{2}))?/) {
                         $secs = (($1 * 60) + $2) * 60 + $3;
+                        # adjust for time zone if specified
+                        $secs += ($7 * 60 + $8) * ($6 eq '-' ? 60 : -60) if $5;
                     }
-                } elsif ($label =~ /^(Pos)?Lat/) {
-                    $$fix{lat} = $val;
-                } elsif ($label =~ /^(Pos)?Lon/) {
-                    $$fix{lon} = $val;
-                } elsif ($label =~ /^(Pos)?Alt/) {
-                    $$fix{alt} = $val;
-                } elsif ($label =~ /^(Angle)?Heading/) {
-                    $$fix{track} = $val;
-                } elsif ($label =~ /^(Angle)?Pitch/) {
-                    $$fix{pitch} = $val;
-                } elsif ($label =~ /^(Angle)?Roll/) {
-                    $$fix{roll} = $val;
+                } elsif ($param eq 'lat' or $param eq 'lon') {
+                    $$fix{$param} = Image::ExifTool::GPS::ToDegrees($val, 1);
+                } else {
+                    $$fix{$param} = $val;
                 }
             }
             if ($date and defined $secs and defined $$fix{lat} and defined $$fix{lon}) {

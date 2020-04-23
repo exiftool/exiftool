@@ -17,15 +17,24 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.95'><b>Apr. 23, 2020 - Version 11.95</b></a>
+<ul>
+<li>Added Exit() and ExitDir() functions for use in -if conditions
+<li>Enhanced -geotag feature to support a more flexible input CSV file format
+<li>Enhanced -if and API Filter options to allow access to ExifTool object via
+    $self
+<li>Fixed problem reading HEIC Exif with a missing header
+</ul>
+
 <a name='v11.94'><b>Apr. 17, 2020 - Version 11.94</b></a>
 <ul>
-<li>Added a new Sony LensType (thanks Jos Roost)
-<li>Added additional Validate test for overlapping EXIF values
-<li>Added a new Nikon LensID
 <li>Added support for QuickTime ItemList:GPSCoordinates
+<li>Added additional Validate test for overlapping EXIF values
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Added a new Nikon LensID
 <li>Decode a few more Nikon tags (thanks Warren Hatch)
 <li>Decode Pentax ShutterType
-<li>Changed color of locked highlighted selection in -htmlDump output
+<li>Changed color of locked highlighted selection in <a href="htmldump.html">-htmlDump output</a>
 <li>Fixed problem reading PDF files written by Microsoft Print-to-PDF
 <li>Fixed problem where -X output would produce invalid XML for MP4 files
     containing an HTCTrack

@@ -595,13 +595,15 @@ distribution for examples.</p>
     PrintConv values only.  List items are filtered individually.</td>
     <td>Expression to act on the value of the Perl default variable ($_),
     changing the value of this variable as required.  The value is not changed
-    if $_ is set to undef.</td>
+    if $_ is set to undef.  Expression may access the current ExifTool object
+    through $self.</td>
     <td align=center>undef</td></tr>
 <tr id="FilterW"><td>FilterW</td>
     <td>Perl expression used to filter PrintConv values when writing.</td>
     <td>Expression to act on the value of the Perl default variable ($_),
-    changing the value of this variable as required.  The value is not changed
-    if $_ is set to undef.</td>
+    changing the value of this variable as required.  The current ExifTool
+    object may be accessed through $self.  The value is not changed if $_
+    is set to undef.</td>
     <td align=center>undef</td></tr>
 <tr id="FixBase"><td>FixBase</td>
     <td>Fix maker notes base offset.  Allows values to be extracted from maker notes

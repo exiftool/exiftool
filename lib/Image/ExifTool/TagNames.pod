@@ -3643,7 +3643,6 @@ is to write ImageRegion as a structure with these tags as new fields.
   GPSAltitude                                   rational
   GPSLatitude                                   string
   GPSLongitude                                  string
-  GROUPS                                        string
   Identifier                                    string+
   LocationId                                    string+
   LocationName                                  lang-alt

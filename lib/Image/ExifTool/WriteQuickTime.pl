@@ -499,6 +499,9 @@ sub WriteItemInfo($$$)
             if (not length $buff) {
                 # create EXIF from scratch
                 $hdr = "\0\0\0\x06Exif\0\0";
+            } elsif ($buff =~ /^(MM\0\x2a|II\x2a\0)/) {
+                $et->Warn('Missing Exif header');
+                $hdr = '';
             } elsif (length($buff) >= 4 and length($buff) >= 4 + unpack('N',$buff)) {
                 $hdr = substr($buff, 0, 4 + unpack('N',$buff));
             } else {

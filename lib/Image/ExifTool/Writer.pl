@@ -359,7 +359,7 @@ sub SetNewValue($;$$%)
     my $convType = $options{Type} || ($$self{OPTIONS}{PrintConv} ? 'PrintConv' : 'ValueConv');
 
     # filter value if necessary
-    Filter($$self{OPTIONS}{FilterW}, \$value) if $convType eq 'PrintConv';
+    $self->Filter($$self{OPTIONS}{FilterW}, \$value) if $convType eq 'PrintConv';
 
     my (@wantGroup, $family2);
     my $wantGroup = $options{Group};
@@ -2967,9 +2967,13 @@ sub InsertTagValues($$$;$$$)
         my (@tags, $val, $tg, @val, $type, $expr, $didExpr, $level, $asList);
         # "$$" represents a "$" symbol, and "$/" is a newline
         if ($var eq '$' or $var eq '/') {
-            $var = "\n" if $var eq '/';
-            $rtnStr .= "$pre$var";
             $line =~ s/^\s*\}// if $bra;
+            if ($var eq '/') {
+                $var = "\n";
+            } elsif ($line =~ /^self\b/ and not $rtnStr =~ /\$$/) {
+                $var = '$$';    # ("$$self{var}" in string)
+            }
+            $rtnStr .= "$pre$var";
             next;
         }
         # allow multiple group names
@@ -3074,6 +3078,8 @@ sub InsertTagValues($$$;$$$)
                             last unless $tag =~ / /;    # all done if we got our best match
                         }
                     }
+                } elsif ($tag eq 'self') {
+                    $val = $self; # ("$self{var}" or "$self->{var}" in string)
                 } else {
                     # get the tag value
                     $val = $self->GetValue($tag, $type);

@@ -652,16 +652,17 @@ based on the file's extension.  Default is undef.
 
 Perl expression used to filter values for all tags.  The expression acts on
 the value of the Perl default variable ($_), and changes the value of this
-variable as required.  The value is not changed if $_ is set to undef.  List
-items are filtered individually.  Applies to all returned values unless
-PrintConv option is disabled.
+variable as required.  The current ExifTool object may be accessed through
+$self.  The value is not changed if $_ is set to undef.  List items are
+filtered individually.  Applies to all returned values unless PrintConv
+option is disabled.
 
 =item FilterW
 
 Perl expression used to filter PrintConv values when writing.  The
 expression acts on the value of the Perl default variable ($_), and changes
-the value of this variable as required.  The value is not changed if $_ is
-set to undef.
+the value of this variable as required.  The current ExifTool object may be
+accessed through $self.  The value is not changed if $_ is set to undef.
 
 =item FixBase
 

@@ -16,7 +16,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 
-$VERSION = '1.23';
+$VERSION = '1.24';
 
 sub RecoverTruncatedIPTC($$$);
 sub ListToString($);
@@ -629,6 +629,14 @@ sub OverwriteStringList($$$$)
     local $_;
     my ($et, $nvHash, $val, $newValuePt) = @_;
     my (@new, $delIndex);
+    my $writeMode = $et->Options('WriteMode');
+    if ($writeMode ne 'wcg') {
+        if (defined $val) {
+            $writeMode =~ /w/i or return 0;
+        } else {
+            $writeMode =~ /c/i or return 0;
+        }
+    }
     if ($$nvHash{DelValue} and defined $val) {
         # preserve specified old values
         my $old = StringToList($val, $et);

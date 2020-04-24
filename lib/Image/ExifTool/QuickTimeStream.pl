@@ -133,6 +133,21 @@ my %insvLimit = (
     SampleTime   => { Groups => { 2 => 'Video' }, PrintConv => 'ConvertDuration($val)', Notes => 'sample decoding time' },
     SampleDuration=>{ Groups => { 2 => 'Video' }, PrintConv => 'ConvertDuration($val)' },
     UserLabel    => { Groups => { 2 => 'Other' } },
+    SampleDateTime => {
+        Groups => { 2 => 'Time' },
+        ValueConv => q{
+            my $str = ConvertUnixTime($val);
+            my $frac = $val - int($val);
+            if ($frac != 0) {
+                $frac = sprintf('%.6f', $frac);
+                $frac =~ s/^0//;
+                $frac =~ s/0+$//;
+                $str .= $frac;
+            }
+            return $str;
+        },
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
 #
 # timed metadata decoded based on MetaFormat (format of 'meta' or 'data' sample description)
 # [or HandlerType, or specific 'vide' type if specified]

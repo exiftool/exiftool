@@ -85,6 +85,10 @@ value.</p>
     writing (Note: entry may exist but be undefined for top-level
     directory!)</td></tr>
 
+<tr><td>End</td><td>Used by application to signal end of processing</td></tr>
+
+<tr><td>EndDir</td><td>Used by application to signal end of the current directory</td></tr>
+
 <tr><td>ESCAPE_PROC</td><td>Routine for XML or HTML escaping if Escape option is set</td></tr>
 
 <tr><td>EXCL_TAG_LOOKUP</td><td>Hash for looking up excluded tags (keys are lower case tag names)</td></tr>
@@ -92,10 +96,6 @@ value.</p>
 <tr><td>EXIF_DATA</td><td>EXIF data block (valid while reading from file)</td></tr>
 
 <tr><td>EXIF_POS</td><td>Position of EXIF data in file</td></tr>
-
-<tr><td>Exit</td><td>Set by calling Exit() to signal application to exit</td></tr>
-
-<tr><td>ExitDir</td><td>Set by calling ExitDir() to signal application to exit the current directory</td></tr>
 
 <tr><td>FILENAME</td><td>Name of input file while extracting (only if we opened it, '' otherwise)</td></tr>
 

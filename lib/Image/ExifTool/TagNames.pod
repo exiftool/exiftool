@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23363 tags, with 15305 unique tag names.
+They contain a total of 23364 tags, with 15306 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -25097,6 +25097,7 @@ formats of timed GPS metadata from video files.
   RVMI_gReV                                     QuickTime RVMI_gReV
   RVMI_sReV                                     QuickTime RVMI_sReV
   RawGSensor                                    no
+  SampleDateTime                                no
   SampleDuration                                no
   SampleTime                                    no
   Text                                          no
@@ -28946,6 +28947,7 @@ sub-documents, but the Duration is calculated for the full video.
                        RicohJunk                Ricoh AVI
                        PentaxJunk               Pentax Junk
                        PentaxJunk2              Pentax Junk2
+                       LucasJunk                QuickTime Stream
                        TextJunk                 no
   'JUNQ'               OldXMP                   no
   'LIST_INF0'          Info                     RIFF Info

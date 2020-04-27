@@ -679,47 +679,88 @@ sub SetGPSDateTime($$$)
 }
 
 #------------------------------------------------------------------------------
+# Handle tags that we found in the subtitle 'text'
+# Inputs: 0) ExifTool ref, 1) tag table ref, 2) hash of tag names/values
+sub HandleTextTags($$$)
+{
+    my ($et, $tagTbl, $tags) = @_;
+    my $tag;
+    delete $$tags{done};
+    delete $$tags{GPSTimeStamp} if $$tags{GPSDateTime};
+    foreach $tag (sort keys %$tags) {
+        $et->HandleTag($tagTbl, $tag => $$tags{$tag});
+    }
+    $$et{UnknownTextCount} = 0;
+    undef %$tags;   # clear the hash
+}
+
+#------------------------------------------------------------------------------
 # Process subtitle 'text'
 # Inputs: 0) ExifTool ref, 1) tag table ref, 2) data ref, 3) optional sample time
 sub Process_text($$$)
 {
     my ($et, $tagTbl, $buffPt) = @_;
-    my ($found, $val, %tags, $tag);
+    my %tags;
 
     return if $$et{NoMoreTextDecoding};
 
     while ($$buffPt =~ /\$(\w+)([^\$]*)/g) {
         my ($tag, $dat) = ($1, $2);
-        if ($tag =~ /^[A-Z]{2}RMC$/ and $dat =~ /^,(\d{2})(\d{2})(\d+)(\.\d*)?,A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/) {
-            my $year = $15 + ($15 >= 70 ? 1900 : 2000);
-            my $str = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d%sZ', $year, $14, $13, $1, $2, $3, $4 || '');
-            $et->HandleTag($tagTbl, GPSDateTime  => $str);
-            $et->HandleTag($tagTbl, GPSLatitude  => (($5 || 0) + $6/60) * ($7 eq 'N' ? 1 : -1));
-            $et->HandleTag($tagTbl, GPSLongitude => (($8 || 0) + $9/60) * ($10 eq 'E' ? 1 : -1));
+        if ($tag =~ /^[A-Z]{2}RMC$/ and $dat =~ /^,(\d{2})(\d{2})(\d+(?:\.\d*)),A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/) {
+            my $time = "$1:$2:$3";
+            if ($$et{LastTime}) {
+                if ($$et{LastTime} eq $time) {
+                    $$et{DOC_NUM} = $$et{LastDoc};
+                } elsif (%tags) {
+                    HandleTextTags($et, $tagTbl, \%tags);
+                    $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                }
+            }
+            $$et{LastTime} = $time;
+            $$et{LastDoc} = $$et{DOC_NUM};
+            my $year = $14 + ($14 >= 70 ? 1900 : 2000);
+            my $dateTime = sprintf('%.4d:%.2d:%.2d %sZ', $year, $13, $12, $time);
+            $tags{GPSDateTime} = $dateTime;
+            $tags{GPSLatitude} = (($4 || 0) + $5/60) * ($6 eq 'N' ? 1 : -1);
+            $tags{GPSLongitude} = (($7 || 0) + $8/60) * ($9 eq 'E' ? 1 : -1);
+            if (length $10) {
+                $tags{GPSSpeed} = $10 * $knotsToKph;
+                $tags{GPSSpeedRef} = 'K';
+            }
             if (length $11) {
-                $et->HandleTag($tagTbl, GPSSpeed => $11 * $knotsToKph);
-                $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
+                $tags{GPSTrack} = $11;
+                $tags{GPSTrackRef} = 'T';
             }
-            if (length $12) {
-                $et->HandleTag($tagTbl, GPSTrack => $12);
-                $et->HandleTag($tagTbl, GPSTrackRef => 'T');
+        } elsif ($tag =~ /^[A-Z]{2}GGA$/ and $dat =~ /^,(\d{2})(\d{2})(\d+(?:\.\d*)?),(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),[1-6]?,(\d+)?,(\.\d+|\d+\.?\d*)?,(-?\d+\.?\d*)?,M?/s) {
+            my $time = "$1:$2:$3";
+            if ($$et{LastTime}) {
+                if ($$et{LastTime} eq $time) {
+                    $$et{DOC_NUM} = $$et{LastDoc};
+                } elsif (%tags) {
+                    HandleTextTags($et, $tagTbl, \%tags);
+                    $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                }
             }
-            $found = 1;
+            $$et{LastTime} = $time;
+            $$et{LastDoc} = $$et{DOC_NUM};
+            $tags{GPSTimeStamp} = $time;
+            $tags{GPSLatitude} = (($4 || 0) + $5/60) * ($6 eq 'N' ? 1 : -1);
+            $tags{GPSLongitude} = (($7 || 0) + $8/60) * ($9 eq 'E' ? 1 : -1);
+            $tags{GPSSatellites} = $10 if defined $10;
+            $tags{GPSDOP} = $11 if defined $11;
+            $tags{GPSAltitude} = $12 if defined $12;
         } elsif ($tag eq 'BEGINGSENSOR' and $dat =~ /^:([-+]\d+\.\d+):([-+]\d+\.\d+):([-+]\d+\.\d+)/) {
-            $et->HandleTag($tagTbl, Accelerometer => "$1 $2 $3");
-            $found = 1;
+            $tags{Accelerometer} = "$1 $2 $3";
         } elsif ($tag eq 'TIME' and $dat =~ /^:(\d+)/) {
-            $et->HandleTag($tagTbl, TimeCode => $1 / ($$et{MediaTS} || 1));
-            $found = 1;
+            $tags{TimeCode} = $1 / ($$et{MediaTS} || 1);
         } elsif ($tag eq 'BEGIN') {
-            $et->HandleTag($tagTbl, Text => $dat) if length $dat;
-            $found = 1;
+            $tags{Text} = $dat if length $dat;
+            $tags{done} = 1;
         } elsif ($tag ne 'END') {
-            $et->HandleTag($tagTbl, Text => "\$$tag$dat");
-            $found = 1;
+            $tags{Text} = "\$$tag$dat";
         }
     }
-    return if $found;
+    %tags and HandleTextTags($et, $tagTbl, \%tags), return;
 
     # check for enciphered binary GPS data
     # BlueSkySea:
@@ -755,7 +796,7 @@ sub Process_text($$$)
     #   0120: 58 00 58 00 58 00 58 00 00 00 00 00 00 00 00 00 [X.X.X.X.........]
     #   0130: 00 00 00 00 00 00 00                            [.......]
     if ($$buffPt =~ /^\0\0(..\xaa\xaa|\xf2\xe1\xf0\xee)/s and length $$buffPt >= 282) {
-        $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 8, 14)));
+        my $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 8, 14)));
         if ($val =~ /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/) {
             $tags{GPSDateTime} = "$1:$2:$3 $4:$5:$6";
             $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$buffPt, 38, 9)));
@@ -792,12 +833,13 @@ sub Process_text($$$)
                 $tags{Accelerometer} = "@acc" if @acc;
             }
         }
+        %tags and HandleTextTags($et, $tagTbl, \%tags), return;
     }
 
     # check for DJI telemetry data, eg:
     # "F/3.5, SS 1000, ISO 100, EV 0, GPS (8.6499, 53.1665, 18), D 24.26m,
     #  H 6.00m, H.S 2.10m/s, V.S 0.00m/s \n"
-    if (not %tags and $$buffPt =~ /GPS \(([-+]?\d*\.\d+),\s*([-+]?\d*\.\d+)/) {
+    if ($$buffPt =~ /GPS \(([-+]?\d*\.\d+),\s*([-+]?\d*\.\d+)/) {
         $$et{CreateDateAtEnd} = 1;  # set flag indicating the file creation date is at the end
         $tags{GPSLatitude} = $2;
         $tags{GPSLongitude} = $1;
@@ -812,11 +854,13 @@ sub Process_text($$$)
         $tags{ExposureTime} = 1 / $1 if $$buffPt =~ /\bSS\s+(\d+\.?\d*)/;
         $tags{ExposureCompensation} = ($1 / ($2 || 1)) if $$buffPt =~ /\bEV\s+([-+]?\d+\.?\d*)(\/\d+)?/;
         $tags{ISO} = $1 if $$buffPt =~ /\bISO\s+(\d+\.?\d*)/;
+        HandleTextTags($et, $tagTbl, \%tags);
+        return;
     }
 
     # check for Mini 0806 dashcam GPS, eg:
     # "A,270519,201555.000,3356.8925,N,08420.2071,W,000.0,331.0M,+01.84,-09.80,-00.61;\n"
-    if (not %tags and $$buffPt =~ /^A,(\d{2})(\d{2})(\d{2}),(\d{2})(\d{2})(\d{2}(\.\d+)?)/) {
+    if ($$buffPt =~ /^A,(\d{2})(\d{2})(\d{2}),(\d{2})(\d{2})(\d{2}(\.\d+)?)/) {
         $tags{GPSDateTime} = "20$3:$2:$1 $4:$5:$6Z";
         if ($$buffPt =~ /^A,.*?,.*?,(\d{2})(\d+\.\d+),([NS])/) {
             $tags{GPSLatitude} = ($1 + $2/60) * ($3 eq 'S' ? -1 : 1);
@@ -828,37 +872,35 @@ sub Process_text($$$)
         $tags{GPSAltitude} = $a[8] if $a[8] and $a[8] =~ s/M$//;
         $tags{GPSSpeed} = $a[7] if $a[7] and $a[7] =~ /^\d+\.\d+$/; # (NC)
         $tags{Accelerometer} = "$a[9] $a[10] $a[11]" if $a[11] and $a[11] =~ s/;\s*$//;
+        HandleTextTags($et, $tagTbl, \%tags);
+        return;
     }
 
     # check for Thinkware format, eg:
     # "gsensori,4,512,-67,-12,100;GNRMC,161313.00,A,4529.87489,N,07337.01215,W,6.225,35.34,310819,,,A*52..;
     #  CAR,0,0,0,0.0,0,0,0,0,0,0,0,0"
-    unless (%tags) {
-        if ($$buffPt =~ /[A-Z]{2}RMC,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/ and
-            # do some basic sanity checks on the date
-            $13 <= 31 and $14 <= 12 and $15 <= 99)
-        {
-            my $year = $15 + ($15 >= 70 ? 1900 : 2000);
-            $tags{GPSDateTime} = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $year, $14, $13, $1, $2, $3);
-            $tags{GPSLatitude} = (($5 || 0) + $6/60) * ($7 eq 'N' ? 1 : -1);
-            $tags{GPSLongitude} = (($8 || 0) + $9/60) * ($10 eq 'E' ? 1 : -1);
-            if (length $11) {
-                $tags{GPSSpeed} = $11 * $knotsToKph;
-                $tags{GPSSpeedRef} = 'K';
-            }
-            if (length $12) {
-                $tags{GPSTrack} = $12;
-                $tags{GPSTrackRef} = 'T';
-            }
+    if ($$buffPt =~ /[A-Z]{2}RMC,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/ and
+        # do some basic sanity checks on the date
+        $13 <= 31 and $14 <= 12 and $15 <= 99)
+    {
+        my $year = $15 + ($15 >= 70 ? 1900 : 2000);
+        $tags{GPSDateTime} = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $year, $14, $13, $1, $2, $3);
+        $tags{GPSLatitude} = (($5 || 0) + $6/60) * ($7 eq 'N' ? 1 : -1);
+        $tags{GPSLongitude} = (($8 || 0) + $9/60) * ($10 eq 'E' ? 1 : -1);
+        if (length $11) {
+            $tags{GPSSpeed} = $11 * $knotsToKph;
+            $tags{GPSSpeedRef} = 'K';
         }
-        $tags{GSensor} = $1 if $$buffPt =~ /\bgsensori,(.*?)(;|$)/;
-        $tags{Car} = $1 if $$buffPt =~ /\bCAR,(.*?)(;|$)/;
+        if (length $12) {
+            $tags{GPSTrack} = $12;
+            $tags{GPSTrackRef} = 'T';
+        }
     }
+    $tags{GSensor} = $1 if $$buffPt =~ /\bgsensori,(.*?)(;|$)/;
+    $tags{Car} = $1 if $$buffPt =~ /\bCAR,(.*?)(;|$)/;
+
     if (%tags) {
-        foreach $tag (sort keys %tags) {
-            $et->HandleTag($tagTbl, $tag => $tags{$tag});
-        }
-        $$et{UnknownTextCount} = 0;
+        HandleTextTags($et, $tagTbl, \%tags);
     } else {
         $$et{UnknownTextCount} = ($$et{UnknownTextCount} || 0) + 1;
         # give up trying to decode useful information if we haven't found anything for a while

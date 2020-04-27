@@ -7,6 +7,11 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.85. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 27, 2020 - Version 11.97
+
+  - Added experimental -efile option (undocumented)
+  - Decode NMEA GGA sentence from streaming GPS of some dashcam videos
+
 Apr. 24, 2020 - Version 11.96
 
   - Decode streaming GPS from Lucas LK-7900 Ace AVI videos

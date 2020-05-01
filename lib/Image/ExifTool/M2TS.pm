@@ -31,7 +31,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 # program map table "stream_type" lookup (ref 6/1)
 my %streamType = (
@@ -313,7 +313,7 @@ sub ProcessM2TS($$)
     my $raf = $$dirInfo{RAF};
     my ($buff, $pLen, $upkPrefix, $j, $fileType, $eof);
     my (%pmt, %pidType, %data, %sectLen);
-    my ($startTime, $endTime, $backScan, $maxBack);
+    my ($startTime, $endTime, $fwdTime, $backScan, $maxBack);
     my $verbose = $et->Options('Verbose');
     my $out = $et->Options('TextOut');
 
@@ -330,7 +330,7 @@ sub ProcessM2TS($$)
         $upkPrefix = 'x4N';
     }
     my $prePos = $pLen - 188;       # byte position of packet prefix
-    my $readSize = 64 * $pLen;      # read 64 packets at once
+    my $readSize = 64 * $pLen;      # size of our read buffer
     $raf->Seek(0,0);                # rewind to start
     $raf->Read($buff, $readSize) >= $pLen * 4 or return 0;  # require at least 4 packets
     # validate the sync byte in the next 3 packets
@@ -351,39 +351,58 @@ sub ProcessM2TS($$)
     my %didPID = ( 1 => 0, 2 => 0, 0x1fff => 0 );
     my %needPID = ( 0 => 1 );       # lookup for stream PID's that we still need to parse
     my $pEnd = 0;
-    my $i = 0;
 
     # parse packets from MPEG-2 Transport Stream
     for (;;) {
 
         unless (%needPID) {
             last unless defined $startTime;
-            # seek backwards to find last PCR
-            if (defined $backScan) {
-                last if defined $endTime;
-                $backScan -= $pLen;
-                last if $backScan < $maxBack;
-            } else {
-                undef $endTime;
-                last if $et->Options('FastScan');
+            # reconfigure to seek backwards for last PCR
+            unless (defined $backScan) {
+                $et->Options('FastScan') and undef($endTime), last;
                 $verbose and print "[Starting backscan for last PCR]\n";
-                # calculate position of last complete packet
-                my $fwdPos = $raf->Tell();
+                $fwdTime = $endTime;
+                undef $endTime;
+                # remember how far we got when reading forward through the file
+                my $fwdPos = $raf->Tell() - length($buff) + $pEnd;
+                # determine the number of whole packets in the file
                 $raf->Seek(0, 2) or last;
                 my $fsize = $raf->Tell();
                 my $nPack = int($fsize / $pLen);
-                $backScan = ($nPack - 1) * $pLen - $fsize;
+                $backScan = $nPack * $pLen - $fsize;
                 # set limit on how far back we will go
                 $maxBack = $fwdPos - $fsize;
-                $maxBack = -256000 if $maxBack < -256000;
+                # scan back a maximum of 512k (have seen last PCR at -276k)
+                my $nMax = int(512000 / $pLen);     # max packets to scan
+                my $nRem = int(-$maxBack / $pLen);  # packets remaining in file
+                $maxBack = $backScan - $nMax * $pLen if $nRem > $nMax;
+                $pEnd = 0;
             }
-            $raf->Seek($backScan, 2) or last;
         }
-        my $pos = $pEnd;
+        my $pos;
         # read more if necessary
-        if ($pos + $pLen > length $buff) {
-            $raf->Read($buff, $readSize) >= $pLen or $eof = 1, last;
-            $pos = $pEnd = 0;
+        if (defined $backScan) {
+            last if defined $endTime;
+            $pos = $pEnd = $pEnd - 2 * $pLen;   # step back to previous packet
+            if ($pos < 0) {
+                # read another buffer from end of file
+                last if $backScan <= $maxBack;
+                my $readThis = $readSize;
+                $backScan -= $readSize;
+                if ($backScan < $maxBack) {
+                    $readThis = $readSize - ($maxBack - $backScan);
+                    $backScan = $maxBack;
+                }
+                $raf->Seek($backScan, 2) or last;
+                $raf->Read($buff, $readThis) == $readThis or last;
+                $pos = $pEnd = $readThis - $pLen;
+            }
+        } else {
+            $pos = $pEnd;
+            if ($pos + $pLen > length $buff) {
+                $raf->Read($buff, $readSize) >= $pLen or $eof = 1, last;
+                $pos = $pEnd = 0;
+            }
         }
         $pEnd += $pLen;
         # decode the packet prefix
@@ -404,8 +423,8 @@ sub ProcessM2TS($$)
       # my $continuity_counter           = $prefix & 0x0000000f;
 
         if ($verbose > 1) {
+            my $i = ($raf->Tell() - length($buff) + $pEnd) / $pLen - 1;
             print  $out "Transport packet $i:\n";
-            ++$i;
             $et->VerboseDump(\$buff, Len => $pLen, Addr => $i * $pLen, Start => $pos - $prePos);
             my $str = $pidName{$pid} ? " ($pidName{$pid})" : '';
             printf $out "  Timecode:   0x%.4x\n", Get32u(\$buff, $pos - $prePos) if $pLen == 192;
@@ -646,7 +665,8 @@ sub ProcessM2TS($$)
     }
 
     # calculate Duration if available
-    if (defined $startTime and defined $endTime and $startTime != $endTime) {
+    $endTime = $fwdTime unless defined $endTime;
+    if (defined $startTime and defined $endTime) {
         $endTime += 0x80000000 * 1200 if $startTime > $endTime; # handle 33-bit wrap
         $et->HandleTag($tagTablePtr, 'Duration', $endTime - $startTime);
     }

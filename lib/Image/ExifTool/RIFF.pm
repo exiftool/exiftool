@@ -29,7 +29,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.55';
+$VERSION = '1.56';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -485,14 +485,26 @@ my %code2charset = (
 #
 # WebP-specific tags
 #
-    EXIF => { # (WebP)
+    EXIF => [{ # (WebP)
         Name => 'EXIF',
+        Condition => '$$valPt =~ /^(II\x2a\0|MM\0\x2a)/',
         Notes => 'WebP files',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
         },
-    },
+    },{ # (WebP) - have also seen with "Exif\0\0" header - PH
+        Name => 'EXIF',
+        Condition => '$$valPt =~ /^Exif\0\0(II\x2a\0|MM\0\x2a)/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Exif::Main',
+            ProcessProc => \&Image::ExifTool::ProcessTIFF,
+            Start => 6,
+        },
+    },{
+        Name => 'UnknownEXIF',
+        Binary => 1,
+    }],
    'XMP ' => { #14 (WebP)
         Name => 'XMP',
         Notes => 'WebP files',

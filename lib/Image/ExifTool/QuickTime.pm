@@ -46,7 +46,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.47';
+$VERSION = '2.48';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -1628,10 +1628,14 @@ my %eeBox = (
         Avoid => 1,
         Format => 'string', # (necessary to remove the trailing NULL)
     },
-    date => { # (NC)
+    date => {
         Name => 'DateTimeOriginal',
         Description => 'Date/Time Original',
         Groups => { 2 => 'Time' },
+        Notes => q{
+            Apple Photos has been reported to show a crazy date/time for some MP4 files
+            containing this tag
+        }, #forum10690/11125
         Shift => 'Time',
         ValueConv => q{
             require Image::ExifTool::XMP;
@@ -8232,6 +8236,11 @@ sub HandleItemInfo($)
                 if ($buff =~ /^(MM\0\x2a|II\x2a\0)/) {
                     $et->Warn('Missing Exif header');
                     $start = 0;
+                } elsif ($buff =~ /^Exif\0\0/) {
+                    # (haven't seen this yet, but it is just a matter of time
+                    #  until someone screws it up like this)
+                    $et->Warn('Missing Exif header size');
+                    $start = 6;
                 } else {
                     my $n = unpack('N', $buff);
                     $start = 4 + $n; # skip "Exif\0\0" header if it exists

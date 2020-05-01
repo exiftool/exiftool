@@ -7,6 +7,16 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.85. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 1, 2020 - Version 11.98
+
+  - Added a new Nikon LensID (thanks Warren Hatch)
+  - Added a new Sony LensType (thanks LibRaw)
+  - Added a new Canon LensType
+  - Patched to extract EXIF with an "Exif\0\0" header from WebP images
+  - Enhanced -efile option and added to the documentation
+  - Minor tweak to -htmlDump output (disallow locking of empty selection)
+  - Fixed problem determining Duration of some M2TS videos
+
 Apr. 27, 2020 - Version 11.97
 
   - Added experimental -efile option (undocumented)

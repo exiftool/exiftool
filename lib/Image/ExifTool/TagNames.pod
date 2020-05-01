@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23364 tags, with 15306 unique tag names.
+They contain a total of 23365 tags, with 15307 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -28940,6 +28940,7 @@ sub-documents, but the Duration is calculated for the full video.
   'ANMF'               ANMF                     RIFF ANMF
   'CSET'               CharacterSet             RIFF CSET
   'EXIF'               EXIF                     EXIF
+                       UnknownEXIF              no
   'ICCP'               ICC_Profile              ICC_Profile
   'IDIT'               DateTimeOriginal         no
   'JUNK'               OlympusJunk              Olympus AVI

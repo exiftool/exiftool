@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool;    # only for FinishTiffDump()
 use Image::ExifTool::HTML qw(EscapeHTML);
 
-$VERSION = '1.38';
+$VERSION = '1.39';
 
 sub DumpTable($$$;$$$$$$);
 sub Open($$$;@);
@@ -122,7 +122,7 @@ function doClick(e)
   if (!clicked) {
     firstOutEvt = lastInEvt = undefined;
     high(e, 2);
-    clicked = 1;
+    if (hlist) clicked = 1;
   } else {
     clicked = 0;
     if (firstOutEvt) high(firstOutEvt, 0);

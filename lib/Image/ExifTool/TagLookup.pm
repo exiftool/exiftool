@@ -10651,6 +10651,7 @@ my %tagExists = (
 	'unknown_slmt' => 1,
 	'unknownd30' => 1,
 	'unknowndata' => 1,
+	'unknownexif' => 1,
 	'unknowninfo' => 1,
 	'unknowninfo2' => 1,
 	'unknowninfo2version' => 1,

@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.81';
+$VERSION = '3.82';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -297,6 +297,7 @@ sub GetAFPointGrid($$;$);
     'B8 40 2D 44 2C 34 BA 06' => 'AF-S Nikkor 18-35mm f/3.5-4.5G ED',
     'A0 40 2D 74 2C 3C BB 0E' => 'AF-S DX Nikkor 18-140mm f/3.5-5.6G ED VR', #PH
     'A1 54 55 55 0C 0C BC 06' => 'AF-S Nikkor 58mm f/1.4G', #IB
+    'A1 48 6E 8E 24 24 DB 4E' => 'AF-S Nikkor 120-300mm f/2.8E FL ED SR VR', #28
     'A2 40 2D 53 2C 3C BD 0E' => 'AF-S DX Nikkor 18-55mm f/3.5-5.6G VR II',
     'A4 40 2D 8E 2C 40 BF 0E' => 'AF-S DX Nikkor 18-300mm f/3.5-6.3G ED VR',
     'A5 4C 44 44 14 14 C0 06' => 'AF-S Nikkor 35mm f/1.8G ED', #35 ("ED" ref 11)

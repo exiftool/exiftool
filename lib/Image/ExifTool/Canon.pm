@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.36';
+$VERSION = '4.37';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -486,6 +486,7 @@ $VERSION = '4.36';
     368.7 => 'Sigma 85mm f/1.4 DG HSM | A', #IB (016)
     368.8 => 'Sigma 105mm f/1.4 DG HSM', #IB (A018)
     368.9 => 'Sigma 14-24mm f/2.8 DG HSM', #IB (A018)
+    368.10 => 'Sigma 35mm f/1.4 DG HSM | A', #PH (012)
    '368.10' => 'Sigma 70mm f/2.8 DG Macro', #IB (A018)
     # Note: LensType 488 (0x1e8) is reported as 232 (0xe8) in 7D CameraSettings
     488 => 'Canon EF-S 15-85mm f/3.5-5.6 IS USM', #PH
@@ -532,7 +533,7 @@ $VERSION = '4.36';
     757 => 'Canon EF 400mm f/2.8L IS III USM', #IB
     758 => 'Canon EF 600mm f/4L IS III USM', #IB
 
-    1136 => 'Sigma 24-70mm f/2.8 DG OS HSM | Art 017', #IB
+    1136 => 'Sigma 24-70mm f/2.8 DG OS HSM | A', #IB (017)
     # (STM lenses - 0x10xx)
     4142 => 'Canon EF-S 18-135mm f/3.5-5.6 IS STM',
     4143 => 'Canon EF-M 18-55mm f/3.5-5.6 IS STM or Tamron Lens',

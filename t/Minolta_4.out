@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.99
 [File, System, Other] FileName - File Name: Minolta_4_failed.mrw
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 2.5 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:01 10:15:31-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:31-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:01 10:15:31-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:05:11 10:37:10-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:05:11 10:37:10-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:05:11 10:37:10-04:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: MRW
 [File, File, Other] FileTypeExtension - File Type Extension: mrw
@@ -87,6 +87,12 @@
 [MakerNotes, MinoltaRaw, Image] 5 - Program Mode: None
 [MakerNotes, MinoltaRaw, Image] 6 - ISO Setting: 65
 [MakerNotes, MinoltaRaw, Image] 7 - Color Mode: Natural color
+[MakerNotes, MinoltaRaw, Image] 8 - WB RB Levels Tungsten: 278 738
+[MakerNotes, MinoltaRaw, Image] 12 - WB RB Levels Daylight: 503 357
+[MakerNotes, MinoltaRaw, Image] 16 - WB RB Levels Cloudy: 565 330
+[MakerNotes, MinoltaRaw, Image] 20 - WB RB Levels Cool White F: 441 545
+[MakerNotes, MinoltaRaw, Image] 24 - WB RB Levels Flash: 523 339
+[MakerNotes, MinoltaRaw, Image] 28 - WB RB Levels Custom: 565 330
 [MakerNotes, MinoltaRaw, Image] 56 - Color Filter: 0
 [MakerNotes, MinoltaRaw, Image] 57 - BW Filter: 0
 [MakerNotes, MinoltaRaw, Image] 58 - Zone Matching: ISO Setting Used

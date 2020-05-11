@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub ProcessUserProps($$$);
 
@@ -181,12 +181,17 @@ sub UnescapeRTF($$$)
             if ($1 eq 'uc') {       # \ucN
                 $skip = $2;
             } elsif ($1 eq 'u') {   # \uN
-                require Image::ExifTool::Charset;
-                $rtnVal .= Image::ExifTool::Charset::Recompose($et, [$2]);
-                if ($skip) {
-                    # must skip the specified number of characters
-                    # (not simple because RTF control words count as a single character)
-                    last unless $val =~ /\G([^\\]|\\([a-zA-Z]+)(-?\d+)? ?|\\'.{2}|\\.){$skip}/g;
+                if ($2 < 0) {
+                    $et->WarnOnce('Invalid Unicode character(s) in text');
+                    $rtnVal .= '?';
+                } else {
+                    require Image::ExifTool::Charset;
+                    $rtnVal .= Image::ExifTool::Charset::Recompose($et, [$2]);
+                    if ($skip) {
+                        # must skip the specified number of characters
+                        # (not simple because RTF control words count as a single character)
+                        last unless $val =~ /\G([^\\]|\\([a-zA-Z]+)(-?\d+)? ?|\\'.{2}|\\.){$skip}/g;
+                    }
                 }
             } elsif ($rtfEntity{$1}) {
                 require Image::ExifTool::Charset;

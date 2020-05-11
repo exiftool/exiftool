@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23365 tags, with 15307 unique tag names.
+They contain a total of 23378 tags, with 15312 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -18950,7 +18950,7 @@ These tags are used in Minolta RAW format (MRW) images.
      16    WB_RBLevelsCloudy                    int16u[2]
      20    WB_RBLevelsCoolWhiteF                int16u[2]
      24    WB_RBLevelsFlash                     int16u[2]
-     28    WB_RBLevelsUnknown?                  int16u[2]
+     28    WB_RBLevelsCustom                    int16u[2]
      32    WB_RBLevelsShade                     int16u[2]
      36    WB_RBLevelsDaylightF                 int16u[2]
      40    WB_RBLevelsDayWhiteF                 int16u[2]
@@ -24260,9 +24260,12 @@ software.
   'APIC-2' PictureType                          no
   'APIC-3' PictureDescription                   no
   'COMM'   Comment                              no
+  'GRP1'   Grouping                             no
   'IPLS'   InvolvedPeople                       no
   'ITNU'   iTunesU?                             no
   'MCDI'   MusicCDIdentifier                    no
+  'MVIN'   MovementNumber                       no
+  'MVNM'   MovementName                         no
   'OWNE'   Ownership                            no
   'PCNT'   PlayCounter                          no
   'PCST'   Podcast?                             no
@@ -24362,8 +24365,11 @@ software.
   'APIC-2' PictureType                          no
   'APIC-3' PictureDescription                   no
   'COMM'   Comment                              no
+  'GRP1'   Grouping                             no
   'ITNU'   iTunesU?                             no
   'MCDI'   MusicCDIdentifier                    no
+  'MVIN'   MovementNumber                       no
+  'MVNM'   MovementName                         no
   'OWNE'   Ownership                            no
   'PCNT'   PlayCounter                          no
   'PCST'   Podcast?                             no
@@ -25466,6 +25472,7 @@ API QuickTimeHandler option may be used to include an 'mdir' Handler box.
   'rldt'       ReleaseDate                      string
   'rtng'       Rating                           int8u
   'sfID'       AppleStoreCountry                int32u
+  'shwm'       ShowMovement                     int8s
   'soaa'       SortAlbumArtist                  string
   'soal'       SortAlbum                        string
   'soar'       SortArtist                       string
@@ -25494,11 +25501,15 @@ API QuickTimeHandler option may be used to include an 'mdir' Handler box.
   "\xa9gen"    Genre                            string
   "\xa9grp"    Grouping                         string
   "\xa9lyr"    Lyrics                           string
+  "\xa9mvc"    MovementCount                    int16s
+  "\xa9mvi"    MovementNumber                   int16s
+  "\xa9mvn"    MovementName                     string
   "\xa9nam"    Title                            string
   "\xa9nrt"    Narrator                         string
   "\xa9pub"    Publisher                        string
   "\xa9too"    Encoder                          string
   "\xa9trk"    Track                            string
+  "\xa9wrk"    Work                             string
   "\xa9wrt"    Composer                         string
   "\xa9xyz"    GPSCoordinates                   string
 
@@ -25858,6 +25869,7 @@ Child atoms found in "sinf" and/or "pinf" atoms.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  'enda'   Endianness                           no
   'frma'   OriginalFormat                       no
   'schi'   SchemeInfo                           QuickTime SchemeInfo
   'schm'   SchemeType                           QuickTime SchemeType
@@ -25898,6 +25910,7 @@ Child atoms found in "sinf" and/or "pinf" atoms.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  'enda'   Endianness                           no
   'frma'   PurchaseFileFormat                   no
 
 =head3 QuickTime ImageDesc Tags

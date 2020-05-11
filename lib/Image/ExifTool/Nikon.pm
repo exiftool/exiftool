@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.82';
+$VERSION = '3.83';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -653,6 +653,7 @@ sub GetAFPointGrid($$;$);
     '00 40 64 64 2C 2C 00 00' => 'Voigtlander APO-Lanthar 90mm F3.5 SLII Close Focus',
 #
     '00 40 2D 2D 2C 2C 00 00' => 'Carl Zeiss Distagon T* 3.5/18 ZF.2',
+    '00 48 27 27 24 24 00 00' => 'Carl Zeiss Distagon T* 2.8/15 ZF.2', #MykytaKozlov
     '00 48 32 32 24 24 00 00' => 'Carl Zeiss Distagon T* 2.8/21 ZF.2',
     '00 54 38 38 18 18 00 00' => 'Carl Zeiss Distagon T* 2/25 ZF.2',
     '00 54 3C 3C 18 18 00 00' => 'Carl Zeiss Distagon T* 2/28 ZF.2',
@@ -1694,7 +1695,8 @@ my %binaryDataAttrs = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD850',
                 DecryptStart => 4,
-                DecryptLen => 0x2f07,
+                DecryptLen => 0x2efb + 12,
+                DecryptMore => 'Get32u(\$data, 0xa0) + 12',
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -6250,7 +6252,7 @@ my %nikonFocalConversions = (
     #        3 => 'Rotate 180',
     #    },
     #},
-    0x2ea4 => {
+    0x2ea4 => { #PH
         Name => 'NikonMeteringMode',
         Condition => '$$self{Model} =~ /\bD500\b/', # (didn't seem to work for D5, but I need more samples)
         Notes => 'D500 only',
@@ -6627,7 +6629,7 @@ my %nikonFocalConversions = (
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x58, 0x0fbf ],
+    DATAMEMBER => [ 0x04, 0x58, 0xa0, 0x0fbf, 0x2efa ],
     IS_SUBDIR => [ 0x1038 ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
@@ -6652,6 +6654,14 @@ my %nikonFocalConversions = (
         Writable => 0,
         Hidden => 1,
         RawConv => '$$self{CustomSettingsOffset} = $val || 0x10000000; undef',
+    },
+    0xa0 => {
+        Name => 'OrientationOffset',
+        DataMember => 'OrientationOffset',
+        Format => 'int32u',
+        Writable => 0,
+        Hidden => 1,
+        RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef',
     },
     0x0791 => {
         Name => 'PhotoShootingMenuBankImageArea',
@@ -6691,6 +6701,14 @@ my %nikonFocalConversions = (
         SubDirectory => {
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD850',
         },
+    },
+### 0x2efb - OrientationInfo start (D850 firmware 1.01a)
+    0x2efa => {
+        Name => 'Hook1',
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of OrientationInfo data
+        Hook => '$varSize = $$self{OrientationOffset} - 0x2efb',
     },
     0x2efb => { #28
         Name => 'RollAngle',

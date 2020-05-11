@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Minolta;
 
-$VERSION = '1.15';
+$VERSION = '1.16';
 
 sub ProcessMRW($$;$);
 sub WriteMRW($$;$);
@@ -59,10 +59,12 @@ sub WriteMRW($$;$);
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     WRITABLE => 1,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0 ],
     FIRST_ENTRY => 0,
     0 => {
         Name => 'FirmwareID',
         Format => 'string[8]',
+        RawConv => '$$self{MinoltaPRD} = 1 if $$self{FILE_TYPE} eq "MRW"; $val',  # used in decoding RIF info
     },
     8 => {
         Name => 'SensorHeight',
@@ -214,38 +216,37 @@ sub WriteMRW($$;$);
             PrintConv => \%Image::ExifTool::Minolta::sonyColorMode,
         },
     ],
-    # NOTE: some of these WB_RBLevels may apply to other models too...
+    # NOTE: WB_RBLevels up to Custom also apply to Minolta models which write PRD info (ref IB)
     8  => { #3
         Name => 'WB_RBLevelsTungsten',
-        Condition => '$$self{Model} eq "DSLR-A100"',
+        Condition => '$$self{Model} eq "DSLR-A100" or $$self{MinoltaPRD}',
         Format => 'int16u[2]',
         Notes => 'these WB_RBLevels currently decoded only for the Sony A100',
     },
     12 => { #3
         Name => 'WB_RBLevelsDaylight',
-        Condition => '$$self{Model} eq "DSLR-A100"',
+        Condition => '$$self{Model} eq "DSLR-A100" or $$self{MinoltaPRD}',
         Format => 'int16u[2]',
     },
     16 => { #3
         Name => 'WB_RBLevelsCloudy',
-        Condition => '$$self{Model} eq "DSLR-A100"',
+        Condition => '$$self{Model} eq "DSLR-A100" or $$self{MinoltaPRD}',
         Format => 'int16u[2]',
     },
     20 => { #3
         Name => 'WB_RBLevelsCoolWhiteF',
-        Condition => '$$self{Model} eq "DSLR-A100"',
+        Condition => '$$self{Model} eq "DSLR-A100" or $$self{MinoltaPRD}',
         Format => 'int16u[2]',
     },
     24 => { #3
         Name => 'WB_RBLevelsFlash',
-        Condition => '$$self{Model} eq "DSLR-A100"',
+        Condition => '$$self{Model} eq "DSLR-A100" or $$self{MinoltaPRD}',
         Format => 'int16u[2]',
     },
     28 => { #3
-        Name => 'WB_RBLevelsUnknown',
-        Condition => '$$self{Model} eq "DSLR-A100"',
+        Name => 'WB_RBLevelsCustom', #IB
+        Condition => '$$self{Model} eq "DSLR-A100" or $$self{MinoltaPRD}',
         Format => 'int16u[2]',
-        Unknown => 1,
     },
     32 => { #3
         Name => 'WB_RBLevelsShade',

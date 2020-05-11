@@ -46,7 +46,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.48';
+$VERSION = '2.49';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -5908,6 +5908,24 @@ my %eeBox = (
         PrintConv => \&PrintGPSCoordinates,
         PrintConvInv => \&PrintInvGPSCoordinates,
     },
+    # the following tags written by iTunes 12.5.1.21
+    # (ref https://www.ventismedia.com/mantis/view.php?id=14963
+    #  https://community.mp3tag.de/t/x-mp4-new-tag-problems/19488)
+    "\xa9wrk" => 'Work', #PH
+    "\xa9mvn" => 'MovementName', #PH
+    "\xa9mvi" => { #PH
+        Name => 'MovementNumber',
+        Format => 'int16s',
+    },
+    "\xa9mvc" => { #PH
+        Name => 'MovementCount',
+        Format => 'int16s',
+    },
+    shwm => { #PH
+        Name => 'ShowMovement',
+        Format => 'int8s',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
 );
 
 # tag decoded from timed face records
@@ -6127,6 +6145,21 @@ my %eeBox = (
     'detected-face.roll-angle' => { Name => 'DetectedFaceRollAngle', Writable => 0 },
     # (fiel)com.apple.quicktime.detected-face.yaw-angle (dtyp=23, float)
     'detected-face.yaw-angle'  => { Name => 'DetectedFaceYawAngle',  Writable => 0 },
+#
+# seen in Apple ProRes RAW file
+#
+    # (mdta)com.apple.proapps.manufacturer (eg. "Sony")
+    # (mdta)com.apple.proapps.exif.{Exif}.FNumber (float, eg. 1.0)
+    # (mdta)org.smpte.rdd18.lens.irisfnumber (eg. "F1.0")
+    # (mdta)com.apple.proapps.exif.{Exif}.ShutterSpeedValue (float, eg. 1.006)
+    # (mdta)org.smpte.rdd18.camera.shutterspeed_angle (eg. "179.2deg")
+    # (mdta)org.smpte.rdd18.camera.neutraldensityfilterwheelsetting (eg. "ND1")
+    # (mdta)org.smpte.rdd18.camera.whitebalance (eg. "4300K")
+    # (mdta)com.apple.proapps.exif.{Exif}.ExposureIndex (float, eg. 4000)
+    # (mdta)org.smpte.rdd18.camera.isosensitivity (eg. "4000")
+    # (mdta)com.apple.proapps.image.{TIFF}.Make (eg. "Atmos")
+    # (mdta)com.apple.proapps.image.{TIFF}.Model (eg. "ShogunInferno")
+    # (mdta)com.apple.proapps.image.{TIFF}.Software (eg. "9.0")
 );
 
 # iTunes info ('----') atoms
@@ -6734,13 +6767,28 @@ my %eeBox = (
         Name => 'SchemeInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::SchemeInfo' },
     },
+    enda => {
+        Name => 'Endianness',
+        Format => 'int16u',
+        PrintConv => {
+            0 => 'Big-endian (Motorola, MM)',
+            1 => 'Little-endian (Intel, II)',
+        },
+    },
     # skcr
-    # enda
 );
 
 %Image::ExifTool::QuickTime::Wave = (
     PROCESS_PROC => \&ProcessMOV,
     frma => 'PurchaseFileFormat',
+    enda => {
+        Name => 'Endianness',
+        Format => 'int16u',
+        PrintConv => {
+            0 => 'Big-endian (Motorola, MM)',
+            1 => 'Little-endian (Intel, II)',
+        },
+    },
     # "ms\0\x11" - 20 bytes
 );
 
@@ -8564,9 +8612,10 @@ sub ProcessKeys($$$)
             $$newInfo{Groups} = $groups ? { %$groups } : { };
             $$newInfo{Groups}{$_} or $$newInfo{Groups}{$_} = $$tagTablePtr{GROUPS}{$_} foreach 0..2;
             $$newInfo{Groups}{1} = 'Keys';
-        } elsif ($tag =~ /^[-\w. ]+$/) {
+        } elsif ($tag =~ /^[-\w. ]+$/ or $tag =~ /\w{4}/) {
             # create info for tags with reasonable id's
             my $name = ucfirst $tag;
+            $name =~ tr/-0-9a-zA-Z_. //dc;
             $name =~ s/[. ]+(.?)/\U$1/g;
             $name =~ s/_([a-z])/_\U$1/g;
             $name =~ s/([a-z])_([A-Z])/$1$2/g;
@@ -8587,7 +8636,7 @@ sub ProcessKeys($$$)
         if ($newInfo) {
             AddTagToTable($itemList, $id, $newInfo);
             $msg or $msg = '';
-            $out and print $out "$$et{INDENT}Added ItemList Tag $id = $tag$msg\n";
+            $out and print $out "$$et{INDENT}Added ItemList Tag $id = ($ns) $tag$msg\n";
         }
         $pos += $len;
         ++$index;

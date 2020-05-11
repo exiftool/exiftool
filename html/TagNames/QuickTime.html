@@ -1749,36 +1749,42 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
 <td class=c>int32u</td>
 <td>--&gt; <a href='QuickTime.html#AppleStoreCountry'>QuickTime AppleStoreCountry Values</a></td></tr>
 <tr class=b>
+<td>'shwm'</td>
+<td>ShowMovement</td>
+<td class=c>int8s</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
 <td>'soaa'</td>
 <td>SortAlbumArtist</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'soal'</td>
 <td>SortAlbum</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'soar'</td>
 <td>SortArtist</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'soco'</td>
 <td>SortComposer</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'sonm'</td>
 <td>SortName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'sosn'</td>
 <td>SortShow</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'stik'</td>
 <td>MediaType</td>
 <td class=c>int8u</td>
@@ -1795,109 +1801,124 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
   <br>21 = Podcast
   <br>23 = iTunes U</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td>'titl'</td>
 <td>Title</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tmpo'</td>
 <td>BeatsPerMinute</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'trkn'</td>
 <td>TrackNumber</td>
 <td class=c>undef</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tven'</td>
 <td>TVEpisodeID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tves'</td>
 <td>TVEpisode</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tvnn'</td>
 <td>TVNetworkName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tvsh'</td>
 <td>TVShow</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tvsn'</td>
 <td>TVSeason</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'yrrc'</td>
 <td>Year</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ART"</td>
 <td>Artist</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;alb"</td>
 <td>Album</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;aut"</td>
 <td>Author</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;cmt"</td>
 <td>Comment</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;com"</td>
 <td>Composer</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;cpy"</td>
 <td>Copyright</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;day"</td>
 <td>ContentCreateDate</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;des"</td>
 <td>Description</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;enc"</td>
 <td>EncodedBy</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;gen"</td>
 <td>Genre</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;grp"</td>
 <td>Grouping</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;lyr"</td>
 <td>Lyrics</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>"&copy;mvc"</td>
+<td>MovementCount</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>"&copy;mvi"</td>
+<td>MovementNumber</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>"&copy;mvn"</td>
+<td>MovementName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -1926,11 +1947,16 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>"&copy;wrk"</td>
+<td>Work</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>"&copy;wrt"</td>
 <td>Composer</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;xyz"</td>
 <td>GPSCoordinates</td>
 <td class=c>string</td>
@@ -6241,16 +6267,22 @@ spherical coordinates left/right degrees, down/up degrees, distance)</span></spa
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>'enda'</td>
+<td>Endianness</td>
+<td class=c>no</td>
+<td><span class=s>0 = Big-endian (Motorola, MM)
+  <br>1 = Little-endian (Intel, II)</span></td></tr>
+<tr class=b>
 <td>'frma'</td>
 <td>OriginalFormat</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'schi'</td>
 <td>SchemeInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#SchemeInfo'>QuickTime SchemeInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'schm'</td>
 <td>SchemeType</td>
 <td class=c>-</td>
@@ -6373,6 +6405,12 @@ spherical coordinates left/right degrees, down/up degrees, distance)</span></spa
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>'enda'</td>
+<td>Endianness</td>
+<td class=c>no</td>
+<td><span class=s>0 = Big-endian (Motorola, MM)
+  <br>1 = Little-endian (Intel, II)</span></td></tr>
+<tr class=b>
 <td>'frma'</td>
 <td>PurchaseFileFormat</td>
 <td class=c>no</td>
@@ -8292,7 +8330,7 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 1, 2020</i>
+<br><i>Last revised May 11, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

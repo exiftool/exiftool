@@ -31,7 +31,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.17';
+$VERSION = '1.18';
 
 # program map table "stream_type" lookup (ref 6/1)
 my %streamType = (
@@ -359,23 +359,26 @@ sub ProcessM2TS($$)
             last unless defined $startTime;
             # reconfigure to seek backwards for last PCR
             unless (defined $backScan) {
-                $et->Options('FastScan') and undef($endTime), last;
-                $verbose and print "[Starting backscan for last PCR]\n";
-                $fwdTime = $endTime;
+                my $saveTime = $endTime;
                 undef $endTime;
+                last if $et->Options('FastScan');
+                $verbose and print $out "[Starting backscan for last PCR]\n";
                 # remember how far we got when reading forward through the file
                 my $fwdPos = $raf->Tell() - length($buff) + $pEnd;
-                # determine the number of whole packets in the file
+                # determine the position of the last packet relative to the EOF
                 $raf->Seek(0, 2) or last;
                 my $fsize = $raf->Tell();
-                my $nPack = int($fsize / $pLen);
-                $backScan = $nPack * $pLen - $fsize;
+                $backScan = int($fsize / $pLen) * $pLen - $fsize;
                 # set limit on how far back we will go
                 $maxBack = $fwdPos - $fsize;
                 # scan back a maximum of 512k (have seen last PCR at -276k)
-                my $nMax = int(512000 / $pLen);     # max packets to scan
-                my $nRem = int(-$maxBack / $pLen);  # packets remaining in file
-                $maxBack = $backScan - $nMax * $pLen if $nRem > $nMax;
+                my $nMax = int(512000 / $pLen);     # max packets to backscan
+                if ($nMax < int(-$maxBack / $pLen)) {
+                    $maxBack = $backScan - $nMax * $pLen;
+                } else {
+                    # use this time if none found in all remaining packets
+                    $fwdTime = $saveTime;
+                }
                 $pEnd = 0;
             }
         }
@@ -387,15 +390,12 @@ sub ProcessM2TS($$)
             if ($pos < 0) {
                 # read another buffer from end of file
                 last if $backScan <= $maxBack;
-                my $readThis = $readSize;
-                $backScan -= $readSize;
-                if ($backScan < $maxBack) {
-                    $readThis = $readSize - ($maxBack - $backScan);
-                    $backScan = $maxBack;
-                }
+                my $buffLen = $backScan - $maxBack;
+                $buffLen = $readSize if $buffLen > $readSize;
+                $backScan -= $buffLen;
                 $raf->Seek($backScan, 2) or last;
-                $raf->Read($buff, $readThis) == $readThis or last;
-                $pos = $pEnd = $readThis - $pLen;
+                $raf->Read($buff, $buffLen) == $buffLen or last;
+                $pos = $pEnd = $buffLen - $pLen;
             }
         } else {
             $pos = $pEnd;

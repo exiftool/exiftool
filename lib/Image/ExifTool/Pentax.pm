@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.31';
+$VERSION = '3.32';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -546,6 +546,7 @@ my %pentaxModelID = (
     0x13222 => 'K-70', #29 (Ricoh)
     0x1322c => 'KP', #29 (Ricoh)
     0x13240 => 'K-1 Mark II', # (Ricoh)
+    0x13290 => 'WG-70', # (Ricoh)
 );
 
 # Pentax city codes - (PH, Optio WP)

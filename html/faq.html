@@ -844,9 +844,20 @@ with a command like this:
 <pre>exiftool -f -r -p my.fmt t/images &gt; out.csv
 </pre>
 
-Alternatively, the <code>-p</code> option may be used with a format string instead
-of a file name.  The following command has the same effect as above except that
-the row of headings is not printed (Note: Use single quotes as below on Mac/Linux,
+But note that any values containing commas, quotes or some other special
+characters may mess up the CSV formatting.  If this is a possibility, the
+<code>-api filter</code> option may be added to the command to quote values
+if necessary.  For example:
+
+<pre><span class='blk'># in Windows</span>
+exiftool -api filter="$_ = qq{""$_""} if s/""/""""/g or /(^\s+|\s+$)/ or /[,\n\r]/" ...
+
+<span class='blk'># in Mac/Linux</span>
+exiftool -api filter='$_ = qq{"$_"} if s/"/""/g or /(^\s+|\s+$)/ or /[,\n\r]/' ...</pre>
+
+The <code>-p</code> option argument may also be a format string instead of a
+file name.  The following command has the same effect as above except that the
+row of headings is not printed (Note: Use single quotes as below on Mac/Linux,
 or double quotes instead on Windows):
 
 <pre>exiftool -f -r -p '$filename,$aperture,$iso' t/images &gt; out.csv
@@ -1706,7 +1717,7 @@ but in an ARGFILE, this should be
 %Y:%m:%d %H:%M:%S</pre></blockquote>
 
 <hr>
-<i>Last revised Apr. 16, 2020</i>
+<i>Last revised May 7, 2020</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

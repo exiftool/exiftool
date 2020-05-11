@@ -7,6 +7,20 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 11.85. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 11, 2020 - Version 11.99
+
+  - Added a new Nikon LensID (thanks Mykyta Kozlov)
+  - Added a new Canon LensType
+  - Added a newn PentaxModelID
+  - Decode a few new QuickTime tags
+  - Decode new ID3 Grouping tag
+  - Decode a few more MinoltaRaw tags (thanks LibRaw)
+  - Fixed runtime warning which could occur when reading corrupted RTF files
+  - Fixed another potential pitfall in M2TS Duration calculation
+  - Fixed problem extracting some unknown QuickTime:Keys tags
+  - Fixed problem decoding Nikon D850 orientation tags
+  - Fixed bug where TIFF image data may not be padded to an even number of bytes
+
 May 1, 2020 - Version 11.98
 
   - Added a new Nikon LensID (thanks Warren Hatch)

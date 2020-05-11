@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.53';
+$VERSION = '1.54';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -613,6 +613,9 @@ my %id3v2_common = (
         Name => 'OlympusDSS',
         SubDirectory => { TagTable => 'Image::ExifTool::Olympus::DSS' },
     },
+    GRP1 => 'Grouping',
+    MVNM => 'MovementName', # (NC)
+    MVIN => 'MovementNumber', # (NC)
 );
 
 # Tags for ID3v2.3 (http://www.id3.org/id3v2.3.0)
@@ -1318,6 +1321,8 @@ sub ProcessID3v2($$$)
         } elsif ($$tagInfo{Format} or $$tagInfo{SubDirectory}) {
             $et->HandleTag($tagTablePtr, $id, undef, DataPt => \$val);
             next;
+        } elsif ($id eq 'GRP1' or $id eq 'MVNM' or $id eq 'MVIN') {
+            $val =~ s/(^\0+|\0+$)//g;   # (PH guess)
         } elsif (not $$tagInfo{Binary}) {
             $et->Warn("Don't know how to handle $id frame");
             next;

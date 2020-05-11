@@ -226,13 +226,15 @@ sub PrintInvLensSpec($;$$);
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)
     # 504xx => 'Sigma 30mm F1.4 DC HSM | A + MC-11', # (013)
 
+    # Note: For Samyang lenses, the "FE" designation isn't written to
+    # EXIF:LensModel, so it isn't included in these strings either - JR/PH
     51504 => 'Samyang AF 50mm F1.4', #IB
     51505 => 'Samyang AF 14mm F2.8 or Samyang AF 35mm F2.8', #forum3833
     51505.1 => 'Samyang AF 35mm F2.8', #PH (also 32794)
     51507 => 'Samyang AF 35mm F1.4', #IB
     51508 => 'Samyang AF 45mm F1.8',
     51510 => 'Samyang AF 18mm F2.8', #JR
-    51512 => 'Samyang AF 75mm F1.8 FE', #IB
+    51512 => 'Samyang AF 75mm F1.8', #IB/JR
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)

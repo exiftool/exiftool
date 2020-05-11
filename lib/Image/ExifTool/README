@@ -1083,7 +1083,7 @@ The contained structure field information hashes are similar to tag information
 hashes, except that only the following elements are used:
 
   Raw/Value/PrintConv (and their inverses), TagID (optional), Groups, List,
-  Writable, Struct, Namespace, LangCode, PropertyPath, Notes.
+  Writable, Struct, Namespace, FlatName, LangCode, PropertyPath, Notes.
 
 But note that for PropertyPath, only the element of the path corresponding to
 the specific field is stored (including any necessary list properties).  The

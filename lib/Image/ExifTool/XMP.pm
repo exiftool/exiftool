@@ -2935,10 +2935,18 @@ sub PrintLensID(@)
             # for Pentax, CS4 stores an int16u, but we use 2 x int8u
             $id = join(' ', unpack('C*', pack('n', $id)));
         }
-        my $str = $$printConv{$id} || "Unknown ($id)";
         # Nikon is a special case because Adobe doesn't store the full LensID
         if ($mk eq 'Nikon') {
             my $hex = sprintf("%.2X", $id);
+
+            # Split the hex into pairs, then re-join the pairs with
+            # spaces to match the nikonLensIDs keys
+            my @hexComponents = ($hex =~ m/../g);
+            $hex = join(' ', @hexComponents);
+
+            # Also, split hex is the lookup ID for all Nikon lenses
+            $id = $hex;
+
             my (%newConv, %used);
             my $i = 0;
             foreach (grep /^$hex /, keys %$printConv) {
@@ -2948,8 +2956,14 @@ sub PrintLensID(@)
                 $newConv{$i ? "$id.$i" : $id} = $lens;
                 ++$i;
             }
-            $printConv = \%newConv;
+
+            # Only update the printer if assigned above
+            if (%newConv) {
+                $printConv = \%newConv;
+            }
         }
+
+        my $str = $$printConv{$id} || "Unknown ($id)";
         return Image::ExifTool::Exif::PrintLensID($et, $str, $printConv,
                     undef, $id, $focalLength, $sa, $maxAv, $sf, $lf, $lensModel);
     }

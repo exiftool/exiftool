@@ -4715,8 +4715,8 @@ my %subSecConv = (
     },
     LensID => {
         Groups => { 2 => 'Camera' },
-        Require => 'LensType',
         Desire => {
+            0 => 'LensType',
             1 => 'FocalLength',
             2 => 'MaxAperture',
             3 => 'MaxApertureValue',
@@ -4739,12 +4739,20 @@ my %subSecConv = (
         RawConv => q{
             my $printConv = $$self{TAG_INFO}{LensType}{PrintConv};
             return $val if ref $printConv eq 'HASH' or (ref $printConv eq 'ARRAY' and
-                ref $$printConv[0] eq 'HASH') or $val[0] =~ /(mm|\d\/F)/;
+                ref $$printConv[0] eq 'HASH') or
+                (defined $val[0] and $val[0] =~ /(mm|\d\/F)/) or
+                (defined $val[6] and $val[6] =~ /(mm|\d\/F)/);
             return undef;
         },
-        ValueConv => '$val',
+        ValueConv => '$val[0] || $val[6]',
         PrintConv => q{
             my $pcv;
+            # use LensModel ([6]) if LensType ([0]) is not populated
+            # (iPhone populates LensModel but not LensType)
+            if ((not defined $val[0]) and (defined $val[6])) {
+                $val[0] = $val[6];
+                $prt[0] = $prt[6];
+            }
             # use LensType2 instead of LensType if available and valid (Sony E-mount lenses)
             # (0x8000 or greater; 0 for several older/3rd-party E-mount lenses)
             if (defined $val[9] and ($val[9] & 0x8000 or $val[9] == 0)) {

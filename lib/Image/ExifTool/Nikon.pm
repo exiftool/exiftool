@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.83';
+$VERSION = '3.84';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -513,6 +513,7 @@ sub GetAFPointGrid($$;$);
     'CE 34 76 A0 38 40 4B 0E' => 'Sigma 150-500mm F5-6.3 DG OS APO HSM', #JD
     '81 34 76 A6 38 40 4B 0E' => 'Sigma 150-600mm F5-6.3 DG OS HSM | S', #Jaap Voets
     '82 34 76 A6 38 40 4B 0E' => 'Sigma 150-600mm F5-6.3 DG OS HSM | C',
+    'C4 4C 73 73 14 14 4B 46' => 'Sigma 135mm F1.8 DG HSM | A', #forum3833
     '26 40 7B A0 34 40 1C 02' => 'Sigma APO 170-500mm F5-6.3 Aspherical RF',
     'A7 49 80 A0 24 24 4B 06' => 'Sigma APO 200-500mm F2.8 EX DG',
     '48 3C 8E B0 3C 3C 4B 02' => 'Sigma APO 300-800mm F5.6 EX DG HSM',
@@ -579,6 +580,7 @@ sub GetAFPointGrid($$;$);
     '4D 41 3C 8E 2B 40 62 02' => 'Tamron AF 28-300mm f/3.5-6.3 XR Di LD Aspherical (IF) (A061)',
     '4D 41 3C 8E 2C 40 62 02' => 'Tamron AF 28-300mm f/3.5-6.3 XR LD Aspherical (IF) (185D)',
     'F9 40 3C 8E 2C 40 40 0E' => 'Tamron AF 28-300mm f/3.5-6.3 XR Di VC LD Aspherical (IF) Macro (A20)',
+    'C9 3C 44 76 25 31 DF 4E' => 'Tamron 35-150mm f/2.8-4 Di VC OSD (A043)', #30
     '00 47 53 80 30 3C 00 06' => 'Tamron AF 55-200mm f/4-5.6 Di II LD (A15)',
     'F7 53 5C 80 24 24 84 06' => 'Tamron SP AF 70-200mm f/2.8 Di LD (IF) Macro (A001)',
     'FE 53 5C 80 24 24 84 06' => 'Tamron SP AF 70-200mm f/2.8 Di LD (IF) Macro (A001)',
@@ -711,6 +713,7 @@ sub GetAFPointGrid($$;$);
     '00 48 80 80 30 30 00 00' => 'Nikkor 200mm f/4 AiS',
     '00 40 11 11 2C 2C 00 00' => 'Samyang 8mm f/3.5 Fish-Eye',
     '00 58 64 64 20 20 00 00' => 'Soligor C/D Macro MC 90mm f/2.5',
+    '4A 58 30 30 14 0C 4D 02' => 'Rokinon 20mm f/1.8 ED AS UMC', #30
 );
 
 # text encoding used in LocationInfo (ref PH)
@@ -876,6 +879,38 @@ my %afPoints39 = (
      8 => 'A3', 18 => 'D8', 28 => 'C4', 38 => 'B1',
      9 => 'D7', 19 => 'C9', 29 => 'B4', 39 => 'D1',
     10 => 'E3', 20 => 'B9', 30 => 'D4',
+);
+
+# AF point indices for models with 105 focus points, eg. D6 (ref 28)
+# - 7 rows (A-G) with 15 columns (1-15), center is D8
+my %afPoints105 = (
+     1 => 'D8',  28 => 'G7',  55 => 'F13', 82 => 'E4', 
+     2 => 'C8',  29 => 'D6',  56 => 'G13', 83 => 'F4', 
+     3 => 'B8',  30 => 'C6',  57 => 'D14', 84 => 'G4', 
+     4 => 'A8',  31 => 'B6',  58 => 'C14', 85 => 'D3', 
+     5 => 'E8',  32 => 'A6',  59 => 'B14', 86 => 'C3', 
+     6 => 'F8',  33 => 'E6',  60 => 'A14', 87 => 'B3', 
+     7 => 'G8',  34 => 'F6',  61 => 'E14', 88 => 'A3',
+     8 => 'D9',  35 => 'G6',  62 => 'F14', 89 => 'E3', 
+     9 => 'C9',  36 => 'D11', 63 => 'G14', 90 => 'F3', 
+    10 => 'B9',  37 => 'C11', 64 => 'D15', 91 => 'G3', 
+    11 => 'A9',  38 => 'B11', 65 => 'C15', 92 => 'D2', 
+    12 => 'E9',  39 => 'A11', 66 => 'B15', 93 => 'C2', 
+    13 => 'F9',  40 => 'E11', 67 => 'A15', 94 => 'B2', 
+    14 => 'G9',  41 => 'F11', 68 => 'E15', 95 => 'A2', 
+    15 => 'D10', 42 => 'G11', 69 => 'F15', 96 => 'E2', 
+    16 => 'C10', 43 => 'D12', 70 => 'G15', 97 => 'F2', 
+    17 => 'B10', 44 => 'C12', 71 => 'D5',  98 => 'G2', 
+    18 => 'A10', 45 => 'B12', 72 => 'C5',  99 => 'D1', 
+    19 => 'E10', 46 => 'A12', 73 => 'B5', 100 => 'C1', 
+    20 => 'F10', 47 => 'E12', 74 => 'A5', 101 => 'B1', 
+    21 => 'G10', 48 => 'F12', 75 => 'E5', 102 => 'A1',
+    22 => 'D7',  49 => 'G12', 76 => 'F5', 103 => 'E1', 
+    23 => 'C7',  50 => 'D13', 77 => 'G5', 104 => 'F1', 
+    24 => 'B7',  51 => 'C13', 78 => 'D4', 105 => 'G1', 
+    25 => 'A7',  52 => 'B13', 79 => 'C4', 
+    26 => 'E7',  53 => 'A13', 80 => 'B4', 
+    27 => 'F7',  54 => 'E13', 81 => 'A4', 
 );
 
 # AF point indices for models with 135 focus points, eg. 1J1 (ref PH)
@@ -1540,7 +1575,7 @@ my %binaryDataAttrs = (
     0x008c => {
         Name => 'ContrastCurve', #JD
         Writable => 'undef',
-        Flags => [ 'Binary', 'Protected' ],
+        Flags => [ 'Binary', 'Protected', 'Drop' ], # (drop because not found in Nikon JPEG's)
     },
     # ColorHue: MODE1/MODE1a=sRGB, MODE2=Adobe RGB, MODE3a=more saturated sRGB
     # --> should really be called ColorSpace or ColorMode, but that would conflict with other tags
@@ -1782,6 +1817,16 @@ my %binaryDataAttrs = (
                 DecryptStart => 4,
                 DecryptLen => 0x2cb2 + 4,
                 DecryptMore => 'Get32u(\$data, 0xa8) + 0x2ea5 - 0x2c90',
+                ByteOrder => 'LittleEndian',
+            },
+        },
+        { # (D6 firmware version 1.00, ref 28)
+            Condition => '$$valPt =~ /^0246/',
+            Name => 'ShotInfoD6',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::ShotInfo',
+                DecryptStart => 4,
+                DecryptLen => 0xa4, # only decrypt the version info & offset fields for now                            
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -3300,6 +3345,7 @@ my %binaryDataAttrs = (
                 15 => 'Dynamic Area (72 points)', #PH
                 16 => 'Group Area (HL)', #28
                 17 => 'Group Area (VL)', #28
+                18 => 'Dynamic Area (49 points)', #28
                 128 => 'Single', #PH (1J1,1J2,1J3,1J4,1S1,1S2,1V2,1V3)
                 129 => 'Auto (41 points)', #PH (1J1,1J2,1J3,1J4,1S1,1S2,1V1,1V2,1V3,AW1)
                 130 => 'Subject Tracking (41 points)', #PH (1J1,1J4,1J3)
@@ -3337,6 +3383,10 @@ my %binaryDataAttrs = (
                 197 => 'Auto', #PH (Z7)
                 198 => 'Auto (198)', #PH (Z7) (focus lock with AF-C maybe?)
                 199 => 'Auto (focus lock)', #PH (Z7, AF-S)
+                200 => 'Normal-area AF', #28 (D6)
+                201 => 'Wide-area AF', #28 (D6)
+                202 => 'Face-priority AF', #28 (D6)
+                203 => 'Subject-tracking AF', #28 (D6)
             },
         },
     ],
@@ -3355,12 +3405,14 @@ my %binaryDataAttrs = (
             6 => 'On (105-point)', #PH (1J4/1V3[128/130])
             7 => 'On (153-point)', #PH (D5/D500/D850)
             8 => 'On (81-point)', #38
+            9 => 'On (105-point)', #28 (D6)
         },
     },
     7 => [
         { #PH/JD
             Name => 'PrimaryAFPoint',
-            Condition => '$$self{PhaseDetectAF} < 2',
+            # PrimaryAFPoint may only be valid for PhaseDetect - certainly true on the D6, possibly other bodies? (ref 28)
+            Condition => '$$self{PhaseDetectAF} < 2 and $$self{AFInfo2Version} ne "0301"',
             Notes => q{
                 models with 51-point AF -- 5 rows (A-E) and 11 columns (1-11): D3, D3S, D3X,
                 D4, D4S, D300, D300S, D700, D800, D800e and D810
@@ -3495,7 +3547,7 @@ my %binaryDataAttrs = (
     8 => [
         { #JD/PH
             Name => 'AFPointsUsed',
-            Condition => '$$self{PhaseDetectAF} < 2',
+            Condition => '$$self{PhaseDetectAF} < 2 and $$self{AFInfo2Version} ne "0301"',
             Notes => q{
                 models with 51-point AF -- 5 rows: A1-9, B1-11, C1-11, D1-11, E1-9.  Center
                 point is C6
@@ -3614,6 +3666,8 @@ my %binaryDataAttrs = (
         },
         { #PH
             Name => 'AFPointsUsed',
+            # version 301 uses a separate field at offset 0x0a for this tag (ref 28)
+            Condition =>  '$$self{AFInfo2Version} ne "0301"',
             Format => 'undef[7]',
             ValueConv => 'join(" ", unpack("H2"x7, $val))',
             ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
@@ -3621,6 +3675,19 @@ my %binaryDataAttrs = (
             PrintConvInv => '$val=~s/Unknown \\((.*)\\)/$1/; $val',
         },
     ],
+    0x0a => { #28 (D6) in any of the 3 Group modes on the D6, the points specify the outer boundaries of the focus point area; otherwise the tag value is consistent with other Nikon bodies
+            Name => 'AFPointsUsed',
+        Condition => '$$self{AFInfo2Version} eq "0301"  and $$self{PhaseDetectAF} == 9',      
+        Notes => q{
+            models with 105-point AF -- 7 rows (A-G) and 15 columns (1-15). Center
+            point is D8
+        },
+        Format => 'undef[14]',
+        ValueConv => 'join(" ", unpack("H2"x14, $val))',
+        ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
+        PrintConv => sub { PrintAFPoints(shift, \%afPoints105); },
+        PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints105); },
+    },
     0x10 => { #PH (D90 and D5000)
         Name => 'AFImageWidth',
         Condition => '$$self{AFInfo2Version} eq "0100"',
@@ -3663,11 +3730,21 @@ my %binaryDataAttrs = (
         Format => 'int16u',
         RawConv => '$val ? $val : undef',
     },
-    0x1c => { #PH
-        Name => 'ContrastDetectAFInFocus',
-        Condition => '$$self{AFInfo2Version} eq "0100"',
-        PrintConv => { 0 => 'No', 1 => 'Yes' },
-    },
+    0x1c => [
+        { #PH
+            Name => 'ContrastDetectAFInFocus',
+            Condition => '$$self{AFInfo2Version} eq "0100"',
+            PrintConv => { 0 => 'No', 1 => 'Yes' },
+        },{ #PH (D500, see forum11190)
+            Name => 'AFPointsSelected',
+            Condition => '$$self{AFInfo2Version} eq "0101" and $$self{PhaseDetectAF} == 7',
+            Format => 'undef[20]',
+            ValueConv => 'join(" ", unpack("H2"x20, $val))',
+            ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
+            PrintConv => sub { PrintAFPoints(shift, \%afPoints153); },
+            PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints153); },
+        },
+    ],
     # 0x1d - always zero (with or without live view)
     0x2a => { #PH (Z7)
         Name => 'AFImageWidth',
@@ -3683,14 +3760,31 @@ my %binaryDataAttrs = (
     },
     0x2e => { #PH (Z7)
         Name => 'AFAreaXPosition',
-        Condition => '$$self{ContrastDetectAF} == 2 and $$self{AFInfo2Version} =~ /^03/',
+        Condition => q{
+            $$self{ContrastDetectAF} == 2 and $$self{AFInfo2Version} =~ /^03/ or
+            $$self{ContrastDetectAF} == 1 and $$self{AFInfo2Version} =~ /^0301/
+        },
         Format => 'int16u',
     },
-    0x30 => { #PH (Z7)
-        Name => 'AFAreaYPosition',
-        Condition => '$$self{ContrastDetectAF} == 2 and $$self{AFInfo2Version} =~ /^03/',
-        Format => 'int16u',
-    },
+    0x30 => [
+        { #PH (Z7)
+            Name => 'AFAreaYPosition',
+            Condition => q{
+                $$self{ContrastDetectAF} == 2 and $$self{AFInfo2Version} =~ /^03/ or
+                $$self{ContrastDetectAF} == 1 and $$self{AFInfo2Version} =~ /^0301/
+            },
+            Format => 'int16u',
+        },{ #PH (D500, see forum11190)
+            Name => 'AFPointsInFocus',
+            Condition => '$$self{AFInfo2Version} eq "0101" and $$self{PhaseDetectAF} == 7',
+            Notes => 'AF points in use at the time time image was captured',
+            Format => 'undef[20]',
+            ValueConv => 'join(" ", unpack("H2"x20, $val))',
+            ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
+            PrintConv => sub { PrintAFPoints(shift, \%afPoints153); },
+            PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints153); },
+        },
+    ],
     0x32 => { #PH (Z7)
         Name => 'AFAreaWidth',
         Condition => '$$self{AFInfo2Version} =~ /^03/',
@@ -3702,6 +3796,19 @@ my %binaryDataAttrs = (
         Condition => '$$self{AFInfo2Version} =~ /^03/',
         Format => 'int16u',
         RawConv => '$val ? $val : undef',
+    },
+    0x38 => { #28
+        Name => 'PrimaryAFPoint',
+        Condition => '$$self{PhaseDetectAF} == 9 and $$self{AFInfo2Version} =~ /^03/',
+        Notes => q{
+            Nikon models with 105-point AF -- 7 rows (A-G) and 15 columns (1-15): D6
+        },
+        PrintConvColumns => 5,
+        PrintConv => {
+            0 => '(none)',
+            %afPoints105,
+            1 => 'D8 (Center)',
+        },
     },
     0x44 => [
         {
@@ -3802,6 +3909,7 @@ my %binaryDataAttrs = (
             # (don't know what the difference between 1 and 2 is)
             1 => 'On (1)',
             2 => 'On (2)',
+            3 => 'On (Zoom)', #28
         },
     },
     1 => {
@@ -3811,9 +3919,18 @@ my %binaryDataAttrs = (
         PrintConvInv => '$val eq "n/a" ? 255 : $val',
     },
     2 => {
+        # when AFFineTune = 3 (indicating a zoom lens), this Tag stores the tuning adjustment for the wide end of the zoom range (ref 28)
         Name => 'AFFineTuneAdj',
         Priority => 0, # so other value takes priority if it exists
         Notes => 'may only be valid for saved lenses',
+        Format => 'int8s',
+        PrintConv => '$val > 0 ? "+$val" : $val',
+        PrintConvInv => '$val',
+    },
+    3 => {
+        Name => 'AFFineTuneAdjTele',
+        # should probably insert a Condition that restricts this to AFFineTune = 3 (ref 28)
+        Notes => 'only valid for zoom lenses (ie, AFTune=3)',
         Format => 'int8s',
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val',

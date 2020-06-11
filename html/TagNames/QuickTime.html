@@ -39,10 +39,10 @@ country code to the tag name (eg. &quot;ItemList:Artist-deu&quot; or
 &quot;ItemList::Artist-deu-DE&quot;).  Most
 <a href="QuickTime.html#UserData">UserData</a> tags support a
 language code, but without a country code.  If no language code is specified
-when writing, alternate languages for the tag are deleted.  Use the &quot;und&quot;
-language code to write the default language without deleting alternate
-languages.  Note that &quot;eng&quot; is treated as a default language when reading,
-but not when writing.</p>
+when writing, the default language is written and alternate languages for
+the tag are deleted.  Use the &quot;und&quot; language code to write the default
+language without deleting alternate languages.  Note that &quot;eng&quot; is treated
+as a default language when reading, but not when writing.</p>
 
 <p>According to the specification, integer-format QuickTime date/time tags
 should be stored as UTC.  Unfortunately, digital cameras often store local
@@ -194,13 +194,17 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br>UUID-PROF
   <br>UUID-Flip
   <br>UUID-Canon2
+  <br>SensorData
+  <br>SensorData
   <br>PreviewImage
   <br>UUID-Unknown?</td>
-<td class=c>-<br>-<br>-<br>-<br>no<br>no</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>no<br>no<br>no</td>
 <td>--&gt; <a href='XMP.html'>XMP Tags</a>
   <br>--&gt; <a href='QuickTime.html#Profile'>QuickTime Profile Tags</a>
   <br>--&gt; <a href='QuickTime.html#Flip'>QuickTime Flip Tags</a>
-  <br>--&gt; <a href='Canon.html#uuid2'>Canon uuid2 Tags</a></td></tr>
+  <br>--&gt; <a href='Canon.html#uuid2'>Canon uuid2 Tags</a>
+  <br>--&gt; <a href='QuickTime.html#Tags360Fly'>QuickTime Tags360Fly Tags</a>
+  <br><span class=n>(raw 360Fly sensor data without ExtractEmbedded option)</span></td></tr>
 <tr class=b>
 <td>'wide'</td>
 <td>Wide?</td>
@@ -7248,7 +7252,7 @@ on the command line), or the PREFERRED level must be changed via
 <td>DateTimeOriginal</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(Apple Photos has been reported to show a crazy date/time for some MP4 files
-containing this tag)</span></span></td></tr>
+containing this tag, but perhaps only if it is missing a time zone)</span></span></td></tr>
 <tr class=b>
 <td>'dscp'</td>
 <td>Description</td>
@@ -8304,6 +8308,208 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='Tags360Fly'>QuickTime Tags360Fly Tags</a></h2>
+<p>Timed metadata found in MP4 videos from the 360Fly.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0001 = 1'>0x0001</td>
+<td>Accel360Fly</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#Accel360Fly'>QuickTime Accel360Fly Tags</a></td></tr>
+<tr class=b>
+<td title='0x0002 = 2'>0x0002</td>
+<td>Gyro360Fly</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#Gyro360Fly'>QuickTime Gyro360Fly Tags</a></td></tr>
+<tr>
+<td title='0x0003 = 3'>0x0003</td>
+<td>Mag360Fly</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#Mag360Fly'>QuickTime Mag360Fly Tags</a></td></tr>
+<tr class=b>
+<td title='0x0005 = 5'>0x0005</td>
+<td>GPS360Fly</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#GPS360Fly'>QuickTime GPS360Fly Tags</a></td></tr>
+<tr>
+<td title='0x0006 = 6'>0x0006</td>
+<td>Rot360Fly</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#Rot360Fly'>QuickTime Rot360Fly Tags</a></td></tr>
+<tr class=b>
+<td title='0x00fa = 250'>0x00fa</td>
+<td>Fusion360Fly</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#Fusion360Fly'>QuickTime Fusion360Fly Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Accel360Fly'>QuickTime Accel360Fly Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>AccelMode?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>SampleTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>AccelYPR</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Gyro360Fly'>QuickTime Gyro360Fly Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>GyroMode?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>SampleTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>GyroYPR</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Mag360Fly'>QuickTime Mag360Fly Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>MagMode?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>SampleTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>MagnetometerXYZ</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='GPS360Fly'>QuickTime GPS360Fly Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>GPSMode?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>SampleTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>GPSLatitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='14 = 0xe'>14</td>
+<td>GPSLongitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='18 = 0x12'>18</td>
+<td>GPSAltitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='22 = 0x16'>22</td>
+<td>GPSSpeed</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(converted to km/hr)</span></span></td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>GPSTrack</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='26 = 0x1a'>26</td>
+<td>Acceleration</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Rot360Fly'>QuickTime Rot360Fly Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>RotMode?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>SampleTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>RotationXYZ</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Fusion360Fly'>QuickTime Fusion360Fly Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>FusionMode?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>SampleTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>FusionYPR</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='ImageFile'>QuickTime ImageFile Tags</a></h2>
 <p>Tags used in QTIF QuickTime Image Files.</p>
 <blockquote>
@@ -8330,7 +8536,7 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 11, 2020</i>
+<br><i>Last revised Jun 11, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

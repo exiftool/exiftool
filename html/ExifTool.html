@@ -602,8 +602,8 @@ distribution for examples.</p>
     <td>Perl expression used to filter PrintConv values when writing.</td>
     <td>Expression to act on the value of the Perl default variable ($_),
     changing the value of this variable as required.  The current ExifTool
-    object may be accessed through $self.  The value is not changed if $_
-    is set to undef.</td>
+    object may be accessed through $self.  The tag is not written if $_ is
+    set to undef.</td>
     <td align=center>undef</td></tr>
 <tr id="FixBase"><td>FixBase</td>
     <td>Fix maker notes base offset.  Allows values to be extracted from maker notes
@@ -737,6 +737,8 @@ distribution for examples.</p>
     expression returns undef). If not set, a minor error is issued for missing
     values, or the value is set to '' if IgnoreMinorErrors is set.</td>
     <td align=center>Any string, or undef</td><td align=center>undef</td></tr>
+<tr id="NoMultiExif"><td>NoMultiExif</td><td>Raise error when attempting to write multi-segment
+    EXIF in a JPEG image.</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="NoPDFList"><td>NoPDFList</td><td>Flag to avoid splitting PDF list-type tag
     values into separate items.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
@@ -1103,8 +1105,8 @@ and Warning tags.</p>
 <a href="#WriteInfo">WriteInfo</a>:</p>
 <blockquote>
 ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
-Compress, FixBase, IgnoreMinorErrors, Password, QuickTimeHandler, Verbose
-and WriteMode.
+Compress, FixBase, IgnoreMinorErrors, NoMultiExif, Password, QuickTimeHandler,
+Verbose and WriteMode.
 </blockquote>
 
 <hr><h2><a name="GetTagList">GetTagList</a></h2>
@@ -1317,7 +1319,7 @@ errors are printed to STDERR.
 <tr><td>NoFlat</td><td>Treat flattened tags as 'unsafe'</td><td align=center>0 or 1</td><td align=center>0</td></tr>
 <tr><td>NoShortcut</td><td>Disables default behaviour of looking up tag in
     shortcuts if not found otherwise.</td><td align=center>0 or 1</td><td align=center>0</td></tr>
-<tr><td>Protected</td><td>Allow protected tags to be written</td>
+<tr><td>Protected</td><td>Allow unsafe and protected tags to be written</td>
     <td>Bitmask of tag protection levels to write:
     <table class=clear>
     <tr><td valign=top align=center><b>0x01</b>&nbsp;=</td>

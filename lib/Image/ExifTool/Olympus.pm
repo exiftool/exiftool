@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.65';
+$VERSION = '2.66';
 
 sub PrintLensInfo($$$);
 
@@ -172,6 +172,7 @@ my %olympusLensTypes = (
     '2 28 10' => 'Lumix G Vario 12-60mm F3.5-5.6 Asph. Power OIS', #NJ
     '2 29 10' => 'Leica DG Summilux 12mm F1.4 Asph.', #IB
     '2 30 10' => 'Leica DG Vario-Elmarit 12-60mm F2.8-4 Asph. Power OIS', #IB
+    '2 31 10' => 'Lumix G Vario 45-200mm F4.0-5.6 II', #forum3833
     '2 32 10' => 'Lumix G Vario 100-300mm F4.0-5.6 II', #PH
     '2 33 10' => 'Lumix G X Vario 12-35mm F2.8 II Asph. Power OIS', #IB
     '2 34 10' => 'Lumix G Vario 35-100mm F2.8 II', #forum3833
@@ -184,6 +185,8 @@ my %olympusLensTypes = (
     # Tamron lenses
     '5 01 10' => 'Tamron 14-150mm F3.5-5.8 Di III', #NJ (model C001)
   # '65535 07 40' - Seen for LUMIX S 16-35/F4 on Panasonic DC-S1H (ref PH)
+    # Other makes
+    '24 01 10' => 'Venus Optics Laowa 50mm F2.8 2x Macro', #DonKomarechka
 );
 
 # lookup for Olympus camera types (ref PH)

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.86
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.00
 [File, System, Other] FileName - File Name: PhaseOne.iiq
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 3.3 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:12:17 10:49:08-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:02:04 08:34:54-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:01:28 10:35:42-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:12:17 14:25:00-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:06:09 07:33:44-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: IIQ
 [File, File, Other] FileTypeExtension - File Type Extension: iiq
@@ -92,6 +92,7 @@
 [Composite, Composite, Image] Exif::Aperture - Aperture: 5.6
 [Composite, Composite, Camera] Exif::BlueBalance - Blue Balance: 1.41912
 [Composite, Composite, Image] Exif::ImageSize - Image Size: 7320x5484
+[Composite, Composite, Camera] Exif::LensID - Lens ID: Mamiya LS 80mm f/2.8 D
 [Composite, Composite, Image] Exif::Megapixels - Megapixels: 40.1
 [Composite, Composite, Camera] Exif::RedBalance - Red Balance: 1.30548
 [Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/1250

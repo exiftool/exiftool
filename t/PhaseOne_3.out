@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.86
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.00
 [File, System, Other] FileName - File Name: PhaseOne_3_failed.iiq
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 3.3 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:02:04 08:36:54-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:02:04 08:36:54-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:02:04 08:36:54-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:06:09 07:33:44-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:06:09 07:33:44-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:06:09 07:33:44-04:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: IIQ
 [File, File, Other] FileTypeExtension - File Type Extension: iiq
@@ -165,6 +165,7 @@
 [Composite, Composite, Image] Exif::Megapixels - Megapixels: 40.1
 [Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/1250
 [Composite, Composite, Camera] Exif::BlueBalance - Blue Balance: 1.41912
+[Composite, Composite, Camera] Exif::LensID - Lens ID: Mamiya LS 80mm f/2.8 D
 [Composite, Composite, Image] Exif::LightValue - Light Value: 15.3
 [Composite, Composite, Camera] Exif::RedBalance - Red Balance: 1.30548
 [Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 80.0 mm

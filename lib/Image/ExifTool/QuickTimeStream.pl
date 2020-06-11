@@ -22,6 +22,7 @@ sub Process_tx3g($$$);
 sub Process_mebx($$$);
 sub ProcessFreeGPS($$$);
 sub ProcessFreeGPS2($$$);
+sub Process360Fly($$$);
 
 # QuickTime data types that have ExifTool equivalents
 # (ref https://developer.apple.com/library/content/documentation/QuickTime/QTFF/Metadata/Metadata.html#//apple_ref/doc/uid/TP40000939-CH1-SW35)
@@ -548,6 +549,130 @@ my %insvLimit = (
     },
 );
 
+%Image::ExifTool::QuickTime::Tags360Fly = (
+    PROCESS_PROC => \&Process360Fly,
+    NOTES => 'Timed metadata found in MP4 videos from the 360Fly.',
+    1 => {
+        Name => 'Accel360Fly',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Accel360Fly' },
+    },
+    2 => {
+        Name => 'Gyro360Fly',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Gyro360Fly' },
+    },
+    3 => {
+        Name => 'Mag360Fly',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Mag360Fly' },
+    },
+    5 => {
+        Name => 'GPS360Fly',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::GPS360Fly' },
+    },
+    6 => {
+        Name => 'Rot360Fly',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Rot360Fly' },
+    },
+    250 => {
+        Name => 'Fusion360Fly',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Fusion360Fly' },
+    },
+);
+
+%Image::ExifTool::QuickTime::Accel360Fly = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    1  => { Name => 'AccelMode', Unknown => 1 }, # (always 2 in my sample)
+    2  => {
+        Name => 'SampleTime',
+        Groups => { 2 => 'Video' },
+        Format => 'int64u',
+        ValueConv => '$val / 1e6',
+        PrintConv => 'ConvertDuration($val)',
+    },
+    10 => { Name => 'AccelYPR',  Format => 'float[3]' },
+);
+
+%Image::ExifTool::QuickTime::Gyro360Fly = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    1  => { Name => 'GyroMode', Unknown => 1 }, # (always 1 in my sample)
+    2  => {
+        Name => 'SampleTime',
+        Groups => { 2 => 'Video' },
+        Format => 'int64u',
+        ValueConv => '$val / 1e6',
+        PrintConv => 'ConvertDuration($val)',
+    },
+    10 => { Name => 'GyroYPR', Format => 'float[3]' },
+);
+
+%Image::ExifTool::QuickTime::Mag360Fly = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    1  => { Name => 'MagMode', Unknown => 1 }, # (always 1 in my sample)
+    2  => {
+        Name => 'SampleTime',
+        Groups => { 2 => 'Video' },
+        Format => 'int64u',
+        ValueConv => '$val / 1e6',
+        PrintConv => 'ConvertDuration($val)',
+    },
+    10 => { Name => 'MagnetometerXYZ', Format => 'float[3]' },
+);
+
+%Image::ExifTool::QuickTime::GPS360Fly = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    1  => { Name => 'GPSMode', Unknown => 1 }, # (always 16 in my sample)
+    2  => {
+        Name => 'SampleTime',
+        Groups => { 2 => 'Video' },
+        Format => 'int64u',
+        ValueConv => '$val / 1e6',
+        PrintConv => 'ConvertDuration($val)',
+    },
+    10 => { Name => 'GPSLatitude',  Format => 'float', PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")' },
+    14 => { Name => 'GPSLongitude', Format => 'float', PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
+    18 => { Name => 'GPSAltitude',  Format => 'float', PrintConv => '"$val m"' }, # (questionable accuracy)
+    22 => {
+        Name => 'GPSSpeed',
+        Notes => 'converted to km/hr',
+        Format => 'int16u',
+        ValueConv => '$val * 0.036',
+        PrintConv => 'sprintf("%.1f",$val)',
+    },
+    24 => { Name => 'GPSTrack',     Format => 'int16u', ValueConv => '$val / 100' },
+    26 => { Name => 'Acceleration', Format => 'int16u', ValueConv => '$val / 1000' },
+);
+
+%Image::ExifTool::QuickTime::Rot360Fly = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    1  => { Name => 'RotMode', Unknown => 1 }, # (always 1 in my sample)
+    2  => {
+        Name => 'SampleTime',
+        Groups => { 2 => 'Video' },
+        Format => 'int64u',
+        ValueConv => '$val / 1e6',
+        PrintConv => 'ConvertDuration($val)',
+    },
+    10 => { Name => 'RotationXYZ', Format => 'float[3]' },
+);
+
+%Image::ExifTool::QuickTime::Fusion360Fly = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    1  => { Name => 'FusionMode', Unknown => 1 }, # (always 0 in my sample)
+    2  => {
+        Name => 'SampleTime',
+        Groups => { 2 => 'Video' },
+        Format => 'int64u',
+        ValueConv => '$val / 1e6',
+        PrintConv => 'ConvertDuration($val)',
+    },
+    10 => { Name => 'FusionYPR', Format => 'float[3]' },
+);
+
 #------------------------------------------------------------------------------
 # Save information from keys in OtherSampleDesc directory for processing timed metadata
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
@@ -876,7 +1001,28 @@ sub Process_text($$$)
         return;
     }
 
-    # check for Thinkware format, eg:
+    # check for Roadhawk dashcam text
+    # ".;;;;D?JL;6+;;;D;R?;4;;;;DBB;;O;;;=D;L;;HO71G>F;-?=J-F:FNJJ;DPP-JF3F;;PL=DBRLBF0F;=?DNF-RD-PF;N;?=JF;;?D=F:*6F~"
+    # decoded:
+    # "X0000.2340Y-000.0720Z0000.9900G0001.0400$GPRMC,082138,A,5330.6683,N,00641.9749,W,012.5,87.86,050213,002.1,A"
+    # (note: "002.1" is magnetic variation and is not decoded; it should have ",E" or ",W" afterward for direction)
+    if ($$buffPt =~ /\*[0-9A-F]{2}~$/) {
+        # (ref https://reverseengineering.stackexchange.com/questions/11582/how-to-reverse-engineer-dash-cam-metadata)
+        my @decode = unpack 'C*', '-I8XQWRVNZOYPUTA0B1C2SJ9K.L,M$D3E4F5G6H7';
+        my @chars = unpack 'C*', substr($$buffPt, 0, -4);
+        foreach (@chars) {
+            my $n = $_ - 43;
+            $_ = $decode[$n] if $n >= 0 and defined $decode[$n];
+        }
+        my $buff = pack 'C*', @chars;
+        if ($buff =~ /X(.*?)Y(.*?)Z(.*?)G(.*?)\$/) {
+            # yup. the decoding worked out
+            $tags{Accelerometer} = "$1 $2 $3 $4";
+            $$buffPt = $buff;   # (process GPRMC below)
+        }
+    }
+
+    # check for Thinkware format (and other NMEA RMC), eg:
     # "gsensori,4,512,-67,-12,100;GNRMC,161313.00,A,4529.87489,N,07337.01215,W,6.225,35.34,310819,,,A*52..;
     #  CAR,0,0,0,0.0,0,0,0,0,0,0,0,0"
     if ($$buffPt =~ /[A-Z]{2}RMC,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/ and
@@ -1150,13 +1296,35 @@ sub ProcessFreeGPS($$$)
 
     return 0 if $dirLen < 92;
 
-    if (substr($$dataPt,12,1) eq "\x05") {
+    if (substr($$dataPt,18,8) eq "\xaa\xaa\xf2\xe1\xf0\xee\x54\x54") {
 
+        # (this is very similar to the encrypted text format)
         # decode encrypted ASCII-based GPS (DashCam Azdome GS63H, ref 5)
         # header looks like this in my sample:
         #  0000: 00 00 80 00 66 72 65 65 47 50 53 20 05 01 00 00 [....freeGPS ....]
         #  0010: 01 03 aa aa f2 e1 f0 ee 54 54 98 9a 9b 92 9a 93 [........TT......]
         #  0020: 98 9e 98 98 9e 93 98 92 a6 9f 9f 9c 9d ed fa 8a [................]
+        # decrypted (from byte 18):
+        #  0000: 00 00 58 4b 5a 44 fe fe 32 30 31 38 30 39 32 34 [..XKZD..20180924]
+        #  0010: 32 32 34 39 32 38 0c 35 35 36 37 47 50 20 20 20 [224928.5567GP   ]
+        #  0020: 00 00 00 00 00 03 4e 34 30 34 36 34 33 35 30 57 [......N40464350W]
+        #  0030: 30 30 37 30 34 30 33 30 38 30 30 30 30 30 30 30 [0070403080000000]
+        #  0040: 37 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [7...............]
+        #  [...]
+        #  00a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 2b 30 39 [.............+09]
+        #  00b0: 33 2d 30 30 33 2d 30 30 35 00 00 00 00 00 00 00 [3-003-005.......]
+        # header looks like this for EEEkit gps:
+        #  0000: 00 00 04 00 66 72 65 65 47 50 53 20 f0 03 00 00 [....freeGPS ....]
+        #  0010: 01 03 aa aa f2 e1 f0 ee 54 54 98 9a 98 9a 9a 9f [........TT......]
+        #  0020: 9b 93 9b 9c 98 99 99 9f a6 9a 9a 98 9a 9a 9f 9b [................]
+        #  0030: 93 9b 9c 98 99 99 9c a9 e4 99 9d 9e 9f 98 9e 9b [................]
+        #  0040: 9c fd 9b 98 98 98 9f 9f 9a 9a 93 81 9a 9b 9d 9f [................]
+        # decrypted (from byte 18):
+        #  0000: 00 00 58 4b 5a 44 fe fe 32 30 32 30 30 35 31 39 [..XKZD..20200519]
+        #  0010: 31 36 32 33 33 35 0c 30 30 32 30 30 35 31 39 31 [162335.002005191]
+        #  0020: 36 32 33 33 36 03 4e 33 37 34 35 32 34 31 36 57 [62336.N37452416W]
+        #  0030: 31 32 32 32 35 35 30 30 39 2b 30 31 37 35 30 31 [122255009+017501]
+        #  0040: 31 2b 30 31 34 2b 30 30 32 2b 30 32 36 2b 30 31 [1+014+002+026+01]
         my $n = $dirLen - 18;
         $n = 0x101 if $n > 0x101;
         my $buf2 = pack 'C*', map { $_ ^ 0xaa } unpack 'C*', substr($$dataPt,18,$n);
@@ -1165,13 +1333,25 @@ sub ProcessFreeGPS($$$)
             $et->VerboseDump(\$buf2);
         }
         # (extract longitude as 9 digits, not 8, ref PH)
-        return 0 unless $buf2 =~ /^.{8}(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}).(.{15})([NS])(\d{8})([EW])(\d{9})(\d{8})/s;
+        return 0 unless $buf2 =~ /^.{8}(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}).(.{15})([NS])(\d{8})([EW])(\d{9})(\d{8})?/s;
         ($yr,$mon,$day,$hr,$min,$sec,$lbl,$latRef,$lat,$lonRef,$lon,$spd) = ($1,$2,$3,$4,$5,$6,$7,$8,$9/1e4,$10,$11/1e4,$12);
-        $spd += 0;  # remove leading 0's
+        if (defined $spd) { # (Azdome)
+            $spd += 0;  # remove leading 0's
+        } elsif ($buf2 =~ /^.{57}([-+]\d{4})(\d{3})/s) { # (EEEkit)
+            # $alt = $1 + 0;  (doesn't look right for my sample, but the Ambarella A12 text has this)
+            $spd = $2 + 0;
+        }
         $lbl =~ s/\0.*//s;  $lbl =~ s/\s+$//;  # truncate at null and remove trailing spaces
         push @xtra, UserLabel => $lbl if length $lbl;
         # extract accelerometer data (ref PH)
-        @acc = ($1/100,$2/100,$3/100) if $buf2 =~ /^.{173}([-+]\d{3})([-+]\d{3})([-+]\d{3})/s;
+        if ($buf2 =~ /^.{65}(([-+]\d{3})([-+]\d{3})([-+]\d{3})([-+]\d{3})*)/s) {
+            $_ = $1;
+            @acc = ($2/100, $3/100, $4/100);
+            s/([-+])/ $1/g;  s/^ //;
+            push @xtra, AccelerometerData => $_;
+        } elsif ($buf2 =~ /^.{173}([-+]\d{3})([-+]\d{3})([-+]\d{3})/s) { # (Azdome)
+            @acc = ($1/100, $2/100, $3/100);
+        }
 
     } elsif ($$dataPt =~ /^.{52}(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/s) {
 
@@ -2186,6 +2366,37 @@ sub ProcessInsta360($;$)
     SetByteOrder('MM');
     delete $$et{SET_GROUP0};
     delete $$et{SET_GROUP1};
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process 360Fly 'uuid' atom containing sensor data
+# (ref https://github.com/JamesHeinrich/getID3/blob/master/getid3/module.audio-video.quicktime.php)
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub Process360Fly($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dataLen = length $$dataPt;
+    my $pos = 16;
+    my $lastTime = -1;
+    my $streamTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+    while ($pos + 32 <= $dataLen) {
+        my $type = ord substr $$dataPt, $pos, 1;
+        my $time = Get64u($dataPt, $pos + 2); # (only valid for some types)
+        if ($$tagTbl{$type}) {
+            if ($time != $lastTime) {
+                $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                $lastTime = $time;
+            }
+        }
+        $et->HandleTag($tagTbl, $type, undef, DataPt => $dataPt, Start => $pos, Size => 32);
+        # synthesize GPSDateTime from the timestamp for GPS records
+        SetGPSDateTime($et, $streamTbl, $time / 1e6) if $type == 5;
+        $pos += 32;
+    }
+    delete $$et{DOC_NUM};
     return 1;
 }
 

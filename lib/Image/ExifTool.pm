@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '11.99';
+$VERSION = '12.00';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -91,7 +91,7 @@ sub GetExtended($$);
 sub Set64u(@);
 sub DecodeBits($$;$);
 sub EncodeBits($$;$$);
-sub Filter($$@);
+sub Filter($$$);
 sub HexDump($;$%);
 sub DumpTrailer($$);
 sub DumpUnknownTrailer($$);
@@ -142,11 +142,11 @@ sub ReadValue($$$;$$$);
     FujiFilm::RAF FujiFilm::IFD Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD
     Sony::PMP ITC ID3 FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible
     MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile
-    QuickTime::Stream Matroska MOI MXF DV Flash Flash::FLV Real::Media
-    Real::Audio Real::Metafile Red RIFF AIFF ASF WTV DICOM FITS MIE JSON HTML
-    XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion EXE::PEString
-    EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard Text
-    VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork ISO
+    QuickTime::Stream QuickTime::Tags360Fly Matroska MOI MXF DV Flash Flash::FLV
+    Real::Media Real::Audio Real::Metafile Red RIFF AIFF ASF WTV DICOM FITS MIE
+    JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
+    EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard
+    Text VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork ISO
     FLIR::AFF FLIR::FPF MacOS::MDItem MacOS::XAttr FlashPix::DocTable
 );
 
@@ -527,6 +527,8 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     XLTM => [['ZIP','FPX'], 'Office Open XML Spreadsheet Template Macro-enabled'],
     XLTX => [['ZIP','FPX'], 'Office Open XML Spreadsheet Template'],
     XMP  => ['XMP',  'Extensible Metadata Platform'],
+    WOFF => ['Font', 'Web Open Font Format'],
+    WOFF2=> ['Font', 'Web Open Font Format2'],
     WTV  => ['WTV',  'Windows recorded TV show'],
     ZIP  => ['ZIP',  'ZIP archive'],
 );
@@ -872,7 +874,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     FLIR => '[AF]FF\0',
     FLV  => 'FLV\x01',
     Font => '((\0\x01\0\0|OTTO|true|typ1)[\0\x01]|ttcf\0[\x01\x02]\0\0|\0[\x01\x02]|' .
-            '(.{6})?%!(PS-(AdobeFont-|Bitstream )|FontType1-)|Start(Comp|Master)?FontMetrics)',
+            '(.{6})?%!(PS-(AdobeFont-|Bitstream )|FontType1-)|Start(Comp|Master)?FontMetrics|wOF[F2])',
     FPF  => 'FPF Public Image Format\0',
     FPX  => '\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1',
     GIF  => 'GIF8[79]a',
@@ -2249,6 +2251,7 @@ sub ClearOptions($)
         MakerNotes  => undef,   # extract maker notes as a block
         MDItemTags  => undef,   # extract MacOS metadata item tags
         MissingTagValue =>undef,# value for missing tags when expanded in expressions
+        NoMultiExif => undef,   # raise error when writing multi-segment EXIF
         NoPDFList   => undef,   # flag to avoid splitting PDF List-type tag values
         Password    => undef,   # password for password-protected PDF documents
         PrintConv   => 1,       # flag to enable print conversion
@@ -5415,36 +5418,38 @@ sub GetDescriptions($$)
 
 #------------------------------------------------------------------------------
 # Apply filter to value(s) if necessary
-# Inputs: 0) ExifTool ref, 1) filter expression, 2-N) references to value(s) to filter
-# Returns: nothing, but changes values if necessary
-sub Filter($$@)
+# Inputs: 0) ExifTool ref, 1) filter expression, 2) reference to value to filter
+# Returns: true unless a filter returned undef; changes value if necessary
+sub Filter($$$)
 {
     local $_;
-    my $self = shift;
-    my $filter = shift;
-    return unless defined $filter;
-    while (@_) {
-        my $valPt = shift;
-        next unless defined $$valPt;
-        if (not ref $$valPt) {
-            $_ = $$valPt;
-            #### eval Filter ($_, $self)
-            eval $filter;
-            $$valPt = $_ if defined $_;
-        } elsif (ref $$valPt eq 'SCALAR') {
-            my $val = $$$valPt; # make a copy to avoid filtering twice
-            $self->Filter($filter, \$val);
-            $$valPt = \$val;
-        } elsif (ref $$valPt eq 'ARRAY') {
-            my @val = @{$$valPt}; # make a copy to avoid filtering twice
-            $self->Filter($filter, \$_) foreach @val;
-            $$valPt = \@val;
-        } elsif (ref $$valPt eq 'HASH') {
-            my %val = %{$$valPt}; # make a copy to avoid filtering twice
-            $self->Filter($filter, \$val{$_}) foreach keys %val;
-            $$valPt = \%val;
+    my ($self, $filter, $valPt) = @_;
+    return 1 unless defined $filter and defined $$valPt;
+    my $rtnVal;
+    if (not ref $$valPt) {
+        $_ = $$valPt;
+        #### eval Filter ($_, $self)
+        eval $filter;
+        if (defined $_) {
+            $$valPt = $_;
+            $rtnVal = 1;
         }
+    } elsif (ref $$valPt eq 'SCALAR') {
+        my $val = $$$valPt; # make a copy to avoid filtering twice
+        $rtnVal = $self->Filter($filter, \$val);
+        $$valPt = \$val;
+    } elsif (ref $$valPt eq 'ARRAY') {
+        my @val = @{$$valPt}; # make a copy to avoid filtering twice
+        $self->Filter($filter, \$_) and $rtnVal = 1 foreach @val;
+        $$valPt = \@val;
+    } elsif (ref $$valPt eq 'HASH') {
+        my %val = %{$$valPt}; # make a copy to avoid filtering twice
+        $self->Filter($filter, \$val{$_}) and $rtnVal = 1 foreach keys %val;
+        $$valPt = \%val;
+    } else {
+        $rtnVal = 1;
     }
+    return $rtnVal;
 }
 
 #------------------------------------------------------------------------------
@@ -8197,7 +8202,7 @@ sub VerboseDir($$;$$)
     }
     my $indent = substr($$self{INDENT}, 0, -2);
     my $out = $$self{OPTIONS}{TextOut};
-    my $str = $entries ? " with $entries entries" : '';
+    my $str = ($entries or defined $entries and not $size) ? " with $entries entries" : '';
     $str .= ", $size bytes" if $size;
     print $out "$indent+ [$name directory$str]\n";
 }

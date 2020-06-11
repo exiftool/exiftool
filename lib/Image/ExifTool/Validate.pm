@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.17';
+$VERSION = '1.18';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -214,11 +214,11 @@ my %validValue = (
         IFD0 => {
             0x100 => 'defined $val',        # ImageWidth
             0x101 => 'defined $val',        # ImageLength
-            0x102 => 'defined $val',        # BitsPerSample
+            # (default is 1) 0x102 => 'defined $val',        # BitsPerSample
             0x103 => q{
                 not defined $val or $val =~ /^(1|5|6|32773)$/ or
                     ($val == 2 and (not defined $val{0x102} or $val{0x102} == 1));
-            },  # Compression
+            }, # Compression
             0x106 => '$val =~ /^[0123]$/',  # PhotometricInterpretation
             0x111 => 'defined $val',        # StripOffsets
             # SamplesPerPixel
@@ -237,7 +237,7 @@ my %validValue = (
             0x117 => 'defined $val',        # StripByteCounts
             0x11a => 'defined $val',        # XResolution
             0x11b => 'defined $val',        # YResolution
-            0x128 => '$val =~ /^[123]$/',   # ResolutionUnit
+            0x128 => 'not defined $val or $val =~ /^[123]$/',   # ResolutionUnit
             # ColorMap (must be palette image with correct number of colors)
             0x140 => q{
                 return '' if defined $val{0x106} and $val{0x106} == 3 xor defined $val;

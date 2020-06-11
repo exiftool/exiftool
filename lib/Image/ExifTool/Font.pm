@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION %ttLang);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 
 sub ProcessOTF($$);
 
@@ -589,6 +589,11 @@ sub ProcessFont($$)
             $et->HandleTag($tagTablePtr, 'postfont', $2);
         }
         $rtnVal = 1;
+    } elsif ($buff =~ /^(wOF[F2])/) {
+        my $type = $1 eq 'wOFF' ? 'woff' : 'woff2';
+        $et->SetFileType(uc($type), "font/$type");
+        # (don't yet extract metadata from these files)
+        $rtnVal = 1;
     } else {
         $rtnVal = 0;
     }
@@ -611,7 +616,9 @@ This module is used by Image::ExifTool
 
 This module contains the routines required by Image::ExifTool to read meta
 information from various format font files.  Currently recognized font file
-types are OTF, TTF, TTC, DFONT, PFA, PFB, PFM, AFM, ACFM and AMFM.
+types are OTF, TTF, TTC, DFONT, PFA, PFB, PFM, AFM, ACFM and AMFM.  As well,
+WOFF and WOFF2 font files are identified, but metadata is not currently
+extracted from these formats.
 
 =head1 AUTHOR
 

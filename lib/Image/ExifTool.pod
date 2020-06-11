@@ -662,7 +662,7 @@ option is disabled.
 Perl expression used to filter PrintConv values when writing.  The
 expression acts on the value of the Perl default variable ($_), and changes
 the value of this variable as required.  The current ExifTool object may be
-accessed through $self.  The value is not changed if $_ is set to undef.
+accessed through $self.  The tag is not written if $_ is set to undef.
 
 =item FixBase
 
@@ -808,6 +808,11 @@ Value for missing tags in tag name expressions (or tags where the advanced
 formatting expression returns undef).  If not set, a minor error is issued
 for missing values, or the value is set to '' if L</IgnoreMinorErrors> is
 set.  Default is undef.
+
+=item NoMultiExif
+
+Raise error when attempting to write multi-segment EXIF in a JPEG image. 
+Default is undef.
 
 =item NoPDFList
 

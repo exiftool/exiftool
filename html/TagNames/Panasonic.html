@@ -91,7 +91,9 @@ reference number and not the actual firmware version)</span></span></td></tr>
   <br>&#39;32 2&#39; = 3-area (center)?
   <br>&#39;32 3&#39; = 3-area (right)?
   <br>&#39;64 0&#39; = Face Detect
-  <br>&#39;128 0&#39; = Spot Focusing 2
+  <br>&#39;64 1&#39; = Face Detect (animal detect on)
+  <br>&#39;64 2&#39; = Face Detect (animal detect off)
+  <br>&#39;128 0&#39; = Pinpoint focus
   <br>&#39;240 0&#39; = Tracking</td></tr></table>
 </td></tr>
 <tr class=b>
@@ -99,13 +101,16 @@ reference number and not the actual firmware version)</span></span></td></tr>
 <td>ImageStabilization</td>
 <td class=c>int16u</td>
 <td><table class=cols><tr>
-  <td>2 = On, Mode 1
+  <td>2 = On, Optical
   <br>3 = Off
   <br>4 = On, Mode 2
-  <br>5 = Panning</td><td>&nbsp;&nbsp;</td>
-  <td>6 = On, Mode 3
+  <br>5 = On, Optical Panning
+  <br>6 = On, Body-only
+  <br>7 = On, Body-only Panning
   <br>9 = Dual IS
-  <br>11 = Dual2 IS</td></tr></table>
+  <br>10 = Dual IS Panning
+  <br>11 = Dual2 IS
+  <br>12 = Dual2 IS Panning</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x001c = 28'>0x001c</td>
@@ -260,9 +265,11 @@ written to memory card)</span></span></td></tr>
   <td>0 = Off
   <br>1 = On
   <br>2 = Auto Exposure Bracketing (AEB)
+  <br>3 = Focus Bracketing
   <br>4 = Unlimited
   <br>8 = White Balance Bracketing
-  <br>17 = On (with flash)</td></tr></table>
+  <br>17 = On (with flash)
+  <br>18 = Aperture Bracketing</td></tr></table>
 </td></tr>
 <tr class=b>
 <td title='0x002b = 43'>0x002b</td>
@@ -279,9 +286,13 @@ L10 and LC80)</span></span><table class=cols><tr>
   <td>0x0 = Normal
   <br>0x1 = Low
   <br>0x2 = High
+  <br>0x5 = Normal 2
   <br>0x6 = Medium Low
-  <br>0x7 = Medium High</td><td>&nbsp;&nbsp;</td>
-  <td>0xd = High Dynamic
+  <br>0x7 = Medium High
+  <br>0xd = High Dynamic
+  <br>0x18 = Dynamic Range (film-like)
+  <br>0x2e = Match Filter Effects Toy
+  <br>0x37 = Match Photo Style L. Monochrome
   <br>0x100 = Low
   <br>0x110 = Normal
   <br>0x120 = High</td></tr></table>
@@ -357,10 +368,15 @@ L10 and LC80)</span></span><table class=cols><tr>
 <td title='0x002e = 46'>0x002e</td>
 <td>SelfTimer</td>
 <td class=c>int16u</td>
-<td><span class=s>1 = Off
+<td><table class=cols><tr>
+  <td>1 = Off
   <br>2 = 10 s
   <br>3 = 2 s
-  <br>4 = 10 s / 3 pictures</span></td></tr>
+  <br>4 = 10 s / 3 pictures
+  <br>258 = 2 s after shutter pressed
+  <br>266 = 10 s
+  <br>778 = 3 photos after 10 s</td></tr></table>
+</td></tr>
 <tr class=b>
 <td title='0x0030 = 48'>0x0030</td>
 <td>Rotation</td>
@@ -691,10 +707,14 @@ L10 and LC80)</span></span><table class=cols><tr>
   <td>0 = Auto
   <br>1 = Standard or Custom
   <br>2 = Vivid
-  <br>3 = Natural</td><td>&nbsp;&nbsp;</td>
-  <td>4 = Monochrome
-  <br>5 = Scenery
-  <br>6 = Portrait</td></tr></table>
+  <br>3 = Natural
+  <br>4 = Monochrome
+  <br>5 = Scenery</td><td>&nbsp;&nbsp;</td>
+  <td>6 = Portrait
+  <br>8 = Cinelike D
+  <br>9 = Cinelike V
+  <br>11 = L. Monochrome
+  <br>15 = L. Monochrome D</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x008a = 138'>0x008a</td>
@@ -769,7 +789,8 @@ L10 and LC80)</span></span><table class=cols><tr>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = Time Lapse
-  <br>2 = Stop-motion Animation</span></td></tr>
+  <br>2 = Stop-motion Animation
+  <br>3 = Focus Bracketing</span></td></tr>
 <tr>
 <td title='0x009d = 157'>0x009d</td>
 <td>InternalNDFilter</td>
@@ -796,23 +817,60 @@ L10 and LC80)</span></span><table class=cols><tr>
   <br>1 = Electronic
   <br>2 = Hybrid</span></td></tr>
 <tr class=b>
+<td title='0x00a1 = 161'>0x00a1</td>
+<td>FilterEffect</td>
+<td class=c>rational64u[0.5]</td>
+<td><table class=cols><tr>
+  <td>&#39;0 0&#39; = Expressive
+  <br>&#39;0 2&#39; = Retro
+  <br>&#39;0 4&#39; = High Key
+  <br>&#39;0 8&#39; = Sepia
+  <br>&#39;0 16&#39; = High Dynamic
+  <br>&#39;0 32&#39; = Miniature Effect
+  <br>&#39;0 1024&#39; = Dynamic Monochrome
+  <br>&#39;0 1048576&#39; = Sunshine
+  <br>&#39;0 134217728&#39; = Silky Monochrome
+  <br>&#39;0 16384&#39; = One Point Color
+  <br>&#39;0 2048&#39; = Soft Focus
+  <br>&#39;0 2097152&#39; = Bleach Bypass
+  <br>&#39;0 256&#39; = Low Key
+  <br>&#39;0 32768&#39; = Star Filter
+  <br>&#39;0 33554432&#39; = Monochrome
+  <br>&#39;0 4096&#39; = Impressive Art
+  <br>&#39;0 4194304&#39; = Toy Pop
+  <br>&#39;0 512&#39; = Toy Effect
+  <br>&#39;0 524288&#39; = Old Days
+  <br>&#39;0 67108864&#39; = Rough Monochrome
+  <br>&#39;0 8192&#39; = Cross Process
+  <br>&#39;0 8388608&#39; = Fantasy</td></tr></table>
+</td></tr>
+<tr>
 <td title='0x00a3 = 163'>0x00a3</td>
 <td>ClearRetouchValue</td>
 <td class=c>rational64u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x00a7 = 167'>0x00a7</td>
 <td>OutputLUT</td>
 <td class=c>yes</td>
 <td><span class=s><span class=n>(2-column by 432-row binary lookup table of unsigned short values for
 converting to 16-bit output (1st column) from 14 bits (2nd column) with
 camera contrast)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x00ab = 171'>0x00ab</td>
 <td>TouchAE</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x00ac = 172'>0x00ac</td>
+<td>MonochromeFilterEffect</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = Yellow
+  <br>2 = Orange
+  <br>3 = Red
+  <br>4 = Green</span></td></tr>
 <tr>
 <td title='0x00ad = 173'>0x00ad</td>
 <td>HighlightShadow</td>
@@ -824,19 +882,25 @@ camera contrast)</span></span></td></tr>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x00b3 = 179'>0x00b3</td>
+<td>VideoBurstResolution</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off or 4K
+  <br>4 = 6K</span></td></tr>
+<tr class=b>
 <td title='0x00b4 = 180'>0x00b4</td>
 <td>MultiExposure</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = n/a
   <br>1 = Off
   <br>2 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x00b9 = 185'>0x00b9</td>
 <td>RedEyeRemoval</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x00bb = 187'>0x00bb</td>
 <td>VideoBurstMode</td>
 <td class=c>int32u</td>
@@ -846,29 +910,62 @@ camera contrast)</span></span></td></tr>
   <br>0x18 = 4K Burst
   <br>0x28 = 4K Burst (Start/Stop)
   <br>0x48 = 4K Pre-burst
-  <br>0x108 = Loop Recording</td></tr></table>
+  <br>0x108 = Loop Recording
+  <br>0x810 = 6K Burst
+  <br>0x820 = 6K Burst (Start/Stop)
+  <br>0x1001 = High Resolution Mode</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x00bc = 188'>0x00bc</td>
 <td>DiffractionCorrection</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = Auto</span></td></tr>
+<tr class=b>
+<td title='0x00bd = 189'>0x00bd</td>
+<td>FocusBracket</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(positive is further, negative is closer)</span></span></td></tr>
 <tr>
+<td title='0x00be = 190'>0x00be</td>
+<td>LongExposureNRUsed</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td title='0x00bf = 191'>0x00bf</td>
+<td>PostFocusMerging</td>
+<td class=c>int32u[2]</td>
+<td><span class=s>&#39;0 0&#39; = Post Focus Auto Merging or None</span></td></tr>
+<tr>
+<td title='0x00c1 = 193'>0x00c1</td>
+<td>VideoPreburst</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = No
+  <br>1 = 4K or 6K</span></td></tr>
+<tr class=b>
 <td title='0x00c4 = 196'>0x00c4</td>
 <td>LensTypeMake</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x00c5 = 197'>0x00c5</td>
 <td>LensTypeModel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x00d1 = 209'>0x00d1</td>
 <td>ISO</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0x00d2 = 210'>0x00d2</td>
+<td>MonochromeGrainEffect</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = Low
+  <br>2 = Standard
+  <br>3 = High</span></td></tr>
 <tr class=b>
 <td title='0x00d6 = 214'>0x00d6</td>
 <td>NoiseReductionStrength</td>
@@ -1954,7 +2051,7 @@ various Panasonic and Leica models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 19, 2020</i>
+<br><i>Last revised Jun 11, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -407,10 +407,11 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>ShotInfoD4S
   <br>ShotInfoD5
   <br>ShotInfoD500
+  <br>ShotInfoD6
   <br>ShotInfoD610
   <br>ShotInfo02xx
   <br>ShotInfoUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#ShotInfoD40'>Nikon ShotInfoD40 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD80'>Nikon ShotInfoD80 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD90'>Nikon ShotInfoD90 Tags</a>
@@ -433,6 +434,7 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>--&gt; <a href='Nikon.html#ShotInfoD4S'>Nikon ShotInfoD4S Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD500'>Nikon ShotInfoD500 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD500'>Nikon ShotInfoD500 Tags</a>
+  <br>--&gt; <a href='Nikon.html#ShotInfo'>Nikon ShotInfo Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD610'>Nikon ShotInfoD610 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfo'>Nikon ShotInfo Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfo'>Nikon ShotInfo Tags</a></td></tr>
@@ -3413,30 +3415,6 @@ firmware 1.01b.</p>
   <br>3 = Highlight</span></td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='ShotInfoD610'>Nikon ShotInfoD610 Tags</a></h2>
-<p>These tags are extracted from encrypted data in images from the D610.</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Index</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td class=r title='0 = 0x0'>0</td>
-<td>ShotInfoVersion</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='4 = 0x4'>4</td>
-<td>FirmwareVersion</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='1999 = 0x7cf'>1999</td>
-<td>CustomSettingsD610</td>
-<td class=c>-</td>
-<td>--&gt; <a href='NikonCustom.html#SettingsD610'>NikonCustom SettingsD610 Tags</a></td></tr>
-</table></td></tr></table></blockquote>
-
 <h2><a name='ShotInfo'>Nikon ShotInfo Tags</a></h2>
 <p>This information is encrypted for ShotInfoVersion 02xx, and some tags are
 only valid for specific models.</p>
@@ -3514,6 +3492,30 @@ only valid for specific models.</p>
 <td>ShutterCount</td>
 <td class=c>int32u</td>
 <td><span class=s><span class=n>(D60)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ShotInfoD610'>Nikon ShotInfoD610 Tags</a></h2>
+<p>These tags are extracted from encrypted data in images from the D610.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ShotInfoVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>FirmwareVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1999 = 0x7cf'>1999</td>
+<td>CustomSettingsD610</td>
+<td class=c>-</td>
+<td>--&gt; <a href='NikonCustom.html#SettingsD610'>NikonCustom SettingsD610 Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorBalance1'>Nikon ColorBalance1 Tags</a></h2>
@@ -4739,6 +4741,7 @@ D5200, D7000.</p>
   <br>15 = Dynamic Area (72 points)
   <br>16 = Group Area (HL)
   <br>17 = Group Area (VL)
+  <br>18 = Dynamic Area (49 points)
   <br>128 = Single
   <br>129 = Auto (41 points)
   <br>130 = Subject Tracking (41 points)
@@ -4765,7 +4768,11 @@ D5200, D7000.</p>
   <br>196 = Wide (L)
   <br>197 = Auto
   <br>198 = Auto (198)
-  <br>199 = Auto (focus lock)</td></tr></table>
+  <br>199 = Auto (focus lock)
+  <br>200 = Normal-area AF
+  <br>201 = Wide-area AF
+  <br>202 = Face-priority AF
+  <br>203 = Subject-tracking AF</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='6 = 0x6'>6</td>
@@ -4780,7 +4787,8 @@ D5200, D7000.</p>
   <td>5 = On (5)
   <br>6 = On (105-point)
   <br>7 = On (153-point)
-  <br>8 = On (81-point)</td></tr></table>
+  <br>8 = On (81-point)
+  <br>9 = On (105-point)</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='7 = 0x7'>7</td>
@@ -5246,71 +5254,191 @@ point is E9)</span>
   <br><span class=n>(models with 81-selectable point AF -- 9 rows (A-I) and 9 columns (1-9) for
 phase detect AF points. Center point is E5)</span></span></td></tr>
 <tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>AFPointsUsed</td>
+<td class=c>undef[14]</td>
+<td><span class=s><span class=n>(models with 105-point AF -- 7 rows (A-G) and 15 columns (1-15). Center
+point is D8)</span></span></td></tr>
+<tr class=b>
 <td class=r title='16 = 0x10'>16</td>
 <td>AFImageWidth</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(this and the following tags are valid only for contrast-detect AF)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='18 = 0x12'>18</td>
 <td>AFImageHeight</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='20 = 0x14'>20</td>
 <td>AFAreaXPosition</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(center of AF area in AFImage coordinates)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='22 = 0x16'>22</td>
 <td>AFAreaYPosition</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='24 = 0x18'>24</td>
 <td>AFAreaWidth</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(size of AF area in AFImage coordinates)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='26 = 0x1a'>26</td>
 <td>AFAreaHeight</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='28 = 0x1c'>28</td>
-<td>ContrastDetectAFInFocus</td>
-<td class=c>int8u</td>
+<td>ContrastDetectAFInFocus
+  <br>AFPointsSelected</td>
+<td class=c>int8u<br>undef[20]</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='42 = 0x2a'>42</td>
 <td>AFImageWidth</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='44 = 0x2c'>44</td>
 <td>AFImageHeight</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='46 = 0x2e'>46</td>
 <td>AFAreaXPosition</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
-<td class=r title='48 = 0x30'>48</td>
-<td>AFAreaYPosition</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='48 = 0x30'>48</td>
+<td>AFAreaYPosition
+  <br>AFPointsInFocus</td>
+<td class=c>int16u<br>undef[20]</td>
+<td><span class=s><span class=n>(AF points in use at the time time image was captured)</span></span></td></tr>
+<tr>
 <td class=r title='50 = 0x32'>50</td>
 <td>AFAreaWidth</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='52 = 0x34'>52</td>
 <td>AFAreaHeight</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td class=r title='56 = 0x38'>56</td>
+<td>PrimaryAFPoint</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(Nikon models with 105-point AF -- 7 rows (A-G) and 15 columns (1-15): D6)</span></span><table class=cols><tr>
+  <td>0 = (none)
+  <br>1 = D8 (Center)
+  <br>2 = C8
+  <br>3 = B8
+  <br>4 = A8
+  <br>5 = E8
+  <br>6 = F8
+  <br>7 = G8
+  <br>8 = D9
+  <br>9 = C9
+  <br>10 = B9
+  <br>11 = A9
+  <br>12 = E9
+  <br>13 = F9
+  <br>14 = G9
+  <br>15 = D10
+  <br>16 = C10
+  <br>17 = B10
+  <br>18 = A10
+  <br>19 = E10
+  <br>20 = F10
+  <br>21 = G10</td><td>&nbsp;&nbsp;</td>
+  <td>22 = D7
+  <br>23 = C7
+  <br>24 = B7
+  <br>25 = A7
+  <br>26 = E7
+  <br>27 = F7
+  <br>28 = G7
+  <br>29 = D6
+  <br>30 = C6
+  <br>31 = B6
+  <br>32 = A6
+  <br>33 = E6
+  <br>34 = F6
+  <br>35 = G6
+  <br>36 = D11
+  <br>37 = C11
+  <br>38 = B11
+  <br>39 = A11
+  <br>40 = E11
+  <br>41 = F11
+  <br>42 = G11
+  <br>43 = D12</td><td>&nbsp;&nbsp;</td>
+  <td>44 = C12
+  <br>45 = B12
+  <br>46 = A12
+  <br>47 = E12
+  <br>48 = F12
+  <br>49 = G12
+  <br>50 = D13
+  <br>51 = C13
+  <br>52 = B13
+  <br>53 = A13
+  <br>54 = E13
+  <br>55 = F13
+  <br>56 = G13
+  <br>57 = D14
+  <br>58 = C14
+  <br>59 = B14
+  <br>60 = A14
+  <br>61 = E14
+  <br>62 = F14
+  <br>63 = G14
+  <br>64 = D15
+  <br>65 = C15</td><td>&nbsp;&nbsp;</td>
+  <td>66 = B15
+  <br>67 = A15
+  <br>68 = E15
+  <br>69 = F15
+  <br>70 = G15
+  <br>71 = D5
+  <br>72 = C5
+  <br>73 = B5
+  <br>74 = A5
+  <br>75 = E5
+  <br>76 = F5
+  <br>77 = G5
+  <br>78 = D4
+  <br>79 = C4
+  <br>80 = B4
+  <br>81 = A4
+  <br>82 = E4
+  <br>83 = F4
+  <br>84 = G4
+  <br>85 = D3
+  <br>86 = C3
+  <br>87 = B3</td><td>&nbsp;&nbsp;</td>
+  <td>88 = A3
+  <br>89 = E3
+  <br>90 = F3
+  <br>91 = G3
+  <br>92 = D2
+  <br>93 = C2
+  <br>94 = B2
+  <br>95 = A2
+  <br>96 = E2
+  <br>97 = F2
+  <br>98 = G2
+  <br>99 = D1
+  <br>100 = C1
+  <br>101 = B1
+  <br>102 = A1
+  <br>103 = E1
+  <br>104 = F1
+  <br>105 = G1</td></tr></table>
+</td></tr>
 <tr class=b>
 <td class=r title='68 = 0x44'>68</td>
 <td>PrimaryAFPoint</td>
@@ -5564,7 +5692,8 @@ phase detect AF points. Center point is E5)</span></span></td></tr>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On (1)
-  <br>2 = On (2)</span></td></tr>
+  <br>2 = On (2)
+  <br>3 = On (Zoom)</span></td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>AFFineTuneIndex</td>
@@ -5575,6 +5704,11 @@ phase detect AF points. Center point is E5)</span></span></td></tr>
 <td>AFFineTuneAdj</td>
 <td class=c>int8s</td>
 <td><span class=s><span class=n>(may only be valid for saved lenses)</span></span></td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>AFFineTuneAdjTele</td>
+<td class=c>int8s</td>
+<td><span class=s><span class=n>(only valid for zoom lenses (ie, AFTune=3))</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='RetouchInfo'>Nikon RetouchInfo Tags</a></h2>
@@ -6854,6 +6988,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 </tr><tr><td>'4A 4C 24 24 1E 6C 4D 06'</td><td>= Samyang 14mm f/2.4 Premium</td>
 </tr><tr><td>'4A 54 29 29 18 0C 4D 02'</td><td>= Samyang 16mm f/2.0 ED AS UMC CS</td>
 </tr><tr><td>'4A 54 62 62 0C 0C 4D 02'</td><td>= AF Nikkor 85mm f/1.4D IF</td>
+</tr><tr><td>'4A 58 30 30 14 0C 4D 02'</td><td>= Rokinon 20mm f/1.8 ED AS UMC</td>
 </tr><tr><td>'4A 60 36 36 0C 0C 4D 02'</td><td>= Samyang 24mm f/1.4 ED AS UMC</td>
 </tr><tr><td>'4A 60 44 44 0C 0C 4D 02'</td><td>= Samyang 35mm f/1.4 AS UMC</td>
 </tr><tr><td>'4A 60 62 62 0C 0C 4D 02'</td><td>= Samyang AE 85mm f/1.4 AS IF UMC</td>
@@ -7078,9 +7213,11 @@ used to specify the lens for ExifTool to choose in these cases (see the
 </tr><tr><td>'C1 48 24 37 24 24 4B 46'</td><td>= Sigma 14-24mm F2.8 DG HSM | A</td>
 </tr><tr><td>'C2 4C 24 24 14 14 4B 06'</td><td>= Sigma 14mm F1.8 DG HSM | A</td>
 </tr><tr><td>'C3 34 68 98 38 40 4B 4E'</td><td>= Sigma 100-400mm F5-6.3 DG OS HSM | C</td>
+</tr><tr><td>'C4 4C 73 73 14 14 4B 46'</td><td>= Sigma 135mm F1.8 DG HSM | A</td>
 </tr><tr><td>'C8 54 44 44 0D 0D DF 46'</td><td>= Tamron SP 35mm f/1.4 Di USD (F045)</td>
 </tr><tr><td>'C8 54 62 62 0C 0C 4B 06'</td><td>= Sigma 85mm F1.4 DG HSM | A</td>
 </tr><tr><td>'C8 54 62 62 0C 0C 4B 46'</td><td>= Sigma 85mm F1.4 DG HSM | A</td>
+</tr><tr><td>'C9 3C 44 76 25 31 DF 4E'</td><td>= Tamron 35-150mm f/2.8-4 Di VC OSD (A043)</td>
 </tr><tr><td>'C9 48 37 5C 24 24 4B 4E'</td><td>= Sigma 24-70mm F2.8 DG OS HSM | A</td>
 </tr><tr><td>'CA 48 27 3E 24 24 DF 4E'</td><td>= Tamron SP 15-30mm f/2.8 Di VC USD G2 (A041)</td>
 </tr><tr><td>'CB 3C 2B 44 24 31 DF 46'</td><td>= Tamron 17-35mm f/2.8-4 Di OSD (A037)</td>
@@ -7151,7 +7288,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 11, 2020</i>
+<br><i>Last revised Jun 11, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

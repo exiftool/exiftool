@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.30';
+$VERSION = '4.31';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -4715,8 +4715,8 @@ my %subSecConv = (
     },
     LensID => {
         Groups => { 2 => 'Camera' },
-        Require => 'LensType',
         Desire => {
+            0 => 'LensType',
             1 => 'FocalLength',
             2 => 'MaxAperture',
             3 => 'MaxApertureValue',
@@ -4735,16 +4735,25 @@ my %subSecConv = (
             Applies only to LensType values with a lookup table.  May be configured
             by adding user-defined lenses
         },
-        # this LensID is only valid if the LensType has a PrintConv or is a model name
+        # this LensID is only valid if the LensType has a PrintConv,
+        # or LensType or LensModel are the model name
         RawConv => q{
             my $printConv = $$self{TAG_INFO}{LensType}{PrintConv};
-            return $val if ref $printConv eq 'HASH' or (ref $printConv eq 'ARRAY' and
-                ref $$printConv[0] eq 'HASH') or $val[0] =~ /(mm|\d\/F)/;
+            return $val if ref $printConv eq 'HASH' or
+                (ref $printConv eq 'ARRAY' and ref $$printConv[0] eq 'HASH') or
+                (defined $val[0] and $val[0] =~ /(mm|\d\/F)/) or
+                (defined $val[6] and $val[6] =~ /(mm|\d\/F)/);
             return undef;
         },
-        ValueConv => '$val',
+        ValueConv => '$val[0] || $val[6]',
         PrintConv => q{
             my $pcv;
+            # use LensModel ([6]) if LensType ([0]) is not populated
+            # (iPhone populates LensModel but not LensType)
+            if (not defined $val[0] and defined $val[6]) {
+                $val[0] = $val[6];
+                $prt[0] = $prt[6];
+            }
             # use LensType2 instead of LensType if available and valid (Sony E-mount lenses)
             # (0x8000 or greater; 0 for several older/3rd-party E-mount lenses)
             if (defined $val[9] and ($val[9] & 0x8000 or $val[9] == 0)) {

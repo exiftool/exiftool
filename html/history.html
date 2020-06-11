@@ -11,11 +11,47 @@
 
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-11.85.tar.gz">Version 11.85</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.00.tar.gz">Version 12.00</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">CPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v12.00'><b>June 11, 2020 - Version 12.00</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added two new Olympus LensTypes (thanks Don Komarechka for one)
+<li>Added two new Sony LensType values (thanks Jos Roost)
+<li>Added a few new Nikon LensID's (thanks Mathieu Carbou)
+<li>Added support for the Sony ZV-1 (thanks Jos Roost)
+<li>Added a new CanonModelID (thanks Jos Roost)
+<li>Added missing MimeType values for HEICS and HEIFS files
+<li>Added definitions for a number of new XMP-crs tags
+<li>Recognize WOFF and WOFF2 font files
+<li>Decode streaming GPS from Roadhawk, EEEkit and 360Fly MP4 videos
+<li>Decode a number of new tags for the Nikon D6 (thanks Warren Hatch)
+<li>Decode a couple more AF tags for the D500/D850
+<li>Decode a number of new Panasonic tags
+<li>Improved Composite LensID logic (thanks Matt Stancliff)
+<li>Enhanced -v option to state when a directory has 0 entries
+<li>Removed a couple of incorrect Validate warnings for bilevel TIFF images
+<li>Drop ContrastCurve tag when copying from NEF to JPEG
+<li>Changed -csv output to add "Unknown" group name to column headings for
+    missing tags when -f and -G options are used
+<li>Patched to support new XMP LensID format for Nikon cameras as written by
+    Apple Photos (thanks Mattsta)
+<li>Fixed problem extracting metadata from Sigma DP2 Quattro X3F files
+<li>Fixed End() and EndDir() functions so they work when writing and when the -v
+    option is used
+<li>Fixed problem recognizing some PGM files
+<li>Fixed bug in offsets for some Photoshop information in -v3 output
+<li>Fixed problem writing a list containing empty elements inside an XMP
+    structure
+<li>API Changes:
+    <ul>
+    <li>Changed FilterW option to not write tag if $_ is set to undef
+    <li>Added NoMultiExif option
+    </ul>
+</ul>
 
 <a name='v11.99'><b>May 11, 2020 - Version 11.99</b></a>
 <ul>
@@ -58,7 +94,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
 
 <a name='v11.95'><b>Apr. 23, 2020 - Version 11.95</b></a>
 <ul>
-<li>Added Exit() and ExitDir() functions for use in -if conditions
+<li>Added Exit() and ExitDir() functions for use in -if conditions (NOTE: these
+    function names changed to End() and EndDir() in ExifTool 11.96)
 <li>Enhanced -geotag feature to support a more flexible input CSV file format
 <li>Enhanced -if and <a href="ExifTool.html#Filter">API Filter</a> options to allow access to ExifTool object via
     $self

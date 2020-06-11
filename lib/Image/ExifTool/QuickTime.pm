@@ -46,7 +46,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.49';
+$VERSION = '2.50';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -105,7 +105,9 @@ my %mimeLookup = (
     MQV  => 'video/quicktime',
     HEIC => 'image/heic',
     HEVC => 'image/heic-sequence',
+    HEICS=> 'image/heic-sequence',
     HEIF => 'image/heif',
+    HEIFS=> 'image/heif-sequence',
     AVIF => 'image/avif', #PH (NC)
     CRX  => 'video/x-canon-crx',    # (will get overridden)
 );
@@ -553,6 +555,20 @@ my %eeBox = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Canon::uuid2',
                 Start => 16,
+            },
+        },
+        { # (ref https://github.com/JamesHeinrich/getID3/blob/master/getid3/module.audio-video.quicktime.php)
+            Name => 'SensorData', # sensor data for the 360Fly
+            Condition => '$$valPt=~/^\xef\xe1\x58\x9a\xbb\x77\x49\xef\x80\x95\x27\x75\x9e\xb1\xdc\x6f/ and $$self{OPTIONS}{ExtractEmbedded}',
+            SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Tags360Fly' },
+        },
+        {
+            Name => 'SensorData',
+            Condition => '$$valPt=~/^\xef\xe1\x58\x9a\xbb\x77\x49\xef\x80\x95\x27\x75\x9e\xb1\xdc\x6f/',
+            Notes => 'raw 360Fly sensor data without ExtractEmbedded option',
+            RawConv => q{
+                $self->WarnOnce('Use the ExtractEmbedded option to decode timed SensorData',3);
+                return \$val;
             },
         },
         { #PH (Canon CR3)
@@ -1634,7 +1650,7 @@ my %eeBox = (
         Groups => { 2 => 'Time' },
         Notes => q{
             Apple Photos has been reported to show a crazy date/time for some MP4 files
-            containing this tag
+            containing this tag, but perhaps only if it is missing a time zone
         }, #forum10690/11125
         Shift => 'Time',
         ValueConv => q{

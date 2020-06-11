@@ -4,8 +4,41 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 11.85. (Other versions are
+Note: The most recent production release is Version 12.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+June 11, 2020 - Version 12.00 (production release)
+
+  - Added two new Olympus LensTypes (thanks Don Komarechka for one)
+  - Added two new Sony LensType values (thanks Jos Roost)
+  - Added a few new Nikon LensID's (thanks Mathieu Carbou)
+  - Added support for the Sony ZV-1 (thanks Jos Roost)
+  - Added a new CanonModelID (thanks Jos Roost)
+  - Added missing MimeType values for HEICS and HEIFS files
+  - Added definitions for a number of new XMP-crs tags
+  - Recognize WOFF and WOFF2 font files
+  - Decode streaming GPS from Roadhawk, EEEkit and 360Fly MP4 videos
+  - Decode a number of new tags for the Nikon D6 (thanks Warren Hatch)
+  - Decode a couple more AF tags for the D500/D850
+  - Decode a number of new Panasonic tags
+  - Improved Composite LensID logic (thanks Matt Stancliff)
+  - Enhanced -v option to state when a directory has 0 entries
+  - Removed a couple of incorrect Validate warnings for bilevel TIFF images
+  - Drop ContrastCurve tag when copying from NEF to JPEG
+  - Changed -csv output to add "Unknown" group name to column headings for
+    missing tags when -f and -G options are used
+  - Patched to support new XMP LensID format for Nikon cameras as written by
+    Apple Photos (thanks Mattsta)
+  - Fixed problem extracting metadata from Sigma DP2 Quattro X3F files
+  - Fixed End() and EndDir() functions so they work when writing and when the -v
+    option is used
+  - Fixed problem recognizing some PGM files
+  - Fixed bug in offsets for some Photoshop information in -v3 output
+  - Fixed problem writing a list containing empty elements inside an XMP
+    structure
+  - API Changes:
+      - Changed FilterW option to not write tag if $_ is set to undef
+      - Added NoMultiExif option
 
 May 11, 2020 - Version 11.99
 
@@ -44,7 +77,8 @@ Apr. 24, 2020 - Version 11.96
 
 Apr. 23, 2020 - Version 11.95
 
-  - Added Exit() and ExitDir() functions for use in -if conditions
+  - Added Exit() and ExitDir() functions for use in -if conditions (NOTE: these
+    function names changed to End() and EndDir() in ExifTool 11.96)
   - Enhanced -geotag feature to support a more flexible input CSV file format
   - Enhanced -if and API Filter options to allow access to ExifTool object via
     $self

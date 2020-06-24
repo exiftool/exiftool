@@ -17,6 +17,15 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.01'><b>June 24, 2020 - Version 12.01</b></a>
+<ul>
+<li>Added a new NEFCompression value (thanks Warren Hatch)
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Decode timed GPS from Rove Stealth 4K dashcam videos
+<li>Fixed bug which would corrupt TIFF images with 16-bit image data offsets
+    when writing (these are very rare)
+</ul>
+
 <a name='v12.00'><b>June 11, 2020 - Version 12.00</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added two new Olympus LensTypes (thanks Don Komarechka for one)
@@ -48,8 +57,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
     structure
 <li>API Changes:
     <ul>
-    <li>Changed FilterW option to not write tag if $_ is set to undef
-    <li>Added NoMultiExif option
+    <li>Added <a href="ExifTool.html#NoMultiExif">NoMultiExif option</a>
+    <li>Changed <a href="ExifTool.html#FilterW">FilterW option</a> to not write tag if $_ is set to undef
     </ul>
 </ul>
 

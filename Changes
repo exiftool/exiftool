@@ -7,6 +7,14 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+June 24, 2020 - Version 12.01
+
+  - Added a new NEFCompression value (thanks Warren Hatch)
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Decode timed GPS from Rove Stealth 4K dashcam videos
+  - Fixed bug which would corrupt TIFF images with 16-bit image data offsets
+    when writing (these are very rare)
+
 June 11, 2020 - Version 12.00 (production release)
 
   - Added two new Olympus LensTypes (thanks Don Komarechka for one)
@@ -37,8 +45,8 @@ June 11, 2020 - Version 12.00 (production release)
   - Fixed problem writing a list containing empty elements inside an XMP
     structure
   - API Changes:
-      - Changed FilterW option to not write tag if $_ is set to undef
       - Added NoMultiExif option
+      - Changed FilterW option to not write tag if $_ is set to undef
 
 May 11, 2020 - Version 11.99
 

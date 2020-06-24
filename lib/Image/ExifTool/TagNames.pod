@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23457 tags, with 15345 unique tag names.
+They contain a total of 23465 tags, with 15349 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1657,7 +1657,11 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   LensProfileSetup                              string/
   LensProfileVignettingScale                    integer/
   Look                                          Look Struct
+  LookAmount                                    string/_
+  LookCluster                                   string/_
   LookName                                      string/_
+  LookSupportsMonochrome                        string/_
+  LookUUID                                      string/_
   LuminanceAdjustmentAqua                       integer/
   LuminanceAdjustmentBlue                       integer/
   LuminanceAdjustmentGreen                      integer/
@@ -1924,7 +1928,11 @@ These tags belong to the ExifTool XMP-crd family 1 group.
 
   Field Name                                    Writable
   ----------                                    --------
+  Amount                                        string
+  Cluster                                       string
   Name                                          string
+  SupportsMonochrome                            string
+  UUID                                          string
 
 =head3 XMP RetouchArea Struct
 
@@ -2205,7 +2213,11 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   LensProfileSetup                              string
   LensProfileVignettingScale                    integer
   Look                                          Look Struct
+  LookAmount                                    string_
+  LookCluster                                   string_
   LookName                                      string_
+  LookSupportsMonochrome                        string_
+  LookUUID                                      string_
   LuminanceAdjustmentAqua                       integer
   LuminanceAdjustmentBlue                       integer
   LuminanceAdjustmentGreen                      integer

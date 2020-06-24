@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.84';
+$VERSION = '3.85';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1879,6 +1879,7 @@ my %binaryDataAttrs = (
             7 => 'Unpacked 12 bits', #IB (padded to 16)
             8 => 'Small', #IB
             9 => 'Packed 12 bits', #IB (2 pixels in 3 bytes)
+            10 => 'Packed 14 bits', #28 (4 pixels in 7 bytes, eg. D6 uncompressed 14 bit)
         },
     },
     0x0094 => { Name => 'SaturationAdj',    Writable => 'int16s' },
@@ -3777,7 +3778,7 @@ my %binaryDataAttrs = (
         },{ #PH (D500, see forum11190)
             Name => 'AFPointsInFocus',
             Condition => '$$self{AFInfo2Version} eq "0101" and $$self{PhaseDetectAF} == 7',
-            Notes => 'AF points in use at the time time image was captured',
+            Notes => 'AF points in focus at the time time image was captured',
             Format => 'undef[20]',
             ValueConv => 'join(" ", unpack("H2"x20, $val))',
             ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',

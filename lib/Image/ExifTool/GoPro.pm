@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::QuickTime;
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub ProcessGoPro($$$);
 sub ProcessString($$$);
@@ -590,6 +590,7 @@ sub ProcessString($$$)
 # Process GoPro metadata (gpmd samples, GPMF box, or APP6) (ref PH/1/2)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
+# - with hack to check for encrypted text in gpmd data (Rove Stealth 4K)
 sub ProcessGoPro($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
@@ -601,6 +602,14 @@ sub ProcessGoPro($$$)
     my $unknown = $verbose || $et->Options('Unknown');
     my ($size, $type, $unit, $scal, $setGroup0);
 
+    # the Rove Stealth 4K writes encrypted text here, so check for this first
+    # (really should check for this before loading GoPro module, but I was lazy)
+    if ($$dataPt =~ /^\0\0\xf2\xe1\xf0\xeeTT/) {
+        $et->VerboseDir('gpmd encrypted text', undef, length($$dataPt));
+        my $strmTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+        Image::ExifTool::QuickTime::Process_text($et, $strmTbl, $dataPt);
+        return 1;
+    }
     $et->VerboseDir($$dirInfo{DirName} || 'GPMF', undef, $dirEnd-$pos) if $verbose;
     if ($pos) {
         my $parent = $$dirInfo{Parent};

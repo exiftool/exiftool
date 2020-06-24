@@ -1483,6 +1483,10 @@ my %sPantryItem = (
             STRUCT_NAME => 'Look',
             NAMESPACE   => 'crs',
             Name   => { },
+            Amount => { },
+            Cluster=> { },
+            UUID   => { },
+            SupportsMonochrome => { },
         }
     },
     # more again (ref forum11258)

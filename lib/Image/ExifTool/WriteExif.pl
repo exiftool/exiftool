@@ -1832,6 +1832,7 @@ NoOverwrite:            next if $isNew > 0;
                                 warn "Internal error writing offsets for $$newInfo{Name}\n";
                                 return undef;
                             }
+                            $newValuePt = \$newValue;
                         }
                         $offsetInfo or $offsetInfo = $offsetInfo[$ifd] = { };
                         # save location of valuePtr in new directory

@@ -46,7 +46,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.50';
+$VERSION = '2.51';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -420,7 +420,8 @@ my %eeBox = (
     sbtl => { %eeStd },
     data => { %eeStd },
     camm => { %eeStd }, # (Insta360)
-    ''   => { 'gps ' => 'moov' }, # (no handler -- in top level 'moov' box)
+    ctbx => { %eeStd }, # (GM cars)
+    ''   => { 'gps ' => 'moov', 'GPS ' => 'main' }, # (no handler -- in top level 'moov' box, and main)
 );
 
 # QuickTime atoms
@@ -683,6 +684,11 @@ my %eeBox = (
     },
     # gpsa - seen hex "01 20 00 00" (DuDuBell M1, VSYS M6L)
     # gsea - 20 bytes hex "05 00's..." (DuDuBell M1) "05 08 02 01 ..." (VSYS M6L)
+   'GPS ' => {  # GPS data written by 70mai dashcam (parsed in QuickTimeStream.pl)
+        Name => 'GPSDataList2',
+        Unknown => 1,
+        Binary => 1,
+    },
 );
 
 # MPEG-4 'ftyp' atom
@@ -978,7 +984,7 @@ my %eeBox = (
 %Image::ExifTool::QuickTime::CleanAperture = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 2 => 'Video' },
-    FORMAT => 'rational64u',
+    FORMAT => 'rational64s',
     0 => 'CleanApertureWidth',
     1 => 'CleanApertureHeight',
     2 => 'CleanApertureOffsetX',
@@ -1387,8 +1393,8 @@ my %eeBox = (
         },
         ValueConvInv => q{
             require Image::ExifTool::XMP;
-            $val =  Image::ExifTool::XMP::FormatXMPDate($val);
-            $val =~ s/([-+]\d{2}):(\d{2})$/$1$2/; # remove time zone colon
+            my $tmp = Image::ExifTool::XMP::FormatXMPDate($val);
+            ($val = $tmp) =~ s/([-+]\d{2}):(\d{2})$/$1$2/ if defined $tmp; # remove time zone colon
             return $val;
         },
         PrintConv => '$self->ConvertDateTime($val)',
@@ -1873,6 +1879,25 @@ my %eeBox = (
             ByteOrder => 'LittleEndian',
         },
     },
+    # ---- Garmin ---- (ref PH)
+    uuid => [{
+        Name => 'GarminSoftware', # (NC)
+        Condition => '$$valPt =~ /^VIRBactioncamera/',
+        RawConv => 'substr($val, 16)',
+        RawConvInv => '"VIRBactioncamera$val"',
+    },{
+        # have seen "28 f3 11 e2 b7 91 4f 6f 94 e2 4f 5d ea cb 3c 01" for RicohThetaZ1 accelerometer RADT data (not yet decoded)
+        Name => 'UUID-Unknown',
+        Writable => 0,
+        %unknownInfo,
+    }],
+    pmcc => {
+        Name => 'GarminSettings',
+        ValueConv => 'substr($val, 4)',
+        ValueConvInv => '"\0\0\0\x01$val"',
+    },
+    # hmtp - "\0\0\0\x01" followed by 408 bytes of zero
+    # vrin - "\0\0\0\x01" followed by 8 bytes of zero
     # ---- GoPro ---- (ref PH)
     GoPr => 'GoProType', # (Hero3+)
     FIRM => { Name => 'FirmwareVersion', Avoid => 1 }, # (Hero4)
@@ -2056,6 +2081,63 @@ my %eeBox = (
             ProcessProc => \&Image::ExifTool::ProcessTIFF, # (because ProcessMOV is default)
         },
     },
+    '@mak' => { Name => 'Make',     Avoid => 1 },
+    '@mod' => { Name => 'Model',    Avoid => 1 },
+    '@swr' => { Name => 'SoftwareVersion', Avoid => 1 },
+    '@day' => {
+        Name => 'ContentCreateDate',
+        Notes => q{
+            some stupid Ricoh programmer used the '@' symbol instead of the copyright
+            symbol in these tag ID's for the Ricoh Theta Z1 and maybe other models
+        },
+        Groups => { 2 => 'Time' },
+        Shift => 'Time',
+        Avoid => 1,
+        # handle values in the form "2010-02-12T13:27:14-0800"
+        ValueConv => q{
+            require Image::ExifTool::XMP;
+            $val =  Image::ExifTool::XMP::ConvertXMPDate($val);
+            $val =~ s/([-+]\d{2})(\d{2})$/$1:$2/; # add colon to timezone if necessary
+            return $val;
+        },
+        ValueConvInv => q{
+            require Image::ExifTool::XMP;
+            my $tmp = Image::ExifTool::XMP::FormatXMPDate($val);
+            ($val = $tmp) =~ s/([-+]\d{2}):(\d{2})$/$1$2/ if defined $tmp; # remove time zone colon
+            return $val;
+        },
+        PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
+    },
+    '@xyz' => { #PH (iPhone 3GS)
+        Name => 'GPSCoordinates',
+        Groups => { 2 => 'Location' },
+        Avoid => 1,
+        ValueConv => \&ConvertISO6709,
+        ValueConvInv => \&ConvInvISO6709,
+        PrintConv => \&PrintGPSCoordinates,
+        PrintConvInv => \&PrintInvGPSCoordinates,
+    },
+    # RDT1 - pairs of int32u_BE, starting at byte 8: "458275 471846"
+    # RDT2 - pairs of int32u_BE, starting at byte 8: "472276 468526"
+    # RDT3 - pairs of int32u_BE, starting at byte 8: "876603 482191"
+    # RDT4 - pairs of int32u_BE, starting at byte 8: "1955 484612"
+    # RDT6 - empty
+    # RDT7 - empty
+    # RDT8 - empty
+    # RDT9 - only 16-byte header?
+    # the boxes below all have a similar header (little-endian):
+    #  0 int32u - number of records
+    #  4 ? - "1e 00"
+    #  6 int16u - record length in bytes
+    #  8 ? - "23 01 00 00 00 00 00 00"
+    #  16 - start of records (each record ends in an int64u timestamp in ns)
+    # RDTA - float[4],ts: "-0.31289672 -0.2245330 11.303817 0 775.780"
+    # RDTB - float[4],ts: "-0.04841613 -0.2166595 0.0724792 0 775.780"
+    # RDTC - float[4],ts: "27.60925 -27.10037 -13.27285 0 775.829"
+    # RDTD - int16s[3],ts: "353 -914 16354 0 775.829"
+    # RDTG - ts: "775.825"
+    # RDTI - float[4],ts: "0.00165951 0.005770059 0.06838259 0.1744695 775.862"
     # ---- Samsung ----
     vndr => 'Vendor', #PH (Samsung PL70)
     SDLN => 'PlayMode', #PH (NC, Samsung ST80 "SEQ_PLAY")
@@ -2571,7 +2653,7 @@ my %eeBox = (
     },
     clap => {
         Name => 'CleanAperture',
-        Format => 'rational64u',
+        Format => 'rational64s',
         Notes => '4 numbers: width, height, left and top',
     },
     hvcC => {
@@ -2909,7 +2991,6 @@ my %eeBox = (
     "\xa9grp" => 'Grouping',
     "\xa9lyr" => 'Lyrics',
     "\xa9nam" => 'Title',
-    # "\xa9st3" ? #10
     "\xa9too" => 'Encoder',
     "\xa9trk" => 'Track',
     "\xa9wrt" => 'Composer',
@@ -2927,8 +3008,17 @@ my %eeBox = (
     disk => {
         Name => 'DiskNumber',
         Format => 'undef',  # (necessary to prevent decoding as string!)
-        ValueConv => 'length($val) >= 6 ? join(" of ",unpack("x2nn",$val)) : \$val',
-        ValueConvInv => 'my @a = split / of /, $val; @a==2 ? pack("n3",0,@a) : undef',
+        ValueConv => q{
+            return \$val unless length($val) >= 6;
+            my @a = unpack 'x2nn', $val;
+            return $a[1] ? join(' of ', @a) : $a[0];
+        },
+        ValueConvInv => q{
+            my @a = $val =~ /\d+/g;
+            return undef if @a == 0 or @a > 2;
+            push @a, 0 if @a == 1;
+            return pack('n3', 0, @a);
+        },
     },
     pgap => { #10
         Name => 'PlayGap',
@@ -2945,8 +3035,17 @@ my %eeBox = (
     trkn => {
         Name => 'TrackNumber',
         Format => 'undef',  # (necessary to prevent decoding as string!)
-        ValueConv => 'length($val) >= 6 ? join(" of ",unpack("x2nn",$val)) : \$val',
-        ValueConvInv => 'my @a = split / of /, $val; @a==2 ? pack("n3",0,@a) : undef',
+        ValueConv => q{
+            return \$val unless length($val) >= 6;
+            my @a = unpack 'x2nn', $val;
+            return $a[1] ? join(' of ', @a) : $a[0];
+        },
+        ValueConvInv => q{
+            my @a = $val =~ /\d+/g;
+            return undef if @a == 0 or @a > 2;
+            push @a, 0 if @a == 1;
+            return pack('n3', 0, @a);
+        },
     },
 #
 # Note: it is possible that the tags below are not being decoded properly
@@ -6162,6 +6261,21 @@ my %eeBox = (
     # (fiel)com.apple.quicktime.detected-face.yaw-angle (dtyp=23, float)
     'detected-face.yaw-angle'  => { Name => 'DetectedFaceYawAngle',  Writable => 0 },
 #
+# the following tags written by AtomicParsley 0.9.6
+# (ref https://exiftool.org/forum/index.php?topic=11455.0)
+#
+    "\xa9st3" => 'Subtitle',
+    "\xa9con" => 'Conductor',
+    "\xa9sol" => 'Soloist',
+    "\xa9arg" => 'Arranger',
+    "\xa9ope" => 'OriginalArtist',
+    "\xa9dir" => 'Director',
+    "\xa9ard" => 'ArtDirector',
+    "\xa9sne" => 'SoundEngineer',
+    "\xa9prd" => 'Producer',
+    "\xa9xpd" => 'ExecutiveProducer',
+    sdes      => 'StoreDescription',
+#
 # seen in Apple ProRes RAW file
 #
     # (mdta)com.apple.proapps.manufacturer (eg. "Sony")
@@ -6753,6 +6867,7 @@ my %eeBox = (
     # alac - 28 bytes
     # adrm - AAX DRM atom? 148 bytes
     # aabd - AAX unknown 17kB (contains 'aavd' strings)
+    # SA3D - written by Garmin VIRB360
 );
 
 # AMR decode config box (ref 3)
@@ -7239,6 +7354,20 @@ my %eeBox = (
 #
     ftab => { Name => 'FontTable',  Format => 'undef', ValueConv => 'substr($val, 5)' },
     name => { Name => 'OtherName',  Format => 'undef', ValueConv => 'substr($val, 4)' },
+    # mrlh = GM header?
+    # mrlv = GM data
+    # mrld = GM data (448-byte records):
+    #            0 - int32u count
+    #            4 - int32u ? (related to units) 0=none,1=m/km,2=L,3=kph,4=C,7=deg,8=rpm,9=kPa,10=G,11=V,15=Nm,16=%
+    #            8 - int32u ? (0,1,3,4,5)
+    #           12 - string[64] units
+    #           76 - int32u ? (1,3,7,15)
+    #           80 - int32u 0
+    #           84 - undef[4] ?
+    #           88 - int16u[6] ?
+    #           100 - undef[32] ?
+    #           132 - string[64] measurement name
+    #           196 - string[64] measurement name
 );
 
 # MP4 data information box (ref 5)
@@ -8596,7 +8725,7 @@ sub ProcessKeys($$$)
         my $ns  = substr($$dataPt, $pos + 4, 4);
         my $tag = substr($$dataPt, $pos + 8, $len - 8);
         $tag =~ s/\0.*//s; # truncate at null
-        $tag =~ s/^com\.apple\.quicktime\.// if $ns eq 'mdta'; # remove apple quicktime domain
+        $tag =~ s/^com\.(apple\.quicktime\.)?// if $ns eq 'mdta'; # remove apple quicktime domain
         $tag = "Tag_$ns" unless $tag;
         # (I have some samples where the tag is a reversed ItemList or UserData tag ID)
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);

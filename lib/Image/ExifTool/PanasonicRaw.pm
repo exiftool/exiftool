@@ -531,14 +531,45 @@ my %panasonicWhiteBalance = ( #forum9396
         PrintConv => '"$val mm"',
         PrintConvInv => '$val=~s/\s*mm$//;$val',
     },
+    # 0x1300 - incident light value? (ref forum11395)
+    0x1301 => { #forum11395
+        Name => 'ApertureValue',
+        Writable => 'int16s',
+        Priority => 0,
+        ValueConv => '2 ** ($val / 512)',
+        ValueConvInv => '$val>0 ? 512*log($val)/log(2) : 0',
+        PrintConv => 'sprintf("%.1f",$val)',
+        PrintConvInv => '$val',
+    },
+    0x1302 => { #forum11395
+        Name => 'ShutterSpeedValue',
+        Writable => 'int16s',
+        Priority => 0,
+        ValueConv => 'abs($val/256)<100 ? 2**(-$val/256) : 0',
+        ValueConvInv => '$val>0 ? -256*log($val)/log(2) : -25600',
+        PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
+    0x1303 => { #forum11395
+        Name => 'SensitivityValue',
+        Writable => 'int16s',
+        ValueConv => '$val / 256',
+        ValueConvInv => 'int($val * 256)',
+    },
     0x1305 => { #forum9384
         Name => 'HighISOMode',
         Writable => 'int16u',
         RawConv => '$val || undef',
         PrintConv => { 1 => 'On', 2 => 'Off' },
     },
+    # 0x1306 EV for some models like the GX8 (forum11395)
     # 0x140b - scaled overall black level? (ref forum9281)
     # 0x1411 - scaled black level per channel difference (ref forum9281)
+    0x1412 => { #forum11397
+        Name => 'FacesDetected',
+        Writable => 'int8u',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
     # 0x2000 - WB tungsten=3, daylight=4 (ref forum9467)
     # 0x2009 - scaled black level per channel (ref forum9281)
     # 0x3000-0x310b - red/blue balances * 1024 (ref forum9467)
@@ -600,6 +631,8 @@ my %panasonicWhiteBalance = ( #forum9396
         Writable => 'int8u',
         PrintConv => \%Image::ExifTool::Exif::orientation,
     },
+    # 0x3504 = Tag 0x1301+0x1302-0x1303 (Bv = Av+Tv-Sv) (forum11395)
+    # 0x3505 - same as 0x1300 (forum11395)
     0x3600 => { #forum9396
         Name => 'WhiteBalanceDetected',
         Writable => 'int8u',

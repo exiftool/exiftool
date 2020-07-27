@@ -736,8 +736,19 @@ my %shootingMode = (
         PrintConvInv => '$val =~ /(\d+)/ ? $1 : $val',
     },
     # 0x37 - values: 0,1,2 (LZ6, 0 for movie preview); 257 (FX10K); 0,256 (TZ5, 0 for movie preview)
-    # 0x38 - values: 0,1,2 (LZ6, same as 0x37); 1,2 (FX10K); 0,256 (TZ5, 0 for movie preview)
-    #        - changes with noise reduction for DC-S1
+    0x38 => { #forum11388
+        Name => 'BatteryLevel',
+        Writable => 'int16u',
+        PrintConv => {
+            1 => 'Full',
+            2 => 'Medium',
+            3 => 'Low',
+            4 => 'Near Empty',
+            7 => 'Near Full',
+            8 => 'Medimu Low',
+            256 => 'n/a',
+        },
+    },
     0x39 => { #7 (L1/L10)
         Name => 'Contrast',
         Format => 'int16s',

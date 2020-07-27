@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.01';
+$VERSION = '12.02';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -3348,6 +3348,17 @@ sub GetGroup($$;$)
             $groups[5] = '' unless defined $groups[5];  # (can't leave a hole in the array)
             $groups[6] = $$ex{G6};
         }
+    }
+    if ($$self{OPTIONS}{SaveIDGroup}) {
+        my $id = $$tagInfo{TagID};
+        $id = '' unless defined $id;
+        if ($$self{OPTIONS}{SaveIDGroup} eq '2' and $id =~ /^\d+$/) {
+            $groups[7] = 'ID_' . sprintf('0x%x', $id);
+        } else {
+            $id =~ s/([^-_A-Za-z0-9])/sprintf('%.2x',ord $1)/ge;
+            $groups[7] = 'ID_' . $id;
+        }
+        defined $groups[$_] or $groups[$_] = '' foreach (5,6);
     }
     if ($family) {
         return $groups[$family] || '' if $family > 0;

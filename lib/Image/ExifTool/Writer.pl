@@ -366,14 +366,18 @@ sub SetNewValue($;$$%)
     if ($wantGroup) {
         foreach (split /:/, $wantGroup) {
             next unless length($_) and /^(\d+)?(.*)/; # separate family number and group name
-            my ($f, $g) = ($1, lc $2);
+            my ($f, $g) = ($1, $2);
+            my $lcg = lc $g;
             # save group/family unless '*' or 'all'
-            push @wantGroup, [ $f, $g ] unless $g eq '*' or $g eq 'all';
-            if (defined $f) {
-                $f > 2 and return 0;      # only allow family 0, 1 or 2
-                $family2 = 1 if $f == 2;  # set flag indicating family 2 was used
+            push @wantGroup, [ $f, $lcg ] unless $lcg eq '*' or $lcg eq 'all';
+            if ($g =~ /^ID_(.*)/i) {        # family 7 is this is a tag ID
+                return 0 if defined $f and $f ne 7;
+                $wantGroup[-1] = [ 7, "ID_$1" ]; # case is significant for tag ID's
+            } elsif (defined $f) {
+                $f > 2 and return 0;        # only allow family 0, 1 or 2
+                $family2 = 1 if $f == 2;    # set flag indicating family 2 was used
             } else {
-                $family2 = 1 if $family2groups{$g};
+                $family2 = 1 if $family2groups{$lcg};
             }
         }
         undef $wantGroup unless @wantGroup;
@@ -622,6 +626,16 @@ TAG: foreach $tagInfo (@matchingTags) {
                         next;
                     }
                     next if $lcWant eq lc $grp[2];
+                } elsif ($fam == 7) {
+                    my $idGrp;
+                    if ($$self{OPTIONS}{HexIDGroup} and $$tagInfo{TagID} =~ /^\d+$/) {
+                        $idGrp = 'ID_' . sprintf('0x%x', $$tagInfo{TagID});
+                    } else {
+                        $idGrp = 'ID_' . $$tagInfo{TagID};
+                    }
+                    next if $lcWant eq $idGrp;  # also allow raw tag ID
+                    $idGrp =~ s/([^-_A-Za-z0-9])/sprintf('%.2x',ord $1)/ge;
+                    next if $lcWant eq $idGrp;  # plain ASCII tag ID group name
                 } elsif ($fam != 1 and not $$tagInfo{AllowGroup}) {
                     next if $lcWant eq lc $grp[$fam];
                     if ($wgAll and not $fam and $allFam0{$lcWant}) {

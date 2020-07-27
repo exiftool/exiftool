@@ -1378,15 +1378,17 @@ well as newer tags and values added by later models.</p>
   <br>2 = Enable (ISO speed)</span></td></tr>
 <tr>
 <td title='0x0109 = 265'>0x0109</td>
-<td>UsableShootingModes</td>
-<td class=c>int32s[2]</td>
+<td>UsableShootingModes
+  <br>UsableShootingModes</td>
+<td class=c>int32s<br>int32s[2]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
 <tr class=b>
 <td title='0x010a = 266'>0x010a</td>
-<td>UsableMeteringModes</td>
-<td class=c>int32s[2]</td>
+<td>UsableMeteringModes
+  <br>UsableMeteringModes</td>
+<td class=c>int32s<br>int32s[2]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
@@ -1864,9 +1866,13 @@ well as newer tags and values added by later models.</p>
   <br>2 = Enable: Down with Set</span></td></tr>
 <tr>
 <td title='0x0610 = 1552'>0x0610</td>
-<td>ContinuousShootingSpeed</td>
-<td class=c>int32s[3]</td>
+<td>ContinuousShootingSpeed
+  <br>ContinuousShootingSpeed</td>
+<td class=c>int32s[6]<br>int32s[3]</td>
 <td><span class=s>[Value 0]
+  <br>0 = Disable
+  <br>1 = Enable
+  <br>[Value 0]
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
 <tr class=b>
@@ -1878,8 +1884,9 @@ well as newer tags and values added by later models.</p>
   <br>1 = Enable</span></td></tr>
 <tr>
 <td title='0x0612 = 1554'>0x0612</td>
-<td>RestrictDriveModes</td>
-<td class=c>int32s[2]</td>
+<td>RestrictDriveModes
+  <br>RestrictDriveModes</td>
+<td class=c>int32s<br>int32s[2]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
@@ -2126,8 +2133,9 @@ well as newer tags and values added by later models.</p>
   <br>3 = Ec-N,R</span></td></tr>
 <tr class=b>
 <td title='0x080c = 2060'>0x080c</td>
-<td>TimerLength</td>
-<td class=c>int32s[4]</td>
+<td>TimerLength
+  <br>TimerLength</td>
+<td class=c>int32s[3]<br>int32s[4]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
@@ -2179,7 +2187,9 @@ well as newer tags and values added by later models.</p>
 <td>DefaultEraseOption</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Cancel selected
-  <br>1 = Erase selected</span></td></tr>
+  <br>1 = Erase selected
+  <br>2 = Erase RAW selected
+  <br>3 = Erase non-RAW selected</span></td></tr>
 <tr class=b>
 <td title='0x0814 = 2068'>0x0814</td>
 <td>RetractLensOnPowerOff</td>
@@ -2202,7 +2212,7 @@ well as newer tags and values added by later models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 18, 2019</i>
+<br><i>Last revised Jul 27, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

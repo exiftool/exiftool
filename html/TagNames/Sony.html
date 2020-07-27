@@ -4800,6 +4800,7 @@ multi-frame noise reduction)</span></span></td></tr>
 </tr><tr><td>32854</td><td>= Sony E 70-350mm F4.5-6.3 G OSS</td>
 </tr><tr><td>32858</td><td>= Sony FE 35mm F1.8</td>
 </tr><tr><td>32859</td><td>= Sony FE 20mm F1.8 G</td>
+</tr><tr><td>32860</td><td>= Sony FE 12-24mm F2.8 GM</td>
 </tr><tr><td>33072</td><td>= Sony FE 70-200mm F2.8 GM OSS + 1.4X Teleconverter</td>
 </tr><tr><td>33073</td><td>= Sony FE 70-200mm F2.8 GM OSS + 2X Teleconverter</td>
 </tr><tr><td>33076</td><td>= Sony FE 100mm F2.8 STF GM OSS (macro mode)</td>
@@ -4858,7 +4859,7 @@ multi-frame noise reduction)</span></span></td></tr>
 </tr><tr><td>50515</td><td>= Sigma 35mm F1.2 DG DN | A</td>
 </tr><tr><td>50516</td><td>= Sigma 14-24mm F2.8 DG DN | A</td>
 </tr><tr><td>50517</td><td>= Sigma 24-70mm F2.8 DG DN | A</td>
-</tr><tr><td>50518</td><td>= Sigma 100-400mm F5-6.3 DG DN OS</td>
+</tr><tr><td>50518</td><td>= Sigma 100-400mm F5-6.3 DG DN OS | C</td>
 </tr><tr><td>50992</td><td>= Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III</td>
 </tr><tr><td>50993</td><td>= Voigtlander HELIAR-HYPER WIDE 10mm F5.6</td>
 </tr><tr><td>50994</td><td>= Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III</td>
@@ -11267,6 +11268,60 @@ some models when the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded<
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td title='0x8500 = 34048'>0x8500</td>
+<td>GPSVersionID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x8501 = 34049'>0x8501</td>
+<td>GPSLatitudeRef</td>
+<td class=c>no</td>
+<td><span class=s>&#39;N&#39; = North
+  <br>&#39;S&#39; = South</span></td></tr>
+<tr>
+<td title='0x8502 = 34050'>0x8502</td>
+<td>GPSLatitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x8503 = 34051'>0x8503</td>
+<td>GPSLongitudeRef</td>
+<td class=c>no</td>
+<td><span class=s>&#39;E&#39; = East
+  <br>&#39;W&#39; = West</span></td></tr>
+<tr>
+<td title='0x8504 = 34052'>0x8504</td>
+<td>GPSLongitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x8507 = 34055'>0x8507</td>
+<td>GPSTimeStamp</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x8509 = 34057'>0x8509</td>
+<td>GPSStatus</td>
+<td class=c>no</td>
+<td><span class=s>&#39;A&#39; = Measurement Active
+  <br>&#39;V&#39; = Measurement Void</span></td></tr>
+<tr class=b>
+<td title='0x850a = 34058'>0x850a</td>
+<td>GPSMeasureMode</td>
+<td class=c>no</td>
+<td><span class=s>2 = 2-Dimensional Measurement
+  <br>3 = 3-Dimensional Measurement</span></td></tr>
+<tr>
+<td title='0x8512 = 34066'>0x8512</td>
+<td>GPSMapDatum</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x851d = 34077'>0x851d</td>
+<td>GPSDateStamp</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0xe304 = 58116'>0xe304</td>
 <td>DateTime</td>
 <td class=c>no</td>
@@ -11275,7 +11330,7 @@ some models when the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded<
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 24, 2020</i>
+<br><i>Last revised Jul 27, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -19,7 +19,7 @@ use Image::ExifTool qw(:DataAccess);
 use Image::ExifTool::Canon;
 use Image::ExifTool::Exif;
 
-$VERSION = '1.56';
+$VERSION = '1.57';
 
 sub ProcessCanonCustom($$$);
 sub ProcessCanonCustom2($$$);
@@ -1326,9 +1326,15 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             2 => 'Enable (ISO speed)',
         },
     },
-    0x0109 => {
+    0x0109 => [{ # (1DXmkIII)
         Name => 'UsableShootingModes',
-        Count => 2, # (Count is 1 for 1DXmkIII -- need to decode this)
+        Condition => '$count == 1',
+        Count => 1,
+        PrintConv => 'sprintf("Flags 0x%x",$val)',
+        PrintConvInv => '$val=~/0x([\dA-F]+)/i ? hex($1) : undef',
+    },{
+        Name => 'UsableShootingModes',
+        Count => 2,
         PrintConv => [
             \%disableEnable,
             'sprintf("Flags 0x%x",$val)', # (M, Tv, Av, P, Bulb)
@@ -1337,10 +1343,16 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             undef,
             '$val=~/0x([\dA-F]+)/i ? hex($1) : undef',
         ],
-    },
-    0x010a => {
+    }],
+    0x010a => [{ # (1DXmkIII)
         Name => 'UsableMeteringModes',
-        Count => 2, # (Count is 1 for 1DXmkIII -- need to decode this)
+        Condition => '$count == 1',
+        Count => 1,
+        PrintConv => 'sprintf("Flags 0x%x",$val)',
+        PrintConvInv => '$val=~/0x([\dA-F]+)/i ? hex($1) : undef',
+    },{
+        Name => 'UsableMeteringModes',
+        Count => 2, 
         PrintConv => [
             \%disableEnable,
             'sprintf("Flags 0x%x",$val)', # (evaluative,partial,spot,center-weighted average)
@@ -1349,7 +1361,7 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             undef,
             '$val=~/0x([\dA-F]+)/i ? hex($1) : undef',
         ],
-    },
+    }],
     0x010b => {
         Name => 'ExposureModeInManual',
         PrintConv => {
@@ -2066,7 +2078,27 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             2 => 'Enable: Down with Set',
         },
     },
-    0x0610 => {
+    0x0610 => [{ # (1DXmkIII)
+        Name => 'ContinuousShootingSpeed',
+        Condition => '$count == 6',
+        Count => 6,
+        PrintConv => [
+            \%disableEnable,
+            '"Hi $val"',
+            '"Cont $val"',
+            '"Lo $val"',
+            '"Soft $val"',
+            '"Soft LS $val"',
+        ],
+        PrintConvInv => [
+            undef,
+            '$val=~/(\d+)/ ? $1 : 0',
+            '$val=~/(\d+)/ ? $1 : 0',
+            '$val=~/(\d+)/ ? $1 : 0',
+            '$val=~/(\d+)/ ? $1 : 0',
+            '$val=~/(\d+)/ ? $1 : 0',
+        ],
+    },{ # others
         Name => 'ContinuousShootingSpeed',
         Count => 3,
         PrintConv => [
@@ -2079,7 +2111,7 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             '$val=~/(\d+)/ ? $1 : 0',
             '$val=~/(\d+)/ ? $1 : 0',
         ],
-    },
+    }],
     0x0611 => {
         Name => 'ContinuousShotLimit',
         Count => 2,
@@ -2092,9 +2124,15 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             '$val=~/(\d+)/ ? $1 : 0',
         ],
     },
-    0x0612 => { # (1DX)
+    0x0612 => [{ # (1DXmkIII)
         Name => 'RestrictDriveModes',
-        Count => 2, # (Count is 1 for 1DXmkIII -- need to decode this)
+        Condition => '$count == 1',
+        Count => 1,
+        PrintConv => 'sprintf("Flags 0x%x",$val)',
+        PrintConvInv => '$val=~/0x([\dA-F]+)/i ? hex($1) : undef',
+    },{ # (1DX)
+        Name => 'RestrictDriveModes',
+        Count => 2,
         PrintConv => [
             \%disableEnable,
             'sprintf("Flags 0x%x",$val)', # (Single,Cont Hi,Cont Lo,Timer 10,Timer 2,Silent,Super Hi)
@@ -2103,7 +2141,7 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             undef,
             '$val=~/0x([\dA-F]+)/i ? hex($1) : undef',
         ],
-    },
+    }],
     #### 4a) Operation
     0x0701 => [
         {
@@ -2458,7 +2496,21 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             },
         },
     ],
-    0x080c => {
+    0x080c => [{ # (1DXmkIII)
+        Name => 'TimerLength',
+        Condition => '$count == 3',
+        Count => 3,
+        PrintConv => [
+            '"6 s: $val"',
+            '"16 s: $val"',
+            '"After release: $val"',
+        ],
+        PrintConvInv => [
+            '$val=~/(\d+)$/ ? $1 : 0',
+            '$val=~/(\d+)$/ ? $1 : 0',
+            '$val=~/(\d+)$/ ? $1 : 0',
+        ],
+    },{
         Name => 'TimerLength',
         Count => 4,
         PrintConv => [
@@ -2473,7 +2525,7 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             '$val=~/(\d+)$/ ? $1 : 0',
             '$val=~/(\d+)$/ ? $1 : 0',
         ],
-    },
+    }],
     0x080d => {
         Name => 'ShortReleaseTimeLag',
         PrintConv => \%disableEnable,
@@ -2520,6 +2572,8 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
         PrintConv => {
             0 => 'Cancel selected',
             1 => 'Erase selected',
+            2 => 'Erase RAW selected', # (1DXmkIII)
+            3 => 'Erase non-RAW selected', # (1DXmkIII)
         },
     },
     0x0814 => { # (5DS)
@@ -2595,7 +2649,7 @@ sub ProcessCanonCustom2($$$)
         my $recPos = $pos;
         my $recEnd = $pos + $recLen - 8;
         if ($recEnd > $end) {
-            $et->Warn('Corrupted CanonCustom2 group');
+            $et->Warn("Corrupted CanonCustom2 group $recNum");
             return 0;
         }
         if ($verbose and not $write) {
@@ -2605,8 +2659,17 @@ sub ProcessCanonCustom2($$$)
         for ($i=0; $recPos + 8 < $recEnd; ++$i, $recPos+=4*$num) {
             $tag = Get32u($dataPt, $recPos);
             $num = Get32u($dataPt, $recPos + 4);
+            my $nextRec = $recPos + 8 + $num * 4;
+            last if $nextRec > $recEnd;
+            # patch for EOS-1DXmkIII firmware 1.0.0 bug:
+            if ($tag == 0x70c and $num == 0x66 and $nextRec + 8 < $recEnd) {
+                my $tmp = Get32u($dataPt, $nextRec + 4);
+                if ($tmp == 0x70f) {
+                    $et->Warn('Fixed incorrect CanonCustom tag 0x70c size', 1);
+                    ++$num; # (count should be one greater)
+                }
+            }
             $recPos += 8;
-            last if $recPos + $num * 4 > $recEnd;
             my $val = ReadValue($dataPt, $recPos, 'int32s', $num, $num * 4);
             if ($write) {
                 # write new value
@@ -2637,6 +2700,9 @@ sub ProcessCanonCustom2($$$)
                     $$tagInfo{Description} =~ s/CanonCustom Functions/Canon Custom Functions /;
                 }
             }
+        }
+        if ($i != $recCount) {
+            $et->Warn('Missing '.($recCount-$i)." entries in CanonCustom2 group $recNum directory", 1);
         }
         $pos = $recEnd;
     }

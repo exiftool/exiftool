@@ -13,7 +13,7 @@ package Image::ExifTool::Parrot;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 sub Process_mett($$$);
 
@@ -703,6 +703,7 @@ sub Process_mett($$$)
         $et->HandleTag($tagTbl, $id, undef,
             DataPt  => $dataPt,
             DataPos => $dataPos,
+            Base    => $$dirInfo{Base},
             Start   => $pos,
             Size    => $size,
         );

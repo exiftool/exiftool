@@ -19,6 +19,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::QuickTime;
 
 sub Process_tx3g($$$);
+sub Process_marl($$$);
 sub Process_mebx($$$);
 sub ProcessFreeGPS($$$);
 sub ProcessFreeGPS2($$$);
@@ -71,6 +72,7 @@ my %processByMetaFormat = (
     meta => 1,  # ('CTMD' in CR3 images, 'priv' unknown in DJI video)
     data => 1,  # ('RVMI')
     sbtl => 1,  # (subtitle; 'tx3g' in Yuneec drone videos)
+    ctbx => 1,  # ('marl' in GM videos)
 );
 
 # data lengths for each INSV record type
@@ -92,7 +94,7 @@ my %insvLimit = (
     NOTES => q{
         Timed metadata extracted from QuickTime media data and some AVI videos when
         the ExtractEmbedded option is used.  Although most of these tags are
-        combined into the single table below, ExifTool currently reads 37 different
+        combined into the single table below, ExifTool currently reads 46 different
         formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
@@ -173,6 +175,10 @@ my %insvLimit = (
     rtmd => {
         Name => 'rtmd',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::rtmd' },
+    },
+    marl => {
+        Name => 'marl',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::marl' },
     },
     CTMD => { # (Canon Timed MetaData)
         Name => 'CTMD',
@@ -673,6 +679,13 @@ my %insvLimit = (
     10 => { Name => 'FusionYPR', Format => 'float[3]' },
 );
 
+# tags found in 'marl' ctbx timed metadata (ref PH)
+%Image::ExifTool::QuickTime::marl = (
+    PROCESS_PROC => \&Process_marl,
+    GROUPS => { 2 => 'Other' },
+    NOTES => 'Tags extracted from the marl ctbx timed metadata of GM cars.',
+);
+
 #------------------------------------------------------------------------------
 # Save information from keys in OtherSampleDesc directory for processing timed metadata
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
@@ -773,7 +786,7 @@ sub FoundSomething($$;$$)
 
 #------------------------------------------------------------------------------
 # Approximate GPSDateTime value from sample time and CreateDate
-# Inputs: 0) ExifTool ref, 1) tag table ptr, 2) sample time (ms)
+# Inputs: 0) ExifTool ref, 1) tag table ptr, 2) sample time (s)
 #         3) true if CreateDate is at end of video
 # Notes: Uses ExifTool CreateDateAtEnd as flag to subtract video duration
 sub SetGPSDateTime($$$)
@@ -821,7 +834,7 @@ sub HandleTextTags($$$)
 
 #------------------------------------------------------------------------------
 # Process subtitle 'text'
-# Inputs: 0) ExifTool ref, 1) tag table ref, 2) data ref, 3) optional sample time
+# Inputs: 0) ExifTool ref, 1) tag table ref, 2) data ref
 sub Process_text($$$)
 {
     my ($et, $tagTbl, $buffPt) = @_;
@@ -1226,8 +1239,8 @@ sub ProcessSamples($)
                     $$et{ee} = $ee; # need ee information for 'keys'
                     $et->HandleTag($tagTbl, $metaFormat, undef,
                         DataPt  => \$buff,
-                        DataPos => $$start[$i],
-                        Base    => $$start[$i],
+                        DataPos => 0,
+                        Base    => $$start[$i], # (Base must be set for CR3 files)
                         TagInfo => $tagInfo,
                     );
                     delete $$et{ee};
@@ -1239,7 +1252,7 @@ sub ProcessSamples($)
                     Process_text($et, $tagTbl, \$buff);
                 }
             } elsif ($verbose) {
-                $et->VPrint(0, "Unknown meta format ($metaFormat)");
+                $et->VPrint(0, "Unknown $type format ($metaFormat)");
             }
 
         } elsif ($type eq 'gps ') { # (ie. GPSDataList tag)
@@ -1261,8 +1274,8 @@ sub ProcessSamples($)
                 FoundSomething($et, $tagTbl, $time[$i], $dur[$i]);
                 $et->HandleTag($tagTbl, $type, undef,
                     DataPt  => \$buff,
-                    DataPos => $$start[$i],
-                    Base    => $$start[$i],
+                    DataPos => 0,
+                    Base    => $$start[$i], # (Base must be set for CR3 files)
                     TagInfo => $tagInfo,
                 );
             }
@@ -1402,12 +1415,12 @@ sub ProcessFreeGPS($$$)
 
         # decode freeGPS from Akaso dashcam
         # 0000: 00 00 80 00 66 72 65 65 47 50 53 20 60 00 00 00 [....freeGPS `...]
-        # 0000: 78 2e 78 78 00 00 00 00 00 00 00 00 00 00 00 00 [x.xx............]
-        # 0000: 30 30 30 30 30 00 00 00 00 00 00 00 00 00 00 00 [00000...........]
-        # 0000: 12 00 00 00 2f 00 00 00 19 00 00 00 41 00 00 00 [..../.......A...]
-        # 0000: 13 b3 ca 44 4e 00 00 00 29 92 fb 45 45 00 00 00 [...DN...)..EE...]
-        # 0000: d9 ee b4 41 ec d1 d3 42 e4 07 00 00 01 00 00 00 [...A...B........]
-        # 0000: 0c 00 00 00 01 00 00 00 05 00 00 00 00 00 00 00 [................]
+        # 0010: 78 2e 78 78 00 00 00 00 00 00 00 00 00 00 00 00 [x.xx............]
+        # 0020: 30 30 30 30 30 00 00 00 00 00 00 00 00 00 00 00 [00000...........]
+        # 0030: 12 00 00 00 2f 00 00 00 19 00 00 00 41 00 00 00 [..../.......A...]
+        # 0040: 13 b3 ca 44 4e 00 00 00 29 92 fb 45 45 00 00 00 [...DN...)..EE...]
+        # 0050: d9 ee b4 41 ec d1 d3 42 e4 07 00 00 01 00 00 00 [...A...B........]
+        # 0060: 0c 00 00 00 01 00 00 00 05 00 00 00 00 00 00 00 [................]
         ($latRef, $lonRef) = ($1, $2);
         ($hr, $min, $sec, $yr, $mon, $day) = unpack('x48V3x28V3', $$dataPt);
         SetByteOrder('II');
@@ -1417,6 +1430,56 @@ sub ProcessFreeGPS($$$)
         $trk = GetFloat($dataPt, 0x54) + 180;   # (why is this off by 180?)
         $trk -= 360 if $trk >= 360;
         SetByteOrder('MM');
+
+    } elsif ($$dataPt =~ /^.{16}YndAkasoCar/s) {
+
+        # Akaso V1 dascham
+        #  0000: 00 00 80 00 66 72 65 65 47 50 53 20 78 00 00 00 [....freeGPS x...]
+        #  0010: 59 6e 64 41 6b 61 73 6f 43 61 72 00 00 00 00 00 [YndAkasoCar.....]
+        #  0020: 30 30 30 30 30 00 00 00 00 00 00 00 00 00 00 00 [00000...........]
+        #  0030: 0e 00 00 00 27 00 00 00 2c 00 00 00 e3 07 00 00 [....'...,.......]
+        #  0040: 05 00 00 00 1d 00 00 00 41 4e 45 00 00 00 00 00 [........ANE.....]
+        #  0050: f1 4e 3e 3d 90 df ca 40 e3 50 bf 0b 0b 31 a0 40 [.N>=...@.P...1.@]
+        #  0060: 4b dc c8 41 9a 79 a7 43 34 58 43 31 4f 37 31 35 [K..A.y.C4XC1O715]
+        #  0070: 35 31 32 36 36 35 37 35 59 4e 44 53 0d e7 cc f9 [51266575YNDS....]
+        #  0080: 00 00 00 00 05 00 00 00 00 00 00 00 00 00 00 00 [................]
+        ($hr,$min,$sec,$yr,$mon,$day,$stat,$latRef,$lonRef) =
+            unpack('x48V6a1a1a1x1', $$dataPt);
+        # ignore invalid fixes
+        return 0 unless $stat eq 'A' and ($latRef eq 'N' or $latRef eq 'S') and
+                                         ($lonRef eq 'E' or $lonRef eq 'W');
+
+        $et->WarnOnce("Can't yet decrypt Akaso V1 timed GPS", 1);
+        # (see https://exiftool.org/forum/index.php?topic=11320.0)
+        return 1;
+
+        SetByteOrder('II');
+        $lat = GetDouble($dataPt, 0x50);    # latitude is here, but encrypted somehow
+        $lon = GetDouble($dataPt, 0x58);    # longitude is here, but encrypted somehow
+        SetByteOrder('MM');
+        #my $serialNum = substr($$dataPt, 0x68, 20);
+
+    } elsif ($$dataPt =~ /^.{12}\xac\0\0\0.{44}(.{72})/s) {
+
+        # EACHPAI dash cam
+        #  0000: 00 00 80 00 66 72 65 65 47 50 53 20 ac 00 00 00 [....freeGPS ....]
+        #  0010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+        #  0020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+        #  0030: 00 00 00 00 00 00 00 00 00 00 00 00 34 57 60 62 [............4W`b]
+        #  0040: 5d 53 3c 41 47 45 45 42 42 3e 40 40 40 3c 51 3c []S<AGEEBB>@@@<Q<]
+        #  0050: 44 42 44 40 3e 48 46 43 45 3c 5e 3c 40 48 43 41 [DBD@>HFCE<^<@HCA]
+        #  0060: 42 3e 46 42 47 48 3c 67 3c 40 3e 40 42 3c 43 3e [B>FBGH<g<@>@B<C>]
+        #  0070: 43 41 3c 40 42 40 46 42 40 3c 3c 3c 51 3a 47 46 [CA<@B@FB@<<<Q:GF]
+        #  0080: 00 2a 36 35 00 00 00 00 00 00 00 00 00 00 00 00 [.*65............]
+
+        $et->WarnOnce("Can't yet decrypt EACHPAI timed GPS", 1);
+        # (see https://exiftool.org/forum/index.php?topic=5095.msg61266#msg61266)
+        return 1;
+
+        my $time = pack 'C*', map { $_ ^= 0 } unpack 'C*', $1;
+        # bytes 7-12 are the timestamp in ASCII HHMMSS after xor-ing with 0x70
+        substr($time,7,6) = pack 'C*', map { $_ ^= 0x70 } unpack 'C*', substr($time,7,6);
+        # (other values are currently unknown)
 
     } else {
 
@@ -1432,6 +1495,21 @@ sub ProcessFreeGPS($$$)
         return 0 unless $stat eq 'A' and ($latRef eq 'N' or $latRef eq 'S') and
                                          ($lonRef eq 'E' or $lonRef eq 'W');
         ($lat,$lon,$spd,$trk) = unpack 'f*', pack 'L*', $lat, $lon, $spd, $trk;
+        # lat/lon also stored as doubles by Transcend Driver Pro 230 (ref PH)
+        SetByteOrder('II');
+        my ($lat2, $lon2, $alt2) = (
+            GetDouble($dataPt, 0x70),
+            GetDouble($dataPt, 0x80),
+          # GetDouble($dataPt, 0x98), # (don't know what this is)
+            GetDouble($dataPt,0xa0),
+          # GetDouble($dataPt,0xa8)) # (don't know what this is)
+        );
+        if (abs($lat2-$lat) < 0.001 and abs($lon2-$lon) < 0.001) {
+            $lat = $lat2;
+            $lon = $lon2;
+            $alt = $alt2;
+        }
+        SetByteOrder('MM');
         $yr += 2000 if $yr < 2000;
         $spd *= $knotsToKph;    # convert speed to km/h
         # ($trk is not confirmed; may be GPSImageDirection, ref PH)
@@ -1824,6 +1902,33 @@ sub ParseTag($$$)
         }
         $$et{HandlerType} = $tag;   # fake handler type
         ProcessSamples($et);        # we have all we need to process sample data now
+    } elsif ($tag eq 'GPS ') {
+        my $pos = 0;
+        my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+        SetByteOrder('II');
+        while ($pos + 36 < $dataLen) {
+            my $dat = substr($$dataPt, $pos, 36);
+            last if $dat eq "\x0" x 36;
+            my @a = unpack 'VVVVCVCV', $dat;
+            $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+            # 0=1, 1=1, 2=secs, 3=?
+            SetGPSDateTime($et, $tagTbl, $a[2]);
+            my $lat = $a[5] / 1e3;
+            my $lon = $a[7] / 1e3;
+            my $deg = int($lat / 100);
+            $lat = $deg + ($lat - $deg * 100) / 60;
+            $deg = int($lon / 100);
+            $lon = $deg + ($lon - $deg * 100) / 60;
+            $lat = -$lat if $a[4] eq 'S';
+            $lon = -$lon if $a[6] eq 'W';
+            $et->HandleTag($tagTbl, GPSLatitude  => $lat);
+            $et->HandleTag($tagTbl, GPSLongitude => $lon);
+            $et->HandleTag($tagTbl, GPSSpeed => $a[3] / 1e3);
+            $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
+            $pos += 36;
+        }
+        SetByteOrder('MM');
+        delete $$et{DOC_NUM};
     }
 }
 
@@ -1838,6 +1943,26 @@ sub Process_tx3g($$$)
     return 0 if length $$dataPt < 2;
     pos($$dataPt) = 2;  # skip 2-byte length word
     $et->HandleTag($tagTablePtr, $1, $2) while $$dataPt =~ /(\w+):([^:]*[^:\s])(\s|$)/sg;
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process GM 'marl' ctbx metadata (ref PH)
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub Process_marl($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    return 0 if length $$dataPt < 2;
+
+    # 8-byte records:
+    # byte 0 seems to be tag ID (0=timestamp in sec * 1e7)
+    # bytes 1-3 seem to be 24-bit signed integer (unknown meaning)
+    # bytes 4-7 are an int32u value, usually a multiple of 10000
+
+    $et->WarnOnce("Can't yet decode timed GM data", 1);
+    # (see https://exiftool.org/forum/index.php?topic=11335.msg61393#msg61393)
     return 1;
 }
 

@@ -603,7 +603,7 @@ sub ProcessGoPro($$$)
     my ($size, $type, $unit, $scal, $setGroup0);
 
     # the Rove Stealth 4K writes encrypted text here, so check for this first
-    # (really should check for this before loading GoPro module, but I was lazy)
+    # (really should check for this before loading GoPro module, but I was lazy) PHIL
     if ($$dataPt =~ /^\0\0\xf2\xe1\xf0\xeeTT/) {
         $et->VerboseDir('gpmd encrypted text', undef, length($$dataPt));
         my $strmTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23465 tags, with 15349 unique tag names.
+They contain a total of 23508 tags, with 15359 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -4329,6 +4329,7 @@ These tags belong to the ExifTool XMP-xmp family 1 group.
   PageImagePageNumber                           integer_+
   PageImageWidth                                integer_+
   Rating                                        real
+  RatingPercent                                 real/
   Thumbnails                                    Thumbnail Struct+
   ThumbnailFormat                               string_+
   ThumbnailHeight                               integer_+
@@ -8239,8 +8240,10 @@ well as newer tags and values added by later models.
            AEBShotCount                         int32s[2]
   0x0107   SpotMeterLinkToAFPoint               int32s
   0x0108   SafetyShift                          int32s
-  0x0109   UsableShootingModes                  int32s[2]
-  0x010a   UsableMeteringModes                  int32s[2]
+  0x0109   UsableShootingModes                  int32s
+           UsableShootingModes                  int32s[2]
+  0x010a   UsableMeteringModes                  int32s
+           UsableMeteringModes                  int32s[2]
   0x010b   ExposureModeInManual                 int32s
   0x010c   ShutterSpeedRange                    int32s[3]
            ShutterSpeedRange                    int32s[4]
@@ -8298,9 +8301,11 @@ well as newer tags and values added by later models.
   0x051d   VFDisplayIllumination                int32s
   0x051e   InitialAFPointAIServoAF              int32s
   0x060f   MirrorLockup                         int32s
-  0x0610   ContinuousShootingSpeed              int32s[3]
+  0x0610   ContinuousShootingSpeed              int32s[6]
+           ContinuousShootingSpeed              int32s[3]
   0x0611   ContinuousShotLimit                  int32s[2]
-  0x0612   RestrictDriveModes                   int32s[2]
+  0x0612   RestrictDriveModes                   int32s
+           RestrictDriveModes                   int32s[2]
   0x0701   Shutter-AELock                       int32s
            AFAndMeteringButtons                 int32s
            ShutterButtonAFOnButton              int32s
@@ -8325,7 +8330,8 @@ well as newer tags and values added by later models.
   0x0714   RFLensMFFocusRingSensitivity         int32s
   0x0715   CustomizeDials                       int32s
   0x080b   FocusingScreen                       int32s
-  0x080c   TimerLength                          int32s[4]
+  0x080c   TimerLength                          int32s[3]
+           TimerLength                          int32s[4]
   0x080d   ShortReleaseTimeLag                  int32s
   0x080e   AddAspectRatioInfo                   int32s
   0x080f   AddOriginalDecisionData              int32s
@@ -14965,6 +14971,7 @@ These tags are used in Panasonic/Leica cameras.
   0x0034   OpticalZoomMode                      int16u
   0x0035   ConversionLens                       int16u
   0x0036   TravelDay                            int16u
+  0x0038   BatteryLevel                         int16u
   0x0039   Contrast                             int16u
   0x003a   WorldTimeLocation                    int16u
   0x003b   TextStamp                            int16u
@@ -16749,6 +16756,7 @@ defined below, ExifTool will extract any information found here.
   'Location'           Location                 no
   'Sign type'          SignType                 no
   '_audio'             SoundFile                no
+  '_barcode'           Barcodes                 no+
 
 =head3 Ricoh AVI Tags
 
@@ -18597,6 +18605,16 @@ some models when the ExtractEmbedded option is used.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  0x8500   GPSVersionID                         no
+  0x8501   GPSLatitudeRef                       no
+  0x8502   GPSLatitude                          no
+  0x8503   GPSLongitudeRef                      no
+  0x8504   GPSLongitude                         no
+  0x8507   GPSTimeStamp                         no
+  0x8509   GPSStatus                            no
+  0x850a   GPSMeasureMode                       no
+  0x8512   GPSMapDatum                          no
+  0x851d   GPSDateStamp                         no
   0xe304   DateTime                             no
 
 =head2 SonyIDC Tags
@@ -19168,7 +19186,11 @@ Lens distortion correction information.
   0x1201   LensTypeMake                         no
   0x1202   LensTypeModel                        no
   0x1203   FocalLengthIn35mmFormat              no
+  0x1301   ApertureValue                        no
+  0x1302   ShutterSpeedValue                    no
+  0x1303   SensitivityValue                     no
   0x1305   HighISOMode                          no
+  0x1412   FacesDetected                        no
   0x3200   WB_CFA0_LevelDaylight                no
   0x3201   WB_CFA1_LevelDaylight                no
   0x3202   WB_CFA2_LevelDaylight                no
@@ -25074,6 +25096,7 @@ for the official specification.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
+  'GPS '               GPSDataList2?            no
   'IDIT'               DateTimeOriginal         string
   'PICT'               PreviewPICT              no
   '_htc'               HTCInfo                  QuickTime HTCInfo
@@ -25138,7 +25161,7 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
 
 Timed metadata extracted from QuickTime media data and some AVI videos when
 the ExtractEmbedded option is used.  Although most of these tags are
-combined into the single table below, ExifTool currently reads 37 different
+combined into the single table below, ExifTool currently reads 46 different
 formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
@@ -25194,6 +25217,7 @@ formats of timed GPS metadata from video files.
   camm7                                         QuickTime camm7
   fdsc                                          GoPro fdsc
   gpmd                                          GoPro GPMF
+  marl                                          QuickTime marl
   mebx                                          QuickTime Keys
   mett                                          Parrot mett
   rtmd                                          Sony rtmd
@@ -25301,6 +25325,14 @@ specification.
   ------   --------                             --------
       4    MagneticField                        no
 
+=head3 QuickTime marl Tags
+
+Tags extracted from the marl ctbx timed metadata of GM cars.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
+
 =head3 QuickTime Keys Tags
 
 This directory contains a list of key names which are used to decode tags
@@ -25371,12 +25403,23 @@ changed via the config file.
   'producer'              Producer              string
   'publisher'             Publisher             string
   'rating.user'           UserRating            string
+  'sdes'                  StoreDescription      string
   'software'              Software              string
   'still-image-time'      StillImageTime        no
   'title'                 Title                 string
   'version'               Version               string
   'video-orientation'     VideoOrientation      no
   'year'                  Year                  string
+  "\xa9ard"               ArtDirector           string
+  "\xa9arg"               Arranger              string
+  "\xa9con"               Conductor             string
+  "\xa9dir"               Director              string
+  "\xa9ope"               OriginalArtist        string
+  "\xa9prd"               Producer              string
+  "\xa9sne"               SoundEngineer         string
+  "\xa9sol"               Soloist               string
+  "\xa9st3"               Subtitle              string
+  "\xa9xpd"               ExecutiveProducer     string
 
 =head3 QuickTime FaceInfo Tags
 
@@ -26155,7 +26198,12 @@ the config file.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
+  '@day'       ContentCreateDate                string/
+  '@mak'       Make                             string/
+  '@mod'       Model                            string/
   '@sec'       SamsungSec                       Samsung sec
+  '@swr'       SoftwareVersion                  string/
+  '@xyz'       GPSCoordinates                   string/
   'AllF'       PlayAllFrames                    int8u
   'CAME'       SerialNumberHash                 string
   'CNCV'       CompressorVersion                string
@@ -26247,6 +26295,7 @@ the config file.
   'modl'       Model                            no
   'name'       Name                             string
   'perf'       Performer                        string/
+  'pmcc'       GarminSettings                   string
   'pose'       pose                             Kodak pose
   'ptch'       Pitch                            rational64s/
   'ptv '       PrintToVideo                     QuickTime Video
@@ -26267,6 +26316,8 @@ the config file.
                UnknownThumbnail                 string
   'titl'       Title                            string/
   'urat'       UserRating                       no
+  'uuid'       GarminSoftware                   string
+               UUID-Unknown?                    no
   'vndr'       Vendor                           string
   'vrot'       AccelerometerData                no
   'yrrc'       Year                             no
@@ -34478,6 +34529,8 @@ values, may created via the ExifTool configuration file.
   GPSDateTime          Parrot:GPSLatitude       no
                        Main:CreateDate
                        SampleTime
+  GPSDateTime          Sony:GPSDateStamp        no
+                       Sony:GPSTimeStamp
   GPSDestLatitude      GPS:GPSDestLatitude      no
                        GPS:GPSDestLatitudeRef
   GPSDestLatitudeRef   XMP-exif:GPSDestLatitude no

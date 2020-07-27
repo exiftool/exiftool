@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.26';
+$VERSION = '3.27';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -143,6 +143,7 @@ sub PrintInvLensSpec($;$$);
     32854 => 'Sony E 70-350mm F4.5-6.3 G OSS', #IB/JR
     32858 => 'Sony FE 35mm F1.8', #JR/IB
     32859 => 'Sony FE 20mm F1.8 G', #IB/JR
+    32860 => 'Sony FE 12-24mm F2.8 GM', #JR/IB
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -210,7 +211,7 @@ sub PrintInvLensSpec($;$$);
     50515 => 'Sigma 35mm F1.2 DG DN | A', #IB/JR (019)
     50516 => 'Sigma 14-24mm F2.8 DG DN | A', #IB/JR (019)
     50517 => 'Sigma 24-70mm F2.8 DG DN | A', #JR (019)
-    50518 => 'Sigma 100-400mm F5-6.3 DG DN OS', #JR
+    50518 => 'Sigma 100-400mm F5-6.3 DG DN OS | C', #JR (020)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
@@ -9746,12 +9747,88 @@ my %isoSetting2010 = (
   # 0x8100 - 16 bytes starting with 0x060e2b340401
     0x8100 => { Name => 'Sony_rtmd_0x8100', Format => 'int8u',  %hidUnk },
     0x8101 => { Name => 'Sony_rtmd_0x8101', Format => 'int8u',  %hidUnk }, # seen: 0,1
+    0x8106 => { Name => 'Sony_rtmd_0x8106', Format => 'int32u', %hidUnk }, # seen: "25 1"
     0x8109 => { Name => 'Sony_rtmd_0x8109', Format => 'int32u', %hidUnk }, # seen: "1 50"
     0x810a => { Name => 'Sony_rtmd_0x810a', Format => 'int16u', %hidUnk }, # seen: 0
     0x810b => { Name => 'Sony_rtmd_0x810b', Format => 'int16u', %hidUnk }, # seen: 100
     0x810c => { Name => 'Sony_rtmd_0x810c', Format => 'int16u', %hidUnk }, # seen: 100
     0x810d => { Name => 'Sony_rtmd_0x810d', Format => 'int8u',  %hidUnk }, # seen: 1
+    0x8115 => { Name => 'Sony_rtmd_0x8115', Format => 'int16u', %hidUnk }, # seen: 100
   # 0x8300 - container for other tags in this format
+    0x8500 => {
+        Name => 'GPSVersionID',
+        Groups => { 2 => 'Location' },
+        Format => 'int8u',
+        PrintConv => '$val =~ tr/ /./; $val',
+    },
+    0x8501 => {
+        Name => 'GPSLatitudeRef',
+        Groups => { 2 => 'Location' },
+        Format => 'string',
+        PrintConv => {
+            N => 'North',
+            S => 'South',
+        },
+    },
+    0x8502 => {
+        Name => 'GPSLatitude',
+        Groups => { 2 => 'Location' },
+        Format => 'rational64u',
+        ValueConv => 'require Image::ExifTool::GPS;Image::ExifTool::GPS::ToDegrees($val)',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1)',
+    },
+    0x8503 => {
+        Name => 'GPSLongitudeRef',
+        Groups => { 2 => 'Location' },
+        Format => 'string',
+        PrintConv => {
+            E => 'East',
+            W => 'West',
+        },
+    },
+    0x8504 => {
+        Name => 'GPSLongitude',
+        Groups => { 2 => 'Location' },
+        Format => 'rational64u',
+        ValueConv => 'require Image::ExifTool::GPS;Image::ExifTool::GPS::ToDegrees($val)',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1)',
+    },
+    0x8507 => {
+        Name => 'GPSTimeStamp',
+        Groups => { 2 => 'Time' },
+        Format => 'rational64u',
+        ValueConv => 'require Image::ExifTool::GPS;Image::ExifTool::GPS::ConvertTimeStamp($val)',
+        PrintConv => 'Image::ExifTool::GPS::PrintTimeStamp($val)',
+    },
+    0x8509 => {
+        Name => 'GPSStatus',
+        Groups => { 2 => 'Location' },
+        Format => 'string',
+        PrintConv => {
+            A => 'Measurement Active',
+            V => 'Measurement Void',
+        },
+    },
+    0x850a => {
+        Name => 'GPSMeasureMode',
+        Groups => { 2 => 'Location' },
+        Format => 'string',
+        PrintConv => {
+            2 => '2-Dimensional Measurement',
+            3 => '3-Dimensional Measurement',
+        },
+    },
+    0x8512 => {
+        Name => 'GPSMapDatum',
+        Groups => { 2 => 'Location' },
+        Format => 'string',
+    },
+    0x851d => {
+        Name => 'GPSDateStamp',
+        Groups => { 2 => 'Time' },
+        Format => 'string',
+        ValueConv => 'Image::ExifTool::Exif::ExifDate($val)',
+    },
     0xe000 => { Name => 'Sony_rtmd_0xe000', Format => 'int8u',  %hidUnk }, # (16 bytes)
     0xe300 => { Name => 'Sony_rtmd_0xe300', Format => 'int8u',  %hidUnk }, # seen: 0,1
     0xe301 => { Name => 'Sony_rtmd_0xe301', Format => 'int32u', %hidUnk }, # seen: 100
@@ -9764,6 +9841,8 @@ my %isoSetting2010 = (
         ValueConv => 'my @a=unpack("x1H4H2H2H2H2H2",$val); "$a[0]:$a[1]:$a[2] $a[3]:$a[4]:$a[5]"',
         PrintConv => '$self->ConvertDateTime($val)',
     },
+    # f010 - 2048 bytes
+    # f020 - 543 bytes
 );
 
 # Composite Sony tags
@@ -9797,6 +9876,17 @@ my %isoSetting2010 = (
             return (2**($val/16-5) + 1) * $val[1] / 1000;
         },
         PrintConv => '$val eq "inf" ? $val : sprintf("%.2f m",$val)',
+    },
+    GPSDateTime => {
+        Description => 'GPS Date/Time',
+        Groups => { 2 => 'Time' },
+        SubDoc => 1,    # generate for all sub-documents
+        Require => {
+            0 => 'Sony:GPSDateStamp',
+            1 => 'Sony:GPSTimeStamp',
+        },
+        ValueConv => '"$val[0] $val[1]Z"',
+        PrintConv => '$self->ConvertDateTime($val)',
     },
 );
 

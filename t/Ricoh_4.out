@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: Ricoh2.jpg
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 3.1 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:09:29 19:47:55-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:46-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:20-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -85,7 +85,7 @@
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 2492
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
-[EXIF, IFD1, Preview] Exif::ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
+[EXIF, IFD1, Preview] Exif-ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, Ricoh, Camera] 1 - Maker Note Type: Rdc
 [MakerNotes, Ricoh, Camera] 2 - Firmware Version: 22.19
 [MakerNotes, Ricoh, Camera] 5 - Internal Serial Number: 00000000000000012207000003100957
@@ -101,14 +101,14 @@
 [APP5, RMETA, Image] Lit - Lit: No
 [APP5, RMETA, Image] Condition - Condition: Good
 [APP5, RMETA, Image] Azimuth - Azimuth: E
-[Composite, Composite, Image] Exif::Aperture - Aperture: 5.5
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/1740
-[Composite, Composite, Location] GPS::GPSAltitude - GPS Altitude: 117 m Above Sea Level
-[Composite, Composite, Time] GPS::GPSDateTime - GPS Date/Time: 2006:05:26 10:47:24Z
-[Composite, Composite, Location] GPS::GPSLatitude - GPS Latitude: 42 deg 2' 4.47" N
-[Composite, Composite, Location] GPS::GPSLongitude - GPS Longitude: 0 deg 30' 27.01" W
-[Composite, Composite, Location] Exif::GPSPosition - GPS Position: 42 deg 2' 4.47" N, 0 deg 30' 27.01" W
-[Composite, Composite, Image] Exif::LightValue - Light Value: 15.4
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 5.7 mm
+[Composite, Composite, Image] Exif-Aperture - Aperture: 5.5
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/1740
+[Composite, Composite, Location] GPS-GPSAltitude - GPS Altitude: 117 m Above Sea Level
+[Composite, Composite, Time] GPS-GPSDateTime - GPS Date/Time: 2006:05:26 10:47:24Z
+[Composite, Composite, Location] GPS-GPSLatitude - GPS Latitude: 42 deg 2' 4.47" N
+[Composite, Composite, Location] GPS-GPSLongitude - GPS Longitude: 0 deg 30' 27.01" W
+[Composite, Composite, Location] Exif-GPSPosition - GPS Position: 42 deg 2' 4.47" N, 0 deg 30' 27.01" W
+[Composite, Composite, Image] Exif-LightValue - Light Value: 15.4
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 5.7 mm

@@ -7,6 +7,17 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+July 29, 2020 - Version 12.03
+
+  - Added family 7 group names to allow tag ID's to be specified when reading
+    and writing
+  - Fixed a couple of typos in tag values (thanks Herb)
+  - API Changes:
+      - Added HexTagIDs option
+      - Enhanced GetNewValue() to allow family 7 groups names to be used
+  - Internal Changes:
+      - Changed Composite tag ID's to use "-" instead of "::" as a separator
+
 July 27, 2020 - Version 12.02
 
   - Added support for a number of new QuickTime ItemList tags

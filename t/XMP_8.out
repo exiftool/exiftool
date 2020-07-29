@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: XMP2.xmp
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 890 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:09:01 09:59:28-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:30-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:26-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: XMP
 [File, File, Other] FileTypeExtension - File Type Extension: xmp
@@ -15,5 +15,5 @@
 [XMP, XMP-tiff, Image] ImageLength - Image Height: 2048
 [XMP, XMP-tiff, Image] ImageWidth - Image Width: 3072
 [XMP, XMP-dc, Image] subject - Subject: ExifTool, XMP, nodeID, test
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 3072x2048
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 6.3
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 3072x2048
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 6.3

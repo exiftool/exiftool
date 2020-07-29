@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.81
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: QuickTime.m4a
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 5.1 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:22 12:15:37-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:12:18 11:12:55-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:12:17 10:26:28-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:22 19:58:22-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:19-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:03:22 19:58:22-04:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: M4A
 [File, File, Other] FileTypeExtension - File Type Extension: m4a
@@ -70,4 +70,4 @@
 [QuickTime, ItemList, Preview] covr - Cover Art: (Binary data 19 bytes)
 [QuickTime, QuickTime, Video] mdat-size - Media Data Size: 0
 [QuickTime, QuickTime, Video] mdat-offset - Media Data Offset: 5237
-[Composite, Composite, Video] QuickTime::AvgBitrate - Avg Bitrate: 0 bps
+[Composite, Composite, Video] QuickTime-AvgBitrate - Avg Bitrate: 0 bps

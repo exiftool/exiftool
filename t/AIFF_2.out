@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: AIFF.aif
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 290 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:01:06 15:05:23-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:11:40-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:03:59-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: AIFF
 [File, File, Other] FileTypeExtension - File Type Extension: aiff
@@ -29,5 +29,5 @@
 [ID3, ID3v2_2, Time] TYE - Year: 2006
 [ID3, ID3v2_2, Audio] TCO - Genre: Techno
 [ID3, ID3v2_2, Audio] TCP - Compilation: Yes
-[Composite, Composite, Other] AIFF::Duration - Duration: 0.52 s
-[Composite, Composite, Time] ID3::DateTimeOriginal - Date/Time Original: 2006
+[Composite, Composite, Other] AIFF-Duration - Duration: 0.52 s
+[Composite, Composite, Time] ID3-DateTimeOriginal - Date/Time Original: 2006

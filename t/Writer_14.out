@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: Writer_14_failed.jpg
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 1253 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:01 10:15:48-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:48-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:01 10:15:48-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:07:29 09:04:23-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:23-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:07:29 09:04:23-04:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -57,13 +57,13 @@
 [EXIF, ExifIFD, Camera] 41986 - Exposure Mode: Manual
 [EXIF, ExifIFD, Camera] 41987 - White Balance: Auto
 [EXIF, ExifIFD, Camera] 41990 - Scene Capture Type: Standard
-[Composite, Composite, Image] Exif::Aperture - Aperture: 14.0
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 4
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Exif::LightValue - Light Value: 5.6
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
-[Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.019 mm
-[Composite, Composite, Image] Exif::FOV - Field Of View: 36.9 deg
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 34.0 mm (35 mm equivalent: 54.0 mm)
-[Composite, Composite, Camera] Exif::HyperfocalDistance - Hyperfocal Distance: 4.37 m
+[Composite, Composite, Image] Exif-Aperture - Aperture: 14.0
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 4
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif-LightValue - Light Value: 5.6
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
+[Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
+[Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.019 mm
+[Composite, Composite, Image] Exif-FOV - Field Of View: 36.9 deg
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 34.0 mm (35 mm equivalent: 54.0 mm)
+[Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 4.37 m

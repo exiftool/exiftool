@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: Olympus.jpg
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 1573 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:01:04 14:02:27-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:46-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:13-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -56,7 +56,7 @@
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 1296
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
-[EXIF, IFD1, Preview] Exif::ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
+[EXIF, IFD1, Preview] Exif-ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, Olympus, Camera] 512 - Special Mode: Normal, Sequence: 0, Panorama: (none)
 [MakerNotes, Olympus, Camera] 513 - Quality: SQ (Low)
 [MakerNotes, Olympus, Camera] 514 - Macro: Off
@@ -69,13 +69,13 @@
 [MakerNotes, Olympus, Camera] Type - Camera Type: C2000Z
 [MakerNotes, Olympus, Camera] 521 - Camera ID: OLYMPUS DIGITAL CAMERA
 [MakerNotes, Olympus, Camera] 3840 - Data Dump: (Binary data 186 bytes)
-[Composite, Composite, Image] Exif::Aperture - Aperture: 2.0
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 5.5
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/30
-[Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.005 mm
-[Composite, Composite, Image] Exif::FOV - Field Of View: 49.7 deg
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 7.0 mm (35 mm equivalent: 38.8 mm)
-[Composite, Composite, Camera] Exif::HyperfocalDistance - Hyperfocal Distance: 4.52 m
-[Composite, Composite, Image] Exif::LightValue - Light Value: 6.9
+[Composite, Composite, Image] Exif-Aperture - Aperture: 2.0
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
+[Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 5.5
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/30
+[Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.005 mm
+[Composite, Composite, Image] Exif-FOV - Field Of View: 49.7 deg
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 7.0 mm (35 mm equivalent: 38.8 mm)
+[Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 4.52 m
+[Composite, Composite, Image] Exif-LightValue - Light Value: 6.9

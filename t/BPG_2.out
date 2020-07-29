@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [ExifTool, ExifTool, ExifTool] Warning - Warning: [minor] Ignored extra byte at start of EXIF extension
 [File, System, Other] FileName - File Name: BPG.bpg
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 1863 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:07:07 11:08:36-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:11:40-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:07:07 11:21:11-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:00-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: BPG
 [File, File, Other] FileTypeExtension - File Type Extension: bpg
@@ -80,13 +80,13 @@
 [ICC_Profile, ICC_Profile, Image] rXYZ - Red Matrix Column: 0.60974 0.31111 0.01947
 [ICC_Profile, ICC_Profile, Image] gXYZ - Green Matrix Column: 0.20528 0.62567 0.06087
 [ICC_Profile, ICC_Profile, Image] bXYZ - Blue Matrix Column: 0.14919 0.06322 0.74457
-[Composite, Composite, Image] Exif::Aperture - Aperture: 5.6
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 16x16
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000256
-[Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/60
-[Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.019 mm
-[Composite, Composite, Image] Exif::FOV - Field Of View: 23.3 deg
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 55.0 mm (35 mm equivalent: 87.4 mm)
-[Composite, Composite, Camera] Exif::HyperfocalDistance - Hyperfocal Distance: 28.56 m
-[Composite, Composite, Image] Exif::LightValue - Light Value: 10.9
+[Composite, Composite, Image] Exif-Aperture - Aperture: 5.6
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 16x16
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000256
+[Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/60
+[Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.019 mm
+[Composite, Composite, Image] Exif-FOV - Field Of View: 23.3 deg
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 55.0 mm (35 mm equivalent: 87.4 mm)
+[Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 28.56 m
+[Composite, Composite, Image] Exif-LightValue - Light Value: 10.9

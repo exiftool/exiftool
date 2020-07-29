@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: Radiance.hdr
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 587 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2011:12:10 14:16:13-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:46-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:19-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: HDR
 [File, File, Other] FileTypeExtension - File Type Extension: hdr
@@ -20,5 +20,5 @@
 [Radiance, Radiance, Image] _command - Command: pfilt -1 -e 1 -m .25 -2 -x /3 -y /3
 [Radiance, Radiance, Image] exposure - Exposure: 3.512179e-001
 [Radiance, Radiance, Image] _orient - Orientation: Horizontal (normal)
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 1x1
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000001
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 1x1
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000001

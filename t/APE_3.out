@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: APE.mpc
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 2.5 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:11:14 15:06:40-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:11:40-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:00-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: MPC
 [File, File, Other] FileTypeExtension - File Type Extension: mpc
@@ -55,4 +55,4 @@
 [ID3, ID3v1, Audio] 97 - Comment: a nice comment
 [ID3, ID3v1, Audio] 125 - Track: 1
 [ID3, ID3v1, Audio] 127 - Genre: Funk
-[Composite, Composite, Time] ID3::DateTimeOriginal - Date/Time Original: 2005
+[Composite, Composite, Time] ID3-DateTimeOriginal - Date/Time Original: 2005

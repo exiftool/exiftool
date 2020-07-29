@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: Sigma.x3f
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 1464 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2005:11:14 14:47:22-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:46-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:21-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: X3F
 [File, File, Other] FileTypeExtension - File Type Extension: x3f
@@ -52,14 +52,14 @@
 [SigmaRaw, SigmaRaw, Camera] LENSFRANGE - Lens Focal Range: 15 to 30
 [SigmaRaw, SigmaRaw, Camera] FLENGTH - Focal Length: 30.0 mm
 [SigmaRaw, SigmaRaw, Camera] FLEQ35MM - Focal Length In 35mm Format: 51.0 mm
-[Composite, Composite, Image] Exif::Aperture - Aperture: 8.4
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 2268x1512
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 3.4
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/108
-[Composite, Composite, Camera] Exif::LensID - Lens ID: Sigma 15-30mm F3.5-4.5 EX DG Aspherical
-[Composite, Composite, Image] Exif::LightValue - Light Value: 12.9
-[Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.7
-[Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.018 mm
-[Composite, Composite, Image] Exif::FOV - Field Of View: 38.9 deg
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 30.0 mm (35 mm equivalent: 51.0 mm)
-[Composite, Composite, Camera] Exif::HyperfocalDistance - Hyperfocal Distance: 6.10 m
+[Composite, Composite, Image] Exif-Aperture - Aperture: 8.4
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 2268x1512
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 3.4
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/108
+[Composite, Composite, Camera] Exif-LensID - Lens ID: Sigma 15-30mm F3.5-4.5 EX DG Aspherical
+[Composite, Composite, Image] Exif-LightValue - Light Value: 12.9
+[Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.7
+[Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.018 mm
+[Composite, Composite, Image] Exif-FOV - Field Of View: 38.9 deg
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 30.0 mm (35 mm equivalent: 51.0 mm)
+[Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 6.10 m

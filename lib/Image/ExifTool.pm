@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.02';
+$VERSION = '12.03';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2238,6 +2238,7 @@ sub ClearOptions($)
         GeoSpeedRef => undef,   # geotag GPSSpeedRef
         GlobalTimeShift => undef,   # apply time shift to all extracted date/time values
     #   Group#      => undef,   # return tags for specified groups in family #
+        HexTagIDs   => 0,       # use hex tag ID's in family 7 group names
         HtmlDump    => 0,       # HTML dump (0-3, higher # = bigger limit)
         HtmlDumpBase => undef,  # base address for HTML dump
         IgnoreMinorErrors => undef, # ignore minor errors when reading/writing
@@ -3297,7 +3298,7 @@ sub GetGroup($$;$)
 {
     local $_;
     my ($self, $tag, $family) = @_;
-    my ($tagInfo, @groups, @families, $simplify, $byTagInfo, $ex);
+    my ($tagInfo, @groups, @families, $simplify, $byTagInfo, $ex, $noID);
     if (ref $tag eq 'HASH') {
         $tagInfo = $tag;
         $tag = $$tagInfo{Name};
@@ -3328,6 +3329,7 @@ sub GetGroup($$;$)
             $simplify = 1 unless $family =~ /^:/;
             undef $family;
             foreach (0..2) { $groups[$_] = $$groups{$_}; }
+            $noID = 1 if @families == 1 and $families[0] != 7;
         } else {
             return(($ex && $$ex{"G$family"}) || $$groups{$family}) if $family == 0 or $family == 2;
             $groups[1] = $$groups{1};
@@ -3339,26 +3341,30 @@ sub GetGroup($$;$)
     $groups[3] = 'Main';
     $groups[4] = ($tag =~ /\((\d+)\)$/) ? "Copy$1" : '';
     # handle dynamic group names if necessary
-    if ($ex and not $byTagInfo) {
-        $groups[0] = $$ex{G0} if $$ex{G0};
-        $groups[1] = $$ex{G1} =~ /^\+(.*)/ ? "$groups[1]$1" : $$ex{G1} if $$ex{G1};
-        $groups[3] = 'Doc' . $$ex{G3} if $$ex{G3};
-        $groups[5] = $$ex{G5} || $groups[1] if defined $$ex{G5};
-        if (defined $$ex{G6}) {
-            $groups[5] = '' unless defined $groups[5];  # (can't leave a hole in the array)
-            $groups[6] = $$ex{G6};
+    unless ($byTagInfo) {
+        if ($ex) {
+            $groups[0] = $$ex{G0} if $$ex{G0};
+            $groups[1] = $$ex{G1} =~ /^\+(.*)/ ? "$groups[1]$1" : $$ex{G1} if $$ex{G1};
+            $groups[3] = 'Doc' . $$ex{G3} if $$ex{G3};
+            $groups[5] = $$ex{G5} || $groups[1] if defined $$ex{G5};
+            if (defined $$ex{G6}) {
+                $groups[5] = '' unless defined $groups[5];  # (can't leave a hole in the array)
+                $groups[6] = $$ex{G6};
+            }
         }
-    }
-    if ($$self{OPTIONS}{SaveIDGroup}) {
-        my $id = $$tagInfo{TagID};
-        $id = '' unless defined $id;
-        if ($$self{OPTIONS}{SaveIDGroup} eq '2' and $id =~ /^\d+$/) {
-            $groups[7] = 'ID_' . sprintf('0x%x', $id);
-        } else {
-            $id =~ s/([^-_A-Za-z0-9])/sprintf('%.2x',ord $1)/ge;
-            $groups[7] = 'ID_' . $id;
+        # generate tag ID group names unless obviously not needed
+        unless ($noID) {
+            my $id = $$tagInfo{TagID};
+            if (not defined $id) {
+                $id = '';   # (just to be safe)
+            } elsif ($id =~ /^\d+$/) {
+                $id = sprintf('0x%x', $id) if $$self{OPTIONS}{HexTagIDs};
+            } else {
+                $id =~ s/([^-_A-Za-z0-9])/sprintf('%.2x',ord $1)/ge;
+            }
+            $groups[7] = 'ID-' . $id;
+            defined $groups[$_] or $groups[$_] = '' foreach (5,6);
         }
-        defined $groups[$_] or $groups[$_] = '' foreach (5,6);
     }
     if ($family) {
         return $groups[$family] || '' if $family > 0;
@@ -4206,6 +4212,22 @@ sub ParseArguments($;@)
 }
 
 #------------------------------------------------------------------------------
+# Does group name match the tag ID?
+# Inputs: 0) tag ID, 1) group name (with "ID-" removed)
+# Returns: true on success
+sub IsSameID($$)
+{
+    my ($id, $grp) = @_;
+    return 1 if $grp eq $id;    # decimal ID's or raw ID's
+    if ($id =~ /^\d+$/) {       # numerical numerical ID's may be in hex
+        return 1 if $grp =~ s/^0x0*// and $grp eq sprintf('%x', $id);
+    } else {                    # other ID's may conform to ExifTool group name conventions
+        return 1 if $id =~ s/([^-_A-Za-z0-9])/sprintf('%.2x',ord $1)/ge and $grp eq $id;
+    }
+    return 0;
+}
+
+#------------------------------------------------------------------------------
 # Get list of tags in specified group
 # Inputs: 0) ExifTool ref, 1) group spec, 2) tag key or reference to list of tag keys
 # Returns: list of matching tags in list context, or first match in scalar context
@@ -4216,40 +4238,41 @@ sub GroupMatches($$$)
     my ($self, $group, $tagList) = @_;
     $tagList = [ $tagList ] unless ref $tagList;
     my ($tag, @matches);
-    if ($group =~ /:/) {
-        # check each group name individually (eg. "Author:1IPTC")
-        my @grps = split ':', lc $group;
-        my (@fmys, $g);
+    # check each group name individually (eg. "Author:1IPTC")
+    my @grps = split ':', $group;
+    my (@fmys, $g);
+    for ($g=0; $g<@grps; ++$g) {
+        if ($grps[$g] =~ s/^(\d*)(id-)?//i) {
+            $fmys[$g] = $1 if length $1;
+            if ($2) {
+                $fmys[$g] = 7;
+                next;   # (don't convert tag ID's to lower case)
+            }
+        }
+        $grps[$g] = lc $grps[$g];
+        $grps[$g] = '' if $grps[$g] eq 'copy0'; # accept 'Copy0' for primary tag
+    }
+    foreach $tag (@$tagList) {
+        my @groups = $self->GetGroup($tag, -1);
         for ($g=0; $g<@grps; ++$g) {
-            $fmys[$g] = $1 if $grps[$g] =~ s/^(\d+)//;
-            $grps[$g] = '' if $grps[$g] eq 'copy0'; # accept 'Copy0' for primary tag
-        }
-        foreach $tag (@$tagList) {
-            my @groups = $self->GetGroup($tag, -1);
-            for ($g=0; $g<@grps; ++$g) {
-                my $grp = $grps[$g];
-                next if $grp eq '*' or $grp eq 'all';
-                if (defined $fmys[$g]) {
-                    my $f = $fmys[$g];
-                    last unless defined $groups[$f] and $grp eq lc $groups[$f];
+            my $grp = $grps[$g];
+            next if $grp eq '*' or $grp eq 'all';
+            my $f;
+            if (defined($f = $fmys[$g])) {
+                last unless defined $groups[$f];
+                if ($f == 7) {
+                    next if IsSameID($self->GetTagID($tag), $grp);
                 } else {
-                    last unless grep /^$grp$/i, @groups;
+                    next if $grp eq lc $groups[$f];
                 }
-            }
-            if ($g == @grps) {
-                return $tag unless wantarray;
-                push @matches, $tag;
+                last;
+            } else {
+                last unless grep /^$grp$/i, @groups;
             }
         }
-    } else {
-        my $family = ($group =~ s/^(\d+)//) ? $1 : -1;
-        $group = '' if lc $group eq 'copy0';        # accept 'Copy0' for primary tag
-        foreach $tag (@$tagList) {
-            my @groups = $self->GetGroup($tag, $family);
-            if (grep(/^$group$/i, @groups)) {
-                return $tag unless wantarray;
-                push @matches, $tag;
-            }
+        if ($g == @grps) {
+            return $tag unless wantarray;
+            push @matches, $tag;
         }
     }
     return wantarray ? @matches : $matches[0];
@@ -4708,13 +4731,13 @@ sub AddCompositeTags($;$)
     my ($module, $prefix, $tagID);
     unless (ref $add) {
         ($prefix = $add) =~ s/.*:://;
-        $prefix .= '::';
         $module = $add;
         $add .= '::Composite';
         no strict 'refs';
         $add = \%$add;
+        $prefix .= '-';
     } else {
-        $prefix = 'UserDefined::';
+        $prefix = 'UserDefined-';
     }
     my $defaultGroups = $$add{GROUPS};
     my $compTable = GetTagTable('Image::ExifTool::Composite');

@@ -1,9 +1,9 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: CanonRaw.cr3
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 51 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:26 22:05:16-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:03:25 10:22:48-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:02-04:00
 [File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:03:26 22:05:16-04:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: CR3
@@ -473,32 +473,32 @@
 [EXIF, GPS, Location] 0 - GPS Version ID: 2.3.0.0
 [EXIF, ExifIFD, Camera] 41990 - Scene Capture Type: Standard
 [XMP, XMP-xmp, Image] Rating - Rating: 0
-[Composite, Composite, Camera] Canon::ConditionalFEC - Flash Exposure Compensation: 0
-[Composite, Composite, Camera] Canon::DriveMode - Drive Mode: Single-frame Shooting
-[Composite, Composite, Camera] Canon::FlashType - Flash Type: Built-In Flash
-[Composite, Composite, Camera] Canon::ISO - ISO: 12800
-[Composite, Composite, Camera] Canon::Lens - Lens: 15.0 - 45.0 mm
-[Composite, Composite, Camera] Canon::RedEyeReduction - Red Eye Reduction: Off
-[Composite, Composite, Camera] Canon::ShootingMode - Shooting Mode: Aperture-priority AE
-[Composite, Composite, Camera] Canon::ShutterCurtainHack - Shutter Curtain Sync: 1st-curtain sync
-[Composite, Composite, Camera] Canon::WB_RGGBLevels - WB RGGB Levels: 1104 1024 1024 1789
-[Composite, Composite, Image] Exif::Aperture - Aperture: 3.5
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/80
-[Composite, Composite, Time] Exif::SubSecCreateDate - Create Date: 2018:02:21 12:08:56.21+00:00
-[Composite, Composite, Time] Exif::SubSecDateTimeOriginal - Date/Time Original: 2018:02:21 12:08:56.21+00:00
-[Composite, Composite, Time] Exif::SubSecModifyDate - Modify Date: 2018:02:21 12:08:56.21+00:00
-[Composite, Composite, Video] QuickTime::AvgBitrate - Avg Bitrate: 329 kbps
-[Composite, Composite, Video] QuickTime::Rotation - Rotation: 0
-[Composite, Composite, Camera] Exif::BlueBalance - Blue Balance: 1.74707
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 6000x4000
-[Composite, Composite, Camera] Exif::LensID - Lens ID: Canon EF-M 15-45mm f/3.5-6.3 IS STM
-[Composite, Composite, Image] Exif::LightValue - Light Value: 2.9
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 24.0
-[Composite, Composite, Camera] Exif::RedBalance - Red Balance: 1.078125
-[Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
-[Composite, Composite, Camera] Canon::Lens35efl - Lens: 15.0 - 45.0 mm (35 mm equivalent: 23.3 - 69.9 mm)
-[Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.019 mm
-[Composite, Composite, Image] Exif::DOF - Depth Of Field: 0.03 m (0.22 - 0.25 m)
-[Composite, Composite, Image] Exif::FOV - Field Of View: 75.3 deg
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 15.0 mm (35 mm equivalent: 23.3 mm)
-[Composite, Composite, Camera] Exif::HyperfocalDistance - Hyperfocal Distance: 3.33 m
+[Composite, Composite, Camera] Canon-ConditionalFEC - Flash Exposure Compensation: 0
+[Composite, Composite, Camera] Canon-DriveMode - Drive Mode: Single-frame Shooting
+[Composite, Composite, Camera] Canon-FlashType - Flash Type: Built-In Flash
+[Composite, Composite, Camera] Canon-ISO - ISO: 12800
+[Composite, Composite, Camera] Canon-Lens - Lens: 15.0 - 45.0 mm
+[Composite, Composite, Camera] Canon-RedEyeReduction - Red Eye Reduction: Off
+[Composite, Composite, Camera] Canon-ShootingMode - Shooting Mode: Aperture-priority AE
+[Composite, Composite, Camera] Canon-ShutterCurtainHack - Shutter Curtain Sync: 1st-curtain sync
+[Composite, Composite, Camera] Canon-WB_RGGBLevels - WB RGGB Levels: 1104 1024 1024 1789
+[Composite, Composite, Image] Exif-Aperture - Aperture: 3.5
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/80
+[Composite, Composite, Time] Exif-SubSecCreateDate - Create Date: 2018:02:21 12:08:56.21+00:00
+[Composite, Composite, Time] Exif-SubSecDateTimeOriginal - Date/Time Original: 2018:02:21 12:08:56.21+00:00
+[Composite, Composite, Time] Exif-SubSecModifyDate - Modify Date: 2018:02:21 12:08:56.21+00:00
+[Composite, Composite, Video] QuickTime-AvgBitrate - Avg Bitrate: 329 kbps
+[Composite, Composite, Video] QuickTime-Rotation - Rotation: 0
+[Composite, Composite, Camera] Exif-BlueBalance - Blue Balance: 1.74707
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 6000x4000
+[Composite, Composite, Camera] Exif-LensID - Lens ID: Canon EF-M 15-45mm f/3.5-6.3 IS STM
+[Composite, Composite, Image] Exif-LightValue - Light Value: 2.9
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 24.0
+[Composite, Composite, Camera] Exif-RedBalance - Red Balance: 1.078125
+[Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
+[Composite, Composite, Camera] Canon-Lens35efl - Lens: 15.0 - 45.0 mm (35 mm equivalent: 23.3 - 69.9 mm)
+[Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.019 mm
+[Composite, Composite, Image] Exif-DOF - Depth Of Field: 0.03 m (0.22 - 0.25 m)
+[Composite, Composite, Image] Exif-FOV - Field Of View: 75.3 deg
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 15.0 mm (35 mm equivalent: 23.3 mm)
+[Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 3.33 m

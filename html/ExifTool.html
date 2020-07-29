@@ -665,6 +665,9 @@ distribution for examples.</p>
     See <a href="#GetGroup">GetGroup</a> for a description of group families,
     and <a href="#GetAllGroups">GetAllGroups</a> for a list of available groups.</td>
     <td align=center>undef</td></tr>
+<tr id="HexTagIDs"><td>HexTagIDs</td><td>Use hexadecimal for the family 7 group names of
+    tags with numerical ID's (instead of decimal).</td>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="HtmlDump"><td>HtmlDump</td><td>Dump information in hex to a dynamic HTML web page.
     Option value sets a limit on the maximum block size.  Output file is
     specified by the TextOut option.</td>
@@ -1469,7 +1472,8 @@ file.  List-type tags may return multiple values in list context.</p>
 <blockquote><table class='norm'>
 <tr><td><b>Prototype</b></td><td>GetNewValue($$)</td></tr>
 <tr><td valign=top><b>Inputs</b></td><td><b>0)</b> ExifTool object reference
- <br><b>1)</b> Tag name (case sensitive, may be prefixed by family 0 or 1 group name)
+ <br><b>1)</b> Tag name (case sensitive, may be prefixed by family 0, 1 or 7
+ group names, separated by colons)
 </td></tr>
 <tr><td valign=top><b>Returns</b></td><td>List of new Raw tag values, or first value in
 list when called in scalar context. The list may be empty either if the tag
@@ -1495,8 +1499,8 @@ in a specified file.</p>
  <br><b>1)</b> File name, file reference, or scalar reference
  <br><b>2-N)</b> [<i>optional</i>] List of tag names to set or options hash
  references.  All writable tags are set if none are specified.  The tag names
- are not case sensitive, and may be prefixed by one or more family 0, 1 or 2
- group names with optional leading family numbers, separated by colons (eg.
+ are not case sensitive, and may be prefixed by one or more family 0, 1, 2
+ or 7 group names with optional leading family numbers, separated by colons (eg.
  '<code>exif:iso</code>').  A leading '<code>-</code>' indicates tags to be
  excluded (eg. '<code>-comment</code>'), or a trailing '<code>#</code>' causes
  the ValueConv value to be copied (same as setting the Type option to
@@ -1878,6 +1882,13 @@ option is used when extracting.</p>
 <p>Family 6 is currently used only for EXIF/TIFF metadata, and gives the format
 type of the extracted value.  Generated only if the
 <a href="#SaveFormat">SaveFormat</a> option is used when extracting.</p>
+<p>Family 7 is used for tag ID's.  The group names are "ID-" followed by the
+tag ID with characters other than [-_A-Za-z0-9] converted to hex.  Numerical tag ID's are
+given in hex if the <a href="#HexTagIDs">HexTagIDs</a> option is set.  When
+specifying a family 7 group name, numerical ID's may be in hex or decimal, and
+non-numercal ID's may or may not have characters other than [-_A-Za-z0-9]
+converted to hex.  Note that unlike other group names, family 7 group names are
+case sensitive (except for the leading "ID-").</p>
 <p>See <a href="#GetAllGroups">GetAllGroups</a> for lists of group names.</p>
 
 <p><b>Examples:</b></p>
@@ -2108,6 +2119,10 @@ Preview, Printing, Time, Unknown, Video
 <tr><td><b>6&nbsp;(EXIF/TIFF&nbsp;Format)</b></td>
 <td>int8u, string, int16u, int32u, rational64u, int8s, undef, int16s, int32s,
 rational64s, float, double, ifd, unicode, complex, int64u, int64s, ifd64</td></tr>
+<tr><td><b>7&nbsp;(Tag&nbsp;ID)</b></td>
+<td>ID-xxx (where xxx is the tag ID.  Numerical ID's are given in hex with a
+leading "0x" if the HexTagIDs option is set, as are characters in non-numerical
+ID's which are not valid in a group name)</td></tr>
 </table></blockquote>
 <p><b>Example:</b></p>
 <blockquote><table class='box'><tr><td><pre>

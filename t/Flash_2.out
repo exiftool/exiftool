@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: Flash.swf
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 384 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2008:10:23 16:27:45-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:16-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:05-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: SWF
 [File, File, Other] FileTypeExtension - File Type Extension: swf
@@ -18,5 +18,5 @@
 [Flash, Flash, Video] Duration - Duration: 0.08 s
 [XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 7.50
 [XMP, XMP-pdf, Author] Author - Author: Phil
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 50x50
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.003
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 50x50
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.003

@@ -1,13 +1,13 @@
-[Composite, MWG, Location] MWG::City - City: RIGHT-XMP-City
-[Composite, MWG, Author] MWG::Copyright - Copyright: RIGHT-XMP-Copyright
-[Composite, MWG, Location] MWG::Country - Country: RIGHT-IPTC-Country
-[Composite, MWG, Author] MWG::Creator - Creator: RIGHT1of2-EXIF-Creator, RIGHT2of2-EXIF-Creator
-[Composite, MWG, Time] MWG::DateTimeOriginal - Date/Time Original: 2001:01:01 01:11:11.111
-[Composite, MWG, Image] MWG::Description - Description: RIGHT-EXIF-Description
-[Composite, MWG, Image] MWG::Keywords - Keywords: RIGHT1of2-XMP-Keywords, RIGHT2of2-XMP-Keywords
-[Composite, MWG, Location] MWG::Location - Location: RIGHT-IPTC-Location
-[Composite, MWG, Image] MWG::Orientation - Orientation: Rotate 90 CW
-[Composite, MWG, Image] MWG::Rating - Rating: 3
-[Composite, MWG, Location] MWG::State - State: RIGHT-IPTC-State
-[Composite, MWG, Time] MWG::CreateDate - Create Date: 2002:02:02 02:22:22+02:00
-[Composite, MWG, Time] MWG::ModifyDate - Modify Date: 2003:03:03 03:33:33.333+03:00
+[Composite, MWG, Location] MWG-City - City: RIGHT-XMP-City
+[Composite, MWG, Author] MWG-Copyright - Copyright: RIGHT-XMP-Copyright
+[Composite, MWG, Location] MWG-Country - Country: RIGHT-IPTC-Country
+[Composite, MWG, Author] MWG-Creator - Creator: RIGHT1of2-EXIF-Creator, RIGHT2of2-EXIF-Creator
+[Composite, MWG, Time] MWG-DateTimeOriginal - Date/Time Original: 2001:01:01 01:11:11.111
+[Composite, MWG, Image] MWG-Description - Description: RIGHT-EXIF-Description
+[Composite, MWG, Image] MWG-Keywords - Keywords: RIGHT1of2-XMP-Keywords, RIGHT2of2-XMP-Keywords
+[Composite, MWG, Location] MWG-Location - Location: RIGHT-IPTC-Location
+[Composite, MWG, Image] MWG-Orientation - Orientation: Rotate 90 CW
+[Composite, MWG, Image] MWG-Rating - Rating: 3
+[Composite, MWG, Location] MWG-State - State: RIGHT-IPTC-State
+[Composite, MWG, Time] MWG-CreateDate - Create Date: 2002:02:02 02:22:22+02:00
+[Composite, MWG, Time] MWG-ModifyDate - Modify Date: 2003:03:03 03:33:33.333+03:00

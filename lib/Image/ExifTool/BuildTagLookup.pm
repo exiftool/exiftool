@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.36';
+$VERSION = '3.37';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -877,6 +877,11 @@ TagID:  foreach $tagID (@keys) {
                     $case{$lc} = $name;
                 }
                 my $format = $$tagInfo{Format};
+                # check TagID's to make sure they don't start with 'ID-'
+                my @grps = $et->GetGroup($tagInfo);
+                foreach (@grps) {
+                    warn "Group name starts with 'ID-' for $short $name\n" if /^ID-/i;
+                }
                 # validate Name (must not start with a digit or else XML output will not be valid;
                 # must not start with a dash or exiftool command line may get confused)
                 if ($name !~ /^[_A-Za-z][-\w]+$/ and

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: KyoceraRaw.raw
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 166 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:02:17 11:59:53-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:16-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:10-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: RAW
 [File, File, Other] FileTypeExtension - File Type Extension: raw
@@ -20,9 +20,9 @@
 [MakerNotes, KyoceraRaw, Camera] 104 - Max Aperture: 5.2
 [MakerNotes, KyoceraRaw, Camera] 112 - Focal Length: 55 mm
 [MakerNotes, KyoceraRaw, Camera] 124 - Lens: VS28-80/3.5
-[Composite, Composite, Image] Exif::Aperture - Aperture: 11.3
-[Composite, Composite, Camera] Exif::BlueBalance - Blue Balance: 1.34375
-[Composite, Composite, Camera] Exif::RedBalance - Red Balance: 1.3125
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/125
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 55.0 mm
-[Composite, Composite, Image] Exif::LightValue - Light Value: 14.0
+[Composite, Composite, Image] Exif-Aperture - Aperture: 11.3
+[Composite, Composite, Camera] Exif-BlueBalance - Blue Balance: 1.34375
+[Composite, Composite, Camera] Exif-RedBalance - Red Balance: 1.3125
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/125
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 55.0 mm
+[Composite, Composite, Image] Exif-LightValue - Light Value: 14.0

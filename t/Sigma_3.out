@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: Sigma_3_failed.jpg
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 1575 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:01 10:15:44-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:44-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:01 10:15:44-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:07:29 09:04:21-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:21-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:07:29 09:04:21-04:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -58,7 +58,7 @@
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 1254
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
 [EXIF, IFD1, Image] 531 - Y Cb Cr Positioning: Co-sited
-[EXIF, IFD1, Preview] Exif::ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
+[EXIF, IFD1, Preview] Exif-ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, Sigma, Camera] 2 - Serial Number: 02000019
 [MakerNotes, Sigma, Camera] 3 - Drive Mode: SINGLE
 [MakerNotes, Sigma, Camera] 4 - Resolution Mode: HI
@@ -84,13 +84,13 @@
 [MakerNotes, Sigma, Camera] 25 - Auto Bracket:  
 [IPTC, IPTC, Image] 40 - IPTC Pixel Width: 200
 [IPTC, IPTC, Image] 0 - News Photo Version: 4
-[Composite, Composite, Image] Exif::Aperture - Aperture: 8.0
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/320
-[Composite, Composite, Image] Exif::LightValue - Light Value: 14.3
-[Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.7
-[Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.018 mm
-[Composite, Composite, Image] Exif::FOV - Field Of View: 20.0 deg
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 60.0 mm (35 mm equivalent: 102.0 mm)
-[Composite, Composite, Camera] Exif::HyperfocalDistance - Hyperfocal Distance: 25.46 m
+[Composite, Composite, Image] Exif-Aperture - Aperture: 8.0
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/320
+[Composite, Composite, Image] Exif-LightValue - Light Value: 14.3
+[Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.7
+[Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.018 mm
+[Composite, Composite, Image] Exif-FOV - Field Of View: 20.0 deg
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 60.0 mm (35 mm equivalent: 102.0 mm)
+[Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 25.46 m

@@ -370,9 +370,9 @@ sub SetNewValue($;$$%)
             my $lcg = lc $g;
             # save group/family unless '*' or 'all'
             push @wantGroup, [ $f, $lcg ] unless $lcg eq '*' or $lcg eq 'all';
-            if ($g =~ /^ID_(.*)/i) {        # family 7 is this is a tag ID
+            if ($g =~ s/^ID-//i) {          # family 7 is a tag ID
                 return 0 if defined $f and $f ne 7;
-                $wantGroup[-1] = [ 7, "ID_$1" ]; # case is significant for tag ID's
+                $wantGroup[-1] = [ 7, $g ]; # group name with 'ID-' removed and case preserved
             } elsif (defined $f) {
                 $f > 2 and return 0;        # only allow family 0, 1 or 2
                 $family2 = 1 if $f == 2;    # set flag indicating family 2 was used
@@ -627,15 +627,7 @@ TAG: foreach $tagInfo (@matchingTags) {
                     }
                     next if $lcWant eq lc $grp[2];
                 } elsif ($fam == 7) {
-                    my $idGrp;
-                    if ($$self{OPTIONS}{HexIDGroup} and $$tagInfo{TagID} =~ /^\d+$/) {
-                        $idGrp = 'ID_' . sprintf('0x%x', $$tagInfo{TagID});
-                    } else {
-                        $idGrp = 'ID_' . $$tagInfo{TagID};
-                    }
-                    next if $lcWant eq $idGrp;  # also allow raw tag ID
-                    $idGrp =~ s/([^-_A-Za-z0-9])/sprintf('%.2x',ord $1)/ge;
-                    next if $lcWant eq $idGrp;  # plain ASCII tag ID group name
+                    next if IsSameID($$tagInfo{TagID}, $lcWant);
                 } elsif ($fam != 1 and not $$tagInfo{AllowGroup}) {
                     next if $lcWant eq lc $grp[$fam];
                     if ($wgAll and not $fam and $allFam0{$lcWant}) {
@@ -1272,6 +1264,7 @@ sub SetNewValuesFromFile($$;@)
         Filter          => $$options{Filter},
         FixBase         => $$options{FixBase},
         GlobalTimeShift => $$options{GlobalTimeShift},
+        HexTagIDs       => $$options{HexTagIDs},
         IgnoreMinorErrors=>$$options{IgnoreMinorErrors},
         Lang            => $$options{Lang},
         LargeFileSupport=> $$options{LargeFileSupport},
@@ -1423,7 +1416,9 @@ sub SetNewValuesFromFile($$;@)
                 foreach (split /:/, $grp) {
                     # save family/groups in list (ignoring 'all' and '*')
                     next unless length($_) and /^(\d+)?(.*)/;
-                    push @fg, [ $1, $2 ] unless $2 eq '*' or $2 eq 'all';
+                    my ($f, $g) = ($1, $2);
+                    $f = 7 if $g =~ s/^ID-//i;
+                    push @fg, [ $f, $g ] unless $g eq '*' or $g eq 'all';
                 }
             }
             # allow ValueConv to be specified by a '#' on the tag name
@@ -1489,10 +1484,12 @@ SET:    foreach $set (@setList) {
                 }
                 foreach (@{$$set[0]}) {
                     my ($f, $g) = @$_;
-                    if (defined $f) {
-                        next SET unless defined $grp[$f] and $g eq $grp[$f];
-                    } else {
+                    if (not defined $f) {
                         next SET unless $grp{$g};
+                    } elsif ($f == 7) {
+                        next SET unless IsSameID($srcExifTool->GetTagID($tag), $g);
+                    } else {
+                        next SET unless defined $grp[$f] and $g eq $grp[$f];
                     }
                 }
             }
@@ -1612,21 +1609,25 @@ sub GetNewValue($$;$)
                 $nvHash = $self->GetNewValueHash($tagInfo);
             } else {
                 # separate group from tag name
-                $group = $1 if $tag =~ s/(.*)://;
+                my @groups;
+                @groups = split ':', $1 if $tag =~ s/(.*)://;
                 my @tagInfoList = FindTagInfo($tag);
                 # decide which tag we want
 GNV_TagInfo:    foreach $tagInfo (@tagInfoList) {
                     my $nvh = $self->GetNewValueHash($tagInfo) or next;
-                    # select tag in specified group if necessary
-                    while ($group and $group ne $$nvh{WriteGroup}) {
+                    # select tag in specified group(s) if necessary
+                    foreach (@groups) {
+                        next if $_ eq $$nvh{WriteGroup};
                         my @grps = $self->GetGroup($tagInfo);
                         if ($grps[0] eq $$nvh{WriteGroup}) {
                             # check family 1 group only if WriteGroup is not specific
-                            last if $group eq $grps[1];
+                            next if $_ eq $grps[1];
                         } else {
                             # otherwise check family 0 group
-                            last if $group eq $grps[0];
+                            next if $_ eq $grps[0];
                         }
+                        # also check family 7
+                        next if /^ID-(.*)/i and IsSameID($$tagInfo{TagID}, $1);
                         # step to next entry in list
                         $nvh = $$nvh{Next} or next GNV_TagInfo;
                     }

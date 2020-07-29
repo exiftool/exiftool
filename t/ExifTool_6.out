@@ -1,9 +1,9 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: Canon.jpg
 [File, System, Other] Directory - Directory: t/images
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:10:03 15:10:31-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:22-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:04-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -49,23 +49,23 @@
 [EXIF, ExifIFD, Camera] 41986 - Exposure Mode: Manual
 [EXIF, ExifIFD, Camera] 41987 - White Balance: Auto
 [EXIF, ExifIFD, Camera] 41990 - Scene Capture Type: Standard
-[Composite, Composite, Camera] Canon::DriveMode - Drive Mode: Continuous Shooting
-[Composite, Composite, Camera] Canon::ISO - ISO: 100
-[Composite, Composite, Camera] Canon::Lens - Lens: 18.0 - 55.0 mm
-[Composite, Composite, Camera] Canon::ShootingMode - Shooting Mode: Bulb
-[Composite, Composite, Camera] Canon::WB_RGGBLevels - WB RGGB Levels: 1719 832 831 990
-[Composite, Composite, Image] Exif::Aperture - Aperture: 14.0
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
-[Composite, Composite, Camera] Exif::LensID - Lens ID: Unknown 18-55mm
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 4
-[Composite, Composite, Camera] Canon::Lens35efl - Lens: 18.0 - 55.0 mm (35 mm equivalent: 28.6 - 87.4 mm)
-[Composite, Composite, Camera] Exif::BlueBalance - Blue Balance: 1.190619
-[Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.019 mm
-[Composite, Composite, Image] Exif::DOF - Depth Of Field: inf (4.31 m - inf)
-[Composite, Composite, Image] Exif::FOV - Field Of View: 36.9 deg
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 34.0 mm (35 mm equivalent: 54.0 mm)
-[Composite, Composite, Camera] Exif::HyperfocalDistance - Hyperfocal Distance: 4.37 m
-[Composite, Composite, Image] Exif::LightValue - Light Value: 5.6
-[Composite, Composite, Camera] Exif::RedBalance - Red Balance: 2.067348
+[Composite, Composite, Camera] Canon-DriveMode - Drive Mode: Continuous Shooting
+[Composite, Composite, Camera] Canon-ISO - ISO: 100
+[Composite, Composite, Camera] Canon-Lens - Lens: 18.0 - 55.0 mm
+[Composite, Composite, Camera] Canon-ShootingMode - Shooting Mode: Bulb
+[Composite, Composite, Camera] Canon-WB_RGGBLevels - WB RGGB Levels: 1719 832 831 990
+[Composite, Composite, Image] Exif-Aperture - Aperture: 14.0
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
+[Composite, Composite, Camera] Exif-LensID - Lens ID: Unknown 18-55mm
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
+[Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 4
+[Composite, Composite, Camera] Canon-Lens35efl - Lens: 18.0 - 55.0 mm (35 mm equivalent: 28.6 - 87.4 mm)
+[Composite, Composite, Camera] Exif-BlueBalance - Blue Balance: 1.190619
+[Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.019 mm
+[Composite, Composite, Image] Exif-DOF - Depth Of Field: inf (4.31 m - inf)
+[Composite, Composite, Image] Exif-FOV - Field Of View: 36.9 deg
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 34.0 mm (35 mm equivalent: 54.0 mm)
+[Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 4.37 m
+[Composite, Composite, Image] Exif-LightValue - Light Value: 5.6
+[Composite, Composite, Camera] Exif-RedBalance - Red Balance: 2.067348

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.76
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: FLIR.fpf
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 914 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2013:04:11 15:17:20-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:07 08:35:59-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:04 10:47:12-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:05-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: FPF
 [File, File, Other] FileTypeExtension - File Type Extension: fpf
@@ -45,5 +45,5 @@
 [FLIR, FLIR, Image] 688 - Calculated Scale Max: 279.6
 [FLIR, FLIR, Image] 692 - Actual Scale Min: 267.3
 [FLIR, FLIR, Image] 696 - Actual Scale Max: 277.1
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 160x120
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.019
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 160x120
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.019

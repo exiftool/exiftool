@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.78
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: DjVu.djvu
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 930 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:12:04 09:57:39-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:12:04 10:11:39-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:12:04 09:57:39-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:12:04 21:22:58-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:03-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:12:04 21:22:58-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: DJVU (multi-page)
 [File, File, Other] FileTypeExtension - File Type Extension: djvu
@@ -42,5 +42,5 @@
 [XMP, XMP-xmp, Time] CreateDate - Create Date: 2008:09:23 12:31:34-04:00
 [XMP, XMP-xmp, Image] CreatorTool - Creator Tool: ExifTool
 [XMP, XMP-xmp, Time] ModifyDate - Modify Date: 2008:11:11 09:17:10-05:00
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064

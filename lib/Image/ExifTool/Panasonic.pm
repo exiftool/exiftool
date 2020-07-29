@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.10';
+$VERSION = '2.11';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -745,7 +745,7 @@ my %shootingMode = (
             3 => 'Low',
             4 => 'Near Empty',
             7 => 'Near Full',
-            8 => 'Medimu Low',
+            8 => 'Medium Low',
             256 => 'n/a',
         },
     },

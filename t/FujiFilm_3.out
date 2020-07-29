@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: FujiFilm_3_failed.jpg
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 1373 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:01 10:15:24-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:24-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:01 10:15:24-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:07:29 09:04:06-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:06-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:07:29 09:04:06-04:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -62,7 +62,7 @@
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 1096
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
 [EXIF, IFD1, Image] 531 - Y Cb Cr Positioning: Co-sited
-[EXIF, IFD1, Preview] Exif::ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
+[EXIF, IFD1, Preview] Exif-ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, FujiFilm, Camera] 0 - Version: 0130
 [MakerNotes, FujiFilm, Camera] 4096 - Quality: NORMAL 
 [MakerNotes, FujiFilm, Camera] 4097 - Sharpness: 0 (normal)
@@ -78,13 +78,13 @@
 [MakerNotes, FujiFilm, Camera] 4864 - Blur Warning: None
 [MakerNotes, FujiFilm, Camera] 4865 - Focus Warning: Good
 [MakerNotes, FujiFilm, Camera] 4866 - Exposure Warning: Good
-[Composite, Composite, Image] Exif::Aperture - Aperture: 3.5
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/64
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Exif::LightValue - Light Value: 9.6
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 6.6
-[Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.005 mm
-[Composite, Composite, Image] Exif::FOV - Field Of View: 48.9 deg
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 6.0 mm (35 mm equivalent: 39.6 mm)
-[Composite, Composite, Camera] Exif::HyperfocalDistance - Hyperfocal Distance: 2.26 m
+[Composite, Composite, Image] Exif-Aperture - Aperture: 3.5
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/64
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif-LightValue - Light Value: 9.6
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
+[Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 6.6
+[Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.005 mm
+[Composite, Composite, Image] Exif-FOV - Field Of View: 48.9 deg
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 6.0 mm (35 mm equivalent: 39.6 mm)
+[Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 2.26 m

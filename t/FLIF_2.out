@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: FLIF.flif
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 674 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:10:19 09:52:32-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:04-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:10:27 14:56:15-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:05-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rwxr-xr-x
 [File, File, Other] FileType - File Type: FLIF
 [File, File, Other] FileTypeExtension - File Type Extension: flif
@@ -47,5 +47,5 @@
 [ICC_Profile, ICC_Profile, Image] bTRC - Blue Tone Reproduction Curve: (Binary data 14 bytes)
 [ICC_Profile, ICC_Profile, Image] wtpt - Media White Point: 0.9505 1 1.0891
 [ICC_Profile, ICC_Profile, Image] cprt - Profile Copyright: Nikon Inc. & Nikon Corporation 2001
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 16x16
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000256
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 16x16
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000256

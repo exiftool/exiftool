@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: RIFF.wav
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 224 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:01:01 09:26:57-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:46-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
-[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:20-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
+[File, System, Other] FilePermissions - File Permissions: rwxr-xr-x
 [File, File, Other] FileType - File Type: WAV
 [File, File, Other] FileTypeExtension - File Type Extension: wav
 [File, File, Other] MIMEType - MIME Type: audio/x-wav
@@ -21,5 +21,5 @@
 [RIFF, RIFF, Camera] ecor - Make: PENTAX Corporation 
 [RIFF, RIFF, Camera] emdl - Camera Model Name: PENTAX Optio WP
 [RIFF, RIFF, Audio] emnt - Maker Notes: (Binary data 16 bytes)
-[Composite, Composite, Time] Exif::DateTimeOriginal - Date/Time Original: 2005:08:08 16:23:35
-[Composite, Composite, Other] RIFF::Duration2 - Duration: 0.03 s
+[Composite, Composite, Time] Exif-DateTimeOriginal - Date/Time Original: 2005:08:08 16:23:35
+[Composite, Composite, Other] RIFF-Duration2 - Duration: 0.03 s

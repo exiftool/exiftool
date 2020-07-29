@@ -1,11 +1,11 @@
-[Composite, MWG, Location] MWG::City - City: Kingston
-[Composite, MWG, Author] MWG::Copyright - Copyright: Copyright 2004 Phil Harvey
-[Composite, MWG, Location] MWG::Country - Country: Canada
-[Composite, MWG, Time] MWG::CreateDate - Create Date: 2001:05:19 18:36:41
-[Composite, MWG, Author] MWG::Creator - Creator: Phil Harvey
-[Composite, MWG, Time] MWG::DateTimeOriginal - Date/Time Original: 2001:05:19 18:36:41
-[Composite, MWG, Image] MWG::Description - Description: A witty caption
-[Composite, MWG, Image] MWG::Keywords - Keywords: jambalaya
-[Composite, MWG, Time] MWG::ModifyDate - Modify Date: 2004:02:26 09:36:46
-[Composite, MWG, Image] MWG::Orientation - Orientation: Horizontal (normal)
-[Composite, MWG, Location] MWG::State - State: Ont
+[Composite, MWG, Location] MWG-City - City: Kingston
+[Composite, MWG, Author] MWG-Copyright - Copyright: Copyright 2004 Phil Harvey
+[Composite, MWG, Location] MWG-Country - Country: Canada
+[Composite, MWG, Time] MWG-CreateDate - Create Date: 2001:05:19 18:36:41
+[Composite, MWG, Author] MWG-Creator - Creator: Phil Harvey
+[Composite, MWG, Time] MWG-DateTimeOriginal - Date/Time Original: 2001:05:19 18:36:41
+[Composite, MWG, Image] MWG-Description - Description: A witty caption
+[Composite, MWG, Image] MWG-Keywords - Keywords: jambalaya
+[Composite, MWG, Time] MWG-ModifyDate - Modify Date: 2004:02:26 09:36:46
+[Composite, MWG, Image] MWG-Orientation - Orientation: Horizontal (normal)
+[Composite, MWG, Location] MWG-State - State: Ont

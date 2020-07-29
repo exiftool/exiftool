@@ -81,6 +81,7 @@ my $testnum = 1;
         ['UserData:Genre' => 'rock'],
         ['UserData:Album' => 'albumA'],
         ['ItemList:Album' => 'albumB'],
+        ['ItemList:ID-albm:Album' => 'albumC'],
         ['QuickTime:Comment-fra-FR' => 'fr comment'],
         ['Keys:Director' => 'director'],
         ['Keys:CameraDirection' => '90'],

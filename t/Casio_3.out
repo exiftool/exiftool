@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: Casio2.jpg
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 1699 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:01:04 14:02:27-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:01-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:03-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -62,7 +62,7 @@
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 1396
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
-[EXIF, IFD1, Preview] Exif::ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
+[EXIF, IFD1, Preview] Exif-ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, Casio, Image] 2 - Preview Image Size: 320x240
 [MakerNotes, Casio, Image] 3 - Preview Image Length: 26
 [MakerNotes, Casio, Image] 4 - Preview Image Start: 1424
@@ -87,16 +87,16 @@
 [MakerNotes, Casio, Camera] 12310 - Enhancement: Off
 [MakerNotes, Casio, Camera] 12311 - Color Filter: Off
 [MakerNotes, Casio, Camera] 12315 - Art Mode: Normal
-[MakerNotes, Casio, Preview] Exif::PreviewImage - Preview Image: (Binary data 26 bytes)
+[MakerNotes, Casio, Preview] Exif-PreviewImage - Preview Image: (Binary data 26 bytes)
 [PrintIM, PrintIM, Printing] PrintIMVersion - PrintIM Version: 0250
-[Composite, Composite, Image] Exif::Aperture - Aperture: 3.9
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 6.1
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/80
-[Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.005 mm
-[Composite, Composite, Image] Exif::DOF - Depth Of Field: 0.26 m (0.89 - 1.15 m)
-[Composite, Composite, Image] Exif::FOV - Field Of View: 27.3 deg
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 12.2 mm (35 mm equivalent: 74.0 mm)
-[Composite, Composite, Camera] Exif::HyperfocalDistance - Hyperfocal Distance: 7.70 m
-[Composite, Composite, Image] Exif::LightValue - Light Value: 11.2
+[Composite, Composite, Image] Exif-Aperture - Aperture: 3.9
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
+[Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 6.1
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/80
+[Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.005 mm
+[Composite, Composite, Image] Exif-DOF - Depth Of Field: 0.26 m (0.89 - 1.15 m)
+[Composite, Composite, Image] Exif-FOV - Field Of View: 27.3 deg
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 12.2 mm (35 mm equivalent: 74.0 mm)
+[Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 7.70 m
+[Composite, Composite, Image] Exif-LightValue - Light Value: 11.2

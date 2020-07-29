@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: FLIF_4_failed.flif
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 23 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:01 10:15:23-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:23-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:01 10:15:23-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:07:29 09:04:05-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:05-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:07:29 09:04:05-04:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: FLIF
 [File, File, Other] FileTypeExtension - File Type Extension: flif
@@ -14,5 +14,5 @@
 [File, File, Image] 2 - Image Width: 16
 [File, File, Image] 3 - Image Height: 16
 [File, File, Image] 5 - Encoding: FLIF16
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 16x16
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000256
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 16x16
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000256

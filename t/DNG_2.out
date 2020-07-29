@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.86
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: DNG.dng
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 13 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:02:26 09:30:53-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:02:04 08:34:38-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:01:28 10:35:42-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:03-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: DNG
 [File, File, Other] FileTypeExtension - File Type Extension: dng
@@ -126,9 +126,9 @@
 [EXIF, IFD0, Image] 50779 - Calibration Illuminant 2: D65
 [EXIF, IFD0, Image] 50781 - Raw Data Unique ID: 0358DB4E08632D90925171A6BB8848A2
 [EXIF, IFD0, Image] 50827 - Original Raw File Name: Canon350D.CR2
-[EXIF, SubIFD2, Preview] Exif::JpgFromRaw - Jpg From Raw: (Binary data 29 bytes)
-[EXIF, SubIFD1, Preview] Exif::PreviewImage - Preview Image: (Binary data 26 bytes)
-[EXIF, IFD0, Preview] Exif::ThumbnailTIFF - Thumbnail TIFF: (Binary data 408 bytes)
+[EXIF, SubIFD2, Preview] Exif-JpgFromRaw - Jpg From Raw: (Binary data 29 bytes)
+[EXIF, SubIFD1, Preview] Exif-PreviewImage - Preview Image: (Binary data 26 bytes)
+[EXIF, IFD0, Preview] Exif-ThumbnailTIFF - Thumbnail TIFF: (Binary data 408 bytes)
 [XMP, XMP-x, Document] xmptk - XMP Toolkit: XMP toolkit 3.0-28, framework 1.6
 [XMP, XMP-exif, Image] ExifVersion - Exif Version: 0221
 [XMP, XMP-exif, Image] ExposureTime - Exposure Time: 1/15
@@ -306,24 +306,24 @@
 [MakerNotes, Canon, Camera] 70 - WB RGGB Levels Custom 2: 2312 1022 1024 1501
 [MakerNotes, Canon, Camera] 74 - Color Temp Custom 2: 5200
 [MakerNotes, Canon, Camera] 2 - Color Tone: Normal
-[Composite, Composite, Camera] Canon::DriveMode - Drive Mode: Single-frame Shooting
-[Composite, Composite, Camera] Canon::ISO - ISO: 400
-[Composite, Composite, Camera] Canon::Lens - Lens: 18.0 - 55.0 mm
-[Composite, Composite, Camera] Canon::ShootingMode - Shooting Mode: Aperture-priority AE
-[Composite, Composite, Camera] Canon::WB_RGGBLevels - WB RGGB Levels: 2002 1185 1187 2364
-[Composite, Composite, Image] Exif::Aperture - Aperture: 8.0
-[Composite, Composite, Camera] Exif::BlueBalance - Blue Balance: 1.993255
-[Composite, Composite, Image] Exif::CFAPattern - CFA Pattern: [Red,Green][Green,Blue]
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 3516x2328
-[Composite, Composite, Camera] Exif::LensID - Lens ID: Unknown 18-55mm
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 8.2
-[Composite, Composite, Camera] Exif::RedBalance - Red Balance: 1.688027
-[Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/15
-[Composite, Composite, Camera] XMP::Flash - Flash: Off, Did not fire
-[Composite, Composite, Camera] Canon::Lens35efl - Lens: 18.0 - 55.0 mm (35 mm equivalent: 29.2 - 89.2 mm)
-[Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.019 mm
-[Composite, Composite, Image] Exif::FOV - Field Of View: 22.8 deg
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 55.0 mm (35 mm equivalent: 89.2 mm)
-[Composite, Composite, Camera] Exif::HyperfocalDistance - Hyperfocal Distance: 20.42 m
-[Composite, Composite, Image] Exif::LightValue - Light Value: 7.9
+[Composite, Composite, Camera] Canon-DriveMode - Drive Mode: Single-frame Shooting
+[Composite, Composite, Camera] Canon-ISO - ISO: 400
+[Composite, Composite, Camera] Canon-Lens - Lens: 18.0 - 55.0 mm
+[Composite, Composite, Camera] Canon-ShootingMode - Shooting Mode: Aperture-priority AE
+[Composite, Composite, Camera] Canon-WB_RGGBLevels - WB RGGB Levels: 2002 1185 1187 2364
+[Composite, Composite, Image] Exif-Aperture - Aperture: 8.0
+[Composite, Composite, Camera] Exif-BlueBalance - Blue Balance: 1.993255
+[Composite, Composite, Image] Exif-CFAPattern - CFA Pattern: [Red,Green][Green,Blue]
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 3516x2328
+[Composite, Composite, Camera] Exif-LensID - Lens ID: Unknown 18-55mm
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 8.2
+[Composite, Composite, Camera] Exif-RedBalance - Red Balance: 1.688027
+[Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/15
+[Composite, Composite, Camera] XMP-Flash - Flash: Off, Did not fire
+[Composite, Composite, Camera] Canon-Lens35efl - Lens: 18.0 - 55.0 mm (35 mm equivalent: 29.2 - 89.2 mm)
+[Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.019 mm
+[Composite, Composite, Image] Exif-FOV - Field Of View: 22.8 deg
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 55.0 mm (35 mm equivalent: 89.2 mm)
+[Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 20.42 m
+[Composite, Composite, Image] Exif-LightValue - Light Value: 7.9

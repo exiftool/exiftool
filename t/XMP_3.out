@@ -1,4 +1,4 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.78
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileSize - File Size: 9.9 kB
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -61,7 +61,7 @@
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 0
 [IPTC, IPTC, Other] 90 - Coded Character Set: UTF8
 [IPTC, IPTC, Other] 0 - Envelope Record Version: 4
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.78
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.03
 [XMP, XMP-rdf, Document] about - About: uuid:80056b68-1045-fa97-3401-6f4ed84cd53d
 [XMP, XMP-iptcCore, Author] CreatorContactInfoCiAdrCtry - Creator Country: Canada
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey-v2
@@ -130,9 +130,9 @@
 [APP14, Adobe, Image] 1 - APP14 Flags 0: (none)
 [APP14, Adobe, Image] 2 - APP14 Flags 1: (none)
 [APP14, Adobe, Image] 3 - Color Transform: YCbCr
-[Composite, Composite, Image] Exif::Aperture - Aperture: 4.9
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/64
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Exif::LightValue - Light Value: 10.4
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 6.0 mm
+[Composite, Composite, Image] Exif-Aperture - Aperture: 4.9
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/64
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif-LightValue - Light Value: 10.4
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 6.0 mm

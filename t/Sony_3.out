@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: Sony_3_failed.jpg
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 5.5 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:01 10:15:45-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:45-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:01 10:15:45-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:07:29 09:04:21-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:21-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:07:29 09:04:21-04:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -64,7 +64,7 @@
 [EXIF, IFD1, Time] 306 - Modify Date: 2003:12:18 13:51:33
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 2486
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
-[EXIF, IFD1, Preview] Exif::ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
+[EXIF, IFD1, Preview] Exif-ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, Sony, Camera] 8192 - Sony 0x2000: 0
 [MakerNotes, Sony, Camera] 36865 - Sony 0x9001: ..­mQV„ûV„û.³9°9ŠJuÿ.Å¬]è^Ž¸.[...]
 [MakerNotes, Sony, Camera] 36866 - Sony 0x9002: .JÚ`.p.V!.!¾ê¾ê0ÿ0ÿV!ˆPp,×.0c[...]
@@ -77,11 +77,11 @@
 [PrintIM, PrintIM, Printing] PrintIMVersion - PrintIM Version: 0250
 [PrintIM, PrintIM, Printing] 2 - Print IM 0x0002: 0x00000001
 [PrintIM, PrintIM, Printing] 257 - Print IM 0x0101: 0x00000000
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.75
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.03
 [XMP, XMP-exif, Camera] FlashFired - Flash Fired: True
-[Composite, Composite, Image] Exif::Aperture - Aperture: 7.1
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/250
-[Composite, Composite, Camera] XMP::Flash - Flash: Fired
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 12.5 mm
+[Composite, Composite, Image] Exif-Aperture - Aperture: 7.1
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/250
+[Composite, Composite, Camera] XMP-Flash - Flash: Fired
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 12.5 mm

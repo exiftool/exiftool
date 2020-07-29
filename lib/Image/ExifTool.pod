@@ -731,6 +731,11 @@ to be excluded by preceding group name with a '-'.  See L</GetGroup> for a
 description of group families, and L</GetAllGroups [static]> for lists of
 group names.
 
+=item HexTagIDs
+
+Use hexadecimal for the family 7 group names of tags with numerical ID's
+(instead of decimal).
+
 =item HtmlDump
 
 Dump information in hex to dynamic HTML web page.  The value may be 0-3 for
@@ -1606,7 +1611,8 @@ values in list context.
 
 0) ExifTool object reference
 
-1) Tag name (case sensitive, may be prefixed by family 0 or 1 group name)
+1) Tag name (case sensitive, may be prefixed by family 0, 1 or 7 group
+names, separated by colons)
 
 =item Return Values:
 
@@ -1668,34 +1674,35 @@ in a specified file.
 
 2-N) [optional] List of tag names to set or options hash references.  All
 writable tags are set if none are specified.  The tag names are not case
-sensitive, and may be prefixed by one or more family 0, 1 or 2 group names
-with optional leading family numbers, separated by colons (eg. 'exif:iso'). 
-A leading '-' indicates tags to be excluded (eg. '-comment'), or a trailing
-'#' causes the ValueConv value to be copied (same as setting the Type option
-to 'ValueConv' for this tag only).  Wildcards ('*' and '?') may be used in
-the tag name.  A tag name of '*' is commonly used when a group is specified
-to copy all tags in the group (eg. 'XMP:*').  A special feature allows tag
-names of the form 'DSTTAGE<lt>SRCTAG' (or 'SRCTAGE<gt>DSTTAG') to be
-specified to copy information to a tag with a different name or a specified
-group.  Both 'SRCTAG' and 'DSTTAG' may contain wildcards and/or be prefixed
-by a group name (eg. 'fileModifyDateE<lt>modifyDate' or 'xmp:*E<lt>*'),
-and/or suffixed by a '#' to disable print conversion.  Copied tags may also
-be added or deleted from a list with arguments of the form
-'DSTTAG+E<lt>SRCTAG' or 'DSTTAG-E<lt>SRCTAG'.  Tags are evaluated in order,
-so exclusions apply only to tags included earlier in the list.  An extension
-of this feature allows the tag value to be set from a string containing tag
-names with leading '$' symbols (eg. 'CommentE<lt>the file is $filename'). 
-Braces '{}' may be used around the tag name to separate it from subsequent
-text, and a '$$' is used to to represent a '$' symbol.  The behaviour for
-missing tags in expressions is defined by the L</MissingTagValue> option.
-The tag value may be modified via changes to the default input variable ($_)
-in a Perl expression placed inside the braces and after a semicolon
-following the tag name (see the last example above).  A '@' may be added
-after the tag name (before the semicolon) to make the expression act on
-individual list items instead of the concatenated string for list-type tags.
-Braces within the expression must be balanced. Multiple options hash
-references may be passed to set different options for different tags. 
-Options apply to subsequent tags in the argument list.
+sensitive, and may be prefixed by one or more family 0, 1, 2 or 7 group
+names with optional leading family numbers, separated by colons (eg.
+'exif:iso'). A leading '-' indicates tags to be excluded (eg. '-comment'),
+or a trailing '#' causes the ValueConv value to be copied (same as setting
+the Type option to 'ValueConv' for this tag only).  Wildcards ('*' and '?')
+may be used in the tag name.  A tag name of '*' is commonly used when a
+group is specified to copy all tags in the group (eg. 'XMP:*').  A special
+feature allows tag names of the form 'DSTTAGE<lt>SRCTAG' (or
+'SRCTAGE<gt>DSTTAG') to be specified to copy information to a tag with a
+different name or a specified group.  Both 'SRCTAG' and 'DSTTAG' may contain
+wildcards and/or be prefixed by a group name (eg.
+'fileModifyDateE<lt>modifyDate' or 'xmp:*E<lt>*'), and/or suffixed by a '#'
+to disable print conversion.  Copied tags may also be added or deleted from
+a list with arguments of the form 'DSTTAG+E<lt>SRCTAG' or
+'DSTTAG-E<lt>SRCTAG'.  Tags are evaluated in order, so exclusions apply only
+to tags included earlier in the list.  An extension of this feature allows
+the tag value to be set from a string containing tag names with leading '$'
+symbols (eg. 'CommentE<lt>the file is $filename'). Braces '{}' may be used
+around the tag name to separate it from subsequent text, and a '$$' is used
+to to represent a '$' symbol.  The behaviour for missing tags in expressions
+is defined by the L</MissingTagValue> option. The tag value may be modified
+via changes to the default input variable ($_) in a Perl expression placed
+inside the braces and after a semicolon following the tag name (see the last
+example above).  A '@' may be added after the tag name (before the
+semicolon) to make the expression act on individual list items instead of
+the concatenated string for list-type tags. Braces within the expression
+must be balanced. Multiple options hash references may be passed to set
+different options for different tags. Options apply to subsequent tags in
+the argument list.
 
 By default, this routine will commute information between same-named tags in
 different groups, allowing information to be translated between images with
@@ -2072,6 +2079,14 @@ Family 6 is currently used only for EXIF/TIFF metadata, and gives the format
 type of the extracted value.  Generated only if the L</SaveFormat> option is
 used when extracting.
 
+Family 7 is used for tag ID's.  The group names are "ID-" followed by the
+tag ID with characters other than [-_A-Za-z0-9] converted to hex.  Numerical
+tag ID's are given in hex if the L</HexTagIDs> option is set.  When
+specifying a family 7 group name, numerical ID's may be in hex or decimal,
+and non-numercal ID's may or may not have characters other than
+[-_A-Za-z0-9] converted to hex.  Note that unlike other group names, family
+7 group names are case sensitive (except for the leading "ID-").
+
 See L</GetAllGroups [static]> for complete lists of group names.
 
 =back
@@ -2313,6 +2328,12 @@ eg. JPEG-APP1-IFD0-ExifIFD
 
 int8u, string, int16u, int32u, rational64u, int8s, undef, int16s, int32s,
 rational64s, float, double, ifd, unicode, complex, int64u, int64s, ifd64
+
+=item Family 7 (Tag ID):
+
+ID-xxx (where xxx is the tag ID.  Numerical ID's are given in hex with a
+leading "0x" if the HexTagIDs option is set, as are characters in
+non-numerical ID's which are not valid in a group name)
 
 =back
 

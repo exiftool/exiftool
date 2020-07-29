@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, System, Other] FileName - File Name: Sanyo_3_failed.jpg
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 2.1 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:01 10:15:44-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:01 10:15:44-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:01 10:15:44-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:07:29 09:04:20-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:20-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:07:29 09:04:20-04:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -67,7 +67,7 @@
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 1882
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
-[EXIF, IFD1, Preview] Exif::ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
+[EXIF, IFD1, Preview] Exif-ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, Sanyo, Camera] 255 - Maker Note Offset: 1076
 [MakerNotes, Sanyo, Camera] 512 - Special Mode: 0 0 0
 [MakerNotes, Sanyo, Camera] 513 - Sanyo Quality: Fine/Very High
@@ -101,13 +101,13 @@
 [MakerNotes, Sanyo, Camera] 3840 - Data Dump: (Binary data 260 bytes)
 [PrintIM, PrintIM, Printing] PrintIMVersion - PrintIM Version: 0100
 [PrintIM, PrintIM, Printing] 257 - Print IM 0x0101: 0x00000001
-[Composite, Composite, Image] Exif::Aperture - Aperture: 6.9
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 481.1
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/185
-[Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.000 mm
-[Composite, Composite, Image] Exif::FOV - Field Of View: 0.2 deg
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 23.1 mm (35 mm equivalent: 11113.0 mm)
-[Composite, Composite, Camera] Exif::HyperfocalDistance - Hyperfocal Distance: 1238.24 m
-[Composite, Composite, Image] Exif::LightValue - Light Value: 11.1
+[Composite, Composite, Image] Exif-Aperture - Aperture: 6.9
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
+[Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 481.1
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/185
+[Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.000 mm
+[Composite, Composite, Image] Exif-FOV - Field Of View: 0.2 deg
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 23.1 mm (35 mm equivalent: 11113.0 mm)
+[Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 1238.24 m
+[Composite, Composite, Image] Exif-LightValue - Light Value: 11.1

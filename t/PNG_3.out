@@ -1,4 +1,4 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.78
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [File, File, Other] FileType - File Type: PNG
 [File, File, Other] FileTypeExtension - File Type Extension: png
 [File, File, Other] MIMEType - MIME Type: image/png
@@ -25,7 +25,7 @@
 [PNG, PNG-pHYs, Image] 0 - Pixels Per Unit X: 1234
 [PNG, PNG-pHYs, Image] 4 - Pixels Per Unit Y: 2834
 [PNG, PNG-pHYs, Image] 8 - Pixel Units: meters
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.78
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.03
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [XMP, XMP-dc, Image] description - Description: UTF-16 (big-endian) encoded XMP
 [XMP, XMP-dc, Author] rights - Rights: Copyright 2004 Phil Harvey
@@ -114,10 +114,10 @@
 [EXIF, ExifIFD, Camera] 41495 - Sensing Method: One-chip color area
 [EXIF, ExifIFD, Image] 41728 - File Source: Digital Camera
 [EXIF, ExifIFD, Image] 41729 - Scene Type: Directly photographed
-[Composite, Composite, Image] Exif::Aperture - Aperture: 3.5
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/64
-[Composite, Composite, Camera] XMP::Flash - Flash: Fired
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 16x16
-[Composite, Composite, Image] Exif::LightValue - Light Value: 9.6
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000256
-[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 6.0 mm
+[Composite, Composite, Image] Exif-Aperture - Aperture: 3.5
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/64
+[Composite, Composite, Camera] XMP-Flash - Flash: Fired
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 16x16
+[Composite, Composite, Image] Exif-LightValue - Light Value: 9.6
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000256
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 6.0 mm

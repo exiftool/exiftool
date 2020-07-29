@@ -1,12 +1,12 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.76
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
 [ExifTool, ExifTool, ExifTool]  - Make: Sony
 [ExifTool, ExifTool, ExifTool]  - Model: DSC-F1
 [File, System, Other] FileName - File Name: Sony.pmp
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 375 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2010:04:13 18:42:12-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:11:07 08:36:29-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:11:04 10:47:12-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:21-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: PMP
 [File, File, Other] FileTypeExtension - File Type Extension: pmp
@@ -28,7 +28,7 @@
 [MakerNotes, Sony, Time] 84 - Modify Date: 1998:09:01 20:19:57
 [MakerNotes, Sony, Image] 102 - Exposure Time: 1/100
 [MakerNotes, Sony, Camera] 118 - Flash: No Flash
-[MakerNotes, Sony, Preview] Exif::JpgFromRaw - Jpg From Raw: (Binary data 251 bytes)
-[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/100
-[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
+[MakerNotes, Sony, Preview] Exif-JpgFromRaw - Jpg From Raw: (Binary data 251 bytes)
+[Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/100
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064

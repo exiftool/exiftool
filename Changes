@@ -7,6 +7,23 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Aug. 10, 2020 - Version 12.04
+
+  - Added read support for ZEISS ZISRAW CZI files
+  - Added some new values for a couple of Olympus tags (thanks Sebastian)
+  - Decode a number of new tags for the Sony ILCE-7SM3 (thanks Jos Roost)
+  - Removed formatting restrictions on XMP-dwc:EventTime to allow a time-only
+    value to be written
+  - Moved new QuckTime ItemList tags added in version 12.02 to the proper group
+    (they were incorrectly added to the Keys group)
+  - Improved QuickTime -v3 output to show default language codes
+  - Patched -lang option to work for the values of somet tags with coded
+    translations
+  - Patched the format of a number of QuickTime tags when writing for improved
+    compatibility with iTunes and AtomicParsley
+  - Patched to write a default QuickTime language code of 0x0000 (null) instead
+    of 0x55c4 ('und')
+
 July 29, 2020 - Version 12.03
 
   - Added family 7 group names to allow tag ID's to be specified when reading

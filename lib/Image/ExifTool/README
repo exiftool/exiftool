@@ -763,25 +763,26 @@ numerical, and generated automatically otherwise.
                   conditionally deleted.
 
   Writable      : Indicates this tag can be written (or not written if Writable
-                  is set to zero), and for EXIF-type tables gives format for
-                  writing.  Writable may be set to 1 for MakerNotes information
-                  because the existing format is always used, however providing
-                  a format is desirable because it is used in validating the
-                  value.  Set to 2 for tag to show "yes" in the Writable column
-                  of the tag name documentation even when there is no WRITE_PROC
-                  defined (eg. if it is written via an Extra tag).  For EXIF
-                  tables, the Writable flag may be different than the Format
-                  flag, in which case Format is used for converting the binary
-                  value and Writable specifies the format code written to the
-                  EXIF IFD.  For SubDirectories in EXIF information, this flag
-                  is only defined if the SubDirectory is writable as a block, or
-                  if the SubDirectory can not be edited (in which case Writable
-                  is set to 0).  If non-zero, the SubDirectory is also extracted
-                  as a block, so the Binary and Protected flags should usually
-                  set as well.  There is currently no way to specify a write
-                  format for a SubDirectory that is not writable as a block (the
-                  default is 'int32u' for IFD-type SubDirectories, and 'undef'
-                  for all others).
+                  is set to zero), and for EXIF and QuickTime tables gives
+                  format for writing.  Writable may be set to 1 for MakerNotes
+                  information because the existing format is always used,
+                  however providing a format is desirable because it is used in
+                  validating the value.  Set to 2 for tag to show "yes" in the
+                  Writable column of the tag name documentation even when there
+                  is no WRITE_PROC defined (eg. if it is written via an Extra
+                  tag).  For EXIF and QuickTime tables, the Writable flag may be
+                  different than the Format flag, in which case Format is used
+                  for converting the binary value and Writable specifies the
+                  format code written to the EXIF IFD.  For SubDirectories in
+                  EXIF information, this flag is only defined if the
+                  SubDirectory is writable as a block, or if the SubDirectory
+                  can not be edited (in which case Writable is set to 0).  If
+                  non-zero, the SubDirectory is also extracted as a block, so
+                  the Binary and Protected flags should usually set as well. 
+                  There is currently no way to specify a write format for a
+                  SubDirectory that is not writable as a block (the default is
+                  'int32u' for IFD-type SubDirectories, and 'undef' for all
+                  others).
 
   WriteAlso     : Used for writable tag to specify other tags to write when this
                   tag is written.  The value is a hash reference.  The hash keys

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23508 tags, with 15359 unique tag names.
+They contain a total of 23545 tags, with 15366 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -14957,6 +14957,7 @@ These tags are used in Panasonic/Leica cameras.
   0x0024   FlashBias                            int16s
   0x0025   InternalSerialNumber                 undef[16]
   0x0026   PanasonicExifVersion                 undef
+  0x0027   VideoFrameRate                       int16u
   0x0028   ColorEffect                          int16u
   0x0029   TimeSincePowerOn                     int32u
   0x002a   BurstMode                            int16u
@@ -15051,6 +15052,7 @@ These tags are used in Panasonic/Leica cameras.
   0x00c1   VideoPreburst                        int16u
   0x00c4   LensTypeMake                         int16u
   0x00c5   LensTypeModel                        int16u
+  0x00ca   SensorType                           int16u
   0x00d1   ISO                                  int32u
   0x00d2   MonochromeGrainEffect                int16u
   0x00d6   NoiseReductionStrength               rational64s
@@ -16970,6 +16972,7 @@ MakerNotes.
   0x900b   Tag900b                              Sony Tag900b
   0x9050   Tag9050a                             Sony Tag9050a
            Tag9050b                             Sony Tag9050b
+           Tag9050c                             Sony Tag9050c
   0x9400   Tag9400a                             Sony Tag9400a
            Tag9400b                             Sony Tag9400b
            Tag9400c                             Sony Tag9400c
@@ -16986,6 +16989,7 @@ MakerNotes.
   0x940c   Tag940c                              Sony Tag940c
   0x940e   AFInfo                               Sony AFInfo
            Tag940e                              Sony Tag940e
+  0x9416   Sony_0x9416                          Sony Tag9416
   0xb000   FileFormat                           int8u[4]
   0xb001   SonyModelID                          int16u
   0xb020   CreativeStyle                        string
@@ -18048,6 +18052,24 @@ Valid from July 2015 for ILCE-6100/6300/6400/6500/6600/7M3/7RM2/7RM3/7RM4/
            APS-CSizeCapture                     int8u
     542    LensSpecFeatures                     undef[2]
 
+=head3 Sony Tag9050c Tags
+
+Valid from July 2020 for ILCE-7SM3.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     38    Shutter                              int16u[3]
+     57    FlashStatus                          int8u
+     58    ShutterCount                         int32u~
+     70    SonyExposureTime                     int16u
+     72    SonyFNumber                          int16u
+     75    ReleaseMode2                         int8u
+     80    ShutterCount2                        int32u
+    102    SonyExposureTime                     int16u
+    104    SonyFNumber                          int16u
+    107    ReleaseMode2                         int8u
+    136    InternalSerialNumber                 int8u[6]~
+
 =head3 Sony Tag9400a Tags
 
 Valid for many DSC, NEX and SLT models
@@ -18109,6 +18131,7 @@ WX350/WX500, ILCE-7/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/9/9M2/5000/5100/6000/
   Index1   Tag Name                             Writable
   ------   --------                             --------
    1176    ISOInfo                              Sony ISOInfo
+   1185    ISOInfo                              Sony ISOInfo
    1186    ISOInfo                              Sony ISOInfo
    1437    ISOInfo                              Sony ISOInfo
    1588    ISOInfo                              Sony ISOInfo
@@ -18435,6 +18458,31 @@ E-mount models.
    6662    TiffMeteringImageWidth               no
    6663    TiffMeteringImageHeight              no
    6664    TiffMeteringImage                    no
+
+=head3 Sony Tag9416 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    Tag9416_0000                         no
+      4    SonyISO                              no
+      6    StopsAboveBaseISO                    no
+     10    SonyExposureTime2                    no
+     12    ExposureTime                         no
+     16    SonyFNumber2                         no
+     18    SonyMaxApertureValue                 no
+     29    SequenceImageNumber                  no
+     53    ExposureProgram                      no
+     72    LensMount                            no
+     73    LensFormat                           no
+     74    LensMount                            no
+     75    LensType2                            no
+     77    LensType                             no
+     79    DistortionCorrParams                 no
+    113    FocalLength                          no
+    115    MinFocalLength                       no
+    117    MaxFocalLength                       no
+   2191    VignettingCorrParams                 no
+   2324    ChromaticAberrationCorrParams        no
 
 =head3 Sony PIC Tags
 
@@ -21301,7 +21349,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   EventDate                                     date_
   EventID                                       string_
   EventRemarks                                  lang-alt_
-  EventTime                                     date_
+  EventTime                                     string_
   EventFieldNotes                               string_
   EventFieldNumber                              string_
   EventHabitat                                  string_
@@ -21343,7 +21391,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   HumanObservationEventDate                     date_
   HumanObservationEventID                       string_
   HumanObservationEventRemarks                  lang-alt_
-  HumanObservationEventTime                     date_
+  HumanObservationEventTime                     string_
   HumanObservationFieldNotes                    string_
   HumanObservationFieldNumber                   string_
   HumanObservationHabitat                       string_
@@ -21375,7 +21423,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   MachineObservationEventDate                   date_
   MachineObservationEventID                     string_
   MachineObservationEventRemarks                lang-alt_
-  MachineObservationEventTime                   date_
+  MachineObservationEventTime                   string_
   MachineObservationFieldNotes                  string_
   MachineObservationFieldNumber                 string_
   MachineObservationHabitat                     string_
@@ -21551,7 +21599,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   EventDate                                     date
   EventID                                       string
   EventRemarks                                  lang-alt
-  EventTime                                     date
+  EventTime                                     string
   FieldNotes                                    string
   FieldNumber                                   string
   Habitat                                       string
@@ -23717,6 +23765,18 @@ the official specification.
   'wrapmodes'          WrapModes                no
   'xDensity'           XResolution              no
 
+=head2 ZISRAW Tags
+
+As well as the header information listed below, ExifTool also extracts the
+top-level XML-based metadata from Zeiss Integrated Software RAW (ZISRAW) CZI
+files.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     32    ZISRAWVersion                        no
+     48    PrimaryFileGUID                      no
+     64    FileGUID                             no
+
 =head2 MIFF Tags
 
 The MIFF (Magick Image File Format) format allows aribrary tag names to be
@@ -25403,23 +25463,12 @@ changed via the config file.
   'producer'              Producer              string
   'publisher'             Publisher             string
   'rating.user'           UserRating            string
-  'sdes'                  StoreDescription      string
   'software'              Software              string
   'still-image-time'      StillImageTime        no
   'title'                 Title                 string
   'version'               Version               string
   'video-orientation'     VideoOrientation      no
   'year'                  Year                  string
-  "\xa9ard"               ArtDirector           string
-  "\xa9arg"               Arranger              string
-  "\xa9con"               Conductor             string
-  "\xa9dir"               Director              string
-  "\xa9ope"               OriginalArtist        string
-  "\xa9prd"               Producer              string
-  "\xa9sne"               SoundEngineer         string
-  "\xa9sol"               Soloist               string
-  "\xa9st3"               Subtitle              string
-  "\xa9xpd"               ExecutiveProducer     string
 
 =head3 QuickTime FaceInfo Tags
 
@@ -25547,21 +25596,21 @@ API QuickTimeHandler option may be used to include an 'mdir' Handler box.
   'GUID'       GUID                             string
   'VERS'       ProductVersion                   string
   'aART'       AlbumArtist                      string
-  'akID'       AppleStoreAccountType            int8u
+  'akID'       AppleStoreAccountType            int8s
   'albm'       Album                            string/
   'apID'       AppleStoreAccount                string
-  'atID'       AlbumTitleID                     int32u
+  'atID'       AlbumTitleID                     int32s
   'auth'       Author                           string
   'catg'       Category                         string
-  'cnID'       AppleStoreCatalogID              int32u
+  'cnID'       AppleStoreCatalogID              int32s
   'covr'       CoverArt                         string
-  'cpil'       Compilation                      int8u
+  'cpil'       Compilation                      int8s
   'cprt'       Copyright                        string
   'desc'       Description                      string/
   'disk'       DiskNumber                       undef
   'dscp'       Description                      string/
   'egid'       EpisodeGlobalUniqueID            string
-  'geID'       GenreID                          int32u
+  'geID'       GenreID                          int32s
   'gnre'       Genre                            string/
   'grup'       Grouping                         string/
   'gshh'       GoogleHostHeader                 string
@@ -25570,21 +25619,22 @@ API QuickTimeHandler option may be used to include an 'mdir' Handler box.
   'gssd'       GoogleSourceData                 string
   'gsst'       GoogleStartTime                  string
   'gstd'       GoogleTrackDuration              string
-  'hdvd'       HDVideo                          int8u
+  'hdvd'       HDVideo                          int8s
   'itnu'       iTunesU                          int8s
   'keyw'       Keyword                          string
   'ldes'       LongDescription                  string
-  'pcst'       Podcast                          int8u
+  'pcst'       Podcast                          int8s
   'perf'       Performer                        string
-  'pgap'       PlayGap                          int8u
-  'plID'       PlayListID                       int8u
+  'pgap'       PlayGap                          int8s
+  'plID'       PlayListID                       int32s[0.25]
   'prID'       ProductID                        string
   'purd'       PurchaseDate                     string
   'purl'       PodcastURL                       string
   'rate'       RatingPercent                    string
   'rldt'       ReleaseDate                      string
-  'rtng'       Rating                           int8u
-  'sfID'       AppleStoreCountry                int32u
+  'rtng'       Rating                           int8s
+  'sdes'       StoreDescription                 string
+  'sfID'       AppleStoreCountry                int32s
   'shwm'       ShowMovement                     int8s
   'soaa'       SortAlbumArtist                  string
   'soal'       SortAlbum                        string
@@ -25592,24 +25642,28 @@ API QuickTimeHandler option may be used to include an 'mdir' Handler box.
   'soco'       SortComposer                     string
   'sonm'       SortName                         string
   'sosn'       SortShow                         string
-  'stik'       MediaType                        int8u
+  'stik'       MediaType                        int8s
   'titl'       Title                            string/
-  'tmpo'       BeatsPerMinute                   int16u
+  'tmpo'       BeatsPerMinute                   int16s
   'trkn'       TrackNumber                      undef
   'tven'       TVEpisodeID                      string
-  'tves'       TVEpisode                        int32u
+  'tves'       TVEpisode                        int32s
   'tvnn'       TVNetworkName                    string
   'tvsh'       TVShow                           string
   'tvsn'       TVSeason                         int32u
   'yrrc'       Year                             string
   "\xa9ART"    Artist                           string
   "\xa9alb"    Album                            string
+  "\xa9ard"    ArtDirector                      string
+  "\xa9arg"    Arranger                         string
   "\xa9aut"    Author                           string/
   "\xa9cmt"    Comment                          string
   "\xa9com"    Composer                         string/
+  "\xa9con"    Conductor                        string
   "\xa9cpy"    Copyright                        string/
   "\xa9day"    ContentCreateDate                string
   "\xa9des"    Description                      string
+  "\xa9dir"    Director                         string
   "\xa9enc"    EncodedBy                        string
   "\xa9gen"    Genre                            string
   "\xa9grp"    Grouping                         string
@@ -25619,11 +25673,17 @@ API QuickTimeHandler option may be used to include an 'mdir' Handler box.
   "\xa9mvn"    MovementName                     string
   "\xa9nam"    Title                            string
   "\xa9nrt"    Narrator                         string
+  "\xa9ope"    OriginalArtist                   string
+  "\xa9prd"    Producer                         string
   "\xa9pub"    Publisher                        string
+  "\xa9sne"    SoundEngineer                    string
+  "\xa9sol"    Soloist                          string
+  "\xa9st3"    Subtitle                         string
   "\xa9too"    Encoder                          string
   "\xa9trk"    Track                            string
   "\xa9wrk"    Work                             string
   "\xa9wrt"    Composer                         string
+  "\xa9xpd"    ExecutiveProducer                string
   "\xa9xyz"    GPSCoordinates                   string
 
 =head3 QuickTime iTunesInfo Tags
@@ -34394,6 +34454,7 @@ FileName.
   Trailer                    File               yes!
   Validate                   ExifTool           no
   Warning                    ExifTool           no
+  XML                        XML                no
   XMP                        XMP                yes!
   XResolution                File               no
   YResolution                File               no

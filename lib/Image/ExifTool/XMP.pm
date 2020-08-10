@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.34';
+$VERSION = '3.35';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3562,6 +3562,11 @@ sub ParseXMPElement($$$;$$$$)
             if ($prop eq 'svg' or $prop eq 'metadata') {
                 # add svg namespace prefix if missing to ignore these entries in the tag name
                 $$propList[-1] = "svg:$prop";
+            }
+        } elsif ($$et{XmpIgnoreProps}) { # ignore specified properties for tag name
+            foreach (@{$$et{XmpIgnoreProps}}) {
+                last unless @$propList;
+                pop @$propList if $_ eq $$propList[0];
             }
         }
 

@@ -1036,89 +1036,34 @@ changed via <a href="../config.html#PREF">the config file</a>.</p>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'sdes'</td>
-<td>StoreDescription</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
 <td>'software'</td>
 <td>Software</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'still-image-time'</td>
 <td>StillImageTime</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(this tag always has a value of -1; the time of the still image is obtained
 from the associated SampleTime)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'title'</td>
 <td>Title</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'version'</td>
 <td>Version</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'video-orientation'</td>
 <td>VideoOrientation</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'year'</td>
 <td>Year</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>"&copy;ard"</td>
-<td>ArtDirector</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>"&copy;arg"</td>
-<td>Arranger</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>"&copy;con"</td>
-<td>Conductor</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>"&copy;dir"</td>
-<td>Director</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>"&copy;ope"</td>
-<td>OriginalArtist</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>"&copy;prd"</td>
-<td>Producer</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>"&copy;sne"</td>
-<td>SoundEngineer</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>"&copy;sol"</td>
-<td>Soloist</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>"&copy;st3"</td>
-<td>Subtitle</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>"&copy;xpd"</td>
-<td>ExecutiveProducer</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -1630,7 +1575,7 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
 <tr class=b>
 <td>'akID'</td>
 <td>AppleStoreAccountType</td>
-<td class=c>int8u</td>
+<td class=c>int8s</td>
 <td><span class=s>0 = iTunes
   <br>1 = AOL</span></td></tr>
 <tr>
@@ -1646,7 +1591,7 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
 <tr>
 <td>'atID'</td>
 <td>AlbumTitleID</td>
-<td class=c>int32u</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'auth'</td>
@@ -1661,7 +1606,7 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
 <tr class=b>
 <td>'cnID'</td>
 <td>AppleStoreCatalogID</td>
-<td class=c>int32u</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'covr'</td>
@@ -1671,7 +1616,7 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
 <tr class=b>
 <td>'cpil'</td>
 <td>Compilation</td>
-<td class=c>int8u</td>
+<td class=c>int8s</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
 <tr>
@@ -1702,7 +1647,7 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
 <tr class=b>
 <td>'geID'</td>
 <td>GenreID</td>
-<td class=c>int32u</td>
+<td class=c>int32s</td>
 <td>--&gt; <a href='QuickTime.html#GenreID'>QuickTime GenreID Values</a></td></tr>
 <tr>
 <td>'gnre'</td>
@@ -1747,7 +1692,7 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
 <tr>
 <td>'hdvd'</td>
 <td>HDVideo</td>
-<td class=c>int8u</td>
+<td class=c>int8s</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
 <tr class=b>
@@ -1769,7 +1714,7 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
 <tr>
 <td>'pcst'</td>
 <td>Podcast</td>
-<td class=c>int8u</td>
+<td class=c>int8s</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
 <tr class=b>
@@ -1780,13 +1725,13 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
 <tr>
 <td>'pgap'</td>
 <td>PlayGap</td>
-<td class=c>int8u</td>
+<td class=c>int8s</td>
 <td><span class=s>0 = Insert Gap
   <br>1 = No Gap</span></td></tr>
 <tr class=b>
 <td>'plID'</td>
 <td>PlayListID</td>
-<td class=c>int8u</td>
+<td class=c>int32s[0.25]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'prID'</td>
@@ -1816,56 +1761,61 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
 <tr class=b>
 <td>'rtng'</td>
 <td>Rating</td>
-<td class=c>int8u</td>
+<td class=c>int8s</td>
 <td><span class=s>0 = none
   <br>1 = Explicit
   <br>2 = Clean
   <br>4 = Explicit (old)</span></td></tr>
 <tr>
+<td>'sdes'</td>
+<td>StoreDescription</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'sfID'</td>
 <td>AppleStoreCountry</td>
-<td class=c>int32u</td>
+<td class=c>int32s</td>
 <td>--&gt; <a href='QuickTime.html#AppleStoreCountry'>QuickTime AppleStoreCountry Values</a></td></tr>
-<tr class=b>
+<tr>
 <td>'shwm'</td>
 <td>ShowMovement</td>
 <td class=c>int8s</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr>
+<tr class=b>
 <td>'soaa'</td>
 <td>SortAlbumArtist</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'soal'</td>
 <td>SortAlbum</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'soar'</td>
 <td>SortArtist</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'soco'</td>
 <td>SortComposer</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'sonm'</td>
 <td>SortName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'sosn'</td>
 <td>SortShow</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'stik'</td>
 <td>MediaType</td>
-<td class=c>int8u</td>
+<td class=c>int8s</td>
 <td><table class=cols><tr>
   <td>0 = Movie (old)
   <br>1 = Normal (Music)
@@ -1879,75 +1829,90 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
   <br>21 = Podcast
   <br>23 = iTunes U</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td>'titl'</td>
 <td>Title</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tmpo'</td>
 <td>BeatsPerMinute</td>
-<td class=c>int16u</td>
+<td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'trkn'</td>
 <td>TrackNumber</td>
 <td class=c>undef</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tven'</td>
 <td>TVEpisodeID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tves'</td>
 <td>TVEpisode</td>
-<td class=c>int32u</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tvnn'</td>
 <td>TVNetworkName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tvsh'</td>
 <td>TVShow</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tvsn'</td>
 <td>TVSeason</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'yrrc'</td>
 <td>Year</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ART"</td>
 <td>Artist</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;alb"</td>
 <td>Album</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td>"&copy;ard"</td>
+<td>ArtDirector</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
 <tr>
+<td>"&copy;arg"</td>
+<td>Arranger</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>"&copy;aut"</td>
 <td>Author</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;cmt"</td>
 <td>Comment</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;com"</td>
 <td>Composer</td>
 <td class=c title=' / = Avoid'>string/</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>"&copy;con"</td>
+<td>Conductor</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;cpy"</td>
@@ -1965,53 +1930,83 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>"&copy;dir"</td>
+<td>Director</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>"&copy;enc"</td>
 <td>EncodedBy</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;gen"</td>
 <td>Genre</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;grp"</td>
 <td>Grouping</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;lyr"</td>
 <td>Lyrics</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;mvc"</td>
 <td>MovementCount</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;mvi"</td>
 <td>MovementNumber</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;mvn"</td>
 <td>MovementName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;nam"</td>
 <td>Title</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;nrt"</td>
 <td>Narrator</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td>"&copy;ope"</td>
+<td>OriginalArtist</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
+<td>"&copy;prd"</td>
+<td>Producer</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>"&copy;pub"</td>
 <td>Publisher</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>"&copy;sne"</td>
+<td>SoundEngineer</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>"&copy;sol"</td>
+<td>Soloist</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>"&copy;st3"</td>
+<td>Subtitle</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -2035,6 +2030,11 @@ API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may 
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>"&copy;xpd"</td>
+<td>ExecutiveProducer</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>"&copy;xyz"</td>
 <td>GPSCoordinates</td>
 <td class=c>string</td>
@@ -8647,7 +8647,7 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 27, 2020</i>
+<br><i>Last revised Aug 10, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

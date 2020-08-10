@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 my %dateTimeInfo = (
     # NOTE: Do NOT put "Groups" here because Groups hash must not be common!
@@ -40,7 +40,7 @@ my %event = (
     eventDate           => { %dateTimeInfo, Groups => { 2 => 'Time' } },
     eventID             => { },
     eventRemarks        => { Writable => 'lang-alt' },
-    eventTime           => { %dateTimeInfo, Groups => { 2 => 'Time' } },
+    eventTime           => { Shift => 'Time', Groups => { 2 => 'Time' } },
     fieldNotes          => { },
     fieldNumber         => { },
     habitat             => { },

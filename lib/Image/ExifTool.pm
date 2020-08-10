@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.03';
+$VERSION = '12.04';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -137,8 +137,8 @@ sub ReadValue($$$;$$$);
 @loadAllTables = qw(
     PhotoMechanic Exif GeoTiff CanonRaw KyoceraRaw Lytro MinoltaRaw PanasonicRaw
     SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 BMP::Extra BPG BPG::Extensions
-    PICT PNG MNG FLIF DjVu DPX OpenEXR MIFF PCX PGF PSP PhotoCD Radiance PDF
-    PostScript Photoshop::Header Photoshop::Layers Photoshop::ImageData
+    PICT PNG MNG FLIF DjVu DPX OpenEXR ZISRAW MIFF PCX PGF PSP PhotoCD Radiance
+    PDF PostScript Photoshop::Header Photoshop::Layers Photoshop::ImageData
     FujiFilm::RAF FujiFilm::IFD Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD
     Sony::PMP ITC ID3 FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible
     MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile
@@ -186,9 +186,9 @@ $defaultLang = 'en';    # default language
                 PSD XMP BMP BPG PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG
                 FLAC APE MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FLIF FPF LFP
                 HTML VRD RTF FITS XCF DSS QTIF FPX PICT ZIP GZIP PLIST RAR BZ2
-                TAR  EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC M2TS PHP
-                PCX DCX DWF DWG WTV Torrent VCard LRI R3D AA PDB MOI ISO ALIAS
-                JSON MP3 DICOM PCD TXT);
+                CZI TAR  EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC M2TS
+                PHP PCX DCX DWF DWG WTV Torrent VCard LRI R3D AA PDB MOI ISO
+                ALIAS JSON MP3 DICOM PCD TXT);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -253,6 +253,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     CRW  => ['CRW',  'Canon RAW format'],
     CS1  => ['PSD',  'Sinar CaptureShop 1-Shot RAW'],
     CSV  => ['TXT',  'Comma-Separated Values'],
+    CZI  => ['CZI',  'Zeiss Integrated Software RAW'],
     DC3  =>  'DICM',
     DCM  =>  'DICM',
     DCP  => ['TIFF', 'DNG Camera Profile'],
@@ -583,6 +584,7 @@ my %fileDescription = (
     CRM  => 'video/x-canon-crm',
     CRW  => 'image/x-canon-crw',
     CSV  => 'text/csv',
+    CZI  => 'image/x-zeiss-czi', #PH (NC)
     DCP  => 'application/octet-stream', #PH (NC)
     DCR  => 'image/x-kodak-dcr',
     DCX  => 'image/dcx',
@@ -783,6 +785,7 @@ my %moduleName = (
     CRW  => 'CanonRaw',
     CHM  => 'EXE',
     COS  => 'CaptureOne',
+    CZI  => 'ZISRAW',
     DEX  => 0,
     DOCX => 'OOXML',
     DCX  => 0,
@@ -853,6 +856,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     BZ2  => 'BZh[1-9]\x31\x41\x59\x26\x53\x59',
     CHM  => 'ITSF.{20}\x10\xfd\x01\x7c\xaa\x7b\xd0\x11\x9e\x0c\0\xa0\xc9\x22\xe6\xec',
     CRW  => '(II|MM).{4}HEAP(CCDR|JPGM)',
+    CZI  => 'ZISRAWFILE\0{6}',
     DCX  => '\xb1\x68\xde\x3a',
     DEX  => "dex\n035\0",
     DICOM=> '(.{128}DICM|\0[\x02\x04\x06\x08]\0[\0-\x20]|[\x02\x04\x06\x08]\0[\0-\x20]\0)',
@@ -1446,6 +1450,11 @@ my %systemTagsNotes = (
             require Image::ExifTool::XMP;
             return Image::ExifTool::XMP::CheckXMP($self, $tagInfo, \$val);
         },
+    },
+    XML => {
+        Notes => 'the XML data block, extracted for some file types',
+        Groups => { 0 => 'XML', 1 => 'XML' },
+        Binary => 1,
     },
     ICC_Profile => {
         Notes => q{
@@ -3099,30 +3108,9 @@ sub GetValue($$;$)
                 }
                 if (ref $conv eq 'HASH') {
                     # look up converted value in hash
-                    my $lc;
-                    if (defined($value = $$conv{$val})) {
-                        # override with our localized language PrintConv if available
-                        if ($$self{CUR_LANG} and $convType eq 'PrintConv' and
-                            # (no need to check for lang-alt tag names -- they won't have a PrintConv)
-                            ref($lc = $$self{CUR_LANG}{$$tagInfo{Name}}) eq 'HASH' and
-                            ($lc = $$lc{PrintConv}) and ($lc = $$lc{$value}))
-                        {
-                            $value = $self->Decode($lc, 'UTF8');
-                        }
-                    } else {
+                    if (not defined($value = $$conv{$val})) {
                         if ($$conv{BITMASK}) {
                             $value = DecodeBits($val, $$conv{BITMASK}, $$tagInfo{BitsPerWord});
-                            # override with localized language strings
-                            if (defined $value and $$self{CUR_LANG} and $convType eq 'PrintConv' and
-                                ref($lc = $$self{CUR_LANG}{$$tagInfo{Name}}) eq 'HASH' and
-                                ($lc = $$lc{PrintConv}))
-                            {
-                                my @vals = split ', ', $value;
-                                foreach (@vals) {
-                                    $_ = $$lc{$_} if defined $$lc{$_};
-                                }
-                                $value = join ', ', @vals;
-                            }
                         } else {
                              # use alternate conversion routine if available
                             if ($$conv{OTHER}) {
@@ -3135,10 +3123,28 @@ sub GetValue($$;$)
                                 if ($$tagInfo{PrintHex} and $val and IsInt($val) and
                                     $convType eq 'PrintConv')
                                 {
-                                    $val = sprintf('0x%x',$val);
+                                    $value = sprintf('Unknown (0x%x)',$val);
+                                } else {
+                                    $value = "Unknown ($val)";
                                 }
-                                $value = "Unknown ($val)";
                             }
+                        }
+                    }
+                    # override with our localized language PrintConv if available
+                    my $tmp;
+                    if ($$self{CUR_LANG} and $convType eq 'PrintConv' and
+                        # (no need to check for lang-alt tag names -- they won't have a PrintConv)
+                        ref($tmp = $$self{CUR_LANG}{$$tagInfo{Name}}) eq 'HASH' and
+                        ($tmp = $$tmp{PrintConv}))
+                    {
+                        if ($$conv{BITMASK} and not defined $$conv{$val}) {
+                            my @vals = split ', ', $value;
+                            foreach (@vals) {
+                                $_ = $$tmp{$_} if defined $$tmp{$_};
+                            }
+                            $value = join ', ', @vals;
+                        } elsif (defined($tmp = $$tmp{$value})) {
+                            $value = $self->Decode($tmp, 'UTF8');
                         }
                     }
                 } else {

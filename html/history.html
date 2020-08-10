@@ -17,6 +17,24 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.04'><b>Aug. 10, 2020 - Version 12.04</b></a>
+<ul>
+<li>Added read support for ZEISS ZISRAW CZI files
+<li>Added some new values for a couple of Olympus tags (thanks Sebastian)
+<li>Decode a number of new tags for the Sony ILCE-7SM3 (thanks Jos Roost)
+<li>Removed formatting restrictions on XMP-dwc:EventTime to allow a time-only
+    value to be written
+<li>Moved new QuckTime ItemList tags added in version 12.02 to the proper group
+    (they were incorrectly added to the Keys group)
+<li>Improved QuickTime -v3 output to show default language codes
+<li>Patched -lang option to work for the values of somet tags with coded
+    translations
+<li>Patched the format of a number of QuickTime tags when writing for improved
+    compatibility with iTunes and AtomicParsley
+<li>Patched to write a default QuickTime language code of 0x0000 (null) instead
+    of 0x55c4 ('und')
+</ul>
+
 <a name='v12.03'><b>July 29, 2020 - Version 12.03</b></a>
 <ul>
 <li>Added family 7 group names to allow tag ID's to be specified when reading
@@ -24,8 +42,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Fixed a couple of typos in tag values (thanks Herb)
 <li>API Changes:
     <ul>
-    <li>Added HexTagIDs option
-    <li>Enhanced GetNewValue() to allow family 7 groups names to be used
+    <li>Added <a href="ExifTool.html#HexTagIDs">HexTagIDs</a> option
+    <li>Enhanced <a href="ExifTool.html#GetNewValue">GetNewValue()</a> to allow family 7 groups names to be used
     </ul>
 <li>Internal Changes:
     <ul>

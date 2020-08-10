@@ -169,6 +169,7 @@ html/TagNames/Vorbis.html
 html/TagNames/WTV.html
 html/TagNames/XMP.html
 html/TagNames/ZIP.html
+html/TagNames/ZISRAW.html
 html/TagNames/iWork.html
 html/TagNames/index.html
 html/TagNames/style.css
@@ -410,6 +411,7 @@ lib/Image/ExifTool/XMP.pm
 lib/Image/ExifTool/XMP2.pl
 lib/Image/ExifTool/XMPStruct.pl
 lib/Image/ExifTool/ZIP.pm
+lib/Image/ExifTool/ZISRAW.pm
 lib/Image/ExifTool/iWork.pm
 perl-Image-ExifTool.spec
 t/AFCP.t
@@ -915,6 +917,8 @@ t/ZIP_4.out
 t/ZIP_5.out
 t/ZIP_6.out
 t/ZIP_7.out
+t/ZISRAW.t
+t/ZISRAW_2.out
 t/images/AFCP.jpg
 t/images/AIFF.aif
 t/images/APE.ape
@@ -1089,4 +1093,5 @@ t/images/XMP8.xmp
 t/images/XMP9.xmp
 t/images/ZIP.gz
 t/images/ZIP.zip
+t/images/ZISRAW.czi
 t/images/iWork.numbers

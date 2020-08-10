@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.83';
+$VERSION = '2.84';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -608,7 +608,8 @@ $VERSION = '2.83';
     103 => 'Light', #JD
     104 => 'Night View', #JD
     105 => 'Autumn Leaves', #JD
-    0xffffffff => 'n/a', #PH
+    255 => 'Off', #JR (new for ILCE-7SM3, July 2020)
+   0xffffffff => 'n/a', #PH
 );
 
 %minoltaSceneMode = (

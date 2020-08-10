@@ -21,10 +21,10 @@
 #           10) Copy zip archive to web servers.
 #           11) Update zip file version in link and text of html/index.html.
 #------------------------------------------------------------------------------
--T exiftool-12.03
-#--info=FileVersion=12.0.3.0
-#--info=ProductVersion=12.0.3.0
-##"--info=Build Date=2020:07:29 15:31:03-04:00"
+-T exiftool-12.04
+#--info=FileVersion=12.0.4.0
+#--info=ProductVersion=12.0.4.0
+##"--info=Build Date=2020:08:10 10:03:15-04:00"
 ##"--info=Bundled Perl Version=ActivePerl 5.24.0"
 ##"--info=LegalCopyright=Copyright (c) 2003-2020, Phil Harvey"
 ##"--info=ProductName=ExifTool"
@@ -244,6 +244,7 @@
 -M Image::ExifTool::WTV
 -M Image::ExifTool::XMP
 -M Image::ExifTool::ZIP
+-M Image::ExifTool::ZISRAW
 -M Image::ExifTool::iWork
 -M File::RandomAccess
 -M Image/ExifTool/QuickTimeStream.pl

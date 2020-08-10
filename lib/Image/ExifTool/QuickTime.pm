@@ -36,6 +36,7 @@
 #   24) https://github.com/sergiomb2/libmp4v2/wiki/iTunesMetadata
 #   25) https://cconcolato.github.io/mp4ra/atoms.html
 #   26) https://github.com/SamsungVR/android_upload_sdk/blob/master/SDKLib/src/main/java/com/samsung/msca/samsungvr/sdk/UserVideo.java
+#   27) https://exiftool.org/forum/index.php?topic=11517.0
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::QuickTime;
@@ -46,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.51';
+$VERSION = '2.52';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -2994,6 +2995,22 @@ my %eeBox = (
     "\xa9too" => 'Encoder',
     "\xa9trk" => 'Track',
     "\xa9wrt" => 'Composer',
+#
+# the following tags written by AtomicParsley 0.9.6
+# (ref https://exiftool.org/forum/index.php?topic=11455.0)
+#
+    "\xa9st3" => 'Subtitle',
+    "\xa9con" => 'Conductor',
+    "\xa9sol" => 'Soloist',
+    "\xa9arg" => 'Arranger',
+    "\xa9ope" => 'OriginalArtist',
+    "\xa9dir" => 'Director',
+    "\xa9ard" => 'ArtDirector',
+    "\xa9sne" => 'SoundEngineer',
+    "\xa9prd" => 'Producer',
+    "\xa9xpd" => 'ExecutiveProducer',
+    sdes      => 'StoreDescription',
+#
     '----' => {
         Name => 'iTunesInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::iTunesInfo' },
@@ -3002,7 +3019,8 @@ my %eeBox = (
     covr => { Name => 'CoverArt',    Groups => { 2 => 'Preview' } },
     cpil => { #10
         Name => 'Compilation',
-        Format => 'int8u', #23
+        Format => 'int8u', #27 (ref 23 contradicts what AtomicParsley actually writes, which is int8s)
+        Writable => 'int8s',
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
     disk => {
@@ -3023,6 +3041,7 @@ my %eeBox = (
     pgap => { #10
         Name => 'PlayGap',
         Format => 'int8u', #23
+        Writable => 'int8s', #27
         PrintConv => {
             0 => 'Insert Gap',
             1 => 'No Gap',
@@ -3030,7 +3049,10 @@ my %eeBox = (
     },
     tmpo => {
         Name => 'BeatsPerMinute',
-        Format => 'int16u', # marked as boolean but really int16u in my sample
+        # marked as boolean but really int16u in my sample
+        # (but written as int16s by iTunes and AtomicParsley, ref forum11506)
+        Format => 'int16u',
+        Writable => 'int16s',
     },
     trkn => {
         Name => 'TrackNumber',
@@ -3040,11 +3062,12 @@ my %eeBox = (
             my @a = unpack 'x2nn', $val;
             return $a[1] ? join(' of ', @a) : $a[0];
         },
+        # (see forum11501 for discussion about the format used)
         ValueConvInv => q{
             my @a = $val =~ /\d+/g;
             return undef if @a == 0 or @a > 2;
             push @a, 0 if @a == 1;
-            return pack('n3', 0, @a);
+            return pack('n4', 0, @a, 0);
         },
     },
 #
@@ -3054,6 +3077,7 @@ my %eeBox = (
     akID => { #10
         Name => 'AppleStoreAccountType',
         Format => 'int8u', #24
+        Writable => 'int8s', #27
         PrintConv => {
             0 => 'iTunes',
             1 => 'AOL',
@@ -3064,12 +3088,14 @@ my %eeBox = (
     atID => { #10 (or TV series)
         Name => 'AlbumTitleID',
         Format => 'int32u',
+        Writable => 'int32s', #27
     },
     auth => { Name => 'Author', Groups => { 2 => 'Author' } },
     catg => 'Category', #7
     cnID => { #10
         Name => 'AppleStoreCatalogID',
         Format => 'int32u',
+        Writable => 'int32s', #27
     },
     cprt => { Name => 'Copyright', Groups => { 2 => 'Author' } },
     dscp => { Name => 'Description', Avoid => 1 },
@@ -3093,6 +3119,7 @@ my %eeBox = (
     geID => { #10
         Name => 'GenreID',
         Format => 'int32u',
+        Writable => 'int32s', #27
         SeparateTable => 1,
         # the following lookup is based on http://itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres
         # (see scripts/parse_genre to parse genre JSON file from above)
@@ -5745,6 +5772,7 @@ my %eeBox = (
     hdvd => { #10
         Name => 'HDVideo',
         Format => 'int8u', #24
+        Writable => 'int8s', #27
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
     keyw => 'Keyword', #7
@@ -5752,18 +5780,21 @@ my %eeBox = (
     pcst => { #7
         Name => 'Podcast',
         Format => 'int8u', #23
+        Writable => 'int8s', #27
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
     perf => 'Performer',
     plID => { #10 (or TV season)
         Name => 'PlayListID',
         Format => 'int8u',  # actually int64u, but split it up
+        Writable => 'int32s', #27
     },
     purd => 'PurchaseDate', #7
     purl => 'PodcastURL', #7
     rtng => { #10
         Name => 'Rating',
         Format => 'int8u', #23
+        Writable => 'int8s', #27
         PrintConv => {
             0 => 'none',
             1 => 'Explicit',
@@ -5774,6 +5805,7 @@ my %eeBox = (
     sfID => { #10
         Name => 'AppleStoreCountry',
         Format => 'int32u',
+        Writable => 'int32s', #27
         SeparateTable => 1,
         PrintConv => { #21
             143441 => 'United States', # US
@@ -5942,6 +5974,7 @@ my %eeBox = (
     stik => { #10
         Name => 'MediaType',
         Format => 'int8u', #23
+        Writable => 'int8s', #27
         PrintConvColumns => 2,
         PrintConv => { #(http://weblog.xanga.com/gryphondwb/615474010/iphone-ringtones---what-did-itunes-741-really-do.html)
             0 => 'Movie (old)', #forum9059 (was Movie)
@@ -5963,6 +5996,7 @@ my %eeBox = (
     tves => { #7/10
         Name => 'TVEpisode',
         Format => 'int32u',
+        Writable => 'int32s', #27
     },
     tvnn => 'TVNetworkName', #7
     tvsh => 'TVShow', #10
@@ -5973,7 +6007,8 @@ my %eeBox = (
     yrrc => 'Year', #(ffmpeg source)
     itnu => { #PH (iTunes 10.5)
         Name => 'iTunesU',
-        Format => 'int8s',
+        Format => 'int8u', #27
+        Writable => 'int8s', #27
         Description => 'iTunes U',
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
@@ -6030,15 +6065,18 @@ my %eeBox = (
     "\xa9mvn" => 'MovementName', #PH
     "\xa9mvi" => { #PH
         Name => 'MovementNumber',
-        Format => 'int16s',
+        Format => 'int16u', #27
+        Writable => 'int16s', #27
     },
     "\xa9mvc" => { #PH
         Name => 'MovementCount',
-        Format => 'int16s',
+        Format => 'int16u', #27
+        Writable => 'int16s', #27
     },
     shwm => { #PH
         Name => 'ShowMovement',
-        Format => 'int8s',
+        Format => 'int8u', #27
+        Writable => 'int8s', #27
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
 );
@@ -6260,21 +6298,6 @@ my %eeBox = (
     'detected-face.roll-angle' => { Name => 'DetectedFaceRollAngle', Writable => 0 },
     # (fiel)com.apple.quicktime.detected-face.yaw-angle (dtyp=23, float)
     'detected-face.yaw-angle'  => { Name => 'DetectedFaceYawAngle',  Writable => 0 },
-#
-# the following tags written by AtomicParsley 0.9.6
-# (ref https://exiftool.org/forum/index.php?topic=11455.0)
-#
-    "\xa9st3" => 'Subtitle',
-    "\xa9con" => 'Conductor',
-    "\xa9sol" => 'Soloist',
-    "\xa9arg" => 'Arranger',
-    "\xa9ope" => 'OriginalArtist',
-    "\xa9dir" => 'Director',
-    "\xa9ard" => 'ArtDirector',
-    "\xa9sne" => 'SoundEngineer',
-    "\xa9prd" => 'Producer',
-    "\xa9xpd" => 'ExecutiveProducer',
-    sdes      => 'StoreDescription',
 #
 # seen in Apple ProRes RAW file
 #
@@ -9236,10 +9259,10 @@ ItemID:         foreach $id (keys %$items) {
                             }
                         }
                         if ($ctry or $lang) {
-                            $lang = GetLangCode($lang, $ctry);
-                            if ($lang) {
+                            my $langCode = GetLangCode($lang, $ctry);
+                            if ($langCode) {
                                 # get tagInfo for other language
-                                $langInfo = GetLangInfoQT($et, $tagInfo, $lang);
+                                $langInfo = GetLangInfoQT($et, $tagInfo, $langCode);
                                 # save other language tag ID's so we can delete later if necessary
                                 if ($langInfo) {
                                     $$tagInfo{OtherLang} or $$tagInfo{OtherLang} = [ ];
@@ -9256,7 +9279,7 @@ ItemID:         foreach $id (keys %$items) {
                             Size    => $len,
                             Format  => $format,
                             Index   => $index,
-                            Extra   => sprintf(", Type='${type}', Flags=0x%x%s",$flags,($lang ? ", Lang=$lang" : '')),
+                            Extra   => sprintf(", Type='${type}', Flags=0x%x, Lang=0x%.4x",$flags,$lang),
                         ) if $verbose;
                         # use "Keys" in path instead of ItemList if this was defined by a Keys tag
                         my $isKey = $$tagInfo{Groups} && $$tagInfo{Groups}{1} && $$tagInfo{Groups}{1} eq 'Keys';

@@ -81,9 +81,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.03.tar.gz/download">
-Download        Version 12.03</a> (4.6 MB) -
-<a href="history.html">July 29, 2020</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.04.tar.gz/download">
+Download        Version 12.04</a> (4.6 MB) -
+<a href="history.html">Aug. 10, 2020</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -135,8 +135,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.03.zip/download">
-         exiftool-12.03.zip</a> (6.3 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.04.zip/download">
+         exiftool-12.04.zip</a> (6.3 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -154,7 +154,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.03.dmg</a> (2.9 MB)</b></td></tr></table></blockquote>
+         ExifTool-12.04.dmg</a> (2.9 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -304,6 +304,7 @@ for each file format.</p>
 <tr><td><a href="TagNames/CanonRaw.html">CRW, CIFF</a></td><td>R/W</td><td>Canon RAW Camera Image File Format (<a href="canon_raw.html">CRW spec</a>)</td><td>-</td><td>-</td><td>R/W/C</td><td>-</td><td>R/W <a href="TagNames/CanonRaw.html">CanonRaw</a>, R/W/C <a href="TagNames/CanonVRD.html">CanonVRD</a><span class=sup>2</span></td></tr>
 <tr><td>CS1</td><td>R/W</td><td>Sinar CaptureShop 1-shot RAW (<a href="TagNames/Photoshop.html">PSD</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R <a href="TagNames/Photoshop.html">Photoshop</a></td></tr>
 <tr><td>CSV</td><td>R</td><td>Comma-Separated Values</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Text.html">Text</a></td></tr>
+<tr><td><a href="TagNames/ZISRAW.html">CZI</a></td><td>R</td><td>Zeiss Integrated Software RAW </td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/ZISRAW.html">ZISRAW</a>, R XML</td></tr>
 <tr><td><a href="TagNames/DICOM.html">DCM, DC3, DIC, DICM</a></td><td>R</td><td>DICOM - Digital Imaging and Communications in Medicine</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/DICOM.html">DICOM</a></td></tr>
 <tr><td>DCP</td><td>R/W</td><td>DNG Camera Profile (<a href="TagNames/DNG.html">DNG</a>-like)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>-</td></tr>
 <tr><td>DCR</td><td>R</td><td>Kodak Digital Camera RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>-</td></tr>
@@ -848,8 +849,10 @@ Preview, Printing, Time, Unknown, Video
 rational64s, float, double, ifd, unicode, complex, int64u, int64s, ifd64</td></tr>
 <tr><td><b>7&nbsp;(Tag&nbsp;ID)</b></td>
 <td>ID-xxx (where xxx is the tag ID.  Numerical ID's are given in hex with a
-leading "0x" if the HexTagIDs option is set, as are characters in non-numerical
-ID's which are not valid in a group name)</td></tr>
+leading "0x" if the <a href="ExifTool.html#HexTagIDs">HexTagIDs API option</a>
+is set, as are characters in non-numerical ID's which are not valid in a group
+name.  Note that unlike other group names, family 7 group names are case
+sensitive.)</td></tr>
 </table></blockquote>
 
 <p>The exiftool output can be organized based on these groups using the
@@ -858,7 +861,7 @@ groups, or <code>-g3:1</code> to see both family 3 and family 1 group names in
 the output.  See the <code>-g</code> option in the exiftool application
 documentation for more details, and the <a href="ExifTool.html#GetGroup">GetGroup</a>
 function in the ExifTool library for a description of the group families. Note
-that when writing, only family 0, 1 and 2 group names may be used.</p>
+that when writing, only family 0, 1, 2 and 7 group names may be used.</p>
 
 <h2><a name="writing">Writing Meta Information</a></h2>
 
@@ -923,7 +926,7 @@ if no corresponding EXIF tag exists, or finally to the XMP group.</p>
 <p>Alternatively, information may be written to a specific group only, bypassing
 these priorities, by providing a group name for the tag.  The
 "<a href="#writing">Writing Meta Information</a>" section above gave the syntax
-rules for exiftool command-line arguments to do this.  Any family 0, 1 or 2 group
+rules for exiftool command-line arguments to do this.  Any family 0, 1, 2 or 7 group
 name may be used when writing information, although not all groups are writable.</p>
 
 <h3>The "-tagsFromFile" Option</h3>

@@ -325,7 +325,7 @@ sub MDItemLocalTime($)
 
 #------------------------------------------------------------------------------
 # Set MacOS MDItem and XAttr tags from new tag values
-# Inputs: 0) Exiftool ref, 1) file name, 2) list of tags to set
+# Inputs: 0) ExifTool ref, 1) file name, 2) list of tags to set
 # Returns: 1=something was set OK, 0=didn't try, -1=error (and warning set)
 # Notes: There may be errors even if 1 is returned
 sub SetMacOSTags($$$)

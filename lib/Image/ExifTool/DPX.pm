@@ -6,6 +6,7 @@
 # Revisions:    2013-09-19 - P. Harvey created
 #
 # References:   1) http://www.cineon.com/ff_draft.php
+#               2) Harry Mallon private communication
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::DPX;
@@ -14,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 # DPX tags
 %Image::ExifTool::DPX::Main = (
@@ -86,6 +87,56 @@ $VERSION = '1.03';
             156 => 'User-defined 8 component element',
         },
     },
+    801 => { #2
+        Name => 'TransferCharacteristic',
+        Format => 'int8u',
+        PrintConv => {
+            0 => 'User-defined',
+            1 => 'Printing density',
+            2 => 'Linear',
+            3 => 'Logarithmic',
+            4 => 'Unspecified video',
+            5 => 'SMPTE 274M',
+            6 => 'ITU-R 704-4',
+            7 => 'ITU-R 601-5 system B or G (625)',
+            8 => 'ITU-R 601-5 system M (525)',
+            9 => 'Composite video (NTSC)',
+            10 => 'Composite video (PAL)',
+            11 => 'Z (depth) - linear',
+            12 => 'Z (depth) - homogeneous',
+            13 => 'SMPTE ADX',
+            14 => 'ITU-R 2020 NCL',
+            15 => 'ITU-R 2020 CL',
+            16 => 'IEC 61966-2-4 xvYCC',
+            17 => 'ITU-R 2100 NCL/PQ',
+            18 => 'ITU-R 2100 ICtCp/PQ',
+            19 => 'ITU-R 2100 NCL/HLG',
+            20 => 'ITU-R 2100 ICtCp/HLG',
+            21 => 'RP 431-2:2011 Gama 2.6',
+            22 => 'IEC 61966-2-1 sRGB',
+        },
+    },
+    802 => { #2
+        Name => 'ColorimetricSpecification',
+        Format => 'int8u',
+        PrintConv => {
+            0 => 'User-defined',
+            1 => 'Printing density',
+            4 => 'Unspecified video',
+            5 => 'SMPTE 274M',
+            6 => 'ITU-R 704-4',
+            7 => 'ITU-R 601-5 system B or G (625)',
+            8 => 'ITU-R 601-5 system M (525)',
+            9 => 'Composite video (NTSC)',
+            10 => 'Composite video (PAL)',
+            13 => 'SMPTE ADX',
+            14 => 'ITU-R 2020',
+            15 => 'P3D65',
+            16 => 'P3DCI',
+            17 => 'P3D60',
+            18 => 'ACES',
+        },
+    },
     803 => { Name => 'BitDepth',      Format => 'int8u' },
     820 => { Name => 'ImageDescription',  Format => 'string[32]' },
     892 => { Name => 'Image2Description', Format => 'string[32]', RawConv => '$val=~/[^\xff]/ ? $val : undef' },
@@ -106,9 +157,12 @@ $VERSION = '1.03';
     1556=> { Name => 'InputDeviceName',   Format => 'string[32]' },
     1588=> { Name => 'InputDeviceSerialNumber', Format => 'string[32]' },
     # 1620=> { Name => 'AspectRatio',       Format => 'int32u' },
-    1724 => { Name => 'FrameRate',        Format => 'float' },
+    1724 => { Name => 'OriginalFrameRate',Format => 'float' },
+    1728 => { Name => 'ShutterAngle',     Format => 'float', RawConv => '$val =~ /\d/ ? $val : undef' }, #2
     1732 => { Name => 'FrameID',          Format => 'string[32]' },
     1764 => { Name => 'SlateInformation', Format => 'string[100]' },
+    1920 => { Name => 'TimeCode',         Format => 'int32u' }, #2
+    1940 => { Name => 'FrameRate',        Format => 'float', RawConv => '$val =~ /\d/ ? $val : undef' }, #2
     1972 => { Name => 'Reserved5',        Format => 'string[76]', Unknown => 1 },
     2048 => { Name => 'UserID',           Format => 'string[32]' },
 );

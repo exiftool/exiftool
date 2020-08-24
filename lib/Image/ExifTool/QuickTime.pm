@@ -3103,17 +3103,22 @@ my %eeBox = (
     gnre => { #10
         Name => 'Genre',
         Avoid => 1,
-        # (Note: not written as int16u if numerical, although it should be)
+        # (Note: see https://exiftool.org/forum/index.php?topic=11537.0)
+        Format => 'undef',
+        ValueConv => 'unpack("n",$val)',
+        ValueConvInv => '$val =~ /^\d+$/ ? pack("n",$val) : undef',
         PrintConv => q{
             return $val unless $val =~ /^\d+$/;
             require Image::ExifTool::ID3;
             Image::ExifTool::ID3::PrintGenre($val - 1); # note the "- 1"
         },
         PrintConvInv => q{
+            return $val if $val =~ /^[0-9]+$/;
             require Image::ExifTool::ID3;
             my $id = Image::ExifTool::ID3::GetGenreID($val);
-            return defined $id ? $id : $val;
-        },
+            return unless defined $id and $id =~ /^\d+$/;
+            return $id + 1;
+        }, 
     },
     egid => 'EpisodeGlobalUniqueID', #7
     geID => { #10
@@ -8521,7 +8526,7 @@ sub EEWarn($)
 #------------------------------------------------------------------------------
 # Get quicktime format from flags word
 # Inputs: 0) quicktime atom flags, 1) data length
-# Returns: Exiftool format string
+# Returns: ExifTool format string
 sub QuickTimeFormat($$)
 {
     my ($flags, $len) = @_;

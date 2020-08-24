@@ -262,7 +262,7 @@ sub ParseAC3Descriptor($$)
 
 #------------------------------------------------------------------------------
 # Parse PID stream data
-# Inputs: 0) Exiftool ref, 1) PID number, 2) PID type, 3) PID name, 4) data ref
+# Inputs: 0) ExifTool ref, 1) PID number, 2) PID type, 3) PID name, 4) data ref
 # Returns: 0=stream parsed OK,
 #          1=stream parsed but we want to parse more of these,
 #          -1=can't parse yet because we don't know the type

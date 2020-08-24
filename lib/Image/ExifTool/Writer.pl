@@ -2022,7 +2022,7 @@ sub SetFileName($$;$$$)
 
 #------------------------------------------------------------------------------
 # Set file permissions, group/user id and various MDItem tags from new tag values
-# Inputs: 0) Exiftool ref, 1) file name or glob (must be a name for MDItem tags)
+# Inputs: 0) ExifTool ref, 1) file name or glob (must be a name for MDItem tags)
 # Returns: 1=something was set OK, 0=didn't try, -1=error (and warning set)
 # Notes: There may be errors even if 1 is returned
 sub SetSystemTags($$)
@@ -3284,7 +3284,7 @@ sub IsSameFile($$$)
 
 #------------------------------------------------------------------------------
 # Is this a raw file type?
-# Inputs: 0) Exiftool ref
+# Inputs: 0) ExifTool ref
 # Returns: true if FileType is a type of RAW image
 sub IsRawType($)
 {
@@ -6802,7 +6802,7 @@ sub WriteBinaryData($$$)
         my $val = ReadValue($dataPt, $entry, $format, $count, $dirLen-$entry);
         next unless defined $val;
         my $nvHash = $self->GetNewValueHash($tagInfo, $$self{CUR_WRITE_GROUP});
-        next unless $self->IsOverwriting($nvHash, $val);
+        next unless $self->IsOverwriting($nvHash, $val) > 0;
         my $newVal = $self->GetNewValue($nvHash);
         next unless defined $newVal;    # can't delete from a binary table
         # update DataMember with new value if necessary

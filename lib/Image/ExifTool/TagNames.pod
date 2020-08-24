@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23545 tags, with 15366 unique tag names.
+They contain a total of 23551 tags, with 15369 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -23701,6 +23701,8 @@ Tags extracted from DPX (Digital Picture Exchange) images.
     776    ImageHeight                          no
     780    DataSign                             no
     800    ComponentsConfiguration              no
+    801    TransferCharacteristic               no
+    802    ColorimetricSpecification            no
     803    BitDepth                             no
     820    ImageDescription                     no
     892    Image2Description                    no
@@ -23714,9 +23716,12 @@ Tags extracted from DPX (Digital Picture Exchange) images.
    1532    SourceCreateDate                     no
    1556    InputDeviceName                      no
    1588    InputDeviceSerialNumber              no
-   1724    FrameRate                            no
+   1724    OriginalFrameRate                    no
+   1728    ShutterAngle                         no
    1732    FrameID                              no
    1764    SlateInformation                     no
+   1920    TimeCode                             no
+   1940    FrameRate                            no
    1972    Reserved5?                           no
    2048    UserID                               no
 
@@ -25108,7 +25113,7 @@ Frame rate information stored by some Canon video cameras.
 =head2 QuickTime Tags
 
 The QuickTime format is used for many different types of audio, video and
-image files (most notably, MOV/MP4 videos and HEIC/CR3 images).  Exiftool
+image files (most notably, MOV/MP4 videos and HEIC/CR3 images).  ExifTool
 extracts standard meta information and a variety of audio, video and image
 parameters, as well as proprietary information written by many camera
 models.  Tags with a question mark after their name are not extracted unless
@@ -25611,7 +25616,7 @@ API QuickTimeHandler option may be used to include an 'mdir' Handler box.
   'dscp'       Description                      string/
   'egid'       EpisodeGlobalUniqueID            string
   'geID'       GenreID                          int32s
-  'gnre'       Genre                            string/
+  'gnre'       Genre                            undef/
   'grup'       Grouping                         string/
   'gshh'       GoogleHostHeader                 string
   'gspm'       GooglePingMessage                string
@@ -29550,6 +29555,7 @@ the AIFF specification.
   ------   --------                             --------
   '(c) '   Copyright                            no
   'ANNO'   Annotation                           no
+  'APPL'   ApplicationData                      no
   'AUTH'   Author                               no
   'COMM'   Common                               AIFF Common
   'COMT'   Comment                              AIFF Comment

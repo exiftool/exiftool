@@ -890,7 +890,7 @@ sub ParsePictureTiming($$)
 
 #------------------------------------------------------------------------------
 # Process H.264 Supplementary Enhancement Information (ref 1/PH)
-# Inputs: 0) Exiftool ref, 1) dirInfo ref, 2) tag table ref
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 if we processed payload type 5
 # Payload types:
 #   0 - buffer period

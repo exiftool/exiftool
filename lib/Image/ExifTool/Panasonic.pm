@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.11';
+$VERSION = '2.12';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -259,6 +259,7 @@ my %shootingMode = (
     88 => 'Clear Sports Shot', #18
     89 => 'Monochrome', #18
     90 => 'Creative Control', #18
+    92 => 'Handheld Night Shot', #forum11523
 );
 
 %Image::ExifTool::Panasonic::Main = (
@@ -670,12 +671,13 @@ my %shootingMode = (
         Name => 'SelfTimer',
         Writable => 'int16u',
         PrintConv => {
+            0 => 'Off (0)', #forum11529
             1 => 'Off',
             2 => '10 s',
             3 => '2 s',
             4 => '10 s / 3 pictures', #17
             258 => '2 s after shutter pressed', #forum11194
-            266 => '10 s', #forum11194
+            266 => '10 s after shutter pressed', #forum11194
             778 => '3 photos after 10 s', #forum11194
         },
     },
@@ -1319,7 +1321,7 @@ my %shootingMode = (
     0xb3 => { #forum11194
         Name => 'VideoBurstResolution',
         Writable => 'int16u',
-        PrintConv => { 0 => 'Off or 4K', 4 => '6K' },
+        PrintConv => { 1 => 'Off or 4K', 4 => '6K' },
     },
     0xb4 => { #forum9429
         Name => 'MultiExposure',
@@ -2539,6 +2541,16 @@ my %shootingMode = (
             'DMC-TZ40 90 10' => 'Toy Effect',
             'DMC-TZ40 90 11' => 'Dynamic Monochrome',
             'DMC-TZ40 90 12' => 'Soft',
+            # some TZ5 modes are different (forum11523)
+            # (these may be the same for the  TZ4, TZ11 and TZ15)
+            'DMC-TZ5 18 1' => 'High Sensitivity',
+            'DMC-TZ5 26 1' => 'High-speed Burst (shot 1)',
+            'DMC-TZ5 27 1' => 'High-speed Burst (shot 2)',
+            'DMC-TZ5 29 1' => 'Snow',
+            'DMC-TZ5 30 1' => 'Starry Sky',
+            'DMC-TZ5 31 1' => 'Beach',
+            'DMC-TZ5 36 1' => 'High-speed Burst (shot 3)',
+            'DMC-TZ5 39 1' => 'Aerial Photo / Underwater / Multi-aspect',
         },
     },
 );

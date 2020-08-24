@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.04';
+$VERSION = '12.05';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -7600,7 +7600,7 @@ sub ProcessDirectory($$$;$)
 
 #------------------------------------------------------------------------------
 # Get Metadata path
-# Inputs: 0) Exiftool object ref
+# Inputs: 0) ExifTool object ref
 # Return: Metadata path string
 sub MetadataPath($)
 {

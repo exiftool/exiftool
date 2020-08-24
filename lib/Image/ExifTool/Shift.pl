@@ -300,6 +300,7 @@ sub ShiftTime($;$$$)
 #
     SplitTime($val, \@time) or return "Invalid time string ($val)";
     if (defined $time[0]) {
+        return "Can't shift from year 0000" if $time[0] eq '0000';
         $mode = defined $time[3] ? 'DateTime' : 'Date';
     } elsif (defined $time[3]) {
         $mode = 'Time';

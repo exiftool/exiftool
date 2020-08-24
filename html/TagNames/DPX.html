@@ -131,6 +131,56 @@
   <br>156 = User-defined 8 component element</td></tr></table>
 </td></tr>
 <tr>
+<td class=r title='801 = 0x321'>801</td>
+<td>TransferCharacteristic</td>
+<td class=c>no</td>
+<td><table class=cols><tr>
+  <td>0 = User-defined
+  <br>1 = Printing density
+  <br>2 = Linear
+  <br>3 = Logarithmic
+  <br>4 = Unspecified video
+  <br>5 = SMPTE 274M
+  <br>6 = ITU-R 704-4
+  <br>7 = ITU-R 601-5 system B or G (625)
+  <br>8 = ITU-R 601-5 system M (525)
+  <br>9 = Composite video (NTSC)
+  <br>10 = Composite video (PAL)
+  <br>11 = Z (depth) - linear
+  <br>12 = Z (depth) - homogeneous
+  <br>13 = SMPTE ADX
+  <br>14 = ITU-R 2020 NCL
+  <br>15 = ITU-R 2020 CL
+  <br>16 = IEC 61966-2-4 xvYCC
+  <br>17 = ITU-R 2100 NCL/PQ
+  <br>18 = ITU-R 2100 ICtCp/PQ
+  <br>19 = ITU-R 2100 NCL/HLG
+  <br>20 = ITU-R 2100 ICtCp/HLG
+  <br>21 = RP 431-2:2011 Gama 2.6
+  <br>22 = IEC 61966-2-1 sRGB</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='802 = 0x322'>802</td>
+<td>ColorimetricSpecification</td>
+<td class=c>no</td>
+<td><table class=cols><tr>
+  <td>0 = User-defined
+  <br>1 = Printing density
+  <br>4 = Unspecified video
+  <br>5 = SMPTE 274M
+  <br>6 = ITU-R 704-4
+  <br>7 = ITU-R 601-5 system B or G (625)
+  <br>8 = ITU-R 601-5 system M (525)
+  <br>9 = Composite video (NTSC)
+  <br>10 = Composite video (PAL)
+  <br>13 = SMPTE ADX
+  <br>14 = ITU-R 2020
+  <br>15 = P3D65
+  <br>16 = P3DCI
+  <br>17 = P3D60
+  <br>18 = ACES</td></tr></table>
+</td></tr>
+<tr>
 <td class=r title='803 = 0x323'>803</td>
 <td>BitDepth</td>
 <td class=c>no</td>
@@ -197,25 +247,40 @@
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1724 = 0x6bc'>1724</td>
-<td>FrameRate</td>
+<td>OriginalFrameRate</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='1728 = 0x6c0'>1728</td>
+<td>ShutterAngle</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='1732 = 0x6c4'>1732</td>
 <td>FrameID</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1764 = 0x6e4'>1764</td>
 <td>SlateInformation</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1920 = 0x780'>1920</td>
+<td>TimeCode</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr>
+<td class=r title='1940 = 0x794'>1940</td>
+<td>FrameRate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='1972 = 0x7b4'>1972</td>
 <td>Reserved5?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='2048 = 0x800'>2048</td>
 <td>UserID</td>
 <td class=c>no</td>
@@ -224,7 +289,7 @@
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 27, 2016</i>
+<br><i>Last revised Aug 24, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -7,9 +7,22 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+(I'll be on vacation from Aug 26 to Sep 3, 2020 so don't expect any
+forum or email responses from me during this time)
+
+Aug. 24, 2020 - Version 12.05
+
+  - Added a new Panasonic SelfTimer value (thanks Herb)
+  - Decode a few more DPX tags (thanks Harry Mallon)
+  - Extract AIFF APPL tag as ApplicationData
+  - Fixed bug writing QuickTime ItemList 'gnre' Genre values
+  - Fixed an incorrect value for Panasonic VideoBurstResolution (thanks Herb)
+  - Fixed problem when applying a time shift to some invalid makernote date/time
+    values
+
 Aug. 10, 2020 - Version 12.04
 
-  - Added read support for ZEISS ZISRAW CZI files
+  - Added read support for Zeiss ZISRAW CZI files
   - Added some new values for a couple of Olympus tags (thanks Sebastian)
   - Decode a number of new tags for the Sony ILCE-7SM3 (thanks Jos Roost)
   - Removed formatting restrictions on XMP-dwc:EventTime to allow a time-only

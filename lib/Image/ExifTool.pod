@@ -2614,7 +2614,7 @@ IPTC Core and Extension specifications actually use the XMP format.)
 
 =head2 XMP
 
-Exiftool reads XMP encoded as UTF-8, UTF-16 or UTF-32, and converts them all
+ExifTool reads XMP encoded as UTF-8, UTF-16 or UTF-32, and converts them all
 to UTF-8 internally.  Also, all XML character entity references and numeric
 character references are converted.  When writing, ExifTool always encodes
 XMP as UTF-8, converting the following 5 characters to XML character

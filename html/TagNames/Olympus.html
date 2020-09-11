@@ -1482,6 +1482,11 @@ the Make and Model are used to identify the extender)</span>
 <td class=c>int16s[3]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x0308 = 776'>0x0308</td>
+<td>FocusBracketStepSize</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x0400 = 1024'>0x0400</td>
 <td>FlashMode</td>
 <td class=c>int16u</td>
@@ -1494,12 +1499,12 @@ the Make and Model are used to identify the extender)</span>
   <br>Bit 4 = Forced On
   <br>Bit 5 = 2nd Curtain</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0401 = 1025'>0x0401</td>
 <td>FlashExposureComp</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0403 = 1027'>0x0403</td>
 <td>FlashRemoteControl</td>
 <td class=c>int16u</td>
@@ -1518,7 +1523,7 @@ the Make and Model are used to identify the extender)</span>
   <br>0x13 = Channel 3, High
   <br>0x14 = Channel 4, High</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0404 = 1028'>0x0404</td>
 <td>FlashControlMode</td>
 <td class=c>int16u[n]</td>
@@ -1528,21 +1533,21 @@ the Make and Model are used to identify the extender)</span>
   <br>3 = TTL
   <br>4 = Auto
   <br>5 = Manual</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0405 = 1029'>0x0405</td>
 <td>FlashIntensity</td>
 <td class=c>rational64s[n]</td>
 <td><span class=s><span class=n>(3 or 4 values)</span>
   <br>&#39;undef undef undef&#39; = n/a
   <br>&#39;undef undef undef undef&#39; = n/a (x4)</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0406 = 1030'>0x0406</td>
 <td>ManualFlashStrength</td>
 <td class=c>rational64s[n]</td>
 <td><span class=s><span class=n>(3 or 4 values)</span>
   <br>&#39;undef undef undef&#39; = n/a
   <br>&#39;undef undef undef undef&#39; = n/a (x4)</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0500 = 1280'>0x0500</td>
 <td>WhiteBalance2</td>
 <td class=c>int16u</td>
@@ -1571,22 +1576,22 @@ the Make and Model are used to identify the extender)</span>
   <br>514 = Custom WB 3
   <br>515 = Custom WB 4</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0501 = 1281'>0x0501</td>
 <td>WhiteBalanceTemperature</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0502 = 1282'>0x0502</td>
 <td>WhiteBalanceBracket</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0503 = 1283'>0x0503</td>
 <td>CustomSaturation</td>
 <td class=c title=' ~ = Writable only with -n'>int16s[3]~</td>
 <td><span class=s><span class=n>(3 numbers: 1. CS Value, 2. Min, 3. Max)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0504 = 1284'>0x0504</td>
 <td>ModifiedSaturation</td>
 <td class=c>int16u</td>
@@ -1595,24 +1600,24 @@ the Make and Model are used to identify the extender)</span>
   <br>2 = CM2 (Green Enhance)
   <br>3 = CM3 (Blue Enhance)
   <br>4 = CM4 (Skin Tones)</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0505 = 1285'>0x0505</td>
 <td>ContrastSetting</td>
 <td class=c>int16s[3]</td>
 <td><span class=s><span class=n>(value, min, max)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0506 = 1286'>0x0506</td>
 <td>SharpnessSetting</td>
 <td class=c>int16s[3]</td>
 <td><span class=s><span class=n>(value, min, max)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0507 = 1287'>0x0507</td>
 <td>ColorSpace</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = sRGB
   <br>1 = Adobe RGB
   <br>2 = Pro Photo RGB</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0509 = 1289'>0x0509</td>
 <td>SceneMode</td>
 <td class=c>int16u</td>
@@ -1675,7 +1680,7 @@ the Make and Model are used to identify the extender)</span>
   <br>142 = Hand-held Starlight
   <br>154 = HDR</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x050a = 1290'>0x050a</td>
 <td>NoiseReduction</td>
 <td class=c>int16u</td>
@@ -1684,24 +1689,24 @@ the Make and Model are used to identify the extender)</span>
   <br>Bit 1 = Noise Filter
   <br>Bit 2 = Noise Filter (ISO Boost)
   <br>Bit 3 = Auto</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x050b = 1291'>0x050b</td>
 <td>DistortionCorrection</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x050c = 1292'>0x050c</td>
 <td>ShadingCompensation</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x050d = 1293'>0x050d</td>
 <td>CompressionFactor</td>
 <td class=c>rational64u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x050f = 1295'>0x050f</td>
 <td>Gradation</td>
 <td class=c>int16s[n]</td>
@@ -1714,7 +1719,7 @@ the Make and Model are used to identify the extender)</span>
   <br>[Value 3]
   <br>0 = User-Selected
   <br>1 = Auto-Override</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0520 = 1312'>0x0520</td>
 <td>PictureMode</td>
 <td class=c>int16u[n]</td>
@@ -1736,27 +1741,27 @@ the Make and Model are used to identify the extender)</span>
   <br>256 = Monotone
   <br>512 = Sepia</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0521 = 1313'>0x0521</td>
 <td>PictureModeSaturation</td>
 <td class=c>int16s[3]</td>
 <td><span class=s><span class=n>(value, min, max)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0522 = 1314'>0x0522</td>
 <td>PictureModeHue?</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0523 = 1315'>0x0523</td>
 <td>PictureModeContrast</td>
 <td class=c>int16s[3]</td>
 <td><span class=s><span class=n>(value, min, max)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0524 = 1316'>0x0524</td>
 <td>PictureModeSharpness</td>
 <td class=c>int16s[3]</td>
 <td><span class=s><span class=n>(value, min, max)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0525 = 1317'>0x0525</td>
 <td>PictureModeBWFilter</td>
 <td class=c>int16s</td>
@@ -1768,7 +1773,7 @@ the Make and Model are used to identify the extender)</span>
   <br>4 = Red
   <br>5 = Green</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x0526 = 1318'>0x0526</td>
 <td>PictureModeTone</td>
 <td class=c>int16s</td>
@@ -1780,7 +1785,7 @@ the Make and Model are used to identify the extender)</span>
   <br>4 = Purple
   <br>5 = Green</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0527 = 1319'>0x0527</td>
 <td>NoiseFilter</td>
 <td class=c>int16s[3]</td>
@@ -1789,7 +1794,7 @@ the Make and Model are used to identify the extender)</span>
   <br>&#39;0 -2 1&#39; = Standard
   <br>&#39;0 0 0&#39; = n/a
   <br>&#39;1 -2 1&#39; = High</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0529 = 1321'>0x0529</td>
 <td>ArtFilter</td>
 <td class=c>int16u[4]</td>
@@ -1833,7 +1838,7 @@ the Make and Model are used to identify the extender)</span>
   <br>40 = Partial Color II
   <br>41 = Partial Color III</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x052c = 1324'>0x052c</td>
 <td>MagicFilter</td>
 <td class=c>int16u[4]</td>
@@ -1877,7 +1882,7 @@ the Make and Model are used to identify the extender)</span>
   <br>40 = Partial Color II
   <br>41 = Partial Color III</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x052d = 1325'>0x052d</td>
 <td>PictureModeEffect</td>
 <td class=c>int16s[3]</td>
@@ -1885,7 +1890,7 @@ the Make and Model are used to identify the extender)</span>
   <br>&#39;0 -1 1&#39; = Standard
   <br>&#39;0 0 0&#39; = n/a
   <br>&#39;1 -1 1&#39; = High</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x052e = 1326'>0x052e</td>
 <td>ToneLevel</td>
 <td class=c>yes</td>
@@ -1894,7 +1899,7 @@ the Make and Model are used to identify the extender)</span>
   <br>-31998 = Shadows
   <br>-31997 = Midtones
   <br>0 = 0</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x052f = 1327'>0x052f</td>
 <td>ArtFilterEffect</td>
 <td class=c>int16u[20]</td>
@@ -1954,12 +1959,12 @@ the Make and Model are used to identify the extender)</span>
   <td>0x3 = Red Color Filter
   <br>0x4 = Green Color Filter</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0532 = 1330'>0x0532</td>
 <td>ColorCreatorEffect</td>
 <td class=c>int16s[6]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0537 = 1335'>0x0537</td>
 <td>MonochromeProfileSettings</td>
 <td class=c>int16s[6]</td>
@@ -1974,7 +1979,7 @@ the Make and Model are used to identify the extender)</span>
   <br>7 = Green Filter
   <br>8 = Yellow-green Filter</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0538 = 1336'>0x0538</td>
 <td>FilmGrainEffect</td>
 <td class=c>int16s</td>
@@ -1982,17 +1987,17 @@ the Make and Model are used to identify the extender)</span>
   <br>1 = Low
   <br>2 = Medium
   <br>3 = High</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0539 = 1337'>0x0539</td>
 <td>ColorProfileSettings</td>
 <td class=c>int16s[14]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x053a = 1338'>0x053a</td>
 <td>MonochromeVignetting</td>
 <td class=c>int16s</td>
 <td><span class=s><span class=n>(-5 to +5: positive is white vignetting, negative is black vignetting)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x053b = 1339'>0x053b</td>
 <td>MonochromeColor</td>
 <td class=c>int16s</td>
@@ -2004,17 +2009,17 @@ the Make and Model are used to identify the extender)</span>
   <br>4 = Purple
   <br>5 = Green</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0600 = 1536'>0x0600</td>
 <td>DriveMode</td>
 <td class=c title=' ~ = Writable only with -n'>int16u[n]~</td>
 <td><span class=s><span class=n>(2, 3 or 5 numbers: 1. Mode, 2. Shot number, 3. Mode bits, 5. Shutter mode)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0601 = 1537'>0x0601</td>
 <td>PanoramaMode</td>
 <td class=c title=' ~ = Writable only with -n'>int16u~</td>
 <td><span class=s><span class=n>(2 numbers: 1. Mode, 2. Shot number)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0603 = 1539'>0x0603</td>
 <td>ImageQuality2</td>
 <td class=c>int16u</td>
@@ -2023,7 +2028,7 @@ the Make and Model are used to identify the extender)</span>
   <br>3 = SHQ
   <br>4 = RAW
   <br>5 = SQ (5)</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0604 = 1540'>0x0604</td>
 <td>ImageStabilization</td>
 <td class=c>int32u</td>
@@ -2032,7 +2037,7 @@ the Make and Model are used to identify the extender)</span>
   <br>2 = On, Mode 2
   <br>3 = On, Mode 3
   <br>4 = On, Mode 4</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0804 = 2052'>0x0804</td>
 <td>StackedImage</td>
 <td class=c>int32u[2]</td>
@@ -2051,33 +2056,33 @@ the Make and Model are used to identify the extender)</span>
   <br>&#39;4 *&#39; = Live Time/Bulb (* images)
   <br>&#39;9 *&#39; = Focus-stacked (* images)</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x0900 = 2304'>0x0900</td>
 <td>ManometerPressure</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0901 = 2305'>0x0901</td>
 <td>ManometerReading</td>
 <td class=c>int32s[2]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0902 = 2306'>0x0902</td>
 <td>ExtendedWBDetect</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0903 = 2307'>0x0903</td>
 <td>RollAngle</td>
 <td class=c>int16s[2]</td>
 <td><span class=s><span class=n>(converted to degrees of clockwise camera rotation)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0904 = 2308'>0x0904</td>
 <td>PitchAngle</td>
 <td class=c>int16s[2]</td>
 <td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0908 = 2312'>0x0908</td>
 <td>DateTimeUTC</td>
 <td class=c>string</td>
@@ -2632,6 +2637,7 @@ the Make and Model are used to identify the extender)</span>
 <td class=c>int16u[2]</td>
 <td><span class=s>[Value 0]
   <br>0 = Off
+  <br>1 = Live Composite
   <br>2 = On (2 frames)
   <br>3 = On (3 frames)</span></td></tr>
 <tr>
@@ -3697,7 +3703,7 @@ like the LS-5, LS-10, LS-11.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 10, 2020</i>
+<br><i>Last revised Sep 11, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 my %dateTimeInfo = (
     # NOTE: Do NOT put "Groups" here because Groups hash must not be common!
@@ -28,7 +28,7 @@ my %dateTimeInfo = (
 my %materialSample = (
     STRUCT_NAME => 'DarwinCore MaterialSample',
     NAMESPACE => 'dwc',
-    materialSampleID            => { },
+    materialSampleID    => { },
 );
 
 my %event = (
@@ -40,7 +40,20 @@ my %event = (
     eventDate           => { %dateTimeInfo, Groups => { 2 => 'Time' } },
     eventID             => { },
     eventRemarks        => { Writable => 'lang-alt' },
-    eventTime           => { Shift => 'Time', Groups => { 2 => 'Time' } },
+    eventTime => {
+        Groups => { 2 => 'Time' },
+        Writable => 'string', # (so we can format this ourself)
+        Shift => 'Time',
+        # (pass straight through if this isn't a full date/time value)
+        ValueConv => 'Image::ExifTool::XMP::ConvertXMPDate($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+        ValueConvInv => 'Image::ExifTool::XMP::FormatXMPDate($val) or $val',
+        PrintConvInv => q{
+            my $v = $self->InverseDateTime($val,undef,1);
+            undef $Image::ExifTool::evalWarning;
+            return $v || $val;
+        },
+    },
     fieldNotes          => { },
     fieldNumber         => { },
     habitat             => { },

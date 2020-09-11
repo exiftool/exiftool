@@ -8,7 +8,21 @@ Note: The most recent production release is Version 12.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
 (I'll be on vacation from Aug 26 to Sep 3, 2020 so don't expect any
-forum or email responses from me during this time)
+forum or email responses from me during this time - Phil H.)
+
+Sept. 11, 2020 - Version 12.06
+
+  - Added read support for Lyrics3 metadata (and fixed problem where APE
+    metadata may be ignored if Lyrics3 exists)
+  - Added a new Panasonic VideoBurstMode value (thanks Klaus Homeister)
+  - Added a new Olympus MultipleExposureMode value
+  - Added a new Nikon LensID
+  - Added back conversions for XMP-dwc EventTime that were removed in 12.04 with
+    a patch to allow time-only values
+  - Decode GIF AspectRatio
+  - Decode Olympus FocusBracketStepSize (thanks Karsten)
+  - Extract PNG iDOT chunk in Binary format with the name AppleDataOffsets
+  - Process PNG images which do not start with mandatory IHDR chunk
 
 Aug. 24, 2020 - Version 12.05
 

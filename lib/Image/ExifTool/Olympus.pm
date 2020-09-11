@@ -40,7 +40,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.67';
+$VERSION = '2.68';
 
 sub PrintLensInfo($$$);
 
@@ -1898,8 +1898,12 @@ my %indexInfo = (
     },
     0x307 => { #15
         Name => 'AFFineTuneAdj',
-        Format => 'int16s',
+        Writable => 'int16s',
         Count => 3, # not sure what the 3 values mean
+    },
+    0x308 => { #forum11578
+        Name => 'FocusBracketStepSize',
+        Writable => 'int8u',
     },
     0x400 => { #6
         Name => 'FlashMode',
@@ -2906,6 +2910,7 @@ my %indexInfo = (
         Count => 2,
         PrintConv => [{
             0 => 'Off',
+            1 => 'Live Composite', #github issue#61
             2 => 'On (2 frames)',
             3 => 'On (3 frames)',
         }],

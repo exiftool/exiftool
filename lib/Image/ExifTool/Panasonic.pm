@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.12';
+$VERSION = '2.13';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1346,6 +1346,7 @@ my %shootingMode = (
             0x108 => 'Loop Recording',
             0x810 => '6K Burst',
             0x820 => '6K Burst (Start/Stop)',
+            0x408 => 'Focus Stacking', #forum11563
             0x1001 => 'High Resolution Mode',
         },
     },

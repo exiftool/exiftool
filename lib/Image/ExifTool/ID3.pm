@@ -1,13 +1,15 @@
 #------------------------------------------------------------------------------
 # File:         ID3.pm
 #
-# Description:  Read ID3 meta information
+# Description:  Read ID3 and Lyrics3 meta information
 #
 # Revisions:    09/12/2005 - P. Harvey Created
+#               09/08/2020 - PH Added Lyrics3 support
 #
 # References:   1) http://www.id3.org/
 #               2) http://www.mp3-tech.org/
 #               3) http://www.fortunecity.com/underworld/sonic/3/id3tag.html
+#               4) https://id3.org/Lyrics3
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::ID3;
@@ -16,7 +18,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.54';
+$VERSION = '1.55';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -68,13 +70,13 @@ my %dateTimeConv = (
 %Image::ExifTool::ID3::Main = (
     VARS => { NO_ID => 1 },
     NOTES => q{
-        ExifTool extracts ID3 information from MP3, MPEG, AIFF, OGG, FLAC, APE, MPC
-        and RealAudio files.  ID3v2 tags which support multiple languages (eg.
-        Comment and Lyrics) are extracted by specifying the tag name, followed by a
-        dash ('-'), then a 3-character ISO 639-2 language code (eg. "Comment-spa").
-        See L<http://www.id3.org/> for the official ID3 specification and
-        L<http://www.loc.gov/standards/iso639-2/php/code_list.php> for a list of ISO
-        639-2 language codes.
+        ExifTool extracts ID3 and Lyrics3 information from MP3, MPEG, AIFF, OGG,
+        FLAC, APE, MPC and RealAudio files.  ID3v2 tags which support multiple
+        languages (eg. Comment and Lyrics) are extracted by specifying the tag name,
+        followed by a dash ('-'), then a 3-character ISO 639-2 language code (eg.
+        "Comment-spa"). See L<http://www.id3.org/> for the official ID3
+        specification and L<http://www.loc.gov/standards/iso639-2/php/code_list.php>
+        for a list of ISO 639-2 language codes.
     },
     ID3v1 => {
         Name => 'ID3v1',
@@ -96,6 +98,24 @@ my %dateTimeConv = (
         Name => 'ID3v2_4',
         SubDirectory => { TagTable => 'Image::ExifTool::ID3::v2_4' },
     },
+);
+
+# Lyrics3 tags (ref 4)
+%Image::ExifTool::ID3::Lyrics3 = (
+    GROUPS => { 1 => 'Lyrics3', 2 => 'Audio' },
+    NOTES => q{
+        ExifTool extracts Lyrics3 version 1.00 and 2.00 tags from any file that
+        supports ID3.  See L<https://id3.org/Lyrics3> for the specification.
+    },
+    IND => 'Indications',
+    LYR => 'Lyrics',
+    INF => 'AdditionalInfo',
+    AUT => { Name => 'Author', Groups => { 2 => 'Author' } },
+    EAL => 'ExtendedAlbumName',
+    EAR => 'ExtendedArtistName',
+    ETT => 'ExtendedTrackTitle',
+    IMG => 'AssociatedImageFile',
+    CRC => 'CRC', #PH
 );
 
 # Mapping for ID3v1 Genre numbers
@@ -1347,7 +1367,7 @@ sub ProcessID3v2($$$)
 # Inputs: 0) ExifTool object reference, 1) dirInfo reference
 # Returns: 1 on success, 0 if this file didn't contain ID3 information
 # - also processes audio data if any ID3 information was found
-# - sets ExifTool DoneID3 to 1 when called, or to 2 if an ID3v1 trailer exists
+# - sets ExifTool DoneID3 to 1 when called, or to trailer size if an ID3v1 trailer exists
 sub ProcessID3($$)
 {
     my ($et, $dirInfo) = @_;
@@ -1426,8 +1446,9 @@ sub ProcessID3($$)
 #
 # read ID3v1 trailer if it exists
 #
+    my $trailSize = 0;
     if ($raf->Seek(-128, 2) and $raf->Read($tBuff, 128) == 128 and $tBuff =~ /^TAG/) {
-        $$et{DoneID3} = 2;  # set to 2 as flag that trailer exists
+        $trailSize = 128;
         %id3Trailer = (
             DataPt   => \$tBuff,
             DataPos  => $raf->Tell() - 128,
@@ -1437,8 +1458,59 @@ sub ProcessID3($$)
         $id3Len += length($tBuff);
         $rtnVal = 1;
         # load 'Enhanced TAG' information if available
-        if ($raf->Seek(-355, 2) and $raf->Read($eBuff, 227) == 227 and $eBuff =~ /^TAG+/) {
+        my $eSize = 227;    # size of ID3 Enhanced TAG info
+        if ($raf->Seek(-$trailSize - $eSize, 2) and $raf->Read($eBuff, $eSize) == $eSize and $eBuff =~ /^TAG+/) {
             $id3Trailer{EnhancedTAG} = \$eBuff;
+            $trailSize += $eSize;
+        }
+        $$et{DoneID3} = $trailSize; # save trailer size
+    }
+#
+# read Lyrics3 trailer if it exists
+#
+    if ($raf->Seek(-$trailSize-15, 2) and $raf->Read($buff, 15) == 15 and $buff =~ /^(.{6})LYRICS(END|200)$/) {
+        my $ver = $2;   # Lyrics3 version ('END' for version 1)
+        my $len = ($ver eq 'END') ? 5100 : $1 + 15; # max Lyrics3 length
+        my $tbl = GetTagTable('Image::ExifTool::ID3::Lyrics3');
+        $len = $raf->Tell() if $len > $raf->Tell();
+        if ($raf->Seek(-$len, 1) and $raf->Read($buff, $len) == $len and $buff =~ /LYRICSBEGIN/g) {
+            my $pos = pos($buff);
+            $$et{DoneID3} = $trailSize + $len - $pos + 11;  # update trailer length
+            my $oldIndent = $$et{INDENT};
+            $$et{INDENT} .= '| ';
+            if ($et->Options('Verbose')) {
+                $et->VPrint(0, "Lyrics3:\n");
+                $et->VerboseDir('Lyrics3', undef, $len);
+                if ($pos > 11) {
+                    $buff = substr($buff, $pos - 11);
+                    $pos = 11;
+                }
+                $et->VerboseDump(\$buff);
+            }
+            if ($ver eq 'END') {
+                # Lyrics3 v1.00
+                my $val = substr($buff, $pos, $len - $pos - 9);
+                $et->HandleTag($tbl, 'LYR', $et->Decode($val, 'Latin'));
+            } else {
+                # Lyrics3 v2.00
+                for (;;) {
+                    # (note: the size field is 5 digits,, not 6 as per the documentation)
+                    last unless $buff =~ /\G(.{3})(\d{5})/g;
+                    my ($tag, $size) = ($1, $2);
+                    $pos += 8;
+                    last if $pos + $size > length($buff);
+                    unless ($$tbl{$tag}) {
+                        AddTagToTable($tbl, $tag, { Name => Image::ExifTool::MakeTagName("Lyrics3_$tag") });
+                    }
+                    $et->HandleTag($tbl, $tag, $et->Decode(substr($buff, $pos, $size), 'Latin'));
+                    $pos += $size;
+                    pos($buff) = $pos;
+                }
+                $pos == length($buff) - 15 or $et->Warn('Malformed Lyrics3 v2.00 block');
+            }
+            $$et{INDENT} = $oldIndent;
+        } else {
+            $et->Warn('Error reading Lyrics3 trailer');
         }
     }
 #
@@ -1582,6 +1654,8 @@ under the same terms as Perl itself.
 =item L<http://www.mp3-tech.org/>
 
 =item L<http://www.fortunecity.com/underworld/sonic/3/id3tag.html>
+
+=item L<https://id3.org/Lyrics3>
 
 =back
 

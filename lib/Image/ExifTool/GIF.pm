@@ -115,6 +115,11 @@ my %gifMap = (
         ValueConv => '$val + 1',
     },
     5 => 'BackgroundColor',
+    6 => {
+        Name => 'AspectRatio',
+        RawConv => '$val ? $val : undef',
+        ValueConv => '($val + 15) / 64',
+    },
 );
 
 # GIF Netscape 2.0 animation extension (ref 3)

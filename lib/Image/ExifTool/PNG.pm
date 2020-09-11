@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.54';
+$VERSION = '1.55';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -311,6 +311,18 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
     },
     # fcTL - animation frame control for each frame
     # fdAT - animation data for each frame
+    iDOT => { # (ref NealKrawetz)
+        Name => 'AppleDataOffsets',
+        Binary => 1,
+        # Apple offsets into data relative to start of iDOT chunk:
+        #    int32u Divisor  [only ever seen 2]
+        #    int32u Unknown  [always 0]
+        #    int32u TotalDividedHeight  [image height from IDHR/Divisor]
+        #    int32u Size  [always 40 / 0x28; size of this chunk]
+        #    int32u DividedHeight1
+        #    int32u DividedHeight2
+        #    int32u IDAT_Offset2 [location of IDAT with start of DividedHeight2 segment]
+    },
 );
 
 # PNG IHDR chunk
@@ -1342,8 +1354,7 @@ sub ProcessPNG($$)
             } elsif ($hdrChunk eq 'IHDR' and $chunk eq 'CgBI') {
                 $et->Warn('Non-standard PNG image (Apple iPhone format)');
             } else {
-                $et->Warn("$fileType image did not start with $hdrChunk");
-                last;
+                $et->WarnOnce("$fileType image did not start with $hdrChunk");
             }
         }
         if ($outfile and ($isDatChunk{$chunk} or $chunk eq $endChunk) and @txtOffset) {

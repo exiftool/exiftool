@@ -1330,6 +1330,7 @@ my %eeBox = (
         Format => 'fixed32s[9]',
         Notes => 'writable for the video track via the Composite Rotation tag',
         Writable => 1,
+        Protected => 1,
         Permanent => 1,
         # only set rotation if image size is non-zero
         RawConvInv => \&GetMatrixStructure,
@@ -2615,6 +2616,7 @@ my %eeBox = (
         Name => 'Rotation',
         Format => 'int8u',
         Writable => 'int8u',
+        Protected => 1,
         ValueConv => '$val * 90',
         ValueConvInv => 'int($val / 90 + 0.5)',
     },
@@ -2646,6 +2648,7 @@ my %eeBox = (
         Name => 'PixelAspectRatio',
         Format => 'int32u',
         Writable => 'int32u',
+        Protected => 1,
     },
     rloc => {
         Name => 'RelativeLocation',
@@ -7692,6 +7695,7 @@ my %eeBox = (
             1 => 'QuickTime:HandlerType',
         },
         Writable => 1,
+        Protected => 1,
         WriteAlso => {
             MatrixStructure => 'Image::ExifTool::QuickTime::GetRotationMatrix($val)',
         },

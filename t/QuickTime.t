@@ -59,7 +59,7 @@ my $testnum = 1;
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
-    $exifTool->SetNewValue('Rotation' => '270');
+    $exifTool->SetNewValue('Rotation' => '270', Protected => 1);
     my $testfile = "t/${testname}_${testnum}_failed.mov";
     unlink $testfile;
     my $rtnVal = $exifTool->WriteInfo('t/images/QuickTime.mov', $testfile);

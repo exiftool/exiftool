@@ -15,9 +15,24 @@
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">CPAN</a>.)</p>
 
 <p><i class=red>(I'll be on vacation from Aug 26 to Sep 3, 2020 so don't expect any
-forum or email responses from me during this time)</i></p>
+forum or email responses from me during this time - Phil H.)</i></p>
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v12.06'><b>Sept. 11, 2020 - Version 12.06</b></a>
+<ul>
+<li>Added read support for Lyrics3 metadata (and fixed problem where APE
+    metadata may be ignored if Lyrics3 exists)
+<li>Added a new Panasonic VideoBurstMode value (thanks Klaus Homeister)
+<li>Added a new Olympus MultipleExposureMode value
+<li>Added a new Nikon LensID
+<li>Added back conversions for XMP-dwc EventTime that were removed in 12.04 with
+    a patch to allow time-only values
+<li>Decode GIF AspectRatio
+<li>Decode Olympus FocusBracketStepSize (thanks Karsten)
+<li>Extract PNG iDOT chunk in Binary format with the name AppleDataOffsets
+<li>Process PNG images which do not start with mandatory IHDR chunk
+</ul>
 
 <a name='v12.05'><b>Aug. 24, 2020 - Version 12.05</b></a>
 <ul>

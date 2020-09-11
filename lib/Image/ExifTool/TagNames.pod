@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23551 tags, with 15369 unique tag names.
+They contain a total of 23563 tags, with 15378 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -14488,6 +14488,7 @@ any information found here will be extracted, even if the tag is not listed.
   0x0305   AFPointSelected                      rational64s[5]
   0x0306   AFFineTune                           int8u
   0x0307   AFFineTuneAdj                        int16s[3]
+  0x0308   FocusBracketStepSize                 int8u
   0x0400   FlashMode                            int16u
   0x0401   FlashExposureComp                    rational64s
   0x0403   FlashRemoteControl                   int16u
@@ -22933,6 +22934,7 @@ Information extracted from the GIF logical screen descriptor.
     4.2    ColorResolutionDepth                 no
     4.3    BitsPerPixel                         no
       5    BackgroundColor                      no
+      6    AspectRatio                          no
 
 =head2 BMP Tags
 
@@ -23215,6 +23217,7 @@ check if speed is more of a concern.
   'hIST'             PaletteHistogram           no
   'iCCP'             ICC_Profile                ICC_Profile
   'iCCP-name'        ProfileName                no
+  'iDOT'             AppleDataOffsets           no
   'iTXt'             InternationalText          PNG TextualData
   'oFFs'             ImageOffset                no
   'pCAL'             PixelCalibration           no
@@ -24278,13 +24281,13 @@ Additional document permissions imposed by digital signatures.
 
 =head2 ID3 Tags
 
-ExifTool extracts ID3 information from MP3, MPEG, AIFF, OGG, FLAC, APE, MPC
-and RealAudio files.  ID3v2 tags which support multiple languages (eg.
-Comment and Lyrics) are extracted by specifying the tag name, followed by a
-dash ('-'), then a 3-character ISO 639-2 language code (eg. "Comment-spa").
-See L<http://www.id3.org/> for the official ID3 specification and
-L<http://www.loc.gov/standards/iso639-2/php/code_list.php> for a list of ISO
-639-2 language codes.
+ExifTool extracts ID3 and Lyrics3 information from MP3, MPEG, AIFF, OGG,
+FLAC, APE, MPC and RealAudio files.  ID3v2 tags which support multiple
+languages (eg. Comment and Lyrics) are extracted by specifying the tag name,
+followed by a dash ('-'), then a 3-character ISO 639-2 language code (eg.
+"Comment-spa"). See L<http://www.id3.org/> for the official ID3
+specification and L<http://www.loc.gov/standards/iso639-2/php/code_list.php>
+for a list of ISO 639-2 language codes.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -24602,6 +24605,23 @@ software.
   'XSOA'   AlbumSortOrder                       no
   'XSOP'   PerformerSortOrder                   no
   'XSOT'   TitleSortOrder                       no
+
+=head3 ID3 Lyrics3 Tags
+
+ExifTool extracts Lyrics3 version 1.00 and 2.00 tags from any file that
+supports ID3.  See L<https://id3.org/Lyrics3> for the specification.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'AUT'    Author                               no
+  'CRC'    CRC                                  no
+  'EAL'    ExtendedAlbumName                    no
+  'EAR'    ExtendedArtistName                   no
+  'ETT'    ExtendedTrackTitle                   no
+  'IMG'    AssociatedImageFile                  no
+  'IND'    Indications                          no
+  'INF'    AdditionalInfo                       no
+  'LYR'    Lyrics                               no
 
 =head2 ITC Tags
 
@@ -25756,9 +25776,9 @@ defined in this table.
   'colr'   ICC_Profile                          ICC_Profile
            ColorRepresentation                  no
   'hvcC'   HEVCConfiguration                    QuickTime HEVCConfig
-  'irot'   Rotation                             int8u
+  'irot'   Rotation                             int8u!
   'ispe'   ImageSpatialExtent                   no
-  'pasp'   PixelAspectRatio                     int32u
+  'pasp'   PixelAspectRatio                     int32u!
   'pixi'   ImagePixelDepth                      no
   'rloc'   RelativeLocation                     no
 
@@ -26235,7 +26255,7 @@ MP4 video media header.
       5    TrackDuration                        no
       8    TrackLayer                           no
       9    TrackVolume                          no
-     10    MatrixStructure                      fixed32s[9]
+     10    MatrixStructure                      fixed32s[9]!
      19    ImageWidth                           no
      20    ImageHeight                          no
 
@@ -34711,7 +34731,7 @@ values, may created via the ExifTool configuration file.
                        FlashBits
   RicohPitch           Ricoh:Accelerometer      no
   RicohRoll            Ricoh:Accelerometer      no
-  Rotation             QuickTime:MatrixStructure yes
+  Rotation             QuickTime:MatrixStructure yes!
                        QuickTime:HandlerType
   RunTimeSincePowerUp  Apple:RunTimeValue       no
                        Apple:RunTimeScale

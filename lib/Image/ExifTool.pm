@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.05';
+$VERSION = '12.06';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -140,14 +140,15 @@ sub ReadValue($$$;$$$);
     PICT PNG MNG FLIF DjVu DPX OpenEXR ZISRAW MIFF PCX PGF PSP PhotoCD Radiance
     PDF PostScript Photoshop::Header Photoshop::Layers Photoshop::ImageData
     FujiFilm::RAF FujiFilm::IFD Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD
-    Sony::PMP ITC ID3 FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible
-    MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile
-    QuickTime::Stream QuickTime::Tags360Fly Matroska MOI MXF DV Flash Flash::FLV
-    Real::Media Real::Audio Real::Metafile Red RIFF AIFF ASF WTV DICOM FITS MIE
-    JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
-    EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard
-    Text VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork ISO
-    FLIR::AFF FLIR::FPF MacOS::MDItem MacOS::XAttr FlashPix::DocTable
+    Sony::PMP ITC ID3 ID3::Lyrics3 FLAC Ogg Vorbis APE APE::NewHeader
+    APE::OldHeader Audible MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime
+    QuickTime::ImageFile QuickTime::Stream QuickTime::Tags360Fly Matroska MOI
+    MXF DV Flash Flash::FLV Real::Media Real::Audio Real::Metafile Red RIFF AIFF
+    ASF WTV DICOM FITS MIE JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent
+    EXE EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR
+    EXE::CHM LNK Font VCard Text VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP
+    ZIP::RAR RTF OOXML iWork ISO FLIR::AFF FLIR::FPF MacOS::MDItem MacOS::XAttr
+    FlashPix::DocTable
 );
 
 # alphabetical list of current Lang modules

@@ -77,8 +77,9 @@ my %processByMetaFormat = (
 
 # data lengths for each INSV record type
 my %insvDataLen = (
-    0x300 => 56,    # accelerometer
-    0x400 => 16,    # unknown
+    0x300 => 56,    # gyro/accelerometer
+    0x400 => 16,    # exposure
+    0x600 => 8,     # timestamps
     0x700 => 53,    # GPS
 );
 
@@ -2444,11 +2445,16 @@ sub ProcessInsta360($;$)
                     $et->HandleTag($tagTbl, Accelerometer => "@a[0..2]"); # (NC)
                     $et->HandleTag($tagTbl, AngularVelocity => "@a[3..5]"); # (NC)
                 }
-            } elsif ($id == 0x400 and $unknown) {
+            } elsif ($id == 0x400) {
                 for ($p=0; $p<$len; $p+=$dlen) {
                     $$et{DOC_NUM} = ++$$et{DOC_COUNT};
                     $et->HandleTag($tagTbl, TimeCode => sprintf('%.3f', Get64u(\$buff, $p) / 1000));
-                    $et->HandleTag($tagTbl, Unknown01 => GetDouble(\$buff, $p + 8));
+                    $et->HandleTag($tagTbl, Exposure => GetDouble(\$buff, $p + 8));
+                }
+            } elsif ($id == 0x600) {
+                for ($p=0; $p<$len; $p+=$dlen) {
+                    $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                    $et->HandleTag($tagTbl, VideoTimestamp => sprintf('%.3f', Get64u(\$buff, $p) / 1000));
                 }
             } elsif ($id == 0x700) {
                 for ($p=0; $p<$len; $p+=$dlen) {

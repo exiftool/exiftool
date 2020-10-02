@@ -1145,7 +1145,7 @@ my %sPantryItem = (
             LayerText => { },
         },
     },
-    TransmissionReference   => { },
+    TransmissionReference => { Notes => 'Now used as a job identifier' },
     Urgency         => {
         Writable => 'integer',
         Notes => 'should be in the range 1-8 to conform with the XMP spec',

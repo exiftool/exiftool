@@ -44,14 +44,18 @@ my %event = (
         Groups => { 2 => 'Time' },
         Writable => 'string', # (so we can format this ourself)
         Shift => 'Time',
-        # (pass straight through if this isn't a full date/time value)
+        # (allow date/time or just time value)
         ValueConv => 'Image::ExifTool::XMP::ConvertXMPDate($val)',
         PrintConv => '$self->ConvertDateTime($val)',
         ValueConvInv => 'Image::ExifTool::XMP::FormatXMPDate($val) or $val',
         PrintConvInv => q{
             my $v = $self->InverseDateTime($val,undef,1);
             undef $Image::ExifTool::evalWarning;
-            return $v || $val;
+            return $v if $v;
+            my @a = ($val =~ /\d{1,2}/g);   # get HH, MM and maybe SS
+            return undef unless @a >= 2;
+            $a[2] or $a[2] = 0;
+            return sprintf('%.2d:%.2d:%.2d', @a);
         },
     },
     fieldNotes          => { },

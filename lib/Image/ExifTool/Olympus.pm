@@ -40,7 +40,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.68';
+$VERSION = '2.69';
 
 sub PrintLensInfo($$$);
 
@@ -2129,6 +2129,11 @@ my %indexInfo = (
             67 => 'Soft Background Shot', #11
             142 => 'Hand-held Starlight', #PH (SH-21)
             154 => 'HDR', #PH (XZ-2)
+            197 => 'Panning', #forum11631 (EM5iii)
+            203 => 'Light Trails', #forum11631 (EM5iii)
+            204 => 'Backlight HDR', #forum11631 (EM5iii)
+            205 => 'Silent', #forum11631 (EM5iii)
+            206 => 'Multi Focus Shot', #forum11631 (EM5iii)
         },
     },
     0x50a => { #PH/4/6

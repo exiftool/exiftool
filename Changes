@@ -7,8 +7,20 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
-(I'll be on vacation from Aug 26 to Sep 3, 2020 so don't expect any
-forum or email responses from me during this time - Phil H.)
+Oct. 2, 2020 - Version 12.07
+
+  - Added support for GoPro .360 videos
+  - Added some new Canon RF and Nikkor Z lenses (thanks LibRaw)
+  - Added some new Sony LensType and CreativeStyle values and decode some
+    ICLE-7C tags (thanks Jos Roost)
+  - Added a number of new Olympus SceneMode values (thanks Herb)
+  - Added a new Nikon LensID
+  - Decode more timed metadata from Insta360 videos (thanks Thomas Allen)
+  - Decode timed GPS from videos of more Garmin dashcam models
+  - Decode a new GoPro video tag
+  - Reformat time-only EventTime values when writing and prevent arbitrary
+    strings from being written
+  - Patched to accept backslashes in SourceFile entries for -csv option
 
 Sept. 11, 2020 - Version 12.06
 

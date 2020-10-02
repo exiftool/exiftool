@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.28';
+$VERSION = '3.29';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -144,6 +144,7 @@ sub PrintInvLensSpec($;$$);
     32858 => 'Sony FE 35mm F1.8', #JR/IB
     32859 => 'Sony FE 20mm F1.8 G', #IB/JR
     32860 => 'Sony FE 12-24mm F2.8 GM', #JR/IB
+    32864 => 'Sony FE 28-60mm F4-5.6', #JR
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -182,7 +183,8 @@ sub PrintInvLensSpec($;$$);
     49461 => 'Tamron 20mm F2.8 Di III OSD M1:2', #JR (Model F050)
     49462 => 'Tamron 70-180mm F2.8 Di III VXD', #JR (Model A056)
     49463 => 'Tamron 28-200mm F2.8-5.6 Di III RXD', #JR (Model A071)
-
+    49464 => 'Tamron 70-300mm F4.5-6.3 Di III RXD', #JR (Model A047)
+    49473 => 'Tokina atx-m 85mm F1.8 FE', #JR
     49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
     49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)
 
@@ -213,6 +215,7 @@ sub PrintInvLensSpec($;$$);
     50517 => 'Sigma 24-70mm F2.8 DG DN | A', #JR (019)
     50518 => 'Sigma 100-400mm F5-6.3 DG DN OS | C', #JR (020)
     50521 => 'Sigma 85mm F1.4 DG DN | A', #JR (020)
+    50522 => 'Sigma 105mm F2.8 DG DN MACRO | A', #JR (020)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
@@ -1000,7 +1003,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010h' },
     },{
         Name => 'Tag2010i', # ?
-        Condition => '$$self{Model} =~ /^(ILCE-(6100|6400|6600|7M3|7RM3|7RM4|9|9M2)|DSC-(RX10M4|RX100M6|RX100M5A|RX100M7|HX99|RX0M2)|ZV-1)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6100|6400|6600|7M3|7RM3|7RM4|7C|9|9M2)|DSC-(RX10M4|RX100M6|RX100M5A|RX100M7|HX99|RX0M2)|ZV-1)\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010i' },
     },{
         Name => 'Tag_0x2010',
@@ -1528,14 +1531,14 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     # from mid-2015: ILCE-7RM2/7SM2/6300 and newer models use different offsets
     {
         Name => 'Tag9050a',
-        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-(6100|6300|6400|6500|6600|7M3|7RM2|7RM3|7RM4|7SM2|7SM3|9|9M2)|ILCA-99M2|ZV-)/',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-(6100|6300|6400|6500|6600|7M3|7RM2|7RM3|7RM4|7SM2|7SM3|7C|9|9M2)|ILCA-99M2|ZV-)/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Tag9050a',
             ByteOrder => 'LittleEndian',
         },
     },{
         Name => 'Tag9050b',
-        Condition => '$$self{Model} =~ /^(ILCE-(6100|6300|6400|6500|6600|7M3|7RM2|7RM3|7RM4|7SM2|9|9M2)|ILCA-99M2)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6100|6300|6400|6500|6600|7M3|7RM2|7RM3|7RM4|7SM2|7C|9|9M2)|ILCA-99M2)/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Tag9050b',
             ByteOrder => 'LittleEndian',
@@ -1945,11 +1948,12 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             378 => 'ILCE-6600', #IB/JR
             379 => 'ILCE-6100', #IB/JR
             380 => 'ZV-1', #JR
+            381 => 'ILCE-7C', #JR
             383 => 'ILCE-7SM3',
         },
     },
     0xb020 => { #2
-        Name => 'CreativeStyle',
+        Name => 'CreativeStyle', # (called CreativeLook by the 7SM3, ref JR)
         Writable => 'string',
         # (all of these values have been observed, ref JR and PH)
         # - this PrintConv is included to make these strings consistent with
@@ -1973,6 +1977,18 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             Light       => 'Light',
             Autumnleaves=> 'Autumn Leaves',
             Sepia       => 'Sepia',
+            # new for the ILCE-7SM3 (ref JR)
+            ST => 'Standard',
+            PT => 'Portrait',
+            NT => 'Neutral', # (NC)
+            VV => 'Vivid', # (NC)
+            VV2 => 'Vivid 2',  # (NC)
+            FL => 'Fluorescent', # (NC)
+            IN => 'Incandescent', # (NC)
+            SH => 'Shadow', # (NC)
+            BW => 'B&W',
+            SE => 'Sepia',
+            # (...also Custom Look 1-6, but don't konw the values)
         },
     },
     0xb021 => { #2

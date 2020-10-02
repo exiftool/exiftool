@@ -1,6 +1,6 @@
 Summary: perl module for image data extraction
 Name: perl-Image-ExifTool
-Version: 12.06
+Version: 12.07
 Release: 1
 License: Artistic/GPL
 Group: Development/Libraries/Perl
@@ -22,6 +22,7 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
+  360   r/w   | DOCX  r     | INX   r     | NUMBERS r   | RAR   r
   3FR   r     | DPX   r     | ISO   r     | O     r     | RAW   r/w
   3G2   r/w   | DR4   r/w/c | ITC   r     | ODP   r     | RIFF  r
   3GP   r/w   | DSS   r     | J2C   r     | ODS   r     | RSRC  r
@@ -61,7 +62,6 @@ supported by ExifTool (r = read, w = write, c = create):
   DLL   r     | IND   r/w   | MXF   r     | RA    r     | XLSX  r
   DNG   r/w   | INSP  r/w   | NEF   r/w   | RAF   r/w   | XMP   r/w/c
   DOC   r     | INSV  r     | NRW   r/w   | RAM   r     | ZIP   r
-  DOCX  r     | INX   r     | NUMBERS r   | RAR   r     |
 
   Meta Information
   ----------------------+----------------------+---------------------

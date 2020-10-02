@@ -497,6 +497,7 @@ my %fileFormat = (
     103 => {
         Name => 'OriginalTransmissionReference',
         Format => 'string[0,32]',
+        Notes => 'now used as a job identifier',
     },
     105 => {
         Name => 'Headline',

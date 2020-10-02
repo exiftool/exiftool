@@ -14,10 +14,24 @@
 <p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.00.tar.gz">Version 12.00</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">CPAN</a>.)</p>
 
-<p><i class=red>(I'll be on vacation from Aug 26 to Sep 3, 2020 so don't expect any
-forum or email responses from me during this time - Phil H.)</i></p>
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v12.07'><b>Oct. 2, 2020 - Version 12.07</b></a>
+<ul>
+<li>Added support for GoPro .360 videos
+<li>Added some new Canon RF and Nikkor Z lenses (thanks LibRaw)
+<li>Added some new Sony LensType and CreativeStyle values and decode some
+    ICLE-7C tags (thanks Jos Roost)
+<li>Added a number of new Olympus SceneMode values (thanks Herb)
+<li>Added a new Nikon LensID
+<li>Decode more timed metadata from Insta360 videos (thanks Thomas Allen)
+<li>Decode timed GPS from videos of more Garmin dashcam models
+<li>Decode a new GoPro video tag
+<li>Reformat time-only EventTime values when writing and prevent arbitrary
+    strings from being written
+<li>Patched to accept backslashes in SourceFile entries for -csv option
+</ul>
 
 <a name='v12.06'><b>Sept. 11, 2020 - Version 12.06</b></a>
 <ul>

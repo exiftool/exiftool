@@ -566,14 +566,27 @@ $VERSION = '4.39';
     61494 => 'Canon CN-E 85mm T1.3 L F', #PH
     61495 => 'Canon CN-E 135mm T2.2 L F', #PH
     61496 => 'Canon CN-E 35mm T1.5 L F', #PH
-    61182 => 'Canon RF 35mm F1.8 Macro IS STM or other Canon RF Lens', #IB
-    61182.1 => 'Canon RF 50mm F1.2 L USM', #IB
-    61182.2 => 'Canon RF 24-105mm F4 L IS USM', #IB
-    61182.3 => 'Canon RF 28-70mm F2 L USM', #IB
-    61182.4 => 'Canon RF 85mm F1.2L USM', #IB
-    61182.5 => 'Canon RF 24-240mm F4-6.3 IS USM', #IB
-    61182.6 => 'Canon RF 24-70mm F2.8 L IS USM', #PH
-    61182.7 => 'Canon RF 15-35mm F2.8 L IS USM', #PH
+    # see RFLensType tag for master list of 61182 RF lenses
+    61182 => 'Canon RF 50mm F1.2L USM or other Canon RF Lens',
+    61182.1 => 'Canon RF 24-105mm F4L IS USM',
+    61182.2 => 'Canon RF 28-70mm F2L USM',
+    61182.3 => 'Canon RF 35mm F1.8 MACRO IS STM',
+    61182.4 => 'Canon RF 85mm F1.2L USM',
+    61182.5 => 'Canon RF 85mm F1.2L USM DS',
+    61182.6 => 'Canon RF 24-70mm F2.8L IS USM',
+    61182.7 => 'Canon RF 15-35mm F2.8L IS USM',
+    61182.8 => 'Canon RF 24-240mm F4-6.3 IS USM',
+    61182.9 => 'Canon RF 70-200mm F2.8L IS USM',
+    61182.10 => 'Canon RF 600mm F11 IS STM',
+    61182.11 => 'Canon RF 600mm F11 IS STM + RF1.4x',
+    61182.12 => 'Canon RF 600mm F11 IS STM + RF2x',
+    61182.13 => 'Canon RF 800mm F11 IS STM',
+    61182.14 => 'Canon RF 800mm F11 IS STM + RF1.4x',
+    61182.15 => 'Canon RF 800mm F11 IS STM + RF2x',
+    61182.16 => 'Canon RF 24-105mm F4-7.1 IS STM',
+    61182.17 => 'Canon RF 100-500mm F4.5-7.1L IS USM',
+    61182.18 => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF1.4x',
+    61182.19 => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF2x',
     65535 => 'n/a',
 );
 
@@ -6694,7 +6707,17 @@ my %ciMaxFocal = (
             264 => 'Canon RF 15-35mm F2.8L IS USM',
             265 => 'Canon RF 24-240mm F4-6.3 IS USM',
             266 => 'Canon RF 70-200mm F2.8L IS USM',
+            268 => 'Canon RF 600mm F11 IS STM',
+            269 => 'Canon RF 600mm F11 IS STM + RF1.4x',
+            270 => 'Canon RF 600mm F11 IS STM + RF2x',
+            271 => 'Canon RF 800mm F11 IS STM',
+            272 => 'Canon RF 800mm F11 IS STM + RF1.4x',
+            273 => 'Canon RF 800mm F11 IS STM + RF2x',
             274 => 'Canon RF 24-105mm F4-7.1 IS STM',
+            275 => 'Canon RF 100-500mm F4.5-7.1L IS USM',
+            276 => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF1.4x',
+            277 => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF2x',
+            # Note: add new RF lenses to %canonLensTypes with ID 61182
         },
     },
 );

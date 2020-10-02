@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.13';
+$VERSION = '2.14';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -2471,7 +2471,8 @@ my %shootingMode = (
                 # AdvancedSceneType=5 for automatic mode iA (ref 19)
                 if ($prt) {
                     return $prt if $v[1] == 1;
-                    return "$prt (intelligent auto)" if $v[1] == 5;
+                    return "$prt (intelligent auto)" if $v[1] == 5; #forum11523
+                    return "$prt (intelligent auto plus)" if $v[1] == 7; #forum11523
                     return "$prt ($v[1])";
                 }
                 return "Unknown ($val)";
@@ -2494,10 +2495,19 @@ my %shootingMode = (
             '9 3' => 'Objects', #(FZ28)
             '9 4' => 'Creative Macro', #(FZ28)
             #'9 5' - ? (GF3)
+            '18 1' => 'High Sensitivity', #forum11523 (TZ5)
+            '20 1' => 'Fireworks', #forum11523 (TZ5)
             '21 2' => 'Illuminations', #(FZ28)
             '21 4' => 'Creative Night Scenery', #(FZ28)
             #'21 5' - ? (LX3)
+            '26 1' => 'High-speed Burst (shot 1)', #forum11523 (TZ5)
+            '27 1' => 'High-speed Burst (shot 2)', #forum11523 (TZ5)
+            '29 1' => 'Snow', #forum11523 (TZ5)
+            '30 1' => 'Starry Sky', #forum11523 (TZ5)
+            '31 1' => 'Beach', #forum11523 (TZ5)
+            '36 1' => 'High-speed Burst (shot 3)', #forum11523 (TZ5)
             #'37 5' - ? (various)
+            '39 1' => 'Aerial Photo / Underwater / Multi-aspect', #forum11523 (TZ5)
             '45 2' => 'Cinema', #(GF2)
             '45 7' => 'Expressive', #(GF1,GF2)
             '45 8' => 'Retro', #(GF1,GF2)
@@ -2542,16 +2552,6 @@ my %shootingMode = (
             'DMC-TZ40 90 10' => 'Toy Effect',
             'DMC-TZ40 90 11' => 'Dynamic Monochrome',
             'DMC-TZ40 90 12' => 'Soft',
-            # some TZ5 modes are different (forum11523)
-            # (these may be the same for the  TZ4, TZ11 and TZ15)
-            'DMC-TZ5 18 1' => 'High Sensitivity',
-            'DMC-TZ5 26 1' => 'High-speed Burst (shot 1)',
-            'DMC-TZ5 27 1' => 'High-speed Burst (shot 2)',
-            'DMC-TZ5 29 1' => 'Snow',
-            'DMC-TZ5 30 1' => 'Starry Sky',
-            'DMC-TZ5 31 1' => 'Beach',
-            'DMC-TZ5 36 1' => 'High-speed Burst (shot 3)',
-            'DMC-TZ5 39 1' => 'Aerial Photo / Underwater / Multi-aspect',
         },
     },
 );

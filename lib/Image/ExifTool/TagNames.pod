@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23563 tags, with 15378 unique tag names.
+They contain a total of 23565 tags, with 15380 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -19953,6 +19953,7 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'TSMP'   TotalSamples?                        no
   'TYPE'   StructureType?                       no
   'UNIT'   Units?                               no
+  'VERS'   MetadataVersion                      no
   'VFOV'   FieldOfView                          no
   'VFRH'   VisualFlightRulesHUD                 no
   'WBAL'   ColorTemperatures                    no
@@ -25292,6 +25293,7 @@ formats of timed GPS metadata from video files.
   Unknown03?                                    no
   UserLabel                                     no
   VerticalSpeed                                 no
+  VideoTimeStamp                                no
   camm0                                         QuickTime camm0
   camm1                                         QuickTime camm1
   camm2                                         QuickTime camm2

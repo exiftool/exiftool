@@ -1913,7 +1913,7 @@ my %eeBox = (
     # SETT? 12 bytes (Hero4)
     # MUID? 32 bytes (Hero4, starts with serial number hash)
     # HMMT? 404 bytes (Hero4, all zero)
-    # BCID? 26 bytes (Hero5, all zero)
+    # BCID? 26 bytes (Hero5, all zero), 36 bytes GoPro Max
     # GUMI? 16 bytes (Hero5)
    "FOV\0" => 'FieldOfView', #forum8938 (Hero2) seen: "Wide"
     GPMF => {
@@ -6861,7 +6861,7 @@ my %eeBox = (
 #
 #   AudioFormat  Offset  Child atoms
 #   -----------  ------  ----------------
-#   mp4a         52 *    wave, chan, esds, SA3D(Insta360 spherical video params?)
+#   mp4a         52 *    wave, chan, esds, SA3D(Insta360 spherical video params?,also GoPro Max)
 #   in24         52      wave, chan
 #   "ms\0\x11"   52      wave
 #   sowt         52      chan

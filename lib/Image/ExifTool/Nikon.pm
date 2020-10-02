@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.86';
+$VERSION = '3.87';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -349,6 +349,7 @@ sub GetAFPointGrid($$;$);
     'FE 47 00 00 24 24 4B 06' => 'Sigma 4.5mm F2.8 EX DC HSM Circular Fisheye', #JD
     '26 48 11 11 30 30 1C 02' => 'Sigma 8mm F4 EX Circular Fisheye',
     '79 40 11 11 2C 2C 1C 06' => 'Sigma 8mm F3.5 EX Circular Fisheye', #JD
+    'DB 40 11 11 2C 2C 1C 06' => 'Sigma 8mm F3.5 EX DG Circular Fisheye', #30
     'DC 48 19 19 24 24 4B 06' => 'Sigma 10mm F2.8 EX DC HSM Fisheye',
     'C2 4C 24 24 14 14 4B 06' => 'Sigma 14mm F1.8 DG HSM | A', #IB
     '48 48 24 24 24 24 4B 02' => 'Sigma 14mm F2.8 EX Aspherical HSM',
@@ -4657,6 +4658,11 @@ my %nikonFocalConversions = (
             13 => 'Nikkor Z 24-70mm f/2.8 S',
             14 => 'Nikkor Z 85mm f/1.8 S',
             15 => 'Nikkor Z 24mm f/1.8 S', #IB
+            16 => 'Nikkor Z 70-200mm f/2.8 VR S', #IB
+            17 => 'Nikkor Z 20mm f/1.8 S', #IB
+            18 => 'Nikkor Z 24-200mm f/4-6.3 VR', #IB
+            21 => 'Nikkor Z 50mm f/1.2 S', #IB
+            22 => 'Nikkor Z 24-50mm f/4-6.3', #IB
         },
     },
     0x36 => {

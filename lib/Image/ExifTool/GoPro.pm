@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::QuickTime;
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 sub ProcessGoPro($$$);
 sub ProcessString($$$);
@@ -77,6 +77,9 @@ my %addUnits = (
         Notes => 'accelerator readings in m/s2',
         Binary => 1,
     },
+  # ANGX (GPMF-GEOC) - seen -0.05 (fmt d, Max)
+  # ANGY (GPMF-GEOC) - seen 179.9 (fmt d, Max)
+  # ANGZ (GPMF-GEOC) - seen 0.152 (fmt d, Max)
     ALLD => 'AutoLowLightDuration', #1 (gpmd) (untested)
   # APTO (GPMF) - seen: 'RAW', 'DYNM' (fmt c)
     ATTD => { #PH (Karma)
@@ -105,16 +108,14 @@ my %addUnits = (
     },
   # BRID (GPMF) - seen: 0 (fmt B)
   # BROD (GPMF) - seen: 'ASK','' (fmt c)
+  # CALH (GPMF-GEOC) - seen 3040 (fmt L, Max)
+  # CALW (GPMF-GEOC) - seen 4056 (fmt L, Max)
     CASN => 'CameraSerialNumber', #PH (GPMF - seen: 'C3221324545448', fmt c)
-  # CINF (GPMF) - seen: 0x67376be7709bc8876a8baf3940908618, 0xe230988539b30cf5f016627ae8fc5395 (fmt B) (Camera INFormation?)
-  # CMOD (GPMF) - seen: 12,13,17 [13 time-laps video, 17 JPEG] (fmt B)
-    CYTS => { #PH (Karma)
-        Name => 'CoyoteStatus',
-        # UNIT=s,,,,,rad,rad,rad,,
-        # TYPE=LLLLLfffBB
-        # SCAL=1000 1 1 1 1 1 1 1 1 1
-        Binary => 1,
-    },
+  # CINF (GPMF) - seen: 0x67376be7709bc8876a8baf3940908618, 0xe230988539b30cf5f016627ae8fc5395,
+  #                     0x8bcbe424acc5b37d7d77001635198b3b (fmt B) (Camera INFormation?)
+  # CMOD (GPMF) - seen: 12,13,17 [12 360 video, 13 time-laps video, 17 JPEG] (fmt B)
+  # CRTX (GPMF-BACK/FRNT) - double[1]
+  # CRTY (GPMF-BACK/FRNT) - double[1]
     CSEN => { #PH (Karma)
         Name => 'CoyoteSense',
         # UNIT=s,rad/s,rad/s,rad/s,g,g,g,,,,
@@ -122,13 +123,27 @@ my %addUnits = (
         # SCAL=1000 1 1 1 1 1 1 1 1 1 1
         Binary => 1,
     },
+    CYTS => { #PH (Karma)
+        Name => 'CoyoteStatus',
+        # UNIT=s,,,,,rad,rad,rad,,
+        # TYPE=LLLLLfffBB
+        # SCAL=1000 1 1 1 1 1 1 1 1 1
+        Binary => 1,
+    },
     DEVC => { #PH (gpmd,GPMF, fmt \0)
         Name => 'DeviceContainer',
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
+        # (Max) DVID=1,DVNM='Global Settings',VERS,FMWR,LINF,CINF,CASN,MINF,MUID,CMOD,MTYP,OREN,
+        #       DZOM,DZST,SMTR,PRTN,PTWB,PTSH,PTCL,EXPT,PIMX,PIMN,PTEV,RATE,SROT,ZFOV,VLTE,VLTA,
+        #       EISE,EISA,AUPT,AUDO,BROD,BRID,PVUL,PRJT,SOFF
+        # (Max) DVID='GEOC',DVNM='Geometry Calibrations',SHFX,SHFY,SHFZ,ANGX,ANGY,ANGZ,CALW,CALH
+        # (Max) DVID='BACK',DVNM='Back Lens',KLNS,CTRX,CTRY,MFOV,SFTR
+        # (Max) DVID='FRNT',DVNM='Front Lens',KLNS,CTRX,CTRY,MFOV,SFTR
+        # (Max) DVID='HLMT',DVNM='Highlights'
     },
-  # DVID (GPMF) - DeviceID; seen: 1 (fmt L), HLMT (fmt F)
+  # DVID (GPMF) - DeviceID; seen: 1 (fmt L), HLMT (fmt F), GEOC (fmt F), 'BACK' (fmt F, Max)
     DVID => { Name => 'DeviceID', Unknown => 1 }, #2 (gpmd)
-  # DVNM (GPMF) seen: 'Video Global Settings' (fmt c), 'Highlights' (fmt c)
+  # DVNM (GPMF) seen: 'Video Global Settings' (fmt c), 'Highlights' (fmt c), 'Geometry Calibrations' (Max)
   # DVNM (gpmd) seen: 'Camera' (Hero5), 'Hero6 Black' (Hero6), 'GoPro Karma v1.0' (Karma)
     DVNM => 'DeviceName', #PH (n/c)
     DZOM => { #PH (GPMF - seen: 'Y', fmt c)
@@ -136,10 +151,10 @@ my %addUnits = (
         PrintConv => { N => 'No', Y => 'Yes' },
     },
   # DZST (GPMF) - seen: 0 (fmt L) (something to do with digital zoom maybe?)
-    EISA => { #PH (GPMF) - seen: 'Y','N', 'HS EIS' (fmt c) [N was for a time-lapse video]
+    EISA => { #PH (GPMF) - seen: 'Y','N','HS EIS','N/A' (fmt c) [N was for a time-lapse video]
         Name => 'ElectronicImageStabilization',
     },
-  # EISE (GPMF) - seen: 'Y' (fmt c)
+  # EISE (GPMF) - seen: 'Y','N' (fmt c)
     EMPT => { Name => 'Empty', Unknown => 1 }, #2 (gpmd)
     ESCS => { #PH (Karma)
         Name => 'EscapeStatus',
@@ -215,7 +230,8 @@ my %addUnits = (
         RawConv => '$val', # necessary to use scaled value instead of raw data as subdir data
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::KBAT' },
     },
-  # LINF (GPMF) - seen: LAJ7061916601668, C3341326002180 (fmt c) (Lens INFormation?)
+  # KLNS (GPMF-BACK/FRNT) - double[5] (fmt d, Max)
+  # LINF (GPMF) - seen: LAJ7061916601668,C3341326002180,C33632245450981 (fmt c) (Lens INFormation?)
     LNED => { #PH (Karma)
         Name => 'LocalPositionNED',
         # UNIT=s,m,m,m,m/s,m/s,m/s
@@ -224,12 +240,13 @@ my %addUnits = (
         Binary => 1,
     },
     MAGN => 'Magnetometer', #1 (gpmd) (units of uT)
+  # MFOV (GPMF-BACK/FRNT) - seen: 100 (fmt d, Max)
     MINF => { #PH (GPMF - seen: HERO6 Black, fmt c)
         Name => 'Model',
         Groups => { 2 => 'Camera' },
         Description => 'Camera Model Name',
     },
-  # MTYP (GPMF) - seen: 0,1,11 [1 for time-lapse video, 11 for JPEG] (fmt B)
+  # MTYP (GPMF) - seen: 0,1,5,11 [1 for time-lapse video, 5 for 360 video, 11 for JPEG] (fmt B)
   # MUID (GPMF) - seen: 3882563431 2278071152 967805802 411471936 0 0 0 0 (fmt L)
     OREN => { #PH (GPMF - seen: 'U', fmt c)
         Name => 'AutoRotation',
@@ -245,7 +262,7 @@ my %addUnits = (
     PIMX => 'AutoISOMax', #PH (GPMF - seen: 1600, fmt L)
   # PRAW (APP6) - seen: 0, 'N', 'Y' (fmt c)
     PRES => 'PhotoResolution', #PH (APP6 - seen: '12MP_W')
-  # PRJT (APP6) - seen: 'GPRO' (fmt F, Hero8)
+  # PRJT (APP6) - seen: 'GPRO','EACO' (fmt F, Hero8, Max)
     PRTN => { #PH (GPMF - seen: 'N', fmt c)
         Name => 'ProTune',
         PrintConv => {
@@ -257,7 +274,7 @@ my %addUnits = (
     PTEV => 'ExposureCompensation', #PH (GPMF - seen: '0.0', fmt c)
     PTSH => 'Sharpness', #PH (GPMF - seen: 'HIGH', fmt c)
     PTWB => 'WhiteBalance', #PH (GPMF - seen: 'AUTO', fmt c)
-  # PVUL (APP6) - seen: 'F' (fmt c, Hero8)
+  # PVUL (APP6) - seen: 'F' (fmt c, Hero8, Max)
     RATE => 'Rate', #PH (GPMF - seen: '0_5SEC', fmt c; APP6 - seen: '4_1SEC')
     RMRK => { #2 (gpmd)
         Name => 'Comments',
@@ -274,6 +291,10 @@ my %addUnits = (
         # SCAL=1000 0.00999999977648258 0.00999999977648258 100
         %addUnits,
     },
+  # SFTR (GPMF-BACK/FRNT) - seen 0.999,1.00004 (fmt d, Max)
+  # SHFX (GPMF-GEOC) - seen 22.92 (fmt d, Max)
+  # SHFY (GPMF-GEOC) - seen 0.123 (fmt d, Max)
+  # SHFZ (GPMF-GEOC) - seen 36.06 (fmt d, Max)
     SHUT => { #2 (gpmd)
         Name => 'ExposureTimes',
         PrintConv => q{
@@ -295,7 +316,8 @@ my %addUnits = (
         ValueConv => '$self->Decode($val, "Latin")',
     },
   # SMTR (GPMF) - seen: 'N' (fmt c)
-  # SOFF (APP6) - seen: 0 (fmt L, Hero8)
+  # SOFF (APP6) - seen: 0 (fmt L, Hero8, Max)
+  # SROT (GPMF) - seen 20.60 (fmt f, Max)
     STMP => { #1 (gpmd)
         Name => 'TimeStamp',
         ValueConv => '$val / 1e6',
@@ -338,7 +360,10 @@ my %addUnits = (
         Unknown => 1,
         ValueConv => '$self->Decode($val, "Latin")',
     },
-  # VERS (APP6) - seen: '7 6 4' (fmt B, Hero8)
+    VERS => {
+        Name => 'MetadataVersion',
+        PrintConv => '$val =~ tr/ /./; $val',
+    },
     VFOV => { #PH (GPMF - seen: 'W', fmt c)
         Name => 'FieldOfView',
         PrintConv => {
@@ -360,7 +385,7 @@ my %addUnits = (
         Name => 'WhiteBalanceRGB',
         Binary => 1,
     },
-  # ZFOV (APP6) - seen: 148.34 (fmt f, Hero8)
+  # ZFOV (APP6,GPMF) - seen: 148.34, 0 (fmt f, Hero8, Max)
 );
 
 # GoPro GPS5 tags (ref 2) (Hero5,Hero6)

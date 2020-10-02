@@ -10,6 +10,7 @@
 #               3) https://forum.flitsservice.nl/dashcam-info/dod-ls460w-gps-data-uit-mov-bestand-lezen-t87926.html
 #               4) https://developers.google.com/streetview/publish/camm-spec
 #               5) https://sergei.nz/extracting-gps-data-from-viofo-a119-and-other-novatek-powered-cameras/
+#               6) Thomas Allen https://github.com/exiftool/exiftool/pull/62
 #------------------------------------------------------------------------------
 package Image::ExifTool::QuickTime;
 
@@ -78,7 +79,8 @@ my %processByMetaFormat = (
 # data lengths for each INSV record type
 my %insvDataLen = (
     0x300 => 56,    # accelerometer
-    0x400 => 16,    # unknown
+    0x400 => 16,    # exposure (ref 6)
+    0x600 => 8,     # timestamps (ref 6)
     0x700 => 53,    # GPS
 );
 
@@ -121,6 +123,7 @@ my %insvLimit = (
     ExposureCompensation => { PrintConv => 'Image::ExifTool::Exif::PrintFraction($val)', Groups => { 2 => 'Camera' } },
     ISO          => { Groups => { 2 => 'Camera' } },
     CameraDateTime=>{ PrintConv => '$self->ConvertDateTime($val)', Groups => { 2 => 'Time' } },
+    VideoTimeStamp => { Groups => { 2 => 'Video' } },
     Accelerometer=> { Notes => '3-axis acceleration in units of g' },
     AccelerometerData => { },
     AngularVelocity => { },
@@ -1112,7 +1115,7 @@ sub ProcessSamples($)
                 ($startChunk, $samplesPerChunk, $descIdx) = @{shift @$stsc};
                 $nextChunk = $$stsc[0][0] if @$stsc;
             }
-            @$size < @$start + $samplesPerChunk and $et->WarnOnce('Sample size error'), return;
+            @$size < @$start + $samplesPerChunk and $et->WarnOnce('Sample size error'), last;
             my $sampleStart = $chunkStart;
             for ($i=0; ; ) {
                 push @$start, $sampleStart;
@@ -1215,11 +1218,13 @@ sub ProcessSamples($)
                         $val =~ tr/\t/ /;
                         $et->HandleTag($tagTbl, RawGSensor => $val) if length $val;
                     }
-                } elsif ($buff =~ /^PNDM/ and length $buff >= 20) {
+                } elsif ($buff =~ /^(\0.{3})?PNDM/s) {
                     # Garmin Dashcam format (actually binary, not text)
-                    $et->HandleTag($tagTbl, GPSLatitude  => Get32s(\$buff, 12) * 180/0x80000000);
-                    $et->HandleTag($tagTbl, GPSLongitude => Get32s(\$buff, 16) * 180/0x80000000);
-                    $et->HandleTag($tagTbl, GPSSpeed => Get16u(\$buff, 8));
+                    my $n = $1 ? 4 : 0; # skip leading 4-byte size word if it exists
+                    next if length($buff) < 20 + $n;
+                    $et->HandleTag($tagTbl, GPSLatitude  => Get32s(\$buff, 12+$n) * 180/0x80000000);
+                    $et->HandleTag($tagTbl, GPSLongitude => Get32s(\$buff, 16+$n) * 180/0x80000000);
+                    $et->HandleTag($tagTbl, GPSSpeed => Get16u(\$buff, 8+$n));
                     $et->HandleTag($tagTbl, GPSSpeedRef => 'M');
                     SetGPSDateTime($et, $tagTbl, $time[$i]);
                     next; # all done (don't store/process as text)
@@ -2444,11 +2449,16 @@ sub ProcessInsta360($;$)
                     $et->HandleTag($tagTbl, Accelerometer => "@a[0..2]"); # (NC)
                     $et->HandleTag($tagTbl, AngularVelocity => "@a[3..5]"); # (NC)
                 }
-            } elsif ($id == 0x400 and $unknown) {
+            } elsif ($id == 0x400) {
                 for ($p=0; $p<$len; $p+=$dlen) {
                     $$et{DOC_NUM} = ++$$et{DOC_COUNT};
                     $et->HandleTag($tagTbl, TimeCode => sprintf('%.3f', Get64u(\$buff, $p) / 1000));
-                    $et->HandleTag($tagTbl, Unknown01 => GetDouble(\$buff, $p + 8));
+                    $et->HandleTag($tagTbl, ExposureTime => GetDouble(\$buff, $p + 8)); #6
+                }
+            } elsif ($id == 0x600) { #6
+                for ($p=0; $p<$len; $p+=$dlen) {
+                    $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                    $et->HandleTag($tagTbl, VideoTimeStamp => sprintf('%.3f', Get64u(\$buff, $p) / 1000));
                 }
             } elsif ($id == 0x700) {
                 for ($p=0; $p<$len; $p+=$dlen) {

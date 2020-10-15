@@ -21,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -1009,7 +1009,7 @@ sub ProcessPEDict($$)
     my $raf = $$dirInfo{RAF};
     my $dataPt = $$dirInfo{DataPt};
     my $dirLen = length($$dataPt);
-    my ($pos, @sections, %dirInfo);
+    my ($pos, @sections, %dirInfo, $rsrcFound);
 
     # loop through all sections
     for ($pos=0; $pos+40<=$dirLen; $pos+=40) {
@@ -1019,14 +1019,16 @@ sub ProcessPEDict($$)
         my $offset = Get32u($dataPt, $pos + 20);
         # remember the section offsets for the VirtualAddress lookup later
         push @sections, { Base => $offset, Size => $size, VirtualAddress => $va };
-        # save details of the first resource section
+        # save details of the first resource section (or .text if .rsrc not found, ref forum11465)
+        next unless ($name eq ".rsrc\0\0\0" and not $rsrcFound and defined($rsrcFound = 1)) or
+                    ($name eq ".text\0\0\0" and not %dirInfo);
         %dirInfo = (
             RAF      => $raf,
             Base     => $offset,
             DirStart => 0,   # (relative to Base)
             DirLen   => $size,
             Sections => \@sections,
-        ) if $name eq ".rsrc\0\0\0" and not %dirInfo;
+        );
     }
     # process the first resource section
     ProcessPEResources($et, \%dirInfo) or return 0 if %dirInfo;
@@ -1144,7 +1146,8 @@ sub ProcessEXE($$)
         my $fileSize = ($cp - ($cblp ? 1 : 0)) * 512 + $cblp;
         #(patch to accommodate observed 64-bit files)
         #return 0 if $fileSize < 0x40 or $fileSize < $lfarlc;
-        return 0 if $fileSize < 0x40;
+        #return 0 if $fileSize < 0x40; (changed to warning in ExifTool 12.08)
+        $et->Warn('Invalid file size in DOS header') if $fileSize < 0x40;
         # read the Windows NE, PE or LE (virtual device driver) header
         #if ($lfarlc == 0x40 and $fileSize > $lfanew + 2 and ...
         if ($raf->Seek($lfanew, 0) and $raf->Read($buff, 0x40) and $buff =~ /^(NE|PE|LE)/) {

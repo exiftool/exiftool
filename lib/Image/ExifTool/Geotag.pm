@@ -27,7 +27,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.62';
+$VERSION = '1.63';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -217,7 +217,7 @@ sub LoadTrackLog($$;$)
                 # (don't set format yet because we want to read HFDTE first)
                 $nmeaStart = 'B' ;
                 next;
-            } elsif (/^HFDTE(\d{2})(\d{2})(\d{2})/) {
+            } elsif (/^HFDTE(?:DATE:)?(\d{2})(\d{2})(\d{2})/) {
                 my $year = $3 + ($3 >= 70 ? 1900 : 2000);
                 $dateFlarm = Time::Local::timegm(0,0,0,$1,$2-1,$year);
                 $nmeaStart = 'B' ;

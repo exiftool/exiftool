@@ -11,7 +11,8 @@
 <p>
 On MacOS systems, the there are additional MDItem and XAttr Finder tags that
 may be extracted.  These tags are not extracted by default -- they must be
-specifically requested or enabled via an API option.</p>
+specifically requested or enabled via an API option.  (Except when reading
+MacOS &quot;._&quot; files directly, see below.)</p>
 
 <p>The tables below list some of the tags that may be extracted, but ExifTool
 will extract all available information even for tags not listed.</p>
@@ -20,6 +21,85 @@ will extract all available information even for tags not listed.</p>
 information is not stored in the file itself.  As such, <b>Writable</b> tags in
 these tables may be changed without having to rewrite the file.
 </p>
+<p>Note that on some filesystems, MacOS creates sidecar files with names that
+begin with &quot;._&quot;.  ExifTool will read these files if specified, and extract
+the information listed in the following table without the need for extra
+options, but these files are not writable directly.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>RSRC</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RSRC.html'>RSRC Tags</a></td></tr>
+<tr class=b>
+<td title='0x0009 = 9'>0x0009</td>
+<td>ATTR</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MacOS.html#XAttr'>MacOS XAttr Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='XAttr'>MacOS XAttr Tags</a></h2>
+<p>XAttr tags are extracted using the &quot;xattr&quot; utility.  They are extracted if
+any &quot;XAttr*&quot; tag or the MacOS group is specifically requested, or by setting
+the <a href="../ExifTool.html#XAttrTags">XAttrTags</a> API option to 1 or the <a href="../ExifTool.html#RequestAll">RequestAll</a> API option to 2 or higher.
+And they extracted by default from MacOS &quot;._&quot; files when reading
+these files directly.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>XAttrAppleMailDateReceived</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>XAttrAppleMailDateSent</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>XAttrAppleMailIsRemoteAttachment</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>XAttrFinderInfo</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>XAttrLastUsedDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>XAttrMDItemDownloadedDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>XAttrMDItemFinderComment</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>XAttrMDItemWhereFroms</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>XAttrMDLabel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>XAttrQuarantine</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
+<td><span class=s><span class=n>(quarantine information for files downloaded from the internet.  May only be
+deleted when writing)</span></span></td></tr>
+<tr>
+<td>XAttrResourceFork</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='MDItem'>MacOS MDItem Tags</a></h2>
 <p>MDItem tags are extracted using the &quot;mdls&quot; utility.  They are extracted if
 any &quot;MDItem*&quot; tag or the MacOS group is specifically requested, or by
@@ -572,65 +652,9 @@ not be written)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='XAttr'>MacOS XAttr Tags</a></h2>
-<p>XAttr tags are extracted using the &quot;xattr&quot; utility.  They are extracted if
-any &quot;XAttr*&quot; tag or the MacOS group is specifically requested, or by setting
-the <a href="../ExifTool.html#XAttrTags">XAttrTags</a> API option to 1 or the <a href="../ExifTool.html#RequestAll">RequestAll</a> API option to 2 or higher.</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>XAttrAppleMailDateReceived</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>XAttrAppleMailDateSent</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>XAttrAppleMailIsRemoteAttachment</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>XAttrFinderInfo</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>XAttrLastUsedDate</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>XAttrMDItemDownloadedDate</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>XAttrMDItemFinderComment</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>XAttrMDItemWhereFroms</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>XAttrMDLabel</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>XAttrQuarantine</td>
-<td class=c title=' ! = Unsafe'>yes!</td>
-<td><span class=s><span class=n>(quarantine information for files downloaded from the internet.  May only be
-deleted when writing)</span></span></td></tr>
-<tr>
-<td>XAttrResourceFork</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 23, 2019</i>
+<br><i>Last revised Oct 15, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

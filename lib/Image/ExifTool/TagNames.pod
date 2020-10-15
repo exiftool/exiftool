@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23565 tags, with 15380 unique tag names.
+They contain a total of 23566 tags, with 15380 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -17850,7 +17850,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.
 
 =head3 Sony Tag2010i Tags
 
-Valid for ILCE-6100/6400/6600/7M3/7RM3/7RM4/9/9M2, DSC-RX0M2/RX10M4/RX100M6/
+Valid for ILCE-6100/6400/6600/7C/7M3/7RM3/7RM4/9/9M2, DSC-RX0M2/RX10M4/RX100M6/
 RX100M5A/RX100M7/HX99.
 
   Index1   Tag Name                             Writable
@@ -18013,7 +18013,7 @@ substitution cipher, but the deciphered values are listed below.
 
 =head3 Sony Tag9050b Tags
 
-Valid from July 2015 for ILCE-6100/6300/6400/6500/6600/7M3/7RM2/7RM3/7RM4/
+Valid from July 2015 for ILCE-6100/6300/6400/6500/6600/7C/7M3/7RM2/7RM3/7RM4/
 7SM2/9/9M2, ILCA-99M2.
 
   Index1   Tag Name                             Writable
@@ -18110,8 +18110,8 @@ DSC-HX50V, DSC-QX10/QX100.
 
 Valid for DSC-HX60V/HX80/HX90V/HX99/HX350/HX400V/QX30/RX0/RX1RM2/RX10/
 RX10M2/RX10M3/RX10M4/RX100M3/RX100M4/RX100M5/RX100M5A/RX100M6/RX100M7/WX220/
-WX350/WX500, ILCE-7/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/9/9M2/5000/5100/6000/
-6100/6300/6400/6500/6600/QX1, ILCA-68/77M2/99M2.
+WX350/WX500, ILCE-7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/9/9M2/5000/5100/
+6000/6100/6300/6400/6500/6600/QX1, ILCA-68/77M2/99M2.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -18461,6 +18461,8 @@ E-mount models.
    6664    TiffMeteringImage                    no
 
 =head3 Sony Tag9416 Tags
+
+Valid for the ILCE-7SM3.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -25208,6 +25210,7 @@ for the official specification.
   'skip'               CanonSkip                Canon Skip
                        PreviewImage             no
                        Skip?                    no
+  'thm '               ThumbnailImage           no
   'thum'               ThumbnailImage           no
   'udat'               GPSLog                   no
   'udta'               UserData                 FLIR UserData
@@ -33972,13 +33975,13 @@ option is used.
 
 =head2 RSRC Tags
 
-Tags extracted from Mac OS resource files and DFONT files.  These tags may
-also be extracted from the resource fork of any file in OS X, either by
-adding "/..namedfork/rsrc" to the filename to process the resource fork
-alone, or by using the ExtractEmbedded (-ee) option to process the resource
-fork as a sub-document of the main file.  When writing, ExifTool preserves
-the Mac OS resource fork by default, but it may deleted with C<-rsrc:all=>
-on the command line.
+Tags extracted from Mac OS resource files, DFONT files and "._" sidecar
+files.  These tags may also be extracted from the resource fork of any file
+in OS X, either by adding "/..namedfork/rsrc" to the filename to process the
+resource fork alone, or by using the ExtractEmbedded (-ee) option to process
+the resource fork as a sub-document of the main file.  When writing,
+ExifTool preserves the Mac OS resource fork by default, but it may deleted
+with C<-rsrc:all=> on the command line.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
@@ -34230,7 +34233,8 @@ Tags extracted from ISO 9660 disk images.
 
 On MacOS systems, the there are additional MDItem and XAttr Finder tags that
 may be extracted.  These tags are not extracted by default -- they must be
-specifically requested or enabled via an API option.
+specifically requested or enabled via an API option.  (Except when reading
+MacOS "._" files directly, see below.)
 
 The tables below list some of the tags that may be extracted, but ExifTool
 will extract all available information even for tags not listed.
@@ -34238,6 +34242,38 @@ will extract all available information even for tags not listed.
 Tags in these tables are referred to as "pseudo" tags because their
 information is not stored in the file itself.  As such, B<Writable> tags in
 these tables may be changed without having to rewrite the file.
+
+Note that on some filesystems, MacOS creates sidecar files with names that
+begin with "._".  ExifTool will read these files if specified, and extract
+the information listed in the following table without the need for extra
+options, but these files are not writable directly.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0002   RSRC                                 RSRC
+  0x0009   ATTR                                 MacOS XAttr
+
+=head3 MacOS XAttr Tags
+
+XAttr tags are extracted using the "xattr" utility.  They are extracted if
+any "XAttr*" tag or the MacOS group is specifically requested, or by setting
+the XAttrTags API option to 1 or the RequestAll API option to 2 or higher.
+And they extracted by default from MacOS "._" files when reading
+these files directly.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  XAttrAppleMailDateReceived                    no
+  XAttrAppleMailDateSent                        no
+  XAttrAppleMailIsRemoteAttachment              no
+  XAttrFinderInfo                               no
+  XAttrLastUsedDate                             no
+  XAttrMDItemDownloadedDate                     no
+  XAttrMDItemFinderComment                      no
+  XAttrMDItemWhereFroms                         no
+  XAttrMDLabel                                  no
+  XAttrQuarantine                               yes!
+  XAttrResourceFork                             no
 
 =head3 MacOS MDItem Tags
 
@@ -34381,26 +34417,6 @@ index the file after a metadata change.
   MDItemVideoBitRate                            no
   MDItemWhereFroms                              no
   MDItemWhiteBalance                            no
-
-=head3 MacOS XAttr Tags
-
-XAttr tags are extracted using the "xattr" utility.  They are extracted if
-any "XAttr*" tag or the MacOS group is specifically requested, or by setting
-the XAttrTags API option to 1 or the RequestAll API option to 2 or higher.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  XAttrAppleMailDateReceived                    no
-  XAttrAppleMailDateSent                        no
-  XAttrAppleMailIsRemoteAttachment              no
-  XAttrFinderInfo                               no
-  XAttrLastUsedDate                             no
-  XAttrMDItemDownloadedDate                     no
-  XAttrMDItemFinderComment                      no
-  XAttrMDItemWhereFroms                         no
-  XAttrMDLabel                                  no
-  XAttrQuarantine                               yes!
-  XAttrResourceFork                             no
 
 =head2 Extra Tags
 

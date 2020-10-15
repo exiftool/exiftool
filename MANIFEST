@@ -652,6 +652,8 @@ t/MWG_6.out
 t/MWG_7.out
 t/MXF.t
 t/MXF_2.out
+t/MacOS.t
+t/MacOS_2.out
 t/Matroska.t
 t/Matroska_2.out
 t/Minolta.t
@@ -1007,6 +1009,7 @@ t/images/MOI.moi
 t/images/MP3.mp3
 t/images/MWG.jpg
 t/images/MXF.mxf
+t/images/MacOS.macos
 t/images/Matroska.mkv
 t/images/Minolta.jpg
 t/images/Minolta.mrw

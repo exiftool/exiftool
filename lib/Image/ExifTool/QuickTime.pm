@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.52';
+$VERSION = '2.53';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -603,6 +603,11 @@ my %eeBox = (
         SubDirectory => { TagTable => 'Image::ExifTool::FLIR::UserData' },
     },
     thum => { #PH
+        Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
+        Binary => 1,
+    },
+   'thm ' => { #PH (70mai A800)
         Name => 'ThumbnailImage',
         Groups => { 2 => 'Preview' },
         Binary => 1,

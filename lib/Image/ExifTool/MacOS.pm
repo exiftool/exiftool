@@ -4,6 +4,7 @@
 # Description:  Read/write MacOS system tags
 #
 # Revisions:    2017/03/01 - P. Harvey Created
+#               2020/10/13 - PH Added ability to read MacOS "._" files
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::MacOS;
@@ -11,13 +12,36 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 
 sub MDItemLocalTime($);
+sub ProcessATTR($$$);
 
 my %mdDateInfo = (
     ValueConv => \&MDItemLocalTime,
     PrintConv => '$self->ConvertDateTime($val)',
+);
+
+# Information decoded from Mac OS sidecar files
+%Image::ExifTool::MacOS::Main = (
+    GROUPS => { 0 => 'File', 1 => 'MacOS' },
+    NOTES => q{
+        Note that on some filesystems, MacOS creates sidecar files with names that
+        begin with "._".  ExifTool will read these files if specified, and extract
+        the information listed in the following table without the need for extra
+        options, but these files are not writable directly.
+    },
+    2 => {
+        Name => 'RSRC',
+        SubDirectory => { TagTable => 'Image::ExifTool::RSRC::Main' },
+    },
+    9 => {
+        Name => 'ATTR',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::MacOS::XAttr',
+            ProcessProc => \&ProcessATTR,
+        },
+    },
 );
 
 # "mdls" tags (ref PH)
@@ -221,6 +245,8 @@ my %mdDateInfo = (
         XAttr tags are extracted using the "xattr" utility.  They are extracted if
         any "XAttr*" tag or the MacOS group is specifically requested, or by setting
         the L<XAttrTags|../ExifTool.html#XAttrTags> API option to 1 or the L<RequestAll|../ExifTool.html#RequestAll> API option to 2 or higher.
+        And they extracted by default from MacOS "._" files when reading
+        these files directly.
     },
     'com.apple.FinderInfo' => {
         Name => 'XAttrFinderInfo',
@@ -486,8 +512,50 @@ sub ExtractMDItemTags($$)
     $$et{INDENT} =~ s/\| $//;
 }
 
+        
 #------------------------------------------------------------------------------
-# Extract MacOS extended attribute tags
+# Read MacOS XAttr value
+# Inputs: 0) ExifTool object ref, 1) file name
+sub ReadXAttrValue($$$$)
+{
+    my ($et, $tagTablePtr, $tag, $val) = @_;
+    # add to our table if necessary
+    unless ($$tagTablePtr{$tag}) {
+        my $name;
+        # generate tag name from attribute name
+        if ($tag =~ /^com\.apple\.(.*)$/) {
+            ($name = $1) =~ s/^metadata:_?k//;
+            $name =~ s/^metadata:(com_)?//;
+        } else {
+            $name = $tag;
+        }
+        $name =~ s/[.:_]([a-z])/\U$1/g;
+        $name = 'XAttr' . ucfirst $name;
+        my %tagInfo = ( Name => $name );
+        $tagInfo{Groups} = { 2 => 'Time' } if $tag=~/Date$/;
+        $et->VPrint(0, "  [adding $tag]\n");
+        AddTagToTable($tagTablePtr, $tag, \%tagInfo);
+    }
+    if ($val =~ /^bplist0/) {
+        my %dirInfo = ( DataPt => \$val );
+        require Image::ExifTool::PLIST;
+        if (Image::ExifTool::PLIST::ProcessBinaryPLIST($et, \%dirInfo, $tagTablePtr)) {
+            return undef if ref $dirInfo{Value} eq 'HASH';
+            $val = $dirInfo{Value}
+        } else {
+            $et->Warn("Error decoding $$tagTablePtr{$tag}{Name}");
+            return undef;
+        }
+    }
+    if (not ref $val and ($val =~ /\0/ or length($val) > 200) or $tag eq 'XAttrMDLabel') {
+        my $buff = $val;
+        $val = \$buff;
+    }
+    return $val;
+}
+
+#------------------------------------------------------------------------------
+# Read MacOS extended attribute tags using 'xattr' utility
 # Inputs: 0) ExifTool object ref, 1) file name
 sub ExtractXAttrTags($$)
 {
@@ -517,39 +585,8 @@ sub ExtractXAttrTags($$)
             $val .= pack('H*', $_);
             next;
         } elsif ($tag and defined $val) {
-            # add to our table if necessary
-            unless ($$tagTablePtr{$tag}) {
-                my $name;
-                # generate tag name from attribute name
-                if ($tag =~ /^com\.apple\.(.*)$/) {
-                    ($name = $1) =~ s/^metadata:_?k//;
-                    $name =~ s/^metadata:(com_)?//;
-                } else {
-                    $name = $tag;
-                }
-                $name =~ s/[.:_]([a-z])/\U$1/g;
-                $name = 'XAttr' . ucfirst $name;
-                my %tagInfo = ( Name => $name );
-                $tagInfo{Groups} = { 2 => 'Time' } if $tag=~/Date$/;
-                $et->VPrint(0, "  [adding $tag]\n");
-                AddTagToTable($tagTablePtr, $tag, \%tagInfo);
-            }
-            if ($val =~ /^bplist0/) {
-                my %dirInfo = ( DataPt => \$val );
-                require Image::ExifTool::PLIST;
-                if (Image::ExifTool::PLIST::ProcessBinaryPLIST($et, \%dirInfo, $tagTablePtr)) {
-                    next if ref $dirInfo{Value} eq 'HASH';
-                    $val = $dirInfo{Value}
-                } else {
-                    $et->Warn("Error decoding $$tagTablePtr{$tag}{Name}");
-                    next;
-                }
-            }
-            if (not ref $val and ($val =~ /\0/ or length($val) > 200) or $tag eq 'XAttrMDLabel') {
-                my $buff = $val;
-                $val = \$buff;
-            }
-            $et->HandleTag($tagTablePtr, $tag, $val);
+            $val = ReadXAttrValue($et, $tagTablePtr, $tag, $val);
+            $et->HandleTag($tagTablePtr, $tag, $val) if defined $val;
             undef $tag;
             undef $val;
         }
@@ -584,6 +621,82 @@ sub GetFileCreateDate($$)
     delete $$et{SET_GROUP1};
 }
 
+#------------------------------------------------------------------------------
+# Read ATTR metadata from "._" file
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Return: 1 on success
+# (ref https://www.swiftforensics.com/2018/11/the-dot-underscore-file-format.html)
+sub ProcessATTR($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dataPos = $$dirInfo{DataPos};
+    my $dataLen = length $$dataPt;
+
+    $dataLen >= 58 and $$dataPt =~ /^.{34}ATTR/s or $et->Warn('Invalid ATTR header'), return 0;
+    my $entries = Get32u($dataPt, 66);
+    $et->VerboseDir('ATTR', $entries);
+    # (Note: The RAF is not in $dirInfo because it would break RSRC reading --
+    # the RSCR block uses relative offsets, while the ATTR block uses absolute! grrr!)
+    my $raf = $$et{RAF};
+    my $pos = 70;       # first entry is after ATTR header
+    my $i;
+    for ($i=0; $i<$entries; ++$i) {
+        $pos + 12 > $dataLen and $et->Warn('Truncated ATTR entry'), last;
+        my $off = Get32u($dataPt, $pos);
+        my $len = Get32u($dataPt, $pos + 4);
+        my $n = Get8u($dataPt, $pos + 10);  # number of characters in tag name
+        $pos + 11 + $n > $dataLen and $et->Warn('Truncated ATTR name'), last;
+        $off -= $dataPos;       # convert to relative offset (grrr!)
+        $off < 0 or $off > $dataLen and $et->Warn('Invalid ATTR offset'), last;
+        my $tag = substr($$dataPt, $pos + 11, $n);
+        $tag =~ s/\0+$//;       # remove null terminator
+        $off + $len > $dataLen and $et->Warn('Truncated ATTR value'), last;
+        my $val = ReadXAttrValue($et, $tagTablePtr, $tag, substr($$dataPt, $off, $len));
+        $et->HandleTag($tagTablePtr, $tag, $val,
+            DataPt  => $dataPt,
+            DataPos => $dataPos,
+            Start   => $off,
+            Size    => $len,
+        ) if defined $val;
+        $pos += (11 + $n + 3) & -4; # step to next entry (on even 4-byte boundary)
+    }
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Read information from a MacOS "._" sidecar file
+# Inputs: 0) ExifTool ref, 1) dirInfo ref
+# Returns: 1 on success, 0 if this wasn't a valid "._" file
+# (ref https://www.swiftforensics.com/2018/11/the-dot-underscore-file-format.html)
+sub ProcessMacOS($$)
+{
+    my ($et, $dirInfo) = @_;
+    my $raf = $$dirInfo{RAF};
+    my ($hdr, $buff, $i);
+
+    return 0 unless $raf->Read($hdr, 26) == 26 and $hdr =~ /^\0\x05\x16\x07\0(.)\0\0Mac OS X        /s;
+    my $ver = ord $1;
+    # (extension may be anything, so just echo back the incoming file extension if it exists)
+    $et->SetFileType(undef, undef, $$et{FILE_EXT});
+    $ver == 2 or $et->Warn("Unsupported file version $ver"), return 1;
+    SetByteOrder('MM');
+    my $tagTablePtr = GetTagTable('Image::ExifTool::MacOS::Main');
+    my $entries = Get16u(\$hdr, 0x18);
+    $et->VerboseDir('MacOS', $entries);
+    $raf->Read($hdr, $entries * 12) == $entries * 12 or $et->Warn('Truncated header'), return 1;
+    for ($i=0; $i<$entries; ++$i) {
+        my $pos = $i * 12;
+        my $tag = Get32u(\$hdr, $pos);
+        my $off = Get32u(\$hdr, $pos + 4);
+        my $len = Get32u(\$hdr, $pos + 8);
+        $len > 100000000 and $et->Warn('Record size too large'), last;
+        $raf->Seek($off,0) and $raf->Read($buff,$len) == $len or $et->Warn('Truncated record'), last;
+        $et->HandleTag($tagTablePtr, $tag, undef, DataPt => \$buff, DataPos => $off, Index => $i);
+    }
+    return 1;
+}
+
 1;  # end
 
 __END__
@@ -600,8 +713,9 @@ This module is used by Image::ExifTool
 
 This module contains definitions required by Image::ExifTool to extract
 MDItem* and XAttr* tags on MacOS systems using the "mdls" and "xattr"
-utilities respectively.  Writable tags use "xattr", "setfile" or "osascript"
-for writing.
+utilities respectively.  It also reads metadata directly from the MacOS "_."
+sidecar files that are used on some filesystems to store file attributes. 
+Writable tags use "xattr", "setfile" or "osascript" for writing.
 
 =head1 AUTHOR
 

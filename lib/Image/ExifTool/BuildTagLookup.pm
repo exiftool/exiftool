@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.37';
+$VERSION = '3.38';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -633,7 +633,8 @@ L<http://www.metadataworkinggroup.org/> for the official MWG specification.
     MacOS => q{
 On MacOS systems, the there are additional MDItem and XAttr Finder tags that
 may be extracted.  These tags are not extracted by default -- they must be
-specifically requested or enabled via an API option.
+specifically requested or enabled via an API option.  (Except when reading
+MacOS "._" files directly, see below.)
 
 The tables below list some of the tags that may be extracted, but ExifTool
 will extract all available information even for tags not listed.

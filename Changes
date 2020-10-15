@@ -7,6 +7,18 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 15, 2020 - Version 12.08
+
+  - Added read support for MacOS "._" sidecar files
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Recognize Mac OS X xattr files
+  - Extract ThumbnailImage from MP4 videos of more dashcam models
+  - Improved decoding of a number of Sony tags (thanks Jos Roost)
+  - Fixed problem where the special -if EndDir() function didn't work properly
+    for directories after the one in which it was initially called
+  - Patched to support new IGC date format when geotagging
+  - Patched to read DLL files with an invalid size in the header
+
 Oct. 2, 2020 - Version 12.07
 
   - Added support for GoPro .360 videos

@@ -14,19 +14,22 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.08';
+$VERSION = '1.09';
+
+sub ProcessRSRC($$);
 
 # Information decoded from Mac OS resources
 %Image::ExifTool::RSRC::Main = (
     GROUPS => { 2 => 'Document' },
+    PROCESS_PROC => \&ProcessRSRC,
     NOTES => q{
-        Tags extracted from Mac OS resource files and DFONT files.  These tags may
-        also be extracted from the resource fork of any file in OS X, either by
-        adding "/..namedfork/rsrc" to the filename to process the resource fork
-        alone, or by using the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> (-ee) option to process the resource
-        fork as a sub-document of the main file.  When writing, ExifTool preserves
-        the Mac OS resource fork by default, but it may deleted with C<-rsrc:all=>
-        on the command line.
+        Tags extracted from Mac OS resource files, DFONT files and "._" sidecar
+        files.  These tags may also be extracted from the resource fork of any file
+        in OS X, either by adding "/..namedfork/rsrc" to the filename to process the
+        resource fork alone, or by using the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> (-ee) option to process
+        the resource fork as a sub-document of the main file.  When writing,
+        ExifTool preserves the Mac OS resource fork by default, but it may deleted
+        with C<-rsrc:all=> on the command line.
     },
     '8BIM' => {
         Name => 'PhotoshopInfo',
@@ -66,6 +69,9 @@ sub ProcessRSRC($$)
     my $raf = $$dirInfo{RAF};
     my ($hdr, $map, $buff, $i, $j);
 
+    # allow access with data reference
+    $raf or $raf = new File::RandomAccess($$dirInfo{DataPt});
+
     # attempt to validate the format as thoroughly as practical
     return 0 unless $raf->Read($hdr, 30) == 30;
     my ($datOff, $mapOff, $datLen, $mapLen) = unpack('N*', $hdr);
@@ -81,7 +87,7 @@ sub ProcessRSRC($$)
     SetByteOrder('MM');
     my $typeOff = Get16u(\$map, 24);
     my $nameOff = Get16u(\$map, 26);
-    my $numTypes = Get16u(\$map, 28);
+    my $numTypes = (Get16u(\$map, 28) + 1) & 0xffff;
 
     # validate offsets in the resource map
     return 0 if $typeOff < 28 or $nameOff < 30;
@@ -89,10 +95,10 @@ sub ProcessRSRC($$)
     $et->SetFileType('RSRC') unless $$et{IN_RESOURCE};
     my $verbose = $et->Options('Verbose');
     my $tagTablePtr = GetTagTable('Image::ExifTool::RSRC::Main');
-    $et->VerboseDir('RSRC', $numTypes+1);
+    $et->VerboseDir('RSRC', $numTypes);
 
     # parse resource type list
-    for ($i=0; $i<=$numTypes; ++$i) {
+    for ($i=0; $i<$numTypes; ++$i) {
         my $off = $typeOff + 2 + 8 * $i;    # offset of entry in type list
         last if $off + 8 > $mapLen;
         my $resType = substr($map,$off,4);  # resource type

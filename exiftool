@@ -136,6 +136,7 @@ my $countSameWr;    # count files written OK but not changed
 my $critical;       # flag for critical operations (disable CTRL-C)
 my $csv;            # flag for CSV option (set to "CSV", or maybe "JSON" when writing)
 my $csvAdd;         # flag to add CSV information to existing lists
+my $csvOutDelimiter;# CSV output delimiter: $ENV{'OFS'} if set or comma (,) by default
 my $csvSaveCount;   # save counter for last CSV file loaded
 my $deleteOrig;     # 0=restore original files, 1=delete originals, 2=delete w/o asking
 my $disableOutput;  # flag to disable normal output
@@ -492,6 +493,7 @@ $countGoodCr = 0;
 $countGoodWr = 0;
 $countNewDir = 0;
 $countSameWr = 0;
+$csvOutDelimiter = ((defined $ENV{'OFS'}) ? $ENV{'OFS'} : ',');
 $csvSaveCount = 0;
 $fileTrailer = '';
 $filterFlag = 0;
@@ -3305,7 +3307,7 @@ sub PrintCSV()
     foreach $lcTag (@csvTags) {
         push @tags, $csvTags{$lcTag} if $csvTags{$lcTag};
     }
-    print join(',', 'SourceFile', @tags), "\n";
+    print join($csvOutDelimiter, 'SourceFile', @tags), "\n";
     my $empty = defined($forcePrint) ? $forcePrint : '';
     foreach $file (@csvFiles) {
         my @vals = (FormatCSV($file)); # start with full file name
@@ -3316,7 +3318,7 @@ sub PrintCSV()
             defined $val or push(@vals,$empty), next;
             push @vals, FormatCSV($val);
         }
-        print join(',', @vals), "\n";
+        print join($csvOutDelimiter, @vals), "\n";
     }
 }
 

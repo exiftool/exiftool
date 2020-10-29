@@ -512,6 +512,7 @@ my %panasonicWhiteBalance = ( #forum9396
         # when format is int32u (S models), these values have been observed (ref IB):
         #  256 - Leica lens
         #  257 - Lumix lens
+        #  258 - ? (seen once)
     },
     0x1202 => { #IB
         Name => 'LensTypeModel',

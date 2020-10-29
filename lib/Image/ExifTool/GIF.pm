@@ -20,7 +20,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.17';
+$VERSION = '1.18';
 
 # road map of directory locations in GIF images
 my %gifMap = (
@@ -116,7 +116,7 @@ my %gifMap = (
     },
     5 => 'BackgroundColor',
     6 => {
-        Name => 'AspectRatio',
+        Name => 'PixelAspectRatio',
         RawConv => '$val ? $val : undef',
         ValueConv => '($val + 15) / 64',
     },

@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.30';
+$VERSION = '3.31';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -73,6 +73,7 @@ sub PrintInvLensSpec($;$$);
     2 => 'Sony LA-EA2 Adapter',
     3 => 'Sony LA-EA3 Adapter', #(NC) ILCE-7 image with A-mount lens, but also has 0x940e 2nd byte=2
     6 => 'Sony LA-EA4 Adapter', #(NC) ILCE-7R image with A-mount lens and having phase-detect info blocks in 0x940e AFInfo
+    7 => 'Sony LA-EA5 Adapter', #JR
     # 27 => Venus Optics Laowa 12mm f2.8 Zero-D or 105mm f2 (T3.2) Smooth Trans Focus (ref IB)
     44 => 'Metabones Canon EF Smart Adapter', #JR
     78 => 'Metabones Canon EF Smart Adapter Mark III or Other Adapter', #PH/JR (also Mark IV, Fotodiox and Viltrox)
@@ -1980,16 +1981,10 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             Autumnleaves=> 'Autumn Leaves',
             Sepia       => 'Sepia',
             # new for the ILCE-7SM3 (ref JR)
-            ST => 'Standard',
-            PT => 'Portrait',
-            NT => 'Neutral', # (NC)
-            VV => 'Vivid', # (NC)
             VV2 => 'Vivid 2',  # (NC)
             FL => 'FL', # "moody finish with sharp contrast and calm coloring as well as the impressive sky and colors of the greens"
             IN => 'IN', # "matte textures by suppressing the contrast and saturation"
             SH => 'SH', # "bright, transparent, soft, and vivid mood"
-            BW => 'B&W',
-            SE => 'Sepia',
             # (...also Custom Look 1-6, but don't konw the values)
         },
     },

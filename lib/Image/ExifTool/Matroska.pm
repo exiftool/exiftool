@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 
 my %noYes = ( 0 => 'No', 1 => 'Yes' );
 
@@ -221,6 +221,8 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     },
     0x2e => {
         Name => 'TrackEntry',
+        # reset TrackType member at the start of each track
+        Condition => 'delete $$self{TrackType}; 1',
         SubDirectory => { TagTable => 'Image::ExifTool::Matroska::Main' },
     },
     0x57   => { Name => 'TrackNumber',      Format => 'unsigned' },

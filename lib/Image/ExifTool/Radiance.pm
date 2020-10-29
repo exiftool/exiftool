@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 # Radiance tags
 %Image::ExifTool::Radiance::Main = (
@@ -42,6 +42,7 @@ $VERSION = '1.01';
         },
     },
     _command  => 'Command',
+    _comment  => 'Comment',
     software  => 'Software',
     view      => 'View',
    'format'   => 'Format', # <-- this is the one that caused the conflict when uppercase
@@ -74,8 +75,12 @@ sub ProcessHDR($$)
     while ($raf->ReadLine($buff)) {
         chomp $buff;
         last unless length($buff) > 0 and length($buff) < 4096;
+        if ($buff =~ s/^#\s*//) {
+            $et->HandleTag($tagTablePtr, '_comment', $buff) if length $buff;
+            next;
+        }
         unless ($buff =~ /^(.*)?\s*=\s*(.*)/) {
-            $et->HandleTag($tagTablePtr, '_command', $buff);
+            $et->HandleTag($tagTablePtr, '_command', $buff) if length $buff;
             next;
         }
         # use lower-case tag names to avoid conflicts with reserved tag table entries

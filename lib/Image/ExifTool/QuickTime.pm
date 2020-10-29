@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.53';
+$VERSION = '2.54';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -2555,7 +2555,23 @@ my %eeBox = (
             Start => 4,
         },
     },
-    # idat
+    idat => {
+        Name => 'MetaImageSize', #PH (NC)
+        Format => 'int16u',
+        # (don't know what the first two numbers are for)
+        PrintConv => '$val =~ s/^(\d+) (\d+) (\d+) (\d+)/${3}x$4/; $val',
+    },
+    uuid => [
+        { #PH (Canon R5/R6 HIF)
+            Name => 'MetaVersion', # (NC)
+            Condition => '$$valPt=~/^\x85\xc0\xb6\x87\x82\x0f\x11\xe0\x81\x11\xf4\xce\x46\x2b\x6a\x48/',
+            RawConv => 'substr($val, 0x14)',
+        },
+        {
+            Name => 'UUID-Unknown',
+            %unknownInfo,
+        },
+    ],
 );
 
 # additional metadata container (ref ISO14496-12:2015)
@@ -2867,12 +2883,16 @@ my %eeBox = (
     WRITE_PROC => \&WriteQuickTime,
     GROUPS => { 2 => 'Image' },
     # (Note: ExifTool's ItemRefVersion may be used to test the iref version number)
-    # dimg - DerivedImage
-    # thmb - Thumbnail
-    # auxl - AuxiliaryImage
+    NOTES => q{
+        The Item reference entries listed in the table below contain information about
+        the associations between items in the file.  This information is used by
+        ExifTool, but these entries are not extracted as tags.
+    },
+    dimg => { Name => 'DerivedImageRef',   RawConv => 'undef' },
+    thmb => { Name => 'ThumbnailRef',      RawConv => 'undef' },
+    auxl => { Name => 'AuxiliaryImageRef', RawConv => 'undef' },
     cdsc => {
         Name => 'ContentDescribes',
-        Notes => 'parsed, but not extracted as a tag',
         RawConv => \&ParseContentDescribes,
         WriteHook => \&ParseContentDescribes,
     },

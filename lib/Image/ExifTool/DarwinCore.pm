@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 my %dateTimeInfo = (
     # NOTE: Do NOT put "Groups" here because Groups hash must not be common!
@@ -52,10 +52,12 @@ my %event = (
             my $v = $self->InverseDateTime($val,undef,1);
             undef $Image::ExifTool::evalWarning;
             return $v if $v;
-            my @a = ($val =~ /\d{1,2}/g);   # get HH, MM and maybe SS
-            return undef unless @a >= 2;
-            $a[2] or $a[2] = 0;
-            return sprintf('%.2d:%.2d:%.2d', @a);
+            # allow time-only values by adding dummy date (thanks Herb)
+            my $v = $self->InverseDateTime("2000:01:01 $val",undef,1);
+            undef $Image::ExifTool::evalWarning;
+            return $v if $v and $v =~ s/.* //;  # strip off dummy date
+            $Image::ExifTool::evalWarning = 'Invalid date/time or time-only value (use HH:MM:SS[.ss][+/-HH:MM|Z])';
+            return undef;
         },
     },
     fieldNotes          => { },

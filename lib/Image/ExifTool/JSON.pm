@@ -14,16 +14,33 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Import;
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub ProcessTag($$$$%);
 
 %Image::ExifTool::JSON::Main = (
     GROUPS => { 0 => 'JSON', 1 => 'JSON', 2 => 'Other' },
+    VARS => { NO_ID => 1 },
     NOTES => q{
-        No JSON tags have been pre-defined, but ExifTool will read any existing
-        tags from basic JSON-formatted files.
+        Other than a few tags in the table below, JSON tags have not been
+        pre-defined.  However, ExifTool will read any existing tags from basic
+        JSON-formatted files.
     },
+    # ON1 settings tags
+    ON1_SettingsData => {
+        RawConv => q{
+            require Image::ExifTool::XMP;
+            $val = Image::ExifTool::XMP::DecodeBase64($val);
+        },
+        SubDirectory => { TagTable => 'Image::ExifTool::PLIST::Main' },
+    },
+    ON1_SettingsMetadataCreated     => { Groups => { 2 => 'Time' } },
+    ON1_SettingsMetadataModified    => { Groups => { 2 => 'Time' } },
+    ON1_SettingsMetadataName        => { },
+    ON1_SettingsMetadataPluginID    => { },
+    ON1_SettingsMetadataTimestamp   => { Groups => { 2 => 'Time' } },
+    ON1_SettingsMetadataUsage       => { },
+    ON1_SettingsMetadataVisibleToUser=>{ },
 );
 
 #------------------------------------------------------------------------------
@@ -33,12 +50,18 @@ sub FoundTag($$$$%)
 {
     my ($et, $tagTablePtr, $tag, $val, %flags) = @_;
 
+    # special case to reformat ON1 tag names
+    if ($tag =~ s/^settings\w{8}-\w{4}-\w{4}-\w{4}-\w{12}(Data|Metadata.+)$/ON1_Settings$1/) {
+        $et->OverrideFileType('ONP','application/on1') if $$et{FILE_TYPE} eq 'JSON';
+    }
+
     # avoid conflict with special table entries
     $tag .= '!' if $Image::ExifTool::specialTags{$tag};
 
     AddTagToTable($tagTablePtr, $tag, {
         Name => Image::ExifTool::MakeTagName($tag),
         %flags,
+        Temporary => 1,
     }) unless $$tagTablePtr{$tag};
 
     $et->HandleTag($tagTablePtr, $tag, $val);
@@ -94,7 +117,7 @@ sub ProcessJSON($$)
 
     # remove any old tag definitions in case they change flags
     foreach $key (TagTableKeys($tagTablePtr)) {
-        delete $$tagTablePtr{$key};
+        delete $$tagTablePtr{$key} if $$tagTablePtr{$key}{Temporary};
     }
 
     # extract tags from JSON database

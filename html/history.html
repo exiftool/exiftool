@@ -17,6 +17,35 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.09'><b>Oct. 29, 2020 - Version 12.09</b></a>
+<ul>
+<li>Added ability to copy CanonMakerNotes from CR3 images to other file types
+<li>Added read support for ON1 presets file (.ONP)
+<li>Added two new CanonModelID values
+<li>Added trailing "/" when writing QuickTime:GPSCoordinates
+<li>Added a number of new XMP-crs tags
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Added a new Nikon Z lens (thanks LibRaw)
+<li>Added a new Canon LensType
+<li>Added a new XMP-crs tag
+<li>Decode ColorData for Canon EOS R5/R6
+<li>Decode a couple of new HEIF tags
+<li>Decode FirmwareVersion for Canon M50
+<li>Patched EndDir() feature so subdirectories are always processed when -r is
+    used (previously, EndDir() would end processing of a directory completely)
+<li>Improved decoding of Sony CreativeStyle tags (thanks Jos Roost)
+<li>Improved parsing of Radiance files to recognize comments
+<li>Renamed GIF AspectRatio tag to PixelAspectRatio
+<li>Yet another tweak to the EventTime formatting rules (also allow time-only
+    values with fractional seconds and a time zone)
+<li>Avoid loading GoPro module unnecessarily when reading MP4 videos from some
+    other cameras
+<li>Fixed problem with an incorrect naming of CodecID tags in some MKV videos
+<li>Fixed verbose output to avoid "adding" messages for existing flattened XMP
+    tags
+</ul>
+
+<li>Added read support for MacOS "._" sidecar files
 <a name='v12.08'><b>Oct. 15, 2020 - Version 12.08</b></a>
 <ul>
 <li>Added read support for MacOS "._" sidecar files
@@ -26,6 +55,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Improved decoding of a number of Sony tags (thanks Jos Roost)
 <li>Fixed problem where the special -if EndDir() function didn't work properly
     for directories after the one in which it was initially called
+<li>Patched to read DLL files which don't have a .rsrc section (thanks Hank)
 <li>Patched to support new IGC date format when geotagging
 <li>Patched to read DLL files with an invalid size in the header
 </ul>
@@ -35,7 +65,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added support for GoPro .360 videos
 <li>Added some new Canon RF and Nikkor Z lenses (thanks LibRaw)
 <li>Added some new Sony LensType and CreativeStyle values and decode some
-    ICLE-7C tags (thanks Jos Roost)
+    ILCE-7C tags (thanks Jos Roost)
 <li>Added a number of new Olympus SceneMode values (thanks Herb)
 <li>Added a new Nikon LensID
 <li>Decode more timed metadata from Insta360 videos (thanks Thomas Allen)

@@ -170,7 +170,7 @@ list.</p>
     <br><b>2-N)</b> [<i>optional</i>] list of tag names to find (or tag list reference or
     options hash reference, see below)
 </td></tr>
-<tr><td valign=top><b>Returns</b></td><td>Reference to hash of tag key/value pairs</td></tr>
+<tr><td valign=top><b>Returns</b></td><td>Reference to hash of tag-key/value pairs</td></tr>
 </table></blockquote>
 
 <p><b>Examples:</b></p>
@@ -303,12 +303,12 @@ take precedence over <a href="#Options">Options</a> settings.
 
 <p><b>Return Value:</b></p>
 
-<p><a href="#ImageInfo">ImageInfo</a> returns a reference to a hash of tag
-key/value pairs.  The tag keys are identifiers -- essentially case-sensitive tag
-names with an appended instance number if multiple tags with the same name were
-extracted from the image.  Many of the ExifTool functions require a tag key as
-an argument.  Use <a href="#GetTagName">GetTagName</a> to get the tag name for a
-given tag key.  Note that the case of the tag names may not be the same as
+<p><a href="#ImageInfo">ImageInfo</a> returns a reference to a hash of
+tag-key/value pairs.  The tag keys are identifiers -- essentially case-sensitive
+tag names with an appended instance number if multiple tags with the same name
+were extracted from the image.  Many of the ExifTool functions require a tag key
+as an argument.  Use <a href="#GetTagName">GetTagName</a> to get the tag name
+for a given tag key.  Note that the case of the tag names may not be the same as
 requested.</p>
 
 <p>Values of the returned hash are usually simple scalars, but a scalar
@@ -1041,7 +1041,16 @@ specified information.  May be called repeatedly to write the same information
 to additional files without the need to call <a href="#SetNewValue">SetNewValue</a>
 again.</p>
 
-<p>Note that it is <b>NOT</b> necessary to call <a href="#ExtractInfo">ExtractInfo</a>
+<p>ExifTool queues all new values that are assigned via calls to
+<a href="#SetNewValue">SetNewValue</a>, then applies them to any number of files
+through one or more calls to <a href="#WriteInfo">WriteInfo</a>.  These queued
+values may be accessed through <a href="#GetNewValue">GetNewValue</a>, and are
+completely separate from metadata extracted from files via
+<a href="#ExtractInfo">ExtractInfo</a> or <a href="#ImageInfo">ImageInfo</a>
+and accessed through <a href="#GetInfo">GetInfo</a> or
+<a href="#GetValue">GetValue</a>.</p>
+
+<p>To be clear, it is <b>NOT</b> necessary to call <a href="#ExtractInfo">ExtractInfo</a>
 or <a href="#ImageInfo">ImageInfo</a> before <a href="#WriteInfo">WriteInfo</a>.
 <a href="#WriteInfo">WriteInfo</a> changes only metadata specified by previous
 calls to <a href="#SetNewValue">SetNewValue</a>.</p>

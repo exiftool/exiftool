@@ -7,6 +7,34 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 29, 2020 - Version 12.09
+
+  - Added ability to copy CanonMakerNotes from CR3 images to other file types
+  - Added read support for ON1 presets file (.ONP)
+  - Added two new CanonModelID values
+  - Added trailing "/" when writing QuickTime:GPSCoordinates
+  - Added a number of new XMP-crs tags
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Added a new Nikon Z lens (thanks LibRaw)
+  - Added a new Canon LensType
+  - Added a new XMP-crs tag
+  - Decode ColorData for Canon EOS R5/R6
+  - Decode a couple of new HEIF tags
+  - Decode FirmwareVersion for Canon M50
+  - Patched EndDir() feature so subdirectories are always processed when -r is
+    used (previously, EndDir() would end processing of a directory completely)
+  - Improved decoding of Sony CreativeStyle tags (thanks Jos Roost)
+  - Improved parsing of Radiance files to recognize comments
+  - Renamed GIF AspectRatio tag to PixelAspectRatio
+  - Yet another tweak to the EventTime formatting rules (also allow time-only
+    values with fractional seconds and a time zone)
+  - Avoid loading GoPro module unnecessarily when reading MP4 videos from some
+    other cameras
+  - Fixed problem with an incorrect naming of CodecID tags in some MKV videos
+  - Fixed verbose output to avoid "adding" messages for existing flattened XMP
+    tags
+  - Added read support for MacOS "._" sidecar files
+
 Oct. 15, 2020 - Version 12.08
 
   - Added read support for MacOS "._" sidecar files
@@ -16,6 +44,7 @@ Oct. 15, 2020 - Version 12.08
   - Improved decoding of a number of Sony tags (thanks Jos Roost)
   - Fixed problem where the special -if EndDir() function didn't work properly
     for directories after the one in which it was initially called
+  - Patched to read DLL files which don't have a .rsrc section (thanks Hank)
   - Patched to support new IGC date format when geotagging
   - Patched to read DLL files with an invalid size in the header
 
@@ -24,7 +53,7 @@ Oct. 2, 2020 - Version 12.07
   - Added support for GoPro .360 videos
   - Added some new Canon RF and Nikkor Z lenses (thanks LibRaw)
   - Added some new Sony LensType and CreativeStyle values and decode some
-    ICLE-7C tags (thanks Jos Roost)
+    ILCE-7C tags (thanks Jos Roost)
   - Added a number of new Olympus SceneMode values (thanks Herb)
   - Added a new Nikon LensID
   - Decode more timed metadata from Insta360 videos (thanks Thomas Allen)

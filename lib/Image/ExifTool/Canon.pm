@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.39';
+$VERSION = '4.40';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -487,8 +487,9 @@ $VERSION = '4.39';
     368.7 => 'Sigma 85mm f/1.4 DG HSM | A', #IB (016)
     368.8 => 'Sigma 105mm f/1.4 DG HSM', #IB (A018)
     368.9 => 'Sigma 14-24mm f/2.8 DG HSM', #IB (A018)
-    368.10 => 'Sigma 35mm f/1.4 DG HSM | A', #PH (012)
-   '368.10' => 'Sigma 70mm f/2.8 DG Macro', #IB (A018)
+   '368.10' => 'Sigma 35mm f/1.4 DG HSM | A', #PH (012)
+   '368.11' => 'Sigma 70mm f/2.8 DG Macro', #IB (A018)
+   '368.12' => 'Sigma 18-35mm f/1.8 DC HSM | A', #50
     # Note: LensType 488 (0x1e8) is reported as 232 (0xe8) in 7D CameraSettings
     488 => 'Canon EF-S 15-85mm f/3.5-5.6 IS USM', #PH
     489 => 'Canon EF 70-300mm f/4-5.6L IS USM', #Gerald Kapounek
@@ -932,6 +933,7 @@ $VERSION = '4.39';
     0x80000406 => 'EOS 6D Mark II', #IB/42
     0x80000408 => 'EOS 77D / 9000D',
     0x80000417 => 'EOS Rebel SL2 / 200D / Kiss X9', #IB/42
+    0x80000421 => 'EOS R5', #PH
     0x80000422 => 'EOS Rebel T100 / 4000D / 3000D', #IB (3000D in China; Kiss? - PH)
     0x80000424 => 'EOS R', #IB
     0x80000428 => 'EOS-1D X Mark III', #IB
@@ -940,6 +942,7 @@ $VERSION = '4.39';
     0x80000435 => 'EOS Rebel T8i / 850D / X10i', #JR/PH
     0x80000436 => 'EOS SL3 / 250D / Kiss X10', #25
     0x80000437 => 'EOS 90D', #IB
+    0x80000453 => 'EOS R6', #PH
     0x80000520 => 'EOS D2000C', #IB
     0x80000560 => 'EOS D6000C', #PH (guess)
 );
@@ -1895,6 +1898,11 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Condition => '$count == 1816 or $count == 1820 or $count == 1824',
             Name => 'ColorData9',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData9' },
+        },
+        {   # (int16u[3656]) - R5/R6 ref PH
+            Condition => '$count == 3656',
+            Name => 'ColorData10',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData10' },
         },
         {
             Name => 'ColorDataUnknown',
@@ -5675,6 +5683,13 @@ my %ciMaxFocal = (
         ValueConv => 'unpack("H*",$val)',
         ValueConvInv => 'length($val) < 10 and $val = 0 x (10-length($val)) . $val; pack("H*",$val)',
     },
+    0x5c1 => {
+        Name => 'FirmwareVersion',
+        Format => 'string[6]',
+        Writable => 0,
+        Condition => '$$valPt =~ /^\d\.\d\.\d\0/',
+        Notes => 'M50', # (firmware 1.0.0)
+    },
 );
 
 # Picture Style information for various cameras (ref 48)
@@ -8062,7 +8077,6 @@ my %ciMaxFocal = (
     0x149 => { #IB
         Name => 'PerChannelBlackLevel',
         Format => 'int16u[4]',
-        Notes => '1300D',
     },
     # 0x318 - PerChannelBlackLevel again (ref IB)
     0x31c => { #IB
@@ -8075,6 +8089,126 @@ my %ciMaxFocal = (
         Format => 'int16u',
     },
     0x31e => { #IB
+        Name => 'LinearityUpperMargin',
+        Format => 'int16u',
+    },
+);
+
+# Color data (MakerNotes tag 0x4001, count=3656) (same as ColorData9 but shifted up by 0x0e, ref PH)
+%Image::ExifTool::Canon::ColorData10 = (
+    %binaryDataAttrs,
+    FORMAT => 'int16s',
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0 ],
+    IS_SUBDIR => [ 0x118 ],
+    0x00 => {
+        Name => 'ColorDataVersion',
+        DataMember => 'ColorDataVersion',
+        RawConv => '$$self{ColorDataVersion} = $val',
+        PrintConv => {
+            33 => '33 (R5/R6)',
+        },
+    },
+    0x55 => { Name => 'WB_RGGBLevelsAsShot',     Format => 'int16s[4]' },
+    0x59 => 'ColorTempAsShot',
+    0x5a => { Name => 'WB_RGGBLevelsAuto',       Format => 'int16s[4]' },
+    0x5e => 'ColorTempAuto',
+    0x5f => { Name => 'WB_RGGBLevelsMeasured',   Format => 'int16s[4]' },
+    0x63 => 'ColorTempMeasured',
+    0x64 => { Name => 'WB_RGGBLevelsUnknown',   Format => 'int16s[4]', Unknown => 1 },
+    0x68 => { Name => 'ColorTempUnknown',  Unknown => 1 },
+    0x69 => { Name => 'WB_RGGBLevelsUnknown2',  Format => 'int16s[4]', Unknown => 1 },
+    0x6d => { Name => 'ColorTempUnknown2', Unknown => 1 },
+    0x6e => { Name => 'WB_RGGBLevelsUnknown3',  Format => 'int16s[4]', Unknown => 1 },
+    0x72 => { Name => 'ColorTempUnknown3', Unknown => 1 },
+    0x73 => { Name => 'WB_RGGBLevelsUnknown4',  Format => 'int16s[4]', Unknown => 1 },
+    0x77 => { Name => 'ColorTempUnknown4', Unknown => 1 },
+    0x78 => { Name => 'WB_RGGBLevelsUnknown5',  Format => 'int16s[4]', Unknown => 1 },
+    0x7c => { Name => 'ColorTempUnknown5', Unknown => 1 },
+    0x7d => { Name => 'WB_RGGBLevelsUnknown6',  Format => 'int16s[4]', Unknown => 1 },
+    0x81 => { Name => 'ColorTempUnknown6', Unknown => 1 },
+    0x82 => { Name => 'WB_RGGBLevelsUnknown7',  Format => 'int16s[4]', Unknown => 1 },
+    0x86 => { Name => 'ColorTempUnknown7', Unknown => 1 },
+    0x87 => { Name => 'WB_RGGBLevelsUnknown8',  Format => 'int16s[4]', Unknown => 1 },
+    0x8b => { Name => 'ColorTempUnknown8', Unknown => 1 },
+    0x8c => { Name => 'WB_RGGBLevelsUnknown9',  Format => 'int16s[4]', Unknown => 1 },
+    0x90 => { Name => 'ColorTempUnknown9', Unknown => 1 },
+    0x91 => { Name => 'WB_RGGBLevelsUnknown10',  Format => 'int16s[4]', Unknown => 1 },
+    0x95 => { Name => 'ColorTempUnknown10', Unknown => 1 },
+    0x96 => { Name => 'WB_RGGBLevelsDaylight',   Format => 'int16s[4]' },
+    0x9a => 'ColorTempDaylight',
+    0x9b => { Name => 'WB_RGGBLevelsShade',      Format => 'int16s[4]' },
+    0x9f => 'ColorTempShade',
+    0xa0 => { Name => 'WB_RGGBLevelsCloudy',     Format => 'int16s[4]' },
+    0xa4 => 'ColorTempCloudy',
+    0xa5 => { Name => 'WB_RGGBLevelsTungsten',   Format => 'int16s[4]' },
+    0xa9 => 'ColorTempTungsten',
+    0xaa => { Name => 'WB_RGGBLevelsFluorescent',Format => 'int16s[4]' },
+    0xae => 'ColorTempFluorescent',
+    0xaf => { Name => 'WB_RGGBLevelsKelvin',     Format => 'int16s[4]' },
+    0xb3 => 'ColorTempKelvin',
+    0xb4 => { Name => 'WB_RGGBLevelsFlash',      Format => 'int16s[4]' },
+    0xb8 => 'ColorTempFlash',
+    0xb9 => { Name => 'WB_RGGBLevelsUnknown11',  Format => 'int16s[4]', Unknown => 1 },
+    0xbd => { Name => 'ColorTempUnknown11', Unknown => 1 },
+    0xbe => { Name => 'WB_RGGBLevelsUnknown12',  Format => 'int16s[4]', Unknown => 1 },
+    0xc2 => { Name => 'ColorTempUnknown12', Unknown => 1 },
+    0xc3 => { Name => 'WB_RGGBLevelsUnknown13',  Format => 'int16s[4]', Unknown => 1 },
+    0xc7 => { Name => 'ColorTempUnknown13', Unknown => 1 },
+    0xc8 => { Name => 'WB_RGGBLevelsUnknown14',  Format => 'int16s[4]', Unknown => 1 },
+    0xcc => { Name => 'ColorTempUnknown14', Unknown => 1 },
+    0xcd => { Name => 'WB_RGGBLevelsUnknown15',  Format => 'int16s[4]', Unknown => 1 },
+    0xd1 => { Name => 'ColorTempUnknown15', Unknown => 1 },
+    0xd2 => { Name => 'WB_RGGBLevelsUnknown16',  Format => 'int16s[4]', Unknown => 1 },
+    0xd6 => { Name => 'ColorTempUnknown16', Unknown => 1 },
+    0xd7 => { Name => 'WB_RGGBLevelsUnknown17',  Format => 'int16s[4]', Unknown => 1 },
+    0xdb => { Name => 'ColorTempUnknown17', Unknown => 1 },
+    0xdc => { Name => 'WB_RGGBLevelsUnknown18',  Format => 'int16s[4]', Unknown => 1 },
+    0xe0 => { Name => 'ColorTempUnknown18', Unknown => 1 },
+    0xe1 => { Name => 'WB_RGGBLevelsUnknown19',  Format => 'int16s[4]', Unknown => 1 },
+    0xe5 => { Name => 'ColorTempUnknown19', Unknown => 1 },
+    0xe6 => { Name => 'WB_RGGBLevelsUnknown20',  Format => 'int16s[4]', Unknown => 1 },
+    0xea => { Name => 'ColorTempUnknown20', Unknown => 1 },
+    0xeb => { Name => 'WB_RGGBLevelsUnknown21',  Format => 'int16s[4]', Unknown => 1 },
+    0xef => { Name => 'ColorTempUnknown21', Unknown => 1 },
+    0xf0 => { Name => 'WB_RGGBLevelsUnknown22',  Format => 'int16s[4]', Unknown => 1 },
+    0xf4 => { Name => 'ColorTempUnknown22', Unknown => 1 },
+    0xf5 => { Name => 'WB_RGGBLevelsUnknown23',  Format => 'int16s[4]', Unknown => 1 },
+    0xf9 => { Name => 'ColorTempUnknown23', Unknown => 1 },
+    0xfa => { Name => 'WB_RGGBLevelsUnknown24',  Format => 'int16s[4]', Unknown => 1 },
+    0xfe => { Name => 'ColorTempUnknown24', Unknown => 1 },
+    0xff => { Name => 'WB_RGGBLevelsUnknown25',  Format => 'int16s[4]', Unknown => 1 },
+    0x103=> { Name => 'ColorTempUnknown25', Unknown => 1 },
+    0x104=> { Name => 'WB_RGGBLevelsUnknown26',  Format => 'int16s[4]', Unknown => 1 },
+    0x108=> { Name => 'ColorTempUnknown26', Unknown => 1 },
+    0x109=> { Name => 'WB_RGGBLevelsUnknown27',  Format => 'int16s[4]', Unknown => 1 },
+    0x10d=> { Name => 'ColorTempUnknown27', Unknown => 1 },
+    0x10e=> { Name => 'WB_RGGBLevelsUnknown28',  Format => 'int16s[4]', Unknown => 1 },
+    0x112=> { Name => 'ColorTempUnknown28', Unknown => 1 },
+    0x113=> { Name => 'WB_RGGBLevelsUnknown29',  Format => 'int16s[4]', Unknown => 1 },
+    0x117=> { Name => 'ColorTempUnknown29', Unknown => 1 },
+    0x118 => {
+        Name => 'ColorCalib',
+        Format => 'undef[120]',
+        Unknown => 1,
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCalib' }
+    },
+    0x157 => {
+        Name => 'PerChannelBlackLevel',
+        Format => 'int16u[4]',
+    },
+    # 0x326 - PerChannelBlackLevel again
+    0x32a => {
+        Name => 'NormalWhiteLevel',
+        Format => 'int16u',
+        RawConv => '$val || undef',
+    },
+    0x32b => {
+        Name => 'SpecularWhiteLevel',
+        Format => 'int16u',
+    },
+    0x32c => {
         Name => 'LinearityUpperMargin',
         Format => 'int16u',
     },
@@ -8588,7 +8722,7 @@ my %filterConv = (
         Name => 'MakerNoteCanon',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Canon::Main',
-            ProcessProc => \&Image::ExifTool::ProcessTIFF,
+            ProcessProc => \&ProcessCMT3,
             WriteProc => \&Image::ExifTool::WriteTIFF,
         },
     },
@@ -9532,6 +9666,33 @@ sub CanonEvInv($)
         $frac = int($frac * 0x20 + 0.5);
     }
     return $sign * ($val * 0x20 + $frac);
+}
+
+#------------------------------------------------------------------------------
+# Read CMT3 maker notes from CR3 file
+# Inputs: 0) ExifTool object reference, 1) dirInfo ref, 2) tag table ref
+# Returns: data block (may be empty if no Exif data) or undef on error
+sub ProcessCMT3($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+
+    # extract the static maker notes to copying to other file types if requested
+    # Note: this won't copy makernotes in the timed metadata since these are stored
+    # separately, but the only records they have that aren't in the static maker notes
+    # (for the M50) are: ColorData9, Flavor, CanonCameraInfoUnknown,
+    # VignettingCorrUnknown1, Canon_0x4033 and Canon_0x402e
+    if (($et->Options('MakerNotes') or $$et{REQ_TAG_LOOKUP}{makernotecanon}) and
+        $$dirInfo{DirLen} > 8)
+    {
+        my $dataPt = $$dirInfo{DataPt};
+        # remove old (unused) trailer
+        $$dataPt =~ s/(II\x2a\0|MM\0\x2a)\0{4,10}$//;
+        # remove TIFF header and append as the Canon makernote trailer
+        # (so offsets will be interpreted correctly)
+        my $val = substr($$dataPt,8) . substr($$dataPt,0,8);
+        $et->FoundTag($Image::ExifTool::Canon::uuid{CMT3}, \$val);
+    }
+    return $et->ProcessTIFF($dirInfo, $tagTablePtr);
 }
 
 #------------------------------------------------------------------------------

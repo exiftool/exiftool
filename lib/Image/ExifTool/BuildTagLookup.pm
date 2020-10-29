@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.38';
+$VERSION = '3.39';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -1029,9 +1029,14 @@ TagID:  foreach $tagID (@keys) {
                     $note =~ s/(^[ \t]+|[ \t]+$)//mg;
                     push @values, "($note)";
                 }
-                if ($isXMP and lc $tagID ne lc $name) {
-                    # add note about different XMP Tag ID
-                    my $note = $$tagInfo{RootTagInfo} ? $tagID : "called $tagID by the spec";
+                if ($isXMP and (lc $tagID ne lc $name or $$tagInfo{NotFlat})) {
+                    my $note;
+                    if ($$tagInfo{NotFlat}) {
+                        $note = 'NOT a flattened tag!';
+                    } else {
+                        # add note about different XMP Tag ID
+                        $note = $$tagInfo{RootTagInfo} ? $tagID : "called $tagID by the spec";
+                    }
                     if ($$tagInfo{Notes}) {
                         $values[-1] =~ s/^\(/($note; /;
                     } else {

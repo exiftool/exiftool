@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.08';
+$VERSION = '12.09';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -413,6 +413,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     OFR  => ['RIFF', 'OptimFROG audio'],
     OGG  => ['OGG',  'Ogg Vorbis audio file'],
     OGV  => ['OGG',  'Ogg Video file'],
+    ONP  => ['JSON', 'ON1 Presets'],
     OPUS => ['OGG',  'Ogg Opus audio file'],
     ORF  => ['ORF',  'Olympus RAW format'],
     OTF  => ['Font', 'Open Type Font'],
@@ -688,6 +689,7 @@ my %fileDescription = (
     ODT  => 'application/vnd.oasis.opendocument.text',
     OGG  => 'audio/ogg',
     OGV  => 'video/ogg',
+    ONP  => 'application/on1',
     ORF  => 'image/x-olympus-orf',
     OTF  => 'application/x-font-otf',
     PAGES=> 'application/x-iwork-pages-sffpages',
@@ -7796,7 +7798,7 @@ sub HandleTag($$$$;%)
     my ($subdir, $format, $noTagInfo, $rational);
 
     if ($tagInfo) {
-        $subdir = $$tagInfo{SubDirectory}
+        $subdir = $$tagInfo{SubDirectory};
     } else {
         return undef unless $verbose;
         $tagInfo = { Name => "tag $tag" };  # create temporary tagInfo hash

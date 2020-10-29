@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23566 tags, with 15380 unique tag names.
+They contain a total of 23716 tags, with 15418 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1457,6 +1457,8 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   AutoLateralCA                                 integer/
   AutoShadows                                   boolean/
   AutoTone                                      boolean/
+  AutoToneDigest                                string/
+  AutoToneDigestNoSat                           string/
   AutoWhiteVersion                              integer/
   Blacks2012                                    integer/
   BlueHue                                       integer/
@@ -1522,6 +1524,15 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   ClipboardAspectRatio                          integer/
   ClipboardOrientation                          integer/
   Cluster                                       string/
+  ColorGradeBlending                            integer/
+  ColorGradeGlobalHue                           integer/
+  ColorGradeGlobalLum                           integer/
+  ColorGradeGlobalSat                           integer/
+  ColorGradeHighlightLum                        integer/
+  ColorGradeMidtoneHue                          integer/
+  ColorGradeMidtoneLum                          integer/
+  ColorGradeMidtoneSat                          integer/
+  ColorGradeShadowLum                           integer/
   ColorNoiseReduction                           integer/
   ColorNoiseReductionDetail                     integer/
   ColorNoiseReductionSmoothness                 integer/
@@ -1645,6 +1656,7 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   LensProfileDistortionScale                    integer/
   LensProfileEnable                             integer/
   LensProfileFilename                           string/
+  LensProfileIsEmbedded                         boolean/
   LensProfileMatchKeyCameraModelName            string/
   LensProfileMatchKeyExifMake                   string/
   LensProfileMatchKeyExifModel                  string/
@@ -1659,8 +1671,20 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   Look                                          Look Struct
   LookAmount                                    string/_
   LookCluster                                   string/_
-  LookName                                      string/_
+  LookCopyright                                 string/_
+  LookGroup                                     lang-alt/_
+  LookName                                      string/
+  LookParameters                                LookParms Struct_
+  LookParametersCameraProfile                   string/_
+  LookParametersClarity2012                     string/_
+  LookParametersConvertToGrayscale              string/_
+  LookParametersLookTable                       string/_
+  LookParametersProcessVersion                  string/_
+  LookParametersToneCurvePV2012                 string/_+
+  LookParametersVersion                         string/_
+  LookSupportsAmount                            string/_
   LookSupportsMonochrome                        string/_
+  LookSupportsOutputReferred                    string/_
   LookUUID                                      string/_
   LuminanceAdjustmentAqua                       integer/
   LuminanceAdjustmentBlue                       integer/
@@ -1829,6 +1853,8 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   Texture                                       integer/
   TIFFHandling                                  string/
   Tint                                          integer/
+  ToggleStyleAmount                             integer/
+  ToggleStyleDigest                             string/
   ToneCurve                                     string/+
   ToneCurveBlue                                 string/+
   ToneCurveGreen                                string/+
@@ -1930,9 +1956,26 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   ----------                                    --------
   Amount                                        string
   Cluster                                       string
+  Copyright                                     string
+  Group                                         lang-alt
   Name                                          string
+  Parameters                                    LookParms Struct
+  SupportsAmount                                string
   SupportsMonochrome                            string
+  SupportsOutputReferred                        string
   UUID                                          string
+
+=head3 XMP LookParms Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  CameraProfile                                 string
+  Clarity2012                                   string
+  ConvertToGrayscale                            string
+  LookTable                                     string
+  ProcessVersion                                string
+  ToneCurvePV2012                               string+
+  Version                                       string
 
 =head3 XMP RetouchArea Struct
 
@@ -2013,6 +2056,8 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   AutoLateralCA                                 integer
   AutoShadows                                   boolean
   AutoTone                                      boolean
+  AutoToneDigest                                string
+  AutoToneDigestNoSat                           string
   AutoWhiteVersion                              integer
   Blacks2012                                    integer
   BlueHue                                       integer
@@ -2078,6 +2123,15 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   ClipboardAspectRatio                          integer
   ClipboardOrientation                          integer
   Cluster                                       string
+  ColorGradeBlending                            integer
+  ColorGradeGlobalHue                           integer
+  ColorGradeGlobalLum                           integer
+  ColorGradeGlobalSat                           integer
+  ColorGradeHighlightLum                        integer
+  ColorGradeMidtoneHue                          integer
+  ColorGradeMidtoneLum                          integer
+  ColorGradeMidtoneSat                          integer
+  ColorGradeShadowLum                           integer
   ColorNoiseReduction                           integer
   ColorNoiseReductionDetail                     integer
   ColorNoiseReductionSmoothness                 integer
@@ -2201,6 +2255,7 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   LensProfileDistortionScale                    integer
   LensProfileEnable                             integer
   LensProfileFilename                           string
+  LensProfileIsEmbedded                         boolean
   LensProfileMatchKeyCameraModelName            string
   LensProfileMatchKeyExifMake                   string
   LensProfileMatchKeyExifModel                  string
@@ -2215,8 +2270,20 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   Look                                          Look Struct
   LookAmount                                    string_
   LookCluster                                   string_
-  LookName                                      string_
+  LookCopyright                                 string_
+  LookGroup                                     lang-alt_
+  LookName                                      string
+  LookParameters                                LookParms Struct_
+  LookParametersCameraProfile                   string_
+  LookParametersClarity2012                     string_
+  LookParametersConvertToGrayscale              string_
+  LookParametersLookTable                       string_
+  LookParametersProcessVersion                  string_
+  LookParametersToneCurvePV2012                 string_+
+  LookParametersVersion                         string_
+  LookSupportsAmount                            string_
   LookSupportsMonochrome                        string_
+  LookSupportsOutputReferred                    string_
   LookUUID                                      string_
   LuminanceAdjustmentAqua                       integer
   LuminanceAdjustmentBlue                       integer
@@ -2385,6 +2452,8 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   Texture                                       integer
   TIFFHandling                                  string
   Tint                                          integer
+  ToggleStyleAmount                             integer
+  ToggleStyleDigest                             string
   ToneCurve                                     string+
   ToneCurveBlue                                 string+
   ToneCurveGreen                                string+
@@ -2941,7 +3010,7 @@ These tags belong to the ExifTool XMP-exif family 1 group.
 =head3 XMP exifEX Tags
 
 EXIF tags added by the EXIF 2.31 for XMP specification (see
-L<http://www.cipa.jp/std/documents/e/DC-010-2017_E.pdf>).
+L<http://www.cipa.jp/std/documents/e/DC-X010-2017.pdf>).
 
 These tags belong to the ExifTool XMP-exifEX family 1 group.
 
@@ -5830,6 +5899,7 @@ boot, not including standby time.
            ColorData7                           Canon ColorData7
            ColorData8                           Canon ColorData8
            ColorData9                           Canon ColorData9
+           ColorData10                          Canon ColorData10
            ColorDataUnknown                     Canon ColorDataUnknown
   0x4002   CRWParam?                            no
   0x4003   ColorInfo                            Canon ColorInfo
@@ -6792,6 +6862,7 @@ Unknown CameraInfo tags are divided into 3 tables based on format size.
   Index1   Tag Name                             Writable
   ------   --------                             --------
     363    LensSerialNumber                     undef[5]
+   1473    FirmwareVersion                      no
 
 =head3 Canon MovieInfo Tags
 
@@ -7719,6 +7790,95 @@ These tags are used by the EOS 1DX, 5DmkIII, 6D, 100D, 650D, 700D, M and 7DmkII.
     796    NormalWhiteLevel                     int16u
     797    SpecularWhiteLevel                   int16u
     798    LinearityUpperMargin                 int16u
+
+=head3 Canon ColorData10 Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    ColorDataVersion                     int16s
+     85    WB_RGGBLevelsAsShot                  int16s[4]
+     89    ColorTempAsShot                      int16s
+     90    WB_RGGBLevelsAuto                    int16s[4]
+     94    ColorTempAuto                        int16s
+     95    WB_RGGBLevelsMeasured                int16s[4]
+     99    ColorTempMeasured                    int16s
+    100    WB_RGGBLevelsUnknown?                int16s[4]
+    104    ColorTempUnknown?                    int16s
+    105    WB_RGGBLevelsUnknown2?               int16s[4]
+    109    ColorTempUnknown2?                   int16s
+    110    WB_RGGBLevelsUnknown3?               int16s[4]
+    114    ColorTempUnknown3?                   int16s
+    115    WB_RGGBLevelsUnknown4?               int16s[4]
+    119    ColorTempUnknown4?                   int16s
+    120    WB_RGGBLevelsUnknown5?               int16s[4]
+    124    ColorTempUnknown5?                   int16s
+    125    WB_RGGBLevelsUnknown6?               int16s[4]
+    129    ColorTempUnknown6?                   int16s
+    130    WB_RGGBLevelsUnknown7?               int16s[4]
+    134    ColorTempUnknown7?                   int16s
+    135    WB_RGGBLevelsUnknown8?               int16s[4]
+    139    ColorTempUnknown8?                   int16s
+    140    WB_RGGBLevelsUnknown9?               int16s[4]
+    144    ColorTempUnknown9?                   int16s
+    145    WB_RGGBLevelsUnknown10?              int16s[4]
+    149    ColorTempUnknown10?                  int16s
+    150    WB_RGGBLevelsDaylight                int16s[4]
+    154    ColorTempDaylight                    int16s
+    155    WB_RGGBLevelsShade                   int16s[4]
+    159    ColorTempShade                       int16s
+    160    WB_RGGBLevelsCloudy                  int16s[4]
+    164    ColorTempCloudy                      int16s
+    165    WB_RGGBLevelsTungsten                int16s[4]
+    169    ColorTempTungsten                    int16s
+    170    WB_RGGBLevelsFluorescent             int16s[4]
+    174    ColorTempFluorescent                 int16s
+    175    WB_RGGBLevelsKelvin                  int16s[4]
+    179    ColorTempKelvin                      int16s
+    180    WB_RGGBLevelsFlash                   int16s[4]
+    184    ColorTempFlash                       int16s
+    185    WB_RGGBLevelsUnknown11?              int16s[4]
+    189    ColorTempUnknown11?                  int16s
+    190    WB_RGGBLevelsUnknown12?              int16s[4]
+    194    ColorTempUnknown12?                  int16s
+    195    WB_RGGBLevelsUnknown13?              int16s[4]
+    199    ColorTempUnknown13?                  int16s
+    200    WB_RGGBLevelsUnknown14?              int16s[4]
+    204    ColorTempUnknown14?                  int16s
+    205    WB_RGGBLevelsUnknown15?              int16s[4]
+    209    ColorTempUnknown15?                  int16s
+    210    WB_RGGBLevelsUnknown16?              int16s[4]
+    214    ColorTempUnknown16?                  int16s
+    215    WB_RGGBLevelsUnknown17?              int16s[4]
+    219    ColorTempUnknown17?                  int16s
+    220    WB_RGGBLevelsUnknown18?              int16s[4]
+    224    ColorTempUnknown18?                  int16s
+    225    WB_RGGBLevelsUnknown19?              int16s[4]
+    229    ColorTempUnknown19?                  int16s
+    230    WB_RGGBLevelsUnknown20?              int16s[4]
+    234    ColorTempUnknown20?                  int16s
+    235    WB_RGGBLevelsUnknown21?              int16s[4]
+    239    ColorTempUnknown21?                  int16s
+    240    WB_RGGBLevelsUnknown22?              int16s[4]
+    244    ColorTempUnknown22?                  int16s
+    245    WB_RGGBLevelsUnknown23?              int16s[4]
+    249    ColorTempUnknown23?                  int16s
+    250    WB_RGGBLevelsUnknown24?              int16s[4]
+    254    ColorTempUnknown24?                  int16s
+    255    WB_RGGBLevelsUnknown25?              int16s[4]
+    259    ColorTempUnknown25?                  int16s
+    260    WB_RGGBLevelsUnknown26?              int16s[4]
+    264    ColorTempUnknown26?                  int16s
+    265    WB_RGGBLevelsUnknown27?              int16s[4]
+    269    ColorTempUnknown27?                  int16s
+    270    WB_RGGBLevelsUnknown28?              int16s[4]
+    274    ColorTempUnknown28?                  int16s
+    275    WB_RGGBLevelsUnknown29?              int16s[4]
+    279    ColorTempUnknown29?                  int16s
+    280    ColorCalib?                          Canon ColorCalib
+    343    PerChannelBlackLevel                 int16u[4]
+    810    NormalWhiteLevel                     int16u
+    811    SpecularWhiteLevel                   int16u
+    812    LinearityUpperMargin                 int16u
 
 =head3 Canon ColorDataUnknown Tags
 
@@ -22937,7 +23097,7 @@ Information extracted from the GIF logical screen descriptor.
     4.2    ColorResolutionDepth                 no
     4.3    BitsPerPixel                         no
       5    BackgroundColor                      no
-      6    AspectRatio                          no
+      6    PixelAspectRatio                     no
 
 =head2 BMP Tags
 
@@ -23963,6 +24123,7 @@ specification.
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
   '_command'           Command                  no
+  '_comment'           Comment                  no
   '_orient'            Orientation              no
   'colorcorr'          ColorCorrection          no
   'exposure'           Exposure                 no
@@ -25306,7 +25467,8 @@ formats of timed GPS metadata from video files.
   camm6                                         QuickTime camm6
   camm7                                         QuickTime camm7
   fdsc                                          GoPro fdsc
-  gpmd                                          GoPro GPMF
+  gpmd_GoPro                                    GoPro GPMF
+  gpmd_Rove                                     QuickTime Stream
   marl                                          QuickTime marl
   mebx                                          QuickTime Keys
   mett                                          Parrot mett
@@ -25557,6 +25719,7 @@ Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.
   'dinf'   DataInfo                             QuickTime DataInfo
   'free'   Free?                                no
   'hdlr'   Handler                              QuickTime Handler
+  'idat'   MetaImageSize                        no
   'iinf'   ItemInformation                      QuickTime ItemInfo
                                                 QuickTime ItemInfo
   'iloc'   ItemLocation                         no
@@ -25567,6 +25730,8 @@ Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.
   'iref'   ItemReference                        QuickTime ItemRef
   'keys'   Keys                                 QuickTime Keys
   'pitm'   PrimaryItemReference                 no
+  'uuid'   MetaVersion                          no
+           UUID-Unknown?                        no
   'xml '   XML                                  XMP XML
 
 =head3 QuickTime DataInfo Tags
@@ -25824,9 +25989,16 @@ defined in this table.
 
 =head3 QuickTime ItemRef Tags
 
+The Item reference entries listed in the table below contain information about
+the associations between items in the file.  This information is used by
+ExifTool, but these entries are not extracted as tags.
+
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  'auxl'   AuxiliaryImageRef                    no
   'cdsc'   ContentDescribes                     no
+  'dimg'   DerivedImageRef                      no
+  'thmb'   ThumbnailRef                         no
 
 =head3 QuickTime MovieFragment Tags
 
@@ -33172,12 +33344,20 @@ L<https://fits.gsfc.nasa.gov/fits_standard.html> for the specification.
 
 =head2 JSON Tags
 
-No JSON tags have been pre-defined, but ExifTool will read any existing
-tags from basic JSON-formatted files.
+Other than a few tags in the table below, JSON tags have not been
+pre-defined.  However, ExifTool will read any existing tags from basic
+JSON-formatted files.
 
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  [no tags known]
+  Tag Name                                      Writable
+  --------                                      --------
+  ON1_SettingsData                              PLIST
+  ON1_SettingsMetadataCreated                   no
+  ON1_SettingsMetadataModified                  no
+  ON1_SettingsMetadataName                      no
+  ON1_SettingsMetadataPluginID                  no
+  ON1_SettingsMetadataTimestamp                 no
+  ON1_SettingsMetadataUsage                     no
+  ON1_SettingsMetadataVisibleToUser             no
 
 =head2 HTML Tags
 

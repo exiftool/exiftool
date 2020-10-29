@@ -482,9 +482,11 @@ formats of timed GPS metadata from video files.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='GoPro.html#fdsc'>GoPro fdsc Tags</a></td></tr>
 <tr class=b>
-<td>gpmd</td>
-<td class=c>-</td>
-<td>--&gt; <a href='GoPro.html#GPMF'>GoPro GPMF Tags</a></td></tr>
+<td>gpmd_GoPro
+  <br>gpmd_Rove</td>
+<td class=c>-<br>-</td>
+<td>--&gt; <a href='GoPro.html#GPMF'>GoPro GPMF Tags</a>
+  <br>--&gt; <a href='QuickTime.html#Stream'>QuickTime Stream Tags</a></td></tr>
 <tr>
 <td>marl</td>
 <td class=c>-</td>
@@ -1326,50 +1328,61 @@ from the associated SampleTime)</span></span></td></tr>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Handler'>QuickTime Handler Tags</a></td></tr>
 <tr>
+<td>'idat'</td>
+<td>MetaImageSize</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'iinf'</td>
 <td>ItemInformation</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#ItemInfo'>QuickTime ItemInfo Tags</a>
   <br>--&gt; <a href='QuickTime.html#ItemInfo'>QuickTime ItemInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'iloc'</td>
 <td>ItemLocation</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(parsed, but not extracted as a tag)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'ilst'</td>
 <td>ItemList</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#ItemList'>QuickTime ItemList Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'ipmc'</td>
 <td>IPMPControl?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'ipro'</td>
 <td>ItemProtection?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'iprp'</td>
 <td>ItemProperties</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#ItemProp'>QuickTime ItemProp Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'iref'</td>
 <td>ItemReference</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#ItemRef'>QuickTime ItemRef Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'keys'</td>
 <td>Keys</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Keys'>QuickTime Keys Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'pitm'</td>
 <td>PrimaryItemReference</td>
 <td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'uuid'</td>
+<td>MetaVersion
+  <br>UUID-Unknown?</td>
+<td class=c>no<br>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'xml '</td>
@@ -5318,16 +5331,34 @@ defined in this table.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ItemRef'>QuickTime ItemRef Tags</a></h2>
+<p>The Item reference entries listed in the table below contain information about
+the associations between items in the file.  This information is used by
+ExifTool, but these entries are not extracted as tags.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>'auxl'</td>
+<td>AuxiliaryImageRef</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'cdsc'</td>
 <td>ContentDescribes</td>
 <td class=c>no</td>
-<td><span class=s><span class=n>(parsed, but not extracted as a tag)</span></span></td></tr>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dimg'</td>
+<td>DerivedImageRef</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'thmb'</td>
+<td>ThumbnailRef</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='MovieFragment'>QuickTime MovieFragment Tags</a></h2>
@@ -8656,7 +8687,7 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 15, 2020</i>
+<br><i>Last revised Oct 29, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

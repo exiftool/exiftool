@@ -1,4 +1,3 @@
-AspectRatio: 1
 BackgroundColor: 0
 BitsPerPixel: 8
 BlueMatrixColumn: 0.1492 0.06322 0.74463
@@ -12,7 +11,7 @@ ConnectionSpaceIlluminant: 0.9642 1 0.82491
 DeviceAttributes: Reflective, Glossy, Positive, Color
 DeviceManufacturer: none
 DeviceModel: 
-ExifToolVersion: 12.06
+ExifToolVersion: 12.09
 FileSize: 4.5 kB
 FileType: GIF
 FileTypeExtension: gif
@@ -26,6 +25,7 @@ ImageWidth: 8
 MIMEType: image/gif
 MediaWhitePoint: 0.9505 1 1.0891
 Megapixels: 0.000064
+PixelAspectRatio: 1
 PrimaryPlatform: Apple Computer Inc.
 ProfileCMMType: Nikon Corporation
 ProfileClass: Display Device Profile
@@ -41,4 +41,4 @@ RedMatrixColumn: 0.60976 0.31113 0.01947
 RedTRC: (Binary data 14 bytes)
 RenderingIntent: Perceptual
 Title: GIF with XMP
-XMPToolkit: Image::ExifTool 12.06
+XMPToolkit: Image::ExifTool 12.09

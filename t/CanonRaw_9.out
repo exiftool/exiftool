@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.09
 [File, System, Other] FileName - File Name: CanonRaw_9_failed.cr3
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 52 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:07:29 09:04:02-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:02-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:07:29 09:04:02-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:10:29 09:40:43-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:10:29 09:40:43-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:10:29 09:40:43-04:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: CR3
 [File, File, Other] FileTypeExtension - File Type Extension: cr3
@@ -536,6 +536,7 @@
 [MakerNotes, Track4, Camera] 797 - Specular White Level: 14338
 [MakerNotes, Track4, Camera] 798 - Linearity Upper Margin: 10025
 [MakerNotes, Track4, Camera] 16389 - Flavor: (Binary data 32476 bytes)
+[MakerNotes, Track4, Camera] 1473 - Firmware Version: 1.0.0
 [MakerNotes, Track4, Camera] 0 - Vignetting Corr Version: 32
 [MakerNotes, Track4, Camera] 16435 - Canon 0x4033: [...]
 [MakerNotes, Track4, Camera] 16430 - Canon 0x402e: ."..@.þÿ.þñ?...,I“À[...]
@@ -593,7 +594,7 @@
 [EXIF, ExifIFD, Image] 42037 - Lens Serial Number: 0000000000
 [EXIF, GPS, Location] 0 - GPS Version ID: 2.3.0.0
 [EXIF, ExifIFD, Camera] 41990 - Scene Capture Type: Standard
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.03
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.09
 [XMP, XMP-dc, Image] subject - Subject: CR3 test
 [XMP, XMP-exif, Image] ExposureBiasValue - Exposure Compensation: -1.3
 [XMP, XMP-xmp, Image] Rating - Rating: 0

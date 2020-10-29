@@ -387,8 +387,11 @@ numerical, and generated automatically otherwise.
                   'Flattened' - [reserved] used internally to mark Struct tags
                   which have been processed to generate flattened equivalents.
 
-                  'GotGroups' - [reserved] flag used internally to indicate that
-                  the Groups hash has been initialized for this tag.
+                  'NotFlat' - [XMP tags only] Flag indicates that this tag ID
+                  does not represent a flattened tag.  Used to avoid a conflict
+                  if the tag ID would be the same as a generated ID for a
+                  flattened tag.  The result is that the flattened tag will not
+                  be accessible.
 
                   'Hidden' - set to hide tag from the TagName documentation.
                   Also suppresses verbose output of a BinaryData tag.

@@ -144,7 +144,7 @@ sub PrintInvGPSCoordinates($)
         $v[2] = Image::ExifTool::ToFloat($v[2]) * ($below ? -1 : 1) if @v == 3;
         return "@v";
     }
-    return $val if $val =~ /^([-+]\d+(\.\d*)?){2,3}(CRS.*)?$/; # already in ISO6709 format?
+    return $val if $val =~ /^([-+]\d+(\.\d*)?){2,3}(CRS.*)?\/?$/; # already in ISO6709 format?
     return undef;
 }
 
@@ -165,9 +165,9 @@ sub ConvInvISO6709($)
             return undef unless Image::ExifTool::IsFloat($_);
             $_ =~ s/^([-+]?)(\d+)/sprintf(shift(@fmt), $1 || '+', $2)/e;
         }
-        return join '', @a;
+        return join '', @a, '/';
     }
-    return $val if $val =~ /^([-+]\d+(\.\d*)?){2,3}(CRS.*)?$/; # already in ISO6709 format?
+    return $val if $val =~ /^([-+]\d+(\.\d*)?){2,3}(CRS.*)?\/?$/; # already in ISO6709 format?
     return undef;
 }
 

@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.31';
+$VERSION = '3.32';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1583,7 +1583,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9400b' },
     },{
         Name => 'Tag9400c',
-        Condition => '$$valPt =~ /^[\x23\x24\x26\x28]/',
+        Condition => '$$valPt =~ /^[\x23\x24\x26\x28\x31]/', 
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9400c' },
     },{
         Name => 'Sony_0x9400',
@@ -8047,21 +8047,18 @@ my %isoSetting2010 = (
     NOTES => q{
         Valid for DSC-HX60V/HX80/HX90V/HX99/HX350/HX400V/QX30/RX0/RX1RM2/RX10/
         RX10M2/RX10M3/RX10M4/RX100M3/RX100M4/RX100M5/RX100M5A/RX100M6/RX100M7/WX220/
-        WX350/WX500, ILCE-7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/9/9M2/5000/5100/
-        6000/6100/6300/6400/6500/6600/QX1, ILCA-68/77M2/99M2.
+        WX350/WX500, ILCE-7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/7SM3/9/9M2/5000/
+        5100/6000/6100/6300/6400/6500/6600/QX1, ILCA-68/77M2/99M2.
     },
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     0x0009 => { %releaseMode2 },
-    0x000a => [{
-        Condition => '$$self{Model} =~ /^(ILCE-(6100|6400|6600|7M3|7RM3|7RM4|9|9M2)|DSC-(RX10M4|RX100M6|RX100M7|RX100M5A|HX99|RX0M2)|ZV-1)\b/',
+    0x000a => {
         Name => 'ShotNumberSincePowerUp',
-        Format => 'int8u',
-    },{
-        Condition => '$$self{Model} !~ /^(ILCE-7C)\b/',
-        Name => 'ShotNumberSincePowerUp',
+        Condition => '$$self{Model} =~ /^(ILCA-(68|77M2|99M2)|ILCE-(5000|5100|6000|6300|6500|7|7M2|7R|7RM2|7S|7SM2|QX1)|DSC-(HX350|HX400V|HX60V|HX80|HX90|HX90V|QX30|RX0|RX1RM2|RX10|RX10M2|RX10M3|RX100M3|RX100M4|RX100M5|WX220|WX350|WX500))\b/',
+        Notes => 'valid only for some models',
         Format => 'int32u',
-    }],
+    },
     0x0012 => { %sequenceImageNumber },
     0x0016 => {
         Name => 'SequenceLength',
@@ -8107,6 +8104,7 @@ my %isoSetting2010 = (
     },
     0x002a => {
         Name => 'Quality2',
+        Condition => '$$self{Model} !~ /^(ILCE-7SM3)\b/',
         PrintConv => {
             0 => 'JPEG',
             1 => 'RAW',
@@ -8116,11 +8114,13 @@ my %isoSetting2010 = (
     },
     0x0047 => {
         Name => 'SonyImageHeight',
+        Condition => '$$self{Model} !~ /^(ILCE-7SM3)\b/',
         Format => 'int16u',
         PrintConv => '$val > 0 ? 8*$val : "n.a."',
     },
     0x0053 => {
         Name => 'ModelReleaseYear',
+        Condition => '$$self{Model} !~ /^(ILCE-7SM3)\b/',
         Format => 'int8u',
         PrintConv => 'sprintf("20%.2d", $val)',
     },

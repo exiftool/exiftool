@@ -1,9 +1,9 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.09
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.10
 [File, System, Other] FileName - File Name: CanonRaw.cr3
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 51 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:26 22:05:16-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:10:29 09:30:30-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2020:10:29 14:57:47-04:00
 [File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:03:26 22:05:16-04:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: CR3
@@ -17,8 +17,8 @@
 [QuickTime, QuickTime, Video] 1 - Minor Version: 0.0.1
 [QuickTime, QuickTime, Video] 2 - Compatible Brands: crx , isom
 [QuickTime, QuickTime, Video] 0 - Movie Header Version: 0
-[QuickTime, QuickTime, Time] 1 - Create Date: 2018:02:21 12:08:56
-[QuickTime, QuickTime, Time] 2 - Modify Date: 2018:02:21 12:08:56
+[QuickTime, QuickTime, Time] 1 - Create Date: 2018:02:21 07:08:56-05:00
+[QuickTime, QuickTime, Time] 2 - Modify Date: 2018:02:21 07:08:56-05:00
 [QuickTime, QuickTime, Video] 3 - Time Scale: 1
 [QuickTime, QuickTime, Video] 4 - Duration: 1.00 s
 [QuickTime, QuickTime, Video] 5 - Preferred Rate: 1
@@ -32,8 +32,8 @@
 [QuickTime, QuickTime, Video] 23 - Current Time: 0 s
 [QuickTime, QuickTime, Video] 24 - Next Track ID: 5
 [QuickTime, Track1, Video] 0 - Track Header Version: 0
-[QuickTime, Track1, Time] 1 - Track Create Date: 2018:02:21 12:08:56
-[QuickTime, Track1, Time] 2 - Track Modify Date: 2018:02:21 12:08:56
+[QuickTime, Track1, Time] 1 - Track Create Date: 2018:02:21 07:08:56-05:00
+[QuickTime, Track1, Time] 2 - Track Modify Date: 2018:02:21 07:08:56-05:00
 [QuickTime, Track1, Video] 3 - Track ID: 1
 [QuickTime, Track1, Video] 5 - Track Duration: 1.00 s
 [QuickTime, Track1, Video] 8 - Track Layer: 0
@@ -42,8 +42,8 @@
 [QuickTime, Track1, Video] 19 - Image Width: 6000
 [QuickTime, Track1, Video] 20 - Image Height: 4000
 [QuickTime, Track1, Video] 0 - Media Header Version: 0
-[QuickTime, Track1, Time] 1 - Media Create Date: 2018:02:21 12:08:56
-[QuickTime, Track1, Time] 2 - Media Modify Date: 2018:02:21 12:08:56
+[QuickTime, Track1, Time] 1 - Media Create Date: 2018:02:21 07:08:56-05:00
+[QuickTime, Track1, Time] 2 - Media Modify Date: 2018:02:21 07:08:56-05:00
 [QuickTime, Track1, Video] 3 - Media Time Scale: 1
 [QuickTime, Track1, Video] 4 - Media Duration: 1.00 s
 [QuickTime, Track1, Video] 5 - Media Language Code: eng
@@ -61,8 +61,8 @@
 [QuickTime, Track1, Video] SampleDuration - Sample Duration: 1.00 s
 [QuickTime, Track1, Preview] JPEG - Jpg From Raw: (Binary data 29 bytes)
 [QuickTime, Track2, Video] 0 - Track Header Version: 0
-[QuickTime, Track2, Time] 1 - Track Create Date: 2018:02:21 12:08:56
-[QuickTime, Track2, Time] 2 - Track Modify Date: 2018:02:21 12:08:56
+[QuickTime, Track2, Time] 1 - Track Create Date: 2018:02:21 07:08:56-05:00
+[QuickTime, Track2, Time] 2 - Track Modify Date: 2018:02:21 07:08:56-05:00
 [QuickTime, Track2, Video] 3 - Track ID: 2
 [QuickTime, Track2, Video] 5 - Track Duration: 1.00 s
 [QuickTime, Track2, Video] 8 - Track Layer: 0
@@ -71,8 +71,8 @@
 [QuickTime, Track2, Video] 19 - Image Width: 1624
 [QuickTime, Track2, Video] 20 - Image Height: 1080
 [QuickTime, Track2, Video] 0 - Media Header Version: 0
-[QuickTime, Track2, Time] 1 - Media Create Date: 2018:02:21 12:08:56
-[QuickTime, Track2, Time] 2 - Media Modify Date: 2018:02:21 12:08:56
+[QuickTime, Track2, Time] 1 - Media Create Date: 2018:02:21 07:08:56-05:00
+[QuickTime, Track2, Time] 2 - Media Modify Date: 2018:02:21 07:08:56-05:00
 [QuickTime, Track2, Video] 3 - Media Time Scale: 1
 [QuickTime, Track2, Video] 4 - Media Duration: 1.00 s
 [QuickTime, Track2, Video] 5 - Media Language Code: eng
@@ -87,8 +87,8 @@
 [QuickTime, Track2, Image] 41 - Bit Depth: 24
 [QuickTime, Track2, Video] stts - Video Frame Rate: 1
 [QuickTime, Track3, Video] 0 - Track Header Version: 0
-[QuickTime, Track3, Time] 1 - Track Create Date: 2018:02:21 12:08:56
-[QuickTime, Track3, Time] 2 - Track Modify Date: 2018:02:21 12:08:56
+[QuickTime, Track3, Time] 1 - Track Create Date: 2018:02:21 07:08:56-05:00
+[QuickTime, Track3, Time] 2 - Track Modify Date: 2018:02:21 07:08:56-05:00
 [QuickTime, Track3, Video] 3 - Track ID: 3
 [QuickTime, Track3, Video] 5 - Track Duration: 1.00 s
 [QuickTime, Track3, Video] 8 - Track Layer: 0
@@ -97,8 +97,8 @@
 [QuickTime, Track3, Video] 19 - Image Width: 6288
 [QuickTime, Track3, Video] 20 - Image Height: 4056
 [QuickTime, Track3, Video] 0 - Media Header Version: 0
-[QuickTime, Track3, Time] 1 - Media Create Date: 2018:02:21 12:08:56
-[QuickTime, Track3, Time] 2 - Media Modify Date: 2018:02:21 12:08:56
+[QuickTime, Track3, Time] 1 - Media Create Date: 2018:02:21 07:08:56-05:00
+[QuickTime, Track3, Time] 2 - Media Modify Date: 2018:02:21 07:08:56-05:00
 [QuickTime, Track3, Video] 3 - Media Time Scale: 1
 [QuickTime, Track3, Video] 4 - Media Duration: 1.00 s
 [QuickTime, Track3, Video] 5 - Media Language Code: eng
@@ -113,16 +113,16 @@
 [QuickTime, Track3, Image] 41 - Bit Depth: 24
 [QuickTime, Track3, Video] stts - Video Frame Rate: 1
 [QuickTime, Track4, Video] 0 - Track Header Version: 0
-[QuickTime, Track4, Time] 1 - Track Create Date: 2018:02:21 12:08:56
-[QuickTime, Track4, Time] 2 - Track Modify Date: 2018:02:21 12:08:56
+[QuickTime, Track4, Time] 1 - Track Create Date: 2018:02:21 07:08:56-05:00
+[QuickTime, Track4, Time] 2 - Track Modify Date: 2018:02:21 07:08:56-05:00
 [QuickTime, Track4, Video] 3 - Track ID: 4
 [QuickTime, Track4, Video] 5 - Track Duration: 1.00 s
 [QuickTime, Track4, Video] 8 - Track Layer: 0
 [QuickTime, Track4, Video] 9 - Track Volume: 0.00%
 [QuickTime, Track4, Video] 10 - Matrix Structure: 1 0 0 0 1 0 0 0 1
 [QuickTime, Track4, Video] 0 - Media Header Version: 0
-[QuickTime, Track4, Time] 1 - Media Create Date: 2018:02:21 12:08:56
-[QuickTime, Track4, Time] 2 - Media Modify Date: 2018:02:21 12:08:56
+[QuickTime, Track4, Time] 1 - Media Create Date: 2018:02:21 07:08:56-05:00
+[QuickTime, Track4, Time] 2 - Media Modify Date: 2018:02:21 07:08:56-05:00
 [QuickTime, Track4, Video] 3 - Media Time Scale: 1
 [QuickTime, Track4, Video] 4 - Media Duration: 1.00 s
 [QuickTime, Track4, Video] 5 - Media Language Code: eng

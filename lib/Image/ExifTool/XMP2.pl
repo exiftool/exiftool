@@ -1697,6 +1697,7 @@ my %sSubVersion = (
     InitialViewPitchDegrees         => { Writable => 'real' },
     InitialViewRollDegrees          => { Writable => 'real' },
     InitialHorizontalFOVDegrees     => { Writable => 'real' },
+    InitialVerticalFOVDegrees       => { Writable => 'real' },
     FirstPhotoDate                  => { %dateTimeInfo, Groups => { 2 => 'Time' } },
     LastPhotoDate                   => { %dateTimeInfo, Groups => { 2 => 'Time' } },
     SourcePhotosCount               => { Writable => 'integer' },

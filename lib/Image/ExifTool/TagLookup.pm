@@ -3231,6 +3231,7 @@ my %tagLookup = (
 	'initialafpointinservo' => { 2 => 0x13 },
 	'initialcameradolly' => { 452 => 'InitialCameraDolly' },
 	'initialhorizontalfovdegrees' => { 452 => 'InitialHorizontalFOVDegrees' },
+	'initialverticalfovdegrees' => { 452 => 'InitialVerticalFOVDegrees' },
 	'initialviewheadingdegrees' => { 452 => 'InitialViewHeadingDegrees', 453 => 'InitialViewHeadingDegrees' },
 	'initialviewpitchdegrees' => { 452 => 'InitialViewPitchDegrees', 453 => 'InitialViewPitchDegrees' },
 	'initialviewrolldegrees' => { 452 => 'InitialViewRollDegrees', 453 => 'InitialViewRollDegrees' },

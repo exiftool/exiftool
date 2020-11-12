@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 sub MDItemLocalTime($);
 sub ProcessATTR($$$);
@@ -651,6 +651,8 @@ sub ProcessATTR($$$)
         $off < 0 or $off > $dataLen and $et->Warn('Invalid ATTR offset'), last;
         my $tag = substr($$dataPt, $pos + 11, $n);
         $tag =~ s/\0+$//;       # remove null terminator
+        # remove random ID after kMDLabel in tag ID
+        $tag =~ s/^com.apple.metadata:kMDLabel_.*/com.apple.metadata:kMDLabel/s;
         $off + $len > $dataLen and $et->Warn('Truncated ATTR value'), last;
         my $val = ReadXAttrValue($et, $tagTablePtr, $tag, substr($$dataPt, $off, $len));
         $et->HandleTag($tagTablePtr, $tag, $val,

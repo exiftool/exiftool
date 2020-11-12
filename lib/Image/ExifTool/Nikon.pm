@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.88';
+$VERSION = '3.89';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -2083,7 +2083,7 @@ my %binaryDataAttrs = (
             },
         },
         {
-            Condition => '$$valPt =~ /^0800/', # Z6/Z7
+            Condition => '$$valPt =~ /^080[01]/', # Z6/Z7
             Name => 'LensData0800',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData0800',
@@ -8999,7 +8999,7 @@ my %nikonFocalConversions = (
             },
         },
         {
-            Condition => '$$valPt =~ /^0800/', # Z6/Z7
+            Condition => '$$valPt =~ /^080[01]/', # Z6/Z7
             Name => 'LensData0800',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData0800',

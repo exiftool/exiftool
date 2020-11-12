@@ -1899,8 +1899,8 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Name => 'ColorData9',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData9' },
         },
-        {   # (int16u[3656]) - R5/R6 ref PH
-            Condition => '$count == 3656',
+        {   # (int16u[2024|3656]) - 1DXmkIII (2024) ref IB, R5/R6 (3656) ref PH
+            Condition => '$count == 2024 or $count == 3656',
             Name => 'ColorData10',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData10' },
         },
@@ -8094,7 +8094,8 @@ my %ciMaxFocal = (
     },
 );
 
-# Color data (MakerNotes tag 0x4001, count=3656) (same as ColorData9 but shifted up by 0x0e, ref PH)
+# Color data (MakerNotes tag 0x4001, count=2024,3656)
+# (same as ColorData9 but shifted up by 0x0e, ref PH)
 %Image::ExifTool::Canon::ColorData10 = (
     %binaryDataAttrs,
     FORMAT => 'int16s',
@@ -8107,6 +8108,7 @@ my %ciMaxFocal = (
         DataMember => 'ColorDataVersion',
         RawConv => '$$self{ColorDataVersion} = $val',
         PrintConv => {
+            32 => '32 (1DXmkIII)', #IB
             33 => '33 (R5/R6)',
         },
     },

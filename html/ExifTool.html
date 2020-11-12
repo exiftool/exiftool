@@ -763,9 +763,10 @@ distribution for examples.</p>
     extracted and from local time when written. According to the QuickTime
     specification date/time values should be UTC, but many digital cameras store
     local time instead (presumably because they don't know the time zone), so
-    the default is to not convert these times.  This option also disables the
-    autodetection of incorrect time-zero offsets in QuickTime date/time values,
-    and enforces a time zero of 1904 as per the QuickTime specification.</td>
+    the default is to not convert these times (except for Canon CR3 files, which
+    always use UTC times).  This option also disables the autodetection of
+    incorrect time-zero offsets in QuickTime date/time values, and enforces a
+    time zero of 1904 as per the QuickTime specification.</td>
     <td align=center>0 or 1</td>
     <td align=center>undef</td></tr>
 <tr id="RequestAll"><td>RequestAll</td><td>Flag to request all tags to be extracted.

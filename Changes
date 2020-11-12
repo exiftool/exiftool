@@ -7,6 +7,20 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 12, 2020 - Version 12.10
+
+  - Added -validate test for proper TIFF magic number in JPEG EXIF header
+  - Added support for Nikon Z7 LensData version 0801
+  - Added a new XMP-GPano tag
+  - Decode ColorData for the Canon EOS 1DXmkIII (thanks LibRaw)
+  - Decode more tags for the Sony ILCE-7SM3 (thanks Jos Roost)
+  - Automatically apply QuickTimeUTC option for CR3 files
+  - Improved decoding of XAttrMDLabel from MacOS files
+  - Ignore time zones when writing date/time values and using the -d option
+  - Enhanced -echo3 and -echo4 options to allow exit status to be returned
+  - Changed -execute so the -q option no longer suppresses the "{ready}" message
+    when a synchronization number is used (eg. -execute123)
+
 Oct. 29, 2020 - Version 12.09
 
   - Added ability to copy CanonMakerNotes from CR3 images to other file types
@@ -17,15 +31,14 @@ Oct. 29, 2020 - Version 12.09
   - Added a new Sony LensType (thanks Jos Roost)
   - Added a new Nikon Z lens (thanks LibRaw)
   - Added a new Canon LensType
-  - Added a new XMP-crs tag
   - Decode ColorData for Canon EOS R5/R6
   - Decode a couple of new HEIF tags
   - Decode FirmwareVersion for Canon M50
-  - Patched EndDir() feature so subdirectories are always processed when -r is
-    used (previously, EndDir() would end processing of a directory completely)
   - Improved decoding of Sony CreativeStyle tags (thanks Jos Roost)
   - Improved parsing of Radiance files to recognize comments
   - Renamed GIF AspectRatio tag to PixelAspectRatio
+  - Patched EndDir() feature so subdirectories are always processed when -r is
+    used (previously, EndDir() would end processing of a directory completely)
   - Yet another tweak to the EventTime formatting rules (also allow time-only
     values with fractional seconds and a time zone)
   - Avoid loading GoPro module unnecessarily when reading MP4 videos from some
@@ -33,7 +46,6 @@ Oct. 29, 2020 - Version 12.09
   - Fixed problem with an incorrect naming of CodecID tags in some MKV videos
   - Fixed verbose output to avoid "adding" messages for existing flattened XMP
     tags
-  - Added read support for MacOS "._" sidecar files
 
 Oct. 15, 2020 - Version 12.08
 

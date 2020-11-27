@@ -23,14 +23,15 @@ my $charset;
 
 #------------------------------------------------------------------------------
 # Read CSV file
-# Inputs: 0) CSV file name, file ref or RAF ref, 1) database hash ref, 2) missing tag value
+# Inputs: 0) CSV file name, file ref or RAF ref, 1) database hash ref,
+#         2) missing tag value, 3) delimiter if other than ','
 # Returns: undef on success, or error string
 # Notes: There are various flavours of CSV, but here we assume that only
 #        double quotes are escaped, and they are escaped by doubling them
-sub ReadCSV($$;$)
+sub ReadCSV($$;$$)
 {
     local ($_, $/);
-    my ($file, $database, $missingValue) = @_;
+    my ($file, $database, $missingValue, $delim) = @_;
     my ($buff, @tags, $found, $err, $raf, $openedFile);
 
     if (UNIVERSAL::isa($file, 'File::RandomAccess')) {
@@ -45,6 +46,7 @@ sub ReadCSV($$;$)
         $openedFile = 1;
         $raf = new File::RandomAccess(\*CSVFILE);
     }
+    $delim = ',' unless defined $delim;
     # set input record separator by first newline found in the file
     # (safe because first line should contain only tag names)
     while ($raf->Read($buff, 65536)) {
@@ -53,18 +55,18 @@ sub ReadCSV($$;$)
     $raf->Seek(0,0);
     while ($raf->ReadLine($buff)) {
         my (@vals, $v, $i, %fileInfo);
-        my @toks = split ',', $buff;
+        my @toks = split /\Q$delim/, $buff;
         while (@toks) {
             ($v = shift @toks) =~ s/^ +//;  # remove leading spaces
             if ($v =~ s/^"//) {
                 # quoted value must end in an odd number of quotes
                 while ($v !~ /("+)\s*$/ or not length($1) & 1) {
                     if (@toks) {
-                        $v .= ',' . shift @toks;
+                        $v .= $delim . shift @toks;
                     } else {
                         # read another line from the file
                         $raf->ReadLine($buff) or last;
-                        @toks = split ',', $buff;
+                        @toks = split /\Q$delim/, $buff;
                         last unless @toks;
                         $v .= shift @toks;
                     }
@@ -330,9 +332,10 @@ Read CSV or JSON file into a database hash.
 2) Optional string used to represent an undefined (missing) tag value. 
 (Used for deleting tags.)
 
-3) [ReadJSON only] Optional character set for converting Unicode escape
-sequences in strings.  Defaults to "UTF8".  See the ExifTool Charset option
-for a list of valid settings.
+3) For ReadCSV this gives the delimiter for CSV entries, with a default of
+",".  For ReadJSON this is the character set for converting Unicode escape
+sequences in strings, with a default of "UTF8".  See the ExifTool Charset
+option for a list of valid character sets.
 
 =item Return Value:
 

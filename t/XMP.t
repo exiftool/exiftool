@@ -262,7 +262,7 @@ my $testnum = 1;
         [ 'xmp-xmprights:all' => undef, Replace => 2 ],
     );
     print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum,
-                                   't/images/XMP.jpg', ['XMP:all']);
+                                   't/images/XMP.jpg', ['XMP:all'], undef, 1);
     print "ok $testnum\n";
 }
 
@@ -274,7 +274,7 @@ my $testnum = 1;
         [ 'xmp:all' => undef, Replace => 2 ],
     );
     print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum,
-                                   't/images/XMP.jpg', ['-file:all']);
+                                   't/images/XMP.jpg', ['-file:all'], undef, 1);
     print "ok $testnum\n";
 }
 

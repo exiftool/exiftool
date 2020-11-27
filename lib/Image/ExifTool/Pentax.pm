@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.34';
+$VERSION = '3.35';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -2894,13 +2894,20 @@ my %binaryDataAttrs = (
         Writable => 'string',
         Notes => 'left blank by some cameras',
     },
-    0x022a => { #PH (K-5)
+    0x022a => [{ #PH (RICOH models (GR III))
+        Name => 'FilterInfo',
+        Condition => '$$self{Make} =~ /^RICOH/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Pentax::FilterInfo',
+            ByteOrder => 'LittleEndian',
+        },
+    },{ #PH (K-5)
         Name => 'FilterInfo',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Pentax::FilterInfo',
             ByteOrder => 'BigEndian',
         },
-    },
+    }],
     0x022b => { #PH (K-5)
         Name => 'LevelInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Pentax::LevelInfo' },

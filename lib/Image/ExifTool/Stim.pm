@@ -21,8 +21,8 @@ $VERSION = '1.01';
     NOTES => q{
         These tags are part of the CIPA Stereo Still Image specification, and are
         found in the APP3 "Stim" segment of JPEG images.  See
-        L<http://www.cipa.jp/std/documents/e/DC-006_E.pdf> for the
-        official specification.
+        L<https://web.archive.org/web/20190718152459/http://www.cipa.jp/std/documents/e/DC-006_E.pdf>
+        for the official specification.
     },
     0 => 'StimVersion',
     1 => {

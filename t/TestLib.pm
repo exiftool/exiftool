@@ -24,7 +24,7 @@ require Exporter;
 use Image::ExifTool qw(ImageInfo);
 
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = '1.21';
+$VERSION = '1.22';
 @ISA = qw(Exporter);
 @EXPORT = qw(check writeCheck writeInfo testCompare binaryCompare testVerbose);
 
@@ -354,10 +354,11 @@ sub check($$$;$$$)
 #         1) test name, 2) test number, 3) optional source file name,
 #         4) true to only check tags which were written (or list ref for tags to check)
 #         5) flag set if nothing is expected to change in the output file
+#         6) true to ignore warnings
 # Returns: 1 if check passed
-sub writeCheck($$$;$$$)
+sub writeCheck($$$;$$$$)
 {
-    my ($writeInfo, $testname, $testnum, $srcfile, $onlyWritten, $same) = @_;
+    my ($writeInfo, $testname, $testnum, $srcfile, $onlyWritten, $same, $ignore) = @_;
     $srcfile or $srcfile = "t/images/$testname.jpg";
     my ($ext) = ($srcfile =~ /\.(.+?)$/);
     my $testfile = "t/${testname}_${testnum}_failed.$ext";
@@ -372,7 +373,7 @@ sub writeCheck($$$;$$$)
         push @tags, $$_[0] if $onlyWritten;
     }
     unlink $testfile;
-    my $ok = writeInfo($exifTool, $srcfile, $testfile, $same);
+    my $ok = writeInfo($exifTool, $srcfile, $testfile, $same, $ignore);
     my $info = $exifTool->ImageInfo($testfile,{Duplicates=>1,Unknown=>1},@tags);
     my $rtnVal = check($exifTool, $info, $testname, $testnum);
     return 0 unless $ok and $rtnVal;
@@ -396,7 +397,7 @@ sub writeInfo($$;$$$)
     $err .= "  Error: WriteInfo() returned $result\n" if $result != ($same ? 2 : 1);
     my $info = $exifTool->GetInfo('Warning', 'Error');
     foreach (sort keys %$info) {
-        next if $ignore and $_ eq 'Warning';
+        next if $ignore and $_ =~ /^Warning/;
         my $tag = Image::ExifTool::GetTagName($_);
         $err .= "  $tag: $$info{$_}\n";
     }

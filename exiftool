@@ -10,7 +10,7 @@
 use strict;
 require 5.004;
 
-my $version = '12.10';
+my $version = '12.11';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -136,12 +136,13 @@ my $countSameWr;    # count files written OK but not changed
 my $critical;       # flag for critical operations (disable CTRL-C)
 my $csv;            # flag for CSV option (set to "CSV", or maybe "JSON" when writing)
 my $csvAdd;         # flag to add CSV information to existing lists
+my $csvDelim;       # delimiter for CSV files
 my $csvSaveCount;   # save counter for last CSV file loaded
 my $deleteOrig;     # 0=restore original files, 1=delete originals, 2=delete w/o asking
 my $disableOutput;  # flag to disable normal output
 my $doSetFileName;  # flag set if FileName may be written
 my $doUnzip;        # flag to extract info from .gz and .bz2 files
-my ($end,$endDir);  # flags to end processing
+my ($end,$endDir,%endDir);  # flags to end processing
 my $escapeC;        # C-style escape
 my $escapeHTML;     # flag to escape printed values for html
 my $evalWarning;    # warning from eval
@@ -239,6 +240,7 @@ my %optArgs = (
     '-c' => 1, '-coordformat' => 1,
     '-charset' => 0, # (optional arg; OK because arg cannot begin with "-")
     '-config' => 1,
+    '-csvdelim' => 1,
     '-d' => 1, '-dateformat' => 1,
     '-D' => 0, # necessary to avoid matching lower-case equivalent
     '-echo' => 1, '-echo1' => 1, '-echo2' => 1, '-echo3' => 1, '-echo4' => 1,
@@ -246,11 +248,12 @@ my %optArgs = (
     '-efile!' => 1, '-efile1!' => 1, '-efile2!' => 1, '-efile3!' => 1, '-efile4!' => 1,
     '-ext' => 1, '--ext' => 1, '-ext+' => 1, '--ext+' => 1,
         '-extension' => 1, '--extension' => 1, '-extension+' => 1, '--extension+' => 1,
-    '-fileorder' => 1,
+    '-fileorder' => 1, '-fileorder0' => 1, '-fileorder1' => 1, '-fileorder2' => 1,
+        '-fileorder3' => 1, '-fileorder4' => 1, '-fileorder5' => 1,
     '-geotag' => 1,
     '-globaltimeshift' => 1,
     '-i' => 1, '-ignore' => 1,
-    '-if' => 1, '-if0' => 1, '-if1' => 1, '-if2' => 1, '-if3' => 1, '-if4' => 1,
+    '-if' => 1, '-if0' => 1, '-if1' => 1, '-if2' => 1, '-if3' => 1, '-if4' => 1, '-if5' => 1,
     '-lang' => 0, # (optional arg; cannot begin with "-")
     '-listitem' => 1,
     '-o' => 1, '-out' => 1,
@@ -429,6 +432,7 @@ undef %countLink;
 undef %created;
 undef %csvTags;
 undef %database;
+undef %endDir;
 undef %filterExt;
 undef %ignore;
 undef %printFmt;
@@ -500,6 +504,7 @@ $countGoodCr = 0;
 $countGoodWr = 0;
 $countNewDir = 0;
 $countSameWr = 0;
+$csvDelim = ',';
 $csvSaveCount = 0;
 $fileTrailer = '';
 $filterFlag = 0;
@@ -821,7 +826,7 @@ for (;;) {
         next;
     }
     /^config$/i and Warn("Ignored -config option (not first on command line)\n"), shift, next;
-    if (/^csv(\+?=.*)?/i) {
+    if (/^csv(\+?=.*)?$/i) {
         my $csvFile = $1;
         # must process on 2nd pass so -f and -charset options are available
         unless ($pass) {
@@ -841,7 +846,7 @@ for (;;) {
             if ($mt->Open(\*CSVFILE, $csvFile)) {
                 binmode CSVFILE;
                 require Image::ExifTool::Import;
-                $msg = Image::ExifTool::Import::ReadCSV(\*CSVFILE, \%database, $forcePrint);
+                $msg = Image::ExifTool::Import::ReadCSV(\*CSVFILE, \%database, $forcePrint, $csvDelim);
                 close(CSVFILE);
             } else {
                 $msg = "Error opening CSV file '${csvFile}'";
@@ -850,6 +855,11 @@ for (;;) {
             $isWriting = 1;
         }
         $csv = 'CSV';
+        next;
+    }
+    if (/^csvdelim$/i) {
+        $csvDelim = shift;
+        defined $csvDelim or Error("Expecting argument for -csvDelim option\n"), $badCmd=1;
         next;
     }
     if (/^d$/ or $a eq 'dateformat') {
@@ -1982,6 +1992,7 @@ sub GetImageInfo($$)
                 }
                 last unless $result;
             }
+            undef @foundTags if $fastCondition; # ignore if we didn't get all tags
         }
         unless ($result) {
             $verbose and print $vout "-------- $file (failed condition)$progStr\n";
@@ -2235,7 +2246,9 @@ sub GetImageInfo($$)
         my $noDups = ($json or ($xml and $outFormat > 0));
         my $printConv = $et->Options('PrintConv');
         my $lastGroup = '';
+        my $i = -1;
 TAG:    foreach $tag (@foundTags) {
+            ++$i;   # keep track on index in @foundTags
             my $tagName = GetTagName($tag);
             my ($group, $valList);
             # get the value for this tag
@@ -2353,26 +2366,38 @@ TAG:    foreach $tag (@foundTags) {
             }
             # save information for CSV output
             if ($csv) {
-                my $t = $group ? "$group:$tagName" : $tagName;
-                $t .= '#' if $tag =~ /#/;   # add ValueConv "#" suffix if used
+                my $tn = $tagName;
+                $tn .= '#' if $tag =~ /#/;  # add ValueConv "#" suffix if used
+                my $gt = $group ? "$group:$tn" : $tn;
                 # (tag-name case may be different if some tags don't exist
                 # in a file, so all logic must use lower-case tag names)
-                my $lcTag = lc $t;
+                my $lcTag = lc $gt;
                 # override existing entry only if top priority
                 next if defined $csvInfo{$lcTag} and $tag =~ /\(/;
                 $csvInfo{$lcTag} = $val;
                 if (defined $csvTags{$lcTag}) {
                     # overwrite with actual extracted tag name
                     # (note: can't check "if defined $val" here because -f may be used)
-                    $csvTags{$lcTag} = $t if defined $$info{$tag};
-                } else {
-                    # (don't save unextracted tag name unless -f was used)
-                    $csvTags{$lcTag} = defined($val) ? $t : '';
-                    if (@csvFiles == 1) {
-                        push @csvTags, $lcTag; # save order of tags for first file
-                    } elsif (@csvTags) {
-                        undef @csvTags;
-                    }
+                    $csvTags{$lcTag} = $gt if defined $$info{$tag};
+                    next;
+                }
+                # must check for "Unknown" group (for tags that don't exist)
+                if ($group and defined $csvTags[$i] and $csvTags[$i] =~ /^(.*):$tn$/i) {
+                     next if $group eq 'Unknown';   # nothing more to do if we don't know tag group
+                     if ($1 eq 'unknown') {
+                        # replace unknown entry in CSV tag lookup and list
+                        delete $csvTags{$csvTags[$i]};
+                        $csvTags{$lcTag} = defined($val) ? $gt : '';
+                        $csvTags[$i] = $lcTag;
+                        next;
+                     }
+                }
+                # (don't save unextracted tag name unless -f was used)
+                $csvTags{$lcTag} = defined($val) ? $gt : '';
+                if (@csvFiles == 1) {
+                    push @csvTags, $lcTag; # save order of tags for first file
+                } elsif (@csvTags) {
+                    undef @csvTags;
                 }
                 next;
             }
@@ -3298,7 +3323,7 @@ sub FormatCSV($)
     # the -b option is used to encode as Base64.  It is unclear whether or not this
     # is valid CSV, but some readers may not like it.  (If this becomes a problem,
     # in the future values may need to be truncated at the first NULL character.)
-    $val = qq{"$val"} if $val =~ s/"/""/g or $val =~ /(^\s+|\s+$)/ or $val =~ /[,\n\r]/;
+    $val = qq{"$val"} if $val =~ s/"/""/g or $val =~ /(^\s+|\s+$)/ or $val =~ /[\n\r]|\Q$csvDelim/;
     return $val;
 }
 
@@ -3311,9 +3336,9 @@ sub PrintCSV()
     @csvTags or @csvTags = sort keys %csvTags;
     # make a list of tags actually found
     foreach $lcTag (@csvTags) {
-        push @tags, $csvTags{$lcTag} if $csvTags{$lcTag};
+        push @tags, FormatCSV($csvTags{$lcTag}) if $csvTags{$lcTag};
     }
-    print join(',', 'SourceFile', @tags), "\n";
+    print join($csvDelim, 'SourceFile', @tags), "\n";
     my $empty = defined($forcePrint) ? $forcePrint : '';
     foreach $file (@csvFiles) {
         my @vals = (FormatCSV($file)); # start with full file name
@@ -3324,7 +3349,7 @@ sub PrintCSV()
             defined $val or push(@vals,$empty), next;
             push @vals, FormatCSV($val);
         }
-        print join(',', @vals), "\n";
+        print join($csvDelim, @vals), "\n";
     }
 }
 
@@ -3560,8 +3585,18 @@ sub ProcessFiles($;$)
             if ($list) {
                 push(@$list, $file);
             } else {
+                if (%endDir) {
+                    my ($d, $f) = Image::ExifTool::SplitFileName($file);
+                    next if $endDir{$d};
+                }
                 GetImageInfo($et, $file);
                 $end and Warn("End called - $file\n");
+                if ($endDir) {
+                    Warn("EndDir called - $file\n");
+                    my ($d, $f) = Image::ExifTool::SplitFileName($file);
+                    $endDir{$d} = 1;
+                    undef $endDir;
+                }
             }
         }
         $et->Options(CharsetFileName => $enc) if $utf8FileName{$file};
@@ -3691,8 +3726,9 @@ sub ScanDir($$;$)
             if ($endDir) {
                 $path =~ s(/$)();
                 Warn("EndDir called - $path\n");
-                undef $endDir;
+                $endDir{$path} = 1;
                 $endThisDir = 1;
+                undef $endDir;
             }
         }
     }
@@ -4486,6 +4522,7 @@ L<Input-output text formatting|/Input-output text formatting>
   -c FMT      (-coordFormat)       Set format for GPS coordinates
   -charset [[TYPE=]CHARSET]        Specify encoding for special characters
   -csv[[+]=CSVFILE]                Export/import tags in CSV format
+  -csvDelim STR                    Set delimiter for CSV file
   -d FMT      (-dateFormat)        Set format for date/time values
   -D          (-decimal)           Show tag ID numbers in decimal
   -E,-ex,-ec  (-escape(HTML|XML|C))Escape tag values for HTML, XML or C
@@ -5005,8 +5042,11 @@ tag names (with optional group names) for each column of the file, and
 values must be separated by commas.  A special "SourceFile" column specifies
 the files associated with each row of information (and a SourceFile of "*"
 may be used to define default tags to be imported for all files which are
-combined with any tags specified for the specific SourceFile processed).
-The following examples demonstrate basic use of this option:
+combined with any tags specified for the specific SourceFile processed). The
+B<-csvDelim> option may be used to change the input/output field delimiter
+if something other than a comma is required.
+
+The following examples demonstrate basic use of the B<-csv> option:
 
     # generate CSV file with common tags from all images in a directory
     exiftool -common -csv dir > out.csv
@@ -5052,6 +5092,11 @@ single command.  Also, it makes this option incompatible with the B<-w>
 option.  When processing a large number of files, it is recommended to
 either use the JSON (B<-j>) or XML (B<-X>) output format, or use B<-p> to
 generate a fixed-column CSV file instead of using the B<-csv> option.
+
+=item B<-csvDelim> I<STR>
+
+Set the delimiter for separating CSV entries for the B<-csv> option. 
+Default is ','.
 
 =item B<-d> I<FMT> (B<-dateFormat>)
 
@@ -5304,7 +5349,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 12.10 --
+    -- Generated by ExifTool 12.11 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -5712,7 +5757,8 @@ extracting any EXIF MakerNote information.  B<-fast3> avoids extracting
 metadata from the file, and returns only pseudo System tags, but still reads
 the file header to obtain an educated guess at FileType.  B<-fast4> doesn't
 even read the file header, and returns only System tags and a FileType based
-on the file extension.  Has no effect when writing.
+on the file extension.  B<-fast5> also disables generation of the Composite
+tags (like B<-e>).  Has no effect when writing.
 
 Note that a separate B<-fast> setting may be used for evaluation of a B<-if>
 condition, or when ordering files with the B<-fileOrder> option.  See the
@@ -5780,7 +5826,7 @@ Adding I<NUM> to the B<-if> option causes a separate processing pass to be
 executed for evaluating I<EXPR> at a B<-fast> level given by I<NUM> (see the
 B<-fast> option documentation for details).  Without I<NUM>, only one
 processing pass is done at the level specified by the B<-fast> option.  For
-example, using B<-if4> is possible if I<EXPR> uses only pseudo System tags,
+example, using B<-if5> is possible if I<EXPR> uses only pseudo System tags,
 and may significantly speed processing if enough files fail the condition.
 
 The expression has access to the current ExifTool object through C<$self>,

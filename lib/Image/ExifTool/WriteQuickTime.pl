@@ -159,11 +159,12 @@ sub ConvInvISO6709($)
     my @a = split ' ', $val;
     if (@a == 2 or @a == 3) {
         # latitude must have 2 digits before the decimal, and longitude 3,
-        # and all values must start with a "+" or "-"
-        my @fmt = ('%s%02d','%s%03d','%s%d');
+        # and all values must start with a "+" or "-", and Google Photos
+        # requires at least 3 digits after the decimal point
+        my @fmt = ('%s%02d.%s%s','%s%03d.%s%s','%s%d.%s%s');
         foreach (@a) {
             return undef unless Image::ExifTool::IsFloat($_);
-            $_ =~ s/^([-+]?)(\d+)/sprintf(shift(@fmt), $1 || '+', $2)/e;
+            $_ =~ s/^([-+]?)(\d+)\.?(\d*)/sprintf(shift(@fmt),$1||'+',$2,$3,length($3)<3 ? '0'x(3-length($3)) : '')/e;
         }
         return join '', @a, '/';
     }

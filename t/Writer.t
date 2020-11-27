@@ -544,7 +544,7 @@ my $testOK;
     $exifTool->SetNewValue('IPTC:*', undef, Replace => 2);
     $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
-    writeInfo($exifTool, 't/images/ExifTool.jpg', $testfile);
+    writeInfo($exifTool, 't/images/ExifTool.jpg', $testfile, undef, 1);
     my $info = $exifTool->ImageInfo($testfile);
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;

@@ -15614,6 +15614,7 @@ These tags are used in Pentax/Asahi cameras.
   0x0228   FaceSize                             Pentax FaceSize
   0x0229   SerialNumber                         string
   0x022a   FilterInfo                           Pentax FilterInfo
+                                                Pentax FilterInfo
   0x022b   LevelInfo                            Pentax LevelInfo
   0x022d   WBLevels                             Pentax WBLevels
   0x022e   Artist                               string
@@ -19939,8 +19940,8 @@ found in the APP2 "MPF" segment of JPEG images.  MPImage data referenced
 from this segment is stored as a JPEG trailer.  The MPF tags are not
 writable, however the MPF segment may be deleted as a group (with "MPF:All")
 but then the JPEG trailer should also be deleted (with "Trailer:All").  See
-L<http://www.cipa.jp/std/documents/e/DC-007_E.pdf> for the official
-specification.
+L<https://web.archive.org/web/20190713230858/http://www.cipa.jp/std/documents/e/DC-007_E.pdf>
+for the official specification.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -19985,8 +19986,8 @@ embedded images.
 
 These tags are part of the CIPA Stereo Still Image specification, and are
 found in the APP3 "Stim" segment of JPEG images.  See
-L<http://www.cipa.jp/std/documents/e/DC-006_E.pdf> for the
-official specification.
+L<https://web.archive.org/web/20190718152459/http://www.cipa.jp/std/documents/e/DC-006_E.pdf>
+for the official specification.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------

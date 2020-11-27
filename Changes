@@ -7,6 +7,23 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 27, 2020 - Version 12.11
+
+  - Added -csvDelim option
+  - Added new Canon and Olympus LensType values (thanks LibRaw)
+  - Added a warning if ICC_Profile is deleted from an image (github issue #63)
+  - EndDir() function for -if option now works when -fileOrder is used
+  - Changed FileSize conversion to use binary prefixes since that is how the
+    conversion is currently done (eg. MiB instead of MB)
+  - Patched -csv option so columns aren't resorted when using -G option and one
+    of the tags is missing from a file
+  - Fixed incompatiblity with Google Photos when writing UserData:GPSCoordinates
+    to MP4 videos
+  - Fixed problem where the tags available in a -p format string were limited to
+    the same as the -if[NUM] option when NUM was specified
+  - Fixed incorrect decoding of SourceFileIndex/SourceDirectoryIndex for Ricoh
+    models
+
 Nov. 12, 2020 - Version 12.10
 
   - Added -validate test for proper TIFF magic number in JPEG EXIF header

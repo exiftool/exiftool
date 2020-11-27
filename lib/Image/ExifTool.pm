@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.10';
+$VERSION = '12.11';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2505,6 +2505,7 @@ sub ExtractInfo($;@)
             } else {
                 $self->Error('Unknown file type');
             }
+            $self->BuildCompositeTags() if $fast == 4 and $$options{Composite};
             last;   # don't read the file
         }
         if (@fileTypeList) {
@@ -5732,12 +5733,12 @@ sub ConvertFileSize($)
 {
     my $val = shift;
     $val < 2048 and return "$val bytes";
-    $val < 10240 and return sprintf('%.1f kB', $val / 1024);
-    $val < 2097152 and return sprintf('%.0f kB', $val / 1024);
-    $val < 10485760 and return sprintf('%.1f MB', $val / 1048576);
-    $val < 2147483648 and return sprintf('%.0f MB', $val / 1048576);
-    $val < 10737418240 and return sprintf('%.1f GB', $val / 1073741824);
-    return sprintf('%.0f GB', $val / 1073741824);
+    $val < 10240 and return sprintf('%.1f KiB', $val / 1024);
+    $val < 2097152 and return sprintf('%.0f KiB', $val / 1024);
+    $val < 10485760 and return sprintf('%.1f MiB', $val / 1048576);
+    $val < 2147483648 and return sprintf('%.0f MiB', $val / 1048576);
+    $val < 10737418240 and return sprintf('%.1f GiB', $val / 1073741824);
+    return sprintf('%.0f GiB', $val / 1073741824);
 }
 
 #------------------------------------------------------------------------------

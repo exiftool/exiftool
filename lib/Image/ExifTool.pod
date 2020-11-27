@@ -644,10 +644,11 @@ file types.  With a value of 2, ExifTool will also avoid extracting any EXIF
 MakerNote information, and will stop parsing at the IDAT chunk of PNG
 images.  (By the PNG specification, metadata is allowed after IDAT, but
 ExifTool always writes it before because some utilities will ignore it
-otherwise.)  When set to 3 or 4, only pseudo system tags and FileType are
-generated.  For 3, the file header is read to provide an educated guess at
-FileType.  For 4, the file is not read at all and FileType is determined
-based on the file's extension.  Default is undef.
+otherwise.)  When set to 3 or higher, only pseudo system tags and FileType
+are generated.  For 3, the file header is read to provide an educated guess
+at FileType.  For 4, the file is not read at all and FileType is determined
+based on the file's extension.  For 5, generation of Composite tags is also
+disabled (like setting L</Composite> to 0).  Default is undef.
 
 =item Filter
 

@@ -28,8 +28,8 @@ sub ProcessMPImageList($$$);
         from this segment is stored as a JPEG trailer.  The MPF tags are not
         writable, however the MPF segment may be deleted as a group (with "MPF:All")
         but then the JPEG trailer should also be deleted (with "Trailer:All").  See
-        L<http://www.cipa.jp/std/documents/e/DC-007_E.pdf> for the official
-        specification.
+        L<https://web.archive.org/web/20190713230858/http://www.cipa.jp/std/documents/e/DC-007_E.pdf>
+        for the official specification.
     },
     0xb000 => 'MPFVersion',
     0xb001 => 'NumberOfImages',

@@ -1550,16 +1550,14 @@ file.</blockquote>
 also sets this to the current date/time when the file is edited.  On Windows the
 creation date is readable/writable through the FileCreateDate tag (see the
 <a href="TagNames/Extra.html">Extra Tags documentation</a>), and is preserved
-with the <code>-P</code> option. On Mac the MDItemFSCreationDate tag is used
-(see the <a href="TagNames/MacOS.html#MDItem">MacOS MDItem Tags documentation</a>),
-however this tag is extracted only if specified explicitly or the
-<a href="ExifTool.html#MDItemTags">MDItemTags API option</a> is set.  The
-<code>-P</code> option does not preserve the creation date when editing a file
-on Mac systems, but the <code>-overwrite_original_in_place</code> option may be
-used to preserve all Finder information including the creation date, or the
-MDItemFSCreationDate may be copied back specifically (ie.
-<code>-tagsfromfile @ -MDItemFSCreationDate</code>).  On Linux, the file
-creation date is not stored.</blockquote>
+with the <code>-P</code> option. On MacOS, FileCreateDate is available but
+extracted only if specified explicitly, and is writable only if "setfile" is
+available.  The <code>-P</code> option does not preserve the creation date when
+editing a file on Mac systems, but the <code>-overwrite_original_in_place</code>
+option may be used to preserve all Finder information including the creation
+date, or the FileCreateDate may be copied back specifically (ie.
+<code>-tagsfromfile @ -FileCreateDate</code>).  On Linux, the file creation date
+is not stored.</blockquote>
 
 <blockquote>For example, commands like this act on common metadata tags, setting
 the filesystem modification date/time to the current date/time:
@@ -1721,7 +1719,7 @@ but in an ARGFILE, this should be
 %Y:%m:%d %H:%M:%S</pre></blockquote>
 
 <hr>
-<i>Last revised Aug 25, 2020</i>
+<i>Last revised Nov 30, 2020</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

@@ -17,6 +17,19 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.12'><b>Dec. 4, 2020 - Version 12.12</b></a>
+<ul>
+<li>Added ability to geotag from DJI CSV log files
+<li>Added a new CanonModelID
+<li>Added a couple of new Sony LensType values (thanks LibRaw)
+<li>Enhanced -csvDelim option to allow "\t", "\n", "\r" and "\\"
+<li>Unescape "\b" and "\f" in imported JSON values
+<li>Fixed bug introduced in 12.10 which generated a "Not an integer" warning
+    when attempting to shift some QuickTime date/time tags
+<li>Fixed shared-write permission problem with -@ argfile when using -stay_open
+    and a filename containing special characters on Windows
+</ul>
+
 <a name='v12.11'><b>Nov. 27, 2020 - Version 12.11</b></a>
 <ul>
 <li>Added -csvDelim option

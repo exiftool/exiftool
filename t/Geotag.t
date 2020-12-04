@@ -4,7 +4,7 @@
 my $numTests;
 
 BEGIN {
-    $numTests = 11;
+    $numTests = 12;
     $| = 1; print "1..$numTests\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
     # must create user-defined tags before loading ExifTool (used in test 8)
@@ -191,6 +191,25 @@ unless (eval { require Time::Local }) {
     $exifTool->SetNewValue(Geotime => '2010:01:01 01:00:00Z');
     $exifTool->WriteInfo('t/images/Writer.jpg', $testfile);
     my $info = $exifTool->ImageInfo($testfile, @testTags);
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
+    print "ok $testnum\n";
+}
+
+# test 12: Geotag from DJI CSV log file
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    my $testfile = "t/${testname}_${testnum}_failed.jpg";
+    unlink $testfile;
+    $exifTool->SetNewValue(Geotag => 't/images/Geotag_DJI_2020-12-02_[07-50-31].csv');
+    $exifTool->SetNewValue(Geotime => '2020:12:02 07:50:35.3');
+    $exifTool->WriteInfo('t/images/Writer.jpg', $testfile);
+    # (ignore GPSTimeStamp because it will depend on the system time zone)
+    my $info = $exifTool->ImageInfo($testfile, 'gps:all', '-gpstimestamp');
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {

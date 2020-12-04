@@ -7,6 +7,18 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Dec. 4, 2020 - Version 12.12
+
+  - Added ability to geotag from DJI CSV log files
+  - Added a new CanonModelID
+  - Added a couple of new Sony LensType values (thanks LibRaw)
+  - Enhanced -csvDelim option to allow "\t", "\n", "\r" and "\\"
+  - Unescape "\b" and "\f" in imported JSON values
+  - Fixed bug introduced in 12.10 which generated a "Not an integer" warning
+    when attempting to shift some QuickTime date/time tags
+  - Fixed shared-write permission problem with -@ argfile when using -stay_open
+    and a filename containing special characters on Windows
+
 Nov. 27, 2020 - Version 12.11
 
   - Added -csvDelim option

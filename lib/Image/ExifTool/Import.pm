@@ -12,13 +12,13 @@ require Exporter;
 
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(ReadCSV ReadJSON);
 
 sub ReadJSONObject($;$);
 
-my %unescapeJSON = ( 't'=>"\t", 'n'=>"\n", 'r'=>"\r" );
+my %unescapeJSON = ( 't'=>"\t", 'n'=>"\n", 'r'=>"\r", 'b' => "\b", 'f' => "\f" );
 my $charset;
 
 #------------------------------------------------------------------------------

@@ -138,6 +138,7 @@ my %olympusLensTypes = (
     '1 15 00' => 'Sigma 10-20mm F4.0-5.6 EX DC HSM', #11
     '1 16 00' => 'Sigma APO 70-200mm F2.8 II EX DG Macro HSM', #11
     '1 17 00' => 'Sigma 50mm F1.4 EX DG HSM', #11
+    '1 18 60' => 'Test',
     # Panasonic/Leica lenses
     '2 01 00' => 'Leica D Vario Elmarit 14-50mm F2.8-3.5 Asph.', #11
     '2 01 10' => 'Lumix G Vario 14-45mm F3.5-5.6 Asph. Mega OIS', #16

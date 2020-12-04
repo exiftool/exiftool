@@ -1401,6 +1401,7 @@ my %binaryDataAttrs = (
              16 => 'Electronic',
            # 33 => ? seen for 1J2
              48 => 'Electronic Front Curtain',
+           # 80 => ? seen for the Z6II
            # 81 => ? seen for Z50
         },
     },

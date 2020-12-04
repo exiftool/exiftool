@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.32';
+$VERSION = '3.33';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -217,6 +217,8 @@ sub PrintInvLensSpec($;$$);
     50518 => 'Sigma 100-400mm F5-6.3 DG DN OS | C', #JR (020)
     50521 => 'Sigma 85mm F1.4 DG DN | A', #JR (020)
     50522 => 'Sigma 105mm F2.8 DG DN MACRO | A', #JR (020)
+    50523 => 'Sigma 65mm F2 DG DN | C', #IB (020)
+    50524 => 'Sigma 35mm F2 DG DN | C', #IB (020)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB

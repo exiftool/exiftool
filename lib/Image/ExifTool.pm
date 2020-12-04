@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.11';
+$VERSION = '12.12';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -4002,7 +4002,9 @@ sub Open($*$;$)
             }
             my $share = 0;
             eval {
-                $share = Win32API::File::FILE_SHARE_READ() unless $access & Win32API::File::GENERIC_WRITE();
+                unless ($access & Win32API::File::GENERIC_WRITE()) {
+                    $share = Win32API::File::FILE_SHARE_READ() | Win32API::File::FILE_SHARE_WRITE();
+                }
             };
             my $wh = eval { Win32API::File::CreateFileW($file, $access, $share, [], $create, 0, []) };
             return undef unless $wh;

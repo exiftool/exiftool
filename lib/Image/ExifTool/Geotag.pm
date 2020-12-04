@@ -13,6 +13,7 @@
 #               2016/07/13 - PH Added ability to geotag date/time only
 #               2019/07/02 - PH Added ability to read IMU CSV files
 #               2019/11/10 - PH Also write pitch to CameraElevationAngle
+#               2020/12/01 - PH Added ability to read DJI CSV log files
 #
 # References:   1) http://www.topografix.com/GPX/1/1/
 #               2) http://www.gpsinformation.org/dale/nmea.htm#GSA
@@ -27,7 +28,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.63';
+$VERSION = '1.64';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -133,7 +134,7 @@ sub LoadTrackLog($$;$)
     my ($et, $val) = @_;
     my ($raf, $from, $time, $isDate, $noDate, $noDateChanged, $lastDate, $dateFlarm);
     my ($nmeaStart, $fixSecs, @fixTimes, $lastFix, %nmea, @csvHeadings);
-    my ($canCut, $cutPDOP, $cutHDOP, $cutSats, $e0, $e1, @tmp);
+    my ($canCut, $cutPDOP, $cutHDOP, $cutSats, $e0, $e1, @tmp, $trackFile, $trackTime);
 
     unless (eval { require Time::Local }) {
         return 'Geotag feature requires Time::Local installed';
@@ -159,6 +160,7 @@ sub LoadTrackLog($$;$)
     } else {
         # $val is track file name
         if ($et->Open(\*EXIFTOOL_TRKFILE, $val)) {
+            $trackFile = $val;
             $raf = new File::RandomAccess(\*EXIFTOOL_TRKFILE);
             unless ($raf->Read($_, 256)) {
                 close EXIFTOOL_TRKFILE;
@@ -201,6 +203,8 @@ sub LoadTrackLog($$;$)
     my $skipped = 0;
     my $lastSecs = 0;
     my $fix = { };
+    my $csvDelim = $et->Options('CSVDelim');
+    $csvDelim = ',' unless defined $csvDelim;
     my (@saveFix, $timeSpan);
     for (;;) {
         $raf->ReadLine($_) or last;
@@ -230,19 +234,31 @@ sub LoadTrackLog($$;$)
                 $format = 'Winplus';
             } elsif (/^\s*\d+\s+.*\sypr\s*$/ and (@tmp=split) == 12) {
                 $format = 'Bramor';
-            } elsif (/\b(GPS)?Date/i and /\b(GPS)?(Date)?Time/i and /,/) {
+            } elsif (((/\b(GPS)?Date/i and /\b(GPS)?(Date)?Time/i) or /\bTime\(seconds\)/i) and /\Q$csvDelim/) {
                 chomp;
-                @csvHeadings = split ',';
+                @csvHeadings = split /\Q$csvDelim/;
                 $format = 'CSV';
                 # convert recognized headings to our parameter names
                 foreach (@csvHeadings) {
                     my $param;
                     s/^GPS ?//; # remove leading "GPS" to simplify regex patterns
-                    if (/^Date ?Time/i) { # ExifTool addition
+                    if (/^Time ?\(seconds\)$/i) { # DJI
+                        # DJI CSV log files have a column "Time(seconds)" which is seconds since
+                        # the start of the flight.  The date/time is obtained from the file name.
+                        $param = 'runtime';
+                        if ($trackFile and $trackFile =~ /(\d{4})-(\d{2})-(\d{2})[^\/]+(\d{2})-(\d{2})-(\d{2})[^\/]*$/) {
+                            $trackTime = Image::ExifTool::TimeLocal($6,$5,$4,$3,$2-1,$1);
+                            my $utc = PrintFixTime($trackTime);
+                            my $tzs = Image::ExifTool::TimeZoneString([$6,$5,$4,$3,$2-1,$1-1900],$trackTime);
+                            $et->VPrint(2, "  DJI start time:  $utc (local timezone is $tzs)\n");
+                        } else {
+                            return 'Error getting start time from file name for DJI CSV track file';
+                        }
+                    } elsif (/^Date ?Time/i) {  # ExifTool addition
                         $param = 'datetime';
                     } elsif (/^Date/i) {
                         $param = 'date';
-                    } elsif (/^Time/i) {
+                    } elsif (/^Time(?! ?\(text\))/i) { # (ignore DJI "Time(text)" column)
                         $param = 'time';
                     } elsif (/^(Pos)?Lat/i) {
                         $param = 'lat';
@@ -423,7 +439,7 @@ DoneFix:    $isDate = 1;
             goto DoneFix;   # save this fix
         } elsif ($format eq 'CSV') {
             chomp;
-            my @vals = split ',';
+            my @vals = split /\Q$csvDelim/;
 #
 # CSV format output of GPS/IMU POS system
 #   Date*           - date in DD/MM/YYYY format
@@ -435,7 +451,7 @@ DoneFix:    $isDate = 1;
 #   [Angle]Pitch*   - pitch angle in degrees
 #   [Angle]Roll*    - roll angle in degrees
 # (ExifTool enhancements allow for standard tag names or descriptions as the column headings,
-#  add support for time zones and flexible coordinates, and allow a new DateTime column)
+#  add support for time zones and flexible coordinates, and allow new DateTime and Shift columns)
 #
             my ($param, $date, $secs);
             foreach $param (@csvHeadings) {
@@ -463,6 +479,9 @@ DoneFix:    $isDate = 1;
                     }
                 } elsif ($param eq 'lat' or $param eq 'lon') {
                     $$fix{$param} = Image::ExifTool::GPS::ToDegrees($val, 1);
+                } elsif ($param eq 'runtime') {
+                    $date = $trackTime;
+                    $secs = $val;
                 } else {
                     $$fix{$param} = $val;
                 }
@@ -1378,8 +1397,8 @@ This module is used by Image::ExifTool
 This module loads GPS track logs, interpolates to determine position based
 on time, and sets new GPS values for geotagging images.  Currently supported
 formats are GPX, NMEA RMC/GGA/GLL, KML, IGC, Garmin XML and TCX, Magellan
-PMGNTRK, Honeywell PTNTHPR, Winplus Beacon text, IMU CSV, and Bramor gEO log
-files.
+PMGNTRK, Honeywell PTNTHPR, Winplus Beacon text, IMU CSV, DJI CSV, and
+Bramor gEO log files.
 
 Methods in this module should not be called directly.  Instead, the Geotag
 feature is accessed by writing the values of the ExifTool Geotag, Geosync

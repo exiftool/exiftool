@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.39';
+$VERSION = '3.40';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -456,6 +456,11 @@ this reason, by default ExifTool does not assume a time zone for these
 values.  However, if the L<QuickTimeUTC|../ExifTool.html#QuickTimeUTC> API option is set, then ExifTool will
 assume these values are properly stored as UTC, and will convert them to
 local time when extracting.
+
+When writing string-based date/time tags, the system time zone is added if
+the PrintConv option is enabled and no time zone is specified.  This is
+because Apple software may display a crazy values if the time zone is
+missing for some tags.
 
 See
 L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/>

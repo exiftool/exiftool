@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.89';
+$VERSION = '3.90';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1401,8 +1401,9 @@ my %binaryDataAttrs = (
              16 => 'Electronic',
            # 33 => ? seen for 1J2
              48 => 'Electronic Front Curtain',
-           # 80 => ? seen for the Z6II
-           # 81 => ? seen for Z50
+             64 => 'Electronic (Movie)', #JanSkoda (Z6II)
+             80 => 'Auto (Mechanical)', #JanSkoda (Z6II)
+             81 => 'Auto (Electronic Front Curtain)', #JanSkoda (Z6II)
         },
     },
     0x0035 => { #32

@@ -1902,7 +1902,9 @@ file or creating the link.
 
 =item Notes:
 
-Will not overwrite existing files. New directories are created as necessary.
+Will not overwrite existing files. New directories are created as necessary. 
+If the file is successfully renamed, the new file name may be accessed via
+C<$$exifTool{NewName}>.
 
 =back
 

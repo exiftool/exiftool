@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.33';
+$VERSION = '3.34';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -6064,6 +6064,7 @@ my %pictureProfile2010 = (
         29 => 'Gamma ITU709 (800%)',
         31 => 'Gamma S-Log3 (PP8 or PP9)', #14
         33 => 'Gamma HLG2 (PP10)', #14
+        34 => 'Gamma HLG3', #IB
     },
 );
 my %isoSetting2010 = (
@@ -9507,6 +9508,7 @@ my %isoSetting2010 = (
         Name => 'DistortionCorrParams',
         Format => 'int16s[16]',
     },
+    0x0070 => { %pictureProfile2010 }, #IB
     0x0071 => {
         Name => 'FocalLength',
         Format => 'int16u',

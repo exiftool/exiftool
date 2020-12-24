@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.55';
+$VERSION = '2.56';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -214,7 +214,7 @@ my %ftypLookup = (
     'crx ' => 'Canon Raw (.CRX)', #PH (CR3 or CRM; use Canon CompressorVersion to decide)
 );
 
-# information for time/date-based tags (time zero is Jan 1, 1904)
+# information for int32u date/time tags (time zero is Jan 1, 1904)
 my %timeInfo = (
     Notes => 'converted from UTC to local time if the QuickTimeUTC option is set',
     Shift => 'Time',
@@ -682,7 +682,7 @@ my %eeBox = (
         ValueConv => '$val=~tr/-/:/; $val',
         ValueConvInv => '$val=~s/(\d+):(\d+):/$1-$2-/; $val',
         PrintConv => '$self->ConvertDateTime($val)',
-        PrintConvInv => '$self->InverseDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
     },
     gps0 => { #PH (DuDuBell M1, VSYS M6L)
         Name => 'GPSTrack',
@@ -1415,7 +1415,7 @@ my %eeBox = (
             return $val;
         },
         PrintConv => '$self->ConvertDateTime($val)',
-        PrintConvInv => '$self->InverseDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
     },
     "\xa9ART" => 'Artist', #PH (iTunes 8.0.2)
     "\xa9alb" => 'Album', #PH (iTunes 8.0.2)
@@ -1689,7 +1689,7 @@ my %eeBox = (
             return $val;
         },
         PrintConv => '$self->ConvertDateTime($val)',
-        PrintConvInv => '$self->InverseDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
     },
     manu => { # (SX280)
         Name => 'Make',
@@ -2124,7 +2124,7 @@ my %eeBox = (
             return $val;
         },
         PrintConv => '$self->ConvertDateTime($val)',
-        PrintConvInv => '$self->InverseDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
     },
     '@xyz' => { #PH (iPhone 3GS)
         Name => 'GPSCoordinates',
@@ -3022,7 +3022,7 @@ my %eeBox = (
             return $val;
         },
         PrintConv => '$self->ConvertDateTime($val)',
-        PrintConvInv => '$self->InverseDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
     },
     "\xa9des" => 'Description', #4
     "\xa9enc" => 'EncodedBy', #10
@@ -6200,7 +6200,7 @@ my %eeBox = (
             return $val;
         },
         PrintConv => '$self->ConvertDateTime($val)',
-        PrintConvInv => '$self->InverseDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
     },
     description => { },
     director    => { },
@@ -6260,7 +6260,7 @@ my %eeBox = (
             return $val;
         },
         PrintConv => '$self->ConvertDateTime($val)',
-        PrintConvInv => '$self->InverseDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
     },
     'direction.facing' => { Name => 'CameraDirection', Groups => { 2 => 'Location' } },
     'direction.motion' => { Name => 'CameraMotion',    Groups => { 2 => 'Location' } },

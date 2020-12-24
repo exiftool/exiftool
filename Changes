@@ -5,7 +5,20 @@ ExifTool Version History
 RSS feed: https://exiftool.org/rss.xml
 
 Note: The most recent production release is Version 12.00. (Other versions are
-considered development releases, and are not uploaded to CPAN.)
+considered development releases, and are not uploaded to MetaCPAN.)
+
+Dec. 24, 2020 - Version 12.13
+
+  - Add time zone automatically to most string-based QuickTime date/time tags
+    when writing unless the PrintConv option is disabled
+  - Added -i HIDDEN option to ignore files with names that start with "."
+  - Added a few new Nikon ShutterMode values (thanks Jan Skoda)
+  - Added ability to write Google GCamera MicroVideo XMP tags
+  - Decode a new Sony tag (thanks LibRaw)
+  - Changed behaviour when writing only pseudo tags to return an error and avoid
+    writing any other tags if writing FileName fails
+  - Print "X image files read" message even if only 1 file is read when at least
+    one other file has failed the -if condition
 
 Dec. 4, 2020 - Version 12.12
 

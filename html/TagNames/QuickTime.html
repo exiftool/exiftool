@@ -52,6 +52,11 @@ values.  However, if the <a href="../ExifTool.html#QuickTimeUTC">QuickTimeUTC</a
 assume these values are properly stored as UTC, and will convert them to
 local time when extracting.</p>
 
+<p>When writing string-based date/time tags, the system time zone is added if
+the PrintConv option is enabled and no time zone is specified.  This is
+because Apple software may display a crazy values if the time zone is
+missing for some tags.</p>
+
 <p>See
 <a href="https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/">https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/</a>
 for the official specification.
@@ -8687,7 +8692,7 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 29, 2020</i>
+<br><i>Last revised Dec 24, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23716 tags, with 15419 unique tag names.
+They contain a total of 23721 tags, with 15423 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -3129,6 +3129,10 @@ These tags belong to the ExifTool XMP-GCamera family 1 group.
   BurstPrimary                                  string
   DisableAutoCreation                           string+
   HDRPMakerNote                                 string
+  MicroVideo                                    integer
+  MicroVideoOffset                              integer
+  MicroVideoPresentationTimestampUs             integer
+  MicroVideoVersion                             integer
   PortraitNote                                  string
   PortraitRequest                               string
   PortraitVersion                               string
@@ -18642,6 +18646,7 @@ Valid for the ILCE-7SM3.
      75    LensType2                            no
      77    LensType                             no
      79    DistortionCorrParams                 no
+    112    PictureProfile                       no
     113    FocalLength                          no
     115    MinFocalLength                       no
     117    MaxFocalLength                       no
@@ -25339,6 +25344,11 @@ this reason, by default ExifTool does not assume a time zone for these
 values.  However, if the QuickTimeUTC API option is set, then ExifTool will
 assume these values are properly stored as UTC, and will convert them to
 local time when extracting.
+
+When writing string-based date/time tags, the system time zone is added if
+the PrintConv option is enabled and no time zone is specified.  This is
+because Apple software may display a crazy values if the time zone is
+missing for some tags.
 
 See
 L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/>

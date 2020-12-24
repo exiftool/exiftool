@@ -1839,6 +1839,10 @@ my %sSubVersion = (
         ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
         ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
     },
+    MicroVideo          => { Writable => 'integer' },
+    MicroVideoVersion   => { Writable => 'integer' },
+    MicroVideoOffset    => { Writable => 'integer' },
+    MicroVideoPresentationTimestampUs => { Writable => 'integer' },
 );
 
 # Google creations namespace (ref PH)

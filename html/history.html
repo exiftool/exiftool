@@ -12,10 +12,24 @@
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
 <p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.00.tar.gz">Version 12.00</a>. (Other versions are
-considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">CPAN</a>.)</p>
+considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">MetaCPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v12.13'><b>Dec. 24, 2020 - Version 12.13</b></a>
+<ul>
+<li>Add time zone automatically to most string-based QuickTime date/time tags
+    when writing unless the PrintConv option is disabled
+<li>Added -i HIDDEN option to ignore files with names that start with "."
+<li>Added a few new Nikon ShutterMode values (thanks Jan &Scaron;koda)
+<li>Added ability to write Google GCamera MicroVideo XMP tags
+<li>Decode a new Sony tag (thanks LibRaw)
+<li>Changed behaviour when writing only pseudo tags to return an error and avoid
+    writing any other tags if writing FileName fails
+<li>Print "X image files read" message even if only 1 file is read when at least
+    one other file has failed the -if condition
+</ul>
 
 <a name='v12.12'><b>Dec. 4, 2020 - Version 12.12</b></a>
 <ul>

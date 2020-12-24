@@ -1752,7 +1752,8 @@ my $result = $exifTool-&gt;<b>SetFileName</b>($file, $newName);
 </pre></td></tr></table></blockquote>
 <p><b>Notes:</b></p>
 <p>Will not overwrite existing files. New directories are created as
-necessary.</p>
+necessary. If the file is successfully renamed, the new file name may be
+accessed via <code>$$exifTool{NewName}</code>.</p>
 
 <hr><h2><a name="SetNewGroups">SetNewGroups</a></h2>
 <p>Set the order of the preferred groups when adding new information.  In

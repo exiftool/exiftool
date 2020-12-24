@@ -251,9 +251,14 @@ causes the other information to be re-encrypted with the new key)</span></span><
 <td title='0x0034 = 52'>0x0034</td>
 <td>ShutterMode</td>
 <td class=c>int16u</td>
-<td><span class=s>0 = Mechanical
+<td><table class=cols><tr>
+  <td>0 = Mechanical
   <br>16 = Electronic
-  <br>48 = Electronic Front Curtain</span></td></tr>
+  <br>48 = Electronic Front Curtain
+  <br>64 = Electronic (Movie)
+  <br>80 = Auto (Mechanical)
+  <br>81 = Auto (Electronic Front Curtain)</td></tr></table>
+</td></tr>
 <tr>
 <td title='0x0035 = 53'>0x0035</td>
 <td>HDRInfo</td>
@@ -7297,7 +7302,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 29, 2020</i>
+<br><i>Last revised Dec 24, 2020</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

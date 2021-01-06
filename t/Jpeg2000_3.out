@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.11
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.14
 [File, System, Other] FileName - File Name: Jpeg2000_3_failed.jp2
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 3.6 KiB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:11:26 10:02:32-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:11:26 10:02:32-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:11:26 10:02:32-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2021:01:05 15:35:26-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2021:01:05 15:35:26-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:01:05 15:35:26-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: JP2
 [File, File, Other] FileTypeExtension - File Type Extension: jp2
@@ -45,10 +45,10 @@
 [GeoTiff, GeoTiff, Location] 1026 - GT Citation: NAD83 / UTM zone 18N
 [GeoTiff, GeoTiff, Location] 3072 - Projected CS Type: NAD83 UTM zone 18N
 [GeoTiff, GeoTiff, Location] 3076 - Proj Linear Units: Linear Meter
-[XMP, XMP, Unknown] :test - Test: Yippee
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.11
-[XMP, XMP-photoshop, Location] City - City: a city
+[XML, XML, Unknown] test - Test: Yippee
 [IPTC, IPTC, Other] 25 - Keywords: test keyword
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.14
+[XMP, XMP-photoshop, Location] City - City: a city
 [Composite, Composite, Image] Exif-ImageSize - Image Size: 16x16
 [Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000256

@@ -1,9 +1,9 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.14
 [File, System, Other] FileName - File Name: Jpeg2000.jp2
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 2028 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2016:10:10 15:46:32-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:09-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2021:01:05 15:35:26-05:00
 [File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Other] FilePermissions - File Permissions: rw-r--r--
 [File, File, Other] FileType - File Type: JP2
@@ -44,28 +44,28 @@
 [GeoTiff, GeoTiff, Location] 1026 - GT Citation: NAD83 / UTM zone 18N
 [GeoTiff, GeoTiff, Location] 3072 - Projected CS Type: NAD83 UTM zone 18N
 [GeoTiff, GeoTiff, Location] 3076 - Proj Linear Units: Linear Meter
-[XMP, XMP, Unknown] :imageCreationXmlns - Image Creation Xmlns: http://www.jpeg.org/jpx/1.0/xml
-[XMP, XMP-xsi, Unknown] xsi:imageCreationSchemaLocation - Image Creation Schema Location: http://www.jpeg.org/jpx/1.0/xml;http://www.jpeg.org/metadata/15444-2.xsd
-[XMP, XMP, Unknown] :imageCreationGeneralCreationInfoCreationTime - Image Creation General Creation Info Creation Time: 2001:08:01 15:40:00.000-06:00
-[XMP, XMP, Unknown] :contentDescriptionXmlns - Content Description Xmlns: http://www.jpeg.org/jpx/1.0/xml
-[XMP, XMP-xsi, Unknown] xsi:contentDescriptionSchemaLocation - Content Description Schema Location: http://www.jpeg.org/jpx/1.0/xml;http://www.jpeg.org/metadata/15444-2.xsd
-[XMP, XMP, Unknown] :contentDescriptionCaption - Content Description Caption: Wide Dynamic Range Scene
-[XMP, XMP, Unknown] :contentDescriptionLocationAddressType - Content Description Location Address Type: Test Scene Location
-[XMP, XMP, Unknown] :contentDescriptionLocationAddressAddrCompType - Content Description Location Address Addr Comp Type: Street
-[XMP, XMP, Unknown] :contentDescriptionLocationAddressAddrComp - Content Description Location Address Addr Comp: 70 Lighthouse St 
-[XMP, XMP, Unknown] :contentDescriptionLocationAddressAddrCompType - Content Description Location Address Addr Comp Type: City
-[XMP, XMP, Unknown] :contentDescriptionLocationAddressAddrComp - Content Description Location Address Addr Comp: Charlotte
-[XMP, XMP, Unknown] :contentDescriptionLocationAddressAddrCompType - Content Description Location Address Addr Comp Type: State
-[XMP, XMP, Unknown] :contentDescriptionLocationAddressAddrComp - Content Description Location Address Addr Comp: New York
-[XMP, XMP, Unknown] :contentDescriptionLocationAddressZipcode - Content Description Location Address Zipcode: 14612
-[XMP, XMP, Unknown] :contentDescriptionLocationAddressCountry - Content Description Location Address Country: US
-[XMP, XMP, Unknown] :contentDescriptionThingId - Content Description Thing Id: 5431
-[XMP, XMP, Unknown] :contentDescriptionThingName - Content Description Thing Name: Macbeth chart
-[XMP, XMP, Unknown] :contentDescriptionThingPositionRectX - Content Description Thing Position Rect X: 562
-[XMP, XMP, Unknown] :contentDescriptionThingPositionRectY - Content Description Thing Position Rect Y: 286
-[XMP, XMP, Unknown] :contentDescriptionThingPositionRectWidth - Content Description Thing Position Rect Width: 59
-[XMP, XMP, Unknown] :contentDescriptionThingPositionRectHeight - Content Description Thing Position Rect Height: 39
-[XMP, XMP, Unknown] :contentDescriptionEventEventType - Content Description Event Event Type: Capture Device Test 1234
-[XMP, XMP, Unknown] :contentDescriptionEventDescription - Content Description Event Description: Project Prototype
+[XML, XML, Unknown] imageCreationXmlns - Image Creation Xmlns: http://www.jpeg.org/jpx/1.0/xml
+[XML, XML-xsi, Unknown] xsi:imageCreationSchemaLocation - Image Creation Schema Location: http://www.jpeg.org/jpx/1.0/xml;http://www.jpeg.org/metadata/15444-2.xsd
+[XML, XML, Unknown] imageCreationGeneralCreationInfoCreationTime - Image Creation General Creation Info Creation Time: 2001:08:01 15:40:00.000-06:00
+[XML, XML, Unknown] contentDescriptionXmlns - Content Description Xmlns: http://www.jpeg.org/jpx/1.0/xml
+[XML, XML-xsi, Unknown] xsi:contentDescriptionSchemaLocation - Content Description Schema Location: http://www.jpeg.org/jpx/1.0/xml;http://www.jpeg.org/metadata/15444-2.xsd
+[XML, XML, Unknown] contentDescriptionCaption - Content Description Caption: Wide Dynamic Range Scene
+[XML, XML, Unknown] contentDescriptionLocationAddressType - Content Description Location Address Type: Test Scene Location
+[XML, XML, Unknown] contentDescriptionLocationAddressAddrCompType - Content Description Location Address Addr Comp Type: Street
+[XML, XML, Unknown] contentDescriptionLocationAddressAddrComp - Content Description Location Address Addr Comp: 70 Lighthouse St 
+[XML, XML, Unknown] contentDescriptionLocationAddressAddrCompType - Content Description Location Address Addr Comp Type: City
+[XML, XML, Unknown] contentDescriptionLocationAddressAddrComp - Content Description Location Address Addr Comp: Charlotte
+[XML, XML, Unknown] contentDescriptionLocationAddressAddrCompType - Content Description Location Address Addr Comp Type: State
+[XML, XML, Unknown] contentDescriptionLocationAddressAddrComp - Content Description Location Address Addr Comp: New York
+[XML, XML, Unknown] contentDescriptionLocationAddressZipcode - Content Description Location Address Zipcode: 14612
+[XML, XML, Unknown] contentDescriptionLocationAddressCountry - Content Description Location Address Country: US
+[XML, XML, Unknown] contentDescriptionThingId - Content Description Thing Id: 5431
+[XML, XML, Unknown] contentDescriptionThingName - Content Description Thing Name: Macbeth chart
+[XML, XML, Unknown] contentDescriptionThingPositionRectX - Content Description Thing Position Rect X: 562
+[XML, XML, Unknown] contentDescriptionThingPositionRectY - Content Description Thing Position Rect Y: 286
+[XML, XML, Unknown] contentDescriptionThingPositionRectWidth - Content Description Thing Position Rect Width: 59
+[XML, XML, Unknown] contentDescriptionThingPositionRectHeight - Content Description Thing Position Rect Height: 39
+[XML, XML, Unknown] contentDescriptionEventEventType - Content Description Event Event Type: Capture Device Test 1234
+[XML, XML, Unknown] contentDescriptionEventDescription - Content Description Event Description: Project Prototype
 [Composite, Composite, Image] Exif-ImageSize - Image Size: 16x16
 [Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000256

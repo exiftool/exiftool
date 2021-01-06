@@ -225,6 +225,16 @@ sub-documents, but the Duration is calculated for the full video.</p>
 <td>Olym</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Olympus.html#WAV'>Olympus WAV Tags</a></td></tr>
+<tr class=b>
+<td>'tx_USER'</td>
+<td>UserText</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#UserText'>RIFF UserText Tags</a></td></tr>
+<tr>
+<td>'tx_Unknown'</td>
+<td>Text</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(streamed text, extracted when the ExtractEmbedded option is used)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ALPH'>RIFF ALPH Tags</a></h2>
@@ -1477,9 +1487,49 @@ container specification.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='UserText'>RIFF UserText Tags</a></h2>
+<p>Tags decoded from the USER-format txts stream written by an unknown dashcam.
+Extracted only if the ExtractEmbedded option is used.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='28 = 0x1c'>28</td>
+<td>GPSAltitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='40 = 0x28'>40</td>
+<td>Accelerometer</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='56 = 0x38'>56</td>
+<td>GPSSpeed</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='60 = 0x3c'>60</td>
+<td>GPSLatitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='64 = 0x40'>64</td>
+<td>GPSLongitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='68 = 0x44'>68</td>
+<td>GPSDateTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 1, 2020</i>
+<br><i>Last revised Jan 6, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

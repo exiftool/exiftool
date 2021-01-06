@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.36';
+$VERSION = '3.37';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3105,10 +3105,15 @@ sub FoundXMP($$$$;$)
         }
     }
 
-    if (not $ns and $$tagTablePtr{GROUPS}{0} ne 'XMP') {
-        # this is a simple XML table (no namespaces)
+    my $xmlGroups;
+    my $grp0 = $$tagTablePtr{GROUPS}{0};
+    if (not $ns and $grp0 ne 'XMP') {
         $tagID = $tag;
+    } elsif ($grp0 eq 'XML' and not $table) {
+        # this is an XML table (no namespace lookup)
+        $tagID = "$ns:$tag";
     } else {
+        $xmlGroups = 1 if $grp0 eq 'XML';
         # look up this tag in the appropriate table
         $table or $table = 'Image::ExifTool::XMP::other';
         $tagTablePtr = GetTagTable($table);
@@ -3335,7 +3340,10 @@ NoLoop:
         $$et{TAG_EXTRA}{$key}{Struct} = \@structProps;
         $$et{IsStruct} = 1;
     }
-    if ($ns and not $$tagInfo{StaticGroup1}) {
+    if ($xmlGroups) {
+        $et->SetGroup($key, 'XML', 0);
+        $et->SetGroup($key, "XML-$ns", 1);
+    } elsif ($ns and not $$tagInfo{StaticGroup1}) {
         # set group1 dynamically according to the namespace
         $et->SetGroup($key, "$$tagTablePtr{GROUPS}{0}-$ns");
     }
@@ -4027,11 +4035,12 @@ sub ProcessXMP($$;$)
         $dirLen = $dataLen = length $$dataPt;
     }
 
-    # extract XMP as a block if specified
+    # extract XMP/XML as a block if specified
     my $blockName = $$dirInfo{BlockInfo} ? $$dirInfo{BlockInfo}{Name} : 'XMP';
     if (($$et{REQ_TAG_LOOKUP}{lc $blockName} or ($$et{TAGS_FROM_FILE} and
-        not $$et{EXCL_TAG_LOOKUP}{lc $blockName})) and ($$et{FileType} eq 'XMP' or
-        ($$dirInfo{DirName} and $$dirInfo{DirName} eq 'XMP')))
+        not $$et{EXCL_TAG_LOOKUP}{lc $blockName})) and
+        (($$et{FileType} eq 'XMP' and $blockName eq 'XMP') or
+        ($$dirInfo{DirName} and $$dirInfo{DirName} eq $blockName)))
     {
         $et->FoundTag($$dirInfo{BlockInfo} || 'XMP', substr($$dataPt, $dirStart, $dirLen));
     }
@@ -4193,7 +4202,7 @@ information.
 
 =head1 AUTHOR
 
-Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

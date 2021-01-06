@@ -136,7 +136,7 @@ with the desired group name.  eg.) "<code>-ExifIFD:DateTimeOriginal</code>"
 different meta information formats within the same file.  For example, often XMP
 will be ignored if IPTC exists and the Photoshop:IPTCDigest does not agree with
 the IPTC content.  The
-<a href="http://www.metadataworkinggroup.org/">Metadata Working Group</a>
+<a href="https://web.archive.org/web/20181006115950/http://www.metadataworkinggroup.org/specs/">Metadata Working Group</a>
 recommends techniques to keep the EXIF, IPTC and XMP metadata synchronized. 
 These recommendations are implemented by the ExifTool
 <a href="TagNames/MWG.html">MWG tags</a>.  For maximum compatibility with the
@@ -1722,11 +1722,11 @@ but in an ARGFILE, this should be
 <a name="Q30"></a>
 <p>30. <b>"How do I extract absolutely all metadata from a file?"</b></p>
 
-<blockquote>By default, duplicate tags, unknown tags, embedded tags, and tags
-that require system utilities are not extracted.  The main reason for this is
-performance; extracting these tags will significantly increase processing time
-for some files.  The following command extracts everything possible with
-ExifTool:
+<blockquote>By default, duplicate tags, unknown tags, embedded tags, and System
+tags that require external utilities are not extracted.  The main reason for
+this is performance; extracting these tags will significantly increase
+processing time for some files.  The following command extracts everything
+possible with ExifTool:
 
 <pre>exiftool -ee -u -G3:1 -api requestall=3 -api largefilesupport FILE</pre>
 
@@ -1734,7 +1734,7 @@ ExifTool:
 indication of where the metadata was stored.)</blockquote>
 
 <hr>
-<i>Last revised Dec 15, 2020</i>
+<i>Last revised Jan 4, 2021</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

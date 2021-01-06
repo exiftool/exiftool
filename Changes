@@ -7,13 +7,30 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.00. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 6, 2021 - Version 12.14
+
+  - Added support for 2 more types of timed GPS in video files (that makes 49
+    different formats now supported)
+  - Added validity check for PDF trailer dictionary Size
+  - Added a new Pentax LensType
+  - Extract metadata from Jpeg2000 Association box
+  - Changed -g:XX:YY and -G:XX:YY options to show empty strings for non-existent
+    groups
+  - Patched to issue warning and avoid writing date/time values with a zero
+    month or day number
+  - Patched to avoid runtime warnings if trying to set FileName to an empty
+    string
+  - Fixed issue that could cause GPS test number 12 to fail on some systems
+  - Fixed problem extracting XML as a block from Jpeg2000 images, and extract
+    XML tags in the XML group instead of XMP
+
 Dec. 24, 2020 - Version 12.13
 
-  - Add time zone automatically to most string-based QuickTime date/time tags
-    when writing unless the PrintConv option is disabled
   - Added -i HIDDEN option to ignore files with names that start with "."
   - Added a few new Nikon ShutterMode values (thanks Jan Skoda)
   - Added ability to write Google GCamera MicroVideo XMP tags
+  - Add time zone automatically to most string-based QuickTime date/time tags
+    when writing unless the PrintConv option is disabled
   - Decode a new Sony tag (thanks LibRaw)
   - Changed behaviour when writing only pseudo tags to return an error and avoid
     writing any other tags if writing FileName fails

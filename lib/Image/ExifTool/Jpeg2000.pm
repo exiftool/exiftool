@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.26';
+$VERSION = '1.27';
 
 sub ProcessJpeg2000Box($$$);
 
@@ -186,7 +186,11 @@ my %j2cMarker = (
     comp => 'Composition',
     copt => 'CompositionOptions',
     inst => 'InstructionSet',
-    asoc => 'Association',
+    asoc => {
+        Name => 'Association',
+        SubDirectory => { },
+    },
+        # (Association box may contain any other sub-box)
     nlst => 'NumberList',
     bfil => 'BinaryFilter',
     drep => 'DesiredReproductions',
@@ -212,7 +216,8 @@ my %j2cMarker = (
             written and copied.  This is a List-type tag because multiple XML blocks may
             exist
         },
-        SubDirectory => { TagTable => 'Image::ExifTool::XMP::Main' },
+        # (note: extracting as a block was broken in 11.04, and finally fixed in 12.14)
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::XML' },
     },
     uuid => [
         {
@@ -874,7 +879,7 @@ files.
 
 =head1 AUTHOR
 
-Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

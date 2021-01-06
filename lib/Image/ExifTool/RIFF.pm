@@ -482,6 +482,15 @@ my %code2charset = (
         Name => 'CharacterSet',
         SubDirectory => { TagTable => 'Image::ExifTool::RIFF::CSET' },
     },
+    # tx_ tags are generated based on the Codec used for the txts stream
+    tx_USER => {
+        Name => 'UserText',
+        SubDirectory => { TagTable => 'Image::ExifTool::RIFF::UserText' },
+    },
+    tx_Unknown => { # (untested)
+        Name => 'Text',
+        Notes => 'streamed text, extracted when the ExtractEmbedded option is used',
+    },
 #
 # WebP-specific tags
 #
@@ -995,6 +1004,12 @@ my %code2charset = (
             Condition => '$$self{RIFFStreamType} eq "vids"',
             SubDirectory => { TagTable => 'Image::ExifTool::BMP::Main' },
         },
+        {
+            Name => 'TextFormat',
+            Condition => '$$self{RIFFStreamType} eq "txts"',
+            Hidden => 1,
+            RawConv => '$self->Options("ExtractEmbedded") or $self->WarnOnce("Use ExtractEmbedded option to extract timed text"); undef',
+        },
     ],
 );
 
@@ -1025,7 +1040,7 @@ my %code2charset = (
     0 => {
         Name => 'StreamType',
         Format => 'string[4]',
-        RawConv => '$$self{RIFFStreamType} = $val',
+        RawConv => '$$self{RIFFStreamNum} = ($$self{RIFFStreamNum} || 0) + 1; $$self{RIFFStreamType} = $val',
         PrintConv => {
             auds => 'Audio',
             mids => 'MIDI',
@@ -1038,16 +1053,19 @@ my %code2charset = (
         {
             Name => 'AudioCodec',
             Condition => '$$self{RIFFStreamType} eq "auds"',
+            RawConv => '$$self{RIFFStreamCodec}[$$self{RIFFStreamNum}-1] = $val',
             Format => 'string[4]',
         },
         {
             Name => 'VideoCodec',
             Condition => '$$self{RIFFStreamType} eq "vids"',
+            RawConv => '$$self{RIFFStreamCodec}[$$self{RIFFStreamNum}-1] = $val',
             Format => 'string[4]',
         },
         {
             Name => 'Codec',
             Format => 'string[4]',
+            RawConv => '$$self{RIFFStreamCodec}[$$self{RIFFStreamNum}-1] = $val',
         },
     ],
   # 2 => 'StreamFlags',
@@ -1240,6 +1258,54 @@ my %code2charset = (
         },
         ValueConv => '$val / 1000',
         PrintConv => 'ConvertDuration($val)',
+    },
+);
+
+# streamed USER txts written by some dashcam (ref PH)
+%Image::ExifTool::RIFF::UserText = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    NOTES => q{
+        Tags decoded from the USER-format txts stream written by an unknown dashcam.
+        Extracted only if the ExtractEmbedded option is used.
+    },
+  #  0 - int32u: 0
+  #  4 - int32u: sample number (starting from unknown offset)
+  #  8 - int8u[4]: "0 x y z" ? (z mostly 5-8)
+  # 12 - int8u[4]: "0 x 1 0" ? (x incrementing once per second)
+  # 16 - int8u[4]: "0 32 0 x" ?
+  # 20 - int32u: 100-150(mostly), 250-300(once per second)
+  # 24 - int8u[4]: "0 x y 0" ?
+    28 => { Name => 'GPSAltitude', Format => 'int32u', ValueConv => '$val / 10' }, # (NC)
+  # 32 - int32u: 0(mostly), 23(once per second)
+  # 36 - int32u: 1
+    40 => { Name => 'Accelerometer', Format => 'float[3]' },
+  # 52 - int32u: 1
+    56 => { Name => 'GPSSpeed',      Format => 'float' }, # km/h
+    60 => {
+        Name => 'GPSLatitude',
+        Format => 'float',
+        # Note: these values are unsigned and I don't know where the hemisphere is stored,
+        # but my only sample is from the U.S., so assume a positive latitude (for now)
+        ValueConv => 'my $deg = int($val / 100); $deg + ($val - $deg * 100) / 60',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
+    },
+    64 => {
+        Name => 'GPSLongitude',
+        Format => 'float',
+        # Note: these values are unsigned and I don't know where the hemisphere is stored,
+        # but my only sample is from the U.S., so assume a negative longitude (for now)
+        ValueConv => 'my $deg = int($val / 100); -($deg + ($val - $deg * 100) / 60)',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
+    },
+    68 => {
+        Name => 'GPSDateTime',
+        Description => 'GPS Date/Time',
+        Groups => { 2 => 'Time' },
+        Format => 'int32u',
+        ValueConv => 'ConvertUnixTime($val)',
+        # (likely local time, but clock seemed off by 3 hours in my sample)
+        PrintConv => '$self->ConvertDateTime($val)',
     },
 );
 
@@ -1752,6 +1818,7 @@ sub ProcessRIFF($$)
     my ($buff, $buf2, $type, $mime, $err, $rf64);
     my $verbose = $et->Options('Verbose');
     my $unknown = $et->Options('Unknown');
+    my $ee = $et->Options('ExtractEmbedded');
 
     # verify this is a valid RIFF file
     return 0 unless $raf->Read($buff, 12) == 12;
@@ -1769,7 +1836,8 @@ sub ProcessRIFF($$)
     $mime = $riffMimeType{$type} if $type;
     $et->SetFileType($type, $mime);
     $$et{VALUE}{FileType} .= ' (RF64)' if $rf64;
-    $$et{RIFFStreamType} = '';    # initialize stream type
+    $$et{RIFFStreamType} = '';      # initialize stream type
+    $$et{RIFFStreamCodec} = [];     # initialize codec array
     SetByteOrder('II');
     my $tagTbl = GetTagTable('Image::ExifTool::RIFF::Main');
     my $pos = 12;
@@ -1808,14 +1876,20 @@ sub ProcessRIFF($$)
         # stop when we hit the audio data or AVI index or AVI movie data
         # --> no more because Adobe Bridge stores XMP after this!!
         # (so now we only do this on the FastScan option)
-        if (($tag eq 'data' or $tag eq 'idx1' or $tag eq 'LIST_movi') and
-            $et->Options('FastScan'))
+        if ($et->Options('FastScan') and ($tag eq 'data' or $tag eq 'idx1' or
+            ($tag eq 'LIST_movi' and not $ee)))
         {
             $et->VPrint(0, "(end of parsing)\n");
             last;
         }
         # RIFF chunks are padded to an even number of bytes
         my $len2 = $len + ($len & 0x01);
+        # change name of stream txts data depending on the Codec
+        if ($ee and $tag =~ /^(\d{2})tx$/) {
+            $tag = 'tx_' . ($$et{RIFFStreamCodec}[$1] || 'Unknown');
+            $tag = "tx_Unknown" unless defined $$tagTbl{$tag};
+            $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        }
         my $tagInfo = $$tagTbl{$tag};
         if ($tagInfo or (($verbose or $unknown) and $tag !~ /^(data|idx1|LIST_movi|RIFF)$/)) {
             $raf->Read($buff, $len2) == $len2 or $err=1, last;
@@ -1835,11 +1909,14 @@ sub ProcessRIFF($$)
                 delete $$et{SET_GROUP0};
                 delete $$et{SET_GROUP1};
             }
+            delete $$et{DOC_NUM} if $ee;
         } elsif ($tag eq 'RIFF') {
             # don't read into RIFF chunk (eg. concatenated video file)
             $raf->Read($buff, 4) == 4 or $err=1, last;
             # extract information from remaining file as an embedded file
             $$et{DOC_NUM} = ++$$et{DOC_COUNT}
+        } elsif ($tag eq 'LIST_movi' and $ee) {
+            next; # parse into movi chunk
         } else {
             if ($len > 0x7fffffff and not $et->Options('LargeFileSupport')) {
                 $et->Warn("Stopped parsing at large $tag chunk (LargeFileSupport not set)");
@@ -1874,7 +1951,7 @@ including AVI videos, WAV audio files and WEBP images.
 
 =head1 AUTHOR
 
-Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

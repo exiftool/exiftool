@@ -8,7 +8,7 @@
 # Revisions:    Nov. 12/2003 - P. Harvey Created
 #               (See html/history.html for revision history)
 #
-# Legal:        Copyright (c) 2003-2020, Phil Harvey (philharvey66 at gmail.com)
+# Legal:        Copyright (c) 2003-2021, Phil Harvey (philharvey66 at gmail.com)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.13';
+$VERSION = '12.14';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -3395,7 +3395,11 @@ sub GetGroup($$;$)
         my @grps;
         # create list of group names (without identical adjacent groups if simplifying)
         foreach (@families) {
-            my $grp = $groups[$_] or next;
+            my $grp = $groups[$_];
+            unless ($grp) {
+                next if $simplify;
+                $grp = '';
+            }
             push @grps, $grp unless $simplify and @grps and $grp eq $grps[-1];
         }
         # remove leading "Main:" if simplifying

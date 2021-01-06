@@ -1771,6 +1771,25 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
             $trk = GetFloat($dataPt, 0x58);
         }
 
+    } elsif ($$dataPt =~ /^.{60}A\0.{6}([NS])\0.{6}([EW])\0/s and $dirLen >= 112) {
+
+        # header looks like this in my sample (unknown dashcam, "Anticlock 2 2020_1125_1455_007.MOV"):
+        #  0000: 00 00 80 00 66 72 65 65 47 50 53 20 68 00 00 00 [....freeGPS h...]
+        #  0010: 32 30 31 33 30 33 32 35 41 00 00 00 00 00 00 00 [20130325A.......]
+        #  0020: 41 70 72 20 20 36 20 32 30 31 36 2c 20 31 36 3a [Apr  6 2016, 16:]
+        #  0030: 0e 00 00 00 38 00 00 00 22 00 00 00 41 00 00 00 [....8..."...A...]
+        #  0040: 8a 63 24 45 53 00 00 00 9f e6 42 45 45 00 00 00 [.c$ES.....BEE...]
+        #  0050: 59 c0 04 3f 52 b8 42 41 14 00 00 00 0b 00 00 00 [Y..?R.BA........]
+        #  0060: 19 00 00 00 06 00 00 00 05 00 00 00 f6 ff ff ff [................]
+        #  0070: 03 00 00 00 04 00 00 00 00 00 00 00 00 00 00 00 [................]
+        ($latRef, $lonRef) = ($1, $2);
+        ($hr,$min,$sec,$yr,$mon,$day,@acc) = unpack('x48V3x28V6',$$dataPt);
+        map { $_ = $_ - 4294967296 if $_ >= 0x80000000; $_ /= 1000 } @acc; # (NC)
+        $lat = GetFloat($dataPt, 0x40);
+        $lon = GetFloat($dataPt, 0x48);
+        $spd = GetFloat($dataPt, 0x50);
+        $trk = GetFloat($dataPt, 0x54);
+
     } else {
 
         # (look for binary GPS as stored by NextBase 512G, ref PH)
@@ -1836,8 +1855,10 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
     $et->HandleTag($tagTbl, GPSDateTime  => $time);
     $et->HandleTag($tagTbl, GPSLatitude  => $lat * ($latRef eq 'S' ? -1 : 1));
     $et->HandleTag($tagTbl, GPSLongitude => $lon * ($lonRef eq 'W' ? -1 : 1));
-    $et->HandleTag($tagTbl, GPSSpeed     => $spd); # (now in km/h)
-    $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
+    if (defined $spd) {
+        $et->HandleTag($tagTbl, GPSSpeed     => $spd); # (now in km/h)
+        $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
+    }
     if (defined $trk) {
         $et->HandleTag($tagTbl, GPSTrack     => $trk);
         $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
@@ -2649,7 +2670,7 @@ information like GPS tracks from MOV, MP4 and INSV media data.
 
 =head1 AUTHOR
 
-Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

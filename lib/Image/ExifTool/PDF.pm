@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.50';
+$VERSION = '1.51';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -2164,6 +2164,7 @@ sub ReadPDF($$)
     # set input record separator
     local $/ = $ws =~ /(\x0d\x0a|\x0d|\x0a)/ ? $1 : "\x0a";
     my (%xref, @mainDicts, %loaded, $mainFree);
+    my ($xrefSize, $mainDictSize) = (0, 0);
     # initialize variables to capture when rewriting
     if ($capture) {
         $capture->{startxref} = $xr;
@@ -2206,6 +2207,7 @@ XRef:
                     $raf->Read($buff, 20) == 20 or return -6;
                     $buff =~ /^\s*(\d{10}) (\d{5}) (f|n)/s or return -4;
                     my $num = $start + $i;
+                    $xrefSize = $num if $num > $xrefSize;
                     # locate object to generate entry from stream if necessary
                     # (must do this before we test $xref{$num})
                     LocateAnyObject(\%xref, $num) if $xref{dicts};
@@ -2242,6 +2244,8 @@ XRef:
             $et->Warn('Error loading secondary dictionary');
             next;
         }
+        # keep track of total trailer dictionary Size
+        $mainDictSize = $$mainDict{Size} if $$mainDict{Size} and $$mainDict{Size} > $mainDictSize;
         if ($loadXRefStream) {
             # decode and save our XRef stream from PDF-1.5 file
             # (but parse it later as required to save time)
@@ -2279,6 +2283,10 @@ XRef:
         push @mainDicts, $mainDict, $type;
         # load previous xref table if it exists
         push @xrefOffsets, $$mainDict{Prev}, 'Prev' if $$mainDict{Prev};
+    }
+    if ($xrefSize > $mainDictSize) {
+        my $str = "Objects in xref table ($xrefSize) exceed trailer dictionary Size ($mainDictSize)";
+        $capture ? $et->Error($str) : $et->Warn($str);
     }
 #
 # extract encryption information if necessary
@@ -2381,7 +2389,7 @@ including AESV2 (AES-128) and AESV3 (AES-256).
 
 =head1 AUTHOR
 
-Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

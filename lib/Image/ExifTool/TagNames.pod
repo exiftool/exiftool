@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23721 tags, with 15423 unique tag names.
+They contain a total of 23727 tags, with 15422 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -22942,7 +22942,7 @@ currently writes only EXIF, IPTC and XMP tags in these images.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  'asoc'   Association                          no
+  'asoc'   Association                          Jpeg2000
   'bfil'   BinaryFilter                         no
   'bpcc'   BitsPerComponent                     no
   'cdef'   ComponentDefinition                  no
@@ -22993,7 +22993,7 @@ currently writes only EXIF, IPTC and XMP tags in these images.
            UUID-GeoJP2                          EXIF
            UUID-Photoshop                       Photoshop
            UUID-Unknown                         no
-  'xml '   XML                                  XMP
+  'xml '   XML                                  XMP XML
 
 =head3 Jpeg2000 ColorSpec Tags
 
@@ -29452,6 +29452,8 @@ sub-documents, but the Duration is calculated for the full video.
   'labl'               Label                    RIFF Label
   'list'               ListType                 no
   'olym'               Olym                     Olympus WAV
+  'tx_USER'            UserText                 RIFF UserText
+  'tx_Unknown'         Text                     no
 
 =head3 RIFF ALPH Tags
 
@@ -29752,6 +29754,20 @@ L<https://tech.ebu.ch/docs/tech/tech3306-2009.pdf> for the specification.
   ------   --------                             --------
       0    LabelID                              no
       1    LabelText                            no
+
+=head3 RIFF UserText Tags
+
+Tags decoded from the USER-format txts stream written by an unknown dashcam.
+Extracted only if the ExtractEmbedded option is used.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     28    GPSAltitude                          no
+     40    Accelerometer                        no
+     56    GPSSpeed                             no
+     60    GPSLatitude                          no
+     64    GPSLongitude                         no
+     68    GPSDateTime                          no
 
 =head2 AIFF Tags
 
@@ -35262,7 +35278,8 @@ overlapping EXIF, IPTC and XMP tags to be reconciled when reading, and
 synchronized when writing.  The MWG Composite tags below are designed to aid
 in the implementation of these recommendations.  As well, the MWG defines
 new XMP tags which are listed in the subsequent tables below.  See
-L<http://www.metadataworkinggroup.org/> for the official MWG specification.
+L<https://web.archive.org/web/20181006115950/http://www.metadataworkinggroup.org/specs/>
+for the official MWG specification.
 
 =head3 MWG Composite Tags
 
@@ -35511,7 +35528,7 @@ L<Image::ExifTool::BuildTagLookup|Image::ExifTool::BuildTagLookup>.
 
 =head1 AUTHOR
 
-Copyright 2003-2020, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

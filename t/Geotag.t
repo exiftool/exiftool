@@ -208,8 +208,8 @@ unless (eval { require Time::Local }) {
     $exifTool->SetNewValue(Geotag => 't/images/Geotag_DJI_2020-12-02_[07-50-31].csv');
     $exifTool->SetNewValue(Geotime => '2020:12:02 07:50:35.3');
     $exifTool->WriteInfo('t/images/Writer.jpg', $testfile);
-    # (ignore GPSTimeStamp because it will depend on the system time zone)
-    my $info = $exifTool->ImageInfo($testfile, 'gps:all', '-gpstimestamp');
+    # (ignore GPSDate/TimeStamp because they will depend on the system time zone)
+    my $info = $exifTool->ImageInfo($testfile, 'gps:all', '-gpstimestamp', '-gpsdatestamp');
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {

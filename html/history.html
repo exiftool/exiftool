@@ -17,13 +17,31 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.14'><b>Jan. 6, 2021 - Version 12.14</b></a>
+<ul>
+<li>Added support for 2 more types of timed GPS in video files (that makes 49
+    different formats now supported)
+<li>Added validity check for PDF trailer dictionary Size
+<li>Added a new Pentax LensType
+<li>Extract metadata from Jpeg2000 Association box
+<li>Changed -g:XX:YY and -G:XX:YY options to show empty strings for non-existent
+    groups
+<li>Patched to issue warning and avoid writing date/time values with a zero
+    month or day number
+<li>Patched to avoid runtime warnings if trying to set FileName to an empty
+    string
+<li>Fixed issue that could cause GPS test number 12 to fail on some systems
+<li>Fixed problem extracting XML as a block from Jpeg2000 images, and extract
+    XML tags in the XML group instead of XMP
+</ul>
+
 <a name='v12.13'><b>Dec. 24, 2020 - Version 12.13</b></a>
 <ul>
-<li>Add time zone automatically to most string-based QuickTime date/time tags
-    when writing unless the PrintConv option is disabled
 <li>Added -i HIDDEN option to ignore files with names that start with "."
 <li>Added a few new Nikon ShutterMode values (thanks Jan &Scaron;koda)
 <li>Added ability to write Google GCamera MicroVideo XMP tags
+<li>Add time zone automatically to most string-based QuickTime date/time tags
+    when writing unless the PrintConv option is disabled
 <li>Decode a new Sony tag (thanks LibRaw)
 <li>Changed behaviour when writing only pseudo tags to return an error and avoid
     writing any other tags if writing FileName fails

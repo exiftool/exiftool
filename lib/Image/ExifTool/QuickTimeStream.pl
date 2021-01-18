@@ -96,7 +96,7 @@ my %insvLimit = (
     NOTES => q{
         Timed metadata extracted from QuickTime media data and some AVI videos when
         the ExtractEmbedded option is used.  Although most of these tags are
-        combined into the single table below, ExifTool currently reads 46 different
+        combined into the single table below, ExifTool currently reads 49 different
         formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },

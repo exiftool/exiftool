@@ -15,7 +15,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 my %convFloat2 = (
     PrintConv => 'sprintf("%+.2f", $val)',
@@ -42,6 +42,32 @@ my %convFloat2 = (
     0x09 => { Name => 'CameraPitch',Writable => 'float', %convFloat2 },
     0x0a => { Name => 'CameraYaw',  Writable => 'float', %convFloat2 },
     0x0b => { Name => 'CameraRoll', Writable => 'float', %convFloat2 },
+);
+
+# thermal parameters in APP4 of DJI ZH20T images (ref forum11401)
+%Image::ExifTool::DJI::ThermalParams = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 0 => 'APP4', 2 => 'Image' },
+    NOTES => 'Thermal parameters extracted from APP4 of DJI RJPEG files from the ZH20T.',
+  # 0x00 - 0xaa551206 - temperature header magic number 
+    0x24 => { Name => 'K1', Format => 'float' },
+    0x28 => { Name => 'K2', Format => 'float' },
+    0x2c => { Name => 'K3', Format => 'float' },
+    0x30 => { Name => 'K4', Format => 'float' },
+    0x34 => { Name => 'KF', Format => 'float' },
+    0x38 => { Name => 'B1', Format => 'float' },
+    0x3c => { Name => 'B2', Format => 'float' },
+    0x44 => { Name => 'ObjectDistance',     Format => 'int16u' },
+    0x46 => { Name => 'RelativeHumidity',   Format => 'int16u' },
+    0x48 => { Name => 'Emissivity',         Format => 'int16u' },
+    0x4a => { Name => 'Reflection',         Format => 'int16u',  },
+    0x4c => { Name => 'AmbientTemperature', Format => 'int16u' }, # (aka D1)
+    0x50 => { Name => 'D2', Format => 'int32s' },
+    0x54 => { Name => 'KJ', Format => 'int16u' },
+    0x56 => { Name => 'DB', Format => 'int16u' },
+    0x58 => { Name => 'KK', Format => 'int16u' },
+  # 0x500 - 0x55aa1206 - device header magic number 
+    # (nothing yet decoded from device header)
 );
 
 %Image::ExifTool::DJI::XMP = (

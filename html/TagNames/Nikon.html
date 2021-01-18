@@ -280,10 +280,23 @@ causes the other information to be re-encrypted with the new key)</span></span><
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x003e = 62'>0x003e</td>
+<td>ImageSizeRAW</td>
+<td class=c>yes</td>
+<td><span class=s>1 = Large
+  <br>2 = Medium
+  <br>3 = Small</span></td></tr>
+<tr class=b>
 <td title='0x0045 = 69'>0x0045</td>
 <td>CropArea</td>
 <td class=c>int16u[4]</td>
 <td><span class=s><span class=n>(left, top, width, height)</span></span></td></tr>
+<tr>
+<td title='0x004e = 78'>0x004e</td>
+<td>NikonSettings</td>
+<td class=c title=' ! = Unsafe
+ ^ = Deletable'>undef!^</td>
+<td>--&gt; <a href='NikonSettings.html'>NikonSettings Tags</a></td></tr>
 <tr class=b>
 <td title='0x004f = 79'>0x004f</td>
 <td>ColorTemperatureAuto</td>
@@ -341,7 +354,8 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>3 = Not Ready
   <br>7 = Fired, External
   <br>8 = Fired, Commander Mode
-  <br>9 = Fired, TTL Mode</td></tr></table>
+  <br>9 = Fired, TTL Mode
+  <br>18 = Fired, Sync Mode</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x0088 = 136'>0x0088</td>
@@ -414,9 +428,10 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>ShotInfoD500
   <br>ShotInfoD6
   <br>ShotInfoD610
+  <br>ShotInfoZ7_2
   <br>ShotInfo02xx
   <br>ShotInfoUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#ShotInfoD40'>Nikon ShotInfoD40 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD80'>Nikon ShotInfoD80 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD90'>Nikon ShotInfoD90 Tags</a>
@@ -439,8 +454,9 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>--&gt; <a href='Nikon.html#ShotInfoD4S'>Nikon ShotInfoD4S Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD500'>Nikon ShotInfoD500 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD500'>Nikon ShotInfoD500 Tags</a>
-  <br>--&gt; <a href='Nikon.html#ShotInfo'>Nikon ShotInfo Tags</a>
+  <br>--&gt; <a href='Nikon.html#ShotInfoD6'>Nikon ShotInfoD6 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD610'>Nikon ShotInfoD610 Tags</a>
+  <br>--&gt; <a href='Nikon.html#ShotInfoZ7_2'>Nikon ShotInfoZ7_2 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfo'>Nikon ShotInfo Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfo'>Nikon ShotInfo Tags</a></td></tr>
 <tr>
@@ -635,13 +651,15 @@ new key)</span></span></td></tr>
   <br>FlashInfo0103
   <br>FlashInfo0106
   <br>FlashInfo0107
+  <br>FlashInfo0300
   <br>FlashInfoUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#FlashInfo0100'>Nikon FlashInfo0100 Tags</a>
   <br>--&gt; <a href='Nikon.html#FlashInfo0102'>Nikon FlashInfo0102 Tags</a>
   <br>--&gt; <a href='Nikon.html#FlashInfo0103'>Nikon FlashInfo0103 Tags</a>
   <br>--&gt; <a href='Nikon.html#FlashInfo0106'>Nikon FlashInfo0106 Tags</a>
   <br>--&gt; <a href='Nikon.html#FlashInfo0107'>Nikon FlashInfo0107 Tags</a>
+  <br>--&gt; <a href='Nikon.html#FlashInfo0300'>Nikon FlashInfo0300 Tags</a>
   <br>--&gt; <a href='Nikon.html#FlashInfoUnknown'>Nikon FlashInfoUnknown Tags</a></td></tr>
 <tr>
 <td title='0x00a9 = 169'>0x00a9</td>
@@ -3421,6 +3439,93 @@ firmware 1.01b.</p>
   <br>3 = Highlight</span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='ShotInfoD6'>Nikon ShotInfoD6 Tags</a></h2>
+<p>These tags are extracted from encrypted data in images from the D6.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ShotInfoVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='49690 = 0xc21a'>49690</td>
+<td>RollAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
+<tr>
+<td class=r title='49694 = 0xc21e'>49694</td>
+<td>PitchAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
+<tr class=b>
+<td class=r title='49698 = 0xc222'>49698</td>
+<td>YawAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ShotInfoD610'>Nikon ShotInfoD610 Tags</a></h2>
+<p>These tags are extracted from encrypted data in images from the D610.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ShotInfoVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>FirmwareVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1999 = 0x7cf'>1999</td>
+<td>CustomSettingsD610</td>
+<td class=c>-</td>
+<td>--&gt; <a href='NikonCustom.html#SettingsD610'>NikonCustom SettingsD610 Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ShotInfoZ7_2'>Nikon ShotInfoZ7_2 Tags</a></h2>
+<p>These tags are extracted from encrypted data in images from the Z7_2.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ShotInfoVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>FirmwareVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='52786 = 0xce32'>52786</td>
+<td>RollAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
+<tr class=b>
+<td class=r title='52790 = 0xce36'>52790</td>
+<td>PitchAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
+<tr>
+<td class=r title='52794 = 0xce3a'>52794</td>
+<td>YawAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='ShotInfo'>Nikon ShotInfo Tags</a></h2>
 <p>This information is encrypted for ShotInfoVersion 02xx, and some tags are
 only valid for specific models.</p>
@@ -3498,30 +3603,6 @@ only valid for specific models.</p>
 <td>ShutterCount</td>
 <td class=c>int32u</td>
 <td><span class=s><span class=n>(D60)</span></span></td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='ShotInfoD610'>Nikon ShotInfoD610 Tags</a></h2>
-<p>These tags are extracted from encrypted data in images from the D610.</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Index</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td class=r title='0 = 0x0'>0</td>
-<td>ShotInfoVersion</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='4 = 0x4'>4</td>
-<td>FirmwareVersion</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='1999 = 0x7cf'>1999</td>
-<td>CustomSettingsD610</td>
-<td class=c>-</td>
-<td>--&gt; <a href='NikonCustom.html#SettingsD610'>NikonCustom SettingsD610 Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorBalance1'>Nikon ColorBalance1 Tags</a></h2>
@@ -4665,6 +4746,36 @@ D5200, D7000.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='FlashInfo0300'>Nikon FlashInfo0300 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FlashInfoVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>FlashSource</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = None
+  <br>1 = External
+  <br>2 = Internal</span></td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>ExternalFlashFirmware</td>
+<td class=c>int8u[2]</td>
+<td>--&gt; <a href='Nikon.html#FlashFirmware'>Nikon FlashFirmware Values</a></td></tr>
+<tr class=b>
+<td class=r title='27 = 0x1b'>27</td>
+<td>FlashCompensation</td>
+<td class=c>int8s</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='FlashInfoUnknown'>Nikon FlashInfoUnknown Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -4779,8 +4890,8 @@ D5200, D7000.</p>
   <br>195 = Wide (S)
   <br>196 = Wide (L)
   <br>197 = Auto
-  <br>198 = Auto (198)
-  <br>199 = Auto (focus lock)
+  <br>198 = Auto (People)
+  <br>199 = Auto (Animal)
   <br>200 = Normal-area AF
   <br>201 = Wide-area AF
   <br>202 = Face-priority AF
@@ -5324,11 +5435,21 @@ point is D8)</span></span></td></tr>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='47 = 0x2f'>47</td>
+<td>AFFocusPointXPosition</td>
+<td class=c title=' ~ = Writable only with -n'>int8u~</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='48 = 0x30'>48</td>
 <td>AFAreaYPosition
   <br>AFPointsInFocus</td>
 <td class=c>int16u<br>undef[20]</td>
 <td><span class=s><span class=n>(AF points in focus at the time time image was captured)</span></span></td></tr>
+<tr class=b>
+<td class=r title='49 = 0x31'>49</td>
+<td>AFFocusPointYPosition</td>
+<td class=c title=' ~ = Writable only with -n'>int8u~</td>
+<td>&nbsp;</td></tr>
 <tr>
 <td class=r title='50 = 0x32'>50</td>
 <td>AFAreaWidth</td>
@@ -7302,7 +7423,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 24, 2020</i>
+<br><i>Last revised Jan 18, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

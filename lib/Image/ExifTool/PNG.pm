@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.55';
+$VERSION = '1.56';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -1422,8 +1422,16 @@ sub ProcessPNG($$)
             next;
         }
         if ($datChunk) {
-            # skip over data chunks if possible
-            unless ($verbose or $validate or $outfile) {
+            my $chunkSizeLimit = 10000000;  # largest chunk to read into memory
+            if ($outfile) {
+                # avoid loading very large data chunks into memory
+                if ($len > $chunkSizeLimit) {
+                    Write($outfile, $hbuf) or $err = 1;
+                    Image::ExifTool::CopyBlock($raf, $outfile, $len+4) or $et->Error("Error copying $datChunk");
+                    next;
+                }
+            # skip over data chunks if possible/necessary
+            } elsif (not $validate or $len > $chunkSizeLimit) {
                 $raf->Seek($len + 4, 1) or $et->Warn('Seek error'), last;
                 next;
             }

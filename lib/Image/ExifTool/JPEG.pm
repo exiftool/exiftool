@@ -16,7 +16,7 @@ $VERSION = '1.30';
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
 
-# (this main JPEG table is for documentation purposes only)
+# (most of the tags in this table are for documentation purposes only)
 %Image::ExifTool::JPEG::Main = (
     NOTES => q{
         This table lists information extracted by ExifTool from JPEG images. See
@@ -97,6 +97,12 @@ sub ProcessJPEG_HDR($$$);
         Condition => '$$valPt =~ /^Stim\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::Stim::Main' },
       }, {
+        Name => 'ThermalData', # (written by DJI FLIR models)
+        Condition => '$$self{Make} eq "DJI"',
+        Notes => 'DJI raw thermal data',
+        Groups => { 0 => 'APP3', 1 => 'DJI', 2 => 'Image' },
+        Binary => 1,
+      }, {
         Name => 'PreviewImage', # (written by HP R837 and Samsung S1060)
         Condition => '$$valPt =~ /^\xff\xd8\xff\xdb/',
         Notes => 'Samsung/HP preview image', # (Samsung, HP, BenQ)
@@ -110,6 +116,10 @@ sub ProcessJPEG_HDR($$$);
         Condition => '$$valPt =~ /^FPXR\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::FlashPix::Main' },
       }, {
+        Name => 'ThermalParams', # (written by DJI FLIR models)
+        Condition => '$$self{Make} eq "DJI" and $$valPt =~ /^\xaa\x55\x12\x06/',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::ThermalParams' },
+      }, {
         Name => 'PreviewImage', # (eg. Samsung S1060)
         Notes => 'continued from APP3',
     }],
@@ -121,6 +131,12 @@ sub ProcessJPEG_HDR($$$);
         Name => 'SamsungUniqueID',
         Condition => '$$valPt =~ /ssuniqueid\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::Samsung::APP5' },
+      }, {
+        Name => 'ThermalCalibration', # (written by DJI FLIR models)
+        Condition => '$$self{Make} eq "DJI"',
+        Notes => 'DJI thermal calibration data',
+        Groups => { 0 => 'APP5', 1 => 'DJI', 2 => 'Image' },
+        Binary => 1,
       }, {
         Name => 'PreviewImage', # (eg. BenQ DC E1050)
         Notes => 'continued from APP4',
@@ -142,6 +158,12 @@ sub ProcessJPEG_HDR($$$);
         Condition => '$$valPt =~ /^GoPro\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
       # also seen Motorola APP6 "MMIMETA\0", with sub-types: AL3A,ALED,MMI0,MOTD,QC3A
+      }, {
+        Name => 'DJI_DTAT', # (written by ZH20T)
+        Condition => '$$valPt =~ /^DTAT\0\0.\{/s',
+        Groups => { 0 => 'APP6', 1 => 'DJI' },
+        Notes => 'DJI Thermal Analysis Tool record',
+        ValueConv => 'substr($val,7)',
     }],
     APP7 => [{
         Name => 'Pentax',

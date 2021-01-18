@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.14';
+$VERSION = '12.15';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -6695,6 +6695,22 @@ sub ProcessJPEG($$)
                 # extract the Stim information (it is in standard TIFF format)
                 my $tagTablePtr = GetTagTable('Image::ExifTool::Stim::Main');
                 $self->ProcessTIFF(\%dirInfo, $tagTablePtr);
+            } elsif ($$self{Make} eq 'DJI') {
+                $dumpType = 'DJI ThermalData';
+                # add this data to the combined data if it exists
+                my $dataPt = $segDataPt;
+                if (defined $combinedSegData) {
+                    $combinedSegData .= $$segDataPt;
+                    $dataPt = \$combinedSegData;
+                }
+                if ($nextMarker == $marker) {
+                    $combinedSegData = $$segDataPt unless defined $combinedSegData;
+                } else {
+                    # process DJI FLIR thermal data
+                    my $tagTablePtr = GetTagTable('Image::ExifTool::JPEG::Main');
+                    $self->HandleTag($tagTablePtr, 'APP3', $$dataPt);
+                    undef $combinedSegData;
+                }
             } elsif ($$segDataPt =~ /^\xff\xd8\xff\xdb/) {
                 $dumpType = 'PreviewImage'; # (Samsung, HP, BenQ)
                 $preview = $$segDataPt;
@@ -6729,6 +6745,11 @@ sub ProcessJPEG($$)
                 # set flag if this is the last FPXR segment
                 $dirInfo{LastFPXR} = not ($nextMarker==$marker and $$nextSegDataPt=~/^FPXR\0/),
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            } elsif ($$self{Make} eq 'DJI' and $$segDataPt =~ /^\xaa\x55\x12\x06/) {
+                $dumpType = 'DJI ThermalParams';
+                DirStart(\%dirInfo, 0, 0);
+                my $tagTablePtr = GetTagTable('Image::ExifTool::DJI::ThermalParams');
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
             } elsif ($preview) {
                 # continued Samsung S1060 preview from APP3
                 $dumpType = 'PreviewImage';
@@ -6751,6 +6772,10 @@ sub ProcessJPEG($$)
             } elsif ($$segDataPt =~ /^ssuniqueid\0/) {
                 my $tagTablePtr = GetTagTable('Image::ExifTool::Samsung::APP5');
                 $self->HandleTag($tagTablePtr, 'ssuniqueid', substr($$segDataPt, 11));
+            } elsif ($$self{Make} eq 'DJI') {
+                $dumpType = 'DJI ThermalCal';
+                my $tagTablePtr = GetTagTable('Image::ExifTool::JPEG::Main');
+                $self->HandleTag($tagTablePtr, 'APP5', $$segDataPt);
             } elsif ($preview) {
                 $dumpType = 'PreviewImage';
                 $preview .= $$segDataPt;
@@ -6786,6 +6811,10 @@ sub ProcessJPEG($$)
                 my $tagTablePtr = GetTagTable('Image::ExifTool::GoPro::GPMF');
                 DirStart(\%dirInfo, 6);
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            } elsif ($$segDataPt =~ /^DTAT\0\0.\{/s) {
+                $dumpType = 'DJI_DTAT';
+                my $tagTablePtr = GetTagTable('Image::ExifTool::JPEG::Main');
+                $self->HandleTag($tagTablePtr, 'APP6', $$segDataPt);
             }
         } elsif ($marker == 0xe7) {         # APP7 (Pentax, Huawei, Qualcomm)
             if ($$segDataPt =~ /^PENTAX \0(II|MM)/) {

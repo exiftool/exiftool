@@ -12,7 +12,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                     1)Tj
+(                           -- Image::ExifTool 12.15 --                                     1)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (EXIFTOOL\(1\)           User Contributed Perl Documentation          EXIFTOOL\(1\))Tj
@@ -189,7 +189,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                     2)Tj
+(                           -- Image::ExifTool 12.15 --                                     2)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (         ARW   r/w   | EXV   r/w/c | M4A/V r/w   | PCX   r     | SWF   r)Tj
@@ -384,7 +384,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                     3)Tj
+(                           -- Image::ExifTool 12.15 --                                     3)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       be exported with the ":Public" export list.)Tj
@@ -619,7 +619,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                     4)Tj
+(                           -- Image::ExifTool 12.15 --                                     4)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               Advantages of using the object-oriented form are that options)Tj
@@ -770,7 +770,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                     5)Tj
+(                           -- Image::ExifTool 12.15 --                                     5)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               "Sort" settings the entries may not be in the same order as)Tj
@@ -965,7 +965,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                     6)Tj
+(                           -- Image::ExifTool 12.15 --                                     6)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           As well as tags representing information extracted from the image,)Tj
@@ -1116,7 +1116,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                     7)Tj
+(                           -- Image::ExifTool 12.15 --                                     7)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               ExifByteOrder tag, but the ByteOrder option takes precedence if)Tj
@@ -1267,7 +1267,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                     8)Tj
+(                           -- Image::ExifTool 12.15 --                                     8)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (           CharsetQuickTime)Tj
@@ -1416,7 +1416,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                     9)Tj
+(                           -- Image::ExifTool 12.15 --                                     9)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               EXIF format \(similar to a DateFormat of "%Y:%m:%d %H:%M:%S"\).)Tj
@@ -1569,7 +1569,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    10)Tj
+(                           -- Image::ExifTool 12.15 --                                    10)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               value is not changed if $_ is set to undef.  List items are)Tj
@@ -1760,7 +1760,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    11)Tj
+(                           -- Image::ExifTool 12.15 --                                    11)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               Extract tags only for specified groups in family # \(Group0)Tj
@@ -1909,7 +1909,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    12)Tj
+(                           -- Image::ExifTool 12.15 --                                    12)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               MakerNotes are extracted they are rebuilt to include data)Tj
@@ -2056,7 +2056,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    13)Tj
+(                           -- Image::ExifTool 12.15 --                                    13)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               of names \(any delimiter is allowed\), or undef to clear the)Tj
@@ -2199,7 +2199,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    14)Tj
+(                           -- Image::ExifTool 12.15 --                                    14)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (                 undef - \(default\) Same as 0 for reading, 2 for copying)Tj
@@ -2356,7 +2356,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    15)Tj
+(                           -- Image::ExifTool 12.15 --                                    15)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           WriteMode)Tj
@@ -2553,7 +2553,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    16)Tj
+(                           -- Image::ExifTool 12.15 --                                    16)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           # get image width and height only)Tj
@@ -2706,7 +2706,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    17)Tj
+(                           -- Image::ExifTool 12.15 --                                    17)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (           3\) [optional] Destination file type.  Ignored if a source is)Tj
@@ -2859,7 +2859,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    18)Tj
+(                           -- Image::ExifTool 12.15 --                                    18)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           A list of tag keys in the specified order.)Tj
@@ -3068,7 +3068,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    19)Tj
+(                           -- Image::ExifTool 12.15 --                                    19)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           if \(ref $val eq 'ARRAY'\) {)Tj
@@ -3227,7 +3227,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    20)Tj
+(                           -- Image::ExifTool 12.15 --                                    20)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           # delete a specific keyword)Tj
@@ -3368,7 +3368,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    21)Tj
+(                           -- Image::ExifTool 12.15 --                                    21)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           file.  May be a scalar, scalar reference, list reference to set a)Tj
@@ -3515,7 +3515,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    22)Tj
+(                           -- Image::ExifTool 12.15 --                                    22)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               normally -- adds to new values for list-type tags\), 1 \(reset)Tj
@@ -3762,7 +3762,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    23)Tj
+(                           -- Image::ExifTool 12.15 --                                    23)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (           # set new values from all information in a file...)Tj
@@ -3905,7 +3905,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    24)Tj
+(                           -- Image::ExifTool 12.15 --                                    24)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           semicolon following the tag name \(see the last example above\).  A)Tj
@@ -4070,7 +4070,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    25)Tj
+(                           -- Image::ExifTool 12.15 --                                    25)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           0\) ExifTool object reference)Tj
@@ -4317,7 +4317,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    26)Tj
+(                           -- Image::ExifTool 12.15 --                                    26)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       specified, the new file name is derived from the new values of the)Tj
@@ -4516,7 +4516,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    27)Tj
+(                           -- Image::ExifTool 12.15 --                                    27)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       default language \(eg.  with alternate language entries for XMP "lang-)Tj
@@ -4691,7 +4691,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    28)Tj
+(                           -- Image::ExifTool 12.15 --                                    28)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               6\) EXIF/TIFF Format         \(eg. int8u, int32u, undef, string\))Tj
@@ -4852,7 +4852,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    29)Tj
+(                           -- Image::ExifTool 12.15 --                                    29)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (       Return Values:)Tj
@@ -5123,7 +5123,7 @@ endobj
 endobj
 96 0 obj
 <<
-/Length 5211
+/Length 5215
 >>
 stream
 BT
@@ -5133,7 +5133,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    30)Tj
+(                           -- Image::ExifTool 12.15 --                                    30)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           a specified group or intersection of groups.  The group name is)Tj
@@ -5336,9 +5336,9 @@ T*
 T*
 (           Motorola, NITF, Nikon, NikonCapture, NikonCustom, NikonScan,)Tj
 T*
-(           Nintendo, Ocad, Ogg, Olympus, OpenEXR, Opus, PDF, PICT, PNG, PNG-)Tj
+(           NikonSettings, Nintendo, Ocad, Ogg, Olympus, OpenEXR, Opus, PDF,)Tj
 T*
-(           pHYs, PSP, Palm, Panasonic, PanasonicRaw, Pentax, PhaseOne,)Tj
+(           PICT, PNG, PNG-pHYs, PSP, Palm, Panasonic, PanasonicRaw, Pentax,)Tj
 ET
 endstream
 endobj
@@ -5356,7 +5356,7 @@ endobj
 endobj
 99 0 obj
 <<
-/Length 4520
+/Length 4532
 >>
 stream
 BT
@@ -5366,34 +5366,34 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    31)Tj
+(                           -- Image::ExifTool 12.15 --                                    31)Tj
 /TT4 1 Tf
 0 -1.6333 TD
-(           PhotoCD, PhotoMechanic, Photoshop, PictureInfo, PostScript,)Tj
+(           PhaseOne, PhotoCD, PhotoMechanic, Photoshop, PictureInfo,)Tj
 0 -1.1 TD
-(           PreviewIFD, PrintIM, ProfileIFD, Qualcomm, QuickTime, RAF, RAF2,)Tj
+(           PostScript, PreviewIFD, PrintIM, ProfileIFD, Qualcomm, QuickTime,)Tj
 T*
-(           RIFF, RMETA, RSRC, RTF, Radiance, Rawzor, Real, Real-CONT, Real-)Tj
+(           RAF, RAF2, RIFF, RMETA, RSRC, RTF, Radiance, Rawzor, Real, Real-)Tj
 T*
-(           MDPR, Real-PROP, Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx,)Tj
+(           CONT, Real-MDPR, Real-PROP, Real-RA3, Real-RA4, Real-RA5, Real-)Tj
 T*
-(           Red, Ricoh, SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung,)Tj
+(           RJMD, Reconyx, Red, Ricoh, SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#,)Tj
 T*
-(           Sanyo, Scalado, Sigma, SigmaRaw, Sony, SonyIDC, Stim, SubIFD,)Tj
+(           SVG, Samsung, Sanyo, Scalado, Sigma, SigmaRaw, Sony, SonyIDC, Stim,)Tj
 T*
-(           System, Theora, Torrent, Track#, UserData, UserParam, VCalendar,)Tj
+(           SubIFD, System, Theora, Torrent, Track#, UserData, UserParam,)Tj
 T*
-(           VCard, Version0, Vorbis, WTV, XML, XMP, XMP-DICOM, XMP-Device, XMP-)Tj
+(           VCalendar, VCard, Version0, Vorbis, WTV, XML, XMP, XMP-DICOM, XMP-)Tj
 T*
-(           GAudio, XMP-GDepth, XMP-GFocus, XMP-GImage, XMP-GPano, XMP-)Tj
+(           Device, XMP-GAudio, XMP-GDepth, XMP-GFocus, XMP-GImage, XMP-GPano,)Tj
 T*
-(           GSpherical, XMP-LImage, XMP-MP, XMP-MP1, XMP-PixelLive, XMP-aas,)Tj
+(           XMP-GSpherical, XMP-LImage, XMP-MP, XMP-MP1, XMP-PixelLive, XMP-)Tj
 T*
-(           XMP-acdsee, XMP-album, XMP-apple-fi, XMP-aux, XMP-cc, XMP-cell,)Tj
+(           aas, XMP-acdsee, XMP-album, XMP-apple-fi, XMP-aux, XMP-cc, XMP-)Tj
 T*
-(           XMP-creatorAtom, XMP-crs, XMP-dc, XMP-dex, XMP-digiKam, XMP-drone-)Tj
+(           cell, XMP-creatorAtom, XMP-crs, XMP-dc, XMP-dex, XMP-digiKam, XMP-)Tj
 T*
-(           dji, XMP-dwc, XMP-exif, XMP-exifEX, XMP-expressionmedia, XMP-)Tj
+(           drone-dji, XMP-dwc, XMP-exif, XMP-exifEX, XMP-expressionmedia, XMP-)Tj
 T*
 (           extensis, XMP-fpv, XMP-getty, XMP-ics, XMP-iptcCore, XMP-iptcExt,)Tj
 T*
@@ -5555,7 +5555,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    32)Tj
+(                           -- Image::ExifTool 12.15 --                                    32)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           block of metadata, but deleting a family 2 group \(eg. Audio,)Tj
@@ -5848,7 +5848,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    33)Tj
+(                           -- Image::ExifTool 12.15 --                                    33)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           my %tags = \()Tj
@@ -6079,7 +6079,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    34)Tj
+(                           -- Image::ExifTool 12.15 --                                    34)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       "string" in the ExifTool tag name documentation\). By default ExifTool)Tj
@@ -6230,7 +6230,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    35)Tj
+(                           -- Image::ExifTool 12.15 --                                    35)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       \(Note: Here, "IPTC" Refers to the older IPTC IIM format.  The more)Tj
@@ -6477,7 +6477,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 12.14 --                                    36)Tj
+(                           -- Image::ExifTool 12.15 --                                    36)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (   M)Tj
@@ -6830,7 +6830,7 @@ T*
 0.6 0 TD
 (G\(3pm\))Tj
 -27 -4.4 TD
-(perl v5.18.4                      2020-12-26                       EXIFTOOL\(1\))Tj
+(perl v5.18.4                      2021-01-18                       EXIFTOOL\(1\))Tj
 ET
 endstream
 endobj
@@ -7266,8 +7266,8 @@ endobj
 endobj
 121 0 obj
 <<
-/CreationDate (D:20210106131701-05'00')
-/ModDate (D:20210106131701-05'00')
+/CreationDate (D:20210118084422-05'00')
+/ModDate (D:20210118084422-05'00')
 /Producer (Apple pstopdf)
 >>
 endobj
@@ -7281,135 +7281,135 @@ endobj
 xref
 0 123
 0000000000 65535 f 
-0000169173 00000 n 
+0000169189 00000 n 
 0000000016 00000 n 
 0000004112 00000 n 
-0000168174 00000 n 
-0000168575 00000 n 
-0000167639 00000 n 
-0000172275 00000 n 
-0000169253 00000 n 
+0000168190 00000 n 
+0000168591 00000 n 
+0000167655 00000 n 
+0000172291 00000 n 
+0000169269 00000 n 
 0000004218 00000 n 
 0000009550 00000 n 
-0000169334 00000 n 
+0000169350 00000 n 
 0000009657 00000 n 
 0000014384 00000 n 
-0000169417 00000 n 
+0000169433 00000 n 
 0000014491 00000 n 
 0000019421 00000 n 
-0000169500 00000 n 
+0000169516 00000 n 
 0000019528 00000 n 
 0000024242 00000 n 
-0000169583 00000 n 
+0000169599 00000 n 
 0000024349 00000 n 
 0000028355 00000 n 
-0000169666 00000 n 
+0000169682 00000 n 
 0000028462 00000 n 
 0000033161 00000 n 
-0000169749 00000 n 
+0000169765 00000 n 
 0000033268 00000 n 
 0000037886 00000 n 
-0000169832 00000 n 
+0000169848 00000 n 
 0000037993 00000 n 
 0000042869 00000 n 
-0000169915 00000 n 
+0000169931 00000 n 
 0000042976 00000 n 
 0000047682 00000 n 
-0000169998 00000 n 
+0000170014 00000 n 
 0000047789 00000 n 
 0000052254 00000 n 
-0000172801 00000 n 
-0000172410 00000 n 
-0000170082 00000 n 
+0000172817 00000 n 
+0000172426 00000 n 
+0000170098 00000 n 
 0000052361 00000 n 
 0000056894 00000 n 
-0000170166 00000 n 
+0000170182 00000 n 
 0000057001 00000 n 
 0000061390 00000 n 
-0000170250 00000 n 
+0000170266 00000 n 
 0000061497 00000 n 
 0000065887 00000 n 
-0000170334 00000 n 
+0000170350 00000 n 
 0000065994 00000 n 
 0000070154 00000 n 
-0000170418 00000 n 
+0000170434 00000 n 
 0000070261 00000 n 
 0000074461 00000 n 
-0000170502 00000 n 
+0000170518 00000 n 
 0000074568 00000 n 
 0000078627 00000 n 
-0000170586 00000 n 
+0000170602 00000 n 
 0000078734 00000 n 
 0000083044 00000 n 
-0000170670 00000 n 
+0000170686 00000 n 
 0000083151 00000 n 
 0000087264 00000 n 
-0000170754 00000 n 
+0000170770 00000 n 
 0000087371 00000 n 
 0000091760 00000 n 
-0000170838 00000 n 
+0000170854 00000 n 
 0000091867 00000 n 
 0000096405 00000 n 
-0000172548 00000 n 
-0000170922 00000 n 
+0000172564 00000 n 
+0000170938 00000 n 
 0000096512 00000 n 
 0000101372 00000 n 
-0000171006 00000 n 
+0000171022 00000 n 
 0000101479 00000 n 
 0000106225 00000 n 
-0000171090 00000 n 
+0000171106 00000 n 
 0000106332 00000 n 
 0000110693 00000 n 
-0000171174 00000 n 
+0000171190 00000 n 
 0000110800 00000 n 
 0000115214 00000 n 
-0000171258 00000 n 
+0000171274 00000 n 
 0000115321 00000 n 
 0000119454 00000 n 
-0000171342 00000 n 
+0000171358 00000 n 
 0000119561 00000 n 
 0000123327 00000 n 
-0000171426 00000 n 
+0000171442 00000 n 
 0000123434 00000 n 
 0000128288 00000 n 
-0000171510 00000 n 
+0000171526 00000 n 
 0000128395 00000 n 
 0000132938 00000 n 
-0000171594 00000 n 
+0000171610 00000 n 
 0000133045 00000 n 
-0000138309 00000 n 
-0000171678 00000 n 
-0000138416 00000 n 
-0000142989 00000 n 
-0000172686 00000 n 
-0000171764 00000 n 
-0000143097 00000 n 
-0000148146 00000 n 
-0000171852 00000 n 
-0000148254 00000 n 
-0000153233 00000 n 
-0000171940 00000 n 
-0000153341 00000 n 
-0000158014 00000 n 
-0000172028 00000 n 
-0000158122 00000 n 
-0000163227 00000 n 
-0000172116 00000 n 
-0000163335 00000 n 
-0000167531 00000 n 
-0000167779 00000 n 
-0000167982 00000 n 
-0000172204 00000 n 
-0000172233 00000 n 
-0000172907 00000 n 
-0000173031 00000 n 
+0000138313 00000 n 
+0000171694 00000 n 
+0000138420 00000 n 
+0000143005 00000 n 
+0000172702 00000 n 
+0000171780 00000 n 
+0000143113 00000 n 
+0000148162 00000 n 
+0000171868 00000 n 
+0000148270 00000 n 
+0000153249 00000 n 
+0000171956 00000 n 
+0000153357 00000 n 
+0000158030 00000 n 
+0000172044 00000 n 
+0000158138 00000 n 
+0000163243 00000 n 
+0000172132 00000 n 
+0000163351 00000 n 
+0000167547 00000 n 
+0000167795 00000 n 
+0000167998 00000 n 
+0000172220 00000 n 
+0000172249 00000 n 
+0000172923 00000 n 
+0000173047 00000 n 
 trailer
 <<
 /Size 123
 /Root 122 0 R
 /Info 121 0 R
-/ID [<c3799ea34179fa433427e08a1cddad0a><c3799ea34179fa433427e08a1cddad0a>]
+/ID [<e6f10e8b1eb1005d2a7ec60ad592facc><e6f10e8b1eb1005d2a7ec60ad592facc>]
 >>
 startxref
-173103
+173119
 %%EOF

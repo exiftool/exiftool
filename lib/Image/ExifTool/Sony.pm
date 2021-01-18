@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.34';
+$VERSION = '3.35';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -146,6 +146,7 @@ sub PrintInvLensSpec($;$$);
     32859 => 'Sony FE 20mm F1.8 G', #IB/JR
     32860 => 'Sony FE 12-24mm F2.8 GM', #JR/IB
     32864 => 'Sony FE 28-60mm F4-5.6', #JR
+    32865 => 'Sony FE 35mm F1.4 GM', #IB/JR
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -185,6 +186,7 @@ sub PrintInvLensSpec($;$$);
     49462 => 'Tamron 70-180mm F2.8 Di III VXD', #JR (Model A056)
     49463 => 'Tamron 28-200mm F2.8-5.6 Di III RXD', #JR (Model A071)
     49464 => 'Tamron 70-300mm F4.5-6.3 Di III RXD', #JR (Model A047)
+    49465 => 'Tamron 17-70mm F2.8 Di III-A VC RXD', #JR (Model B070)
     49473 => 'Tokina atx-m 85mm F1.8 FE', #JR
     49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
     49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)

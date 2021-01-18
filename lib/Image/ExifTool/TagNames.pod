@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23727 tags, with 15422 unique tag names.
+They contain a total of 23980 tags, with 15546 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -115,17 +115,21 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
                PreviewImage                     no
   'APP3'       Meta                             Kodak Meta
                Stim                             Stim
+               ThermalData                      no
                PreviewImage                     no
   'APP4'       Scalado                          Scalado
                FPXR                             FlashPix
+               ThermalParams                    DJI ThermalParams
                PreviewImage                     no
   'APP5'       RMETA                            Ricoh RMETA
                SamsungUniqueID                  Samsung APP5
+               ThermalCalibration               no
                PreviewImage                     no
   'APP6'       EPPIM                            JPEG EPPIM
                NITF                             JPEG NITF
                HP_TDHD                          HP TDHD
                GoPro                            GoPro GPMF
+               DJI_DTAT                         no
   'APP7'       Pentax                           Pentax
                Huawei                           Unknown
                Qualcomm                         Qualcomm
@@ -5787,6 +5791,205 @@ boot, not including standby time.
   'timescale'          RunTimeScale             no
   'value'              RunTimeValue             no
 
+=head2 NikonSettings Tags
+
+User settings for newer Nikon models.  A number of the tags are marked as
+Unknown only to reduce the volume of the normal output.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   ISOAutoHiLimit                       no
+  0x0002   ISOAutoFlashLimit                    no
+  0x0003   ISOAutoShutterTime                   no
+  0x000b   FlickerReductionShooting             no
+  0x000c   FlickerReductionIndicator            no
+  0x000d   MovieISOAutoHiLimit                  no
+  0x000e   MovieISOAutoControlManualMode        no
+  0x001d   AF-CPrioritySel                      no
+  0x001e   AF-SPrioritySel                      no
+  0x0020   AFPointSel                           no
+  0x0022   AFActivation                         no
+  0x0023   FocusPointWrap                       no
+  0x0025   ManualFocusPointIllumination         no
+  0x0026   AF-AssistIlluminator                 no
+  0x0029   ISOStepSize                          no
+  0x002a   ExposureControlStepSize              no
+  0x002b   EasyExposureCompensation             no
+  0x002c   MatrixMetering                       no
+  0x002d   CenterWeightedAreaSize               no
+  0x002f   FineTuneOptMatrixMetering            no
+  0x0030   FineTuneOptCenterWeighted            no
+  0x0031   FineTuneOptSpotMetering              no
+  0x0032   FineTuneOptHighlightWeighted         no
+  0x0033   ShutterReleaseButtonAE-L             no
+  0x0034   StandbyMonitorOffTime                no
+  0x0035   SelfTimerTime                        no
+  0x0036   SelfTimerShotCount                   no
+  0x0037   SelfTimerShotInterval                no
+  0x0038   PlaybackMonitorOffTime               no
+  0x0039   MenuMonitorOffTime                   no
+  0x003a   ShootingInfoMonitorOffTime           no
+  0x003b   ImageReviewMonitorOffTime            no
+  0x003c   LiveViewMonitorOffTime               no
+  0x003e   CLModeShootingSpeed                  no
+  0x003f   MaxContinuousRelease                 no
+  0x0040   ExposureDelayMode                    no
+  0x0041   ElectronicFront-CurtainShutter       no
+  0x0042   FileNumberSequence                   no
+  0x0043   FramingGridDisplay                   no
+  0x0045   LCDIllumination                      no
+  0x0046   OpticalVR                            no
+  0x0047   FlashSyncSpeed                       no
+  0x0048   FlashShutterSpeed                    no
+  0x0049   FlashExposureCompArea                no
+  0x004a   AutoFlashISOSensitivity              no
+  0x0051   AssignBktButton                      no
+  0x0052   AssignMovieRecordButton              no
+  0x0053   MultiSelectorShootMode               no
+  0x0054   MultiSelectorPlaybackMode            no
+  0x0056   MultiSelectorLiveView                no
+  0x0058   CmdDialsReverseRotExposureComp?      no
+  0x0059   CmdDialsChangeMainSubExposure?       no
+  0x005a   CmdDialsChangeMainSub                no
+  0x005b   CmdDialsMenuAndPlayback              no
+  0x005c   SubDialFrameAdvance                  no
+  0x005d   ReleaseButtonToUseDial               no
+  0x005e   ReverseIndicators                    no
+  0x0062   MovieShutterButton                   no
+  0x0063   Language                             no
+  0x006c   ShootingInfoDisplay                  no
+  0x0074   FlickAdvanceDirection                no
+  0x0080   RemoteFuncButton                     no
+  0x008b   CmdDialsReverseRotation              no
+  0x008d   FocusPeakingHighlightColor           no
+  0x008e   ContinuousModeDisplay                no
+  0x008f   ShutterSpeedLock                     no
+  0x0090   ApertureLock                         no
+  0x0091   MovieHighlightDisplayThreshold       no
+  0x0093   BlockShotAFResponse                  no
+  0x0094   SubjectMotion                        no
+  0x0095   Three-DTrackingFaceDetection         no
+  0x0097   StoreByOrientation                   no
+  0x0099   DynamicAreaAFAssist                  no
+  0x009a   ExposureCompStepSize                 no
+  0x009b   SyncReleaseMode                      no
+  0x009c   ModelingFlash                        no
+  0x009d   AutoBracketModeM                     no
+  0x009e   PreviewButton                        no
+  0x00a0   Func1Button                          no
+  0x00a2   Func2Button                          no
+  0x00a3   AF-OnButton                          no
+  0x00a4   SubSelector                          no
+  0x00a5   SubSelectorCenter                    no
+  0x00a7   LensFunc1Button                      no
+  0x00a8   CmdDialsApertureSetting              no
+  0x00a9   MultiSelector                        no
+  0x00aa   LiveViewButtonOptions                no
+  0x00ab   LightSwitch                          no
+  0x00b1   MoviePreviewButton                   no
+           MovieFunc1Button                     no
+  0x00b3   MovieFunc1Button                     no
+           MovieFunc2Button                     no
+  0x00b5   MovieFunc2Button                     no
+  0x00b6   AssignMovieSubselector               no
+  0x00b8   LimitAFAreaModeSelD9?                no
+  0x00b9   LimitAFAreaModeSelD25?               no
+  0x00bc   LimitAFAreaModeSel3D?                no
+  0x00bd   LimitAFAreaModeSelGroup?             no
+  0x00be   LimitAFAreaModeSelAuto?              no
+  0x00c1   LimitSelectableImageArea5To4?        no
+  0x00c2   LimitSelectableImageArea1To1?        no
+  0x00d4   PhotoShootingMenuBank                no
+  0x00d5   CustomSettingsBank                   no
+  0x00d6   LimitAF-AreaModeSelPinpoint?         no
+  0x00d7   LimitAF-AreaModeSelDynamic?          no
+  0x00d8   LimitAF-AreaModeSelWideAF_S?         no
+  0x00d9   LimitAF-AreaModeSelWideAF_L?         no
+  0x00da   LowLightAF                           no
+  0x00db   LimitSelectableImageAreaDX?          no
+  0x00dc   LimitSelectableImageArea5To4?        no
+  0x00dd   LimitSelectableImageArea1To1?        no
+  0x00de   LimitSelectableImageArea16To9?       no
+  0x00df   ApplySettingsToLiveView              no
+  0x00e0   FocusPeakingLevel                    no
+  0x00e9   LensControlRing                      no
+  0x00ed   MovieMultiSelector                   no
+  0x00ee   MovieAFSpeed                         no
+  0x00ef   MovieAFSpeedApply                    no
+  0x00f0   MovieAFTrackingSensitivity           no
+  0x00f1   MovieHighlightDisplayPattern         no
+  0x00f2   SubDialFrameAdvanceRating5?          no
+  0x00f3   SubDialFrameAdvanceRating4?          no
+  0x00f4   SubDialFrameAdvanceRating3?          no
+  0x00f5   SubDialFrameAdvanceRating2?          no
+  0x00f6   SubDialFrameAdvanceRating1?          no
+  0x00f7   SubDialFrameAdvanceRating0?          no
+  0x00f9   MovieAF-OnButton                     no
+  0x00fb   SecondarySlotFunction                no
+  0x00fc   SilentPhotography                    no
+  0x00fd   ExtendedShuttterSpeeds               no
+  0x0109   BracketSet                           no
+  0x010a   BracketProgram                       no
+  0x010b   BracketIncrement                     no
+  0x010c   BracketIncrement                     no
+  0x0116   GroupAreaC1                          no
+  0x0117   AutoAreaAFStartingPoint              no
+  0x0118   FocusPointPersistence                no
+  0x0119   LimitAFAreaModeSelD49?               no
+  0x011a   LimitAFAreaModeSelD105?              no
+  0x011b   LimitAFAreaModeSelGroupC1?           no
+  0x011c   LimitAFAreaModeSelGroupC2?           no
+  0x011d   AutoFocusModeRestrictions            no
+  0x011e   FocusPointBrightness                 no
+  0x011f   CHModeShootingSpeed                  no
+  0x0120   CLModeShootingSpeed                  no
+  0x0121   QuietShutterShootingSpeed            no
+  0x0122   LimitReleaseModeSelCL?               no
+  0x0123   LimitReleaseModeSelCH?               no
+  0x0124   LimitReleaseModeSelQ?                no
+  0x0125   LimitReleaseModeSelTimer?            no
+  0x0126   LimitReleaseModeSelMirror-Up?        no
+  0x0127   LimitSelectableImageArea16To9?       no
+  0x0128   RearControPanelDisplay               no
+  0x0129   FlashBurstPriority                   no
+  0x012a   RecallShootFuncExposureMode          no
+  0x012b   RecallShootFuncShutterSpeed          no
+  0x012c   RecallShootFuncAperture              no
+  0x012d   RecallShootFuncExposureComp          no
+  0x012e   RecallShootFuncISO                   no
+  0x012f   RecallShootFuncMeteringMode          no
+  0x0130   RecallShootFuncWhiteBalance          no
+  0x0131   RecallShootFuncAFAreaMode            no
+  0x0132   RecallShootFuncFocusTracking         no
+  0x0133   RecallShootFuncAF-On                 no
+  0x0134   VerticalFuncButton                   no
+  0x0135   Func3Button                          no
+  0x0136   VerticalAF-OnButton                  no
+  0x0137   VerticalMultiSelector                no
+  0x0138   MeteringButton                       no
+  0x0139   PlaybackFlickUp                      no
+  0x013a   PlaybackFlickUpRating                no
+  0x013b   PlaybackFlickDown                    no
+  0x013c   PlaybackFlickDownRating              no
+  0x013d   MovieFunc3Button                     no
+  0x0150   ShutterType                          no
+  0x0151   LensFunc2Button                      no
+  0x0158   USBPowerDelivery                     no
+  0x015b   GroupAreaC2                          no
+  0x015c   BracketingBurstOptions               no
+  0x015e   PrimarySlot                          no
+  0x015f   ReverseFocusRing                     no
+  0x0160   VerticalFuncButton                   no
+  0x0161   VerticalAFOnButton                   no
+  0x0162   VerticalMultiSelector                no
+  0x0164   VerticalMovieFuncButton              no
+  0x0165   VerticalMovieAFOnButton              no
+  0x0169   LimitAF-AreaModeSelAutoPeople?       no
+  0x016a   LimitAF-AreaModeSelAutoAnimals?      no
+  0x016b   LimitAF-AreaModeSelWideLPeople?      no
+  0x016c   LimitAF-AreaModeSelWideLAnimals?     no
+  0x016e   AFAreaMode                           no
+
 =head2 Canon Tags
 
   Tag ID   Tag Name                             Writable
@@ -9115,6 +9318,29 @@ These tags belong to the ExifTool XMP-drone-dji family 1 group.
   RtkStdLon                                     real
   SelfData                                      string
 
+=head3 DJI ThermalParams Tags
+
+Thermal parameters extracted from APP4 of DJI RJPEG files from the ZH20T.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     36    K1                                   no
+     40    K2                                   no
+     44    K3                                   no
+     48    K4                                   no
+     52    KF                                   no
+     56    B1                                   no
+     60    B2                                   no
+     68    ObjectDistance                       no
+     70    RelativeHumidity                     no
+     72    Emissivity                           no
+     74    Reflection                           no
+     76    AmbientTemperature                   no
+     80    D2                                   no
+     84    KJ                                   no
+     86    DB                                   no
+     88    KK                                   no
+
 =head2 FLIR Tags
 
 Information extracted from the maker notes of JPEG images from thermal
@@ -11909,7 +12135,9 @@ DiMAGE X and Xt.
   0x0037   MechanicalShutterCount               int32u
   0x0039   LocationInfo                         Nikon LocationInfo
   0x003d   BlackLevel                           int16u[4]
+  0x003e   ImageSizeRAW                         yes
   0x0045   CropArea                             int16u[4]
+  0x004e   NikonSettings                        NikonSettings
   0x004f   ColorTemperatureAuto                 int16u
   0x0080   ImageAdjustment                      string
   0x0081   ToneComp                             string
@@ -11949,8 +12177,9 @@ DiMAGE X and Xt.
            ShotInfoD4S                          Nikon ShotInfoD4S
            ShotInfoD5                           Nikon ShotInfoD500
            ShotInfoD500                         Nikon ShotInfoD500
-           ShotInfoD6                           Nikon ShotInfo
+           ShotInfoD6                           Nikon ShotInfoD6
            ShotInfoD610                         Nikon ShotInfoD610
+           ShotInfoZ7_2                         Nikon ShotInfoZ7_2
            ShotInfo02xx                         Nikon ShotInfo
            ShotInfoUnknown                      Nikon ShotInfo
   0x0092   HueAdjustment                        int16s
@@ -11994,6 +12223,7 @@ DiMAGE X and Xt.
            FlashInfo0103                        Nikon FlashInfo0103
            FlashInfo0106                        Nikon FlashInfo0106
            FlashInfo0107                        Nikon FlashInfo0107
+           FlashInfo0300                        Nikon FlashInfo0300
            FlashInfoUnknown                     Nikon FlashInfoUnknown
   0x00a9   ImageOptimization                    string
   0x00aa   Saturation                           string
@@ -12550,6 +12780,39 @@ These tags are extracted from encrypted data in images from the D5 and D500.
   11308    YawAngle                             fixed32u
   11940    NikonMeteringMode                    int8u & 0x03
 
+=head3 Nikon ShotInfoD6 Tags
+
+These tags are extracted from encrypted data in images from the D6.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    ShotInfoVersion                      no
+  49690    RollAngle                            fixed32u
+  49694    PitchAngle                           fixed32u
+  49698    YawAngle                             fixed32u
+
+=head3 Nikon ShotInfoD610 Tags
+
+These tags are extracted from encrypted data in images from the D610.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    ShotInfoVersion                      no
+      4    FirmwareVersion                      no
+   1999    CustomSettingsD610                   NikonCustom SettingsD610
+
+=head3 Nikon ShotInfoZ7_2 Tags
+
+These tags are extracted from encrypted data in images from the Z7_2.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    ShotInfoVersion                      no
+      4    FirmwareVersion                      no
+  52786    RollAngle                            fixed32u
+  52790    PitchAngle                           fixed32u
+  52794    YawAngle                             fixed32u
+
 =head3 Nikon ShotInfo Tags
 
 This information is encrypted for ShotInfoVersion 02xx, and some tags are
@@ -12568,16 +12831,6 @@ only valid for specific models.
     343    ShutterCount                         undef[2]
     430    VibrationReduction                   int8u
     589    ShutterCount                         int32u
-
-=head3 Nikon ShotInfoD610 Tags
-
-These tags are extracted from encrypted data in images from the D610.
-
-   Index   Tag Name                             Writable
-   -----   --------                             --------
-      0    ShotInfoVersion                      no
-      4    FirmwareVersion                      no
-   1999    CustomSettingsD610                   NikonCustom SettingsD610
 
 =head3 Nikon ColorBalance1 Tags
 
@@ -12877,6 +13130,15 @@ These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
      42    FlashGroupCOutput                    int8u
            FlashGroupCCompensation              int8s
 
+=head3 Nikon FlashInfo0300 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    FlashInfoVersion                     no
+      4    FlashSource                          int8u
+      6    ExternalFlashFirmware                int8u[2]
+     27    FlashCompensation                    int8s
+
 =head3 Nikon FlashInfoUnknown Tags
 
   Index1   Tag Name                             Writable
@@ -12924,8 +13186,10 @@ These tags are written by Nikon DSLR's which have the live view feature.
      42    AFImageWidth                         int16u
      44    AFImageHeight                        int16u
      46    AFAreaXPosition                      int16u
+     47    AFFocusPointXPosition                int8u~
      48    AFAreaYPosition                      int16u
            AFPointsInFocus                      undef[20]
+     49    AFFocusPointYPosition                int8u~
      50    AFAreaWidth                          int16u
      52    AFAreaHeight                         int16u
      56    PrimaryAFPoint                       int8u
@@ -25422,7 +25686,7 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
 
 Timed metadata extracted from QuickTime media data and some AVI videos when
 the ExtractEmbedded option is used.  Although most of these tags are
-combined into the single table below, ExifTool currently reads 46 different
+combined into the single table below, ExifTool currently reads 49 different
 formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
@@ -29757,7 +30021,7 @@ L<https://tech.ebu.ch/docs/tech/tech3306-2009.pdf> for the specification.
 
 =head3 RIFF UserText Tags
 
-Tags decoded from the USER-format txts stream written by an unknown dashcam.
+Tags decoded from the USER-format txts stream written by Momento M6 dashcam.
 Extracted only if the ExtractEmbedded option is used.
 
   Index1   Tag Name                             Writable

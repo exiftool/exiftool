@@ -1261,24 +1261,25 @@ my %code2charset = (
     },
 );
 
-# streamed USER txts written by some dashcam (ref PH)
+# streamed USER txts written by Momento M6 dashcam (ref PH)
 %Image::ExifTool::RIFF::UserText = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 2 => 'Location' },
     NOTES => q{
-        Tags decoded from the USER-format txts stream written by an unknown dashcam.
+        Tags decoded from the USER-format txts stream written by Momento M6 dashcam.
         Extracted only if the ExtractEmbedded option is used.
     },
-  #  0 - int32u: 0
+    # (little-endian)
+  #  0 - int32u: 32
   #  4 - int32u: sample number (starting from unknown offset)
-  #  8 - int8u[4]: "0 x y z" ? (z mostly 5-8)
+  #  8 - int8u[4]: "w x y z" ? (w 0=front cam, 1=rear cam, z mostly 5-8)
   # 12 - int8u[4]: "0 x 1 0" ? (x incrementing once per second)
   # 16 - int8u[4]: "0 32 0 x" ?
   # 20 - int32u: 100-150(mostly), 250-300(once per second)
   # 24 - int8u[4]: "0 x y 0" ?
     28 => { Name => 'GPSAltitude', Format => 'int32u', ValueConv => '$val / 10' }, # (NC)
   # 32 - int32u: 0(mostly), 23(once per second)
-  # 36 - int32u: 1
+  # 36 - int32u: 0
     40 => { Name => 'Accelerometer', Format => 'float[3]' },
   # 52 - int32u: 1
     56 => { Name => 'GPSSpeed',      Format => 'float' }, # km/h

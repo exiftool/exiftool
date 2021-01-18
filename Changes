@@ -4,8 +4,18 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 12.00. (Other versions are
+Note: The most recent production release is Version 12.15. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Jan. 18, 2021 - Version 12.15 (production release)
+
+  - Added a couple of new Sony LensType values (thanks LibRaw and Jos Roost)
+  - Added a new Nikon FlashMode value (thanks Mike)
+  - Decode NikonSettings (thanks Warren Hatch)
+  - Decode thermal information from DJI RJPEG images
+  - Fixed extra newline in -echo3 and -echo4 outputs added in version 12.10
+  - Fixed out-of-memory problem when writing some very large PNG files under
+    Windows
 
 Jan. 6, 2021 - Version 12.14
 

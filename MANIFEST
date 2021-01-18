@@ -115,6 +115,7 @@ html/TagNames/Motorola.html
 html/TagNames/Nikon.html
 html/TagNames/NikonCapture.html
 html/TagNames/NikonCustom.html
+html/TagNames/NikonSettings.html
 html/TagNames/Nintendo.html
 html/TagNames/OOXML.html
 html/TagNames/Ogg.html
@@ -337,6 +338,7 @@ lib/Image/ExifTool/Motorola.pm
 lib/Image/ExifTool/Nikon.pm
 lib/Image/ExifTool/NikonCapture.pm
 lib/Image/ExifTool/NikonCustom.pm
+lib/Image/ExifTool/NikonSettings.pm
 lib/Image/ExifTool/Nintendo.pm
 lib/Image/ExifTool/OOXML.pm
 lib/Image/ExifTool/Ogg.pm

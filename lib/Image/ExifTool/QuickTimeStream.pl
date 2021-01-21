@@ -531,7 +531,10 @@ my %insvLimit = (
     PROCESS_PROC => \&Process_tx3g,
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
-    NOTES => 'Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.',
+    NOTES => q{
+        Tags extracted from the tx3g sbtl timed metadata of Yuneec drones, and
+        subtitle text in some other videos.
+    },
     Lat => {
         Name => 'GPSLatitude',
         RawConv => '$$self{FoundGPSLatitude} = 1; $val',
@@ -552,6 +555,11 @@ my %insvLimit = (
     GimYaw   => 'GimbalYaw',
     GimPitch => 'GimbalPitch',
     GimRoll  => 'GimbalRoll',
+    DateTime => { # for date/time-format subtitle text
+        Groups => { 2 => 'Time' },
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    Text => { Groups => { 2 => 'Other' } },
 );
 
 %Image::ExifTool::QuickTime::INSV_MakerNotes = (
@@ -1194,6 +1202,10 @@ sub ProcessSamples($)
                 Image::ExifTool::H264::ParseH264Video($et, \$tmp);
                 $pos += $hdrLen + $len;
                 last if $pos + $hdrLen >= length($buff);
+            }
+            if ($$et{GotNAL06}) {
+                my $eeOpt = $et->Options('ExtractEmbedded');
+                last unless $eeOpt and $eeOpt > 2;
             }
             next;
         }
@@ -1981,7 +1993,13 @@ sub Process_tx3g($$$)
     my $dataPt = $$dirInfo{DataPt};
     return 0 if length $$dataPt < 2;
     pos($$dataPt) = 2;  # skip 2-byte length word
-    $et->HandleTag($tagTablePtr, $1, $2) while $$dataPt =~ /(\w+):([^:]*[^:\s])(\s|$)/sg;
+    $et->VerboseDir('tx3g', undef, length($$dataPt)-2);
+    $et->HandleTag($tagTablePtr, 'Text', substr($$dataPt, 2));
+    if ($$dataPt =~ /^..\w{3} (\d{4})-(\d{2})-(\d{2}) (\d{2}:\d{2}:\d{2}) ?([-+])(\d{2}):?(\d{2})$/s) {
+        $et->HandleTag($tagTablePtr, 'DateTime', "$1:$2:$3 $4$5$6:$7");
+    } else {
+        $et->HandleTag($tagTablePtr, $1, $2) while $$dataPt =~ /(\w+):([^:]*[^:\s])(\s|$)/sg;
+    }
     return 1;
 }
 
@@ -2513,7 +2531,7 @@ sub ProcessInsta360($;$)
                     $et->HandleTag($tagTbl, GPSTrack => $a[9]);
                     $et->HandleTag($tagTbl, GPSTrackRef => 'T');
                     $et->HandleTag($tagTbl, GPSAltitude => $a[10]);
-                    $et->HandleTag($tagTbl, Unknown02 => "@a[1,2]") if $unknown;
+                    $et->HandleTag($tagTbl, Unknown02 => "@a[1,2]") if $unknown; # millisecond counter (https://exiftool.org/forum/index.php?topic=9884.msg65143#msg65143)
                 }
             }
         } elsif ($id == 0x101) {

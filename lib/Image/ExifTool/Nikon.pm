@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.91';
+$VERSION = '3.92';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1520,7 +1520,7 @@ my %binaryDataAttrs = (
             7 => 'Fired, External', #14
             8 => 'Fired, Commander Mode',
             9 => 'Fired, TTL Mode',
-            18 => 'Fired, Sync Mode', #G.F. (movie LED light)
+            18 => 'LED Light', #G.F. (movie LED light)
         },
     },
     0x0088 => [
@@ -9184,6 +9184,7 @@ my %nikonFocalConversions = (
             7 => 'Fired, External', #14
             8 => 'Fired, Commander Mode',
             9 => 'Fired, TTL Mode',
+            18 => 'LED Light', #G.F. (movie LED light)
         },
     },
     0x2000098 => [

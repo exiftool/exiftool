@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23980 tags, with 15546 unique tag names.
+They contain a total of 23982 tags, with 15546 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -25951,11 +25951,13 @@ changed via the config file.
 
 =head3 QuickTime tx3g Tags
 
-Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.
+Tags extracted from the tx3g sbtl timed metadata of Yuneec drones, and
+subtitle text in some other videos.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
   'Alt'        GPSAltitude                      no
+  'DateTime'   DateTime                         no
   'GimPitch'   GimbalPitch                      no
   'GimRoll'    GimbalRoll                       no
   'GimYaw'     GimbalYaw                        no
@@ -25963,6 +25965,7 @@ Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.
   'Lon'        GPSLongitude                     no
   'Pitch'      Pitch                            no
   'Roll'       Roll                             no
+  'Text'       Text                             no
   'Yaw'        Yaw                              no
 
 =head3 QuickTime FileType Tags

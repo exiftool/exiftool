@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.56';
+$VERSION = '2.57';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -424,7 +424,6 @@ my %eeBox = (
     # (note: vide is only processed if specific atoms exist in the VideoSampleDesc)
     vide => { %eeStd,
         JPEG => 'stsd',
-      # avcC => 'stsd', # (uncomment to parse H264 stream)
     },
     text => { %eeStd },
     meta => { %eeStd },
@@ -433,6 +432,10 @@ my %eeBox = (
     camm => { %eeStd }, # (Insta360)
     ctbx => { %eeStd }, # (GM cars)
     ''   => { 'gps ' => 'moov', 'GPS ' => 'main' }, # (no handler -- in top level 'moov' box, and main)
+);
+# boxes to save when ExtractEmbedded is set to 2 or higher
+my %eeBox2 = (
+    vide => { avcC => 'stsd' }, # (parses H264 video stream)
 );
 
 # QuickTime atoms
@@ -8884,7 +8887,7 @@ sub ProcessMOV($$;$)
     my $dirID = $$dirInfo{DirID} || '';
     my $charsetQuickTime = $et->Options('CharsetQuickTime');
     my ($buff, $tag, $size, $track, $isUserData, %triplet, $doDefaultLang, $index);
-    my ($dirEnd, $ee, $unkOpt, %saveOptions, $atomCount);
+    my ($dirEnd, $unkOpt, %saveOptions, $atomCount);
 
     my $topLevel = not $$et{InQuickTime};
     $$et{InQuickTime} = 1;
@@ -8948,8 +8951,8 @@ sub ProcessMOV($$;$)
     }
     $$raf{NoBuffer} = 1 if $et->Options('FastScan'); # disable buffering in FastScan mode
 
-    if ($$et{OPTIONS}{ExtractEmbedded}) {
-        $ee = 1;
+    my $ee = $$et{OPTIONS}{ExtractEmbedded};
+    if ($ee) {
         $unkOpt = $$et{OPTIONS}{Unknown};
         require 'Image/ExifTool/QuickTimeStream.pl';
     }
@@ -9032,6 +9035,9 @@ sub ProcessMOV($$;$)
             } elsif ($handlerType ne 'vide' and not $$et{OPTIONS}{Validate}) {
                 EEWarn($et);
             }
+        } elsif ($ee and $ee > 1 and $eeBox2{$handlerType} and $eeBox2{$handlerType}{$tag}) {
+            $eeTag = 1;
+            $$et{OPTIONS}{Unknown} = 1;
         }
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
 

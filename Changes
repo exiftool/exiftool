@@ -4,8 +4,16 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 12.15. (Other versions are
+Note: The most recent production release is Version 12.16. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Jan. 21, 2021 - Version 12.16 (production release)
+
+  - Extract another form of video subtitle text
+  - Enhanced -ee option with -ee2 and -ee3 to allow parsing of the H264 video
+    stream in MP4 files
+  - Changed a Nikon FlashMode value
+  - Fixed problem that caused a failed DPX test on Strawberry Perl
 
 Jan. 18, 2021 - Version 12.15 (production release)
 

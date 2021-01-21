@@ -568,8 +568,10 @@ distribution for examples.</p>
     <td>Flag to extract information from embedded
     documents in EPS files, embedded EPS information and JPEG and Jpeg2000
     images in PDF files, embedded MPF images in JPEG and MPO files, timed
-    metadata in videos, and the resource fork of Mac OS files.</td>
-    <td align=center>0 or 1</td><td align=center>undef</td></tr>
+    metadata in videos, and the resource fork of Mac OS files.  A setting of 2
+    also causes the H264 video stream in MP4 files to be parsed until the first
+    SEI message is decoded, or 3 to parse the entire stream.</td>
+    <td align=center>0, 1, 2 or 3</td><td align=center>undef</td></tr>
 <tr id="FastScan"><td>FastScan</td>
     <td>Flag to increase speed when reading files by avoiding extraction of some
     types of metadata.  With this option set to 1, ExifTool will not scan to the

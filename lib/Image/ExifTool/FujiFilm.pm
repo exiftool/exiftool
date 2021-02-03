@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.78';
+$VERSION = '1.79';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -623,6 +623,7 @@ my %faceCategories = (
             0x700 => 'Eterna', #12
             0x800 => 'Classic Negative', #forum10536
             0x900 => 'Bleach Bypass', #forum10890
+            0xa00 => 'Nostalgic Neg', #forum12085
         },
     },
     0x1402 => { #2

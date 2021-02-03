@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23982 tags, with 15546 unique tag names.
+They contain a total of 24075 tags, with 15588 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1156,9 +1156,10 @@ C<integer> is a string of digits (possibly beginning with a '+' or '-'),
 C<real> is a floating point number, C<rational> is entered as a floating
 point number but stored as two C<integer> strings separated by a '/'
 character, C<date> is a date/time string entered in the format "YYYY:mm:dd
-HH:MM:SS[.ss][+/-HH:MM]", C<boolean> is either "True" or "False", C<struct>
-indicates a structured tag, and C<lang-alt> is a tag that supports alternate
-languages.
+HH:MM:SS[.ss][+/-HH:MM]", C<boolean> is either "True" or "False" (but "true"
+and "false" may be written as a ValueConv value for compatibility with
+non-conforming applications), C<struct> indicates a structured tag, and
+C<lang-alt> is a tag that supports alternate languages.
 
 When reading, C<struct> tags are extracted only if the Struct (-struct)
 option is used.  Otherwise the corresponding I<Flattened> tags, indicated by
@@ -1504,24 +1505,39 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   CircGradBasedCorrMaskY                        real/_
   CircGradBasedCorrMaskZeroX                    real/_
   CircGradBasedCorrMaskZeroY                    real/_
+  CircGradBasedCorrRangeMask                    CorrectionRangeMask Struct_+
+  CircGradBasedCorrRangeMaskColorAmount         real/_+
+  CircGradBasedCorrRangeMaskDepthFeather        real/_+
+  CircGradBasedCorrRangeMaskDepthMax            real/_+
+  CircGradBasedCorrRangeMaskDepthMin            real/_+
+  CircGradBasedCorrRangeMaskLumFeather          real/_+
+  CircGradBasedCorrRangeMaskLumMax              real/_+
+  CircGradBasedCorrRangeMaskLumMin              real/_+
+  CircGradBasedCorrRangeMaskType                string/_+
+  CircGradBasedCorrRangeMaskVersion             string/_+
+  CircGradBasedCorrBlacks2012                   real/_
   CircGradBasedCorrBrightness                   real/_
   CircGradBasedCorrClarity                      real/_
   CircGradBasedCorrClarity2012                  real/_
   CircGradBasedCorrContrast                     real/_
   CircGradBasedCorrContrast2012                 real/_
   CircGradBasedCorrDefringe                     real/_
+  CircGradBasedCorrDehaze                       real/_
   CircGradBasedCorrExposure                     real/_
   CircGradBasedCorrExposure2012                 real/_
   CircGradBasedCorrHighlights2012               real/_
+  CircGradBasedCorrHue                          real/_
   CircGradBasedCorrLuminanceNoise               real/_
   CircGradBasedCorrMoire                        real/_
   CircGradBasedCorrSaturation                   real/_
   CircGradBasedCorrShadows2012                  real/_
   CircGradBasedCorrSharpness                    real/_
   CircGradBasedCorrTemperature                  real/_
+  CircGradBasedCorrTexture                      real/_
   CircGradBasedCorrTint                         real/_
   CircGradBasedCorrHue                          real/_
   CircGradBasedCorrSaturation                   real/_
+  CircGradBasedCorrWhites2012                   real/_
   CircGradBasedCorrWhat                         string/_
   Clarity                                       integer/
   Clarity2012                                   integer/
@@ -1604,24 +1620,39 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   GradientBasedCorrMaskY                        real/_
   GradientBasedCorrMaskZeroX                    real/_
   GradientBasedCorrMaskZeroY                    real/_
+  GradientBasedCorrRangeMask                    CorrectionRangeMask Struct_+
+  GradientBasedCorrRangeMaskColorAmount         real/_+
+  GradientBasedCorrRangeMaskDepthFeather        real/_+
+  GradientBasedCorrRangeMaskDepthMax            real/_+
+  GradientBasedCorrRangeMaskDepthMin            real/_+
+  GradientBasedCorrRangeMaskLumFeather          real/_+
+  GradientBasedCorrRangeMaskLumMax              real/_+
+  GradientBasedCorrRangeMaskLumMin              real/_+
+  GradientBasedCorrRangeMaskType                string/_+
+  GradientBasedCorrRangeMaskVersion             string/_+
+  GradientBasedCorrBlacks2012                   real/_
   GradientBasedCorrBrightness                   real/_
   GradientBasedCorrClarity                      real/_
   GradientBasedCorrClarity2012                  real/_
   GradientBasedCorrContrast                     real/_
   GradientBasedCorrContrast2012                 real/_
   GradientBasedCorrDefringe                     real/_
+  GradientBasedCorrDehaze                       real/_
   GradientBasedCorrExposure                     real/_
   GradientBasedCorrExposure2012                 real/_
   GradientBasedCorrHighlights2012               real/_
+  GradientBasedCorrHue                          real/_
   GradientBasedCorrLuminanceNoise               real/_
   GradientBasedCorrMoire                        real/_
   GradientBasedCorrSaturation                   real/_
   GradientBasedCorrShadows2012                  real/_
   GradientBasedCorrSharpness                    real/_
   GradientBasedCorrTemperature                  real/_
+  GradientBasedCorrTexture                      real/_
   GradientBasedCorrTint                         real/_
   GradientBasedCorrHue                          real/_
   GradientBasedCorrSaturation                   real/_
+  GradientBasedCorrWhites2012                   real/_
   GradientBasedCorrWhat                         string/_
   GrainAmount                                   integer/
   GrainFrequency                                integer/
@@ -1738,24 +1769,39 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   PaintCorrectionMaskY                          real/_
   PaintCorrectionMaskZeroX                      real/_
   PaintCorrectionMaskZeroY                      real/_
+  PaintCorrectionRangeMask                      CorrectionRangeMask Struct_+
+  PaintCorrectionRangeMaskColorAmount           real/_+
+  PaintCorrectionRangeMaskDepthFeather          real/_+
+  PaintCorrectionRangeMaskDepthMax              real/_+
+  PaintCorrectionRangeMaskDepthMin              real/_+
+  PaintCorrectionRangeMaskLumFeather            real/_+
+  PaintCorrectionRangeMaskLumMax                real/_+
+  PaintCorrectionRangeMaskLumMin                real/_+
+  PaintCorrectionRangeMaskType                  string/_+
+  PaintCorrectionRangeMaskVersion               string/_+
+  PaintCorrectionBlacks2012                     real/_
   PaintCorrectionBrightness                     real/_
   PaintCorrectionClarity                        real/_
   PaintCorrectionClarity2012                    real/_
   PaintCorrectionContrast                       real/_
   PaintCorrectionContrast2012                   real/_
   PaintCorrectionDefringe                       real/_
+  PaintCorrectionDehaze                         real/_
   PaintCorrectionExposure                       real/_
   PaintCorrectionExposure2012                   real/_
   PaintCorrectionHighlights2012                 real/_
+  PaintCorrectionHue                            real/_
   PaintCorrectionLuminanceNoise                 real/_
   PaintCorrectionMoire                          real/_
   PaintCorrectionSaturation                     real/_
   PaintCorrectionShadows2012                    real/_
   PaintCorrectionSharpness                      real/_
   PaintCorrectionTemperature                    real/_
+  PaintCorrectionTexture                        real/_
   PaintCorrectionTint                           real/_
   PaintCorrectionHue                            real/_
   PaintCorrectionSaturation                     real/_
+  PaintCorrectionWhites2012                     real/_
   PaintCorrectionWhat                           string/_
   ParametricDarks                               integer/
   ParametricHighlights                          integer/
@@ -1902,24 +1948,30 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   CorrectionActive                              boolean
   CorrectionAmount                              real
   CorrectionMasks                               CorrectionMask Struct+
+  CorrectionRangeMask                           CorrectionRangeMask Struct
+  LocalBlacks2012                               real
   LocalBrightness                               real
   LocalClarity                                  real
   LocalClarity2012                              real
   LocalContrast                                 real
   LocalContrast2012                             real
   LocalDefringe                                 real
+  LocalDehaze                                   real
   LocalExposure                                 real
   LocalExposure2012                             real
   LocalHighlights2012                           real
+  LocalHue                                      real
   LocalLuminanceNoise                           real
   LocalMoire                                    real
   LocalSaturation                               real
   LocalShadows2012                              real
   LocalSharpness                                real
   LocalTemperature                              real
+  LocalTexture                                  real
   LocalTint                                     real
   LocalToningHue                                real
   LocalToningSaturation                         real
+  LocalWhites2012                               real
   What                                          string
 
 =head3 XMP CorrectionMask Struct
@@ -1953,6 +2005,20 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   Y                                             real
   ZeroX                                         real
   ZeroY                                         real
+
+=head3 XMP CorrectionRangeMask Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  ColorAmount                                   real
+  DepthFeather                                  real
+  DepthMax                                      real
+  DepthMin                                      real
+  LumFeather                                    real
+  LumMax                                        real
+  LumMin                                        real
+  Type                                          string
+  Version                                       string
 
 =head3 XMP Look Struct
 
@@ -2103,24 +2169,39 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   CircGradBasedCorrMaskY                        real_
   CircGradBasedCorrMaskZeroX                    real_
   CircGradBasedCorrMaskZeroY                    real_
+  CircGradBasedCorrRangeMask                    CorrectionRangeMask Struct_+
+  CircGradBasedCorrRangeMaskColorAmount         real_+
+  CircGradBasedCorrRangeMaskDepthFeather        real_+
+  CircGradBasedCorrRangeMaskDepthMax            real_+
+  CircGradBasedCorrRangeMaskDepthMin            real_+
+  CircGradBasedCorrRangeMaskLumFeather          real_+
+  CircGradBasedCorrRangeMaskLumMax              real_+
+  CircGradBasedCorrRangeMaskLumMin              real_+
+  CircGradBasedCorrRangeMaskType                string_+
+  CircGradBasedCorrRangeMaskVersion             string_+
+  CircGradBasedCorrBlacks2012                   real_
   CircGradBasedCorrBrightness                   real_
   CircGradBasedCorrClarity                      real_
   CircGradBasedCorrClarity2012                  real_
   CircGradBasedCorrContrast                     real_
   CircGradBasedCorrContrast2012                 real_
   CircGradBasedCorrDefringe                     real_
+  CircGradBasedCorrDehaze                       real_
   CircGradBasedCorrExposure                     real_
   CircGradBasedCorrExposure2012                 real_
   CircGradBasedCorrHighlights2012               real_
+  CircGradBasedCorrHue                          real_
   CircGradBasedCorrLuminanceNoise               real_
   CircGradBasedCorrMoire                        real_
   CircGradBasedCorrSaturation                   real_
   CircGradBasedCorrShadows2012                  real_
   CircGradBasedCorrSharpness                    real_
   CircGradBasedCorrTemperature                  real_
+  CircGradBasedCorrTexture                      real_
   CircGradBasedCorrTint                         real_
   CircGradBasedCorrHue                          real_
   CircGradBasedCorrSaturation                   real_
+  CircGradBasedCorrWhites2012                   real_
   CircGradBasedCorrWhat                         string_
   Clarity                                       integer
   Clarity2012                                   integer
@@ -2203,24 +2284,39 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   GradientBasedCorrMaskY                        real_
   GradientBasedCorrMaskZeroX                    real_
   GradientBasedCorrMaskZeroY                    real_
+  GradientBasedCorrRangeMask                    CorrectionRangeMask Struct_+
+  GradientBasedCorrRangeMaskColorAmount         real_+
+  GradientBasedCorrRangeMaskDepthFeather        real_+
+  GradientBasedCorrRangeMaskDepthMax            real_+
+  GradientBasedCorrRangeMaskDepthMin            real_+
+  GradientBasedCorrRangeMaskLumFeather          real_+
+  GradientBasedCorrRangeMaskLumMax              real_+
+  GradientBasedCorrRangeMaskLumMin              real_+
+  GradientBasedCorrRangeMaskType                string_+
+  GradientBasedCorrRangeMaskVersion             string_+
+  GradientBasedCorrBlacks2012                   real_
   GradientBasedCorrBrightness                   real_
   GradientBasedCorrClarity                      real_
   GradientBasedCorrClarity2012                  real_
   GradientBasedCorrContrast                     real_
   GradientBasedCorrContrast2012                 real_
   GradientBasedCorrDefringe                     real_
+  GradientBasedCorrDehaze                       real_
   GradientBasedCorrExposure                     real_
   GradientBasedCorrExposure2012                 real_
   GradientBasedCorrHighlights2012               real_
+  GradientBasedCorrHue                          real_
   GradientBasedCorrLuminanceNoise               real_
   GradientBasedCorrMoire                        real_
   GradientBasedCorrSaturation                   real_
   GradientBasedCorrShadows2012                  real_
   GradientBasedCorrSharpness                    real_
   GradientBasedCorrTemperature                  real_
+  GradientBasedCorrTexture                      real_
   GradientBasedCorrTint                         real_
   GradientBasedCorrHue                          real_
   GradientBasedCorrSaturation                   real_
+  GradientBasedCorrWhites2012                   real_
   GradientBasedCorrWhat                         string_
   GrainAmount                                   integer
   GrainFrequency                                integer
@@ -2337,24 +2433,39 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   PaintCorrectionMaskY                          real_
   PaintCorrectionMaskZeroX                      real_
   PaintCorrectionMaskZeroY                      real_
+  PaintCorrectionRangeMask                      CorrectionRangeMask Struct_+
+  PaintCorrectionRangeMaskColorAmount           real_+
+  PaintCorrectionRangeMaskDepthFeather          real_+
+  PaintCorrectionRangeMaskDepthMax              real_+
+  PaintCorrectionRangeMaskDepthMin              real_+
+  PaintCorrectionRangeMaskLumFeather            real_+
+  PaintCorrectionRangeMaskLumMax                real_+
+  PaintCorrectionRangeMaskLumMin                real_+
+  PaintCorrectionRangeMaskType                  string_+
+  PaintCorrectionRangeMaskVersion               string_+
+  PaintCorrectionBlacks2012                     real_
   PaintCorrectionBrightness                     real_
   PaintCorrectionClarity                        real_
   PaintCorrectionClarity2012                    real_
   PaintCorrectionContrast                       real_
   PaintCorrectionContrast2012                   real_
   PaintCorrectionDefringe                       real_
+  PaintCorrectionDehaze                         real_
   PaintCorrectionExposure                       real_
   PaintCorrectionExposure2012                   real_
   PaintCorrectionHighlights2012                 real_
+  PaintCorrectionHue                            real_
   PaintCorrectionLuminanceNoise                 real_
   PaintCorrectionMoire                          real_
   PaintCorrectionSaturation                     real_
   PaintCorrectionShadows2012                    real_
   PaintCorrectionSharpness                      real_
   PaintCorrectionTemperature                    real_
+  PaintCorrectionTexture                        real_
   PaintCorrectionTint                           real_
   PaintCorrectionHue                            real_
   PaintCorrectionSaturation                     real_
+  PaintCorrectionWhites2012                     real_
   PaintCorrectionWhat                           string_
   ParametricDarks                               integer
   ParametricHighlights                          integer
@@ -5927,7 +6038,7 @@ Unknown only to reduce the volume of the normal output.
   0x00f9   MovieAF-OnButton                     no
   0x00fb   SecondarySlotFunction                no
   0x00fc   SilentPhotography                    no
-  0x00fd   ExtendedShuttterSpeeds               no
+  0x00fd   ExtendedShutterSpeeds                no
   0x0109   BracketSet                           no
   0x010a   BracketProgram                       no
   0x010b   BracketIncrement                     no
@@ -8670,6 +8781,7 @@ well as newer tags and values added by later models.
   0x051e   InitialAFPointAIServoAF              int32s
   0x060f   MirrorLockup                         int32s
   0x0610   ContinuousShootingSpeed              int32s[6]
+           ContinuousShootingSpeed              int32s[5]
            ContinuousShootingSpeed              int32s[3]
   0x0611   ContinuousShotLimit                  int32s[2]
   0x0612   RestrictDriveModes                   int32s
@@ -25514,6 +25626,7 @@ which case subsequent occurrences are extracted as sub-documents).
   0x00c5   GPSImgDirectionRef                   no
   0x00c6   GPSImgDirection                      no
   0x00c7   GPSMapDatum                          no
+  0x00ca   GPSDateStamp                         no
   0x00e0   MakeModel                            H264 MakeModel
   0x00e1   RecInfo                              H264 RecInfo
   0x00e4   Model                                no
@@ -35170,6 +35283,10 @@ values, may created via the ExifTool configuration file.
                        LensType3
                        LensFocalLength
                        RFLensType
+  LensID               LensModel                no
+                       Lens
+                       XMP-aux:LensID
+                       Make
   LensID               Nikon:LensIDNumber       no
                        LensFStops
                        MinFocalLength

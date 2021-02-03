@@ -7,6 +7,26 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.16. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 3, 2021 - Version 12.17
+
+  - Added a new Canon FocusMode value
+  - Added a new FujiFilm FilmMode value
+  - Added a number of new XMP-crs tags (thanks Herb)
+  - Decode a new H264 MDPM tag
+  - Allow non-conforming lower-case XMP boolean "true" and "false" values to be
+    written, but only when print conversion is disabled
+  - Improved Validate option to warn about non-capitalized boolean XMP values
+  - Improved logic for setting GPSLatitude/LongitudeRef values when writing
+  - Changed -json and -php options so the -a option is implied even without the
+    -g option
+  - Avoid extracting audio/video data from AVI videos when -ee -u is used
+  - Patched decoding of Canon ContinuousShootingSpeed for newer firmware
+    versions of the EOS-1DXmkIII
+  - Re-worked LensID patch of version 12.00 (github issue #51)
+  - Fixed a few typos in newly-added NikonSettings tags (thanks Herb)
+  - Fixed problem where group could not be specified for PNG-pHYs tags when
+    writing
+
 Jan. 21, 2021 - Version 12.16 (production release)
 
   - Extract another form of video subtitle text
@@ -14,6 +34,8 @@ Jan. 21, 2021 - Version 12.16 (production release)
     stream in MP4 files
   - Changed a Nikon FlashMode value
   - Fixed problem that caused a failed DPX test on Strawberry Perl
+  - API Changes:
+      - Enhanced ExtractEmbedded option
 
 Jan. 18, 2021 - Version 12.15 (production release)
 
@@ -220,7 +242,7 @@ July 27, 2020 - Version 12.02
   - Improved decoding of some Canon EOS 1DXmkIII custom functions
   - Allow integer QuickTime TrackNumber and DiskNumber values
   - Relax validity check of QuickTime:ContentCreateDate when writing with -n
-  - Removed "Com" from the start of some unknown ItemList tag names
+  - Removed "Com" from the start of some unknown QuickTime ItemList tag names
   - Patched CanonCustom decoding for bug in Canon EOS-1DX firmware
   - Changed QuickTime CleanAperture tags decode as signed rationals
 

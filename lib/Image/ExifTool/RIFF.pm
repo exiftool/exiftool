@@ -29,7 +29,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.56';
+$VERSION = '1.57';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -1892,7 +1892,7 @@ sub ProcessRIFF($$)
             $$et{DOC_NUM} = ++$$et{DOC_COUNT};
         }
         my $tagInfo = $$tagTbl{$tag};
-        if ($tagInfo or (($verbose or $unknown) and $tag !~ /^(data|idx1|LIST_movi|RIFF)$/)) {
+        if ($tagInfo or (($verbose or $unknown) and $tag !~ /^(data|idx1|LIST_movi|RIFF|\d{2}(db|dc|wb))$/)) {
             $raf->Read($buff, $len2) == $len2 or $err=1, last;
             my $setGroups;
             if ($tagInfo and ref $tagInfo eq 'HASH' and $$tagInfo{SetGroups}) {

@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 sub ProcessNikonSettings($$$);
 
@@ -1283,7 +1283,7 @@ my %infoD6 = (
         PrintConv => {
             1 => 'Enable',
             2 => 'Enable (Standby Timer Active)',
-            3 => 'Diaable',
+            3 => 'Disable',
         },
     },
     0x0ab => { # CSf11 (D6)
@@ -1545,10 +1545,10 @@ my %infoD6 = (
             12 => 'None',
         },
     },
-    0x0fb => { Name => 'SecondarySlotFunction',    PrintConv => \%tagSecondarySlotFunction },    # tag name selected to maintain compatibility with older cameras # (Z7_2)
-    0x0fb => { Name => 'SecondarySlotFunction',    PrintConv => \%tagSecondarySlotFunction }, # (D6)
-    0x0fc => { Name => 'SilentPhotography',        PrintConv => \%onOff }, # (D6,Z7_2)   # tag is associated with Silent LiveView Photography (as distinguisehed from Silent Interval or Silent Focus Shift)
-    0x0fd => { Name => 'ExtendedShuttterSpeeds',   PrintConv => \%onOff }, # CSd7 (D6), CSd6 (Z7_2)
+    0x0fb => { Name => 'SecondarySlotFunction', PrintConv => \%tagSecondarySlotFunction },    # tag name selected to maintain compatibility with older cameras # (Z7_2)
+    0x0fb => { Name => 'SecondarySlotFunction', PrintConv => \%tagSecondarySlotFunction }, # (D6)
+    0x0fc => { Name => 'SilentPhotography',     PrintConv => \%onOff }, # (D6,Z7_2)   # tag is associated with Silent LiveView Photography (as distinguisehed from Silent Interval or Silent Focus Shift)
+    0x0fd => { Name => 'ExtendedShutterSpeeds', PrintConv => \%onOff }, # CSd7 (D6), CSd6 (Z7_2)
     0x109 => { # (D6,Z7_2)
         Name => 'BracketSet',
         RawConv => '$$self{BracketSet} = $val',
@@ -1875,7 +1875,7 @@ my %infoD6 = (
     0x164 => { # CSg7-a (Z7_2)
         Name => 'VerticalMovieFuncButton',
         PrintConv => {
-            1 => 'LiveView Info Display On/Off)',
+            1 => 'LiveView Info Display On/Off',
             2 => 'Record Movies',
             3 => 'Exposure Compensation',
             4 => 'ISO',

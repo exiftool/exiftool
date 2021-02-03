@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.51';
+$VERSION = '1.52';
 
 my %coordConv = (
     ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val)',
@@ -50,8 +50,8 @@ my %coordConv = (
             OTHER => sub {
                 my ($val, $inv) = @_;
                 return undef unless $inv;
-                return uc $1 if $val =~ /\b([NS])$/i;
-                return $1 eq '-' ? 'S' : 'N' if $val =~ /^([-+]?)\d+(\.\d*)?$/;
+                return uc $1 if $val =~ /\b([NS])\b/i;
+                return $1 eq '-' ? 'S' : 'N' if $val =~ /([-+]?)\d+/;
                 return undef;
             },
             N => 'North',
@@ -78,8 +78,8 @@ my %coordConv = (
             OTHER => sub {
                 my ($val, $inv) = @_;
                 return undef unless $inv;
-                return uc $1 if $val =~ /\b([EW])$/i;
-                return $1 eq '-' ? 'W' : 'E' if $val =~ /^([-+]?)\d+(\.\d*)?$/;
+                return uc $1 if $val =~ /\b([EW])\b/i;
+                return $1 eq '-' ? 'W' : 'E' if $val =~ /([-+]?)\d+/;
                 return undef;
             },
             E => 'East',

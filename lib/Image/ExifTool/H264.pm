@@ -89,7 +89,7 @@ my $parsePictureTiming; # flag to enable parsing of picture timing information (
         Notes => 'hours:minutes:seconds:frames',
         ValueConv => 'sprintf("%.2x:%.2x:%.2x:%.2x",reverse unpack("C*",$val))',
     },
-    # 0x14 - TitleBinaryGroup
+    # 0x14 - TitleBinaryGroup - val: 0x00000000,0x14200130
     # 0x15 - TitleCassetteNo (ref 7)
     # 0x16-0x17 - TitleSoftID (ref 7)
     # (0x18,0x19 listed as TitleTextHeader/TitleText by ref 7)
@@ -134,8 +134,8 @@ my $parsePictureTiming; # flag to enable parsing of picture timing information (
         Name => 'Camera2',
         SubDirectory => { TagTable => 'Image::ExifTool::H264::Camera2' },
     },
-    # 0x73 Lens - val: 0x75ffffd3,0x0effffd3,0x59ffffd3,0x79ffffd3,0xffffffd3...
-    # 0x74 Gain
+    # 0x73 Lens - val: 0x04ffffd3,0x0effffd3,0x15ffffd3,0x41ffffd3,0x52ffffd3,0x59ffffd3,0x65ffffd3,0x71ffffd3,0x75ffffd3,0x79ffffd3,0x7fffffd3,0xffffffd3...
+    # 0x74 Gain - val: 0xb8ffff0f
     # 0x75 Pedestal
     # 0x76 Gamma
     # 0x77 Detail
@@ -376,34 +376,49 @@ my $parsePictureTiming; # flag to enable parsing of picture timing information (
         Notes => 'combined with tag 0xc8',
     },
     # 0xc9-0xcf - GPSOption
+    # 0xc9 - val: 0x001d0203
+    0xca => { #PH (Sony DSC-HX7V)
+        Name => 'GPSDateStamp',
+        Format => 'string',
+        Groups => { 1 => 'GPS', 2 => 'Time' },
+        Combine => 2,    # the next 2 tags contain the rest of the string
+        Notes => 'combined with tags 0xcb and 0xcc',
+        ValueConv => 'Image::ExifTool::Exif::ExifDate($val)',
+    },
     0xe0 => {
         Name => 'MakeModel',
         SubDirectory => { TagTable => 'Image::ExifTool::H264::MakeModel' },
     },
     # 0xe1-0xef - MakerOption
     # 0xe1 - val: 0x01000670,0x01000678,0x06ffffff,0x01ffffff,0x01000020,0x01000400...
-    # 0xe2-0xe8 - val: 0x00000000 in many samples
     0xe1 => { #6
         Name => 'RecInfo',
         Condition => '$$self{Make} eq "Canon"',
         Notes => 'Canon only',
         SubDirectory => { TagTable => 'Image::ExifTool::H264::RecInfo' },
     },
+    # 0xe2-0xe8 - val: 0x00000000 in many samples
+    # 0xe2 - val: 0x00000000,0x01000000,0x01010000,0x8080900c,0x8080a074
+    # 0xe3 - val: 0x00801f89,0x00801f8b,0x00c01f89,0xc9c01f80
     0xe4 => { #PH
         Name => 'Model',
         Condition => '$$self{Make} eq "Sony"', # (possibly also Canon models?)
         Description => 'Camera Model Name',
-        Notes => 'Sony cameras only, combined with tags 0xe5 and 0xe6',
+        Notes => 'Sony only, combined with tags 0xe5 and 0xe6',
         Format => 'string',
         Combine => 2, # (not sure about 0xe6, but include it just in case)
         RawConv => '$val eq "" ? undef : $val',
     },
+    # 0xeb - val: 0x008a0a00,0x0a300000,0x508a0a00,0x52880a00,0x528a0a00
+    # 0xec - val: 0x0b700000
+    # 0xed - val: 0x0ce0f819
     0xee => { #6 (HFS200)
         Name => 'FrameInfo',
         Condition => '$$self{Make} eq "Canon"',
         Notes => 'Canon only',
         SubDirectory => { TagTable => 'Image::ExifTool::H264::FrameInfo' },
     },
+    # 0xef - val: 0x01c00000,0x0e00000c
 );
 
 # ConsumerCamera1 information (ref PH)

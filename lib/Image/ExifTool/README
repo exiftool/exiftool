@@ -62,10 +62,11 @@ key:
   information about the source directory for tags to be copied to the output.
 
   CHECK_PROC : Reference to a function which validates Raw values for writing.
-  The function takes three arguments: 0) ExifTool object reference, 1) tagInfo
-  reference, 2) value reference, and returns undefined (and possibly modifies
-  the input value) if successful, or an error message if there was a format
-  problem.  May set ExifTool CHECK_WARN datamember for success with a warning.
+  The function takes 3-4 arguments: 0) ExifTool object reference, 1) tagInfo
+  reference, 2) value reference, and 3) [optional] conversion type.  It returns
+  undefined (and possibly modifies the input value) if successful, or an error
+  message if there was a format problem.  May set ExifTool CHECK_WARN datamember
+  for success with a warning.
 
   INIT_TABLE : Routine called to do any necessary initialization before the
   first time the table is loaded.  Argument is a reference to the table.

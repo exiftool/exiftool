@@ -50,13 +50,13 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.37';
+$VERSION = '3.38';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
 sub ProcessXMP($$;$);
 sub WriteXMP($$;$);
-sub CheckXMP($$$);
+sub CheckXMP($$$;$);
 sub ParseXMPElement($$$;$$$$);
 sub DecodeBase64($);
 sub EncodeBase64($;$);
@@ -467,6 +467,19 @@ my %sCorrectionMask = (
     CenterValue  => { Writable => 'real', List => 0 },
     PerimeterValue=>{ Writable => 'real', List => 0 },
 );
+my %sCorrectionRangeMask = (
+    STRUCT_NAME => 'CorrectionRangeMask',
+    NAMESPACE   => 'crs',
+    Version     => { },
+    Type        => { },
+    ColorAmount => { Writable => 'real' },
+    LumMin      => { Writable => 'real' },
+    LumMax      => { Writable => 'real' },
+    LumFeather  => { Writable => 'real' },
+    DepthMin    => { Writable => 'real' },
+    DepthMax    => { Writable => 'real' },
+    DepthFeather=> { Writable => 'real' },
+);
 my %sCorrection = (
     STRUCT_NAME => 'Correction',
     NAMESPACE   => 'crs',
@@ -491,6 +504,15 @@ my %sCorrection = (
     LocalDefringe    => { FlatName => 'Defringe',   Writable => 'real', List => 0 },
     LocalTemperature => { FlatName => 'Temperature',Writable => 'real', List => 0 },
     LocalTint        => { FlatName => 'Tint',       Writable => 'real', List => 0 },
+    LocalHue         => { FlatName => 'Hue',        Writable => 'real', List => 0 },
+    LocalWhites2012  => { FlatName => 'Whites2012', Writable => 'real', List => 0 },
+    LocalBlacks2012  => { FlatName => 'Blacks2012', Writable => 'real', List => 0 },
+    LocalDehaze      => { FlatName => 'Dehaze', Writable => 'real', List => 0 },
+    LocalTexture     => { FlatName => 'Texture', Writable => 'real', List => 0 },
+    CorrectionRangeMask => {
+        FlatName => 'RangeMask',
+        Struct => \%sCorrectionRangeMask,
+    },
     CorrectionMasks  => {
         FlatName => 'Mask',
         Struct => \%sCorrectionMask,
@@ -2311,6 +2333,7 @@ my %sPantryItem = (
     Location            => { Groups => { 2 => 'Location' } },
     Scene               => { Groups => { 2 => 'Other' }, List => 'Bag' },
     SubjectCode         => { Groups => { 2 => 'Other' }, List => 'Bag' },
+    # Copyright - have seen this in a sample (Jan 2021), but I think it is non-standard
 );
 
 # Adobe Lightroom namespace properties (lr) (ref PH)
@@ -3305,6 +3328,9 @@ NoLoop:
             $rational = $rawVal;
         } else {
             $val = ConvertXMPDate($val, $new) if $new or $fmt eq 'date';
+        }
+        if ($$et{XmpValidate} and $fmt and $fmt eq 'boolean') {
+            $et->WarnOnce("Boolean value for XMP-$ns:$$tagInfo{Name} should be capitalized",1);
         }
         # protect against large binary data in unknown tags
         $$tagInfo{Binary} = 1 if $new and length($val) > 65536;

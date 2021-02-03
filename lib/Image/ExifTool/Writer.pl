@@ -669,7 +669,7 @@ TAG: foreach $tagInfo (@matchingTags) {
                     next TAG unless $lcWant eq lc $grp[1];
                 }
             }
-            $writeGroup or $writeGroup = ($$tagInfo{WriteGroup} || $grp[0]);
+            $writeGroup or $writeGroup = ($$tagInfo{WriteGroup} || $$tagInfo{Table}{WRITE_GROUP} || $grp[0]);
             $priority = $hiPri; # highest priority since group was specified
         }
         ++$foundMatch;
@@ -2766,6 +2766,8 @@ sub ConvInv($$$$$;$$)
     my ($self, $val, $tagInfo, $tag, $wgrp1, $convType, $wantGroup) = @_;
     my ($err, $type);
 
+    $convType or $convType = $$self{ConvType} || 'PrintConv';
+
 Conv: for (;;) {
         if (not defined $type) {
             # split value into list if necessary
@@ -2779,7 +2781,7 @@ Conv: for (;;) {
                     $val = @splitVal > 1 ? \@splitVal : @splitVal ? $splitVal[0] : '';
                 }
             }
-            $type = $convType || $$self{ConvType} || 'PrintConv';
+            $type = $convType;
         } elsif ($type eq 'PrintConv') {
             $type = 'ValueConv';
         } else {
@@ -2802,11 +2804,11 @@ Conv: for (;;) {
                     if (ref $val eq 'ARRAY') {
                         # loop through array values
                         foreach $v (@$val) {
-                            $err2 = &$checkProc($self, $tagInfo, \$v);
+                            $err2 = &$checkProc($self, $tagInfo, \$v, $convType);
                             last if $err2;
                         }
                     } else {
-                        $err2 = &$checkProc($self, $tagInfo, \$val);
+                        $err2 = &$checkProc($self, $tagInfo, \$val, $convType);
                     }
                 }
             }

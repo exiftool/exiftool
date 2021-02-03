@@ -501,6 +501,14 @@ by adding user-defined lenses)</span></span></td></tr>
 <tr>
 <td>LensID</td>
 <td class=c>no</td>
+<td class=n>LensModel
+  <br>Lens
+  <br>XMP-aux:LensID
+  <br>Make</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LensID</td>
+<td class=c>no</td>
 <td class=n>Nikon:LensIDNumber
   <br>LensFStops
   <br>MinFocalLength
@@ -510,12 +518,12 @@ by adding user-defined lenses)</span></span></td></tr>
   <br>MCUVersion
   <br>Nikon:LensType</td>
 <td>--&gt; <a href='Nikon.html#LensID'>Nikon LensID Values</a></td></tr>
-<tr class=b>
+<tr>
 <td>LensID</td>
 <td class=c>no</td>
 <td class=n>Ricoh:LensFirmware</td>
 <td>--&gt; <a href='Ricoh.html#LensID'>Ricoh LensID Values</a></td></tr>
-<tr>
+<tr class=b>
 <td>LensID</td>
 <td class=c>no</td>
 <td class=n>XMP-aux:LensID
@@ -525,20 +533,20 @@ by adding user-defined lenses)</span></span></td></tr>
   <br>LensModel
   <br>MaxApertureValue</td>
 <td><span class=s><span class=n>(attempt to convert numerical XMP-aux:LensID stored by Adobe applications)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>LensSpec</td>
 <td class=c>no</td>
 <td class=n>Nikon:Lens
   <br>Nikon:LensType</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LensType</td>
 <td class=c>no</td>
 <td class=n>LensTypeMake
   <br>LensTypeModel</td>
 <td>--&gt; <a href='Composite.html#LensType'>Composite LensType Values</a>
   <br><span class='n s'>(based on tags found in some Panasonic RW2 images)</span></td></tr>
-<tr class=b>
+<tr>
 <td>LightValue</td>
 <td class=c>no</td>
 <td class=n>Aperture
@@ -546,7 +554,7 @@ by adding user-defined lenses)</span></span></td></tr>
   <br>ISO</td>
 <td><span class=s><span class=n>(calculated LV = 2 * log2(Aperture) - log2(ShutterSpeed) - log2(ISO/100);
 similar to exposure value but normalized to ISO 100)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>MPImage</td>
 <td class=c>no</td>
 <td class=n>MPImageStart
@@ -555,29 +563,29 @@ similar to exposure value but normalized to ISO 100)</span></span></td></tr>
 <td><span class=s><span class=n>(the first MPF &quot;Large Thumbnail&quot; is extracted as PreviewImage, and the rest
 of the embedded MPF images are extracted as MPImage#.  The <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded</a>
 option may be used to extract information from these embedded images.)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>Megapixels</td>
 <td class=c>no</td>
 <td class=n>ImageSize</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>OriginalDecisionData</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=n>OriginalDecisionDataOffset</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>OtherImage</td>
 <td class=c>yes</td>
 <td class=n>OtherImageStart
   <br>OtherImageLength</td>
 <td><span class=s><span class=n>(this tag is writable, and may be used to update existing embedded images,
 but not create or delete them)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PeakSpectralSensitivity</td>
 <td class=c>no</td>
 <td class=n>FLIR:PlanckB</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>PreviewImage</td>
 <td class=c>yes</td>
 <td class=n>PreviewImageStart
@@ -587,18 +595,18 @@ but not create or delete them)</span></span></td></tr>
   <br>PreviewImageLength (1)</td>
 <td><span class=s><span class=n>(this tag is writable, and may be used to update existing embedded images,
 but not create or delete them)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PreviewImage</td>
 <td class=c>no</td>
 <td class=n>ScreenNail</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>PreviewImageSize</td>
 <td class=c>no</td>
 <td class=n>PreviewImageWidth
   <br>PreviewImageHeight</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RedBalance</td>
 <td class=c>no</td>
 <td class=n>WB_RGGBLevels
@@ -613,37 +621,37 @@ but not create or delete them)</span></span></td></tr>
   <br>WBRedLevel
   <br>WBGreenLevel</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RedEyeReduction</td>
 <td class=c>no</td>
 <td class=n>CanonFlashMode
   <br>FlashBits</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td>RicohPitch</td>
 <td class=c>no</td>
 <td class=n>Ricoh:Accelerometer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RicohRoll</td>
 <td class=c>no</td>
 <td class=n>Ricoh:Accelerometer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Rotation</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=n>QuickTime:MatrixStructure
   <br>QuickTime:HandlerType</td>
 <td><span class=s><span class=n>(writing this tag updates QuickTime MatrixStructure for all tracks with a
 non-zero image size)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RunTimeSincePowerUp</td>
 <td class=c>no</td>
 <td class=n>Apple:RunTimeValue
   <br>Apple:RunTimeScale</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ScaleFactor35efl</td>
 <td class=c>no</td>
 <td class=n>FocalLength
@@ -664,56 +672,56 @@ non-zero image size)</span></span></td></tr>
   <br>ImageHeight</td>
 <td><span class=s><span class=n>(this value and any derived values may be incorrect if the image has been
 resized)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ShootingMode</td>
 <td class=c>no</td>
 <td class=n>CanonExposureMode
   <br>EasyMode
   <br>BulbDuration</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ShutterCurtainHack</td>
 <td class=c>no</td>
 <td class=n>FlashBits
   <br>ShutterCurtainSync</td>
 <td><span class=s>0 = 1st-curtain sync
   <br>1 = 2nd-curtain sync</span></td></tr>
-<tr class=b>
+<tr>
 <td>ShutterSpeed</td>
 <td class=c>no</td>
 <td class=n>ExposureTime
   <br>ShutterSpeedValue
   <br>BulbDuration</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SingleShotDepthMapTiff</td>
 <td class=c>no</td>
 <td class=n>SingleShotDepthMap
   <br>SegWidth
   <br>SegHeight</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SubSecCreateDate</td>
 <td class=c>yes</td>
 <td class=n>EXIF:CreateDate
   <br>SubSecTimeDigitized
   <br>OffsetTimeDigitized</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SubSecDateTimeOriginal</td>
 <td class=c>yes</td>
 <td class=n>EXIF:DateTimeOriginal
   <br>SubSecTimeOriginal
   <br>OffsetTimeOriginal</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SubSecModifyDate</td>
 <td class=c>yes</td>
 <td class=n>EXIF:ModifyDate
   <br>SubSecTime
   <br>OffsetTime</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ThumbnailImage</td>
 <td class=c>yes</td>
 <td class=n>ThumbnailOffset
@@ -722,7 +730,7 @@ resized)</span></span></td></tr>
 only create a thumbnail in IFD1 of certain types of files.  Note that for
 this and other Composite embedded-image tags the family 0 and 1 groups match
 those of the originating tags)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ThumbnailTIFF</td>
 <td class=c>no</td>
 <td class=n>SubfileType
@@ -738,13 +746,13 @@ those of the originating tags)</span></span></td></tr>
   <br>PlanarConfiguration
   <br>Orientation</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>VolumeSize</td>
 <td class=c>no</td>
 <td class=n>ISO:VolumeBlockCount
   <br>ISO:VolumeBlockSize</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>WB_RGBLevels</td>
 <td class=c>no</td>
 <td class=n>KDC_IFD:WhiteBalance
@@ -756,7 +764,7 @@ those of the originating tags)</span></span></td></tr>
   <br>WB_RGBLevels5
   <br>WB_RGBLevelsShade</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>WB_RGBLevels</td>
 <td class=c>no</td>
 <td class=n>KodakIFD:WhiteBalance
@@ -771,7 +779,7 @@ those of the originating tags)</span></span></td></tr>
   <br>KodakIFD:ColorTemperature
   <br>Kodak:WB_RGBLevels</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>WB_RGGBLevels</td>
 <td class=c>no</td>
 <td class=n>Canon:WhiteBalance
@@ -786,13 +794,13 @@ those of the originating tags)</span></span></td></tr>
   <br>WB_RGGBLevelsShade
   <br>WB_RGGBLevelsKelvin</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>WB_RGGBLevels</td>
 <td class=c>no</td>
 <td class=n>WB_RGGBLevelsUncorrected
   <br>WB_RGGBLevelsBlack</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ZoomedPreviewImage</td>
 <td class=c>no</td>
 <td class=n>ZoomedPreviewStart
@@ -941,7 +949,7 @@ those of the originating tags)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 4, 2020</i>
+<br><i>Last revised Feb 3, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -384,7 +384,7 @@
 
 <p>Finally, the behaviour is different when a destination tag or group of <code>All</code> is used. When copying directly, a destination group and/or tag name of <code>All</code> writes to the same family 1 group and/or tag name as the source. But when interpolated in a string, the identity of the source tags are lost and the value is written to all possible groups/tags. For example, the string form must be used in the following command since the intent is to set the value of all existing date/time tags from <code>CreateDate</code>:</p>
 
-<pre><code>    exiftool &quot;-time:all&lt;$createdate&quot; -wm w FILE</code></pre>
+<pre><code>    exiftool &#39;-time:all&lt;$createdate&#39; -wm w FILE</code></pre>
 
 </dd>
 <dt id="x-TAG--exclude"><b>-x</b> <i>TAG</i> (<b>-exclude</b>)</dt>
@@ -407,7 +407,7 @@
 <p>Output information in the form of exiftool arguments, suitable for use with the <b>-@</b> option when writing. May be combined with the <b>-G</b> option to include group names. This feature may be used to effectively copy tags between images, but allows the metadata to be altered by editing the intermediate file (<code>out.args</code> in this example):</p>
 
 <pre><code>    exiftool -args -G1 --filename --directory src.jpg &gt; out.args
-    exiftool -@ out.args -sep &quot;, &quot; dst.jpg</code></pre>
+    exiftool -@ out.args -sep &#39;, &#39; dst.jpg</code></pre>
 
 <p>Note: Be careful when copying information with this technique since it is easy to write tags which are normally considered &quot;unsafe&quot;. For instance, the FileName and Directory tags are excluded in the example above to avoid renaming and moving the destination file. Also note that the second command above will produce warning messages for any tags which are not writable.</p>
 
@@ -579,7 +579,7 @@
 <dt id="j-JSONFILE--json"><b>-j</b>[[+]=<i>JSONFILE</i>] (<b>-json</b>)</dt>
 <dd>
 
-<p>Use JSON (JavaScript Object Notation) formatting for console output, or import JSON file if <i>JSONFILE</i> is specified. This option may be combined with <b>-g</b> to organize the output into objects by group, or <b>-G</b> to add group names to each tag. List-type tags with multiple items are output as JSON arrays unless <b>-sep</b> is used. By default XMP structures are flattened into individual tags in the JSON output, but the original structure may be preserved with the <b>-struct</b> option (this also causes all list-type XMP tags to be output as JSON arrays, otherwise single-item lists would be output as simple strings). The <b>-a</b> option is implied if the <b>-g</b> or <b>-G</b> options are used, otherwise it is ignored and tags with identical JSON names are suppressed. (<b>-g4</b> may be used to ensure that all tags have unique JSON names.) Adding the <b>-D</b> or <b>-H</b> option changes tag values to JSON objects with &quot;val&quot; and &quot;id&quot; fields, and adding <b>-l</b> adds a &quot;desc&quot; field, and a &quot;num&quot; field if the numerical value is different from the converted &quot;val&quot;. The <b>-b</b> option may be added to output binary data, encoded in base64 if necessary (indicated by ASCII &quot;base64:&quot; as the first 7 bytes of the value), and <b>-t</b> may be added to include tag table information (see <b>-t</b> for details). The JSON output is UTF-8 regardless of any <b>-L</b> or <b>-charset</b> option setting, but the UTF-8 validation is disabled if a character set other than UTF-8 is specified.</p>
+<p>Use JSON (JavaScript Object Notation) formatting for console output, or import JSON file if <i>JSONFILE</i> is specified. This option may be combined with <b>-g</b> to organize the output into objects by group, or <b>-G</b> to add group names to each tag. List-type tags with multiple items are output as JSON arrays unless <b>-sep</b> is used. By default XMP structures are flattened into individual tags in the JSON output, but the original structure may be preserved with the <b>-struct</b> option (this also causes all list-type XMP tags to be output as JSON arrays, otherwise single-item lists would be output as simple strings). The <b>-a</b> option is implied when <b>-json</b> is used, but entries with identical JSON names are suppressed in the output. (<b>-G4</b> may be used to ensure that all tags have unique JSON names.) Adding the <b>-D</b> or <b>-H</b> option changes tag values to JSON objects with &quot;val&quot; and &quot;id&quot; fields, and adding <b>-l</b> adds a &quot;desc&quot; field, and a &quot;num&quot; field if the numerical value is different from the converted &quot;val&quot;. The <b>-b</b> option may be added to output binary data, encoded in base64 if necessary (indicated by ASCII &quot;base64:&quot; as the first 7 bytes of the value), and <b>-t</b> may be added to include tag table information (see <b>-t</b> for details). The JSON output is UTF-8 regardless of any <b>-L</b> or <b>-charset</b> option setting, but the UTF-8 validation is disabled if a character set other than UTF-8 is specified.</p>
 
 <p>If <i>JSONFILE</i> is specified, the file is imported and the tag definitions from the file are used to set tag values on a per-file basis. The special &quot;SourceFile&quot; entry in each JSON object associates the information with a specific target file. An object with a missing SourceFile or a SourceFile of &quot;*&quot; defines default tags for all target files which are combined with any tags specified for the specific SourceFile processed. The imported JSON file must have the same format as the exported JSON files with the exception that the <b>-g</b> option is not compatible with the import file format (use <b>-G</b> instead). Additionally, tag names in the input JSON file may be suffixed with a <code>#</code> to disable print conversion.</p>
 
@@ -682,7 +682,7 @@
 
 <p>produces output like this:</p>
 
-<pre><code>    -- Generated by ExifTool 12.16 --
+<pre><code>    -- Generated by ExifTool 12.17 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -787,13 +787,16 @@
 
 <p>1) In a Windows BAT file the <code>%</code> character is represented by <code>%%</code>, so an argument like <code>%d%f.txt</code> is written as <code>%%d%%f.txt</code>.</p>
 
-<p>2) If the argument for <b>-w</b> does not contain a valid format code (eg. %f), then it is interpreted as a file extension. It is not possible to specify a simple filename as an argument -- creating a single output file from multiple source files is typically done by shell redirection, ie)</p>
+<p>2) If the argument for <b>-w</b> does not contain a valid format code (eg. %f), then it is interpreted as a file extension, but there are three different ways to create a single output file from multiple source files:</p>
 
-<pre><code>    exiftool FILE1 FILE2 ... &gt; out.txt</code></pre>
+<pre><code>    # 1. Shell redirection
+    exiftool FILE1 FILE2 ... &gt; out.txt
 
-<p>But if necessary, an empty format code may be used to force the argument to be interpreted as a format string, and the same result may be obtained without the use of shell redirection:</p>
+    # 2. With the -w option and a zero-width format code
+    exiftool -w+! %0fout.txt FILE1 FILE2 ...
 
-<pre><code>    exiftool -w+! %0fout.txt FILE1 FILE2 ...</code></pre>
+    # 3. With the -W option (see the -W option below)
+    exiftool -W+! out.txt FILE1 FILE2 ...</code></pre>
 
 <p>Advanced features:</p>
 

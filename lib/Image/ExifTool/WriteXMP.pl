@@ -12,7 +12,7 @@ use vars qw(%specialStruct %dateTimeInfo %stdXlatNS);
 
 use Image::ExifTool qw(:DataAccess :Utils);
 
-sub CheckXMP($$$);
+sub CheckXMP($$$;$);
 sub CaptureXMP($$$;$);
 sub SetPropertyPath($$;$$$$);
 
@@ -165,12 +165,12 @@ sub FormatXMPDate($)
 
 #------------------------------------------------------------------------------
 # Check XMP values for validity and format accordingly
-# Inputs: 0) ExifTool object ref, 1) tagInfo hash ref, 2) raw value ref
+# Inputs: 0) ExifTool object ref, 1) tagInfo hash ref, 2) raw value ref, 3) conversion type
 # Returns: error string or undef (and may change value) on success
 # Note: copies structured information to avoid conflicts with calling code
-sub CheckXMP($$$)
+sub CheckXMP($$$;$)
 {
-    my ($et, $tagInfo, $valPtr) = @_;
+    my ($et, $tagInfo, $valPtr, $convType) = @_;
 
     if ($$tagInfo{Struct}) {
         require 'Image/ExifTool/XMPStruct.pl';
@@ -250,9 +250,12 @@ sub CheckXMP($$$)
         return "Invalid date/time (use YYYY:mm:dd HH:MM:SS[.ss][+/-HH:MM|Z])" unless $newDate;
         $$valPtr = $newDate;
     } elsif ($format eq 'boolean') {
+        # (allow lower-case 'true' and 'false' if not setting PrintConv value)
         if (not $$valPtr or $$valPtr =~ /false/i or $$valPtr =~ /^no$/i) {
-            $$valPtr = 'False';
-        } else {
+            if (not $$valPtr or $$valPtr ne 'false' or not $convType or $convType eq 'PrintConv') {
+                $$valPtr = 'False';
+            }
+        } elsif ($$valPtr ne 'true' or not $convType or $convType eq 'PrintConv') {
             $$valPtr = 'True';
         }
     } elsif ($format eq '1') {

@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.42';
+$VERSION = '4.43';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -2128,6 +2128,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
            16 => 'Pan Focus', #PH
            # 137 - Single?
            256 => 'AF + MF', #PH (NC, EOS M)
+           257 => 'Live View', #forum12082
            512 => 'Movie Snap Focus', #48
            519 => 'Movie Servo AF', #PH (NC, EOS M)
         },

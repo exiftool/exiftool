@@ -19,7 +19,7 @@ use Image::ExifTool qw(:DataAccess);
 use Image::ExifTool::Canon;
 use Image::ExifTool::Exif;
 
-$VERSION = '1.57';
+$VERSION = '1.58';
 
 sub ProcessCanonCustom($$$);
 sub ProcessCanonCustom2($$$);
@@ -2092,6 +2092,24 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
         ],
         PrintConvInv => [
             undef,
+            '$val=~/(\d+)/ ? $1 : 0',
+            '$val=~/(\d+)/ ? $1 : 0',
+            '$val=~/(\d+)/ ? $1 : 0',
+            '$val=~/(\d+)/ ? $1 : 0',
+            '$val=~/(\d+)/ ? $1 : 0',
+        ],
+    },{ # (1DXmkIII firmware 1.3)
+        Name => 'ContinuousShootingSpeed',
+        Condition => '$count == 5',
+        Count => 5,
+        PrintConv => [
+            '"Hi $val"',
+            '"Cont $val"',
+            '"Lo $val"',
+            '"Soft $val"',
+            '"Soft LS $val"',
+        ],
+        PrintConvInv => [
             '$val=~/(\d+)/ ? $1 : 0',
             '$val=~/(\d+)/ ? $1 : 0',
             '$val=~/(\d+)/ ? $1 : 0',

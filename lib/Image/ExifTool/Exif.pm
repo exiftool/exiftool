@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.31';
+$VERSION = '4.32';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2560,6 +2560,7 @@ my %opcodeInfo = (
             5 => 'Color sequential area',
             7 => 'Trilinear',
             8 => 'Color sequential linear',
+            # 15 - used by DJI XT2
         },
     },
     0xa300 => {
@@ -4728,8 +4729,8 @@ my %subSecConv = (
     },
     LensID => {
         Groups => { 2 => 'Camera' },
+        Require => 'LensType',
         Desire => {
-            0 => 'LensType',
             1 => 'FocalLength',
             2 => 'MaxAperture',
             3 => 'MaxApertureValue',
@@ -4748,25 +4749,16 @@ my %subSecConv = (
             Applies only to LensType values with a lookup table.  May be configured
             by adding user-defined lenses
         },
-        # this LensID is only valid if the LensType has a PrintConv,
-        # or LensType or LensModel are the model name
+        # this LensID is only valid if the LensType has a PrintConv or is a model name
         RawConv => q{
             my $printConv = $$self{TAG_INFO}{LensType}{PrintConv};
-            return $val if ref $printConv eq 'HASH' or
-                (ref $printConv eq 'ARRAY' and ref $$printConv[0] eq 'HASH') or
-                (defined $val[0] and $val[0] =~ /(mm|\d\/F)/) or
-                (defined $val[6] and $val[6] =~ /(mm|\d\/F)/);
+            return $val if ref $printConv eq 'HASH' or (ref $printConv eq 'ARRAY' and
+                ref $$printConv[0] eq 'HASH') or $val[0] =~ /(mm|\d\/F)/;
             return undef;
         },
-        ValueConv => '$val[0] || $val[6]',
+        ValueConv => '$val',
         PrintConv => q{
             my $pcv;
-            # use LensModel ([6]) if LensType ([0]) is not populated
-            # (iPhone populates LensModel but not LensType)
-            if (not defined $val[0] and defined $val[6]) {
-                $val[0] = $val[6];
-                $prt[0] = $prt[6];
-            }
             # use LensType2 instead of LensType if available and valid (Sony E-mount lenses)
             # (0x8000 or greater; 0 for several older/3rd-party E-mount lenses)
             if (defined $val[9] and ($val[9] & 0x8000 or $val[9] == 0)) {
@@ -4793,6 +4785,30 @@ my %subSecConv = (
             }
             return $lens;
         },
+    },
+    'LensID-2' => {
+        Name => 'LensID',
+        Groups => { 2 => 'Camera' },
+        Desire => {
+            0 => 'LensModel',
+            1 => 'Lens',
+            2 => 'XMP-aux:LensID',
+            3 => 'Make',
+        },
+        Inhibit => {
+            4 => 'Composite:LensID',
+        },
+        RawConv => q{
+            return undef if defined $val[2] and defined $val[3];
+            return $val if defined $val[0] and $val[0] =~ /(mm|\d\/F)/;
+            return $val if defined $val[1] and $val[1] =~ /(mm|\d\/F)/;
+            return undef;
+        },
+        ValueConv => q{
+            return $val[0] if defined $val[0] and $val[0] =~ /(mm|\d\/F)/;
+            return $val[1];
+        },
+        PrintConv => '$_=$val; s/(\d)\/F/$1mm F/; s/mmF/mm F/; s/(\d) mm/${1}mm/; s/ - /-/; $_',
     },
 );
 

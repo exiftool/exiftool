@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub ProcessNikonSettings($$$);
 
@@ -911,14 +911,14 @@ my %infoD6 = (
     },
     0x05a => [{ # CSf6-b-1 and CSf6-b-2 (D6), CSf5-b-1 and CSf5-b-2 (Z7_2), (continued from above)
         Name => 'CmdDialsChangeMainSub',
-        Condition => '$$self{CmdDialsChangeMainSubExposure} == 1',
+        Condition => '$$self{CmdDialsChangeMainSubExposure} and $$self{CmdDialsChangeMainSubExposure} == 1',
         PrintConv => {
             1 => 'Autofocus On, Exposure On',
             2 => 'Autofocus Off, Exposure On',
         },
     },{
         Name => 'CmdDialsChangeMainSub',
-        Condition => '$$self{CmdDialsChangeMainSubExposure} == 2',
+        Condition => '$$self{CmdDialsChangeMainSubExposure} and $$self{CmdDialsChangeMainSubExposure} == 2',
         PrintConv => {
             1 => 'Autofocus On, Exposure On (Mode A)',
             2 => 'Autofocus Off, Exposure On (Mode A)',
@@ -1014,7 +1014,7 @@ my %infoD6 = (
     }],
     0x08b => [{ # CSf6-a-1 and CSf6-a-2 (D6), CSf5-a-1 and CSf5-a-2 (Z7_2), (continued from above)
         Name => 'CmdDialsReverseRotation',
-        Condition => '$$self{CmdDialsReverseRotExposureComp} == 1',
+        Condition => '$$self{CmdDialsReverseRotExposureComp} and $$self{CmdDialsReverseRotExposureComp} == 1',
         PrintConv => {
             1 => 'No',
             2 => 'Shutter Speed & Aperture',
@@ -1313,7 +1313,7 @@ my %infoD6 = (
             1 => 'Power Aperture (Open)',
             2 => 'Exposure Compensation',
             3 => 'Subject Tracking',
-            4 => 'LiveView Info Display On/Off)',
+            4 => 'LiveView Info Display On/Off',
             5 => 'Grid Display',
             6 => 'Zoom (Low)',
             7 => 'Zoom (1:1)',
@@ -1357,7 +1357,7 @@ my %infoD6 = (
             1 => 'Power Aperture (Close)',
             2 => 'Exposure Compensation',
             3 => 'Subject Tracking',
-            4 => 'LiveView Info Display On/Off)',
+            4 => 'LiveView Info Display On/Off',
             5 => 'Grid Display',
             6 => 'Zoom (Low)',
             7 => 'Zoom (1:1)',
@@ -1578,7 +1578,7 @@ my %infoD6 = (
         },
     },{
         Name => 'BracketProgram',
-        Condition => '$$self{BracketSet} == 4',
+        Condition => '$$self{BracketSet} and $$self{BracketSet} == 4',
         Notes => 'White Balance Bracketing',
         RawConv => '$$self{BracketProgram} = $val',
         PrintConv =>  {
@@ -1595,7 +1595,7 @@ my %infoD6 = (
         },
     },{
         Name => 'BracketProgram',
-        Condition => '$$self{BracketSet} == 5',
+        Condition => '$$self{BracketSet} and $$self{BracketSet} == 5',
         Notes => 'Active-D Bracketing',
         RawConv => '$$self{BracketProgram} = $val',
         Mask => 0x0f,
@@ -1802,9 +1802,9 @@ my %infoD6 = (
         },
     },
     0x139 => { Name => 'PlaybackFlickUp', RawConv => '$$self{PlaybackFlickUp} = $val', PrintConv => \%flickUpDownD6 }, # CSf12-1-a # (D6)
-    0x13a => { Name => 'PlaybackFlickUpRating', Condition => '$$self{PlaybackFlickUp} == 1', Notes => 'Meaningful only when PlaybackFlickUp is Rating', PrintConv => \%flickUpDownRatingD6 }, # CSf12-1-b # (D6)
+    0x13a => { Name => 'PlaybackFlickUpRating', Condition => '$$self{PlaybackFlickUp} and $$self{PlaybackFlickUp} == 1', Notes => 'Meaningful only when PlaybackFlickUp is Rating', PrintConv => \%flickUpDownRatingD6 }, # CSf12-1-b # (D6)
     0x13b => { Name => 'PlaybackFlickDown', RawConv => '$$self{PlaybackFlickDown} = $val', PrintConv => \%flickUpDownD6 }, # CSf12-2-a # (D6)
-    0x13c => { Name => 'PlaybackFlickDownRating', Condition => '$$self{PlaybackFlickDown} == 1', Notes => 'Meaningful only when PlaybackFlickDown is Rating', PrintConv => \%flickUpDownRatingD6 }, # CSf12-2-b # (D6)
+    0x13c => { Name => 'PlaybackFlickDownRating', Condition => '$$self{PlaybackFlickDown} and $$self{PlaybackFlickDown} == 1', Notes => 'Meaningful only when PlaybackFlickDown is Rating', PrintConv => \%flickUpDownRatingD6 }, # CSf12-2-b # (D6)
     0x13d => {  # CSg2-d (D6)
         Name => 'MovieFunc3Button',
         PrintConv => {

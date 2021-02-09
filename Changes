@@ -7,6 +7,16 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.16. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 9, 2021 - Version 12.18
+
+  - Added a new SonyModelID
+  - Decode a number of Sony tags for the ILCE-1 (thanks Jos Roost)
+  - Decode a couple of new Canon tags (thanks LibRaw)
+  - Patched to read differently formatted UserData:Keywords as written by iPhone
+  - Patched to tolerate out-of-order Nikon MakerNote IFD entries when obtaining
+    tags necessary for decryption
+  - Fixed a few possible Condition warnings for some NikonSettings tags
+
 Feb. 3, 2021 - Version 12.17
 
   - Added a new Canon FocusMode value

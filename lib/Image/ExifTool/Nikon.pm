@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.92';
+$VERSION = '3.93';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -9945,12 +9945,10 @@ sub PrescanExif($$$)
         $dataLen = length $data;
         $dirStart = 0;
     }
-    # loop through necessary IFD entries
-    my ($lastTag) = sort { $b <=> $a } keys %$tagHash; # (reverse sort)
+    # loop through Nikon MakerNote IFD entries
     for ($index=0; $index<$numEntries; ++$index) {
         my $entry = $dirStart + 2 + 12 * $index;
         my $tagID = Get16u($dataPt, $entry);
-        last if $tagID > $lastTag;  # (assuming tags are in order)
         next unless exists $$tagHash{$tagID};   # only extract required tags
         my $format = Get16u($dataPt, $entry+2);
         next if $format < 1 or $format > 13;

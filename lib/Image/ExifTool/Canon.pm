@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.43';
+$VERSION = '4.44';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -4539,6 +4539,16 @@ my %ciMaxFocal = (
             2 => 'Rotate 270 CW',
         },
     },
+    0x3a => { #IB
+        Name => 'CameraOrientation',
+        Condition => '$$self{Model} =~ /\b(1200D|REBEL T5|Kiss X70)\b/',
+        Notes => '1200D only',
+        PrintConv => {
+            0 => 'Horizontal (normal)',
+            1 => 'Rotate 90 CW',
+            2 => 'Rotate 270 CW',
+        },
+    },
     0x55 => {
         Name => 'FocusDistanceUpper',
         Condition => '$$self{Model} =~ /EOS 60D$/',
@@ -4679,7 +4689,7 @@ my %ciMaxFocal = (
     FIRST_ENTRY => 0,
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => 'CameraInfo tags for the EOS 70D.',
+    NOTES => 'CameraInfo tags for the EOS 80D.',
     0x03 => { %ciFNumber },
     0x04 => { %ciExposureTime },
     0x06 => { %ciISO },
@@ -5255,6 +5265,14 @@ my %ciMaxFocal = (
     0x06 => { %ciISO },
     0x1b => { %ciCameraTemperature }, # (700D + 0)
     0x23 => { %ciFocalLength }, # (700D + 0)
+    0x96 => { #IB (700D + 0x19)
+        Name => 'CameraOrientation',
+        PrintConv => {
+            0 => 'Horizontal (normal)',
+            1 => 'Rotate 90 CW',
+            2 => 'Rotate 270 CW',
+        },
+    },
     0xa5 => { # (700D + 0x19)
         Name => 'FocusDistanceUpper',
         %focusDistanceByteSwap,

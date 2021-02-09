@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24075 tags, with 15588 unique tag names.
+They contain a total of 24077 tags, with 15588 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -6879,6 +6879,7 @@ CameraInfo tags for the EOS 60D and 1200D.
      25    CameraTemperature                    int8u
      30    FocalLength                          int16uRev
      54    CameraOrientation                    int8u
+     58    CameraOrientation                    int8u
      85    FocusDistanceUpper                   int16uRev
      87    FocusDistanceLower                   int16uRev
     125    ColorTemperature                     int16u
@@ -6916,7 +6917,7 @@ CameraInfo tags for the EOS 70D.
 
 =head3 Canon CameraInfo80D Tags
 
-CameraInfo tags for the EOS 70D.
+CameraInfo tags for the EOS 80D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -7084,6 +7085,7 @@ CameraInfo tags for the EOS 750D and 760D.
       6    ISO                                  int8u
      27    CameraTemperature                    int8u
      35    FocalLength                          int16uRev
+    150    CameraOrientation                    int8u
     165    FocusDistanceUpper                   int16uRev
     167    FocusDistanceLower                   int16uRev
     305    WhiteBalance                         int16u
@@ -18597,7 +18599,7 @@ Valid from July 2015 for ILCE-6100/6300/6400/6500/6600/7C/7M3/7RM2/7RM3/7RM4/
 
 =head3 Sony Tag9050c Tags
 
-Valid from July 2020 for ILCE-7SM3.
+Valid from July 2020 for ILCE-1/7SM3.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -18652,7 +18654,7 @@ DSC-HX50V, DSC-QX10/QX100.
 
 Valid for DSC-HX60V/HX80/HX90V/HX99/HX350/HX400V/QX30/RX0/RX1RM2/RX10/
 RX10M2/RX10M3/RX10M4/RX100M3/RX100M4/RX100M5/RX100M5A/RX100M6/RX100M7/WX220/
-WX350/WX500, ILCE-7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/7SM3/9/9M2/5000/
+WX350/WX500, ILCE-1/7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/7SM3/9/9M2/5000/
 5100/6000/6100/6300/6400/6500/6600/QX1, ILCA-68/77M2/99M2.
 
   Index1   Tag Name                             Writable
@@ -19003,7 +19005,7 @@ E-mount models.
 
 =head3 Sony Tag9416 Tags
 
-Valid for the ILCE-7SM3.
+Valid for the ILCE-1/7SM3.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------

@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.57';
+$VERSION = '2.58';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -258,11 +258,15 @@ my %unknownInfo = (
     Unknown => 1,
     ValueConv => '$val =~ /^([\x20-\x7e]*)\0*$/ ? $1 : \$val',
 );
+
+# multi-language text with 6-byte header
+my %langText = ( IText => 6 );
+
 # parsing for most of the 3gp udta language text boxes
-my %langText = (
+my %langText3gp = (
     Notes => 'used in 3gp videos',
-    IText => 6,
     Avoid => 1,
+    IText => 6,
 );
 
 # 4-character Vendor ID codes (ref PH)
@@ -1545,15 +1549,15 @@ my %eeBox2 = (
     # the following are 3gp tags, references:
     # http://atomicparsley.sourceforge.net
     # http://www.3gpp.org/ftp/tsg_sa/WG4_CODEC/TSGS4_25/Docs/
-    # (note that all %langText tags are Avoid => 1)
-    cprt => { Name => 'Copyright',  %langText, Groups => { 2 => 'Author' } },
-    auth => { Name => 'Author',     %langText, Groups => { 2 => 'Author' } },
-    titl => { Name => 'Title',      %langText },
-    dscp => { Name => 'Description',%langText },
-    perf => { Name => 'Performer',  %langText },
-    gnre => { Name => 'Genre',      %langText },
-    albm => { Name => 'Album',      %langText },
-    coll => { Name => 'CollectionName', %langText }, #17
+    # (note that all %langText3gp tags are Avoid => 1)
+    cprt => { Name => 'Copyright',  %langText3gp, Groups => { 2 => 'Author' } },
+    auth => { Name => 'Author',     %langText3gp, Groups => { 2 => 'Author' } },
+    titl => { Name => 'Title',      %langText3gp },
+    dscp => { Name => 'Description',%langText3gp },
+    perf => { Name => 'Performer',  %langText3gp },
+    gnre => { Name => 'Genre',      %langText3gp },
+    albm => { Name => 'Album',      %langText3gp },
+    coll => { Name => 'CollectionName', %langText3gp }, #17
     rtng => {
         Name => 'Rating',
         # (4-byte flags, 4-char entity, 4-char criteria, 2-byte lang, string)
@@ -1584,8 +1588,11 @@ my %eeBox2 = (
     },
     kywd => {
         Name => 'Keywords',
-        # (4 byte flags, 2-byte lang, 1-byte count, count x pascal strings)
+        # (4 byte flags, 2-byte lang, 1-byte count, count x pascal strings, ref 17)
+        # (but I have also seen a simple string written by iPhone)
         RawConv => q{
+            my $sep = $self->Options('ListSep');
+            return join($sep, split /\0+/, $val) unless $val =~ /^\0/; # (iPhone)
             return '<err>' unless length $val >= 7;
             my $lang = Image::ExifTool::QuickTime::UnpackLang(Get16u(\$val, 4));
             $lang = $lang ? "($lang) " : '';
@@ -1601,7 +1608,6 @@ my %eeBox2 = (
                 push @vals, $v;
                 $pos += $len;
             }
-            my $sep = $self->Options('ListSep');
             return $lang . join($sep, @vals);
         },
     },
@@ -2037,7 +2043,7 @@ my %eeBox2 = (
             SubDirectory => { TagTable => 'Image::ExifTool::Olympus::thmb' },
         },{ #17 (format is in bytes 3-7)
             Name => 'ThumbnailImage',
-            Condition => '$$valPt =~ /^.{8}\xff\xd8\xff\xdb/s',
+            Condition => '$$valPt =~ /^.{8}\xff\xd8\xff[\xdb\xe0]/s',
             Groups => { 2 => 'Preview' },
             RawConv => 'substr($val, 8)',
             Binary => 1,

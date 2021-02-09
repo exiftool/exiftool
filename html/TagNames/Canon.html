@@ -4639,57 +4639,65 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
   <br>1 = Rotate 90 CW
   <br>2 = Rotate 270 CW</span></td></tr>
 <tr>
+<td class=r title='58 = 0x3a'>58</td>
+<td>CameraOrientation</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(1200D only)</span>
+  <br>0 = Horizontal (normal)
+  <br>1 = Rotate 90 CW
+  <br>2 = Rotate 270 CW</span></td></tr>
+<tr class=b>
 <td class=r title='85 = 0x55'>85</td>
 <td>FocusDistanceUpper</td>
 <td class=c>int16uRev</td>
 <td><span class=s><span class=n>(60D only)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='87 = 0x57'>87</td>
 <td>FocusDistanceLower</td>
 <td class=c>int16uRev</td>
 <td><span class=s><span class=n>(60D only)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='125 = 0x7d'>125</td>
 <td>ColorTemperature</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(60D only)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='232 = 0xe8'>232</td>
 <td>LensType</td>
 <td class=c>int16uRev</td>
 <td>--&gt; <a href='Canon.html#LensType'>Canon LensType Values</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='234 = 0xea'>234</td>
 <td>MinFocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='236 = 0xec'>236</td>
 <td>MaxFocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='409 = 0x199'>409</td>
 <td>FirmwareVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='473 = 0x1d9'>473</td>
 <td>FileIndex</td>
 <td class=c>int32u</td>
 <td><span class=s><span class=n>(60D only)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='485 = 0x1e5'>485</td>
 <td>DirectoryIndex</td>
 <td class=c>int32u</td>
 <td><span class=s><span class=n>(60D only)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='761 = 0x2f9'>761</td>
 <td>PictureStyleInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#PSInfo2'>Canon PSInfo2 Tags</a>
   <br><span class='n s'>(1200D)</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='801 = 0x321'>801</td>
 <td>PictureStyleInfo</td>
 <td class=c>-</td>
@@ -4789,7 +4797,7 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfo80D'>Canon CameraInfo80D Tags</a></h2>
-<p>CameraInfo tags for the EOS 70D.</p>
+<p>CameraInfo tags for the EOS 80D.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -5497,51 +5505,58 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='150 = 0x96'>150</td>
+<td>CameraOrientation</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Horizontal (normal)
+  <br>1 = Rotate 90 CW
+  <br>2 = Rotate 270 CW</span></td></tr>
+<tr>
 <td class=r title='165 = 0xa5'>165</td>
 <td>FocusDistanceUpper</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='167 = 0xa7'>167</td>
 <td>FocusDistanceLower</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='305 = 0x131'>305</td>
 <td>WhiteBalance</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Canon.html#WhiteBalance'>Canon WhiteBalance Values</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='309 = 0x135'>309</td>
 <td>ColorTemperature</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='361 = 0x169'>361</td>
 <td>PictureStyle</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Canon.html#PictureStyle'>Canon PictureStyle Values</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='388 = 0x184'>388</td>
 <td>LensType</td>
 <td class=c>int16uRev</td>
 <td>--&gt; <a href='Canon.html#LensType'>Canon LensType Values</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='390 = 0x186'>390</td>
 <td>MinFocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='392 = 0x188'>392</td>
 <td>MaxFocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1085 = 0x43d'>1085</td>
 <td>FirmwareVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1097 = 0x449'>1097</td>
 <td>FirmwareVersion</td>
 <td class=c>no</td>
@@ -11085,7 +11100,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 3, 2021</i>
+<br><i>Last revised Feb 9, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

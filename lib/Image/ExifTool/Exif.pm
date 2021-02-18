@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.32';
+$VERSION = '4.33';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1452,6 +1452,7 @@ my %opcodeInfo = (
             1 => 'Sony Uncompressed 12-bit RAW', #IB
             2 => 'Sony Compressed RAW', # (lossy, ref IB)
             3 => 'Sony Lossless Compressed RAW', #IB
+            4 => 'Sony Lossless Compressed RAW 2', #JR (ILCE-1)
         },
     },
     # 0x7001 - int16u[1] (in SubIFD of Sony ARW images) - values: 0,1
@@ -1472,6 +1473,7 @@ my %opcodeInfo = (
         PrintConv => {
             256 => 'Off',
             257 => 'Auto',
+            272 => 'Auto (ILCE-1)', #JR
             511 => 'No correction params available',
         },
     },
@@ -5796,7 +5798,8 @@ sub ProcessExif($$$)
             $numEntries = Get16u($dataPt, $dirStart);
         } else {
             $et->Warn("Bad $dir directory", $inMakerNotes);
-            return 0 unless $inMakerNotes and $dirLen >= 14;
+            return 0 unless $inMakerNotes and $dirLen >= 14 and $dirStart >= 0 and
+                            $dirStart + $dirLen <= length($$dataPt);
             $dirSize = $dirLen;
             $numEntries = int(($dirSize - 2) / 12); # read what we can
             Set16u($numEntries, $dataPt, $dirStart);

@@ -548,7 +548,7 @@ sub WriteExif($$$)
         my $mustRead;
         if ($dirStart < 0 or $dirStart > $dataLen-2) {
             $mustRead = 1;
-        } elsif ($dirLen > 2) {
+        } elsif ($dirLen >= 2) {
             my $len = 2 + 12 * Get16u($dataPt, $dirStart);
             $mustRead = 1 if $dirStart + $len > $dataLen;
         }

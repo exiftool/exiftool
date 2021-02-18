@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 # FITS tags (ref 1)
 %Image::ExifTool::FITS::Main = (
@@ -36,6 +36,8 @@ $VERSION = '1.00';
    'TIME-OBS'=> { Name => 'ObservationTime',    Groups => { 2 => 'Time' } },
    'DATE-END'=> { Name => 'ObservationDateEnd', Groups => { 2 => 'Time' } },
    'TIME-END'=> { Name => 'ObservationTimeEnd', Groups => { 2 => 'Time' } },
+    COMMENT  => 'Comment',
+    HISTORY  => 'History',
 );
 
 #------------------------------------------------------------------------------
@@ -67,7 +69,8 @@ sub ProcessFITS($$)
             last if $key eq 'END';
             # make sure the key is valid
             $key =~ /^[-_A-Z0-9]*$/ or $et->Warn('Format error in FITS header'), last;
-            next unless substr($buff,8,2) eq '= ';  # ignore comment lines
+            # ignore lines other than tags, COMMENT or HISTORY
+            next unless substr($buff,8,2) eq '= ' or $key eq 'COMMENT' or $key eq 'HISTORY';
             # save tag name (avoiding potential conflict with ExifTool variables)
             $tag = $Image::ExifTool::specialTags{$key} ? "_$key" : $key;
             # add to tag table if necessary

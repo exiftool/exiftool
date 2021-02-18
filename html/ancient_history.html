@@ -13,6 +13,186 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v11.99'><b>May 11, 2020 - Version 11.99</b></a>
+<ul>
+<li>Added a new Nikon LensID (thanks Mykyta Kozlov)
+<li>Added a new Canon LensType
+<li>Added a newn PentaxModelID
+<li>Decode a few new QuickTime tags
+<li>Decode new ID3 Grouping tag
+<li>Decode a few more MinoltaRaw tags (thanks LibRaw)
+<li>Fixed runtime warning which could occur when reading corrupted RTF files
+<li>Fixed another potential pitfall in M2TS Duration calculation
+<li>Fixed problem extracting some unknown QuickTime:Keys tags
+<li>Fixed problem decoding Nikon D850 orientation tags
+<li>Fixed bug where TIFF image data may not be padded to an even number of bytes
+</ul>
+
+<a name='v11.98'><b>May 1, 2020 - Version 11.98</b></a>
+<ul>
+<li>Added a new Nikon LensID (thanks Warren Hatch)
+<li>Added a new Sony LensType (thanks LibRaw)
+<li>Added a new Canon LensType
+<li>Patched to extract EXIF with an "Exif\0\0" header from WebP images
+<li>Enhanced -efile option and added to the documentation
+<li>Minor tweak to -htmlDump output (disallow locking of empty selection)
+<li>Fixed problem determining Duration of some M2TS videos
+</ul>
+
+<a name='v11.97'><b>Apr. 27, 2020 - Version 11.97</b></a>
+<ul>
+<li>Added experimental -efile option (undocumented)
+<li>Decode NMEA GGA sentence from streaming GPS of some dashcam videos
+</ul>
+
+<a name='v11.96'><b>Apr. 24, 2020 - Version 11.96</b></a>
+<ul>
+<li>Decode streaming GPS from Lucas LK-7900 Ace AVI videos
+<li>Changed new Exit/ExitDir function names to End/EndDir
+<li>Fixed inconsistencies when using "-use mwg" together with the -wm option
+</ul>
+
+<a name='v11.95'><b>Apr. 23, 2020 - Version 11.95</b></a>
+<ul>
+<li>Added Exit() and ExitDir() functions for use in -if conditions (NOTE: these
+    function names changed to End() and EndDir() in ExifTool 11.96)
+<li>Enhanced -geotag feature to support a more flexible input CSV file format
+<li>Enhanced -if and <a href="ExifTool.html#Filter">API Filter</a> options to allow access to ExifTool object via
+    $self
+<li>Fixed problem reading HEIC Exif with a missing header
+</ul>
+
+<a name='v11.94'><b>Apr. 17, 2020 - Version 11.94</b></a>
+<ul>
+<li>Added support for QuickTime ItemList:GPSCoordinates
+<li>Added additional Validate test for overlapping EXIF values
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Added a new Nikon LensID
+<li>Decode a few more Nikon tags (thanks Warren Hatch)
+<li>Decode Pentax ShutterType
+<li>Changed color of locked highlighted selection in <a href="htmldump.html">-htmlDump output</a>
+<li>Fixed problem reading PDF files written by Microsoft Print-to-PDF
+<li>Fixed problem where -X output would produce invalid XML for MP4 files
+    containing an HTCTrack
+</ul>
+
+<a name='v11.93'><b>Apr. 3, 2020 - Version 11.93</b></a>
+<ul>
+<li>Added new config file to the distribution for writing Pix4D XMP-Camera tags
+    (config_files/pix4d.config)
+<li>Added support for the DOSCyrillic (cp866) character set
+<li>Added IO::String to the Windows EXE version
+<li>Improved identification of Canon RF lenses (thanks LibRaw)
+<li>Enhanced -htmlDump output to add "File offset" entry for EXIF tags and
+    ability lock highlighted selection by clicking the mouse
+<li>Enhanced -srcfile option to generate OriginalFileName and OriginalDirectory
+    UserParam tags
+<li>Patched HEIC writer to add missing pitm box if necessary
+<li>Fixed problem adding back EXIF after deleting it from HEIC file
+<li>Fixed minor problem with incorrect number of bytes being reported for
+    invalid header in corrupt files
+<li>API Changes:
+    <ul>
+    <li>Enhanced UserParam  option to allow parameters to be extracted as if
+        they were normal tags
+    </ul>
+</ul>
+
+<a name='v11.92'><b>Mar. 19, 2020 - Version 11.92</b></a>
+<ul>
+<li>Added a new Nikon LensID (thanks Wolfgang Exler)
+<li>Decode a few new Leica tags (thanks Tim Gray)
+<li>Decode AccelerometerData from Samsung Gear 360 videos
+<li>Fixed a couple of problems decoding timed GPS metadata from NextBase dashcam
+    videos
+<li>Fixed problem where -X option could produce invalid XML when reading
+    corrupted XMP
+</ul>
+
+<a name='v11.91'><b>Mar. 5, 2020 - Version 11.91</b></a>
+<ul>
+<li>Decode a couple of new Panasonic tags
+<li>Documented -ec option (available since version 11.54)
+<li>Reverted -htmlDump fix of 11.90 because it broke more than it fixed, and
+    instead applied a targeted patch to fix this problem for RW2 files
+</ul>
+
+<a name='v11.90'><b>Mar. 3, 2020 - Version 11.90</b></a>
+<ul>
+<li>Added a new Sony LensType (thanks LibRaw and Jos Roost)
+<li>Added two new Olympus LensType values
+<li>Added a new Canon LensType
+<li>Added some new Canon RecordMode values
+<li>Added some new QuickTime GeneralProfileIDC values
+<li>Added new values for a couple of FujiFilm tags
+<li>Added a number of new QuickTime GenreID values
+<li>Decode Nikon Z6/Z7 phase-detect AF points (thanks Andy Dragon)
+<li>Patched to avoid possible "Undefined subroutine" error in MacOS 10.15
+<li>Fixed incorrect offsets in -htmlDump output for some file types
+</ul>
+
+<a name='v11.89'><b>Feb. 25, 2020 - Version 11.89</b></a>
+<ul>
+<li>Added support for Exif 2.32 for XMP
+<li>Recognize the HIF file extension
+<li>Improved verbose output for QuickTime iref items
+<li>Patched to create new GPS metadata in Canon CR3 images using a default byte
+    order that is the same as existing EXIF boxes
+<li>Patched to add missing newline that could occur in XMP with the API <a href="ExifTool.html#Compact">Compact</a>
+    Shorthand option
+</ul>
+
+<a name='v11.88'><b>Feb. 20, 2020 - Version 11.88</b></a>
+<ul>
+<li>Added write support for new <a href="TagNames/XMP.html#Device">Google depth-map XMP tags</a>
+<li>Added config_files/depthmap.config to the distribution
+<li>Added minor error when attempting to write FFF images due to incompatibility
+    with Hasselblad Phocus software
+<li>Patched to avoid "Invalid iloc offset size" error when writing some
+    QuickTime-based files
+<li>Fixed incorrect ColumnCount for CSV files
+<li>Fixed various spelling errors (thanks Jens Schleusener)
+<li>Fixed bug writing QuickTime:Rotation in HEIC files
+</ul>
+
+<a name='v11.87'><b>Feb. 13, 2020 - Version 11.87</b></a>
+<ul>
+<li>Added read support for CSV files
+<li>Added "--" option to indicate the end of options
+<li>Added ability to read/write/copy/delete the JPEG trailer as a block
+<li>Added new Olympus CameraType and LensType values (thanks LibRaw)
+<li>Decode a few more FujiFilm tags
+<li>Enhanced -fast option (API <a href="ExifTool.html#FastScan">FastScan</a>) to bypass PNG CRC validation when
+    writing
+</ul>
+
+<a name='v11.86'><b>Feb. 4, 2020 - Version 11.86</b></a>
+<ul>
+<li>Added support for DNG version 1.5
+<li>Added config_files/acdsee.config to the full distribution (thanks StarGeek)
+<li>Added a new Sony LensType (thanks Jos Roost and LibRaw)
+<li>Decode two more bits from Nikon LensType (thanks LibRaw)
+<li>Decode QuickTime MovieFragmentSequence
+<li>Patched HEIC writer to add missing iref box if necessary
+<li>Fixed typo in a Canon LensType value
+<li>API Changes:
+    <ul>
+    <li>Patched ImageInfo() to recognize a stringified object as a file name
+    </ul>
+</ul>
+
+<a name='v11.85'><b>Jan. 28, 2020 - Version 11.85</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Added a new Olympus CameraType (thanks LibRaw)
+<li>Added a two new Pentax LensType values
+<li>Added a new FujiFilm FocusMode
+<li>Decode timed GPS from Akaso dashcam MOV videos
+<li>Decode Insta360 trailer from INSP images and made Insta360 a deletable group
+<li>Patched kml.fmt file to limit maximum image size (thanks Fedor Kotov)
+<li>Fixed problem decoding values from Leica M10 and S maker notes
+</ul>
+
 <a name='v11.84'><b>Jan. 10, 2020 - Version 11.84</b></a>
 <ul>
 <li>Decode accelerometer data from timed metadata of more dashcam videos

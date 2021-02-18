@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24077 tags, with 15588 unique tag names.
+They contain a total of 24079 tags, with 15589 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -5886,7 +5886,7 @@ Tags extracted from the maker notes of iPhone images.
   0x0008   AccelerationVector                   rational64s[3]
   0x000a   HDRImageType                         int32s
   0x000b   BurstUUID                            string
-  0x0011   ContentIdentifier                    string
+  0x0011   MediaGroupUUID                       string
   0x0015   ImageUniqueID                        string
 
 =head3 Apple RunTime Tags
@@ -25697,11 +25697,13 @@ L<UserData|Image::ExifTool::TagNames/QuickTime UserData Tags>, and
 finally in L<Keys|Image::ExifTool::TagNames/QuickTime Keys Tags>,
 but this order may be changed by setting the PREFERRED level of the
 appropriate table in the config file (see
-example.config in the full distribution for
-an example).  ExifTool currently writes only top-level metadata in
-QuickTime-based files; it extracts other track-specific and timed
-metadata, but can not yet edit tags in these locations (with the
-exception of track-level date/time tags).
+example.config in the full distribution for an
+example).  Note that some tags with the same name but different ID's may
+exist in the same location, but the family 7 group names may be used to
+differentiate these.  ExifTool currently writes only top-level metadata in
+QuickTime-based files; it extracts other track-specific and timed metadata,
+but can not yet edit tags in these locations (with the exception of
+track-level date/time tags).
 
 Alternate language tags may be accessed for
 L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and
@@ -25726,8 +25728,8 @@ local time when extracting.
 
 When writing string-based date/time tags, the system time zone is added if
 the PrintConv option is enabled and no time zone is specified.  This is
-because Apple software may display a crazy values if the time zone is
-missing for some tags.
+because Apple software may display crazy values if the time zone is missing
+for some tags.
 
 See
 L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/>
@@ -26167,9 +26169,9 @@ this table support alternate languages which are accessed by adding a
 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
 country code to the tag name (eg. "ItemList:Title-fra" or
 "ItemList::Title-fra-FR").  When creating a new Meta box to contain the
-ItemList directory, by default ExifTool does not specify a
-L<Handler|Image::ExifTool::TagNames/QuickTime Handler Tags>, but the
-API QuickTimeHandler option may be used to include an 'mdir' Handler box.
+ItemList directory, by default ExifTool adds an 'mdir' (Metadata) Handler
+box because Apple software may ignore ItemList tags otherwise, but the API
+QuickTimeHandler option may be set to 0 to avoid this.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
@@ -33740,9 +33742,11 @@ L<https://fits.gsfc.nasa.gov/fits_standard.html> for the specification.
   ------       --------                         --------
   'AUTHOR'     Author                           no
   'BACKGRND'   Background                       no
+  'COMMENT'    Comment                          no
   'DATE'       CreateDate                       no
   'DATE-END'   ObservationDateEnd               no
   'DATE-OBS'   ObservationDate                  no
+  'HISTORY'    History                          no
   'INSTRUME'   Instrument                       no
   'OBJECT'     Object                           no
   'OBSERVER'   Observer                         no
@@ -35656,6 +35660,13 @@ for more details.
                        InteropIFD:InteropVersion
                        InteropIFD:RelatedImageWidth
                        InteropIFD:RelatedImageHeight
+  ls-l                 FilePermissions          yes
+                       FileHardLinks
+                       FileUserID
+                       FileGroupID
+                       FileSize#
+                       FileModifyDate
+                       FileName
 
 =head2 MWG Tags
 

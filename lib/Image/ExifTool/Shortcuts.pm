@@ -265,6 +265,15 @@ $VERSION = '1.65';
         'XMP',
         'ZoomedPreviewImage',
     ],
+    'ls-l' => [
+        'FilePermissions',
+        'FileHardLinks',
+        'FileUserID',
+        'FileGroupID',
+        'FileSize#',
+        'FileModifyDate',
+        'FileName',
+    ],
 );
 
 #------------------------------------------------------------------------------

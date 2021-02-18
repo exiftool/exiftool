@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.18';
+$VERSION = '12.19';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -70,7 +70,7 @@ sub SetFileName($$;$$$);
 sub SetSystemTags($$);
 sub GetAllTags(;$);
 sub GetWritableTags(;$);
-sub GetAllGroups($);
+sub GetAllGroups($;$);
 sub GetNewGroups($);
 sub GetDeleteGroups();
 sub AddUserDefinedTags($%);
@@ -266,6 +266,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     DIB  => ['BMP',  'Device Independent Bitmap'],
     DIC  =>  'DICM',
     DICM => ['DICOM','Digital Imaging and Communications in Medicine'],
+    DIR  => ['DIR',  'Directory'],
     DIVX => ['ASF',  'DivX media format'],
     DJV  =>  'DJVU',
     DJVU => ['AIFF', 'DjVu image'],
@@ -1270,10 +1271,19 @@ my %systemTagsNotes = (
         WritePseudo => 1,
         DelCheck => q{"Can't delete"},
         Protected => 1, # all writable pseudo-tags must be protected!
-        ValueConv => 'sprintf("%.3o", $val & 0777)',
-        ValueConvInv => 'oct($val)',
+        ValueConv => 'sprintf("%.3o", $val)',
+        ValueConvInv => 'oct($val & 07777)',
         PrintConv => sub {
-            my ($mask, $str, $val) = (0400, '', oct(shift));
+            my ($mask, $val) = (0400, oct(shift));
+            my %types = (
+                0010000 => 'p',
+                0020000 => 'c',
+                0040000 => 'd',
+                0060000 => 'b',
+                0120000 => 'l',
+                0140000 => 's',
+            );
+            my $str = $types{$val & 0170000} || '-';
             while ($mask) {
                 foreach (qw(r w x)) {
                     $str .= $val & $mask ? $_ : '-';
@@ -1284,6 +1294,7 @@ my %systemTagsNotes = (
         },
         PrintConvInv => sub {
             my ($bit, $val, $str) = (8, 0, shift);
+            $str = substr($str, 1) if length($str) == 10;
             return undef if length($str) != 9;
             while ($bit >= 0) {
                 foreach (qw(r w x)) {
@@ -2271,7 +2282,7 @@ sub ClearOptions($)
         NoPDFList   => undef,   # flag to avoid splitting PDF List-type tag values
         Password    => undef,   # password for password-protected PDF documents
         PrintConv   => 1,       # flag to enable print conversion
-        QuickTimeHandler => undef,  # flag to add mdir Handler to newly created Meta box
+        QuickTimeHandler => 1,  # flag to add mdir Handler to newly created Meta box
         QuickTimeUTC=> undef,   # assume that QuickTime date/time tags are stored as UTC
         RequestAll  => undef,   # extract all tags that must be specifically requested
         RequestTags => undef,   # extra tags to request (on top of those in the tag list)
@@ -2321,7 +2332,7 @@ sub ExtractInfo($;@)
     my $fast = $$options{FastScan} || 0;
     my $req = $$self{REQ_TAG_LOOKUP};
     my $reqAll = $$options{RequestAll} || 0;
-    my (%saveOptions, $reEntry, $rsize, $type, @startTime, $saveOrder);
+    my (%saveOptions, $reEntry, $rsize, $type, @startTime, $saveOrder, $isDir);
 
     # check for internal ReEntry option to allow recursive calls to ExtractInfo
     if (ref $_[1] eq 'HASH' and $_[1]{ReEntry} and
@@ -2417,6 +2428,8 @@ sub ExtractInfo($;@)
                 # in Windows cmd shell pipe even though it really failed
                 $$raf{TESTED} = -1 if $filename eq '-' or $filename =~ /\|$/;
                 $$self{RAF} = $raf;
+            } elsif ($self->IsDirectory($filename)) {
+                $isDir = 1;
             } else {
                 $self->Error('Error opening file');
             }
@@ -2425,28 +2438,30 @@ sub ExtractInfo($;@)
         }
     }
 
-    while ($raf) {
-        my (@stat, $fileSize);
+    while ($raf or $isDir) {
+        my (@stat, $plainFile);
         if ($reEntry) {
             # we already set these tags
+        } elsif (not $raf) {
+            @stat = stat $filename;
         } elsif (not $$raf{FILE_PT}) {
             # get file size from image in memory
             $self->FoundTag('FileSize', length ${$$raf{BUFF_PT}});
         } elsif (-f $$raf{FILE_PT}) {
             # get file tags if this is a plain file
-            $fileSize = -s _;
             @stat = stat _;
-            my ($aTime, $mTime, $cTime) = $self->GetFileTime($$raf{FILE_PT});
-            $self->FoundTag('FileSize', $fileSize) if defined $fileSize;
-            $self->FoundTag('ResourceForkSize', $rsize) if $rsize;
-            $self->FoundTag('FileModifyDate', $mTime) if defined $mTime;
-            $self->FoundTag('FileAccessDate', $aTime) if defined $aTime;
-            my $cTag = $^O eq 'MSWin32' ? 'FileCreateDate' : 'FileInodeChangeDate';
-            $self->FoundTag($cTag, $cTime) if defined $cTime;
-            $self->FoundTag('FilePermissions', $stat[2]) if defined $stat[2];
+            $plainFile = 1;
         } else {
             @stat = stat $$raf{FILE_PT};
         }
+        my $fileSize = $stat[7];
+        $self->FoundTag('FileSize', $stat[7]) if defined $stat[7];
+        $self->FoundTag('ResourceForkSize', $rsize) if $rsize;
+        $self->FoundTag('FileModifyDate', $stat[9]) if defined $stat[9];
+        $self->FoundTag('FileAccessDate', $stat[8]) if defined $stat[8];
+        my $cTag = $^O eq 'MSWin32' ? 'FileCreateDate' : 'FileInodeChangeDate';
+        $self->FoundTag($cTag, $stat[10]) if defined $stat[10];
+        $self->FoundTag('FilePermissions', $stat[2]) if defined $stat[2];
         # extract more system info if SystemTags option is set
         if (@stat) {
             my $sys = $$options{SystemTags} || ($reqAll and not defined $$options{SystemTags});
@@ -2486,11 +2501,18 @@ sub ExtractInfo($;@)
             if ($crDate or $mdItem or $xattr) {
                 require Image::ExifTool::MacOS;
                 Image::ExifTool::MacOS::GetFileCreateDate($self, $filename) if $crDate;
-                Image::ExifTool::MacOS::ExtractMDItemTags($self, $filename) if $mdItem;
+                Image::ExifTool::MacOS::ExtractMDItemTags($self, $filename) if $mdItem and $plainFile;
                 Image::ExifTool::MacOS::ExtractXAttrTags($self, $filename) if $xattr;
             }
         }
-
+        # do whatever else we can with directories, then return
+        if ($isDir or (defined $stat[2] and ($stat[2] & 0170000) == 0040000)) {
+            $self->FoundTag('FileType', 'DIR');
+            $self->FoundTag('FileTypeExtension', '');
+            $self->BuildCompositeTags() if $$options{Composite};
+            $raf->Close() if $raf;
+            return 1;
+        }
         # get list of file types to check
         my ($tiffType, %noMagic, $recognizedExt);
         my $ext = $$self{FILE_EXT} = GetFileExtension($realname);
@@ -4079,7 +4101,14 @@ sub GetFileTime($$)
     # open file by name if necessary
     unless (ref $file) {
         local *FH;
-        $self->Open(\*FH, $file) or $self->Warn("GetFileTime error for '${file}'"), return ();
+        unless ($self->Open(\*FH, $file)) {
+            if ($self->IsDirectory($file)) {
+                my @rtn = (stat $file)[8, 9, 10];
+                return @rtn if defined $rtn[0];
+            }
+            $self->Warn("GetFileTime error for '${file}'");
+            return ();
+        }
         $file = *FH;  # (not \*FH, so *FH will be kept open until $file goes out of scope)
     }
     # on Windows, try to work around incorrect file times when daylight saving time is in effect

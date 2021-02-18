@@ -669,7 +669,7 @@ distribution for examples.</p>
     and <a href="#GetAllGroups">GetAllGroups</a> for a list of available groups.</td>
     <td align=center>undef</td></tr>
 <tr id="HexTagIDs"><td>HexTagIDs</td><td>Use hexadecimal instead of decimal for the family 7
-	group names of tags with numerical ID's.</td>
+    group names of tags with numerical ID's.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="HtmlDump"><td>HtmlDump</td><td>Dump information in hex to a dynamic HTML web page.
     Option value sets a limit on the maximum block size.  Output file is
@@ -757,10 +757,11 @@ distribution for examples.</p>
 <tr id="QuickTimeHandler"><td>QuickTimeHandler</td><td>Flag set to add an 'mdir'
     <a href="TagNames/QuickTime.html#Handler">Handler</a> to a newly created
     Meta box when adding QuickTime ItemList tags.  Adobe Bridge does not add this
-    Handler, but it is commonly found in samples from other software, so it is
-    possible that this could affect the interoperability of ItemList tags.</td>
+    Handler, but it is commonly found in samples from other software, and it has been
+    reported that Apple QuickTime Player and Photos.apps will ignore ItemList tags
+    if this is missing.</td>
     <td align=center>0 or 1</td>
-    <td align=center>undef</td></tr>
+    <td align=center>1</td></tr>
 <tr id="QuickTimeUTC"><td>QuickTimeUTC</td><td>Flag set to assume that QuickTime
     date/time values are stored as UTC, causing conversion to local time when they are
     extracted and from local time when written. According to the QuickTime
@@ -1855,7 +1856,8 @@ and adjacent identical group names unless the family string begins with a colon.
 <tr><td align=center>3</td><td>Document Number</td> <td>Main, Doc1, Doc3-2</td></tr>
 <tr><td align=center>4</td><td>Instance Number</td> <td>Copy1, Copy2, Copy3...</td></tr>
 <tr><td align=center>5</td><td>Metadata Path</td> <td>eg. JPEG-APP1-IFD0-ExifIFD</td></tr>
-<tr><td align=center>6</td><td>EXIF/TIFF Format</td> <td>int8u, int32u, undef, string...</td></tr>
+<tr><td align=center>6</td><td>EXIF/TIFF Format</td> <td>int8u, int32u, undef, string</td></tr>
+<tr><td align=center>7</td><td>Tag ID</td> <td>ID-271, ID-rights, ID-a9aut</td></tr>
 </table></blockquote>
 
 <p>Families 0 and 1 are based on the file structure, and are similar except that
@@ -1896,13 +1898,15 @@ option is used when extracting.</p>
 <p>Family 6 is currently used only for EXIF/TIFF metadata, and gives the format
 type of the extracted value.  Generated only if the
 <a href="#SaveFormat">SaveFormat</a> option is used when extracting.</p>
-<p>Family 7 is used for tag ID's.  The group names are "ID-" followed by the
-tag ID with characters other than [-_A-Za-z0-9] converted to hex.  Numerical tag ID's are
-given in hex if the <a href="#HexTagIDs">HexTagIDs</a> option is set.  When
-specifying a family 7 group name, numerical ID's may be in hex or decimal, and
-non-numercal ID's may or may not have characters other than [-_A-Za-z0-9]
-converted to hex.  Note that unlike other group names, family 7 group names are
-case sensitive (except for the leading "ID-").</p>
+<p>Family 7 is used for tag ID's.  The group names are the actual tag ID's with
+a leading "ID-" string.  Non-numerical tag ID's have characters other than
+[-_A-Za-z0-9] converted to hex.  Numerical tag ID's are returned in hex if the
+<a href="#HexTagIDs">HexTagIDs</a> option is set, otherwise decimal is used. 
+When specifying a family 7 group name, numerical ID's may be in hex (with
+leading "0x") or decimal, and non-numerical ID's may or may not have characters
+other than [-_A-Za-z0-9] converted to hex.  Note that unlike other group names,
+the tag ID's in family 7 group names are case sensitive (but the leading "ID-"
+is not).</p>
 <p>See <a href="#GetAllGroups">GetAllGroups</a> for lists of group names.</p>
 
 <p><b>Examples:</b></p>
@@ -2058,7 +2062,7 @@ the specific IFD).
 <p>Get list of all group names in specified family.</p>
 <blockquote><table class='norm'>
 <tr><td><b>Prototype</b></td><td>GetAllGroups($)</td></tr>
-<tr><td valign=top><b>Inputs</b></td><td><b>0)</b> Group family number (0-4)
+<tr><td valign=top><b>Inputs</b></td><td><b>0)</b> Group family number (0-7)
 </td></tr>
 <tr><td valign=top><b>Returns</b></td>
 <td>A list of all groups in the specified family in alphabetical order</td></tr>
@@ -2134,10 +2138,13 @@ Preview, Printing, Time, Unknown, Video
 <td>int8u, string, int16u, int32u, rational64u, int8s, undef, int16s, int32s,
 rational64s, float, double, ifd, unicode, complex, int64u, int64s, ifd64</td></tr>
 <tr><td><b>7&nbsp;(Tag&nbsp;ID)</b></td>
-<td>ID-xxx (where xxx is the tag ID.  Numerical ID's are given in hex with a
-leading "0x" if the HexTagIDs option is set, as are characters in non-numerical
-ID's which are not valid in a group name)</td></tr>
+<td>ID-xxx (Where xxx is the tag ID.  Numerical ID's are returned in hex with a
+leading "0x" if the HexTagIDs option is set, or decimal otherwise.  Characters
+in non-numerical ID's which are not valid in a group name are returned as 2
+hex digits.)</td></tr>
 </table></blockquote>
+<p>Note:  This function may also be called as an ExifTool member function to
+allow the HexTagIDs option to be set when retrieving family 7 group names.</p>
 <p><b>Example:</b></p>
 <blockquote><table class='box'><tr><td><pre>
 @groupList = Image::ExifTool::<b>GetAllGroups</b>($family);

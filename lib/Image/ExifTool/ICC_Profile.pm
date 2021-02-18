@@ -24,7 +24,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.35';
+$VERSION = '1.36';
 
 sub ProcessICC($$);
 sub ProcessICC_Profile($$$);
@@ -1225,7 +1225,7 @@ sub ProcessICC_Profile($$$)
             my $type = substr($$dataPt, $valuePtr, 4);
             #### eval Validate ($type)
             if (defined $$subdir{Validate} and not eval $$subdir{Validate}) {
-                $et->Warn("Invalid $name data");
+                $et->Warn("Invalid ICC $name data");
             } else {
                 $et->ProcessDirectory(\%subdirInfo, $newTagTable, $$subdir{ProcessProc});
             }

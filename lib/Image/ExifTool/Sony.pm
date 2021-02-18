@@ -222,6 +222,7 @@ sub PrintInvLensSpec($;$$);
     50522 => 'Sigma 105mm F2.8 DG DN MACRO | A', #JR (020)
     50523 => 'Sigma 65mm F2 DG DN | C', #IB (020)
     50524 => 'Sigma 35mm F2 DG DN | C', #IB (020)
+    50525 => 'Sigma 24mm F3.5 DG DN | C', #JR (021)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
@@ -1405,6 +1406,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         PrintConv => {
             0 => 'Compressed RAW',
             1 => 'Uncompressed RAW',
+            2 => 'Lossless Compressed RAW', #JR (NC) seen for ILCE-1
            65535 => 'n/a', # seen for ILCE-7SM3 JPEG-only
         },
     },

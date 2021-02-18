@@ -7,6 +7,24 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.16. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 18, 2021 - Version 12.19
+
+  - Added -list_dir option
+  - Added the "ls-l" Shortcut tag
+  - Extract Comment and History from FITS files
+  - Enhanced FilePermissions to include device type (similar to "ls -l")
+  - Changed the name of Apple ContentIdentifier tag to MediaGroupUUID
+    (thanks Neal Krawetz)
+  - Fixed a potential "substr outside of string" runtime error when reading
+    corrupted EXIF
+  - Fixed edge case where NikonScanIFD may not be copied properly when copying
+    MakerNotes to another file
+  - API Changes:
+      - Added ability to read/write System tags of directories
+      - Enhanced GetAllGroups() to support family 7 and take optional ExifTool
+        reference
+      - Changed QuickTimeHandler option default to 1
+
 Feb. 9, 2021 - Version 12.18
 
   - Added a new SonyModelID

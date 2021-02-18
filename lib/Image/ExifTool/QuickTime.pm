@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.58';
+$VERSION = '2.59';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -3000,9 +3000,9 @@ my %eeBox2 = (
         3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
         country code to the tag name (eg. "ItemList:Title-fra" or
         "ItemList::Title-fra-FR").  When creating a new Meta box to contain the
-        ItemList directory, by default ExifTool does not specify a
-        L<Handler|Image::ExifTool::TagNames/QuickTime Handler Tags>, but the
-        API L<QuickTimeHandler|../ExifTool.html#QuickTimeHandler> option may be used to include an 'mdir' Handler box.
+        ItemList directory, by default ExifTool adds an 'mdir' (Metadata) Handler
+        box because Apple software may ignore ItemList tags otherwise, but the API
+        L<QuickTimeHandler|../ExifTool.html#QuickTimeHandler> option may be set to 0 to avoid this.
     },
     # in this table, binary 1 and 2-byte "data"-type tags are interpreted as
     # int8u and int16u.  Multi-byte binary "data" tags are extracted as binary data.

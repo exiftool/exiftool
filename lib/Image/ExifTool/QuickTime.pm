@@ -1994,7 +1994,11 @@ my %eeBox2 = (
     # ---- Microsoft ----
     Xtra => { #PH (microsoft)
         Name => 'MicrosoftXtra',
-        SubDirectory => { TagTable => 'Image::ExifTool::Microsoft::Xtra' },
+        WriteGroup => 'Microsoft',
+        SubDirectory => {
+            DirName => 'Microsoft',
+            TagTable => 'Image::ExifTool::Microsoft::Xtra',
+        },
     },
     # ---- Minolta ----
     MMA0 => { #PH (DiMage 7Hi)

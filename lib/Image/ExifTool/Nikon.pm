@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.93';
+$VERSION = '3.94';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -640,6 +640,7 @@ sub GetAFPointGrid($$;$);
     '24 44 60 98 34 3C 1A 02' => 'Tokina AT-X 840 AF-II (AF 80-400mm f/4.5-5.6)',
     '00 44 60 98 34 3C 00 02' => 'Tokina AT-X 840 D (AF 80-400mm f/4.5-5.6)',
     '14 48 68 8E 30 30 0B 00' => 'Tokina AT-X 340 AF (AF 100-300mm f/4)',
+    '8C 48 29 3C 24 24 86 06' => 'Tokina opera 16-28mm F2.8 FF', #30
 #
     '06 3F 68 68 2C 2C 06 00' => 'Cosina AF 100mm F3.5 Macro',
     '07 36 3D 5F 2C 3C 03 00' => 'Cosina AF Zoom 28-80mm F3.5-5.6 MC Macro',

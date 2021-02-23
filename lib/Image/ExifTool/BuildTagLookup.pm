@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.42';
+$VERSION = '3.43';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -141,6 +141,9 @@ my %formatOK = (
     signed      => 1,
     unsigned    => 1,
     utf8        => 1,
+    Unicode     => 1, # (Microsoft Xtra)
+    GUID        => 1, # (Microsoft Xtra)
+    vt_filetime => 1, # (Microsoft Xtra)
 );
 
 # Descriptions for the TagNames documentation

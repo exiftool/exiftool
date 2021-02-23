@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24079 tags, with 15589 unique tag names.
+They contain a total of 24082 tags, with 15589 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -22510,7 +22510,10 @@ Windows Live Photo Gallery.
 =head3 Microsoft Xtra Tags
 
 Tags extracted from the Microsoft "Xtra" atom of QuickTime videos.  Tag ID's
-are not shown because some are unruly GUID's.
+are not shown because some are unruly GUID's.  Currently most of these tags
+are not writable because the Microsoft documentation is poor and samples
+were not available, but more tags may be made writable in the future if
+samples are provided.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -22522,13 +22525,13 @@ are not shown because some are unruly GUID's.
   AcquisitionTimeYear                           no
   AcquisitionTimeYearMonth                      no
   AcquisitionTimeYearMonthDay                   no
-  AlbumArtist                                   no
+  AlbumArtist                                   Unicode/
   AlbumArtist                                   no
   AlbumArtistSortOrder                          no
-  AlbumCoverURL                                 no
+  AlbumCoverURL                                 Unicode/
   AlbumID                                       no
   AlbumIDAlbumArtist                            no
-  AlbumTitle                                    no
+  AlbumTitle                                    Unicode/
   AlbumTitle                                    no
   AlbumTitleSortOrder                           no
   AlternateSourceURL                            no
@@ -22545,6 +22548,7 @@ are not shown because some are unruly GUID's.
   Author                                        no
   Author                                        no
   AuthorSortOrder                               no
+  AuthorURL                                     Unicode/
   AutoSummary                                   no
   AverageLevel                                  no
   BccAddresses                                  no
@@ -22577,7 +22581,7 @@ are not shown because some are unruly GUID's.
   CameraModel                                   no
   CameraModel                                   no
   CarPhone                                      no
-  Category                                      no
+  Category                                      Unicode/+
   Category                                      no
   CcAddresses                                   no
   CcNames                                       no
@@ -22596,13 +22600,13 @@ are not shown because some are unruly GUID's.
   Company                                       no
   CompanyMainPhone                              no
   Complete                                      no
-  Composer                                      no
+  Composer                                      Unicode/
   Composers                                     no
   Computer                                      no
-  Conductor                                     no
+  Conductor                                     Unicode/+
   Conductors                                    no
   ContactNames                                  no
-  ContentDistributor                            no
+  ContentDistributor                            Unicode/
   ContentDistributorDuration                    no
   ContentDistributorType                        no
   ContentGroupDescription                       no
@@ -22625,7 +22629,7 @@ are not shown because some are unruly GUID's.
   DataRate                                      no
   Date                                          no
   DateAccessed                                  no
-  DateAcquired                                  no
+  DateAcquired                                  vt_filetime/
   DateArchived                                  no
   DateCompleted                                 no
   DateCreated                                   no
@@ -22642,7 +22646,7 @@ are not shown because some are unruly GUID's.
   Description                                   no
   Description                                   no
   Dimensions                                    no
-  Director                                      no
+  Director                                      Unicode/+
   Directors                                     no
   DisplayArtist                                 no
   Division                                      no
@@ -22656,8 +22660,9 @@ are not shown because some are unruly GUID's.
   E-mailAddress                                 no
   E-mailDisplayName                             no
   E-mailList                                    no
+  EncodedBy                                     Unicode/
   EncodedBy                                     no
-  EncodingTime                                  no
+  EncodingTime                                  date/
   EndDate                                       no
   EntryType                                     no
   EpisodeName                                   no
@@ -22715,7 +22720,7 @@ are not shown because some are unruly GUID's.
   ISOSpeed                                      no
   Importance                                    no
   Incomplete                                    no
-  InitialKey                                    no
+  InitialKey                                    Unicode/
   InitialKey                                    no
   Initials                                      no
   IsAttachment                                  no
@@ -22749,8 +22754,8 @@ are not shown because some are unruly GUID's.
   MCDI                                          no
   MailingAddress                                no
   MaxAperture                                   no
-  MediaClassPrimaryID                           no
-  MediaClassSecondaryID                         no
+  MediaClassPrimaryID                           GUID/
+  MediaClassSecondaryID                         GUID/
   MediaContentTypes                             no
   MediaCreated                                  no
   MediaOriginalBroadcastDateTime                no
@@ -22761,7 +22766,7 @@ are not shown because some are unruly GUID's.
   MiddleName                                    no
   Mileage                                       no
   ModifiedBy                                    no
-  Mood                                          no
+  Mood                                          Unicode/
   Mood                                          no
   MoreInfo                                      no
   Name                                          no
@@ -22774,9 +22779,9 @@ are not shown because some are unruly GUID's.
   OrganizerAddress                              no
   OrganizerName                                 no
   Orientation                                   no
-  OriginalAlbumTitle                            no
-  OriginalArtist                                no
-  OriginalLyricist                              no
+  OriginalAlbumTitle                            Unicode/
+  OriginalArtist                                Unicode/
+  OriginalLyricist                              Unicode/
   OtherAddress                                  no
   OtherCity                                     no
   OtherCountry-Region                           no
@@ -22788,7 +22793,7 @@ are not shown because some are unruly GUID's.
   POBox                                         no
   Pager                                         no
   Pages                                         no
-  ParentalRating                                no
+  ParentalRating                                Unicode/
   ParentalRating                                no
   ParentalRatingReason                          no
   PartOfSet                                     no
@@ -22798,7 +22803,7 @@ are not shown because some are unruly GUID's.
   Path                                          no
   PeakValue                                     no
   PerceivedType                                 no
-  Period                                        no
+  Period                                        Unicode/
   Period                                        no
   PersonalTitle                                 no
   PixelAspectRatioX                             no
@@ -22808,7 +22813,7 @@ are not shown because some are unruly GUID's.
   PrimaryE-mail                                 no
   PrimaryPhone                                  no
   Priority                                      no
-  Producer                                      no
+  Producer                                      Unicode/+
   Producers                                     no
   ProductName                                   no
   ProductVersion                                no
@@ -22817,15 +22822,16 @@ are not shown because some are unruly GUID's.
   ProgramMode                                   no
   ProgramName                                   no
   Project                                       no
+  PromotionURL                                  Unicode/
   Protected                                     no
   ProtectionType                                no
   Provider                                      no
-  Provider                                      no
+  Provider                                      Unicode/
   ProviderLogoURL                               no
   ProviderRating                                no
   ProviderStyle                                 no
   ProviderURL                                   no
-  Publisher                                     no
+  Publisher                                     Unicode/
   Publisher                                     no
   RadioBand                                     no
   RadioFormat                                   no
@@ -22859,7 +22865,7 @@ are not shown because some are unruly GUID's.
   Sensitivity                                   no
   ShadowFilePath                                no
   Shared                                        no
-  SharedUserRating                              no
+  SharedUserRating                              int64u/
   SharedWith                                    no
   Size                                          no
   Slides                                        no
@@ -22880,7 +22886,7 @@ are not shown because some are unruly GUID's.
   Subject                                       no
   SubjectDistance                               no
   SubscriptionContentID                         no
-  Subtitle                                      no
+  Subtitle                                      Unicode/
   Subtitle                                      no
   SubtitleDescription                           no
   Suffix                                        no
@@ -22959,7 +22965,7 @@ are not shown because some are unruly GUID's.
   WhiteBalance                                  no
   WindowsFileName                               no
   WordCount                                     no
-  Writer                                        no
+  Writer                                        Unicode/
   Writers                                       no
   Year                                          no
   Year                                          no

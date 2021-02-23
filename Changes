@@ -7,6 +7,13 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.16. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 23, 2021 - Version 12.20
+
+  - Added ability to write some Microsoft Xtra tags in MOV/MP4 videos
+  - Added two new Canon LensType values (thanks Norbert Wasser)
+  - Added a new Nikon LensID
+  - Fixed problem reading FITS comments that start before column 11
+
 Feb. 18, 2021 - Version 12.19
 
   - Added -list_dir option

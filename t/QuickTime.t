@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/QuickTime.t".
 
 BEGIN {
-    $| = 1; print "1..15\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..16\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -205,6 +205,25 @@ my $testnum = 1;
     unlink $testfile;
     my $rtnVal = $exifTool->WriteInfo('t/images/QuickTime.m4a', $testfile);
     my $info = $exifTool->ImageInfo($testfile, 'ItemList:all', 'Keys:all', 'UserData:all');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
+    print "ok $testnum\n";
+}
+
+# test 16: Write some Microsoft Xtra tags
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    $exifTool->SetNewValue('Microsoft:Director' => 'dir1');
+    $exifTool->SetNewValue('Microsoft:Director' => 'dir2');
+    $exifTool->SetNewValue('Microsoft:SharedUserRating' => 75);
+    my $testfile = "t/${testname}_${testnum}_failed.mov";
+    unlink $testfile;
+    my $rtnVal = $exifTool->WriteInfo('t/images/QuickTime.mov', $testfile);
+    my $info = $exifTool->ImageInfo($testfile, 'Microsoft:all');
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {

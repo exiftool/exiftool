@@ -17,6 +17,16 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.21'><b>Feb. 24, 2021 - Version 12.21</b></a>
+<ul>
+<li>Decode a couple more Sony rtmd tags
+<li>Patch to avoid possible "Use of uninitialized value" warning when attempting
+    to write QuickTime date/time tags with an invalid value
+<li>Fixed problem writing Microsoft Xtra tags
+<li>Fixed Windows daylight savings time patch for file times that was broken in
+    12.19 (however directory times will not yet handle DST properly)
+</ul>
+
 <a name='v12.20'><b>Feb. 23, 2021 - Version 12.20</b></a>
 <ul>
 <li>Added ability to write some <a href="TagNames/Microsoft.html#Xtra">Microsoft Xtra tags</a> in MOV/MP4 videos

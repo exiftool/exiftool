@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24082 tags, with 15589 unique tag names.
+They contain a total of 24089 tags, with 15594 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -19200,6 +19200,8 @@ some models when the ExtractEmbedded option is used.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  0x8109   ExposureTime                         no
+  0x810b   ISO                                  no
   0x8500   GPSVersionID                         no
   0x8501   GPSLatitudeRef                       no
   0x8502   GPSLatitude                          no
@@ -22509,11 +22511,11 @@ Windows Live Photo Gallery.
 
 =head3 Microsoft Xtra Tags
 
-Tags extracted from the Microsoft "Xtra" atom of QuickTime videos.  Tag ID's
-are not shown because some are unruly GUID's.  Currently most of these tags
-are not writable because the Microsoft documentation is poor and samples
-were not available, but more tags may be made writable in the future if
-samples are provided.
+Tags found in the Microsoft "Xtra" atom of QuickTime videos.  Tag ID's are
+not shown because some are unruly GUID's.  Currently most of these tags are
+not writable because the Microsoft documentation is poor and samples were
+not available, but more tags may be made writable in the future if samples
+are provided.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -25999,66 +26001,75 @@ either of these tables, either the "Keys" location must be specified (eg.
 C<-Keys:Author=Phil> on the command line), or the PREFERRED level must be
 changed via the config file.
 
-  Tag ID                  Tag Name              Writable
-  ------                  --------              --------
-  'Encoded_With'          EncodedWith           string
-  'album'                 Album                 string
-  'artist'                Artist                string
-  'artwork'               Artwork               string
-  'author'                Author                string
+  Tag ID        Tag Name                        Writable
+  ------        --------                        --------
+  'Encoded_With' EncodedWith                    yes
+  'album'       Album                           yes
+  'apple.photos.variation-identifier'
+                ApplePhotosVariationIdentifier  int64s
+  'artist'      Artist                          yes
+  'artwork'     Artwork                         yes
+  'author'      Author                          yes
   'camera.framereadouttimeinmicroseconds'
-                          FrameReadoutTime      string
-  'camera.identifier'     CameraIdentifier      string
-  'collection.user'       UserCollection        string
-  'com.android.version'   AndroidVersion        string
-  'com.apple.photos.captureMode' CaptureMode    string
-  'comment'               Comment               string
-  'copyright'             Copyright             string
-  'creationdate'          CreationDate          string
-  'description'           Description           string
-  'detected-face'         FaceInfo              QuickTime FaceInfo
-  'detected-face.bounds'  DetectedFaceBounds    no
+                FrameReadoutTime                yes
+  'camera.identifier' CameraIdentifier          yes
+  'collection.user' UserCollection              yes
+  'com.android.version' AndroidVersion          yes
+  'com.apple.photos.captureMode' CaptureMode    yes
+  'comment'     Comment                         yes
+  'copyright'   Copyright                       yes
+  'creationdate' CreationDate                   yes
+  'description' Description                     yes
+  'detected-face' FaceInfo                      QuickTime FaceInfo
+  'detected-face.bounds' DetectedFaceBounds     no
   'detected-face.face-id' DetectedFaceID        no
   'detected-face.roll-angle'
-                          DetectedFaceRollAngle no
+                DetectedFaceRollAngle           no
   'detected-face.yaw-angle'
-                          DetectedFaceYawAngle  no
-  'direction.facing'      CameraDirection       string
-  'direction.motion'      CameraMotion          string
-  'director'              Director              string
-  'displayname'           DisplayName           string
-  'genre'                 Genre                 string
-  'information'           Information           string
-  'keywords'              Keywords              string
-  'live-photo-info'       LivePhotoInfo         no
-  'location.ISO6709'      GPSCoordinates        string
-  'location.body'         LocationBody          string
-  'location.date'         LocationDate          string
-  'location.name'         LocationName          string
-  'location.note'         LocationNote          string
-  'location.role'         LocationRole          string
-  'make'                  Make                  string
-  'model'                 Model                 string
-  'player.movie.audio.balance' Balance          string
-  'player.movie.audio.bass' Bass                string
-  'player.movie.audio.gain' AudioGain           string
+                DetectedFaceYawAngle            no
+  'direction.facing' CameraDirection            yes
+  'direction.motion' CameraMotion               yes
+  'director'    Director                        yes
+  'displayname' DisplayName                     yes
+  'genre'       Genre                           yes
+  'information' Information                     yes
+  'keywords'    Keywords                        yes
+  'live-photo-info' LivePhotoInfo               no
+  'live-photo.auto' LivePhotoAuto               int8u
+  'live-photo.vitality-score'
+                LivePhotoVitalityScore          float
+  'live-photo.vitality-scoring-version'
+                LivePhotoVitalityScoringVersion int64s
+  'location.ISO6709' GPSCoordinates             yes
+  'location.accuracy.horizontal'
+                LocationAccuracyHorizontal      yes
+  'location.body' LocationBody                  yes
+  'location.date' LocationDate                  yes
+  'location.name' LocationName                  yes
+  'location.note' LocationNote                  yes
+  'location.role' LocationRole                  yes
+  'make'        Make                            yes
+  'model'       Model                           yes
+  'player.movie.audio.balance' Balance          yes
+  'player.movie.audio.bass' Bass                yes
+  'player.movie.audio.gain' AudioGain           yes
   'player.movie.audio.mute' Mute                int8u
-  'player.movie.audio.pitchshift' PitchShift    string
-  'player.movie.audio.treble' Trebel            string
-  'player.movie.visual.brightness' Brightness   string
-  'player.movie.visual.color' Color             string
-  'player.movie.visual.contrast' Contrast       string
-  'player.movie.visual.tint' Tint               string
-  'player.version'        PlayerVersion         string
-  'producer'              Producer              string
-  'publisher'             Publisher             string
-  'rating.user'           UserRating            string
-  'software'              Software              string
-  'still-image-time'      StillImageTime        no
-  'title'                 Title                 string
-  'version'               Version               string
-  'video-orientation'     VideoOrientation      no
-  'year'                  Year                  string
+  'player.movie.audio.pitchshift' PitchShift    yes
+  'player.movie.audio.treble' Trebel            yes
+  'player.movie.visual.brightness' Brightness   yes
+  'player.movie.visual.color' Color             yes
+  'player.movie.visual.contrast' Contrast       yes
+  'player.movie.visual.tint' Tint               yes
+  'player.version' PlayerVersion                yes
+  'producer'    Producer                        yes
+  'publisher'   Publisher                       yes
+  'rating.user' UserRating                      yes
+  'software'    Software                        yes
+  'still-image-time' StillImageTime             no
+  'title'       Title                           yes
+  'version'     Version                         yes
+  'video-orientation' VideoOrientation          no
+  'year'        Year                            yes
 
 =head3 QuickTime FaceInfo Tags
 

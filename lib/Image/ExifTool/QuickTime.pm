@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.59';
+$VERSION = '2.60';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -243,7 +243,11 @@ my %timeInfo = (
     },
     # (all CR3 files store UTC times - PH)
     ValueConv => 'ConvertUnixTime($val, $self->Options("QuickTimeUTC") || $$self{FileType} eq "CR3")',
-    ValueConvInv => 'GetUnixTime($val, $self->Options("QuickTimeUTC")) + (66 * 365 + 17) * 24 * 3600',
+    ValueConvInv => q{
+        $val = GetUnixTime($val, $self->Options("QuickTimeUTC"));
+        return undef unless defined $val;
+        return $val + (66 * 365 + 17) * 24 * 3600;
+    },
     PrintConv => '$self->ConvertDateTime($val)',
     PrintConvInv => '$self->InverseDateTime($val)',
     # (can't put Groups here because they aren't constant!)
@@ -6167,13 +6171,12 @@ my %eeBox2 = (
     PROCESS_PROC => \&ProcessKeys,
     WRITE_PROC => \&WriteKeys,
     CHECK_PROC => \&CheckQTValue,
-    VARS => { LONG_TAGS => 3 },
+    VARS => { LONG_TAGS => 7 },
     WRITABLE => 1,
     # (not PREFERRED when writing)
     GROUPS => { 1 => 'Keys' },
     WRITE_GROUP => 'Keys',
     LANG_INFO => \&GetLangInfo,
-    FORMAT => 'string',
     NOTES => q{
         This directory contains a list of key names which are used to decode tags
         written by the "mdta" handler.  Also in this table are a few tags found in
@@ -6275,6 +6278,11 @@ my %eeBox2 = (
         PrintConv => '$self->ConvertDateTime($val)',
         PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
     },
+    'location.accuracy.horizontal' => { Name => 'LocationAccuracyHorizontal' },
+    'live-photo.auto'           => { Name => 'LivePhotoAuto', Writable => 'int8u' },
+    'live-photo.vitality-score' => { Name => 'LivePhotoVitalityScore', Writable => 'float' },
+    'live-photo.vitality-scoring-version' => { Name => 'LivePhotoVitalityScoringVersion', Writable => 'int64s' },
+    'apple.photos.variation-identifier'   => { Name => 'ApplePhotosVariationIdentifier',  Writable => 'int64s' },
     'direction.facing' => { Name => 'CameraDirection', Groups => { 2 => 'Location' } },
     'direction.motion' => { Name => 'CameraMotion',    Groups => { 2 => 'Location' } },
     'location.body'    => { Name => 'LocationBody',    Groups => { 2 => 'Location' } },
@@ -8584,7 +8592,7 @@ sub QuickTimeFormat($$)
     my ($flags, $len) = @_;
     my $format;
     if ($flags == 0x15 or $flags == 0x16) {
-        $format = { 1=>'int8', 2=>'int16', 4=>'int32' }->{$len};
+        $format = { 1=>'int8', 2=>'int16', 4=>'int32', 8=>'int64' }->{$len};
         $format .= $flags == 0x15 ? 's' : 'u' if $format;
     } elsif ($flags == 0x17) {
         $format = 'float';

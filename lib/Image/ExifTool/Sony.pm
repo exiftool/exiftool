@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.36';
+$VERSION = '3.37';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -10046,11 +10046,15 @@ my %isoSetting2010 = (
     0x8100 => { Name => 'Sony_rtmd_0x8100', Format => 'int8u',  %hidUnk },
     0x8101 => { Name => 'Sony_rtmd_0x8101', Format => 'int8u',  %hidUnk }, # seen: 0,1
     0x8106 => { Name => 'Sony_rtmd_0x8106', Format => 'int32u', %hidUnk }, # seen: "25 1"
-    0x8109 => { Name => 'Sony_rtmd_0x8109', Format => 'int32u', %hidUnk }, # seen: "1 50"
-    0x810a => { Name => 'Sony_rtmd_0x810a', Format => 'int16u', %hidUnk }, # seen: 0
-    0x810b => { Name => 'Sony_rtmd_0x810b', Format => 'int16u', %hidUnk }, # seen: 100
+    0x8109 => { #forum12218
+        Name => 'ExposureTime',
+        Format => 'rational64u',
+        PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
+    },
+    0x810a => { Name => 'Sony_rtmd_0x810a', Format => 'int16u', %hidUnk }, # seen: 0,1800
+    0x810b => { Name => 'ISO',              Format => 'int16u' }, #forum12218
     0x810c => { Name => 'Sony_rtmd_0x810c', Format => 'int16u', %hidUnk }, # seen: 100
-    0x810d => { Name => 'Sony_rtmd_0x810d', Format => 'int8u',  %hidUnk }, # seen: 1
+    0x810d => { Name => 'Sony_rtmd_0x810d', Format => 'int8u',  %hidUnk }, # seen: 0,1
     0x8115 => { Name => 'Sony_rtmd_0x8115', Format => 'int16u', %hidUnk }, # seen: 100
   # 0x8300 - container for other tags in this format
     0x8500 => {
@@ -10129,9 +10133,9 @@ my %isoSetting2010 = (
     },
     0xe000 => { Name => 'Sony_rtmd_0xe000', Format => 'int8u',  %hidUnk }, # (16 bytes)
     0xe300 => { Name => 'Sony_rtmd_0xe300', Format => 'int8u',  %hidUnk }, # seen: 0,1
-    0xe301 => { Name => 'Sony_rtmd_0xe301', Format => 'int32u', %hidUnk }, # seen: 100
+    0xe301 => { Name => 'Sony_rtmd_0xe301', Format => 'int32u', %hidUnk }, # seen: 100,1600
     0xe302 => { Name => 'Sony_rtmd_0xe302', Format => 'int8u',  %hidUnk }, # seen: 1
-    0xe303 => { Name => 'Sony_rtmd_0xe303', Format => 'int8u',  %hidUnk }, # seen: 255
+    0xe303 => { Name => 'Sony_rtmd_0xe303', Format => 'int8u',  %hidUnk }, # seen: 4,255
     0xe304 => {
         Name => 'DateTime',
         Groups => { 2 => 'Time' },

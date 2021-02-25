@@ -7,6 +7,15 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.16. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 24, 2021 - Version 12.21
+
+  - Decode a couple more Sony rtmd tags
+  - Patch to avoid possible "Use of uninitialized value" warning when attempting
+    to write QuickTime date/time tags with an invalid value
+  - Fixed problem writing Microsoft Xtra tags
+  - Fixed Windows daylight savings time patch for file times that was broken in
+    12.19 (however directory times will not yet handle DST properly)
+
 Feb. 23, 2021 - Version 12.20
 
   - Added ability to write some Microsoft Xtra tags in MOV/MP4 videos

@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.20';
+$VERSION = '12.21';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -42,7 +42,7 @@ $RELEASE = '';
     DataAccess => [qw(
         ReadValue GetByteOrder SetByteOrder ToggleByteOrder Get8u Get8s Get16u
         Get16s Get32u Get32s Get64u GetFloat GetDouble GetFixed32s Write
-        WriteValue Tell Set8u Set8s Set16u Set32u Set64u
+        WriteValue Tell Set8u Set8s Set16u Set32u Set64u Set64s
     )],
     Utils => [qw(GetTagTable TagTableKeys GetTagInfoList AddTagToTable HexDump)],
     Vars  => [qw(%allTables @tableOrder @fileTypes)],
@@ -89,6 +89,7 @@ sub Get64u($$);
 sub GetFixed64s($$);
 sub GetExtended($$);
 sub Set64u(@);
+sub Set64s(@);
 sub DecodeBits($$;$);
 sub EncodeBits($$;$$);
 sub Filter($$$);
@@ -2451,7 +2452,11 @@ sub ExtractInfo($;@)
             # get file tags if this is a plain file
             @stat = stat _;
             $plainFile = 1;
+            # hack to patch Windows daylight savings time bug
+            @stat[8,9,10] = $self->GetFileTime($$raf{FILE_PT}) if $^O eq 'MSWin32';
         } else {
+            # (note that Windows directories will still show the
+            #  daylight savings time bug -- should fix this sometime)
             @stat = stat $$raf{FILE_PT};
         }
         my $fileSize = $stat[7];

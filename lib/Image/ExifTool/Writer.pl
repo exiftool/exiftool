@@ -4951,6 +4951,12 @@ sub Set64u(@)
     $_[1] and substr(${$_[1]}, $_[2], length($val)) = $val;
     return $val;
 }
+sub Set64s(@)
+{
+    my $val = shift;
+    $val < 0 and $val += 4294967296 * 4294967296; # (temporary hack won't really work due to round-off errors)
+    return Set64u($val, @_);
+}
 sub SetRational64u(@) {
     my ($numer,$denom) = Rationalize($_[0],0xffffffff);
     my $val = Set32u($numer) . Set32u($denom);
@@ -5012,6 +5018,7 @@ my %writeValueProc = (
     int16uRev => \&Set16uRev,
     int32s => \&Set32s,
     int32u => \&Set32u,
+    int64s => \&Set64s,
     int64u => \&Set64u,
     rational32s => \&SetRational32s,
     rational32u => \&SetRational32u,

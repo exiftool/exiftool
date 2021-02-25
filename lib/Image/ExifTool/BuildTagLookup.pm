@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.43';
+$VERSION = '3.44';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -1330,6 +1330,7 @@ TagID:  foreach $tagID (@keys) {
                         my $count = $$tagInfo{Count} || 1;
                         # adjust count to Writable size if different than Format
                         if ($writable and $format and $writable ne $format and
+                            $writable ne 'string' and $format ne 'string' and
                             $Image::ExifTool::Exif::formatNumber{$writable} and
                             $Image::ExifTool::Exif::formatNumber{$format})
                         {

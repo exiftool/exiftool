@@ -78,8 +78,8 @@ my %dirMap = (
 # convert ExifTool Format to QuickTime type
 my %qtFormat = (
    'undef' => 0x00,  string => 0x01,
-    int8s  => 0x15,  int16s => 0x15,  int32s => 0x15,
-    int8u  => 0x16,  int16u => 0x16,  int32u => 0x16,
+    int8s  => 0x15,  int16s => 0x15,  int32s => 0x15,  int64s => 0x15,
+    int8u  => 0x16,  int16u => 0x16,  int32u => 0x16,  int64u => 0x16,
     float  => 0x17,  double => 0x18,
 );
 my $undLang = 0x55c4;   # numeric code for default ('und') language
@@ -296,7 +296,7 @@ sub GetLangInfo($$)
 sub CheckQTValue($$$)
 {
     my ($et, $tagInfo, $valPtr) = @_;
-    my $format = $$tagInfo{Format} || $$tagInfo{Table}{FORMAT};
+    my $format = $$tagInfo{Format} || $$tagInfo{Writable} || $$tagInfo{Table}{FORMAT};
     return undef unless $format;
     return Image::ExifTool::CheckValue($valPtr, $format, $$tagInfo{Count});
 }
@@ -309,8 +309,8 @@ sub FormatQTValue($$;$$)
 {
     my ($et, $valPt, $format, $writable) = @_;
     my $flags;
-    if ($format and $format ne 'string') {
-        $$valPt = WriteValue($$valPt, $format);
+    if ($format and $format ne 'string' or not $format and $writable and $writable ne 'string') {
+        $$valPt = WriteValue($$valPt, $format || $writable);
         if ($writable and $qtFormat{$writable}) {
             $flags = $qtFormat{$writable};
         } else {

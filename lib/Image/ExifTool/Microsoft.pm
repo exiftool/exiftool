@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.21';
+$VERSION = '1.22';
 
 sub ProcessXtra($$$);
 sub WriteXtra($$$);
@@ -206,11 +206,11 @@ my %sRegions = (
     GROUPS => { 0 => 'QuickTime', 2 => 'Video' },
     VARS => { NO_ID => 1 },
     NOTES => q{
-        Tags extracted from the Microsoft "Xtra" atom of QuickTime videos.  Tag ID's
-        are not shown because some are unruly GUID's.  Currently most of these tags
-        are not writable because the Microsoft documentation is poor and samples
-        were not available, but more tags may be made writable in the future if
-        samples are provided.
+        Tags found in the Microsoft "Xtra" atom of QuickTime videos.  Tag ID's are
+        not shown because some are unruly GUID's.  Currently most of these tags are
+        not writable because the Microsoft documentation is poor and samples were
+        not available, but more tags may be made writable in the future if samples
+        are provided.
     },
     Abstract                    => { },
     AcquisitionTime             => { Groups => { 2 => 'Time' } },
@@ -877,7 +877,7 @@ sub WriteXtraValue($$$)
         SetByteOrder('II');
         my ($type, $dat);
         if ($format eq 'Unicode') {
-            $dat = $et->Encode($val,'UCS2','II');
+            $dat = $et->Encode($val,'UCS2','II') . "\0\0";  # (must be null terminated)
             $type = 8;
         } elsif ($format eq 'int64u') {
             if (Image::ExifTool::IsInt($val)) {

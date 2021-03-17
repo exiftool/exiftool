@@ -7,8 +7,28 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.16. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Mar. 17, 2021 - Version 12.22
+
+  - Added a few new Sony LensTypes and a new SonyModelID (thanks Jos Roost and
+    LibRaw)
+  - Added Extra BaseName tag
+  - Added a new CanonModelID (thanks LibRaw)
+  - Decode timed GPS from unlisted programs in M2TS videos with the -ee3 option
+  - Decode more Sony rtmd tags
+  - Decode some tags for the Sony ILME-FX3 (thanks Jos Roost)
+  - Allow negative values to be written to XMP-aux:LensID
+  - Recognize HEVC video program in M2TS files
+  - Enhanced -b option so --b suppresses tags with binary data
+  - Improved flexibility when writing GPS coordinates:
+      - Now pulls latitude and longitude from a combined GPSCoordinates string
+      - Recognizes the full word "South" and "West" to write negative coordinates
+  - Improved warning when trying to write an integer QuickTime date/time tag and
+    Time::Local is not available
+  - Convert GPSSpeed from mph to km/h in timed GPS from Garmin MP4 videos
+
 Feb. 24, 2021 - Version 12.21
 
+  - Added a few new iOS QuickTime tags
   - Decode a couple more Sony rtmd tags
   - Patch to avoid possible "Use of uninitialized value" warning when attempting
     to write QuickTime date/time tags with an invalid value

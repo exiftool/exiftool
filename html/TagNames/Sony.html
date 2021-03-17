@@ -998,7 +998,8 @@ toward magenta)</span></span></td></tr>
   <br>380 = ZV-1
   <br>381 = ILCE-7C
   <br>383 = ILCE-7SM3
-  <br>384 = ILCE-1</td></tr></table>
+  <br>384 = ILCE-1
+  <br>385 = ILME-FX3</td></tr></table>
 </td></tr>
 <tr class=b>
 <td title='0xb020 = 45088'>0xb020</td>
@@ -4823,9 +4824,11 @@ multi-frame noise reduction)</span></span></td></tr>
 </tr><tr><td>32852</td><td>= Sony FE 600mm F4 GM OSS</td>
 </tr><tr><td>32853</td><td>= Sony E 16-55mm F2.8 G</td>
 </tr><tr><td>32854</td><td>= Sony E 70-350mm F4.5-6.3 G OSS</td>
+</tr><tr><td>32855</td><td>= Sony FE C 16-35mm T3.1 G</td>
 </tr><tr><td>32858</td><td>= Sony FE 35mm F1.8</td>
 </tr><tr><td>32859</td><td>= Sony FE 20mm F1.8 G</td>
 </tr><tr><td>32860</td><td>= Sony FE 12-24mm F2.8 GM</td>
+</tr><tr><td>32862</td><td>= Sony FE 50mm F1.2 GM</td>
 </tr><tr><td>32864</td><td>= Sony FE 28-60mm F4-5.6</td>
 </tr><tr><td>32865</td><td>= Sony FE 35mm F1.4 GM</td>
 </tr><tr><td>33072</td><td>= Sony FE 70-200mm F2.8 GM OSS + 1.4X Teleconverter</td>
@@ -4895,6 +4898,7 @@ multi-frame noise reduction)</span></span></td></tr>
 </tr><tr><td>50523</td><td>= Sigma 65mm F2 DG DN | C</td>
 </tr><tr><td>50524</td><td>= Sigma 35mm F2 DG DN | C</td>
 </tr><tr><td>50525</td><td>= Sigma 24mm F3.5 DG DN | C</td>
+</tr><tr><td>50526</td><td>= Sigma 28-70mm F2.8 DG DN | C</td>
 </tr><tr><td>50992</td><td>= Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III</td>
 </tr><tr><td>50993</td><td>= Voigtlander HELIAR-HYPER WIDE 10mm F5.6</td>
 </tr><tr><td>50994</td><td>= Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III</td>
@@ -11540,8 +11544,18 @@ some models when the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded<
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td title='0x8000 = 32768'>0x8000</td>
+<td>FNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x8109 = 33033'>0x8109</td>
 <td>ExposureTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x810a = 33034'>0x810a</td>
+<td>MasterGainAdjustment</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -11550,59 +11564,76 @@ some models when the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded<
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x810c = 33036'>0x810c</td>
+<td>ElectricalExtenderMagnification</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x8500 = 34048'>0x8500</td>
 <td>GPSVersionID</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x8501 = 34049'>0x8501</td>
 <td>GPSLatitudeRef</td>
 <td class=c>no</td>
 <td><span class=s>&#39;N&#39; = North
   <br>&#39;S&#39; = South</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x8502 = 34050'>0x8502</td>
 <td>GPSLatitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x8503 = 34051'>0x8503</td>
 <td>GPSLongitudeRef</td>
 <td class=c>no</td>
 <td><span class=s>&#39;E&#39; = East
   <br>&#39;W&#39; = West</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x8504 = 34052'>0x8504</td>
 <td>GPSLongitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x8507 = 34055'>0x8507</td>
 <td>GPSTimeStamp</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x8509 = 34057'>0x8509</td>
 <td>GPSStatus</td>
 <td class=c>no</td>
 <td><span class=s>&#39;A&#39; = Measurement Active
   <br>&#39;V&#39; = Measurement Void</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x850a = 34058'>0x850a</td>
 <td>GPSMeasureMode</td>
 <td class=c>no</td>
 <td><span class=s>2 = 2-Dimensional Measurement
   <br>3 = 3-Dimensional Measurement</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x8512 = 34066'>0x8512</td>
 <td>GPSMapDatum</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x851d = 34077'>0x851d</td>
 <td>GPSDateStamp</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xe303 = 58115'>0xe303</td>
+<td>WhiteBalance</td>
+<td class=c>no</td>
+<td><table class=cols><tr>
+  <td>1 = Incandescent
+  <br>2 = Fluorescent
+  <br>4 = Daylight</td><td>&nbsp;&nbsp;</td>
+  <td>5 = Cloudy
+  <br>6 = Custom
+  <br>255 = Preset</td></tr></table>
+</td></tr>
 <tr>
 <td title='0xe304 = 58116'>0xe304</td>
 <td>DateTime</td>
@@ -11612,7 +11643,7 @@ some models when the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded<
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 24, 2021</i>
+<br><i>Last revised Mar 17, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

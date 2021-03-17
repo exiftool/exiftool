@@ -164,6 +164,7 @@ PTILoop:    for ($index=0; $index<@infoArray; ++$index) {
                 $format = 'struct' if $$tagInfo{Struct};
                 if (defined $format) {
                     $format =~ s/\[.*\$.*\]//;   # remove expressions from format
+                    $format = 'undef' if $format eq '2'; # (special case)
                 } elsif ($isBinary) {
                     $format = 'int8u';
                 } else {

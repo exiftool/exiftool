@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24089 tags, with 15594 unique tag names.
+They contain a total of 24094 tags, with 15597 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -19200,8 +19200,11 @@ some models when the ExtractEmbedded option is used.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  0x8000   FNumber                              no
   0x8109   ExposureTime                         no
+  0x810a   MasterGainAdjustment                 no
   0x810b   ISO                                  no
+  0x810c   ElectricalExtenderMagnification      no
   0x8500   GPSVersionID                         no
   0x8501   GPSLatitudeRef                       no
   0x8502   GPSLatitude                          no
@@ -19212,6 +19215,7 @@ some models when the ExtractEmbedded option is used.
   0x850a   GPSMeasureMode                       no
   0x8512   GPSMapDatum                          no
   0x851d   GPSDateStamp                         no
+  0xe303   WhiteBalance                         no
   0xe304   DateTime                             no
 
 =head2 SonyIDC Tags
@@ -22515,7 +22519,9 @@ Tags found in the Microsoft "Xtra" atom of QuickTime videos.  Tag ID's are
 not shown because some are unruly GUID's.  Currently most of these tags are
 not writable because the Microsoft documentation is poor and samples were
 not available, but more tags may be made writable in the future if samples
-are provided.
+are provided.  Note that writable tags in this table are are flagged to
+"Avoid", which means that other more common tags will be written instead if
+possible unless the Microsoft group is specified explicitly.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -25811,7 +25817,7 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
 
 Timed metadata extracted from QuickTime media data and some AVI videos when
 the ExtractEmbedded option is used.  Although most of these tags are
-combined into the single table below, ExifTool currently reads 49 different
+combined into the single table below, ExifTool currently reads 51 different
 formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
@@ -35045,6 +35051,7 @@ FileName.
   Tag Name                   Group              Writable
   --------                   -----              --------
   Adobe                      Adobe              yes!
+  BaseName                   System             no
   CanonDR4                   CanonVRD           yes!^
   CanonVRD                   CanonVRD           yes!^
   Comment                    File               yes

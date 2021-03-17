@@ -210,7 +210,9 @@ my %sRegions = (
         not shown because some are unruly GUID's.  Currently most of these tags are
         not writable because the Microsoft documentation is poor and samples were
         not available, but more tags may be made writable in the future if samples
-        are provided.
+        are provided.  Note that writable tags in this table are are flagged to
+        "Avoid", which means that other more common tags will be written instead if
+        possible unless the Microsoft group is specified explicitly.
     },
     Abstract                    => { },
     AcquisitionTime             => { Groups => { 2 => 'Time' } },

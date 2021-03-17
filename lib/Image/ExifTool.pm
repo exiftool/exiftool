@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.21';
+$VERSION = '12.22';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1130,6 +1130,13 @@ my %systemTagsNotes = (
         },
         RawConv => '$self->ConvertFileName($val)',
         ValueConvInv => '$self->InverseFileName($val)',
+    },
+    BaseName => {
+        Groups => { 1 => 'System', 2 => 'Other' },
+        Notes => q{
+            file name without extension. Not generated unless specifically requested or
+            the L<RequestAll|../ExifTool.html#RequestAll> API option is set
+        },
     },
     FilePath => {
         Groups => { 1 => 'System', 2 => 'Other' },
@@ -2406,6 +2413,11 @@ sub ExtractInfo($;@)
                 $realname =~ /\|$/ and $realname =~ s/^.*?"(.*?)".*/$1/s;
                 my ($dir, $name) = SplitFileName($realname);
                 $self->FoundTag('FileName', $name);
+                if ($$req{basename} or
+                   ($reqAll and not $$self{EXCL_TAG_LOOKUP}{basename}))
+                {
+                    $self->FoundTag('BaseName', $name =~ /(.*)\./ ? $1 : $name);
+                }
                 $self->FoundTag('Directory', $dir) if defined $dir and length $dir;
                 if ($$req{filepath} or
                    ($reqAll and not $$self{EXCL_TAG_LOOKUP}{filepath}))
@@ -5744,7 +5756,11 @@ sub GetUnixTime($;$)
     my ($timeStr, $isLocal) = @_;
     return 0 if $timeStr eq '0000:00:00 00:00:00';
     my @tm = ($timeStr =~ /^(\d+):(\d+):(\d+)\s+(\d+):(\d+):(\d+)(.*)/);
-    return undef unless @tm == 7 and eval { require Time::Local };
+    return undef unless @tm == 7;
+    unless (eval { require Time::Local }) {
+        warn "Time::Local is not installed\n";
+        return undef;
+    }
     my ($tzStr, $tzSec) = (pop(@tm), 0);
     # use specified timezone offset (if given) instead of local system time
     # if we are converting a local time value
@@ -5942,7 +5958,7 @@ sub ProcessTrailers($$)
     for (;;) { # loop through all trailers
         my ($proc, $outBuff);
         if ($dirName eq 'Insta360') {
-            require "Image/ExifTool/QuickTimeStream.pl";
+            require 'Image/ExifTool/QuickTimeStream.pl';
             $proc = 'Image::ExifTool::QuickTime::ProcessInsta360';
         } else {
             require "Image/ExifTool/$dirName.pm";

@@ -17,8 +17,31 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.22'><b>Mar. 17, 2021 - Version 12.22</b></a>
+<ul>
+<li>Added a few new Sony LensTypes and a new SonyModelID (thanks Jos Roost and
+    LibRaw)
+<li>Added Extra BaseName tag
+<li>Added a new CanonModelID (thanks LibRaw)
+<li>Decode timed GPS from unlisted programs in M2TS videos with the -ee3 option
+<li>Decode more Sony rtmd tags
+<li>Decode some tags for the Sony ILME-FX3 (thanks Jos Roost)
+<li>Allow negative values to be written to XMP-aux:LensID
+<li>Recognize HEVC video program in M2TS files
+<li>Enhanced -b option so --b suppresses tags with binary data
+<li>Improved flexibility when writing GPS coordinates:
+    <ul>
+    <li>Now pulls latitude and longitude from a combined GPSCoordinates string
+    <li>Recognizes the full word "South" and "West" to write negative coordinates
+    </ul>
+<li>Improved warning when trying to write an integer QuickTime date/time tag and
+    Time::Local is not available
+<li>Convert GPSSpeed from mph to km/h in timed GPS from Garmin MP4 videos
+</ul>
+
 <a name='v12.21'><b>Feb. 24, 2021 - Version 12.21</b></a>
 <ul>
+<li>Added a few new iOS QuickTime tags
 <li>Decode a couple more Sony rtmd tags
 <li>Patch to avoid possible "Use of uninitialized value" warning when attempting
     to write QuickTime date/time tags with an invalid value

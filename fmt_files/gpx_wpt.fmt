@@ -4,7 +4,7 @@
 # Description:  Example ExifTool print format file to generate GPX waypoints
 #               with pictures
 #
-# Usage:        exiftool -p gpx_wpt.fmt -ee FILE [...] > out.gpx
+# Usage:        exiftool -p gpx_wpt.fmt -ee3 FILE [...] > out.gpx
 #
 # Requires:     ExifTool version 10.49 or later
 #

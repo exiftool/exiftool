@@ -12,13 +12,12 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.52';
+$VERSION = '1.53';
 
 my %coordConv = (
     ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val)',
     ValueConvInv => 'Image::ExifTool::GPS::ToDMS($self, $val)',
     PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1)',
-    PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val)',
 );
 
 %Image::ExifTool::GPS::Main = (
@@ -41,7 +40,7 @@ my %coordConv = (
         Notes => q{
             tags 0x0001-0x0006 used for camera location according to MWG 2.0. ExifTool
             will also accept a number when writing GPSLatitudeRef, positive for north
-            latitudes or negative for south, or a string ending in N or S
+            latitudes or negative for south, or a string containing N, North, S or South
         },
         Count => 2,
         PrintConv => {
@@ -50,7 +49,7 @@ my %coordConv = (
             OTHER => sub {
                 my ($val, $inv) = @_;
                 return undef unless $inv;
-                return uc $1 if $val =~ /\b([NS])\b/i;
+                return uc $2 if $val =~ /(^|[^A-Z])([NS])(orth|outh)?\b/i;
                 return $1 eq '-' ? 'S' : 'N' if $val =~ /([-+]?)\d+/;
                 return undef;
             },
@@ -63,6 +62,7 @@ my %coordConv = (
         Writable => 'rational64u',
         Count => 3,
         %coordConv,
+        PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val,undef,"lat")',
     },
     0x0003 => {
         Name => 'GPSLongitudeRef',
@@ -70,7 +70,7 @@ my %coordConv = (
         Count => 2,
         Notes => q{
             ExifTool will also accept a number when writing this tag, positive for east
-            longitudes or negative for west, or a string ending in E or W
+            longitudes or negative for west, or a string containing E, East, W or West
         },
         PrintConv => {
             # extract E/W if written from Composite:GPSLongitude
@@ -78,7 +78,7 @@ my %coordConv = (
             OTHER => sub {
                 my ($val, $inv) = @_;
                 return undef unless $inv;
-                return uc $1 if $val =~ /\b([EW])\b/i;
+                return uc $2 if $val =~ /(^|[^A-Z])([EW])(ast|est)?\b/i;
                 return $1 eq '-' ? 'W' : 'E' if $val =~ /([-+]?)\d+/;
                 return undef;
             },
@@ -91,6 +91,7 @@ my %coordConv = (
         Writable => 'rational64u',
         Count => 3,
         %coordConv,
+        PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val,undef,"lon")',
     },
     0x0005 => {
         Name => 'GPSAltitudeRef',
@@ -238,6 +239,7 @@ my %coordConv = (
         Writable => 'rational64u',
         Count => 3,
         %coordConv,
+        PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val,undef,"lat")',
     },
     0x0015 => {
         Name => 'GPSDestLongitudeRef',
@@ -250,6 +252,7 @@ my %coordConv = (
         Writable => 'rational64u',
         Count => 3,
         %coordConv,
+        PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val,undef,"lon")',
     },
     0x0017 => {
         Name => 'GPSDestBearingRef',
@@ -529,18 +532,26 @@ sub ToDMS($$;$$)
 #------------------------------------------------------------------------------
 # Convert to decimal degrees
 # Inputs: 0) a string containing 1-3 decimal numbers and any amount of other garbage
-#         1) true if value should be negative if coordinate ends in 'S' or 'W'
-# Returns: Coordinate in degrees
-sub ToDegrees($;$)
+#         1) true if value should be negative if coordinate ends in 'S' or 'W',
+#         2) 'lat' or 'lon' to extract lat or lon from GPSCoordinates string
+# Returns: Coordinate in degrees, or '' on error
+sub ToDegrees($;$$)
 {
-    my ($val, $doSign) = @_;
+    my ($val, $doSign, $coord) = @_;
     return '' if $val =~ /\b(inf|undef)\b/; # ignore invalid values
+    # use only lat or lon part of combined GPSCoordinates inputs
+    if ($coord and ($coord eq 'lat' or $coord eq 'lon') and
+        # (two formatted coordinate values with cardinal directions, separated by a comma)
+        $val =~ /^(.*(?:N(?:orth)?|S(?:outh)?)),\s*(.*(?:E(?:ast)?|W(?:est)?))$/i)
+    {
+        $val = $coord eq 'lat' ? $1 : $2;
+    }
     # extract decimal or floating point values out of any other garbage
     my ($d, $m, $s) = ($val =~ /((?:[+-]?)(?=\d|\.\d)\d*(?:\.\d*)?(?:[Ee][+-]\d+)?)/g);
     return '' unless defined $d;
     my $deg = $d + (($m || 0) + ($s || 0)/60) / 60;
     # make negative if S or W coordinate
-    $deg = -$deg if $doSign ? $val =~ /[^A-Z](S|W)$/i : $deg < 0;
+    $deg = -$deg if $doSign ? $val =~ /[^A-Z](S(outh)?|W(est)?)\s*$/i : $deg < 0;
     return $deg;
 }
 

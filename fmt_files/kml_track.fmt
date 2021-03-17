@@ -11,7 +11,7 @@
 #
 #               From video files:
 #
-#                 exiftool -p kml.fmt -ee FILEorDIR [...] > out.kml
+#                 exiftool -p kml.fmt -ee3 FILEorDIR [...] > out.kml
 #
 # Requires:     ExifTool version 10.41 or later
 #

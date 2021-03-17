@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.60';
+$VERSION = '2.61';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -6318,11 +6318,15 @@ my %eeBox2 = (
     # com.divergentmedia.clipwrap.manufacturer     ('Sony')
     # com.divergentmedia.clipwrap.originalDateTime ('2013/2/6 10:30:40+0200')
 #
-# seen in timed metadata (mebx), and added dynamically to the table
-# via SaveMetaKeys().  NOTE: these tags are not writable!
+# seen in timed metadata (mebx), and added dynamically to the table via SaveMetaKeys()
+# NOTE: these tags are not writable! (timed metadata cannot yet be written)
 #
     # (mdta)com.apple.quicktime.video-orientation (dtyp=66, int16s)
-    'video-orientation' => { Name => 'VideoOrientation', Writable => 0 },
+    'video-orientation' => {
+        Name => 'VideoOrientation',
+        Writable => 0,
+        PrintConv => \%Image::ExifTool::Exif::orientation, #PH (NC)
+    },
     # (mdta)com.apple.quicktime.live-photo-info (dtyp=com.apple.quicktime.com.apple.quicktime.live-photo-info)
     'live-photo-info' => {
         Name => 'LivePhotoInfo',

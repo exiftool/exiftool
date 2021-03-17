@@ -65,8 +65,9 @@ my @dateMax = ( 24, 59, 59, 2200, 12, 31 );
 my $gpsBlockSize = 0x8000;
 
 # conversion factors
-my $knotsToKph = 1.852; # knots --> km/h
-my $mpsToKph   = 3.6;   # m/s   --> km/h
+my $knotsToKph = 1.852;     # knots --> km/h
+my $mpsToKph   = 3.6;       # m/s   --> km/h
+my $mphToKph   = 1.60934;   # mph   --> km/h
 
 # handler types to process based on MetaFormat/OtherFormat
 my %processByMetaFormat = (
@@ -96,7 +97,7 @@ my %insvLimit = (
     NOTES => q{
         Timed metadata extracted from QuickTime media data and some AVI videos when
         the ExtractEmbedded option is used.  Although most of these tags are
-        combined into the single table below, ExifTool currently reads 49 different
+        combined into the single table below, ExifTool currently reads 51 different
         formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
@@ -1249,8 +1250,8 @@ sub ProcessSamples($)
                     next if length($buff) < 20 + $n;
                     $et->HandleTag($tagTbl, GPSLatitude  => Get32s(\$buff, 12+$n) * 180/0x80000000);
                     $et->HandleTag($tagTbl, GPSLongitude => Get32s(\$buff, 16+$n) * 180/0x80000000);
-                    $et->HandleTag($tagTbl, GPSSpeed => Get16u(\$buff, 8+$n));
-                    $et->HandleTag($tagTbl, GPSSpeedRef => 'M');
+                    $et->HandleTag($tagTbl, GPSSpeed => Get16u(\$buff, 8+$n) * $mphToKph);
+                    $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
                     SetGPSDateTime($et, $tagTbl, $time[$i]);
                     next; # all done (don't store/process as text)
                 }

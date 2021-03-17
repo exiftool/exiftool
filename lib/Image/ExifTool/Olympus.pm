@@ -40,7 +40,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.70';
+$VERSION = '2.71';
 
 sub PrintLensInfo($$$);
 
@@ -3952,7 +3952,7 @@ my %indexInfo = (
             1 => 'LensTypeModel',
         },
         Notes => 'based on tags found in some Panasonic RW2 images',
-        SeparateTable => 'LensType',
+        SeparateTable => 'Olympus LensType',
         ValueConv => '"$val[0] $val[1]"',
         PrintConv => \%olympusLensTypes,
     },

@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.45';
+$VERSION = '4.46';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -947,6 +947,7 @@ $VERSION = '4.45';
     0x80000437 => 'EOS 90D', #IB
     0x80000453 => 'EOS R6', #PH
     0x80000467 => 'PowerShot ZOOM',
+    0x80000468 => 'EOS M50 Mark II / Kiss M2', #IB
     0x80000520 => 'EOS D2000C', #IB
     0x80000560 => 'EOS D6000C', #PH (guess)
 );

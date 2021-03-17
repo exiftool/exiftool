@@ -930,11 +930,12 @@ valid.  The numbers represent degrees, (and optionally) minutes and
 seconds with any number of decimal places.</blockquote>
 
 <blockquote>For EXIF GPS coordinates, the reference direction is specified
-separately with the EXIF:GPSLatitudeRef or EXIF:GPSLongitudeRef tag. 
-GPSLatitudeRef may be written with a string ending in "<code>N</code>" or
-"<code>S</code>", or with a signed coordinate value, positive for the northern
-hemisphere or negative for the south.  GPSLongitudeRef accepts similar values,
-but for E (positive) and W (negative).</blockquote>
+separately with the EXIF:GPSLatitudeRef or EXIF:GPSLongitudeRef tag.
+GPSLatitudeRef may be written with a string containing "<code>N</code>",
+"<code>North</code>", "<code>S</code>" or "<code>South</code>", or with a signed
+coordinate value (positive for the northern hemisphere or negative for the
+south).  GPSLongitudeRef accepts similar values, but for E/East (positive) and
+W/West (negative).</blockquote>
 
 <blockquote>For XMP GPS coordinates, the reference direction is specified within
 the XMP:GPSLatitude or XMP:GPSLongitude value, with west longitudes and south
@@ -956,6 +957,10 @@ exiftool -xmp:gpslatitude=-42.5 a.jpg
 Similar styles may be used for longitude.  ExifTool will convert any of these
 coordinate styles to the proper format for the specific tag used.
 </blockquote>
+
+<blockquote>ExifTool 12.22 and later allow combined lat/lon GPSCoordinates
+values to be written to GPSLatitude and GPSLongitude, and the appropriate
+latitude or longitude part will be pulled from the input string.</blockquote>
 
 <blockquote>When reading, by default ExifTool reports coordinates in the format
 <pre>DDD deg MM' SS.SS"</pre>
@@ -1734,7 +1739,7 @@ possible with ExifTool:
 indication of where the metadata was stored.)</blockquote>
 
 <hr>
-<i>Last revised Jan 21, 2021</i>
+<i>Last revised Mar 17, 2021</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

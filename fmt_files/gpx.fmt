@@ -3,7 +3,7 @@
 #
 # Description:  Example ExifTool print format file to generate a GPX track log
 #
-# Usage:        exiftool -p gpx.fmt -ee FILE [...] > out.gpx
+# Usage:        exiftool -p gpx.fmt -ee3 FILE [...] > out.gpx
 #
 # Requires:     ExifTool version 10.49 or later
 #

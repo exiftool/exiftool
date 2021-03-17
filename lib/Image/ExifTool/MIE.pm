@@ -393,7 +393,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
         ValueConvInv => 'Image::ExifTool::GPS::ToDMS($self, $val, 0)',
         PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
-        PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
+        PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1, "lat")',
     },
     Longitude => {
         Name => 'GPSLongitude',
@@ -406,7 +406,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
         ValueConvInv => 'Image::ExifTool::GPS::ToDMS($self, $val, 0)',
         PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
-        PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
+        PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1, "lon")',
     },
     MeasureMode => {
         Name => 'GPSMeasureMode',

@@ -193,11 +193,15 @@ sub ProcessJPEG_HDR($$$);
         Condition => '$$valPt =~ /^UNICODE\0/',
         Notes => 'PhotoStudio Unicode comment',
     },
-    APP11 => {
+    APP11 => [{
         Name => 'JPEG-HDR',
         Condition => '$$valPt =~ /^HDR_RI /',
         SubDirectory => { TagTable => 'Image::ExifTool::JPEG::HDR' },
-    },
+    },{
+        Name => 'JUMBF',
+        Condition => '$$valPt =~ /^JP/',
+        SubDirectory => { TagTable => 'Image::ExifTool::Jpeg2000::Main' },
+    }],
     APP12 => [{
         Name => 'PictureInfo',
         Condition => '$$valPt =~ /(\[picture info\]|Type=)/',

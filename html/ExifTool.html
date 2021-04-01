@@ -397,13 +397,14 @@ The following functions require an ExifTool object as the first argument
 
 <hr><h2><a name='options'></a><a name="Options">Options</a></h2>
 <p>Get/set ExifTool options.  This function can be called to set the default
-options for an ExifTool object.  Options set this way are in effect for
-all function calls but may be overridden by options passed as arguments
-to some functions.  Option names are not case sensitive.</p>
+options for an ExifTool object.  Options set this way are in effect for all
+function calls but may be overridden by options passed as arguments to some
+functions.  Option names are not case sensitive.</p>
 <p>The default option values may be changed by defining a
 %Image::ExifTool::UserDefined::Options hash.  See the
-<a href="config.html">ExifTool_config file</a> in the full ExifTool
-distribution for examples.</p>
+<a href="config.html">ExifTool_config file</a> in the full ExifTool distribution
+for examples.  A default of undef has the same behaviour as a value of 0 for
+numerical options.</p>
 <blockquote><table class='norm'>
 <tr><td><b>Prototype</b></td><td>Options($$;@)</td></tr>
 <tr><td valign=top><b>Inputs</b></td><td><b>0)</b> ExifTool object reference
@@ -427,6 +428,13 @@ distribution for examples.</p>
     are not necessarily extracted unless this option is set or the tag is
     specifically requested by name.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
+<tr id="BlockExtract"><td>BlockExtract</td><td>Flag to extract some directories
+    (mentioned in the Tag Name documentation) as a block.</td>
+    <td align=center><table class=clear>
+    <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Extract as block only if tag specified by name</td></tr>
+    <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>Extract as block, and extract contained tags</td></tr>
+    <tr><td valign=top align=right><b>2</b>&nbsp;=</td><td>Extract as block without contained tags</td></tr>
+    </table></td><td align=center>undef</td></tr>
 <tr id="ByteOrder"><td>ByteOrder</td><td>The byte order for newly created EXIF segments when
     writing.  Note that if EXIF information already exists, the existing order is
     maintained.  If ByteOrder is not defined, then the order of the maker notes is
@@ -2077,12 +2085,12 @@ the specific IFD).
 APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG, DV, DjVu, Ducky,
 EXE, EXIF, ExifTool, FITS, FLAC, FLIR, File, Flash, FlashPix, Font,
 FotoStation, GIF, GIMP, GeoTiff, GoPro, H264, HTML, ICC_Profile, ID3, IPTC,
-ISO, ITC, JFIF, JPEG, JSON, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF,
-MNG, MOI, MPC, MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg, OpenEXR,
-Opus, PDF, PICT, PLIST, PNG, PSP, Palm, Parrot, PanasonicRaw, PhotoCD,
-PhotoMechanic, Photoshop, PostScript, PrintIM, QuickTime, RAF, RIFF, RSRC,
-RTF, Radiance, Rawzor, Real, Red, SVG, SigmaRaw, Stim, Theora, Torrent,
-Trailer, UserParam, VCard, Vorbis, WTV, XML, XMP, ZIP
+ISO, ITC, JFIF, JPEG, JSON, JUMBF, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE,
+MIFF, MNG, MOI, MPC, MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg,
+OpenEXR, Opus, PDF, PICT, PLIST, PNG, PSP, Palm, Parrot, PanasonicRaw,
+PhotoCD, PhotoMechanic, Photoshop, PostScript, PrintIM, QuickTime, RAF,
+RIFF, RSRC, RTF, Radiance, Rawzor, Real, Red, SVG, SigmaRaw, Stim, Theora,
+Torrent, Trailer, UserParam, VCard, Vorbis, WTV, XML, XMP, ZIP
 </td></tr>
 <tr><td><b>1&nbsp;(Specific&nbsp;Location)</b></td>
 <td>AC3, AFCP, AIFF, APE, ASF, AVI1, Adobe, AdobeCM, AdobeDNG, Apple, Audible,
@@ -2094,8 +2102,8 @@ GoPro, GraphConv, H264, HP, HTC, HTML, HTML-dc, HTML-ncc, HTML-office,
 HTML-prod, HTML-vw96, HTTP-equiv, ICC-chrm, ICC-clrt, ICC-header, ICC-meas,
 ICC-meta, ICC-view, ICC_Profile, ICC_Profile#, ID3, ID3v1, ID3v1_Enh,
 ID3v2_2, ID3v2_3, ID3v2_4, IFD0, IFD1, IPTC, IPTC#, ISO, ITC, Insta360,
-InteropIFD, ItemList, JFIF, JFXX, JPEG, JPEG-HDR, JSON, JVC, Jpeg2000,
-KDC_IFD, Keys, Kodak, KodakBordersIFD, KodakEffectsIFD, KodakIFD,
+InteropIFD, ItemList, JFIF, JFXX, JPEG, JPEG-HDR, JSON, JUMBF, JVC,
+Jpeg2000, KDC_IFD, Keys, Kodak, KodakBordersIFD, KodakEffectsIFD, KodakIFD,
 KyoceraRaw, LNK, Leaf, LeafSubIFD, Leica, Lyrics3, Lytro, M2TS, MAC,
 MIE-Audio, MIE-Camera, MIE-Canon, MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS,
 MIE-Geo, MIE-Image, MIE-Lens, MIE-Main, MIE-MakerNotes, MIE-Meta,

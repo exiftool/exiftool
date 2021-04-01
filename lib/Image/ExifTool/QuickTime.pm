@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.61';
+$VERSION = '2.62';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -65,6 +65,7 @@ sub Process_gsen($$$);
 sub ProcessRIFFTrailer($$$);
 sub ProcessTTAD($$$);
 sub ProcessNMEA($$$);
+sub ProcessGPSLog($$$);
 sub SaveMetaKeys($$$);
 # ++^^^^^^^^^^^^++
 sub ParseItemLocation($$);
@@ -160,8 +161,15 @@ my %ftypLookup = (
     'F4P ' => 'Protected Video for Adobe Flash Player 9+ (.F4P)', # video/mp4
     'F4V ' => 'Video for Adobe Flash Player 9+ (.F4V)', # video/mp4
     'isc2' => 'ISMACryp 2.0 Encrypted File', # ?/enc-isoff-generic
-    'iso2' => 'MP4 Base Media v2 [ISO 14496-12:2005]', # video/mp4
-    'isom' => 'MP4  Base Media v1 [IS0 14496-12:2003]', # video/mp4
+    'iso2' => 'MP4 Base Media v2 [ISO 14496-12:2005]', # video/mp4 (or audio)
+    'iso3' => 'MP4 Base Media v3', # video/mp4 (or audio)
+    'iso4' => 'MP4 Base Media v4', # video/mp4 (or audio)
+    'iso5' => 'MP4 Base Media v5', # video/mp4 (or audio)
+    'iso6' => 'MP4 Base Media v6', # video/mp4 (or audio)
+    'iso7' => 'MP4 Base Media v7', # video/mp4 (or audio)
+    'iso8' => 'MP4 Base Media v8', # video/mp4 (or audio)
+    'iso9' => 'MP4 Base Media v9', # video/mp4 (or audio)
+    'isom' => 'MP4 Base Media v1 [IS0 14496-12:2003]', # video/mp4 (or audio)
     'JP2 ' => 'JPEG 2000 Image (.JP2) [ISO 15444-1 ?]', # image/jp2
     'JP20' => 'Unknown, from GPAC samples (prob non-existent)',
     'jpm ' => 'JPEG 2000 Compound Image (.JPM) [ISO 15444-6]', # image/jpm
@@ -678,6 +686,15 @@ my %eeBox2 = (
     udat => { #PH (GPS NMEA-format log written by Datakam Player software)
         Name => 'GPSLog',
         Binary => 1,    # (actually ASCII, but very lengthy)
+        Notes => 'parsed to extract GPS separately when ExtractEmbedded is used',
+        RawConv => q{
+            $val =~ s/\0+$//;   # remove trailing nulls
+            if (length $val and $$self{OPTIONS}{ExtractEmbedded}) {
+                my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+                Image::ExifTool::QuickTime::ProcessGPSLog($self, { DataPt => \$val }, $tagTbl);
+            }
+            return $val;
+        },
     },
     # meta - proprietary XML information written by some Flip cameras - PH
     # beam - 16 bytes found in an iPhone video
@@ -7611,7 +7628,11 @@ my %eeBox2 = (
     8 => {
         Name => 'HandlerType',
         Format => 'undef[4]',
-        RawConv => '$$self{HandlerType} = $val unless $val eq "alis" or $val eq "url "; $val',
+        RawConv => q{
+            $$self{HandlerType} = $val unless $val eq 'alis' or $val eq 'url ';
+            $$self{HasHandler}{$val} = 1; # remember all our handlers
+            return $val;
+        },
         PrintConvColumns => 2,
         PrintConv => {
             alis => 'Alias Data', #PH
@@ -7716,7 +7737,7 @@ my %eeBox2 = (
             $val =~ s/\0+$//;   # remove trailing nulls
             if (length $val and $$self{OPTIONS}{ExtractEmbedded}) {
                 my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
-                Image::ExifTool::QuickTime::ProcessNMEA($self, { DataPt => \$val }, $tagTbl);
+                Image::ExifTool::QuickTime::ProcessGPSLog($self, { DataPt => \$val }, $tagTbl);
             }
             return $val;
         },
@@ -8949,6 +8970,7 @@ sub ProcessMOV($$;$)
             if ($raf->Read($buff, $size-8) == $size-8) {
                 $raf->Seek(-($size-8), 1);
                 my $type = substr($buff, 0, 4);
+                $$et{save_ftyp} = $type;
                 # see if we know the extension for this file type
                 if ($ftypLookup{$type} and $ftypLookup{$type} =~ /\(\.(\w+)/) {
                     $fileType = $1;
@@ -9468,6 +9490,13 @@ ItemID:         foreach $id (keys %$items) {
         $raf->Read($buff, 8) == 8 or last;
         ($size, $tag) = unpack('Na4', $buff);
         ++$index if defined $index;
+    }
+    # tweak file type based on track content ("iso*" ftyp only)
+    if ($$et{VALUE}{FileType} and $$et{VALUE}{FileType} eq 'MP4' and
+        $$et{save_ftyp} and $$et{HasHandler} and $$et{save_ftyp} =~ /^iso/ and
+        $$et{HasHandler}{soun} and not $$et{HasHandler}{vide})
+    {
+        $et->OverrideFileType('M4A', 'audio/mp4');
     }
     # fill in missing defaults for alternate language tags
     # (the first language is taken as the default)

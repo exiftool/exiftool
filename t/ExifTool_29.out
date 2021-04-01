@@ -4,7 +4,7 @@
 [File, System, Time] FileModifyDate - File Modification Date/Time: ####:##:##_##:##:##-##:##
 [File, System, Time] FileAccessDate - File Access Date/Time: ####:##:##_##:##:##-##:##
 [File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: ####:##:##_##:##:##-##:##
-[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
 [File, File, Other] MIMEType - MIME Type: image/jpeg
@@ -258,6 +258,21 @@
 [APP11, JPEG-HDR, Image] bet - Beta: #.######
 [APP11, JPEG-HDR, Image] cor - Correction Method: #
 [APP11, JPEG-HDR, Preview] RatioImage - Ratio Image: (Binary data 19 bytes)
+[JUMBF, JUMBF, Image] type - JUMBF Type: cacb-####-####-######aa#####b##
+[JUMBF, JUMBF, Image] label - JUMBF Label: cai
+[JUMBF, JUMBF, Image] type - JUMBF Type: cast-####-####-######aa#####b##
+[JUMBF, JUMBF, Image] label - JUMBF Label: cb.reuters_#
+[JUMBF, JUMBF, Image] type - JUMBF Type: caas-####-####-######aa#####b##
+[JUMBF, JUMBF, Image] label - JUMBF Label: cai.assertions
+[JUMBF, JUMBF, Image] type - JUMBF Type: json-####-####-######aa#####b##
+[JUMBF, JUMBF, Image] label - JUMBF Label: adobe.asset.info
+[JUMBF, JSON, Other] title - Title: HEALTHCORONAVIRUSUSAOREGON_SALEM_##.jpg
+[JUMBF, JUMBF, Image] type - JUMBF Type: json-####-####-######aa#####b##
+[JUMBF, JUMBF, Image] label - JUMBF Label: cai.location.broad
+[JUMBF, JSON, Other] location - Location: Salem,_Oregon
+[JUMBF, JUMBF, Image] type - JUMBF Type: json-####-####-######aa#####b##
+[JUMBF, JUMBF, Image] label - JUMBF Label: cai.rights
+[JUMBF, JSON, Other] copyright - Copyright: Alisha_Jucevic
 [APP12, PictureInfo, Time] TimeDate - Date/Time Original: ####:##:##_##:##:##
 [APP12, PictureInfo, Image] Shutter - Exposure Time: #/###
 [APP12, PictureInfo, Image] Flash - Flash: Off

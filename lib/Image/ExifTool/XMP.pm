@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.39';
+$VERSION = '3.40';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -4063,12 +4063,14 @@ sub ProcessXMP($$;$)
 
     # extract XMP/XML as a block if specified
     my $blockName = $$dirInfo{BlockInfo} ? $$dirInfo{BlockInfo}{Name} : 'XMP';
+    my $blockExtract = $et->Options('BlockExtract');
     if (($$et{REQ_TAG_LOOKUP}{lc $blockName} or ($$et{TAGS_FROM_FILE} and
-        not $$et{EXCL_TAG_LOOKUP}{lc $blockName})) and
+        not $$et{EXCL_TAG_LOOKUP}{lc $blockName}) or $blockExtract) and
         (($$et{FileType} eq 'XMP' and $blockName eq 'XMP') or
         ($$dirInfo{DirName} and $$dirInfo{DirName} eq $blockName)))
     {
         $et->FoundTag($$dirInfo{BlockInfo} || 'XMP', substr($$dataPt, $dirStart, $dirLen));
+        return 1 if $blockExtract and $blockExtract > 1;
     }
 
     $tagTablePtr or $tagTablePtr = GetTagTable('Image::ExifTool::XMP::Main');

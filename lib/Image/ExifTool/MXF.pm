@@ -1066,7 +1066,7 @@ my %componentDataDef = (
     '060e2b34.0101.0102.04010503.08000000' => { Name => 'Palette', Type => 'DataValue', Unknown => 1 },
     '060e2b34.0101.0102.04010503.09000000' => { Name => 'PaletteLayout', Type => 'RGBALayout', Unknown => 1 },
     '060e2b34.0101.0102.04010503.0a000000' => { Name => 'ComponentDepth', Format => 'int32u' },
-    '060e2b34.0101.0102.04010601.00000000' => { Name => 'VideoCodingSchemeID', Type => 'AUID', Unknown => 1 },
+    '060e2b34.0101.0102.04010601.00000000' => { Name => 'VideoCodingSchemeID', Type => 'AUID' },
     '060e2b34.0101.0102.04010802.03000000' => { Name => 'RoundedCaptureFilmFrameRate', Format => 'int32u' },
     '060e2b34.0101.0102.04020301.02000000' => { Name => 'AudioAverageBitrate', Format => 'float', PrintConv => 'ConvertBitrate($val)', Groups => { 2 => 'Audio' } },
     '060e2b34.0101.0102.04020301.03000000' => { Name => 'AudioFixedBitrateFlag', Type => 'Boolean', Groups => { 2 => 'Audio' } },

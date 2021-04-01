@@ -59,6 +59,7 @@ my %psMap = (
     Photoshop    => 'PostScript',
     IPTC         => 'Photoshop',
     EXIFInfo     => 'Photoshop',
+    EXIF         => 'EXIFInfo',
     IFD0         => 'EXIFInfo',
     IFD1         => 'IFD0',
     ICC_Profile  => 'PostScript',

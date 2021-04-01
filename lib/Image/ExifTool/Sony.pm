@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.38';
+$VERSION = '3.39';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -150,6 +150,9 @@ sub PrintInvLensSpec($;$$);
     32862 => 'Sony FE 50mm F1.2 GM', #IB/JR
     32864 => 'Sony FE 28-60mm F4-5.6', #JR
     32865 => 'Sony FE 35mm F1.4 GM', #IB/JR
+    32866 => 'Sony FE 24mm F2.8 G', #IB
+    32867 => 'Sony FE 40mm F2.5 G', #IB
+    32868 => 'Sony FE 50mm F2.5 G', #IB
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -190,7 +193,9 @@ sub PrintInvLensSpec($;$$);
     49463 => 'Tamron 28-200mm F2.8-5.6 Di III RXD', #JR (Model A071)
     49464 => 'Tamron 70-300mm F4.5-6.3 Di III RXD', #JR (Model A047)
     49465 => 'Tamron 17-70mm F2.8 Di III-A VC RXD', #JR (Model B070)
-    49473 => 'Tokina atx-m 85mm F1.8 FE', #JR
+    49473 => 'Tokina atx-m 85mm F1.8 FE or Viltrox lens', #JR
+    49473.1 => 'Viltrox 23mm F1.4 E', #JR
+    49473.2 => 'Viltrox 56mm F1.4 E', #JR
     49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
     49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)
 
@@ -1806,7 +1811,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     },
     0x940c => [{
         Name => 'Tag940c',
-        Condition => '$$self{Model} =~ /^(NEX-|ILCE-|Lunar)\b/',
+        Condition => '$$self{Model} =~ /^(NEX-|ILCE-|ILME-|Lunar)\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag940c' },
     },{
         Name => 'Sony_0x940c',

@@ -140,6 +140,7 @@ my %insvLimit = (
     SampleTime   => { Groups => { 2 => 'Video' }, PrintConv => 'ConvertDuration($val)', Notes => 'sample decoding time' },
     SampleDuration=>{ Groups => { 2 => 'Video' }, PrintConv => 'ConvertDuration($val)' },
     UserLabel    => { Groups => { 2 => 'Other' } },
+    KiloCalories => { Groups => { 2 => 'Other' } },
     SampleDateTime => {
         Groups => { 2 => 'Time' },
         ValueConv => q{
@@ -2273,8 +2274,10 @@ sub ProcessNMEA($$$)
 {
     my ($et, $dirInfo, $tagTbl) = @_;
     my $dataPt = $$dirInfo{DataPt};
+    my $rtnVal;
     # parse only RMC sentence (with leading timestamp) for now
     while ($$dataPt =~ /(?:\[(\d+)\])?\$[A-Z]{2}RMC,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d+\.\d+),([NS]),(\d+\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/g) {
+        $rtnVal = 1;
         my $tc = $1;    # milliseconds since 1970 (local time)
         my ($lat,$latRef,$lon,$lonRef) = ($6,$7,$8,$9);
         my $yr = $14 + ($14 >= 70 ? 1900 : 2000);
@@ -2305,7 +2308,41 @@ sub ProcessNMEA($$$)
         }
     }
     delete $$et{DOC_NUM};
-    return 1;
+    return $rtnVal;
+}
+
+#------------------------------------------------------------------------------
+# Process 'gps ' or 'udat' atom possibly containing NMEA (ref PH)
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessGPSLog($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my ($rtnVal, @a);
+
+    # try NMEA format first
+    return 1 if ProcessNMEA($et,$dirInfo,$tagTbl);
+
+    # DENVER ACG-8050WMK2 format looks like this:
+    # 210318073213[1][N][52200970][E][006362321][+00152][100][00140][C000000]+000+000+000+000+000+000+000+000+000+000+000+000+000+000+000+000+000+000
+    # YYMMDDHHMMSS A? NS lat       EW lon         alt    kph  dir    kCal    accel
+    while ($$dataPt =~ /\b(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})\[1\]\[([NS])\]\[(\d{8})\]\[([EW])\]\[(\d{9})\]\[([-+]?\d*)\]\[(\d*)\]\[(\d*)\]\[C?(\d*)\](([-+]\d{3})+)/g) {
+        my $lat = substr( $8,0,2) + substr( $8,2) / 600000;
+        my $lon = substr($10,0,3) + substr($10,3) / 600000;
+        $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        $et->HandleTag($tagTbl, GPSDateTime  => "20$1:$2:$3 $4:$5:$6Z");
+        $et->HandleTag($tagTbl, GPSLatitude  => $lat * ($7 eq 'S' ? -1 : 1));
+        $et->HandleTag($tagTbl, GPSLongitude => $lon * ($9 eq 'W' ? -1 : 1));
+        $et->HandleTag($tagTbl, GPSAltitude  => $11 / 10) if length $11;
+        $et->HandleTag($tagTbl, GPSSpeed     => $12 + 0)  if length $12;
+        $et->HandleTag($tagTbl, GPSTrack     => $13 + 0)  if length $13;
+        $et->HandleTag($tagTbl, KiloCalories => $14 / 10) if length $14;
+        $et->HandleTag($tagTbl, Accelerometer=> $15)      if length $15;
+        $rtnVal = 1;
+    }
+    delete $$et{DOC_NUM};
+    return $rtnVal;
 }
 
 #------------------------------------------------------------------------------

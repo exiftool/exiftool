@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24094 tags, with 15597 unique tag names.
+They contain a total of 24102 tags, with 15604 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -137,6 +137,7 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
   'APP9'       MediaJukebox                     JPEG MediaJukebox
   'APP10'      Comment                          no
   'APP11'      JPEG-HDR                         JPEG HDR
+               JUMBF                            Jpeg2000
   'APP12'      PictureInfo                      APP12 PictureInfo
                Ducky                            APP12 Ducky
   'APP13'      Photoshop                        Photoshop
@@ -21771,6 +21772,177 @@ even if it is not listed in this table.
   YhiYloCorK1                                   no
   YhiYloCorK2                                   no
 
+=head2 Jpeg2000 Tags
+
+The tags below are extracted from JPEG 2000 images and the JUMBF metadata in
+JPEG images.  Note that ExifTool currently writes only EXIF, IPTC and XMP
+tags in Jpeg2000 images.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'Exif'   EXIF                                 EXIF
+  'asoc'   Association                          Jpeg2000
+  'bfil'   BinaryFilter                         no
+  'bpcc'   BitsPerComponent                     no
+  'cdef'   ComponentDefinition                  no
+  'cgrp'   ColorGroup                           no
+  'chck'   DigitalSignature                     no
+  'cmap'   ComponentMapping                     no
+  'colr'   ColorSpecification                   Jpeg2000 ColorSpec
+  'comp'   Composition                          no
+  'copt'   CompositionOptions                   no
+  'cref'   Cross-Reference                      no
+  'creg'   CodestreamRegistration               no
+  'drep'   DesiredReproductions                 no
+  'dtbl'   DataReference                        no
+  'flst'   FragmentList                         no
+  'free'   Free                                 no
+  'ftbl'   FragmentTable                        no
+  'ftyp'   FileType                             Jpeg2000 FileType
+  'gtso'   GraphicsTechnologyStandardOutput     no
+  'ihdr'   ImageHeader                          Jpeg2000 ImageHeader
+  'inst'   InstructionSet                       no
+  'jP  '   JP2Signature                         no
+  'jp2c'   ContiguousCodestream                 no
+           PreviewImage                         no
+  'jp2h'   JP2Header                            Jpeg2000
+  'jp2i'   IntellectualProperty                 XMP
+  'jpch'   CodestreamHeader                     Jpeg2000
+  'jplh'   CompositingLayerHeader               Jpeg2000
+  'json'   JSONData                             JSON
+  'jumb'   JUMBFBox                             Jpeg2000
+  'jumd'   JUMBFDescr                           Jpeg2000 JUMD
+  'jxlc'   JXLCodestream                        no
+  'lbl '   Label                                no
+  'mdat'   MediaData                            no
+  'mp7b'   MPEG7Binary                          no
+  'nlst'   NumberList                           no
+  'opct'   Opacity                              no
+  'pclr'   Palette                              no
+  'prfl'   Profile                              no
+  'res '   Resolution                           Jpeg2000
+  'resc'   CaptureResolution                    Jpeg2000 CaptureResolution
+  'resd'   DisplayResolution                    Jpeg2000 DisplayResolution
+  'roid'   ROIDescription                       no
+  'rreq'   ReaderRequirements                   no
+  'uinf'   UUIDInfo                             Jpeg2000
+  'ulst'   UUIDList                             no
+  'url '   URL                                  no
+  'uuid'   UUID-EXIF                            EXIF
+           UUID-EXIF2                           EXIF
+           UUID-EXIF_bad                        EXIF
+           UUID-IPTC                            IPTC
+           UUID-IPTC2                           IPTC
+           UUID-XMP                             XMP
+           UUID-GeoJP2                          EXIF
+           UUID-Photoshop                       Photoshop
+           UUID-Signature                       no
+           UUID-Unknown                         no
+  'xml '   XML                                  XMP XML
+           XMP                                  -
+                                                XMP
+
+=head3 Jpeg2000 ColorSpec Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    ColorSpecMethod                      no
+      1    ColorSpecPrecedence                  no
+      2    ColorSpecApproximation               no
+      3    ICC_Profile                          ICC_Profile
+           ColorSpace                           no
+           ColorSpecData                        no
+
+=head3 Jpeg2000 FileType Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    MajorBrand                           no
+      1    MinorVersion                         no
+      2    CompatibleBrands                     no
+
+=head3 Jpeg2000 ImageHeader Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    ImageHeight                          no
+      4    ImageWidth                           no
+      8    NumberOfComponents                   no
+     10    BitsPerComponent                     no
+     11    Compression                          no
+
+=head3 Jpeg2000 JUMD Tags
+
+Information extracted from the JUMBF description box.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'id'                 JUMBFID                  no
+  'label'              JUMBFLabel               no
+  'signature'          JUMBFSignature           no
+  'type'               JUMBFType                no
+
+=head3 Jpeg2000 CaptureResolution Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    CaptureYResolution                   no
+      4    CaptureXResolution                   no
+      8    CaptureYResolutionUnit               no
+      9    CaptureXResolutionUnit               no
+
+=head3 Jpeg2000 DisplayResolution Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    DisplayYResolution                   no
+      4    DisplayXResolution                   no
+      8    DisplayYResolutionUnit               no
+      9    DisplayXResolutionUnit               no
+
+=head2 JSON Tags
+
+Other than a few tags in the table below, JSON tags have not been
+pre-defined.  However, ExifTool will read any existing tags from basic
+JSON-formatted files.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  ON1_SettingsData                              PLIST
+  ON1_SettingsMetadataCreated                   no
+  ON1_SettingsMetadataModified                  no
+  ON1_SettingsMetadataName                      no
+  ON1_SettingsMetadataPluginID                  no
+  ON1_SettingsMetadataTimestamp                 no
+  ON1_SettingsMetadataUsage                     no
+  ON1_SettingsMetadataVisibleToUser             no
+
+=head2 PLIST Tags
+
+Apple Property List tags.  ExifTool reads both XML and binary-format PLIST
+files, and will extract any existing tags even if they aren't listed below.
+These tags belong to the family 0 "PLIST" group, but family 1 group may be
+either "XML" or "PLIST" depending on whether the format is XML or binary.
+
+  Tag ID                       Tag Name         Writable
+  ------                       --------         --------
+  'MetaDataList//DateTimeOriginal'
+                               DateTimeOriginal no
+  'MetaDataList//Duration'     Duration         no
+  'MetaDataList//Geolocation/Latitude'
+                               GPSLatitude      no
+  'MetaDataList//Geolocation/Longitude'
+                               GPSLongitude     no
+  'MetaDataList//Geolocation/MapDatum'
+                               GPSMapDatum      no
+  'XMLFileType'                XMLFileType      no
+  'cast//name'                 Cast             no+
+  'codirectors//name'          Codirectors      no+
+  'directors//name'            Directors        no+
+  'producers//name'            Producers        no+
+  'screenwriters//name'        Screenwriters    no+
+  'studio//name'               Studio           no+
+
 =head2 APP12 Tags
 
 =head3 APP12 PictureInfo Tags
@@ -23326,113 +23498,6 @@ to avoid name conflicts.
   'Codec'      Codec                            string
   'Duration'   Duration                         rational64u~
   'data'       RelatedVideoFile                 undef
-
-=head2 Jpeg2000 Tags
-
-The tags below are extracted from JPEG 2000 images, however ExifTool
-currently writes only EXIF, IPTC and XMP tags in these images.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'asoc'   Association                          Jpeg2000
-  'bfil'   BinaryFilter                         no
-  'bpcc'   BitsPerComponent                     no
-  'cdef'   ComponentDefinition                  no
-  'cgrp'   ColorGroup                           no
-  'chck'   DigitalSignature                     no
-  'cmap'   ComponentMapping                     no
-  'colr'   ColorSpecification                   Jpeg2000 ColorSpec
-  'comp'   Composition                          no
-  'copt'   CompositionOptions                   no
-  'cref'   Cross-Reference                      no
-  'creg'   CodestreamRegistration               no
-  'drep'   DesiredReproductions                 no
-  'dtbl'   DataReference                        no
-  'flst'   FragmentList                         no
-  'free'   Free                                 no
-  'ftbl'   FragmentTable                        no
-  'ftyp'   FileType                             Jpeg2000 FileType
-  'gtso'   GraphicsTechnologyStandardOutput     no
-  'ihdr'   ImageHeader                          Jpeg2000 ImageHeader
-  'inst'   InstructionSet                       no
-  'jP  '   JP2Signature                         no
-  'jp2c'   ContiguousCodestream                 no
-  'jp2h'   JP2Header                            Jpeg2000
-  'jp2i'   IntellectualProperty                 XMP
-  'jpch'   CodestreamHeader                     Jpeg2000
-  'jplh'   CompositingLayerHeader               Jpeg2000
-  'lbl '   Label                                no
-  'mdat'   MediaData                            no
-  'mp7b'   MPEG7Binary                          no
-  'nlst'   NumberList                           no
-  'opct'   Opacity                              no
-  'pclr'   Palette                              no
-  'prfl'   Profile                              no
-  'res '   Resolution                           Jpeg2000
-  'resc'   CaptureResolution                    Jpeg2000 CaptureResolution
-  'resd'   DisplayResolution                    Jpeg2000 DisplayResolution
-  'roid'   ROIDescription                       no
-  'rreq'   ReaderRequirements                   no
-  'uinf'   UUIDInfo                             Jpeg2000
-  'ulst'   UUIDList                             no
-  'url '   URL                                  no
-  'uuid'   UUID-EXIF                            EXIF
-           UUID-EXIF2                           EXIF
-           UUID-EXIF_bad                        EXIF
-           UUID-IPTC                            IPTC
-           UUID-IPTC2                           IPTC
-           UUID-XMP                             XMP
-           UUID-GeoJP2                          EXIF
-           UUID-Photoshop                       Photoshop
-           UUID-Unknown                         no
-  'xml '   XML                                  XMP XML
-
-=head3 Jpeg2000 ColorSpec Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    ColorSpecMethod                      no
-      1    ColorSpecPrecedence                  no
-      2    ColorSpecApproximation               no
-      3    ICC_Profile                          ICC_Profile
-           ColorSpace                           no
-           ColorSpecData                        no
-
-=head3 Jpeg2000 FileType Tags
-
-  Index4   Tag Name                             Writable
-  ------   --------                             --------
-      0    MajorBrand                           no
-      1    MinorVersion                         no
-      2    CompatibleBrands                     no
-
-=head3 Jpeg2000 ImageHeader Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    ImageHeight                          no
-      4    ImageWidth                           no
-      8    NumberOfComponents                   no
-     10    BitsPerComponent                     no
-     11    Compression                          no
-
-=head3 Jpeg2000 CaptureResolution Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    CaptureYResolution                   no
-      4    CaptureXResolution                   no
-      8    CaptureYResolutionUnit               no
-      9    CaptureXResolutionUnit               no
-
-=head3 Jpeg2000 DisplayResolution Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    DisplayYResolution                   no
-      4    DisplayXResolution                   no
-      8    DisplayYResolutionUnit               no
-      9    DisplayXResolutionUnit               no
 
 =head2 GIF Tags
 
@@ -25848,6 +25913,7 @@ formats of timed GPS metadata from video files.
   INSV                                          QuickTime INSV_MakerNotes
   ISO                                           no
   JpgFromRaw                                    no
+  KiloCalories                                  no
   PreviewInfo                                   QuickTime PreviewInfo
   RVMI_gReV                                     QuickTime RVMI_gReV
   RVMI_sReV                                     QuickTime RVMI_sReV
@@ -27441,32 +27507,6 @@ Parrot streaming metadata automation extension.
      24    GPSDestAltitude                      no
      28    AutomationAnimation                  no
      29    AutomationFlags                      no
-
-=head2 PLIST Tags
-
-Apple Property List tags.  ExifTool reads both XML and binary-format PLIST
-files, and will extract any existing tags even if they aren't listed below.
-These tags belong to the family 0 "PLIST" group, but family 1 group may be
-either "XML" or "PLIST" depending on whether the format is XML or binary.
-
-  Tag ID                       Tag Name         Writable
-  ------                       --------         --------
-  'MetaDataList//DateTimeOriginal'
-                               DateTimeOriginal no
-  'MetaDataList//Duration'     Duration         no
-  'MetaDataList//Geolocation/Latitude'
-                               GPSLatitude      no
-  'MetaDataList//Geolocation/Longitude'
-                               GPSLongitude     no
-  'MetaDataList//Geolocation/MapDatum'
-                               GPSMapDatum      no
-  'XMLFileType'                XMLFileType      no
-  'cast//name'                 Cast             no+
-  'codirectors//name'          Codirectors      no+
-  'directors//name'            Directors        no+
-  'producers//name'            Producers        no+
-  'screenwriters//name'        Screenwriters    no+
-  'studio//name'               Studio           no+
 
 =head2 Matroska Tags
 
@@ -29331,7 +29371,7 @@ because they are bulky 16-byte binary values.
   VideoAndFilmFrameRelationship                 no
   VideoAverageBitrate                           no
   VideoClipDuration                             no
-  VideoCodingSchemeID?                          no
+  VideoCodingSchemeID                           no
   VideoColorKind                                no
   VideoCompressionAlgorithm                     no
   VideoDeviceKind                               no
@@ -33778,23 +33818,6 @@ L<https://fits.gsfc.nasa.gov/fits_standard.html> for the specification.
   'TIME-END'   ObservationTimeEnd               no
   'TIME-OBS'   ObservationTime                  no
 
-=head2 JSON Tags
-
-Other than a few tags in the table below, JSON tags have not been
-pre-defined.  However, ExifTool will read any existing tags from basic
-JSON-formatted files.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  ON1_SettingsData                              PLIST
-  ON1_SettingsMetadataCreated                   no
-  ON1_SettingsMetadataModified                  no
-  ON1_SettingsMetadataName                      no
-  ON1_SettingsMetadataPluginID                  no
-  ON1_SettingsMetadataTimestamp                 no
-  ON1_SettingsMetadataUsage                     no
-  ON1_SettingsMetadataVisibleToUser             no
-
 =head2 HTML Tags
 
 Meta information extracted from the header of HTML and XHTML files.  This is
@@ -35699,7 +35722,7 @@ overlapping EXIF, IPTC and XMP tags to be reconciled when reading, and
 synchronized when writing.  The MWG Composite tags below are designed to aid
 in the implementation of these recommendations.  As well, the MWG defines
 new XMP tags which are listed in the subsequent tables below.  See
-L<https://web.archive.org/web/20181006115950/http://www.metadataworkinggroup.org/specs/>
+L<https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf>
 for the official MWG specification.
 
 =head3 MWG Composite Tags
@@ -35810,7 +35833,7 @@ implements this policy and changes EXIF:Artist to a list-type tag.
 
 Image region metadata defined by the MWG 2.0 specification.  These tags
 may be accessed without the need to load the MWG Composite tags above.  See
-L<https://web.archive.org/web/20181006115950/http://www.metadataworkinggroup.org/specs/>
+L<https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf>
 for the official specification.
 
 These tags belong to the ExifTool XMP-mwg-rs family 1 group.
@@ -35880,7 +35903,7 @@ Hierarchical keywords metadata defined by the MWG 2.0 specification.
 ExifTool unrolls keyword structures to an arbitrary depth of 6 to allow
 individual levels to be accessed with different tag names, and to avoid
 infinite recursion.  See
-L<https://web.archive.org/web/20181006115950/http://www.metadataworkinggroup.org/specs/>
+L<https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf>
 for the official specification.
 
 These tags belong to the ExifTool XMP-mwg-kw family 1 group.
@@ -35924,7 +35947,7 @@ These tags belong to the ExifTool XMP-mwg-kw family 1 group.
 =head3 MWG Collections Tags
 
 Collections metadata defined by the MWG 2.0 specification.  See
-L<https://web.archive.org/web/20181006115950/http://www.metadataworkinggroup.org/specs/>
+L<https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf>
 for the official specification.
 
 These tags belong to the ExifTool XMP-mwg-coll family 1 group.

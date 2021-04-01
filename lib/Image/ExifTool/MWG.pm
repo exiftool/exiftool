@@ -460,7 +460,7 @@ my %sKeywordStruct;
     NOTES => q{
         Image region metadata defined by the MWG 2.0 specification.  These tags
         may be accessed without the need to load the MWG Composite tags above.  See
-        L<https://web.archive.org/web/20181006115950/http://www.metadataworkinggroup.org/specs/>
+        L<https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf>
         for the official specification.
     },
     Regions => {
@@ -490,7 +490,7 @@ my %sKeywordStruct;
         ExifTool unrolls keyword structures to an arbitrary depth of 6 to allow
         individual levels to be accessed with different tag names, and to avoid
         infinite recursion.  See
-        L<https://web.archive.org/web/20181006115950/http://www.metadataworkinggroup.org/specs/>
+        L<https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf>
         for the official specification.
     },
     # arbitrarily define only the first 6 levels of the keyword hierarchy
@@ -529,7 +529,7 @@ my %sKeywordStruct;
     NAMESPACE => 'mwg-coll',
     NOTES => q{
         Collections metadata defined by the MWG 2.0 specification.  See
-        L<https://web.archive.org/web/20181006115950/http://www.metadataworkinggroup.org/specs/>
+        L<https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf>
         for the official specification.
     },
     Collections => {

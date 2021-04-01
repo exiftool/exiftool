@@ -8,224 +8,256 @@
 </head>
 <body>
 <h2 class=top>Jpeg2000 Tags</h2>
-<p>The tags below are extracted from JPEG 2000 images, however ExifTool
-currently writes only EXIF, IPTC and XMP tags in these images.</p>
+<p>The tags below are extracted from JPEG 2000 images and the JUMBF metadata in
+JPEG images.  Note that ExifTool currently writes only EXIF, IPTC and XMP
+tags in Jpeg2000 images.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>'Exif'</td>
+<td>EXIF</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+<tr class=b>
 <td>'asoc'</td>
 <td>Association</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'bfil'</td>
 <td>BinaryFilter</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'bpcc'</td>
 <td>BitsPerComponent</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'cdef'</td>
 <td>ComponentDefinition</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'cgrp'</td>
 <td>ColorGroup</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'chck'</td>
 <td>DigitalSignature</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'cmap'</td>
 <td>ComponentMapping</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'colr'</td>
 <td>ColorSpecification</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html#ColorSpec'>Jpeg2000 ColorSpec Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'comp'</td>
 <td>Composition</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'copt'</td>
 <td>CompositionOptions</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'cref'</td>
 <td>Cross-Reference</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'creg'</td>
 <td>CodestreamRegistration</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'drep'</td>
 <td>DesiredReproductions</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'dtbl'</td>
 <td>DataReference</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'flst'</td>
 <td>FragmentList</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'free'</td>
 <td>Free</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'ftbl'</td>
 <td>FragmentTable</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'ftyp'</td>
 <td>FileType</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html#FileType'>Jpeg2000 FileType Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'gtso'</td>
 <td>GraphicsTechnologyStandardOutput</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'ihdr'</td>
 <td>ImageHeader</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html#ImageHeader'>Jpeg2000 ImageHeader Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'inst'</td>
 <td>InstructionSet</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'jP  '</td>
 <td>JP2Signature</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
-<td>'jp2c'</td>
-<td>ContiguousCodestream</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
 <tr class=b>
+<td>'jp2c'</td>
+<td>ContiguousCodestream
+  <br>PreviewImage</td>
+<td class=c>no<br>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'jp2h'</td>
 <td>JP2Header</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'jp2i'</td>
 <td>IntellectualProperty</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'jpch'</td>
 <td>CodestreamHeader</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'jplh'</td>
 <td>CompositingLayerHeader</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a></td></tr>
+<tr>
+<td>'json'</td>
+<td>JSONData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='JSON.html'>JSON Tags</a>
+  <br><span class='n s'>(by default, data in this tag is parsed using the ExifTool JSON module to to
+allow individual tags to be accessed when reading, but it may also be
+extracted as a block via the &quot;JSONData&quot; tag or by setting the API
+BlockExtract option)</span></td></tr>
 <tr class=b>
+<td>'jumb'</td>
+<td>JUMBFBox</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a></td></tr>
+<tr>
+<td>'jumd'</td>
+<td>JUMBFDescr</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Jpeg2000.html#JUMD'>Jpeg2000 JUMD Tags</a></td></tr>
+<tr class=b>
+<td>'jxlc'</td>
+<td>JXLCodestream</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(Codestream in JPEG XL image.  Currently processed only to determine
+ImageSize)</span></span></td></tr>
+<tr>
 <td>'lbl '</td>
 <td>Label</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'mdat'</td>
 <td>MediaData</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'mp7b'</td>
 <td>MPEG7Binary</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'nlst'</td>
 <td>NumberList</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'opct'</td>
 <td>Opacity</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'pclr'</td>
 <td>Palette</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'prfl'</td>
 <td>Profile</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'res '</td>
 <td>Resolution</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'resc'</td>
 <td>CaptureResolution</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html#CaptureResolution'>Jpeg2000 CaptureResolution Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'resd'</td>
 <td>DisplayResolution</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html#DisplayResolution'>Jpeg2000 DisplayResolution Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'roid'</td>
 <td>ROIDescription</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'rreq'</td>
 <td>ReaderRequirements</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'uinf'</td>
 <td>UUIDInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'ulst'</td>
 <td>UUIDList</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'url '</td>
 <td>URL</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'uuid'</td>
 <td>UUID-EXIF
   <br>UUID-EXIF2
@@ -235,8 +267,9 @@ currently writes only EXIF, IPTC and XMP tags in these images.</p>
   <br>UUID-XMP
   <br>UUID-GeoJP2
   <br>UUID-Photoshop
+  <br>UUID-Signature
   <br>UUID-Unknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>no</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>no<br>no</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br>--&gt; <a href='EXIF.html'>EXIF Tags</a>
@@ -245,17 +278,21 @@ currently writes only EXIF, IPTC and XMP tags in these images.</p>
   <br>--&gt; <a href='XMP.html'>XMP Tags</a>
   <br>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br>--&gt; <a href='Photoshop.html'>Photoshop Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'xml '</td>
-<td>XML</td>
+<td>XML
+  <br>XMP</td>
 <td class=c title=' ! = Unsafe
- + = List'>undef!+</td>
-<td>--&gt; <a href='XMP.html#XML'>XMP XML Tags</a>
-  <br><span class='n s'>(by default, the XML data in this tag is parsed using the ExifTool XMP module
+ + = List'>undef!+<br>-</td>
+<td><span class=n>(by default, the XML data in this tag is parsed using the ExifTool XMP module
 to to allow individual tags to be accessed when reading, but it may also be
 extracted as a block via the &quot;XML&quot; tag, which is also how this tag is
-written and copied.  This is a List-type tag because multiple XML blocks may
-exist)</span></td></tr>
+written and copied.  It may also be extracted as a block by setting the API
+BlockExtract option.  This is a List-type tag because multiple XML blocks
+may exist)</span>
+  <br>--&gt; <a href='XMP.html#XML'>XMP XML Tags</a>
+  <br><span class=n>(used for XMP in JPEG XL files)</span>
+  <br>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorSpec'>Jpeg2000 ColorSpec Tags</a></h2>
@@ -328,7 +365,8 @@ exist)</span></td></tr>
 <td class=c>no</td>
 <td><span class=s>&#39;jp2 &#39; = JPEG 2000 Image (.JP2)
   <br>&#39;jpm &#39; = JPEG 2000 Compound Image (.JPM)
-  <br>&#39;jpx &#39; = JPEG 2000 with extensions (.JPX)</span></td></tr>
+  <br>&#39;jpx &#39; = JPEG 2000 with extensions (.JPX)
+  <br>&#39;jxl &#39; = JPEG XL Image (.JXL)</span></td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>MinorVersion</td>
@@ -382,6 +420,35 @@ exist)</span></td></tr>
   <br>7 = JPEG 2000
   <br>8 = JBIG2</td></tr></table>
 </td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='JUMD'>Jpeg2000 JUMD Tags</a></h2>
+<p>Information extracted from the JUMBF description box.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'id'</td>
+<td>JUMBFID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'label'</td>
+<td>JUMBFLabel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'signature'</td>
+<td>JUMBFSignature</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'type'</td>
+<td>JUMBFType</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CaptureResolution'>Jpeg2000 CaptureResolution Tags</a></h2>
@@ -461,7 +528,7 @@ exist)</span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 6, 2021</i>
+<br><i>Last revised Apr 1, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

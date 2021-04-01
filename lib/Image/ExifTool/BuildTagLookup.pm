@@ -639,7 +639,7 @@ overlapping EXIF, IPTC and XMP tags to be reconciled when reading, and
 synchronized when writing.  The MWG Composite tags below are designed to aid
 in the implementation of these recommendations.  As well, the MWG defines
 new XMP tags which are listed in the subsequent tables below.  See
-L<https://web.archive.org/web/20181006115950/http://www.metadataworkinggroup.org/specs/>
+L<https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf>
 for the official MWG specification.
 },
     MacOS => q{

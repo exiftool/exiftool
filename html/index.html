@@ -81,9 +81,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.22.tar.gz/download">
-Download        Version 12.22</a> (4.7 MB) -
-<a href="history.html">Mar. 17, 2021</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.23.tar.gz/download">
+Download        Version 12.23</a> (4.7 MB) -
+<a href="history.html">Apr. 1, 2021</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -136,8 +136,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.22.zip/download">
-         exiftool-12.22.zip</a> (6.4 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.23.zip/download">
+         exiftool-12.23.zip</a> (6.4 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -155,7 +155,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.22.dmg</a> (3.0 MB)</b></td></tr></table></blockquote>
+         ExifTool-12.23.dmg</a> (3.0 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -368,6 +368,8 @@ for each file format.</p>
 <tr><td><a href="TagNames/Jpeg2000.html">JP2, JPF, JPM, JPX</a></td><td>R/W</td><td>JPEG 2000 image [Compound/Extended]</td><td>R/W/C<span class=sup>3</span></td><td>R/W/C<span class=sup>3</span></td><td>R/W/C</td><td>R</td><td>R/W/C <a href="TagNames/Jpeg2000.html">Jpeg2000</a>, R <a href="TagNames/Photoshop.html">Photoshop</a><span class=sup>3</span></td></tr>
 <tr><td><a href="TagNames/JPEG.html">JPEG, JPG, JPE</a></td><td>R/W</td><td>Joint Photographic Experts Group image</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td><a href="#JPEG">Supported JPEG Meta Information</a></td></tr>
 <tr><td><a href="TagNames/JSON.html">JSON</a></td><td>R</td><td>JavaScript Object Notation</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/JSON.html">JSON</a></td></tr>
+<tr><td>JXL</td><td>R/W</td><td>JPEG XL in ISO BMFF container</td><td>R/W/C</td><td>-</td><td>R/W/C</td><td>-</td><td>-</td></tr>
+<tr><td>JXL</td><td>R</td><td>JPEG XL Codestream</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
 <tr><td>K25</td><td>R</td><td>Kodak DC25 RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>-</td></tr>
 <tr><td>KDC</td><td>R</td><td>Kodak Digital Camera RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>R <a href="TagNames/Kodak.html">Kodak</a></td></tr>
 <tr><td><a href="TagNames/iWork.html">KEY, KTH</a></td><td>R</td><td>Apple iWork '09 Keynote presentation/Theme</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/iWork.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
@@ -406,7 +408,7 @@ for each file format.</p>
 <tr><td><a href="TagNames/Ogg.html">OGG, OGV</a></td><td>R</td><td>Ogg bitstream container</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/FLAC.html">FLAC</a> <a href="TagNames/ID3.html">ID3</a> <a href="TagNames/ID3.html#Lyrics3">Lyrics3</a> <a href="TagNames/Theora.html">Theora</a> <a href="TagNames/Vorbis.html">Vorbis</a></td></tr>
 <tr><td>ONP</td><td>R</td><td>ON1 Presets</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/JSON.html">JSON</a> <a href="TagNames/PLIST.html">PLIST</a></td></tr>
 <tr><td><a href="TagNames/Opus.html">OPUS</a></td><td>R</td><td>Ogg Opus audio</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/FLAC.html">FLAC</a> <a href="TagNames/ID3.html">ID3</a> <a href="TagNames/ID3.html#Lyrics3">Lyrics3</a> <a href="TagNames/Opus.html">Opus</a> <a href="TagNames/Vorbis.html">Vorbis</a></td></tr>
-<tr><td>ORF</td><td>R/W</td><td>Olympus RAW Format (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W <a href="TagNames/Olympus.html">Olympus</a></td></tr>
+<tr><td>ORF, ORI</td><td>R/W</td><td>Olympus RAW Format (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W <a href="TagNames/Olympus.html">Olympus</a></td></tr>
 <tr><td><a href="TagNames/Font.html">OTF</a></td><td>R</td><td>Open Type Font</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Font.html">Font</a></td></tr>
 <tr><td>PAC</td><td>R</td><td>Lossless Predictive Audio Compression (<a href="TagNames/RIFF.html">RIFF</a>-based)</td><td>R<span class=sup>3</span></td><td>-</td><td>R</td><td>-</td><td>R <a href="TagNames/RIFF.html">RIFF</a></td></tr>
 <tr><td><a href="TagNames/iWork.html">PAGES</a></td><td>R</td><td>Apple iWork '09 Pages document</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/iWork.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
@@ -525,6 +527,7 @@ of meta information in JPEG images:</p>
 <tr><td>APP9 - <a href="TagNames/JPEG.html#MediaJukebox">Media Jukebox</a></td><td>R</td><td>Media Jukebox XML information</td></tr>
 <tr><td>APP10 - Comment</td><td>R</td><td>PhotoStudio Unicode Comment</td></tr>
 <tr><td>APP11 - <a href="TagNames/JPEG.html#HDR">JPEG-HDR</a></td><td>R</td><td>JPEG-HDR compressed ratio image</td></tr>
+<tr><td>APP11 - <a href="TagNames/Jpeg2000.html">JUMBF</a></td><td>R</td><td>Jpeg Universal Metadata Box Format (multi-segment)</td></tr>
 <tr><td>APP12 - <a href="TagNames/APP12.html#PictureInfo">Picture Info</a></td><td>R</td><td>ASCII-based Picture Information</td></tr>
 <tr><td>APP12 - <a href="TagNames/APP12.html#Ducky">Ducky</a></td><td>R/W/C</td><td>Photoshop "Save for Web"</td></tr>
 <tr><td>APP13 - <a href="TagNames/Photoshop.html">Photoshop IRB</a></td><td>R/W/C</td><td>Image Resource Block (multi-segment, includes <a href="TagNames/IPTC.html">IPTC</a>)</td></tr>
@@ -798,12 +801,12 @@ of the group names in each family:</p>
 APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG, DV, DjVu, Ducky,
 EXE, EXIF, ExifTool, FITS, FLAC, FLIR, File, Flash, FlashPix, Font,
 FotoStation, GIF, GIMP, GeoTiff, GoPro, H264, HTML, ICC_Profile, ID3, IPTC,
-ISO, ITC, JFIF, JPEG, JSON, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF,
-MNG, MOI, MPC, MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg, OpenEXR,
-Opus, PDF, PICT, PLIST, PNG, PSP, Palm, Parrot, PanasonicRaw, PhotoCD,
-PhotoMechanic, Photoshop, PostScript, PrintIM, QuickTime, RAF, RIFF, RSRC,
-RTF, Radiance, Rawzor, Real, Red, SVG, SigmaRaw, Stim, Theora, Torrent,
-Trailer, UserParam, VCard, Vorbis, WTV, XML, XMP, ZIP
+ISO, ITC, JFIF, JPEG, JSON, JUMBF, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE,
+MIFF, MNG, MOI, MPC, MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg,
+OpenEXR, Opus, PDF, PICT, PLIST, PNG, PSP, Palm, Parrot, PanasonicRaw,
+PhotoCD, PhotoMechanic, Photoshop, PostScript, PrintIM, QuickTime, RAF,
+RIFF, RSRC, RTF, Radiance, Rawzor, Real, Red, SVG, SigmaRaw, Stim, Theora,
+Torrent, Trailer, UserParam, VCard, Vorbis, WTV, XML, XMP, ZIP
 </td></tr>
 <tr><td><b>1&nbsp;(Specific&nbsp;Location)</b></td>
 <td class=sm>AC3, AFCP, AIFF, APE, ASF, AVI1, Adobe, AdobeCM, AdobeDNG, Apple, Audible,
@@ -815,8 +818,8 @@ GoPro, GraphConv, H264, HP, HTC, HTML, HTML-dc, HTML-ncc, HTML-office,
 HTML-prod, HTML-vw96, HTTP-equiv, ICC-chrm, ICC-clrt, ICC-header, ICC-meas,
 ICC-meta, ICC-view, ICC_Profile, ICC_Profile#, ID3, ID3v1, ID3v1_Enh,
 ID3v2_2, ID3v2_3, ID3v2_4, IFD0, IFD1, IPTC, IPTC#, ISO, ITC, Insta360,
-InteropIFD, ItemList, JFIF, JFXX, JPEG, JPEG-HDR, JSON, JVC, Jpeg2000,
-KDC_IFD, Keys, Kodak, KodakBordersIFD, KodakEffectsIFD, KodakIFD,
+InteropIFD, ItemList, JFIF, JFXX, JPEG, JPEG-HDR, JSON, JUMBF, JVC,
+Jpeg2000, KDC_IFD, Keys, Kodak, KodakBordersIFD, KodakEffectsIFD, KodakIFD,
 KyoceraRaw, LNK, Leaf, LeafSubIFD, Leica, Lyrics3, Lytro, M2TS, MAC,
 MIE-Audio, MIE-Camera, MIE-Canon, MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS,
 MIE-Geo, MIE-Image, MIE-Lens, MIE-Main, MIE-MakerNotes, MIE-Meta,

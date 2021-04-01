@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.22';
+$VERSION = '12.23';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -201,7 +201,7 @@ my %writeTypes; # lookup for writable file types (hash filled if required)
 %noWriteFile = (
     TIFF => [ qw(3FR DCR K25 KDC SRF) ],
     XMP  => [ qw(SVG INX) ],
-    JP2  => [ qw(J2C JPC) ],
+    JP2  => [ qw(J2C JPC JXC) ],
     MOV  => [ qw(INSV) ],
 );
 
@@ -355,6 +355,8 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     JPM  => ['JP2',  'JPEG 2000 compound image'],
     JPX  => ['JP2',  'JPEG 2000 with extensions'],
     JSON => ['JSON', 'JavaScript Object Notation'],
+    JXC  => ['JP2', 'JPEG XL Codestream'], # (JXC = PH invention, not a real extension)
+    JXL  => ['JP2', 'JPEG XL'],
     JXR  => ['TIFF', 'JPEG XR'],
     K25  => ['TIFF', 'Kodak DC25 RAW'],
     KDC  => ['TIFF', 'Kodak Digital Camera RAW'],
@@ -418,6 +420,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     ONP  => ['JSON', 'ON1 Presets'],
     OPUS => ['OGG',  'Ogg Opus audio file'],
     ORF  => ['ORF',  'Olympus RAW format'],
+    ORI  =>  'ORF',
     OTF  => ['Font', 'Open Type Font'],
     PAC  => ['RIFF', 'Lossless Predictive Audio Compression'],
     PAGES => ['ZIP', 'Apple Pages document'],
@@ -651,6 +654,8 @@ my %fileDescription = (
     JPM  => 'image/jpm',
     JPX  => 'image/jpx',
     JSON => 'application/json',
+    JXC  => 'image/x-jxc', #PH (invented)
+    JXL  => 'image/jxl', #PH (NC)
     JXR  => 'image/jxr',
     K25  => 'image/x-kodak-k25',
     KDC  => 'image/x-kodak-kdc',
@@ -813,6 +818,7 @@ my %moduleName = (
     HDR  => 'Radiance',
     JP2  => 'Jpeg2000',
     JPEG => '',
+    JXL  => 'Jpeg2000',
     LFP  => 'Lytro',
     LRI  => 0,
     MOV  => 'QuickTime',
@@ -896,7 +902,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     IND  => '\x06\x06\xed\xf5\xd8\x1d\x46\xe5\xbd\x31\xef\xe7\xfe\x74\xb7\x1d',
   # ISO  =>  signature is at byte 32768
     ITC  => '.{4}itch',
-    JP2  => '(\0\0\0\x0cjP(  |\x1a\x1a)\x0d\x0a\x87\x0a|\xff\x4f\xff\x51\0)',
+    JP2  => '(\0\0\0\x0cjP(  |\x1a\x1a)\x0d\x0a\x87\x0a|\xff\x4f\xff\x51\0|\xff\x0a|\0\0\0\x0cJXL \x0d\x0a......ftypjxl )',
     JPEG => '\xff\xd8\xff',
     JSON => '(\xef\xbb\xbf)?\s*(\[\s*)?\{\s*"[^"]*"\s*:',
     LFP  => '\x89LFP\x0d\x0a\x1a\x0a',
@@ -1756,7 +1762,10 @@ my %systemTagsNotes = (
     EmbeddedVideo => { Groups => { 0 => 'Trailer', 2 => 'Video' } },
     Trailer => {
         Groups => { 0 => 'Trailer' },
-        Notes => 'the full JPEG trailer data block.  Extracted only if specifically requested',
+        Notes => q{
+            the full JPEG trailer data block.  Extracted only if specifically requested
+            or the RequestAll API option is set to 3 or higher
+        },
         Writable => 1,
         Protected => 1,
     },
@@ -6120,9 +6129,10 @@ sub ProcessJPEG($$)
     my $out = $$options{TextOut};
     my $fast = $$options{FastScan} || 0;
     my $raf = $$dirInfo{RAF};
+    my $req = $$self{REQ_TAG_LOOKUP};
     my $htmlDump = $$self{HTML_DUMP};
     my %dumpParms = ( Out => $out );
-    my ($success, $wantTrailer, $trailInfo, $foundSOS);
+    my ($success, $wantTrailer, $trailInfo, $foundSOS, %jumbfChunk);
     my (@iccChunk, $iccChunkCount, $iccChunksTotal, @flirChunk, $flirCount, $flirTotal);
     my ($preview, $scalado, @dqt, $subSampling, $dumpEnd, %extendedXMP);
 
@@ -6133,7 +6143,7 @@ sub ProcessJPEG($$)
         $$self{FILE_TYPE} = 'EXV';
     }
     my $appBytes = 0;
-    my $calcImageLen = $$self{REQ_TAG_LOOKUP}{jpegimagelength};
+    my $calcImageLen = $$req{jpegimagelength};
     if ($$options{RequestAll} and $$options{RequestAll} > 2) {
         $calcImageLen = 1;
     }
@@ -6267,7 +6277,7 @@ sub ProcessJPEG($$)
             } else {
                 $self->Warn('Missing JPEG SOS');
             }
-            if ($$self{REQ_TAG_LOOKUP}{trailer}) {
+            if ($$req{trailer}) {
                 # read entire trailer into memory
                 if ($raf->Seek(0,2)) {
                     my $len = $raf->Tell() - $pos;
@@ -6401,7 +6411,7 @@ sub ProcessJPEG($$)
                 next if $trailInfo or $wantTrailer or $verbose > 2 or $htmlDump;
             }
             # must scan to EOI if Validate or JpegCompressionFactor used
-            next if $$options{Validate} or $calcImageLen or $$self{REQ_TAG_LOOKUP}{trailer};
+            next if $$options{Validate} or $calcImageLen or $$req{trailer};
             # nothing interesting to parse after start of scan (SOS)
             $success = 1;
             last;   # all done parsing file
@@ -6421,7 +6431,7 @@ sub ProcessJPEG($$)
             #  must use the RequestTags option to generate these tags if they have not been
             #  specifically requested.  The reason is that there is too much overhead involved
             #  in the calculation of this tag to make this worth the CPU time.)
-            ($$self{REQ_TAG_LOOKUP}{jpegdigest} or $$self{REQ_TAG_LOOKUP}{jpegqualityestimate}
+            ($$req{jpegdigest} or $$req{jpegqualityestimate}
             or ($$options{RequestAll} and $$options{RequestAll} > 2)))
         {
             my $num = unpack('C',$$segDataPt) & 0x0f;   # get table index
@@ -6539,7 +6549,7 @@ sub ProcessJPEG($$)
                 }
                 if ($start and $plen and IsInt($start) and IsInt($plen) and
                     $start + $plen > $$self{EXIF_POS} + length($$self{EXIF_DATA}) and
-                    ($$self{REQ_TAG_LOOKUP}{previewimage} or
+                    ($$req{previewimage} or
                     # (extracted normally, so check Binary option)
                     ($$options{Binary} and not $$self{EXCL_TAG_LOOKUP}{previewimage})))
                 {
@@ -6934,7 +6944,7 @@ sub ProcessJPEG($$)
                 # (with number of elements N = ImageHeight / 16 - 1, ref PH/NealKrawetz)
                 $xtra = 'segment (N=' . unpack('x6N', $$segDataPt) . ')';
             }
-        } elsif ($marker == 0xeb) {         # APP11 (JPEG-HDR)
+        } elsif ($marker == 0xeb) {         # APP11 (JPEG-HDR, JUMBF)
             if ($$segDataPt =~ /^HDR_RI /) {
                 $dumpType = 'JPEG-HDR';
                 my $dataPt = $segDataPt;
@@ -6953,6 +6963,47 @@ sub ProcessJPEG($$)
                     my %dirInfo = ( DataPt => $dataPt );
                     $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
                     undef $combinedSegData;
+                }
+            } elsif ($$segDataPt =~ /^(JP..)/s and length($$segDataPt) >= 16) {
+                # JUMBF extension marker
+                my $hdr = $1;
+                $dumpType = 'JUMBF';
+                SetByteOrder('MM');
+                my $seq = Get32u($segDataPt, 4) - 1; # (start from 0)
+                my $len = Get32u($segDataPt, 8);
+                my $type = substr($$segDataPt, 12, 4);
+                my $hdrLen;
+                if ($len == 1 and length($$segDataPt) >= 24) {
+                    $len = Get64u($$segDataPt, 16);
+                    $hdrLen = 16;
+                } else {
+                    $hdrLen = 8;
+                }
+                $jumbfChunk{$type} or $jumbfChunk{$type} = [ ];
+                if ($len < $hdrLen) {
+                    $self->Warn('Invalid JUMBF segment');
+                } elsif ($seq < 0) {
+                    $self->Warn('Invalid JUMBF sequence number');
+                } elsif (defined $jumbfChunk{$type}[$seq]) {
+                    $self->Warn('Duplicate JUMBF sequence number');
+                } else {
+                    # add to list of JUMBF chunks
+                    $jumbfChunk{$type}[$seq] = substr($$segDataPt, 8 + $hdrLen);
+                    # check to see if we have a complete JUMBF box
+                    my $size = $hdrLen;
+                    foreach (@{$jumbfChunk{$type}}) {
+                        defined $_ or $size = 0, last;
+                        $size += length $_;
+                    }
+                    if ($size == $len) {
+                        my $buff = join '', substr($$segDataPt,8,$hdrLen), @{$jumbfChunk{$type}};
+                        $dirInfo{DataPt} = \$buff;
+                        $dirInfo{DataPos} = $segPos + 8; # (shows correct offsets for single-segment JUMBF)
+                        $dirInfo{DataLen} = $dirInfo{DirLen} = $size;
+                        my $tagTablePtr = GetTagTable('Image::ExifTool::Jpeg2000::Main');
+                        $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+                        delete $jumbfChunk{$type};
+                    }
                 }
             }
         } elsif ($marker == 0xec) {         # APP12 (Ducky, Picture Info)
@@ -7005,7 +7056,7 @@ sub ProcessJPEG($$)
         } elsif ($marker == 0xee) {         # APP14 (Adobe)
             if ($$segDataPt =~ /^Adobe/) {
                 # extract as a block if requested, or if copying tags from file
-                if ($$self{REQ_TAG_LOOKUP}{adobe} or
+                if ($$req{adobe} or
                     # (not extracted normally, so check TAGS_FROM_FILE)
                     ($$self{TAGS_FROM_FILE} and not $$self{EXCL_TAG_LOOKUP}{adobe}))
                 {
@@ -7108,6 +7159,7 @@ sub ProcessJPEG($$)
         Image::ExifTool::JPEGDigest::Calculate($self, \@dqt, $subSampling);
     }
     # issue necessary warnings
+    $self->Warn('Invalid JUMBF size or missing JUMBF chunk') if %jumbfChunk;
     $self->Warn('Incomplete ICC_Profile record', 1) if defined $iccChunkCount;
     $self->Warn('Incomplete FLIR record', 1) if defined $flirCount;
     $self->Warn('Error reading PreviewImage', 1) if $$self{PreviewError};

@@ -7,6 +7,24 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.16. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Apr. 1, 2021 - Version 12.23
+
+  - Added support for Olympus ORI files
+  - Added experimental read/write support for JPEG XL images
+  - Added experimental read support for JUMBF metadata in JPEG and Jpeg2000
+    images
+  - Added built-in support for parsing GPS track from Denver ACG-8050 videos
+    with the -ee option
+  - Added a some new Sony lenses (thanks Jos Roost and LibRaw)
+  - Changed priority of Samsung trailer tags so the first DepthMapImage takes
+    precedence when -a is not used
+  - Improved identification of M4A audio files
+  - Patched to avoid escaping ',' in "Binary data" message when -struct is used
+  - Removed Unknown flag from MXF VideoCodingSchemeID tag
+  - Fixed -forcewrite=EXIF to apply to EXIF in binary header of EPS files
+  - API Changes:
+      - Added BlockExtract option
+
 Mar. 17, 2021 - Version 12.22
 
   - Added a few new Sony LensTypes and a new SonyModelID (thanks Jos Roost and

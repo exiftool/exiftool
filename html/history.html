@@ -17,6 +17,27 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.23'><b>Apr. 1, 2021 - Version 12.23</b></a>
+<ul>
+<li>Added support for Olympus ORI files
+<li>Added experimental read/write support for JPEG XL images
+<li>Added experimental read support for JUMBF metadata in JPEG and Jpeg2000
+    images
+<li>Added built-in support for parsing GPS track from Denver ACG-8050 videos
+    with the -ee option
+<li>Added a some new Sony lenses (thanks Jos Roost and LibRaw)
+<li>Changed priority of Samsung trailer tags so the first DepthMapImage takes
+    precedence when -a is not used
+<li>Improved identification of M4A audio files
+<li>Patched to avoid escaping ',' in "Binary data" message when -struct is used
+<li>Removed Unknown flag from MXF VideoCodingSchemeID tag
+<li>Fixed -forcewrite=EXIF to apply to EXIF in binary header of EPS files
+<li>API Changes:
+    <ul>
+    <li>Added BlockExtract option
+    </ul>
+</ul>
+
 <a name='v12.22'><b>Mar. 17, 2021 - Version 12.22</b></a>
 <ul>
 <li>Added a few new Sony LensTypes and a new SonyModelID (thanks Jos Roost and

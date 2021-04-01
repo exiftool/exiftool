@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.56';
+$VERSION = '1.57';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -975,7 +975,7 @@ sub FoundPNG($$$$;$$$$)
         $$tagInfo{LangCode} = $lang if $lang;
         # make unknown profiles binary data type
         $$tagInfo{Binary} = 1 if $tag =~ /^Raw profile type /;
-        $verbose and $et->VPrint(0, "  | [adding $tag]\n");
+        $verbose and $et->VPrint(0, "  [adding $tag]\n");
         AddTagToTable($tagTablePtr, $tag, $tagInfo);
     }
 #

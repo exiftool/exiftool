@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 sub WritePhaseOne($$$);
 sub ProcessPhaseOne($$$);
@@ -73,10 +73,11 @@ my @formatName = ( undef, 'string', 'int16s', undef, 'int32s' );
         PrintConv => { #PH
             1 => 'RAW 1', #? (encrypted)
             2 => 'RAW 2', #? (encrypted)
-            3 => 'IIQ L',
+            3 => 'IIQ L', # (now "L14", ref IB)
             # 4?
             5 => 'IIQ S',
-            6 => 'IIQ Sv2',
+            6 => 'IIQ Sv2', # (now "S14" for "IIQ 14 Smart" and "IIQ 14 Sensor+", ref IB)
+            8 => 'IIQ L16', #IB ("IIQ 16 Extended" and "IIQ 16 Large")
         },
     },
     0x010f => {

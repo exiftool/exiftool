@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24102 tags, with 15604 unique tag names.
+They contain a total of 24118 tags, with 15614 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -9933,6 +9933,8 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1100   AutoBracketing                       int16u
   0x1101   SequenceNumber                       int16u
   0x1103   DriveSettings                        FujiFilm DriveSettings
+  0x1105   PixelShiftShots                      int16u
+  0x1106   PixelShiftOffset                     rational64s[2]
   0x1153   PanoramaAngle                        int16u
   0x1154   PanoramaDirection                    int16u
   0x1201   AdvancedFilter                       int32u
@@ -9989,10 +9991,11 @@ Tags extracted from FLIR Public image Format (FPF) files.
 
   Index4   Tag Name                             Writable
   ------   --------                             --------
-    0.1    FocusMode2                           int32u & 0xff
-    0.2    AFAreaMode                           int32u & 0xf00
-    0.3    AFAreaPointSize                      int32u & 0xf000
-    0.4    AFAreaZoneSize                       int32u & 0xf0000
+    0.1    FocusMode2                           int32u & 0x0f
+    0.2    PreAF                                int32u & 0xf0
+    0.3    AFAreaMode                           int32u & 0xf00
+    0.4    AFAreaPointSize                      int32u & 0xf000
+    0.5    AFAreaZoneSize                       int32u & 0xf0000
 
 =head3 FujiFilm AFCSettings Tags
 
@@ -15802,6 +15805,9 @@ This information is written by the Leica S (Typ 007) and M10 models.
   0x034c   UserProfile                          string
   0x0359   ISOSelected                          int32s
   0x035a   FNumber                              int32s
+  0x035b   CorrelatedColorTemp                  int16u
+  0x035c   ColorTint                            int16s
+  0x035d   WhitePoint                           rational64u[2]
 
 =head3 Panasonic Type2 Tags
 
@@ -17514,6 +17520,13 @@ MakerNotes.
   0x202e   Quality                              int16u[2]
   0x202f   PixelShiftInfo                       undef
   0x2031   SerialNumber                         string
+  0x2032   Shadows                              int32s
+  0x2033   Highlights                           int32s
+  0x2034   Fade                                 int32s
+  0x2035   SharpnessRange                       int32s
+  0x2036   Clarity                              int32s
+  0x2037   FocusFrameSize                       no
+  0x2039   JPEG-HEIFSwitch                      int16u
   0x3000   ShotInfo                             Sony ShotInfo
   0x900b   Tag900b                              Sony Tag900b
   0x9050   Tag9050a                             Sony Tag9050a
@@ -18600,7 +18613,7 @@ Valid from July 2015 for ILCE-6100/6300/6400/6500/6600/7C/7M3/7RM2/7RM3/7RM4/
 
 =head3 Sony Tag9050c Tags
 
-Valid from July 2020 for ILCE-1/7SM3.
+Valid from July 2020 for ILCE-1/7SM3, ILME-FX3.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -18615,6 +18628,7 @@ Valid from July 2020 for ILCE-1/7SM3.
     104    SonyFNumber                          int16u
     107    ReleaseMode2                         int8u
     136    InternalSerialNumber                 int8u[6]~
+    138    InternalSerialNumber                 int8u[6]~
 
 =head3 Sony Tag9400a Tags
 
@@ -18816,7 +18830,7 @@ These tags are currently extracted for SLT models only.
 
 =head3 Sony Tag940c Tags
 
-NEX and ILCE models only.
+E-mount cameras only.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -19006,7 +19020,7 @@ E-mount models.
 
 =head3 Sony Tag9416 Tags
 
-Valid for the ILCE-1/7SM3.
+Valid for the ILCE-1/7SM3, ILME-FX3.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -21877,10 +21891,11 @@ Information extracted from the JUMBF description box.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
-  'id'                 JUMBFID                  no
-  'label'              JUMBFLabel               no
-  'signature'          JUMBFSignature           no
-  'type'               JUMBFType                no
+  'jumd-flags'         JUMDFlags                no
+  'jumd-id'            JUMDID                   no
+  'jumd-label'         JUMDLabel                no
+  'jumd-sig'           JUMDSignature            no
+  'jumd-type'          JUMDType                 no
 
 =head3 Jpeg2000 CaptureResolution Tags
 
@@ -34897,7 +34912,7 @@ options, but these files are not writable directly.
 XAttr tags are extracted using the "xattr" utility.  They are extracted if
 any "XAttr*" tag or the MacOS group is specifically requested, or by setting
 the XAttrTags API option to 1 or the RequestAll API option to 2 or higher.
-And they extracted by default from MacOS "._" files when reading
+And they are extracted by default from MacOS "._" files when reading
 these files directly.
 
   Tag Name                                      Writable

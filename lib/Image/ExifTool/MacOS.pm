@@ -245,7 +245,7 @@ my %mdDateInfo = (
         XAttr tags are extracted using the "xattr" utility.  They are extracted if
         any "XAttr*" tag or the MacOS group is specifically requested, or by setting
         the L<XAttrTags|../ExifTool.html#XAttrTags> API option to 1 or the L<RequestAll|../ExifTool.html#RequestAll> API option to 2 or higher.
-        And they extracted by default from MacOS "._" files when reading
+        And they are extracted by default from MacOS "._" files when reading
         these files directly.
     },
     'com.apple.FinderInfo' => {

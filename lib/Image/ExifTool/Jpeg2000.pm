@@ -607,8 +607,8 @@ my %jumbfTypes = (
     PROCESS_PROC => \&ProcessJUMD,
     GROUPS => { 0 => 'JUMBF', 1 => 'JUMBF', 2 => 'Image' },
     NOTES => 'Information extracted from the JUMBF description box.',
-    type => {
-        Name => 'JUMBFType',
+    'jumd-type' => {
+        Name => 'JUMDType',
         ValueConv => 'unpack "H*", $val',
         PrintConv => q{
             my @a = $val =~ /^(\w{8})(\w{4})(\w{4})(\w{16})$/;
@@ -621,9 +621,18 @@ my %jumbfTypes = (
         # cacb/cast/caas/cacl/casg/json-00110010800000aa00389b71
         # 6579d6fbdba2446bb2ac1b82feeb89d1 - JPEG image
     },
-    label      => { Name => 'JUMBFLabel' },
-    id         => { Name => 'JUMBFID', Description => 'JUMBF ID' },
-    signature  => { Name => 'JUMBFSignature', PrintConv => 'unpack "H*", $val' },
+    'jumd-label' => { Name => 'JUMDLabel' },
+    'jumd-flags' => {
+        Name => 'JUMDFlags',
+        PrintConv => { BITMASK => {
+            0 => 'Requestable',
+            1 => 'Label',
+            2 => 'ID',
+            3 => 'Signature',
+        }},
+    },
+    'jumd-id'    => { Name => 'JUMDID', Description => 'JUMD ID' },
+    'jumd-sig'   => { Name => 'JUMDSignature', PrintConv => 'unpack "H*", $val' },
 );
 
 #------------------------------------------------------------------------------
@@ -666,15 +675,16 @@ sub ProcessJUMD($$$)
     delete $$et{JUMBFLabel};
     $$dirInfo{DirLen} < 17 and $et->Warn('Truncated JUMD directory'), return 0;
     my $type = substr($$dataPt, $pos, 4);
-    $et->HandleTag($tagTablePtr, 'type', substr($$dataPt, $pos, 16));
+    $et->HandleTag($tagTablePtr, 'jumd-type', substr($$dataPt, $pos, 16));
     $pos += 16;
     my $flags = Get8u($dataPt, $pos++);
+    $et->HandleTag($tagTablePtr, 'jumd-flags', $flags);
     if ($flags & 0x02) {    # label exists?
         pos($$dataPt) = $pos;
         $$dataPt =~ /\0/g or $et->Warn('Missing JUMD label terminator'), return 0;
         my $len = pos($$dataPt) - $pos;
         my $name = substr($$dataPt, $pos, $len);
-        $et->HandleTag($tagTablePtr, 'label', $name);
+        $et->HandleTag($tagTablePtr, 'jumd-label', $name);
         $pos += $len;
         if ($len) {
             $name =~ s/[^-_a-zA-Z0-9]([a-z])/\U$1/g; # capitalize characters after illegal characters
@@ -686,12 +696,12 @@ sub ProcessJUMD($$$)
     }
     if ($flags & 0x04) {    # ID exists?
         $pos + 4 > $end and $et->Warn('Missing JUMD ID'), return 0;
-        $et->HandleTag($tagTablePtr, 'id', Get32u($dataPt, $pos));
+        $et->HandleTag($tagTablePtr, 'jumd-id', Get32u($dataPt, $pos));
         $pos += 4;
     }
     if ($flags & 0x08) {    # signature exists?
         $pos + 32 > $end and $et->Warn('Missing JUMD signature'), return 0;
-        $et->HandleTag($tagTablePtr, 'signature', substr($$dataPt, $pos, 32));
+        $et->HandleTag($tagTablePtr, 'jumd-sig', substr($$dataPt, $pos, 32));
         $pos += 32;
     }
     $pos == $end or $et->Warn('Extra data in JUMD box'." $pos $end", 1);
@@ -1043,6 +1053,7 @@ sub GetBits($$)
 #------------------------------------------------------------------------------
 # Extract parameters from JPEG XL codestream [unverified!]
 # Inputs: 0) ExifTool ref, 1) codestream ref
+# Returns: 1
 sub ProcessJXLCodestream($$)
 {
     my ($et, $dataPt) = @_;
@@ -1076,6 +1087,7 @@ sub ProcessJXLCodestream($$)
     }
     $et->FoundTag(ImageWidth => $x);
     $et->FoundTag(ImageHeight => $y);
+    return 1;
 }
 
 #------------------------------------------------------------------------------
@@ -1094,16 +1106,8 @@ sub ProcessJP2($$)
     return 0 unless $raf->Read($hdr,12) == 12;
     unless ($hdr eq "\0\0\0\x0cjP  \x0d\x0a\x87\x0a" or     # (ref 1)
             $hdr eq "\0\0\0\x0cjP\x1a\x1a\x0d\x0a\x87\x0a" or # (ref 2)
-            ($hdr eq "\0\0\0\x0cJXL \x0d\x0a\x87\x0a" and $$et{IsJXL} = 1)) # (JPEG XL)
+            $$et{IsJXL})
     {
-        if ($hdr =~ /^\xff\x0a/) {
-            $outfile and $et->Error('Writing of JPEG XL codestream files is not yet supported'), return 0;
-            # JPEG XL codestream
-            $et->SetFileType('JXC',undef,'JXL'); # (PH invention)
-            $et->Warn('JPEG XL codestream support is currently experimental',1);
-            ProcessJXLCodestream($et, \$hdr);
-            return 1;
-        }
         return 0 unless $hdr =~ /^\xff\x4f\xff\x51\0/;  # check for JP2 codestream format
         if ($outfile) {
             $et->Error('Writing of J2C files is not yet supported');
@@ -1117,7 +1121,6 @@ sub ProcessJP2($$)
         $raf->Seek(0,0);
         return $et->ProcessJPEG($dirInfo);    # decode with JPEG processor
     }
-    $et->Warn('JPEG XL support is currently experimental',1) if $$et{IsJXL};
     if ($outfile) {
         Write($outfile, $hdr) or return -1;
         if ($$et{IsJXL}) {
@@ -1154,11 +1157,56 @@ sub ProcessJP2($$)
 #------------------------------------------------------------------------------
 # Read meta information from a JPEG XL image
 # Inputs: 0) ExifTool object reference, 1) dirInfo reference
-# Returns: 1 on success, 0 if this wasn't a valid JPEG XL file
+# Returns: 1 on success, 0 if this wasn't a valid JPEG XL file, -1 on write error
 sub ProcessJXL($$)
 {
     my ($et, $dirInfo) = @_;
-    return ProcessJP2($et, $dirInfo);
+    my $raf = $$dirInfo{RAF};
+    my $outfile = $$dirInfo{OutFile};
+    my ($hdr, $buff);
+
+    return 0 unless $raf->Read($hdr,12) == 12;
+    if ($hdr eq "\0\0\0\x0cJXL \x0d\x0a\x87\x0a") {
+        # JPEG XL in ISO BMFF container
+        $$et{IsJXL} = 1;
+    } elsif ($hdr =~ /^\xff\x0a/) {
+        # JPEG XL codestream
+        if ($outfile) {
+            if ($$et{OPTIONS}{IgnoreMinorErrors}) {
+                $et->Warn('Wrapped JXL codestream in ISO BMFF container');
+            } else {
+                $et->Error('Will wrap JXL codestream in ISO BMFF container for writing',1);
+                return 0;
+            }
+            $$et{IsJXL} = 2;
+            my $buff = "\0\0\0\x0cJXL \x0d\x0a\x87\x0a\0\0\0\x14ftypjxl \0\0\0\0jxl ";
+            # add metadata to empty ISO BMFF container
+            $$dirInfo{RAF} = new File::RandomAccess(\$buff);
+        } else {
+            $et->Warn('JPEG XL codestream support is currently experimental',1);
+            $et->SetFileType('JXL Codestream','image/jxl', 'jxl');
+            return ProcessJXLCodestream($et, \$hdr);
+        }
+    } else {
+        return 0;
+    }
+    $raf->Seek(0,0) or $et->Error('Seek error'), return 0;
+    $et->Warn('JPEG XL support is currently experimental',1);
+
+    my $success = ProcessJP2($et, $dirInfo);
+
+    if ($outfile and $success > 0 and $$et{IsJXL} == 2) {
+        # attach the JXL codestream box to the ISO BMFF file
+        $raf->Seek(0,2) or return -1;
+        my $size = $raf->Tell();
+        $raf->Seek(0,0) or return -1;
+        SetByteOrder('MM');
+        Write($outfile, Set32u($size + 8), 'jxlc') or return -1;
+        while ($raf->Read($buff, 65536)) {
+            Write($outfile, $buff) or return -1;
+        }
+    }
+    return $success;
 }
 
 1;  # end

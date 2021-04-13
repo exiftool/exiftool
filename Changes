@@ -7,6 +7,17 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.16. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Apr. 13, 2021 - Version 12.24
+
+  - Added a new PhaseOne RawFormat value (thanks LibRaw)
+  - Decode a new Sony tag (thanks Jos Roost)
+  - Decode a few new Panasonic and FujiFilm tags (thanks LibRaw and Greybeard)
+  - Patched security vulnerability in DjVu reader
+  - Updated acdsee.config in distribution (thanks StarGeek)
+  - Recognize AutoCAD DXF files
+  - More work on experimental JUMBF read support
+  - More work on experimental JXL read/write support
+
 Apr. 1, 2021 - Version 12.23
 
   - Added support for Olympus ORI files

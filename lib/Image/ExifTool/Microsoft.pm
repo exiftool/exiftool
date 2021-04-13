@@ -889,12 +889,14 @@ sub WriteXtraValue($$$)
         } elsif ($format eq 'date') {
             $dat = Image::ExifTool::GetUnixTime($val, 1);   # (convert to UTC, NC)
             if ($dat) {
+                # 100ns intervals since Jan 1, 1601
                 $dat = Set64u(($dat + 11644473600) * 1e7);
                 $type = 21;
             }
-        } elsif ($format eq 'vt_filetime') {
+        } elsif ($format eq 'vt_filetime') { # 'date' value inside a VT_VARIANT
             $dat = Image::ExifTool::GetUnixTime($val);  # (leave as local time, NC)
             if ($dat) {
+                # 100ns intervals since Jan 1, 1601
                 $dat = Set32u(64) . Set64u(($dat + 11644473600) * 1e7);
                 $type = 65;
             }

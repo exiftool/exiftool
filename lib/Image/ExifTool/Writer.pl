@@ -105,6 +105,7 @@ my %writableType = (
     ICC => [ 'ICC_Profile', 'WriteICC' ],
     IND =>   'InDesign',
     JP2 =>   'Jpeg2000',
+    JXL =>   'Jpeg2000',
     MIE =>   undef,
     MOV => [ 'QuickTime',   'WriteMOV' ],
     MRW =>   'MinoltaRaw',

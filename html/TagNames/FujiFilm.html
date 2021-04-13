@@ -377,7 +377,8 @@ the date of manufacture)</span></span></td></tr>
   <br><span class=n>(other models)</span>
   <br>0 = Off
   <br>1 = On
-  <br>2 = No flash &amp; flash</span></td></tr>
+  <br>2 = No flash &amp; flash
+  <br>6 = Pixel Shift</span></td></tr>
 <tr class=b>
 <td title='0x1101 = 4353'>0x1101</td>
 <td>SequenceNumber</td>
@@ -388,6 +389,16 @@ the date of manufacture)</span></span></td></tr>
 <td>DriveSettings</td>
 <td class=c>-</td>
 <td>--&gt; <a href='FujiFilm.html#DriveSettings'>FujiFilm DriveSettings Tags</a></td></tr>
+<tr class=b>
+<td title='0x1105 = 4357'>0x1105</td>
+<td>PixelShiftShots</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1106 = 4358'>0x1106</td>
+<td>PixelShiftOffset</td>
+<td class=c>rational64s[2]</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x1153 = 4435'>0x1153</td>
 <td>PanoramaAngle</td>
@@ -718,27 +729,33 @@ element)</span></span></td></tr>
 <td class=r title='0 = 0x0'>0.1</td>
 <td>FocusMode2</td>
 <td class=c>int32u</td>
-<td><span class=s>[val &amp; 0xff]
+<td><span class=s>[val &amp; 0xf]
   <br>0 = AF-M
   <br>1 = AF-S
-  <br>2 = AF-C
-  <br>17 = AF-S (Auto)</span></td></tr>
+  <br>2 = AF-C</span></td></tr>
 <tr class=b>
 <td class=r title='0 = 0x0'>0.2</td>
+<td>PreAF</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='0 = 0x0'>0.3</td>
 <td>AFAreaMode</td>
 <td class=c>int32u</td>
 <td><span class=s>[val &gt;&gt; 8 &amp; 0xf]
   <br>0 = Single Point
   <br>1 = Zone
   <br>2 = Wide/Tracking</span></td></tr>
-<tr>
-<td class=r title='0 = 0x0'>0.3</td>
+<tr class=b>
+<td class=r title='0 = 0x0'>0.4</td>
 <td>AFAreaPointSize</td>
 <td class=c>int32u</td>
 <td><span class=s>[val &gt;&gt; 12 &amp; 0xf]
   <br>0 = n/a</span></td></tr>
-<tr class=b>
-<td class=r title='0 = 0x0'>0.4</td>
+<tr>
+<td class=r title='0 = 0x0'>0.5</td>
 <td>AFAreaZoneSize</td>
 <td class=c>int32u</td>
 <td><span class=s>[val &gt;&gt; 16 &amp; 0xf]
@@ -1189,7 +1206,7 @@ RAF-format information.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 3, 2021</i>
+<br><i>Last revised Apr 13, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

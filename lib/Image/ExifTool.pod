@@ -441,9 +441,10 @@ Default is undef.
 
 =item BlockExtract
 
-Flag to extract some directories (mentioned in the Tag Name documentation)
-as a block.  Setting this to a value of 2 also prevents parsing the block to
-extract tags contained within.
+Flag to extract some directories (mentioned in the
+L<ExifTool tag name documentation|Image::ExifTool::TagNames>) as a block. 
+Setting this to a value of 2 also prevents parsing the block to extract tags
+contained within.
 
 =item ByteOrder
 

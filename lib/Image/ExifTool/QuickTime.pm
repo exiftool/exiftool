@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.62';
+$VERSION = '2.63';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -1581,36 +1581,29 @@ my %eeBox2 = (
     coll => { Name => 'CollectionName', %langText3gp }, #17
     rtng => {
         Name => 'Rating',
+        Writable => 'undef',
+        Avoid => 1,
         # (4-byte flags, 4-char entity, 4-char criteria, 2-byte lang, string)
-        RawConv => q{
-            return '<err>' unless length $val >= 14;
-            my $str = 'Entity=' . substr($val,4,4) . ' Criteria=' . substr($val,8,4);
-            $str =~ tr/\0-\x1f\x7f-\xff//d; # remove unprintable characters
-            my $lang = Image::ExifTool::QuickTime::UnpackLang(Get16u(\$val, 12));
-            $lang = $lang ? "($lang) " : '';
-            $val = substr($val, 14);
-            $val = $self->Decode($val, 'UCS2') if $val =~ /^\xfe\xff/;
-            return $lang . $str . ' ' . $val;
-        },
+        IText => 14, # (14 bytes before string)
+        Notes => 'string in the form "Entity=XXXX Criteria=XXXX XXXXX", used in 3gp videos',
+        ValueConv => '$val=~s/^(.{4})(.{4})/Entity=$1 Criteria=$2 /i; $val',
+        ValueConvInv => '$val=~s/Entity=(.{4}) Criteria=(.{4}) ?/$1$2/i; $val',
     },
     clsf => {
         Name => 'Classification',
+        Writable => 'undef',
+        Avoid => 1,
         # (4-byte flags, 4-char entity, 2-byte index, 2-byte lang, string)
-        RawConv => q{
-            return '<err>' unless length $val >= 12;
-            my $str = 'Entity=' . substr($val,4,4) . ' Index=' . Get16u(\$val,8);
-            $str =~ tr/\0-\x1f\x7f-\xff//d; # remove unprintable characters
-            my $lang = Image::ExifTool::QuickTime::UnpackLang(Get16u(\$val, 10));
-            $lang = $lang ? "($lang) " : '';
-            $val = substr($val, 12);
-            $val = $self->Decode($val, 'UCS2') if $val =~ /^\xfe\xff/;
-            return $lang . $str . ' ' . $val;
-        },
+        IText => 12,
+        Notes => 'string in the form "Entity=XXXX Index=### XXXXX", used in 3gp videos',
+        ValueConv => '$val=~s/^(.{4})(.{2})/"Entity=$1 Index=".unpack("n",$2)." "/ie; $val',
+        ValueConvInv => '$val=~s/Entity=(.{4}) Index=(\d+) ?/$1.pack("n",$2)/ie; $val',
     },
     kywd => {
         Name => 'Keywords',
         # (4 byte flags, 2-byte lang, 1-byte count, count x pascal strings, ref 17)
-        # (but I have also seen a simple string written by iPhone)
+        # (but I have also seen a simple string written by iPhone, so don't make writable yet)
+        Notes => "not writable because Apple doesn't follow the 3gp specification",
         RawConv => q{
             my $sep = $self->Options('ListSep');
             return join($sep, split /\0+/, $val) unless $val =~ /^\0/; # (iPhone)
@@ -1635,20 +1628,24 @@ my %eeBox2 = (
     loci => {
         Name => 'LocationInformation',
         Groups => { 2 => 'Location' },
+        Writable => 'undef',
+        IText => 6,
+        Avoid => 1,
+        NoDecode => 1, # (we'll decode the data ourself)
+        Notes => q{
+            string in the form "XXXXX Role=XXX Lat=XXX Lon=XXX Alt=XXX Body=XXX
+            Notes=XXX", used in 3gp videos
+        },
         # (4-byte flags, 2-byte lang, location string, 1-byte role, 4-byte fixed longitude,
         #  4-byte fixed latitude, 4-byte fixed altitude, body string, notes string)
         RawConv => q{
-            return '<err>' unless length $val >= 6;
-            my $lang = Image::ExifTool::QuickTime::UnpackLang(Get16u(\$val, 4));
-            $lang = $lang ? "($lang) " : '';
-            $val = substr($val, 6);
             my $str;
             if ($val =~ /^\xfe\xff/) {
                 $val =~ s/^(\xfe\xff(.{2})*?)\0\0//s or return '<err>';
                 $str = $self->Decode($1, 'UCS2');
             } else {
                 $val =~ s/^(.*?)\0//s or return '<err>';
-                $str = $1;
+                $str = $self->Decode($1, 'UTF8');
             }
             $str = '(none)' unless length $str;
             return '<err>' if length $val < 13;
@@ -1663,27 +1660,52 @@ my %eeBox2 = (
             if ($val =~ s/^(\xfe\xff(.{2})*?)\0\0//s) {
                 $str .= ' Body=' . $self->Decode($1, 'UCS2');
             } elsif ($val =~ s/^(.*?)\0//s) {
-                $str .= " Body=$1";
+                $str .= ' Body=' . $self->Decode($1, 'UTF8');
             }
             if ($val =~ s/^(\xfe\xff(.{2})*?)\0\0//s) {
                 $str .= ' Notes=' . $self->Decode($1, 'UCS2');
             } elsif ($val =~ s/^(.*?)\0//s) {
-                $str .= " Notes=$1";
+                $str .= ' Notes=' . $self->Decode($1, 'UTF8');
             }
-            return $lang . $str;
+            return $str;
+        },
+        RawConvInv => q{
+            my ($role, $lat, $lon, $alt, $body, $note);
+            $lat = $1 if $val =~ s/ Lat=([-+]?[.\d]+)//i;
+            $lon = $1 if $val =~ s/ Lon=([-+]?[.\d]+)//i;
+            $alt = $1 if $val =~ s/ Alt=([-+]?[.\d]+)//i;
+            $note = $val =~ s/ Notes=(.*)//i ? $1 : '';
+            $body = $val =~ s/ Body=(.*)//i ? $1 : '';
+            $role = $val =~ s/ Role=(.*)//i ? $1 : '';
+            $val = '' if $val eq '(none)';
+            $role = {shooting=>0,real=>1,fictional=>2}->{lc $role} || 0;
+            return $self->Encode($val, 'UTF8') . "\0" . Set8u($role) .
+                   SetFixed32s(defined $lon ? $lon : 999) .
+                   SetFixed32s(defined $lat ? $lat : 999) .
+                   SetFixed32s(defined $alt ? $alt : 0) .
+                   $self->Encode($body) . "\0" .
+                   $self->Encode($note) . "\0";
         },
     },
     yrrc => {
         Name => 'Year',
+        Writable => 'undef',
         Groups => { 2 => 'Time' },
-        RawConv => 'length($val) >= 6 ? Get16u(\$val,4) : "<err>"',
+        Avoid => 1,
+        Notes => 'used in 3gp videos',
+        ValueConv => 'length($val) >= 6 ? unpack("x4n",$val) : "<err>"',
+        ValueConvInv => 'pack("Nn",0,$val)',
     },
     urat => { #17
         Name => 'UserRating',
-        RawConv => q{
+        Writable => 'undef',
+        Notes => 'used in 3gp videos',
+        Avoid => 1,
+        ValueConv => q{
             return '<err>' unless length $val >= 8;
-            return Get8u(\$val, 7);
+            unpack('x7C', $val);
         },
+        ValueConvInv => 'pack("N2",0,$val)',
     },
     # tsel - TrackSelection (ref 17)
     # Apple tags (ref 16[dead] -- see ref 25 instead)
@@ -9394,9 +9416,9 @@ ItemID:         foreach $id (keys %$items) {
                     }
                     for (;;) {
                         my ($len, $lang);
-                        if ($$tagInfo{IText} and $$tagInfo{IText} == 6) {
-                            last if $pos + 6 > $size;
-                            $pos += 4;
+                        if ($$tagInfo{IText} and $$tagInfo{IText} >= 6) {
+                            last if $pos + $$tagInfo{IText} > $size;
+                            $pos += $$tagInfo{IText} - 2;
                             $lang = unpack("x${pos}n", $val);
                             $pos += 2;
                             $len = $size - $pos;
@@ -9416,7 +9438,7 @@ ItemID:         foreach $id (keys %$items) {
                         # ignore any empty entries (or null padding) after the first
                         next if not $len and $pos;
                         my $str = substr($val, $pos, $len);
-                        my $langInfo;
+                        my ($langInfo, $enc);
                         if (($lang < 0x400 or $lang == 0x7fff) and $str !~ /^\xfe\xff/) {
                             # this is a Macintosh language code
                             # a language code of 0 is Macintosh english, so treat as default
@@ -9433,15 +9455,22 @@ ItemID:         foreach $id (keys %$items) {
                             }
                             # the spec says only "Macintosh text encoding", but
                             # allow this to be configured by the user
-                            $str = $et->Decode($str, $charsetQuickTime);
+                            $enc = $charsetQuickTime;
                         } else {
                             # convert language code to ASCII (ignore read-only bit)
                             $lang = UnpackLang($lang);
                             # may be either UTF-8 or UTF-16BE
-                            my $enc = $str=~s/^\xfe\xff// ? 'UTF16' : 'UTF8';
-                            $str = $et->Decode($str, $enc);
+                            $enc = $str=~s/^\xfe\xff// ? 'UTF16' : 'UTF8';
                         }
-                        $str =~ s/\0+$//;   # remove any trailing nulls (eg. 3gp tags)
+                        unless ($$tagInfo{NoDecode}) {
+                            $str = $et->Decode($str, $enc);
+                            $str =~ s/\0+$//;   # remove any trailing nulls (eg. 3gp tags)
+                        }
+                        if ($$tagInfo{IText} and $$tagInfo{IText} > 6) {
+                            my $n = $$tagInfo{IText} - 6;
+                            # add back extra bytes (eg. 'rtng' box)
+                            $str = substr($val, $pos-$n-2, $n) . $str;
+                        }
                         $langInfo = GetLangInfoQT($et, $tagInfo, $lang) if $lang;
                         $et->FoundTag($langInfo || $tagInfo, $str);
                         $pos += $len;

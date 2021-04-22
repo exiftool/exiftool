@@ -21,6 +21,7 @@
 #              13) http://tech.ebu.ch/docs/tech/tech3285.pdf
 #              14) https://developers.google.com/speed/webp/docs/riff_container
 #              15) https://tech.ebu.ch/docs/tech/tech3306-2009.pdf
+#              16) https://sites.google.com/site/musicgapi/technical-documents/wav-file-format
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::RIFF;
@@ -29,7 +30,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.57';
+$VERSION = '1.58';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -354,9 +355,35 @@ my %code2charset = (
         SubDirectory => { TagTable => 'Image::ExifTool::RIFF::DS64' },
     },
     list => 'ListType',  #15
-    labl => { #15
-        Name => 'Label',
-        SubDirectory => { TagTable => 'Image::ExifTool::RIFF::Label' },
+    labl => { #16 (in 'adtl' chunk)
+        Name => 'CuePointLabel',
+        Priority => 0, # (so they are stored in sequence)
+        ValueConv => 'my $str=substr($val,4); $str=~s/\0+$//; unpack("V",$val) . " " . $str',
+    },
+    note => { #16 (in 'adtl' chunk)
+        Name => 'CuePointNote',
+        Priority => 0, # (so they are stored in sequence)
+        ValueConv => 'my $str=substr($val,4); $str=~s/\0+$//; unpack("V",$val) . " " . $str',
+    },
+    ltxt => { #16 (in 'adtl' chunk)
+        Name => 'LabeledText',
+        Notes => 'CuePointID Length Purpose Country Language Dialect Codepage Text',
+        Priority => 0, # (so they are stored in sequence)
+        ValueConv => q{
+            my @a = unpack('VVa4vvvv', $val);
+            $a[2] = "'$a[2]'";
+            my $txt = substr($val, 18);
+            $txt =~ s/\0+$//;   # remove null terminator
+            return join(' ', @a, $txt);
+        },
+    },
+    smpl => { #16
+        Name => 'Sampler',
+        SubDirectory => { TagTable => 'Image::ExifTool::RIFF::Sampler' },
+    },        
+    inst => { #16
+        Name => 'Instrument',
+        SubDirectory => { TagTable => 'Image::ExifTool::RIFF::Instrument' },
     },
     LIST_INFO => {
         Name => 'Info',
@@ -395,6 +422,10 @@ my %code2charset = (
             TagTable => 'Image::ExifTool::Pentax::AVI',
             ProcessProc => \&Image::ExifTool::RIFF::ProcessChunks,
         },
+    },
+    LIST_adtl => { #PH (ref 16, forum12387)
+        Name => 'AssociatedDataList',
+        SubDirectory => { TagTable => 'Image::ExifTool::RIFF::Main' },
     },
     # seen LIST_JUNK
     JUNK => [
@@ -466,10 +497,15 @@ my %code2charset = (
         Name => 'NumberOfSamples',
         RawConv => 'Get32u(\$val, 0)',
     },
-   'cue ' => {
+   'cue '=> {
         Name => 'CuePoints',
         Binary => 1,
+        Notes => q{
+            config_files/cutepointlist.config from full distribution will decode this
+            and generate a list of cue points with labels
+        },
     },
+    plst => { Name => 'Playlist',  Binary => 1 }, #16
     afsp => { },
     IDIT => {
         Name => 'DateTimeOriginal',
@@ -704,16 +740,52 @@ my %code2charset = (
     #  very unlikely, support for these is not yet implemented)
 );
 
-# cue point labels (ref 15)
-%Image::ExifTool::RIFF::Label = (
+# Sampler chunk (ref 16)
+%Image::ExifTool::RIFF::Sampler = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 2 => 'Audio' },
     FORMAT => 'int32u',
-    0 => 'LabelID',
-    1 => {
-        Name => 'LabelText',
-        Format => 'string[$size-4]',
+    0 => 'Manufacturer',
+    1 => 'Product',
+    2 => 'SamplePeriod',
+    3 => 'MIDIUnityNote',
+    4 => 'MIDIPitchFraction',
+    5 => {
+        Name => 'SMPTEFormat',
+        PrintConv => {
+            0 => 'none',
+            24 => '24 fps',
+            25 => '25 fps',
+            29 => '29 fps',
+            30 => '30 fps',
+        },
     },
+    6 => {
+        Name => 'SMPTEOffset',
+        Notes => 'HH:MM:SS:FF',
+        ValueConv => q{
+            my $str = sprintf('%.8x', $val);
+            $str =~ s/(..)(..)(..)(..)/$1:$2:$3:$4/;
+            return $str;
+        },
+    },
+    7 => 'NumSampleLoops',
+    8 => 'SamplerDataLen',
+    9 => { Name => 'SamplerData', Format => 'undef[$size-40]', Binary => 1 },
+);
+
+# Instrument chunk (ref 16)
+%Image::ExifTool::RIFF::Instrument = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Audio' },
+    FORMAT => 'int8s',
+    0 => 'UnshiftedNote',
+    1 => 'FineTune',
+    2 => 'Gain',
+    3 => 'LowNote',
+    4 => 'HighNote',
+    5 => 'LowVelocity',
+    6 => 'HighVelocity',
 );
 
 # Sub chunks of INFO LIST chunk

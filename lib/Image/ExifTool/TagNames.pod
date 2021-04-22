@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24118 tags, with 15614 unique tag names.
+They contain a total of 24273 tags, with 15738 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -6101,6 +6101,8 @@ Unknown only to reduce the volume of the normal output.
   0x016b   LimitAF-AreaModeSelWideLPeople?      no
   0x016c   LimitAF-AreaModeSelWideLAnimals?     no
   0x016e   AFAreaMode                           no
+  0x0170   PreferSubSelectorCenter              no
+  0x0174   FocusPointSelectionSpeed             no
 
 =head2 Canon Tags
 
@@ -24426,6 +24428,155 @@ files.
      48    PrimaryFileGUID                      no
      64    FileGUID                             no
 
+=head2 MRC Tags
+
+Tags extracted from Medical Research Council (MRC) format imaging files.
+See L<https://www.ccpem.ac.uk/mrc_format/mrc2014.php> for the specification.
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    ImageWidth                           no
+      1    ImageHeight                          no
+      2    ImageDepth                           no
+      3    ImageMode                            no
+      4    StartPoint                           no
+      7    GridSize                             no
+     10    CellWidth                            no
+     11    CellHeight                           no
+     12    CellDepth                            no
+     13    CellAlpha                            no
+     14    CellBeta                             no
+     15    CellGamma                            no
+     16    ImageWidthAxis                       no
+     17    ImageHeightAxis                      no
+     18    ImageDepthAxis                       no
+     19    DensityMin                           no
+     20    DensityMax                           no
+     21    DensityMean                          no
+     22    SpaceGroupNumber                     no
+     23    ExtendedHeaderSize                   no
+     26    ExtendedHeaderType                   no
+     27    MRCVersion                           no
+     49    Origin                               no
+     53    MachineStamp                         no
+     54    RMSDeviation                         no
+     55    NumberOfLabels                       no
+     56    Label0                               no
+     76    Label1                               no
+     96    Label2                               no
+    116    Label3                               no
+    136    Label4                               no
+    156    Label5                               no
+    176    Label6                               no
+    196    Label7                               no
+    216    Label8                               no
+    236    Label9                               no
+
+=head3 MRC FEI12 Tags
+
+Tags extracted from FEI1 and FEI2 extended headers.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    MetadataSize                         no
+      4    MetadataVersion                      no
+      8    Bitmask1                             no
+     12    TimeStamp                            no
+     20    MicroscopeType                       no
+     36    MicroscopeID                         no
+     52    Application                          no
+     68    AppVersion                           no
+     84    HighTension                          no
+     92    Dose                                 no
+    100    AlphaTilt                            no
+    108    BetaTilt                             no
+    116    XStage                               no
+    124    YStage                               no
+    132    ZStage                               no
+    140    TiltAxisAngle                        no
+    148    DualAxisRot                          no
+    156    PixelSizeX                           no
+    164    PixelSizeY                           no
+    220    Defocus                              no
+    228    STEMDefocus                          no
+    236    AppliedDefocus                       no
+    244    InstrumentMode                       no
+    248    ProjectionMode                       no
+    252    ObjectiveLens                        no
+    268    HighMagnificationMode                no
+    284    ProbeMode                            no
+    288    EFTEMOn                              no
+    289    Magnification                        no
+    297    Bitmask2                             no
+    301    CameraLength                         no
+    309    SpotIndex                            no
+    313    IlluminationArea                     no
+    321    Intensity                            no
+    329    ConvergenceAngle                     no
+    337    IlluminationMode                     no
+    353    WideConvergenceAngleRange            no
+    354    SlitInserted                         no
+    355    SlitWidth                            no
+    363    AccelVoltOffset                      no
+    371    DriftTubeVolt                        no
+    379    EnergyShift                          no
+    387    ShiftOffsetX                         no
+    395    ShiftOffsetY                         no
+    403    ShiftX                               no
+    411    ShiftY                               no
+    419    IntegrationTime                      no
+    427    BinningWidth                         no
+    431    BinningHeight                        no
+    435    CameraName                           no
+    451    ReadoutAreaLeft                      no
+    455    ReadoutAreaTop                       no
+    459    ReadoutAreaRight                     no
+    463    ReadoutAreaBottom                    no
+    467    CetaNoiseReduct                      no
+    468    CetaFramesSummed                     no
+    472    DirectDetElectronCounting            no
+    473    DirectDetAlignFrames                 no
+    490    Bitmask3                             no
+    518    PhasePlate                           no
+    519    STEMDetectorName                     no
+    535    Gain                                 no
+    543    Offset                               no
+    571    DwellTime                            no
+    579    FrameTime                            no
+    587    ScanSizeLeft                         no
+    591    ScanSizeTop                          no
+    595    ScanSizeRight                        no
+    599    ScanSizeBottom                       no
+    603    FullScanFOV_X                        no
+    611    FullScanFOV_Y                        no
+    619    Element                              no
+    635    EnergyIntervalLower                  no
+    643    EnergyIntervalHigher                 no
+    651    Method                               no
+    655    IsDoseFraction                       no
+    656    FractionNumber                       no
+    660    StartFrame                           no
+    664    EndFrame                             no
+    668    InputStackFilename                   no
+    748    Bitmask4                             no
+    752    AlphaTiltMin                         no
+    760    AlphaTiltMax                         no
+    768    ScanRotation                         no
+    776    DiffractionPatternRotation           no
+    784    ImageRotation                        no
+    792    ScanModeEnumeration                  no
+    796    AcquisitionTimeStamp                 no
+    804    DetectorCommercialName               no
+    820    StartTiltAngle                       no
+    828    EndTiltAngle                         no
+    836    TiltPerImage                         no
+    844    TitlSpeed                            no
+    852    BeamCenterX                          no
+    856    BeamCenterY                          no
+    860    CFEGFlashTimeStamp                   no
+    868    PhasePlatePosition                   no
+    872    ObjectiveAperture                    no
+
 =head2 MIFF Tags
 
 The MIFF (Magick Image File Format) format allows aribrary tag names to be
@@ -27030,7 +27181,7 @@ the config file.
   'chpl'       ChapterList                      no
   'clfn'       ClipFileName                     string
   'clid'       ClipID                           string
-  'clsf'       Classification                   no
+  'clsf'       Classification                   undef/
   'cmid'       CameraID                         string
   'cmnm'       Model                            string/
   'coll'       CollectionName                   string/
@@ -27048,7 +27199,7 @@ the config file.
   'infu'       InfoURL                          string
   'kgtt'       TrackType                        string
   'kywd'       Keywords                         no
-  'loci'       LocationInformation              no
+  'loci'       LocationInformation              undef/
   'lrcu'       LyricsURI                        string
   'lvlm'       LevelMeter?                      rational64s
   'manu'       Make                             no
@@ -27063,7 +27214,7 @@ the config file.
   'rads'       Rads?                            rational64s
   'reel'       ReelName                         string
   'roll'       Roll                             rational64s/
-  'rtng'       Rating                           no
+  'rtng'       Rating                           undef/
   'scen'       Scene                            string
   'scrn'       OlympusPreview                   Olympus scrn
   'shot'       ShotName                         string
@@ -27076,12 +27227,12 @@ the config file.
                ThumbnailPNG                     string
                UnknownThumbnail                 string
   'titl'       Title                            string/
-  'urat'       UserRating                       no
+  'urat'       UserRating                       undef/
   'uuid'       GarminSoftware                   string
                UUID-Unknown?                    no
   'vndr'       Vendor                           string
   'vrot'       AccelerometerData                no
-  'yrrc'       Year                             no
+  'yrrc'       Year                             undef/
   "\xa9ART"    Artist                           string
   "\xa9TIM"    StartTimecode                    string
   "\xa9TSC"    StartTimeScale                   string
@@ -29889,6 +30040,7 @@ sub-documents, but the Duration is calculated for the full video.
   'LIST_INF0'          Info                     RIFF Info
   'LIST_INFO'          Info                     RIFF Info
   'LIST_Tdat'          Tdat                     RIFF Tdat
+  'LIST_adtl'          AssociatedDataList       RIFF
   'LIST_exif'          Exif                     RIFF Exif
   'LIST_hdrl'          Hdrl                     RIFF Hdrl
   'LIST_hydt'          PentaxData               Pentax AVI
@@ -29911,9 +30063,14 @@ sub-documents, but the Duration is calculated for the full video.
   'gps0'               GPSTrack                 QuickTime Stream
   'gsen'               GSensor                  QuickTime Stream
   'iXML'               IXML                     XMP XML
-  'labl'               Label                    RIFF Label
+  'inst'               Instrument               RIFF Instrument
+  'labl'               CuePointLabel            no
   'list'               ListType                 no
+  'ltxt'               LabeledText              no
+  'note'               CuePointNote             no
   'olym'               Olym                     Olympus WAV
+  'plst'               Playlist                 no
+  'smpl'               Sampler                  RIFF Sampler
   'tx_USER'            UserText                 RIFF UserText
   'tx_Unknown'         Text                     no
 
@@ -30210,12 +30367,32 @@ L<https://tech.ebu.ch/docs/tech/tech3306-2009.pdf> for the specification.
       1    DataSize64                           no
       2    NumberOfSamples64                    no
 
-=head3 RIFF Label Tags
+=head3 RIFF Instrument Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    UnshiftedNote                        no
+      1    FineTune                             no
+      2    Gain                                 no
+      3    LowNote                              no
+      4    HighNote                             no
+      5    LowVelocity                          no
+      6    HighVelocity                         no
+
+=head3 RIFF Sampler Tags
 
   Index4   Tag Name                             Writable
   ------   --------                             --------
-      0    LabelID                              no
-      1    LabelText                            no
+      0    Manufacturer                         no
+      1    Product                              no
+      2    SamplePeriod                         no
+      3    MIDIUnityNote                        no
+      4    MIDIPitchFraction                    no
+      5    SMPTEFormat                          no
+      6    SMPTEOffset                          no
+      7    NumSampleLoops                       no
+      8    SamplerDataLen                       no
+      9    SamplerData                          no
 
 =head3 RIFF UserText Tags
 

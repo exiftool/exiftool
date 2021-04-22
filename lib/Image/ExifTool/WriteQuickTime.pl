@@ -1232,10 +1232,14 @@ sub WriteQuickTime($$$)
                     } elsif ($format) {
                         $val = ReadValue(\$buff, 0, $format, undef, $size);
                     } elsif (($tag =~ /^\xa9/ or $$tagInfo{IText}) and $size >= ($$tagInfo{IText} || 4)) {
-                        if ($$tagInfo{IText} and $$tagInfo{IText} == 6) {
-                            $lang = unpack('x4n', $buff);
-                            $len = $size - 6;
-                            $val = substr($buff, 6, $len);
+                        my $hdr;
+                        if ($$tagInfo{IText} and $$tagInfo{IText} >= 6) {
+                            my $iText = $$tagInfo{IText};
+                            my $pos = $iText - 2;
+                            $lang = unpack("x${pos}n", $buff);
+                            $hdr = substr($buff,4,$iText-6);
+                            $len = $size - $iText;
+                            $val = substr($buff, $iText, $len);
                         } else {
                             ($len, $lang) = unpack('nn', $buff);
                             $len -= 4 if 4 + $len > $size; # (see QuickTime.pm for explanation)
@@ -1243,14 +1247,18 @@ sub WriteQuickTime($$$)
                             $val = substr($buff, 4, $len);
                         }
                         $lang or $lang = $undLang;  # treat both 0 and 'und' as 'und'
+                        my $enc;
                         if ($lang < 0x400 and $val !~ /^\xfe\xff/) {
                             $charsetQuickTime = $et->Options('CharsetQuickTime');
-                            $val = $et->Decode($val, $charsetQuickTime);
+                            $enc = $charsetQuickTime;
                         } else {
-                            my $enc = $val=~s/^\xfe\xff// ? 'UTF16' : 'UTF8';
-                            $val = $et->Decode($val, $enc);
+                            $enc = $val=~s/^\xfe\xff// ? 'UTF16' : 'UTF8';
                         }
-                        $val =~ s/\0+$//;   # remove trailing nulls if they exist
+                        unless ($$tagInfo{NoDecode}) {
+                            $val = $et->Decode($val, $enc);
+                            $val =~ s/\0+$//;   # remove trailing nulls if they exist
+                        }
+                        $val = $hdr . $val if defined $hdr;
                         my $langCode = UnpackLang($lang, 1);
                         $langInfo = GetLangInfo($tagInfo, $langCode);
                         $nvHash = $et->GetNewValueHash($langInfo);
@@ -1267,6 +1275,9 @@ sub WriteQuickTime($$$)
                         }
                     } else {
                         $val = $buff;
+                        if ($tag =~ /^\xa9/ or $$tagInfo{IText}) {
+                            $et->Warn("Corrupted $$tagInfo{Name} value");
+                        }
                     }
                     if ($nvHash and defined $val) {
                         if ($et->IsOverwriting($nvHash, $val)) {
@@ -1279,12 +1290,23 @@ sub WriteQuickTime($$$)
                             $et->VerboseValue("+ $grp:$$langInfo{Name}", $newData);
                             # add back necessary header and encode as necessary
                             if (defined $lang) {
-                                $newData = $et->Encode($newData, $lang < 0x400 ? $charsetQuickTime : 'UTF8');
+                                my $iText = $$tagInfo{IText} || 0;
+                                my $hdr;
+                                if ($iText > 6) {
+                                    $newData .= ' 'x($iText-6) if length($newData) < $iText-6;
+                                    $hdr = substr($newData, 0, $iText-6);
+                                    $newData = substr($newData, $iText-6);
+                                }
+                                unless ($$tagInfo{NoDecode}) {
+                                    $newData = $et->Encode($newData, $lang < 0x400 ? $charsetQuickTime : 'UTF8');
+                                }
                                 my $wLang = $lang eq $undLang ? 0 : $lang;
-                                if ($$tagInfo{IText} and $$tagInfo{IText} == 6) {
+                                if ($iText < 6) {
+                                    $newData = pack('nn', length($newData), $wLang) . $newData;
+                                } elsif ($iText == 6) {
                                     $newData = pack('Nn', 0, $wLang) . $newData . "\0";
                                 } else {
-                                    $newData = pack('nn', length($newData), $wLang) . $newData;
+                                    $newData = "\0\0\0\0" . $hdr . pack('n', $wLang) . $newData . "\0";
                                 }
                             } elsif (not $format or $format =~ /^string/ and
                                      not $$tagInfo{Binary} and not $$tagInfo{ValueConv})
@@ -1443,9 +1465,12 @@ sub WriteQuickTime($$$)
                         my $grp = $et->GetGroup($tagInfo,1);
                         $et->Warn("Can't use country code for $grp:$$tagInfo{Name}");
                         next;
-                    } elsif ($$tagInfo{IText} and $$tagInfo{IText} == 6) {
+                    } elsif ($$tagInfo{IText} and $$tagInfo{IText} >= 6) {
                         # add 6-byte langText header and trailing null
-                        $newVal = pack('Nn',0,$lang) . $newVal . "\0";
+                        # (with extra junk before language code if IText > 6)
+                        my $n = $$tagInfo{IText} - 6;
+                        $newVal .= ' ' x $n if length($newVal) < $n;
+                        $newVal = "\0\0\0\0" . substr($newVal,0,$n) . pack('n',0,$lang) . substr($newVal,$n) . "\0";
                     } else {
                         # add IText header
                         $newVal = pack('nn',length($newVal),$lang) . $newVal;

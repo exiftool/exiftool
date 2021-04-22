@@ -2274,37 +2274,59 @@ sub ProcessNMEA($$$)
 {
     my ($et, $dirInfo, $tagTbl) = @_;
     my $dataPt = $$dirInfo{DataPt};
-    my $rtnVal;
-    # parse only RMC sentence (with leading timestamp) for now
-    while ($$dataPt =~ /(?:\[(\d+)\])?\$[A-Z]{2}RMC,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d+\.\d+),([NS]),(\d+\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/g) {
-        $rtnVal = 1;
-        my $tc = $1;    # milliseconds since 1970 (local time)
-        my ($lat,$latRef,$lon,$lonRef) = ($6,$7,$8,$9);
-        my $yr = $14 + ($14 >= 70 ? 1900 : 2000);
-        my ($mon,$day,$hr,$min,$sec) = ($13,$12,$2,$3,$4);
-        my ($spd, $trk);
-        $spd = $10 * $knotsToKph if length $10;
-        $trk = $11 if length $11;
-        # lat/long are in DDDMM.MMMM format
-        my $deg = int($lat / 100);
-        $lat = $deg + ($lat - $deg * 100) / 60;
-        $deg = int($lon / 100);
-        $lon = $deg + ($lon - $deg * 100) / 60;
-        $sec = '0' . $sec unless $sec =~ /^\d{2}/;   # pad integer part of seconds to 2 digits
-        my $time = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%sZ',$yr,$mon,$day,$hr,$min,$sec);
-        my $sampleTime;
-        $sampleTime = ($tc - $$et{StartTime}) / 1000 if $tc and $$et{StartTime};
-        FoundSomething($et, $tagTbl, $sampleTime);
-        $et->HandleTag($tagTbl, GPSDateTime => $time);
-        $et->HandleTag($tagTbl, GPSLatitude  => $lat * ($latRef eq 'S' ? -1 : 1));
-        $et->HandleTag($tagTbl, GPSLongitude => $lon * ($lonRef eq 'W' ? -1 : 1));
-        if (defined $spd) {
-            $et->HandleTag($tagTbl, GPSSpeed => $spd);
-            $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
+    my ($rtnVal, %fix);
+    # parse only RMC and GGA sentence [with leading timecode] for now
+    for (;;) {
+        my ($tc, $type, $tim);
+        if ($$dataPt =~ /(?:\[(\d+)\])?\$[A-Z]{2}(RMC|GGA),(\d{2}\d{2}\d+(\.\d*)?),/g) {
+            ($tc, $type, $tim) = ($1, $2, $3);
         }
-        if (defined $trk) {
-            $et->HandleTag($tagTbl, GPSTrack => $trk);
-            $et->HandleTag($tagTbl, GPSTrackRef => 'T');
+        # write out last fix now if complete
+        # (use the GPS timestamps because they may be different for the same timecode)
+        if ($fix{tim} and (not $tim or $fix{tim} != $tim)) {
+            if ($fix{dat} and defined $fix{lat} and defined $fix{lon}) {
+                my $sampleTime;
+                $sampleTime = ($fix{tc} - $$et{StartTime}) / 1000 if $fix{tc} and $$et{StartTime};
+                FoundSomething($et, $tagTbl, $sampleTime);
+                $et->HandleTag($tagTbl, GPSDateTime  => $fix{dat});
+                $et->HandleTag($tagTbl, GPSLatitude  => $fix{lat});
+                $et->HandleTag($tagTbl, GPSLongitude => $fix{lon});
+                if (defined $fix{spd}) {
+                    $et->HandleTag($tagTbl, GPSSpeed => $fix{spd} * $knotsToKph);
+                    $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
+                }
+                if (defined $fix{trk}) {
+                    $et->HandleTag($tagTbl, GPSTrack => $fix{trk});
+                    $et->HandleTag($tagTbl, GPSTrackRef => 'T');
+                }
+                $et->HandleTag($tagTbl, GPSAltitude => $fix{alt}) if defined $fix{alt};
+                $et->HandleTag($tagTbl, GPSSatellites => $fix{nsats}+0) if defined $fix{nsats};
+                $et->HandleTag($tagTbl, GPSDOP => $fix{hdop}) if defined $fix{hdop};
+            }
+            undef %fix;
+        }
+        $fix{tim} = $tim or last;
+        my $pos = pos($$dataPt);
+        pos($$dataPt) = $pos - length($tim) - 1; # rewind to re-parse time
+        # (parsing of NMEA strings copied from Geotag.pm)
+        if ($type eq 'RMC' and
+            $$dataPt =~ /\G(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/g)
+        {
+            my $year = $15 + ($15 >= 70 ? 1900 : 2000);
+            $fix{tc} = $tc; # use timecode of RMC sentence
+            $fix{dat} = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%sZ',$year,$14,$13,$1,$2,$3);
+            $fix{lat} = (($5 || 0) + $6/60) * ($7 eq 'N' ? 1 : -1);
+            $fix{lon} = (($8 || 0) + $9/60) * ($10 eq 'E' ? 1 : -1);
+            $fix{spd} = $11 if length $11;
+            $fix{trk} = $12 if length $12;
+        } elsif ($type eq 'GGA' and
+            $$dataPt =~ /\G(\d{2})(\d{2})(\d+(\.\d*)?),(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),[1-6]?,(\d+)?,(\.\d+|\d+\.?\d*)?,(-?\d+\.?\d*)?,M?/g)
+        {
+            $fix{lat} = (($5 || 0) + $6/60) * ($7 eq 'N' ? 1 : -1);
+            $fix{lon} = (($8 || 0) + $9/60) * ($10 eq 'E' ? 1 : -1);
+            @fix{qw(nsats hdop alt)} = ($11,$12,$13);
+        } else {
+            pos($$dataPt) = $pos;   # continue searching from our last match
         }
     }
     delete $$et{DOC_NUM};

@@ -380,6 +380,8 @@ while processing the image</td></tr>
 my $exifTool = <b>new</b> Image::ExifTool;
 </pre></td></tr></table></blockquote>
 
+<p>One ExifTool object may be used to process many files, so creating multiple
+ExifTool objects usually is not necessary.</p>
 <p>Note that ExifTool uses AUTOLOAD to load non-member methods, so any class
 using Image::ExifTool as a base class must define an AUTOLOAD which calls
 Image::ExifTool::DoAutoLoad().  ie)</p>

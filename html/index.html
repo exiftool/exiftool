@@ -39,7 +39,13 @@ table.links th.rt { border-right: 0 }
 table.dl        { border: 1px solid gray; border-collapse: collapse }
 table.dl td     { padding: .4em .8em }
 table.bm        { margin: 0 0 .35em 0 }
-span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top: -.4em; }
+table.sticky    { border-collapse: separate; border-spacing: 0 }
+table.sticky th { position: sticky; top: 0; background: #ddd; z-index: 1; border-top: 1px solid gray;
+                  border-bottom: 1px solid gray; border-right: 1px solid gray }
+table.sticky td { border-bottom: 1px solid gray; border-right: 1px solid gray }
+table.sticky th:first-child,
+table.sticky td:first-child { border-left: 1px solid gray}
+span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top: -.4em }
 -->
 </style>
 </head>
@@ -81,9 +87,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.24.tar.gz/download">
-Download        Version 12.24</a> (4.7 MB) -
-<a href="history.html">Apr. 13, 2021</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.25.tar.gz/download">
+Download        Version 12.25</a> (4.7 MB) -
+<a href="history.html">Apr. 22, 2021</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -136,8 +142,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.24.zip/download">
-         exiftool-12.24.zip</a> (6.4 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.25.zip/download">
+         exiftool-12.25.zip</a> (6.4 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -155,7 +161,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.24.dmg</a> (3.0 MB)</b></td></tr></table></blockquote>
+         ExifTool-12.25.dmg</a> (3.0 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -280,7 +286,7 @@ suck the last bit of metadata out of whatever image file you throw at it!"</i> -
 <p>ExifTool can <b>R</b>ead, <b>W</b>rite and/or <b>C</b>reate files in the following formats. 
 Also listed are the support levels for EXIF, IPTC, XMP, ICC_Profile and other metadata types
 for each file format.</p>
-<blockquote class=s><table class='norm tight sm bm'>
+<blockquote class=s><table class='sticky tight sm bm'>
 <tr><th>File Type</th><th>Support</th><th>Description</th><th><a href="TagNames/EXIF.html">EXIF</a></th><th><a href="TagNames/IPTC.html">IPTC</a></th><th><a href="TagNames/XMP.html">XMP</a></th><th><a href="TagNames/ICC_Profile.html">ICC</a><span class=sup>1</span></th><th>Other</th></tr>
 <tr><td>360</td><td>R/W</td><td>GoPro 360 video (<a href="TagNames/QuickTime.html">QuickTime</a>-based)</td><td>R/W<span class=sup>3</span></td><td>R/W<span class=sup>3</span></td><td>R/W/C</td><td>-</td><td>R/W/C <a href="TagNames/QuickTime.html">QuickTime</a>, R <a href="TagNames/GoPro.html#GPMF">GoPro</a></td></tr>
 <tr><td>3FR</td><td>R</td><td>Hasselblad RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>-</td></tr>
@@ -368,8 +374,7 @@ for each file format.</p>
 <tr><td><a href="TagNames/Jpeg2000.html">JP2, JPF, JPM, JPX</a></td><td>R/W</td><td>JPEG 2000 image [Compound/Extended]</td><td>R/W/C<span class=sup>3</span></td><td>R/W/C<span class=sup>3</span></td><td>R/W/C</td><td>R</td><td>R/W/C <a href="TagNames/Jpeg2000.html">Jpeg2000</a>, R <a href="TagNames/Photoshop.html">Photoshop</a><span class=sup>3</span></td></tr>
 <tr><td><a href="TagNames/JPEG.html">JPEG, JPG, JPE</a></td><td>R/W</td><td>Joint Photographic Experts Group image</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td><a href="#JPEG">Supported JPEG Meta Information</a></td></tr>
 <tr><td><a href="TagNames/JSON.html">JSON</a></td><td>R</td><td>JavaScript Object Notation</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/JSON.html">JSON</a></td></tr>
-<tr><td>JXL</td><td>R/W</td><td>JPEG XL in ISO BMFF container</td><td>R/W/C</td><td>-</td><td>R/W/C</td><td>-</td><td>-</td></tr>
-<tr><td>JXL</td><td>R</td><td>JPEG XL Codestream</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>JXL</td><td>R/W</td><td>JPEG XL (codestream and ISO BMFF)</td><td>R/W/C</td><td>-</td><td>R/W/C</td><td>-</td><td>-</td></tr>
 <tr><td>K25</td><td>R</td><td>Kodak DC25 RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>-</td></tr>
 <tr><td>KDC</td><td>R</td><td>Kodak Digital Camera RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>R <a href="TagNames/Kodak.html">Kodak</a></td></tr>
 <tr><td><a href="TagNames/iWork.html">KEY, KTH</a></td><td>R</td><td>Apple iWork '09 Keynote presentation/Theme</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/iWork.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
@@ -397,6 +402,7 @@ for each file format.</p>
 <tr><td>MPO</td><td>R/W</td><td>Extended Multi-Picture format (<a href="TagNames/JPEG.html">JPEG</a> with <a href="TagNames/MPF.html">MPF</a> extensions)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td><a href="#JPEG">Supported JPEG Meta Information</a></td></tr>
 <tr><td><a href="TagNames/QuickTime.html">MQV</a></td><td>R/W</td><td>Sony Mobile QuickTime Video</td><td>R/W<span class=sup>3</span></td><td>R/W<span class=sup>3</span></td><td>R/W/C</td><td>-</td><td>R/W/C <a href="TagNames/QuickTime.html">QuickTime</a></td></tr>
 <tr><td><a href="TagNames/MinoltaRaw.html">MRW</a></td><td>R/W</td><td>Minolta RAW</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W <a href="TagNames/MinoltaRaw.html">MinoltaRaw</a> <a href="TagNames/Minolta.html">Minolta</a></td></tr>
+<tr><td><a href="TagNames/MRC.html">MRC</a></td><td>R</td><td>Medical Research Council</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/MRC.html">MRC</a></td></tr>
 <tr><td><a href="TagNames/MXF.html">MXF</a></td><td>R</td><td>Material Exchange Format</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/MXF.html">MXF</a></td></tr>
 <tr><td>NEF</td><td>R/W</td><td>Nikon (RAW) Electronic Format (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W <a href="TagNames/Nikon.html">Nikon</a> <a href="TagNames/NikonCapture.html">NikonCapture</a></td></tr>
 <tr><td><a href="TagNames/iWork.html">NMBTEMPLATE</a></td><td>R</td><td>Apple iWork '09 Numbers Template</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/iWork.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
@@ -1383,7 +1389,7 @@ three droplets to extract information [exiftool must be installed] (thanks to Ro
 <li><a href="https://exiftool.org/forum/index.php/topic,5262.0.html">ExifToolWrapper</a>: .NET wrapper for ExifTool (using C#)</li>
 <li><a href="http://gitorious.org/mini_exiftool">MiniExiftool</a>: Ruby library wrapper for ExifTool</li>
 <li><a href="https://github.com/mceachen/exiftoolr">exiftoolr</a>: Ruby wrapper for ExifTool</li>
-<li><a href="http://smarnach.github.com/pyexiftool/">pyexiftool</a>: Python wrapper for ExifTool</li>
+<li><a href="https://github.com/sylikc/pyexiftool">pyexiftool</a>: Python wrapper for ExifTool</li>
 <li><a href="https://github.com/guinslym/pyexifinfo">PyExifInfo</a>: Another Python wrapper for ExifTool</li>
 <li><a href="https://github.com/romainneutron/PHPExiftool">PHPExiftool</a>: PHP wrapper for ExifTool (in development)</li>
 <li><a href="https://exiftool.org/forum/index.php/topic,5381.0.html">ExifTool_PHP_StayOpen</a>: ExifTool PHP fast processing script using -stayOpen and Gearman</li>

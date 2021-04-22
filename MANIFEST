@@ -19,6 +19,7 @@ config_files/acdsee.config
 config_files/age.config
 config_files/bibble.config
 config_files/convert_regions.config
+config_files/cuepointlist.config
 config_files/depthmap.config
 config_files/example.config
 config_files/fotoware.config
@@ -104,6 +105,7 @@ html/TagNames/MOI.html
 html/TagNames/MPC.html
 html/TagNames/MPEG.html
 html/TagNames/MPF.html
+html/TagNames/MRC.html
 html/TagNames/MWG.html
 html/TagNames/MXF.html
 html/TagNames/MacOS.html
@@ -326,6 +328,7 @@ lib/Image/ExifTool/MOI.pm
 lib/Image/ExifTool/MPC.pm
 lib/Image/ExifTool/MPEG.pm
 lib/Image/ExifTool/MPF.pm
+lib/Image/ExifTool/MRC.pm
 lib/Image/ExifTool/MWG.pm
 lib/Image/ExifTool/MXF.pm
 lib/Image/ExifTool/MacOS.pm
@@ -601,6 +604,9 @@ t/JSON_2.out
 t/JVC.t
 t/JVC_2.out
 t/JVC_3.out
+t/JXL.t
+t/JXL_2.out
+t/JXL_3.out
 t/Jpeg2000.t
 t/Jpeg2000_2.out
 t/Jpeg2000_3.out
@@ -647,6 +653,8 @@ t/MOI.t
 t/MOI_2.out
 t/MP3.t
 t/MP3_2.out
+t/MRC.t
+t/MRC_2.out
 t/MWG.t
 t/MWG_2.out
 t/MWG_3.out
@@ -760,6 +768,7 @@ t/QuickTime_13.out
 t/QuickTime_14.out
 t/QuickTime_15.out
 t/QuickTime_16.out
+t/QuickTime_17.out
 t/QuickTime_2.out
 t/QuickTime_3.out
 t/QuickTime_4.out
@@ -1002,6 +1011,7 @@ t/images/InDesign.indd
 t/images/JSON.json
 t/images/JVC.jpg
 t/images/JVC2.jpg
+t/images/JXL.jxl
 t/images/Jpeg2000.j2c
 t/images/Jpeg2000.jp2
 t/images/Kodak.jpg
@@ -1013,6 +1023,7 @@ t/images/MIE.mie
 t/images/MIFF.miff
 t/images/MOI.moi
 t/images/MP3.mp3
+t/images/MRC.mrc
 t/images/MWG.jpg
 t/images/MXF.mxf
 t/images/MacOS.macos

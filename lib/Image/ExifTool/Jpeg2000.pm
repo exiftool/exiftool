@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.28';
+$VERSION = '1.29';
 
 sub ProcessJpeg2000Box($$$);
 sub ProcessJUMD($$$);
@@ -389,7 +389,7 @@ my %jumbfTypes = (
 #
 # stuff seen in JPEG XL images:
 #
-  # jbrd - JXL Brotli Compressed Data?
+  # jbrd - JPEG Bitstream Reconstruction Data (allows lossless conversion back to original JPG)
     jxlc => {
         Name => 'JXLCodestream',
         Format => 'undef',
@@ -1034,16 +1034,18 @@ sub GetBits($$)
 {
     my ($a, $n) = @_;
     my $v = 0;
+    my $bit = 1;
     my $i;
     while ($n--) {
         for ($i=0; $i<@$a; ++$i) {
-            my $set = $$a[$i] & 0x80000000;
-            $$a[$i] <<= 1;
+            # consume bits LSB first
+            my $set = $$a[$i] & 1;
+            $$a[$i] >>= 1;
             if ($i) {
-                $$a[$i-1] |= 1 if $set;
+                $$a[$i-1] |= 0x80 if $set;
             } else {
-                $v <<= 1;
-                $v |= 1 if $set;
+                $v |= $bit if $set;
+                $bit <<= 1;
             }
         }
     }
@@ -1062,11 +1064,7 @@ sub ProcessJXLCodestream($$)
         my $tmp = $$dataPt . ("\0" x 14);
         $dataPt = \$tmp;
     }
-    # Note: I have a test ISO BMFF JXL image with EXIF that shows y=130, x=200
-    # but the codestream decodes as y=128, x=254, so I'm not sure this is correct...
-    # 200x130 image should be (binary) 0 00 010000001 000 00 011000111
-    # JXL codestream is                0 00 010000000 010 (01000111010000001)
-    my @a = unpack 'x2N3', $$dataPt;
+    my @a = unpack 'x2C12', $$dataPt;
     my ($x, $y);
     my $small = GetBits(\@a, 1);
     if ($small) {
@@ -1183,7 +1181,6 @@ sub ProcessJXL($$)
             # add metadata to empty ISO BMFF container
             $$dirInfo{RAF} = new File::RandomAccess(\$buff);
         } else {
-            $et->Warn('JPEG XL codestream support is currently experimental',1);
             $et->SetFileType('JXL Codestream','image/jxl', 'jxl');
             return ProcessJXLCodestream($et, \$hdr);
         }
@@ -1191,7 +1188,6 @@ sub ProcessJXL($$)
         return 0;
     }
     $raf->Seek(0,0) or $et->Error('Seek error'), return 0;
-    $et->Warn('JPEG XL support is currently experimental',1);
 
     my $success = ProcessJP2($et, $dirInfo);
 

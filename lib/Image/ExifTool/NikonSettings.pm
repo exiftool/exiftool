@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 sub ProcessNikonSettings($$$);
 
@@ -1917,6 +1917,15 @@ my %infoD6 = (
             8 => 'Auto',
             9 => 'Auto (People)',
             10 => 'Auto (Animals)',
+        },
+    },
+    0x170 => { Name => 'PreferSubSelectorCenter', PrintConv => \%offOn }, # CSf13 (D6 firmware v1.2.0)
+    0x174 => { # CSa17-d (D6 firmware v1.2.0)
+        Name => 'FocusPointSelectionSpeed',
+        PrintConv => {
+            1 => 'Normal',
+            2 => 'High',
+            3 => 'Very High',
         },
     },
 );

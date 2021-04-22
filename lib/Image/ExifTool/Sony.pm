@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.40';
+$VERSION = '3.41';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -148,6 +148,7 @@ sub PrintInvLensSpec($;$$);
     32859 => 'Sony FE 20mm F1.8 G', #IB/JR
     32860 => 'Sony FE 12-24mm F2.8 GM', #JR/IB
     32862 => 'Sony FE 50mm F1.2 GM', #IB/JR
+    32863 => 'Sony FE 14mm F1.8 GM', #IB
     32864 => 'Sony FE 28-60mm F4-5.6', #JR
     32865 => 'Sony FE 35mm F1.4 GM', #IB/JR
     32866 => 'Sony FE 24mm F2.8 G', #IB
@@ -1552,6 +1553,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         Name => 'FocusFrameSize',
         Format => 'int16u',
         Count => '3',
+        Notes => 'width and height of FocusFrame, centered on FocusLocation',
         PrintConv => q{
             my @a = split ' ', $val;
             return $a[2] ? sprintf('%3dx%3d', $a[0], $a[1]) : 'n/a';
@@ -6127,6 +6129,7 @@ my %pictureProfile2010 = (
         33 => 'Gamma HLG2 (PP10)', #14
         34 => 'Gamma HLG3', #IB
         37 => 'FL',
+        38 => 'VV2',
         39 => 'IN',
         40 => 'SH',
     },

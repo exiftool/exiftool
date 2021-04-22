@@ -506,7 +506,7 @@ sub ConformPathToNamespace($$)
     my $prop;
     foreach $prop (@propList) {
         my ($ns, $tag) = $prop =~ /(.+?):(.*)/;
-        next if $$nsUsed{$ns};
+        next if not defined $ns or $$nsUsed{$ns};
         my $uri = $nsURI{$ns};
         unless ($uri) {
             warn "No URI for namespace prefix $ns!\n";
@@ -1417,7 +1417,11 @@ sub WriteXMP($$;$)
             my $uri = $nsUsed{$1};
             unless ($uri) {
                 $uri = $nsURI{$1};      # we must have added a namespace
-                $uri or $xmpErr = "Undefined XMP namespace: $1", next;
+                unless ($uri) {
+                    # (namespace may be empty if trying to write empty XMP structure, forum12384)
+                    $xmpErr = "Undefined XMP namespace: $1" if length $uri;
+                    next;
+                }
             }
             $nsNew{$1} = $uri;
             # need a new description if any new namespaces

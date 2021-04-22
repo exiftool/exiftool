@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/QuickTime.t".
 
 BEGIN {
-    $| = 1; print "1..16\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..17\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -216,19 +216,24 @@ my $testnum = 1;
 # test 16: Write some Microsoft Xtra tags
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
-    $exifTool->SetNewValue('Microsoft:Director' => 'dir1');
-    $exifTool->SetNewValue('Microsoft:Director' => 'dir2');
-    $exifTool->SetNewValue('Microsoft:SharedUserRating' => 75);
-    my $testfile = "t/${testname}_${testnum}_failed.mov";
-    unlink $testfile;
-    my $rtnVal = $exifTool->WriteInfo('t/images/QuickTime.mov', $testfile);
-    my $info = $exifTool->ImageInfo($testfile, 'Microsoft:all');
-    if (check($exifTool, $info, $testname, $testnum)) {
-        unlink $testfile;
-    } else {
-        print 'not ';
-    }
+    my @writeInfo = (
+        ['Microsoft:Director' => 'dir1'],
+        ['Microsoft:Director' => 'dir2'],
+        ['Microsoft:SharedUserRating' => 75],
+    );
+    my @extract = ('Microsoft:all');
+    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/QuickTime.mov', \@extract);
+    print "ok $testnum\n";
+}
+
+# test 17: Write some 3gp tags
+{
+    ++$testnum;
+    my @writeInfo = (
+        ['UserData:LocationInformation' => 'test comment role=Shooting lat=1.2 lon=-2.3 alt=100 body=earth notes=a note'],
+        ['UserData:Rating' => 'entity=ABCD criteria=1234 a rating'],
+    );
+    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/QuickTime.mov', 1);
     print "ok $testnum\n";
 }
 

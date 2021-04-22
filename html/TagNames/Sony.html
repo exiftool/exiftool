@@ -835,7 +835,7 @@ toward magenta)</span></span></td></tr>
 <td title='0x2037 = 8247'>0x2037</td>
 <td>FocusFrameSize</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(width and height of FocusFrame, centered on FocusLocation)</span></span></td></tr>
 <tr class=b>
 <td title='0x2039 = 8249'>0x2039</td>
 <td>JPEG-HEIFSwitch</td>
@@ -4869,6 +4869,7 @@ multi-frame noise reduction)</span></span></td></tr>
 </tr><tr><td>32859</td><td>= Sony FE 20mm F1.8 G</td>
 </tr><tr><td>32860</td><td>= Sony FE 12-24mm F2.8 GM</td>
 </tr><tr><td>32862</td><td>= Sony FE 50mm F1.2 GM</td>
+</tr><tr><td>32863</td><td>= Sony FE 14mm F1.8 GM</td>
 </tr><tr><td>32864</td><td>= Sony FE 28-60mm F4-5.6</td>
 </tr><tr><td>32865</td><td>= Sony FE 35mm F1.4 GM</td>
 </tr><tr><td>32866</td><td>= Sony FE 24mm F2.8 G</td>
@@ -5319,6 +5320,7 @@ rotation -- the width is always the longer dimension.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -5348,6 +5350,7 @@ rotation -- the width is always the longer dimension.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -5719,6 +5722,7 @@ option is used.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -5748,6 +5752,7 @@ option is used.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -5951,6 +5956,7 @@ option is used.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -5980,6 +5986,7 @@ option is used.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -6169,6 +6176,7 @@ not valid for panorama images.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -6198,6 +6206,7 @@ not valid for panorama images.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -6391,6 +6400,7 @@ WX300, but not for panorama images.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -6420,6 +6430,7 @@ WX300, but not for panorama images.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -6664,6 +6675,7 @@ WX300, but not for panorama images.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -6693,6 +6705,7 @@ WX300, but not for panorama images.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -6882,6 +6895,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -6911,6 +6925,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -7146,6 +7161,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -7175,6 +7191,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -7415,6 +7432,7 @@ RX100M5A/RX100M7/HX99.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -7444,6 +7462,7 @@ RX100M5A/RX100M7/HX99.</p>
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -11034,6 +11053,7 @@ ILCE-7/7M2/7M3/7R/7RM2/7RM3/7RM4/7S/7SM2/9/9M2/5000/5100/6000/6100/6300/
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
   <br>37 = FL
+  <br>38 = VV2
   <br>39 = IN
   <br>40 = SH</td></tr></table>
 </td></tr>
@@ -11755,7 +11775,7 @@ some models when the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded<
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 13, 2021</i>
+<br><i>Last revised Apr 22, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

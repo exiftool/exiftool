@@ -17,6 +17,28 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.25'><b>Apr. 22, 2021 - Version 12.25</b></a>
+<ul>
+<li>JPEG XL support is now official
+<li>Added read support for Medical Research Council (MRC) image files
+<li>Added ability to write a number of 3gp tags in video files
+<li>Added a new Sony PictureProfile value (thanks Jos Roost)
+<li>Added a new Sony LensType (thanks LibRaw)
+<li>Added a new Nikon LensID (thanks Niels Kristian Bech Jensen)
+<li>Added a new Canon LensType
+<li>Decode more GPS information from Blackvue dashcam videos
+<li>Decode a couple of new NikonSettings tags (thanks Warren Hatch)
+<li>Decode a few new RIFF tags
+<li>Improved Validate option to add minor warning if standard XMP is missing
+    xpacket wrapper
+<li>Avoid decoding some large arrays in DNG images to improve performance unless
+    the -m option is used
+<li>Patched bug that could give runtime warning when trying to write an empty
+    XMP structure
+<li>Fixed decoding of ImageWidth/Height for JPEG XL images
+<li>Fixed problem were Microsoft Xtra tags couldn't be deleted
+</ul>
+
 <a name='v12.24'><b>Apr. 13, 2021 - Version 12.24</b></a>
 <ul>
 <li>Added a new PhaseOne RawFormat value (thanks LibRaw)
@@ -26,7 +48,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Updated acdsee.config in distribution (thanks StarGeek)
 <li>Recognize AutoCAD DXF files
 <li>More work on experimental JUMBF read support
-<li>More work on experimental JXL read/write support
+<li>More work on experimental JPEG XL read/write support
 </ul>
 
 <a name='v12.23'><b>Apr. 1, 2021 - Version 12.23</b></a>

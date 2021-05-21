@@ -11,16 +11,30 @@
 
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.16.tar.gz">Version 12.16</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.26.tar.gz">Version 12.26</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">MetaCPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.26'><b>May 20, 2021 - Version 12.26</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added support for JPEG Stereo (JPS) images
+<li>Added a new Sony LensType (thanks LibRaw)
+<li>Added a new PentaxModelID (thanks LibRaw)
+<li>Changed ExifTool namespace URI to use exiftool.org instead of exiftool.ca in
+    the -X option output (exiftool.ca is still recognized when reading XML)
+<li>Improved handling of large-array warnings in -htmldump output
+<li>Changed handling of escaped characters in #[CSTR] lines of -@ argfile
+<li>Patched security vulnerability in argument of -lang option
+<li>Fixed problem which could cause a "Wide character" warning and generate a
+    corrupted output file when writing some illegal values
+</ul>
+
 <a name='v12.25'><b>Apr. 22, 2021 - Version 12.25</b></a>
 <ul>
 <li>JPEG XL support is now official
-<li>Added read support for Medical Research Council (MRC) image files
+<li>Added read support for  <a href="TagNames/MRC.html">Medical Research Council (MRC) image files</a>
 <li>Added ability to write a number of 3gp tags in video files
 <li>Added a new Sony PictureProfile value (thanks Jos Roost)
 <li>Added a new Sony LensType (thanks LibRaw)
@@ -44,11 +58,11 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added a new PhaseOne RawFormat value (thanks LibRaw)
 <li>Decode a new Sony tag (thanks Jos Roost)
 <li>Decode a few new Panasonic and FujiFilm tags (thanks LibRaw and Greybeard)
-<li>Patched security vulnerability in DjVu reader
 <li>Updated acdsee.config in distribution (thanks StarGeek)
 <li>Recognize AutoCAD DXF files
 <li>More work on experimental JUMBF read support
 <li>More work on experimental JPEG XL read/write support
+<li>Patched security vulnerability in DjVu reader
 </ul>
 
 <a name='v12.23'><b>Apr. 1, 2021 - Version 12.23</b></a>
@@ -87,7 +101,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Improved flexibility when writing GPS coordinates:
     <ul>
     <li>Now pulls latitude and longitude from a combined GPSCoordinates string
-    <li>Recognizes the full word "South" and "West" to write negative coordinates
+    <li>Recognize full word "South" and "West" to write negative coordinates
     </ul>
 <li>Improved warning when trying to write an integer QuickTime date/time tag and
     Time::Local is not available

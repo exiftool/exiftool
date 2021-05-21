@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.63';
+$VERSION = '2.64';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -6281,6 +6281,10 @@ my %eeBox2 = (
     'location.ISO6709' => {
         Name => 'GPSCoordinates',
         Groups => { 2 => 'Location' },
+        Notes => q{
+            Google Photos may ignore this if the coorinates have more than 5 digits
+            after the decimal
+        },
         ValueConv => \&ConvertISO6709,
         ValueConvInv => \&ConvInvISO6709,
         PrintConv => \&PrintGPSCoordinates,

@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.25';
+$VERSION = '12.26';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -354,6 +354,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     JPF  =>  'JP2',
     JPG =>   'JPEG',
     JPM  => ['JP2',  'JPEG 2000 compound image'],
+    JPS  => ['JPEG', 'JPEG Stereo image'],
     JPX  => ['JP2',  'JPEG 2000 with extensions'],
     JSON => ['JSON', 'JavaScript Object Notation'],
     JXL  => ['JXL',  'JPEG XL'],
@@ -654,6 +655,7 @@ my %fileDescription = (
     JP2  => 'image/jp2',
     JPEG => 'image/jpeg',
     JPM  => 'image/jpm',
+    JPS  => 'image/x-jps',
     JPX  => 'image/jpx',
     JSON => 'application/json',
     JXL  => 'image/jxl', #PH (NC)
@@ -2084,12 +2086,15 @@ sub Options($$;@)
                 $$options{$param} = $newVal;
                 delete $$self{CUR_LANG};
             # make sure the language is available
-            } elsif (eval "require Image::ExifTool::Lang::$newVal") {
-                my $xlat = "Image::ExifTool::Lang::${newVal}::Translate";
-                no strict 'refs';
-                if (%$xlat) {
-                    $$self{CUR_LANG} = \%$xlat;
-                    $$options{$param} = $newVal;
+            } else {
+                my %langs = map { $_ => 1 } @langs;
+                if ($langs{$newVal} and eval "require Image::ExifTool::Lang::$newVal") {
+                    my $xlat = "Image::ExifTool::Lang::${newVal}::Translate";
+                    no strict 'refs';
+                    if (%$xlat) {
+                        $$self{CUR_LANG} = \%$xlat;
+                        $$options{$param} = $newVal;
+                    }
                 }
             } # else don't change Lang
         } elsif ($param eq 'Exclude' and defined $newVal) {
@@ -6761,6 +6766,12 @@ sub ProcessJPEG($$)
                 # extract the Stim information (it is in standard TIFF format)
                 my $tagTablePtr = GetTagTable('Image::ExifTool::Stim::Main');
                 $self->ProcessTIFF(\%dirInfo, $tagTablePtr);
+            } elsif ($$segDataPt =~ /^_JPSJPS_/) {
+                $dumpType = 'JPS';
+                $self->OverrideFileType('JPS') if $$self{FILE_TYPE} eq 'JPEG';
+                SetByteOrder('MM');
+                my $tagTablePtr = GetTagTable('Image::ExifTool::JPEG::JPS');
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
             } elsif ($$self{Make} eq 'DJI') {
                 $dumpType = 'DJI ThermalData';
                 # add this data to the combined data if it exists

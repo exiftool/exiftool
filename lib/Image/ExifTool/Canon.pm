@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.47';
+$VERSION = '4.48';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -579,19 +579,19 @@ $VERSION = '4.47';
     61182.7 => 'Canon RF 15-35mm F2.8L IS USM',
     61182.8 => 'Canon RF 24-240mm F4-6.3 IS USM',
     61182.9 => 'Canon RF 70-200mm F2.8L IS USM',
-    61182.10 => 'Canon RF 85mm F2 MACRO IS STM',
-    61182.11 => 'Canon RF 600mm F11 IS STM',
-    61182.12 => 'Canon RF 600mm F11 IS STM + RF1.4x',
-    61182.13 => 'Canon RF 600mm F11 IS STM + RF2x',
-    61182.14 => 'Canon RF 800mm F11 IS STM',
-    61182.15 => 'Canon RF 800mm F11 IS STM + RF1.4x',
-    61182.16 => 'Canon RF 800mm F11 IS STM + RF2x',
-    61182.17 => 'Canon RF 24-105mm F4-7.1 IS STM',
-    61182.18 => 'Canon RF 100-500mm F4.5-7.1L IS USM',
-    61182.19 => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF1.4x',
-    61182.20 => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF2x',
-    61182.21 => 'Canon RF 70-200mm F4L IS USM', #42
-    61182.22 => 'Canon RF 50mm F1.8 STM', #42
+   '61182.10' => 'Canon RF 85mm F2 MACRO IS STM',
+   '61182.11' => 'Canon RF 600mm F11 IS STM',
+   '61182.12' => 'Canon RF 600mm F11 IS STM + RF1.4x',
+   '61182.13' => 'Canon RF 600mm F11 IS STM + RF2x',
+   '61182.14' => 'Canon RF 800mm F11 IS STM',
+   '61182.15' => 'Canon RF 800mm F11 IS STM + RF1.4x',
+   '61182.16' => 'Canon RF 800mm F11 IS STM + RF2x',
+   '61182.17' => 'Canon RF 24-105mm F4-7.1 IS STM',
+   '61182.18' => 'Canon RF 100-500mm F4.5-7.1L IS USM',
+   '61182.19' => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF1.4x',
+   '61182.20' => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF2x',
+   '61182.21' => 'Canon RF 70-200mm F4L IS USM', #42
+   '61182.22' => 'Canon RF 50mm F1.8 STM', #42
     65535 => 'n/a',
 );
 

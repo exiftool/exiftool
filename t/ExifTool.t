@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/ExifTool.t".
 
 BEGIN {
-    $| = 1; print "1..31\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..32\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -339,6 +339,15 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = new Image::ExifTool;
     my $info = $exifTool->ImageInfo('t/images/CanonRaw.cr2', 'Validate', 'Warning', 'Error');
+    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    print "ok $testnum\n";
+}
+
+# test 32: Read JPS file
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    my $info = $exifTool->ImageInfo('t/images/ExifTool.jps', 'jps:all');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }

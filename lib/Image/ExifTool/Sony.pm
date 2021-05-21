@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.41';
+$VERSION = '3.42';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -232,6 +232,7 @@ sub PrintInvLensSpec($;$$);
     50524 => 'Sigma 35mm F2 DG DN | C', #IB (020)
     50525 => 'Sigma 24mm F3.5 DG DN | C', #JR (021)
     50526 => 'Sigma 28-70mm F2.8 DG DN | C', #JR (021)
+    50528 => 'Sigma 35mm F1.4 DG DN | A', #IB (021)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
@@ -260,6 +261,7 @@ sub PrintInvLensSpec($;$$);
     51510 => 'Samyang AF 18mm F2.8 or Samyang AF 35mm F1.8', #JR
     51510.1 => 'Samyang AF 35mm F1.8', #JR
     51512 => 'Samyang AF 75mm F1.8', #IB/JR
+    51514 => 'Samyang AF 24mm F1.8 FE', #IB
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)
@@ -1493,7 +1495,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             my ($a,$b,$c,$d) = split ' ', $val;
             my @a = $a =~ /../g;
             return undef unless @a == 4;
-            return Set32u((hex($d)<<22) | ($a[0]<<17) | ($a[1]<<12) | ($a[2]<<6) | $a[3]) . chr($b) . chr($c);
+            return Set32u((hex($d)<<22) | ($a[0]<<17) | ($a[1]<<12) | ($a[2]<<6) | $a[3]) . chr($b & 0xff) . chr($c & 0xff);
         },
         PrintConv => {
             '00000000 0 0 0x0' => 'n/a',

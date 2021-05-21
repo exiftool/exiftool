@@ -170,7 +170,7 @@ sub FormatIPTC($$$$$;$)
         } else {
             my $len = int(($1 || 0) / 8);
             if ($len == 1) {        # 1 byte
-                $$valPtr = chr($$valPtr);
+                $$valPtr = chr($$valPtr & 0xff);
             } elsif ($len == 2) {   # 2-byte integer
                 $$valPtr = pack('n', $$valPtr);
             } else {                # 4-byte integer

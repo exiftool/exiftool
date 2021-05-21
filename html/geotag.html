@@ -91,11 +91,11 @@ option, so this command is equivalent to the one above:</p>
 
 <p>Multiple GPS log files may be loaded simultaneously by using more than one
 <code>-geotag</code> option or <code>-geotag=</code> assignment in the same
-command.  This allows batch processing of images spanning different tracks with
-a single command.  Wildcards may be used in the argument of the
-<code>-geotag</code> option, but note that the argument may then need to be
-quoted on some systems to prevent shell globbing, and that wildcards are not
-supported with the <code>-geotag=</code> syntax.  See the
+command, or by using wildcards in the filename argument of the
+<code>-geotag</code> option.  This allows batch processing of images spanning
+different tracks with a single command.  When using wildcards the argument may
+need to be quoted on some systems to prevent shell globbing, but note that
+wildcards are not supported with the <code>-geotag=</code> syntax.  See the
 <a href="#Examples">examples</a> below.</p>
 
 <p>Deleting the <code>Geotag</code> tag (with <code>-geotag=</code>) causes the
@@ -717,7 +717,7 @@ forum post</a> for more useful tips about creating KML files.</p>
 
 <hr>
 <i>Created Apr. 2, 2009</i><br>
-<i>Last revised Dec. 1, 2020</i>
+<i>Last revised Apr. 27, 2021</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

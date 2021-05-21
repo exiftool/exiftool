@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.34';
+$VERSION = '4.35';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2581,7 +2581,7 @@ my %opcodeInfo = (
     0xa301 => {
         Name => 'SceneType',
         Writable => 'undef',
-        ValueConvInv => 'chr($val)',
+        ValueConvInv => 'chr($val & 0xff)',
         PrintConv => {
             1 => 'Directly photographed',
         },
@@ -6171,18 +6171,23 @@ sub ProcessExif($$$)
         unless ($bad) {
             # limit maximum length of data to reformat
             # (avoids long delays when processing some corrupted files)
+            my $warned;
             if ($count > 100000 and $formatStr !~ /^(undef|string|binary)$/) {
                 my $tagName = $tagInfo ? $$tagInfo{Name} : sprintf('tag 0x%.4x', $tagID);
                 # (count of 196608 is typical for ColorMap)
                 if ($tagName ne 'TransferFunction' or $count != 196608) {
                     my $minor = $count > 2000000 ? 0 : 2;
-                    next if $et->Warn("Ignoring $dirName $tagName with excessive count", $minor);
+                    if ($et->Warn("Ignoring $dirName $tagName with excessive count", $minor)) {
+                        next unless $$et{OPTIONS}{HtmlDump};
+                        $warned = 1;
+                    }
                 }
             }
             if ($count > 500 and $formatStr !~ /^(undef|string|binary)$/ and
-                (not $tagInfo or $$tagInfo{LongBinary}) and not $$et{OPTIONS}{IgnoreMinorErrors})
+                (not $tagInfo or $$tagInfo{LongBinary} or $warned) and not $$et{OPTIONS}{IgnoreMinorErrors})
             {
-                $et->WarnOnce('Not decoding some large array(s). Ignore minor errors to decode', 2);
+                $et->WarnOnce('Not decoding some large array(s). Ignore minor errors to decode', 2) unless $warned;
+                next if $$et{TAGS_FROM_FILE};   # don't generate bogus value when copying tags
                 $val = "(large array of $count $formatStr values)";
             } else {
                 # convert according to specified format

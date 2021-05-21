@@ -285,7 +285,7 @@ sub ProcessMRC($$)
             $et->ProcessDirectory(\%dirInfo, $tagTablePtr);
             last if ++$i >= $$et{ImageDepth};
             unless ($$et{OPTIONS}{ExtractEmbedded}) {
-                $et->Warn('Use the ExtractEmbedded option to read metadata for all frames',1);
+                $et->Warn('Use the ExtractEmbedded option to read metadata for all frames',3);
                 last;
             }
             $$et{DOC_NUM} = ++$$et{DOC_COUNT};

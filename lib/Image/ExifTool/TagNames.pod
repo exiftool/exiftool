@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24273 tags, with 15738 unique tag names.
+They contain a total of 24279 tags, with 15743 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -115,6 +115,7 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
                PreviewImage                     no
   'APP3'       Meta                             Kodak Meta
                Stim                             Stim
+               JPS                              JPEG JPS
                ThermalData                      no
                PreviewImage                     no
   'APP4'       Scalado                          Scalado
@@ -173,6 +174,18 @@ images).
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'Rev'    OcadRevision                         no
+
+=head3 JPEG JPS Tags
+
+Tags found in JPEG Stereo (JPS) images.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     10    JPSSeparation                        no
+     11    JPSFlags                             no
+     12    JPSLayout                            no
+     13    JPSType                              no
+     16    JPSComment                           no
 
 =head3 JPEG EPPIM Tags
 

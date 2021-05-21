@@ -1469,7 +1469,7 @@ sub WriteXMP($$;$)
             $long[-2] .= "$nl$sp<$prop rdf:about='${about}'";
             # generate et:toolkit attribute if this is an exiftool RDF/XML output file
             if (@ns and $nsCur{$ns[0]} =~ m{^http://ns.exiftool.(?:ca|org)/}) {
-                $long[-2] .= "\n$sp${sp}xmlns:et='http://ns.exiftool.ca/1.0/'" .
+                $long[-2] .= "\n$sp${sp}xmlns:et='http://ns.exiftool.org/1.0/'" .
                             " et:toolkit='Image::ExifTool $Image::ExifTool::VERSION'";
             }
             $long[-2] .= "\n$sp${sp}xmlns:$_='$nsCur{$_}'" foreach @ns;

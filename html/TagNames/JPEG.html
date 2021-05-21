@@ -58,11 +58,13 @@
 <td>'APP3'</td>
 <td>Meta
   <br>Stim
+  <br>JPS
   <br>ThermalData
   <br>PreviewImage</td>
-<td class=c>-<br>-<br>no<br>no</td>
+<td class=c>-<br>-<br>-<br>no<br>no</td>
 <td>--&gt; <a href='Kodak.html#Meta'>Kodak Meta Tags</a>
   <br>--&gt; <a href='Stim.html'>Stim Tags</a>
+  <br>--&gt; <a href='JPEG.html#JPS'>JPEG JPS Tags</a>
   <br><span class=n>(DJI raw thermal data)</span>
   <br><span class=n>(Samsung/HP preview image)</span></td></tr>
 <tr>
@@ -218,6 +220,51 @@ images).</p>
 <tr>
 <td>'Rev'</td>
 <td>OcadRevision</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='JPS'>JPEG JPS Tags</a></h2>
+<p>Tags found in JPEG Stereo (JPS) images.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>JPSSeparation</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(stereo only)</span></span></td></tr>
+<tr class=b>
+<td class=r title='11 = 0xb'>11</td>
+<td>JPSFlags</td>
+<td class=c>no</td>
+<td><span class=s>Bit 0 = Half height
+  <br>Bit 1 = Half width
+  <br>Bit 2 = Left field first</span></td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>JPSLayout</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(mono)</span>
+  <br>0 = Both Eyes
+  <br>1 = Left Eye
+  <br>2 = Right Eye
+  <br><span class=n>(stereo)</span>
+  <br>1 = Interleaved
+  <br>2 = Side By Side
+  <br>3 = Over Under
+  <br>4 = Anaglyph</span></td></tr>
+<tr class=b>
+<td class=r title='13 = 0xd'>13</td>
+<td>JPSType</td>
+<td class=c>no</td>
+<td><span class=s>0 = Mono
+  <br>1 = Stereo</span></td></tr>
+<tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>JPSComment</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -619,7 +666,7 @@ because it may affect the appearance of the image.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 1, 2021</i>
+<br><i>Last revised May 20, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

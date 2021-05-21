@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.30';
+$VERSION = '1.32';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
@@ -96,6 +96,10 @@ sub ProcessJPEG_HDR($$$);
         Name => 'Stim',
         Condition => '$$valPt =~ /^Stim\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::Stim::Main' },
+      }, {
+        Name => 'JPS',
+        Condition => '$$valPt =~ /^_JPSJPS_/',
+        SubDirectory => { TagTable => 'Image::ExifTool::JPEG::JPS' },
       }, {
         Name => 'ThermalData', # (written by DJI FLIR models)
         Condition => '$$self{Make} eq "DJI"',
@@ -285,6 +289,68 @@ sub ProcessJPEG_HDR($$$);
         Condition => '$$valPt =~ /^\xff\xd8\xff/',
         Writable => 2,  # (for docs only)
     }],
+);
+
+# JPS APP3 segment (ref http://paulbourke.net/stereographics/stereoimage/)
+%Image::ExifTool::JPEG::JPS = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 0 => 'APP3', 1 => 'JPS', 2 => 'Image' },
+    NOTES => 'Tags found in JPEG Stereo (JPS) images.',
+    0x0a => {
+        Name => 'JPSSeparation',
+        Format => 'int32u', # (just so we can look ahead to MediaType);
+        Notes => 'stereo only',
+        RawConv => q{
+            $$self{MediaType} = $val & 0xff;
+            return undef unless $$self{MediaType} == 1;
+            return(($val >> 24) & 0xff);
+        },
+    },
+    0x08 => {
+        Name => 'HdrLength',
+        Format => 'int16u',
+        Hidden => 1,
+        RawConv => '$$self{HdrLength} = $val; undef',
+    },
+    0x0b => {
+        Name => 'JPSFlags',
+        PrintConv => { BITMASK => {
+            0 => 'Half height',
+            1 => 'Half width',
+            2 => 'Left field first',
+        }},
+    },
+    0x0c => [{
+        Name => 'JPSLayout',
+        Condition => '$$self{MediaType} == 0',
+        Notes => 'mono',
+        PrintConv => {
+            0 => 'Both Eyes',
+            1 => 'Left Eye',
+            2 => 'Right Eye',
+        },
+    },{
+        Name => 'JPSLayout',
+        Condition => '$$self{MediaType} == 1',
+        Notes => 'stereo',
+        PrintConv => {
+            1 => 'Interleaved',
+            2 => 'Side By Side',
+            3 => 'Over Under',
+            4 => 'Anaglyph',
+        },
+    }],
+    0x0d => {
+        Name => 'JPSType',
+        Hook => '$varSize += $$self{HdrLength} - 4', # comment starts after header block
+        PrintConv => { 0 => 'Mono', 1 => 'Stereo' },
+    },
+    # 0x0e - in16u comment length (ignored -- assume the remainder is all comment)
+    #        (this is offset if we had a 4-byte JPS header block)
+    0x10 => {
+        Name => 'JPSComment',
+        Format => 'string',
+    },
 );
 
 # EPPIM APP6 (Toshiba PrintIM) segment (ref PH, from PDR-M700 samples)
@@ -545,7 +611,7 @@ sub ProcessJPEG_HDR($$$);
     },
     2 => {
         Name => 'ImageFormat',
-        ValueConv => 'chr($val)',
+        ValueConv => 'chr($val & 0xff)',
         PrintConv => { B => 'IMode B' },
     },
     3 => {

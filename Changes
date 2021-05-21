@@ -4,13 +4,26 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 12.16. (Other versions are
+Note: The most recent production release is Version 12.26. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+May 20, 2021 - Version 12.26 (production release)
+
+  - Added support for JPEG Stereo (JPS) images
+  - Added a new Sony LensType (thanks LibRaw)
+  - Added a new PentaxModelID (thanks LibRaw)
+  - Changed ExifTool namespace URI to use exiftool.org instead of exiftool.ca in
+    the -X option output (exiftool.ca is still recognized when reading XML)
+  - Improved handling of large-array warnings in -htmldump output
+  - Changed handling of escaped characters in #[CSTR] lines of -@ argfile
+  - Patched security vulnerability in argument of -lang option
+  - Fixed problem which could cause a "Wide character" warning and generate a
+    corrupted output file when writing some illegal values
 
 Apr. 22, 2021 - Version 12.25
 
   - JPEG XL support is now official
-  - Added read support for Medical Research Council (MRC) image files
+  - Added read support for  Medical Research Council (MRC) image files
   - Added ability to write a number of 3gp tags in video files
   - Added a new Sony PictureProfile value (thanks Jos Roost)
   - Added a new Sony LensType (thanks LibRaw)
@@ -33,11 +46,11 @@ Apr. 13, 2021 - Version 12.24
   - Added a new PhaseOne RawFormat value (thanks LibRaw)
   - Decode a new Sony tag (thanks Jos Roost)
   - Decode a few new Panasonic and FujiFilm tags (thanks LibRaw and Greybeard)
-  - Patched security vulnerability in DjVu reader
   - Updated acdsee.config in distribution (thanks StarGeek)
   - Recognize AutoCAD DXF files
   - More work on experimental JUMBF read support
   - More work on experimental JPEG XL read/write support
+  - Patched security vulnerability in DjVu reader
 
 Apr. 1, 2021 - Version 12.23
 
@@ -71,7 +84,7 @@ Mar. 17, 2021 - Version 12.22
   - Enhanced -b option so --b suppresses tags with binary data
   - Improved flexibility when writing GPS coordinates:
       - Now pulls latitude and longitude from a combined GPSCoordinates string
-      - Recognizes the full word "South" and "West" to write negative coordinates
+      - Recognize full word "South" and "West" to write negative coordinates
   - Improved warning when trying to write an integer QuickTime date/time tag and
     Time::Local is not available
   - Convert GPSSpeed from mph to km/h in timed GPS from Garmin MP4 videos

@@ -1423,6 +1423,7 @@ my %shootingMode = (
         Name => 'NoiseReductionStrength',
         Writable => 'rational64s',
     },
+    # 0xe4 - LensID (ref IB)
     0x0e00 => {
         Name => 'PrintIM',
         Description => 'Print Image Matching',

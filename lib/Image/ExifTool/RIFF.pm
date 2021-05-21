@@ -1080,7 +1080,7 @@ my %code2charset = (
             Name => 'TextFormat',
             Condition => '$$self{RIFFStreamType} eq "txts"',
             Hidden => 1,
-            RawConv => '$self->Options("ExtractEmbedded") or $self->WarnOnce("Use ExtractEmbedded option to extract timed text"); undef',
+            RawConv => '$self->Options("ExtractEmbedded") or $self->WarnOnce("Use ExtractEmbedded option to extract timed text",3); undef',
         },
     ],
 );

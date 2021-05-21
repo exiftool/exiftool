@@ -163,6 +163,9 @@ sub ConvInvISO6709($)
         # latitude must have 2 digits before the decimal, and longitude 3,
         # and all values must start with a "+" or "-", and Google Photos
         # requires at least 3 digits after the decimal point
+        # (and as of Apr 2021, Google Photos doesn't accept coordinats
+        #  with more than 5 digits after the decimal place:
+        #  https://exiftool.org/forum/index.php?topic=11055.msg67171#msg67171 )
         my @fmt = ('%s%02d.%s%s','%s%03d.%s%s','%s%d.%s%s');
         foreach (@a) {
             return undef unless Image::ExifTool::IsFloat($_);

@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.95';
+$VERSION = '3.96';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -9468,7 +9468,7 @@ sub GetAFPointGrid($$;$)
         return undef unless $val =~ /^([A-J])(\d+)$/i;
         return (ord(uc($1))-65) * $ncol + $2 - 1;
     } else {
-        my $row = int(($val + 0.5) / $ncol);
+        my $row = int(($val + 0.5) / $ncol) & 0xff;
         my $col = $val - $ncol * $row + 1;
         return chr(65+$row) . $col;
     }

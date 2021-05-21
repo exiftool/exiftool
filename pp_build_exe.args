@@ -21,10 +21,10 @@
 #           10) Copy zip archive to web servers.
 #           11) Update zip file version in link and text of html/index.html.
 #------------------------------------------------------------------------------
--T exiftool-12.25
-#--info=FileVersion=12.2.5.0
-#--info=ProductVersion=12.2.5.0
-##"--info=Build Date=2021:04:22 14:33:15-04:00"
+-T exiftool-12.26
+#--info=FileVersion=12.2.6.0
+#--info=ProductVersion=12.2.6.0
+##"--info=Build Date=2021:05:20 20:17:36-04:00"
 ##"--info=Bundled Perl Version=ActivePerl 5.24.0"
 ##"--info=LegalCopyright=Copyright (c) 2003-2021, Phil Harvey"
 ##"--info=ProductName=ExifTool"

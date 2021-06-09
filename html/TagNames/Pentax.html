@@ -1044,7 +1044,8 @@ for live view or video recording)</span></span></td></tr>
   <br>16 = 16 (K-1)
   <br>17 = 17 (K-70)
   <br>18 = 18 (KP)
-  <br>19 = 19 (GR III)</td></tr></table>
+  <br>19 = 19 (GR III)
+  <br>20 = 20 (K-3III)</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x0067 = 103'>0x0067</td>
@@ -1338,11 +1339,13 @@ other models)</span>
   <br>&#39;0 0&#39; = Off</span></td></tr>
 <tr>
 <td title='0x0095 = 149'>0x0095</td>
-<td>SkinToneCorrection</td>
-<td class=c>int8s[2]</td>
+<td>SkinToneCorrection
+  <br>SkinToneCorrection</td>
+<td class=c>int8s[2]<br>int8s[3]</td>
 <td><span class=s>&#39;0 0&#39; = Off
   <br>&#39;1 1&#39; = On (type 1)
-  <br>&#39;1 2&#39; = On (type 2)</span></td></tr>
+  <br>&#39;1 2&#39; = On (type 2)
+  <br>&#39;0 0 0&#39; = Off</span></td></tr>
 <tr class=b>
 <td title='0x0096 = 150'>0x0096</td>
 <td>ClarityControl</td>
@@ -1474,6 +1477,16 @@ segments for the K-3, converted to LV)</span></span></td></tr>
 <td>SaturationInfo?</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(only in PEF and DNG images)</span></span></td></tr>
+<tr>
+<td title='0x021c = 540'>0x021c</td>
+<td>ColorMatrixA2</td>
+<td class=c>undef[18]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x021d = 541'>0x021d</td>
+<td>ColorMatrixB2</td>
+<td class=c>undef[18]</td>
+<td>&nbsp;</td></tr>
 <tr>
 <td title='0x021f = 543'>0x021f</td>
 <td>AFInfo</td>
@@ -4903,7 +4916,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 20, 2021</i>
+<br><i>Last revised Jun 9, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -988,6 +988,12 @@ sub ProcessPhotoshop($$$)
         $size += 1 if $size & 0x01; # size is padded to an even # bytes
         $pos += $size;
     }
+    # warn about incorrect IPTCDigest
+    if ($$et{VALUE}{IPTCDigest} and $$et{VALUE}{CurrentIPTCDigest} and
+        $$et{VALUE}{IPTCDigest} ne $$et{VALUE}{CurrentIPTCDigest})
+    {
+        $et->WarnOnce('IPTCDigest is not current. XMP may be out of sync');
+    }
     delete $$et{LOW_PRIORITY_DIR}{'*'};
     return $success;
 }

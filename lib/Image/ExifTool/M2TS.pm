@@ -31,7 +31,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.19';
+$VERSION = '1.20';
 
 # program map table "stream_type" lookup (ref 6/1)
 my %streamType = (
@@ -112,6 +112,8 @@ my %noSyntax = (
     0xf8 => 1, # ITU-T Rec. H.222.1 type E stream
     0xff => 1, # program_stream_directory
 );
+
+my $knotsToKph = 1.852;     # knots --> km/h
 
 # information extracted from the MPEG-2 transport stream
 %Image::ExifTool::M2TS::Main = (
@@ -326,6 +328,33 @@ sub ParsePID($$$$$)
             my $dat = ("\0" x 16) . substr($$dataPt, length($1 || '')) . ("\0" x 20);
             my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
             Image::ExifTool::QuickTime::ProcessFreeGPS($et, { DataPt => \$dat }, $tbl);
+            $more = 1;
+        } elsif ($$dataPt =~ /^A([NS])([EW])\0/s) {
+            # INNOVV TS video (same format is INNOVV MP4)
+            SetByteOrder('II');
+            while ($$dataPt =~ /(A[NS][EW]\0.{28})/g) {
+                my $dat = $1;
+                my $lat = abs(GetFloat(\$dat, 4)); # (abs just to be safe)
+                my $lon = abs(GetFloat(\$dat, 8)); # (abs just to be safe)
+                my $spd = GetFloat(\$dat, 12) * $knotsToKph;
+                my $trk = GetFloat(\$dat, 16);
+                my @acc = unpack('x20V3', $dat);
+                map { $_ = $_ - 4294967296 if $_ >= 0x80000000 } @acc;
+                my $deg = int($lat / 100);
+                $lat = $deg + ($lat - $deg * 100) / 60;
+                $deg = int($lon / 100);
+                $lon = $deg + ($lon - $deg * 100) / 60;
+                $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+                $et->HandleTag($tagTbl, GPSLatitude  => $lat * (substr($dat,1,1) eq 'S' ? -1 : 1));
+                $et->HandleTag($tagTbl, GPSLongitude => $lon * (substr($dat,2,1) eq 'W' ? -1 : 1));
+                $et->HandleTag($tagTbl, GPSSpeed     => $spd);
+                $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
+                $et->HandleTag($tagTbl, GPSTrack     => $trk);
+                $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
+                $et->HandleTag($tagTbl, Accelerometer => "@acc");
+            }
+            SetByteOrder('MM');
             $more = 1;
         }
     }

@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.38';
+$VERSION = '1.39';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -1369,29 +1369,48 @@ sub ReadFPXValue($$$$$;$$)
         my $flags = $type & 0xf000;
         if ($flags) {
             if ($flags == VT_VECTOR) {
-                $noPad = 1;     # values don't seem to be padded inside vectors
+                $noPad = 1;     # values sometimes aren't padded inside vectors!!
                 my $size = $oleFormatSize{VT_VECTOR};
-                last if $valPos + $size > $dirEnd;
+                if ($valPos + $size > $dirEnd) {
+                    $et->WarnOnce('Incorrect FPX VT_VECTOR size');
+                    last;
+                }
                 $count = Get32u($dataPt, $valPos);
                 push @vals, '' if $count == 0;  # allow zero-element vector
                 $valPos += 4;
             } else {
                 # can't yet handle this property flag
+                $et->WarnOnce('Unknown FPX property');
                 last;
             }
         }
         unless ($format =~ /^VT_/) {
             my $size = Image::ExifTool::FormatSize($format) * $count;
-            last if $valPos + $size > $dirEnd;
+            if ($valPos + $size > $dirEnd) {
+                $et->WarnOnce("Incorrect FPX $format size");
+                last;
+            }
             @vals = ReadValue($dataPt, $valPos, $format, $count, $size);
             # update position to end of value plus padding
             $valPos += ($count * $size + 3) & 0xfffffffc;
             last;
         }
         my $size = $oleFormatSize{$format};
-        my ($item, $val);
+        my ($item, $val, $len);
         for ($item=0; $item<$count; ++$item) {
-            last if $valPos + $size > $dirEnd;
+            if ($valPos + $size > $dirEnd) {
+                $et->WarnOnce("Truncated FPX $format value");
+                last;
+            }
+            # sometimes VT_VECTOR items are padded to even 4-byte boundaries, and sometimes they aren't
+            if ($noPad and defined $len and $len & 0x03) {
+                my $pad = 4 - ($len & 0x03);
+                if ($valPos + $pad + $size <= $dirEnd) {
+                    # skip padding if all zeros
+                    $valPos += $pad if substr($$dataPt, $valPos, $pad) eq "\0" x $pad;
+                }
+            }
+            undef $len;
             if ($format eq 'VT_VARIANT') {
                 my $subType = Get32u($dataPt, $valPos);
                 $valPos += $size;
@@ -1429,9 +1448,12 @@ sub ReadFPXValue($$$$$;$$)
                 $val = ($val - 25569) * 24 * 3600 if $val != 0;
                 $val = Image::ExifTool::ConvertUnixTime($val);
             } elsif ($format =~ /STR$/) {
-                my $len = Get32u($dataPt, $valPos);
+                $len = Get32u($dataPt, $valPos);
                 $len *= 2 if $format eq 'VT_LPWSTR';    # convert to byte count
-                last if $valPos + $len + 4 > $dirEnd;
+                if ($valPos + $len + 4 > $dirEnd) {
+                    $et->WarnOnce("Truncated $format value");
+                    last;
+                }
                 $val = substr($$dataPt, $valPos + 4, $len);
                 if ($format eq 'VT_LPWSTR') {
                     # convert wide string from Unicode
@@ -1450,8 +1472,11 @@ sub ReadFPXValue($$$$$;$$)
                 #  on even 32-bit boundaries, but this isn't always the case)
                 $valPos += $noPad ? $len : ($len + 3) & 0xfffffffc;
             } elsif ($format eq 'VT_BLOB' or $format eq 'VT_CF') {
-                my $len = Get32u($dataPt, $valPos);
-                last if $valPos + $len + 4 > $dirEnd;
+                my $len = Get32u($dataPt, $valPos); # (use local $len because we always expect padding)
+                if ($valPos + $len + 4 > $dirEnd) {
+                    $et->WarnOnce("Truncated $format value");
+                    last;
+                }
                 $val = substr($$dataPt, $valPos + 4, $len);
                 # update position for data length plus padding
                 # (does this padding disappear in arrays too?)

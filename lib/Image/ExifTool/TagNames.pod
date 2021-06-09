@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24279 tags, with 15743 unique tag names.
+They contain a total of 24282 tags, with 15745 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -15976,6 +15976,7 @@ These tags are used in Pentax/Asahi cameras.
   0x008b   ISO                                  int32u
   0x0092   IntervalShooting                     int16u[2]
   0x0095   SkinToneCorrection                   int8s[2]
+           SkinToneCorrection                   int8s[3]
   0x0096   ClarityControl                       int8s[2]
   0x0200   BlackPoint                           int16u[4]
   0x0201   WhitePoint                           int16u[4]
@@ -16008,6 +16009,8 @@ These tags are used in Pentax/Asahi cameras.
   0x0215   CameraInfo                           Pentax CameraInfo
   0x0216   BatteryInfo                          Pentax BatteryInfo
   0x021b   SaturationInfo?                      no
+  0x021c   ColorMatrixA2                        undef[18]
+  0x021d   ColorMatrixB2                        undef[18]
   0x021f   AFInfo                               Pentax AFInfo
   0x0220   HuffmanTable?                        no
   0x0221   KelvinWB                             Pentax KelvinWB
@@ -26059,10 +26062,10 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
 
 =head3 QuickTime Stream Tags
 
-Timed metadata extracted from QuickTime media data and some AVI videos when
-the ExtractEmbedded option is used.  Although most of these tags are
-combined into the single table below, ExifTool currently reads 51 different
-formats of timed GPS metadata from video files.
+The tags below are extracted from timed metadata in QuickTime and other
+formats of video files when the ExtractEmbedded option is used.  Although
+most of these tags are combined into the single table below, ExifTool
+currently reads 53 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -26118,8 +26121,9 @@ formats of timed GPS metadata from video files.
   camm6                                         QuickTime camm6
   camm7                                         QuickTime camm7
   fdsc                                          GoPro fdsc
-  gpmd_GoPro                                    GoPro GPMF
+  gpmd_Kingslim                                 QuickTime Stream
   gpmd_Rove                                     QuickTime Stream
+  gpmd_GoPro                                    GoPro GPMF
   marl                                          QuickTime marl
   mebx                                          QuickTime Keys
   mett                                          Parrot mett

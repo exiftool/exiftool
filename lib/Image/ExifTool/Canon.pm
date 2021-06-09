@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.48';
+$VERSION = '4.49';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -9253,8 +9253,9 @@ sub PrintLensID(@)
                 push @likely, $tclens;
                 if ($maxAperture) {
                     # (not 100% sure that TC affects MaxAperture, but it should!)
-                    next if $maxAperture < $sa * $tc - 0.15;
-                    next if $maxAperture > $la * $tc + 0.15;
+                    # (RF 24-105mm F4L IS USM shows a MaxAperture of 4.177)
+                    next if $maxAperture < $sa * $tc - 0.18;
+                    next if $maxAperture > $la * $tc + 0.18;
                 }
                 push @matches, $tclens;
             }

@@ -17,6 +17,26 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.27'><b>June 9, 2021 - Version 12.27</b></a>
+<ul>
+<li>Added a new SonyModelID value
+<li>Added two new Nikon LensID values (thanks Daniel)
+<li>Added a new Pentax RawDevelopmentProcess value
+<li>Added a few new Sony LensType values (thanks Jos Roost)
+<li>Added warning if IPTCDigest is not current
+<li>Decode a couple more Pentax tags (thanks LibRaw)
+<li>Decode streaming GPS from Novatek INNOVV MP4 and TS videos
+<li>Improved tag names in confi_files/covert_regions.config (thanks StarGeek)
+<li>Changed MIME types for MS Office macro-enabled formats to add the .12
+<li>Patched Canon LensID logic to properly identify the Canon RF 24-105mm F4 L
+    IS USM lens
+<li>Patched decoding of camm6 GPSDateTime to use a flexible epoch because other
+    apps don't seem to use a consistent time zero
+<li>Fixed family 7 group names for QuickTime Keys tags
+<li>Fixed problem reading BeatsPerMinute from some MP4 files
+<li>Fixed hemisphere problem when extracting GPS from 70mai dashcam videos
+</ul>
+
 <a name='v12.26'><b>May 20, 2021 - Version 12.26</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added support for JPEG Stereo (JPS) images

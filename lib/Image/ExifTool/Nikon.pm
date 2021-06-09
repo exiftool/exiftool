@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.96';
+$VERSION = '3.97';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -272,6 +272,7 @@ sub GetAFPointGrid($$;$);
     '9F 58 44 44 14 14 A1 06' => 'AF-S DX Nikkor 35mm f/1.8G', #27
     'A0 54 50 50 0C 0C A2 06' => 'AF-S Nikkor 50mm f/1.4G',
     'A1 40 18 37 2C 34 A3 06' => 'AF-S DX Nikkor 10-24mm f/3.5-4.5G ED',
+    'A1 40 2D 53 2C 3C CB 86' => 'AF-P DX Nikkor 18-55mm f/3.5-5.6G', #30
     'A2 48 5C 80 24 24 A4 0E' => 'AF-S Nikkor 70-200mm f/2.8G ED VR II',
     'A3 3C 29 44 30 30 A5 0E' => 'AF-S Nikkor 16-35mm f/4G ED VR',
     'A4 54 37 37 0C 0C A6 06' => 'AF-S Nikkor 24mm f/1.4G ED',
@@ -495,6 +496,7 @@ sub GetAFPointGrid($$;$);
     '02 46 5C 82 25 25 02 00' => 'Sigma 70-210mm F2.8 APO', #JD
     '02 40 5C 82 2C 35 02 00' => 'Sigma APO 70-210mm F3.5-4.5',
     '26 3C 5C 82 30 3C 1C 02' => 'Sigma 70-210mm F4-5.6 UC-II',
+    '02 3B 5C 82 30 3C 02 00' => 'Sigma Zoom-K 70-210mm F4-5.6', #30
     '26 3C 5C 8E 30 3C 1C 02' => 'Sigma 70-300mm F4-5.6 DG Macro',
     '56 3C 5C 8E 30 3C 1C 02' => 'Sigma 70-300mm F4-5.6 APO Macro Super II',
     'E0 3C 5C 8E 30 3C 4B 06' => 'Sigma 70-300mm F4-5.6 APO DG Macro HSM', #22

@@ -7,6 +7,25 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.26. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+June 9, 2021 - Version 12.27
+
+  - Added a new SonyModelID value
+  - Added two new Nikon LensID values (thanks Daniel)
+  - Added a new Pentax RawDevelopmentProcess value
+  - Added a few new Sony LensType values (thanks Jos Roost)
+  - Added warning if IPTCDigest is not current
+  - Decode a couple more Pentax tags (thanks LibRaw)
+  - Decode streaming GPS from Novatek INNOVV MP4 and TS videos
+  - Improved tag names in confi_files/covert_regions.config (thanks StarGeek)
+  - Changed MIME types for MS Office macro-enabled formats to add the .12
+  - Patched Canon LensID logic to properly identify the Canon RF 24-105mm F4 L
+    IS USM lens
+  - Patched decoding of camm6 GPSDateTime to use a flexible epoch because other
+    apps don't seem to use a consistent time zero
+  - Fixed family 7 group names for QuickTime Keys tags
+  - Fixed problem reading BeatsPerMinute from some MP4 files
+  - Fixed hemisphere problem when extracting GPS from 70mai dashcam videos
+
 May 20, 2021 - Version 12.26 (production release)
 
   - Added support for JPEG Stereo (JPS) images

@@ -14,6 +14,7 @@
 #               Sep. 16/08 - P. Harvey Improve timezone testing
 #               Jul. 14/10 - P. Harvey Added writeInfo()
 #               Jan. 06/12 - P. Harvey Patched MirBSD leap second "feature"
+#               Jun. 08/21 - PH Patched float compare to fix quadmath test failure
 #------------------------------------------------------------------------------
 
 package t::TestLib;
@@ -24,7 +25,7 @@ require Exporter;
 use Image::ExifTool qw(ImageInfo);
 
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = '1.22';
+$VERSION = '1.23';
 @ISA = qw(Exporter);
 @EXPORT = qw(check writeCheck writeInfo testCompare binaryCompare testVerbose);
 
@@ -78,14 +79,28 @@ sub testCompare($$$;$)
             $success = 1;
             my ($line1, $line2);
             my $linenum = 0;
+            my $skip = 0;
             for (;;) {
-                $line1 = <FILE1>;
+                $line1 = <FILE1> unless $skip == 1;
                 last unless defined $line1;
                 ++$linenum;
-                $line2 = <FILE2>;
+                $line2 = <FILE2> unless $skip == 2;
+                $skip = 0;
                 if (defined $line2) {
                     next if $line1 eq $line2;
                     next if nearEnough($line1, $line2);
+                    # ignore IPTCDigest warning if Digest::MD5 isn't available
+                    if ($line1 =~ /Warning: IPTCDigest is not current/ and
+                        not eval 'require Digest::MD5')
+                    {
+                        $skip = 2; 
+                        next;
+                    } elsif ($line2 =~ /Warning: IPTCDigest is not current/ and
+                        not eval 'require Digest::MD5')
+                    {
+                        $skip = 1;
+                        next;
+                    }
                 }
                 $success = 0;
                 last;
@@ -204,8 +219,7 @@ sub nearEnough($$)
                 last unless $tok2 =~ s/^'//;
             }
             last unless Image::ExifTool::IsFloat($tok1) and
-                        Image::ExifTool::IsFloat($tok2) and
-                        $tok1 =~ /\./ and $tok2 =~ /\./;
+                        Image::ExifTool::IsFloat($tok2);
             last if $tok1 == 0 or $tok2 == 0;
             # numbers are bad if not the same to 5 significant figures
             if (abs(($tok1-$tok2)/($tok1+$tok2)) > 1e-5) {

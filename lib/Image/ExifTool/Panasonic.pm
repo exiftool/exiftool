@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.14';
+$VERSION = '2.15';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1423,7 +1423,18 @@ my %shootingMode = (
         Name => 'NoiseReductionStrength',
         Writable => 'rational64s',
     },
-    # 0xe4 - LensID (ref IB)
+    0xe4 => { #IB
+        Name => 'LensTypeModel',
+        Condition => '$format eq "int16u"',
+        Writable => 'int16u',
+        RawConv => q{
+            return undef unless $val;
+            require Image::ExifTool::Olympus; # (to load Composite LensID)
+            return $val;
+        },
+        ValueConv => '$_=sprintf("%.4x",$val); s/(..)(..)/$2 $1/; $_',
+        ValueConvInv => '$val =~ s/(..) (..)/$2$1/; hex($val)',
+    },
     0x0e00 => {
         Name => 'PrintIM',
         Description => 'Print Image Matching',

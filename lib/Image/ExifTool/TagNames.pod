@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24282 tags, with 15745 unique tag names.
+They contain a total of 24286 tags, with 15747 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -15619,6 +15619,7 @@ These tags are used in Panasonic/Leica cameras.
   0x00d1   ISO                                  int32u
   0x00d2   MonochromeGrainEffect                int16u
   0x00d6   NoiseReductionStrength               rational64s
+  0x00e4   LensTypeModel                        int16u
   0x0e00   PrintIM                              PrintIM
   0x2003   TimeInfo                             Panasonic TimeInfo
   0x8000   MakerNoteVersion                     undef
@@ -19250,6 +19251,8 @@ some models when the ExtractEmbedded option is used.
   0x851d   GPSDateStamp                         no
   0xe303   WhiteBalance                         no
   0xe304   DateTime                             no
+  0xe43b   PitchRollYaw                         no
+  0xe44b   Accelerometer                        no
 
 =head2 SonyIDC Tags
 
@@ -24592,6 +24595,16 @@ Tags extracted from FEI1 and FEI2 extended headers.
     860    CFEGFlashTimeStamp                   no
     868    PhasePlatePosition                   no
     872    ObjectiveAperture                    no
+
+=head2 LIF Tags
+
+Tags extracted from Leica Image Format (LIF) imaging files.  As well as the
+tags listed below, all available information is extracted from the
+XML-format metadata in the LIF header.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  TimeStampList                                 no
 
 =head2 MIFF Tags
 

@@ -10134,7 +10134,9 @@ my %isoSetting2010 = (
   # 0x8100 - 16 bytes starting with 0x060e2b340401
     0x8100 => { Name => 'Sony_rtmd_0x8100', Format => 'int8u',  %hidUnk },
     0x8101 => { Name => 'Sony_rtmd_0x8101', Format => 'int8u',  %hidUnk }, # seen: 0,1
-    0x8106 => { Name => 'Sony_rtmd_0x8106', Format => 'int32u', %hidUnk }, # seen: "25 1"
+    0x8104 => { Name => 'Sony_rtmd_0x8104', Format => 'int16u', %hidUnk }, # seen: 35616
+    0x8105 => { Name => 'Sony_rtmd_0x8105', Format => 'int16u', %hidUnk }, # seen: 20092
+    0x8106 => { Name => 'Sony_rtmd_0x8106', Format => 'int32u', %hidUnk }, # seen: "25 1","24000 1001" frame rate?
     0x8109 => { #forum12218
         Name => 'ExposureTime',
         Format => 'rational64u',
@@ -10230,7 +10232,7 @@ my %isoSetting2010 = (
     },
     0xe000 => { Name => 'Sony_rtmd_0xe000', Format => 'int8u',  %hidUnk }, # (16 bytes)
     0xe300 => { Name => 'Sony_rtmd_0xe300', Format => 'int8u',  %hidUnk }, # seen: 0,1
-    0xe301 => { Name => 'Sony_rtmd_0xe301', Format => 'int32u', %hidUnk }, # seen: 100,1600
+    0xe301 => { Name => 'Sony_rtmd_0xe301', Format => 'int32u', %hidUnk }, # seen: 100,1600,12800
     0xe302 => { Name => 'Sony_rtmd_0xe302', Format => 'int8u',  %hidUnk }, # seen: 1
     0xe303 => { #forum12218
         Name => 'WhiteBalance',
@@ -10250,6 +10252,19 @@ my %isoSetting2010 = (
         Format => 'undef',
         ValueConv => 'my @a=unpack("x1H4H2H2H2H2H2",$val); "$a[0]:$a[1]:$a[2] $a[3]:$a[4]:$a[5]"',
         PrintConv => '$self->ConvertDateTime($val)',
+    },
+    0xe435 => { Name => 'Sony_rtmd_0xe435', Format => 'int32u',  %hidUnk }, # seen: 2000
+    0xe437 => { Name => 'Sony_rtmd_0xe437', Format => 'int32s',  %hidUnk }, # seen: -3800 to -3400
+    0xe43b => {
+        Name => 'PitchRollYaw',
+        Format => 'int16s',
+        RawConv => 'substr($val, 8)',
+    },
+    0xe445 => { Name => 'Sony_rtmd_0xe445', Format => 'int32u',  %hidUnk }, # seen: 2000
+    0xe44b => {
+        Name => 'Accelerometer', # (NC)
+        Format => 'int16s',
+        RawConv => 'substr($val, 8)',
     },
     # f010 - 2048 bytes
     # f020 - 543 bytes

@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.66';
+$VERSION = '2.67';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -8874,20 +8874,28 @@ sub ProcessKeys($$$)
         my $ns  = substr($$dataPt, $pos + 4, 4);
         my $tag = substr($$dataPt, $pos + 8, $len - 8);
         $tag =~ s/\0.*//s; # truncate at null
+        my $full = $tag;
         $tag =~ s/^com\.(apple\.quicktime\.)?// if $ns eq 'mdta'; # remove apple quicktime domain
         $tag = "Tag_$ns" unless $tag;
-        # (I have some samples where the tag is a reversed ItemList or UserData tag ID)
-        my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
-        unless ($tagInfo) {
-            $tagInfo = $et->GetTagInfo($itemList, $tag);
-            unless ($tagInfo) {
+        my $short = $tag;
+        my $tagInfo;
+        for (;;) {
+            $tagInfo = $et->GetTagInfo($tagTablePtr, $tag) and last;
+            # also try ItemList and UserData tables
+            $tagInfo = $et->GetTagInfo($itemList, $tag) and last;
+            $tagInfo = $et->GetTagInfo($userData, $tag) and last;
+            # (I have some samples where the tag is a reversed ItemList or UserData tag ID)
+            if ($tag =~ /^\w{3}\xa9$/) {
+                $tag = pack('N', unpack('V', $tag));
+                $tagInfo = $et->GetTagInfo($itemList, $tag) and last;
                 $tagInfo = $et->GetTagInfo($userData, $tag);
-                if (not $tagInfo and $tag =~ /^\w{3}\xa9$/) {
-                    $tag = pack('N', unpack('V', $tag));
-                    $tagInfo = $et->GetTagInfo($itemList, $tag);
-                    $tagInfo or $tagInfo = $et->GetTagInfo($userData, $tag);
-                }
+                last;
             }
+            if ($tag eq $full) {
+                $tag = $short;
+                last;
+            }
+            $tag = $full;
         }
         my ($newInfo, $msg);
         if ($tagInfo) {
@@ -9541,9 +9549,9 @@ ItemID:         foreach $id (keys %$items) {
         ($size, $tag) = unpack('Na4', $buff);
         ++$index if defined $index;
     }
-    # tweak file type based on track content ("iso*" ftyp only)
-    if ($$et{VALUE}{FileType} and $$et{VALUE}{FileType} eq 'MP4' and
-        $$et{save_ftyp} and $$et{HasHandler} and $$et{save_ftyp} =~ /^iso/ and
+    # tweak file type based on track content ("iso*" and "dash" ftyp only)
+    if ($topLevel and $$et{VALUE}{FileType} and $$et{VALUE}{FileType} eq 'MP4' and
+        $$et{save_ftyp} and $$et{HasHandler} and $$et{save_ftyp} =~ /^(iso|dash)/ and
         $$et{HasHandler}{soun} and not $$et{HasHandler}{vide})
     {
         $et->OverrideFileType('M4A', 'audio/mp4');

@@ -7,6 +7,17 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.26. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+June 22, 2021 - Version 12.28
+
+  - Added read support for Leica Image File (LIF) images
+  - Added a new Olympus LensType (thanks LibRaw)
+  - Decode another Panasonic tag (thanks LibRaw)
+  - Decode more timed metadata from Sony MP4 videos
+  - Attempt to shorten tag names for metadata in CZI files
+  - Allow full QuickTime Keys tag ID's in UserDefined tags (fixes backward
+    incompatibility introduced in 12.02)
+  - Patched to handle special characters in Torrent tag values
+
 June 9, 2021 - Version 12.27
 
   - Added a new SonyModelID value

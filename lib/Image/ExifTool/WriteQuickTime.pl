@@ -317,7 +317,7 @@ sub FormatQTValue($$;$$)
         if ($writable and $qtFormat{$writable}) {
             $flags = $qtFormat{$writable};
         } else {
-            $flags = $qtFormat{$format} || 0;
+            $flags = $qtFormat{$format || 0} || 0;
         }
     } elsif ($$valPt =~ /^\xff\xd8\xff/) {
         $flags = 0x0d;  # JPG

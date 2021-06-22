@@ -94,6 +94,7 @@ html/TagNames/JVC.html
 html/TagNames/Jpeg2000.html
 html/TagNames/Kodak.html
 html/TagNames/KyoceraRaw.html
+html/TagNames/LIF.html
 html/TagNames/LNK.html
 html/TagNames/Leaf.html
 html/TagNames/Lytro.html
@@ -299,6 +300,7 @@ lib/Image/ExifTool/JVC.pm
 lib/Image/ExifTool/Jpeg2000.pm
 lib/Image/ExifTool/Kodak.pm
 lib/Image/ExifTool/KyoceraRaw.pm
+lib/Image/ExifTool/LIF.pm
 lib/Image/ExifTool/LNK.pm
 lib/Image/ExifTool/Lang/cs.pm
 lib/Image/ExifTool/Lang/de.pm

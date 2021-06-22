@@ -28,7 +28,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath);
 
-$VERSION = '12.27';
+$VERSION = '12.28';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -138,8 +138,8 @@ sub ReadValue($$$;$$$);
 @loadAllTables = qw(
     PhotoMechanic Exif GeoTiff CanonRaw KyoceraRaw Lytro MinoltaRaw PanasonicRaw
     SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 BMP::Extra BPG BPG::Extensions
-    PICT PNG MNG FLIF DjVu DPX OpenEXR ZISRAW MRC MRC::FEI12 MIFF PCX PGF PSP
-    PhotoCD Radiance PDF PostScript Photoshop::Header Photoshop::Layers
+    PICT PNG MNG FLIF DjVu DPX OpenEXR ZISRAW MRC LIF MRC::FEI12 MIFF PCX PGF
+    PSP PhotoCD Radiance PDF PostScript Photoshop::Header Photoshop::Layers
     Photoshop::ImageData FujiFilm::RAF FujiFilm::IFD Samsung::Trailer Sony::SRF2
     Sony::SR2SubIFD Sony::PMP ITC ID3 ID3::Lyrics3 FLAC Ogg Vorbis APE
     APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio MPEG::Video MPEG::Xing
@@ -190,7 +190,7 @@ $defaultLang = 'en';    # default language
                 HTML VRD RTF FITS XCF DSS QTIF FPX PICT ZIP GZIP PLIST RAR BZ2
                 CZI TAR  EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC M2TS
                 MacOS PHP PCX DCX DWF DWG DXF WTV Torrent VCard LRI R3D AA PDB
-                MRC JXL MOI ISO ALIAS JSON MP3 DICOM PCD TXT);
+                MRC LIF JXL MOI ISO ALIAS JSON MP3 DICOM PCD TXT);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -366,6 +366,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     LA   => ['RIFF', 'Lossless Audio'],
     LFP  => ['LFP',  'Lytro Light Field Picture'],
     LFR  =>  'LFP', # (Light Field RAW)
+    LIF  => ['LIF',  'Leica Image File'],
     LNK  => ['LNK',  'Windows shortcut'],
     LRI  => ['LRI',  'Light RAW'],
     LRV  => ['MOV',  'Low-Resolution Video'],
@@ -664,6 +665,7 @@ my %fileDescription = (
     KDC  => 'image/x-kodak-kdc',
     KEY  => 'application/x-iwork-keynote-sffkey',
     LFP  => 'image/x-lytro-lfp', #PH (NC)
+    LIF  => 'image/x-lif',
     LNK  => 'application/octet-stream',
     LRI  => 'image/x-light-lri',
     M2T  => 'video/mpeg',
@@ -913,6 +915,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     JSON => '(\xef\xbb\xbf)?\s*(\[\s*)?\{\s*"[^"]*"\s*:',
     JXL  => '\xff\x0a|\0\0\0\x0cJXL \x0d\x0a......ftypjxl ',
     LFP  => '\x89LFP\x0d\x0a\x1a\x0a',
+    LIF  => '\x70\0{3}.{4}\x2a.{4}<\0',
     LNK  => '.{4}\x01\x14\x02\0{5}\xc0\0{6}\x46',
     LRI  => 'LELR \0',
     M2TS => '(....)?\x47',

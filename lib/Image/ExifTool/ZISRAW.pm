@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 %Image::ExifTool::ZISRAW::Main = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
@@ -40,6 +40,123 @@ $VERSION = '1.00';
         ValueConv => 'unpack("H*",$val)',
     },
 );
+
+#------------------------------------------------------------------------------
+# Shorten obscenely long CZI tag names
+# Inputs: Tag name
+# Returns: Shortened tag name
+sub ShortenTagNames($)
+{
+    local $_;
+    $_ = shift;
+    s/^HardwareSetting//;
+    s/^DevicesDevice/Device/;
+    s/LightPathNode//g;
+    s/Successors//g;
+    s/ExperimentExperiment/Experiment/g;
+    s/ObjectivesObjective/Objective/;
+    s/ChannelsChannel/Channel/;
+    s/TubeLensesTubeLens/TubeLens/;
+    s/^ExperimentHardwareSettingsPoolHardwareSetting/HardwareSetting/;
+    s/SharpnessMeasureSetSharpnessMeasure/Sharpness/;
+    s/FocusSetupAutofocusSetup/Autofocus/;
+    s/TracksTrack/Track/;
+    s/ChannelRefsChannelRef/ChannelRef/;
+    s/ChangerChanger/Changer/;
+    s/ElementsChangerElement/Changer/;
+    s/ChangerElements/Changer/;
+    s/ContrastChangerContrast/Contrast/;
+    s/KeyFunctionsKeyFunction/KeyFunction/;
+    s/ManagerContrastManager(Contrast)?/ManagerContrast/;
+    s/ObjectiveChangerObjective/ObjectiveChanger/;
+    s/ManagerLightManager/ManagerLight/;
+    s/WavelengthAreasWavelengthArea/WavelengthArea/;
+    s/ReflectorChangerReflector/ReflectorChanger/;
+    s/^StageStageAxesStageAxis/StageAxis/;
+    s/ShutterChangerShutter/ShutterChanger/;
+    s/OnOffChangerOnOff/OnOffChanger/;
+    s/UnsharpMaskStateUnsharpMask/UnsharpMask/;
+    s/Acquisition/Acq/;
+    s/Continuous/Cont/;
+    s/Resolution/Res/;
+    s/Experiment/Expt/g;
+    s/Threshold/Thresh/;
+    s/Reference/Ref/;
+    s/Magnification/Mag/;
+    s/Original/Orig/;
+    s/FocusSetupFocusStrategySetup/Focus/;
+    s/ParametersParameter/Parameter/;
+    s/IntervalInfo/Interval/;
+    s/ExptBlocksAcqBlock/AcqBlock/;
+    s/MicroscopesMicroscope/Microscope/;
+    s/TimeSeriesInterval/TimeSeries/;
+    s/Interval(.*Interval)/$1/;
+    s/SingleTileRegionsSingleTileRegion/SingleTileRegion/;
+    s/AcquisitionMode//;
+    s/DetectorsDetector/Detector/;
+    s/Setup//;
+    s/Setting//;
+    s/TrackTrack/Track/;
+    s/AnalogOutMaximumsAnalogOutMaximum/AnalogOutMaximum/;
+    s/AnalogOutMinimumsAnalogOutMinimum/AnalogOutMinimum/;
+    s/DigitalOutLabelsDigitalOutLabelLabel/DigitalOutLabelLabel/;
+    s/(VivaTomeOpticalSectionInformation)+VivaTomeOpticalSectionInformation/VivaTomeOpticalSectionInformation/;
+    s/FocusDefiniteFocus/FocusDefinite/;
+    s/ChangerChanger/Changer/;
+    s/Calibration/Cal/;
+    s/LightSwitchChangerRLTLSwitch/LightSwitchChangerRLTL/;
+    s/Parameters//;
+    s/Fluorescence/Fluor/;
+    s/CameraGeometryCameraGeometry/CameraGeometry/;
+    s/CameraCamera/Camera/;
+    s/DetectorsCamera/Camera/;
+    s/FilterChangerLeftChangerEmissionFilter/LeftChangerEmissionFilter/;
+    s/SwitchingStatesSwitchingState/SwitchingState/;
+    s/Information/Info/;
+    s/SubDimensions?//g;
+    s/Setups?//;
+    s/Parameters?//;
+    s/Calculate/Calc/;
+    s/Visibility/Vis/;
+    s/Orientation/Orient/;
+    s/ListItems/Items/;
+    s/Increment/Incr/;
+    s/Parameter/Param/;
+    s/(ParfocalParcentralValues)+ParfocalParcentralValue/Parcentral/;
+    s/ParcentralParcentral/Parcentral/;
+    s/CorrFocusCorrection/FocusCorr/;
+    s/(ApoTomeDepthInfo)+Element/ApoTomeDepth/;
+    s/(ApoTomeClickStopInfo)+Element/ApoTomeClickStop/;
+    s/DepthDepth/Depth/;
+    s/(Devices?)+Device/Device/;
+    s/(BeamPathNode)+/BeamPathNode/;
+    s/BeamPathsBeamPath/BeamPath/g;
+    s/BeamPathBeamPath/BeamPath/g;
+    s/Configuration/Config/;
+    s/StageAxesStageAxis/StageAxis/;
+    s/RangesRange/Range/;
+    s/DataGridDatasGridData(Grid)?/DataGrid/;
+    s/DataMicroscopeDatasMicroscopeData(Microscope)?/DataMicroscope/;
+    s/DataWegaDatasWegaData/DataWega/;
+    s/ClickStopPositionsClickStopPosition/ClickStopPosition/;
+    s/LightSourcess?LightSource(Settings)?(LightSource)?/LightSource/;
+    s/FilterSetsFilterSet/FilterSet/;
+    s/EmissionFiltersEmissionFilter/EmissionFilter/;
+    s/ExcitationFiltersExcitationFilter/ExcitationFilter/;
+    s/FiltersFilter/Filter/;
+    s/DichroicsDichroic/Dichronic/;
+    s/WavelengthsWavelength/Wavelength/;
+    s/MultiTrackSetup/MultiTrack/;
+    s/TrackTrack/Track/;
+    s/DataGrabberSetup/DataGrabber/;
+    s/CameraFrameSetup/CameraFrame/;
+    s/TimeSeries(TimeSeries|Setups)/TimeSeries/;
+    s/FocusFocus/Focus/;
+    s/FocusAutofocus/Autofocus/;
+    s/Focus(Hardware|Software)(Autofocus)+/Autofocus$1/;
+    s/AutofocusAutofocus/Autofocus/;
+    return $_;
+}
 
 #------------------------------------------------------------------------------
 # Extract metadata from a ZISRAW (CZI) image
@@ -76,7 +193,9 @@ sub ProcessCZI($$)
     $tagTablePtr = GetTagTable('Image::ExifTool::XMP::XML');
     $dirInfo{DirLen} = length $buff;
     # shorten tag names somewhat by removing 'ImageDocumentMetadata' prefix from all
-    $$et{XmpIgnoreProps} = [ 'ImageDocument', 'Metadata' ];
+    $$et{XmpIgnoreProps} = [ 'ImageDocument', 'Metadata', 'Information' ];
+    $$et{ShortenXmpTags} = \&ShortenTagNames;
+
     $et->ProcessDirectory(\%dirInfo, $tagTablePtr);
 
     return 1;

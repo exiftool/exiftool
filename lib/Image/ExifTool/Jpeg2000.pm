@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.29';
+$VERSION = '1.30';
 
 sub ProcessJpeg2000Box($$$);
 sub ProcessJUMD($$$);
@@ -607,23 +607,24 @@ my %jumbfTypes = (
     PROCESS_PROC => \&ProcessJUMD,
     GROUPS => { 0 => 'JUMBF', 1 => 'JUMBF', 2 => 'Image' },
     NOTES => 'Information extracted from the JUMBF description box.',
-    'jumd-type' => {
+    'type' => {
         Name => 'JUMDType',
         ValueConv => 'unpack "H*", $val',
         PrintConv => q{
             my @a = $val =~ /^(\w{8})(\w{4})(\w{4})(\w{16})$/;
             return $val unless @a;
             my $ascii = pack 'H*', $a[0];
-            $a[0] = $ascii if $ascii =~ /^[a-zA-Z0-9]{4}$/;
+            $a[0] = "($ascii)" if $ascii =~ /^[a-zA-Z0-9]{4}$/;
             return join '-', @a;
         },
         # seen:
         # cacb/cast/caas/cacl/casg/json-00110010800000aa00389b71
         # 6579d6fbdba2446bb2ac1b82feeb89d1 - JPEG image
     },
-    'jumd-label' => { Name => 'JUMDLabel' },
-    'jumd-flags' => {
-        Name => 'JUMDFlags',
+    'label' => { Name => 'JUMDLabel' },
+    'toggles' => {
+        Name => 'JUMDToggles',
+        Unknown => 1,
         PrintConv => { BITMASK => {
             0 => 'Requestable',
             1 => 'Label',
@@ -631,8 +632,8 @@ my %jumbfTypes = (
             3 => 'Signature',
         }},
     },
-    'jumd-id'    => { Name => 'JUMDID', Description => 'JUMD ID' },
-    'jumd-sig'   => { Name => 'JUMDSignature', PrintConv => 'unpack "H*", $val' },
+    'id'    => { Name => 'JUMDID', Description => 'JUMD ID' },
+    'sig'   => { Name => 'JUMDSignature', PrintConv => 'unpack "H*", $val' },
 );
 
 #------------------------------------------------------------------------------
@@ -675,16 +676,16 @@ sub ProcessJUMD($$$)
     delete $$et{JUMBFLabel};
     $$dirInfo{DirLen} < 17 and $et->Warn('Truncated JUMD directory'), return 0;
     my $type = substr($$dataPt, $pos, 4);
-    $et->HandleTag($tagTablePtr, 'jumd-type', substr($$dataPt, $pos, 16));
+    $et->HandleTag($tagTablePtr, 'type', substr($$dataPt, $pos, 16));
     $pos += 16;
     my $flags = Get8u($dataPt, $pos++);
-    $et->HandleTag($tagTablePtr, 'jumd-flags', $flags);
+    $et->HandleTag($tagTablePtr, 'toggles', $flags);
     if ($flags & 0x02) {    # label exists?
         pos($$dataPt) = $pos;
         $$dataPt =~ /\0/g or $et->Warn('Missing JUMD label terminator'), return 0;
         my $len = pos($$dataPt) - $pos;
         my $name = substr($$dataPt, $pos, $len);
-        $et->HandleTag($tagTablePtr, 'jumd-label', $name);
+        $et->HandleTag($tagTablePtr, 'label', $name);
         $pos += $len;
         if ($len) {
             $name =~ s/[^-_a-zA-Z0-9]([a-z])/\U$1/g; # capitalize characters after illegal characters
@@ -696,12 +697,12 @@ sub ProcessJUMD($$$)
     }
     if ($flags & 0x04) {    # ID exists?
         $pos + 4 > $end and $et->Warn('Missing JUMD ID'), return 0;
-        $et->HandleTag($tagTablePtr, 'jumd-id', Get32u($dataPt, $pos));
+        $et->HandleTag($tagTablePtr, 'id', Get32u($dataPt, $pos));
         $pos += 4;
     }
     if ($flags & 0x08) {    # signature exists?
         $pos + 32 > $end and $et->Warn('Missing JUMD signature'), return 0;
-        $et->HandleTag($tagTablePtr, 'jumd-sig', substr($$dataPt, $pos, 32));
+        $et->HandleTag($tagTablePtr, 'sig', substr($$dataPt, $pos, 32));
         $pos += 32;
     }
     $pos == $end or $et->Warn('Extra data in JUMD box'." $pos $end", 1);

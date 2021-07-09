@@ -849,7 +849,7 @@ sub WriteQuickTime($$$)
                 # --> hold this terminator to the end
                 $term = $hdr;
             } elsif ($n != 0) {
-                $et->Error('File format error');
+                $et->Error("Unknown $n bytes at end of file", 1);
             }
             last;
         }

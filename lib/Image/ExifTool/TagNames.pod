@@ -21910,13 +21910,13 @@ tags in Jpeg2000 images.
 
 Information extracted from the JUMBF description box.
 
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'jumd-flags'         JUMDFlags                no
-  'jumd-id'            JUMDID                   no
-  'jumd-label'         JUMDLabel                no
-  'jumd-sig'           JUMDSignature            no
-  'jumd-type'          JUMDType                 no
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  'id'         JUMDID                           no
+  'label'      JUMDLabel                        no
+  'sig'        JUMDSignature                    no
+  'toggles'    JUMDToggles?                     no
+  'type'       JUMDType                         no
 
 =head3 Jpeg2000 CaptureResolution Tags
 

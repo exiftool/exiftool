@@ -40,7 +40,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.72';
+$VERSION = '2.73';
 
 sub PrintLensInfo($$$);
 
@@ -113,6 +113,7 @@ my %olympusLensTypes = (
     '0 34 00' => 'Olympus Zuiko Digital ED 9-18mm F4.0-5.6', #7
     '0 34 10' => 'Olympus M.Zuiko Digital ED 12-45mm F4.0 Pro', #IB
     '0 35 00' => 'Olympus Zuiko Digital 14-54mm F2.8-3.5 II', #PH
+    '0 35 10' => 'Olympus M.Zuiko 100-400mm F5.0-6.3', #IB
     '0 36 10' => 'Olympus M.Zuiko Digital ED 8-25mm F4 Pro', #IB
     # Sigma lenses
     '1 01 00' => 'Sigma 18-50mm F3.5-5.6 DC', #8
@@ -183,6 +184,7 @@ my %olympusLensTypes = (
     '2 36 10' => 'Leica DG Elmarit 200mm F2.8 Power OIS', #IB
     '2 37 10' => 'Leica DG Vario-Elmarit 50-200mm F2.8-4 Asph. Power OIS', #IB
     '2 38 10' => 'Leica DG Vario-Summilux 10-25mm F1.7 Asph.', #IB
+    '2 40 10' => 'Leica DG Vario-Summilux 25-50mm F1.7 Asph.', #IB (H-X2550)
     '3 01 00' => 'Leica D Vario Elmarit 14-50mm F2.8-3.5 Asph.', #11
     '3 02 00' => 'Leica D Summilux 25mm F1.4 Asph.', #11
     # Tamron lenses

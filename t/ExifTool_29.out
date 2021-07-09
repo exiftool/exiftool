@@ -258,26 +258,20 @@
 [APP11, JPEG-HDR, Image] bet - Beta: #.######
 [APP11, JPEG-HDR, Image] cor - Correction Method: #
 [APP11, JPEG-HDR, Preview] RatioImage - Ratio Image: (Binary data 19 bytes)
-[JUMBF, JUMBF, Image] jumd-type - JUMD Type: cacb-####-####-######aa#####b##
-[JUMBF, JUMBF, Image] jumd-flags - JUMD Flags: Requestable,_Label
-[JUMBF, JUMBF, Image] jumd-label - JUMD Label: cai
-[JUMBF, JUMBF, Image] jumd-type - JUMD Type: cast-####-####-######aa#####b##
-[JUMBF, JUMBF, Image] jumd-flags - JUMD Flags: Requestable,_Label
-[JUMBF, JUMBF, Image] jumd-label - JUMD Label: cb.reuters_#
-[JUMBF, JUMBF, Image] jumd-type - JUMD Type: caas-####-####-######aa#####b##
-[JUMBF, JUMBF, Image] jumd-flags - JUMD Flags: Requestable,_Label
-[JUMBF, JUMBF, Image] jumd-label - JUMD Label: cai.assertions
-[JUMBF, JUMBF, Image] jumd-type - JUMD Type: json-####-####-######aa#####b##
-[JUMBF, JUMBF, Image] jumd-flags - JUMD Flags: Requestable,_Label
-[JUMBF, JUMBF, Image] jumd-label - JUMD Label: adobe.asset.info
+[JUMBF, JUMBF, Image] type - JUMD Type: (cacb)-####-####-######aa#####b##
+[JUMBF, JUMBF, Image] label - JUMD Label: cai
+[JUMBF, JUMBF, Image] type - JUMD Type: (cast)-####-####-######aa#####b##
+[JUMBF, JUMBF, Image] label - JUMD Label: cb.reuters_#
+[JUMBF, JUMBF, Image] type - JUMD Type: (caas)-####-####-######aa#####b##
+[JUMBF, JUMBF, Image] label - JUMD Label: cai.assertions
+[JUMBF, JUMBF, Image] type - JUMD Type: (json)-####-####-######aa#####b##
+[JUMBF, JUMBF, Image] label - JUMD Label: adobe.asset.info
 [JUMBF, JSON, Other] title - Title: HEALTHCORONAVIRUSUSAOREGON_SALEM_##.jpg
-[JUMBF, JUMBF, Image] jumd-type - JUMD Type: json-####-####-######aa#####b##
-[JUMBF, JUMBF, Image] jumd-flags - JUMD Flags: Requestable,_Label
-[JUMBF, JUMBF, Image] jumd-label - JUMD Label: cai.location.broad
+[JUMBF, JUMBF, Image] type - JUMD Type: (json)-####-####-######aa#####b##
+[JUMBF, JUMBF, Image] label - JUMD Label: cai.location.broad
 [JUMBF, JSON, Other] location - Location: Salem,_Oregon
-[JUMBF, JUMBF, Image] jumd-type - JUMD Type: json-####-####-######aa#####b##
-[JUMBF, JUMBF, Image] jumd-flags - JUMD Flags: Requestable,_Label
-[JUMBF, JUMBF, Image] jumd-label - JUMD Label: cai.rights
+[JUMBF, JUMBF, Image] type - JUMD Type: (json)-####-####-######aa#####b##
+[JUMBF, JUMBF, Image] label - JUMD Label: cai.rights
 [JUMBF, JSON, Other] copyright - Copyright: Alisha_Jucevic
 [APP12, PictureInfo, Time] TimeDate - Date/Time Original: ####:##:##_##:##:##
 [APP12, PictureInfo, Image] Shutter - Exposure Time: #/###

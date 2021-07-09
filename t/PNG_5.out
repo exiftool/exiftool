@@ -18,7 +18,7 @@ PNG iTXt (443 bytes):
   Rewriting XMP
     + XMP-dc:Creator = 'Phil Harvey'
 PNG IDAT (1 chunk, total 14 bytes)
-  Warning = [minor] Text chunk(s) found after PNG IDAT (fixed)
+  Warning = [minor] Text/EXIF chunk(s) found after PNG IDAT (fixed)
   Deleting tEXt that was moved (20 bytes)
   Deleting iTXt that was moved (443 bytes)
 PNG IEND (end of image)

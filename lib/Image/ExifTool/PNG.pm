@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.57';
+$VERSION = '1.58';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -89,7 +89,7 @@ $Image::ExifTool::PNG::colorType = -1;
 
 # data and text chunk types
 my %isDatChunk = ( IDAT => 1, JDAT => 1, JDAA => 1 );
-my %isTxtChunk = ( tEXt => 1, zTXt => 1, iTXt => 1 );
+my %isTxtChunk = ( tEXt => 1, zTXt => 1, iTXt => 1, eXIf => 1 );
 
 # chunks that we shouldn't move other chunks across (ref 3)
 my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND => 1,
@@ -1382,9 +1382,8 @@ sub ProcessPNG($$)
                 # to add it as a text profile chunk if this isn't successful
                 # (ie. if Compress::Zlib wasn't available)
                 Add_iCCP($et, $outfile);
-                AddChunks($et, $outfile) or $err = 1;   # all all text chunks
-                # add EXIF before end chunk if not found already
-                AddChunks($et, $outfile, 'IFD0') if $chunk eq $endChunk;
+                AddChunks($et, $outfile) or $err = 1;           # add all text chunks
+                AddChunks($et, $outfile, 'IFD0') or $err = 1;   # and eXIf chunk
             } elsif ($chunk eq 'PLTE') {
                 # iCCP chunk must come before PLTE (and IDAT, handled above)
                 # (ignore errors -- will add later as text profile if this fails)
@@ -1444,7 +1443,7 @@ sub ProcessPNG($$)
             } else {
                 $msg = 'fixed';
             }
-            $et->WarnOnce("Text chunk(s) found after $$et{FileType} $wasDat ($msg)", 1);
+            $et->WarnOnce("Text/EXIF chunk(s) found after $$et{FileType} $wasDat ($msg)", 1);
         }
         # read chunk data and CRC
         unless ($raf->Read($dbuf,$len)==$len and $raf->Read($cbuf, 4)==4) {

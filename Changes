@@ -7,6 +7,17 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.26. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+July 9, 2021 - Version 12.29
+
+  - Added a few new Nikon and Olympus lenses (thanks LibRaw)
+  - Improved a QuickTime "File format error" message to be more meaningful, and
+    made it a minor error
+  - Changed PNG writer to add EXIF before IDAT
+  - Some changes the way JUMBF metadata is handled
+  - Patched to read timed GPS from a different type of INSV videos
+  - Patched a security issue
+  - Fixed problem where ExifTool could hang when processing mebx timed metadata
+
 June 22, 2021 - Version 12.28
 
   - Added read support for Leica Image File (LIF) images

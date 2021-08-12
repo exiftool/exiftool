@@ -30,7 +30,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.58';
+$VERSION = '1.59';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -527,6 +527,10 @@ my %code2charset = (
         Name => 'Text',
         Notes => 'streamed text, extracted when the ExtractEmbedded option is used',
     },
+   'id3 ' => {
+        Name => 'ID3',
+        SubDirectory => { TagTable => 'Image::ExifTool::ID3::Main' },
+    },        
 #
 # WebP-specific tags
 #
@@ -818,6 +822,7 @@ my %code2charset = (
     ILGT => 'Lightness',
     IMED => 'Medium',
     INAM => 'Title',
+    ITRK => 'TrackNumber',
     IPLT => 'NumColors',
     IPRD => 'Product',
     ISBJ => 'Subject',

@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.49';
+$VERSION = '4.50';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -557,7 +557,8 @@ $VERSION = '4.49';
     4158 => 'Canon EF-S 18-55mm f/4-5.6 IS STM', #PH
     4159 => 'Canon EF-M 32mm f/1.4 STM', #42
     4160 => 'Canon EF-S 35mm f/2.8 Macro IS STM', #42
-    4208 => 'Sigma 56mm f/1.4 DC DN | C', #forum10603
+    4208 => 'Sigma 56mm f/1.4 DC DN | C or other Sigma Lens', #forum10603
+    4208.1 => 'Sigma 30mm F1.4 DC DN | C', #git issue#83 (016)
     # (Nano USM lenses - 0x90xx)
     36910 => 'Canon EF 70-300mm f/4-5.6 IS II USM', #42
     36912 => 'Canon EF-S 18-135mm f/3.5-5.6 IS USM', #42

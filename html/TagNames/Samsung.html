@@ -495,15 +495,17 @@ array of X coordinates then an array of Y coordinates)</span></span></td></tr>
 <h2><a name='Trailer'>Samsung Trailer Tags</a></h2>
 <p>Tags extracted from the trailer of JPEG images written when using certain
 features (such as &quot;Sound &amp; Shot&quot; or &quot;Shot &amp; More&quot;) from Samsung models such
-as the Galaxy S4 and Tab S.</p>
+as the Galaxy S4 and Tab S, and from the &#39;sefd&#39; atom in HEIC images from the
+Samsung S10+.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
 <tr class=h><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td>DepthMapData</td>
-<td class=c>no</td>
+<td>DepthMapData
+  <br>DepthMapData2</td>
+<td class=c>no<br>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>DepthMapName</td>
@@ -530,8 +532,9 @@ as the Galaxy S4 and Tab S.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>EmbeddedImage</td>
-<td class=c>no</td>
+<td>EmbeddedImage
+  <br>EmbeddedImage2</td>
+<td class=c>no<br>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>EmbeddedImageName</td>
@@ -546,22 +549,26 @@ as the Galaxy S4 and Tab S.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>MCCData</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>SingleShotDepthMap</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SingleShotMeta</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Samsung.html#SingleShotMeta'>Samsung SingleShotMeta Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>SurroundShotVideo</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SurroundShotVideoName</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>TimeStamp</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
@@ -899,7 +906,7 @@ such as the Galaxy S4.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 16, 2019</i>
+<br><i>Last revised Aug 12, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

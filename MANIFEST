@@ -125,6 +125,7 @@ html/TagNames/Ogg.html
 html/TagNames/Olympus.html
 html/TagNames/OpenEXR.html
 html/TagNames/Opus.html
+html/TagNames/Other.html
 html/TagNames/PCX.html
 html/TagNames/PDF.html
 html/TagNames/PGF.html
@@ -350,6 +351,7 @@ lib/Image/ExifTool/Ogg.pm
 lib/Image/ExifTool/Olympus.pm
 lib/Image/ExifTool/OpenEXR.pm
 lib/Image/ExifTool/Opus.pm
+lib/Image/ExifTool/Other.pm
 lib/Image/ExifTool/PCX.pm
 lib/Image/ExifTool/PDF.pm
 lib/Image/ExifTool/PGF.pm
@@ -717,6 +719,8 @@ t/PDF_6.out
 t/PDF_7.out
 t/PDF_8.out
 t/PDF_9.out
+t/PFM.t
+t/PFM_2.out
 t/PGF.t
 t/PGF_2.out
 t/PICT.t
@@ -1050,6 +1054,7 @@ t/images/Opus.opus
 t/images/PCX.pcx
 t/images/PDF.pdf
 t/images/PDF2.pdf
+t/images/PFM.pfm
 t/images/PGF.pgf
 t/images/PICT.pict
 t/images/PLIST-bin.plist

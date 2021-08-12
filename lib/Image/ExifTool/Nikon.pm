@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.98';
+$VERSION = '3.99';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -556,6 +556,7 @@ sub GetAFPointGrid($$;$);
     'F3 54 2B 50 24 24 84 0E' => 'Tamron SP AF 17-50mm f/2.8 XR Di II VC LD Aspherical (IF) (B005)',
     '00 3F 2D 80 2B 40 00 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) (A14)',
     '00 3F 2D 80 2C 40 00 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14)',
+    'EC 3E 3C 8E 2C 40 DF 0E' => 'Tamron 28-300mm f/3.5-6.3 Di VC PZD A010', #30
     '00 40 2D 80 2C 40 00 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14NII)', #NJ
     'FC 40 2D 80 2C 40 DF 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14NII)', #PH (NC)
     'E6 40 2D 80 2C 40 DF 0E' => 'Tamron 18-200mm f/3.5-6.3 Di II VC (B018)', #Tanel (removed AF designation, ref 37)
@@ -614,6 +615,7 @@ sub GetAFPointGrid($$;$);
     '7A 48 1C 29 24 24 7E 06' => 'Tokina AT-X 116 PRO DX II (AF 11-16mm f/2.8)',
     '80 48 1C 29 24 24 7A 06' => 'Tokina atx-i 11-16mm F2.8 CF', #exiv2 issue 1078
     '7A 48 1C 30 24 24 7E 06' => 'Tokina AT-X 11-20 F2.8 PRO DX (AF 11-20mm f/2.8)',
+    '8B 48 1C 30 24 24 85 06' => 'Tokina AT-X 11-20 F2.8 PRO DX (AF 11-20mm f/2.8)', #forum12687
     '00 3C 1F 37 30 30 00 06' => 'Tokina AT-X 124 AF PRO DX (AF 12-24mm f/4)',
     '7A 3C 1F 37 30 30 7E 06.2' => 'Tokina AT-X 124 AF PRO DX II (AF 12-24mm f/4)',
     '7A 3C 1F 3C 30 30 7E 06' => 'Tokina AT-X 12-28 PRO DX (AF 12-28mm f/4)',
@@ -720,6 +722,9 @@ sub GetAFPointGrid($$;$);
     '00 40 11 11 2C 2C 00 00' => 'Samyang 8mm f/3.5 Fish-Eye',
     '00 58 64 64 20 20 00 00' => 'Soligor C/D Macro MC 90mm f/2.5',
     '4A 58 30 30 14 0C 4D 02' => 'Rokinon 20mm f/1.8 ED AS UMC', #30
+#
+    'A0 56 44 44 14 14 A2 06' => 'Sony FE 35mm F1.8', #IB (Techart adapter)
+    'A0 37 5C 8E 34 3C A2 06' => 'Sony FE 70-300mm F4.5-5.6 G OSS', #IB (Techart adapter)
 );
 
 # text encoding used in LocationInfo (ref PH)
@@ -8497,8 +8502,8 @@ my %nikonFocalConversions = (
     # 0x02 - undef[148]
     # 0x03 - undef[284]
     # 0x04 - undef[148,212]
-    # 0x05 - undef[84]
-    # 0x06 - undef[116]
+    # 0x05 - undef[84] (barrel distortion params at offsets 0x14,0x1c,0x24, ref 28)
+    # 0x06 - undef[116] (vignette correction params at offsets 0x24,0x34,0x44, ref 28)
     # 0x07 - undef[104]
     # 0x08 - undef[24]
     # 0x09 - undef[36]

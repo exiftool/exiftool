@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub ProcessNikonSettings($$$);
 
@@ -592,7 +592,7 @@ my %infoD6 = (
         },
     },
     0x026 => { Name => 'AF-AssistIlluminator',      PrintConv => \%onOff }, # CSa11 (Z7_2)
-  # 0x027 => { Name => 'ManualFocusRingInAFMode',   PrintConv => \%onOff }, # CSa18 (D6,Z7_2) capability documented in manual, but visibility (& ability to test) requires a compatible lens
+    0x027 => { Name => 'ManualFocusRingInAFMode',   PrintConv => \%onOff }, # CSa12 (D6,Z7_2) capability documented in manual, but visibility (& ability to test) requires a compatible lens
     0x029 => { Name => 'ISOStepSize',               PrintConv => \%thirdHalfFull },     # CSb1 (D6)
     0x02a => { Name => 'ExposureControlStepSize',   PrintConv => \%thirdHalfFull }, # CSb2 (D6), CSb1 (Z7_2)
     0x02b => { # CSb4 (D6), CSb2 (Z7_2)
@@ -1920,6 +1920,14 @@ my %infoD6 = (
         },
     },
     0x170 => { Name => 'PreferSubSelectorCenter', PrintConv => \%offOn }, # CSf13 (D6 firmware v1.2.0)
+    0x171 => { # CSb8 (D6 firmware v1.3.0)
+        Name => 'KeepExposureWithTeleconverter',
+        PrintConv => {
+            1 => 'Off',
+            2 => 'Shutter Speed',
+            3 => 'ISO',
+        },
+    },
     0x174 => { # CSa17-d (D6 firmware v1.2.0)
         Name => 'FocusPointSelectionSpeed',
         PrintConv => {

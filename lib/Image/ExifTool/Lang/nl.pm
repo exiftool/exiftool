@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::nl;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 %Image::ExifTool::Lang::nl::Translate = (
    'AEBAutoCancel' => {
@@ -1502,97 +1502,98 @@ $VERSION = '1.12';
    'GIFVersion' => 'GIF versie',
    'GPSAltitude' => 'Hoogte',
    'GPSAltitudeRef' => {
-      Description => 'Hoogte referentie',
+      Description => 'GPS hoogte - referentie',
       PrintConv => {
-        'Above Sea Level' => 'Zee spiegel',
-        'Below Sea Level' => 'Zee spiegel referentie (negatieve waarde)',
+        'Above Sea Level' => 'Boven zeeniveau',
+        'Below Sea Level' => 'Onder zeeniveau',
       },
     },
-   'GPSAreaInformation' => 'Naam van het GPS gebied',
-   'GPSDOP' => 'Meet nauwkeurigheid',
-   'GPSDateStamp' => 'GPS datum',
-   'GPSDateTime' => 'GPS tijd (atoomklok)',
-   'GPSDestBearing' => 'Motiefrichting',
+   'GPSAreaInformation' => 'GPS naam van het gebied',
+   'GPSDOP' => 'GPS meetnauwkeurigheid',
+   'GPSDateStamp' => 'GPS UTC datum',
+   'GPSDateTime' => 'GPS UTC datum en tijd',
+   'GPSDestBearing' => 'GPS peiling van bestemming',
    'GPSDestBearingRef' => {
-      Description => 'Referentie voor de motiefrichting',
+      Description => 'GPS peiling van bestemming - referentie',
       PrintConv => {
-        'Magnetic North' => 'Magnetische uitrichting',
-        'True North' => 'Geografische uitrichting',
+        'Magnetic North' => 'Magnetische noorden',
+        'True North' => 'Geografische noorden',
       },
     },
-   'GPSDestDistance' => 'Afstand tot bestemming',
+   'GPSDestDistance' => 'GPS afstand tot bestemming',
    'GPSDestDistanceRef' => {
-      Description => 'Referentie voor de afstand tot de bestemming',
+      Description => 'GPS afstand tot bestemming - referentie',
       PrintConv => {
-        'Miles' => 'Mijlen',
-        'Nautical Miles' => 'Knopen',
+        'Miles' => 'Engelse mijlen',
+        'Nautical Miles' => 'Zeemijlen',
       },
     },
-   'GPSDestLatitude' => 'Breedte van het doel',
+   'GPSDestLatitude' => 'GPS breedtegraad van bestemming',
    'GPSDestLatitudeRef' => {
-      Description => 'Referentie voor de breedte van het doel',
+      Description => 'GPS breedtegraad van bestemming - referentie',
       PrintConv => {
-        'North' => 'Noordelijke breedte',
-        'South' => 'Zuidelijke breedte',
+        'North' => 'Noorderbreedte',
+        'South' => 'Zuiderbreedte',
       },
     },
-   'GPSDestLongitude' => 'Lengtegraad van het doel',
+   'GPSDestLongitude' => 'GPS lengtegraad van bestemming',
    'GPSDestLongitudeRef' => {
-      Description => 'Referentie voor de lengte van het doel',
+      Description => 'GPS lengtegraad van bestemming - referentie',
       PrintConv => {
-        'East' => 'Oostelijke lengte',
-        'West' => 'Westlijke lengte',
+        'East' => 'Oosterlengte',
+        'West' => 'Westerlengte',
       },
     },
    'GPSDifferential' => {
       Description => 'GPS differentiaal correctie',
       PrintConv => {
-        'Differential Corrected' => 'Differentiaal correctie toegepast',
-        'No Correction' => 'Meting zonder differentiaal correctie',
+        'Differential Corrected' => 'Met differentiaal correctie',
+        'No Correction' => 'Zonder differentiaal correctie',
       },
     },
-   'GPSImgDirection' => 'Richting van de afbeelding',
+   'GPSImgDirection' => 'GPS peiling van de afbeelding',
    'GPSImgDirectionRef' => {
-      Description => 'Referentie voor de uitrichting van de afbeelding',
+      Description => 'GPS peiling van de afbeelding - referentie',
       PrintConv => {
-        'Magnetic North' => 'Magnetische uitrichting',
-        'True North' => 'Geografische uitrichting',
+        'Magnetic North' => 'Magnetische noorden',
+        'True North' => 'Geografische noorden',
       },
     },
-   'GPSInfo' => 'GPS Info IFD-wijzer',
-   'GPSLatitude' => 'Breedte graad',
+   'GPSInfo' => 'GPS Info',
+   'GPSLatitude' => 'GPS breedtegraad',
    'GPSLatitudeRef' => {
-      Description => 'Noord. of zuid. breedte',
+      Description => 'GPS breedtegraad - referentie',
       PrintConv => {
-        'North' => 'Noordelijke breedte',
-        'South' => 'Zuidlijke breedte',
+        'North' => 'Noorderbreedte',
+        'South' => 'Zuiderbreedte',
       },
     },
-   'GPSLongitude' => 'Geografische lengte',
+   'GPSLongitude' => 'GPS lengtegraad',
    'GPSLongitudeRef' => {
-      Description => 'Oost. of west. lengte',
+      Description => 'GPS lengtegraad - referentie',
       PrintConv => {
-        'East' => 'Oostlijke lengte',
-        'West' => 'Westlijke lengte',
+        'East' => 'Oosterlengte',
+        'West' => 'Westerlengte',
       },
     },
-   'GPSMapDatum' => 'Geodatische datum',
+   'GPSMapDatum' => 'GPS geodetisch datum',
    'GPSMeasureMode' => {
-      Description => 'GPS meet methode',
+      Description => 'GPS meetmethode',
       PrintConv => {
-        '2-D' => '2 dimensionale meting',
-        '2-Dimensional' => '2 dimensionale meting',
-        '2-Dimensional Measurement' => '2 dimensionale meting',
-        '3-D' => '3 dimensionale meting',
-        '3-Dimensional' => '3 dimensionale meting',
-        '3-Dimensional Measurement' => '3 dimensionale meting',
+        '2-D' => 'Tweedimensionale meting',
+        '2-Dimensional' => 'Tweedimensionale meting',
+        '2-Dimensional Measurement' => 'Tweedimensionale meting',
+        '3-D' => 'Driedimensionale meting',
+        '3-Dimensional' => 'Driedimensionale meting',
+        '3-Dimensional Measurement' => 'Driedimensionale meting',
       },
     },
-   'GPSProcessingMethod' => 'Naam van de GPS verwerk methode',
-   'GPSSatellites' => 'Voor de meting gebruikte satellieten',
-   'GPSSpeed' => 'Snelheid van de GPS ontvanger',
+   'GPSPosition' => 'GPS positie',
+   'GPSProcessingMethod' => 'GPS verwerkingsmethode',
+   'GPSSatellites' => 'GPS satellieten gebruikt voor de meting',
+   'GPSSpeed' => 'GPS ontvanger bewegingssnelheid',
    'GPSSpeedRef' => {
-      Description => 'Snelheids eenheid',
+      Description => 'GPS ontvanger bewegingssnelheid - referentie',
       PrintConv => {
         'km/h' => 'Kilometer per uur',
         'knots' => 'Knopen',
@@ -1602,20 +1603,20 @@ $VERSION = '1.12';
    'GPSStatus' => {
       Description => 'GPS ontvanger status',
       PrintConv => {
-        'Measurement Active' => 'Meting loopt',
-        'Measurement Void' => 'Interoperabiliteit voor metingen',
+        'Measurement Active' => 'Actuele meting beschikbaar',
+        'Measurement Void' => 'Actuele meting niet beschikbaar',
       },
     },
-   'GPSTimeStamp' => 'GPS tijd (atoomklok)',
-   'GPSTrack' => 'Bewegingsrichting',
+   'GPSTimeStamp' => 'GPS UTC tijd',
+   'GPSTrack' => 'GPS ontvanger bewegingsrichting',
    'GPSTrackRef' => {
-      Description => 'Referentie voor de bewegingsrichting',
+      Description => 'GPS ontvanger bewegingsrichting - referentie',
       PrintConv => {
-        'Magnetic North' => 'Magnetische uitrichting',
-        'True North' => 'Geographische uitrichting',
+        'Magnetic North' => 'Magnetische noorden',
+        'True North' => 'Geografische noorden',
       },
     },
-   'GPSVersionID' => 'GPS tag versie',
+   'GPSVersionID' => 'GPS versie ID',
    'GainControl' => {
       Description => 'Belichtingsversterking',
       PrintConv => {

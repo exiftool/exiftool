@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.67';
+$VERSION = '2.68';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -733,6 +733,10 @@ my %eeBox2 = (
         Name => 'GPSDataList2',
         Unknown => 1,
         Binary => 1,
+    },
+    sefd => {
+        Name => 'SamsungTrailer',
+        SubDirectory => { TagTable => 'Image::ExifTool::Samsung::Trailer' },
     },
 );
 
@@ -2264,6 +2268,12 @@ my %eeBox2 = (
     # opax - 164 bytes unknown (center and affine arrays? ref 26)
     # opai - 32 bytes (maybe contains a serial number starting at byte 16? - PH) (rgb gains, degamma, gamma? ref 26)
     # intv - 16 bytes all zero
+    # ---- Xaiomi ----
+    mcvr => {
+        Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
+        Binary => 1,
+    },
     # ---- Unknown ----
     # CDET - 128 bytes (unknown origin)
     # mtyp - 4 bytes all zero (some drone video)
@@ -2701,6 +2711,7 @@ my %eeBox2 = (
     colr => [{
         Name => 'ICC_Profile',
         Condition => '$$valPt =~ /^(prof|rICC)/',
+        Permanent => 0, # (in QuickTime, this writes a zero-length box instead of deleting)
         SubDirectory => {
             TagTable => 'Image::ExifTool::ICC_Profile::Main',
             Start => 4,

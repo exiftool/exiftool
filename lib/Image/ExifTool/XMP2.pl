@@ -539,7 +539,8 @@ my %sImageRegion = ( # new in 1.5
     NOTES => q{
         This table contains tags defined by the IPTC Extension schema version 1.5. 
         The actual namespace prefix is "Iptc4xmpExt", but ExifTool shortens this for
-        the family 1 group name. (see L<http://www.iptc.org/IPTC4XMP/>)
+        the family 1 group name. (see
+        L<http://www.iptc.org/standards/photo-metadata/iptc-standard/>)
     },
     AboutCvTerm => {
         Struct => \%sCVTermDetails,

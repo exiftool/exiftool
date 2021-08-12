@@ -489,6 +489,7 @@ my %faceCategories = (
             3 => 'Electronic Front Curtain', #10
         },
     },
+    # 0x1100 - This may not work well for newer cameras (ref forum12682)
     0x1100 => [{
         Name => 'AutoBracketing',
         Condition => '$$self{Model} eq "X-T3"',

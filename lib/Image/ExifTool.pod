@@ -1188,8 +1188,9 @@ file from scratch.  A reference to a
 L<File::RandomAccess|File::RandomAccess> object is also allowed as a source,
 but in this case the destination is not optional.
 
-2) [optional] Destination file name, file reference, scalar reference, or
-undef to overwrite the original file.  May be '-' to write to stdout.
+2) [optional] Destination file name, file reference, scalar reference to
+write to memory, or undef to overwrite the original file.  May be '-' to
+write to stdout.
 
 3) [optional] Destination file type.  Ignored if a source is defined.
 

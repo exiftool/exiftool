@@ -22,12 +22,13 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.49';
+$VERSION = '1.50';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
 sub ProcessSamsungMeta($$$);
 sub ProcessSamsungIFD($$$);
+sub ProcessSamsung($$$);
 
 # Samsung LensType lookup
 %samsungLensTypes = (
@@ -940,14 +941,31 @@ my %formatMinMax = (
 %Image::ExifTool::Samsung::Trailer = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Other' },
     VARS => { NO_ID => 1, HEX_ID => 0 },
+    PROCESS_PROC => \&ProcessSamsung,
     PRIORITY => 0, # (first one takes priority so DepthMapWidth/Height match first DepthMapData)
     NOTES => q{
         Tags extracted from the trailer of JPEG images written when using certain
         features (such as "Sound & Shot" or "Shot & More") from Samsung models such
-        as the Galaxy S4 and Tab S.
+        as the Galaxy S4 and Tab S, and from the 'sefd' atom in HEIC images from the
+        Samsung S10+.
     },
-    '0x0001-name' => 'EmbeddedImageName', # ("DualShot_1","DualShot_2")
-    '0x0001' => { Name => 'EmbeddedImage', Groups => { 2 => 'Preview' }, Binary => 1 },
+    '0x0001-name' => {
+        Name => 'EmbeddedImageName', # ("DualShot_1","DualShot_2")
+        RawConv => '$$self{EmbeddedImageName} = $val',
+    },
+    '0x0001' => [
+        {
+            Name => 'EmbeddedImage',
+            Condition => '$$self{EmbeddedImageName} eq "DualShot_1"',
+            Groups => { 2 => 'Preview' },
+            Binary => 1,
+        },
+        {
+            Name => 'EmbeddedImage2',
+            Groups => { 2 => 'Preview' },
+            Binary => 1,
+        },
+    ],
     '0x0100-name' => 'EmbeddedAudioFileName', # ("SoundShot_000")
     '0x0100' => { Name => 'EmbeddedAudioFile', Groups => { 2 => 'Audio' }, Binary => 1 },
     '0x0201-name' => 'SurroundShotVideoName', # ("Interactive_Panorama_000")
@@ -977,10 +995,24 @@ my %formatMinMax = (
     '0x0a30-name' => 'EmbeddedVideoType', # ("MotionPhoto_Data")
     '0x0a30' => { Name => 'EmbeddedVideoFile', Groups => { 2 => 'Video' }, Binary => 1 }, #forum7161
    # 0x0aa1-name - seen 'MCC_Data'
-   # 0x0aa1 - seen '234','222','429'
+   # 0x0aa1 - seen '204','222','234','302','429'
+    '0x0aa1' => 'MCCData', # (unknown meaning)
    # 0x0ab0-name - seen 'DualShot_Meta_Info'
-    '0x0ab1-name' => 'DepthMapName', # seen 'DualShot_DepthMap_1' (SM-N950U)
-    '0x0ab1' => { Name => 'DepthMapData', Binary => 1 },
+    '0x0ab1-name' => {
+        Name => 'DepthMapName',
+        # seen 'DualShot_DepthMap_1' (SM-N950U), DualShot_DepthMap_5 (SM-G998W)
+        RawConv => '$$self{DepthMapName} = $val',
+    },
+    '0x0ab1' => [
+        {
+            Name => 'DepthMapData',
+            Condition => '$$self{DepthMapName} eq "DualShot_DepthMap_1"',
+            Binary => 1,
+        },{
+            Name => 'DepthMapData2',
+            Binary => 1,
+        },
+    ],
    # 0x0ab3-name - seen 'DualShot_Extra_Info' (SM-N950U)
     '0x0ab3' => { # (SM-N950U)
         Name => 'DualShotExtra',
@@ -1015,7 +1047,8 @@ my %formatMinMax = (
         Hook => q{
             if ($size >= 96) {
                 my $tmp = substr($$dataPt, $pos, 64);
-                if ($tmp =~ /\x01\0\xff\xff/g and not pos($tmp) % 4) {
+                # (have seen 0x01,0x03 and 0x07)
+                if ($tmp =~ /[\x01-\x09]\0\xff\xff/g and not pos($tmp) % 4) {
                     $$self{DepthMapTagPos} = pos($tmp);
                     $varSize += $$self{DepthMapTagPos} - 32;
                 }
@@ -1274,6 +1307,10 @@ sub ProcessSamsung($$$)
     my $unknown = $et->Options('Unknown');
     my ($buff, $buf2, $index, $offsetPos, $audioNOff, $audioSize);
 
+    unless ($raf) {
+        $raf = new File::RandomAccess($$dirInfo{DataPt});
+        $et->VerboseDir('SamsungTrailer');
+    }
     return 0 unless $raf->Seek(-6-$offset, 2) and $raf->Read($buff, 6) == 6 and
                     ($buff eq 'QDIOBS' or $buff eq "\0\0SEFT");
     my $endPos = $raf->Tell();
@@ -1328,7 +1365,7 @@ SamBlock:
         # save trailer position and length
         my $dataPos = $$dirInfo{DataPos} = $dirPos - $firstBlock;
         my $dirLen = $$dirInfo{DirLen} = $endPos - $dataPos;
-        if (($verbose or $$et{HTML_DUMP}) and not $outfile) {
+        if (($verbose or $$et{HTML_DUMP}) and not $outfile and $$dirInfo{RAF}) {
             $et->DumpTrailer($dirInfo);
             return 1 if $$et{HTML_DUMP};
         }

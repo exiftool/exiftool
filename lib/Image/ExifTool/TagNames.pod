@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24286 tags, with 15747 unique tag names.
+They contain a total of 24297 tags, with 15752 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -3519,7 +3519,8 @@ These tags belong to the ExifTool XMP-iptcCore family 1 group.
 
 This table contains tags defined by the IPTC Extension schema version 1.5.
 The actual namespace prefix is "Iptc4xmpExt", but ExifTool shortens this for
-the family 1 group name. (see L<http://www.iptc.org/IPTC4XMP/>)
+the family 1 group name. (see
+L<http://www.iptc.org/standards/photo-metadata/iptc-standard/>)
 
 These tags belong to the ExifTool XMP-iptcExt family 1 group.
 
@@ -5937,6 +5938,7 @@ Unknown only to reduce the volume of the normal output.
   0x0023   FocusPointWrap                       no
   0x0025   ManualFocusPointIllumination         no
   0x0026   AF-AssistIlluminator                 no
+  0x0027   ManualFocusRingInAFMode              no
   0x0029   ISOStepSize                          no
   0x002a   ExposureControlStepSize              no
   0x002b   EasyExposureCompensation             no
@@ -6115,6 +6117,7 @@ Unknown only to reduce the volume of the normal output.
   0x016c   LimitAF-AreaModeSelWideLAnimals?     no
   0x016e   AFAreaMode                           no
   0x0170   PreferSubSelectorCenter              no
+  0x0171   KeepExposureWithTeleconverter        no
   0x0174   FocusPointSelectionSpeed             no
 
 =head2 Canon Tags
@@ -17040,11 +17043,13 @@ Camera orientation information written by the Gear 360 (SM-C200).
 
 Tags extracted from the trailer of JPEG images written when using certain
 features (such as "Sound & Shot" or "Shot & More") from Samsung models such
-as the Galaxy S4 and Tab S.
+as the Galaxy S4 and Tab S, and from the 'sefd' atom in HEIC images from the
+Samsung S10+.
 
   Tag Name                                      Writable
   --------                                      --------
   DepthMapData                                  no
+  DepthMapData2                                 no
   DepthMapName                                  no
   DualCameraImage                               no
   DualCameraImageName                           no
@@ -17052,9 +17057,11 @@ as the Galaxy S4 and Tab S.
   EmbeddedAudioFile                             no
   EmbeddedAudioFileName                         no
   EmbeddedImage                                 no
+  EmbeddedImage2                                no
   EmbeddedImageName                             no
   EmbeddedVideoFile                             no
   EmbeddedVideoType                             no
+  MCCData                                       no
   SingleShotDepthMap                            no
   SingleShotMeta                                Samsung SingleShotMeta
   SurroundShotVideo                             no
@@ -24792,6 +24799,18 @@ specification.
   'software'           Software                 no
   'view'               View                     no
 
+=head3 Other PFM Tags
+
+Tags extracted from Portable FloatMap images. See
+L<http://www.pauldebevec.com/Research/HDR/PFM/> for the specification.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  ByteOrder                                     no
+  ColorSpace                                    no
+  ImageHeight                                   no
+  ImageWidth                                    no
+
 =head2 PDF Tags
 
 The tags listed in the PDF tables below are those which are used by ExifTool
@@ -25103,8 +25122,8 @@ Additional document permissions imposed by digital signatures.
 
 =head2 ID3 Tags
 
-ExifTool extracts ID3 and Lyrics3 information from MP3, MPEG, AIFF, OGG,
-FLAC, APE, MPC and RealAudio files.  ID3v2 tags which support multiple
+ExifTool extracts ID3 and Lyrics3 information from MP3, MPEG, WAV, AIFF,
+OGG, FLAC, APE, MPC and RealAudio files.  ID3v2 tags which support multiple
 languages (eg. Comment and Lyrics) are extracted by specifying the tag name,
 followed by a dash ('-'), then a 3-character ISO 639-2 language code (eg.
 "Comment-spa"). See L<http://www.id3.org/> for the official ID3
@@ -26034,6 +26053,7 @@ for the official specification.
   'pict'               PreviewPICT              no
   'pnot'               Preview                  QuickTime Preview
   'prrt'               ARDroneTelemetry         no
+  'sefd'               SamsungTrailer           Samsung Trailer
   'skip'               CanonSkip                Canon Skip
                        PreviewImage             no
                        Skip?                    no
@@ -26078,7 +26098,7 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 53 different formats of timed GPS metadata from video files.
+currently reads 55 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -27233,6 +27253,7 @@ the config file.
   'lrcu'       LyricsURI                        string
   'lvlm'       LevelMeter?                      rational64s
   'manu'       Make                             no
+  'mcvr'       PreviewImage                     string
   'meta'       Meta                             QuickTime Meta
   'modl'       Model                            no
   'name'       Name                             string
@@ -30093,6 +30114,7 @@ sub-documents, but the Duration is calculated for the full video.
   'gps0'               GPSTrack                 QuickTime Stream
   'gsen'               GSensor                  QuickTime Stream
   'iXML'               IXML                     XMP XML
+  'id3 '               ID3                      ID3
   'inst'               Instrument               RIFF Instrument
   'labl'               CuePointLabel            no
   'list'               ListType                 no
@@ -30214,6 +30236,7 @@ by some software.
   'ISTD'   ProductionStudio                     no
   'ISTR'   Starring                             no
   'ITCH'   Technician                           no
+  'ITRK'   TrackNumber                          no
   'IWMU'   WatermarkURL                         no
   'IWRI'   WrittenBy                            no
   'LANG'   Language                             no

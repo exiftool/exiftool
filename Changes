@@ -4,8 +4,33 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 12.26. (Other versions are
+Note: The most recent production release is Version 12.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Aug. 12, 2021 - Version 12.30 (production release)
+
+  - Added read support for Portable FloatMap (PFM) images (this was a bit of a
+    pain because they have the same file extension as Printer Font Metrix files)
+  - Added a few new Nikon LensID values (thanks LibRaw)
+  - Added a new Canon LensType
+  - Added a new Olympus CameraType (thanks LibRaw)
+  - Added minor warning about unknown data between JPEG segments
+  - Added a couple of new NikonSettings tags (thanks Warren Hatch)
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Decode 'id3 ' chunk in WAV audio files
+  - Decode timed GPS from concatenated Garmin dashcam videos
+  - Decode SamsungTrailer information from sefd atom in HEIC images
+  - Decode more Sony MakerNote tags for the ZV-E10 (thanks Jos Roost)
+  - Decode DepthMapTiff from JPEG images of more Samsung models
+  - Decode timed GPS from M2TS videos of yet another type of dashcam
+  - Extract PreviewImage from Xaiomi MP4 videos
+  - Changed name of second EmbeddedImage in Samsung trailer to EmbeddedImage2
+  - Improved Dutch translations for GPS tags (thanks Peter Dubbelman)
+  - Allow ICC_Profile to be "deleted" from AVIF files (actually, the profile
+    isn't really deleted. Instead, a zero-length profile is written to allow a
+    profile to be added back later since QuickTime item property containers
+    currently can't be created)
+  - Patched to remove 2 GB size limit when reading Photoshop ImageSourceData
 
 July 9, 2021 - Version 12.29
 
@@ -38,7 +63,7 @@ June 9, 2021 - Version 12.27
   - Added warning if IPTCDigest is not current
   - Decode a couple more Pentax tags (thanks LibRaw)
   - Decode streaming GPS from Novatek INNOVV MP4 and TS videos
-  - Improved tag names in confi_files/covert_regions.config (thanks StarGeek)
+  - Improved tag names in config_files/covert_regions.config (thanks StarGeek)
   - Changed MIME types for MS Office macro-enabled formats to add the .12
   - Patched Canon LensID logic to properly identify the Canon RF 24-105mm F4 L
     IS USM lens

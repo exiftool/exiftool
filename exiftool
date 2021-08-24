@@ -3061,12 +3061,13 @@ sub SetImageInfo($$$)
                         # temporarily disable CTRL-C during this critical operation
                         $critical = 1;
                         undef $tmpFile;     # handle deletion of temporary file ourself
-                        if ($et->Open(\*ORIG_FILE, $file, '>')) {
+                        if ($et->Open(\*ORIG_FILE, $file, '+<')) {
                             binmode(ORIG_FILE);
                             while (read(NEW_FILE, $buff, 65536)) {
                                 print ORIG_FILE $buff or $err = 1;
                             }
                             close(NEW_FILE);
+                            truncate(ORIG_FILE, tell(ORIG_FILE));  # Handle files being shorter than the original
                             close(ORIG_FILE) or $err = 1;
                             if ($err) {
                                 Warn "Couldn't overwrite in place - $file\n";

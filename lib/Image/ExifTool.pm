@@ -2320,6 +2320,7 @@ sub ClearOptions($)
         PrintConv   => 1,       # flag to enable print conversion
         QuickTimeHandler => 1,  # flag to add mdir Handler to newly created Meta box
         QuickTimeUTC=> undef,   # assume that QuickTime date/time tags are stored as UTC
+        QuickTimePreservePadding => undef, # preserve the size of QuickTime tags across rewrites
         RequestAll  => undef,   # extract all tags that must be specifically requested
         RequestTags => undef,   # extra tags to request (on top of those in the tag list)
         SaveFormat  => undef,   # save family 6 tag TIFF format

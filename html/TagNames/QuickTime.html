@@ -59,6 +59,11 @@ the PrintConv option is enabled and no time zone is specified.  This is
 because Apple software may display crazy values if the time zone is missing
 for some tags.</p>
 
+<p>If the input file has additional padding at the end of each tag, the padding
+will be stripped when rewriting the file. However, if the <a href="../ExifTool.html#QuickTimePreservePadding">QuickTimePreservePadding</a>
+API option is set, then ExifTool will pad each tag to maintain the overall file
+size if a rewritten tag is shorter.</p>
+
 <p>See
 <a href="https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/">https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/</a>
 for the official specification.

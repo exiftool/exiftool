@@ -1282,6 +1282,7 @@ sub SetNewValuesFromFile($$;@)
         Password        => $$options{Password},
         PrintConv       => $$options{PrintConv},
         QuickTimeUTC    => $$options{QuickTimeUTC},
+        QuickTimePreservePadding => $$options{QuickTimePreservePadding},
         RequestAll      => $$options{RequestAll} || 1, # (is this still necessary now that RequestTags are being set?)
         RequestTags     => $$options{RequestTags},
         SaveFormat      => $$options{SaveFormat},

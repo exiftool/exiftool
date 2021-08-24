@@ -1137,6 +1137,10 @@ for (;;) {
         next;
     }
     /^q(uiet)?$/i and ++$quiet, next;
+    if (/^quicktimepreservepadding(?:=(.+))?$/i) {
+        $mt->Options('QuickTimePreservePadding' => (defined($1) ? $1 : 1));
+        next;
+    }
     /^r(ecurse)?(\.?)$/i and $recurse = ($2 ? 2 : 1), next;
     if ($a eq 'require') { # (undocumented) added in version 8.65
         my $ver = shift;

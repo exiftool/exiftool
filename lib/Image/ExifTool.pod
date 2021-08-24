@@ -872,6 +872,16 @@ option also disables the autodetection of incorrect time-zero offsets in
 QuickTime date/time values, and enforces a time zero of 1904 as per the
 QuickTime specification.
 
+=item QuickTimePreservePadding
+
+Flag set to preserve the padding of tags within the QuickTime Container.
+The default behaviour is to size each tag with as much space as needed
+exactly; however some files (like Canon CR3) include padding into each of
+the tags. Setting this flag to 1 will maintain the space allocated to each
+tag by appending NUL bytes at the end if a rewritten tag is shorter than its
+original. If a rewritten tag is longer than the original, the new longer tag
+is always written in full.
+
 =item RequestAll
 
 Flag to request all tags to be extracted.  This causes some tags to be

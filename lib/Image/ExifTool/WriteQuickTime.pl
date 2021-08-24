@@ -1331,6 +1331,10 @@ sub WriteQuickTime($$$)
             }
             # write the new atom if it was modified
             if (defined $newData) {
+                if ($et->Options('QuickTimePreservePadding') and (length($buff) > length($newData))) {
+                    my $padding = length($buff) - length($newData);
+                    $newData .= "\0" x $padding;
+                }
                 my $len = length($newData) + 8;
                 $len > 0x7fffffff and $et->Error("$$tagInfo{Name} to large to write"), last;
                 # update size in ChunkOffset list for modified 'uuid' atom

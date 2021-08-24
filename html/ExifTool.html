@@ -785,6 +785,15 @@ numerical options.</p>
     time zero of 1904 as per the QuickTime specification.</td>
     <td align=center>0 or 1</td>
     <td align=center>undef</td></tr>
+<tr id="QuickTimePreservePadding"><td>QuickTimePreservePadding</td><td>Flag set to preserve
+    the padding of tags within the QuickTime Container. The default behaviour is to size
+    each tag with as much space as needed exactly; however some files (like Canon CR3)
+    include padding into some tags. Setting this flag to 1 will maintain the space
+    allocated to each tag by appending NUL bytes at the end if a rewritten tag is shorter
+    than its original. If a rewritten tag is longer than the original, the new longer tag
+    is always written in full.</td>
+    <td align=center>0 or 1</td>
+    <td align=center>undef</td></tr>
 <tr id="RequestAll"><td>RequestAll</td><td>Flag to request all tags to be extracted.
     This causes some tags to be generated which normally would not be unless specifically
     requested (by passing the tag name to <a href="#ImageInfo">ImageInfo</a> or

@@ -179,6 +179,8 @@ sub BuildTextChunk($$$$$)
             $tag =~ s/-$lang$//;    # remove language code from tagID
         } elsif ($$et{OPTIONS}{Charset} ne 'Latin' and $val =~  /[\x80-\xff]/) {
             $iTXt = 1;      # write as iTXt if it contains non-Latin special characters
+        } elsif ($$tagInfo{iTXt}) {
+            $iTXt = 1;      # write as iTXt if specified in user-defined tag
         }
     }
     if ($comp) {

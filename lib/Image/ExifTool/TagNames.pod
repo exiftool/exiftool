@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24297 tags, with 15752 unique tag names.
+They contain a total of 24327 tags, with 15772 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -20506,6 +20506,7 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'EISA'   ElectronicImageStabilization         no
   'EMPT'   Empty?                               no
   'ESCS'   EscapeStatus?                        no
+  'EXPT'   MaximumShutterAngle                  no
   'FACE'   FaceDetected                         no
   'FCNM'   FaceNumbers                          no
   'FMWR'   FirmwareVersion                      no
@@ -20523,7 +20524,11 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'LNED'   LocalPositionNED                     no
   'MAGN'   Magnetometer                         no
   'MINF'   Model                                no
+  'MTRX'   AccelerometerMatrix                  no
+  'MUID'   MediaUniqueID                        no
   'OREN'   AutoRotation                         no
+  'ORIN'   InputOrientation                     no
+  'ORIO'   OutputOrientation                    no
   'PHDR'   HDRSetting                           no
   'PIMN'   AutoISOMin                           no
   'PIMX'   AutoISOMax                           no
@@ -20540,6 +20545,7 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'SHUT'   ExposureTimes                        no
   'SIMU'   ScaledIMU                            no
   'SIUN'   SIUnits?                             no
+  'SROT'   SensorReadoutTime                    no
   'STMP'   TimeStamp                            no
   'STNM'   StreamName?                          no
   'STRM'   NestedSignalStream                   GoPro GPMF
@@ -20547,6 +20553,7 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'TMPC'   CameraTemperature                    no
   'TSMP'   TotalSamples?                        no
   'TYPE'   StructureType?                       no
+  'UNIF'   InputUniformity                      no
   'UNIT'   Units?                               no
   'VERS'   MetadataVersion                      no
   'VFOV'   FieldOfView                          no
@@ -23955,6 +23962,8 @@ available.  Alternate language tags and values containing special characters
 if the Compress option is used and Compress::Zlib is available.  Raw profile
 information is always created as compressed zTXt if Compress::Zlib is
 available, or tEXt otherwise.  Standard XMP is written as uncompressed iTXt.
+User-defined tags may set an 'iTXt' flag in the tag definition to be written
+only as iTXt.
 
 Alternate languages are accessed by suffixing the tag name with a '-',
 followed by an RFC 3066 language code (eg. "PNG:Comment-fr", or
@@ -24388,6 +24397,7 @@ Tags extracted from DPX (Digital Picture Exchange) images.
    1532    SourceCreateDate                     no
    1556    InputDeviceName                      no
    1588    InputDeviceSerialNumber              no
+   1628    AspectRatio                          no
    1724    OriginalFrameRate                    no
    1728    ShutterAngle                         no
    1732    FrameID                              no
@@ -24989,11 +24999,12 @@ This is the PDF document catalog.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
-  'Cs1'                Cs1                      PDF Cs1
+  'CS0'                CS0                      PDF ICCBased
+  'Cs1'                Cs1                      PDF ICCBased
   'DefaultCMYK'        DefaultCMYK              PDF DefaultRGB
   'DefaultRGB'         DefaultRGB               PDF DefaultRGB
 
-=head3 PDF Cs1 Tags
+=head3 PDF ICCBased Tags
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
@@ -25004,12 +25015,6 @@ This is the PDF document catalog.
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
   'ICCBased'   ICCBased                         PDF ICCBased
-
-=head3 PDF ICCBased Tags
-
-  Tag ID       Tag Name                         Writable
-  ------       --------                         --------
-  '_stream'    _stream                          ICC_Profile
 
 =head3 PDF Properties Tags
 
@@ -26584,21 +26589,42 @@ QuickTimeHandler option may be set to 0 to avoid this.
 =head3 QuickTime iTunesInfo Tags
 
 ExifTool will extract any iTunesInfo tags that exist, even if they are not
-defined in this table.
+defined in this table.  These tags belong to the family 1 "iTunes" group,
+and are not currently writable.
 
   Tag ID                    Tag Name            Writable
   ------                    --------            --------
+  'ARTISTS'                 Artists             no
+  'BARCODE'                 Barcode             no
+  'CATALOGNUMBER'           CatalogNumber       no
   'DISCNUMBER'              DiscNumber          no
+  'Dynamic Range (DR)'      DynamicRange        no
+  'Dynamic Range (R128)'    DynamicRangeR128    no
   'Encoding Params'         EncodingParams      QuickTime EncodingParams
+  'LABEL'                   Label               no
+  'MEDIA'                   Media               no
+  'MOOD'                    Mood                no
+  'Peak Level (R128)'       PeakLevelR128       no
+  'Peak Level (Sample)'     PeakLevelSample     no
+  'RATING'                  Rating              no
+  'SCRIPT'                  Script              no
   'TRACKNUMBER'             TrackNumber         no
+  'Volume Level (R128)'     VolumeLevelR128     no
+  'Volume Level (ReplayGain)' ReplayVolumeLevel no
   'iTunEXTC'                ContentRating       no
   'iTunMOVI'                iTunMOVI            PLIST
   'iTunNORM'                VolumeNormalization no
   'iTunSMPB'                iTunSMPB            no
   'iTunes_CDDB_1'           CDDB1Info           no
   'iTunes_CDDB_TrackNumber' CDDBTrackNumber     no
+  'initialkey'              InitialKey          no
+  'originaldate'            OriginalDate        no
+  'originalyear'            OriginalYear        no
   'popularimeter'           Popularimeter       no
+  'replaygain_track_gain'   ReplayTrackGain     no
+  'replaygain_track_peak'   ReplayTrackPeak     no
   'tool'                    iTunTool            no
+  '~length'                 Length              no
 
 =head3 QuickTime EncodingParams Tags
 
@@ -35531,11 +35557,15 @@ values, may created via the ExifTool configuration file.
                        GPS:GPSLatitudeRef
   GPSLatitude          QuickTime:GPSCoordinates no
   GPSLatitude          QuickTime:LocationInformation no
+  GPSLatitude          Sony:GPSLatitude         no
+                       Sony:GPSLatitudeRef
   GPSLatitudeRef       XMP-exif:GPSLatitude     no
   GPSLongitude         GPS:GPSLongitude         no
                        GPS:GPSLongitudeRef
   GPSLongitude         QuickTime:GPSCoordinates no
   GPSLongitude         QuickTime:LocationInformation no
+  GPSLongitude         Sony:GPSLongitude        no
+                       Sony:GPSLongitudeRef
   GPSLongitudeRef      XMP-exif:GPSLongitude    no
   GPSPosition          GPSLatitude              no
                        GPSLongitude

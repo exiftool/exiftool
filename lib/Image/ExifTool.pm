@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath
             %static_vars);
 
-$VERSION = '12.30';
+$VERSION = '12.31';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (

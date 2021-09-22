@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.51';
+$VERSION = '1.53';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -280,7 +280,10 @@ my %supportedFilter = (
         ConvertToDict => 1,
     },
     Cs1 => {
-        SubDirectory => { TagTable => 'Image::ExifTool::PDF::Cs1' },
+        SubDirectory => { TagTable => 'Image::ExifTool::PDF::ICCBased' },
+    },
+    CS0 => {
+        SubDirectory => { TagTable => 'Image::ExifTool::PDF::ICCBased' },
     },
 );
 
@@ -291,14 +294,7 @@ my %supportedFilter = (
     },
 );
 
-# tags in PDF Cs1 dictionary
-%Image::ExifTool::PDF::Cs1 = (
-    _stream => {
-        SubDirectory => { TagTable => 'Image::ExifTool::ICC_Profile::Main' },
-    },
-);
-
-# tags in PDF ICCBased dictionary
+# tags in PDF ICCBased, Cs1 and CS0 dictionaries
 %Image::ExifTool::PDF::ICCBased = (
     _stream => {
         SubDirectory => { TagTable => 'Image::ExifTool::ICC_Profile::Main' },
@@ -1989,16 +1985,17 @@ sub ProcessDict($$$$;$$)
             } else {
                 $val = ReadPDFValue($val);
             }
-            # convert from UTF-16 (big endian) to UTF-8 or Latin if necessary
-            # unless this is binary data (hex-encoded strings would not have been converted)
             if (ref $val) {
                 if (ref $val eq 'ARRAY') {
+                    delete $$et{LIST_TAGS}{$tagInfo} if $$tagInfo{List};
                     my $v;
                     foreach $v (@$val) {
                         $et->FoundTag($tagInfo, $v);
                     }
                 }
             } elsif (defined $val) {
+                # convert from UTF-16 (big endian) to UTF-8 or Latin if necessary
+                # unless this is binary data (hex-encoded strings would not have been converted)
                 my $format = $$tagInfo{Format} || $$tagInfo{Writable} || 'string';
                 $val = ConvertPDFDate($val) if $format eq 'date';
                 if (not $$tagInfo{Binary} and $val =~ /[\x18-\x1f\x80-\xff]/) {

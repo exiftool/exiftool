@@ -14,7 +14,7 @@
 #               2019/10/24 - PH Preserve sub-seconds in GPSDateTime value
 #
 # Notes:     1) Input file(s) must contain GPSLatitude and GPSLongitude.
-#            2) The -ee option is to extract the full track from video files.
+#            2) The -ee3 option is to extract the full track from video files.
 #            3) The -fileOrder option may be used to control the order of the
 #               generated track points when processing multiple files.
 #------------------------------------------------------------------------------

@@ -293,6 +293,7 @@ sub WritePDF($$)
     my $newTool = new Image::ExifTool;
     $newTool->Options(List => 1);
     $newTool->Options(Password => $et->Options('Password'));
+    $newTool->Options(NoPDFList => $et->Options('NoPDFList'));
     $$newTool{PDF_CAPTURE} = \%capture;
     my $info = $newTool->ImageInfo($raf, 'XMP', 'PDF:*', 'Error', 'Warning');
     # not a valid PDF file unless we got a version number

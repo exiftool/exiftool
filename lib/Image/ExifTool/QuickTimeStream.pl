@@ -1343,6 +1343,19 @@ sub ProcessSamples($)
 }
 
 #------------------------------------------------------------------------------
+# Convert latitude/longitude from DDDMM.MMMM format to decimal degrees
+# Inputs: 0) latitude, 1) longitude
+# Returns: lat/lon are changed in place
+# (note: this method works fine for negative coordinates)
+sub ConvertLatLon($$)
+{
+    my $deg = int($_[0] / 100);     # latitude
+    $_[0] = $deg + ($_[0] - $deg * 100) / 60;
+    $deg = int($_[1] / 100);        # longitude
+    $_[1] = $deg + ($_[1] - $deg * 100) / 60;
+}
+
+#------------------------------------------------------------------------------
 # Process "freeGPS " data blocks referenced by a 'gps ' (GPSDataList) atom
 # Inputs: 0) ExifTool ref, 1) dirInfo ref {DataPt,SampleTime,SampleDuration}, 2) tagTable ref
 # Returns: 1 on success (or 0 on unrecognized or "measurement-void" GPS data)
@@ -1353,7 +1366,7 @@ sub ProcessFreeGPS($$$)
     my ($et, $dirInfo, $tagTbl) = @_;
     my $dataPt = $$dirInfo{DataPt};
     my $dirLen = length $$dataPt;
-    my ($yr, $mon, $day, $hr, $min, $sec, $stat, $lbl);
+    my ($yr, $mon, $day, $hr, $min, $sec, $stat, $lbl, $ddd);
     my ($lat, $latRef, $lon, $lonRef, $spd, $trk, $alt, @acc, @xtra);
 
     return 0 if $dirLen < 92;
@@ -1478,7 +1491,7 @@ sub ProcessFreeGPS($$$)
         $lat = GetFloat($dataPt, 0x1c);
         $lon = GetFloat($dataPt, 0x20);
         $et->VPrint(0, sprintf("Raw lat/lon = %.9f %.9f\n", $lat, $lon));
-        $et->WarnOnce('GPSLatitude/Longitude encoding is not yet known, so these will be wrong');
+        $et->WarnOnce('GPSLatitude/Longitude encryption is not yet known, so these will be wrong');
         $lat = abs $lat;
         $lon = abs $lon;
         $spd = GetFloat($dataPt, 0x24) * $knotsToKph; # (convert knots to km/h)
@@ -1526,13 +1539,17 @@ sub ProcessFreeGPS($$$)
         return 0 unless $stat eq 'A' and ($latRef eq 'N' or $latRef eq 'S') and
                                          ($lonRef eq 'E' or $lonRef eq 'W');
 
-        $et->WarnOnce("Can't yet decrypt Akaso V1 timed GPS", 1);
+        $et->WarnOnce('GPSLatitude/Longitude encryption is not yet known, so these will be wrong');
         # (see https://exiftool.org/forum/index.php?topic=11320.0)
-        return 1;
 
         SetByteOrder('II');
+
+        $spd = GetFloat($dataPt, 0x60);
+        $trk = GetFloat($dataPt, 0x64) + 180;   # (why is this off by 180?)
         $lat = GetDouble($dataPt, 0x50);    # latitude is here, but encrypted somehow
         $lon = GetDouble($dataPt, 0x58);    # longitude is here, but encrypted somehow
+        $ddd = 1; # don't convert until we know what the format is
+
         SetByteOrder('MM');
         #my $serialNum = substr($$dataPt, 0x68, 20);
 
@@ -1596,10 +1613,7 @@ sub ProcessFreeGPS($$$)
 #
     FoundSomething($et, $tagTbl, $$dirInfo{SampleTime}, $$dirInfo{SampleDuration});
     # lat/long are in DDDMM.MMMM format
-    my $deg = int($lat / 100);
-    $lat = $deg + ($lat - $deg * 100) / 60;
-    $deg = int($lon / 100);
-    $lon = $deg + ($lon - $deg * 100) / 60;
+    ConvertLatLon($lat, $lon) unless $ddd;
     $sec = '0' . $sec unless $sec =~ /^\d{2}/;   # pad integer part of seconds to 2 digits
     if (defined $yr) {
         my $time = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%sZ',$yr,$mon,$day,$hr,$min,$sec);
@@ -1860,10 +1874,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
             $trk = GetFloat(\$dat, 16);
             @acc = unpack('x20V3', $dat);
             map { $_ = $_ - 4294967296 if $_ >= 0x80000000 } @acc;
-            my $deg = int($lat / 100);
-            $lat = $deg + ($lat - $deg * 100) / 60;
-            $deg = int($lon / 100);
-            $lon = $deg + ($lon - $deg * 100) / 60;
+            ConvertLatLon($lat, $lon);
             $$et{DOC_NUM} = ++$$et{DOC_COUNT};
             $et->HandleTag($tagTbl, GPSLatitude  => $lat * (substr($dat,1,1) eq 'S' ? -1 : 1));
             $et->HandleTag($tagTbl, GPSLongitude => $lon * (substr($dat,2,1) eq 'W' ? -1 : 1));
@@ -1931,12 +1942,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
     $yr += 2000 if $yr < 2000;
     my $time = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $yr, $mon, $day, $hr, $min, $sec);
     # convert from DDMM.MMMMMM to DD.DDDDDD format if necessary
-    unless ($ddd) {
-        my $deg = int($lat / 100);
-        $lat = $deg + ($lat - $deg * 100) / 60;
-        $deg = int($lon / 100);
-        $lon = $deg + ($lon - $deg * 100) / 60;
-    }
+    ConvertLatLon($lat, $lon) unless $ddd;
     $et->HandleTag($tagTbl, GPSDateTime  => $time);
     $et->HandleTag($tagTbl, GPSLatitude  => $lat * ($latRef eq 'S' ? -1 : 1));
     $et->HandleTag($tagTbl, GPSLongitude => $lon * ($lonRef eq 'W' ? -1 : 1));
@@ -1954,6 +1960,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
     $et->HandleTag($tagTbl, Accelerometer => "@acc") if @acc;
     return 1;
 }
+
 
 #------------------------------------------------------------------------------
 # Extract embedded information referenced from a track
@@ -2039,12 +2046,9 @@ sub ParseTag($$$)
             SetGPSDateTime($et, $tagTbl, $a[2]);
             my $lat = $a[5] / 1e3;
             my $lon = $a[7] / 1e3;
-            my $deg = int($lat / 100);
-            $lat = $deg + ($lat - $deg * 100) / 60;
-            $deg = int($lon / 100);
-            $lon = $deg + ($lon - $deg * 100) / 60;
-            $lat = -$lat if $a[4] eq 'S';
-            $lon = -$lon if $a[6] eq 'W';
+            ConvertLatLon($lat, $lon);
+            $lat = -abs($lat) if $a[4] eq 'S';
+            $lon = -abs($lon) if $a[6] eq 'W';
             $et->HandleTag($tagTbl, GPSLatitude  => $lat);
             $et->HandleTag($tagTbl, GPSLongitude => $lon);
             $et->HandleTag($tagTbl, GPSSpeed => $a[3] / 1e3);
@@ -2190,11 +2194,7 @@ sub Process_gps0($$$)
         my $lat = GetDouble($dataPt, $pos);
         my $lon = GetDouble($dataPt, $pos+8);
         next if abs($lat) > 9000 or abs($lon) > 18000;
-        # (note: this method works fine for negative coordinates)
-        my $deg = int($lat / 100);
-        $lat = $deg + ($lat - $deg * 100) / 60;
-        $deg = int($lon / 100);
-        $lon = $deg + ($lon - $deg * 100) / 60;
+        ConvertLatLon($lat, $lon);
         my @a = unpack('C*', substr($$dataPt, $pos+22, 6)); # unpack date/time
         $a[0] += 2000;
         $et->HandleTag($tagTbl, GPSDateTime  => sprintf("%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ", @a));
@@ -2292,10 +2292,7 @@ sub ProcessRIFFTrailer($$$)
                 my $lat = GetDouble(\$buff, $pos+4);
                 my $lon = GetDouble(\$buff, $pos+12);
                 $et->Warn('Bad gps0 record') and last if abs($lat) > 9000 or abs($lon) > 18000;
-                my $deg = int($lat / 100);
-                $lat = $deg + ($lat - $deg * 100) / 60;
-                $deg = int($lon / 100);
-                $lon = $deg + ($lon - $deg * 100) / 60;
+                ConvertLatLon($lat, $lon);
                 $lat = -$lat if Get8u(\$buff, $pos+0x21) == 2;   # wild guess
                 $lon = -$lon if Get8u(\$buff, $pos+0x22) == 2;   # wild guess
                 my @a = unpack('C*', substr($buff, $pos+26, 6)); # unpack date/time

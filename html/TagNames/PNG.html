@@ -335,7 +335,9 @@ available.  Alternate language tags and values containing special characters
 (unless the Latin character set is used) are written as iTXt, and compressed
 if the <a href="../ExifTool.html#Compress">Compress</a> option is used and Compress::Zlib is available.  Raw profile
 information is always created as compressed zTXt if Compress::Zlib is
-available, or tEXt otherwise.  Standard XMP is written as uncompressed iTXt.</p>
+available, or tEXt otherwise.  Standard XMP is written as uncompressed iTXt.
+User-defined tags may set an &#39;iTXt&#39; flag in the tag definition to be written
+only as iTXt.</p>
 
 <p>Alternate languages are accessed by suffixing the tag name with a &#39;-&#39;,
 followed by an RFC 3066 language code (eg. &quot;PNG:Comment-fr&quot;, or
@@ -595,7 +597,7 @@ when any of these tags is written, and may only be deleted as a group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 11, 2020</i>
+<br><i>Last revised Sep 22, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

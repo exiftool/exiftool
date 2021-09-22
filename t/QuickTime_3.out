@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.11
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.31
 [File, System, Other] FileName - File Name: QuickTime.m4a
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 5.1 KiB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:22 19:58:22-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:11:26 10:02:41-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2021:07:19 06:34:30-04:00
 [File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:03:22 19:58:22-04:00
-[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: M4A
 [File, File, Other] FileTypeExtension - File Type Extension: m4a
 [File, File, Other] MIMEType - MIME Type: audio/mp4
@@ -53,7 +53,7 @@
 [QuickTime, ItemList, Audio] cpil - Compilation: No
 [QuickTime, ItemList, Audio] tmpo - Beats Per Minute: 120
 [QuickTime, ItemList, Audio] ©too - Encoder: iTunes v4.9, QuickTime 7.0.1
-[QuickTime, QuickTime, Audio] iTunNORM - Volume Normalization: 80 0 610 0 289C 0 0 0 0 0
+[QuickTime, iTunes, Audio] iTunNORM - Volume Normalization: 80 0 610 0 289C 0 0 0 0 0
 [QuickTime, ItemList, Audio] ©lyr - Lyrics: these are lyrics
 [QuickTime, ItemList, Audio] ©ART - Artist: Phil Harvey
 [QuickTime, ItemList, Author] aART - Album Artist: album artist

@@ -556,7 +556,7 @@ in the same timezone.</blockquote>
 geotagged images</b>. The <code>-p</code> option may be used to output files in
 any number of formats. This section gives examples for creating GPX and KML
 output files from a set of geotagged images, or from a geotagged video file.
-(But note that the <code>-ee</code> option must be added to the commands below
+(But note that the <code>-ee3</code> option must be added to the commands below
 to extract the full track from a video file.)</p>
 
 <a name="GPX"></a>
@@ -570,7 +570,7 @@ one or more geotagged images:</p>
 #
 # Description:  Example ExifTool print format file to generate a GPX track log
 #
-# Usage:        exiftool -p gpx.fmt -ee FILE [...] &gt; out.gpx
+# Usage:        exiftool -p gpx.fmt -ee3 FILE [...] &gt; out.gpx
 #
 # Requires:     ExifTool version 10.49 or later
 #
@@ -580,7 +580,7 @@ one or more geotagged images:</p>
 #               2019/10/24 - PH Preserve sub-seconds in GPSDateTime value
 #
 # Notes:     1) Input file(s) must contain GPSLatitude and GPSLongitude.
-#            2) The -ee option is to extract the full track from video files.
+#            2) The -ee3 option is to extract the full track from video files.
 #            3) The -fileOrder option may be used to control the order of the
 #               generated track points when processing multiple files.
 #------------------------------------------------------------------------------
@@ -666,7 +666,7 @@ in ExifTool 10.41 to divide the placemarks into folders based on directory name:
 #               2020/01/11 - F. Kotov Limited image preview size to 500px
 #
 # Notes:     1) Input files must contain GPSLatitude and GPSLongitude.
-#            2) Add the -ee option to extract the full track from video files.
+#            2) Add the -ee3 option to extract the full track from video files.
 #            3) For Google Earth to be able to find the images, the input
 #               images must be specified using relative paths, and "out.kml"
 #               must stay in the same directory as where the command was run.

@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.44';
+$VERSION = '3.45';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -237,6 +237,8 @@ sub PrintInvLensSpec($;$$);
     50526 => 'Sigma 28-70mm F2.8 DG DN | C', #JR (021)
     50527 => 'Sigma 150-600mm F5-6.3 DG DN OS | S', #JR (021)
     50528 => 'Sigma 35mm F1.4 DG DN | A', #IB/JR (021)
+    50529 => 'Sigma 90mm F2.8 DG DN | C', #JR (021)
+    50530 => 'Sigma 24mm F2 DG DN | C', #JR (021)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
@@ -2026,6 +2028,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             383 => 'ILCE-7SM3',
             384 => 'ILCE-1', #PH
             385 => 'ILME-FX3', #JR
+            386 => 'ILCE-7RM3A', #JR
             387 => 'ILCE-7RM4A', #forum12542
         },
     },
@@ -10319,6 +10322,26 @@ my %isoSetting2010 = (
         },
         ValueConv => '"$val[0] $val[1]Z"',
         PrintConv => '$self->ConvertDateTime($val)',
+    },
+    GPSLatitude => {
+        SubDoc => 1,    # generate for all sub-documents
+        Groups => { 2 => 'Location' },
+        Require => {
+            0 => 'Sony:GPSLatitude',
+            1 => 'Sony:GPSLatitudeRef',
+        },
+        ValueConv => '$val[1] =~ /^S/i ? -$val[0] : $val[0]',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
+    },
+    GPSLongitude => {
+        SubDoc => 1,    # generate for all sub-documents
+        Groups => { 2 => 'Location' },
+        Require => {
+            0 => 'Sony:GPSLongitude',
+            1 => 'Sony:GPSLongitudeRef',
+        },
+        ValueConv => '$val[1] =~ /^W/i ? -$val[0] : $val[0]',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
     },
 );
 

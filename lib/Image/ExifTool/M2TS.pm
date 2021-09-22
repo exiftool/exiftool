@@ -31,7 +31,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.20';
+$VERSION = '1.21';
 
 # program map table "stream_type" lookup (ref 6/1)
 my %streamType = (
@@ -332,6 +332,7 @@ sub ParsePID($$$$$)
         } elsif ($$dataPt =~ /^A([NS])([EW])\0/s) {
             # INNOVV TS video (same format is INNOVV MP4)
             SetByteOrder('II');
+            my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
             while ($$dataPt =~ /(A[NS][EW]\0.{28})/g) {
                 my $dat = $1;
                 my $lat = abs(GetFloat(\$dat, 4)); # (abs just to be safe)
@@ -340,14 +341,10 @@ sub ParsePID($$$$$)
                 my $trk = GetFloat(\$dat, 16);
                 my @acc = unpack('x20V3', $dat);
                 map { $_ = $_ - 4294967296 if $_ >= 0x80000000 } @acc;
-                my $deg = int($lat / 100);
-                $lat = $deg + ($lat - $deg * 100) / 60;
-                $deg = int($lon / 100);
-                $lon = $deg + ($lon - $deg * 100) / 60;
+                Image::ExifTool::QuickTime::ConvertLatLon($lat, $lon);
                 $$et{DOC_NUM} = ++$$et{DOC_COUNT};
-                my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
-                $et->HandleTag($tagTbl, GPSLatitude  => $lat * (substr($dat,1,1) eq 'S' ? -1 : 1));
-                $et->HandleTag($tagTbl, GPSLongitude => $lon * (substr($dat,2,1) eq 'W' ? -1 : 1));
+                $et->HandleTag($tagTbl, GPSLatitude  => abs($lat) * (substr($dat,1,1) eq 'S' ? -1 : 1));
+                $et->HandleTag($tagTbl, GPSLongitude => abs($lon) * (substr($dat,2,1) eq 'W' ? -1 : 1));
                 $et->HandleTag($tagTbl, GPSSpeed     => $spd);
                 $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
                 $et->HandleTag($tagTbl, GPSTrack     => $trk);
@@ -375,10 +372,7 @@ sub ParsePID($$$$$)
                     $a[2] =~ tr/./:/;
                     # (untested, and probably doesn't work for S/W hemispheres)
                     my ($lat, $lon) = @a[3,4];
-                    my $deg = int($lat / 100);
-                    $lat = $deg + ($lat - $deg * 100) / 60;
-                    $deg = int($lon / 100);
-                    $lon = $deg + ($lon - $deg * 100) / 60;
+                    Image::ExifTool::QuickTime::ConvertLatLon($lat, $lon);
                     # $a[0] - flags? values: '0x0001','0x0004','0x0008','0x0010'
                     $et->HandleTag($tagTbl, GPSDateTime  => $a[2]);
                     $et->HandleTag($tagTbl, GPSLatitude  => $lat);
@@ -395,6 +389,27 @@ sub ParsePID($$$$$)
                     $et->HandleTag($tagTbl, Accelerometer => "@a");
                 }
             }
+            $more = 1;
+        } elsif ($$dataPt =~ /^.{44}A\0{3}.{4}([NS])\0{3}.{4}([EW])\0{3}/s and length($$dataPt) >= 84) {
+            #forum11320
+            SetByteOrder('II');
+            my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+            my $lat = abs(GetFloat($dataPt, 48)); # (abs just to be safe)
+            my $lon = abs(GetFloat($dataPt, 56)); # (abs just to be safe)
+            my $spd = GetFloat($dataPt, 64);
+            my $trk = GetFloat($dataPt, 68);
+            $et->WarnOnce('GPSLatitude/Longitude encryption is not yet known, so these will be wrong');
+            $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+            my @date = unpack('x32V3x28V3', $$dataPt);
+            $date[3] += 2000;
+            $et->HandleTag($tagTbl, GPSDateTime  => sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d', @date[3..5,0..2]));
+            $et->HandleTag($tagTbl, GPSLatitude  => abs($lat) * ($1 eq 'S' ? -1 : 1));
+            $et->HandleTag($tagTbl, GPSLongitude => abs($lon) * ($2 eq 'W' ? -1 : 1));
+            $et->HandleTag($tagTbl, GPSSpeed     => $spd);
+            $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
+            $et->HandleTag($tagTbl, GPSTrack     => $trk);
+            $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
+            SetByteOrder('MM');
             $more = 1;
         }
         delete $$et{DOC_NUM};

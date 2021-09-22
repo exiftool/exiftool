@@ -1235,8 +1235,8 @@ called with a source file name.
 The following ExifTool options are effective in the call to L</WriteInfo>:
 
 ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
-Compress, FixBase, IgnoreMinorErrors, Password, QuickTimeHandler, Verbose
-and WriteMode.
+Compress, FixBase, IgnoreMinorErrors, NoMultiExif, NoPDFList, Password,
+QuickTimeHandler, Verbose and WriteMode.
 
 =head2 GetTagList
 
@@ -1486,13 +1486,13 @@ optional leading family numbers, separated by colons (eg. 'EXIF:Artist',
 'XMP:Time:*'), which is equivalent to using a Group option argument.  Also,
 a '#' may be appended to the tag name (eg. 'EXIF:Orientation#'), with the
 same effect as setting Type to 'ValueConv'.  Wildcards ('*' and '?') may be
-used in the tag name to assign multiple tags simultaneously.  A tag name of
-'*' is special when deleting information, and will delete an entire group
-even if some individual tags in the group are not writable, but only if a
-single family 0 or 1 group is specified (otherwise the tags are deleted
-individually).  Use L</GetDeleteGroups> to get a list of deletable group
-names, and see L<Image::ExifTool::TagNames|Image::ExifTool::TagNames> for a
-complete list of tag names.
+used in the tag name to assign or delete multiple tags simultaneously.  A
+tag name of '*' is special when deleting information, and will delete an
+entire group even if some individual tags in the group are not writable, but
+only if a single family 0 or 1 group is specified (otherwise the tags are
+deleted individually).  Use L</GetDeleteGroups> to get a list of deletable
+group names, and see L<Image::ExifTool::TagNames|Image::ExifTool::TagNames>
+for a complete list of tag names.
 
 2) [optional] New value for tag.  Undefined to delete tag from file.  May be
 a scalar, scalar reference, list reference to set a list of values, or hash
@@ -2335,7 +2335,7 @@ XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft,
 XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-pdf, XMP-pdfx, XMP-photomech,
 XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism, XMP-prl, XMP-prm, XMP-pur,
 XMP-rdf, XMP-swf, XMP-tiff, XMP-x, XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpMM,
-XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP
+XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
 
 =item Family 2 (Category):
 

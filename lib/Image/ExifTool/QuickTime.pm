@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.68';
+$VERSION = '2.69';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -6450,10 +6450,11 @@ my %eeBox2 = (
 # iTunes info ('----') atoms
 %Image::ExifTool::QuickTime::iTunesInfo = (
     PROCESS_PROC => \&ProcessMOV,
-    GROUPS => { 2 => 'Audio' },
+    GROUPS => { 1 => 'iTunes', 2 => 'Audio' },
     NOTES => q{
         ExifTool will extract any iTunesInfo tags that exist, even if they are not
-        defined in this table.
+        defined in this table.  These tags belong to the family 1 "iTunes" group,
+        and are not currently writable.
     },
     # 'mean'/'name'/'data' atoms form a triplet, but unfortunately
     # I haven't been able to find any documentation on this.
@@ -6514,9 +6515,45 @@ my %eeBox2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::EncodingParams' },
     },
     # also heard about 'iTunPGAP', but I haven't seen a sample
-    DISCNUMBER => 'DiscNumber', #PH
-    TRACKNUMBER => 'TrackNumber', #PH
-    popularimeter => 'Popularimeter', #PH
+    # all tags below were added based on samples I have seen - PH
+    DISCNUMBER          => 'DiscNumber',
+    TRACKNUMBER         => 'TrackNumber',
+    ARTISTS             => 'Artists',
+    CATALOGNUMBER       => 'CatalogNumber',
+    RATING              => 'Rating',
+    MEDIA               => 'Media',
+    SCRIPT              => 'Script', # character set? (seen 'Latn')
+    BARCODE             => 'Barcode',
+    LABEL               => 'Label',
+    MOOD                => 'Mood',
+    popularimeter       => 'Popularimeter',
+    'Dynamic Range (DR)'=> 'DynamicRange',
+    initialkey          => 'InitialKey',
+    originalyear        => 'OriginalYear',
+    originaldate        => 'OriginalDate',
+    '~length'           => 'Length', # play length? (ie. duration?)
+    replaygain_track_gain=>'ReplayTrackGain',
+    replaygain_track_peak=>'ReplayTrackPeak',
+   'Volume Level (ReplayGain)'=> 'ReplayVolumeLevel',
+   'Dynamic Range (R128)'=> 'DynamicRangeR128',
+   'Volume Level (R128)' => 'VolumeLevelR128',
+   'Peak Level (Sample)' => 'PeakLevelSample',
+   'Peak Level (R128)'   => 'PeakLevelR128',
+    # also seen (many from forum12777):
+    # 'MusicBrainz Album Release Country'
+    # 'MusicBrainz Album Type'
+    # 'MusicBrainz Album Status'
+    # 'MusicBrainz Track Id'
+    # 'MusicBrainz Release Track Id'
+    # 'MusicBrainz Album Id'
+    # 'MusicBrainz Album Artist Id'
+    # 'MusicBrainz Artist Id'
+    # 'Acoustid Id' (sic)
+    # 'Tool Version'
+    # 'Tool Name'
+    # 'ISRC'
+    # 'HDCD'
+    # 'Waveform'
 );
 
 # iTunes audio encoding parameters
@@ -9301,6 +9338,7 @@ ItemID:         foreach $id (keys %$items) {
                             Name => $name,
                             Description => $desc,
                         };
+                        $et->VPrint(0, $$et{INDENT}, "[adding QuickTime:$name]\n");
                         AddTagToTable($tagTablePtr, $tag, $tagInfo);
                     }
                     # ignore 8-byte header
@@ -9312,9 +9350,9 @@ ItemID:         foreach $id (keys %$items) {
                             $val = \$buff;
                         }
                     }
-                    undef %triplet;
+                    $$tagInfo{List} = 1; # (allow any of these tags to have multiple data elements)
+                    $et->VerboseInfo($tag, $tagInfo, Value => $val) if $verbose;
                 } else {
-                    undef %triplet if $tag eq 'mean';
                     $triplet{$tag} = substr($val,4) if length($val) > 4;
                     undef $tagInfo;  # don't store this tag
                 }

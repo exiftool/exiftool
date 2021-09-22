@@ -4948,25 +4948,96 @@ box because Apple software may ignore ItemList tags otherwise, but the API
 
 <h2><a name='iTunesInfo'>QuickTime iTunesInfo Tags</a></h2>
 <p>ExifTool will extract any iTunesInfo tags that exist, even if they are not
-defined in this table.</p>
+defined in this table.  These tags belong to the family 1 &quot;iTunes&quot; group,
+and are not currently writable.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>'ARTISTS'</td>
+<td>Artists</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'BARCODE'</td>
+<td>Barcode</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'CATALOGNUMBER'</td>
+<td>CatalogNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'DISCNUMBER'</td>
 <td>DiscNumber</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td>'Dynamic Range (DR)'</td>
+<td>DynamicRange</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
+<td>'Dynamic Range (R128)'</td>
+<td>DynamicRangeR128</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'Encoding Params'</td>
 <td>EncodingParams</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#EncodingParams'>QuickTime EncodingParams Tags</a></td></tr>
+<tr class=b>
+<td>'LABEL'</td>
+<td>Label</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'MEDIA'</td>
+<td>Media</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'MOOD'</td>
+<td>Mood</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Peak Level (R128)'</td>
+<td>PeakLevelR128</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Peak Level (Sample)'</td>
+<td>PeakLevelSample</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'RATING'</td>
+<td>Rating</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'SCRIPT'</td>
+<td>Script</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr>
 <td>'TRACKNUMBER'</td>
 <td>TrackNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Volume Level (R128)'</td>
+<td>VolumeLevelR128</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Volume Level (ReplayGain)'</td>
+<td>ReplayVolumeLevel</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -5000,13 +5071,43 @@ defined in this table.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'initialkey'</td>
+<td>InitialKey</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'originaldate'</td>
+<td>OriginalDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'originalyear'</td>
+<td>OriginalYear</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'popularimeter'</td>
 <td>Popularimeter</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td>'replaygain_track_gain'</td>
+<td>ReplayTrackGain</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr>
+<td>'replaygain_track_peak'</td>
+<td>ReplayTrackPeak</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'tool'</td>
 <td>iTunTool</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'~length'</td>
+<td>Length</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -8764,7 +8865,7 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 12, 2021</i>
+<br><i>Last revised Sep 22, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -7,6 +7,23 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Sept. 22, 2021 - Version 12.31
+
+  - Added a new SonyModelID and a couple of new Sony lenses (thanks Jos Roost)
+  - Added a new Canon LensType (thanks Chris Skopec)
+  - Added Composite GPSLatitude/Longitude tags for Sony videos which combine the
+    reference hemispheres as with the Composite tags for EXIF GPS
+  - Decode DPX AspectRatio
+  - Decode more GoPro MP4 tags
+  - Extract ICC_Profile from CS0 object in PDF files
+  - Extract encrypted GPS from Akaso V1 dashcam videos (can't yet decrypt)
+  - Improved handling of QuickTime iTunesInfo tags, and created new "iTunes"
+    family 1 group for these
+  - Patched so NoPDFList option also applies when writing
+  - Patched to allow user-defined PNG TextualData tags to be written only as iTXt
+  - Patched PDF reader to avoid concatenating values of multiple List-type tags
+    into a single tag
+
 Aug. 12, 2021 - Version 12.30 (production release)
 
   - Added read support for Portable FloatMap (PFM) images (this was a bit of a

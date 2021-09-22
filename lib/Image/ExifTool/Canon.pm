@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.50';
+$VERSION = '4.51';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -519,7 +519,8 @@ $VERSION = '4.50';
     507 => 'Canon EF 16-35mm f/4L IS USM', #42
     508 => 'Canon EF 11-24mm f/4L USM or Tamron Lens', #PH
     508.1 => 'Tamron 10-24mm f/3.5-4.5 Di II VC HLD (B023)', #PH
-    624 => 'Sigma 70-200mm f/2.8 DG OS HSM | S', #IB (018)
+    624 => 'Sigma 70-200mm f/2.8 DG OS HSM | S or other Sigma Lens', #IB (018)
+    624.1 => 'Sigma 150-600mm f/5-6.3 | C', #ChrisSkopec
     747 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM or Tamron Lens', #JR
     747.1 => 'Tamron SP 150-600mm f/5-6.3 Di VC USD G2', #50
     748 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM + 1.4x or Tamron Lens', #JR (1.4x Mk III)
@@ -593,6 +594,8 @@ $VERSION = '4.50';
    '61182.20' => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF2x',
    '61182.21' => 'Canon RF 70-200mm F4L IS USM', #42
    '61182.22' => 'Canon RF 50mm F1.8 STM', #42
+   '61182.23' => 'Canon RF 14-35mm F4L IS USM', #IB
+  #'61182.xx' => 'Canon RF 100mm F2.8L MACRO IS USM',
     65535 => 'n/a',
 );
 
@@ -6761,6 +6764,8 @@ my %ciMaxFocal = (
             277 => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF2x',
             278 => 'Canon RF 70-200mm F4L IS USM', #42
             280 => 'Canon RF 50mm F1.8 STM', #42
+            281 => 'Canon RF 14-35mm F4L IS USM', #IB
+           #xxx => 'Canon RF 100mm F2.8L MACRO IS USM',
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },
     },

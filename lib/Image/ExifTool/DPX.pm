@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 # DPX tags
 %Image::ExifTool::DPX::Main = (
@@ -156,7 +156,18 @@ $VERSION = '1.05';
     1532=> { Name => 'SourceCreateDate',  Format => 'string[24]' },
     1556=> { Name => 'InputDeviceName',   Format => 'string[32]' },
     1588=> { Name => 'InputDeviceSerialNumber', Format => 'string[32]' },
-    # 1620=> { Name => 'AspectRatio',       Format => 'int32u' },
+    # 1620 => { Name => 'Border',           Format => 'int16u[4]' },
+    1628 => {
+        Name => 'AspectRatio',
+        Format => 'int32u[2]',
+        RawConv => '$val =~ /4294967295/ ? undef : $val', # ignore undefined values
+        PrintConv => q{
+            return 'undef' if $val eq '0 0';
+            return 'inf' if $val=~/ 0$/;
+            my @a=split(' ',$val);
+            return join(':', Rationalize($a[0]/$a[1]));
+        },
+    },
     1724 => { Name => 'OriginalFrameRate',Format => 'float' },
     1728 => { Name => 'ShutterAngle',     Format => 'float', RawConv => '($val =~ /\d/ and $val !~ /nan/i) ? $val : undef' }, #2
     1732 => { Name => 'FrameID',          Format => 'string[32]' },

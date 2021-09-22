@@ -17,6 +17,24 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.31'><b>Sept. 22, 2021 - Version 12.31</b></a>
+<ul>
+<li>Added a new SonyModelID and a couple of new Sony lenses (thanks Jos Roost)
+<li>Added a new Canon LensType (thanks Chris Skopec)
+<li>Added Composite GPSLatitude/Longitude tags for Sony videos which combine the
+    reference hemispheres as with the Composite tags for EXIF GPS
+<li>Decode DPX AspectRatio
+<li>Decode more GoPro MP4 tags
+<li>Extract ICC_Profile from CS0 object in PDF files
+<li>Extract encrypted GPS from Akaso V1 dashcam videos (can't yet decrypt)
+<li>Improved handling of QuickTime iTunesInfo tags, and created new "iTunes"
+    family 1 group for these
+<li>Patched so NoPDFList option also applies when writing
+<li>Patched to allow user-defined PNG TextualData tags to be written only as iTXt
+<li>Patched PDF reader to avoid concatenating values of multiple List-type tags
+    into a single tag
+</ul>
+
 <a name='v12.30'><b>Aug. 12, 2021 - Version 12.30</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added read support for Portable FloatMap (PFM) images (this was a bit of a

@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.58';
+$VERSION = '1.59';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -478,6 +478,8 @@ my %unreg = ( Notes => 'unregistered' );
         if the L<Compress|../ExifTool.html#Compress> option is used and Compress::Zlib is available.  Raw profile
         information is always created as compressed zTXt if Compress::Zlib is
         available, or tEXt otherwise.  Standard XMP is written as uncompressed iTXt.
+        User-defined tags may set an 'iTXt' flag in the tag definition to be written
+        only as iTXt.
 
         Alternate languages are accessed by suffixing the tag name with a '-',
         followed by an RFC 3066 language code (eg. "PNG:Comment-fr", or

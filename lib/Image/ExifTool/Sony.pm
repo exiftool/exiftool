@@ -8382,7 +8382,7 @@ my %isoSetting2010 = (
     },
     0x05 => {
         Name => 'CameraTemperature', # (maybe SensorTemperature? - heats up when taking movies)
-        Condition => '$$self{TempTest2} and $$self{TempTest2} < 100',
+        Condition => '$$self{TempTest2} and $$self{TempTest2} != 0 and $$self{TempTest2} != 148',
         Format => 'int8s', # have seen as low as -1 for AmbientTemperature of -18
         PrintConv => '"$val C"',
         PrintConvInv => '$val=~s/ ?C//; $val',

@@ -8373,8 +8373,8 @@ my %isoSetting2010 = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     DATAMEMBER => [ 0x04 ],
     0x04 => {
-        # seen values 0,2,3,18,32,49,50,83,148
-        # CameraTemperature is valid for all values except 0,148
+        # seen values 0,2,3,18,19,32,49,50,83,130,132,148,213,229,255
+        # CameraTemperature is valid for all values above except ==0 and >=130 
         Name => 'TempTest2',
         DataMember => 'TempTest2',
         Hidden => 1,

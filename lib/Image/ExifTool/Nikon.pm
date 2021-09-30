@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.99';
+$VERSION = '4.00';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -598,6 +598,7 @@ sub GetAFPointGrid($$;$);
     '00 48 5C 8E 30 3C 00 06' => 'Tamron AF 70-300mm f/4-5.6 Di LD Macro 1:2 (A17NII)', #JD
     'F1 47 5C 8E 30 3C DF 0E' => 'Tamron SP 70-300mm f/4-5.6 Di VC USD (A005)',
     'CF 47 5C 8E 31 3D DF 0E' => 'Tamron SP 70-300mm f/4-5.6 Di VC USD (A030)', #forum9773
+    'CC 44 68 98 34 41 DF 0E' => 'Tamron 100-400mm f/4.5-6.3 Di VC USD', #30
     'EB 40 76 A6 38 40 DF 0E' => 'Tamron SP AF 150-600mm f/5-6.3 VC USD (A011)',
     'E3 40 76 A6 38 40 DF 4E' => 'Tamron SP 150-600mm f/5-6.3 Di VC USD G2', #30
     '20 3C 80 98 3D 3D 1E 02' => 'Tamron AF 200-400mm f/5.6 LD IF (75D)',

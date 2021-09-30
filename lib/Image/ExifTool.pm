@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath
             %static_vars);
 
-$VERSION = '12.31';
+$VERSION = '12.32';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -4121,7 +4121,9 @@ sub Exists($$)
         return 0 unless $wh;
         eval { Win32API::File::CloseHandle($wh) };
     } else {
-        return -e $file;
+        # (named pipes already exist, but we pretend that they don't
+        #  so we will be able to write them, so test with for pipe -p)
+        return(-e $file and not -p $file);
     }
     return 1;
 }

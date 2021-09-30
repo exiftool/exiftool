@@ -25,6 +25,7 @@ sub Process_mebx($$$);
 sub ProcessFreeGPS($$$);
 sub ProcessFreeGPS2($$$);
 sub Process360Fly($$$);
+sub ProcessFMAS($$$);
 
 # QuickTime data types that have ExifTool equivalents
 # (ref https://developer.apple.com/library/content/documentation/QuickTime/QTFF/Metadata/Metadata.html#//apple_ref/doc/uid/TP40000939-CH1-SW35)
@@ -98,15 +99,15 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 55 different formats of timed GPS metadata from video files.
+        currently reads 57 different formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
     GPSLongitude => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
     GPSAltitude  => { PrintConv => '(sprintf("%.4f", $val) + 0) . " m"' }, # round to 4 decimals
-    GPSSpeed     => { PrintConv => 'sprintf("%.4f", $val) + 0' },   # round to 4 decimals
+    GPSSpeed     => { PrintConv => 'sprintf("%.4f", $val) + 0', Notes => 'in km/h unless GPSSpeedRef says otherwise' },
     GPSSpeedRef  => { PrintConv => { K => 'km/h', M => 'mph', N => 'knots' } },
-    GPSTrack     => { PrintConv => 'sprintf("%.4f", $val) + 0' },    # round to 4 decimals
+    GPSTrack     => { PrintConv => 'sprintf("%.4f", $val) + 0', Notes => 'true north unless GPSTrackRef says otherwise' },
     GPSTrackRef  => { PrintConv => { M => 'Magnetic North', T => 'True North' } },
     GPSDateTime  => {
         Groups => { 2 => 'Time' },
@@ -180,6 +181,13 @@ my %insvLimit = (
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::Stream',
             ProcessProc => \&Process_text,
+        },
+    },{
+        Name => 'gpmd_FMAS', # Vantrue N2S binary format
+        Condition => '$$valPt =~ /^FMAS\0\0\0\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => \&ProcessFMAS,
         },
     },{
         Name => 'gpmd_GoPro',
@@ -901,14 +909,8 @@ sub Process_text($$$)
             $tags{GPSDateTime} = $dateTime;
             $tags{GPSLatitude} = (($4 || 0) + $5/60) * ($6 eq 'N' ? 1 : -1);
             $tags{GPSLongitude} = (($7 || 0) + $8/60) * ($9 eq 'E' ? 1 : -1);
-            if (length $10) {
-                $tags{GPSSpeed} = $10 * $knotsToKph;
-                $tags{GPSSpeedRef} = 'K';
-            }
-            if (length $11) {
-                $tags{GPSTrack} = $11;
-                $tags{GPSTrackRef} = 'T';
-            }
+            $tags{GPSSpeed} = $10 * $knotsToKph if length $10;
+            $tags{GPSTrack} = $11 if length $11;
         } elsif ($tag =~ /^[A-Z]{2}GGA$/ and $dat =~ /^,(\d{2})(\d{2})(\d+(?:\.\d*)?),(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),[1-6]?,(\d+)?,(\.\d+|\d+\.?\d*)?,(-?\d+\.?\d*)?,M?/s) {
             my $time = "$1:$2:$3";
             if ($$et{LastTime}) {
@@ -988,10 +990,7 @@ sub Process_text($$$)
             $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$dataPt, 0x39, 5)));
             $tags{GPSAltitude} = $val + 0 if $val =~ /^[-+]\d+$/;
             $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$dataPt, 0x3e, 3)));
-            if ($val =~ /^\d+$/) {
-                $tags{GPSSpeed} = $val + 0;
-                $tags{GPSSpeedRef} = 'K';
-            }
+            $tags{GPSSpeed} = $val + 0 if $val =~ /^\d+$/;
             if ($$dataPt =~ /^\0\0..\xaa\xaa/s) { # (BlueSkySea)
                 $val = pack('C*', map { $_ ^ 0xaa } unpack('C*', substr($$dataPt, 0xad, 12)));
                 # the first X,Y,Z accelerometer readings from the AccelerometerData
@@ -1022,10 +1021,7 @@ sub Process_text($$$)
         $tags{GPSLatitude} = $2;
         $tags{GPSLongitude} = $1;
         $tags{GPSAltitude} = $1 if $$dataPt =~ /,\s*H\s+([-+]?\d+\.?\d*)m/;
-        if ($$dataPt =~ /,\s*H.S\s+([-+]?\d+\.?\d*)/) {
-            $tags{GPSSpeed} = $1 * $mpsToKph;
-            $tags{GPSSpeedRef} = 'K';
-        }
+        $tags{GPSSpeed} = $1 * $mpsToKph if $$dataPt =~ /,\s*H.S\s+([-+]?\d+\.?\d*)/;
         $tags{Distance} = $1 * $mpsToKph if $$dataPt =~ /,\s*D\s+(\d+\.?\d*)m/;
         $tags{VerticalSpeed} = $1 if $$dataPt =~ /,\s*V.S\s+([-+]?\d+\.?\d*)/;
         $tags{FNumber} = $1 if $$dataPt =~ /\bF\/(\d+\.?\d*)/;
@@ -1086,14 +1082,8 @@ sub Process_text($$$)
         $tags{GPSDateTime} = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $year, $14, $13, $1, $2, $3);
         $tags{GPSLatitude} = (($5 || 0) + $6/60) * ($7 eq 'N' ? 1 : -1);
         $tags{GPSLongitude} = (($8 || 0) + $9/60) * ($10 eq 'E' ? 1 : -1);
-        if (length $11) {
-            $tags{GPSSpeed} = $11 * $knotsToKph;
-            $tags{GPSSpeedRef} = 'K';
-        }
-        if (length $12) {
-            $tags{GPSTrack} = $12;
-            $tags{GPSTrackRef} = 'T';
-        }
+        $tags{GPSSpeed} = $11 * $knotsToKph if length $11;
+        $tags{GPSTrack} = $12 if length $12;
     }
     $tags{GSensor} = $1 if $$dataPt =~ /\bgsensori,(.*?)(;|$)/;
     $tags{Car} = $1 if $$dataPt =~ /\bCAR,(.*?)(;|$)/;
@@ -1268,8 +1258,7 @@ sub ProcessSamples($)
                     next if length($buff) < 20 + $n;
                     $et->HandleTag($tagTbl, GPSLatitude  => Get32s(\$buff, 12+$n) * 180/0x80000000);
                     $et->HandleTag($tagTbl, GPSLongitude => Get32s(\$buff, 16+$n) * 180/0x80000000);
-                    $et->HandleTag($tagTbl, GPSSpeed => Get16u(\$buff, 8+$n) * $mphToKph);
-                    $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
+                    $et->HandleTag($tagTbl, GPSSpeed     => Get16u(\$buff, 8+$n) * $mphToKph);
                     SetGPSDateTime($et, $tagTbl, $time[$i]);
                     next; # all done (don't store/process as text)
                 }
@@ -1521,6 +1510,23 @@ sub ProcessFreeGPS($$$)
         $trk -= 360 if $trk >= 360;
         SetByteOrder('MM');
 
+    } elsif ($$dataPt =~ /^.{60}4W`b]S</s and length($$dataPt) >= 140) {
+
+        # 0000: 00 00 40 00 66 72 65 65 47 50 53 20 f0 01 00 00 [..@.freeGPS ....]
+        # 0010: 5a 58 53 42 4e 58 59 53 00 00 00 00 00 00 00 00 [ZXSBNXYS........]
+        # 0020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+        # 0030: 00 00 00 00 00 00 00 00 00 00 00 00 34 57 60 62 [............4W`b]
+        # 0040: 5d 53 3c 41 44 45 41 41 42 3e 40 40 3c 51 3c 45 []S<ADEAAB>@@<Q<E]
+        # 0050: 41 40 43 3e 41 47 49 48 44 3c 5e 3c 40 41 46 43 [A@C>AGIHD<^<@AFC]
+        # 0060: 42 3e 49 49 40 42 45 3c 55 3c 45 47 3e 45 43 41 [B>II@BE<U<EG>ECA]
+        # decipher $GPRMC by subtracting 16 from each character value
+        $_ = pack 'C*', map { $_>=16 and $_-=16 } unpack('x60C80', $$dataPt);
+        return 0 unless /[A-Z]{2}RMC,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d*?\d{1,2}\.\d+),([NS]),(\d*?\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/;
+        ($yr,$mon,$day,$hr,$min,$sec,$lat,$latRef,$lon,$lonRef) = ($13,$12,$11,$1,$2,$3,$5,$6,$7,$8);
+        $yr += ($yr >= 70 ? 1900 : 2000);
+        $spd = $9 * $knotsToKph if length $9;
+        $trk = $10 if length $10;
+
     } elsif ($$dataPt =~ /^.{16}YndAkasoCar/s) {
 
         # Akaso V1 dascham
@@ -1625,14 +1631,8 @@ sub ProcessFreeGPS($$$)
     $et->HandleTag($tagTbl, GPSLatitude  => $lat * ($latRef eq 'S' ? -1 : 1));
     $et->HandleTag($tagTbl, GPSLongitude => $lon * ($lonRef eq 'W' ? -1 : 1));
     $et->HandleTag($tagTbl, GPSAltitude  => $alt) if defined $alt;
-    if (defined $spd) {
-        $et->HandleTag($tagTbl, GPSSpeed => $spd);
-        $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
-    }
-    if (defined $trk) {
-        $et->HandleTag($tagTbl, GPSTrack => $trk);
-        $et->HandleTag($tagTbl, GPSTrackRef => 'T');
-    }
+    $et->HandleTag($tagTbl, GPSSpeed     => $spd) if defined $spd;
+    $et->HandleTag($tagTbl, GPSTrack     => $trk) if defined $trk;
     while (@xtra) {
         my $tag = shift @xtra;
         $et->HandleTag($tagTbl, $tag => shift @xtra);
@@ -1751,9 +1751,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
                 $et->HandleTag($tagTbl, GPSLatitude  => Get32s(\$b, 0x10) / 1e7);
                 $et->HandleTag($tagTbl, GPSLongitude => Get32s(\$b, 0x18) / 1e7);
                 $et->HandleTag($tagTbl, GPSSpeed     => Get32s(\$b, 0x20) / 100 * $mpsToKph);
-                $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
                 $et->HandleTag($tagTbl, GPSTrack     => $trk);
-                $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
                 $et->HandleTag($tagTbl, GPSAltitude  => Get32s(\$b, 0x28) / 1000);
                 $lastRecPos = $recPos;
                 $foundNew = 1;
@@ -1879,9 +1877,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
             $et->HandleTag($tagTbl, GPSLatitude  => $lat * (substr($dat,1,1) eq 'S' ? -1 : 1));
             $et->HandleTag($tagTbl, GPSLongitude => $lon * (substr($dat,2,1) eq 'W' ? -1 : 1));
             $et->HandleTag($tagTbl, GPSSpeed     => $spd);
-            $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
             $et->HandleTag($tagTbl, GPSTrack     => $trk);
-            $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
             $et->HandleTag($tagTbl, Accelerometer => "@acc");
         }
         return 1;
@@ -1927,9 +1923,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
             $et->HandleTag($tagTbl, GPSLatitude  => $lat);
             $et->HandleTag($tagTbl, GPSLongitude => $lon);
             $et->HandleTag($tagTbl, GPSSpeed     => $spd / 100 * $mpsToKph);
-            $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
             $et->HandleTag($tagTbl, GPSTrack     => $trk);
-            $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
             last if $pos += 0x20 > length($$dataPt) - 0x1e;
         }
         return $$et{DOC_NUM} ? 1 : 0;   # return 0 if nothing extracted
@@ -1946,14 +1940,8 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
     $et->HandleTag($tagTbl, GPSDateTime  => $time);
     $et->HandleTag($tagTbl, GPSLatitude  => $lat * ($latRef eq 'S' ? -1 : 1));
     $et->HandleTag($tagTbl, GPSLongitude => $lon * ($lonRef eq 'W' ? -1 : 1));
-    if (defined $spd) {
-        $et->HandleTag($tagTbl, GPSSpeed     => $spd); # (now in km/h)
-        $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
-    }
-    if (defined $trk) {
-        $et->HandleTag($tagTbl, GPSTrack     => $trk);
-        $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
-    }
+    $et->HandleTag($tagTbl, GPSSpeed     => $spd) if defined $spd; # (now in km/h)
+    $et->HandleTag($tagTbl, GPSTrack     => $trk) if defined $trk;
     if (defined $alt) {
         $et->HandleTag($tagTbl, GPSAltitude  => $alt);
     }
@@ -2051,8 +2039,7 @@ sub ParseTag($$$)
             $lon = -abs($lon) if $a[6] eq 'W';
             $et->HandleTag($tagTbl, GPSLatitude  => $lat);
             $et->HandleTag($tagTbl, GPSLongitude => $lon);
-            $et->HandleTag($tagTbl, GPSSpeed => $a[3] / 1e3);
-            $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
+            $et->HandleTag($tagTbl, GPSSpeed     => $a[3] / 1e3);
             $pos += 36;
         }
         SetByteOrder('MM');
@@ -2201,9 +2188,7 @@ sub Process_gps0($$$)
         $et->HandleTag($tagTbl, GPSLatitude  => $lat);
         $et->HandleTag($tagTbl, GPSLongitude => $lon);
         $et->HandleTag($tagTbl, GPSSpeed     => Get16u($dataPt, $pos+0x14));
-        $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
         $et->HandleTag($tagTbl, GPSTrack     => Get8u($dataPt, $pos+0x1c) * 2); # (NC)
-        $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
         $et->HandleTag($tagTbl, GPSAltitude  => Get32s($dataPt, $pos + 0x10));
         # yet to be decoded:
         # 0x1d - int8u[3] seen: "1 1 0"
@@ -2302,9 +2287,7 @@ sub ProcessRIFFTrailer($$$)
                 $et->HandleTag($tagTbl, GPSLatitude  => $lat);
                 $et->HandleTag($tagTbl, GPSLongitude => $lon);
                 $et->HandleTag($tagTbl, GPSSpeed     => Get16u(\$buff, $pos+0x18) * $knotsToKph);
-                $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
                 $et->HandleTag($tagTbl, GPSTrack     => Get8u(\$buff, $pos+0x20) * 2);
-                $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
             }
         } elsif ($tag eq 'gsen') {
             # (similar to record decoded in Process_gsen)
@@ -2358,17 +2341,11 @@ sub ProcessNMEA($$$)
                 $et->HandleTag($tagTbl, GPSDateTime  => $fix{dat});
                 $et->HandleTag($tagTbl, GPSLatitude  => $fix{lat});
                 $et->HandleTag($tagTbl, GPSLongitude => $fix{lon});
-                if (defined $fix{spd}) {
-                    $et->HandleTag($tagTbl, GPSSpeed => $fix{spd} * $knotsToKph);
-                    $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
-                }
-                if (defined $fix{trk}) {
-                    $et->HandleTag($tagTbl, GPSTrack => $fix{trk});
-                    $et->HandleTag($tagTbl, GPSTrackRef => 'T');
-                }
-                $et->HandleTag($tagTbl, GPSAltitude => $fix{alt}) if defined $fix{alt};
-                $et->HandleTag($tagTbl, GPSSatellites => $fix{nsats}+0) if defined $fix{nsats};
-                $et->HandleTag($tagTbl, GPSDOP => $fix{hdop}) if defined $fix{hdop};
+                $et->HandleTag($tagTbl, GPSSpeed     => $fix{spd} * $knotsToKph) if defined $fix{spd};
+                $et->HandleTag($tagTbl, GPSTrack     => $fix{trk}) if defined $fix{trk};
+                $et->HandleTag($tagTbl, GPSAltitude  => $fix{alt}) if defined $fix{alt};
+                $et->HandleTag($tagTbl, GPSSatellites=> $fix{nsats}+0) if defined $fix{nsats};
+                $et->HandleTag($tagTbl, GPSDOP       => $fix{hdop}) if defined $fix{hdop};
             }
             undef %fix;
         }
@@ -2522,9 +2499,7 @@ sub ProcessTTAD($$$)
             $et->HandleTag($tagTbl, GPSLongitude => GetDouble($dataPt, $pos+0x24));
             $et->HandleTag($tagTbl, GPSAltitude  => GetDouble($dataPt, $pos+0x14));
             $et->HandleTag($tagTbl, GPSSpeed     => GetDouble($dataPt, $pos+0x0c) * $mpsToKph);
-            $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
             $et->HandleTag($tagTbl, GPSTrack     => GetDouble($dataPt, $pos+0x30));
-            $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
             if ($unknown) {
                 my @a = map { GetDouble($dataPt, $pos+0x38+8*$_) } 0..2;
                 $et->HandleTag($tagTbl, Unknown03 => "@a");
@@ -2657,15 +2632,13 @@ sub ProcessInsta360($;$)
                     $a[$_] = GetDouble(\$a[$_], 0) foreach 4,6,8,9,10;
                     $a[4] = -abs($a[4]) if $a[5] eq 'S'; # (abs just in case it was already signed)
                     $a[6] = -abs($a[6]) if $a[7] ne 'E';
-                    $et->HandleTag($tagTbl, GPSDateTime => Image::ExifTool::ConvertUnixTime($a[0]) . 'Z');
-                    $et->HandleTag($tagTbl, GPSLatitude => $a[4]);
+                    $et->HandleTag($tagTbl, GPSDateTime  => Image::ExifTool::ConvertUnixTime($a[0]) . 'Z');
+                    $et->HandleTag($tagTbl, GPSLatitude  => $a[4]);
                     $et->HandleTag($tagTbl, GPSLongitude => $a[6]);
-                    $et->HandleTag($tagTbl, GPSSpeed => $a[8] * $mpsToKph);
-                    $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
-                    $et->HandleTag($tagTbl, GPSTrack => $a[9]);
-                    $et->HandleTag($tagTbl, GPSTrackRef => 'T');
-                    $et->HandleTag($tagTbl, GPSAltitude => $a[10]);
-                    $et->HandleTag($tagTbl, Unknown02 => "@a[1,2]") if $unknown; # millisecond counter (https://exiftool.org/forum/index.php?topic=9884.msg65143#msg65143)
+                    $et->HandleTag($tagTbl, GPSSpeed     => $a[8] * $mpsToKph);
+                    $et->HandleTag($tagTbl, GPSTrack     => $a[9]);
+                    $et->HandleTag($tagTbl, GPSAltitude  => $a[10]);
+                    $et->HandleTag($tagTbl, Unknown02    => "@a[1,2]") if $unknown; # millisecond counter (https://exiftool.org/forum/index.php?topic=9884.msg65143#msg65143)
                 }
             }
         } elsif ($id == 0x101) {
@@ -2718,6 +2691,41 @@ sub Process360Fly($$$)
         $pos += 32;
     }
     delete $$et{DOC_NUM};
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process GPS from Vantrue N2S dashcam
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessFMAS($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    return 0 unless $$dataPt =~ /^FMAS\0\0\0\0.{72}SAMM.{36}A/s and length($$dataPt) >= 160;
+    $et->VerboseDir('FMAS', undef, length($$dataPt));
+    # 0000: 46 4d 41 53 00 00 00 00 00 00 00 00 00 00 00 00 [FMAS............]
+    # 0010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+    # 0020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+    # 0030: 02 08 01 08 06 08 02 04 07 02 06 00 00 00 00 00 [................]
+    # 0040: 00 00 00 00 00 00 00 00 4f 46 4e 49 4d 4d 41 53 [........OFNIMMAS]
+    # 0050: 53 41 4d 4d 01 00 00 00 00 00 00 00 00 00 00 00 [SAMM............]
+    # 0060: e5 07 09 18 08 00 22 00 02 00 00 00 a1 82 8a bf [......".........]
+    # 0070: 89 23 8e bd 0b 2c 30 bc 41 57 4e 51 16 00 a1 01 [.#...,0.AWNQ....]
+    # 0080: 29 26 27 0c 4b 00 49 00 00 00 00 00 00 00 00 00 [)&'.K.I.........]
+    # 0090: 00 00 00 00 00 00 00 00 00 52 00 00 00 00 00 00 [.........R......]
+    my @a = unpack('x96vCCCCCCx16AAACCCvCCvvv',$$dataPt);
+    SetByteOrder('II');
+    my $acc = ReadValue($dataPt, 0x6c, 'float', 3); # (looks like Z comes first in my sample)
+    my $lon = $a[10] + ($a[11] + $a[13]/6000) / 60; # (why zero byte at $a[12]?)
+    my $lat = $a[14] + ($a[15] + $a[16]/6000) / 60;
+    $et->HandleTag($tagTbl, GPSDateTime  => sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d', @a[0..5]));
+    $et->HandleTag($tagTbl, GPSLatitude  => $lat * ($a[9] eq 'S' ? -1 : 1));
+    $et->HandleTag($tagTbl, GPSLongitude => $lon * ($a[8] eq 'W' ? -1 : 1));
+    $et->HandleTag($tagTbl, GPSSpeed     => $a[17] * $mphToKph); # convert mph -> kph
+    $et->HandleTag($tagTbl, GPSTrack     => $a[18]);
+    $et->HandleTag($tagTbl, Accelerometer=> $acc);
+    SetByteOrder('MM');
     return 1;
 }
 

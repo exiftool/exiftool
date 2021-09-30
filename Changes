@@ -7,11 +7,25 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Sept. 30, 2021 - Version 12.32
+
+  - Added support for CBOR-format metadata in JUMBF (note that JUMBF support is
+    still experimental)
+  - Added a new Nikon LensID
+  - Added a new Pentax LensType
+  - Decode timed GPS for two more dashcam formats
+  - Support reference direction columns in -geotag CSV input
+  - Removed generation of GPSSpeedRef and GPSTrackRef tags in timed metadata for
+    most dashcam formats when speed is km/h and track is relative to true north
+  - Patched to allow writing of console output to named pipes
+  - Fixed formatting of InternalSerialNumber for some Panasonic cameras
+  - Fixed bug in arg_files/xmp2exif.args support file
+
 Sept. 22, 2021 - Version 12.31
 
   - Added a new SonyModelID and a couple of new Sony lenses (thanks Jos Roost)
   - Added a new Canon LensType (thanks Chris Skopec)
-  - Added Composite GPSLatitude/Longitude tags for Sony videos which combine the
+  - Added Composite GPSLatitude/Longitude tags for Sony videos to combine the
     reference hemispheres as with the Composite tags for EXIF GPS
   - Decode DPX AspectRatio
   - Decode more GoPro MP4 tags

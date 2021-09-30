@@ -28,7 +28,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.64';
+$VERSION = '1.65';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -262,8 +262,10 @@ sub LoadTrackLog($$;$)
                         $param = 'time';
                     } elsif (/^(Pos)?Lat/i) {
                         $param = 'lat';
+                        /ref$/i and $param .= 'ref';
                     } elsif (/^(Pos)?Lon/i) {
                         $param = 'lon';
+                        /ref$/i and $param .= 'ref';
                     } elsif (/^(Pos)?Alt/i) {
                         $param = 'alt';
                     } elsif (/^(Angle)?(Heading|Track)/i) {
@@ -453,7 +455,7 @@ DoneFix:    $isDate = 1;
 # (ExifTool enhancements allow for standard tag names or descriptions as the column headings,
 #  add support for time zones and flexible coordinates, and allow new DateTime and Shift columns)
 #
-            my ($param, $date, $secs);
+            my ($param, $date, $secs, %neg);
             foreach $param (@csvHeadings) {
                 my $val = shift @vals;
                 last unless defined $val;
@@ -479,12 +481,21 @@ DoneFix:    $isDate = 1;
                     }
                 } elsif ($param eq 'lat' or $param eq 'lon') {
                     $$fix{$param} = Image::ExifTool::GPS::ToDegrees($val, 1);
+                } elsif ($param eq 'latref') {
+                    $neg{lat} = 1 if $val =~ /^S/i;
+                } elsif ($param eq 'lonref') {
+                    $neg{lon} = 1 if $val =~ /^W/i;
                 } elsif ($param eq 'runtime') {
                     $date = $trackTime;
                     $secs = $val;
                 } else {
                     $$fix{$param} = $val;
                 }
+            }
+            # make coordinate negative according to reference direction if necessary
+            foreach $param (keys %neg) {
+                next unless defined $$fix{$param};
+                $$fix{$param} = -abs($$fix{$param});
             }
             if ($date and defined $secs and defined $$fix{lat} and defined $$fix{lon}) {
                 $time = $date + $secs;

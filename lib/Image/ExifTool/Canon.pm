@@ -6764,7 +6764,7 @@ my %ciMaxFocal = (
             277 => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF2x',
             278 => 'Canon RF 70-200mm F4L IS USM', #42
             280 => 'Canon RF 50mm F1.8 STM', #42
-            281 => 'Canon RF 14-35mm F4L IS USM', #IB
+            281 => 'Canon RF 14-35mm F4L IS USM', #42/IB
            #xxx => 'Canon RF 100mm F2.8L MACRO IS USM',
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },

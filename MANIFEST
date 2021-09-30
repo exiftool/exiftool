@@ -48,6 +48,7 @@ html/TagNames/Apple.html
 html/TagNames/Audible.html
 html/TagNames/BMP.html
 html/TagNames/BPG.html
+html/TagNames/CBOR.html
 html/TagNames/Canon.html
 html/TagNames/CanonCustom.html
 html/TagNames/CanonRaw.html
@@ -217,6 +218,7 @@ lib/Image/ExifTool/BPG.pm
 lib/Image/ExifTool/BZZ.pm
 lib/Image/ExifTool/BigTIFF.pm
 lib/Image/ExifTool/BuildTagLookup.pm
+lib/Image/ExifTool/CBOR.pm
 lib/Image/ExifTool/Canon.pm
 lib/Image/ExifTool/CanonCustom.pm
 lib/Image/ExifTool/CanonRaw.pm

@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.15';
+$VERSION = '2.16';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -449,7 +449,7 @@ my %shootingMode = (
             same as the number printed on the camera body
         },
         PrintConv => q{
-            return $val unless $val=~/^([A-Z]\d{2})(\d{2})(\d{2})(\d{2})(\d{4})/;
+            return $val unless $val=~/^([A-Z][0-9A-Z]{2})(\d{2})(\d{2})(\d{2})(\d{4})/;
             my $yr = $2 + ($2 < 70 ? 2000 : 1900);
             return "($1) $yr:$3:$4 no. $5";
         },

@@ -14,7 +14,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Import;
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub ProcessJSON($$);
 sub ProcessTag($$$$%);
@@ -83,7 +83,9 @@ sub ProcessTag($$$$%)
             FoundTag($et, $tagTablePtr, $tag, $val, %flags, Struct => 1);
             return unless $et->Options('Struct') > 1;
         }
-        foreach (sort keys %$val) {
+        # support hashes with ordered keys
+        my @keys = $$val{_ordered_keys_} ? @{$$val{_ordered_keys_}} : sort keys %$val;
+        foreach (@keys) {
             ProcessTag($et, $tagTablePtr, $tag . ucfirst, $$val{$_}, %flags, Flat => 1);
         }
     } elsif (ref $val eq 'ARRAY') {

@@ -17,11 +17,26 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.32'><b>Sept. 30, 2021 - Version 12.32</b></a>
+<ul>
+<li>Added support for CBOR-format metadata in JUMBF (note that JUMBF support is
+    still experimental)
+<li>Added a new Nikon LensID
+<li>Added a new Pentax LensType
+<li>Decode timed GPS for two more dashcam formats
+<li>Support reference direction columns in -geotag CSV input
+<li>Removed generation of GPSSpeedRef and GPSTrackRef tags in timed metadata for
+    most dashcam formats when speed is km/h and track is relative to true north
+<li>Patched to allow writing of console output to named pipes
+<li>Fixed formatting of InternalSerialNumber for some Panasonic cameras
+<li>Fixed bug in arg_files/xmp2exif.args support file
+</ul>
+
 <a name='v12.31'><b>Sept. 22, 2021 - Version 12.31</b></a>
 <ul>
 <li>Added a new SonyModelID and a couple of new Sony lenses (thanks Jos Roost)
 <li>Added a new Canon LensType (thanks Chris Skopec)
-<li>Added Composite GPSLatitude/Longitude tags for Sony videos which combine the
+<li>Added Composite GPSLatitude/Longitude tags for Sony videos to combine the
     reference hemispheres as with the Composite tags for EXIF GPS
 <li>Decode DPX AspectRatio
 <li>Decode more GoPro MP4 tags

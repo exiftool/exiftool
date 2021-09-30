@@ -13,6 +13,7 @@
 #               2015/01/12 - PH Avoid copying from non-standard namespaces
 #               2016/09/26 - PH Write Composite SubSec tags
 #               2018/05/07 - PH Added support for GPSDestXxxRef tags
+#               2021/09/30 - PH Removed erroneous "-" when copying CreatorTool
 #
 # References:   http://www.metadataworkinggroup.org/specs/
 #
@@ -34,7 +35,7 @@
 -Composite:SubSecDateTimeOriginal < XMP-photoshop:DateCreated
 -Composite:SubSecCreateDate < XMP-xmp:CreateDate
 -Composite:SubSecModifyDate < XMP-xmp:ModifyDate
--EXIF:Software < -XMP-xmp:CreatorTool
+-EXIF:Software < XMP-xmp:CreatorTool
 -EXIF:Copyright < XMP-dc:Rights
 -EXIF:Artist < XMP-dc:Creator
 # XMP flash information is translated by the Composite Flash tag

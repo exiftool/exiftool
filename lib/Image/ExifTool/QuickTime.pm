@@ -738,6 +738,7 @@ my %eeBox2 = (
         Name => 'SamsungTrailer',
         SubDirectory => { TagTable => 'Image::ExifTool::Samsung::Trailer' },
     },
+    # 'samn'? - seen in Vantrue N2S sample video
 );
 
 # MPEG-4 'ftyp' atom

@@ -408,6 +408,9 @@ numerical, and generated automatically otherwise.
                   to be evaluated.  Expression may access $val and $et,
                   and is evaluated only when reading.
 
+                  'iTXt' - [PNG TextualData tags only] flag to write tag as PNG
+                  iTXt chunk even if it contains no special characters.
+
                   'List' - flag indicating that duplicate entries of this tag
                   are allowed, and will be accumulated in a list.  Note that for
                   XMP information, 3 different types of lists are supported and

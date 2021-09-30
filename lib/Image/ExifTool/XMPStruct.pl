@@ -32,7 +32,9 @@ sub SerializeStruct($;$)
     my ($key, $val, @vals, $rtnVal);
 
     if (ref $obj eq 'HASH') {
-        foreach $key (sort keys %$obj) {
+        # support hashes with ordered keys
+        my @keys = $$obj{_ordered_keys_} ? @{$$obj{_ordered_keys_}} : sort keys %$obj;
+        foreach $key (@keys) {
             push @vals, $key . '=' . SerializeStruct($$obj{$key}, '}');
         }
         $rtnVal = '{' . join(',', @vals) . '}';

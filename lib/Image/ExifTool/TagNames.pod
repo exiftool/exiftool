@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24327 tags, with 15772 unique tag names.
+They contain a total of 24338 tags, with 15779 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -21823,16 +21823,19 @@ even if it is not listed in this table.
 
 =head2 Jpeg2000 Tags
 
-The tags below are extracted from JPEG 2000 images and the JUMBF metadata in
-JPEG images.  Note that ExifTool currently writes only EXIF, IPTC and XMP
-tags in Jpeg2000 images.
+The tags below are found in JPEG 2000 images and the JUMBF metadata in JPEG
+images, but not all of these are extracted.  Note that ExifTool currently
+writes only EXIF, IPTC and XMP tags in Jpeg2000 images.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'Exif'   EXIF                                 EXIF
   'asoc'   Association                          Jpeg2000
+  'bfdb'   BinaryDataType                       no
   'bfil'   BinaryFilter                         no
+  'bidb'   BinaryData                           no
   'bpcc'   BitsPerComponent                     no
+  'cbor'   CBORData                             CBOR
   'cdef'   ComponentDefinition                  no
   'cgrp'   ColorGroup                           no
   'chck'   DigitalSignature                     no
@@ -21886,6 +21889,7 @@ tags in Jpeg2000 images.
            UUID-GeoJP2                          EXIF
            UUID-Photoshop                       Photoshop
            UUID-Signature                       no
+           UUID-C2PAClaimSignature              -
            UUID-Unknown                         no
   'xml '   XML                                  XMP XML
            XMP                                  -
@@ -21966,6 +21970,24 @@ JSON-formatted files.
   ON1_SettingsMetadataTimestamp                 no
   ON1_SettingsMetadataUsage                     no
   ON1_SettingsMetadataVisibleToUser             no
+
+=head2 CBOR Tags
+
+The tags below are extracted from CBOR (Concise Binary Object
+Representation) metadata.  The C2PA specification uses this format for some
+metadata.  As well as these tags, ExifTool will read any existing tags.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AuthorIdentifier                              no
+  AuthorName                                    no
+  DocumentID                                    no
+  Format                                        no
+  InstanceID                                    no
+  Relationship                                  no
+  ThumbnailHash                                 no+
+  ThumbnailURL                                  no
+  Title                                         no
 
 =head2 PLIST Tags
 
@@ -26103,7 +26125,7 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 55 different formats of timed GPS metadata from video files.
+currently reads 57 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -26161,6 +26183,7 @@ currently reads 55 different formats of timed GPS metadata from video files.
   fdsc                                          GoPro fdsc
   gpmd_Kingslim                                 QuickTime Stream
   gpmd_Rove                                     QuickTime Stream
+  gpmd_FMAS                                     QuickTime Stream
   gpmd_GoPro                                    GoPro GPMF
   marl                                          QuickTime marl
   mebx                                          QuickTime Keys

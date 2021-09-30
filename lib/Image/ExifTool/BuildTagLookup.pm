@@ -68,6 +68,7 @@ my %tweakOrder = (
     IPTC    => 'Exif',  # put IPTC after EXIF,
     GPS     => 'XMP',   # etc...
     Composite => 'Extra',
+    CBOR    => 'JSON',
     GeoTiff => 'GPS',
     CanonVRD=> 'CanonCustom',
     DJI     => 'Casio',

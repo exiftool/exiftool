@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.30';
+$VERSION = '1.31';
 
 sub ProcessJpeg2000Box($$$);
 sub ProcessJUMD($$$);
@@ -116,9 +116,6 @@ my %j2cMarker = (
     0x76 => 'NLT', # non-linearity point transformation
 );
 
-my %jumbfTypes = (
-);
-
 # JPEG 2000 "box" (ie. atom) names
 # Note: only tags with a defined "Format" are extracted
 %Image::ExifTool::Jpeg2000::Main = (
@@ -127,10 +124,13 @@ my %jumbfTypes = (
     WRITE_PROC => \&ProcessJpeg2000Box,
     PREFERRED => 1, # always add these tags when writing
     NOTES => q{
-        The tags below are extracted from JPEG 2000 images and the JUMBF metadata in
-        JPEG images.  Note that ExifTool currently writes only EXIF, IPTC and XMP
-        tags in Jpeg2000 images.
+        The tags below are found in JPEG 2000 images and the JUMBF metadata in JPEG
+        images, but not all of these are extracted.  Note that ExifTool currently
+        writes only EXIF, IPTC and XMP tags in Jpeg2000 images.
     },
+#
+# NOTE: ONLY TAGS WITH "Format" DEFINED ARE EXTRACTED!
+#
    'jP  ' => 'JP2Signature', # (ref 1)
    "jP\x1a\x1a" => 'JP2Signature', # (ref 2)
     prfl => 'Profile',
@@ -345,6 +345,14 @@ my %jumbfTypes = (
             ValueConv => 'substr($val,16)',
         },
         {
+            Name => 'UUID-C2PAClaimSignature',  # (seen in JUMB data of JPEG images)
+            Condition => '$$valPt=~/^c2cs\x00\x11\x00\x10\x80\x00\x00\xaa\x00\x38\x9b\x71/',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::CBOR::Main',
+                Start => '$valuePtr + 16',
+            },
+        },
+        {
             Name => 'UUID-Unknown',
         },
         # also written by Adobe JPEG2000 plugin v1.5:
@@ -385,6 +393,27 @@ my %jumbfTypes = (
             BlockExtract option
         },
         SubDirectory => { TagTable => 'Image::ExifTool::JSON::Main' },
+    },
+    cbor => {
+        Name => 'CBORData',
+        Flags => [ 'Binary', 'Protected' ],
+        SubDirectory => { TagTable => 'Image::ExifTool::CBOR::Main' },
+    },
+    bfdb => { # used in JUMBF (see  # (used when tag is renamed according to JUMDLabel)
+        Name => 'BinaryDataType',
+        Notes => 'JUMBF, MIME type and optional file name',
+        Format => 'undef',
+        # (ignore "toggles" byte and just extract MIME type and file name)
+        ValueConv => '$_=substr($val,1); s/\0+$//; s/\0/, /; $_',
+        JUMBF_Suffix => 'Type', # (used when tag is renamed according to JUMDLabel)
+    },
+    bidb => { # used in JUMBF
+        Name => 'BinaryData',
+        Notes => 'JUMBF',
+        Groups => { 2 => 'Preview' },
+        Format => 'undef',
+        Binary => 1,
+        JUMBF_Suffix => 'Data', # (used when tag is renamed according to JUMDLabel)
     },
 #
 # stuff seen in JPEG XL images:
@@ -690,6 +719,7 @@ sub ProcessJUMD($$$)
         if ($len) {
             $name =~ s/[^-_a-zA-Z0-9]([a-z])/\U$1/g; # capitalize characters after illegal characters
             $name =~ tr/-_a-zA-Z0-9//dc;    # remove other illegal characters
+            $name =~ s/__/_/;               # collapse double underlines
             $name = ucfirst $name;          # capitalize first letter
             $name = "Tag$name" if length($name) < 2; # must at least 2 characters long
             $$et{JUMBFLabel} = $name;
@@ -932,6 +962,14 @@ sub ProcessJpeg2000Box($$$)
                 }
             }
         }
+        # create new tag for JUMBF data values with name corresponding to JUMBFLabel
+        if ($tagInfo and $$et{JUMBFLabel} and (not $$tagInfo{SubDirectory} or $$tagInfo{BlockExtract})) {
+            $tagInfo = { %$tagInfo, Name => $$et{JUMBFLabel} . ($$tagInfo{JUMBF_Suffix} || '') };
+            delete $$tagInfo{Description};
+            AddTagToTable($tagTablePtr, '_JUMBF_' . $$et{JUMBFLabel}, $tagInfo);
+            delete $$tagInfo{Protected}; # (must do this so -j -b returns JUMBF binary data)
+            $$tagInfo{TagID} = $boxID;
+        }
         if ($verbose) {
             $et->VerboseInfo($boxID, $tagInfo,
                 Table  => $tagTablePtr,
@@ -941,13 +979,6 @@ sub ProcessJpeg2000Box($$$)
                 Addr   => $valuePtr + $dataPos + $base,
             );
             next unless $tagInfo;
-        }
-        # create new tag for JUMBF data values with name corresponding to JUMBFLabel
-        if ($$et{JUMBFLabel} and (not $$tagInfo{SubDirectory} or $$tagInfo{BlockExtract})) {
-            $tagInfo = { %$tagInfo, Name => $$et{JUMBFLabel} };
-            AddTagToTable($tagTablePtr, '_JUMBF_' . $$et{JUMBFLabel}, $tagInfo);
-            delete $$tagInfo{Protected}; # (must do this so -j -b returns JUMBF binary data)
-            $$tagInfo{TagID} = $boxID;
         }
         if ($$tagInfo{SubDirectory}) {
             my $subdir = $$tagInfo{SubDirectory};

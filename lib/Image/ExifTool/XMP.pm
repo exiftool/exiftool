@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.44';
+$VERSION = '3.46';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -1533,6 +1533,9 @@ my %sPantryItem = (
                     CameraProfile   => { },
                     LookTable       => { },
                     ToneCurvePV2012 => { List => 'Seq' },
+                    ToneCurvePV2012Red   => { List => 'Seq' },
+                    ToneCurvePV2012Green => { List => 'Seq' },
+                    ToneCurvePV2012Blue  => { List => 'Seq' },
                 },
             },
         }
@@ -2346,6 +2349,8 @@ my %sPantryItem = (
     Scene               => { Groups => { 2 => 'Other' }, List => 'Bag' },
     SubjectCode         => { Groups => { 2 => 'Other' }, List => 'Bag' },
     # Copyright - have seen this in a sample (Jan 2021), but I think it is non-standard
+    AltTextAccessibility =>{ Groups => { 2 => 'Other' }, Writable => 'lang-alt' }, # added 2021-10-13
+    ExtDescrAccessibility=>{ Groups => { 2 => 'Other' }, Writable => 'lang-alt' }, # added 2021-10-13
 );
 
 # Adobe Lightroom namespace properties (lr) (ref PH)
@@ -3960,7 +3965,7 @@ sub ProcessXMP($$;$)
                         } elsif ($1 eq 'REDXIF') {
                             $type = 'RMD';
                             $mime = 'application/xml';
-                        } else {
+                        } elsif ($1 ne 'fcpxml') { # Final Cut Pro XML
                             return 0;
                         }
                     } elsif ($buf2 =~ /<svg[\s>]/) {

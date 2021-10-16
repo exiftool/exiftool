@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.36';
+$VERSION = '4.37';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -265,6 +265,7 @@ sub BINARY_DATA_LIMIT { return 10 * 1024 * 1024; }
     32892 => 'Sequential Color Filter', #JR (Sony ARQ)
     34892 => 'Linear Raw', #2
     51177 => 'Depth Map', # (DNG 1.5)
+    52527 => 'Semantic Mask', # (DNG 1.6)
 );
 
 %orientation = (
@@ -291,6 +292,7 @@ sub BINARY_DATA_LIMIT { return 10 * 1024 * 1024; }
     9 => 'Depth map of reduced-resolution image', # (DNG 1.5)
     16 => 'Enhanced image data', # (DNG 1.5)
     0x10001 => 'Alternate reduced-resolution image', # (DNG 1.2)
+    0x10004 => 'Semantic Mask', # (DNG 1.6)
     0xffffffff => 'invalid', #(found in E5700 NEF's)
     BITMASK => {
         0 => 'Reduced resolution',
@@ -366,6 +368,7 @@ my %opcodeInfo = (
         11 => 'DeltaPerColumn',
         12 => 'ScalePerRow',
         13 => 'ScalePerColumn',
+        14 => 'WarpRectilinear2', # (DNG 1.6)
     },
     PrintConvInv => undef,  # (so the inverse conversion is not performed)
 );
@@ -3038,12 +3041,12 @@ my %opcodeInfo = (
         },
     },
 #
-# DNG tags 0xc6XX and 0xc7XX (ref 2 unless otherwise stated)
+# DNG tags 0xc6XX, 0xc7XX and 0xcdXX (ref 2 unless otherwise stated)
 #
     0xc612 => {
         Name => 'DNGVersion',
         Notes => q{
-            tags 0xc612-0xc7b5 are defined by the DNG specification unless otherwise
+            tags 0xc612-0xcd3b are defined by the DNG specification unless otherwise
             noted.  See L<https://helpx.adobe.com/photoshop/digital-negative.html> for
             the specification
         },
@@ -4040,6 +4043,97 @@ my %opcodeInfo = (
         Writable => 'string',
         Protected => 1,
         WriteGroup => 'IFD0',
+    },
+    0xcd2d => { # DNG 1.6
+        Name => 'ProfileGainTableMap',
+        Writable => 'undef',
+        WriteGroup => 'SubIFD',
+        Protected => 1,
+        Binary => 1,
+    },
+    0xcd2e => { # DNG 1.6
+        Name => 'SemanticName',
+      # Writable => 'string',
+        WriteGroup => 'SubIFD' #? (NC) Semantic Mask IFD (only for Validate)
+    },
+    0xcd30 => { # DNG 1.6
+        Name => 'SemanticInstanceIFD',
+      # Writable => 'string',
+        WriteGroup => 'SubIFD' #? (NC) Semantic Mask IFD (only for Validate)
+    },
+    0xcd31 => { # DNG 1.6
+        Name => 'CalibrationIlluminant3',
+        Writable => 'int16u',
+        WriteGroup => 'IFD0',
+        Protected => 1,
+        SeparateTable => 'LightSource',
+        PrintConv => \%lightSource,
+    },
+    0xcd32 => { # DNG 1.6
+        Name => 'CameraCalibration3',
+        Writable => 'rational64s',
+        WriteGroup => 'IFD0',
+        Count => -1,
+        Protected => 1,
+    },
+    0xcd33 => { # DNG 1.6
+        Name => 'ColorMatrix3',
+        Writable => 'rational64s',
+        WriteGroup => 'IFD0',
+        Count => -1,
+        Protected => 1,
+    },
+    0xcd34 => { # DNG 1.6
+        Name => 'ForwardMatrix3',
+        Writable => 'rational64s',
+        WriteGroup => 'IFD0',
+        Count => -1,
+        Protected => 1,
+    },
+    0xcd35 => { # DNG 1.6
+        Name => 'IlluminantData1',
+        Writable => 'undef',
+        WriteGroup => 'IFD0',
+        Protected => 1,
+    },
+    0xcd36 => { # DNG 1.6
+        Name => 'IlluminantData2',
+        Writable => 'undef',
+        WriteGroup => 'IFD0',
+        Protected => 1,
+    },
+    0xcd37 => { # DNG 1.6
+        Name => 'IlluminantData3',
+        Writable => 'undef',
+        WriteGroup => 'IFD0',
+        Protected => 1,
+    },
+    0xcd38 => { # DNG 1.6
+        Name => 'MaskSubArea',
+      # Writable => 'int32u',
+        WriteGroup => 'SubIFD', #? (NC) Semantic Mask IFD (only for Validate)
+        Count => 4,
+    },
+    0xcd39 => { # DNG 1.6
+        Name => 'ProfileHueSatMapData3',
+        %longBin,
+        Writable => 'float',
+        WriteGroup => 'IFD0',
+        Count => -1,
+        Protected => 1,
+    },
+    0xcd3a => { # DNG 1.6
+        Name => 'ReductionMatrix3',
+        Writable => 'rational64s',
+        WriteGroup => 'IFD0',
+        Count => -1,
+        Protected => 1,
+    },
+    0xcd3b => { # DNG 1.6
+        Name => 'RGBTables',
+        Writable => 'undef',
+        WriteGroup => 'IFD0',
+        Protected => 1,
     },
     0xea1c => { #13
         Name => 'Padding',

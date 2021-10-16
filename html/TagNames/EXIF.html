@@ -76,6 +76,7 @@ for the official EXIF 2.32 specification.
   <br>0x9 = Depth map of reduced-resolution image
   <br>0x10 = Enhanced image data
   <br>0x10001 = Alternate reduced-resolution image
+  <br>0x10004 = Semantic Mask
   <br>0xffffffff = invalid
   <br>Bit 0 = Reduced resolution
   <br>Bit 1 = Single page
@@ -137,7 +138,8 @@ for the official EXIF 2.32 specification.
   <br>32845 = Pixar LogLuv
   <br>32892 = Sequential Color Filter
   <br>34892 = Linear Raw
-  <br>51177 = Depth Map</td></tr></table>
+  <br>51177 = Depth Map
+  <br>52527 = Semantic Mask</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x0107 = 263'>0x0107</td>
@@ -2777,7 +2779,7 @@ unnecessary clutter)</span></span><table class=cols><tr>
 <td>DNGVersion</td>
 <td class=c title=' ! = Unsafe'>int8u[4]!</td>
 <td class=c>IFD0</td>
-<td><span class=s><span class=n>(tags 0xc612-0xc7b5 are defined by the DNG specification unless otherwise
+<td><span class=s><span class=n>(tags 0xc612-0xcd3b are defined by the DNG specification unless otherwise
 noted.  See <a href="https://helpx.adobe.com/photoshop/digital-negative.html">https://helpx.adobe.com/photoshop/digital-negative.html</a> for
 the specification)</span></span></td></tr>
 <tr>
@@ -3298,7 +3300,8 @@ one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</sp
   <br>10 = DeltaPerRow
   <br>11 = DeltaPerColumn
   <br>12 = ScalePerRow
-  <br>13 = ScalePerColumn</td></tr></table>
+  <br>13 = ScalePerColumn
+  <br>14 = WarpRectilinear2</td></tr></table>
 </td></tr>
 <tr>
 <td title='0xc741 = 51009'>0xc741</td>
@@ -3318,7 +3321,8 @@ one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</sp
   <br>10 = DeltaPerRow
   <br>11 = DeltaPerColumn
   <br>12 = ScalePerRow
-  <br>13 = ScalePerColumn</td></tr></table>
+  <br>13 = ScalePerColumn
+  <br>14 = WarpRectilinear2</td></tr></table>
 </td></tr>
 <tr class=b>
 <td title='0xc74e = 51022'>0xc74e</td>
@@ -3338,7 +3342,8 @@ one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</sp
   <br>10 = DeltaPerRow
   <br>11 = DeltaPerColumn
   <br>12 = ScalePerRow
-  <br>13 = ScalePerColumn</td></tr></table>
+  <br>13 = ScalePerColumn
+  <br>14 = WarpRectilinear2</td></tr></table>
 </td></tr>
 <tr>
 <td title='0xc761 = 51041'>0xc761</td>
@@ -3491,6 +3496,90 @@ one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</sp
 <td title='0xc7ee = 51182'>0xc7ee</td>
 <td>EnhanceParams</td>
 <td class=c title=' ! = Unsafe'>string!</td>
+<td class=c>IFD0</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xcd2d = 52525'>0xcd2d</td>
+<td>ProfileGainTableMap</td>
+<td class=c title=' ! = Unsafe'>undef!</td>
+<td class=c>SubIFD</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xcd2e = 52526'>0xcd2e</td>
+<td>SemanticName</td>
+<td class=c>no</td>
+<td class=c>SubIFD</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xcd30 = 52528'>0xcd30</td>
+<td>SemanticInstanceIFD</td>
+<td class=c>no</td>
+<td class=c>SubIFD</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xcd31 = 52529'>0xcd31</td>
+<td>CalibrationIlluminant3</td>
+<td class=c title=' ! = Unsafe'>int16u!</td>
+<td class=c>IFD0</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td title='0xcd32 = 52530'>0xcd32</td>
+<td>CameraCalibration3</td>
+<td class=c title=' ! = Unsafe'>rational64s[n]!</td>
+<td class=c>IFD0</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xcd33 = 52531'>0xcd33</td>
+<td>ColorMatrix3</td>
+<td class=c title=' ! = Unsafe'>rational64s[n]!</td>
+<td class=c>IFD0</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xcd34 = 52532'>0xcd34</td>
+<td>ForwardMatrix3</td>
+<td class=c title=' ! = Unsafe'>rational64s[n]!</td>
+<td class=c>IFD0</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xcd35 = 52533'>0xcd35</td>
+<td>IlluminantData1</td>
+<td class=c title=' ! = Unsafe'>undef!</td>
+<td class=c>IFD0</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xcd36 = 52534'>0xcd36</td>
+<td>IlluminantData2</td>
+<td class=c title=' ! = Unsafe'>undef!</td>
+<td class=c>IFD0</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xcd37 = 52535'>0xcd37</td>
+<td>IlluminantData3</td>
+<td class=c title=' ! = Unsafe'>undef!</td>
+<td class=c>IFD0</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xcd38 = 52536'>0xcd38</td>
+<td>MaskSubArea</td>
+<td class=c>no</td>
+<td class=c>SubIFD</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xcd39 = 52537'>0xcd39</td>
+<td>ProfileHueSatMapData3</td>
+<td class=c title=' ! = Unsafe'>float[n]!</td>
+<td class=c>IFD0</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xcd3a = 52538'>0xcd3a</td>
+<td>ReductionMatrix3</td>
+<td class=c title=' ! = Unsafe'>rational64s[n]!</td>
+<td class=c>IFD0</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xcd3b = 52539'>0xcd3b</td>
+<td>RGBTables</td>
+<td class=c title=' ! = Unsafe'>undef!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -3723,7 +3812,7 @@ these unless they already exist in the file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 18, 2021</i>
+<br><i>Last revised Oct 16, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

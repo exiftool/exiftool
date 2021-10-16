@@ -474,9 +474,9 @@ numerical, and generated automatically otherwise.
                   tags in IFD1 of JPEG images which default to priority 0.
 
                   'Protected' - bit mask to protect tags from writing:
-                  Bit 0x01 indicates an 'unsafe' tag, which is not set via
+                  Bit 0x01 indicates an 'Unsafe' tag, which is not set via
                   SetNewValuesFromFile() unless specified explicitly.
-                  Bit 0x02 indicates a 'protected' tag, which should not be set
+                  Bit 0x02 indicates a 'Protected' tag, which should not be set
                   directly by the user.
 
                   'PutFirst' - [EXIF only] flag to place this value before IFD0

@@ -40,7 +40,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.74';
+$VERSION = '2.75';
 
 sub PrintLensInfo($$$);
 
@@ -3608,6 +3608,10 @@ my %indexInfo = (
         Name => 'DateTime2',
         Format => 'string[24]',
         Groups => { 2 => 'Time' },
+    },
+    0x17f => {
+        Name => 'LensModel',
+        Format => 'string[32]'
     },
 );
 

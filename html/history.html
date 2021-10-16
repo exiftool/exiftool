@@ -17,13 +17,32 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.33'><b>Oct. 16, 2021 - Version 12.33</b></a>
+<ul>
+<li>Added support for DNG version 1.6.0.0
+<li>Added two new Sony LensType values (thanks Jos Roost and LibRaw)
+<li>Added some new elements to the XMP-crs:Look structure (thanks Herb)
+<li>Added a few new IPTC XMP tags (thanks Michael Steidl)
+<li>Added a new Canon RF lens (thanks Norbert Wasser)
+<li>Decode Canon ShutterMode (thanks John Moyer)
+<li>Extract LensModel from some Olympus MOV videos
+<li>Generate MediaDataOffset/Size for MOV videos with zero-sized MDAT chunk
+<li>Improvements to CBOR reader, including hex dump with -v3 option
+<li>Recognize Final Cut Pro XML files
+<li>Allow binary data of Protected tags to be extracted with the -X -j and -php
+    options with -b by setting the API RequestAll option to 3
+<li>Changed name of "Canon EF 80-200mm f/4.5-5.6" lens with LensType 38 to add
+    "II" to the name (Exiv2 issue 1906)
+<li>Fixed runtime warning when processing files with a .DIR extension
+</ul>
+
 <a name='v12.32'><b>Sept. 30, 2021 - Version 12.32</b></a>
 <ul>
 <li>Added support for CBOR-format metadata in JUMBF (note that JUMBF support is
     still experimental)
 <li>Added a new Nikon LensID
 <li>Added a new Pentax LensType
-<li>Decode timed GPS for two more dashcam formats
+<li>Decode <a href="https://exiftool.org/TagNames/QuickTime.html#Stream">timed GPS</a> for two more dashcam formats
 <li>Support reference direction columns in -geotag CSV input
 <li>Removed generation of GPSSpeedRef and GPSTrackRef tags in timed metadata for
     most dashcam formats when speed is km/h and track is relative to true north

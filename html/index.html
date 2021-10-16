@@ -87,9 +87,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.32.tar.gz/download">
-Download        Version 12.32</a> (4.7 MB) -
-<a href="history.html">Sept. 30, 2021</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.33.tar.gz/download">
+Download        Version 12.33</a> (4.7 MB) -
+<a href="history.html">Oct. 16, 2021</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -142,8 +142,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.32.zip/download">
-         exiftool-12.32.zip</a> (6.4 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.33.zip/download">
+         exiftool-12.33.zip</a> (6.4 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -161,7 +161,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.32.dmg</a> (3.0 MB)</b></td></tr></table></blockquote>
+         ExifTool-12.33.dmg</a> (3.0 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -422,7 +422,7 @@ for each file format.</p>
 <tr><td><a href="TagNames/PhotoCD.html">PCD</a></td><td>R</td><td>Kodak Photo CD Image Pac</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/PhotoCD.html">PhotoCD</a></td></tr>
 <tr><td><a href="TagNames/PCX.html">PCX</a></td><td>R</td><td>PC Paintbrush</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/PCX.html">PCX</a></td></tr>
 <tr><td><a href="TagNames/Palm.html">PDB, PRC</a></td><td>R</td><td>Palm Database</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Palm.html">Palm</a></td></tr>
-<tr><td><a href="TagNames/PDF.html">PDF</a></td><td>R/W</td><td>Adobe Portable Document Format</td><td>R<span class=sup>3</span></td><td>R<span class=sup>3</span></td><td>R/W/C</td><td>R<span class=sup>3</span></td><td>R/W/C <a href="TagNames/PDF.html">PDF</a>, R <a href="TagNames/Photoshop.html">Photoshop</a></td></tr>
+<tr><td><a href="TagNames/PDF.html">PDF</a></td><td>R/W<span class=sup>7</span></td><td>Adobe Portable Document Format</td><td>R<span class=sup>3</span></td><td>R<span class=sup>3</span></td><td>R/W/C</td><td>R<span class=sup>3</span></td><td>R/W/C <a href="TagNames/PDF.html">PDF</a>, R <a href="TagNames/Photoshop.html">Photoshop</a></td></tr>
 <tr><td>PEF</td><td>R/W</td><td>Pentax (RAW) Electronic Format (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W <a href="TagNames/Pentax.html">Pentax</a></td></tr>
 <tr><td><a href="TagNames/Font.html">PFA, PFB</a></td><td>R</td><td>PostScript Font ASCII/Binary</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Font.html">Font</a></td></tr>
 <tr><td><a href="TagNames/Font.html">PFM</a></td><td>R</td><td>Printer Font Metrics</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Font.html">Font</a></td></tr>
@@ -491,7 +491,8 @@ for each file format.</p>
 <span class=sup>3</span> Non-standard format,
 <span class=sup>4</span> Only writable for PostScript-format file type,
 <span class=sup>5</span> Only writable for PDF-format file type,
-<span class=sup>6</span> Only writable when ignoring minor errors due to <a href='#problems'>Phocus incompatibility</a></span></blockquote>
+<span class=sup>6</span> Only writable when ignoring minor errors due to <a href='#problems'>Phocus incompatibility</a>,
+<span class=sup>7</span> Old metdata is never actually deleted</span></blockquote>
 <h3><a name="JPEG">Supported JPEG Meta Information</a></h3>
 <p>ExifTool can <b>R</b>ead, <b>W</b>rite and/or <b>C</b>reate the following types
 of meta information in JPEG images:</p>

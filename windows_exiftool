@@ -10,7 +10,7 @@
 use strict;
 require 5.004;
 
-my $version = '12.32';
+my $version = '12.33';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -1619,7 +1619,7 @@ if (@newValues) {
             next;
         }
         my %opts = ( Shift => 0 );  # shift values if possible instead of adding/deleting
-        # allow writing of 'unsafe' tags unless specified by wildcard
+        # allow writing of 'Unsafe' tags unless specified by wildcard
         $opts{Protected} = 1 unless $tag =~ /[?*]/;
 
         if ($tag =~ s/<// and defined $newVal) {
@@ -1954,10 +1954,19 @@ sub GetImageInfo($$)
     my $pipe = $file;
     if ($doUnzip) {
         # pipe through gzip or bzip2 if necessary
-        if ($file =~ /\.gz$/i) {
-            $pipe = qq{gzip -dc "$file" |};
-        } elsif ($file =~ /\.bz2$/i) {
-            $pipe = qq{bzip2 -dc "$file" |};
+        if ($file =~ /\.(gz|bz2)$/i) {
+            my $type = lc $1;
+            if ($file =~ /[^-_.'A-Za-z0-9\/\\]/) {
+                Warn "Error: Insecure zip file name. Skipped\n";
+                EFile($file);
+                ++$countBad;
+                return;
+            }
+            if ($type eq 'gz') {
+                $pipe = qq{gzip -dc "$file" |};
+            } else {
+                $pipe = qq{bzip2 -dc "$file" |};
+            }
         }
     }
     # evaluate -if expression for conditional processing
@@ -2276,7 +2285,7 @@ TAG:    foreach $tag (@foundTags) {
                     # avoid extracting Protected binary tags (eg. data blocks) [insider information]
                     my $lcTag = lc $tag;
                     $lcTag =~ s/ .*//;
-                    next unless $$et{REQ_TAG_LOOKUP}{$lcTag};
+                    next unless $$et{REQ_TAG_LOOKUP}{$lcTag} or ($$et{OPTIONS}{RequestAll} || 0) > 2;
                 }
                 $val = ConvertBinary($val); # convert SCALAR references
                 next unless defined $val;
@@ -4731,12 +4740,13 @@ OPTIONS
          names, prefixed by optional family numbers, and separated colons.
          If no group name is specified, the tag is created in the preferred
          group, and updated in any other location where a same-named tag
-         already exists. The preferred group is the first group in the
-         following list where *TAG* is valid: 1) EXIF, 2) IPTC, 3) XMP.
+         already exists. The preferred group in JPEG and TIFF-format images
+         is the first group in the following list where *TAG* is valid: 1)
+         EXIF, 2) IPTC, 3) XMP.
 
          The wildcards "*" and "?" may be used in tag names to assign the
          same value to multiple tags. When specified with wildcards,
-         "unsafe" tags are not written. A tag name of "All" is equivalent to
+         "Unsafe" tags are not written. A tag name of "All" is equivalent to
          "*" (except that it doesn't require quoting, while arguments with
          wildcards do on systems with shell globbing), and is often used
          when deleting all metadata (ie. "-All=") or an entire group (eg.
@@ -4891,9 +4901,9 @@ OPTIONS
          Notes:
 
          1) Some tags (generally tags which may affect the appearance of the
-         image) are considered "unsafe" to write, and are only copied if
+         image) are considered "Unsafe" to write, and are only copied if
          specified explicitly (ie. no wildcards). See the tag name
-         documentation for more details about "unsafe" tags.
+         documentation for more details about "Unsafe" tags.
 
          2) Be aware of the difference between excluding a tag from being
          copied (--*TAG*), and deleting a tag (-*TAG*=). Excluding a tag
@@ -4991,7 +5001,7 @@ OPTIONS
              exiftool -@ out.args -sep ", " dst.jpg
 
          Note: Be careful when copying information with this technique since
-         it is easy to write tags which are normally considered "unsafe".
+         it is easy to write tags which are normally considered "Unsafe".
          For instance, the FileName and Directory tags are excluded in the
          example above to avoid renaming and moving the destination file.
          Also note that the second command above will produce warning
@@ -5011,9 +5021,9 @@ OPTIONS
          output. By default, list items are separated by a newline when
          extracted with the -b option, but this may be changed (see the -sep
          option for details). May be combined with -j, -php or -X to extract
-         binary data in JSON, PHP or XML format, but note that "unsafe" tags
-         must be specified explicitly to be extracted as binary in these
-         formats.
+         binary data in JSON, PHP or XML format, but note that "Unsafe" tags
+         are not extracted as binary unless they are specified explicitly or
+         the API RequestAll option is set to 3 or higher.
 
          With a leading double dash (--b or --binary), tags which contain
          binary data are suppressed in the output when reading.
@@ -5217,7 +5227,7 @@ OPTIONS
          collapsing adjacent identical group names, but this can be avoided
          by placing a colon before the first family number (eg. -g:3:1). Use
          the -listg option to list group names for a specified family. The
-         SavePath and SaveFormat API options are automatically enabled if
+         API SavePath and SaveFormat options are automatically enabled if
          the respective family 5 or 6 group names are requested. See the API
          GetGroup documentation for more information.
 
@@ -5423,7 +5433,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 12.32 --
+             -- Generated by ExifTool 12.33 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38
@@ -5440,7 +5450,7 @@ OPTIONS
          If a specified tag does not exist, a minor warning is issued and
          the line with the missing tag is not printed. However, the -f
          option may be used to set the value of missing tags to '-' (but
-         this may be configured via the MissingTagValue API option), or the
+         this may be configured via the API MissingTagValue option), or the
          -m option may be used to ignore minor warnings and leave the
          missing values empty. Alternatively, -q -q may be used to simply
          suppress the warning messages.

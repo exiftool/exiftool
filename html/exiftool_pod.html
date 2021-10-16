@@ -304,9 +304,9 @@
 
 <p>Write a new value for the specified tag (eg. <code>-comment=wow</code>), or delete the tag if no <i>VALUE</i> is given (eg. <code>-comment=</code>). <code>+=</code> and <code>-=</code> are used to add or remove existing entries from a list, or to shift date/time values (see <a>Image::ExifTool::Shift.pl</a> and note 6 below for more details). <code>+=</code> may also be used to increment numerical values (or decrement if <i>VALUE</i> is negative), and <code>-=</code> may be used to conditionally delete or replace a tag (see <a href="#WRITING-EXAMPLES">&quot;WRITING EXAMPLES&quot;</a> for examples). <code>^=</code> is used to write an empty string instead of deleting the tag when no <i>VALUE</i> is given, but otherwise it is equivalent to <code>=</code>.</p>
 
-<p><i>TAG</i> may contain one or more leading family 0, 1, 2 or 7 group names, prefixed by optional family numbers, and separated colons. If no group name is specified, the tag is created in the preferred group, and updated in any other location where a same-named tag already exists. The preferred group is the first group in the following list where <i>TAG</i> is valid: 1) EXIF, 2) IPTC, 3) XMP.</p>
+<p><i>TAG</i> may contain one or more leading family 0, 1, 2 or 7 group names, prefixed by optional family numbers, and separated colons. If no group name is specified, the tag is created in the preferred group, and updated in any other location where a same-named tag already exists. The preferred group in JPEG and TIFF-format images is the first group in the following list where <i>TAG</i> is valid: 1) EXIF, 2) IPTC, 3) XMP.</p>
 
-<p>The wildcards <code>*</code> and <code>?</code> may be used in tag names to assign the same value to multiple tags. When specified with wildcards, &quot;unsafe&quot; tags are not written. A tag name of <code>All</code> is equivalent to <code>*</code> (except that it doesn&#39;t require quoting, while arguments with wildcards do on systems with shell globbing), and is often used when deleting all metadata (ie. <code>-All=</code>) or an entire group (eg. <code>-XMP-dc:All=</code>, see note 4 below). Note that not all groups are deletable, and that the JPEG APP14 &quot;Adobe&quot; group is not removed by default with <code>-All=</code> because it may affect the appearance of the image. However, color space information is removed, so the colors may be affected (but this may be avoided by copying back the tags defined by the ColorSpaceTags shortcut). Use the <b>-listd</b> option for a complete list of deletable groups, and see note 5 below regarding the &quot;APP&quot; groups. Also, within an image some groups may be contained within others, and these groups are removed if the containing group is deleted:</p>
+<p>The wildcards <code>*</code> and <code>?</code> may be used in tag names to assign the same value to multiple tags. When specified with wildcards, &quot;Unsafe&quot; tags are not written. A tag name of <code>All</code> is equivalent to <code>*</code> (except that it doesn&#39;t require quoting, while arguments with wildcards do on systems with shell globbing), and is often used when deleting all metadata (ie. <code>-All=</code>) or an entire group (eg. <code>-XMP-dc:All=</code>, see note 4 below). Note that not all groups are deletable, and that the JPEG APP14 &quot;Adobe&quot; group is not removed by default with <code>-All=</code> because it may affect the appearance of the image. However, color space information is removed, so the colors may be affected (but this may be avoided by copying back the tags defined by the ColorSpaceTags shortcut). Use the <b>-listd</b> option for a complete list of deletable groups, and see note 5 below regarding the &quot;APP&quot; groups. Also, within an image some groups may be contained within others, and these groups are removed if the containing group is deleted:</p>
 
 <pre><code>  JPEG Image:
   - Deleting EXIF or IFD0 also deletes ExifIFD, GlobParamIFD,
@@ -358,7 +358,7 @@
 
 <p>Notes:</p>
 
-<p>1) Some tags (generally tags which may affect the appearance of the image) are considered &quot;unsafe&quot; to write, and are only copied if specified explicitly (ie. no wildcards). See the <a>tag name documentation</a> for more details about &quot;unsafe&quot; tags.</p>
+<p>1) Some tags (generally tags which may affect the appearance of the image) are considered &quot;Unsafe&quot; to write, and are only copied if specified explicitly (ie. no wildcards). See the <a>tag name documentation</a> for more details about &quot;Unsafe&quot; tags.</p>
 
 <p>2) Be aware of the difference between excluding a tag from being copied (--<i>TAG</i>), and deleting a tag (-<i>TAG</i>=). Excluding a tag prevents it from being copied to the destination image, but deleting will remove a pre-existing tag from the image.</p>
 
@@ -411,7 +411,7 @@
 <pre><code>    exiftool -args -G1 --filename --directory src.jpg &gt; out.args
     exiftool -@ out.args -sep &#39;, &#39; dst.jpg</code></pre>
 
-<p>Note: Be careful when copying information with this technique since it is easy to write tags which are normally considered &quot;unsafe&quot;. For instance, the FileName and Directory tags are excluded in the example above to avoid renaming and moving the destination file. Also note that the second command above will produce warning messages for any tags which are not writable.</p>
+<p>Note: Be careful when copying information with this technique since it is easy to write tags which are normally considered &quot;Unsafe&quot;. For instance, the FileName and Directory tags are excluded in the example above to avoid renaming and moving the destination file. Also note that the second command above will produce warning messages for any tags which are not writable.</p>
 
 <p>As well, the <b>-sep</b> option should be used as in the second command above to maintain separate list items when writing metadata back to image files, and the <b>-struct</b> option may be used when extracting to preserve structured XMP information.</p>
 
@@ -419,7 +419,7 @@
 <dt id="b---b--binary---binary"><b>-b</b>, <b>--b</b> (<b>-binary</b>, <b>--binary</b>)</dt>
 <dd>
 
-<p>Output requested metadata in binary format without tag names or descriptions (<b>-b</b> or <b>-binary</b>). This option is mainly used for extracting embedded images or other binary data, but it may also be useful for some text strings since control characters (such as newlines) are not replaced by &#39;.&#39; as they are in the default output. By default, list items are separated by a newline when extracted with the <b>-b</b> option, but this may be changed (see the <b>-sep</b> option for details). May be combined with <b>-j</b>, <b>-php</b> or <b>-X</b> to extract binary data in JSON, PHP or XML format, but note that &quot;unsafe&quot; tags must be specified explicitly to be extracted as binary in these formats.</p>
+<p>Output requested metadata in binary format without tag names or descriptions (<b>-b</b> or <b>-binary</b>). This option is mainly used for extracting embedded images or other binary data, but it may also be useful for some text strings since control characters (such as newlines) are not replaced by &#39;.&#39; as they are in the default output. By default, list items are separated by a newline when extracted with the <b>-b</b> option, but this may be changed (see the <b>-sep</b> option for details). May be combined with <b>-j</b>, <b>-php</b> or <b>-X</b> to extract binary data in JSON, PHP or XML format, but note that &quot;Unsafe&quot; tags are not extracted as binary unless they are specified explicitly or the API RequestAll option is set to 3 or higher.</p>
 
 <p>With a leading double dash (<b>--b</b> or <b>--binary</b>), tags which contain binary data are suppressed in the output when reading.</p>
 
@@ -553,7 +553,7 @@
 <dt id="g-NUM-:NUM...--groupHeadings"><b>-g</b>[<i>NUM</i>][:<i>NUM</i>...] (<b>-groupHeadings</b>)</dt>
 <dd>
 
-<p>Organize output by tag group. <i>NUM</i> specifies a group family number, and may be 0 (general location), 1 (specific location), 2 (category), 3 (document number), 4 (instance number), 5 (metadata path), 6 (EXIF/TIFF format) or 7 (tag ID). <b>-g0</b> is assumed if a family number is not specified. May be combined with other options to add group names to the output. Multiple families may be specified by separating them with colons. By default the resulting group name is simplified by removing any leading <code>Main:</code> and collapsing adjacent identical group names, but this can be avoided by placing a colon before the first family number (eg. <b>-g:3:1</b>). Use the <b>-listg</b> option to list group names for a specified family. The SavePath and SaveFormat API options are automatically enabled if the respective family 5 or 6 group names are requested. See the <a>API GetGroup documentation</a> for more information.</p>
+<p>Organize output by tag group. <i>NUM</i> specifies a group family number, and may be 0 (general location), 1 (specific location), 2 (category), 3 (document number), 4 (instance number), 5 (metadata path), 6 (EXIF/TIFF format) or 7 (tag ID). <b>-g0</b> is assumed if a family number is not specified. May be combined with other options to add group names to the output. Multiple families may be specified by separating them with colons. By default the resulting group name is simplified by removing any leading <code>Main:</code> and collapsing adjacent identical group names, but this can be avoided by placing a colon before the first family number (eg. <b>-g:3:1</b>). Use the <b>-listg</b> option to list group names for a specified family. The API SavePath and SaveFormat options are automatically enabled if the respective family 5 or 6 group names are requested. See the <a>API GetGroup documentation</a> for more information.</p>
 
 </dd>
 <dt id="G-NUM-:NUM...--groupNames"><b>-G</b>[<i>NUM</i>][:<i>NUM</i>...] (<b>-groupNames</b>)</dt>
@@ -686,7 +686,7 @@
 
 <p>produces output like this:</p>
 
-<pre><code>    -- Generated by ExifTool 12.32 --
+<pre><code>    -- Generated by ExifTool 12.33 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -697,7 +697,7 @@
 
 <p>When <b>-ee</b> (<b>-extractEmbedded</b>) is combined with <b>-p</b>, embedded documents are effectively processed as separate input files.</p>
 
-<p>If a specified tag does not exist, a minor warning is issued and the line with the missing tag is not printed. However, the <b>-f</b> option may be used to set the value of missing tags to &#39;-&#39; (but this may be configured via the MissingTagValue API option), or the <b>-m</b> option may be used to ignore minor warnings and leave the missing values empty. Alternatively, <b>-q -q</b> may be used to simply suppress the warning messages.</p>
+<p>If a specified tag does not exist, a minor warning is issued and the line with the missing tag is not printed. However, the <b>-f</b> option may be used to set the value of missing tags to &#39;-&#39; (but this may be configured via the API MissingTagValue option), or the <b>-m</b> option may be used to ignore minor warnings and leave the missing values empty. Alternatively, <b>-q -q</b> may be used to simply suppress the warning messages.</p>
 
 <p>The <a href="#Advanced-formatting-feature">&quot;Advanced formatting feature&quot;</a> may be used to modify the values of individual tags with the <b>-p</b> option.</p>
 

@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.11
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.33
 [File, System, Other] FileName - File Name: CanonRaw.cr3
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 51 KiB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:26 22:05:16-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:11:26 10:02:24-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:03:26 22:05:16-04:00
-[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:11:28 07:22:08-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2021:09:30 11:42:30-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:09:30 11:41:12-04:00
+[File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: CR3
 [File, File, Other] FileTypeExtension - File Type Extension: cr3
 [File, File, Other] MIMEType - MIME Type: image/x-canon-cr3
@@ -220,6 +220,7 @@
 [MakerNotes, Canon, Image] 19 - Live View Shooting: On
 [MakerNotes, Canon, Image] 20 - Focus Distance Upper: 0.24 m
 [MakerNotes, Canon, Image] 21 - Focus Distance Lower: 0.22 m
+[MakerNotes, Canon, Image] 23 - Shutter Mode: Electronic First Curtain
 [MakerNotes, Canon, Image] 25 - Flash Exposure Lock: Off
 [MakerNotes, Canon, Image] 61 - RF Lens Type: n/a
 [MakerNotes, Canon, Camera] 149 - Lens Model: EF-M15-45mm f/3.5-6.3 IS STM
@@ -375,6 +376,7 @@
 [MakerNotes, Track4, Image] 19 - Live View Shooting: On
 [MakerNotes, Track4, Image] 20 - Focus Distance Upper: 0.24 m
 [MakerNotes, Track4, Image] 21 - Focus Distance Lower: 0.22 m
+[MakerNotes, Track4, Image] 23 - Shutter Mode: Electronic First Curtain
 [MakerNotes, Track4, Image] 25 - Flash Exposure Lock: Off
 [MakerNotes, Track4, Image] 61 - RF Lens Type: n/a
 [MakerNotes, Track4, Image] 1 - Tone Curve: Standard

@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath
             %static_vars);
 
-$VERSION = '12.32';
+$VERSION = '12.33';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -808,6 +808,7 @@ my %moduleName = (
     DEX  => 0,
     DOCX => 'OOXML',
     DCX  => 0,
+    DIR  => 0,
     DR4  => 'CanonVRD',
     DSS  => 'Olympus',
     DWF  => 0,
@@ -1155,14 +1156,14 @@ my %systemTagsNotes = (
         Groups => { 1 => 'System', 2 => 'Other' },
         Notes => q{
             file name without extension. Not generated unless specifically requested or
-            the L<RequestAll|../ExifTool.html#RequestAll> API option is set
+            the API L<RequestAll|../ExifTool.html#RequestAll> option is set
         },
     },
     FilePath => {
         Groups => { 1 => 'System', 2 => 'Other' },
         Notes => q{
             absolute path of source file. Not generated unless specifically requested or
-            the L<RequestAll|../ExifTool.html#RequestAll> API option is set.  Does not support Windows Unicode file
+            the API L<RequestAll|../ExifTool.html#RequestAll> option is set.  Does not support Windows Unicode file
             names
         },
     },
@@ -1185,7 +1186,7 @@ my %systemTagsNotes = (
             sequence number for each source file when extracting or copying information,
             including files that fail the -if condition of the command-line application,
             beginning at 0 for the first file.  Not generated unless specifically
-            requested or the L<RequestAll|../ExifTool.html#RequestAll> API option is set
+            requested or the API L<RequestAll|../ExifTool.html#RequestAll> option is set
         },
     },
     FileSize => {
@@ -1258,7 +1259,7 @@ my %systemTagsNotes = (
             the filesystem creation date/time.  Windows/Mac only.  In Windows, the file
             creation date/time is preserved by default when writing if Win32API::File
             and Win32::API are available.  On Mac, this tag is extracted only if it or
-            the MacOS group is specifically requested or the L<RequestAll|../ExifTool.html#RequestAll> API option is
+            the MacOS group is specifically requested or the API L<RequestAll|../ExifTool.html#RequestAll> option is
             set to 2 or higher.  Requires "setfile" for writing on Mac, which may be
             installed by typing C<xcode-select --install> in the Terminal
         },
@@ -1649,7 +1650,7 @@ my %systemTagsNotes = (
             sub-sampling values to generate the value of this tag.  The result is
             compared to known values in an attempt to deduce the originating software
             based only on the JPEG image data.  For performance reasons, this tag is
-            generated only if specifically requested or the L<RequestAll|../ExifTool.html#RequestAll> API option is set
+            generated only if specifically requested or the API L<RequestAll|../ExifTool.html#RequestAll> option is set
             to 3 or higher
         },
     },
@@ -1657,14 +1658,14 @@ my %systemTagsNotes = (
         Notes => q{
             an estimate of the IJG JPEG quality setting for the image, calculated from
             the quantization tables.  For performance reasons, this tag is generated
-            only if specifically requested or the L<RequestAll|../ExifTool.html#RequestAll> API option is set to 3 or
+            only if specifically requested or the API L<RequestAll|../ExifTool.html#RequestAll> option is set to 3 or
             higher
         },
     },
     JPEGImageLength => {
         Notes => q{
             byte length of JPEG image without metadata.  For performance reasons, this
-            tag is generated only if specifically requested or the L<RequestAll|../ExifTool.html#RequestAll> API option
+            tag is generated only if specifically requested or the API L<RequestAll|../ExifTool.html#RequestAll> option
             is set to 3 or higher
         },
     },
@@ -1674,7 +1675,7 @@ my %systemTagsNotes = (
         Notes => q{
             the current date/time.  Useful when setting the tag values, eg.
             C<"-modifydate<now">.  Not generated unless specifically requested or the
-            L<RequestAll|../ExifTool.html#RequestAll> API option is set
+            API L<RequestAll|../ExifTool.html#RequestAll> option is set
         },
         PrintConv => '$self->ConvertDateTime($val)',
     },
@@ -1685,7 +1686,7 @@ my %systemTagsNotes = (
             YYYYmmdd-HHMM-SSNN-PPPP-RRRRRRRRRRRR, where Y=year, m=month, d=day, H=hour,
             M=minute, S=second, N=file sequence number in hex, P=process ID in hex, and
             R=random hex number; without dashes with the -n option.  Not generated
-            unless specifically requested or the L<RequestAll|../ExifTool.html#RequestAll> API option is set
+            unless specifically requested or the API L<RequestAll|../ExifTool.html#RequestAll> option is set
         },
         PrintConv => '$val =~ s/(.{8})(.{4})(.{4})(.{4})/$1-$2-$3-$4-/; $val',
     },
@@ -1778,7 +1779,7 @@ my %systemTagsNotes = (
         Groups => { 0 => 'Trailer' },
         Notes => q{
             the full JPEG trailer data block.  Extracted only if specifically requested
-            or the RequestAll API option is set to 3 or higher
+            or the API RequestAll option is set to 3 or higher
         },
         Writable => 1,
         Protected => 1,
@@ -6469,7 +6470,7 @@ sub ProcessJPEG($$)
             next;
         } elsif ($marker == 0xdb and length($$segDataPt) and    # DQT
             # save the DQT data only if JPEGDigest has been requested
-            # (Note: since we aren't checking the RequestAll API option here, the application
+            # (Note: since we aren't checking the API RequestAll option here, the application
             #  must use the RequestTags option to generate these tags if they have not been
             #  specifically requested.  The reason is that there is too much overhead involved
             #  in the calculation of this tag to make this worth the CPU time.)

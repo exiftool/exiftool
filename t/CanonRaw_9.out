@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.11
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.33
 [File, System, Other] FileName - File Name: CanonRaw_9_failed.cr3
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 52 KiB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:11:26 10:02:24-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:11:26 10:02:24-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:11:26 10:02:24-05:00
-[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2021:10:16 12:45:16-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2021:10:16 12:45:16-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:10:16 12:45:16-04:00
+[File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: CR3
 [File, File, Other] FileTypeExtension - File Type Extension: cr3
 [File, File, Other] MIMEType - MIME Type: image/x-canon-cr3
@@ -256,6 +256,7 @@
 [MakerNotes, Canon, Image] 19 - Live View Shooting: On
 [MakerNotes, Canon, Image] 20 - Focus Distance Upper: 0.24 m
 [MakerNotes, Canon, Image] 21 - Focus Distance Lower: 0.22 m
+[MakerNotes, Canon, Image] 23 - Shutter Mode: Electronic First Curtain
 [MakerNotes, Canon, Image] 25 - Flash Exposure Lock: Off
 [MakerNotes, Canon, Image] 61 - RF Lens Type: n/a
 [MakerNotes, Canon, Camera] 149 - Lens Model: EF-M15-45mm f/3.5-6.3 IS STM
@@ -420,6 +421,7 @@
 [MakerNotes, Track4, Image] 19 - Live View Shooting: On
 [MakerNotes, Track4, Image] 20 - Focus Distance Upper: 0.24 m
 [MakerNotes, Track4, Image] 21 - Focus Distance Lower: 0.22 m
+[MakerNotes, Track4, Image] 23 - Shutter Mode: Electronic First Curtain
 [MakerNotes, Track4, Image] 25 - Flash Exposure Lock: Off
 [MakerNotes, Track4, Image] 61 - RF Lens Type: n/a
 [MakerNotes, Track4, Image] 1 - Tone Curve: Standard
@@ -594,7 +596,7 @@
 [EXIF, ExifIFD, Image] 42037 - Lens Serial Number: 0000000000
 [EXIF, GPS, Location] 0 - GPS Version ID: 2.3.0.0
 [EXIF, ExifIFD, Camera] 41990 - Scene Capture Type: Standard
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.11
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.33
 [XMP, XMP-dc, Image] subject - Subject: CR3 test
 [XMP, XMP-exif, Image] ExposureBiasValue - Exposure Compensation: -1.3
 [XMP, XMP-xmp, Image] Rating - Rating: 0

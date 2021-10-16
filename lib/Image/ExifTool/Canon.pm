@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.51';
+$VERSION = '4.52';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -187,7 +187,7 @@ $VERSION = '4.51';
     37.2 => 'Tamron AF 28-300mm f/3.5-6.3 XR Di VC LD Aspherical [IF] Macro (A20)', #38
     37.3 => 'Tamron SP AF 17-50mm f/2.8 XR Di II VC LD Aspherical [IF]', #34
     37.4 => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC LD Aspherical [IF] Macro', #forum2937
-    38 => 'Canon EF 80-200mm f/4.5-5.6', #32
+    38 => 'Canon EF 80-200mm f/4.5-5.6 II', #32 (II added ref https://github.com/Exiv2/exiv2/issues/1906)
     39 => 'Canon EF 75-300mm f/4-5.6',
     40 => 'Canon EF 28-80mm f/3.5-5.6',
     41 => 'Canon EF 28-90mm f/4-5.6', #32
@@ -595,6 +595,7 @@ $VERSION = '4.51';
    '61182.21' => 'Canon RF 70-200mm F4L IS USM', #42
    '61182.22' => 'Canon RF 50mm F1.8 STM', #42
    '61182.23' => 'Canon RF 14-35mm F4L IS USM', #IB
+   '61182.24' => 'Canon RF 16mm F2.8 STM', #42
   #'61182.xx' => 'Canon RF 100mm F2.8L MACRO IS USM',
     65535 => 'n/a',
 );
@@ -6731,7 +6732,17 @@ my %ciMaxFocal = (
         PrintConvInv => '$val =~ s/ ?m$//; IsFloat($val) ? $val : 655.35',
     },
     # 22 - values: 0, 1
-    # 23 - values: 0, 21, 22
+    23 => { #JohnMoyer (forum12925)
+        Name => 'ShutterMode',
+        PrintConv => {
+            0 => 'Mechanical',
+            1 => 'Electronic First Curtain',
+            2 => 'Electronic',
+            # 3 => ?
+            # 21 => ?
+            # 22 => ?
+        },
+    },
     25 => { #PH
         Name => 'FlashExposureLock',
         PrintConv => \%offOn,
@@ -6765,6 +6776,7 @@ my %ciMaxFocal = (
             278 => 'Canon RF 70-200mm F4L IS USM', #42
             280 => 'Canon RF 50mm F1.8 STM', #42
             281 => 'Canon RF 14-35mm F4L IS USM', #42/IB
+            288 => 'Canon RF 16mm F2.8 STM', #42
            #xxx => 'Canon RF 100mm F2.8L MACRO IS USM',
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },

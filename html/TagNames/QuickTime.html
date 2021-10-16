@@ -50,7 +50,7 @@ as a default language when reading, but not when writing.</p>
 should be stored as UTC.  Unfortunately, digital cameras often store local
 time values instead (presumably because they don&#39;t know the time zone).  For
 this reason, by default ExifTool does not assume a time zone for these
-values.  However, if the <a href="../ExifTool.html#QuickTimeUTC">QuickTimeUTC</a> API option is set, then ExifTool will
+values.  However, if the API <a href="../ExifTool.html#QuickTimeUTC">QuickTimeUTC</a> option is set, then ExifTool will
 assume these values are properly stored as UTC, and will convert them to
 local time when extracting.</p>
 
@@ -387,7 +387,7 @@ currently reads 57 different formats of timed GPS metadata from video files.</p>
 <tr>
 <td>GPSTrack</td>
 <td class=c>no</td>
-<td><span class=s><span class=n>(true north unless GPSTrackRef says otherwise)</span></span></td></tr>
+<td><span class=s><span class=n>(relative to true north unless GPSTrackRef says otherwise)</span></span></td></tr>
 <tr class=b>
 <td>GPSTrackRef</td>
 <td class=c>no</td>
@@ -8867,7 +8867,7 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 30, 2021</i>
+<br><i>Last revised Oct 16, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

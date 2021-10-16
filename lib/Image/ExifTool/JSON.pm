@@ -14,7 +14,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Import;
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 sub ProcessJSON($$);
 sub ProcessTag($$$$%);
@@ -86,7 +86,9 @@ sub ProcessTag($$$$%)
         # support hashes with ordered keys
         my @keys = $$val{_ordered_keys_} ? @{$$val{_ordered_keys_}} : sort keys %$val;
         foreach (@keys) {
-            ProcessTag($et, $tagTablePtr, $tag . ucfirst, $$val{$_}, %flags, Flat => 1);
+            my $tg = $tag . ((/^\d/ and $tag =~ /\d$/) ? '_' : '') . ucfirst;
+            $tg =~ s/([^a-zA-Z])([a-z])/$1\U$2/g;
+            ProcessTag($et, $tagTablePtr, $tg, $$val{$_}, %flags, Flat => 1);
         }
     } elsif (ref $val eq 'ARRAY') {
         foreach (@$val) {

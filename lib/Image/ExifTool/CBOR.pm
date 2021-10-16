@@ -15,12 +15,12 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::JSON;
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 sub ProcessCBOR($$$);
 sub ReadCBORValue($$$$);
 
-# optional CBOR type codes
+# optional CBOR type code
 my %cborType6 = (
     0 => 'date/time string',
     1 => 'epoch-based date/time',
@@ -78,6 +78,7 @@ sub ReadCBORValue($$$$)
     return(undef, 'Truncated CBOR data', $pos) if $pos >= $end;
     my $verbose = $$et{OPTIONS}{Verbose};
     my $indent = $$et{INDENT};
+    my $dumpStart = $pos;
     my $fmt = Get8u($dataPt, $pos++);
     my $dat = $fmt & 0x1f;
     my ($num, $val, $err, $size);
@@ -95,28 +96,22 @@ sub ReadCBORValue($$$$)
         $num = ReadValue($dataPt, $pos, $format, 1, $size);
         $pos += $size;
     }
-    my ($pre, $opt) = ('', ':');
-    if ($verbose and $fmt != 6) {
-        if (defined $$et{cbor_pre}) {
-            $pre = "$$et{cbor_pre}";
-            delete $$et{cbor_pre};
-        }
-        if (defined $$et{cbor_opt}) {
-            $opt = ", $$et{cbor_opt}:";
-            delete $$et{cbor_opt};
-        }
+    my $pre = '';
+    if (defined $$et{cbor_pre} and $fmt != 6) {
+        $pre = $$et{cbor_pre};
+        delete $$et{cbor_pre};
     }
     if ($fmt == 0) {            # positive integer
         $val = $num;
-        $et->VPrint(1, "$$et{INDENT} ${pre}int+$opt $val\n");
+        $et->VPrint(1, "$$et{INDENT} ${pre}int+: $val\n");
     } elsif ($fmt == 1) {       # negative integer
         $val = -1 * $num;
-        $et->VPrint(1, "$$et{INDENT} ${pre}int-$opt $val\n");
+        $et->VPrint(1, "$$et{INDENT} ${pre}int-: $val\n");
     } elsif ($fmt == 2 or $fmt == 3) {  # byte/UTF8 string
         return(undef, 'Truncated CBOR string value', $pos) if $pos + $num > $end;
         if ($num < 0) { # (should not happen in C2PA)
             my $string = '';
-            $$et{INDENT} .= '   ';
+            $$et{INDENT} .= '  ';
             for (;;) {
                 ($val, $err, $pos) = ReadCBORValue($et, $dataPt, $pos, $end);
                 return(undef, $err, $pos) if $err;
@@ -125,26 +120,34 @@ sub ReadCBORValue($$$$)
                 $string .= $val;
             }
             $$et{INDENT} = $indent;
-            return($string, undef, $pos);   # return concatenated strings
+            return($string, undef, $pos);   # return concatenated byte/text string
         } else {
             $val = substr($$dataPt, $pos, $num);
         }
         $pos += $num;
-        if ($fmt == 2) {
-            $et->VPrint(1, "$$et{INDENT} ${pre}byte$opt <binary data ".length($val)." bytes>\n");
-            return(\$val, undef, $pos);    # (byte string)
+        if ($fmt == 2) {    # (byte string)
+            $et->VPrint(1, "$$et{INDENT} ${pre}byte: <binary data ".length($val)." bytes>\n");
+            my $dat = $val;
+            $val = \$dat;   # use scalar reference for binary data
+        } else {            # (text string)
+            $val = $et->Decode($val, 'UTF8');
+            $et->VPrint(1, "$$et{INDENT} ${pre}text: '${val}'\n");
         }
-        $et->VPrint(1, "$$et{INDENT} ${pre}text$opt '${val}'\n");
     } elsif ($fmt == 4 or $fmt == 5) {  # list/hash
         if ($fmt == 4) {
-            $et->VPrint(1, "$$et{INDENT} ${pre}list$opt <$num elements>\n");
+            $et->VPrint(1, "$$et{INDENT} ${pre}list: <$num elements>\n");
         } else {
-            $et->VPrint(1, "$$et{INDENT} ${pre}hash$opt <$num pairs>\n");
+            $et->VPrint(1, "$$et{INDENT} ${pre}hash: <$num pairs>\n");
             $num *= 2;
         }
-        $$et{INDENT} .= '   ';
+        $$et{INDENT} .= '  ';
         my $i = 0;
         my @list;
+        Image::ExifTool::HexDump($dataPt, $pos - $dumpStart,
+            Start   => $dumpStart,
+            DataPos => $$et{cbor_datapos},
+            Prefix  => $$et{INDENT},
+        ) if $verbose > 2;
         while ($num) {
             $$et{cbor_pre} = "$i) ";
             if ($fmt == 4) {
@@ -162,6 +165,7 @@ sub ReadCBORValue($$$$)
             push @list, $val;
             --$num;
         }
+        $dumpStart = $pos;
         $$et{INDENT} = $indent;
         if ($fmt == 5) {
             my ($i, @keys);
@@ -174,9 +178,40 @@ sub ReadCBORValue($$$$)
         } else {
             $val = \@list;
         }
-    } elsif ($fmt == 6) {       # optional type
-        $$et{cbor_opt} = $cborType6{$num} || "<unknown type $num>";
+    } elsif ($fmt == 6) {       # optional tag
+        if ($verbose) {
+            my $str = "$num (" . ($cborType6{$num} || 'unknown') . ')';
+            my $spc = $$et{cbor_pre} ? (' ' x length $$et{cbor_pre}) : '';
+            $et->VPrint(1, "$$et{INDENT} $spc<CBOR optional type $str>\n");
+            Image::ExifTool::HexDump($dataPt, $pos - $dumpStart,
+                Start   => $dumpStart,
+                DataPos => $$et{cbor_datapos},
+                Prefix  => $$et{INDENT} . '  ',
+            ) if $verbose > 2;
+        }
+        # read next value (note: in the case of multiple tags,
+        # this nesting will apply the tags in the correct order)
         ($val, $err, $pos) = ReadCBORValue($et, $dataPt, $pos, $end);
+        $dumpStart = $pos;
+        # convert some values according to the optional tag number (untested)
+        if ($num == 0 and not ref $val) {       # date/time string
+            require Image::ExifTool::XMP;
+            $val = Image::ExifTool::XMP::ConvertXMPDate($val);
+        } elsif ($num == 1 and not ref $val) {  # epoch-based date/time
+            if (Image::ExifTool::IsFloat($val)) {
+                my $dec = ($val == int($val)) ? undef : 6;
+                $val = Image::ExifTool::ConvertUnixTime($val, 1, $dec);
+            }
+        } elsif (($num == 2 or $num == 3) and ref($val) eq 'SCALAR') { # pos/neg bignum
+            my $big = 0;
+            $big = 256 * $big + Get8u($val,$_) foreach 0..(length($$val) - 1);
+            $val = $num==2 ? $big : -$big;
+        } elsif (($num == 4 or $num == 5) and # decimal fraction or bigfloat
+            ref($val) eq 'ARRAY' and @$val == 2 and
+            Image::ExifTool::IsInt($$val[0]) and Image::ExifTool::IsInt($$val[1]))
+        {
+            $val = $$val[1] * ($num == 4 ? 10 : 2) ** $$val[0];
+        }
     } elsif ($fmt == 7) {       
         if ($dat == 31) {
             undef $val; # "break" = end of indefinite array/hash (not used in C2PA)
@@ -202,10 +237,16 @@ sub ReadCBORValue($$$$)
         } else {
             return(undef, "Invalid CBOR type 7 variant $num", $pos);
         }
-        $et->VPrint(1, "$$et{INDENT} ${pre}typ7$opt ".(defined $val ? $val : '<break>')."\n");
+        $et->VPrint(1, "$$et{INDENT} ${pre}typ7: ".(defined $val ? $val : '<break>')."\n");
     } else {
         return(undef, "Unknown CBOR format $fmt", $pos);
     }
+    Image::ExifTool::HexDump($dataPt, $pos - $dumpStart,
+        Start   => $dumpStart,
+        DataPos => $$et{cbor_datapos},
+        Prefix  => $$et{INDENT} . '  ',
+        MaxLen  => $verbose < 5 ? ($verbose == 3 ? 96 : 2048) : undef,
+    ) if $verbose > 2;
     return($val, $err, $pos);
 }
 
@@ -219,15 +260,28 @@ sub ProcessCBOR($$$)
     my $dataPt = $$dirInfo{DataPt};
     my $pos = $$dirInfo{DirStart};
     my $end = $pos + $$dirInfo{DirLen};
+    my ($val, $err, $tag, $i);
+
     $et->VerboseDir('CBOR', undef, $$dirInfo{DirLen});
-    my ($val, $err, $tag);
-    require Image::ExifTool::CBOR;
+
+    $$et{cbor_datapos} = $$dirInfo{DataPos} + $$dirInfo{Base};
+
     while ($pos < $end) {
         ($val, $err, $pos) = ReadCBORValue($et, $dataPt, $pos, $end);
         $err and $et->Warn($err), last;
-        ref $val eq 'HASH' or $et->VPrint(1, "$$et{INDENT} CBOR end: Non-hash encountered\n"), last;
-        foreach $tag (@{$$val{_ordered_keys_}}) {
-            Image::ExifTool::JSON::ProcessTag($et, $tagTablePtr, $tag, $$val{$tag});
+        if (ref $val eq 'HASH') {
+            foreach $tag (@{$$val{_ordered_keys_}}) {
+                Image::ExifTool::JSON::ProcessTag($et, $tagTablePtr, $tag, $$val{$tag});
+            }
+        } elsif (ref $val eq 'ARRAY') {
+            for ($i=0; $i<@$val; ++$i) {
+                Image::ExifTool::JSON::ProcessTag($et, $tagTablePtr, "Item$i", $$val[$i]);
+            }
+        } elsif ($val eq '0') {
+            $et->VPrint(1, "$$et{INDENT} <CBOR end>\n");
+            last;   # (treat as padding)
+        } else {
+            $et->VPrint(1, "$$et{INDENT} Unknown value: $val\n");
         }
     }
     return 1;

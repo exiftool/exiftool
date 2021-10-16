@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24338 tags, with 15779 unique tag names.
+They contain a total of 24363 tags, with 15798 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -925,6 +925,20 @@ for the official EXIF 2.32 specification.
   0xc7ec   DepthUnits                IFD0       int16u!
   0xc7ed   DepthMeasureType          IFD0       int16u!
   0xc7ee   EnhanceParams             IFD0       string!
+  0xcd2d   ProfileGainTableMap       SubIFD     undef!
+  0xcd2e   SemanticName              SubIFD     no
+  0xcd30   SemanticInstanceIFD       SubIFD     no
+  0xcd31   CalibrationIlluminant3    IFD0       int16u!
+  0xcd32   CameraCalibration3        IFD0       rational64s[n]!
+  0xcd33   ColorMatrix3              IFD0       rational64s[n]!
+  0xcd34   ForwardMatrix3            IFD0       rational64s[n]!
+  0xcd35   IlluminantData1           IFD0       undef!
+  0xcd36   IlluminantData2           IFD0       undef!
+  0xcd37   IlluminantData3           IFD0       undef!
+  0xcd38   MaskSubArea               SubIFD     no
+  0xcd39   ProfileHueSatMapData3     IFD0       float[n]!
+  0xcd3a   ReductionMatrix3          IFD0       rational64s[n]!
+  0xcd3b   RGBTables                 IFD0       undef!
   0xea1c   Padding                   ExifIFD    undef!
   0xea1d   OffsetSchema              ExifIFD    int32s!
   0xfde8   OwnerName                 ExifIFD    string/
@@ -1730,6 +1744,9 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   LookParametersLookTable                       string/_
   LookParametersProcessVersion                  string/_
   LookParametersToneCurvePV2012                 string/_+
+  LookParametersToneCurvePV2012Blue             string/_+
+  LookParametersToneCurvePV2012Green            string/_+
+  LookParametersToneCurvePV2012Red              string/_+
   LookParametersVersion                         string/_
   LookSupportsAmount                            string/_
   LookSupportsMonochrome                        string/_
@@ -2059,6 +2076,9 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   LookTable                                     string
   ProcessVersion                                string
   ToneCurvePV2012                               string+
+  ToneCurvePV2012Blue                           string+
+  ToneCurvePV2012Green                          string+
+  ToneCurvePV2012Red                            string+
   Version                                       string
 
 =head3 XMP RetouchArea Struct
@@ -2394,6 +2414,9 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   LookParametersLookTable                       string_
   LookParametersProcessVersion                  string_
   LookParametersToneCurvePV2012                 string_+
+  LookParametersToneCurvePV2012Blue             string_+
+  LookParametersToneCurvePV2012Green            string_+
+  LookParametersToneCurvePV2012Red              string_+
   LookParametersVersion                         string_
   LookSupportsAmount                            string_
   LookSupportsMonochrome                        string_
@@ -3487,6 +3510,7 @@ These tags belong to the ExifTool XMP-iptcCore family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
+  AltTextAccessibility                          lang-alt
   CountryCode                                   string
   CreatorContactInfo                            ContactInfo Struct
   CreatorCity                                   string_
@@ -3497,6 +3521,7 @@ These tags belong to the ExifTool XMP-iptcCore family 1 group.
   CreatorWorkEmail                              string_
   CreatorWorkTelephone                          string_
   CreatorWorkURL                                string_
+  ExtDescrAccessibility                         lang-alt
   IntellectualGenre                             string
   Location                                      string
   Scene                                         string+
@@ -3596,6 +3621,7 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   ShownEvent                                    Entity Struct+
   ShownEventIdentifier                          string_+
   ShownEventName                                lang-alt_+
+  EventID                                       string+
   ExternalMetadataLink                          string+
   FeedIdentifier                                string
   Genre                                         CVTermDetails Struct+
@@ -7359,6 +7385,7 @@ WB tags for the Canon G9.
      19    LiveViewShooting                     int16s
      20    FocusDistanceUpper                   int16u
      21    FocusDistanceLower                   int16u
+     23    ShutterMode                          int16s
      25    FlashExposureLock                    int16s
      61    RFLensType                           int16u
 
@@ -15412,6 +15439,7 @@ such as the OM E-M5.
      44    Model                                no
     131    DateTime1                            no
     157    DateTime2                            no
+    383    LensModel                            no
 
 =head3 Olympus scrn2 Tags
 
@@ -26042,7 +26070,7 @@ According to the specification, integer-format QuickTime date/time tags
 should be stored as UTC.  Unfortunately, digital cameras often store local
 time values instead (presumably because they don't know the time zone).  For
 this reason, by default ExifTool does not assume a time zone for these
-values.  However, if the QuickTimeUTC API option is set, then ExifTool will
+values.  However, if the API QuickTimeUTC option is set, then ExifTool will
 assume these values are properly stored as UTC, and will convert them to
 local time when extracting.
 
@@ -35190,7 +35218,7 @@ options, but these files are not writable directly.
 
 XAttr tags are extracted using the "xattr" utility.  They are extracted if
 any "XAttr*" tag or the MacOS group is specifically requested, or by setting
-the XAttrTags API option to 1 or the RequestAll API option to 2 or higher.
+the API XAttrTags option to 1 or the API RequestAll option to 2 or higher.
 And they are extracted by default from MacOS "._" files when reading
 these files directly.
 
@@ -35212,7 +35240,7 @@ these files directly.
 
 MDItem tags are extracted using the "mdls" utility.  They are extracted if
 any "MDItem*" tag or the MacOS group is specifically requested, or by
-setting the MDItemTags API option to 1 or the RequestAll API option to 2 or
+setting the API MDItemTags option to 1 or the API RequestAll option to 2 or
 higher.  Note that these tags do not necessarily reflect the current
 metadata of a file -- it may take some time for the MacOS mdworker daemon to
 index the file after a metadata change.

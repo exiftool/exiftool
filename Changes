@@ -7,6 +7,24 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Oct. 16, 2021 - Version 12.33
+
+  - Added support for DNG version 1.6.0.0
+  - Added two new Sony LensType values (thanks Jos Roost and LibRaw)
+  - Added some new elements to the XMP-crs:Look structure (thanks Herb)
+  - Added a few new IPTC XMP tags (thanks Michael Steidl)
+  - Added a new Canon RF lens (thanks Norbert Wasser)
+  - Decode Canon ShutterMode (thanks John Moyer)
+  - Extract LensModel from some Olympus MOV videos
+  - Generate MediaDataOffset/Size for MOV videos with zero-sized MDAT chunk
+  - Improvements to CBOR reader, including hex dump with -v3 option
+  - Recognize Final Cut Pro XML files
+  - Allow binary data of Protected tags to be extracted with the -X -j and -php
+    options with -b by setting the API RequestAll option to 3
+  - Changed name of "Canon EF 80-200mm f/4.5-5.6" lens with LensType 38 to add
+    "II" to the name (Exiv2 issue 1906)
+  - Fixed runtime warning when processing files with a .DIR extension
+
 Sept. 30, 2021 - Version 12.32
 
   - Added support for CBOR-format metadata in JUMBF (note that JUMBF support is
@@ -1484,8 +1502,8 @@ Oct. 9, 2018 - Version 11.13
   - Added a new Canon LensType (thanks LibRaw)
   - Minor improvements to verbose dump of streaming GPS metadata
   - Reverted change of version 10.71 which resulted in Windows not recognizing
-    PNG CreationTime as written by ExifTool (added this feature to the
-    StrictDate API option instead)
+    PNG CreationTime as written by ExifTool (added this feature to the API
+    StrictDate option instead)
   - Improved decoding of Nikon CropHiSpeed (thanks LibRaw)
   - Improved -fast option to reduce memory usage when reading JPG, PNG,
     QuickTime-based and RIFF-based files via a sequential stream
@@ -1599,7 +1617,7 @@ June 21, 2018 - Version 11.03
 June 13, 2018 - Version 11.02
 
   - Added support for a different format of Apple iWorks files
-  - Added undocumented FixCorruptedMOV API option to allow fixing MOV videos
+  - Added undocumented API FixCorruptedMOV option to allow fixing MOV videos
     with multiple 'mdat' atoms which were corrupted by ExifTool
   - Decode more QuickTime tags
   - Decode more PanasonicRaw tags (thanks Klaus Homeister)

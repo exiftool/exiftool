@@ -340,12 +340,14 @@ my %j2cMarker = (
         },
         {
             Name => 'UUID-Signature',  # (seen in JUMB data of JPEG images)
+            # (may be able to remove this when JUMBF specification is finalized)
             Condition => '$$valPt=~/^casg\x00\x11\x00\x10\x80\x00\x00\xaa\x00\x38\x9b\x71/',
             Format => 'undef',
             ValueConv => 'substr($val,16)',
         },
         {
-            Name => 'UUID-C2PAClaimSignature',  # (seen in JUMB data of JPEG images)
+            Name => 'UUID-C2PAClaimSignature',  # (seen in incorrectly-formatted JUMB data of JPEG images)
+            # (may be able to remove this when JUMBF specification is finalized)
             Condition => '$$valPt=~/^c2cs\x00\x11\x00\x10\x80\x00\x00\xaa\x00\x38\x9b\x71/',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::CBOR::Main',

@@ -107,7 +107,7 @@ my %insvLimit = (
     GPSAltitude  => { PrintConv => '(sprintf("%.4f", $val) + 0) . " m"' }, # round to 4 decimals
     GPSSpeed     => { PrintConv => 'sprintf("%.4f", $val) + 0', Notes => 'in km/h unless GPSSpeedRef says otherwise' },
     GPSSpeedRef  => { PrintConv => { K => 'km/h', M => 'mph', N => 'knots' } },
-    GPSTrack     => { PrintConv => 'sprintf("%.4f", $val) + 0', Notes => 'true north unless GPSTrackRef says otherwise' },
+    GPSTrack     => { PrintConv => 'sprintf("%.4f", $val) + 0', Notes => 'relative to true north unless GPSTrackRef says otherwise' },
     GPSTrackRef  => { PrintConv => { M => 'Magnetic North', T => 'True North' } },
     GPSDateTime  => {
         Groups => { 2 => 'Time' },

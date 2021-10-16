@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.69';
+$VERSION = '2.70';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -9113,6 +9113,12 @@ sub ProcessMOV($$;$)
                 } else {
                     my $t = PrintableTagID($tag,2);
                     $et->VPrint(0,"$$et{INDENT}Tag '${t}' extends to end of file");
+                    if ($$tagTablePtr{"$tag-size"}) {
+                        my $pos = $raf->Tell();
+                        $raf->Seek(0, 2);
+                        $et->HandleTag($tagTablePtr, "$tag-size", $raf->Tell() - $pos);
+                        $et->HandleTag($tagTablePtr, "$tag-offset", $pos) if $$tagTablePtr{"$tag-offset"};
+                    }
                 }
                 last;
             }

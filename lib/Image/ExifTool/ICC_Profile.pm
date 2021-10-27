@@ -11,6 +11,7 @@
 #               4) http://www.color.org/privatetag2007-01.pdf
 #               5) http://www.color.org/icc_specs2.xalter (approved revisions, 2010-07-16)
 #               6) Eef Vreeland private communication
+#               7) https://color.org/specification/ICC.2-2019.pdf
 #
 # Notes:        The ICC profile information is different: the format of each
 #               tag is embedded in the information instead of in the directory
@@ -24,7 +25,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.36';
+$VERSION = '1.37';
 
 sub ProcessICC($$);
 sub ProcessICC_Profile($$$);
@@ -52,6 +53,11 @@ my %profileClass = (
     abst => 'Abstract Profile',
     nmcl => 'NamedColor Profile',
     nkpf => 'Nikon Input Device Profile (NON-STANDARD!)', # (written by Nikon utilities)
+    # additions in v5 (ref 7)
+    cenc => 'ColorEncodingSpace Profile',
+   'mid '=> 'MultiplexIdentification Profile',
+    mlnk => 'MultiplexLink Profile',
+    mvis => 'MultiplexVisualization Profile',
 );
 my %manuSig = ( #6
     'NONE' => 'none',
@@ -539,6 +545,90 @@ my %manuSig = ( #6
         Binary => 1, # (NC)
     },
 
+    # new tags in v5 (ref 7)
+    A2B3 => 'AToB3',
+    A2M0 => 'AToM0',
+    B2A3 => 'BToA3',
+    bcp0 => 'BRDFColorimetricParameter3Tag',
+    bcp1 => 'BRDFColorimetricParam1',
+    bcp2 => 'BRDFColorimetricParam2',
+    bcp3 => 'BRDFColorimetricParam3',
+    bsp0 => 'BRDFSpectralParam0',
+    bsp1 => 'BRDFSpectralParam1',
+    bsp2 => 'BRDFSpectralParam2',
+    bsp3 => 'BRDFSpectralParam3',
+    bAB0 => 'BRDFAToB0',
+    bAB1 => 'BRDFAToB1',
+    bAB2 => 'BRDFAToB2',
+    bAB3 => 'BRDFAToB3',
+    bBA0 => 'BRDFBToA0',
+    bBA1 => 'BRDFBToA1',
+    bBA2 => 'BRDFBToA2',
+    bBA3 => 'BRDFBToA3',
+    bBD0 => 'BRDFBToD0',
+    bBD1 => 'BRDFBToD1',
+    bBD2 => 'BRDFBToD2',
+    bBD3 => 'BRDFBToD3',
+    bDB0 => 'BRDFDToB0',
+    bDB1 => 'BRDFDToB1',
+    bDB2 => 'BRDFDToB2',
+    bDB3 => 'BRDFDToB3',
+    bMB0 => 'BRDFMToB0',
+    bMB1 => 'BRDFMToB1',
+    bMB2 => 'BRDFMToB2',
+    bMB3 => 'BRDFMToB3',
+    bMS0 => 'BRDFMToS0',
+    bMS1 => 'BRDFMToS1',
+    bMS2 => 'BRDFMToS2',
+    bMS3 => 'BRDFMToS3',
+    dAB0 => 'DirectionalAToB0',
+    dAB1 => 'DirectionalAToB1',
+    dAB2 => 'DirectionalAToB2',
+    dAB3 => 'DirectionalAToB3',
+    dBA0 => 'DirectionalBToA0',
+    dBA1 => 'DirectionalBToA1',
+    dBA2 => 'DirectionalBToA2',
+    dBA3 => 'DirectionalBToA3',
+    dBD0 => 'DirectionalBToD0',
+    dBD1 => 'DirectionalBToD1',
+    dBD2 => 'DirectionalBToD2',
+    dBD3 => 'DirectionalBToD3',
+    dDB0 => 'DirectionalDToB0',
+    dDB1 => 'DirectionalDToB1',
+    dDB2 => 'DirectionalDToB2',
+    dDB3 => 'DirectionalDToB3',
+    gdb0 => 'GamutBoundaryDescription0',
+    gdb1 => 'GamutBoundaryDescription1',
+    gdb2 => 'GamutBoundaryDescription2',
+    gdb3 => 'GamutBoundaryDescription3',
+   'mdv '=> 'MultiplexDefaultValues',
+    mcta => 'MultiplixTypeArray',
+    minf => 'MeasurementInfo',
+    miin => 'MeasurementInputInfo',
+    M2A0 => 'MToA0',
+    M2B0 => 'MToB0',
+    M2B1 => 'MToB1',
+    M2B2 => 'MToB2',
+    M2B3 => 'MToB3',
+    M2S0 => 'MToS0',
+    M2S1 => 'MToS1',
+    M2S2 => 'MToS2',
+    M2S3 => 'MToS3',
+    cept => 'ColorEncodingParams',
+    csnm => 'ColorSpaceName',
+    cloo => 'ColorantOrderOut',
+    clio => 'ColorantInfoOut',
+    c2sp => 'CustomToStandardPcc',
+   'CxF '=> 'CXF',
+    nmcl => 'NamedColor',
+    psin => 'ProfileSequenceInfo',
+    rfnm => 'ReferenceName',
+    svcn => 'SpectralViewingConditions',
+    swpt => 'SpectralWhitePoint',
+    s2cp => 'StandardToCustomPcc',
+    smap => 'SurfaceMap',
+    # smwp ? (seen in some v5 samples)
+
     # the following entry represents the ICC profile header, and doesn't
     # exist as a tag in the directory.  It is only in this table to provide
     # a link so ExifTool can locate the header tags
@@ -850,7 +940,7 @@ sub FormatICCTag($$$)
     # dataType
     if ($type eq 'data' and $size >= 12) {
         my $form = Get32u($dataPt, $offset+8);
-        # format 0 is ASCII data
+        # format 0 is UTF-8 data
         $form == 0 and return substr($$dataPt, $offset+12, $size-12);
         # binary data and other data types treat as binary (ie. don't format)
     }
@@ -1022,7 +1112,7 @@ sub ValidateICC($)
     $profileClass{substr($$valPtr, 12, 4)} or $err = 'profile class';
     my $col = substr($$valPtr, 16, 4); # ColorSpaceData
     my $con = substr($$valPtr, 20, 4); # ConnectionSpace
-    my $match = '(XYZ |Lab |Luv |YCbr|Yxy |RGB |GRAY|HSV |HLS |CMYK|CMY |[2-9A-F]CLR)';
+    my $match = '(XYZ |Lab |Luv |YCbr|Yxy |RGB |GRAY|HSV |HLS |CMYK|CMY |[2-9A-F]CLR|nc..|\0{4})';
     $col =~ /$match/ or $err = 'color space';
     $con =~ /$match/ or $err = 'connection space';
     return $err ? "Invalid ICC profile (bad $err)" : undef;
@@ -1134,7 +1224,7 @@ sub ProcessICC_Profile($$$)
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tagID);
         # unknown tags aren't generated automatically by GetTagInfo()
         # if the tagID's aren't numeric, so we must do this manually:
-        if (not $tagInfo and $$et{OPTIONS}{Unknown}) {
+        if (not $tagInfo and ($$et{OPTIONS}{Unknown} or $verbose)) {
             $tagInfo = { Unknown => 1 };
             AddTagToTable($tagTablePtr, $tagID, $tagInfo);
         }
@@ -1276,6 +1366,8 @@ under the same terms as Perl itself.
 =item L<http://www.color.org/icc_specs2.html>
 
 =item L<http://developer.apple.com/documentation/GraphicsImaging/Reference/ColorSync_Manager/ColorSync_Manager.pdf>
+
+=item L<https://color.org/specification/ICC.2-2019.pdf>
 
 =back
 

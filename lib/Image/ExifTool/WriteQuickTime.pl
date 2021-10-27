@@ -1067,6 +1067,9 @@ sub WriteQuickTime($$$)
                     #  3=optional base offset, 4=optional item ID)
                     ChunkOffset => \@chunkOffset,
                 );
+                # set InPlace flag so XMP will be padded properly when
+                # QuickTimePad is used if this is an XMP directory
+                $subdirInfo{InPlace} = 2 if $et->Options('QuickTimePad');
                 # pass the header pointer if necessary (for EXIF IFD's
                 # where the Base offset is at the end of the header)
                 if ($hdrLen and $hdrLen < $size) {
@@ -1331,6 +1334,13 @@ sub WriteQuickTime($$$)
             }
             # write the new atom if it was modified
             if (defined $newData) {
+                my $sizeDiff = length($buff) - length($newData);
+                if ($sizeDiff > 0 and $$tagInfo{PreservePadding} and $et->Options('QuickTimePad')) {
+                    $newData .= "\0" x $sizeDiff;
+                    $et->VPrint(1, "    ($$tagInfo{Name} padded to original size)");
+                } elsif ($sizeDiff) {
+                    $et->VPrint(1, "    ($$tagInfo{Name} changed size)");
+                }
                 my $len = length($newData) + 8;
                 $len > 0x7fffffff and $et->Error("$$tagInfo{Name} to large to write"), last;
                 # update size in ChunkOffset list for modified 'uuid' atom

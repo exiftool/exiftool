@@ -797,7 +797,8 @@ my %sImageRegion = ( # new in 1.5
     audioBitsPerSample  => { Groups => { 2 => 'Audio' }, Writable => 'integer' },
     # new IPTC Extension schema 1.5 property
     ImageRegion => { Groups => { 2 => 'Image' }, List => 'Bag', Struct => \%sImageRegion },
-    EventID     => { List => 'Bag' }, # added 2021-10-13
+    # new Extension 1.6 property
+    EventId     => { Name => 'EventID', List => 'Bag' },
 );
 
 #------------------------------------------------------------------------------

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24363 tags, with 15798 unique tag names.
+They contain a total of 24447 tags, with 15878 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -3161,8 +3161,8 @@ These tags belong to the ExifTool XMP-exif family 1 group.
 
 =head3 XMP exifEX Tags
 
-EXIF tags added by the EXIF 2.31 for XMP specification (see
-L<http://www.cipa.jp/std/documents/e/DC-X010-2017.pdf>).
+EXIF tags added by the EXIF 2.32 for XMP specification (see
+L<https://cipa.jp/std/documents/download_e.html?DC-010-2020_E>).
 
 These tags belong to the ExifTool XMP-exifEX family 1 group.
 
@@ -5569,32 +5569,98 @@ specification.
   'A2B0'   AToB0                                no
   'A2B1'   AToB1                                no
   'A2B2'   AToB2                                no
+  'A2B3'   AToB3                                no
+  'A2M0'   AToM0                                no
   'B2A0'   BToA0                                no
   'B2A1'   BToA1                                no
   'B2A2'   BToA2                                no
+  'B2A3'   BToA3                                no
   'B2D0'   BToD0                                no
   'B2D1'   BToD1                                no
   'B2D2'   BToD2                                no
   'B2D3'   BToD3                                no
+  'CxF '   CXF                                  no
   'D2B0'   DToB0                                no
   'D2B1'   DToB1                                no
   'D2B2'   DToB2                                no
   'D2B3'   DToB3                                no
   'Header' ProfileHeader                        ICC_Profile Header
+  'M2A0'   MToA0                                no
+  'M2B0'   MToB0                                no
+  'M2B1'   MToB1                                no
+  'M2B2'   MToB2                                no
+  'M2B3'   MToB3                                no
+  'M2S0'   MToS0                                no
+  'M2S1'   MToS1                                no
+  'M2S2'   MToS2                                no
+  'M2S3'   MToS3                                no
   'MS00'   WCSProfiles                          no
+  'bAB0'   BRDFAToB0                            no
+  'bAB1'   BRDFAToB1                            no
+  'bAB2'   BRDFAToB2                            no
+  'bAB3'   BRDFAToB3                            no
+  'bBA0'   BRDFBToA0                            no
+  'bBA1'   BRDFBToA1                            no
+  'bBA2'   BRDFBToA2                            no
+  'bBA3'   BRDFBToA3                            no
+  'bBD0'   BRDFBToD0                            no
+  'bBD1'   BRDFBToD1                            no
+  'bBD2'   BRDFBToD2                            no
+  'bBD3'   BRDFBToD3                            no
+  'bDB0'   BRDFDToB0                            no
+  'bDB1'   BRDFDToB1                            no
+  'bDB2'   BRDFDToB2                            no
+  'bDB3'   BRDFDToB3                            no
+  'bMB0'   BRDFMToB0                            no
+  'bMB1'   BRDFMToB1                            no
+  'bMB2'   BRDFMToB2                            no
+  'bMB3'   BRDFMToB3                            no
+  'bMS0'   BRDFMToS0                            no
+  'bMS1'   BRDFMToS1                            no
+  'bMS2'   BRDFMToS2                            no
+  'bMS3'   BRDFMToS3                            no
   'bTRC'   BlueTRC                              no
   'bXYZ'   BlueMatrixColumn                     no
+  'bcp0'   BRDFColorimetricParameter3Tag        no
+  'bcp1'   BRDFColorimetricParam1               no
+  'bcp2'   BRDFColorimetricParam2               no
+  'bcp3'   BRDFColorimetricParam3               no
   'bfd '   UCRBG                                no
   'bkpt'   MediaBlackPoint                      no
+  'bsp0'   BRDFSpectralParam0                   no
+  'bsp1'   BRDFSpectralParam1                   no
+  'bsp2'   BRDFSpectralParam2                   no
+  'bsp3'   BRDFSpectralParam3                   no
+  'c2sp'   CustomToStandardPcc                  no
   'calt'   CalibrationDateTime                  no
+  'cept'   ColorEncodingParams                  no
   'chad'   ChromaticAdaptation                  no
   'chrm'   Chromaticity                         ICC_Profile Chromaticity
   'ciis'   ColorimetricIntentImageState         no
+  'clio'   ColorantInfoOut                      no
+  'cloo'   ColorantOrderOut                     no
   'clot'   ColorantTableOut                     no
   'clro'   ColorantOrder                        no
   'clrt'   ColorantTable                        ICC_Profile ColorantTable
   'cprt'   ProfileCopyright                     no
   'crdi'   CRDInfo                              no
+  'csnm'   ColorSpaceName                       no
+  'dAB0'   DirectionalAToB0                     no
+  'dAB1'   DirectionalAToB1                     no
+  'dAB2'   DirectionalAToB2                     no
+  'dAB3'   DirectionalAToB3                     no
+  'dBA0'   DirectionalBToA0                     no
+  'dBA1'   DirectionalBToA1                     no
+  'dBA2'   DirectionalBToA2                     no
+  'dBA3'   DirectionalBToA3                     no
+  'dBD0'   DirectionalBToD0                     no
+  'dBD1'   DirectionalBToD1                     no
+  'dBD2'   DirectionalBToD2                     no
+  'dBD3'   DirectionalBToD3                     no
+  'dDB0'   DirectionalDToB0                     no
+  'dDB1'   DirectionalDToB1                     no
+  'dDB2'   DirectionalDToB2                     no
+  'dDB3'   DirectionalDToB3                     no
   'desc'   ProfileDescription                   no
   'devs'   DeviceSettings                       no
   'dmdd'   DeviceModelDesc                      no
@@ -5604,14 +5670,23 @@ specification.
   'gTRC'   GreenTRC                             no
   'gXYZ'   GreenMatrixColumn                    no
   'gamt'   Gamut                                no
+  'gdb0'   GamutBoundaryDescription0            no
+  'gdb1'   GamutBoundaryDescription1            no
+  'gdb2'   GamutBoundaryDescription2            no
+  'gdb3'   GamutBoundaryDescription3            no
   'kTRC'   GrayTRC                              no
   'lumi'   Luminance                            no
+  'mcta'   MultiplixTypeArray                   no
+  'mdv '   MultiplexDefaultValues               no
   'meas'   Measurement                          ICC_Profile Measurement
   'meta'   Metadata                             ICC_Profile Metadata
+  'miin'   MeasurementInputInfo                 no
+  'minf'   MeasurementInfo                      no
   'mmod'   MakeAndModel                         no
   'ncl2'   NamedColor2                          no
   'ncol'   NamedColor                           no
   'ndin'   NativeDisplayInfo                    no
+  'nmcl'   NamedColor                           no
   'pre0'   Preview0                             no
   'pre1'   Preview1                             no
   'pre2'   Preview2                             no
@@ -5623,18 +5698,24 @@ specification.
   'psd3'   PostScript2CRD3                      no
   'pseq'   ProfileSequenceDesc                  no
   'psid'   ProfileSequenceIdentifier            no
+  'psin'   ProfileSequenceInfo                  no
   'psvm'   PS2CRDVMSize                         no
   'rTRC'   RedTRC                               no
   'rXYZ'   RedMatrixColumn                      no
   'resp'   OutputResponse                       no
+  'rfnm'   ReferenceName                        no
   'rhoc'   ReflectionHardcopyOrigColorimetry    no
   'rig0'   PerceptualRenderingIntentGamut       no
   'rig2'   SaturationRenderingIntentGamut       no
   'rpoc'   ReflectionPrintOutputColorimetry     no
+  's2cp'   StandardToCustomPcc                  no
   'sape'   SceneAppearanceEstimates             no
   'scoe'   SceneColorimetryEstimates            no
   'scrd'   ScreeningDesc                        no
   'scrn'   Screening                            no
+  'smap'   SurfaceMap                           no
+  'svcn'   SpectralViewingConditions            no
+  'swpt'   SpectralWhitePoint                   no
   'targ'   CharTarget                           no
   'tech'   Technology                           no
   'vcgt'   VideoCardGamma                       no
@@ -18744,6 +18825,7 @@ WX350/WX500, ILCE-1/7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/7SM3/9/9M2/5000/
   Index1   Tag Name                             Writable
   ------   --------                             --------
    1176    ISOInfo                              Sony ISOInfo
+   1181    ISOInfo                              Sony ISOInfo
    1185    ISOInfo                              Sony ISOInfo
    1186    ISOInfo                              Sony ISOInfo
    1437    ISOInfo                              Sony ISOInfo
@@ -19074,7 +19156,7 @@ E-mount models.
 
 =head3 Sony Tag9416 Tags
 
-Valid for the ILCE-1/7SM3, ILME-FX3.
+Valid for the ILCE-1/7M4/7SM3, ILME-FX3.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -19098,7 +19180,9 @@ Valid for the ILCE-1/7SM3, ILME-FX3.
     115    MinFocalLength                       no
     117    MaxFocalLength                       no
    2191    VignettingCorrParams                 no
+   2193    VignettingCorrParams                 no
    2324    ChromaticAberrationCorrParams        no
+   2326    ChromaticAberrationCorrParams        no
 
 =head3 Sony PIC Tags
 
@@ -25049,22 +25133,22 @@ This is the PDF document catalog.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
-  'CS0'                CS0                      PDF ICCBased
-  'Cs1'                Cs1                      PDF ICCBased
+  'CS0'                CS0                      PDF DefaultRGB
+  'Cs1'                Cs1                      PDF DefaultRGB
   'DefaultCMYK'        DefaultCMYK              PDF DefaultRGB
   'DefaultRGB'         DefaultRGB               PDF DefaultRGB
-
-=head3 PDF ICCBased Tags
-
-  Tag ID       Tag Name                         Writable
-  ------       --------                         --------
-  '_stream'    _stream                          ICC_Profile
 
 =head3 PDF DefaultRGB Tags
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
   'ICCBased'   ICCBased                         PDF ICCBased
+
+=head3 PDF ICCBased Tags
+
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  '_stream'    _stream                          ICC_Profile
 
 =head3 PDF Properties Tags
 
@@ -26078,6 +26162,11 @@ When writing string-based date/time tags, the system time zone is added if
 the PrintConv option is enabled and no time zone is specified.  This is
 because Apple software may display crazy values if the time zone is missing
 for some tags.
+
+By default ExifTool will remove null padding from some QuickTime containers
+in Canon CR3 files when writing, but the
+QuickTimePad option may be used to preserve
+the original size by padding with nulls if necessary.
 
 See
 L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/>
@@ -35464,6 +35553,7 @@ FileName.
   XMP                        XMP                yes!
   XResolution                File               no
   YResolution                File               no
+  ZoneIdentifier             System             yes!
 
 =head2 Composite Tags
 

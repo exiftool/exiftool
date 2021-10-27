@@ -2074,6 +2074,46 @@ sub SetSystemTags($$)
             last;
         }
     }
+    # delete Windows Zone.Identifier if specified
+    my $zhash = $self->GetNewValueHash($Image::ExifTool::Extra{ZoneIdentifier});
+    if ($zhash) {
+        my $res = -1;
+        if ($^O ne 'MSWin32') {
+            $self->Warn('ZoneIdentifer is a Windows-only tag');
+        } elsif (ref $file) {
+            $self->Warn('Writing ZoneIdentifer requires a file name');
+        } elsif (defined $self->GetNewValue('ZoneIdentifier', \$zhash)) {
+            $self->Warn('ZoneIndentifier may only be delted');
+        } elsif (not eval { require Win32API::File }) {
+            $self->Warn('Install Win32API::File to write ZoneIdentifier');
+        } else {
+            my ($wattr, $wide);
+            my $zfile = "${file}:Zone.Identifier";
+            if ($self->EncodeFileName($zfile)) {
+                $wide = 1;
+                $wattr = eval { Win32API::File::GetFileAttributesW($zfile) };
+            } else {
+                $wattr = eval { Win32API::File::GetFileAttributes($zfile) };
+            }
+            if ($wattr == Win32API::File::INVALID_FILE_ATTRIBUTES()) {
+                $res = 0; # file doesn't exist, nothing to do
+            } elsif ($wattr & Win32API::File::FILE_ATTRIBUTE_READONLY()) {
+                $self->Warn('Zone.Identifier stream is read-only');
+            } else {
+                if ($wide) {
+                    $res = 1 if eval { Win32API::File::DeleteFileW($zfile) };
+                } else {
+                    $res = 1 if eval { Win32API::File::DeleteFile($zfile) };
+                }
+                if ($res > 0) {
+                    $self->VPrint(0, "  Deleting Zone.Identifier stream\n");
+                } else {
+                    $self->Warn('Error deleting Zone.Identifier stream');
+                }
+            }
+        }
+        $result = $res if $res == 1 or not $result;
+    }
     return $result;
 }
 

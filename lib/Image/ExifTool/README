@@ -450,6 +450,10 @@ numerical, and generated automatically otherwise.
                   may be written if the tag already exists.  By default, all
                   MakerNotes tags are permanent unless otherwise specified.
 
+                  'PreservePadding' - [QuickTime only] flag to preserve the
+                  original size of the QuickTime atom by padding with nulls when
+                  writing with the QuickTimePad option.
+
                   'PrintHex' - specifies that unknown PrintConv values should
                   be printed in hex (eg. 'Unknown (0x1)').  Also causes
                   numerical tag values to be printed in hex in the HTML tag name

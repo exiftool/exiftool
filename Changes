@@ -7,6 +7,24 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Oct. 27, 2021 - Version 12.34
+
+  - Added support for ICC.2:2019 (Profile version 5.0.0 - iccMAX) color profiles
+  - Added ability to detect/delete a Windows Zone.Identifier alternate data
+    stream (ADS) via the new ZoneIdentifier tag
+  - Added support for the Sony ILCE-7M4 (thanks Jos Roost)
+  - Added a new Sony lens (thanks LibRaw and Jos Roost)
+  - Added a new SonyModelID (thanks LibRaw)
+  - Added a new Canon RF lens (thanks Norbert Wasser)
+  - Improved handling of some SVG files
+  - Patched -overwrite_original_in_place option to open the output file in
+    update mode rather than write mode (to allow some write optimizations on
+    certain filesystems)
+  - Fixed case of tag ID for new XMP-iptcExt:EventID (thanks Michael Steidl)
+  - Fixed problem extracting ICC_Profile information from some PDF files
+  - API Changes:
+      - Added QuickTimePad option
+
 Oct. 16, 2021 - Version 12.33
 
   - Added support for DNG version 1.6.0.0

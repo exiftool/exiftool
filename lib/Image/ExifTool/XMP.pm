@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.46';
+$VERSION = '3.47';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2142,8 +2142,8 @@ my %sPantryItem = (
     NAMESPACE   => 'exifEX',
     PRIORITY => 0, # not as reliable as actual EXIF tags
     NOTES => q{
-        EXIF tags added by the EXIF 2.31 for XMP specification (see
-        L<http://www.cipa.jp/std/documents/e/DC-X010-2017.pdf>).
+        EXIF tags added by the EXIF 2.32 for XMP specification (see
+        L<https://cipa.jp/std/documents/download_e.html?DC-010-2020_E>).
     },
     Gamma                       => { Writable => 'rational' },
     PhotographicSensitivity     => { Writable => 'integer' },
@@ -2349,8 +2349,9 @@ my %sPantryItem = (
     Scene               => { Groups => { 2 => 'Other' }, List => 'Bag' },
     SubjectCode         => { Groups => { 2 => 'Other' }, List => 'Bag' },
     # Copyright - have seen this in a sample (Jan 2021), but I think it is non-standard
-    AltTextAccessibility =>{ Groups => { 2 => 'Other' }, Writable => 'lang-alt' }, # added 2021-10-13
-    ExtDescrAccessibility=>{ Groups => { 2 => 'Other' }, Writable => 'lang-alt' }, # added 2021-10-13
+    # new IPTC Core 1.3 properties
+    AltTextAccessibility  => { Groups => { 2 => 'Other' }, Writable => 'lang-alt' },
+    ExtDescrAccessibility => { Groups => { 2 => 'Other' }, Writable => 'lang-alt' },
 );
 
 # Adobe Lightroom namespace properties (lr) (ref PH)
@@ -3975,14 +3976,16 @@ sub ProcessXMP($$;$)
                     } elsif ($buf2 =~ /<plist[\s>]/) {
                         $type = 'PLIST';
                     }
-                    if ($isSVG and $$et{XMP_CAPTURE}) {
-                        $et->Error("ExifTool does not yet support writing of SVG images");
-                        return 0;
-                    }
                 }
                 $isXML = 1;
             } elsif ($2 eq '<rdf:RDF') {
                 $isRDF = 1;     # recognize XMP without x:xmpmeta element
+            } elsif ($2 eq '<svg') {
+                $isSVG = $isXML = 1;
+            }
+            if ($isSVG and $$et{XMP_CAPTURE}) {
+                $et->Error("ExifTool does not yet support writing of SVG images");
+                return 0;
             }
             if ($buff =~ /^\0\0/) {
                 $fmt = 'N';     # UTF-32 MM with or without BOM

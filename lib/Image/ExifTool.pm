@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exePath
             %static_vars);
 
-$VERSION = '12.33';
+$VERSION = '12.34';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -909,7 +909,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     GZIP => '\x1f\x8b\x08',
     HDR  => '#\?(RADIANCE|RGBE)\x0a',
     HTML => '(\xef\xbb\xbf)?\s*(?i)<(!DOCTYPE\s+HTML|HTML|\?xml)', # (case insensitive)
-    ICC  => '.{12}(scnr|mntr|prtr|link|spac|abst|nmcl|nkpf)(XYZ |Lab |Luv |YCbr|Yxy |RGB |GRAY|HSV |HLS |CMYK|CMY |[2-9A-F]CLR){2}',
+    ICC  => '.{12}(scnr|mntr|prtr|link|spac|abst|nmcl|nkpf|cenc|mid |mlnk|mvis)(XYZ |Lab |Luv |YCbr|Yxy |RGB |GRAY|HSV |HLS |CMYK|CMY |[2-9A-F]CLR|nc..|\0{4}){2}',
     IND  => '\x06\x06\xed\xf5\xd8\x1d\x46\xe5\xbd\x31\xef\xe7\xfe\x74\xb7\x1d',
   # ISO  =>  signature is at byte 32768
     ITC  => '.{4}itch',
@@ -1207,6 +1207,18 @@ my %systemTagsNotes = (
             the command line
         },
         PrintConv => \&ConvertFileSize,
+    },
+    ZoneIdentifier => {
+        Groups => { 1 => 'System', 2 => 'Other' },
+        Notes => q{
+            Windows only.  Used to indicate that a file has a Zone.Identifier alternate
+            data stream, which is used by some Windows browsers to mark downloaded files
+            as possibly unsafe to run.  May be deleted to remove this stream.  Requires
+            Win32API::File
+        },
+        Writable => 1,
+        WritePseudo => 1,
+        Protected => 1,
     },
     FileType => {
         Groups => { 2 => 'Other' },
@@ -2320,6 +2332,7 @@ sub ClearOptions($)
         Password    => undef,   # password for password-protected PDF documents
         PrintConv   => 1,       # flag to enable print conversion
         QuickTimeHandler => 1,  # flag to add mdir Handler to newly created Meta box
+        QuickTimePad=> undef,   # flag to preserve padding of QuickTime CR3 tags
         QuickTimeUTC=> undef,   # assume that QuickTime date/time tags are stored as UTC
         RequestAll  => undef,   # extract all tags that must be specifically requested
         RequestTags => undef,   # extra tags to request (on top of those in the tag list)
@@ -2369,7 +2382,7 @@ sub ExtractInfo($;@)
     my $fast = $$options{FastScan} || 0;
     my $req = $$self{REQ_TAG_LOOKUP};
     my $reqAll = $$options{RequestAll} || 0;
-    my (%saveOptions, $reEntry, $rsize, $type, @startTime, $saveOrder, $isDir);
+    my (%saveOptions, $reEntry, $rsize, $zid, $type, @startTime, $saveOrder, $isDir);
 
     # check for internal ReEntry option to allow recursive calls to ExtractInfo
     if (ref $_[1] eq 'HASH' and $_[1]{ReEntry} and
@@ -2461,6 +2474,17 @@ sub ExtractInfo($;@)
                 }
                 # get size of resource fork on Mac OS
                 $rsize = -s "$filename/..namedfork/rsrc" if $^O eq 'darwin' and not $$self{IN_RESOURCE};
+                # check to see if Zone.Identifier file exists in Windows
+                if ($^O eq 'MSWin32' and eval { require Win32API::File }) {
+                    my $wattr;
+                    my $zfile = "${filename}:Zone.Identifier";
+                    if ($self->EncodeFileName($zfile)) {
+                        $wattr = eval { Win32API::File::GetFileAttributesW($zfile) };
+                    } else {
+                        $wattr = eval { Win32API::File::GetFileAttributes($zfile) };
+                    }
+                    $zid = 1 unless $wattr == Win32API::File::INVALID_FILE_ATTRIBUTES();
+                }
             }
             # open the file
             if ($self->Open(\*EXIFTOOL_FILE, $filename)) {
@@ -2503,6 +2527,7 @@ sub ExtractInfo($;@)
         my $fileSize = $stat[7];
         $self->FoundTag('FileSize', $stat[7]) if defined $stat[7];
         $self->FoundTag('ResourceForkSize', $rsize) if $rsize;
+        $self->FoundTag('ZoneIdentifier', 'Exists') if $zid;
         $self->FoundTag('FileModifyDate', $stat[9]) if defined $stat[9];
         $self->FoundTag('FileAccessDate', $stat[8]) if defined $stat[8];
         my $cTag = $^O eq 'MSWin32' ? 'FileCreateDate' : 'FileInodeChangeDate';

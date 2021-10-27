@@ -12,7 +12,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                     1)Tj
+(                              -- ExifTool 12.34 --                                     1)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (EXIFTOOL\(1\)           User Contributed Perl Documentation          EXIFTOOL\(1\))Tj
@@ -637,7 +637,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                     2)Tj
+(                              -- ExifTool 12.34 --                                     2)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (         AVIF  r/w   | FLA   r     | MEF   r/w   | PDF   r/w   | TORRENT r)Tj
@@ -834,7 +834,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                     3)Tj
+(                              -- ExifTool 12.34 --                                     3)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (         -c FMT      \(-coordFormat\)       Set format for GPS coordinates)Tj
@@ -991,7 +991,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                     4)Tj
+(                              -- ExifTool 12.34 --                                     4)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (         -geotag TRKFILE                  Geotag images from specified GPS log)Tj
@@ -1282,7 +1282,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                     5)Tj
+(                              -- ExifTool 12.34 --                                     5)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            note 4 below\).  Instead, individual tags may be recovered using)Tj
@@ -1615,7 +1615,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                     6)Tj
+(                              -- ExifTool 12.34 --                                     6)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            and in this case is it possible to exclude individual tags from a)Tj
@@ -2054,7 +2054,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                     7)Tj
+(                              -- ExifTool 12.34 --                                     7)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (            A powerful redirection feature allows a destination tag to be)Tj
@@ -2539,7 +2539,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                     8)Tj
+(                              -- ExifTool 12.34 --                                     8)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            because each copy operation on a tag overrides any previous)Tj
@@ -3042,7 +3042,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                     9)Tj
+(                              -- ExifTool 12.34 --                                     9)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            Note:  Be careful when copying information with this technique)Tj
@@ -3463,7 +3463,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    10)Tj
+(                              -- ExifTool 12.34 --                                    10)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (                Hebrew      cp1255           Windows Hebrew)Tj
@@ -3738,7 +3738,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    11)Tj
+(                              -- ExifTool 12.34 --                                    11)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (            When exporting a CSV file, the -)Tj
@@ -4221,7 +4221,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    12)Tj
+(                              -- ExifTool 12.34 --                                    12)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            Force printing of tags even if their values are not found.  This)Tj
@@ -4830,7 +4830,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    13)Tj
+(                              -- ExifTool 12.34 --                                    13)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            data, encoded in base64 if necessary \(indicated by ASCII "base64:")Tj
@@ -5229,7 +5229,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    14)Tj
+(                              -- ExifTool 12.34 --                                    14)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (            4. Copy this text into a file called 'import.pl' in the exiftool)Tj
@@ -5492,7 +5492,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    15)Tj
+(                              -- ExifTool 12.34 --                                    15)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            "#[TAIL]" are output before the first processed file and after the)Tj
@@ -5531,7 +5531,7 @@ T*
 T*
 (            produces output like this:)Tj
 T*
-(                -- Generated by ExifTool 12.33 --)Tj
+(                -- Generated by ExifTool 12.34 --)Tj
 0 -1.1 TD
 (                File: a.jpg - 2003:10:31 15:44:19)Tj
 T*
@@ -5837,7 +5837,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    16)Tj
+(                              -- ExifTool 12.34 --                                    16)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       -)Tj
@@ -6376,7 +6376,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    17)Tj
+(                              -- ExifTool 12.34 --                                    17)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       -)Tj
@@ -6647,7 +6647,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    18)Tj
+(                              -- ExifTool 12.34 --                                    18)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            \(Note that special characters may have a width of greater than)Tj
@@ -6874,7 +6874,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    19)Tj
+(                              -- ExifTool 12.34 --                                    19)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (            2\) -)Tj
@@ -7353,7 +7353,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    20)Tj
+(                              -- ExifTool 12.34 --                                    20)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            file.)Tj
@@ -7860,7 +7860,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    21)Tj
+(                              -- ExifTool 12.34 --                                    21)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            values to be extracted for some maker note entries when reading)Tj
@@ -8441,7 +8441,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    22)Tj
+(                              -- ExifTool 12.34 --                                    22)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            turn, and the file is processed only if the expression returns)Tj
@@ -8718,7 +8718,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    23)Tj
+(                              -- ExifTool 12.34 --                                    23)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            any other tag in the condition \(ie. "$OK"\).)Tj
@@ -9273,7 +9273,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    24)Tj
+(                              -- ExifTool 12.34 --                                    24)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            opening the original file in update mode and replacing its data)Tj
@@ -9864,7 +9864,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    25)Tj
+(                              -- ExifTool 12.34 --                                    25)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (       -)Tj
@@ -10253,7 +10253,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    26)Tj
+(                              -- ExifTool 12.34 --                                    26)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (       -)Tj
@@ -10872,7 +10872,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    27)Tj
+(                              -- ExifTool 12.34 --                                    27)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            When the "Geotime" value is converted to UTC, the local system)Tj
@@ -11191,7 +11191,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    28)Tj
+(                              -- ExifTool 12.34 --                                    28)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (       _)Tj
@@ -11844,7 +11844,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    29)Tj
+(                              -- ExifTool 12.34 --                                    29)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       -)Tj
@@ -12527,7 +12527,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    30)Tj
+(                              -- ExifTool 12.34 --                                    30)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            the name of an existing \(possibly empty\) argument file or "-" to)Tj
@@ -13096,7 +13096,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    31)Tj
+(                              -- ExifTool 12.34 --                                    31)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       API through the current ExifTool object \($self\) and the tag key \($tag\).)Tj
@@ -13297,7 +13297,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    32)Tj
+(                              -- ExifTool 12.34 --                                    32)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       be represented.)Tj
@@ -13804,7 +13804,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    33)Tj
+(                              -- ExifTool 12.34 --                                    33)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       terminal!  Some characters such as single and double quotes and hyphens)Tj
@@ -13943,7 +13943,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    34)Tj
+(                              -- ExifTool 12.34 --                                    34)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            DateTimeOriginal for each image in directory "dir".)Tj
@@ -14110,7 +14110,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    35)Tj
+(                              -- ExifTool 12.34 --                                    35)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       exiftool -Photoshop:All= dst.jpg)Tj
@@ -14277,7 +14277,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    36)Tj
+(                              -- ExifTool 12.34 --                                    36)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       These examples demonstrate the ability to copy tag values between)Tj
@@ -14446,7 +14446,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    37)Tj
+(                              -- ExifTool 12.34 --                                    37)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            the inverse conversion\) and a few more .args files for other)Tj
@@ -14693,7 +14693,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    38)Tj
+(                              -- ExifTool 12.34 --                                    38)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (            month and day of "DateTimeOriginal".  eg\) This command would move)Tj
@@ -14872,7 +14872,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                              -- ExifTool 12.33 --                                    39)Tj
+(                              -- ExifTool 12.34 --                                    39)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (       exiftool -xmp:geotag= a.jpg)Tj
@@ -15251,7 +15251,7 @@ T*
 0.6 0 TD
 (s\(3pm\), Image::ExifTool::Shift.pl)Tj
 -19.2 -4.4 TD
-(perl v5.18.4                      2021-10-16                       EXIFTOOL\(1\))Tj
+(perl v5.18.4                      2021-10-27                       EXIFTOOL\(1\))Tj
 ET
 endstream
 endobj
@@ -15711,8 +15711,8 @@ endobj
 endobj
 130 0 obj
 <<
-/CreationDate (D:20211016133214-04'00')
-/ModDate (D:20211016133214-04'00')
+/CreationDate (D:20211027121356-04'00')
+/ModDate (D:20211027121356-04'00')
 /Producer (Apple pstopdf)
 >>
 endobj
@@ -15862,7 +15862,7 @@ trailer
 /Size 132
 /Root 131 0 R
 /Info 130 0 R
-/ID [<bb98c5af27aca4d9807e17785e16a7e1><bb98c5af27aca4d9807e17785e16a7e1>]
+/ID [<39b34a58be3f90505c69ae79370a0602><39b34a58be3f90505c69ae79370a0602>]
 >>
 startxref
 267878

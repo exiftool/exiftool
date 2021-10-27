@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.52';
+$VERSION = '4.53';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -595,7 +595,10 @@ $VERSION = '4.52';
    '61182.21' => 'Canon RF 70-200mm F4L IS USM', #42
    '61182.22' => 'Canon RF 50mm F1.8 STM', #42
    '61182.23' => 'Canon RF 14-35mm F4L IS USM', #IB
-   '61182.24' => 'Canon RF 16mm F2.8 STM', #42
+   '61182.24' => 'Canon RF 100-400mm F5.6-8 IS USM', #42
+   '61182.25' => 'Canon RF 100-400mm F5.6-8 IS USM + RF1.4x', #42 (NC)
+   '61182.26' => 'Canon RF 100-400mm F5.6-8 IS USM + RF2x', #42 (NC)
+   '61182.27' => 'Canon RF 16mm F2.8 STM', #42
   #'61182.xx' => 'Canon RF 100mm F2.8L MACRO IS USM',
     65535 => 'n/a',
 );
@@ -6776,6 +6779,9 @@ my %ciMaxFocal = (
             278 => 'Canon RF 70-200mm F4L IS USM', #42
             280 => 'Canon RF 50mm F1.8 STM', #42
             281 => 'Canon RF 14-35mm F4L IS USM', #42/IB
+            283 => 'Canon RF 100-400mm F5.6-8 IS USM', #42
+            284 => 'Canon RF 100-400mm F5.6-8 IS USM + RF1.4x', #42 (NC)
+            285 => 'Canon RF 100-400mm F5.6-8 IS USM + RF2x', #42 (NC)
             288 => 'Canon RF 16mm F2.8 STM', #42
            #xxx => 'Canon RF 100mm F2.8L MACRO IS USM',
             # Note: add new RF lenses to %canonLensTypes with ID 61182
@@ -8752,6 +8758,7 @@ my %filterConv = (
     #        --> ignored when reading, but offsets are updated when writing
     CMT1 => { # (CR3 files)
         Name => 'IFD0',
+        PreservePadding => 1,
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
@@ -8760,6 +8767,7 @@ my %filterConv = (
     },
     CMT2 => { # (CR3 files)
         Name => 'ExifIFD',
+        PreservePadding => 1,
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
@@ -8768,6 +8776,7 @@ my %filterConv = (
     },
     CMT3 => { # (CR3 files)
         Name => 'MakerNoteCanon',
+        PreservePadding => 1,
         SubDirectory => {
             TagTable => 'Image::ExifTool::Canon::Main',
             ProcessProc => \&ProcessCMT3,
@@ -8776,6 +8785,7 @@ my %filterConv = (
     },
     CMT4 => { # (CR3 files)
         Name => 'GPSInfo',
+        PreservePadding => 1,
         SubDirectory => {
             TagTable => 'Image::ExifTool::GPS::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
@@ -8786,6 +8796,7 @@ my %filterConv = (
     THMB => {
         Name => 'ThumbnailImage',
         Groups => { 2 => 'Preview' },
+        PreservePadding => 1,
         RawConv => 'substr($val, 16)',
         Binary => 1,
     },
@@ -8800,6 +8811,7 @@ my %filterConv = (
     WRITE_PROC => 'Image::ExifTool::QuickTime::WriteQuickTime',
     CNOP => {
         Name => 'CanonVRD',
+        PreservePadding => 1,
         SubDirectory => {
             TagTable => 'Image::ExifTool::CanonVRD::Main',
             WriteProc => 'Image::ExifTool::CanonVRD::WriteCanonDR4',

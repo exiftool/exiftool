@@ -774,6 +774,14 @@ numerical options.</p>
     if this is missing.</td>
     <td align=center>0 or 1</td>
     <td align=center>1</td></tr>
+<tr id="QuickTimePad"><td>QuickTimePad</td><td>Flag to preserve the padding of
+    some QuickTime atoms when writing.  QuickTime-based Canon CR3 files pad
+    the values of container atoms with null bytes.  This padding is removed by
+    default when the file is rewritten, but setting this option to 1 adds
+    padding to preserve the original atom size if the new atom would be smaller
+    than the original.</td>
+    <td align=center>0 or 1</td>
+    <td align=center>undef</td></tr>
 <tr id="QuickTimeUTC"><td>QuickTimeUTC</td><td>Flag set to assume that QuickTime
     date/time values are stored as UTC, causing conversion to local time when they are
     extracted and from local time when written. According to the QuickTime
@@ -1135,7 +1143,7 @@ and Warning tags.</p>
 <blockquote>
 ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
 Compress, FixBase, IgnoreMinorErrors, NoMultiExif, NoPDFList, Password,
-QuickTimeHandler, Verbose and WriteMode.
+QuickTimeHandler, QuickTimePad, Verbose and WriteMode.
 </blockquote>
 
 <hr><h2><a name="GetTagList">GetTagList</a></h2>

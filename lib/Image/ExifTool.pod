@@ -860,6 +860,14 @@ commonly found in samples from other software, and it has been reported that
 Apple QuickTime Player and Photos.apps will ignore ItemList tags if this is
 missing.  Default is 1.
 
+=item QuickTimePad
+
+Flag to preserve the padding of some QuickTime atoms when writing. 
+QuickTime-based Canon CR3 files pad the values of container atoms with null
+bytes.  This padding is removed by default when the file is rewritten, but
+setting this option to 1 adds padding to preserve the original atom size if
+the new atom would be smaller than the original.  Default is undef.
+
 =item QuickTimeUTC
 
 Flag set to assume that QuickTime date/time values are stored as UTC,
@@ -1236,7 +1244,7 @@ The following ExifTool options are effective in the call to L</WriteInfo>:
 
 ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
 Compress, FixBase, IgnoreMinorErrors, NoMultiExif, NoPDFList, Password,
-QuickTimeHandler, Verbose and WriteMode.
+QuickTimeHandler, QuickTimePad, Verbose and WriteMode.
 
 =head2 GetTagList
 

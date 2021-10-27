@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.70';
+$VERSION = '2.71';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -558,6 +558,7 @@ my %eeBox2 = (
             # *** this is where ExifTool writes XMP in MP4 videos (as per XMP spec) ***
             Condition => '$$valPt=~/^\xbe\x7a\xcf\xcb\x97\xa9\x42\xe8\x9c\x71\x99\x94\x91\xe3\xaf\xac/',
             WriteGroup => 'XMP',    # (write main XMP tags here)
+            PreservePadding => 1,
             SubDirectory => {
                 TagTable => 'Image::ExifTool::XMP::Main',
                 Start => 16,
@@ -607,6 +608,7 @@ my %eeBox2 = (
             Name => 'PreviewImage',
             Condition => '$$valPt=~/^\xea\xf4\x2b\x5e\x1c\x98\x4b\x88\xb9\xfb\xb7\xdc\x40\x6e\x4d\x16/',
             Groups => { 2 => 'Preview' },
+            PreservePadding => 1,
             # 0x00 - undef[16]: UUID
             # 0x10 - int32u[2]: "0 1" (version and/or item count?)
             # 0x18 - int32u: PRVW atom size
@@ -9425,7 +9427,7 @@ ItemID:         foreach $id (keys %$items) {
                     for (;;) {
                         last if $pos + 16 > $size;
                         my ($len, $type, $flags, $ctry, $lang) = unpack("x${pos}Na4Nnn", $val);
-                        last if $pos + $len > $size;
+                        last if $pos + $len > $size or not $len;
                         my ($value, $langInfo, $oldDir);
                         my $format = $$tagInfo{Format};
                         if ($type eq 'data' and $len >= 16) {

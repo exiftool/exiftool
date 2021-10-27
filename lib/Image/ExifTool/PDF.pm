@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.53';
+$VERSION = '1.54';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -280,10 +280,12 @@ my %supportedFilter = (
         ConvertToDict => 1,
     },
     Cs1 => {
-        SubDirectory => { TagTable => 'Image::ExifTool::PDF::ICCBased' },
+        SubDirectory => { TagTable => 'Image::ExifTool::PDF::DefaultRGB' },
+        ConvertToDict => 1, # (just in case)
     },
     CS0 => {
-        SubDirectory => { TagTable => 'Image::ExifTool::PDF::ICCBased' },
+        SubDirectory => { TagTable => 'Image::ExifTool::PDF::DefaultRGB' },
+        ConvertToDict => 1, # (just in case)
     },
 );
 

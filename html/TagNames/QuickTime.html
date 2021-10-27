@@ -59,6 +59,11 @@ the PrintConv option is enabled and no time zone is specified.  This is
 because Apple software may display crazy values if the time zone is missing
 for some tags.</p>
 
+<p>By default ExifTool will remove null padding from some QuickTime containers
+in Canon CR3 files when writing, but the
+<a href="../ExifTool.html#QuickTimePad">QuickTimePad</a> option may be used to preserve
+the original size by padding with nulls if necessary.</p>
+
 <p>See
 <a href="https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/">https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/</a>
 for the official specification.
@@ -8867,7 +8872,7 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 16, 2021</i>
+<br><i>Last revised Oct 27, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

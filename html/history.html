@@ -17,11 +17,32 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.35'><b>Nov. 11, 2021 - Version 12.35</b></a>
+<ul>
+<li>Added ability to write ICC_Profile (and other color specifications) to
+    Jpeg2000 images
+<li>Added %o code to -W option format string
+<li>Added %f code to -d option for fractional seconds
+<li>Added a couple of new Sony LensType values (thanks Jos Roost)
+<li>Added a new Nikon LensID
+<li>Added a new CanonModelID
+<li>Decode more Nikon MakerNotes tags for some new models (thanks Warren Hatch)
+<li>Extract ThumbnailImage from some DJI drone videos
+<li>Enhanced -ee option to extract metadata from all frames in a SEQ file
+<li>Patched to avoid possible "Use of uninitialized value" runtime warning
+<li>Fixed a couple if misspelt new ICC_Profile tag names (thanks Herb)
+<li>Fixed problem generating the correct file extension when extracting
+    OriginalRawImage from a DNG file using the -W option with the %s format code
+<li>Fixed bug introduced in 11.91 where exiftool couldn't find its libraries
+    when running via a link.  Also it was looking for the config file in the
+    directory of the link, and this was changed to the target directory
+</ul>
+
 <a name='v12.34'><b>Oct. 27, 2021 - Version 12.34</b></a>
 <ul>
 <li>Added support for ICC.2:2019 (Profile version 5.0.0 - iccMAX) color profiles
 <li>Added ability to detect/delete a Windows Zone.Identifier alternate data
-    stream (ADS) via the new <a href="TagNames/Extra.html">ZoneIdentifier tag</a>
+    stream (ADS) via the new <a href="TagNames/Extra.html">ZoneIdentifier tag</a> (thanks Alex Xu)
 <li>Added support for the Sony ILCE-7M4 (thanks Jos Roost)
 <li>Added a new Sony lens (thanks LibRaw and Jos Roost)
 <li>Added a new SonyModelID (thanks LibRaw)
@@ -29,12 +50,12 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Improved handling of some SVG files
 <li>Patched -overwrite_original_in_place option to open the output file in
     update mode rather than write mode (to allow some write optimizations on
-    certain filesystems)
+    certain filesystems) (thanks Joel Low)
 <li>Fixed case of tag ID for new XMP-iptcExt:EventID (thanks Michael Steidl)
 <li>Fixed problem extracting ICC_Profile information from some PDF files
 <li>API Changes:
     <ul>
-    <li>Added QuickTimePad option
+    <li>Added <a href="ExifTool.html#QuickTimePad">QuickTimePad option</a>
     </ul>
 </ul>
 

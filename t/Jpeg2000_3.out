@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.14
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.35
 [File, System, Other] FileName - File Name: Jpeg2000_3_failed.jp2
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 3.6 KiB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2021:01:05 15:35:26-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2021:01:05 15:35:26-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:01:05 15:35:26-05:00
-[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2021:11:09 11:03:34-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2021:11:09 11:03:34-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:11:09 11:03:34-05:00
+[File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JP2
 [File, File, Other] FileTypeExtension - File Type Extension: jp2
 [File, File, Other] MIMEType - MIME Type: image/jp2
@@ -20,9 +20,9 @@
 [Jpeg2000, Jpeg2000, Image] 10 - Bits Per Component: 8 Bits, Unsigned
 [Jpeg2000, Jpeg2000, Image] 11 - Compression: JPEG 2000
 [Jpeg2000, Jpeg2000, Image] 0 - Color Spec Method: Enumerated
-[Jpeg2000, Jpeg2000, Image] 1 - Color Spec Precedence: 0
+[Jpeg2000, Jpeg2000, Image] 1 - Color Spec Precedence: 1
 [Jpeg2000, Jpeg2000, Image] 2 - Color Spec Approximation: Not Specified
-[Jpeg2000, Jpeg2000, Image] 3 - Color Space: sRGB
+[Jpeg2000, Jpeg2000, Image] 3 - Color Space: Grayscale
 [EXIF, IFD0, Image] 256 - Image Width: 1
 [EXIF, IFD0, Image] 257 - Image Height: 1
 [EXIF, IFD0, Image] 258 - Bits Per Sample: 8
@@ -48,7 +48,7 @@
 [XML, XML, Unknown] test - Test: Yippee
 [IPTC, IPTC, Other] 25 - Keywords: test keyword
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.14
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.35
 [XMP, XMP-photoshop, Location] City - City: a city
 [Composite, Composite, Image] Exif-ImageSize - Image Size: 16x16
 [Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000256

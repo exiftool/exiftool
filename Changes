@@ -7,11 +7,31 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Nov. 11, 2021 - Version 12.35
+
+  - Added ability to write ICC_Profile (and other color specifications) to
+    Jpeg2000 images
+  - Added %o code to -W option format string
+  - Added %f code to -d option for fractional seconds
+  - Added a couple of new Sony LensType values (thanks Jos Roost)
+  - Added a new Nikon LensID
+  - Added a new CanonModelID
+  - Decode more Nikon MakerNotes tags for some new models (thanks Warren Hatch)
+  - Extract ThumbnailImage from some DJI drone videos
+  - Enhanced -ee option to extract metadata from all frames in a SEQ file
+  - Patched to avoid possible "Use of uninitialized value" runtime warning
+  - Fixed a couple if misspelt new ICC_Profile tag names (thanks Herb)
+  - Fixed problem generating the correct file extension when extracting
+    OriginalRawImage from a DNG file using the -W option with the %s format code
+  - Fixed bug introduced in 11.91 where exiftool couldn't find its libraries
+    when running via a link.  Also it was looking for the config file in the
+    directory of the link, and this was changed to the target directory
+
 Oct. 27, 2021 - Version 12.34
 
   - Added support for ICC.2:2019 (Profile version 5.0.0 - iccMAX) color profiles
   - Added ability to detect/delete a Windows Zone.Identifier alternate data
-    stream (ADS) via the new ZoneIdentifier tag
+    stream (ADS) via the new ZoneIdentifier tag (thanks Alex Xu)
   - Added support for the Sony ILCE-7M4 (thanks Jos Roost)
   - Added a new Sony lens (thanks LibRaw and Jos Roost)
   - Added a new SonyModelID (thanks LibRaw)
@@ -19,7 +39,7 @@ Oct. 27, 2021 - Version 12.34
   - Improved handling of some SVG files
   - Patched -overwrite_original_in_place option to open the output file in
     update mode rather than write mode (to allow some write optimizations on
-    certain filesystems)
+    certain filesystems) (thanks Joel Low)
   - Fixed case of tag ID for new XMP-iptcExt:EventID (thanks Michael Steidl)
   - Fixed problem extracting ICC_Profile information from some PDF files
   - API Changes:
@@ -635,6 +655,7 @@ Mar. 19, 2020 - Version 11.92
 
 Mar. 5, 2020 - Version 11.91
 
+  - Added undocumented -xpath option for use by alternate Windows version
   - Decode a couple of new Panasonic tags
   - Documented -ec option (available since version 11.54)
   - Reverted -htmlDump fix of 11.90 because it broke more than it fixed, and

@@ -79,7 +79,7 @@ specification.  (See <a href="#ex5">example 5</a> below.  Also see
 <p>If the <code>-d</code> option is used, the unformatted date/time value must
 be valid (ie. in the form "<code>YYYY:mm:dd HH:MM:SS</code>"), otherwise the
 date formatting will fail and the file will not be renamed or moved (but this may
-be changed via the <a href="ExifTool.html#StrictDate">API StrictDate option</a>).
+be changed via the <a href="ExifTool.html#StrictDate">API StrictDate option</a>).</p>
 
 <p>Also note that the <code>-d</code> formatting applies to date/time tags used
 in <code>-if</code> conditions unless the print conversion is disabled by adding
@@ -296,6 +296,18 @@ argument that is valid for that image.  Specifically, Directory is set from
 DateTimeOriginal if it exists, otherwise CreateDate if it exists, and finally
 FileModifyDate (which always exists) is used as a fallback.</blockquote>
 
+<a name="ex13"></a><table cellpadding=6>
+<tr><td valign='top'>13.</td><td bgcolor='#dddddd'><code class='blk'>
+exiftool -d %Y '-filename&lt;$createdate/${model;}/${createdate#;DateFmt("%Y-%m-%d_%H%M%S")}.%e' pics
+</code></td></tr></table>
+<blockquote>Multiple date/time formatting codes become necessary when other
+tags are place between date/time fields.  The <code>DateFmt</code> helper
+function is provided for this reason, and is applied to the unformatted tag
+value (ie. tag name ending with '<code>#</code>') to achieve a different
+date/time formatting in the same string.  (Note that the single quotes are
+necessary in Unix shells due to the '<code>$</code>' symbol, but double quotes
+must be used instead when running in a Windows cmd shell.)</blockquote>
+
 <a name="codes"></a><h2>Common Date Format Codes</h2>
 <p>Date format codes are used in the argument to the <code>-d</code> option to
 represent components of the date/time string.  The codes listed below are common
@@ -309,13 +321,14 @@ formatting is equivalent to '<code>%Y:%m:%d %H:%M:%S</code>'.</p>
 <tr><th>%B</th><td>- full locale month name</td></tr>
 <tr><th>%c</th><td>- preferred locale date/time representation</td></tr>
 <tr><th>%d</th><td>- day of month (01-31)</td></tr>
+<tr><th>%f</th><td>- fractional seconds (see note 1 below)</td></tr>
 <tr><th>%H</th><td>- hour on a 24-hour clock (00-23)</td></tr>
 <tr><th>%I</th><td>- hour on a 12-hour clock (01-12)</td></tr>
 <tr><th>%j</th><td>- day of year (001-366)</td></tr>
 <tr><th>%m</th><td>- month number (01-12)</td></tr>
 <tr><th>%M</th><td>- minute (00-59)</td></tr>
 <tr><th>%p</th><td>- 'AM' or 'PM'</td></tr>
-<tr><th>%s</th><td>- number of seconds since the Epoch, UTC (see note 1 below)</td></tr>
+<tr><th>%s</th><td>- number of seconds since the Epoch, UTC (see note 2 below)</td></tr>
 <tr><th>%S</th><td>- seconds (00-59)</td></tr>
 <tr><th>%w</th><td>- weekday number (0-6)</td></tr>
 <tr><th>%W</th><td>- week number of the year (00-53)</td></tr>
@@ -323,8 +336,8 @@ formatting is equivalent to '<code>%Y:%m:%d %H:%M:%S</code>'.</p>
 <tr><th>%X</th><td>- preferred locale time representation</td></tr>
 <tr><th>%y</th><td>- 2-digit year (00-99)</td></tr>
 <tr><th>%Y</th><td>- 4-digit year (eg. 2006)</td></tr>
-<tr><th>%z</th><td>- time zone in the form +/-hhmm (see note 1 below)</td></tr>
-<tr><th>%Z</th><td>- system time zone name (see note 2 below)</td></tr>
+<tr><th>%z</th><td>- time zone in the form +/-hhmm (see note 2 below)</td></tr>
+<tr><th>%Z</th><td>- system time zone name (see note 3 below)</td></tr>
 <tr><th>%%</th><td>- a literal '%' character</td></tr>
 </table></blockquote>
 <p>ExifTool file name format codes may be used inside a date format
@@ -343,13 +356,22 @@ application documentation</a> for details about special features available
 with these name format codes.</p>
 <p><b>Notes:</b></p>
 <ol>
-<li>The %s and %z format codes use the time zone specified by the date/time
-value.  If the date/time value does not include a time zone specification, then
-it is interpreted as a local time in the system time zone.  These format codes
-are parsed by ExifTool, so they should work on all systems.<br><br></li>
-<li>The %Z format code ignores any time zone specified in the date/time value,
-and returns the system time-zone name for the given date/time interpreted as a
-local system time.</li>
+<li>The <code>%f</code> format code is an ExifTool-specific enhancement and
+supports an optional number of digits after the decimal point. For example,
+<code>%3f</code> gives fractional seconds with 3 digits (eg. ".123").  The value
+is rounded to the specified number of digits, and the date/time value is
+incremented by one second if the rounding would overflow to the next second,
+even if the number of decimal digits is zero (ie. <code>%0f</code>).  Without
+<code>%f</code>, the fractional seconds are simply discarded and no rounding is
+performed.<br><br></li>
+<li>The <code>%s</code> and <code>%z</code> format codes use the time zone
+specified by the date/time value.  If the date/time value does not include a
+time zone specification, then it is interpreted as a local time in the system
+time zone.  These format codes are parsed by ExifTool, so they should work on
+all systems.<br><br></li>
+<li>The <code>%Z</code> format code ignores any time zone specified in the
+date/time value, and returns the system time-zone name for the given date/time
+interpreted as a local system time.</li>
 </ol>
 <hr>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>

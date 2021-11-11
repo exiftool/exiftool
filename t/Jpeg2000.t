@@ -33,6 +33,8 @@ my $testnum = 1;
         ['XMP:City' => 'a city'],
         ['EXIF:ImageDescription' => 'a description'],
         ['XML' => '<test>Yippee</test>', Protected => 1 ],
+        ['Jpeg2000:ColorSpace' => 'Grayscale', Protected => 1 ],
+        ['ColorSpecPrecedence' => 1, Protected => 1 ],
     );
     print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/Jpeg2000.jp2');
     print "ok $testnum\n";

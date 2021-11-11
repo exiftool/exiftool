@@ -71,7 +71,8 @@ tags by suffixing the tag name with a <code>#</code> character.</li></ol>
 <ol start=1><li>The "<b>Raw</b>" value is the value after initial formatting is
 applied to the binary data from the file.  Most tags have no separate "ValueConv"
 conversion, so for these tags the "Raw" value is the same as the "ValueConv"
-value.  This value may be seen by using the <code>-v</code> option.</li></ol>
+value. Values stored in rational form also have a "<b>Rational</b>" value. Both
+Raw and Rational values may be seen by using the <code>-v</code> option.</li></ol>
 
 <ol start=0><li>The "<b>Binary</b>" value is the actual binary data stored in the
 file.  This data is displayed in hexadecimal form with the <code>-v3</code>
@@ -85,7 +86,7 @@ gives the format of this binary data for writable tags.</li></ol>
 <p>Below are some examples of these different values for a few tags:</p>
 
 <blockquote><table class=norm>
-<tr><th>Tag</th><th>3.&nbsp;PrintConv</th><th>2.&nbsp;ValueConv</th><th>1.&nbsp;Raw</th><th>0.&nbsp;Binary</th></tr>
+<tr><th>Tag</th><th>3.&nbsp;PrintConv</th><th>2.&nbsp;ValueConv</th><th>1.&nbsp;Raw (Rational)</th><th>0.&nbsp;Binary</th></tr>
 <tr align='center'><td>EXIF:Orientation</td><td>Horizontal (normal)</td><td>1</td><td>1</td><td><pre>00 01</pre></td></tr>
 <tr align='center'><td>EXIF:GPSLatitude</td><td>45 deg 20' 11.00"</td><td>45.3363888888889</td><td>45 20 11<br>(45/1 20/1 11/1)</td>
   <td><pre>00 00 00 2d 00 00 00 01<br>00 00 00 14 00 00 00 01<br>00 00 00 0b 00 00 00 01</pre></td></tr>
@@ -158,7 +159,7 @@ Jan 2019), this is a real accomplishment.</p>
 
 <hr>
 <i>Created Jun. 24, 2009</i><br>
-<i>Last revised Mar. 1, 2019</i>
+<i>Last revised Nov. 1, 2021</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

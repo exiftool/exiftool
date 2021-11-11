@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '4.00';
+$VERSION = '4.01';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -404,6 +404,7 @@ sub GetAFPointGrid($$;$);
     '48 38 1F 37 34 3C 4B 06' => 'Sigma 12-24mm F4.5-5.6 EX DG Aspherical HSM',
     'F0 38 1F 37 34 3C 4B 06' => 'Sigma 12-24mm F4.5-5.6 EX DG Aspherical HSM',
     '96 38 1F 37 34 3C 4B 06' => 'Sigma 12-24mm F4.5-5.6 II DG HSM', #Jurgen Sahlberg
+    'CA 3C 1F 37 30 30 4B 46' => 'Sigma 12-24mm F4 DG HSM | A', #github issue#101
     'C1 48 24 37 24 24 4B 46' => 'Sigma 14-24mm F2.8 DG HSM | A', #30
     '26 40 27 3F 2C 34 1C 02' => 'Sigma 15-30mm F3.5-4.5 EX DG Aspherical DF',
     '48 48 2B 44 24 30 4B 06' => 'Sigma 17-35mm F2.8-4 EX DG  Aspherical HSM',
@@ -7353,7 +7354,7 @@ my %nikonFocalConversions = (
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x0e, 0x18, 0x98, 0xce31 ],
+    DATAMEMBER => [ 0x04, 0x0e, 0x18, 0x38, 0x98, 0x7eff, 0xce31 ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -7391,6 +7392,14 @@ my %nikonFocalConversions = (
         Writable => 0,
         Hidden => 1,
     },
+    0x38 => { #28
+        Name => 'Offset5',
+        DataMember => 'Offset5',
+        Format => 'int32u',
+        Writable => 0,
+        Hidden => 1,
+        RawConv => '$$self{Offset5} = $val || 0x10000000; undef', # (ignore if 0)
+    },
     0x98 => {
         Name => 'OrientationOffset',
         DataMember => 'OrientationOffset',
@@ -7400,9 +7409,33 @@ my %nikonFocalConversions = (
         RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef', # (ignore if 0)
     },
 
+### 0x7f00 - Offset5 info start (Z7_2 firmware 1.30)
+    0x7eff => { #28
+        Name => 'Hook1',
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of Offset5 data
+        Hook => '$varSize = $$self{Offset5} - 0x7f00',
+    },
+    0x7fa0 => { #28
+        Name => 'PortraitImpressionBalance',   #will be 0 for firmware 1.21 and earlier; firmware 1.30 onward: will be set by Photo Shooting Menu entry Portrait Impression Balance
+                   #offset5+160;    128 is neutral; >128 increases Yellow; <128 increases Magenta;  increments of 4 result from 1 full unit adjustment on the camera
+                   #offset5+161     129 is neutral;  >129 increases Brightness; <129 decreases Brightness 
+                   #with firmware 1.30 when 'Off' is selected in the Shooting menu, offsets 160 & 161 will contain 255.  Selecting Mode 1,2, or 3 will populate offsets 160 & 161 with values in the range [116,141]
+        Format => 'int8u[2]',
+        Condition => '$$self{FirmwareVersion} ge "01.30"',
+        PrintConv => q{
+            return 'Off' if $val eq '0 0' or $val eq '255 255';
+            my @v = split ' ', $val;
+            my $brightness = $v[1]==128 ? 'Brightness: Neutral' : sprintf('Brightness: %+.1f',($v[1]-128)/4);
+            my $color = $v[0]==128 ? 'Color: Neutral' : sprintf('%s: %.1f', $v[0]>128 ? 'Yellow' : 'Magenta', abs($v[0]-128)/4);
+            # will return something like: 'Magenta: 1.0  Brightness: Neutral'
+            return "$color $brightness"
+        },
+    },
 ### 0xce32 - OrientationInfo start (Z7_2 firmware 1.00)
     0xce31 => {
-        Name => 'Hook1',
+        Name => 'Hook2',
         Hidden => 1,
         RawConv => 'undef',
         # account for variable location of OrientationInfo data

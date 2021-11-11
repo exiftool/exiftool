@@ -24,7 +24,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.18';
+$VERSION = '1.19';
 
 sub ProcessFLIR($$;$);
 sub ProcessFLIRText($$$);
@@ -99,7 +99,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     NOTES => q{
         Information extracted from FLIR FFF images and the APP1 FLIR segment of JPEG
         images.  These tags may also be extracted from the first frame of an FLIR
-        SEQ file.
+        SEQ file, or all frames if the ExtractEmbedded option is used.
     },
     "_header" => {
         Name => 'FFFHeader',
@@ -1457,6 +1457,7 @@ sub ProcessFLIR($$;$)
     my $raf = $$dirInfo{RAF} || new File::RandomAccess($$dirInfo{DataPt});
     my $verbose = $et->Options('Verbose');
     my $out = $et->Options('TextOut');
+    my $base = $raf->Tell();
     my ($i, $hdr, $buff, $rec);
 
     # read and verify FFF header
@@ -1485,15 +1486,18 @@ sub ProcessFLIR($$;$)
         my $ver = Get32u(\$hdr, 0x14);
         last if $ver >= 100 and $ver < 200; # (have seen 100 and 101 - PH)
         ToggleByteOrder();
-        $i and $et->Warn("Unsupported FLIR $type version"), return 1;
+        next unless $i;
+        return 0 if $$et{DOC_NUM};
+        $et->Warn("Unsupported FLIR $type version");
+        return 1;
     }
 
     # read the FLIR record directory
     my $pos = Get32u(\$hdr, 0x18);
     my $num = Get32u(\$hdr, 0x1c);
-    unless ($raf->Seek($pos) and $raf->Read($buff, $num * 0x20) == $num * 0x20) {
+    unless ($raf->Seek($base+$pos) and $raf->Read($buff, $num * 0x20) == $num * 0x20) {
         $et->Warn('Truncated FLIR FFF directory');
-        return 1;
+        return $$et{DOC_NUM} ? 0 : 1;
     }
 
     unless ($tagTablePtr) {
@@ -1504,6 +1508,7 @@ sub ProcessFLIR($$;$)
     # process the header data
     $et->HandleTag($tagTablePtr, '_header', $hdr);
 
+    my $success = 1;
     my $oldIndent = $$et{INDENT};
     $$et{INDENT} .= '| ';
     $et->VerboseDir($type, $num);
@@ -1533,12 +1538,22 @@ sub ProcessFLIR($$;$)
         $verbose and printf $out "%s%d) FLIR Record 0x%.2x, offset 0x%.4x, length 0x%.4x\n",
                                  $$et{INDENT}, $i, $recType, $recPos, $recLen;
 
-        unless ($raf->Seek($recPos) and $raf->Read($rec, $recLen) == $recLen) {
-            $et->Warn('Invalid FLIR record');
+        # skip RawData records for embedded documents
+        if ($recType == 1 and $$et{DOC_NUM}) {
+            $raf->Seek($base+$recPos+$recLen) or $success = 0, last;
+            next;
+        }
+        unless ($raf->Seek($base+$recPos) and $raf->Read($rec, $recLen) == $recLen) {
+            if ($$et{DOC_NUM}) {
+                $success = 0;   # abort processing more documents
+            } else {
+                $et->Warn('Invalid FLIR record');
+            }
             last;
         }
         if ($$tagTablePtr{$recType}) {
             $et->HandleTag($tagTablePtr, $recType, undef,
+                Base    => $base,
                 DataPt  => \$rec,
                 DataPos => $recPos,
                 Start   => 0,
@@ -1550,7 +1565,17 @@ sub ProcessFLIR($$;$)
     }
     delete $$et{SET_GROUP0};
     $$et{INDENT} = $oldIndent;
-    return 1;
+
+    # extract information from subsequent frames in SEQ file if ExtractEmbedded is used
+    if ($$dirInfo{RAF} and $et->Options('ExtractEmbedded') and not $$et{DOC_NUM}) {
+        for (;;) {
+            $$et{DOC_NUM} = $$et{DOC_COUNT} + 1;
+            last unless ProcessFLIR($et, $dirInfo, $tagTablePtr);
+            # (DOC_COUNT will be incremented automatically if we extracted any tags)
+        }
+        delete $$et{DOC_NUM};
+    }
+    return $success;
 }
 
 #------------------------------------------------------------------------------

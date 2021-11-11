@@ -25,7 +25,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.37';
+$VERSION = '1.38';
 
 sub ProcessICC($$);
 sub ProcessICC_Profile($$$);
@@ -549,7 +549,7 @@ my %manuSig = ( #6
     A2B3 => 'AToB3',
     A2M0 => 'AToM0',
     B2A3 => 'BToA3',
-    bcp0 => 'BRDFColorimetricParameter3Tag',
+    bcp0 => 'BRDFColorimetricParam0',
     bcp1 => 'BRDFColorimetricParam1',
     bcp2 => 'BRDFColorimetricParam2',
     bcp3 => 'BRDFColorimetricParam3',
@@ -602,7 +602,7 @@ my %manuSig = ( #6
     gdb2 => 'GamutBoundaryDescription2',
     gdb3 => 'GamutBoundaryDescription3',
    'mdv '=> 'MultiplexDefaultValues',
-    mcta => 'MultiplixTypeArray',
+    mcta => 'MultiplexTypeArray',
     minf => 'MeasurementInfo',
     miin => 'MeasurementInputInfo',
     M2A0 => 'MToA0',

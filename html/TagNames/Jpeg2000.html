@@ -313,6 +313,14 @@ may exist)</span>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorSpec'>Jpeg2000 ColorSpec Tags</a></h2>
+<p>The table below contains tags in the color specification (colr) box.  This
+box may be rewritten by writing either ICC_Profile, ColorSpace or
+ColorSpecData.  When writing, any existing colr boxes are replaced with the
+newly created colr box.</p>
+
+<p><b>NOTE</b>: Care must be taken when writing this color specification because
+writing a specification that is incompatible with the image data may make
+the image undisplayable.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -321,21 +329,24 @@ may exist)</span>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>ColorSpecMethod</td>
-<td class=c>no</td>
-<td><span class=s>1 = Enumerated
+<td class=c title=' ! = Unsafe'>int8s!</td>
+<td><span class=s><span class=n>(default for writing is 2 when writing ICC_Profile, 1 when writing
+ColorSpace, or 4 when writing ColorSpecData)</span>
+  <br>1 = Enumerated
   <br>2 = Restricted ICC
   <br>3 = Any ICC
   <br>4 = Vendor Color</span></td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>ColorSpecPrecedence</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td class=c title=' ! = Unsafe'>int8s!</td>
+<td><span class=s><span class=n>(default for writing is 0)</span></span></td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>ColorSpecApproximation</td>
-<td class=c>no</td>
-<td><span class=s>0 = Not Specified
+<td class=c title=' ! = Unsafe'>int8s!</td>
+<td><span class=s><span class=n>(default for writing is 0)</span>
+  <br>0 = Not Specified
   <br>1 = Accurate
   <br>2 = Exceptional Quality
   <br>3 = Reasonable Quality
@@ -345,7 +356,7 @@ may exist)</span>
 <td>ICC_Profile
   <br>ColorSpace
   <br>ColorSpecData</td>
-<td class=c>-<br>no<br>no</td>
+<td class=c title=' ! = Unsafe'>-<br>int32u!<br>undef!</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
   <br><table class=cols><tr>
   <td>0 = Bi-level
@@ -553,7 +564,7 @@ may exist)</span>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 30, 2021</i>
+<br><i>Last revised Nov 11, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

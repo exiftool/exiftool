@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.53';
+$VERSION = '4.54';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -954,6 +954,7 @@ $VERSION = '4.53';
     0x80000435 => 'EOS Rebel T8i / 850D / X10i', #JR/PH
     0x80000436 => 'EOS SL3 / 250D / Kiss X10', #25
     0x80000437 => 'EOS 90D', #IB
+    0x80000450 => 'EOS R3', #42
     0x80000453 => 'EOS R6', #PH
     0x80000467 => 'PowerShot ZOOM',
     0x80000468 => 'EOS M50 Mark II / Kiss M2', #IB

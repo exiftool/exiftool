@@ -4798,6 +4798,8 @@ sub InverseDateTime($$;$$)
                 $strptimeLib = '';
             }
         }
+        # handle factional seconds (%f), but only at the end of the string
+        my $fs = ($fmt =~ s/%f$// and $val =~ s/(\.\d+)\s*$//) ? $1 : '';
         my ($lib, $wrn, @a);
 TryLib: for ($lib=$strptimeLib; ; $lib='') {
             if (not $lib) {
@@ -4834,10 +4836,10 @@ TryLib: for ($lib=$strptimeLib; ; $lib='') {
                         next TryLib;
                     }
                 } elsif (length($a[$i]) < 2) {
-                    $$a[$i] = "0$a[$i]";# pad to 2 digits if necessary
+                    $a[$i] = "0$a[$i]"; # pad to 2 digits if necessary
                 }
             }
-            $val = join(':', @a[5,4,3]) . ' ' . join(':', @a[2,1,0]);
+            $val = join(':', @a[5,4,3]) . ' ' . join(':', @a[2,1,0]) . $fs;
             last;
         }
     }

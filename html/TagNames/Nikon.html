@@ -3511,16 +3511,21 @@ firmware 1.01b.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='32672 = 0x7fa0'>32672</td>
+<td>PortraitImpressionBalance</td>
+<td class=c title=' ~ = Writable only with -n'>int8u[2]~</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='52786 = 0xce32'>52786</td>
 <td>RollAngle</td>
 <td class=c>fixed32u</td>
 <td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='52790 = 0xce36'>52790</td>
 <td>PitchAngle</td>
 <td class=c>fixed32u</td>
 <td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='52794 = 0xce3a'>52794</td>
 <td>YawAngle</td>
 <td class=c>fixed32u</td>
@@ -7365,6 +7370,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 </tr><tr><td>'C8 54 62 62 0C 0C 4B 46'</td><td>= Sigma 85mm F1.4 DG HSM | A</td>
 </tr><tr><td>'C9 3C 44 76 25 31 DF 4E'</td><td>= Tamron 35-150mm f/2.8-4 Di VC OSD (A043)</td>
 </tr><tr><td>'C9 48 37 5C 24 24 4B 4E'</td><td>= Sigma 24-70mm F2.8 DG OS HSM | A</td>
+</tr><tr><td>'CA 3C 1F 37 30 30 4B 46'</td><td>= Sigma 12-24mm F4 DG HSM | A</td>
 </tr><tr><td>'CA 48 27 3E 24 24 DF 4E'</td><td>= Tamron SP 15-30mm f/2.8 Di VC USD G2 (A041)</td>
 </tr><tr><td>'CB 3C 2B 44 24 31 DF 46'</td><td>= Tamron 17-35mm f/2.8-4 Di OSD (A037)</td>
 </tr><tr><td>'CC 44 68 98 34 41 DF 0E'</td><td>= Tamron 100-400mm f/4.5-6.3 Di VC USD</td>
@@ -7437,7 +7443,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 16, 2021</i>
+<br><i>Last revised Nov 11, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

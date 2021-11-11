@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24447 tags, with 15878 unique tag names.
+They contain a total of 24449 tags, with 15879 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -3542,7 +3542,7 @@ These tags belong to the ExifTool XMP-iptcCore family 1 group.
 
 =head3 XMP iptcExt Tags
 
-This table contains tags defined by the IPTC Extension schema version 1.5.
+This table contains tags defined by the IPTC Extension schema version 1.6.
 The actual namespace prefix is "Iptc4xmpExt", but ExifTool shortens this for
 the family 1 group name. (see
 L<http://www.iptc.org/standards/photo-metadata/iptc-standard/>)
@@ -5621,7 +5621,7 @@ specification.
   'bMS3'   BRDFMToS3                            no
   'bTRC'   BlueTRC                              no
   'bXYZ'   BlueMatrixColumn                     no
-  'bcp0'   BRDFColorimetricParameter3Tag        no
+  'bcp0'   BRDFColorimetricParam0               no
   'bcp1'   BRDFColorimetricParam1               no
   'bcp2'   BRDFColorimetricParam2               no
   'bcp3'   BRDFColorimetricParam3               no
@@ -5676,7 +5676,7 @@ specification.
   'gdb3'   GamutBoundaryDescription3            no
   'kTRC'   GrayTRC                              no
   'lumi'   Luminance                            no
-  'mcta'   MultiplixTypeArray                   no
+  'mcta'   MultiplexTypeArray                   no
   'mdv '   MultiplexDefaultValues               no
   'meas'   Measurement                          ICC_Profile Measurement
   'meta'   Metadata                             ICC_Profile Metadata
@@ -9600,7 +9600,7 @@ imaging cameras by FLIR Systems Inc.
 
 Information extracted from FLIR FFF images and the APP1 FLIR segment of JPEG
 images.  These tags may also be extracted from the first frame of an FLIR
-SEQ file.
+SEQ file, or all frames if the ExtractEmbedded option is used.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
@@ -13053,6 +13053,7 @@ These tags are extracted from encrypted data in images from the Z7_2.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
+  32672    PortraitImpressionBalance            int8u[2]~
   52786    RollAngle                            fixed32u
   52790    PitchAngle                           fixed32u
   52794    YawAngle                             fixed32u
@@ -22009,14 +22010,23 @@ writes only EXIF, IPTC and XMP tags in Jpeg2000 images.
 
 =head3 Jpeg2000 ColorSpec Tags
 
+The table below contains tags in the color specification (colr) box.  This
+box may be rewritten by writing either ICC_Profile, ColorSpace or
+ColorSpecData.  When writing, any existing colr boxes are replaced with the
+newly created colr box.
+
+B<NOTE>: Care must be taken when writing this color specification because
+writing a specification that is incompatible with the image data may make
+the image undisplayable.
+
   Index1   Tag Name                             Writable
   ------   --------                             --------
-      0    ColorSpecMethod                      no
-      1    ColorSpecPrecedence                  no
-      2    ColorSpecApproximation               no
+      0    ColorSpecMethod                      int8s!
+      1    ColorSpecPrecedence                  int8s!
+      2    ColorSpecApproximation               int8s!
       3    ICC_Profile                          ICC_Profile
-           ColorSpace                           no
-           ColorSpecData                        no
+           ColorSpace                           int32u!
+           ColorSpecData                        undef!
 
 =head3 Jpeg2000 FileType Tags
 
@@ -26182,6 +26192,7 @@ for the official specification.
   'frea'               Kodak_frea               Kodak frea
   'free'               KodakFree                Kodak Free
                        Pittasoft                QuickTime Pittasoft
+                       ThumbnailImage           no
                        Free?                    no
   'ftyp'               FileType                 QuickTime FileType
   'gps0'               GPSTrack                 QuickTime Stream
@@ -26242,7 +26253,7 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 57 different formats of timed GPS metadata from video files.
+currently reads 58 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------

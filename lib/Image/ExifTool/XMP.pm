@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.47';
+$VERSION = '3.48';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -436,9 +436,37 @@ my %sOECF = (
     Names       => { List => 'Seq' },
     Values      => { List => 'Seq', Writable => 'rational' },
 );
-
+my %sAreaModels = (
+    STRUCT_NAME => 'AreaModels',
+    NAMESPACE   => 'crs',
+    ColorRangeMaskAreaSampleInfo => { },
+    AreaComponents => { List => 'Seq' },
+);
+my %sCorrectionRangeMask = (
+    STRUCT_NAME => 'CorrectionRangeMask',
+    NAMESPACE   => 'crs',
+    Version     => { },
+    Type        => { },
+    ColorAmount => { Writable => 'real' },
+    LumMin      => { Writable => 'real' },
+    LumMax      => { Writable => 'real' },
+    LumFeather  => { Writable => 'real' },
+    DepthMin    => { Writable => 'real' },
+    DepthMax    => { Writable => 'real' },
+    DepthFeather=> { Writable => 'real' },
+    # new in LR 11.0
+    Invert      => { Writable => 'boolean' },
+    SampleType  => { Writable => 'integer' },
+    AreaModels  => {
+        List => 'Seq',
+        Struct => \%sAreaModels,
+    },
+    LumRange    => { },
+    LuminanceDepthSampleInfo => { },
+);
 # new LR2 crs structures (PH)
-my %sCorrectionMask = (
+my %sCorrectionMask;
+%sCorrectionMask = (
     STRUCT_NAME => 'CorrectionMask',
     NAMESPACE   => 'crs',
     # disable List behaviour of flattened Gradient/PaintBasedCorrections
@@ -473,19 +501,21 @@ my %sCorrectionMask = (
     Alpha        => { Writable => 'real', List => 0 },
     CenterValue  => { Writable => 'real', List => 0 },
     PerimeterValue=>{ Writable => 'real', List => 0 },
-);
-my %sCorrectionRangeMask = (
-    STRUCT_NAME => 'CorrectionRangeMask',
-    NAMESPACE   => 'crs',
-    Version     => { },
-    Type        => { },
-    ColorAmount => { Writable => 'real' },
-    LumMin      => { Writable => 'real' },
-    LumMax      => { Writable => 'real' },
-    LumFeather  => { Writable => 'real' },
-    DepthMin    => { Writable => 'real' },
-    DepthMax    => { Writable => 'real' },
-    DepthFeather=> { Writable => 'real' },
+    # new in LR 11.0 MaskGroupBasedCorrections
+    MaskActive   => { Writable => 'boolean', List => 0 },
+    MaskName     => { List => 0 },
+    MaskBlendMode=> { Writable => 'integer', List => 0 },
+    MaskInverted => { Writable => 'boolean', List => 0 },
+    MaskSyncID   => { List => 0 },
+    MaskVersion  => { List => 0 },
+    MaskSubType  => { List => 0 },
+    ReferencePoint => { List => 0  },
+    InputDigest  => { List => 0 },
+    MaskDigest   => { List => 0 },
+    WholeImageArea => { List => 0 },
+    Origin       => { List => 0 },
+    Masks        => { Struct => \%sCorrectionMask, NoSubStruct => 1 },
+    CorrectionRangeMask => { Struct => \%sCorrectionRangeMask },
 );
 my %sCorrection = (
     STRUCT_NAME => 'Correction',
@@ -516,6 +546,7 @@ my %sCorrection = (
     LocalBlacks2012  => { FlatName => 'Blacks2012', Writable => 'real', List => 0 },
     LocalDehaze      => { FlatName => 'Dehaze', Writable => 'real', List => 0 },
     LocalTexture     => { FlatName => 'Texture', Writable => 'real', List => 0 },
+    # new in LR 11.0
     CorrectionRangeMask => {
         FlatName => 'RangeMask',
         Struct => \%sCorrectionRangeMask,
@@ -525,6 +556,8 @@ my %sCorrection = (
         Struct => \%sCorrectionMask,
         List => 'Seq',
     },
+    CorrectionName => { },
+    CorrectionSyncID => { },
 );
 my %sRetouchArea = (
     STRUCT_NAME => 'RetouchArea',
@@ -542,6 +575,30 @@ my %sRetouchArea = (
         Struct => \%sCorrectionMask,
         List => 'Seq',
     },
+);
+my %sMapInfo = (
+    STRUCT_NAME => 'MapInfo',
+    NAMESPACE   => 'crs',
+    NOTES => q{
+        Called RangeMaskMapInfo by the specification, the same as the containing
+        structure.
+    },
+    RGBMin => { },
+    RGBMax => { },
+    LabMin => { },
+    LabMax => { },
+    LumEq  => { List => 'Seq' },
+);
+my %sRangeMask = (
+    STRUCT_NAME => 'RangeMask',
+    NAMESPACE   => 'crs',
+    NOTES => q{
+        This structure is actually called RangeMaskMapInfo, but it only contains one
+        element which is a RangeMaskMapInfo structure (Yes, really!).  So these are
+        renamed to RangeMask and MapInfo respectively to avoid confusion and
+        redundancy in the tag names.
+    },
+    RangeMaskMapInfo => { FlatName => 'MapInfo', Struct => \%sMapInfo },
 );
 
 # main XMP tag table (tag ID's are used for the family 1 group names)
@@ -1581,6 +1638,14 @@ my %sPantryItem = (
     AutoToneDigestNoSat     => { },
     ToggleStyleDigest       => { },
     ToggleStyleAmount       => { Writable => 'integer' },
+    # new for LightRoom 11.0
+    CompatibleVersion       => { },
+    MaskGroupBasedCorrections => {
+        FlatName => 'MaskGroupBasedCorr',
+        Struct => \%sCorrection,
+        List => 'Seq',
+    },
+    RangeMaskMapInfo => { Name => 'RangeMask', Struct => \%sRangeMask, FlatName => 'RangeMask' },
 );
 
 # Tiff namespace properties (tiff)
@@ -2307,6 +2372,7 @@ my %sPantryItem = (
     VignetteCorrectionAlreadyApplied    => { Writable => 'boolean' },
     LateralChromaticAberrationCorrectionAlreadyApplied => { Writable => 'boolean' },
     LensDistortInfo => { }, # (LR 7.5.1, 4 signed rational values)
+    NeutralDensityFactor => { }, # (LR 11.0 - rational value, but denominator seems significant)
 );
 
 # IPTC Core namespace properties (Iptc4xmpCore) (ref 4)
@@ -2363,6 +2429,7 @@ my %sPantryItem = (
     NOTES => 'Adobe Lightroom "lr" namespace tags.',
     privateRTKInfo => { },
     hierarchicalSubject => { List => 'Bag' },
+    weightedFlatSubject => { List => 'Bag' },
 );
 
 # Adobe Album namespace properties (album) (ref PH)
@@ -3505,6 +3572,17 @@ sub ParseXMPElement($$$;$$$$)
         }
         $start = pos($$dataPt);         # start from here the next time around
 
+        # ignore specified XMP namespaces/properties
+        if ($$et{EXCL_XMP_LOOKUP} and not $isWriting and $prop =~ /^(.+):(.*)/) {
+            my ($ns, $nm) = (lc($stdXlatNS{$1} || $1), lc($2));
+            if ($$et{EXCL_XMP_LOOKUP}{"xmp-$ns:all"} or $$et{EXCL_XMP_LOOKUP}{"xmp-$ns:$nm"} or
+                $$et{EXCL_XMP_LOOKUP}{"xmp-all:$nm"})
+            {
+                ++$count;   # (pretend we found something so we don't store as a tag value)
+                next;
+            }
+        }
+
         # extract property attributes
         my ($parseResource, %attrs, @attrs);
         while ($attrs =~ m/(\S+?)\s*=\s*(['"])(.*?)\2/sg) {
@@ -3602,9 +3680,9 @@ sub ParseXMPElement($$$;$$$$)
             if ($nItems == 1000) {
                 my ($tg,$ns) = GetXMPTagID($propList);
                 if ($isWriting) {
-                    $et->Warn("Excessive number of items for $ns:$tg. Processing may be slow", 1);
+                    $et->WarnOnce("Excessive number of items for $ns:$tg. Processing may be slow", 1);
                 } elsif (not $$et{OPTIONS}{IgnoreMinorErrors}) {
-                    $et->Warn("Extracted only 1000 $ns:$tg items. Ignore minor errors to extract all", 2);
+                    $et->WarnOnce("Extracted only 1000 $ns:$tg items. Ignore minor errors to extract all", 2);
                     last;
                 }
             }

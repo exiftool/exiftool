@@ -17,6 +17,22 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.36'><b>Nov. 16, 2021 - Version 12.36</b></a>
+<ul>
+<li>IMPORTANT: Fixed bug introduced in 12.35 which corrupted JPEG 2000 images
+    when removing all metadata with -all=
+<li>Added feature to bypass processing of specified XMP namespaces and
+    properties (to improve performance in cases where the XMP suffers from
+    Adobe-editing bloat)
+<li>Added a number of new XMP tags used by Lightroom 11.0
+<li>Decode a number of new Nikon tags (thanks Warren Hatch)
+<li>Made the Composite GPSPosition tag writable
+<li>Fixed erroneous "Skipped unknown bytes after JPEG SOS" warning
+<li>Fixed group for new writable Jpeg2000 color tags in -listx output
+<li>Fixed problem finding files in windows when using wildcards in file name and
+    a drive letter with no slash
+</ul>
+
 <a name='v12.35'><b>Nov. 11, 2021 - Version 12.35</b></a>
 <ul>
 <li>Added ability to write ICC_Profile (and other color specifications) to
@@ -24,18 +40,18 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added %o code to -W option format string
 <li>Added %f code to -d option for fractional seconds
 <li>Added a couple of new Sony LensType values (thanks Jos Roost)
+<li>Added a new CanonModelID (thanks Norbert Wasser)
 <li>Added a new Nikon LensID
-<li>Added a new CanonModelID
 <li>Decode more Nikon MakerNotes tags for some new models (thanks Warren Hatch)
 <li>Extract ThumbnailImage from some DJI drone videos
 <li>Enhanced -ee option to extract metadata from all frames in a SEQ file
 <li>Patched to avoid possible "Use of uninitialized value" runtime warning
-<li>Fixed a couple if misspelt new ICC_Profile tag names (thanks Herb)
+<li>Fixed a couple of misspelt new ICC_Profile tag names (thanks Herb)
 <li>Fixed problem generating the correct file extension when extracting
     OriginalRawImage from a DNG file using the -W option with the %s format code
 <li>Fixed bug introduced in 11.91 where exiftool couldn't find its libraries
-    when running via a link.  Also it was looking for the config file in the
-    directory of the link, and this was changed to the target directory
+    when run via a soft link.  Also changed to look for config file in the link
+    target directory instead of the directory of the link itself
 </ul>
 
 <a name='v12.34'><b>Oct. 27, 2021 - Version 12.34</b></a>
@@ -195,7 +211,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
     corrupted output file when writing some illegal values
 </ul>
 
-<a name='ancient' href="ancient_history.html"><b>History of older versions</b> (back to 1.00) --></a><br><br>
+<a name='ancient' href="ancient_history.html"><b>History of older versions</b> (back to Nov. 19, 2003 - Version 1.00) --></a><br><br>
 
 <hr>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>

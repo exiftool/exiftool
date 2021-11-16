@@ -15,7 +15,7 @@ package Image::ExifTool::NikonCustom;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.17';
+$VERSION = '1.18';
 
 my %offOn = ( 0 => 'Off', 1 => 'On' );
 my %onOff = ( 0 => 'On', 1 => 'Off' );
@@ -3358,6 +3358,8 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
             47 => 'AF-Area Mode + AF-On (Auto Area AF)',
             49 => 'Sync Release (Master Only)',
             50 => 'Sync Release (Remote Only)',
+            58 => 'AF-Area Mode + AF-On (Group Area AF - HL)',
+            59 => 'AF-Area Mode + AF-On (Group Area AF - VL)',
         },
     },
     15.1 => { # CSf1-a
@@ -3401,6 +3403,8 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
             47 => 'AF-Area Mode + AF-On (Auto Area AF)',
             49 => 'Sync Release (Master Only)',
             50 => 'Sync Release (Remote Only)',
+            58 => 'AF-Area Mode + AF-On (Group Area AF - HL)',
+            59 => 'AF-Area Mode + AF-On (Group Area AF - VL)',
         },
     },
     16.1 => { # CSf1-p

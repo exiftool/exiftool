@@ -565,6 +565,9 @@ my %j2cMarker = (
     GROUPS => { 2 => 'Image' },
     FORMAT => 'int8s',
     WRITABLE => 1,
+    # (Note: 'colr' is not a real group, but is used as a hack to write the
+    #  necessary colr box.  This hack necessitated another hack in TagInfoXML.pm
+    #  to avoid reporting this fake group in the XML output)
     WRITE_GROUP => 'colr',
     DATAMEMBER => [ 0 ],
     IS_SUBDIR => [ 3 ],

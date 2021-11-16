@@ -1046,7 +1046,9 @@ my %cropHiSpeed = ( #IB
     10 => '1.3x Movie Crop', #36 (D4/D500)
     11 => 'FX Uncropped',
     12 => 'DX Uncropped',
-    15 => '1.5x Movie Crop', #36 (D4/D500)
+    13 => '2.8x Movie Crop', #28 (D5/D6)    5584/1936
+    14 => '1.4x Movie Crop', #28 (D5/D6)    5584/3856
+    15 => '1.5x Movie Crop', #36 (D4/D500)  5600/3872
     17 => '1:1 Crop',
     OTHER => sub {
         my ($val, $inv, $conv) = @_;
@@ -1058,7 +1060,16 @@ my %cropHiSpeed = ( #IB
     },
 );
 
+my %flashGroupOptionsMode = (
+    0 => 'TTL',
+    1 => 'Manual',
+    2 => 'Auto',
+    3 => 'Off',
+);
+
+my %noYes = ( 0 => 'No' , 1 => 'Yes', );
 my %offOn = ( 0 => 'Off', 1 => 'On' );
+my %onOff = ( 0 => 'On',  1 => 'Off' );
 
 # common attributes for writable BinaryData directories
 my %binaryDataAttrs = (
@@ -1465,6 +1476,8 @@ my %binaryDataAttrs = (
         Name => 'ColorTemperatureAuto',
         Writable => 'int16u',
     },
+    #0x0053 #28 possibly a secondary DistortionControl block (in addition to DistortInfo)?  Certainly offset 0x04 within block contains tag AutoDistortionControl for Z72 and D6  (1=>On; 2=> Off)
+    #0x005e #28 possibly DiffractionCompensation block?  Certainly offset 0x04 within block contains tag DiffractionCompensation
     0x0080 => { Name => 'ImageAdjustment',  Writable => 'string' },
     0x0081 => { Name => 'ToneComp',         Writable => 'string' }, #2
     0x0082 => { Name => 'AuxiliaryLens',    Writable => 'string' },
@@ -1862,7 +1875,7 @@ my %binaryDataAttrs = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD6',
                 DecryptStart => 4,
-                DecryptLen => 0xc21a + 12,
+                DecryptLen => 0xc292 + 720,   # thru decoded parts of Offset 32
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -1882,7 +1895,7 @@ my %binaryDataAttrs = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoZ7_2',
                 DecryptStart => 4,
-                DecryptLen => 0xce32 + 12,
+                DecryptLen => 0xcea6 + 1050,   # thru decoded parts of Offset31
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -2388,6 +2401,10 @@ my %binaryDataAttrs = (
         Permanent => 0,
         Flags => [ 'Binary', 'Protected' ],
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::PictureControl' },
+    },
+    0x00bf => {
+        Name => 'SilentPhotography',
+        PrintConv => \%offOn,
     },
     0x00c3 => {
         Name => 'BarometerInfo',
@@ -6049,6 +6066,18 @@ my %nikonFocalConversions = (
             3 => 'Rotate 180',
         },
     },
+    0x0d0 => {
+        Name => 'Interval',
+        # prior version of the d% firmware do not support this tag, nor does the D500 (at least thru firmware 1.3)
+        Condition => '$$self{Model} eq "NIKON D5" and $$self{FirmwareVersion} ge "1.40"',
+        PrintConv =>  '$val > 0 ? sprintf("%.0f", $val) : ""',
+    },
+    0x0d4 => {
+        Name => 'IntervalFrame',
+        # prior version of the d% firmware do not support this tag, nor does the D500 (at least thru firmware 1.3)
+        Condition => '$$self{Model} eq "NIKON D5" and $$self{FirmwareVersion} ge "1.40"',
+        PrintConv =>  '$val > 0 ? sprintf("%.0f", $val) : ""',
+    },
     0x05e2 => {
         Name => 'FlickerReductionIndicator',
         Mask => 0x01,
@@ -6467,7 +6496,7 @@ my %nikonFocalConversions = (
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x9c, 0xc219 ],
+    DATAMEMBER => [ 0x30, 0x60, 0x9c, 0xa4, 0x75e7, 0x760c, 0x7610, 0xc219, 0xc292, 0xc40e, 0xc412, 0xc4a6, 0xc4be ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -6477,12 +6506,33 @@ my %nikonFocalConversions = (
         Format => 'string[4]',
         Writable => 0,
     },
+    0x04 => {
+        Name => 'FirmwareVersion',
+        Format => 'string[8]',
+        Writable => 0,
+    },
     0x24 => {
         Name => 'NumberOffsets', # (number of entries in offset table.  offsets are from start of ShotInfo data)
         DataMember => 'NumberOffsets',
         Format => 'int32u',
         Writable => 0,
         Hidden => 1,
+    },
+    0x30 => {
+        Name => 'Offset3',
+        DataMember => 'Offset3',
+        Format => 'int32u',
+        Writable => 0,
+        Hidden => 1,
+        RawConv => '$$self{Offset3} = $val || 0x10000000; undef', # (ignore if 0)
+    },
+    0x60 => {
+        Name => 'Offset15',
+        DataMember => 'Offset15',
+        Format => 'int32u',
+        Writable => 0,
+        Hidden => 1,
+        RawConv => '$$self{Offset15} = $val || 0x10000000; undef', # (ignore if 0)
     },
     0x9c => {
         Name => 'OrientationOffset',
@@ -6492,15 +6542,49 @@ my %nikonFocalConversions = (
         Hidden => 1,
         RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef', # (ignore if 0)
     },
-### 0xc21a - OrientationInfo start (D6 firmware 1.00)
-    0xc219 => {
+    0xa4 => {
+        Name => 'Offset32',
+        DataMember => 'Offset32',
+        Format => 'int32u',
+        Writable => 0,
+        Hidden => 1,
+        RawConv => '$$self{Offset32} = $val || 0x10000000; undef', # (ignore if 0)
+    },
+    ### 0x75e8 - Offset3 info start (D6 firmware 1.33)
+    0x75e7 => {
         Name => 'Hook1',
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of Offset5 data
+        Hook => '$varSize = $$self{Offset3} - 0x75e8',
+    },
+    0x760c => {
+        Name => 'IntervalShooting',
+        RawConv => '$$self{IntervalShooting} = $val',
+        Format => 'int16u',
+        PrintConv => q{
+            return 'Off' if $val == 0 ;
+            my $i = sprintf("Interval %.0f of %.0f",$val, $$self{IntervalShootingIntervals});    #something like "Interval 1 of 3"
+            my $f = $$self{IntervalShootingShotsPerInterval} > 1 ? sprintf(" Frame %.0f of %.0f",$$self{IntervalFrame}, $$self{IntervalShootingShotsPerInterval}): '' ;  #something like "Frame 1 of 3" or blank
+            return "On: $i$f"
+            #$val == 0 ? 'Off' : sprintf("On: Interval %.0f of %.0f Frame %.0f of %.0f",$val, $$self{IntervalShootingIntervals}, $$self{IntervalFrame}, $$self{IntervalShootingShotsPerInterval}),
+        },
+    },
+    0x7610 => {
+        Name => 'IntervalFrame',
+        RawConv => '$$self{IntervalFrame} = $val',
+        Condition => '$$self{IntervalShooting} > 0',
+        Format => 'int16u',
+        Hidden => 1,
+    },
+### 0xc21a - OrientationInfo start (D6 firmware 1.00) (0xc952 for firmware 1.33)
+    0xc219 => {
+        Name => 'Hook2',
         Hidden => 1,
         RawConv => 'undef',
         # account for variable location of OrientationInfo data
         Hook => '$varSize = $$self{OrientationOffset} - 0xc21a',
     },
-
     0xc21a => {
         Name => 'RollAngle',
         Format => 'fixed32u',
@@ -6528,7 +6612,136 @@ my %nikonFocalConversions = (
         PrintConv => 'sprintf("%.1f", $val)',
         PrintConvInv => '$val',
     },
-    # note: DecryptLen currently set to 0xc21a + 12
+    ### 0xc9c6 - Offset32 start (D6 firmware 1.33)
+    0xc292 => {
+        Name => 'Hook3',
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of data
+        Hook => '$varSize = $$self{Offset32} - 0xc292',
+    },
+    0xc40e => {
+        Name => 'Intervals',
+        Format => 'int32u',
+        RawConv => '$$self{IntervalShootingIntervals} = $val',
+        Condition => '$$self{IntervalShooting} > 0',
+    },
+    0xc412 => {
+        Name => 'ShotsPerInterval',
+        Format => 'int32u',
+        RawConv => '$$self{IntervalShootingShotsPerInterval} = $val',
+        Condition => '$$self{IntervalShooting} > 0',
+    },
+    0xc416 => {
+        Name => 'IntervalExposureSmoothing',
+        Condition => '$$self{IntervalShooting} > 0',
+        Format => 'int8u',
+        PrintConv => \%offOn,
+    },
+    0xc418 => {
+        Name => 'IntervalPriority',
+        Condition => '$$self{IntervalShooting} > 0',
+        Format => 'int8u',
+        PrintConv => \%offOn,
+    },
+    0xc43a => {
+        Name => 'FocusShiftNumberShots',
+    },
+    0xc43e => {
+        Name => 'FocusShiftStepWidth',
+    },
+    0xc442 => {
+        Name => 'FocusShiftInterval',
+        PrintConv => '$val == 1? "1 Second" : sprintf("%.0f Seconds",$val)',
+    },
+    0xc446 => {
+        Name => 'FocusShiftExposureLock',
+        PrintConv => \%offOn,
+    },
+    #0xc49c => HighISONoiseReduction
+    0xc4a0 => {
+        Name => 'DiffractionCompensation',
+        Format => 'int8u',
+        PrintConv => \%offOn,
+    },
+    #0xc4a1 => {Name => 'FlickerReductionShooting',},   #redundant with tag in NikonSettings
+    0xc4a6 => {
+        Name => 'FlashControlMode',   #this and nearby tag values for flash may be set from either the Photo Shooting Menu or using the Flash unit menu
+        RawConv => '$$self{FlashControlMode} = $val',
+        PrintConv => {
+            0 => 'TTL',
+            1 => 'Auto External Flash',
+            2 => 'GN (distance priority)',
+            3 => 'Manual',
+            4 => 'Repeating Flash',
+        },
+    },
+    0xc4ac => {
+        Name => 'FlashGNDistance',
+        Condition => '$$self{FlashControlMode} == 2',
+        Unknown => 1,
+        ValueConv => '$val + 3',
+        PrintConv => \%flashGNDistance,
+    },
+    0xc4b0 => {
+        Name => 'FlashOutput',   #range[0,24]  with 0=>Full; 1=>50%; then decreasing flash power in 1/3 stops to 0.39% (1/256 full power). #also found in FlashInfoUnknown at offset 0x0a (with different mappings)
+        Condition => '$$self{FlashControlMode} >= 3',
+        Unknown => 1,
+        ValueConv => '2 ** (-$val/3)',
+        ValueConvInv => '$val>0 ? -3*log($val)/log(2) : 0',
+        PrintConv => '$val>0.99 ? "Full" : sprintf("%.1f%%",$val*100)',
+        PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
+    },
+    0xc4ba => {
+        Name => 'FlashRemoteControl',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'Group',
+            1 => 'Quick Wireless',
+            2 => 'Remote Repeating',
+        },
+    },
+    0xc4be => {
+        Name => 'FlashMasterControlMode',        #tag name chosen for compatibility with those found in FlashInfo0102 & FlashInfo0103
+        RawConv => '$$self{FlashGroupOptionsMasterMode} = $val',
+        PrintConv => \%flashGroupOptionsMode,
+    },
+    0xc4c0 => {
+        Name => 'FlashMasterCompensation',
+        Unknown => 1,
+        Format => 'int8s',
+        Condition => '$$self{FlashGroupOptionsMasterMode}  != 3',   #other than 'Off'
+        ValueConv => '$val/6',
+        ValueConvInv => '6 * $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
+        PrintConvInv => '$val',
+    },
+    0xc4c4 => {
+        Name => 'FlashMasterOutput',
+        Unknown => 1,
+        Condition => '$$self{FlashGroupOptionsMasterMode}  == 1',   #only for Mode=M
+        ValueConv => '2 ** (-$val/3)',
+        ValueConvInv => '$val>0 ? -3*log($val)/log(2) : 0',
+        PrintConv => '$val>0.99 ? "Full" : sprintf("%.1f%%",$val*100)',
+        PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
+    },
+    0xc4c6 => {
+        Name => 'FlashWirelessOption',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'Optical AWL',
+            1 => 'Off',
+        },
+    },
+    0xc55c => {
+        Name => 'MovieType',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'MOV',
+            1 => 'MP4',
+        },
+    },
+    # note: DecryptLen currently set to 0xc9c6 + 720
 );
 
 # shot information for the D610 firmware 1.00 (encrypted) - ref PH
@@ -7299,7 +7512,7 @@ my %nikonFocalConversions = (
         Format => 'undef[56]',
         SubDirectory => { TagTable => 'Image::ExifTool::NikonCustom::SettingsD4' },
     },
-#    0x1978 => {        #this decode works, but involves more bits than should be necessary
+#    0x1978 => {        # this decode works, but involves more bits than should be necessary
 #        Name => 'ShutterTrigger',
 #        Mask => 0xff,
 #        PrintConv => {
@@ -7354,7 +7567,8 @@ my %nikonFocalConversions = (
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x0e, 0x18, 0x38, 0x98, 0x7eff, 0xce31 ],
+    DATAMEMBER => [ 0x04, 0x0e, 0x18, 0x30, 0x38, 0x98, 0xa0, 0x75e7, 0x760c, 0x7610, 0x7eff,
+                    0xce31, 0xcea5, 0xd00e, 0xd012, 0xd0a6, 0xd0be, 0xd2b8 ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -7386,13 +7600,21 @@ my %nikonFocalConversions = (
         Hidden => 1,
     },
     0x24 => {
-        Name => 'NumberOffsets', #number of entries in offset table.  offsets are from start of ShotInfo data.
+        Name => 'NumberOffsets', # number of entries in offset table.  offsets are from start of ShotInfo data.
         DataMember => 'NumberOffsets',
         Format => 'int32u',
         Writable => 0,
         Hidden => 1,
     },
-    0x38 => { #28
+    0x30 => {
+        Name => 'Offset3',
+        DataMember => 'Offset3',
+        Format => 'int32u',
+        Writable => 0,
+        Hidden => 1,
+        RawConv => '$$self{Offset3} = $val || 0x10000000; undef', # (ignore if 0)
+    },
+    0x38 => {
         Name => 'Offset5',
         DataMember => 'Offset5',
         Format => 'int32u',
@@ -7408,20 +7630,54 @@ my %nikonFocalConversions = (
         Hidden => 1,
         RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef', # (ignore if 0)
     },
-
-### 0x7f00 - Offset5 info start (Z7_2 firmware 1.30)
-    0x7eff => { #28
+    0xa0 => {
+        Name => 'Offset31',
+        DataMember => 'Offset31',
+        Format => 'int32u',
+        Writable => 0,
+        Hidden => 1,
+        RawConv => '$$self{Offset31} = $val || 0x10000000; undef', # (ignore if 0)
+    },
+    ### 0x75e8 - Offset3 info start (Z7_2 firmware 1.30)
+    0x75e7 => {
         Name => 'Hook1',
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of Offset5 data
+        Hook => '$varSize = $$self{Offset3} - 0x75e8',
+    },
+    0x760c => {
+        Name => 'IntervalShooting',
+        RawConv => '$$self{IntervalShooting} = $val',
+        Format => 'int16u',
+        PrintConv => q{
+            return 'Off' if $val == 0 ;
+            my $i = sprintf("Interval %.0f of %.0f",$val, $$self{IntervalShootingIntervals}); # something like "Interval 1 of 3"
+            my $f = $$self{IntervalShootingShotsPerInterval} > 1 ? sprintf(" Frame %.0f of %.0f",$$self{IntervalFrame}, $$self{IntervalShootingShotsPerInterval}): '' ;  # something like "Frame 1 of 3" or blank
+            return "On: $i$f"
+            #$val == 0 ? 'Off' : sprintf("On: Interval %.0f of %.0f Frame %.0f of %.0f",$val, $$self{IntervalShootingIntervals}, $$self{IntervalFrame}, $$self{IntervalShootingShotsPerInterval}),
+        },
+    },
+    0x7610 => {
+        Name => 'IntervalFrame',
+        RawConv => '$$self{IntervalFrame} = $val',
+        Condition => '$$self{IntervalShooting} > 0',
+        Format => 'int16u',
+        Hidden => 1,
+    },
+    ### 0x7f00 - Offset5 info start (Z7_2 firmware 1.30)
+    0x7eff => {
+        Name => 'Hook2',
         Hidden => 1,
         RawConv => 'undef',
         # account for variable location of Offset5 data
         Hook => '$varSize = $$self{Offset5} - 0x7f00',
     },
     0x7fa0 => { #28
-        Name => 'PortraitImpressionBalance',   #will be 0 for firmware 1.21 and earlier; firmware 1.30 onward: will be set by Photo Shooting Menu entry Portrait Impression Balance
-                   #offset5+160;    128 is neutral; >128 increases Yellow; <128 increases Magenta;  increments of 4 result from 1 full unit adjustment on the camera
-                   #offset5+161     129 is neutral;  >129 increases Brightness; <129 decreases Brightness 
-                   #with firmware 1.30 when 'Off' is selected in the Shooting menu, offsets 160 & 161 will contain 255.  Selecting Mode 1,2, or 3 will populate offsets 160 & 161 with values in the range [116,141]
+        Name => 'PortraitImpressionBalance', # will be 0 for firmware 1.21 and earlier; firmware 1.30 onward: will be set by Photo Shooting Menu entry Portrait Impression Balance
+                   # offset5+160;    128 is neutral; >128 increases Yellow; <128 increases Magenta;  increments of 4 result from 1 full unit adjustment on the camera
+                   # offset5+161     128 is neutral;  >128 increases Brightness; <128 decreases Brightness
+                   # with firmware 1.30 when 'Off' is selected in the Shooting menu, offsets 160 & 161 will contain 255.  Selecting Mode 1,2, or 3 will populate offsets 160 & 161 with values in the range [116,141]
         Format => 'int8u[2]',
         Condition => '$$self{FirmwareVersion} ge "01.30"',
         PrintConv => q{
@@ -7433,9 +7689,9 @@ my %nikonFocalConversions = (
             return "$color $brightness"
         },
     },
-### 0xce32 - OrientationInfo start (Z7_2 firmware 1.00)
+    ### 0xce32 - OrientationInfo start (Z7_2 firmware 1.00)
     0xce31 => {
-        Name => 'Hook2',
+        Name => 'Hook3',
         Hidden => 1,
         RawConv => 'undef',
         # account for variable location of OrientationInfo data
@@ -7469,7 +7725,339 @@ my %nikonFocalConversions = (
         PrintConv => 'sprintf("%.1f", $val)',
         PrintConvInv => '$val',
     },
-     #note: DecryptLen currently set to 0xce32 + 12
+    ### 0xcea6 - Offset31 info start (Z7_2 firmware 1.30) -- seems to include items from the Settings, Photo Shooting and Movie Shooting Menus.   Some tags are duplicated in NikonSettings, otherr tags are only found in one block or the other.  Further investigation required as to why the split.
+    0xcea5 => {
+        Name => 'Hook4',
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of Offset5 data
+        Hook => '$varSize = $$self{Offset31} - 0xcea6',
+    },
+    0xcffe => {
+        Name => 'IntervalDurationHours',
+        Format => 'int32u',
+        Condition => '$$self{IntervalShooting} > 0',
+    },
+    0xd002 => {
+        Name => 'IntervalDurationMinutes',
+        Format => 'int32u',
+        Condition => '$$self{IntervalShooting} > 0',
+    },
+    0xd006 => {
+        Name => 'IntervalDurationSeconds',
+        Format => 'int32u',
+        Condition => '$$self{IntervalShooting} > 0',
+    },
+    0xd00e => {
+        Name => 'Intervals',
+        Format => 'int32u',
+        RawConv => '$$self{IntervalShootingIntervals} = $val',
+        Condition => '$$self{IntervalShooting} > 0',
+    },
+    0xd012 => {
+        Name => 'ShotsPerInterval',
+        Format => 'int32u',
+        RawConv => '$$self{IntervalShootingShotsPerInterval} = $val',
+        Condition => '$$self{IntervalShooting} > 0',
+    },
+    0xd016 => {
+        Name => 'IntervalExposureSmoothing',
+        Condition => '$$self{IntervalShooting} > 0',
+        Format => 'int8u',
+        PrintConv => \%offOn,
+    },
+    0xd018 => {
+        Name => 'IntervalPriority',
+        Condition => '$$self{IntervalShooting} > 0',
+        Format => 'int8u',
+        PrintConv => \%offOn,
+    },
+    0xd03a => {
+        Name => 'FocusShiftNumberShots',
+    },
+    0xd03e => {
+        Name => 'FocusShiftStepWidth',
+    },
+    0xd042 => {
+        Name => 'FocusShiftInterval',
+        PrintConv => '$val == 1? "1 Second" : sprintf("%.0f Seconds",$val)',
+    },
+    0xd046 => {
+        Name => 'FocusShiftExposureLock',
+        PrintConv => \%offOn,
+    },
+    #0xd08e => White Balance - Kelvin Temp
+    #0xd096 => ColorSpace
+    #0xd098 => ActiveD-Lighting
+    #0xd09c => HighISONoiseReduction
+    0xd0a0 => {
+        Name => 'DiffractionCompensation',
+        Format => 'int8u',
+        PrintConv => \%offOn,
+    },
+    0xd0a1 => {
+        Name => 'AutoDistortionControl',
+        Format => 'int8u',
+        PrintConv => \%offOn,
+    },
+    #0xd0a2 => {Name => 'FlickerReductionShooting',}, # redundant with tag in NikonSettings
+    0xd0a4 => {
+        Name => 'NikonMeteringMode',
+         Unknown => 1,
+         PrintConv => {
+            0 => 'Matrix',
+            1 => 'Center',
+            2 => 'Spot',
+            3 => 'Highlight'
+        },
+    },
+    0xd0a6 => {
+        Name => 'FlashControlMode', # this and nearby tag values for flash may be set from either the Photo Shooting Menu or using the Flash unit menu
+        RawConv => '$$self{FlashControlMode} = $val',
+        PrintConv => {
+            0 => 'TTL',
+            1 => 'Auto External Flash',
+            2 => 'GN (distance priority)',
+            3 => 'Manual',
+            4 => 'Repeating Flash',
+        },
+    },
+    0xd0ac => {
+        Name => 'FlashGNDistance',
+        Condition => '$$self{FlashControlMode} == 2',
+        Unknown => 1,
+        ValueConv => '$val + 3',
+        PrintConv => \%flashGNDistance,
+    },
+    0xd0b0 => {
+        Name => 'FlashOutput',   # range[0,24]  with 0=>Full; 1=>50%; then decreasing flash power in 1/3 stops to 0.39% (1/256 full power). also found in FlashInfoUnknown at offset 0x0a (with different mappings)
+        Condition => '$$self{FlashControlMode} >= 3',
+        Unknown => 1,
+        ValueConv => '2 ** (-$val/3)',
+        ValueConvInv => '$val>0 ? -3*log($val)/log(2) : 0',
+        PrintConv => '$val>0.99 ? "Full" : sprintf("%.1f%%",$val*100)',
+        PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
+    },
+    0xd0b8 => {
+        Name => 'FlashWirelessOption',  # also found in FlashInfoUnknown at offset 0x23 (with different mappings)
+        Unknown => 1,
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Optical AWL',
+            2 => 'Optical/Radio AWL',
+            3 => 'Radio AWL'
+        },
+    },
+    0xd0ba => {
+        Name => 'FlashRemoteControl',    # also found in FlashInfoUnknown at offset 0x1e (with different mappings)
+        Unknown => 1,
+        PrintConv => {
+            0 => 'Group',
+            1 => 'Quick Wireless',
+            2 => 'Remote Repeating',
+        },
+    },
+    0xd0be => {
+        Name => 'FlashMasterControlMode', # tag name chosen for compatibility with those found in FlashInfo0102 & FlashInfo0103
+        RawConv => '$$self{FlashGroupOptionsMasterMode} = $val',
+        PrintConv => \%flashGroupOptionsMode,
+    },
+    0xd0c0 => {
+        Name => 'FlashMasterCompensation',
+        Format => 'int8s',
+        Condition => '$$self{FlashGroupOptionsMasterMode}  != 3',   # other than 'Off'
+        Unknown => 1,
+        ValueConv => '$val/6',
+        ValueConvInv => '6 * $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
+        PrintConvInv => '$val',
+    },
+    0xd0c4 => {
+        Name => 'FlashMasterOutput',
+        Unknown => 1,
+        Condition => '$$self{FlashGroupOptionsMasterMode}  == 1',   # only for Mode=M
+        ValueConv => '2 ** (-$val/3)',
+        ValueConvInv => '$val>0 ? -3*log($val)/log(2) : 0',
+        PrintConv => '$val>0.99 ? "Full" : sprintf("%.1f%%",$val*100)',
+        PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
+    },
+    #0xd0c6 => {Name => 'FlashGroupAControlMode', }, # commented out to reduce output volume - mapping follows FlashMasterControlMode with FlashGroupACompensation at 0xd0c8 and FlashGroupAOutput at 0xd0cc
+    #0xd0ce => {Name => 'FlashGroupBControlMode', }, # commented out to reduce output volume - mapping follows FlashMasterControlMode with FlashGroupBCompensation at 0xd0d0 and FlashGroupBOutput at 0xd0d4
+    #0xd0d6 => {Name => 'FlashGroupCControlMode', }, # commented out to reduce output volume - mapping follows FlashMasterControlMode with FlashGroupCCompensation at 0xd0d8 and FlashGroupCOutput at 0xd0dc
+    #0xd0de => {Name => 'FlashGroupDControlMode', }, # commented out to reduce output volume - mapping follows FlashMasterControlMode with FlashGroupDCompensation at 0xd0e0 and FlashGroupDOutput at 0xd0e4
+    #0xd0e6 => {Name => 'FlashGroupEControlMode', }, # commented out to reduce output volume - mapping follows FlashMasterControlMode with FlashGroupECompensation at 0xd0e8 and FlashGroupEOutput at 0xd0ec
+    #0xd0ee => {Name => 'FlashGroupFControlMode', }, # commented out to reduce output volume - mapping follows FlashMasterControlMode with FlashGroupFCompensation at 0xd0f0 and FlashGroupFOutput at 0xd0f4
+    #0xd09e => VignetteControl
+    #0xd110 => FocusMode
+    #0xd112 => AFAreaMode
+    #0xd114 => VibrationReduction
+    #0xd118 => BracketSet
+    #0xd11a => BracketProgram
+    #0xd11c => BracketIncrement
+    #0xd12d => SilentPhotography
+    0xd154 => {
+        Name => 'MovieFrameSize',        # may want to rename or suppress the movie menu settings - potentially confusing for still photographers
+        Unknown => 1,
+        PrintConv => {
+            1 => '1920x1080',
+            2 => '3840x2160',
+        },
+    },
+    0xd156 => {
+        Name => 'MovieFrameRate',
+        Unknown => 1,
+        PrintConv => {
+            0 => '120p',
+            1 => '100p',
+            2 => '60p',
+            3 => '50p',
+            4 => '30p',
+            5 => '25p',
+            6 => '24p',
+        },
+    },
+    0xd158 => {
+        Name => 'MovieSlowMotion',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On (4x)', # 120p recording with playback @ 30p [1920 x 1080; 30p x 4] or 100p recording with playback @ 25p [1920 x 1080; 25p x 4]
+            2 => 'On (5x)', # 120p recording with playback @ 24p [1920 x 1080; 20p x 5]
+        },
+    },
+    0xd15c => {
+        Name => 'MovieType',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'MOV',
+            1 => 'MP4',
+        },
+    },
+    #0xd15e => MovieISOAutoHiLimit
+    0xd162 => {
+        Name => 'MovieISOAutoManualMode',
+        Format => 'int16u',
+        Unknown => 1,
+        ValueConv => '($val-104)/8',
+        PrintConv => {
+            0 => 'ISO 64',
+            1 => 'ISO 80',
+            2 => 'ISO 100',
+            3 => 'ISO 125',
+            4 => 'ISO 160',
+            5 => 'ISO 200',
+            6 => 'ISO 250',
+            7 => 'ISO 320',
+            8 => 'ISO 400',
+            9 => 'ISO 500',
+            10 => 'ISO 640',
+            11 => 'ISO 800',
+            12 => 'ISO 1000',
+            13 => 'ISO 1250',
+            14 => 'ISO 1600',
+            15 => 'ISO 2000',
+            16 => 'ISO 2500',
+            17 => 'ISO 3200',
+            18 => 'ISO 4000',
+            19 => 'ISO 5000',
+            20 => 'ISO 6400',
+            21 => 'ISO 8000',
+            22 => 'ISO 10000',
+            23 => 'ISO 12800',
+            24 => 'ISO 16000',
+            25 => 'ISO 20000',
+            26 => 'ISO 25600',
+            27 => 'ISO Hi 0.3',
+            28 => 'ISO Hi 0.7',
+            29 => 'ISO Hi 1.0',
+            32 => 'ISO Hi 2.0',
+        },
+    },
+    #0xd166 => MovieWhiteBalanceSameAsPhoto
+    0xd196 => {
+        Name => 'MovieActiveD-Lighting',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'Off',
+            2 => 'Low',
+            3 => 'Normal',
+            4 => 'High',
+            5 => 'Extra High',
+        },
+    },
+    0xd19a => {
+        Name => 'MovieHighISONoiseReduction',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Low',
+            2 => 'Normal',
+            3 => 'High',
+        },
+    },
+    0xd19c => {
+        Name => 'MovieVignetteControl',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Low',
+            2 => 'Normal',
+            3 => 'High',
+        },
+    },
+    0xd19e => {
+        Name => 'MovieVignetteControlSameAsPhoto',
+        Unknown => 1,
+        PrintConv => \%noYes
+    },
+    0xd19f => {
+        Name => 'MovieDiffrationCompensation',
+        Unknown => 1,
+        PrintConv => \%offOn
+    },
+    0xd1a0 => {
+        Name => 'MovieAutoDistortionControl',
+        Unknown => 1,
+        PrintConv => \%offOn
+    },
+    0xd1a6 => {
+        Name => 'MovieFocusMode',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'Manual',
+            1 => 'AF-S',
+            2 => 'AF-C',
+            4 => 'AF-F',    # full frame
+        },
+    },
+    #0xd1a8 => MovieAFAreaMode
+    0xd1aa => {
+        Name => 'MovieVibrationReduction',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On (Normal)',
+            2 => 'On (Sport)',
+        },
+    },
+    0xd1ad => {
+        Name => 'MovieVibrationReductionSameAsPhoto',
+        Unknown => 1,
+        PrintConv => \%noYes
+    },
+    #0xd2ae => HDMIOutputResolution
+    #0xd2b0 => HDMIOutputRange
+    #0xd2b4 => HDMIExternalRecorder
+    #0xd2b6 => HDMIBitDepth
+    0xd2b8 => {
+        Name => 'HDMIOutputN-Log', # one of the choices under SettingsMenu/HDMI/Advanced.  Curiously,the HDR/HLC output option which is controlled by the same sub-menu is decoded thru NikonSettings
+        Condition => '$$self{HDMIBitDepth} and $$self{HDMIBitDepth} == 2',   # only for 10 bit
+        RawConv => '$$self{HDMIOutputNLog} = $val',
+        Unknown => 1,
+        PrintConv => \%offOn,
+    },
+     #0xd2b9 => HDMIViewAssist
+    # note: DecryptLen currently set to 0xcea6 + 1050
 );
 
 # Flash information (ref JD)

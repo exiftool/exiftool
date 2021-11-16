@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.37';
+$VERSION = '4.38';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -4816,11 +4816,23 @@ my %subSecConv = (
     },
     GPSPosition => {
         Groups => { 2 => 'Location' },
+        Writable => 1,
+        WriteAlso => {
+            GPSLatitude => '$val =~ /(.*?)( ?[NS])?,/ ? $1 : undef',
+            GPSLatitudeRef => '$val =~ /(-?)(.*?) ?([NS]?),/ ? ($3 || ($1 ? "S" : "N")) : undef',
+            GPSLongitude => '$val =~ /, ?(.*?)( ?[EW]?)$/ ? $1 : undef',
+            GPSLongitudeRef => '$val =~ /, ?(-?)(.*?) ?([EW]?)$/ ? ($3 || ($1 ? "W" : "E")) : undef',
+        },
         Require => {
             0 => 'GPSLatitude',
             1 => 'GPSLongitude',
         },
         Priority => 0,
+        Notes => q{
+            when written, writes GPSLatitude, GPSLatitudeRef, GPSLongitude and
+            GPSLongitudeRef.  This tag may be written using the same coordinate
+            format as provided by Google Maps when right-clicking on a location
+        },
         ValueConv => '(length($val[0]) or length($val[1])) ? "$val[0] $val[1]" : undef',
         PrintConv => '"$prt[0], $prt[1]"',
     },

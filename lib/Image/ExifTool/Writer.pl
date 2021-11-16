@@ -154,7 +154,7 @@ my %delMore = (
 );
 
 # family 0 groups where directories should never be deleted
-my %permanentDir = ( QuickTime => 1 );
+my %permanentDir = ( QuickTime => 1, Jpeg2000 => 1 );
 
 # lookup for all valid family 2 groups (lower case)
 my %family2groups = map { lc $_ => 1 } @delGroup2, 'Unknown';

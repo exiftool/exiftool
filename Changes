@@ -7,6 +7,21 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Nov. 16, 2021 - Version 12.36
+
+  - IMPORTANT: Fixed bug introduced in 12.35 which corrupted JPEG 2000 images
+    when removing all metadata with -all=
+  - Added feature to bypass processing of specified XMP namespaces and
+    properties (to improve performance in cases where the XMP suffers from
+    Adobe-editing bloat)
+  - Added a number of new XMP tags used by Lightroom 11.0
+  - Decode a number of new Nikon tags (thanks Warren Hatch)
+  - Made the Composite GPSPosition tag writable
+  - Fixed erroneous "Skipped unknown bytes after JPEG SOS" warning
+  - Fixed group for new writable Jpeg2000 color tags in -listx output
+  - Fixed problem finding files in windows when using wildcards in file name and
+    a drive letter with no slash
+
 Nov. 11, 2021 - Version 12.35
 
   - Added ability to write ICC_Profile (and other color specifications) to
@@ -14,18 +29,18 @@ Nov. 11, 2021 - Version 12.35
   - Added %o code to -W option format string
   - Added %f code to -d option for fractional seconds
   - Added a couple of new Sony LensType values (thanks Jos Roost)
+  - Added a new CanonModelID (thanks Norbert Wasser)
   - Added a new Nikon LensID
-  - Added a new CanonModelID
   - Decode more Nikon MakerNotes tags for some new models (thanks Warren Hatch)
   - Extract ThumbnailImage from some DJI drone videos
   - Enhanced -ee option to extract metadata from all frames in a SEQ file
   - Patched to avoid possible "Use of uninitialized value" runtime warning
-  - Fixed a couple if misspelt new ICC_Profile tag names (thanks Herb)
+  - Fixed a couple of misspelt new ICC_Profile tag names (thanks Herb)
   - Fixed problem generating the correct file extension when extracting
     OriginalRawImage from a DNG file using the -W option with the %s format code
   - Fixed bug introduced in 11.91 where exiftool couldn't find its libraries
-    when running via a link.  Also it was looking for the config file in the
-    directory of the link, and this was changed to the target directory
+    when run via a soft link.  Also changed to look for config file in the link
+    target directory instead of the directory of the link itself
 
 Oct. 27, 2021 - Version 12.34
 
@@ -172,6 +187,8 @@ May 20, 2021 - Version 12.26 (production release)
   - Patched security vulnerability in argument of -lang option
   - Fixed problem which could cause a "Wide character" warning and generate a
     corrupted output file when writing some illegal values
+
+History of older versions (back to Nov. 19, 2003 - Version 1.00) -->
 
 Apr. 22, 2021 - Version 12.25
 

@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.35';
+$VERSION = '12.36';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -4252,6 +4252,7 @@ sub ParseArguments($;@)
     $$self{REQ_TAG_LOOKUP}  = { };
     $$self{EXCL_TAG_LOOKUP} = { };
     $$self{IO_TAG_LIST} = undef;
+    delete $$self{EXCL_XMP_LOOKUP};
 
     # handle our input arguments
     while (@_) {
@@ -4335,7 +4336,11 @@ sub ParseArguments($;@)
     # generate lookup for excluded tags
     if ($$options{Exclude}) {
         foreach (@{$$options{Exclude}}) {
-            /([-\w]+)#?$/ and $$self{EXCL_TAG_LOOKUP}{lc($1)} = 1;
+            /([-\w]+)#?$/ and $$self{EXCL_TAG_LOOKUP}{lc $1} = 1;
+            if (/(xmp-.*:[-\w]+)#?/i) {
+                $$self{EXCL_XMP_LOOKUP} or $$self{EXCL_XMP_LOOKUP} = { };
+                $$self{EXCL_XMP_LOOKUP}{lc $1} = 1;
+            }
         }
         # exclude list is used only for EXCL_TAG_LOOKUP when TAGS_FROM_FILE is set
         undef $$options{Exclude} if $$self{TAGS_FROM_FILE};
@@ -6309,7 +6314,7 @@ sub ProcessJPEG($$)
         my $markerName = JpegMarkerName($marker);
         $$path[$pn] = $markerName;
         # issue warning if we skipped some garbage
-        if ($skipped and not $foundSOS) {
+        if ($skipped and not $foundSOS and $markerName ne 'SOS') {
             $self->Warn("Skipped unknown $skipped bytes after JPEG $markerName segment", 1);
             if ($htmlDump) {
                 $self->HDump($nextSegPos-4-$skipped, $skipped, "[unknown $skipped bytes]", undef, 0x08);

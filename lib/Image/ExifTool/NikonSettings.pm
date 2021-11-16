@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 sub ProcessNikonSettings($$$);
 
@@ -545,15 +545,7 @@ my %infoD6 = (
         %infoZ72,
     }],
     0x00e => { Name => 'MovieISOAutoControlManualMode',PrintConv => \%onOff }, # (D6/Z7_2)
-  # 0x00f => [{   # this tag should reside here, but unable to confirm
-  #     Name => 'MovieISOAutoManualMode',
-  #     PrintConv => \%iSOAutoHiLimitD6,
-  #     %infoD6,
-  # },{
-  #     Name => 'MovieISOAutoManualMode',
-  #     PrintConv => \%iSOAutoHiLimitZ7m2,
-  #     %infoZ72,
-  # }],
+    0x00f => { Name => 'MovieWhiteBalanceSameAsPhoto', PrintConv => \%yesNo }, # (D6/Z7_2)
     0x01d => [{ # CSa1 (D6)
         Name => 'AF-CPrioritySel',
         PrintConv => { # valid for cameras with 4 options for CS1, otherwise 1=Release, 2=Focus
@@ -978,6 +970,26 @@ my %infoD6 = (
         %infoZ72,
     }],
     0x074 => { Name => 'FlickAdvanceDirection', PrintConv => { 1 => 'Right to Left', 2 => 'Left to Right' } }, # CSf12-3 (D6)
+    0x075 => { # Settings menu # (D6,Z7_2)
+        Name => 'HDMIOutputResolution',
+        PrintConv => {
+            1 => 'Auto',
+            2 => '2160p',
+            3 => '1080p',
+            4 => '1080i)',
+            5 => '720p',
+            6 => '576p',
+            7 => '480p',
+        },
+    },
+    0x077 => { # Settings menu # (D6,Z7_2)
+        Name => 'HDMIOutputRange',
+        PrintConv => {
+            1 => 'Auto',
+            2 => 'Limit',
+            3 => 'Full',
+        },
+    },
     0x080 => [{
         Name => 'RemoteFuncButton',
         PrintConv => {
@@ -1051,6 +1063,7 @@ my %infoD6 = (
             8 => '180',
         },
     },
+    0x092 => { Name => 'HDMIExternalRecorder',     PrintConv => \%onOff }, # Settings Menu/HDMI/Advanced entry (D6 & Z7_2)
     0x093 => { # CSa3-a (D6), CSa3 (Z7_2)
         Name => 'BlockShotAFResponse',
         PrintConv => {
@@ -1549,6 +1562,28 @@ my %infoD6 = (
     0x0fb => { Name => 'SecondarySlotFunction', PrintConv => \%tagSecondarySlotFunction }, # (D6)
     0x0fc => { Name => 'SilentPhotography',     PrintConv => \%onOff }, # (D6,Z7_2)   # tag is associated with Silent LiveView Photography (as distinguisehed from Silent Interval or Silent Focus Shift)
     0x0fd => { Name => 'ExtendedShutterSpeeds', PrintConv => \%onOff }, # CSd7 (D6), CSd6 (Z7_2)
+    0x102 => { # (Z7_2)
+        Name => 'HDMIBitDepth',
+        RawConv => '$$self{HDMIBitDepth} = $val',
+        PrintConv => {
+            1 => '8 Bit',
+            2 => '10 Bit',
+        },
+    },
+    0x103 => { # (Z7_2)
+        Name => 'HDMIOutputHDR',
+        Condition => '$$self{HDMIBitDepth}  == 2',   # HDR(HLC) output option only available only for 10 bit
+        RawConv => '$$self{HDMIOutputHDR} = $val',
+        PrintConv => {
+            2 => 'On',  # unusual decode perhaps due to sharing sub-menu with tag HDMIOutputN-Log?
+            3 => 'Off',
+        },
+    },
+    0x104 => {  # valid for 10 bit with either N-Log or HDR/HLG selected (Z7_2)
+        Name => 'HDMIViewAssist',
+        Condition => '$$self{HDMIBitDepth}  == 2',
+        PrintConv => \%onOff
+    },
     0x109 => { # (D6,Z7_2)
         Name => 'BracketSet',
         RawConv => '$$self{BracketSet} = $val',
@@ -1639,6 +1674,11 @@ my %infoD6 = (
             7 => 'Off, Low, Normal, High',
             8 => 'Off, Low, Normal, High, Extra High',
         },
+    },
+    0x10e  => { # (D6/Z7_2)
+        Name => 'MonitorBrightness',
+        # settings: -5 to +5
+        ValueConv => '$val - 6',
     },
     0x116 => { Name => 'GroupAreaC1',               PrintConv =>\%groupAreaCustom },    # CSa10-a (new with D6) # (D6)
     0x117 => { Name => 'AutoAreaAFStartingPoint',   PrintConv => \%enableDisable },     # CSa12 (D6)
@@ -1823,8 +1863,9 @@ my %infoD6 = (
         },
     },
     0x151 => { Name => 'LensFunc2Button',       PrintConv => \%lensFuncButtonZ7m2 }, # CSf2-h (Z7_2)
+    #0x153 => { Name => 'ViewfinderBrightness', }      #(Z7_2)   # commented out to reduce output volume.  Range [-5,+5]. PrintConv matches MonitorBrightness.
     0x158 => { Name => 'USBPowerDelivery',      PrintConv => \%enableDisable }, # (Z7_2)
-    0x15b => { Name => 'GroupAreaC2',           PrintConv =>\%groupAreaCustom },    # CSa10-b (new with D6) # (D6)
+    0x159 => { Name => 'EnergySavingMode',      PrintConv =>\%onOff },    # (Z7_2)
     0x15c => { Name => 'BracketingBurstOptions',PrintConv => \%enableDisable }, # CSe9 (D6)
   # 0x15d => CSf3-j-2 (D6) 'Same as Multi-Selector with Info(U/D) & Playback(R/L)'  and  'Same as Multi-Selector with Info(R/L) & Playback(U/D)'  (skipped to reduce volume of output)
     0x15e => { Name => 'PrimarySlot',           PrintConv => { 1 => 'CFexpress/XQD Card', 2 => 'SD Card' } }, # (Z7_2)
@@ -1900,10 +1941,12 @@ my %infoD6 = (
             13 => 'None',
         },
     },
+    #0x168 => { Name => 'ControlPanelBrightness',   # (Z7_2)   #commented to reduce output volume
     0x169 => { Name => 'LimitAF-AreaModeSelAutoPeople',   PrintConv => \%limitNolimit, Unknown => 1 }, # CSa7-h (Z7_2)
     0x16a => { Name => 'LimitAF-AreaModeSelAutoAnimals',  PrintConv => \%limitNolimit, Unknown => 1 }, # CSa7-h (Z7_2)
     0x16b => { Name => 'LimitAF-AreaModeSelWideLPeople',  PrintConv => \%limitNolimit, Unknown => 1 }, # CSa7-e (Z7_2)
     0x16c => { Name => 'LimitAF-AreaModeSelWideLAnimals', PrintConv => \%limitNolimit, Unknown => 1 }, # CSa7-f (Z7_2)
+    0x16d => { Name => 'SaveFocus', PrintConv => \%onOff }, # (Z7_2)
     0x16e => { # (Z7_2)
         Name => 'AFAreaMode',
         RawConv => '$$self{AFAreaMode} = $val',
@@ -1917,6 +1960,19 @@ my %infoD6 = (
             8 => 'Auto',
             9 => 'Auto (People)',
             10 => 'Auto (Animals)',
+        },
+    },
+    0x16f => { # (Z7_2)
+        Name => 'MovieAFAreaMode',
+        PrintConv => {
+            1 => 'Single-point',
+            2 => 'Wide (S)',
+            3 => 'Wide (L)',
+            4 => 'Wide (L-people)',
+            5 => 'Wide (L-animals)',
+            6 => 'Auto',
+            7 => 'Auto (People)',
+            8 => 'Auto (Animals)',
         },
     },
     0x170 => { Name => 'PreferSubSelectorCenter', PrintConv => \%offOn }, # CSf13 (D6 firmware v1.2.0)

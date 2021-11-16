@@ -91,7 +91,11 @@ value.</p>
 
 <tr><td>ESCAPE_PROC</td><td>Routine for XML or HTML escaping if Escape option is set</td></tr>
 
-<tr><td>EXCL_TAG_LOOKUP</td><td>Hash for looking up excluded tags (keys are lower case tag names)</td></tr>
+<tr><td>EXCL_TAG_LOOKUP</td><td>Hash for looking up excluded tags (keys are lower case tag names without group)</td></tr>
+
+<tr><td>EXCL_XMP_LOOKUP</td><td>Hash for looking up excluded "XMP-xxx:yyy" tags (keys are lower case including group).
+    "XMP-xxx" may be any ExifTool family 1 XMP group name, or "XMP-all" for any XMP group.  "yyy" may
+    be any XMP property name (NOT ExifTool tag name), or "all" for all tags in a group</td></tr>
 
 <tr><td>EXIF_DATA</td><td>EXIF data block (valid while reading from file)</td></tr>
 

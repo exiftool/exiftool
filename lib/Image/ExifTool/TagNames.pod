@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 24449 tags, with 15879 unique tag names.
+They contain a total of 25430 tags, with 16376 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1434,6 +1434,7 @@ These tags belong to the ExifTool XMP-aux family 1 group.
   LensID                                        string
   LensInfo                                      string/
   LensSerialNumber                              string/
+  NeutralDensityFactor                          string
   OwnerName                                     string/
   SerialNumber                                  string/
   VignetteCorrectionAlreadyApplied              boolean
@@ -1511,17 +1512,85 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   CircGradBasedCorrMaskBottom                   real/_
   CircGradBasedCorrMaskCenterValue              real/_
   CircGradBasedCorrMaskCenterWeight             real/_
+  CircGradBasedCorrMaskCorrectionRangeMask      CorrectionRangeMask Struct_+
+  CircGradBasedCorrMaskCorrectionRangeMaskAreaModels AreaModels Struct_+
+  CircGradBasedCorrMaskCorrectionRangeMaskAreaModelsAreaComponents string/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskColorAmount real/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskDepthFeather real/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskDepthMax real/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskDepthMin real/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskInvert boolean/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskLumFeather real/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskLuminanceDepthSampleInfo string/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskLumMax real/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskLumMin real/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskLumRange string/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskSampleType integer/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskType  string/_+
+  CircGradBasedCorrMaskCorrectionRangeMaskVersion string/_+
   CircGradBasedCorrMaskDabs                     string/_
   CircGradBasedCorrMaskFeather                  real/_
   CircGradBasedCorrMaskFlipped                  boolean/_
   CircGradBasedCorrMaskFlow                     real/_
   CircGradBasedCorrMaskFullX                    real/_
   CircGradBasedCorrMaskFullY                    real/_
+  CircGradBasedCorrMaskInputDigest              string/_
   CircGradBasedCorrMaskLeft                     real/_
+  CircGradBasedCorrMaskMaskActive               boolean/_
+  CircGradBasedCorrMaskMaskBlendMode            integer/_
+  CircGradBasedCorrMaskMaskDigest               string/_
+  CircGradBasedCorrMaskMaskInverted             boolean/_
+  CircGradBasedCorrMaskMaskName                 string/_
+  CircGradBasedCorrMaskMasks                    CorrectionMask Struct_+
+  CircGradBasedCorrMaskMasksAlpha               real/_
+  CircGradBasedCorrMaskMasksAngle               real/_
+  CircGradBasedCorrMaskMasksBottom              real/_
+  CircGradBasedCorrMaskMasksCenterValue         real/_
+  CircGradBasedCorrMaskMasksCenterWeight        real/_
+  CircGradBasedCorrMaskMasksDabs                string/_+
+  CircGradBasedCorrMaskMasksFeather             real/_
+  CircGradBasedCorrMaskMasksFlipped             boolean/_
+  CircGradBasedCorrMaskMasksFlow                real/_
+  CircGradBasedCorrMaskMasksFullX               real/_
+  CircGradBasedCorrMaskMasksFullY               real/_
+  CircGradBasedCorrMaskMasksInputDigest         string/_
+  CircGradBasedCorrMaskMasksLeft                real/_
+  CircGradBasedCorrMaskMasksMaskActive          boolean/_
+  CircGradBasedCorrMaskMasksMaskBlendMode       integer/_
+  CircGradBasedCorrMaskMasksMaskDigest          string/_
+  CircGradBasedCorrMaskMasksMaskInverted        boolean/_
+  CircGradBasedCorrMaskMasksMaskName            string/_
+  CircGradBasedCorrMaskMasksMaskSubType         string/_
+  CircGradBasedCorrMaskMasksMaskSyncID          string/_
+  CircGradBasedCorrMaskMasksValue               real/_
+  CircGradBasedCorrMaskMasksMaskVersion         string/_
+  CircGradBasedCorrMaskMasksMidpoint            real/_
+  CircGradBasedCorrMaskMasksOrigin              string/_
+  CircGradBasedCorrMaskMasksPerimeterValue      real/_
+  CircGradBasedCorrMaskMasksRadius              real/_
+  CircGradBasedCorrMaskMasksReferencePoint      string/_
+  CircGradBasedCorrMaskMasksRight               real/_
+  CircGradBasedCorrMaskMasksRoundness           real/_
+  CircGradBasedCorrMaskMasksSizeX               real/_
+  CircGradBasedCorrMaskMasksSizeY               real/_
+  CircGradBasedCorrMaskMasksTop                 real/_
+  CircGradBasedCorrMaskMaskSubType              string/_
+  CircGradBasedCorrMaskMasksVersion             integer/_
+  CircGradBasedCorrMaskMasksWhat                string/_
+  CircGradBasedCorrMaskMasksWholeImageArea      string/_
+  CircGradBasedCorrMaskMasksX                   real/_
+  CircGradBasedCorrMaskMasksY                   real/_
+  CircGradBasedCorrMaskMaskSyncID               string/_
+  CircGradBasedCorrMaskMasksZeroX               real/_
+  CircGradBasedCorrMaskMasksZeroY               real/_
   CircGradBasedCorrMaskValue                    real/_
+  CircGradBasedCorrMaskMaskVersion              string/_
   CircGradBasedCorrMaskMidpoint                 real/_
+  CircGradBasedCorrMaskOrigin                   string/_
   CircGradBasedCorrMaskPerimeterValue           real/_
   CircGradBasedCorrMaskRadius                   real/_
+  CircGradBasedCorrMaskReferencePoint           string/_
   CircGradBasedCorrMaskRight                    real/_
   CircGradBasedCorrMaskRoundness                real/_
   CircGradBasedCorrMaskSizeX                    real/_
@@ -1529,20 +1598,30 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   CircGradBasedCorrMaskTop                      real/_
   CircGradBasedCorrMaskVersion                  integer/_
   CircGradBasedCorrMaskWhat                     string/_
+  CircGradBasedCorrMaskWholeImageArea           string/_
   CircGradBasedCorrMaskX                        real/_
   CircGradBasedCorrMaskY                        real/_
   CircGradBasedCorrMaskZeroX                    real/_
   CircGradBasedCorrMaskZeroY                    real/_
+  CircGradBasedCorrCorrectionName               string/_+
   CircGradBasedCorrRangeMask                    CorrectionRangeMask Struct_+
+  CircGradBasedCorrRangeMaskAreaModels          AreaModels Struct_+
+  CircGradBasedCorrRangeMaskAreaModelsAreaComponents string/_+
+  CircGradBasedCorrRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string/_+
   CircGradBasedCorrRangeMaskColorAmount         real/_+
   CircGradBasedCorrRangeMaskDepthFeather        real/_+
   CircGradBasedCorrRangeMaskDepthMax            real/_+
   CircGradBasedCorrRangeMaskDepthMin            real/_+
+  CircGradBasedCorrRangeMaskInvert              boolean/_+
   CircGradBasedCorrRangeMaskLumFeather          real/_+
+  CircGradBasedCorrRangeMaskLuminanceDepthSampleInfo string/_+
   CircGradBasedCorrRangeMaskLumMax              real/_+
   CircGradBasedCorrRangeMaskLumMin              real/_+
+  CircGradBasedCorrRangeMaskLumRange            string/_+
+  CircGradBasedCorrRangeMaskSampleType          integer/_+
   CircGradBasedCorrRangeMaskType                string/_+
   CircGradBasedCorrRangeMaskVersion             string/_+
+  CircGradBasedCorrCorrectionSyncID             string/_+
   CircGradBasedCorrBlacks2012                   real/_
   CircGradBasedCorrBrightness                   real/_
   CircGradBasedCorrClarity                      real/_
@@ -1584,6 +1663,7 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   ColorNoiseReduction                           integer/
   ColorNoiseReductionDetail                     integer/
   ColorNoiseReductionSmoothness                 integer/
+  CompatibleVersion                             string/
   ContactInfo                                   string/
   Contrast                                      integer/
   Contrast2012                                  integer/
@@ -1626,17 +1706,85 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   GradientBasedCorrMaskBottom                   real/_
   GradientBasedCorrMaskCenterValue              real/_
   GradientBasedCorrMaskCenterWeight             real/_
+  GradientBasedCorrMaskCorrectionRangeMask      CorrectionRangeMask Struct_+
+  GradientBasedCorrMaskCorrectionRangeMaskAreaModels AreaModels Struct_+
+  GradientBasedCorrMaskCorrectionRangeMaskAreaModelsAreaComponents string/_+
+  GradientBasedCorrMaskCorrectionRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string/_+
+  GradientBasedCorrMaskCorrectionRangeMaskColorAmount real/_+
+  GradientBasedCorrMaskCorrectionRangeMaskDepthFeather real/_+
+  GradientBasedCorrMaskCorrectionRangeMaskDepthMax real/_+
+  GradientBasedCorrMaskCorrectionRangeMaskDepthMin real/_+
+  GradientBasedCorrMaskCorrectionRangeMaskInvert boolean/_+
+  GradientBasedCorrMaskCorrectionRangeMaskLumFeather real/_+
+  GradientBasedCorrMaskCorrectionRangeMaskLuminanceDepthSampleInfo string/_+
+  GradientBasedCorrMaskCorrectionRangeMaskLumMax real/_+
+  GradientBasedCorrMaskCorrectionRangeMaskLumMin real/_+
+  GradientBasedCorrMaskCorrectionRangeMaskLumRange string/_+
+  GradientBasedCorrMaskCorrectionRangeMaskSampleType integer/_+
+  GradientBasedCorrMaskCorrectionRangeMaskType  string/_+
+  GradientBasedCorrMaskCorrectionRangeMaskVersion string/_+
   GradientBasedCorrMaskDabs                     string/_
   GradientBasedCorrMaskFeather                  real/_
   GradientBasedCorrMaskFlipped                  boolean/_
   GradientBasedCorrMaskFlow                     real/_
   GradientBasedCorrMaskFullX                    real/_
   GradientBasedCorrMaskFullY                    real/_
+  GradientBasedCorrMaskInputDigest              string/_
   GradientBasedCorrMaskLeft                     real/_
+  GradientBasedCorrMaskMaskActive               boolean/_
+  GradientBasedCorrMaskMaskBlendMode            integer/_
+  GradientBasedCorrMaskMaskDigest               string/_
+  GradientBasedCorrMaskMaskInverted             boolean/_
+  GradientBasedCorrMaskMaskName                 string/_
+  GradientBasedCorrMaskMasks                    CorrectionMask Struct_+
+  GradientBasedCorrMaskMasksAlpha               real/_
+  GradientBasedCorrMaskMasksAngle               real/_
+  GradientBasedCorrMaskMasksBottom              real/_
+  GradientBasedCorrMaskMasksCenterValue         real/_
+  GradientBasedCorrMaskMasksCenterWeight        real/_
+  GradientBasedCorrMaskMasksDabs                string/_+
+  GradientBasedCorrMaskMasksFeather             real/_
+  GradientBasedCorrMaskMasksFlipped             boolean/_
+  GradientBasedCorrMaskMasksFlow                real/_
+  GradientBasedCorrMaskMasksFullX               real/_
+  GradientBasedCorrMaskMasksFullY               real/_
+  GradientBasedCorrMaskMasksInputDigest         string/_
+  GradientBasedCorrMaskMasksLeft                real/_
+  GradientBasedCorrMaskMasksMaskActive          boolean/_
+  GradientBasedCorrMaskMasksMaskBlendMode       integer/_
+  GradientBasedCorrMaskMasksMaskDigest          string/_
+  GradientBasedCorrMaskMasksMaskInverted        boolean/_
+  GradientBasedCorrMaskMasksMaskName            string/_
+  GradientBasedCorrMaskMasksMaskSubType         string/_
+  GradientBasedCorrMaskMasksMaskSyncID          string/_
+  GradientBasedCorrMaskMasksValue               real/_
+  GradientBasedCorrMaskMasksMaskVersion         string/_
+  GradientBasedCorrMaskMasksMidpoint            real/_
+  GradientBasedCorrMaskMasksOrigin              string/_
+  GradientBasedCorrMaskMasksPerimeterValue      real/_
+  GradientBasedCorrMaskMasksRadius              real/_
+  GradientBasedCorrMaskMasksReferencePoint      string/_
+  GradientBasedCorrMaskMasksRight               real/_
+  GradientBasedCorrMaskMasksRoundness           real/_
+  GradientBasedCorrMaskMasksSizeX               real/_
+  GradientBasedCorrMaskMasksSizeY               real/_
+  GradientBasedCorrMaskMasksTop                 real/_
+  GradientBasedCorrMaskMaskSubType              string/_
+  GradientBasedCorrMaskMasksVersion             integer/_
+  GradientBasedCorrMaskMasksWhat                string/_
+  GradientBasedCorrMaskMasksWholeImageArea      string/_
+  GradientBasedCorrMaskMasksX                   real/_
+  GradientBasedCorrMaskMasksY                   real/_
+  GradientBasedCorrMaskMaskSyncID               string/_
+  GradientBasedCorrMaskMasksZeroX               real/_
+  GradientBasedCorrMaskMasksZeroY               real/_
   GradientBasedCorrMaskValue                    real/_
+  GradientBasedCorrMaskMaskVersion              string/_
   GradientBasedCorrMaskMidpoint                 real/_
+  GradientBasedCorrMaskOrigin                   string/_
   GradientBasedCorrMaskPerimeterValue           real/_
   GradientBasedCorrMaskRadius                   real/_
+  GradientBasedCorrMaskReferencePoint           string/_
   GradientBasedCorrMaskRight                    real/_
   GradientBasedCorrMaskRoundness                real/_
   GradientBasedCorrMaskSizeX                    real/_
@@ -1644,20 +1792,30 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   GradientBasedCorrMaskTop                      real/_
   GradientBasedCorrMaskVersion                  integer/_
   GradientBasedCorrMaskWhat                     string/_
+  GradientBasedCorrMaskWholeImageArea           string/_
   GradientBasedCorrMaskX                        real/_
   GradientBasedCorrMaskY                        real/_
   GradientBasedCorrMaskZeroX                    real/_
   GradientBasedCorrMaskZeroY                    real/_
+  GradientBasedCorrCorrectionName               string/_+
   GradientBasedCorrRangeMask                    CorrectionRangeMask Struct_+
+  GradientBasedCorrRangeMaskAreaModels          AreaModels Struct_+
+  GradientBasedCorrRangeMaskAreaModelsAreaComponents string/_+
+  GradientBasedCorrRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string/_+
   GradientBasedCorrRangeMaskColorAmount         real/_+
   GradientBasedCorrRangeMaskDepthFeather        real/_+
   GradientBasedCorrRangeMaskDepthMax            real/_+
   GradientBasedCorrRangeMaskDepthMin            real/_+
+  GradientBasedCorrRangeMaskInvert              boolean/_+
   GradientBasedCorrRangeMaskLumFeather          real/_+
+  GradientBasedCorrRangeMaskLuminanceDepthSampleInfo string/_+
   GradientBasedCorrRangeMaskLumMax              real/_+
   GradientBasedCorrRangeMaskLumMin              real/_+
+  GradientBasedCorrRangeMaskLumRange            string/_+
+  GradientBasedCorrRangeMaskSampleType          integer/_+
   GradientBasedCorrRangeMaskType                string/_+
   GradientBasedCorrRangeMaskVersion             string/_+
+  GradientBasedCorrCorrectionSyncID             string/_+
   GradientBasedCorrBlacks2012                   real/_
   GradientBasedCorrBrightness                   real/_
   GradientBasedCorrClarity                      real/_
@@ -1763,6 +1921,149 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   LuminanceNoiseReductionContrast               integer/
   LuminanceNoiseReductionDetail                 integer/
   LuminanceSmoothing                            integer/
+  MaskGroupBasedCorrections                     Correction Struct+
+  MaskGroupBasedCorrActive                      boolean/_
+  MaskGroupBasedCorrAmount                      real/_
+  MaskGroupBasedCorrMask                        CorrectionMask Struct_+
+  MaskGroupBasedCorrMaskAlpha                   real/_
+  MaskGroupBasedCorrMaskAngle                   real/_
+  MaskGroupBasedCorrMaskBottom                  real/_
+  MaskGroupBasedCorrMaskCenterValue             real/_
+  MaskGroupBasedCorrMaskCenterWeight            real/_
+  MaskGroupBasedCorrMaskCorrectionRangeMask     CorrectionRangeMask Struct_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskAreaModels AreaModels Struct_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskAreaModelsAreaComponents string/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskColorAmount real/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskDepthFeather real/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskDepthMax real/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskDepthMin real/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskInvert boolean/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskLumFeather real/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskLuminanceDepthSampleInfo string/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskLumMax real/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskLumMin real/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskLumRange string/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskSampleType integer/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskType string/_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskVersion string/_+
+  MaskGroupBasedCorrMaskDabs                    string/_+
+  MaskGroupBasedCorrMaskFeather                 real/_
+  MaskGroupBasedCorrMaskFlipped                 boolean/_
+  MaskGroupBasedCorrMaskFlow                    real/_
+  MaskGroupBasedCorrMaskFullX                   real/_
+  MaskGroupBasedCorrMaskFullY                   real/_
+  MaskGroupBasedCorrMaskInputDigest             string/_
+  MaskGroupBasedCorrMaskLeft                    real/_
+  MaskGroupBasedCorrMaskMaskActive              boolean/_
+  MaskGroupBasedCorrMaskMaskBlendMode           integer/_
+  MaskGroupBasedCorrMaskMaskDigest              string/_
+  MaskGroupBasedCorrMaskMaskInverted            boolean/_
+  MaskGroupBasedCorrMaskMaskName                string/_
+  MaskGroupBasedCorrMaskMasks                   CorrectionMask Struct_+
+  MaskGroupBasedCorrMaskMasksAlpha              real/_
+  MaskGroupBasedCorrMaskMasksAngle              real/_
+  MaskGroupBasedCorrMaskMasksBottom             real/_
+  MaskGroupBasedCorrMaskMasksCenterValue        real/_
+  MaskGroupBasedCorrMaskMasksCenterWeight       real/_
+  MaskGroupBasedCorrMaskMasksDabs               string/_+
+  MaskGroupBasedCorrMaskMasksFeather            real/_
+  MaskGroupBasedCorrMaskMasksFlipped            boolean/_
+  MaskGroupBasedCorrMaskMasksFlow               real/_
+  MaskGroupBasedCorrMaskMasksFullX              real/_
+  MaskGroupBasedCorrMaskMasksFullY              real/_
+  MaskGroupBasedCorrMaskMasksInputDigest        string/_
+  MaskGroupBasedCorrMaskMasksLeft               real/_
+  MaskGroupBasedCorrMaskMasksMaskActive         boolean/_
+  MaskGroupBasedCorrMaskMasksMaskBlendMode      integer/_
+  MaskGroupBasedCorrMaskMasksMaskDigest         string/_
+  MaskGroupBasedCorrMaskMasksMaskInverted       boolean/_
+  MaskGroupBasedCorrMaskMasksMaskName           string/_
+  MaskGroupBasedCorrMaskMasksMaskSubType        string/_
+  MaskGroupBasedCorrMaskMasksMaskSyncID         string/_
+  MaskGroupBasedCorrMaskMasksValue              real/_
+  MaskGroupBasedCorrMaskMasksMaskVersion        string/_
+  MaskGroupBasedCorrMaskMasksMidpoint           real/_
+  MaskGroupBasedCorrMaskMasksOrigin             string/_
+  MaskGroupBasedCorrMaskMasksPerimeterValue     real/_
+  MaskGroupBasedCorrMaskMasksRadius             real/_
+  MaskGroupBasedCorrMaskMasksReferencePoint     string/_
+  MaskGroupBasedCorrMaskMasksRight              real/_
+  MaskGroupBasedCorrMaskMasksRoundness          real/_
+  MaskGroupBasedCorrMaskMasksSizeX              real/_
+  MaskGroupBasedCorrMaskMasksSizeY              real/_
+  MaskGroupBasedCorrMaskMasksTop                real/_
+  MaskGroupBasedCorrMaskMaskSubType             string/_
+  MaskGroupBasedCorrMaskMasksVersion            integer/_
+  MaskGroupBasedCorrMaskMasksWhat               string/_
+  MaskGroupBasedCorrMaskMasksWholeImageArea     string/_
+  MaskGroupBasedCorrMaskMasksX                  real/_
+  MaskGroupBasedCorrMaskMasksY                  real/_
+  MaskGroupBasedCorrMaskMaskSyncID              string/_
+  MaskGroupBasedCorrMaskMasksZeroX              real/_
+  MaskGroupBasedCorrMaskMasksZeroY              real/_
+  MaskGroupBasedCorrMaskValue                   real/_
+  MaskGroupBasedCorrMaskMaskVersion             string/_
+  MaskGroupBasedCorrMaskMidpoint                real/_
+  MaskGroupBasedCorrMaskOrigin                  string/_
+  MaskGroupBasedCorrMaskPerimeterValue          real/_
+  MaskGroupBasedCorrMaskRadius                  real/_
+  MaskGroupBasedCorrMaskReferencePoint          string/_
+  MaskGroupBasedCorrMaskRight                   real/_
+  MaskGroupBasedCorrMaskRoundness               real/_
+  MaskGroupBasedCorrMaskSizeX                   real/_
+  MaskGroupBasedCorrMaskSizeY                   real/_
+  MaskGroupBasedCorrMaskTop                     real/_
+  MaskGroupBasedCorrMaskVersion                 integer/_
+  MaskGroupBasedCorrMaskWhat                    string/_
+  MaskGroupBasedCorrMaskWholeImageArea          string/_
+  MaskGroupBasedCorrMaskX                       real/_
+  MaskGroupBasedCorrMaskY                       real/_
+  MaskGroupBasedCorrMaskZeroX                   real/_
+  MaskGroupBasedCorrMaskZeroY                   real/_
+  MaskGroupBasedCorrCorrectionName              string/_+
+  MaskGroupBasedCorrRangeMask                   CorrectionRangeMask Struct_+
+  MaskGroupBasedCorrRangeMaskAreaModels         AreaModels Struct_+
+  MaskGroupBasedCorrRangeMaskAreaModelsAreaComponents string/_+
+  MaskGroupBasedCorrRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string/_+
+  MaskGroupBasedCorrRangeMaskColorAmount        real/_+
+  MaskGroupBasedCorrRangeMaskDepthFeather       real/_+
+  MaskGroupBasedCorrRangeMaskDepthMax           real/_+
+  MaskGroupBasedCorrRangeMaskDepthMin           real/_+
+  MaskGroupBasedCorrRangeMaskInvert             boolean/_+
+  MaskGroupBasedCorrRangeMaskLumFeather         real/_+
+  MaskGroupBasedCorrRangeMaskLuminanceDepthSampleInfo string/_+
+  MaskGroupBasedCorrRangeMaskLumMax             real/_+
+  MaskGroupBasedCorrRangeMaskLumMin             real/_+
+  MaskGroupBasedCorrRangeMaskLumRange           string/_+
+  MaskGroupBasedCorrRangeMaskSampleType         integer/_+
+  MaskGroupBasedCorrRangeMaskType               string/_+
+  MaskGroupBasedCorrRangeMaskVersion            string/_+
+  MaskGroupBasedCorrCorrectionSyncID            string/_+
+  MaskGroupBasedCorrBlacks2012                  real/_
+  MaskGroupBasedCorrBrightness                  real/_
+  MaskGroupBasedCorrClarity                     real/_
+  MaskGroupBasedCorrClarity2012                 real/_
+  MaskGroupBasedCorrContrast                    real/_
+  MaskGroupBasedCorrContrast2012                real/_
+  MaskGroupBasedCorrDefringe                    real/_
+  MaskGroupBasedCorrDehaze                      real/_
+  MaskGroupBasedCorrExposure                    real/_
+  MaskGroupBasedCorrExposure2012                real/_
+  MaskGroupBasedCorrHighlights2012              real/_
+  MaskGroupBasedCorrHue                         real/_
+  MaskGroupBasedCorrLuminanceNoise              real/_
+  MaskGroupBasedCorrMoire                       real/_
+  MaskGroupBasedCorrSaturation                  real/_
+  MaskGroupBasedCorrShadows2012                 real/_
+  MaskGroupBasedCorrSharpness                   real/_
+  MaskGroupBasedCorrTemperature                 real/_
+  MaskGroupBasedCorrTexture                     real/_
+  MaskGroupBasedCorrTint                        real/_
+  MaskGroupBasedCorrHue                         real/_
+  MaskGroupBasedCorrSaturation                  real/_
+  MaskGroupBasedCorrWhites2012                  real/_
+  MaskGroupBasedCorrWhat                        string/_
   MoireFilter                                   string/
   Name                                          lang-alt/
   NegativeCacheLargePreviewSize                 integer/
@@ -1778,17 +2079,85 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   PaintCorrectionMaskBottom                     real/_
   PaintCorrectionMaskCenterValue                real/_
   PaintCorrectionMaskCenterWeight               real/_
+  PaintCorrectionMaskCorrectionRangeMask        CorrectionRangeMask Struct_+
+  PaintCorrectionMaskCorrectionRangeMaskAreaModels AreaModels Struct_+
+  PaintCorrectionMaskCorrectionRangeMaskAreaModelsAreaComponents string/_+
+  PaintCorrectionMaskCorrectionRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string/_+
+  PaintCorrectionMaskCorrectionRangeMaskColorAmount real/_+
+  PaintCorrectionMaskCorrectionRangeMaskDepthFeather real/_+
+  PaintCorrectionMaskCorrectionRangeMaskDepthMax real/_+
+  PaintCorrectionMaskCorrectionRangeMaskDepthMin real/_+
+  PaintCorrectionMaskCorrectionRangeMaskInvert  boolean/_+
+  PaintCorrectionMaskCorrectionRangeMaskLumFeather real/_+
+  PaintCorrectionMaskCorrectionRangeMaskLuminanceDepthSampleInfo string/_+
+  PaintCorrectionMaskCorrectionRangeMaskLumMax  real/_+
+  PaintCorrectionMaskCorrectionRangeMaskLumMin  real/_+
+  PaintCorrectionMaskCorrectionRangeMaskLumRange string/_+
+  PaintCorrectionMaskCorrectionRangeMaskSampleType integer/_+
+  PaintCorrectionMaskCorrectionRangeMaskType    string/_+
+  PaintCorrectionMaskCorrectionRangeMaskVersion string/_+
   PaintCorrectionMaskDabs                       string/_
   PaintCorrectionMaskFeather                    real/_
   PaintCorrectionMaskFlipped                    boolean/_
   PaintCorrectionMaskFlow                       real/_
   PaintCorrectionMaskFullX                      real/_
   PaintCorrectionMaskFullY                      real/_
+  PaintCorrectionMaskInputDigest                string/_
   PaintCorrectionMaskLeft                       real/_
+  PaintCorrectionMaskMaskActive                 boolean/_
+  PaintCorrectionMaskMaskBlendMode              integer/_
+  PaintCorrectionMaskMaskDigest                 string/_
+  PaintCorrectionMaskMaskInverted               boolean/_
+  PaintCorrectionMaskMaskName                   string/_
+  PaintCorrectionMaskMasks                      CorrectionMask Struct_+
+  PaintCorrectionMaskMasksAlpha                 real/_
+  PaintCorrectionMaskMasksAngle                 real/_
+  PaintCorrectionMaskMasksBottom                real/_
+  PaintCorrectionMaskMasksCenterValue           real/_
+  PaintCorrectionMaskMasksCenterWeight          real/_
+  PaintCorrectionMaskMasksDabs                  string/_+
+  PaintCorrectionMaskMasksFeather               real/_
+  PaintCorrectionMaskMasksFlipped               boolean/_
+  PaintCorrectionMaskMasksFlow                  real/_
+  PaintCorrectionMaskMasksFullX                 real/_
+  PaintCorrectionMaskMasksFullY                 real/_
+  PaintCorrectionMaskMasksInputDigest           string/_
+  PaintCorrectionMaskMasksLeft                  real/_
+  PaintCorrectionMaskMasksMaskActive            boolean/_
+  PaintCorrectionMaskMasksMaskBlendMode         integer/_
+  PaintCorrectionMaskMasksMaskDigest            string/_
+  PaintCorrectionMaskMasksMaskInverted          boolean/_
+  PaintCorrectionMaskMasksMaskName              string/_
+  PaintCorrectionMaskMasksMaskSubType           string/_
+  PaintCorrectionMaskMasksMaskSyncID            string/_
+  PaintCorrectionMaskMasksValue                 real/_
+  PaintCorrectionMaskMasksMaskVersion           string/_
+  PaintCorrectionMaskMasksMidpoint              real/_
+  PaintCorrectionMaskMasksOrigin                string/_
+  PaintCorrectionMaskMasksPerimeterValue        real/_
+  PaintCorrectionMaskMasksRadius                real/_
+  PaintCorrectionMaskMasksReferencePoint        string/_
+  PaintCorrectionMaskMasksRight                 real/_
+  PaintCorrectionMaskMasksRoundness             real/_
+  PaintCorrectionMaskMasksSizeX                 real/_
+  PaintCorrectionMaskMasksSizeY                 real/_
+  PaintCorrectionMaskMasksTop                   real/_
+  PaintCorrectionMaskMaskSubType                string/_
+  PaintCorrectionMaskMasksVersion               integer/_
+  PaintCorrectionMaskMasksWhat                  string/_
+  PaintCorrectionMaskMasksWholeImageArea        string/_
+  PaintCorrectionMaskMasksX                     real/_
+  PaintCorrectionMaskMasksY                     real/_
+  PaintCorrectionMaskMaskSyncID                 string/_
+  PaintCorrectionMaskMasksZeroX                 real/_
+  PaintCorrectionMaskMasksZeroY                 real/_
   PaintCorrectionMaskValue                      real/_
+  PaintCorrectionMaskMaskVersion                string/_
   PaintCorrectionMaskMidpoint                   real/_
+  PaintCorrectionMaskOrigin                     string/_
   PaintCorrectionMaskPerimeterValue             real/_
   PaintCorrectionMaskRadius                     real/_
+  PaintCorrectionMaskReferencePoint             string/_
   PaintCorrectionMaskRight                      real/_
   PaintCorrectionMaskRoundness                  real/_
   PaintCorrectionMaskSizeX                      real/_
@@ -1796,20 +2165,30 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   PaintCorrectionMaskTop                        real/_
   PaintCorrectionMaskVersion                    integer/_
   PaintCorrectionMaskWhat                       string/_
+  PaintCorrectionMaskWholeImageArea             string/_
   PaintCorrectionMaskX                          real/_
   PaintCorrectionMaskY                          real/_
   PaintCorrectionMaskZeroX                      real/_
   PaintCorrectionMaskZeroY                      real/_
+  PaintCorrectionCorrectionName                 string/_+
   PaintCorrectionRangeMask                      CorrectionRangeMask Struct_+
+  PaintCorrectionRangeMaskAreaModels            AreaModels Struct_+
+  PaintCorrectionRangeMaskAreaModelsAreaComponents string/_+
+  PaintCorrectionRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string/_+
   PaintCorrectionRangeMaskColorAmount           real/_+
   PaintCorrectionRangeMaskDepthFeather          real/_+
   PaintCorrectionRangeMaskDepthMax              real/_+
   PaintCorrectionRangeMaskDepthMin              real/_+
+  PaintCorrectionRangeMaskInvert                boolean/_+
   PaintCorrectionRangeMaskLumFeather            real/_+
+  PaintCorrectionRangeMaskLuminanceDepthSampleInfo string/_+
   PaintCorrectionRangeMaskLumMax                real/_+
   PaintCorrectionRangeMaskLumMin                real/_+
+  PaintCorrectionRangeMaskLumRange              string/_+
+  PaintCorrectionRangeMaskSampleType            integer/_+
   PaintCorrectionRangeMaskType                  string/_+
   PaintCorrectionRangeMaskVersion               string/_+
+  PaintCorrectionCorrectionSyncID               string/_+
   PaintCorrectionBlacks2012                     real/_
   PaintCorrectionBrightness                     real/_
   PaintCorrectionClarity                        real/_
@@ -1857,6 +2236,13 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   PostCropVignetteStyle                         integer/
   PresetType                                    string/
   ProcessVersion                                string/
+  RangeMask                                     RangeMask Struct
+  RangeMaskMapInfo                              MapInfo Struct_
+  RangeMaskMapInfoLabMax                        string/_
+  RangeMaskMapInfoLabMin                        string/_
+  RangeMaskMapInfoLumEq                         string/_+
+  RangeMaskMapInfoRGBMax                        string/_
+  RangeMaskMapInfoRGBMin                        string/_
   RawFileName                                   string/
   RedEyeInfo                                    string/+
   RedHue                                        integer/
@@ -1869,17 +2255,85 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   RetouchAreaMaskBottom                         real/_
   RetouchAreaMaskCenterValue                    real/_
   RetouchAreaMaskCenterWeight                   real/_
+  RetouchAreaMaskCorrectionRangeMask            CorrectionRangeMask Struct_+
+  RetouchAreaMaskCorrectionRangeMaskAreaModels  AreaModels Struct_+
+  RetouchAreaMaskCorrectionRangeMaskAreaModelsAreaComponents string/_+
+  RetouchAreaMaskCorrectionRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string/_+
+  RetouchAreaMaskCorrectionRangeMaskColorAmount real/_+
+  RetouchAreaMaskCorrectionRangeMaskDepthFeather real/_+
+  RetouchAreaMaskCorrectionRangeMaskDepthMax    real/_+
+  RetouchAreaMaskCorrectionRangeMaskDepthMin    real/_+
+  RetouchAreaMaskCorrectionRangeMaskInvert      boolean/_+
+  RetouchAreaMaskCorrectionRangeMaskLumFeather  real/_+
+  RetouchAreaMaskCorrectionRangeMaskLuminanceDepthSampleInfo string/_+
+  RetouchAreaMaskCorrectionRangeMaskLumMax      real/_+
+  RetouchAreaMaskCorrectionRangeMaskLumMin      real/_+
+  RetouchAreaMaskCorrectionRangeMaskLumRange    string/_+
+  RetouchAreaMaskCorrectionRangeMaskSampleType  integer/_+
+  RetouchAreaMaskCorrectionRangeMaskType        string/_+
+  RetouchAreaMaskCorrectionRangeMaskVersion     string/_+
   RetouchAreaMaskDabs                           string/_
   RetouchAreaMaskFeather                        real/_
   RetouchAreaMaskFlipped                        boolean/_
   RetouchAreaMaskFlow                           real/_
   RetouchAreaMaskFullX                          real/_
   RetouchAreaMaskFullY                          real/_
+  RetouchAreaMaskInputDigest                    string/_
   RetouchAreaMaskLeft                           real/_
+  RetouchAreaMaskMaskActive                     boolean/_
+  RetouchAreaMaskMaskBlendMode                  integer/_
+  RetouchAreaMaskMaskDigest                     string/_
+  RetouchAreaMaskMaskInverted                   boolean/_
+  RetouchAreaMaskMaskName                       string/_
+  RetouchAreaMaskMasks                          CorrectionMask Struct_+
+  RetouchAreaMaskMasksAlpha                     real/_
+  RetouchAreaMaskMasksAngle                     real/_
+  RetouchAreaMaskMasksBottom                    real/_
+  RetouchAreaMaskMasksCenterValue               real/_
+  RetouchAreaMaskMasksCenterWeight              real/_
+  RetouchAreaMaskMasksDabs                      string/_+
+  RetouchAreaMaskMasksFeather                   real/_
+  RetouchAreaMaskMasksFlipped                   boolean/_
+  RetouchAreaMaskMasksFlow                      real/_
+  RetouchAreaMaskMasksFullX                     real/_
+  RetouchAreaMaskMasksFullY                     real/_
+  RetouchAreaMaskMasksInputDigest               string/_
+  RetouchAreaMaskMasksLeft                      real/_
+  RetouchAreaMaskMasksMaskActive                boolean/_
+  RetouchAreaMaskMasksMaskBlendMode             integer/_
+  RetouchAreaMaskMasksMaskDigest                string/_
+  RetouchAreaMaskMasksMaskInverted              boolean/_
+  RetouchAreaMaskMasksMaskName                  string/_
+  RetouchAreaMaskMasksMaskSubType               string/_
+  RetouchAreaMaskMasksMaskSyncID                string/_
+  RetouchAreaMaskMasksValue                     real/_
+  RetouchAreaMaskMasksMaskVersion               string/_
+  RetouchAreaMaskMasksMidpoint                  real/_
+  RetouchAreaMaskMasksOrigin                    string/_
+  RetouchAreaMaskMasksPerimeterValue            real/_
+  RetouchAreaMaskMasksRadius                    real/_
+  RetouchAreaMaskMasksReferencePoint            string/_
+  RetouchAreaMaskMasksRight                     real/_
+  RetouchAreaMaskMasksRoundness                 real/_
+  RetouchAreaMaskMasksSizeX                     real/_
+  RetouchAreaMaskMasksSizeY                     real/_
+  RetouchAreaMaskMasksTop                       real/_
+  RetouchAreaMaskMaskSubType                    string/_
+  RetouchAreaMaskMasksVersion                   integer/_
+  RetouchAreaMaskMasksWhat                      string/_
+  RetouchAreaMaskMasksWholeImageArea            string/_
+  RetouchAreaMaskMasksX                         real/_
+  RetouchAreaMaskMasksY                         real/_
+  RetouchAreaMaskMaskSyncID                     string/_
+  RetouchAreaMaskMasksZeroX                     real/_
+  RetouchAreaMaskMasksZeroY                     real/_
   RetouchAreaMaskValue                          real/_
+  RetouchAreaMaskMaskVersion                    string/_
   RetouchAreaMaskMidpoint                       real/_
+  RetouchAreaMaskOrigin                         string/_
   RetouchAreaMaskPerimeterValue                 real/_
   RetouchAreaMaskRadius                         real/_
+  RetouchAreaMaskReferencePoint                 string/_
   RetouchAreaMaskRight                          real/_
   RetouchAreaMaskRoundness                      real/_
   RetouchAreaMaskSizeX                          real/_
@@ -1887,6 +2341,7 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   RetouchAreaMaskTop                            real/_
   RetouchAreaMaskVersion                        integer/_
   RetouchAreaMaskWhat                           string/_
+  RetouchAreaMaskWholeImageArea                 string/_
   RetouchAreaMaskX                              real/_
   RetouchAreaMaskY                              real/_
   RetouchAreaMaskZeroX                          real/_
@@ -1979,7 +2434,9 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   CorrectionActive                              boolean
   CorrectionAmount                              real
   CorrectionMasks                               CorrectionMask Struct+
+  CorrectionName                                string
   CorrectionRangeMask                           CorrectionRangeMask Struct
+  CorrectionSyncID                              string
   LocalBlacks2012                               real
   LocalBrightness                               real
   LocalClarity                                  real
@@ -2014,17 +2471,30 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   Bottom                                        real
   CenterValue                                   real
   CenterWeight                                  real
+  CorrectionRangeMask                           CorrectionRangeMask Struct
   Dabs                                          string+
   Feather                                       real
   Flipped                                       boolean
   Flow                                          real
   FullX                                         real
   FullY                                         real
+  InputDigest                                   string
   Left                                          real
+  MaskActive                                    boolean
+  MaskBlendMode                                 integer
+  MaskDigest                                    string
+  MaskInverted                                  boolean
+  MaskName                                      string
+  MaskSubType                                   string
+  MaskSyncID                                    string
   MaskValue                                     real
+  MaskVersion                                   string
+  Masks                                         CorrectionMask Struct
   Midpoint                                      real
+  Origin                                        string
   PerimeterValue                                real
   Radius                                        real
+  ReferencePoint                                string
   Right                                         real
   Roundness                                     real
   SizeX                                         real
@@ -2032,6 +2502,7 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   Top                                           real
   Version                                       integer
   What                                          string
+  WholeImageArea                                string
   X                                             real
   Y                                             real
   ZeroX                                         real
@@ -2041,15 +2512,27 @@ These tags belong to the ExifTool XMP-crd family 1 group.
 
   Field Name                                    Writable
   ----------                                    --------
+  AreaModels                                    AreaModels Struct+
   ColorAmount                                   real
   DepthFeather                                  real
   DepthMax                                      real
   DepthMin                                      real
+  Invert                                        boolean
   LumFeather                                    real
   LumMax                                        real
   LumMin                                        real
+  LumRange                                      string
+  LuminanceDepthSampleInfo                      string
+  SampleType                                    integer
   Type                                          string
   Version                                       string
+
+=head3 XMP AreaModels Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  AreaComponents                                string+
+  ColorRangeMaskAreaSampleInfo                  string
 
 =head3 XMP Look Struct
 
@@ -2080,6 +2563,30 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   ToneCurvePV2012Green                          string+
   ToneCurvePV2012Red                            string+
   Version                                       string
+
+=head3 XMP RangeMask Struct
+
+This structure is actually called RangeMaskMapInfo, but it only contains one
+element which is a RangeMaskMapInfo structure (Yes, really!).  So these are
+renamed to RangeMask and MapInfo respectively to avoid confusion and
+redundancy in the tag names.
+
+  Field Name                                    Writable
+  ----------                                    --------
+  RangeMaskMapInfo                              MapInfo Struct
+
+=head3 XMP MapInfo Struct
+
+Called RangeMaskMapInfo by the specification, the same as the containing
+structure.
+
+  Field Name                                    Writable
+  ----------                                    --------
+  LabMax                                        string
+  LabMin                                        string
+  LumEq                                         string+
+  RGBMax                                        string
+  RGBMin                                        string
 
 =head3 XMP RetouchArea Struct
 
@@ -2181,17 +2688,85 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   CircGradBasedCorrMaskBottom                   real_
   CircGradBasedCorrMaskCenterValue              real_
   CircGradBasedCorrMaskCenterWeight             real_
+  CircGradBasedCorrMaskCorrectionRangeMask      CorrectionRangeMask Struct_+
+  CircGradBasedCorrMaskCorrectionRangeMaskAreaModels AreaModels Struct_+
+  CircGradBasedCorrMaskCorrectionRangeMaskAreaModelsAreaComponents string_+
+  CircGradBasedCorrMaskCorrectionRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string_+
+  CircGradBasedCorrMaskCorrectionRangeMaskColorAmount real_+
+  CircGradBasedCorrMaskCorrectionRangeMaskDepthFeather real_+
+  CircGradBasedCorrMaskCorrectionRangeMaskDepthMax real_+
+  CircGradBasedCorrMaskCorrectionRangeMaskDepthMin real_+
+  CircGradBasedCorrMaskCorrectionRangeMaskInvert boolean_+
+  CircGradBasedCorrMaskCorrectionRangeMaskLumFeather real_+
+  CircGradBasedCorrMaskCorrectionRangeMaskLuminanceDepthSampleInfo string_+
+  CircGradBasedCorrMaskCorrectionRangeMaskLumMax real_+
+  CircGradBasedCorrMaskCorrectionRangeMaskLumMin real_+
+  CircGradBasedCorrMaskCorrectionRangeMaskLumRange string_+
+  CircGradBasedCorrMaskCorrectionRangeMaskSampleType integer_+
+  CircGradBasedCorrMaskCorrectionRangeMaskType  string_+
+  CircGradBasedCorrMaskCorrectionRangeMaskVersion string_+
   CircGradBasedCorrMaskDabs                     string_
   CircGradBasedCorrMaskFeather                  real_
   CircGradBasedCorrMaskFlipped                  boolean_
   CircGradBasedCorrMaskFlow                     real_
   CircGradBasedCorrMaskFullX                    real_
   CircGradBasedCorrMaskFullY                    real_
+  CircGradBasedCorrMaskInputDigest              string_
   CircGradBasedCorrMaskLeft                     real_
+  CircGradBasedCorrMaskMaskActive               boolean_
+  CircGradBasedCorrMaskMaskBlendMode            integer_
+  CircGradBasedCorrMaskMaskDigest               string_
+  CircGradBasedCorrMaskMaskInverted             boolean_
+  CircGradBasedCorrMaskMaskName                 string_
+  CircGradBasedCorrMaskMasks                    CorrectionMask Struct_+
+  CircGradBasedCorrMaskMasksAlpha               real_
+  CircGradBasedCorrMaskMasksAngle               real_
+  CircGradBasedCorrMaskMasksBottom              real_
+  CircGradBasedCorrMaskMasksCenterValue         real_
+  CircGradBasedCorrMaskMasksCenterWeight        real_
+  CircGradBasedCorrMaskMasksDabs                string_+
+  CircGradBasedCorrMaskMasksFeather             real_
+  CircGradBasedCorrMaskMasksFlipped             boolean_
+  CircGradBasedCorrMaskMasksFlow                real_
+  CircGradBasedCorrMaskMasksFullX               real_
+  CircGradBasedCorrMaskMasksFullY               real_
+  CircGradBasedCorrMaskMasksInputDigest         string_
+  CircGradBasedCorrMaskMasksLeft                real_
+  CircGradBasedCorrMaskMasksMaskActive          boolean_
+  CircGradBasedCorrMaskMasksMaskBlendMode       integer_
+  CircGradBasedCorrMaskMasksMaskDigest          string_
+  CircGradBasedCorrMaskMasksMaskInverted        boolean_
+  CircGradBasedCorrMaskMasksMaskName            string_
+  CircGradBasedCorrMaskMasksMaskSubType         string_
+  CircGradBasedCorrMaskMasksMaskSyncID          string_
+  CircGradBasedCorrMaskMasksValue               real_
+  CircGradBasedCorrMaskMasksMaskVersion         string_
+  CircGradBasedCorrMaskMasksMidpoint            real_
+  CircGradBasedCorrMaskMasksOrigin              string_
+  CircGradBasedCorrMaskMasksPerimeterValue      real_
+  CircGradBasedCorrMaskMasksRadius              real_
+  CircGradBasedCorrMaskMasksReferencePoint      string_
+  CircGradBasedCorrMaskMasksRight               real_
+  CircGradBasedCorrMaskMasksRoundness           real_
+  CircGradBasedCorrMaskMasksSizeX               real_
+  CircGradBasedCorrMaskMasksSizeY               real_
+  CircGradBasedCorrMaskMasksTop                 real_
+  CircGradBasedCorrMaskMaskSubType              string_
+  CircGradBasedCorrMaskMasksVersion             integer_
+  CircGradBasedCorrMaskMasksWhat                string_
+  CircGradBasedCorrMaskMasksWholeImageArea      string_
+  CircGradBasedCorrMaskMasksX                   real_
+  CircGradBasedCorrMaskMasksY                   real_
+  CircGradBasedCorrMaskMaskSyncID               string_
+  CircGradBasedCorrMaskMasksZeroX               real_
+  CircGradBasedCorrMaskMasksZeroY               real_
   CircGradBasedCorrMaskValue                    real_
+  CircGradBasedCorrMaskMaskVersion              string_
   CircGradBasedCorrMaskMidpoint                 real_
+  CircGradBasedCorrMaskOrigin                   string_
   CircGradBasedCorrMaskPerimeterValue           real_
   CircGradBasedCorrMaskRadius                   real_
+  CircGradBasedCorrMaskReferencePoint           string_
   CircGradBasedCorrMaskRight                    real_
   CircGradBasedCorrMaskRoundness                real_
   CircGradBasedCorrMaskSizeX                    real_
@@ -2199,20 +2774,30 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   CircGradBasedCorrMaskTop                      real_
   CircGradBasedCorrMaskVersion                  integer_
   CircGradBasedCorrMaskWhat                     string_
+  CircGradBasedCorrMaskWholeImageArea           string_
   CircGradBasedCorrMaskX                        real_
   CircGradBasedCorrMaskY                        real_
   CircGradBasedCorrMaskZeroX                    real_
   CircGradBasedCorrMaskZeroY                    real_
+  CircGradBasedCorrCorrectionName               string_+
   CircGradBasedCorrRangeMask                    CorrectionRangeMask Struct_+
+  CircGradBasedCorrRangeMaskAreaModels          AreaModels Struct_+
+  CircGradBasedCorrRangeMaskAreaModelsAreaComponents string_+
+  CircGradBasedCorrRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string_+
   CircGradBasedCorrRangeMaskColorAmount         real_+
   CircGradBasedCorrRangeMaskDepthFeather        real_+
   CircGradBasedCorrRangeMaskDepthMax            real_+
   CircGradBasedCorrRangeMaskDepthMin            real_+
+  CircGradBasedCorrRangeMaskInvert              boolean_+
   CircGradBasedCorrRangeMaskLumFeather          real_+
+  CircGradBasedCorrRangeMaskLuminanceDepthSampleInfo string_+
   CircGradBasedCorrRangeMaskLumMax              real_+
   CircGradBasedCorrRangeMaskLumMin              real_+
+  CircGradBasedCorrRangeMaskLumRange            string_+
+  CircGradBasedCorrRangeMaskSampleType          integer_+
   CircGradBasedCorrRangeMaskType                string_+
   CircGradBasedCorrRangeMaskVersion             string_+
+  CircGradBasedCorrCorrectionSyncID             string_+
   CircGradBasedCorrBlacks2012                   real_
   CircGradBasedCorrBrightness                   real_
   CircGradBasedCorrClarity                      real_
@@ -2254,6 +2839,7 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   ColorNoiseReduction                           integer
   ColorNoiseReductionDetail                     integer
   ColorNoiseReductionSmoothness                 integer
+  CompatibleVersion                             string
   ContactInfo                                   string
   Contrast                                      integer/
   Contrast2012                                  integer
@@ -2296,17 +2882,85 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   GradientBasedCorrMaskBottom                   real_
   GradientBasedCorrMaskCenterValue              real_
   GradientBasedCorrMaskCenterWeight             real_
+  GradientBasedCorrMaskCorrectionRangeMask      CorrectionRangeMask Struct_+
+  GradientBasedCorrMaskCorrectionRangeMaskAreaModels AreaModels Struct_+
+  GradientBasedCorrMaskCorrectionRangeMaskAreaModelsAreaComponents string_+
+  GradientBasedCorrMaskCorrectionRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string_+
+  GradientBasedCorrMaskCorrectionRangeMaskColorAmount real_+
+  GradientBasedCorrMaskCorrectionRangeMaskDepthFeather real_+
+  GradientBasedCorrMaskCorrectionRangeMaskDepthMax real_+
+  GradientBasedCorrMaskCorrectionRangeMaskDepthMin real_+
+  GradientBasedCorrMaskCorrectionRangeMaskInvert boolean_+
+  GradientBasedCorrMaskCorrectionRangeMaskLumFeather real_+
+  GradientBasedCorrMaskCorrectionRangeMaskLuminanceDepthSampleInfo string_+
+  GradientBasedCorrMaskCorrectionRangeMaskLumMax real_+
+  GradientBasedCorrMaskCorrectionRangeMaskLumMin real_+
+  GradientBasedCorrMaskCorrectionRangeMaskLumRange string_+
+  GradientBasedCorrMaskCorrectionRangeMaskSampleType integer_+
+  GradientBasedCorrMaskCorrectionRangeMaskType  string_+
+  GradientBasedCorrMaskCorrectionRangeMaskVersion string_+
   GradientBasedCorrMaskDabs                     string_
   GradientBasedCorrMaskFeather                  real_
   GradientBasedCorrMaskFlipped                  boolean_
   GradientBasedCorrMaskFlow                     real_
   GradientBasedCorrMaskFullX                    real_
   GradientBasedCorrMaskFullY                    real_
+  GradientBasedCorrMaskInputDigest              string_
   GradientBasedCorrMaskLeft                     real_
+  GradientBasedCorrMaskMaskActive               boolean_
+  GradientBasedCorrMaskMaskBlendMode            integer_
+  GradientBasedCorrMaskMaskDigest               string_
+  GradientBasedCorrMaskMaskInverted             boolean_
+  GradientBasedCorrMaskMaskName                 string_
+  GradientBasedCorrMaskMasks                    CorrectionMask Struct_+
+  GradientBasedCorrMaskMasksAlpha               real_
+  GradientBasedCorrMaskMasksAngle               real_
+  GradientBasedCorrMaskMasksBottom              real_
+  GradientBasedCorrMaskMasksCenterValue         real_
+  GradientBasedCorrMaskMasksCenterWeight        real_
+  GradientBasedCorrMaskMasksDabs                string_+
+  GradientBasedCorrMaskMasksFeather             real_
+  GradientBasedCorrMaskMasksFlipped             boolean_
+  GradientBasedCorrMaskMasksFlow                real_
+  GradientBasedCorrMaskMasksFullX               real_
+  GradientBasedCorrMaskMasksFullY               real_
+  GradientBasedCorrMaskMasksInputDigest         string_
+  GradientBasedCorrMaskMasksLeft                real_
+  GradientBasedCorrMaskMasksMaskActive          boolean_
+  GradientBasedCorrMaskMasksMaskBlendMode       integer_
+  GradientBasedCorrMaskMasksMaskDigest          string_
+  GradientBasedCorrMaskMasksMaskInverted        boolean_
+  GradientBasedCorrMaskMasksMaskName            string_
+  GradientBasedCorrMaskMasksMaskSubType         string_
+  GradientBasedCorrMaskMasksMaskSyncID          string_
+  GradientBasedCorrMaskMasksValue               real_
+  GradientBasedCorrMaskMasksMaskVersion         string_
+  GradientBasedCorrMaskMasksMidpoint            real_
+  GradientBasedCorrMaskMasksOrigin              string_
+  GradientBasedCorrMaskMasksPerimeterValue      real_
+  GradientBasedCorrMaskMasksRadius              real_
+  GradientBasedCorrMaskMasksReferencePoint      string_
+  GradientBasedCorrMaskMasksRight               real_
+  GradientBasedCorrMaskMasksRoundness           real_
+  GradientBasedCorrMaskMasksSizeX               real_
+  GradientBasedCorrMaskMasksSizeY               real_
+  GradientBasedCorrMaskMasksTop                 real_
+  GradientBasedCorrMaskMaskSubType              string_
+  GradientBasedCorrMaskMasksVersion             integer_
+  GradientBasedCorrMaskMasksWhat                string_
+  GradientBasedCorrMaskMasksWholeImageArea      string_
+  GradientBasedCorrMaskMasksX                   real_
+  GradientBasedCorrMaskMasksY                   real_
+  GradientBasedCorrMaskMaskSyncID               string_
+  GradientBasedCorrMaskMasksZeroX               real_
+  GradientBasedCorrMaskMasksZeroY               real_
   GradientBasedCorrMaskValue                    real_
+  GradientBasedCorrMaskMaskVersion              string_
   GradientBasedCorrMaskMidpoint                 real_
+  GradientBasedCorrMaskOrigin                   string_
   GradientBasedCorrMaskPerimeterValue           real_
   GradientBasedCorrMaskRadius                   real_
+  GradientBasedCorrMaskReferencePoint           string_
   GradientBasedCorrMaskRight                    real_
   GradientBasedCorrMaskRoundness                real_
   GradientBasedCorrMaskSizeX                    real_
@@ -2314,20 +2968,30 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   GradientBasedCorrMaskTop                      real_
   GradientBasedCorrMaskVersion                  integer_
   GradientBasedCorrMaskWhat                     string_
+  GradientBasedCorrMaskWholeImageArea           string_
   GradientBasedCorrMaskX                        real_
   GradientBasedCorrMaskY                        real_
   GradientBasedCorrMaskZeroX                    real_
   GradientBasedCorrMaskZeroY                    real_
+  GradientBasedCorrCorrectionName               string_+
   GradientBasedCorrRangeMask                    CorrectionRangeMask Struct_+
+  GradientBasedCorrRangeMaskAreaModels          AreaModels Struct_+
+  GradientBasedCorrRangeMaskAreaModelsAreaComponents string_+
+  GradientBasedCorrRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string_+
   GradientBasedCorrRangeMaskColorAmount         real_+
   GradientBasedCorrRangeMaskDepthFeather        real_+
   GradientBasedCorrRangeMaskDepthMax            real_+
   GradientBasedCorrRangeMaskDepthMin            real_+
+  GradientBasedCorrRangeMaskInvert              boolean_+
   GradientBasedCorrRangeMaskLumFeather          real_+
+  GradientBasedCorrRangeMaskLuminanceDepthSampleInfo string_+
   GradientBasedCorrRangeMaskLumMax              real_+
   GradientBasedCorrRangeMaskLumMin              real_+
+  GradientBasedCorrRangeMaskLumRange            string_+
+  GradientBasedCorrRangeMaskSampleType          integer_+
   GradientBasedCorrRangeMaskType                string_+
   GradientBasedCorrRangeMaskVersion             string_+
+  GradientBasedCorrCorrectionSyncID             string_+
   GradientBasedCorrBlacks2012                   real_
   GradientBasedCorrBrightness                   real_
   GradientBasedCorrClarity                      real_
@@ -2433,6 +3097,149 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   LuminanceNoiseReductionContrast               integer
   LuminanceNoiseReductionDetail                 integer
   LuminanceSmoothing                            integer
+  MaskGroupBasedCorrections                     Correction Struct+
+  MaskGroupBasedCorrActive                      boolean_
+  MaskGroupBasedCorrAmount                      real_
+  MaskGroupBasedCorrMask                        CorrectionMask Struct_+
+  MaskGroupBasedCorrMaskAlpha                   real_
+  MaskGroupBasedCorrMaskAngle                   real_
+  MaskGroupBasedCorrMaskBottom                  real_
+  MaskGroupBasedCorrMaskCenterValue             real_
+  MaskGroupBasedCorrMaskCenterWeight            real_
+  MaskGroupBasedCorrMaskCorrectionRangeMask     CorrectionRangeMask Struct_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskAreaModels AreaModels Struct_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskAreaModelsAreaComponents string_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskColorAmount real_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskDepthFeather real_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskDepthMax real_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskDepthMin real_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskInvert boolean_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskLumFeather real_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskLuminanceDepthSampleInfo string_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskLumMax real_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskLumMin real_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskLumRange string_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskSampleType integer_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskType string_+
+  MaskGroupBasedCorrMaskCorrectionRangeMaskVersion string_+
+  MaskGroupBasedCorrMaskDabs                    string_+
+  MaskGroupBasedCorrMaskFeather                 real_
+  MaskGroupBasedCorrMaskFlipped                 boolean_
+  MaskGroupBasedCorrMaskFlow                    real_
+  MaskGroupBasedCorrMaskFullX                   real_
+  MaskGroupBasedCorrMaskFullY                   real_
+  MaskGroupBasedCorrMaskInputDigest             string_
+  MaskGroupBasedCorrMaskLeft                    real_
+  MaskGroupBasedCorrMaskMaskActive              boolean_
+  MaskGroupBasedCorrMaskMaskBlendMode           integer_
+  MaskGroupBasedCorrMaskMaskDigest              string_
+  MaskGroupBasedCorrMaskMaskInverted            boolean_
+  MaskGroupBasedCorrMaskMaskName                string_
+  MaskGroupBasedCorrMaskMasks                   CorrectionMask Struct_+
+  MaskGroupBasedCorrMaskMasksAlpha              real_
+  MaskGroupBasedCorrMaskMasksAngle              real_
+  MaskGroupBasedCorrMaskMasksBottom             real_
+  MaskGroupBasedCorrMaskMasksCenterValue        real_
+  MaskGroupBasedCorrMaskMasksCenterWeight       real_
+  MaskGroupBasedCorrMaskMasksDabs               string_+
+  MaskGroupBasedCorrMaskMasksFeather            real_
+  MaskGroupBasedCorrMaskMasksFlipped            boolean_
+  MaskGroupBasedCorrMaskMasksFlow               real_
+  MaskGroupBasedCorrMaskMasksFullX              real_
+  MaskGroupBasedCorrMaskMasksFullY              real_
+  MaskGroupBasedCorrMaskMasksInputDigest        string_
+  MaskGroupBasedCorrMaskMasksLeft               real_
+  MaskGroupBasedCorrMaskMasksMaskActive         boolean_
+  MaskGroupBasedCorrMaskMasksMaskBlendMode      integer_
+  MaskGroupBasedCorrMaskMasksMaskDigest         string_
+  MaskGroupBasedCorrMaskMasksMaskInverted       boolean_
+  MaskGroupBasedCorrMaskMasksMaskName           string_
+  MaskGroupBasedCorrMaskMasksMaskSubType        string_
+  MaskGroupBasedCorrMaskMasksMaskSyncID         string_
+  MaskGroupBasedCorrMaskMasksValue              real_
+  MaskGroupBasedCorrMaskMasksMaskVersion        string_
+  MaskGroupBasedCorrMaskMasksMidpoint           real_
+  MaskGroupBasedCorrMaskMasksOrigin             string_
+  MaskGroupBasedCorrMaskMasksPerimeterValue     real_
+  MaskGroupBasedCorrMaskMasksRadius             real_
+  MaskGroupBasedCorrMaskMasksReferencePoint     string_
+  MaskGroupBasedCorrMaskMasksRight              real_
+  MaskGroupBasedCorrMaskMasksRoundness          real_
+  MaskGroupBasedCorrMaskMasksSizeX              real_
+  MaskGroupBasedCorrMaskMasksSizeY              real_
+  MaskGroupBasedCorrMaskMasksTop                real_
+  MaskGroupBasedCorrMaskMaskSubType             string_
+  MaskGroupBasedCorrMaskMasksVersion            integer_
+  MaskGroupBasedCorrMaskMasksWhat               string_
+  MaskGroupBasedCorrMaskMasksWholeImageArea     string_
+  MaskGroupBasedCorrMaskMasksX                  real_
+  MaskGroupBasedCorrMaskMasksY                  real_
+  MaskGroupBasedCorrMaskMaskSyncID              string_
+  MaskGroupBasedCorrMaskMasksZeroX              real_
+  MaskGroupBasedCorrMaskMasksZeroY              real_
+  MaskGroupBasedCorrMaskValue                   real_
+  MaskGroupBasedCorrMaskMaskVersion             string_
+  MaskGroupBasedCorrMaskMidpoint                real_
+  MaskGroupBasedCorrMaskOrigin                  string_
+  MaskGroupBasedCorrMaskPerimeterValue          real_
+  MaskGroupBasedCorrMaskRadius                  real_
+  MaskGroupBasedCorrMaskReferencePoint          string_
+  MaskGroupBasedCorrMaskRight                   real_
+  MaskGroupBasedCorrMaskRoundness               real_
+  MaskGroupBasedCorrMaskSizeX                   real_
+  MaskGroupBasedCorrMaskSizeY                   real_
+  MaskGroupBasedCorrMaskTop                     real_
+  MaskGroupBasedCorrMaskVersion                 integer_
+  MaskGroupBasedCorrMaskWhat                    string_
+  MaskGroupBasedCorrMaskWholeImageArea          string_
+  MaskGroupBasedCorrMaskX                       real_
+  MaskGroupBasedCorrMaskY                       real_
+  MaskGroupBasedCorrMaskZeroX                   real_
+  MaskGroupBasedCorrMaskZeroY                   real_
+  MaskGroupBasedCorrCorrectionName              string_+
+  MaskGroupBasedCorrRangeMask                   CorrectionRangeMask Struct_+
+  MaskGroupBasedCorrRangeMaskAreaModels         AreaModels Struct_+
+  MaskGroupBasedCorrRangeMaskAreaModelsAreaComponents string_+
+  MaskGroupBasedCorrRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string_+
+  MaskGroupBasedCorrRangeMaskColorAmount        real_+
+  MaskGroupBasedCorrRangeMaskDepthFeather       real_+
+  MaskGroupBasedCorrRangeMaskDepthMax           real_+
+  MaskGroupBasedCorrRangeMaskDepthMin           real_+
+  MaskGroupBasedCorrRangeMaskInvert             boolean_+
+  MaskGroupBasedCorrRangeMaskLumFeather         real_+
+  MaskGroupBasedCorrRangeMaskLuminanceDepthSampleInfo string_+
+  MaskGroupBasedCorrRangeMaskLumMax             real_+
+  MaskGroupBasedCorrRangeMaskLumMin             real_+
+  MaskGroupBasedCorrRangeMaskLumRange           string_+
+  MaskGroupBasedCorrRangeMaskSampleType         integer_+
+  MaskGroupBasedCorrRangeMaskType               string_+
+  MaskGroupBasedCorrRangeMaskVersion            string_+
+  MaskGroupBasedCorrCorrectionSyncID            string_+
+  MaskGroupBasedCorrBlacks2012                  real_
+  MaskGroupBasedCorrBrightness                  real_
+  MaskGroupBasedCorrClarity                     real_
+  MaskGroupBasedCorrClarity2012                 real_
+  MaskGroupBasedCorrContrast                    real_
+  MaskGroupBasedCorrContrast2012                real_
+  MaskGroupBasedCorrDefringe                    real_
+  MaskGroupBasedCorrDehaze                      real_
+  MaskGroupBasedCorrExposure                    real_
+  MaskGroupBasedCorrExposure2012                real_
+  MaskGroupBasedCorrHighlights2012              real_
+  MaskGroupBasedCorrHue                         real_
+  MaskGroupBasedCorrLuminanceNoise              real_
+  MaskGroupBasedCorrMoire                       real_
+  MaskGroupBasedCorrSaturation                  real_
+  MaskGroupBasedCorrShadows2012                 real_
+  MaskGroupBasedCorrSharpness                   real_
+  MaskGroupBasedCorrTemperature                 real_
+  MaskGroupBasedCorrTexture                     real_
+  MaskGroupBasedCorrTint                        real_
+  MaskGroupBasedCorrHue                         real_
+  MaskGroupBasedCorrSaturation                  real_
+  MaskGroupBasedCorrWhites2012                  real_
+  MaskGroupBasedCorrWhat                        string_
   MoireFilter                                   string
   Name                                          lang-alt/
   NegativeCacheLargePreviewSize                 integer
@@ -2448,17 +3255,85 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   PaintCorrectionMaskBottom                     real_
   PaintCorrectionMaskCenterValue                real_
   PaintCorrectionMaskCenterWeight               real_
+  PaintCorrectionMaskCorrectionRangeMask        CorrectionRangeMask Struct_+
+  PaintCorrectionMaskCorrectionRangeMaskAreaModels AreaModels Struct_+
+  PaintCorrectionMaskCorrectionRangeMaskAreaModelsAreaComponents string_+
+  PaintCorrectionMaskCorrectionRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string_+
+  PaintCorrectionMaskCorrectionRangeMaskColorAmount real_+
+  PaintCorrectionMaskCorrectionRangeMaskDepthFeather real_+
+  PaintCorrectionMaskCorrectionRangeMaskDepthMax real_+
+  PaintCorrectionMaskCorrectionRangeMaskDepthMin real_+
+  PaintCorrectionMaskCorrectionRangeMaskInvert  boolean_+
+  PaintCorrectionMaskCorrectionRangeMaskLumFeather real_+
+  PaintCorrectionMaskCorrectionRangeMaskLuminanceDepthSampleInfo string_+
+  PaintCorrectionMaskCorrectionRangeMaskLumMax  real_+
+  PaintCorrectionMaskCorrectionRangeMaskLumMin  real_+
+  PaintCorrectionMaskCorrectionRangeMaskLumRange string_+
+  PaintCorrectionMaskCorrectionRangeMaskSampleType integer_+
+  PaintCorrectionMaskCorrectionRangeMaskType    string_+
+  PaintCorrectionMaskCorrectionRangeMaskVersion string_+
   PaintCorrectionMaskDabs                       string_
   PaintCorrectionMaskFeather                    real_
   PaintCorrectionMaskFlipped                    boolean_
   PaintCorrectionMaskFlow                       real_
   PaintCorrectionMaskFullX                      real_
   PaintCorrectionMaskFullY                      real_
+  PaintCorrectionMaskInputDigest                string_
   PaintCorrectionMaskLeft                       real_
+  PaintCorrectionMaskMaskActive                 boolean_
+  PaintCorrectionMaskMaskBlendMode              integer_
+  PaintCorrectionMaskMaskDigest                 string_
+  PaintCorrectionMaskMaskInverted               boolean_
+  PaintCorrectionMaskMaskName                   string_
+  PaintCorrectionMaskMasks                      CorrectionMask Struct_+
+  PaintCorrectionMaskMasksAlpha                 real_
+  PaintCorrectionMaskMasksAngle                 real_
+  PaintCorrectionMaskMasksBottom                real_
+  PaintCorrectionMaskMasksCenterValue           real_
+  PaintCorrectionMaskMasksCenterWeight          real_
+  PaintCorrectionMaskMasksDabs                  string_+
+  PaintCorrectionMaskMasksFeather               real_
+  PaintCorrectionMaskMasksFlipped               boolean_
+  PaintCorrectionMaskMasksFlow                  real_
+  PaintCorrectionMaskMasksFullX                 real_
+  PaintCorrectionMaskMasksFullY                 real_
+  PaintCorrectionMaskMasksInputDigest           string_
+  PaintCorrectionMaskMasksLeft                  real_
+  PaintCorrectionMaskMasksMaskActive            boolean_
+  PaintCorrectionMaskMasksMaskBlendMode         integer_
+  PaintCorrectionMaskMasksMaskDigest            string_
+  PaintCorrectionMaskMasksMaskInverted          boolean_
+  PaintCorrectionMaskMasksMaskName              string_
+  PaintCorrectionMaskMasksMaskSubType           string_
+  PaintCorrectionMaskMasksMaskSyncID            string_
+  PaintCorrectionMaskMasksValue                 real_
+  PaintCorrectionMaskMasksMaskVersion           string_
+  PaintCorrectionMaskMasksMidpoint              real_
+  PaintCorrectionMaskMasksOrigin                string_
+  PaintCorrectionMaskMasksPerimeterValue        real_
+  PaintCorrectionMaskMasksRadius                real_
+  PaintCorrectionMaskMasksReferencePoint        string_
+  PaintCorrectionMaskMasksRight                 real_
+  PaintCorrectionMaskMasksRoundness             real_
+  PaintCorrectionMaskMasksSizeX                 real_
+  PaintCorrectionMaskMasksSizeY                 real_
+  PaintCorrectionMaskMasksTop                   real_
+  PaintCorrectionMaskMaskSubType                string_
+  PaintCorrectionMaskMasksVersion               integer_
+  PaintCorrectionMaskMasksWhat                  string_
+  PaintCorrectionMaskMasksWholeImageArea        string_
+  PaintCorrectionMaskMasksX                     real_
+  PaintCorrectionMaskMasksY                     real_
+  PaintCorrectionMaskMaskSyncID                 string_
+  PaintCorrectionMaskMasksZeroX                 real_
+  PaintCorrectionMaskMasksZeroY                 real_
   PaintCorrectionMaskValue                      real_
+  PaintCorrectionMaskMaskVersion                string_
   PaintCorrectionMaskMidpoint                   real_
+  PaintCorrectionMaskOrigin                     string_
   PaintCorrectionMaskPerimeterValue             real_
   PaintCorrectionMaskRadius                     real_
+  PaintCorrectionMaskReferencePoint             string_
   PaintCorrectionMaskRight                      real_
   PaintCorrectionMaskRoundness                  real_
   PaintCorrectionMaskSizeX                      real_
@@ -2466,20 +3341,30 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   PaintCorrectionMaskTop                        real_
   PaintCorrectionMaskVersion                    integer_
   PaintCorrectionMaskWhat                       string_
+  PaintCorrectionMaskWholeImageArea             string_
   PaintCorrectionMaskX                          real_
   PaintCorrectionMaskY                          real_
   PaintCorrectionMaskZeroX                      real_
   PaintCorrectionMaskZeroY                      real_
+  PaintCorrectionCorrectionName                 string_+
   PaintCorrectionRangeMask                      CorrectionRangeMask Struct_+
+  PaintCorrectionRangeMaskAreaModels            AreaModels Struct_+
+  PaintCorrectionRangeMaskAreaModelsAreaComponents string_+
+  PaintCorrectionRangeMaskAreaModelsColorRangeMaskAreaSampleInfo string_+
   PaintCorrectionRangeMaskColorAmount           real_+
   PaintCorrectionRangeMaskDepthFeather          real_+
   PaintCorrectionRangeMaskDepthMax              real_+
   PaintCorrectionRangeMaskDepthMin              real_+
+  PaintCorrectionRangeMaskInvert                boolean_+
   PaintCorrectionRangeMaskLumFeather            real_+
+  PaintCorrectionRangeMaskLuminanceDepthSampleInfo string_+
   PaintCorrectionRangeMaskLumMax                real_+
   PaintCorrectionRangeMaskLumMin                real_+
+  PaintCorrectionRangeMaskLumRange              string_+
+  PaintCorrectionRangeMaskSampleType            integer_+
   PaintCorrectionRangeMaskType                  string_+
   PaintCorrectionRangeMaskVersion               string_+
+  PaintCorrectionCorrectionSyncID               string_+
   PaintCorrectionBlacks2012                     real_
   PaintCorrectionBrightness                     real_
   PaintCorrectionClarity                        real_
@@ -2527,6 +3412,13 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   PostCropVignetteStyle                         integer
   PresetType                                    string
   ProcessVersion                                string
+  RangeMask                                     RangeMask Struct
+  RangeMaskMapInfo                              MapInfo Struct_
+  RangeMaskMapInfoLabMax                        string_
+  RangeMaskMapInfoLabMin                        string_
+  RangeMaskMapInfoLumEq                         string_+
+  RangeMaskMapInfoRGBMax                        string_
+  RangeMaskMapInfoRGBMin                        string_
   RawFileName                                   string
   RedEyeInfo                                    string+
   RedHue                                        integer
@@ -2539,17 +3431,85 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   RetouchAreaMaskBottom                         real_
   RetouchAreaMaskCenterValue                    real_
   RetouchAreaMaskCenterWeight                   real_
+  RetouchAreaMaskCorrectionRangeMask            CorrectionRangeMask Struct_+
+  RetouchAreaMaskCorrectionRangeMaskAreaModels  AreaModels Struct_+
+  RetouchAreaMaskCorrectionRangeMaskAreaModelsAreaComponents string_+
+  RetouchAreaMaskCorrectionRangeMaskAreaModelsColorRangeMaskAreaSampleInfostring_+
+  RetouchAreaMaskCorrectionRangeMaskColorAmount real_+
+  RetouchAreaMaskCorrectionRangeMaskDepthFeather real_+
+  RetouchAreaMaskCorrectionRangeMaskDepthMax    real_+
+  RetouchAreaMaskCorrectionRangeMaskDepthMin    real_+
+  RetouchAreaMaskCorrectionRangeMaskInvert      boolean_+
+  RetouchAreaMaskCorrectionRangeMaskLumFeather  real_+
+  RetouchAreaMaskCorrectionRangeMaskLuminanceDepthSampleInfo string_+
+  RetouchAreaMaskCorrectionRangeMaskLumMax      real_+
+  RetouchAreaMaskCorrectionRangeMaskLumMin      real_+
+  RetouchAreaMaskCorrectionRangeMaskLumRange    string_+
+  RetouchAreaMaskCorrectionRangeMaskSampleType  integer_+
+  RetouchAreaMaskCorrectionRangeMaskType        string_+
+  RetouchAreaMaskCorrectionRangeMaskVersion     string_+
   RetouchAreaMaskDabs                           string_
   RetouchAreaMaskFeather                        real_
   RetouchAreaMaskFlipped                        boolean_
   RetouchAreaMaskFlow                           real_
   RetouchAreaMaskFullX                          real_
   RetouchAreaMaskFullY                          real_
+  RetouchAreaMaskInputDigest                    string_
   RetouchAreaMaskLeft                           real_
+  RetouchAreaMaskMaskActive                     boolean_
+  RetouchAreaMaskMaskBlendMode                  integer_
+  RetouchAreaMaskMaskDigest                     string_
+  RetouchAreaMaskMaskInverted                   boolean_
+  RetouchAreaMaskMaskName                       string_
+  RetouchAreaMaskMasks                          CorrectionMask Struct_+
+  RetouchAreaMaskMasksAlpha                     real_
+  RetouchAreaMaskMasksAngle                     real_
+  RetouchAreaMaskMasksBottom                    real_
+  RetouchAreaMaskMasksCenterValue               real_
+  RetouchAreaMaskMasksCenterWeight              real_
+  RetouchAreaMaskMasksDabs                      string_+
+  RetouchAreaMaskMasksFeather                   real_
+  RetouchAreaMaskMasksFlipped                   boolean_
+  RetouchAreaMaskMasksFlow                      real_
+  RetouchAreaMaskMasksFullX                     real_
+  RetouchAreaMaskMasksFullY                     real_
+  RetouchAreaMaskMasksInputDigest               string_
+  RetouchAreaMaskMasksLeft                      real_
+  RetouchAreaMaskMasksMaskActive                boolean_
+  RetouchAreaMaskMasksMaskBlendMode             integer_
+  RetouchAreaMaskMasksMaskDigest                string_
+  RetouchAreaMaskMasksMaskInverted              boolean_
+  RetouchAreaMaskMasksMaskName                  string_
+  RetouchAreaMaskMasksMaskSubType               string_
+  RetouchAreaMaskMasksMaskSyncID                string_
+  RetouchAreaMaskMasksValue                     real_
+  RetouchAreaMaskMasksMaskVersion               string_
+  RetouchAreaMaskMasksMidpoint                  real_
+  RetouchAreaMaskMasksOrigin                    string_
+  RetouchAreaMaskMasksPerimeterValue            real_
+  RetouchAreaMaskMasksRadius                    real_
+  RetouchAreaMaskMasksReferencePoint            string_
+  RetouchAreaMaskMasksRight                     real_
+  RetouchAreaMaskMasksRoundness                 real_
+  RetouchAreaMaskMasksSizeX                     real_
+  RetouchAreaMaskMasksSizeY                     real_
+  RetouchAreaMaskMasksTop                       real_
+  RetouchAreaMaskMaskSubType                    string_
+  RetouchAreaMaskMasksVersion                   integer_
+  RetouchAreaMaskMasksWhat                      string_
+  RetouchAreaMaskMasksWholeImageArea            string_
+  RetouchAreaMaskMasksX                         real_
+  RetouchAreaMaskMasksY                         real_
+  RetouchAreaMaskMaskSyncID                     string_
+  RetouchAreaMaskMasksZeroX                     real_
+  RetouchAreaMaskMasksZeroY                     real_
   RetouchAreaMaskValue                          real_
+  RetouchAreaMaskMaskVersion                    string_
   RetouchAreaMaskMidpoint                       real_
+  RetouchAreaMaskOrigin                         string_
   RetouchAreaMaskPerimeterValue                 real_
   RetouchAreaMaskRadius                         real_
+  RetouchAreaMaskReferencePoint                 string_
   RetouchAreaMaskRight                          real_
   RetouchAreaMaskRoundness                      real_
   RetouchAreaMaskSizeX                          real_
@@ -2557,6 +3517,7 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   RetouchAreaMaskTop                            real_
   RetouchAreaMaskVersion                        integer_
   RetouchAreaMaskWhat                           string_
+  RetouchAreaMaskWholeImageArea                 string_
   RetouchAreaMaskX                              real_
   RetouchAreaMaskY                              real_
   RetouchAreaMaskZeroX                          real_
@@ -4044,6 +5005,7 @@ These tags belong to the ExifTool XMP-lr family 1 group.
   --------                                      --------
   HierarchicalSubject                           string+
   PrivateRTKInfo                                string
+  WeightedFlatSubject                           string+
 
 =head3 XMP MediaPro Tags
 
@@ -6038,6 +7000,7 @@ Unknown only to reduce the volume of the normal output.
   0x000c   FlickerReductionIndicator            no
   0x000d   MovieISOAutoHiLimit                  no
   0x000e   MovieISOAutoControlManualMode        no
+  0x000f   MovieWhiteBalanceSameAsPhoto         no
   0x001d   AF-CPrioritySel                      no
   0x001e   AF-SPrioritySel                      no
   0x0020   AFPointSel                           no
@@ -6093,6 +7056,8 @@ Unknown only to reduce the volume of the normal output.
   0x0063   Language                             no
   0x006c   ShootingInfoDisplay                  no
   0x0074   FlickAdvanceDirection                no
+  0x0075   HDMIOutputResolution                 no
+  0x0077   HDMIOutputRange                      no
   0x0080   RemoteFuncButton                     no
   0x008b   CmdDialsReverseRotation              no
   0x008d   FocusPeakingHighlightColor           no
@@ -6100,6 +7065,7 @@ Unknown only to reduce the volume of the normal output.
   0x008f   ShutterSpeedLock                     no
   0x0090   ApertureLock                         no
   0x0091   MovieHighlightDisplayThreshold       no
+  0x0092   HDMIExternalRecorder                 no
   0x0093   BlockShotAFResponse                  no
   0x0094   SubjectMotion                        no
   0x0095   Three-DTrackingFaceDetection         no
@@ -6162,10 +7128,14 @@ Unknown only to reduce the volume of the normal output.
   0x00fb   SecondarySlotFunction                no
   0x00fc   SilentPhotography                    no
   0x00fd   ExtendedShutterSpeeds                no
+  0x0102   HDMIBitDepth                         no
+  0x0103   HDMIOutputHDR                        no
+  0x0104   HDMIViewAssist                       no
   0x0109   BracketSet                           no
   0x010a   BracketProgram                       no
   0x010b   BracketIncrement                     no
   0x010c   BracketIncrement                     no
+  0x010e   MonitorBrightness                    no
   0x0116   GroupAreaC1                          no
   0x0117   AutoAreaAFStartingPoint              no
   0x0118   FocusPointPersistence                no
@@ -6209,7 +7179,7 @@ Unknown only to reduce the volume of the normal output.
   0x0150   ShutterType                          no
   0x0151   LensFunc2Button                      no
   0x0158   USBPowerDelivery                     no
-  0x015b   GroupAreaC2                          no
+  0x0159   EnergySavingMode                     no
   0x015c   BracketingBurstOptions               no
   0x015e   PrimarySlot                          no
   0x015f   ReverseFocusRing                     no
@@ -6222,7 +7192,9 @@ Unknown only to reduce the volume of the normal output.
   0x016a   LimitAF-AreaModeSelAutoAnimals?      no
   0x016b   LimitAF-AreaModeSelWideLPeople?      no
   0x016c   LimitAF-AreaModeSelWideLAnimals?     no
+  0x016d   SaveFocus                            no
   0x016e   AFAreaMode                           no
+  0x016f   MovieAFAreaMode                      no
   0x0170   PreferSubSelectorCenter              no
   0x0171   KeepExposureWithTeleconverter        no
   0x0174   FocusPointSelectionSpeed             no
@@ -12485,6 +13457,7 @@ DiMAGE X and Xt.
   0x00b9   AFTune                               Nikon AFTune
   0x00bb   RetouchInfo                          Nikon RetouchInfo
   0x00bd   PictureControlData                   Nikon PictureControl
+  0x00bf   SilentPhotography                    yes
   0x00c3   BarometerInfo                        Nikon BarometerInfo
   0x0e00   PrintIM                              PrintIM
   0x0e01   NikonCaptureData                     NikonCapture
@@ -13005,6 +13978,8 @@ These tags are extracted from encrypted data in images from the D5 and D500.
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
     202    Rotation                             int8u & 0x03
+    208    Interval                             int8u~
+    212    IntervalFrame                        int8u~
    1506    FlickerReductionIndicator            int8u & 0x01
    2004    JPGCompression                       int8u & 0x01
    2171    AEBracketingSteps                    int8u & 0xff
@@ -13031,9 +14006,29 @@ These tags are extracted from encrypted data in images from the D6.
    Index   Tag Name                             Writable
    -----   --------                             --------
       0    ShotInfoVersion                      no
+      4    FirmwareVersion                      no
+  30220    IntervalShooting                     int16u~
   49690    RollAngle                            fixed32u
   49694    PitchAngle                           fixed32u
   49698    YawAngle                             fixed32u
+  50190    Intervals                            int32u
+  50194    ShotsPerInterval                     int32u
+  50198    IntervalExposureSmoothing            int8u
+  50200    IntervalPriority                     int8u
+  50234    FocusShiftNumberShots                int8u
+  50238    FocusShiftStepWidth                  int8u
+  50242    FocusShiftInterval                   int8u~
+  50246    FocusShiftExposureLock               int8u
+  50336    DiffractionCompensation              int8u
+  50342    FlashControlMode                     int8u
+  50348    FlashGNDistance?                     no
+  50352    FlashOutput?                         int8u
+  50362    FlashRemoteControl?                  int8u
+  50366    FlashMasterControlMode               int8u
+  50368    FlashMasterCompensation?             int8s
+  50372    FlashMasterOutput?                   int8u
+  50374    FlashWirelessOption?                 int8u
+  50524    MovieType?                           int8u
 
 =head3 Nikon ShotInfoD610 Tags
 
@@ -13053,10 +14048,48 @@ These tags are extracted from encrypted data in images from the Z7_2.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
+  30220    IntervalShooting                     int16u~
   32672    PortraitImpressionBalance            int8u[2]~
   52786    RollAngle                            fixed32u
   52790    PitchAngle                           fixed32u
   52794    YawAngle                             fixed32u
+  53246    IntervalDurationHours                int32u
+  53250    IntervalDurationMinutes              int32u
+  53254    IntervalDurationSeconds              int32u
+  53262    Intervals                            int32u
+  53266    ShotsPerInterval                     int32u
+  53270    IntervalExposureSmoothing            int8u
+  53272    IntervalPriority                     int8u
+  53306    FocusShiftNumberShots                int8u
+  53310    FocusShiftStepWidth                  int8u
+  53314    FocusShiftInterval                   int8u~
+  53318    FocusShiftExposureLock               int8u
+  53408    DiffractionCompensation              int8u
+  53409    AutoDistortionControl                int8u
+  53412    NikonMeteringMode?                   int8u
+  53414    FlashControlMode                     int8u
+  53420    FlashGNDistance?                     no
+  53424    FlashOutput?                         int8u
+  53432    FlashWirelessOption?                 int8u
+  53434    FlashRemoteControl?                  int8u
+  53438    FlashMasterControlMode               int8u
+  53440    FlashMasterCompensation?             int8s
+  53444    FlashMasterOutput?                   int8u
+  53588    MovieFrameSize?                      int8u
+  53590    MovieFrameRate?                      int8u
+  53592    MovieSlowMotion?                     int8u
+  53596    MovieType?                           int8u
+  53602    MovieISOAutoManualMode?              no
+  53654    MovieActiveD-Lighting?               int8u
+  53658    MovieHighISONoiseReduction?          int8u
+  53660    MovieVignetteControl?                int8u
+  53662    MovieVignetteControlSameAsPhoto?     int8u
+  53663    MovieDiffrationCompensation?         int8u
+  53664    MovieAutoDistortionControl?          int8u
+  53670    MovieFocusMode?                      int8u
+  53674    MovieVibrationReduction?             int8u
+  53677    MovieVibrationReductionSameAsPhoto?  int8u
+  53944    HDMIOutputN-Log?                     int8u
 
 =head3 Nikon ShotInfo Tags
 
@@ -35719,7 +36752,7 @@ values, may created via the ExifTool configuration file.
   GPSLongitude         Sony:GPSLongitude        no
                        Sony:GPSLongitudeRef
   GPSLongitudeRef      XMP-exif:GPSLongitude    no
-  GPSPosition          GPSLatitude              no
+  GPSPosition          GPSLatitude              yes
                        GPSLongitude
   HyperfocalDistance   FocalLength              no
                        Aperture

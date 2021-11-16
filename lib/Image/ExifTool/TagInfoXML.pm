@@ -15,7 +15,7 @@ use vars qw($VERSION @ISA $makeMissing);
 use Image::ExifTool qw(:Utils :Vars);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.31';
+$VERSION = '1.32';
 @ISA = qw(Exporter);
 
 # set this to a language code to generate Lang module with 'MISSING' entries
@@ -57,6 +57,12 @@ my %translateLang = (
 
 my $numbersFirst = 1;   # set to -1 to sort numbers last, or 2 to put negative numbers last
 my $caseInsensitive;    # used internally by sort routine
+
+# write groups that don't represent real family 1 group names
+my %fakeWriteGroup = (
+    Comment => 1,   # (JPEG Comment)
+    colr => 1,      # (Jpeg2000 'colr' box)
+);
 
 #------------------------------------------------------------------------------
 # Utility to print tag information database as an XML list
@@ -178,9 +184,8 @@ PTILoop:    for ($index=0; $index<@infoArray; ++$index) {
                 }
                 my @groups = $et->GetGroup($tagInfo);
                 my $writeGroup = $$tagInfo{WriteGroup} || $$table{WRITE_GROUP};
-                if ($writeGroup and $writeGroup ne 'Comment') {
-                    $groups[1] = $writeGroup;   # use common write group for group 1
-                }
+                # use common write group for group 1 (unless fake)
+                $groups[1] = $writeGroup if $writeGroup and not $fakeWriteGroup{$writeGroup};
                 # add group names if different from table defaults
                 my $grp = '';
                 for ($fam=0; $fam<3; ++$fam) {

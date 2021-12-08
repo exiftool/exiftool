@@ -20,7 +20,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.18';
+$VERSION = '1.19';
 
 # road map of directory locations in GIF images
 my %gifMap = (
@@ -54,6 +54,7 @@ my %gifMap = (
     Extensions => { # (for documentation only)
         SubDirectory => { TagTable => 'Image::ExifTool::GIF::Extensions' },
     },
+    TransparentColor => { },
 );
 
 # GIF89a application extensions:
@@ -475,6 +476,9 @@ Block:
             my $delay = Get16u(\$buff, 1);
             $delayTime += $delay;
             $verbose and printf $out "Graphic Control: delay=%.2f\n", $delay / 100;
+            # get transparent colour
+            my $bits = Get8u(\$buff, 0);
+            $et->HandleTag($tagTablePtr, 'TransparentColor', Get8u(\$buff,3)) if $bits & 0x01;
             $raf->Seek(-$length, 1) or last;
 
         } elsif ($a == 0x01 and $length == 12) {    # plain text extension

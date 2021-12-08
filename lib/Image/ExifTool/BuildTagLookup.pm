@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.46';
+$VERSION = '3.47';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -757,7 +757,7 @@ sub new
     my (%tagNameInfo, %id, %longID, %longName, %shortName, %tableNum,
         %tagLookup, %tagExists, %noLookup, %tableWritable, %sepTable, %case,
         %structs, %compositeModules, %isPlugin, %flattened, %structLookup,
-        @writePseudo);
+        @writePseudo, %dupXmpTag);
     $self->{TAG_NAME_INFO} = \%tagNameInfo;
     $self->{ID_LOOKUP} = \%id;
     $self->{LONG_ID} = \%longID;
@@ -904,6 +904,10 @@ TagID:  foreach $tagID (@keys) {
                 my @grps = $et->GetGroup($tagInfo);
                 foreach (@grps) {
                     warn "Group name starts with 'ID-' for $short $name\n" if /^ID-/i;
+                }
+                if ($isXMP and not $$tagInfo{Avoid} and not $$tagInfo{Struct}) {
+                    $dupXmpTag{$name} and warn "Duplicate XMP tag $name\n";
+                    $dupXmpTag{$name} = 1;
                 }
                 # validate Name (must not start with a digit or else XML output will not be valid;
                 # must not start with a dash or exiftool command line may get confused)

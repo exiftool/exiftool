@@ -99,7 +99,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 58 different formats of timed GPS metadata from video files.
+        currently reads 59 different formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
@@ -1580,6 +1580,31 @@ sub ProcessFreeGPS($$$)
         # bytes 7-12 are the timestamp in ASCII HHMMSS after xor-ing with 0x70
         substr($time,7,6) = pack 'C*', map { $_ ^= 0x70 } unpack 'C*', substr($time,7,6);
         # (other values are currently unknown)
+
+    } elsif ($$dataPt =~ /^.{64}A([NS])([EW])\0/s) {
+
+        # Vantrue S1 dashcam
+        #  0000: 00 00 80 00 66 72 65 65 47 50 53 20 78 00 00 00 [....freeGPS x...]
+        #  0010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+        #  0020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+        #  0030: 68 6f 72 73 6f 6e 74 65 63 68 00 00 00 00 00 00 [horsontech......]
+        #  0040: 41 4e 45 00 15 00 00 00 07 00 00 00 02 00 00 00 [ANE.............]
+        #  0050: 03 00 00 00 35 00 00 00 05 00 00 00 4f 74 4c 44 [....5.......OtLD]
+        #  0060: e2 77 a0 45 89 c1 98 42 71 bd ac 42 02 ab 0d 43 [.w.E...Bq..B...C]
+        #  0070: 05 00 00 00 7f 00 00 00 07 01 00 00 00 00 00 00 [................]
+        ($latRef, $lonRef) = ($1, $2);
+        ($yr,$mon,$day,$hr,$min,$sec,@acc) = unpack('x68V6x20V3', $$dataPt);
+        return 0 unless $mon>=1 and $mon<=12 and $day>=1 and $day<=31;
+        $yr += 2000 if $yr < 2000;
+        # (not sure about acc scaling)
+        map { $_ = $_ - 4294967296 if $_ >= 0x80000000; $_ /= 1000 } @acc;
+        SetByteOrder('II');
+        $lon = GetFloat($dataPt, 0x5c);
+        $lat = GetFloat($dataPt, 0x60);
+        $spd = GetFloat($dataPt, 0x64) * $knotsToKph;
+        $trk = GetFloat($dataPt, 0x68);
+        $alt = GetFloat($dataPt, 0x6c);
+        SetByteOrder('MM');
 
     } else {
 

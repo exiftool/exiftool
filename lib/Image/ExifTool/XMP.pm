@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.48';
+$VERSION = '3.49';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -439,12 +439,13 @@ my %sOECF = (
 my %sAreaModels = (
     STRUCT_NAME => 'AreaModels',
     NAMESPACE   => 'crs',
-    ColorRangeMaskAreaSampleInfo => { },
-    AreaComponents => { List => 'Seq' },
+    ColorRangeMaskAreaSampleInfo => { FlatName => 'ColorSampleInfo' },
+    AreaComponents => { FlatName => 'Components', List => 'Seq' },
 );
-my %sCorrectionRangeMask = (
-    STRUCT_NAME => 'CorrectionRangeMask',
+my %sCorrRangeMask = (
+    STRUCT_NAME => 'CorrRangeMask',
     NAMESPACE   => 'crs',
+    NOTES => 'Called CorrectionRangeMask by the spec.',
     Version     => { },
     Type        => { },
     ColorAmount => { Writable => 'real' },
@@ -515,7 +516,12 @@ my %sCorrectionMask;
     WholeImageArea => { List => 0 },
     Origin       => { List => 0 },
     Masks        => { Struct => \%sCorrectionMask, NoSubStruct => 1 },
-    CorrectionRangeMask => { Struct => \%sCorrectionRangeMask },
+    CorrectionRangeMask => {
+        Name => 'CorrRangeMask',
+        Notes => 'called CorrectionRangeMask by the spec',
+        FlatName => 'Range',
+        Struct => \%sCorrRangeMask,
+    },
 );
 my %sCorrection = (
     STRUCT_NAME => 'Correction',
@@ -529,8 +535,8 @@ my %sCorrection = (
     LocalClarity     => { FlatName => 'Clarity',    Writable => 'real', List => 0 },
     LocalSharpness   => { FlatName => 'Sharpness',  Writable => 'real', List => 0 },
     LocalBrightness  => { FlatName => 'Brightness', Writable => 'real', List => 0 },
-    LocalToningHue   => { FlatName => 'Hue',        Writable => 'real', List => 0 },
-    LocalToningSaturation => { FlatName => 'Saturation',        Writable => 'real', List => 0 },
+    LocalToningHue   => { FlatName => 'ToningHue',  Writable => 'real', List => 0 },
+    LocalToningSaturation => { FlatName => 'ToningSaturation',  Writable => 'real', List => 0 },
     LocalExposure2012     => { FlatName => 'Exposure2012',      Writable => 'real', List => 0 },
     LocalContrast2012     => { FlatName => 'Contrast2012',      Writable => 'real', List => 0 },
     LocalHighlights2012   => { FlatName => 'Highlights2012',    Writable => 'real', List => 0 },
@@ -548,8 +554,10 @@ my %sCorrection = (
     LocalTexture     => { FlatName => 'Texture', Writable => 'real', List => 0 },
     # new in LR 11.0
     CorrectionRangeMask => {
+        Name => 'CorrRangeMask',
+        Notes => 'called CorrectionRangeMask by the spec',
         FlatName => 'RangeMask',
-        Struct => \%sCorrectionRangeMask,
+        Struct => \%sCorrRangeMask,
     },
     CorrectionMasks  => {
         FlatName => 'Mask',
@@ -1737,7 +1745,7 @@ my %sPantryItem = (
     Software  => { },
     Artist    => { Groups => { 2 => 'Author' } },
     Copyright => { Groups => { 2 => 'Author' }, Writable => 'lang-alt' },
-    NativeDigest => { }, #PH
+    NativeDigest => { Avoid => 1 }, #PH
 );
 
 # Exif namespace properties (exif)

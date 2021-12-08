@@ -137,22 +137,26 @@ my %coordConv = (
             my ($v, $et) = @_;
             $v = $et->TimeNow() if lc($v) eq 'now';
             my @tz;
-            if ($v =~ s/([-+])(.*)//s) {    # remove timezone
+            if ($v =~ s/([-+])(\d{1,2}):?(\d{2})\s*(DST)?$//i) {    # remove timezone
                 my $s = $1 eq '-' ? 1 : -1; # opposite sign to convert back to UTC
                 my $t = $2;
-                @tz = ($s*$1, $s*$2) if $t =~ /^(\d{2}):?(\d{2})\s*$/;
+                @tz = ($s*$2, $s*$3);
             }
-            my @a = ($v =~ /((?=\d|\.\d)\d*(?:\.\d*)?)/g);
-            push @a, '00' while @a < 3;
+            # (note: we must allow '.' as a time separator, eg. '10.30.00', with is tricky due to decimal seconds)
+            # YYYYmmddHHMMSS[.ss] format
+            my @a = ($v =~ /^[^\d]*\d{4}[^\d]*\d{1,2}[^\d]*\d{1,2}[^\d]*(\d{1,2})[^\d]*(\d{2})[^\d]*(\d{2}(?:\.\d+)?)[^\d]*$/);
+            # HHMMSS[.ss] format
+            @a or @a = ($v =~ /^[^\d]*(\d{1,2})[^\d]*(\d{2})[^\d]*(\d{2}(?:\.\d+)?)[^\d]*$/);
+            @a or warn('Invalid time (use HH:MM:SS[.ss][+/-HH:MM|Z])'), return undef;
             if (@tz) {
                 # adjust to UTC
-                $a[-2] += $tz[1];
-                $a[-3] += $tz[0];
-                while ($a[-2] >= 60) { $a[-2] -= 60; ++$a[-3] }
-                while ($a[-2] < 0)   { $a[-2] += 60; --$a[-3] }
-                $a[-3] = ($a[-3] + 24) % 24;
+                $a[1] += $tz[1];
+                $a[0] += $tz[0];
+                while ($a[1] >= 60) { $a[1] -= 60; ++$a[0] }
+                while ($a[1] < 0)   { $a[1] += 60; --$a[0] }
+                $a[0] = ($a[0] + 24) % 24;
             }
-            return "$a[-3]:$a[-2]:$a[-1]";
+            return join(':', @a);
         },
     },
     0x0008 => {

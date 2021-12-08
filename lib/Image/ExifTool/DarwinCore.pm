@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 my %dateTimeInfo = (
     # NOTE: Do NOT put "Groups" here because Groups hash must not be common!
@@ -38,7 +38,7 @@ my %event = (
     earliestDate        => { %dateTimeInfo, Groups => { 2 => 'Time' } },
     endDayOfYear        => { Writable => 'integer', Groups => { 2 => 'Time' } },
     eventDate           => { %dateTimeInfo, Groups => { 2 => 'Time' } },
-    eventID             => { },
+    eventID             => { Avoid => 1, Notes => 'avoided in favor of XMP-iptcExt:EventID' },
     eventRemarks        => { Writable => 'lang-alt' },
     eventTime => {
         Groups => { 2 => 'Time' },

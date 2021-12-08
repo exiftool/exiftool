@@ -7,6 +7,16 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Dec. 8, 2021 - Version 12.37
+
+  - Decode timed GPS from Vantrue S1 dashcam MP4 videos
+  - Decode ColorData tags for the Canon EOS R3 (thanks LibRaw)
+  - Decode more makernotes tags for Nikon Z cameras (thanks Warren Hatch)
+  - Extract TransparentColor from GIF images
+  - Improved parsing of input time values for GPSTimeStamp to properly handle a
+    "." separator
+  - Improved warning when incorrectly using "
+
 Nov. 16, 2021 - Version 12.36
 
   - IMPORTANT: Fixed bug introduced in 12.35 which corrupted JPEG 2000 images
@@ -19,7 +29,7 @@ Nov. 16, 2021 - Version 12.36
   - Made the Composite GPSPosition tag writable
   - Fixed erroneous "Skipped unknown bytes after JPEG SOS" warning
   - Fixed group for new writable Jpeg2000 color tags in -listx output
-  - Fixed problem finding files in windows when using wildcards in file name and
+  - Fixed problem finding files in Windows when using wildcards in file name and
     a drive letter with no slash
 
 Nov. 11, 2021 - Version 12.35

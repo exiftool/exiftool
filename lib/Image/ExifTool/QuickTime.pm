@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.72';
+$VERSION = '2.73';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -6370,7 +6370,7 @@ my %eeBox2 = (
     'player.movie.visual.tint'      => 'Tint',
     'player.movie.visual.contrast'  => 'Contrast',
     'player.movie.audio.gain'       => 'AudioGain',
-    'player.movie.audio.treble'     => 'Trebel',
+    'player.movie.audio.treble'     => 'Treble',
     'player.movie.audio.bass'       => 'Bass',
     'player.movie.audio.balance'    => 'Balance',
     'player.movie.audio.pitchshift' => 'PitchShift',
@@ -6465,6 +6465,7 @@ my %eeBox2 = (
 %Image::ExifTool::QuickTime::iTunesInfo = (
     PROCESS_PROC => \&ProcessMOV,
     GROUPS => { 1 => 'iTunes', 2 => 'Audio' },
+    VARS => { LONG_TAGS => 0 }, # (hack for discrepancy in the way long tags are counted in BuildTagLookup)
     NOTES => q{
         ExifTool will extract any iTunesInfo tags that exist, even if they are not
         defined in this table.  These tags belong to the family 1 "iTunes" group,

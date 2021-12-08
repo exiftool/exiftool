@@ -1400,7 +1400,10 @@ sub SetNewValuesFromFile($$;@)
                 }
             }
             # validate tag name(s)
-            $$opts{EXPR} or ValidTagName($tag) or $self->Warn("Invalid tag name '${tag}'"), next;
+            unless ($$opts{EXPR} or ValidTagName($tag)) {
+                $self->Warn("Invalid tag name '${tag}'. Use '=' not '<' to assign a tag value");
+                next;
+            }
             ValidTagName($dstTag) or $self->Warn("Invalid tag name '${dstTag}'"), next;
             # translate '+' and '-' to appropriate SetNewValue option
             if ($opt) {
@@ -4775,7 +4778,7 @@ sub InverseDateTime($$;$$)
     my ($rtnVal, $tz);
     my $fmt = $$self{OPTIONS}{DateFormat};
     # strip off timezone first if it exists
-    if (not $fmt and $val =~ s/([+-])(\d{1,2}):?(\d{2})\s*(DST)?$//i) {
+    if (not $fmt and $val =~ s/([-+])(\d{1,2}):?(\d{2})\s*(DST)?$//i) {
         $tz = sprintf("$1%.2d:$3", $2);
     } elsif (not $fmt and $val =~ s/Z$//i) {
         $tz = 'Z';

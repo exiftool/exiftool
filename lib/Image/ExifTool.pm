@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.36';
+$VERSION = '12.37';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1211,10 +1211,10 @@ my %systemTagsNotes = (
     ZoneIdentifier => {
         Groups => { 1 => 'System', 2 => 'Other' },
         Notes => q{
-            Windows only.  Used to indicate that a file has a Zone.Identifier alternate
-            data stream, which is used by some Windows browsers to mark downloaded files
-            as possibly unsafe to run.  May be deleted to remove this stream.  Requires
-            Win32API::File
+            Windows only.  Existence indicates that the file has a Zone.Identifier
+            alternate data stream, which is used by some Windows browsers to mark
+            downloaded files as possibly unsafe to run.  May be deleted to remove this
+            stream.  Requires Win32API::File
         },
         Writable => 1,
         WritePseudo => 1,

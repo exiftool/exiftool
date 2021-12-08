@@ -259,6 +259,7 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
     },
     tRNS => {
         Name => 'Transparency',
+        # may have as many entries as the PLTE table, but who wants to see all that?
         ValueConv => q{
             return \$val if length($val) > 6;
             join(" ",unpack($Image::ExifTool::PNG::colorType == 3 ? "C*" : "n*", $val));

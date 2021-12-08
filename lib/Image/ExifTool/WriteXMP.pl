@@ -1418,9 +1418,15 @@ sub WriteXMP($$;$)
             unless ($uri) {
                 $uri = $nsURI{$1};      # we must have added a namespace
                 unless ($uri) {
-                    # (namespace may be empty if trying to write empty XMP structure, forum12384)
-                    $xmpErr = "Undefined XMP namespace: $1" if length $uri;
-                    next;
+                    # (namespace prefix may be empty if trying to write empty XMP structure, forum12384)
+                     if (length $1) {
+                        my $err = "Undefined XMP namespace: $1";
+                        if (not $xmpErr or $err ne $xmpErr) {
+                            $xmpFile ? $et->Error($err) : $et->Warn($err);
+                            $xmpErr = $err;
+                        }
+                     }
+                     next;
                 }
             }
             $nsNew{$1} = $uri;
@@ -1586,14 +1592,7 @@ sub WriteXMP($$;$)
     unless (%capture or $xmpFile or $$dirInfo{InPlace} or $$dirInfo{NoDelete}) {
         $long[-2] = '';
     }
-    if ($xmpErr) {
-        if ($xmpFile) {
-            $et->Error($xmpErr);
-            return -1;
-        }
-        $et->Warn($xmpErr);
-        return undef;
-    }
+    return($xmpFile ? -1 : undef) if $xmpErr;
     $$et{CHANGED} += $changed;
     $debug > 1 and $long[-2] and print $long[-2],"\n";
     return $long[-2] unless $xmpFile;

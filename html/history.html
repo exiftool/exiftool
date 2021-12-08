@@ -17,6 +17,25 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.37'><b>Dec. 8, 2021 - Version 12.37</b></a>
+<ul>
+<li>Decode timed GPS from Vantrue S1 dashcam MP4 videos
+<li>Decode ColorData tags for the Canon EOS R3 (thanks LibRaw)
+<li>Decode more makernotes tags for Nikon Z cameras (thanks Warren Hatch)
+<li>Extract TransparentColor from GIF images
+<li>Improved parsing of input time values for GPSTimeStamp to properly handle a
+    "." separator
+<li>Improved warning when incorrectly using "<" instead of "=" to write FileName
+    or Directory with a format string
+<li>Shortened a few of the new obscenely-long XMP-crs tag names 
+<li>Avoid writing XMP-dwc:EventID and XMP-tiff:NativeDigest
+<li>Avoid printing same structure twice in -j and -X output when -l is used
+<li>Fixed typo in a QuickTime tag name
+<li>Fixed two XMP-crs tag names and typo in a NikonSettings value (thanks Herb)
+<li>Fixed patch of version 12.25 to avoid writing XMP which contains an
+    undefined namespace
+</ul>
+
 <a name='v12.36'><b>Nov. 16, 2021 - Version 12.36</b></a>
 <ul>
 <li>IMPORTANT: Fixed bug introduced in 12.35 which corrupted JPEG 2000 images
@@ -29,7 +48,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Made the Composite GPSPosition tag writable
 <li>Fixed erroneous "Skipped unknown bytes after JPEG SOS" warning
 <li>Fixed group for new writable Jpeg2000 color tags in -listx output
-<li>Fixed problem finding files in windows when using wildcards in file name and
+<li>Fixed problem finding files in Windows when using wildcards in file name and
     a drive letter with no slash
 </ul>
 

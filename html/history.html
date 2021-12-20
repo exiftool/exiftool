@@ -17,6 +17,18 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.38'><b>Dec. 20, 2021 - Version 12.38</b></a>
+<ul>
+<li>Decode a number of new tags for the Nikon Z9 (thanks Warren Hatch)
+<li>Patched incorrect decoding of AEBShotCount for the Canon EOS 90D
+<li>Patched EXR reader to support long tag names
+<li>Patched security issue (thanks Joe Lothan)
+<li>Fixed an incorrect tag ID for a new Nikon MakerNote tag (github #108)
+<li>Fixed XMP-exif:GPSMeasureMode conversions to match EXIF
+<li>Fixed problem where some namespaces may be undeclared in the -X output when
+    using the -struct option
+</ul>
+
 <a name='v12.37'><b>Dec. 8, 2021 - Version 12.37</b></a>
 <ul>
 <li>Decode timed GPS from Vantrue S1 dashcam MP4 videos
@@ -25,12 +37,12 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Extract TransparentColor from GIF images
 <li>Improved parsing of input time values for GPSTimeStamp to properly handle a
     "." separator
-<li>Improved warning when incorrectly using "<" instead of "=" to write FileName
-    or Directory with a format string
+<li>Improved warning when incorrectly using "<" instead of "=" to assign a tag
+    value
 <li>Shortened a few of the new obscenely-long XMP-crs tag names 
 <li>Avoid writing XMP-dwc:EventID and XMP-tiff:NativeDigest
 <li>Avoid printing same structure twice in -j and -X output when -l is used
-<li>Fixed typo in a QuickTime tag name
+<li>Fixed typo in a QuickTime tag name (thanks Hubert)
 <li>Fixed two XMP-crs tag names and typo in a NikonSettings value (thanks Herb)
 <li>Fixed patch of version 12.25 to avoid writing XMP which contains an
     undefined namespace

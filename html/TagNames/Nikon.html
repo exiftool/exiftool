@@ -431,9 +431,10 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>ShotInfoD6
   <br>ShotInfoD610
   <br>ShotInfoZ7_2
+  <br>ShotInfoZ9
   <br>ShotInfo02xx
   <br>ShotInfoUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#ShotInfoD40'>Nikon ShotInfoD40 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD80'>Nikon ShotInfoD80 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD90'>Nikon ShotInfoD90 Tags</a>
@@ -459,6 +460,7 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>--&gt; <a href='Nikon.html#ShotInfoD6'>Nikon ShotInfoD6 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD610'>Nikon ShotInfoD610 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoZ7_2'>Nikon ShotInfoZ7_2 Tags</a>
+  <br>--&gt; <a href='Nikon.html#ShotInfoZ9'>Nikon ShotInfoZ9 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfo'>Nikon ShotInfo Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfo'>Nikon ShotInfo Tags</a></td></tr>
 <tr>
@@ -470,18 +472,7 @@ causes the other information to be re-encrypted with the new key)</span></span><
 <td title='0x0093 = 147'>0x0093</td>
 <td>NEFCompression</td>
 <td class=c>int16u</td>
-<td><table class=cols><tr>
-  <td>1 = Lossy (type 1)
-  <br>2 = Uncompressed
-  <br>3 = Lossless
-  <br>4 = Lossy (type 2)
-  <br>5 = Striped packed 12 bits
-  <br>6 = Uncompressed (reduced to 12 bit)
-  <br>7 = Unpacked 12 bits
-  <br>8 = Small
-  <br>9 = Packed 12 bits
-  <br>10 = Packed 14 bits</td></tr></table>
-</td></tr>
+<td>--&gt; <a href='Nikon.html#NEFCompression'>Nikon NEFCompression Values</a></td></tr>
 <tr>
 <td title='0x0094 = 148'>0x0094</td>
 <td>SaturationAdj</td>
@@ -814,6 +805,25 @@ edit versions, otherwise this is extracted as a binary data block)</span>
   <br>&#39;14 0 0 0&#39; = 14
   <br>&#39;16 16 16 0&#39; = 16 x 3</span></td></tr>
 </table></td></tr></table></blockquote>
+
+<h2><a name='NEFCompression'>Nikon NEFCompression Values</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>NEFCompression</th><th>Value</th><th>NEFCompression</th></tr>
+<tr><td class=r>1</td><td>= Lossy (type 1)</td>
+<td class='r b'>7</td><td class=b>= Unpacked 12 bits</td>
+</tr><tr><td class=r>2</td><td>= Uncompressed</td>
+<td class='r b'>8</td><td class=b>= Small</td>
+</tr><tr><td class=r>3</td><td>= Lossless</td>
+<td class='r b'>9</td><td class=b>= Packed 12 bits</td>
+</tr><tr><td class=r>4</td><td>= Lossy (type 2)</td>
+<td class='r b'>10</td><td class=b>= Packed 14 bits</td>
+</tr><tr><td class=r>5</td><td>= Striped packed 12 bits</td>
+<td class='r b'>13</td><td class=b>= High Efficiency</td>
+</tr><tr><td class=r>6</td><td>= Uncompressed (reduced to 12 bit)</td>
+<td class='r b'>14</td><td class=b>= High Efficiency*</td>
+</tr></table></td></tr></table></blockquote>
 
 <h2><a name='PreviewIFD'>Nikon PreviewIFD Tags</a></h2>
 <blockquote>
@@ -1701,6 +1711,24 @@ FaceDetectFrameSize)</span></span></td></tr>
 <td>Location</td>
 <td class=c>undef[70]</td>
 <td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MakerNotes0x51'>Nikon MakerNotes0x51 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FirmwareVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>NEFCompression</td>
+<td class=c>int16u[0.5]</td>
+<td>--&gt; <a href='Nikon.html#NEFCompression'>Nikon NEFCompression Values</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='AFInfo'>Nikon AFInfo Tags</a></h2>
@@ -3996,12 +4024,18 @@ firmware 1.01b.</p>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
 <tr class=b>
+<td class=r title='577 = 0x241'>577</td>
+<td>MovieDiffractionCompensation?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
 <td class=r title='578 = 0x242'>578</td>
 <td>MovieAutoDistortionControl?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='584 = 0x248'>584</td>
 <td>MovieFocusMode?</td>
 <td class=c>int8u</td>
@@ -4009,31 +4043,59 @@ firmware 1.01b.</p>
   <br>1 = AF-S
   <br>2 = AF-C
   <br>4 = AF-F</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='590 = 0x24e'>590</td>
 <td>MovieVibrationReduction?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On (Normal)
   <br>2 = On (Sport)</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='591 = 0x24f'>591</td>
 <td>MovieVibrationReductionSameAsPhoto?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='858 = 0x35a'>858</td>
 <td>HDMIOutputN-Log?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ShotInfoZ9'>Nikon ShotInfoZ9 Tags</a></h2>
+<p>These tags are extracted from encrypted data in images from the Z9.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='5771 = 0x168b'>5771</td>
-<td>MovieDiffrationCompensation?</td>
-<td class=c>int8u</td>
-<td><span class=s>0 = Off
-  <br>1 = On</span></td></tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ShotInfoVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>FirmwareVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='60139 = 0xeaeb'>60139</td>
+<td>RollAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
+<tr class=b>
+<td class=r title='60143 = 0xeaef'>60143</td>
+<td>PitchAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
+<tr>
+<td class=r title='60147 = 0xeaf3'>60147</td>
+<td>YawAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfo'>Nikon ShotInfo Tags</a></h2>
@@ -7949,7 +8011,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 8, 2021</i>
+<br><i>Last revised Dec 20, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

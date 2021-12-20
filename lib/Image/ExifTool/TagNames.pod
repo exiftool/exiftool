@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 25513 tags, with 16386 unique tag names.
+They contain a total of 25521 tags, with 16386 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -13498,6 +13498,7 @@ DiMAGE X and Xt.
            ShotInfoD6                           Nikon ShotInfoD6
            ShotInfoD610                         Nikon ShotInfoD610
            ShotInfoZ7_2                         Nikon ShotInfoZ7_2
+           ShotInfoZ9                           Nikon ShotInfoZ9
            ShotInfo02xx                         Nikon ShotInfo
            ShotInfoUnknown                      Nikon ShotInfo
   0x0092   HueAdjustment                        int16s
@@ -13781,6 +13782,13 @@ Tags written by some Nikon GPS-equipped cameras like the AW100.
       5    CountryCode                          undef[3]
       8    POILevel                             int8u
       9    Location                             undef[70]
+
+=head3 Nikon MakerNotes0x51 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    FirmwareVersion                      no
+     10    NEFCompression                       int16u[0.5]
 
 =head3 Nikon AFInfo Tags
 
@@ -14195,12 +14203,24 @@ These tags are used by the Z5 Z6 Z7  Z6II Z7II Z50 Zfc
     572    MovieHighISONoiseReduction?          int8u
     574    MovieVignetteControl?                int8u
     576    MovieVignetteControlSameAsPhoto?     int8u
+    577    MovieDiffractionCompensation?        int8u
     578    MovieAutoDistortionControl?          int8u
     584    MovieFocusMode?                      int8u
     590    MovieVibrationReduction?             int8u
     591    MovieVibrationReductionSameAsPhoto?  int8u
     858    HDMIOutputN-Log?                     int8u
-   5771    MovieDiffrationCompensation?         int8u
+
+=head3 Nikon ShotInfoZ9 Tags
+
+These tags are extracted from encrypted data in images from the Z9.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    ShotInfoVersion                      no
+      4    FirmwareVersion                      no
+  60139    RollAngle                            fixed32u
+  60143    PitchAngle                           fixed32u
+  60147    YawAngle                             fixed32u
 
 =head3 Nikon ShotInfo Tags
 

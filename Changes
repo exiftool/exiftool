@@ -7,6 +7,17 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Dec. 20, 2021 - Version 12.38
+
+  - Decode a number of new tags for the Nikon Z9 (thanks Warren Hatch)
+  - Patched incorrect decoding of AEBShotCount for the Canon EOS 90D
+  - Patched EXR reader to support long tag names
+  - Patched security issue (thanks Joe Lothan)
+  - Fixed an incorrect tag ID for a new Nikon MakerNote tag (github #108)
+  - Fixed XMP-exif:GPSMeasureMode conversions to match EXIF
+  - Fixed problem where some namespaces may be undeclared in the -X output when
+    using the -struct option
+
 Dec. 8, 2021 - Version 12.37
 
   - Decode timed GPS from Vantrue S1 dashcam MP4 videos

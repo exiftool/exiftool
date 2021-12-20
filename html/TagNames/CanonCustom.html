@@ -1352,12 +1352,17 @@ well as newer tags and values added by later models.</p>
 <td>AEBShotCount
   <br>AEBShotCount</td>
 <td class=c>int32s<br>int32s[2]</td>
-<td><span class=s><span class=n>(one value for some models...)</span>
+<td><span class=s><span class=n>(EOS 90D)</span>
+  <br>2 = 2 shots
+  <br>3 = 3 shots
+  <br>5 = 5 shots
+  <br>7 = 7 shots
+  <br><span class=n>(other models storing a single value)</span>
   <br>0 = 3 shots
   <br>1 = 2 shots
   <br>2 = 5 shots
   <br>3 = 7 shots
-  <br><span class=n>(two values for others)</span>
+  <br><span class=n>(models storing two values)</span>
   <br>&#39;2 1&#39; = 2 shots
   <br>&#39;3 0&#39; = 3 shots
   <br>&#39;5 2&#39; = 5 shots
@@ -2213,7 +2218,7 @@ well as newer tags and values added by later models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 3, 2021</i>
+<br><i>Last revised Dec 20, 2021</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

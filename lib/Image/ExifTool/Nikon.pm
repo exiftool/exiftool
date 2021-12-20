@@ -62,7 +62,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '4.02';
+$VERSION = '4.03';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1067,6 +1067,21 @@ my %flashGroupOptionsMode = (
     3 => 'Off',
 );
 
+my %nefCompression = (   #28 relocated to MakerNotes_0x51 at offset x'0a (Z9)
+    1 => 'Lossy (type 1)', # (older models)
+    2 => 'Uncompressed', #JD - D100 (even though TIFF compression is set!)
+    3 => 'Lossless',
+    4 => 'Lossy (type 2)',
+    5 => 'Striped packed 12 bits', #IB
+    6 => 'Uncompressed (reduced to 12 bit)', #IB
+    7 => 'Unpacked 12 bits', #IB (padded to 16)
+    8 => 'Small', #IB
+    9 => 'Packed 12 bits', #IB (2 pixels in 3 bytes)
+    10 => 'Packed 14 bits', #28 (4 pixels in 7 bytes, eg. D6 uncompressed 14 bit)
+    13 => 'High Efficiency', #28
+    14 => 'High Efficiency*', #28
+);
+
 my %noYes = ( 0 => 'No' , 1 => 'Yes', );
 my %offOn = ( 0 => 'Off', 1 => 'On' );
 my %onOff = ( 0 => 'On',  1 => 'Off' );
@@ -1475,6 +1490,14 @@ my %binaryDataAttrs = (
     0x004f => { #IB (D850)
         Name => 'ColorTemperatureAuto',
         Writable => 'int16u',
+    },
+    0x0051 => { #28 (Z9)
+        Name => 'MakerNotes0x51',
+        Writable => 'undef',
+        Hidden => 1,
+        Permanent => 0,
+        Flags => [ 'Binary', 'Protected' ],
+        SubDirectory => { TagTable => 'Image::ExifTool::Nikon::MakerNotes0x51' },
     },
     #0x0053 #28 possibly a secondary DistortionControl block (in addition to DistortInfo)?  Certainly offset 0x04 within block contains tag AutoDistortionControl for Z72 and D6  (1=>On; 2=> Off)
     #0x005e #28 possibly DiffractionCompensation block?  Certainly offset 0x04 within block contains tag DiffractionCompensation
@@ -1900,6 +1923,16 @@ my %binaryDataAttrs = (
                 ByteOrder => 'LittleEndian',
             },
         },
+        { # (Z9 firmware version 1.00 ref 28)
+            Condition => '$$valPt =~ /^0805/',
+            Name => 'ShotInfoZ9',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::ShotInfoZ9',
+                DecryptStart => 4,
+                DecryptLen => 0xeb5b + 1050,   # thru decoded parts of Offset27
+                ByteOrder => 'LittleEndian',
+            },
+        },
         { # D7100=0227, Z6/Z7=0800
             Condition => '$$valPt =~ /^0[28]/',
             Name => 'ShotInfo02xx',
@@ -1929,18 +1962,8 @@ my %binaryDataAttrs = (
     0x0093 => { #21
         Name => 'NEFCompression',
         Writable => 'int16u',
-        PrintConv => {
-            1 => 'Lossy (type 1)', # (older models)
-            2 => 'Uncompressed', #JD - D100 (even though TIFF compression is set!)
-            3 => 'Lossless',
-            4 => 'Lossy (type 2)',
-            5 => 'Striped packed 12 bits', #IB
-            6 => 'Uncompressed (reduced to 12 bit)', #IB
-            7 => 'Unpacked 12 bits', #IB (padded to 16)
-            8 => 'Small', #IB
-            9 => 'Packed 12 bits', #IB (2 pixels in 3 bytes)
-            10 => 'Packed 14 bits', #28 (4 pixels in 7 bytes, eg. D6 uncompressed 14 bit)
-        },
+        SeparateTable => 'NEFCompression',
+        PrintConv => \%nefCompression,
     },
     0x0094 => { Name => 'SaturationAdj',    Writable => 'int16s' },
     0x0095 => { Name => 'NoiseReduction',   Writable => 'string' }, # ("Off" or "FPNR"=long exposure NR)
@@ -7756,6 +7779,97 @@ my %nikonFocalConversions = (
     # note: DecryptLen currently set to 0xcea6 + 1050
 );
 
+# shot information for the Z9 firmware 1.00 (encrypted) - ref 28
+%Image::ExifTool::Nikon::ShotInfoZ9 = (
+    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    VARS => { ID_LABEL => 'Index' },
+    DATAMEMBER => [ 0x04, 0x0e, 0x18, 0x84, 0xeaea],
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'These tags are extracted from encrypted data in images from the Z9.',
+    0x00 => {
+        Name => 'ShotInfoVersion',
+        Format => 'string[4]',
+        Writable => 0,
+    },
+    0x04 => {
+        Name => 'FirmwareVersion',
+        DataMember => 'FirmwareVersion',
+        Format => 'string[8]',
+        Writable => 0,
+        RawConv => '$$self{FirmwareVersion} = $val',
+    },
+    0x0e => {
+        Name => 'FirmwareVersion2',
+        Format => 'string[8]',
+        Writable => 0,
+        RawConv => '$$self{FirmwareVersion2} = $val',
+        Hidden => 1,
+    },
+    0x18 => {
+        Name => 'FirmwareVersion3',
+        Format => 'string[8]',
+        Writable => 0,
+        RawConv => '$$self{FirmwareVersion3} = $val',
+        Hidden => 1,
+    },
+    0x24 => {
+        Name => 'NumberOffsets', # number of entries in offset table.  offsets are from start of ShotInfo data.
+        DataMember => 'NumberOffsets',
+        Format => 'int32u',
+        Writable => 0,
+        Hidden => 1,
+    },
+    0x84 => {
+        Name => 'OrientationOffset',   #offset24 - length 108
+        DataMember => 'OrientationOffset',
+        Format => 'int32u',
+        Writable => 0,
+        Hidden => 1,
+        RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef', # (ignore if 0)
+    },
+    ### 0xce32 - OrientationInfo start (Z9 firmware 1.00)
+    0xeaea => {
+        Name => 'Hook1',
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of OrientationInfo data
+        Hook => '$varSize = $$self{OrientationOffset} - 0xeaeb',
+    },
+
+    0xeaeb => {
+        Name => 'RollAngle',
+        Format => 'fixed32u',
+        Notes => 'converted to degrees of clockwise camera roll',
+        ValueConv => '$val <= 180 ? $val : $val - 360',
+        ValueConvInv => '$val >= 0 ? $val : $val + 360',
+        PrintConv => 'sprintf("%.1f", $val)',
+        PrintConvInv => '$val',
+    },
+    0xeaef => {
+        Name => 'PitchAngle',
+        Format => 'fixed32u',
+        Notes => 'converted to degrees of upward camera tilt',
+        ValueConv => '$val <= 180 ? $val : $val - 360',
+        ValueConvInv => '$val >= 0 ? $val : $val + 360',
+        PrintConv => 'sprintf("%.1f", $val)',
+        PrintConvInv => '$val',
+    },
+    0xeaf3 => {
+        Name => 'YawAngle',
+        Format => 'fixed32u',
+        Notes => 'the camera yaw angle when shooting in portrait orientation',
+        ValueConv => '$val <= 180 ? $val : $val - 360',
+        ValueConvInv => '$val >= 0 ? $val : $val + 360',
+        PrintConv => 'sprintf("%.1f", $val)',
+        PrintConvInv => '$val',
+    },
+    # note: DecryptLen currently set to 0xeb5b + 1050
+);
+
 %Image::ExifTool::Nikon::ZMenuSettings  = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -8040,8 +8154,8 @@ my %nikonFocalConversions = (
         Unknown => 1,
         PrintConv => \%noYes
     },
-    5771 => {
-        Name => 'MovieDiffrationCompensation',
+    577 => {
+        Name => 'MovieDiffractionCompensation',
         Unknown => 1,
         PrintConv => \%offOn
     },
@@ -9463,6 +9577,25 @@ my %nikonFocalConversions = (
         Format => 'undef[70]',
         RawConv    => '$$self{TextEncoding} ? $self->Decode($val,$$self{TextEncoding},"MM") : $val',
         RawConvInv => '$$self{TextEncoding} ? $self->Encode($val,$$self{TextEncoding},"MM") : $val',
+    },
+);
+
+# MakerNotes0x51 - compression info for Z9
+%Image::ExifTool::Nikon::MakerNotes0x51 = (
+    %binaryDataAttrs,
+    DATAMEMBER => [ 0 ],
+    GROUPS => { 0 => 'MakerNotes' },
+    0 => {
+        Name => 'FirmwareVersion',
+        Format => 'string[8]',
+        Writable => 0,
+        RawConv => '$$self{FirmwareVersion} = $val',
+    },
+    10 => {
+        Name => 'NEFCompression',
+        Writable => 'int16u',
+        SeparateTable => 'NEFCompression',
+        PrintConv => \%nefCompression,
     },
 );
 

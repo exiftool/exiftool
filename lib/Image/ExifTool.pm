@@ -671,7 +671,7 @@ my %fileDescription = (
     LRI  => 'image/x-light-lri',
     M2T  => 'video/mpeg',
     M2TS => 'video/m2ts',
-    MAX  => 'application/x-3ds',
+    MAX  => 'image/x-3ds',
     MEF  => 'image/x-mamiya-mef',
     MIE  => 'application/x-mie',
     MIFF => 'application/x-magick-image',
@@ -734,7 +734,7 @@ my %fileDescription = (
     PPTM => 'application/vnd.ms-powerpoint.presentation.macroEnabled.12',
     PPTX => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
     PS   => 'application/postscript',
-    PSD  => 'application/vnd.adobe.photoshop',
+    PSD  => 'image/vnd.adobe.photoshop',
     PSP  => 'image/x-paintshoppro', #(NC)
     QTIF => 'image/x-quicktime',
     R3D  => 'video/x-red-r3d', #PH (invented)
@@ -789,6 +789,7 @@ my %fileDescription = (
     XML  => 'application/xml',
     XMP  => 'application/rdf+xml',
     ZIP  => 'application/zip',
+
 );
 
 # module names for processing routines of each file type

@@ -673,9 +673,9 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
         Condition => '$$self{ProjectionType} == 2',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::cbmp' },
     }],
-    0x7673 => { Name => 'ProjectionPosYaw',   Format => 'float' },
-    0x7674 => { Name => 'ProjectionPosPitch', Format => 'float' },
-    0x7675 => { Name => 'ProjectionPosRoll',  Format => 'float' },
+    0x7673 => { Name => 'ProjectionPoseYaw',   Format => 'float' },
+    0x7674 => { Name => 'ProjectionPosePitch', Format => 'float' },
+    0x7675 => { Name => 'ProjectionPoseRoll',  Format => 'float' },
 );
 
 #------------------------------------------------------------------------------

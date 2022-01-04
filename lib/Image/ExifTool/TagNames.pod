@@ -29294,9 +29294,9 @@ for the specification.
   0x7671   ProjectionType                       no
   0x7672   EquirectangularProj                  QuickTime equi
            CubemapProj                          QuickTime cbmp
-  0x7673   ProjectionPosYaw                     no
-  0x7674   ProjectionPosPitch                   no
-  0x7675   ProjectionPosRoll                    no
+  0x7673   ProjectionPoseYaw                    no
+  0x7674   ProjectionPosePitch                  no
+  0x7675   ProjectionPoseRoll                   no
 
 =head2 MOI Tags
 

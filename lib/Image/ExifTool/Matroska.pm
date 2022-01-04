@@ -664,6 +664,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
             3 => 'Mesh',
         },
     },
+    # ProjectionPrivate in the spec
     0x7672 => [{
         Name => 'EquirectangularProj',
         Condition => '$$self{ProjectionType} == 1',

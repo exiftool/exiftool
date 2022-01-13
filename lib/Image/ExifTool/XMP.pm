@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.50';
+$VERSION = '3.51';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -192,6 +192,9 @@ my %xmpNS = (
     GettyImagesGIFT => 'http://xmp.gettyimages.com/gift/1.0/',
     LImage    => 'http://ns.leiainc.com/photos/1.0/image/',
     Profile   => 'http://ns.google.com/photos/dd/1.0/profile/',
+    sdc       => 'http://ns.nikon.com/sdc/1.0/',
+    ast       => 'http://ns.nikon.com/asteroid/1.0/',
+    nine      => 'http://ns.nikon.com/nine/1.0/',
 );
 
 # build reverse namespace lookup
@@ -877,6 +880,18 @@ my %sRangeMask = (
     Device => {
         Name => 'Device',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::Device' },
+    },
+    sdc => {
+        Name => 'sdc',
+        SubDirectory => { TagTable => 'Image::ExifTool::Nikon::sdc' },
+    },
+    ast => {
+        Name => 'ast',
+        SubDirectory => { TagTable => 'Image::ExifTool::Nikon::ast' },
+    },
+    nine => {
+        Name => 'nine',
+        SubDirectory => { TagTable => 'Image::ExifTool::Nikon::nine' },
     },
 );
 
@@ -3438,26 +3453,6 @@ NoLoop:
     my $key = $et->FoundTag($tagInfo, $val) or return 0;
     # save original components of rational numbers (used when copying)
     $$et{RATIONAL}{$key} = $rational if defined $rational;
-    # allow read-only subdirectories (eg. embedded base64 XMP/IPTC in NKSC files)
-    if ($$tagInfo{SubDirectory} and not $$et{IsWriting}) {
-        my $subdir = $$tagInfo{SubDirectory};
-        my $dataPt = ref $$et{VALUE}{$key} ? $$et{VALUE}{$key} : \$$et{VALUE}{$key};
-        # process subdirectory information
-        my %dirInfo = (
-            DirName  => $$subdir{DirName} || $$tagInfo{Name},
-            DataPt   => $dataPt,
-            DirLen   => length $$dataPt,
-            IsExtended => 1, # (hack to avoid Duplicate warning for embedded XMP)
-        );
-        my $oldOrder = GetByteOrder();
-        SetByteOrder($$subdir{ByteOrder}) if $$subdir{ByteOrder};
-        my $oldNS = $$et{definedNS};
-        delete $$et{definedNS};
-        my $subTablePtr = GetTagTable($$subdir{TagTable}) || $tagTablePtr;
-        $et->ProcessDirectory(\%dirInfo, $subTablePtr, $$subdir{ProcessProc});
-        SetByteOrder($oldOrder);
-        $$et{definedNS} = $oldNS;
-    }
     # save structure/list information if necessary
     if (@structProps and (@structProps > 1 or defined $structProps[0][1]) and
         not $$et{NO_STRUCT})
@@ -3487,6 +3482,29 @@ NoLoop:
         }
         my $tagID = join('/',@$props);
         $et->VerboseInfo($tagID, $tagInfo, Value => $rawVal || $val);
+    }
+    # allow read-only subdirectories (eg. embedded base64 XMP/IPTC in NKSC files)
+    if ($$tagInfo{SubDirectory} and not $$et{IsWriting}) {
+        my $subdir = $$tagInfo{SubDirectory};
+        my $dataPt = ref $$et{VALUE}{$key} ? $$et{VALUE}{$key} : \$$et{VALUE}{$key};
+        # decode if necessary (eg. Nikon XMP-ast:XMLPackets)
+        $dataPt = DecodeBase64($$dataPt) if $$tagInfo{Encoding} and $$tagInfo{Encoding} eq 'Base64';
+        # process subdirectory information
+        my %dirInfo = (
+            DirName  => $$subdir{DirName} || $$tagInfo{Name},
+            DataPt   => $dataPt,
+            DirLen   => length $$dataPt,
+            IgnoreProp => $$subdir{IgnoreProp}, # (allow XML to ignore specified properties)
+            IsExtended => 1, # (hack to avoid Duplicate warning for embedded XMP)
+        );
+        my $oldOrder = GetByteOrder();
+        SetByteOrder($$subdir{ByteOrder}) if $$subdir{ByteOrder};
+        my $oldNS = $$et{definedNS};
+        delete $$et{definedNS};
+        my $subTablePtr = GetTagTable($$subdir{TagTable}) || $tagTablePtr;
+        $et->ProcessDirectory(\%dirInfo, $subTablePtr, $$subdir{ProcessProc});
+        SetByteOrder($oldOrder);
+        $$et{definedNS} = $oldNS;
     }
     return 1;
 }
@@ -4347,7 +4365,7 @@ information.
 
 =head1 AUTHOR
 
-Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

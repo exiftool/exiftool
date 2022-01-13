@@ -5,7 +5,7 @@
 #
 # Revisions:    2009/11/25 - P. Harvey Created
 #
-# References:   1) Warren Hatch private communication (D3 with SB-800 and SB-900)
+# References:   1) Warren Hatch private communication (D3 and Z9 with SB-800 and SB-900)
 #               2) Anonymous contribution 2011/05/25 (D700, D7000)
 #              JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
@@ -15,8 +15,122 @@ package Image::ExifTool::NikonCustom;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.18';
+$VERSION = '1.19';
 
+my %buttonsZ9= (
+    0 => 'None',
+    1 => 'Preview',
+    3 => 'FV Lock',
+    4 => 'AE/AF Lock',
+    5 => 'AE Lock Only',
+    6 => 'AE Lock (reset on release)',
+    7 => 'AE Lock (hold)',
+    8 => 'AF Lock Only',
+    9 => 'AF-On',
+    10 => 'Flash Disable/Enable',
+    11 => 'Bracketing Burst',
+    12 => '+NEF(RAW)',
+    18 => 'Virtual Horizon',
+    19 => 'Synchronized Release',
+    20 => 'My Menu',
+    21 => 'My Menu Top Item',
+    22 => 'Playback',
+    23 => 'Rating',
+    24 => 'Protect',
+    25 => 'Zoom',
+    26 => 'Focus Peaking',
+    28 => 'Image Area',
+    30 => 'Non-CPU Lens',
+    31 => 'Active-D Lighting',
+    33 => '1 Stop Speed/Aperture',
+    35 => 'Metering',
+    36 => 'Auto Bracketing',
+    37 => 'Multiple Exposure',
+    38 => 'HDR Overlay',
+    39 => 'Picture Control',
+    40 => 'Quality',
+    41 => 'Focus Mode/AF AreaMode',
+    42 => 'Select Center Focus Point',
+    44 => 'Record Movie',
+    47 => 'Choose Folder',
+    48 => 'Power Aperture (Open)',
+    49 => 'Power Aperture (Close)',
+    52 => 'Microphone Sensitivity',
+    57 => 'Preset Focus Point',
+    58 => 'AE/AWB Lock (hold)',
+    59 => 'AF-AreaMode',
+    60 => 'AF-AreaMode + AF-On',
+    61 => 'Recall Shooting Functions',
+    64 => 'Filtered Playback',
+    65 => 'Same as AF-On',
+    66 => 'Voice Memo',
+    70 => 'Photo Shooting Bank',
+    73 => 'Exposure Compensation',
+    76 => 'Silent Mode',
+    78 => 'LiveView Information',
+    79 => 'AWB Lock (hold)',
+    80 => 'Grid Display',
+    81 => 'Starlight View',
+    82 => 'Select To Send (PC)',
+    83 => 'Select To Send (FTP)',
+    85 => 'Control Lock',
+);
+my %dialsZ9 = (
+    0 => '1 Frame',
+    1 => '10 Frames',
+    2 => '50 Frames',
+    3 => 'Folder',
+    4 => 'Protect',
+    5 => 'Photos Only',
+    6 => 'Videos Only',
+    7 => 'Rating',
+    8 => 'Page',
+);
+my %evfGridsZ9 = (
+    0 => '3x3',
+    1 => '4x4',
+    2 => '2.35:1',
+    3 => '1.85:1',
+    4 => '5:4',
+    5 => '4:3',
+    6 => '1:1',
+    7 => '16:9',
+    8 => '90%',
+);
+my %flicksZ9 = (
+     0 => 'Rating',
+    1 => 'Select To Send (PC)',
+    2 => 'Select To Send (FTP)',
+    3 => 'Protect',
+    4 => 'Voice Memo',
+    5 => 'None',
+);
+my %focusModeRestrictionsZ9 = (
+    0 => 'AF-S',
+    1 => 'AF-C',
+    2 => 'Full-time AF',
+    3 => 'Manual',
+    4 => 'No Restrictions',
+);
+my %powerOffDelayTimesZ9 = (
+    0 => '2 s',
+    1 => '4 s',
+    3 => '10 s',
+    4 => '20 s',
+    5 => '30 s',
+    6 => '1 min',
+    7 => '5 min',
+    8 => '10 min',
+    11 => '30 min',
+    12 => 'No Limit',
+);
+my %thirdHalfFull = (
+    0 => '1/3 EV',
+    1 => '1/2 EV',
+    2 => '1 EV',
+);
+
+my %limitNolimit = ( 0 => 'Limit', 1 => 'No Limit' );
 my %offOn = ( 0 => 'Off', 1 => 'On' );
 my %onOff = ( 0 => 'On', 1 => 'Off' );
 my %noYes = ( 0 => 'No', 1 => 'Yes' );
@@ -9516,6 +9630,405 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     },
 );
 
+# Z9 custom settings (ref 1)   #base at offset26 + 1035 (firmware 1.0.0)
+%Image::ExifTool::NikonCustom::SettingsZ9 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    DATAMEMBER => [ 185, 529 ],
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'Custom settings for the Z9.',
+    1 => {
+        Name => 'CustomSettingsBank',
+        PrintConv => {
+            0 => 'A',
+            1 => 'B',
+            2 => 'C',
+            3 => 'D',
+        },
+    },
+    3 => { # CSa1
+        Name => 'AF-CPrioritySelection',
+        PrintConv => {
+            0 => 'Release',
+            1 => 'Release + Focus',
+            3 => 'Focus',
+        },
+    },
+    5 => { Name => 'AF-SPrioritySelection', PrintConv => {0 => 'Release',1 => 'Focus'}},  #CSa2
+    7 => { # CSa3-a                      #when AFAreaMode is 3D-tracking, blocked shot response will be 3, regardless of this setting
+        Name => 'BlockShotAFResponse',
+        PrintConv => {
+            1 => '1 (Quick)',
+            2 => '2',
+            3 => '3 (Normal)',
+            4 => '4',
+            5 => '5 (Delayed)',
+        },
+    },
+    11 => {Name => 'AFPointSel',PrintConv => { 0 => 'Use All',1 => 'Use Half' }},    # CSa4
+    13 => { # CSa5
+        Name => 'StoreByOrientation',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Focus Point',
+            2 => 'Focus Point and AF-area mode',
+        },
+    },
+    15 => { Name => 'AFActivation',                 PrintConv => {0 => 'AF-On Only', 1 => 'Shutter/AF-On'}},     # CSa6-a
+    16 => { Name => 'AF-OnOutOfFocusRelease',       PrintConv => {0 => 'Disable', 1 => 'Enable'}, Unknown => 1},  # CSa6-b
+    17 => { Name => 'LimitAF-AreaModeSelPinpoint',  PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
+    19 => { Name => 'LimitAF-AreaModeSelWideAF_S',  PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
+    20 => { Name => 'LimitAF-AreaModeSelWideAF_L',  PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
+    21 => { Name => 'LimitAFAreaModeSelAuto',       PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8     #left out hypen to retain compatibility with tag name in NikonSettings
+    22 => { Name => 'FocusPointWrap',               PrintConv => { 0 => 'No Wrap', 1 => 'Wrap' }, Unknown => 1 }, # CSa10
+    23 => { Name => 'ManualFocusPointIllumination', PrintConv => {0 => 'On During Focus Point Selection Only', 1 => 'On', }, Unknown => 1 },  # CSa11a
+    24 => { Name => 'DynamicAreaAFAssist',     PrintConv => { 0 => 'Focus Point Only',1 => 'Focus and Surrounding Points',}, Unknown => 1 },  # CSa11b
+    25 => { Name => 'AF-AssistIlluminator',    PrintConv => \%offOn }, # CSa12
+    26 => { Name => 'ManualFocusRingInAFMode', PrintConv => \%offOn }, # CSa14
+    27 => { Name => 'ExposureControlStepSize', PrintConv => \%thirdHalfFull },     # CSb2
+    29 => { # CSb3
+        Name => 'EasyExposureCompensation',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+            2 => 'On (auto reset)',
+        },
+    },
+    31 => { # CSb5
+        Name => 'CenterWeightedAreaSize',
+        PrintConv => {
+            0 => '8 mm',
+            1 => '12 mm',
+            4 => 'Average',
+        },
+    },
+    33 => { # CSb6-a
+        Name => 'FineTuneOptMatrixMetering',
+        Format => 'int8s',
+        ValueConv => '$val / 6',
+        ValueConvInv => 'int($val*6)',
+        PrintConv => '$val ? sprintf("%+.2f", $val) : 0',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
+    35 => { # CSb6-b
+        Name => 'FineTuneOptCenterWeighted',
+        Format => 'int8s',
+        ValueConv => '$val / 6',
+        ValueConvInv => 'int($val*6)',
+        PrintConv => '$val ? sprintf("%+.2f", $val) : 0',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
+    37 => { # CSb6-c
+        Name => 'FineTuneOptSpotMetering',
+        Format => 'int8s',
+        ValueConv => '$val / 6',
+        ValueConvInv => 'int($val*6)',
+        PrintConv => '$val ? sprintf("%+.2f", $val) : 0',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
+    39 => { # CSb6-d
+        Name => 'FineTuneOptHighlightWeighted',
+        Format => 'int8s',
+        ValueConv => '$val / 6',
+        ValueConvInv => 'int($val*6)',
+        PrintConv => '$val ? sprintf("%+.2f", $val) : 0',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
+    41 => { # CSc1
+        Name => 'ShutterReleaseButtonAE-L',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On (Half Press)',
+            2 => 'On (Burst Mode)',
+        },
+    },
+    43 => { # CSc3-a
+        Name => 'SelfTimerTime',
+        PrintConv => {
+            0 => '2 s',
+            1 => '5 s',
+            2 => '10 s',
+            3 => '20 s',
+        },
+    },
+    45 => { Name => 'SelfTimerShotCount',  }, # CSc3-b   1-9
+    49 => { # CSc3-c
+        Name => 'SelfTimerShotInterval',
+        PrintConv => {
+            0 => '0.5 s',
+            1 => '1 s',
+            2 => '2 s',
+            3 => '3 s',
+        },
+    },
+    51 => { Name => 'PlaybackMonitorOffTime',    PrintConv => \%powerOffDelayTimesZ9 }, # CSc4-a
+    53 => { Name => 'MenuMonitorOffTime',        PrintConv => \%powerOffDelayTimesZ9 }, # CSc4-b
+    55 => { Name => 'ShootingInfoMonitorOffTime',PrintConv => \%powerOffDelayTimesZ9 }, # CSc4-c
+    57 => { Name => 'ImageReviewMonitorOffTime', PrintConv => \%powerOffDelayTimesZ9 }, # CSc4-d
+    59 => { Name => 'CLModeShootingSpeed',       ValueConv => '$val + 1', ValueConvInv => '$val - 1', PrintConv => '"$val fps"', PrintConvInv => '$val=~s/\s*fps//i; $val' }, # CSd1b
+    61 => {  # CSd2       # values: 1-200 &  'No Limit'
+        Name => 'MaxContinuousRelease',
+        Format => 'int16s',
+        ValueConv => '($val = -1 ?  \'No Limit\' : $val ) ',
+    },
+    65 => { Name => 'SyncReleaseMode',                PrintConv => { 0 => 'No Sync', 1 => 'Sync' }, Unknown => 1 }, # CSd4
+    69 => { Name => 'LimitSelectableImageAreaDX',     PrintConv => \%limitNolimit, Unknown => 1 }, # CSd6-1
+    70 => { Name => 'LimitSelectableImageArea1To1',   PrintConv => \%limitNolimit, Unknown => 1 }, # CSd6-2
+    71 => { Name => 'LimitSelectableImageArea16To9',  PrintConv => \%limitNolimit, Unknown => 1 }, # CSd6-3
+    72 => { Name => 'FileNumberSequence',             PrintConv => \%offOn }, # CSd7
+    73 => { #CSa13b
+        Name => 'FocusPeakingLevel',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'High Sensitivity',
+            1 => 'Standard Sensitivity',
+            2 => 'Low Sensitivity',
+        },
+    },
+    75 => { #CSa13c
+        Name => 'FocusPeakingHighlightColor',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'Red',
+            1 => 'Yellow',
+            2 => 'Blue',
+            3 => 'White',
+        },
+    },
+    81 => { Name => 'ContinuousModeDisplay',  PrintConv => \%offOn }, # CSd12
+    83 => { # CSe1-a            Previous cameras reported this with HighSpeedSync indicator appended as '(Auto FP)'.  Z9 separated the 2 fields.
+        Name => 'FlashSyncSpeed',
+        ValueConv => '($val-144)/8',
+        PrintConv => {
+            0 => '1/60 s',
+            1 => '1/80 s',
+            2 => '1/100 s',
+            3 => '1/125 s',
+            4 => '1/160 s',
+            5 => '1/200 s',
+            6 => '1/250 s',
+        },
+    },
+    85 => { Name => 'HighSpeedSync',          PrintConv => \%offOn }, # CSe1-b
+    87 => { # CSe2
+        Name => 'FlashShutterSpeed',
+        ValueConv => 'my $t = ($val - 16) % 24; $t ? $val / 24  : 2 + ($val - 16) / 24',     #unusual decode perhaps due to need to accomodate 4 new values?
+        PrintConv => {
+            0 => '1 s',
+            1 => '1/2 s',
+            2 => '1/4 s',
+            3 => '1/8 s',
+            4 => '1/15 s',
+            5 => '1/30 s',
+            6 => '1/60 s',
+            7 => '30 s',
+            8 => '15 s',
+            9 => '8 s',
+            10 => '4 s',
+            11 => '2 s',
+        },
+    },
+    89 => { Name => 'FlashExposureCompArea',   PrintConv => { 0 => 'Entire Frame', 1 => 'Background Only' } }, # CSe3
+    91 => { Name => 'AutoFlashISOSensitivity', PrintConv => { 0 => 'Subject and Background',1 => 'Subject Only'} }, # CSe4
+    93 => { Name => 'ModelingFlash',           PrintConv => \%offOn }, # CSe5
+    95 => { # CSe6
+        Name => 'AutoBracketModeM',
+        PrintConv => {
+            0 => 'Flash/Speed',
+            1 => 'Flash/Speed/Aperture',
+            2 => 'Flash/Aperture',
+            3 => 'Flash Only',
+            4 => 'Flash/ISO',
+        },
+    },
+    97 => { Name => 'AutoBracketOrder',   PrintConv => { 0 => '0,-,+',1 => '-,0,+' } }, # CSe7
+    99 => { Name => 'Func1Button',        PrintConv => \%buttonsZ9}, # CSf2-a
+    #101 Func1Button submenu: Preview               0 => 'Press To Recall', 1=> 'Hold To Recall'  # CSf2-a
+    #103 Func1Button submenu: AreaMode              0-7 => S, Dyn-S, Dyn-M, Dyn-L, Wide-S, Wide-L, 3D, Auto; 11=>n/a  # CSf2-a
+    #105 Func1Button submenu: AreaMode+AF-On        0-7 => S, Dyn-S, Dyn-M, Dyn-L, Wide-S, Wide-L, 3D, Auto; 11=>n/a  # CSf2-a
+    #109 Func1Button submenu: SynchronizedRelease   1=>'Master', 2=>'Remote'  # CSf2-a
+    #111 Func1Button submenu: Zoom                  0=>'Zoom (Low)', 2=>'Zoom (1:1)', 2=>'Zoom (High)'  # CSf2-a
+    #113 Func1Button & Func1ButtonPlayback submenu: Rating                # CSf2-a & CSf3a   0=>'Candidate For Deletion'  6=>''None'
+    115 => { Name => 'Func2Button',       PrintConv => \%buttonsZ9}, # CSf2-b
+    #117 Func2Button submenu: Preview               0 => 'Press To Recall', 1=> 'Hold To Recall' # CSf2-b
+    #119 Func2Button submenu: AreaMode              0-7 => S, Dyn-S, Dyn-M, Dyn-L, Wide-S, Wide-L, 3D, Auto; 11=>n/a  # CSf2-b
+    #121 Func2Button submenu: AreaMode+AF-On        0-7 => S, Dyn-S, Dyn-M, Dyn-L, Wide-S, Wide-L, 3D, Auto; 11=>n/a  # CSf2-b
+    #125 Func2Button submenu: SynchronizedRelease   1=>'Master', 2=>'Remote'  # CSf2-b
+    #127 Func2Button submenu: Zoom                  0=>'Zoom (Low)', 2=>'Zoom (1:1)', 2=>'Zoom (High)'  # CSf2-b
+    #129 Func2Button & Func2ButtonPlayback submenu: Rating                # CSf2-b & CSf3b   0=>'Candidate For Deletion'  6=>''None'
+    131 => { Name => 'AFOnButton',                PrintConv => \%buttonsZ9}, # CSf2-c
+    143 => { Name => 'SubSelector',               PrintConv => \%buttonsZ9, Unknown => 1}, # CSf2-g
+    155 => { Name => 'AssignMovieRecordButton',   PrintConv => \%buttonsZ9, Unknown => 1}, # CSf2-m
+    159 => { Name => 'LensFunc1Button',           PrintConv => \%buttonsZ9}, # CSf2-o
+    167 => { Name => 'LensFunc2Button',           PrintConv => \%buttonsZ9}, # CSf2-p
+    173 => { # CSf2-q
+        Name => 'LensControlRing',
+        PrintConv => {
+            0 => 'None (Disabled)',
+            1 => 'Focus (M/A)',
+            2 => 'ISO Sensitivity',
+            3 => 'Exposure Compensation',
+            4 => 'Aperture',
+        },
+    },
+    175 => { Name => 'MultiSelectorShootMode',     PrintConv => \%buttonsZ9}, # CSf2-h    called the OK button in camera, tag name retained for compatibility
+    179 => { Name => 'MultiSelectorPlaybackMode',  PrintConv => \%buttonsZ9}, # CSf3f
+    183 => { Name => 'ShutterSpeedLock',           PrintConv => \%offOn }, # CSf4-a
+    184 => { Name => 'ApertureLock',               PrintConv => \%offOn }, # CSf4-b
+    185 => { # CSf5-a Previous cameras reported this tag as part of CmdDialsReverseRotation.  Blend with CSf5-b separate settings together to match extant tag name and values
+        Name => 'CmdDialsReverseRotExposureComp',
+        RawConv => '$$self{CmdDialsReverseRotExposureComp} = $val',
+        Hidden => 1,
+    },
+    186 => [{ # CSf5-a  (continued from above)
+        Name => 'CmdDialsReverseRotation',
+        Condition => '$$self{CmdDialsReverseRotExposureComp} == 0',
+        PrintConv => {
+            0 => 'No',
+            1 => 'Shutter Speed & Aperture',
+        },
+    },{
+        Name => 'CmdDialsReverseRotation',
+        PrintConv => {
+            0 => 'Exposure Compensation',
+            1 => 'Exposure Compensation, Shutter Speed & Aperture',
+        },
+    }],
+    191 => { Name => 'UseDialWithoutHold',  PrintConv => \%offOn, Unknown => 1 }, # CSf6
+    193 => { Name => 'ReverseIndicators',   PrintConv => { 0 => '+ 0 -', 1 => '- 0 +' }, Unknown => 1 }, # CSf7
+    195 => { Name => 'MovieFunc1Button',    PrintConv => \%buttonsZ9}, # CSg2-a
+    203 => { Name => 'MovieAF-OnButton',    PrintConv => \%buttonsZ9}, # CSg2-f
+    217 => { Name => 'MovieMultiSelector',  PrintConv => \%buttonsZ9, Unknown => 1}, # CSg2-h
+    221 => { Name => 'MovieAFSpeed',        ValueConv => '$val - 5', ValueConvInv => '$val + 6' }, # CSg6-a
+    223 => { Name => 'MovieAFSpeedApply',    rintConv => {0 => 'Always', 1 => 'Only During Recording'},}, # CSg6-b
+    225 => { # CSg7
+        Name => 'MovieAFTrackingSensitivity',
+        PrintConv => {
+            0 => '1 (High)',
+            1 => '2',
+            2 => '3',
+            3 => '4 (Normal)',
+            4 => '5',
+            5 => '6',
+            6 => '7 (Low)',
+        },
+    },
+    257 => { Name => 'LCDIllumination',           PrintConv => \%offOn, Unknown => 1 }, # CSd11
+    258 => { Name => 'ExtendedShutterSpeeds',     PrintConv => \%offOn }, # CSd5
+    259 => { Name => 'SubjectMotion',             PrintConv => {0 => 'Erratic', 1 => 'Steady'} },  # CSa3-b
+    261 => { Name => 'FocusPointPersistence',     PrintConv => {0 => 'Auto', 1 => 'Off'} }, # CSa7
+    263 => { Name => 'AutoFocusModeRestrictions', PrintConv => \%focusModeRestrictionsZ9, Unknown => 1},  # CSa9
+    267 => { Name => 'CHModeShootingSpeed',       ValueConv => '$val + 1', ValueConvInv => '$val - 1', PrintConv => '"$val fps"', PrintConvInv => '$val=~s/\s*fps//i; $val' }, # CSd1a
+    269.1 => { Name => 'LimitReleaseModeSelCL',   Mask => 0x02, PrintConv => \%limitNolimit, Unknown => 1 }, # CSd3-a
+    269.2 => { Name => 'LimitReleaseModeSelCH',   Mask => 0x04, PrintConv => \%limitNolimit, Unknown => 1 }, # CSd3-b
+    269.3 => { Name => 'LimitReleaseModeSelC30',  Mask => 0x10, PrintConv => \%limitNolimit, Unknown => 1 }, # CSd3-e
+    269.4 => { Name => 'LimitReleaseModeSelC120', Mask => 0x40, PrintConv => \%limitNolimit, Unknown => 1 }, # CSd3-c
+    269.5 => { Name => 'LimitReleaseModeSelSelf', Mask => 0x80, PrintConv => \%limitNolimit, Unknown => 1 }, # CSd3-d
+    273 => { Name => 'FlashBurstPriority',            PrintConv => { 0 => 'Frame Rate',1 => 'Exposure'}, Unknown => 1 },  # CSe8
+    277 => { Name => 'VerticalFuncButton',            PrintConv => \%buttonsZ9}, # CSf2-c
+    281 => { Name => 'Func3Button',                   PrintConv => \%buttonsZ9}, # CSf2-c
+    285 => { Name => 'VerticalAFOnButton',            PrintConv => \%buttonsZ9}, # CSf2-l
+    293 => { Name => 'VerticalMultiSelectorPlaybackMode',  PrintConv => { 0 => 'Image Scroll L/R', 1 => 'Image Scroll Up/Down' }, Unknown => 1}, # CSf3-j
+    295 => { Name => 'MovieFunc3Button',                   PrintConv => \%buttonsZ9}, # CSg2-c
+    335 => { Name => 'LimitAF-AreaModeSelDynamic_S',       PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
+    336 => { Name => 'LimitAF-AreaModeSelDynamic_M',       PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
+    337 => { Name => 'LimitAF-AreaModeSelDynamic_L',       PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
+    339 => { Name => 'LimitAF-AreaModeSel3DTracking',      PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
+    341 => { Name => 'PlaybackFlickUp',     PrintConv => \%flicksZ9, Unknown => 1}, # CSf11-a
+    345 => { Name => 'PlaybackFlickDown',   PrintConv => \%flicksZ9, Unknown => 1}, # CSf11-b
+    349 => { Name => 'ISOStepSize',         PrintConv => \%thirdHalfFull },     # CSb1
+    355 => { Name => 'ReverseFocusRing',    PrintConv => { 0 => 'Not Reversed', 1 => 'Reversed' } }, # CSf8
+    356 => { Name => 'EVFImageFrame',       PrintConv => \%offOn, Unknown => 1 }, # CSd14
+    357 => { Name => 'EVFGrid',             PrintConv => \%evfGridsZ9, Unknown => 1 }, # CSd15
+    359 => { Name => 'VirtualHorizonStyle', PrintConv => {0 => 'Type A (Cockpit)', 1 => 'Type B (Sides)' }, Unknown => 1}, #CSd16
+    373 => { Name => 'Func4Button',         PrintConv => \%buttonsZ9, Unknown => 1}, # CSf2-e
+    379 => { Name => 'AudioButton',         PrintConv => \%buttonsZ9, Unknown => 1}, # CSf2-i
+    381 => { Name => 'QualityButton',       PrintConv => \%buttonsZ9, Unknown => 1}, # CSf2-j
+    399 => { Name => 'VerticalMultiSelector',          PrintConv => \%buttonsZ9, Unknown => 1}, # CSf2-k
+    421 => { Name => 'Func1ButtonPlaybackMode',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-a
+    423 => { Name => 'Func2ButtonPlaybackMode',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-b
+    425 => { Name => 'Func3ButtonPlaybackMode',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-c
+    431 => { Name => 'Func4ButtonPlaybackMode',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-e
+    437 => { Name => 'MovieRecordButtonPlaybackMode',  PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-m
+    439 => { Name => 'VerticalFuncButtonPlaybackMode', PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-d
+    441 => { Name => 'AudioButtonPlaybackMode',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-g
+    447 => { Name => 'QualityButtonPlaybackMode',      PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-h
+    467 => { Name => 'FocusPointLock',                 PrintConv => \%offOn,     Unknown => 1}, # CSf4-c
+    453 => { Name => 'WhiteBalanceButtonPlaybackMode', PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-i
+    459 => { Name => 'CommandDialPlaybackMode',        PrintConv => \%dialsZ9,   Unknown => 1}, # CSf3-k
+    463 => { Name => 'SubCommandDialPlaybackMode',     PrintConv => \%dialsZ9,   Unknown => 1}, # CSf3-l
+    469 => { Name => 'ControlRingResponse',            PrintConv => { 0 => 'High', 1 => 'Low' } }, # CSf10
+    481 => { Name => 'VerticalMovieFuncButton',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSg2-d
+    505 => { Name => 'VerticalMovieAFOnButton',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSg2-l
+    515 => { Name => 'MovieAFAreaMode',       PrintConv => \%buttonsZ9, Unknown => 1}, # CSg2-e
+    #521 => { Name => 'MovieLimitAF-AreaModeSelWideAF_S',      PrintConv => \%limitNolimit, Unknown => 1 }, # CSg4-a
+    #522 => { Name => 'MovieLimitAF-AreaModeSelWideAF_W',      PrintConv => \%limitNolimit, Unknown => 1 }, # CSg4-b
+    #523 => { Name => 'MovieLimitAF-AreaModeSelSubjectTrack',  PrintConv => \%limitNolimit, Unknown => 1 }, # CSg4-c
+    #524 => { Name => 'MovieLimitAFAreaModeSelAuto',           PrintConv => \%limitNolimit, Unknown => 1 }, # CSg4-d
+    #525 => { Name => 'MovieAutoFocusModeRestrictions', PrintConv => \%focusModeRestrictionsZ9, Unknown => 1},  # CSa9
+    527 => { Name => 'HDMIViewAssist', PrintConv => \%offOn, Unknown => 1 }, # CSg8
+    529 => { # CSg9-a
+        Name => 'ZebraPatternToneRange',
+        Unknown => 1,
+        RawConv => '$$self{ZebraPatternToneRange} = $val',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Highlights',
+            2 => 'Midtones',
+        },
+    },
+    531 => { Name => 'MovieZebraPattern',              Condition => '$$self{ZebraPatternToneRange} and $$self{ZebraPatternToneRange} != 0', PrintConv => {0 => 'Pattern 1', 1 => 'Pattern 2'}, Unknown => 1}, # CSg9-b
+    533 => { Name => 'MovieHighlightDisplayThreshold', Condition => '$$self{ZebraPatternToneRange} and $$self{ZebraPatternToneRange} == 1', Unknown => 1 }, # CSg9-c   120-25  when highlights are the selected tone range
+    535 => { Name => 'MovieMidtoneDisplayValue',       Condition => '$$self{ZebraPatternToneRange} and $$self{ZebraPatternToneRange} == 2', Unknown => 1 }, # CSg9-d1     when midtones are the selected tone range
+    537 => { Name => 'MovieMidtoneDisplayRange',       Condition => '$$self{ZebraPatternToneRange} and $$self{ZebraPatternToneRange} == 2', PrintConv => '"+/-$val"', Unknown => 1 }, # CSg9-d1     when midtones are the selected tone range
+    #539 CS g-10 LimitZebraPatternToneRange  0=>'No Restrictions', 1=> 'Highlights', 2=> 'Midtones'
+    541 => { Name => 'MovieEVFGrid',          PrintConv => \%evfGridsZ9, Unknown => 1 }, # CSg11
+    549 => { Name => 'MovieShutterSpeedLock', PrintConv => \%offOn,     Unknown => 1}, # CSg4-a
+    550 => { Name => 'MovieFocusPointLock',   PrintConv => \%offOn,     Unknown => 1}, # CSf4-c
+    563 => { Name => 'MatrixMetering',        PrintConv => { 0 => 'Face Detection Off', 1 => 'Face Detection On' }, Unknown => 1 }, # CSb4
+    564 => { Name => 'AF-CFocusDisplay',      PrintConv => \%offOn }, # CSa11c
+    565 => { Name => 'FocusPeakingDisplay',   PrintConv => \%offOn, Unknown => 1}, # CSa13a
+    567 => { # CSb7
+        Name => 'KeepExposure',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Shutter Speed',
+            2 => 'ISO',
+        },
+    },
+    #569  CDd8 (adjust viewfinder/monitor hue, brightness and/or white balance settings)   0=>'No adjustment',  1=>'Adjust'.  Related ontrols & adjustments stored in following dozen bytes or so.
+    585 => { Name => 'StarlightView',   PrintConv => \%offOn, Unknown => 1 }, # CSd9
+    587 => { # CSd10-a
+        Name => 'EVFWarmDisplayMode',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Mode 1',
+            2 => 'Mode 2',
+        },
+    },
+    589 => {  # CSd10-b      values in range -3 to +3
+        Name => 'EVFWarmDisplayBrightness',
+        Format => 'int8s',
+        Unknown => 1,
+    },
+    591 => { #CSd13
+        Name => 'EVFReleaseIndicator',
+        Unknown => 1,
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Type A (Dark)',
+            2 => 'Type B (Border)',
+            3 => 'Type C (Sides)',
+        },
+    },
+    601 => { Name => 'MovieApertureLock',     PrintConv => \%offOn,  Unknown => 1 }, # CSg4-b
+    607 => { Name => 'FlickAdvanceDirection', PrintConv => {  0 => 'Left to Right', 1 => 'Right to Left' },  Unknown => 1 }, # CSf11-c
+);
+
 1;  # end
 
 __END__
@@ -9538,16 +10051,16 @@ this information.
 
 =head1 AUTHOR
 
-Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =head1 ACKNOWLEDGEMENTS
 
-Thanks to Jens Duttke and Warren Hatch for their help decoding the D300 and
-D3 custom settings.  And thanks to the customer service personnel at Best
-Buy for not bugging me while I spent lots of time playing with their
+Thanks to Jens Duttke and Warren Hatch for their help decoding the D300, D3
+and Z9 custom settings.  And thanks to the customer service personnel at
+Best Buy for not bugging me while I spent lots of time playing with their
 cameras.
 
 =head1 SEE ALSO

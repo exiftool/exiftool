@@ -4817,11 +4817,19 @@ my %subSecConv = (
     GPSPosition => {
         Groups => { 2 => 'Location' },
         Writable => 1,
+        Protected => 1,
         WriteAlso => {
             GPSLatitude => '$val =~ /(.*?)( ?[NS])?,/ ? $1 : undef',
             GPSLatitudeRef => '$val =~ /(-?)(.*?) ?([NS]?),/ ? ($3 || ($1 ? "S" : "N")) : undef',
             GPSLongitude => '$val =~ /, ?(.*?)( ?[EW]?)$/ ? $1 : undef',
             GPSLongitudeRef => '$val =~ /, ?(-?)(.*?) ?([EW]?)$/ ? ($3 || ($1 ? "W" : "E")) : undef',
+        },
+        PrintConvInv => q{
+            return undef unless $val =~ /(.*? ?[NS]?), ?(.*? ?[EW]?)$/;
+            my ($lat, $lon) = ($1, $2);
+            $lat = Image::ExifTool::GPS::ToDegrees($lat, 1, "lat");
+            $lon = Image::ExifTool::GPS::ToDegrees($lon, 1, "lon");
+            return "$lat, $lon";
         },
         Require => {
             0 => 'GPSLatitude',
@@ -6743,7 +6751,7 @@ EXIF and TIFF meta information.
 
 =head1 AUTHOR
 
-Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -1335,6 +1335,7 @@ sub WriteQuickTime($$$)
             # write the new atom if it was modified
             if (defined $newData) {
                 my $sizeDiff = length($buff) - length($newData);
+                # pad to original size if specified, otherwise give verbose message about the changed size
                 if ($sizeDiff > 0 and $$tagInfo{PreservePadding} and $et->Options('QuickTimePad')) {
                     $newData .= "\0" x $sizeDiff;
                     $et->VPrint(1, "    ($$tagInfo{Name} padded to original size)");
@@ -1922,7 +1923,7 @@ QuickTime-based file formats like MOV and MP4.
 
 =head1 AUTHOR
 
-Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

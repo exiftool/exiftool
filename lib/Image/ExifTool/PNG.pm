@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.59';
+$VERSION = '1.60';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -142,11 +142,14 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
     },
     gAMA => {
         Name => 'Gamma',
+        Writable => 1,
+        Protected => 1,
         Notes => q{
             ExifTool reports the gamma for decoding the image, which is consistent with
             the EXIF convention, but is the inverse of the stored encoding gamma
         },
         ValueConv => 'my $a=unpack("N",$val);$a ? int(1e9/$a+0.5)/1e4 : $val',
+        ValueConvInv => 'pack("N", int(1e5/$val+0.5))',
     },
     gIFg => {
         Name => 'GIFGraphicControlExtension',
@@ -166,7 +169,10 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
     },
     iCCP => {
         Name => 'ICC_Profile',
-        Notes => 'this is where ExifTool will write a new ICC_Profile',
+        Notes => q{
+            this is where ExifTool will write a new ICC_Profile.  When creating a new
+            ICC_Profile, the SRGBRendering tag should be deleted if it exists
+        },
         SubDirectory => {
             TagTable => 'Image::ExifTool::ICC_Profile::Main',
             ProcessProc => \&ProcessPNG_Compressed,
@@ -174,7 +180,12 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
     },
    'iCCP-name' => {
         Name => 'ProfileName',
-        Notes => 'not a real tag ID, this tag represents the iCCP profile name',
+        Writable => 1,
+        FakeTag => 1, # (not a real PNG tag, so don't try to write it)
+        Notes => q{
+            not a real tag ID, this tag represents the iCCP profile name, and may only
+            be written when the ICC_Profile is written
+        },
     },
 #   IDAT
 #   IEND
@@ -227,7 +238,11 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
     },
     sRGB => {
         Name => 'SRGBRendering',
+        Writable => 1,
+        Protected => 1,
+        Notes => 'this chunk should not be present if an iCCP chunk exists',
         ValueConv => 'unpack("C",$val)',
+        ValueConvInv => 'pack("C",$val)',
         PrintConv => {
             0 => 'Perceptual',
             1 => 'Relative Colorimetric',
@@ -1159,11 +1174,16 @@ sub ProcessPNG_Compressed($$$)
     if ($tagInfo and $$tagInfo{Name} eq 'ICC_Profile') {
         $et->VerboseDir('iCCP');
         $tagTablePtr = \%Image::ExifTool::PNG::Main;
-        if (length($tag) and not $outBuff) {
-            FoundPNG($et, $tagTablePtr, 'iCCP-name', $tag);
-        }
+        FoundPNG($et, $tagTablePtr, 'iCCP-name', $tag) if length($tag) and not $outBuff;
         $success = FoundPNG($et, $tagTablePtr, 'iCCP', $val, $compressed, $outBuff);
-        $$outBuff = $hdr . $$outBuff if $outBuff and $$outBuff;
+        if ($outBuff and $$outBuff) {
+            my $profileName = $et->GetNewValue($Image::ExifTool::PNG::Main{'iCCP-name'});
+            if (defined $profileName) {
+                $hdr = $profileName . substr($hdr, length $tag);
+                $et->VerboseValue("+ PNG:ProfileName", $profileName);
+            }
+            $$outBuff = $hdr . $$outBuff;
+        }
     } else {
         $success = FoundPNG($et, $tagTablePtr, $tag, $val, $compressed, $outBuff, 'Latin');
     }
@@ -1541,7 +1561,7 @@ and JNG (JPEG Network Graphics) images.
 
 =head1 AUTHOR
 
-Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

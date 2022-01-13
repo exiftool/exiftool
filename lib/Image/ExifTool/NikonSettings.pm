@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 sub ProcessNikonSettings($$$);
 
@@ -948,7 +948,7 @@ my %infoZSeries = (
         Name => 'MovieShutterButton',
         PrintConv => {
             1 => 'Take Photo',
-            2 => 'Record Movies',
+            2 => 'Record Movie',
         },
     },
     0x063 => { # Settings menu # (D6,Z7_2)
@@ -1425,7 +1425,7 @@ my %infoZSeries = (
             7 => 'Zoom (Low)',
             8 => 'Zoom (1:1)',
             9 => 'Zoom (High)',
-            10 => 'Record Movies',
+            10 => 'Record Movie',
             11 => 'None',
         },
         %infoD6,
@@ -1442,7 +1442,7 @@ my %infoZSeries = (
             8 => 'Zoom (Low)',
             9 => 'Zoom (1:1)',
             10 => 'Zoom (High)',
-            11 => 'Record Movies',
+            11 => 'Record Movie',
             12 => 'Image Area',
             13 => 'None',
         },
@@ -1479,14 +1479,13 @@ my %infoZSeries = (
             4 => 'Off',
         },
     },
-    0x0e9 => { # CSf2-i        # need to confirm with a Z series lens  # (Z7_2)
+    0x0ea => { # CSf2-i         #option for 'Focus (M/A)' is documented, but not available from camera menu
         Name => 'LensControlRing',
         PrintConv => {
-            1 => 'Focus (M/A)',
-            2 => 'Aperture',
-            3 => 'Exposure Compensation',
-            4 => 'ISO Sensitivity',
-            5 => 'None (Disabled)',
+            1 => 'Aperture',
+            2 => 'Exposure Compensation',
+            3 => 'ISO Sensitivity',
+            4 => 'None (Disabled)',
         },
     },
   # 0x0eb  MovieLensControlRing ? # (Z7_2)
@@ -1498,7 +1497,7 @@ my %infoZSeries = (
             2 => 'Zoom (Low)',
             3 => 'Zoom (1:1)',
             4 => 'Zoom (High)',
-            5 => 'Record Movies',
+            5 => 'Record Movie',
             6 => 'None',
         },
         %infoD6,
@@ -1509,7 +1508,7 @@ my %infoZSeries = (
             2 => 'Zoom (Low)',
             3 => 'Zoom (1:1)',
             4 => 'Zoom (High)',
-            5 => 'Record Movies',
+            5 => 'Record Movie',
             6 => 'None',
         },
     }],
@@ -1561,7 +1560,7 @@ my %infoZSeries = (
             8 => 'Zoom (Low)',
             9 => 'Zoom (1:1)',
             10 => 'Zoom (High)',
-            11 => 'Record Movies',
+            11 => 'Record Movie',
             12 => 'None',
         },
     },
@@ -1587,7 +1586,7 @@ my %infoZSeries = (
             3 => 'Off',
         },
     },
-    0x104 => {  # valid for 10 bit with either N-Log or HDR/HLG selected (Z7_2)
+    0x104 => {  # valid for 10 bit with either N-Log or HDR/HLG selected    CSg5 (Z7_2)
         Name => 'HDMIViewAssist',
         Condition => '$$self{HDMIBitDepth}  == 2',
         PrintConv => \%onOff
@@ -1856,7 +1855,7 @@ my %infoZSeries = (
     0x13d => {  # CSg2-d (D6)
         Name => 'MovieFunc3Button',
         PrintConv => {
-            1 => 'Record Movies',
+            1 => 'Record Movie',
             2 => 'My Menu',
             3 => 'My Menu Top Item',
             4 => 'None',
@@ -1925,7 +1924,7 @@ my %infoZSeries = (
         Name => 'VerticalMovieFuncButton',
         PrintConv => {
             1 => 'LiveView Info Display On/Off',
-            2 => 'Record Movies',
+            2 => 'Record Movie',
             3 => 'Exposure Compensation',
             4 => 'ISO',
             5 => 'None',
@@ -1945,7 +1944,7 @@ my %infoZSeries = (
             9 => 'Zoom (Low)',
             10 => 'Zoom (1:1)',
             11 => 'Zoom (High)',
-            12 => 'Record Movies',
+            12 => 'Record Movie',
             13 => 'None',
         },
     },
@@ -2076,7 +2075,7 @@ Nikon cameras such as the D6 and Z7mk2.
 
 =head1 AUTHOR
 
-Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

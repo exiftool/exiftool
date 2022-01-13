@@ -79,7 +79,7 @@ check if speed is more of a concern.</p>
 <tr>
 <td>'gAMA'</td>
 <td>Gamma</td>
-<td class=c>no</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td><span class=s><span class=n>(ExifTool reports the gamma for decoding the image, which is consistent with
 the EXIF convention, but is the inverse of the stored encoding gamma)</span></span></td></tr>
 <tr class=b>
@@ -107,12 +107,14 @@ the EXIF convention, but is the inverse of the stored encoding gamma)</span></sp
 <td>ICC_Profile</td>
 <td class=c>-</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
-  <br><span class='n s'>(this is where ExifTool will write a new ICC_Profile)</span></td></tr>
+  <br><span class='n s'>(this is where ExifTool will write a new ICC_Profile.  When creating a new
+ICC_Profile, the SRGBRendering tag should be deleted if it exists)</span></td></tr>
 <tr>
 <td>'iCCP-name'</td>
 <td>ProfileName</td>
-<td class=c>no</td>
-<td><span class=s><span class=n>(not a real tag ID, this tag represents the iCCP profile name)</span></span></td></tr>
+<td class=c>yes</td>
+<td><span class=s><span class=n>(not a real tag ID, this tag represents the iCCP profile name, and may only
+be written when the ICC_Profile is written)</span></span></td></tr>
 <tr class=b>
 <td>'iDOT'</td>
 <td>AppleDataOffsets</td>
@@ -156,8 +158,9 @@ the EXIF convention, but is the inverse of the stored encoding gamma)</span></sp
 <tr class=b>
 <td>'sRGB'</td>
 <td>SRGBRendering</td>
-<td class=c>no</td>
-<td><span class=s>0 = Perceptual
+<td class=c title=' ! = Unsafe'>yes!</td>
+<td><span class=s><span class=n>(this chunk should not be present if an iCCP chunk exists)</span>
+  <br>0 = Perceptual
   <br>1 = Relative Colorimetric
   <br>2 = Saturation
   <br>3 = Absolute Colorimetric</span></td></tr>
@@ -597,7 +600,7 @@ when any of these tags is written, and may only be deleted as a group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 22, 2021</i>
+<br><i>Last revised Jan 12, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -8,7 +8,7 @@
 # Revisions:    Nov. 12/2003 - P. Harvey Created
 #               (See html/history.html for revision history)
 #
-# Legal:        Copyright (c) 2003-2021, Phil Harvey (philharvey66 at gmail.com)
+# Legal:        Copyright (c) 2003-2022, Phil Harvey (philharvey66 at gmail.com)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.38';
+$VERSION = '12.39';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -406,6 +406,8 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
   # NDPI => ['TIFF', 'Hamamatsu NanoZoomer Digital Pathology Image'],
     NEF  => ['TIFF', 'Nikon (RAW) Electronic Format'],
     NEWER => 'COS',
+    NKSC => ['XMP',  'Nikon Sidecar'],
+
     NMBTEMPLATE => ['ZIP','Apple Numbers Template'],
     NRW  => ['TIFF', 'Nikon RAW (2)'],
     NUMBERS => ['ZIP','Apple Numbers spreadsheet'],
@@ -691,6 +693,7 @@ my %fileDescription = (
     MRW  => 'image/x-minolta-mrw',
     MXF  => 'application/mxf',
     NEF  => 'image/x-nikon-nef',
+    NKSC => 'application/x-nikon-nxstudio',
     NRW  => 'image/x-nikon-nrw',
     NUMBERS => 'application/x-iwork-numbers-sffnumbers',
     ODB  => 'application/vnd.oasis.opendocument.database',
@@ -4090,7 +4093,7 @@ sub Open($*$;$)
     $file =~ s/^([\s&])/.\/$1/; # protect leading whitespace or ampersand
     # default to read mode ('<') unless input is a trusted pipe
     $mode = (($file =~ /\|$/ and $$self{TRUST_PIPE}) ? '' : '<') unless $mode;
-    undef $$self{TRUST_PIPE};
+    delete $$self{TRUST_PIPE};
     if ($mode) {
         if ($self->EncodeFileName($file)) {
             # handle Windows Unicode file name
@@ -6029,6 +6032,8 @@ sub IdentifyTrailer($;$)
             $type = 'Samsung';
         } elsif ($buff =~ /8db42d694ccc418790edff439fe026bf$/s) {
             $type = 'Insta360';
+        } elsif ($buff =~ m(\0{6}/NIKON APP$)) {
+            $type = 'NikonApp';
         }
         last;
     }
@@ -6064,6 +6069,9 @@ sub ProcessTrailers($$)
         if ($dirName eq 'Insta360') {
             require 'Image/ExifTool/QuickTimeStream.pl';
             $proc = 'Image::ExifTool::QuickTime::ProcessInsta360';
+        } elsif ($dirName eq 'NikonApp') {
+            require Image::ExifTool::Nikon;
+            $proc = 'Image::ExifTool::Nikon::ProcessNikonApp';
         } else {
             require "Image/ExifTool/$dirName.pm";
             $proc = "Image::ExifTool::${dirName}::Process$dirName";

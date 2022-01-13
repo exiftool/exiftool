@@ -1527,7 +1527,7 @@ sub ProcessFreeGPS($$$)
         $spd = $9 * $knotsToKph if length $9;
         $trk = $10 if length $10;
 
-    } elsif ($$dataPt =~ /^.{16}YndAkasoCar/s) {
+    } elsif ($$dataPt =~ /^.{64}[\x01-\x0c]\0{3}[\x01-\x1f]\0{3}A[NS][EW]\0/s) {
 
         # Akaso V1 dascham
         #  0000: 00 00 80 00 66 72 65 65 47 50 53 20 78 00 00 00 [....freeGPS x...]
@@ -1539,6 +1539,17 @@ sub ProcessFreeGPS($$$)
         #  0060: 4b dc c8 41 9a 79 a7 43 34 58 43 31 4f 37 31 35 [K..A.y.C4XC1O715]
         #  0070: 35 31 32 36 36 35 37 35 59 4e 44 53 0d e7 cc f9 [51266575YNDS....]
         #  0080: 00 00 00 00 05 00 00 00 00 00 00 00 00 00 00 00 [................]
+        # Redtiger F7N dashcam
+        #  0000: 00 00 40 00 66 72 65 65 47 50 53 20 f0 01 00 00 [..@.freeGPS ....]
+        #  0010: 0a 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+        #  0020: 01 00 00 00 b0 56 50 01 7b 18 68 45 17 02 3f 46 [.....VP.{.hE..?F]
+        #  0030: 13 00 00 00 01 00 00 00 06 00 00 00 15 00 00 00 [................]
+        #  0040: 0c 00 00 00 1c 00 00 00 41 4e 57 00 00 00 00 00 [........ANW.....]
+        #  0050: 80 d4 26 4e 36 11 b5 40 74 b5 15 7b cd 7b f3 40 [..&N6..@t..{.{.@]
+        #  0060: 0a d7 a3 3d cd 4c 4e 43 38 34 37 41 45 48 31 36 [...=.LNC847AEH16]
+        #  0070: 33 36 30 38 32 34 35 37 59 53 4b 4a 01 00 00 00 [36082457YSKJ....]
+        #  0080: ec ff ff ff 00 00 00 00 0e 00 00 00 01 00 00 00 [................]
+        #  0090: 0a 00 00 00 e5 07 00 00 0c 00 00 00 1c 00 00 00 [................]
         ($hr,$min,$sec,$yr,$mon,$day,$stat,$latRef,$lonRef) =
             unpack('x48V6a1a1a1x1', $$dataPt);
         # ignore invalid fixes
@@ -2572,7 +2583,7 @@ sub ProcessInsta360($;$)
     my $trailerLen = unpack('x38V', $buff);
     $trailerLen > $fileEnd and $et->Warn('Bad Insta360 trailer size'), return 0;
     if ($dirInfo) {
-        $$dirInfo{DirLen} = $trailerLen if $dirInfo;
+        $$dirInfo{DirLen} = $trailerLen;
         $$dirInfo{DataPos} = $fileEnd - $trailerLen;
         if ($$dirInfo{OutFile}) {
             if ($$et{DEL_GROUP}{Insta360}) {
@@ -2855,7 +2866,7 @@ information like GPS tracks from MOV, MP4 and INSV media data.
 
 =head1 AUTHOR
 
-Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

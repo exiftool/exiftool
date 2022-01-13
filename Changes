@@ -7,6 +7,23 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 13, 2022 - Version 12.39
+
+  - Added a new Pentax LensType (thanks Christian Shulz)
+  - Added a couple of new Nikon LensID's
+  - Added support for Nikon NKSC sidecar files
+  - Decode more tags for the Nikon Z7 and Z9 (thanks Warren Hatch)
+  - Decode a couple more FLIR tags
+  - Extract ZIP file comments
+  - Made PNG ProfileName, SRGBRendering and Gamma writable
+  - Patched to avoid possible problem running "more" to show documentation in
+    Windows version
+  - Fixed problem writing Composite:GPSPosition with coordinates in DMS format,
+    and made this tag protected when writing
+  - Fixed bug where invalid date/time tags could be written to PNG files when
+    attempting to shift a non-existent date/time tag
+  - Fixed spelling of a few Matroska tag names (thanks Martin Hoppenheit)
+
 Dec. 20, 2021 - Version 12.38
 
   - Decode a number of new tags for the Nikon Z9 (thanks Warren Hatch)

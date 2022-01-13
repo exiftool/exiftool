@@ -61,7 +61,7 @@ sub HexEncode($)
 
 #------------------------------------------------------------------------------
 # Write profile chunk (possibly compressed if Zlib is available)
-# Inputs: 0) outfile, 1) Raw profile type, 2) data ref
+# Inputs: 0) outfile, 1) Raw profile type (SCALAR ref for iCCP name), 2) data ref
 #         3) profile header type (undef if not a text profile)
 # Returns: 1 on success
 sub WriteProfile($$$;$)
@@ -73,10 +73,10 @@ sub WriteProfile($$$;$)
     }
     if (not defined $profile) {
         # write ICC profile as compressed iCCP chunk if possible
-        if ($rawType eq 'icm') {
+        if (ref $rawType) {
             return 0 unless $deflate;
             $chunk = 'iCCP';
-            $prefix = "$rawType\0\0";
+            $prefix = "$$rawType\0\0";
         } else {
             $chunk = $rawType;
             if ($rawType eq $stdCase{zxif}) {
@@ -116,7 +116,7 @@ sub WriteProfile($$$;$)
 }
 
 #------------------------------------------------------------------------------
-# Add iCCP chunk to the PNG image if necessary (must come before PLTE and IDAT)
+# Add iCCP-related chunks to the PNG image if necessary (must come before PLTE and IDAT)
 # Inputs: 0) ExifTool object ref, 1) output file or scalar ref
 # Returns: true on success
 sub Add_iCCP($$)
@@ -127,9 +127,28 @@ sub Add_iCCP($$)
         my $tagTablePtr = Image::ExifTool::GetTagTable('Image::ExifTool::ICC_Profile::Main');
         my %dirInfo = ( Parent => 'PNG', DirName => 'ICC_Profile' );
         my $buff = $et->WriteDirectory(\%dirInfo, $tagTablePtr);
-        if (defined $buff and length $buff and WriteProfile($outfile, 'icm', \$buff)) {
-            $et->VPrint(0, "Created ICC profile\n");
-            delete $$et{ADD_DIRS}{ICC_Profile}; # don't add it again
+        if (defined $buff and length $buff) {
+            my $profileName = $et->GetNewValue($Image::ExifTool::PNG::Main{'iCCP-name'});
+            $profileName = 'icm' unless defined $profileName;
+            if (WriteProfile($outfile, \$profileName, \$buff)) {
+                $et->VPrint(0, "Created ICC profile with name '${profileName}'\n");
+                delete $$et{ADD_DIRS}{ICC_Profile}; # don't add it again
+            }
+        }
+    }
+    # must also add sRGB and gAMA before PLTE and IDAT
+    if ($$et{ADD_PNG}) {
+        my ($tag, %addBeforePLTE);
+        foreach $tag (qw(sRGB gAMA)) {
+            next unless $$et{ADD_PNG}{$tag};
+            $addBeforePLTE{$tag} = $$et{ADD_PNG}{$tag};
+            delete $$et{ADD_PNG}{$tag};
+        }
+        if (%addBeforePLTE) {
+            my $save = $$et{ADD_PNG};
+            $$et{ADD_PNG} = \%addBeforePLTE;
+            AddChunks($et, $outfile);
+            $$et{ADD_PNG} = $save;
         }
     }
     return 1;
@@ -244,9 +263,10 @@ sub AddChunks($$;@)
     # write any outstanding PNG tags
     foreach $tag (sort keys %$addTags) {
         my $tagInfo = $$addTags{$tag};
+        next if $$tagInfo{FakeTag}; # (iCCP-name)
         my $nvHash = $et->GetNewValueHash($tagInfo);
-        # (native PNG information is always preferred, so don't check IsCreating)
-        next unless $et->IsOverwriting($nvHash);
+        # (native PNG information is always preferred, so don't rely on just IsCreating)
+        next unless $$nvHash{IsCreating} or $et->IsOverwriting($nvHash) > 0;
         my $val = $et->GetNewValue($nvHash);
         if (defined $val) {
             next if $$nvHash{EditOnly};
@@ -381,7 +401,7 @@ strings).
 
 =head1 AUTHOR
 
-Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -304,6 +304,8 @@ sub ShiftTime($;$$$)
         $mode = defined $time[3] ? 'DateTime' : 'Date';
     } elsif (defined $time[3]) {
         $mode = 'Time';
+    } else {
+        $mode = '';
     }
     # get number of digits after the seconds decimal point
     if (defined $time[5] and $time[5] =~ /\.(\d+)/) {
@@ -630,7 +632,7 @@ limited to the range 1970 to 2038 on 32-bit systems.
 
 =head1 AUTHOR
 
-Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

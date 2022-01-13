@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/PNG.t".
 
 BEGIN {
-    $| = 1; print "1..6\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..7\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -113,6 +113,29 @@ my $testnum = 1;
         print 'not ';
     }
     print "ok $testnum\n";
+}
+
+# test 7: Write ICC_Profile with a name
+{
+    ++$testnum;
+    my $skip = '';
+    if (eval 'require Compress::Zlib') {
+        my $exifTool = new Image::ExifTool;
+        $exifTool->SetNewValuesFromFile('t/images/ICC_Profile.icc', 'ICC_Profile');
+        $exifTool->SetNewValue('PNG:ProfileName' => 'Adobe RGB (1998)');
+        my $testfile = "t/${testname}_${testnum}_failed.png";
+        unlink $testfile;
+        my $rtnVal = $exifTool->WriteInfo('t/images/PNG.png', $testfile);
+        my $info = $exifTool->ImageInfo($testfile, 'ProfileName', 'ProfileCMMType');
+        if (check($exifTool, $info, $testname, $testnum)) {
+            unlink $testfile;
+        } else {
+            print 'not ';
+        }
+    } else {
+        $skip = ' # skip Requires Compress::Zlib';
+    }
+    print "ok $testnum$skip\n";
 }
 
 # end

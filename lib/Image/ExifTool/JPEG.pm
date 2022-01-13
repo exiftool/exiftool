@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.32';
+$VERSION = '1.33';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
@@ -284,6 +284,10 @@ sub ProcessJPEG_HDR($$$);
       }, {
         Name => 'Insta360',
         Condition => '$$valPt =~ /8db42d694ccc418790edff439fe026bf$/',
+      }, {
+        Name => 'NikonApp',
+        Condition => '$$valPt =~ m(\0{6}/NIKON APP$)',
+        Notes => 'contains editing information in XMP format',
       }, {
         Name => 'PreviewImage',
         Condition => '$$valPt =~ /^\xff\xd8\xff/',
@@ -714,7 +718,7 @@ segments are included in the Image::ExifTool module itself.
 
 =head1 AUTHOR
 
-Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

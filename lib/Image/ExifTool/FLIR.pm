@@ -24,7 +24,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.19';
+$VERSION = '1.20';
 
 sub ProcessFLIR($$;$);
 sub ProcessFLIRText($$$);
@@ -691,7 +691,15 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
             T => 'True North',
         },
     },
-  # 0x48 - int32u: seen 0,77
+    0x48 => { #PH (NC)
+        Name => 'GPSImgDirectionRef',
+        Format => 'string[2]',
+        RawConv => 'length($val) ? $val : undef',
+        PrintConv => {
+            M => 'Magnetic North',
+            T => 'True North',
+        },
+    },
     0x4c => {
         Name => 'GPSSpeed',
         %float2f,
@@ -702,7 +710,11 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
         %float2f,
         RawConv => '$val < 0 ? undef : $val',
     },
-  # 0x54 - float: seen 0,-1
+    0x54 => {
+        Name => 'GPSImgDirection',
+        %float2f,
+        RawConv => '$val < 0 ? undef : $val',
+    },
     0x58 => {
         Name => 'GPSMapDatum',
         Format => 'string[16]',
@@ -1619,7 +1631,7 @@ Systems Inc. thermal image files (FFF, FPF and JPEG format).
 
 =head1 AUTHOR
 
-Copyright 2003-2021, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

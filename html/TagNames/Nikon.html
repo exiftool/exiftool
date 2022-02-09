@@ -849,6 +849,15 @@ edit versions, otherwise this is extracted as a binary data block)</span>
 <td><span class=s>0 = Above Sea Level
   <br>1 = Below Sea Level</span></td></tr>
 <tr class=b>
+<td>GPSImgDirection</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>GPSImgDirectionRef</td>
+<td class=c>no</td>
+<td><span class=s>&#39;M&#39; = Magnetic North
+  <br>&#39;T&#39; = True North</span></td></tr>
+<tr class=b>
 <td>GPSLatitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
@@ -4567,13 +4576,25 @@ firmware 1.01b.</p>
   <br>2 = Optical/Radio AWL
   <br>3 = Radio AWL</span></td></tr>
 <tr>
+<td class=r title='528 = 0x210'>528</td>
+<td>AFAreaMode</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>1 = Single
+  <br>2 = Dynamic
+  <br>3 = Wide (S)</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Wide (L)
+  <br>5 = 3D
+  <br>6 = Auto</td></tr></table>
+</td></tr>
+<tr class=b>
 <td class=r title='530 = 0x212'>530</td>
 <td>VRMode</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = Normal
   <br>2 = Sport</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='534 = 0x216'>534</td>
 <td>BracketSet</td>
 <td class=c>int8u</td>
@@ -4582,7 +4603,7 @@ firmware 1.01b.</p>
   <br>2 = Flash
   <br>3 = White Balance
   <br>4 = Active-D Lighting</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='536 = 0x218'>536</td>
 <td>BracketProgram</td>
 <td class=c>int8u</td>
@@ -4595,7 +4616,7 @@ firmware 1.01b.</p>
   <br>7 = 7F
   <br>9 = 9F</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='538 = 0x21a'>538</td>
 <td>BracketIncrement</td>
 <td class=c>int8u</td>
@@ -4605,7 +4626,7 @@ firmware 1.01b.</p>
   <br>3 = 1.0
   <br>4 = 2.0
   <br>5 = 3.0</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='556 = 0x22c'>556</td>
 <td>SecondarySlotFunction</td>
 <td class=c>int8u</td>
@@ -4613,13 +4634,13 @@ firmware 1.01b.</p>
   <br>1 = Backup
   <br>2 = NEF Primary + JPG Secondary
   <br>3 = JPG Primary + JPG Secondary</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='572 = 0x23c'>572</td>
 <td>DXCropAlert</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='574 = 0x23e'>574</td>
 <td>SubjectDetection</td>
 <td class=c>int8u</td>
@@ -4628,14 +4649,14 @@ firmware 1.01b.</p>
   <br>2 = People
   <br>3 = Animals
   <br>4 = Vehicles</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='604 = 0x25c'>604</td>
 <td>MovieImageArea?</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0x1]
   <br>0 = FX
   <br>1 = DX</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='614 = 0x266'>614</td>
 <td>MovieType?</td>
 <td class=c>int8u</td>
@@ -4643,7 +4664,7 @@ firmware 1.01b.</p>
   <br>2 = H.265 8-bit (MOV)
   <br>3 = H.265 10-bit (MOV)
   <br>4 = ProRes 422 HQ 10-bit (MOV)</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='616 = 0x268'>616</td>
 <td>MovieISOAutoHiLimit?</td>
 <td class=c>int16u</td>
@@ -4680,13 +4701,13 @@ firmware 1.01b.</p>
   <br>29 = ISO Hi 1.0
   <br>32 = ISO Hi 2.0</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='618 = 0x26a'>618</td>
 <td>MovieISOAutoControlManualMode?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='620 = 0x26c'>620</td>
 <td>MovieISOAutoManualMode?</td>
 <td class=c>int16u</td>
@@ -4723,7 +4744,7 @@ firmware 1.01b.</p>
   <br>29 = ISO Hi 1.0
   <br>32 = ISO Hi 2.0</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='696 = 0x2b8'>696</td>
 <td>MovieActiveD-Lighting?</td>
 <td class=c>int8u</td>
@@ -4732,7 +4753,7 @@ firmware 1.01b.</p>
   <br>3 = Normal
   <br>4 = High
   <br>5 = Extra High</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='698 = 0x2ba'>698</td>
 <td>MovieHighISONoiseReduction?</td>
 <td class=c>int8u</td>
@@ -4740,14 +4761,14 @@ firmware 1.01b.</p>
   <br>1 = Low
   <br>2 = Normal
   <br>3 = High</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='704 = 0x2c0'>704</td>
 <td>MovieFlickerReduction</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Auto
   <br>1 = 50Hz
   <br>2 = 60Hz</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='706 = 0x2c2'>706</td>
 <td>MovieMeteringMode?</td>
 <td class=c>int8u</td>
@@ -4755,7 +4776,7 @@ firmware 1.01b.</p>
   <br>1 = Center
   <br>2 = Spot
   <br>3 = Highlight</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='708 = 0x2c4'>708</td>
 <td>MovieFocusMode?</td>
 <td class=c>int8u</td>
@@ -4763,7 +4784,7 @@ firmware 1.01b.</p>
   <br>1 = AF-S
   <br>2 = AF-C
   <br>4 = AF-F</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='710 = 0x2c6'>710</td>
 <td>MovieAFAreaMode</td>
 <td class=c>int8u</td>
@@ -4772,64 +4793,64 @@ firmware 1.01b.</p>
   <br>4 = Wide (L)
   <br>6 = Auto
   <br>11 = Subject Tracking</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='712 = 0x2c8'>712</td>
 <td>MovieVRMode?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = Normal
   <br>2 = Sport</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='716 = 0x2cc'>716</td>
 <td>MovieElectronicVR?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='718 = 0x2ce'>718</td>
 <td>MovieSoundRecording?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On
   <br>2 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='720 = 0x2d0'>720</td>
 <td>MicrophoneSensitivity?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='722 = 0x2d2'>722</td>
 <td>MicrophoneAttenuator?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='724 = 0x2d4'>724</td>
 <td>MicrophoneFrequencyResponse?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Wide Range
   <br>1 = Vocal Range</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='726 = 0x2d6'>726</td>
 <td>WindNoiseReduction?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='748 = 0x2ec'>748</td>
 <td>MovieToneMap?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = SDR
   <br>1 = HLG
   <br>2 = N-Log</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='754 = 0x2f2'>754</td>
 <td>MovieFrameSize?</td>
 <td class=c>int8u</td>
 <td><span class=s>1 = 1920x1080
   <br>2 = 3840x2160
   <br>3 = 7680x4320</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='756 = 0x2f4'>756</td>
 <td>MovieFrameRate?</td>
 <td class=c>int8u</td>
@@ -4842,19 +4863,19 @@ firmware 1.01b.</p>
   <br>5 = 25p
   <br>6 = 24p</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='762 = 0x2fa'>762</td>
 <td>MicrophoneJackPower?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='763 = 0x2fb'>763</td>
 <td>MovieDXCropAlert?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='764 = 0x2fc'>764</td>
 <td>MovieSubjectDetection?</td>
 <td class=c>int8u</td>
@@ -4863,19 +4884,19 @@ firmware 1.01b.</p>
   <br>2 = People
   <br>3 = Animals
   <br>4 = Vehicles</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='799 = 0x31f'>799</td>
 <td>CustomSettingsZ9</td>
 <td class=c>-</td>
 <td>--&gt; <a href='NikonCustom.html#SettingsZ9'>NikonCustom SettingsZ9 Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1426 = 0x592'>1426</td>
 <td>Language?</td>
 <td class=c>int8u</td>
 <td><span class=s>4 = English
   <br>5 = Spanish
   <br>7 = French</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1428 = 0x594'>1428</td>
 <td>TimeZone</td>
 <td class=c>int8u</td>
@@ -4898,18 +4919,18 @@ firmware 1.01b.</p>
   <br>29 = -09:00 (Anchorage)
   <br>30 = -10:00 (Hawaii)</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1434 = 0x59a'>1434</td>
 <td>MonitorBrightness?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1456 = 0x5b0'>1456</td>
 <td>AFFineTune?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1552 = 0x610'>1552</td>
 <td>HDMIOutputResolution</td>
 <td class=c>int8u</td>
@@ -4918,43 +4939,43 @@ firmware 1.01b.</p>
   <br>2 = 2160p
   <br>3 = 1080p
   <br>5 = 720p</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1565 = 0x61d'>1565</td>
 <td>SetClockFromLocationData?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1572 = 0x624'>1572</td>
 <td>AirplaneMode?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1573 = 0x625'>1573</td>
 <td>EmptySlotRelease?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Disable Release
   <br>1 = Enable Release</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1608 = 0x648'>1608</td>
 <td>EnergySavingMode?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1632 = 0x660'>1632</td>
 <td>RecordLocationData?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1636 = 0x664'>1636</td>
 <td>USBPowerDelivery?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1645 = 0x66d'>1645</td>
 <td>SensorShield?</td>
 <td class=c>int8u</td>
@@ -6286,7 +6307,7 @@ D5200, D7000.</p>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='67 = 0x43'>67</td>
-<td>FocusPositionHoriontal</td>
+<td>FocusPositionHorizontal</td>
 <td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -8843,6 +8864,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 </tr><tr><td>'B6 48 37 56 24 24 1C 02'</td><td>= Sigma 24-60mm F2.8 EX DG</td>
 </tr><tr><td>'B7 44 60 98 34 3C B9 0E'</td><td>= AF-S Nikkor 80-400mm f/4.5-5.6G ED VR</td>
 </tr><tr><td>'B8 40 2D 44 2C 34 BA 06'</td><td>= AF-S Nikkor 18-35mm f/3.5-4.5G ED</td>
+</tr><tr><td>'BB 48 5C 80 24 24 4B 4E'</td><td>= Sigma 70-200mm F2.8 DG OS HSM | S</td>
 </tr><tr><td>'BF 3C 1B 1B 30 30 01 04'</td><td>= Irix 11mm f/4 Firefly</td>
 </tr><tr><td>'BF 4E 26 26 1E 1E 01 04'</td><td>= Irix 15mm f/2.4 Firefly</td>
 </tr><tr><td>'C1 48 24 37 24 24 4B 46'</td><td>= Sigma 14-24mm F2.8 DG HSM | A</td>
@@ -8927,7 +8949,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 12, 2022</i>
+<br><i>Last revised Feb 9, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

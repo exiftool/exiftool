@@ -17,6 +17,29 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.40'><b>Feb. 9, 2022 - Version 12.40</b></a>
+<ul>
+<li>Added a new Nikon LensID (thanks Wolfgang Exler)
+<li>Added PageCount tag to return the number of pages in a multi-page TIFF
+<li>Added a few more Sony LensTypes (thanks Jos Roost)
+<li>Decode some new Canon tags (thanks Mark Reid)
+<li>Decode another Nikon Z9 tag (thanks Warren Hatch)
+<li>Decode Nikon NKSC GPSImgDirection (thanks Olaf)
+<li>Improved handling of empty XMP structures in lists
+<li>Tolerate leading UTF-8 BOM in -geotag log files
+<li>Updated photoshop_paths.config to include WorkingPath
+<li>Patched to allow writing of MP4 videos which have url tracks with a missing
+    sample description entry
+<li>Fixed typo in the name of a new Nikon tag (thanks Herb)
+<li>Fixed description of GPR (General Purpose RAW) file type
+<li>Fixed potential deep recursion runtime error when writing nested XMP
+    structures
+<li>Fixed warning which could be generated when writing new
+    Composite:GPSCoordinates tag
+<li>Fixed deep recursion error when reading multi-page TIFF images with more
+    than 100 pages
+</ul>
+
 <a name='v12.39'><b>Jan. 13, 2022 - Version 12.39</b></a>
 <ul>
 <li>Added a new Pentax LensType (thanks Christian Shulz)

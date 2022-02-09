@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.73';
+$VERSION = '2.74';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -8795,15 +8795,19 @@ sub ProcessSampleDesc($$$)
 
     my $num = Get32u($dataPt, 4);   # get number of sample entries in table
     $pos += 8;
-    my $i;
+    my ($i, $err);
     for ($i=0; $i<$num; ++$i) {     # loop through sample entries
-        last if $pos + 8 > $dirLen;
+        $pos + 8 > $dirLen and $err = 1, last;
         my $size = Get32u($dataPt, $pos);
-        last if $pos + $size > $dirLen;
+        $pos + $size > $dirLen and $err = 1, last;
         $$dirInfo{DirStart} = $pos;
         $$dirInfo{DirLen} = $size;
         ProcessHybrid($et, $dirInfo, $tagTablePtr);
         $pos += $size;
+    }
+    if ($err and $$et{HandlerType}) {
+        my $grp = $$et{SET_GROUP1} || $$dirInfo{Parent} || 'unknown';
+        $et->Warn("Truncated $$et{HandlerType} sample table for $grp");
     }
     return 1;
 }

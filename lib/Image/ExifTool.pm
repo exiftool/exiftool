@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.39';
+$VERSION = '12.40';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -320,7 +320,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     FPF  => ['FPF',  'FLIR Public image Format'],
     FPX  => ['FPX',  'FlashPix'],
     GIF  => ['GIF',  'Compuserve Graphics Interchange Format'],
-    GPR  => ['TIFF', 'GoPro RAW'],
+    GPR  => ['TIFF', 'General Purpose RAW'], # https://gopro.github.io/gpr/
     GZ   =>  'GZIP',
     GZIP => ['GZIP', 'GNU ZIP compressed archive'],
     HDP  => ['TIFF', 'Windows HD Photo'],
@@ -1799,6 +1799,7 @@ my %systemTagsNotes = (
         Writable => 1,
         Protected => 1,
     },
+    PageCount => { Notes => 'the number of pages in a multi-page TIFF document' },
 );
 
 # tags defined by UserParam option (added at runtime)
@@ -7448,7 +7449,11 @@ sub DoProcessTIFF($$;$)
                 # this looks like a BigTIFF image
                 $raf->Seek(0);
                 require Image::ExifTool::BigTIFF;
-                return 1 if Image::ExifTool::BigTIFF::ProcessBTF($self, $dirInfo);
+                my $result = Image::ExifTool::BigTIFF::ProcessBTF($self, $dirInfo);
+                if ($result) {
+                    $self->FoundTag(PageCount => $$self{PageCount}) if $$self{MultiPage};
+                    return 1;
+                }
             } elsif ($identifier == 0x4f52 or $identifier == 0x5352) {
                 # Olympus ORF image (set FileType now because base type is 'ORF')
                 $self->SetFileType($fileType = 'ORF');
@@ -7540,6 +7545,9 @@ sub DoProcessTIFF($$;$)
         if ($$self{DNGVersion} and $$self{VALUE}{FileType} !~ /^(DNG|GPR)$/) {
             # override whatever FileType we set since we now know it is DNG
             $self->OverrideFileType($$self{TIFF_TYPE} = 'DNG');
+        }
+        if ($$self{TIFF_TYPE} eq 'TIFF') {
+            $self->FoundTag(PageCount => $$self{PageCount}) if $$self{MultiPage};
         }
         return 1;
     }

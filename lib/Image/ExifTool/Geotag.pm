@@ -28,7 +28,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.65';
+$VERSION = '1.66';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -210,13 +210,14 @@ sub LoadTrackLog($$;$)
         $raf->ReadLine($_) or last;
         # determine file format
         if (not $format) {
+            s/^\xef\xbb\xbf//;          # remove leading BOM if it exists
             if (/^<(\?xml|gpx)[\s>]/) { # look for XML or GPX header
                 $format = 'XML';
             # check for NMEA sentence
             # (must ONLY start with ones that have timestamps! eg. not GSA or PTNTHPR!)
             } elsif (/^.*\$([A-Z]{2}(RMC|GGA|GLL|ZDA)|PMGNTRK),/) {
                 $format = 'NMEA';
-                $nmeaStart = $2 || $1;    # save type of first sentence
+                $nmeaStart = $2 || $1;  # save type of first sentence
             } elsif (/^A(FLA|XSY|FIL)/) {
                 # (don't set format yet because we want to read HFDTE first)
                 $nmeaStart = 'B' ;

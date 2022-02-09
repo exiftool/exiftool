@@ -1391,9 +1391,13 @@ sub WriteQuickTime($$$)
                 $pos += $siz;
             }
             if ($msg) {
-                my $grp = $$et{CUR_WRITE_GROUP} || $parent;
-                $et->Error("$msg for $grp");
-                return $rtnErr;
+                # (allow empty sample description for 'url ' handler type)
+                if ($$et{HandlerType} or length($buff) > 8) {
+                    my $grp = $$et{CUR_WRITE_GROUP} || $parent;
+                    $et->Error("$msg for $grp");
+                    return $rtnErr;
+                }
+                $flg = 1; # (this seems to be the case)
             }
             $$et{QtDataFlg} = $flg;
         }

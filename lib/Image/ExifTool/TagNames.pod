@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 25764 tags, with 16462 unique tag names.
+They contain a total of 25775 tags, with 16465 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -7346,6 +7346,7 @@ Unknown only to reduce the volume of the normal output.
   0x4021   MultiExp                             Canon MultiExp
   0x4024   FilterInfo                           Canon FilterInfo
   0x4025   HDRInfo                              Canon HDRInfo
+  0x4026   LogInfo                              Canon LogInfo
   0x4028   AFConfig                             Canon AFConfig
   0x403f   RawBurstModeRoll                     Canon RawBurstInfo
 
@@ -9514,6 +9515,18 @@ Information about creative filter settings.
   ------   --------                             --------
       1    HDR                                  int32s
       2    HDREffect                            int32s
+
+=head3 Canon LogInfo Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      4    CompressionFormat                    int32s
+      6    Sharpness                            int32s
+      7    Saturation                           int32s
+      8    ColorTone                            int32s
+      9    ColorSpace2                          int32s
+     10    ColorMatrix                          int32s
+     11    CanonLogVersion                      int32s
 
 =head3 Canon AFConfig Tags
 
@@ -13591,6 +13604,8 @@ These tags belong to the ExifTool XMP-ast family 1 group.
   About                                         no
   GPSAltitude                                   no
   GPSAltitudeRef                                no
+  GPSImgDirection                               no
+  GPSImgDirectionRef                            no
   GPSLatitude                                   no
   GPSLatitudeRef                                no
   GPSLongitude                                  no
@@ -14317,6 +14332,7 @@ These tags are used by the Z9.
     434    FlashOutput?                         int8u
     444    FlashRemoteControl?                  int8u
     456    FlashWirelessOption?                 int8u
+    528    AFAreaMode                           int8u
     530    VRMode                               int8u
     534    BracketSet                           int8u
     536    BracketProgram                       int8u
@@ -14710,7 +14726,7 @@ These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
       0    AFInfo2Version                       no
      62    AFImageWidth                         int16u
      64    AFImageHeight                        int16u
-     67    FocusPositionHoriontal               int8u~
+     67    FocusPositionHorizontal              int8u~
      69    FocusPositionVertical                int8u~
      70    AFAreaWidth                          int16u
      72    AFAreaHeight                         int16u
@@ -37010,6 +37026,7 @@ FileName.
   NewGUID                    ExifTool           no
   Now                        ExifTool           no
   OtherImage                 File               no
+  PageCount                  File               no
   PreviewImage               File               yes
   PreviewPDF                 File               no
   PreviewPNG                 File               no

@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.55';
+$VERSION = '4.56';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -970,8 +970,8 @@ my %canonQuality = (
     4 => 'RAW',
     5 => 'Superfine',
     7 => 'CRAW', #42
-    130 => 'Normal Movie', #22
-    131 => 'Movie (2)', #PH (7DmkII 1920x1080)
+    130 => 'Light (RAW)', #github#119
+    131 => 'Standard (RAW)', #github#119
 );
 my %canonImageSize = (
    -1 => 'n/a',
@@ -2051,6 +2051,13 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         SubDirectory => {
             Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart,$size)',
             TagTable => 'Image::ExifTool::Canon::HDRInfo',
+        }
+    },
+    0x4026 => { #github#119
+        Name => 'LogInfo',
+        SubDirectory => {
+            Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart,$size)',
+            TagTable => 'Image::ExifTool::Canon::LogInfo',
         }
     },
     0x4028 => { #PH
@@ -8699,6 +8706,65 @@ my %filterConv = (
         },
     },
     # 3 - maybe related to AutoImageAlign?
+);
+
+# More color information (MakerNotes tag 0x4026) (ref github issue #119)
+%Image::ExifTool::Canon::LogInfo = (
+    %binaryDataAttrs,
+    FORMAT => 'int32s',
+    FIRST_ENTRY => 1,
+    PRIORITY => 0,
+    4 => {
+        Name => 'CompressionFormat',
+        PrintConv => {
+             0 => 'Editing (ALL-I)',
+             1 => 'Standard (IPB)',
+             2 => 'Light (IPB)',
+             3 => 'Motion JPEG',
+             4 => 'RAW', # either Standard or Light, depending on Quality
+        },
+    },
+    6 => {  # 0 to 7
+        Name => 'Sharpness',
+        RawConv => '$val == 0x7fffffff ? undef : $val',
+    },
+    7 => {  # -4 to 4
+        Name => 'Saturation', 
+        RawConv => '$val == 0x7fffffff ? undef : $val',
+        %Image::ExifTool::Exif::printParameter,
+    },
+    8 => {  # -4 to 4
+        Name => 'ColorTone',
+        RawConv => '$val == 0x7fffffff ? undef : $val',
+        %Image::ExifTool::Exif::printParameter,
+    },
+    9 => {
+        Name => 'ColorSpace2',
+        RawConv => '$val == 0x7fffffff ? undef : $val',
+        PrintConv => {
+            0 => 'BT.709',
+            1 => 'BT.2020',
+            2 => 'CinemaGamut',
+        },
+    },
+    10 => {
+        Name => 'ColorMatrix',
+        RawConv => '$val == 0x7fffffff ? undef : $val',
+        PrintConv => {
+            0 => 'EOS Original',
+            1 => 'Neutral',
+        },
+    },
+    11 => {
+        Name => 'CanonLogVersion', # (increases dynamic range of sensor data)
+        RawConv => '$val == 0x7fffffff ? undef : $val',
+        PrintConv => {
+            0 => 'OFF',
+            1 => 'CLogV1',
+            2 => 'CLogV2', # (NC)
+            3 => 'CLogV3',
+        },
+    },
 );
 
 # AF configuration info (MakerNotes tag 0x4028) (ref PH)

@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.50';
+$VERSION = '1.51';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -454,6 +454,8 @@ my %formatMinMax = (
     0xa018 => { #1
         Name => 'ExposureTime',
         Writable => 'rational64u',
+        ValueConv => '$val=~s/ .*//; $val', # some models write 2 values here
+        ValueConvInv => '$val',
         PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
         PrintConvInv => '$val',
     },
@@ -461,6 +463,8 @@ my %formatMinMax = (
         Name => 'FNumber',
         Priority => 0,
         Writable => 'rational64u',
+        ValueConv => '$val=~s/ .*//; $val', # some models write 2 values here
+        ValueConvInv => '$val',
         PrintConv => 'sprintf("%.1f",$val)',
         PrintConvInv => '$val',
     },

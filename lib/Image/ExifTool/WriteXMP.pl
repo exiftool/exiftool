@@ -298,6 +298,8 @@ sub SetPropertyPath($$;$$$$)
         $flatInfo = $$tagTablePtr{$flatID};
         if ($flatInfo) {
             return if $$flatInfo{PropertyPath};
+        } elsif (@$propList > 50) {
+            return; # avoid deep recursion
         } else {
             # flattened tag doesn't exist, so create it now
             # (could happen if we were just writing a structure)

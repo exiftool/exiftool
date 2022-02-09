@@ -7,6 +7,28 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 9, 2022 - Version 12.40
+
+  - Added a new Nikon LensID (thanks Wolfgang Exler)
+  - Added PageCount tag to return the number of pages in a multi-page TIFF
+  - Added a few more Sony LensTypes (thanks Jos Roost)
+  - Decode some new Canon tags (thanks Mark Reid)
+  - Decode another Nikon Z9 tag (thanks Warren Hatch)
+  - Decode Nikon NKSC GPSImgDirection (thanks Olaf)
+  - Improved handling of empty XMP structures in lists
+  - Tolerate leading UTF-8 BOM in -geotag log files
+  - Updated photoshop_paths.config to include WorkingPath
+  - Patched to allow writing of MP4 videos which have url tracks with a missing
+    sample description entry
+  - Fixed typo in the name of a new Nikon tag (thanks Herb)
+  - Fixed description of GPR (General Purpose RAW) file type
+  - Fixed potential deep recursion runtime error when writing nested XMP
+    structures
+  - Fixed warning which could be generated when writing new
+    Composite:GPSCoordinates tag
+  - Fixed deep recursion error when reading multi-page TIFF images with more
+    than 100 pages
+
 Jan. 13, 2022 - Version 12.39
 
   - Added a new Pentax LensType (thanks Christian Shulz)

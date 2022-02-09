@@ -634,15 +634,14 @@ sub RestoreStruct($;$)
     local $_;
     my ($et, $keepFlat) = @_;
     my ($key, %structs, %var, %lists, $si, %listKeys, @siList);
-    my $ex = $$et{TAG_EXTRA};
     my $valueHash = $$et{VALUE};
     my $fileOrder = $$et{FILE_ORDER};
     my $tagExtra = $$et{TAG_EXTRA};
     foreach $key (keys %{$$et{TAG_INFO}}) {
-        $$ex{$key} or next;
-        my $structProps = $$ex{$key}{Struct} or next;
-        delete $$ex{$key}{Struct}; # (don't re-use)
-        my $tagInfo = $$et{TAG_INFO}{$key};   # tagInfo for flattened tag
+        $$tagExtra{$key} or next;
+        my $structProps = $$tagExtra{$key}{Struct} or next;
+        delete $$tagExtra{$key}{Struct};    # (don't re-use)
+        my $tagInfo = $$et{TAG_INFO}{$key}; # tagInfo for flattened tag
         my $table = $$tagInfo{Table};
         my $prop = shift @$structProps;
         my $tag = $$prop[0];
@@ -829,8 +828,23 @@ sub RestoreStruct($;$)
     $var{$_} and push @siList, $_ foreach keys %structs;
     # save new structures in the same order they were read from file
     foreach $si (sort { $var{$a}[1] <=> $var{$b}[1] } @siList) {
-        $key = $et->FoundTag($var{$si}[0], '');
-        $$valueHash{$key} = $structs{$si};
+        # test to see if a tag for this structure has already been generated
+        # (this could happen only if one of the structures in a list was empty)
+        $key = $var{$si}[0]{Name};
+        my $found;
+        if ($$valueHash{$key}) {
+            my @keys = grep /^$key( \(\d+\))?$/, keys %$valueHash;
+            foreach $key (@keys) {
+                next unless $$valueHash{$key} eq $structs{$si};
+                $found = 1;
+                last;
+            }
+        }
+        unless ($found) {
+            # otherwise, generate a new tag for this structure
+            $key = $et->FoundTag($var{$si}[0], '');
+            $$valueHash{$key} = $structs{$si};
+        }
         $$fileOrder{$key} = $var{$si}[1];
     }
 }

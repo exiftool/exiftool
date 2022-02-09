@@ -535,11 +535,16 @@
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#HDRInfo'>Canon HDRInfo Tags</a></td></tr>
 <tr class=b>
+<td title='0x4026 = 16422'>0x4026</td>
+<td>LogInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#LogInfo'>Canon LogInfo Tags</a></td></tr>
+<tr>
 <td title='0x4028 = 16424'>0x4028</td>
 <td>AFConfig</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#AFConfig'>Canon AFConfig Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x403f = 16447'>0x403f</td>
 <td>RawBurstModeRoll</td>
 <td class=c>-</td>
@@ -957,8 +962,8 @@
   <br>4 = RAW</td><td>&nbsp;&nbsp;</td>
   <td>5 = Superfine
   <br>7 = CRAW
-  <br>130 = Normal Movie
-  <br>131 = Movie (2)</td></tr></table>
+  <br>130 = Light (RAW)
+  <br>131 = Standard (RAW)</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
@@ -6403,8 +6408,8 @@ on the 1DSmkII)</span></span></td></tr>
   <br>4 = RAW</td><td>&nbsp;&nbsp;</td>
   <td>5 = Superfine
   <br>7 = CRAW
-  <br>130 = Normal Movie
-  <br>131 = Movie (2)</td></tr></table>
+  <br>130 = Light (RAW)
+  <br>131 = Standard (RAW)</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='7 = 0x7'>7</td>
@@ -6887,8 +6892,8 @@ valid for all camera models)</span></span></td></tr>
   <br>4 = RAW</td><td>&nbsp;&nbsp;</td>
   <td>5 = Superfine
   <br>7 = CRAW
-  <br>130 = Normal Movie
-  <br>131 = Movie (2)</td></tr></table>
+  <br>130 = Light (RAW)
+  <br>131 = Standard (RAW)</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
@@ -11145,6 +11150,59 @@ to the one printed on the lens)</span></span></td></tr>
   <br>4 = Art (embossed)</span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='LogInfo'>Canon LogInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>CompressionFormat</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Editing (ALL-I)
+  <br>1 = Standard (IPB)
+  <br>2 = Light (IPB)
+  <br>3 = Motion JPEG
+  <br>4 = RAW</span></td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>Sharpness</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
+<td>Saturation</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Normal</span></td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>ColorTone</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Normal</span></td></tr>
+<tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>ColorSpace2</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = BT.709
+  <br>1 = BT.2020
+  <br>2 = CinemaGamut</span></td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>ColorMatrix</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = EOS Original
+  <br>1 = Neutral</span></td></tr>
+<tr>
+<td class=r title='11 = 0xb'>11</td>
+<td>CanonLogVersion</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = OFF
+  <br>1 = CLogV1
+  <br>2 = CLogV2
+  <br>3 = CLogV3</span></td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='AFConfig'>Canon AFConfig Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -11554,7 +11612,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 8, 2021</i>
+<br><i>Last revised Feb 9, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

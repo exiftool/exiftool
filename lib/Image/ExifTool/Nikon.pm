@@ -63,7 +63,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.04';
+$VERSION = '4.05';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -495,6 +495,7 @@ sub GetAFPointGrid($$;$);
     '7A 48 5C 80 24 24 4B 06' => 'Sigma 70-200mm F2.8 EX APO DG Macro HSM II',
     'EE 48 5C 80 24 24 4B 06' => 'Sigma 70-200mm F2.8 EX APO DG Macro HSM II', #JD
     '9C 48 5C 80 24 24 4B 0E' => 'Sigma 70-200mm F2.8 EX DG OS HSM', #Rolando Ruzic
+    'BB 48 5C 80 24 24 4B 4E' => 'Sigma 70-200mm F2.8 DG OS HSM | S', #forum13207
     '02 46 5C 82 25 25 02 00' => 'Sigma 70-210mm F2.8 APO', #JD
     '02 40 5C 82 2C 35 02 00' => 'Sigma APO 70-210mm F3.5-4.5',
     '26 3C 5C 82 30 3C 1C 02' => 'Sigma 70-210mm F4-5.6 UC-II',
@@ -1220,6 +1221,16 @@ my %binaryDataAttrs = (
 my %base64bin = ( ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)' );
 my %base64int32u = ( ValueConv => 'my $val=Image::ExifTool::XMP::DecodeBase64($val); unpack("V",$$val)' );
 my %base64bytes = ( ValueConv => 'my $val=Image::ExifTool::XMP::DecodeBase64($val); join(".",unpack("C*",$$val))' );
+my %base64double = (
+    ValueConv => q{
+        my $val=Image::ExifTool::XMP::DecodeBase64($val);
+        my $saveOrder = GetByteOrder();
+        SetByteOrder('II');
+        $val = GetDouble($val,0);
+        SetByteOrder($saveOrder);
+        return $val;
+    },
+);
 my %base64coord = (
     ValueConv => q{
         my $val=Image::ExifTool::XMP::DecodeBase64($val);
@@ -4180,7 +4191,7 @@ my %base64coord = (
         Format => 'int16u',
     },
     0x43 => {
-        Name => 'FocusPositionHoriontal',
+        Name => 'FocusPositionHorizontal',
         PrintConv => sub { my ($val) = @_; PrintAFPointsLeftRight($val, 29 ); },    #493 focus points for Z9 fall in a 30x18 grid (some coordinates are not accessible)
     },
     0x45 => {
@@ -8565,7 +8576,17 @@ my %nikonFocalConversions = (
     444 => { Name => 'FlashRemoteControl',  PrintConv => \%flashRemoteControlZ7, Unknown => 1},
     456 => { Name => 'FlashWirelessOption', PrintConv => \%flashWirelessOptionZ7, Unknown => 1},
     #526 FocusMode
-    #528 AFAreaMode
+    528 => {
+        Name => 'AFAreaMode',
+        PrintConv => {
+            1 => 'Single',
+            2 => 'Dynamic',
+            3 => 'Wide (S)',
+            4 => 'Wide (L)',
+            5 => '3D',
+            6 => 'Auto',
+        },
+    },
     530 => { Name => 'VRMode',   PrintConv => \%vRModeZ9},
     534 => {
         Name => 'BracketSet',
@@ -11055,17 +11076,22 @@ my %nikonFocalConversions = (
     },
     GPSAltitude => {
         Groups => { 2 => 'Location' },
-        ValueConv => q{
-            my $val=Image::ExifTool::XMP::DecodeBase64($val);
-            my $saveOrder = GetByteOrder();
-            SetByteOrder('II');
-            $val = GetDouble($val,0);
-            SetByteOrder($saveOrder);
-            return $val;
-        },
+        %base64double,
         PrintConv => '"$val m"',
     },
-    GPSMapDatum => { },
+    GPSMapDatum => { Groups => { 2 => 'Location' } },
+    GPSImgDirection => {
+        Groups => { 2 => 'Location' },
+        %base64double,
+        PrintConv => 'sprintf("%.2f", $val)',
+    },
+    GPSImgDirectionRef => {
+        Groups => { 2 => 'Location' },
+        PrintConv => {
+            M => 'Magnetic North',
+            T => 'True North',
+        },
+    },
 );
 %Image::ExifTool::Nikon::sdc = (
     GROUPS => { 0 => 'XMP', 1 => 'XMP-sdc', 2 => 'Image' },

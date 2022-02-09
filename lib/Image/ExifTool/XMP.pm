@@ -3399,6 +3399,10 @@ NoLoop:
         }
         # save property list for verbose "adding" message unless this tag already exists
         $added = \@tagList unless $$tagTablePtr{$tagID};
+        # if this is an empty structure, we must add a Struct field
+        if (not length $val and $$attrs{'rdf:parseType'} and $$attrs{'rdf:parseType'} eq 'Resource') {
+            $$tagInfo{Struct} = { STRUCT_NAME => 'XMP Unknown' };
+        }
         AddTagToTable($tagTablePtr, $tagID, $tagInfo);
         last;
     }
@@ -3730,7 +3734,11 @@ sub ParseXMPElement($$$;$$$$)
         } elsif ($prop eq 'rdf:Description') {
             # remove unnecessary rdf:Description elements since parseType='Resource'
             # is more efficient (also necessary to make property path consistent)
-            $parseResource = 1 if grep /^rdf:Description$/, @$propList;
+            if (grep /^rdf:Description$/, @$propList) {
+                $parseResource = 1;
+                # set parseType so we know this is a structure
+                $attrs{'rdf:parseType'} = 'Resource';
+            }
         } elsif ($prop eq 'xmp:xmpmeta') {
             # patch MicrosoftPhoto unconformity
             $prop = 'x:xmpmeta';

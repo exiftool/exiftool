@@ -1144,13 +1144,13 @@ sub ProcessSamples($)
             }
             @$size < @$start + $samplesPerChunk and $et->WarnOnce('Sample size error'), last;
             my $sampleStart = $chunkStart;
-            for ($i=0; ; ) {
+Sample:     for ($i=0; ; ) {
                 push @$start, $sampleStart;
                 if (defined $time) {
                     until ($timeCount) {
                         if (@$stts < 2) {
                             undef $time;
-                            last;
+                            last Sample;
                         }
                         $timeCount = shift @$stts;
                         $timeDelta = shift @$stts;

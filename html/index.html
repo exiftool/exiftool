@@ -45,6 +45,7 @@ table.sticky th { position: sticky; top: 0; background: #ddd; z-index: 1; border
 table.sticky td { border-bottom: 1px solid gray; border-right: 1px solid gray }
 table.sticky th:first-child,
 table.sticky td:first-child { border-left: 1px solid gray}
+table.sticky td.nb          { border-bottom: 0px }
 span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top: -.4em }
 i.orng          { color: #c60 }
 -->
@@ -92,9 +93,9 @@ the site with a moderate load.  An alternate ExifTool homepage is available at
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.40.tar.gz/download">
-Download        Version 12.40</a> (4.8 MB) -
-<a href="history.html">Feb. 9, 2022</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.41.tar.gz/download">
+Download        Version 12.41</a> (4.8 MB) -
+<a href="history.html">Apr. 7, 2022</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -147,8 +148,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.40.zip/download">
-         exiftool-12.40.zip</a> (6.4 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.41.zip/download">
+         exiftool-12.41.zip</a> (6.4 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -166,7 +167,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.40.dmg</a> (3.1 MB)</b></td></tr></table></blockquote>
+         ExifTool-12.41.dmg</a> (3.1 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -502,7 +503,7 @@ for each file format.</p>
 <h3><a name="JPEG">Supported JPEG Meta Information</a></h3>
 <p>ExifTool can <b>R</b>ead, <b>W</b>rite and/or <b>C</b>reate the following types
 of meta information in JPEG images:</p>
-<blockquote><table class='norm tight sm bm'>
+<blockquote><table class='sticky tight sm bm'>
 <tr><th>JPEG Meta Information</th><th>Support</th><th>Description</th></tr>
 <tr><td>APP0 - <a href="TagNames/JFIF.html">JFIF</a></td><td>R/W/C</td><td>JPEG File Interchange Format</td></tr>
 <tr><td>APP0 - <a href="TagNames/JFIF.html#Extension">JFXX</a></td><td>R</td><td>Extended JFIF</td></tr>
@@ -552,8 +553,8 @@ of meta information in JPEG images:</p>
 <tr><td>APP15 - <a href="TagNames/JPEG.html#GraphConv">GraphicConverter</a></td><td>R</td><td>GraphicConverter quality</td></tr>
 <tr><td>COM</td><td>R/W/C</td><td>JPEG Comment (multi-segment)</td></tr>
 <tr><td>DQT</td><td>R</td><td>(used to calculate the <a href="TagNames/Extra.html">Extra:JPEGDigest</a> tag value)</td></tr>
-<tr><td><a href="TagNames/JPEG.html#SOF">SOF</a></td><td>R</td><td>JPEG Start Of Frame</td></tr>
-<tr><th colspan=3><a name="Trailers">Trailers <span class=sup>1</span></a></th></tr>
+<tr><td class='nb'><a href="TagNames/JPEG.html#SOF">SOF</a></td><td class='nb'>R</td><td class='nb'>JPEG Start Of Frame</td></tr>
+<tr><th><a name="Trailers">JPEG Trailer <span class=sup>1</span></a></th><th>Support</th><th>Description</th></tr>
 <tr><td><a href="TagNames/AFCP.html">AFCP trailer</a></td><td>R/W</td><td>AXS File Concatenation Protocol (includes <a href="TagNames/IPTC.html">IPTC</a>)</td></tr>
 <tr><td><a href="TagNames/CanonVRD.html">CanonVRD trailer</a></td><td>R/W/C</td><td>Canon DPP Recipe Data (includes <a href="TagNames/CanonVRD.html#DR4">DR4</a>)</td></tr>
 <tr><td><a href="TagNames/FotoStation.html">FotoStation trailer</a></td><td>R/W</td><td>FotoWare FotoStation (includes <a href="TagNames/IPTC.html">IPTC</a>)</td></tr>
@@ -1284,7 +1285,7 @@ binary data.  The simple script above does not handle this case.</p>
 <p><b><a name="related_win">Windows</a></b></p>
 <ul>
 <li><a href="https://oliverbetz.de/pages/Artikel/ExifTool-for-Windows">Alternate ExifTool Windows Installer and Portable Package</a> by Oliver Betz</li>
-<li><a href="http://wxutils.com/wxeti.php">wxETI</a>: A wxWidgets-based Windows interface for Exiftool</a></li>
+<li><a href="http://wxutils.com/wxeti.php">wxETI</a>: A wxWidgets-based Windows interface for Exiftool</li>
 <li><a href="https://exiftool.org/gui/">ExifTool GUI for Windows</a>: GUI for viewing meta information with some editing features</li>
 <li><a href="https://www.logipole.com/metadata++-en.htm">Metadata++</a>: View, edit, extract, copy metadata metadata</li>
 <!-- dead <li><a href="http://www.thezeal.com/software/?Exif_Stats_Utility">Exif Stats Utility</a>: Analyzes images to tabulate apertures, exposure times, etc</li> -->
@@ -1333,6 +1334,7 @@ three droplets to extract information [exiftool must be installed] (thanks to Ro
 <li><a href="http://marc.vos.net/downloads/setexifdata/">SetEXIFData</a>: Add/modify EXIF data in images</li>
 <li><a href="https://itunes.apple.com/us/app/geotagster/id1180435565">GeoTagster</a>: Geotagging from GPX files ($0.99 paid app)</li>
 <li><a href="http://www.exifphotoworker.com/">Exif Photoworker</a>: Smart rename and organize your photos and videos in a few clicks</li>
+<li><a href="https://neededapps.com/metaimage/">MetaImage</a>: Reads, writes and edits your image metadata in a familiar interface</li>
 </ul>
 
 <p><b><a name="related_linux">Linux</a></b></p>
@@ -1421,6 +1423,7 @@ three droplets to extract information [exiftool must be installed] (thanks to Ro
 <li><a href="https://github.com/mceachen/exiftool-vendored">exiftool-vendored</a>: Blazing-fast, cross-platform Node.js access to ExifTool</li>
 <li><a href="https://exiftool.org/gui/articles/delphi01.html">How to call ExifTool from Delphi</a>, by Bogdan Hrastnik</li>
 <li><a href="https://github.com/philvl/ZExifTool">Qt5 and Qt6 interface for ExifTool</a>, by Philippe Vianney-Liaud</li>
+<li><a href="https://github.com/JoshOBrien/exiftoolr">exiftoolr</a>: ExifTool functionality from R</li>
 </ul>
 
 <h3><a name="other_links">Other Links</a></h3>

@@ -669,6 +669,7 @@ for the official EXIF 2.32 specification.
            MakerNoteNintendo         ExifIFD    Nintendo
            MakerNoteOlympus          ExifIFD    Olympus
            MakerNoteOlympus2         ExifIFD    Olympus
+           MakerNoteOlympus3         ExifIFD    Olympus
            MakerNoteLeica            ExifIFD    Panasonic
            MakerNoteLeica2           ExifIFD    Panasonic Leica2
            MakerNoteLeica3           ExifIFD    Panasonic Leica3
@@ -20994,6 +20995,7 @@ still proprietary) Adobe format.
            MakerNoteNintendo                    Nintendo
            MakerNoteOlympus                     Olympus
            MakerNoteOlympus2                    Olympus
+           MakerNoteOlympus3                    Olympus
            MakerNoteLeica                       Panasonic
            MakerNoteLeica2                      Panasonic Leica2
            MakerNoteLeica3                      Panasonic Leica3
@@ -37534,6 +37536,7 @@ for more details.
                        MakerNoteNintendo
                        MakerNoteOlympus
                        MakerNoteOlympus2
+                       MakerNoteOlympus3
                        MakerNoteLeica
                        MakerNoteLeica2
                        MakerNoteLeica3

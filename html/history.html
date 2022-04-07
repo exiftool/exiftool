@@ -17,10 +17,34 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.41'><b>Apr. 7, 2022 - Version 12.41</b></a>
+<ul>
+<li>Added support for "OM SYSTEM" maker notes
+<li>Added 2 new Sony LensType values (thanks Jos Roost)
+<li>Added some new Canon lenses (thanks LibRaw)
+<li>Added a new Nikon LensID (thanks Bert Ligtvoet)
+<li>Added a new Canon ContinuousDrive value (thanks Wolfgang G&uuml;lcker)
+<li>Enhanced -v0 option to also print new file name when renaming, moving or
+    copying a file
+<li>Updated xmp2exif.args and exif2xmp.args helper files to reflect the IPTC
+    Photometadata Mapping Guidelines version 2202.1
+<li>Made "Invalid Xxx data" a minor warning for MakerNote data
+<li>Patched to allow writing of MP4 videos which have other tracks with a
+    missing sample description entry
+<li>Patched MacOS version to specify directory for external utilities (setfile,
+    xattr, stat, mdls and osascript from /usr/bin, and tag from /usr/local/bin)
+<li>Fixed long-standing problem where Windows version could behave differently
+    for -if conditions containing undefined tags
+<li>Fixed problem where -W+! combined with -j or -X produced invalid JSON or XML
+    when  processing multiple files
+<li>Fixed potential "uninitialized value $time in division" runtime warning when
+    reading MP4 videos
+</ul>
+
 <a name='v12.40'><b>Feb. 9, 2022 - Version 12.40</b></a>
 <ul>
-<li>Added a new Nikon LensID (thanks Wolfgang Exler)
 <li>Added PageCount tag to return the number of pages in a multi-page TIFF
+<li>Added a new Nikon LensID (thanks Wolfgang Exler)
 <li>Added a few more Sony LensTypes (thanks Jos Roost)
 <li>Decode some new Canon tags (thanks Mark Reid)
 <li>Decode another Nikon Z9 tag (thanks Warren Hatch)
@@ -30,14 +54,14 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Updated photoshop_paths.config to include WorkingPath
 <li>Patched to allow writing of MP4 videos which have url tracks with a missing
     sample description entry
-<li>Fixed typo in the name of a new Nikon tag (thanks Herb)
-<li>Fixed description of GPR (General Purpose RAW) file type
+<li>Fixed deep recursion error when reading multi-page TIFF images with more
+    than 100 pages
 <li>Fixed potential deep recursion runtime error when writing nested XMP
     structures
 <li>Fixed warning which could be generated when writing new
     Composite:GPSCoordinates tag
-<li>Fixed deep recursion error when reading multi-page TIFF images with more
-    than 100 pages
+<li>Fixed description of GPR (General Purpose RAW) file type
+<li>Fixed typo in the name of a new Nikon tag (thanks Herb)
 </ul>
 
 <a name='v12.39'><b>Jan. 13, 2022 - Version 12.39</b></a>

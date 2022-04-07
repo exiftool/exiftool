@@ -437,6 +437,7 @@ sub GetAFPointGrid($$;$);
     'A5 40 2D 88 2C 40 4B 0E' => 'Sigma 18-250mm F3.5-6.3 DC OS HSM',
   #  LensFStops varies with FocalLength for this lens (ref 2):
     '92 2C 2D 88 2C 40 4B 0E' => 'Sigma 18-250mm F3.5-6.3 DC Macro OS HSM', #2
+    '87 2C 2D 8E 2C 40 4B 0E' => 'Sigma 18-300mm F3.5-6.3 DC Macro HSM', #30
   # '92 2C 2D 88 2C 40 4B 0E' (250mm)
   # '92 2B 2D 88 2C 40 4B 0E' (210mm)
   # '92 2C 2D 88 2C 40 4B 0E' (185mm)

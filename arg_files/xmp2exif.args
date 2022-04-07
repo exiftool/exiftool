@@ -14,8 +14,10 @@
 #               2016/09/26 - PH Write Composite SubSec tags
 #               2018/05/07 - PH Added support for GPSDestXxxRef tags
 #               2021/09/30 - PH Removed erroneous "-" when copying CreatorTool
+#               2022/03/31 - PH IPTC Photometadata Mapping Guidelines 2202.1 update
 #
 # References:   http://www.metadataworkinggroup.org/specs/
+#               https://iptc.org/std/photometadata/documentation/mappingguidelines/
 #
 # Notes:     1) The first three arguments copy the bulk of the EXIF and GPS
 #               information, and the remaining arguments handle the tags
@@ -24,6 +26,8 @@
 #            2) These arguments will not delete existing EXIF tags which are
 #               missing from the XMP.  The EXIF tags should be deleted
 #               beforehand if required.
+#
+#            3) XMP-iptcExt:ImageRegion is not currently mapped into EXIF:SubjectArea
 #------------------------------------------------------------------------------
 -EXIF:all < XMP-exif:all
 -EXIF:all < XMP-exifEX:all
@@ -37,7 +41,9 @@
 -Composite:SubSecModifyDate < XMP-xmp:ModifyDate
 -EXIF:Software < XMP-xmp:CreatorTool
 -EXIF:Copyright < XMP-dc:Rights
+-EXIF:Artist < XMP-plus:ImageCreatorName
 -EXIF:Artist < XMP-dc:Creator
+-EXIF:DigImageGUID < XMP-iptcExt:DigitalImageGUID
 # XMP flash information is translated by the Composite Flash tag
 -EXIF:Flash < Composite:Flash
 # generate GPS tags which have been combined into other XMP tags

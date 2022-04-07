@@ -7,10 +7,33 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Apr. 7, 2022 - Version 12.41
+
+  - Added support for "OM SYSTEM" maker notes
+  - Added 2 new Sony LensType values (thanks Jos Roost)
+  - Added some new Canon lenses (thanks LibRaw)
+  - Added a new Nikon LensID (thanks Bert Ligtvoet)
+  - Added a new Canon ContinuousDrive value (thanks Wolfgang Gulcker)
+  - Enhanced -v0 option to also print new file name when renaming, moving or
+    copying a file
+  - Updated xmp2exif.args and exif2xmp.args helper files to reflect the IPTC
+    Photometadata Mapping Guidelines version 2202.1
+  - Made "Invalid Xxx data" a minor warning for MakerNote data
+  - Patched to allow writing of MP4 videos which have other tracks with a
+    missing sample description entry
+  - Patched MacOS version to specify directory for external utilities (setfile,
+    xattr, stat, mdls and osascript from /usr/bin, and tag from /usr/local/bin)
+  - Fixed long-standing problem where Windows version could behave differently
+    for -if conditions containing undefined tags
+  - Fixed problem where -W+! combined with -j or -X produced invalid JSON or XML
+    when  processing multiple files
+  - Fixed potential "uninitialized value $time in division" runtime warning when
+    reading MP4 videos
+
 Feb. 9, 2022 - Version 12.40
 
-  - Added a new Nikon LensID (thanks Wolfgang Exler)
   - Added PageCount tag to return the number of pages in a multi-page TIFF
+  - Added a new Nikon LensID (thanks Wolfgang Exler)
   - Added a few more Sony LensTypes (thanks Jos Roost)
   - Decode some new Canon tags (thanks Mark Reid)
   - Decode another Nikon Z9 tag (thanks Warren Hatch)
@@ -20,14 +43,14 @@ Feb. 9, 2022 - Version 12.40
   - Updated photoshop_paths.config to include WorkingPath
   - Patched to allow writing of MP4 videos which have url tracks with a missing
     sample description entry
-  - Fixed typo in the name of a new Nikon tag (thanks Herb)
-  - Fixed description of GPR (General Purpose RAW) file type
+  - Fixed deep recursion error when reading multi-page TIFF images with more
+    than 100 pages
   - Fixed potential deep recursion runtime error when writing nested XMP
     structures
   - Fixed warning which could be generated when writing new
     Composite:GPSCoordinates tag
-  - Fixed deep recursion error when reading multi-page TIFF images with more
-    than 100 pages
+  - Fixed description of GPR (General Purpose RAW) file type
+  - Fixed typo in the name of a new Nikon tag (thanks Herb)
 
 Jan. 13, 2022 - Version 12.39
 

@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 sub MDItemLocalTime($);
 sub ProcessATTR($$$);
@@ -381,7 +381,7 @@ sub SetMacOSTags($$$)
                 $val = Image::ExifTool::ConvertUnixTime($time, 1) if $time;
             }
             $val =~ s{(\d{4}):(\d{2}):(\d{2})}{$2/$3/$1};   # reformat for setfile
-            $cmd = "setfile -d '${val}' '${f}'";
+            $cmd = "/usr/bin/setfile -d '${val}' '${f}'";
         } elsif ($tag eq 'MDItemUserTags') {
             # (tested with "tag" version 0.9.0)
             ($f = $file) =~ s/'/'\\''/g;
@@ -391,7 +391,7 @@ sub SetMacOSTags($$$)
                 my @dels = @{$$nvHash{DelValue}};
                 s/'/'\\''/g foreach @dels;
                 my $del = join ',', @dels;
-                $err = system "tag -r '${del}' '${f}'>/dev/null 2>&1";
+                $err = system "/usr/local/bin/tag -r '${del}' '${f}'>/dev/null 2>&1";
                 unless ($err) {
                     $et->VerboseValue("- $tag", $del);
                     $result = 1;
@@ -403,13 +403,13 @@ sub SetMacOSTags($$$)
                 s/'/'\\''/g foreach @vals;
                 my $opt = $overwrite > 0 ? '-s' : '-a';
                 $val = @vals ? join(',', @vals) : '';
-                $cmd = "tag $opt '${val}' '${f}'";
+                $cmd = "/usr/local/bin/tag $opt '${val}' '${f}'";
                 $et->VPrint(1,"    - $tag = (all)\n") if $overwrite > 0;
                 undef $val if $val eq '';
             }
         } elsif ($tag eq 'XAttrQuarantine') {
             ($f = $file) =~ s/'/'\\''/g;
-            $cmd = "xattr -d com.apple.quarantine '${f}'";
+            $cmd = "/usr/bin/xattr -d com.apple.quarantine '${f}'";
             $silentErr = 256;   # (will get this error if attribute doesn't exist)
         } else {
             ($f = $file) =~ s/(["\\])/\\$1/g;   # escape necessary characters for script
@@ -426,7 +426,7 @@ sub SetMacOSTags($$$)
                 $v = $val ? 8 - $val : 0;       # convert from label to label index (0 for no label)
                 $attr = 'label index';
             }
-            $cmd = qq(osascript -e 'set fp to POSIX file "$f" as alias' -e \\
+            $cmd = qq(/usr/bin/osascript -e 'set fp to POSIX file "$f" as alias' -e \\
                 'tell application "Finder" to set $attr of file fp to "$v"');
         }
         if (defined $cmd) {
@@ -455,7 +455,7 @@ sub ExtractMDItemTags($$)
 
     ($fn = $file) =~ s/([`"\$\\])/\\$1/g;   # escape necessary characters
     $et->VPrint(0, '(running mdls)');
-    my @mdls = `mdls "$fn" 2> /dev/null`;   # get MacOS metadata
+    my @mdls = `/usr/bin/mdls "$fn" 2> /dev/null`;   # get MacOS metadata
     if ($? or not @mdls) {
         $et->Warn('Error running "mdls" to extract MDItem tags');
         return;
@@ -565,7 +565,7 @@ sub ExtractXAttrTags($$)
 
     ($fn = $file) =~ s/([`"\$\\])/\\$1/g;       # escape necessary characters
     $et->VPrint(0, '(running xattr)');
-    my @xattr = `xattr -lx "$fn" 2> /dev/null`; # get MacOS extended attributes
+    my @xattr = `/usr/bin/xattr -lx "$fn" 2> /dev/null`; # get MacOS extended attributes
     if ($? or not @xattr) {
         $? and $et->Warn('Error running "xattr" to extract XAttr tags');
         return;
@@ -611,7 +611,7 @@ sub GetFileCreateDate($$)
 
     ($fn = $file) =~ s/([`"\$\\])/\\$1/g;   # escape necessary characters
     $et->VPrint(0, '(running stat)');
-    my $time = `stat -f '%SB' -t '%Y:%m:%d %H:%M:%S%z' "$fn" 2> /dev/null`;
+    my $time = `/usr/bin/stat -f '%SB' -t '%Y:%m:%d %H:%M:%S%z' "$fn" 2> /dev/null`;
     if ($? or not $time or $time !~ s/([-+]\d{2})(\d{2})\s*$/$1:$2/) {
         $et->Warn('Error running "stat" to extract FileCreateDate');
         return;

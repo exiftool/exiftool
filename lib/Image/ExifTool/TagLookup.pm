@@ -4075,6 +4075,7 @@ my %tagLookup = (
 	'makernoteoffset' => { 396 => 0xff },
 	'makernoteolympus' => { 117 => 'MakN', 119 => 0x927c },
 	'makernoteolympus2' => { 117 => 'MakN', 119 => 0x927c },
+	'makernoteolympus3' => { 117 => 'MakN', 119 => 0x927c },
 	'makernotepanasonic' => { 117 => 'MakN', 119 => 0x927c },
 	'makernotepanasonic2' => { 117 => 'MakN', 119 => 0x927c },
 	'makernotepanasonic3' => { 117 => 'MakN', 119 => 0x927c },

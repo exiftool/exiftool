@@ -2232,7 +2232,7 @@ my %eeBox2 = (
     #  4 ? - "1e 00"
     #  6 int16u - record length in bytes
     #  8 ? - "23 01 00 00 00 00 00 00"
-    #  16 - start of records (each record ends in an int64u timestamp in ns)
+    #  16 - start of records (each record ends in an int64u timestamp "ts" in ns)
     # RDTA - float[4],ts: "-0.31289672 -0.2245330 11.303817 0 775.780"
     # RDTB - float[4],ts: "-0.04841613 -0.2166595 0.0724792 0 775.780"
     # RDTC - float[4],ts: "27.60925 -27.10037 -13.27285 0 775.829"

@@ -12,8 +12,10 @@
 #               2013/06/12 - PH Additions for the Exif 2.3 for XMP spec
 #               2015/01/12 - PH Avoid copying to non-standard namespaces
 #               2018/05/07 - PH Added support for GPSDestXxxRef tags
+#               2022/03/31 - PH IPTC Photometadata Mapping Guidelines 2202.1 update
 #
 # References:   http://www.metadataworkinggroup.org/specs/
+#               https://iptc.org/std/photometadata/documentation/mappingguidelines/
 #
 # Notes:     1) The first three arguments copy most of the EXIF and GPS tags to
 #               XMP-exif/XMP-tiff, and the remaining arguments handle tags
@@ -22,6 +24,8 @@
 #            2) These arguments will not delete existing XMP tags which are
 #               missing from the EXIF.  The XMP tags should be deleted
 #               beforehand if required.
+#
+#            3) EXIF:SubjectArea is not currently mapped into XMP-iptcExt:ImageRegion
 #------------------------------------------------------------------------------
 -XMP-exif:all < EXIF:all
 -XMP-exifEX:all < EXIF:all
@@ -37,6 +41,7 @@
 -XMP-xmp:CreatorTool < EXIF:Software
 -XMP-dc:Rights < EXIF:Copyright
 -XMP-dc:Creator < EXIF:Artist
+-XMP-iptcExt:DigitalImageGUID < EXIF:DigImageGUID
 # XMP flash information is translated by the Composite Flash tag
 -Composite:Flash < EXIF:Flash
 # overwrite GPS tags which have different formats in XMP

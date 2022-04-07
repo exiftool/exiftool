@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.39';
+$VERSION = '4.40';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -6605,7 +6605,7 @@ sub ProcessExif($$$)
                 #### eval Validate ($val, $dirData, $subdirStart, $size)
                 my $ok = 0;
                 if (defined $$subdir{Validate} and not eval $$subdir{Validate}) {
-                    $et->Warn("Invalid $tagStr data");
+                    $et->Warn("Invalid $tagStr data", $inMakerNotes);
                     $invalid = 1;
                 } else {
                     if (not $subdirInfo{DirName} and $inMakerNotes) {

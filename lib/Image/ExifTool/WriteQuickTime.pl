@@ -1391,8 +1391,8 @@ sub WriteQuickTime($$$)
                 $pos += $siz;
             }
             if ($msg) {
-                # (allow empty sample description for 'url ' handler type)
-                if ($$et{HandlerType} or length($buff) > 8) {
+                # (allow empty sample description for non-audio/video handler types, eg. 'url ', 'meta')
+                if ($$et{HandlerType}) {
                     my $grp = $$et{CUR_WRITE_GROUP} || $parent;
                     $et->Error("$msg for $grp");
                     return $rtnErr;

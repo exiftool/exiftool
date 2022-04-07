@@ -8,9 +8,10 @@
 #               (See html/history.html for revision history)
 #------------------------------------------------------------------------------
 use strict;
+use warnings;
 require 5.004;
 
-my $version = '12.40';
+my $version = '12.41';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -102,6 +103,8 @@ my %database;       # lookup for database information based on file name (in Exi
 my %filterExt;      # lookup for filtered extensions
 my %ignore;         # directory names to ignore
 my $ignoreHidden;   # flag to ignore hidden files
+my %outComma;       # flag that output text file needs a comma
+my %outTrailer;     # trailer for output text file
 my %preserveTime;   # preserved timestamps for files
 my %printFmt;       # the contents of the print format file
 my %setTags;        # hash of list references for tags to set from files
@@ -455,6 +458,8 @@ undef %database;
 undef %endDir;
 undef %filterExt;
 undef %ignore;
+undef %outComma;
+undef %outTrailer;
 undef %printFmt;
 undef %preserveTime;
 undef %setTags;
@@ -1819,8 +1824,21 @@ if ($filtered and not $validFile) {
 PrintCSV() if $csv and not $isWriting;
 
 # print folder/file trailer if necessary
-print $sectTrailer if $sectTrailer and not $textOut;
-print $fileTrailer if $fileTrailer and not $textOut and not $fileHeader;
+if ($textOut) {
+    foreach (keys %outTrailer) {
+        next unless $outTrailer{$_};
+        if ($mt->Open(\*OUTTRAIL, $_, '>>')) {
+            my $fp = \*OUTTRAIL;
+            print $fp $outTrailer{$_};
+            close $fp;
+        } else {
+            Error("Error appending to $_\n");
+        }
+    }
+} else {
+    print $sectTrailer if $sectTrailer;
+    print $fileTrailer if $fileTrailer and not $fileHeader;
+}
 
 my $totWr = $countGoodWr + $countBadWr + $countSameWr + $countCopyWr +
             $countGoodCr + $countBadCr;
@@ -2158,6 +2176,9 @@ sub GetImageInfo($$)
         $tmpText = $outfile unless $append;
     }
 
+    # restore state of comma flag for this file if appending
+    $comma = $outComma{$outfile} if $append and ($textOverwrite & 0x02);
+
     # print the results for this file
     if (%printFmt) {
         # output using print format file (-p) option
@@ -2219,7 +2240,7 @@ sub GetImageInfo($$)
         if ($fp) {
             # print file header (only once)
             if ($fileHeader) {
-                print $fp $fileHeader;
+                print $fp $fileHeader unless defined $outfile and ($created{$outfile} or $appended{$outfile});
                 undef $fileHeader unless $textOut;
             }
             if ($html) {
@@ -2672,9 +2693,17 @@ TAG:    foreach $tag (@foundTags) {
         }
     }
     if ($outfile) {
-        # write section and file trailers before closing the file
-        print $fp $sectTrailer and $sectTrailer = '' if $sectTrailer;
-        print $fp $fileTrailer if $fileTrailer;
+        if ($textOverwrite & 0x02) {
+            # save state of this file if we may be appending
+            $outComma{$outfile} = $comma;
+            $outTrailer{$outfile} = '';
+            $outTrailer{$outfile} .= $sectTrailer and $sectTrailer = '' if $sectTrailer;
+            $outTrailer{$outfile} .= $fileTrailer if $fileTrailer;
+        } else {
+            # write section and file trailers before closing the file
+            print $fp $sectTrailer and $sectTrailer = '' if $sectTrailer;
+            print $fp $fileTrailer if $fileTrailer;
+        }
         close($fp);
         undef $tmpText;
         if ($lineCount) {
@@ -2924,7 +2953,7 @@ sub SetImageInfo($$$)
             }
         }
         if (defined $outfile) {
-            $verbose and print $vout "'${infile}' --> '${outfile}'\n";
+            defined $verbose and print $vout "'${infile}' --> '${outfile}'\n";
             # create output directory if necessary
             CreateDirectory($outfile);
             # set temporary file (automatically erased on abnormal exit)
@@ -5155,14 +5184,15 @@ OPTIONS
              # update metadata for all images in a directory from CSV file
              exiftool -csv=a.csv dir
 
-         Empty values are ignored when importing (unless the -f option is
-         used and the API MissingTagValue is set to an empty string, in
+         When importing, empty values are ignored unless the -f option is
+         used and the API MissingTagValue is set to an empty string (in
          which case the tag is deleted). Also, FileName and Directory
          columns are ignored if they exist (ie. ExifTool will not attempt to
-         write these tags with a CSV import). To force a tag to be deleted,
-         use the -f option and set the value to "-" in the CSV file (or to
-         the MissingTagValue if this API option was used). Multiple
-         databases may be imported in a single command.
+         write these tags with a CSV import), but all other columns are
+         imported. To force a tag to be deleted, use the -f option and set
+         the value to "-" in the CSV file (or to the MissingTagValue if this
+         API option was used). Multiple databases may be imported in a
+         single command.
 
          When exporting a CSV file, the -g or -G option adds group names to
          the tag headings. If the -a option is used to allow duplicate tag
@@ -5461,7 +5491,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 12.40 --
+             -- Generated by ExifTool 12.41 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38
@@ -5576,7 +5606,9 @@ OPTIONS
          extracted. Using -v0 causes the console output buffer to be flushed
          after each line (which may be useful to avoid delays when piping
          exiftool output), and prints the name of each processed file when
-         writing. Also see the -progress option.
+         writing and the new file name when renaming, moving or copying.
+         Verbose levels above -v0 do not flush after each line. Also see the
+         -progress option.
 
     -w[+|!] *EXT* or *FMT* (-textOut)
          Write console output to files with names ending in *EXT*, one for
@@ -5794,9 +5826,9 @@ OPTIONS
          Allow (-a) or suppress (--a) duplicate tag names to be extracted.
          By default, duplicate tags are suppressed when reading unless the
          -ee or -X options are used or the Duplicates option is enabled in
-         the configuration file. This option has an affect when writing only
-         to allow duplicate Warning messages to be shown. Duplicate tags are
-         always extracted when copying.
+         the configuration file. When writing, this option allows multiple
+         Warning messages to be shown. Duplicate tags are always extracted
+         when copying.
 
     -e (--composite)
          Extract existing tags only -- don't generate composite tags.

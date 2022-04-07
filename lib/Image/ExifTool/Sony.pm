@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.49';
+$VERSION = '3.50';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -244,7 +244,8 @@ sub PrintInvLensSpec($;$$);
     50529 => 'Sigma 90mm F2.8 DG DN | C', #JR (021)
     50530 => 'Sigma 24mm F2 DG DN | C', #JR (021)
     50531 => 'Sigma 18-50mm F2.8 DC DN | C', #IB/JR (021)
- 
+    50532 => 'Sigma 20mm F2 DG DN | C', #JR (022)
+
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
     50994 => 'Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III', #IB
@@ -278,6 +279,7 @@ sub PrintInvLensSpec($;$$);
     51515 => 'Samyang AF 12mm F2.0', #JR
     51516 => 'Samyang AF 24-70mm F2.8', #JR
     51517 => 'Samyang AF 50mm F1.4 II', #JR
+    51518 => 'Samyang AF 135mm F1.8', #JR
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)
@@ -1790,7 +1792,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     # 15  0   35  2  2     ILCA-68/77M2, ILCE-5000/5100/6000/7/7R/7S/7M2/QX1, DSC-HX60V/HX350/HX400V/QX30/RX10/RX100M3/WX220/WX350
     # 16  0   85  2  2     DSC-HX80/HX90V/WX500
     # 17  0  232  1  2     DSC-RX0/RX0M2/RX1RM2/RX10M2/RX10M3/RX10M4/RX100M4/RX100M5/RX100M5A/RX100M6/RX100M7/HX99, ILCE-6100/6300/6400/6500/6600/7C/7M3/7RM2/7RM3/7RM4/7SM2/9/9M2, ILCA-99M2, ZV-1
-    # 18  0   20  0 164    ILCE-7SM3 
+    # 18  0   20  0 164    ILCE-7SM3
     # other values for Panorama images and several other models
     0x9404 => [{
         Name => 'Tag9404a',
@@ -8386,7 +8388,7 @@ my %isoSetting2010 = (
     DATAMEMBER => [ 0x04 ],
     0x04 => {
         # seen values 0,2,3,18,19,32,49,50,83,130,132,148,213,229,255
-        # CameraTemperature is valid for all values above except ==0 and >=130 
+        # CameraTemperature is valid for all values above except ==0 and >=130
         Name => 'TempTest2',
         DataMember => 'TempTest2',
         Hidden => 1,

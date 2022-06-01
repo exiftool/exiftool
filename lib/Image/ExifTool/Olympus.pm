@@ -40,7 +40,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.77';
+$VERSION = '2.78';
 
 sub PrintLensInfo($$$);
 
@@ -1911,6 +1911,23 @@ my %indexInfo = (
         Name => 'FocusBracketStepSize',
         Writable => 'int8u',
     },
+    0x309 => { #forum13341
+        Name => 'AISubjectTrackingMode',
+        Writable => 'int16u',
+        ValueConv => '($val >> 8) . " " . ($val & 0xff)',
+        ValueConvInv => 'my @a = split " ", $val; $val = $a[0]*256 + $a[1]',
+        PrintConv => [{
+            0 => 'Off',
+            1 => 'Motorsports',
+            2 => 'Airplnes',
+            3 => 'Trains',
+            4 => 'Birds',
+            5 => 'Dogs & Cats',
+        },{
+            0 => 'Object Not Found',
+            1 => 'Object Found',
+        }],
+    },
     0x400 => { #6
         Name => 'FlashMode',
         Writable => 'int16u',
@@ -2538,11 +2555,13 @@ my %indexInfo = (
             '3 8' => 'ND8 (3EV)', #IB
             '3 16' => 'ND16 (4EV)', #IB
             '3 32' => 'ND32 (5EV)', #IB
+            '3 64' => 'ND64 (6EV)', #forum13341
             '5 4' => 'HDR1', #forum8906
             '6 4' => 'HDR2', #forum8906
             '8 8' => 'Tripod high resolution', #IB
             '9 *' => 'Focus-stacked (* images)', #IB (* = 2-15)
-            '11 16' => 'Hand-held high resolution', #IB (perhaps '11 15' would be possible, ref 24)
+            '11 12' => 'Hand-held high resolution (11 12)', #forum13341 (OM-1)
+            '11 16' => 'Hand-held high resolution (11 16)', #IB (perhaps '11 15' would be possible, ref 24)
             OTHER => sub {
                 my ($val, $inv, $conv) = @_;
                 if ($inv) {

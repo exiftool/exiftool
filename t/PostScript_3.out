@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool, Main] ExifToolVersion - ExifTool Version Number: 12.27
+[ExifTool, ExifTool, ExifTool, Main] ExifToolVersion - ExifTool Version Number: 12.42
 [ExifTool, ExifTool, ExifTool, Main] Warning - Warning: IPTCDigest is not current. XMP may be out of sync
 [File, System, Other, Main] FileName - File Name: PostScript_3_failed.eps
 [File, System, Other, Main] Directory - Directory: t
-[File, System, Other, Main] FileSize - File Size: 14 KiB
-[File, System, Time, Main] FileModifyDate - File Modification Date/Time: 2021:06:08 15:46:25-04:00
-[File, System, Time, Main] FileAccessDate - File Access Date/Time: 2021:06:08 15:46:25-04:00
-[File, System, Time, Main] FileInodeChangeDate - File Inode Change Date/Time: 2021:06:08 15:46:25-04:00
+[File, System, Other, Main] FileSize - File Size: 14 kB
+[File, System, Time, Main] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:49-04:00
+[File, System, Time, Main] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:49-04:00
+[File, System, Time, Main] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:49-04:00
 [File, System, Other, Main] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other, Main] FileType - File Type: EPS
 [File, File, Other, Main] FileTypeExtension - File Type Extension: eps
@@ -100,7 +100,7 @@
 [EXIF, IFD1, Image, Main] 282 - X Resolution: 72
 [EXIF, IFD1, Image, Main] 283 - Y Resolution: 72
 [EXIF, IFD1, Image, Main] 296 - Resolution Unit: inches
-[XMP, XMP-x, Document, Main] xmptk - XMP Toolkit: Image::ExifTool 12.27
+[XMP, XMP-x, Document, Main] xmptk - XMP Toolkit: Image::ExifTool 12.42
 [XMP, XMP-rdf, Document, Main] about - About: uuid:b691db36-f92a-11d9-99a4-8c8e8269c120
 [XMP, XMP-dc, Author, Main] creator - Creator: phil made it
 [XMP, XMP-dc, Image, Main] description - Description: UTF-16 (big-endian) encoded XMP

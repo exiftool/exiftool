@@ -25,7 +25,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.38';
+$VERSION = '1.39';
 
 sub ProcessICC($$);
 sub ProcessICC_Profile($$$);
@@ -522,11 +522,11 @@ my %manuSig = ( #6
             prmg => 'Perceptual Reference Medium Gamut',
         },
     },
-    meta => { #5 (EVENTUALLY DECODE THIS ONCE WE HAVE A SAMPLE!!)
+    meta => { #5
         Name => 'Metadata',
         SubDirectory => {
             TagTable => 'Image::ExifTool::ICC_Profile::Metadata',
-            Validate => '$type eq "meta"',
+            Validate => '$type eq "dict"',
         },
     },
 
@@ -891,6 +891,7 @@ my %manuSig = ( #6
     ManufacturerName => { },
     MediaColor       => { },
     MediaWeight      => { },
+    CreatorApp       => { },
 );
 
 #------------------------------------------------------------------------------
@@ -1000,7 +1001,7 @@ sub FormatICCTag($$$)
 }
 
 #------------------------------------------------------------------------------
-# Process ICC metadata record (ref 5) (UNTESTED!)
+# Process ICC metadata record (ref 5)
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
 sub ProcessMetadata($$$)
@@ -1032,7 +1033,7 @@ sub ProcessMetadata($$$)
         my $namePtr = Get32u($dataPt, $entry);
         my $nameLen = Get32u($dataPt, $entry + 4);
         my $valuePtr = Get32u($dataPt, $entry + 8);
-        my $valueLen = Get32u($dataPt, $entry + 16);
+        my $valueLen = Get32u($dataPt, $entry + 12);
         next unless $namePtr and $valuePtr;   # ignore if offsets are zero
         if ($namePtr < $minPtr or $namePtr + $nameLen > $dirLen or
             $valuePtr < $minPtr or $valuePtr + $valueLen > $dirLen)
@@ -1040,8 +1041,8 @@ sub ProcessMetadata($$$)
             $et->Warn('Corrupted ICC meta dictionary');
             last;
         }
-        my $tag = substr($dataPt, $dirStart + $namePtr, $nameLen);
-        my $val = substr($dataPt, $dirStart + $valuePtr, $valueLen);
+        my $tag = substr($$dataPt, $dirStart + $namePtr, $nameLen);
+        my $val = substr($$dataPt, $dirStart + $valuePtr, $valueLen);
         $tag = $et->Decode($tag, 'UTF16', 'MM', 'UTF8');
         $val = $et->Decode($val, 'UTF16', 'MM');
         # generate tagInfo if it doesn't exist
@@ -1050,6 +1051,7 @@ sub ProcessMetadata($$$)
             $name =~ s/\s+(.)/\u$1/g;
             $name =~ tr/-_a-zA-Z0-9//dc;
             next unless length $name;
+            $et->VPrint(0, $$et{INDENT}, "[adding $tag]\n");
             AddTagToTable($tagTablePtr, $tag, { Name => $name });
         }
         $et->HandleTag($tagTablePtr, $tag, $val);
@@ -1312,7 +1314,7 @@ sub ProcessICC_Profile($$$)
                 DirName  => $name,
                 Parent   => $$dirInfo{DirName},
             );
-            my $type = substr($$dataPt, $valuePtr, 4);
+            my $type = $fmt;
             #### eval Validate ($type)
             if (defined $$subdir{Validate} and not eval $$subdir{Validate}) {
                 $et->Warn("Invalid ICC $name data");

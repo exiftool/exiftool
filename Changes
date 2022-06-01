@@ -4,8 +4,28 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 12.30. (Other versions are
+Note: The most recent production release is Version 12.42. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+June 1, 2022 - Version 12.42 (production release)
+
+  - Added support for reading maker notes from Panasonic DC-GH6 videos
+  - Added conversion for Samsung MCCData
+  - Added a new Nikon LensID (thanks Chris)
+  - Added a few new Canon LensType values
+  - Added a couple of new Olympus StackedImage values (thanks Eberhard)
+  - Added a few new values for some Nikon Settings tags (thanks Warren Hatch)
+  - Added a "lang:" element to the -json output for alternate language tags when
+    -D, -H or -t is used
+  - Update DNG writer to not issue an error when writing DNG 1.6 files
+  - Decode information from DJI "ae_dbg_info" maker notes
+  - Decode Olympus AISubjectTrackingMode
+  - Changed ExifTool FileSize print conversion to use kB/MB/GB units instead of
+    KiB/MiB/GiB
+  - Changed "is not shiftable" warning to appear in -v (instead of just -v3)
+    output
+  - Patched to allow PDF Encrypt object to be "null"
+  - Fixed bug reading ICC_Profile 'meta' tags
 
 Apr. 7, 2022 - Version 12.41
 

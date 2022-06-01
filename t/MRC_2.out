@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool, Main] ExifToolVersion - ExifTool Version Number: 12.25
+[ExifTool, ExifTool, ExifTool, Main] ExifToolVersion - ExifTool Version Number: 12.42
 [File, System, Other, Main] FileName - File Name: MRC.mrc
 [File, System, Other, Main] Directory - Directory: t/images
-[File, System, Other, Main] FileSize - File Size: 2.5 KiB
+[File, System, Other, Main] FileSize - File Size: 2.6 kB
 [File, System, Time, Main] FileModifyDate - File Modification Date/Time: 2021:04:22 09:31:39-04:00
-[File, System, Time, Main] FileAccessDate - File Access Date/Time: 2021:04:22 09:49:10-04:00
-[File, System, Time, Main] FileInodeChangeDate - File Inode Change Date/Time: 2021:04:22 09:42:59-04:00
+[File, System, Time, Main] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:43-04:00
+[File, System, Time, Main] FileInodeChangeDate - File Inode Change Date/Time: 2021:10:31 20:34:50-04:00
 [File, System, Other, Main] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other, Main] FileType - File Type: MRC
 [File, File, Other, Main] FileTypeExtension - File Type Extension: mrc
@@ -44,7 +44,7 @@
 [File, File, Image, Main] 52 - Application: Tomography
 [File, File, Image, Main] 68 - App Version: 4.10.0.65
 [File, File, Image, Main] 84 - High Tension: 200000
-[File, File, Image, Main] 92 - Dose: 351360899930878640128
+[File, File, Image, Main] 92 - Dose: 3.51360899930879e+20
 [File, File, Image, Main] 100 - Alpha Tilt: -64.0024700625157
 [File, File, Image, Main] 108 - Beta Tilt: 0
 [File, File, Image, Main] 116 - X Stage: -8.8173405e-05

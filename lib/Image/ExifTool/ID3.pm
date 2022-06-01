@@ -6,7 +6,7 @@
 # Revisions:    09/12/2005 - P. Harvey Created
 #               09/08/2020 - PH Added Lyrics3 support
 #
-# References:   1) http://www.id3.org/
+# References:   1) http://www.id3.org/ (now https://id3.org)
 #               2) http://www.mp3-tech.org/
 #               3) http://www.fortunecity.com/underworld/sonic/3/id3tag.html
 #               4) https://id3.org/Lyrics3
@@ -76,9 +76,9 @@ my %dateTimeConv = (
         OGG, FLAC, APE, MPC and RealAudio files.  ID3v2 tags which support multiple
         languages (eg. Comment and Lyrics) are extracted by specifying the tag name,
         followed by a dash ('-'), then a 3-character ISO 639-2 language code (eg.
-        "Comment-spa"). See L<http://www.id3.org/> for the official ID3
-        specification and L<http://www.loc.gov/standards/iso639-2/php/code_list.php>
-        for a list of ISO 639-2 language codes.
+        "Comment-spa"). See L<https://id3.org/> for the official ID3 specification
+        and L<http://www.loc.gov/standards/iso639-2/php/code_list.php> for a list of
+        ISO 639-2 language codes.
     },
     ID3v1 => {
         Name => 'ID3v1',
@@ -1661,7 +1661,7 @@ under the same terms as Perl itself.
 
 =over 4
 
-=item L<http://www.id3.org/>
+=item L<https://id3.org/>
 
 =item L<http://www.mp3-tech.org/>
 

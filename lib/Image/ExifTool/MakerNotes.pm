@@ -90,6 +90,11 @@ my $debug;          # set to 1 to enable debugging code
         },
     },
     {
+        Name => 'MakerNoteDJIInfo',
+        Condition => '$$valPt =~ /^\[ae_dbg_info:/',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::Info' },
+    },
+    {
         Name => 'MakerNoteDJI',
         Condition => '$$self{Make} eq "DJI" and $$valPt !~ /^...\@AMBA/s',
         SubDirectory => {

@@ -171,7 +171,7 @@ sub DecodeAFPoints($$$$;$);
     '3 255.4' => 'Sigma DF EX Aspherical 28-70mm F2.8', #12
     '3 255.5' => 'Sigma AF Tele 400mm F5.6 Multi-coated', #JD
     '3 255.6' => 'Sigma 24-60mm F2.8 EX DG', #PH
-    '3 255.7' => 'Sigma 70-300mm F4-5.6 Macro', #JD
+    '3 255.7' => 'Sigma 70-300mm F4-5.6 Macro', #JD (also DG Macro, ref 27)
     '3 255.8' => 'Sigma 55-200mm F4-5.6 DC', #JD
     '3 255.9' => 'Sigma 18-50mm F2.8 EX DC', #JD (also Macro version - PH)
     '4 1' => 'smc PENTAX-FA SOFT 28mm F2.8',

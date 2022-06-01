@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.16';
+$VERSION = '2.17';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -2464,6 +2464,15 @@ my %shootingMode = (
         },
     },
     0x4080 => { # (FZ1000)
+        Name => 'ExifData',
+        Condition => '$$valPt =~ /^\xff\xd8\xff\xe1..Exif\0\0/s',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Exif::Main',
+            ProcessProc => \&Image::ExifTool::ProcessTIFF,
+            Start => 12,
+        },
+    },
+    0x200080 => { # (GH6)
         Name => 'ExifData',
         Condition => '$$valPt =~ /^\xff\xd8\xff\xe1..Exif\0\0/s',
         SubDirectory => {

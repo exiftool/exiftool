@@ -4582,10 +4582,12 @@ firmware 1.01b.</p>
 <td><table class=cols><tr>
   <td>1 = Single
   <br>2 = Dynamic
-  <br>3 = Wide (S)</td><td>&nbsp;&nbsp;</td>
-  <td>4 = Wide (L)
-  <br>5 = 3D
-  <br>6 = Auto</td></tr></table>
+  <br>3 = Wide (S)
+  <br>4 = Wide (L)</td><td>&nbsp;&nbsp;</td>
+  <td>5 = 3D
+  <br>6 = Auto
+  <br>12 = Wide (C1)
+  <br>13 = Wide (C2)</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='530 = 0x212'>530</td>
@@ -4660,10 +4662,14 @@ firmware 1.01b.</p>
 <td class=r title='614 = 0x266'>614</td>
 <td>MovieType?</td>
 <td class=c>int8u</td>
-<td><span class=s>1 = H.265 8-bit (MP4)
+<td><table class=cols><tr>
+  <td>1 = H.265 8-bit (MP4)
   <br>2 = H.265 8-bit (MOV)
   <br>3 = H.265 10-bit (MOV)
-  <br>4 = ProRes 422 HQ 10-bit (MOV)</span></td></tr>
+  <br>4 = ProRes 422 HQ 10-bit (MOV)
+  <br>5 = ProRes RAW HQ 12-bit (MOV)
+  <br>6 = NRAW 12-bit (NEV)</td></tr></table>
+</td></tr>
 <tr>
 <td class=r title='616 = 0x268'>616</td>
 <td>MovieISOAutoHiLimit?</td>
@@ -8691,6 +8697,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 </tr><tr><td>'6E 48 98 98 24 24 74 02'</td><td>= AF-S Nikkor 400mm f/2.8D IF-ED II</td>
 </tr><tr><td>'6F 3C A0 A0 30 30 75 02'</td><td>= AF-S Nikkor 500mm f/4D IF-ED II</td>
 </tr><tr><td>'70 3C A6 A6 30 30 76 02'</td><td>= AF-S Nikkor 600mm f/4D IF-ED II</td>
+</tr><tr><td>'71 48 64 64 24 24 00 00'</td><td>= Voigtlander APO-Skopar 90mm F2.8 SL IIs</td>
 </tr><tr><td>'72 48 4C 4C 24 24 77 00'</td><td>= Nikkor 45mm f/2.8 P</td>
 </tr><tr><td>'74 40 37 62 2C 34 78 06'</td><td>= AF-S Zoom-Nikkor 24-85mm f/3.5-4.5G IF-ED</td>
 </tr><tr><td>'75 40 3C 68 2C 3C 79 06'</td><td>= AF Zoom-Nikkor 28-100mm f/3.5-5.6G</td>
@@ -8950,7 +8957,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 7, 2022</i>
+<br><i>Last revised Jun 1, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

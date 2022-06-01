@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.11
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
 [File, System, Other] FileName - File Name: CanonRaw_4_failed.crw
 [File, System, Other] Directory - Directory: t
-[File, System, Other] FileSize - File Size: 13 KiB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:11:26 10:02:24-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:11:26 10:02:24-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:11:26 10:02:24-05:00
-[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, System, Other] FileSize - File Size: 13 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:31-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:31-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:31-04:00
+[File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: CRW
 [File, File, Other] FileTypeExtension - File Type Extension: crw
 [File, File, Other] MIMEType - MIME Type: image/x-canon-crw
@@ -142,7 +142,7 @@
 [MakerNotes, CanonRaw, Image] 3 - Raw Jpg Width: 2048
 [MakerNotes, CanonRaw, Image] 4 - Raw Jpg Height: 1360
 [MakerNotes, CanonRaw, Camera] 6203 - Serial Number Format: Format 1
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.11
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.42
 [XMP, XMP-aux, Camera] Lens - Lens: 18.0 - 55.0 mm
 [XMP, XMP-crs, Image] Temperature - Color Temperature: 5200
 [XMP, XMP-dc, Image] description - Description: CRW with embedded XMP

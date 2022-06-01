@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.54';
+$VERSION = '1.55';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -2276,6 +2276,7 @@ XRef:
         # load XRef stream in hybrid file if it exists
         push @xrefOffsets, $$mainDict{XRefStm}, 'XRefStm' if $$mainDict{XRefStm};
         $encrypt = $$mainDict{Encrypt} if $$mainDict{Encrypt};
+        undef $encrypt if $encrypt and $encrypt eq 'null'; # (have seen "null")
         if ($$mainDict{ID} and ref $$mainDict{ID} eq 'ARRAY') {
             $id = ReadPDFValue($mainDict->{ID}->[0]);
         }

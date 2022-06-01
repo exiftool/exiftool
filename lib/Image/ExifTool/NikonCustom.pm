@@ -15,7 +15,7 @@ package Image::ExifTool::NikonCustom;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.19';
+$VERSION = '1.20';
 
 my %buttonsZ9= (
     0 => 'None',
@@ -74,6 +74,9 @@ my %buttonsZ9= (
     82 => 'Select To Send (PC)',
     83 => 'Select To Send (FTP)',
     85 => 'Control Lock',
+    86 => 'Save Focus Position',
+    87 => 'Recall Focus Position',
+    88 => 'Recall Shooting Functions (Hold)',
 );
 my %dialsZ9 = (
     0 => '1 Frame',

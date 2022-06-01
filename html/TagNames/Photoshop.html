@@ -316,11 +316,12 @@ access to this information.
 <td>IPTCDigest</td>
 <td class=c title=' ! = Unsafe'>string!</td>
 <td><span class=s><span class=n>(this tag indicates provides a way for XMP-aware applications to indicate
-that the XMP is synchronized with the IPTC.  When writing, special values of
-&quot;new&quot; and &quot;old&quot; represent the digests of the IPTC from the edited and
-original files respectively, and are undefined if the IPTC does not exist in
-the respective file.  Set this to &quot;new&quot; as an indication that the XMP is
-synchronized with the IPTC)</span></span></td></tr>
+that the XMP is synchronized with the IPTC.  The MWG recommendation is to
+ignore the XMP if IPTCDigest exists and doesn&#39;t match the CurrentIPTCDigest.
+When writing, special values of &quot;new&quot; and &quot;old&quot; represent the digests of the
+IPTC from the edited and original files respectively, and are undefined if
+the IPTC does not exist in the respective file.  Set this to &quot;new&quot; as an
+indication that the XMP is synchronized with the IPTC)</span></span></td></tr>
 <tr class=b>
 <td title='0x0426 = 1062'>0x0426</td>
 <td>PrintScaleInfo</td>
@@ -762,7 +763,7 @@ synchronized with the IPTC)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 5, 2018</i>
+<br><i>Last revised Jun 1, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -858,7 +858,7 @@ TAG: foreach $tagInfo (@matchingTags) {
                 ($shift or ($shiftable eq '0' and $options{DelValue})))
             {
                 $err = "$wgrp1:$tag is not shiftable";
-                $verbose > 2 and print $out "$err\n";
+                $verbose and print $out "$err\n";
                 next;
             }
         }

@@ -63,7 +63,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.05';
+$VERSION = '4.06';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -667,6 +667,7 @@ sub GetAFPointGrid($$;$);
     '00 54 55 55 0C 0C 00 00' => 'Voigtlander Nokton 58mm F1.4 SLII',
     '00 40 64 64 2C 2C 00 00' => 'Voigtlander APO-Lanthar 90mm F3.5 SLII Close Focus',
     '07 40 30 45 2D 35 03 02.2' => 'Voigtlander Ultragon 19-35mm F3.5-4.5 VMV', #NJ
+    '71 48 64 64 24 24 00 00' => 'Voigtlander APO-Skopar 90mm F2.8 SL IIs', #30
 #
     '00 40 2D 2D 2C 2C 00 00' => 'Carl Zeiss Distagon T* 3.5/18 ZF.2',
     '00 48 27 27 24 24 00 00' => 'Carl Zeiss Distagon T* 2.8/15 ZF.2', #MykytaKozlov
@@ -8586,6 +8587,8 @@ my %nikonFocalConversions = (
             4 => 'Wide (L)',
             5 => '3D',
             6 => 'Auto',
+            12 => 'Wide (C1)',
+            13 => 'Wide (C2)',
         },
     },
     530 => { Name => 'VRMode',   PrintConv => \%vRModeZ9},
@@ -8656,6 +8659,8 @@ my %nikonFocalConversions = (
             2 => 'H.265 8-bit (MOV)',
             3 => 'H.265 10-bit (MOV)',
             4 => 'ProRes 422 HQ 10-bit (MOV)',
+            5 => 'ProRes RAW HQ 12-bit (MOV)',
+            6 => 'NRAW 12-bit (NEV)'
         },
     },
     616 => {

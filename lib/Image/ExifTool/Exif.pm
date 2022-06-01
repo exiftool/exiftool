@@ -3398,6 +3398,15 @@ my %opcodeInfo = (
         # the DJI FC2103 writes some interesting stuff here (with sections labelled
         # awb_dbg_info, ae_dbg_info, ae_histogram_info, af_dbg_info, hiso, xidiri) - PH
         {
+            Name => 'MakerNoteDJIInfo',
+            Condition => '$$valPt =~ /^\[ae_dbg_info:/',
+            MakerNotes => 1,
+            Binary => 1,
+            WriteGroup => 'IFD0', # (for Validate)
+            SubDirectory => { TagTable => 'Image::ExifTool::DJI::Info' },
+            Format => 'undef',
+        },
+        {
             Name => 'DNGPrivateData',
             Flags => [ 'Binary', 'Protected' ],
             Format => 'undef',

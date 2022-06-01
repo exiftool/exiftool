@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 25775 tags, with 16465 unique tag names.
+They contain a total of 25792 tags, with 16480 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -629,6 +629,7 @@ for the official EXIF 2.32 specification.
            MakerNoteCanon            ExifIFD    Canon
            MakerNoteCasio            ExifIFD    Casio
            MakerNoteCasio2           ExifIFD    Casio Type2
+           MakerNoteDJIInfo          ExifIFD    DJI Info
            MakerNoteDJI              ExifIFD    DJI
            MakerNoteFLIR             ExifIFD    FLIR
            MakerNoteFujiFilm         ExifIFD    FujiFilm
@@ -854,6 +855,7 @@ for the official EXIF 2.32 specification.
            MakerNotePentax           IFD0       Pentax
            MakerNotePentax5          IFD0       Pentax
            MakerNoteRicohPentax      IFD0       Pentax
+           MakerNoteDJIInfo          IFD0       DJI Info
            DNGPrivateData            IFD0       int8u!
   0xc635   MakerNoteSafety           IFD0       int16u
   0xc640   RawImageSegmentation      -          no
@@ -6755,6 +6757,7 @@ Metadata tags that exist.
 
   Tag Name                                      Writable
   --------                                      --------
+  CreatorApp                                    no
   ManufacturerName                              no
   MediaColor                                    no
   MediaWeight                                   no
@@ -10650,6 +10653,30 @@ These tags belong to the ExifTool XMP-drone-dji family 1 group.
   RtkStdLat                                     real
   RtkStdLon                                     real
   SelfData                                      string
+
+=head3 DJI Info Tags
+
+Tags written by some DJI drones.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'FlightDegree(Y,P,R)' FlightDegree            no
+  'FlightSpeed(X,Y,Z)' FlightSpeed              no
+  'GimbalDegree(Y,P,R)' GimbalDegree            no
+  'adj_dbg_info'       ADJDebugInfo             no
+  'ae_dbg_info'        AEDebugInfo              no
+  'ae_histogram_info'  AEHistogramInfo          no
+  'ae_liveview_histogram_info'
+                       AELiveViewHistogramInfo  no
+  'ae_liveview_local_histogram'
+                       AELiveViewLocalHistogram no
+  'ae_local_histogram' AELocalHistogram         no
+  'af_dbg_info'        AFDebugInfo              no
+  'awb_dbg_info'       AWBDebugInfo             no
+  'hiso'               Histogram                no
+  'hyperlapse_dbg_info' HyperlapsDebugInfo      no
+  'sensor_id'          SensorID                 no
+  'xidiri'             Xidiri                   no
 
 =head3 DJI ThermalParams Tags
 
@@ -16641,6 +16668,7 @@ any information found here will be extracted, even if the tag is not listed.
   0x0306   AFFineTune                           int8u
   0x0307   AFFineTuneAdj                        int16s[3]
   0x0308   FocusBracketStepSize                 int8u
+  0x0309   AISubjectTrackingMode                int16u
   0x0400   FlashMode                            int16u
   0x0401   FlashExposureComp                    rational64s
   0x0403   FlashRemoteControl                   int16u
@@ -17432,29 +17460,30 @@ iPalm.
 Tags extracted from the PANA and LEIC user data found in MP4 videos from
 various Panasonic and Leica models.
 
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    Make                                 no
-      4    Model                                no
-     12    Model                                no
-     16    JPEG-likeData                        EXIF
-     22    Model                                no
-     52    Version1                             no
-     62    Version2                             no
-     80    MakerNoteLeica5                      Panasonic Leica5
-     88    ThumbnailWidth                       no
-     90    ThumbnailHeight                      no
-     92    ThumbnailImage                       no
-   1334    ThumbnailWidth                       no
-   1338    ThumbnailHeight                      no
-   1342    ThumbnailLength                      no
-   1350    ThumbnailImage                       no
-   1358    ThumbnailWidth                       no
-   1362    ThumbnailHeight                      no
-   1366    ThumbnailLength                      no
-   1374    ThumbnailImage                       no
-  16488    ExifData                             EXIF
-  16512    ExifData                             EXIF
+  Index1       Tag Name                         Writable
+  ------       --------                         --------
+          0    Make                             no
+          4    Model                            no
+         12    Model                            no
+         16    JPEG-likeData                    EXIF
+         22    Model                            no
+         52    Version1                         no
+         62    Version2                         no
+         80    MakerNoteLeica5                  Panasonic Leica5
+         88    ThumbnailWidth                   no
+         90    ThumbnailHeight                  no
+         92    ThumbnailImage                   no
+       1334    ThumbnailWidth                   no
+       1338    ThumbnailHeight                  no
+       1342    ThumbnailLength                  no
+       1350    ThumbnailImage                   no
+       1358    ThumbnailWidth                   no
+       1362    ThumbnailHeight                  no
+       1366    ThumbnailLength                  no
+       1374    ThumbnailImage                   no
+      16488    ExifData                         EXIF
+      16512    ExifData                         EXIF
+  0x00200080   ExifData                         EXIF
 
 =head2 Pentax Tags
 
@@ -20955,6 +20984,7 @@ still proprietary) Adobe format.
            MakerNoteCanon                       Canon
            MakerNoteCasio                       Casio
            MakerNoteCasio2                      Casio Type2
+           MakerNoteDJIInfo                     DJI Info
            MakerNoteDJI                         DJI
            MakerNoteFLIR                        FLIR
            MakerNoteFujiFilm                    FujiFilm
@@ -26755,9 +26785,9 @@ ExifTool extracts ID3 and Lyrics3 information from MP3, MPEG, WAV, AIFF,
 OGG, FLAC, APE, MPC and RealAudio files.  ID3v2 tags which support multiple
 languages (eg. Comment and Lyrics) are extracted by specifying the tag name,
 followed by a dash ('-'), then a 3-character ISO 639-2 language code (eg.
-"Comment-spa"). See L<http://www.id3.org/> for the official ID3
-specification and L<http://www.loc.gov/standards/iso639-2/php/code_list.php>
-for a list of ISO 639-2 language codes.
+"Comment-spa"). See L<https://id3.org/> for the official ID3 specification
+and L<http://www.loc.gov/standards/iso639-2/php/code_list.php> for a list of
+ISO 639-2 language codes.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -37496,6 +37526,7 @@ for more details.
                        MakerNoteCasio
                        MakerNoteCasio2
                        MakerNoteDJI
+                       MakerNoteDJIInfo
                        MakerNoteFLIR
                        MakerNoteFujiFilm
                        MakerNoteGE

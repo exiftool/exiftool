@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.41';
+$VERSION = '12.42';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -5896,13 +5896,13 @@ sub GetUnixTime($;$)
 sub ConvertFileSize($)
 {
     my $val = shift;
-    $val < 2048 and return "$val bytes";
-    $val < 10240 and return sprintf('%.1f KiB', $val / 1024);
-    $val < 2097152 and return sprintf('%.0f KiB', $val / 1024);
-    $val < 10485760 and return sprintf('%.1f MiB', $val / 1048576);
-    $val < 2147483648 and return sprintf('%.0f MiB', $val / 1048576);
-    $val < 10737418240 and return sprintf('%.1f GiB', $val / 1073741824);
-    return sprintf('%.0f GiB', $val / 1073741824);
+    $val < 2000 and return "$val bytes";
+    $val < 10000 and return sprintf('%.1f kB', $val / 1000);
+    $val < 2000000 and return sprintf('%.0f kB', $val / 1000);
+    $val < 10000000 and return sprintf('%.1f MB', $val / 1000000);
+    $val < 2000000000 and return sprintf('%.0f MB', $val / 1000000);
+    $val < 10000000000 and return sprintf('%.1f GB', $val / 1000000000);
+    return sprintf('%.0f GB', $val / 1000000000);
 }
 
 #------------------------------------------------------------------------------
@@ -7686,8 +7686,8 @@ sub DoProcessTIFF($$;$)
     # check DNG version
     if ($$self{DNGVersion}) {
         my $ver = $$self{DNGVersion};
-        # currently support up to DNG version 1.5
-        unless ($ver =~ /^(\d+) (\d+)/ and "$1.$2" <= 1.5) {
+        # currently support up to DNG version 1.6
+        unless ($ver =~ /^(\d+) (\d+)/ and "$1.$2" <= 1.6) {
             $ver =~ tr/ /./;
             $self->Error("DNG Version $ver not yet tested", 1);
         }

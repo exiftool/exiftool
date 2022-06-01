@@ -680,8 +680,14 @@ sub ProcessAdobeMakN($$$)
     my $dataPos = $$dirInfo{DataPos};
     my $hdrLen = 6;
 
-    # hack for extra 12 bytes in MakN header of JPEG converted to DNG by Adobe Camera Raw
-    # (4 bytes "00 00 00 01" followed by 8 unknown bytes)
+    # 2018-09-27: hack for extra 12 bytes in MakN header of JPEG converted to DNG
+    # by Adobe Camera Raw (4 bytes "00 00 00 01" followed by 8 unknown bytes)
+    # - this is because CameraRaw copies the maker notes from the wrong location
+    #   in a JPG image (off by 12 bytes presumably due to the JPEG headers)
+    # - this hack won't work in most cases because the extra bytes are not consistent
+    #   since they are just the data that existed in the JPG before the maker notes
+    # - also, the last 12 bytes of the maker notes will be missing
+    # - 2022-04-26: this bug still exists in Camera Raw 14.3
     $hdrLen += 12 if $len >= 18 and substr($$dataPt, $start+6, 4) eq "\0\0\0\x01";
 
     my $dirStart = $start + $hdrLen;    # pointer to maker note directory

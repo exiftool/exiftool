@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.11
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
 [File, System, Other] FileName - File Name: Panasonic_5_failed.rw2
 [File, System, Other] Directory - Directory: t
-[File, System, Other] FileSize - File Size: 14 KiB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2020:11:26 10:02:37-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:11:26 10:02:37-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2020:11:26 10:02:37-05:00
-[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, System, Other] FileSize - File Size: 15 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:45-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:45-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:45-04:00
+[File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: RW2
 [File, File, Other] FileTypeExtension - File Type Extension: rw2
 [File, File, Other] MIMEType - MIME Type: image/x-panasonic-rw2
@@ -223,7 +223,7 @@
 [PrintIM, PrintIM, Printing] 256 - Print IM 0x0100: 0x00000005
 [PrintIM, PrintIM, Printing] 257 - Print IM 0x0101: 0x00000001
 [PrintIM, PrintIM, Printing] 272 - Print IM 0x0110: 0x00000080
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.11
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.42
 [XMP, XMP-dc, Image] title - Title: new title
 [IPTC, IPTC, Other] 25 - Keywords: a keyword
 [IPTC, IPTC, Other] 0 - Application Record Version: 4

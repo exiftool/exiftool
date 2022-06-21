@@ -273,7 +273,11 @@ sub ProcessLinkInfo($$$);
             6 => 'Ram Disk',
         },
     },
-    DriveSerialNumber => { },
+    DriveSerialNumber => {
+        PrintConv => {
+            OTHER => sub { join("-", unpack("A4 A4", sprintf("%08X", $_[0]))) },
+        },
+    },
     VolumeLabel => { },
     LocalBasePath => { },
     CommonNetworkRelLink => { },
@@ -508,6 +512,7 @@ sub ProcessLinkInfo($$$)
         if ($off + 0x20 <= $dataLen) {
             # my $len = Get32u($dataPt, $off);
             $et->HandleTag($tagTablePtr, 'DriveType', undef, %opts, Start=>$off+4);
+            $et->HandleTag($tagTablePtr, 'DriveSerialNumber', undef, %opts, Start=>$off+8);
             $pos = Get32u($dataPt, $off + 0x0c);
             if ($pos == 0x14) {
                 # use VolumeLabelOffsetUnicode instead

@@ -63,7 +63,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.06';
+$VERSION = '4.07';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -606,6 +606,7 @@ sub GetAFPointGrid($$;$);
     'CC 44 68 98 34 41 DF 0E' => 'Tamron 100-400mm f/4.5-6.3 Di VC USD', #30
     'EB 40 76 A6 38 40 DF 0E' => 'Tamron SP AF 150-600mm f/5-6.3 VC USD (A011)',
     'E3 40 76 A6 38 40 DF 4E' => 'Tamron SP 150-600mm f/5-6.3 Di VC USD G2', #30
+    'E3 40 76 A6 38 40 DF 0E' => 'Tamron SP 150-600mm f/5-6.3 Di VC USD G2 (A022)', #forum3833
     '20 3C 80 98 3D 3D 1E 02' => 'Tamron AF 200-400mm f/5.6 LD IF (75D)',
     '00 3E 80 A0 38 3F 00 02' => 'Tamron SP AF 200-500mm f/5-6.3 Di LD (IF) (A08)',
     '00 3F 80 A0 38 3F 00 02' => 'Tamron SP AF 200-500mm f/5-6.3 Di (A08)',
@@ -4026,7 +4027,7 @@ my %base64coord = (
         },
         Format => 'int16u',
     },
-    0x2f => { #28 (Z7)   Still photography range 1-17 for the 493 point Z7 (arranged in a 29x17 grid. Center at x=16, y=10).
+    0x2f => { #28 (Z7) Still photography range 1-17 for the 493 point Z7 (arranged in a 29x17 grid. Center at x=16, y=10).
         Name => 'AFFocusPointXPosition',
         Condition => q{
             $$self{ContrastDetectAF} == 2 and $$self{AFInfo2Version} =~ /^03/ or
@@ -4194,11 +4195,19 @@ my %base64coord = (
     },
     0x43 => {
         Name => 'FocusPositionHorizontal',
-        PrintConv => sub { my ($val) = @_; PrintAFPointsLeftRight($val, 29 ); },    #493 focus points for Z9 fall in a 30x18 grid (some coordinates are not accessible)
+        Notes => q{
+            the focus points form a 29x17 grid, but the X,Y coordinate values run from 1,1
+            to 30,19.  The horizontal coordinate 11R (5) and the vertical coordinates 6U
+            (4) and 2D (12) are not used for some reason
+        },
+        # 493 focus points for Z9 fall in a 30x19 grid
+        # (the 11R (5) position is not used, for a total of 29 columns, ref AlbertShan email)
+        PrintConv => sub { my ($val) = @_; PrintAFPointsLeftRight($val, 29); },
     },
     0x45 => {
         Name => 'FocusPositionVertical',
-        PrintConv => sub { my ($val) = @_; PrintAFPointsUpDown($val, 17 ); },
+        # (the 6U (4) and 2D (12) are not used, for a total of 17 rows, ref AlbertShan email)
+        PrintConv => sub { my ($val) = @_; PrintAFPointsUpDown($val, 17); },
     },
     0x46 => {
         Name => 'AFAreaWidth',
@@ -11316,7 +11325,7 @@ sub PrintAFPointsGridInv($$$)
 #------------------------------------------------------------------------------
 # Print conversion for relative Left/Right AF points (ref 28)
 # Inputs: 0) column, 1) number of columns
-# Returns: AF point data as a string (e.g. '2L' or 'C' or '3R')
+# Returns: AF point data as a string (e.g. '2L of Center' or 'C' or '3R of Center')
 sub PrintAFPointsLeftRight($$)
 {
     my ($col, $ncol) = @_;
@@ -11329,7 +11338,7 @@ sub PrintAFPointsLeftRight($$)
 #------------------------------------------------------------------------------
 # Print conversion for relative Up/Down AF points (ref 28)
 # Inputs: 0) row, 1) number of rows
-# Returns: AF point data as a string (e.g. '2U' or 'C' or '3D')
+# Returns: AF point data as a string (e.g. '2U from Center' or 'C' or '3D from Center')
 sub PrintAFPointsUpDown($$)
 {
     my ($row, $nrow) = @_;

@@ -46,6 +46,7 @@ ol.index { margin: 0; padding: 0 0 0 2em }
 <li><a href="#Q28">Copying a shifted date/time</a></li>
 <li><a href="#Q29">ARGFILE options</a></li>
 <li><a href="#Q30">Extracting all metadata</a></li>
+<li><a href="#Q31">Rewriting the entire file</a></li>
 </ol>
 </div>
 
@@ -1738,8 +1739,30 @@ possible with ExifTool:
 (The <code>-G3:1</code> option is included in the above command only to give an
 indication of where the metadata was stored.)</blockquote>
 
+<a name="Q31"></a>
+<p>31. <b>"Why does ExifTool rewrite the entire file when I am only changing one small thing?"</b></p>
+
+<blockquote>Generally it is possible in theory to edit existing fixed-length tags without having to rewrite an entire file, but ExifTool doesn't do this for 3 reasons:
+
+<ol>
+<li>The algorithm to do this would be completely different than the more general
+and powerful case where you want to be able to add/delete tags and/or write
+values with different lengths.  Plus, implementing this feature would be a lot
+of work, and it would only be useful in certain situations.</li>
+<li>Some file formats (like MP4) allow metadata to be written at the beginning
+or the end of a file.  Writing it at the end of the file could avoid the need to
+rewrite the entire starting section, but metadata is more useful at the start of
+a file because then other programs (especially ones that stream the file over
+the internet) don't have to read through the entire file to find the metadata.
+Also, some software won't read metadata that comes at the end of a file
+(probably for this reason).</li>
+<li>ExifTool is designed to allow files to be read/written via pipes, which are
+not seekable, so in-place editing is not possible with these files and again,
+like 1, two completely different algorithms would be required.</li>
+</ol></blockquote>
+
 <hr>
-<i>Last revised Mar 17, 2021</i>
+<i>Last revised Jun 11, 2022</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

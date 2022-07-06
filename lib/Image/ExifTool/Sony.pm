@@ -9937,20 +9937,22 @@ my %isoSetting2010 = (
     WRITE_PROC => \&Image::ExifTool::Exif::WriteExif,
     CHECK_PROC => \&Image::ExifTool::Exif::CheckExif,
     GROUPS => { 0 => 'MakerNotes', 1 => 'SR2SubIFD', 2 => 'Camera' },
+    WRITE_GROUP => 'SR2SubIFD',
+    PERMANENT => 1,
     SET_GROUP1 => 1, # set group1 name to directory name for all tags in table
     NOTES => 'Tags in the encrypted SR2SubIFD',
-    0x7300 => 'BlackLevel', #IB (R1)
-    0x7302 => 'WB_GRBGLevelsAuto', #IB (R1)
-    0x7303 => 'WB_GRBGLevels', #1 (R1 "as shot", ref IB)
-    0x7310 => 'BlackLevel', #IB (divide by 4)
-    0x7312 => 'WB_RGGBLevelsAuto', #IB
-    0x7313 => 'WB_RGGBLevels', #6
-    0x7480 => 'WB_RGBLevelsDaylight', #IB (R1)
-    0x7481 => 'WB_RGBLevelsCloudy', #IB (R1)
-    0x7482 => 'WB_RGBLevelsTungsten', #IB (R1)
-    0x7483 => 'WB_RGBLevelsFlash', #IB (R1)
-    0x7484 => 'WB_RGBLevels4500K', #IB (R1)
-    0x7486 => 'WB_RGBLevelsFluorescent', #IB (R1)
+    0x7300 => { Name => 'BlackLevel',           Writable => 'int16u', Count => 4, Protected => 1 },
+    0x7302 => { Name => 'WB_GRBGLevelsAuto',    Writable => 'int16s', Count => 4, Protected => 1 }, #IB (R1)
+    0x7303 => { Name => 'WB_GRBGLevels',        Writable => 'int16s', Count => 4, Protected => 1 }, #1 (R1 "as shot", ref IB)
+    0x7310 => { Name => 'BlackLevel',           Writable => 'int16u', Count => 4, Protected => 1 }, #IB (divide by 4)
+    0x7312 => { Name => 'WB_RGGBLevelsAuto',    Writable => 'int16s', Count => 4, Protected => 1 }, #IB
+    0x7313 => { Name => 'WB_RGGBLevels',        Writable => 'int16s', Count => 4, Protected => 1 }, #6
+    0x7480 => { Name => 'WB_RGBLevelsDaylight', Writable => 'int16s', Count => 4, Protected => 1 }, #IB (R1)
+    0x7481 => { Name => 'WB_RGBLevelsCloudy',   Writable => 'int16s', Count => 4, Protected => 1 }, #IB (R1)
+    0x7482 => { Name => 'WB_RGBLevelsTungsten', Writable => 'int16s', Count => 4, Protected => 1 }, #IB (R1)
+    0x7483 => { Name => 'WB_RGBLevelsFlash',    Writable => 'int16s', Count => 4, Protected => 1 }, #IB (R1)
+    0x7484 => { Name => 'WB_RGBLevels4500K',    Writable => 'int16s', Count => 4, Protected => 1 }, #IB (R1)
+    0x7486 => { Name => 'WB_RGBLevelsFluorescent',  Writable => 'int16s', Count => 4, Protected => 1 }, #IB (R1)
     0x74a0 => 'MaxApertureAtMaxFocal', #PH
     0x74a1 => 'MaxApertureAtMinFocal', #PH
     0x74a2 => { #IB (R1)
@@ -9972,21 +9974,21 @@ my %isoSetting2010 = (
         },
     },
     0x7800 => 'ColorMatrix', #IB (divide by 1024)
-    0x7820 => 'WB_RGBLevelsDaylight', #6 (or 5300K, ref IB)
-    0x7821 => 'WB_RGBLevelsCloudy', #6 (or 6100K, ref IB)
-    0x7822 => 'WB_RGBLevelsTungsten', #6
-    0x7823 => 'WB_RGBLevelsFlash', #IB
-    0x7824 => 'WB_RGBLevels4500K', #IB
-    0x7825 => 'WB_RGBLevelsShade', #6 (or 7500K, ref IB)
-    0x7826 => 'WB_RGBLevelsFluorescent', #6 (~4000K)
-    0x7827 => 'WB_RGBLevelsFluorescentP1', #IB (~5000K)
-    0x7828 => 'WB_RGBLevelsFluorescentP2', #IB (~6500K) (was Flash, ref 6)
-    0x7829 => 'WB_RGBLevelsFluorescentM1', #IB (~3500K)
-    0x782a => 'WB_RGBLevels8500K', #IB
-    0x782b => 'WB_RGBLevels6000K', #IB
-    0x782c => 'WB_RGBLevels3200K', #IB
-    0x782d => 'WB_RGBLevels2500K', #IB
-    0x787f => 'WhiteLevel', #IB (divide by 4)
+    0x7820 => { Name => 'WB_RGBLevelsDaylight', Writable => 'int16s', Count => 3, Protected => 1 }, #6 (or 5300K, ref IB)
+    0x7821 => { Name => 'WB_RGBLevelsCloudy',   Writable => 'int16s', Count => 3, Protected => 1 }, #6 (or 6100K, ref IB)
+    0x7822 => { Name => 'WB_RGBLevelsTungsten', Writable => 'int16s', Count => 3, Protected => 1 }, #6
+    0x7823 => { Name => 'WB_RGBLevelsFlash',    Writable => 'int16s', Count => 3, Protected => 1 }, #IB
+    0x7824 => { Name => 'WB_RGBLevels4500K',    Writable => 'int16s', Count => 3, Protected => 1 }, #IB
+    0x7825 => { Name => 'WB_RGBLevelsShade',    Writable => 'int16s', Count => 3, Protected => 1 }, #6 (or 7500K, ref IB)
+    0x7826 => { Name => 'WB_RGBLevelsFluorescent',   Writable => 'int16s', Count => 3, Protected => 1 }, #6 (~4000K)
+    0x7827 => { Name => 'WB_RGBLevelsFluorescentP1', Writable => 'int16s', Count => 3, Protected => 1 }, #IB (~5000K)
+    0x7828 => { Name => 'WB_RGBLevelsFluorescentP2', Writable => 'int16s', Count => 3, Protected => 1 }, #IB (~6500K) (was Flash, ref 6)
+    0x7829 => { Name => 'WB_RGBLevelsFluorescentM1', Writable => 'int16s', Count => 3, Protected => 1 }, #IB (~3500K)
+    0x782a => { Name => 'WB_RGBLevels8500K',    Writable => 'int16s', Count => 3, Protected => 1 }, #IB
+    0x782b => { Name => 'WB_RGBLevels6000K',    Writable => 'int16s', Count => 3, Protected => 1 }, #IB
+    0x782c => { Name => 'WB_RGBLevels3200K',    Writable => 'int16s', Count => 3, Protected => 1 }, #IB
+    0x782d => { Name => 'WB_RGBLevels2500K',    Writable => 'int16s', Count => 3, Protected => 1 }, #IB
+    0x787f => { Name => 'WhiteLevel',           Writable => 'int16u', Count => 3, Protected => 1 }, #IB (divide by 4)
     0x797d => 'VignettingCorrParams', #forum7640
     0x7980 => 'ChromaticAberrationCorrParams', #forum6509 (Sony A7 ARW)
     0x7982 => 'DistortionCorrParams', #forum6509 (Sony A7 ARW)

@@ -1,15 +1,15 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.43
 [File, System, Other] FileName - File Name: XMP_41_failed.xmp
 [File, System, Other] Directory - Directory: t
-[File, System, Other] FileSize - File Size: 13 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:59-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:59-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:59-04:00
+[File, System, Other] FileSize - File Size: 14 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:07:06 14:38:09-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2022:07:06 14:38:09-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:07:06 14:38:09-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: XMP
 [File, File, Other] FileTypeExtension - File Type Extension: xmp
 [File, File, Other] MIMEType - MIME Type: application/rdf+xml
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.42
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.43
 [XMP, XMP-dwc, Time] EventDay - Event Day: 2013
 [XMP, XMP-dwc, Time] EventEarliestDate - Event Earliest Date: 2013
 [XMP, XMP-dwc, Time] EventEndDayOfYear - Event End Day Of Year: 2013
@@ -76,7 +76,9 @@
 [XMP, XMP-dwc, Other] IdentificationIdentificationRemarks - Identification Remarks: 2013
 [XMP, XMP-dwc, Other] IdentificationIdentificationVerificationStatus - Identification Verification Status: 2013
 [XMP, XMP-dwc, Other] IdentificationIdentifiedBy - Identified By: 2013
+[XMP, XMP-dwc, Other] IdentificationIdentifiedByID - Identified By ID: 2013
 [XMP, XMP-dwc, Other] IdentificationTypeStatus - Type Status: 2013
+[XMP, XMP-dwc, Other] IdentificationVerbatimIdentification - Verbatim Identification: 2013
 [XMP, XMP-dwc, Other] LivingSpecimenMaterialSampleID - Living Specimen Material Sample ID: 2013
 [XMP, XMP-dwc, Time] MachineObservationDay - Machine Observation Day: 2013
 [XMP, XMP-dwc, Time] MachineObservationEarliestDate - Machine Observation Earliest Date: 2013
@@ -115,8 +117,10 @@
 [XMP, XMP-dwc, Other] OccurrenceAssociatedTaxa - Occurrence Associated Taxa: 2013
 [XMP, XMP-dwc, Other] OccurrenceBehavior - Occurrence Behavior: 2013
 [XMP, XMP-dwc, Other] OccurrenceCatalogNumber - Occurrence Catalog Number: 2013
+[XMP, XMP-dwc, Other] OccurrenceDegreeOfEstablishment - Occurrence Degree Of Establishment: 2013
 [XMP, XMP-dwc, Other] OccurrenceDisposition - Occurrence Disposition: 2013
 [XMP, XMP-dwc, Other] OccurrenceEstablishmentMeans - Occurrence Establishment Means: 2013
+[XMP, XMP-dwc, Other] OccurrenceGeoreferenceVerificationStatus - Occurrence Georeference Verification Status: 2013
 [XMP, XMP-dwc, Other] OccurrenceIndividualCount - Occurrence Individual Count: 2013
 [XMP, XMP-dwc, Other] OccurrenceIndividualID - Occurrence Individual ID: 2013
 [XMP, XMP-dwc, Other] OccurrenceLifeStage - Occurrence Life Stage: 2013
@@ -131,6 +135,7 @@
 [XMP, XMP-dwc, Other] OccurrencePreviousIdentifications - Occurrence Previous Identifications: 2013
 [XMP, XMP-dwc, Other] OccurrenceRecordNumber - Occurrence Record Number: 2013
 [XMP, XMP-dwc, Other] OccurrenceRecordedBy - Occurrence Recorded By: 2013
+[XMP, XMP-dwc, Other] OccurrenceRecordedByID - Occurrence Recorded By ID: 2013
 [XMP, XMP-dwc, Other] OccurrenceReproductiveCondition - Occurrence Reproductive Condition: 2013
 [XMP, XMP-dwc, Other] OccurrenceSex - Occurrence Sex: 2013
 [XMP, XMP-dwc, Other] OrganismAssociatedOccurrences - Organism Associated Occurrences: 2013
@@ -156,12 +161,14 @@
 [XMP, XMP-dwc, Other] ResourceRelationshipRelationshipAccordingTo - Relationship According To: 2013
 [XMP, XMP-dwc, Time] ResourceRelationshipRelationshipEstablishedDate - Relationship Established Date: 2013
 [XMP, XMP-dwc, Other] ResourceRelationshipRelationshipOfResource - Relationship Of Resource: 2013
+[XMP, XMP-dwc, Other] ResourceRelationshipRelationshipOfResourceID - Relationship Of Resource ID: 2013
 [XMP, XMP-dwc, Other] ResourceRelationshipRelationshipRemarks - Relationship Remarks: 2013
 [XMP, XMP-dwc, Other] ResourceRelationshipResourceID - Resource ID: 2013
 [XMP, XMP-dwc, Other] ResourceRelationshipResourceRelationshipID - Resource Relationship ID: 2013
 [XMP, XMP-dwc, Other] TaxonAcceptedNameUsage - Taxon Accepted Name Usage: 2013
 [XMP, XMP-dwc, Other] TaxonAcceptedNameUsageID - Taxon Accepted Name Usage ID: 2013
 [XMP, XMP-dwc, Other] TaxonClass - Taxon Class: 2013
+[XMP, XMP-dwc, Other] TaxonCultivarEpithet - Taxon Cultivar Epithet: 2013
 [XMP, XMP-dwc, Other] TaxonFamily - Taxon Family: 2013
 [XMP, XMP-dwc, Other] TaxonGenus - Taxon Genus: 2013
 [XMP, XMP-dwc, Other] TaxonHigherClassification - Taxon Higher Classification: 2013
@@ -235,4 +242,5 @@
 [XMP, XMP-dwc, Location] dctermsLocationVerbatimLocality - DC Verbatim Locality: 2013
 [XMP, XMP-dwc, Location] dctermsLocationVerbatimLongitude - DC Verbatim Longitude: 2013
 [XMP, XMP-dwc, Location] dctermsLocationVerbatimSRS - DC Verbatim SRS: 2013
+[XMP, XMP-dwc, Location] dctermsLocationVerticalDatum - DC Vertical Datum: 2013
 [XMP, XMP-dwc, Location] dctermsLocationWaterBody - DC Water Body: 2013

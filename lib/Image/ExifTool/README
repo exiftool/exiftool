@@ -531,7 +531,8 @@ numerical, and generated automatically otherwise.
                   SubIFD's where the PutFirst flag is valid.
 
                   'Unknown' - this is an unknown tag (only extracted when the
-                  Unknown option is set).
+                  Unknown option is set).  This is set to 2 for Unknown tags in
+                  binary tables (extracted when Unknown is 2).
 
                   'WriteNothing' - flag indicating that nothing is actually
                   written when this tag is set.  It is a fake writable tag that
@@ -974,6 +975,9 @@ numerical, and generated automatically otherwise.
   LangCode      : [reserved] Used internally to indicate language code for
                   alternate language tags (eg. 'fr').  Only used with formats
                   which support alternate languages (eg. XMP, MIE, etc).
+
+  AddedUnknown  : [reserved] Used internally to mark Unknown tags that were
+                  added to the table at run time.
 
   SubDirectory {  If it exists, this specifies the start of a new subdirectory.
                   It contains a collection of variables which specify the type

@@ -532,13 +532,14 @@ the date of manufacture)</span></span></td></tr>
 <td title='0x1422 = 5154'>0x1422</td>
 <td>ImageStabilization</td>
 <td class=c>int16u[3]</td>
-<td><span class=s>[Value 0]
-  <br>0 = None
+<td><span class=s>[Value 0]</span><table class=cols><tr>
+  <td>0 = None
   <br>1 = Optical
-  <br>2 = Sensor-shift
-  <br>3 = OIS Lens
-  <br>512 = Digital
-  <br>[Value 1]
+  <br>2 = Sensor-shift</td><td>&nbsp;&nbsp;</td>
+  <td>3 = OIS Lens
+  <br>258 = IBIS/OIS + DIS
+  <br>512 = Digital</td></tr></table>
+<span class=s>[Value 1]
   <br>0 = Off
   <br>1 = On (mode 1, continuous)
   <br>2 = On (mode 2, shooting only)</span></td></tr>
@@ -660,10 +661,29 @@ detected)</span></span></td></tr>
 <td title='0x4201 = 16897'>0x4201</td>
 <td>FaceElementTypes</td>
 <td class=c>int8u[n]</td>
-<td><span class=s>[Values 0-N]
-  <br>1 = Face
+<td><span class=s>[Values 0-N]</span><table class=cols><tr>
+  <td>1 = Face
   <br>2 = Left Eye
-  <br>3 = Right Eye</span></td></tr>
+  <br>3 = Right Eye
+  <br>7 = Body
+  <br>8 = Head
+  <br>11 = Bike
+  <br>12 = Body of Car
+  <br>13 = Front of Car
+  <br>14 = Animal Body
+  <br>15 = Animal Head
+  <br>16 = Animal Face</td><td>&nbsp;&nbsp;</td>
+  <td>17 = Animal Left Eye
+  <br>18 = Animal Right Eye
+  <br>19 = Bird Body
+  <br>20 = Bird Head
+  <br>21 = Bird Left Eye
+  <br>22 = Bird Right Eye
+  <br>23 = Aircraft Body
+  <br>25 = Aircraft Cockpit
+  <br>26 = Train Front
+  <br>27 = Train Cockpit</td></tr></table>
+</td></tr>
 <tr class=b>
 <td title='0x4203 = 16899'>0x4203</td>
 <td>FaceElementPositions</td>
@@ -1206,7 +1226,7 @@ RAF-format information.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 13, 2021</i>
+<br><i>Last revised Jul 6, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

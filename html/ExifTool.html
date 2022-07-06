@@ -709,6 +709,14 @@ numerical options.</p>
     or "[Minor]" (with a capital "M") for warnings that affect processing when
     ignored.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
+<tr id="IgnoreTags"><td>IgnoreTags</td><td>List of tag names to ignore when reading.
+    This may help in situations where memory is limited because the ignored tag values
+    are not stored in memory. The tag names are case insensitive and group names
+    and wildcards are not allowed.  A special tag name of "All" may be used to ignore
+    all tags except those specified by the <a href="#RequestTags">RequestTags option</a>.</td>
+    <td>List reference, delimited string of names (any delimiter is allowed), or undef to
+    clear the previous IgnoreTags list.</td>
+    <td align=center>undef</td></tr>
 <tr id="Lang"><td>Lang</td><td>Localized language for exiftool tag descriptions, etc.  If the
     specified language isn't available, the option is not changed.  May be set to
     undef to select the built-in default language.</td>

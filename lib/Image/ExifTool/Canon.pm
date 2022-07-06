@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.58';
+$VERSION = '4.59';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -597,21 +597,23 @@ $VERSION = '4.58';
    '61182.19' => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF1.4x',
    '61182.20' => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF2x',
    '61182.21' => 'Canon RF 70-200mm F4L IS USM', #42
-   '61182.22' => 'Canon RF 50mm F1.8 STM', #42
-   '61182.23' => 'Canon RF 14-35mm F4L IS USM', #IB
-   '61182.24' => 'Canon RF 100-400mm F5.6-8 IS USM', #42
-   '61182.25' => 'Canon RF 100-400mm F5.6-8 IS USM + RF1.4x', #42 (NC)
-   '61182.26' => 'Canon RF 100-400mm F5.6-8 IS USM + RF2x', #42 (NC)
-   '61182.27' => 'Canon RF 16mm F2.8 STM', #42
-   '61182.28' => 'Canon RF 400mm F2.8L IS USM', #IB
-   '61182.29' => 'Canon RF 400mm F2.8L IS USM + RF1.4x', #IB
-   '61182.30' => 'Canon RF 400mm F2.8L IS USM + RF2x', #IB
-   '61182.31' => 'Canon RF 600mm F4L IS USM', #GiaZopatti
+   '61182.22' => 'Canon RF 100mm F2.8L MACRO IS USM', #42
+   '61182.23' => 'Canon RF 50mm F1.8 STM', #42
+   '61182.24' => 'Canon RF 14-35mm F4L IS USM', #IB
+   '61182.25' => 'Canon RF-S 18-45mm F4.5-6.3 IS STM', #42
+   '61182.26' => 'Canon RF 100-400mm F5.6-8 IS USM', #42
+   '61182.27' => 'Canon RF 100-400mm F5.6-8 IS USM + RF1.4x', #42 (NC)
+   '61182.28' => 'Canon RF 100-400mm F5.6-8 IS USM + RF2x', #42 (NC)
+   '61182.29' => 'Canon RF-S 18-150mm F3.5-6.3 IS STM', #42
+   '61182.30' => 'Canon RF 16mm F2.8 STM', #42
+   '61182.31' => 'Canon RF 400mm F2.8L IS USM', #IB
+   '61182.32' => 'Canon RF 400mm F2.8L IS USM + RF1.4x', #IB
+   '61182.33' => 'Canon RF 400mm F2.8L IS USM + RF2x', #IB
+   '61182.34' => 'Canon RF 600mm F4L IS USM', #GiaZopatti
    # we need the RFLensType values for the following...
-   '61182.32' => 'Canon RF 800mm F5.6L IS USM', #PH (NC)
-   '61182.33' => 'Canon RF 1200mm F8L IS USM', #PH (NC)
-   '61182.34' => 'Canon RF 5.2mm F2.8L Dual Fisheye 3D VR', #PH (NC)
-   '61182.35' => 'Canon RF 100mm F2.8L MACRO IS USM', #(NC)
+   '61182.35' => 'Canon RF 800mm F5.6L IS USM', #PH (NC)
+   '61182.36' => 'Canon RF 1200mm F8L IS USM', #PH (NC)
+   '61182.37' => 'Canon RF 5.2mm F2.8L Dual Fisheye 3D VR', #PH (NC)
     65535 => 'n/a',
 );
 
@@ -968,6 +970,8 @@ $VERSION = '4.58';
     0x80000437 => 'EOS 90D', #IB
     0x80000450 => 'EOS R3', #42
     0x80000453 => 'EOS R6', #PH
+    0x80000464 => 'EOS R7', #42
+    0x80000465 => 'EOS R10', #42
     0x80000467 => 'PowerShot ZOOM',
     0x80000468 => 'EOS M50 Mark II / Kiss M2', #IB
     0x80000520 => 'EOS D2000C', #IB
@@ -6530,23 +6534,23 @@ my %ciMaxFocal = (
     0x02 => 'FacesDetected',
 );
 
-# G9 white balance information (MakerNotes tag 0x29) (ref IB)
+# G9 white balance information (MakerNotes tag 0x29) (ref IB, changed ref forum13640)
 %Image::ExifTool::Canon::WBInfo = (
     %binaryDataAttrs,
     NOTES => 'WB tags for the Canon G9.',
     FORMAT => 'int32u',
     FIRST_ENTRY => 1,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
-    0x02 => { Name => 'WB_GRGBLevelsAuto',        Format => 'int32s[4]' },
-    0x0a => { Name => 'WB_GRGBLevelsDaylight',    Format => 'int32s[4]' },
-    0x12 => { Name => 'WB_GRGBLevelsCloudy',      Format => 'int32s[4]' },
-    0x1a => { Name => 'WB_GRGBLevelsTungsten',    Format => 'int32s[4]' },
-    0x22 => { Name => 'WB_GRGBLevelsFluorescent', Format => 'int32s[4]' },
-    0x2a => { Name => 'WB_GRGBLevelsFluorHigh',   Format => 'int32s[4]' },
-    0x32 => { Name => 'WB_GRGBLevelsFlash',       Format => 'int32s[4]' },
-    0x3a => { Name => 'WB_GRGBLevelsUnderwater',  Format => 'int32s[4]' },
-    0x42 => { Name => 'WB_GRGBLevelsCustom1',     Format => 'int32s[4]' },
-    0x4a => { Name => 'WB_GRGBLevelsCustom2',     Format => 'int32s[4]' },
+    0x02 => { Name => 'WB_GRBGLevelsAuto',        Format => 'int32s[4]' },
+    0x0a => { Name => 'WB_GRBGLevelsDaylight',    Format => 'int32s[4]' },
+    0x12 => { Name => 'WB_GRBGLevelsCloudy',      Format => 'int32s[4]' },
+    0x1a => { Name => 'WB_GRBGLevelsTungsten',    Format => 'int32s[4]' },
+    0x22 => { Name => 'WB_GRBGLevelsFluorescent', Format => 'int32s[4]' },
+    0x2a => { Name => 'WB_GRBGLevelsFluorHigh',   Format => 'int32s[4]' },
+    0x32 => { Name => 'WB_GRBGLevelsFlash',       Format => 'int32s[4]' },
+    0x3a => { Name => 'WB_GRBGLevelsUnderwater',  Format => 'int32s[4]' },
+    0x42 => { Name => 'WB_GRBGLevelsCustom1',     Format => 'int32s[4]' },
+    0x4a => { Name => 'WB_GRBGLevelsCustom2',     Format => 'int32s[4]' },
 );
 
 # yet more face detect information (MakerNotes tag 0x2f) - PH (G12)
@@ -6803,17 +6807,19 @@ my %ciMaxFocal = (
             276 => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF1.4x',
             277 => 'Canon RF 100-500mm F4.5-7.1L IS USM + RF2x',
             278 => 'Canon RF 70-200mm F4L IS USM', #42
+            279 => 'Canon RF 100mm F2.8L MACRO IS USM', #42
             280 => 'Canon RF 50mm F1.8 STM', #42
             281 => 'Canon RF 14-35mm F4L IS USM', #42/IB
+            282 => 'Canon RF-S 18-45mm F4.5-6.3 IS STM', #42
             283 => 'Canon RF 100-400mm F5.6-8 IS USM', #42
             284 => 'Canon RF 100-400mm F5.6-8 IS USM + RF1.4x', #42 (NC)
             285 => 'Canon RF 100-400mm F5.6-8 IS USM + RF2x', #42 (NC)
+            286 => 'Canon RF-S 18-150mm F3.5-6.3 IS STM', #42
             288 => 'Canon RF 16mm F2.8 STM', #42
             289 => 'Canon RF 400mm F2.8L IS USM', #IB
             290 => 'Canon RF 400mm F2.8L IS USM + RF1.4x', #IB
             291 => 'Canon RF 400mm F2.8L IS USM + RF2x', #IB
             292 => 'Canon RF 600mm F4L IS USM', #GiaZopatti
-           #xxx => 'Canon RF 100mm F2.8L MACRO IS USM',
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },
     },

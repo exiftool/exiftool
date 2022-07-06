@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.42';
+$VERSION = '12.43';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2209,6 +2209,20 @@ sub Options($$;@)
             } else {
                 $$options{$param} = undef;  # clear the list
             }
+        } elsif ($param eq 'IgnoreTags') {
+            if (defined $newVal) {
+                # parse list from delimited string if necessary
+                my @ignoreList = (ref $newVal eq 'ARRAY') ? @$newVal : ($newVal =~ /[-\w?*:]+/g);
+                ExpandShortcuts(\@ignoreList);
+                # add to existing tags to ignore
+                $$options{$param} or $$options{$param} = { };
+                foreach (@ignoreList) {
+                    /^(.*:)?([-\w?*]+)#?$/ or next;
+                    $$options{$param}{lc $2} = 1;
+                }
+            } else {
+                $$options{$param} = undef;  # clear the option
+            }
         } elsif ($param eq 'ListJoin') {
             $$options{$param} = $newVal;
             # set the old List and ListSep options for backward compatibility
@@ -2321,6 +2335,7 @@ sub ClearOptions($)
         HtmlDump    => 0,       # HTML dump (0-3, higher # = bigger limit)
         HtmlDumpBase => undef,  # base address for HTML dump
         IgnoreMinorErrors => undef, # ignore minor errors when reading/writing
+        IgnoreTags  => undef,   # list of tags to ignore when extracting
         Lang        => $defaultLang,# localized language for descriptions etc
         LargeFileSupport => undef,  # flag indicating support of 64-bit file offsets
         List        => undef,   # extract lists of PrintConv values into arrays [no longer documented]
@@ -5863,7 +5878,7 @@ sub GetUnixTime($;$)
 {
     my ($timeStr, $isLocal) = @_;
     return 0 if $timeStr eq '0000:00:00 00:00:00';
-    my @tm = ($timeStr =~ /^(\d+):(\d+):(\d+)\s+(\d+):(\d+):(\d+)(.*)/);
+    my @tm = ($timeStr =~ /^(\d+)[-:](\d+)[-:](\d+)\s+(\d+):(\d+):(\d+)(.*)/);
     return undef unless @tm == 7;
     unless (eval { require Time::Local }) {
         warn "Time::Local is not installed\n";
@@ -7955,11 +7970,11 @@ sub GetTagInfo($$$;$$$)
                 next;
             }
         }
-        if ($$tagInfo{Unknown} and not $$self{OPTIONS}{Unknown} and
-            not $$self{OPTIONS}{Verbose} and not $$self{OPTIONS}{Validate} and
-            not $$self{HTML_DUMP})
+        # don't return Unknown tags unless that option is set (also see forum13716)
+        if ($$tagInfo{Unknown} and not $$self{OPTIONS}{Unknown} and not 
+            ($$self{OPTIONS}{Verbose} or $$self{HTML_DUMP} or
+            ($$self{OPTIONS}{Validate} and not $$tagInfo{AddedUnknown})))
         {
-            # don't return Unknown tags unless that option is set
             return undef;
         }
         # return the tag information we found
@@ -7984,6 +7999,7 @@ sub GetTagInfo($$$;$$$)
             Unknown => 1,
             Writable => 0,  # can't write unknown tags
             PrintConv => $printConv,
+            AddedUnknown => 1,
         };
         # add tag information to table
         AddTagToTable($tagTablePtr, $tagID, $tagInfo);
@@ -8233,6 +8249,14 @@ sub FoundTag($$$;@)
         $self->Warn("RawConv $tag: " . CleanWarning()) if $evalWarning;
         return undef unless defined $value;
     }
+    # ignore specified tags (AFTER doing RawConv if necessary!)
+    if ($$options{IgnoreTags}) {
+        if ($$options{IgnoreTags}{all}) {
+            return undef unless $$self{REQ_TAG_LOOKUP}{lc $tag};
+        } else {
+            return undef if $$options{IgnoreTags}{lc $tag};
+        }
+    }
     # handle duplicate tag names
     if (defined $$valueHash{$tag}) {
         # add to list if there is an active list for this tag
@@ -8444,7 +8468,7 @@ sub SetFileType($;$$$)
 
 #------------------------------------------------------------------------------
 # Override the FileType and MIMEType tags
-# Inputs: 0) ExifTool object ref, 1) file type, 2) MIME type, 3) normal extension
+# Inputs: 0) ExifTool object ref, 1) file type, 2) MIME type, 3) normal extension (lower case)
 # Notes:  does nothing if FileType was not previously defined (ie. when writing)
 sub OverrideFileType($$;$$)
 {

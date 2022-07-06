@@ -16,7 +16,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 sub ProcessDJIInfo($$$);
 
@@ -176,6 +176,7 @@ sub ProcessDJIInfo($$$)
     }
     while ($$dataPt =~ /\G\[(.*?)\](?=(\[|$))/sg) {
         my ($tag, $val) = split /:/, $1, 2;
+        next unless defined $tag and defined $val;
         if ($val =~ /^([\x20-\x7f]+)\0*$/) {
             $val = $1;
         } else {

@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::PLIST;
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 # Apple iPhone metadata (ref PH)
 %Image::ExifTool::Apple::Main = (
@@ -66,7 +66,16 @@ $VERSION = '1.05';
         Writable => 'string',
         Notes => 'unique ID for all images in a burst',
     },
-    # 0x000c - rational64s[2]: eg) "0.1640625 0.19921875"
+    0x000c => { # ref forum13710 (Neal Krawetz)
+        Name => 'FocusDistanceRange',
+        Writable => 'rational64s',
+        Count => 2,
+        PrintConv => q{
+            my @a = split ' ', $val;
+            sprintf('%.2f - %.2f m', $a[0] <= $a[1] ? @a : reverse @a);
+        },
+        PrintConvInv => '$val =~ s/ - //; $val =~ s/ ?m$//; $val',
+    },
     # 0x000d - int32s: 0,1,6,20,24,32,40
     # 0x000e - int32s: 0,1,4,12 (Orientation? 0=landscape? 4=portrait? ref 1)
     # 0x000f - int32s: 2,3

@@ -1270,6 +1270,7 @@ sub SetNewValuesFromFile($$;@)
         GlobalTimeShift => $$options{GlobalTimeShift},
         HexTagIDs       => $$options{HexTagIDs},
         IgnoreMinorErrors=>$$options{IgnoreMinorErrors},
+        IgnoreTags      => $$options{IgnoreTags},
         Lang            => $$options{Lang},
         LargeFileSupport=> $$options{LargeFileSupport},
         List            => 1,

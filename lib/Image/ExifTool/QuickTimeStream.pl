@@ -80,7 +80,7 @@ my %processByMetaFormat = (
 
 # data lengths for each INSV record type
 my %insvDataLen = (
-    0x300 => 56,    # accelerometer
+    0x300 => 0,     # accelerometer (could be either 20 or 56 bytes)
     0x400 => 16,    # exposure (ref 6)
     0x600 => 8,     # timestamps (ref 6)
     0x700 => 53,    # GPS
@@ -2621,8 +2621,33 @@ sub ProcessInsta360($;$)
         if ($verbose) {
             $et->VPrint(0, sprintf("Insta360 Record 0x%x (offset 0x%x, %d bytes):\n", $id, $fileEnd + $epos, $len));
         }
+        # there are 2 types of record 0x300:
+        # 1. 56 byte records
+        # 0000: 4a f7 02 00 00 00 00 00 00 00 00 00 00 1e e7 3f [J..............?]
+        # 0010: 00 00 00 00 00 b2 ef bf 00 00 00 00 00 70 c1 bf [.............p..]
+        # 0020: 00 00 00 e0 91 5c 8c bf 00 00 00 20 8f ff 87 bf [.....\..... ....]
+        # 0030: 00 00 00 00 88 7f c9 bf
+        # 2. 20 byte records
+        # 0000: c1 d8 d9 0b 00 00 00 00 f5 83 14 80 df 7f fe 7f [................]
+        # 0010: fe 7f 01 80
+        if ($id == 0x300) {
+            if ($len % 20 and not $len % 56) {
+                $dlen = 56;
+            } elsif ($len % 56 and not $len % 20) {
+                $dlen = 20;
+            } else {
+                if ($raf->Read($buff, 20) == 20) {
+                    if (substr($buff, 16, 3) eq "\0\0\0") {
+                        $dlen = 56;
+                    } else {
+                        $dlen = 20;
+                    }
+                }
+                $raf->Seek($epos, 2) or last;
+            }
+        }
         # limit the number of records we read if necessary
-        if ($insvLimit{$id} and $len > $insvLimit{$id}[1] * $dlen and
+        if ($dlen and $insvLimit{$id} and $len > $insvLimit{$id}[1] * $dlen and
             $et->Warn("Insta360 $insvLimit{$id}[0] data is huge. Processing only the first $insvLimit{$id}[1] records",2))
         {
             $len = $insvLimit{$id}[1] * $dlen;
@@ -2630,11 +2655,18 @@ sub ProcessInsta360($;$)
         $raf->Read($buff, $len) == $len or last;
         $et->VerboseDump(\$buff) if $verbose > 2;
         if ($dlen) {
-            $len % $dlen and $et->Warn(sprintf('Unexpected Insta360 record 0x%x length',$id)), last;
-            if ($id == 0x300) {
+            if ($len % $dlen) {
+                $et->Warn(sprintf('Unexpected Insta360 record 0x%x length',$id));
+            } elsif ($id == 0x300) {
                 for ($p=0; $p<$len; $p+=$dlen) {
                     $$et{DOC_NUM} = ++$$et{DOC_COUNT};
-                    my @a = map { GetDouble(\$buff, $p + 8 * $_) } 1..6;
+                    my @a;
+                    if ($dlen == 56) {
+                        @a = map { GetDouble(\$buff, $p + 8 * $_) } 1..6;
+                    } else {
+                        @a = unpack("x${p}x8v6", $buff);
+                        map { $_ = ($_ - 0x8000) / 1000 } @a;
+                    }
                     $et->HandleTag($tagTbl, TimeCode => sprintf('%.3f', Get64u(\$buff, $p) / 1000));
                     $et->HandleTag($tagTbl, Accelerometer => "@a[0..2]"); # (NC)
                     $et->HandleTag($tagTbl, AngularVelocity => "@a[3..5]"); # (NC)
@@ -2668,7 +2700,7 @@ sub ProcessInsta360($;$)
                     $a[$_] = GetDouble(\$a[$_], 0) foreach 4,6,8,9,10;
                     $a[4] = -abs($a[4]) if $a[5] eq 'S'; # (abs just in case it was already signed)
                     $a[6] = -abs($a[6]) if $a[7] ne 'E';
-                    $et->HandleTag($tagTbl, GPSDateTime  => Image::ExifTool::ConvertUnixTime($a[0]) . 'Z');
+                    $et->HandleTag($tagTbl, GPSDateTifme  => Image::ExifTool::ConvertUnixTime($a[0]) . 'Z');
                     $et->HandleTag($tagTbl, GPSLatitude  => $a[4]);
                     $et->HandleTag($tagTbl, GPSLongitude => $a[6]);
                     $et->HandleTag($tagTbl, GPSSpeed     => $a[8] * $mpsToKph);

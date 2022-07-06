@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.43
 [File, System, Other] FileName - File Name: LNK.lnk
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 876 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2009:09:19 23:38:35-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:16-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
-[File, System, Other] FilePermissions - File Permissions: rwxr-xr-x
+[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:21 16:17:22-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:10:31 20:34:50-04:00
+[File, System, Other] FilePermissions - File Permissions: -rwxr-xr-x
 [File, File, Other] FileType - File Type: LNK
 [File, File, Other] FileTypeExtension - File Type Extension: lnk
 [File, File, Other] MIMEType - MIME Type: application/octet-stream
@@ -20,6 +20,7 @@
 [LNK, LNK, Other] 64 - Hot Key: (none)
 [LNK, LNK, Other] 14 - Target File DOS Name: EXIFTO~2.EXE
 [LNK, LNK, Other] DriveType - Drive Type: Fixed Disk
+[LNK, LNK, Other] DriveSerialNumber - Drive Serial Number: C8F0-D326
 [LNK, LNK, Other] VolumeLabel - Volume Label: 
 [LNK, LNK, Other] LocalBasePath - Local Base Path: C:\Documents and Settings\Phil\Desktop\exiftool(-k).exe
 [LNK, LNK, Other] 196612 - Description: Rename file name with image date and time

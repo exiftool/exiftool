@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.39';
+$VERSION = '1.40';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -465,6 +465,19 @@ my %fpxFileType = (
         SubDirectory => {
             TagTable => 'Image::ExifTool::FlashPix::PreviewInfo',
             ByteOrder => 'BigEndian',
+        },
+    },
+    # recognize Autodesk Revit files by looking at BasicFileInfo
+    # (but don't yet support reading their metatdata)
+    BasicFileInfo => {
+        Name => 'BasicFileInfo',
+        Binary => 1,
+        RawConv => q{
+            $val =~ tr/\0//d;   # brute force conversion to ASCII
+            if ($val =~ /\.(rfa|rft|rte|rvt)/) {
+                $self->OverrideFileType(uc($1), "application/$1", $1);
+            }
+            return $val;
         },
     },
 );

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 25792 tags, with 16480 unique tag names.
+They contain a total of 25802 tags, with 16493 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -6982,6 +6982,7 @@ Tags extracted from the maker notes of iPhone images.
   0x0008   AccelerationVector                   rational64s[3]
   0x000a   HDRImageType                         int32s
   0x000b   BurstUUID                            string
+  0x000c   FocusDistanceRange                   rational64s[2]
   0x0011   MediaGroupUUID                       string
   0x0015   ImageUniqueID                        string
 
@@ -8406,16 +8407,16 @@ WB tags for the Canon G9.
 
   Index4   Tag Name                             Writable
   ------   --------                             --------
-      2    WB_GRGBLevelsAuto                    int32s[4]
-     10    WB_GRGBLevelsDaylight                int32s[4]
-     18    WB_GRGBLevelsCloudy                  int32s[4]
-     26    WB_GRGBLevelsTungsten                int32s[4]
-     34    WB_GRGBLevelsFluorescent             int32s[4]
-     42    WB_GRGBLevelsFluorHigh               int32s[4]
-     50    WB_GRGBLevelsFlash                   int32s[4]
-     58    WB_GRGBLevelsUnderwater              int32s[4]
-     66    WB_GRGBLevelsCustom1                 int32s[4]
-     74    WB_GRGBLevelsCustom2                 int32s[4]
+      2    WB_GRBGLevelsAuto                    int32s[4]
+     10    WB_GRBGLevelsDaylight                int32s[4]
+     18    WB_GRBGLevelsCloudy                  int32s[4]
+     26    WB_GRBGLevelsTungsten                int32s[4]
+     34    WB_GRBGLevelsFluorescent             int32s[4]
+     42    WB_GRBGLevelsFluorHigh               int32s[4]
+     50    WB_GRBGLevelsFlash                   int32s[4]
+     58    WB_GRBGLevelsUnderwater              int32s[4]
+     66    WB_GRBGLevelsCustom1                 int32s[4]
+     74    WB_GRBGLevelsCustom2                 int32s[4]
 
 =head3 Canon FaceDetect3 Tags
 
@@ -20789,39 +20790,39 @@ Tags in the encrypted SR2SubIFD
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  0x7300   BlackLevel                           no
-  0x7302   WB_GRBGLevelsAuto                    no
-  0x7303   WB_GRBGLevels                        no
-  0x7310   BlackLevel                           no
-  0x7312   WB_RGGBLevelsAuto                    no
-  0x7313   WB_RGGBLevels                        no
-  0x7480   WB_RGBLevelsDaylight                 no
-  0x7481   WB_RGBLevelsCloudy                   no
-  0x7482   WB_RGBLevelsTungsten                 no
-  0x7483   WB_RGBLevelsFlash                    no
-  0x7484   WB_RGBLevels4500K                    no
-  0x7486   WB_RGBLevelsFluorescent              no
+  0x7300   BlackLevel                           int16u[4]!
+  0x7302   WB_GRBGLevelsAuto                    int16s[4]!
+  0x7303   WB_GRBGLevels                        int16s[4]!
+  0x7310   BlackLevel                           int16u[4]!
+  0x7312   WB_RGGBLevelsAuto                    int16s[4]!
+  0x7313   WB_RGGBLevels                        int16s[4]!
+  0x7480   WB_RGBLevelsDaylight                 int16s[4]!
+  0x7481   WB_RGBLevelsCloudy                   int16s[4]!
+  0x7482   WB_RGBLevelsTungsten                 int16s[4]!
+  0x7483   WB_RGBLevelsFlash                    int16s[4]!
+  0x7484   WB_RGBLevels4500K                    int16s[4]!
+  0x7486   WB_RGBLevelsFluorescent              int16s[4]!
   0x74a0   MaxApertureAtMaxFocal                no
   0x74a1   MaxApertureAtMinFocal                no
   0x74a2   MaxFocalLength                       no
   0x74a3   MinFocalLength                       no
   0x74c0   SR2DataIFD                           Sony SR2DataIFD
   0x7800   ColorMatrix                          no
-  0x7820   WB_RGBLevelsDaylight                 no
-  0x7821   WB_RGBLevelsCloudy                   no
-  0x7822   WB_RGBLevelsTungsten                 no
-  0x7823   WB_RGBLevelsFlash                    no
-  0x7824   WB_RGBLevels4500K                    no
-  0x7825   WB_RGBLevelsShade                    no
-  0x7826   WB_RGBLevelsFluorescent              no
-  0x7827   WB_RGBLevelsFluorescentP1            no
-  0x7828   WB_RGBLevelsFluorescentP2            no
-  0x7829   WB_RGBLevelsFluorescentM1            no
-  0x782a   WB_RGBLevels8500K                    no
-  0x782b   WB_RGBLevels6000K                    no
-  0x782c   WB_RGBLevels3200K                    no
-  0x782d   WB_RGBLevels2500K                    no
-  0x787f   WhiteLevel                           no
+  0x7820   WB_RGBLevelsDaylight                 int16s[3]!
+  0x7821   WB_RGBLevelsCloudy                   int16s[3]!
+  0x7822   WB_RGBLevelsTungsten                 int16s[3]!
+  0x7823   WB_RGBLevelsFlash                    int16s[3]!
+  0x7824   WB_RGBLevels4500K                    int16s[3]!
+  0x7825   WB_RGBLevelsShade                    int16s[3]!
+  0x7826   WB_RGBLevelsFluorescent              int16s[3]!
+  0x7827   WB_RGBLevelsFluorescentP1            int16s[3]!
+  0x7828   WB_RGBLevelsFluorescentP2            int16s[3]!
+  0x7829   WB_RGBLevelsFluorescentM1            int16s[3]!
+  0x782a   WB_RGBLevels8500K                    int16s[3]!
+  0x782b   WB_RGBLevels6000K                    int16s[3]!
+  0x782c   WB_RGBLevels3200K                    int16s[3]!
+  0x782d   WB_RGBLevels2500K                    int16s[3]!
+  0x787f   WhiteLevel                           int16u[3]!
   0x797d   VignettingCorrParams                 no
   0x7980   ChromaticAberrationCorrParams        no
   0x7982   DistortionCorrParams                 no
@@ -21656,28 +21657,29 @@ unrecognized Windows Compound Binary file as a FlashPix (FPX) file.  See
 L<http://graphcomp.com/info/specs/livepicture/fpx.pdf> for the FlashPix
 specification.
 
-  Tag ID                           Tag Name     Writable
-  ------                           --------     --------
-  "\x01CompObj"                    CompObj      FlashPix CompObj
-  "\x05Audio Info"                 AudioInfo    FlashPix AudioInfo
-  "\x05Data Object"                DataObject   FlashPix DataObject
+  Tag ID                          Tag Name      Writable
+  ------                          --------      --------
+  "\x01CompObj"                   CompObj       FlashPix CompObj
+  "\x05Audio Info"                AudioInfo     FlashPix AudioInfo
+  "\x05Data Object"               DataObject    FlashPix DataObject
   "\x05DocumentSummaryInformation" DocumentInfo FlashPix DocumentInfo
-  "\x05Extension List"             Extensions   FlashPix Extensions
-  "\x05Global Info"                GlobalInfo   FlashPix GlobalInfo
-  "\x05Image Contents"             Image        FlashPix Image
-  "\x05Image Info"                 ImageInfo    FlashPix ImageInfo
-  "\x05Operation"                  Operation    FlashPix Operation
-  "\x05Screen Nail"                ScreenNail   no
-  "\x05SummaryInformation"         SummaryInfo  FlashPix SummaryInfo
-  "\x05Transform"                  Transform    FlashPix Transform
-  'Audio Stream'                   AudioStream  no
-  'Contents'                       Contents     XMP
-  'Current User'                   CurrentUser  no
-  'ICC Profile 0001'               ICC_Profile  ICC_Profile
-  'Preview'                        PreviewImage no
-  'Property'                       PreviewInfo  FlashPix PreviewInfo
-  'Subimage 0000 Header'           SubimageHdr  FlashPix SubimageHdr
-  'WordDocument'                   WordDocument FlashPix WordDocument
+  "\x05Extension List"            Extensions    FlashPix Extensions
+  "\x05Global Info"               GlobalInfo    FlashPix GlobalInfo
+  "\x05Image Contents"            Image         FlashPix Image
+  "\x05Image Info"                ImageInfo     FlashPix ImageInfo
+  "\x05Operation"                 Operation     FlashPix Operation
+  "\x05Screen Nail"               ScreenNail    no
+  "\x05SummaryInformation"        SummaryInfo   FlashPix SummaryInfo
+  "\x05Transform"                 Transform     FlashPix Transform
+  'Audio Stream'                  AudioStream   no
+  'BasicFileInfo'                 BasicFileInfo no
+  'Contents'                      Contents      XMP
+  'Current User'                  CurrentUser   no
+  'ICC Profile 0001'              ICC_Profile   ICC_Profile
+  'Preview'                       PreviewImage  no
+  'Property'                      PreviewInfo   FlashPix PreviewInfo
+  'Subimage 0000 Header'          SubimageHdr   FlashPix SubimageHdr
+  'WordDocument'                  WordDocument  FlashPix WordDocument
 
 =head3 FlashPix CompObj Tags
 
@@ -23770,6 +23772,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   DCVerbatimLocality                            string_
   DCVerbatimLongitude                           string_
   DCVerbatimSRS                                 string_
+  DCVerticalDatum                               string_
   DCWaterBody                                   string_
   DCEvent                                       DarwinCore Event Struct
   EventDay                                      integer_
@@ -23842,7 +23845,9 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   IdentificationRemarks                         string_
   IdentificationVerificationStatus              string_
   IdentifiedBy                                  string_
+  IdentifiedByID                                string_
   TypeStatus                                    string_
+  VerbatimIdentification                        string_
   LivingSpecimen                                DarwinCore MaterialSample Struct
   LivingSpecimenMaterialSampleID                string_
   MachineObservation                            DarwinCore Event Struct
@@ -23886,8 +23891,10 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   OccurrenceAssociatedTaxa                      string_
   OccurrenceBehavior                            string_
   OccurrenceCatalogNumber                       string_
+  OccurrenceDegreeOfEstablishment               string_
   OccurrenceDisposition                         string_
   OccurrenceEstablishmentMeans                  string_
+  OccurrenceGeoreferenceVerificationStatus      string_
   OccurrenceIndividualCount                     string_
   OccurrenceIndividualID                        string_
   OccurrenceLifeStage                           string_
@@ -23901,6 +23908,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   OccurrencePreparations                        string_
   OccurrencePreviousIdentifications             string_
   OccurrenceRecordedBy                          string_
+  OccurrenceRecordedByID                        string_
   OccurrenceRecordNumber                        string_
   OccurrenceReproductiveCondition               string_
   OccurrenceSex                                 string_
@@ -23931,6 +23939,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   RelationshipAccordingTo                       string_
   RelationshipEstablishedDate                   date_
   RelationshipOfResource                        string_
+  RelationshipOfResourceID                      string_
   RelationshipRemarks                           string_
   ResourceID                                    string_
   ResourceRelationshipID                        string_
@@ -23938,6 +23947,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   TaxonAcceptedNameUsage                        string_
   TaxonAcceptedNameUsageID                      string_
   TaxonClass                                    string_
+  TaxonCultivarEpithet                          string_
   TaxonFamily                                   string_
   TaxonGenus                                    string_
   TaxonHigherClassification                     string_
@@ -24016,6 +24026,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   VerbatimLocality                              string
   VerbatimLongitude                             string
   VerbatimSRS                                   string
+  VerticalDatum                                 string
   WaterBody                                     string
 
 =head3 DarwinCore Event Struct
@@ -24083,7 +24094,9 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   IdentificationRemarks                         string
   IdentificationVerificationStatus              string
   IdentifiedBy                                  string
+  IdentifiedByID                                string
   TypeStatus                                    string
+  VerbatimIdentification                        string
 
 =head3 DarwinCore MeasurementOrFact Struct
 
@@ -24110,8 +24123,10 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   AssociatedTaxa                                string
   Behavior                                      string
   CatalogNumber                                 string
+  DegreeOfEstablishment                         string
   Disposition                                   string
   EstablishmentMeans                            string
+  GeoreferenceVerificationStatus                string
   IndividualCount                               string
   IndividualID                                  string
   LifeStage                                     string
@@ -24126,6 +24141,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   PreviousIdentifications                       string
   RecordNumber                                  string
   RecordedBy                                    string
+  RecordedByID                                  string
   ReproductiveCondition                         string
   Sex                                           string
 
@@ -24165,6 +24181,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   RelationshipAccordingTo                       string
   RelationshipEstablishedDate                   date
   RelationshipOfResource                        string
+  RelationshipOfResourceID                      string
   RelationshipRemarks                           string
   ResourceID                                    string
   ResourceRelationshipID                        string
@@ -24176,6 +24193,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   AcceptedNameUsage                             string
   AcceptedNameUsageID                           string
   Class                                         string
+  CultivarEpithet                               string
   Family                                        string
   Genus                                         string
   HigherClassification                          string

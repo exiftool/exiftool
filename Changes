@@ -7,6 +7,28 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.42. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+July 6, 2022 - Version 12.43
+
+  - Added the ability to geotag from Google Takeout JSON files
+  - Added a few new Canon RF LensType values and a couple of new CanonModelID's
+    (thanks Norbert Wasser)
+  - Added new values to a couple of FujiFilm tags (thanks Greybeard)
+  - Added a new Nikon LensID (thanks BertJan Bakker)
+  - Recognize Autodesk Revit files (but don't yet support reading metadata)
+  - Decode DriveSerialNumber from LNK files (github #145)
+  - Decode Apple FocusDistanceRange (thanks Neal Krawetz)
+  - Made a number of Sony SR2SubIFD tags writable
+  - Tolerate dashes instead of colons as date separators in -geotag CSV files
+  - Patched to read new format accelerometer data from Insta360 files
+  - Patched to avoid outputting some Unknown tags when the -validate option is
+    used after a previously -execute'd command used the -u option
+  - Fixed names of Canon G9 WB levels tags (changed from GRGB to GRBG) (thanks
+    Christoph)
+  - Fixed typo in new Olympus AISubjectTrackingMode value
+  - Fixed "use of undefined value" warning when reading DJI metadata
+  - API Changes:
+      - Added IgnoreTags option
+
 June 1, 2022 - Version 12.42 (production release)
 
   - Added support for reading maker notes from Panasonic DC-GH6 videos

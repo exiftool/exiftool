@@ -6,6 +6,7 @@
 # Revisions:    2019-10-23 - P. Harvey Created
 #
 # References:   1) https://developer.parrot.com/docs/pdraw/metadata.html
+#               --> changed to https://developer.parrot.com/docs/pdraw/video-metadata.html
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Parrot;

@@ -896,6 +896,8 @@
 </tr><tr><td class=r>0x80000437</td><td>= EOS 90D</td>
 </tr><tr><td class=r>0x80000450</td><td>= EOS R3</td>
 </tr><tr><td class=r>0x80000453</td><td>= EOS R6</td>
+</tr><tr><td class=r>0x80000464</td><td>= EOS R7</td>
+</tr><tr><td class=r>0x80000465</td><td>= EOS R10</td>
 </tr><tr><td class=r>0x80000467</td><td>= PowerShot ZOOM</td>
 </tr><tr><td class=r>0x80000468</td><td>= EOS M50 Mark II / Kiss M2</td>
 </tr><tr><td class=r>0x80000520</td><td>= EOS D2000C</td>
@@ -1849,20 +1851,22 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>61182.19</td><td>= Canon RF 100-500mm F4.5-7.1L IS USM + RF1.4x</td>
 </tr><tr><td>61182.20</td><td>= Canon RF 100-500mm F4.5-7.1L IS USM + RF2x</td>
 </tr><tr><td>61182.21</td><td>= Canon RF 70-200mm F4L IS USM</td>
-</tr><tr><td>61182.22</td><td>= Canon RF 50mm F1.8 STM</td>
-</tr><tr><td>61182.23</td><td>= Canon RF 14-35mm F4L IS USM</td>
-</tr><tr><td>61182.24</td><td>= Canon RF 100-400mm F5.6-8 IS USM</td>
-</tr><tr><td>61182.25</td><td>= Canon RF 100-400mm F5.6-8 IS USM + RF1.4x</td>
-</tr><tr><td>61182.26</td><td>= Canon RF 100-400mm F5.6-8 IS USM + RF2x</td>
-</tr><tr><td>61182.27</td><td>= Canon RF 16mm F2.8 STM</td>
-</tr><tr><td>61182.28</td><td>= Canon RF 400mm F2.8L IS USM</td>
-</tr><tr><td>61182.29</td><td>= Canon RF 400mm F2.8L IS USM + RF1.4x</td>
-</tr><tr><td>61182.30</td><td>= Canon RF 400mm F2.8L IS USM + RF2x</td>
-</tr><tr><td>61182.31</td><td>= Canon RF 600mm F4L IS USM</td>
-</tr><tr><td>61182.32</td><td>= Canon RF 800mm F5.6L IS USM</td>
-</tr><tr><td>61182.33</td><td>= Canon RF 1200mm F8L IS USM</td>
-</tr><tr><td>61182.34</td><td>= Canon RF 5.2mm F2.8L Dual Fisheye 3D VR</td>
-</tr><tr><td>61182.35</td><td>= Canon RF 100mm F2.8L MACRO IS USM</td>
+</tr><tr><td>61182.22</td><td>= Canon RF 100mm F2.8L MACRO IS USM</td>
+</tr><tr><td>61182.23</td><td>= Canon RF 50mm F1.8 STM</td>
+</tr><tr><td>61182.24</td><td>= Canon RF 14-35mm F4L IS USM</td>
+</tr><tr><td>61182.25</td><td>= Canon RF-S 18-45mm F4.5-6.3 IS STM</td>
+</tr><tr><td>61182.26</td><td>= Canon RF 100-400mm F5.6-8 IS USM</td>
+</tr><tr><td>61182.27</td><td>= Canon RF 100-400mm F5.6-8 IS USM + RF1.4x</td>
+</tr><tr><td>61182.28</td><td>= Canon RF 100-400mm F5.6-8 IS USM + RF2x</td>
+</tr><tr><td>61182.29</td><td>= Canon RF-S 18-150mm F3.5-6.3 IS STM</td>
+</tr><tr><td>61182.30</td><td>= Canon RF 16mm F2.8 STM</td>
+</tr><tr><td>61182.31</td><td>= Canon RF 400mm F2.8L IS USM</td>
+</tr><tr><td>61182.32</td><td>= Canon RF 400mm F2.8L IS USM + RF1.4x</td>
+</tr><tr><td>61182.33</td><td>= Canon RF 400mm F2.8L IS USM + RF2x</td>
+</tr><tr><td>61182.34</td><td>= Canon RF 600mm F4L IS USM</td>
+</tr><tr><td>61182.35</td><td>= Canon RF 800mm F5.6L IS USM</td>
+</tr><tr><td>61182.36</td><td>= Canon RF 1200mm F8L IS USM</td>
+</tr><tr><td>61182.37</td><td>= Canon RF 5.2mm F2.8L Dual Fisheye 3D VR</td>
 </tr><tr><td>61491</td><td>= Canon CN-E 14mm T3.1 L F</td>
 </tr><tr><td>61492</td><td>= Canon CN-E 24mm T1.5 L F</td>
 </tr><tr><td>61494</td><td>= Canon CN-E 85mm T1.3 L F</td>
@@ -6248,52 +6252,52 @@ may be 7, 9, 11, 19, 31, 45 or 61, depending on the camera model.</p>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
-<td>WB_GRGBLevelsAuto</td>
+<td>WB_GRBGLevelsAuto</td>
 <td class=c>int32s[4]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='10 = 0xa'>10</td>
-<td>WB_GRGBLevelsDaylight</td>
+<td>WB_GRBGLevelsDaylight</td>
 <td class=c>int32s[4]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='18 = 0x12'>18</td>
-<td>WB_GRGBLevelsCloudy</td>
+<td>WB_GRBGLevelsCloudy</td>
 <td class=c>int32s[4]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='26 = 0x1a'>26</td>
-<td>WB_GRGBLevelsTungsten</td>
+<td>WB_GRBGLevelsTungsten</td>
 <td class=c>int32s[4]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='34 = 0x22'>34</td>
-<td>WB_GRGBLevelsFluorescent</td>
+<td>WB_GRBGLevelsFluorescent</td>
 <td class=c>int32s[4]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='42 = 0x2a'>42</td>
-<td>WB_GRGBLevelsFluorHigh</td>
+<td>WB_GRBGLevelsFluorHigh</td>
 <td class=c>int32s[4]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='50 = 0x32'>50</td>
-<td>WB_GRGBLevelsFlash</td>
+<td>WB_GRBGLevelsFlash</td>
 <td class=c>int32s[4]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='58 = 0x3a'>58</td>
-<td>WB_GRGBLevelsUnderwater</td>
+<td>WB_GRBGLevelsUnderwater</td>
 <td class=c>int32s[4]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='66 = 0x42'>66</td>
-<td>WB_GRGBLevelsCustom1</td>
+<td>WB_GRBGLevelsCustom1</td>
 <td class=c>int32s[4]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='74 = 0x4a'>74</td>
-<td>WB_GRGBLevelsCustom2</td>
+<td>WB_GRBGLevelsCustom2</td>
 <td class=c>int32s[4]</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -6554,11 +6558,14 @@ valid for all camera models)</span></span></td></tr>
   <br>276 = Canon RF 100-500mm F4.5-7.1L IS USM + RF1.4x
   <br>277 = Canon RF 100-500mm F4.5-7.1L IS USM + RF2x
   <br>278 = Canon RF 70-200mm F4L IS USM
+  <br>279 = Canon RF 100mm F2.8L MACRO IS USM
   <br>280 = Canon RF 50mm F1.8 STM
   <br>281 = Canon RF 14-35mm F4L IS USM
+  <br>282 = Canon RF-S 18-45mm F4.5-6.3 IS STM
   <br>283 = Canon RF 100-400mm F5.6-8 IS USM
   <br>284 = Canon RF 100-400mm F5.6-8 IS USM + RF1.4x
   <br>285 = Canon RF 100-400mm F5.6-8 IS USM + RF2x
+  <br>286 = Canon RF-S 18-150mm F3.5-6.3 IS STM
   <br>288 = Canon RF 16mm F2.8 STM
   <br>289 = Canon RF 400mm F2.8L IS USM
   <br>290 = Canon RF 400mm F2.8L IS USM + RF1.4x
@@ -11626,7 +11633,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 1, 2022</i>
+<br><i>Last revised Jul 6, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

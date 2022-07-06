@@ -17,6 +17,31 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.43'><b>July 6, 2022 - Version 12.43</b></a>
+<ul>
+<li>Added the ability to geotag from Google Takeout JSON files
+<li>Added a few new Canon RF LensType values and a couple of new CanonModelID's
+    (thanks Norbert Wasser)
+<li>Added new values to a couple of FujiFilm tags (thanks Greybeard)
+<li>Added a new Nikon LensID (thanks BertJan Bakker)
+<li>Recognize Autodesk Revit files (but don't yet support reading metadata)
+<li>Decode DriveSerialNumber from LNK files (github #145)
+<li>Decode Apple FocusDistanceRange (thanks Neal Krawetz)
+<li>Made a number of Sony SR2SubIFD tags writable
+<li>Tolerate dashes instead of colons as date separators in -geotag CSV files
+<li>Patched to read new format accelerometer data from Insta360 files
+<li>Patched to avoid outputting some Unknown tags when the -validate option is
+    used after a previously -execute'd command used the -u option
+<li>Fixed names of Canon G9 WB levels tags (changed from GRGB to GRBG) (thanks
+    Christoph)
+<li>Fixed typo in new Olympus AISubjectTrackingMode value
+<li>Fixed "use of undefined value" warning when reading DJI metadata
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#IgnoreTags">IgnoreTags option</a>
+    </ul>
+</ul>
+
 <a name='v12.42'><b>June 1, 2022 - Version 12.42</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added support for reading maker notes from Panasonic DC-GH6 videos

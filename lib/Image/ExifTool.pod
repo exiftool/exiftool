@@ -776,6 +776,15 @@ images even if they don't have a recognizable header).  Minor errors and
 warnings are denoted by "[minor]" at the start of the message, or "[Minor]"
 (with a capital "M") for warnings that affect processing when ignored.
 
+=item IgnoreTags
+
+List of tag names to ignore when reading.  This may help in situations where
+memory is limited because the ignored tag values are not stored in memory.
+The tag names are case insensitive and group names and wildcards are not
+allowed.  A special tag name of "All" may be used to ignore all tags except
+those specified by the L</RequestTags> option.  Set to undef to clear the
+previous IgnoreTags list.  Default is undef.
+
 =item Lang
 
 Localized language for exiftool tag descriptions, etc.  Available languages
@@ -1103,10 +1112,10 @@ L</ExtractInfo>:
 Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3, CharsetIPTC,
 CharsetPhotoshop, CharsetQuickTime, CharsetRIFF, Composite, ExtendedXMP,
 ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase,
-IgnoreMinorErrors, Lang, LargeFileSupport, MakerNotes, MDItemTags,
-NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero), RequestAll,
-RequestTags, SaveFormat, SavePath, ScanForXMP, Struct, TextOut, Unknown,
-Verbose, XAttrTags and XMPAutoConv.
+IgnoreMinorErrors, IgnoreTags, Lang, LargeFileSupport, MakerNotes,
+MDItemTags, NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero),
+RequestAll, RequestTags, SaveFormat, SavePath, ScanForXMP, Struct, TextOut,
+Unknown, Verbose, XAttrTags and XMPAutoConv.
 
 =item Return Value:
 

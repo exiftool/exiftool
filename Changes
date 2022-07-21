@@ -7,6 +7,22 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.42. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+July 21, 2022 - Version 12.44
+
+  - Added a few new Sony lenses (thanks Jos Roost)
+  - Decode Accelerometer and Gyroscope data from ARCore videos
+  - Decode a couple of new Motorola tags (thanks Neal Krawetz)
+  - Decode FujiFilm FirmwareVersion (thanks Justin Arkinson)
+  - Decode MetaType for timed metadata in videos
+  - Decode a number of new Nikon Z tags (thanks Warren Hatch)
+  - Extract more types of embedded images from FlashPix-format files
+  - Made Composite GPSLatitude and GPSLongitude writable for setting GPS
+    coordinates and reference directions with one assignment
+  - Fixed bug introduced in 12.39 which broke extraction of timed GPS from some
+    INNOVV videos
+  - Fixed bug introduced in 12.43 which broke extraction of timed GPSDateTime
+    from Insta360 videos
+
 July 6, 2022 - Version 12.43
 
   - Added the ability to geotag from Google Takeout JSON files
@@ -99,6 +115,7 @@ Jan. 13, 2022 - Version 12.39
   - Added a new Pentax LensType (thanks Christian Shulz)
   - Added a couple of new Nikon LensID's
   - Added support for Nikon NKSC sidecar files
+  - Decode another type of timed GPS from MP4 videos
   - Decode more tags for the Nikon Z7 and Z9 (thanks Warren Hatch)
   - Decode a couple more FLIR tags
   - Extract ZIP file comments

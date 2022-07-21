@@ -395,7 +395,9 @@ numerical, and generated automatically otherwise.
                   be accessible.
 
                   'Hidden' - set to hide tag from the TagName documentation.
-                  Also suppresses verbose output of a BinaryData tag.
+                  Also suppresses verbose output of a BinaryData tag.  The
+                  RawConv of a Hidden tag should return undef so the tag value
+                  is not seen by the user.
 
                   'IsComposite' - flag set for Composite tags
 

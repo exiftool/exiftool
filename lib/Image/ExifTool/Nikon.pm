@@ -63,7 +63,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.07';
+$VERSION = '4.08';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -2081,7 +2081,7 @@ my %base64coord = (
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoZ9',
                 DecryptStart => 4,
                 # TODO: eventually set the length dynamically according to actual offsets!
-                DecryptLen => 0xec4b + 1646,  # decoded thru end of CustomSettingZ9 in Offset26 (+MenuSettingsZ9Offset)
+                DecryptLen => 0xec4b + 1907,  # decoded thru end of Offset26 
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -4867,7 +4867,7 @@ my %nikonFocalConversions = (
     %binaryDataAttrs,
     NOTES => 'Tags found in the encrypted LensData from cameras such as the Z6 and Z7.',
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    DATAMEMBER => [ 0x03, 0x2f ],
+    DATAMEMBER => [ 0x03, 0x2f, 0x35, 0x4c, 0x56 ],
     0x00 => {
         Name => 'LensDataVersion',
         Format => 'string[4]',
@@ -4893,12 +4893,12 @@ my %nikonFocalConversions = (
         %nikonApertureConversions,
     },
     # --> another extra byte at position 0x08 in this version of LensData (PH)
-    0x09 => {
-        Name => 'FocusPosition',
-        Condition => '$$self{OldLensData}',
-        PrintConv => 'sprintf("0x%02x", $val)',
-        PrintConvInv => '$val',
-    },
+    #0x09 => {
+    #    Name => 'FocusPosition',                         #28 - this appears to be copied from an older version of LensData and is no longer valid.  Text with Z9 and Z7_2 with a variety of lenses
+    #    Condition => '$$self{OldLensData}',
+    #    PrintConv => 'sprintf("0x%02x", $val)',
+    #    PrintConvInv => '$val',
+    #},
     0x0b => {
         Notes => 'this focus distance is approximate, and not very accurate for some lenses',
         Name => 'FocusDistance',
@@ -4957,7 +4957,8 @@ my %nikonFocalConversions = (
         %nikonApertureConversions,
     },
 #
-# ---- new LensData tags used by Nikkor Z lenses ---- (ref PH)
+# ---- new LensData tags used by Nikkor Z cameras (ref PH/28). ----
+# (some fields are strictly for Z-series lenses, others apply to legacy F-mount as well, ref 28)
 #
     0x2f => { # look forward to see if new lens data exists...
         Name => 'NewLensData',
@@ -4965,7 +4966,7 @@ my %nikonFocalConversions = (
         RawConv => '$$self{NewLensData} = 1 unless $val =~ /^.\0+$/s; undef',
         Hidden => 1,
     },
-    0x30 => {
+    0x30 => { #PH
         Name => 'LensID',
         Condition => '$$self{NewLensData}',
         Notes => 'tags from here onward used for Nikkor Z lenses only',
@@ -4991,9 +4992,22 @@ my %nikonFocalConversions = (
             27 => 'Nikkor Z MC 50mm f/2.8', #IB
             28 => 'Nikkor Z 100-400mm f/4.5-5.6 VR S', #28
             29 => 'Nikkor Z 28mm f/2.8', #IB
+            30 => 'Nikkor Z 400mm f/2.8 TC VR S',   #28
+            31 => 'Nikkor Z 24-120 f/4',   #28     
+            32 => 'Nikkor Z 800mm f/6.3 VR S',  #28
         },
     },
-    0x36 => {
+    0x35 => { #28
+        Name => 'LensMountType',
+        RawConv => '$$self{LensMountType} = $val',   #  0=> DSLR lens via FTZ style adapter;   1=> Native Z lens;
+        Format => 'int8u',
+        Unknown => 1,
+        PrintConv => {
+             0 => 'F-mount Lens',
+             1 => 'Z-mount Lens',
+         },
+    },
+    0x36 => { #PH
         Name => 'MaxAperture',
         Condition => '$$self{NewLensData}',
         Format => 'int16u',
@@ -5003,7 +5017,7 @@ my %nikonFocalConversions = (
         PrintConv => 'sprintf("%.1f",$val)',
         PrintConvInv => '$val',
     },
-    0x38 => {
+    0x38 => { #PH
         Name => 'FNumber',
         Condition => '$$self{NewLensData}',
         Format => 'int16u',
@@ -5013,7 +5027,7 @@ my %nikonFocalConversions = (
         PrintConv => 'sprintf("%.1f",$val)',
         PrintConvInv => '$val',
     },
-    0x3c => {
+    0x3c => { #PH
         Name => 'FocalLength',
         Condition => '$$self{NewLensData}',
         Format => 'int16u',
@@ -5021,14 +5035,36 @@ my %nikonFocalConversions = (
         PrintConv => '"$val mm"',
         PrintConvInv => '$val=~s/\s*mm$//;$val',
     },
-    0x4f => {
-        Name => 'FocusDistance',
-        Condition => '$$self{NewLensData}',
-        # (perhaps int16u Format? -- although upper byte would always be zero)
+    0x4c => { #28
+        Name => 'FocusDistanceRangeWidth',     #reflects the number of discrete absolute lens positions that are mapped to the reported FocusDistance.  Will be 1 near CFD reflecting very narrow focus distance bands (i.e., quite accurate).  Near Infinity will be something like 32.  Note: 0 at infinity.
+        Format => 'int8u',
+        Condition => '$$self{NewLensData} and $$self{LensMountType} == 1',  
+        RawConv => '$$self{FocusDistanceRangeWidth} = $val',
+        Unknown => 1,
+    },
+    0x4e => { #28
+        Name => 'FocusDistance', 
+        Format => 'int16u',
+        Condition => '$$self{NewLensData} and $$self{LensMountType} == 1',  
+        RawConv => '$val = $val/256',  # 1st byte is the fractional component.  This byte was not previously considered in the legacy calculation (which only used the 2nd byte).  When 2nd byte < 80; distance is < 1 meter
         ValueConv => '0.01 * 10**($val/40)', # in m
         ValueConvInv => '$val>0 ? 40*log($val*100)/log(10) : 0',
-        PrintConv => '$val ? sprintf("%.2f m",$val) : "inf"',
-        PrintConvInv => '$val eq "inf" ? 0 : $val =~ s/\s*m$//, $val',
+        PrintConv => q{
+            $$self{FocusDistanceRangeWidth} == 0 ? "Inf" : $val < 1 ? $val < 0.35 ? sprintf("%.4f m", $val): sprintf("%.3f m", $val): sprintf("%.2f m", $val),    #distances less than 35mm are quite accurate with increasingly less precision past 1m       
+        },
+    },
+    0x56 => { #28
+        Name => 'LensDriveEnd',     # byte contains: 1 at CFD/MOD; 2 at Infinity; 0 otherwise
+        Condition => '$$self{NewLensData} and $$self{LensMountType} == 1',  
+        Format => 'int8u',
+        RawConv => 'unless ($$self{FocusDistanceRangeWidth} == 0 ) { if ($val == 0 ) {$$self{LensDriveEnd} = "No"} else { $$self{LensDriveEnd} = "CFD"}; } else{ $$self{LensDriveEnd} = "Inf"}',
+        Unknown => 1,
+    },
+    0x5a => { #28
+        Name => 'LensPositionAbsolute',    # <=0 at infinity.  Typical value at CFD might be 58000.   Only valid for Z-mount lenses.
+        Condition => '$$self{NewLensData} and $$self{LensMountType} == 1',      
+        Format => 'int32s',
+        Unknown => 1,
     },
 );
 
@@ -8753,13 +8789,18 @@ my %nikonFocalConversions = (
             6 => '+08:00 (Beijing, Honk Kong, Sinapore)',
             10 => '+05:45 (Kathmandu)',
             11 => '+05:30 (New Dehli)',
+            12 => '+05:00 (Islamabad)',
+            13 => '+04:30 (Kabul)',
+            14 => '+04:00 (Abu Dhabi)',
+            15 => '+03:30 (Tehran)',
             16 => '+03:00 (Moscow, Nairobi)',
-            15 => '+02:00 (Athens)',
-            16 => '+01:00 (Madrid, Paris, Berlin)',
             17 => '+02:00 (Athens, Helsinki)',
-            18 => '+00:00 (London)',
-            19 => '+00:00', #PH (unknown city)
+            18 => '+01:00 (Madrid, Paris, Berlin)',
+            19 => '+00:00 (London)', 
+            20 => '-01:00 (Azores)', 
+            21 => '-02:00 (Fernando de Noronha)', 
             22 => '-03:00 (Buenos Aires, Sao Paulo)',
+            23 => '-03:30 (Newfoundland)',
             24 => '-04:00 (Manaus, Caracas)',
             25 => '-05:00 (New York, Toronto, Lima)',
             26 => '-06:00 (Chicago, Mexico City)',

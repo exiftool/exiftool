@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.74';
+$VERSION = '2.75';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -7515,6 +7515,12 @@ my %eeBox2 = (
         Name => 'MetaFormat',
         Format => 'undef[4]',
         RawConv => '$$self{MetaFormat} = $val',
+    },
+    8 => { # starts at 8 for MetaFormat eq 'camm', and 17 for 'mett'
+        Name => 'MetaType',
+        Format => 'undef[$size-8]',
+        # may start at various locations!
+        RawConv => '$$self{MetaType} = ($val=~/(application[^\0]+)/ ? $1 : undef)',
     },
 #
 # Observed offsets for child atoms of various MetaFormat types:

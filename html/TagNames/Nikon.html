@@ -4911,12 +4911,18 @@ firmware 1.01b.</p>
   <br>6 = +08:00 (Beijing, Honk Kong, Sinapore)
   <br>10 = +05:45 (Kathmandu)
   <br>11 = +05:30 (New Dehli)
-  <br>15 = +02:00 (Athens)
-  <br>16 = +01:00 (Madrid, Paris, Berlin)
+  <br>12 = +05:00 (Islamabad)
+  <br>13 = +04:30 (Kabul)
+  <br>14 = +04:00 (Abu Dhabi)
+  <br>15 = +03:30 (Tehran)
+  <br>16 = +03:00 (Moscow, Nairobi)
   <br>17 = +02:00 (Athens, Helsinki)
-  <br>18 = +00:00 (London)
-  <br>19 = +00:00
+  <br>18 = +01:00 (Madrid, Paris, Berlin)
+  <br>19 = +00:00 (London)
+  <br>20 = -01:00 (Azores)
+  <br>21 = -02:00 (Fernando de Noronha)
   <br>22 = -03:00 (Buenos Aires, Sao Paulo)
+  <br>23 = -03:30 (Newfoundland)
   <br>24 = -04:00 (Manaus, Caracas)
   <br>25 = -05:00 (New York, Toronto, Lima)
   <br>26 = -06:00 (Chicago, Mexico City)
@@ -5425,61 +5431,56 @@ extracted.</p>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='9 = 0x9'>9</td>
-<td>FocusPosition</td>
-<td class=c>int8u</td>
-<td>&nbsp;</td></tr>
-<tr>
 <td class=r title='11 = 0xb'>11</td>
 <td>FocusDistance</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(this focus distance is approximate, and not very accurate for some lenses)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='12 = 0xc'>12</td>
 <td>FocalLength</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='13 = 0xd'>13</td>
 <td>LensIDNumber</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(see LensID values below)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='14 = 0xe'>14</td>
 <td>LensFStops</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='15 = 0xf'>15</td>
 <td>MinFocalLength</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='16 = 0x10'>16</td>
 <td>MaxFocalLength</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='17 = 0x11'>17</td>
 <td>MaxApertureAtMinFocal</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='18 = 0x12'>18</td>
 <td>MaxApertureAtMaxFocal</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='19 = 0x13'>19</td>
 <td>MCUVersion</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='20 = 0x14'>20</td>
 <td>EffectiveMaxAperture</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='48 = 0x30'>48</td>
 <td>LensID</td>
 <td class=c>int16u</td>
@@ -5503,8 +5504,17 @@ extracted.</p>
   <br>24 = Nikkor Z MC 105mm f/2.8 VR S
   <br>27 = Nikkor Z MC 50mm f/2.8
   <br>28 = Nikkor Z 100-400mm f/4.5-5.6 VR S
-  <br>29 = Nikkor Z 28mm f/2.8</td></tr></table>
+  <br>29 = Nikkor Z 28mm f/2.8
+  <br>30 = Nikkor Z 400mm f/2.8 TC VR S
+  <br>31 = Nikkor Z 24-120 f/4
+  <br>32 = Nikkor Z 800mm f/6.3 VR S</td></tr></table>
 </td></tr>
+<tr>
+<td class=r title='53 = 0x35'>53</td>
+<td>LensMountType?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = F-mount Lens
+  <br>1 = Z-mount Lens</span></td></tr>
 <tr class=b>
 <td class=r title='54 = 0x36'>54</td>
 <td>MaxAperture</td>
@@ -5521,9 +5531,24 @@ extracted.</p>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='79 = 0x4f'>79</td>
-<td>FocusDistance</td>
+<td class=r title='76 = 0x4c'>76</td>
+<td>FocusDistanceRangeWidth?</td>
 <td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='78 = 0x4e'>78</td>
+<td>FocusDistance</td>
+<td class=c title=' ~ = Writable only with -n'>int16u~</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='86 = 0x56'>86</td>
+<td>LensDriveEnd?</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='90 = 0x5a'>90</td>
+<td>LensPositionAbsolute?</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -8960,7 +8985,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 6, 2022</i>
+<br><i>Last revised Jul 21, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -13,8 +13,9 @@ package Image::ExifTool::Parrot;
 
 use strict;
 use vars qw($VERSION);
+use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub Process_mett($$$);
 
@@ -22,7 +23,10 @@ sub Process_mett($$$);
 %Image::ExifTool::Parrot::mett = (
     PROCESS_PROC => \&Process_mett,
     # put the 'P' records first in the documentation
-    VARS => { SORT_PROC => sub { my ($a,$b)=@_; $a=~s/P/A/; $b=~s/P/A/; $a cmp $b } },
+    VARS => {
+        SORT_PROC => sub { my ($a,$b)=@_; $a=~s/P/A/; $b=~s/P/A/; $a cmp $b },
+        LONG_TAGS => 1
+    },
     NOTES => q{
         Streaming metadata found in Parrot drone videos. See
         L<https://developer.parrot.com/docs/pdraw/metadata.html> for the
@@ -51,6 +55,23 @@ sub Process_mett($$$);
     E3 => {
         Name => 'ParrotAutomation',
         SubDirectory => { TagTable => 'Image::ExifTool::Parrot::Automation' },
+    },
+    # timed metadata written by ARCore (see forum13653)
+    'application/arcore-accel' => {
+        Name => 'ARCoreAccel',
+        SubDirectory => { TagTable => 'Image::ExifTool::Parrot::ARCoreAccel', ByteOrder => 'II' },
+    },
+    'application/arcore-gyro' => {
+        Name => 'ARCoreGyro',
+        SubDirectory => { TagTable => 'Image::ExifTool::Parrot::ARCoreGyro', ByteOrder => 'II' },
+    },
+    'application/arcore-video-0' => {
+        Name => 'ARCoreVideo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Parrot::ARCoreVideo', ByteOrder => 'II' },
+    },
+    'application/arcore-custom-event' => {
+        Name => 'ARCoreCustom',
+        SubDirectory => { TagTable => 'Image::ExifTool::Parrot::ARCoreCustom', ByteOrder => 'II' },
     },
 );
 
@@ -630,6 +651,69 @@ sub Process_mett($$$);
     },
 );
 
+# ARCore Accel data (ref PH)
+%Image::ExifTool::Parrot::ARCoreAccel = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    NOTES => 'ARCore accelerometer data.',
+    FIRST_ENTRY => 0,
+    # 00-04: always 10 34 16 1 29
+    4  => {
+        Name => 'AccelerometerUnknown',
+        Format => 'undef[16]',
+        Unknown => 1,
+        ValueConv => 'join " ", unpack("Cx4Cx4Cx4C", $val)',
+    },
+    5  => { # (NC)
+        Name => 'Accelerometer',
+        Format => 'undef[14]',
+        RawConv => 'GetFloat(\$val,0) . " " . GetFloat(\$val,5) . " " . GetFloat(\$val,10)',
+    },
+    # 05-08: float Accelerometer X
+    # 09: 37
+    # 10-13: float Accelerometer Y
+    # 14: 45
+    # 15-18: float Accelerometer Z
+    # 19: 48
+    # 20-24: 128-255
+    # 25: 246 then 247
+    # 26: 188
+    # 27: 2
+    # 28: 56
+    # 29-32: 128-255
+    # 33: increments slowly (about once every 56 samples or so)
+);
+
+# ARCore Gyro data (ref PH)
+%Image::ExifTool::Parrot::ARCoreGyro = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    NOTES => 'ARCore accelerometer data.',
+    FIRST_ENTRY => 0,
+    # 00-04: always 10 34 16 3 29
+    4  => {
+        Name => 'GyroscopeUnknown',
+        Format => 'undef[16]',
+        Unknown => 1, # always "29 37 45 48" in my sample, just like AccelerometerUnknown
+        ValueConv => 'join " ", unpack("Cx4Cx4Cx4C", $val)',
+    },
+    5  => { # (NC)
+        Name => 'Gyroscope',
+        Format => 'undef[14]',
+        RawConv => 'GetFloat(\$val,0) . " " . GetFloat(\$val,5) . " " . GetFloat(\$val,10)',
+    },
+);
+
+%Image::ExifTool::Parrot::ARCoreVideo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    FIRST_ENTRY => 0,
+);
+
+%Image::ExifTool::Parrot::ARCoreCustom = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    FIRST_ENTRY => 0,
+);
+
 %Image::ExifTool::Parrot::Composite = (
     GPSDateTime => {
         Description => 'GPS Date/Time',
@@ -677,9 +761,18 @@ sub Process_mett($$$)
     my $dataPos = $$dirInfo{DataPos};
     my $dirEnd = length $$dataPt;
     my $pos = $$dirInfo{DirStart} || 0;
+    my $metaType = $$et{MetaType} || '';
 
     $et->VerboseDir('Parrot mett', undef, $dirEnd);
 
+    if ($$tagTbl{$metaType}) {
+        $et->HandleTag($tagTbl, $metaType, undef,
+            DataPt  => $dataPt,
+            DataPos => $dataPos,
+            Base    => $$dirInfo{Base},
+        );
+        return 1;
+    }
     while ($pos + 4 < $dirEnd) {
         my ($id, $nwords) = unpack("x${pos}a2n", $$dataPt);
         my $size;

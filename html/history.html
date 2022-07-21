@@ -17,6 +17,23 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.44'><b>July 21, 2022 - Version 12.44</b></a>
+<ul>
+<li>Added a few new Sony lenses (thanks Jos Roost)
+<li>Decode Accelerometer and Gyroscope data from ARCore videos
+<li>Decode a couple of new Motorola tags (thanks Neal Krawetz)
+<li>Decode FujiFilm FirmwareVersion (thanks Justin Arkinson)
+<li>Decode MetaType for timed metadata in videos
+<li>Decode a number of new Nikon Z tags (thanks Warren Hatch)
+<li>Extract more types of embedded images from FlashPix-format files
+<li>Made Composite GPSLatitude and GPSLongitude writable for setting GPS
+    coordinates and reference directions with one assignment
+<li>Fixed bug introduced in 12.39 which broke extraction of timed GPS from some
+    INNOVV videos
+<li>Fixed bug introduced in 12.43 which broke extraction of timed GPSDateTime
+    from Insta360 videos
+</ul>
+
 <a name='v12.43'><b>July 6, 2022 - Version 12.43</b></a>
 <ul>
 <li>Added the ability to geotag from Google Takeout JSON files
@@ -115,6 +132,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added a new Pentax LensType (thanks Christian Shulz)
 <li>Added a couple of new Nikon LensID's
 <li>Added support for Nikon NKSC sidecar files
+<li>Decode another type of timed GPS from MP4 videos
 <li>Decode more tags for the Nikon Z7 and Z9 (thanks Warren Hatch)
 <li>Decode a couple more FLIR tags
 <li>Extract ZIP file comments

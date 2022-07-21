@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 25802 tags, with 16493 unique tag names.
+They contain a total of 25816 tags, with 16503 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -11209,6 +11209,8 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1444   DRangePriorityAuto                   int16u
   0x1445   DRangePriorityFixed                  int16u
   0x1446   FlickerReduction                     int32u
+  0x1447   FirmwareVersion                      string
+  0x1448   FirmwareVersion2                     string
   0x3803   VideoRecordingMode                   int32u
   0x3804   PeripheralLighting                   int16u
   0x3806   VideoCompression                     int16u
@@ -13445,6 +13447,8 @@ DiMAGE X and Xt.
   ------   --------                             --------
   0x5500   BuildNumber                          string
   0x5501   SerialNumber                         string
+  0x6420   CustomRendered                       string
+  0x64d0   DriveMode                            string
   0x665e   Sensor                               string
   0x6705   ManufactureDate                      string
 
@@ -14555,7 +14559,6 @@ Tags found in the encrypted LensData from cameras such as the Z6 and Z7.
       0    LensDataVersion                      no
       4    ExitPupilPosition                    int8u
       5    AFAperture                           int8u
-      9    FocusPosition                        int8u
      11    FocusDistance                        int8u
      12    FocalLength                          int8u
      13    LensIDNumber                         int8u
@@ -14567,10 +14570,14 @@ Tags found in the encrypted LensData from cameras such as the Z6 and Z7.
      19    MCUVersion                           int8u
      20    EffectiveMaxAperture                 int8u
      48    LensID                               int16u
+     53    LensMountType?                       int8u
      54    MaxAperture                          int16u
      56    FNumber                              int16u
      60    FocalLength                          int16u
-     79    FocusDistance                        int8u
+     76    FocusDistanceRangeWidth?             int8u
+     78    FocusDistance                        int16u~
+     86    LensDriveEnd?                        int8u
+     90    LensPositionAbsolute?                int32s
 
 =head3 Nikon LensDataUnknown Tags
 
@@ -21676,6 +21683,7 @@ specification.
   'Contents'                      Contents      XMP
   'Current User'                  CurrentUser   no
   'ICC Profile 0001'              ICC_Profile   ICC_Profile
+  'IeImg'                         EmbeddedImage no
   'Preview'                       PreviewImage  no
   'Property'                      PreviewInfo   FlashPix PreviewInfo
   'Subimage 0000 Header'          SubimageHdr   FlashPix SubimageHdr
@@ -23905,6 +23913,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   OccurrenceOrganismQuantity                    string_
   OccurrenceOrganismQuantityType                string_
   OccurrenceOtherCatalogNumbers                 string_
+  OccurrencePathway                             string_
   OccurrencePreparations                        string_
   OccurrencePreviousIdentifications             string_
   OccurrenceRecordedBy                          string_
@@ -24137,6 +24146,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   OrganismQuantity                              string
   OrganismQuantityType                          string
   OtherCatalogNumbers                           string
+  Pathway                                       string
   Preparations                                  string
   PreviousIdentifications                       string
   RecordNumber                                  string
@@ -28798,6 +28808,7 @@ MP4 metadata sample description.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0004   MetaFormat                           no
+  0x0008   MetaType                             no
   'btrt'   BitrateInfo                          QuickTime Bitrate
   'keys'   Keys                                 QuickTime Keys
 
@@ -29295,14 +29306,19 @@ Streaming metadata found in Parrot drone videos. See
 L<https://developer.parrot.com/docs/pdraw/metadata.html> for the
 specification.
 
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'P1'     ParrotV1                             Parrot V1
-  'P2'     ParrotV2                             Parrot V2
-  'P3'     ParrotV3                             Parrot V3
-  'E1'     ParrotTimeStamp                      Parrot TimeStamp
-  'E2'     ParrotFollowMe                       Parrot FollowMe
-  'E3'     ParrotAutomation                     Parrot Automation
+  Tag ID                       Tag Name         Writable
+  ------                       --------         --------
+  'P1'                         ParrotV1         Parrot V1
+  'P2'                         ParrotV2         Parrot V2
+  'P3'                         ParrotV3         Parrot V3
+  'E1'                         ParrotTimeStamp  Parrot TimeStamp
+  'E2'                         ParrotFollowMe   Parrot FollowMe
+  'E3'                         ParrotAutomation Parrot Automation
+  'application/arcore-accel'   ARCoreAccel      Parrot ARCoreAccel
+  'application/arcore-custom-event'
+                               ARCoreCustom     Parrot ARCoreCustom
+  'application/arcore-gyro'    ARCoreGyro       Parrot ARCoreGyro
+  'application/arcore-video-0' ARCoreVideo      Parrot ARCoreVideo
 
 =head3 Parrot V1 Tags
 
@@ -29429,6 +29445,36 @@ Parrot streaming metadata automation extension.
      24    GPSDestAltitude                      no
      28    AutomationAnimation                  no
      29    AutomationFlags                      no
+
+=head3 Parrot ARCoreAccel Tags
+
+ARCore accelerometer data.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    AccelerometerUnknown?                no
+      5    Accelerometer                        no
+
+=head3 Parrot ARCoreCustom Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
+
+=head3 Parrot ARCoreGyro Tags
+
+ARCore accelerometer data.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    GyroscopeUnknown?                    no
+      5    Gyroscope                            no
+
+=head3 Parrot ARCoreVideo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
 
 =head2 Matroska Tags
 
@@ -37236,14 +37282,14 @@ values, may created via the ExifTool configuration file.
   GPSDestLongitude     GPS:GPSDestLongitude     no
                        GPS:GPSDestLongitudeRef
   GPSDestLongitudeRef  XMP-exif:GPSDestLongitude no
-  GPSLatitude          GPS:GPSLatitude          no
+  GPSLatitude          GPS:GPSLatitude          yes/
                        GPS:GPSLatitudeRef
   GPSLatitude          QuickTime:GPSCoordinates no
   GPSLatitude          QuickTime:LocationInformation no
   GPSLatitude          Sony:GPSLatitude         no
                        Sony:GPSLatitudeRef
   GPSLatitudeRef       XMP-exif:GPSLatitude     no
-  GPSLongitude         GPS:GPSLongitude         no
+  GPSLongitude         GPS:GPSLongitude         yes/
                        GPS:GPSLongitudeRef
   GPSLongitude         QuickTime:GPSCoordinates no
   GPSLongitude         QuickTime:LocationInformation no

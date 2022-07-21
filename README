@@ -107,8 +107,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-12.43.tar.gz | tar -xf -
-  cd Image-ExifTool-12.43
+  gzip -dc Image-ExifTool-12.44.tar.gz | tar -xf -
+  cd Image-ExifTool-12.44
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 

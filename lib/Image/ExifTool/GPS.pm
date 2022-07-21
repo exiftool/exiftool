@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.53';
+$VERSION = '1.54';
 
 my %coordConv = (
     ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val)',
@@ -360,21 +360,41 @@ my %coordConv = (
     # which must therefore require this module as necessary
     GPSLatitude => {
         SubDoc => 1,    # generate for all sub-documents
+        Writable => 1,
+        Avoid => 1,
+        Priority => 1,  # (necessary because Avoid sets default Priority to 0)
         Require => {
             0 => 'GPS:GPSLatitude',
             1 => 'GPS:GPSLatitudeRef',
         },
+        WriteAlso => {
+            'GPS:GPSLatitude' => '$val',
+            'GPS:GPSLatitudeRef' => '$val < 0 ? "S" : "N"',
+        },
         ValueConv => '$val[1] =~ /^S/i ? -$val[0] : $val[0]',
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
+        PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1, "lat")',
     },
     GPSLongitude => {
         SubDoc => 1,    # generate for all sub-documents
+        Writable => 1,
+        Avoid => 1,
+        Priority => 1,
+        Require => {
+            0 => 'GPS:GPSLongitude',
+            1 => 'GPS:GPSLongitudeRef',
+        },
+        WriteAlso => {
+            'GPS:GPSLongitude' => '$val',
+            'GPS:GPSLongitudeRef' => '$val < 0 ? "W" : "E"',
+        },
         Require => {
             0 => 'GPS:GPSLongitude',
             1 => 'GPS:GPSLongitudeRef',
         },
         ValueConv => '$val[1] =~ /^W/i ? -$val[0] : $val[0]',
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
+        PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1, "lon")',
     },
     GPSAltitude => {
         SubDoc => [1,3], # generate for sub-documents if Desire 1 or 3 has a chance to exist

@@ -195,6 +195,7 @@ my %event = (
             # new, ref forum13707
             degreeOfEstablishment       => { },
             georeferenceVerificationStatus => { },
+            pathway                     => { },
             recordedByID                => { },
         },
     },

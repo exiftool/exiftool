@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 # Motorola makernotes tags (ref PH)
 %Image::ExifTool::Motorola::Main = (
@@ -54,7 +54,12 @@ $VERSION = '1.01';
     # 0x6400 - string: 'AUTO','ON','OFF'
     # 0x6401 - string: 'HDR'
     # 0x6410 - string: 'NO','YES'
-    # 0x6420 - int32s: 0 (only exists in HDR images?)
+    # 0x6420 - int32s for some models: 0 (only exists in HDR images?)
+    0x6420 => { #forum13731
+        Condition => '$format eq "string"',
+        Name => 'CustomRendered',
+        Writable => 'string',
+    },
     # 0x6430 - float
     # 0x6431 - int8u: 0,1
     # 0x6432 - int8u: 0,79,100
@@ -89,6 +94,7 @@ $VERSION = '1.01';
     # 0x64c2,0x64c3 - int32s
     # 0x64c4 - int32s
     # 0x64c5 - int32u
+    0x64d0 => { Name => 'DriveMode', Writable => 'string' }, #forum13731
     # 0x6500 - int8u: 1
     # 0x6501 - string: 'Luma-Chroma Plane','Chroma only' or int8u: 0
     # 0x6502 - string: 'Luma-Chroma Plane','Chroma only','' or int8u: 1,255

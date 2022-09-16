@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 my %noYes = ( 0 => 'No', 1 => 'Yes' );
 
@@ -27,8 +27,10 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     NOTES => q{
         The following tags are extracted from Matroska multimedia container files. 
         This container format is used by file types such as MKA, MKV, MKS and WEBM. 
-        For speed, ExifTool extracts tags only up to the first Cluster unless the
-        L<Verbose|../ExifTool.html#Verbose> (-v) or L<Unknown|../ExifTool.html#Unknown> = 2 (-U) option is used.  See
+        For speed, by default ExifTool extracts tags only up to the first Cluster.
+        However, the L<Verbose|../ExifTool.html#Verbose> (-v) and L<Unknown|../ExifTool.html#Unknown> = 2 (-U) options force processing of
+        Cluster data, and the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> (-ee) option skips over Clusters to
+        read subsequent tags.  See
         L<http://www.matroska.org/technical/specs/index.html> for the official
         Matroska specification.
     },
@@ -269,10 +271,11 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
         }
     ],
     0x3314f => { Name => 'TrackTimecodeScale',Format => 'float' },
-    0x137f  => { Name => 'TrackOffset',     Format => 'signed', Unknown => 1 },
+    0x137f  => { Name => 'TrackOffset',       Format => 'signed', Unknown => 1 },
     0x15ee  => { Name => 'MaxBlockAdditionID',Format => 'unsigned', Unknown => 1 },
-    0x136e  => { Name => 'TrackName',       Format => 'utf8' },
-    0x2b59c => { Name => 'TrackLanguage',   Format => 'string' },
+    0x136e  => { Name => 'TrackName',         Format => 'utf8' },
+    0x2b59c => { Name => 'TrackLanguage',     Format => 'string' },
+    0x2b59d => { Name => 'TrackLanguageIETF', Format => 'string' },
     0x06 => [
         {
             Name => 'VideoCodecID',
@@ -743,7 +746,8 @@ sub ProcessMKV($$)
 
     # set flag to process entire file (otherwise we stop at the first Cluster)
     my $verbose = $et->Options('Verbose');
-    my $processAll = ($verbose or $et->Options('Unknown') > 1);
+    my $processAll = ($verbose or $et->Options('Unknown') > 1) ? 2 : 0;
+    ++$processAll if $et->Options('ExtractEmbedded');
     $$et{TrackTypes} = \%trackTypes;  # store Track types reference
     my $oldIndent = $$et{INDENT};
     my $chapterNum = 0;
@@ -786,16 +790,20 @@ sub ProcessMKV($$)
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
         # just fall through into the contained EBML elements
         if ($tagInfo and $$tagInfo{SubDirectory}) {
-            # stop processing at first cluster unless we are in verbose mode
-            last if $$tagInfo{Name} eq 'Cluster' and not $processAll;
-            $$et{INDENT} .= '| ';
-            $et->VerboseDir($$tagTablePtr{$tag}{Name}, undef, $size);
-            push @dirEnd, [ $pos + $dataPos + $size, $$tagInfo{Name} ];
-            if ($$tagInfo{Name} eq 'ChapterAtom') {
-                $$et{SET_GROUP1} = 'Chapter' . (++$chapterNum);
-                $trackIndent = $$et{INDENT};
+            # stop processing at first cluster unless we are using -v -U or -ee
+            if ($$tagInfo{Name} eq 'Cluster' and $processAll < 2) {
+                last unless $processAll;
+                undef $tagInfo; # just skip the Cluster when -ee is used
+            } else {
+                $$et{INDENT} .= '| ';
+                $et->VerboseDir($$tagTablePtr{$tag}{Name}, undef, $size);
+                push @dirEnd, [ $pos + $dataPos + $size, $$tagInfo{Name} ];
+                if ($$tagInfo{Name} eq 'ChapterAtom') {
+                    $$et{SET_GROUP1} = 'Chapter' . (++$chapterNum);
+                    $trackIndent = $$et{INDENT};
+                }
+                next;
             }
-            next;
         }
         last if $unknownSize;
         if ($pos + $size > $dataLen) {

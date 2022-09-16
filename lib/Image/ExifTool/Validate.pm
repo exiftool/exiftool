@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.18';
+$VERSION = '1.19';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -82,8 +82,8 @@ my %otherSpec = (
     CR2 => { 0xc5d8 => 1, 0xc5d9 => 1, 0xc5e0 => 1, 0xc640 => 1, 0xc6dc => 1, 0xc6dd => 1 },
     NEF => { 0x9216 => 1, 0x9217 => 1 },
     DNG => { 0x882a => 1, 0x9211 => 1, 0x9216 => 1 },
-    ARW => { 0x7000 => 1, 0x7001 => 1, 0x7010 => 1, 0x7011 => 1, 0x7020 => 1,
-             0x7031 => 1, 0x7032 => 1, 0x7034 => 1, 0x7035 => 1, 0x7036 => 1, 0x7037 => 1,
+    ARW => { 0x7000 => 1, 0x7001 => 1, 0x7010 => 1, 0x7011 => 1, 0x7020 => 1, 0x7031 => 1,
+             0x7032 => 1, 0x7034 => 1, 0x7035 => 1, 0x7036 => 1, 0x7037 => 1, 0x7038 => 1,
              0x7310 => 1, 0x7313 => 1, 0x7316 => 1, 0x74c7 => 1, 0x74c8 => 1, 0xa500 => 1 },
     RW2 => { All => 1 },    # ignore all unknown tags in RW2
     RWL => { All => 1 },

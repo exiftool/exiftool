@@ -16,6 +16,9 @@
 #            2) The -ee3 option is to extract the full track from video files.
 #            3) The -fileOrder option may be used to control the order of the
 #               generated track points when processing multiple files.
+#            4) Coordinates are written at full resolution.  To change this,
+#               remove the "#" from the GPSLatitude/Longitude tag names below
+#               and use the -c option to set the desired precision.
 #------------------------------------------------------------------------------
 #[HEAD]<?xml version="1.0" encoding="utf-8"?>
 #[HEAD]<gpx version="1.0"

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 25816 tags, with 16503 unique tag names.
+They contain a total of 25828 tags, with 16515 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -902,9 +902,9 @@ for the official EXIF 2.32 specification.
   0xc71f   RowInterleaveFactor       -          no
   0xc725   ProfileLookTableDims      IFD0       int32u[3]!
   0xc726   ProfileLookTableData      IFD0       float[n]!
-  0xc740   OpcodeList1               SubIFD     undef!
-  0xc741   OpcodeList2               SubIFD     undef!
-  0xc74e   OpcodeList3               SubIFD     undef!
+  0xc740   OpcodeList1               SubIFD     undef~!
+  0xc741   OpcodeList2               SubIFD     undef~!
+  0xc74e   OpcodeList3               SubIFD     undef~!
   0xc761   NoiseProfile              SubIFD     double[n]!
   0xc763   TimeCodes                 IFD0       int8u[n]
   0xc764   FrameRate                 IFD0       rational64s
@@ -4514,10 +4514,11 @@ These tags belong to the ExifTool XMP-iptcCore family 1 group.
 
 =head3 XMP iptcExt Tags
 
-This table contains tags defined by the IPTC Extension schema version 1.6.
-The actual namespace prefix is "Iptc4xmpExt", but ExifTool shortens this for
-the family 1 group name. (see
-L<http://www.iptc.org/standards/photo-metadata/iptc-standard/>)
+This table contains tags defined by the IPTC Extension schema version 1.6
+and IPTC Video Metadata version 1.3. The actual namespace prefix is
+"Iptc4xmpExt", but ExifTool shortens this for the family 1 group name. (See
+L<http://www.iptc.org/standards/photo-metadata/iptc-standard/> and
+L<https://iptc.org/standards/video-metadata-hub/>.)
 
 These tags belong to the ExifTool XMP-iptcExt family 1 group.
 
@@ -4655,9 +4656,17 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   LocationShownWorldRegion                      string_+
   MaxAvailHeight                                integer
   MaxAvailWidth                                 integer
+  MetadataAuthority                             Entity Struct
+  MetadataAuthorityIdentifier                   string_+
+  MetadataAuthorityName                         lang-alt_
+  MetadataLastEdited                            date
+  MetadataLastEditor                            Entity Struct
+  MetadataLastEditorIdentifier                  string_+
+  MetadataLastEditorName                        lang-alt_
   ModelAge                                      integer+
   OrganisationInImageCode                       string+
   OrganisationInImageName                       string+
+  ParentID                                      string
   PersonHeard                                   Entity Struct+
   PersonHeardIdentifier                         string_+
   PersonHeardName                               lang-alt_+
@@ -10720,7 +10729,8 @@ imaging cameras by FLIR Systems Inc.
 
 Information extracted from FLIR FFF images and the APP1 FLIR segment of JPEG
 images.  These tags may also be extracted from the first frame of an FLIR
-SEQ file, or all frames if the ExtractEmbedded option is used.
+SEQ file, or all frames if the ExtractEmbedded option is used.  Setting
+ExtractEmbedded to 2 also the raw thermal data from all frames.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
@@ -13506,6 +13516,7 @@ DiMAGE X and Xt.
   0x0039   LocationInfo                         Nikon LocationInfo
   0x003d   BlackLevel                           int16u[4]
   0x003e   ImageSizeRAW                         yes
+  0x003f   WhiteBalanceFineTune                 rational64s[2]
   0x0045   CropArea                             int16u[4]
   0x004e   NikonSettings                        NikonSettings
   0x004f   ColorTemperatureAuto                 int16u
@@ -28359,7 +28370,7 @@ and are not currently writable.
   'av1C'   AV1Configuration                     QuickTime AV1Config
   'clap'   CleanAperture                        no
   'colr'   ICC_Profile                          ICC_Profile
-           ColorRepresentation                  no
+           ColorRepresentation                  QuickTime ColorRep
   'hvcC'   HEVCConfiguration                    QuickTime HEVCConfig
   'irot'   Rotation                             int8u!
   'ispe'   ImageSpatialExtent                   no
@@ -28380,6 +28391,15 @@ and are not currently writable.
     2.3    ChromaFormat                         no
     2.4    ChromaSamplePosition                 no
       3    InitialDelaySamples?                 no
+
+=head3 QuickTime ColorRep Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    ColorProfiles                        no
+      4    ColorPrimaries                       no
+      6    TransferCharacteristics              no
+      8    MatrixCoefficients                   no
 
 =head3 QuickTime HEVCConfig Tags
 
@@ -28721,7 +28741,7 @@ Child atoms found in "sinf" and/or "pinf" atoms.
   'avcC'   AVCConfiguration?                    no
   'btrt'   BitrateInfo                          QuickTime Bitrate
   'clap'   CleanAperture                        QuickTime CleanAperture
-  'colr'   ColorRepresentation                  no
+  'colr'   ColorRepresentation                  QuickTime ColorRep
   'fiel'   VideoFieldOrder                      no
   'gama'   Gamma                                no
   'pasp'   PixelAspectRatio                     no
@@ -29480,8 +29500,10 @@ ARCore accelerometer data.
 
 The following tags are extracted from Matroska multimedia container files.
 This container format is used by file types such as MKA, MKV, MKS and WEBM.
-For speed, ExifTool extracts tags only up to the first Cluster unless the
-Verbose (-v) or Unknown = 2 (-U) option is used.  See
+For speed, by default ExifTool extracts tags only up to the first Cluster.
+However, the Verbose (-v) and Unknown = 2 (-U) options force processing of
+Cluster data, and the ExtractEmbedded (-ee) option skips over Clusters to
+read subsequent tags.  See
 L<http://www.matroska.org/technical/specs/index.html> for the official
 Matroska specification.
 
@@ -29663,6 +29685,7 @@ Matroska specification.
   0x3eb5       Signature?                       no
   0x7670       Projection                       Matroska Projection
   0x2b59c      TrackLanguage                    no
+  0x2b59d      TrackLanguageIETF                no
   0x3314f      TrackTimecodeScale               no
   0x383e3      FrameRate                        no
   0x3e383      VideoFrameRate                   no

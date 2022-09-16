@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.40';
+$VERSION = '4.41';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -4842,10 +4842,10 @@ my %subSecConv = (
         Writable => 1,
         Protected => 1,
         WriteAlso => {
-            GPSLatitude => '$val =~ /(.*?)( ?[NS])?,/ ? $1 : undef',
-            GPSLatitudeRef => '$val =~ /(-?)(.*?) ?([NS]?),/ ? ($3 || ($1 ? "S" : "N")) : undef',
-            GPSLongitude => '$val =~ /, ?(.*?)( ?[EW]?)$/ ? $1 : undef',
-            GPSLongitudeRef => '$val =~ /, ?(-?)(.*?) ?([EW]?)$/ ? ($3 || ($1 ? "W" : "E")) : undef',
+            GPSLatitude => '(defined $val and $val =~ /(.*?)( ?[NS])?,/) ? $1 : undef',
+            GPSLatitudeRef => '(defined $val and $val =~ /(-?)(.*?) ?([NS]?),/) ? ($3 || ($1 ? "S" : "N")) : undef',
+            GPSLongitude => '(defined $val and $val =~ /, ?(.*?)( ?[EW]?)$/) ? $1 : undef',
+            GPSLongitudeRef => '(defined $val and $val =~ /, ?(-?)(.*?) ?([EW]?)$/) ? ($3 || ($1 ? "W" : "E")) : undef',
         },
         PrintConvInv => q{
             return undef unless $val =~ /(.*? ?[NS]?), ?(.*? ?[EW]?)$/;

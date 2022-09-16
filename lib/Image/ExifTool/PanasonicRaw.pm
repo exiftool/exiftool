@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.25';
+$VERSION = '1.26';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -218,6 +218,7 @@ my %panasonicWhiteBalance = ( #forum9396
     0x30 => { Name => 'CropLeft',   Writable => 'int16u' },
     0x31 => { Name => 'CropBottom', Writable => 'int16u' },
     0x32 => { Name => 'CropRight',  Writable => 'int16u' },
+    # 0x44 - may contain another pointer to the raw data starting at byte 2 in this data (DC-GH6)
     0x10f => {
         Name => 'Make',
         Groups => { 2 => 'Camera' },
@@ -737,6 +738,7 @@ sub WriteDistortionInfo($$$)
 #  2 - value count
 #  3 - reference to list of original offset values
 #  4 - IFD format number
+#  5 - (pointer to StripOffsets value added by this PatchRawDataOffset routine)
 sub PatchRawDataOffset($$$)
 {
     my ($offsetInfo, $raf, $ifd) = @_;
@@ -745,15 +747,26 @@ sub PatchRawDataOffset($$$)
     my $rawDataOffset = $$offsetInfo{0x118};
     my $err;
     $err = 1 unless $ifd == 0;
-    $err = 1 unless $stripOffsets and $stripByteCounts and $$stripOffsets[2] == 1;
-    if ($rawDataOffset) {
+    if ($stripOffsets or $stripByteCounts) {
+        $err = 1 unless $stripOffsets and $stripByteCounts and $$stripOffsets[2] == 1;
+    } else {
+        # the DC-GH6 and DC-GH5M2 write RawDataOffset with no Strip tags, so we need
+        # to create fake StripByteCounts information for copying the data
+      # (disable this until SilkyPix and Adobe utilities can deal with a variable
+      #  RawDataOffset, see https://exiftool.org/forum/index.php?topic=13861.0 --
+      #  so these files will continue to give a "No size tag" error when writing)
+      #  $stripByteCounts = $$offsetInfo{0x117} = [ $PanasonicRaw::Main{0x117}, 0, 1, [ 0 ], 4 ];
+    }
+    if ($rawDataOffset and not $err) {
         $err = 1 unless $$rawDataOffset[2] == 1;
-        $err = 1 unless $$stripOffsets[3][0] == 0xffffffff or $$stripByteCounts[3][0] == 0;
+        if ($stripOffsets) {
+            $err = 1 unless $$stripOffsets[3][0] == 0xffffffff or $$stripByteCounts[3][0] == 0;
+        }
     }
     $err and return 'Unsupported Panasonic/Leica RAW variant';
     if ($rawDataOffset) {
         # update StripOffsets along with this tag if it contains a reasonable value
-        unless ($$stripOffsets[3][0] == 0xffffffff) {
+        if ($stripOffsets and $$stripOffsets[3][0] != 0xffffffff) {
             # save pointer to StripOffsets value for updating later
             push @$rawDataOffset, $$stripOffsets[1];
         }

@@ -638,11 +638,12 @@ XMP to be extracted.
 
 Flag to extract information from embedded documents in EPS files, embedded
 EPS information and JPEG and Jpeg2000 images in PDF files, embedded MPF
-images in JPEG and MPO files, timed metadata in videos, and the resource
-fork of Mac OS files.  A setting of 2 also causes the H264 video stream in
-MP4 files to be parsed until the first SEI message is decoded, or 3 to parse
-the entire H264 stream in MP4 videos and the entire M2TS file to look for
-any unlisted program containing GPS metadata.  Default is undef.
+images in JPEG and MPO files, metadata after the first Cluster in MKV files,
+timed metadata in videos, and the resource fork of Mac OS files. A setting
+of 2 also causes the H264 video stream in MP4 files to be parsed until the
+first SEI message is decoded, or 3 to parse the entire H264 stream in MP4
+videos and the entire M2TS file to look for any unlisted program containing
+GPS metadata. Default is undef.
 
 =item FastScan
 

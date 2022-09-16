@@ -63,7 +63,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.08';
+$VERSION = '4.09';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1623,6 +1623,11 @@ my %base64coord = (
              2 => 'Medium',
              3 => 'Small',
         },
+    },
+    0x003f => { #https://github.com/darktable-org/darktable/issues/12282
+        Name => 'WhiteBalanceFineTune',
+        Writable => 'rational64s',
+        Count => 2,
     },
     0x0045 => { #IB
         Name => 'CropArea',

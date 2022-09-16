@@ -24,7 +24,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.20';
+$VERSION = '1.21';
 
 sub ProcessFLIR($$;$);
 sub ProcessFLIRText($$$);
@@ -99,7 +99,8 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     NOTES => q{
         Information extracted from FLIR FFF images and the APP1 FLIR segment of JPEG
         images.  These tags may also be extracted from the first frame of an FLIR
-        SEQ file, or all frames if the ExtractEmbedded option is used.
+        SEQ file, or all frames if the ExtractEmbedded option is used.  Setting
+        ExtractEmbedded to 2 also the raw thermal data from all frames.
     },
     "_header" => {
         Name => 'FFFHeader',
@@ -1551,7 +1552,7 @@ sub ProcessFLIR($$;$)
                                  $$et{INDENT}, $i, $recType, $recPos, $recLen;
 
         # skip RawData records for embedded documents
-        if ($recType == 1 and $$et{DOC_NUM}) {
+        if ($recType == 1 and $$et{DOC_NUM} and $et->Options('ExtractEmbedded') < 2) {
             $raf->Seek($base+$recPos+$recLen) or $success = 0, last;
             next;
         }

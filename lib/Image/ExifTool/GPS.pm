@@ -369,7 +369,7 @@ my %coordConv = (
         },
         WriteAlso => {
             'GPS:GPSLatitude' => '$val',
-            'GPS:GPSLatitudeRef' => '$val < 0 ? "S" : "N"',
+            'GPS:GPSLatitudeRef' => '(defined $val and $val < 0) ? "S" : "N"',
         },
         ValueConv => '$val[1] =~ /^S/i ? -$val[0] : $val[0]',
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
@@ -386,7 +386,7 @@ my %coordConv = (
         },
         WriteAlso => {
             'GPS:GPSLongitude' => '$val',
-            'GPS:GPSLongitudeRef' => '$val < 0 ? "W" : "E"',
+            'GPS:GPSLongitudeRef' => '(defined $val and $val < 0) ? "W" : "E"',
         },
         Require => {
             0 => 'GPS:GPSLongitude',

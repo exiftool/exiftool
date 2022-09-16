@@ -21,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.17';
+$VERSION = '1.18';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -1233,6 +1233,14 @@ sub ProcessEXE($$)
         $tagTablePtr = GetTagTable('Image::ExifTool::EXE::MachO');
         if ($1 eq "\xca\xfe\xba\xbe") {
             SetByteOrder('MM');
+            my $ver = Get32u(\$buff, 4);
+            # Java bytecode .class files have the same magic number, so we need to look deeper
+            # (ref https://github.com/file/file/blob/master/magic/Magdir/cafebabe#L6-L15)
+            if ($ver > 30) {
+                # this is Java bytecode
+                $et->SetFileType('Java bytecode', 'application/java-byte-code', 'class');
+                return 1;
+            }
             $et->SetFileType('Mach-O fat binary executable', undef, '');
             return 1 if $fast3;
             my $count = Get32u(\$buff, 4);  # get architecture count

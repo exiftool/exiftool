@@ -538,10 +538,11 @@ my %sImageRegion = ( # new in 1.5
     NAMESPACE   => 'Iptc4xmpExt',
     TABLE_DESC => 'XMP IPTC Extension',
     NOTES => q{
-        This table contains tags defined by the IPTC Extension schema version 1.6. 
-        The actual namespace prefix is "Iptc4xmpExt", but ExifTool shortens this for
-        the family 1 group name. (see
-        L<http://www.iptc.org/standards/photo-metadata/iptc-standard/>)
+        This table contains tags defined by the IPTC Extension schema version 1.6
+        and IPTC Video Metadata version 1.3. The actual namespace prefix is
+        "Iptc4xmpExt", but ExifTool shortens this for the family 1 group name. (See
+        L<http://www.iptc.org/standards/photo-metadata/iptc-standard/> and
+        L<https://iptc.org/standards/video-metadata-hub/>.)
     },
     AboutCvTerm => {
         Struct => \%sCVTermDetails,
@@ -796,6 +797,12 @@ my %sImageRegion = ( # new in 1.5
     },
     PlanningRef         => { List => 'Bag', Struct => \%sEntityWithRole },
     audioBitsPerSample  => { Groups => { 2 => 'Audio' }, Writable => 'integer' },
+    # new IPTC video metadata 1.3 properties
+    # (ref https://iptc.org/std/videometadatahub/recommendation/IPTC-VideoMetadataHub-props-Rec_1.3.html)
+    metadataLastEdited => { Groups => { 2 => 'Time' }, %dateTimeInfo },
+    metadataLastEditor => { Struct => \%sEntity },
+    metadataAuthority  => { Struct => \%sEntity },
+    parentId           => { Name => 'ParentID' },
     # new IPTC Extension schema 1.5 property
     ImageRegion => { Groups => { 2 => 'Image' }, List => 'Bag', Struct => \%sImageRegion },
     # new Extension 1.6 property

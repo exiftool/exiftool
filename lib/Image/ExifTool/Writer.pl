@@ -4242,7 +4242,10 @@ sub WriteDirectory($$$;$)
     $$self{DIR_NAME} = $oldDir;
     @$self{'Compression','SubfileType'} = @save;
     SetByteOrder($saveOrder);
-    print $out "  Deleting $name\n" if $out and defined $newData and not length $newData;
+    if ($out) {
+        print $out "  Deleting $name\n" if defined $newData and not length $newData;
+        print $out "$$self{INDENT}  [nothing changed in $dirName]\n" if $$self{CHANGED} == $oldChanged;
+    }
     return $newData;
 }
 
@@ -4531,7 +4534,7 @@ sub DumpUnknownTrailer($$)
         # add to Preview block list if valid and in the trailer
         $image{$prePos} = [$tag, $preLen] if $prePos and $preLen and $prePos+$preLen > $pos;
         last if $lastOne;   # checked all images
-        # look for MPF images (in the the proper order)
+        # look for MPF images (in the proper order)
         ++$mpImageNum;
         $prePos = $$self{VALUE}{"MPImageStart ($mpImageNum)"};
         if (defined $prePos) {

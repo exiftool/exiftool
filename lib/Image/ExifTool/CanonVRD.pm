@@ -23,7 +23,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.33';
+$VERSION = '1.34';
 
 sub ProcessCanonVRD($$;$);
 sub WriteCanonVRD($$;$);
@@ -2046,17 +2046,16 @@ sub ProcessCanonVRD($$;$)
             return 0;
         }
     }
-    # exit quickly if writing and no CanonVRD tags are being edited
-    if ($outfile and not exists $$et{EDIT_DIRS}{CanonVRD}) {
-        print $out "$$et{INDENT}  [nothing changed]\n" if $verbose;
-        return 1 if $outfile eq $dataPt;
-        return Write($outfile, $$dataPt) ? 1 : -1;
-    }
-
     my $vrdType = 'VRD';
 
     if ($outfile) {
         $verbose and not $created and print $out "  Rewriting CanonVRD trailer\n";
+        # exit quickly if writing and no CanonVRD tags are being edited
+        unless (exists $$et{EDIT_DIRS}{CanonVRD}) {
+            print $out "$$et{INDENT}  [nothing changed in CanonVRD]\n" if $verbose;
+            return 1 if $outfile eq $dataPt;
+            return Write($outfile, $$dataPt) ? 1 : -1;
+        }
         # delete CanonVRD information if specified
         my $doDel = $$et{DEL_GROUP}{CanonVRD};
         unless ($doDel) {

@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.51';
+$VERSION = '3.52';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -205,6 +205,7 @@ sub PrintInvLensSpec($;$$);
     49468 => 'Tamron 18-300mm F3.5-6.3 Di III-A VC VXD', #JR (Model B061)
     49469 => 'Tamron 35-150mm F2-F2.8 Di III VXD', #JR (Model A058)
     49470 => 'Tamron 28-75mm F2.8 Di III VXD G2', #JR (Model A063)
+    49471 => 'Tamron 50-400mm F4.5-6.3 Di III VC VXD', #JR (Model A067)
 
     49473 => 'Tokina atx-m 85mm F1.8 FE or Viltrox lens', #JR
     49473.1 => 'Viltrox 23mm F1.4 E', #JR

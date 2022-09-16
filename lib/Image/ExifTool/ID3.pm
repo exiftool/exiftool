@@ -1516,7 +1516,7 @@ sub ProcessID3($$)
         }
     }
 #
-# process the the information
+# process the information
 #
     if ($rtnVal) {
         # first process audio data if it exists

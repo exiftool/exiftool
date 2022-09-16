@@ -13164,10 +13164,11 @@ shortens this for the family 1 group name. (see
 </table></td></tr></table></blockquote>
 
 <h2><a name='iptcExt'>XMP iptcExt Tags</a></h2>
-<p>This table contains tags defined by the IPTC Extension schema version 1.6.
-The actual namespace prefix is &quot;Iptc4xmpExt&quot;, but ExifTool shortens this for
-the family 1 group name. (see
-<a href="http://www.iptc.org/standards/photo-metadata/iptc-standard/">http://www.iptc.org/standards/photo-metadata/iptc-standard/</a>)</p>
+<p>This table contains tags defined by the IPTC Extension schema version 1.6
+and IPTC Video Metadata version 1.3. The actual namespace prefix is
+&quot;Iptc4xmpExt&quot;, but ExifTool shortens this for the family 1 group name. (See
+<a href="http://www.iptc.org/standards/photo-metadata/iptc-standard/">http://www.iptc.org/standards/photo-metadata/iptc-standard/</a> and
+<a href="https://iptc.org/standards/video-metadata-hub/">https://iptc.org/standards/video-metadata-hub/</a>.)</p>
 
 <p>These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <blockquote>
@@ -13809,16 +13810,50 @@ the family 1 group name. (see
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>MetadataAuthority</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='XMP.html#Entity'>Entity Struct</a></td></tr>
+<tr class=b>
+<td>MetadataAuthorityIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MetadataAuthorityName</td>
+<td class=c title=' _ = Flattened'>lang-alt_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MetadataLastEdited</td>
+<td class=c>date</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MetadataLastEditor</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='XMP.html#Entity'>Entity Struct</a></td></tr>
+<tr class=b>
+<td>MetadataLastEditorIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MetadataLastEditorName</td>
+<td class=c title=' _ = Flattened'>lang-alt_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>ModelAge</td>
 <td class=c title=' + = List'>integer+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>OrganisationInImageCode</td>
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>OrganisationInImageName</td>
 <td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ParentID</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>PersonHeard</td>
@@ -19431,7 +19466,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 12, 2022</i>
+<br><i>Last revised Sep 16, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

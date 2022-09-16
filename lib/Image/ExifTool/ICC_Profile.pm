@@ -25,7 +25,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.39';
+$VERSION = '1.40';
 
 sub ProcessICC($$);
 sub ProcessICC_Profile($$$);
@@ -815,6 +815,7 @@ my %manuSig = ( #6
         Name => 'ChromaticityColorant',
         Format => 'int16u',
         PrintConv => {
+            0 => 'Unknown',
             1 => 'ITU-R BT.709',
             2 => 'SMPTE RP145-1994',
             3 => 'EBU Tech.3213-E',

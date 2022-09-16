@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.75';
+$VERSION = '2.76';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -556,12 +556,16 @@ my %eeBox2 = (
     mdat => { Name => 'MediaData', Unknown => 1, Binary => 1 },
     'mdat-size' => {
         Name => 'MediaDataSize',
+        RawConv => '$$self{MediaDataSize} = $val',
         Notes => q{
             not a real tag ID, this tag represents the size of the 'mdat' data in bytes
             and is used in the AvgBitrate calculation
         },
     },
-    'mdat-offset' => 'MediaDataOffset',
+    'mdat-offset' => {
+        Name  => 'MediaDataOffset',
+        RawConv => '$$self{MediaDataOffset} = $val',
+    },
     junk => { Unknown => 1, Binary => 1 }, #8
     uuid => [
         { #9 (MP4 files)
@@ -897,7 +901,7 @@ my %eeBox2 = (
     },
     colr => {
         Name => 'ColorRepresentation',
-        ValueConv => 'join(" ", substr($val,0,4), unpack("x4n*",$val))',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::ColorRep' },
     },
     pasp => {
         Name => 'PixelAspectRatio',
@@ -2732,7 +2736,7 @@ my %eeBox2 = (
         },
     },{
         Name => 'ColorRepresentation',
-        ValueConv => 'join(" ", substr($val,0,4), unpack("x4n*",$val))',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::ColorRep' },
     }],
     irot => {
         Name => 'Rotation',
@@ -2789,6 +2793,78 @@ my %eeBox2 = (
     av1C => {
         Name => 'AV1Configuration',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::AV1Config' },
+    },
+);
+
+# ref https://aomediacodec.github.io/av1-spec/av1-spec.pdf
+%Image::ExifTool::QuickTime::ColorRep = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Video' },
+    FIRST_ENTRY => 0,
+    0 => { Name => 'ColorProfiles', Format => 'undef[4]' },
+    4 => {
+        Name => 'ColorPrimaries',
+        Format => 'int16u',
+        PrintConv => {
+                1 => 'BT.709',
+                2 => 'Unspecified',
+                4 => 'BT.470 System M (historical)',
+                5 => 'BT.470 System B, G (historical)',
+                6 => 'BT.601',
+                7 => 'SMPTE 240',
+                8 => 'Generic film (color filters using illuminant C)',
+                9 => 'BT.2020, BT.2100',
+                10 => 'SMPTE 428 (CIE 1921 XYZ)',
+                11 => 'SMPTE RP 431-2',
+                12 => 'SMPTE EG 432-1',
+                22 => 'EBU Tech. 3213-E',
+            },
+    },
+    6 => {
+        Name => 'TransferCharacteristics',
+        Format => 'int16u',
+        PrintConv => {
+                0 => 'For future use (0)',
+                1 => 'BT.709',
+                2 => 'Unspecified',
+                3 => 'For future use (3)',
+                4 => 'BT.470 System M (historical)',
+                5 => 'BT.470 System B, G (historical)',
+                6 => 'BT.601',
+                7 => 'SMPTE 240 M',
+                8 => 'Linear',
+                9 => 'Logarithmic (100 : 1 range)',
+                10 => 'Logarithmic (100 * Sqrt(10) : 1 range)',
+                11 => 'IEC 61966-2-4',
+                12 => 'BT.1361',
+                13 => 'sRGB or sYCC',
+                14 => 'BT.2020 10-bit systems',
+                15 => 'BT.2020 12-bit systems',
+                16 => 'SMPTE ST 2084, ITU BT.2100 PQ',
+                17 => 'SMPTE ST 428',
+                18 => 'BT.2100 HLG, ARIB STD-B67',
+            },
+    },
+    8 => {
+        Name => 'MatrixCoefficients',
+        Format => 'int16u',
+        PrintConv => {
+                0 => 'Identity matrix',
+                1 => 'BT.709',
+                2 => 'Unspecified',
+                3 => 'For future use (3)',
+                4 => 'US FCC 73.628',
+                5 => 'BT.470 System B, G (historical)',
+                6 => 'BT.601',
+                7 => 'SMPTE 240 M',
+                8 => 'YCgCo',
+                9 => 'BT.2020 non-constant luminance, BT.2100 YCbCr',
+                10 => 'BT.2020 constant luminance',
+                11 => 'SMPTE ST 2085 YDzDx',
+                12 => 'Chromaticity-derived non-constant luminance',
+                13 => 'Chromaticity-derived constant luminance',
+                14 => 'BT.2100 ICtCp',
+            },
     },
 );
 

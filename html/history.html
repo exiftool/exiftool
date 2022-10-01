@@ -17,6 +17,38 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.46'><b>Oct. 1, 2022 - Version 12.46</b> - "Write WEBP"</a>
+<ul>
+<li>Added WEBP write support
+<li>Added the abilty to write Panasonic GH6 RW2 files
+<li>Added a new Canon LensType
+<li>Added a number of new Sigma LensType values (thanks LibRaw)
+<li>Added support for BigTIFF format code 16 in Apple ProRaw maker notes
+<li>Added config_files/frameCount.config to extract MP4 FrameCount
+<li>Added a MIE OriginalImageSize tag
+<li>Added some extra -validate checks for RIFF-based file formats
+<li>Extract FrameRate from MP4 tmcd box
+<li>Decode a new Apple tag (thanks Neal Krawetz)
+<li>Decode more information from Nikon Z-camera videos
+<li>Decode streaming GPS from Garmin DriveAssist 51 MP4 videos
+<li>Changed the names of two FujiFilm FirmwareVersion tags
+<li>Enhanced WEBP FileType identification to denote Extended WEBP
+<li>Preserve fractional seconds when extracting Samsung TimeStamp times
+<li>Patched to avoid reporting Photoshop:ProgressiveScans unless PhotoshopFormat
+    is Progressive
+<li>Patched to test QuickTime UserData tags with default 0x0000 language code to
+    see if they contain UTF8 characters, and if so assume UTF8 encoding and
+    ignore the CharsetQuickTime setting
+<li>Patched to avoid potential deep recursion when reading/writing malicious CRW
+    images
+<li>Fixed "Invalid ID3 frame size" problem when reading ID3v2 with an extended
+    header (very uncommon, but Audacity uses this)
+<li>Fixed typo in the name of a new DNG 1.6 tag
+<li>Fixed some verbose warnings when reading Nikon Z-camera NEF files
+<li>Fixed decoding of a couple of Nikon Z9 tags for newer firmware versions
+    (thanks Warren Hatch)
+</ul>
+
 <a name='v12.45'><b>Sept. 16, 2022 - Version 12.45</b></a>
 <ul>
 <li>Added new IPTC Video Metadata version 1.3 tags

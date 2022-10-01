@@ -99,7 +99,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 59 different formats of timed GPS metadata from video files.
+        currently reads 60 different formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
@@ -2533,7 +2533,7 @@ sub ProcessTTAD($$$)
             # (I think "5" may be the number of satellites.  seen: 5,6,7 - PH)
             FoundSomething($et, $tagTbl, $sampleTime / 1000);
             my $t = GetDouble($dataPt, $pos);
-            $et->HandleTag($tagTbl, GPSDateTime  => Image::ExifTool::ConvertUnixTime($t,undef,3).'Z');
+            $et->HandleTag($tagTbl, GPSDateTime  => Image::ExifTool::ConvertUnixTime($t,undef,3) . 'Z');
             $et->HandleTag($tagTbl, GPSLatitude  => GetDouble($dataPt, $pos+0x1c));
             $et->HandleTag($tagTbl, GPSLongitude => GetDouble($dataPt, $pos+0x24));
             $et->HandleTag($tagTbl, GPSAltitude  => GetDouble($dataPt, $pos+0x14));
@@ -2731,6 +2731,38 @@ sub ProcessInsta360($;$)
     SetByteOrder('MM');
     delete $$et{SET_GROUP0};
     delete $$et{SET_GROUP1};
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process Garmin GPS 'uuid' atom (ref PH)
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+# Note: This format is used by the Garmin DriveAssist 51, but the DriveAssist 50
+#       uses a completely different format.  :(
+sub ProcessGarminGPS($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dataLen = length $$dataPt;
+    my $pos = 33;
+    my $epoch = (66 * 365 + 17) * 24 * 3600; # time is relative to Jan 1, 1904
+    my $scl = 180 / (32768 * 65536);         # scaling factor for lat/lon
+    $et->VerboseDir('GarminGPS');
+    while ($pos + 20 <= $dataLen) {
+        $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        my $time = Image::ExifTool::ConvertUnixTime(Get32u($dataPt, $pos) - $epoch) . 'Z';
+        my $lat = Get32s($dataPt, $pos + 12) * $scl;
+        my $lon = Get32s($dataPt, $pos + 16) * $scl;
+        my $spd = Get16u($dataPt, $pos + 4); # (in mph)
+        $et->HandleTag($tagTbl, 'GPSDateTime',  $time);
+        $et->HandleTag($tagTbl, 'GPSLatitude',  $lat);
+        $et->HandleTag($tagTbl, 'GPSLongitude', $lon);
+        $et->HandleTag($tagTbl, 'GPSSpeed',     $spd);
+        $et->HandleTag($tagTbl, 'GPSSpeedRef', 'M');
+        $pos += 20;
+    }
+    delete $$et{DOC_NUM};
     return 1;
 }
 

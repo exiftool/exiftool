@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.31';
+$VERSION = '1.32';
 
 # sigma LensType lookup (ref IB)
 %sigmaLensTypes = (
@@ -226,9 +226,35 @@ $VERSION = '1.31';
     0x1008 => 'Sigma 50mm F2.8 Macro', #NJ (DP3 Quattro kit)
     0x1009 => 'Sigma 14mm F4', #NJ (DP0 Quattro kit)
     # L-mount lenses?:
+    0x4001 => 'Lumix S 24-105mm F4 Macro OIS (S-R24105)', #IB
+    0x4002 => 'Lumix S 70-200mm F4 OIS (S-R70200)', #IB
+    0x4003 => 'Lumix S 50mm F1.4 (S-X50)', #IB
+    0x4006 => 'Lumix S 24-70mm F2.8 (S-E2470)', #IB
+    0x4007 => 'Lumix S 16-35mm F4 (S-R1635)', #IB
+    0x4008 => 'Lumix S 70-200mm F2.8 OIS (S-E70200)', #IB
+    0x4010 => 'Lumix S 35mm F1.8 (S-S35)', #IB
+    0x4011 => 'LUMIX S 18mm F1.8 (S-S18)', #IB
+    0x400b => 'Lumix S 20-60mm F3.5-5.6 (S-R2060)', #IB
+    0x400c => 'Lumix S 85mm F1.8 (S-S85)', #IB
+    0x400d => 'Lumix S 70-300 F4.5-5.6 Macro OIS (S-R70300)', #IB
+    0x400f => 'Lumix S 24mm F1.8 (S-S24)', #IB
     0x6001 => 'Sigma 150-600mm F5-6.3 DG OS HSM | S', #PH (NC, fp)
     0x6003 => 'Sigma 45mm F2.8 DG DN | C', #PH (NC, fp)
+    0x6005 => 'Sigma 14-24mm F2.8 DG DN | A', #IB
     0x6006 => 'Sigma 50mm F1.4 DG HSM | A', #IB (014)
+    0x6011 => 'Sigma 24-70mm F2.8 DG DN | A', #IB
+    0x6012 => 'Sigma 100-400mm F5-6.3 DG DN OS | C', #IB
+    0x6013 => 'Sigma 100-400mm F5-6.3 DG DN OS | C + TC-1411', #IB
+    0x6015 => 'Sigma 85mm F1.4 DG DN | A', #IB
+    0x6017 => 'Sigma 65mm F2 DG DN | C', #IB
+    0x6018 => 'Sigma 35mm F2 DG DN | C', #IB
+    0x601a => 'Sigma 28-70mm F2.8 DG DN | C', #IB
+    0x601b => 'Sigma 150-600mm F5-6.3 DG DN OS | S', #IB
+    0x6020 => 'Sigma 35mm F1.4 DG DN | A', #IB
+    0x6021 => 'Sigma 90mm F2.8 DG DN | C', #IB
+    0x6023 => 'Sigma 20mm F2 DG DN | C', #IB
+    0x6025 => 'Sigma 20mm F1.4 DG DN | A', #IB
+    0x6026 => 'Sigma 24mm F1.4 DG DN | A', #IB
     0x8005 => 'Sigma 35mm F1.4 DG HSM | A', #PH (012)
     0x8009 => 'Sigma 18-35mm F1.8 DC HSM | A', #PH
     0x8900 => 'Sigma 70-300mm F4-5.6 DG OS', #PH (SD15)

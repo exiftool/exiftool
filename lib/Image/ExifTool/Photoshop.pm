@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.65';
+$VERSION = '1.66';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -332,6 +332,7 @@ my %unicodeString = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    DATAMEMBER => [ 1 ],
     FORMAT => 'int16s',
     GROUPS => { 2 => 'Image' },
     0 => {
@@ -342,6 +343,7 @@ my %unicodeString = (
     },
     1 => {
         Name => 'PhotoshopFormat',
+        RawConv => '$$self{PhotoshopFormat} = $val',
         PrintConv => {
             0x0000 => 'Standard',
             0x0001 => 'Optimized',
@@ -350,6 +352,7 @@ my %unicodeString = (
     },
     2 => {
         Name => 'ProgressiveScans',
+        Condition => '$$self{PhotoshopFormat} == 0x0101',
         PrintConv => {
             1 => '3 Scans',
             2 => '4 Scans',

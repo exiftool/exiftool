@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.26';
+$VERSION = '1.27';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -739,6 +739,7 @@ sub WriteDistortionInfo($$$)
 #  3 - reference to list of original offset values
 #  4 - IFD format number
 #  5 - (pointer to StripOffsets value added by this PatchRawDataOffset routine)
+#  6 - flag set if this is a fixed offset (Panasonic GH6 fixed-offset hack)
 sub PatchRawDataOffset($$$)
 {
     my ($offsetInfo, $raf, $ifd) = @_;
@@ -752,10 +753,16 @@ sub PatchRawDataOffset($$$)
     } else {
         # the DC-GH6 and DC-GH5M2 write RawDataOffset with no Strip tags, so we need
         # to create fake StripByteCounts information for copying the data
-      # (disable this until SilkyPix and Adobe utilities can deal with a variable
-      #  RawDataOffset, see https://exiftool.org/forum/index.php?topic=13861.0 --
-      #  so these files will continue to give a "No size tag" error when writing)
-      #  $stripByteCounts = $$offsetInfo{0x117} = [ $PanasonicRaw::Main{0x117}, 0, 1, [ 0 ], 4 ];
+        if ($$offsetInfo{0x118}) { # (just to be safe)
+            $stripByteCounts = $$offsetInfo{0x117} = [ $PanasonicRaw::Main{0x117}, 0, 1, [ 0 ], 4 ];
+            # set flag so the offset will be fixed (GH6 hack, see https://exiftool.org/forum/index.php?topic=13861.0)
+            # (of course, fixing up the offset is now unnecessary, but continue to do this even
+            # though the fixup adjustment will be 0 because this allows us to delete the following
+            # line to remove the fix-offset restriction if Panasonic ever sees the light, but note
+            # that in this case we should investigate the purpose of the seemily-duplicate raw
+            # data offset contained within PanasonicRaw_0x0044)
+            $$offsetInfo{0x118}[6] = 1;
+        }
     }
     if ($rawDataOffset and not $err) {
         $err = 1 unless $$rawDataOffset[2] == 1;

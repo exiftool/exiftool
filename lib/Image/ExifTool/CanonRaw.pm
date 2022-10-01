@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Canon;
 
-$VERSION = '1.58';
+$VERSION = '1.59';
 
 sub WriteCRW($$);
 sub ProcessCanonRaw($$$);
@@ -625,6 +625,13 @@ sub ProcessCanonRaw($$$)
     $raf->Seek($blockStart+$blockSize-4, 0) or return 0;
     $raf->Read($buff, 4) == 4 or return 0;
     my $dirOffset = Get32u(\$buff,0) + $blockStart;
+    # avoid infinite recursion
+    $$et{ProcessedCanonRaw} or $$et{ProcessedCanonRaw} = { };
+    if ($$et{ProcessedCanonRaw}{$dirOffset}) {
+        $et->Warn("Not processing double-referenced $$dirInfo{DirName} directory");
+        return 0;
+    }
+    $$et{ProcessedCanonRaw}{$dirOffset} = 1;
     $raf->Seek($dirOffset, 0) or return 0;
     $raf->Read($buff, 2) == 2 or return 0;
     my $entries = Get16u(\$buff,0);         # get number of entries in directory

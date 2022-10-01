@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.52';
+$VERSION = '1.53';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -991,7 +991,7 @@ my %formatMinMax = (
     '0x0a01' => { #forum7161
         Name => 'TimeStamp',
         Groups => { 2 => 'Time' },
-        ValueConv => 'ConvertUnixTime($val / 1e3, 1)',
+        ValueConv => 'ConvertUnixTime($val / 1e3, 1, 3)',
         PrintConv => '$self->ConvertDateTime($val)',
     },
     '0x0a20-name' => 'DualCameraImageName', # ("FlipPhoto_002")

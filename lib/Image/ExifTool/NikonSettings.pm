@@ -2036,11 +2036,13 @@ sub ProcessNikonSettings($$$)
     for ($i=0; $i<$num; ++$i) {
         my $entry = $start + 0x18 + $i * 8;
         my $tag = Get16u($dataPt, $entry);
-        my $fmt = Get16u($dataPt, $entry + 2);
+        # this is odd, but either the format is 16-bit and always big-endian,
+        # or it is 8-bit and we have an unknown byte in the entry...
+        my $fmt = Get8u($dataPt,  $entry + 3);
         my $val = Get32u($dataPt, $entry + 4);
         # abort if the tag has a format that we haven't yet seen
-        # (assuming this is a size/format code.  So far we have only seen 0x400)
-        $fmt == 0x400 or $et->Warn(sprintf('Unknown format 0x%x for NikonSettings tag 0x%.4x',$fmt,$tag)), last;
+        # (assuming this is a size/format code.  So far we have only seen a code of 4)
+        $fmt == 4 or $et->Warn(sprintf('Unknown format $fmt for NikonSettings tag 0x%.4x',$tag)), last;
         $et->HandleTag($tagTablePtr, $tag, $val,
             DataPt  => $dataPt,
             DataPos => $$dirInfo{DataPos},

@@ -63,7 +63,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.09';
+$VERSION = '4.10';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -2086,7 +2086,7 @@ my %base64coord = (
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoZ9',
                 DecryptStart => 4,
                 # TODO: eventually set the length dynamically according to actual offsets!
-                DecryptLen => 0xec4b + 1907,  # decoded thru end of Offset26 
+                DecryptLen => 0xec4b + 2105,  # decoded thru end of Offset26 
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -5043,31 +5043,31 @@ my %nikonFocalConversions = (
     0x4c => { #28
         Name => 'FocusDistanceRangeWidth',     #reflects the number of discrete absolute lens positions that are mapped to the reported FocusDistance.  Will be 1 near CFD reflecting very narrow focus distance bands (i.e., quite accurate).  Near Infinity will be something like 32.  Note: 0 at infinity.
         Format => 'int8u',
-        Condition => '$$self{NewLensData} and $$self{LensMountType} == 1',  
+        Condition => '$$self{NewLensData} and $$self{LensMountType} and $$self{LensMountType} == 1',  
         RawConv => '$$self{FocusDistanceRangeWidth} = $val',
         Unknown => 1,
     },
     0x4e => { #28
         Name => 'FocusDistance', 
         Format => 'int16u',
-        Condition => '$$self{NewLensData} and $$self{LensMountType} == 1',  
+        Condition => '$$self{NewLensData} and $$self{LensMountType} and $$self{LensMountType} == 1',  
         RawConv => '$val = $val/256',  # 1st byte is the fractional component.  This byte was not previously considered in the legacy calculation (which only used the 2nd byte).  When 2nd byte < 80; distance is < 1 meter
         ValueConv => '0.01 * 10**($val/40)', # in m
         ValueConvInv => '$val>0 ? 40*log($val*100)/log(10) : 0',
         PrintConv => q{
-            $$self{FocusDistanceRangeWidth} == 0 ? "Inf" : $val < 1 ? $val < 0.35 ? sprintf("%.4f m", $val): sprintf("%.3f m", $val): sprintf("%.2f m", $val),    #distances less than 35mm are quite accurate with increasingly less precision past 1m       
+            (defined $$self{FocusDistanceRangeWidth} and not $$self{FocusDistanceRangeWidth}) ? "Inf" : $val < 1 ? $val < 0.35 ? sprintf("%.4f m", $val): sprintf("%.3f m", $val): sprintf("%.2f m", $val),    #distances less than 35mm are quite accurate with increasingly less precision past 1m       
         },
     },
     0x56 => { #28
         Name => 'LensDriveEnd',     # byte contains: 1 at CFD/MOD; 2 at Infinity; 0 otherwise
-        Condition => '$$self{NewLensData} and $$self{LensMountType} == 1',  
+        Condition => '$$self{NewLensData} and $$self{LensMountType} and $$self{LensMountType} == 1',  
         Format => 'int8u',
-        RawConv => 'unless ($$self{FocusDistanceRangeWidth} == 0 ) { if ($val == 0 ) {$$self{LensDriveEnd} = "No"} else { $$self{LensDriveEnd} = "CFD"}; } else{ $$self{LensDriveEnd} = "Inf"}',
+        RawConv => 'unless (defined $$self{FocusDistanceRangeWidth} and not $$self{FocusDistanceRangeWidth}) { if ($val == 0 ) {$$self{LensDriveEnd} = "No"} else { $$self{LensDriveEnd} = "CFD"}; } else{ $$self{LensDriveEnd} = "Inf"}',
         Unknown => 1,
     },
     0x5a => { #28
         Name => 'LensPositionAbsolute',    # <=0 at infinity.  Typical value at CFD might be 58000.   Only valid for Z-mount lenses.
-        Condition => '$$self{NewLensData} and $$self{LensMountType} == 1',      
+        Condition => '$$self{NewLensData} and $$self{LensMountType} and $$self{LensMountType} == 1',      
         Format => 'int32s',
         Unknown => 1,
     },
@@ -8041,8 +8041,8 @@ my %nikonFocalConversions = (
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x30, 0x38, 0x84, 0x8c, 0x6c6f, 0x6c98,
-                    0x6c9a, 0x7717, 0x7844, 0xeaea, 0xeb6f, 0xeb70 ],
+    DATAMEMBER => [ 0x04, 0x30, 0x38, 0x84, 0x8c, 0x6c6f, 0x6c90, 0x6c98,
+                    0x6c9a, 0xeaea, 0xeb6f, 0xeb70 ],
     IS_SUBDIR => [ 0xec4b ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
@@ -8119,6 +8119,15 @@ my %nikonFocalConversions = (
         # account for variable location of Offset3 data
         Hook => '$varSize = $$self{Offset3} - 0x6c70',
     },
+    0x6c90 => {
+        Name => 'FocusShiftShooting',
+        RawConv => '$$self{FocusShiftShooting} = $val',
+        PrintConv => q{
+            return 'Off' if $val == 0 ;
+            my $i = sprintf("Frame %.0f of %.0f",$val, $$self{FocusShiftNumberShots}); # something like Frame 1 of 100"
+            return "On: $i"
+        },
+    },
     0x6c98 => {
         Name => 'IntervalShooting',
         RawConv => '$$self{IntervalShooting} = $val',
@@ -8137,23 +8146,6 @@ my %nikonFocalConversions = (
         Condition => '$$self{IntervalShooting} > 0',
         Format => 'int16u',
         Hidden => 1,
-    },
-    ### 0x7718 - Offset5 info start (Z9 firmware 1.00)
-    0x7717 => {
-        Name => 'Offsset5Hook',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of Offset5 data
-        Hook => '$varSize = $$self{Offset5} - 0x7718',
-    },
-    0x7844 => {
-        Name => 'FocusShiftShooting',
-        RawConv => '$$self{FocusShiftShooting} = $val',
-        PrintConv => q{
-            return 'Off' if $val == 0 ;
-            my $i = sprintf("Frame %.0f of %.0f",$val, $$self{FocusShiftNumberShots}); # something like Frame 1 of 100"
-            return "On: $i"
-        },
     },
     ### 0xeaeb - OrientationInfo start (Z9 firmware 1.00)
     0xeaea => {
@@ -10902,9 +10894,14 @@ my %nikonFocalConversions = (
         Name => 'LocationInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::LocationInfo' },
     },
+    0x200003f => 'WhiteBalanceFineTune',
     # 0x200003f - rational64s[2]: "0 0"
     # 0x2000042 - undef[6]: "0100\x03\0"
     # 0x2000043 - undef[12]: all zeros
+    0x200004e => {
+        Name => 'NikonSettings',
+        SubDirectory => { TagTable => 'Image::ExifTool::NikonSettings::Main' },
+    },
     0x2000083 => {
         Name => 'LensType',
         # credit to Tom Christiansen (ref 7) for figuring this out...

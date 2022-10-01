@@ -18,6 +18,9 @@ manufacturer-specific information is also extracted.</p>
 <p>Large AVI videos may be a concatenation of two or more RIFF chunks.  For
 these files, information is extracted from subsequent RIFF chunks as
 sub-documents, but the Duration is calculated for the full video.</p>
+
+<p>ExifTool currently has the ability to write EXIF and XMP to WEBP images, but
+can&#39;t yet write other RIFF-based formats.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -1424,11 +1427,21 @@ container specification.</p>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>WebP_Flags</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(flags used in Extended WebP images)</span>
+  <br>Bit 1 = Animation
+  <br>Bit 2 = XMP
+  <br>Bit 3 = EXIF
+  <br>Bit 4 = Alpha
+  <br>Bit 5 = ICC Profile</span></td></tr>
+<tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>ImageWidth</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='6 = 0x6'>6</td>
 <td>ImageHeight</td>
 <td class=c>no</td>
@@ -1657,7 +1670,7 @@ Extracted only if the ExtractEmbedded option is used.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 12, 2021</i>
+<br><i>Last revised Oct 1, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

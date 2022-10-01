@@ -725,7 +725,7 @@ Entry:  for (;;) {
                     $readFormat = $oldFormat = Get16u($dataPt, $entry+2);
                     $readCount = $oldCount = Get32u($dataPt, $entry+4);
                     undef $oldImageData;
-                    if ($oldFormat < 1 or $oldFormat > 13) {
+                    if ($oldFormat < 1 or $oldFormat > 13 and not ($oldFormat == 16 and $$et{Make} eq 'Apple' and $inMakerNotes)) {
                         my $msg = "Bad format ($oldFormat) for $name entry $index";
                         # patch to preserve invalid directory entries in SubIFD3 of
                         # various Kodak Z-series cameras (Z812, Z1085IS, Z1275)
@@ -2244,6 +2244,7 @@ NoOverwrite:            next if $isNew > 0;
                 }
             } else {
                 last unless @writeLater;
+                # finally, copy all deferred data
                 @offsetList = @writeLater;
             }
             my $offsetPair;
@@ -2337,6 +2338,23 @@ NoOverwrite:            next if $isNew > 0;
                         $size = length($buff);
                         Set32u($size, \$newData, $byteCountPos);
                     } elsif ($ifd < 0) {
+                        # hack for fixed-offset data (Panasonic GH6)
+                        if ($$offsetPair[0][6]) {
+                            if ($count > 1) {
+                                $et->Error("Can't handle fixed offsets with count > 1");
+                            } else {
+                                my $fixedOffset = Get32u(\$newData, $offsets);
+                                my $padToFixedOffset = $fixedOffset - ($newOffset + $dpos);
+                                if ($padToFixedOffset < 0) {
+                                    $et->Error('Metadata too large to fit before fixed-offset image data');
+                                } else {
+                                    # add necessary padding before raw data
+                                    push @imageData, [$offset+$dbase+$dpos, 0, $padToFixedOffset];
+                                    $newOffset += $padToFixedOffset;
+                                    $et->Warn("Adding $padToFixedOffset bytes of padding before fixed-offset image data", 1);
+                                }
+                            }
+                        }
                         # pad if necessary (but don't pad contiguous image blocks)
                         my $pad = 0;
                         ++$pad if ($blockSize + $size) & 0x01 and ($n+1 >= $count or

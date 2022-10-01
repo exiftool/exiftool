@@ -27,10 +27,10 @@
 package Image::ExifTool::RIFF;
 
 use strict;
-use vars qw($VERSION);
+use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.59';
+$VERSION = '1.60';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -340,6 +340,9 @@ my %code2charset = (
         Large AVI videos may be a concatenation of two or more RIFF chunks.  For
         these files, information is extracted from subsequent RIFF chunks as
         sub-documents, but the Duration is calculated for the full video.
+
+        ExifTool currently has the ability to write EXIF and XMP to WEBP images, but
+        can't yet write other RIFF-based formats.
     },
     # (not 100% sure that the concatenation technique mentioned above is valid - PH)
    'fmt ' => {
@@ -544,7 +547,7 @@ my %code2charset = (
         },
     },{ # (WebP) - have also seen with "Exif\0\0" header - PH
         Name => 'EXIF',
-        Condition => '$$valPt =~ /^Exif\0\0(II\x2a\0|MM\0\x2a)/',
+        Condition => '$$valPt =~ /^Exif\0\0(II\x2a\0|MM\0\x2a)/ and $self->Warn("Improper EXIF header",1)',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
@@ -1249,6 +1252,7 @@ my %code2charset = (
         Name => 'ImageWidth',
         Format => 'int16u',
         Mask => 0x3fff,
+        Priority => 0,
     },
     6.1 => {
         Name => 'HorizontalScale',
@@ -1259,6 +1263,7 @@ my %code2charset = (
         Name => 'ImageHeight',
         Format => 'int16u',
         Mask => 0x3fff,
+        Priority => 0,
     },
     8.1 => {
         Name => 'VerticalScale',
@@ -1275,11 +1280,13 @@ my %code2charset = (
     1 => {
         Name => 'ImageWidth',
         Format => 'int16u',
+        Priority => 0,
         ValueConv => '($val & 0x3fff) + 1',
     },
     2 => {
         Name => 'ImageHeight',
         Format => 'int32u',
+        Priority => 0,
         ValueConv => '(($val >> 6) & 0x3fff) + 1',
     },
 );
@@ -1290,6 +1297,19 @@ my %code2charset = (
     GROUPS => { 2 => 'Image' },
     NOTES => 'This chunk is found in extended WebP files.',
     # 0 - bitmask: 2=ICC, 3=alpha, 4=EXIF, 5=XMP, 6=animation
+    0 => {
+        Name => 'WebP_Flags',
+        Description => 'WebP Flags',
+        Notes => 'flags used in Extended WebP images',
+        Format => 'int32u',
+        PrintConv => { BITMASK => {
+            1 => 'Animation',
+            2 => 'XMP',
+            3 => 'EXIF',
+            4 => 'Alpha',
+            5 => 'ICC Profile',
+        }},
+    },
     4 => {
         Name => 'ImageWidth',
         Format => 'int32u',
@@ -1458,6 +1478,14 @@ my %code2charset = (
 # add our composite tags
 Image::ExifTool::AddCompositeTags('Image::ExifTool::RIFF');
 
+
+#------------------------------------------------------------------------------
+# AutoLoad our writer routines when necessary
+#
+sub AUTOLOAD
+{
+    return Image::ExifTool::DoAutoLoad($AUTOLOAD, @_);
+}
 
 #------------------------------------------------------------------------------
 # Convert RIFF date to EXIF format
@@ -1896,6 +1924,7 @@ sub ProcessRIFF($$)
     my ($buff, $buf2, $type, $mime, $err, $rf64);
     my $verbose = $et->Options('Verbose');
     my $unknown = $et->Options('Unknown');
+    my $validate = $et->Options('Validate');
     my $ee = $et->Options('ExtractEmbedded');
 
     # verify this is a valid RIFF file
@@ -1917,6 +1946,8 @@ sub ProcessRIFF($$)
     $$et{RIFFStreamType} = '';      # initialize stream type
     $$et{RIFFStreamCodec} = [];     # initialize codec array
     SetByteOrder('II');
+    my $riffEnd = Get32u(\$buff, 4) + 8;
+    $riffEnd += $riffEnd & 0x01;    # (account for padding)
     my $tagTbl = GetTagTable('Image::ExifTool::RIFF::Main');
     my $pos = 12;
 #
@@ -1926,10 +1957,13 @@ sub ProcessRIFF($$)
         my $num = $raf->Read($buff, 8);
         if ($num < 8) {
             $err = 1 if $num;
+            $et->Warn('Incorrect RIFF chunk size' . " $pos vs. $riffEnd") if $validate and $pos != $riffEnd;
             last;
         }
         $pos += 8;
         my ($tag, $len) = unpack('a4V', $buff);
+        # tweak WEBP type if this is an extended WebP
+        $et->OverrideFileType('Extended WEBP',undef,'webp') if $tag eq 'VP8X' and $type eq 'WEBP';
         # special case: construct new tag name from specific LIST type
         if ($tag eq 'LIST') {
             $raf->Read($buff, 4) == 4 or $err=1, last;
@@ -1949,7 +1983,6 @@ sub ProcessRIFF($$)
             } else {
                 next;
             }
-            last;
         }
         # stop when we hit the audio data or AVI index or AVI movie data
         # --> no more because Adobe Bridge stores XMP after this!!
@@ -1980,7 +2013,7 @@ sub ProcessRIFF($$)
                 DataPt  => \$buff,
                 DataPos => 0,   # (relative to Base)
                 Start   => 0,
-                Size    => $len2,
+                Size    => $len,
                 Base    => $pos,
             );
             if ($setGroups) {
@@ -1989,10 +2022,14 @@ sub ProcessRIFF($$)
             }
             delete $$et{DOC_NUM} if $ee;
         } elsif ($tag eq 'RIFF') {
+            $et->Warn('Incorrect RIFF chunk size') if $validate and $pos - 8 != $riffEnd;
+            $riffEnd += $len2 + 8;
             # don't read into RIFF chunk (eg. concatenated video file)
-            $raf->Read($buff, 4) == 4 or $err=1, last;
+            $raf->Read($buff, 4) == 4 or $err=1, last;  # (skip RIFF type word)
+            $pos += 4;
             # extract information from remaining file as an embedded file
-            $$et{DOC_NUM} = ++$$et{DOC_COUNT}
+            $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+            next; # (must not increment $pos)
         } elsif ($tag eq 'LIST_movi' and $ee) {
             next; # parse into movi chunk
         } else {
@@ -2000,7 +2037,12 @@ sub ProcessRIFF($$)
                 $et->Warn("Stopped parsing at large $tag chunk (LargeFileSupport not set)");
                 last;
             }
-            $raf->Seek($len2, 1) or $err=1, last;
+            if ($validate and $len2) {
+                # (must actually try to read something after seeking to detect error)
+                $raf->Seek($len2-1, 1) and $raf->Read($buff, 1) == 1 or $err = 1, last;
+            } else {
+                $raf->Seek($len2, 1) or $err=1, last;
+            }
         }
         $pos += $len2;
     }

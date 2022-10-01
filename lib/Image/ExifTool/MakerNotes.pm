@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '2.11';
+$VERSION = '2.12';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -1609,6 +1609,8 @@ IFD_TRY: for ($offset=$firstTry; $offset<=$lastTry; $offset+=2) {
                 }
                 # patch for Sony cameras like the DSC-P10 that have invalid MakerNote entries
                 next if $num == 12 and $$et{Make} eq 'SONY' and $index >= 8;
+                # patch for Apple ProRaw DNG which uses format 16 in the maker notes
+                next if $format == 16 and $$et{Make} eq 'Apple';
                 # (would like to verify tag ID, but some manufactures don't
                 #  sort entries in order of tag ID so we don't have much of
                 #  a handle to verify this field)

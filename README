@@ -107,8 +107,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-12.45.tar.gz | tar -xf -
-  cd Image-ExifTool-12.45
+  gzip -dc Image-ExifTool-12.46.tar.gz | tar -xf -
+  cd Image-ExifTool-12.46
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -199,6 +199,7 @@ distribution package:
     depthmap.config           - Extract Google DepthMap images
     example.config            - General example showing config features
     fotoware.config           - Definitions for writing Fotoware XMP tags
+    frameCount.config         - Extract FrameCount from MP4 videos
     gps2utm.config            - Generate UTM coordinate tags from GPS info
     gpsdatetime.config        - Make GPSDateTime from CreateDate+SampleTime
     nksc.config               - Decode tags in Nikon ViewNX NKSC files

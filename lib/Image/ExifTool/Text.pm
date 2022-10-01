@@ -14,9 +14,8 @@ package Image::ExifTool::Text;
 use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
-use Image::ExifTool::XMP;
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 # Text tags
 %Image::ExifTool::Text::Main = (
@@ -97,7 +96,7 @@ sub ProcessTXT($$)
         $nl =~ tr/\0//d;    # remove nulls from newline sequence
         $isBOM = 1;         # (we don't recognize UTF-16/UTF-32 without one)
     } else {
-        $isUTF8 = Image::ExifTool::XMP::IsUTF8($dataPt, 1);
+        $isUTF8 = Image::ExifTool::IsUTF8($dataPt, 1);
         if ($isUTF8 == 0) {
             $enc = 'us-ascii';
         } elsif ($isUTF8 > 0) {
@@ -183,7 +182,7 @@ sub ProcessTXT($$)
         next if $raf->Tell() < 65536;
         # continue to check encoding after the first 64 kB
         if ($isUTF8 >= 0) { # (if ascii or utf8)
-            $isUTF8 = Image::ExifTool::XMP::IsUTF8(\$buff);
+            $isUTF8 = Image::ExifTool::IsUTF8(\$buff);
             if ($isUTF8 > 0) {
                 $enc = 'utf-8';
             } elsif ($isUTF8 < 0) {

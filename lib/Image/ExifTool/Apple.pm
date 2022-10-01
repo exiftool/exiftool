@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::PLIST;
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 # Apple iPhone metadata (ref PH)
 %Image::ExifTool::Apple::Main = (
@@ -80,7 +80,7 @@ $VERSION = '1.06';
     # 0x000e - int32s: 0,1,4,12 (Orientation? 0=landscape? 4=portrait? ref 1)
     # 0x000f - int32s: 2,3
     # 0x0010 - int32s: 1
-    0x0011 => {
+    0x0011 => { # (if defined, there is a live photo associated with the video, #forum13565)
         Name => 'MediaGroupUUID', #NealKrawetz private communication
         # (changed in 12.19 from Name => 'ContentIdentifier', #forum8750)
         Writable => 'string',
@@ -91,6 +91,10 @@ $VERSION = '1.06';
         Writable => 'string',
     },
     # 0x0016 - string[29]: "AXZ6pMTOh2L+acSh4Kg630XCScoO\0"
+    0x0017 => { #forum13565 (only valid if MediaGroupUUID exists)
+        Name => 'LivePhotoVideoIndex',
+        Notes => 'divide by RunTimeScale to get time in seconds',
+    },
     # 0x0017 - int32s: 0,8192
     # 0x0019 - int32s: 0,2,128
     # 0x001a - string[6]: "q825s\0"

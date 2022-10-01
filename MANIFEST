@@ -23,6 +23,7 @@ config_files/cuepointlist.config
 config_files/depthmap.config
 config_files/example.config
 config_files/fotoware.config
+config_files/frameCount.config
 config_files/gps2utm.config
 config_files/nksc.config
 config_files/photoshop_paths.config
@@ -417,6 +418,7 @@ lib/Image/ExifTool/WritePNG.pl
 lib/Image/ExifTool/WritePhotoshop.pl
 lib/Image/ExifTool/WritePostScript.pl
 lib/Image/ExifTool/WriteQuickTime.pl
+lib/Image/ExifTool/WriteRIFF.pl
 lib/Image/ExifTool/WriteXMP.pl
 lib/Image/ExifTool/Writer.pl
 lib/Image/ExifTool/XMP.pm
@@ -792,6 +794,9 @@ t/RIFF.t
 t/RIFF_2.out
 t/RIFF_3.out
 t/RIFF_4.out
+t/RIFF_5.out
+t/RIFF_6.out
+t/RIFF_7.out
 t/RTF.t
 t/RTF_2.out
 t/Radiance.t

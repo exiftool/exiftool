@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 25828 tags, with 16515 unique tag names.
+They contain a total of 25834 tags, with 16520 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -931,7 +931,7 @@ for the official EXIF 2.32 specification.
   0xc7ee   EnhanceParams             IFD0       string!
   0xcd2d   ProfileGainTableMap       SubIFD     undef!
   0xcd2e   SemanticName              SubIFD     no
-  0xcd30   SemanticInstanceIFD       SubIFD     no
+  0xcd30   SemanticInstanceID        SubIFD     no
   0xcd31   CalibrationIlluminant3    IFD0       int16u!
   0xcd32   CameraCalibration3        IFD0       rational64s[n]!
   0xcd33   ColorMatrix3              IFD0       rational64s[n]!
@@ -6308,11 +6308,13 @@ to an image.
 =head2 GeoTiff Tags
 
 ExifTool extracts the following tags from GeoTIFF images.  See
-L<http://www.remotesensing.org/geotiff/spec/geotiffhome.html> for the
-complete GeoTIFF specification.  Also included in the table below are
-ChartTIFF tags (see L<http://www.charttiff.com/whitepapers.shtml>). GeoTIFF
-tags are not writable individually, but they may be copied en mass via the
-block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
+L<https://web.archive.org/web/20070820121549/http://www.remotesensing.org/geotiff/spec/geotiffhome.html>
+for the complete GeoTIFF specification.  Also included in the table below
+are ChartTIFF tags (see
+L<https://web.archive.org/web/20020828193928/http://www.charttiff.com/whitepapers.shtml>).
+GeoTIFF tags are not writable individually, but they may be copied en mass
+via the block tags GeoTiffDirectory, GeoTiffDoubleParams and
+GeoTiffAsciiParams.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -6994,6 +6996,7 @@ Tags extracted from the maker notes of iPhone images.
   0x000c   FocusDistanceRange                   rational64s[2]
   0x0011   MediaGroupUUID                       string
   0x0015   ImageUniqueID                        string
+  0x0017   LivePhotoVideoIndex                  yes
 
 =head3 Apple RunTime Tags
 
@@ -11219,8 +11222,8 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1444   DRangePriorityAuto                   int16u
   0x1445   DRangePriorityFixed                  int16u
   0x1446   FlickerReduction                     int32u
-  0x1447   FirmwareVersion                      string
-  0x1448   FirmwareVersion2                     string
+  0x1447   FujiModel                            string
+  0x1448   FujiModel2                           string
   0x3803   VideoRecordingMode                   int32u
   0x3804   PeripheralLighting                   int16u
   0x3806   VideoCompression                     int16u
@@ -14339,8 +14342,8 @@ These tags are extracted from encrypted data in images from the Z9.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
+  27792    FocusShiftShooting                   int8u~
   27800    IntervalShooting                     int16u~
-  30788    FocusShiftShooting                   int8u~
   60139    RollAngle                            fixed32u
   60143    PitchAngle                           fixed32u
   60147    YawAngle                             fixed32u
@@ -15012,6 +15015,8 @@ videos from some Nikon cameras.
   0x200002c    UnknownInfo                      Nikon UnknownInfo
   0x2000032    UnknownInfo2                     Nikon UnknownInfo2
   0x2000039    LocationInfo                     Nikon LocationInfo
+  0x200003f    WhiteBalanceFineTune             no
+  0x200004e    NikonSettings                    NikonSettings
   0x2000083    LensType                         no
   0x2000084    Lens                             no
   0x2000087    FlashMode                        no
@@ -25178,6 +25183,7 @@ Information related to geographic location.
   'Components'         ComponentsConfiguration  string
   'Compression'        CompressionRatio         rational32u
   'ImageSize'          ImageSize                int16u[n]
+  'OriginalImageSize'  OriginalImageSize        int16u[n]
   'Resolution'         Resolution               rational64u[n]
   'data'               FullSizeImage            undef
 
@@ -27802,7 +27808,7 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 59 different formats of timed GPS metadata from video files.
+currently reads 60 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -28470,6 +28476,8 @@ ExifTool, but these entries are not extracted as tags.
   'udta'   UserData                             QuickTime UserData
   'uuid'   UUID-USMT                            QuickTime UserMedia
            UUID-Canon                           Canon uuid
+           GarminGPS                            QuickTime Stream
+           GarminGPS                            no
            UUID-Unknown?                        no
 
 =head3 QuickTime CMovie Tags
@@ -28837,6 +28845,7 @@ MP4 metadata sample description.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0004   OtherFormat                          no
+  0x0018   PlaybackFrameRate                    no
   'ftab'   FontTable                            no
   'name'   OtherName                            no
 
@@ -31845,6 +31854,9 @@ Large AVI videos may be a concatenation of two or more RIFF chunks.  For
 these files, information is extracted from subsequent RIFF chunks as
 sub-documents, but the Duration is calculated for the full video.
 
+ExifTool currently has the ability to write EXIF and XMP to WEBP images, but
+can't yet write other RIFF-based formats.
+
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
   'ALPH'               ALPH                     RIFF ALPH
@@ -32165,6 +32177,7 @@ This chunk is found in extended WebP files.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    WebP_Flags                           no
       4    ImageWidth                           no
       6    ImageHeight                          no
 

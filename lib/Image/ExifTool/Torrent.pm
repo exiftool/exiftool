@@ -13,9 +13,8 @@ package Image::ExifTool::Torrent;
 use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
-use Image::ExifTool::XMP;
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 sub ReadBencode($$$);
 sub ExtractTags($$$;$$@);
@@ -169,7 +168,7 @@ sub ReadBencode($$$)
             if (length($value) > 256) {
                 $val = \$value;
             } elsif ($value =~ /[^\t\x20-\x7e]/) {
-                if (Image::ExifTool::XMP::IsUTF8(\$value) >= 0) {
+                if (Image::ExifTool::IsUTF8(\$value) >= 0) {
                     $val = $et->Decode($value, 'UTF8');
                 } else {
                     $val = \$value;

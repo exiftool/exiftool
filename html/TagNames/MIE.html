@@ -828,13 +828,18 @@ negative, but may be entered as positive numbers with a trailing &#39;W&#39;)</s
 <td class=c>int16u[n]</td>
 <td><span class=s><span class=n>(2 or 3 values, for number of XY or XYZ pixels)</span></span></td></tr>
 <tr class=b>
+<td>'OriginalImageSize'</td>
+<td>OriginalImageSize</td>
+<td class=c>int16u[n]</td>
+<td><span class=s><span class=n>(size of original image before cropping)</span></span></td></tr>
+<tr>
 <td>'Resolution'</td>
 <td>Resolution</td>
 <td class=c>rational64u[n]</td>
 <td><span class=s><span class=n>(1 to 3 values.  A single value for equal resolution in all directions, or
 separate X, Y and Z values if necessary.  Units are &#39;/in&#39; unless &#39;/cm&#39;,
 &#39;/deg&#39;, &#39;/arcmin&#39;, &#39;/arcsec&#39; or &#39;&#39; specified)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'data'</td>
 <td>FullSizeImage</td>
 <td class=c>undef</td>
@@ -1024,7 +1029,7 @@ to avoid name conflicts.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 28, 2019</i>
+<br><i>Last revised Oct 1, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

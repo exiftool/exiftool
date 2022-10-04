@@ -36,6 +36,7 @@ sub ConvertTimecode($);
 sub ProcessSGLT($$$);
 sub ProcessSLLT($$$);
 sub ProcessLucas($$$);
+sub WriteRIFF($$);
 
 # recognized RIFF variants
 my %riffType = (
@@ -341,8 +342,8 @@ my %code2charset = (
         these files, information is extracted from subsequent RIFF chunks as
         sub-documents, but the Duration is calculated for the full video.
 
-        ExifTool currently has the ability to write EXIF and XMP to WEBP images, but
-        can't yet write other RIFF-based formats.
+        ExifTool currently has the ability to write EXIF, XMP and ICC_Profile
+        metadata to WEBP images, but can't yet write to other RIFF-based formats.
     },
     # (not 100% sure that the concatenation technique mentioned above is valid - PH)
    'fmt ' => {
@@ -2002,6 +2003,7 @@ sub ProcessRIFF($$)
             $$et{DOC_NUM} = ++$$et{DOC_COUNT};
         }
         my $tagInfo = $$tagTbl{$tag};
+        # (in LIST_movi chunk: ##db = uncompressed DIB, ##dc = compressed DIB, ##wb = audio data)
         if ($tagInfo or (($verbose or $unknown) and $tag !~ /^(data|idx1|LIST_movi|RIFF|\d{2}(db|dc|wb))$/)) {
             $raf->Read($buff, $len2) == $len2 or $err=1, last;
             my $setGroups;

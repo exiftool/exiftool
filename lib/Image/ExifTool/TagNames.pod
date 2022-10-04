@@ -31854,8 +31854,8 @@ Large AVI videos may be a concatenation of two or more RIFF chunks.  For
 these files, information is extracted from subsequent RIFF chunks as
 sub-documents, but the Duration is calculated for the full video.
 
-ExifTool currently has the ability to write EXIF and XMP to WEBP images, but
-can't yet write other RIFF-based formats.
+ExifTool currently has the ability to write EXIF, XMP and ICC_Profile
+metadata to WEBP images, but can't yet write to other RIFF-based formats.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------

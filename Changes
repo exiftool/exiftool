@@ -7,6 +7,12 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.42. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Oct. 3, 2022 - Version 12.47
+
+  - Added a new Nikon LensID (thanks David Puschel)
+  - Fixed bug introduced in 12.46 which resulted in a runtime error when -j was
+    combined with -b
+
 Oct. 1, 2022 - Version 12.46 - "Write WEBP"
 
   - Added WEBP write support

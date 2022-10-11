@@ -26,7 +26,7 @@ Image::ExifTool - Read and write meta information
   # ---- Object-oriented usage ----
 
   # Create a new Image::ExifTool object
-  $exifTool = new Image::ExifTool;
+  $exifTool = Image::ExifTool->new;
 
   # Extract meta information from an image
   $exifTool->ExtractInfo($file, \%options);

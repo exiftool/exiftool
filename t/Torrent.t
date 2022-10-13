@@ -18,7 +18,7 @@ my $testnum = 1;
 
 # test 2: Extract information from a BitTorrent file
 {
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     ++$testnum;
     my $info = $exifTool->ImageInfo('t/images/Torrent.torrent');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);

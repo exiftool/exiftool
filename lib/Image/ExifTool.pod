@@ -26,7 +26,7 @@ Image::ExifTool - Read and write meta information
   # ---- Object-oriented usage ----
 
   # Create a new Image::ExifTool object
-  $exifTool = new Image::ExifTool;
+  $exifTool = Image::ExifTool->new;
 
   # Extract meta information from an image
   $exifTool->ExtractInfo($file, \%options);
@@ -175,7 +175,7 @@ The ExifTool methods are not thread safe.
 
 Creates a new ExifTool object.
 
-    $exifTool = new Image::ExifTool;
+    $exifTool = Image::ExifTool->new;
 
 One ExifTool object may be used to process many files, so creating multiple
 ExifTool objects usually is not necessary.
@@ -338,7 +338,7 @@ The code below gives an example of how to handle these return values, as
 well as illustrating the use of other ExifTool functions:
 
     use Image::ExifTool;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Unknown => 1);
     my $info = $exifTool->ImageInfo('a.jpg');
     my $group = '';
@@ -615,11 +615,14 @@ undef.
 
 =item Exclude
 
-Exclude specified tags from tags extracted from an image.  The option value
-is either a tag name or reference to a list of tag names to exclude.  The
-case of tag names is not significant.  This option is ignored for
-specifically requested tags.  Tags may also be excluded by preceding their
-name with a '-' in the arguments to L</ImageInfo>.
+Exclude specified tags when extracting information.  Note that this option
+is applied after all of the tags have already been loaded into memory (so
+different tags may be excluded in subsequent calls to L</GetInfo>). See the
+IgnoreTags option to save memory by not loading the tags in the first place.
+The option value is either a tag name or reference to a list of tag names to
+exclude.  The case of tag names is not significant.  This option is ignored
+for specifically requested tags.  Tags may also be excluded by preceding
+their name with a '-' in the arguments to L</ImageInfo>.
 
 =item ExtendedXMP
 
@@ -2310,7 +2313,7 @@ APP5, APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG, DV, DjVu,
 Ducky, EXE, EXIF, ExifTool, FITS, FLAC, FLIR, File, Flash, FlashPix, Font,
 FotoStation, GIF, GIMP, GeoTiff, GoPro, H264, HTML, ICC_Profile, ID3, IPTC,
 ISO, ITC, JFIF, JPEG, JSON, JUMBF, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE,
-MIFF, MNG, MOI, MPC, MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg,
+MIFF, MISB, MNG, MOI, MPC, MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg,
 OpenEXR, Opus, PDF, PICT, PLIST, PNG, PSP, Palm, Parrot, PanasonicRaw,
 PhotoCD, PhotoMechanic, Photoshop, PostScript, PrintIM, QuickTime, RAF,
 RIFF, RSRC, RTF, Radiance, Rawzor, Real, Red, SVG, SigmaRaw, Stim, Theora,
@@ -2333,7 +2336,7 @@ KyoceraRaw, LNK, Leaf, LeafSubIFD, Leica, Lyrics3, Lytro, M2TS, MAC,
 MIE-Audio, MIE-Camera, MIE-Canon, MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS,
 MIE-Geo, MIE-Image, MIE-Lens, MIE-Main, MIE-MakerNotes, MIE-Meta,
 MIE-Orient, MIE-Preview, MIE-Thumbnail, MIE-UTM, MIE-Unknown, MIE-Video,
-MIFF, MNG, MOBI, MOI, MPC, MPEG, MPF0, MPImage, MS-DOC, MXF, MacOS,
+MIFF, MISB, MNG, MOBI, MOI, MPC, MPEG, MPF0, MPImage, MS-DOC, MXF, MacOS,
 MakerNotes, MakerUnknown, Matroska, MediaJukebox, Meta, MetaIFD, Microsoft,
 Minolta, MinoltaRaw, Motorola, NITF, Nikon, NikonCapture, NikonCustom,
 NikonScan, NikonSettings, NineEdits, Nintendo, Ocad, Ogg, Olympus, OpenEXR,

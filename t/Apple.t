@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from Apple.jpg
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Unknown => 1, Composite => 0);
     my $info = $exifTool->ImageInfo('t/images/Apple.jpg', '-file:all');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);

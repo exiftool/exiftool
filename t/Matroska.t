@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from test image
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Unknown => 1);
     my $info = $exifTool->ImageInfo('t/images/Matroska.mkv');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);

@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from HTML.html
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/HTML.html');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

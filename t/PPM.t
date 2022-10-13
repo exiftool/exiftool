@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from PPM.bmp
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/PPM.ppm');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -28,7 +28,7 @@ my $testnum = 1;
 # test 3: Write new comments to PPM in memory
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('Comment', 'A new comment');
     my $image;
     $exifTool->WriteInfo('t/images/PPM.ppm', \$image);

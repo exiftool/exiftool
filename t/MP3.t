@@ -20,7 +20,7 @@ my $testnum = 1;
 # test 2: Extract information from test image
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/MP3.mp3');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

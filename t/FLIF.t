@@ -23,7 +23,7 @@ my @checkTags = qw(Artist Creator XResolution ProfileCMMType XMP);
     ++$testnum;
     my $skip = '';
     if (eval { require IO::Uncompress::RawInflate }) {
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         my $info = $exifTool->ImageInfo('t/images/FLIF.flif');
         print 'not ' unless check($exifTool, $info, $testname, $testnum);
     } else {
@@ -37,7 +37,7 @@ my @checkTags = qw(Artist Creator XResolution ProfileCMMType XMP);
     ++$testnum;
     my $skip = '';
     if (eval { require IO::Uncompress::RawInflate and require IO::Compress::RawDeflate }) {
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         $exifTool->SetNewValuesFromFile('t/images/XMP.jpg','ICC_Profile');
         $exifTool->SetNewValue('EXIF:XResolution' => 234);
         $exifTool->SetNewValue('XMP:Creator' => 'just me');
@@ -62,7 +62,7 @@ my $testfile;
     ++$testnum;
     my $skip = '';
     if (eval { require IO::Uncompress::RawInflate and require IO::Compress::RawDeflate }) {
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         $exifTool->SetNewValue(ICC_Profile => undef, Protected => 1);
         $exifTool->SetNewValue(EXIF => undef, Protected => 1);
         $exifTool->SetNewValue('XMP:all' => undef);
@@ -85,7 +85,7 @@ my $testfile;
     ++$testnum;
     my $skip = '';
     if (defined $testfile) {
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         $exifTool->SetNewValuesFromFile('t/images/Photoshop.psd','ICC_Profile');
         $exifTool->SetNewValue('EXIF:XResolution' => 123);
         $exifTool->SetNewValue('XMP:Creator' => 'me again');
@@ -110,7 +110,7 @@ my $testfile;
     ++$testnum;
     my $skip = '';
     if (eval { require IO::Uncompress::RawInflate and require IO::Compress::RawDeflate }) {
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         $exifTool->SetNewValue(all => undef);
         $exifTool->SetNewValuesFromFile('t/images/Photoshop.psd','ICC_Profile');
         $exifTool->SetNewValue('EXIF:XResolution' => 456);

@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from Olympus.jpg
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Olympus.jpg');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -39,7 +39,7 @@ my $testnum = 1;
 # test 4: Extract information from OlympusE1.jpg
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/OlympusE1.jpg');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -59,7 +59,7 @@ my $testnum = 1;
 # test 6: Test reading Olympus type 2 maker notes
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Olympus2.jpg');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -68,7 +68,7 @@ my $testnum = 1;
 # test 7: Rewrite type 2 maker notes
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
     $exifTool->SetNewValue(FocusDistance => 100);
@@ -85,7 +85,7 @@ my $testnum = 1;
 # test 8: Extract information from Olympus.dss
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Olympus.dss');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

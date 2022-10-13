@@ -21,7 +21,7 @@ my $testnum = 1;
     my $file;
     foreach $file ('FLIR.jpg', 'FLIR.fpf') {
         ++$testnum;
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         my $info = $exifTool->ImageInfo("t/images/$file");
         print 'not ' unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";

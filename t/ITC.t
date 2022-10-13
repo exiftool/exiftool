@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from ITC.itc
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ITC.itc');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

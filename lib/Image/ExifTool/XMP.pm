@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.52';
+$VERSION = '3.53';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -128,6 +128,8 @@ my %xmpNS = (
     stRef     => 'http://ns.adobe.com/xap/1.0/sType/ResourceRef#',
     stVer     => 'http://ns.adobe.com/xap/1.0/sType/Version#',
     stMfs     => 'http://ns.adobe.com/xap/1.0/sType/ManifestItem#',
+    stCamera  => 'http://ns.adobe.com/photoshop/1.0/camera-profile',
+    crlcp     => 'http://ns.adobe.com/camera-raw-embedded-lens-profile/1.0/',
     tiff      => 'http://ns.adobe.com/tiff/1.0/',
    'x'        => 'adobe:ns:meta/',
     xmpG      => 'http://ns.adobe.com/xap/1.0/g/',
@@ -1273,6 +1275,41 @@ my %sPantryItem = (
         },
     },
     EmbeddedXMPDigest => { },   #PH (LR5)
+    CameraProfiles => { #PH (2022-10-11)
+        List => 'Seq',
+        Struct => {
+            NAMESPACE   => 'stCamera',
+            STRUCT_NAME => 'Camera',
+            Author              => { },
+            Make                => { },
+            Model               => { },
+            UniqueCameraModel   => { },
+            CameraRawProfile    => { Writable => 'boolean' },
+            AutoScale           => { Writable => 'boolean' },
+            Lens                => { },
+            CameraPrettyName    => { },
+            LensPrettyName      => { },
+            ProfileName         => { },
+            SensorFormatFactor  => { Writable => 'real' },
+            FocalLength         => { Writable => 'real' },
+            FocusDistance       => { Writable => 'real' },
+            ApertureValue       => { Writable => 'real' },
+            PerspectiveModel    => {
+                Namespace       => 'crlcp',
+                Struct => {
+                    NAMESPACE   => 'stCamera',
+                    STRUCT_NAME => 'PerspectiveModel',
+                    Version              => { },
+                    ImageXCenter         => { Writable => 'real' },
+                    ImageYCenter         => { Writable => 'real' },
+                    ScaleFactor          => { Writable => 'real' },
+                    RadialDistortParam1  => { Writable => 'real' },
+                    RadialDistortParam2  => { Writable => 'real' },
+                    RadialDistortParam3  => { Writable => 'real' },
+                },
+            },
+        },
+    },
 );
 
 # Photoshop Camera Raw namespace properties (crs) - (ref 8,PH)

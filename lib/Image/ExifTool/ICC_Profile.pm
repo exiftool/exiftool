@@ -627,7 +627,7 @@ my %manuSig = ( #6
     swpt => 'SpectralWhitePoint',
     s2cp => 'StandardToCustomPcc',
     smap => 'SurfaceMap',
-    # smwp ? (seen in some v5 samples)
+    # smwp ? (seen in some v5 samples [was a mistake in sample production])
 
     # the following entry represents the ICC profile header, and doesn't
     # exist as a tag in the directory.  It is only in this table to provide

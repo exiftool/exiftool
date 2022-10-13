@@ -99,7 +99,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 60 different formats of timed GPS metadata from video files.
+        currently reads 61 different formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
@@ -896,10 +896,15 @@ sub Process_text($$$)
             my $time = "$1:$2:$3";
             if ($$et{LastTime}) {
                 if ($$et{LastTime} eq $time) {
+                    # combine with the previous NMEA sentence
                     $$et{DOC_NUM} = $$et{LastDoc};
                 } elsif (%tags) {
+                    # handle existing tags and start a new document
+                    # (see https://exiftool.org/forum/index.php?msg=75422)
                     HandleTextTags($et, $tagTbl, \%tags);
-                    $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                    undef %tags;
+                    # increment document number and update document count if necessary
+                    $$et{DOC_COUNT} < ++$$et{DOC_NUM} and $$et{DOC_COUNT} = $$et{DOC_NUM};
                 }
             }
             $$et{LastTime} = $time;
@@ -918,7 +923,8 @@ sub Process_text($$$)
                     $$et{DOC_NUM} = $$et{LastDoc};
                 } elsif (%tags) {
                     HandleTextTags($et, $tagTbl, \%tags);
-                    $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                    undef %tags;
+                    $$et{DOC_COUNT} < ++$$et{DOC_NUM} and $$et{DOC_COUNT} = $$et{DOC_NUM};
                 }
             }
             $$et{LastTime} = $time;

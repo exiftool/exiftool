@@ -44,7 +44,7 @@ unless (eval { require Time::Local }) {
 # test 2: Geotag from GPX track log
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $testfile2 = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile2;
     $exifTool->SetNewValue(Geotag => 't/images/Geotag.gpx');
@@ -59,7 +59,7 @@ unless (eval { require Time::Local }) {
 {
     # geotag to XMP
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
     $exifTool->SetNewValue(Geotag => 't/images/Geotag.log');
@@ -107,7 +107,7 @@ unless (eval { require Time::Local }) {
 # test 6: Geotag from Garmin XML track log and test Geosync too
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
     $exifTool->SetNewValue(Geosync => '1:30');
@@ -128,7 +128,7 @@ unless (eval { require Time::Local }) {
 # test 7: Geotag from IGC log with time drift correction
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     my $txtfile = "t/${testname}_${testnum}.failed";
     unlink $testfile;
@@ -161,7 +161,7 @@ unless (eval { require Time::Local }) {
         9  => { file => 'Geotag.kml',  geotime => '2013:11:13 09:04:31Z' },
         10 => { file => 'Geotag3.log', geotime => '2014:04:21 07:06:42Z' },
     );
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     while ($testnum < 10) {
         ++$testnum;
         $testfile = "t/${testname}_${testnum}_failed.jpg";
@@ -182,7 +182,7 @@ unless (eval { require Time::Local }) {
 # test 11: Geotag date/time only with drift correction
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
     $exifTool->SetNewValue(Geotag => 'DATETIMEONLY');
@@ -202,7 +202,7 @@ unless (eval { require Time::Local }) {
 # test 12: Geotag from DJI CSV log file
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
     $exifTool->SetNewValue(Geotag => 't/images/Geotag_DJI_2020-12-02_[07-50-31].csv');

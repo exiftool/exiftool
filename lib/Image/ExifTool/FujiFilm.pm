@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.83';
+$VERSION = '1.84';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -254,6 +254,23 @@ my %faceCategories = (
             0x2e0 => '-4 (weakest)', #10 (-4)
         },
     },
+    0x100f => { #PR158
+        Name => 'Clarity',
+        Writable => 'int32s', #PH
+        PrintConv => {
+            -5000 => '-5',
+            -4000 => '-4',
+            -3000 => '-3',
+            -2000 => '-2',
+            -1000 => '-1',
+            0 => '0',
+            1000 => '1',
+            2000 => '2',
+            3000 => '3',
+            4000 => '4',
+            5000 => '5',
+        },
+    },
     0x1010 => {
         Name => 'FujiFlashMode',
         Writable => 'int16u',
@@ -444,7 +461,7 @@ my %faceCategories = (
         PrintConv => { 0 => 'Off', 1 => 'On' },
     },
     0x1047 => { #12
-        Name => 'GrainEffect',
+        Name => 'GrainEffectRoughness',
         Writable => 'int32s',
         PrintConv => {
             0 => 'Off',
@@ -469,6 +486,15 @@ my %faceCategories = (
         PrintConvInv => '$val + 0',
     },
     # 0x104b - BWAdjustment for Green->Magenta (forum10800)
+    0x104c => { #PR158
+        Name => "GrainEffectSize",
+        Writable => 'int16u', #PH
+        PrintConv => {
+            0 => 'Off',
+            16 => 'Small',
+            32 => 'Large',
+        },
+    },
     0x104d => { #forum9634
         Name => 'CropMode',
         Writable => 'int16u',

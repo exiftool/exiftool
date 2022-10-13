@@ -18,7 +18,7 @@ my $testnum = 1;
 
 # tests 2-7: Extract information from test Font files
 {
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $type;
     foreach $type (qw(afm dfont pfa pfb pfm ttf)) {
         ++$testnum;

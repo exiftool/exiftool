@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from Nikon.jpg
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Nikon.jpg');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -39,7 +39,7 @@ my $testnum = 1;
 # test 4: Test writing all D70 image information
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValuesFromFile('t/images/NikonD70.jpg');
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
@@ -56,7 +56,7 @@ my $testnum = 1;
 # test 5: Extract information from a D2Hs image
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/NikonD2Hs.jpg');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -80,7 +80,7 @@ my $testnum = 1;
 # test 7: Test reading NEF image
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 1);
     my $info = $exifTool->ImageInfo('t/images/Nikon.nef');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
@@ -90,7 +90,7 @@ my $testnum = 1;
 # test 8: Test writing Nikon Capture information in NEF image
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(IgnoreMinorErrors => 1);
     $exifTool->SetNewValue('PhotoEffects' => 'Off');
     $exifTool->SetNewValue('Caption-abstract' => 'A new caption');

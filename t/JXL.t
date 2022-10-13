@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from JXL.jxl
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/JXL.jxl', '-system:all');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -28,7 +28,7 @@ my $testnum = 1;
 # test 3: Write some new information
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.jxl";
     unlink $testfile;
     my @writeInfo = (

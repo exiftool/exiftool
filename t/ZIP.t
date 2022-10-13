@@ -19,7 +19,7 @@ my $failed;
 
 # tests 2-3: Extract information from test ZIP and GZIP files
 {
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $type;
     foreach $type (qw(zip gz)) {
         ++$testnum;
@@ -31,7 +31,7 @@ my $failed;
 
 # tests 4-7: Extract information from other ZIP-based files (requires Archive::Zip)
 {
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $file;
     foreach $file ('OOXML.docx', 'CaptureOne.eip', 'iWork.numbers', 'OpenDoc.ods') {
         ++$testnum;

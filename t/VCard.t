@@ -18,7 +18,7 @@ my $testnum = 1;
 
 # tests 2-3: Extract information from test files
 {
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $ext;
     foreach $ext (qw(vcf ics)) {
         ++$testnum;

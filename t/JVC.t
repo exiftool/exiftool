@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from EXIF-based JVC maker notes
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/JVC.jpg', { Group1 => 'JVC', Unknown => 1 });
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -28,7 +28,7 @@ my $testnum = 1;
 # test 3: Extract information from text-based JVC maker notes
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/JVC.jpg', { Group1 => 'JVC', Unknown => 1 });
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

@@ -21,7 +21,7 @@ my $testfile;
 # tests 2/3: Test writing new comment to JPEG file and removing it again
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile1 = "t/${testname}_${testnum}_failed.jpg";
     -e $testfile1 and unlink $testfile1;
     $exifTool->SetNewValue('Comment','New comment in JPG file');
@@ -47,7 +47,7 @@ my $testfile;
 # tests 4/5: Test editing a TIFF in memory then changing it back again
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 1, Unknown => 1);
     my $newtiff;
     $exifTool->SetNewValue(Headline => 'A different headline');
@@ -90,7 +90,7 @@ my $testfile;
 # test 6/7: Test rewriting a JPEG file then changing it back again
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 1, Unknown => 1);
     my $testfile1 = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile1;
@@ -143,7 +143,7 @@ my $testfile;
 # test 8: Test rewriting everything in a JPEG file
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 1, Binary => 1, ListJoin => undef);
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg');
     my $tag;
@@ -177,7 +177,7 @@ my $testfile;
 #         (including a transfer of the ICC_Profile record)
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValuesFromFile('t/images/Canon.jpg');
     $exifTool->SetNewValuesFromFile('t/images/ExifTool.tif', 'ICC_Profile');
     $testfile = "t/${testname}_${testnum}_failed.jpg";
@@ -195,7 +195,7 @@ my $testfile;
 # test 10: Another SetNewValuesFromFile() test
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(IgnoreMinorErrors => 1);
     $exifTool->SetNewValuesFromFile('t/images/Pentax.jpg');
     $testfile = "t/${testname}_${testnum}_failed.jpg";
@@ -214,7 +214,7 @@ my $testfile;
 #              (also test ListSplit and ListJoin options)
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(ListSplit => ';\\s*');
     $exifTool->Options(ListJoin => ' <<separator>> ');
     $exifTool->SetNewValue(DateTimeOriginal => '2005:01:19 13:37:22', Group => 'EXIF');
@@ -253,7 +253,7 @@ my $testfile;
 # test 13: Copy tags from CRW file to JPG
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValuesFromFile('t/images/CanonRaw.crw');
     $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
@@ -270,7 +270,7 @@ my $testfile;
 # test 14: Delete all information in a group
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('All' => undef, Group => 'MakerNotes');
     $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
@@ -287,7 +287,7 @@ my $testfile;
 # test 15: Copy a specific set of tags
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my @copyTags = qw(exififd:all -lightSource ifd0:software);
     # also test new regular expression feature (ExifTool 9.15)
     push @copyTags, 'comment<${ make ; tr{ ,.}{_}; s{__}{_} } {cool, huh?}';
@@ -314,7 +314,7 @@ my $testfile;
     my $args;
     foreach $args (@argsList) {
         ++$testnum;
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         $exifTool->SetNewValuesFromFile('t/images/GPS.jpg', @$args);
         $testfile = "t/${testname}_${testnum}_failed.jpg";
         unlink $testfile;
@@ -333,7 +333,7 @@ my $testfile;
 my $testOK;
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue(ISO => 25);
     $exifTool->SetNewValue(Sharpness => '+1');
     $exifTool->SetNewValue(Artist => 'Phil', Group => 'IFD0');
@@ -363,7 +363,7 @@ my $testOK;
     ++$testnum;
     $skip = '';
     if ($testOK) {
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         my $newComment = 'This is a new test comment';
         $exifTool->SetNewValue(Comment => $newComment);
         my $ok = writeInfo($exifTool, $testfile);
@@ -383,7 +383,7 @@ my $testOK;
     ++$testnum;
     $skip = '';
     if ($testOK) {
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         my $shortComment = 'short comment';
         $exifTool->SetNewValue(Comment => $shortComment);
         open FILE, "+<$testfile";   # open test file for update
@@ -429,7 +429,7 @@ my $testOK;
     } elsif ($testOK) {
         my $newfile = "t/${testname}_${testnum}_20060327_failed.jpg";
         unlink $newfile;
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         $exifTool->Options(DateFormat => "${testname}_${testnum}_%Y%m%d_failed.jpg");
         $exifTool->SetNewValuesFromFile($testfile, 'FileName<DateTimeOriginal');
         writeInfo($exifTool, $testfile);
@@ -450,7 +450,7 @@ my $testOK;
 # test 24: Test redirection with expressions
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValuesFromFile('t/images/FujiFilm.jpg',
         'Comment<ISO=$ISO Aperture=${EXIF:fnumber} Exposure=${shutterspeed}'
     );
@@ -471,7 +471,7 @@ my $testOK;
     my $i;
     for ($i=0; $i<2; ++$i) {
         ++$testnum;
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         $exifTool->SetNewValuesFromFile('t/images/Nikon.jpg', 'all:all', '-makernotes:all');
         $exifTool->SetNewValue(fnumber => 26) if $i == 1;
         $exifTool->SetNewValue('exififd:all'); # delete all exifIFD
@@ -492,7 +492,7 @@ my $testOK;
 # test 27: Check that mandatory EXIF resolution tags get taken from JFIF
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('exif:all');     # delete all EXIF
     $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
@@ -512,7 +512,7 @@ my $testOK;
 # tests 28-30: Check cross delete behaviour when deleting tags
 {
     my $group;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('IFD0:ISO',100);
     $exifTool->SetNewValue('ExifIFD:ISO',200);
     writeInfo($exifTool, 't/images/Writer.jpg', 't/tmp.jpg');
@@ -537,7 +537,7 @@ my $testOK;
 # test 31: Delete all but EXIF (excluding IFD1) and IPTC information
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('*');
     $exifTool->SetNewValue('EXIF:*', undef, Replace => 2);
     $exifTool->SetNewValue('ifd1:all');
@@ -557,7 +557,7 @@ my $testOK;
 # tests 32-33: Read/Write ICC Profile tags
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(IgnoreMinorErrors => 1);
     my $hdr = "\0\0\0\x18ADBE\x02\x10\0\0mntrRGB XYZ ";
     $exifTool->SetNewValue(AsShotICCProfile => $hdr . '<dummy>', Protected => 1);
@@ -590,7 +590,7 @@ my $testOK;
 # test 34: copy list tag to list and non-list tags with different options
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(ListJoin => undef);
     $exifTool->SetNewValuesFromFile('t/images/IPTC.jpg',
             { Replace => 1 },
@@ -630,7 +630,7 @@ my $testOK;
 # test 35: Add back all information after deleting everything
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('*');
     $exifTool->SetNewValuesFromFile('t/images/ExifTool.jpg', 'all:all',
                                     'icc_profile', 'canonvrd');
@@ -650,7 +650,7 @@ my $testOK;
 # test 36: Test adding and deleting from the same list
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('IPTC:Keywords', 'out', DelValue => 1);
     $exifTool->SetNewValue('IPTC:Keywords', 'in', AddValue => 1);
     $testfile = "t/${testname}_${testnum}_failed.jpg";
@@ -670,7 +670,7 @@ my $testOK;
     my $i;
     for ($i=0; $i<2; ++$i) {
         ++$testnum;
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         my @tags;
         if ($i == 0) {
             $exifTool->SetNewValuesFromFile('t/images/Sony.jpg', 'EXIF');
@@ -731,7 +731,7 @@ my $testOK;
 # test 42: Test SetNewValuesFromFile with wildcards
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValuesFromFile('t/images/ExifTool.jpg', 'ifd0:*<jfif:?resolution');
     $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
@@ -749,7 +749,7 @@ my $testOK;
 # test 43: Test increment feature EXIF
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
     my @writeInfo = (
@@ -764,7 +764,7 @@ my $testOK;
 # test 44: Test increment feature with XMP
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my @writeInfo = (
         ['XMP:ApertureValue' => '-0.1', Shift => 1], # increment
         ['XMP:FNumber' => '28/10', DelValue => 1], # conditional delete
@@ -777,7 +777,7 @@ my $testOK;
 # test 45: Test writing different EXIF string encoding
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(CharsetEXIF => 'Latin');
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
@@ -796,7 +796,7 @@ my $testOK;
 # test 46: Test writing with wildcards
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
     $exifTool->SetNewValue('A*' => '7');
@@ -813,7 +813,7 @@ my $testOK;
 # test 47: Test various WriteMode settings
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;                               # Should the tag be written?
     $exifTool->Options(WriteMode => 'w');           # --- write existing tags only:
@@ -842,7 +842,7 @@ my $testOK;
     ++$testnum;
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(WriteMode => 'cg');
     $exifTool->SetNewValue('XMP-dc:Title' => 'A');
     $exifTool->SetNewValue('XMP:Subject' => 'A');
@@ -899,7 +899,7 @@ my $testOK;
 # test 51: Delete a unknown JPEG APP segment
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('APP6:*' => undef);
     $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
@@ -916,7 +916,7 @@ my $testOK;
 # test 52: Delete groups by family 2 group name
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('Image:*');
     $exifTool->SetNewValue('Camera:*');
     $testfile = "t/${testname}_${testnum}_failed.xmp";
@@ -934,7 +934,7 @@ my $testOK;
 # test 53: Exclude groups when copying
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValuesFromFile('t/images/Canon.jpg', '-Exif:All', '-Canon:All');
     $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
@@ -951,7 +951,7 @@ my $testOK;
 # test 54: Specify multiple groups when copying, excluding a single tag
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValuesFromFile('t/images/Canon.jpg', 'Exif:Time:All', '-createdate');
     $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
@@ -968,7 +968,7 @@ my $testOK;
 # tests 55-56: Create and edit EXV file
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue(Artist => 'me');
     $exifTool->SetNewValue(Keywords => ['one','two']);
     $testfile = "t/${testname}_${testnum}_failed.exv";
@@ -1001,7 +1001,7 @@ my $testOK;
 {
     ++$testnum;
     my $ok = 1;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(IgnoreMinorErrors => 1);
     my %try = (
         'previewimage'              => 1,
@@ -1056,7 +1056,7 @@ my $testOK;
 # test 58: Set ICC_Profile from an external file
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     open IN, 't/images/ICC_Profile.icc' or die;
     binmode IN;
     my $buff;
@@ -1072,7 +1072,7 @@ my $testOK;
 # test 59: Test writing empty list elements
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(ListSplit => ',');
     $exifTool->Options(ListJoin => ';');
     $exifTool->SetNewValue('XMP-dc:Subject' => ',a,,');

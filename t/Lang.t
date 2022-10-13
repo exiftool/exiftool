@@ -16,7 +16,7 @@ my $testnum = 0;
 # test 1: Test localized language description for a lang-alt tag
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Lang => 'de');
     my $info = $exifTool->ImageInfo('t/images/MIE.mie', 'Comment-fr_FR');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
@@ -24,7 +24,7 @@ my $testnum = 0;
 }
 
 # tests 2-N: Test all languages
-my $exifTool = new Image::ExifTool;
+my $exifTool = Image::ExifTool->new;
 my $lang;
 foreach $lang (@Image::ExifTool::langs) {
     next if $lang eq 'en'; # skip english

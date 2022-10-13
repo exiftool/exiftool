@@ -18,7 +18,7 @@ my $testnum = 1;
 # test 2: extract information from JPG file using name
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -27,7 +27,7 @@ my $testnum = 1;
 # test 3: TIFF file using file reference and ExifTool object with options
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 1, Unknown => 1);
     open(TESTFILE, 't/images/ExifTool.tif');
     my $info = $exifTool->ImageInfo(\*TESTFILE);
@@ -47,7 +47,7 @@ my $testnum = 1;
 # test 5: extract specified tags only
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
 # don't test DateFormat because strftime output varies with locale
 #    $exifTool->Options(DateFormat => '%H:%M:%S %a. %b. %e, %Y');
     my @tags = ('CreateDate', 'DateTimeOriginal', 'ModifyDate', 'Orientation#', '?Resolution');
@@ -59,7 +59,7 @@ my $testnum = 1;
 # test 6: test the 5 different ways to exclude tags...
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Exclude => 'ImageWidth');
     my @tagList = ( '-ImageHeight', '-Make' );
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg', '-FileSize', '-*resolution',
@@ -71,7 +71,7 @@ my $testnum = 1;
 # tests 7/8: test ExtractInfo(), GetInfo(), CombineInfo()
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 0);  # don't allow duplicates
     $exifTool->ExtractInfo('t/images/Canon.jpg');
     my $info1 = $exifTool->GetInfo({Group0 => 'MakerNotes'});
@@ -90,7 +90,7 @@ my $testnum = 1;
 # test 9: test group options across different families
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg',
                     { Group1 => 'Canon', Group2 => '-Camera' });
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
@@ -101,7 +101,7 @@ my $testnum = 1;
 # (uses output from test 5 for comparison)
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
 # don't test DateFormat because strftime output is system dependent
 #    $exifTool->Options(DateFormat => '%H:%M:%S %a. %b. %e, %Y');
     $exifTool->ExtractInfo('t/images/Canon.jpg');
@@ -126,7 +126,7 @@ my $testnum = 1;
 #  so the .out files from tests 7/8 are used)
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 0);  # don't allow duplicates
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg',{Group0=>['MakerNotes','EXIF']});
     print 'not ' unless check($exifTool, $info, $testname, $testnum, 7);
@@ -142,7 +142,7 @@ my $testnum = 1;
 # tests 14/15/16: test GetGroups()
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->ExtractInfo('t/images/Canon.jpg');
     my @groups = $exifTool->GetGroups(2);
     my $not;
@@ -193,7 +193,7 @@ my $testnum = 1;
 # tests 18/19: Test Group# option with multiple groups and no duplicates
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 0);  # don't allow duplicates
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg',
                     { Group0 => ['MakerNotes','EXIF'] });
@@ -210,7 +210,7 @@ my $testnum = 1;
 # test 20: Test extracting a single, non-priority tag with duplicates set to 0
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 0);
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg', 'EXIF:WhiteBalance');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
@@ -220,7 +220,7 @@ my $testnum = 1;
 # test 21: Test extracting ICC_Profile as a block
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.tif', 'ICC_Profile');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -229,7 +229,7 @@ my $testnum = 1;
 # test 22: Test InsertTagValues
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my @foundTags;
     $exifTool->ImageInfo('t/images/ExifTool.jpg', \@foundTags);
     my $str = $exifTool->InsertTagValues(\@foundTags, '${ifd0:model;tr/i/_/} - $1ciff:3main:model');
@@ -247,7 +247,7 @@ my $testnum = 1;
 # test 23: Test the multi-group feature in a tag name
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', 'main:Author:IPTC3:all');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -256,7 +256,7 @@ my $testnum = 1;
 # test 24: Test a shortcut with multiple group names and a ValueConv suffix
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg', 'exififd:camera:common#');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -266,7 +266,7 @@ my $testnum = 1;
 {
     ++$testnum;
     if (eval { require Time::Local }) {
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         $exifTool->Options(GlobalTimeShift => '-0:1:0 0:0:0');
         # Note: can't extract system times because this could result in a different
         # calculated global time offset (since I am shifting by 1 month)
@@ -281,7 +281,7 @@ my $testnum = 1;
 # test 26: Test wildcards using '#' suffix with duplicate PrintConv tags and exclusions
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     # (hack to avoid sorting in TestLib.pm because order of duplicate tags would be indeterminate)
     $$exifTool{NO_SORT} = 1;
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg', 'encodingprocess', 'E*#', 'exposureMode',
@@ -293,7 +293,7 @@ my $testnum = 1;
 # test 27: Test ListItem option
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(ListItem => -3);
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', 'Subject', 'SupplementalCategories');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
@@ -303,7 +303,7 @@ my $testnum = 1;
 # test 28: Test FastScan = 3
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(FastScan => 3);
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
@@ -313,7 +313,7 @@ my $testnum = 1;
 # test 29: Test Filter
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Filter => 'tr/ /_/;tr/0-9/#/');
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', '-ExifToolVersion');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
@@ -325,7 +325,7 @@ my $testnum = 1;
     ++$testnum;
     my $skip = '';
     if (eval 'require Digest::MD5') {
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         my $info = $exifTool->ImageInfo('t/images/Writer.jpg', 'JPEGDigest', 'JPEGQualityEstimate');
         print 'not ' unless check($exifTool, $info, $testname, $testnum);
     } else {
@@ -337,7 +337,7 @@ my $testnum = 1;
 # test 31: Test Validate feature
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/CanonRaw.cr2', 'Validate', 'Warning', 'Error');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -346,7 +346,7 @@ my $testnum = 1;
 # test 32: Read JPS file
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jps', 'jps:all');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

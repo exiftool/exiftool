@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.78';
+$VERSION = '2.79';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -8105,9 +8105,12 @@ sub AUTOLOAD
 # Returns: 9-element rotation matrix as a string (with 0 x/y offsets)
 sub GetRotationMatrix($)
 {
-    my $ang = 3.1415926536 * shift() / 180;
+    my $ang = 3.14159265358979323846264 * shift() / 180;
     my $cos = cos $ang;
     my $sin = sin $ang;
+    # round to zero
+    $cos = 0 if abs($cos) < 1e-12;
+    $sin = 0 if abs($sin) < 1e-12;
     my $msn = -$sin;
     return "$cos $sin 0 $msn $cos 0 0 0 1";
 }

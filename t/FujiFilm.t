@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from FujiFilm.jpg
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/FujiFilm.jpg');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -39,7 +39,7 @@ my $testnum = 1;
 # test 4: Extract information from FujiFilm.raf
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my @tags = qw(-filename -directory -filemodifydate -fileaccessdate
                   -filecreatedate -fileinodechangedate -filepermissions);
     my $info = $exifTool->ImageInfo('t/images/FujiFilm.raf', @tags, {Duplicates=>1});
@@ -50,7 +50,7 @@ my $testnum = 1;
 # tests 5-6: Write writing a RAF and changing it back again in memory
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     # set IgnoreMinorErrors option to allow invalid JpgFromRaw to be written
     $exifTool->SetNewValue(UserComment => 'test comment');
     my $testfile = "t/${testname}_${testnum}_failed.raf";

@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from Sony.jpg
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Sony.jpg',{Unknown=>1});
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -54,7 +54,7 @@ my $testnum = 1;
 # test 5: Extract information from a PMP image
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Sony.pmp');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

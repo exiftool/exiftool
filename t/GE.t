@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from GE.jpg
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Unknown => 1);
     my $info = $exifTool->ImageInfo('t/images/GE.jpg');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
@@ -29,7 +29,7 @@ my $testnum = 1;
 # test 3: Write some new information
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue(GEModel => 'test model');
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;

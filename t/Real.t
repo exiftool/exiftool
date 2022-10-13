@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from a RealMedia file
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Real.rm');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -28,7 +28,7 @@ my $testnum = 1;
 # test 3: Extract information from a RealAudio file
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Real.ra');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -37,7 +37,7 @@ my $testnum = 1;
 # test 4: Extract information from a RealAudio Metafile
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Real.ram');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from GPS.jpg with specified coordinate format
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(CoordFormat => '%d degrees %.2f minutes');
     my $info = $exifTool->ImageInfo('t/images/GPS.jpg');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);

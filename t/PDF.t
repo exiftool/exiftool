@@ -33,7 +33,7 @@ sub CryptTest($$;$)
     my ($cryptInfo, $testNum, $encrypt) = @_;
     my $skip = '';
     if (eval "require $$cryptInfo{_req}") {
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         $exifTool->Options('Password', $$cryptInfo{_password});
         my $err = Image::ExifTool::PDF::DecryptInit($exifTool, $cryptInfo, $$cryptInfo{_id});
         unless ($err) {
@@ -57,7 +57,7 @@ sub CryptTest($$;$)
 # test 2: Extract information from PDF.pdf
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/PDF.pdf');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -136,7 +136,7 @@ sub CryptTest($$;$)
         my ($edit, $testfile2, $lastOK);
         my $testfile = 't/images/' . ($testSet ? 'PDF2.pdf' : 'PDF.pdf');
         my $testfile1 = $testfile;
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         $exifTool->Options(PrintConv => 0);
         foreach $edit (@{$edits[$testSet]}) {
             ++$testnum;
@@ -174,7 +174,7 @@ sub CryptTest($$;$)
 # test 22: Delete all tags
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.pdf";
     unlink $testfile;
     $exifTool->Options(IgnoreMinorErrors => 1);
@@ -291,7 +291,7 @@ sub CryptTest($$;$)
         _password => 'ExifTool',
         _ciphertext => pack('H*', '8bb3565d8c4b9df8cc350954d9f91a46aa47e40eeb5a0cff559acd5ec3e94244'),
     });
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $cryptInfo;
     foreach $cryptInfo (@encrypt) {
         ++$testnum;

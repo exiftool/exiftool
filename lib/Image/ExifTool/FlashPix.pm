@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.40';
+$VERSION = '1.41';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -1338,7 +1338,9 @@ sub ConvertDTTM($)
     my $hr  = ($val >> 6)  & 0x1f;
     my $min = ($val & 0x3f);
     $yr += 1900 if $val;
-    return sprintf("%.4d:%.2d:%.2d %.2d:%.2d:00%s",$yr,$mon,$day,$hr,$min,$val ? 'Z' : '');
+    # ExifTool 12.48 dropped the "Z" on the time here because a test .doc
+    # file written by Word 2011 on Mac certainly used local time here
+    return sprintf("%.4d:%.2d:%.2d %.2d:%.2d:00",$yr,$mon,$day,$hr,$min);
 }
 
 #------------------------------------------------------------------------------

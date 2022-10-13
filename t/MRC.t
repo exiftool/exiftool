@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from MRC.mrc
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(ExtractEmbedded => 1);
     my $info = $exifTool->ImageInfo('t/images/MRC.mrc');
     print 'not ' unless check($exifTool, $info, $testname, $testnum, undef, 3);

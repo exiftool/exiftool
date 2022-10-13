@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from MacOS.macos (MacOS "._" sidecar file)
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/MacOS.macos');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

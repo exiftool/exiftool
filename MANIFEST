@@ -103,6 +103,7 @@ html/TagNames/Lytro.html
 html/TagNames/M2TS.html
 html/TagNames/MIE.html
 html/TagNames/MIFF.html
+html/TagNames/MISB.html
 html/TagNames/MNG.html
 html/TagNames/MOI.html
 html/TagNames/MPC.html
@@ -330,6 +331,7 @@ lib/Image/ExifTool/M2TS.pm
 lib/Image/ExifTool/MIE.pm
 lib/Image/ExifTool/MIEUnits.pod
 lib/Image/ExifTool/MIFF.pm
+lib/Image/ExifTool/MISB.pm
 lib/Image/ExifTool/MNG.pm
 lib/Image/ExifTool/MOI.pm
 lib/Image/ExifTool/MPC.pm

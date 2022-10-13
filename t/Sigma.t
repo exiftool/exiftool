@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from Sigma.jpg
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Sigma.jpg');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -39,7 +39,7 @@ my $testnum = 1;
 # test 4: Test reading X3F image
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Sigma.x3f');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

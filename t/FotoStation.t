@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from FotoStation.jpg
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/FotoStation.jpg', {Duplicates => 1});
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

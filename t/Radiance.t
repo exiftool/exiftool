@@ -18,7 +18,7 @@ my $testnum = 1;
 
 # test 2: Extract information from RGBE file
 {
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     ++$testnum;
     my $info = $exifTool->ImageInfo('t/images/Radiance.hdr');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);

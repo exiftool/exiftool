@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.17';
+$VERSION = '2.18';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -543,7 +543,11 @@ my %shootingMode = (
     0x2c => [
         {
             Name => 'ContrastMode',
-            Condition => '$$self{Model} !~ /^DMC-(FX10|G1|L1|L10|LC80|GF\d+|G2|TZ10|ZS7)$/',
+            Condition => q{
+                $$self{Model} !~ /^DMC-(FX10|G1|L1|L10|LC80|GF\d+|G2|TZ10|ZS7)$/ and
+                # tested for DC-GH6, but rule out other DC- models just in case - PH
+                $$self{Model} !~ /^DC-/
+            },
             Flags => 'PrintHex',
             Writable => 'int16u',
             Notes => q{
@@ -1129,7 +1133,10 @@ my %shootingMode = (
             8 => 'Cinelike D', #forum11194
             9 => 'Cinelike V', #forum11194
             11 => 'L. Monochrome', #forum11194
+            12 => 'Like709', #forum14033
             15 => 'L. Monochrome D', #forum11194
+            17 => 'V-Log', #forum14033
+            18 => 'Cinelike D2', #forum14033
         },
     },
     0x8a => { #18
@@ -1255,8 +1262,9 @@ my %shootingMode = (
         Writable => 'rational64u',
         Format => 'int32u',
         PrintConv => {
-            '0 0' => 'Expressive',
-            # '0 1' => have seen this for XS1 (PH)
+            # '0 0' => 'Expressive', #forum11194
+            '0 0' => 'Off', #forum14033 (GH6)
+            '0 1' => 'Expressive', #forum14033 (GH6) (have also seen this for XS1)
             '0 2' => 'Retro',
             '0 4' => 'High Key',
             '0 8' => 'Sepia',
@@ -1434,6 +1442,15 @@ my %shootingMode = (
         },
         ValueConv => '$_=sprintf("%.4x",$val); s/(..)(..)/$2 $1/; $_',
         ValueConvInv => '$val =~ s/(..) (..)/$2$1/; hex($val)',
+    },
+    0xe8 => { #PH (DC-GH6)
+        Name => 'MinimumISO',
+        Writable => 'int32u',
+    },
+    0xee => { #PH (DC-GH6)
+        Name => 'DynamicRangeBoost',
+        Writable => 'int16u',
+        PrintConv => { 0 => 'Off', 1 => 'On' },
     },
     0x0e00 => {
         Name => 'PrintIM',

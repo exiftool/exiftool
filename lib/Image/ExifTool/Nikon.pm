@@ -4181,7 +4181,7 @@ my %base64coord = (
     },
 );
 
-%Image::ExifTool::Nikon::AFInfo2V0400 = (       #V0400 related fields begin at x'3c'   ( Z9)
+%Image::ExifTool::Nikon::AFInfo2V0400 = (       #V0400 related fields begin at x'3c' (Z9)
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     DATAMEMBER => [ 0 ],
@@ -4225,9 +4225,13 @@ my %base64coord = (
         Name => 'AFAreaHeight',
         Format => 'int16u',
         RawConv => '$val ? $val : undef',
-    }
-    #  AFFocusResult is the result of the last AF operation and not necessarily an indication of the state of the of the capture (e.g., the subject may have moved or the image re-framed)
-    #0x4a => { Name => 'AFFocusResult',PrintConv => {0=> "No Focus", 1=>"Focus"} },     #new tag created because Z9 uses a hybrid contrast/phase AF     (closest former tag was ContrastDetectAFInFocus).
+    },
+    0x4a => {
+        Name => 'FocusResult',
+        # in Manual Foucs mode, reflects the state of viewfinder focus indicator.
+        # In AF-C or AF-S, reflects the result of the last AF operation.
+        PrintConv => { 0=> "Out of Focus", 1=>"Focus"},
+    },
 );
 
 # Nikon AF fine-tune information (ref 28)

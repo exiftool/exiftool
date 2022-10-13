@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 25834 tags, with 16520 unique tag names.
+They contain a total of 25979 tags, with 16641 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -5087,6 +5087,29 @@ These tags belong to the ExifTool XMP-photoshop family 1 group.
   Tag Name                                      Writable
   --------                                      --------
   AuthorsPosition                               string
+  CameraProfiles                                Camera Struct+
+  CameraProfilesApertureValue                   real_+
+  CameraProfilesAuthor                          string_+
+  CameraProfilesAutoScale                       boolean_+
+  CameraProfilesCameraPrettyName                string_+
+  CameraProfilesCameraRawProfile                boolean_+
+  CameraProfilesFocalLength                     real_+
+  CameraProfilesFocusDistance                   real_+
+  CameraProfilesLens                            string_+
+  CameraProfilesLensPrettyName                  string_+
+  CameraProfilesMake                            string_+
+  CameraProfilesModel                           string_+
+  CameraProfilesPerspectiveModel                PerspectiveModel Struct_+
+  CameraProfilesPerspectiveModelImageXCenter    real_+
+  CameraProfilesPerspectiveModelImageYCenter    real_+
+  CameraProfilesPerspectiveModelRadialDistortParam1 real_+
+  CameraProfilesPerspectiveModelRadialDistortParam2 real_+
+  CameraProfilesPerspectiveModelRadialDistortParam3 real_+
+  CameraProfilesPerspectiveModelScaleFactor     real_+
+  CameraProfilesPerspectiveModelVersion         string_+
+  CameraProfilesProfileName                     string_+
+  CameraProfilesSensorFormatFactor              real_+
+  CameraProfilesUniqueCameraModel               string_+
   CaptionWriter                                 string
   Category                                      string
   City                                          string
@@ -5110,6 +5133,38 @@ These tags belong to the ExifTool XMP-photoshop family 1 group.
   TextLayerText                                 string_+
   TransmissionReference                         string
   Urgency                                       integer
+
+=head3 XMP Camera Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  ApertureValue                                 real
+  Author                                        string
+  AutoScale                                     boolean
+  CameraPrettyName                              string
+  CameraRawProfile                              boolean
+  FocalLength                                   real
+  FocusDistance                                 real
+  Lens                                          string
+  LensPrettyName                                string
+  Make                                          string
+  Model                                         string
+  PerspectiveModel                              PerspectiveModel Struct
+  ProfileName                                   string
+  SensorFormatFactor                            real
+  UniqueCameraModel                             string
+
+=head3 XMP PerspectiveModel Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  ImageXCenter                                  real
+  ImageYCenter                                  real
+  RadialDistortParam1                           real
+  RadialDistortParam2                           real
+  RadialDistortParam3                           real
+  ScaleFactor                                   real
+  Version                                       string
 
 =head3 XMP Layer Struct
 
@@ -11167,6 +11222,7 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x100a   WhiteBalanceFineTune                 int32s[2]
   0x100b   NoiseReduction                       int16u
   0x100e   NoiseReduction                       int16u
+  0x100f   Clarity                              int32s
   0x1010   FujiFlashMode                        int16u
   0x1011   FlashExposureComp                    rational64s
   0x1020   Macro                                int16u
@@ -11185,9 +11241,10 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1041   HighlightTone                        int32s
   0x1044   DigitalZoom                          int32u
   0x1045   LensModulationOptimizer              int32u
-  0x1047   GrainEffect                          int32s
+  0x1047   GrainEffectRoughness                 int32s
   0x1048   ColorChromeEffect                    int32s
   0x1049   BWAdjustment                         int8s
+  0x104c   GrainEffectSize                      int16u
   0x104d   CropMode                             int16u
   0x104e   ColorChromeFXBlue                    int32s
   0x1050   ShutterType                          int16u
@@ -14780,6 +14837,7 @@ These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
      69    FocusPositionVertical                int8u~
      70    AFAreaWidth                          int16u
      72    AFAreaHeight                         int16u
+     74    FocusResult                          int8u
 
 =head3 Nikon AFInfo2 Tags
 
@@ -17263,6 +17321,8 @@ These tags are used in Panasonic/Leica cameras.
   0x00d2   MonochromeGrainEffect                int16u
   0x00d6   NoiseReductionStrength               rational64s
   0x00e4   LensTypeModel                        int16u
+  0x00e8   MinimumISO                           int32u
+  0x00ee   DynamicRangeBoost                    int16u
   0x0e00   PrintIM                              PrintIM
   0x2003   TimeInfo                             Panasonic TimeInfo
   0x8000   MakerNoteVersion                     undef
@@ -20356,6 +20416,7 @@ WX350/WX500, ILCE-1/7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/7SM3/9/9M2/5000/
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+   1102    ISOInfo                              Sony ISOInfo
    1176    ISOInfo                              Sony ISOInfo
    1181    ISOInfo                              Sony ISOInfo
    1185    ISOInfo                              Sony ISOInfo
@@ -27555,6 +27616,7 @@ extracted from M2TS files.
   VideoStreamType                               no
   _AC3                                          M2TS AC3
   _H264                                         H264
+  _MISB                                         MISB
 
 =head3 M2TS AC3 Tags
 
@@ -27675,6 +27737,177 @@ Frame rate information stored by some Canon video cameras.
   ------   --------                             --------
       0    CaptureFrameRate                     no
       1    VideoFrameRate                       no
+
+=head2 MISB Tags
+
+These tags are extracted from STANAG-4609 MISB (Motion Industry Standards
+Board) KLV-format metadata in M2TS videos.
+
+  Tag ID                           Tag Name     Writable
+  ------                           --------     --------
+  '060E2B34030101010E01030302000000' Security   MISB Security
+  '060e2b3402030101434e415644494147'
+                                   ChurchillNav MISB ChurchillNav
+  '060e2b34020b01010e01030101000000'
+                                   UASDataLink  MISB UASDatalink
+  '<other>'                        Unknown      MISB Unknown
+
+=head3 MISB Security Tags
+
+Tags extracted from the MISB ST 0102.11 Security Metadata local set.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   SecurityClassification               no
+  0x0002   ClassifyingCountryCodeMethod         no
+  0x0003   ClassifyingCountry                   no
+  0x0004   SecuritySCI-SHIInformation           no
+  0x0005   Caveats                              no
+  0x0006   ReleasingInstructions                no
+  0x0007   ClassifiedBy                         no
+  0x0008   DerivedFrom                          no
+  0x0009   ClassificationReason                 no
+  0x000a   DeclassificationDate                 no
+  0x000b   ClassificationAndMarkingSystem       no
+  0x000c   ObjectCountryCodingMethod            no
+  0x000d   ObjectCountryCodes                   no
+  0x000e   ClassificationComments               no
+  0x000f   UMID                                 no
+  0x0010   StreamID                             no
+  0x0011   TransportStreamID                    no
+  0x0015   ItemDesignatorID                     no
+  0x0016   SecurityVersion                      no
+  0x0017   ClassifyingCountryCodingMethodDate   no
+  0x0018   ObjectCountryCodingMethodDate        no
+
+=head3 MISB ChurchillNav Tags
+
+Proprietary tags used by Churchill Navigation units.  These tags are all
+currently unknown, but extracted with the Unknown option.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
+
+=head3 MISB UASDatalink Tags
+
+Tags extracted from the MISB ST 0601.11 UAS Datalink local set.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   Checksum                             no
+  0x0002   GPSDateTime                          no
+  0x0003   MissionID                            no
+  0x0004   TailNumber                           no
+  0x0005   GPSTrack                             no
+  0x0006   PitchAngle                           no
+  0x0007   RollAngle                            no
+  0x0008   TrueAirspeed                         no
+  0x0009   IndicatedAirspeed                    no
+  0x000a   ProjectIDCode                        no
+  0x000b   SensorName                           no
+  0x000c   ImageCoordinateSystem                no
+  0x000d   GPSLatitude                          no
+  0x000e   GPSLongitude                         no
+  0x000f   GPSAltitude                          no
+  0x0010   HorizontalFieldOfView                no
+  0x0011   VerticalFieldOfView                  no
+  0x0012   SensorRelativeAzimuthAngle           no
+  0x0013   SensorRelativeElevationAngle         no
+  0x0014   SensorRelativeRollAngle              no
+  0x0015   SlantRange                           no
+  0x0016   TargetWidth                          no
+  0x0017   FrameCenterLatitude                  no
+  0x0018   FrameCenterLongitude                 no
+  0x0019   FrameCenterElevation                 no
+  0x001a   OffsetCornerLatitude1                no
+  0x001b   OffsetCornerLongitude1               no
+  0x001c   OffsetCornerLatitude2                no
+  0x001d   OffsetCornerLongitude2               no
+  0x001e   OffsetCornerLatitude3                no
+  0x001f   OffsetCornerLongitude3               no
+  0x0020   OffsetCornerLatitude4                no
+  0x0021   OffsetCornerLongitude4               no
+  0x0022   IcingDetected                        no
+  0x0023   WindDirection                        no
+  0x0024   WindSpeed                            no
+  0x0025   StaticPressure                       no
+  0x0026   DensityAltitude                      no
+  0x0027   AirTemperature                       no
+  0x0028   TargetLocationLatitude               no
+  0x0029   TargetLocationLongitude              no
+  0x002a   TargetLocationElevation              no
+  0x002b   TargetTrackGateWidth                 no
+  0x002c   TargetTrackGateHeight                no
+  0x002d   TargetErrorEstimateCE90              no
+  0x002e   TargetErrorEstimateLE90              no
+  0x002f   GenericFlagData01                    no
+  0x0030   SecurityLocalMetadataSet             MISB Security
+  0x0031   DifferentialPressure                 no
+  0x0032   AngleOfAttack                        no
+  0x0033   VerticalSpeed                        no
+  0x0034   SideslipAngle                        no
+  0x0035   AirfieldBarometricPressure           no
+  0x0036   AirfieldElevation                    no
+  0x0037   RelativeHumidity                     no
+  0x0038   GPSSpeed                             no
+  0x0039   GroundRange                          no
+  0x003a   FuelRemaining                        no
+  0x003b   CallSign                             no
+  0x003c   WeaponLoad                           no
+  0x003d   WeaponFired                          no
+  0x003e   LaserPRFCode                         no
+  0x003f   SensorFieldOfViewName                no
+  0x0040   MagneticHeading                      no
+  0x0041   UAS_LSVersionNumber                  no
+  0x0042   TargetLocationCovarianceMatrix       no
+  0x0043   AlternateLatitude                    no
+  0x0044   AlternateLongitude                   no
+  0x0045   AlternateAltitude                    no
+  0x0046   AlternateName                        no
+  0x0047   AlternateHeading                     no
+  0x0048   EventStartTime                       no
+  0x0049   RVTLocalSet                          MISB Unknown
+  0x004a   VMTIDataSet                          MISB Unknown
+  0x004b   SensorEllipsoidHeight                no
+  0x004c   AlternateEllipsoidHeight             no
+  0x004d   OperationalMode                      no
+  0x004e   FrameCenterHeightAboveEllipsoid      no
+  0x004f   SensorVelocityNorth                  no
+  0x0050   SensorVelocityEast                   no
+  0x0051   ImageHorizonPixelPack                no
+  0x0052   CornerLatitude1                      no
+  0x0053   CornerLongitude1                     no
+  0x0054   CornerLatitude2                      no
+  0x0055   CornerLongitude2                     no
+  0x0056   CornerLatitude3                      no
+  0x0057   CornerLongitude3                     no
+  0x0058   CornerLatitude4                      no
+  0x0059   CornerLongitude4                     no
+  0x005a   FullPitchAngle                       no
+  0x005b   FullRollAngle                        no
+  0x005c   FullAngleOfAttack                    no
+  0x005d   FullSideslipAngle                    no
+  0x005e   MIISCoreIdentifier                   no
+  0x005f   SARMotionImageryData                 MISB Unknown
+  0x0060   TargetWidthExtended                  no
+  0x0061   RangeImageLocalSet                   MISB Unknown
+  0x0062   GeoregistrationLocalSet              MISB Unknown
+  0x0063   CompositeImagingLocalSet             MISB Unknown
+  0x0064   SegmentLocalSet                      MISB Unknown
+  0x0065   AmendLocalSet                        MISB Unknown
+  0x0066   SDCC-FLP                             no
+  0x0067   DensityAltitudeExtended              no
+  0x0068   SensorEllipsoidHeightExtended        no
+  0x0069   AlternateEllipsoidHeightExtended     no
+
+=head3 MISB Unknown Tags
+
+Other tags are extracted with the Unknown option.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
 
 =head2 QuickTime Tags
 
@@ -27808,7 +28041,7 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 60 different formats of timed GPS metadata from video files.
+currently reads 61 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------

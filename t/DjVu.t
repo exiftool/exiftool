@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from DjVu.djvu
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/DjVu.djvu');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

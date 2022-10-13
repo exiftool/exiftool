@@ -45,7 +45,7 @@ my $testnum = 1;
 # test 2: Extract information from XMP.jpg
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP.jpg', {Duplicates => 1});
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -54,7 +54,7 @@ my $testnum = 1;
 # test 3: Test rewriting everything with slightly different values
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 1, Binary => 1, ListJoin => undef);
     my $info = $exifTool->ImageInfo('t/images/XMP.jpg');
     my $tag;
@@ -85,7 +85,7 @@ my $testnum = 1;
     # this is effectively what the RHEL 3 UTF8 LANG problem does:
     # $image = pack("U*", unpack("C*", $image));
 
-    my $exifTool2 = new Image::ExifTool;
+    my $exifTool2 = Image::ExifTool->new;
     $exifTool2->Options(Duplicates => 1);
     $info = $exifTool2->ImageInfo(\$image);
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
@@ -105,7 +105,7 @@ my $testnum = 1;
 # tests 4/5: Test extracting then reading XMP data as a block
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP.jpg','XMP');
     print 'not ' unless $$info{XMP};
     print "ok $testnum\n";
@@ -123,7 +123,7 @@ my $testnum = 1;
 # test 6: Test copying information to a new XMP data file
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValuesFromFile('t/images/XMP.jpg');
     my $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
@@ -140,7 +140,7 @@ my $testnum = 1;
 # test 7: Test rewriting CS2 XMP information
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
     $exifTool->SetNewValue(Label => 'Blue');
@@ -157,7 +157,7 @@ my $testnum = 1;
     my $file;
     foreach $file ('XMP2.xmp', 'XMP3.xmp') {
         ++$testnum;
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         my $info = $exifTool->ImageInfo("t/images/$file", {Duplicates => 1});
         print 'not ' unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";
@@ -190,7 +190,7 @@ my $testnum = 1;
     my $writeListRef;
     foreach $writeListRef (@writeList) {
         ++$testnum;
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         my $testfile = "t/${testname}_${testnum}_failed.xmp";
         unlink $testfile;
         print 'not ' unless writeCheck($writeListRef, $testname, $testnum,
@@ -213,7 +213,7 @@ my $testnum = 1;
 
 # test 19-20: Copy from XMP to EXIF with and without PrintConv enabled
 {
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     while ($testnum < 20) {
         ++$testnum;
         my $testfile = "t/${testname}_${testnum}_failed.jpg";
@@ -234,7 +234,7 @@ my $testnum = 1;
 
 # test 21-22: Copy from EXIF to XMP with and without PrintConv enabled
 {
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     while ($testnum < 22) {
         ++$testnum;
         my $testfile = "t/${testname}_${testnum}_failed.xmp";
@@ -281,7 +281,7 @@ my $testnum = 1;
 # test 25: Extract information from SVG image
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP.svg', {Duplicates => 1});
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -291,7 +291,7 @@ my $testnum = 1;
 #          (including x:xmptk, rdf:about and rdf:resource attributes)
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
     my @writeInfo = (
@@ -317,7 +317,7 @@ my $testnum = 1;
 # test 27: Extract information from exiftool RDF/XML output file
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP.xml', {Duplicates => 1});
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -347,7 +347,7 @@ my $testnum = 1;
 # test 30: Test mass copy with deletion of specific XMP family 1 groups in shorthand format
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(XMPShorthand => 1);
     my $testfile = "t/${testname}_${testnum}_failed.out";
     unlink $testfile;
@@ -362,7 +362,7 @@ my $testnum = 1;
 # test 31: Extract structured information
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP4.xmp', {Struct => 1});
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -372,7 +372,7 @@ my $testnum = 1;
 {
     # write title only if it doesn't exist
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
     $exifTool->SetNewValue('XMP-dc:Title-de' => '', DelValue => 1);
@@ -416,7 +416,7 @@ my $testnum = 1;
 # test 35: Test various features of writing structured information
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
     my @writeInfo = (
@@ -460,7 +460,7 @@ my $testnum = 1;
     my $i;
     for ($i=0; $i<2; ++$i) {
         ++$testnum;
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         $exifTool->Options(Struct => 1 - $i);
         $exifTool->Options(Escape => 'HTML');   # test escaping of structure fields too
         my $info = $exifTool->ImageInfo("t/images/XMP5.xmp");
@@ -472,7 +472,7 @@ my $testnum = 1;
 # test 38: Copy complex structured information
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
     $exifTool->SetNewValuesFromFile('t/images/XMP5.xmp', 'xmp:all');
@@ -484,7 +484,7 @@ my $testnum = 1;
 # test 39: Extract information from an INX file
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP.inx', {Duplicates => 1});
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -493,7 +493,7 @@ my $testnum = 1;
 # test 40: Copy by flattened tag name and structure at the same time
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
     $exifTool->SetNewValuesFromFile('t/images/XMP5.xmp', 'HierarchicalKeywords1', 'Licensee');
@@ -510,7 +510,7 @@ my $testnum = 1;
 # test 41: Rest writing/reading all DarwinCore tags
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
     $exifTool->SetNewValue('xmp-dwc:*' => 2013);
@@ -527,7 +527,7 @@ my $testnum = 1;
 # test 42: Read extended XMP
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExtendedXMP.jpg', 'xmp:all');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -536,7 +536,7 @@ my $testnum = 1;
 # test 43: Read XMP with unusual namespace prefixes
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP6.xmp', 'xmp:all');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -545,7 +545,7 @@ my $testnum = 1;
 # test 44: Write XMP with unusual namespace prefixes
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
     $exifTool->SetNewValue('xmp-dc:subject' => 'changed');
@@ -559,7 +559,7 @@ my $testnum = 1;
 # test 45: Write empty structures
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
     $exifTool->SetNewValue('regioninfo' => '{RegionList=[,]}');
@@ -572,7 +572,7 @@ my $testnum = 1;
 # test 46: Test the advanced-formatting '@' feature on an XMP:Subject list
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(ListSplit => ', ');
     my $cpy = 'subject<${subject@;/^Test/ ? $_=undef : s/Tool$//}';
     $exifTool->SetNewValuesFromFile('t/images/XMP.jpg', $cpy);
@@ -592,7 +592,7 @@ my $testnum = 1;
 # tests 47-49: Test replacing specific elements in list of structures
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(ListSplit => ',');
     $exifTool->Options(Struct => 1);
     $exifTool->SetNewValue('LocationShownCity' => 'Manchester,Lyon,Frankfurt');
@@ -641,7 +641,7 @@ my $testnum = 1;
 # test 50-53: Test replacing/creating elements in nested lang-alt list
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValuesFromFile('t/images/XMP9.xmp', '*:*');
     $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
@@ -683,7 +683,7 @@ my $testnum = 1;
     ++$testnum;
     $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue(ImageRegionCtypeIdentifier => 'x');
     $exifTool->SetNewValue(ImageRegion => '{Flash={Fired=True,Return#=3}}');
     $exifTool->WriteInfo(undef, $testfile);

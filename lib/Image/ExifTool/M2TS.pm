@@ -13,6 +13,7 @@
 #               6) http://trac.handbrake.fr/browser/trunk/libhb/stream.c
 #               7) http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=04560141
 #               8) http://www.w6rz.net/xport.zip
+#               9) https://en.wikipedia.org/wiki/Program-specific_information
 #
 # Notes:        Variable names containing underlines are the same as in ref 1.
 #
@@ -31,9 +32,9 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.21';
+$VERSION = '1.22';
 
-# program map table "stream_type" lookup (ref 6/1)
+# program map table "stream_type" lookup (ref 6/1/9)
 my %streamType = (
     0x00 => 'Reserved',
     0x01 => 'MPEG-1 Video',
@@ -56,9 +57,22 @@ my %streamType = (
     0x12 => 'MPEG-4 generic',
     0x13 => 'ISO 14496-1 SL-packetized',
     0x14 => 'ISO 13818-6 Synchronized Download Protocol',
-  # 0x15-0x7F => 'ISO 13818-1 Reserved',
+    0x15 => 'Packetized metadata',
+    0x16 => 'Sectioned metadata',
+    0x17 => 'ISO/IEC 13818-6 DSM CC Data Carousel metadata',
+    0x18 => 'ISO/IEC 13818-6 DSM CC Object Carousel metadata',
+    0x19 => 'ISO/IEC 13818-6 Synchronized Download Protocol metadata',
+    0x1a => 'ISO/IEC 13818-11 IPMP',
     0x1b => 'H.264 (AVC) Video',
+    0x1c => 'ISO/IEC 14496-3 (MPEG-4 raw audio)',
+    0x1d => 'ISO/IEC 14496-17 (MPEG-4 text)',
+    0x1e => 'ISO/IEC 23002-3 (MPEG-4 auxiliary video)',
+    0x1f => 'ISO/IEC 14496-10 SVC (MPEG-4 AVC sub-bitstream)',
+    0x20 => 'ISO/IEC 14496-10 MVC (MPEG-4 AVC sub-bitstream)',
+    0x21 => 'ITU-T Rec. T.800 and ISO/IEC 15444 (JPEG 2000 video)',
     0x24 => 'H.265 (HEVC) Video', #PH
+    0x42 => 'Chinese Video Standard',
+    0x7f => 'ISO/IEC 13818-11 IPMP (DRM)',
     0x80 => 'DigiCipher II Video',
     0x81 => 'A52/AC-3 Audio',
     0x82 => 'HDMV DTS Audio',
@@ -145,6 +159,7 @@ my $knotsToKph = 1.852;     # knots --> km/h
     # the following tags are for documentation purposes only
     _AC3  => { SubDirectory => { TagTable => 'Image::ExifTool::M2TS::AC3' } },
     _H264 => { SubDirectory => { TagTable => 'Image::ExifTool::H264::Main' } },
+    _MISB => { SubDirectory => { TagTable => 'Image::ExifTool::MISB::Main' } },
 );
 
 # information extracted from AC-3 audio streams
@@ -278,7 +293,7 @@ sub ParsePID($$$$$)
     my $verbose = $et->Options('Verbose');
     if ($verbose > 1) {
         my $out = $et->Options('TextOut');
-        printf $out "Parsing stream 0x%.4x (%s)\n", $pid, $pidName;
+        printf $out "Parsing stream 0x%.4x (%s) %d bytes\n", $pid, $pidName, length($$dataPt);
         $et->VerboseDump($dataPt);
     }
     my $more = 0;
@@ -303,6 +318,16 @@ sub ParsePID($$$$$)
     } elsif ($type == 0x81 or $type == 0x87 or $type == 0x91) {
         # AC-3 audio
         ParseAC3Audio($et, $dataPt);
+    } elsif ($type == 0x15) {
+        # packetized metadata (look for MISB code starting after 5-byte header)
+        if ($$dataPt =~ /^.{5}\x06\x0e\x2b\x34/s) {
+            $more = Image::ExifTool::MISB::ParseMISB($et, $dataPt, GetTagTable('Image::ExifTool::MISB::Main'));
+            if (not $$et{OPTIONS}{ExtractEmbedded}) {
+                $more = 0;  # extract from only the first packet unless ExtractEmbedded is used
+            } elsif ($$et{OPTIONS}{ExtractEmbedded} > 2) {
+                $more = 1;  # read past unknown 0x15 packets if ExtractEmbedded > 2
+            }
+        }
     } elsif ($type < 0) {
         if ($$dataPt =~ /^(.{164})?(.{24})A[NS][EW]/s) {
             # (Blueskysea B4K, Novatek NT96670)
@@ -426,7 +451,7 @@ sub ProcessM2TS($$)
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
     my ($buff, $pLen, $upkPrefix, $j, $fileType, $eof);
-    my (%pmt, %pidType, %data, %sectLen);
+    my (%pmt, %pidType, %data, %sectLen, %packLen, %fromStart);
     my ($startTime, $endTime, $fwdTime, $backScan, $maxBack);
     my $verbose = $et->Options('Verbose');
     my $out = $et->Options('TextOut');
@@ -610,6 +635,7 @@ sub ProcessM2TS($$)
                 $buf2 = $data{$pid};
                 $pos = 0;
                 delete $data{$pid};
+                delete $fromStart{$pid};
                 delete $sectLen{$pid};
             }
             my $slen = length($buf2);   # section length
@@ -736,6 +762,7 @@ sub ProcessM2TS($$)
                     my $more = ParsePID($et, $pid, $pidType{$pid}, $pidName{$pid}, \$data{$pid});
                     # start fresh even if we couldn't process this PID yet
                     delete $data{$pid};
+                    delete $fromStart{$pid};
                     unless ($more) {
                         delete $needPID{$pid};
                         $didPID{$pid} = 1;
@@ -749,8 +776,8 @@ sub ProcessM2TS($$)
                 my $start_code = Get32u(\$buff, $pos);
                 next unless ($start_code & 0xffffff00) == 0x00000100;
                 my $stream_id = $start_code & 0xff;
+                my $pes_packet_length = Get16u(\$buff, $pos + 4);
                 if ($verbose > 1) {
-                    my $pes_packet_length = Get16u(\$buff, $pos + 4);
                     printf $out "  Stream ID:  0x%.2x\n", $stream_id;
                     print  $out "  Packet Len: $pes_packet_length\n";
                 }
@@ -766,6 +793,14 @@ sub ProcessM2TS($$)
                     next if $pos >= $pEnd;
                 }
                 $data{$pid} = substr($buff, $pos, $pEnd-$pos);
+                # set flag that we read this payload from the start
+                $fromStart{$pid} = 1;
+                # save the packet length
+                if ($pes_packet_length > 8) {
+                    $packLen{$pid} = $pes_packet_length - 8; # (where are the 8 extra bytes? - PH)
+                } else {
+                    delete $packLen{$pid};
+                }
             } else {
                 unless (defined $data{$pid}) {
                     # (vsys a6l dashcam GPS record doesn't have a start indicator)
@@ -776,12 +811,24 @@ sub ProcessM2TS($$)
                 $data{$pid} .= substr($buff, $pos, $pEnd-$pos);
             }
             # save only the first 256 bytes of most streams, except for
-            # unknown or H.264 streams where we save 1 kB
-            my $saveLen = (not $pidType{$pid} or $pidType{$pid} == 0x1b) ? 1024 : 256;
+            # unknown, H.264 or metadata streams where we save up to 1 kB
+            my $saveLen;
+            if (not $pidType{$pid} or $pidType{$pid} == 0x1b) {
+                $saveLen = 1024;
+            } elsif ($pidType{$pid} == 0x15) {
+                # use 1024 or actual size of metadata packet if smaller
+                $saveLen = 1024;
+                $saveLen = $packLen{$pid} if defined $packLen{$pid} and $saveLen > $packLen{$pid};
+            } else {
+                $saveLen = 256;
+            }
             if (length($data{$pid}) >= $saveLen) {
                 my $more = ParsePID($et, $pid, $pidType{$pid}, $pidName{$pid}, \$data{$pid});
                 next if $more < 0;  # wait for program map table (hopefully not too long)
+                # don't stop parsing if we weren't successful and may have missed the start
+                $more = 1 if not $more and not $fromStart{$pid};
                 delete $data{$pid};
+                delete $fromStart{$pid};
                 $more and $needPID{$pid} = -1, next; # parse more of these
                 delete $needPID{$pid};
                 $didPID{$pid} = 1;

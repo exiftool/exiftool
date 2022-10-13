@@ -149,6 +149,23 @@ the date of manufacture)</span></span></td></tr>
   <br>0x2e0 = -4 (weakest)</td></tr></table>
 </td></tr>
 <tr>
+<td title='0x100f = 4111'>0x100f</td>
+<td>Clarity</td>
+<td class=c>int32s</td>
+<td><table class=cols><tr>
+  <td>-5000 = -5
+  <br>-4000 = -4
+  <br>-3000 = -3
+  <br>-2000 = -2</td><td>&nbsp;&nbsp;</td>
+  <td>-1000 = -1
+  <br>0 = 0
+  <br>1000 = 1
+  <br>2000 = 2</td><td>&nbsp;&nbsp;</td>
+  <td>3000 = 3
+  <br>4000 = 4
+  <br>5000 = 5</td></tr></table>
+</td></tr>
+<tr class=b>
 <td title='0x1010 = 4112'>0x1010</td>
 <td>FujiFlashMode</td>
 <td class=c>int16u</td>
@@ -177,25 +194,25 @@ the date of manufacture)</span></span></td></tr>
   <br>0xce20 = TTL Slow - Red-eye Flash - 2nd Curtain (rear)
   <br>0xcf20 = TTL Auto - Red-eye Flash - 2nd Curtain (rear)
   <br>0xe920 = High Speed Sync (HSS)</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1011 = 4113'>0x1011</td>
 <td>FlashExposureComp</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1020 = 4128'>0x1020</td>
 <td>Macro</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1021 = 4129'>0x1021</td>
 <td>FocusMode</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Auto
   <br>1 = Manual
   <br>65535 = Movie</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1022 = 4130'>0x1022</td>
 <td>AFMode</td>
 <td class=c>int16u</td>
@@ -204,33 +221,33 @@ the date of manufacture)</span></span></td></tr>
   <br>1 = Single Point
   <br>256 = Zone
   <br>512 = Wide/Tracking</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1023 = 4131'>0x1023</td>
 <td>FocusPixel</td>
 <td class=c>int16u[2]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x102b = 4139'>0x102b</td>
 <td>PrioritySettings</td>
 <td class=c>-</td>
 <td>--&gt; <a href='FujiFilm.html#PrioritySettings'>FujiFilm PrioritySettings Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x102d = 4141'>0x102d</td>
 <td>FocusSettings</td>
 <td class=c>-</td>
 <td>--&gt; <a href='FujiFilm.html#FocusSettings'>FujiFilm FocusSettings Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x102e = 4142'>0x102e</td>
 <td>AFCSettings</td>
 <td class=c>-</td>
 <td>--&gt; <a href='FujiFilm.html#AFCSettings'>FujiFilm AFCSettings Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1030 = 4144'>0x1030</td>
 <td>SlowSync</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1031 = 4145'>0x1031</td>
 <td>PictureMode</td>
 <td class=c>int16u</td>
@@ -269,25 +286,25 @@ the date of manufacture)</span></span></td></tr>
   <br>0x200 = Shutter speed priority AE
   <br>0x300 = Manual</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x1032 = 4146'>0x1032</td>
 <td>ExposureCount</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(number of exposures used for this image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1033 = 4147'>0x1033</td>
 <td>EXRAuto</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Auto
   <br>1 = Manual</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1034 = 4148'>0x1034</td>
 <td>EXRMode</td>
 <td class=c>int16u</td>
 <td><span class=s>0x100 = HR (High Resolution)
   <br>0x200 = SN (Signal to Noise priority)
   <br>0x300 = DR (Dynamic Range priority)</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1040 = 4160'>0x1040</td>
 <td>ShadowTone</td>
 <td class=c>int32s</td>
@@ -300,7 +317,7 @@ the date of manufacture)</span></span></td></tr>
   <br>16 = -1 (medium soft)
   <br>32 = -2 (soft)</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x1041 = 4161'>0x1041</td>
 <td>HighlightTone</td>
 <td class=c>int32s</td>
@@ -313,36 +330,43 @@ the date of manufacture)</span></span></td></tr>
   <br>16 = -1 (medium soft)
   <br>32 = -2 (soft)</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x1044 = 4164'>0x1044</td>
 <td>DigitalZoom</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1045 = 4165'>0x1045</td>
 <td>LensModulationOptimizer</td>
 <td class=c>int32u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1047 = 4167'>0x1047</td>
-<td>GrainEffect</td>
+<td>GrainEffectRoughness</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Off
   <br>32 = Weak
   <br>64 = Strong</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1048 = 4168'>0x1048</td>
 <td>ColorChromeEffect</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Off
   <br>32 = Weak
   <br>64 = Strong</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1049 = 4169'>0x1049</td>
 <td>BWAdjustment</td>
 <td class=c>int8s</td>
 <td><span class=s><span class=n>(positive values are warm, negative values are cool)</span></span></td></tr>
+<tr>
+<td title='0x104c = 4172'>0x104c</td>
+<td>GrainEffectSize</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>16 = Small
+  <br>32 = Large</span></td></tr>
 <tr class=b>
 <td title='0x104d = 4173'>0x104d</td>
 <td>CropMode</td>
@@ -1236,7 +1260,7 @@ RAF-format information.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 1, 2022</i>
+<br><i>Last revised Oct 13, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

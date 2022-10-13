@@ -18,7 +18,7 @@ my $testnum = 1;
 
 # tests 2-7: Test various types of text files
 {
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $i;
     for (my $i=1; $i<=6; ++$i) {
         ++$testnum;

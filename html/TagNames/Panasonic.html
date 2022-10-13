@@ -730,12 +730,15 @@ L10 and LC80)</span></span><table class=cols><tr>
   <br>2 = Vivid
   <br>3 = Natural
   <br>4 = Monochrome
-  <br>5 = Scenery</td><td>&nbsp;&nbsp;</td>
-  <td>6 = Portrait
-  <br>8 = Cinelike D
+  <br>5 = Scenery
+  <br>6 = Portrait</td><td>&nbsp;&nbsp;</td>
+  <td>8 = Cinelike D
   <br>9 = Cinelike V
   <br>11 = L. Monochrome
-  <br>15 = L. Monochrome D</td></tr></table>
+  <br>12 = Like709
+  <br>15 = L. Monochrome D
+  <br>17 = V-Log
+  <br>18 = Cinelike D2</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x008a = 138'>0x008a</td>
@@ -842,7 +845,8 @@ L10 and LC80)</span></span><table class=cols><tr>
 <td>FilterEffect</td>
 <td class=c>rational64u[0.5]</td>
 <td><table class=cols><tr>
-  <td>&#39;0 0&#39; = Expressive
+  <td>&#39;0 0&#39; = Off
+  <br>&#39;0 1&#39; = Expressive
   <br>&#39;0 2&#39; = Retro
   <br>&#39;0 4&#39; = High Key
   <br>&#39;0 8&#39; = Sepia
@@ -1004,6 +1008,17 @@ camera contrast)</span></span></td></tr>
 <td>LensTypeModel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0x00e8 = 232'>0x00e8</td>
+<td>MinimumISO</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x00ee = 238'>0x00ee</td>
+<td>DynamicRangeBoost</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
 <tr>
 <td title='0x0e00 = 3584'>0x0e00</td>
 <td>PrintIM</td>
@@ -2115,7 +2130,7 @@ various Panasonic and Leica models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 1, 2022</i>
+<br><i>Last revised Oct 13, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

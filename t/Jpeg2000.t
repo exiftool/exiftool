@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from Jpeg2000.jp2
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Jpeg2000.jp2');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -43,7 +43,7 @@ my $testnum = 1;
 # test 4: Extract information from Jpeg2000.j2c
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Jpeg2000.j2c');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -52,7 +52,7 @@ my $testnum = 1;
 # test 5: Extract XML as a block from JP2 image
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Jpeg2000.jp2','xml');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

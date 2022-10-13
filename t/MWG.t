@@ -20,7 +20,7 @@ my $testnum = 1;
 # test 2: Extract MWG information from test image
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 0);
     my $info = $exifTool->ImageInfo('t/images/MWG.jpg', 'MWG:*');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
@@ -29,7 +29,7 @@ my $testnum = 1;
 
 # tests 3-4: Write some MWG tags
 {
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('MWG:DateTimeOriginal' => '2009:10:25 15:13:44.567-04:00');
     $exifTool->SetNewValue('MWG:Creator' => 'Creator One');
     $exifTool->SetNewValue('MWG:Creator' => 'Creator Two');
@@ -65,7 +65,7 @@ my $testnum = 1;
 # test 5: Extract IPTC information from non-standard image while in strict MWG mode
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', 'IPTC:*', 'Warning');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -74,7 +74,7 @@ my $testnum = 1;
 # test 6: Copy a tag with MWG feature active
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValuesFromFile('t/images/MWG.jpg', 'Creator');
     my $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
@@ -91,7 +91,7 @@ my $testnum = 1;
 # test 7: Extract MWG information from ExifTool.jpg
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', 'MWG:*');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

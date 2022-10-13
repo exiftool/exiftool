@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from IPTC.jpg
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/IPTC.jpg', {Duplicates => 1});
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -28,7 +28,7 @@ my $testnum = 1;
 # test 3: Test GetValue() in list context
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->ExtractInfo('t/images/IPTC.jpg', {JoinLists => 0});
     my @values = $exifTool->GetValue('Keywords','ValueConv');
     my $values = join '-', @values;
@@ -43,7 +43,7 @@ my $testnum = 1;
 # test 4: Test rewriting everything with slightly different values
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 1, Binary => 1, ListJoin => undef);
     my $info = $exifTool->ImageInfo('t/images/IPTC.jpg');
     my $tag;
@@ -74,7 +74,7 @@ my $testnum = 1;
     # this is effectively what the RHEL 3 UTF8 LANG problem does:
     # $image = pack("U*", unpack("C*", $image));
 
-    my $exifTool2 = new Image::ExifTool;
+    my $exifTool2 = Image::ExifTool->new;
     $exifTool2->Options(Duplicates => 1);
     $info = $exifTool2->ImageInfo(\$image);
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
@@ -109,7 +109,7 @@ my $testnum = 1;
 # test 6: Write and read using different default IPTC encoding
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
     $exifTool->Options(Charset => 'Cyrillic');
@@ -141,7 +141,7 @@ my $testnum = 1;
 # test 8: Write IPTC as a block
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
     $exifTool->SetNewValuesFromFile('t/images/IPTC.jpg', 'IPTC');

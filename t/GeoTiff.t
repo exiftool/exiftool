@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from GeoTiff.tif
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/GeoTiff.tif');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -36,7 +36,7 @@ my $testnum = 1;
 # test 4: Copy GeoTiff information
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $testfile = "t/${testname}_${testnum}_failed.out";
     unlink $testfile;
     $exifTool->SetNewValuesFromFile('t/images/GeoTiff.tif', 'GeoTiff*');

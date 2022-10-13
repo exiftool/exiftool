@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from Pentax.jpg
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Pentax.jpg');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -41,7 +41,7 @@ my $testnum = 1;
 # test 4: Extract information from a Pentax AVI video
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Pentax.avi');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

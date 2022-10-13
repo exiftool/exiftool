@@ -98,7 +98,7 @@ my $info = <a href="#ImageInfo">ImageInfo</a>('image.jpg');
 
 <blockquote><table class='box'><tr><td><pre>
 use Image::ExifTool;
-my $exifTool = <a href="#new">new</a> Image::ExifTool;
+my $exifTool = Image::ExifTool-&gt;<a href="#new">new</a>;
 my $info = $exifTool-&gt;<a href="#ImageInfo">ImageInfo</a>('image.jpg');
 </pre></td></tr></table></blockquote>
 
@@ -122,7 +122,7 @@ info hash entries.</p>
 
 <blockquote><table class='box'><tr><td><pre>
 use Image::ExifTool;
-my $exifTool = <a href="#new">new</a> Image::ExifTool;
+my $exifTool = Image::ExifTool-&gt;<a href="#new">new</a>;
 $exifTool-&gt;<a href="#SetNewValue">SetNewValue</a>(Author =&gt; 'Phil Harvey');
 $exifTool-&gt;<a href="#WriteInfo">WriteInfo</a>('image.jpg','modified_image.jpg');
 </pre></td></tr></table></blockquote>
@@ -186,7 +186,7 @@ $info = <b>ImageInfo</b>('image.jpg', \@ioTagList, {Sort =&gt; 'Group0'});
 
 <blockquote>Object-oriented example to read from a file that is already open:
 <table class='box'><tr><td><pre>
-my $exifTool = <a href="#new">new</a> Image::ExifTool;
+my $exifTool = Image::ExifTool-&gt;<a href="#new">new</a>;
 
 $info = $exifTool-&gt;<b>ImageInfo</b>(\*FILE_PT, 'Aperture', 'ShutterSpeed', 'ISO');
 </pre></td></tr></table></blockquote>
@@ -377,7 +377,7 @@ while processing the image</td></tr>
 <p>Create a new ExifTool object.</p>
 <p><b>Example:</b></p>
 <blockquote><table class='box'><tr><td><pre>
-my $exifTool = <b>new</b> Image::ExifTool;
+my $exifTool = Image::ExifTool-&gt;<b>new</b>;
 </pre></td></tr></table></blockquote>
 
 <p>One ExifTool object may be used to process many files, so creating multiple
@@ -553,7 +553,11 @@ numerical options.</p>
     align=center>HTML, XML or undef</td>
     <td align=center>undef</td></tr>
 <tr id="Exclude"><td>Exclude</td>
-    <td>Exclude specified tags when extracting information.</td>
+    <td>Exclude specified tags when extracting information.  Note that this
+    option is applied after all of the tags have already been loaded into
+    memory (so different tags may be excluded in subsequent calls to
+    <a href="#GetInfo">GetInfo</a>).  See the <a href="#IgnoreTags">IgnoreTags</a>
+    option to save memory by not loading the tags in the first place.</td>
     <td>Tag name or reference to a list of tag names to
     exclude.  Case is not significant. Tags may also be excluded by preceding
     their name with a '-' in the arguments to ImageInfo.</td>
@@ -1979,7 +1983,7 @@ my @groups = $exifTool-&gt;<b>GetGroups</b>($info, $family);
 </pre></td></tr></table></blockquote>
 <blockquote>Example of one way to print information organized by group
 <table class='box'><tr><td><pre>
-my $exifTool = <a href="#new">new</a> Image::ExifTool;
+my $exifTool = Image::ExifTool-&gt;<a href="#new">new</a>;
 $exifTool-&gt;<a href="#ExtractInfo">ExtractInfo</a>('t/images/ExifTool.jpg');
 
 my $family = 1;
@@ -2104,7 +2108,7 @@ APP5, APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG, DV, DjVu,
 Ducky, EXE, EXIF, ExifTool, FITS, FLAC, FLIR, File, Flash, FlashPix, Font,
 FotoStation, GIF, GIMP, GeoTiff, GoPro, H264, HTML, ICC_Profile, ID3, IPTC,
 ISO, ITC, JFIF, JPEG, JSON, JUMBF, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE,
-MIFF, MNG, MOI, MPC, MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg,
+MIFF, MISB, MNG, MOI, MPC, MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg,
 OpenEXR, Opus, PDF, PICT, PLIST, PNG, PSP, Palm, Parrot, PanasonicRaw,
 PhotoCD, PhotoMechanic, Photoshop, PostScript, PrintIM, QuickTime, RAF,
 RIFF, RSRC, RTF, Radiance, Rawzor, Real, Red, SVG, SigmaRaw, Stim, Theora,
@@ -2126,7 +2130,7 @@ KyoceraRaw, LNK, Leaf, LeafSubIFD, Leica, Lyrics3, Lytro, M2TS, MAC,
 MIE-Audio, MIE-Camera, MIE-Canon, MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS,
 MIE-Geo, MIE-Image, MIE-Lens, MIE-Main, MIE-MakerNotes, MIE-Meta,
 MIE-Orient, MIE-Preview, MIE-Thumbnail, MIE-UTM, MIE-Unknown, MIE-Video,
-MIFF, MNG, MOBI, MOI, MPC, MPEG, MPF0, MPImage, MS-DOC, MXF, MacOS,
+MIFF, MISB, MNG, MOBI, MOI, MPC, MPEG, MPF0, MPImage, MS-DOC, MXF, MacOS,
 MakerNotes, MakerUnknown, Matroska, MediaJukebox, Meta, MetaIFD, Microsoft,
 Minolta, MinoltaRaw, Motorola, NITF, Nikon, NikonCapture, NikonCustom,
 NikonScan, NikonSettings, NineEdits, Nintendo, Ocad, Ogg, Olympus, OpenEXR,

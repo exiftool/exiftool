@@ -37,7 +37,7 @@ my $testnum = 1;
     my $gifImage;
     read(TESTFILE, $gifImage, 100000);
     close(TESTFILE);
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue(Comment => 'a new comment');
     $exifTool->SetNewValue(City => 'Kingston');
     my $image1;

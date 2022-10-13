@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Sigma;
 
-$VERSION = '1.27';
+$VERSION = '1.28';
 
 sub ProcessX3FHeader($$$);
 sub ProcessX3FDirectory($$$);
@@ -450,6 +450,8 @@ sub WriteX3F($$)
                     return -1 if $success < 0;
                     # (this shouldn't happen unless someone tries to delete the EXIF...)
                     return 'EXIF segment must come first in X3F JpgFromRaw' unless $newData =~ /^\xff\xd8\xff\xe1/;
+                    # trim off any extra null bytes (since section length includes padding -- silly Sigma)
+                    $newData =~ s/\0+$//;
                     # write new data if anything changed, otherwise copy old image
                     my $outPt = $$et{CHANGED} ? \$newData : \$buff;
                     Write($outfile, $$outPt) or return -1;
@@ -468,15 +470,16 @@ sub WriteX3F($$)
             # copy data for this subsection
             Image::ExifTool::CopyBlock($raf, $outfile, $len) or return 'Corrupted X3F directory';
         }
-        # add directory entry and update output file position
-        $outDir .= pack('V2a4', $outPos, $len, $tag);
-        $outPos += $len;
         # pad data to an even 4-byte boundary
+        # (stored length includes padding! ref Sigma engineer Yuki Miyahara)
         if ($len & 0x03) {
             my $pad = 4 - ($len & 0x03);
             Write($outfile, "\0" x $pad) or return -1;
-            $outPos += $pad;
+            $len += $pad;
         }
+        # add directory entry and update output file position
+        $outDir .= pack('V2a4', $outPos, $len, $tag);
+        $outPos += $len;
     }
     # warn if we couldn't add metadata to this image (should only be SD9 or SD10)
     $didContain or $et->Warn("Can't yet write SD9 or SD10 X3F images");

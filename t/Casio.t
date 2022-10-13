@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2-4: Extract information from Casio images
 {
     my $file;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     foreach $file ('Casio.jpg', 'Casio2.jpg', 'CasioQVCI.jpg') {
         ++$testnum;
         my $info = $exifTool->ImageInfo("t/images/$file");

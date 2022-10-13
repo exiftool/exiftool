@@ -18,7 +18,7 @@ my $testnum = 1;
 
 # tests 2-7: Extract information from various types of executable files and libraries
 {
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $ext;
     foreach $ext ('exe', 'macho', 'elf', 'a', 'so', 'dylib') {
         ++$testnum;

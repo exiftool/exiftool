@@ -21,7 +21,7 @@ my $testnum = 1;
     my $ext;
     foreach $ext (qw(mov m4a)) {
         ++$testnum;
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         my $info = $exifTool->ImageInfo("t/images/QuickTime.$ext");
         print 'not ' unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";
@@ -31,7 +31,7 @@ my $testnum = 1;
 # tests 4-5: Try writing XMP to the different file formats
 {
     my $ext;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(SavePath => 1); # to save group 5 names
     $exifTool->SetNewValue('XMP:Title' => 'x');
     $exifTool->SetNewValue('TrackCreateDate' => '2000:01:02 03:04:05');
@@ -58,7 +58,7 @@ my $testnum = 1;
 # test 6: Write video rotation
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('Rotation' => '270', Protected => 1);
     my $testfile = "t/${testname}_${testnum}_failed.mov";
     unlink $testfile;
@@ -95,7 +95,7 @@ my $testnum = 1;
 # test 8-9: Delete everything then add back some tags in one step
 {
     my $ext;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my @writeInfo = (
         ['all' => undef],
         ['artist' => 'me'],
@@ -115,7 +115,7 @@ my $testnum = 1;
     ++$testnum;
     my $testfile = "t/${testname}_${testnum}a_failed.mov";
     unlink $testfile;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(QuickTimeHandler => 1);
     $exifTool->SetNewValue('all' => undef);
     writeInfo($exifTool, 't/images/QuickTime.mov', $testfile);
@@ -134,7 +134,7 @@ my $testnum = 1;
     ++$testnum;
     my $testfile = "t/${testname}_${testnum}_failed.heic";
     unlink $testfile;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Composite => 0);
     $exifTool->SetNewValue('XMP-dc:Title' => 'a title');
     writeInfo($exifTool, 't/images/QuickTime.heic', $testfile);
@@ -195,7 +195,7 @@ my $testnum = 1;
 # test 15: Test WriteMode option with QuickTime tags
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(WriteMode => 'c');
     $exifTool->SetNewValue('ItemList:Composer' => 'WRONG');
     $exifTool->SetNewValue('ItemList:Author' => 'aut');

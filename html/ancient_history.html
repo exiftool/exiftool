@@ -13,6 +13,64 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v12.29'><b>July 9, 2021 - Version 12.29</b></a>
+<ul>
+<li>Added a few new Nikon and Olympus lenses (thanks LibRaw)
+<li>Improved a QuickTime "File format error" message to be more meaningful, and
+    made it a minor error
+<li>Changed PNG writer to add EXIF before IDAT
+<li>Some changes the way JUMBF metadata is handled
+<li>Patched to read timed GPS from a different type of INSV videos
+<li>Patched a security issue
+<li>Fixed problem where ExifTool could hang when processing mebx timed metadata
+</ul>
+
+<a name='v12.28'><b>June 22, 2021 - Version 12.28</b></a>
+<ul>
+<li>Added read support for Leica Image File (LIF) images
+<li>Added a new Olympus LensType (thanks LibRaw)
+<li>Decode another Panasonic tag (thanks LibRaw)
+<li>Decode more timed metadata from Sony MP4 videos
+<li>Attempt to shorten tag names for metadata in CZI files
+<li>Allow full QuickTime Keys tag ID's in UserDefined tags (fixes backward
+    incompatibility introduced in 12.02)
+<li>Patched to handle special characters in Torrent tag values
+</ul>
+
+<a name='v12.27'><b>June 9, 2021 - Version 12.27</b></a>
+<ul>
+<li>Added a new SonyModelID value
+<li>Added two new Nikon LensID values (thanks Daniel)
+<li>Added a new Pentax RawDevelopmentProcess value
+<li>Added a few new Sony LensType values (thanks Jos Roost)
+<li>Added warning if IPTCDigest is not current
+<li>Decode a couple more Pentax tags (thanks LibRaw)
+<li>Decode streaming GPS from Novatek INNOVV MP4 and TS videos
+<li>Improved tag names in config_files/covert_regions.config (thanks StarGeek)
+<li>Changed MIME types for MS Office macro-enabled formats to add the .12
+<li>Patched Canon LensID logic to properly identify the Canon RF 24-105mm F4 L
+    IS USM lens
+<li>Patched decoding of camm6 GPSDateTime to use a flexible epoch because other
+    apps don't seem to use a consistent time zero
+<li>Fixed family 7 group names for QuickTime Keys tags
+<li>Fixed problem reading BeatsPerMinute from some MP4 files
+<li>Fixed hemisphere problem when extracting GPS from 70mai dashcam videos
+</ul>
+
+<a name='v12.26'><b>May 20, 2021 - Version 12.26</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added support for JPEG Stereo (JPS) images
+<li>Added a new Sony LensType (thanks LibRaw)
+<li>Added a new PentaxModelID (thanks LibRaw)
+<li>Changed ExifTool namespace URI to use exiftool.org instead of exiftool.ca in
+    the -X option output (exiftool.ca is still recognized when reading XML)
+<li>Improved handling of large-array warnings in -htmldump output
+<li>Changed handling of escaped characters in #[CSTR] lines of -@ argfile
+<li>Patched security vulnerability in argument of -lang option
+<li>Fixed problem which could cause a "Wide character" warning and generate a
+    corrupted output file when writing some illegal values
+</ul>
+
 <a name='v12.25'><b>Apr. 22, 2021 - Version 12.25</b></a>
 <ul>
 <li>JPEG XL support is now official

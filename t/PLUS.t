@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from PLUS.xmp
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/PLUS.xmp', 'xmp:all');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -28,7 +28,7 @@ my $testnum = 1;
 # test 3: Copy PLUS information to a new file
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValuesFromFile('t/images/PLUS.xmp','all:all');
     my $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;

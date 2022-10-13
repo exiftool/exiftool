@@ -4246,7 +4246,9 @@ sub WriteDirectory($$$;$)
     SetByteOrder($saveOrder);
     if ($out) {
         print $out "  Deleting $name\n" if defined $newData and not length $newData;
-        print $out "$$self{INDENT}  [nothing changed in $dirName]\n" if $$self{CHANGED} == $oldChanged;
+        if ($$self{CHANGED} == $oldChanged and $$self{OPTIONS}{Verbose} > 2) {
+            print $out "$$self{INDENT}  [nothing changed in $dirName]\n";
+        }
     }
     return $newData;
 }

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.48
 [File, System, Other] FileName - File Name: Sigma_5_failed.x3f
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 7.3 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:52-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:52-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:52-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:10:13 10:00:31-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2022:10:13 10:00:31-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:10:13 10:00:31-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: X3F
 [File, File, Other] FileTypeExtension - File Type Extension: x3f
@@ -34,7 +34,7 @@
 [SigmaRaw, SigmaRaw, Camera] 7 - Red Adjust: 0.0
 [SigmaRaw, SigmaRaw, Camera] 8 - Green Adjust: 0.0
 [SigmaRaw, SigmaRaw, Camera] 9 - Blue Adjust: 0.0
-[SigmaRaw, SigmaRaw, Preview] IMA2 - Jpg From Raw: (Binary data 5637 bytes)
+[SigmaRaw, SigmaRaw, Preview] IMA2 - Jpg From Raw: (Binary data 5640 bytes)
 [SigmaRaw, SigmaRaw, Camera] AEMODE - Metering Mode: 8-segment
 [SigmaRaw, SigmaRaw, Camera] AFMODE - Focus Mode: AF-S
 [SigmaRaw, SigmaRaw, Camera] AP_DESC - Aperture Displayed: 2.8
@@ -68,7 +68,7 @@
 [SigmaRaw, SigmaRaw, Time] TIME - Date/Time Original: 2009:11:28 13:05:20
 [SigmaRaw, SigmaRaw, Camera] WB_DESC - White Balance: Auto
 [SigmaRaw, SigmaRaw, Camera] CM_DESC - Scene Capture Type: Standard
-[SigmaRaw, SigmaRaw, Preview] IMA2 - Preview Image: (Binary data 18 bytes)
+[SigmaRaw, SigmaRaw, Preview] IMA2 - Preview Image: (Binary data 20 bytes)
 [EXIF, IFD0, Camera] 271 - Make: SIGMA
 [EXIF, IFD0, Camera] 272 - Camera Model Name: SIGMA DP2
 [EXIF, IFD0, Image] 274 - Orientation: Horizontal (normal)
@@ -179,7 +179,7 @@
 [MakerNotes, Sigma, Preview] Exif-PreviewImage - Preview Image: (Binary data 26 bytes)
 [IPTC, IPTC, Other] 25 - Keywords: one, two
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.42
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.48
 [XMP, XMP-dc, Image] title - Title: A title
 [Composite, Composite, Image] Exif-Aperture - Aperture: 2.8
 [Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/10

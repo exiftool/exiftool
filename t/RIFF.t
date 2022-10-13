@@ -21,7 +21,7 @@ my $testnum = 1;
     my $ext;
     foreach $ext (qw(wav avi webp)) {
         ++$testnum;
-        my $exifTool = new Image::ExifTool;
+        my $exifTool = Image::ExifTool->new;
         my $info = $exifTool->ImageInfo("t/images/RIFF.$ext");
         print 'not ' unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";
@@ -31,7 +31,7 @@ my $testnum = 1;
 # test 5: Edit EXIF and XMP
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('exif:usercomment' => 'test comment');
     $exifTool->SetNewValue('xmp:description' => 'test description');
     $testfile = "t/${testname}_${testnum}_failed.webp";
@@ -49,7 +49,7 @@ my $testnum = 1;
 # test 6: Delete all metadata from a WebP file
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('all');
     $testfile = "t/${testname}_${testnum}_failed.webp";
     unlink $testfile;
@@ -62,7 +62,7 @@ my $testnum = 1;
 # test 7: Add back WebP information
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->SetNewValue('exif:usercomment' => 'test comment 2');
     $exifTool->SetNewValue('xmp:description' => 'test description 2');
     my $testfile2 = "t/${testname}_${testnum}_failed.webp";

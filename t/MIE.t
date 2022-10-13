@@ -19,7 +19,7 @@ my $testnum = 1;
 # test 2: Extract information from MIE.mie
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/MIE.mie', '-filename', '-directory');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -28,7 +28,7 @@ my $testnum = 1;
 # test 3: Write MIE information (also test Escape option when writing)
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(IgnoreMinorErrors => 1); # to copy invalid thumbnail
     $exifTool->SetNewValuesFromFile('t/images/Nikon.jpg','*:*');
     $exifTool->SetNewValue('EXIF:XResolution' => 200);
@@ -53,7 +53,7 @@ my $testnum = 1;
 # test 4: Create a MIE file from scratch (also test Escape option when copying)
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(IgnoreMinorErrors => 1); # to copy invalid thumbnail
     $exifTool->Options(Escape => 'HTML');
     $exifTool->SetNewValuesFromFile('t/images/MIE.mie');
@@ -73,7 +73,7 @@ my $testnum = 1;
 # tests 5-6: Test reading different Charsets
 foreach (qw(Latin Cyrillic)) {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Charset => $_);
     my $info = $exifTool->ImageInfo('t/images/MIE.mie', 'comment-ru_ru');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);

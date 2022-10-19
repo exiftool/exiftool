@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 25979 tags, with 16641 unique tag names.
+They contain a total of 26009 tags, with 16658 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1430,6 +1430,11 @@ These tags belong to the ExifTool XMP-aux family 1 group.
   --------                                      --------
   ApproximateFocusDistance                      rational
   DistortionCorrectionAlreadyApplied            boolean
+  EnhanceDetailsAlreadyApplied                  boolean
+  EnhanceDetailsVersion                         string
+  EnhanceSuperResolutionAlreadyApplied          boolean
+  EnhanceSuperResolutionScale                   rational
+  EnhanceSuperResolutionVersion                 string
   Firmware                                      string
   FlashCompensation                             rational
   ImageNumber                                   string
@@ -2415,7 +2420,12 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   UprightDependentDigest                        string/
   UprightFocalLength35mm                        real/
   UprightFocalMode                              integer/
+  UprightFourSegments_0                         string/
+  UprightFourSegments_1                         string/
+  UprightFourSegments_2                         string/
+  UprightFourSegments_3                         string/
   UprightFourSegmentsCount                      integer/
+  UprightGuidedDependentDigest                  string/
   UprightPreview                                boolean/
   UprightTransform_0                            string/
   UprightTransform_1                            string/
@@ -3595,7 +3605,12 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   UprightDependentDigest                        string
   UprightFocalLength35mm                        real
   UprightFocalMode                              integer
+  UprightFourSegments_0                         string
+  UprightFourSegments_1                         string
+  UprightFourSegments_2                         string
+  UprightFourSegments_3                         string
   UprightFourSegmentsCount                      integer
+  UprightGuidedDependentDigest                  string
   UprightPreview                                boolean
   UprightTransform_0                            string
   UprightTransform_1                            string
@@ -14988,6 +15003,55 @@ cameras such as the Z6 and Z7, and NRW images from some Coolpix cameras.
   ------   --------                             --------
   [no tags known]
 
+=head3 Nikon AVI Tags
+
+Nikon-specific RIFF tags found in AVI videos.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'nctg'   NikonTags                            Nikon AVITags
+  'ncth'   ThumbnailImage                       no
+  'ncvr'   NikonVers                            Nikon AVIVers
+  'ncvw'   PreviewImage                         no
+
+=head3 Nikon AVITags Tags
+
+These tags and the AVIVer tags below are found in proprietary-format records
+of Nikon AVI videos.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0003   Make                                 no
+  0x0004   Model                                no
+  0x0005   Software                             no
+  0x0006   Equipment                            no
+  0x0007   Orientation                          no
+  0x0008   ExposureTime                         no
+  0x0009   FNumber                              no
+  0x000a   ExposureCompensation                 no
+  0x000b   MaxApertureValue                     no
+  0x000c   MeteringMode                         no
+  0x000f   FocalLength                          no
+  0x0010   XResolution                          no
+  0x0011   YResolution                          no
+  0x0012   ResolutionUnit                       no
+  0x0013   DateTimeOriginal                     no
+  0x0014   CreateDate                           no
+  0x0016   Duration                             no
+  0x0018   FocusMode                            no
+  0x001b   DigitalZoom                          no
+  0x001d   ColorMode                            no
+  0x001e   Sharpness                            no
+  0x001f   WhiteBalance                         no
+  0x0020   NoiseReduction                       no
+
+=head3 Nikon AVIVers Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   MakerNoteType                        no
+  0x0002   MakerNoteVersion                     no
+
 =head3 Nikon NCDT Tags
 
 Nikon-specific QuickTime tags found in the NCDT atom of MOV videos from
@@ -15114,55 +15178,6 @@ This information is found in MOV and QT videos from some Nikon cameras.
      72    FocalLength                          no
     175    Software                             no
     223    ISO                                  no
-
-=head3 Nikon AVI Tags
-
-Nikon-specific RIFF tags found in AVI videos.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'nctg'   NikonTags                            Nikon AVITags
-  'ncth'   ThumbnailImage                       no
-  'ncvr'   NikonVers                            Nikon AVIVers
-  'ncvw'   PreviewImage                         no
-
-=head3 Nikon AVITags Tags
-
-These tags and the AVIVer tags below are found in proprietary-format records
-of Nikon AVI videos.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0003   Make                                 no
-  0x0004   Model                                no
-  0x0005   Software                             no
-  0x0006   Equipment                            no
-  0x0007   Orientation                          no
-  0x0008   ExposureTime                         no
-  0x0009   FNumber                              no
-  0x000a   ExposureCompensation                 no
-  0x000b   MaxApertureValue                     no
-  0x000c   MeteringMode                         no
-  0x000f   FocalLength                          no
-  0x0010   XResolution                          no
-  0x0011   YResolution                          no
-  0x0012   ResolutionUnit                       no
-  0x0013   DateTimeOriginal                     no
-  0x0014   CreateDate                           no
-  0x0016   Duration                             no
-  0x0018   FocusMode                            no
-  0x001b   DigitalZoom                          no
-  0x001d   ColorMode                            no
-  0x001e   Sharpness                            no
-  0x001f   WhiteBalance                         no
-  0x0020   NoiseReduction                       no
-
-=head3 Nikon AVIVers Tags
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0001   MakerNoteType                        no
-  0x0002   MakerNoteVersion                     no
 
 =head2 NikonCustom Tags
 
@@ -17021,6 +17036,58 @@ written by some Olympus voice recorders.
      62    Duration                             no
     798    Comment                              no
 
+=head3 Olympus AVI Tags
+
+This information is found in Olympus AVI videos.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     18    Make                                 no
+     44    Model                                no
+     94    FNumber                              no
+    131    DateTime1                            no
+    157    DateTime2                            no
+    297    ThumbInfo                            Olympus thmb2
+
+=head3 Olympus thmb2 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    ThumbnailWidth                       no
+      2    ThumbnailHeight                      no
+      4    ThumbnailLength                      no
+      8    ThumbnailImage                       no
+
+=head3 Olympus WAV Tags
+
+This information is found in WAV files from Olympus PCM linear recorders
+like the LS-5, LS-10, LS-11.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     12    Model                                no
+     28    FileNumber                           no
+     38    DateTimeOriginal                     no
+     50    DateTimeEnd                          no
+     62    RecordingTime                        no
+    512    Duration                             no
+    522    Index01                              no
+    532    Index02                              no
+    542    Index03                              no
+    552    Index04                              no
+    562    Index05                              no
+    572    Index06                              no
+    582    Index07                              no
+    592    Index08                              no
+    602    Index09                              no
+    612    Index10                              no
+    622    Index11                              no
+    632    Index12                              no
+    642    Index13                              no
+    652    Index14                              no
+    662    Index15                              no
+    672    Index16                              no
+
 =head3 Olympus MOV1 Tags
 
 This information is found in MOV videos from Olympus models such as the
@@ -17126,15 +17193,6 @@ Information extracted from the "scrn" atom of Olympus MP4 videos.
       0    PreviewImageLength                   no
       4    PreviewImage                         no
 
-=head3 Olympus thmb2 Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    ThumbnailWidth                       no
-      2    ThumbnailHeight                      no
-      4    ThumbnailLength                      no
-      8    ThumbnailImage                       no
-
 =head3 Olympus thmb Tags
 
 Information extracted from the "thmb" atom of Olympus MP4 videos.
@@ -17157,49 +17215,6 @@ Tags found in the OLYM atom of MP4 videos from the TG-810.
     153    DateTime2                            no
     265    ThumbnailWidth                       no
     267    ThumbnailHeight                      no
-
-=head3 Olympus AVI Tags
-
-This information is found in Olympus AVI videos.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-     18    Make                                 no
-     44    Model                                no
-     94    FNumber                              no
-    131    DateTime1                            no
-    157    DateTime2                            no
-    297    ThumbInfo                            Olympus thmb2
-
-=head3 Olympus WAV Tags
-
-This information is found in WAV files from Olympus PCM linear recorders
-like the LS-5, LS-10, LS-11.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-     12    Model                                no
-     28    FileNumber                           no
-     38    DateTimeOriginal                     no
-     50    DateTimeEnd                          no
-     62    RecordingTime                        no
-    512    Duration                             no
-    522    Index01                              no
-    532    Index02                              no
-    542    Index03                              no
-    552    Index04                              no
-    562    Index05                              no
-    572    Index06                              no
-    582    Index07                              no
-    592    Index08                              no
-    602    Index09                              no
-    612    Index10                              no
-    622    Index11                              no
-    632    Index12                              no
-    642    Index13                              no
-    652    Index14                              no
-    662    Index15                              no
-    672    Index16                              no
 
 =head2 Panasonic Tags
 
@@ -18324,6 +18339,39 @@ Tags extracted from the maker notes of AVI videos from the Optio S1.
   ------   --------                             --------
   0x0000   MakerNoteVersion                     no
 
+=head3 Pentax Junk Tags
+
+Tags found in the JUNK chunk of AVI videos from the RS1000.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     12    Model                                no
+
+=head3 Pentax Junk2 Tags
+
+This information is found in AVI videos from the Optio RZ18.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     18    Make                                 no
+     44    Model                                no
+     94    FNumber                              no
+    131    DateTime1                            no
+    157    DateTime2                            no
+    299    ThumbnailWidth                       no
+    301    ThumbnailHeight                      no
+    303    ThumbnailLength                      no
+    307    ThumbnailImage                       no
+
+=head3 Pentax AVI Tags
+
+Pentax-specific RIFF tags found in AVI videos.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'hymn'   MakerNotes                           Pentax
+  'mknt'   MakerNotes                           Pentax
+
 =head3 Pentax PENT Tags
 
 Tags found in the PENT atom of MOV videos from the Optio WG-2 GPS.
@@ -18377,39 +18425,6 @@ This information is found in MOV videos from cameras such as the Optio WP.
      68    WhiteBalance                         no
      72    FocalLength                          no
     175    ISO                                  no
-
-=head3 Pentax Junk Tags
-
-Tags found in the JUNK chunk of AVI videos from the RS1000.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-     12    Model                                no
-
-=head3 Pentax Junk2 Tags
-
-This information is found in AVI videos from the Optio RZ18.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-     18    Make                                 no
-     44    Model                                no
-     94    FNumber                              no
-    131    DateTime1                            no
-    157    DateTime2                            no
-    299    ThumbnailWidth                       no
-    301    ThumbnailHeight                      no
-    303    ThumbnailLength                      no
-    307    ThumbnailImage                       no
-
-=head3 Pentax AVI Tags
-
-Pentax-specific RIFF tags found in AVI videos.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'hymn'   MakerNotes                           Pentax
-  'mknt'   MakerNotes                           Pentax
 
 =head2 PhaseOne Tags
 
@@ -25454,6 +25469,29 @@ Graphics) images.  See L<http://bellard.org/bpg/> for the specification.
   0x0004   ThumbnailBPG                         no
   0x0005   AnimationControl?                    no
 
+=head2 ICO Tags
+
+Information extracted from Windows ICO (icon) and CUR (cursor) files.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      2    ImageType                            no
+      4    ImageCount                           no
+      6    IconDir                              ICO IconDir
+
+=head3 ICO IconDir Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    ImageWidth                           no
+      1    ImageHeight                          no
+      2    NumColors                            no
+      4    ColorPlanes                          no
+           HotspotX                             no
+      6    BitsPerPixel                         no
+           HotspotY                             no
+      8    ImageLength                          no
+
 =head2 PICT Tags
 
 The PICT format contains no true meta information, except for the possible
@@ -27256,659 +27294,6 @@ This information is found in iTunes Cover Flow data files.
       7    ImageWidth                           no
       8    ImageHeight                          no
 
-=head2 FLAC Tags
-
-Free Lossless Audio Codec (FLAC) meta information.  ExifTool also extracts
-ID3 information from these files.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0000   StreamInfo                           FLAC StreamInfo
-  0x0001   Padding?                             no
-  0x0002   Application?                         no
-  0x0003   SeekTable?                           no
-  0x0004   VorbisComment                        Vorbis Comments
-  0x0005   CueSheet?                            no
-  0x0006   Picture                              FLAC Picture
-
-=head3 FLAC StreamInfo Tags
-
-FLAC is big-endian, so bit 0 is the high-order bit in this table.
-
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'Bit000-015'         BlockSizeMin             no
-  'Bit016-031'         BlockSizeMax             no
-  'Bit032-055'         FrameSizeMin             no
-  'Bit056-079'         FrameSizeMax             no
-  'Bit080-099'         SampleRate               no
-  'Bit100-102'         Channels                 no
-  'Bit103-107'         BitsPerSample            no
-  'Bit108-143'         TotalSamples             no
-  'Bit144-271'         MD5Signature             no
-
-=head3 FLAC Picture Tags
-
-  Index4   Tag Name                             Writable
-  ------   --------                             --------
-      0    PictureType                          no
-      1    PictureMIMEType                      no
-      2    PictureDescription                   no
-      3    PictureWidth                         no
-      4    PictureHeight                        no
-      5    PictureBitsPerPixel                  no
-      6    PictureIndexedColors                 no
-      7    PictureLength                        no
-      8    Picture                              no
-
-=head2 Ogg Tags
-
-ExifTool extracts the following types of information from Ogg files.  See
-L<http://www.xiph.org/vorbis/doc/> for the Ogg specification.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'FLAC'   FLAC                                 FLAC
-  'ID3'    ID3                                  ID3
-  'Opus'   Opus                                 Opus
-  'theora' Theora                               Theora
-  'vorbis' Vorbis                               Vorbis
-
-=head2 Vorbis Tags
-
-Information extracted from Ogg Vorbis files.  See
-L<http://www.xiph.org/vorbis/doc/> for the Vorbis specification.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0001   Identification                       Vorbis Identification
-  0x0003   Comments                             Vorbis Comments
-
-=head3 Vorbis Comments Tags
-
-The tags below are only some common tags found in the Vorbis comments of Ogg
-Vorbis and Ogg FLAC audio files, however ExifTool will extract values from
-any tag found, even if not listed here.
-
-  Tag ID                   Tag Name             Writable
-  ------                   --------             --------
-  'ACTOR'                  Actor                no
-  'ALBUM'                  Album                no
-  'ARTIST'                 Artist               no+
-  'COMMENT'                Comment              no
-  'COMPOSER'               Composer             no
-  'CONTACT'                Contact              no+
-  'COPYRIGHT'              Copyright            no
-  'COVERART'               CoverArt             no
-  'COVERARTMIME'           CoverArtMIMEType     no
-  'DATE'                   Date                 no
-  'DESCRIPTION'            Description          no
-  'DIRECTOR'               Director             no
-  'ENCODED_BY'             EncodedBy            no
-  'ENCODED_USING'          EncodedUsing         no
-  'ENCODER'                Encoder              no
-  'ENCODER_OPTIONS'        EncoderOptions       no
-  'GENRE'                  Genre                no
-  'ISRC'                   ISRCNumber           no
-  'LICENSE'                License              no
-  'LOCATION'               Location             no
-  'METADATA_BLOCK_PICTURE' Picture              FLAC Picture
-  'ORGANIZATION'           Organization         no
-  'PERFORMER'              Performer            no+
-  'PRODUCER'               Producer             no
-  'REPLAYGAIN_ALBUM_GAIN'  ReplayGainAlbumGain  no
-  'REPLAYGAIN_ALBUM_PEAK'  ReplayGainAlbumPeak  no
-  'REPLAYGAIN_TRACK_GAIN'  ReplayGainTrackGain  no
-  'REPLAYGAIN_TRACK_PEAK'  ReplayGainTrackPeak  no
-  'TITLE'                  Title                no
-  'TRACKNUMBER'            TrackNumber          no
-  'VERSION'                Version              no
-  'vendor'                 Vendor               no
-
-=head3 Vorbis Identification Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    VorbisVersion                        no
-      4    AudioChannels                        no
-      5    SampleRate                           no
-      9    MaximumBitrate                       no
-     13    NominalBitrate                       no
-     17    MinimumBitrate                       no
-
-=head2 Opus Tags
-
-Information extracted from Ogg Opus files.  See
-L<https://www.opus-codec.org/docs/> for the specification.
-
-  Tag ID       Tag Name                         Writable
-  ------       --------                         --------
-  'OpusHead'   Header                           Opus Header
-  'OpusTags'   Comments                         Vorbis Comments
-
-=head3 Opus Header Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    OpusVersion                          no
-      1    AudioChannels                        no
-      4    SampleRate                           no
-      8    OutputGain                           no
-
-=head2 Theora Tags
-
-Information extracted from Ogg Theora video files.  See
-L<http://www.theora.org/doc/Theora.pdf> for the Theora specification.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0080   Identification                       Theora Identification
-  0x0081   Comments                             Vorbis Comments
-
-=head3 Theora Identification Tags
-
-Tags extracted from the Theora identification header.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    TheoraVersion                        no
-      7    ImageWidth                           no
-     10    ImageHeight                          no
-     13    XOffset                              no
-     14    YOffset                              no
-     15    FrameRate                            no
-     23    PixelAspectRatio                     no
-     29    ColorSpace                           no
-     30    NominalVideoBitrate                  no
-     33    Quality                              no
-     34    PixelFormat                          no
-
-=head2 APE Tags
-
-Tags found in Monkey's Audio (APE) information.  Only a few common tags are
-listed below, but ExifTool will extract any tag found.  ExifTool supports
-APEv1 and APEv2 tags, as well as ID3 information in APE files, and will also
-read APE metadata from MP3 and MPC files.
-
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'Album'              Album                    no
-  'Artist'             Artist                   no
-  'DURATION'           Duration                 no
-  'Genre'              Genre                    no
-  'Title'              Title                    no
-  'Tool Name'          ToolName                 no
-  'Tool Version'       ToolVersion              no
-  'Track'              Track                    no
-  'Year'               Year                     no
-
-=head3 APE NewHeader Tags
-
-APE MAC audio header for version 3.98 or later.
-
-  Index2   Tag Name                             Writable
-  ------   --------                             --------
-      0    CompressionLevel                     no
-      2    BlocksPerFrame                       no
-      4    FinalFrameBlocks                     no
-      6    TotalFrames                          no
-      8    BitsPerSample                        no
-      9    Channels                             no
-     10    SampleRate                           no
-
-=head3 APE OldHeader Tags
-
-APE MAC audio header for version 3.97 or earlier.
-
-  Index2   Tag Name                             Writable
-  ------   --------                             --------
-      0    APEVersion                           no
-      1    CompressionLevel                     no
-      3    Channels                             no
-      4    SampleRate                           no
-     10    TotalFrames                          no
-     12    FinalFrameBlocks                     no
-
-=head2 Audible Tags
-
-ExifTool will extract any information found in the metadata dictionary of
-Audible .AA files, even if not listed in the table below.
-
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  '_chapter_count'     ChapterCount             no
-  '_cover_art'         CoverArt                 no
-  'author'             Author                   no
-  'copyright'          Copyright                no
-  'pub_date_start'     PublishDateStart         no
-  'pubdate'            PublishDate              no
-
-=head3 Audible tags Tags
-
-Information found in "tags" atom of Audible M4B audio books.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'cvrx'   Audible_cvrx                         Audible cvrx
-  'meta'   Audible_meta                         Audible meta
-  'tseg'   Audible_tseg                         Audible tseg
-
-=head3 Audible cvrx Tags
-
-Audible cover art information in M4B audio books.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  CoverArt                                      no
-  CoverArtType                                  no
-
-=head3 Audible meta Tags
-
-Information found in Audible M4B "meta" atom.
-
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'ALBUMARTIST'        AlbumArtist              no
-  'Album'              Album                    no
-  'Artist'             Artist                   no
-  'Comment'            Comment                  no
-  'Genre'              Genre                    no
-  'SUBTITLE'           Subtitle                 no
-  'TOOL'               CreatorTool              no
-  'Title'              Title                    no
-  'Year'               Year                     no
-  'itunesmediatype'    iTunesMediaType          no
-  'track'              ChapterName              no
-
-=head3 Audible tseg Tags
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'meta'   Audible_meta2                        Audible meta
-  'tshd'   ChapterNumber                        no
-
-=head2 MPC Tags
-
-Tags used in Musepack (MPC) audio files.  ExifTool also extracts ID3 and APE
-information from these files.
-
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'Bit032-063'         TotalFrames              no
-  'Bit080-081'         SampleRate               no
-  'Bit084-087'         Quality                  no
-  'Bit088-093'         MaxBand                  no
-  'Bit096-111'         ReplayGainTrackPeak      no
-  'Bit112-127'         ReplayGainTrackGain      no
-  'Bit128-143'         ReplayGainAlbumPeak      no
-  'Bit144-159'         ReplayGainAlbumGain      no
-  'Bit179'             FastSeek                 no
-  'Bit191'             Gapless                  no
-  'Bit216-223'         EncoderVersion           no
-
-=head2 MPEG Tags
-
-The MPEG format doesn't specify any file-level meta information.  In lieu of
-this, information is extracted from the first audio and video frame headers
-in the file.
-
-=head3 MPEG Audio Tags
-
-  Tag ID       Tag Name                         Writable
-  ------       --------                         --------
-  'Bit11-12'   MPEGAudioVersion                 no
-  'Bit13-14'   AudioLayer                       no
-  'Bit16-19'   AudioBitrate                     no
-  'Bit20-21'   SampleRate                       no
-  'Bit24-25'   ChannelMode                      no
-  'Bit26'      MSStereo                         no
-  'Bit26-27'   ModeExtension                    no
-  'Bit27'      IntensityStereo                  no
-  'Bit28'      CopyrightFlag                    no
-  'Bit29'      OriginalMedia                    no
-  'Bit30-31'   Emphasis                         no
-
-=head3 MPEG Video Tags
-
-  Tag ID       Tag Name                         Writable
-  ------       --------                         --------
-  'Bit00-11'   ImageWidth                       no
-  'Bit12-23'   ImageHeight                      no
-  'Bit24-27'   AspectRatio                      no
-  'Bit28-31'   FrameRate                        no
-  'Bit32-49'   VideoBitrate                     no
-
-=head3 MPEG Xing Tags
-
-These tags are extracted from the Xing/Info frame.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  Encoder                                       no
-  LameHeader                                    MPEG Lame
-  LameQuality                                   no
-  LameVBRQuality                                no
-  VBRBytes                                      no
-  VBRFrames                                     no
-  VBRScale                                      no
-
-=head3 MPEG Lame Tags
-
-Tags extracted from Lame 3.90 or later header.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      9    LameMethod                           no
-     10    LameLowPassFilter                    no
-     20    LameBitrate                          no
-     24    LameStereoMode                       no
-
-=head2 M2TS Tags
-
-The MPEG-2 transport stream is used as a container for many different
-audio/video formats (including AVCHD).  This table lists information
-extracted from M2TS files.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  AudioStreamType                               no
-  Duration                                      no
-  VideoStreamType                               no
-  _AC3                                          M2TS AC3
-  _H264                                         H264
-  _MISB                                         MISB
-
-=head3 M2TS AC3 Tags
-
-Tags extracted from AC-3 audio streams.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  AudioBitrate                                  no
-  AudioChannels                                 no
-  AudioSampleRate                               no
-  SurroundMode                                  no
-
-=head2 H264 Tags
-
-Tags extracted from H.264 video streams.  The metadata for AVCHD videos is
-stored in this stream.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  ImageHeight                                   no
-  ImageWidth                                    no
-  MDPM                                          H264 MDPM
-
-=head3 H264 MDPM Tags
-
-The following tags are decoded from the Modified Digital Video Pack Metadata
-(MDPM) of the unregistered user data with UUID
-17ee8c60f84d11d98cd60800200c9a66 in the H.264 Supplemental Enhancement
-Information (SEI).  I<[Yes, this description is confusing, but nothing
-compared to the challenge of actually decoding the data!]>  This information
-may exist at regular intervals through the entire video, but only the first
-occurrence is extracted unless the ExtractEmbedded (-ee) option is used (in
-which case subsequent occurrences are extracted as sub-documents).
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0013   TimeCode                             no
-  0x0018   DateTimeOriginal                     no
-  0x0070   Camera1                              H264 Camera1
-  0x0071   Camera2                              H264 Camera2
-  0x007f   Shutter                              H264 Shutter
-  0x00a0   ExposureTime                         no
-  0x00a1   FNumber                              no
-  0x00a2   ExposureProgram                      no
-  0x00a3   BrightnessValue                      no
-  0x00a4   ExposureCompensation                 no
-  0x00a5   MaxApertureValue                     no
-  0x00a6   Flash                                no
-  0x00a7   CustomRendered                       no
-  0x00a8   WhiteBalance                         no
-  0x00a9   FocalLengthIn35mmFormat              no
-  0x00aa   SceneCaptureType                     no
-  0x00b0   GPSVersionID                         no
-  0x00b1   GPSLatitudeRef                       no
-  0x00b2   GPSLatitude                          no
-  0x00b5   GPSLongitudeRef                      no
-  0x00b6   GPSLongitude                         no
-  0x00b9   GPSAltitudeRef                       no
-  0x00ba   GPSAltitude                          no
-  0x00bb   GPSTimeStamp                         no
-  0x00be   GPSStatus                            no
-  0x00bf   GPSMeasureMode                       no
-  0x00c0   GPSDOP                               no
-  0x00c1   GPSSpeedRef                          no
-  0x00c2   GPSSpeed                             no
-  0x00c3   GPSTrackRef                          no
-  0x00c4   GPSTrack                             no
-  0x00c5   GPSImgDirectionRef                   no
-  0x00c6   GPSImgDirection                      no
-  0x00c7   GPSMapDatum                          no
-  0x00ca   GPSDateStamp                         no
-  0x00e0   MakeModel                            H264 MakeModel
-  0x00e1   RecInfo                              H264 RecInfo
-  0x00e4   Model                                no
-  0x00ee   FrameInfo                            H264 FrameInfo
-
-=head3 H264 Camera1 Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    ApertureSetting                      no
-      1    Gain                                 no
-    1.1    ExposureProgram                      no
-    2.1    WhiteBalance                         no
-      3    Focus                                no
-
-=head3 H264 Camera2 Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      1    ImageStabilization                   no
-
-=head3 H264 Shutter Tags
-
-  Index2   Tag Name                             Writable
-  ------   --------                             --------
-    1.1    ExposureTime                         no
-
-=head3 H264 MakeModel Tags
-
-  Index2   Tag Name                             Writable
-  ------   --------                             --------
-      0    Make                                 no
-
-=head3 H264 RecInfo Tags
-
-Recording information stored by some Canon video cameras.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    RecordingMode                        no
-
-=head3 H264 FrameInfo Tags
-
-Frame rate information stored by some Canon video cameras.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    CaptureFrameRate                     no
-      1    VideoFrameRate                       no
-
-=head2 MISB Tags
-
-These tags are extracted from STANAG-4609 MISB (Motion Industry Standards
-Board) KLV-format metadata in M2TS videos.
-
-  Tag ID                           Tag Name     Writable
-  ------                           --------     --------
-  '060E2B34030101010E01030302000000' Security   MISB Security
-  '060e2b3402030101434e415644494147'
-                                   ChurchillNav MISB ChurchillNav
-  '060e2b34020b01010e01030101000000'
-                                   UASDataLink  MISB UASDatalink
-  '<other>'                        Unknown      MISB Unknown
-
-=head3 MISB Security Tags
-
-Tags extracted from the MISB ST 0102.11 Security Metadata local set.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0001   SecurityClassification               no
-  0x0002   ClassifyingCountryCodeMethod         no
-  0x0003   ClassifyingCountry                   no
-  0x0004   SecuritySCI-SHIInformation           no
-  0x0005   Caveats                              no
-  0x0006   ReleasingInstructions                no
-  0x0007   ClassifiedBy                         no
-  0x0008   DerivedFrom                          no
-  0x0009   ClassificationReason                 no
-  0x000a   DeclassificationDate                 no
-  0x000b   ClassificationAndMarkingSystem       no
-  0x000c   ObjectCountryCodingMethod            no
-  0x000d   ObjectCountryCodes                   no
-  0x000e   ClassificationComments               no
-  0x000f   UMID                                 no
-  0x0010   StreamID                             no
-  0x0011   TransportStreamID                    no
-  0x0015   ItemDesignatorID                     no
-  0x0016   SecurityVersion                      no
-  0x0017   ClassifyingCountryCodingMethodDate   no
-  0x0018   ObjectCountryCodingMethodDate        no
-
-=head3 MISB ChurchillNav Tags
-
-Proprietary tags used by Churchill Navigation units.  These tags are all
-currently unknown, but extracted with the Unknown option.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  [no tags known]
-
-=head3 MISB UASDatalink Tags
-
-Tags extracted from the MISB ST 0601.11 UAS Datalink local set.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0001   Checksum                             no
-  0x0002   GPSDateTime                          no
-  0x0003   MissionID                            no
-  0x0004   TailNumber                           no
-  0x0005   GPSTrack                             no
-  0x0006   PitchAngle                           no
-  0x0007   RollAngle                            no
-  0x0008   TrueAirspeed                         no
-  0x0009   IndicatedAirspeed                    no
-  0x000a   ProjectIDCode                        no
-  0x000b   SensorName                           no
-  0x000c   ImageCoordinateSystem                no
-  0x000d   GPSLatitude                          no
-  0x000e   GPSLongitude                         no
-  0x000f   GPSAltitude                          no
-  0x0010   HorizontalFieldOfView                no
-  0x0011   VerticalFieldOfView                  no
-  0x0012   SensorRelativeAzimuthAngle           no
-  0x0013   SensorRelativeElevationAngle         no
-  0x0014   SensorRelativeRollAngle              no
-  0x0015   SlantRange                           no
-  0x0016   TargetWidth                          no
-  0x0017   FrameCenterLatitude                  no
-  0x0018   FrameCenterLongitude                 no
-  0x0019   FrameCenterElevation                 no
-  0x001a   OffsetCornerLatitude1                no
-  0x001b   OffsetCornerLongitude1               no
-  0x001c   OffsetCornerLatitude2                no
-  0x001d   OffsetCornerLongitude2               no
-  0x001e   OffsetCornerLatitude3                no
-  0x001f   OffsetCornerLongitude3               no
-  0x0020   OffsetCornerLatitude4                no
-  0x0021   OffsetCornerLongitude4               no
-  0x0022   IcingDetected                        no
-  0x0023   WindDirection                        no
-  0x0024   WindSpeed                            no
-  0x0025   StaticPressure                       no
-  0x0026   DensityAltitude                      no
-  0x0027   AirTemperature                       no
-  0x0028   TargetLocationLatitude               no
-  0x0029   TargetLocationLongitude              no
-  0x002a   TargetLocationElevation              no
-  0x002b   TargetTrackGateWidth                 no
-  0x002c   TargetTrackGateHeight                no
-  0x002d   TargetErrorEstimateCE90              no
-  0x002e   TargetErrorEstimateLE90              no
-  0x002f   GenericFlagData01                    no
-  0x0030   SecurityLocalMetadataSet             MISB Security
-  0x0031   DifferentialPressure                 no
-  0x0032   AngleOfAttack                        no
-  0x0033   VerticalSpeed                        no
-  0x0034   SideslipAngle                        no
-  0x0035   AirfieldBarometricPressure           no
-  0x0036   AirfieldElevation                    no
-  0x0037   RelativeHumidity                     no
-  0x0038   GPSSpeed                             no
-  0x0039   GroundRange                          no
-  0x003a   FuelRemaining                        no
-  0x003b   CallSign                             no
-  0x003c   WeaponLoad                           no
-  0x003d   WeaponFired                          no
-  0x003e   LaserPRFCode                         no
-  0x003f   SensorFieldOfViewName                no
-  0x0040   MagneticHeading                      no
-  0x0041   UAS_LSVersionNumber                  no
-  0x0042   TargetLocationCovarianceMatrix       no
-  0x0043   AlternateLatitude                    no
-  0x0044   AlternateLongitude                   no
-  0x0045   AlternateAltitude                    no
-  0x0046   AlternateName                        no
-  0x0047   AlternateHeading                     no
-  0x0048   EventStartTime                       no
-  0x0049   RVTLocalSet                          MISB Unknown
-  0x004a   VMTIDataSet                          MISB Unknown
-  0x004b   SensorEllipsoidHeight                no
-  0x004c   AlternateEllipsoidHeight             no
-  0x004d   OperationalMode                      no
-  0x004e   FrameCenterHeightAboveEllipsoid      no
-  0x004f   SensorVelocityNorth                  no
-  0x0050   SensorVelocityEast                   no
-  0x0051   ImageHorizonPixelPack                no
-  0x0052   CornerLatitude1                      no
-  0x0053   CornerLongitude1                     no
-  0x0054   CornerLatitude2                      no
-  0x0055   CornerLongitude2                     no
-  0x0056   CornerLatitude3                      no
-  0x0057   CornerLongitude3                     no
-  0x0058   CornerLatitude4                      no
-  0x0059   CornerLongitude4                     no
-  0x005a   FullPitchAngle                       no
-  0x005b   FullRollAngle                        no
-  0x005c   FullAngleOfAttack                    no
-  0x005d   FullSideslipAngle                    no
-  0x005e   MIISCoreIdentifier                   no
-  0x005f   SARMotionImageryData                 MISB Unknown
-  0x0060   TargetWidthExtended                  no
-  0x0061   RangeImageLocalSet                   MISB Unknown
-  0x0062   GeoregistrationLocalSet              MISB Unknown
-  0x0063   CompositeImagingLocalSet             MISB Unknown
-  0x0064   SegmentLocalSet                      MISB Unknown
-  0x0065   AmendLocalSet                        MISB Unknown
-  0x0066   SDCC-FLP                             no
-  0x0067   DensityAltitudeExtended              no
-  0x0068   SensorEllipsoidHeightExtended        no
-  0x0069   AlternateEllipsoidHeightExtended     no
-
-=head3 MISB Unknown Tags
-
-Other tags are extracted with the Unknown option.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  [no tags known]
-
 =head2 QuickTime Tags
 
 The QuickTime format is used for many different types of audio, video and
@@ -28013,28 +27398,6 @@ for the official specification.
                        PreviewImage             no
                        UUID-Unknown?            no
   'wide'               Wide?                    no
-
-=head3 QuickTime HTCInfo Tags
-
-Tags written by some HTC camera phones.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'slmt'   Unknown_slmt?                        no
-
-=head3 QuickTime Pittasoft Tags
-
-Tags found in Pittasoft Blackvue dashcam "free" data.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  '3gf '   AccelData                            QuickTime Stream
-  'cprt'   Copyright                            no
-  'gps '   GPSLog                               no
-  'ptnm'   OriginalFileName                     no
-  'ptrh'   Ptrh                                 QuickTime Pittasoft
-  'sttm'   StartTime                            no
-  'thum'   PreviewImage                         no
 
 =head3 QuickTime Stream Tags
 
@@ -28333,6 +27696,28 @@ subtitle text in some other videos.
   'Roll'       Roll                             no
   'Text'       Text                             no
   'Yaw'        Yaw                              no
+
+=head3 QuickTime HTCInfo Tags
+
+Tags written by some HTC camera phones.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'slmt'   Unknown_slmt?                        no
+
+=head3 QuickTime Pittasoft Tags
+
+Tags found in Pittasoft Blackvue dashcam "free" data.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  '3gf '   AccelData                            QuickTime Stream
+  'cprt'   Copyright                            no
+  'gps '   GPSLog                               no
+  'ptnm'   OriginalFileName                     no
+  'ptrh'   Ptrh                                 QuickTime Pittasoft
+  'sttm'   StartTime                            no
+  'thum'   PreviewImage                         no
 
 =head3 QuickTime FileType Tags
 
@@ -29560,6 +28945,471 @@ Tags used in QTIF QuickTime Image Files.
   'idsc'   ImageDescription                     QuickTime ImageDesc
   'iicc'   ICC_Profile                          ICC_Profile
 
+=head2 RIFF Tags
+
+The RIFF container format is used various types of fines including AVI, WAV,
+WEBP, LA, OFR, PAC and WV.  According to the EXIF specification, Meta
+information is embedded in two types of RIFF C<LIST> chunks: C<INFO> and
+C<exif>, and information about the audio content is stored in the C<fmt >
+chunk.  As well as this information, some video information and proprietary
+manufacturer-specific information is also extracted.
+
+Large AVI videos may be a concatenation of two or more RIFF chunks.  For
+these files, information is extracted from subsequent RIFF chunks as
+sub-documents, but the Duration is calculated for the full video.
+
+ExifTool currently has the ability to write EXIF, XMP and ICC_Profile
+metadata to WEBP images, but can't yet write to other RIFF-based formats.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'ALPH'               ALPH                     RIFF ALPH
+  'ANIM'               ANIM                     RIFF ANIM
+  'ANMF'               ANMF                     RIFF ANMF
+  'CSET'               CharacterSet             RIFF CSET
+  'EXIF'               EXIF                     EXIF
+                       UnknownEXIF              no
+  'ICCP'               ICC_Profile              ICC_Profile
+  'IDIT'               DateTimeOriginal         no
+  'JUNK'               OlympusJunk              Olympus AVI
+                       CasioJunk                EXIF
+                       RicohJunk                Ricoh AVI
+                       PentaxJunk               Pentax Junk
+                       PentaxJunk2              Pentax Junk2
+                       LucasJunk                QuickTime Stream
+                       TextJunk                 no
+  'JUNQ'               OldXMP                   no
+  'LIST_INF0'          Info                     RIFF Info
+  'LIST_INFO'          Info                     RIFF Info
+  'LIST_Tdat'          Tdat                     RIFF Tdat
+  'LIST_adtl'          AssociatedDataList       RIFF
+  'LIST_exif'          Exif                     RIFF Exif
+  'LIST_hdrl'          Hdrl                     RIFF Hdrl
+  'LIST_hydt'          PentaxData               Pentax AVI
+  'LIST_ncdt'          NikonData                Nikon AVI
+  'LIST_pntx'          PentaxData2              Pentax AVI
+  'SGLT'               BikeBroAccel             QuickTime Stream
+  'SLLT'               BikeBroGPS               QuickTime Stream
+  'VP8 '               VP8Bitstream             RIFF VP8
+  'VP8L'               VP8L                     RIFF VP8L
+  'VP8X'               VP8X                     RIFF VP8X
+  'XMP '               XMP                      XMP
+  '_PMX'               XMP                      XMP
+  'aXML'               AXML                     XMP XML
+  'acid'               Acidizer                 RIFF Acidizer
+  'afsp'               Afsp                     no
+  'bext'               BroadcastExtension       RIFF BroadcastExt
+  'cue '               CuePoints                no
+  'ds64'               DataSize64               RIFF DS64
+  'fact'               NumberOfSamples          no
+  'fmt '               AudioFormat              RIFF AudioFormat
+  'gps0'               GPSTrack                 QuickTime Stream
+  'gsen'               GSensor                  QuickTime Stream
+  'iXML'               IXML                     XMP XML
+  'id3 '               ID3                      ID3
+  'inst'               Instrument               RIFF Instrument
+  'labl'               CuePointLabel            no
+  'list'               ListType                 no
+  'ltxt'               LabeledText              no
+  'note'               CuePointNote             no
+  'olym'               Olym                     Olympus WAV
+  'plst'               Playlist                 no
+  'smpl'               Sampler                  RIFF Sampler
+  'tx_USER'            UserText                 RIFF UserText
+  'tx_Unknown'         Text                     no
+
+=head3 RIFF ALPH Tags
+
+WebP alpha chunk.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    AlphaPreprocessing                   no
+    0.1    AlphaFiltering                       no
+    0.2    AlphaCompression                     no
+
+=head3 RIFF ANIM Tags
+
+WebP animation chunk.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    BackgroundColor                      no
+      4    AnimationLoopCount                   no
+
+=head3 RIFF ANMF Tags
+
+WebP animation frame chunk.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     12    Duration                             no
+
+=head3 RIFF CSET Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    CodePage                             no
+      1    CountryCode                          no
+      2    LanguageCode                         no
+      3    Dialect                              no
+
+=head3 RIFF Info Tags
+
+RIFF INFO tags found in AVI video and WAV audio files.  Tags which are part
+of the EXIF 2.3 specification have an underlined Tag Name in the HTML
+version of this documentation.  Other tags are found in AVI files generated
+by some software.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'AGES'   Rated                                no
+  'CMNT'   Comment                              no
+  'CODE'   EncodedBy                            no
+  'COMM'   Comments                             no
+  'DIRC'   Directory                            no
+  'DISP'   SoundSchemeTitle                     no
+  'DTIM'   DateTimeOriginal                     no
+  'GENR'   Genre                                no
+  'IARL'   ArchivalLocation                     no
+  'IART'   Artist                               no
+  'IAS1'   FirstLanguage                        no
+  'IAS2'   SecondLanguage                       no
+  'IAS3'   ThirdLanguage                        no
+  'IAS4'   FourthLanguage                       no
+  'IAS5'   FifthLanguage                        no
+  'IAS6'   SixthLanguage                        no
+  'IAS7'   SeventhLanguage                      no
+  'IAS8'   EighthLanguage                       no
+  'IAS9'   NinthLanguage                        no
+  'IBSU'   BaseURL                              no
+  'ICAS'   DefaultAudioStream                   no
+  'ICDS'   CostumeDesigner                      no
+  'ICMS'   Commissioned                         no
+  'ICMT'   Comment                              no
+  'ICNM'   Cinematographer                      no
+  'ICNT'   Country                              no
+  'ICOP'   Copyright                            no
+  'ICRD'   DateCreated                          no
+  'ICRP'   Cropped                              no
+  'IDIM'   Dimensions                           no
+  'IDIT'   DateTimeOriginal                     no
+  'IDPI'   DotsPerInch                          no
+  'IDST'   DistributedBy                        no
+  'IEDT'   EditedBy                             no
+  'IENC'   EncodedBy                            no
+  'IENG'   Engineer                             no
+  'IGNR'   Genre                                no
+  'IKEY'   Keywords                             no
+  'ILGT'   Lightness                            no
+  'ILGU'   LogoURL                              no
+  'ILIU'   LogoIconURL                          no
+  'ILNG'   Language                             no
+  'IMBI'   MoreInfoBannerImage                  no
+  'IMBU'   MoreInfoBannerURL                    no
+  'IMED'   Medium                               no
+  'IMIT'   MoreInfoText                         no
+  'IMIU'   MoreInfoURL                          no
+  'IMUS'   MusicBy                              no
+  'INAM'   Title                                no
+  'IPDS'   ProductionDesigner                   no
+  'IPLT'   NumColors                            no
+  'IPRD'   Product                              no
+  'IPRO'   ProducedBy                           no
+  'IRIP'   RippedBy                             no
+  'IRTD'   Rating                               no
+  'ISBJ'   Subject                              no
+  'ISFT'   Software                             no
+  'ISGN'   SecondaryGenre                       no
+  'ISHP'   Sharpness                            no
+  'ISMP'   TimeCode                             no
+  'ISRC'   Source                               no
+  'ISRF'   SourceForm                           no
+  'ISTD'   ProductionStudio                     no
+  'ISTR'   Starring                             no
+  'ITCH'   Technician                           no
+  'ITRK'   TrackNumber                          no
+  'IWMU'   WatermarkURL                         no
+  'IWRI'   WrittenBy                            no
+  'LANG'   Language                             no
+  'LOCA'   Location                             no
+  'PRT1'   Part                                 no
+  'PRT2'   NumberOfParts                        no
+  'RATE'   Rate                                 no
+  'STAR'   Starring                             no
+  'STAT'   Statistics                           no
+  'TAPE'   TapeName                             no
+  'TCDO'   EndTimecode                          no
+  'TCOD'   StartTimecode                        no
+  'TITL'   Title                                no
+  'TLEN'   Length                               no
+  'TORG'   Organization                         no
+  'TRCK'   TrackNumber                          no
+  'TURL'   URL                                  no
+  'TVER'   Version                              no
+  'VMAJ'   VegasVersionMajor                    no
+  'VMIN'   VegasVersionMinor                    no
+  'YEAR'   Year                                 no
+
+=head3 RIFF Tdat Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
+
+=head3 RIFF Exif Tags
+
+These tags are part of the EXIF 2.3 specification for WAV audio files.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'ecor'   Make                                 no
+  'emdl'   Model                                no
+  'emnt'   MakerNotes                           no
+  'erel'   RelatedImageFile                     no
+  'etim'   TimeCreated                          no
+  'eucm'   UserComment                          no
+  'ever'   ExifVersion                          no
+
+=head3 RIFF Hdrl Tags
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'IDIT'               DateTimeOriginal         no
+  'ISMP'               TimeCode                 no
+  'LIST_odml'          OpenDML                  RIFF OpenDML
+  'LIST_strl'          Stream                   RIFF Stream
+  'avih'               AVIHeader                RIFF AVIHeader
+
+=head3 RIFF OpenDML Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'dmlh'   ExtendedAVIHeader                    RIFF ExtAVIHdr
+
+=head3 RIFF ExtAVIHdr Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    TotalFrameCount                      no
+
+=head3 RIFF Stream Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'strd'   StreamData                           RIFF StreamData
+  'strf'   AudioFormat                          RIFF AudioFormat
+           VideoFormat                          BMP
+  'strh'   StreamHeader                         RIFF StreamHeader
+  'strn'   StreamName                           no
+
+=head3 RIFF StreamData Tags
+
+This chunk is used to store proprietary information in AVI videos from some
+cameras.  The first 4 characters of the data are used as the Tag ID below.
+
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  'AVIF'       AVIF                             EXIF
+  'CASI'       CasioData                        Casio AVI
+  'Zora'       VendorName                       no
+  'unknown'    UnknownData                      no
+
+=head3 RIFF AudioFormat Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    Encoding                             no
+      1    NumChannels                          no
+      2    SampleRate                           no
+      4    AvgBytesPerSec                       no
+      7    BitsPerSample                        no
+
+=head3 RIFF StreamHeader Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    StreamType                           no
+      1    AudioCodec                           no
+           VideoCodec                           no
+           Codec                                no
+      5    AudioSampleRate                      no
+           VideoFrameRate                       no
+           StreamSampleRate                     no
+      8    AudioSampleCount                     no
+           VideoFrameCount                      no
+           StreamSampleCount                    no
+     10    Quality                              no
+     11    SampleSize                           no
+
+=head3 RIFF AVIHeader Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    FrameRate                            no
+      1    MaxDataRate                          no
+      4    FrameCount                           no
+      6    StreamCount                          no
+      8    ImageWidth                           no
+      9    ImageHeight                          no
+
+=head3 RIFF VP8 Tags
+
+This chunk is found in simple-format (lossy) WebP files. See
+L<https://developers.google.com/speed/webp/docs/riff_container> for the WebP
+container specification.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    VP8Version                           no
+      6    ImageWidth                           no
+    6.1    HorizontalScale                      no
+      8    ImageHeight                          no
+    8.1    VerticalScale                        no
+
+=head3 RIFF VP8L Tags
+
+This chunk is found in lossless WebP files.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      1    ImageWidth                           no
+      2    ImageHeight                          no
+
+=head3 RIFF VP8X Tags
+
+This chunk is found in extended WebP files.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    WebP_Flags                           no
+      4    ImageWidth                           no
+      6    ImageHeight                          no
+
+=head3 RIFF Acidizer Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    AcidizerFlags                        no
+      4    RootNote                             no
+     12    Beats                                no
+     16    Meter                                no
+     20    Tempo                                no
+
+=head3 RIFF BroadcastExt Tags
+
+Information found in the Broadcast Audio Extension chunk (see
+L<http://tech.ebu.ch/docs/tech/tech3285.pdf>).
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    Description                          no
+    256    Originator                           no
+    288    OriginatorReference                  no
+    320    DateTimeOriginal                     no
+    338    TimeReference                        no
+    346    BWFVersion                           no
+    348    BWF_UMID                             no
+    602    CodingHistory                        no
+
+=head3 RIFF DS64 Tags
+
+64-bit data sizes for MBWF/RF64 files.  See
+L<https://tech.ebu.ch/docs/tech/tech3306-2009.pdf> for the specification.
+
+  Index8   Tag Name                             Writable
+  ------   --------                             --------
+      0    RIFFSize64                           no
+      1    DataSize64                           no
+      2    NumberOfSamples64                    no
+
+=head3 RIFF Instrument Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    UnshiftedNote                        no
+      1    FineTune                             no
+      2    Gain                                 no
+      3    LowNote                              no
+      4    HighNote                             no
+      5    LowVelocity                          no
+      6    HighVelocity                         no
+
+=head3 RIFF Sampler Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    Manufacturer                         no
+      1    Product                              no
+      2    SamplePeriod                         no
+      3    MIDIUnityNote                        no
+      4    MIDIPitchFraction                    no
+      5    SMPTEFormat                          no
+      6    SMPTEOffset                          no
+      7    NumSampleLoops                       no
+      8    SamplerDataLen                       no
+      9    SamplerData                          no
+
+=head3 RIFF UserText Tags
+
+Tags decoded from the USER-format txts stream written by Momento M6 dashcam.
+Extracted only if the ExtractEmbedded option is used.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     28    GPSAltitude                          no
+     40    Accelerometer                        no
+     56    GPSSpeed                             no
+     60    GPSLatitude                          no
+     64    GPSLongitude                         no
+     68    GPSDateTime                          no
+
+=head2 FLAC Tags
+
+Free Lossless Audio Codec (FLAC) meta information.  ExifTool also extracts
+ID3 information from these files.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0000   StreamInfo                           FLAC StreamInfo
+  0x0001   Padding?                             no
+  0x0002   Application_riff                     RIFF
+           ApplicationUnknown?                  no
+  0x0003   SeekTable?                           no
+  0x0004   VorbisComment                        Vorbis Comments
+  0x0005   CueSheet?                            no
+  0x0006   Picture                              FLAC Picture
+
+=head3 FLAC StreamInfo Tags
+
+FLAC is big-endian, so bit 0 is the high-order bit in this table.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'Bit000-015'         BlockSizeMin             no
+  'Bit016-031'         BlockSizeMax             no
+  'Bit032-055'         FrameSizeMin             no
+  'Bit056-079'         FrameSizeMax             no
+  'Bit080-099'         SampleRate               no
+  'Bit100-102'         Channels                 no
+  'Bit103-107'         BitsPerSample            no
+  'Bit108-143'         TotalSamples             no
+  'Bit144-271'         MD5Signature             no
+
+=head3 FLAC Picture Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    PictureType                          no
+      1    PictureMIMEType                      no
+      2    PictureDescription                   no
+      3    PictureWidth                         no
+      4    PictureHeight                        no
+      5    PictureBitsPerPixel                  no
+      6    PictureIndexedColors                 no
+      7    PictureLength                        no
+      8    Picture                              no
+
 =head2 Parrot Tags
 
 =head3 Parrot mett Tags
@@ -29735,6 +29585,614 @@ ARCore accelerometer data.
 =head3 Parrot ARCoreVideo Tags
 
   Index1   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
+
+=head2 Ogg Tags
+
+ExifTool extracts the following types of information from Ogg files.  See
+L<http://www.xiph.org/vorbis/doc/> for the Ogg specification.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'FLAC'   FLAC                                 FLAC
+  'ID3'    ID3                                  ID3
+  'Opus'   Opus                                 Opus
+  'theora' Theora                               Theora
+  'vorbis' Vorbis                               Vorbis
+
+=head2 Vorbis Tags
+
+Information extracted from Ogg Vorbis files.  See
+L<http://www.xiph.org/vorbis/doc/> for the Vorbis specification.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   Identification                       Vorbis Identification
+  0x0003   Comments                             Vorbis Comments
+
+=head3 Vorbis Comments Tags
+
+The tags below are only some common tags found in the Vorbis comments of Ogg
+Vorbis and Ogg FLAC audio files, however ExifTool will extract values from
+any tag found, even if not listed here.
+
+  Tag ID                   Tag Name             Writable
+  ------                   --------             --------
+  'ACTOR'                  Actor                no
+  'ALBUM'                  Album                no
+  'ARTIST'                 Artist               no+
+  'COMMENT'                Comment              no
+  'COMPOSER'               Composer             no
+  'CONTACT'                Contact              no+
+  'COPYRIGHT'              Copyright            no
+  'COVERART'               CoverArt             no
+  'COVERARTMIME'           CoverArtMIMEType     no
+  'DATE'                   Date                 no
+  'DESCRIPTION'            Description          no
+  'DIRECTOR'               Director             no
+  'ENCODED_BY'             EncodedBy            no
+  'ENCODED_USING'          EncodedUsing         no
+  'ENCODER'                Encoder              no
+  'ENCODER_OPTIONS'        EncoderOptions       no
+  'GENRE'                  Genre                no
+  'ISRC'                   ISRCNumber           no
+  'LICENSE'                License              no
+  'LOCATION'               Location             no
+  'METADATA_BLOCK_PICTURE' Picture              FLAC Picture
+  'ORGANIZATION'           Organization         no
+  'PERFORMER'              Performer            no+
+  'PRODUCER'               Producer             no
+  'REPLAYGAIN_ALBUM_GAIN'  ReplayGainAlbumGain  no
+  'REPLAYGAIN_ALBUM_PEAK'  ReplayGainAlbumPeak  no
+  'REPLAYGAIN_TRACK_GAIN'  ReplayGainTrackGain  no
+  'REPLAYGAIN_TRACK_PEAK'  ReplayGainTrackPeak  no
+  'TITLE'                  Title                no
+  'TRACKNUMBER'            TrackNumber          no
+  'VERSION'                Version              no
+  'vendor'                 Vendor               no
+
+=head3 Vorbis Identification Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    VorbisVersion                        no
+      4    AudioChannels                        no
+      5    SampleRate                           no
+      9    MaximumBitrate                       no
+     13    NominalBitrate                       no
+     17    MinimumBitrate                       no
+
+=head2 Opus Tags
+
+Information extracted from Ogg Opus files.  See
+L<https://www.opus-codec.org/docs/> for the specification.
+
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  'OpusHead'   Header                           Opus Header
+  'OpusTags'   Comments                         Vorbis Comments
+
+=head3 Opus Header Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    OpusVersion                          no
+      1    AudioChannels                        no
+      4    SampleRate                           no
+      8    OutputGain                           no
+
+=head2 Theora Tags
+
+Information extracted from Ogg Theora video files.  See
+L<http://www.theora.org/doc/Theora.pdf> for the Theora specification.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0080   Identification                       Theora Identification
+  0x0081   Comments                             Vorbis Comments
+
+=head3 Theora Identification Tags
+
+Tags extracted from the Theora identification header.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    TheoraVersion                        no
+      7    ImageWidth                           no
+     10    ImageHeight                          no
+     13    XOffset                              no
+     14    YOffset                              no
+     15    FrameRate                            no
+     23    PixelAspectRatio                     no
+     29    ColorSpace                           no
+     30    NominalVideoBitrate                  no
+     33    Quality                              no
+     34    PixelFormat                          no
+
+=head2 APE Tags
+
+Tags found in Monkey's Audio (APE) information.  Only a few common tags are
+listed below, but ExifTool will extract any tag found.  ExifTool supports
+APEv1 and APEv2 tags, as well as ID3 information in APE files, and will also
+read APE metadata from MP3 and MPC files.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'Album'              Album                    no
+  'Artist'             Artist                   no
+  'DURATION'           Duration                 no
+  'Genre'              Genre                    no
+  'Title'              Title                    no
+  'Tool Name'          ToolName                 no
+  'Tool Version'       ToolVersion              no
+  'Track'              Track                    no
+  'Year'               Year                     no
+
+=head3 APE NewHeader Tags
+
+APE MAC audio header for version 3.98 or later.
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    CompressionLevel                     no
+      2    BlocksPerFrame                       no
+      4    FinalFrameBlocks                     no
+      6    TotalFrames                          no
+      8    BitsPerSample                        no
+      9    Channels                             no
+     10    SampleRate                           no
+
+=head3 APE OldHeader Tags
+
+APE MAC audio header for version 3.97 or earlier.
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    APEVersion                           no
+      1    CompressionLevel                     no
+      3    Channels                             no
+      4    SampleRate                           no
+     10    TotalFrames                          no
+     12    FinalFrameBlocks                     no
+
+=head2 Audible Tags
+
+ExifTool will extract any information found in the metadata dictionary of
+Audible .AA files, even if not listed in the table below.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  '_chapter_count'     ChapterCount             no
+  '_cover_art'         CoverArt                 no
+  'author'             Author                   no
+  'copyright'          Copyright                no
+  'pub_date_start'     PublishDateStart         no
+  'pubdate'            PublishDate              no
+
+=head3 Audible tags Tags
+
+Information found in "tags" atom of Audible M4B audio books.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'cvrx'   Audible_cvrx                         Audible cvrx
+  'meta'   Audible_meta                         Audible meta
+  'tseg'   Audible_tseg                         Audible tseg
+
+=head3 Audible cvrx Tags
+
+Audible cover art information in M4B audio books.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  CoverArt                                      no
+  CoverArtType                                  no
+
+=head3 Audible meta Tags
+
+Information found in Audible M4B "meta" atom.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'ALBUMARTIST'        AlbumArtist              no
+  'Album'              Album                    no
+  'Artist'             Artist                   no
+  'Comment'            Comment                  no
+  'Genre'              Genre                    no
+  'SUBTITLE'           Subtitle                 no
+  'TOOL'               CreatorTool              no
+  'Title'              Title                    no
+  'Year'               Year                     no
+  'itunesmediatype'    iTunesMediaType          no
+  'track'              ChapterName              no
+
+=head3 Audible tseg Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'meta'   Audible_meta2                        Audible meta
+  'tshd'   ChapterNumber                        no
+
+=head2 MPC Tags
+
+Tags used in Musepack (MPC) audio files.  ExifTool also extracts ID3 and APE
+information from these files.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'Bit032-063'         TotalFrames              no
+  'Bit080-081'         SampleRate               no
+  'Bit084-087'         Quality                  no
+  'Bit088-093'         MaxBand                  no
+  'Bit096-111'         ReplayGainTrackPeak      no
+  'Bit112-127'         ReplayGainTrackGain      no
+  'Bit128-143'         ReplayGainAlbumPeak      no
+  'Bit144-159'         ReplayGainAlbumGain      no
+  'Bit179'             FastSeek                 no
+  'Bit191'             Gapless                  no
+  'Bit216-223'         EncoderVersion           no
+
+=head2 MPEG Tags
+
+The MPEG format doesn't specify any file-level meta information.  In lieu of
+this, information is extracted from the first audio and video frame headers
+in the file.
+
+=head3 MPEG Audio Tags
+
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  'Bit11-12'   MPEGAudioVersion                 no
+  'Bit13-14'   AudioLayer                       no
+  'Bit16-19'   AudioBitrate                     no
+  'Bit20-21'   SampleRate                       no
+  'Bit24-25'   ChannelMode                      no
+  'Bit26'      MSStereo                         no
+  'Bit26-27'   ModeExtension                    no
+  'Bit27'      IntensityStereo                  no
+  'Bit28'      CopyrightFlag                    no
+  'Bit29'      OriginalMedia                    no
+  'Bit30-31'   Emphasis                         no
+
+=head3 MPEG Video Tags
+
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  'Bit00-11'   ImageWidth                       no
+  'Bit12-23'   ImageHeight                      no
+  'Bit24-27'   AspectRatio                      no
+  'Bit28-31'   FrameRate                        no
+  'Bit32-49'   VideoBitrate                     no
+
+=head3 MPEG Xing Tags
+
+These tags are extracted from the Xing/Info frame.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  Encoder                                       no
+  LameHeader                                    MPEG Lame
+  LameQuality                                   no
+  LameVBRQuality                                no
+  VBRBytes                                      no
+  VBRFrames                                     no
+  VBRScale                                      no
+
+=head3 MPEG Lame Tags
+
+Tags extracted from Lame 3.90 or later header.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      9    LameMethod                           no
+     10    LameLowPassFilter                    no
+     20    LameBitrate                          no
+     24    LameStereoMode                       no
+
+=head2 M2TS Tags
+
+The MPEG-2 transport stream is used as a container for many different
+audio/video formats (including AVCHD).  This table lists information
+extracted from M2TS files.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AudioStreamType                               no
+  Duration                                      no
+  VideoStreamType                               no
+  _AC3                                          M2TS AC3
+  _H264                                         H264
+  _MISB                                         MISB
+
+=head3 M2TS AC3 Tags
+
+Tags extracted from AC-3 audio streams.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AudioBitrate                                  no
+  AudioChannels                                 no
+  AudioSampleRate                               no
+  SurroundMode                                  no
+
+=head2 H264 Tags
+
+Tags extracted from H.264 video streams.  The metadata for AVCHD videos is
+stored in this stream.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  ImageHeight                                   no
+  ImageWidth                                    no
+  MDPM                                          H264 MDPM
+
+=head3 H264 MDPM Tags
+
+The following tags are decoded from the Modified Digital Video Pack Metadata
+(MDPM) of the unregistered user data with UUID
+17ee8c60f84d11d98cd60800200c9a66 in the H.264 Supplemental Enhancement
+Information (SEI).  I<[Yes, this description is confusing, but nothing
+compared to the challenge of actually decoding the data!]>  This information
+may exist at regular intervals through the entire video, but only the first
+occurrence is extracted unless the ExtractEmbedded (-ee) option is used (in
+which case subsequent occurrences are extracted as sub-documents).
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0013   TimeCode                             no
+  0x0018   DateTimeOriginal                     no
+  0x0070   Camera1                              H264 Camera1
+  0x0071   Camera2                              H264 Camera2
+  0x007f   Shutter                              H264 Shutter
+  0x00a0   ExposureTime                         no
+  0x00a1   FNumber                              no
+  0x00a2   ExposureProgram                      no
+  0x00a3   BrightnessValue                      no
+  0x00a4   ExposureCompensation                 no
+  0x00a5   MaxApertureValue                     no
+  0x00a6   Flash                                no
+  0x00a7   CustomRendered                       no
+  0x00a8   WhiteBalance                         no
+  0x00a9   FocalLengthIn35mmFormat              no
+  0x00aa   SceneCaptureType                     no
+  0x00b0   GPSVersionID                         no
+  0x00b1   GPSLatitudeRef                       no
+  0x00b2   GPSLatitude                          no
+  0x00b5   GPSLongitudeRef                      no
+  0x00b6   GPSLongitude                         no
+  0x00b9   GPSAltitudeRef                       no
+  0x00ba   GPSAltitude                          no
+  0x00bb   GPSTimeStamp                         no
+  0x00be   GPSStatus                            no
+  0x00bf   GPSMeasureMode                       no
+  0x00c0   GPSDOP                               no
+  0x00c1   GPSSpeedRef                          no
+  0x00c2   GPSSpeed                             no
+  0x00c3   GPSTrackRef                          no
+  0x00c4   GPSTrack                             no
+  0x00c5   GPSImgDirectionRef                   no
+  0x00c6   GPSImgDirection                      no
+  0x00c7   GPSMapDatum                          no
+  0x00ca   GPSDateStamp                         no
+  0x00e0   MakeModel                            H264 MakeModel
+  0x00e1   RecInfo                              H264 RecInfo
+  0x00e4   Model                                no
+  0x00ee   FrameInfo                            H264 FrameInfo
+
+=head3 H264 Camera1 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    ApertureSetting                      no
+      1    Gain                                 no
+    1.1    ExposureProgram                      no
+    2.1    WhiteBalance                         no
+      3    Focus                                no
+
+=head3 H264 Camera2 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      1    ImageStabilization                   no
+
+=head3 H264 Shutter Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+    1.1    ExposureTime                         no
+
+=head3 H264 MakeModel Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    Make                                 no
+
+=head3 H264 RecInfo Tags
+
+Recording information stored by some Canon video cameras.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    RecordingMode                        no
+
+=head3 H264 FrameInfo Tags
+
+Frame rate information stored by some Canon video cameras.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    CaptureFrameRate                     no
+      1    VideoFrameRate                       no
+
+=head2 MISB Tags
+
+These tags are extracted from STANAG-4609 MISB (Motion Industry Standards
+Board) KLV-format metadata in M2TS videos.
+
+  Tag ID                           Tag Name     Writable
+  ------                           --------     --------
+  '060E2B34030101010E01030302000000' Security   MISB Security
+  '060e2b3402030101434e415644494147'
+                                   ChurchillNav MISB ChurchillNav
+  '060e2b34020b01010e01030101000000'
+                                   UASDataLink  MISB UASDatalink
+  '<other>'                        Unknown      MISB Unknown
+
+=head3 MISB Security Tags
+
+Tags extracted from the MISB ST 0102.11 Security Metadata local set.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   SecurityClassification               no
+  0x0002   ClassifyingCountryCodeMethod         no
+  0x0003   ClassifyingCountry                   no
+  0x0004   SecuritySCI-SHIInformation           no
+  0x0005   Caveats                              no
+  0x0006   ReleasingInstructions                no
+  0x0007   ClassifiedBy                         no
+  0x0008   DerivedFrom                          no
+  0x0009   ClassificationReason                 no
+  0x000a   DeclassificationDate                 no
+  0x000b   ClassificationAndMarkingSystem       no
+  0x000c   ObjectCountryCodingMethod            no
+  0x000d   ObjectCountryCodes                   no
+  0x000e   ClassificationComments               no
+  0x000f   UMID                                 no
+  0x0010   StreamID                             no
+  0x0011   TransportStreamID                    no
+  0x0015   ItemDesignatorID                     no
+  0x0016   SecurityVersion                      no
+  0x0017   ClassifyingCountryCodingMethodDate   no
+  0x0018   ObjectCountryCodingMethodDate        no
+
+=head3 MISB ChurchillNav Tags
+
+Proprietary tags used by Churchill Navigation units.  These tags are all
+currently unknown, but extracted with the Unknown option.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
+
+=head3 MISB UASDatalink Tags
+
+Tags extracted from the MISB ST 0601.11 UAS Datalink local set.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   Checksum                             no
+  0x0002   GPSDateTime                          no
+  0x0003   MissionID                            no
+  0x0004   TailNumber                           no
+  0x0005   GPSTrack                             no
+  0x0006   PitchAngle                           no
+  0x0007   RollAngle                            no
+  0x0008   TrueAirspeed                         no
+  0x0009   IndicatedAirspeed                    no
+  0x000a   ProjectIDCode                        no
+  0x000b   SensorName                           no
+  0x000c   ImageCoordinateSystem                no
+  0x000d   GPSLatitude                          no
+  0x000e   GPSLongitude                         no
+  0x000f   GPSAltitude                          no
+  0x0010   HorizontalFieldOfView                no
+  0x0011   VerticalFieldOfView                  no
+  0x0012   SensorRelativeAzimuthAngle           no
+  0x0013   SensorRelativeElevationAngle         no
+  0x0014   SensorRelativeRollAngle              no
+  0x0015   SlantRange                           no
+  0x0016   TargetWidth                          no
+  0x0017   FrameCenterLatitude                  no
+  0x0018   FrameCenterLongitude                 no
+  0x0019   FrameCenterElevation                 no
+  0x001a   OffsetCornerLatitude1                no
+  0x001b   OffsetCornerLongitude1               no
+  0x001c   OffsetCornerLatitude2                no
+  0x001d   OffsetCornerLongitude2               no
+  0x001e   OffsetCornerLatitude3                no
+  0x001f   OffsetCornerLongitude3               no
+  0x0020   OffsetCornerLatitude4                no
+  0x0021   OffsetCornerLongitude4               no
+  0x0022   IcingDetected                        no
+  0x0023   WindDirection                        no
+  0x0024   WindSpeed                            no
+  0x0025   StaticPressure                       no
+  0x0026   DensityAltitude                      no
+  0x0027   AirTemperature                       no
+  0x0028   TargetLocationLatitude               no
+  0x0029   TargetLocationLongitude              no
+  0x002a   TargetLocationElevation              no
+  0x002b   TargetTrackGateWidth                 no
+  0x002c   TargetTrackGateHeight                no
+  0x002d   TargetErrorEstimateCE90              no
+  0x002e   TargetErrorEstimateLE90              no
+  0x002f   GenericFlagData01                    no
+  0x0030   SecurityLocalMetadataSet             MISB Security
+  0x0031   DifferentialPressure                 no
+  0x0032   AngleOfAttack                        no
+  0x0033   VerticalSpeed                        no
+  0x0034   SideslipAngle                        no
+  0x0035   AirfieldBarometricPressure           no
+  0x0036   AirfieldElevation                    no
+  0x0037   RelativeHumidity                     no
+  0x0038   GPSSpeed                             no
+  0x0039   GroundRange                          no
+  0x003a   FuelRemaining                        no
+  0x003b   CallSign                             no
+  0x003c   WeaponLoad                           no
+  0x003d   WeaponFired                          no
+  0x003e   LaserPRFCode                         no
+  0x003f   SensorFieldOfViewName                no
+  0x0040   MagneticHeading                      no
+  0x0041   UAS_LSVersionNumber                  no
+  0x0042   TargetLocationCovarianceMatrix       no
+  0x0043   AlternateLatitude                    no
+  0x0044   AlternateLongitude                   no
+  0x0045   AlternateAltitude                    no
+  0x0046   AlternateName                        no
+  0x0047   AlternateHeading                     no
+  0x0048   EventStartTime                       no
+  0x0049   RVTLocalSet                          MISB Unknown
+  0x004a   VMTIDataSet                          MISB Unknown
+  0x004b   SensorEllipsoidHeight                no
+  0x004c   AlternateEllipsoidHeight             no
+  0x004d   OperationalMode                      no
+  0x004e   FrameCenterHeightAboveEllipsoid      no
+  0x004f   SensorVelocityNorth                  no
+  0x0050   SensorVelocityEast                   no
+  0x0051   ImageHorizonPixelPack                no
+  0x0052   CornerLatitude1                      no
+  0x0053   CornerLongitude1                     no
+  0x0054   CornerLatitude2                      no
+  0x0055   CornerLongitude2                     no
+  0x0056   CornerLatitude3                      no
+  0x0057   CornerLongitude3                     no
+  0x0058   CornerLatitude4                      no
+  0x0059   CornerLongitude4                     no
+  0x005a   FullPitchAngle                       no
+  0x005b   FullRollAngle                        no
+  0x005c   FullAngleOfAttack                    no
+  0x005d   FullSideslipAngle                    no
+  0x005e   MIISCoreIdentifier                   no
+  0x005f   SARMotionImageryData                 MISB Unknown
+  0x0060   TargetWidthExtended                  no
+  0x0061   RangeImageLocalSet                   MISB Unknown
+  0x0062   GeoregistrationLocalSet              MISB Unknown
+  0x0063   CompositeImagingLocalSet             MISB Unknown
+  0x0064   SegmentLocalSet                      MISB Unknown
+  0x0065   AmendLocalSet                        MISB Unknown
+  0x0066   SDCC-FLP                             no
+  0x0067   DensityAltitudeExtended              no
+  0x0068   SensorEllipsoidHeightExtended        no
+  0x0069   AlternateEllipsoidHeightExtended     no
+
+=head3 MISB Unknown Tags
+
+Other tags are extracted with the Unknown option.
+
+  Tag ID   Tag Name                             Writable
   ------   --------                             --------
   [no tags known]
 
@@ -32073,414 +32531,6 @@ Redcode version 2 header.
      76    ImageWidth                           no
      80    ImageHeight                          no
      86    FrameRate                            no
-
-=head2 RIFF Tags
-
-The RIFF container format is used various types of fines including AVI, WAV,
-WEBP, LA, OFR, PAC and WV.  According to the EXIF specification, Meta
-information is embedded in two types of RIFF C<LIST> chunks: C<INFO> and
-C<exif>, and information about the audio content is stored in the C<fmt >
-chunk.  As well as this information, some video information and proprietary
-manufacturer-specific information is also extracted.
-
-Large AVI videos may be a concatenation of two or more RIFF chunks.  For
-these files, information is extracted from subsequent RIFF chunks as
-sub-documents, but the Duration is calculated for the full video.
-
-ExifTool currently has the ability to write EXIF, XMP and ICC_Profile
-metadata to WEBP images, but can't yet write to other RIFF-based formats.
-
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'ALPH'               ALPH                     RIFF ALPH
-  'ANIM'               ANIM                     RIFF ANIM
-  'ANMF'               ANMF                     RIFF ANMF
-  'CSET'               CharacterSet             RIFF CSET
-  'EXIF'               EXIF                     EXIF
-                       UnknownEXIF              no
-  'ICCP'               ICC_Profile              ICC_Profile
-  'IDIT'               DateTimeOriginal         no
-  'JUNK'               OlympusJunk              Olympus AVI
-                       CasioJunk                EXIF
-                       RicohJunk                Ricoh AVI
-                       PentaxJunk               Pentax Junk
-                       PentaxJunk2              Pentax Junk2
-                       LucasJunk                QuickTime Stream
-                       TextJunk                 no
-  'JUNQ'               OldXMP                   no
-  'LIST_INF0'          Info                     RIFF Info
-  'LIST_INFO'          Info                     RIFF Info
-  'LIST_Tdat'          Tdat                     RIFF Tdat
-  'LIST_adtl'          AssociatedDataList       RIFF
-  'LIST_exif'          Exif                     RIFF Exif
-  'LIST_hdrl'          Hdrl                     RIFF Hdrl
-  'LIST_hydt'          PentaxData               Pentax AVI
-  'LIST_ncdt'          NikonData                Nikon AVI
-  'LIST_pntx'          PentaxData2              Pentax AVI
-  'SGLT'               BikeBroAccel             QuickTime Stream
-  'SLLT'               BikeBroGPS               QuickTime Stream
-  'VP8 '               VP8Bitstream             RIFF VP8
-  'VP8L'               VP8L                     RIFF VP8L
-  'VP8X'               VP8X                     RIFF VP8X
-  'XMP '               XMP                      XMP
-  '_PMX'               XMP                      XMP
-  'aXML'               AXML                     XMP XML
-  'afsp'               Afsp                     no
-  'bext'               BroadcastExtension       RIFF BroadcastExt
-  'cue '               CuePoints                no
-  'ds64'               DataSize64               RIFF DS64
-  'fact'               NumberOfSamples          no
-  'fmt '               AudioFormat              RIFF AudioFormat
-  'gps0'               GPSTrack                 QuickTime Stream
-  'gsen'               GSensor                  QuickTime Stream
-  'iXML'               IXML                     XMP XML
-  'id3 '               ID3                      ID3
-  'inst'               Instrument               RIFF Instrument
-  'labl'               CuePointLabel            no
-  'list'               ListType                 no
-  'ltxt'               LabeledText              no
-  'note'               CuePointNote             no
-  'olym'               Olym                     Olympus WAV
-  'plst'               Playlist                 no
-  'smpl'               Sampler                  RIFF Sampler
-  'tx_USER'            UserText                 RIFF UserText
-  'tx_Unknown'         Text                     no
-
-=head3 RIFF ALPH Tags
-
-WebP alpha chunk.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    AlphaPreprocessing                   no
-    0.1    AlphaFiltering                       no
-    0.2    AlphaCompression                     no
-
-=head3 RIFF ANIM Tags
-
-WebP animation chunk.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    BackgroundColor                      no
-      4    AnimationLoopCount                   no
-
-=head3 RIFF ANMF Tags
-
-WebP animation frame chunk.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-     12    Duration                             no
-
-=head3 RIFF CSET Tags
-
-  Index2   Tag Name                             Writable
-  ------   --------                             --------
-      0    CodePage                             no
-      1    CountryCode                          no
-      2    LanguageCode                         no
-      3    Dialect                              no
-
-=head3 RIFF Info Tags
-
-RIFF INFO tags found in AVI video and WAV audio files.  Tags which are part
-of the EXIF 2.3 specification have an underlined Tag Name in the HTML
-version of this documentation.  Other tags are found in AVI files generated
-by some software.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'AGES'   Rated                                no
-  'CMNT'   Comment                              no
-  'CODE'   EncodedBy                            no
-  'COMM'   Comments                             no
-  'DIRC'   Directory                            no
-  'DISP'   SoundSchemeTitle                     no
-  'DTIM'   DateTimeOriginal                     no
-  'GENR'   Genre                                no
-  'IARL'   ArchivalLocation                     no
-  'IART'   Artist                               no
-  'IAS1'   FirstLanguage                        no
-  'IAS2'   SecondLanguage                       no
-  'IAS3'   ThirdLanguage                        no
-  'IAS4'   FourthLanguage                       no
-  'IAS5'   FifthLanguage                        no
-  'IAS6'   SixthLanguage                        no
-  'IAS7'   SeventhLanguage                      no
-  'IAS8'   EighthLanguage                       no
-  'IAS9'   NinthLanguage                        no
-  'IBSU'   BaseURL                              no
-  'ICAS'   DefaultAudioStream                   no
-  'ICDS'   CostumeDesigner                      no
-  'ICMS'   Commissioned                         no
-  'ICMT'   Comment                              no
-  'ICNM'   Cinematographer                      no
-  'ICNT'   Country                              no
-  'ICOP'   Copyright                            no
-  'ICRD'   DateCreated                          no
-  'ICRP'   Cropped                              no
-  'IDIM'   Dimensions                           no
-  'IDIT'   DateTimeOriginal                     no
-  'IDPI'   DotsPerInch                          no
-  'IDST'   DistributedBy                        no
-  'IEDT'   EditedBy                             no
-  'IENC'   EncodedBy                            no
-  'IENG'   Engineer                             no
-  'IGNR'   Genre                                no
-  'IKEY'   Keywords                             no
-  'ILGT'   Lightness                            no
-  'ILGU'   LogoURL                              no
-  'ILIU'   LogoIconURL                          no
-  'ILNG'   Language                             no
-  'IMBI'   MoreInfoBannerImage                  no
-  'IMBU'   MoreInfoBannerURL                    no
-  'IMED'   Medium                               no
-  'IMIT'   MoreInfoText                         no
-  'IMIU'   MoreInfoURL                          no
-  'IMUS'   MusicBy                              no
-  'INAM'   Title                                no
-  'IPDS'   ProductionDesigner                   no
-  'IPLT'   NumColors                            no
-  'IPRD'   Product                              no
-  'IPRO'   ProducedBy                           no
-  'IRIP'   RippedBy                             no
-  'IRTD'   Rating                               no
-  'ISBJ'   Subject                              no
-  'ISFT'   Software                             no
-  'ISGN'   SecondaryGenre                       no
-  'ISHP'   Sharpness                            no
-  'ISMP'   TimeCode                             no
-  'ISRC'   Source                               no
-  'ISRF'   SourceForm                           no
-  'ISTD'   ProductionStudio                     no
-  'ISTR'   Starring                             no
-  'ITCH'   Technician                           no
-  'ITRK'   TrackNumber                          no
-  'IWMU'   WatermarkURL                         no
-  'IWRI'   WrittenBy                            no
-  'LANG'   Language                             no
-  'LOCA'   Location                             no
-  'PRT1'   Part                                 no
-  'PRT2'   NumberOfParts                        no
-  'RATE'   Rate                                 no
-  'STAR'   Starring                             no
-  'STAT'   Statistics                           no
-  'TAPE'   TapeName                             no
-  'TCDO'   EndTimecode                          no
-  'TCOD'   StartTimecode                        no
-  'TITL'   Title                                no
-  'TLEN'   Length                               no
-  'TORG'   Organization                         no
-  'TRCK'   TrackNumber                          no
-  'TURL'   URL                                  no
-  'TVER'   Version                              no
-  'VMAJ'   VegasVersionMajor                    no
-  'VMIN'   VegasVersionMinor                    no
-  'YEAR'   Year                                 no
-
-=head3 RIFF Tdat Tags
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  [no tags known]
-
-=head3 RIFF Exif Tags
-
-These tags are part of the EXIF 2.3 specification for WAV audio files.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'ecor'   Make                                 no
-  'emdl'   Model                                no
-  'emnt'   MakerNotes                           no
-  'erel'   RelatedImageFile                     no
-  'etim'   TimeCreated                          no
-  'eucm'   UserComment                          no
-  'ever'   ExifVersion                          no
-
-=head3 RIFF Hdrl Tags
-
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'IDIT'               DateTimeOriginal         no
-  'ISMP'               TimeCode                 no
-  'LIST_odml'          OpenDML                  RIFF OpenDML
-  'LIST_strl'          Stream                   RIFF Stream
-  'avih'               AVIHeader                RIFF AVIHeader
-
-=head3 RIFF OpenDML Tags
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'dmlh'   ExtendedAVIHeader                    RIFF ExtAVIHdr
-
-=head3 RIFF ExtAVIHdr Tags
-
-  Index4   Tag Name                             Writable
-  ------   --------                             --------
-      0    TotalFrameCount                      no
-
-=head3 RIFF Stream Tags
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'strd'   StreamData                           RIFF StreamData
-  'strf'   AudioFormat                          RIFF AudioFormat
-           VideoFormat                          BMP
-  'strh'   StreamHeader                         RIFF StreamHeader
-  'strn'   StreamName                           no
-
-=head3 RIFF StreamData Tags
-
-This chunk is used to store proprietary information in AVI videos from some
-cameras.  The first 4 characters of the data are used as the Tag ID below.
-
-  Tag ID       Tag Name                         Writable
-  ------       --------                         --------
-  'AVIF'       AVIF                             EXIF
-  'CASI'       CasioData                        Casio AVI
-  'Zora'       VendorName                       no
-  'unknown'    UnknownData                      no
-
-=head3 RIFF AudioFormat Tags
-
-  Index2   Tag Name                             Writable
-  ------   --------                             --------
-      0    Encoding                             no
-      1    NumChannels                          no
-      2    SampleRate                           no
-      4    AvgBytesPerSec                       no
-      7    BitsPerSample                        no
-
-=head3 RIFF StreamHeader Tags
-
-  Index4   Tag Name                             Writable
-  ------   --------                             --------
-      0    StreamType                           no
-      1    AudioCodec                           no
-           VideoCodec                           no
-           Codec                                no
-      5    AudioSampleRate                      no
-           VideoFrameRate                       no
-           StreamSampleRate                     no
-      8    AudioSampleCount                     no
-           VideoFrameCount                      no
-           StreamSampleCount                    no
-     10    Quality                              no
-     11    SampleSize                           no
-
-=head3 RIFF AVIHeader Tags
-
-  Index4   Tag Name                             Writable
-  ------   --------                             --------
-      0    FrameRate                            no
-      1    MaxDataRate                          no
-      4    FrameCount                           no
-      6    StreamCount                          no
-      8    ImageWidth                           no
-      9    ImageHeight                          no
-
-=head3 RIFF VP8 Tags
-
-This chunk is found in simple-format (lossy) WebP files. See
-L<https://developers.google.com/speed/webp/docs/riff_container> for the WebP
-container specification.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    VP8Version                           no
-      6    ImageWidth                           no
-    6.1    HorizontalScale                      no
-      8    ImageHeight                          no
-    8.1    VerticalScale                        no
-
-=head3 RIFF VP8L Tags
-
-This chunk is found in lossless WebP files.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      1    ImageWidth                           no
-      2    ImageHeight                          no
-
-=head3 RIFF VP8X Tags
-
-This chunk is found in extended WebP files.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    WebP_Flags                           no
-      4    ImageWidth                           no
-      6    ImageHeight                          no
-
-=head3 RIFF BroadcastExt Tags
-
-Information found in the Broadcast Audio Extension chunk (see
-L<http://tech.ebu.ch/docs/tech/tech3285.pdf>).
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    Description                          no
-    256    Originator                           no
-    288    OriginatorReference                  no
-    320    DateTimeOriginal                     no
-    338    TimeReference                        no
-    346    BWFVersion                           no
-    348    BWF_UMID                             no
-    602    CodingHistory                        no
-
-=head3 RIFF DS64 Tags
-
-64-bit data sizes for MBWF/RF64 files.  See
-L<https://tech.ebu.ch/docs/tech/tech3306-2009.pdf> for the specification.
-
-  Index8   Tag Name                             Writable
-  ------   --------                             --------
-      0    RIFFSize64                           no
-      1    DataSize64                           no
-      2    NumberOfSamples64                    no
-
-=head3 RIFF Instrument Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    UnshiftedNote                        no
-      1    FineTune                             no
-      2    Gain                                 no
-      3    LowNote                              no
-      4    HighNote                             no
-      5    LowVelocity                          no
-      6    HighVelocity                         no
-
-=head3 RIFF Sampler Tags
-
-  Index4   Tag Name                             Writable
-  ------   --------                             --------
-      0    Manufacturer                         no
-      1    Product                              no
-      2    SamplePeriod                         no
-      3    MIDIUnityNote                        no
-      4    MIDIPitchFraction                    no
-      5    SMPTEFormat                          no
-      6    SMPTEOffset                          no
-      7    NumSampleLoops                       no
-      8    SamplerDataLen                       no
-      9    SamplerData                          no
-
-=head3 RIFF UserText Tags
-
-Tags decoded from the USER-format txts stream written by Momento M6 dashcam.
-Extracted only if the ExtractEmbedded option is used.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-     28    GPSAltitude                          no
-     40    Accelerometer                        no
-     56    GPSSpeed                             no
-     60    GPSLatitude                          no
-     64    GPSLongitude                         no
-     68    GPSDateTime                          no
 
 =head2 AIFF Tags
 

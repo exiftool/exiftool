@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.53';
+$VERSION = '3.54';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1050,7 +1050,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010h' },
     },{
         Name => 'Tag2010i', # ?
-        Condition => '$$self{Model} =~ /^(ILCE-(6100|6400|6600|7C|7M3|7RM3A?|7RM4A?|9|9M2)|DSC-(RX10M4|RX100M6|RX100M5A|RX100M7|HX99|RX0M2)|ZV-(1|E10))\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6100|6400|6600|7C|7M3|7RM3A?|7RM4A?|9|9M2)|DSC-(RX10M4|RX100M6|RX100M5A|RX100M7|HX99|RX0M2)|ZV-(1F?|E10))\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010i' },
     },{
         Name => 'Tag_0x2010',
@@ -2051,6 +2051,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             386 => 'ILCE-7RM3A', #JR
             387 => 'ILCE-7RM4A', #forum12542
             388 => 'ILCE-7M4', #IB/JR
+            389 => 'ZV-1F', #IB
             391 => 'ILME-FX30', #JR
         },
     },

@@ -30,7 +30,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.60';
+$VERSION = '1.61';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -640,6 +640,11 @@ my %code2charset = (
     },
     # gpsa - seen hex "01 20 00 00", same as QuickTime
     # gsea - 16 bytes hex "04 08 02 00 20 02 00 00 1f 03 00 00 01 00 00 00"
+
+    acid => {   # writen by Acidizer
+        Name => 'Acidizer',
+        SubDirectory => { TagTable => 'Image::ExifTool::RIFF::Acidizer' },
+    },
 );
 
 # the maker notes used by some digital cameras
@@ -1441,6 +1446,54 @@ my %code2charset = (
     },
 );
 
+# Acidizer information (ref https://forums.cockos.com/showthread.php?t=227118)
+%Image::ExifTool::RIFF::Acidizer = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Audio' },
+    0 => {
+        Name => 'AcidizerFlags',
+        Format => 'int32u',
+        PrintConv => { BITMASK => {
+            0 => 'One shot',
+            1 => 'Root note set',
+            2 => 'Stretch',
+            3 => 'Disk-based',
+            4 => 'High octave',
+        }},
+    },
+    4 => {
+        Name => 'RootNote',
+        Format => 'int16u',
+        PrintConv => {
+            0x30 => 'C',    0x3c => 'High C',
+            0x31 => 'C#',   0x3d => 'High C#',
+            0x32 => 'D',    0x3e => 'High D',
+            0x33 => 'D#',   0x3f => 'High D#',
+            0x34 => 'E',    0x40 => 'High E',
+            0x35 => 'F',    0x41 => 'High F',
+            0x36 => 'F#',   0x42 => 'High F#',
+            0x37 => 'G',    0x43 => 'High G',
+            0x38 => 'G#',   0x44 => 'High G#',
+            0x39 => 'A',    0x45 => 'High A',
+            0x3a => 'A#',   0x46 => 'High A#',
+            0x3b => 'B',    0x47 => 'High B',
+        },
+    },
+    12 => {
+        Name => 'Beats',
+        Format => 'int32u',
+    },
+    16 => {
+        Name => 'Meter',
+        Format => 'int16u[2]',
+        PrintConv => '$val =~ s/(\d+) (\d+)/$2\/$1/; $val', # denominator comes first, so swap them
+    },
+    20 => {
+        Name => 'Tempo',
+        Format => 'float',
+    },
+);
+
 # RIFF composite tags
 %Image::ExifTool::RIFF::Composite = (
     Duration => {
@@ -1671,7 +1724,7 @@ sub ProcessChunks($$$)
     my $start = $$dirInfo{DirStart};
     my $size = $$dirInfo{DirLen};
     my $end = $start + $size;
-    my $base = $$dirInfo{Base};
+    my $base = $$dirInfo{Base} || 0;
     my $verbose = $et->Options('Verbose');
     my $unknown = $et->Options('Unknown');
     my $charset = $et->Options('CharsetRIFF');

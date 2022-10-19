@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.48';
+$VERSION = '12.49';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -139,8 +139,8 @@ sub ReadValue($$$;$$$);
 @loadAllTables = qw(
     PhotoMechanic Exif GeoTiff CanonRaw KyoceraRaw Lytro MinoltaRaw PanasonicRaw
     SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 BMP::Extra BPG BPG::Extensions
-    PICT PNG MNG FLIF DjVu DPX OpenEXR ZISRAW MRC LIF MRC::FEI12 MIFF PCX PGF
-    PSP PhotoCD Radiance Other::PFM PDF PostScript Photoshop::Header
+    ICO PICT PNG MNG FLIF DjVu DPX OpenEXR ZISRAW MRC LIF MRC::FEI12 MIFF PCX
+    PGF PSP PhotoCD Radiance Other::PFM PDF PostScript Photoshop::Header
     Photoshop::Layers Photoshop::ImageData FujiFilm::RAF FujiFilm::IFD
     Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3 ID3::Lyrics3
     FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio
@@ -191,7 +191,7 @@ $defaultLang = 'en';    # default language
                 HTML VRD RTF FITS XCF DSS QTIF FPX PICT ZIP GZIP PLIST RAR BZ2
                 CZI TAR  EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC M2TS
                 MacOS PHP PCX DCX DWF DWG DXF WTV Torrent VCard LRI R3D AA PDB
-                PFM2 MRC LIF JXL MOI ISO ALIAS JSON MP3 DICOM PCD TXT);
+                PFM2 MRC LIF JXL MOI ISO ALIAS JSON MP3 DICOM PCD ICO TXT);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -260,6 +260,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     CRW  => ['CRW',  'Canon RAW format'],
     CS1  => ['PSD',  'Sinar CaptureShop 1-Shot RAW'],
     CSV  => ['TXT',  'Comma-Separated Values'],
+    CUR  => ['ICO',  'Windows Cursor'],
     CZI  => ['CZI',  'Zeiss Integrated Software RAW'],
     DC3  =>  'DICM',
     DCM  =>  'DICM',
@@ -336,6 +337,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     ICAL =>  'ICS',
     ICC  => ['ICC',  'International Color Consortium'],
     ICM  =>  'ICC',
+    ICO  => ['ICO',  'Windows Icon'],
     ICS  => ['VCard','iCalendar Schedule'],
     IDML => ['ZIP',  'Adobe InDesign Markup Language'],
     IIQ  => ['TIFF', 'Phase One Intelligent Image Quality RAW'],
@@ -649,6 +651,7 @@ my %fileDescription = (
     HDR  => 'image/vnd.radiance',
     HTML => 'text/html',
     ICC  => 'application/vnd.iccprofile',
+    ICO  => 'application/octet-stream', #PH (NC)
     ICS  => 'text/calendar',
     IDML => 'application/vnd.adobe.indesign-idml-package',
     IIQ  => 'image/x-raw',
@@ -915,6 +918,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     HDR  => '#\?(RADIANCE|RGBE)\x0a',
     HTML => '(\xef\xbb\xbf)?\s*(?i)<(!DOCTYPE\s+HTML|HTML|\?xml)', # (case insensitive)
     ICC  => '.{12}(scnr|mntr|prtr|link|spac|abst|nmcl|nkpf|cenc|mid |mlnk|mvis)(XYZ |Lab |Luv |YCbr|Yxy |RGB |GRAY|HSV |HLS |CMYK|CMY |[2-9A-F]CLR|nc..|\0{4}){2}',
+    ICO  => '\0\0[\x01\x02]\0[^0]\0', # (reasonably assume that the file contains less than 256 images)
     IND  => '\x06\x06\xed\xf5\xd8\x1d\x46\xe5\xbd\x31\xef\xe7\xfe\x74\xb7\x1d',
   # ISO  =>  signature is at byte 32768
     ITC  => '.{4}itch',
@@ -5758,8 +5762,8 @@ sub ConvertDateTime($$)
             $a[4] -= 1;                 # base month is 1
             # parse our %f fractional seconds first (and round up seconds if necessary)
             # - if there are multiple %f codes, they all get the same number of digits as the first
-            if ($fmt =~ /%\.?(\d*)f/) {
-                my $dig = $1;
+            if ($fmt =~ /%(-?)\.?(\d*)f/) {
+                my ($neg, $dig) = ($1, $2);
                 my $frac = $date =~ /(\.\d+)/ ? $1 : '';
                 if (not $frac) {
                     $frac = '.' . ('0' x $dig) if $dig;
@@ -5786,7 +5790,8 @@ sub ConvertDateTime($$)
                         }
                     } 
                 }
-                $fmt =~ s/(^|[^%])((%%)*)%\.?\d*f/$1$2$frac/g;
+                $neg and $frac =~ s/^\.//;
+                $fmt =~ s/(^|[^%])((%%)*)%-?\.?\d*f/$1$2$frac/g;
             }
             # parse %z and %s ourself (to handle time zones properly)
             if ($fmt =~ /%[sz]/) {

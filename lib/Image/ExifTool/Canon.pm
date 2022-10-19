@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.61';
+$VERSION = '4.62';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -480,6 +480,7 @@ $VERSION = '4.61';
     255 => 'Sigma 24-105mm f/4 DG OS HSM | A or Other Lens', #50
     255.1 => 'Sigma 180mm f/2.8 EX DG OS HSM APO Macro', #50
     255.2 => 'Tamron SP 70-200mm f/2.8 Di VC USD', #exiv issue 1202 (A009)
+    255.3 => 'Yongnuo YN 50mm f/1.8', #50
     368 => 'Sigma 14-24mm f/2.8 DG HSM | A or other Sigma Lens', #IB (A018)
     368.1 => 'Sigma 20mm f/1.4 DG HSM | A', #50 (newer firmware)
     368.2 => 'Sigma 50mm f/1.4 DG HSM | A', #50
@@ -603,8 +604,8 @@ $VERSION = '4.61';
    '61182.24' => 'Canon RF 14-35mm F4L IS USM', #IB
    '61182.25' => 'Canon RF-S 18-45mm F4.5-6.3 IS STM', #42
    '61182.26' => 'Canon RF 100-400mm F5.6-8 IS USM', #42
-   '61182.27' => 'Canon RF 100-400mm F5.6-8 IS USM + RF1.4x', #42 (NC)
-   '61182.28' => 'Canon RF 100-400mm F5.6-8 IS USM + RF2x', #42 (NC)
+   '61182.27' => 'Canon RF 100-400mm F5.6-8 IS USM + RF1.4x', #42
+   '61182.28' => 'Canon RF 100-400mm F5.6-8 IS USM + RF2x', #42
    '61182.29' => 'Canon RF-S 18-150mm F3.5-6.3 IS STM', #42
    '61182.30' => 'Canon RF 24mm F1.8 MACRO IS STM', #42
    '61182.31' => 'Canon RF 16mm F2.8 STM', #42
@@ -613,10 +614,14 @@ $VERSION = '4.61';
    '61182.34' => 'Canon RF 400mm F2.8L IS USM + RF2x', #IB
    '61182.35' => 'Canon RF 600mm F4L IS USM', #GiaZopatti
    '61182.36' => 'Canon RF 15-30mm F4.5-6.3 IS STM', #42
+   '61182.37' => 'Canon RF 800mm F5.6L IS USM', #42
+   '61182.38' => 'Canon RF 800mm F5.6L IS USM + RF1.4x', #42
+   '61182.39' => 'Canon RF 800mm F5.6L IS USM + RF2x', #42
+   '61182.40' => 'Canon RF 1200mm F8L IS USM', #42
+   '61182.41' => 'Canon RF 1200mm F8L IS USM + RF1.4x', #42
+   '61182.42' => 'Canon RF 1200mm F8L IS USM + RF2x', #42
     # we need the RFLensType values for the following...
-   '61182.37' => 'Canon RF 800mm F5.6L IS USM', #PH (NC)
-   '61182.38' => 'Canon RF 1200mm F8L IS USM', #PH (NC)
-   '61182.39' => 'Canon RF 5.2mm F2.8L Dual Fisheye 3D VR', #PH (NC)
+   '61182.43' => 'Canon RF 5.2mm F2.8L Dual Fisheye 3D VR', #PH (NC)
     65535 => 'n/a',
 );
 
@@ -6815,8 +6820,8 @@ my %ciMaxFocal = (
             281 => 'Canon RF 14-35mm F4L IS USM', #42/IB
             282 => 'Canon RF-S 18-45mm F4.5-6.3 IS STM', #42
             283 => 'Canon RF 100-400mm F5.6-8 IS USM', #42
-            284 => 'Canon RF 100-400mm F5.6-8 IS USM + RF1.4x', #42 (NC)
-            285 => 'Canon RF 100-400mm F5.6-8 IS USM + RF2x', #42 (NC)
+            284 => 'Canon RF 100-400mm F5.6-8 IS USM + RF1.4x', #42
+            285 => 'Canon RF 100-400mm F5.6-8 IS USM + RF2x', #42
             286 => 'Canon RF-S 18-150mm F3.5-6.3 IS STM', #42
             287 => 'Canon RF 24mm F1.8 MACRO IS STM', #42
             288 => 'Canon RF 16mm F2.8 STM', #42
@@ -6824,6 +6829,12 @@ my %ciMaxFocal = (
             290 => 'Canon RF 400mm F2.8L IS USM + RF1.4x', #IB
             291 => 'Canon RF 400mm F2.8L IS USM + RF2x', #IB
             292 => 'Canon RF 600mm F4L IS USM', #GiaZopatti
+            295 => 'Canon RF 800mm F5.6L IS USM', #42
+            296 => 'Canon RF 800mm F5.6L IS USM + RF1.4x', #42
+            297 => 'Canon RF 800mm F5.6L IS USM + RF2x', #42
+            298 => 'Canon RF 1200mm F8L IS USM', #42
+            299 => 'Canon RF 1200mm F8L IS USM + RF1.4x', #42
+            300 => 'Canon RF 1200mm F8L IS USM + RF2x', #42
             302 => 'Canon RF 15-30mm F4.5-6.3 IS STM', #42
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },

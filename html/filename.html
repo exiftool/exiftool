@@ -358,12 +358,13 @@ with these name format codes.</p>
 <ol>
 <li>The <code>%f</code> format code is an ExifTool-specific enhancement and
 supports an optional number of digits after the decimal point. For example,
-<code>%3f</code> gives fractional seconds with 3 digits (eg. ".123").  The value
-is rounded to the specified number of digits, and the date/time value is
-incremented by one second if the rounding would overflow to the next second,
-even if the number of decimal digits is zero (ie. <code>%0f</code>).  Without
-<code>%f</code>, the fractional seconds are simply discarded and no rounding is
-performed.<br><br></li>
+<code>%3f</code> gives fractional seconds with 3 digits (eg. ".123").  A
+"<code>-</code>" may be added to drop the decimal (eg. <code>%-3f</code> would
+give "123").  The value is rounded to the specified number of digits, and the
+date/time value is incremented by one second if the rounding would overflow to
+the next second, even if the number of decimal digits is zero (ie.
+<code>%0f</code>).  Without <code>%f</code>, the fractional seconds are simply
+discarded and no rounding is performed.<br><br></li>
 <li>The <code>%s</code> and <code>%z</code> format codes use the time zone
 specified by the date/time value.  If the date/time value does not include a
 time zone specification, then it is interpreted as a local time in the system

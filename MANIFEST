@@ -85,6 +85,7 @@ html/TagNames/H264.html
 html/TagNames/HP.html
 html/TagNames/HTML.html
 html/TagNames/ICC_Profile.html
+html/TagNames/ICO.html
 html/TagNames/ID3.html
 html/TagNames/IPTC.html
 html/TagNames/ISO.html
@@ -293,6 +294,7 @@ lib/Image/ExifTool/HP.pm
 lib/Image/ExifTool/HTML.pm
 lib/Image/ExifTool/HtmlDump.pm
 lib/Image/ExifTool/ICC_Profile.pm
+lib/Image/ExifTool/ICO.pm
 lib/Image/ExifTool/ID3.pm
 lib/Image/ExifTool/IPTC.pm
 lib/Image/ExifTool/ISO.pm

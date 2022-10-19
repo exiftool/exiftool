@@ -655,62 +655,82 @@ at this time.  For this reason, tags below with equivalents in the
 <td class=c>boolean</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>Firmware</td>
-<td class=c>string</td>
+<td>EnhanceDetailsAlreadyApplied</td>
+<td class=c>boolean</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>FlashCompensation</td>
+<td>EnhanceDetailsVersion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>EnhanceSuperResolutionAlreadyApplied</td>
+<td class=c>boolean</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>EnhanceSuperResolutionScale</td>
 <td class=c>rational</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>EnhanceSuperResolutionVersion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Firmware</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FlashCompensation</td>
+<td class=c>rational</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>ImageNumber</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>IsMergedHDR</td>
 <td class=c>boolean</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>IsMergedPanorama</td>
 <td class=c>boolean</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LateralChromaticAberrationCorrectionAlreadyApplied</td>
 <td class=c>boolean</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Lens</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LensDistortInfo</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LensID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LensInfo</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td><span class=s><span class=n>(4 rational values giving focal and aperture ranges)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>LensSerialNumber</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>NeutralDensityFactor</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>OwnerName</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SerialNumber</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>VignetteCorrectionAlreadyApplied</td>
 <td class=c>boolean</td>
 <td>&nbsp;</td></tr>
@@ -4543,7 +4563,14 @@ specific properties in XMP (see <a href="http://creativecommons.org/ns">http://c
 <tr>
 <td>PerspectiveUpright</td>
 <td class=c title=' / = Avoid'>integer/</td>
-<td>&nbsp;</td></tr>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Full</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Level
+  <br>4 = Vertical
+  <br>5 = Guided</td></tr></table>
+</td></tr>
 <tr class=b>
 <td>PerspectiveVertical</td>
 <td class=c title=' / = Avoid'>integer/</td>
@@ -4579,7 +4606,9 @@ specific properties in XMP (see <a href="http://creativecommons.org/ns">http://c
 <tr class=b>
 <td>PostCropVignetteStyle</td>
 <td class=c title=' / = Avoid'>integer/</td>
-<td>&nbsp;</td></tr>
+<td><span class=s>1 = Highlight Priority
+  <br>2 = Color Priority
+  <br>3 = Paint Overlay</span></td></tr>
 <tr>
 <td>PresetType</td>
 <td class=c title=' / = Avoid'>string/</td>
@@ -5423,70 +5452,90 @@ specific properties in XMP (see <a href="http://creativecommons.org/ns">http://c
 <td class=c title=' / = Avoid'>integer/</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>UprightFourSegments_0</td>
+<td class=c title=' / = Avoid'>string/</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>UprightFourSegments_1</td>
+<td class=c title=' / = Avoid'>string/</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>UprightFourSegments_2</td>
+<td class=c title=' / = Avoid'>string/</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>UprightFourSegments_3</td>
+<td class=c title=' / = Avoid'>string/</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>UprightFourSegmentsCount</td>
 <td class=c title=' / = Avoid'>integer/</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>UprightGuidedDependentDigest</td>
+<td class=c title=' / = Avoid'>string/</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>UprightPreview</td>
 <td class=c title=' / = Avoid'>boolean/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>UprightTransform_0</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>UprightTransform_1</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>UprightTransform_2</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>UprightTransform_3</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>UprightTransform_4</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>UprightTransform_5</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>UprightTransformCount</td>
 <td class=c title=' / = Avoid'>integer/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>UprightVersion</td>
 <td class=c title=' / = Avoid'>integer/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>UUID</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Version</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Vibrance</td>
 <td class=c title=' / = Avoid'>integer/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>VignetteAmount</td>
 <td class=c title=' / = Avoid'>integer/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>VignetteMidpoint</td>
 <td class=c title=' / = Avoid'>integer/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>What</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>WhiteBalance</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td><table class=cols><tr>
@@ -5500,7 +5549,7 @@ specific properties in XMP (see <a href="http://creativecommons.org/ns">http://c
   <br>&#39;Shade&#39; = Shade
   <br>&#39;Tungsten&#39; = Tungsten</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td>Whites2012</td>
 <td class=c title=' / = Avoid'>integer/</td>
 <td>&nbsp;</td></tr>
@@ -9373,7 +9422,14 @@ metadata space with these incredibly bulky image editing parameters.</p>
 <tr>
 <td>PerspectiveUpright</td>
 <td class=c>integer</td>
-<td>&nbsp;</td></tr>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Full</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Level
+  <br>4 = Vertical
+  <br>5 = Guided</td></tr></table>
+</td></tr>
 <tr class=b>
 <td>PerspectiveVertical</td>
 <td class=c>integer</td>
@@ -9409,7 +9465,9 @@ metadata space with these incredibly bulky image editing parameters.</p>
 <tr class=b>
 <td>PostCropVignetteStyle</td>
 <td class=c>integer</td>
-<td>&nbsp;</td></tr>
+<td><span class=s>1 = Highlight Priority
+  <br>2 = Color Priority
+  <br>3 = Paint Overlay</span></td></tr>
 <tr>
 <td>PresetType</td>
 <td class=c>string</td>
@@ -10137,70 +10195,90 @@ metadata space with these incredibly bulky image editing parameters.</p>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>UprightFourSegments_0</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>UprightFourSegments_1</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>UprightFourSegments_2</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>UprightFourSegments_3</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>UprightFourSegmentsCount</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>UprightGuidedDependentDigest</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>UprightPreview</td>
 <td class=c>boolean</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>UprightTransform_0</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>UprightTransform_1</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>UprightTransform_2</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>UprightTransform_3</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>UprightTransform_4</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>UprightTransform_5</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>UprightTransformCount</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>UprightVersion</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>UUID</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Version</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Vibrance</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>VignetteAmount</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>VignetteMidpoint</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>What</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>WhiteBalance</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td><table class=cols><tr>
@@ -10214,7 +10292,7 @@ metadata space with these incredibly bulky image editing parameters.</p>
   <br>&#39;Shade&#39; = Shade
   <br>&#39;Tungsten&#39; = Tungsten</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td>Whites2012</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
@@ -19684,7 +19762,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 13, 2022</i>
+<br><i>Last revised Oct 19, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

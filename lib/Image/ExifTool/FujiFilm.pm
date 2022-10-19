@@ -1072,7 +1072,7 @@ my %faceCategories = (
         Mask => 0x000000ff,
         PrintConv => {
             0 => 'Single',
-            1 => 'Continuous Low',
+            1 => 'Continuous Low', # not used by X-H2S? (see forum13777)
             2 => 'Continuous High',
         },
     },

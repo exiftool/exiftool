@@ -17,15 +17,33 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.49'><b>Oct. 19, 2022 - Version 12.49</b></a>
+<ul>
+<li>Added read support for Windows ICO and CUR files
+<li>Added ability to shift EXIF OffsetTime tags (eg. "-OffsetTime+=+02:00")
+<li>Added a few new XMP tags and print conversions
+<li>Added a print conversion for Photoshop:PrintFlags
+<li>Added a new SonyModelID (thanks LibRaw)
+<li>Added a few new Canon RF LensType values (thanks Norbert Wasser)
+<li>Added a new Canon LensType
+<li>Added a new Nikon LensID
+<li>Decode 'riff' metadata blocks in FLAC audio files
+<li>Decode RIFF 'acid' chunk written by Acidizer
+<li>Enhanced the -d option %f sub-second date/time format code to allow the
+    decimal point to be dropped (eg. "%-3f")
+<li>Patched another Sigma Photo Pro incompatibility when writing X3F images
+    (Sigma will also fix this at their end in the next SPP release)
+</ul>
+
 <a name='v12.48'><b>Oct. 13, 2022 - Version 12.48</b></a>
 <ul>
 <li>Added support for new XMP-photoshop:CameraProfiles structure
 <li>Added a new SonyModelID and Sony LensType (thanks Jos Roost)
 <li>Decode more tags for the Sony ILME-FX30 (thanks Jos Roost)
 <li>Decode a couple of new Panasonic tags, and improved decoding of others
-<li>Decode <a href="TagNames/MISB.html">STANAG-4609 MISB GPS information</a> from M2TS videos
+<li>Decode <a href="TagNames/MISB.html">STANAG-4609 MISB</a> timed metadata from M2TS videos
 <li>Decode a new Nikon tag (thanks Warren Hatch)
-<li>Decode a couple of new FujiFilm tag (thanks Honza Pokorny)
+<li>Decode a couple of new FujiFilm tags (thanks Honza Pokorny)
 <li>Improved round-off errors when writing QuickTime:MatrixStructure via the
     Composite:Rotation tag
 <li>Increased Verbose level of "nothing changed" message added in 12.45

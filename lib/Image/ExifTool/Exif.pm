@@ -2080,6 +2080,7 @@ my %opcodeInfo = (
         Groups => { 2 => 'Time' },
         Notes => 'time zone for ModifyDate',
         Writable => 'string',
+        Shift => 'Time',
         PrintConvInv => q{
             return "+00:00" if $val =~ /\d{2}Z$/;
             return sprintf("%s%.2d:%.2d",$1,$2,$3) if $val =~ /([-+])(\d{1,2}):(\d{2})/;
@@ -2091,6 +2092,7 @@ my %opcodeInfo = (
         Groups => { 2 => 'Time' },
         Notes => 'time zone for DateTimeOriginal',
         Writable => 'string',
+        Shift => 'Time',
         PrintConvInv => q{
             return "+00:00" if $val =~ /\d{2}Z$/;
             return sprintf("%s%.2d:%.2d",$1,$2,$3) if $val =~ /([-+])(\d{1,2}):(\d{2})/;
@@ -2102,6 +2104,7 @@ my %opcodeInfo = (
         Groups => { 2 => 'Time' },
         Notes => 'time zone for CreateDate',
         Writable => 'string',
+        Shift => 'Time',
         PrintConvInv => q{
             return "+00:00" if $val =~ /\d{2}Z$/;
             return sprintf("%s%.2d:%.2d",$1,$2,$3) if $val =~ /([-+])(\d{1,2}):(\d{2})/;

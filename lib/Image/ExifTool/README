@@ -720,7 +720,7 @@ numerical, and generated automatically otherwise.
                   condition exists, then a 'true' condition is assumed.  The
                   expression may use $self to access the ExifTool object.  The
                   first 128 bytes of the raw data value are accessible through
-                  the reference $valPt for EXIF, Jpeg2000, QuickTime and
+                  the reference $valPt for EXIF, Jpeg2000, QuickTime, FLAC and
                   BinaryData tags only (note that for BinaryData tags, the raw
                   data of $$valPt is always 'undef' type, and may not be used
                   when writing except for SubDirectory tags).  EXIF tags (and

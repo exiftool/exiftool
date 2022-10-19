@@ -25,14 +25,27 @@
 package Image::ExifTool::Photoshop;
 
 use strict;
-use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
+use vars qw($VERSION $AUTOLOAD $iptcDigestInfo %printFlags);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.66';
+$VERSION = '1.67';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
 sub ProcessLayers($$$);
+
+# PrintFlags bit definitions (ref forum13785)
+%printFlags = (
+    0 => 'Labels',
+    1 => 'Corner crop marks',
+    2 => 'Color bars', # (deprecated)
+    3 => 'Registration marks',
+    4 => 'Negative',
+    5 => 'Emulsion down',
+    6 => 'Interpolate', # (deprecated)
+    7 => 'Description',
+    8 => 'Print flags',
+);
 
 # map of where information is stored in PSD image
 my %psdMap = (
@@ -106,7 +119,17 @@ my %unicodeString = (
     0x03f0 => { Unknown => 1, Name => 'PStringCaption' },
     0x03f1 => { Unknown => 1, Name => 'BorderInformation' },
     0x03f2 => { Unknown => 1, Name => 'BackgroundColor' },
-    0x03f3 => { Unknown => 1, Name => 'PrintFlags', Format => 'int8u' },
+    0x03f3 => {
+        Unknown => 1,
+        Name => 'PrintFlags',
+        Format => 'int8u',
+        PrintConv => q{
+            my $byte = 0;
+            my @bits = $val =~ /\d+/g;
+            $byte = ($byte << 1) | ($_ ? 1 : 0) foreach reverse @bits;
+            return DecodeBits($byte, \%Image::ExifTool::Photoshop::printFlags);
+        },
+    },
     0x03f4 => { Unknown => 1, Name => 'BW_HalftoningInfo' },
     0x03f5 => { Unknown => 1, Name => 'ColorHalftoningInfo' },
     0x03f6 => { Unknown => 1, Name => 'DuotoneHalftoningInfo' },

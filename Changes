@@ -7,15 +7,32 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.42. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Oct. 19, 2022 - Version 12.49
+
+  - Added read support for Windows ICO and CUR files
+  - Added ability to shift EXIF OffsetTime tags (eg. "-OffsetTime+=+02:00")
+  - Added a few new XMP tags and print conversions
+  - Added a print conversion for Photoshop:PrintFlags
+  - Added a new SonyModelID (thanks LibRaw)
+  - Added a few new Canon RF LensType values (thanks Norbert Wasser)
+  - Added a new Canon LensType
+  - Added a new Nikon LensID
+  - Decode 'riff' metadata blocks in FLAC audio files
+  - Decode RIFF 'acid' chunk written by Acidizer
+  - Enhanced the -d option %f sub-second date/time format code to allow the
+    decimal point to be dropped (eg. "%-3f")
+  - Patched another Sigma Photo Pro incompatibility when writing X3F images
+    (Sigma will also fix this at their end in the next SPP release)
+
 Oct. 13, 2022 - Version 12.48
 
   - Added support for new XMP-photoshop:CameraProfiles structure
   - Added a new SonyModelID and Sony LensType (thanks Jos Roost)
   - Decode more tags for the Sony ILME-FX30 (thanks Jos Roost)
   - Decode a couple of new Panasonic tags, and improved decoding of others
-  - Decode STANAG-4609 MISB GPS information from M2TS videos
+  - Decode STANAG-4609 MISB timed metadata from M2TS videos
   - Decode a new Nikon tag (thanks Warren Hatch)
-  - Decode a couple of new FujiFilm tag (thanks Honza Pokorny)
+  - Decode a couple of new FujiFilm tags (thanks Honza Pokorny)
   - Improved round-off errors when writing QuickTime:MatrixStructure via the
     Composite:Rotation tag
   - Increased Verbose level of "nothing changed" message added in 12.45

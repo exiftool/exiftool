@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.53';
+$VERSION = '3.54';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -1468,7 +1468,14 @@ my %sPantryItem = (
     PostCropVignetteMidpoint    => { Writable => 'integer' },
     PostCropVignetteFeather     => { Writable => 'integer' },
     PostCropVignetteRoundness   => { Writable => 'integer' },
-    PostCropVignetteStyle       => { Writable => 'integer' },
+    PostCropVignetteStyle       => {
+        Writable => 'integer',
+        PrintConv => { #forum14011
+            1 => 'Highlight Priority',
+            2 => 'Color Priority',
+            3 => 'Paint Overlay',
+        },
+    },
     # disable List behaviour of flattened Gradient/PaintBasedCorrections
     # because these are nested in lists and the flattened tags can't
     # do justice to this complex structure
@@ -1565,7 +1572,17 @@ my %sPantryItem = (
     },
     ColorNoiseReductionSmoothness       => { Writable => 'integer' },
     PerspectiveAspect                   => { Writable => 'integer' },
-    PerspectiveUpright                  => { Writable => 'integer' },
+    PerspectiveUpright                  => {
+        Writable => 'integer',
+        PrintConv => { #forum14012
+            0 => 'Off',     # Disable Upright
+            1 => 'Auto',    # Apply balanced perspective corrections
+            2 => 'Full',    # Apply level, horizontal, and vertical perspective corrections
+            3 => 'Level',   # Apply only level correction
+            4 => 'Vertical',# Apply level and vertical perspective corrections
+            5 => 'Guided',  # Draw two or more guides to customize perspective corrections
+        },
+    },
     RetouchAreas => {
         FlatName => 'RetouchArea',
         Struct => \%sRetouchArea,
@@ -1589,12 +1606,17 @@ my %sPantryItem = (
     UprightPreview                      => { Writable => 'boolean' },
     UprightTransformCount               => { Writable => 'integer' },
     UprightDependentDigest              => { },
+    UprightGuidedDependentDigest        => { },
     UprightTransform_0                  => { },
     UprightTransform_1                  => { },
     UprightTransform_2                  => { },
     UprightTransform_3                  => { },
     UprightTransform_4                  => { },
     UprightTransform_5                  => { },
+    UprightFourSegments_0               => { },
+    UprightFourSegments_1               => { },
+    UprightFourSegments_2               => { },
+    UprightFourSegments_3               => { },
     # more stuff seen in lens profile file (unknown source)
     What => { }, # (with value "LensProfileDefaultSettings")
     LensProfileMatchKeyExifMake         => { },
@@ -2433,6 +2455,12 @@ my %sPantryItem = (
     LateralChromaticAberrationCorrectionAlreadyApplied => { Writable => 'boolean' },
     LensDistortInfo => { }, # (LR 7.5.1, 4 signed rational values)
     NeutralDensityFactor => { }, # (LR 11.0 - rational value, but denominator seems significant)
+    # the following are ref forum13747
+    EnhanceDetailsAlreadyApplied    => { Writable => 'boolean' },
+    EnhanceDetailsVersion           => { }, # integer?
+    EnhanceSuperResolutionAlreadyApplied => { Writable => 'boolean' },
+    EnhanceSuperResolutionVersion   => { }, # integer?
+    EnhanceSuperResolutionScale     => { Writable => 'rational' },
 );
 
 # IPTC Core namespace properties (Iptc4xmpCore) (ref 4)

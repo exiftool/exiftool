@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %iptcCharset);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.57';
+$VERSION = '1.58';
 
 %iptcCharset = (
     "\x1b%G"  => 'UTF8',
@@ -411,6 +411,7 @@ my %fileFormat = (
         Shift => 'Time',
         ValueConv => 'Image::ExifTool::Exif::ExifDate($val)',
         ValueConvInv => 'Image::ExifTool::IPTC::IptcDate($val)',
+        PrintConv => '$self->Options("DateFormat") ? $self->ConvertDateTime("$val 00:00:00") : $val',
         PrintConvInv => 'Image::ExifTool::IPTC::InverseDateOrTime($self,$val)',
     },
     60 => {
@@ -420,6 +421,7 @@ my %fileFormat = (
         Shift => 'Time',
         ValueConv => 'Image::ExifTool::Exif::ExifTime($val)',
         ValueConvInv => 'Image::ExifTool::IPTC::IptcTime($val)',
+        PrintConv => '$self->Options("DateFormat") ? $self->ConvertDateTime("1970:01:01 $val") : $val',
         PrintConvInv => 'Image::ExifTool::IPTC::InverseDateOrTime($self,$val)',
     },
     62 => {
@@ -429,6 +431,7 @@ my %fileFormat = (
         Shift => 'Time',
         ValueConv => 'Image::ExifTool::Exif::ExifDate($val)',
         ValueConvInv => 'Image::ExifTool::IPTC::IptcDate($val)',
+        PrintConv => '$self->Options("DateFormat") ? $self->ConvertDateTime("$val 00:00:00") : $val',
         PrintConvInv => 'Image::ExifTool::IPTC::InverseDateOrTime($self,$val)',
     },
     63 => {
@@ -438,6 +441,7 @@ my %fileFormat = (
         Shift => 'Time',
         ValueConv => 'Image::ExifTool::Exif::ExifTime($val)',
         ValueConvInv => 'Image::ExifTool::IPTC::IptcTime($val)',
+        PrintConv => '$self->Options("DateFormat") ? $self->ConvertDateTime("1970:01:01 $val") : $val',
         PrintConvInv => 'Image::ExifTool::IPTC::InverseDateOrTime($self,$val)',
     },
     65 => {

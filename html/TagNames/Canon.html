@@ -900,6 +900,7 @@
 </tr><tr><td class=r>0x80000465</td><td>= EOS R10</td>
 </tr><tr><td class=r>0x80000467</td><td>= PowerShot ZOOM</td>
 </tr><tr><td class=r>0x80000468</td><td>= EOS M50 Mark II / Kiss M2</td>
+</tr><tr><td class=r>0x80000481</td><td>= EOS R6 Mark II</td>
 </tr><tr><td class=r>0x80000520</td><td>= EOS D2000C</td>
 </tr><tr><td class=r>0x80000560</td><td>= EOS D6000C</td>
 </tr></table></td></tr></table></blockquote>
@@ -1874,7 +1875,8 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>61182.40</td><td>= Canon RF 1200mm F8L IS USM</td>
 </tr><tr><td>61182.41</td><td>= Canon RF 1200mm F8L IS USM + RF1.4x</td>
 </tr><tr><td>61182.42</td><td>= Canon RF 1200mm F8L IS USM + RF2x</td>
-</tr><tr><td>61182.43</td><td>= Canon RF 5.2mm F2.8L Dual Fisheye 3D VR</td>
+</tr><tr><td>61182.43</td><td>= Canon RF 135mm F1.8 L IS USM</td>
+</tr><tr><td>61182.44</td><td>= Canon RF 5.2mm F2.8L Dual Fisheye 3D VR</td>
 </tr><tr><td>61491</td><td>= Canon CN-E 14mm T3.1 L F</td>
 </tr><tr><td>61492</td><td>= Canon CN-E 24mm T1.5 L F</td>
 </tr><tr><td>61494</td><td>= Canon CN-E 85mm T1.3 L F</td>
@@ -6586,7 +6588,8 @@ valid for all camera models)</span></span></td></tr>
   <br>298 = Canon RF 1200mm F8L IS USM
   <br>299 = Canon RF 1200mm F8L IS USM + RF1.4x
   <br>300 = Canon RF 1200mm F8L IS USM + RF2x
-  <br>302 = Canon RF 15-30mm F4.5-6.3 IS STM</span></td></tr>
+  <br>302 = Canon RF 15-30mm F4.5-6.3 IS STM
+  <br>303 = Canon RF 135mm F1.8 L IS USM</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='SerialInfo'>Canon SerialInfo Tags</a></h2>
@@ -10422,7 +10425,7 @@ option is used.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorData11'>Canon ColorData11 Tags</a></h2>
-<p>These tags are used by the EOS R3</p>
+<p>These tags are used by the EOS R3, R7 and R6mkII</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -10432,7 +10435,8 @@ option is used.</p>
 <td class=r title='0 = 0x0'>0</td>
 <td>ColorDataVersion</td>
 <td class=c>int16s</td>
-<td><span class=s>34 = 34 (R3)</span></td></tr>
+<td><span class=s>34 = 34 (R3)
+  <br>48 = 48 (R7, R10, R6 Mark II)</span></td></tr>
 <tr class=b>
 <td class=r title='105 = 0x69'>105</td>
 <td>WB_RGGBLevelsAsShot</td>
@@ -11650,7 +11654,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 19, 2022</i>
+<br><i>Last revised Nov 8, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

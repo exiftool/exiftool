@@ -4,8 +4,43 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 12.42. (Other versions are
+Note: The most recent production release is Version 12.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Nov. 8, 2022 - Version 12.50 (production release)
+
+  - Added a new XMP-GCreations tag
+  - Added a few new Sony lenses (thanks Jos Roost)
+  - Added new SonyModelID and Olympus CameraType values (thanks LibRaw and Herb)
+  - Added a couple of new XMP tags (thanks Jose Oliver-Didier)
+  - Added a new Nikon Z lens (thanks LibRaw)
+  - Added a new Canon LensType and CanonModelID (thanks Norbert Wasser and
+    LibRaw)
+  - Added some new Pentax lenses (thanks LibRaw)
+  - Added experimental support for timed GPS in TS videos from Jomise T860S-GM
+    dashcam (more samples are needed for this to be finalized)
+  - Decode information written in "skip" atom of 70mai Pro Plus+ MP4 videos
+  - Decode timed accelerometer data from Kenwood dashcam MP4 videos
+  - Decode a few new Nikon Z9 tags (thanks Stefan Grussen)
+  - Decode ColorData for some newer Canon models (thanks LibRaw)
+  - Decode a number of new tags for the Sony ILCE-7RM5 (thanks Jos Roost)
+  - Updated IPTC XMP tags to correspond with new Photo Metadata 2022.1 standard
+  - Extract JPEG previews from FujiFilm HIF images
+  - Changed -if option so multiple -if options are evaluated at the lowest
+    specified -fast level
+  - Changed MIMEType for ICO and CUR files
+  - Enhanced -fast2 so it stops processing QuickTime files at mdat atom
+  - Enhanced -listx output so -f also indicates the ID of the parent structure
+    for Flattened tags
+  - Improved conversion of IPTC date-only and time-only tags to allow formatting
+    with the -d option
+  - Improved Canon and Nikon TimeZone tags to accept a wider variety of input
+    formats when writing
+  - Disabled extraction of Nikon Z9 MenuSettings for firmware 3.0 until they can
+    be properly decoded (thanks Warren Hatch)
+  - Fixed decoding of AF points for some newer Nikon models
+  - Fixed inconsistent year and time zone for Kenwood dashcam timed GPS in MP4
+    videos
 
 Oct. 19, 2022 - Version 12.49
 
@@ -320,7 +355,7 @@ Oct. 16, 2021 - Version 12.33
   - Added a new Canon RF lens (thanks Norbert Wasser)
   - Decode Canon ShutterMode (thanks John Moyer)
   - Extract LensModel from some Olympus MOV videos
-  - Generate MediaDataOffset/Size for MOV videos with zero-sized MDAT chunk
+  - Generate MediaDataOffset/Size for MOV videos with zero-sized mdat chunk
   - Improvements to CBOR reader, including hex dump with -v3 option
   - Recognize Final Cut Pro XML files
   - Allow binary data of Protected tags to be extracted with the -X -j and -php
@@ -2119,7 +2154,7 @@ Mar. 1, 2018 - Version 10.82
   - Added a few new CanonModelID/SonyModelID values (thanks LibRaw)
   - Added support for the Sony ILCE-7M3 (thanks Jos Roost)
   - Decode timed GPS information from Insta360 MP4 videos with the -ee option
-  - Write XMP before idat in MOV/MP4/CR3 files if possible
+  - Write XMP before mdat in MOV/MP4/CR3 files if possible
   - Fixed "'x' outside of string" runtime error when reading some Sony images
   - Fixed problem with some hex dumps going to the console when -v3 was combined
     with the -w option

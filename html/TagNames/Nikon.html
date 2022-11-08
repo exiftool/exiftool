@@ -263,9 +263,11 @@ causes the other information to be re-encrypted with the new key)</span></span><
 </td></tr>
 <tr>
 <td title='0x0035 = 53'>0x0035</td>
-<td>HDRInfo</td>
-<td class=c>-</td>
-<td>--&gt; <a href='Nikon.html#HDRInfo'>Nikon HDRInfo Tags</a></td></tr>
+<td>HDRInfo
+  <br>HDRInfo2</td>
+<td class=c>-<br>-</td>
+<td>--&gt; <a href='Nikon.html#HDRInfo'>Nikon HDRInfo Tags</a>
+  <br>--&gt; <a href='Nikon.html#HDRInfo2'>Nikon HDRInfo2 Tags</a></td></tr>
 <tr class=b>
 <td title='0x0037 = 55'>0x0037</td>
 <td>MechanicalShutterCount</td>
@@ -686,10 +688,12 @@ new key)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x00b0 = 176'>0x00b0</td>
-<td>MultiExposure</td>
-<td class=c>-</td>
+<td>MultiExposure
+  <br>MultiExposure2</td>
+<td class=c>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#MultiExposure'>Nikon MultiExposure Tags</a>
-  <br>--&gt; <a href='Nikon.html#MultiExposure'>Nikon MultiExposure Tags</a></td></tr>
+  <br>--&gt; <a href='Nikon.html#MultiExposure'>Nikon MultiExposure Tags</a>
+  <br>--&gt; <a href='Nikon.html#MultiExposure2'>Nikon MultiExposure2 Tags</a></td></tr>
 <tr class=b>
 <td title='0x00b1 = 177'>0x00b1</td>
 <td>HighISONoiseReduction</td>
@@ -1248,14 +1252,20 @@ edit versions, otherwise this is extracted as a binary data block)</span>
 <td class=r title='6 = 0x6'>6</td>
 <td>VRMode</td>
 <td class=c>int8u</td>
-<td><span class=s><span class=n>(Z Series cameras thru Decemeber 2021)</span>
+<td><span class=s><span class=n>(Z Series cameras thru December 2021)</span>
   <br>0 = Off
-  <br>1 = Sport
-  <br>3 = Normal
+  <br>1 = Normal
+  <br>3 = Sport
   <br>0 = Normal
   <br>1 = On (1)
   <br>2 = Active
   <br>3 = Sport</span></td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>VRType</td>
+<td class=c>int8u</td>
+<td><span class=s>2 = In-body
+  <br>3 = In-body + Lens</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='FaceDetect'>Nikon FaceDetect Tags</a></h2>
@@ -1796,14 +1806,14 @@ FaceDetectFrameSize)</span></span></td></tr>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>HDRInfoVersion</td>
-<td class=c>string[4]</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>HDR</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
-  <br>1 = On
+  <br>1 = On (normal)
   <br>48 = Auto</span></td></tr>
 <tr>
 <td class=r title='5 = 0x5'>5</td>
@@ -1835,6 +1845,37 @@ FaceDetectFrameSize)</span></span></td></tr>
   <br>2 = 2 EV
   <br>3 = 3 EV
   <br>255 = n/a</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='HDRInfo2'>Nikon HDRInfo2 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>HDRInfoVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>HDR</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On (normal)</span></td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>HDRLevel</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = n/a
+  <br>1 = Normal
+  <br>2 = Low</td><td>&nbsp;&nbsp;</td>
+  <td>3 = High
+  <br>4 = High+
+  <br>5 = Auto</td></tr></table>
+</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='LocationInfo'>Nikon LocationInfo Tags</a></h2>
@@ -5512,7 +5553,8 @@ extracted.</p>
   <br>29 = Nikkor Z 28mm f/2.8
   <br>30 = Nikkor Z 400mm f/2.8 TC VR S
   <br>31 = Nikkor Z 24-120 f/4
-  <br>32 = Nikkor Z 800mm f/6.3 VR S</td></tr></table>
+  <br>32 = Nikkor Z 800mm f/6.3 VR S
+  <br>36 = Nikkor Z 400mm f/4.5 VR S</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='53 = 0x35'>53</td>
@@ -6320,6 +6362,39 @@ D5200, D7000.</p>
   <br>1 = On</span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='MultiExposure2'>Nikon MultiExposure2 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>MultiExposureVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>MultiExposureMode</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Off
+  <br>1 = Multiple Exposure
+  <br>3 = HDR</span></td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>MultiExposureShots</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>MultiExposureOverlayMode</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Add
+  <br>1 = Average
+  <br>2 = Light
+  <br>3 = Dark</span></td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='AFInfo2V0400'>Nikon AFInfo2V0400 Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -6882,11 +6957,7 @@ D500 and D850)</span></span><table class=cols><tr>
   <br>151 = G1
   <br>152 = H1
   <br>153 = I1</td></tr></table>
-<span class=s><span class=n>(Nikon models with 493-point AF -- 17 rows (A-Q) and 29 columns (1-29), I15
-at the center)</span>
-  <br>0 = (none)
-  <br>246 = I15 (Center)
-  <br><span class=n>(future models?...)</span>
+<span class=s><span class=n>(future models?...)</span>
   <br>0 = (none)
   <br>1 = Center</span></td></tr>
 <tr class=b>
@@ -6899,8 +6970,8 @@ at the center)</span>
   <br>AFPointsUsed
   <br>AFPointsUsed
   <br>AFPointsUsed
-  <br>AFPointsUsed</td>
-<td class=c>undef[7]<br>undef[2]<br>undef[5]<br>undef[17]<br>undef[21]<br>undef[29]<br>undef[20]<br>undef[13]<br>undef[7]</td>
+  <br>PrimaryAFPoint</td>
+<td class=c>undef[7]<br>undef[2]<br>undef[5]<br>undef[17]<br>undef[21]<br>undef[29]<br>undef[20]<br>undef[7]<br>int8u</td>
 <td><span class=s><span class=n>(models with 51-point AF -- 5 rows: A1-9, B1-11, C1-11, D1-11, E1-9.  Center
 point is C6)</span>
   <br><span class=n>(models with 11-point AF)</span></span><table class=cols><tr>
@@ -6928,13 +6999,153 @@ point is F8)</span>
 point is F10)</span>
   <br><span class=n>(models with 153-point AF -- 9 rows (A-I) and 17 columns (1-17). Center
 point is E9)</span>
-  <br><span class=n>(models with 81-selectable point AF -- 9 rows (A-I) and 9 columns (1-9) for
-phase detect AF points. Center point is E5)</span></span></td></tr>
+  <br><span class=n>(newer models with 51-point AF)</span></span><table class=cols><tr>
+  <td>0 = (none)
+  <br>1 = C6 (Center)
+  <br>2 = B6
+  <br>3 = A5
+  <br>4 = D6
+  <br>5 = E5
+  <br>6 = C7
+  <br>7 = B7
+  <br>8 = A6
+  <br>9 = D7
+  <br>10 = E6</td><td>&nbsp;&nbsp;</td>
+  <td>11 = C5
+  <br>12 = B5
+  <br>13 = A4
+  <br>14 = D5
+  <br>15 = E4
+  <br>16 = C8
+  <br>17 = B8
+  <br>18 = A7
+  <br>19 = D8
+  <br>20 = E7
+  <br>21 = C9</td><td>&nbsp;&nbsp;</td>
+  <td>22 = B9
+  <br>23 = A8
+  <br>24 = D9
+  <br>25 = E8
+  <br>26 = C10
+  <br>27 = B10
+  <br>28 = A9
+  <br>29 = D10
+  <br>30 = E9
+  <br>31 = C11
+  <br>32 = B11</td><td>&nbsp;&nbsp;</td>
+  <td>33 = D11
+  <br>34 = C4
+  <br>35 = B4
+  <br>36 = A3
+  <br>37 = D4
+  <br>38 = E3
+  <br>39 = C3
+  <br>40 = B3
+  <br>41 = A2
+  <br>42 = D3
+  <br>43 = E2</td><td>&nbsp;&nbsp;</td>
+  <td>44 = C2
+  <br>45 = B2
+  <br>46 = A1
+  <br>47 = D2
+  <br>48 = E1
+  <br>49 = C1
+  <br>50 = B1
+  <br>51 = D1</td></tr></table>
+<table class=cols><tr>
+  <td>0 = (none)
+  <br>1 = E5 (Center)
+  <br>2 = D5
+  <br>3 = C5
+  <br>4 = B5
+  <br>5 = A5
+  <br>6 = F5
+  <br>7 = G5
+  <br>8 = H5
+  <br>9 = I5
+  <br>10 = E6
+  <br>11 = D6
+  <br>12 = C6
+  <br>13 = B6
+  <br>14 = A6
+  <br>15 = F6
+  <br>16 = G6
+  <br>17 = H6
+  <br>18 = I6
+  <br>19 = E4
+  <br>20 = D4
+  <br>21 = C4
+  <br>22 = B4
+  <br>23 = A4
+  <br>24 = F4
+  <br>25 = G4
+  <br>26 = H4
+  <br>27 = I4
+  <br>28 = E7
+  <br>29 = D7
+  <br>30 = C7
+  <br>31 = B7
+  <br>32 = A7
+  <br>33 = F7
+  <br>34 = G7
+  <br>35 = H7
+  <br>36 = I7
+  <br>37 = E3
+  <br>38 = D3
+  <br>39 = C3
+  <br>40 = B3</td><td>&nbsp;&nbsp;</td>
+  <td>41 = A3
+  <br>42 = F3
+  <br>43 = G3
+  <br>44 = H3
+  <br>45 = I3
+  <br>46 = E8
+  <br>47 = D8
+  <br>48 = C8
+  <br>49 = B8
+  <br>50 = A8
+  <br>51 = F8
+  <br>52 = G8
+  <br>53 = H8
+  <br>54 = I8
+  <br>55 = E2
+  <br>56 = D2
+  <br>57 = C2
+  <br>58 = B2
+  <br>59 = A2
+  <br>60 = F2
+  <br>61 = G2
+  <br>62 = H2
+  <br>63 = I2
+  <br>64 = E9
+  <br>65 = D9
+  <br>66 = C9
+  <br>67 = B9
+  <br>68 = A9
+  <br>69 = F9
+  <br>70 = G9
+  <br>71 = H9
+  <br>72 = I9
+  <br>73 = E1
+  <br>74 = D1
+  <br>75 = C1
+  <br>76 = B1
+  <br>77 = A1
+  <br>78 = F1
+  <br>79 = G1
+  <br>80 = H1
+  <br>81 = I1</td></tr></table>
+</td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
-<td>AFPointsUsed</td>
-<td class=c>undef[14]</td>
-<td><span class=s><span class=n>(models with 105-point AF -- 7 rows (A-G) and 15 columns (1-15). Center
+<td>AFPointsUsed
+  <br>AFPointsUsed
+  <br>AFPointsUsed</td>
+<td class=c>undef[7]<br>undef[11]<br>undef[14]</td>
+<td><span class=s><span class=n>(newer models with 51-point AF)</span>
+  <br><span class=n>(models with 81-selectable point AF -- 9 rows (A-I) and 9 columns (1-9) for
+phase detect AF points. Center point is E5)</span>
+  <br><span class=n>(models with 105-point AF -- 7 rows (A-G) and 15 columns (1-15). Center
 point is D8)</span></span></td></tr>
 <tr class=b>
 <td class=r title='16 = 0x10'>16</td>
@@ -9008,7 +9219,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 19, 2022</i>
+<br><i>Last revised Nov 8, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -998,9 +998,9 @@ toward magenta)</span></span></td></tr>
   <br>306 = ILCE-7
   <br>307 = NEX-5T
   <br>308 = DSC-RX100M2
-  <br>309 = DSC-RX10</td><td>&nbsp;&nbsp;</td>
-  <td>310 = DSC-RX1R
-  <br>311 = ILCE-7R
+  <br>309 = DSC-RX10
+  <br>310 = DSC-RX1R</td><td>&nbsp;&nbsp;</td>
+  <td>311 = ILCE-7R
   <br>312 = ILCE-6000
   <br>313 = ILCE-5000
   <br>317 = DSC-RX100M3
@@ -1045,6 +1045,7 @@ toward magenta)</span></span></td></tr>
   <br>387 = ILCE-7RM4A
   <br>388 = ILCE-7M4
   <br>389 = ZV-1F
+  <br>390 = ILCE-7RM5
   <br>391 = ILME-FX30</td></tr></table>
 </td></tr>
 <tr>
@@ -4926,6 +4927,7 @@ multi-frame noise reduction)</span></span></td></tr>
 </tr><tr><td>49469</td><td>= Tamron 35-150mm F2-F2.8 Di III VXD</td>
 </tr><tr><td>49470</td><td>= Tamron 28-75mm F2.8 Di III VXD G2</td>
 </tr><tr><td>49471</td><td>= Tamron 50-400mm F4.5-6.3 Di III VC VXD</td>
+</tr><tr><td>49472</td><td>= Tamron 20-40mm F2.8 Di III VXD</td>
 </tr><tr><td>49473</td><td>= Tokina atx-m 85mm F1.8 FE or Viltrox lens</td>
 </tr><tr><td>49473.1</td><td>= Viltrox 23mm F1.4 E</td>
 </tr><tr><td>49473.2</td><td>= Viltrox 56mm F1.4 E</td>
@@ -4971,6 +4973,8 @@ multi-frame noise reduction)</span></span></td></tr>
 </tr><tr><td>50531</td><td>= Sigma 18-50mm F2.8 DC DN | C</td>
 </tr><tr><td>50532</td><td>= Sigma 20mm F2 DG DN | C</td>
 </tr><tr><td>50533</td><td>= Sigma 16-28mm F2.8 DG DN | C</td>
+</tr><tr><td>50534</td><td>= Sigma 20mm F1.4 DG DN | A</td>
+</tr><tr><td>50535</td><td>= Sigma 24mm F1.4 DG DN | A</td>
 </tr><tr><td>50992</td><td>= Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III</td>
 </tr><tr><td>50993</td><td>= Voigtlander HELIAR-HYPER WIDE 10mm F5.6</td>
 </tr><tr><td>50994</td><td>= Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III</td>
@@ -10982,7 +10986,7 @@ ILCE-7/7M2/7M3/7R/7RM2/7RM3/7RM4/7S/7SM2/9/9M2/5000/5100/6000/6100/6300/
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag9416'>Sony Tag9416 Tags</a></h2>
-<p>Valid for the ILCE-1/7M4/7SM3, ILME-FX3.</p>
+<p>Valid for the ILCE-1/7M4/7RM5/7SM3, ILME-FX3.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -11126,12 +11130,22 @@ ILCE-7/7M2/7M3/7R/7RM2/7RM3/7RM4/7S/7SM2/9/9M2/5000/5100/6000/6100/6300/
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='2203 = 0x89b'>2203</td>
+<td>VignettingCorrParams</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='2324 = 0x914'>2324</td>
 <td>ChromaticAberrationCorrParams</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='2326 = 0x916'>2326</td>
+<td>ChromaticAberrationCorrParams</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2373 = 0x945'>2373</td>
 <td>ChromaticAberrationCorrParams</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
@@ -11838,7 +11852,7 @@ some models when the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded<
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 19, 2022</i>
+<br><i>Last revised Nov 8, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

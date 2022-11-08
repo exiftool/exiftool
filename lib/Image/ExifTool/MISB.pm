@@ -385,7 +385,7 @@ sub ProcessKLV($$$)
 # Parse MISB metadata
 # Inputs: 0) ExifTool ref, 1) data ref, 2) tag table ref
 # Returns: 1 if something was extracted, 0 otherwise
-sub ParseMISB($$)
+sub ParseMISB($$$)
 {
     my ($et, $dataPt, $tagTablePtr) = @_;
     my $end = length $$dataPt;

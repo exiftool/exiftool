@@ -32,7 +32,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.22';
+$VERSION = '1.23';
 
 # program map table "stream_type" lookup (ref 6/1/9)
 my %streamType = (
@@ -415,6 +415,48 @@ sub ParsePID($$$$$)
                 }
             }
             $more = 1;
+        } elsif ($$dataPt =~ /\$GPRMC,/) {
+            # Jomise T860S-GM dashcam
+            # $GPRMC,hhmmss.ss,A,ddmm.mmmmm,N,dddmm.mmmmm,W,spd-kts,dir-dg,DDMMYY,,*cs
+            # $GPRMC,172255.00,A,:985.95194,N,17170.14674,W,029.678,170.68,240822,,,D*7B
+            # $GPRMC,172355.00,A,:984.76779,N,17170.00473,W,032.219,172.04,240822,,,D*7B
+            # ddmm.mmmm: from    4742.2568    12209.2028 (should be)
+            # to                 4741.7696    12209.1056
+            # stamped on video:  47.70428N, 122.15338W, 35mph (dd.ddddd)
+            # to                 47.69616N, 122.15176W, 37mph
+            my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+            while ($$dataPt =~ /\$[A-Z]{2}RMC,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(.{2})(\d{2}\.\d+),([NS]),(.{3})(\d{2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/g and
+                # do some basic sanity checks on the date
+                $13 <= 31 and $14 <= 12 and $15 <= 99)
+            {
+                $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                my $year = $15 + ($15 >= 70 ? 1900 : 2000);
+                $et->HandleTag($tagTbl, GPSDateTime => sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $year, $14, $13, $1, $2, $3));
+                #(not this simple)
+                #$et->HandleTag($tagTbl, GPSLatitude => (($5 || 0) + $6/60) * ($7 eq 'N' ? 1 : -1));
+                #$et->HandleTag($tagTbl, GPSLongitude => (($8 || 0) + $9/60) * ($10 eq 'E' ? 1 : -1));
+                $et->HandleTag($tagTbl, GPSSpeed => $11 * $knotsToKph) if length $11;
+                $et->HandleTag($tagTbl, GPSTrack => $12) if length $12;
+                # it looks like maybe the degrees are xor-ed with something,
+                # and the minutes have some scaling factor and offset?
+                # (the code below is approximately correct for my only sample)
+                my @chars = unpack('C*', $5 . $8);
+                my @xor = (0x0e,0x0e,0x00,0x05,0x03); # (empirical based on 1 sample; may be completely off base)
+                my $bad;
+                foreach (@chars) {
+                    $_ ^= shift(@xor);
+                    $bad = 1 if $_ < 0x30 or $_ > 0x39;
+                }
+                if ($bad) {
+                    $et->WarnOnce('Error decrypting GPS degrees');
+                } else {
+                    my $la = pack('C*', @chars[0,1]);
+                    my $lo = pack('C*', @chars[2,3,4]);
+                    $et->WarnOnce('Decryption of this GPS is highly experimental. More testing samples are required');
+                    $et->HandleTag($tagTbl, GPSLatitude  => (($la || 0) + (($6-85.95194)/2.43051724137931+42.2568)/60) * ($7 eq 'N' ? 1 : -1));
+                    $et->HandleTag($tagTbl, GPSLongitude => (($lo || 0) + (($9-70.14674)/1.460987654320988+9.2028)/60) * ($10 eq 'E' ? 1 : -1));
+                }
+            }
         } elsif ($$dataPt =~ /^.{44}A\0{3}.{4}([NS])\0{3}.{4}([EW])\0{3}/s and length($$dataPt) >= 84) {
             #forum11320
             SetByteOrder('II');
@@ -493,6 +535,7 @@ sub ProcessM2TS($$)
     my %gpsPID = (
         0x0300 => 1,    # Novatek INNOVV
         0x01e4 => 1,    # vsys a6l dashcam
+        0x0e1b => 1,    # Jomise T860S-GM dashcam
     );
     my $pEnd = 0;
 

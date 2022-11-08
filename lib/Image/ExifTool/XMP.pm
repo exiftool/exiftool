@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.54';
+$VERSION = '3.55';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2996,8 +2996,9 @@ sub AddFlattenedTags($;$$)
             } else {
                 $$flatInfo{Groups}{2} = $tagG2;
             }
-            # save reference to top-level structure
+            # save reference to top-level and parent structures
             $$flatInfo{RootTagInfo} = $$tagInfo{RootTagInfo} || $tagInfo;
+            $$flatInfo{ParentTagInfo} = $tagInfo;
             # recursively generate flattened tags for sub-structures
             next unless $$flatInfo{Struct};
             length($flatID) > 250 and warn("Possible deep recursion for tag $flatID\n"), last;

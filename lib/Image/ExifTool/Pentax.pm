@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.40';
+$VERSION = '3.41';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -365,10 +365,15 @@ sub DecodeAFPoints($$$$;$);
     '8 255.4' => 'Sigma 4.5mm F2.8 EX DC HSM Circular Fisheye', #PH
     '8 255.5' => 'Sigma 50-200mm F4-5.6 DC OS', #26
     '8 255.6' => 'Sigma 24-70mm F2.8 EX DG HSM', #29
+
+    '9 0' => '645 Manual Lens', #PH (NC)
+    '9 3' => 'HD PENTAX-FA 43mm F1.9 Limited', #IB
+    '9 24' => 'HD PENTAX-FA 77mm F1.8 Limited', #IB
+    '9 39' => 'HD PENTAX-FA 31mm F1.8 AL Limited', #IB
+    '9 247' => 'HD PENTAX-DA FISH-EYE 10-17mm F3.5-4.5 ED [IF]', #IB
 #
 # 645 lenses
 #
-    '9 0' => '645 Manual Lens', #PH (NC)
     '10 0' => '645 A Series Lens', #PH
     '11 1' => 'smc PENTAX-FA 645 75mm F2.8', #PH
     '11 2' => 'smc PENTAX-FA 645 45mm F2.8', #PH

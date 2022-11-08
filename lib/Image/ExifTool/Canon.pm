@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.62';
+$VERSION = '4.63';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -620,8 +620,9 @@ $VERSION = '4.62';
    '61182.40' => 'Canon RF 1200mm F8L IS USM', #42
    '61182.41' => 'Canon RF 1200mm F8L IS USM + RF1.4x', #42
    '61182.42' => 'Canon RF 1200mm F8L IS USM + RF2x', #42
+   '61182.43' => 'Canon RF 135mm F1.8 L IS USM', #42
     # we need the RFLensType values for the following...
-   '61182.43' => 'Canon RF 5.2mm F2.8L Dual Fisheye 3D VR', #PH (NC)
+   '61182.44' => 'Canon RF 5.2mm F2.8L Dual Fisheye 3D VR', #PH (NC)
     65535 => 'n/a',
 );
 
@@ -982,6 +983,7 @@ $VERSION = '4.62';
     0x80000465 => 'EOS R10', #42
     0x80000467 => 'PowerShot ZOOM',
     0x80000468 => 'EOS M50 Mark II / Kiss M2', #IB
+    0x80000481 => 'EOS R6 Mark II', #42
     0x80000520 => 'EOS D2000C', #IB
     0x80000560 => 'EOS D6000C', #PH (guess)
 );
@@ -1944,7 +1946,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData10' },
         },
         {   # (int16u[3973]) - R3 ref IB
-            Condition => '$count == 3973',
+            Condition => '$count == 3973 or $count == 3778',
             Name => 'ColorData11',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData11' },
         },
@@ -6377,10 +6379,11 @@ my %ciMaxFocal = (
     1 => {
         Name => 'TimeZone',
         PrintConv => 'Image::ExifTool::TimeZoneString($val)',
-        PrintConvInv => sub {
-            my $val = shift;
-            $val =~ /^([-+]?)(\d{1,2}):?(\d{2})$/ or return undef;
-            return(($1 eq '-' ? -1 : 1) * ($2 * 60 + $3));
+        PrintConvInv => q{
+            $val =~ /Z$/ and return 0;
+            $val =~ /([-+])(\d{1,2}):?(\d{2})$/ and return $1 . ($2 * 60 + $3);
+            $val =~ /^(\d{2})(\d{2})$/ and return $1 * 60 + $2;
+            return undef;
         },
     },
     2 => {
@@ -6836,6 +6839,7 @@ my %ciMaxFocal = (
             299 => 'Canon RF 1200mm F8L IS USM + RF1.4x', #42
             300 => 'Canon RF 1200mm F8L IS USM + RF2x', #42
             302 => 'Canon RF 15-30mm F4.5-6.3 IS STM', #42
+            303 => 'Canon RF 135mm F1.8 L IS USM', #42
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },
     },
@@ -8333,7 +8337,7 @@ my %ciMaxFocal = (
 # Color data (MakerNotes tag 0x4001, count=3973, ref IB)
 %Image::ExifTool::Canon::ColorData11 = (
     %binaryDataAttrs,
-    NOTES => 'These tags are used by the EOS R3',
+    NOTES => 'These tags are used by the EOS R3, R7 and R6mkII',
     FORMAT => 'int16s',
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -8345,6 +8349,7 @@ my %ciMaxFocal = (
         RawConv => '$$self{ColorDataVersion} = $val',
         PrintConv => {
             34 => '34 (R3)', #IB
+            48 => '48 (R7, R10, R6 Mark II)', #IB
         },
     },
     0x69 => { Name => 'WB_RGGBLevelsAsShot',     Format => 'int16s[4]' },

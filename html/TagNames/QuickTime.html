@@ -193,9 +193,11 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td>'skip'</td>
 <td>CanonSkip
   <br>PreviewImage
+  <br>SkipInfo
   <br>Skip?</td>
-<td class=c>-<br>no<br>no</td>
-<td>--&gt; <a href='Canon.html#Skip'>Canon Skip Tags</a></td></tr>
+<td class=c>-<br>no<br>-<br>no</td>
+<td>--&gt; <a href='Canon.html#Skip'>Canon Skip Tags</a>
+  <br>--&gt; <a href='QuickTime.html#SkipInfo'>QuickTime SkipInfo Tags</a></td></tr>
 <tr class=b>
 <td>'thm '</td>
 <td>ThumbnailImage</td>
@@ -244,7 +246,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <p>The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 61 different formats of timed GPS metadata from video files.</p>
+currently reads 62 different formats of timed GPS metadata from video files.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -8530,6 +8532,24 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='SkipInfo'>QuickTime SkipInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'thma'</td>
+<td>ThumbnailImage</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ver '</td>
+<td>Version</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='Profile'>QuickTime Profile Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -8961,7 +8981,7 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 19, 2022</i>
+<br><i>Last revised Nov 8, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

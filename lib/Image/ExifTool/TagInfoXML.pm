@@ -15,7 +15,7 @@ use vars qw($VERSION @ISA $makeMissing);
 use Image::ExifTool qw(:Utils :Vars);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.32';
+$VERSION = '1.33';
 @ISA = qw(Exporter);
 
 # set this to a language code to generate Lang module with 'MISSING' entries
@@ -204,6 +204,8 @@ PTILoop:    for ($index=0; $index<@infoArray; ++$index) {
                     push @flags, 'Permanent' if $$tagInfo{Permanent} or
                         ($groups[0] eq 'MakerNotes' and not defined $$tagInfo{Permanent});
                     $grp = " flags='" . join(',', sort @flags) . "'$grp" if @flags;
+                    # add parent structure tag ID
+                    $grp .= " struct='$$tagInfo{ParentTagInfo}{TagID}'" if $$tagInfo{ParentTagInfo};
                 }
                 print $fp " <tag id='${xmlID}' name='${name}'$ind type='${format}'$count writable='${writable}'$grp";
                 if ($opts{NoDesc}) {

@@ -967,6 +967,10 @@ numerical, and generated automatically otherwise.
   OtherLang     : [reserved] Used internally by QuickTime module to store a list
                   of tag ID's for alternate-language tags based on this one.
 
+  ParentTagInfo : [reserved] Used internally to store a reference to the tag
+                  information hash of the parent structure for flattened
+                  structure tags.
+
   RootTagInfo   : [reserved] Used internally to store a reference to the tag
                   information hash of the top-level structure for flattened
                   structure tags.

@@ -27,6 +27,8 @@ sub ProcessFreeGPS2($$$);
 sub Process360Fly($$$);
 sub ProcessFMAS($$$);
 
+my $debug;  # set to 1 for extra debugging messages
+
 # QuickTime data types that have ExifTool equivalents
 # (ref https://developer.apple.com/library/content/documentation/QuickTime/QTFF/Metadata/Metadata.html#//apple_ref/doc/uid/TP40000939-CH1-SW35)
 my %qtFmt = (
@@ -99,7 +101,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 61 different formats of timed GPS metadata from video files.
+        currently reads 62 different formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
@@ -1422,6 +1424,7 @@ sub ProcessFreeGPS($$$)
         } elsif ($buf2 =~ /^.{173}([-+]\d{3})([-+]\d{3})([-+]\d{3})/s) { # (Azdome)
             @acc = ($1/100, $2/100, $3/100);
         }
+        $debug and $et->FoundTag(GPSType => '1A');
 
     } elsif ($$dataPt =~ /^.{52}(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/s) {
 
@@ -1450,6 +1453,7 @@ sub ProcessFreeGPS($$$)
             # change to signed integer and divide by 256
             map { $_ = $_ - 4294967296 if $_ >= 0x80000000; $_ /= 256 } @acc;
         }
+        $debug and $et->FoundTag(GPSType => '1B');
 
     } elsif ($$dataPt =~ /^.{37}\0\0\0A([NS])([EW])/s) {
 
@@ -1460,13 +1464,27 @@ sub ProcessFreeGPS($$$)
         # 0030: f1 47 40 46 66 66 d2 41 85 eb 83 41 00 00 00 00 [.G@Fff.A...A....]
         ($latRef, $lonRef) = ($1, $2);
         ($hr,$min,$sec,$yr,$mon,$day) = unpack('x16V6', $$dataPt);
-        $yr += 2000;
+        if ($yr < 2000) {
+            $yr += 2000;
+        } else {
+            # Kenwood dashcam sometimes stores absolute year and local time
+            # (but sometimes year since 2000 and UTC time in same video!)
+            require Time::Local;
+            my $time = Image::ExifTool::TimeLocal($sec,$min,$hr,$day,$mon-1,$yr-1900);
+            ($sec,$min,$hr,$day,$mon,$yr) = gmtime($time);
+            $yr += 1900;
+            ++$mon;
+            $et->WarnOnce('Converting GPSDateTime to UTC based on local time zone',1);
+        }
         SetByteOrder('II');
         $lat = GetFloat($dataPt, 0x2c);
         $lon = GetFloat($dataPt, 0x30);
         $spd = GetFloat($dataPt, 0x34) * $knotsToKph; # (convert knots to km/h)
         $trk = GetFloat($dataPt, 0x38);
+        @acc = unpack('x60V3', $$dataPt); # (may be all zeros if not valid)
+        map { $_ = $_ - 4294967296 if $_ >= 0x80000000; $_ /= 256 } @acc;
         SetByteOrder('MM');
+        $debug and $et->FoundTag(GPSType => '1C');
 
     } elsif ($$dataPt =~ /^.{21}\0\0\0A([NS])([EW])/s) {
 
@@ -1495,6 +1513,7 @@ sub ProcessFreeGPS($$$)
         $acc[1] = GetFloat($dataPt, 0x30);
         $acc[2] = GetFloat($dataPt, 0x34);
         SetByteOrder('MM');
+        $debug and $et->FoundTag(GPSType => '1D');
 
     } elsif ($$dataPt =~ /^.{60}A\0{3}.{4}([NS])\0{3}.{4}([EW])\0{3}/s) {
 
@@ -1515,6 +1534,7 @@ sub ProcessFreeGPS($$$)
         $trk = GetFloat($dataPt, 0x54) + 180;   # (why is this off by 180?)
         $trk -= 360 if $trk >= 360;
         SetByteOrder('MM');
+        $debug and $et->FoundTag(GPSType => '1E');
 
     } elsif ($$dataPt =~ /^.{60}4W`b]S</s and length($$dataPt) >= 140) {
 
@@ -1532,6 +1552,7 @@ sub ProcessFreeGPS($$$)
         $yr += ($yr >= 70 ? 1900 : 2000);
         $spd = $9 * $knotsToKph if length $9;
         $trk = $10 if length $10;
+        $debug and $et->FoundTag(GPSType => '1F');
 
     } elsif ($$dataPt =~ /^.{64}[\x01-\x0c]\0{3}[\x01-\x1f]\0{3}A[NS][EW]\0{5}/s) {
 
@@ -1575,6 +1596,7 @@ sub ProcessFreeGPS($$$)
 
         SetByteOrder('MM');
         #my $serialNum = substr($$dataPt, 0x68, 20);
+        $debug and $et->FoundTag(GPSType => '1G');
 
     } elsif ($$dataPt =~ /^.{12}\xac\0\0\0.{44}(.{72})/s) {
 
@@ -1597,6 +1619,7 @@ sub ProcessFreeGPS($$$)
         # bytes 7-12 are the timestamp in ASCII HHMMSS after xor-ing with 0x70
         substr($time,7,6) = pack 'C*', map { $_ ^= 0x70 } unpack 'C*', substr($time,7,6);
         # (other values are currently unknown)
+        $debug and $et->FoundTag(GPSType => '1H');
 
     } elsif ($$dataPt =~ /^.{64}A([NS])([EW])\0/s) {
 
@@ -1622,6 +1645,7 @@ sub ProcessFreeGPS($$$)
         $trk = GetFloat($dataPt, 0x68);
         $alt = GetFloat($dataPt, 0x6c);
         SetByteOrder('MM');
+        $debug and $et->FoundTag(GPSType => '1I');
 
     } else {
 
@@ -1658,6 +1682,7 @@ sub ProcessFreeGPS($$$)
         $yr += 2000 if $yr < 2000;
         $spd *= $knotsToKph;    # convert speed to km/h
         # ($trk is not confirmed; may be GPSImageDirection, ref PH)
+        $debug and $et->FoundTag(GPSType => '1J');
     }
 #
 # save tag values extracted by above code
@@ -1811,6 +1836,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
         }
         # save position of most recent record (needed when parsing the next freeGPS block)
         $$et{FreeGPS2}{RecentRecPos} = $lastRecPos;
+        $debug and $et->FoundTag(GPSType => '2A');
         return 1;
 
     } elsif ($$dataPt =~ /^.{60}A\0.{10}([NS])\0.{14}([EW])\0/s) {
@@ -1842,6 +1868,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
         $lon = GetDouble($dataPt, 0x50);
         $spd = GetDouble($dataPt, 0x60) * $knotsToKph;
         $trk = GetDouble($dataPt, 0x68);
+        $debug and $et->FoundTag(GPSType => '2B');
 
     } elsif ($$dataPt =~ /^.{72}A([NS])([EW])/s) {
 
@@ -1878,6 +1905,8 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
             $lon = abs Get32s($dataPt, 0x50) / 1e7;
             $spd = Get32s($dataPt, 0x54) / 100 * $mpsToKph;
             $alt = GetFloat($dataPt, 0x58) / 1000; # (NC)
+            $debug and $et->FoundTag(GPSType => '2C');
+
         } else {
             # Type 3 (ref 2)
             # (no sample with this format)
@@ -1885,6 +1914,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
             $lon = GetFloat($dataPt, 0x50);
             $spd = GetFloat($dataPt, 0x54) * $knotsToKph;
             $trk = GetFloat($dataPt, 0x58);
+            $debug and $et->FoundTag(GPSType => '2D');
         }
 
     } elsif ($$dataPt =~ /^.{60}A\0.{6}([NS])\0.{6}([EW])\0/s and $dirLen >= 112) {
@@ -1905,6 +1935,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
         $lon = GetFloat($dataPt, 0x48);
         $spd = GetFloat($dataPt, 0x50);
         $trk = GetFloat($dataPt, 0x54);
+        $debug and $et->FoundTag(GPSType => '2E');
 
     } elsif ($$dataPt =~ /^.{16}A([NS])([EW])\0/s) {
 
@@ -1925,6 +1956,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
             $et->HandleTag($tagTbl, GPSTrack     => $trk);
             $et->HandleTag($tagTbl, Accelerometer => "@acc");
         }
+        $debug and $et->FoundTag(GPSType => '2F');
         return 1;
 
     } else {
@@ -1971,6 +2003,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
             $et->HandleTag($tagTbl, GPSTrack     => $trk);
             last if $pos += 0x20 > length($$dataPt) - 0x1e;
         }
+        $debug and $et->FoundTag(GPSType => '2G');
         return $$et{DOC_NUM} ? 1 : 0;   # return 0 if nothing extracted
     }
 #

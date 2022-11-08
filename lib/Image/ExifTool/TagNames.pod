@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26009 tags, with 16658 unique tag names.
+They contain a total of 26027 tags, with 16663 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -3997,6 +3997,7 @@ These tags belong to the ExifTool XMP-digiKam family 1 group.
   ImageHistory                                  string/
   ImageUniqueID                                 string/
   LensCorrectionSettings                        string
+  PicasawebGPhotoId                             string
   PickLabel                                     string
   TagsList                                      string+
 
@@ -4275,6 +4276,7 @@ These tags belong to the ExifTool XMP-GCamera family 1 group.
   PortraitNote                                  string
   PortraitRequest                               string
   PortraitVersion                               string
+  ShotLogData                                   string
   SpecialTypeID                                 string+
 
 =head3 XMP GCreations Tags
@@ -4286,6 +4288,7 @@ These tags belong to the ExifTool XMP-GCreations family 1 group.
   Tag Name                                      Writable
   --------                                      --------
   CameraBurstID                                 string
+  Type                                          string/
 
 =head3 XMP GDepth Tags
 
@@ -4529,7 +4532,7 @@ These tags belong to the ExifTool XMP-iptcCore family 1 group.
 
 =head3 XMP iptcExt Tags
 
-This table contains tags defined by the IPTC Extension schema version 1.6
+This table contains tags defined by the IPTC Extension schema version 1.7
 and IPTC Video Metadata version 1.3. The actual namespace prefix is
 "Iptc4xmpExt", but ExifTool shortens this for the family 1 group name. (See
 L<http://www.iptc.org/standards/photo-metadata/iptc-standard/> and
@@ -4702,6 +4705,7 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   ProductInImage                                ProductDetails Struct+
   ProductInImageDescription                     lang-alt_+
   ProductInImageGTIN                            string_+
+  ProductInImageProductId                       string_+
   ProductInImageName                            lang-alt_+
   PublicationEvent                              PublicationEvent Struct+
   PublicationEventDate                          date_+
@@ -4945,6 +4949,7 @@ is to write ImageRegion as a structure with these tags as new fields.
   ----------                                    --------
   ProductDescription                            lang-alt
   ProductGTIN                                   string
+  ProductId                                     string
   ProductName                                   lang-alt
 
 =head3 XMP PublicationEvent Struct
@@ -9407,7 +9412,7 @@ These tags are used by the R5, R5 and EOS 1DXmkIII.
 
 =head3 Canon ColorData11 Tags
 
-These tags are used by the EOS R3
+These tags are used by the EOS R3, R7 and R6mkII
 
   Index2   Tag Name                             Writable
   ------   --------                             --------
@@ -13587,6 +13592,7 @@ DiMAGE X and Xt.
   0x0032   UnknownInfo2                         Nikon UnknownInfo2
   0x0034   ShutterMode                          int16u
   0x0035   HDRInfo                              Nikon HDRInfo
+           HDRInfo2                             Nikon HDRInfo2
   0x0037   MechanicalShutterCount               int32u
   0x0039   LocationInfo                         Nikon LocationInfo
   0x003d   BlackLevel                           int16u[4]
@@ -13688,7 +13694,8 @@ DiMAGE X and Xt.
   0x00ac   ImageStabilization                   string
   0x00ad   AFResponse                           string
   0x00b0   MultiExposure                        Nikon MultiExposure
-                                                Nikon MultiExposure
+           MultiExposure2                       Nikon MultiExposure
+                                                Nikon MultiExposure2
   0x00b1   HighISONoiseReduction                int16u
   0x00b3   ToningEffect                         string
   0x00b6   PowerUpTime                          undef
@@ -13838,6 +13845,7 @@ Color balance tags used by the P1000, P7000, P7100 and B700.
       0    VRInfoVersion                        no
       4    VibrationReduction                   int8u
       6    VRMode                               int8u
+      8    VRType                               int8u
 
 =head3 Nikon FaceDetect Tags
 
@@ -13961,11 +13969,19 @@ Color balance tags used by the P1000, P7000, P7100 and B700.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-      0    HDRInfoVersion                       string[4]
+      0    HDRInfoVersion                       no
       4    HDR                                  int8u
       5    HDRLevel                             int8u
       6    HDRSmoothing                         int8u
       7    HDRLevel2                            int8u
+
+=head3 Nikon HDRInfo2 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    HDRInfoVersion                       no
+      4    HDR                                  int8u
+      5    HDRLevel                             int8u
 
 =head3 Nikon LocationInfo Tags
 
@@ -14841,6 +14857,15 @@ These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
       2    MultiExposureShots                   int32u
       3    MultiExposureAutoGain                int32u
 
+=head3 Nikon MultiExposure2 Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    MultiExposureVersion                 no
+      1    MultiExposureMode                    int32u
+      2    MultiExposureShots                   int32u
+      3    MultiExposureOverlayMode             int32u
+
 =head3 Nikon AFInfo2V0400 Tags
 
   Index1   Tag Name                             Writable
@@ -14872,9 +14897,11 @@ These tags are written by Nikon DSLR's which have the live view feature.
            AFPointsUsed                         undef[21]
            AFPointsUsed                         undef[29]
            AFPointsUsed                         undef[20]
-           AFPointsUsed                         undef[13]
            AFPointsUsed                         undef[7]
-     10    AFPointsUsed                         undef[14]
+           PrimaryAFPoint                       int8u
+     10    AFPointsUsed                         undef[7]
+           AFPointsUsed                         undef[11]
+           AFPointsUsed                         undef[14]
      16    AFImageWidth                         int16u
      18    AFImageHeight                        int16u
      20    AFAreaXPosition                      int16u
@@ -20764,7 +20791,7 @@ E-mount models.
 
 =head3 Sony Tag9416 Tags
 
-Valid for the ILCE-1/7M4/7SM3, ILME-FX3.
+Valid for the ILCE-1/7M4/7RM5/7SM3, ILME-FX3.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -20789,8 +20816,10 @@ Valid for the ILCE-1/7M4/7SM3, ILME-FX3.
     117    MaxFocalLength                       no
    2191    VignettingCorrParams                 no
    2193    VignettingCorrParams                 no
+   2203    VignettingCorrParams                 no
    2324    ChromaticAberrationCorrParams        no
    2326    ChromaticAberrationCorrParams        no
+   2373    ChromaticAberrationCorrParams        no
 
 =head3 Sony PIC Tags
 
@@ -27384,6 +27413,7 @@ for the official specification.
   'sefd'               SamsungTrailer           Samsung Trailer
   'skip'               CanonSkip                Canon Skip
                        PreviewImage             no
+                       SkipInfo                 -
                        Skip?                    no
   'thm '               ThumbnailImage           no
   'thum'               ThumbnailImage           no
@@ -27404,7 +27434,7 @@ for the official specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 61 different formats of timed GPS metadata from video files.
+currently reads 62 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -28810,6 +28840,13 @@ Tags found in TomTom Bandit Action Cam MP4 videos.
       2    PreviewVersion                       no
       3    PreviewAtomType                      no
       5    PreviewAtomIndex                     no
+
+=head3 QuickTime SkipInfo Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'thma'   ThumbnailImage                       no
+  'ver '   Version                              no
 
 =head3 QuickTime Profile Tags
 

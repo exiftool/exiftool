@@ -1084,11 +1084,11 @@ my %opcodeInfo = (
         {
             Name => 'ThumbnailOffset',
             Notes => q{
-                ThumbnailOffset in IFD1 of JPEG and some TIFF-based images, IFD0 of MRW
-                images and AVI and MOV videos, and the SubIFD in IFD1 of SRW images;
-                PreviewImageStart in MakerNotes and IFD0 of ARW and SR2 images;
-                JpgFromRawStart in SubIFD of NEF images and IFD2 of PEF images; and
-                OtherImageStart in everything else
+                called JPEGInterchangeFormat in the specification, this is ThumbnailOffset
+                in IFD1 of JPEG and some TIFF-based images, IFD0 of MRW images and AVI and
+                MOV videos, and the SubIFD in IFD1 of SRW images; PreviewImageStart in
+                MakerNotes and IFD0 of ARW and SR2 images; JpgFromRawStart in SubIFD of NEF
+                images and IFD2 of PEF images; and OtherImageStart in everything else
             },
             # thumbnail is found in IFD1 of JPEG and TIFF images, and
             # IFD0 of EXIF information in FujiFilm AVI (RIFF) and MOV videos
@@ -1225,6 +1225,7 @@ my %opcodeInfo = (
         {
             Name => 'ThumbnailLength',
             Notes => q{
+                called JPEGInterchangeFormatLength in the specification, this is
                 ThumbnailLength in IFD1 of JPEG and some TIFF-based images, IFD0 of MRW
                 images and AVI and MOV videos, and the SubIFD in IFD1 of SRW images;
                 PreviewImageLength in MakerNotes and IFD0 of ARW and SR2 images;

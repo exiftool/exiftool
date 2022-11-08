@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.54';
+$VERSION = '3.55';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -206,6 +206,7 @@ sub PrintInvLensSpec($;$$);
     49469 => 'Tamron 35-150mm F2-F2.8 Di III VXD', #JR (Model A058)
     49470 => 'Tamron 28-75mm F2.8 Di III VXD G2', #JR (Model A063)
     49471 => 'Tamron 50-400mm F4.5-6.3 Di III VC VXD', #JR (Model A067)
+    49472 => 'Tamron 20-40mm F2.8 Di III VXD', #JR (Model A062)
 
     49473 => 'Tokina atx-m 85mm F1.8 FE or Viltrox lens', #JR
     49473.1 => 'Viltrox 23mm F1.4 E', #JR
@@ -253,6 +254,8 @@ sub PrintInvLensSpec($;$$);
     50531 => 'Sigma 18-50mm F2.8 DC DN | C', #IB/JR (021)
     50532 => 'Sigma 20mm F2 DG DN | C', #JR (022)
     50533 => 'Sigma 16-28mm F2.8 DG DN | C', #JR (022)
+    50534 => 'Sigma 20mm F1.4 DG DN | A', #JR (022)
+    50535 => 'Sigma 24mm F1.4 DG DN | A', #JR (022)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
@@ -1626,7 +1629,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     # from mid-2015: ILCE-7RM2/7SM2/6300 and newer models use different offsets
     {
         Name => 'Tag9050a',
-        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-(1|6100|6300|6400|6500|6600|7C|7M3|7M4|7RM2|7RM3A?|7RM4A?|7SM2|7SM3|9|9M2)|ILCA-99M2|ILME-FX3|ZV-)/',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-(1|6100|6300|6400|6500|6600|7C|7M3|7M4|7RM2|7RM3A?|7RM4A?|7RM5|7SM2|7SM3|9|9M2)|ILCA-99M2|ILME-FX3|ZV-)/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Tag9050a',
             ByteOrder => 'LittleEndian',
@@ -1640,7 +1643,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         },
     },{
         Name => 'Tag9050c',
-        Condition => '$$self{Model} =~ /^(ILCE-(1|7M4|7SM3)|ILME-FX3)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(1|7M4|7RM5|7SM3)|ILME-FX3)/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Tag9050c',
             ByteOrder => 'LittleEndian',
@@ -1660,8 +1663,9 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     # 0x24 (e) for ILCA-99M2,ILCE-5100/6300/6500/7M2/7RM2/7S/7SM2/QX1, DSC-HX80/HX90V/QX30/RX0/RX100M3/RX100M4/RX100M5/RX10M2/RX10M3/RX1RM2/WX500
     # 0x26 (e) for ILCE-6100/6400/6600/7M3/7RM3/9, DSC-RX0M2/RX10M4/RX100M5A/RX100M6/HX99
     # 0x28 (e) for ILCE-7RM4/9M2, DSC-RX100M7, ZV-1/E10
-    # 0x31 (e) for ILCE-1/7SM3, ILME-FX3
-    # first byte decoded: 40, 204, 202, 27, 58, 62, 48, 215, 28, 106 respectively
+    # 0x31 (e) for ILCE-1/7M4/7SM3, ILME-FX3
+    # 0x32 (e) for ILCE-7RM5, ILME-FX30
+    # first byte decoded: 40, 204, 202, 27, 58, 62, 48, 215, 28, 106, 89 respectively
     {
         Name => 'Tag9400a',
         Condition => q{
@@ -1675,7 +1679,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9400b' },
     },{
         Name => 'Tag9400c',
-        Condition => '$$valPt =~ /^[\x23\x24\x26\x28\x31]/',
+        Condition => '$$valPt =~ /^[\x23\x24\x26\x28\x31\x32]/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9400c' },
     },{
         Name => 'Sony_0x9400',
@@ -2052,6 +2056,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             387 => 'ILCE-7RM4A', #forum12542
             388 => 'ILCE-7M4', #IB/JR
             389 => 'ZV-1F', #IB
+            390 => 'ILCE-7RM5', #IB
             391 => 'ILME-FX30', #JR
         },
     },
@@ -7975,7 +7980,7 @@ my %isoSetting2010 = (
     },
     0x0088 => {
         Name => 'InternalSerialNumber', #(NC)
-        Condition => '$$self{Model} =~ /^(ILCE-(7M4|7SM3)|ILME-FX3)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7M4|7RM5|7SM3)|ILME-FX3)/',
         Format => 'int8u[6]',
         PrintConv => 'unpack "H*", pack "C*", split " ", $val',
     },
@@ -8213,7 +8218,7 @@ my %isoSetting2010 = (
     },
     0x002a => [{
         Name => 'Quality2',
-        Condition => '$$self{Model} !~ /^(ILCE-(1|7M4|7SM3)|ILME-FX3)\b/',
+        Condition => '$$self{Model} !~ /^(ILCE-(1|7M4|7RM5|7SM3)|ILME-FX3)\b/',
         PrintConv => {
             0 => 'JPEG',
             1 => 'RAW',
@@ -8222,7 +8227,7 @@ my %isoSetting2010 = (
         },
     },{
         Name => 'Quality2',
-        Condition => '$$self{Model} =~ /^(ILCE-(1|7M4|7SM3)|ILME-FX3)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(1|7M4|7RM5|7SM3)|ILME-FX3)\b/',
         PrintConv => {
             1 => 'JPEG',
             2 => 'RAW',
@@ -8233,13 +8238,13 @@ my %isoSetting2010 = (
     }],
     0x0047 => {
         Name => 'SonyImageHeight',
-        Condition => '$$self{Model} !~ /^(ILCE-(1|7M4|7SM3)|ILME-FX3)\b/',
+        Condition => '$$self{Model} !~ /^(ILCE-(1|7M4|7RM5|7SM3)|ILME-FX3)\b/',
         Format => 'int16u',
         PrintConv => '$val > 0 ? 8*$val : "n.a."',
     },
     0x0053 => {
         Name => 'ModelReleaseYear',
-        Condition => '$$self{Model} !~ /^(ILCE-(1|7M4|7SM3)|ILME-FX3)\b/',
+        Condition => '$$self{Model} !~ /^(ILCE-(1|7M4|7RM5|7SM3)|ILME-FX3)\b/',
         Format => 'int8u',
         PrintConv => 'sprintf("20%.2d", $val)',
     },
@@ -9528,7 +9533,7 @@ my %isoSetting2010 = (
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     FORMAT => 'int8u',
-    NOTES => 'Valid for the ILCE-1/7M4/7SM3, ILME-FX3.',
+    NOTES => 'Valid for the ILCE-1/7M4/7RM5/7SM3, ILME-FX3.',
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     0x0000 => { Name => 'Tag9416_0000', PrintConv => 'sprintf("%3d",$val)', RawConv => '$$self{TagVersion} = $val' },
@@ -9655,7 +9660,7 @@ my %isoSetting2010 = (
     },
     0x088f => {
         Name => 'VignettingCorrParams',
-        Condition => '$$self{Model} !~ /^(ILCE-7M4)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(1|7SM3)|ILME-FX3)\b/',
         Format => 'int16s[16]',
     },
     0x0891 => {
@@ -9663,14 +9668,24 @@ my %isoSetting2010 = (
         Condition => '$$self{Model} =~ /^(ILCE-7M4)/',
         Format => 'int16s[16]',
     },
+    0x089b => {
+        Name => 'VignettingCorrParams',
+        Condition => '$$self{Model} =~ /^(ILCE-7RM5|ILME-FX30)\b/',
+        Format => 'int16s[16]',
+    },
     0x0914 => {
         Name => 'ChromaticAberrationCorrParams',
-        Condition => '$$self{Model} !~ /^(ILCE-7M4)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(1|7SM3)|ILME-FX3)\b/',
         Format => 'int16s[32]',
     },
     0x0916 => {
         Name => 'ChromaticAberrationCorrParams',
         Condition => '$$self{Model} =~ /^(ILCE-7M4)/',
+        Format => 'int16s[32]',
+    },
+    0x0945 => {
+        Name => 'ChromaticAberrationCorrParams',
+        Condition => '$$self{Model} =~ /^(ILCE-7RM5|ILME-FX30)\b/',
         Format => 'int16s[32]',
     },
 );

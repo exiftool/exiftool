@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.79';
+$VERSION = '2.80';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -522,6 +522,12 @@ my %eeBox2 = (
                 return substr($val, 12, $len);
             },
         },
+        {
+            Name => 'SkipInfo', # (found in 70mai Pro Plus+ MP4 videos)
+            # (look for something that looks like a QuickTime atom header)
+            Condition => '$$valPt =~ /^\0[\0-\x04]..[a-zA-Z ]{4}/s',
+            SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::SkipInfo' },
+        },
         { Name => 'Skip', Unknown => 1, Binary => 1 },
     ],
     wide => { Unknown => 1, Binary => 1 },
@@ -757,6 +763,19 @@ my %eeBox2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::Samsung::Trailer' },
     },
     # 'samn'? - seen in Vantrue N2S sample video
+);
+
+# stuff seen in 'skip' atom (70mai Pro Plus+ MP4 videos)
+%Image::ExifTool::QuickTime::SkipInfo = (
+    PROCESS_PROC => \&ProcessMOV,
+    GROUPS => { 2 => 'Video' },
+    'ver ' => 'Version',
+    # tima - int32u: seen 0x3c
+    thma => {
+        Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
+        Binary => 1,
+    },
 );
 
 # MPEG-4 'ftyp' atom
@@ -8691,7 +8710,7 @@ sub HandleItemInfo($)
                 $et->VPrint(0, "$$et{INDENT}Item $id) '${type}' ($len bytes)\n");
             }
             # get ExifTool name for this item
-            my $name = { Exif => 'EXIF', 'application/rdf+xml' => 'XMP' }->{$type} || '';
+            my $name = { Exif => 'EXIF', 'application/rdf+xml' => 'XMP', jpeg => 'PreviewImage' }->{$type} || '';
             my ($warn, $extent);
             $warn = "Can't currently decode encoded $type metadata" if $$item{ContentEncoding};
             $warn = "Can't currently decode protected $type metadata" if $$item{ProtectionIndex};
@@ -8768,6 +8787,21 @@ sub HandleItemInfo($)
                 }
                 $subTable = GetTagTable('Image::ExifTool::Exif::Main');
                 $proc = \&Image::ExifTool::ProcessTIFF;
+            } elsif ($name eq 'PreviewImage') {
+                # take a quick stab at determining the size of the image
+                # (based on JPEG previews found in Fuji X-H2S HIF images)
+                my $type = 'PreviewImage';
+                if ($buff =~ /^.{556}\xff\xc0\0\x11.(.{4})/s) {
+                    my ($h, $w) = unpack('n2', $1);
+                    # (not sure if $h is ever the long dimension, but test it just in case)
+                    if ($w == 160 or $h == 160) {
+                        $type = 'ThumbnailImage';
+                    } elsif ($w == 1920 or $h == 1920) {
+                        $type = 'OtherImage'; # (large preview)
+                    } # (PreviewImage is 640x480)
+                }
+                $et->FoundTag($type => $buff);
+                next;
             } else {
                 $start = 0;
                 $subTable = GetTagTable('Image::ExifTool::XMP::Main');
@@ -9208,12 +9242,13 @@ sub ProcessMOV($$;$)
             # temporarily set ExtractEmbedded option for CRX files
             $saveOptions{ExtractEmbedded} = $et->Options(ExtractEmbedded => 1) if $fileType eq 'CRX';
         } else {
-            $et->SetFileType();       # MOV
+            $et->SetFileType();     # MOV
         }
         SetByteOrder('MM');
         $$et{PRIORITY_DIR} = 'XMP';   # have XMP take priority
     }
-    $$raf{NoBuffer} = 1 if $et->Options('FastScan'); # disable buffering in FastScan mode
+    my $fast = $$et{OPTIONS}{FastScan} || 0;
+    $$raf{NoBuffer} = 1 if $fast;   # disable buffering in FastScan mode
 
     my $ee = $$et{OPTIONS}{ExtractEmbedded};
     if ($ee) {
@@ -9241,8 +9276,10 @@ sub ProcessMOV($$;$)
                     $et->VPrint(0,"$$et{INDENT}Tag '${t}' extends to end of file");
                     if ($$tagTablePtr{"$tag-size"}) {
                         my $pos = $raf->Tell();
-                        $raf->Seek(0, 2);
-                        $et->HandleTag($tagTablePtr, "$tag-size", $raf->Tell() - $pos);
+                        unless ($fast) {
+                            $raf->Seek(0, 2);
+                            $et->HandleTag($tagTablePtr, "$tag-size", $raf->Tell() - $pos);
+                        }
                         $et->HandleTag($tagTablePtr, "$tag-offset", $pos) if $$tagTablePtr{"$tag-offset"};
                     }
                 }
@@ -9345,6 +9382,8 @@ sub ProcessMOV($$;$)
             $et->HandleTag($tagTablePtr, "$tag-size", $size);
             $et->HandleTag($tagTablePtr, "$tag-offset", $raf->Tell()) if $$tagTablePtr{"$tag-offset"};
         }
+        # stop processing at mdat/idat if -fast2 is used
+        last if $fast > 1 and ($tag eq 'mdat' or $tag eq 'idat');
         # load values only if associated with a tag (or verbose) and not too big
         if ($size > 0x2000000) {    # start to get worried above 32 MB
             # check for RIFF trailer (written by Auto-Vox dashcam)

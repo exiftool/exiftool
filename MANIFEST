@@ -598,6 +598,8 @@ t/GoPro.t
 t/GoPro_2.out
 t/HTML.t
 t/HTML_2.out
+t/ICO.t
+t/ICO_2.out
 t/IPTC.t
 t/IPTC_2.out
 t/IPTC_4.out
@@ -1025,6 +1027,7 @@ t/images/Geotag_DJI_2020-12-02_[07-50-31].csv
 t/images/GoPro.jpg
 t/images/HTML.html
 t/images/ICC_Profile.icc
+t/images/ICO.ico
 t/images/IPTC.jpg
 t/images/ISO.iso
 t/images/ITC.itc

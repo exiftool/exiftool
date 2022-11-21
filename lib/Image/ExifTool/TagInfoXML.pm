@@ -15,7 +15,7 @@ use vars qw($VERSION @ISA $makeMissing);
 use Image::ExifTool qw(:Utils :Vars);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.33';
+$VERSION = '1.34';
 @ISA = qw(Exporter);
 
 # set this to a language code to generate Lang module with 'MISSING' entries
@@ -401,10 +401,14 @@ sub BuildLangModules($;$)
                 my $val = ucfirst $tval;
                 $val = $tval if $tval =~ /^(cRAW|iTun)/; # special-case non-capitalized values
                 my $cap = ($tval ne $val);
-                if ($makeMissing and $lang eq 'en') {
-                    $lang = $makeMissing;
-                    $val = 'MISSING';
-                    undef $cap;
+                if ($makeMissing) {
+                    if ($lang eq 'en') {
+                        $lang = $makeMissing;
+                        $val = 'MISSING';
+                        undef $cap;
+                    }
+                } elsif ($val eq 'MISSING') {
+                    next;   # ignore "MISSING" entries
                 }
                 my $isDefault = ($lang eq $Image::ExifTool::defaultLang);
                 unless ($langInfo{$lang} or $isDefault) {

@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.60';
+$VERSION = '1.61';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -339,6 +339,11 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
         #    int32u DividedHeight2
         #    int32u IDAT_Offset2 [location of IDAT with start of DividedHeight2 segment]
     },
+    caBX => { # C2PA metadata
+        Name => 'JUMBF',
+        SubDirectory => { TagTable => 'Image::ExifTool::Jpeg2000::Main' },
+    },
+    # cICP - Coding-independent code points (added in 2022 specification)
 );
 
 # PNG IHDR chunk

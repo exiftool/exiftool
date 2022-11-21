@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.50';
+$VERSION = '12.51';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2029,6 +2029,7 @@ sub new
     $$self{DEL_GROUP} = { };    # lookup for groups to delete when writing
     $$self{SAVE_COUNT} = 0;     # count calls to SaveNewValues()
     $$self{FILE_SEQUENCE} = 0;  # sequence number for files when reading
+    $$self{INDENT2} = '';       # indentation of verbose messages from SetNewValue
 
     # initialize our new groups for writing
     $self->SetNewGroups(@defaultWriteGroups);
@@ -3909,7 +3910,7 @@ sub CanCreate($)
 #==============================================================================
 # Functions below this are not part of the public API
 
-# Initialize member variables for reading or writing a new file
+# Initialize member variables before reading or writing a new file
 # Inputs: 0) ExifTool object reference
 sub Init($)
 {
@@ -4174,10 +4175,15 @@ sub Open($*$;$)
             # handle Windows Unicode file name
             local $SIG{'__WARN__'} = \&SetWarning;
             my ($access, $create);
-            if ($mode eq '>') {
+            if ($mode eq '>' or $mode eq '>>') {
                 eval {
                     $access  = Win32API::File::GENERIC_WRITE();
-                    $create  = Win32API::File::CREATE_ALWAYS();
+                    if ($mode eq '>>') {
+                        $access |= Win32API::File::FILE_APPEND_DATA();
+                        $create  = Win32API::File::OPEN_ALWAYS();
+                    } else {
+                        $create  = Win32API::File::CREATE_ALWAYS();
+                    }
                 }
             } else {
                 eval {
@@ -4433,11 +4439,15 @@ sub ParseArguments($;@)
 sub IsSameID($$)
 {
     my ($id, $grp) = @_;
-    return 1 if $grp eq $id;    # decimal ID's or raw ID's
-    if ($id =~ /^\d+$/) {       # numerical numerical ID's may be in hex
-        return 1 if $grp =~ s/^0x0*// and $grp eq sprintf('%x', $id);
-    } else {                    # other ID's may conform to ExifTool group name conventions
-        return 1 if $id =~ s/([^-_A-Za-z0-9])/sprintf('%.2x',ord $1)/ge and $grp eq $id;
+    for (;;) {
+        return 1 if $grp eq $id;    # decimal ID's or raw ID's
+        if ($id =~ /^\d+$/) {       # numerical numerical ID's may be in hex
+            return 1 if $grp =~ s/^0x0*// and $grp eq sprintf('%x', $id);
+        } else {                    # other ID's may conform to ExifTool group name conventions
+            my $tmp = $id;
+            return 1 if $tmp =~ s/([^-_A-Za-z0-9])/sprintf('%.2x',ord $1)/ge and $grp eq $tmp;
+        }
+        last unless $id =~ s/-.*//; # remove language code if it exists
     }
     return 0;
 }

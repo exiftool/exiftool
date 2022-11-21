@@ -115,6 +115,7 @@ my %olympusLensTypes = (
     '0 35 00' => 'Olympus Zuiko Digital 14-54mm F2.8-3.5 II', #PH
     '0 35 10' => 'Olympus M.Zuiko 100-400mm F5.0-6.3', #IB
     '0 36 10' => 'Olympus M.Zuiko Digital ED 8-25mm F4 Pro', #IB
+    '0 37 10' => 'Olympus M.Zuiko Digital ED 40-150mm F4.0 Pro', #forum3833
     # Sigma lenses
     '1 01 00' => 'Sigma 18-50mm F3.5-5.6 DC', #8
     '1 01 10' => 'Sigma 30mm F2.8 EX DN', #NJ

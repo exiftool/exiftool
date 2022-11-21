@@ -24,7 +24,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.21';
+$VERSION = '1.22';
 
 sub ProcessFLIR($$;$);
 sub ProcessFLIRText($$$);
@@ -241,7 +241,8 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     16.1 => {
         Name => 'RawThermalImage',
         Groups => { 2 => 'Preview' },
-        RawConv => '\$$self{RawThermalImage}',
+        # make a copy in case we want to extract more of them with -ee2
+        RawConv => 'my $copy = $$self{RawThermalImage}; \$copy',
     },
 );
 
@@ -272,7 +273,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     },
     16.1 => {
         Name => 'GainDeadMapImage',
-        RawConv => '\$$self{GainDeadMapImage}',
+        RawConv => 'my $copy = \$$self{GainDeadMapImage}; \$copy',
     },
 );
 
@@ -303,7 +304,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     },
     16.1 => {
         Name => 'CoarseMapImage',
-        RawConv => '\$$self{CoarseMapImage}',
+        RawConv => 'my $copy = \$$self{CoarseMapImage}; \$copy',
     },
 );
 
@@ -334,7 +335,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     },
     20.1 => {
         Name => 'PaintImage',
-        RawConv => '\$$self{PaintImage}',
+        RawConv => 'my $copy = \$$self{PaintImage}; \$copy',
     },
 );
 

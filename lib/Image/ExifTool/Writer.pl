@@ -707,9 +707,13 @@ TAG: foreach $tagInfo (@matchingTags) {
             $writeGroup or $writeGroup = $group0;
             # get priority for this group
             unless ($priority) {
-                $priority = $$self{WRITE_PRIORITY}{lc($writeGroup)};
-                unless ($priority) {
-                    $priority = $$self{WRITE_PRIORITY}{lc($group0)} || 0;
+                if ($$tagInfo{Avoid} and $$tagInfo{WriteAlso}) {
+                    $priority = 0;
+                } else {
+                    $priority = $$self{WRITE_PRIORITY}{lc($writeGroup)};
+                    unless ($priority) {
+                        $priority = $$self{WRITE_PRIORITY}{lc($group0)} || 0;
+                    }
                 }
             }
             # adjust priority based on Preferred level for this tag
@@ -830,6 +834,8 @@ TAG: foreach $tagInfo (@matchingTags) {
         $tag = $$tagInfo{Name};     # get tag name for warnings
         my $lcTag = lc $tag;
         my $pref = $preferred{$lcTag} || { };
+        # don't write Avoid-ed tags with side effect unless preferred
+        next if not $$pref{$tagInfo} and $$tagInfo{Avoid} and $$tagInfo{WriteAlso};
         my $shift = $options{Shift};
         my $addValue = $options{AddValue};
         if (defined $shift) {
@@ -971,6 +977,7 @@ TAG: foreach $tagInfo (@matchingTags) {
             $self->GetNewValueHash($tagInfo, $writeGroup, 'delete', $options{ProtectSaved});
             # also delete related tag previous new values
             if ($$tagInfo{WriteAlso}) {
+                $$self{INDENT2} = '+';
                 my ($wgrp, $wtag);
                 if ($$tagInfo{WriteGroup} and $$tagInfo{WriteGroup} eq 'All' and $writeGroup) {
                     $wgrp = $writeGroup . ':';
@@ -981,6 +988,7 @@ TAG: foreach $tagInfo (@matchingTags) {
                     my ($n,$e) = $self->SetNewValue($wgrp . $wtag, undef, Replace=>2);
                     $numSet += $n;
                 }
+                $$self{INDENT2} = '';
             }
             $options{Replace} == 2 and ++$numSet, next;
         }
@@ -1022,7 +1030,7 @@ TAG: foreach $tagInfo (@matchingTags) {
                                 require 'Image/ExifTool/XMPStruct.pl';
                                 $_ = Image::ExifTool::XMP::SerializeStruct($_);
                             }
-                            print $out "$verb $wgrp1:$tag$fromList if value is '${_}'\n";
+                            print $out "$$self{INDENT2}$verb $wgrp1:$tag$fromList if value is '${_}'\n";
                         }
                     }
                 }
@@ -1086,15 +1094,25 @@ TAG: foreach $tagInfo (@matchingTags) {
                     push @{$$nvHash{Value}}, ref $val eq 'ARRAY' ? @$val : $val;
                 }
                 if ($verbose > 1) {
-                    my $ifExists = $$nvHash{IsCreating} ? ( $createOnly ?
-                                  ($$nvHash{IsCreating} == 2 ?
-                                    " if $writeGroup exists and tag doesn't" :
-                                    " if tag doesn't exist") :
-                                  ($$nvHash{IsCreating} == 2 ? " if $writeGroup exists" : '')) :
+                    my $ifExists;
+                    if ($$tagInfo{IsComposite}) {
+                        # (composite tags don't technically exist in the file)
+                        if ($$tagInfo{WriteAlso}) {
+                            $ifExists = ' (+' . join(',+',sort keys %{$$tagInfo{WriteAlso}}) . '):';
+                        } else {
+                            $ifExists = '';
+                        }
+                    } else {
+                        $ifExists = $$nvHash{IsCreating} ? ( $createOnly ?
+                                   ($$nvHash{IsCreating} == 2 ?
+                                     " if $writeGroup exists and tag doesn't" :
+                                     " if tag doesn't exist") :
+                                   ($$nvHash{IsCreating} == 2 ? " if $writeGroup exists" : '')) :
                                   (($$nvHash{DelValue} and @{$$nvHash{DelValue}}) ?
-                                    ' if tag was deleted' : ' if tag exists');
+                                     ' if tag was deleted' : ' if tag exists');
+                    }
                     my $verb = ($shift ? 'Shifting' : ($addValue ? 'Adding' : 'Writing'));
-                    print $out "$verb $wgrp1:$tag$ifExists\n";
+                    print $out "$$self{INDENT2}$verb $wgrp1:$tag$ifExists\n";
                 }
             }
         } elsif ($permanent) {
@@ -1109,7 +1127,7 @@ TAG: foreach $tagInfo (@matchingTags) {
             $self->GetNewValueHash($tagInfo, $writeGroup, 'delete');
             my $nvHash = $self->GetNewValueHash($tagInfo, $writeGroup, 'create');
             $$nvHash{WantGroup} = $wantGroup;
-            $verbose > 1 and print $out "Deleting $wgrp1:$tag\n";
+            $verbose > 1 and print $out "$$self{INDENT2}Deleting $wgrp1:$tag\n";
         }
         $$setTags{$tagInfo} = 1 if $setTags;
         $prioritySet = 1 if $$pref{$tagInfo};
@@ -1118,6 +1136,7 @@ WriteAlso:
         # also write related tags
         my $writeAlso = $$tagInfo{WriteAlso};
         if ($writeAlso) {
+            $$self{INDENT2} = '+';  # indicate related tag with a leading "+"
             my ($wgrp, $wtag, $n);
             if ($$tagInfo{WriteGroup} and $$tagInfo{WriteGroup} eq 'All' and $writeGroup) {
                 $wgrp = $writeGroup . ':';
@@ -1137,7 +1156,7 @@ WriteAlso:
                     SetTags     => \%alsoWrote,         # remember tags already written
                 );
                 undef $evalWarning;
-                #### eval WriteAlso ($val)
+                #### eval WriteAlso ($val,%opts)
                 my $v = eval $$writeAlso{$wtag};
                 # we wanted to do the eval in case there are side effect, but we
                 # don't want to write a value for a tag that is being deleted:
@@ -1159,6 +1178,7 @@ WriteAlso:
                     }
                 }
             }
+            $$self{INDENT2} = '';
         }
     }
     # print warning if we couldn't set our priority tag

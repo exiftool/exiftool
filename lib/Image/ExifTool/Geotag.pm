@@ -29,7 +29,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.68';
+$VERSION = '1.69';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -75,7 +75,8 @@ my %xmlTag = (
 );
 
 # fix information keys which must be interpolated around a circle
-my %cyclical = (lon => 1, track => 1, dir => 1, roll => 1);
+my %cyclical = (lon => 1, track => 1, dir => 1, pitch => 1, roll => 1);
+my %cyc180 = (lon => 1, pitch => 1, roll => 1); # wraps from 180 to -180
 
 # fix information keys for each of our general categories
 my %fixInfoKeys = (
@@ -87,6 +88,9 @@ my %fixInfoKeys = (
 );
 
 my %isOrient = ( dir => 1, pitch => 1, roll => 1 ); # test for orientation key
+
+# tags which may exist separately in some formats (eg. CSV)
+my %sepTags = ( dir => 1, pitch => 1, roll => 1, track => 1, speed => 1 );
 
 # conversion factors for GPSSpeed
 my %speedConv = (
@@ -276,6 +280,8 @@ sub LoadTrackLog($$;$)
                         $param = 'pitch';
                     } elsif (/^(Angle)?Roll/i) {
                         $param = 'roll';
+                    } elsif (/^Img ?Dir/i) {
+                        $param = 'dir';
                     }
                     if ($param) {
                         $et->VPrint(2, "CSV column '${_}' is $param\n");
@@ -496,6 +502,7 @@ DoneFix:    $isDate = 1;
                     $secs = $val;
                 } else {
                     $$fix{$param} = $val;
+                    $$has{$param} = 1 if $sepTags{$param};
                 }
             }
             # make coordinate negative according to reference direction if necessary
@@ -1101,6 +1108,7 @@ Category:       foreach $category (qw{pos track alt orient atemp}) {
                             next unless defined $v0 and defined $v1;
                             $f = $f0b;
                         } else {
+                            next if $sepTags{$key}; # (don't scan outwards for some formats, eg. CSV)
                             # scan outwards looking for fixes with the required information
                             # (NOTE: SHOULD EVENTUALLY DO THIS FOR EXTRAPOLATION TOO!)
                             my ($t0b, $t1b);
@@ -1127,8 +1135,8 @@ Category:       foreach $category (qw{pos track alt orient atemp}) {
                             # 360 degrees to the smaller angle before interpolating
                             $v0 < $v1 ? $v0 += 360 : $v1 += 360;
                             $$fix{$key} = $v1 * $f + $v0 * (1 - $f);
-                            # longitude and roll ranges are -180 to 180, others are 0 to 360
-                            my $max = ($key eq 'lon' or $key eq 'roll') ? 180 : 360;
+                            # some ranges are -180 to 180, others are 0 to 360
+                            my $max = $cyc180{$key} ? 180 : 360;
                             $$fix{$key} -= 360 if $$fix{$key} >= $max;
                         } else {
                             # simple linear interpolation

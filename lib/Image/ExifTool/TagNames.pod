@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26027 tags, with 16663 unique tag names.
+They contain a total of 26095 tags, with 16668 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -14436,6 +14436,8 @@ These tags are extracted from encrypted data in images from the Z9.
   60143    PitchAngle                           fixed32u
   60147    YawAngle                             fixed32u
   60491    MenuSettingsZ9                       Nikon MenuSettingsZ9
+                                                -
+                                                Nikon MenuSettingsZ9Firmware3
 
 =head3 Nikon MenuSettingsZ9 Tags
 
@@ -14512,6 +14514,79 @@ These tags are used by the Z9.
    1632    RecordLocationData?                  int8u
    1636    USBPowerDelivery?                    int8u
    1645    SensorShield?                        int8u
+
+=head3 Nikon MenuSettingsZ9Firmware3 Tags
+
+These tags are used by the Z9 firmware 3.00.
+
+  Index1 Tag Name                               Writable
+  ---------------                               --------
+  154    MultipleExposureMode                   int8u
+  156    MultiExposureShots                     int8u
+  204    Intervals                              int32u
+  208    ShotsPerInterval                       int32u
+  248    FocusShiftNumberShots                  int8u
+  252    FocusShiftStepWidth                    int8u
+  256    FocusShiftInterval                     int8u~
+  260    FocusShiftExposureLock?                int8u
+  290    PhotoShootingMenuBank                  int8u
+  292    ExtendedMenuBanks                      int8u
+  328    PhotoShootingMenuBankImageArea         int8u
+  342    AutoISO                                int8u
+  344    ISOAutoHiLimit?                        int16u
+  346    ISOAutoFlashLimit?                     int16u
+  354    ISOAutoShutterTime                     no
+  436    MovieVignetteControl?                  int8u
+  438    DiffractionCompensation                int8u
+  440    FlickerReductionShooting               int8u
+  548    AFAreaMode                             int8u
+  550    VRMode                                 int8u
+  554    BracketSet                             int8u
+  556    BracketProgram                         int8u
+  558    BracketIncrement                       int8u
+  576    SecondarySlotFunction                  int8u
+  592    DXCropAlert                            int8u
+  594    SubjectDetection                       int8u
+  636    HighFrequencyFlickerReductionShooting? int8u
+  646    MovieImageArea?                        int8u & 0x01
+  656    MovieType?                             int8u
+  658    MovieISOAutoHiLimit?                   int16u
+  660    MovieISOAutoControlManualMode?         int8u
+  662    MovieISOAutoManualMode?                int16u
+  736    MovieActiveD-Lighting?                 int8u
+  738    MovieHighISONoiseReduction?            int8u
+  744    MovieFlickerReduction                  int8u
+  746    MovieMeteringMode?                     int8u
+  748    MovieFocusMode?                        int8u
+  750    MovieAFAreaMode                        int8u
+  752    MovieVRMode?                           int8u
+  756    MovieElectronicVR?                     int8u
+  758    MovieSoundRecording?                   int8u
+  760    MicrophoneSensitivity?                 int8u
+  762    MicrophoneAttenuator?                  int8u
+  764    MicrophoneFrequencyResponse?           int8u
+  766    WindNoiseReduction?                    int8u
+  788    MovieToneMap?                          int8u
+  794    MovieFrameSize?                        int8u
+  796    MovieFrameRate?                        int8u
+  802    MicrophoneJackPower?                   int8u
+  803    MovieDXCropAlert?                      int8u
+  804    MovieSubjectDetection?                 int8u
+  812    MovieHighResZoom?                      int8u
+  847    CustomSettingsZ9                       NikonCustom SettingsZ9
+  1474   Language?                              int8u
+  1476   TimeZone                               int8u
+  1482   MonitorBrightness?                     int8u
+  1504   AFFineTune?                            int8u
+  1600   HDMIOutputResolution                   int8u
+  1613   SetClockFromLocationData?              int8u
+  1620   AirplaneMode?                          int8u
+  1621   EmptySlotRelease?                      int8u
+  1656   EnergySavingMode?                      int8u
+  1680   RecordLocationData?                    int8u
+  1684   USBPowerDelivery?                      int8u
+  1693   SensorShield?                          int8u
+  1754   FocusShiftAutoReset?                   int8u
 
 =head3 Nikon ShotInfo Tags
 
@@ -16306,7 +16381,9 @@ Custom settings for the Z9.
     191    UseDialWithoutHold?                  int8u
     193    ReverseIndicators?                   int8u
     195    MovieFunc1Button                     int8u
+    199    MovieFunc2Button                     int8u
     203    MovieAF-OnButton                     int8u
+    215    MovieLensControlRing                 int8u
     217    MovieMultiSelector?                  int8u
     221    MovieAFSpeed                         int8u
     223    MovieAFSpeedApply                    int8u
@@ -23588,6 +23665,7 @@ writes only EXIF, IPTC and XMP tags in Jpeg2000 images.
   'bfil'   BinaryFilter                         no
   'bidb'   BinaryData                           no
   'bpcc'   BitsPerComponent                     no
+  'c2sh'   C2PASaltHash                         no
   'cbor'   CBORData                             CBOR
   'cdef'   ComponentDefinition                  no
   'cgrp'   ColorGroup                           no
@@ -25710,6 +25788,7 @@ check if speed is more of a concern.
   'acTL'             AnimationControl           PNG AnimationControl
   'bKGD'             BackgroundColor            no
   'cHRM'             PrimaryChromaticities      PNG PrimaryChromaticities
+  'caBX'             JUMBF                      Jpeg2000
   'dSIG'             DigitalSignature           no
   'eXIf'             eXIf                       EXIF
   'fRAc'             FractalParameters          no
@@ -27543,64 +27622,64 @@ View Camera Motion Metadata of MP4 videos.  See
 L<https://developers.google.com/streetview/publish/camm-spec> for the
 specification.
 
-  Index1   Tag Name                             Writable
+  Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      4    AngleAxis                            no
+  0x0004   AngleAxis                            no
 
 =head3 QuickTime camm1 Tags
 
-  Index1   Tag Name                             Writable
+  Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      4    PixelExposureTime                    no
-      8    RollingShutterSkewTime               no
+  0x0004   PixelExposureTime                    no
+  0x0008   RollingShutterSkewTime               no
 
 =head3 QuickTime camm2 Tags
 
-  Index1   Tag Name                             Writable
+  Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      4    AngularVelocity                      no
+  0x0004   AngularVelocity                      no
 
 =head3 QuickTime camm3 Tags
 
-  Index1   Tag Name                             Writable
+  Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      4    Acceleration                         no
+  0x0004   Acceleration                         no
 
 =head3 QuickTime camm4 Tags
 
-  Index1   Tag Name                             Writable
+  Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      4    Position                             no
+  0x0004   Position                             no
 
 =head3 QuickTime camm5 Tags
 
-  Index1   Tag Name                             Writable
+  Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      4    GPSLatitude                          no
-     12    GPSLongitude                         no
-     20    GPSAltitude                          no
+  0x0004   GPSLatitude                          no
+  0x000c   GPSLongitude                         no
+  0x0014   GPSAltitude                          no
 
 =head3 QuickTime camm6 Tags
 
-  Index1   Tag Name                             Writable
+  Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      4    GPSDateTime                          no
-     12    GPSMeasureMode                       no
-     16    GPSLatitude                          no
-     24    GPSLongitude                         no
-     32    GPSAltitude                          no
-     36    GPSHorizontalAccuracy                no
-     40    GPSVerticalAccuracy                  no
-     44    GPSVelocityEast                      no
-     48    GPSVelocityNorth                     no
-     52    GPSVelocityUp                        no
-     56    GPSSpeedAccuracy                     no
+  0x0004   GPSDateTime                          no
+  0x000c   GPSMeasureMode                       no
+  0x0010   GPSLatitude                          no
+  0x0018   GPSLongitude                         no
+  0x0020   GPSAltitude                          no
+  0x0024   GPSHorizontalAccuracy                no
+  0x0028   GPSVerticalAccuracy                  no
+  0x002c   GPSVelocityEast                      no
+  0x0030   GPSVelocityNorth                     no
+  0x0034   GPSVelocityUp                        no
+  0x0038   GPSSpeedAccuracy                     no
 
 =head3 QuickTime camm7 Tags
 
-  Index1   Tag Name                             Writable
+  Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      4    MagneticField                        no
+  0x0004   MagneticField                        no
 
 =head3 QuickTime marl Tags
 
@@ -27880,7 +27959,7 @@ QuickTimeHandler option may be set to 0 to avoid this.
   'pcst'       Podcast                          int8s
   'perf'       Performer                        string
   'pgap'       PlayGap                          int8s
-  'plID'       PlayListID                       int32s[0.25]
+  'plID'       PlayListID                       int32s[2]
   'prID'       ProductID                        string
   'purd'       PurchaseDate                     string
   'purl'       PodcastURL                       string

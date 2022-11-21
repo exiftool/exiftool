@@ -15,7 +15,7 @@ package Image::ExifTool::NikonCustom;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.20';
+$VERSION = '1.21';
 
 my %buttonsZ9= (
     0 => 'None',
@@ -43,6 +43,7 @@ my %buttonsZ9= (
     30 => 'Non-CPU Lens',
     31 => 'Active-D Lighting',
     33 => '1 Stop Speed/Aperture',
+    34 => 'White Balance',
     35 => 'Metering',
     36 => 'Auto Bracketing',
     37 => 'Multiple Exposure',
@@ -65,6 +66,7 @@ my %buttonsZ9= (
     65 => 'Same as AF-On',
     66 => 'Voice Memo',
     70 => 'Photo Shooting Bank',
+    71 => 'ISO',
     73 => 'Exposure Compensation',
     76 => 'Silent Mode',
     78 => 'LiveView Information',
@@ -73,10 +75,24 @@ my %buttonsZ9= (
     81 => 'Starlight View',
     82 => 'Select To Send (PC)',
     83 => 'Select To Send (FTP)',
+    84 => 'Pattern Tone Range',
     85 => 'Control Lock',
     86 => 'Save Focus Position',
     87 => 'Recall Focus Position',
     88 => 'Recall Shooting Functions (Hold)',
+    97 => 'High Frequency Flicker Reduction',
+    98 => 'Switch FX/DX',
+    99 => 'View Mode (Photo LV)',
+    100 => 'Photo Flicker Reduction',
+    101 => 'Filtered Playback (Select Criteria)',
+    103 => 'Start Series Playback',
+    104 => 'View Assist',
+    105 => 'Hi-Res Zoom+',
+    106 => 'Hi-Res Zoom-',
+    108 => 'Override Other Cameras',
+    109 => 'DISP - Cycle Information Display',       # Shooting Mode
+    110 => 'DISP - Cycle Information Display',       # Playback mode
+    111 => 'Resume Shooting',
 );
 my %dialsZ9 = (
     0 => '1 Frame',
@@ -9903,7 +9919,18 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     191 => { Name => 'UseDialWithoutHold',  PrintConv => \%offOn, Unknown => 1 }, # CSf6
     193 => { Name => 'ReverseIndicators',   PrintConv => { 0 => '+ 0 -', 1 => '- 0 +' }, Unknown => 1 }, # CSf7
     195 => { Name => 'MovieFunc1Button',    PrintConv => \%buttonsZ9}, # CSg2-a
+    199 => { Name => 'MovieFunc2Button',    PrintConv => \%buttonsZ9}, # CSg2-b
     203 => { Name => 'MovieAF-OnButton',    PrintConv => \%buttonsZ9}, # CSg2-f
+    215 => { # CSg2-z
+        Name => 'MovieLensControlRing',
+        PrintConv => {
+            0 => 'None (Disabled)',
+            2 => 'ISO Sensitivity',
+            3 => 'Exposure Compensation',
+            4 => 'Power Aperture',
+            5 => 'Hi-Res Zoom',
+        },
+    },
     217 => { Name => 'MovieMultiSelector',  PrintConv => \%buttonsZ9, Unknown => 1}, # CSg2-h
     221 => { Name => 'MovieAFSpeed',        ValueConv => '$val - 5', ValueConvInv => '$val + 6' }, # CSg6-a
     223 => { Name => 'MovieAFSpeedApply',    rintConv => {0 => 'Always', 1 => 'Only During Recording'},}, # CSg6-b

@@ -961,7 +961,23 @@ coordinate styles to the proper format for the specific tag used.
 
 <blockquote>ExifTool 12.22 and later allow combined lat/lon GPSCoordinates
 values to be written to GPSLatitude and GPSLongitude, and the appropriate
-latitude or longitude part will be pulled from the input string.</blockquote>
+latitude or longitude part will be pulled from the input string.  Version 12.36
+and later make Composite:GPSPosition writable, allowing EXIF GPS coorinates and
+reference directions to be all writable via a single tag:
+
+<pre><span class='blk'># write all 4 EXIF GPS tags (version 12.36 and later)</span>
+exiftool -gpsposition="42 30 0.00 S, 33 15 0.00 W"
+exiftool -gpsposition="-42.5, -33.25"</pre>
+
+Version 12.44 and later make Composite:GPSLatitude/GPSLongitude writable,
+allowing the separate EXIF coordinate and reference direction tags to be written
+together.  (Note that the Composite group must be specified here because these
+tags are otherwise avoided when writing due to possible confusion when
+attempting to write EXIF tags.)
+
+<pre><span class='blk'># write EXIF:GPSLatitude and GPSLatitudeRef together (12.44 and later)</span>
+exiftool -composite:gpslatitude="42 30 0.00 S" a.jpg
+exiftool -composite:gpslatitude="-42.5" a.jpg</pre></blockquote>
 
 <blockquote>When reading, by default ExifTool reports coordinates in the format
 <pre>DDD deg MM' SS.SS"</pre>
@@ -1762,7 +1778,7 @@ like 1, two completely different algorithms would be required.</li>
 </ol></blockquote>
 
 <hr>
-<i>Last revised Jun 11, 2022</i>
+<i>Last revised Nov 16, 2022</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

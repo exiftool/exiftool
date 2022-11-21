@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.32';
+$VERSION = '1.33';
 
 sub ProcessJpeg2000Box($$$);
 sub ProcessJUMD($$$);
@@ -418,6 +418,12 @@ my %j2cMarker = (
         Binary => 1,
         JUMBF_Suffix => 'Data', # (used when tag is renamed according to JUMDLabel)
     },
+    c2sh => { # used in JUMBF
+        Name => 'C2PASaltHash',
+        Format => 'undef',
+        ValueConv => 'unpack("H*",$val)',
+        JUMBF_Suffix => 'Salt', # (used when tag is renamed according to JUMDLabel)
+    },
 #
 # stuff seen in JPEG XL images:
 #
@@ -770,7 +776,22 @@ sub ProcessJUMD($$$)
         $et->HandleTag($tagTablePtr, 'sig', substr($$dataPt, $pos, 32));
         $pos += 32;
     }
-    $pos == $end or $et->Warn('Extra data in JUMD box'." $pos $end", 1);
+    my $more = $end - $pos;
+    if ($more) {
+        # (may find c2sh box hiding after JUMD record)
+        if ($more >= 8) {
+            my %dirInfo = (
+                DataPt   => $dataPt,
+                DataLen  => $$dirInfo{DataLen},
+                DirStart => $pos,
+                DirLen   => $more,
+                DirName  => 'JUMDPrivate',
+            );
+            $et->ProcessDirectory(\%dirInfo, GetTagTable('Image::ExifTool::Jpeg2000::Main'));
+        } else {
+            $et->Warn("Extra data in JUMD box $more bytes)", 1);
+        }
+    }
     return 1;
 }
 
@@ -902,7 +923,7 @@ sub ProcessJpeg2000Box($$$)
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my $dataPt = $$dirInfo{DataPt};
     my $dataLen = $$dirInfo{DataLen};
-    my $dataPos = $$dirInfo{DataPos};
+    my $dataPos = $$dirInfo{DataPos} || 0;
     my $dirLen = $$dirInfo{DirLen} || 0;
     my $dirStart = $$dirInfo{DirStart} || 0;
     my $base = $$dirInfo{Base} || 0;

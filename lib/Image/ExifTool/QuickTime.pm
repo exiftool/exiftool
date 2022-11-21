@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.80';
+$VERSION = '2.81';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -6034,6 +6034,7 @@ my %eeBox2 = (
     plID => { #10 (or TV season)
         Name => 'PlayListID',
         Format => 'int8u',  # actually int64u, but split it up
+        Count => 8,
         Writable => 'int32s', #27
     },
     purd => 'PurchaseDate', #7

@@ -26,6 +26,7 @@ sub ProcessFreeGPS($$$);
 sub ProcessFreeGPS2($$$);
 sub Process360Fly($$$);
 sub ProcessFMAS($$$);
+sub ProcessCAMM($$$);
 
 my $debug;  # set to 1 for extra debugging messages
 
@@ -236,7 +237,7 @@ my %insvLimit = (
     camm => [{
         Name => 'camm0',
         # (according to the spec. the first 2 bytes are reserved and should be zero,
-        # but I have a sample where these bytes are non-zero, so allow anything here)
+        # but I have samples where these bytes are non-zero, so allow anything here)
         Condition => '$$valPt =~ /^..\0\0/s',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::camm0',
@@ -318,7 +319,7 @@ my %insvLimit = (
 
 # tags found in 'camm' type 0 timed metadata (ref 4)
 %Image::ExifTool::QuickTime::camm0 = (
-    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    PROCESS_PROC => \&ProcessCAMM,
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
     NOTES => q{
@@ -336,7 +337,7 @@ my %insvLimit = (
 
 # tags found in 'camm' type 1 timed metadata (ref 4)
 %Image::ExifTool::QuickTime::camm1 = (
-    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    PROCESS_PROC => \&ProcessCAMM,
     GROUPS => { 2 => 'Camera' },
     FIRST_ENTRY => 0,
     4 => {
@@ -355,7 +356,7 @@ my %insvLimit = (
 
 # tags found in 'camm' type 2 timed metadata (ref PH, Insta360Pro)
 %Image::ExifTool::QuickTime::camm2 = (
-    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    PROCESS_PROC => \&ProcessCAMM,
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
     4 => {
@@ -367,7 +368,7 @@ my %insvLimit = (
 
 # tags found in 'camm' type 3 timed metadata (ref PH, Insta360Pro)
 %Image::ExifTool::QuickTime::camm3 = (
-    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    PROCESS_PROC => \&ProcessCAMM,
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
     4 => {
@@ -379,7 +380,7 @@ my %insvLimit = (
 
 # tags found in 'camm' type 4 timed metadata (ref 4)
 %Image::ExifTool::QuickTime::camm4 = (
-    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    PROCESS_PROC => \&ProcessCAMM,
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
     4 => {
@@ -391,7 +392,7 @@ my %insvLimit = (
 
 # tags found in 'camm' type 5 timed metadata (ref 4)
 %Image::ExifTool::QuickTime::camm5 = (
-    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    PROCESS_PROC => \&ProcessCAMM,
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
     4 => {
@@ -416,7 +417,7 @@ my %insvLimit = (
 
 # tags found in 'camm' type 6 timed metadata (ref PH/4, Insta360)
 %Image::ExifTool::QuickTime::camm6 = (
-    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    PROCESS_PROC => \&ProcessCAMM,
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
     0x04 => {
@@ -482,7 +483,7 @@ my %insvLimit = (
 
 # tags found in 'camm' type 7 timed metadata (ref 4)
 %Image::ExifTool::QuickTime::camm7 = (
-    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    PROCESS_PROC => \&ProcessCAMM,
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
     4 => {
@@ -1481,8 +1482,12 @@ sub ProcessFreeGPS($$$)
         $lon = GetFloat($dataPt, 0x30);
         $spd = GetFloat($dataPt, 0x34) * $knotsToKph; # (convert knots to km/h)
         $trk = GetFloat($dataPt, 0x38);
-        @acc = unpack('x60V3', $$dataPt); # (may be all zeros if not valid)
-        map { $_ = $_ - 4294967296 if $_ >= 0x80000000; $_ /= 256 } @acc;
+        # (may be all zeros or int16u counting from 1 to 6 if not valid)
+        my $tmp = substr($$dataPt, 60, 12);
+        if ($tmp ne "\0\0\0\0\0\0\0\0\0\0\0\0" and $tmp ne "\x01\0\x02\0\x03\0\x04\0\x05\0\x06\0") {
+            @acc = unpack('V3', $tmp);
+            map { $_ = $_ - 4294967296 if $_ >= 0x80000000; $_ /= 256 } @acc;
+        }
         SetByteOrder('MM');
         $debug and $et->FoundTag(GPSType => '1C');
 
@@ -2771,6 +2776,34 @@ sub ProcessInsta360($;$)
     delete $$et{SET_GROUP0};
     delete $$et{SET_GROUP1};
     return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process CAMM metadata (ref PH)
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessCAMM($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $pos = $$dirInfo{DirStart} || 0;
+    my $end = $pos + ($$dirInfo{DirLen} || length($$dataPt) - $pos);
+    # camm record size for each type, including 4-byte header
+    my %size = ( 1 => 12, 2 => 16, 3 => 16, 4 => 16, 5 => 28, 6 => 60, 7 => 16 );
+    my $rtnVal = 0;
+    while ($pos + 4 < $end) {
+        my $type = Get16u($dataPt, $pos + 2);
+        my $size = $size{$type} or $et->WarnOnce("Unknown camm record type $type"), last;
+        $pos + $size > $end and $et->WarnOnce("Truncated camm record $type"), last;
+        my $tagTbl = GetTagTable("Image::ExifTool::QuickTime::camm$type");
+        $$dirInfo{DirStart} = $pos;
+        $$dirInfo{DirLen} = $size;
+        $et->ProcessBinaryData($dirInfo, $tagTbl) and $rtnVal = 1;
+        # not sure if this is according to specification, but I have seen multiple
+        # camm records all in a single sample, so step forward to process the next one
+        $pos += $size;
+    }
+    return $rtnVal;
 }
 
 #------------------------------------------------------------------------------

@@ -306,14 +306,17 @@ sub CheckQTValue($$$)
 
 #------------------------------------------------------------------------------
 # Format QuickTime value for writing
-# Inputs: 0) ExifTool ref, 1) value ref, 2) Format (or undef), 3) Writable (or undef)
-# Returns: Flags for QT data type, and reformats value as required
+# Inputs: 0) ExifTool ref, 1) value ref, 2) tagInfo ref, 3) Format (or undef)
+# Returns: Flags for QT data type, and reformats value as required (sets to undef on error)
 sub FormatQTValue($$;$$)
 {
-    my ($et, $valPt, $format, $writable) = @_;
+    my ($et, $valPt, $tagInfo, $format) = @_;
+    my $writable = $$tagInfo{Writable};
+    my $count = $$tagInfo{Count};
     my $flags;
+    $format or $format = $$tagInfo{Format};
     if ($format and $format ne 'string' or not $format and $writable and $writable ne 'string') {
-        $$valPt = WriteValue($$valPt, $format || $writable);
+        $$valPt = WriteValue($$valPt, $format || $writable, $count);
         if ($writable and $qtFormat{$writable}) {
             $flags = $qtFormat{$writable};
         } else {
@@ -329,6 +332,7 @@ sub FormatQTValue($$;$$)
         $flags = 0x01;  # UTF8
         $$valPt = $et->Encode($$valPt, 'UTF8');
     }
+    defined $$valPt or $et->WarnOnce("Error converting value for $$tagInfo{Name}");
     return $flags;
 }
 
@@ -1139,7 +1143,7 @@ sub WriteQuickTime($$$)
                                         my $newVal = $et->GetNewValue($nvHash);
                                         next unless defined $newVal;
                                         my $prVal = $newVal;
-                                        my $flags = FormatQTValue($et, \$newVal, $format, $$tagInfo{Writable});
+                                        my $flags = FormatQTValue($et, \$newVal, $tagInfo, $format);
                                         next unless defined $newVal;
                                         my ($ctry, $lang) = (0, 0);
                                         if ($$ti{LangCode}) {
@@ -1220,7 +1224,8 @@ sub WriteQuickTime($$$)
                                     }
                                     my $prVal = $newVal;
                                     # format new value for writing (and get new flags)
-                                    $flags = FormatQTValue($et, \$newVal, $format, $$tagInfo{Writable});
+                                    $flags = FormatQTValue($et, \$newVal, $tagInfo, $format);
+                                    next unless defined $newVal;
                                     my $grp = $et->GetGroup($langInfo, 1);
                                     $et->VerboseValue("- $grp:$$langInfo{Name}", $val);
                                     $et->VerboseValue("+ $grp:$$langInfo{Name}", $prVal);
@@ -1463,7 +1468,7 @@ sub WriteQuickTime($$$)
                 my $newVal = $et->GetNewValue($nvHash);
                 next unless defined $newVal;
                 my $prVal = $newVal;
-                my $flags = FormatQTValue($et, \$newVal, $$tagInfo{Format}, $$tagInfo{Writable});
+                my $flags = FormatQTValue($et, \$newVal, $tagInfo);
                 next unless defined $newVal;
                 my ($ctry, $lang) = (0, 0);
                 # handle alternate languages

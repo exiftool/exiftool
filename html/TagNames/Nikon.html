@@ -4312,7 +4312,10 @@ firmware 1.01b.</p>
 <td class=r title='60491 = 0xec4b'>60491</td>
 <td>MenuSettingsZ9</td>
 <td class=c>-</td>
-<td>--&gt; <a href='Nikon.html#MenuSettingsZ9'>Nikon MenuSettingsZ9 Tags</a></td></tr>
+<td>--&gt; <a href='Nikon.html#MenuSettingsZ9'>Nikon MenuSettingsZ9 Tags</a>
+  <br><span class='n s'>(Firmware versions 3.0 and later)</span>
+  <br>--&gt; <a href='Nikon.html#MenuSettingsZ9Firmware3'>Nikon MenuSettingsZ9Firmware3 Tags</a>
+  <br><span class='n s'>(Firmware versions 2.11 and earlier)</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='MenuSettingsZ9'>Nikon MenuSettingsZ9 Tags</a></h2>
@@ -4327,8 +4330,8 @@ firmware 1.01b.</p>
 <td>MultipleExposureMode</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
-  <br>1 = On (Series)
-  <br>2 = On</span></td></tr>
+  <br>1 = On
+  <br>2 = On (Series)</span></td></tr>
 <tr class=b>
 <td class=r title='142 = 0x8e'>142</td>
 <td>MultiExposureShots</td>
@@ -4626,12 +4629,14 @@ firmware 1.01b.</p>
 <td>AFAreaMode</td>
 <td class=c>int8u</td>
 <td><table class=cols><tr>
-  <td>1 = Single
+  <td>0 = Pinpoint
+  <br>1 = Single
   <br>2 = Dynamic
   <br>3 = Wide (S)
   <br>4 = Wide (L)</td><td>&nbsp;&nbsp;</td>
   <td>5 = 3D
   <br>6 = Auto
+  <br>11 = Subject Tracking
   <br>12 = Wide (C1)
   <br>13 = Wide (C2)</td></tr></table>
 </td></tr>
@@ -4840,11 +4845,18 @@ firmware 1.01b.</p>
 <td class=r title='710 = 0x2c6'>710</td>
 <td>MovieAFAreaMode</td>
 <td class=c>int8u</td>
-<td><span class=s>1 = Single
+<td><table class=cols><tr>
+  <td>0 = Pinpoint
+  <br>1 = Single
+  <br>2 = Dynamic
   <br>3 = Wide (S)
-  <br>4 = Wide (L)
+  <br>4 = Wide (L)</td><td>&nbsp;&nbsp;</td>
+  <td>5 = 3D
   <br>6 = Auto
-  <br>11 = Subject Tracking</span></td></tr>
+  <br>11 = Subject Tracking
+  <br>12 = Wide (C1)
+  <br>13 = Wide (C2)</td></tr></table>
+</td></tr>
 <tr class=b>
 <td class=r title='712 = 0x2c8'>712</td>
 <td>MovieVRMode?</td>
@@ -4863,8 +4875,8 @@ firmware 1.01b.</p>
 <td>MovieSoundRecording?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
-  <br>1 = On
-  <br>2 = On</span></td></tr>
+  <br>1 = Auto
+  <br>2 = Manual</span></td></tr>
 <tr>
 <td class=r title='720 = 0x2d0'>720</td>
 <td>MicrophoneSensitivity?</td>
@@ -4947,13 +4959,15 @@ firmware 1.01b.</p>
 <td class=c>int8u</td>
 <td><span class=s>4 = English
   <br>5 = Spanish
-  <br>7 = French</span></td></tr>
+  <br>7 = French
+  <br>15 = Portuguese</span></td></tr>
 <tr>
 <td class=r title='1428 = 0x594'>1428</td>
 <td>TimeZone</td>
 <td class=c>int8u</td>
 <td><table class=cols><tr>
-  <td>5 = +09:00 (Tokyo)
+  <td>3 = +10:00 (Sydney)
+  <br>5 = +09:00 (Tokyo)
   <br>6 = +08:00 (Beijing, Honk Kong, Sinapore)
   <br>10 = +05:45 (Kathmandu)
   <br>11 = +05:30 (New Dehli)
@@ -5039,6 +5053,699 @@ firmware 1.01b.</p>
 <td class=c>int8u</td>
 <td><span class=s>0 = Stays Open
   <br>1 = Closes</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MenuSettingsZ9Firmware3'>Nikon MenuSettingsZ9Firmware3 Tags</a></h2>
+<p>These tags are used by the Z9 firmware 3.00.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='154 = 0x9a'>154</td>
+<td>MultipleExposureMode</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On
+  <br>2 = On (Series)</span></td></tr>
+<tr class=b>
+<td class=r title='156 = 0x9c'>156</td>
+<td>MultiExposureShots</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='204 = 0xcc'>204</td>
+<td>Intervals</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='208 = 0xd0'>208</td>
+<td>ShotsPerInterval</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='248 = 0xf8'>248</td>
+<td>FocusShiftNumberShots</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='252 = 0xfc'>252</td>
+<td>FocusShiftStepWidth</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='256 = 0x100'>256</td>
+<td>FocusShiftInterval</td>
+<td class=c title=' ~ = Writable only with -n'>int8u~</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='260 = 0x104'>260</td>
+<td>FocusShiftExposureLock?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='290 = 0x122'>290</td>
+<td>PhotoShootingMenuBank</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = A
+  <br>1 = B
+  <br>2 = C
+  <br>3 = D</span></td></tr>
+<tr class=b>
+<td class=r title='292 = 0x124'>292</td>
+<td>ExtendedMenuBanks</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='328 = 0x148'>328</td>
+<td>PhotoShootingMenuBankImageArea</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = FX
+  <br>1 = DX
+  <br>4 = 16:9
+  <br>8 = 1:1</span></td></tr>
+<tr class=b>
+<td class=r title='342 = 0x156'>342</td>
+<td>AutoISO</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='344 = 0x158'>344</td>
+<td>ISOAutoHiLimit?</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = ISO 64
+  <br>1 = ISO 80
+  <br>2 = ISO 100
+  <br>3 = ISO 125
+  <br>4 = ISO 160
+  <br>5 = ISO 200
+  <br>6 = ISO 250
+  <br>7 = ISO 320
+  <br>8 = ISO 400
+  <br>9 = ISO 500
+  <br>10 = ISO 640
+  <br>11 = ISO 800
+  <br>12 = ISO 1000
+  <br>13 = ISO 1250
+  <br>14 = ISO 1600
+  <br>15 = ISO 2000</td><td>&nbsp;&nbsp;</td>
+  <td>16 = ISO 2500
+  <br>17 = ISO 3200
+  <br>18 = ISO 4000
+  <br>19 = ISO 5000
+  <br>20 = ISO 6400
+  <br>21 = ISO 8000
+  <br>22 = ISO 10000
+  <br>23 = ISO 12800
+  <br>24 = ISO 16000
+  <br>25 = ISO 20000
+  <br>26 = ISO 25600
+  <br>27 = ISO Hi 0.3
+  <br>28 = ISO Hi 0.7
+  <br>29 = ISO Hi 1.0
+  <br>32 = ISO Hi 2.0</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='346 = 0x15a'>346</td>
+<td>ISOAutoFlashLimit?</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = ISO 64
+  <br>1 = ISO 80
+  <br>2 = ISO 100
+  <br>3 = ISO 125
+  <br>4 = ISO 160
+  <br>5 = ISO 200
+  <br>6 = ISO 250
+  <br>7 = ISO 320
+  <br>8 = ISO 400
+  <br>9 = ISO 500
+  <br>10 = ISO 640
+  <br>11 = ISO 800
+  <br>12 = ISO 1000
+  <br>13 = ISO 1250
+  <br>14 = ISO 1600
+  <br>15 = ISO 2000</td><td>&nbsp;&nbsp;</td>
+  <td>16 = ISO 2500
+  <br>17 = ISO 3200
+  <br>18 = ISO 4000
+  <br>19 = ISO 5000
+  <br>20 = ISO 6400
+  <br>21 = ISO 8000
+  <br>22 = ISO 10000
+  <br>23 = ISO 12800
+  <br>24 = ISO 16000
+  <br>25 = ISO 20000
+  <br>26 = ISO 25600
+  <br>27 = ISO Hi 0.3
+  <br>28 = ISO Hi 0.7
+  <br>29 = ISO Hi 1.0
+  <br>32 = ISO Hi 2.0</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='354 = 0x162'>354</td>
+<td>ISOAutoShutterTime</td>
+<td class=c>no</td>
+<td><table class=cols><tr>
+  <td>-15 = Auto
+  <br>-12 = 15 s
+  <br>-9 = 8 s
+  <br>-6 = 4 s
+  <br>-3 = 2 s
+  <br>0 = 1 s
+  <br>1 = 1/1.3 s
+  <br>2 = 1/1.6 s
+  <br>3 = 1/2 s
+  <br>4 = 1/2.5 s
+  <br>5 = 1/3 s
+  <br>6 = 1/4 s
+  <br>7 = 1/5 s
+  <br>8 = 1/6 s
+  <br>9 = 1/8 s
+  <br>10 = 1/10 s
+  <br>11 = 1/13 s
+  <br>12 = 1/15 s
+  <br>13 = 1/20 s
+  <br>14 = 1/25 s
+  <br>15 = 1/30 s
+  <br>16 = 1/40 s
+  <br>17 = 1/50 s
+  <br>18 = 1/60 s
+  <br>19 = 1/80 s</td><td>&nbsp;&nbsp;</td>
+  <td>20 = 1/100 s
+  <br>21 = 1/120 s
+  <br>22 = 1/160 s
+  <br>23 = 1/200 s
+  <br>24 = 1/250 s
+  <br>25 = 1/320 s
+  <br>26 = 1/400 s
+  <br>27 = 1/500 s
+  <br>28 = 1/640 s
+  <br>29 = 1/800 s
+  <br>30 = 1/1000 s
+  <br>31 = 1/1250 s
+  <br>32 = 1/1600 s
+  <br>33 = 1/2000 s
+  <br>34 = 1/2500 s
+  <br>35 = 1/3200 s
+  <br>36 = 1/4000 s
+  <br>37 = 1/5000 s
+  <br>37.5 = 1/6000 s
+  <br>38 = 1/6400 s
+  <br>39 = 1/8000 s
+  <br>40 = 1/10000 s
+  <br>40.5 = 1/12000 s
+  <br>41 = 1/13000 s
+  <br>42 = 1/16000 s</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='436 = 0x1b4'>436</td>
+<td>MovieVignetteControl?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = Low
+  <br>2 = Normal
+  <br>3 = High</span></td></tr>
+<tr>
+<td class=r title='438 = 0x1b6'>438</td>
+<td>DiffractionCompensation</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='440 = 0x1b8'>440</td>
+<td>FlickerReductionShooting</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='548 = 0x224'>548</td>
+<td>AFAreaMode</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Pinpoint
+  <br>1 = Single
+  <br>2 = Dynamic
+  <br>3 = Wide (S)
+  <br>4 = Wide (L)</td><td>&nbsp;&nbsp;</td>
+  <td>5 = 3D
+  <br>6 = Auto
+  <br>11 = Subject Tracking
+  <br>12 = Wide (C1)
+  <br>13 = Wide (C2)</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='550 = 0x226'>550</td>
+<td>VRMode</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = Normal
+  <br>2 = Sport</span></td></tr>
+<tr>
+<td class=r title='554 = 0x22a'>554</td>
+<td>BracketSet</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = AE/Flash
+  <br>1 = AE
+  <br>2 = Flash
+  <br>3 = White Balance
+  <br>4 = Active-D Lighting</span></td></tr>
+<tr class=b>
+<td class=r title='556 = 0x22c'>556</td>
+<td>BracketProgram</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(AE and/or Flash Bracketing)</span></span><table class=cols><tr>
+  <td>0 = Disabled
+  <br>2 = 2F
+  <br>3 = 3F
+  <br>4 = 4F</td><td>&nbsp;&nbsp;</td>
+  <td>5 = 5F
+  <br>7 = 7F
+  <br>9 = 9F</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='558 = 0x22e'>558</td>
+<td>BracketIncrement</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(AE and/or Flash Bracketing)</span>
+  <br>0 = 0.3
+  <br>2 = 0.7
+  <br>3 = 1.0
+  <br>4 = 2.0
+  <br>5 = 3.0</span></td></tr>
+<tr class=b>
+<td class=r title='576 = 0x240'>576</td>
+<td>SecondarySlotFunction</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Overflow
+  <br>1 = Backup
+  <br>2 = NEF Primary + JPG Secondary
+  <br>3 = JPG Primary + JPG Secondary</span></td></tr>
+<tr>
+<td class=r title='592 = 0x250'>592</td>
+<td>DXCropAlert</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='594 = 0x252'>594</td>
+<td>SubjectDetection</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = Auto
+  <br>2 = People
+  <br>3 = Animals
+  <br>4 = Vehicles</span></td></tr>
+<tr>
+<td class=r title='636 = 0x27c'>636</td>
+<td>HighFrequencyFlickerReductionShooting?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='646 = 0x286'>646</td>
+<td>MovieImageArea?</td>
+<td class=c>int8u</td>
+<td><span class=s>[val &amp; 0x1]
+  <br>0 = FX
+  <br>1 = DX</span></td></tr>
+<tr>
+<td class=r title='656 = 0x290'>656</td>
+<td>MovieType?</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>1 = H.265 8-bit (MP4)
+  <br>2 = H.265 8-bit (MOV)
+  <br>3 = H.265 10-bit (MOV)
+  <br>4 = ProRes 422 HQ 10-bit (MOV)
+  <br>5 = ProRes RAW HQ 12-bit (MOV)
+  <br>6 = NRAW 12-bit (NEV)</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='658 = 0x292'>658</td>
+<td>MovieISOAutoHiLimit?</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = ISO 64
+  <br>1 = ISO 80
+  <br>2 = ISO 100
+  <br>3 = ISO 125
+  <br>4 = ISO 160
+  <br>5 = ISO 200
+  <br>6 = ISO 250
+  <br>7 = ISO 320
+  <br>8 = ISO 400
+  <br>9 = ISO 500
+  <br>10 = ISO 640
+  <br>11 = ISO 800
+  <br>12 = ISO 1000
+  <br>13 = ISO 1250
+  <br>14 = ISO 1600
+  <br>15 = ISO 2000</td><td>&nbsp;&nbsp;</td>
+  <td>16 = ISO 2500
+  <br>17 = ISO 3200
+  <br>18 = ISO 4000
+  <br>19 = ISO 5000
+  <br>20 = ISO 6400
+  <br>21 = ISO 8000
+  <br>22 = ISO 10000
+  <br>23 = ISO 12800
+  <br>24 = ISO 16000
+  <br>25 = ISO 20000
+  <br>26 = ISO 25600
+  <br>27 = ISO Hi 0.3
+  <br>28 = ISO Hi 0.7
+  <br>29 = ISO Hi 1.0
+  <br>32 = ISO Hi 2.0</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='660 = 0x294'>660</td>
+<td>MovieISOAutoControlManualMode?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='662 = 0x296'>662</td>
+<td>MovieISOAutoManualMode?</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = ISO 64
+  <br>1 = ISO 80
+  <br>2 = ISO 100
+  <br>3 = ISO 125
+  <br>4 = ISO 160
+  <br>5 = ISO 200
+  <br>6 = ISO 250
+  <br>7 = ISO 320
+  <br>8 = ISO 400
+  <br>9 = ISO 500
+  <br>10 = ISO 640
+  <br>11 = ISO 800
+  <br>12 = ISO 1000
+  <br>13 = ISO 1250
+  <br>14 = ISO 1600
+  <br>15 = ISO 2000</td><td>&nbsp;&nbsp;</td>
+  <td>16 = ISO 2500
+  <br>17 = ISO 3200
+  <br>18 = ISO 4000
+  <br>19 = ISO 5000
+  <br>20 = ISO 6400
+  <br>21 = ISO 8000
+  <br>22 = ISO 10000
+  <br>23 = ISO 12800
+  <br>24 = ISO 16000
+  <br>25 = ISO 20000
+  <br>26 = ISO 25600
+  <br>27 = ISO Hi 0.3
+  <br>28 = ISO Hi 0.7
+  <br>29 = ISO Hi 1.0
+  <br>32 = ISO Hi 2.0</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='736 = 0x2e0'>736</td>
+<td>MovieActiveD-Lighting?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>2 = Low
+  <br>3 = Normal
+  <br>4 = High
+  <br>5 = Extra High</span></td></tr>
+<tr class=b>
+<td class=r title='738 = 0x2e2'>738</td>
+<td>MovieHighISONoiseReduction?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = Low
+  <br>2 = Normal
+  <br>3 = High</span></td></tr>
+<tr>
+<td class=r title='744 = 0x2e8'>744</td>
+<td>MovieFlickerReduction</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Auto
+  <br>1 = 50Hz
+  <br>2 = 60Hz</span></td></tr>
+<tr class=b>
+<td class=r title='746 = 0x2ea'>746</td>
+<td>MovieMeteringMode?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Matrix
+  <br>1 = Center
+  <br>2 = Spot
+  <br>3 = Highlight</span></td></tr>
+<tr>
+<td class=r title='748 = 0x2ec'>748</td>
+<td>MovieFocusMode?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Manual
+  <br>1 = AF-S
+  <br>2 = AF-C
+  <br>4 = AF-F</span></td></tr>
+<tr class=b>
+<td class=r title='750 = 0x2ee'>750</td>
+<td>MovieAFAreaMode</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Pinpoint
+  <br>1 = Single
+  <br>2 = Dynamic
+  <br>3 = Wide (S)
+  <br>4 = Wide (L)</td><td>&nbsp;&nbsp;</td>
+  <td>5 = 3D
+  <br>6 = Auto
+  <br>11 = Subject Tracking
+  <br>12 = Wide (C1)
+  <br>13 = Wide (C2)</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='752 = 0x2f0'>752</td>
+<td>MovieVRMode?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = Normal
+  <br>2 = Sport</span></td></tr>
+<tr class=b>
+<td class=r title='756 = 0x2f4'>756</td>
+<td>MovieElectronicVR?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='758 = 0x2f6'>758</td>
+<td>MovieSoundRecording?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = Auto
+  <br>2 = Manual</span></td></tr>
+<tr class=b>
+<td class=r title='760 = 0x2f8'>760</td>
+<td>MicrophoneSensitivity?</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='762 = 0x2fa'>762</td>
+<td>MicrophoneAttenuator?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='764 = 0x2fc'>764</td>
+<td>MicrophoneFrequencyResponse?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Wide Range
+  <br>1 = Vocal Range</span></td></tr>
+<tr>
+<td class=r title='766 = 0x2fe'>766</td>
+<td>WindNoiseReduction?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='788 = 0x314'>788</td>
+<td>MovieToneMap?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = SDR
+  <br>1 = HLG
+  <br>2 = N-Log</span></td></tr>
+<tr>
+<td class=r title='794 = 0x31a'>794</td>
+<td>MovieFrameSize?</td>
+<td class=c>int8u</td>
+<td><span class=s>1 = 1920x1080
+  <br>2 = 3840x2160
+  <br>3 = 7680x4320</span></td></tr>
+<tr class=b>
+<td class=r title='796 = 0x31c'>796</td>
+<td>MovieFrameRate?</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = 120p
+  <br>1 = 100p
+  <br>2 = 60p
+  <br>3 = 50p</td><td>&nbsp;&nbsp;</td>
+  <td>4 = 30p
+  <br>5 = 25p
+  <br>6 = 24p</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='802 = 0x322'>802</td>
+<td>MicrophoneJackPower?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='803 = 0x323'>803</td>
+<td>MovieDXCropAlert?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='804 = 0x324'>804</td>
+<td>MovieSubjectDetection?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = Auto
+  <br>2 = People
+  <br>3 = Animals
+  <br>4 = Vehicles</span></td></tr>
+<tr class=b>
+<td class=r title='812 = 0x32c'>812</td>
+<td>MovieHighResZoom?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='847 = 0x34f'>847</td>
+<td>CustomSettingsZ9</td>
+<td class=c>-</td>
+<td>--&gt; <a href='NikonCustom.html#SettingsZ9'>NikonCustom SettingsZ9 Tags</a></td></tr>
+<tr class=b>
+<td class=r title='1474 = 0x5c2'>1474</td>
+<td>Language?</td>
+<td class=c>int8u</td>
+<td><span class=s>4 = English
+  <br>5 = Spanish
+  <br>7 = French
+  <br>15 = Portuguese</span></td></tr>
+<tr>
+<td class=r title='1476 = 0x5c4'>1476</td>
+<td>TimeZone</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>3 = +10:00 (Sydney)
+  <br>5 = +09:00 (Tokyo)
+  <br>6 = +08:00 (Beijing, Honk Kong, Sinapore)
+  <br>10 = +05:45 (Kathmandu)
+  <br>11 = +05:30 (New Dehli)
+  <br>12 = +05:00 (Islamabad)
+  <br>13 = +04:30 (Kabul)
+  <br>14 = +04:00 (Abu Dhabi)
+  <br>15 = +03:30 (Tehran)
+  <br>16 = +03:00 (Moscow, Nairobi)
+  <br>17 = +02:00 (Athens, Helsinki)
+  <br>18 = +01:00 (Madrid, Paris, Berlin)
+  <br>19 = +00:00 (London)
+  <br>20 = -01:00 (Azores)
+  <br>21 = -02:00 (Fernando de Noronha)
+  <br>22 = -03:00 (Buenos Aires, Sao Paulo)
+  <br>23 = -03:30 (Newfoundland)
+  <br>24 = -04:00 (Manaus, Caracas)
+  <br>25 = -05:00 (New York, Toronto, Lima)
+  <br>26 = -06:00 (Chicago, Mexico City)
+  <br>27 = -07:00 (Denver)
+  <br>28 = -08:00 (Los Angeles, Vancouver)
+  <br>29 = -09:00 (Anchorage)
+  <br>30 = -10:00 (Hawaii)</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='1482 = 0x5ca'>1482</td>
+<td>MonitorBrightness?</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = -5
+  <br>1 = -4
+  <br>2 = -3</td><td>&nbsp;&nbsp;</td>
+  <td>3 = -2
+  <br>4 = -1
+  <br>5 = 0</td><td>&nbsp;&nbsp;</td>
+  <td>6 = 1
+  <br>7 = 2
+  <br>8 = 3</td><td>&nbsp;&nbsp;</td>
+  <td>9 = 4
+  <br>10 = 5
+  <br>14 = Hi1</td><td>&nbsp;&nbsp;</td>
+  <td>15 = Hi2
+  <br>16 = Lo2
+  <br>17 = Lo1</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='1504 = 0x5e0'>1504</td>
+<td>AFFineTune?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='1600 = 0x640'>1600</td>
+<td>HDMIOutputResolution</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Auto
+  <br>1 = 4320p
+  <br>2 = 2160p
+  <br>3 = 1080p
+  <br>5 = 720p</span></td></tr>
+<tr>
+<td class=r title='1613 = 0x64d'>1613</td>
+<td>SetClockFromLocationData?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='1620 = 0x654'>1620</td>
+<td>AirplaneMode?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='1621 = 0x655'>1621</td>
+<td>EmptySlotRelease?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Disable Release
+  <br>1 = Enable Release</span></td></tr>
+<tr class=b>
+<td class=r title='1656 = 0x678'>1656</td>
+<td>EnergySavingMode?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='1680 = 0x690'>1680</td>
+<td>RecordLocationData?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='1684 = 0x694'>1684</td>
+<td>USBPowerDelivery?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='1693 = 0x69d'>1693</td>
+<td>SensorShield?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Stays Open
+  <br>1 = Closes</span></td></tr>
+<tr class=b>
+<td class=r title='1754 = 0x6da'>1754</td>
+<td>FocusShiftAutoReset?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfo'>Nikon ShotInfo Tags</a></h2>
@@ -9219,7 +9926,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 8, 2022</i>
+<br><i>Last revised Nov 21, 2022</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

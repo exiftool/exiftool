@@ -7,6 +7,33 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Nov. 21, 2022 - Version 12.51
+
+  - Added a new Olympus LensType (thanks Herb)
+  - Extract C2PA JUMBF metadata from PNG images and C2PA Salt values
+  - Decode NikonSettings for Z9 firmware 3.0 (thanks Warren Hatch)
+  - Decode additional camm metadata from Insta360 Pro2 MP4 videos
+  - Improved Verbose output when writing Composite tags to add a "+" sign to
+    indicate related tags that are being written
+  - Enhanced -geotag option CSV format to support GPSImgDirection column
+  - Fixed problem where -w+ option didn't work in Windows if there were Unicode
+    characters in the path name
+  - Fixed problem where only the last image of the sequence was extracted
+    (multiple times) when using -ee2 to extract embedded images from FLIR SEQ
+    files
+  - Fixed issue where GPS reference directions may be unknowingly written when
+    using ExifTool 12.44 or later to write GPSLatitude or GPSLongitude without
+    specifying a group name.  The fix was to Avoid writing the Composite tags
+    unless the Composite group is specified explicitly
+  - Fixed -geotag to write orientation and track tags even if some tags in the
+    category were missing
+  - Fixed inconsistency in selecting which tag to output with the -json option
+    when multiple tags with the same JSON key exist and the -TAG# feature is
+    used to disable print conversion
+  - Fixed problem writing QuickTime:PlayListID
+  - Fixed problem writing QuickTime tags when specifying tag ID (ie. family 7
+    group) as well as a language code
+
 Nov. 8, 2022 - Version 12.50 (production release)
 
   - Added a new XMP-GCreations tag

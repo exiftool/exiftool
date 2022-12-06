@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.51';
+$VERSION = '12.52';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -145,16 +145,16 @@ sub ReadValue($$$;$$$);
     Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3 ID3::Lyrics3
     FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio
     MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile QuickTime::Stream
-    QuickTime::Tags360Fly Matroska MOI MXF DV Flash Flash::FLV Real::Media
-    Real::Audio Real::Metafile Red RIFF AIFF ASF WTV DICOM FITS MIE JSON HTML
-    XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion EXE::PEString
-    EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard Text
-    VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork ISO
+    QuickTime::Tags360Fly Matroska Matroska::Tags MOI MXF DV Flash Flash::FLV
+    Real::Media Real::Audio Real::Metafile Red RIFF AIFF ASF WTV DICOM FITS MIE
+    JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
+    EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard
+    Text VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork ISO
     FLIR::AFF FLIR::FPF MacOS MacOS::MDItem FlashPix::DocTable
 );
 
 # alphabetical list of current Lang modules
-@langs = qw(cs de en en_ca en_gb es fi fr it ja ko nl pl ru sv tr zh_cn zh_tw);
+@langs = qw(cs de en en_ca en_gb es fi fr it ja ko nl pl ru sk sv tr zh_cn zh_tw);
 
 $defaultLang = 'en';    # default language
 
@@ -174,6 +174,7 @@ $defaultLang = 'en';    # default language
     nl => 'Dutch (Nederlands)',
     pl => 'Polish (Polski)',
     ru => 'Russian (Русский)',
+    sk => 'Slovak (Slovenčina)',
     sv => 'Swedish (Svenska)',
    'tr'=> 'Turkish (Türkçe)',
     zh_cn => 'Simplified Chinese (简体中文)',
@@ -1807,6 +1808,16 @@ my %systemTagsNotes = (
         Protected => 1,
     },
     PageCount => { Notes => 'the number of pages in a multi-page TIFF document' },
+    SphericalVideoXML => {
+        Groups => { 0 => 'QuickTime', 1 => 'GSpherical', 2 => 'Video' },
+        # (group 1 is 'GSpherical' to trigger creation of this tag when writing,
+        # but when reading the family 1 group is the track number)
+        Flags => [ 'Writable', 'Binary', 'Protected' ],
+        Notes => q{
+            the SphericalVideoXML block from MP4/MOV videos.  This tag is generated only
+            if specifically requested
+        },
+    },
 );
 
 # tags defined by UserParam option (added at runtime)

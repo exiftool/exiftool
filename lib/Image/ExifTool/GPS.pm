@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.54';
+$VERSION = '1.55';
 
 my %coordConv = (
     ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val)',
@@ -407,12 +407,18 @@ my %coordConv = (
         # Require either GPS:GPSAltitudeRef or XMP:GPSAltitudeRef
         RawConv => '(defined $val[1] or defined $val[3]) ? $val : undef',
         ValueConv => q{
-            my $alt = $val[0];
-            $alt = $val[2] unless defined $alt;
-            return undef unless defined $alt and IsFloat($alt);
-            return(($val[1] || $val[3]) ? -$alt : $alt);
+            foreach (0,2) {
+                next unless defined $val[$_] and IsFloat($val[$_]) and defined $val[$_+1];
+                return $val[$_+1] ? -abs($val[$_]) : $val[$_];
+            }
+            return undef;
         },
         PrintConv => q{
+            foreach (0,2) {
+                next unless defined $val[$_] and IsFloat($val[$_]);
+                next unless defined $prt[$_+1] and $prt[$_+1] =~ /Sea/;
+                return((int($val[$_]*10)/10) . ' m ' . $prt[$_+1]);
+            }
             $val = int($val * 10) / 10;
             return(($val =~ s/^-// ? "$val m Below" : "$val m Above") . " Sea Level");
         },

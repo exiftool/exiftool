@@ -561,7 +561,21 @@ sub AddStructType($$$$;$)
 }
 
 #------------------------------------------------------------------------------
-# Hack to use XMP writer for SphericalVideoXML
+# Process SphericalVideoXML (see XMP-GSpherical tags documentation)
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: SphericalVideoXML data
+sub ProcessGSpherical($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    # extract SphericalVideoXML as a block if requested
+    if ($$et{REQ_TAG_LOOKUP}{sphericalvideoxml}) {
+        $et->FoundTag(SphericalVideoXML => substr(${$$dirInfo{DataPt}}, 16));
+    }
+    return Image::ExifTool::XMP::ProcessXMP($et, $dirInfo, $tagTablePtr);
+}
+
+#------------------------------------------------------------------------------
+# Hack to use XMP writer for SphericalVideoXML (see XMP-GSpherical tags documentation)
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: SphericalVideoXML data
 sub WriteGSpherical($$$)

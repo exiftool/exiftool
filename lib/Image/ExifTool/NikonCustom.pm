@@ -15,84 +15,87 @@ package Image::ExifTool::NikonCustom;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.21';
+$VERSION = '1.22';
 
 my %buttonsZ9= (
-    0 => 'None',
-    1 => 'Preview',
-    3 => 'FV Lock',
-    4 => 'AE/AF Lock',
-    5 => 'AE Lock Only',
-    6 => 'AE Lock (reset on release)',
-    7 => 'AE Lock (hold)',
-    8 => 'AF Lock Only',
-    9 => 'AF-On',
-    10 => 'Flash Disable/Enable',
-    11 => 'Bracketing Burst',
-    12 => '+NEF(RAW)',
-    18 => 'Virtual Horizon',
-    19 => 'Synchronized Release',
-    20 => 'My Menu',
-    21 => 'My Menu Top Item',
-    22 => 'Playback',
-    23 => 'Rating',
-    24 => 'Protect',
-    25 => 'Zoom',
-    26 => 'Focus Peaking',
-    28 => 'Image Area',
-    30 => 'Non-CPU Lens',
-    31 => 'Active-D Lighting',
-    33 => '1 Stop Speed/Aperture',
-    34 => 'White Balance',
-    35 => 'Metering',
-    36 => 'Auto Bracketing',
-    37 => 'Multiple Exposure',
-    38 => 'HDR Overlay',
-    39 => 'Picture Control',
-    40 => 'Quality',
-    41 => 'Focus Mode/AF AreaMode',
-    42 => 'Select Center Focus Point',
-    44 => 'Record Movie',
-    47 => 'Choose Folder',
-    48 => 'Power Aperture (Open)',
-    49 => 'Power Aperture (Close)',
-    52 => 'Microphone Sensitivity',
-    57 => 'Preset Focus Point',
-    58 => 'AE/AWB Lock (hold)',
-    59 => 'AF-AreaMode',
-    60 => 'AF-AreaMode + AF-On',
-    61 => 'Recall Shooting Functions',
-    64 => 'Filtered Playback',
-    65 => 'Same as AF-On',
-    66 => 'Voice Memo',
-    70 => 'Photo Shooting Bank',
-    71 => 'ISO',
-    73 => 'Exposure Compensation',
-    76 => 'Silent Mode',
-    78 => 'LiveView Information',
-    79 => 'AWB Lock (hold)',
-    80 => 'Grid Display',
-    81 => 'Starlight View',
-    82 => 'Select To Send (PC)',
-    83 => 'Select To Send (FTP)',
-    84 => 'Pattern Tone Range',
-    85 => 'Control Lock',
-    86 => 'Save Focus Position',
-    87 => 'Recall Focus Position',
-    88 => 'Recall Shooting Functions (Hold)',
-    97 => 'High Frequency Flicker Reduction',
-    98 => 'Switch FX/DX',
-    99 => 'View Mode (Photo LV)',
-    100 => 'Photo Flicker Reduction',
-    101 => 'Filtered Playback (Select Criteria)',
-    103 => 'Start Series Playback',
-    104 => 'View Assist',
-    105 => 'Hi-Res Zoom+',
-    106 => 'Hi-Res Zoom-',
-    108 => 'Override Other Cameras',
-    109 => 'DISP - Cycle Information Display',       # Shooting Mode
-    110 => 'DISP - Cycle Information Display',       # Playback mode
-    111 => 'Resume Shooting',
+    SeparateTable => 'ButtonsZ9',
+    PrintConv => {
+        0 => 'None',
+        1 => 'Preview',
+        3 => 'FV Lock',
+        4 => 'AE/AF Lock',
+        5 => 'AE Lock Only',
+        6 => 'AE Lock (reset on release)',
+        7 => 'AE Lock (hold)',
+        8 => 'AF Lock Only',
+        9 => 'AF-On',
+        10 => 'Flash Disable/Enable',
+        11 => 'Bracketing Burst',
+        12 => '+NEF(RAW)',
+        18 => 'Virtual Horizon',
+        19 => 'Synchronized Release',
+        20 => 'My Menu',
+        21 => 'My Menu Top Item',
+        22 => 'Playback',
+        23 => 'Rating',
+        24 => 'Protect',
+        25 => 'Zoom',
+        26 => 'Focus Peaking',
+        28 => 'Image Area',
+        30 => 'Non-CPU Lens',
+        31 => 'Active-D Lighting',
+        33 => '1 Stop Speed/Aperture',
+        34 => 'White Balance',
+        35 => 'Metering',
+        36 => 'Auto Bracketing',
+        37 => 'Multiple Exposure',
+        38 => 'HDR Overlay',
+        39 => 'Picture Control',
+        40 => 'Quality',
+        41 => 'Focus Mode/AF AreaMode',
+        42 => 'Select Center Focus Point',
+        44 => 'Record Movie',
+        47 => 'Choose Folder',
+        48 => 'Power Aperture (Open)',
+        49 => 'Power Aperture (Close)',
+        52 => 'Microphone Sensitivity',
+        57 => 'Preset Focus Point',
+        58 => 'AE/AWB Lock (hold)',
+        59 => 'AF-AreaMode',
+        60 => 'AF-AreaMode + AF-On',
+        61 => 'Recall Shooting Functions',
+        64 => 'Filtered Playback',
+        65 => 'Same as AF-On',
+        66 => 'Voice Memo',
+        70 => 'Photo Shooting Bank',
+        71 => 'ISO',
+        73 => 'Exposure Compensation',
+        76 => 'Silent Mode',
+        78 => 'LiveView Information',
+        79 => 'AWB Lock (hold)',
+        80 => 'Grid Display',
+        81 => 'Starlight View',
+        82 => 'Select To Send (PC)',
+        83 => 'Select To Send (FTP)',
+        84 => 'Pattern Tone Range',
+        85 => 'Control Lock',
+        86 => 'Save Focus Position',
+        87 => 'Recall Focus Position',
+        88 => 'Recall Shooting Functions (Hold)',
+        97 => 'High Frequency Flicker Reduction',
+        98 => 'Switch FX/DX',
+        99 => 'View Mode (Photo LV)',
+        100 => 'Photo Flicker Reduction',
+        101 => 'Filtered Playback (Select Criteria)',
+        103 => 'Start Series Playback',
+        104 => 'View Assist',
+        105 => 'Hi-Res Zoom+',
+        106 => 'Hi-Res Zoom-',
+        108 => 'Override Other Cameras',
+        109 => 'DISP - Cycle Information Display (shooting)', # Shooting Mode
+        110 => 'DISP - Cycle Information Display (playback)', # Playback mode
+        111 => 'Resume Shooting',
+    },
 );
 my %dialsZ9 = (
     0 => '1 Frame',
@@ -132,16 +135,19 @@ my %focusModeRestrictionsZ9 = (
     4 => 'No Restrictions',
 );
 my %powerOffDelayTimesZ9 = (
-    0 => '2 s',
-    1 => '4 s',
-    3 => '10 s',
-    4 => '20 s',
-    5 => '30 s',
-    6 => '1 min',
-    7 => '5 min',
-    8 => '10 min',
-    11 => '30 min',
-    12 => 'No Limit',
+    SeparateTable => 'DelaysZ9',
+    PrintConv => {
+        0 => '2 s',
+        1 => '4 s',
+        3 => '10 s',
+        4 => '20 s',
+        5 => '30 s',
+        6 => '1 min',
+        7 => '5 min',
+        8 => '10 min',
+        11 => '30 min',
+        12 => 'No Limit',
+    },
 );
 my %thirdHalfFull = (
     0 => '1/3 EV',
@@ -9783,10 +9789,10 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
             3 => '3 s',
         },
     },
-    51 => { Name => 'PlaybackMonitorOffTime',    PrintConv => \%powerOffDelayTimesZ9 }, # CSc4-a
-    53 => { Name => 'MenuMonitorOffTime',        PrintConv => \%powerOffDelayTimesZ9 }, # CSc4-b
-    55 => { Name => 'ShootingInfoMonitorOffTime',PrintConv => \%powerOffDelayTimesZ9 }, # CSc4-c
-    57 => { Name => 'ImageReviewMonitorOffTime', PrintConv => \%powerOffDelayTimesZ9 }, # CSc4-d
+    51 => { Name => 'PlaybackMonitorOffTime',    %powerOffDelayTimesZ9 }, # CSc4-a
+    53 => { Name => 'MenuMonitorOffTime',        %powerOffDelayTimesZ9 }, # CSc4-b
+    55 => { Name => 'ShootingInfoMonitorOffTime',%powerOffDelayTimesZ9 }, # CSc4-c
+    57 => { Name => 'ImageReviewMonitorOffTime', %powerOffDelayTimesZ9 }, # CSc4-d
     59 => { Name => 'CLModeShootingSpeed',       ValueConv => '$val + 1', ValueConvInv => '$val - 1', PrintConv => '"$val fps"', PrintConvInv => '$val=~s/\s*fps//i; $val' }, # CSd1b
     61 => {  # CSd2       # values: 1-200 &  'No Limit'
         Name => 'MaxContinuousRelease',
@@ -9864,25 +9870,25 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
         },
     },
     97 => { Name => 'AutoBracketOrder',   PrintConv => { 0 => '0,-,+',1 => '-,0,+' } }, # CSe7
-    99 => { Name => 'Func1Button',        PrintConv => \%buttonsZ9}, # CSf2-a
+    99 => { Name => 'Func1Button',        %buttonsZ9}, # CSf2-a
     #101 Func1Button submenu: Preview               0 => 'Press To Recall', 1=> 'Hold To Recall'  # CSf2-a
     #103 Func1Button submenu: AreaMode              0-7 => S, Dyn-S, Dyn-M, Dyn-L, Wide-S, Wide-L, 3D, Auto; 11=>n/a  # CSf2-a
     #105 Func1Button submenu: AreaMode+AF-On        0-7 => S, Dyn-S, Dyn-M, Dyn-L, Wide-S, Wide-L, 3D, Auto; 11=>n/a  # CSf2-a
     #109 Func1Button submenu: SynchronizedRelease   1=>'Master', 2=>'Remote'  # CSf2-a
     #111 Func1Button submenu: Zoom                  0=>'Zoom (Low)', 2=>'Zoom (1:1)', 2=>'Zoom (High)'  # CSf2-a
     #113 Func1Button & Func1ButtonPlayback submenu: Rating                # CSf2-a & CSf3a   0=>'Candidate For Deletion'  6=>''None'
-    115 => { Name => 'Func2Button',       PrintConv => \%buttonsZ9}, # CSf2-b
+    115 => { Name => 'Func2Button',       %buttonsZ9}, # CSf2-b
     #117 Func2Button submenu: Preview               0 => 'Press To Recall', 1=> 'Hold To Recall' # CSf2-b
     #119 Func2Button submenu: AreaMode              0-7 => S, Dyn-S, Dyn-M, Dyn-L, Wide-S, Wide-L, 3D, Auto; 11=>n/a  # CSf2-b
     #121 Func2Button submenu: AreaMode+AF-On        0-7 => S, Dyn-S, Dyn-M, Dyn-L, Wide-S, Wide-L, 3D, Auto; 11=>n/a  # CSf2-b
     #125 Func2Button submenu: SynchronizedRelease   1=>'Master', 2=>'Remote'  # CSf2-b
     #127 Func2Button submenu: Zoom                  0=>'Zoom (Low)', 2=>'Zoom (1:1)', 2=>'Zoom (High)'  # CSf2-b
     #129 Func2Button & Func2ButtonPlayback submenu: Rating                # CSf2-b & CSf3b   0=>'Candidate For Deletion'  6=>''None'
-    131 => { Name => 'AFOnButton',                PrintConv => \%buttonsZ9}, # CSf2-c
-    143 => { Name => 'SubSelector',               PrintConv => \%buttonsZ9, Unknown => 1}, # CSf2-g
-    155 => { Name => 'AssignMovieRecordButton',   PrintConv => \%buttonsZ9, Unknown => 1}, # CSf2-m
-    159 => { Name => 'LensFunc1Button',           PrintConv => \%buttonsZ9}, # CSf2-o
-    167 => { Name => 'LensFunc2Button',           PrintConv => \%buttonsZ9}, # CSf2-p
+    131 => { Name => 'AFOnButton',                %buttonsZ9}, # CSf2-c
+    143 => { Name => 'SubSelector',               %buttonsZ9, Unknown => 1}, # CSf2-g
+    155 => { Name => 'AssignMovieRecordButton',   %buttonsZ9, Unknown => 1}, # CSf2-m
+    159 => { Name => 'LensFunc1Button',           %buttonsZ9}, # CSf2-o
+    167 => { Name => 'LensFunc2Button',           %buttonsZ9}, # CSf2-p
     173 => { # CSf2-q
         Name => 'LensControlRing',
         PrintConv => {
@@ -9893,8 +9899,8 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
             4 => 'Aperture',
         },
     },
-    175 => { Name => 'MultiSelectorShootMode',     PrintConv => \%buttonsZ9}, # CSf2-h    called the OK button in camera, tag name retained for compatibility
-    179 => { Name => 'MultiSelectorPlaybackMode',  PrintConv => \%buttonsZ9}, # CSf3f
+    175 => { Name => 'MultiSelectorShootMode',     %buttonsZ9}, # CSf2-h    called the OK button in camera, tag name retained for compatibility
+    179 => { Name => 'MultiSelectorPlaybackMode',  %buttonsZ9}, # CSf3f
     183 => { Name => 'ShutterSpeedLock',           PrintConv => \%offOn }, # CSf4-a
     184 => { Name => 'ApertureLock',               PrintConv => \%offOn }, # CSf4-b
     185 => { # CSf5-a Previous cameras reported this tag as part of CmdDialsReverseRotation.  Blend with CSf5-b separate settings together to match extant tag name and values
@@ -9918,9 +9924,9 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     }],
     191 => { Name => 'UseDialWithoutHold',  PrintConv => \%offOn, Unknown => 1 }, # CSf6
     193 => { Name => 'ReverseIndicators',   PrintConv => { 0 => '+ 0 -', 1 => '- 0 +' }, Unknown => 1 }, # CSf7
-    195 => { Name => 'MovieFunc1Button',    PrintConv => \%buttonsZ9}, # CSg2-a
-    199 => { Name => 'MovieFunc2Button',    PrintConv => \%buttonsZ9}, # CSg2-b
-    203 => { Name => 'MovieAF-OnButton',    PrintConv => \%buttonsZ9}, # CSg2-f
+    195 => { Name => 'MovieFunc1Button',    %buttonsZ9}, # CSg2-a
+    199 => { Name => 'MovieFunc2Button',    %buttonsZ9}, # CSg2-b
+    203 => { Name => 'MovieAF-OnButton',    %buttonsZ9}, # CSg2-f
     215 => { # CSg2-z
         Name => 'MovieLensControlRing',
         PrintConv => {
@@ -9931,7 +9937,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
             5 => 'Hi-Res Zoom',
         },
     },
-    217 => { Name => 'MovieMultiSelector',  PrintConv => \%buttonsZ9, Unknown => 1}, # CSg2-h
+    217 => { Name => 'MovieMultiSelector',  %buttonsZ9, Unknown => 1}, # CSg2-h
     221 => { Name => 'MovieAFSpeed',        ValueConv => '$val - 5', ValueConvInv => '$val + 6' }, # CSg6-a
     223 => { Name => 'MovieAFSpeedApply',    rintConv => {0 => 'Always', 1 => 'Only During Recording'},}, # CSg6-b
     225 => { # CSg7
@@ -9958,11 +9964,11 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     269.4 => { Name => 'LimitReleaseModeSelC120', Mask => 0x40, PrintConv => \%limitNolimit, Unknown => 1 }, # CSd3-c
     269.5 => { Name => 'LimitReleaseModeSelSelf', Mask => 0x80, PrintConv => \%limitNolimit, Unknown => 1 }, # CSd3-d
     273 => { Name => 'FlashBurstPriority',            PrintConv => { 0 => 'Frame Rate',1 => 'Exposure'}, Unknown => 1 },  # CSe8
-    277 => { Name => 'VerticalFuncButton',            PrintConv => \%buttonsZ9}, # CSf2-c
-    281 => { Name => 'Func3Button',                   PrintConv => \%buttonsZ9}, # CSf2-c
-    285 => { Name => 'VerticalAFOnButton',            PrintConv => \%buttonsZ9}, # CSf2-l
+    277 => { Name => 'VerticalFuncButton',            %buttonsZ9}, # CSf2-c
+    281 => { Name => 'Func3Button',                   %buttonsZ9}, # CSf2-c
+    285 => { Name => 'VerticalAFOnButton',            %buttonsZ9}, # CSf2-l
     293 => { Name => 'VerticalMultiSelectorPlaybackMode',  PrintConv => { 0 => 'Image Scroll L/R', 1 => 'Image Scroll Up/Down' }, Unknown => 1}, # CSf3-j
-    295 => { Name => 'MovieFunc3Button',                   PrintConv => \%buttonsZ9}, # CSg2-c
+    295 => { Name => 'MovieFunc3Button',                   %buttonsZ9}, # CSg2-c
     335 => { Name => 'LimitAF-AreaModeSelDynamic_S',       PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
     336 => { Name => 'LimitAF-AreaModeSelDynamic_M',       PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
     337 => { Name => 'LimitAF-AreaModeSelDynamic_L',       PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
@@ -9974,26 +9980,26 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     356 => { Name => 'EVFImageFrame',       PrintConv => \%offOn, Unknown => 1 }, # CSd14
     357 => { Name => 'EVFGrid',             PrintConv => \%evfGridsZ9, Unknown => 1 }, # CSd15
     359 => { Name => 'VirtualHorizonStyle', PrintConv => {0 => 'Type A (Cockpit)', 1 => 'Type B (Sides)' }, Unknown => 1}, #CSd16
-    373 => { Name => 'Func4Button',         PrintConv => \%buttonsZ9, Unknown => 1}, # CSf2-e
-    379 => { Name => 'AudioButton',         PrintConv => \%buttonsZ9, Unknown => 1}, # CSf2-i
-    381 => { Name => 'QualityButton',       PrintConv => \%buttonsZ9, Unknown => 1}, # CSf2-j
-    399 => { Name => 'VerticalMultiSelector',          PrintConv => \%buttonsZ9, Unknown => 1}, # CSf2-k
-    421 => { Name => 'Func1ButtonPlaybackMode',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-a
-    423 => { Name => 'Func2ButtonPlaybackMode',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-b
-    425 => { Name => 'Func3ButtonPlaybackMode',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-c
-    431 => { Name => 'Func4ButtonPlaybackMode',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-e
-    437 => { Name => 'MovieRecordButtonPlaybackMode',  PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-m
-    439 => { Name => 'VerticalFuncButtonPlaybackMode', PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-d
-    441 => { Name => 'AudioButtonPlaybackMode',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-g
-    447 => { Name => 'QualityButtonPlaybackMode',      PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-h
+    373 => { Name => 'Func4Button',         %buttonsZ9, Unknown => 1}, # CSf2-e
+    379 => { Name => 'AudioButton',         %buttonsZ9, Unknown => 1}, # CSf2-i
+    381 => { Name => 'QualityButton',       %buttonsZ9, Unknown => 1}, # CSf2-j
+    399 => { Name => 'VerticalMultiSelector',          %buttonsZ9, Unknown => 1}, # CSf2-k
+    421 => { Name => 'Func1ButtonPlaybackMode',        %buttonsZ9, Unknown => 1}, # CSf3-a
+    423 => { Name => 'Func2ButtonPlaybackMode',        %buttonsZ9, Unknown => 1}, # CSf3-b
+    425 => { Name => 'Func3ButtonPlaybackMode',        %buttonsZ9, Unknown => 1}, # CSf3-c
+    431 => { Name => 'Func4ButtonPlaybackMode',        %buttonsZ9, Unknown => 1}, # CSf3-e
+    437 => { Name => 'MovieRecordButtonPlaybackMode',  %buttonsZ9, Unknown => 1}, # CSf3-m
+    439 => { Name => 'VerticalFuncButtonPlaybackMode', %buttonsZ9, Unknown => 1}, # CSf3-d
+    441 => { Name => 'AudioButtonPlaybackMode',        %buttonsZ9, Unknown => 1}, # CSf3-g
+    447 => { Name => 'QualityButtonPlaybackMode',      %buttonsZ9, Unknown => 1}, # CSf3-h
     467 => { Name => 'FocusPointLock',                 PrintConv => \%offOn,     Unknown => 1}, # CSf4-c
-    453 => { Name => 'WhiteBalanceButtonPlaybackMode', PrintConv => \%buttonsZ9, Unknown => 1}, # CSf3-i
+    453 => { Name => 'WhiteBalanceButtonPlaybackMode', %buttonsZ9, Unknown => 1}, # CSf3-i
     459 => { Name => 'CommandDialPlaybackMode',        PrintConv => \%dialsZ9,   Unknown => 1}, # CSf3-k
     463 => { Name => 'SubCommandDialPlaybackMode',     PrintConv => \%dialsZ9,   Unknown => 1}, # CSf3-l
     469 => { Name => 'ControlRingResponse',            PrintConv => { 0 => 'High', 1 => 'Low' } }, # CSf10
-    481 => { Name => 'VerticalMovieFuncButton',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSg2-d
-    505 => { Name => 'VerticalMovieAFOnButton',        PrintConv => \%buttonsZ9, Unknown => 1}, # CSg2-l
-    515 => { Name => 'MovieAFAreaMode',       PrintConv => \%buttonsZ9, Unknown => 1}, # CSg2-e
+    481 => { Name => 'VerticalMovieFuncButton',        %buttonsZ9, Unknown => 1}, # CSg2-d
+    505 => { Name => 'VerticalMovieAFOnButton',        %buttonsZ9, Unknown => 1}, # CSg2-l
+    515 => { Name => 'MovieAFAreaMode',       %buttonsZ9, Unknown => 1}, # CSg2-e
     #521 => { Name => 'MovieLimitAF-AreaModeSelWideAF_S',      PrintConv => \%limitNolimit, Unknown => 1 }, # CSg4-a
     #522 => { Name => 'MovieLimitAF-AreaModeSelWideAF_W',      PrintConv => \%limitNolimit, Unknown => 1 }, # CSg4-b
     #523 => { Name => 'MovieLimitAF-AreaModeSelSubjectTrack',  PrintConv => \%limitNolimit, Unknown => 1 }, # CSg4-c

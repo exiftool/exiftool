@@ -7,10 +7,20 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Dec. 6, 2022 - Version 12.52
+
+  - Added a few new Nikon LensID's (thanks LibRaw and Chris)
+  - Added Slovak translations (thanks Peter Bagin)
+  - Made SphericalVideoXML readable/writable as a block
+  - Improved handling of Matroska metadata tags, including language support
+  - Improved French translations (thanks Philippe Bonnaure of GraphicConverter)
+  - Improved Composite:GPSAltitude conversion to honour -lang setting
+  - Improved -v2 messages to indicate files extracted from zip archives
+
 Nov. 21, 2022 - Version 12.51
 
   - Added a new Olympus LensType (thanks Herb)
-  - Extract C2PA JUMBF metadata from PNG images and C2PA Salt values
+  - Extract C2PA JUMBF metadata from PNG images and extract C2PA Salt values
   - Decode NikonSettings for Z9 firmware 3.0 (thanks Warren Hatch)
   - Decode additional camm metadata from Insta360 Pro2 MP4 videos
   - Improved Verbose output when writing Composite tags to add a "+" sign to
@@ -236,6 +246,8 @@ June 1, 2022 - Version 12.42 (production release)
   - Patched to allow PDF Encrypt object to be "null"
   - Fixed bug reading ICC_Profile 'meta' tags
 
+History of older versions (back to Nov. 19, 2003 - Version 1.00) -->
+
 Apr. 7, 2022 - Version 12.41
 
   - Added support for "OM SYSTEM" maker notes
@@ -446,8 +458,6 @@ Aug. 12, 2021 - Version 12.30 (production release)
     profile to be added back later since QuickTime item property containers
     currently can't be created)
   - Patched to remove 2 GB size limit when reading Photoshop ImageSourceData
-
-History of older versions (back to Nov. 19, 2003 - Version 1.00) -->
 
 July 9, 2021 - Version 12.29
 

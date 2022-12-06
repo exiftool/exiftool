@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.52
 [File, System, Other] FileName - File Name: Matroska.mkv
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 507 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2010:05:28 18:24:56-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:11-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
-[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, System, Time] FileAccessDate - File Access Date/Time: 2022:09:26 20:08:35-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:09:18 10:49:22-04:00
+[File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: MKV
 [File, File, Other] FileTypeExtension - File Type Extension: mkv
 [File, File, Other] MIMEType - MIME Type: video/x-matroska
@@ -25,9 +25,9 @@
 [Matroska, Matroska, Video] 5953 - Writing App: mkvmerge v2.4.0 ('Fumbling Towards Ecstasy') built on Dec  3 2008 16:22:41
 [Matroska, Matroska, Video] 1161 - Duration: 0:02:29
 [Matroska, Matroska, Time] 1121 - Date/Time Original: 2010:02:03 21:17:48Z
-[Matroska, Matroska, Video] 13220 - Segment UID: (Binary data 16 bytes)
+[Matroska, Matroska, Video] 13220 - Segment UID: 567c66ee723eb3fb134811344da9a391
 [Matroska, Track1, Video] 87 - Track Number: 1
-[Matroska, Track1, Video] 13253 - Track UID: 2708023567
+[Matroska, Track1, Video] 13253 - Track UID: a169290f
 [Matroska, Track1, Video] 3 - Track Type: Video
 [Matroska, Track1, Video] 57 - Track Used: Yes
 [Matroska, Track1, Video] 8 - Track Default: Yes
@@ -47,7 +47,7 @@
 [Matroska, Track1, Video] 5296 - Display Width: 768
 [Matroska, Track1, Video] 5306 - Display Height: 576
 [Matroska, Track2, Video] 87 - Track Number: 2
-[Matroska, Track2, Video] 13253 - Track UID: 3776461812
+[Matroska, Track2, Video] 13253 - Track UID: e1183bf4
 [Matroska, Track2, Video] 3 - Track Type: Audio
 [Matroska, Track2, Video] 57 - Track Used: Yes
 [Matroska, Track2, Video] 8 - Track Default: Yes

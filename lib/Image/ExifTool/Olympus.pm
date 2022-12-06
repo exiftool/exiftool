@@ -1836,7 +1836,7 @@ my %indexInfo = (
             1 => 'Sequential shooting AF',
             2 => 'Continuous AF',
             3 => 'Multi AF',
-            4 => 'Face detect', #11
+            4 => 'Face Detect', #11
             10 => 'MF',
         }, {
             0 => '(none)',
@@ -1844,7 +1844,7 @@ my %indexInfo = (
                 0 => 'S-AF',
                 2 => 'C-AF',
                 4 => 'MF',
-                5 => 'Face detect',
+                5 => 'Face Detect',
                 6 => 'Imager AF',
                 7 => 'Live View Magnification Frame',
                 8 => 'AF sensor',

@@ -10191,10 +10191,10 @@ my %isoSetting2010 = (
         PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
     },
     0x8001 => { Name => 'Sony_rtmd_0x8001', Format => 'int16u', %hidUnk },
-    0x8004 => { Name => 'Sony_rtmd_0x8004', Format => 'int16u', %hidUnk },
-    0x8005 => { Name => 'Sony_rtmd_0x8005', Format => 'int16u', %hidUnk },
-    0x800a => { Name => 'Sony_rtmd_0x800a', Format => 'int16u', %hidUnk },
-    0x800b => { Name => 'Sony_rtmd_0x800b', Format => 'int16u', %hidUnk },
+    0x8004 => { Name => 'Sony_rtmd_0x8004', Format => 'int16u', %hidUnk }, # (FocalLength35efl?, forum14315)
+    0x8005 => { Name => 'Sony_rtmd_0x8005', Format => 'int16u', %hidUnk }, # (FocalLength?, forum14315)
+    0x800a => { Name => 'Sony_rtmd_0x800a', Format => 'int16u', %hidUnk }, # (FocusRingPosition?, forum14315)
+    0x800b => { Name => 'Sony_rtmd_0x800b', Format => 'int16u', %hidUnk }, # (ZoomRingPosition?, forum14315)
   # 0x8100 - 16 bytes starting with 0x060e2b340401
     0x8100 => { Name => 'Sony_rtmd_0x8100', Format => 'int8u',  %hidUnk },
     0x8101 => { Name => 'Sony_rtmd_0x8101', Format => 'int8u',  %hidUnk }, # seen: 0,1

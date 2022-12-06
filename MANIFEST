@@ -323,6 +323,7 @@ lib/Image/ExifTool/Lang/ko.pm
 lib/Image/ExifTool/Lang/nl.pm
 lib/Image/ExifTool/Lang/pl.pm
 lib/Image/ExifTool/Lang/ru.pm
+lib/Image/ExifTool/Lang/sk.pm
 lib/Image/ExifTool/Lang/sv.pm
 lib/Image/ExifTool/Lang/tr.pm
 lib/Image/ExifTool/Lang/zh_cn.pm
@@ -646,6 +647,7 @@ t/Lang_15.out
 t/Lang_16.out
 t/Lang_17.out
 t/Lang_18.out
+t/Lang_19.out
 t/Lang_2.out
 t/Lang_3.out
 t/Lang_4.out

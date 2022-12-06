@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26095 tags, with 16668 unique tag names.
+They contain a total of 26197 tags, with 16717 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -30398,7 +30398,7 @@ Matroska specification.
   0x037e       ChapterCountry                   no
   0x0444       SegmentFamily?                   no
   0x0461       DateTimeOriginal                 no
-  0x047a       TagLanguage                      no
+  0x047a       TagLanguageBCP47                 no
   0x0484       TagDefault                       no
   0x0485       TagBinary                        no
   0x0487       TagString                        no
@@ -30456,10 +30456,10 @@ Matroska specification.
   0x23a2       CodecPrivate?                    no
   0x23c0       Targets                          Matroska
   0x23c3       ChapterPhysicalEquivalent        no
-  0x23c4       TagChapterUID?                   no
-  0x23c5       TagTrackUID?                     no
-  0x23c6       TagAttachmentUID?                no
-  0x23c9       TagEditionUID?                   no
+  0x23c4       TagChapterUID                    no
+  0x23c5       TagTrackUID                      no
+  0x23c6       TagAttachmentUID                 no
+  0x23c9       TagEditionUID                    no
   0x23ca       TargetType                       no
   0x2532       SignedElement?                   no
   0x2624       TrackTranslate                   Matroska
@@ -30487,7 +30487,7 @@ Matroska specification.
   0x3384       SegmentFileName                  no
   0x33a4       SegmentUID?                      no
   0x33c4       ChapterUID?                      no
-  0x33c5       TrackUID?                        no
+  0x33c5       TrackUID                         no
   0x3446       TrackAttachmentUID               no
   0x35a1       BlockAdditions                   Matroska
   0x38b5       OutputAudioSampleRate            no
@@ -30546,6 +30546,116 @@ for the specification.
   0x7673   ProjectionPoseYaw                    no
   0x7674   ProjectionPosePitch                  no
   0x7675   ProjectionPoseRoll                   no
+
+=head3 Matroska  Tags
+
+Standardized Matroska tags (see
+L<https://www.matroska.org/technical/tagging.html>).
+
+  Tag ID                  Tag Name              Writable
+  ------                  --------              --------
+  'ACCOMPANIMENT'         Accompaniment         no
+  'ACTOR'                 Actor                 no
+  'ADDRESS'               Address               no
+  'ARRANGER'              Arranger              no
+  'ARTIST'                Artist                no
+  'ART_DIRECTOR'          ArtDirector           no
+  'ASSISTANT_DIRECTOR'    AssistantDirector     no
+  'BARCODE'               Barcode               no
+  'BPM'                   BPM                   no
+  'BPS'                   BPS                   no
+  'CATALOG_NUMBER'        CatalogNumber         no
+  'CHARACTER'             Character             no
+  'CHOREGRAPHER'          Choregrapher          no
+  'COMMENT'               Comment               no
+  'COMPOSER'              Composer              no
+  'COMPOSER_NATIONALITY'  ComposerNationality   no
+  'COMPOSITION_LOCATION'  CompositionLocation   no
+  'CONDUCTOR'             Conductor             no
+  'CONTENT_TYPE'          ContentType           no
+  'COPRODUCER'            Coproducer            no
+  'COPYRIGHT'             Copyright             no
+  'COSTUME_DESIGNER'      CostumeDesigner       no
+  'COUNTRY'               Country               no
+  'DATE_DIGITIZED'        CreateDate            no
+  'DATE_ENCODED'          DateEncoded           no
+  'DATE_PURCHASED'        DatePurchased         no
+  'DATE_RECORDED'         DateTimeOriginal      no
+  'DATE_RELEASED'         DateReleased          no
+  'DATE_TAGGED'           DateTagged            no
+  'DATE_WRITTEN'          DateWritten           no
+  'DESCRIPTION'           Description           no
+  'DIRECTOR'              Director              no
+  'DIRECTOR_OF_PHOTOGRAPHY'
+                          DirectorOfPhotography no
+  'DISTRIBUTED_BY'        DistributedBy         no
+  'EDITED_BY'             EditedBy              no
+  'EMAIL'                 Email                 no
+  'ENCODED_BY'            EncodedBy             no
+  'ENCODER'               Encoder               no
+  'ENCODER_SETTINGS'      EncoderSettings       no
+  'EXECUTIVE_PRODUCER'    ExecutiveProducer     no
+  'FAX'                   FAX                   no
+  'FPS'                   FPS                   no
+  'GENRE'                 Genre                 no
+  'IMDB'                  IMDB                  no
+  'INITIAL_KEY'           InitialKey            no
+  'INSTRUMENTS'           Instruments           no
+  'ISBN'                  ISBN                  no
+  'ISRC'                  ISRC                  no
+  'KEYWORDS'              Keywords              no
+  'LABEL'                 Label                 no
+  'LABEL_CODE'            LabelCode             no
+  'LAW_RATING'            LawRating             no
+  'LCCN'                  Lccn                  no
+  'LEAD_PERFORMER'        LeadPerformer         no
+  'LICENSE'               License               no
+  'LYRICIST'              Lyricist              no
+  'LYRICS'                Lyrics                no
+  'MASTERED_BY'           MasteredBy            no
+  'MCDI'                  MCDI                  no
+  'MEASURE'               Measure               no
+  'MIXED_BY'              MixedBy               no
+  'MOOD'                  Mood                  no
+  'ORIGINAL'              Original              no
+  'ORIGINAL_MEDIA_TYPE'   OriginalMediaType     no
+  'PART_NUMBER'           PartNumber            no
+  'PART_OFFSET'           PartOffset            no
+  'PERIOD'                Period                no
+  'PHONE'                 Phone                 no
+  'PLAY_COUNTER'          PlayCounter           no
+  'PRODUCER'              Producer              no
+  'PRODUCTION_COPYRIGHT'  ProductionCopyright   no
+  'PRODUCTION_DESIGNER'   ProductionDesigner    no
+  'PRODUCTION_STUDIO'     ProductionStudio      no
+  'PUBLISHER'             Publisher             no
+  'PURCHASE_CURRENCY'     PurchaseCurrency      no
+  'PURCHASE_INFO'         PurchaseInfo          no
+  'PURCHASE_ITEM'         PurchaseItem          no
+  'PURCHASE_OWNER'        PurchaseOwner         no
+  'PURCHASE_PRICE'        PurchasePrice         no
+  'RATING'                Rating                no
+  'RECORDING_LOCATION'    RecordingLocation     no
+  'REMIXED_BY'            RemixedBy             no
+  'REPLAYGAIN_GAIN'       ReplaygainGain        no
+  'REPLAYGAIN_PEAK'       ReplaygainPeak        no
+  'SAMPLE'                Sample                no
+  'SCREENPLAY_BY'         ScreenplayBy          no
+  'SORT_WITH'             SortWith              no
+  'SOUND_ENGINEER'        SoundEngineer         no
+  'SUBJECT'               Subject               no
+  'SUBTITLE'              Subtitle              no
+  'SUMMARY'               Summary               no
+  'SYNOPSIS'              Synopsis              no
+  'TERMS_OF_USE'          TermsOfUse            no
+  'THANKS_TO'             ThanksTo              no
+  'TITLE'                 Title                 no
+  'TMDB'                  TMDB                  no
+  'TOTAL_PARTS'           TotalParts            no
+  'TUNING'                Tuning                no
+  'TVDB'                  TVDB                  no
+  'URL'                   URL                   no
+  'WRITTEN_BY'            WrittenBy             no
 
 =head2 MOI Tags
 
@@ -37566,6 +37676,7 @@ FileName.
   ProcessingTime             ExifTool           no
   RAFVersion                 File               no
   ResourceForkSize           System             no
+  SphericalVideoXML          GSpherical         yes!
   SymLink                    -                  yes!
   TestName                   -                  yes!
   ThumbnailImage             File               no

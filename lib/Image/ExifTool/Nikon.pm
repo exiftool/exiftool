@@ -64,7 +64,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.14';
+$VERSION = '4.15';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -369,6 +369,7 @@ sub GetAFPointGrid($$;$);
     '48 54 3E 3E 0C 0C 4B 06' => 'Sigma 30mm F1.4 EX DC HSM',
     'F8 54 3E 3E 0C 0C 4B 06' => 'Sigma 30mm F1.4 EX DC HSM', #JD
     '91 54 44 44 0C 0C 4B 06' => 'Sigma 35mm F1.4 DG HSM', #30
+    'BD 54 48 48 0C 0C 4B 46' => 'Sigma 40mm F1.4 DG HSM | A', #30
     'DE 54 50 50 0C 0C 4B 06' => 'Sigma 50mm F1.4 EX DG HSM',
     '88 54 50 50 0C 0C 4B 06' => 'Sigma 50mm F1.4 DG HSM | A',
     '02 48 50 50 24 24 02 00' => 'Sigma Macro 50mm F2.8', #https://exiftool.org/forum/index.php/topic,4027.0.html
@@ -382,6 +383,7 @@ sub GetAFPointGrid($$;$);
     '32 54 6A 6A 24 24 35 02.2' => 'Sigma Macro 105mm F2.8 EX DG', #JD
     'E5 54 6A 6A 24 24 35 02' => 'Sigma Macro 105mm F2.8 EX DG',
     '97 48 6A 6A 24 24 4B 0E' => 'Sigma Macro 105mm F2.8 EX DG OS HSM',
+    'BE 54 6A 6A 0C 0C 4B 46' => 'Sigma 105mm F1.4 DG HSM | A', #30
     '48 48 76 76 24 24 4B 06' => 'Sigma APO Macro 150mm F2.8 EX DG HSM',
     'F5 48 76 76 24 24 4B 06' => 'Sigma APO Macro 150mm F2.8 EX DG HSM', #24
     '99 48 76 76 24 24 4B 0E' => 'Sigma APO Macro 150mm F2.8 EX DG OS HSM', #(Christian Hesse)
@@ -437,7 +439,7 @@ sub GetAFPointGrid($$;$);
     '90 40 2D 80 2C 40 4B 0E' => 'Sigma 18-200mm F3.5-6.3 II DC OS HSM', #JohnHelour
     '89 30 2D 80 2C 40 4B 0E' => 'Sigma 18-200mm F3.5-6.3 DC Macro OS HS | C', #JoeSchonberg
     'A5 40 2D 88 2C 40 4B 0E' => 'Sigma 18-250mm F3.5-6.3 DC OS HSM',
-  #  LensFStops varies with FocalLength for this lens (ref 2):
+    #  LensFStops varies with FocalLength for this lens (ref 2):
     '92 2C 2D 88 2C 40 4B 0E' => 'Sigma 18-250mm F3.5-6.3 DC Macro OS HSM', #2
     '87 2C 2D 8E 2C 40 4B 0E' => 'Sigma 18-300mm F3.5-6.3 DC Macro HSM', #30
   # '92 2C 2D 88 2C 40 4B 0E' (250mm)
@@ -5263,6 +5265,7 @@ my %nikonFocalConversions = (
             31 => 'Nikkor Z 24-120 f/4', #28
             32 => 'Nikkor Z 800mm f/6.3 VR S', #28
             36 => 'Nikkor Z 400mm f/4.5 VR S', #IB
+            39 => 'Nikkor Z 17-28mm f/2.8', #IB
         },
     },
     0x35 => { #28

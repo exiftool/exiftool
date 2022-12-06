@@ -641,7 +641,8 @@ numerical, and generated automatically otherwise.
                   expression, a code reference or a list reference.  In this
                   expression, $self, $val and $tag may be used as with
                   ValueConv, but if ValueConv was defined then $val is the
-                  ValueConv value instead of the Raw value.  The returned value
+                  ValueConv value instead of the Raw value.  Composite tags
+                  may also use the @val, @prt and @raw lists. The returned value
                   should always be defined.  Note that the print conversion is
                   only done if the PrintConv option is enabled (which it is by
                   default), and if the result of the ValueConv is not a scalar

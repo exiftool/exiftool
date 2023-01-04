@@ -2074,6 +2074,25 @@ my %sSubVersion = (
     },
 );
 
+# hdr metadata namespace used by ACR 15.1
+%Image::ExifTool::XMP::hdr = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-hdr', 2 => 'Image' },
+    NAMESPACE   => 'hdr_metadata',
+    TABLE_DESC => 'XMP HDR Metadata',
+    NOTES => q{
+        HDR metadata namespace tags written by ACR 15.1.  The actual namespace
+        prefix is "hdr_metadata", which is the prefix recorded in the file, but
+        ExifTool shortens this for the family 1 group name.
+    },
+    ccv_primaries_xy        => { Name => 'CCVPrimariesXY' }, # (comma-separated string of 6 reals)
+    ccv_white_xy            => { Name => 'CCVWhiteXY' }, # (comma-separated string of 2 reals)
+    ccv_min_luminance_nits  => { Name => 'CCVMinLuminanceNits', Writable => 'real' },
+    ccv_max_luminance_nits  => { Name => 'CCVMaxLuminanceNits', Writable => 'real' },
+    ccv_avg_luminance_nits  => { Name => 'CCVAvgLuminanceNits', Writable => 'real' },
+    scene_referred          => { Name => 'SceneReferred', Writable => 'boolean' },
+);
+
 # SVG namespace properties (ref 9)
 %Image::ExifTool::XMP::SVG = (
     GROUPS => { 0 => 'SVG', 1 => 'SVG', 2 => 'Image' },
@@ -2141,7 +2160,7 @@ This file contains definitions for less common XMP namespaces.
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

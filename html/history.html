@@ -17,6 +17,28 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.53'><b>Jan. 4, 2023 - Version 12.53</b></a>
+<ul>
+<li>Added support for a number of new XMP tags written by ACR 15.1
+<li>Added a new Nikon LensID
+<li>Decode timed GPS from Lamax S9 dual dashcam MOV videos
+<li>Decode a number of new Nikon tags (thanks Warren Hatch)
+<li>Decode a couple of new Canon tags (thanks John Moyer)
+<li>Decode FujiFilm BWMagentaGreen tag
+<li>Enable block-write of EXIF to JXL files
+<li>Accept values of "now" and "Z" when writing EXIF OffsetTime tags
+<li>Changed priority of XMP when reading/writing HEIC files so that it is no
+    longer preferred as with other QuickTime-based formats
+<li>Changed family 1 group name of Canon DR4 tags from CanonVRD to CanonDR4 to
+    allow newer tags to be differentiated from older ones.  The family 0 group
+    name for both remains CanonVRD
+<li>Patched to recognize JXL EXIF box with non-zero header length
+<li>Patched to avoid runtime error when writing a PDF with an Info dictionary
+    which was stored incorrectly as a direct object
+<li>Fixed problem writing EXIF to JXL images where a new EXIF box was created
+    even if one previously existed
+</ul>
+
 <a name='v12.52'><b>Dec. 6, 2022 - Version 12.52</b></a>
 <ul>
 <li>Added a few new Nikon LensID's (thanks LibRaw and Chris)

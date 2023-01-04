@@ -5284,6 +5284,69 @@ firmware 1.01b.</p>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
 <tr>
+<td class=r title='444 = 0x1bc'>444</td>
+<td>FlashControlMode</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = TTL
+  <br>1 = Auto External Flash
+  <br>2 = GN (distance priority)
+  <br>3 = Manual
+  <br>4 = Repeating Flash</span></td></tr>
+<tr class=b>
+<td class=r title='446 = 0x1be'>446</td>
+<td>FlashMasterCompensation?</td>
+<td class=c>int8s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='450 = 0x1c2'>450</td>
+<td>FlashGNDistance?</td>
+<td class=c>no</td>
+<td><table class=cols><tr>
+  <td>0 = 0
+  <br>1 = 0.1 m
+  <br>2 = 0.2 m
+  <br>3 = 0.3 m
+  <br>4 = 0.4 m
+  <br>5 = 0.5 m
+  <br>6 = 0.6 m
+  <br>7 = 0.7 m
+  <br>8 = 0.8 m
+  <br>9 = 0.9 m
+  <br>10 = 1.0 m
+  <br>11 = 1.1 m
+  <br>12 = 1.3 m</td><td>&nbsp;&nbsp;</td>
+  <td>13 = 1.4 m
+  <br>14 = 1.6 m
+  <br>15 = 1.8 m
+  <br>16 = 2.0 m
+  <br>17 = 2.2 m
+  <br>18 = 2.5 m
+  <br>19 = 2.8 m
+  <br>20 = 3.2 m
+  <br>21 = 3.6 m
+  <br>22 = 4.0 m
+  <br>23 = 4.5 m
+  <br>24 = 5.0 m
+  <br>25 = 5.6 m</td><td>&nbsp;&nbsp;</td>
+  <td>26 = 6.3 m
+  <br>27 = 7.1 m
+  <br>28 = 8.0 m
+  <br>29 = 9.0 m
+  <br>30 = 10.0 m
+  <br>31 = 11.0 m
+  <br>32 = 13.0 m
+  <br>33 = 14.0 m
+  <br>34 = 16.0 m
+  <br>35 = 18.0 m
+  <br>36 = 20.0 m
+  <br>255 = n/a</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='454 = 0x1c6'>454</td>
+<td>FlashOutput?</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='548 = 0x224'>548</td>
 <td>AFAreaMode</td>
 <td class=c>int8u</td>
@@ -6757,14 +6820,17 @@ D5200, D7000.</p>
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>FlashColorFilter</th><th>Value</th><th>FlashColorFilter</th><th>Value</th><th>FlashColorFilter</th></tr>
 <tr><td class=r>0</td><td>= None</td>
-<td class='r b'>9</td><td class=b>= TN-A1 or SZ-2TN Incandescent</td>
-<td class=r>66</td><td>= Blue</td>
-</tr><tr><td class=r>1</td><td>= FL-GL1 or SZ-2FL Fluorescent</td>
 <td class='r b'>10</td><td class=b>= TN-A2</td>
-<td class=r>67</td><td>= Yellow</td>
-</tr><tr><td class=r>2</td><td>= FL-GL2</td>
-<td class='r b'>65</td><td class=b>= Red</td>
 <td class=r>68</td><td>= Amber</td>
+</tr><tr><td class=r>1</td><td>= FL-GL1 or SZ-2FL Fluorescent</td>
+<td class='r b'>65</td><td class=b>= Red</td>
+<td class=r>128</td><td>= Incandescent</td>
+</tr><tr><td class=r>2</td><td>= FL-GL2</td>
+<td class='r b'>66</td><td class=b>= Blue</td>
+<td class=r>&nbsp;</td><td>&nbsp;</td>
+</tr><tr><td class=r>9</td><td>= TN-A1 or SZ-2TN Incandescent</td>
+<td class='r b'>67</td><td class=b>= Yellow</td>
+<td class=r>&nbsp;</td><td>&nbsp;</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='FlashInfo0106'>Nikon FlashInfo0106 Tags</a></h2>
@@ -7019,9 +7085,106 @@ D5200, D7000.</p>
 <td class=c>int8u[2]</td>
 <td>--&gt; <a href='Nikon.html#FlashFirmware'>Nikon FlashFirmware Values</a></td></tr>
 <tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>ExternalFlashFlags</td>
+<td class=c>int8u</td>
+<td><span class=s>Bit 0 = Flash Ready
+  <br>Bit 2 = Bounce Flash
+  <br>Bit 4 = Wide Flash Adapter
+  <br>Bit 7 = Zoom Override</span></td></tr>
+<tr>
+<td class=r title='9 = 0x9'>9.1</td>
+<td>FlashCommanderMode</td>
+<td class=c>int8u</td>
+<td><span class=s>[val &gt;&gt; 7 &amp; 0x1]
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9.2</td>
+<td>FlashControlMode</td>
+<td class=c>int8u</td>
+<td><span class=s>[val &amp; 0x7f]</span>
+  <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
+<tr>
 <td class=r title='10 = 0xa'>10</td>
 <td>FlashCompensation</td>
 <td class=c>int8s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='13 = 0xd'>13</td>
+<td>RepeatingFlashRate</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='14 = 0xe'>14</td>
+<td>RepeatingFlashCount</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='15 = 0xf'>15</td>
+<td>FlashGNDistance</td>
+<td class=c>int8u</td>
+<td>--&gt; <a href='Nikon.html#FlashGNDistance'>Nikon FlashGNDistance Values</a></td></tr>
+<tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>FlashColorFilter</td>
+<td class=c>int8u</td>
+<td>--&gt; <a href='Nikon.html#FlashColorFilter'>Nikon FlashColorFilter Values</a></td></tr>
+<tr class=b>
+<td class=r title='17 = 0x11'>17.1</td>
+<td>FlashGroupAControlMode</td>
+<td class=c>int8u</td>
+<td><span class=s>[val &amp; 0xf]</span>
+  <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
+  <br><span class='n s'>(note: group A tags may apply to the built-in flash settings for some models)</span></td></tr>
+<tr>
+<td class=r title='18 = 0x12'>18.1</td>
+<td>FlashGroupBControlMode</td>
+<td class=c>int8u</td>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]</span>
+  <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
+  <br><span class='n s'>(note: group B tags may apply to group A settings for some models)</span></td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18.2</td>
+<td>FlashGroupCControlMode</td>
+<td class=c>int8u</td>
+<td><span class=s>[val &amp; 0xf]</span>
+  <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
+  <br><span class='n s'>(note: group C tags may apply to group B settings for some models)</span></td></tr>
+<tr>
+<td class=r title='33 = 0x21'>33</td>
+<td>FlashOutput</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='37 = 0x25'>37</td>
+<td>FlashIlluminationPattern</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Standard
+  <br>1 = Center-weighted
+  <br>2 = Even</span></td></tr>
+<tr>
+<td class=r title='38 = 0x26'>38</td>
+<td>FlashFocalLength</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(only valid if flash pattern is &quot;Standard Illumination&quot;)</span></span></td></tr>
+<tr class=b>
+<td class=r title='40 = 0x28'>40</td>
+<td>FlashGroupAOutput
+  <br>FlashGroupACompensation</td>
+<td class=c>int8u<br>int8s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='41 = 0x29'>41</td>
+<td>FlashGroupBOutput
+  <br>FlashGroupBCompensation</td>
+<td class=c>int8u<br>int8s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='42 = 0x2a'>42</td>
+<td>FlashGroupCOutput
+  <br>FlashGroupCCompensation</td>
+<td class=c>int8u<br>int8s</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -9721,6 +9884,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 </tr><tr><td>'8C 48 29 3C 24 24 86 06'</td><td>= Tokina opera 16-28mm F2.8 FF</td>
 </tr><tr><td>'8D 44 5C 8E 34 3C 8F 0E'</td><td>= AF-S VR Zoom-Nikkor 70-300mm f/4.5-5.6G IF-ED</td>
 </tr><tr><td>'8D 48 6E 8E 24 24 4B 0E'</td><td>= Sigma 120-300mm F2.8 DG OS HSM Sports</td>
+</tr><tr><td>'8D 54 68 68 24 24 87 02'</td><td>= Tokina AT-X PRO 100mm F2.8 D Macro</td>
 </tr><tr><td>'8E 3C 2B 5C 24 30 4B 0E'</td><td>= Sigma 17-70mm F2.8-4 DC Macro OS HSM | C</td>
 </tr><tr><td>'8F 40 2D 72 2C 3C 91 06'</td><td>= AF-S DX Zoom-Nikkor 18-135mm f/3.5-5.6G IF-ED</td>
 </tr><tr><td>'8F 48 2B 50 24 24 4B 0E'</td><td>= Sigma 17-50mm F2.8 EX DC OS HSM</td>
@@ -9929,7 +10093,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 6, 2022</i>
+<br><i>Last revised Jan 4, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

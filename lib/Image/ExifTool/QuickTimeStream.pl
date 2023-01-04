@@ -102,7 +102,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 62 different formats of timed GPS metadata from video files.
+        currently reads 63 different formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
@@ -2243,6 +2243,7 @@ sub Process_3gf($$$)
 
 #------------------------------------------------------------------------------
 # Process DuDuBell M1 dashcam / VSYS M6L 'gps0' atom (ref PH)
+# (Lamax S9 dual dashcam also uses 'gps0' atom, but encrypted text format)
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
 sub Process_gps0($$$)
@@ -2250,14 +2251,28 @@ sub Process_gps0($$$)
     my ($et, $dirInfo, $tagTbl) = @_;
     my $dataPt = $$dirInfo{DataPt};
     my $dirLen = $$dirInfo{DirLen};
-    my $recLen = 32;    # 32-byte record length
+    my ($pos, $recLen);
     $et->VerboseDir('gps0', undef, $dirLen);
+    # check for encrypted format written by Lamax S9 dual dashcam
+    # (similar to Ambarella A12, but in multiple 311-byte records)
+    if ($$dataPt =~ /^.{2}\xf2\xe1\xf0\xeeTT\x98/s) {
+        $recLen = 311;
+        for ($pos=0; $pos+$recLen<=$dirLen; $pos+=$recLen) {
+            my $dat = substr($$dataPt, $pos, $recLen);
+            last unless $dat =~ /^.{2}\xf2\xe1\xf0\xeeTT\x98/s;
+            $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+            Process_text($et, \$dat, $tagTbl);
+            $pos += $recLen;
+        }
+        delete $$et{DOC_NUM};
+        return 1;
+    }
+    $recLen = 32;    # 32-byte record length
     SetByteOrder('II');
     if ($dirLen > $recLen and not $et->Options('ExtractEmbedded')) {
         $dirLen = $recLen;
         EEWarn($et);
     }
-    my $pos;
     for ($pos=0; $pos+$recLen<=$dirLen; $pos+=$recLen) {
         $$et{DOC_NUM} = ++$$et{DOC_COUNT};
         # lat/long are in DDDMM.MMMM format
@@ -3005,7 +3020,7 @@ information like GPS tracks from MOV, MP4 and INSV media data.
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

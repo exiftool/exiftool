@@ -54,6 +54,19 @@ my %mandatory = (
 );
 
 #------------------------------------------------------------------------------
+# Inverse print conversion for OffsetTime tags
+# Inputs: 0) input time zone or date/time value, 1) ExifTool ref
+# Returns: Time zone string for writing to EXIF
+sub InverseOffsetTime($$)
+{
+    my ($val, $et) = @_;
+    $val = $et->TimeNow() if lc($val) eq 'now';
+    return '+00:00' if $val =~ /Z$/;
+    return sprintf('%s%.2d:%.2d',$1,$2,$3) if $val =~ /([-+])(\d{1,2}):?(\d{2})/;
+    return undef;
+}
+
+#------------------------------------------------------------------------------
 # Inverse print conversion for LensInfo
 # Inputs: 0) lens info string
 # Returns: PrintConvInv of string
@@ -2640,7 +2653,7 @@ This file contains routines to write EXIF metadata.
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

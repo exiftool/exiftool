@@ -671,7 +671,7 @@ L<Image::ExifTool::BuildTagLookup|Image::ExifTool::BuildTagLookup>.
 
 ~head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
@@ -1507,7 +1507,7 @@ TagID:  foreach $tagID (@keys) {
                     }
                 }
                 foreach $tagID (sort keys %$hash) {
-                    warn sprintf("Warning: Missing %s for %s %s, tag %d (0x%.4x)\n",
+                    warn sprintf("Warning: Missing %s for %s %s, tag %s (0x%.4x)\n",
                                  $var, $short, $$hash{$tagID}, $tagID, $tagID);
                 }
             }
@@ -2773,7 +2773,7 @@ Returned list of writable pseudo tags.
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

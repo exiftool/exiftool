@@ -1261,8 +1261,10 @@ my %formatMinMax = (
      },
    # 0x0b41-name - seen 'SingeShot_DepthMap_1' (Yes, "Singe") (SM-N975X front camera)
     '0x0b41' => { Name => 'SingleShotDepthMap', Binary => 1 },
+   # 0x0ba1-name - seen 'Original_Path_Hash_Key', 'PhotoEditor_Re_Edit_Data'
    # 0xa050-name - seen 'Jpeg360_2D_Info' (Samsung Gear 360)
    # 0xa050 - seen 'Jpeg3602D' (Samsung Gear 360)
+   # 0x0c81-name - seen 'Watermark_Info'
 );
 
 # DualShot Extra Info (ref PH)
@@ -1720,7 +1722,7 @@ Samsung maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

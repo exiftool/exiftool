@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.84';
+$VERSION = '1.85';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -222,6 +222,7 @@ my %faceCategories = (
     },
     0x100a => { #2
         Name => 'WhiteBalanceFineTune',
+        Notes => 'newer cameras should divide these values by 20', #forum10800
         Writable => 'int32s',
         Count => 2,
         PrintConv => 'sprintf("Red %+d, Blue %+d", split(" ", $val))',
@@ -478,14 +479,20 @@ my %faceCategories = (
             64 => 'Strong',
         },
     },
-    0x1049 => { #12
+    0x1049 => { #12,forum14319
         Name => 'BWAdjustment',
         Notes => 'positive values are warm, negative values are cool',
         Format => 'int8s',
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val + 0',
     },
-    # 0x104b - BWAdjustment for Green->Magenta (forum10800)
+    0x104b => { #forum10800,forum14319
+        Name => 'BWMagentaGreen',
+        Notes => 'positive values are green, negative values are magenta',
+        Format => 'int8s',
+        PrintConv => '$val > 0 ? "+$val" : $val',
+        PrintConvInv => '$val + 0',
+    },
     0x104c => { #PR158
         Name => "GrainEffectSize",
         Writable => 'int16u', #PH
@@ -503,6 +510,15 @@ my %faceCategories = (
             1 => 'Full-frame on GFX', #IB
             2 => 'Sports Finder Mode', # (mechanical shutter)
             4 => 'Electronic Shutter 1.25x Crop', # (continuous high)
+        },
+    },
+    0x104e => { #forum10800 (X-Pro3)
+        Name => 'ColorChromeFXBlue',
+        Writable => 'int32s',
+        PrintConv => {
+            0 => 'Off',
+            32 => 'Weak', # (NC)
+            64 => 'Strong',
         },
     },
     0x1050 => { #forum6109
@@ -698,15 +714,6 @@ my %faceCategories = (
         Writable => 'int16u',
         PrintConv => '"$val%"',
         PrintConvInv => '$val=~s/\s*\%$//; $val',
-    },
-    0x104e => { #forum10800 (X-Pro3)
-        Name => 'ColorChromeFXBlue',
-        Writable => 'int32s',
-        PrintConv => {
-            0 => 'Off',
-            32 => 'Weak', # (NC)
-            64 => 'Strong',
-        },
     },
     0x1422 => { #8
         Name => 'ImageStabilization',
@@ -1717,7 +1724,7 @@ FujiFilm maker notes in EXIF information, and to read/write FujiFilm RAW
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

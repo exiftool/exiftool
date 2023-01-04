@@ -7,6 +7,27 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 4, 2023 - Version 12.53
+
+  - Added support for a number of new XMP tags written by ACR 15.1
+  - Added a new Nikon LensID
+  - Decode timed GPS from Lamax S9 dual dashcam MOV videos
+  - Decode a number of new Nikon tags (thanks Warren Hatch)
+  - Decode a couple of new Canon tags (thanks John Moyer)
+  - Decode FujiFilm BWMagentaGreen tag
+  - Enable block-write of EXIF to JXL files
+  - Accept values of "now" and "Z" when writing EXIF OffsetTime tags
+  - Changed priority of XMP when reading/writing HEIC files so that it is no
+    longer preferred as with other QuickTime-based formats
+  - Changed family 1 group name of Canon DR4 tags from CanonVRD to CanonDR4 to
+    allow newer tags to be differentiated from older ones.  The family 0 group
+    name for both remains CanonVRD
+  - Patched to recognize JXL EXIF box with non-zero header length
+  - Patched to avoid runtime error when writing a PDF with an Info dictionary
+    which was stored incorrectly as a direct object
+  - Fixed problem writing EXIF to JXL images where a new EXIF box was created
+    even if one previously existed
+
 Dec. 6, 2022 - Version 12.52
 
   - Added a few new Nikon LensID's (thanks LibRaw and Chris)
@@ -258,7 +279,7 @@ Apr. 7, 2022 - Version 12.41
   - Enhanced -v0 option to also print new file name when renaming, moving or
     copying a file
   - Updated xmp2exif.args and exif2xmp.args helper files to reflect the IPTC
-    Photometadata Mapping Guidelines version 2202.1
+    Photometadata Mapping Guidelines version 2022.1
   - Made "Invalid Xxx data" a minor warning for MakerNote data
   - Patched to allow writing of MP4 videos which have other tracks with a
     missing sample description entry

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26197 tags, with 16717 unique tag names.
+They contain a total of 26243 tags, with 16734 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1283,6 +1283,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   GImage                                        XMP GImage
   GPano                                         XMP GPano
   GSpherical                                    XMP GSpherical
+  hdr                                           XMP hdr
   ics                                           XMP ics
   iptcCore                                      XMP iptcCore
   iptcExt                                       XMP iptcExt
@@ -1869,6 +1870,7 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   Group                                         lang-alt/
   HasCrop                                       boolean/
   HasSettings                                   boolean/
+  HDREditMode                                   integer/
   Highlight2012                                 integer/
   HighlightRecovery                             integer/
   Highlights2012                                integer/
@@ -2375,6 +2377,12 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   SaturationAdjustmentPurple                    integer/
   SaturationAdjustmentRed                       integer/
   SaturationAdjustmentYellow                    integer/
+  SDRBlend                                      real/
+  SDRBrightness                                 real/
+  SDRContrast                                   real/
+  SDRHighlights                                 real/
+  SDRShadows                                    real/
+  SDRWhites                                     real/
   Shadows                                       integer/
   Shadows2012                                   integer/
   ShadowTint                                    integer/
@@ -3054,6 +3062,7 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   Group                                         lang-alt/
   HasCrop                                       boolean
   HasSettings                                   boolean
+  HDREditMode                                   integer
   Highlight2012                                 integer
   HighlightRecovery                             integer
   Highlights2012                                integer
@@ -3560,6 +3569,12 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   SaturationAdjustmentPurple                    integer
   SaturationAdjustmentRed                       integer
   SaturationAdjustmentYellow                    integer
+  SDRBlend                                      real
+  SDRBrightness                                 real
+  SDRContrast                                   real
+  SDRHighlights                                 real
+  SDRShadows                                    real
+  SDRWhites                                     real
   Shadows                                       integer
   Shadows2012                                   integer
   ShadowTint                                    integer
@@ -4432,6 +4447,23 @@ These tags belong to the ExifTool XMP-GSpherical family 1 group.
   Stitched                                      boolean/
   StitchingSoftware                             string/
   TimeStamp                                     integer/
+
+=head3 XMP hdr Tags
+
+HDR metadata namespace tags written by ACR 15.1.  The actual namespace
+prefix is "hdr_metadata", which is the prefix recorded in the file, but
+ExifTool shortens this for the family 1 group name.
+
+These tags belong to the ExifTool XMP-hdr family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  CCVAvgLuminanceNits                           real
+  CCVMaxLuminanceNits                           real
+  CCVMinLuminanceNits                           real
+  CCVPrimariesXY                                string
+  CCVWhiteXY                                    string
+  SceneReferred                                 boolean
 
 =head3 XMP ics Tags
 
@@ -9551,6 +9583,7 @@ Vignetting correction from PowerShot models.
       5    PeripheralLightingSetting            int32s
       6    ChromaticAberrationSetting           int32s
       7    DistortionCorrectionSetting          int32s
+      9    DigitalLensOptimizerSetting          int32s
 
 =head3 Canon LightingOpt Tags
 
@@ -9563,6 +9596,7 @@ This information is new in images from the EOS 7D.
       3    HighlightTonePriority                int32s
       4    LongExposureNoiseReduction           int32s
       5    HighISONoiseReduction                int32s
+     10    DigitalLensOptimizer                 int32s
 
 =head3 Canon LensInfo Tags
 
@@ -11264,6 +11298,7 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1047   GrainEffectRoughness                 int32s
   0x1048   ColorChromeEffect                    int32s
   0x1049   BWAdjustment                         int8s
+  0x104b   BWMagentaGreen                       int8s
   0x104c   GrainEffectSize                      int16u
   0x104d   CropMode                             int16u
   0x104e   ColorChromeFXBlue                    int32s
@@ -14539,6 +14574,10 @@ These tags are used by the Z9 firmware 3.00.
   436    MovieVignetteControl?                  int8u
   438    DiffractionCompensation                int8u
   440    FlickerReductionShooting               int8u
+  444    FlashControlMode                       int8u
+  446    FlashMasterCompensation?               int8s
+  450    FlashGNDistance?                       no
+  454    FlashOutput?                           int8u
   548    AFAreaMode                             int8u
   550    VRMode                                 int8u
   554    BracketSet                             int8u
@@ -14915,7 +14954,26 @@ These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
       0    FlashInfoVersion                     no
       4    FlashSource                          int8u
       6    ExternalFlashFirmware                int8u[2]
+      8    ExternalFlashFlags                   int8u
+    9.1    FlashCommanderMode                   int8u & 0x80
+    9.2    FlashControlMode                     int8u & 0x7f
      10    FlashCompensation                    int8s
+     13    RepeatingFlashRate                   int8u
+     14    RepeatingFlashCount                  int8u
+     15    FlashGNDistance                      int8u
+     16    FlashColorFilter                     int8u
+   17.1    FlashGroupAControlMode               int8u & 0x0f
+   18.1    FlashGroupBControlMode               int8u & 0xf0
+   18.2    FlashGroupCControlMode               int8u & 0x0f
+     33    FlashOutput                          int8u
+     37    FlashIlluminationPattern             int8u
+     38    FlashFocalLength                     int8u
+     40    FlashGroupAOutput                    int8u
+           FlashGroupACompensation              int8s
+     41    FlashGroupBOutput                    int8u
+           FlashGroupBCompensation              int8s
+     42    FlashGroupCOutput                    int8u
+           FlashGroupCCompensation              int8s
 
 =head3 Nikon FlashInfoUnknown Tags
 
@@ -27513,7 +27571,7 @@ for the official specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 62 different formats of timed GPS metadata from video files.
+currently reads 63 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -38524,7 +38582,7 @@ L<Image::ExifTool::BuildTagLookup|Image::ExifTool::BuildTagLookup>.
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

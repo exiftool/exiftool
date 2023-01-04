@@ -8,7 +8,7 @@
 # Revisions:    Nov. 12/2003 - P. Harvey Created
 #               (See html/history.html for revision history)
 #
-# Legal:        Copyright (c) 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+# Legal:        Copyright (c) 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.52';
+$VERSION = '12.53';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -116,6 +116,7 @@ sub SetPreferredByteOrder($;$);
 sub CopyBlock($$$);
 sub CopyFileAttrs($$$);
 sub TimeNow(;$$);
+sub InverseDateTime($$;$$);
 sub NewGUID();
 sub MakeTiffHeader($$$$;$$);
 

@@ -444,7 +444,7 @@ my %j2cMarker = (
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
             WriteProc => \&Image::ExifTool::WriteTIFF,
             DirName => 'EXIF',
-            Start => '$valuePtr + 4',
+            Start => '$valuePtr + 4 + (length($$dataPt)-$valuePtr > 4 ? unpack("N", $$dataPt) : 0)',
         },
     },
 );
@@ -1096,11 +1096,16 @@ sub ProcessJpeg2000Box($$$)
         if ($$tagInfo{SubDirectory}) {
             my $subdir = $$tagInfo{SubDirectory};
             my $subdirStart = $valuePtr;
+            my $subdirLen = $boxLen;
             if (defined $$subdir{Start}) {
-                #### eval Start ($valuePtr)
+                #### eval Start ($valuePtr, $dataPt)
                 $subdirStart = eval($$subdir{Start});
+                $subdirLen -= $subdirStart - $valuePtr;
+                if ($subdirLen < 0) {
+                    $subdirStart = $valuePtr;
+                    $subdirLen = 0;
+                }
             }
-            my $subdirLen = $boxLen - ($subdirStart - $valuePtr);
             my %subdirInfo = (
                 Parent => 'JP2',
                 DataPt => $dataPt,
@@ -1118,7 +1123,8 @@ sub ProcessJpeg2000Box($$$)
             my $subTable = GetTagTable($$subdir{TagTable}) || $tagTablePtr;
             if ($outfile) {
                 # remove this directory from our create list
-                delete $$et{AddJp2Dirs}{$$tagInfo{Name}};
+                delete $$et{AddJp2Dirs}{$$tagInfo{Name}};   # (eg. 'EXIF')
+                delete $$et{AddJp2Dirs}{$boxID};            # (eg. 'Exif')
                 my $newdir;
                 # only edit writable UUID, Exif and jp2h boxes
                 if ($uuid or $boxID eq 'Exif' or ($boxID eq 'xml ' and $$et{IsJXL}) or
@@ -1376,7 +1382,7 @@ files.
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.53
 [File, System, Other] FileName - File Name: CanonRaw_9_failed.cr3
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 53 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:32-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:32-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:32-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:12:21 10:47:57-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2022:12:21 10:47:57-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:12:21 10:47:57-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: CR3
 [File, File, Other] FileTypeExtension - File Type Extension: cr3
@@ -311,11 +311,13 @@
 [MakerNotes, Canon, Camera] 5 - Peripheral Lighting Setting: On
 [MakerNotes, Canon, Camera] 6 - Chromatic Aberration Setting: On
 [MakerNotes, Canon, Camera] 7 - Distortion Correction Setting: Off
+[MakerNotes, Canon, Camera] 9 - Digital Lens Optimizer Setting: Off
 [MakerNotes, Canon, Camera] 1 - Peripheral Illumination Corr: Off
 [MakerNotes, Canon, Camera] 2 - Auto Lighting Optimizer: Standard
 [MakerNotes, Canon, Camera] 3 - Highlight Tone Priority: Off
 [MakerNotes, Canon, Camera] 4 - Long Exposure Noise Reduction: Off
 [MakerNotes, Canon, Camera] 5 - High ISO Noise Reduction: Standard
+[MakerNotes, Canon, Camera] 10 - Digital Lens Optimizer: Off
 [MakerNotes, Canon, Camera] 1 - Ambience Selection: Standard
 [MakerNotes, Canon, Camera] 257 - Grainy B/W Filter: Off
 [MakerNotes, Canon, Camera] 513 - Soft Focus Filter: Off
@@ -439,6 +441,7 @@
 [MakerNotes, Track4, Camera] 5 - Peripheral Lighting Setting: On
 [MakerNotes, Track4, Camera] 6 - Chromatic Aberration Setting: On
 [MakerNotes, Track4, Camera] 7 - Distortion Correction Setting: Off
+[MakerNotes, Track4, Camera] 9 - Digital Lens Optimizer Setting: Off
 [MakerNotes, Track4, Camera] 0 - Color Data Version: 16 (M50)
 [MakerNotes, Track4, Camera] 71 - WB RGGB Levels As Shot: 1104 1024 1024 1789
 [MakerNotes, Track4, Camera] 75 - Color Temp As Shot: 3284
@@ -596,7 +599,7 @@
 [EXIF, ExifIFD, Image] 42037 - Lens Serial Number: 0000000000
 [EXIF, GPS, Location] 0 - GPS Version ID: 2.3.0.0
 [EXIF, ExifIFD, Camera] 41990 - Scene Capture Type: Standard
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.42
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.53
 [XMP, XMP-dc, Image] subject - Subject: CR3 test
 [XMP, XMP-exif, Image] ExposureBiasValue - Exposure Compensation: -1.3
 [XMP, XMP-xmp, Image] Rating - Rating: 0

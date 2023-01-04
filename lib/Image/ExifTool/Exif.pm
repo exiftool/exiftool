@@ -70,6 +70,7 @@ sub PrintParameter($$$);
 sub GetOffList($$$$$);
 sub PrintOpcode($$$);
 sub PrintLensInfo($);
+sub InverseOffsetTime($$);
 sub ConvertLensInfo($);
 
 # size limit for loading binary data block into memory
@@ -2082,11 +2083,7 @@ my %opcodeInfo = (
         Notes => 'time zone for ModifyDate',
         Writable => 'string',
         Shift => 'Time',
-        PrintConvInv => q{
-            return "+00:00" if $val =~ /\d{2}Z$/;
-            return sprintf("%s%.2d:%.2d",$1,$2,$3) if $val =~ /([-+])(\d{1,2}):(\d{2})/;
-            return undef;
-        },
+        PrintConvInv => \&InverseOffsetTime,
     },
     0x9011 => {
         Name => 'OffsetTimeOriginal',
@@ -2094,11 +2091,7 @@ my %opcodeInfo = (
         Notes => 'time zone for DateTimeOriginal',
         Writable => 'string',
         Shift => 'Time',
-        PrintConvInv => q{
-            return "+00:00" if $val =~ /\d{2}Z$/;
-            return sprintf("%s%.2d:%.2d",$1,$2,$3) if $val =~ /([-+])(\d{1,2}):(\d{2})/;
-            return undef;
-        },
+        PrintConvInv => \&InverseOffsetTime,
     },
     0x9012 => {
         Name => 'OffsetTimeDigitized',
@@ -2106,11 +2099,7 @@ my %opcodeInfo = (
         Notes => 'time zone for CreateDate',
         Writable => 'string',
         Shift => 'Time',
-        PrintConvInv => q{
-            return "+00:00" if $val =~ /\d{2}Z$/;
-            return sprintf("%s%.2d:%.2d",$1,$2,$3) if $val =~ /([-+])(\d{1,2}):(\d{2})/;
-            return undef;
-        },
+        PrintConvInv => \&InverseOffsetTime,
     },
     0x9101 => {
         Name => 'ComponentsConfiguration',
@@ -6789,7 +6778,7 @@ EXIF and TIFF meta information.
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -5,7 +5,7 @@
 #
 # URL:          https://exiftool.org/
 #
-# Legal:        Copyright (c) 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+# Legal:        Copyright (c) 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -2323,43 +2323,44 @@ Torrent, Trailer, UserParam, VCard, Vorbis, WTV, XML, XMP, ZIP
 =item Family 1 (Specific Location):
 
 AC3, AFCP, AIFF, APE, ASF, AVI1, Adobe, AdobeCM, AdobeDNG, Apple, Audible,
-CBOR, CIFF, CameraIFD, Canon, CanonCustom, CanonRaw, CanonVRD, Casio,
-Chapter#, Composite, DICOM, DJI, DNG, DV, DjVu, DjVu-Meta, Ducky, EPPIM,
-EXE, EXIF, ExifIFD, ExifTool, FITS, FLAC, FLIR, File, Flash, FlashPix, Font,
-FotoStation, FujiFilm, FujiIFD, GE, GIF, GIMP, GPS, GeoTiff, GlobParamIFD,
-GoPro, GraphConv, H264, HP, HTC, HTML, HTML-dc, HTML-ncc, HTML-office,
-HTML-prod, HTML-vw96, HTTP-equiv, ICC-chrm, ICC-clrt, ICC-header, ICC-meas,
-ICC-meta, ICC-view, ICC_Profile, ICC_Profile#, ID3, ID3v1, ID3v1_Enh,
-ID3v2_2, ID3v2_3, ID3v2_4, IFD0, IFD1, IPTC, IPTC#, ISO, ITC, Insta360,
-InteropIFD, ItemList, JFIF, JFXX, JPEG, JPEG-HDR, JPS, JSON, JUMBF, JVC,
-Jpeg2000, KDC_IFD, Keys, Kodak, KodakBordersIFD, KodakEffectsIFD, KodakIFD,
-KyoceraRaw, LNK, Leaf, LeafSubIFD, Leica, Lyrics3, Lytro, M2TS, MAC,
-MIE-Audio, MIE-Camera, MIE-Canon, MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS,
-MIE-Geo, MIE-Image, MIE-Lens, MIE-Main, MIE-MakerNotes, MIE-Meta,
-MIE-Orient, MIE-Preview, MIE-Thumbnail, MIE-UTM, MIE-Unknown, MIE-Video,
-MIFF, MISB, MNG, MOBI, MOI, MPC, MPEG, MPF0, MPImage, MS-DOC, MXF, MacOS,
-MakerNotes, MakerUnknown, Matroska, MediaJukebox, Meta, MetaIFD, Microsoft,
-Minolta, MinoltaRaw, Motorola, NITF, Nikon, NikonCapture, NikonCustom,
-NikonScan, NikonSettings, NineEdits, Nintendo, Ocad, Ogg, Olympus, OpenEXR,
-Opus, PDF, PICT, PNG, PNG-pHYs, PSP, Palm, Panasonic, PanasonicRaw, Pentax,
-PhaseOne, PhotoCD, PhotoMechanic, Photoshop, PictureInfo, PostScript,
-PreviewIFD, PrintIM, ProfileIFD, Qualcomm, QuickTime, RAF, RAF2, RIFF,
-RMETA, RSRC, RTF, Radiance, Rawzor, Real, Real-CONT, Real-MDPR, Real-PROP,
-Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx, Red, Ricoh, SPIFF, SR2,
-SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado, Sigma, SigmaRaw,
-Sony, SonyIDC, Stim, SubIFD, System, Theora, Torrent, Track#, UserData,
-UserParam, VCalendar, VCard, Version0, Vorbis, WTV, XML, XMP, XMP-DICOM,
-XMP-Device, XMP-GAudio, XMP-GDepth, XMP-GFocus, XMP-GImage, XMP-GPano,
+CBOR, CIFF, CameraIFD, Canon, CanonCustom, CanonDR4, CanonRaw, CanonVRD,
+Casio, Chapter#, Composite, DICOM, DJI, DNG, DV, DjVu, DjVu-Meta, Ducky,
+EPPIM, EXE, EXIF, ExifIFD, ExifTool, FITS, FLAC, FLIR, File, Flash,
+FlashPix, Font, FotoStation, FujiFilm, FujiIFD, GE, GIF, GIMP, GPS,
+GSpherical, GeoTiff, GlobParamIFD, GoPro, GraphConv, H264, HP, HTC, HTML,
+HTML-dc, HTML-ncc, HTML-office, HTML-prod, HTML-vw96, HTTP-equiv, ICC-chrm,
+ICC-clrt, ICC-header, ICC-meas, ICC-meta, ICC-view, ICC_Profile,
+ICC_Profile#, ID3, ID3v1, ID3v1_Enh, ID3v2_2, ID3v2_3, ID3v2_4, IFD0, IFD1,
+IPTC, IPTC#, ISO, ITC, Insta360, InteropIFD, ItemList, JFIF, JFXX, JPEG,
+JPEG-HDR, JPS, JSON, JUMBF, JVC, Jpeg2000, KDC_IFD, Keys, Kodak,
+KodakBordersIFD, KodakEffectsIFD, KodakIFD, KyoceraRaw, LNK, Leaf,
+LeafSubIFD, Leica, Lyrics3, Lytro, M2TS, MAC, MIE-Audio, MIE-Camera,
+MIE-Canon, MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS, MIE-Geo, MIE-Image,
+MIE-Lens, MIE-Main, MIE-MakerNotes, MIE-Meta, MIE-Orient, MIE-Preview,
+MIE-Thumbnail, MIE-UTM, MIE-Unknown, MIE-Video, MIFF, MISB, MNG, MOBI, MOI,
+MPC, MPEG, MPF0, MPImage, MS-DOC, MXF, MacOS, MakerNotes, MakerUnknown,
+Matroska, MediaJukebox, Meta, MetaIFD, Microsoft, Minolta, MinoltaRaw,
+Motorola, NITF, Nikon, NikonCapture, NikonCustom, NikonScan, NikonSettings,
+NineEdits, Nintendo, Ocad, Ogg, Olympus, OpenEXR, Opus, PDF, PICT, PNG,
+PNG-pHYs, PSP, Palm, Panasonic, PanasonicRaw, Parrot, Pentax, PhaseOne,
+PhotoCD, PhotoMechanic, Photoshop, PictureInfo, PostScript, PreviewIFD,
+PrintIM, ProfileIFD, Qualcomm, QuickTime, RAF, RAF2, RIFF, RMETA, RSRC, RTF,
+Radiance, Rawzor, Real, Real-CONT, Real-MDPR, Real-PROP, Real-RA3, Real-RA4,
+Real-RA5, Real-RJMD, Reconyx, Red, Ricoh, SPIFF, SR2, SR2DataIFD, SR2SubIFD,
+SRF#, SVG, Samsung, Sanyo, Scalado, Sigma, SigmaRaw, Sony, SonyIDC, Stim,
+SubIFD, System, Theora, Torrent, Track#, UserData, VCalendar, VCard,
+Version0, Vorbis, WTV, XML, XMP, XMP-DICOM, XMP-Device, XMP-GAudio,
+XMP-GCamera, XMP-GCreations, XMP-GDepth, XMP-GFocus, XMP-GImage, XMP-GPano,
 XMP-GSpherical, XMP-LImage, XMP-MP, XMP-MP1, XMP-PixelLive, XMP-aas,
-XMP-acdsee, XMP-album, XMP-apple-fi, XMP-aux, XMP-cc, XMP-cell,
-XMP-creatorAtom, XMP-crs, XMP-dc, XMP-dex, XMP-digiKam, XMP-drone-dji,
-XMP-dwc, XMP-exif, XMP-exifEX, XMP-expressionmedia, XMP-extensis, XMP-fpv,
-XMP-getty, XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro,
-XMP-microsoft, XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-pdf, XMP-pdfx,
-XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism, XMP-prl,
-XMP-prm, XMP-pur, XMP-rdf, XMP-swf, XMP-tiff, XMP-x, XMP-xmp, XMP-xmpBJ,
-XMP-xmpDM, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg,
-ZIP, iTunes
+XMP-acdsee, XMP-album, XMP-apple-fi, XMP-ast, XMP-aux, XMP-cc, XMP-cell,
+XMP-crd, XMP-creatorAtom, XMP-crs, XMP-dc, XMP-dex, XMP-digiKam,
+XMP-drone-dji, XMP-dwc, XMP-exif, XMP-exifEX, XMP-expressionmedia,
+XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr, XMP-ics, XMP-iptcCore,
+XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft, XMP-mwg-coll, XMP-mwg-kw,
+XMP-mwg-rs, XMP-nine, XMP-pdf, XMP-pdfx, XMP-photomech, XMP-photoshop,
+XMP-plus, XMP-pmi, XMP-prism, XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc,
+XMP-swf, XMP-tiff, XMP-x, XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpMM,
+XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
 
 =item Family 2 (Category):
 
@@ -2758,7 +2759,7 @@ specified by the L</Charset> option.
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey
+Copyright 2003-2023, Phil Harvey
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.55';
+$VERSION = '3.56';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -87,6 +87,7 @@ my %stdPath = (
     'MicrosoftPhoto' => 'microsoft',
     'prismusagerights' => 'pur',
     'GettyImagesGIFT' => 'getty',
+    'hdr_metadata' => 'hdr',
 );
 
 # translate ExifTool XMP family 1 group names back to standard XMP namespace prefixes
@@ -197,6 +198,7 @@ my %xmpNS = (
     sdc       => 'http://ns.nikon.com/sdc/1.0/',
     ast       => 'http://ns.nikon.com/asteroid/1.0/',
     nine      => 'http://ns.nikon.com/nine/1.0/',
+    hdr_metadata => 'http://ns.adobe.com/hdr-metadata/1.0/',
 );
 
 # build reverse namespace lookup
@@ -894,6 +896,10 @@ my %sRangeMask = (
     nine => {
         Name => 'nine',
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::nine' },
+    },
+    hdr => {
+        Name => 'hdr',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::hdr' },
     },
 );
 
@@ -1728,6 +1734,14 @@ my %sPantryItem = (
         List => 'Seq',
     },
     RangeMaskMapInfo => { Name => 'RangeMask', Struct => \%sRangeMask, FlatName => 'RangeMask' },
+    # new for ACR 15.1 (not sure if these are integer or real, so just guess)
+    HDREditMode    => { Writable => 'integer' },
+    SDRBrightness  => { Writable => 'real' },
+    SDRContrast    => { Writable => 'real' },
+    SDRHighlights  => { Writable => 'real' },
+    SDRShadows     => { Writable => 'real' },
+    SDRWhites      => { Writable => 'real' },
+    SDRBlend       => { Writable => 'real' },
 );
 
 # Tiff namespace properties (tiff)
@@ -2279,7 +2293,13 @@ my %sPantryItem = (
         PrintConvInv => '$val=~s/\s*m$//; $val',
     },
     NativeDigest => { }, #PH
-    # new Exif
+    # the following written incorrectly by ACR 15.1
+    # SubSecTime (should not be written according to Exif4XMP 2.32 specification)
+    # SubSecTimeOriginal (should not be written according to Exif4XMP 2.32 specification)
+    # SubSecTimeDigitized (should not be written according to Exif4XMP 2.32 specification)
+    # SerialNumber (should be BodySerialNumber)
+    # Lens (should be XMP-aux)
+    # LensInfo (should be XMP-aux)
 );
 
 # Exif extended properties (exifEX, ref 12)
@@ -4392,7 +4412,7 @@ information.
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

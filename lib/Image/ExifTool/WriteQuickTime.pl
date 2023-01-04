@@ -1899,7 +1899,12 @@ sub WriteMOV($$)
         $ftype = 'MOV';
     }
     $et->SetFileType($ftype); # need to set "FileType" tag for a Condition
-    $et->InitWriteDirs($dirMap{$ftype}, 'XMP', 'QuickTime');
+    if ($ftype eq 'HEIC') {
+        # EXIF is preferred in HEIC files
+        $et->InitWriteDirs($dirMap{$ftype}, 'EXIF', 'QuickTime');
+    } else {
+        $et->InitWriteDirs($dirMap{$ftype}, 'XMP', 'QuickTime');
+    }
     $$et{DirMap} = $dirMap{$ftype};     # need access to directory map when writing
     # track tags globally to avoid creating multiple tags in the case of duplicate directories
     $$et{DidTag} = { };
@@ -1932,7 +1937,7 @@ QuickTime-based file formats like MOV and MP4.
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

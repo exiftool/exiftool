@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::sk;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 %Image::ExifTool::Lang::sk::Translate = (
    'A100DataOffset' => 'Korekcia údajov A100',
@@ -21,7 +21,6 @@ $VERSION = '1.00';
    'ActionAdvised' => {
       Description => 'Odporúčané opatrenia',
       PrintConv => {
-        '' => 'MISSING',
         'Object Append' => 'Pripojenie objektu',
         'Object Kill' => 'Zničenie objektu',
         'Object Reference' => 'Odkaz na objekt',
@@ -136,7 +135,6 @@ $VERSION = '1.00';
         '[Green,Blue][Red,Green]' => '[Zelená,Modrá][Červená,Zelená]',
         '[Green,Red][Blue,Green]' => '[Zelená,Červená][Modrá,Zelená]',
         '[Red,Green][Green,Blue]' => '[Červená,Zelená][Zelená,Modrá]',
-        'n/a' => 'MISSING',
       },
     },
    'CFAPattern2' => 'Matica farebných filtrov 2',
@@ -220,7 +218,6 @@ $VERSION = '1.00';
         'Standard Light B' => 'Štandardné svetlo B',
         'Standard Light C' => 'Štandardné svetlo C',
         'Tungsten (Incandescent)' => 'Volfrámová (žiarovka)',
-        'Unknown' => 'MISSING',
         'Warm White Fluorescent' => 'Teplá biela žiarivka',
         'White Fluorescent' => 'Biela žiarivka',
       },
@@ -541,40 +538,17 @@ $VERSION = '1.00';
    'FaxRecvParams' => 'Parametre prijímania faxov',
    'FaxRecvTime' => 'Čas potrebný na prijatie faxu',
    'FaxSubAddress' => 'Podadresa faxu',
-   'FedexEDR' => 'Fedex EDR',
    'FileFormat' => {
       Description => 'Formát súboru',
       PrintConv => {
-        'AppleSingle (Apple Computer Inc)' => 'MISSING',
-        'Audio Interchange File Format AIFF (Apple Computer Inc)' => 'MISSING',
-        'Audio plus Moving Video [.AVI] (Microsoft)' => 'MISSING',
-        'Bit Mapped Graphics File [.BMP] (Microsoft)' => 'MISSING',
         'Compressed Binary File [.ZIP] (PKWare Inc)' => 'Komprimovaný binárny súbor [.ZIP] (PKWare Inc)',
-        'Corel Draw [.CDR]' => 'MISSING',
-        'Digital Audio File [.WAV] (Microsoft & Creative Labs)' => 'MISSING',
-        'Freehand (Macromedia/Aldus)' => 'MISSING',
-        'Hypertext Markup Language [.HTML] (The Internet Society)' => 'MISSING',
         'IPTC Unstructured Character Oriented File Format (UCOFF)' => 'Formát neštruktúrovaných znakovo orientovaných súborov IPTC (UCOFF)',
         'IPTC-NAA Digital Newsphoto Parameter Record' => 'Záznam parametrov digitálnych novín IPTC-NAA',
         'IPTC7901 Recommended Message Format' => 'Odporúčaný formát správy IPTC7901',
-        'Illustrator (Adobe Graphics data)' => 'MISSING',
-        'JPEG File Interchange (JFIF)' => 'MISSING',
-        'MPEG 2 Audio Layer 2 (Musicom), ISO/IEC' => 'MISSING',
-        'MPEG 2 Audio Layer 3, ISO/IEC' => 'MISSING',
-        'MacBinary II' => 'MISSING',
-        'NAA 89-3 (ANPA 1312)' => 'MISSING',
         'News Industry Text Format (NITF)' => 'Textový formát pre spravodajstvo (NITF)',
         'No ObjectData' => 'Žiadne údaje o objekte',
-        'PC DOS/Windows Executable Files [.COM][.EXE]' => 'MISSING',
-        'Photo-CD Image-Pac (Eastman Kodak)' => 'MISSING',
-        'Portable Document File [.PDF] Adobe' => 'MISSING',
-        'RIFF Wave (Microsoft Corporation)' => 'MISSING',
         'Ritzaus Bureau NITF version (RBNITF DTD)' => 'Verzia Ritzaus Bureau NITF (RBNITF DTD)',
         'Tagged Image File Format (Adobe/Aldus Image data)' => 'Označený formát obrazového súboru (obrazové údaje Adobe/Aldus)',
-        'Tape Archive [.TAR]' => 'MISSING',
-        'Tidningarnas Telegrambyra NITF version (TTNITF DTD)' => 'MISSING',
-        'United Press International ANPA 1312 variant' => 'MISSING',
-        'United Press International Down-Load Message' => 'MISSING',
       },
     },
    'FileSource' => {
@@ -796,7 +770,6 @@ $VERSION = '1.00';
    'Humidity' => 'Vlhkosť',
    'ICC_Profile' => 'Profil ICC',
    'INGRReserved' => 'INGR Rezervované',
-   'IPTC' => 'MISSING',
    'IPTCBitsPerSample' => 'IPTC - Bitov na vzorku',
    'IPTCImageHeight' => 'IPTC - Výška obrázku',
    'IPTCImageRotation' => {
@@ -823,7 +796,6 @@ $VERSION = '1.00';
    'Image::ExifTool::Composite' => 'Zloženie',
    'Image::ExifTool::DNG::OriginalRaw' => 'Originálny Raw DNG',
    'Image::ExifTool::Exif::Main' => 'Exif',
-   'Image::ExifTool::Extra' => 'MISSING',
    'Image::ExifTool::GPS::Main' => 'GPS',
    'Image::ExifTool::IPTC::ApplicationRecord' => 'Záznam aplikácie IPTC',
    'Image::ExifTool::IPTC::EnvelopeRecord' => 'IPTC Záznam obálky',
@@ -831,7 +803,6 @@ $VERSION = '1.00';
    'Image::ExifTool::IPTC::ObjectData' => 'IPTC - Údaje o objekte',
    'Image::ExifTool::IPTC::PostObjectData' => 'IPTC - Predbežné údaje o objekte',
    'Image::ExifTool::IPTC::PreObjectData' => 'IPTC - Údaje pred objektom',
-   'Image::ExifTool::PanasonicRaw::Main' => 'MISSING',
    'ImageByteCount' => 'Veľkosť obrázku (v bajtoch)',
    'ImageColorIndicator' => {
       Description => 'Indikátor farby obrázku',
@@ -893,19 +864,7 @@ $VERSION = '1.00';
         'Not CMYK' => 'Nie CMYK',
       },
     },
-   'InterchangeColorSpace' => {
-      Description => 'Zmena farebného priestoru',
-      PrintConv => {
-        'CMY (K) Device Dependent' => 'MISSING',
-        'Lab (K) CIE' => 'MISSING',
-        'RGB Device Dependent' => 'MISSING',
-        'RGB SMPTE' => 'MISSING',
-        'X,Y,Z CIE' => 'MISSING',
-        'Y,U,V (K) (D65)' => 'MISSING',
-        'YCbCr' => 'MISSING',
-        'sRGB' => 'MISSING',
-      },
-    },
+   'InterchangeColorSpace' => 'Zmena farebného priestoru',
    'IntergraphFlagRegisters' => 'Intergraph - Registračná značka',
    'IntergraphMatrix' => 'Intergraph - Matrica',
    'IntergraphPacketData' => 'Intergraph - Údaje o balíku',
@@ -934,7 +893,6 @@ $VERSION = '1.00';
    'JPEGQTables' => 'Tabuľky JPEGQ',
    'JPEGRestartInterval' => 'Interval opätovného spustenia JPEG',
    'JPEGTables' => 'Tabuľky JPEG',
-   'JPLCartoIFD' => 'JPL Carto IFD',
    'JobID' => 'ID úlohy',
    'JpgFromRaw' => 'Súbor Jpg vložený do súboru Raw',
    'JpgFromRawLength' => 'Ťahy v súbore JPG vloženom do súboru Raw',
@@ -1114,7 +1072,6 @@ $VERSION = '1.00';
    'MinSampleValue' => 'Minimálna hodnota súčasti',
    'ModeNumber' => 'Číslo režimu',
    'Model' => 'Názov modelu fotoaparátu',
-   'Model2' => 'Model 2',
    'ModelTiePoint' => 'Modelový bod väzby',
    'ModelTransform' => 'Model transformácie',
    'ModifyDate' => 'Dátum úpravy',
@@ -1151,7 +1108,6 @@ $VERSION = '1.00';
    'NumIndexEntries' => 'Počet záznamov v indexe',
    'NumberofInks' => 'Počet atramentov',
    'OPIProxy' => {
-      Description => 'OPI Proxy',
       PrintConv => {
         'Higher resolution image does not exist' => 'Obrázok s vyšším rozlíšením neexistuje',
         'Higher resolution image exists' => 'Obrázok s vyšším rozlíšením existuje',
@@ -1171,36 +1127,14 @@ $VERSION = '1.00';
    'ObjectPreviewFileFormat' => {
       Description => 'Objekt náhľadu - Formát súboru',
       PrintConv => {
-        'AppleSingle (Apple Computer Inc)' => 'MISSING',
-        'Audio Interchange File Format AIFF (Apple Computer Inc)' => 'MISSING',
-        'Audio plus Moving Video [.AVI] (Microsoft)' => 'MISSING',
-        'Bit Mapped Graphics File [.BMP] (Microsoft)' => 'MISSING',
         'Compressed Binary File [.ZIP] (PKWare Inc)' => 'Komprimovaný binárny súbor [.ZIP] (PKWare Inc)',
-        'Corel Draw [.CDR]' => 'MISSING',
-        'Digital Audio File [.WAV] (Microsoft & Creative Labs)' => 'MISSING',
-        'Freehand (Macromedia/Aldus)' => 'MISSING',
-        'Hypertext Markup Language [.HTML] (The Internet Society)' => 'MISSING',
         'IPTC Unstructured Character Oriented File Format (UCOFF)' => 'Formát neštruktúrovaných znakovo orientovaných súborov IPTC (UCOFF)',
         'IPTC-NAA Digital Newsphoto Parameter Record' => 'Záznam parametrov digitálnych novín IPTC-NAA',
         'IPTC7901 Recommended Message Format' => 'Odporúčaný formát správy IPTC7901',
-        'Illustrator (Adobe Graphics data)' => 'MISSING',
-        'JPEG File Interchange (JFIF)' => 'MISSING',
-        'MPEG 2 Audio Layer 2 (Musicom), ISO/IEC' => 'MISSING',
-        'MPEG 2 Audio Layer 3, ISO/IEC' => 'MISSING',
-        'MacBinary II' => 'MISSING',
-        'NAA 89-3 (ANPA 1312)' => 'MISSING',
         'News Industry Text Format (NITF)' => 'Textový formát pre spravodajstvo (NITF)',
         'No ObjectData' => 'Žiadne údaje o objekte',
-        'PC DOS/Windows Executable Files [.COM][.EXE]' => 'MISSING',
-        'Photo-CD Image-Pac (Eastman Kodak)' => 'MISSING',
-        'Portable Document File [.PDF] Adobe' => 'MISSING',
-        'RIFF Wave (Microsoft Corporation)' => 'MISSING',
         'Ritzaus Bureau NITF version (RBNITF DTD)' => 'Verzia Ritzaus Bureau NITF (RBNITF DTD)',
         'Tagged Image File Format (Adobe/Aldus Image data)' => 'Označený formát obrazového súboru (obrazové údaje Adobe/Aldus)',
-        'Tape Archive [.TAR]' => 'MISSING',
-        'Tidningarnas Telegrambyra NITF version (TTNITF DTD)' => 'MISSING',
-        'United Press International ANPA 1312 variant' => 'MISSING',
-        'United Press International Down-Load Message' => 'MISSING',
       },
     },
    'ObjectPreviewFileVersion' => 'Objekt náhľadu - Verzia súboru',
@@ -1222,63 +1156,9 @@ $VERSION = '1.00';
         'Single page of multi-page image' => 'Jedna strana viacstranového obrázku',
       },
     },
-   'OpcodeList1' => {
-      Description => 'Zoznam kódov operácií 1',
-      PrintConv => {
-        'DeltaPerColumn' => 'MISSING',
-        'DeltaPerRow' => 'MISSING',
-        'FixBadPixelsConstant' => 'MISSING',
-        'FixBadPixelsList' => 'MISSING',
-        'FixVignetteRadial' => 'MISSING',
-        'GainMap' => 'MISSING',
-        'MapPolynomial' => 'MISSING',
-        'MapTable' => 'MISSING',
-        'ScalePerColumn' => 'MISSING',
-        'ScalePerRow' => 'MISSING',
-        'TrimBounds' => 'MISSING',
-        'WarpFisheye' => 'MISSING',
-        'WarpRectilinear' => 'MISSING',
-        'WarpRectilinear2' => 'MISSING',
-      },
-    },
-   'OpcodeList2' => {
-      Description => 'Zoznam kódov operácií 2',
-      PrintConv => {
-        'DeltaPerColumn' => 'MISSING',
-        'DeltaPerRow' => 'MISSING',
-        'FixBadPixelsConstant' => 'MISSING',
-        'FixBadPixelsList' => 'MISSING',
-        'FixVignetteRadial' => 'MISSING',
-        'GainMap' => 'MISSING',
-        'MapPolynomial' => 'MISSING',
-        'MapTable' => 'MISSING',
-        'ScalePerColumn' => 'MISSING',
-        'ScalePerRow' => 'MISSING',
-        'TrimBounds' => 'MISSING',
-        'WarpFisheye' => 'MISSING',
-        'WarpRectilinear' => 'MISSING',
-        'WarpRectilinear2' => 'MISSING',
-      },
-    },
-   'OpcodeList3' => {
-      Description => 'Zoznam kódov operácií 3',
-      PrintConv => {
-        'DeltaPerColumn' => 'MISSING',
-        'DeltaPerRow' => 'MISSING',
-        'FixBadPixelsConstant' => 'MISSING',
-        'FixBadPixelsList' => 'MISSING',
-        'FixVignetteRadial' => 'MISSING',
-        'GainMap' => 'MISSING',
-        'MapPolynomial' => 'MISSING',
-        'MapTable' => 'MISSING',
-        'ScalePerColumn' => 'MISSING',
-        'ScalePerRow' => 'MISSING',
-        'TrimBounds' => 'MISSING',
-        'WarpFisheye' => 'MISSING',
-        'WarpRectilinear' => 'MISSING',
-        'WarpRectilinear2' => 'MISSING',
-      },
-    },
+   'OpcodeList1' => 'Zoznam kódov operácií 1',
+   'OpcodeList2' => 'Zoznam kódov operácií 2',
+   'OpcodeList3' => 'Zoznam kódov operácií 3',
    'Opto-ElectricConvFactor' => 'Optoelektrický konverzný faktor',
    'Orientation' => {
       Description => 'Orientácia',
@@ -1878,7 +1758,6 @@ $VERSION = '1.00';
    'XPKeywords' => 'XP - Kľúčová slová',
    'XPSubject' => 'XP - Téma',
    'XPTitle' => 'XP - Názov',
-   'XP_DIP_XML' => 'XP DIP XML',
    'XPosition' => 'Pozícia obrázku X',
    'XResolution' => 'Horizontálne rozlíšenie',
    'YCbCrCoefficients' => 'Konverzné faktory Y Cb Cr',
@@ -1901,7 +1780,7 @@ __END__
 
 =head1 NAME
 
-Image::ExifTool::Lang::sk.pm - ExifTool sk language translations
+Image::ExifTool::Lang::sk.pm - ExifTool Slovak language translations
 
 =head1 DESCRIPTION
 
@@ -1910,7 +1789,7 @@ and values.
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

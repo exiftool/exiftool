@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.63';
+$VERSION = '4.64';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -8578,6 +8578,10 @@ my %ciMaxFocal = (
         Name => 'DistortionCorrectionSetting',
         PrintConv => \%offOn,
     },
+    9 => { #forum14286
+        Name => 'DigitalLensOptimizerSetting',
+        PrintConv => \%offOn,
+    },
 );
 
 # Auto Lighting Optimizater information (MakerNotes tag 0x4018) (ref PH)
@@ -8624,6 +8628,14 @@ my %ciMaxFocal = (
     # 6 - related to ChromaticAberrationCorr
     # 7 - related to DistortionCorrection (0=off, 1=On in a 5DmkIV sample)
     # 8 - related to PeripheralIlluminationCorr and ChromaticAberrationCorr
+    10 => { #forum14286
+        Name => 'DigitalLensOptimizer',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Stanard',
+            2 => 'High',
+        },
+    },
 );
 
 # Lens information (MakerNotes tag 0x4019) (ref 20)
@@ -10176,7 +10188,7 @@ Canon maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2022, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

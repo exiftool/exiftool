@@ -15,10 +15,42 @@
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td title='0x0001 = 1'>0x0001</td>
+<td>MakerNoteVersion</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0002 = 2'>0x0002</td>
+<td>AEMatrix?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x0003 = 3'>0x0003</td>
 <td>RunTime</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Apple.html#RunTime'>Apple RunTime Tags</a></td></tr>
+<tr class=b>
+<td title='0x0004 = 4'>0x0004</td>
+<td>AEStable</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td title='0x0005 = 5'>0x0005</td>
+<td>AETarget</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0006 = 6'>0x0006</td>
+<td>AEAverage</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0007 = 7'>0x0007</td>
+<td>AFStable</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
 <tr class=b>
 <td title='0x0008 = 8'>0x0008</td>
 <td>AccelerationVector</td>
@@ -43,9 +75,19 @@ toward the bottom, and positive Z points into the face of the phone)</span></spa
 <td class=c>rational64s[2]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x000f = 15'>0x000f</td>
+<td>OISMode</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x0011 = 17'>0x0011</td>
 <td>MediaGroupUUID</td>
 <td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0014 = 20'>0x0014</td>
+<td>ImageCaptureType?</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0015 = 21'>0x0015</td>
@@ -57,6 +99,97 @@ toward the bottom, and positive Z points into the face of the phone)</span></spa
 <td>LivePhotoVideoIndex</td>
 <td class=c>yes</td>
 <td><span class=s><span class=n>(divide by RunTimeScale to get time in seconds)</span></span></td></tr>
+<tr>
+<td title='0x0019 = 25'>0x0019</td>
+<td>ImageProcessingFlags?</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x001a = 26'>0x001a</td>
+<td>QualityHint?</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x001d = 29'>0x001d</td>
+<td>LuminanceNoiseAmplitude</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0020 = 32'>0x0020</td>
+<td>ImageCaptureReqestID?</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0021 = 33'>0x0021</td>
+<td>HDRHeadroom</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0025 = 37'>0x0025</td>
+<td>SceneFlags?</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0026 = 38'>0x0026</td>
+<td>SignalToNoiseRatioType?</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0027 = 39'>0x0027</td>
+<td>SignalToNoiseRatio</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x002f = 47'>0x002f</td>
+<td>FocusPosition</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0030 = 48'>0x0030</td>
+<td>HDRGain</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0038 = 56'>0x0038</td>
+<td>AFMeasuredDepth</td>
+<td class=c>int32s</td>
+<td><span class=s><span class=n>(from the time-of-flight-assisted auto-focus estimator)</span></span></td></tr>
+<tr class=b>
+<td title='0x003d = 61'>0x003d</td>
+<td>AFConfidence</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x003e = 62'>0x003e</td>
+<td>ColorCorrectionMatrix?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x003f = 63'>0x003f</td>
+<td>GreenGhostMitigationStatus?</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0040 = 64'>0x0040</td>
+<td>SemanticStyle</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0041 = 65'>0x0041</td>
+<td>SemanticStyleRenderingVer</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0042 = 66'>0x0042</td>
+<td>SemanticStylePreset</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0045 = 69'>0x0045</td>
+<td>FrontFacingCamera</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='RunTime'>Apple RunTime Tags</a></h2>
@@ -96,7 +229,7 @@ boot, not including standby time.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 1, 2022</i>
+<br><i>Last revised Jan 6, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

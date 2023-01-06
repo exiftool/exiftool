@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 
 sub ExtractObject($$;$);
 sub Get24u($$);
@@ -274,6 +274,7 @@ sub ExtractObject($$;$)
                 }
                 my $tagTablePtr = $$plistInfo{TagTablePtr};
                 my $verbose = $et->Options('Verbose');
+                $val = { }; # initialize return dictionary (will stay empty if tags are saved)
                 for ($i=0; $i<$size; ++$i) {
                     # get the entry key
                     $raf->Seek($$table[$refs[$i]], 0) or return undef;
@@ -284,8 +285,13 @@ sub ExtractObject($$;$)
                     # generate an ID for this tag
                     my $tag = defined $parent ? "$parent/$key" : $key;
                     undef $$plistInfo{DateFormat};
-                    my $val = ExtractObject($et, $plistInfo, $tag);
-                    next if not defined $val or ref($val) eq 'HASH';
+                    my $obj = ExtractObject($et, $plistInfo, $tag);
+                    next if not defined $obj;
+                    unless ($tagTablePtr) {
+                        $$val{$key} = $obj if defined $obj;
+                        next;
+                    }
+                    next if ref($obj) eq 'HASH';
                     my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
                     unless ($tagInfo) {
                         $et->VPrint(0, $$et{INDENT}, "[adding $tag]\n") if $verbose;
@@ -304,9 +310,8 @@ sub ExtractObject($$;$)
                         delete $$et{LIST_TAGS}{$$et{LastPListTag}};
                     }
                     $$et{LastPListTag} = $tagInfo;
-                    $et->HandleTag($tagTablePtr, $tag, $val);
+                    $et->HandleTag($tagTablePtr, $tag, $obj);
                 }
-                $val = { }; # flag the value as a dictionary (ie. tags already saved)
             } else {
                 # extract the referenced objects
                 foreach $ref (@refs) {
@@ -326,7 +331,7 @@ sub ExtractObject($$;$)
 # Process binary PLIST data (ref 2)
 # Inputs: 0) ExifTool object ref, 1) DirInfo ref, 2) tag table ref
 # Returns: 1 on success (and returns plist value as $$dirInfo{Value})
-sub ProcessBinaryPLIST($$$)
+sub ProcessBinaryPLIST($$;$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my ($i, $buff, @table);

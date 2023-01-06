@@ -1667,12 +1667,18 @@ sub WriteQuickTime($$$)
                 # edit size of mdat in header if necessary
                 if ($diff) {
                     if (length($$hdrChunk[2]) == 8) {
-                        my $size = Get32u(\$$hdrChunk[2], 0) + $diff;
-                        $size > 0xffffffff and $et->Error("Can't yet grow mdat across 4GB boundary"), return $rtnVal;
-                        Set32u($size, \$$hdrChunk[2], 0);
+                        my $size = Get32u(\$$hdrChunk[2], 0);
+                        if ($size) { # (0 size = extends to end of file)
+                            $size += $diff;
+                            $size > 0xffffffff and $et->Error("Can't yet grow mdat across 4GB boundary"), return $rtnVal;
+                            Set32u($size, \$$hdrChunk[2], 0);
+                        }
                     } elsif (length($$hdrChunk[2]) == 16) {
-                        my $size = Get64u(\$$hdrChunk[2], 8) + $diff;
-                        Set64u($size, \$$hdrChunk[2], 8);
+                        my $size = Get64u(\$$hdrChunk[2], 8);
+                        if ($size) {
+                            $size += $diff;
+                            Set64u($size, \$$hdrChunk[2], 8);
+                        }
                     } else {
                         $et->Error('Internal error. Invalid mdat header');
                         return $rtnVal;

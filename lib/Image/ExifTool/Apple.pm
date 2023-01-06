@@ -6,6 +6,7 @@
 # Revisions:    2013-09-13 - P. Harvey Created
 #
 # References:   1) http://www.photoinvestigator.co/blog/the-mystery-of-maker-apple-metadata/
+#               2) Frank Rupprecht private communication
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Apple;
@@ -15,7 +16,9 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::PLIST;
 
-$VERSION = '1.07';
+$VERSION = '1.08';
+
+sub ConvertPLIST($$);
 
 # Apple iPhone metadata (ref PH)
 %Image::ExifTool::Apple::Main = (
@@ -24,17 +27,39 @@ $VERSION = '1.07';
     WRITABLE => 1,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     NOTES => 'Tags extracted from the maker notes of iPhone images.',
-    # 0x0001 - int32s: seen 0,1,2,3,4,9
-    # 0x0002 - binary plist with a single data object of size 512 bytes (iPhone5s)
-    0x0003 => {
+    0x0001 => { # (Version, ref 2)
+        Name => 'MakerNoteVersion',
+        Writable => 'int32s',
+    },
+    0x0002 => { #2
+        Name => 'AEMatrix',
+        Unknown => 1,
+        # (not currently writable)
+        ValueConv => \&ConvertPLIST,
+    },
+    0x0003 => { # (Timestamp, ref 2)
         Name => 'RunTime', # (includes time plugged in, but not when suspended, ref 1)
         SubDirectory => { TagTable => 'Image::ExifTool::Apple::RunTime' },
     },
-    # 0x0004 - int32s: normally 1, but 0 for low-light images
-    # 0x0005 - int32s: seen values 113-247, and 100 for blank images
-    # 0x0006 - int32s: seen values 27-258, and 20 for blank images
-    # 0x0007 - int32s: seen 1
-    0x0008 => { #1
+    0x0004 => { #2
+        Name => 'AEStable',
+        Writable => 'int32s',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
+    0x0005 => { #2
+        Name => 'AETarget',
+        Writable => 'int32s',
+    },
+    0x0006 => { #2
+        Name => 'AEAverage',
+        Writable => 'int32s',
+    },
+    0x0007 => { #2
+        Name => 'AFStable',
+        Writable => 'int32s',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
+    0x0008 => { #1 (FocusAccelerometerVector, ref 2)
         Name => 'AccelerationVector',
         Groups => { 2 => 'Camera' },
         Writable => 'rational64s',
@@ -51,8 +76,8 @@ $VERSION = '1.07';
             toward the bottom, and positive Z points into the face of the phone
         },
     },
-    # 0x0009 - int32s: seen 19,275,531,4371
-    0x000a => {
+    # 0x0009 - int32s: seen 19,275,531,4371 (SISMethod, ref 2)
+    0x000a => { # (HDRMethod, ref 2)
         Name => 'HDRImageType',
         Writable => 'int32s',
         PrintConv => {
@@ -61,12 +86,12 @@ $VERSION = '1.07';
             4 => 'Original Image',
         },
     },
-    0x000b => {
+    0x000b => { # (BurstUUID, ref 2)
         Name => 'BurstUUID',
         Writable => 'string',
         Notes => 'unique ID for all images in a burst',
     },
-    0x000c => { # ref forum13710 (Neal Krawetz)
+    0x000c => { # ref forum13710 (Neal Krawetz) (SphereHealthTrackingError, ref 2)
         Name => 'FocusDistanceRange',
         Writable => 'rational64s',
         Count => 2,
@@ -76,29 +101,157 @@ $VERSION = '1.07';
         },
         PrintConvInv => '$val =~ s/ - //; $val =~ s/ ?m$//; $val',
     },
-    # 0x000d - int32s: 0,1,6,20,24,32,40
-    # 0x000e - int32s: 0,1,4,12 (Orientation? 0=landscape? 4=portrait? ref 1)
-    # 0x000f - int32s: 2,3
-    # 0x0010 - int32s: 1
-    0x0011 => { # (if defined, there is a live photo associated with the video, #forum13565)
+    # 0x000d - int32s: 0,1,6,20,24,32,40 (SphereHealthAverageCurrent, ref 2)
+    # 0x000e - int32s: 0,1,4,12 (Orientation? 0=landscape? 4=portrait? ref 1) (SphereMotionDataStatus, ref 2)
+    0x000f => { #2
+        Name => 'OISMode',
+        Writable => 'int32s',
+        # seen: 2,3,5
+    },
+    # 0x0010 - int32s: 1 (SphereStatus, ref 2)
+    0x0011 => { # (if defined, there is a live photo associated with the video, #forum13565) (AssetIdentifier, ref 2)
         Name => 'MediaGroupUUID', #NealKrawetz private communication
         # (changed in 12.19 from Name => 'ContentIdentifier', #forum8750)
         Writable => 'string',
     },
-    # 0x0014 - int32s: 1,2,3,4,5 (iPhone 6s, iOS 6.1)
-    0x0015 => {
+    # 0x0012 - (QRMOutputType, ref 2)
+    # 0x0013 - (SphereExternalForceOffset, ref 2)
+    0x0014 => { # (StillImageCaptureType, ref 2)
+        Name => 'ImageCaptureType',
+        Writable => 'int32s',
+        Unknown => 1, # (don't know what the values mean)
+        # seen: 1,2,3,4,5,10,12
+    },
+    0x0015 => { # (ImageGroupIdentifier, ref 2)
         Name => 'ImageUniqueID',
         Writable => 'string',
     },
-    # 0x0016 - string[29]: "AXZ6pMTOh2L+acSh4Kg630XCScoO\0"
-    0x0017 => { #forum13565 (only valid if MediaGroupUUID exists)
+    # 0x0016 - string[29]: "AXZ6pMTOh2L+acSh4Kg630XCScoO\0" (PhotosOriginatingSignature, ref 2)
+    0x0017 => { #forum13565 (only valid if MediaGroupUUID exists) (StillImageCaptureFlags, ref 2)
         Name => 'LivePhotoVideoIndex',
         Notes => 'divide by RunTimeScale to get time in seconds',
     },
-    # 0x0017 - int32s: 0,8192
-    # 0x0019 - int32s: 0,2,128
-    # 0x001a - string[6]: "q825s\0"
-    # 0x001f - int32s: 0
+    # 0x0018 - (PhotosRenderOriginatingSignature, ref 2)
+    0x0019 => { # (StillImageProcessingFlags, ref 2)
+        Name => 'ImageProcessingFlags',
+        Writable => 'int32s',
+        Unknown => 1,
+        PrintConv => { BITMASK => { } },
+    },
+    0x001a => { # (PhotoTranscodeQualityHint, ref 2)
+        Name => 'QualityHint',
+        Writable => 'string',
+        Unknown => 1,
+        # seen: "q825s\0", "q750n\0", "q900n\0"
+    },
+    # 0x001b - (PhotosRenderEffect, ref 2)
+    # 0x001c - (BracketedCaptureSequenceNumber, ref 2)
+    0x001d => { #2
+        Name => 'LuminanceNoiseAmplitude',
+        Writable => 'rational64s',
+    },
+    # 0x001e - (OriginatingAppID, ref 2)
+    # 0x001f - int32s: 0,1 (PhotosAppFeatureFlags, ref 2)
+    0x0020 => { # (ImageCaptureRequestIdentifier, ref 2)
+        Name => 'ImageCaptureReqestID',
+        Writable => 'string',
+        Unknown => 1,
+    },
+    0x0021 => { # (MeteorHeadroom, ref 2)
+        Name => 'HDRHeadroom',
+        Writable => 'rational64s',
+    },
+    # 0x0022 - (ARKitPhoto, ref 2)
+    # 0x0023 - int32s[2] (AFPerformance, ref 2)
+    # 0x0024 - (AFExternalOffset, ref 2)
+    0x0025 => { # (StillImageSceneFlags, ref 2)
+        Name => 'SceneFlags',
+        Writable => 'int32s',
+        Unknown => 1,
+        PrintConv => { BITMASK => { } },
+    },
+    0x0026 => { # (StillImageSNRType, ref 2)
+        Name => 'SignalToNoiseRatioType',
+        Writable => 'int32s',
+        Unknown => 1,
+    },
+    0x0027 => { # (StillImageSNR, ref 2)
+        Name => 'SignalToNoiseRatio',
+        Writable => 'rational64s',
+    },
+    # 0x0028 - int32s (UBMethod, ref 2)
+    # 0x0029 - string (SpatialOverCaptureGroupIdentifier, ref 2)
+    # 0x002A - (iCloudServerSoftwareVersionForDynamicallyGeneratedMedia, ref 2)
+    # 0x002B - (PhotoIdentifier, ref 2)
+    # 0x002C - (SpatialOverCaptureImageType, ref 2)
+    # 0x002D - (CCT, ref 2)
+    # 0x002E - (ApsMode, ref 2)
+    0x002F => { #2
+        Name => 'FocusPosition',
+        Writable => 'int32s',
+    },
+    0x0030 => { # (MeteorPlusGainMap, ref 2)
+        Name => 'HDRGain',
+        Writable => 'rational64s',
+    },
+    # 0x0031 - (StillImageProcessingHomography, ref 2)
+    # 0x0032 - (IntelligentDistortionCorrection, ref 2)
+    # 0x0033 - (NRFStatus, ref 2)
+    # 0x0034 - (NRFInputBracketCount, ref 2)
+    # 0x0035 - (NRFRegisteredBracketCount, ref 2)
+    # 0x0036 - (LuxLevel, ref 2)
+    # 0x0037 - (LastFocusingMethod, ref 2)
+    0x0038 => { # (TimeOfFlightAssistedAutoFocusEstimatorMeasuredDepth, ref 2)
+        Name => 'AFMeasuredDepth',
+        Notes => 'from the time-of-flight-assisted auto-focus estimator',
+        Writable => 'int32s',
+    },
+    # 0x0039 - (TimeOfFlightAssistedAutoFocusEstimatorROIType, ref 2)
+    # 0x003A - (NRFSRLStatus, ref 2)
+    # 0x003B - (SystemPressureLevel, ref 2)
+    # 0x003C - (CameraControlsStatisticsMaster, ref 2)
+    0x003D => { # (TimeOfFlightAssistedAutoFocusEstimatorSensorConfidence, ref 2)
+        Name => 'AFConfidence',
+        Writable => 'int32s',
+    },
+    0x003E => { # (ColorCorrectionMatrix, ref 2)
+        Name => 'ColorCorrectionMatrix',
+        Unknown => 1,
+        ValueConv => \&ConvertPLIST,
+    },
+    0x003F => { #2
+        Name => 'GreenGhostMitigationStatus',
+        Writable => 'int32s',
+        Unknown => 1,
+    },
+    0x0040 => { #2
+        Name => 'SemanticStyle',
+        ValueConv => \&ConvertPLIST,
+    },
+    0x0041 => { # (SemanticStyleKey_RenderingVersion, ref 2)
+        Name => 'SemanticStyleRenderingVer',
+        ValueConv => \&ConvertPLIST,
+    },
+    0x0042 => { # (SemanticStyleKey_Preset, ref 2)
+        Name => 'SemanticStylePreset',
+        ValueConv => \&ConvertPLIST,
+    },
+    # 0x0043 - (SemanticStyleKey_ToneBias, ref 2)
+    # 0x0044 - (SemanticStyleKey_WarmthBias, ref 2)
+    0x0045 => { # (FrontFacing, ref 2)
+        Name => 'FrontFacingCamera',
+        Writable => 'int32s',
+        PrintConv => { 0 => 'No', 1 => 'Yes' }, #PH (NC)
+    },
+    # 0x0046 - (TimeOfFlightAssistedAutoFocusEstimatorContainsBlindSpot, ref 2)
+    # 0x0047 - (LeaderFollowerAutoFocusLeaderDepth, ref 2)
+    # 0x0048 - (LeaderFollowerAutoFocusLeaderFocusMethod, ref 2)
+    # 0x0049 - (LeaderFollowerAutoFocusLeaderConfidence, ref 2)
+    # 0x004A - (LeaderFollowerAutoFocusLeaderROIType, ref 2)
+    # 0x004B - (ZeroShutterLagFailureReason, ref 2)
+    # 0x004C - (TimeOfFlightAssistedAutoFocusEstimatorMSPMeasuredDepth, ref 2)
+    # 0x004D - (TimeOfFlightAssistedAutoFocusEstimatorMSPSensorConfidence, ref 2)
+    # 0x004E - (Camera, ref 2)
 );
 
 # PLIST-format CMTime structure (ref PH)
@@ -142,6 +295,23 @@ $VERSION = '1.07';
 # add our composite tags
 Image::ExifTool::AddCompositeTags('Image::ExifTool::Apple');
 
+#------------------------------------------------------------------------------
+# Convert from binary PLIST format to a tag value we can use
+# Inputs: 0) binary plist data, 1) ExifTool ref
+# Returns: converted value
+sub ConvertPLIST($$)
+{
+    my ($val, $et) = @_;
+    my $dirInfo = { DataPt => \$val };
+    require Image::ExifTool::PLIST;
+    Image::ExifTool::PLIST::ProcessBinaryPLIST($et, $dirInfo);
+    $val = $$dirInfo{Value};
+    if (ref $val eq 'HASH' and not $et->Options('Struct')) {
+        require 'Image/ExifTool/XMPStruct.pl';
+        $val = Image::ExifTool::XMP::SerializeStruct($val);
+    }
+    return $val;
+}
 
 1;  # end
 

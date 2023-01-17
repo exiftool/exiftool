@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.85';
+$VERSION = '1.86';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -798,6 +798,7 @@ my %faceCategories = (
     },
     0x1447 => { Name => 'FujiModel',  Writable => 'string' },
     0x1448 => { Name => 'FujiModel2', Writable => 'string' },
+    0x144d => { Name => 'RollAngle',  Writable => 'rational64s' }, #forum14319
     0x3803 => { #forum10037
         Name => 'VideoRecordingMode',
         Groups => { 2 => 'Video' },

@@ -169,27 +169,32 @@ and is used in the AvgBitrate calculation)</span></span></td></tr>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Movie'>QuickTime Movie Tags</a></td></tr>
 <tr>
+<td>'mpvd'</td>
+<td>MotionPhotoVideo</td>
+<td class=c>yes</td>
+<td><span class=s><span class=n>(MP4-format video saved in Samsung motion-photo HEIC images.)</span></span></td></tr>
+<tr class=b>
 <td>'pict'</td>
 <td>PreviewPICT</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'pnot'</td>
 <td>Preview</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Preview'>QuickTime Preview Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'prrt'</td>
 <td>ARDroneTelemetry</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(telemetry information for each video frame: status1, status2, time, pitch,
 roll, yaw, speed, altitude)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'sefd'</td>
 <td>SamsungTrailer</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Samsung.html#Trailer'>Samsung Trailer Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'skip'</td>
 <td>CanonSkip
   <br>PreviewImage
@@ -198,27 +203,29 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td class=c>-<br>no<br>-<br>no</td>
 <td>--&gt; <a href='Canon.html#Skip'>Canon Skip Tags</a>
   <br>--&gt; <a href='QuickTime.html#SkipInfo'>QuickTime SkipInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'thm '</td>
 <td>ThumbnailImage</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'thum'</td>
 <td>ThumbnailImage</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'udat'</td>
 <td>GPSLog</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(parsed to extract GPS separately when ExtractEmbedded is used)</span></span></td></tr>
-<tr>
-<td>'udta'</td>
-<td>UserData</td>
-<td class=c>-</td>
-<td>--&gt; <a href='FLIR.html#UserData'>FLIR UserData Tags</a></td></tr>
 <tr class=b>
+<td>'udta'</td>
+<td>KenwoodData
+  <br>FLIRData</td>
+<td class=c>-<br>-</td>
+<td>--&gt; <a href='QuickTime.html#Stream'>QuickTime Stream Tags</a>
+  <br>--&gt; <a href='FLIR.html#UserData'>FLIR UserData Tags</a></td></tr>
+<tr>
 <td>'uuid'</td>
 <td>XMP
   <br>UUID-PROF
@@ -235,7 +242,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br>--&gt; <a href='Canon.html#uuid2'>Canon uuid2 Tags</a>
   <br>--&gt; <a href='QuickTime.html#Tags360Fly'>QuickTime Tags360Fly Tags</a>
   <br><span class=n>(raw 360Fly sensor data without ExtractEmbedded option)</span></td></tr>
-<tr>
+<tr class=b>
 <td>'wide'</td>
 <td>Wide?</td>
 <td class=c>no</td>
@@ -246,7 +253,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <p>The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 63 different formats of timed GPS metadata from video files.</p>
+currently reads 66 different formats of timed GPS metadata from video files.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -8981,7 +8988,7 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 4, 2023</i>
+<br><i>Last revised Jan 17, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

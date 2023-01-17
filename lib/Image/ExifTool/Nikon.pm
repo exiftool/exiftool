@@ -64,7 +64,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.16';
+$VERSION = '4.17';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -4292,10 +4292,10 @@ my %base64coord = (
             $$self{ContrastDetectAF} == 2 and $$self{AFInfo2Version} =~ /^03/ or
             $$self{ContrastDetectAF} == 1 and $$self{AFInfo2Version} =~ /^0301/
         },
-        Format => 'int16u',
+        Format => 'int16u', # (decodes same byte as 0x2f)
     },
     0x2f => { #28 (Z7) Still photography range 1-17 for the 493 point Z7 (arranged in a 29x17 grid. Center at x=16, y=10).
-        Name => 'AFFocusPointXPosition',
+        Name => 'FocusPositionHorizontal',
         Condition => q{
             $$self{ContrastDetectAF} == 2 and $$self{AFInfo2Version} =~ /^03/ or
             $$self{ContrastDetectAF} == 1 and $$self{AFInfo2Version} =~ /^0301/
@@ -4309,7 +4309,7 @@ my %base64coord = (
                 $$self{ContrastDetectAF} == 2 and $$self{AFInfo2Version} =~ /^03/ or
                 $$self{ContrastDetectAF} == 1 and $$self{AFInfo2Version} =~ /^0301/
             },
-            Format => 'int16u',
+            Format => 'int16u', # (decodes same byte as 0x31)
         },{ #PH (D500, see forum11190)
             Name => 'AFPointsInFocus',
             Condition => '$$self{AFInfo2Version} eq "0101" and $$self{PhaseDetectAF} == 7',
@@ -4322,7 +4322,7 @@ my %base64coord = (
         },
     ],
     0x31 => { #28 (Z7)
-        Name => 'AFFocusPointYPosition',
+        Name => 'FocusPositionVertical',
         Condition => q{
             $$self{ContrastDetectAF} == 2 and $$self{AFInfo2Version} =~ /^03/ or
             $$self{ContrastDetectAF} == 1 and $$self{AFInfo2Version} =~ /^0301/
@@ -4452,6 +4452,21 @@ my %base64coord = (
         Writable => 0,
         RawConv => '$$self{AFInfo2Version} = $val',
     },
+    5 => { #28
+        Name => 'AFAreaMode',     #reflects the mode active when the shutter is tripped, not the position of the Focus Mode button (which is recorded in MenuSettingsZ9 tag also named AfAreaMode)
+        PrintConv => {
+            192 => 'Pinpoint',
+            193 => 'Single',
+            195 => 'Wide (S)',
+            196 => 'Wide (L)',
+            197 => 'Auto',
+            204 => 'Dynamic Area (S)',
+            205 => 'Dynamic Area (M)',
+            206 => 'Dynamic Area (L)',
+            207 => '3D-tracking',
+            208 => 'Wide (C1/C2)',
+        },
+    },
     0x3e => {
         Name => 'AFImageWidth',
         Format => 'int16u',
@@ -4459,6 +4474,11 @@ my %base64coord = (
     0x40 => {
         Name => 'AFImageHeight',
         Format => 'int16u',
+    },
+    0x42 => { #28
+        Name => 'AFAreaXPosition',            #top left image corner is the origin
+        Format => 'int16u', # (decodes same byte as 0x43)
+        RawConv => '$val ? $val : undef',
     },
     0x43 => {
         Name => 'FocusPositionHorizontal',
@@ -4470,6 +4490,11 @@ my %base64coord = (
         # 493 focus points for Z9 fall in a 30x19 grid
         # (the 11R (5) position is not used, for a total of 29 columns, ref AlbertShan email)
         PrintConv => sub { my ($val) = @_; PrintAFPointsLeftRight($val, 29); },
+    },
+    0x44 => { #28
+        Name => 'AFAreaYPosition',
+        Format => 'int16u', # (decodes same byte as 0x45)
+        RawConv => '$val ? $val : undef',
     },
     0x45 => {
         Name => 'FocusPositionVertical',

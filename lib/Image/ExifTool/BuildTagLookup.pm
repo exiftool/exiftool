@@ -238,7 +238,7 @@ types of meta information.  To determine a tag name, either consult this
 documentation or run C<exiftool -s> on a file containing the information in
 question.
 
-I<(This documentation is the result of years of research, testing and
+I<(This documentation is the result of decades of research, testing and
 reverse engineering, and is the most complete metadata tag list available
 anywhere on the internet.  It is provided not only for ExifTool users, but
 more importantly as a public service to help augment the collective

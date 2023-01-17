@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26269 tags, with 16758 unique tag names.
+They contain a total of 26274 tags, with 16757 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -82,7 +82,7 @@ types of meta information.  To determine a tag name, either consult this
 documentation or run C<exiftool -s> on a file containing the information in
 question.
 
-I<(This documentation is the result of years of research, testing and
+I<(This documentation is the result of decades of research, testing and
 reverse engineering, and is the most complete metadata tag list available
 anywhere on the internet.  It is provided not only for ExifTool users, but
 more importantly as a public service to help augment the collective
@@ -11362,6 +11362,7 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1446   FlickerReduction                     int32u
   0x1447   FujiModel                            string
   0x1448   FujiModel2                           string
+  0x144d   RollAngle                            rational64s
   0x3803   VideoRecordingMode                   int32u
   0x3804   PeripheralLighting                   int16u
   0x3806   VideoCompression                     int16u
@@ -15030,9 +15031,12 @@ These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    AFInfo2Version                       no
+      5    AFAreaMode                           int8u
      62    AFImageWidth                         int16u
      64    AFImageHeight                        int16u
+     66    AFAreaXPosition                      int16u
      67    FocusPositionHorizontal              int8u~
+     68    AFAreaYPosition                      int16u
      69    FocusPositionVertical                int8u~
      70    AFAreaWidth                          int16u
      72    AFAreaHeight                         int16u
@@ -15072,10 +15076,10 @@ These tags are written by Nikon DSLR's which have the live view feature.
      42    AFImageWidth                         int16u
      44    AFImageHeight                        int16u
      46    AFAreaXPosition                      int16u
-     47    AFFocusPointXPosition                int8u~
+     47    FocusPositionHorizontal              int8u~
      48    AFAreaYPosition                      int16u
            AFPointsInFocus                      undef[20]
-     49    AFFocusPointYPosition                int8u~
+     49    FocusPositionVertical                int8u~
      50    AFAreaWidth                          int16u
      52    AFAreaHeight                         int16u
      56    PrimaryAFPoint                       int8u
@@ -27570,6 +27574,7 @@ for the official specification.
   'meta'               Meta                     QuickTime Meta
   'moof'               MovieFragment            QuickTime MovieFragment
   'moov'               Movie                    QuickTime Movie
+  'mpvd'               MotionPhotoVideo         yes
   'pict'               PreviewPICT              no
   'pnot'               Preview                  QuickTime Preview
   'prrt'               ARDroneTelemetry         no
@@ -27581,7 +27586,8 @@ for the official specification.
   'thm '               ThumbnailImage           no
   'thum'               ThumbnailImage           no
   'udat'               GPSLog                   no
-  'udta'               UserData                 FLIR UserData
+  'udta'               KenwoodData              QuickTime Stream
+                       FLIRData                 FLIR UserData
   'uuid'               XMP                      XMP
                        UUID-PROF                QuickTime Profile
                        UUID-Flip                QuickTime Flip
@@ -27597,7 +27603,7 @@ for the official specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 63 different formats of timed GPS metadata from video files.
+currently reads 66 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -30631,9 +30637,9 @@ for the specification.
   0x7674   ProjectionPosePitch                  no
   0x7675   ProjectionPoseRoll                   no
 
-=head3 Matroska  Tags
+=head3 Matroska StdTag Tags
 
-Standardized Matroska tags (see
+Standardized Matroska tags, stored in a SimpleTag structure (see
 L<https://www.matroska.org/technical/tagging.html>).
 
   Tag ID                  Tag Name              Writable

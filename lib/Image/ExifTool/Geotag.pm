@@ -29,7 +29,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.69';
+$VERSION = '1.70';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -210,7 +210,7 @@ sub LoadTrackLog($$;$)
     my $fix = { };
     my $csvDelim = $et->Options('CSVDelim');
     $csvDelim = ',' unless defined $csvDelim;
-    my (@saveFix, $timeSpan);
+    my (@saveFix, @saveTime, $timeSpan);
     for (;;) {
         $raf->ReadLine($_) or last;
         # determine file format
@@ -357,8 +357,13 @@ sub LoadTrackLog($$;$)
                                 }
                                 # read KML "Point" coordinates
                                 @$fix{'lon','lat','alt'} = split ',', $1;
+                                $$has{alt} = 1 if $$fix{alt};
                             } else {
-                                $$fix{$tag} = $1;
+                                if ($tok eq 'when' and $$fix{'time'}) {
+                                    push @saveTime, $1; # flightaware KML stores times in array
+                                } else {
+                                    $$fix{$tag} = $1;
+                                }
                                 if ($isOrient{$tag}) {
                                     $$has{orient} = 1;
                                 } elsif ($tag eq 'alt') {
@@ -375,7 +380,11 @@ sub LoadTrackLog($$;$)
                         $td = 1;
                     }
                     # validate and store GPS fix
-                    next unless defined $$fix{lat} and defined $$fix{lon} and $$fix{'time'};
+                    next unless defined $$fix{lat} and defined $$fix{lon};
+                    unless (defined $$fix{'time'}) {
+                        next unless @saveTime;
+                        $$fix{'time'} = shift @saveTime; # get next time in flightaware KML list
+                    }
                     unless ($$fix{lat} =~ /^[+-]?\d+\.?\d*/ and $$fix{lon} =~ /^[+-]?\d+\.?\d*/) {
                         $e0 or $et->VPrint(0, "Coordinate format error in $from\n"), $e0 = 1;
                         next;

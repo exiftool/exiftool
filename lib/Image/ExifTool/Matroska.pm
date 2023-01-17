@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub HandleStruct($$;$$$$);
 
@@ -708,11 +708,11 @@ my %uidInfo = (
 );
 
 # standardized tag names (ref 2)
-%Image::ExifTool::Matroska::Tags = (
+%Image::ExifTool::Matroska::StdTag = (
     GROUPS => { 2 => 'Video' },
     VARS => { LONG_TAGS => 1 },
     NOTES => q{
-        Standardized Matroska tags (see
+        Standardized Matroska tags, stored in a SimpleTag structure (see
         L<https://www.matroska.org/technical/tagging.html>).
     },
     ORIGINAL    => 'Original',  # struct
@@ -826,7 +826,7 @@ sub HandleStruct($$;$$$$)
 {
     local $_;
     my ($et, $struct, $pid, $pname, $lang, $ctry) = @_;
-    my $tagTbl = GetTagTable('Image::ExifTool::Matroska::Tags');
+    my $tagTbl = GetTagTable('Image::ExifTool::Matroska::StdTag');
     my $tag = $$struct{TagName};
     my $tagInfo = $$tagTbl{$tag};
     # create tag if necessary

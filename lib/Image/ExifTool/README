@@ -3,6 +3,9 @@ File:         Image/ExifTool/README
 
 Description:  ExifTool support modules documentation
 
+Note:         This documentation is a reference to be used by developers when
+              adding new tags to ExifTool.
+
 The ExifTool support modules are loaded by ExifTool to allow processing of
 various meta information formats.
 

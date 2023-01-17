@@ -7278,13 +7278,34 @@ D5200, D7000.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>AFAreaMode</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>192 = Pinpoint
+  <br>193 = Single
+  <br>195 = Wide (S)
+  <br>196 = Wide (L)
+  <br>197 = Auto</td><td>&nbsp;&nbsp;</td>
+  <td>204 = Dynamic Area (S)
+  <br>205 = Dynamic Area (M)
+  <br>206 = Dynamic Area (L)
+  <br>207 = 3D-tracking
+  <br>208 = Wide (C1/C2)</td></tr></table>
+</td></tr>
+<tr>
 <td class=r title='62 = 0x3e'>62</td>
 <td>AFImageWidth</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='64 = 0x40'>64</td>
 <td>AFImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='66 = 0x42'>66</td>
+<td>AFAreaXPosition</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -7295,21 +7316,26 @@ D5200, D7000.</p>
 to 30,19.  The horizontal coordinate 11R (5) and the vertical coordinates 6U
 (4) and 2D (12) are not used for some reason)</span></span></td></tr>
 <tr>
+<td class=r title='68 = 0x44'>68</td>
+<td>AFAreaYPosition</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='69 = 0x45'>69</td>
 <td>FocusPositionVertical</td>
 <td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='70 = 0x46'>70</td>
 <td>AFAreaWidth</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(size of AF area in AFImage pixels)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='72 = 0x48'>72</td>
 <td>AFAreaHeight</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='74 = 0x4a'>74</td>
 <td>FocusResult</td>
 <td class=c>int8u</td>
@@ -8072,7 +8098,7 @@ point is D8)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='47 = 0x2f'>47</td>
-<td>AFFocusPointXPosition</td>
+<td>FocusPositionHorizontal</td>
 <td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -8083,7 +8109,7 @@ point is D8)</span></span></td></tr>
 <td><span class=s><span class=n>(AF points in focus at the time time image was captured)</span></span></td></tr>
 <tr class=b>
 <td class=r title='49 = 0x31'>49</td>
-<td>AFFocusPointYPosition</td>
+<td>FocusPositionVertical</td>
 <td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -10093,7 +10119,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 4, 2023</i>
+<br><i>Last revised Jan 17, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

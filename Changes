@@ -7,13 +7,25 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 17, 2023 - Version 12.55
+
+  - Added support for geotagging from FlightAware KML files
+  - Decode two more types of timed GPS from MOV/MP4 videos (66 types now)
+  - Decode a few new Nikon tags (thanks Warren Hatch)
+  - Decode a new Samsung HEIC tag
+  - Decode FujiFilm RollAngle
+  - Fixed bug where FlatName property wasn't working properly for some
+    user-defined structure tags
+
 Jan. 6, 2023 - Version 12.54
 
-  - Increased precision of Sony FocusDistance2 conversion
   - Decode a number of new Apple tags (thanks Frank Rupprecht)
-  - Fixed bug writing QuickTime-format files which have a zero-sized mdat (ie.
-    media data extends to end of file) which would cause an incorrect mdat size
-    to be written
+  - Increased precision of Sony FocusDistance2 conversion
+  - Fixed problem where GPSAltitude wasn't being set when geotagging from KML
+    files
+  - Fixed bug writing HEIC/AVIF files which have a zero-sized mdat (ie. media
+    data extends to end of file) which could cause an incorrect mdat size to be
+    written
 
 Jan. 4, 2023 - Version 12.53
 

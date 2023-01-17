@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# File:         kml.fmt
+# File:         kml_track.fmt
 #
 # Description:  Example ExifTool print format file for generating a
 #               track in Google Earth KML format from a collection of
@@ -7,11 +7,11 @@
 #
 # Usage:        From a collection of images:
 #
-#                 exiftool -p kml.fmt -r DIR [...] > out.kml
+#                 exiftool -p kml_track.fmt -r DIR [...] > out.kml
 #
 #               From video files:
 #
-#                 exiftool -p kml.fmt -ee3 FILEorDIR [...] > out.kml
+#                 exiftool -p kml_track.fmt -ee3 FILEorDIR [...] > out.kml
 #
 # Requires:     ExifTool version 10.41 or later
 #

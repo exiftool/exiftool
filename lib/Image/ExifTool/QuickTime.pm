@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.82';
+$VERSION = '2.83';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -62,6 +62,7 @@ sub Process_mebx($$$);
 sub Process_3gf($$$);
 sub Process_gps0($$$);
 sub Process_gsen($$$);
+sub ProcessKenwood($$$);
 sub ProcessRIFFTrailer($$$);
 sub ProcessTTAD($$$);
 sub ProcessNMEA($$$);
@@ -652,10 +653,17 @@ my %eeBox2 = (
         Name => 'HTCInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::HTCInfo' },
     },
-    udta => {
-        Name => 'UserData',
+    udta => [{
+        Name => 'KenwoodData',
+        Condition => '$$valPt =~ /^VIDEOUUUUUUUUUUUUUUUUUUUUUU/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => \&ProcessKenwood,
+        },
+    },{
+        Name => 'FLIRData',
         SubDirectory => { TagTable => 'Image::ExifTool::FLIR::UserData' },
-    },
+    }],
     thum => { #PH
         Name => 'ThumbnailImage',
         Groups => { 2 => 'Preview' },
@@ -763,6 +771,13 @@ my %eeBox2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::Samsung::Trailer' },
     },
     # 'samn'? - seen in Vantrue N2S sample video
+    mpvd => {
+        Name => 'MotionPhotoVideo',
+        Notes => 'MP4-format video saved in Samsung motion-photo HEIC images.',
+        Binary => 1,
+        # note that this may be written and/or deleted, but can't currently be added back again
+        Writable => 1,
+    },
 );
 
 # stuff seen in 'skip' atom (70mai Pro Plus+ MP4 videos)

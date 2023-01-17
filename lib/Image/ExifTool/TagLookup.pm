@@ -17,7 +17,7 @@ require Exporter;
 use vars qw($VERSION @ISA @EXPORT_OK);
 use Image::ExifTool qw(:Utils);
 
-$VERSION = '1.18';
+$VERSION = '1.19';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(FindTagInfo TagExists);
 
@@ -652,16 +652,16 @@ my %tagLookup = (
 	'afaperture' => { 220 => 0x5, 221 => 0x5, 225 => 0x5 },
 	'afareaheight' => { 193 => [0x1a,0x34,0x50], 194 => 0x48 },
 	'afareaillumination' => { 184 => 0x4b, 293 => '15.3' },
-	'afareamode' => { 126 => '0.3', 180 => 0x33, 184 => 0xe, 192 => 0x0, 193 => 0x5, 230 => 0x210, 231 => 0x224, 323 => 0xf, 390 => 0x1205, 403 => [0xa,0x3a], 410 => 0x11, 411 => 0x10, 412 => 0x24, 423 => 0xb043, 448 => 0x17 },
+	'afareamode' => { 126 => '0.3', 180 => 0x33, 184 => 0xe, 192 => 0x0, 193 => 0x5, 194 => 0x5, 230 => 0x210, 231 => 0x224, 323 => 0xf, 390 => 0x1205, 403 => [0xa,0x3a], 410 => 0x11, 411 => 0x10, 412 => 0x24, 423 => 0xb043, 448 => 0x17 },
 	'afareamodesetting' => { 284 => '11.1', 287 => '0.1', 293 => '16.1', 297 => '2.1', 423 => 0x201c },
 	'afareapointsize' => { 126 => '0.4' },
 	'afareas' => { 300 => 0x304 },
 	'afareaselectionmethod' => { 2 => 0xd },
 	'afareaselectmethod' => { 84 => 0x51b },
 	'afareawidth' => { 193 => [0x18,0x32,0x4e], 194 => 0x46 },
-	'afareaxposition' => { 193 => [0x14,0x2e,0x4a], 390 => 0x1203 },
+	'afareaxposition' => { 193 => [0x14,0x2e,0x4a], 194 => 0x42, 390 => 0x1203 },
 	'afareaxposition1' => { 390 => 0x1201 },
-	'afareayposition' => { 193 => [0x16,0x30,0x4c], 390 => 0x1204 },
+	'afareayposition' => { 193 => [0x16,0x30,0x4c], 194 => 0x44, 390 => 0x1204 },
 	'afareayposition1' => { 390 => 0x1202 },
 	'afareazonesize' => { 126 => '0.5' },
 	'afassist' => { 82 => 0x5, 90 => 0x5, 184 => 0x48, 282 => '2.5', 284 => '0.2', 287 => '0.2', 288 => '1.1', 289 => '1.1', 290 => '1.3', 291 => '2.4', 292 => '1.3', 293 => '0.2', 295 => '2.4', 297 => '2.3' },
@@ -682,8 +682,6 @@ my %tagLookup = (
 	'affinetuneindex' => { 195 => 0x1 },
 	'affinex' => { 475 => 'AffineX' },
 	'affiney' => { 475 => 'AffineY' },
-	'affocuspointxposition' => { 193 => 0x2f },
-	'affocuspointyposition' => { 193 => 0x31 },
 	'afhold' => { 334 => 0x1fd },
 	'afilluminator' => { 410 => 0x29, 423 => 0xb044 },
 	'afimageheight' => { 193 => [0x12,0x2c,0x48], 194 => 0x40 },
@@ -2957,8 +2955,8 @@ my %tagLookup = (
 	'focuspointwrap' => { 282 => '2.2', 283 => '2.2', 285 => '2.1', 286 => '2.1', 290 => '1.1', 291 => '2.2', 292 => '1.1', 295 => '2.2', 296 => '2.1', 297 => '2.5', 298 => 0x16 },
 	'focusposition' => { 1 => 0x2f, 220 => 0x8, 221 => 0x8, 358 => 0x10, 421 => 0x9bb },
 	'focusposition2' => { 428 => [0x29,0x2b,0x2f], 448 => 0x2d, 451 => 0x20 },
-	'focuspositionhorizontal' => { 194 => 0x43 },
-	'focuspositionvertical' => { 194 => 0x45 },
+	'focuspositionhorizontal' => { 193 => 0x2f, 194 => 0x43 },
+	'focuspositionvertical' => { 193 => 0x31, 194 => 0x45 },
 	'focusprocess' => { 300 => 0x302 },
 	'focusrange' => { 34 => 0x12, 305 => 0x100a },
 	'focusrangeindex' => { 349 => '3.1' },
@@ -4617,6 +4615,7 @@ my %tagLookup = (
 	'mood' => { 179 => 'WM/Mood' },
 	'moonphase' => { 384 => 0x12, 385 => 0x43, 386 => 0x4c },
 	'morepermissions' => { 479 => 'morePermissions' },
+	'motionphotovideo' => { 378 => 'mpvd' },
 	'motionsensitivity' => { 384 => 0x29, 386 => 0x60 },
 	'movementcount' => { 375 => "\xa9mvc" },
 	'movementname' => { 375 => "\xa9mvn" },
@@ -5939,7 +5938,7 @@ my %tagLookup = (
 	'rightsagent' => { 501 => 'rightsAgent' },
 	'rightsowner' => { 501 => 'rightsOwner' },
 	'roll' => { 115 => 0x8, 383 => ['roll',"\xa9frl"] },
-	'rollangle' => { 250 => 0x350b, 251 => 0x2c24, 255 => 0xc21a, 260 => 0x36f4, 261 => 0x2efb, 263 => 0xce32, 264 => 0xeaeb, 300 => 0x903, 323 => 0x90, 357 => 0x1, 395 => 0x2 },
+	'rollangle' => { 127 => 0x144d, 250 => 0x350b, 251 => 0x2c24, 255 => 0xc21a, 260 => 0x36f4, 261 => 0x2efb, 263 => 0xce32, 264 => 0xeaeb, 300 => 0x903, 323 => 0x90, 357 => 0x1, 395 => 0x2 },
 	'romoperationmode' => { 97 => 0x80d },
 	'rotation' => { 30 => 0x17, 31 => 0x18, 96 => 0x3, 103 => 0x10002, 108 => 0x26e, 114 => 'QuickTime-Rotation', 123 => 0x4, 165 => 'Rotation', 182 => [0x65,0x50], 183 => 0x46, 184 => 0x5a, 187 => 0x10, 250 => 0x3693, 251 => 0xca, 258 => '590.1', 275 => 0x76a43207, 323 => 0x30, 339 => '17.2', 369 => 0xd8, 376 => 'irot', 410 => 0x3f, 411 => 0x3f, 421 => 0x10 },
 	'routedto' => { 489 => 'RoutedTo' },
@@ -9034,6 +9033,7 @@ my %tagExists = (
 	'flir_serial' => 1,
 	'flir_unknown' => 1,
 	'flir_unknownuuid' => 1,
+	'flirdata' => 1,
 	'fluormat0' => 1,
 	'fluormat1' => 1,
 	'fluormat2' => 1,
@@ -9702,6 +9702,7 @@ my %tagExists = (
 	'keepexposurewithteleconverter' => 1,
 	'keepuntil' => 1,
 	'kelvinwb' => 1,
+	'kenwooddata' => 1,
 	'keycode' => 1,
 	'keyframepositions' => 1,
 	'keyframestimes' => 1,
@@ -12513,7 +12514,7 @@ if (@Image::ExifTool::pluginTags) {
 
 
 #------------------------------------------------------------------------------
-# Add tag names corresponding to flattened XMP tags for all structure fields
+# Add tag names to lookup corresponding to flattened XMP tags for all structure fields
 # Inputs: 0) tag table ref for flattened tags, 1) tagID, 2) lowercase tag name,
 #         3) tag ID list ref, 4) reference to list of lowercase tag names
 #         5) table number in lookup, 6) tagInfo hash for parent structure
@@ -12596,7 +12597,8 @@ sub AddTags($$)
             my (@lcTags, @tagIDs, $existed, $isFlat);
             # if this is a structure, add all flattened tag names to lookup
             if ($$newInfo{Struct}) {
-                AddFields($tagTablePtr, $tagID, $lcTag, \@tagIDs, \@lcTags, $tnum);
+                my $lcFlat = $$newInfo{FlatName} ? lc($$newInfo{FlatName}) : $lcTag;
+                AddFields($tagTablePtr, $tagID, $lcFlat, \@tagIDs, \@lcTags, $tnum);
             }
             # add tags to lookup even though we don't know if they are writable
             # (to save speed by not having to load the module)

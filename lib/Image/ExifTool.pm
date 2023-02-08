@@ -6939,9 +6939,11 @@ sub ProcessJPEG($$)
                 $dumpType = 'Preview Image';
                 $preview = substr($$segDataPt, length($1));
             } elsif ($$segDataPt =~ /^....IJPEG\0/) {
+                $self->OverrideFileType('IJPEG') if $$self{FILE_TYPE} eq 'JPEG';
+                $dumpType = 'InfiRay Version';
                 SetByteOrder('II');
-                my $tagTablePtr = GetTagTable('Image::ExifTool::JPEG::Main');
-                $self->HandleTag($tagTablePtr, 'APP2', $$segDataPt);
+                my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::Version');
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
             } elsif ($preview) {
                 $dumpType = 'Preview Image';
                 $preview .= $$segDataPt;
@@ -7001,8 +7003,13 @@ sub ProcessJPEG($$)
                 $self->FoundTag('PreviewImage', $preview);
                 undef $preview;
             }
-        } elsif ($marker == 0xe4) {         # APP4 ("SCALADO", FPXR, PreviewImage)
-            if ($$segDataPt =~ /^SCALADO\0/ and $length >= 16) {
+        } elsif ($marker == 0xe4) {         # APP4 (InfiRay, "SCALADO", FPXR, PreviewImage)
+            if ($$self{FileType} eq 'IJPEG' and $length >= 120) {
+                $dumpType = 'InfiRay FactoryTemp';
+                SetByteOrder('II');
+                my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::FactoryTemp');
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            } elsif ($$segDataPt =~ /^SCALADO\0/ and $length >= 16) {
                 $dumpType = 'SCALADO';
                 my ($num, $idx, $len) = unpack('x8n2N', $$segDataPt);
                 # assume that the segments are in order and just concatinate them
@@ -7044,7 +7051,12 @@ sub ProcessJPEG($$)
                 undef $preview;
             }
         } elsif ($marker == 0xe5) {         # APP5 (Ricoh "RMETA")
-            if ($$segDataPt =~ /^RMETA\0/) {
+            if ($$self{FileType} eq 'IJPEG' and $length >= 38) {
+                $dumpType = 'InfiRay PictureTemp';
+                SetByteOrder('II');
+                my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::PictureTemp');
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            } elsif ($$segDataPt =~ /^RMETA\0/) {
                 # (NOTE: apparently these may span multiple segments, but I haven't seen
                 # a sample like this, so multi-segment support hasn't yet been implemented)
                 $dumpType = 'Ricoh RMETA';
@@ -7146,8 +7158,13 @@ sub ProcessJPEG($$)
                 my $tagTablePtr = GetTagTable('Image::ExifTool::JPEG::SPIFF');
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
             }
-        } elsif ($marker == 0xe9) {         # APP9 (Media Jukebox)
-            if ($$segDataPt =~ /^Media Jukebox\0/ and $length > 22) {
+        } elsif ($marker == 0xe9) {         # APP9 (InfiRay, Media Jukebox)
+            if ($$self{FileType} eq 'IJPEG' and $length >= 768) {
+                $dumpType = 'InfiRay SensorInfo';
+                SetByteOrder('II');
+                my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::SensorInfo');
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            } elsif ($$segDataPt =~ /^Media Jukebox\0/ and $length > 22) {
                 $dumpType = 'MediaJukebox';
                 # (start parsing after the "<MJMD>")
                 DirStart(\%dirInfo, 22);

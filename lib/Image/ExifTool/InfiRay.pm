@@ -6,7 +6,7 @@
 # Revisions:    2023-02-08 - M. Del Sol Created
 #
 # Notes:        Information in this document has been mostly gathered by
-#				disassembling the P2 Pro Android app, version 1.0.8.230111.
+#               disassembling the P2 Pro Android app, version 1.0.8.230111.
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::InfiRay;
@@ -16,22 +16,38 @@ use vars qw($VERSION);
 
 $VERSION = '1.00';
 
+my %convFloat2 = (
+    PrintConv => 'sprintf("%.2f", $val)',
+);
+
+my %convPercentage = (
+    PrintConv => 'sprintf("%.1f%%", $val * 100)',
+);
+
+my %convMeters = (
+    PrintConv => 'sprintf("%.2fm", $val)',
+);
+
+my %convCelsius = (
+    PrintConv => 'sprintf("%.2fºC", $val)',
+);
+
 # InfiRay IJPEG version header, found in JPEGs APP2
 %Image::ExifTool::InfiRay::Version = (
     GROUPS => { 2 => 'Image' },
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     NOTES => q{
         This table lists tags found in the InfiRay IJPEG version header, found
-		in JPEGs taken with the P2 Pro camera app.
+        in JPEGs taken with the P2 Pro camera app.
     },
-    0x00 => { Name => 'Version',              Format => 'int8u[4]' },
-    0x04 => { Name => 'Signature',            Format => 'string' },
-    0x0c => { Name => 'ImageOrgType',         Format => 'int8u' },
-    0x0d => { Name => 'ImageDispType',        Format => 'int8u' },
-    0x0e => { Name => 'ImageRotate',          Format => 'int8u' },
-    0x0f => { Name => 'ImageMirrorFlip',      Format => 'int8u' },
+    0x00 => { Name => 'IJPEGVersion',         Format => 'int8u[4]' },
+    #0x04 => { Name => 'IJPEGSignature',       Format => 'string' },
+    0x0c => { Name => 'IJPEGOrgType',         Format => 'int8u' },
+    0x0d => { Name => 'IJPEGDispType',        Format => 'int8u' },
+    0x0e => { Name => 'IJPEGRotate',          Format => 'int8u' },
+    0x0f => { Name => 'IJPEGMirrorFlip',      Format => 'int8u' },
     0x10 => { Name => 'ImageColorSwitchable', Format => 'int8u' },
-    0x11 => { Name => 'ImageColorPalette',    Format => 'int16u' },
+    0x11 => { Name => 'ThermalColorPalette',  Format => 'int16u' },
     0x20 => { Name => 'IRDataSize',           Format => 'int64u' },
     0x28 => { Name => 'IRDataFormat',         Format => 'int16u' },
     0x2a => { Name => 'IRImageWidth',         Format => 'int16u' },
@@ -47,6 +63,82 @@ $VERSION = '1.00';
     0x4a => { Name => 'VisibleImageWidth',    Format => 'int16u' },
     0x4c => { Name => 'VisibleImageHeight',   Format => 'int16u' },
     0x4e => { Name => 'VisibleImageBpp',      Format => 'int8u' },
+);
+
+# InfiRay IJPEG factory temperature, found in IJPEG's APP4 section
+%Image::ExifTool::InfiRay::FactoryTemp = (
+    GROUPS => { 2 => 'Image' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    NOTES => q{
+        This table lists tags found in the InfiRay IJPEG camera factory
+        defaults and calibration data.
+    },
+    0x00 => { Name => 'IJPEGTempVersion',   Format => 'int8u[4]' },
+    0x04 => { Name => 'FactDefEmissivity',  Format => 'int8s' },
+    0x05 => { Name => 'FactDefTau',         Format => 'int8s' },
+    0x06 => { Name => 'FactDefTa',          Format => 'int16s' },
+    0x08 => { Name => 'FactDefTu',          Format => 'int16s' },
+    0x0a => { Name => 'FactDefDist',        Format => 'int16s' },
+    0x0c => { Name => 'FactDefA0',          Format => 'int32s' },
+    0x10 => { Name => 'FactDefB0',          Format => 'int32s' },
+    0x14 => { Name => 'FactDefA1',          Format => 'int32s' },
+    0x18 => { Name => 'FactDefB1',          Format => 'int32s' },
+    0x1c => { Name => 'FactDefP0',          Format => 'int32s' },
+    0x20 => { Name => 'FactDefP1',          Format => 'int32s' },
+    0x24 => { Name => 'FactDefP2',          Format => 'int32s' },
+    0x44 => { Name => 'FactRelSensorTemp',  Format => 'int16s' },
+    0x46 => { Name => 'FactRelShutterTemp', Format => 'int16s' },
+    0x48 => { Name => 'FactRelLensTemp',    Format => 'int16s' },
+    0x64 => { Name => 'FactStatusGain',     Format => 'int8s' },
+    0x65 => { Name => 'FactStatusEnvOK',    Format => 'int8s' },
+    0x66 => { Name => 'FactStatusDistOK',   Format => 'int8s' },
+    0x67 => { Name => 'FactStatusTempMap',  Format => 'int8s' },
+    # Missing: ndist_table_len, ndist_table, nuc_t_table_len, nuc_t_table
+);
+
+# InfiRay IJPEG picture temperature information, found in IJPEG's APP5 section
+%Image::ExifTool::InfiRay::PictureTemp = (
+    GROUPS => { 2 => 'Image' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    NOTES => q{
+        This table lists tags found in the InfiRay IJPEG picture temperature
+        information.
+    },
+    0x00 => { Name => 'EnvironmentTemp', Format => 'float', %convCelsius },
+    0x04 => { Name => 'Distance', Format => 'float', %convMeters },
+    0x08 => { Name => 'Emissivity', Format => 'float', %convFloat2 },
+    0x0c => { Name => 'Humidity', Format => 'float', %convPercentage },
+    0x10 => { Name => 'ReferenceTemp', Format => 'float', %convCelsius },
+    0x20 => { Name => 'TempUnit', Format => 'int8u' },
+    0x21 => { Name => 'ShowCenterTemp', Format => 'int8u' },
+    0x22 => { Name => 'ShowMaxTemp', Format => 'int8u' },
+    0x23 => { Name => 'ShowMinTemp', Format => 'int8u' },
+    0x24 => { Name => 'TempMeasureCount', Format => 'int16u' },
+    # TODO: process extra measurements list
+);
+
+# InfiRay IJPEG sensor information, found in IJPEG's APP9 section
+%Image::ExifTool::InfiRay::SensorInfo = (
+    GROUPS => { 2 => 'Image' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    NOTES => q{
+        This table lists tags found in the InfiRay IJPEG sensor information
+        chunk.
+    },
+    0x000 => { Name => 'IRSensorManufacturer',      Format => 'string' },
+    0x040 => { Name => 'IRSensorName',              Format => 'string' },
+    0x080 => { Name => 'IRSensorPartNumber',        Format => 'string' },
+    0x0c0 => { Name => 'IRSensorSerialNumber',      Format => 'string' },
+    0x100 => { Name => 'IRSensorFirmware',          Format => 'string' },
+    0x140 => { Name => 'IRSensorAperture',          Format => 'float', %convFloat2 },
+    0x144 => { Name => 'IRFocalLength',             Format => 'float', %convFloat2 },
+    0x180 => { Name => 'VisibleSensorManufacturer', Format => 'string' },
+    0x1c0 => { Name => 'VisibleSensorName',         Format => 'string' },
+    0x200 => { Name => 'VisibleSensorPartNumber',   Format => 'string' },
+    0x240 => { Name => 'VisibleSensorSerialNumber', Format => 'string' },
+    0x280 => { Name => 'VisibleSensorFirmware',     Format => 'string' },
+    0x2c0 => { Name => 'VisibleSensorAperture',     Format => 'float' },
+    0x2c4 => { Name => 'VisibleFocalLength',        Format => 'float' },
 );
 
 __END__

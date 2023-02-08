@@ -7077,7 +7077,12 @@ sub ProcessJPEG($$)
                 undef $preview;
             }
         } elsif ($marker == 0xe6) {         # APP6 (Toshiba EPPIM, NITF, HP_TDHD)
-            if ($$segDataPt =~ /^EPPIM\0/) {
+            if ($$self{FileType} eq 'IJPEG' and $length >= 129) {
+                $dumpType = 'InfiRay MixMode';
+                SetByteOrder('II');
+                my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::MixMode');
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            } elsif ($$segDataPt =~ /^EPPIM\0/) {
                 undef $dumpType;    # (will be dumped here)
                 DirStart(\%dirInfo, 6, 6);
                 if ($htmlDump) {
@@ -7111,7 +7116,12 @@ sub ProcessJPEG($$)
                 $self->HandleTag($tagTablePtr, 'APP6', $$segDataPt);
             }
         } elsif ($marker == 0xe7) {         # APP7 (Pentax, Huawei, Qualcomm)
-            if ($$segDataPt =~ /^PENTAX \0(II|MM)/) {
+            if ($$self{FileType} eq 'IJPEG' and $length >= 32) {
+                $dumpType = 'InfiRay OperationMode';
+                SetByteOrder('II');
+                my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::OperationMode');
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            } elsif ($$segDataPt =~ /^PENTAX \0(II|MM)/) {
                 # found in K-3 images (is this multi-segment??)
                 SetByteOrder($1);
                 undef $dumpType; # (dump this ourself)
@@ -7151,8 +7161,13 @@ sub ProcessJPEG($$)
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
             }
         } elsif ($marker == 0xe8) {         # APP8 (SPIFF)
+            if ($$self{FileType} eq 'IJPEG' and $length >= 32) {
+                $dumpType = 'InfiRay Isothermal';
+                SetByteOrder('II');
+                my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::Isothermal');
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
             # my sample SPIFF has 32 bytes of data, but spec states 30
-            if ($$segDataPt =~ /^SPIFF\0/ and $length == 32) {
+            } elsif ($$segDataPt =~ /^SPIFF\0/ and $length == 32) {
                 $dumpType = 'SPIFF';
                 DirStart(\%dirInfo, 6);
                 my $tagTablePtr = GetTagTable('Image::ExifTool::JPEG::SPIFF');

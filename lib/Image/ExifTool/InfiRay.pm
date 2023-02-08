@@ -117,6 +117,55 @@ my %convCelsius = (
     # TODO: process extra measurements list
 );
 
+# InfiRay IJPEG visual-infrared mixing mode, found in IJPEG's APP6 section
+%Image::ExifTool::InfiRay::MixMode = (
+    GROUPS => { 2 => 'Image' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    NOTES => q{
+        This table lists tags found in the InfiRay IJPEG visual-infrared
+        mixing mode section.
+    },
+    0x00 => { Name => 'MixMode', Format => 'int8u' },
+    0x01 => { Name => 'FusionIntensity', Format => 'float', %convPercentage },
+    0x05 => { Name => 'OffsetAdjustment', Format => 'float' },
+    0x09 => { Name => 'CorrectionAsix', Format => 'float[30]' },
+);
+
+# InfiRay IJPEG camera operation mode, found in IJPEG's APP7 section
+#
+# I do not know in what units these times are, or what do they represent.
+%Image::ExifTool::InfiRay::OperationMode = (
+    GROUPS => { 2 => 'Image' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    NOTES => q{
+        This table lists tags found in the InfiRay IJPEG camera operation
+        mode section.
+    },
+    0x00 => { Name => 'WorkingMode', Format => 'int8u' },
+    0x01 => { Name => 'IntegralTime', Format => 'int32u' },
+    0x05 => { Name => 'IntegratTimeHdr',  Format => 'int32u' },
+    0x09 => { Name => 'GainStable',  Format => 'int8u' },
+    0x0a => { Name => 'TempControlEnable',  Format => 'int8u' },
+    0x0b => { Name => 'DeviceTemp',  Format => 'float', %convCelsius },
+);
+
+# InfiRay IJPEG isothermal information, found in IJPEG's APP8 section
+#
+# I have genuinely no clue what is the meaning of any of this information, or
+# what is it used for.
+%Image::ExifTool::InfiRay::Isothermal = (
+    GROUPS => { 2 => 'Image' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    NOTES => q{
+        This table lists tags found in the InfiRay IJPEG picture isothermal
+        information.
+    },
+    0x00 => { Name => 'IsothermalMax', Format => 'float' },
+    0x04 => { Name => 'IsothermalMin', Format => 'float' },
+    0x08 => { Name => 'ChromaBarMax',  Format => 'float' },
+    0x0c => { Name => 'ChromaBarMin',  Format => 'float' },
+);
+
 # InfiRay IJPEG sensor information, found in IJPEG's APP9 section
 %Image::ExifTool::InfiRay::SensorInfo = (
     GROUPS => { 2 => 'Image' },

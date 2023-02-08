@@ -6938,6 +6938,10 @@ sub ProcessJPEG($$)
                 # Digilife DDC-690/Rollei="BGTH"
                 $dumpType = 'Preview Image';
                 $preview = substr($$segDataPt, length($1));
+            } elsif ($$segDataPt =~ /^....IJPEG\0/) {
+                SetByteOrder('II');
+                my $tagTablePtr = GetTagTable('Image::ExifTool::JPEG::Main');
+                $self->HandleTag($tagTablePtr, 'APP2', $$segDataPt);
             } elsif ($preview) {
                 $dumpType = 'Preview Image';
                 $preview .= $$segDataPt;

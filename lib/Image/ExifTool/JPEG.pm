@@ -87,6 +87,10 @@ sub ProcessJPEG_HDR($$$);
         Name => 'PreviewImage',
         Condition => '$$valPt =~ /^(|QVGA\0|BGTH)\xff\xd8\xff\xdb/',
         Notes => 'Samsung APP2 preview image', # (Samsung/GoPro="", BenQ="QVGA\0", Digilife="BGTH")
+      }, {
+        Name => 'IJPEG_Version',
+        Condition => '$$valPt =~ /^....IJPEG\0/',
+        SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::Version' },
     }],
     APP3 => [{
         Name => 'Meta',

@@ -17,6 +17,25 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.56'><b>Feb. 9, 2023 - Version 12.56</b></a>
+<ul>
+<li>Added support for VNT (both Scene7 Vignette and V-Note document) files
+<li>Added read support for <a href="TagNames/InfoRay.html">InfiRay APP2 metadata</a> (thanks Marcos Del Sol Vives)
+<li>Added some new Sony LensType values (thanks Jos Roost and Fran&ccedil;ois Piette)
+<li>Added a new FujiFilm VideoRecordingMode value (thanks Greybeard)
+<li>Added two new Canon LensTypes and CanonModelIDs (thanks Norbert Wasser)
+<li>Added ability to extract semantic images from Apple ProRaw DNG files
+<li>Added read support for the PNG cICP chunk
+<li>Decode more Nikon tags (thanks Warren Hatch)
+<li>Extract PreviewImage from Insta360 trailer record 0x200
+<li>Extract EmbeddedImageRectangle and some other new tags from VNT files
+<li>Minor improvement to arg_files/xmp2exif.args (thanks StarGeek)
+<li>Enhanced -ee option to extract metadata from all frames of a multipart EXR
+    image
+<li>Removed EXR Layout tag and incorporated into new Flags tag
+<li>Patched possible hang problem when reading corrupted .rm audio files
+</ul>
+
 <a name='v12.55'><b>Jan. 17, 2023 - Version 12.55</b></a>
 <ul>
 <li>Added support for geotagging from FlightAware KML files
@@ -24,7 +43,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Decode a few new Nikon tags (thanks Warren Hatch)
 <li>Decode a new Samsung HEIC tag
 <li>Decode FujiFilm RollAngle
-<li>Fixed bug where FlatName property wasn't working properly for some
+<li>Fixed bug where the FlatName property wasn't working properly for some
     user-defined structure tags
 </ul>
 

@@ -1,18 +1,18 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.56
 [File, System, Other] FileName - File Name: OpenEXR.exr
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 395 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2011:12:10 14:34:35-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:14-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
-[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, System, Time] FileAccessDate - File Access Date/Time: 2022:12:01 13:54:43-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:09:18 10:49:22-04:00
+[File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: EXR
 [File, File, Other] FileTypeExtension - File Type Extension: exr
 [File, File, Other] MIMEType - MIME Type: image/x-exr
 [File, File, Image] ImageWidth - Image Width: 3
 [File, File, Image] ImageHeight - Image Height: 2
 [OpenEXR, OpenEXR, Image] _ver - EXR Version: 2
-[OpenEXR, OpenEXR, Image] _lay - Layout: Scan Lines
+[OpenEXR, OpenEXR, Image] _flags - Flags: (none)
 [OpenEXR, OpenEXR, Image] channels - Channels: A half 1 1, B half 1 1, G half 1 1, R half 1 1
 [OpenEXR, OpenEXR, Image] compression - Compression: PIZ
 [OpenEXR, OpenEXR, Image] dataWindow - Data Window: 0 0 2 1

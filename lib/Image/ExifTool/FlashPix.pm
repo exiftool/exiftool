@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.41';
+$VERSION = '1.42';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -483,9 +483,17 @@ my %fpxFileType = (
     },
     IeImg => {
         Name => 'EmbeddedImage',
-        Notes => 'embedded images in Scene7 vignette VNT files',
+        Notes => q{
+            embedded images in Scene7 vignette VNT files.  EmbeddedImageRectangle is
+            generated for applicable images, and may be associated with the
+            corresponding EmbeddedImage via the family 3 group name
+        },
         Groups => { 2 => 'Preview' },
         Binary => 1,
+    },
+    IeImg_rect => { # (not a real tag -- extracted from Contents of VNT file)
+        Name => 'EmbeddedImageRectangle',
+        Hidden => 1,
     },
 );
 
@@ -1059,6 +1067,7 @@ my %fpxFileType = (
 %Image::ExifTool::FlashPix::Contents = (
     PROCESS_PROC => \&ProcessProperties,
     GROUPS => { 2 => 'Image' },
+    OriginalFileName => { Name => 'OriginalFileName', Hidden => 1 }, # (not a real tag -- extracted from Contents of VNT file)
 );
 
 # CompObj tags
@@ -1537,11 +1546,43 @@ sub ProcessContents($$$)
     my $isFLA;
 
     # all of my FLA samples contain "Contents" data, and no other FPX-like samples have
-    # this, but check the data for a familiar pattern to be sure this is FLA: the
-    # Contents of all of my FLA samples start with two bytes (0x29,0x38,0x3f,0x43 or 0x47,
-    # then 0x01) followed by a number of zero bytes (from 0x18 to 0x26 of them, related
-    # somehow to the value of the first byte), followed by the string "DocumentPage"
-    $isFLA = 1 if $$dataPt =~ /^..\0+\xff\xff\x01\0\x0d\0CDocumentPage/s;
+    # this (except Scene7 VNT viles), but check the data for a familiar pattern to be
+    # sure this is FLA: the Contents of all of my FLA samples start with two bytes
+    # (0x29,0x38,0x3f,0x43 or 0x47, then 0x01) followed by a number of zero bytes
+    # (from 0x18 to 0x26 of them, related somehow to the value of the first byte),
+    # followed by the string "DocumentPage"
+    if ($$dataPt =~ /^..\0+\xff\xff\x01\0\x0d\0CDocumentPage/s) {
+        $isFLA = 1;
+    } elsif ($$dataPt =~ /^\0{4}.(.{1,255})\x60\xa1\x3f\x22\0{5}(.{8})/sg) {
+        # this looks like a VNT file
+        $et->OverrideFileType('VNT', 'image/x-vignette');
+        # hack to set proper file description (extension is the same for V-Note files)
+        $Image::ExifTool::static_vars{OverrideFileDescription}{VNT} = 'Scene7 Vignette',
+        my $name = $1;
+        my ($w, $h) = unpack('V2',$2);
+        $et->FoundTag(ImageWidth => $w);
+        $et->FoundTag(ImageHeight => $h);
+        $et->HandleTag($tagTablePtr, OriginalFileName => $name);        
+        if ($$dataPt =~ /\G\x01\0{4}(.{12})/sg) {
+            # (first 4 bytes seem to be number of objects, next 4 bytes are zero, then ICC size)
+            my $size = unpack('x8V', $1);
+            # (not useful?) $et->FoundTag(NumObjects => $num);
+            if ($size and pos($$dataPt) + $size < length($$dataPt)) {
+                my $dat = substr($$dataPt, pos($$dataPt), $size);
+                $et->FoundTag(ICC_Profile => $dat);
+                pos($$dataPt) += $size;
+            }
+            $$et{IeImg_lkup} = { };
+            # - the byte after TargetRole1 is 0x0d or 0x11 for separate images in my samples,
+            #   and 0x1c or 0x23 for inline masks
+            while ($$dataPt =~ /\x0bTargetRole1.\x80\0\0\x01.{4}(.{24})/sg) {
+                my ($index, @coords) = unpack('Vx4V4', $1);
+                next if $index == 0xffffffff;
+                $$et{IeImg_lkup}{$index} and $et->WarnOnce('Duplicate image index');
+                $$et{IeImg_lkup}{$index} = "@coords";
+            }
+        }
+    }
 
     # do a brute-force scan of the "Contents" for UTF-16 XMP
     # (this may always be little-endian, but allow for either endianness)
@@ -2337,8 +2378,24 @@ sub ProcessFPX($$)
                 );
                 my $subTablePtr = GetTagTable($$subdir{TagTable});
                 $et->ProcessDirectory(\%dirInfo, $subTablePtr,  $$subdir{ProcessProc});
+            } elsif (defined $size and $size > length($buff)) {
+                $et->WarnOnce('Truncated object');
             } else {
-                $et->FoundTag($tagInfo, $buff);
+                $buff = substr($buff, 0, $size) if defined $size and $size < length($buff);
+                if ($tag =~ /^IeImg_0*(\d+)$/) {
+                    # set document number for embedded images and their positions (if available, VNT files)
+                    my $num = $1;
+                    $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                    $et->FoundTag($tagInfo, $buff);
+                    if ($$et{IeImg_lkup} and $$et{IeImg_lkup}{$num}) {
+                        # save position of this image
+                        $et->HandleTag($tagTablePtr, IeImg_rect => $$et{IeImg_lkup}{$num});
+                        delete $$et{IeImg_lkup}{$num};
+                    }
+                    delete $$et{DOC_NUM};
+                } else {
+                    $et->FoundTag($tagInfo, $buff);
+                }
             }
             # save object index number for all found tags
             my $num2 = $$et{NUM_FOUND};
@@ -2394,6 +2451,10 @@ sub ProcessFPX($$)
     }
     # process Word document table
     ProcessDocumentTable($et);
+
+    if ($$et{IeImg_lkup} and %{$$et{IeImg_lkup}}) {
+        $et->Warn('Image positions exist without corresponding images');
+    }
 
     return 1;
 }

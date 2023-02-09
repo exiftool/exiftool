@@ -61,106 +61,111 @@ check if speed is more of a concern.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#PrimaryChromaticities'>PNG PrimaryChromaticities Tags</a></td></tr>
 <tr class=b>
+<td>'cICP'</td>
+<td>CICodePoints</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PNG.html#CICodePoints'>PNG CICodePoints Tags</a></td></tr>
+<tr>
 <td>'caBX'</td>
 <td>JUMBF</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'dSIG'</td>
 <td>DigitalSignature</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'eXIf'</td>
 <td>eXIf</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br><span class='n s'>(this is where ExifTool will create new EXIF)</span></td></tr>
-<tr>
+<tr class=b>
 <td>'fRAc'</td>
 <td>FractalParameters</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'gAMA'</td>
 <td>Gamma</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td><span class=s><span class=n>(ExifTool reports the gamma for decoding the image, which is consistent with
 the EXIF convention, but is the inverse of the stored encoding gamma)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'gIFg'</td>
 <td>GIFGraphicControlExtension</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'gIFt'</td>
 <td>GIFPlainTextExtension</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'gIFx'</td>
 <td>GIFApplicationExtension</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'hIST'</td>
 <td>PaletteHistogram</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'iCCP'</td>
 <td>ICC_Profile</td>
 <td class=c>-</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
   <br><span class='n s'>(this is where ExifTool will write a new ICC_Profile.  When creating a new
 ICC_Profile, the SRGBRendering tag should be deleted if it exists)</span></td></tr>
-<tr class=b>
+<tr>
 <td>'iCCP-name'</td>
 <td>ProfileName</td>
 <td class=c>yes</td>
 <td><span class=s><span class=n>(not a real tag ID, this tag represents the iCCP profile name, and may only
 be written when the ICC_Profile is written)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'iDOT'</td>
 <td>AppleDataOffsets</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'iTXt'</td>
 <td>InternationalText</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#TextualData'>PNG TextualData Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'oFFs'</td>
 <td>ImageOffset</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'pCAL'</td>
 <td>PixelCalibration</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'pHYs'</td>
 <td>PhysicalPixel</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#PhysicalPixel'>PNG PhysicalPixel Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'sBIT'</td>
 <td>SignificantBits</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'sCAL'</td>
 <td>SubjectScale</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#SubjectScale'>PNG SubjectScale Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'sPLT'</td>
 <td>SuggestedPalette</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'sRGB'</td>
 <td>SRGBRendering</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
@@ -169,43 +174,43 @@ be written when the ICC_Profile is written)</span></span></td></tr>
   <br>1 = Relative Colorimetric
   <br>2 = Saturation
   <br>3 = Absolute Colorimetric</span></td></tr>
-<tr class=b>
+<tr>
 <td>'sTER'</td>
 <td>StereoImage</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#StereoImage'>PNG StereoImage Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'tEXt'</td>
 <td>TextualData</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#TextualData'>PNG TextualData Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'tIME'</td>
 <td>ModifyDate</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tRNS'</td>
 <td>Transparency</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tXMP'</td>
 <td>XMP</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html'>XMP Tags</a>
   <br><span class='n s'>(obsolete location specified by a September 2001 XMP draft)</span></td></tr>
-<tr>
+<tr class=b>
 <td>'vpAg'</td>
 <td>VirtualPage</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#VirtualPage'>PNG VirtualPage Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'zTXt'</td>
 <td>CompressedText</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#TextualData'>PNG TextualData Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'zxIf'</td>
 <td>zxIf</td>
 <td class=c>-</td>
@@ -325,6 +330,81 @@ be written when the ICC_Profile is written)</span></span></td></tr>
 <tr class=b>
 <td class=r title='7 = 0x7'>7</td>
 <td>BlueY</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CICodePoints'>PNG CICodePoints Tags</a></h2>
+<p>These tags are found in the PNG cICP chunk and belong to the PNG-cICP family
+1 group.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ColorPrimaries</td>
+<td class=c>no</td>
+<td><span class=s>1 = BT.709
+  <br>2 = Unspecified
+  <br>4 = BT.470 System M (historical)
+  <br>5 = BT.470 System B, G (historical)
+  <br>6 = BT.601
+  <br>7 = SMPTE 240
+  <br>8 = Generic film (color filters using illuminant C)
+  <br>9 = BT.2020, BT.2100
+  <br>10 = SMPTE 428 (CIE 1921 XYZ)
+  <br>11 = SMPTE RP 431-2
+  <br>12 = SMPTE EG 432-1
+  <br>22 = EBU Tech. 3213-E</span></td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>TransferCharacteristics</td>
+<td class=c>no</td>
+<td><table class=cols><tr>
+  <td>0 = For future use (0)
+  <br>1 = BT.709
+  <br>2 = Unspecified
+  <br>3 = For future use (3)
+  <br>4 = BT.470 System M (historical)
+  <br>5 = BT.470 System B, G (historical)
+  <br>6 = BT.601
+  <br>7 = SMPTE 240 M
+  <br>8 = Linear
+  <br>9 = Logarithmic (100 : 1 range)
+  <br>10 = Logarithmic (100 * Sqrt(10) : 1 range)
+  <br>11 = IEC 61966-2-4
+  <br>12 = BT.1361
+  <br>13 = sRGB or sYCC
+  <br>14 = BT.2020 10-bit systems
+  <br>15 = BT.2020 12-bit systems
+  <br>16 = SMPTE ST 2084, ITU BT.2100 PQ
+  <br>17 = SMPTE ST 428
+  <br>18 = BT.2100 HLG, ARIB STD-B67</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>MatrixCoefficients</td>
+<td class=c>no</td>
+<td><span class=s>0 = Identity matrix
+  <br>1 = BT.709
+  <br>2 = Unspecified
+  <br>3 = For future use (3)
+  <br>4 = US FCC 73.628
+  <br>5 = BT.470 System B, G (historical)
+  <br>6 = BT.601
+  <br>7 = SMPTE 240 M
+  <br>8 = YCgCo
+  <br>9 = BT.2020 non-constant luminance, BT.2100 YCbCr
+  <br>10 = BT.2020 constant luminance
+  <br>11 = SMPTE ST 2085 YDzDx
+  <br>12 = Chromaticity-derived non-constant luminance
+  <br>13 = Chromaticity-derived constant luminance
+  <br>14 = BT.2100 ICtCp</span></td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>VideoFullRangeFlag</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -605,7 +685,7 @@ when any of these tags is written, and may only be deleted as a group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 21, 2022</i>
+<br><i>Last revised Feb 9, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

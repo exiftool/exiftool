@@ -7,6 +7,24 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 9, 2023 - Version 12.56
+
+  - Added support for VNT (both Scene7 Vignette and V-Note document) files
+  - Added read support for InfiRay APP2 metadata (thanks Marcos Del Sol Vives)
+  - Added some new Sony LensType values (thanks Jos Roost and Francois Piette)
+  - Added a new FujiFilm VideoRecordingMode value (thanks Greybeard)
+  - Added two new Canon LensTypes and CanonModelIDs (thanks Norbert Wasser)
+  - Added ability to extract semantic images from Apple ProRaw DNG files
+  - Added read support for the PNG cICP chunk
+  - Decode more Nikon tags (thanks Warren Hatch)
+  - Extract PreviewImage from Insta360 trailer record 0x200
+  - Extract EmbeddedImageRectangle and some other new tags from VNT files
+  - Minor improvement to arg_files/xmp2exif.args (thanks StarGeek)
+  - Enhanced -ee option to extract metadata from all frames of a multipart EXR
+    image
+  - Removed EXR Layout tag and incorporated into new Flags tag
+  - Patched possible hang problem when reading corrupted .rm audio files
+
 Jan. 17, 2023 - Version 12.55
 
   - Added support for geotagging from FlightAware KML files
@@ -14,7 +32,7 @@ Jan. 17, 2023 - Version 12.55
   - Decode a few new Nikon tags (thanks Warren Hatch)
   - Decode a new Samsung HEIC tag
   - Decode FujiFilm RollAngle
-  - Fixed bug where FlatName property wasn't working properly for some
+  - Fixed bug where the FlatName property wasn't working properly for some
     user-defined structure tags
 
 Jan. 6, 2023 - Version 12.54

@@ -217,6 +217,12 @@ POSIX::strptime or Time::Piece is installed (use "<code>exiftool -ver -v</code>"
 to check the installed packages).  The format of the <code>-d</code> argument is
 the same for reading and writing.</blockquote>
 
+<blockquote>The <code>-n</code> option may be used to disable all of the
+date/time reformatting when reading and writing which will allow otherwise
+invalid date/time values to be written (eg. partial EXIF dates).  The
+reformatting may be disabled on a per-tag basis by adding "<code>#</code>"
+to the tag name instead of using <code>-n</code></blockquote>
+
 <blockquote><b>Special feature</b>: A value of "<code>now</code>" may be used to
 represent the current time when writing any date/time tag.  For example:
 <pre>exiftool -xmp:dateTimeOriginal=now a.jpg</pre>
@@ -1778,7 +1784,7 @@ like 1, two completely different algorithms would be required.</li>
 </ol></blockquote>
 
 <hr>
-<i>Last revised Nov 16, 2022</i>
+<i>Last revised Feb 8, 2023</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

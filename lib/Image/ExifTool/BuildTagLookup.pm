@@ -314,10 +314,12 @@ C<integer> is a string of digits (possibly beginning with a '+' or '-'),
 C<real> is a floating point number, C<rational> is entered as a floating
 point number but stored as two C<integer> strings separated by a '/'
 character, C<date> is a date/time string entered in the format "YYYY:mm:dd
-HH:MM:SS[.ss][+/-HH:MM]", C<boolean> is either "True" or "False" (but "true"
-and "false" may be written as a ValueConv value for compatibility with
-non-conforming applications), C<struct> indicates a structured tag, and
-C<lang-alt> is a tag that supports alternate languages.
+HH:MM:SS[.ss][+/-HH:MM]" but some partial date/time formats are also
+accepted (see L<https://exiftool.org/faq.html#Q5>), C<boolean> is either
+"True" or "False" (but "true" and "false" may be written as a ValueConv
+value for compatibility with non-conforming applications), C<struct>
+indicates a structured tag, and C<lang-alt> is a tag that supports alternate
+languages.
 
 When reading, C<struct> tags are extracted only if the L<Struct|../ExifTool.html#Struct> (-struct)
 option is used.  Otherwise the corresponding I<Flattened> tags, indicated by

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26274 tags, with 16757 unique tag names.
+They contain a total of 26374 tags, with 16843 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -112,30 +112,38 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
   'APP2'       ICC_Profile                      ICC_Profile
                FPXR                             FlashPix
                MPF                              MPF
+               InfiRayVersion                   InfiRay Version
                PreviewImage                     no
   'APP3'       Meta                             Kodak Meta
                Stim                             Stim
                JPS                              JPEG JPS
                ThermalData                      no
+               ImagingData                      no
                PreviewImage                     no
   'APP4'       Scalado                          Scalado
                FPXR                             FlashPix
+               InfiRayFactory                   InfiRay Factory
                ThermalParams                    DJI ThermalParams
                PreviewImage                     no
   'APP5'       RMETA                            Ricoh RMETA
                SamsungUniqueID                  Samsung APP5
+               InfiRayPicture                   InfiRay Picture
                ThermalCalibration               no
                PreviewImage                     no
   'APP6'       EPPIM                            JPEG EPPIM
                NITF                             JPEG NITF
                HP_TDHD                          HP TDHD
                GoPro                            GoPro GPMF
+               InfiRayMixMode                   InfiRay MixMode
                DJI_DTAT                         no
   'APP7'       Pentax                           Pentax
                Huawei                           Unknown
                Qualcomm                         Qualcomm
+               InfiRayOpMode                    InfiRay OpMode
   'APP8'       SPIFF                            JPEG SPIFF
+               InfiRayIsothermal                InfiRay Isothermal
   'APP9'       MediaJukebox                     JPEG MediaJukebox
+               InfiRaySensor                    InfiRay Sensor
   'APP10'      Comment                          no
   'APP11'      JPEG-HDR                         JPEG HDR
                JUMBF                            Jpeg2000
@@ -361,6 +369,8 @@ for the official EXIF 2.32 specification.
   0x010f   Make                      IFD0       string
   0x0110   Model                     IFD0       string
   0x0111   StripOffsets              -          no
+           OtherImageStart           -          no
+           StripOffsets              -          no
            PreviewImageStart         IFD0       int32u*
            PreviewImageStart         All        int32u*
            JpgFromRawStart           SubIFD2    int32u*
@@ -368,6 +378,8 @@ for the official EXIF 2.32 specification.
   0x0115   SamplesPerPixel           IFD0       int16u!
   0x0116   RowsPerStrip              IFD0       int32u!
   0x0117   StripByteCounts           -          no
+           OtherImageLength          -          no
+           StripByteCounts           -          no
            PreviewImageLength        IFD0       int32u*
            PreviewImageLength        All        int32u*
            JpgFromRawLength          SubIFD2    int32u*
@@ -1188,10 +1200,12 @@ C<integer> is a string of digits (possibly beginning with a '+' or '-'),
 C<real> is a floating point number, C<rational> is entered as a floating
 point number but stored as two C<integer> strings separated by a '/'
 character, C<date> is a date/time string entered in the format "YYYY:mm:dd
-HH:MM:SS[.ss][+/-HH:MM]", C<boolean> is either "True" or "False" (but "true"
-and "false" may be written as a ValueConv value for compatibility with
-non-conforming applications), C<struct> indicates a structured tag, and
-C<lang-alt> is a tag that supports alternate languages.
+HH:MM:SS[.ss][+/-HH:MM]" but some partial date/time formats are also
+accepted (see L<https://exiftool.org/faq.html#Q5>), C<boolean> is either
+"True" or "False" (but "true" and "false" may be written as a ValueConv
+value for compatibility with non-conforming applications), C<struct>
+indicates a structured tag, and C<lang-alt> is a tag that supports alternate
+languages.
 
 When reading, C<struct> tags are extracted only if the Struct (-struct)
 option is used.  Otherwise the corresponding I<Flattened> tags, indicated by
@@ -14064,6 +14078,13 @@ Tags written by some Nikon GPS-equipped cameras like the AW100.
       0    FirmwareVersion                      no
      10    NEFCompression                       int16u[0.5]
 
+=head3 Nikon MakerNotes0x56 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    FirmwareVersion                      no
+      4    BurstGroupID                         int16u
+
 =head3 Nikon AFInfo Tags
 
   Index1   Tag Name                             Writable
@@ -14492,12 +14513,15 @@ These tags are extracted from encrypted data in images from the Z9.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
-  27792    FocusShiftShooting                   int8u~
-  27800    IntervalShooting                     int16u~
-  60139    RollAngle                            fixed32u
-  60143    PitchAngle                           fixed32u
-  60147    YawAngle                             fixed32u
-  60491    MenuSettingsZ9                       Nikon MenuSettingsZ9
+    180    FocusShiftShooting                   int8u~
+    188    IntervalShooting                     int16u~
+  17644    MenuSettingsZ9                       Nikon MenuSettingsZ9
+                                                -
+                                                Nikon MenuSettingsZ9Firmware3
+  32965    RollAngle                            fixed32u
+  32969    PitchAngle                           fixed32u
+  32973    YawAngle                             fixed32u
+  33317    MenuSettingsZ9                       Nikon MenuSettingsZ9
                                                 -
                                                 Nikon MenuSettingsZ9Firmware3
 
@@ -14583,6 +14607,7 @@ These tags are used by the Z9 firmware 3.00.
 
   Index1 Tag Name                               Writable
   ---------------                               --------
+   72    HighFrameRate                          int8u
   154    MultipleExposureMode                   int8u
   156    MultiExposureShots                     int8u
   204    Intervals                              int32u
@@ -14653,6 +14678,8 @@ These tags are used by the Z9 firmware 3.00.
   1684   USBPowerDelivery?                      int8u
   1693   SensorShield?                          int8u
   1754   FocusShiftAutoReset?                   int8u
+  1810   PreReleaseBurstLength                  int8u
+  1812   PostReleaseBurstLength                 int8u
 
 =head3 Nikon ShotInfo Tags
 
@@ -22332,6 +22359,38 @@ embedded images.
      12    DependentImage1EntryNumber           no
      14    DependentImage2EntryNumber           no
 
+=head2 InfiRay Tags
+
+=head3 InfiRay Version Tags
+
+This table lists tags found in the InfiRay APP2 IJPEG version header, found
+in JPEGs taken with the P2 Pro camera app.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    IJPEGVersion                         no
+     12    IJPEGOrgType                         no
+     13    IJPEGDispType                        no
+     14    IJPEGRotate                          no
+     15    IJPEGMirrorFlip                      no
+     16    ImageColorSwitchable                 no
+     17    ThermalColorPalette                  no
+     32    IRDataSize                           no
+     40    IRDataFormat                         no
+     42    IRImageWidth                         no
+     44    IRImageHeight                        no
+     46    IRImageBpp                           no
+     48    TempDataSize                         no
+     56    TempDataFormat                       no
+     58    TempImageWidth                       no
+     60    TempImageHeight                      no
+     62    TempImageBpp                         no
+     64    VisibleDataSize                      no
+     72    VisibleDataFormat                    no
+     74    VisibleImageWidth                    no
+     76    VisibleImageHeight                   no
+     78    VisibleImageBpp                      no
+
 =head2 Stim Tags
 
 These tags are part of the CIPA Stereo Still Image specification, and are
@@ -22394,6 +22453,54 @@ L<http://www.scalado.com/>.)
   'QUAL'   PreviewQuality                       no
   'SPMO'   DataLength?                          no
   'WDTH'   PreviewImageWidth                    no
+
+=head2 InfiRay Tags
+
+=head3 InfiRay Factory Tags
+
+This table lists tags found in the InfiRay APP4 IJPEG camera factory
+defaults and calibration data.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    IJPEGTempVersion                     no
+      4    FactDefEmissivity                    no
+      5    FactDefTau                           no
+      6    FactDefTa                            no
+      8    FactDefTu                            no
+     10    FactDefDist                          no
+     12    FactDefA0                            no
+     16    FactDefB0                            no
+     20    FactDefA1                            no
+     24    FactDefB1                            no
+     28    FactDefP0                            no
+     32    FactDefP1                            no
+     36    FactDefP2                            no
+     68    FactRelSensorTemp                    no
+     70    FactRelShutterTemp                   no
+     72    FactRelLensTemp                      no
+    100    FactStatusGain                       no
+    101    FactStatusEnvOK                      no
+    102    FactStatusDistOK                     no
+    103    FactStatusTempMap                    no
+
+=head3 InfiRay Picture Tags
+
+This table lists tags found in the InfiRay APP5 IJPEG picture temperature
+information.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    EnvironmentTemp                      no
+      4    Distance                             no
+      8    Emissivity                           no
+     12    Humidity                             no
+     16    ReferenceTemp                        no
+     32    TempUnit                             no
+     33    ShowCenterTemp                       no
+     34    ShowMaxTemp                          no
+     35    ShowMinTemp                          no
+     36    TempMeasureCount                     no
 
 =head2 GoPro Tags
 
@@ -22540,6 +22647,20 @@ Tags extracted from the MP4 "fdsc" timed metadata when the ExtractEmbedded
      23    SerialNumber                         no
      87    OtherSerialNumber                    no
     102    Model                                no
+
+=head2 InfiRay Tags
+
+=head3 InfiRay MixMode Tags
+
+This table lists tags found in the InfiRay APP6 IJPEG visual-infrared mixing
+mode section.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    MixMode                              no
+      1    FusionIntensity                      no
+      5    OffsetAdjustment                     no
+      9    CorrectionAsix                       no
 
 =head2 Qualcomm Tags
 
@@ -23738,6 +23859,56 @@ even if it is not listed in this table.
   YhiYloCorK0                                   no
   YhiYloCorK1                                   no
   YhiYloCorK2                                   no
+
+=head2 InfiRay Tags
+
+=head3 InfiRay OpMode Tags
+
+This table lists tags found in the InfiRay APP7 IJPEG camera operation mode
+section.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    WorkingMode                          no
+      1    IntegralTime                         no
+      5    IntegratTimeHdr                      no
+      9    GainStable                           no
+     10    TempControlEnable                    no
+     11    DeviceTemp                           no
+
+=head3 InfiRay Isothermal Tags
+
+This table lists tags found in the InfiRay APP8 IJPEG picture isothermal
+information.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    IsothermalMax                        no
+      4    IsothermalMin                        no
+      8    ChromaBarMax                         no
+     12    ChromaBarMin                         no
+
+=head3 InfiRay Sensor Tags
+
+This table lists tags found in the InfiRay APP9 IJPEG sensor information
+chunk.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    IRSensorManufacturer                 no
+     64    IRSensorName                         no
+    128    IRSensorPartNumber                   no
+    192    IRSensorSerialNumber                 no
+    256    IRSensorFirmware                     no
+    320    IRSensorAperture                     no
+    324    IRFocalLength                        no
+    384    VisibleSensorManufacturer            no
+    448    VisibleSensorName                    no
+    512    VisibleSensorPartNumber              no
+    576    VisibleSensorSerialNumber            no
+    640    VisibleSensorFirmware                no
+    704    VisibleSensorAperture                no
+    708    VisibleFocalLength                   no
 
 =head2 Jpeg2000 Tags
 
@@ -25876,6 +26047,7 @@ check if speed is more of a concern.
   'acTL'             AnimationControl           PNG AnimationControl
   'bKGD'             BackgroundColor            no
   'cHRM'             PrimaryChromaticities      PNG PrimaryChromaticities
+  'cICP'             CICodePoints               PNG CICodePoints
   'caBX'             JUMBF                      Jpeg2000
   'dSIG'             DigitalSignature           no
   'eXIf'             eXIf                       EXIF
@@ -25939,6 +26111,18 @@ L<https://wiki.mozilla.org/APNG_Specification> for details.
       5    GreenY                               no
       6    BlueX                                no
       7    BlueY                                no
+
+=head3 PNG CICodePoints Tags
+
+These tags are found in the PNG cICP chunk and belong to the PNG-cICP family
+1 group.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    ColorPrimaries                       no
+      1    TransferCharacteristics              no
+      2    MatrixCoefficients                   no
+      3    VideoFullRangeFlag                   no
 
 =head3 PNG TextualData Tags
 
@@ -26403,12 +26587,13 @@ Tags extracted from DPX (Digital Picture Exchange) images.
 
 =head2 OpenEXR Tags
 
-Information extracted from EXR images.  See L<http://www.openexr.com/> for
-the official specification.
+Information extracted from EXR images.  Use the ExtractEmbedded option to
+extract information from all frames of a multipart image.  See
+L<http://www.openexr.com/> for the official specification.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
-  '_lay'               Layout                   no
+  '_flags'             Flags                    no
   '_ver'               EXRVersion               no
   'adoptedNeutral'     AdoptedNeutral           no
   'altitude'           GPSAltitude              no
@@ -26416,6 +26601,7 @@ the official specification.
   'capDate'            DateTimeOriginal         no
   'channels'           Channels                 no
   'chromaticities'     Chromaticities           no
+  'chunkCount'         ChunkCount               no
   'comments'           Comments                 no
   'compression'        Compression              no
   'dataWindow'         DataWindow               no
@@ -26431,6 +26617,7 @@ the official specification.
   'longitude'          GPSLongitude             no
   'lookModTransform'   LookModTransform         no
   'multiView'          MultiView                no
+  'name'               Name                     no
   'owner'              Owner                    no
   'pixelAspectRatio'   PixelAspectRatio         no
   'preview'            Preview                  no
@@ -26439,7 +26626,9 @@ the official specification.
   'screenWindowWidth'  ScreenWindowWidth        no
   'tiles'              Tiles                    no
   'timeCode'           TimeCode                 no
+  'type'               Type                     no
   'utcOffset'          TimeZone                 no
+  'version'            Version                  no
   'whiteLuminance'     WhiteLuminance           no
   'worldToCamera'      WorldToCamera            no
   'worldToNDC'         WorldToNDC               no
@@ -37221,6 +37410,17 @@ name.  See L<http://tools.ietf.org/html/rfc5545> for the official iCalendar
   'X-wr-relcalid'       CalendarID              no
   'X-wr-timezone'       TimeZone2               no
 
+=head3 VCard VNote Tags
+
+Tags extracted from V-Note VNT files.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'Body'               Body                     no
+  'Dcreated'           CreateDate               no
+  'Last-modified'      ModifyDate               no
+  'Version'            Version                  no
+
 =head2 Text Tags
 
 Although basic text files contain no metadata, the following tags are
@@ -38009,6 +38209,8 @@ values, may created via the ExifTool configuration file.
   OriginalDecisionData OriginalDecisionDataOffset yes!
   OtherImage           OtherImageStart          yes
                        OtherImageLength
+                       OtherImageStart (1)
+                       OtherImageLength (1)
   PeakSpectralSensitivity FLIR:PlanckB          no
   PreviewImage         PreviewImageStart        yes
                        PreviewImageLength

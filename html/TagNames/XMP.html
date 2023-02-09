@@ -28,10 +28,12 @@ specifies the information format:  <code>string</code> is an unformatted string,
 <code>real</code> is a floating point number, <code>rational</code> is entered as a floating
 point number but stored as two <code>integer</code> strings separated by a &#39;/&#39;
 character, <code>date</code> is a date/time string entered in the format &quot;YYYY:mm:dd
-HH:MM:SS[.ss][+/-HH:MM]&quot;, <code>boolean</code> is either &quot;True&quot; or &quot;False&quot; (but &quot;true&quot;
-and &quot;false&quot; may be written as a ValueConv value for compatibility with
-non-conforming applications), <code>struct</code> indicates a structured tag, and
-<code>lang-alt</code> is a tag that supports alternate languages.</p>
+HH:MM:SS[.ss][+/-HH:MM]&quot; but some partial date/time formats are also
+accepted (see <a href="../faq.html#Q5">faq.html#Q5</a>), <code>boolean</code> is either
+&quot;True&quot; or &quot;False&quot; (but &quot;true&quot; and &quot;false&quot; may be written as a ValueConv
+value for compatibility with non-conforming applications), <code>struct</code>
+indicates a structured tag, and <code>lang-alt</code> is a tag that supports alternate
+languages.</p>
 
 <p>When reading, <code>struct</code> tags are extracted only if the <a href="../ExifTool.html#Struct">Struct</a> (-struct)
 option is used.  Otherwise the corresponding <i>Flattened</i> tags, indicated by
@@ -19880,7 +19882,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 4, 2023</i>
+<br><i>Last revised Feb 9, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

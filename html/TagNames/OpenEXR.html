@@ -8,24 +8,27 @@
 </head>
 <body>
 <h2 class=top>OpenEXR Tags</h2>
-<p>Information extracted from EXR images.  See <a href="http://www.openexr.com/">http://www.openexr.com/</a> for
-the official specification.</p>
+<p>Information extracted from EXR images.  Use the ExtractEmbedded option to
+extract information from all frames of a multipart image.  See
+<a href="http://www.openexr.com/">http://www.openexr.com/</a> for the official specification.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td>'_lay'</td>
-<td>Layout</td>
+<td>'_flags'</td>
+<td>Flags</td>
 <td class=c>no</td>
-<td><span class=s>0x0 = Scan Lines
-  <br>0x200 = Tiles</span></td></tr>
+<td><span class=s>Bit 9 = Tiled
+  <br>Bit 10 = Long names
+  <br>Bit 11 = Deep data
+  <br>Bit 12 = Multipart</span></td></tr>
 <tr class=b>
 <td>'_ver'</td>
 <td>EXRVersion</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(low byte of Flags word)</span></span></td></tr>
 <tr>
 <td>'adoptedNeutral'</td>
 <td>AdoptedNeutral</td>
@@ -57,11 +60,16 @@ the official specification.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'chunkCount'</td>
+<td>ChunkCount</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'comments'</td>
 <td>Comments</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'compression'</td>
 <td>Compression</td>
 <td class=c>no</td>
@@ -75,72 +83,77 @@ the official specification.</p>
   <br>6 = B44
   <br>7 = B44A</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td>'dataWindow'</td>
 <td>DataWindow</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'displayWindow'</td>
 <td>DisplayWindow</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'envmap'</td>
 <td>EnvironmentMap</td>
 <td class=c>no</td>
 <td><span class=s>0 = Latitude/Longitude
   <br>1 = Cube</span></td></tr>
-<tr class=b>
+<tr>
 <td>'expTime'</td>
 <td>ExposureTime</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'focus'</td>
 <td>FocusDistance</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'framesPerSecond'</td>
 <td>FramesPerSecond</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'isoSpeed'</td>
 <td>ISO</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'keyCode'</td>
 <td>KeyCode</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'latitude'</td>
 <td>GPSLatitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'lineOrder'</td>
 <td>LineOrder</td>
 <td class=c>no</td>
 <td><span class=s>0 = Increasing Y
   <br>1 = Decreasing Y
   <br>2 = Random Y</span></td></tr>
-<tr>
+<tr class=b>
 <td>'longitude'</td>
 <td>GPSLongitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'lookModTransform'</td>
 <td>LookModTransform</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'multiView'</td>
 <td>MultiView</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'name'</td>
+<td>Name</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -184,8 +197,18 @@ the official specification.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'type'</td>
+<td>Type</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'utcOffset'</td>
 <td>TimeZone</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'version'</td>
+<td>Version</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -217,7 +240,7 @@ the official specification.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 14, 2011</i>
+<br><i>Last revised Feb 9, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

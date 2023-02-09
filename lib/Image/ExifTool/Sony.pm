@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.56';
+$VERSION = '3.57';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -160,6 +160,7 @@ sub PrintInvLensSpec($;$$);
     32875 => 'Sony FE 24-70mm F2.8 GM II', #JR
     32876 => 'Sony E 11mm F1.8', #JR
     32877 => 'Sony E 15mm F1.4 G', #JR
+    32878 => 'Sony FE 20-70mm F4 G', #JR
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -191,6 +192,7 @@ sub PrintInvLensSpec($;$$);
     49235 => 'Zeiss Loxia 85mm F2.4', #JR
     49236 => 'Zeiss Loxia 25mm F2.4', #JR
 
+    49456 => 'Tamron E 18-200mm F3.5-6.3 Di III VC', #FrancoisPiette
     49457 => 'Tamron 28-75mm F2.8 Di III RXD', #JR (Model A036)
     49458 => 'Tamron 17-28mm F2.8 Di III RXD', #JR (Model A046)
     49459 => 'Tamron 35mm F2.8 Di III OSD M1:2', #IB (Model F053)
@@ -256,6 +258,8 @@ sub PrintInvLensSpec($;$$);
     50533 => 'Sigma 16-28mm F2.8 DG DN | C', #JR (022)
     50534 => 'Sigma 20mm F1.4 DG DN | A', #JR (022)
     50535 => 'Sigma 24mm F1.4 DG DN | A', #JR (022)
+    50536 => 'Sigma 60-600mm F4.5-6.3 DG DN OS | S', #JR (023)
+    50539 => 'Sigma 50mm F1.4 DG DN | A', #JR (023)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB

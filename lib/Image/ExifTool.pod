@@ -90,23 +90,23 @@ supported by ExifTool (r = read, w = write, c = create):
   CHM   r     | FPF   r     | MKA   r     | PFA   r     | TTF   r
   COS   r     | FPX   r     | MKS   r     | PFB   r     | TXT   r
   CR2   r/w   | GIF   r/w   | MKV   r     | PFM   r     | VCF   r
-  CR3   r/w   | GPR   r/w   | MNG   r/w   | PGF   r     | VRD   r/w/c
-  CRM   r/w   | GZ    r     | MOBI  r     | PGM   r/w   | VSD   r
-  CRW   r/w   | HDP   r/w   | MODD  r     | PLIST r     | WAV   r
-  CS1   r/w   | HDR   r     | MOI   r     | PICT  r     | WDP   r/w
-  CSV   r     | HEIC  r/w   | MOS   r/w   | PMP   r     | WEBP  r/w
-  CUR   r     | HEIF  r/w   | MOV   r/w   | PNG   r/w   | WEBM  r
-  CZI   r     | HTML  r     | MP3   r     | PPM   r/w   | WMA   r
-  DCM   r     | ICC   r/w/c | MP4   r/w   | PPT   r     | WMV   r
-  DCP   r/w   | ICO   r     | MPC   r     | PPTX  r     | WTV   r
-  DCR   r     | ICS   r     | MPG   r     | PS    r/w   | WV    r
-  DFONT r     | IDML  r     | MPO   r/w   | PSB   r/w   | X3F   r/w
-  DIVX  r     | IIQ   r/w   | MQV   r/w   | PSD   r/w   | XCF   r
-  DJVU  r     | IND   r/w   | MRC   r     | PSP   r     | XLS   r
-  DLL   r     | INSP  r/w   | MRW   r/w   | QTIF  r/w   | XLSX  r
-  DNG   r/w   | INSV  r     | MXF   r     | R3D   r     | XMP   r/w/c
-  DOC   r     | INX   r     | NEF   r/w   | RA    r     | ZIP   r
-  DOCX  r     | ISO   r     | NKSC  r/w   | RAF   r/w   |
+  CR3   r/w   | GPR   r/w   | MNG   r/w   | PGF   r     | VNT   r
+  CRM   r/w   | GZ    r     | MOBI  r     | PGM   r/w   | VRD   r/w/c
+  CRW   r/w   | HDP   r/w   | MODD  r     | PLIST r     | VSD   r
+  CS1   r/w   | HDR   r     | MOI   r     | PICT  r     | WAV   r
+  CSV   r     | HEIC  r/w   | MOS   r/w   | PMP   r     | WDP   r/w
+  CUR   r     | HEIF  r/w   | MOV   r/w   | PNG   r/w   | WEBP  r/w
+  CZI   r     | HTML  r     | MP3   r     | PPM   r/w   | WEBM  r
+  DCM   r     | ICC   r/w/c | MP4   r/w   | PPT   r     | WMA   r
+  DCP   r/w   | ICO   r     | MPC   r     | PPTX  r     | WMV   r
+  DCR   r     | ICS   r     | MPG   r     | PS    r/w   | WTV   r
+  DFONT r     | IDML  r     | MPO   r/w   | PSB   r/w   | WV    r
+  DIVX  r     | IIQ   r/w   | MQV   r/w   | PSD   r/w   | X3F   r/w
+  DJVU  r     | IND   r/w   | MRC   r     | PSP   r     | XCF   r
+  DLL   r     | INSP  r/w   | MRW   r/w   | QTIF  r/w   | XLS   r
+  DNG   r/w   | INSV  r     | MXF   r     | R3D   r     | XLSX  r
+  DOC   r     | INX   r     | NEF   r/w   | RA    r     | XMP   r/w/c
+  DOCX  r     | ISO   r     | NKSC  r/w   | RAF   r/w   | ZIP   r
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -642,11 +642,11 @@ XMP to be extracted.
 Flag to extract information from embedded documents in EPS files, embedded
 EPS information and JPEG and Jpeg2000 images in PDF files, embedded MPF
 images in JPEG and MPO files, metadata after the first Cluster in MKV files,
-timed metadata in videos, and the resource fork of Mac OS files. A setting
-of 2 also causes the H264 video stream in MP4 files to be parsed until the
-first SEI message is decoded, or 3 to parse the entire H264 stream in MP4
-videos and the entire M2TS file to look for any unlisted program containing
-GPS metadata. Default is undef.
+timed metadata in videos, all frames of a multipart EXR image, and the
+resource fork of Mac OS files. A setting of 2 also causes the H264 video
+stream in MP4 files to be parsed until the first SEI message is decoded, or
+3 to parse the entire H264 stream in MP4 videos and the entire M2TS file to
+look for any unlisted program containing GPS metadata. Default is undef.
 
 =item FastScan
 
@@ -2309,13 +2309,13 @@ Here is a complete list of groups for each of these families:
 
 =item Family 0 (Information Type):
 
-AFCP, AIFF, APE, APP0, APP1, APP11, APP12, APP13, APP14, APP15, APP3, APP4,
-APP5, APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG, DV, DjVu,
-Ducky, EXE, EXIF, ExifTool, FITS, FLAC, FLIR, File, Flash, FlashPix, Font,
-FotoStation, GIF, GIMP, GeoTiff, GoPro, H264, HTML, ICC_Profile, ID3, IPTC,
-ISO, ITC, JFIF, JPEG, JSON, JUMBF, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE,
-MIFF, MISB, MNG, MOI, MPC, MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg,
-OpenEXR, Opus, PDF, PICT, PLIST, PNG, PSP, Palm, Parrot, PanasonicRaw,
+AFCP, AIFF, APE, APP0, APP1, APP11, APP12, APP13, APP14, APP15, APP2, APP3,
+APP4, APP5, APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG, DV,
+DjVu, Ducky, EXE, EXIF, ExifTool, FITS, FLAC, FLIR, File, Flash, FlashPix,
+Font, FotoStation, GIF, GIMP, GeoTiff, GoPro, H264, HTML, ICC_Profile, ID3,
+IPTC, ISO, ITC, JFIF, JPEG, JSON, JUMBF, Jpeg2000, LNK, Leaf, Lytro, M2TS,
+MIE, MIFF, MISB, MNG, MOI, MPC, MPEG, MPF, MXF, MakerNotes, Matroska, Meta,
+Ogg, OpenEXR, Opus, PDF, PICT, PLIST, PNG, PSP, Palm, Parrot, PanasonicRaw,
 PhotoCD, PhotoMechanic, Photoshop, PostScript, PrintIM, QuickTime, RAF,
 RIFF, RSRC, RTF, Radiance, Rawzor, Real, Red, SVG, SigmaRaw, Stim, Theora,
 Torrent, Trailer, UserParam, VCard, Vorbis, WTV, XML, XMP, ZIP
@@ -2331,8 +2331,8 @@ GSpherical, GeoTiff, GlobParamIFD, GoPro, GraphConv, H264, HP, HTC, HTML,
 HTML-dc, HTML-ncc, HTML-office, HTML-prod, HTML-vw96, HTTP-equiv, ICC-chrm,
 ICC-clrt, ICC-header, ICC-meas, ICC-meta, ICC-view, ICC_Profile,
 ICC_Profile#, ID3, ID3v1, ID3v1_Enh, ID3v2_2, ID3v2_3, ID3v2_4, IFD0, IFD1,
-IPTC, IPTC#, ISO, ITC, Insta360, InteropIFD, ItemList, JFIF, JFXX, JPEG,
-JPEG-HDR, JPS, JSON, JUMBF, JVC, Jpeg2000, KDC_IFD, Keys, Kodak,
+IPTC, IPTC#, ISO, ITC, InfiRay, Insta360, InteropIFD, ItemList, JFIF, JFXX,
+JPEG, JPEG-HDR, JPS, JSON, JUMBF, JVC, Jpeg2000, KDC_IFD, Keys, Kodak,
 KodakBordersIFD, KodakEffectsIFD, KodakIFD, KyoceraRaw, LNK, Leaf,
 LeafSubIFD, Leica, Lyrics3, Lytro, M2TS, MAC, MIE-Audio, MIE-Camera,
 MIE-Canon, MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS, MIE-Geo, MIE-Image,
@@ -2342,25 +2342,26 @@ MPC, MPEG, MPF0, MPImage, MS-DOC, MXF, MacOS, MakerNotes, MakerUnknown,
 Matroska, MediaJukebox, Meta, MetaIFD, Microsoft, Minolta, MinoltaRaw,
 Motorola, NITF, Nikon, NikonCapture, NikonCustom, NikonScan, NikonSettings,
 NineEdits, Nintendo, Ocad, Ogg, Olympus, OpenEXR, Opus, PDF, PICT, PNG,
-PNG-pHYs, PSP, Palm, Panasonic, PanasonicRaw, Parrot, Pentax, PhaseOne,
-PhotoCD, PhotoMechanic, Photoshop, PictureInfo, PostScript, PreviewIFD,
-PrintIM, ProfileIFD, Qualcomm, QuickTime, RAF, RAF2, RIFF, RMETA, RSRC, RTF,
-Radiance, Rawzor, Real, Real-CONT, Real-MDPR, Real-PROP, Real-RA3, Real-RA4,
-Real-RA5, Real-RJMD, Reconyx, Red, Ricoh, SPIFF, SR2, SR2DataIFD, SR2SubIFD,
-SRF#, SVG, Samsung, Sanyo, Scalado, Sigma, SigmaRaw, Sony, SonyIDC, Stim,
-SubIFD, System, Theora, Torrent, Track#, UserData, VCalendar, VCard,
-Version0, Vorbis, WTV, XML, XMP, XMP-DICOM, XMP-Device, XMP-GAudio,
-XMP-GCamera, XMP-GCreations, XMP-GDepth, XMP-GFocus, XMP-GImage, XMP-GPano,
-XMP-GSpherical, XMP-LImage, XMP-MP, XMP-MP1, XMP-PixelLive, XMP-aas,
-XMP-acdsee, XMP-album, XMP-apple-fi, XMP-ast, XMP-aux, XMP-cc, XMP-cell,
-XMP-crd, XMP-creatorAtom, XMP-crs, XMP-dc, XMP-dex, XMP-digiKam,
-XMP-drone-dji, XMP-dwc, XMP-exif, XMP-exifEX, XMP-expressionmedia,
-XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr, XMP-ics, XMP-iptcCore,
-XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft, XMP-mwg-coll, XMP-mwg-kw,
-XMP-mwg-rs, XMP-nine, XMP-pdf, XMP-pdfx, XMP-photomech, XMP-photoshop,
-XMP-plus, XMP-pmi, XMP-prism, XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc,
-XMP-swf, XMP-tiff, XMP-x, XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpMM,
-XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
+PNG-cICP, PNG-pHYs, PSP, Palm, Panasonic, PanasonicRaw, Parrot, Pentax,
+PhaseOne, PhotoCD, PhotoMechanic, Photoshop, PictureInfo, PostScript,
+PreviewIFD, PrintIM, ProfileIFD, Qualcomm, QuickTime, RAF, RAF2, RIFF,
+RMETA, RSRC, RTF, Radiance, Rawzor, Real, Real-CONT, Real-MDPR, Real-PROP,
+Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx, Red, Ricoh, SPIFF, SR2,
+SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado, Sigma, SigmaRaw,
+Sony, SonyIDC, Stim, SubIFD, System, Theora, Torrent, Track#, UserData,
+VCalendar, VCard, Version0, VNote, Vorbis, WTV, XML, XMP, XMP-DICOM,
+XMP-Device, XMP-GAudio, XMP-GCamera, XMP-GCreations, XMP-GDepth, XMP-GFocus,
+XMP-GImage, XMP-GPano, XMP-GSpherical, XMP-LImage, XMP-MP, XMP-MP1,
+XMP-PixelLive, XMP-aas, XMP-acdsee, XMP-album, XMP-apple-fi, XMP-ast,
+XMP-aux, XMP-cc, XMP-cell, XMP-crd, XMP-creatorAtom, XMP-crs, XMP-dc,
+XMP-dex, XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-exif, XMP-exifEX,
+XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr, XMP-ics,
+XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft,
+XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-pdf, XMP-pdfx,
+XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism, XMP-prl,
+XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff, XMP-x, XMP-xmp,
+XMP-xmpBJ, XMP-xmpDM, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights,
+XMP-xmpTPg, ZIP, iTunes
 
 =item Family 2 (Category):
 

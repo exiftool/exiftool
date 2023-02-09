@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.33';
+$VERSION = '1.34';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
@@ -84,6 +84,10 @@ sub ProcessJPEG_HDR($$$);
         Condition => '$$valPt =~ /^MPF\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::MPF::Main' },
       }, {
+        Name => 'InfiRayVersion',
+        Condition => '$$valPt =~ /^....IJPEG\0/s',
+        SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::Version' },
+      }, {
         Name => 'PreviewImage',
         Condition => '$$valPt =~ /^(|QVGA\0|BGTH)\xff\xd8\xff\xdb/',
         Notes => 'Samsung APP2 preview image', # (Samsung/GoPro="", BenQ="QVGA\0", Digilife="BGTH")
@@ -107,6 +111,12 @@ sub ProcessJPEG_HDR($$$);
         Groups => { 0 => 'APP3', 1 => 'DJI', 2 => 'Image' },
         Binary => 1,
       }, {
+        Name => 'ImagingData', # (written by InfiRay models)
+        Condition => '$$self{HasIJPEG}',
+        Notes => 'InfiRay IR+thermal+visible data',
+        Groups => { 0 => 'APP3', 1 => 'InfiRay', 2 => 'Image' },
+        Binary => 1,
+      }, {
         Name => 'PreviewImage', # (written by HP R837 and Samsung S1060)
         Condition => '$$valPt =~ /^\xff\xd8\xff\xdb/',
         Notes => 'Samsung/HP preview image', # (Samsung, HP, BenQ)
@@ -119,6 +129,10 @@ sub ProcessJPEG_HDR($$$);
         Name => 'FPXR', # (non-standard location written by some HP models)
         Condition => '$$valPt =~ /^FPXR\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::FlashPix::Main' },
+      }, {
+        Name => 'InfiRayFactory',
+        Condition => '$$self{HasIJPEG}"',
+        SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::Factory' },
       }, {
         Name => 'ThermalParams', # (written by DJI FLIR models)
         Condition => '$$self{Make} eq "DJI" and $$valPt =~ /^\xaa\x55\x12\x06/',
@@ -135,6 +149,10 @@ sub ProcessJPEG_HDR($$$);
         Name => 'SamsungUniqueID',
         Condition => '$$valPt =~ /ssuniqueid\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::Samsung::APP5' },
+      }, {
+        Name => 'InfiRayPicture',
+        Condition => '$$self{HasIJPEG}',
+        SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::Picture' },
       }, {
         Name => 'ThermalCalibration', # (written by DJI FLIR models)
         Condition => '$$self{Make} eq "DJI"',
@@ -161,13 +179,17 @@ sub ProcessJPEG_HDR($$$);
         Name => 'GoPro',
         Condition => '$$valPt =~ /^GoPro\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
-      # also seen Motorola APP6 "MMIMETA\0", with sub-types: AL3A,ALED,MMI0,MOTD,QC3A
+      }, {
+        Name => 'InfiRayMixMode',
+        Condition => '$$self{HasIJPEG}',
+        SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::MixMode' },
       }, {
         Name => 'DJI_DTAT', # (written by ZH20T)
         Condition => '$$valPt =~ /^DTAT\0\0.\{/s',
         Groups => { 0 => 'APP6', 1 => 'DJI' },
         Notes => 'DJI Thermal Analysis Tool record',
         ValueConv => 'substr($val,7)',
+      # also seen Motorola APP6 "MMIMETA\0", with sub-types: AL3A,ALED,MMI0,MOTD,QC3A
     }],
     APP7 => [{
         Name => 'Pentax',
@@ -181,17 +203,29 @@ sub ProcessJPEG_HDR($$$);
         Name => 'Qualcomm',
         Condition => '$$valPt =~ /^\x1aQualcomm Camera Attributes/',
         SubDirectory => { TagTable => 'Image::ExifTool::Qualcomm::Main' },
+      }, {
+        Name => 'InfiRayOpMode',
+        Condition => '$$self{HasIJPEG}',
+        SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::OpMode' },
     }],
-    APP8 => {
+    APP8 => [{
         Name => 'SPIFF',
         Condition => '$$valPt =~ /^SPIFF\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::JPEG::SPIFF' },
-    },
-    APP9 => {
+      }, {
+        Name => 'InfiRayIsothermal',
+        Condition => '$$self{HasIJPEG}',
+        SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::Isothermal' },
+    }],
+    APP9 => [{
         Name => 'MediaJukebox',
         Condition => '$$valPt =~ /^Media Jukebox\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::JPEG::MediaJukebox' },
-    },
+      }, {
+        Name => 'InfiRaySensor',
+        Condition => '$$self{HasIJPEG}',
+        SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::Sensor' },
+    }],
     APP10 => {
         Name => 'Comment',
         Condition => '$$valPt =~ /^UNICODE\0/',

@@ -64,7 +64,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.17';
+$VERSION = '4.18';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -919,6 +919,14 @@ my %hDMIOutputResolutionZ9 = (
     #7 => '480p',
 );
 
+my %highFrameRateZ9 = (
+    0 => 'Off',
+    1 => 'CH',
+    3 => 'C30',
+    5 => 'C60',
+    4 => 'C120',
+);
+
 my %imageAreaZ9 = (
     0 => 'FX',
     1 => 'DX',
@@ -1651,7 +1659,7 @@ my %base64coord = (
     0x0019 => { #5
         Name => 'ExposureBracketValue',
         Writable => 'rational64s',
-        PrintConv => 'Image::ExifTool::Exif::PrintFraction($val)',
+        PrintConv => '$val !~ /undef/ ?  Image::ExifTool::Exif::PrintFraction($val) : "n/a" ',   #undef observed for Z9 jpgs at C30/C60/C90 [data is 0/0 rather than the usual 0/6]
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
     0x001a => { #PH
@@ -1803,6 +1811,7 @@ my %base64coord = (
     0x0034 => { #forum9646
         Name => 'ShutterMode',
         Writable => 'int16u',
+        RawConv => '$$self{ShutterMode} = $val',
         PrintConv => {
              0 => 'Mechanical',
              16 => 'Electronic',
@@ -1811,6 +1820,7 @@ my %base64coord = (
              64 => 'Electronic (Movie)', #JanSkoda (Z6II)
              80 => 'Auto (Mechanical)', #JanSkoda (Z6II)
              81 => 'Auto (Electronic Front Curtain)', #JanSkoda (Z6II)
+             96 => 'Electronic (High Speed)', #28   Z9 at C30/C60/C120 frame rates
         },
     },
     0x0035 => [{ #32
@@ -1874,6 +1884,14 @@ my %base64coord = (
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::MakerNotes0x51' },
     },
     #0x0053 #28 possibly a secondary DistortionControl block (in addition to DistortInfo)?  Certainly offset 0x04 within block contains tag AutoDistortionControl for Z72 and D6  (1=>On; 2=> Off)
+    0x0056 => { #28 (Z9)
+        Name => 'MakerNotes0x56',
+        Writable => 'undef',
+        Hidden => 1,
+        Permanent => 0,
+        Flags => [ 'Binary', 'Protected' ],
+        SubDirectory => { TagTable => 'Image::ExifTool::Nikon::MakerNotes0x56' },
+    },
     #0x005e #28 possibly DiffractionCompensation block?  Certainly offset 0x04 within block contains tag DiffractionCompensation
     0x0080 => { Name => 'ImageAdjustment',  Writable => 'string' },
     0x0081 => { Name => 'ToneComp',         Writable => 'string' }, #2
@@ -2003,6 +2021,7 @@ my %base64coord = (
                 6 => 'White-Balance Bracketing',
                 7 => 'IR Control',
                 8 => 'D-Lighting Bracketing', #forum6281 (NC)
+                11 => 'Pre-capture', #28  Z9 pre-release burst
             });
         ],
     },
@@ -5285,6 +5304,7 @@ my %nikonFocalConversions = (
             22 => 'Nikkor Z 24-50mm f/4-6.3', #IB
             23 => 'Nikkor Z 14-24mm f/2.8 S', #IB
             24 => 'Nikkor Z MC 105mm f/2.8 VR S', #IB
+            25 => 'Nikkor Z 40mm f/2', #28
             27 => 'Nikkor Z MC 50mm f/2.8', #IB
             28 => 'Nikkor Z 100-400mm f/4.5-5.6 VR S', #28
             29 => 'Nikkor Z 28mm f/2.8', #IB
@@ -5292,7 +5312,10 @@ my %nikonFocalConversions = (
             31 => 'Nikkor Z 24-120 f/4', #28
             32 => 'Nikkor Z 800mm f/6.3 VR S', #28
             36 => 'Nikkor Z 400mm f/4.5 VR S', #IB
+            37 => 'Nikkor Z 600mm f/4 TC VR S', #28
             39 => 'Nikkor Z 17-28mm f/2.8', #IB
+            32768 => 'Nikkor Z 400mm f/2.8 TC VR S TC-1.4x', #28
+            32769 => 'Nikkor Z 600mm f/4 TC VR S TC-1.4x', #28
         },
     },
     0x35 => { #28
@@ -8334,9 +8357,9 @@ my %nikonFocalConversions = (
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x30, 0x38, 0x84, 0x8c, 0x6c6f, 0x6c90, 0x6c98,
-                    0x6c9a, 0xeaea, 0xeb6f, 0xeb70 ],
-    IS_SUBDIR => [ 0xec4b ],
+    DATAMEMBER => [ 0x04, 0x30, 0x84, 0x8c,0x93, 0xb4, 0xbc, 0xbe,
+                    0x4410, 0x4411, 0x80c4, 0x8149, 0x814a ],
+    IS_SUBDIR => [ 0x44ec, 0x8225 ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -8373,20 +8396,12 @@ my %nikonFocalConversions = (
         Hidden => 1,
     },
     0x30 => {
-        Name => 'Offset3',   #offset3 - length 2528 (Z9 firmware 1.0)
-        DataMember => 'Offset3',
+        Name => 'SequenceOffset',   #offset3 - length 2528 (Z9 firmware 1.0)
+        DataMember => 'SequenceOffset',
         Format => 'int32u',
         Writable => 0,
         Hidden => 1,
-        RawConv => '$$self{Offset3} = $val || 0x10000000; undef', # (ignore if 0)
-    },
-    0x38 => {
-        Name => 'Offset5',   #offset5 - length 2488 (Z9 firmware 1.0)
-        DataMember => 'Offset5',
-        Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{Offset5} = $val || 0x10000000; undef', # (ignore if 0)
+        RawConv => '$$self{SequenceOffset} = $val || 0x10000000; undef', # (ignore if 0)
     },
     0x84 => {
         Name => 'OrientationOffset',   #offset24 - length 108 (Z9 firmware 1.0)
@@ -8397,23 +8412,25 @@ my %nikonFocalConversions = (
         RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef', # (ignore if 0)
     },
     0x8c => {
-        Name => 'Offset26',   #offset26 - length 1895 (Z9 firmware 1.0)
-        DataMember => 'Offset26',
+        Name => 'MenuOffset',   #offset26 - length 1895 (Z9 firmware 1.0)
+        DataMember => 'MenuOffset6',
         Format => 'int32u',
         Writable => 0,
         Hidden => 1,
-        RawConv => '$$self{Offset26} = $val || 0x10000000; undef', # (ignore if 0)
+        RawConv => '$$self{MenuOffset} = $val || 0x10000000; undef', # (ignore if 0)
     },
-    ### 0x6c70 - Offset3 info start (Z9 firmware 1.00)
-    0x6c6f => {
-        Name => 'Offset3Hook',
+    ### 0x0094 - SequenceOffset info start (Z9 firmware 1.00)
+    0x0093 => {
+        Name => 'SequenceOffsetHook',
+        Condition => '$$self{ShutterMode} ne 96',     #not valid for C30/C60/C120 
         Hidden => 1,
         RawConv => 'undef',
-        # account for variable location of Offset3 data
-        Hook => '$varSize = $$self{Offset3} - 0x6c70',
+        # account for variable location of SequenceOffset data
+        Hook => '$varSize = $$self{SequenceOffset} - 0x0094',
     },
-    0x6c90 => {
+    0x00b4 => {
         Name => 'FocusShiftShooting',
+        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120 
         RawConv => '$$self{FocusShiftShooting} = $val',
         PrintConv => q{
             return 'Off' if $val == 0 ;
@@ -8421,8 +8438,9 @@ my %nikonFocalConversions = (
             return "On: $i"
         },
     },
-    0x6c98 => {
+    0x00bc => {
         Name => 'IntervalShooting',
+        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120 
         RawConv => '$$self{IntervalShooting} = $val',
         Format => 'int16u',
         PrintConv => q{
@@ -8433,67 +8451,35 @@ my %nikonFocalConversions = (
             #$val == 0 ? 'Off' : sprintf("On: Interval %.0f of %.0f Frame %.0f of %.0f",$val, $$self{IntervalShootingIntervals}, $$self{IntervalFrame}, $$self{IntervalShootingShotsPerInterval}),
         },
     },
-    0x6c9a => {
+    0x00be => {
+        Condition => '$$self{ShutterMode} ne 96',   #not valid for C30/C60/C120 
         Name => 'IntervalFrame',
         RawConv => '$$self{IntervalFrame} = $val',
-        Condition => '$$self{IntervalShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
         Format => 'int16u',
         Hidden => 1,
     },
-    ### 0xeaeb - OrientationInfo start (Z9 firmware 1.00)
-    0xeaea => {
-        Name => 'OrientationHook',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of OrientationInfo data
-        Hook => '$varSize = $$self{OrientationOffset} - 0xeaeb',
-    },
-    0xeaeb => {
-        Name => 'RollAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of clockwise camera roll',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0xeaef => {
-        Name => 'PitchAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of upward camera tilt',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0xeaf3 => {
-        Name => 'YawAngle',
-        Format => 'fixed32u',
-        Notes => 'the camera yaw angle when shooting in portrait orientation',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    ### 0xeb5f - Offset26 info start (Z9 firmware 1.00)
-    0xeb6f => {
+    ### 0x4400 - Offset26 info start (Z9 firmware 3.01 C30/C60/C120 )
+    0x4410 => {
         Name => 'MenuSettingsZ9Offset',
+        Condition => '$$self{ShutterMode} eq 96',    # C30/C60/C120 jpgs only
         Writable => 0,
         Hidden => 1,
         # offset to MenuSettingsZ9 is relative to start of Offset26 block
-        RawConv => '$$self{MenuSettingsZ9Offset} = ($val || 0x10000000) + $$self{Offset26}; undef', # (ignore if 0)
+        RawConv => '$$self{MenuSettingsZ9Offset} = ($val || 0x10000000) + $$self{MenuOffset}; undef', # (ignore if 0)
     },
-    0xeb70 => {
+    0x4411 => {
         Name => 'Hook5',
+        Condition => '$$self{ShutterMode} eq 96',    # C30/C60/C120 jpgs only
         Hidden => 1,
         RawConv => 'undef',
         # account for variable location of menu settings data
-        Hook => '$varSize = $$self{MenuSettingsZ9Offset} - 0xec4b',
+        Hook => '$varSize = $$self{MenuSettingsZ9Offset} - 0x44ec',
     },
-    0xec4b => [
+    0x44ec => [
         {
             Name => 'MenuSettingsZ9',
-            Condition => '$$self{FirmwareVersion} lt "03.00"',
+            Condition => '$$self{ShutterMode} eq 96 and $$self{FirmwareVersion} lt "03.00"',    # C30/C60/C120 jpgs only
             Format => 'undef[1646]',
             Notes => 'Firmware versions 2.11 and earlier',
             SubDirectory => {
@@ -8503,6 +8489,83 @@ my %nikonFocalConversions = (
         {
             Name => 'MenuSettingsZ9',
             Notes => 'Firmware versions 3.0 and later',
+            Condition => '$$self{ShutterMode} eq 96',    # C30/C60/C120 jpgs only
+            Format => 'undef[1948]',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ9Firmware3',
+            },
+        },
+    ],
+    ### 0x80c5 - OrientationInfo start (Z9 firmware 3.01)
+    0x80c4 => {
+        Name => 'OrientationHook',
+        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of OrientationInfo data
+        Hook => '$varSize = $$self{OrientationOffset} - 0x80c5',
+    },
+    0x80c5 => {
+        Name => 'RollAngle',
+        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
+		Format => 'fixed32u',
+        Notes => 'converted to degrees of clockwise camera roll',
+        ValueConv => '$val <= 180 ? $val : $val - 360',
+        ValueConvInv => '$val >= 0 ? $val : $val + 360',
+        PrintConv => 'sprintf("%.1f", $val)',
+        PrintConvInv => '$val',
+    },
+    0x80c9 => {
+        Name => 'PitchAngle',
+        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
+        Format => 'fixed32u',
+        Notes => 'converted to degrees of upward camera tilt',
+        ValueConv => '$val <= 180 ? $val : $val - 360',
+        ValueConvInv => '$val >= 0 ? $val : $val + 360',
+        PrintConv => 'sprintf("%.1f", $val)',
+        PrintConvInv => '$val',
+    },
+    0x80cd => {
+        Name => 'YawAngle',
+        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
+        Format => 'fixed32u',
+        Notes => 'the camera yaw angle when shooting in portrait orientation',
+        ValueConv => '$val <= 180 ? $val : $val - 360',
+        ValueConvInv => '$val >= 0 ? $val : $val + 360',
+        PrintConv => 'sprintf("%.1f", $val)',
+        PrintConvInv => '$val',
+    },
+    ### 0x8139 - Offset26 info start (Z9 firmware 3.01)
+    0x8149 => {
+        Name => 'MenuSettingsZ9Offset',
+        Condition => '$$self{ShutterMode} ne 96',    # C30/C60/C120 jpgs handled at 0x4410
+        Writable => 0,
+        Hidden => 1,
+        # offset to MenuSettingsZ9 is relative to start of Offset26 block
+        RawConv => '$$self{MenuSettingsZ9Offset} = ($val || 0x10000000) + $$self{MenuOffset}; undef', # (ignore if 0)
+    },
+    0x814a => {
+        Name => 'Hook5',
+        Condition => '$$self{ShutterMode} ne 96',    # C30/C60/C120 jpgs handled at 0x4410
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of menu settings data
+        Hook => '$varSize = $$self{MenuSettingsZ9Offset} - 0x8225',
+    },
+    0x8225 => [
+        {
+            Name => 'MenuSettingsZ9',
+            Condition => '$$self{ShutterMode} ne 96 and $$self{FirmwareVersion} lt "03.00"',    # C30/C60/C120 jpgs handled at 0x4410
+            Format => 'undef[1646]',
+            Notes => 'Firmware versions 2.11 and earlier',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ9',
+            },
+        },
+        {
+            Name => 'MenuSettingsZ9',
+            Notes => 'Firmware versions 3.0 and later',
+            Condition => '$$self{ShutterMode} ne 96',    # C30/C60/C120 jpgs handled at 0x4410
             Format => 'undef[1948]',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ9Firmware3',
@@ -8751,34 +8814,34 @@ my %nikonFocalConversions = (
         Name => 'Intervals',
         Format => 'int32u',
         RawConv => '$$self{IntervalShootingIntervals} = $val',
-        Condition => '$$self{IntervalShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
     },
     192 => {
         Name => 'ShotsPerInterval',
         Format => 'int32u',
         RawConv => '$$self{IntervalShootingShotsPerInterval} = $val',
-        Condition => '$$self{IntervalShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
     },
     #220 NEFCompression      0=> 'Lossless'   1=> 'High Efficiency*'   4=>  'High Efficientcy'
     232 => {
         Name => 'FocusShiftNumberShots',    #1-300
         RawConv => '$$self{FocusShiftNumberShots} = $val',
-        Condition => '$$self{FocusShiftShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
     },
     236 => {
         Name => 'FocusShiftStepWidth',     #1(Narrow) to 10 (Wide)
-        Condition => '$$self{FocusShiftShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
     },
     240 => {
         Name => 'FocusShiftInterval',
-        Condition => '$$self{FocusShiftShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
         PrintConv => '$val == 1? "1 Second" : sprintf("%.0f Seconds",$val)',
     },
     244 => {
         Name => 'FocusShiftExposureLock',
         Unknown => 1,
         PrintConv => \%offOn,
-        Condition => '$$self{FocusShiftShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
     },
     274 => { Name => 'PhotoShootingMenuBank', PrintConv => \%banksZ9 },
     276 => { Name => 'ExtendedMenuBanks',     PrintConv => \%offOn },    #single tag from both Photo & Video menus
@@ -8938,12 +9001,17 @@ my %nikonFocalConversions = (
     1636 => { Name => 'USBPowerDelivery',   PrintConv => \%offOn, Unknown => 1 },
     1645 => { Name => 'SensorShield',       PrintConv => { 0 => 'Stays Open', 1 => 'Closes' }, Unknown => 1 },
 );
+
 %Image::ExifTool::Nikon::MenuSettingsZ9Firmware3  = (   #starts at Offset26 + 248
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     DATAMEMBER => [ 154, 204, 208, 248, 444, 554 ],
     IS_SUBDIR => [ 847 ],
     NOTES => 'These tags are used by the Z9 firmware 3.00.',
+    72 => {
+        Name => 'HighFrameRate',        #CH and C30/C60/C120 but not CL
+        PrintConv => \%highFrameRateZ9,
+    },
     154 => {
         Name => 'MultipleExposureMode',
         RawConv => '$$self{MultipleExposureMode} = $val',
@@ -8954,33 +9022,33 @@ my %nikonFocalConversions = (
         Name => 'Intervals',
         Format => 'int32u',
         RawConv => '$$self{IntervalShootingIntervals} = $val',
-        Condition => '$$self{IntervalShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
     },
     208 => {
         Name => 'ShotsPerInterval',
         Format => 'int32u',
         RawConv => '$$self{IntervalShootingShotsPerInterval} = $val',
-        Condition => '$$self{IntervalShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
     },
     248 => {
         Name => 'FocusShiftNumberShots',    #1-300
         RawConv => '$$self{FocusShiftNumberShots} = $val',
-        Condition => '$$self{FocusShiftShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
     },
     252 => {
         Name => 'FocusShiftStepWidth',     #1(Narrow) to 10 (Wide)
-        Condition => '$$self{FocusShiftShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
     },
     256 => {
         Name => 'FocusShiftInterval',
-        Condition => '$$self{FocusShiftShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
         PrintConv => '$val == 1? "1 Second" : sprintf("%.0f Seconds",$val)',
     },
     260 => {
         Name => 'FocusShiftExposureLock',
         Unknown => 1,
         PrintConv => \%offOn,
-        Condition => '$$self{FocusShiftShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
     },
     290 => { Name => 'PhotoShootingMenuBank', PrintConv => \%banksZ9 },
     292 => { Name => 'ExtendedMenuBanks',     PrintConv => \%offOn }, # single tag from both Photo & Video menus
@@ -9132,7 +9200,25 @@ my %nikonFocalConversions = (
         Name => 'FocusShiftAutoReset',
         Unknown => 1,
         PrintConv => \%offOn,
-        Condition => '$$self{FocusShiftShooting} > 0',
+        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+    },
+    1810 => { #CSd4-a
+        Name => 'PreReleaseBurstLength',
+        PrintConv => {
+            0 => 'None',
+            1 => '0.3 Sec',
+            2 => '0.5 Sec',
+            3 => '1 Sec',
+        },
+    },
+    1812 => { #CSd4-b
+        Name => 'PostReleaseBurstLength',
+        PrintConv => {
+            0 => '1 Sec',
+            1 => '2 Sec',
+            2 => '3 Sec',
+            3 => 'Max',
+        },
     },
     #1824 ReleaseTimingIndicatorTypeADelay CSd14-b   0 => '1/200' ... 15 => '1/6'
     #1826 VerticalISOButton   CSf2
@@ -9141,331 +9227,6 @@ my %nikonFocalConversions = (
     #1890 ViewModeShowEffectsOfSettings CSd9-a   0=>'Always', 1=> 'Only When Flash Not Used'
     #1892 DispButton CSf2
     #1936 FocusPointDisplayOption3DTrackingColor CSa11-d 0=> 'White', 1= => 'Red'
-);
-
-# Flash information (ref JD)
-%Image::ExifTool::Nikon::FlashInfo0100 = (
-    %binaryDataAttrs,
-    DATAMEMBER => [ 9.2, 15, 16 ],
-    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => q{
-        These tags are used by the D2H, D2Hs, D2X, D2Xs, D50, D70, D70s, D80 and
-        D200.
-    },
-    # NOTE: Must set ByteOrder in SubDirectory if any multi-byte integer tags added
-    0 => {
-        Name => 'FlashInfoVersion',
-        Format => 'string[4]',
-        Writable => 0,
-    },
-    4 => { #PH
-        Name => 'FlashSource',
-        PrintConv => {
-            0 => 'None',
-            1 => 'External',
-            2 => 'Internal',
-        },
-    },
-    # 5 - values: 46,48,50,54,78
-    6 => {
-        Format => 'int8u[2]',
-        Name => 'ExternalFlashFirmware',
-        SeparateTable => 'FlashFirmware',
-        PrintConv => \%flashFirmware,
-    },
-    8 => {
-        Name => 'ExternalFlashFlags',
-        PrintConv => { 0 => '(none)',
-            BITMASK => {
-                0 => 'Fired', #28
-                2 => 'Bounce Flash', #PH
-                4 => 'Wide Flash Adapter',
-                5 => 'Dome Diffuser', #28
-            },
-        },
-    },
-    9.1 => {
-        Name => 'FlashCommanderMode',
-        Mask => 0x80,
-        PrintConv => { 0 => 'Off', 1 => 'On' },
-    },
-    9.2 => {
-        Name => 'FlashControlMode',
-        Mask => 0x7f,
-        DataMember => 'FlashControlMode',
-        RawConv => '$$self{FlashControlMode} = $val',
-        PrintConv => \%flashControlMode,
-        SeparateTable => 'FlashControlMode',
-    },
-    10 => [
-        {
-            Name => 'FlashOutput',
-            Condition => '$$self{FlashControlMode} >= 0x06',
-            ValueConv => '2 ** (-$val/6)',
-            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
-            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
-            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
-        },
-        {
-            Name => 'FlashCompensation',
-            Format => 'int8s',
-            Priority => 0,
-            ValueConv => '-$val/6',
-            ValueConvInv => '-6 * $val',
-            PrintConv => 'Image::ExifTool::Exif::PrintFraction($val)',
-            PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
-        },
-    ],
-    11 => {
-        Name => 'FlashFocalLength',
-        RawConv => '$val ? $val : undef',
-        PrintConv => '"$val mm"',
-        PrintConvInv => '$val=~/(\d+)/; $1 || 0',
-    },
-    12 => {
-        Name => 'RepeatingFlashRate',
-        RawConv => '$val ? $val : undef',
-        PrintConv => '"$val Hz"',
-        PrintConvInv => '$val=~/(\d+)/; $1 || 0',
-    },
-    13 => {
-        Name => 'RepeatingFlashCount',
-        RawConv => '$val ? $val : undef',
-    },
-    14 => { #PH
-        Name => 'FlashGNDistance',
-        SeparateTable => 1,
-        PrintConv => \%flashGNDistance,
-    },
-    15 => {
-        Name => 'FlashGroupAControlMode',
-        Mask => 0x0f,
-        DataMember => 'FlashGroupAControlMode',
-        RawConv => '$$self{FlashGroupAControlMode} = $val',
-        PrintConv => \%flashControlMode,
-        SeparateTable => 'FlashControlMode',
-    },
-    16 => {
-        Name => 'FlashGroupBControlMode',
-        Mask => 0x0f,
-        DataMember => 'FlashGroupBControlMode',
-        RawConv => '$$self{FlashGroupBControlMode} = $val',
-        PrintConv => \%flashControlMode,
-        SeparateTable => 'FlashControlMode',
-    },
-    17 => [
-        {
-            Name => 'FlashGroupAOutput',
-            Condition => '$$self{FlashGroupAControlMode} >= 0x06',
-            ValueConv => '2 ** (-$val/6)',
-            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
-            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
-            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
-        },
-        {
-            Name => 'FlashGroupACompensation',
-            Format => 'int8s',
-            ValueConv => '-$val/6',
-            ValueConvInv => '-6 * $val',
-            PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
-            PrintConvInv => '$val',
-        },
-    ],
-    18 => [
-        {
-            Name => 'FlashGroupBOutput',
-            Condition => '$$self{FlashGroupBControlMode} >= 0x06',
-            ValueConv => '2 ** (-$val/6)',
-            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
-            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
-            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
-        },
-        {
-            Name => 'FlashGroupBCompensation',
-            Format => 'int8s',
-            ValueConv => '-$val/6',
-            ValueConvInv => '-6 * $val',
-            PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
-            PrintConvInv => '$val',
-        },
-    ],
-);
-
-# Flash information for D40, D40x, D3 and D300 (ref JD)
-%Image::ExifTool::Nikon::FlashInfo0102 = (
-    %binaryDataAttrs,
-    DATAMEMBER => [ 9.2, 16.1, 17.1, 17.2 ],
-    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => q{
-        These tags are used by the D3 (firmware 1.x), D40, D40X, D60 and D300
-        (firmware 1.00).
-    },
-    # NOTE: Must set ByteOrder in SubDirectory if any multi-byte integer tags added
-    0 => {
-        Name => 'FlashInfoVersion',
-        Format => 'string[4]',
-        Writable => 0,
-    },
-    4 => { #PH
-        Name => 'FlashSource',
-        PrintConv => {
-            0 => 'None',
-            1 => 'External',
-            2 => 'Internal',
-        },
-    },
-    # 5 - values: 46,48,50,54,78
-    6 => {
-        Format => 'int8u[2]',
-        Name => 'ExternalFlashFirmware',
-        SeparateTable => 'FlashFirmware',
-        PrintConv => \%flashFirmware,
-    },
-    8 => {
-        Name => 'ExternalFlashFlags',
-        PrintConv => { BITMASK => {
-            0 => 'Fired', #28
-            2 => 'Bounce Flash', #PH
-            4 => 'Wide Flash Adapter',
-            5 => 'Dome Diffuser', #28
-        }},
-    },
-    9.1 => {
-        Name => 'FlashCommanderMode',
-        Mask => 0x80,
-        PrintConv => { 0 => 'Off', 1 => 'On' },
-    },
-    9.2 => {
-        Name => 'FlashControlMode',
-        Mask => 0x7f,
-        DataMember => 'FlashControlMode',
-        RawConv => '$$self{FlashControlMode} = $val',
-        PrintConv => \%flashControlMode,
-        SeparateTable => 'FlashControlMode',
-    },
-    10 => [
-        {
-            Name => 'FlashOutput',
-            Condition => '$$self{FlashControlMode} >= 0x06',
-            ValueConv => '2 ** (-$val/6)',
-            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
-            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
-            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
-        },
-        {
-            Name => 'FlashCompensation',
-            # this is the compensation from the camera (0x0012) for "Built-in" FlashType, or
-            # the compensation from the external unit (0x0017) for "Optional" FlashType - PH
-            Format => 'int8s',
-            Priority => 0,
-            ValueConv => '-$val/6',
-            ValueConvInv => '-6 * $val',
-            PrintConv => 'Image::ExifTool::Exif::PrintFraction($val)',
-            PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
-        },
-    ],
-    12 => {
-        Name => 'FlashFocalLength',
-        RawConv => '$val ? $val : undef',
-        PrintConv => '"$val mm"',
-        PrintConvInv => '$val=~/(\d+)/; $1 || 0',
-    },
-    13 => {
-        Name => 'RepeatingFlashRate',
-        RawConv => '$val ? $val : undef',
-        PrintConv => '"$val Hz"',
-        PrintConvInv => '$val=~/(\d+)/; $1 || 0',
-    },
-    14 => {
-        Name => 'RepeatingFlashCount',
-        RawConv => '$val ? $val : undef',
-    },
-    15 => { #PH
-        Name => 'FlashGNDistance',
-        SeparateTable => 1,
-        PrintConv => \%flashGNDistance,
-    },
-    16.1 => {
-        Name => 'FlashGroupAControlMode',
-        Mask => 0x0f,
-        Notes => 'note: group A tags may apply to the built-in flash settings for some models',
-        DataMember => 'FlashGroupAControlMode',
-        RawConv => '$$self{FlashGroupAControlMode} = $val',
-        PrintConv => \%flashControlMode,
-        SeparateTable => 'FlashControlMode',
-    },
-    17.1 => {
-        Name => 'FlashGroupBControlMode',
-        Mask => 0xf0,
-        Notes => 'note: group B tags may apply to group A settings for some models',
-        DataMember => 'FlashGroupBControlMode',
-        RawConv => '$$self{FlashGroupBControlMode} = $val',
-        PrintConv => \%flashControlMode,
-        SeparateTable => 'FlashControlMode',
-    },
-    17.2 => { #PH
-        Name => 'FlashGroupCControlMode',
-        Mask => 0x0f,
-        Notes => 'note: group C tags may apply to group B settings for some models',
-        DataMember => 'FlashGroupCControlMode',
-        RawConv => '$$self{FlashGroupCControlMode} = $val',
-        PrintConv => \%flashControlMode,
-        SeparateTable => 'FlashControlMode',
-    },
-    18 => [
-        {
-            Name => 'FlashGroupAOutput',
-            Condition => '$$self{FlashGroupAControlMode} >= 0x06',
-            ValueConv => '2 ** (-$val/6)',
-            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
-            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
-            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
-        },
-        {
-            Name => 'FlashGroupACompensation',
-            Format => 'int8s',
-            ValueConv => '-$val/6',
-            ValueConvInv => '-6 * $val',
-            PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
-            PrintConvInv => '$val',
-        },
-    ],
-    19 => [
-        {
-            Name => 'FlashGroupBOutput',
-            Condition => '$$self{FlashGroupBControlMode} >= 0x60',
-            ValueConv => '2 ** (-$val/6)',
-            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
-            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
-            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
-        },
-        {
-            Name => 'FlashGroupBCompensation',
-            Format => 'int8s',
-            ValueConv => '-$val/6',
-            ValueConvInv => '-6 * $val',
-            PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
-            PrintConvInv => '$val',
-        },
-    ],
-    20 => [ #PH
-        {
-            Name => 'FlashGroupCOutput',
-            Condition => '$$self{FlashGroupCControlMode} >= 0x06',
-            ValueConv => '2 ** (-$val/6)',
-            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
-            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
-            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
-        },
-        {
-            Name => 'FlashGroupCCompensation',
-            Format => 'int8s',
-            ValueConv => '-$val/6',
-            ValueConvInv => '-6 * $val',
-            PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
-            PrintConvInv => '$val',
-        },
-    ],
 );
 
 # Flash information (ref JD)
@@ -10749,6 +10510,21 @@ my %nikonFocalConversions = (
     },
 );
 
+# MakerNotes0x56 - burst info for Z9
+%Image::ExifTool::Nikon::MakerNotes0x56 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes' },
+    0 => {
+        Name => 'FirmwareVersion',
+        Format => 'string[4]',
+        Writable => 0,
+    },
+    4 => {
+        Name => 'BurstGroupID',    #all frames shot within a burst (using CL/CH/C30/C60/C120) will share the same BurstGroupID.  Value will be > 0 for all images shot in continuous modes.  0 for single-frame.
+        Format => 'int16u'
+    },
+);
+
 # extra info found in IFD0 of NEF files (ref PH, Z6/Z7)
 %Image::ExifTool::Nikon::NEFInfo = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -11894,6 +11670,7 @@ sub PrintAFPointsLeftRight($$)
 {
     my ($col, $ncol) = @_;
     my $center = 1 + ($ncol + 1)/2;
+    return 'n/a' if $col == 0;   #out of focus
     return 'C' if $col == $center;
     return sprintf('%d', $center - $col) . 'L of Center' if $col < $center;
     return sprintf('%d', $col - $center) . 'R of Center' if $col > $center;
@@ -11907,6 +11684,7 @@ sub PrintAFPointsUpDown($$)
 {
     my ($row, $nrow) = @_;
     my $center = 1 + ($nrow + 1)/2;
+    return 'n/a' if $row == 0;     #out of focus
     return 'C' if $row == $center;
     return sprintf('%d', $center - $row) . 'U from Center' if $row < $center;
     return sprintf('%d', $row - $center) . 'D from Center' if $row > $center;

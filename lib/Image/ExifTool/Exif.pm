@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.42';
+$VERSION = '4.43';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -579,6 +579,13 @@ my %opcodeInfo = (
             ByteOrder => 'LittleEndian',
         },
         {
+            Condition => '$$self{Compression} and $$self{Compression} eq "34892"', # DNG Lossy JPEG
+            Name => 'OtherImageStart',
+            IsOffset => 1,
+            OffsetPair => 0x117,  # point to associated byte counts
+            DataTag => 'OtherImage',
+        },
+        {
             # (APP1 IFD2 is for Leica JPEG preview)
             Condition => q[
                 not ($$self{TIFF_TYPE} eq 'CR2' and $$self{DIR_NAME} eq 'IFD0') and
@@ -663,6 +670,12 @@ my %opcodeInfo = (
             # A200 stores this information in the wrong byte order!!
             ValueConv => '$val=join(" ",unpack("N*",pack("V*",split(" ",$val))));\$val',
             ByteOrder => 'LittleEndian',
+        },
+        {
+            Condition => '$$self{Compression} and $$self{Compression} eq "34892"', # DNG Lossy JPEG
+            Name => 'OtherImageLength',
+            OffsetPair => 0x111,   # point to associated offset
+            DataTag => 'OtherImage',
         },
         {
             # (APP1 IFD2 is for Leica JPEG preview)
@@ -4706,12 +4719,28 @@ my %subSecConv = (
             0 => 'OtherImageStart',
             1 => 'OtherImageLength',
         },
+        Desire => {
+            2 => 'OtherImageStart (1)',
+            3 => 'OtherImageLength (1)',
+        },
         Notes => q{
             this tag is writable, and may be used to update existing embedded images,
             but not create or delete them
         },
-        # retrieve the thumbnail from our EXIF data
+        # retrieve all other images
         RawConv => q{
+            if ($val[2] and $val[3]) {
+                my $i = 1;
+                for (;;) {
+                    my %val = ( 0 => $$val{2}, 1 => $$val{3} );
+                    $self->FoundTag($tagInfo, \%val);
+                    ++$i;
+                    $$val{2} = "$$val{0} ($i)";
+                    last unless defined $$self{VALUE}{$$val{2}};
+                    $$val{3} = "$$val{1} ($i)";
+                    last unless defined $$self{VALUE}{$$val{3}};
+                }
+            }
             @grps = $self->GetGroup($$val{0});
             Image::ExifTool::Exif::ExtractImage($self,$val[0],$val[1],"OtherImage");
         },

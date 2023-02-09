@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 sub ProcessRealMeta($$$);
 sub ProcessRealProperties($$$);
@@ -608,7 +608,7 @@ sub ProcessReal($$)
         } else {
             last if $tag eq 'DATA'; # stop normal parsing at DATA tag
         }
-        if ($size & 0x80000000) {
+        if ($size & 0x80000000 or $size < 10) {
             $et->Warn('Bad chunk header');
             last;
         }

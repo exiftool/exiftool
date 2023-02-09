@@ -259,7 +259,8 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>48 = Electronic Front Curtain
   <br>64 = Electronic (Movie)
   <br>80 = Auto (Mechanical)
-  <br>81 = Auto (Electronic Front Curtain)</td></tr></table>
+  <br>81 = Auto (Electronic Front Curtain)
+  <br>96 = Electronic (High Speed)</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x0035 = 53'>0x0035</td>
@@ -385,7 +386,8 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>Bit 5 = Auto ISO
   <br>Bit 6 = White-Balance Bracketing
   <br>Bit 7 = IR Control
-  <br>Bit 8 = D-Lighting Bracketing</span></td></tr>
+  <br>Bit 8 = D-Lighting Bracketing
+  <br>Bit 11 = Pre-capture</span></td></tr>
 <tr class=b>
 <td title='0x008b = 139'>0x008b</td>
 <td>LensFStops</td>
@@ -1930,6 +1932,24 @@ FaceDetectFrameSize)</span></span></td></tr>
 <td>NEFCompression</td>
 <td class=c>int16u[0.5]</td>
 <td>--&gt; <a href='Nikon.html#NEFCompression'>Nikon NEFCompression Values</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MakerNotes0x56'>Nikon MakerNotes0x56 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FirmwareVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>BurstGroupID</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='AFInfo'>Nikon AFInfo Tags</a></h2>
@@ -4284,32 +4304,40 @@ firmware 1.01b.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='27792 = 0x6c90'>27792</td>
+<td class=r title='180 = 0xb4'>180</td>
 <td>FocusShiftShooting</td>
 <td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='27800 = 0x6c98'>27800</td>
+<td class=r title='188 = 0xbc'>188</td>
 <td>IntervalShooting</td>
 <td class=c title=' ~ = Writable only with -n'>int16u~</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='60139 = 0xeaeb'>60139</td>
+<td class=r title='17644 = 0x44ec'>17644</td>
+<td>MenuSettingsZ9</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#MenuSettingsZ9'>Nikon MenuSettingsZ9 Tags</a>
+  <br><span class='n s'>(Firmware versions 3.0 and later)</span>
+  <br>--&gt; <a href='Nikon.html#MenuSettingsZ9Firmware3'>Nikon MenuSettingsZ9Firmware3 Tags</a>
+  <br><span class='n s'>(Firmware versions 2.11 and earlier)</span></td></tr>
+<tr class=b>
+<td class=r title='32965 = 0x80c5'>32965</td>
 <td>RollAngle</td>
 <td class=c>fixed32u</td>
 <td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
-<tr class=b>
-<td class=r title='60143 = 0xeaef'>60143</td>
+<tr>
+<td class=r title='32969 = 0x80c9'>32969</td>
 <td>PitchAngle</td>
 <td class=c>fixed32u</td>
 <td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
-<tr>
-<td class=r title='60147 = 0xeaf3'>60147</td>
+<tr class=b>
+<td class=r title='32973 = 0x80cd'>32973</td>
 <td>YawAngle</td>
 <td class=c>fixed32u</td>
 <td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
-<tr class=b>
-<td class=r title='60491 = 0xec4b'>60491</td>
+<tr>
+<td class=r title='33317 = 0x8225'>33317</td>
 <td>MenuSettingsZ9</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#MenuSettingsZ9'>Nikon MenuSettingsZ9 Tags</a>
@@ -5063,49 +5091,58 @@ firmware 1.01b.</p>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='72 = 0x48'>72</td>
+<td>HighFrameRate</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = CH
+  <br>3 = C30
+  <br>4 = C120
+  <br>5 = C60</span></td></tr>
+<tr class=b>
 <td class=r title='154 = 0x9a'>154</td>
 <td>MultipleExposureMode</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On
   <br>2 = On (Series)</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='156 = 0x9c'>156</td>
 <td>MultiExposureShots</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='204 = 0xcc'>204</td>
 <td>Intervals</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='208 = 0xd0'>208</td>
 <td>ShotsPerInterval</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='248 = 0xf8'>248</td>
 <td>FocusShiftNumberShots</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='252 = 0xfc'>252</td>
 <td>FocusShiftStepWidth</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='256 = 0x100'>256</td>
 <td>FocusShiftInterval</td>
 <td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='260 = 0x104'>260</td>
 <td>FocusShiftExposureLock?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='290 = 0x122'>290</td>
 <td>PhotoShootingMenuBank</td>
 <td class=c>int8u</td>
@@ -5113,13 +5150,13 @@ firmware 1.01b.</p>
   <br>1 = B
   <br>2 = C
   <br>3 = D</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='292 = 0x124'>292</td>
 <td>ExtendedMenuBanks</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='328 = 0x148'>328</td>
 <td>PhotoShootingMenuBankImageArea</td>
 <td class=c>int8u</td>
@@ -5127,13 +5164,13 @@ firmware 1.01b.</p>
   <br>1 = DX
   <br>4 = 16:9
   <br>8 = 1:1</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='342 = 0x156'>342</td>
 <td>AutoISO</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='344 = 0x158'>344</td>
 <td>ISOAutoHiLimit?</td>
 <td class=c>int16u</td>
@@ -5170,7 +5207,7 @@ firmware 1.01b.</p>
   <br>29 = ISO Hi 1.0
   <br>32 = ISO Hi 2.0</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='346 = 0x15a'>346</td>
 <td>ISOAutoFlashLimit?</td>
 <td class=c>int16u</td>
@@ -5207,7 +5244,7 @@ firmware 1.01b.</p>
   <br>29 = ISO Hi 1.0
   <br>32 = ISO Hi 2.0</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='354 = 0x162'>354</td>
 <td>ISOAutoShutterTime</td>
 <td class=c>no</td>
@@ -5263,7 +5300,7 @@ firmware 1.01b.</p>
   <br>41 = 1/13000 s
   <br>42 = 1/16000 s</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='436 = 0x1b4'>436</td>
 <td>MovieVignetteControl?</td>
 <td class=c>int8u</td>
@@ -5271,19 +5308,19 @@ firmware 1.01b.</p>
   <br>1 = Low
   <br>2 = Normal
   <br>3 = High</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='438 = 0x1b6'>438</td>
 <td>DiffractionCompensation</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='440 = 0x1b8'>440</td>
 <td>FlickerReductionShooting</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='444 = 0x1bc'>444</td>
 <td>FlashControlMode</td>
 <td class=c>int8u</td>
@@ -5292,12 +5329,12 @@ firmware 1.01b.</p>
   <br>2 = GN (distance priority)
   <br>3 = Manual
   <br>4 = Repeating Flash</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='446 = 0x1be'>446</td>
 <td>FlashMasterCompensation?</td>
 <td class=c>int8s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='450 = 0x1c2'>450</td>
 <td>FlashGNDistance?</td>
 <td class=c>no</td>
@@ -5341,12 +5378,12 @@ firmware 1.01b.</p>
   <br>36 = 20.0 m
   <br>255 = n/a</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='454 = 0x1c6'>454</td>
 <td>FlashOutput?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='548 = 0x224'>548</td>
 <td>AFAreaMode</td>
 <td class=c>int8u</td>
@@ -5362,14 +5399,14 @@ firmware 1.01b.</p>
   <br>12 = Wide (C1)
   <br>13 = Wide (C2)</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='550 = 0x226'>550</td>
 <td>VRMode</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = Normal
   <br>2 = Sport</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='554 = 0x22a'>554</td>
 <td>BracketSet</td>
 <td class=c>int8u</td>
@@ -5378,7 +5415,7 @@ firmware 1.01b.</p>
   <br>2 = Flash
   <br>3 = White Balance
   <br>4 = Active-D Lighting</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='556 = 0x22c'>556</td>
 <td>BracketProgram</td>
 <td class=c>int8u</td>
@@ -5391,7 +5428,7 @@ firmware 1.01b.</p>
   <br>7 = 7F
   <br>9 = 9F</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='558 = 0x22e'>558</td>
 <td>BracketIncrement</td>
 <td class=c>int8u</td>
@@ -5401,7 +5438,7 @@ firmware 1.01b.</p>
   <br>3 = 1.0
   <br>4 = 2.0
   <br>5 = 3.0</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='576 = 0x240'>576</td>
 <td>SecondarySlotFunction</td>
 <td class=c>int8u</td>
@@ -5409,13 +5446,13 @@ firmware 1.01b.</p>
   <br>1 = Backup
   <br>2 = NEF Primary + JPG Secondary
   <br>3 = JPG Primary + JPG Secondary</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='592 = 0x250'>592</td>
 <td>DXCropAlert</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='594 = 0x252'>594</td>
 <td>SubjectDetection</td>
 <td class=c>int8u</td>
@@ -5424,20 +5461,20 @@ firmware 1.01b.</p>
   <br>2 = People
   <br>3 = Animals
   <br>4 = Vehicles</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='636 = 0x27c'>636</td>
 <td>HighFrequencyFlickerReductionShooting?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='646 = 0x286'>646</td>
 <td>MovieImageArea?</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0x1]
   <br>0 = FX
   <br>1 = DX</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='656 = 0x290'>656</td>
 <td>MovieType?</td>
 <td class=c>int8u</td>
@@ -5449,7 +5486,7 @@ firmware 1.01b.</p>
   <br>5 = ProRes RAW HQ 12-bit (MOV)
   <br>6 = NRAW 12-bit (NEV)</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='658 = 0x292'>658</td>
 <td>MovieISOAutoHiLimit?</td>
 <td class=c>int16u</td>
@@ -5486,13 +5523,13 @@ firmware 1.01b.</p>
   <br>29 = ISO Hi 1.0
   <br>32 = ISO Hi 2.0</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='660 = 0x294'>660</td>
 <td>MovieISOAutoControlManualMode?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='662 = 0x296'>662</td>
 <td>MovieISOAutoManualMode?</td>
 <td class=c>int16u</td>
@@ -5529,7 +5566,7 @@ firmware 1.01b.</p>
   <br>29 = ISO Hi 1.0
   <br>32 = ISO Hi 2.0</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='736 = 0x2e0'>736</td>
 <td>MovieActiveD-Lighting?</td>
 <td class=c>int8u</td>
@@ -5538,7 +5575,7 @@ firmware 1.01b.</p>
   <br>3 = Normal
   <br>4 = High
   <br>5 = Extra High</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='738 = 0x2e2'>738</td>
 <td>MovieHighISONoiseReduction?</td>
 <td class=c>int8u</td>
@@ -5546,14 +5583,14 @@ firmware 1.01b.</p>
   <br>1 = Low
   <br>2 = Normal
   <br>3 = High</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='744 = 0x2e8'>744</td>
 <td>MovieFlickerReduction</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Auto
   <br>1 = 50Hz
   <br>2 = 60Hz</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='746 = 0x2ea'>746</td>
 <td>MovieMeteringMode?</td>
 <td class=c>int8u</td>
@@ -5561,7 +5598,7 @@ firmware 1.01b.</p>
   <br>1 = Center
   <br>2 = Spot
   <br>3 = Highlight</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='748 = 0x2ec'>748</td>
 <td>MovieFocusMode?</td>
 <td class=c>int8u</td>
@@ -5569,7 +5606,7 @@ firmware 1.01b.</p>
   <br>1 = AF-S
   <br>2 = AF-C
   <br>4 = AF-F</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='750 = 0x2ee'>750</td>
 <td>MovieAFAreaMode</td>
 <td class=c>int8u</td>
@@ -5585,64 +5622,64 @@ firmware 1.01b.</p>
   <br>12 = Wide (C1)
   <br>13 = Wide (C2)</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='752 = 0x2f0'>752</td>
 <td>MovieVRMode?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = Normal
   <br>2 = Sport</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='756 = 0x2f4'>756</td>
 <td>MovieElectronicVR?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='758 = 0x2f6'>758</td>
 <td>MovieSoundRecording?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = Auto
   <br>2 = Manual</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='760 = 0x2f8'>760</td>
 <td>MicrophoneSensitivity?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='762 = 0x2fa'>762</td>
 <td>MicrophoneAttenuator?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='764 = 0x2fc'>764</td>
 <td>MicrophoneFrequencyResponse?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Wide Range
   <br>1 = Vocal Range</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='766 = 0x2fe'>766</td>
 <td>WindNoiseReduction?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='788 = 0x314'>788</td>
 <td>MovieToneMap?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = SDR
   <br>1 = HLG
   <br>2 = N-Log</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='794 = 0x31a'>794</td>
 <td>MovieFrameSize?</td>
 <td class=c>int8u</td>
 <td><span class=s>1 = 1920x1080
   <br>2 = 3840x2160
   <br>3 = 7680x4320</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='796 = 0x31c'>796</td>
 <td>MovieFrameRate?</td>
 <td class=c>int8u</td>
@@ -5655,19 +5692,19 @@ firmware 1.01b.</p>
   <br>5 = 25p
   <br>6 = 24p</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='802 = 0x322'>802</td>
 <td>MicrophoneJackPower?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='803 = 0x323'>803</td>
 <td>MovieDXCropAlert?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='804 = 0x324'>804</td>
 <td>MovieSubjectDetection?</td>
 <td class=c>int8u</td>
@@ -5676,18 +5713,18 @@ firmware 1.01b.</p>
   <br>2 = People
   <br>3 = Animals
   <br>4 = Vehicles</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='812 = 0x32c'>812</td>
 <td>MovieHighResZoom?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='847 = 0x34f'>847</td>
 <td>CustomSettingsZ9</td>
 <td class=c>-</td>
 <td>--&gt; <a href='NikonCustom.html#SettingsZ9'>NikonCustom SettingsZ9 Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1474 = 0x5c2'>1474</td>
 <td>Language?</td>
 <td class=c>int8u</td>
@@ -5695,7 +5732,7 @@ firmware 1.01b.</p>
   <br>5 = Spanish
   <br>7 = French
   <br>15 = Portuguese</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1476 = 0x5c4'>1476</td>
 <td>TimeZone</td>
 <td class=c>int8u</td>
@@ -5725,7 +5762,7 @@ firmware 1.01b.</p>
   <br>29 = -09:00 (Anchorage)
   <br>30 = -10:00 (Hawaii)</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1482 = 0x5ca'>1482</td>
 <td>MonitorBrightness?</td>
 <td class=c>int8u</td>
@@ -5746,13 +5783,13 @@ firmware 1.01b.</p>
   <br>16 = Lo2
   <br>17 = Lo1</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1504 = 0x5e0'>1504</td>
 <td>AFFineTune?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1600 = 0x640'>1600</td>
 <td>HDMIOutputResolution</td>
 <td class=c>int8u</td>
@@ -5761,54 +5798,70 @@ firmware 1.01b.</p>
   <br>2 = 2160p
   <br>3 = 1080p
   <br>5 = 720p</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1613 = 0x64d'>1613</td>
 <td>SetClockFromLocationData?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1620 = 0x654'>1620</td>
 <td>AirplaneMode?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1621 = 0x655'>1621</td>
 <td>EmptySlotRelease?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Disable Release
   <br>1 = Enable Release</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1656 = 0x678'>1656</td>
 <td>EnergySavingMode?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1680 = 0x690'>1680</td>
 <td>RecordLocationData?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1684 = 0x694'>1684</td>
 <td>USBPowerDelivery?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1693 = 0x69d'>1693</td>
 <td>SensorShield?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Stays Open
   <br>1 = Closes</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1754 = 0x6da'>1754</td>
 <td>FocusShiftAutoReset?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='1810 = 0x712'>1810</td>
+<td>PreReleaseBurstLength</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = None
+  <br>1 = 0.3 Sec
+  <br>2 = 0.5 Sec
+  <br>3 = 1 Sec</span></td></tr>
+<tr>
+<td class=r title='1812 = 0x714'>1812</td>
+<td>PostReleaseBurstLength</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = 1 Sec
+  <br>1 = 2 Sec
+  <br>2 = 3 Sec
+  <br>3 = Max</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfo'>Nikon ShotInfo Tags</a></h2>
@@ -6318,6 +6371,7 @@ extracted.</p>
   <br>22 = Nikkor Z 24-50mm f/4-6.3
   <br>23 = Nikkor Z 14-24mm f/2.8 S
   <br>24 = Nikkor Z MC 105mm f/2.8 VR S
+  <br>25 = Nikkor Z 40mm f/2
   <br>27 = Nikkor Z MC 50mm f/2.8
   <br>28 = Nikkor Z 100-400mm f/4.5-5.6 VR S
   <br>29 = Nikkor Z 28mm f/2.8
@@ -6325,7 +6379,10 @@ extracted.</p>
   <br>31 = Nikkor Z 24-120 f/4
   <br>32 = Nikkor Z 800mm f/6.3 VR S
   <br>36 = Nikkor Z 400mm f/4.5 VR S
-  <br>39 = Nikkor Z 17-28mm f/2.8</td></tr></table>
+  <br>37 = Nikkor Z 600mm f/4 TC VR S
+  <br>39 = Nikkor Z 17-28mm f/2.8
+  <br>32768 = Nikkor Z 400mm f/2.8 TC VR S TC-1.4x
+  <br>32769 = Nikkor Z 600mm f/4 TC VR S TC-1.4x</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='53 = 0x35'>53</td>
@@ -10119,7 +10176,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 17, 2023</i>
+<br><i>Last revised Feb 9, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

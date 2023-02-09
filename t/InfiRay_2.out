@@ -1,0 +1,125 @@
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.56
+[File, System, Other] FileName - File Name: InfiRay.jpg
+[File, System, Other] Directory - Directory: t/images
+[File, System, Other] FileSize - File Size: 2.2 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2023:02:08 14:10:46-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2023:02:09 08:20:04-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2023:02:09 08:20:03-05:00
+[File, System, Other] FilePermissions - File Permissions: -rw-r--r--
+[File, File, Other] FileType - File Type: JPEG
+[File, File, Other] FileTypeExtension - File Type Extension: jpg
+[File, File, Other] MIMEType - MIME Type: image/jpeg
+[File, File, Image] ExifByteOrder - Exif Byte Order: Big-endian (Motorola, MM)
+[File, File, Image] ImageWidth - Image Width: 8
+[File, File, Image] ImageHeight - Image Height: 8
+[File, File, Image] EncodingProcess - Encoding Process: Baseline DCT, Huffman coding
+[File, File, Image] BitsPerSample - Bits Per Sample: 8
+[File, File, Image] ColorComponents - Color Components: 3
+[File, File, Image] YCbCrSubSampling - Y Cb Cr Sub Sampling: YCbCr4:2:0 (2 2)
+[EXIF, IFD0, Image] 256 - Image Width: 720
+[EXIF, IFD0, Camera] 272 - Camera Model Name: P2_USB_IR
+[EXIF, IFD0, Image] 257 - Image Height: 960
+[EXIF, IFD0, Camera] 271 - Make: Infisense
+[EXIF, ExifIFD, Camera] 37384 - Light Source: Unknown
+[EXIF, IFD0, Image] 274 - Orientation: Horizontal (normal)
+[EXIF, IFD0, Time] 306 - Modify Date: 2023:02:08 12:24:35
+[EXIF, GPS, Location] 2 - GPS Latitude: 
+[EXIF, GPS, Location] 6 - GPS Altitude: undef
+[EXIF, GPS, Location] 1 - GPS Latitude Ref: Unknown ()
+[EXIF, GPS, Location] 13 - GPS Speed: undef
+[EXIF, GPS, Location] 27 - GPS Processing Method: 
+[EXIF, GPS, Location] 5 - GPS Altitude Ref: Above Sea Level
+[EXIF, GPS, Location] 12 - GPS Speed Ref: Unknown ()
+[EXIF, GPS, Location] 3 - GPS Longitude Ref: Unknown ()
+[EXIF, GPS, Time] 7 - GPS Time Stamp: 00:00:00
+[EXIF, GPS, Location] 4 - GPS Longitude: 
+[EXIF, GPS, Time] 29 - GPS Date Stamp: 
+[APP2, InfiRay, Image] 0 - IJPEG Version: 0 2 0 1
+[APP2, InfiRay, Image] 12 - IJPEG Org Type: 4
+[APP2, InfiRay, Image] 13 - IJPEG Disp Type: 1
+[APP2, InfiRay, Image] 14 - IJPEG Rotate: 0
+[APP2, InfiRay, Image] 15 - IJPEG Mirror Flip: 0
+[APP2, InfiRay, Image] 16 - Image Color Switchable: 1
+[APP2, InfiRay, Image] 17 - Thermal Color Palette: 3
+[APP2, InfiRay, Image] 32 - IR Data Size: 98304
+[APP2, InfiRay, Image] 40 - IR Data Format: 0
+[APP2, InfiRay, Image] 42 - IR Image Width: 256
+[APP2, InfiRay, Image] 44 - IR Image Height: 384
+[APP2, InfiRay, Image] 46 - IR Image Bpp: 8
+[APP2, InfiRay, Image] 48 - Temp Data Size: 98304
+[APP2, InfiRay, Image] 56 - Temp Data Format: 0
+[APP2, InfiRay, Image] 58 - Temp Image Width: 256
+[APP2, InfiRay, Image] 60 - Temp Image Height: 384
+[APP2, InfiRay, Image] 62 - Temp Image Bpp: 8
+[APP2, InfiRay, Image] 64 - Visible Data Size: 98304
+[APP2, InfiRay, Image] 72 - Visible Data Format: 0
+[APP2, InfiRay, Image] 74 - Visible Image Width: 0
+[APP2, InfiRay, Image] 76 - Visible Image Height: 0
+[APP2, InfiRay, Image] 78 - Visible Image Bpp: 8
+[APP4, InfiRay, Image] 0 - IJPEG Temp Version: 0 1 0 0
+[APP4, InfiRay, Image] 4 - Fact Def Emissivity: -128
+[APP4, InfiRay, Image] 5 - Fact Def Tau: -128
+[APP4, InfiRay, Image] 6 - Fact Def Ta: 300
+[APP4, InfiRay, Image] 8 - Fact Def Tu: 300
+[APP4, InfiRay, Image] 10 - Fact Def Dist: 32
+[APP4, InfiRay, Image] 12 - Fact Def A0: 0
+[APP4, InfiRay, Image] 16 - Fact Def B0: 0
+[APP4, InfiRay, Image] 20 - Fact Def A1: 0
+[APP4, InfiRay, Image] 24 - Fact Def B1: 0
+[APP4, InfiRay, Image] 28 - Fact Def P0: 9178
+[APP4, InfiRay, Image] 32 - Fact Def P1: 621
+[APP4, InfiRay, Image] 36 - Fact Def P2: 65534
+[APP4, InfiRay, Image] 68 - Fact Rel Sensor Temp: 7301
+[APP4, InfiRay, Image] 70 - Fact Rel Shutter Temp: 128
+[APP4, InfiRay, Image] 72 - Fact Rel Lens Temp: 128
+[APP4, InfiRay, Image] 100 - Fact Status Gain: 1
+[APP4, InfiRay, Image] 101 - Fact Status Env OK: 1
+[APP4, InfiRay, Image] 102 - Fact Status Dist OK: 1
+[APP4, InfiRay, Image] 103 - Fact Status Temp Map: 1
+[APP5, InfiRay, Image] 0 - Environment Temp: 25.00 C
+[APP5, InfiRay, Image] 4 - Distance: 0.25 m
+[APP5, InfiRay, Image] 8 - Emissivity: 0.99
+[APP5, InfiRay, Image] 12 - Humidity: 50.0 %
+[APP5, InfiRay, Image] 16 - Reference Temp: 25.00 C
+[APP5, InfiRay, Image] 32 - Temp Unit: 0
+[APP5, InfiRay, Image] 33 - Show Center Temp: 1
+[APP5, InfiRay, Image] 34 - Show Max Temp: 1
+[APP5, InfiRay, Image] 35 - Show Min Temp: 1
+[APP5, InfiRay, Image] 36 - Temp Measure Count: 0
+[APP6, InfiRay, Image] 0 - Mix Mode: 0
+[APP6, InfiRay, Image] 1 - Fusion Intensity: 100.0 %
+[APP6, InfiRay, Image] 5 - Offset Adjustment: 2
+[APP6, InfiRay, Image] 9 - Correction Asix: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[APP7, InfiRay, Image] 0 - Working Mode: 1
+[APP7, InfiRay, Image] 1 - Integral Time: 400
+[APP7, InfiRay, Image] 5 - Integrat Time Hdr: 500
+[APP7, InfiRay, Image] 9 - Gain Stable: 1
+[APP7, InfiRay, Image] 10 - Temp Control Enable: 1
+[APP7, InfiRay, Image] 11 - Device Temp: 25.00 C
+[APP8, InfiRay, Image] 0 - Isothermal Max: 80
+[APP8, InfiRay, Image] 4 - Isothermal Min: -20
+[APP8, InfiRay, Image] 8 - Chroma Bar Max: 80
+[APP8, InfiRay, Image] 12 - Chroma Bar Min: -20
+[APP9, InfiRay, Image] 0 - IR Sensor Manufacturer: infisense
+[APP9, InfiRay, Image] 64 - IR Sensor Name: P2_USB_IR
+[APP9, InfiRay, Image] 128 - IR Sensor Part Number: P2_B_V2.0_2080100019B15656148
+[APP9, InfiRay, Image] 192 - IR Sensor Serial Number: P200019B15656148
+[APP9, InfiRay, Image] 256 - IR Sensor Firmware: 2.07.01.00
+[APP9, InfiRay, Image] 320 - IR Sensor Aperture: 1.10
+[APP9, InfiRay, Image] 324 - IR Focal Length: 3.20
+[APP9, InfiRay, Image] 384 - Visible Sensor Manufacturer: infisense
+[APP9, InfiRay, Image] 448 - Visible Sensor Name: P2_USB_IR
+[APP9, InfiRay, Image] 512 - Visible Sensor Part Number: P2_B_V2.0_2080100019B15656148
+[APP9, InfiRay, Image] 576 - Visible Sensor Serial Number: P200019B15656148
+[APP9, InfiRay, Image] 640 - Visible Sensor Firmware: 2.07.01.00
+[APP9, InfiRay, Image] 704 - Visible Sensor Aperture: 1.10000002384186
+[APP9, InfiRay, Image] 708 - Visible Focal Length: 3.20000004768372
+[JFIF, JFIF, Image] 0 - JFIF Version: 1.01
+[JFIF, JFIF, Image] 2 - Resolution Unit: None
+[JFIF, JFIF, Image] 3 - X Resolution: 1
+[JFIF, JFIF, Image] 5 - Y Resolution: 1
+[Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
+[Composite, Composite, Time] GPS-GPSDateTime - GPS Date/Time:  00:00:00Z
+[Composite, Composite, Location] GPS-GPSLatitude - GPS Latitude: 
+[Composite, Composite, Location] GPS-GPSLongitude - GPS Longitude: 

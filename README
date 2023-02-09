@@ -39,23 +39,23 @@ supported by ExifTool (r = read, w = write, c = create):
   CHM   r     | FPF   r     | MKA   r     | PFA   r     | TTF   r
   COS   r     | FPX   r     | MKS   r     | PFB   r     | TXT   r
   CR2   r/w   | GIF   r/w   | MKV   r     | PFM   r     | VCF   r
-  CR3   r/w   | GPR   r/w   | MNG   r/w   | PGF   r     | VRD   r/w/c
-  CRM   r/w   | GZ    r     | MOBI  r     | PGM   r/w   | VSD   r
-  CRW   r/w   | HDP   r/w   | MODD  r     | PLIST r     | WAV   r
-  CS1   r/w   | HDR   r     | MOI   r     | PICT  r     | WDP   r/w
-  CSV   r     | HEIC  r/w   | MOS   r/w   | PMP   r     | WEBP  r/w
-  CUR   r     | HEIF  r/w   | MOV   r/w   | PNG   r/w   | WEBM  r
-  CZI   r     | HTML  r     | MP3   r     | PPM   r/w   | WMA   r
-  DCM   r     | ICC   r/w/c | MP4   r/w   | PPT   r     | WMV   r
-  DCP   r/w   | ICO   r     | MPC   r     | PPTX  r     | WTV   r
-  DCR   r     | ICS   r     | MPG   r     | PS    r/w   | WV    r
-  DFONT r     | IDML  r     | MPO   r/w   | PSB   r/w   | X3F   r/w
-  DIVX  r     | IIQ   r/w   | MQV   r/w   | PSD   r/w   | XCF   r
-  DJVU  r     | IND   r/w   | MRC   r     | PSP   r     | XLS   r
-  DLL   r     | INSP  r/w   | MRW   r/w   | QTIF  r/w   | XLSX  r
-  DNG   r/w   | INSV  r     | MXF   r     | R3D   r     | XMP   r/w/c
-  DOC   r     | INX   r     | NEF   r/w   | RA    r     | ZIP   r
-  DOCX  r     | ISO   r     | NKSC  r/w   | RAF   r/w   |
+  CR3   r/w   | GPR   r/w   | MNG   r/w   | PGF   r     | VNT   r
+  CRM   r/w   | GZ    r     | MOBI  r     | PGM   r/w   | VRD   r/w/c
+  CRW   r/w   | HDP   r/w   | MODD  r     | PLIST r     | VSD   r
+  CS1   r/w   | HDR   r     | MOI   r     | PICT  r     | WAV   r
+  CSV   r     | HEIC  r/w   | MOS   r/w   | PMP   r     | WDP   r/w
+  CUR   r     | HEIF  r/w   | MOV   r/w   | PNG   r/w   | WEBP  r/w
+  CZI   r     | HTML  r     | MP3   r     | PPM   r/w   | WEBM  r
+  DCM   r     | ICC   r/w/c | MP4   r/w   | PPT   r     | WMA   r
+  DCP   r/w   | ICO   r     | MPC   r     | PPTX  r     | WMV   r
+  DCR   r     | ICS   r     | MPG   r     | PS    r/w   | WTV   r
+  DFONT r     | IDML  r     | MPO   r/w   | PSB   r/w   | WV    r
+  DIVX  r     | IIQ   r/w   | MQV   r/w   | PSD   r/w   | X3F   r/w
+  DJVU  r     | IND   r/w   | MRC   r     | PSP   r     | XCF   r
+  DLL   r     | INSP  r/w   | MRW   r/w   | QTIF  r/w   | XLS   r
+  DNG   r/w   | INSV  r     | MXF   r     | R3D   r     | XLSX  r
+  DOC   r     | INX   r     | NEF   r/w   | RA    r     | XMP   r/w/c
+  DOCX  r     | ISO   r     | NKSC  r/w   | RAF   r/w   | ZIP   r
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -107,8 +107,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-12.55.tar.gz | tar -xf -
-  cd Image-ExifTool-12.55
+  gzip -dc Image-ExifTool-12.56.tar.gz | tar -xf -
+  cd Image-ExifTool-12.56
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 

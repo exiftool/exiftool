@@ -81,12 +81,15 @@ my %processByMetaFormat = (
     ctbx => 1,  # ('marl' in GM videos)
 );
 
-# data lengths for each INSV record type
+# data lengths for each INSV/INSP record type
 my %insvDataLen = (
+    0x200 => 0,     # PreivewImage (any size) (a duplicate of PreviewImage in APP2 of INSP files)
     0x300 => 0,     # accelerometer (could be either 20 or 56 bytes)
     0x400 => 16,    # exposure (ref 6)
     0x600 => 8,     # timestamps (ref 6)
     0x700 => 53,    # GPS
+  # 0x900 => 48,    # ? (Insta360 X3)
+  # 0xb00 => 10,    # ? (Insta360 X3)
 );
 
 # limit the default amount of data we read for some record types
@@ -2758,7 +2761,6 @@ sub ProcessInsta360($;$)
         my ($id, $len) = unpack('vV', $buff);
         ($epos -= $len) + $trailerLen < 0 and last;
         $raf->Seek($epos, 2) or last;
-        my $dlen = $insvDataLen{$id};
         if ($verbose) {
             $et->VPrint(0, sprintf("Insta360 Record 0x%x (offset 0x%x, %d bytes):\n", $id, $fileEnd + $epos, $len));
         }
@@ -2771,20 +2773,25 @@ sub ProcessInsta360($;$)
         # 2. 20 byte records
         # 0000: c1 d8 d9 0b 00 00 00 00 f5 83 14 80 df 7f fe 7f [................]
         # 0010: fe 7f 01 80
-        if ($id == 0x300) {
-            if ($len % 20 and not $len % 56) {
-                $dlen = 56;
-            } elsif ($len % 56 and not $len % 20) {
-                $dlen = 20;
-            } else {
-                if ($raf->Read($buff, 20) == 20) {
-                    if (substr($buff, 16, 3) eq "\0\0\0") {
-                        $dlen = 56;
-                    } else {
-                        $dlen = 20;
+        my $dlen = $insvDataLen{$id};
+        if (defined $dlen and not $dlen) {
+            if ($id == 0x300) {
+                if ($len % 20 and not $len % 56) {
+                    $dlen = 56;
+                } elsif ($len % 56 and not $len % 20) {
+                    $dlen = 20;
+                } else {
+                    if ($raf->Read($buff, 20) == 20) {
+                        if (substr($buff, 16, 3) eq "\0\0\0") {
+                            $dlen = 56;
+                        } else {
+                            $dlen = 20;
+                        }
                     }
+                    $raf->Seek($epos, 2) or last;
                 }
-                $raf->Seek($epos, 2) or last;
+            } elsif ($id == 0x200) {
+                $dlen = $len;
             }
         }
         # limit the number of records we read if necessary
@@ -2798,6 +2805,8 @@ sub ProcessInsta360($;$)
         if ($dlen) {
             if ($len % $dlen) {
                 $et->Warn(sprintf('Unexpected Insta360 record 0x%x length',$id));
+            } elsif ($id == 0x200) {
+                $et->FoundTag(PreviewImage => $buff);
             } elsif ($id == 0x300) {
                 for ($p=0; $p<$len; $p+=$dlen) {
                     $$et{DOC_NUM} = ++$$et{DOC_COUNT};

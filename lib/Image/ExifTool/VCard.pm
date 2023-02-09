@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 my %unescapeVCard = ( '\\'=>'\\', ','=>',', 'n'=>"\n", 'N'=>"\n" );
 
@@ -190,6 +190,15 @@ my %timeInfo = (
     'X-wr-alarmuid'         => 'AlarmUID',
 );
 
+%Image::ExifTool::VCard::VNote = (
+    GROUPS => { 1 => 'VNote', 2 => 'Document' },
+    NOTES => 'Tags extracted from V-Note VNT files.',
+    Version => { },
+    Body    => { },
+    Dcreated        => { Name => 'CreateDate', Groups => { 2 => 'Time' }, %timeInfo },
+    'Last-modified' => { Name => 'ModifyDate', Groups => { 2 => 'Time' }, %timeInfo },
+);
+
 #------------------------------------------------------------------------------
 # Get vCard tag, creating if necessary
 # Inputs: 0) ExifTool ref, 1) tag table ref, 2) tag ID, 3) tag Name,
@@ -254,9 +263,14 @@ sub ProcessVCard($$)
     my $raf = $$dirInfo{RAF};
     my ($buff, $val, $ok, $component, %compNum, @count);
 
-    return 0 unless $raf->Read($buff, 24) and $raf->Seek(0,0) and $buff=~/^BEGIN:(VCARD|VCALENDAR)\r\n/i;
-    my ($type, $lbl, $tbl, $ext) = uc($1) eq 'VCARD' ? qw(VCard vCard Main VCF) : qw(ICS iCalendar VCalendar ICS);
-    $et->SetFileType($type, undef, $ext);
+    return 0 unless $raf->Read($buff, 24) and $raf->Seek(0,0) and $buff=~/^BEGIN:(VCARD|VCALENDAR|VNOTE)\r\n/i;
+    my %info = (
+        VCARD     => [ qw(VCard vCard Main VCF) ],
+        VCALENDAR => [ qw(ICS iCalendar VCalendar ICS) ],
+        VNOTE     => [ qw(VNote vNote VNote VNT text/v-note) ],
+    );
+    my ($type, $lbl, $tbl, $ext, $mime) = @{$info{uc($1)}};
+    $et->SetFileType($type, $mime, $ext);
     return 1 if $$et{OPTIONS}{FastScan} and $$et{OPTIONS}{FastScan} == 3;
     local $/ = "\r\n";
     my $tagTablePtr = GetTagTable("Image::ExifTool::VCard::$tbl");
@@ -274,7 +288,7 @@ sub ProcessVCard($$)
         }
         if ($val =~ /^(BEGIN|END):(V?)(\w+)$/i) {
             my ($begin, $v, $what) = ((lc($1) eq 'begin' ? 1 : 0), $2, ucfirst lc $3);
-            if ($what eq 'Card' or $what eq 'Calendar') {
+            if ($what eq 'Card' or $what eq 'Calendar' or $what eq 'Note') {
                 if ($begin) {
                     @count = ( { } );   # reset group counters
                 } else {

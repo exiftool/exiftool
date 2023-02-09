@@ -4,6 +4,7 @@
 # Description:  Read OpenEXR meta information
 #
 # Revisions:    2011/12/10 - P. Harvey Created
+#               2023/01/31 - PH Added support for multipart images
 #
 # References:   1) http://www.openexr.com/
 #------------------------------------------------------------------------------
@@ -15,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 # supported EXR value format types (other types are extracted as undef binary data)
 my %formatType = (
@@ -47,14 +48,18 @@ my %formatType = (
 %Image::ExifTool::OpenEXR::Main = (
     GROUPS => { 2 => 'Image' },
     NOTES => q{
-        Information extracted from EXR images.  See L<http://www.openexr.com/> for
-        the official specification.
+        Information extracted from EXR images.  Use the ExtractEmbedded option to
+        extract information from all frames of a multipart image.  See
+        L<http://www.openexr.com/> for the official specification.
     },
-    _ver => { Name => 'EXRVersion' },
-    _lay => {
-        Name => 'Layout',
-        PrintHex => 1,
-        PrintConv => { 0 => 'Scan Lines', 0x200 => 'Tiles' },
+    _ver => { Name => 'EXRVersion', Notes => 'low byte of Flags word' },
+    _flags => { Name => 'Flags', 
+        PrintConv => { BITMASK => {
+            9 => 'Tiled',
+            10 => 'Long names',
+            11 => 'Deep data',
+            12 => 'Multipart',
+        }},
     },
     adoptedNeutral      => { },
     altitude => {
@@ -145,6 +150,10 @@ my %formatType = (
     worldToNDC          => { },
     wrapmodes           => { Name => 'WrapModes' },
     xDensity            => { Name => 'XResolution' },
+    name                => { },
+    type                => { },
+    version             => { },
+    chunkCount          => { },
     # also observed:
     # ilut
 );
@@ -169,15 +178,22 @@ sub ProcessEXR($$)
     my $tagTablePtr = GetTagTable('Image::ExifTool::OpenEXR::Main');
 
     # extract information from header
-    my $ver = unpack('x4V', $buff);
-    $et->HandleTag($tagTablePtr, '_ver', $ver & 0xff);
-    $et->HandleTag($tagTablePtr, '_lay', $ver & 0x200);
-    my $maxLen = ($ver & 0x400) ? 255 : 31;
+    my $flags = unpack('x4V', $buff);
+    $et->HandleTag($tagTablePtr, '_ver', $flags & 0xff);
+    $et->HandleTag($tagTablePtr, '_flags', $flags & 0xffffff00);
+    my $maxLen = ($flags & 0x400) ? 255 : 31;
+    my $multi = $flags & 0x1000;
 
     # extract attributes
     for (;;) {
-        $raf->Read($buff, 68) or last;
-        last if $buff =~ /^\0/;
+        $raf->Read($buff, ($maxLen + 1) * 2 + 5) or last;
+        if ($buff =~ /^\0/) {
+            last unless $multi and $et->Options('ExtractEmbedded');
+            # remove null and process the next frame header as a sub-document
+            # (second null is end of all headers)
+            last if $buff =~ s/^(\0+)// and length($1) > 1;
+            $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        }
         unless ($buff =~ /^([^\0]{1,$maxLen})\0([^\0]{1,$maxLen})\0(.{4})/sg) {
             $et->Warn('EXR format error');
             last;
@@ -261,7 +277,7 @@ sub ProcessEXR($$)
 
         # take image dimensions from dataWindow (with displayWindow as backup)
         if (($tag eq 'dataWindow' or (not $dim and $tag eq 'displayWindow')) and
-            $val =~ /^(-?\d+) (-?\d+) (-?\d+) (-?\d+)$/)
+            $val =~ /^(-?\d+) (-?\d+) (-?\d+) (-?\d+)$/ and not $$et{DOC_NUM})
         {
             $dim = [$3 - $1 + 1, $4 - $2 + 1];
         }
@@ -278,6 +294,7 @@ sub ProcessEXR($$)
         }
         $et->FoundTag($tagInfo, $val);
     }
+    delete $$et{DOC_NUM};
     if ($dim) {
         $et->FoundTag('ImageWidth', $$dim[0]);
         $et->FoundTag('ImageHeight', $$dim[1]);

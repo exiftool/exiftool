@@ -24,6 +24,9 @@
 #               extension is used.
 #            5) The -fileOrder option may be used to control the order of the
 #               generated placemarks when processing multiple files.
+#            6) The "0" in the coordinates line may be changed to "$gpsaltitude#"
+#               and the altitudeMode may be changed to "absolute" to store
+#               altitude information if it exists in the track log.
 #------------------------------------------------------------------------------
 #[HEAD]<?xml version="1.0" encoding="UTF-8"?>
 #[HEAD]<kml xmlns="http://earth.google.com/kml/2.0">

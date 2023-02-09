@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.64';
+$VERSION = '4.65';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -621,8 +621,10 @@ $VERSION = '4.64';
    '61182.41' => 'Canon RF 1200mm F8L IS USM + RF1.4x', #42
    '61182.42' => 'Canon RF 1200mm F8L IS USM + RF2x', #42
    '61182.43' => 'Canon RF 135mm F1.8 L IS USM', #42
+   '61182.44' => 'Canon RF 24-50mm F4.5-6.3 IS STM', #42
+   '61182.45' => 'Canon RF-S 55-210mm F5-7.1 IS STM', #42
     # we need the RFLensType values for the following...
-   '61182.44' => 'Canon RF 5.2mm F2.8L Dual Fisheye 3D VR', #PH (NC)
+   '61182.46' => 'Canon RF 5.2mm F2.8L Dual Fisheye 3D VR', #PH (NC)
     65535 => 'n/a',
 );
 
@@ -983,7 +985,9 @@ $VERSION = '4.64';
     0x80000465 => 'EOS R10', #42
     0x80000467 => 'PowerShot ZOOM',
     0x80000468 => 'EOS M50 Mark II / Kiss M2', #IB
+    0x80000480 => 'EOS R50', #42
     0x80000481 => 'EOS R6 Mark II', #42
+    0x80000487 => 'EOS R8', #42
     0x80000520 => 'EOS D2000C', #IB
     0x80000560 => 'EOS D6000C', #PH (guess)
 );
@@ -6840,6 +6844,8 @@ my %ciMaxFocal = (
             300 => 'Canon RF 1200mm F8L IS USM + RF2x', #42
             302 => 'Canon RF 15-30mm F4.5-6.3 IS STM', #42
             303 => 'Canon RF 135mm F1.8 L IS USM', #42
+            304 => 'Canon RF 24-50mm F4.5-6.3 IS STM', #42
+            305 => 'Canon RF-S 55-210mm F5-7.1 IS STM', #42
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },
     },

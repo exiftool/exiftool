@@ -90,6 +90,7 @@ html/TagNames/ID3.html
 html/TagNames/IPTC.html
 html/TagNames/ISO.html
 html/TagNames/ITC.html
+html/TagNames/InfiRay.html
 html/TagNames/JFIF.html
 html/TagNames/JPEG.html
 html/TagNames/JSON.html
@@ -301,6 +302,7 @@ lib/Image/ExifTool/ISO.pm
 lib/Image/ExifTool/ITC.pm
 lib/Image/ExifTool/Import.pm
 lib/Image/ExifTool/InDesign.pm
+lib/Image/ExifTool/InfiRay.pm
 lib/Image/ExifTool/JPEG.pm
 lib/Image/ExifTool/JPEGDigest.pm
 lib/Image/ExifTool/JSON.pm
@@ -616,6 +618,8 @@ t/InDesign.t
 t/InDesign_2.out
 t/InDesign_3.out
 t/InDesign_4.out
+t/InfiRay.t
+t/InfiRay_2.out
 t/JSON.t
 t/JSON_2.out
 t/JVC.t
@@ -1034,6 +1038,7 @@ t/images/IPTC.jpg
 t/images/ISO.iso
 t/images/ITC.itc
 t/images/InDesign.indd
+t/images/InfiRay.jpg
 t/images/JSON.json
 t/images/JVC.jpg
 t/images/JVC2.jpg

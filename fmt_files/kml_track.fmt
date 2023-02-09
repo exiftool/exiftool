@@ -21,6 +21,9 @@
 #            2) The -fileOrder option may be used to control the order of the
 #               waypoints when processing multiple still-image files, or the
 #               order of the tracks when processing multiple video files.
+#            3) The "0" in the BODY line below may be changed to "$gpsaltitude#"
+#               and the altitudeMode may be changed to "absolute" to store
+#               altitude information if it exists in the track log.
 #------------------------------------------------------------------------------
 #[HEAD]<?xml version="1.0" encoding="UTF-8"?>
 #[HEAD]<kml xmlns="http://earth.google.com/kml/2.0">

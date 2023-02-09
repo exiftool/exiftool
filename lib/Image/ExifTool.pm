@@ -6335,7 +6335,7 @@ sub ProcessJPEG($$)
     my %dumpParms = ( Out => $out );
     my ($success, $wantTrailer, $trailInfo, $foundSOS, %jumbfChunk);
     my (@iccChunk, $iccChunkCount, $iccChunksTotal, @flirChunk, $flirCount, $flirTotal);
-    my ($preview, $scalado, @dqt, $subSampling, $dumpEnd, %extendedXMP);
+    my ($preview, $scalado, @dqt, $subSampling, $dumpEnd, %extendedXMP, $infiray);
 
     # check to be sure this is a valid JPG (or J2C, or EXV) file
     return 0 unless $raf->Read($s, 2) == 2 and $s =~ /^\xff[\xd8\x4f\x01]/;
@@ -6939,7 +6939,7 @@ sub ProcessJPEG($$)
                 $dumpType = 'Preview Image';
                 $preview = substr($$segDataPt, length($1));
             } elsif ($$segDataPt =~ /^....IJPEG\0/) {
-                $self->OverrideFileType('IJPEG') if $$self{FILE_TYPE} eq 'JPEG';
+				$infiray = 1;
                 $dumpType = 'InfiRay Version';
                 SetByteOrder('II');
                 my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::Version');
@@ -7004,7 +7004,7 @@ sub ProcessJPEG($$)
                 undef $preview;
             }
         } elsif ($marker == 0xe4) {         # APP4 (InfiRay, "SCALADO", FPXR, PreviewImage)
-            if ($$self{FileType} eq 'IJPEG' and $length >= 120) {
+            if ($infiray and $length >= 120) {
                 $dumpType = 'InfiRay FactoryTemp';
                 SetByteOrder('II');
                 my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::FactoryTemp');
@@ -7051,7 +7051,7 @@ sub ProcessJPEG($$)
                 undef $preview;
             }
         } elsif ($marker == 0xe5) {         # APP5 (Ricoh "RMETA")
-            if ($$self{FileType} eq 'IJPEG' and $length >= 38) {
+            if ($infiray and $length >= 38) {
                 $dumpType = 'InfiRay PictureTemp';
                 SetByteOrder('II');
                 my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::PictureTemp');
@@ -7077,7 +7077,7 @@ sub ProcessJPEG($$)
                 undef $preview;
             }
         } elsif ($marker == 0xe6) {         # APP6 (Toshiba EPPIM, NITF, HP_TDHD)
-            if ($$self{FileType} eq 'IJPEG' and $length >= 129) {
+            if ($infiray and $length >= 129) {
                 $dumpType = 'InfiRay MixMode';
                 SetByteOrder('II');
                 my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::MixMode');
@@ -7116,7 +7116,7 @@ sub ProcessJPEG($$)
                 $self->HandleTag($tagTablePtr, 'APP6', $$segDataPt);
             }
         } elsif ($marker == 0xe7) {         # APP7 (Pentax, Huawei, Qualcomm)
-            if ($$self{FileType} eq 'IJPEG' and $length >= 32) {
+            if ($infiray and $length >= 32) {
                 $dumpType = 'InfiRay OperationMode';
                 SetByteOrder('II');
                 my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::OperationMode');
@@ -7161,7 +7161,7 @@ sub ProcessJPEG($$)
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
             }
         } elsif ($marker == 0xe8) {         # APP8 (SPIFF)
-            if ($$self{FileType} eq 'IJPEG' and $length >= 32) {
+            if ($infiray and $length >= 32) {
                 $dumpType = 'InfiRay Isothermal';
                 SetByteOrder('II');
                 my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::Isothermal');
@@ -7174,7 +7174,7 @@ sub ProcessJPEG($$)
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
             }
         } elsif ($marker == 0xe9) {         # APP9 (InfiRay, Media Jukebox)
-            if ($$self{FileType} eq 'IJPEG' and $length >= 768) {
+            if ($infiray and $length >= 768) {
                 $dumpType = 'InfiRay SensorInfo';
                 SetByteOrder('II');
                 my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::SensorInfo');

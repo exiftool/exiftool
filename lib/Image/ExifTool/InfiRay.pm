@@ -21,15 +21,20 @@ my %convFloat2 = (
 );
 
 my %convPercentage = (
-    PrintConv => 'sprintf("%.1f%%", $val * 100)',
+    PrintConv => 'sprintf("%.1f %%", $val * 100)',
 );
 
 my %convMeters = (
-    PrintConv => 'sprintf("%.2fm", $val)',
+    PrintConv => 'sprintf("%.2f m", $val / 128)',
 );
 
 my %convCelsius = (
-    PrintConv => 'sprintf("%.2fºC", $val)',
+    PrintConv => 'sprintf("%.2f C", $val)',
+);
+
+my %bool = (
+	Format => 'int8u',
+	PrintConv => { 0 => 'No', 1 => 'Yes' }
 );
 
 # InfiRay IJPEG version header, found in JPEGs APP2
@@ -46,7 +51,7 @@ my %convCelsius = (
     0x0d => { Name => 'IJPEGDispType',        Format => 'int8u' },
     0x0e => { Name => 'IJPEGRotate',          Format => 'int8u' },
     0x0f => { Name => 'IJPEGMirrorFlip',      Format => 'int8u' },
-    0x10 => { Name => 'ImageColorSwitchable', Format => 'int8u' },
+    0x10 => { Name => 'ImageColorSwitchable', %bool },
     0x11 => { Name => 'ThermalColorPalette',  Format => 'int16u' },
     0x20 => { Name => 'IRDataSize',           Format => 'int64u' },
     0x28 => { Name => 'IRDataFormat',         Format => 'int16u' },
@@ -89,9 +94,9 @@ my %convCelsius = (
     0x44 => { Name => 'FactRelSensorTemp',  Format => 'int16s' },
     0x46 => { Name => 'FactRelShutterTemp', Format => 'int16s' },
     0x48 => { Name => 'FactRelLensTemp',    Format => 'int16s' },
-    0x64 => { Name => 'FactStatusGain',     Format => 'int8s' },
-    0x65 => { Name => 'FactStatusEnvOK',    Format => 'int8s' },
-    0x66 => { Name => 'FactStatusDistOK',   Format => 'int8s' },
+    0x64 => { Name => 'FactStatusGainOK',   %bool },
+    0x65 => { Name => 'FactStatusEnvOK',    %bool },
+    0x66 => { Name => 'FactStatusDistOK',   %bool },
     0x67 => { Name => 'FactStatusTempMap',  Format => 'int8s' },
     # Missing: ndist_table_len, ndist_table, nuc_t_table_len, nuc_t_table
 );
@@ -104,15 +109,15 @@ my %convCelsius = (
         This table lists tags found in the InfiRay IJPEG picture temperature
         information.
     },
-    0x00 => { Name => 'EnvironmentTemp', Format => 'float', %convCelsius },
-    0x04 => { Name => 'Distance', Format => 'float', %convMeters },
-    0x08 => { Name => 'Emissivity', Format => 'float', %convFloat2 },
-    0x0c => { Name => 'Humidity', Format => 'float', %convPercentage },
-    0x10 => { Name => 'ReferenceTemp', Format => 'float', %convCelsius },
-    0x20 => { Name => 'TempUnit', Format => 'int8u' },
-    0x21 => { Name => 'ShowCenterTemp', Format => 'int8u' },
-    0x22 => { Name => 'ShowMaxTemp', Format => 'int8u' },
-    0x23 => { Name => 'ShowMinTemp', Format => 'int8u' },
+    0x00 => { Name => 'EnvironmentTemp',  Format => 'float', %convCelsius },
+    0x04 => { Name => 'Distance',         Format => 'float', %convMeters },
+    0x08 => { Name => 'Emissivity',       Format => 'float', %convFloat2 },
+    0x0c => { Name => 'Humidity',         Format => 'float', %convPercentage },
+    0x10 => { Name => 'ReferenceTemp',    Format => 'float', %convCelsius },
+    0x20 => { Name => 'TempUnit',         Format => 'int8u' },
+    0x21 => { Name => 'ShowCenterTemp',   %bool },
+    0x22 => { Name => 'ShowMaxTemp',      %bool },
+    0x23 => { Name => 'ShowMinTemp',      %bool },
     0x24 => { Name => 'TempMeasureCount', Format => 'int16u' },
     # TODO: process extra measurements list
 );
@@ -125,10 +130,10 @@ my %convCelsius = (
         This table lists tags found in the InfiRay IJPEG visual-infrared
         mixing mode section.
     },
-    0x00 => { Name => 'MixMode', Format => 'int8u' },
-    0x01 => { Name => 'FusionIntensity', Format => 'float', %convPercentage },
+    0x00 => { Name => 'MixMode',          Format => 'int8u' },
+    0x01 => { Name => 'FusionIntensity',  Format => 'float', %convPercentage },
     0x05 => { Name => 'OffsetAdjustment', Format => 'float' },
-    0x09 => { Name => 'CorrectionAsix', Format => 'float[30]' },
+    0x09 => { Name => 'CorrectionAsix',   Format => 'float[30]' },
 );
 
 # InfiRay IJPEG camera operation mode, found in IJPEG's APP7 section
@@ -141,12 +146,12 @@ my %convCelsius = (
         This table lists tags found in the InfiRay IJPEG camera operation
         mode section.
     },
-    0x00 => { Name => 'WorkingMode', Format => 'int8u' },
-    0x01 => { Name => 'IntegralTime', Format => 'int32u' },
-    0x05 => { Name => 'IntegratTimeHdr',  Format => 'int32u' },
-    0x09 => { Name => 'GainStable',  Format => 'int8u' },
-    0x0a => { Name => 'TempControlEnable',  Format => 'int8u' },
-    0x0b => { Name => 'DeviceTemp',  Format => 'float', %convCelsius },
+    0x00 => { Name => 'WorkingMode',       Format => 'int8u' },
+    0x01 => { Name => 'IntegralTime',      Format => 'int32u' },
+    0x05 => { Name => 'IntegratTimeHdr',   Format => 'int32u' },
+    0x09 => { Name => 'GainStable',        %bool },
+    0x0a => { Name => 'TempControlEnable', %bool },
+    0x0b => { Name => 'DeviceTemp',        Format => 'float', %convCelsius },
 );
 
 # InfiRay IJPEG isothermal information, found in IJPEG's APP8 section

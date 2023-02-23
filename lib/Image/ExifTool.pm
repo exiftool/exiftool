@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.56';
+$VERSION = '12.57';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2043,6 +2043,7 @@ sub new
     $$self{DEL_GROUP} = { };    # lookup for groups to delete when writing
     $$self{SAVE_COUNT} = 0;     # count calls to SaveNewValues()
     $$self{FILE_SEQUENCE} = 0;  # sequence number for files when reading
+    $$self{FILES_WRITTEN} = 0;  # count of files successfully written
     $$self{INDENT2} = '';       # indentation of verbose messages from SetNewValue
 
     # initialize our new groups for writing
@@ -7988,7 +7989,7 @@ sub ProcessDirectory($$$;$)
             # patch for bug in Windows phone 7.5 O/S that writes incorrect InteropIFD pointer
             return 0 unless $dirName eq 'GPS' and $$self{PROCESSED}{$addr} eq 'InteropIFD';
         }
-        $$self{PROCESSED}{$addr} = $dirName;
+        $$self{PROCESSED}{$addr} = $dirName unless $$tagTablePtr{VARS} and $$tagTablePtr{VARS}{ALLOW_REPROCESS};
     }
     my $oldOrder = GetByteOrder();
     my @save = @$self{'INDENT','DIR_NAME','Compression','SubfileType'};
@@ -8749,13 +8750,16 @@ sub ProcessBinaryData($$$)
 {
     my ($self, $dirInfo, $tagTablePtr) = @_;
     my $dataPt = $$dirInfo{DataPt};
-    my $offset = $$dirInfo{DirStart} || 0;
-    my $size = $$dirInfo{DirLen} || (length($$dataPt) - $offset);
+    my $dataLen = length $$dataPt;
+    my $dirStart = $$dirInfo{DirStart} || 0;
+    my $maxLen = $dataLen - $dirStart;
+    my $size = $$dirInfo{DirLen};
     my $base = $$dirInfo{Base} || 0;
     my $verbose = $$self{OPTIONS}{Verbose};
     my $unknown = $$self{OPTIONS}{Unknown};
     my $dataPos = $$dirInfo{DataPos} || 0;
 
+    $size = $maxLen if not defined $size or $size > $maxLen;
     # get default format ('int8u' unless specified)
     my $defaultFormat = $$tagTablePtr{FORMAT} || 'int8u';
     my $increment = $formatSize{$defaultFormat};
@@ -8797,6 +8801,7 @@ sub ProcessBinaryData($$$)
             $tagInfo = $self->GetTagInfo($tagTablePtr, $index);
             unless ($tagInfo) {
                 next unless defined $tagInfo;
+                # $entry = offset of value relative to directory start (or end if negative)
                 my $entry = int($index) * $increment + $varSize;
                 if ($entry < 0) {
                     $entry += $size;
@@ -8805,7 +8810,7 @@ sub ProcessBinaryData($$$)
                 next if $entry >= $size;
                 my $more = $size - $entry;
                 $more = 128 if $more > 128;
-                my $v = substr($$dataPt, $entry+$offset, $more);
+                my $v = substr($$dataPt, $entry+$dirStart, $more);
                 $tagInfo = $self->GetTagInfo($tagTablePtr, $index, \$v);
                 next unless $tagInfo;
             }
@@ -8838,7 +8843,7 @@ sub ProcessBinaryData($$$)
             $count = $more;
         } elsif ($format eq 'pstring') {
             $format = 'string';
-            $count = Get8u($dataPt, ($entry++)+$offset);
+            $count = Get8u($dataPt, ($entry++)+$dirStart);
             --$more;
         } elsif (not $formatSize{$format}) {
             if ($format =~ /(.*)\[(.*)\]/) {
@@ -8867,17 +8872,17 @@ sub ProcessBinaryData($$$)
             } elsif ($format =~ /^var_/) {
                 # handle variable-length string formats
                 $format = substr($format, 4);
-                pos($$dataPt) = $entry + $offset;
+                pos($$dataPt) = $entry + $dirStart;
                 undef $count;
                 if ($format eq 'ustring') {
-                    $count = pos($$dataPt) - ($entry+$offset) if $$dataPt =~ /\G(..)*?\0\0/sg;
+                    $count = pos($$dataPt) - ($entry+$dirStart) if $$dataPt =~ /\G(..)*?\0\0/sg;
                     $varSize -= 2;  # ($count includes base size of 2 bytes)
                 } elsif ($format eq 'pstring') {
-                    $count = Get8u($dataPt, ($entry++)+$offset);
+                    $count = Get8u($dataPt, ($entry++)+$dirStart);
                     --$more;
                 } elsif ($format eq 'pstr32' or $format eq 'ustr32') {
                     last if $more < 4;
-                    $count = Get32u($dataPt, $entry + $offset);
+                    $count = Get32u($dataPt, $entry + $dirStart);
                     $count *= 2 if $format eq 'ustr32';
                     $entry += 4;
                     $more -= 4;
@@ -8885,22 +8890,22 @@ sub ProcessBinaryData($$$)
                 } elsif ($format eq 'int16u') {
                     # int16u size of binary data to follow
                     last if $more < 2;
-                    $count = Get16u($dataPt, $entry + $offset) + 2;
+                    $count = Get16u($dataPt, $entry + $dirStart) + 2;
                     $varSize -= 2;  # ($count includes size word)
                     $format = 'undef';
                 } elsif ($format eq 'ue7') {
                     require Image::ExifTool::BPG;
-                    ($val, $count) = Image::ExifTool::BPG::Get_ue7($dataPt, $entry + $offset);
+                    ($val, $count) = Image::ExifTool::BPG::Get_ue7($dataPt, $entry + $dirStart);
                     last unless defined $val;
                     --$varSize;     # ($count includes base size of 1 byte)
                 } elsif ($$dataPt =~ /\0/g) {
-                    $count = pos($$dataPt) - ($entry+$offset);
+                    $count = pos($$dataPt) - ($entry+$dirStart);
                     --$varSize;     # ($count includes base size of 1 byte)
                 }
                 $count = $more if not defined $count or $count > $more;
                 $varSize += $count; # shift subsequent indices
                 unless (defined $val) {
-                    $val = substr($$dataPt, $entry+$offset, $count);
+                    $val = substr($$dataPt, $entry+$dirStart, $count);
                     $val = $self->Decode($val, 'UCS2') if $format eq 'ustring' or $format eq 'ustr32';
                     $val =~ s/\0.*//s unless $format eq 'undef';  # truncate at null
                 }
@@ -8914,7 +8919,7 @@ sub ProcessBinaryData($$$)
         # hook to allow format, etc to be set dynamically
         if (defined $$tagInfo{Hook}) {
             my $oldVarSize = $varSize;
-            my $pos = $entry + $offset;
+            my $pos = $entry + $dirStart;
             #### eval Hook ($format, $varSize, $size, $dataPt, $pos)
             eval $$tagInfo{Hook};
             # save variable size data if required for writing (in case changed by Hook)
@@ -8939,7 +8944,7 @@ sub ProcessBinaryData($$$)
         next if $$tagInfo{LargeTag} and $$self{EXCL_TAG_LOOKUP}{lc $$tagInfo{Name}};
         # read value now if necessary
         unless (defined $val and not $$tagInfo{SubDirectory}) {
-            $val = ReadValue($dataPt, $entry+$offset, $format, $count, $more, \$rational);
+            $val = ReadValue($dataPt, $entry+$dirStart, $format, $count, $more, \$rational);
             next unless defined $val;
             $mask = $$tagInfo{Mask};
             $val = ($val & $mask) >> $$tagInfo{BitShift} if $mask;
@@ -8956,8 +8961,8 @@ sub ProcessBinaryData($$$)
                 Value  => $val,
                 DataPt => $dataPt,
                 Size   => $len,
-                Start  => $entry+$offset,
-                Addr   => $entry+$offset+$base+$dataPos,
+                Start  => $entry+$dirStart,
+                Addr   => $entry+$dirStart+$base+$dataPos,
                 Format => $format,
                 Count  => $count,
                 Extra  => $mask ? sprintf(', mask 0x%.2x',$mask) : undef,
@@ -8983,16 +8988,27 @@ sub ProcessBinaryData($$$)
             my $subdirBase = $base;
             if (defined $$subdir{Base}) {
                 #### eval Base ($start,$base)
-                my $start = $entry + $offset + $dataPos;
+                my $start = $entry + $dirStart + $dataPos;
                 $subdirBase = eval($$subdir{Base}) + $base;
             }
             my $start = $$subdir{Start} || 0;
+            if ($start =~ /\$/) {
+                # ignore directories with a zero offset (ie. missing Nikon ShotInfo entries)
+                next unless $val;
+                #### eval Start ($val, $dirStart)
+                $start = eval($start);
+                next if $start < $dirStart or $start > $dataLen;
+                $len = $$subdir{DirLen};
+                $len = $dataLen - $start unless $len and $len <= $dataLen - $start;
+            } else {
+                $start += $dirStart + $entry;
+            }
             my %subdirInfo = (
                 DataPt   => $dataPt,
                 DataPos  => $dataPos,
-                DataLen  => length $$dataPt,
-                DirStart => $entry + $offset + $start,
-                DirLen   => $len - $start,
+                DataLen  => $dataLen,
+                DirStart => $start,
+                DirLen   => $len,
                 Base     => $subdirBase,
             );
             delete $$self{NO_UNKNOWN};

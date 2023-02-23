@@ -318,6 +318,10 @@ my %fpxFileType = (
         unrecognized Windows Compound Binary file as a FlashPix (FPX) file.  See
         L<http://graphcomp.com/info/specs/livepicture/fpx.pdf> for the FlashPix
         specification.
+
+        Note that Microsoft is not consistent with the time zone used for some
+        date/time tags, and it may be either UTC or local time depending on the
+        software used to create the file.
     },
     "\x05SummaryInformation" => {
         Name => 'SummaryInfo',

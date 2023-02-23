@@ -35,6 +35,7 @@ my $testnum = 1;
     $exifTool->SetNewValue('MIE:FNumber' => 11);
     $exifTool->SetNewValue('XMP:Creator' => 'phil');
     $exifTool->SetNewValue('IPTC:Keywords' => 'cool');
+    $exifTool->SetNewValue('MIE:GPSLongitude' => -1.5);
     $exifTool->Options(Escape => 'HTML');
     $exifTool->SetNewValue('MIE:PhoneNumber' => 'k&uuml;hl');
     $exifTool->Options(Escape => undef);

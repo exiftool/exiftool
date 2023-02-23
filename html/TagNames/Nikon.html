@@ -435,7 +435,6 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>ShotInfoD7000
   <br>ShotInfoD4
   <br>ShotInfoD4S
-  <br>ShotInfoD5
   <br>ShotInfoD500
   <br>ShotInfoD6
   <br>ShotInfoD610
@@ -443,7 +442,7 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>ShotInfoZ9
   <br>ShotInfo02xx
   <br>ShotInfoUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#ShotInfoD40'>Nikon ShotInfoD40 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD80'>Nikon ShotInfoD80 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD90'>Nikon ShotInfoD90 Tags</a>
@@ -464,7 +463,6 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>--&gt; <a href='Nikon.html#ShotInfoD7000'>Nikon ShotInfoD7000 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD4'>Nikon ShotInfoD4 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD4S'>Nikon ShotInfoD4S Tags</a>
-  <br>--&gt; <a href='Nikon.html#ShotInfoD500'>Nikon ShotInfoD500 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD500'>Nikon ShotInfoD500 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD6'>Nikon ShotInfoD6 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD610'>Nikon ShotInfoD610 Tags</a>
@@ -2682,9 +2680,7 @@ firmware 1.02f.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoD810'>Nikon ShotInfoD810 Tags</a></h2>
-<p>These tags are extracted from encrypted data in images from the D810.  Note
-that the indices listed below are for firmware version 1.0, but they may be
-different for other firmware versions.</p>
+<p>These tags are extracted from encrypted data in images from the D810.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -2701,15 +2697,56 @@ different for other firmware versions.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='464 = 0x1d0'>464</td>
+<td class=r title='16 = 0x10'>16</td>
+<td>SettingsOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#SettingsInfoD810'>Nikon SettingsInfoD810 Tags</a></td></tr>
+<tr class=b>
+<td class=r title='36 = 0x24'>36</td>
+<td>BracketingOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#BracketingInfoD810'>Nikon BracketingInfoD810 Tags</a></td></tr>
+<tr>
+<td class=r title='56 = 0x38'>56</td>
+<td>ISOAutoOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#ISOAutoInfoD810'>Nikon ISOAutoInfoD810 Tags</a></td></tr>
+<tr class=b>
+<td class=r title='64 = 0x40'>64</td>
+<td>CustomSettingsOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='NikonCustom.html#SettingsD810'>NikonCustom SettingsD810 Tags</a></td></tr>
+<tr>
+<td class=r title='132 = 0x84'>132</td>
+<td>OrientationOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#OrientationInfo'>Nikon OrientationInfo Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SettingsInfoD810'>Nikon SettingsInfoD810 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='316 = 0x13c'>316</td>
 <td>SecondarySlotFunction</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0x3]
   <br>0 = Overflow
   <br>2 = Backup
   <br>3 = NEF Primary + JPG Secondary</span></td></tr>
-<tr class=b>
-<td class=r title='5974 = 0x1756'>5974</td>
+</table></td></tr></table></blockquote>
+
+<h2><a name='BracketingInfoD810'>Nikon BracketingInfoD810 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='15 = 0xf'>15</td>
 <td>AEBracketingSteps</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
@@ -2763,8 +2800,8 @@ different for other firmware versions.</p>
   <br>0xd5 = 3F3
   <br>0xd6 = 5F3</td></tr></table>
 </td></tr>
-<tr>
-<td class=r title='5975 = 0x1757'>5975</td>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
 <td>WBBracketingSteps</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
@@ -2796,8 +2833,8 @@ different for other firmware versions.</p>
   <br>0x27 = 7F 3
   <br>0x28 = 9F 3</td></tr></table>
 </td></tr>
-<tr class=b>
-<td class=r title='5982 = 0x175e'>5982</td>
+<tr>
+<td class=r title='23 = 0x17'>23</td>
 <td>NikonMeteringMode</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0x3]
@@ -2805,8 +2842,16 @@ different for other firmware versions.</p>
   <br>1 = Center
   <br>2 = Spot
   <br>3 = Highlight</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ISOAutoInfoD810'>Nikon ISOAutoInfoD810 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='6236 = 0x185c'>6236</td>
+<td class=r title='4 = 0x4'>4</td>
 <td>ISOAutoShutterTime</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0x3f]</span><table class=cols><tr>
@@ -2849,7 +2894,7 @@ different for other firmware versions.</p>
   <br>36 = Auto (Fastest)</td></tr></table>
 </td></tr>
 <tr class=b>
-<td class=r title='6237 = 0x185d'>6237</td>
+<td class=r title='5 = 0x5'>5</td>
 <td>ISOAutoHiLimit</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
@@ -2895,23 +2940,26 @@ different for other firmware versions.</p>
   <br>0x6c = ISO Hi 4.0
   <br>0x72 = ISO Hi 5.0</td></tr></table>
 </td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='OrientationInfo'>Nikon OrientationInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='6315 = 0x18ab'>6315</td>
-<td>CustomSettingsD810</td>
-<td class=c>-</td>
-<td>--&gt; <a href='NikonCustom.html#SettingsD810'>NikonCustom SettingsD810 Tags</a></td></tr>
-<tr class=b>
-<td class=r title='14068 = 0x36f4'>14068</td>
+<td class=r title='0 = 0x0'>0</td>
 <td>RollAngle</td>
 <td class=c>fixed32u</td>
 <td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
-<tr>
-<td class=r title='14072 = 0x36f8'>14072</td>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
 <td>PitchAngle</td>
 <td class=c>fixed32u</td>
 <td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
-<tr class=b>
-<td class=r title='14076 = 0x36fc'>14076</td>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
 <td>YawAngle</td>
 <td class=c>fixed32u</td>
 <td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
@@ -2935,7 +2983,35 @@ different for other firmware versions.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='1937 = 0x791'>1937</td>
+<td class=r title='16 = 0x10'>16</td>
+<td>MenuSettingsOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#MenuSettingsD850'>Nikon MenuSettingsD850 Tags</a></td></tr>
+<tr class=b>
+<td class=r title='76 = 0x4c'>76</td>
+<td>MoreSettingsOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#MoreSettingsD850'>Nikon MoreSettingsD850 Tags</a></td></tr>
+<tr>
+<td class=r title='88 = 0x58'>88</td>
+<td>CustomSettingsOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='NikonCustom.html#SettingsD850'>NikonCustom SettingsD850 Tags</a></td></tr>
+<tr class=b>
+<td class=r title='160 = 0xa0'>160</td>
+<td>OrientationOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#OrientationInfo'>Nikon OrientationInfo Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MenuSettingsD850'>Nikon MenuSettingsD850 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1757 = 0x6dd'>1757</td>
 <td>PhotoShootingMenuBankImageArea</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0x7]
@@ -2944,8 +3020,16 @@ different for other firmware versions.</p>
   <br>2 = 5:4 (30x24)
   <br>3 = 1.2x (30x20)
   <br>4 = 1:1 (24x24)</span></td></tr>
-<tr class=b>
-<td class=r title='4029 = 0xfbd'>4029</td>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MoreSettingsD850'>Nikon MoreSettingsD850 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='36 = 0x24'>36</td>
 <td>PhotoShootingMenuBank</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(valid for JPEG images only)</span>
@@ -2954,33 +3038,13 @@ different for other firmware versions.</p>
   <br>1 = B
   <br>2 = C
   <br>3 = D</span></td></tr>
-<tr>
-<td class=r title='4031 = 0xfbf'>4031</td>
+<tr class=b>
+<td class=r title='37 = 0x25'>37</td>
 <td>PrimarySlot</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &gt;&gt; 7 &amp; 0x1]
   <br>0 = XQD Card
   <br>1 = SD Card</span></td></tr>
-<tr class=b>
-<td class=r title='4152 = 0x1038'>4152</td>
-<td>CustomSettingsD850</td>
-<td class=c>-</td>
-<td>--&gt; <a href='NikonCustom.html#SettingsD850'>NikonCustom SettingsD850 Tags</a></td></tr>
-<tr>
-<td class=r title='12027 = 0x2efb'>12027</td>
-<td>RollAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
-<tr class=b>
-<td class=r title='12031 = 0x2eff'>12031</td>
-<td>PitchAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
-<tr>
-<td class=r title='12035 = 0x2f03'>12035</td>
-<td>YawAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoD5000'>Nikon ShotInfoD5000 Tags</a></h2>
@@ -3365,19 +3429,9 @@ firmware 1.01b.</p>
   <br><span class='n s'>(firmware version 1.01)</span></td></tr>
 <tr class=b>
 <td class=r title='13579 = 0x350b'>13579</td>
-<td>RollAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
-<tr>
-<td class=r title='13583 = 0x350f'>13583</td>
-<td>PitchAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
-<tr class=b>
-<td class=r title='13587 = 0x3513'>13587</td>
-<td>YawAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
+<td>OrientationInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#OrientationInfo'>Nikon OrientationInfo Tags</a></td></tr>
 <tr>
 <td class=r title='13971 = 0x3693'>13971</td>
 <td>Rotation</td>
@@ -3407,7 +3461,50 @@ firmware 1.01b.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='202 = 0xca'>202</td>
+<td class=r title='16 = 0x10'>16</td>
+<td>RotationInfoOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#RotationInfoD500'>Nikon RotationInfoD500 Tags</a></td></tr>
+<tr class=b>
+<td class=r title='20 = 0x14'>20</td>
+<td>JPGInfoOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#JPGInfoD500'>Nikon JPGInfoD500 Tags</a></td></tr>
+<tr>
+<td class=r title='44 = 0x2c'>44</td>
+<td>BracketingOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#BracketingInfoD500'>Nikon BracketingInfoD500 Tags</a></td></tr>
+<tr class=b>
+<td class=r title='80 = 0x50'>80</td>
+<td>ShootingMenuOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#ShootingMenuD500'>Nikon ShootingMenuD500 Tags</a></td></tr>
+<tr>
+<td class=r title='88 = 0x58'>88</td>
+<td>CustomSettingsOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#CustomSettingsD500'>Nikon CustomSettingsD500 Tags</a></td></tr>
+<tr class=b>
+<td class=r title='160 = 0xa0'>160</td>
+<td>OrientationOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#OrientationInfo'>Nikon OrientationInfo Tags</a></td></tr>
+<tr>
+<td class=r title='168 = 0xa8'>168</td>
+<td>OtherOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#OtherInfoD500'>Nikon OtherInfoD500 Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='RotationInfoD500'>Nikon RotationInfoD500 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='26 = 0x1a'>26</td>
 <td>Rotation</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0x3]
@@ -3416,31 +3513,47 @@ firmware 1.01b.</p>
   <br>2 = Rotate 90 CW
   <br>3 = Rotate 180</span></td></tr>
 <tr class=b>
-<td class=r title='208 = 0xd0'>208</td>
+<td class=r title='32 = 0x20'>32</td>
 <td>Interval</td>
 <td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='212 = 0xd4'>212</td>
+<td class=r title='36 = 0x24'>36</td>
 <td>IntervalFrame</td>
 <td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='1506 = 0x5e2'>1506</td>
+<td class=r title='1330 = 0x532'>1330</td>
 <td>FlickerReductionIndicator</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0x1]
   <br>0 = On
   <br>1 = Off</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='JPGInfoD500'>Nikon JPGInfoD500 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='2004 = 0x7d4'>2004</td>
+<td class=r title='36 = 0x24'>36</td>
 <td>JPGCompression</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0x1]
   <br>0 = Size Priority
   <br>1 = Optimal Quality</span></td></tr>
-<tr class=b>
-<td class=r title='2171 = 0x87b'>2171</td>
+</table></td></tr></table></blockquote>
+
+<h2><a name='BracketingInfoD500'>Nikon BracketingInfoD500 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='15 = 0xf'>15</td>
 <td>AEBracketingSteps</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
@@ -3494,8 +3607,8 @@ firmware 1.01b.</p>
   <br>0xd5 = 3F3
   <br>0xd6 = 5F3</td></tr></table>
 </td></tr>
-<tr>
-<td class=r title='2172 = 0x87c'>2172</td>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
 <td>WBBracketingSteps</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
@@ -3527,8 +3640,8 @@ firmware 1.01b.</p>
   <br>0x27 = 7F 3
   <br>0x28 = 9F 3</td></tr></table>
 </td></tr>
-<tr class=b>
-<td class=r title='2179 = 0x883'>2179</td>
+<tr>
+<td class=r title='23 = 0x17'>23</td>
 <td>ADLBracketingStep</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &gt;&gt; 4 &amp; 0xf]</span><table class=cols><tr>
@@ -3539,8 +3652,8 @@ firmware 1.01b.</p>
   <br>4 = Extra High
   <br>8 = Auto</td></tr></table>
 </td></tr>
-<tr>
-<td class=r title='2180 = 0x884'>2180</td>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
 <td>ADLBracketingType</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0xf]
@@ -3549,8 +3662,16 @@ firmware 1.01b.</p>
   <br>2 = 3 Shots
   <br>3 = 4 Shots
   <br>4 = 5 Shots</span></td></tr>
-<tr class=b>
-<td class=r title='3709 = 0xe7d'>3709</td>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ShootingMenuD500'>Nikon ShootingMenuD500 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
 <td>PhotoShootingMenuBank</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0x3]
@@ -3558,16 +3679,16 @@ firmware 1.01b.</p>
   <br>1 = B
   <br>2 = C
   <br>3 = D</span></td></tr>
-<tr>
-<td class=r title='3711 = 0xe7f'>3711</td>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
 <td>PrimarySlot</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(D500 only)</span>
   <br>[val &gt;&gt; 7 &amp; 0x1]
   <br>0 = XQD Card
   <br>1 = SD Card</span></td></tr>
-<tr class=b>
-<td class=r title='3713 = 0xe81'>3713</td>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
 <td>ISOAutoShutterTime</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0x3f]</span><table class=cols><tr>
@@ -3609,8 +3730,8 @@ firmware 1.01b.</p>
   <br>35 = Auto (Faster)
   <br>36 = Auto (Fastest)</td></tr></table>
 </td></tr>
-<tr>
-<td class=r title='3714 = 0xe82'>3714</td>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
 <td>ISOAutoHiLimit</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
@@ -3656,15 +3777,15 @@ firmware 1.01b.</p>
   <br>0x6c = ISO Hi 4.0
   <br>0x72 = ISO Hi 5.0</td></tr></table>
 </td></tr>
-<tr class=b>
-<td class=r title='3716 = 0xe84'>3716</td>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
 <td>FlickerReduction</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &gt;&gt; 5 &amp; 0x1]
   <br>0 = Enable
   <br>1 = Disable</span></td></tr>
-<tr>
-<td class=r title='3716 = 0xe84'>3716.1</td>
+<tr class=b>
+<td class=r title='7 = 0x7'>7.1</td>
 <td>PhotoShootingMenuBankImageArea</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0x7]
@@ -3673,30 +3794,31 @@ firmware 1.01b.</p>
   <br>2 = 5:4 (30x24)
   <br>3 = 1.2x (30x20)
   <br>4 = 1.3x (18x12)</span></td></tr>
-<tr class=b>
-<td class=r title='3819 = 0xeeb'>3819</td>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CustomSettingsD500'>Nikon CustomSettingsD500 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
 <td>CustomSettingsD5
   <br>CustomSettingsD500</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='NikonCustom.html#SettingsD5'>NikonCustom SettingsD5 Tags</a>
   <br>--&gt; <a href='NikonCustom.html#SettingsD500'>NikonCustom SettingsD500 Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='OtherInfoD500'>Nikon OtherInfoD500 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='11300 = 0x2c24'>11300</td>
-<td>RollAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
-<tr class=b>
-<td class=r title='11304 = 0x2c28'>11304</td>
-<td>PitchAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
-<tr>
-<td class=r title='11308 = 0x2c2c'>11308</td>
-<td>YawAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
-<tr class=b>
-<td class=r title='11940 = 0x2ea4'>11940</td>
+<td class=r title='532 = 0x214'>532</td>
 <td>NikonMeteringMode</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(D500 only)</span>
@@ -3725,76 +3847,92 @@ firmware 1.01b.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='30220 = 0x760c'>30220</td>
+<td class=r title='48 = 0x30'>48</td>
+<td>SequenceOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#SeqInfoD6'>Nikon SeqInfoD6 Tags</a></td></tr>
+<tr class=b>
+<td class=r title='156 = 0x9c'>156</td>
+<td>OrientationOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#OrientationInfo'>Nikon OrientationInfo Tags</a></td></tr>
+<tr>
+<td class=r title='164 = 0xa4'>164</td>
+<td>IntervalOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#IntervalInfoD6'>Nikon IntervalInfoD6 Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SeqInfoD6'>Nikon SeqInfoD6 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='36 = 0x24'>36</td>
 <td>IntervalShooting</td>
 <td class=c title=' ~ = Writable only with -n'>int16u~</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='49690 = 0xc21a'>49690</td>
-<td>RollAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='IntervalInfoD6'>Nikon IntervalInfoD6 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='49694 = 0xc21e'>49694</td>
-<td>PitchAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
-<tr class=b>
-<td class=r title='49698 = 0xc222'>49698</td>
-<td>YawAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
-<tr>
-<td class=r title='50190 = 0xc40e'>50190</td>
+<td class=r title='380 = 0x17c'>380</td>
 <td>Intervals</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='50194 = 0xc412'>50194</td>
+<td class=r title='384 = 0x180'>384</td>
 <td>ShotsPerInterval</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='50198 = 0xc416'>50198</td>
+<td class=r title='388 = 0x184'>388</td>
 <td>IntervalExposureSmoothing</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
 <tr class=b>
-<td class=r title='50200 = 0xc418'>50200</td>
+<td class=r title='390 = 0x186'>390</td>
 <td>IntervalPriority</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
 <tr>
-<td class=r title='50234 = 0xc43a'>50234</td>
+<td class=r title='424 = 0x1a8'>424</td>
 <td>FocusShiftNumberShots</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='50238 = 0xc43e'>50238</td>
+<td class=r title='428 = 0x1ac'>428</td>
 <td>FocusShiftStepWidth</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='50242 = 0xc442'>50242</td>
+<td class=r title='432 = 0x1b0'>432</td>
 <td>FocusShiftInterval</td>
 <td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='50246 = 0xc446'>50246</td>
+<td class=r title='436 = 0x1b4'>436</td>
 <td>FocusShiftExposureLock</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
 <tr>
-<td class=r title='50336 = 0xc4a0'>50336</td>
+<td class=r title='526 = 0x20e'>526</td>
 <td>DiffractionCompensation</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
 <tr class=b>
-<td class=r title='50342 = 0xc4a6'>50342</td>
+<td class=r title='532 = 0x214'>532</td>
 <td>FlashControlMode</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = TTL
@@ -3803,7 +3941,7 @@ firmware 1.01b.</p>
   <br>3 = Manual
   <br>4 = Repeating Flash</span></td></tr>
 <tr>
-<td class=r title='50348 = 0xc4ac'>50348</td>
+<td class=r title='538 = 0x21a'>538</td>
 <td>FlashGNDistance?</td>
 <td class=c>no</td>
 <td><table class=cols><tr>
@@ -3847,19 +3985,19 @@ firmware 1.01b.</p>
   <br>255 = n/a</td></tr></table>
 </td></tr>
 <tr class=b>
-<td class=r title='50352 = 0xc4b0'>50352</td>
+<td class=r title='542 = 0x21e'>542</td>
 <td>FlashOutput?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='50362 = 0xc4ba'>50362</td>
+<td class=r title='552 = 0x228'>552</td>
 <td>FlashRemoteControl?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Group
   <br>1 = Quick Wireless
   <br>2 = Remote Repeating</span></td></tr>
 <tr class=b>
-<td class=r title='50366 = 0xc4be'>50366</td>
+<td class=r title='556 = 0x22c'>556</td>
 <td>FlashMasterControlMode</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = TTL
@@ -3867,23 +4005,23 @@ firmware 1.01b.</p>
   <br>2 = Auto
   <br>3 = Off</span></td></tr>
 <tr>
-<td class=r title='50368 = 0xc4c0'>50368</td>
+<td class=r title='558 = 0x22e'>558</td>
 <td>FlashMasterCompensation?</td>
 <td class=c>int8s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='50372 = 0xc4c4'>50372</td>
+<td class=r title='562 = 0x232'>562</td>
 <td>FlashMasterOutput?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='50374 = 0xc4c6'>50374</td>
+<td class=r title='564 = 0x234'>564</td>
 <td>FlashWirelessOption?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Optical AWL
   <br>1 = Off</span></td></tr>
 <tr class=b>
-<td class=r title='50524 = 0xc55c'>50524</td>
+<td class=r title='714 = 0x2ca'>714</td>
 <td>MovieType?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = MOV
@@ -3932,38 +4070,62 @@ firmware 1.01b.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='30220 = 0x760c'>30220</td>
+<td class=r title='48 = 0x30'>48</td>
+<td>IntervalOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#IntervalInfoZ7II'>Nikon IntervalInfoZ7II Tags</a></td></tr>
+<tr class=b>
+<td class=r title='56 = 0x38'>56</td>
+<td>PortraitOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#PortraitInfoZ7II'>Nikon PortraitInfoZ7II Tags</a></td></tr>
+<tr>
+<td class=r title='152 = 0x98'>152</td>
+<td>OrientationOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#OrientationInfo'>Nikon OrientationInfo Tags</a></td></tr>
+<tr class=b>
+<td class=r title='160 = 0xa0'>160</td>
+<td>MenuOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#MenuInfoZ7II'>Nikon MenuInfoZ7II Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='IntervalInfoZ7II'>Nikon IntervalInfoZ7II Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='36 = 0x24'>36</td>
 <td>IntervalShooting</td>
 <td class=c title=' ~ = Writable only with -n'>int16u~</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='32672 = 0x7fa0'>32672</td>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PortraitInfoZ7II'>Nikon PortraitInfoZ7II Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='160 = 0xa0'>160</td>
 <td>PortraitImpressionBalance</td>
 <td class=c title=' ~ = Writable only with -n'>int8u[2]~</td>
 <td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MenuInfoZ7II'>Nikon MenuInfoZ7II Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='52786 = 0xce32'>52786</td>
-<td>RollAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
-<tr class=b>
-<td class=r title='52790 = 0xce36'>52790</td>
-<td>PitchAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
-<tr>
-<td class=r title='52794 = 0xce3a'>52794</td>
-<td>YawAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
-<tr class=b>
-<td class=r title='52918 = 0xceb6'>52918</td>
-<td>MenuSettingsZ7IIOffset</td>
-<td class=c>int8u</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='52920 = 0xceb8'>52920</td>
-<td>MenuSettingsZ7II</td>
+<td class=r title='16 = 0x10'>16</td>
+<td>MenuSettingsOffsetZ7II</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#MenuSettingsZ7II'>Nikon MenuSettingsZ7II Tags</a></td></tr>
 </table></td></tr></table></blockquote>
@@ -3976,76 +4138,85 @@ firmware 1.01b.</p>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='92 = 0x5c'>92</td>
+<td>ReleaseMode</td>
+<td class=c>no</td>
+<td><span class=s>0 = Continuous Low
+  <br>1 = Continuous High
+  <br>2 = Continuous High (Extended)
+  <br>4 = Timer
+  <br>5 = Single Frame</span></td></tr>
+<tr class=b>
 <td class=r title='160 = 0xa0'>160</td>
 <td>IntervalDurationHours</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='164 = 0xa4'>164</td>
 <td>IntervalDurationMinutes</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='168 = 0xa8'>168</td>
 <td>IntervalDurationSeconds</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='176 = 0xb0'>176</td>
 <td>Intervals</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='180 = 0xb4'>180</td>
 <td>ShotsPerInterval</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='184 = 0xb8'>184</td>
 <td>IntervalExposureSmoothing</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='186 = 0xba'>186</td>
 <td>IntervalPriority</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='220 = 0xdc'>220</td>
 <td>FocusShiftNumberShots</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='224 = 0xe0'>224</td>
 <td>FocusShiftStepWidth</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='228 = 0xe4'>228</td>
 <td>FocusShiftInterval</td>
 <td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='232 = 0xe8'>232</td>
 <td>FocusShiftExposureLock</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='322 = 0x142'>322</td>
 <td>DiffractionCompensation</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='323 = 0x143'>323</td>
 <td>AutoDistortionControl</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='326 = 0x146'>326</td>
 <td>NikonMeteringMode</td>
 <td class=c>int8u</td>
@@ -4053,7 +4224,7 @@ firmware 1.01b.</p>
   <br>1 = Center
   <br>2 = Spot
   <br>3 = Highlight</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='328 = 0x148'>328</td>
 <td>FlashControlMode</td>
 <td class=c>int8u</td>
@@ -4062,7 +4233,7 @@ firmware 1.01b.</p>
   <br>2 = GN (distance priority)
   <br>3 = Manual
   <br>4 = Repeating Flash</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='334 = 0x14e'>334</td>
 <td>FlashGNDistance?</td>
 <td class=c>no</td>
@@ -4106,12 +4277,12 @@ firmware 1.01b.</p>
   <br>36 = 20.0 m
   <br>255 = n/a</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='338 = 0x152'>338</td>
 <td>FlashOutput?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='346 = 0x15a'>346</td>
 <td>FlashWirelessOption?</td>
 <td class=c>int8u</td>
@@ -4119,14 +4290,14 @@ firmware 1.01b.</p>
   <br>1 = Optical AWL
   <br>2 = Optical/Radio AWL
   <br>3 = Radio AWL</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='348 = 0x15c'>348</td>
 <td>FlashRemoteControl?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Group
   <br>1 = Quick Wireless
   <br>2 = Remote Repeating</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='352 = 0x160'>352</td>
 <td>FlashMasterControlMode</td>
 <td class=c>int8u</td>
@@ -4134,24 +4305,24 @@ firmware 1.01b.</p>
   <br>1 = Manual
   <br>2 = Auto
   <br>3 = Off</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='354 = 0x162'>354</td>
 <td>FlashMasterCompensation?</td>
 <td class=c>int8s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='358 = 0x166'>358</td>
 <td>FlashMasterOutput?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='502 = 0x1f6'>502</td>
 <td>MovieFrameSize?</td>
 <td class=c>int8u</td>
 <td><span class=s>1 = 1920x1080
   <br>2 = 3840x2160
   <br>3 = 7680x4320</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='504 = 0x1f8'>504</td>
 <td>MovieFrameRate?</td>
 <td class=c>int8u</td>
@@ -4164,20 +4335,20 @@ firmware 1.01b.</p>
   <br>5 = 25p
   <br>6 = 24p</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='506 = 0x1fa'>506</td>
 <td>MovieSlowMotion?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On (4x)
   <br>2 = On (5x)</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='510 = 0x1fe'>510</td>
 <td>MovieType?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = MOV
   <br>1 = MP4</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='516 = 0x204'>516</td>
 <td>MovieISOAutoManualMode?</td>
 <td class=c>int16u</td>
@@ -4214,7 +4385,7 @@ firmware 1.01b.</p>
   <br>29 = ISO Hi 1.0
   <br>32 = ISO Hi 2.0</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='568 = 0x238'>568</td>
 <td>MovieActiveD-Lighting?</td>
 <td class=c>int8u</td>
@@ -4223,7 +4394,7 @@ firmware 1.01b.</p>
   <br>3 = Normal
   <br>4 = High
   <br>5 = Extra High</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='572 = 0x23c'>572</td>
 <td>MovieHighISONoiseReduction?</td>
 <td class=c>int8u</td>
@@ -4231,7 +4402,7 @@ firmware 1.01b.</p>
   <br>1 = Low
   <br>2 = Normal
   <br>3 = High</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='574 = 0x23e'>574</td>
 <td>MovieVignetteControl?</td>
 <td class=c>int8u</td>
@@ -4239,25 +4410,25 @@ firmware 1.01b.</p>
   <br>1 = Low
   <br>2 = Normal
   <br>3 = High</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='576 = 0x240'>576</td>
 <td>MovieVignetteControlSameAsPhoto?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='577 = 0x241'>577</td>
 <td>MovieDiffractionCompensation?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='578 = 0x242'>578</td>
 <td>MovieAutoDistortionControl?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='584 = 0x248'>584</td>
 <td>MovieFocusMode?</td>
 <td class=c>int8u</td>
@@ -4265,20 +4436,20 @@ firmware 1.01b.</p>
   <br>1 = AF-S
   <br>2 = AF-C
   <br>4 = AF-F</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='590 = 0x24e'>590</td>
 <td>MovieVibrationReduction?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On (Normal)
   <br>2 = On (Sport)</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='591 = 0x24f'>591</td>
 <td>MovieVibrationReductionSameAsPhoto?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='858 = 0x35a'>858</td>
 <td>HDMIOutputN-Log?</td>
 <td class=c>int8u</td>
@@ -4304,46 +4475,55 @@ firmware 1.01b.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='180 = 0xb4'>180</td>
+<td class=r title='48 = 0x30'>48</td>
+<td>SequenceOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#SeqInfoZ9'>Nikon SeqInfoZ9 Tags</a></td></tr>
+<tr class=b>
+<td class=r title='132 = 0x84'>132</td>
+<td>OrientOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#OrientationInfo'>Nikon OrientationInfo Tags</a></td></tr>
+<tr>
+<td class=r title='140 = 0x8c'>140</td>
+<td>MenuOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#MenuInfoZ9'>Nikon MenuInfoZ9 Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SeqInfoZ9'>Nikon SeqInfoZ9 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='32 = 0x20'>32</td>
 <td>FocusShiftShooting</td>
 <td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='188 = 0xbc'>188</td>
+<td class=r title='40 = 0x28'>40</td>
 <td>IntervalShooting</td>
 <td class=c title=' ~ = Writable only with -n'>int16u~</td>
 <td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MenuInfoZ9'>Nikon MenuInfoZ9 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='17644 = 0x44ec'>17644</td>
-<td>MenuSettingsZ9</td>
-<td class=c>-</td>
-<td>--&gt; <a href='Nikon.html#MenuSettingsZ9'>Nikon MenuSettingsZ9 Tags</a>
-  <br><span class='n s'>(Firmware versions 3.0 and later)</span>
-  <br>--&gt; <a href='Nikon.html#MenuSettingsZ9Firmware3'>Nikon MenuSettingsZ9Firmware3 Tags</a>
-  <br><span class='n s'>(Firmware versions 2.11 and earlier)</span></td></tr>
-<tr class=b>
-<td class=r title='32965 = 0x80c5'>32965</td>
-<td>RollAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
-<tr>
-<td class=r title='32969 = 0x80c9'>32969</td>
-<td>PitchAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
-<tr class=b>
-<td class=r title='32973 = 0x80cd'>32973</td>
-<td>YawAngle</td>
-<td class=c>fixed32u</td>
-<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
-<tr>
-<td class=r title='33317 = 0x8225'>33317</td>
-<td>MenuSettingsZ9</td>
-<td class=c>-</td>
-<td>--&gt; <a href='Nikon.html#MenuSettingsZ9'>Nikon MenuSettingsZ9 Tags</a>
-  <br><span class='n s'>(Firmware versions 3.0 and later)</span>
-  <br>--&gt; <a href='Nikon.html#MenuSettingsZ9Firmware3'>Nikon MenuSettingsZ9Firmware3 Tags</a>
-  <br><span class='n s'>(Firmware versions 2.11 and earlier)</span></td></tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>MenuSettingsOffsetZ9
+  <br>MenuSettingsOffsetZ9v3</td>
+<td class=c>-<br>-</td>
+<td><span class=n>(Firmware versions 2.11 and earlier)</span>
+  <br>--&gt; <a href='Nikon.html#MenuSettingsZ9'>Nikon MenuSettingsZ9 Tags</a>
+  <br><span class=n>(Firmware versions 3.0 and later)</span>
+  <br>--&gt; <a href='Nikon.html#MenuSettingsZ9v3'>Nikon MenuSettingsZ9v3 Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='MenuSettingsZ9'>Nikon MenuSettingsZ9 Tags</a></h2>
@@ -5083,7 +5263,7 @@ firmware 1.01b.</p>
   <br>1 = Closes</span></td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='MenuSettingsZ9Firmware3'>Nikon MenuSettingsZ9Firmware3 Tags</a></h2>
+<h2><a name='MenuSettingsZ9v3'>Nikon MenuSettingsZ9v3 Tags</a></h2>
 <p>These tags are used by the Z9 firmware 3.00.</p>
 <blockquote>
 <table class=frame><tr><td>
@@ -6372,12 +6552,14 @@ extracted.</p>
   <br>23 = Nikkor Z 14-24mm f/2.8 S
   <br>24 = Nikkor Z MC 105mm f/2.8 VR S
   <br>25 = Nikkor Z 40mm f/2
+  <br>26 = Nikkor Z DX 18-140mm f/3.5-6.3 VR
   <br>27 = Nikkor Z MC 50mm f/2.8
   <br>28 = Nikkor Z 100-400mm f/4.5-5.6 VR S
   <br>29 = Nikkor Z 28mm f/2.8
   <br>30 = Nikkor Z 400mm f/2.8 TC VR S
   <br>31 = Nikkor Z 24-120 f/4
   <br>32 = Nikkor Z 800mm f/6.3 VR S
+  <br>35 = Nikkor Z 28-75mm f/2.8
   <br>36 = Nikkor Z 400mm f/4.5 VR S
   <br>37 = Nikkor Z 600mm f/4 TC VR S
   <br>39 = Nikkor Z 17-28mm f/2.8
@@ -10176,7 +10358,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 9, 2023</i>
+<br><i>Last revised Feb 23, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -2924,6 +2924,7 @@ sub ProcessGarminGPS($$$)
     my $epoch = (66 * 365 + 17) * 24 * 3600; # time is relative to Jan 1, 1904
     my $scl = 180 / (32768 * 65536);         # scaling factor for lat/lon
     $et->VerboseDir('GarminGPS');
+    $$et{SET_GROUP1} = 'Garmin';
     while ($pos + 20 <= $dataLen) {
         $$et{DOC_NUM} = ++$$et{DOC_COUNT};
         my $time = Image::ExifTool::ConvertUnixTime(Get32u($dataPt, $pos) - $epoch) . 'Z';
@@ -2938,6 +2939,7 @@ sub ProcessGarminGPS($$$)
         $pos += 20;
     }
     delete $$et{DOC_NUM};
+    delete $$et{SET_GROUP1};
     return 1;
 }
 

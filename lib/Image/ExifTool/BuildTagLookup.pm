@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.50';
+$VERSION = '3.51';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -444,6 +444,11 @@ differentiate these.  ExifTool currently writes only top-level metadata in
 QuickTime-based files; it extracts other track-specific and timed metadata,
 but can not yet edit tags in these locations (with the exception of
 track-level date/time tags).
+
+Beware that the Keys tags are actually stored inside the ItemList in the
+file, so deleting the ItemList group as a block (ie. C<-ItemList:all=>) also
+deletes Keys tags.  Instead, to preserve Keys tags the ItemList tags may be
+deleted individually with C<-QuickTime:ItemList:all=>.
 
 Alternate language tags may be accessed for
 L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and
@@ -1051,7 +1056,7 @@ TagID:  foreach $tagID (@keys) {
                 if ($$tagInfo{SubIFD}) {
                     warn "Warning: Wrong SubDirectory Start for SubIFD tag - $short $name\n" unless $isSub;
                 } else {
-                    warn "Warning: SubIFD flag not set for $short $name\n" if $isSub;
+                    warn "Warning: SubIFD flag not set for $short $name\n" if $isSub and not $processBinaryData;
                 }
                 if ($$tagInfo{Notes}) {
                     my $note = $$tagInfo{Notes};

@@ -33,6 +33,11 @@ QuickTime-based files; it extracts other track-specific and timed metadata,
 but can not yet edit tags in these locations (with the exception of
 track-level date/time tags).</p>
 
+<p>Beware that the Keys tags are actually stored inside the ItemList in the
+file, so deleting the ItemList group as a block (ie. <code>-ItemList:all=</code>) also
+deletes Keys tags.  Instead, to preserve Keys tags the ItemList tags may be
+deleted individually with <code>-QuickTime:ItemList:all=</code>.</p>
+
 <p>Alternate language tags may be accessed for
 <a href="QuickTime.html#ItemList">ItemList</a> and
 <a href="QuickTime.html#Keys">Keys</a> tags by adding
@@ -8988,7 +8993,7 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 17, 2023</i>
+<br><i>Last revised Feb 23, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

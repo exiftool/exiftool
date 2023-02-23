@@ -482,13 +482,13 @@ sub PrintTimeStamp($)
 #------------------------------------------------------------------------------
 # Convert degrees to DMS, or whatever the current settings are
 # Inputs: 0) ExifTool reference, 1) Value in degrees,
-#         2) format code (0=no format, 1=CoordFormat, 2=XMP format)
+#         2) format code (0=no format, 1=CoordFormat, 2=XMP format, 3=signed unformatted)
 #         3) 'N' or 'E' if sign is significant and N/S/E/W should be added
 # Returns: DMS string
 sub ToDMS($$;$$)
 {
     my ($et, $val, $doPrintConv, $ref) = @_;
-    my ($fmt, @fmt, $num, $sign, $rtnVal);
+    my ($fmt, @fmt, $num, $sign, $rtnVal, $neg);
 
     unless (length $val) {
         # don't convert an empty value
@@ -505,6 +505,10 @@ sub ToDMS($$;$$)
         }
         $ref = " $ref" unless $doPrintConv and $doPrintConv eq '2';
     } else {
+        if ($doPrintConv and $doPrintConv eq '3') {
+            $neg = 1 if $val < 0;
+            $doPrintConv = 0;
+        }
         $val = abs($val);
         $ref = '';
     }
@@ -554,6 +558,7 @@ sub ToDMS($$;$$)
         # trim trailing zeros in XMP
         $rtnVal =~ s/(\d)0+$ref$/$1$ref/ if $doPrintConv eq '2';
     } else {
+        $neg and map { $_ *= -1 } @c;
         $rtnVal = "@c$ref";
     }
     return $rtnVal;

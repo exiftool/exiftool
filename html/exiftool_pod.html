@@ -232,7 +232,7 @@
   -overwrite_original_in_place     Overwrite original by copying tmp file
   -P          (-preserve)          Preserve file modification date/time
   -password PASSWD                 Password for processing protected files
-  -progress[:[TITLE]]              Show file progress count
+  -progress[NUM][:[TITLE]]         Show file progress count
   -q          (-quiet)             Quiet processing
   -r[.]       (-recurse)           Recursively process subdirectories
   -scanForXMP                      Brute force XMP scan
@@ -318,7 +318,10 @@
 
   TIFF Image:
   - Deleting EXIF only removes ExifIFD which also deletes
-    InteropIFD and MakerNotes.</code></pre>
+    InteropIFD and MakerNotes.
+
+  MOV/MP4 video:
+  - Deleting ItemList also deletes Keys tags</code></pre>
 
 <p>Notes:</p>
 
@@ -352,7 +355,7 @@
 
 <p><i>SRCFILE</i> may be the same as <i>FILE</i> to move information around within a single file. In this case, <code>@</code> may be used to represent the source file (ie. <code>-tagsFromFile @</code>), permitting this feature to be used for batch processing multiple files. Specified tags are then copied from each file in turn as it is rewritten. For advanced batch use, the source file name may also be specified using a <i>FMT</i> string in which %d, %f and %e represent the directory, file name and extension of <i>FILE</i>. (eg. the current <i>FILE</i> would be represented by <code>%d%f.%e</code>, with the same effect as <code>@</code>). See the <b>-w</b> option for <i>FMT</i> string examples.</p>
 
-<p>A powerful redirection feature allows a destination tag to be specified for each copied tag. With this feature, information may be written to a tag with a different name or group. This is done using &quot;&#39;-<i>DSTTAG</i>&lt;<i>SRCTAG</i>&#39;&quot; or &quot;&#39;-<i>SRCTAG</i>&gt;<i>DSTTAG</i>&#39;&quot; on the command line after <b>-tagsFromFile</b>, and causes the value of <i>SRCTAG</i> to be copied from <i>SRCFILE</i> and written to <i>DSTTAG</i> in <i>FILE</i>. Has no effect unless <i>SRCTAG</i> exists in <i>SRCFILE</i>. Note that this argument must be quoted to prevent shell redirection, and there is no <code>=</code> sign as when assigning new values. Source and/or destination tags may be prefixed by a group name and/or suffixed by <code>#</code>. Wildcards are allowed in both the source and destination tag names. A destination group and/or tag name of <code>All</code> or <code>*</code> writes to the same family 1 group and/or tag name as the source. If no destination group is specified, the information is written to the preferred group. Whitespace around the <code>&gt;</code> or <code>&lt;</code> is ignored. As a convenience, <code>-tagsFromFile @</code> is assumed for any redirected tags which are specified without a prior <b>-tagsFromFile</b> option. Copied tags may also be added or deleted from a list with arguments of the form &quot;&#39;-<i>SRCTAG</i>+&lt;<i>DSTTAG</i>&#39;&quot; or &quot;&#39;-<i>SRCTAG</i>-&lt;<i>DSTTAG</i>&#39;&quot; (but see Note 5 below).</p>
+<p>A powerful redirection feature allows a destination tag to be specified for each copied tag. With this feature, information may be written to a tag with a different name or group. This is done using &quot;&#39;-<i>DSTTAG</i>&lt;<i>SRCTAG</i>&#39;&quot; or &quot;&#39;-<i>SRCTAG</i>&gt;<i>DSTTAG</i>&#39;&quot; on the command line after <b>-tagsFromFile</b>, and causes the value of <i>SRCTAG</i> to be copied from <i>SRCFILE</i> and written to <i>DSTTAG</i> in <i>FILE</i>. Has no effect unless <i>SRCTAG</i> exists in <i>SRCFILE</i>. Note that this argument must be quoted to prevent shell redirection, and there is no <code>=</code> sign as when assigning new values. Source and/or destination tags may be prefixed by a group name and/or suffixed by <code>#</code>. Wildcards are allowed in both the source and destination tag names. A destination group and/or tag name of <code>All</code> or <code>*</code> writes to the same family 1 group and/or tag name as the source (but the family may be specified by adding a leading number to the group name, eg. <code>0All</code> writes to the same family 0 group as the source). If no destination group is specified, the information is written to the preferred group. Whitespace around the <code>&gt;</code> or <code>&lt;</code> is ignored. As a convenience, <code>-tagsFromFile @</code> is assumed for any redirected tags which are specified without a prior <b>-tagsFromFile</b> option. Copied tags may also be added or deleted from a list with arguments of the form &quot;&#39;-<i>SRCTAG</i>+&lt;<i>DSTTAG</i>&#39;&quot; or &quot;&#39;-<i>SRCTAG</i>-&lt;<i>DSTTAG</i>&#39;&quot; (but see Note 5 below).</p>
 
 <p>An extension of the redirection feature allows strings involving tag names to be used on the right hand side of the <code>&lt;</code> symbol with the syntax &quot;&#39;-<i>DSTTAG</i>&lt;<i>STR</i>&#39;&quot;, where tag names in <i>STR</i> are prefixed with a <code>$</code> symbol. See the <b>-p</b> option and the <a href="#Advanced-formatting-feature">&quot;Advanced formatting feature&quot;</a> section for more details about this syntax. Strings starting with a <code>=</code> sign must insert a single space after the <code>&lt;</code> to avoid confusion with the <code>&lt;=</code> operator which sets the tag value from the contents of a file. A single space at the start of the string is removed if it exists, but all other whitespace in the string is preserved. See note 8 below about using the redirection feature with list-type stags, shortcuts or when using wildcards in tag names.</p>
 
@@ -688,7 +691,7 @@
 
 <p>produces output like this:</p>
 
-<pre><code>    -- Generated by ExifTool 12.56 --
+<pre><code>    -- Generated by ExifTool 12.57 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -1066,12 +1069,12 @@
 <p>Specify password to allow processing of password-protected PDF documents. If a password is required but not given, a warning is issued and the document is not processed. This option is ignored if a password is not required.</p>
 
 </dd>
-<dt id="progress-:-TITLE"><b>-progress</b>[:[<i>TITLE</i>]]</dt>
+<dt id="progress-NUM-:-TITLE"><b>-progress</b>[NUM][:[<i>TITLE</i>]]</dt>
 <dd>
 
-<p>Show the progress when processing files. Without a colon, the <b>-progress</b> option adds a progress count in brackets after the name of each processed file, giving the current file number and the total number of files to be processed. Implies the <b>-v0</b> option, causing the names of processed files to also be printed when writing. When combined with the <b>-if</b> option, the total count includes all files before the condition is applied, but files that fail the condition will not have their names printed.</p>
+<p>Show the progress when processing files. Without a colon, the <b>-progress</b> option adds a progress count in brackets after the name of each processed file, giving the current file number and the total number of files to be processed. Implies the <b>-v0</b> option, causing the names of processed files to also be printed when writing. When combined with the <b>-if</b> option, the total count includes all files before the condition is applied, but files that fail the condition will not have their names printed. If NUM is specified, the progress is shown every NUM input files.</p>
 
-<p>If followed by a colon (ie. <b>-progress:</b>), the console window title is set according to the specified <i>TITLE</i> string. If no <i>TITLE</i> is given, a default <i>TITLE</i> string of &quot;ExifTool %p%%&quot; is assumed. In the string, %f represents the file name, %p is the progress as a percent, %r is the progress as a ratio, %##b is a progress bar of width &quot;##&quot; (20 characters if &quot;##&quot; is omitted), and %% is a % character. May be combined with the normal <b>-progress</b> option to also show the progress count in console messages. (Note: For this feature to function correctly on Mac/Linux, stderr must go to the console.)</p>
+<p>If followed by a colon (ie. <b>-progress:</b>), the console window title is set according to the specified <i>TITLE</i> string. If no <i>TITLE</i> is given, a default <i>TITLE</i> string of &quot;ExifTool %p%%&quot; is assumed. In the string, %f represents the file name, %p is the progress as a percent, %r is the progress as a ratio, %##b is a progress bar of width &quot;##&quot; (where &quot;##&quot; is an integer specifying the bar width in characters, or 20 characters by default if &quot;##&quot; is omitted), and %% is a % character. May be combined with the normal <b>-progress</b> option to also show the progress count in console messages. (Note: For this feature to function correctly on Mac/Linux, stderr must go to the console.)</p>
 
 </dd>
 <dt id="q--quiet"><b>-q</b> (<b>-quiet</b>)</dt>

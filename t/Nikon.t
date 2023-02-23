@@ -66,7 +66,7 @@ my $testnum = 1;
 {
     ++$testnum;
     my $data = pack('N', 0x34a290d3);
-    $data = Image::ExifTool::Nikon::Decrypt(\$data, 0x12345678, 0x00000123);
+    $data = Image::ExifTool::Nikon::Decrypt(\$data, undef, undef, 0x12345678, 0x00000123);
     my $expected = 0xcae17d2f;
     my $got = unpack('N', $data);
     unless ($got == $expected) {

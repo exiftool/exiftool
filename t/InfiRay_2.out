@@ -2,9 +2,9 @@
 [File, System, Other] FileName - File Name: InfiRay.jpg
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 2.2 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2023:02:08 14:10:46-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2023:02:09 08:20:04-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2023:02:09 08:20:03-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2023:02:09 10:42:51-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2023:02:09 10:42:52-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2023:02:09 10:42:51-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -56,6 +56,7 @@
 [APP2, InfiRay, Image] 74 - Visible Image Width: 0
 [APP2, InfiRay, Image] 76 - Visible Image Height: 0
 [APP2, InfiRay, Image] 78 - Visible Image Bpp: 8
+[APP3, InfiRay, Image] APP3 - Imaging Data: (Binary data 20 bytes)
 [APP4, InfiRay, Image] 0 - IJPEG Temp Version: 0 1 0 0
 [APP4, InfiRay, Image] 4 - Fact Def Emissivity: -128
 [APP4, InfiRay, Image] 5 - Fact Def Tau: -128

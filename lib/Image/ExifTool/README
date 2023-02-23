@@ -249,6 +249,13 @@ key:
                   within this atom.  Currently used only for Canon CNTH atom,
                   which contains garbage after the first contained atom.
 
+    NIKON_OFFSETS [Nikon Encrypted tables only] Pointer to int32u NumberOffsets
+                  for offset-type encrypted Nikon directories.  When set,
+                  directory and decryption lengths are calculated automatically.
+
+    ALLOW_REPROCESS Flag to allow reprocessing of another directory at this
+                  same location in the file, bypassing recursion avoidance test.
+
   DATAMEMBER : BinaryData tables only.  A reference to a list of sorted tag ID's
   which must be extracted as data members when writing.  Must also list "var_"
   format tags and tags with Hook so offsets are properly calculated if the table
@@ -713,7 +720,7 @@ numerical, and generated automatically otherwise.
                   BitShift are applied before evaluating RawConv.
 
   BitShift      : [Mask tags only] Bit shift for Mask-ed values.  If not
-                  specified, set to the number of trailing bits in the Mask.
+                  specified, set to the number of trailing zero bits in Mask.
                   When reading, the value is shifted right by this number of
                   bits after the Mask is applied.
 
@@ -1003,7 +1010,9 @@ numerical, and generated automatically otherwise.
                   current Base.  This is a Perl expression which may use
                   $valuePtr to represent the location of the tag value in the
                   file, or $val for the value itself.  If not specified, a Start
-                  of '$valuePtr' is assumed.
+                  of '$valuePtr' is assumed.  Subdirectories in BinaryData may
+                  also use $dirStart to represent the offset of the current
+                  directory start relative to the start of the data block.
 
      OffsetPt   : [EXIF directories only] If specified, this is a Perl
                   expression that gives the position of a 32-bit word in the

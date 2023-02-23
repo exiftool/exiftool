@@ -59,7 +59,7 @@ my %jp2Map = (
 # map of where information is written in a JXL image
 my %jxlMap = (
     IFD0         => 'Exif',
-    XMP          => 'XML',
+    XMP          => 'xml ',
    'Exif'        => 'JP2',
     IFD1         => 'IFD0',
     EXIF         => 'IFD0', # to write EXIF as a block
@@ -827,8 +827,8 @@ sub CreateNewBoxes($$)
     # add UUID boxes (and/or JXL Exif/XML boxes)
     foreach $dirName (sort keys %$addDirs) {
         # handle JPEG XL XMP and EXIF
-        if ($dirName eq 'XML' or $dirName eq 'Exif') {
-            my ($tag, $dir) = $dirName eq 'XML' ? ('xml ', 'XMP') : ('Exif', 'EXIF');
+        if ($dirName eq 'xml ' or $dirName eq 'Exif') {
+            my ($tag, $dir) = $dirName eq 'xml ' ? ('xml ', 'XMP') : ('Exif', 'EXIF');
             my $tagInfo = $Image::ExifTool::Jpeg2000::Main{$tag};
             $tagInfo = $$tagInfo[1] if ref $tagInfo eq 'ARRAY'; # (hack for stupid JXL XMP)
             my $subdir = $$tagInfo{SubDirectory};
@@ -1123,8 +1123,8 @@ sub ProcessJpeg2000Box($$$)
             my $subTable = GetTagTable($$subdir{TagTable}) || $tagTablePtr;
             if ($outfile) {
                 # remove this directory from our create list
-                delete $$et{AddJp2Dirs}{$$tagInfo{Name}};   # (eg. 'EXIF')
-                delete $$et{AddJp2Dirs}{$boxID};            # (eg. 'Exif')
+                delete $$et{AddJp2Dirs}{$$tagInfo{Name}};   # (eg. 'EXIF' or 'XMP')
+                delete $$et{AddJp2Dirs}{$boxID};            # (eg. 'Exif' or 'xml ')
                 my $newdir;
                 # only edit writable UUID, Exif and jp2h boxes
                 if ($uuid or $boxID eq 'Exif' or ($boxID eq 'xml ' and $$et{IsJXL}) or

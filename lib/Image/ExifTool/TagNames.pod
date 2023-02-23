@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26374 tags, with 16843 unique tag names.
+They contain a total of 26359 tags, with 16845 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -7082,6 +7082,9 @@ Tags extracted from Photoshop layer information.
   '_xnam'  LayerNames                           no+
   '_xopc'  LayerOpacities                       no+
   '_xrct'  LayerRectangles                      no+
+  '_xvis'  LayerVisible                         no+
+  'lclr'   LayerColors                          no+
+  'lsct'   LayerSections                        no+
   'luni'   LayerUnicodeNames                    no+
   'lyid'   LayerIDs?                            no+
   'shmd'   LayerModifyDates                     no+
@@ -13713,7 +13716,6 @@ DiMAGE X and Xt.
            ShotInfoD7000                        Nikon ShotInfoD7000
            ShotInfoD4                           Nikon ShotInfoD4
            ShotInfoD4S                          Nikon ShotInfoD4S
-           ShotInfoD5                           Nikon ShotInfoD500
            ShotInfoD500                         Nikon ShotInfoD500
            ShotInfoD6                           Nikon ShotInfoD6
            ShotInfoD610                         Nikon ShotInfoD610
@@ -14264,24 +14266,46 @@ These tags are extracted from encrypted data in images from the D800.
 
 =head3 Nikon ShotInfoD810 Tags
 
-These tags are extracted from encrypted data in images from the D810.  Note
-that the indices listed below are for firmware version 1.0, but they may be
-different for other firmware versions.
+These tags are extracted from encrypted data in images from the D810.
 
    Index   Tag Name                             Writable
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
-    464    SecondarySlotFunction                int8u & 0x03
-   5974    AEBracketingSteps                    int8u & 0xff
-   5975    WBBracketingSteps                    int8u & 0xff
-   5982    NikonMeteringMode                    int8u & 0x03
-   6236    ISOAutoShutterTime                   int8u & 0x3f
-   6237    ISOAutoHiLimit                       int8u & 0xff
-   6315    CustomSettingsD810                   NikonCustom SettingsD810
-  14068    RollAngle                            fixed32u
-  14072    PitchAngle                           fixed32u
-  14076    YawAngle                             fixed32u
+     16    SettingsOffset                       Nikon SettingsInfoD810
+     36    BracketingOffset                     Nikon BracketingInfoD810
+     56    ISOAutoOffset                        Nikon ISOAutoInfoD810
+     64    CustomSettingsOffset                 NikonCustom SettingsD810
+    132    OrientationOffset                    Nikon OrientationInfo
+
+=head3 Nikon SettingsInfoD810 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+    316    SecondarySlotFunction                int8u & 0x03
+
+=head3 Nikon BracketingInfoD810 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     15    AEBracketingSteps                    int8u & 0xff
+     16    WBBracketingSteps                    int8u & 0xff
+     23    NikonMeteringMode                    int8u & 0x03
+
+=head3 Nikon ISOAutoInfoD810 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    ISOAutoShutterTime                   int8u & 0x3f
+      5    ISOAutoHiLimit                       int8u & 0xff
+
+=head3 Nikon OrientationInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    RollAngle                            fixed32u
+      4    PitchAngle                           fixed32u
+      8    YawAngle                             fixed32u
 
 =head3 Nikon ShotInfoD850 Tags
 
@@ -14291,13 +14315,23 @@ These tags are extracted from encrypted data in images from the D850.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
-   1937    PhotoShootingMenuBankImageArea       int8u & 0x07
-   4029    PhotoShootingMenuBank                int8u & 0x03
-   4031    PrimarySlot                          int8u & 0x80
-   4152    CustomSettingsD850                   NikonCustom SettingsD850
-  12027    RollAngle                            fixed32u
-  12031    PitchAngle                           fixed32u
-  12035    YawAngle                             fixed32u
+     16    MenuSettingsOffset                   Nikon MenuSettingsD850
+     76    MoreSettingsOffset                   Nikon MoreSettingsD850
+     88    CustomSettingsOffset                 NikonCustom SettingsD850
+    160    OrientationOffset                    Nikon OrientationInfo
+
+=head3 Nikon MenuSettingsD850 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+   1757    PhotoShootingMenuBankImageArea       int8u & 0x07
+
+=head3 Nikon MoreSettingsD850 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     36    PhotoShootingMenuBank                int8u & 0x03
+     37    PrimarySlot                          int8u & 0x80
 
 =head3 Nikon ShotInfoD5000 Tags
 
@@ -14369,9 +14403,7 @@ These tags are extracted from encrypted data in images from the D4S.
    6378    ISOAutoShutterTime                   int8u & 0x3f
    6379    ISOAutoHiLimit                       int8u & 0xff
    6461    CustomSettingsD4S                    NikonCustom SettingsD4
-  13579    RollAngle                            fixed32u
-  13583    PitchAngle                           fixed32u
-  13587    YawAngle                             fixed32u
+  13579    OrientationInfo                      Nikon OrientationInfo
   13971    Rotation                             int8u & 0x30
 
 =head3 Nikon ShotInfoD500 Tags
@@ -14382,27 +14414,61 @@ These tags are extracted from encrypted data in images from the D5 and D500.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
-    202    Rotation                             int8u & 0x03
-    208    Interval                             int8u~
-    212    IntervalFrame                        int8u~
-   1506    FlickerReductionIndicator            int8u & 0x01
-   2004    JPGCompression                       int8u & 0x01
-   2171    AEBracketingSteps                    int8u & 0xff
-   2172    WBBracketingSteps                    int8u & 0xff
-   2179    ADLBracketingStep                    int8u & 0xf0
-   2180    ADLBracketingType                    int8u & 0x0f
-   3709    PhotoShootingMenuBank                int8u & 0x03
-   3711    PrimarySlot                          int8u & 0x80
-   3713    ISOAutoShutterTime                   int8u & 0x3f
-   3714    ISOAutoHiLimit                       int8u & 0xff
-   3716    FlickerReduction                     int8u & 0x20
-  3716.1   PhotoShootingMenuBankImageArea       int8u & 0x07
-   3819    CustomSettingsD5                     NikonCustom SettingsD5
+     16    RotationInfoOffset                   Nikon RotationInfoD500
+     20    JPGInfoOffset                        Nikon JPGInfoD500
+     44    BracketingOffset                     Nikon BracketingInfoD500
+     80    ShootingMenuOffset                   Nikon ShootingMenuD500
+     88    CustomSettingsOffset                 Nikon CustomSettingsD500
+    160    OrientationOffset                    Nikon OrientationInfo
+    168    OtherOffset                          Nikon OtherInfoD500
+
+=head3 Nikon RotationInfoD500 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     26    Rotation                             int8u & 0x03
+     32    Interval                             int8u~
+     36    IntervalFrame                        int8u~
+   1330    FlickerReductionIndicator            int8u & 0x01
+
+=head3 Nikon JPGInfoD500 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     36    JPGCompression                       int8u & 0x01
+
+=head3 Nikon BracketingInfoD500 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     15    AEBracketingSteps                    int8u & 0xff
+     16    WBBracketingSteps                    int8u & 0xff
+     23    ADLBracketingStep                    int8u & 0xf0
+     24    ADLBracketingType                    int8u & 0x0f
+
+=head3 Nikon ShootingMenuD500 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    PhotoShootingMenuBank                int8u & 0x03
+      2    PrimarySlot                          int8u & 0x80
+      4    ISOAutoShutterTime                   int8u & 0x3f
+      5    ISOAutoHiLimit                       int8u & 0xff
+      7    FlickerReduction                     int8u & 0x20
+    7.1    PhotoShootingMenuBankImageArea       int8u & 0x07
+
+=head3 Nikon CustomSettingsD500 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    CustomSettingsD5                     NikonCustom SettingsD5
            CustomSettingsD500                   NikonCustom SettingsD500
-  11300    RollAngle                            fixed32u
-  11304    PitchAngle                           fixed32u
-  11308    YawAngle                             fixed32u
-  11940    NikonMeteringMode                    int8u & 0x03
+
+=head3 Nikon OtherInfoD500 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+    532    NikonMeteringMode                    int8u & 0x03
 
 =head3 Nikon ShotInfoD6 Tags
 
@@ -14412,28 +14478,38 @@ These tags are extracted from encrypted data in images from the D6.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
-  30220    IntervalShooting                     int16u~
-  49690    RollAngle                            fixed32u
-  49694    PitchAngle                           fixed32u
-  49698    YawAngle                             fixed32u
-  50190    Intervals                            int32u
-  50194    ShotsPerInterval                     int32u
-  50198    IntervalExposureSmoothing            int8u
-  50200    IntervalPriority                     int8u
-  50234    FocusShiftNumberShots                int8u
-  50238    FocusShiftStepWidth                  int8u
-  50242    FocusShiftInterval                   int8u~
-  50246    FocusShiftExposureLock               int8u
-  50336    DiffractionCompensation              int8u
-  50342    FlashControlMode                     int8u
-  50348    FlashGNDistance?                     no
-  50352    FlashOutput?                         int8u
-  50362    FlashRemoteControl?                  int8u
-  50366    FlashMasterControlMode               int8u
-  50368    FlashMasterCompensation?             int8s
-  50372    FlashMasterOutput?                   int8u
-  50374    FlashWirelessOption?                 int8u
-  50524    MovieType?                           int8u
+     48    SequenceOffset                       Nikon SeqInfoD6
+    156    OrientationOffset                    Nikon OrientationInfo
+    164    IntervalOffset                       Nikon IntervalInfoD6
+
+=head3 Nikon SeqInfoD6 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     36    IntervalShooting                     int16u~
+
+=head3 Nikon IntervalInfoD6 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+    380    Intervals                            int32u
+    384    ShotsPerInterval                     int32u
+    388    IntervalExposureSmoothing            int8u
+    390    IntervalPriority                     int8u
+    424    FocusShiftNumberShots                int8u
+    428    FocusShiftStepWidth                  int8u
+    432    FocusShiftInterval                   int8u~
+    436    FocusShiftExposureLock               int8u
+    526    DiffractionCompensation              int8u
+    532    FlashControlMode                     int8u
+    538    FlashGNDistance?                     no
+    542    FlashOutput?                         int8u
+    552    FlashRemoteControl?                  int8u
+    556    FlashMasterControlMode               int8u
+    558    FlashMasterCompensation?             int8s
+    562    FlashMasterOutput?                   int8u
+    564    FlashWirelessOption?                 int8u
+    714    MovieType?                           int8u
 
 =head3 Nikon ShotInfoD610 Tags
 
@@ -14453,13 +14529,28 @@ These tags are extracted from encrypted data in images from the Z7II.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
-  30220    IntervalShooting                     int16u~
-  32672    PortraitImpressionBalance            int8u[2]~
-  52786    RollAngle                            fixed32u
-  52790    PitchAngle                           fixed32u
-  52794    YawAngle                             fixed32u
-  52918    MenuSettingsZ7IIOffset               int8u
-  52920    MenuSettingsZ7II                     Nikon MenuSettingsZ7II
+     48    IntervalOffset                       Nikon IntervalInfoZ7II
+     56    PortraitOffset                       Nikon PortraitInfoZ7II
+    152    OrientationOffset                    Nikon OrientationInfo
+    160    MenuOffset                           Nikon MenuInfoZ7II
+
+=head3 Nikon IntervalInfoZ7II Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     36    IntervalShooting                     int16u~
+
+=head3 Nikon PortraitInfoZ7II Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+    160    PortraitImpressionBalance            int8u[2]~
+
+=head3 Nikon MenuInfoZ7II Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     16    MenuSettingsOffsetZ7II               Nikon MenuSettingsZ7II
 
 =head3 Nikon MenuSettingsZ7II Tags
 
@@ -14467,6 +14558,7 @@ These tags are used by the Z5, Z6, Z7, Z6II, Z7II, Z50 and Zfc.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+     92    ReleaseMode                          no
     160    IntervalDurationHours                int32u
     164    IntervalDurationMinutes              int32u
     168    IntervalDurationSeconds              int32u
@@ -14513,17 +14605,24 @@ These tags are extracted from encrypted data in images from the Z9.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
-    180    FocusShiftShooting                   int8u~
-    188    IntervalShooting                     int16u~
-  17644    MenuSettingsZ9                       Nikon MenuSettingsZ9
-                                                -
-                                                Nikon MenuSettingsZ9Firmware3
-  32965    RollAngle                            fixed32u
-  32969    PitchAngle                           fixed32u
-  32973    YawAngle                             fixed32u
-  33317    MenuSettingsZ9                       Nikon MenuSettingsZ9
-                                                -
-                                                Nikon MenuSettingsZ9Firmware3
+     48    SequenceOffset                       Nikon SeqInfoZ9
+    132    OrientOffset                         Nikon OrientationInfo
+    140    MenuOffset                           Nikon MenuInfoZ9
+
+=head3 Nikon SeqInfoZ9 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     32    FocusShiftShooting                   int8u~
+     40    IntervalShooting                     int16u~
+
+=head3 Nikon MenuInfoZ9 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     16    MenuSettingsOffsetZ9                 Nikon MenuSettingsZ9
+           MenuSettingsOffsetZ9v3               -
+                                                Nikon MenuSettingsZ9v3
 
 =head3 Nikon MenuSettingsZ9 Tags
 
@@ -14601,7 +14700,7 @@ These tags are used by the Z9.
    1636    USBPowerDelivery?                    int8u
    1645    SensorShield?                        int8u
 
-=head3 Nikon MenuSettingsZ9Firmware3 Tags
+=head3 Nikon MenuSettingsZ9v3 Tags
 
 These tags are used by the Z9 firmware 3.00.
 
@@ -21977,6 +22076,10 @@ unrecognized Windows Compound Binary file as a FlashPix (FPX) file.  See
 L<http://graphcomp.com/info/specs/livepicture/fpx.pdf> for the FlashPix
 specification.
 
+Note that Microsoft is not consistent with the time zone used for some
+date/time tags, and it may be either UTC or local time depending on the
+software used to create the file.
+
   Tag ID                          Tag Name      Writable
   ------                          --------      --------
   "\x01CompObj"                   CompObj       FlashPix CompObj
@@ -27704,6 +27807,11 @@ differentiate these.  ExifTool currently writes only top-level metadata in
 QuickTime-based files; it extracts other track-specific and timed metadata,
 but can not yet edit tags in these locations (with the exception of
 track-level date/time tags).
+
+Beware that the Keys tags are actually stored inside the ItemList in the
+file, so deleting the ItemList group as a block (ie. C<-ItemList:all=>) also
+deletes Keys tags.  Instead, to preserve Keys tags the ItemList tags may be
+deleted individually with C<-QuickTime:ItemList:all=>.
 
 Alternate language tags may be accessed for
 L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and

@@ -9938,8 +9938,8 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
         },
     },
     217 => { Name => 'MovieMultiSelector',  %buttonsZ9, Unknown => 1}, # CSg2-h
-    221 => { Name => 'MovieAFSpeed',        ValueConv => '$val - 5', ValueConvInv => '$val + 6' }, # CSg6-a
-    223 => { Name => 'MovieAFSpeedApply',    rintConv => {0 => 'Always', 1 => 'Only During Recording'},}, # CSg6-b
+    221 => { Name => 'MovieAFSpeed',        ValueConv => '$val - 5', ValueConvInv => '$val + 5' }, # CSg6-a
+    223 => { Name => 'MovieAFSpeedApply',   PrintConv => {0 => 'Always', 1 => 'Only During Recording'},}, # CSg6-b
     225 => { # CSg7
         Name => 'MovieAFTrackingSensitivity',
         PrintConv => {

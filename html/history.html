@@ -17,10 +17,30 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.57'><b>Feb. 23, 2023 - Version 12.57</b></a>
+<ul>
+<li>Added two new Nikon Z lenses (thanks LibRaw)
+<li>Added a new Sigma LensType (thanks LibRaw)
+<li>Added a new Olympus LensType (thanks Herb)
+<li>Decode more new Nikon tags (thanks Warren Hatch)
+<li>Decode Photoshop LayerColors, LayerSections and LayerVisible tags
+<li>Improved Verbose output for QuickTime-format files
+<li>Set family 1 group name for Garmin GPS from uuid atom
+<li>Enhanced -progress option to allow message to be displayed every NUM files
+<li>Significant improvements to parsing of Nikon ShotInfo records for newer
+    models
+<li>Removed hex dump of APP segments from -v3 output when writing
+<li>Fixed bug writing negative MIE GPS coordinates
+<li>Fixed bug where a duplicate XMP could be generated when writing XMP to a
+    JPEG XL image which already contained XMP
+<li>Fixed problem where HEAD lines may be duplicated in an output file if the -p
+    option was combined with -w+ or -W+
+</ul>
+
 <a name='v12.56'><b>Feb. 9, 2023 - Version 12.56</b></a>
 <ul>
-<li>Added support for VNT (both Scene7 Vignette and V-Note document) files
-<li>Added read support for <a href="TagNames/InfoRay.html">InfiRay APP2 metadata</a> (thanks Marcos Del Sol Vives)
+<li>Added support for VNT files (both Scene7 Vignette and V-Note document)
+<li>Added read support for <a href="TagNames/InfiRay.html">InfiRay IJPEG metadata</a> (thanks Marcos Del Sol Vives)
 <li>Added some new Sony LensType values (thanks Jos Roost and Fran&ccedil;ois Piette)
 <li>Added a new FujiFilm VideoRecordingMode value (thanks Greybeard)
 <li>Added two new Canon LensTypes and CanonModelIDs (thanks Norbert Wasser)

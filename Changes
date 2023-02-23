@@ -7,10 +7,29 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 23, 2023 - Version 12.57
+
+  - Added two new Nikon Z lenses (thanks LibRaw)
+  - Added a new Sigma LensType (thanks LibRaw)
+  - Added a new Olympus LensType (thanks Herb)
+  - Decode more new Nikon tags (thanks Warren Hatch)
+  - Decode Photoshop LayerColors, LayerSections and LayerVisible tags
+  - Improved Verbose output for QuickTime-format files
+  - Set family 1 group name for Garmin GPS from uuid atom
+  - Enhanced -progress option to allow message to be displayed every NUM files
+  - Significant improvements to parsing of Nikon ShotInfo records for newer
+    models
+  - Removed hex dump of APP segments from -v3 output when writing
+  - Fixed bug writing negative MIE GPS coordinates
+  - Fixed bug where a duplicate XMP could be generated when writing XMP to a
+    JPEG XL image which already contained XMP
+  - Fixed problem where HEAD lines may be duplicated in an output file if the -p
+    option was combined with -w+ or -W+
+
 Feb. 9, 2023 - Version 12.56
 
-  - Added support for VNT (both Scene7 Vignette and V-Note document) files
-  - Added read support for InfiRay APP2 metadata (thanks Marcos Del Sol Vives)
+  - Added support for VNT files (both Scene7 Vignette and V-Note document)
+  - Added read support for InfiRay IJPEG metadata (thanks Marcos Del Sol Vives)
   - Added some new Sony LensType values (thanks Jos Roost and Francois Piette)
   - Added a new FujiFilm VideoRecordingMode value (thanks Greybeard)
   - Added two new Canon LensTypes and CanonModelIDs (thanks Norbert Wasser)

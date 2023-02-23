@@ -1512,7 +1512,7 @@ my %infoZSeries = (
             6 => 'None',
         },
     }],
-    0x0ee => { Name => 'MovieAFSpeed',                  ValueConv => '$val - 6', ValueConvInv => '$val + 6' }, # CSg4-a (Z7_2)
+    0x0ee => { Name => 'MovieAFSpeed', ValueConv => '$val - 6', ValueConvInv => '$val + 6' }, # CSg4-a (Z7_2)
     0x0ef => { # CSg4-b (Z7_2)
         Name => 'MovieAFSpeedApply',
         PrintConv => {

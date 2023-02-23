@@ -14,7 +14,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.50';
+$VERSION = '1.51';
 
 sub ProcessMIE($$);
 sub ProcessMIEGroup($$$);
@@ -391,7 +391,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             -30", "-40.5", "40 30 0.00 S"
         },
         ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
-        ValueConvInv => 'Image::ExifTool::GPS::ToDMS($self, $val, 0)',
+        ValueConvInv => 'Image::ExifTool::GPS::ToDMS($self, $val, 3)',
         PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
         PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1, "lat")',
     },
@@ -404,7 +404,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             negative, but may be entered as positive numbers with a trailing 'W'
         },
         ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
-        ValueConvInv => 'Image::ExifTool::GPS::ToDMS($self, $val, 0)',
+        ValueConvInv => 'Image::ExifTool::GPS::ToDMS($self, $val, 3)',
         PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
         PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1, "lon")',
     },

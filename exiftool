@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '12.56';
+my $version = '12.57';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 BEGIN {
@@ -77,6 +77,7 @@ sub AcceptFile($);
 sub SlurpFile($$);
 sub FilterArgfileLine($);
 sub ReadStayOpen($);
+sub Progress($$);
 sub PrintTagList($@);
 sub PrintErrors($$$);
 
@@ -182,7 +183,9 @@ my $pause;          # pause before returning
 my $preserveTime;   # flag to preserve times of updated files (2=preserve FileCreateDate only)
 my $progress;       # flag to calculate total files to process (0=calculate but don't display)
 my $progressCount;  # count of files processed
+my $progressIncr;   # increment for progress counter
 my $progressMax;    # total number of files to process
+my $progressNext;   # next progress count to output
 my $progStr;        # progress message string
 my $quiet;          # flag to disable printing of informational messages / warnings
 my $rafStdin;       # File::RandomAccess for stdin (if necessary to rewind)
@@ -211,6 +214,7 @@ my $validFile;      # flag indicating we processed a valid file
 my $verbose;        # verbose setting
 my $vout;           # verbose output file reference (\*STDOUT or \*STDERR)
 my $windowTitle;    # title for console window
+my %wroteHEAD;      # list of output txt files to which we wrote HEAD
 my $xml;            # flag for XML-formatted output
 
 # flag to keep the input -@ argfile open:
@@ -489,7 +493,9 @@ undef $outOpt;
 undef $preserveTime;
 undef $progress;
 undef $progressCount;
+undef $progressIncr;
 undef $progressMax;
+undef $progressNext;
 undef $recurse;
 undef $scanWritable;
 undef $sectHeader;
@@ -1119,9 +1125,11 @@ for (;;) {
     }
     (/^P$/ or $a eq 'preserve') and $preserveTime = 1, next;
     /^password$/i and $mt->Options(Password => shift), next;
-    if (/^progress(:.*)?$/i) {
-        if ($1) {
-            $windowTitle = substr $1, 1;
+    if (/^progress(\d*)(:.*)?$/i) {
+        $progressIncr = $1 || 1;
+        $progressNext = 0; # start showing progress at the first file
+        if ($2) {
+            $windowTitle = substr $2, 1;
             $windowTitle = 'ExifTool %p%%' unless length $windowTitle;
             $windowTitle =~ /%\d*[bpr]/ and $progress = 0 unless defined $progress;
         } else {
@@ -1239,7 +1247,8 @@ for (;;) {
         next;
     }
     if (/^(w|textout|tagout)([!+]*)$/i) {
-        $textOut = shift || Warn("Expecting output extension for -$_ option\n");
+        # (note: all logic ignores $textOut of 0 or '')
+        $textOut = shift || Warn("Expecting argument for -$_ option\n");
         my ($t1, $t2) = ($1, $2);
         $textOverwrite = 0;
         $textOverwrite += 1 if $t2 =~ /!/;  # overwrite
@@ -1711,7 +1720,7 @@ if (defined $showGroup and not (@tags and $allGroup) and ($sortOpt or not define
     $mt->Options(Sort => "Group$showGroup");
 }
 
-if (defined $textOut) {
+if ($textOut) {
     CleanFilename($textOut);  # make all forward slashes
     # add '.' before output extension if necessary
     $textOut = ".$textOut" unless $textOut =~ /[.%]/ or defined $tagOut;
@@ -1935,7 +1944,7 @@ sub GetImageInfo($$)
     my (@foundTags, $info, $file, $ind);
 
     # set window title for this file if necessary
-    if (defined $windowTitle) {
+    if (defined $windowTitle and $progressCount >= $progressNext) {
         my $prog = $progressMax ? "$progressCount/$progressMax" : '0/0';
         my $title = $windowTitle;
         my ($num, $denom) = split '/', $prog;
@@ -1951,6 +1960,7 @@ sub GetImageInfo($$)
         );
         $title =~ s/%([%bfpr])/$lkup{$1}/eg;
         SetWindowTitle($title);
+        undef $progressNext;
     }
     unless (length $orig or $outOpt) {
         Warn qq(Error: Zero-length file name - ""\n);
@@ -2044,7 +2054,7 @@ sub GetImageInfo($$)
             undef @foundTags if $fastCondition; # ignore if we didn't get all tags
         }
         unless ($result) {
-            $verbose and print $vout "-------- $file (failed condition)$progStr\n";
+            Progress($vout, "-------- $file (failed condition)") if $verbose;
             EFile($file, 2);
             ++$countFailed;
             return;
@@ -2054,7 +2064,7 @@ sub GetImageInfo($$)
         undef $info if $verbose or defined $fastCondition;
     }
     if (defined $deleteOrig) {
-        print $vout "======== $file$progStr\n" if defined $verbose;
+        Progress($vout, "======== $file") if defined $verbose;
         ++$count;
         my $original = "${file}_original";
         $et->Exists($original) or return;
@@ -2084,12 +2094,12 @@ sub GetImageInfo($$)
     }
 
     if ($isWriting) {
-        print $vout "======== $file$progStr\n" if defined $verbose;
+        Progress($vout, "======== $file") if defined $verbose;
         SetImageInfo($et, $file, $orig);
         $info = $et->GetInfo('Warning', 'Error');
         PrintErrors($et, $info, $file);
         # close output text file if necessary
-        if ($outfile) {
+        if (defined $outfile) {
             undef $tmpText;
             close($fp);
             $et->Options(TextOut => $vout);
@@ -2108,7 +2118,7 @@ sub GetImageInfo($$)
     unless ($file eq '-' or $et->Exists($file)) {
         Warn "Error: File not found - $file\n";
         FileNotFound($file);
-        $outfile and close($fp), undef($tmpText), $et->Unlink($outfile);
+        defined $outfile and close($fp), undef($tmpText), $et->Unlink($outfile);
         EFile($file);
         ++$countBad;
         return;
@@ -2125,7 +2135,7 @@ sub GetImageInfo($$)
         }
     }
     $o = \*STDERR if $progress and not $o;
-    $o and print $o "======== $file$progStr\n";
+    Progress($o, "======== $file") if $o;
     if ($info) {
         # get the information we wanted
         if (@tags and not %printFmt) {
@@ -2147,7 +2157,7 @@ sub GetImageInfo($$)
     }
     # all done now if we already wrote output text file (eg. verbose option)
     if ($fp) {
-        if ($outfile) {
+        if (defined $outfile) {
             $et->Options(TextOut => \*STDOUT);
             undef $tmpText;
             if ($info->{Error}) {
@@ -2176,7 +2186,7 @@ sub GetImageInfo($$)
     }
 
     # open output file (or stdout if no output file) if not done already
-    unless ($outfile or $tagOut) {
+    unless (defined $outfile or $tagOut) {
         ($fp, $outfile, $append) = OpenOutputFile($orig);
         $fp or EFile($file), ++$countBad, return;
         $tmpText = $outfile unless $append;
@@ -2201,6 +2211,10 @@ sub GetImageInfo($$)
             my $skipBody;
             foreach $type (qw(HEAD SECT IF BODY ENDS TAIL)) {
                 my $prf = $printFmt{$type} or next;
+                if ($type eq 'HEAD' and defined $outfile) {
+                    next if $wroteHEAD{$outfile};
+                    $wroteHEAD{$outfile} = 1;
+                }
                 next if $type eq 'BODY' and $skipBody;
                 if ($lastDoc) {
                     if ($doc) {
@@ -2238,7 +2252,7 @@ sub GetImageInfo($$)
                 }
             }
         }
-        delete $printFmt{HEAD} unless $outfile; # print header only once per output file
+        delete $printFmt{HEAD} unless defined $outfile; # print header only once per output file
         my $errs = $et->GetInfo('Warning', 'Error');
         PrintErrors($et, $errs, $file) and EFile($file);
     } elsif (not $disableOutput) {
@@ -2394,7 +2408,7 @@ TAG:    foreach $tag (@foundTags) {
                         next TAG;
                     }
                     my @groups = $et->GetGroup($tag);
-                    $outfile and close($fp), undef($tmpText); # (shouldn't happen)
+                    defined $outfile and close($fp), undef($tmpText); # (shouldn't happen)
                     my $org = $et->GetValue('OriginalRawFileName') || $et->GetValue('OriginalFileName');
                     ($fp, $outfile, $append) = OpenOutputFile($orig, $tagName, \@groups, $ext, $org);
                     $fp or ++$countBad, next TAG;
@@ -2700,7 +2714,7 @@ TAG:    foreach $tag (@foundTags) {
             }
         }
     }
-    if ($outfile) {
+    if (defined $outfile) {
         if ($textOverwrite & 0x02) {
             # save state of this file if we may be appending
             $outComma{$outfile} = $comma;
@@ -3661,8 +3675,19 @@ sub ProcessFiles($;$)
     foreach $file (@files) {
         $et->Options(CharsetFileName => 'UTF8') if $utf8FileName{$file};
         if (defined $progressMax) {
+            unless (defined $progressNext) {
+                $progressNext = $progressCount + $progressIncr;
+                $progressNext -= $progressNext % $progressIncr;
+                $progressNext = $progressMax if $progressNext > $progressMax;
+            }
             ++$progressCount;
-            $progStr = " [$progressCount/$progressMax]" if $progress;
+            if ($progress) {
+                if ($progressCount >= $progressNext) {
+                    $progStr = " [$progressCount/$progressMax]";
+                } else {
+                    undef $progStr; # don't update progress yet
+                }
+            }
         }
         if ($et->IsDirectory($file) and not $listDir) {
             $multiFile = $validFile = 1;
@@ -3670,7 +3695,7 @@ sub ProcessFiles($;$)
         } elsif ($filterFlag and not AcceptFile($file)) {
             if ($et->Exists($file)) {
                 $filtered = 1;
-                $verbose and print $vout "-------- $file (wrong extension)$progStr\n";
+                Progress($vout, "-------- $file (wrong extension)") if $verbose;
             } else {
                 Warn "Error: File not found - $file\n";
                 FileNotFound($file);
@@ -4427,6 +4452,18 @@ sub EFile($$)
 }
 
 #------------------------------------------------------------------------------
+# Print progress message if it is time for it
+# Inputs: 0) file ref, 1) message
+sub Progress($$)
+{
+    my ($file, $msg) = @_;
+    if (defined $progStr) {
+        print $file $msg, $progStr, "\n";
+        undef $progressNext;
+    }
+}
+
+#------------------------------------------------------------------------------
 # Print list of tags
 # Inputs: 0) message, 1-N) list of tag names
 sub PrintTagList($@)
@@ -4672,7 +4709,7 @@ L<Processing control|/Processing control>
   -overwrite_original_in_place     Overwrite original by copying tmp file
   -P          (-preserve)          Preserve file modification date/time
   -password PASSWD                 Password for processing protected files
-  -progress[:[TITLE]]              Show file progress count
+  -progress[NUM][:[TITLE]]         Show file progress count
   -q          (-quiet)             Quiet processing
   -r[.]       (-recurse)           Recursively process subdirectories
   -scanForXMP                      Brute force XMP scan
@@ -4819,6 +4856,9 @@ are removed if the containing group is deleted:
   - Deleting EXIF only removes ExifIFD which also deletes
     InteropIFD and MakerNotes.
 
+  MOV/MP4 video:
+  - Deleting ItemList also deletes Keys tags
+
 Notes:
 
 1) B<Many tag values may be assigned in a single command>.  If two
@@ -4915,7 +4955,9 @@ prevent shell redirection, and there is no C<=> sign as when assigning new
 values.  Source and/or destination tags may be prefixed by a group name
 and/or suffixed by C<#>.  Wildcards are allowed in both the source and
 destination tag names.  A destination group and/or tag name of C<All> or
-C<*> writes to the same family 1 group and/or tag name as the source.  If no
+C<*> writes to the same family 1 group and/or tag name as the source (but
+the family may be specified by adding a leading number to the group name,
+eg. C<0All> writes to the same family 0 group as the source).  If no
 destination group is specified, the information is written to the preferred
 group.  Whitespace around the C<E<gt>> or C<E<lt>> is ignored. As a
 convenience, C<-tagsFromFile @> is assumed for any redirected tags which are
@@ -5477,7 +5519,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 12.56 --
+    -- Generated by ExifTool 12.57 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -6110,7 +6152,7 @@ If a password is required but not given, a warning is issued and the
 document is not processed.  This option is ignored if a password is not
 required.
 
-=item B<-progress>[:[I<TITLE>]]
+=item B<-progress>[NUM][:[I<TITLE>]]
 
 Show the progress when processing files.  Without a colon, the B<-progress>
 option adds a progress count in brackets after the name of each processed
@@ -6118,17 +6160,19 @@ file, giving the current file number and the total number of files to be
 processed.  Implies the B<-v0> option, causing the names of processed files
 to also be printed when writing.  When combined with the B<-if> option, the
 total count includes all files before the condition is applied, but files
-that fail the condition will not have their names printed.
+that fail the condition will not have their names printed.  If NUM is
+specified, the progress is shown every NUM input files.
 
 If followed by a colon (ie. B<-progress:>), the console window title is set
 according to the specified I<TITLE> string.  If no I<TITLE> is given, a
 default I<TITLE> string of "ExifTool %p%%" is assumed.  In the string, %f
 represents the file name, %p is the progress as a percent, %r is the
-progress as a ratio, %##b is a progress bar of width "##" (20 characters if
-"##" is omitted), and %% is a % character.  May be combined with the normal
-B<-progress> option to also show the progress count in console messages. 
-(Note: For this feature to function correctly on Mac/Linux, stderr must go
-to the console.)
+progress as a ratio, %##b is a progress bar of width "##" (where "##" is an
+integer specifying the bar width in characters, or 20 characters by default
+if "##" is omitted), and %% is a % character.  May be combined with the
+normal B<-progress> option to also show the progress count in console
+messages. (Note: For this feature to function correctly on Mac/Linux, stderr
+must go to the console.)
 
 =item B<-q> (B<-quiet>)
 

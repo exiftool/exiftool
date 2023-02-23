@@ -2727,8 +2727,10 @@ sub GetAllGroups($;$)
 
     my @tableNames = keys %allTables;
 
-    # loop through all tag tables and get all group names
     my %allGroups;
+    # add family 1 groups not in tables
+    $family == 1 and map { $allGroups{$_} = 1 } qw(Garmin);
+    # loop through all tag tables and get all group names
     while (@tableNames) {
         my $table = GetTagTable(pop @tableNames);
         my ($grps, $grp, $tag, $tagInfo);
@@ -4267,7 +4269,7 @@ sub WriteDirectory($$$;$)
     if ($out) {
         print $out "  Deleting $name\n" if defined $newData and not length $newData;
         if ($$self{CHANGED} == $oldChanged and $$self{OPTIONS}{Verbose} > 2) {
-            print $out "$$self{INDENT}  [nothing changed in $dirName]\n";
+            print $out "$$self{INDENT}  [nothing changed in $name]\n";
         }
     }
     return $newData;
@@ -5432,7 +5434,6 @@ sub WriteJPEG($$)
     my $verbose = $$self{OPTIONS}{Verbose};
     my $out = $$self{OPTIONS}{TextOut};
     my $rtnVal = 0;
-    my %dumpParms = ( Out => $out );
     my ($writeBuffer, $oldOutfile); # used to buffer writing until PreviewImage position is known
 
     # check to be sure this is a valid JPG or EXV file
@@ -5447,7 +5448,6 @@ sub WriteJPEG($$)
         Write($outfile,"\xff\x01") or $err = 1;
         $isEXV = 1;
     }
-    $dumpParms{MaxLen} = 128 unless $verbose > 3;
 
     delete $$self{PREVIEW_INFO};   # reset preview information
     delete $$self{DEL_PREVIEW};    # reset flag to delete preview
@@ -6017,12 +6017,7 @@ sub WriteJPEG($$)
         #
         my $segDataPt = \$segData;
         $length = length($segData);
-        if ($verbose) {
-            print $out "JPEG $markerName ($length bytes):\n";
-            if ($verbose > 2 and $markerName =~ /^APP/) {
-                HexDump($segDataPt, undef, %dumpParms);
-            }
-        }
+        print $out "JPEG $markerName ($length bytes)\n" if $verbose;
         # group delete of APP segments
         if ($$delGroup{$dirName}) {
             $verbose and print $out "  Deleting $dirName segment\n";
@@ -6870,6 +6865,7 @@ sub WriteBinaryData($$$)
 
     # get default format ('int8u' unless specified)
     my $dataPt = $$dirInfo{DataPt} or return undef;
+    my $dataLen = length $$dataPt;
     my $defaultFormat = $$tagTablePtr{FORMAT} || 'int8u';
     my $increment = FormatSize($defaultFormat);
     unless ($increment) {
@@ -6886,7 +6882,8 @@ sub WriteBinaryData($$$)
         delete $$dirInfo{VarFormatData};
     }
     my $dirStart = $$dirInfo{DirStart} || 0;
-    my $dirLen = $$dirInfo{DirLen} || length($$dataPt) - $dirStart;
+    my $dirLen = $$dirInfo{DirLen};
+    $dirLen = $dataLen - $dirStart if not defined $dirLen or $dirLen > $dataLen - $dirStart;
     my $newData = substr($$dataPt, $dirStart, $dirLen) or return undef;
     my $dirName = $$dirInfo{DirName};
     my $varSize = 0;
@@ -7022,11 +7019,34 @@ sub WriteBinaryData($$$)
                 $tagInfo = $self->GetTagInfo($tagTablePtr, $tagID, \$v);
                 next unless $tagInfo;
             }
-            next unless $$tagInfo{SubDirectory}; # (just to be safe)
-            my %subdirInfo = ( DataPt => \$newData, DirStart => $entry );
-            my $subTablePtr = GetTagTable($$tagInfo{SubDirectory}{TagTable});
-            my $dat = $self->WriteDirectory(\%subdirInfo, $subTablePtr);
-            substr($newData, $entry) = $dat if defined $dat and length $dat;
+            my $subdir = $$tagInfo{SubDirectory} or next;
+            my $start = $$subdir{Start};
+            my $len;
+            if (not $start) {
+                $start = $entry;
+                $len = $dirLen - $start;
+            } elsif ($start =~ /\$/) {
+                my $count = 1;
+                my $format = $$tagInfo{Format} || $defaultFormat;
+                $format =~ /(.*)\[(.*)\]/ and ($format, $count) = ($1, $2);
+                my $val = ReadValue($dataPt, $entry, $format, $count, $dirLen - $entry);
+                # ignore directories with a zero offset (ie. missing Nikon ShotInfo entries)
+                next unless $val;
+                my $dirStart = 0;
+                #### eval Start ($val, $dirStart)
+                $start = eval($start);
+                next if $start < $dirStart or $start > $dataLen;
+                $len = $$subdir{DirLen};
+                $len = $dataLen - $start unless $len and $len <= $dataLen - $start;
+            }
+            my %subdirInfo = (
+                DataPt   => \$newData,
+                DirStart => $start,
+                DirLen   => $len,
+                TagInfo  => $tagInfo,
+            );
+            my $dat = $self->WriteDirectory(\%subdirInfo, GetTagTable($$subdir{TagTable}));
+            substr($newData, $start, $len) = $dat if defined $dat and length $dat;
         }
     }
     return $newData;

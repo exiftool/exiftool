@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.32';
+$VERSION = '1.33';
 
 # sigma LensType lookup (ref IB)
 %sigmaLensTypes = (
@@ -255,6 +255,7 @@ $VERSION = '1.32';
     0x6023 => 'Sigma 20mm F2 DG DN | C', #IB
     0x6025 => 'Sigma 20mm F1.4 DG DN | A', #IB
     0x6026 => 'Sigma 24mm F1.4 DG DN | A', #IB
+    0x602c => "Sigma 50mm F1.4 DG DN | A (2023)", #IB
     0x8005 => 'Sigma 35mm F1.4 DG HSM | A', #PH (012)
     0x8009 => 'Sigma 18-35mm F1.8 DC HSM | A', #PH
     0x8900 => 'Sigma 70-300mm F4-5.6 DG OS', #PH (SD15)

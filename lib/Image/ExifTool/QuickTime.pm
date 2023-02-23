@@ -419,6 +419,18 @@ my %channelLabel = (
     0x1ffff => 'Discrete_65535',
 );
 
+my %qtFlags = ( #12
+    0 => 'undef',       22 => 'unsigned int',   71 => 'float[2] size',
+    1 => 'UTF-8',       23 => 'float',          72 => 'float[4] rect',
+    2 => 'UTF-16',      24 => 'double',         74 => 'int64s',
+    3 => 'ShiftJIS',    27 => 'BMP',            75 => 'int8u',
+    4 => 'UTF-8 sort',  28 => 'QT atom',        76 => 'int16u',
+    5 => 'UTF-16 sort', 65 => 'int8s',          77 => 'int32u',
+    13 => 'JPEG',       66 => 'int16s',         78 => 'int64u',
+    14 => 'PNG',        67 => 'int32s',         79 => 'double[3][3]',
+    21 => 'signed int', 70 => 'float[2] point',
+);
+
 # properties which don't get inherited from the parent
 my %dontInherit = (
     ispe => 1,  # size of parent may be different
@@ -1159,7 +1171,10 @@ my %eeBox2 = (
         },
         {
             Name => 'GarminGPS',
-            Condition => '$$valPt=~/^\x9b\x63\x0f\x8d\x63\x74\x40\xec\x82\x04\xbc\x5f\xf5\x09\x17\x28/ and $$self{OPTIONS}{ExtractEmbedded}',
+            Condition => q{
+                $$valPt=~/^\x9b\x63\x0f\x8d\x63\x74\x40\xec\x82\x04\xbc\x5f\xf5\x09\x17\x28/ and
+                $$self{OPTIONS}{ExtractEmbedded}
+            },
             SubDirectory => {
                 TagTable => 'Image::ExifTool::QuickTime::Stream',
                 ProcessProc => \&ProcessGarminGPS,
@@ -9656,6 +9671,7 @@ ItemID:         foreach $id (keys %$items) {
                             }
                         }
                         $langInfo or $langInfo = $tagInfo;
+                        my $str = $qtFlags{$flags} ? " ($qtFlags{$flags})" : '';
                         $et->VerboseInfo($tag, $langInfo,
                             Value   => ref $value ? $$value : $value,
                             DataPt  => \$val,
@@ -9664,7 +9680,7 @@ ItemID:         foreach $id (keys %$items) {
                             Size    => $len,
                             Format  => $format,
                             Index   => $index,
-                            Extra   => sprintf(", Type='${type}', Flags=0x%x, Lang=0x%.4x",$flags,$lang),
+                            Extra   => sprintf(", Type='${type}', Flags=0x%x%s, Lang=0x%.4x",$flags,$str,$lang),
                         ) if $verbose;
                         # use "Keys" in path instead of ItemList if this was defined by a Keys tag
                         my $isKey = $$tagInfo{Groups} && $$tagInfo{Groups}{1} && $$tagInfo{Groups}{1} eq 'Keys';

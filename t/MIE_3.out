@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.57
 [File, System, Other] FileName - File Name: MIE_3_failed.mie
 [File, System, Other] Directory - Directory: t
-[File, System, Other] FileSize - File Size: 6.2 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:42-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:42-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:42-04:00
+[File, System, Other] FileSize - File Size: 6.3 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2023:02:13 20:46:22-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2023:02:13 20:46:22-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2023:02:13 20:46:22-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: MIE
 [File, File, Other] FileTypeExtension - File Type Extension: mie
@@ -60,6 +60,7 @@
 [MIE, MIE-Doc, Document] URL - URL: https://exiftool.org/
 [MIE, MIE-Geo, Location] City - City: Kingston
 [MIE, MIE-Geo, Location] Country - Country: Canada
+[MIE, MIE-GPS, Location] Longitude - GPS Longitude: 1 deg 30' 0.00" W
 [MIE, MIE-Geo, Location] State - State: Ont
 [MIE, MIE-Image, Image] ColorSpace - Color Space: sRGB
 [MIE, MIE-Image, Image] Components - Components Configuration: YCbCr
@@ -127,7 +128,7 @@
 [PrintIM, PrintIM, Printing] PrintIMVersion - PrintIM Version: 0100
 [IPTC, IPTC, Other] 25 - Keywords: cool
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.42
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.57
 [XMP, XMP-dc, Author] creator - Creator: phil
 [Composite, Composite, Image] Exif-Aperture - Aperture: 9.4
 [Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/213

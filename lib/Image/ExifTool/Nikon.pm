@@ -64,11 +64,12 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.18';
+$VERSION = '4.19';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
 sub ProcessNikonMOV($$$);
+sub ProcessNikonEncrypted($$$);
 sub FormatString($);
 sub ProcessNikonCaptureEditVersions($$$);
 sub PrintAFPoints($$);
@@ -1112,6 +1113,14 @@ my %offLowNormalHighZ7 = (
     3 => 'High',
 );
 
+my %releaseModeZ7 = (
+    0 => 'Continuous Low',
+    1 => 'Continuous High',
+    2 => 'Continuous High (Extended)',
+    4 => 'Timer',
+    5 => 'Single Frame',
+);
+
 my %secondarySlotFunctionZ9 = (
     0 => 'Overflow',
     1 => 'Backup',
@@ -1509,9 +1518,7 @@ my %base64coord = (
     0x0006 => { Name => 'Sharpness',    Writable => 'string' },
     0x0007 => {
         Name => 'FocusMode',
-        DataMember => 'FocusMode',
         Writable => 'string',
-        RawConv => '$$self{FocusMode} = $val',
     },
     # FlashSetting (better named FlashSyncMode, ref 28) values:
     #   "Normal", "Slow", "Rear Slow", "RED-EYE", "RED-EYE SLOW"
@@ -1812,6 +1819,7 @@ my %base64coord = (
         Name => 'ShutterMode',
         Writable => 'int16u',
         RawConv => '$$self{ShutterMode} = $val',
+        DataMember => 'ShutterMode',
         PrintConv => {
              0 => 'Mechanical',
              16 => 'Electronic',
@@ -2184,8 +2192,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD810',
                 DecryptStart => 4,
-                DecryptLen => 0x36f4 + 12,
-                DecryptMore => 'Get32u(\$data, 0x84) + 12',
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -2195,8 +2201,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD850',
                 DecryptStart => 4,
-                DecryptLen => 0x2efb + 12,
-                DecryptMore => 'Get32u(\$data, 0xa0) + 12',
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -2263,25 +2267,12 @@ my %base64coord = (
                 ByteOrder => 'LittleEndian',
             },
         },
-        { #28 (D5 firmware version 1.10a)
-            Condition => '$$valPt =~ /^0238/',
-            Name => 'ShotInfoD5',
-            SubDirectory => {
-                TagTable => 'Image::ExifTool::Nikon::ShotInfoD500',
-                DecryptStart => 4,
-                DecryptLen => 0x2c24 + 12,
-                DecryptMore => 'Get32u(\$data, 0xa8) + 0x2ea5 - 0x2c90',
-                ByteOrder => 'LittleEndian',
-            },
-        },
-        { # (D500 firmware version 1.00)
-            Condition => '$$valPt =~ /^0239/',
+        { #28 (D500 firmware version 1.00 and D5 firmware version 1.10a)
+            Condition => '$$valPt =~ /^023[89]/',
             Name => 'ShotInfoD500',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD500',
                 DecryptStart => 4,
-                DecryptLen => 0x2cb2 + 4,
-                DecryptMore => 'Get32u(\$data, 0xa8) + 0x2ea5 - 0x2c90',
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -2291,7 +2282,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD6',
                 DecryptStart => 4,
-                DecryptLen => 0xc292 + 720,   # thru decoded parts of Offset 32
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -2312,8 +2302,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoZ7II',
                 DecryptStart => 4,
-                # TODO: eventually set the length dynamically according to actual offsets!
-                DecryptLen => 0xd04e + 860,   # thru decoded MenuSettingsZ7II
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -2323,8 +2311,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoZ9',
                 DecryptStart => 4,
-                # TODO: eventually set the length dynamically according to actual offsets!
-                DecryptLen => 0xec4b + 2196,  # decoded thru end of Offset26
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -2333,8 +2319,8 @@ my %base64coord = (
             Name => 'ShotInfo02xx',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfo',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
                 DecryptLen => 0x251,
                 ByteOrder => 'BigEndian',
@@ -2400,8 +2386,8 @@ my %base64coord = (
             Name => 'ColorBalance0205',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ColorBalance2',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
                 DecryptLen => 22, # 284 bytes encrypted, but don't need to decrypt it all
                 DirOffset => 14,
@@ -2412,8 +2398,8 @@ my %base64coord = (
             Name => 'ColorBalance0209',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ColorBalance4',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 284,
                 DecryptLen => 18, # 324 bytes encrypted, but don't need to decrypt it all
                 DirOffset => 10,
@@ -2424,8 +2410,8 @@ my %base64coord = (
             Name => 'ColorBalance02',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ColorBalance2',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 284,
                 DecryptLen => 14, # don't need to decrypt it all
                 DirOffset => 6,
@@ -2436,8 +2422,8 @@ my %base64coord = (
             Name => 'ColorBalance0211',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ColorBalance4',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 284,
                 DecryptLen => 24, # don't need to decrypt it all
                 DirOffset => 16,
@@ -2448,8 +2434,8 @@ my %base64coord = (
             Name => 'ColorBalance0213',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ColorBalance2',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 284,
                 DecryptLen => 18, # don't need to decrypt it all
                 DirOffset => 10,
@@ -2460,8 +2446,8 @@ my %base64coord = (
             Name => 'ColorBalance0215',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ColorBalance4',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 284,
                 DecryptLen => 12, # don't need to decrypt it all
                 DirOffset => 4,
@@ -2472,7 +2458,8 @@ my %base64coord = (
             Condition => '$$valPt =~ /^0[26]/',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ColorBalanceUnknown',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted, # (necessary to recrypt this if serial number changed)
                 DecryptStart => 284,
                 DecryptLen => 10, # (arbitrary)
             },
@@ -2482,7 +2469,8 @@ my %base64coord = (
             Condition => '$$valPt =~ /^0[48]/',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ColorBalanceUnknown',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted, # (necessary to recrypt this if serial number changed)
                 DecryptStart => 4,
                 DecryptLen => 10, # (arbitrary)
             },
@@ -2513,8 +2501,8 @@ my %base64coord = (
             Name => 'LensData0201',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData01',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
             },
         },
@@ -2523,8 +2511,8 @@ my %base64coord = (
             Name => 'LensData0204',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData0204',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
             },
         },
@@ -2533,8 +2521,8 @@ my %base64coord = (
             Name => 'LensData0400',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData0400',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
             },
         },
@@ -2543,8 +2531,8 @@ my %base64coord = (
             Name => 'LensData0402',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData0402',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
             },
         },
@@ -2553,8 +2541,8 @@ my %base64coord = (
             Name => 'LensData0403',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData0403',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
             },
         },
@@ -2563,8 +2551,8 @@ my %base64coord = (
             Name => 'LensData0800',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData0800',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
                 ByteOrder => 'LittleEndian',
             },
@@ -2573,8 +2561,8 @@ my %base64coord = (
             Name => 'LensDataUnknown',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensDataUnknown',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
             },
         },
@@ -5305,12 +5293,14 @@ my %nikonFocalConversions = (
             23 => 'Nikkor Z 14-24mm f/2.8 S', #IB
             24 => 'Nikkor Z MC 105mm f/2.8 VR S', #IB
             25 => 'Nikkor Z 40mm f/2', #28
+            26 => 'Nikkor Z DX 18-140mm f/3.5-6.3 VR', #IB
             27 => 'Nikkor Z MC 50mm f/2.8', #IB
             28 => 'Nikkor Z 100-400mm f/4.5-5.6 VR S', #28
             29 => 'Nikkor Z 28mm f/2.8', #IB
             30 => 'Nikkor Z 400mm f/2.8 TC VR S', #28
             31 => 'Nikkor Z 24-120 f/4', #28
             32 => 'Nikkor Z 800mm f/6.3 VR S', #28
+            35 => 'Nikkor Z 28-75mm f/2.8', #IB
             36 => 'Nikkor Z 400mm f/4.5 VR S', #IB
             37 => 'Nikkor Z 600mm f/4 TC VR S', #28
             39 => 'Nikkor Z 17-28mm f/2.8', #IB
@@ -5521,8 +5511,8 @@ my %nikonFocalConversions = (
 
 # shot information for D40 and D40X (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD40 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 729 ],
@@ -5557,8 +5547,8 @@ my %nikonFocalConversions = (
 
 # shot information for D80 (encrypted) - ref JD
 %Image::ExifTool::Nikon::ShotInfoD80 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 748 ],
@@ -5637,8 +5627,8 @@ my %nikonFocalConversions = (
 
 # shot information for D90 (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD90 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 0x374 ],
@@ -5683,8 +5673,8 @@ my %nikonFocalConversions = (
 
 # shot information for the D3 firmware 0.37 and 1.00 (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD3a = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 0x301 ],
@@ -5747,8 +5737,8 @@ my %nikonFocalConversions = (
 
 # shot information for the D3 firmware 1.10, 2.00 and 2.01 (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD3b = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 0x30a ],
@@ -5842,8 +5832,8 @@ my %nikonFocalConversions = (
 
 # shot information for the D3X firmware 1.00 (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD3X = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 0x30b ],
@@ -5888,8 +5878,8 @@ my %nikonFocalConversions = (
 
 # shot information for the D3S firmware 0.16 and 1.00 (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD3S = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 0x2ce ],
@@ -5943,8 +5933,8 @@ my %nikonFocalConversions = (
 
 # shot information for the D300 firmware 1.00 (encrypted) - ref JD
 %Image::ExifTool::Nikon::ShotInfoD300a = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 790 ],
@@ -6036,8 +6026,8 @@ my %nikonFocalConversions = (
 
 # shot information for the D300 firmware 1.10 (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD300b = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     DATAMEMBER => [ 4 ],
@@ -6187,8 +6177,8 @@ my %nikonFocalConversions = (
 
 # shot information for the D300S firmware 1.00 (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD300S = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 804 ],
@@ -6233,8 +6223,8 @@ my %nikonFocalConversions = (
 
 # shot information for the D700 firmware 1.02f (encrypted) - ref 29
 %Image::ExifTool::Nikon::ShotInfoD700 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 804 ],
@@ -6279,8 +6269,8 @@ my %nikonFocalConversions = (
 
 # shot information for the D5000 firmware 1.00 (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD5000 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 0x378 ],
@@ -6325,8 +6315,8 @@ my %nikonFocalConversions = (
 
 # shot information for the D5100 firmware 1.00f (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD5100 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 0x407 ],
@@ -6360,8 +6350,8 @@ my %nikonFocalConversions = (
 
 # shot information for the D5200 firmware 1.00 (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD5200 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 0xcd5 ],
@@ -6398,8 +6388,8 @@ my %nikonFocalConversions = (
 
 # shot information for the D7000 firmware 1.01d (encrypted) - ref 29
 %Image::ExifTool::Nikon::ShotInfoD7000 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 1028 ],
@@ -6443,8 +6433,8 @@ my %nikonFocalConversions = (
 
 # shot information for the D800 firmware 1.01a (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD800 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 0x6ec ],
@@ -6564,15 +6554,13 @@ my %nikonFocalConversions = (
 
 # shot information for the D5 firmware 1.10a and D500 firmware 1.01 (encrypted) - ref 28
 %Image::ExifTool::Nikon::ShotInfoD500 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
-    VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x10, 0x14, 0x2c, 0x50, 0x58, 0xa0, 0xa8, 0xb0,
-                    0x07b0, 0x086c, 0x0e7c, 0x0eea, 0x2c23, 0x2c8f ],
-    IS_SUBDIR => [ 0x0eeb ],
+    VARS => { ID_LABEL => 'Index', NIKON_OFFSETS => 0x0c },
+    DATAMEMBER => [ 0x04 ],
+    IS_SUBDIR => [ 0x10, 0x14, 0x2c, 0x50, 0x58, 0xa0, 0xa8 ],
     WRITABLE => 1,
-    FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'These tags are extracted from encrypted data in images from the D5 and D500.',
     0x00 => {
@@ -6589,73 +6577,66 @@ my %nikonFocalConversions = (
     },
     0x10 => {
         Name => 'RotationInfoOffset',
-        DataMember => 'RotationInfoOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{RotationInfoOffset} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::RotationInfoD500',
+            Start => '$val',
+        }
     },
     0x14 => {
         Name => 'JPGInfoOffset',
-        DataMember => 'JPGInfoOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{JPGInfoOffset} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::JPGInfoD500',
+            Start => '$val',
+        }
     },
     0x2c => {
-        Name => 'BracketingInfoOffset',
-        DataMember => 'BracketingInfoOffset',
+        Name => 'BracketingOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{BracketingInfoOffset} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::BracketingInfoD500',
+            Start => '$val',
+        }
     },
     0x50 => {
         Name => 'ShootingMenuOffset',
-        DataMember => 'ShootingMenuOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{ShootingMenuOffset} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::ShootingMenuD500',
+            Start => '$val',
+        }
     },
     0x58 => {
         Name => 'CustomSettingsOffset',
-        DataMember => 'CustomSettingsOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{CustomSettingsOffset} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::CustomSettingsD500',
+            Start => '$val',
+        }
     },
     0xa0 => {
         Name => 'OrientationOffset',
-        DataMember => 'OrientationOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::OrientationInfo',
+            Start => '$val',
+        }
     },
     0xa8 => {
         Name => 'OtherOffset',
-        DataMember => 'OtherOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{OtherOffset} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::OtherInfoD500',
+            Start => '$val',
+        }
     },
-#
-# Tag ID's below are the offsets for a D500 JPEG image, but these offsets change
-# for various image types according to the offset table above
-#
-### 0xb0 - RotationInfo start
-    0xb0 => {
-        Name => 'Hook1',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of Rotation data
-        Hook => '$varSize = $$self{RotationInfoOffset} - 0xb0',
-    },
-    0xca => {
+);
+
+%Image::ExifTool::Nikon::RotationInfoD500 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0x1a => {
         Name => 'Rotation',
         Mask => 0x03,
         PrintConv => {
@@ -6665,32 +6646,29 @@ my %nikonFocalConversions = (
             3 => 'Rotate 180',
         },
     },
-    0x0d0 => {
+    0x20 => {
         Name => 'Interval',
         # prior version of the d% firmware do not support this tag, nor does the D500 (at least thru firmware 1.3)
         Condition => '$$self{Model} eq "NIKON D5" and $$self{FirmwareVersion} ge "1.40"',
         PrintConv =>  '$val > 0 ? sprintf("%.0f", $val) : ""',
     },
-    0x0d4 => {
+    0x24 => {
         Name => 'IntervalFrame',
         # prior version of the d% firmware do not support this tag, nor does the D500 (at least thru firmware 1.3)
         Condition => '$$self{Model} eq "NIKON D5" and $$self{FirmwareVersion} ge "1.40"',
         PrintConv =>  '$val > 0 ? sprintf("%.0f", $val) : ""',
     },
-    0x05e2 => {
+    0x0532 => {
         Name => 'FlickerReductionIndicator',
         Mask => 0x01,
         PrintConv => { 0 => 'On', 1 => 'Off' },
     },
-### 0x07b0 - JPEGInfo start
-    0x07b0 => {
-        Name => 'Hook2',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of Shooting Menu data
-        Hook => '$varSize = $$self{JPGInfoOffset} - 0x07b0',
-    },
-    0x07d4 => {
+);
+
+%Image::ExifTool::Nikon::JPGInfoD500 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0x24 => {
         Name => 'JPGCompression',
         Mask => 0x01,
         PrintConv => {
@@ -6698,16 +6676,12 @@ my %nikonFocalConversions = (
             1 => 'Optimal Quality',
         },
     },
-### 0x0830 - ? start
-### 0x086c - BracketingInfo start
-    0x086c => {
-        Name => 'Hook3',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of Shooting Menu data
-        Hook => '$varSize = $$self{BracketingInfoOffset} - 0x086c',
-    },
-    0x087b => {
+);
+
+%Image::ExifTool::Nikon::BracketingInfoD500 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0x0f => {
         Name => 'AEBracketingSteps',
         Condition => '$$self{FILE_TYPE} ne "TIFF"', # (covers NEF and TIFF)
         Mask => 0xff,
@@ -6765,7 +6739,7 @@ my %nikonFocalConversions = (
             0xd6 => '5F3',
         },
     },
-    0x087c => {
+    0x10 => {
         Name => 'WBBracketingSteps',
         Condition => '$$self{FILE_TYPE} ne "TIFF"', # (covers NEF and TIFF)
         Mask => 0xff,
@@ -6808,7 +6782,7 @@ my %nikonFocalConversions = (
             0x28 => '9F 3',
         },
     },
-    0x0883 => {
+    0x17 => {
         Name => 'ADLBracketingStep',
         Mask => 0xf0,
         PrintConv => {
@@ -6820,7 +6794,7 @@ my %nikonFocalConversions = (
             8 => 'Auto',
         },
     },
-    0x0884 => {
+    0x18 => {
         Name => 'ADLBracketingType',
         Mask => 0x0f,
         PrintConv => {
@@ -6831,23 +6805,12 @@ my %nikonFocalConversions = (
             4 => '5 Shots',
         },
     },
-### 0x0887 - ? start
-### 0x089f - ? start
-### 0x0929 - ? start
-### 0x09c9 - ? start
-### 0x0ac5 - ? start
-### 0x0bc1 - ? start
-### 0x0cbd - ? start
-### 0x0d98 - ? start
-### 0x0e7d - ShootingMenuOffset start
-    0x0e7c => {
-        Name => 'Hook4',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of Shooting Menu data
-        Hook => '$varSize = $$self{ShootingMenuOffset} - 0x0e7d',
-    },
-    0x0e7d => {
+);
+
+%Image::ExifTool::Nikon::ShootingMenuD500 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0x00 => {
         Name => 'PhotoShootingMenuBank',
         Mask => 0x03,
         PrintConv => {
@@ -6857,7 +6820,7 @@ my %nikonFocalConversions = (
             3 => 'D',
         },
     },
-    0x0e7f => {
+    0x02 => {
         Name => 'PrimarySlot',
         Condition => '$$self{Model} =~ /\bD500\b/',
         Notes => 'D500 only',
@@ -6867,7 +6830,7 @@ my %nikonFocalConversions = (
             1 => 'SD Card',
         },
     },
-    0x0e81 => {
+    0x04 => {
         Name => 'ISOAutoShutterTime',
         Mask => 0x3f,
         PrintConv => {
@@ -6910,7 +6873,7 @@ my %nikonFocalConversions = (
             36 => 'Auto (Fastest)',
         },
     },
-    0x0e82 => {
+    0x05 => {
         Name => 'ISOAutoHiLimit',
         Mask => 0xff,
         PrintHex => 1,
@@ -6958,7 +6921,7 @@ my %nikonFocalConversions = (
             0x72 => 'ISO Hi 5.0',
         },
     },
-    0x0e84 => {
+    0x07 => {
         Name => 'FlickerReduction',
         Mask => 0x20,
         PrintConv => {
@@ -6966,7 +6929,7 @@ my %nikonFocalConversions = (
             1 => 'Disable',
         },
     },
-    3716.1 => { # (0x0e84)
+    7.1 => {
         Name => 'PhotoShootingMenuBankImageArea',
         Mask => 0x07,
         PrintConv => {
@@ -6977,16 +6940,14 @@ my %nikonFocalConversions = (
             4 => '1.3x (18x12)',
         },
     },
-### 0x0ec4 - ? start
-### 0x0eeb - CustomSettings start
-    0x0eea => {
-        Name => 'Hook5',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of CustomSettings data
-        Hook => '$varSize = $$self{CustomSettingsOffset} - 0x0eeb',
-    },
-    0x0eeb => [{
+);
+
+%Image::ExifTool::Nikon::CustomSettingsD500 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    IS_SUBDIR => [ 0x00 ],
+    VARS => { ALLOW_REPROCESS => 1 }, # (necessary because subdirectory is at offset 0)
+    0x00 => [{
         Name => 'CustomSettingsD5',
         Condition => '$$self{Model} =~ /\bD5\b/',
         Format => 'undef[90]',
@@ -7000,7 +6961,7 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD500',
         },
     }],
-#    0x0f68 => {  #this decode works, but involves more bits than should be necessary
+#    0x7d => {  #this decode works, but involves more bits than should be necessary
 #        Name => 'ShutterTrigger',
 #        Mask => 0xff,
 #        PrintConv => {
@@ -7009,51 +6970,13 @@ my %nikonFocalConversions = (
 #           195 => 'Shutter Button',
 #       },
 #   },
-### 0x2c24 - OrientationInfo start (D5 firmware 1.10b)
-    0x2c23 => {
-        Name => 'Hook6',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of OrientationInfo data
-        Hook => '$varSize = $$self{OrientationOffset} - 0x2c24',
-    },
-    0x2c24 => {
-        Name => 'RollAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of clockwise camera roll',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x2c28 => {
-        Name => 'PitchAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of upward camera tilt',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x2c2c => {
-        Name => 'YawAngle',
-        Format => 'fixed32u',
-        Notes => 'the camera yaw angle when shooting in portrait orientation',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-### 0x2c90 - OtherInfo start (D500 firmware 1.20d)
-    0x2c8f => {
-        Name => 'Hook7',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of OtherInfo data
-        Hook => '$varSize = $$self{OtherOffset} - 0x2c90',
-    },
+);
+
+%Image::ExifTool::Nikon::OtherInfoD500 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     # (needs testing)
-    #0x2cb2 => {
+    #0x22 => {
     #    Name => 'ExtendedPhotoShootingBanks',
     #    Mask => 0x01,
     #    PrintConv => {
@@ -7062,7 +6985,7 @@ my %nikonFocalConversions = (
     #    },
     #},
     # (may not be reliable and is found elsewhere)
-    #0x2ea2 => {
+    #0x212 => {
     #    Name => 'Rotation',
     #    Condition => '$$self{Model} =~ /\bD500\b/',
     #    Notes => 'D500 firmware 1.1x',
@@ -7074,7 +6997,7 @@ my %nikonFocalConversions = (
     #        3 => 'Rotate 180',
     #    },
     #},
-    0x2ea4 => { #PH
+    0x214 => { #PH
         Name => 'NikonMeteringMode',
         Condition => '$$self{Model} =~ /\bD500\b/', # (didn't seem to work for D5, but I need more samples)
         Notes => 'D500 only',
@@ -7091,13 +7014,12 @@ my %nikonFocalConversions = (
 
 # shot information for the D6 firmware 1.00 (encrypted) - ref 28
 %Image::ExifTool::Nikon::ShotInfoD6 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
-    VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x30, 0x60, 0x9c, 0xa4, 0x75e7, 0x760c, 0x7610, 0xc219, 0xc292, 0xc40e, 0xc412, 0xc4a6, 0xc4be ],
+    VARS => { ID_LABEL => 'Index', NIKON_OFFSETS => 0x24 },
+    IS_SUBDIR => [ 0x30, 0x9c, 0xa4 ],
     WRITABLE => 1,
-    FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'These tags are extracted from encrypted data in images from the D6.',
     0x00 => {
@@ -7112,159 +7034,111 @@ my %nikonFocalConversions = (
     },
     0x24 => {
         Name => 'NumberOffsets', # (number of entries in offset table.  offsets are from start of ShotInfo data)
-        DataMember => 'NumberOffsets',
         Format => 'int32u',
         Writable => 0,
         Hidden => 1,
     },
     0x30 => {
-        Name => 'Offset3',
-        DataMember => 'Offset3',
+        Name => 'SequenceOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{Offset3} = $val || 0x10000000; undef', # (ignore if 0)
-    },
-    0x60 => {
-        Name => 'Offset15',
-        DataMember => 'Offset15',
-        Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{Offset15} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::SeqInfoD6',
+            Start => '$val',
+        },
     },
     0x9c => {
         Name => 'OrientationOffset',
-        DataMember => 'OrientationOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::OrientationInfo',
+            Start => '$val',
+        },
     },
     0xa4 => {
-        Name => 'Offset32',
-        DataMember => 'Offset32',
+        Name => 'IntervalOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{Offset32} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::IntervalInfoD6',
+            Start => '$val',
+        }
     },
-    ### 0x75e8 - Offset3 info start (D6 firmware 1.33)
-    0x75e7 => {
-        Name => 'Hook1',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of Offset5 data
-        Hook => '$varSize = $$self{Offset3} - 0x75e8',
-    },
-    0x760c => {
+);
+
+%Image::ExifTool::Nikon::SeqInfoD6 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0x24, 0x28 ],
+    0x24 => {
         Name => 'IntervalShooting',
         RawConv => '$$self{IntervalShooting} = $val',
         Format => 'int16u',
         PrintConv => q{
             return 'Off' if $val == 0 ;
-            my $i = sprintf("Interval %.0f of %.0f",$val, $$self{IntervalShootingIntervals});    #something like "Interval 1 of 3"
-            my $f = $$self{IntervalShootingShotsPerInterval} > 1 ? sprintf(" Frame %.0f of %.0f",$$self{IntervalFrame}, $$self{IntervalShootingShotsPerInterval}): '' ;  #something like "Frame 1 of 3" or blank
+            my $i = sprintf("Interval %.0f of %.0f",$val, $$self{IntervalShootingIntervals}||0);    #something like "Interval 1 of 3"
+            my $f = ($$self{IntervalShootingShotsPerInterval}||0) > 1 ? sprintf(" Frame %.0f of %.0f",$$self{IntervalFrame}||0, $$self{IntervalShootingShotsPerInterval}||0): '' ;  #something like "Frame 1 of 3" or blank
             return "On: $i$f"
-            #$val == 0 ? 'Off' : sprintf("On: Interval %.0f of %.0f Frame %.0f of %.0f",$val, $$self{IntervalShootingIntervals}, $$self{IntervalFrame}, $$self{IntervalShootingShotsPerInterval}),
+            #$val == 0 ? 'Off' : sprintf("On: Interval %.0f of %.0f Frame %.0f of %.0f",$val, $$self{IntervalShootingIntervals}||0, $$self{IntervalFrame}||0, $$self{IntervalShootingShotsPerInterval}||0),
         },
     },
-    0x7610 => {
+    0x28 => {
         Name => 'IntervalFrame',
         RawConv => '$$self{IntervalFrame} = $val',
         Condition => '$$self{IntervalShooting} > 0',
         Format => 'int16u',
         Hidden => 1,
     },
-### 0xc21a - OrientationInfo start (D6 firmware 1.00) (0xc952 for firmware 1.33)
-    0xc219 => {
-        Name => 'Hook2',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of OrientationInfo data
-        Hook => '$varSize = $$self{OrientationOffset} - 0xc21a',
-    },
-    0xc21a => {
-        Name => 'RollAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of clockwise camera roll',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0xc21e => {
-        Name => 'PitchAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of upward camera tilt',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0xc222 => {
-        Name => 'YawAngle',
-        Format => 'fixed32u',
-        Notes => 'the camera yaw angle when shooting in portrait orientation',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    ### 0xc9c6 - Offset32 start (D6 firmware 1.33)
-    0xc292 => {
-        Name => 'Hook3',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of data
-        Hook => '$varSize = $$self{Offset32} - 0xc292',
-    },
-    0xc40e => {
+);
+
+%Image::ExifTool::Nikon::IntervalInfoD6 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0x17c, 0x180, 0x214, 0x22c ],
+    0x17c => {
         Name => 'Intervals',
         Format => 'int32u',
         RawConv => '$$self{IntervalShootingIntervals} = $val',
         Condition => '$$self{IntervalShooting} > 0',
     },
-    0xc412 => {
+    0x180 => {
         Name => 'ShotsPerInterval',
         Format => 'int32u',
         RawConv => '$$self{IntervalShootingShotsPerInterval} = $val',
         Condition => '$$self{IntervalShooting} > 0',
     },
-    0xc416 => {
+    0x184 => {
         Name => 'IntervalExposureSmoothing',
         Condition => '$$self{IntervalShooting} > 0',
         Format => 'int8u',
         PrintConv => \%offOn,
     },
-    0xc418 => {
+    0x186 => {
         Name => 'IntervalPriority',
         Condition => '$$self{IntervalShooting} > 0',
         Format => 'int8u',
         PrintConv => \%offOn,
     },
-    0xc43a => {
+    0x1a8 => {
         Name => 'FocusShiftNumberShots',
     },
-    0xc43e => {
+    0x1ac => {
         Name => 'FocusShiftStepWidth',
     },
-    0xc442 => {
+    0x1b0 => {
         Name => 'FocusShiftInterval',
         PrintConv => '$val == 1? "1 Second" : sprintf("%.0f Seconds",$val)',
     },
-    0xc446 => {
+    0x1b4 => {
         Name => 'FocusShiftExposureLock',
         PrintConv => \%offOn,
     },
-    #0xc49c => HighISONoiseReduction
-    0xc4a0 => {
+    #0x20a => HighISONoiseReduction
+    0x20e => {
         Name => 'DiffractionCompensation',
         Format => 'int8u',
         PrintConv => \%offOn,
     },
-    #0xc4a1 => {Name => 'FlickerReductionShooting',},   #redundant with tag in NikonSettings
-    0xc4a6 => {
+    #0x20f => {Name => 'FlickerReductionShooting',},   #redundant with tag in NikonSettings
+    0x214 => {
         Name => 'FlashControlMode',   #this and nearby tag values for flash may be set from either the Photo Shooting Menu or using the Flash unit menu
         RawConv => '$$self{FlashControlMode} = $val',
         PrintConv => {
@@ -7275,14 +7149,14 @@ my %nikonFocalConversions = (
             4 => 'Repeating Flash',
         },
     },
-    0xc4ac => {
+    0x21a => {
         Name => 'FlashGNDistance',
         Condition => '$$self{FlashControlMode} == 2',
         Unknown => 1,
         ValueConv => '$val + 3',
         PrintConv => \%flashGNDistance,
     },
-    0xc4b0 => {
+    0x21e => {
         Name => 'FlashOutput',   #range[0,24]  with 0=>Full; 1=>50%; then decreasing flash power in 1/3 stops to 0.39% (1/256 full power). #also found in FlashInfoUnknown at offset 0x0a (with different mappings)
         Condition => '$$self{FlashControlMode} >= 3',
         Unknown => 1,
@@ -7291,7 +7165,7 @@ my %nikonFocalConversions = (
         PrintConv => '$val>0.99 ? "Full" : sprintf("%.1f%%",$val*100)',
         PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
     },
-    0xc4ba => {
+    0x228 => {
         Name => 'FlashRemoteControl',
         Unknown => 1,
         PrintConv => {
@@ -7300,12 +7174,12 @@ my %nikonFocalConversions = (
             2 => 'Remote Repeating',
         },
     },
-    0xc4be => {
+    0x22c => {
         Name => 'FlashMasterControlMode',        #tag name chosen for compatibility with those found in FlashInfo0102 & FlashInfo0103
         RawConv => '$$self{FlashGroupOptionsMasterMode} = $val',
         PrintConv => \%flashGroupOptionsMode,
     },
-    0xc4c0 => {
+    0x22e => {
         Name => 'FlashMasterCompensation',
         Unknown => 1,
         Format => 'int8s',
@@ -7315,7 +7189,7 @@ my %nikonFocalConversions = (
         PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => '$val',
     },
-    0xc4c4 => {
+    0x232 => {
         Name => 'FlashMasterOutput',
         Unknown => 1,
         Condition => '$$self{FlashGroupOptionsMasterMode}  == 1',   #only for Mode=M
@@ -7324,7 +7198,7 @@ my %nikonFocalConversions = (
         PrintConv => '$val>0.99 ? "Full" : sprintf("%.1f%%",$val*100)',
         PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
     },
-    0xc4c6 => {
+    0x234 => {
         Name => 'FlashWirelessOption',
         Unknown => 1,
         PrintConv => {
@@ -7332,7 +7206,7 @@ my %nikonFocalConversions = (
             1 => 'Off',
         },
     },
-    0xc55c => {
+    0x2ca => {
         Name => 'MovieType',
         Unknown => 1,
         PrintConv => {
@@ -7340,13 +7214,12 @@ my %nikonFocalConversions = (
             1 => 'MP4',
         },
     },
-    # note: DecryptLen currently set to 0xc9c6 + 720
 );
 
 # shot information for the D610 firmware 1.00 (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD610 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 0x07cf ],
@@ -7376,20 +7249,15 @@ my %nikonFocalConversions = (
 
 # shot information for the D810 firmware 1.00(PH)/1.01 (encrypted) - ref 28
 %Image::ExifTool::Nikon::ShotInfoD810 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
-    VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x24, 0x38, 0x40, 0x84, 0x01d0, 0x175e, 0x185d, 0x18ab ],
-    IS_SUBDIR => [ 0x18ab ],
+    VARS => { ID_LABEL => 'Index', NIKON_OFFSETS => 0x0c },
+    DATAMEMBER => [ 0x04 ],
+    IS_SUBDIR => [ 0x10, 0x24, 0x38, 0x40, 0x84 ],
     WRITABLE => 1,
-    FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => q{
-        These tags are extracted from encrypted data in images from the D810.  Note
-        that the indices listed below are for firmware version 1.0, but they may be
-        different for other firmware versions.
-    },
+    NOTES => 'These tags are extracted from encrypted data in images from the D810.',
     0x00 => {
         Name => 'ShotInfoVersion',
         Format => 'string[4]',
@@ -7404,39 +7272,64 @@ my %nikonFocalConversions = (
     },
     # 0x0c - number of entries in offset table (= 0x21)
     # 0x10 - int32u[val 0x0c]: offset table
+    0x10 => {
+        Name => 'SettingsOffset',
+        Format => 'int32u',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::SettingsInfoD810',
+            Start => '$val',
+        },
+    },
     0x24 => {
         Name => 'BracketingOffset',
-        DataMember => 'BracketingOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{BracketingOffset} = $val || 0x10000000; undef',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::BracketingInfoD810',
+            Start => '$val',
+        },
     },
     0x38 => {
         Name => 'ISOAutoOffset',
-        DataMember => 'ISOAutoOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{ISOAutoOffset} = $val || 0x10000000; undef',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::ISOAutoInfoD810',
+            Start => '$val',
+        },
     },
     0x40 => {
         Name => 'CustomSettingsOffset', # (relative offset from start of ShotInfo data)
-        DataMember => 'CustomSettingsOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{CustomSettingsOffset} = $val || 0x10000000; undef',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::NikonCustom::SettingsD810',
+            Start => '$val',
+        },
     },
     0x84 => {
         Name => 'OrientationOffset',
-        DataMember => 'OrientationOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::OrientationInfo',
+            Start => '$val',
+        }
     },
-    0x01d0 => {
+    # (moves around too much and doesn't fit cleanly in the offset table)
+    #0x38be => {
+    #    Name => 'Rotation',
+    #    Condition => '$$self{FirmwareVersion} =~ /^1\.0/',
+    #    Mask => 0x30,
+    #    PrintConv => {
+    #        0 => 'Horizontal',
+    #        1 => 'Rotate 270 CW',
+    #        2 => 'Rotate 90 CW',
+    #        3 => 'Rotate 180',
+    #    },
+    #},
+);
+
+%Image::ExifTool::Nikon::SettingsInfoD810 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0x13c => {
         Name => 'SecondarySlotFunction',
         Mask => 0x03,
         PrintConv => {
@@ -7444,9 +7337,13 @@ my %nikonFocalConversions = (
             2 => 'Backup',
             3 => 'NEF Primary + JPG Secondary',
         },
-        Hook => '$varSize = $$self{BracketingOffset} - 0x1747',
     },
-    0x1756 => {
+);
+
+%Image::ExifTool::Nikon::BracketingInfoD810 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0x0f => {
         Name => 'AEBracketingSteps',
         Mask => 0xff,
         PrintHex => 1,
@@ -7503,7 +7400,7 @@ my %nikonFocalConversions = (
             0xd6 => '5F3',
         },
     },
-    0x1757 => {
+    0x10 => {
         Name => 'WBBracketingSteps',
         Condition => '$$self{FILE_TYPE} ne "TIFF"', # (covers NEF and TIFF)
         Mask => 0xff,
@@ -7546,7 +7443,7 @@ my %nikonFocalConversions = (
             0x28 => '9F 3',
         },
     },
-    0x175e => {
+    0x17 => {
         Name => 'NikonMeteringMode',
         Mask => 0x03,
         PrintConv => {
@@ -7555,9 +7452,13 @@ my %nikonFocalConversions = (
             2 => 'Spot',
             3 => 'Highlight'
         },
-        Hook => '$varSize = $$self{ISOAutoOffset} - 0x1858',
     },
-    0x185c => {
+);
+
+%Image::ExifTool::Nikon::ISOAutoInfoD810 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0x04 => {
         Name => 'ISOAutoShutterTime',
         Mask => 0x3f,
         PrintConv => {
@@ -7600,7 +7501,7 @@ my %nikonFocalConversions = (
             36 => 'Auto (Fastest)',
         },
     },
-    0x185d => {
+    0x05 => {
         Name => 'ISOAutoHiLimit',
         Mask => 0xff,
         PrintHex => 1,
@@ -7647,69 +7548,18 @@ my %nikonFocalConversions = (
             0x6c => 'ISO Hi 4.0',
             0x72 => 'ISO Hi 5.0',
         },
-        Hook => '$varSize = $$self{CustomSettingsOffset} - 0x18ab',
     },
-    0x18ab => { # (actual offset adjusted by Hook above)
-        Name => 'CustomSettingsD810',
-        Format => 'undef[53]',
-        SubDirectory => {
-            TagTable => 'Image::ExifTool::NikonCustom::SettingsD810',
-        },
-        Hook => '$varSize = $$self{OrientationOffset} - 0x36f4',
-    },
-    0x36f4 => {
-        Name => 'RollAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of clockwise camera roll',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x36f8 => {
-        Name => 'PitchAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of upward camera tilt',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x36fc => {
-        Name => 'YawAngle',
-        Format => 'fixed32u',
-        Notes => 'the camera yaw angle when shooting in portrait orientation',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    # note: DecryptLen currently set to OrientationOffset + 12
-
-    # (moves around too much and doesn't fit cleanly in the offset table)
-    #0x38be => {
-    #    Name => 'Rotation',
-    #    Condition => '$$self{FirmwareVersion} =~ /^1\.0/',
-    #    Mask => 0x30,
-    #    PrintConv => {
-    #        0 => 'Horizontal',
-    #        1 => 'Rotate 270 CW',
-    #        2 => 'Rotate 90 CW',
-    #        3 => 'Rotate 180',
-    #    },
-    #},
 );
 
 # shot information for the D850 firmware 1.00b (encrypted) - ref 28
 %Image::ExifTool::Nikon::ShotInfoD850 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
-    VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x58, 0xa0, 0x0fbf, 0x2efa ],
-    IS_SUBDIR => [ 0x1038 ],
+    VARS => { ID_LABEL => 'Index', NIKON_OFFSETS => 0x0c },
+    DATAMEMBER => [ 0x04 ],
+    IS_SUBDIR => [ 0x10, 0x4c, 0x58, 0xa0 ],
     WRITABLE => 1,
-    FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'These tags are extracted from encrypted data in images from the D850.',
     0x00 => {
@@ -7724,23 +7574,44 @@ my %nikonFocalConversions = (
         Writable => 0,
         RawConv => '$$self{FirmwareVersion} = $val',
     },
-    0x58 => {
-        Name => 'CustomSettingsOffset', # (relative offset from start of ShotInfo data)
-        DataMember => 'CustomSettingsOffset',
+    0x10 => {
+        Name => 'MenuSettingsOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{CustomSettingsOffset} = $val || 0x10000000; undef',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::MenuSettingsD850',
+            Start => '$val',
+        },
+    },
+    0x4c => {
+        Name => 'MoreSettingsOffset',
+        Format => 'int32u',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::MoreSettingsD850',
+            Start => '$val',
+        },
+    },
+    0x58 => {
+        Name => 'CustomSettingsOffset',
+        Format => 'int32u',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::NikonCustom::SettingsD850',
+            Start => '$val',
+        },
     },
     0xa0 => {
         Name => 'OrientationOffset',
-        DataMember => 'OrientationOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::OrientationInfo',
+            Start => '$val',
+        },
     },
-    0x0791 => {
+);
+
+%Image::ExifTool::Nikon::MenuSettingsD850 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0x06dd => {
         Name => 'PhotoShootingMenuBankImageArea',
         Mask => 0x07,
         PrintConv => {
@@ -7751,7 +7622,12 @@ my %nikonFocalConversions = (
             4 => '1:1 (24x24)',
         },
     },
-    0x0fbd => {
+);
+
+%Image::ExifTool::Nikon::MoreSettingsD850 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0x24 => {
         Name => 'PhotoShootingMenuBank',
         Condition => '$$self{FILE_TYPE} eq "JPEG"',
         Notes => 'valid for JPEG images only',
@@ -7763,63 +7639,20 @@ my %nikonFocalConversions = (
             3 => 'D',
         },
     },
-    0x0fbf => {
+    0x25 => {
         Name => 'PrimarySlot',
         Mask => 0x80,
         PrintConv => {
             0 => 'XQD Card',
             1 => 'SD Card',
         },
-        Hook => '$varSize = $$self{CustomSettingsOffset} - 0x1038',
     },
-    0x1038 => {
-        Name => 'CustomSettingsD850',
-        Format => 'undef[90]',
-        SubDirectory => {
-            TagTable => 'Image::ExifTool::NikonCustom::SettingsD850',
-        },
-    },
-### 0x2efb - OrientationInfo start (D850 firmware 1.01a)
-    0x2efa => {
-        Name => 'Hook1',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of OrientationInfo data
-        Hook => '$varSize = $$self{OrientationOffset} - 0x2efb',
-    },
-    0x2efb => { #28
-        Name => 'RollAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of clockwise camera roll',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x2eff => { #28
-        Name => 'PitchAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of upward camera tilt',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x2f03 => { #28
-        Name => 'YawAngle',
-        Format => 'fixed32u',
-        Notes => 'the camera yaw angle when shooting in portrait orientation',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    # note: DecryptLen currently set to 0x2f07
 );
+
 # shot information for the D4 firmware 1.00g (ref PH)
 %Image::ExifTool::Nikon::ShotInfoD4 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     IS_SUBDIR => [ 0x0751 ],
@@ -7850,12 +7683,12 @@ my %nikonFocalConversions = (
 
 # shot information for the D4S firmware 1.01a (ref 28, encrypted)
 %Image::ExifTool::Nikon::ShotInfoD4S = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
     DATAMEMBER => [ 4 ],
-    IS_SUBDIR => [ 0x189d, 0x193d ],
+    IS_SUBDIR => [ 0x189d, 0x193d, 0x350b ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -8119,31 +7952,13 @@ my %nikonFocalConversions = (
 #       },
 #   },
     0x350b => {
-        Name => 'RollAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of clockwise camera roll',
-        ValueConv => '$val < 180 ? -$val : 360 - $val',
-        ValueConvInv => '$val <= 0 ? -$val : 360 - $val',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x350f => {
-        Name => 'PitchAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of upward camera tilt',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x3513 => {
-        Name => 'YawAngle',
-        Format => 'fixed32u',
-        Notes => 'the camera yaw angle when shooting in portrait orientation',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
+        Name => 'OrientationInfo',
+        Format => 'undef[12]',
+        SubDirectory => {
+            # Note: pitch angle may be wrong sign for this model?
+            # (pitch sign was changed without verification to use same decoding as other models)
+            TagTable => 'Image::ExifTool::Nikon::OrientationInfo',
+        },
     },
     0x3693 => {
         Name => 'Rotation',
@@ -8160,15 +7975,13 @@ my %nikonFocalConversions = (
 
 # shot information for the Z7II firmware 1.00 (encrypted) - ref 28
 %Image::ExifTool::Nikon::ShotInfoZ7II = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
-    VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x30, 0x38, 0x98, 0xa0,  0x75e7, 0x760c,
-                    0x7610, 0x7eff, 0xce31, 0xcea5, 0xceb6, 0xceb7 ],
-    IS_SUBDIR => [ 0xceb8 ],
+    VARS => { ID_LABEL => 'Index', NIKON_OFFSETS => 0x24 },
+    DATAMEMBER => [ 0x04 ],
+    IS_SUBDIR => [ 0x30, 0x38, 0x98, 0xa0 ],
     WRITABLE => 1,
-    FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'These tags are extracted from encrypted data in images from the Z7II.',
     0x00 => {
@@ -8197,79 +8010,73 @@ my %nikonFocalConversions = (
     },
     0x24 => {
         Name => 'NumberOffsets', # number of entries in offset table.  offsets are from start of ShotInfo data.
-        DataMember => 'NumberOffsets',
         Format => 'int32u',
         Writable => 0,
         Hidden => 1,
     },
     0x30 => {
-        Name => 'Offset3',
-        DataMember => 'Offset3',
+        Name => 'IntervalOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{Offset3} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::IntervalInfoZ7II',
+            Start => '$val',
+        }
     },
     0x38 => {
-        Name => 'Offset5',
-        DataMember => 'Offset5',
+        Name => 'PortraitOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{Offset5} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::PortraitInfoZ7II',
+            Start => '$val',
+        }
     },
     0x98 => {
         Name => 'OrientationOffset',
-        DataMember => 'OrientationOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::OrientationInfo',
+            Start => '$val',
+        }
     },
     0xa0 => {
-        Name => 'Offset31',
-        DataMember => 'Offset31',
+        Name => 'MenuOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{Offset31} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::MenuInfoZ7II',
+            Start => '$val',
+        },
     },
-    ### 0x75e8 - Offset3 info start (Z7II firmware 1.30)
-    0x75e7 => {
-        Name => 'Hook1',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of Offset3 data
-        Hook => '$varSize = $$self{Offset3} - 0x75e8',
-    },
-    0x760c => {
+);
+
+%Image::ExifTool::Nikon::IntervalInfoZ7II = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0x24, 0x28 ],
+    0x24 => {
         Name => 'IntervalShooting',
         RawConv => '$$self{IntervalShooting} = $val',
         Format => 'int16u',
         PrintConv => q{
             return 'Off' if $val == 0 ;
-            my $i = sprintf("Interval %.0f of %.0f",$val, $$self{IntervalShootingIntervals}); # something like "Interval 1 of 3"
-            my $f = $$self{IntervalShootingShotsPerInterval} > 1 ? sprintf(" Frame %.0f of %.0f",$$self{IntervalFrame}, $$self{IntervalShootingShotsPerInterval}): '' ;  # something like "Frame 1 of 3" or blank
+            my $i = sprintf("Interval %.0f of %.0f",$val, $$self{IntervalShootingIntervals}||0); # something like "Interval 1 of 3"
+            my $f = ($$self{IntervalShootingShotsPerInterval}||0) > 1 ? sprintf(" Frame %.0f of %.0f",$$self{IntervalFrame}||0, $$self{IntervalShootingShotsPerInterval}||0): '' ;  # something like "Frame 1 of 3" or blank
             return "On: $i$f"
-            #$val == 0 ? 'Off' : sprintf("On: Interval %.0f of %.0f Frame %.0f of %.0f",$val, $$self{IntervalShootingIntervals}, $$self{IntervalFrame}, $$self{IntervalShootingShotsPerInterval}),
+            #$val == 0 ? 'Off' : sprintf("On: Interval %.0f of %.0f Frame %.0f of %.0f",$val, $$self{IntervalShootingIntervals}||0, $$self{IntervalFrame}||0, $$self{IntervalShootingShotsPerInterval}||0),
         },
     },
-    0x7610 => {
+    0x28 => {
         Name => 'IntervalFrame',
         RawConv => '$$self{IntervalFrame} = $val',
         Condition => '$$self{IntervalShooting} > 0',
         Format => 'int16u',
         Hidden => 1,
     },
-    ### 0x7f00 - Offset5 info start (Z7II firmware 1.30)
-    0x7eff => {
-        Name => 'Hook2',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of Offset5 data
-        Hook => '$varSize = $$self{Offset5} - 0x7f00',
-    },
-    0x7fa0 => { #28
+);
+
+%Image::ExifTool::Nikon::PortraitInfoZ7II = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0xa0 => { #28
         Name => 'PortraitImpressionBalance', # will be 0 for firmware 1.21 and earlier; firmware 1.30 onward: will be set by Photo Shooting Menu entry Portrait Impression Balance
                    # offset5+160;    128 is neutral; >128 increases Yellow; <128 increases Magenta;  increments of 4 result from 1 full unit adjustment on the camera
                    # offset5+161     128 is neutral;  >128 increases Brightness; <128 decreases Brightness
@@ -8285,83 +8092,31 @@ my %nikonFocalConversions = (
             return "$color $brightness"
         },
     },
-    ### 0xce32 - OrientationInfo start (Z7II firmware 1.00)
-    0xce31 => {
-        Name => 'Hook3',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of OrientationInfo data
-        Hook => '$varSize = $$self{OrientationOffset} - 0xce32',
-    },
+);
 
-    0xce32 => {
-        Name => 'RollAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of clockwise camera roll',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0xce36 => {
-        Name => 'PitchAngle',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of upward camera tilt',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0xce3a => {
-        Name => 'YawAngle',
-        Format => 'fixed32u',
-        Notes => 'the camera yaw angle when shooting in portrait orientation',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0xcea5 => {
-        Name => 'Hook4',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of Offset31 data
-        Hook => '$varSize = $$self{Offset31} - 0xcea6',
-    },
-    ### 0xcea6 - Offset31 info start (Z7II firmware 1.30)
-    0xceb6 => {
-        Name => 'MenuSettingsZ7IIOffset',
-        # offset to MenuSettingsZ7II is relative to start of Offset31 block
-        RawConv => '$$self{MenuSettingsZ7IIOffset} = ($val || 0x10000000) + $$self{Offset31}; undef', # (ignore if 0)
-    },
-    0xceb7 => {
-        Name => 'Hook5',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of Offset5 data
-        Hook => '$varSize = $$self{MenuSettingsZ7IIOffset} - 0xceb8',
-    },
-    0xceb8 => { # (this is 0xd04e for the Z50)
-        Name => 'MenuSettingsZ7II',
-        Format => 'undef[860]',
+%Image::ExifTool::Nikon::MenuInfoZ7II = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    IS_SUBDIR => [ 0x10 ],
+    0x10 => {
+        Name => 'MenuSettingsOffsetZ7II',
+        Format => 'int32u',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ7II',
+            Start => '$dirStart + $val',
         },
-    }
-    # note: DecryptLen currently set to 0xd04e + 860 (offset for Z50 is 0xd04e)
+    },
 );
 
 # shot information for the Z9 firmware 1.00 (encrypted) - ref 28
 %Image::ExifTool::Nikon::ShotInfoZ9 = (
-    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
-    VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x30, 0x84, 0x8c,0x93, 0xb4, 0xbc, 0xbe,
-                    0x4410, 0x4411, 0x80c4, 0x8149, 0x814a ],
-    IS_SUBDIR => [ 0x44ec, 0x8225 ],
+    VARS => { ID_LABEL => 'Index', NIKON_OFFSETS => 0x24 },
+    DATAMEMBER => [ 0x04 ],
+    IS_SUBDIR => [ 0x30, 0x84, 0x8c ],
     WRITABLE => 1,
-    FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'These tags are extracted from encrypted data in images from the Z9.',
     0x00 => {
@@ -8390,47 +8145,45 @@ my %nikonFocalConversions = (
     },
     0x24 => {
         Name => 'NumberOffsets', # number of entries in offset table.  offsets are from start of ShotInfo data.
-        DataMember => 'NumberOffsets',
         Format => 'int32u',
         Writable => 0,
         Hidden => 1,
     },
+    # subdirectories, referenced by offsets (not processed if offset is zero)
     0x30 => {
-        Name => 'SequenceOffset',   #offset3 - length 2528 (Z9 firmware 1.0)
-        DataMember => 'SequenceOffset',
+        Name => 'SequenceOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{SequenceOffset} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::SeqInfoZ9',
+            Start => '$val',
+        },
     },
     0x84 => {
-        Name => 'OrientationOffset',   #offset24 - length 108 (Z9 firmware 1.0)
-        DataMember => 'OrientationOffset',
+        Name => 'OrientOffset',
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::OrientationInfo',
+            Start => '$val',
+        },
     },
     0x8c => {
-        Name => 'MenuOffset',   #offset26 - length 1895 (Z9 firmware 1.0)
-        DataMember => 'MenuOffset6',
+        Name => 'MenuOffset',
         Format => 'int32u',
-        Writable => 0,
-        Hidden => 1,
-        RawConv => '$$self{MenuOffset} = $val || 0x10000000; undef', # (ignore if 0)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::MenuInfoZ9',
+            Start => '$val',
+        },
     },
-    ### 0x0094 - SequenceOffset info start (Z9 firmware 1.00)
-    0x0093 => {
-        Name => 'SequenceOffsetHook',
-        Condition => '$$self{ShutterMode} ne 96',     #not valid for C30/C60/C120 
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of SequenceOffset data
-        Hook => '$varSize = $$self{SequenceOffset} - 0x0094',
-    },
-    0x00b4 => {
+);
+
+%Image::ExifTool::Nikon::SeqInfoZ9 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0x20, 0x28, 0x2a ],
+    0x0020 => {
         Name => 'FocusShiftShooting',
-        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
         RawConv => '$$self{FocusShiftShooting} = $val',
         PrintConv => q{
             return 'Off' if $val == 0 ;
@@ -8438,86 +8191,70 @@ my %nikonFocalConversions = (
             return "On: $i"
         },
     },
-    0x00bc => {
+    0x0028 => {
         Name => 'IntervalShooting',
-        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
         RawConv => '$$self{IntervalShooting} = $val',
         Format => 'int16u',
         PrintConv => q{
             return 'Off' if $val == 0 ;
-            my $i = sprintf("Interval %.0f of %.0f",$val, $$self{IntervalShootingIntervals}); # something like "Interval 1 of 3"
-            my $f = $$self{IntervalShootingShotsPerInterval} > 1 ? sprintf(" Frame %.0f of %.0f",$$self{IntervalFrame}, $$self{IntervalShootingShotsPerInterval}): '' ;  # something like "Frame 1 of 3" or blank
+            my $i = sprintf("Interval %.0f of %.0f",$val, $$self{IntervalShootingIntervals}||0); # something like "Interval 1 of 3"
+            my $f = ($$self{IntervalShootingShotsPerInterval}||0) > 1 ? sprintf(" Frame %.0f of %.0f",$$self{IntervalFrame}||0, $$self{IntervalShootingShotsPerInterval}||0): '' ;  # something like "Frame 1 of 3" or blank
             return "On: $i$f"
-            #$val == 0 ? 'Off' : sprintf("On: Interval %.0f of %.0f Frame %.0f of %.0f",$val, $$self{IntervalShootingIntervals}, $$self{IntervalFrame}, $$self{IntervalShootingShotsPerInterval}),
+            #$val == 0 ? 'Off' : sprintf("On: Interval %.0f of %.0f Frame %.0f of %.0f",$val, $$self{IntervalShootingIntervals}||0, $$self{IntervalFrame}||0, $$self{IntervalShootingShotsPerInterval}||0),
         },
     },
-    0x00be => {
-        Condition => '$$self{ShutterMode} ne 96',   #not valid for C30/C60/C120 
+    0x002a => {
         Name => 'IntervalFrame',
         RawConv => '$$self{IntervalFrame} = $val',
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
         Format => 'int16u',
         Hidden => 1,
     },
-    ### 0x4400 - Offset26 info start (Z9 firmware 3.01 C30/C60/C120 )
-    0x4410 => {
-        Name => 'MenuSettingsZ9Offset',
-        Condition => '$$self{ShutterMode} eq 96',    # C30/C60/C120 jpgs only
-        Writable => 0,
-        Hidden => 1,
-        # offset to MenuSettingsZ9 is relative to start of Offset26 block
-        RawConv => '$$self{MenuSettingsZ9Offset} = ($val || 0x10000000) + $$self{MenuOffset}; undef', # (ignore if 0)
-    },
-    0x4411 => {
-        Name => 'Hook5',
-        Condition => '$$self{ShutterMode} eq 96',    # C30/C60/C120 jpgs only
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of menu settings data
-        Hook => '$varSize = $$self{MenuSettingsZ9Offset} - 0x44ec',
-    },
-    0x44ec => [
+);
+
+%Image::ExifTool::Nikon::MenuInfoZ9 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    IS_SUBDIR => [ 0x10 ],
+  # 0x00 - int32u size of this directory
+    0x10 => [
         {
-            Name => 'MenuSettingsZ9',
-            Condition => '$$self{ShutterMode} eq 96 and $$self{FirmwareVersion} lt "03.00"',    # C30/C60/C120 jpgs only
-            Format => 'undef[1646]',
+            Name => 'MenuSettingsOffsetZ9',
+            Condition => '$$self{FirmwareVersion} and $$self{FirmwareVersion} lt "03.00"',
+            Format => 'int32u',
             Notes => 'Firmware versions 2.11 and earlier',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ9',
+                Start => '$dirStart + $val',
             },
         },
         {
-            Name => 'MenuSettingsZ9',
+            Name => 'MenuSettingsOffsetZ9v3',
             Notes => 'Firmware versions 3.0 and later',
-            Condition => '$$self{ShutterMode} eq 96',    # C30/C60/C120 jpgs only
-            Format => 'undef[1948]',
+            Format => 'int32u',
             SubDirectory => {
-                TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ9Firmware3',
+                TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ9v3',
+                Start => '$dirStart + $val',
             },
         },
     ],
-    ### 0x80c5 - OrientationInfo start (Z9 firmware 3.01)
-    0x80c4 => {
-        Name => 'OrientationHook',
-        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of OrientationInfo data
-        Hook => '$varSize = $$self{OrientationOffset} - 0x80c5',
-    },
-    0x80c5 => {
+);
+
+%Image::ExifTool::Nikon::OrientationInfo = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0 => {
         Name => 'RollAngle',
-        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
-		Format => 'fixed32u',
+        Format => 'fixed32u',
         Notes => 'converted to degrees of clockwise camera roll',
         ValueConv => '$val <= 180 ? $val : $val - 360',
         ValueConvInv => '$val >= 0 ? $val : $val + 360',
         PrintConv => 'sprintf("%.1f", $val)',
         PrintConvInv => '$val',
     },
-    0x80c9 => {
+    4 => {
         Name => 'PitchAngle',
-        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
         Format => 'fixed32u',
         Notes => 'converted to degrees of upward camera tilt',
         ValueConv => '$val <= 180 ? $val : $val - 360',
@@ -8525,9 +8262,8 @@ my %nikonFocalConversions = (
         PrintConv => 'sprintf("%.1f", $val)',
         PrintConvInv => '$val',
     },
-    0x80cd => {
+    8 => {
         Name => 'YawAngle',
-        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
         Format => 'fixed32u',
         Notes => 'the camera yaw angle when shooting in portrait orientation',
         ValueConv => '$val <= 180 ? $val : $val - 360',
@@ -8535,51 +8271,25 @@ my %nikonFocalConversions = (
         PrintConv => 'sprintf("%.1f", $val)',
         PrintConvInv => '$val',
     },
-    ### 0x8139 - Offset26 info start (Z9 firmware 3.01)
-    0x8149 => {
-        Name => 'MenuSettingsZ9Offset',
-        Condition => '$$self{ShutterMode} ne 96',    # C30/C60/C120 jpgs handled at 0x4410
-        Writable => 0,
-        Hidden => 1,
-        # offset to MenuSettingsZ9 is relative to start of Offset26 block
-        RawConv => '$$self{MenuSettingsZ9Offset} = ($val || 0x10000000) + $$self{MenuOffset}; undef', # (ignore if 0)
-    },
-    0x814a => {
-        Name => 'Hook5',
-        Condition => '$$self{ShutterMode} ne 96',    # C30/C60/C120 jpgs handled at 0x4410
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of menu settings data
-        Hook => '$varSize = $$self{MenuSettingsZ9Offset} - 0x8225',
-    },
-    0x8225 => [
-        {
-            Name => 'MenuSettingsZ9',
-            Condition => '$$self{ShutterMode} ne 96 and $$self{FirmwareVersion} lt "03.00"',    # C30/C60/C120 jpgs handled at 0x4410
-            Format => 'undef[1646]',
-            Notes => 'Firmware versions 2.11 and earlier',
-            SubDirectory => {
-                TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ9',
-            },
-        },
-        {
-            Name => 'MenuSettingsZ9',
-            Notes => 'Firmware versions 3.0 and later',
-            Condition => '$$self{ShutterMode} ne 96',    # C30/C60/C120 jpgs handled at 0x4410
-            Format => 'undef[1948]',
-            SubDirectory => {
-                TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ9Firmware3',
-            },
-        },
-    ],
-    # note: DecryptLen currently set to 0xec4b + 2196
 );
 
 %Image::ExifTool::Nikon::MenuSettingsZ7II  = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    DATAMEMBER => [ 176, 180, 328, 352, 858 ],
+    DATAMEMBER => [ 90, 176, 180, 328, 352, 858 ],
     NOTES => 'These tags are used by the Z5, Z6, Z7, Z6II, Z7II, Z50 and Zfc.',
+    #48 SelfTimer'   #0=> no 1=> yes    works for Z7II firmware 1.40, but not 1.30.  Follow-up required.
+    90 => {
+        Name => 'SingleFrame',    #0=> Single Frame 1=> one of the continuous modes
+        Hidden => 1,
+        RawConv => '$$self{SingleFrame} = $val',
+    },
+    92 => {
+        Name => 'ReleaseMode',
+        #ValueConv => '$$self{SelfTimer} == 1 ? 4 : $$self{SingleFrame} == 0 ? 5 : $val',    #map single frame and timer to a unique values for PrintConv.  Activate when SelfTimer tag is clarified for cameras other than Z7II fw 1.40
+        ValueConv => '$$self{SingleFrame} == 0 ? 5 : $val',    #map single frame to a unique value for PrintConv
+        PrintConv => \%releaseModeZ7,
+    },
     160 => {
         Name => 'IntervalDurationHours',
         Format => 'int32u',
@@ -8814,34 +8524,34 @@ my %nikonFocalConversions = (
         Name => 'Intervals',
         Format => 'int32u',
         RawConv => '$$self{IntervalShootingIntervals} = $val',
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
     },
     192 => {
         Name => 'ShotsPerInterval',
         Format => 'int32u',
         RawConv => '$$self{IntervalShootingShotsPerInterval} = $val',
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
     },
     #220 NEFCompression      0=> 'Lossless'   1=> 'High Efficiency*'   4=>  'High Efficientcy'
     232 => {
         Name => 'FocusShiftNumberShots',    #1-300
         RawConv => '$$self{FocusShiftNumberShots} = $val',
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
     },
     236 => {
         Name => 'FocusShiftStepWidth',     #1(Narrow) to 10 (Wide)
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
     },
     240 => {
         Name => 'FocusShiftInterval',
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
         PrintConv => '$val == 1? "1 Second" : sprintf("%.0f Seconds",$val)',
     },
     244 => {
         Name => 'FocusShiftExposureLock',
         Unknown => 1,
         PrintConv => \%offOn,
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
     },
     274 => { Name => 'PhotoShootingMenuBank', PrintConv => \%banksZ9 },
     276 => { Name => 'ExtendedMenuBanks',     PrintConv => \%offOn },    #single tag from both Photo & Video menus
@@ -8996,13 +8706,13 @@ my %nikonFocalConversions = (
     1565 => { Name => 'SetClockFromLocationData', PrintConv => \%offOn, Unknown => 1 },
     1572 => { Name => 'AirplaneMode',       PrintConv => \%offOn, Unknown => 1 },
     1573 => { Name => 'EmptySlotRelease',   PrintConv => { 0 => 'Disable Release', 1 => 'Enable Release' }, Unknown => 1 },
-    1608 => { Name => 'EnergySavingMode',   PrintConv =>\%offOn,  Unknown => 1 },
+    1608 => { Name => 'EnergySavingMode',   PrintConv => \%offOn, Unknown => 1 },
     1632 => { Name => 'RecordLocationData', PrintConv => \%offOn, Unknown => 1 },
     1636 => { Name => 'USBPowerDelivery',   PrintConv => \%offOn, Unknown => 1 },
     1645 => { Name => 'SensorShield',       PrintConv => { 0 => 'Stays Open', 1 => 'Closes' }, Unknown => 1 },
 );
 
-%Image::ExifTool::Nikon::MenuSettingsZ9Firmware3  = (   #starts at Offset26 + 248
+%Image::ExifTool::Nikon::MenuSettingsZ9v3  = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     DATAMEMBER => [ 154, 204, 208, 248, 444, 554 ],
@@ -9022,33 +8732,33 @@ my %nikonFocalConversions = (
         Name => 'Intervals',
         Format => 'int32u',
         RawConv => '$$self{IntervalShootingIntervals} = $val',
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
     },
     208 => {
         Name => 'ShotsPerInterval',
         Format => 'int32u',
         RawConv => '$$self{IntervalShootingShotsPerInterval} = $val',
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
     },
     248 => {
         Name => 'FocusShiftNumberShots',    #1-300
         RawConv => '$$self{FocusShiftNumberShots} = $val',
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
     },
     252 => {
         Name => 'FocusShiftStepWidth',     #1(Narrow) to 10 (Wide)
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
     },
     256 => {
         Name => 'FocusShiftInterval',
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
         PrintConv => '$val == 1? "1 Second" : sprintf("%.0f Seconds",$val)',
     },
     260 => {
         Name => 'FocusShiftExposureLock',
         Unknown => 1,
         PrintConv => \%offOn,
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
     },
     290 => { Name => 'PhotoShootingMenuBank', PrintConv => \%banksZ9 },
     292 => { Name => 'ExtendedMenuBanks',     PrintConv => \%offOn }, # single tag from both Photo & Video menus
@@ -9192,7 +8902,7 @@ my %nikonFocalConversions = (
     1613 => { Name => 'SetClockFromLocationData', PrintConv => \%offOn, Unknown => 1 },
     1620 => { Name => 'AirplaneMode',       PrintConv => \%offOn, Unknown => 1 },
     1621 => { Name => 'EmptySlotRelease',   PrintConv => { 0 => 'Disable Release', 1 => 'Enable Release' }, Unknown => 1 },
-    1656 => { Name => 'EnergySavingMode',   PrintConv =>\%offOn,  Unknown => 1 },
+    1656 => { Name => 'EnergySavingMode',   PrintConv => \%offOn, Unknown => 1 },
     1680 => { Name => 'RecordLocationData', PrintConv => \%offOn, Unknown => 1 },
     1684 => { Name => 'USBPowerDelivery',   PrintConv => \%offOn, Unknown => 1 },
     1693 => { Name => 'SensorShield',       PrintConv => { 0 => 'Stays Open', 1 => 'Closes' }, Unknown => 1 },
@@ -9200,7 +8910,7 @@ my %nikonFocalConversions = (
         Name => 'FocusShiftAutoReset',
         Unknown => 1,
         PrintConv => \%offOn,
-        Condition => '$$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120 
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
     },
     1810 => { #CSd4-a
         Name => 'PreReleaseBurstLength',
@@ -11258,8 +10968,8 @@ my %nikonFocalConversions = (
             Name => 'LensData0201',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData01',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
             },
         },
@@ -11268,8 +10978,8 @@ my %nikonFocalConversions = (
             Name => 'LensData0204',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData0204',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
             },
         },
@@ -11278,8 +10988,8 @@ my %nikonFocalConversions = (
             Name => 'LensData0400',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData0400',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
             },
         },
@@ -11288,8 +10998,8 @@ my %nikonFocalConversions = (
             Name => 'LensData0402',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData0402',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
             },
         },
@@ -11298,8 +11008,8 @@ my %nikonFocalConversions = (
             Name => 'LensData0403',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData0403',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
             },
         },
@@ -11308,8 +11018,8 @@ my %nikonFocalConversions = (
             Name => 'LensData0800',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensData0800',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
                 ByteOrder => 'LittleEndian',
                 # 0x5a0c - NikonMeteringMode for some Z6 ver1.00 samples (ref PH)
@@ -11319,8 +11029,8 @@ my %nikonFocalConversions = (
             Name => 'LensDataUnknown',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::LensDataUnknown',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
             },
         },
@@ -11835,37 +11545,54 @@ my @xlat = (
     0xc6,0x67,0x4a,0xf5,0xa5,0x12,0x65,0x7e,0xb0,0xdf,0xaf,0x4e,0xb3,0x61,0x7f,0x2f ]
 );
 
+my ($ci0, $cj0, $ck0, $decryptStart); # decryption parameters
+
 # Decrypt Nikon data block (ref 4)
-# Inputs: 0) reference to data block, 1) serial number key, 2) shutter count key
-#         4) optional start offset (default 0)
-#         5) optional number of bytes to decode (default to the end of the data)
+# Inputs: 0) reference to data block, 1) optional start offset (default 0)
+#         2) optional number of bytes to decode (default to the end of the data)
+#         3) optional serial number key (undef to continue previous decryption)
+#         4) optional shutter count key
 # Returns: data block with specified data decrypted
-sub Decrypt($$$;$$)
+# Notes: The first time this is called for a given encrypted data block the serial/count
+#        keys must be defined, and $start must be the offset for initialization of the
+#        decryption parameters (ie. the beginning of the encrypted data, which isn't
+#        necessarily inside the data block if $len is zero).  Subsequent calls for
+#        the same data block do not specify the serial/count keys, and may be used
+#        to decrypt data at any start point within the full data block.
+sub Decrypt($;$$$$)
 {
-    my ($dataPt, $serial, $count, $start, $len) = @_;
-    my ($i, $dat);
+    my ($dataPt, $start, $len, $serial, $count) = @_;
+    my ($ch, $cj, $ck);
 
     $start or $start = 0;
     my $maxLen = length($$dataPt) - $start;
     $len = $maxLen if not defined $len or $len > $maxLen;
+    if (defined $serial and defined $count) {
+        # initialize decryption parameters
+        my $key = 0;
+        $key ^= ($count >> ($_*8)) & 0xff foreach 0..3;
+        $ci0 = $xlat[0][$serial & 0xff];
+        $cj0 = $xlat[1][$key];
+        $ck0 = 0x60;
+        undef $decryptStart;
+    }
+    if (defined $decryptStart) {
+        # initialize decryption parameters for this start position
+        my $n = $start - $decryptStart;
+        $cj = ($cj0 + $ci0 * ($n * $ck0 + ($n * ($n - 1))/2)) & 0xff;
+        $ck = ($ck0 + $n) & 0xff;
+    } else {
+        $decryptStart = $start;
+        ($cj, $ck) = ($cj0, $ck0);
+    }
     return $$dataPt if $len <= 0;
-    my $key = 0;
-    for ($i=0; $i<4; ++$i) {
-        $key ^= ($count >> ($i*8)) & 0xff;
-    }
-    my $ci = $xlat[0][$serial & 0xff];
-    my $cj = $xlat[1][$key];
-    my $ck = 0x60;
-    my @data = unpack("x${start}C$len", $$dataPt);
-    foreach $dat (@data) {
-        $cj = ($cj + $ci * $ck) & 0xff;
+    my @data = unpack('C*', substr($$dataPt, $start, $len));
+    foreach $ch (@data) {
+        $cj = ($cj + $ci0 * $ck) & 0xff;
         $ck = ($ck + 1) & 0xff;
-        $dat ^= $cj;
+        $ch ^= $cj;
     }
-    my $end = $start + $len;
-    my $pre = $start ? substr($$dataPt, 0, $start) : '';
-    my $post = $end < length($$dataPt) ? substr($$dataPt, $end) : '';
-    return $pre . pack('C*',@data) . $post;
+    return substr($$dataPt, 0, $start) . pack('C*', @data) . substr($$dataPt, $start+$len);
 }
 
 #------------------------------------------------------------------------------
@@ -12002,6 +11729,110 @@ sub ProcessNikonMOV($$$)
 }
 
 #------------------------------------------------------------------------------
+# Prepare to process NIKON_OFFSETS directory and decrypt necessary data
+# Inputs: 0) ExifTool ref, 1) data ref, 2) tag table ref, 3) decrypt start,
+#         4) serial key, 5) count key, 6) decrypt mode (0=piecewise,
+#            1=continuous to end of last known section, 2=all)
+# Returns: end of decrypted data (or undef for piecewise decryption)
+sub PrepareNikonOffsets($$$$$$$)
+{
+    my ($et, $dataPt, $tagTablePtr, $start, $serial, $count, $decryptMode) = @_;
+    my $offset = $$tagTablePtr{VARS}{NIKON_OFFSETS};
+    my $unknown = $et->Options('Unknown');
+    my $dataLen = length $$dataPt;
+    return undef if $offset + 4 > $dataLen or $offset < $start;
+    my $dpos = $offset + 4; # decrypt the first 4 bytes
+    $$dataPt = Decrypt($dataPt, $start, $dpos - $start, $serial, $count);
+    my $numOffsets = Get32u($dataPt, $offset);
+    my $more = $numOffsets * 4;
+    return undef if $offset + 4 + $more > $dataLen;
+    $$dataPt = Decrypt($dataPt, $dpos, $more);
+    $dpos += $more;
+    my $doneAlready = $$tagTablePtr{VARS}{NIKON_OFFSETS_DONE};
+    $$tagTablePtr{VARS}{NIKON_OFFSETS_DONE} = 1;
+    my ($i, @offInfo);
+    for ($i=0; $i<$numOffsets; ++$i) {
+        my $pos = $offset + 4 + 4 * $i;
+        my $off = Get32u($dataPt, $pos) or next;
+        my $tagInfo = $$tagTablePtr{$pos};
+        if ($tagInfo) {
+            if (not $doneAlready and ref $tagInfo eq 'HASH' and
+                not $$tagInfo{Unknown} and $$tagInfo{SubDirectory})
+            {
+                # determine length of subdirectory up to end of last known tag
+                my $subdir = $$tagInfo{SubDirectory};
+                my $tbl = GetTagTable($$subdir{TagTable});
+                my ($last) = sort { $b <=> $a } TagTableKeys($tbl);
+                my $lastInfo = $$tbl{$last};
+                $lastInfo = $$lastInfo[0] if ref $lastInfo eq 'ARRAY';
+                # (can't pre-determine known length of offset-based subdirectories)
+                unless ($$lastInfo{SubDirectory}) {
+                    my $fmt = $$lastInfo{Format} || $$tbl{FORMAT} || 'int8u';
+                    my $nm = $fmt =~ s/\[(\d+)\]$// ? $1 : 1;
+                    my $sz = Image::ExifTool::FormatSize($fmt);
+                    $$subdir{KnownLen} = int($last) + $sz * $nm if $sz;
+                }
+            }
+        } elsif ($unknown > 1) {
+            # create new table for unknown information
+            my $tbl = sprintf('Image::ExifTool::Nikon::UnknownInfo%.2x', $pos);
+            no strict 'refs';
+            unless (%$tbl) {
+                %$tbl = ( %binaryDataAttrs, GROUPS => { 0=>'MakerNotes', 2=>'Unknown' } );
+                GetTagTable($tbl);
+            }
+            # add unknown entry in offset table for this subdirectory
+            $tagInfo = AddTagToTable($tagTablePtr, $pos, {
+                Name => sprintf('UnknownOffset%.2x', $pos),
+                Format => 'int32u',
+                SubDirectory => { TagTable => $tbl },
+                Unknown => 2,
+            });
+        }
+        if ($off) {
+            my $known = ($tagInfo and (ref $tagInfo ne 'HASH' or not $$tagInfo{Unknown})) ? 1 : 0;
+            push @offInfo, [ $pos, $off, $known ];
+        }
+    }
+    my $end;
+    # sort offsets in ascending order, and use the differences to calculate
+    # directory lengths and update the SubDirectory DirLen's accordingly
+    my @sorted = sort { $$a[1] <=> $$b[1] or $$a[0] <=> $$b[0] } @offInfo;
+    push @sorted, [ 0, length($$dataPt), 0 ];
+    for ($i=0; $i<@sorted-1; ++$i) {
+        my $pos = $sorted[$i][0];
+        my $len = $sorted[$i+1][1] - $sorted[$i][1];
+        # set DirLen in SubDirectory entry
+        my $tagInfo = $$tagTablePtr{$pos};
+        my $subdir;
+        if (ref $tagInfo eq 'HASH' and defined($subdir=$$tagInfo{SubDirectory})) {
+            $$tagInfo{SubDirectory}{DirLen} = $len;
+        }
+        if ($decryptMode) {
+            # keep track of end of last known directory
+            $end = $sorted[$i+1][1] if $sorted[$i][2];
+        } elsif ($tagInfo and (ref $tagInfo ne 'HASH' or not $$tagInfo{Unknown})) {
+            # decrypt data piecewise as necessary
+            my $n = $len;
+            if ($subdir and $$subdir{KnownLen}) {
+                $n = $$subdir{KnownLen};
+                if ($n > $len) {
+                    $et->Warn("Data too short for $$tagInfo{Name}",1);
+                    $n = $len;
+                }
+            }
+            $$dataPt = Decrypt($dataPt, $sorted[$i][1], $n);
+        }
+    }
+    if ($decryptMode) {
+        # decrypt the remaining required data
+        $end = length $$dataPt if $decryptMode == 2 or not $end or $end < $dpos;
+        $$dataPt = Decrypt($dataPt, $dpos, $end - $dpos);
+    }
+    return $end;
+}
+
+#------------------------------------------------------------------------------
 # Read/Write Nikon Encrypted data block
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success when reading, or new directory when writing (IsWriting set)
@@ -12025,15 +11856,17 @@ sub ProcessNikonEncrypted($$$)
         delete $$et{NikonCountKey};
         return 0;
     }
-    my $verbose = $$dirInfo{IsWriting} ? 0 : $et->Options('Verbose');
+    my $oldOrder = GetByteOrder();
+    my $isWriting = $$dirInfo{IsWriting};
+    my $verbose = $isWriting ? 0 : $et->Options('Verbose');
     my $tagInfo = $$dirInfo{TagInfo};
     my $dirStart = $$dirInfo{DirStart};
     my $data = substr(${$$dirInfo{DataPt}}, $dirStart, $$dirInfo{DirLen});
 
-    my ($start, $len, $more, $offset, $byteOrder, $recrypt, $newSerial, $newCount);
+    my ($start, $len, $offset, $byteOrder, $recrypt, $newSerial, $newCount, $didDecrypt);
 
     # must re-encrypt when writing if serial number or shutter count changes
-    if ($$dirInfo{IsWriting}) {
+    if ($isWriting) {
         if ($$et{NewNikonSerialKey}) {
             $newSerial = $$et{NewNikonSerialKey};
             $recrypt = 1;
@@ -12044,46 +11877,32 @@ sub ProcessNikonEncrypted($$$)
         }
     }
     if ($tagInfo and $$tagInfo{SubDirectory}) {
-        $start = $$tagInfo{SubDirectory}{DecryptStart};
+        my $subdir = $$tagInfo{SubDirectory};
+        $start = $$subdir{DecryptStart} || 0;
+        # DirOffset, if specified, is relative to start of encrypted data
+        $offset = defined $$subdir{DirOffset} ? $$subdir{DirOffset} + $start : 0;
+        $byteOrder = $$subdir{ByteOrder};
+        SetByteOrder($byteOrder) if $byteOrder;
+        # prepare for processing NIKON_OFFSETS directory if necessary
+        if ($$tagTablePtr{VARS} and $$tagTablePtr{VARS}{NIKON_OFFSETS}) {
+            my $unknown = $et->Options('Verbose') > 2 || $et->Options('Unknown') > 1;
+            # decrypt mode: 0=piecewise, 1=continuous to end of last known section, 2=all
+            my $dMode = $isWriting ? ($recrypt ? 2 : 1) : ($unknown ? 2 : 0);
+            $len = PrepareNikonOffsets($et, \$data, $tagTablePtr, $start, $serial, $count, $dMode);
+            $didDecrypt = 1;
         # may decrypt only part of the information to save time
-        if ($verbose < 3 and $et->Options('Unknown') < 2 and not $recrypt) {
-            $len = $$tagInfo{SubDirectory}{DecryptLen};
-            $more = $$tagInfo{SubDirectory}{DecryptMore};
+        } elsif ($verbose < 3 and $et->Options('Unknown') < 2 and not $recrypt) {
+            $len = $$subdir{DecryptLen};
         }
-        $offset = $$tagInfo{SubDirectory}{DirOffset};
-        $byteOrder = $$tagInfo{SubDirectory}{ByteOrder};
-    }
-    $start or $start = 0;
-    if (defined $offset) {
-        # offset, if specified, is relative to start of encrypted data
-        $offset += $start;
     } else {
-        $offset = 0;
+        $start = $offset = 0;
     }
     my $maxLen = length($data) - $start;
     # decrypt all the data unless DecryptLen is given
-    unless ($len and $len < $maxLen) {
-        $len = $maxLen;
-        undef $more;    # (can't decrypt more than this)
-    }
+    $len = $maxLen unless $len and $len < $maxLen;
 
-    $data = Decrypt(\$data, $serial, $count, $start, $len);
+    $data = Decrypt(\$data, $start, $len, $serial, $count) unless $didDecrypt;
 
-    # set appropriate byte ordering before evaluating DecryptMore
-    my $oldOrder = GetByteOrder();
-    SetByteOrder($byteOrder) if $byteOrder;
-
-    if ($more) {
-        #### eval DecryptMore ($data)
-        my $moreLen = eval $more;
-        $moreLen = $maxLen if $moreLen > $maxLen;
-        # re-decrypt with new length
-        if ($len < $moreLen) {
-            $len = $moreLen;
-            $data = substr(${$$dirInfo{DataPt}}, $dirStart, $$dirInfo{DirLen});
-            $data = Decrypt(\$data, $serial, $count, $start, $len);
-        }
-    }
     if ($verbose > 2) {
         $et->VerboseDir("Decrypted $$tagInfo{Name}");
         $et->VerboseDump(\$data,
@@ -12102,7 +11921,7 @@ sub ProcessNikonEncrypted($$$)
         Base     => $$dirInfo{Base},
     );
     my $rtnVal;
-    if ($$dirInfo{IsWriting}) {
+    if ($isWriting) {
         my $changed = $$et{CHANGED};
         $rtnVal = $et->WriteBinaryData(\%subdirInfo, $tagTablePtr);
         # must re-encrypt if serial number or shutter count changes
@@ -12117,7 +11936,8 @@ sub ProcessNikonEncrypted($$$)
             # add back any un-encrypted data at start
             $rtnVal = substr($data, 0, $offset) . $rtnVal if $offset;
             # re-encrypt data (symmetrical algorithm)
-            $rtnVal = Decrypt(\$rtnVal, $serial, $count, $start, $len);
+            $rtnVal = Decrypt(\$rtnVal, $start, $len, $serial, $count);
+            $et->VPrint(2, $$et{INDENT}, "  [recrypted $$tagInfo{Name}]");
         }
     } else {
         $rtnVal = $et->ProcessBinaryData(\%subdirInfo, $tagTablePtr);

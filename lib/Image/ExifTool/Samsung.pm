@@ -6,7 +6,7 @@
 # Revisions:    2010/03/01 - P. Harvey Created
 #
 # References:   1) Tae-Sun Park private communication
-#               2) http://www.cybercom.net/~dcoffin/dcraw/
+#               2) https://www.dechifro.org/dcraw/
 #               3) Pascal de Bruijn private communication (NX100)
 #               4) Jaroslav Stepanek via rt.cpan.org
 #               5) Nick Livchits private communication
@@ -1731,7 +1731,7 @@ under the same terms as Perl itself.
 
 =over 4
 
-=item L<http://www.cybercom.net/~dcoffin/dcraw/>
+=item L<https://en.wikipedia.org/wiki/Dcraw>
 
 =back
 

@@ -93,9 +93,9 @@ the site with a moderate load.  An alternate ExifTool homepage is available at
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.57.tar.gz/download">
-Download        Version 12.57</a> (4.9 MB) -
-<a href="history.html">Feb. 23, 2023</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.58.tar.gz/download">
+Download        Version 12.58</a> (5.0 MB) -
+<a href="history.html">Mar. 15, 2023</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -148,8 +148,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.57.zip/download">
-         exiftool-12.57.zip</a> (6.6 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.58.zip/download">
+         exiftool-12.58.zip</a> (6.6 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -167,7 +167,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.57.dmg</a> (3.2 MB)</b></td></tr></table></blockquote>
+         ExifTool-12.58.dmg</a> (3.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -531,6 +531,8 @@ of meta information in JPEG images:</p>
 <tr><td>APP3 - PreviewImage</td><td>R</td><td>Samsung/HP preview image (multi-segment)</td></tr>
 <tr><td>APP4 - <a href="TagNames/Scalado.html">Scalado</a></td><td>R</td><td>(presumably written by <a href="http://www.scalado.com/">Scalado</a> mobile software)</td></tr>
 <tr><td>APP4 - <a href="TagNames/DJI.html#ThermalParams">ThermalParams</a></td><td>R</td><td>Thermal parameters from DJI RJPEG file</td></tr>
+<tr><td>APP4 - <a href="TagNames/DJI.html#ThermalParams2">ThermalParams2</a></td><td>R</td><td>DJI thermal parameters type 2</td></tr>
+<tr><td>APP4 - <a href="TagNames/DJI.html#ThermalParams3">ThermalParams3</a></td><td>R</td><td>DJI thermal parameters type 3</td></tr>
 <tr><td>APP4 - <a href="TagNames/FlashPix.html">FPXR</a></td><td>R</td><td>FlashPix Ready in non-standard location (multi-segment)</td></tr>
 <tr><td>APP4 - <a href="TagNames/InfiRay.html#Factory">InfiRay Factory</a></td><td>R</td><td>InfiRay IJPEG Factory Temperature</td></tr>
 <tr><td>APP4 - PreviewImage</td><td>R</td><td>(continued from APP3)</td></tr>
@@ -549,6 +551,7 @@ of meta information in JPEG images:</p>
 <tr><td>APP7 - <a href="TagNames/Qualcomm.html">Qualcomm</a></td><td>R</td><td>Qualcomm Camera Attributes</td></tr>
 <tr><td>APP7 - Huawei</td><td>R</td><td>Huawei APP7 maker notes (extract with Unknown option)</td></tr>
 <tr><td>APP7 - <a href="TagNames/InfiRay.html#OpMode">InfiRay OpMode</a></td><td>R</td><td>InfiRay IJPEG Operation Mode</td></tr>
+<tr><td>APP6 - <a href="TagNames/DJI.html#Info">DJI Info</a></td><td>R</td><td>DJI debug information</td></tr>
 <tr><td>APP8 - <a href="TagNames/JPEG.html#SPIFF">SPIFF</a></td><td>R</td><td>Still Picture Interchange File Format</td></tr>
 <tr><td>APP8 - <a href="TagNames/InfiRay.html#Isothermal">InfiRay Isothermal</a></td><td>R</td><td>InfiRay IJPEG Isothermal</td></tr>
 <tr><td>APP9 - <a href="TagNames/JPEG.html#MediaJukebox">Media Jukebox</a></td><td>R</td><td>Media Jukebox XML information</td></tr>
@@ -751,8 +754,9 @@ information that can be very useful for debugging or when decoding new tags.</p>
 
 <p>A tag name is a "handle" that is used to refer to a specific piece of meta
 information.  Tag names are entered on the command line with a leading
-'<code>-</code>', in the order you want them displayed.  Case is not
-significant.  The tag name may be prefixed by a <a href="#groups">group name</a>
+'<code>-</code>', in the order you want them displayed.  Valid characters
+in a tag name are A-Z (case is not significant), 0-9, hyphen (-)
+and underline (_).  The tag name may be prefixed by a <a href="#groups">group name</a>
 (separated by a colon) to identify a specific information type or location.  A
 special tag name of "<code>All</code>" may be used to represent all tags, or all
 tags in a specified group. For example:</p>

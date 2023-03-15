@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '2.12';
+$VERSION = '2.13';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -96,7 +96,7 @@ my $debug;          # set to 1 to enable debugging code
     },
     {
         Name => 'MakerNoteDJI',
-        Condition => '$$self{Make} eq "DJI" and $$valPt !~ /^...\@AMBA/s',
+        Condition => '$$self{Make} eq "DJI" and $$valPt !~ /^(...\@AMBA|DJI)/s',
         SubDirectory => {
             TagTable => 'Image::ExifTool::DJI::Main',
             Start => '$valuePtr',

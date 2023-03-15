@@ -64,7 +64,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.19';
+$VERSION = '4.20';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -84,9 +84,8 @@ sub GetAFPointGrid($$;$);
         The Nikon LensID is constructed as a Composite tag from the raw hex values
         of 8 other tags: LensIDNumber, LensFStops, MinFocalLength, MaxFocalLength,
         MaxApertureAtMinFocal, MaxApertureAtMaxFocal, MCUVersion and LensType, in
-        that order.  Multiple lenses with the same LensID are differentiated by
-        decimal values in the list below.  The user-defined "Lenses" list may be
-        used to specify the lens for ExifTool to choose in these cases (see the
+        that order.  The user-defined "Lenses" list may be used to specify the lens
+        for ExifTool to choose in these cases (see the
         L<sample config file|../config.html> for details).
     },
     OTHER => \&LensIDConv,
@@ -879,6 +878,12 @@ my %bracketProgramZ9 = (
     5 => '5F',
     7 => '7F',
     9 => '9F',
+);
+
+my %dynamicAfAreaModesZ9 = (
+    0 => 'Small',
+    1 => 'Medium',
+    2 => 'Large',
 );
 
 my %flashControlModeZ7 = (
@@ -2067,7 +2072,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD40',
                 DecryptStart => 4,
-                DecryptLen => 748,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2077,7 +2081,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD80',
                 DecryptStart => 4,
-                DecryptLen => 765,
                 # (Capture NX can change the makernote byte order, but this stays big-endian)
                 ByteOrder => 'BigEndian',
             },
@@ -2088,7 +2091,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD90',
                 DecryptStart => 4,
-                DecryptLen => 0x398,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2098,7 +2100,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD3a',
                 DecryptStart => 4,
-                DecryptLen => 0x318,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2108,7 +2109,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD3b',
                 DecryptStart => 4,
-                DecryptLen => 0x321,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2118,7 +2118,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD3X',
                 DecryptStart => 4,
-                DecryptLen => 0x323,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2128,7 +2127,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD3S',
                 DecryptStart => 4,
-                DecryptLen => 0x2e9,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2139,7 +2137,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD300a',
                 DecryptStart => 4,
-                DecryptLen => 813,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2150,7 +2147,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD300b',
                 DecryptStart => 4,
-                DecryptLen => 825,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2161,7 +2157,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD300S',
                 DecryptStart => 4,
-                DecryptLen => 827,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2172,8 +2167,25 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD700',
                 DecryptStart => 4,
-                DecryptLen => 0x358,
                 ByteOrder => 'BigEndian',
+            },
+        },
+        { #28 (D780 firmware version 1.00)
+            Condition => '$$valPt =~ /^0245/',
+            Name => 'ShotInfoD780',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::ShotInfoD780',
+                DecryptStart => 4,
+                ByteOrder => 'LittleEndian',
+            },
+        },
+        { #28 (D7500 firmware version 1.00h)
+            Condition => '$$valPt =~ /^0242/',
+            Name => 'ShotInfoD7500',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::ShotInfoD7500',
+                DecryptStart => 4,
+                ByteOrder => 'LittleEndian',
             },
         },
         { #PH (D800 firmware 1.01a)
@@ -2182,7 +2194,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD800',
                 DecryptStart => 4,
-                DecryptLen => 0x720,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2213,7 +2224,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD5000',
                 DecryptStart => 4,
-                DecryptLen => 0x39a,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2223,7 +2233,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD5100',
                 DecryptStart => 4,
-                DecryptLen => 0x430,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2233,7 +2242,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD5200',
                 DecryptStart => 4,
-                DecryptLen => 0xd00,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2243,7 +2251,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD7000',
                 DecryptStart => 4,
-                DecryptLen => 0x448,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2253,7 +2260,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD4',
                 DecryptStart => 4,
-                DecryptLen => 0x789,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2263,7 +2269,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD4S',
                 DecryptStart => 4,
-                DecryptLen => 0x3697,
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -2291,7 +2296,6 @@ my %base64coord = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD610',
                 DecryptStart => 4,
-                DecryptLen => 0x7ff,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2322,7 +2326,6 @@ my %base64coord = (
                 ProcessProc => \&ProcessNikonEncrypted,
                 WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
-                DecryptLen => 0x251,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -2389,8 +2392,7 @@ my %base64coord = (
                 ProcessProc => \&ProcessNikonEncrypted,
                 WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 4,
-                DecryptLen => 22, # 284 bytes encrypted, but don't need to decrypt it all
-                DirOffset => 14,
+                DirOffset => 14, # (start of directory relative to DecryptStart)
             },
         },
         {   # (D3/D3X/D300/D700=0209,D300S=0212,D3S=0214)
@@ -2401,7 +2403,6 @@ my %base64coord = (
                 ProcessProc => \&ProcessNikonEncrypted,
                 WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 284,
-                DecryptLen => 18, # 324 bytes encrypted, but don't need to decrypt it all
                 DirOffset => 10,
             },
         },
@@ -2413,7 +2414,6 @@ my %base64coord = (
                 ProcessProc => \&ProcessNikonEncrypted,
                 WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 284,
-                DecryptLen => 14, # don't need to decrypt it all
                 DirOffset => 6,
             },
         },
@@ -2425,7 +2425,6 @@ my %base64coord = (
                 ProcessProc => \&ProcessNikonEncrypted,
                 WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 284,
-                DecryptLen => 24, # don't need to decrypt it all
                 DirOffset => 16,
             },
         },
@@ -2437,7 +2436,6 @@ my %base64coord = (
                 ProcessProc => \&ProcessNikonEncrypted,
                 WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 284,
-                DecryptLen => 18, # don't need to decrypt it all
                 DirOffset => 10,
             },
         },
@@ -2449,7 +2447,6 @@ my %base64coord = (
                 ProcessProc => \&ProcessNikonEncrypted,
                 WriteProc => \&ProcessNikonEncrypted,
                 DecryptStart => 284,
-                DecryptLen => 12, # don't need to decrypt it all
                 DirOffset => 4,
             },
         },
@@ -2461,7 +2458,6 @@ my %base64coord = (
                 ProcessProc => \&ProcessNikonEncrypted,
                 WriteProc => \&ProcessNikonEncrypted, # (necessary to recrypt this if serial number changed)
                 DecryptStart => 284,
-                DecryptLen => 10, # (arbitrary)
             },
         },
         {   # (1J1/1J2/1V1=0400, 1V2=0401, 1J3/1S1=0402, 1AW1=0403, Z6/Z7=0800)
@@ -2472,7 +2468,6 @@ my %base64coord = (
                 ProcessProc => \&ProcessNikonEncrypted,
                 WriteProc => \&ProcessNikonEncrypted, # (necessary to recrypt this if serial number changed)
                 DecryptStart => 4,
-                DecryptLen => 10, # (arbitrary)
             },
         },
         {
@@ -5267,7 +5262,7 @@ my %nikonFocalConversions = (
         Name => 'NewLensData',
         Format => 'undef[17]',
         RawConv => '$$self{NewLensData} = 1 unless $val =~ /^.\0+$/s; undef',
-        Hidden => 1,
+        #Hidden => 1,
     },
     0x30 => { #PH
         Name => 'LensID',
@@ -5312,7 +5307,7 @@ my %nikonFocalConversions = (
         Name => 'LensMountType',
         RawConv => '$$self{LensMountType} = $val',   #  0=> DSLR lens via FTZ style adapter;   1=> Native Z lens;
         Format => 'int8u',
-        Unknown => 1,
+        #Unknown => 1,
         PrintConv => {
              0 => 'F-mount Lens',
              1 => 'Z-mount Lens',
@@ -5375,7 +5370,7 @@ my %nikonFocalConversions = (
         Name => 'LensPositionAbsolute',    # <=0 at infinity.  Typical value at CFD might be 58000.   Only valid for Z-mount lenses.
         Condition => '$$self{NewLensData} and $$self{LensMountType} and $$self{LensMountType} == 1',
         Format => 'int32s',
-        Unknown => 1,
+        #Unknown => 1,
     },
 );
 
@@ -5498,8 +5493,6 @@ my %nikonFocalConversions = (
         Format => 'int32u',
         Priority => 0,
     },
-    # note: DecryptLen currently set to 0x251
-
     # 0x55c - int16u[2400] TiffMeteringImage2: 60x40 image (ShotInfoVersion 0800, ref JR)
     # 0x181c - int16u[1200] TiffMeteringImage?: 60x20 image for some NEF's (ShotInfoVersion 0800, ref JR)
     # 0x217c - int16u[2400] TiffMeteringImage3: 60x40 image (ShotInfoVersion 0800, ref JR)
@@ -5542,7 +5535,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD40',
         },
     },
-    # note: DecryptLen currently set to 748
 );
 
 # shot information for D80 (encrypted) - ref JD
@@ -5622,7 +5614,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD80',
         },
     },
-    # note: DecryptLen currently set to 765
 );
 
 # shot information for D90 (encrypted) - ref PH
@@ -5668,7 +5659,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD90',
         },
     },
-    # note: DecryptLen currently set to 0x398
 );
 
 # shot information for the D3 firmware 0.37 and 1.00 (encrypted) - ref PH
@@ -5732,7 +5722,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD3',
         },
     },
-    # note: DecryptLen currently set to 0x318
 );
 
 # shot information for the D3 firmware 1.10, 2.00 and 2.01 (encrypted) - ref PH
@@ -5827,7 +5816,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD3',
         },
     },
-    # note: DecryptLen currently set to 0x321
 );
 
 # shot information for the D3X firmware 1.00 (encrypted) - ref PH
@@ -5873,7 +5861,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD3',
         },
     },
-    # note: DecryptLen currently set to 0x323
 );
 
 # shot information for the D3S firmware 0.16 and 1.00 (encrypted) - ref PH
@@ -5928,7 +5915,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD3',
         },
     },
-    # note: DecryptLen currently set to 0x2e9
 );
 
 # shot information for the D300 firmware 1.00 (encrypted) - ref JD
@@ -6021,7 +6007,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD3',
         },
     },
-    # note: DecryptLen currently set to 813
 );
 
 # shot information for the D300 firmware 1.10 (encrypted) - ref PH
@@ -6172,7 +6157,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD3',
         },
     },
-    # note: DecryptLen currently set to 825
 );
 
 # shot information for the D300S firmware 1.00 (encrypted) - ref PH
@@ -6218,7 +6202,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD3',
         },
     },
-    # note: DecryptLen currently set to 827
 );
 
 # shot information for the D700 firmware 1.02f (encrypted) - ref 29
@@ -6264,7 +6247,39 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD700',
         },
     },
-    # note: DecryptLen currently set to 852
+);
+
+# shot information for the D780 - ref #28
+%Image::ExifTool::Nikon::ShotInfoD780 = (
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    VARS => { ID_LABEL => 'Index', NIKON_OFFSETS => 0x24 },
+    DATAMEMBER => [ 0x04 ],
+    IS_SUBDIR => [ 0x9c ],
+    WRITABLE => 1,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'These tags are extracted from encrypted data in images from the D780.',
+    0x00 => {
+        Name => 'ShotInfoVersion',
+        Format => 'string[4]',
+        Writable => 0,
+    },
+    0x04 => {
+        Name => 'FirmwareVersion',
+        DataMember => 'FirmwareVersion',
+        Format => 'string[5]',
+        Writable => 0,
+        RawConv => '$$self{FirmwareVersion} = $val',
+    },
+    0x9c => {
+        Name => 'OrientOffset',
+        Format => 'int32u',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::OrientationInfo',
+            Start => '$val',
+        },
+    },
 );
 
 # shot information for the D5000 firmware 1.00 (encrypted) - ref PH
@@ -6310,7 +6325,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD5000',
         },
     },
-    # note: DecryptLen currently set to 0x39a
 );
 
 # shot information for the D5100 firmware 1.00f (encrypted) - ref PH
@@ -6345,7 +6359,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD5100',
         },
     },
-    # note: DecryptLen currently set to 0x430
 );
 
 # shot information for the D5200 firmware 1.00 (encrypted) - ref PH
@@ -6383,7 +6396,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD5200',
         },
     },
-    # note: DecryptLen currently set to 0xd00
 );
 
 # shot information for the D7000 firmware 1.01d (encrypted) - ref 29
@@ -6427,6 +6439,39 @@ my %nikonFocalConversions = (
         Format => 'undef[48]',
         SubDirectory => {
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD7000',
+        },
+    },
+);
+
+# shot information for the D7500 - ref #28
+%Image::ExifTool::Nikon::ShotInfoD7500 = (
+    PROCESS_PROC => \&ProcessNikonEncrypted,
+    WRITE_PROC => \&ProcessNikonEncrypted,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    VARS => { ID_LABEL => 'Index', NIKON_OFFSETS => 0x0c },
+    DATAMEMBER => [ 0x04 ],
+    IS_SUBDIR => [ 0xa0 ],
+    WRITABLE => 1,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'These tags are extracted from encrypted data in images from the D7500.',
+    0x00 => {
+        Name => 'ShotInfoVersion',
+        Format => 'string[4]',
+        Writable => 0,
+    },
+    0x04 => {
+        Name => 'FirmwareVersion',
+        DataMember => 'FirmwareVersion',
+        Format => 'string[5]',
+        Writable => 0,
+        RawConv => '$$self{FirmwareVersion} = $val',
+    },
+    0xa0 => {
+        Name => 'OrientOffset',
+        Format => 'int32u',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::OrientationInfo',
+            Start => '$val',
         },
     },
 );
@@ -6549,7 +6594,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD800',
         },
     },
-    # note: DecryptLen currently set to 0x720
 );
 
 # shot information for the D5 firmware 1.10a and D500 firmware 1.01 (encrypted) - ref 28
@@ -7009,7 +7053,6 @@ my %nikonFocalConversions = (
             3 => 'Highlight'
         },
     },
-    # note: DecryptLen currently set to OtherOffset + 0x2ea5 - 0x2c90
 );
 
 # shot information for the D6 firmware 1.00 (encrypted) - ref 28
@@ -7244,7 +7287,6 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD610',
         },
     },
-    # note: DecryptLen currently set to 0x7ff
 );
 
 # shot information for the D810 firmware 1.00(PH)/1.01 (encrypted) - ref 28
@@ -7678,7 +7720,6 @@ my %nikonFocalConversions = (
         Format => 'undef[56]',
         SubDirectory => { TagTable => 'Image::ExifTool::NikonCustom::SettingsD4' },
     },
-    # note: DecryptLen currently set to 0x789
 );
 
 # shot information for the D4S firmware 1.01a (ref 28, encrypted)
@@ -7970,7 +8011,6 @@ my %nikonFocalConversions = (
             3 => 'Rotate 180',
         },
     },
-    # note: DecryptLen currently set to 0x3697
 );
 
 # shot information for the Z7II firmware 1.00 (encrypted) - ref 28
@@ -8115,7 +8155,7 @@ my %nikonFocalConversions = (
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index', NIKON_OFFSETS => 0x24 },
     DATAMEMBER => [ 0x04 ],
-    IS_SUBDIR => [ 0x30, 0x84, 0x8c ],
+    IS_SUBDIR => [ 0x30, 0x58, 0x84, 0x8c ],
     WRITABLE => 1,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'These tags are extracted from encrypted data in images from the Z9.',
@@ -8158,6 +8198,15 @@ my %nikonFocalConversions = (
             Start => '$val',
         },
     },
+    0x58 => {
+        Name => 'Offset13',   #offset13 - length x'8f80 (Z9 firmware 3.01 NEF), using currently for a few foucs related tags.  Might be premature to give the offset a more meaningful name at this point.
+        Condition => '$$self{FirmwareVersion} and $$self{FirmwareVersion} ge "03.01"',
+        Format => 'int32u',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::Offset13InfoZ9',
+            Start => '$val',
+        },
+    },
     0x84 => {
         Name => 'OrientOffset',
         Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
@@ -8177,6 +8226,7 @@ my %nikonFocalConversions = (
     },
 );
 
+# ref 28
 %Image::ExifTool::Nikon::SeqInfoZ9 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -8210,6 +8260,151 @@ my %nikonFocalConversions = (
         Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
         Format => 'int16u',
         Hidden => 1,
+    },
+);
+
+# ref 28
+%Image::ExifTool::Nikon::Offset13InfoZ9 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0x0bea, 0x0beb ],
+    0x0be8 => {
+        Name => 'AFAreaInitialXPosition',        #stored as a representation of the horizontal position of the center of the portion of the focus box positioned top left when in Wide Area (L/S/C1/C2) focus modes (before subject detection potentially refines focus)
+        Condition => '$$self{ShutterMode} ne 96 and $$self{AFAreaMode} < 2 ',    #not valid for C30/C60/C120 or for Area Modes 1:1 and 16:19
+        Format => 'int8s',
+        PrintConv => q{
+            #in FX mode and Single-point, the 29 horizontal focus points are spaced 259 pixels apart starting at pixel 502 and ending at 7754.  Spacing is the same for Wide(L/C1/C2) with different start points.
+            #in FX mode and Dynamic(L), the 27 horizontal focus points are spaced 259 pixels apart starting at pixel 761 and ending at 7495
+            #in FX mode and Dynamic(M), the 29 horizontal focus points are spaced 259 pixels apart starting at pixel 502 and ending at 7754
+            #in DX mode and Single-point, the 19 horizontal focus points are spaced 388 pixels apart starting at pixel 636 and ending at 7620.  [These correspond to FX positions and match the corresponding values in AFAreaMode tag AFAreaXPosition].
+            #in DX mode and Wide(S), the 17 horizontal focus points are spaced 393 pixels apart starting at pixel 591 and ending at 7272.
+            #in DX mode and Dynamic(L), the 17 horizontal focus points are spaced 388 pixels apart starting at pixel 1024 and ending at 7232
+            #in DX mode and Dynamic(M), the 19 horizontal focus points are spaced 388 pixels apart starting at pixel 636 and ending at 7620
+
+            my $areaMode = $$self{VALUE}{PhotoShootingMenuBankImageArea};
+            my $afAreaMode = $$self{VALUE}{AFAreaMode};
+            my $dynamicAFAreaSize = $$self{VALUE}{DynamicAFAreaSize};
+
+            my $FX = 0;
+            my $DX = 1;
+
+            my $Single = 1;
+            my $Dynamic = 2;
+            my $WideS = 3;
+            my $WideL = 4;
+            my $ThreeD = 5;
+            my $Auto = 6;
+            my $WideC1 = 12;
+
+            my $DynamicS = 0;
+            my $DynamicM = 1;
+            my $DynamicL = 2;
+
+            my $start = 502;                                                                                                              #FX - all flavors
+            $start = 636 if $areaMode == $DX and ($afAreaMode == $Dynamic or $afAreaMode == $WideL or $afAreaMode == $ThreeD or $afAreaMode == $Auto  or $afAreaMode >= $WideC1);           #DX Wide(L/C1/C2) + Dynamic (L/M/S) + 3D + Auto
+            $start = 591 if $areaMode == $DX and  $afAreaMode == $WideS ;                                                                  #DX Wide(S)
+
+            my $increment = 259;                                                                                                        #FX - all flavors
+            $increment = 388 if $areaMode == $DX and ($afAreaMode == $Dynamic or $afAreaMode == $WideL or $afAreaMode == $ThreeD or $afAreaMode == $Auto  or $afAreaMode >= $WideC1);       #DX Wide(L/C1/C2) + Dynamic (L/M/S) + 3D  + Auto
+            $increment = 393 if $areaMode == $DX and  $afAreaMode == $WideS ;                                                              #DX Wide(S)
+
+            my $divisor = 4;
+            $divisor = 6 if $areaMode == $DX  ;
+
+            my $offsetVal = 0;
+            $offsetVal = 12 if $areaMode == $FX and $afAreaMode == $Dynamic ;                      #FX Dynamic (L/M) - force positive values so perl rounding toward zero isn't an issue
+            $offsetVal = 18 if $areaMode == $DX and $afAreaMode == $Dynamic ;                      #DX Dynamic (L/M)
+
+            my $offsetSum = -1;
+            $offsetSum = -4  if $afAreaMode == $Dynamic ;                  # Dynamic (L/M)
+
+            my $ncol = $$self{AFAreaInitialWidth};
+            $ncol = int($ncol * 2 / 3)    if  $areaMode == $DX ;      #DX
+
+            #some sample mappings:
+            #FX Wide(S/L/C1/C2) [6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 49, 53, 57, 61, 65, 69, 73, 77, 81, 85, 89, 93, 97, 101, 105, 109, 113, 117]  to 502, 761, 1020, 1279, 1538, 1797, 2056, 2315, 2574, 2833, 3092, 3351, 3610, 3869, 4128, 4387, 4646, 4905, 5164, 5423, 5682, 5941, 6200, 6459, 6718, 6977, 7236, 7495, 7754]
+            #DX Wide(L/C1/C2) map for Wide(L)/C1/C2 [6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 67, 73, 79, 85, 91, 97, 103, 109, 115] to [636, 1024, 1412, 1800, 2188, 2576, 2964, 3352, 3740, 4128, 4516, 4904, 5292, 5680, 6068, 6456, 6844, 7232, 7620]
+            #DX Wide(S) for Wide(S) [6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 67, 73, 79, 85, 91, 97, 103] to [984, 1377, 1770, 2163, 2556, 2949, 3342, 3735, 4128, 4521, 4914, 5307, 5700, 6093, 6486, 6879, 7272]
+            #FX Dynamic (L) map [-9, -5, -1, 2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 49, 53, 57, 61, 65, 69, 73, 77, 81, 85, 89, 93] to [761, 1020, 1279, 1538, 1797, 2056, 2315, 2574, 2833, 3092, 3351, 3610, 3869, 4128, 4387, 4646, 4905, 5164, 5423, 5682, 5941, 6200, 6459, 6718, 6977, 7236, 7495]
+
+            return $start + $increment * (int(($val + $offsetVal) / $divisor)  + int($ncol / 2) + $offsetSum) ; #do not use simple int() becuase it rounds negative fractions toward zero resulting in duplicate values - instead use the 10xdivisor to force positive values
+        },
+    },
+    0x0be9 => {
+        Name =>'AFAreaInitialYPosition',    #stored as a representation of the vertical position of the center of the portion of the focus box positioned top left when in Wide Area (L/S/C1/C2) focus modes (before subject detection potentially refines focus)
+        Condition => '$$self{ShutterMode} ne 96 and $$self{AFAreaMode} < 2',    #not valid for C30/C60/C120 or for Area Modes 1:1 and 16:19
+        Format => 'int8s',
+        PrintConv => q{
+            #in FX mode and Single-point, the 17 vertical focus points are spaced 291 pixels apart starting at pixel 424 and ending at 5080.  Spacing is the same for Wide(L/C1/C2)
+            #in FX mode and Dynamic(L),  the 15 vertical focus points are spaced 291 pixels apart starting at pixel 715 and ending at 4789
+            #in FX mode and Dynamic(M), the 17 vertical l focus points are spaced 291 pixels apart starting at pixel 424 and ending at 5080
+            #in DX mode and Single-point, the 11 vertical focus points are spaced 436 pixels apart starting at pixel 572 and ending at 4932.  [These correspond to FX positions and match the corresponding values in AFAreaMode tag AFAreaYPosition].
+            #in DX Mode and Wide(S) the 9 vertical focus points are spaced 442 pixels apart starting at pixel 542 and ending at 4520
+            #in DX mode and Dynamic(L), the 9 vertical focus points are spaced 436 pixels apart starting at pixel 1008 and ending at 4496
+
+            my $areaMode = $$self{VALUE}{PhotoShootingMenuBankImageArea};
+            my $afAreaMode = $$self{VALUE}{AFAreaMode};
+            my $dynamicAFAreaSize = $$self{VALUE}{DynamicAFAreaSize};
+
+            my $FX = 0;
+            my $DX = 1;
+
+            my $Single = 1;
+            my $Dynamic = 2;
+            my $WideS = 3;
+            my $WideL = 4;
+            my $ThreeD = 5;
+            my $Auto = 6;
+            my $WideC1 = 12;
+
+            my $DynamicS = 0;
+            my $DynamicM = 1;
+            my $DynamicL = 2;
+
+            my $start = 424;                                                                                                              #FX - all flavors
+            $start = 572 if $areaMode == $DX and ($afAreaMode == $Dynamic or $afAreaMode == $WideL or $afAreaMode == $ThreeD or $afAreaMode == $Auto or $afAreaMode >= $WideC1);           #DX Wide(L/C1/C2) +  Dynamic(L/M/S)  + 3D + Auto
+            $start = 542 if $areaMode == $DX and  $afAreaMode == 3 ;                                                                      #DX Wide(S)
+
+            my $increment = 291;                                                                                                        #FX - all flavors
+            $increment = 436 if $areaMode == $DX and ($afAreaMode == $Dynamic or $afAreaMode == $WideL or $afAreaMode == $ThreeD or $afAreaMode == $Auto or $afAreaMode >= $WideC1);       #DX Wide(L/C1/C2) + Dynamic (L/M/S) +3D + Auto
+            $increment = 442 if $areaMode == $DX and  $afAreaMode == 3 ;                                                                  #DX Wide(S)
+
+            my $divisor = 7;
+            $divisor = 10 if $areaMode == $DX ;                                                  #DX
+
+            my $offsetVal = -1;
+            $offsetVal = 39 if $afAreaMode == $Dynamic and ( $dynamicAFAreaSize == $DynamicL ) ;      #Dynamic (L)  - force positive values so perl rounding toward zero isn't an issue
+            $offsetVal = 40 if $afAreaMode == $Dynamic and $dynamicAFAreaSize == $DynamicM ;      #Dynamic (M)
+            $offsetVal = 40 if $areaMode == $FX and (($afAreaMode == $Dynamic and $dynamicAFAreaSize == $DynamicS) or $afAreaMode == $ThreeD) ;      #FX Dynamic (S) or 3D
+            $offsetVal = 38 if $areaMode == $DX and ($afAreaMode == $Dynamic and $dynamicAFAreaSize == $DynamicS ) ;        #DX Dynamic (S)or 3D
+
+            my $offsetSum = 0;
+            $offsetSum = -6 if  $areaMode == $FX and ($afAreaMode == $Dynamic or $afAreaMode == $ThreeD);                     #FX Dynamic (L/M/S) or 3D
+            $offsetSum = -4 if  $areaMode == $DX and ($afAreaMode == $Dynamic or $afAreaMode == $ThreeD );                     #DX Dynamic (L/M/S) or 3D
+
+            my $nrow = $$self{AFAreaInitialHeight};
+            $nrow = int($nrow * 2 / 3)    if  $areaMode == $DX;                                      #DX
+
+            #some sample mappings:
+            #FX Wide(S/L/C1/C2) map [7, 13, 20, 27, 33, 40, 47, 53, 60, 67, 74, 80, 87, 94, 100, 107, 114] to [424, 715, 1006, 1297, 1588, 1879, 2170, 2461, 2752, 3043, 3334, 3625, 3916, 4207, 4498, 4789, 5080]
+            #DX Wide(L/C1/C2) map [7, 17, 28, 38, 48, 58, 69, 79, 89, 100, 110] to [572, 1008, 1444, 1880, 2316, 2752, 3188, 3624, 4060, 4496, 4932]
+            #DX Wide(S) map for Wide(S) [7, 17, 28, 38, 48, 58, 69, 79, 89]  to [984, 1426, 1868, 2310, 2752, 3194, 3636, 4078, 4520]
+            #FX Dynamic (L) map [-19, -13, -6, 0, 7, 13, 20, 27, 33, 40, 47, 53, 60, 67, 74] to [715, 1006, 1297, 1588, 1879, 2170, 2461, 2752, 3043, 3334, 3625, 3916, 4207, 4498, 4789]
+
+            return $start + $increment * (int(($val + $offsetVal) / $divisor)  + int($nrow / 2) + $offsetSum) ;;
+        },
+    },
+    0x0bea => {
+        Name => 'AFAreaInitialWidth',
+        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
+        ValueConv => '$$self{VALUE}{PhotoShootingMenuBankImageArea} eq 0 ? $val : int($val * 2 / 3)',   #DX mode requires scaling down  TODO: add support ImageAreas 1:1 and 16:9
+        RawConv => '$$self{AFAreaInitialWidth} = 1 + int ($val / 4)',    #convert from [3, 11, 19, 35, 51, 75] to [1, 3, 5, 9 13, 19] to match camera options for C1/C2 focus modes .. input/output of 11/3 is for Wide(S)
+    },
+    0x0beb => {
+        Name => 'AFAreaInitialHeight',
+        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
+        ValueConv => '$$self{VALUE}{PhotoShootingMenuBankImageArea} eq 0 ? $val : int($val * 2 / 3)',   #DX mode requires scaling down  TODO: add support ImageAreas 1:1 and 16:9
+        RawConv => '$$self{AFAreaInitialHeight} = 1 + int ($val / 7) ',    #convert from [6, 20, 33, 46, 73] to [1, 3, 5, 7, 11] to match camera options for C1/C2 focus modes  .. input/output of 33/5 is for Wide(L)
     },
 );
 
@@ -8510,7 +8705,7 @@ my %nikonFocalConversions = (
 %Image::ExifTool::Nikon::MenuSettingsZ9  = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    DATAMEMBER => [ 140, 188, 192, 232, 424, 534 ],
+    DATAMEMBER => [ 140, 188, 192, 232, 424, 534, 576 ],
     IS_SUBDIR => [ 799 ],
     NOTES => 'These tags are used by the Z9.',
     #90  ISO
@@ -8650,6 +8845,12 @@ my %nikonFocalConversions = (
     556 => { Name => 'SecondarySlotFunction', PrintConv => \%secondarySlotFunctionZ9 },
     572 => { Name => 'DXCropAlert', PrintConv => \%offOn },
     574 => { Name => 'SubjectDetection', PrintConv => \%subjectDetectionZ9 },
+    576 => {
+        Name => 'DynamicAFAreaSize',
+        Condition => '$$self{AFAraMode} = 2',
+        RawConv => '$$self{DynamicAFAreaSize} = $val',
+        PrintConv => \%dynamicAfAreaModesZ9,
+    },
     604 => {
         Name => 'MovieImageArea',
         Unknown => 1,
@@ -8715,7 +8916,7 @@ my %nikonFocalConversions = (
 %Image::ExifTool::Nikon::MenuSettingsZ9v3  = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    DATAMEMBER => [ 154, 204, 208, 248, 444, 554 ],
+    DATAMEMBER => [ 154, 204, 208, 248, 444, 554, 596 ],
     IS_SUBDIR => [ 847 ],
     NOTES => 'These tags are used by the Z9 firmware 3.00.',
     72 => {
@@ -8844,6 +9045,12 @@ my %nikonFocalConversions = (
     576 => { Name => 'SecondarySlotFunction', PrintConv => \%secondarySlotFunctionZ9 },
     592 => { Name => 'DXCropAlert',           PrintConv => \%offOn },
     594 => { Name => 'SubjectDetection',      PrintConv => \%subjectDetectionZ9 },
+    596 => {
+        Name => 'DynamicAFAreaSize',
+        Condition => '$$self{AFAraMode} = 2',
+        RawConv => '$$self{DynamicAFAreaSize} = $val',
+        PrintConv => \%dynamicAfAreaModesZ9,
+    },
     636 => { Name => 'HighFrequencyFlickerReductionShooting', PrintConv => \%offOn, Unknown => 1 }, # new with firmware 3.0
     646 => {
         Name => 'MovieImageArea',
@@ -11222,6 +11429,7 @@ my %nikonFocalConversions = (
         # construct lens ID string as per ref 11
         ValueConv => 'sprintf("%.2X"." %.2X"x7, @raw)',
         PrintConv => \%nikonLensIDs,
+        PrintInt => 1,
     },
     AutoFocus => {
         Require => {
@@ -11729,50 +11937,112 @@ sub ProcessNikonMOV($$$)
 }
 
 #------------------------------------------------------------------------------
+# Get offset of end-of-data for a tag
+# Inputs: 0) tag table ref, 1) tag ID, 2) true to not calculate end for a SubDirectory
+# Returns: offset of tag value end, undef if it can't be determined
+sub GetTagEnd($$;$)
+{
+    my ($tagTablePtr, $tagID, $ignoreSubdir) = @_;
+    my $tagInfo = $$tagTablePtr{$tagID};
+    $tagInfo = $$tagInfo[0] if ref $tagInfo eq 'ARRAY';
+    # (can't pre-determine position of offset-based subdirectories)
+    return undef if $ignoreSubdir and $$tagInfo{SubDirectory};
+    my $fmt = $$tagInfo{Format} || $$tagTablePtr{FORMAT} || 'int8u';
+    my $nm = $fmt =~ s/\[(\d+)\]$// ? $1 : 1;
+    my $sz = Image::ExifTool::FormatSize($fmt) or return undef;
+    return int($tagID) + $sz * $nm;
+}
+
+#------------------------------------------------------------------------------
+# Initialize SubDirectory KnownStart/KnownEnd limits of known tags (used in decryption)
+# Inputs: 0) tagInfo ref containing this SubDirectory, 2) tag table ref for encrypted subdir
+# Notes: KnownStart/KnownEnd are relative to the SubDirectory Start.  If KnownStart/KnownEnd
+#        aren't set then the entire data is decrypted, so all of this effort is just for speed.
+sub InitEncryptedSubdir($$)
+{
+    my ($tagInfo, $tagTablePtr) = @_;
+#
+# for encrypted NIKON_OFFSETS tables we loop through all SubDirectory tags in this table
+# and set the KnownEnd for each of these according to the last tag in the child tables
+#
+    my $vars = $$tagTablePtr{VARS};
+    $vars or $vars = $$tagTablePtr{VARS} = { };
+    if ($$vars{NIKON_OFFSETS} and not $$vars{NIKON_INITIALIZED}) {
+        $$vars{NIKON_INITIALIZED} = 1;
+        my $tagID;
+        foreach $tagID (TagTableKeys($tagTablePtr)) {
+            my $tagInfo = $$tagTablePtr{$tagID};
+            next unless ref $tagInfo eq 'HASH';
+            my $subdir = $$tagInfo{SubDirectory} or next;
+            my $tbl = GetTagTable($$subdir{TagTable});
+            my ($last) = sort { $b <=> $a } TagTableKeys($tbl); # (reverse sort)
+            $$subdir{KnownEnd} = GetTagEnd($tbl, $last, 1);
+        }
+    }
+#
+# for other encrypted Nikon tables we set the KnownStart/KnownEnd entries in the
+# SubDirectory of the parent tag
+#
+    unless ($$tagInfo{NikonInitialized}) {
+        $$tagInfo{NikonInitialized} = 1;
+        my $subdir = $$tagInfo{SubDirectory};
+        my $start = $$subdir{DecryptStart} || 0;
+        my $off = $$subdir{DirOffset};
+        my @tagIDs = sort { $a <=> $b } TagTableKeys($tagTablePtr);
+        if (defined $off) {
+            $off += $start; # (DirOffset, if specified, is relative to DecryptStart)
+        } else {
+            # ignore tags that come before the start of encryption
+            shift @tagIDs while @tagIDs and $tagIDs[0] < $start;
+            $off = 0;
+        }
+        if (@tagIDs) {
+            my ($first, $last) = @tagIDs[0,-1];
+            my $lastInfo = $$tagTablePtr{$last};
+            $lastInfo = $$lastInfo[0] if ref $lastInfo eq 'ARRAY';
+            $$subdir{KnownStart} = int($first) + $off if $first + $off > $start;
+            $$subdir{KnownEnd} = GetTagEnd($tagTablePtr, $last);
+            if (defined $$subdir{KnownEnd}) {
+                $$subdir{KnownEnd} += $off;
+            } else {
+                warn "Internal error setting KnownEnd for $$tagTablePtr{SHORT_NAME}\n";
+            }
+        } else {
+            $$subdir{KnownStart} = $$subdir{KnownEnd} = $start;
+        }
+    }
+}
+
+#------------------------------------------------------------------------------
 # Prepare to process NIKON_OFFSETS directory and decrypt necessary data
 # Inputs: 0) ExifTool ref, 1) data ref, 2) tag table ref, 3) decrypt start,
-#         4) serial key, 5) count key, 6) decrypt mode (0=piecewise,
-#            1=continuous to end of last known section, 2=all)
+#         4) decrypt mode (0=piecewise, 1=continuous to end of last known section, 2=all)
 # Returns: end of decrypted data (or undef for piecewise decryption)
-sub PrepareNikonOffsets($$$$$$$)
+sub PrepareNikonOffsets($$$$$)
 {
-    my ($et, $dataPt, $tagTablePtr, $start, $serial, $count, $decryptMode) = @_;
+    my ($et, $dataPt, $tagTablePtr, $start, $decryptMode) = @_;
     my $offset = $$tagTablePtr{VARS}{NIKON_OFFSETS};
-    my $unknown = $et->Options('Unknown');
     my $dataLen = length $$dataPt;
     return undef if $offset + 4 > $dataLen or $offset < $start;
-    my $dpos = $offset + 4; # decrypt the first 4 bytes
+    my $serial = $$et{NikonSerialKey};
+    my $count = $$et{NikonCountKey};
+    my $dpos = $offset + 4;     # decrypt up to NumberOffsets
     $$dataPt = Decrypt($dataPt, $start, $dpos - $start, $serial, $count);
     my $numOffsets = Get32u($dataPt, $offset);
-    my $more = $numOffsets * 4;
+    my $more = $numOffsets * 4; # more bytes to decrypt entire offsets table
     return undef if $offset + 4 + $more > $dataLen;
     $$dataPt = Decrypt($dataPt, $dpos, $more);
     $dpos += $more;
-    my $doneAlready = $$tagTablePtr{VARS}{NIKON_OFFSETS_DONE};
-    $$tagTablePtr{VARS}{NIKON_OFFSETS_DONE} = 1;
-    my ($i, @offInfo);
+    my $unknown = $et->Options('Unknown');
+    my ($i, @offInfo, $end);
+    # extract non-zero offsets and create unknown subdirectories if Unknown > 1
     for ($i=0; $i<$numOffsets; ++$i) {
         my $pos = $offset + 4 + 4 * $i;
         my $off = Get32u($dataPt, $pos) or next;
         my $tagInfo = $$tagTablePtr{$pos};
+        my $known = 0;
         if ($tagInfo) {
-            if (not $doneAlready and ref $tagInfo eq 'HASH' and
-                not $$tagInfo{Unknown} and $$tagInfo{SubDirectory})
-            {
-                # determine length of subdirectory up to end of last known tag
-                my $subdir = $$tagInfo{SubDirectory};
-                my $tbl = GetTagTable($$subdir{TagTable});
-                my ($last) = sort { $b <=> $a } TagTableKeys($tbl);
-                my $lastInfo = $$tbl{$last};
-                $lastInfo = $$lastInfo[0] if ref $lastInfo eq 'ARRAY';
-                # (can't pre-determine known length of offset-based subdirectories)
-                unless ($$lastInfo{SubDirectory}) {
-                    my $fmt = $$lastInfo{Format} || $$tbl{FORMAT} || 'int8u';
-                    my $nm = $fmt =~ s/\[(\d+)\]$// ? $1 : 1;
-                    my $sz = Image::ExifTool::FormatSize($fmt);
-                    $$subdir{KnownLen} = int($last) + $sz * $nm if $sz;
-                }
-            }
+            $known = 1 if ref $tagInfo ne 'HASH' or not $$tagInfo{Unknown};
         } elsif ($unknown > 1) {
             # create new table for unknown information
             my $tbl = sprintf('Image::ExifTool::Nikon::UnknownInfo%.2x', $pos);
@@ -11789,12 +12059,8 @@ sub PrepareNikonOffsets($$$$$$$)
                 Unknown => 2,
             });
         }
-        if ($off) {
-            my $known = ($tagInfo and (ref $tagInfo ne 'HASH' or not $$tagInfo{Unknown})) ? 1 : 0;
-            push @offInfo, [ $pos, $off, $known ];
-        }
+        push @offInfo, [ $pos, $off, $known ];  # save parameters for non-zero offsets
     }
-    my $end;
     # sort offsets in ascending order, and use the differences to calculate
     # directory lengths and update the SubDirectory DirLen's accordingly
     my @sorted = sort { $$a[1] <=> $$b[1] or $$a[0] <=> $$b[0] } @offInfo;
@@ -11805,17 +12071,15 @@ sub PrepareNikonOffsets($$$$$$$)
         # set DirLen in SubDirectory entry
         my $tagInfo = $$tagTablePtr{$pos};
         my $subdir;
-        if (ref $tagInfo eq 'HASH' and defined($subdir=$$tagInfo{SubDirectory})) {
-            $$tagInfo{SubDirectory}{DirLen} = $len;
-        }
+        $$subdir{DirLen} = $len if ref $tagInfo eq 'HASH' and defined($subdir=$$tagInfo{SubDirectory});
         if ($decryptMode) {
             # keep track of end of last known directory
             $end = $sorted[$i+1][1] if $sorted[$i][2];
         } elsif ($tagInfo and (ref $tagInfo ne 'HASH' or not $$tagInfo{Unknown})) {
             # decrypt data piecewise as necessary
             my $n = $len;
-            if ($subdir and $$subdir{KnownLen}) {
-                $n = $$subdir{KnownLen};
+            if ($subdir and $$subdir{KnownEnd}) {
+                $n = $$subdir{KnownEnd};
                 if ($n > $len) {
                     $et->Warn("Data too short for $$tagInfo{Name}",1);
                     $n = $len;
@@ -11863,7 +12127,7 @@ sub ProcessNikonEncrypted($$$)
     my $dirStart = $$dirInfo{DirStart};
     my $data = substr(${$$dirInfo{DataPt}}, $dirStart, $$dirInfo{DirLen});
 
-    my ($start, $len, $offset, $byteOrder, $recrypt, $newSerial, $newCount, $didDecrypt);
+    my ($start, $len, $offset, $recrypt, $newSerial, $newCount, $didDecrypt);
 
     # must re-encrypt when writing if serial number or shutter count changes
     if ($isWriting) {
@@ -11877,28 +12141,39 @@ sub ProcessNikonEncrypted($$$)
         }
     }
     if ($tagInfo and $$tagInfo{SubDirectory}) {
+        # initialize SubDirectory entries used in encryption (KnownStart, KnownEnd)
+        InitEncryptedSubdir($tagInfo, $tagTablePtr);
         my $subdir = $$tagInfo{SubDirectory};
         $start = $$subdir{DecryptStart} || 0;
-        # DirOffset, if specified, is relative to start of encrypted data
+        # DirOffset, if specified, is the offset to the start of the
+        # directory relative to start of encrypted data
         $offset = defined $$subdir{DirOffset} ? $$subdir{DirOffset} + $start : 0;
-        $byteOrder = $$subdir{ByteOrder};
-        SetByteOrder($byteOrder) if $byteOrder;
+        # must set byte ordering before calling PrepareNikonOffsets()
+        SetByteOrder($$subdir{ByteOrder}) if $$subdir{ByteOrder};
         # prepare for processing NIKON_OFFSETS directory if necessary
-        if ($$tagTablePtr{VARS} and $$tagTablePtr{VARS}{NIKON_OFFSETS}) {
-            my $unknown = $et->Options('Verbose') > 2 || $et->Options('Unknown') > 1;
-            # decrypt mode: 0=piecewise, 1=continuous to end of last known section, 2=all
-            my $dMode = $isWriting ? ($recrypt ? 2 : 1) : ($unknown ? 2 : 0);
-            $len = PrepareNikonOffsets($et, \$data, $tagTablePtr, $start, $serial, $count, $dMode);
+        my $unknown = $verbose > 2 || $et->Options('Unknown') > 1;
+        # decrypt mode: 0=piecewise, 1=continuous to end of last known section, 2=all
+        my $dMode = $isWriting ? ($recrypt ? 2 : 1) : ($unknown ? 2 : 0);
+        if ($$tagTablePtr{VARS}{NIKON_OFFSETS}) {
+            $len = PrepareNikonOffsets($et, \$data, $tagTablePtr, $start, $dMode);
             $didDecrypt = 1;
-        # may decrypt only part of the information to save time
-        } elsif ($verbose < 3 and $et->Options('Unknown') < 2 and not $recrypt) {
-            $len = $$subdir{DecryptLen};
+        } elsif ($dMode < 2) {
+            if ($dMode == 0 and $$subdir{KnownStart}) {
+                # initialize decryption parameters for address DecryptStart address
+                Decrypt(\$data, $start, 0, $serial, $count);
+                # reset serial/count keys so we don't re-initialize below
+                undef $serial;
+                undef $count;
+                # change decryption start to skip unnecessary data
+                $start = $$subdir{KnownStart};
+            }
+            $len = $$subdir{KnownEnd} - $start if $$subdir{KnownEnd};
         }
     } else {
         $start = $offset = 0;
     }
     my $maxLen = length($data) - $start;
-    # decrypt all the data unless DecryptLen is given
+    # decrypt all the data unless the length was specified
     $len = $maxLen unless $len and $len < $maxLen;
 
     $data = Decrypt(\$data, $start, $len, $serial, $count) unless $didDecrypt;

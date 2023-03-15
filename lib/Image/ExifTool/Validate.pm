@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.19';
+$VERSION = '1.20';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -437,8 +437,8 @@ sub ValidateExif($$$$$$$$)
                     $et->Warn(sprintf('Wrong IFD for 0x%.4x %s (should be %s not %s)', $tag, $$ti{Name}, $wgp, $ifd));
                 }
             }
-        } elsif (not $otherSpec{$$et{VALUE}{FileType}} or
-            (not $otherSpec{$$et{VALUE}{FileType}}{$tag} and not $otherSpec{$$et{VALUE}{FileType}}{All}))
+        } elsif (not $otherSpec{$$et{FileType}} or
+            (not $otherSpec{$$et{FileType}}{$tag} and not $otherSpec{$$et{FileType}}{All}))
         {
             if ($tagTablePtr eq \%Image::ExifTool::Exif::Main or $$tagInfo{Unknown}) {
                 $et->Warn(sprintf('Non-standard %s tag 0x%.4x %s', $ifd, $tag, $$ti{Name}), 1);
@@ -459,8 +459,8 @@ sub ValidateExif($$$$$$$$)
                 $et->Warn(sprintf('Non-standard count (%d) for %s 0x%.4x %s', $count, $ifd, $tag, $$ti{Name}));
             }
         }
-    } elsif (not $otherSpec{$$et{VALUE}{FileType}} or
-        (not $otherSpec{$$et{VALUE}{FileType}}{$tag} and not $otherSpec{$$et{VALUE}{FileType}}{All}))
+    } elsif (not $otherSpec{$$et{FileType}} or
+        (not $otherSpec{$$et{FileType}}{$tag} and not $otherSpec{$$et{FileType}}{All}))
     {
         $et->Warn(sprintf('Unknown %s tag 0x%.4x', $ifd, $tag), 1);
     }

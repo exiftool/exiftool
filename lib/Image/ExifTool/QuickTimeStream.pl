@@ -1488,7 +1488,7 @@ sub ProcessFreeGPS($$$)
             # Kenwood dashcam sometimes stores absolute year and local time
             # (but sometimes year since 2000 and UTC time in same video!)
             require Time::Local;
-            my $time = Image::ExifTool::TimeLocal($sec,$min,$hr,$day,$mon-1,$yr-1900);
+            my $time = Image::ExifTool::TimeLocal($sec,$min,$hr,$day,$mon-1,$yr);
             ($sec,$min,$hr,$day,$mon,$yr) = gmtime($time);
             $yr += 1900;
             ++$mon;

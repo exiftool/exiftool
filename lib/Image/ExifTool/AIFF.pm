@@ -18,7 +18,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::ID3;
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 # information for time/date-based tags (time zero is Jan 1, 1904)
 my %timeInfo = (
@@ -203,7 +203,7 @@ sub ProcessAIFF($$)
         return 1 if $fast3;
         $tagTablePtr = GetTagTable('Image::ExifTool::DjVu::Main');
         # modify FileType to indicate a multi-page document
-        $$et{VALUE}{FileType} .= " (multi-page)" if $buf2 eq 'DJVM';
+        $$et{VALUE}{FileType} .= " (multi-page)" if $buf2 eq 'DJVM' and $$et{VALUE}{FileType};
         $type = 'DjVu';
     } else {
         return 0 unless $buff =~ /^FORM....(AIF(F|C))/s;

@@ -420,6 +420,48 @@ sub ValidateImageData($$$;$)
 }
 
 #------------------------------------------------------------------------------
+# Add specified image data to ImageDataMD5 hash
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) lookup for [tagInfo,value] based on tagID
+sub AddImageDataMD5($$$)
+{
+    my ($et, $dirInfo, $offsetInfo) = @_;
+    my ($tagID, $offset, $buff);
+
+    my $verbose = $et->Options('Verbose');
+    my $md5 = $$et{ImageDataMD5};
+    my $raf = $$dirInfo{RAF};
+    my $base = $$dirInfo{Base} || 0;
+
+    foreach $tagID (sort keys %$offsetInfo) {
+        next unless ref $$offsetInfo{$tagID} eq 'ARRAY'; # ignore scalar tag values used for Validate
+        my $tagInfo = $$offsetInfo{$tagID}[0];
+        next unless $$tagInfo{IsImageData} and $$tagInfo{OffsetPair}; # only consider image data
+        my $sizeID = $$tagInfo{OffsetPair};
+        next unless $sizeID and $$offsetInfo{$sizeID};
+        my @offsets = split ' ', $$offsetInfo{$tagID}[1];
+        my @sizes = split ' ', $$offsetInfo{$sizeID}[1];
+        my $total = 0;
+        foreach $offset (@offsets) {
+            my $size = shift @sizes;
+            next unless $offset =~ /^\d+$/ and $size and $size =~ /^\d+$/ and $size;
+            next unless $raf->Seek($offset+$base, 0);
+            while ($size) {
+                my $bytes = $size > 65536 ? 65536 : $size;
+                $raf->Read($buff, $bytes) or last;
+                $md5->add($buff);
+                $total += length($buff);
+                $size -= $bytes;
+            }
+        }
+        if ($verbose) {
+            my $name = "$$dirInfo{DirName}:$$tagInfo{Name}";
+            $name =~ s/Offsets|Start$//;
+            $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: $total bytes of $name data)\n");
+        }
+    }
+}
+
+#------------------------------------------------------------------------------
 # Handle error while writing EXIF
 # Inputs: 0) ExifTool ref, 1) error string, 2) tag table ref
 # Returns: undef on fatal error, or '' if minor error is ignored

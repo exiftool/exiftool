@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.57';
+$VERSION = '12.58';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1821,6 +1821,13 @@ my %systemTagsNotes = (
             if specifically requested
         },
     },
+    ImageDataMD5 => {
+        Notes => q{
+            MD5 of image data. Generated only if specifically requested for JPEG and
+            TIFF-based images, except Panasonic raw for now. Includes image data,
+            OtherImage and JpgFromRaw in the MD5, but not ThumbnailImage or PreviewImage
+        },
+    },
 );
 
 # tags defined by UserParam option (added at runtime)
@@ -2479,7 +2486,15 @@ sub ExtractInfo($;@)
                 $self->WarnOnce('Install Time::HiRes to generate ProcessingTime');
             }
         }
-
+        
+        # create MD5 object if ImageDataMD5 is requested
+        if ($$req{imagedatamd5} and not $$self{ImageDataMD5}) {
+            if (require Digest::MD5) {
+                $$self{ImageDataMD5} = Digest::MD5->new;
+            } else {
+                $self->WarnOnce('Install Digest::MD5 to calculate image data MD5');
+            }
+        }
         ++$$self{FILE_SEQUENCE};        # count files read
     }
 
@@ -2870,6 +2885,10 @@ sub ExtractInfo($;@)
         # restore necessary members when exiting re-entrant code
         $$self{$_} = $$reEntry{$_} foreach keys %$reEntry;
         SetByteOrder($saveOrder);
+    } elsif ($$self{ImageDataMD5}) {
+        my $digest = $$self{ImageDataMD5}->hexdigest;
+        # (don't store empty digest)
+        $self->FoundTag(ImageDataMD5 => $digest) unless $digest eq 'd41d8cd98f00b204e9800998ecf8427e';
     }
 
     # ($type may be undef without an Error when processing sub-documents)
@@ -4297,9 +4316,9 @@ sub GetFileTime($$)
     # on Windows, try to work around incorrect file times when daylight saving time is in effect
     if ($^O eq 'MSWin32') {
         if (not eval { require Win32::API }) {
-            $self->WarnOnce('Install Win32::API for proper handling of Windows file times');
+            $self->WarnOnce('Install Win32::API for proper handling of Windows file times', 1);
         } elsif (not eval { require Win32API::File }) {
-            $self->WarnOnce('Install Win32API::File for proper handling of Windows file times');
+            $self->WarnOnce('Install Win32API::File for proper handling of Windows file times', 1);
         } else {
             # get Win32 handle, needed for GetFileTime
             my $win32Handle = eval { Win32API::File::GetOsFHandle($file) };
@@ -5868,7 +5887,8 @@ sub ConvertTimeSpan($;$)
 #------------------------------------------------------------------------------
 # Patched timelocal() that fixes ActivePerl timezone bug
 # Inputs/Returns: same as timelocal()
-# Notes: must 'require Time::Local' before calling this routine
+# Notes: must 'require Time::Local' before calling this routine.
+# Also note that year should be full year, and not relative to 1900 as with localtime
 sub TimeLocal(@)
 {
     my $tm = Time::Local::timelocal(@_);
@@ -6338,7 +6358,10 @@ sub ProcessJPEG($$)
     my %dumpParms = ( Out => $out );
     my ($success, $wantTrailer, $trailInfo, $foundSOS, %jumbfChunk);
     my (@iccChunk, $iccChunkCount, $iccChunksTotal, @flirChunk, $flirCount, $flirTotal);
-    my ($preview, $scalado, @dqt, $subSampling, $dumpEnd, %extendedXMP);
+    my ($preview, $scalado, @dqt, $subSampling, $dumpEnd, %extendedXMP, $md5);
+
+    # get pointer to MD5 object if it exists and we are the top-level JPEG
+    $md5 = $$self{ImageDataMD5} if $$self{FILE_TYPE} eq 'JPEG' and not $$self{DOC_NUM};
 
     # check to be sure this is a valid JPG (or J2C, or EXV) file
     return 0 unless $raf->Read($s, 2) == 2 and $s =~ /^\xff[\xd8\x4f\x01]/;
@@ -6386,7 +6409,9 @@ sub ProcessJPEG($$)
 #
 # read ahead to the next segment unless we have reached EOI, SOS or SOD
 #
-        unless ($marker and ($marker==0xd9 or ($marker==0xda and not $wantTrailer) or $marker==0x93)) {
+        unless ($marker and ($marker==0xd9 or ($marker==0xda and not $wantTrailer and not $md5) or
+            $marker==0x93))
+        {
             # read up to next marker (JPEG markers begin with 0xff)
             my $buff;
             $raf->ReadLine($buff) or last;
@@ -6416,6 +6441,8 @@ sub ProcessJPEG($$)
                 $nextSegPos = $raf->Tell();
                 $len -= 4;  # subtract size of length word
                 last unless $raf->Seek($len, 1);
+            } elsif ($md5 and defined $marker and ($marker == 0x00 or $marker == 0xda)) {
+                $md5->add($buff);   # (note: this includes the terminating 0xff's)
             }
             # read second segment too if this was the first
             next unless defined $marker;
@@ -6626,7 +6653,7 @@ sub ProcessJPEG($$)
                 next if $trailInfo or $wantTrailer or $verbose > 2 or $htmlDump;
             }
             # must scan to EOI if Validate or JpegCompressionFactor used
-            next if $$options{Validate} or $calcImageLen or $$req{trailer};
+            next if $$options{Validate} or $calcImageLen or $$req{trailer} or $md5;
             # nothing interesting to parse after start of scan (SOS)
             $success = 1;
             last;   # all done parsing file
@@ -7009,7 +7036,7 @@ sub ProcessJPEG($$)
                 $self->FoundTag('PreviewImage', $preview);
                 undef $preview;
             }
-        } elsif ($marker == 0xe4) {         # APP4 (InfiRay, "SCALADO", FPXR, PreviewImage)
+        } elsif ($marker == 0xe4) {         # APP4 (InfiRay, "SCALADO", FPXR, DJI, PreviewImage)
             if ($$segDataPt =~ /^SCALADO\0/ and $length >= 16) {
                 $dumpType = 'SCALADO';
                 my ($num, $idx, $len) = unpack('x8n2N', $$segDataPt);
@@ -7039,6 +7066,16 @@ sub ProcessJPEG($$)
                 $dumpType = 'DJI ThermalParams';
                 DirStart(\%dirInfo, 0, 0);
                 my $tagTablePtr = GetTagTable('Image::ExifTool::DJI::ThermalParams');
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            } elsif ($$self{Make} eq 'DJI' and $$segDataPt =~ /^(.{32})?.{32}\x2c\x01\x20\0/s) {
+                $dumpType = 'DJI ThermalParams2';
+                DirStart(\%dirInfo, $1 ? 32 : 0, 0);
+                my $tagTablePtr = GetTagTable('Image::ExifTool::DJI::ThermalParams2');
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            } elsif ($$self{Make} eq 'DJI' and $$segDataPt =~ /^.{32}\xaa\x55\x38\0/s) {
+                $dumpType = 'DJI ThermalParams3';
+                DirStart(\%dirInfo, 32, 0);
+                my $tagTablePtr = GetTagTable('Image::ExifTool::DJI::ThermalParams3');
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
             } elsif ($$self{HasIJPEG} and $length >= 120) {
                 $dumpType = 'InfiRay Factory';
@@ -7153,6 +7190,13 @@ sub ProcessJPEG($$)
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
                 delete $$self{SET_GROUP0};
                 delete $$self{SET_GROUP1};
+            } elsif ($$segDataPt =~ /^DJI-DBG\0/) {
+                $dumpType = 'DJI Info';
+                my $tagTablePtr = GetTagTable('Image::ExifTool::DJI::Info');
+                DirStart(\%dirInfo, 8, 0);
+                $$self{SET_GROUP0} = 'APP7';
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+                delete $$self{SET_GROUP0};
             } elsif ($$segDataPt =~ /^\x1aQualcomm Camera Attributes/) {
                 # found in HP iPAQ_VoiceMessenger
                 $dumpType = 'Qualcomm';
@@ -7681,7 +7725,7 @@ sub DoProcessTIFF($$;$)
            }
         }
         # update FileType if necessary now that we know more about the file
-        if ($$self{DNGVersion} and $$self{VALUE}{FileType} !~ /^(DNG|GPR)$/) {
+        if ($$self{DNGVersion} and $$self{FileType} !~ /^(DNG|GPR)$/) {
             # override whatever FileType we set since we now know it is DNG
             $self->OverrideFileType($$self{TIFF_TYPE} = 'DNG');
         }
@@ -8567,7 +8611,7 @@ sub DoEscape($$)
 sub SetFileType($;$$$)
 {
     my ($self, $fileType, $mimeType, $normExt) = @_;
-    unless ($$self{VALUE}{FileType} and not $$self{DOC_NUM}) {
+    unless ($$self{FileType} and not $$self{DOC_NUM}) {
         my $baseType = $$self{FILE_TYPE};
         my $ext = $$self{FILE_EXT};
         $fileType or $fileType = $baseType;
@@ -8586,7 +8630,8 @@ sub SetFileType($;$$$)
             $normExt = $fileTypeExt{$fileType};
             $normExt = $fileType unless defined $normExt;
         }
-        $$self{FileType} = $fileType;
+        # ($$self{FileType} is the file type of the main document)
+        $$self{FileType} = $fileType unless $$self{DOC_NUM};
         $self->FoundTag('FileType', $fileType);
         $self->FoundTag('FileTypeExtension', uc $normExt);
         $self->FoundTag('MIMEType', $mimeType || 'application/unknown');

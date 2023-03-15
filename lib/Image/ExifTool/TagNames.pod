@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26359 tags, with 16845 unique tag names.
+They contain a total of 26381 tags, with 16854 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -28,7 +28,8 @@ gives the order of values for a serial data stream.
 A B<Tag Name> is the handle by which the information is accessed in
 ExifTool.  In some instances, more than one name may correspond to a single
 tag ID.  In these cases, the actual name used depends on the context in
-which the information is found.  Case is not significant for tag names.  A
+which the information is found.  Valid characters in a tag name are A-Z,
+a-z, 0-9, hyphen (-) and underline (_).  Case is not significant.  A
 question mark (C<?>) after a tag name indicates that the information is
 either not understood, not verified, or not very useful -- these tags are
 not extracted by ExifTool unless the Unknown (-u) option is enabled.  Be
@@ -124,6 +125,8 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
                FPXR                             FlashPix
                InfiRayFactory                   InfiRay Factory
                ThermalParams                    DJI ThermalParams
+               ThermalParams2                   DJI ThermalParams2
+               ThermalParams3                   DJI ThermalParams3
                PreviewImage                     no
   'APP5'       RMETA                            Ricoh RMETA
                SamsungUniqueID                  Samsung APP5
@@ -140,6 +143,7 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
                Huawei                           Unknown
                Qualcomm                         Qualcomm
                InfiRayOpMode                    InfiRay OpMode
+               DJI-DBG                          DJI Info
   'APP8'       SPIFF                            JPEG SPIFF
                InfiRayIsothermal                InfiRay Isothermal
   'APP9'       MediaJukebox                     JPEG MediaJukebox
@@ -10866,6 +10870,30 @@ Thermal parameters extracted from APP4 of DJI RJPEG files from the ZH20T.
      86    DB                                   no
      88    KK                                   no
 
+=head3 DJI ThermalParams2 Tags
+
+Thermal parameters extracted from APP4 of DJI M3T RJPEG files.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    AmbientTemperature                   no
+      4    ObjectDistance                       no
+      8    Emissivity                           no
+     12    RelativeHumidity                     no
+     16    ReflectedTemperature                 no
+    101    IDString                             no
+
+=head3 DJI ThermalParams3 Tags
+
+Thermal parameters extracted from APP4 of some DJI RJPEG files.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    RelativeHumidity                     no
+      6    ObjectDistance                       no
+      8    Emissivity                           no
+     10    ReflectedTemperature                 no
+
 =head2 FLIR Tags
 
 Information extracted from the maker notes of JPEG images from thermal
@@ -13707,6 +13735,8 @@ DiMAGE X and Xt.
            ShotInfoD300b                        Nikon ShotInfoD300b
            ShotInfoD300S                        Nikon ShotInfoD300S
            ShotInfoD700                         Nikon ShotInfoD700
+           ShotInfoD780                         Nikon ShotInfoD780
+           ShotInfoD7500                        Nikon ShotInfoD7500
            ShotInfoD800                         Nikon ShotInfoD800
            ShotInfoD810                         Nikon ShotInfoD810
            ShotInfoD850                         Nikon ShotInfoD850
@@ -14246,6 +14276,34 @@ firmware 1.02f.
     647    ShutterCount                         int32u
     804    CustomSettingsD700                   NikonCustom SettingsD700
 
+=head3 Nikon ShotInfoD780 Tags
+
+These tags are extracted from encrypted data in images from the D780.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    ShotInfoVersion                      no
+      4    FirmwareVersion                      no
+    156    OrientOffset                         Nikon OrientationInfo
+
+=head3 Nikon OrientationInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    RollAngle                            fixed32u
+      4    PitchAngle                           fixed32u
+      8    YawAngle                             fixed32u
+
+=head3 Nikon ShotInfoD7500 Tags
+
+These tags are extracted from encrypted data in images from the D7500.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    ShotInfoVersion                      no
+      4    FirmwareVersion                      no
+    160    OrientOffset                         Nikon OrientationInfo
+
 =head3 Nikon ShotInfoD800 Tags
 
 These tags are extracted from encrypted data in images from the D800.
@@ -14298,14 +14356,6 @@ These tags are extracted from encrypted data in images from the D810.
   ------   --------                             --------
       4    ISOAutoShutterTime                   int8u & 0x3f
       5    ISOAutoHiLimit                       int8u & 0xff
-
-=head3 Nikon OrientationInfo Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    RollAngle                            fixed32u
-      4    PitchAngle                           fixed32u
-      8    YawAngle                             fixed32u
 
 =head3 Nikon ShotInfoD850 Tags
 
@@ -14606,6 +14656,7 @@ These tags are extracted from encrypted data in images from the Z9.
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
      48    SequenceOffset                       Nikon SeqInfoZ9
+     88    Offset13                             Nikon Offset13InfoZ9
     132    OrientOffset                         Nikon OrientationInfo
     140    MenuOffset                           Nikon MenuInfoZ9
 
@@ -14615,6 +14666,15 @@ These tags are extracted from encrypted data in images from the Z9.
   ------   --------                             --------
      32    FocusShiftShooting                   int8u~
      40    IntervalShooting                     int16u~
+
+=head3 Nikon Offset13InfoZ9 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+   3048    AFAreaInitialXPosition               int8s~
+   3049    AFAreaInitialYPosition               int8s~
+   3050    AFAreaInitialWidth                   no
+   3051    AFAreaInitialHeight                  no
 
 =head3 Nikon MenuInfoZ9 Tags
 
@@ -14662,6 +14722,7 @@ These tags are used by the Z9.
     556    SecondarySlotFunction                int8u
     572    DXCropAlert                          int8u
     574    SubjectDetection                     int8u
+    576    DynamicAFAreaSize                    int8u
     604    MovieImageArea?                      int8u & 0x01
     614    MovieType?                           int8u
     616    MovieISOAutoHiLimit?                 int16u
@@ -14737,6 +14798,7 @@ These tags are used by the Z9 firmware 3.00.
   576    SecondarySlotFunction                  int8u
   592    DXCropAlert                            int8u
   594    SubjectDetection                       int8u
+  596    DynamicAFAreaSize                      int8u
   636    HighFrequencyFlickerReductionShooting? int8u
   646    MovieImageArea?                        int8u & 0x01
   656    MovieType?                             int8u
@@ -14938,15 +15000,16 @@ Tags found in the encrypted LensData from cameras such as the Z6 and Z7.
      18    MaxApertureAtMaxFocal                int8u
      19    MCUVersion                           int8u
      20    EffectiveMaxAperture                 int8u
+     47    NewLensData                          undef[17]
      48    LensID                               int16u
-     53    LensMountType?                       int8u
+     53    LensMountType                        int8u
      54    MaxAperture                          int16u
      56    FNumber                              int16u
      60    FocalLength                          int16u
      76    FocusDistanceRangeWidth?             int8u
      78    FocusDistance                        int16u~
      86    LensDriveEnd?                        int8u
-     90    LensPositionAbsolute?                int32s
+     90    LensPositionAbsolute                 int32s
 
 =head3 Nikon LensDataUnknown Tags
 
@@ -38055,6 +38118,7 @@ FileName.
   ICC_Profile                ICC_Profile        yes!
   ID3Size                    File               no
   IPTC                       IPTC               yes!
+  ImageDataMD5               File               no
   ImageHeight                File               no
   ImageWidth                 File               no
   JPEGDigest                 File               no

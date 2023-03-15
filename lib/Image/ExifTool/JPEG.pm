@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.34';
+$VERSION = '1.35';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
@@ -134,9 +134,17 @@ sub ProcessJPEG_HDR($$$);
         Condition => '$$self{HasIJPEG}"',
         SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::Factory' },
       }, {
-        Name => 'ThermalParams', # (written by DJI FLIR models)
+        Name => 'ThermalParams', # (written by some DJI FLIR models)
         Condition => '$$self{Make} eq "DJI" and $$valPt =~ /^\xaa\x55\x12\x06/',
         SubDirectory => { TagTable => 'Image::ExifTool::DJI::ThermalParams' },
+      }, {
+        Name => 'ThermalParams2', # (written by M3T)
+        Condition => '$$self{Make} eq "DJI" and $$valPt =~ /^(.{32})?.{32}\x2c\x01\x20\0/s',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::ThermalParams2' },
+      }, {
+        Name => 'ThermalParams3', # (written by M30T)
+        Condition => '$$self{Make} eq "DJI" and $$valPt =~ /^.{32}\xaa\x55\x38\0/s',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::ThermalParams3' },
       }, {
         Name => 'PreviewImage', # (eg. Samsung S1060)
         Notes => 'continued from APP3',
@@ -207,6 +215,10 @@ sub ProcessJPEG_HDR($$$);
         Name => 'InfiRayOpMode',
         Condition => '$$self{HasIJPEG}',
         SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::OpMode' },
+      }, {
+        Name => 'DJI-DBG',
+        Condition => '$$valPt =~ /^DJI-DBG\0/',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::Info' },
     }],
     APP8 => [{
         Name => 'SPIFF',

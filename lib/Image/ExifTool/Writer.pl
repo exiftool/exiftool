@@ -1419,6 +1419,8 @@ sub SetNewValuesFromFile($$;@)
                     $tag =~ s/(.+?)\s*(>|<) ?//;
                     $$opts{EXPR} = 1; # flag this expression
                 } else {
+                    # (not sure why this is here because sign should be before '<')
+                    # (--> allows "<+" or "<-", which is an undocumented feature)
                     $opt = $1 if $tag =~ s/^([-+])\s*//;
                 }
             }
@@ -4204,7 +4206,7 @@ sub WriteDirectory($$$;$)
             return '' unless $dataPt or $$dirInfo{RAF}; # nothing to do if block never existed
             # don't allow MakerNotes to be removed from RAW files
             if ($blockName eq 'MakerNotes' and $rawType{$$self{FileType}}) {
-                $self->Warn("Can't delete MakerNotes from $$self{VALUE}{FileType}",1);
+                $self->Warn("Can't delete MakerNotes from $$self{FileType}",1);
                 return undef;
             }
             $verb = 'Deleting';

@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 # APE metadata blocks
 %Image::ExifTool::APE::Main = (
@@ -133,7 +133,7 @@ sub ProcessAPE($$)
 
     # check APE signature and process audio information
     # unless this is some other type of file
-    unless ($$et{VALUE}{FileType}) {
+    unless ($$et{FileType}) {
         $raf->Read($buff, 32) == 32 or return 0;
         $buff =~ /^(MAC |APETAGEX)/ or return 0;
         $et->SetFileType();

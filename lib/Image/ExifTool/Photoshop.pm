@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo %printFlags);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.68';
+$VERSION = '1.69';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -74,7 +74,7 @@ my %thumbnailInfo = (
         my @tags = qw{ImageWidth ImageHeight FileType};
         my $info = $et->ImageInfo(\$val, @tags);
         my ($w, $h, $type) = @$info{@tags};
-        $w and $h and $type eq 'JPEG' or warn("Not a valid JPEG image\n"), return undef;
+        $w and $h and $type and $type eq 'JPEG' or warn("Not a valid JPEG image\n"), return undef;
         my $wbytes = int(($w * 24 + 31) / 32) * 4;
         return pack('N6n2', 1, $w, $h, $wbytes, $wbytes * $h, length($val), 24, 1) . $val;
     },
@@ -706,7 +706,7 @@ sub ProcessLayersAndMask($$$)
     local $_;
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my $raf = $$dirInfo{RAF};
-    my $fileType = $$et{VALUE}{FileType};
+    my $fileType = $$et{FileType};
     my $data;
 
     return 0 unless $fileType eq 'PSD' or $fileType eq 'PSB';   # (no layer section in CS1 files)

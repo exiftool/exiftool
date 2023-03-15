@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.87';
+$VERSION = '2.88';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -179,12 +179,9 @@ $VERSION = '2.87';
 # ("New" and "II" appear in brackets if original version also has this LensType)
 %minoltaLensTypes = (
     Notes => q{
-        Decimal values have been added to differentiate lenses which would otherwise
-        have the same LensType, and are used by the Composite LensID tag when
-        attempting to identify the specific lens model.  "New" or "II" appear in
-        brackets if the original version of the lens has the same LensType.  Special
-        logic is employed to identify the attached lens when a Metabones Canon EF
-        adapter is used.
+        "New" or "II" appear in brackets if the original version of the lens has the
+        same LensType.  Special logic is employed to identify the attached lens when
+        a Metabones Canon EF adapter is used.
     },
     OTHER => sub {
         my ($val, $inv) = @_;
@@ -898,6 +895,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         SeparateTable => 1,
         ValueConvInv => 'int($val)', # (must truncate decimal part)
         PrintConv => \%minoltaLensTypes,
+        PrintInt => 1,
     },
     # 0x010e - WhiteBalance according to ref #10
     0x0111 => { #20
@@ -2708,6 +2706,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         SeparateTable => 1,
         ValueConvInv => 'int($val)', # (must truncate decimal part)
         PrintConv => \%minoltaLensTypes,
+        PrintInt => 1,
     },
     0x49c0 => {
         Name => 'ExposureCompensation', # (in exposure bracketing, this is the actual value used)

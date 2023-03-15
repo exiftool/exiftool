@@ -16,7 +16,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 sub ProcessDJIInfo($$$);
 
@@ -96,6 +96,31 @@ my %convFloat2 = (
     # (nothing yet decoded from device header)
 );
 
+# thermal parameters in APP4 of DJI M3T, H20N, M2EA and some M30T images (ref PH/forum11401)
+%Image::ExifTool::DJI::ThermalParams2 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 0 => 'APP4', 2 => 'Image' },
+    NOTES => 'Thermal parameters extracted from APP4 of DJI M3T RJPEG files.',
+    0x00 => { Name => 'AmbientTemperature',  Format => 'float', PrintConv => 'sprintf("%.1f C",$val)' }, # (NC)
+    0x04 => { Name => 'ObjectDistance',      Format => 'float', PrintConv => 'sprintf("%.1f m",$val)' },
+    0x08 => { Name => 'Emissivity',          Format => 'float', PrintConv => 'sprintf("%.2f",$val)' },
+    0x0c => { Name => 'RelativeHumidity',    Format => 'float', PrintConv => 'sprintf("%g %",$val*100)' },
+    0x10 => { Name => 'ReflectedTemperature',Format => 'float', PrintConv => 'sprintf("%.1f C",$val)' },
+    0x65 => { Name => 'IDString',            Format => 'string[16]' }, # (NC)
+);
+
+# thermal parameters in APP4 of some DJI M30T images (ref PH)
+%Image::ExifTool::DJI::ThermalParams3 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 0 => 'APP4', 2 => 'Image' },
+    NOTES => 'Thermal parameters extracted from APP4 of some DJI RJPEG files.',
+  # 0x00 - 0xaa553800 - params3 magic number 
+    0x04 => { Name => 'RelativeHumidity',    Format => 'int16u' },
+    0x06 => { Name => 'ObjectDistance',      Format => 'int16u', ValueConv => '$val / 10' },
+    0x08 => { Name => 'Emissivity',          Format => 'int16u', ValueConv => '$val / 100' },
+    0x0a => { Name => 'ReflectedTemperature',Format => 'int16u', ValueConv => '$val / 10' },
+);
+
 %Image::ExifTool::DJI::XMP = (
     %Image::ExifTool::XMP::xmpTableDefaults,
     GROUPS => { 0 => 'XMP', 1 => 'XMP-drone-dji', 2 => 'Location' },
@@ -161,7 +186,7 @@ my %convFloat2 = (
 );
 
 #------------------------------------------------------------------------------
-# Process DJI infor (ref PH)
+# Process DJI info (ref PH)
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
 sub ProcessDJIInfo($$$)
@@ -174,6 +199,7 @@ sub ProcessDJIInfo($$$)
         my $buff = substr($$dataPt, $dirStart, $dirLen);
         $dataPt = \$buff;
     }
+    $et->VerboseDir('DJIInfo', undef, length $$dataPt);
     while ($$dataPt =~ /\G\[(.*?)\](?=(\[|$))/sg) {
         my ($tag, $val) = split /:/, $1, 2;
         next unless defined $tag and defined $val;

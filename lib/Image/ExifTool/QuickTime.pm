@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.83';
+$VERSION = '2.84';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -1976,7 +1976,7 @@ my %eeBox2 = (
             Name => 'SanyoMOV',
             Condition => q{
                 $$valPt =~ /^SANYO DIGITAL CAMERA\0/ and
-                $self->{VALUE}->{FileType} eq "MOV"
+                $$self{FileType} eq "MOV"
             },
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Sanyo::MOV',
@@ -1987,7 +1987,7 @@ my %eeBox2 = (
             Name => 'SanyoMP4',
             Condition => q{
                 $$valPt =~ /^SANYO DIGITAL CAMERA\0/ and
-                $self->{VALUE}->{FileType} eq "MP4"
+                $$self{FileType} eq "MP4"
             },
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Sanyo::MP4',
@@ -7161,7 +7161,7 @@ my %eeBox2 = (
             $$self{AudioFormat} = $val;
             return undef unless $val =~ /^[\w ]{4}$/i;
             # check for protected audio format
-            $self->OverrideFileType('M4P') if $val eq 'drms' and $$self{VALUE}{FileType} eq 'M4A';
+            $self->OverrideFileType('M4P') if $val eq 'drms' and $$self{FileType} eq 'M4A';
             return $val;
         },
         # see this link for print conversions (not complete):
@@ -9809,7 +9809,7 @@ ItemID:         foreach $id (keys %$items) {
         ++$index if defined $index;
     }
     # tweak file type based on track content ("iso*" and "dash" ftyp only)
-    if ($topLevel and $$et{VALUE}{FileType} and $$et{VALUE}{FileType} eq 'MP4' and
+    if ($topLevel and $$et{FileType} and $$et{FileType} eq 'MP4' and
         $$et{save_ftyp} and $$et{HasHandler} and $$et{save_ftyp} =~ /^(iso|dash)/ and
         $$et{HasHandler}{soun} and not $$et{HasHandler}{vide})
     {

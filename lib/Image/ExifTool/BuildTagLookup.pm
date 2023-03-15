@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.51';
+$VERSION = '3.52';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -184,7 +184,8 @@ gives the order of values for a serial data stream.
 A B<Tag Name> is the handle by which the information is accessed in
 ExifTool.  In some instances, more than one name may correspond to a single
 tag ID.  In these cases, the actual name used depends on the context in
-which the information is found.  Case is not significant for tag names.  A
+which the information is found.  Valid characters in a tag name are A-Z,
+a-z, 0-9, hyphen (-) and underline (_).  Case is not significant.  A
 question mark (C<?>) after a tag name indicates that the information is
 either not understood, not verified, or not very useful -- these tags are
 not extracted by ExifTool unless the L<Unknown|../ExifTool.html#Unknown> (-u) option is enabled.  Be
@@ -1206,6 +1207,7 @@ TagID:  foreach $tagID (@keys) {
                             $sepTable{$s} = $printConv;
                             # add PrintHex flag to PrintConv so we can check it later
                             $$printConv{PrintHex} = 1 if $$tagInfo{PrintHex};
+                            $$printConv{PrintInt} = 1 if $$tagInfo{PrintInt};
                             $$printConv{PrintString} = 1 if $$tagInfo{PrintString};
                         } else {
                             $caseInsensitive = 0;
@@ -1221,22 +1223,18 @@ TagID:  foreach $tagID (@keys) {
                                 next if $_ eq '' and $$printConv{$_} eq '';
                                 $_ eq 'BITMASK' and $bits = $$printConv{$_}, next;
                                 $_ eq 'OTHER' and next;
-                                my $index;
-                                if (($$tagInfo{PrintHex} or $$printConv{BITMASK}) and /^-?\d+$/) {
+                                my $index = $_;
+                                $index =~ s/\.\d+$// if $$tagInfo{PrintInt};
+                                if (($$tagInfo{PrintHex} or $$printConv{BITMASK}) and $index =~ /^-?\d+$/) {
                                     my $dig = $$tagInfo{PrintHex} || 1;
-                                    if ($_ >= 0) {
-                                        $index = sprintf('0x%.*x', $dig, $_);
+                                    if ($index >= 0) {
+                                        $index = sprintf('0x%.*x', $dig, $index);
                                     } elsif ($format and $format =~ /int(16|32)/) {
                                         # mask off unused bits of signed integer hex value
                                         my $mask = { 16 => 0xffff, 32 => 0xffffffff }->{$1};
-                                        $index = sprintf('0x%.*x', $dig, $_ & $mask);
-                                    } else {
-                                        $index = $_;
+                                        $index = sprintf('0x%.*x', $dig, $index & $mask);
                                     }
-                                } elsif (/^[+-]?(?=\d|\.\d)\d*(\.\d*)?$/ and not $$tagInfo{PrintString}) {
-                                    $index = $_;
-                                } else {
-                                    $index = $_;
+                                } elsif ($$tagInfo{PrintString} or not /^[+-]?(?=\d|\.\d)\d*(\.\d*)?$/) {
                                     # translate unprintable values
                                     if ($index =~ s/([\x00-\x1f\x80-\xff])/sprintf("\\x%.2x",ord $1)/eg) {
                                         $index = qq{"$index"};
@@ -2210,7 +2208,7 @@ sub WriteTagNames($$)
                 my $wid = 0;
                 my @keys;
                 foreach (sort { NumbersFirst($a,$b) } keys %$printConv) {
-                    next if /^(Notes|PrintHex|PrintString|OTHER)$/;
+                    next if /^(Notes|PrintHex|PrintInt|PrintString|OTHER)$/;
                     $align = '' if $align and /[^\d]/;
                     my $w = length($_) + length($$printConv{$_});
                     $wid = $w if $wid < $w;
@@ -2238,6 +2236,7 @@ sub WriteTagNames($$)
                         if (defined $key) {
                             $index = $key;
                             $prt = '= ' . EscapeHTML($$printConv{$key});
+                            $index =~ s/\.\d+$// if $$printConv{PrintInt};
                             if ($$printConv{PrintHex}) {
                                 $index =~ s/(\.\d+)$//; # remove decimal
                                 $index = sprintf('0x%x',$index);

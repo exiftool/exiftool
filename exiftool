@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '12.57';
+my $version = '12.58';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 BEGIN {
@@ -255,17 +255,15 @@ my %optArgs = (
     '-csvdelim' => 1,
     '-d' => 1, '-dateformat' => 1,
     '-D' => 0, # necessary to avoid matching lower-case equivalent
-    '-echo' => 1, '-echo1' => 1, '-echo2' => 1, '-echo3' => 1, '-echo4' => 1,
-    '-efile' => 1, '-efile1' => 1, '-efile2' => 1, '-efile3' => 1, '-efile4' => 1,
-    '-efile!' => 1, '-efile1!' => 1, '-efile2!' => 1, '-efile3!' => 1, '-efile4!' => 1,
+    '-echo' => 1, '-echo#' => 1,
+    '-efile' => 1, '-efile#' => 1, '-efile!' => 1, '-efile#!' => 1,
     '-ext' => 1, '--ext' => 1, '-ext+' => 1, '--ext+' => 1,
         '-extension' => 1, '--extension' => 1, '-extension+' => 1, '--extension+' => 1,
-    '-fileorder' => 1, '-fileorder0' => 1, '-fileorder1' => 1, '-fileorder2' => 1,
-        '-fileorder3' => 1, '-fileorder4' => 1, '-fileorder5' => 1,
+    '-fileorder' => 1, '-fileorder#' => 1,
     '-geotag' => 1,
     '-globaltimeshift' => 1,
     '-i' => 1, '-ignore' => 1,
-    '-if' => 1, '-if0' => 1, '-if1' => 1, '-if2' => 1, '-if3' => 1, '-if4' => 1, '-if5' => 1,
+    '-if' => 1, '-if#' => 1,
     '-lang' => 0, # (optional arg; cannot begin with "-")
     '-listitem' => 1,
     '-o' => 1, '-out' => 1,
@@ -4192,7 +4190,6 @@ sub NextUnusedFilename($;$)
         }
         ++$copy;
         ++$alpha;
-        ++$seq;
     }
 }
 
@@ -4398,9 +4395,13 @@ sub ReadStayOpen($)
                     undef $optArgs;
                     next unless $lastOpt eq '-stay_open' or $lastOpt eq '-@';
                 } else {
-                    $optArgs = $optArgs{$arg};
                     $lastOpt = lc $arg;
-                    $optArgs = $optArgs{$lastOpt} unless defined $optArgs;
+                    $optArgs = $optArgs{$arg};
+                    unless (defined $optArgs) {
+                        $optArgs = $optArgs{$lastOpt};
+                        # handle options with trailing numbers
+                        $optArgs = $optArgs{"$1#$2"} if not defined $optArgs and $lastOpt =~ /^(.*?)\d+(!?)$/;
+                    }
                     next unless $lastOpt =~ /^-execute\d*$/;
                 }
                 $processArgs = 1;
@@ -4765,8 +4766,9 @@ L<Image::ExifTool::TagNames|Image::ExifTool::TagNames> for documentation on
 available tag names.  A tag name may include leading group names separated
 by colons (eg. C<-EXIF:CreateDate>, or C<-Doc1:XMP:Creator>), and each group
 name may be prefixed by a digit to specify family number (eg.
-C<-1IPTC:City>).  Use the B<-listg> option to list available group names by
-family.
+C<-1IPTC:City>).  (Note that the API SavePath and SaveFormat options must be
+used for the family 5 and 6 groups respectively to be available.)  Use the
+B<-listg> option to list available group names by family.
 
 A special tag name of C<All> may be used to indicate all meta information
 (ie. B<-All>).  This is particularly useful when a group name is specified
@@ -4774,10 +4776,11 @@ to extract all information in a group (but beware that unless the B<-a>
 option is also used, some tags in the group may be suppressed by same-named
 tags in other groups).  The wildcard characters C<?> and C<*> may be used in
 a tag name to match any single character and zero or more characters
-respectively. These may not be used in a group name, with the exception that
-a group name of C<*> (or C<All>) may be used to extract all instances of a
-tag (as if B<-a> was used).  Note that arguments containing wildcards must
-be quoted on the command line of most systems to prevent shell globbing.
+respectively.  These may not be used in a group name, with the exception
+that a group name of C<*> (or C<All>) may be used to extract all instances
+of a tag (as if B<-a> was used).  Note that arguments containing wildcards
+must be quoted on the command line of most systems to prevent shell
+globbing.
 
 A C<#> may be appended to the tag name to disable the print conversion on a
 per-tag basis (see the B<-n> option).  This may also be used when writing or
@@ -4856,8 +4859,8 @@ are removed if the containing group is deleted:
   - Deleting EXIF only removes ExifIFD which also deletes
     InteropIFD and MakerNotes.
 
-  MOV/MP4 video:
-  - Deleting ItemList also deletes Keys tags
+  MOV/MP4 Video:
+  - Deleting ItemList also deletes Keys tags.
 
 Notes:
 
@@ -5491,8 +5494,9 @@ which case the string is loaded from the contents of the file.  Tag names in
 the format file or string begin with a C<$> symbol and may contain leading
 group names and/or a trailing C<#> (to disable print conversion).  Case is
 not significant.  Braces C<{}> may be used around the tag name to separate
-it from subsequent text.  Use C<$$> to represent a C<$> symbol, and C<$/>
-for a newline.
+it from subsequent text (and must be used if subsequent text begins with an
+alphanumeric character, hyphen, underline, colon or number sign).  Use C<$$>
+to represent a C<$> symbol, and C<$/> for a newline.
 
 Multiple B<-p> options may be used, each contributing a line (or more) of
 text to the output.  Lines beginning with C<#[HEAD]> and C<#[TAIL]> are
@@ -5519,7 +5523,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 12.57 --
+    -- Generated by ExifTool 12.58 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38

@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.42';
+$VERSION = '1.43';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -2441,7 +2441,7 @@ sub ProcessFPX($$)
     }
     $$et{INDENT} = $oldIndent if $verbose;
     # try to better identify the file type
-    if ($$et{VALUE}{FileType} eq 'FPX') {
+    if ($$et{FileType} eq 'FPX') {
         my $val = $$et{CompObjUserType} || $$et{Software};
         if ($val) {
             my %type = ( '^3ds Max' => 'MAX', Word => 'DOC', PowerPoint => 'PPT', Excel => 'XLS' );

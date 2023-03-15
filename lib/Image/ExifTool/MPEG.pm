@@ -18,7 +18,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 %Image::ExifTool::MPEG::Audio = (
     GROUPS => { 2 => 'Audio' },
@@ -599,7 +599,7 @@ sub ProcessMPEGVideo($$)
         return 0;
     }
     # set file type if not done already
-    $et->SetFileType('MPEG') unless $$et{VALUE}{FileType};
+    $et->SetFileType('MPEG') unless $$et{FileType};
 
     my $tagTablePtr = GetTagTable('Image::ExifTool::MPEG::Video');
     ProcessFrameHeader($et, $tagTablePtr, $w1, $w2);

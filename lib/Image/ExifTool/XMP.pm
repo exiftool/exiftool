@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.56';
+$VERSION = '3.57';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3097,7 +3097,7 @@ sub ScanForXMP($$)
             undef $buff;
         }
     }
-    unless ($$et{VALUE}{FileType}) {
+    unless ($$et{FileType}) {
         $$et{FILE_TYPE} = $$et{FILE_EXT};
         $et->SetFileType('<unknown file containing XMP>', undef, '');
     }

@@ -411,6 +411,10 @@ numerical, and generated automatically otherwise.
 
                   'IsComposite' - flag set for Composite tags
 
+                  'IsImageData' - flag set if this is an image data offset to
+                  be included in ImageDataMD5 calculation.  Must have an
+                  OffsetPair entry which is the ID of the corresponding size.
+
                   'IsOffset' - flag set if the tag represents an offset to some
                   data, and causes value will be adjusted to an absolute file
                   offset.  If set to 2, the offset base of the parent directory
@@ -471,6 +475,10 @@ numerical, and generated automatically otherwise.
                   numerical tag values to be printed in hex in the HTML tag name
                   documentation, padded to the number of digits given by the
                   PrintHex value.
+
+                  'PrintInt' - remove decimal part of tag ID in HTML tag name
+                  documentation.  (To avoid confusing ExifTool users because
+                  the LensType decimal numbers are for internal use only.)
 
                   'PrintSort' - causes PrintConv values to be sorted by value
                   rather than key in the HTML tag name documentation.

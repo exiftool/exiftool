@@ -1372,6 +1372,7 @@ my %faceCategories = (
     0xf007 => {
         Name => 'StripOffsets',
         IsOffset => 1,
+        IsImageData => 1,
         OffsetPair => 0xf008,  # point to associated byte counts
     },
     0xf008 => {

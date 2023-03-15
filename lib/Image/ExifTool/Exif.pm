@@ -65,6 +65,7 @@ sub RebuildMakerNotes($$$);
 sub EncodeExifText($$);
 sub ValidateIFD($;$);
 sub ValidateImageData($$$;$);
+sub AddImageDataMD5($$$);
 sub ProcessTiffIFD($$$);
 sub PrintParameter($$$);
 sub GetOffList($$$$$);
@@ -573,6 +574,7 @@ my %opcodeInfo = (
             ],
             Name => 'StripOffsets',
             IsOffset => 1,
+            IsImageData => 1,
             OffsetPair => 0x117,  # point to associated byte counts
             # A200 stores this information in the wrong byte order!!
             ValueConv => '$val=join(" ",unpack("N*",pack("V*",split(" ",$val))));\$val',
@@ -582,6 +584,7 @@ my %opcodeInfo = (
             Condition => '$$self{Compression} and $$self{Compression} eq "34892"', # DNG Lossy JPEG
             Name => 'OtherImageStart',
             IsOffset => 1,
+            IsImageData => 1,
             OffsetPair => 0x117,  # point to associated byte counts
             DataTag => 'OtherImage',
         },
@@ -594,6 +597,7 @@ my %opcodeInfo = (
             ],
             Name => 'StripOffsets',
             IsOffset => 1,
+            IsImageData => 1,
             OffsetPair => 0x117,  # point to associated byte counts
             ValueConv => 'length($val) > 32 ? \$val : $val',
         },
@@ -630,6 +634,7 @@ my %opcodeInfo = (
             # JpgFromRawStart in various IFD's of DNG images except SubIFD2
             Name => 'JpgFromRawStart',
             IsOffset => 1,
+            IsImageData => 1,
             OffsetPair => 0x117,
             DataTag => 'JpgFromRaw',
             Writable => 'int32u',
@@ -933,6 +938,7 @@ my %opcodeInfo = (
     0x144 => {
         Name => 'TileOffsets',
         IsOffset => 1,
+        IsImageData => 1,
         OffsetPair => 0x145,
         ValueConv => 'length($val) > 32 ? \$val : $val',
     },
@@ -1187,6 +1193,7 @@ my %opcodeInfo = (
             Name => 'JpgFromRawStart',
             Condition => '$$self{DIR_NAME} eq "SubIFD"',
             IsOffset => 1,
+            IsImageData => 1,
             OffsetPair => 0x202,
             DataTag => 'JpgFromRaw',
             Writable => 'int32u',
@@ -1199,6 +1206,7 @@ my %opcodeInfo = (
             Name => 'JpgFromRawStart',
             Condition => '$$self{DIR_NAME} eq "IFD2"',
             IsOffset => 1,
+            IsImageData => 1,
             OffsetPair => 0x202,
             DataTag => 'JpgFromRaw',
             Writable => 'int32u',
@@ -1210,6 +1218,7 @@ my %opcodeInfo = (
         {
             Name => 'OtherImageStart',
             Condition => '$$self{DIR_NAME} eq "SubIFD1"',
+            IsImageData => 1,
             IsOffset => 1,
             OffsetPair => 0x202,
             DataTag => 'OtherImage',
@@ -1222,6 +1231,7 @@ my %opcodeInfo = (
             Name => 'OtherImageStart',
             Condition => '$$self{DIR_NAME} eq "SubIFD2"',
             IsOffset => 1,
+            IsImageData => 1,
             OffsetPair => 0x202,
             DataTag => 'OtherImage',
             Writable => 'int32u',
@@ -1232,6 +1242,7 @@ my %opcodeInfo = (
         {
             Name => 'OtherImageStart',
             IsOffset => 1,
+            IsImageData => 1,
             OffsetPair => 0x202,
         },
     ],
@@ -2968,6 +2979,7 @@ my %opcodeInfo = (
     0xbcc0 => { #13
         Name => 'ImageOffset',
         IsOffset => 1,
+        IsImageData => 1,
         OffsetPair => 0xbcc1,  # point to associated byte count
     },
     0xbcc1 => { #13
@@ -2977,6 +2989,7 @@ my %opcodeInfo = (
     0xbcc2 => { #13
         Name => 'AlphaOffset',
         IsOffset => 1,
+        IsImageData => 1,
         OffsetPair => 0xbcc3,  # point to associated byte count
     },
     0xbcc3 => { #13
@@ -5885,9 +5898,13 @@ sub ProcessExif($$$)
     my $saveFormat = $et->Options('SaveFormat');
     my $htmlDump = $$et{HTML_DUMP};
     my $success = 1;
-    my ($tagKey, $dirSize, $makerAddr, $strEnc, %offsetInfo, $offName, $nextOffName);
+    my ($tagKey, $dirSize, $makerAddr, $strEnc, %offsetInfo, $offName, $nextOffName, $doMD5);
     my $inMakerNotes = $$tagTablePtr{GROUPS}{0} eq 'MakerNotes';
     my $isExif = ($tagTablePtr eq \%Image::ExifTool::Exif::Main);
+
+    # set flag to calculate image data MD5 if requested
+    $doMD5 = 1 if $$et{ImageDataMD5} and (($$et{FILE_TYPE} eq 'TIFF' and not $base and not $inMakerNotes) or
+        ($$et{FILE_TYPE} eq 'RAF' and $dirName eq 'FujiIFD'));
 
     # set encoding to assume for strings
     $strEnc = $et->Options('CharsetEXIF') if $$tagTablePtr{GROUPS}{0} eq 'EXIF';
@@ -6725,7 +6742,7 @@ sub ProcessExif($$$)
             }
             $val = join(' ', @vals);
         }
-        if ($validate) {
+        if ($validate or $doMD5) {
             if ($$tagInfo{OffsetPair}) {
                 $offsetInfo{$tagID} = [ $tagInfo, $val ];
             } elsif ($saveForValidate{$tagID} and $isExif) {
@@ -6743,9 +6760,11 @@ sub ProcessExif($$$)
         }
     }
 
-    # validate image data offsets for this IFD
-    if ($validate and %offsetInfo) {
-        Image::ExifTool::Validate::ValidateOffsetInfo($et, \%offsetInfo, $$dirInfo{DirName}, $inMakerNotes)
+    if (%offsetInfo) {
+        # calculate image data MD5 if requested
+        AddImageDataMD5($et, $dirInfo, \%offsetInfo) if $doMD5;
+        # validate image data offsets for this IFD (note: modifies %offsetInfo)
+        Image::ExifTool::Validate::ValidateOffsetInfo($et, \%offsetInfo, $dirName, $inMakerNotes) if $validate;
     }
 
     # scan for subsequent IFD's if specified

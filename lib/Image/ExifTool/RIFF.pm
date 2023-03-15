@@ -30,7 +30,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.61';
+$VERSION = '1.62';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -1522,7 +1522,7 @@ my %code2charset = (
         },
         # (can't calculate duration like this for compressed audio types)
         RawConv => q{
-            return undef if $$self{VALUE}{FileType} =~ /^(LA|OFR|PAC|WV)$/;
+            return undef if $$self{FileType} =~ /^(LA|OFR|PAC|WV)$/;
             return(($val[0] and not ($val[2] or $val[3])) ? $val[1] / $val[0] : undef);
         },
         PrintConv => 'ConvertDuration($val)',
@@ -1996,7 +1996,7 @@ sub ProcessRIFF($$)
     $$raf{NoBuffer} = 1 if $et->Options('FastScan'); # disable buffering in FastScan mode
     $mime = $riffMimeType{$type} if $type;
     $et->SetFileType($type, $mime);
-    $$et{VALUE}{FileType} .= ' (RF64)' if $rf64;
+    $$et{VALUE}{FileType} .= ' (RF64)' if $rf64 and $$et{VALUE}{FileType};
     $$et{RIFFStreamType} = '';      # initialize stream type
     $$et{RIFFStreamCodec} = [];     # initialize codec array
     SetByteOrder('II');

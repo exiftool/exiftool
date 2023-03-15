@@ -7,6 +7,20 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Mar. 15, 2023 - Version 12.58
+
+  - Added Extra ImageDataMD5 tag to calculate MD5 of image data only
+  - Added support for reading DJI APP4 and APP7 JPEG segments
+  - Added a new SonyModelID value
+  - Decode a few new Nikon tags (thanks Warren Hatch)
+  - Downgraded "Windows file times" to a minor warning when Win32::API or
+    Win32API::File is not installed while reading metadata
+  - Patched possible runtime warning when API IgnoreTags option is used to
+    ignore FileType
+  - Fixed problem extracting NetName from Windows LNK files
+  - Fixed issue where the %C filename format code would increment the count on
+    an output filename collision, but it is supposed to count the input files
+
 Feb. 23, 2023 - Version 12.57
 
   - Added two new Nikon Z lenses (thanks LibRaw)

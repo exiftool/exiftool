@@ -125,9 +125,21 @@ software used to create the file.</p>
 <td>'IeImg'</td>
 <td>EmbeddedImage</td>
 <td class=c>no</td>
-<td><span class=s><span class=n>(embedded images in Scene7 vignette VNT files.  EmbeddedImageRectangle is
-generated for applicable images, and may be associated with the
-corresponding EmbeddedImage via the family 3 group name)</span></span></td></tr>
+<td><span class=s><span class=n>(embedded images in Scene7 vignette VNT files.  The EmbeddedImage Class and
+Rectangle are also extracted for applicable images, and may be associated
+with the corresponding EmbeddedImage via the family 3 group name)</span></span></td></tr>
+<tr>
+<td>'IeImg_class'</td>
+<td>EmbeddedImageClass</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(not a real tag.  This information is extracted if available for the
+corresponding EmbeddedImage from the Contents of a VNT file)</span></span></td></tr>
+<tr class=b>
+<td>'IeImg_rect'</td>
+<td>EmbeddedImageRectangle</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(not a real tag.  This information is extracted if available for the
+corresponding EmbeddedImage from the Contents of a VNT file)</span></span></td></tr>
 <tr>
 <td>'Preview'</td>
 <td>PreviewImage</td>
@@ -1689,7 +1701,7 @@ property tables, even though they are only listed in the SummaryInfo table.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 23, 2023</i>
+<br><i>Last revised Mar 28, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

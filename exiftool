@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '12.58';
+my $version = '12.59';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 BEGIN {
@@ -103,6 +103,7 @@ my @newValues;      # list of new tag values to set
 my @requestTags;    # tags to request (for -p or -if option arguments)
 my @srcFmt;         # source file name format strings
 my @tags;           # list of tags to extract
+my %altFile;        # alternate files to extract information (keyed by lower-case family 8 group)
 my %appended;       # list of files appended to
 my %countLink;      # count hard and symbolic links made
 my %created;        # list of files we created
@@ -115,6 +116,7 @@ my %outComma;       # flag that output text file needs a comma
 my %outTrailer;     # trailer for output text file
 my %preserveTime;   # preserved timestamps for files
 my %printFmt;       # the contents of the print format file
+my %seqFileDir;     # file sequence number in each directory
 my %setTags;        # hash of list references for tags to set from files
 my %setTagsList;    # list of other tag lists for multiple -tagsFromFile from the same file
 my %usedFileName;   # lookup for file names we already used in TestName feature
@@ -196,7 +198,7 @@ my $saveCount;      # count the number of times we will/did call SaveNewValues()
 my $scanWritable;   # flag to process only writable file types
 my $sectHeader;     # current section header for -p option
 my $sectTrailer;    # section trailer for -p option
-my $seqFileBase;    # sequential file number at start of directory
+my $seqFileDir;     # sequential file number used for %-C
 my $seqFileNum;     # sequential file number used for %C
 my $setCharset;     # character set setting ('default' if not set and -csv -b used)
 my $showGroup;      # number of group to show (may be zero or '')
@@ -450,6 +452,7 @@ undef %outComma;
 undef %outTrailer;
 undef %printFmt;
 undef %preserveTime;
+undef %seqFileDir;
 undef %setTags;
 undef %setTagsList;
 undef %usedFileName;
@@ -536,7 +539,7 @@ $quiet = 0;
 $rtnVal = 0;
 $saveCount = 0;
 $sectTrailer = '';
-$seqFileBase = 0;
+$seqFileDir = 0;
 $seqFileNum = 0;
 $tabFormat = 0;
 $vout = \*STDOUT;
@@ -948,6 +951,10 @@ for (;;) {
     }
     if (/^fast(\d*)$/i) {
         $mt->Options(FastScan => (length $1 ? $1 : 1));
+        next;
+    }
+    if (/^(file\d+)$/i) {
+        $altFile{lc $1} = shift or Error("Expecting file name for -file option\n"), $badCmd=1, next;
         next;
     }
     if (/^fileorder(\d*)$/i) {
@@ -1939,7 +1946,7 @@ Exit $rtnValApp;    # all done
 sub GetImageInfo($$)
 {
     my ($et, $orig) = @_;
-    my (@foundTags, $info, $file, $ind);
+    my (@foundTags, $info, $file, $ind, $g8);
 
     # set window title for this file if necessary
     if (defined $windowTitle and $progressCount >= $progressNext) {
@@ -1981,6 +1988,11 @@ sub GetImageInfo($$)
         $et->Options(UserParam => "OriginalFileName#=$f");
     } else {
         $file = $orig;
+    }
+    # set alternate file names
+    foreach $g8 (sort keys %altFile) {
+        my $altName = FilenameSPrintf($altFile{$g8}, $orig);
+        $et->SetAlternateFile($g8, $altName);
     }
 
     my $pipe = $file;
@@ -2080,6 +2092,8 @@ sub GetImageInfo($$)
         return;
     }
     ++$seqFileNum;  # increment our file counter
+    my ($dir) = Image::ExifTool::SplitFileName($orig);
+    $seqFileDir = $seqFileDir{$dir} = ($seqFileDir{$dir} || 0) + 1;
 
     my $lineCount = 0;
     my ($fp, $outfile, $append);
@@ -3741,8 +3755,6 @@ sub ScanDir($$;$)
         $utf8Name = 1;
     }
     return if $ignore{$dir};
-    my $oldBase = $seqFileBase;
-    $seqFileBase = $seqFileNum;
     # use Win32::FindFile on Windows if available
     # (ReadDir will croak if there is a wildcard, so check for this)
     if ($^O eq 'MSWin32' and $dir !~ /[*?]/) {
@@ -3774,7 +3786,6 @@ sub ScanDir($$;$)
         # use standard perl library routines to read directory
         unless (opendir(DIR_HANDLE, $dir)) {
             Warn("Error opening directory $dir\n");
-            $seqFileBase = $oldBase + ($seqFileNum - $seqFileBase);
             return;
         }
         @fileList = readdir(DIR_HANDLE);
@@ -3854,8 +3865,6 @@ sub ScanDir($$;$)
     }
     ++$countDir;
     $et->Options(CharsetFileName => $enc);  # restore original setting
-    # update sequential file base for parent directory
-    $seqFileBase = $oldBase + ($seqFileNum - $seqFileBase);
 }
 
 #------------------------------------------------------------------------------
@@ -4151,16 +4160,15 @@ sub NextUnusedFilename($;$)
     return $fmt unless $fmt =~ /%[-+]?\d*\.?\d*[lun]?[cC]/;
     my %sep = ( '-' => '-', '+' => '_' );
     my ($copy, $alpha) = (0, 'a');
-    my $seq = $seqFileNum - 1;
     for (;;) {
         my ($filename, $pos) = ('', 0);
         while ($fmt =~ /(%([-+]?)(\d*)(\.?)(\d*)([lun]?)([cC]))/g) {
             $filename .= substr($fmt, $pos, pos($fmt) - $pos - length($1));
             $pos = pos($fmt);
             my ($sign, $wid, $dec, $wid2, $mod, $tok) = ($2, $3 || 0, $4, $5 || 0, $6, $7);
-            my $diff;
+            my $seq;
             if ($tok eq 'C') {
-                $diff = $wid - ($sign eq '-' ? $seqFileBase : 0);
+                $seq = $wid + ($sign eq '-' ? $seqFileDir : $seqFileNum) - 1;
                 $wid = $wid2;
             } else {
                 next unless $dec or $copy;
@@ -4169,13 +4177,13 @@ sub NextUnusedFilename($;$)
                 $filename .= $sep{$sign} if $sign;
             }
             if ($mod and $mod ne 'n') {
-                my $a = $tok eq 'C' ? Num2Alpha($diff + $seq) : $alpha;
+                my $a = $tok eq 'C' ? Num2Alpha($seq) : $alpha;
                 my $str = ($wid and $wid > length $a) ? 'a' x ($wid - length($a)) : '';
                 $str .= $a;
                 $str = uc $str if $mod eq 'u';
                 $filename .= $str;
             } else {
-                my $c = $tok eq 'C' ? ($diff + $seq) : $copy;
+                my $c = $tok eq 'C' ? $seq : $copy;
                 my $num = $c + ($mod ? 1 : 0);
                 $filename .= $wid ? sprintf("%.${wid}d",$num) : $num;
             }
@@ -4746,6 +4754,7 @@ L<Advanced options|/Advanced options>
   -echo[NUM] TEXT                  Echo text to stdout or stderr
   -efile[NUM][!] ERRFILE           Save names of files with errors
   -execute[NUM]                    Execute multiple commands on one line
+  -fileNUM ALTFILE                 Load tags from alternate file
   -list_dir                        List directories, not their contents
   -srcfile FMT                     Process a different source file
   -stay_open FLAG                  Keep reading -@ argfile even after EOF
@@ -5018,16 +5027,14 @@ for list-type tags and conditional replacements because each copy operation
 on a tag overrides any previous operations.  While this avoids duplicate
 list items when copying groups of tags from a file containing redundant
 information, it also prevents values of different tags from being copied
-into the same list when this is the intent.  So a B<-addTagsFromFile> option
-is provided which allows copying of multiple tags into the same list.  eg)
+into the same list when this is the intent.  To accumulate values
+from different operations into the same list, add a C<+> after the initial
+C<-> of the argument.  For example:
 
-    exiftool -addtagsfromfile @ '-subject<make' '-subject<model' ...
+    exiftool -tagsfromfile @ '-subject<make' '-+subject<model' ...
 
-Similarly, B<-addTagsFromFile> must be used when conditionally replacing a
-tag to prevent overriding earlier conditions.
-
-Other than these differences, the B<-tagsFromFile> and B<-addTagsFromFile>
-options are equivalent.
+Similarly, C<-+DSTTAG> must be used when conditionally replacing a tag to
+prevent overriding earlier conditions.
 
 6) The B<-a> option (allow duplicate tags) is always in effect when copying
 tags from I<SRCFILE>, but the highest priority tag is always copied last so
@@ -5307,15 +5314,15 @@ B<-csv>=I<CSVFILE> feature.
 Organize output by tag group.  I<NUM> specifies a group family number, and
 may be 0 (general location), 1 (specific location), 2 (category), 3
 (document number), 4 (instance number), 5 (metadata path), 6 (EXIF/TIFF
-format) or 7 (tag ID).  B<-g0> is assumed if a family number is not
-specified.  May be combined with other options to add group names to the
-output.  Multiple families may be specified by separating them with colons. 
-By default the resulting group name is simplified by removing any leading
-C<Main:> and collapsing adjacent identical group names, but this can be
-avoided by placing a colon before the first family number (eg. B<-g:3:1>).
-Use the B<-listg> option to list group names for a specified family.  The
-API SavePath and SaveFormat options are automatically enabled if the
-respective family 5 or 6 group names are requested.  See the
+format), 7 (tag ID) or 8 (file number).  B<-g0> is assumed if a family
+number is not specified.  May be combined with other options to add group
+names to the output.  Multiple families may be specified by separating them
+with colons.  By default the resulting group name is simplified by removing
+any leading C<Main:> and collapsing adjacent identical group names, but this
+can be avoided by placing a colon before the first family number (eg.
+B<-g:3:1>).  Use the B<-listg> option to list group names for a specified
+family.  The API SavePath and SaveFormat options are automatically enabled
+if the respective family 5 or 6 group names are requested.  See the
 L<API GetGroup documentation|Image::ExifTool/GetGroup> for more information.
 
 =item B<-G>[I<NUM>][:I<NUM>...] (B<-groupNames>)
@@ -5523,7 +5530,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 12.58 --
+    -- Generated by ExifTool 12.59 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -6414,12 +6421,12 @@ I<SHIFT> string.  For example:
 
 Add features from specified plug-in I<MODULE>.  Currently, the MWG module is
 the only plug-in module distributed with exiftool.  This module adds
-read/write support for tags as recommended by the Metadata Working Group. 
-As a convenience, C<-use MWG> is assumed if the C<MWG> group is specified
-for any tag on the command line.  See the L<MWG Tags
-documentation|Image::ExifTool::TagNames/MWG Tags> for more details.  Note
-that this option is not reversible, and remains in effect until the
-application terminates, even across the B<-execute> option.
+read/write support for tags as recommended by the Metadata Working Group. As
+a convenience, C<-use MWG> is assumed if the group name prefix starts with
+C<MWG:> exactly for any requested tag.  See the
+L<MWG Tags documentation|Image::ExifTool::TagNames/MWG Tags> for more
+details.  Note that this option is not reversible, and remains in effect
+until the application terminates, even across the B<-execute> option.
 
 =back
 
@@ -6522,6 +6529,14 @@ commands).  Allows multiple commands to be executed from a single command
 line.  I<NUM> is an optional number that is echoed in the "{ready}" message
 when using the B<-stay_open> feature.  If a I<NUM> is specified, the B<-q>
 option no longer suppresses the output "{readyNUM}" message.
+
+=item B<-file>I<NUM> I<ALTFILE>
+
+Read tags from an alternate source file.  These tags are accessed via the
+family 8 group name (eg. C<File1:TAG>, C<File2:TAG>, etc).  I<ALTFILE> may
+contain filename formatting codes %d, %f and %e.  Among other things, this
+allows tags from different files to be compared and combined using the
+B<-if> and B<-p> options.
 
 =item B<-list_dir>
 

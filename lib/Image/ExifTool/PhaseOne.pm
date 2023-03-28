@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 sub WritePhaseOne($$$);
 sub ProcessPhaseOne($$$);
@@ -84,6 +84,7 @@ my @formatName = ( undef, 'string', 'int16s', undef, 'int32s' );
         Name => 'RawData',
         Format => 'undef', # (actually 2-byte integers, but don't convert)
         Binary => 1,
+        IsImageData => 1,
         PutFirst => 1,
         Writable => 0,
         Drop => 1, # don't copy to other file types
@@ -584,6 +585,7 @@ sub ProcessPhaseOne($$$)
     my $dirLen = $$dirInfo{DirLen} || $$dirInfo{DataLen} - $dirStart;
     my $binary = $et->Options('Binary');
     my $verbose = $et->Options('Verbose');
+    my $md5 = $$et{ImageDataMD5};
     my $htmlDump = $$et{HTML_DUMP};
 
     return 0 if $dirLen < 12;
@@ -675,6 +677,17 @@ sub ProcessPhaseOne($$$)
                     }
                 }
             }
+        }
+        if ($md5 and $tagInfo and $$tagInfo{IsImageData}) {
+            my ($pos, $len) = ($valuePtr, $size);
+            while ($len) {
+                my $n = $len > 65536 ? 65536 : $len;
+                my $tmp = substr($$dataPt, $pos, $n);
+                $md5->add($tmp);
+                $len -= $n;
+                $pos += $n;
+            }
+            $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: $size bytes of PhaseOne:$$tagInfo{Name})\n");
         }
         my %parms = (
             DirName => $ifdType,

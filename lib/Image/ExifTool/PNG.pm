@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.62';
+$VERSION = '1.63';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -1374,6 +1374,7 @@ sub ProcessPNG($$)
     my $datCount = 0;
     my $datBytes = 0;
     my $fastScan = $et->Options('FastScan');
+    my $md5 = $$et{ImageDataMD5};
     my ($n, $sig, $err, $hbuf, $dbuf, $cbuf);
     my ($wasHdr, $wasEnd, $wasDat, $doTxt, @txtOffset);
 
@@ -1453,6 +1454,7 @@ sub ProcessPNG($$)
             if ($datCount and $chunk ne $datChunk) {
                 my $s = $datCount > 1 ? 's' : '';
                 print $out "$fileType $datChunk ($datCount chunk$s, total $datBytes bytes)\n";
+                print $out "$$et{INDENT}(ImageDataMD5: $datBytes bytes of $datChunk data)\n" if $md5;
                 $datCount = $datBytes = 0;
             }
         }
@@ -1539,7 +1541,17 @@ sub ProcessPNG($$)
                 }
             # skip over data chunks if possible/necessary
             } elsif (not $validate or $len > $chunkSizeLimit) {
-                $raf->Seek($len + 4, 1) or $et->Warn('Seek error'), last;
+                if ($md5) {
+                    while ($len) {
+                        my $n = $len > 65536 ? 65536 : $len;
+                        $raf->Read($dbuf,$n) == $n or last;
+                        $md5->add($dbuf);
+                        $len -= $n;
+                    }
+                    $raf->Read($cbuf, 4) == 4 or $et->Warn('Truncated data'), last;
+                } else {
+                    $raf->Seek($len + 4, 1) or $et->Warn('Seek error'), last;
+                }
                 next;
             }
         } elsif ($wasDat and $isTxtChunk{$chunk}) {
@@ -1558,6 +1570,7 @@ sub ProcessPNG($$)
             $et->Warn("Corrupted $fileType image") unless $wasEnd;
             last;
         }
+        $md5->add($dbuf) if $md5 and $datChunk;   # add to MD5 if necessary
         if ($verbose or $validate or ($outfile and not $fastScan)) {
             # check CRC when in verbose mode (since we don't care about speed)
             my $crc = CalculateCRC(\$hbuf, undef, 4);

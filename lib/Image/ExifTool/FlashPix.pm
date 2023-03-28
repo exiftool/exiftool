@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.43';
+$VERSION = '1.44';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -488,16 +488,27 @@ my %fpxFileType = (
     IeImg => {
         Name => 'EmbeddedImage',
         Notes => q{
-            embedded images in Scene7 vignette VNT files.  EmbeddedImageRectangle is
-            generated for applicable images, and may be associated with the
-            corresponding EmbeddedImage via the family 3 group name
+            embedded images in Scene7 vignette VNT files.  The EmbeddedImage Class and
+            Rectangle are also extracted for applicable images, and may be associated
+            with the corresponding EmbeddedImage via the family 3 group name
         },
         Groups => { 2 => 'Preview' },
         Binary => 1,
     },
-    IeImg_rect => { # (not a real tag -- extracted from Contents of VNT file)
+    IeImg_class => {
+        Name => 'EmbeddedImageClass',
+        Notes => q{
+            not a real tag.  This information is extracted if available for the
+            corresponding EmbeddedImage from the Contents of a VNT file
+        },
+        # eg. "Cache", "Mask"
+    },
+    IeImg_rect => { #
         Name => 'EmbeddedImageRectangle',
-        Hidden => 1,
+        Notes => q{
+            not a real tag.  This information is extracted if available for the
+            corresponding EmbeddedImage from the Contents of a VNT file
+        },
     },
 );
 
@@ -1577,13 +1588,16 @@ sub ProcessContents($$$)
                 pos($$dataPt) += $size;
             }
             $$et{IeImg_lkup} = { };
-            # - the byte after TargetRole1 is 0x0d or 0x11 for separate images in my samples,
+            $$et{IeImg_class} = { };
+            # - the byte before \x80 is 0x0d, 0x11 or 0x1f for separate images in my samples,
             #   and 0x1c or 0x23 for inline masks
-            while ($$dataPt =~ /\x0bTargetRole1.\x80\0\0\x01.{4}(.{24})/sg) {
-                my ($index, @coords) = unpack('Vx4V4', $1);
+            # - the byte after \xff\xff is 0x3b in my samples for $1 containing 'VnMask' or 'VnCache'
+            while ($$dataPt =~ /\x0bTargetRole1(?:.\x80|\xff\xff.\0.\0Vn(\w+))\0\0\x01.{4}(.{24})/sg) {
+                my ($index, @coords) = unpack('Vx4V4', $2);
                 next if $index == 0xffffffff;
                 $$et{IeImg_lkup}{$index} and $et->WarnOnce('Duplicate image index');
                 $$et{IeImg_lkup}{$index} = "@coords";
+                $$et{IeImg_class}{$index} = $1 if $1;
             }
         }
     }
@@ -2395,6 +2409,10 @@ sub ProcessFPX($$)
                         # save position of this image
                         $et->HandleTag($tagTablePtr, IeImg_rect => $$et{IeImg_lkup}{$num});
                         delete $$et{IeImg_lkup}{$num};
+                        if ($$et{IeImg_class} and $$et{IeImg_class}{$num}) {
+                            $et->HandleTag($tagTablePtr, IeImg_class => $$et{IeImg_class}{$num});
+                            delete $$et{IeImg_class}{$num};
+                        }
                     }
                     delete $$et{DOC_NUM};
                 } else {

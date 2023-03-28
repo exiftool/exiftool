@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/ExifTool.t".
 
 BEGIN {
-    $| = 1; print "1..32\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..34\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -349,6 +349,34 @@ my $testnum = 1;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jps', 'jps:all');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    print "ok $testnum\n";
+}
+
+# test 33: Test SetAlternateFile()
+{
+    ++$testnum;
+    my $exifTool = Image::ExifTool->new;
+    $exifTool->SetAlternateFile(File1 => 't/images/Nikon.jpg');
+    $exifTool->SetAlternateFile(File3 => 't/images/FujiFilm.jpg');
+    my $info = $exifTool->ImageInfo('t/images/Canon.jpg', 'file3:make', 'make', 'file1:make', 'file1:mo*');
+    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    print "ok $testnum\n";
+}
+
+# test 34: Test SetAlternateFile() with InsertTagValues()
+{
+    ++$testnum;
+    my $exifTool = Image::ExifTool->new;
+    my @foundTags;
+    $exifTool->SetAlternateFile(File010 => 't/images/Nikon.jpg');
+    $exifTool->ImageInfo('t/images/Canon.jpg', \@foundTags);
+    my $val = $exifTool->InsertTagValues(\@foundTags, '$file010:make - $make');
+    my $testfile = "t/${testname}_$testnum.failed";
+    my $goodfile = "t/${testname}_$testnum.out";
+    open OUT, ">$testfile";
+    print OUT $val,"\n";
+    close OUT;
+    print 'not ' unless testCompare($goodfile, $testfile, $testnum);
     print "ok $testnum\n";
 }
 

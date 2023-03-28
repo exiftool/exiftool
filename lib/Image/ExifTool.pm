@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.58';
+$VERSION = '12.59';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -75,6 +75,7 @@ sub GetAllGroups($;$);
 sub GetNewGroups($);
 sub GetDeleteGroups();
 sub AddUserDefinedTags($%);
+sub SetAlternateFile($$$);
 # non-public routines below
 sub InsertTagValues($$$;$$$);
 sub IsWritable($);
@@ -1824,8 +1825,11 @@ my %systemTagsNotes = (
     ImageDataMD5 => {
         Notes => q{
             MD5 of image data. Generated only if specifically requested for JPEG and
-            TIFF-based images, except Panasonic raw for now. Includes image data,
-            OtherImage and JpgFromRaw in the MD5, but not ThumbnailImage or PreviewImage
+            TIFF-based images, CR3, MRW and PNG images, MOV/MP4 videos, and RIFF-based
+            files. The MD5 includes the main image data, plus JpgFromRaw/OtherImage for
+            some formats, but does not include ThumbnailImage or PreviewImage. Includes
+            video and audio data for MOV/MP4. The L<XMP-et:OriginalImageMD5
+            tag|XMP.html#ExifTool> provides a place to store these values in the file.
         },
     },
 );
@@ -2052,6 +2056,7 @@ sub new
     $$self{FILE_SEQUENCE} = 0;  # sequence number for files when reading
     $$self{FILES_WRITTEN} = 0;  # count of files successfully written
     $$self{INDENT2} = '';       # indentation of verbose messages from SetNewValue
+    $$self{ALT_EXIFTOOL} = { }; # alternate exiftool objects
 
     # initialize our new groups for writing
     $self->SetNewGroups(@defaultWriteGroups);
@@ -2496,6 +2501,23 @@ sub ExtractInfo($;@)
             }
         }
         ++$$self{FILE_SEQUENCE};        # count files read
+        # extract information from alternate files if necessary
+        my ($g8, $altExifTool);
+        foreach $g8 (keys %{$$self{ALT_EXIFTOOL}}) {
+            $altExifTool = $$self{ALT_EXIFTOOL}{$g8};
+            next if $$altExifTool{DID_EXTRACT}; # avoid extracting twice
+            $$altExifTool{OPTIONS} = $$self{OPTIONS};
+            $$altExifTool{GLOBAL_TIME_OFFSET} = $$self{GLOBAL_TIME_OFFSET};
+            $$altExifTool{REQ_TAG_LOOKUP} = $$self{REQ_TAG_LOOKUP};
+            $altExifTool->ExtractInfo($$altExifTool{ALT_FILE});
+            # set family 8 group name for all tags
+            foreach (keys %{$$altExifTool{VALUE}}) {
+                my $ex = $$altExifTool{TAG_EXTRA}{$_};
+                $ex or $ex = $$altExifTool{TAG_EXTRA}{$_} = { };
+                $$ex{G8} = $g8;
+            }
+            $$altExifTool{DID_EXTRACT} = 1;
+        }
     }
 
     my $filename = $$self{FILENAME};    # image file name ('' if already open)
@@ -3520,6 +3542,10 @@ sub GetGroup($$;$)
                 $groups[6] = $$ex{G6};
             }
         }
+        if ($$ex{G8}) {
+            $groups[7] = '';
+            $groups[8] = $$ex{G8};
+        }
         # generate tag ID group names unless obviously not needed
         unless ($noID) {
             my $id = $$tagInfo{KeysID} || $$tagInfo{TagID};
@@ -4153,7 +4179,11 @@ sub SplitFileName($)
     } else {
         ($name = $file) =~ tr/\\/\//;
         # remove path
-        $dir = length($1) ? $1 : '/' if $name =~ s/(.*)\///;
+        if ($name =~ s/(.*)\///) {
+            $dir = length($1) ? $1 : '/';
+        } else {
+            $dir = '.';
+        }
     }
     return ($dir, $name);
 }
@@ -4594,11 +4624,18 @@ sub SetFoundTags($)
         my $tagHash = $$self{VALUE};
         my $reqTag;
         foreach $reqTag (@$reqTags) {
-            my (@matches, $group, $allGrp, $allTag, $byValue);
+            my (@matches, $group, $allGrp, $allTag, $byValue, $g8, $altOrder);
+            my $et = $self;
             if ($reqTag =~ /^(.*):(.+)/) {
                 ($group, $tag) = ($1, $2);
                 if ($group =~ /^(\*|all)$/i) {
                     $allGrp = 1;
+                } elsif ($reqTag =~ /\bfile(\d+):/i) {
+                    $g8 = "File$1";
+                    $altOrder = ($1 + 1) * 100000;
+                    $et = $$self{ALT_EXIFTOOL}{$g8} || $self;
+                    $fileOrder = $$et{FILE_ORDER};
+                    $tagHash = $$et{VALUE};
                 } elsif ($group !~ /^[-\w:]*$/) {
                     $self->Warn("Invalid group name '${group}'");
                     $group = 'invalid';
@@ -4640,7 +4677,7 @@ sub SetFoundTags($)
             }
             if (defined $group and not $allGrp) {
                 # keep only specified group
-                @matches = $self->GroupMatches($group, \@matches);
+                @matches = $et->GroupMatches($group, \@matches);
                 next unless @matches or not $allTag;
             }
             if (@matches > 1) {
@@ -4649,9 +4686,9 @@ sub SetFoundTags($)
                 # return only the highest priority tag unless duplicates wanted
                 unless ($doDups or $allTag or $allGrp) {
                     $tag = shift @matches;
-                    my $oldPriority = $$self{PRIORITY}{$tag} || 1;
+                    my $oldPriority = $$et{PRIORITY}{$tag} || 1;
                     foreach (@matches) {
-                        my $priority = $$self{PRIORITY}{$_};
+                        my $priority = $$et{PRIORITY}{$_};
                         $priority = 1 unless defined $priority;
                         next unless $priority >= $oldPriority;
                         $tag = $_;
@@ -4664,6 +4701,22 @@ sub SetFoundTags($)
                 $matches[0] = $byValue ? "$tag #(0)" : "$tag (0)";
                 # bogus file order entry to avoid warning if sorting in file order
                 $$self{FILE_ORDER}{$matches[0]} = 9999;
+            }
+            # copy over necessary information for tags from alternate files
+            if ($g8) {
+                my $tag;
+                foreach $tag (@matches) {
+                    my $vtag = $tag;
+                    $vtag =~ s/( |$)/ #[$g8]/;
+                    $$self{VALUE}{$vtag} = $$et{VALUE}{$tag};
+                    $$self{TAG_INFO}{$vtag} = $$et{TAG_INFO}{$tag};
+                    $$self{TAG_EXTRA}{$vtag} = $$et{TAG_EXTRA}{$tag} || { };
+                    $$self{FILE_ORDER}{$vtag} = ($$et{FILE_ORDER}{$tag} || 0) + $altOrder;
+                    $tag = $vtag;
+                }
+                # restore variables to original values for main file
+                $fileOrder = $$self{FILE_ORDER};
+                $tagHash = $$self{VALUE};
             }
             # save indices of tags extracted by value
             push @byValue, scalar(@$rtnTags) .. (scalar(@$rtnTags)+scalar(@matches)-1) if $byValue;
@@ -6347,7 +6400,6 @@ sub ProcessJPEG($$)
 {
     local $_;
     my ($self, $dirInfo) = @_;
-    my ($ch, $s, $length);
     my $options = $$self{OPTIONS};
     my $verbose = $$options{Verbose};
     my $out = $$options{TextOut};
@@ -6356,12 +6408,16 @@ sub ProcessJPEG($$)
     my $req = $$self{REQ_TAG_LOOKUP};
     my $htmlDump = $$self{HTML_DUMP};
     my %dumpParms = ( Out => $out );
+    my ($ch, $s, $length, $md5, $md5size);
     my ($success, $wantTrailer, $trailInfo, $foundSOS, %jumbfChunk);
     my (@iccChunk, $iccChunkCount, $iccChunksTotal, @flirChunk, $flirCount, $flirTotal);
-    my ($preview, $scalado, @dqt, $subSampling, $dumpEnd, %extendedXMP, $md5);
+    my ($preview, $scalado, @dqt, $subSampling, $dumpEnd, %extendedXMP);
 
     # get pointer to MD5 object if it exists and we are the top-level JPEG
-    $md5 = $$self{ImageDataMD5} if $$self{FILE_TYPE} eq 'JPEG' and not $$self{DOC_NUM};
+    if ($$self{FILE_TYPE} eq 'JPEG' and not $$self{DOC_NUM}) {
+        $md5 = $$self{ImageDataMD5};
+        $md5size = 0;
+    }
 
     # check to be sure this is a valid JPG (or J2C, or EXV) file
     return 0 unless $raf->Read($s, 2) == 2 and $s =~ /^\xff[\xd8\x4f\x01]/;
@@ -6441,8 +6497,19 @@ sub ProcessJPEG($$)
                 $nextSegPos = $raf->Tell();
                 $len -= 4;  # subtract size of length word
                 last unless $raf->Seek($len, 1);
-            } elsif ($md5 and defined $marker and ($marker == 0x00 or $marker == 0xda)) {
-                $md5->add($buff);   # (note: this includes the terminating 0xff's)
+            } elsif ($md5 and defined $marker and ($marker == 0x00 or $marker == 0xda or
+                ($marker >= 0xd0 and $marker <= 0xd7)))
+            {
+                # calculate MD5 for image data (includes leading ff d9 but not trailing ff da)
+                $md5->add("\xff" . chr($marker));
+                my $n = $skipped - (length($buff) - 1); # number of extra 0xff's
+                if (not $n) {
+                    $buff = substr($buff, 0, -1);       # remove trailing 0xff
+                } elsif ($n > 1) {
+                    $buff .= "\xff" x ($n - 1);         # add back extra 0xff's
+                }
+                $md5->add($buff);
+                $md5size += $skipped + 2;
             }
             # read second segment too if this was the first
             next unless defined $marker;
@@ -7457,6 +7524,8 @@ sub ProcessJPEG($$)
             delete $extendedXMP{$guid};
         }
     }
+    # print verbose MD5 message if necessary
+    print $out "$$self{INDENT}(ImageDataMD5: $md5size bytes of JPEG image data)\n" if $md5size and $verbose;
     # calculate JPEGDigest if requested
     if (@dqt) {
         require Image::ExifTool::JPEGDigest;

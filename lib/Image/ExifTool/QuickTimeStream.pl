@@ -599,6 +599,8 @@ my %insvLimit = (
     0x1a => 'Firmware',
     0x2a => {
         Name => 'Parameters',
+        # (see https://exiftool.org/forum/index.php?msg=78942)
+        Notes => 'number of lenses, 6-axis orientation of each lens, raw resolution',
         ValueConv => '$val =~ tr/_/ /; $val',
     },
 );
@@ -1125,23 +1127,37 @@ sub Process_text($$$;$)
 # Inputs: 0) ExifTool ref
 # Notes: Also accesses ExifTool RAF*, SET_GROUP1, HandlerType, MetaFormat,
 #        ee*, and avcC elements (* = must exist)
+# - may be called either due to ExtractEmbedded option, or ImageDataMD5 requested
+# - MD5 includes only video and audio data
 sub ProcessSamples($)
 {
     my $et = shift;
     my ($raf, $ee) = @$et{qw(RAF ee)};
-    my ($i, $buff, $pos, $hdrLen, $hdrFmt, @time, @dur, $oldIndent);
+    my ($i, $buff, $pos, $hdrLen, $hdrFmt, @time, @dur, $oldIndent, $md5);
 
     return unless $ee;
     delete $$et{ee};    # use only once
 
-    # only process specific types of video streams
+    my $eeOpt = $et->Options('ExtractEmbedded');
     my $type = $$et{HandlerType} || '';
     if ($type eq 'vide') {
-        if    ($$ee{avcC}) { $type = 'avcC' }
-        elsif ($$ee{JPEG}) { $type = 'JPEG' }
-        else { return }
+        # only process specific types of video streams
+        $md5 = $$et{ImageDataMD5};
+        # only process specific video types if ExtractEmbedded was used
+        # (otherwise we are only here to calculate the audio/video MD5)
+        if ($eeOpt) {
+            if    ($$ee{avcC}) { $type = 'avcC' }
+            elsif ($$ee{JPEG}) { $type = 'JPEG' }
+            else { return unless $md5 }
+        }
+    } elsif ($type eq 'soun') {
+        $md5 = $$et{ImageDataMD5};
+        return unless $md5;
+    } else {
+        return unless $eeOpt;   # (don't do MD5 on other types)
     }
 
+    my $md5size = 0;
     my ($start, $size) = @$ee{qw(start size)};
 #
 # determine sample start offsets from chunk offsets (stco) and sample-to-chunk table (stsc),
@@ -1160,13 +1176,16 @@ sub ProcessSamples($)
             $timeDelta = shift @$stts;
         }
         my $ts = $$et{MediaTS} || 1;
+        my @chunkSize;  # total size of each chunk
         foreach $chunkStart (@$stco) {
             if ($iChunk >= $nextChunk and @$stsc) {
                 ($startChunk, $samplesPerChunk, $descIdx) = @{shift @$stsc};
                 $nextChunk = $$stsc[0][0] if @$stsc;
             }
             @$size < @$start + $samplesPerChunk and $et->WarnOnce('Sample size error'), last;
+            last unless defined $chunkStart and length $chunkStart;
             my $sampleStart = $chunkStart;
+            my $chunkSize = 0;
 Sample:     for ($i=0; ; ) {
                 push @$start, $sampleStart;
                 if (defined $time) {
@@ -1184,12 +1203,19 @@ Sample:     for ($i=0; ; ) {
                     --$timeCount;
                 }
                 # (eventually should use the description indices: $descIdx)
+                $chunkSize += $$size[$#$start];
                 last if ++$i >= $samplesPerChunk;
                 $sampleStart += $$size[$#$start];
             }
+            push @chunkSize, $chunkSize;
             ++$iChunk;
         }
         @$start == @$size or $et->WarnOnce('Incorrect sample start/size count'), return;
+        # process as chunks if we are only interested in calculating MD5
+        if ($type eq 'soun' or $type eq 'vide') {
+            $start = $stco;
+            $size = \@chunkSize;
+        }
     }
 #
 # extract and parse the sample data
@@ -1221,6 +1247,10 @@ Sample:     for ($i=0; ; ) {
         my $size = $$size[$i];
         next unless $raf->Seek($$start[$i], 0) and $raf->Read($buff, $size) == $size;
 
+        if ($md5) {
+            $md5->add($buff);
+            $md5size += length $buff;
+        }
         if ($type eq 'avcC') {
             next if length($buff) <= $hdrLen;
             # scan through all NAL units and send them to ParseH264Video()
@@ -1347,6 +1377,8 @@ Sample:     for ($i=0; ; ) {
         SetGPSDateTime($et, $tagTbl, $time[$i]) if $$et{FoundGPSLatitude} and not $$et{FoundGPSDateTime};
     }
     if ($verbose) {
+        my $str = $type eq 'soun' ? 'Audio' : 'Video';
+        $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: $md5size bytes of $str data)\n") if $md5size;
         $$et{INDENT} = $oldIndent;
         $et->VPrint(0, "--------------------------\n");
     }

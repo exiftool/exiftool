@@ -1727,10 +1727,11 @@ sensitive, and may be prefixed by one or more family 0, 1, 2 or 7 group
 names with optional leading family numbers, separated by colons (eg.
 'exif:iso'). A leading '-' indicates tags to be excluded (eg. '-comment'),
 or a trailing '#' causes the ValueConv value to be copied (same as setting
-the Type option to 'ValueConv' for this tag only).  Wildcards ('*' and '?')
-may be used in the tag name.  A tag name of '*' is commonly used when a
-group is specified to copy all tags in the group (eg. 'XMP:*').  A special
-feature allows tag names of the form 'DSTTAGE<lt>SRCTAG' (or
+the Type option to 'ValueConv' for this tag only).  A leading '+' sets the
+Replace option to 0 on a per-tag basis (see Options below).  Wildcards ('*'
+and '?') may be used in the tag name.  A tag name of '*' is commonly used
+when a group is specified to copy all tags in the group (eg. 'XMP:*').  A
+special feature allows tag names of the form 'DSTTAGE<lt>SRCTAG' (or
 'SRCTAGE<gt>DSTTAG') to be specified to copy information to a tag with a
 different name or a specified group.  Both 'SRCTAG' and 'DSTTAG' may contain
 wildcards and/or be prefixed by a group name (eg.
@@ -1769,7 +1770,9 @@ copies all information while preserving the original family 1 groups, while
 The options are the same was for L</SetNewValue>, and are passed directly
 to L</SetNewValue> internally, with a few exceptions:
 
-- The Replace option defaults to 1 instead of 0 as with L</SetNewValue>.
+- The Replace option defaults to 1 instead of 0 as with L</SetNewValue>,
+however the tag name argument may be prefixed with '+' to set the Replace
+option to 0 for this argument only.
 
 - The AddValue or DelValue option is set for individual tags if '+>' or '->'
 (or '+E<lt>' or '-E<lt>') are used.
@@ -1867,6 +1870,31 @@ L</SaveNewValues>.  See L</SaveNewValues> above for an example.
 =item Return Value:
 
 None.
+
+=back
+
+=head2 SetAlternateFile
+
+Specify alternate file from which to read metadata.  Tags from the alternate
+file are available after L</ExtractInfo> is called or during a call to
+L</SetNewValuesFromFile> by using a family 8 group name (eg. 'File1' in the
+example below).
+
+    $exifTool->SetAlternateFile(File1 => 'images/test1.jpg');
+
+=over 4
+
+=item Inputs:
+
+0) ExifTool object reference
+
+1) Family 8 group name, case insensitive (eg. 'File1', 'File2'...)
+
+2) Name of alternate input file, or undef to reset
+
+=item Return Values:
+
+1 on success, or 0 if the group name is invalid.
 
 =back
 
@@ -2088,6 +2116,7 @@ The group family numbers are currently available:
     5) Metadata Path            (eg. JPEG-APP1-IFD0-ExifIFD)
     6) EXIF/TIFF Format         (eg. int8u, int32u, undef, string)
     7) Tag ID                   (eg. ID-271, ID-rights, ID-a9aut)
+    8) Alternate File Number    (eg. File1, File2, File3...)
 
 Families 0 and 1 are based on the file structure, and are similar except
 that family 1 is more specific and sub-divides some groups to give more
@@ -2139,6 +2168,8 @@ a family 7 group name, numerical ID's may be in hex or decimal, and
 non-numerical ID's may or may not have characters other than [-_A-Za-z0-9]
 converted to hex.  Note that unlike other group names, the tag ID's of
 family 7 group names are case sensitive (but the leading "ID-" is not).
+
+Family 8 specifies the alternate file set from a call to L</SetAlternateFile>.
 
 See L</GetAllGroups [static]> for complete lists of group names.
 
@@ -2391,6 +2422,10 @@ ID-xxx (Where xxx is the tag ID.  Numerical ID's are returned in hex with a
 leading "0x" if the HexTagIDs option is set, or decimal otherwise. 
 Characters in non-numerical ID's which are not valid in a group name are
 returned as 2 hex digits.)
+
+=item Family 8 (Alternate File):
+
+File#
 
 =back
 

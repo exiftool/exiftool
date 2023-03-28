@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/Writer.t".
 
 BEGIN {
-    $| = 1; print "1..59\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..60\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -1080,6 +1080,29 @@ my $testOK;
     unlink $testfile;
     writeInfo($exifTool, 't/images/Writer.jpg', $testfile);
     my $info = $exifTool->ImageInfo($testfile, 'xmp:all');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
+    print "ok $testnum\n";
+}
+
+# test 60: Test SetAlternateFile() feature with SetNewValuesFromFile()
+{
+    ++$testnum;
+    my $exifTool = Image::ExifTool->new;
+    $exifTool->SetAlternateFile(File1 => 't/images/Nikon.jpg');
+    $exifTool->SetAlternateFile(File2 => 't/images/FujiFilm.jpg');
+    $exifTool->SetNewValuesFromFile('t/images/Canon.jpg',
+        'subject<file1:make', '+subject<make', '+subject<$file2:make',
+        'contributor<file1:make', 'contributor<make', 'contributor<$file2:make',
+        '+xmp-dc:type<file1:me*',
+    );
+    $testfile = "t/${testname}_${testnum}_failed.jpg";
+    unlink $testfile;
+    writeInfo($exifTool, 't/images/Writer.jpg', $testfile);
+    my $info = $exifTool->ImageInfo($testfile, 'subject', 'contributor', 'type');
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {

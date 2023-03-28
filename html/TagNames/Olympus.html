@@ -2851,46 +2851,102 @@ give AF point, upper bits give AF target selection mode)</span>
   <td>0x80 = Dynamic Single Target
   <br>0xe0 = n/a</td></tr></table>
 <span class=s><span class=n>(models with 7-point AF)</span>
-  <br>[Value 0]
-  <br>0x0 = (none)
-  <br>0x1 = Center
-  <br>[Value 1]
+  <br>[Value 0]</span><table class=cols><tr>
+  <td>0x0 = (none)
+  <br>0x2 = Top-center (horizontal)
+  <br>0x4 = Right (horizontal)
+  <br>0x5 = Mid-right (horizontal)
+  <br>0x6 = Center (horizontal)
+  <br>0x7 = Mid-left (horizontal)
+  <br>0x8 = Left (horizontal)
+  <br>0xa = Bottom-center (horizontal)
+  <br>0xc = Top-center (vertical)
+  <br>0xf = Right (vertical)
+  <br>0x10 = Mid-right (vertical)
+  <br>0x11 = Center (vertical)
+  <br>0x12 = Mid-left (vertical)
+  <br>0x13 = Left (vertical)
+  <br>0x15 = Bottom-center (vertical)</td></tr></table>
+<span class=s>[Value 1]
   <br>0x0 = Single Target
   <br>0x40 = All Target
-  <br><span class=n>(other models)</span>
+  <br><span class=n>(models other than E-Mxxx and OM-x)</span>
   <br>0 = Left (or n/a)
   <br>1 = Center (horizontal)
   <br>2 = Right
   <br>3 = Center (vertical)
-  <br>255 = None</span></td></tr>
+  <br>255 = None
+  <br><span class=n>(other models)</span></span></td></tr>
 <tr class=b>
+<td title='0x031b = 795'>0x031b</td>
+<td>AFPointDetails
+  <br>AFPointDetails</td>
+<td class=c>no<br>int16u</td>
+<td><span class=s><span class=n>(models E-Mxxx and OM-x)</span>
+  <br>[Value 0]</span><table class=cols><tr>
+  <td>0x0 = No Subject Detection
+  <br>0x1 = Motorsports</td><td>&nbsp;&nbsp;</td>
+  <td>0x2 = Airplanes
+  <br>0x3 = Trains</td><td>&nbsp;&nbsp;</td>
+  <td>0x4 = Birds
+  <br>0x5 = Dogs &amp; Cats</td></tr></table>
+<span class=s>[Value 1]</span><table class=cols><tr>
+  <td>0x0 = Face Priority</td><td>&nbsp;&nbsp;</td>
+  <td>0x1 = Target Priority</td></tr></table>
+<span class=s>[Value 2]</span><table class=cols><tr>
+  <td>0x0 = Normal AF</td><td>&nbsp;&nbsp;</td>
+  <td>0x1 = AF on Half Press</td></tr></table>
+<span class=s>[Value 3]</span><table class=cols><tr>
+  <td>0x0 = No Eye-AF</td><td>&nbsp;&nbsp;</td>
+  <td>0x1 = Right Eye Priority</td><td>&nbsp;&nbsp;</td>
+  <td>0x2 = Left Eye Priority</td><td>&nbsp;&nbsp;</td>
+  <td>0x3 = Both Eyes Priority</td></tr></table>
+<span class=s>[Value 4]</span><table class=cols><tr>
+  <td>0x0 = No Face Detection</td><td>&nbsp;&nbsp;</td>
+  <td>0x1 = Face Detection</td></tr></table>
+<span class=s>[Value 5]</span><table class=cols><tr>
+  <td>0x0 = No MF</td><td>&nbsp;&nbsp;</td>
+  <td>0x1 = With MF</td></tr></table>
+<span class=s>[Value 6]</span><table class=cols><tr>
+  <td>0x0 = AF Priority</td><td>&nbsp;&nbsp;</td>
+  <td>0x1 = Release Priority</td></tr></table>
+<span class=s>[Value 7]</span><table class=cols><tr>
+  <td>0x0 = No Object found</td><td>&nbsp;&nbsp;</td>
+  <td>0x1 = Object found</td></tr></table>
+<span class=s>[Value 8]</span><table class=cols><tr>
+  <td>0x0 = MF</td><td>&nbsp;&nbsp;</td>
+  <td>0x1 = S-AF</td><td>&nbsp;&nbsp;</td>
+  <td>0x2 = C-AF</td><td>&nbsp;&nbsp;</td>
+  <td>0x6 = C-AF + TR</td></tr></table>
+<span class=s><span class=n>(other models)</span></span></td></tr>
+<tr>
 <td title='0x0328 = 808'>0x0328</td>
 <td>AFInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Olympus.html#AFInfo'>Olympus AFInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1201 = 4609'>0x1201</td>
 <td>ExternalFlash</td>
 <td class=c>int16u[2]</td>
 <td><span class=s>&#39;0 0&#39; = Off
   <br>&#39;1 0&#39; = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1203 = 4611'>0x1203</td>
 <td>ExternalFlashGuideNumber?</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1204 = 4612'>0x1204</td>
 <td>ExternalFlashBounce</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Bounce or Off
   <br>1 = Direct</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1205 = 4613'>0x1205</td>
 <td>ExternalFlashZoom</td>
 <td class=c>rational64u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1208 = 4616'>0x1208</td>
 <td>InternalFlash</td>
 <td class=c>int16u[n]</td>
@@ -2898,23 +2954,23 @@ give AF point, upper bits give AF target selection mode)</span>
   <br>1 = On
   <br>&#39;0 0&#39; = Off
   <br>&#39;1 0&#39; = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1209 = 4617'>0x1209</td>
 <td>ManualFlash</td>
 <td class=c title=' ~ = Writable only with -n'>int16u[2]~</td>
 <td><span class=s><span class=n>(2 numbers: 1. 0=Off, 1=On, 2. Flash strength)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x120a = 4618'>0x120a</td>
 <td>MacroLED</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1500 = 5376'>0x1500</td>
 <td>SensorTemperature</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1600 = 5632'>0x1600</td>
 <td>ImageStabilization</td>
 <td class=c title=' ~ = Writable only with -n'>undef~</td>
@@ -3738,7 +3794,7 @@ such as the OM E-M5.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 23, 2023</i>
+<br><i>Last revised Mar 28, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

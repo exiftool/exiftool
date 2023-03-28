@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.27';
+$VERSION = '1.28';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -266,6 +266,7 @@ my %panasonicWhiteBalance = ( #forum9396
         PanasonicHack => 1,
         OffsetPair => 0x117, # (use StripByteCounts as the offset pair)
         NotRealPair => 1,    # (to avoid Validate warning)
+        IsImageData => 1,
     },
     0x119 => {
         Name => 'DistortionInfo',
@@ -296,6 +297,20 @@ my %panasonicWhiteBalance = ( #forum9396
         },
     },
     # 0x122 - int32u: RAWDataOffset for the GH5s/GX9, or pointer to end of raw data for G9 (forum9295)
+    0x127 => { #github193 (newer models)
+        Name => 'JpgFromRaw2',
+        Groups => { 2 => 'Preview' },
+        DataTag => 'JpgFromRaw2',
+        RawConv => '$self->ValidateImage(\$val,$tag)',
+    },
+    0x13b => {
+        Name => 'Artist',
+        Groups => { 2 => 'Author' },
+        Permanent => 1, # (so we don't add it if the model doesn't write it)
+        Writable => 'string',
+        WriteGroup => 'IFD0',
+        RawConv => '$val =~ s/\s+$//; $val', # trim trailing blanks
+    },
     0x2bc => { # PH Extension!!
         Name => 'ApplicationNotes', # (writable directory!)
         Writable => 'int8u',
@@ -317,6 +332,17 @@ my %panasonicWhiteBalance = ( #forum9396
             of entries, then for each entry there are 4 numbers: an ISO speed, and
             noise-reduction strengths the R, G and B channels
         },
+    },
+    0x8298 => { #github193
+        Name => 'Copyright',
+        Groups => { 2 => 'Author' },
+        Permanent => 1, # (so we don't add it if the model doesn't write it)
+        Format => 'undef',
+        Writable => 'string',
+        WriteGroup => 'IFD0',
+        RawConv => $Image::ExifTool::Exif::Main{0x8298}{RawConv},
+        RawConvInv => $Image::ExifTool::Exif::Main{0x8298}{RawConvInv},
+        PrintConvInv => $Image::ExifTool::Exif::Main{0x8298}{PrintConvInv},
     },
     0x83bb => { # PH Extension!!
         Name => 'IPTC-NAA', # (writable directory!)

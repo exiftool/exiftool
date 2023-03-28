@@ -17,9 +17,37 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.59'><b>Mar. 28, 2023 - Version 12.59</b></a>
+<ul>
+<li>COMPATIBILITY WARNING: Changed the calculated ImageDataMD5 for JPEG images
+    to include all data from the SOS to the EOI (including the SOS marker but
+    not the EOI marker)
+<li>Added new -fileNUM option to load tags from alternate files
+<li>Added family 8 groups for accessing tags from alternate files
+<li>Added new XMP-et:OriginalImageMD5 tag for storing ImageDataMD5 value
+<li>Added verbose ImageDataMD5 message for JPEG files
+<li>Added a new Nikon LensID (thanks Warren Hatch)
+<li>Decode a new Olympus tag and improved decoding of another (thanks Herb)
+<li>Decode a couple of new PanasonicRaw tags
+<li>Decode image coordinates for a couple more VNT object types
+<li>Enhanced ImageDataMD5 to also support MRW, CR3, PNG, MOV/MP4 and RIFF-based
+    files
+<li>Improved verbose messages when deleting NikonApp trailer
+<li>Patched to avoid structure warnings when copying tags from Nikon files
+    containing NKSC metadata
+<li>Fixed %-C filename format code to work properly with the -fileOrder and
+    -progress options
+<li>Fixed new ImageDataMD5 tag to work properly with PhaseOne IIQ files
+<li>Fixed potential ValueConv warning when reading LIF files
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#SetAlternateFile">SetAlternateFile method</a>
+    </ul>
+</ul>
+
 <a name='v12.58'><b>Mar. 15, 2023 - Version 12.58</b></a>
 <ul>
-<li>Added Extra ImageDataMD5 tag to calculate MD5 of image data only
+<li>Added <a href="https://exiftool.org/TagNames/Extra.html">Extra</a> ImageDataMD5 tag to calculate MD5 of image data only
 <li>Added support for reading DJI APP4 and APP7 JPEG segments
 <li>Added a new SonyModelID value
 <li>Decode a few new Nikon tags (thanks Warren Hatch)

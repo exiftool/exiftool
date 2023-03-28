@@ -51,14 +51,15 @@ retrieve any number of them.</p>
 <li><a href="#GetRequestedTags">GetRequestedTags</a></li>
 <li><a href="#GetValue">GetValue</a></li>
 <li><a href="#SetNewValue">SetNewValue</a></li>
+<li><a href="#GetNewValue">GetNewValue</a></li>
 </ul>
 </td><td valign=top>
 <ul>
-<li><a href="#GetNewValue">GetNewValue</a></li>
 <li><a href="#SetNewValuesFromFile">SetNewValuesFromFile</a></li>
 <li><a href="#CountNewValues">CountNewValues</a></li>
 <li><a href="#SaveNewValues">SaveNewValues</a></li>
 <li><a href="#RestoreNewValues">RestoreNewValues</a></li>
+<li><a href="#SetAlternateFile">SetAlternateFile</a></li>
 <li><a href="#SetFileModifyDate">SetFileModifyDate</a></li>
 <li><a href="#SetFileName">SetFileName</a></li>
 <li><a href="#SetNewGroups">SetNewGroups</a></li>
@@ -66,10 +67,10 @@ retrieve any number of them.</p>
 <li><a href="#GetTagID">GetTagID</a></li>
 <li><a href="#GetDescription">GetDescription</a></li>
 <li><a href="#GetGroup">GetGroup</a></li>
+<li><a href="#GetGroups">GetGroups</a></li>
 </ul>
 </td><td valign=top>
 <ul>
-<li><a href="#GetGroups">GetGroups</a></li>
 <li><a href="#BuildCompositeTags">BuildCompositeTags</a></li>
 <li><a href="#GetTagName">GetTagName</a></li>
 <li><a href="#GetShortcuts">GetShortcuts</a></li>
@@ -1551,10 +1552,11 @@ in a specified file.</p>
  '<code>exif:iso</code>').  A leading '<code>-</code>' indicates tags to be
  excluded (eg. '<code>-comment</code>'), or a trailing '<code>#</code>' causes
  the ValueConv value to be copied (same as setting the Type option to
- 'ValueConv' for this tag only).  Wildcards ('<code>*</code>' and
- '<code>?</code>') may be used in the tag name.  A tag name of '<code>*</code>'
- is commonly used when a group is specified to copy all tags in the group (eg.
- '<code>XMP:*</code>').<br>&nbsp;<br> 
+ 'ValueConv' for this tag only).  A leading '<code>+</code>' sets the Replace
+ option to 0 on a per-tag basis (see Options below).  Wildcards ('<code>*</code>'
+ and '<code>?</code>') may be used in the tag name.  A tag name of
+ '<code>*</code>' is commonly used when a group is specified to copy all tags in
+ the group (eg. '<code>XMP:*</code>').<br>&nbsp;<br> 
  A special feature allows tag names of the form '<code>DSTTAG&lt;SRCTAG</code>'
  (or '<code>SRCTAG&gt;DSTTAG</code>') to be specified to copy information to a
  tag with a different name or a specified group.  Both '<code>SRCTAG</code>' and
@@ -1601,7 +1603,8 @@ are passed directly to <a href="#SetNewValue">SetNewValue</a> internally,
 with a few exceptions:</p>
 <ul>
 <li>The Replace option defaults to 1 instead of 0 as with
-<a href="#SetNewValue">SetNewValue</a>.</li>
+<a href="#SetNewValue">SetNewValue</a>, however the tag name argument may be
+prefixed with '+' to set the Replace option to 0 for this argument only.</li>
 <li>The AddValue or DelValue option is set for individual tags if '+&gt;' or
 '-&gt;' (or '+&lt;' or '-&lt;') are used.</li>
 <li>The Group option is set for tags where a group name is given.</li>
@@ -1730,6 +1733,25 @@ See <a href="#SaveNewValues">SaveNewValues</a> above for an example.</p>
 <tr><td valign=top><b>Inputs</b></td><td><b>0)</b> ExifTool object reference
 </td></tr>
 </table></blockquote>
+
+<hr><h2><a name="SetAlternateFile">SetAlternateFile</a></h2>
+<p>Specify alternate file from which to read metadata.  Tags from the alternate
+file are available after <a href="#ExtractInfo">ExtractInfo</a> is called or
+during a call to <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a> by
+using a family 8 group name (eg. '<code>File1</code>' in the example below).</p>
+<blockquote><table class='norm'>
+<tr><td><b>Prototype</b></td><td>SetAlternateFile($$$)</td></tr>
+<tr><td valign=top><b>Inputs</b></td><td><b>0)</b> ExifTool object reference
+<br><b>1)</b> Case insensitive family 8 group name ('File1', 'File2' or 'File3', etc)
+<br><b>2)</b> Name of alternate input file, or undef to reset
+</td></tr>
+<tr><td valign=top><b>Returns</b></td><td>1 on success, or 0 if the group name is invalid.
+</td></tr>
+</table></blockquote>
+<p><b>Example:</b></p>
+<blockquote><table class='box'><tr><td><pre>
+$exifTool-&gt;<b>SetAlternateFile</b>(File1 =&gt; 'images/test1.jpg');
+</pre></td></tr></table></blockquote>
 
 <hr><h2><a name="SetFileModifyDate">SetFileModifyDate</a></h2>
 <p>Write the filesystem modification or creation time from the new value of the
@@ -1891,6 +1913,7 @@ and adjacent identical group names unless the family string begins with a colon.
 <tr><td align=center>5</td><td>Metadata Path</td> <td>eg. JPEG-APP1-IFD0-ExifIFD</td></tr>
 <tr><td align=center>6</td><td>EXIF/TIFF Format</td> <td>int8u, int32u, undef, string</td></tr>
 <tr><td align=center>7</td><td>Tag ID</td> <td>ID-271, ID-rights, ID-a9aut</td></tr>
+<tr><td align=center>8</td><td>Alternate File</td> <td>File1, File2, File3...</td></tr>
 </table></blockquote>
 
 <p>Families 0 and 1 are based on the file structure, and are similar except that
@@ -1939,6 +1962,8 @@ leading "0x") or decimal, and non-numerical ID's may or may not have characters
 other than [-_A-Za-z0-9] converted to hex.  Note that unlike other group names,
 the tag ID's in family 7 group names are case sensitive (but the leading "ID-"
 is not).</p>
+<p>Family 8 is used to specify tags loaded from alternate input files defined
+in calls to <a href="#SetAlternateFile">SetAlternateFile</a>.</p>
 <p>See <a href="#GetAllGroups">GetAllGroups</a> for lists of group names.</p>
 
 <p><b>Examples:</b></p>
@@ -2178,6 +2203,9 @@ rational64s, float, double, ifd, unicode, complex, int64u, int64s, ifd64</td></t
 leading "0x" if the HexTagIDs option is set, or decimal otherwise.  Characters
 in non-numerical ID's which are not valid in a group name are returned as 2
 hex digits.)</td></tr>
+<tr><td><b>8&nbsp;(Alternate&nbsp;File)</b></td>
+<td>File#
+</td></tr>
 </table></blockquote>
 <p>Note:  This function may also be called as an ExifTool member function to
 allow the HexTagIDs option to be set when retrieving family 7 group names.</p>

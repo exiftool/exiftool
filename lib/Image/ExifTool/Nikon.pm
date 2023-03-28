@@ -64,7 +64,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.20';
+$VERSION = '4.21';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -5298,6 +5298,7 @@ my %nikonFocalConversions = (
             35 => 'Nikkor Z 28-75mm f/2.8', #IB
             36 => 'Nikkor Z 400mm f/4.5 VR S', #IB
             37 => 'Nikkor Z 600mm f/4 TC VR S', #28
+            38 => 'Nikkor Z 85mm f/1.2 S', #28
             39 => 'Nikkor Z 17-28mm f/2.8', #IB
             32768 => 'Nikkor Z 400mm f/2.8 TC VR S TC-1.4x', #28
             32769 => 'Nikkor Z 600mm f/4 TC VR S TC-1.4x', #28
@@ -11836,19 +11837,19 @@ sub ProcessNikonApp($;$)
     my $trailerLen = unpack('N', $buff);
     $trailerLen > $fileEnd and $et->Warn('Bad NikonApp trailer size'), return 0;
     if ($dirInfo) {
-        $$dirInfo{DirLen} = $trailerLen if $dirInfo;
+        $$dirInfo{DirLen} = $trailerLen;
         $$dirInfo{DataPos} = $fileEnd - $trailerLen;
         if ($$dirInfo{OutFile}) {
             if ($$et{DEL_GROUP}{NikonApp}) {
+                $et->VPrint(0, "  Deleting NikonApp trailer ($trailerLen bytes)\n");
                 ++$$et{CHANGED};
-            # just copy the trailer when writing
+            # just copy the trailer when writing (read directly into output buffer)
             } elsif ($trailerLen > $fileEnd or not $raf->Seek($$dirInfo{DataPos}, 0) or
                      $raf->Read(${$$dirInfo{OutFile}}, $trailerLen) != $trailerLen)
             {
                 return 0;
-            } else {
-                return 1;
             }
+            return 1;
         }
         $et->DumpTrailer($dirInfo) if $verbose or $$et{HTML_DUMP};
     }

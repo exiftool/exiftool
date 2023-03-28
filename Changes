@@ -7,6 +7,31 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Mar. 28, 2023 - Version 12.59
+
+  - COMPATIBILITY WARNING: Changed the calculated ImageDataMD5 for JPEG images
+    to include all data from the SOS to the EOI (including the SOS marker but
+    not the EOI marker)
+  - Added new -fileNUM option to load tags from alternate files
+  - Added family 8 groups for accessing tags from alternate files
+  - Added new XMP-et:OriginalImageMD5 tag for storing ImageDataMD5 value
+  - Added verbose ImageDataMD5 message for JPEG files
+  - Added a new Nikon LensID (thanks Warren Hatch)
+  - Decode a new Olympus tag and improved decoding of another (thanks Herb)
+  - Decode a couple of new PanasonicRaw tags
+  - Decode image coordinates for a couple more VNT object types
+  - Enhanced ImageDataMD5 to also support MRW, CR3, PNG, MOV/MP4 and RIFF-based
+    files
+  - Improved verbose messages when deleting NikonApp trailer
+  - Patched to avoid structure warnings when copying tags from Nikon files
+    containing NKSC metadata
+  - Fixed %-C filename format code to work properly with the -fileOrder and
+    -progress options
+  - Fixed new ImageDataMD5 tag to work properly with PhaseOne IIQ files
+  - Fixed potential ValueConv warning when reading LIF files
+  - API Changes:
+      - Added SetAlternateFile method
+
 Mar. 15, 2023 - Version 12.58
 
   - Added Extra ImageDataMD5 tag to calculate MD5 of image data only

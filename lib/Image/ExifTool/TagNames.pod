@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26381 tags, with 16854 unique tag names.
+They contain a total of 26390 tags, with 16859 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1287,6 +1287,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   digiKam                                       XMP digiKam
   drone-dji                                     DJI XMP
   dwc                                           DarwinCore
+  et                                            XMP ExifTool
   exif                                          XMP exif
   exifEX                                        XMP exifEX
   expressionmedia                               XMP ExpressionMedia
@@ -4034,6 +4035,14 @@ These tags belong to the ExifTool XMP-digiKam family 1 group.
   PickLabel                                     string
   TagsList                                      string+
 
+=head3 XMP ExifTool Tags
+
+These tags belong to the ExifTool XMP-et family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  OriginalImageMD5                              string
+
 =head3 XMP exif Tags
 
 EXIF namespace for EXIF tags.  See
@@ -5307,7 +5316,8 @@ These tags belong to the ExifTool XMP-pmi family 1 group.
 =head3 XMP prism Tags
 
 Publishing Requirements for Industry Standard Metadata 3.0 namespace
-tags.  (see L<http://www.prismstandard.org/>)
+tags.  (see
+L<https://www.w3.org/Submission/2020/SUBM-prism-20200910/prism-basic.html/>)
 
 These tags belong to the ExifTool XMP-prism family 1 group.
 
@@ -17329,6 +17339,8 @@ any information found here will be extracted, even if the tag is not listed.
   0x0304   FocusStepNear                        int16u
   0x0305   FocusDistance                        rational64u
   0x0308   AFPoint                              int16u
+  0x031b   AFPointDetails                       no
+           AFPointDetails                       int16u
   0x0328   AFInfo                               Olympus AFInfo
   0x1201   ExternalFlash                        int16u[2]
   0x1203   ExternalFlashGuideNumber?            rational64s
@@ -21862,7 +21874,10 @@ These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.
   0x011c   Gamma                                int16u
   0x0120   CameraIFD                            PanasonicRaw CameraIFD
   0x0121   Multishot                            int32u
+  0x0127   JpgFromRaw2                          no
+  0x013b   Artist                               string
   0x02bc   ApplicationNotes                     XMP
+  0x8298   Copyright                            string
   0x83bb   IPTC-NAA                             IPTC
   0x8769   ExifOffset                           EXIF
   0x8825   GPSInfo                              GPS
@@ -22143,30 +22158,32 @@ Note that Microsoft is not consistent with the time zone used for some
 date/time tags, and it may be either UTC or local time depending on the
 software used to create the file.
 
-  Tag ID                          Tag Name      Writable
-  ------                          --------      --------
-  "\x01CompObj"                   CompObj       FlashPix CompObj
-  "\x05Audio Info"                AudioInfo     FlashPix AudioInfo
-  "\x05Data Object"               DataObject    FlashPix DataObject
+  Tag ID                 Tag Name               Writable
+  ------                 --------               --------
+  "\x01CompObj"          CompObj                FlashPix CompObj
+  "\x05Audio Info"       AudioInfo              FlashPix AudioInfo
+  "\x05Data Object"      DataObject             FlashPix DataObject
   "\x05DocumentSummaryInformation" DocumentInfo FlashPix DocumentInfo
-  "\x05Extension List"            Extensions    FlashPix Extensions
-  "\x05Global Info"               GlobalInfo    FlashPix GlobalInfo
-  "\x05Image Contents"            Image         FlashPix Image
-  "\x05Image Info"                ImageInfo     FlashPix ImageInfo
-  "\x05Operation"                 Operation     FlashPix Operation
-  "\x05Screen Nail"               ScreenNail    no
-  "\x05SummaryInformation"        SummaryInfo   FlashPix SummaryInfo
-  "\x05Transform"                 Transform     FlashPix Transform
-  'Audio Stream'                  AudioStream   no
-  'BasicFileInfo'                 BasicFileInfo no
-  'Contents'                      Contents      XMP
-  'Current User'                  CurrentUser   no
-  'ICC Profile 0001'              ICC_Profile   ICC_Profile
-  'IeImg'                         EmbeddedImage no
-  'Preview'                       PreviewImage  no
-  'Property'                      PreviewInfo   FlashPix PreviewInfo
-  'Subimage 0000 Header'          SubimageHdr   FlashPix SubimageHdr
-  'WordDocument'                  WordDocument  FlashPix WordDocument
+  "\x05Extension List"   Extensions             FlashPix Extensions
+  "\x05Global Info"      GlobalInfo             FlashPix GlobalInfo
+  "\x05Image Contents"   Image                  FlashPix Image
+  "\x05Image Info"       ImageInfo              FlashPix ImageInfo
+  "\x05Operation"        Operation              FlashPix Operation
+  "\x05Screen Nail"      ScreenNail             no
+  "\x05SummaryInformation" SummaryInfo          FlashPix SummaryInfo
+  "\x05Transform"        Transform              FlashPix Transform
+  'Audio Stream'         AudioStream            no
+  'BasicFileInfo'        BasicFileInfo          no
+  'Contents'             Contents               XMP
+  'Current User'         CurrentUser            no
+  'ICC Profile 0001'     ICC_Profile            ICC_Profile
+  'IeImg'                EmbeddedImage          no
+  'IeImg_class'          EmbeddedImageClass     no
+  'IeImg_rect'           EmbeddedImageRectangle no
+  'Preview'              PreviewImage           no
+  'Property'             PreviewInfo            FlashPix PreviewInfo
+  'Subimage 0000 Header' SubimageHdr            FlashPix SubimageHdr
+  'WordDocument'         WordDocument           FlashPix WordDocument
 
 =head3 FlashPix CompObj Tags
 

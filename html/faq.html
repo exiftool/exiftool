@@ -47,6 +47,7 @@ ol.index { margin: 0; padding: 0 0 0 2em }
 <li><a href="#Q29">ARGFILE options</a></li>
 <li><a href="#Q30">Extracting all metadata</a></li>
 <li><a href="#Q31">Rewriting the entire file</a></li>
+<li><a href="#Q32">Safely removing all metadata</a></li>
 </ol>
 </div>
 
@@ -1783,8 +1784,29 @@ not seekable, so in-place editing is not possible with these files and again,
 like 1, two completely different algorithms would be required.</li>
 </ol></blockquote>
 
+<a name="Q32"></a>
+<p>32. <b>"How do I safely delete all metadata from a file?"</b></p>
+
+<blockquote>First of all, all metadata shouldn't be removed from some file types
+(such as RAW images) because this information is necessary for display of the
+image.  JPEG is the most popular image format and most suited to erasing all
+metadata because the image and metadata are well separated in this format.
+However, even with JPEG images care should be taken because the metadata
+may contain color space information which should be maintained to preserve the
+color rendition.</blockquote>
+
+<blockquote>Here is a command that may be used to safely delete all metadata
+from .JPG images in a directory:
+
+<pre>exiftool -ext jpg -all= --icc_profile:all -tagsfromfile @ -colorspacetags DIR</pre>
+
+This command deletes all metadata except the ICC Profile if it exists, then
+copies back any EXIF color space tags (adding any mandatory EXIF tags using
+default values if necessary).
+</blockquote>
+
 <hr>
-<i>Last revised Feb 8, 2023</i>
+<i>Last revised Mar 27, 2023</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

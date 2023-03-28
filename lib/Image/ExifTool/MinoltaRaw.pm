@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Minolta;
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 sub ProcessMRW($$;$);
 sub WriteMRW($$;$);
@@ -489,6 +489,14 @@ sub ProcessMRW($$;$)
         $err and $et->Error("MRW format error", $$et{TIFF_TYPE} eq 'ARW');
     } else {
         $err and $et->Warn("MRW format error");
+        if ($$et{ImageDataMD5}) {
+            my ($num, $md5) = (0, $$et{ImageDataMD5});
+            while ($raf->Read($data, 65536)) {
+                $md5->add($data);
+                $num += length $data;
+            }
+            $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: $num bytes of raw data)\n");
+        }
     }
     return $rtnVal;
 }

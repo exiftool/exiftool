@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.57';
+$VERSION = '3.58';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -752,6 +752,10 @@ my %sRangeMask = (
     album => {
         Name => 'album',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::Album' },
+    },
+    et => {
+        Name => 'et',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::ExifTool' },
     },
     prism => {
         Name => 'prism',
@@ -2550,6 +2554,14 @@ my %sPantryItem = (
     Notes => { },
 );
 
+# ExifTool namespace properties (et)
+%Image::ExifTool::XMP::ExifTool = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-et', 2 => 'Image' },
+    NAMESPACE   => 'et',
+    OriginalImageMD5 => { Notes => 'used to store ExifTool ImageDataMD5 digest' },
+);
+
 # table to add tags in other namespaces
 %Image::ExifTool::XMP::other = (
     GROUPS => { 2 => 'Unknown' },
@@ -3539,6 +3551,7 @@ NoLoop:
             DirLen   => length $$dataPt,
             IgnoreProp => $$subdir{IgnoreProp}, # (allow XML to ignore specified properties)
             IsExtended => 1, # (hack to avoid Duplicate warning for embedded XMP)
+            NoStruct => 1,   # (don't try to build structures since this isn't true XMP)
         );
         my $oldOrder = GetByteOrder();
         SetByteOrder($$subdir{ByteOrder}) if $$subdir{ByteOrder};
@@ -4375,8 +4388,10 @@ sub ProcessXMP($$;$)
 
     # restore structures if necessary
     if ($$et{IsStruct}) {
-        require 'Image/ExifTool/XMPStruct.pl';
-        RestoreStruct($et, $keepFlat);
+        unless ($$dirInfo{NoStruct}) {
+            require 'Image/ExifTool/XMPStruct.pl';
+            RestoreStruct($et, $keepFlat);
+        }
         delete $$et{IsStruct};
     }
     # reset NO_LIST flag (must do this _after_ RestoreStruct() above)

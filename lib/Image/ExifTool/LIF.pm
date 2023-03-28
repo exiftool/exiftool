@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 %Image::ExifTool::LIF::Main = (
     GROUPS => { 0 => 'XML', 1 => 'XML', 2 => 'Image' },
@@ -30,7 +30,15 @@ $VERSION = '1.00';
             my $unixTimeZero = 134774 * 24 * 3600;
             my @vals = split ' ', $val;
             foreach (@vals) {
-                $_ = 1e-7 * hex($_);
+                if (/[^0-9a-f]/i) {
+                    $_ = '0000:00:00 00:00:00';
+                } elsif (length $_ > 8) {
+                    my $lo = hex substr($_, -8);
+                    my $hi = hex substr($_, 0, -8);
+                    $_ = 1e-7 * ($hi * 4294967296 + $lo);
+                } else {
+                    $_ = 1e-7 * hex($_);
+                }
                 # shift from Jan 1, 1601 to Jan 1, 1970
                 $_ = Image::ExifTool::ConvertUnixTime($_ - $unixTimeZero);
             }

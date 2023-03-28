@@ -16,7 +16,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 sub ProcessDJIInfo($$$);
 
@@ -104,7 +104,7 @@ my %convFloat2 = (
     0x00 => { Name => 'AmbientTemperature',  Format => 'float', PrintConv => 'sprintf("%.1f C",$val)' }, # (NC)
     0x04 => { Name => 'ObjectDistance',      Format => 'float', PrintConv => 'sprintf("%.1f m",$val)' },
     0x08 => { Name => 'Emissivity',          Format => 'float', PrintConv => 'sprintf("%.2f",$val)' },
-    0x0c => { Name => 'RelativeHumidity',    Format => 'float', PrintConv => 'sprintf("%g %",$val*100)' },
+    0x0c => { Name => 'RelativeHumidity',    Format => 'float', PrintConv => 'sprintf("%g %%",$val*100)' },
     0x10 => { Name => 'ReflectedTemperature',Format => 'float', PrintConv => 'sprintf("%.1f C",$val)' },
     0x65 => { Name => 'IDString',            Format => 'string[16]' }, # (NC)
 );

@@ -27,7 +27,7 @@ my $testfile;
     $exifTool->SetNewValue('Comment','New comment in JPG file');
     writeInfo($exifTool, 't/images/Canon.jpg', $testfile1);
     my $info = ImageInfo($testfile1);
-    print 'not ' unless check($info, $testname, $testnum);
+    notOK() unless check($info, $testname, $testnum);
     print "ok $testnum\n";
 
     ++$testnum;
@@ -39,7 +39,7 @@ my $testfile;
         unlink $testfile1;
         unlink $testfile2;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -62,7 +62,7 @@ my $testfile;
         binmode(TESTFILE);
         print TESTFILE $newtiff;
         close(TESTFILE);
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 
@@ -82,7 +82,7 @@ my $testfile;
     if (binaryCompare($testfile,'t/images/ExifTool.tif')) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -106,7 +106,7 @@ my $testfile;
     $exifTool->SetNewValue(TimeCodes => '02:53:49:07 2009-11-19T12:38:35:21-03:00');
     writeInfo($exifTool, 't/images/Canon.jpg', $testfile1, undef, 1);
     my $info = $exifTool->ImageInfo($testfile1);
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 
     ++$testnum;
@@ -135,7 +135,7 @@ my $testfile;
         binmode(TESTFILE);
         print TESTFILE $image;
         close(TESTFILE);
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -168,7 +168,7 @@ my $testfile;
         binmode(TESTFILE);
         print TESTFILE $image;
         close(TESTFILE);
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -187,7 +187,7 @@ my $testfile;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -205,7 +205,7 @@ my $testfile;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -228,7 +228,7 @@ my $testfile;
     writeInfo($exifTool, 't/images/Writer.jpg', $testfile1);
     my $info = $exifTool->ImageInfo($testfile1);
     my $success = check($exifTool, $info, $testname, $testnum);
-    print 'not ' unless $success;
+    notOK() unless $success;
     print "ok $testnum\n";
 
     ++$testnum;
@@ -245,7 +245,7 @@ my $testfile;
         unlink $testfile1 if $success;
         unlink $testfile2;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -262,7 +262,7 @@ my $testfile;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -279,7 +279,7 @@ my $testfile;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -299,7 +299,7 @@ my $testfile;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -323,7 +323,7 @@ my $testfile;
         if (check($exifTool, $info, $testname, $testnum)) {
             unlink $testfile;
         } else {
-            print 'not ';
+            notOK();
         }
         print "ok $testnum\n";
     }
@@ -352,7 +352,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         $testOK = 1;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -372,7 +372,7 @@ my $testOK;
             $size = -s $testfile;
         } else {
             $testOK = 0;
-            print 'not ';
+            notOK();
         }
     } else {
         $skip = ' # skip Relies on previous test';
@@ -399,7 +399,7 @@ my $testOK;
             }
         } else {
             $testOK = 0;
-            print 'not ';
+            notOK();
         }
     } else {
         $skip = ' # skip Relies on previous test';
@@ -416,7 +416,7 @@ my $testOK;
         ['CreateDate' => '200 0', 'Shift' => -1],
         ['DateCreated' => '20:', 'Shift' => -1],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/XMP.jpg', 1);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/XMP.jpg', 1);
     print "ok $testnum\n";
 }
 
@@ -437,7 +437,7 @@ my $testOK;
             $testfile = $newfile;
         } else {
             $testOK = 0;
-            print 'not ';
+            notOK();
         }
     } else {
         $skip = ' # skip Relies on test 21';
@@ -461,7 +461,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -483,7 +483,7 @@ my $testOK;
         if (check($exifTool, $info, $testname, $testnum)) {
             unlink $testfile;
         } else {
-            print 'not ';
+            notOK();
         }
         print "ok $testnum\n";
     }
@@ -504,7 +504,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum) and $ok) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -527,7 +527,7 @@ my $testOK;
         if (check($exifTool, $info, $testname, $testnum)) {
             unlink $testfile;
         } else {
-            print 'not ';
+            notOK();
         }
         print "ok $testnum\n";
     }
@@ -549,7 +549,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -567,7 +567,7 @@ my $testOK;
     my @tags = qw(ICC_Profile AsShotICCProfile CurrentICCProfile);
     writeInfo($exifTool, 't/images/ExifTool.tif', $testfile);
     my $info = $exifTool->ImageInfo($testfile, @tags);
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 
     ++$testnum;
@@ -582,7 +582,7 @@ my $testOK;
         unlink $srcfile;
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -623,7 +623,7 @@ my $testOK;
     } else {
         $err = 1;
     }
-    print 'not ' if $err;
+    notOK() if $err;
     print "ok $testnum\n";
 }
 
@@ -642,7 +642,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -660,7 +660,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -687,7 +687,7 @@ my $testOK;
         if (check($exifTool, $info, $testname, $testnum)) {
             unlink $testfile;
         } else {
-            print 'not ';
+            notOK();
         }
         print "ok $testnum\n";
     }
@@ -705,12 +705,12 @@ my $testOK;
         [ResolutionUnit => 'cm'],
     );
     my @check = qw(FileName DateTimeOriginal XResolution ResolutionUnit);
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum,
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum,
                                    't/images/Writer.jpg', \@check);
     print "ok $testnum\n";
 
     ++$testnum;
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum,
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum,
                                    't/images/Canon.jpg', \@check, 1);
     print "ok $testnum\n";
 }
@@ -723,7 +723,7 @@ my $testOK;
         ['CIFF:OwnerName' => 'CIFF Write Test'],
     );
     my @check = qw(SerialNumber OwnerName);
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum,
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum,
                                    't/images/ExifTool.jpg', \@check);
     print "ok $testnum\n";
 }
@@ -741,7 +741,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -757,7 +757,7 @@ my $testOK;
         [SerialNumber => '-9', Shift => -1], # (two negatives make a positive)
         [MeteringMode => '1', Shift => 0, AddValue => 1],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/Canon.jpg', 1);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/Canon.jpg', 1);
     print "ok $testnum\n";
 }
 
@@ -770,7 +770,7 @@ my $testOK;
         ['XMP:FNumber' => '28/10', DelValue => 1], # conditional delete
         ['XMP:DateTimeOriginal' => '3', Shift => 0, AddValue => 1], # shift
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/XMP.xmp', 1);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/XMP.xmp', 1);
     print "ok $testnum\n";
 }
 
@@ -788,7 +788,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -805,7 +805,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -832,7 +832,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -854,7 +854,7 @@ my $testOK;
     writeInfo($exifTool, 't/images/Writer.jpg', $testfile);
     my $info = $exifTool->ImageInfo($testfile, '-time:all', '-filename');
     unless (check($exifTool, $info, $testname, $testnum)) {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 
@@ -875,7 +875,7 @@ my $testOK;
     } else {
         $info = $exifTool->ImageInfo($testfile2, '-time:all', '-filename');
         check($exifTool, $info, $testname, $testnum, $testnum-1);
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 
@@ -891,7 +891,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -908,7 +908,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -926,7 +926,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -943,7 +943,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -960,7 +960,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -976,7 +976,7 @@ my $testOK;
     writeInfo($exifTool, undef, $testfile);
     my $info = $exifTool->ImageInfo($testfile, 'exif:*', 'iptc:*', 'xmp:*');
     unless (check($exifTool, $info, $testname, $testnum)) {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 
@@ -992,7 +992,7 @@ my $testOK;
         unlink $testfile;
         unlink $testfile2;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -1049,7 +1049,7 @@ my $testOK;
         warn "\nError setting $tag\n";
         $ok = 0;
     }
-    print 'not ' unless $ok;
+    notOK() unless $ok;
     print "ok $testnum\n";
 }
 
@@ -1065,7 +1065,7 @@ my $testOK;
     my @writeInfo = (
         [ICC_Profile => \$buff, Protected => 1],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -1083,7 +1083,7 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -1106,9 +1106,9 @@ my $testOK;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
 
-# end
+done(); # end

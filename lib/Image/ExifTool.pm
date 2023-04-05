@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.59';
+$VERSION = '12.60';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -114,6 +114,7 @@ sub WriteTIFF($$$);
 sub PackUTF8(@);
 sub UnpackUTF8($);
 sub SetPreferredByteOrder($;$);
+sub ImageDataMD5($$$;$$);
 sub CopyBlock($$$);
 sub CopyFileAttrs($$$);
 sub TimeNow(;$$);
@@ -1825,11 +1826,12 @@ my %systemTagsNotes = (
     ImageDataMD5 => {
         Notes => q{
             MD5 of image data. Generated only if specifically requested for JPEG and
-            TIFF-based images, CR3, MRW and PNG images, MOV/MP4 videos, and RIFF-based
-            files. The MD5 includes the main image data, plus JpgFromRaw/OtherImage for
-            some formats, but does not include ThumbnailImage or PreviewImage. Includes
-            video and audio data for MOV/MP4. The L<XMP-et:OriginalImageMD5
-            tag|XMP.html#ExifTool> provides a place to store these values in the file.
+            TIFF-based images, PNG, CRW, CR3, MRW, RAF, X3F and AVIF images, MOV/MP4
+            videos, and some RIFF-based files.  The MD5 includes the main image data,
+            plus JpgFromRaw/OtherImage for some formats, but does not include
+            ThumbnailImage or PreviewImage.  Includes video and audio data for MOV/MP4. 
+            The L<XMP-et:OriginalImageMD5 tag|XMP.html#ExifTool> provides a place to
+            store these values in the file.
         },
     },
 );
@@ -3731,13 +3733,21 @@ COMPOSITE_TAG:
                                 next COMPOSITE_TAG;
                             }
                         }
+                        my ($i, $key, @keys, $altFile);
+                        my $et = $self;
+                        # get tags from alternate file if a family 8 group was specified
+                        if ($reqTag =~ /\b(File\d+):/i and $$self{ALT_EXIFTOOL}{$1}) {
+                            $et = $$self{ALT_EXIFTOOL}{$1};
+                            $altFile = $1;
+                        }
                         # (CAREFUL! keys may not be sequential if one was deleted)
-                        my ($i, $key, @keys);
-                        for ($key=$name, $i=$$self{DUPL_TAG}{$name} || 0; ; --$i) {
-                            push @keys, $key if defined $$rawValue{$key};
+                        for ($key=$name, $i=$$et{DUPL_TAG}{$name} || 0; ; --$i) {
+                            push @keys, $key if defined $$et{VALUE}{$key};
                             last if $i <= 0;
                             $key = "$name ($i)";
                         }
+                        # make sure the necessary information is available from the alternate file
+                        $self->CopyAltInfo($altFile, \@keys) if $altFile;
                         # find first matching tag
                         $key = $self->GroupMatches($reqGroup, \@keys);
                         $reqTag = $key || "$name (0)";
@@ -4599,6 +4609,29 @@ sub RemoveTagsFromList($$$$;$)
 }
 
 #------------------------------------------------------------------------------
+# Copy tags from alternate input file
+# Inputs: 0) ExifTool ref, 1) family 8 group, 2) list ref for tag keys to copy
+# - updates tag key list to match keys newly added to $self
+sub CopyAltInfo($$$)
+{
+    my ($self, $g8, $tags) = @_;
+    my ($tag, $vtag);
+    return unless $g8 =~ /(\d+)/;
+    my $et = $$self{ALT_EXIFTOOL}{$g8} or return;
+    my $altOrder = ($1 + 1) * 100000;   # increment file order
+    foreach $tag (@$tags) {
+        ($vtag = $tag) =~ s/( |$)/ #[$g8]/;
+        unless (defined $$self{VALUE}{$vtag}) {
+            $$self{VALUE}{$vtag} = $$et{VALUE}{$tag};
+            $$self{TAG_INFO}{$vtag} = $$et{TAG_INFO}{$tag};
+            $$self{TAG_EXTRA}{$vtag} = $$et{TAG_EXTRA}{$tag} || { };
+            $$self{FILE_ORDER}{$vtag} = ($$et{FILE_ORDER}{$tag} || 0) + $altOrder;
+        }
+        $tag = $vtag;
+    }
+}
+
+#------------------------------------------------------------------------------
 # Set list of found tags from previously requested tags
 # Inputs: 0) ExifTool object reference
 # Returns: 0) Reference to list of found tag keys (in order of requested tags)
@@ -4624,7 +4657,7 @@ sub SetFoundTags($)
         my $tagHash = $$self{VALUE};
         my $reqTag;
         foreach $reqTag (@$reqTags) {
-            my (@matches, $group, $allGrp, $allTag, $byValue, $g8, $altOrder);
+            my (@matches, $group, $allGrp, $allTag, $byValue, $g8);
             my $et = $self;
             if ($reqTag =~ /^(.*):(.+)/) {
                 ($group, $tag) = ($1, $2);
@@ -4632,7 +4665,6 @@ sub SetFoundTags($)
                     $allGrp = 1;
                 } elsif ($reqTag =~ /\bfile(\d+):/i) {
                     $g8 = "File$1";
-                    $altOrder = ($1 + 1) * 100000;
                     $et = $$self{ALT_EXIFTOOL}{$g8} || $self;
                     $fileOrder = $$et{FILE_ORDER};
                     $tagHash = $$et{VALUE};
@@ -4704,16 +4736,7 @@ sub SetFoundTags($)
             }
             # copy over necessary information for tags from alternate files
             if ($g8) {
-                my $tag;
-                foreach $tag (@matches) {
-                    my $vtag = $tag;
-                    $vtag =~ s/( |$)/ #[$g8]/;
-                    $$self{VALUE}{$vtag} = $$et{VALUE}{$tag};
-                    $$self{TAG_INFO}{$vtag} = $$et{TAG_INFO}{$tag};
-                    $$self{TAG_EXTRA}{$vtag} = $$et{TAG_EXTRA}{$tag} || { };
-                    $$self{FILE_ORDER}{$vtag} = ($$et{FILE_ORDER}{$tag} || 0) + $altOrder;
-                    $tag = $vtag;
-                }
+                $self->CopyAltInfo($g8, \@matches);
                 # restore variables to original values for main file
                 $fileOrder = $$self{FILE_ORDER};
                 $tagHash = $$self{VALUE};
@@ -6802,7 +6825,7 @@ sub ProcessJPEG($$)
         } elsif ($marker == 0xe1) {         # APP1 (EXIF, XMP, QVCI, PARROT)
             # (some Kodak cameras don't put a second "\0", and I have seen an
             #  example where there was a second 4-byte APP1 segment header)
-            if ($$segDataPt =~ /^(.{0,4})Exif\0/is) {
+            if ($$segDataPt =~ /^(.{0,4})Exif\0./is) {
                 undef $dumpType;    # (will be dumped here)
                 # this is EXIF data --
                 # get the data block (into a common variable)

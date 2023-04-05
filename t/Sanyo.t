@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Sanyo.jpg');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -32,9 +32,8 @@ my $testnum = 1;
         [SceneCaptureType => 'night'],
         [FlashMode => 'force', Group => 'MakerNotes'],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum);
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

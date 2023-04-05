@@ -23,9 +23,8 @@ my $testnum = 1;
     $exifTool->Options(Struct => 2);
     $exifTool->Options(MissingTagValue => 'null');
     my $info = $exifTool->ImageInfo('t/images/JSON.json');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Sigma.jpg');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -32,7 +32,7 @@ my $testnum = 1;
         ['IPTCPixelWidth' => 200],
         ['Sharpness' => 2, 'Group' => 'MakerNotes'],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -41,7 +41,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Sigma.x3f');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -53,9 +53,8 @@ my $testnum = 1;
         ['XMP:Title' => 'A title'],
         ['Keywords' => ['one','two']],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/SigmaDP2.x3f');
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/SigmaDP2.x3f');
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

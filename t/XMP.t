@@ -47,7 +47,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP.jpg', {Duplicates => 1});
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -97,7 +97,7 @@ my $testnum = 1;
         binmode(TESTFILE);
         print TESTFILE $image;
         close(TESTFILE);
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -107,7 +107,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP.jpg','XMP');
-    print 'not ' unless $$info{XMP};
+    notOK() unless $$info{XMP};
     print "ok $testnum\n";
 
     ++$testnum;
@@ -116,7 +116,7 @@ my $testnum = 1;
         $info = $exifTool->ImageInfo($$info{XMP});
         $pass = check($exifTool, $info, $testname, $testnum);
     }
-    print 'not ' unless $pass;
+    notOK() unless $pass;
     print "ok $testnum\n";
 }
 
@@ -132,7 +132,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum) and $ok) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -148,7 +148,7 @@ my $testnum = 1;
     $exifTool->SetNewValue(Subject => q{char test: & > < ' "}, AddValue => 1);
     $exifTool->SetNewValue('Rights' => "\xc2\xa9 Copyright Someone Else");
     my $ok = writeInfo($exifTool,'t/images/XMP.xmp',$testfile);
-    print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum) and $ok;
+    notOK() unless testCompare("t/XMP_$testnum.out",$testfile,$testnum) and $ok;
     print "ok $testnum\n";
 }
 
@@ -159,7 +159,7 @@ my $testnum = 1;
         ++$testnum;
         my $exifTool = Image::ExifTool->new;
         my $info = $exifTool->ImageInfo("t/images/$file", {Duplicates => 1});
-        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+        notOK() unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";
 
         ++$testnum;
@@ -171,7 +171,7 @@ my $testnum = 1;
         $exifTool->WriteInfo("t/images/$file", $testfile);
         my $err = $exifTool->GetValue('Error');
         warn "\n  $err\n" if $err;
-        print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
+        notOK() unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
         print "ok $testnum\n";
     }
 }
@@ -193,7 +193,7 @@ my $testnum = 1;
         my $exifTool = Image::ExifTool->new;
         my $testfile = "t/${testname}_${testnum}_failed.xmp";
         unlink $testfile;
-        print 'not ' unless writeCheck($writeListRef, $testname, $testnum,
+        notOK() unless writeCheck($writeListRef, $testname, $testnum,
                                        't/images/XMP.xmp', ['XMP-dc:*']);
         print "ok $testnum\n";
     }
@@ -206,7 +206,7 @@ my $testnum = 1;
         [ 'xmp-xmpmm:all' => undef ],
         [ 'XMP-PHOTOSHOP:all' => undef ],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum,
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum,
                                    't/images/XMP.jpg', ['XMP:all']);
     print "ok $testnum\n";
 }
@@ -225,7 +225,7 @@ my $testnum = 1;
         if (check($exifTool, $info, $testname, $testnum) and $ok) {
             unlink $testfile;
         } else {
-            print 'not ';
+            notOK();
         }
         print "ok $testnum\n";
         $exifTool->Options(PrintConv => 0);
@@ -246,7 +246,7 @@ my $testnum = 1;
         if (check($exifTool, $info, $testname, $testnum) and $ok) {
             unlink $testfile;
         } else {
-            print 'not ';
+            notOK();
         }
         print "ok $testnum\n";
         $exifTool->Options(PrintConv => 0);
@@ -261,7 +261,7 @@ my $testnum = 1;
         [ 'xmp-dc:all' => undef, Replace => 2 ],
         [ 'xmp-xmprights:all' => undef, Replace => 2 ],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum,
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum,
                                    't/images/XMP.jpg', ['XMP:all'], undef, 1);
     print "ok $testnum\n";
 }
@@ -273,7 +273,7 @@ my $testnum = 1;
         [ 'all' => undef ],
         [ 'xmp:all' => undef, Replace => 2 ],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum,
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum,
                                    't/images/XMP.jpg', ['-file:all'], undef, 1);
     print "ok $testnum\n";
 }
@@ -283,7 +283,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP.svg', {Duplicates => 1});
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -310,7 +310,7 @@ my $testnum = 1;
     );
     $exifTool->SetNewValue(@$_) foreach @writeInfo;
     my $ok = writeInfo($exifTool, undef, $testfile);
-    print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum) and $ok;
+    notOK() unless testCompare("t/XMP_$testnum.out",$testfile,$testnum) and $ok;
     print "ok $testnum\n";
 }
 
@@ -319,7 +319,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP.xml', {Duplicates => 1});
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -332,7 +332,7 @@ my $testnum = 1;
         [ 'XML-file:all' => undef, Replace => 2 ],
         [ 'author' => 'Phil' ],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/XMP.xml');
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/XMP.xml');
     print "ok $testnum\n";
 }
 
@@ -340,7 +340,7 @@ my $testnum = 1;
 {
     ++$testnum;
     my @writeInfo = ( [ 'author' => 'Test' ] );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/ExtendedXMP.jpg');
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/ExtendedXMP.jpg');
     print "ok $testnum\n";
 }
 
@@ -355,7 +355,7 @@ my $testnum = 1;
     $exifTool->SetNewValue('xmp-exif:all');
     $exifTool->SetNewValue('XMP-TIFF:*');
     $exifTool->WriteInfo(undef,$testfile,'XMP'); #(also test output file type option)
-    print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
+    notOK() unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
     print "ok $testnum\n";
 }
 
@@ -364,7 +364,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP4.xmp', {Struct => 1});
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -379,7 +379,7 @@ my $testnum = 1;
     $exifTool->SetNewValue('XMP-dc:Title-de' => 'A');
     my $ok = writeInfo($exifTool,'t/images/Writer.jpg',$testfile);
     my $info = $exifTool->ImageInfo($testfile,'XMP:*');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum) and $ok;
+    notOK() unless check($exifTool, $info, $testname, $testnum) and $ok;
     print "ok $testnum\n";
     
     # try again when title already exists
@@ -392,7 +392,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum, 32)) {
         unlink $testfile2
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 
@@ -408,7 +408,7 @@ my $testnum = 1;
         unlink $testfile;
         unlink $testfile2
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -451,7 +451,7 @@ my $testnum = 1;
     );
     $exifTool->SetNewValue(@$_) foreach @writeInfo;
     my $ok = writeInfo($exifTool,undef,$testfile);
-    print 'not ' unless testCompare("t/images/XMP5.xmp",$testfile,$testnum) and $ok;
+    notOK() unless testCompare("t/images/XMP5.xmp",$testfile,$testnum) and $ok;
     print "ok $testnum\n";
 }
 
@@ -464,7 +464,7 @@ my $testnum = 1;
         $exifTool->Options(Struct => 1 - $i);
         $exifTool->Options(Escape => 'HTML');   # test escaping of structure fields too
         my $info = $exifTool->ImageInfo("t/images/XMP5.xmp");
-        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+        notOK() unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";
     }
 }
@@ -477,7 +477,7 @@ my $testnum = 1;
     unlink $testfile;
     $exifTool->SetNewValuesFromFile('t/images/XMP5.xmp', 'xmp:all');
     my $ok = writeInfo($exifTool,undef,$testfile);
-    print 'not ' unless testCompare("t/images/XMP5.xmp",$testfile,$testnum) and $ok;
+    notOK() unless testCompare("t/images/XMP5.xmp",$testfile,$testnum) and $ok;
     print "ok $testnum\n";
 }
 
@@ -486,7 +486,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP.inx', {Duplicates => 1});
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -502,7 +502,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum) and $ok) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -519,7 +519,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum) and $ok) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -529,7 +529,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExtendedXMP.jpg', 'xmp:all');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -538,7 +538,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/XMP6.xmp', 'xmp:all');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -552,7 +552,7 @@ my $testnum = 1;
     $exifTool->WriteInfo("t/images/XMP6.xmp", $testfile);
     my $err = $exifTool->GetValue('Error');
     warn "\n  $err\n" if $err;
-    print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
+    notOK() unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
     print "ok $testnum\n";
 }
 
@@ -565,7 +565,7 @@ my $testnum = 1;
     $exifTool->SetNewValue('regioninfo' => '{RegionList=[,]}');
     $exifTool->SetNewValue('xmp:flash' => '{}');
     $exifTool->WriteInfo(undef, $testfile);
-    print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
+    notOK() unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
     print "ok $testnum\n";
 }
 
@@ -584,7 +584,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -603,7 +603,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 
@@ -618,7 +618,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 
@@ -633,7 +633,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -646,14 +646,14 @@ my $testnum = 1;
     $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
     $exifTool->WriteInfo('t/images/XMP9.xmp', $testfile);
-    print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
+    notOK() unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
     print "ok $testnum\n";
 
     ++$testnum;
     $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
     $exifTool->WriteInfo(undef, $testfile);
-    print 'not ' unless testCompare('t/XMP_50.out',$testfile,$testnum);
+    notOK() unless testCompare('t/XMP_50.out',$testfile,$testnum);
     print "ok $testnum\n";
 
     ++$testnum;
@@ -663,7 +663,7 @@ my $testnum = 1;
     $exifTool->SetNewValue(Custom1 => 'test', DelValue => 1);
     $exifTool->SetNewValue(Custom1 => 'new');
     $exifTool->WriteInfo('t/images/XMP9.xmp', $testfile);
-    print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
+    notOK() unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
     print "ok $testnum\n";
 
     ++$testnum;
@@ -674,7 +674,7 @@ my $testnum = 1;
     $exifTool->SetNewValue(Custom1 => 'a,b,c', AddValue => 1);
     $exifTool->SetNewValue('Custom1-fr' => 'a-fr,,c-fr,d-fr,,f-fr', AddValue => 1);
     $exifTool->WriteInfo('t/images/XMP9.xmp', $testfile);
-    print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
+    notOK() unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
     print "ok $testnum\n";
 }
 
@@ -692,10 +692,9 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

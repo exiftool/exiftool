@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Olympus.jpg');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -32,7 +32,7 @@ my $testnum = 1;
         [Software => 'ExifTool', Group => 'XMP'],
         [Macro => 'On'],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -41,7 +41,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/OlympusE1.jpg');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -52,7 +52,7 @@ my $testnum = 1;
         [LensSerialNumber => '012345678'],
         [CoringFilter => 0],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/OlympusE1.jpg');
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/OlympusE1.jpg');
     print "ok $testnum\n";
 }
 
@@ -61,7 +61,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Olympus2.jpg');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -77,7 +77,7 @@ my $testnum = 1;
     if (testVerbose($testname, $testnum, $testfile, 2)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -87,9 +87,8 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Olympus.dss');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '12.59';
+my $version = '12.60';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 BEGIN {
@@ -922,12 +922,14 @@ for (;;) {
         $mt->Options(Duplicates => 1);
         next;
     }
-    if (/^efile(\d)?(!)?$/i) {
+    if (/^efile(\d+)?(!)?$/i) {
         my $arg = shift;
         defined $arg or Error("Expecting file name for -$_ option\n"), $badCmd=1, next;
-        $efile[0] = $arg if not $1 or $1 & 0x01;
-        $efile[1] = $arg if $1 and $1 & 0x02;
-        $efile[2] = $arg if $1 and $1 & 0x04;
+        $efile[0] = $arg if not $1 or $1 & 0x01;# error
+        $efile[1] = $arg if $1 and $1 & 0x02;   # unchanged
+        $efile[2] = $arg if $1 and $1 & 0x04;   # failed -if condition
+        $efile[3] = $arg if $1 and $1 & 0x08;   # updated
+        $efile[4] = $arg if $1 and $1 & 0x016;  # created
         unlink $arg if $2;
         next;
     }
@@ -1337,7 +1339,7 @@ for (;;) {
         AddSetTagsFile($setTagsFile = '@') if not $setTagsFile and /(<|>)/;
         if ($setTagsFile) {
             push @{$setTags{$setTagsFile}}, $_;
-            if (/>/) {
+            if ($1 eq '>') {
                 $useMWG = 1 if /^(.*>\s*)?mwg:/si;
                 if (/\b(filename|directory|testname)#?$/i) {
                     $doSetFileName = 1;
@@ -2083,6 +2085,7 @@ sub GetImageInfo($$)
             push @delFiles, $original;
         } elsif ($et->Rename($original, $file)) {
             $verbose and print $vout "Restored from $original\n";
+            EFile($file, 3);
             ++$countGoodWr;
         } else {
             Warn "Error renaming $original\n";
@@ -3042,6 +3045,7 @@ sub SetImageInfo($$$)
                     $r3 = $et->SetSystemTags($file);
                 }
                 if ($r0 > 0 or $r1 > 0 or $r2 > 0 or $r3 > 0) {
+                    EFile($infile, 3);
                     ++$countGoodWr;
                 } elsif ($r0 < 0 or $r1 < 0 or $r2 < 0 or $r3 < 0) {
                     EFile($infile);
@@ -3156,6 +3160,7 @@ sub SetImageInfo($$$)
                                     $preserveTime{$file} = [ $aTime, $mTime, $cTime ];
                                 }
                             }
+                            EFile($infile, 3);
                             ++$countGoodWr;
                         } else {
                             close(NEW_FILE);
@@ -3171,6 +3176,7 @@ sub SetImageInfo($$$)
                     # simply rename temporary file to replace original
                     # (if we didn't already rename it to add "_original")
                     } elsif ($et->Rename($tmpFile, $dstFile)) {
+                        EFile($infile, 3);
                         ++$countGoodWr;
                     } else {
                         my $newFile = $tmpFile;
@@ -3188,21 +3194,26 @@ sub SetImageInfo($$$)
                             # (don't delete tmp file now because it is all we have left)
                             ++$countBadWr;
                         } else {
+                            EFile($infile, 3);
                             ++$countGoodWr;
                         }
                     }
                 } elsif ($overwriteOrig) {
                     # erase original file
+                    EFile($infile, 3);
                     $et->Unlink($file) or Warn "Error erasing original $file\n";
                     ++$countGoodWr;
                 } else {
+                    EFile($infile, 4);
                     ++$countGoodCr;
                 }
             } else {
                 # this file was created from scratch, not edited
+                EFile($infile, 4);
                 ++$countGoodCr;
             }
         } else {
+            EFile($infile, 3);
             ++$countGoodWr;
         }
     } elsif ($success) {
@@ -4439,7 +4450,7 @@ sub ReadStayOpen($)
 
 #------------------------------------------------------------------------------
 # Add new entry to -efile output file
-# Inputs: 0) file name, 1) -efile option number (0=error, 1=same, 2=failed)
+# Inputs: 0) file name, 1) -efile option number (0=error, 1=same, 2=failed, 3=updated, 4=created)
 sub EFile($$)
 {
     my $entry = shift;
@@ -5301,12 +5312,12 @@ escaped.  The inverse conversion is applied when writing tags.
 
 =item B<-f> (B<-forcePrint>)
 
-Force printing of tags even if their values are not found.  This option only
-applies when specific tags are requested on the command line (ie. not with
-wildcards or by C<-all>).  With this option, a dash (C<->) is printed for
-the value of any missing tag, but the dash may be changed via the API
-MissingTagValue option.  May also be used to add a 'flags' attribute to the
-B<-listx> output, or to allow tags to be deleted when writing with the
+Force printing of tags even if they don't exist.  This option applies to
+tags specified on the command line, or with the B<-p>, B<-if> or
+B<-tagsFromFile> options.  When B<-f> is used, the value of any missing tag
+is set to a dash (C<->) by default, but this may be configured via the API
+MissingTagValue option.  B<-f> is also used to add a 'flags' attribute to
+the B<-listx> output, or to allow tags to be deleted when writing with the
 B<-csv>=I<CSVFILE> feature.
 
 =item B<-g>[I<NUM>][:I<NUM>...] (B<-groupHeadings>)
@@ -5530,7 +5541,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 12.59 --
+    -- Generated by ExifTool 12.60 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -6512,10 +6523,11 @@ exit status of the command (see L</EXIT STATUS>).
 
 Save the names of files giving errors (I<NUM> missing or 1), files that were
 unchanged (I<NUM> is 2), files that fail the B<-if> condition (I<NUM> is 4),
-or any combination thereof by summing I<NUM> (eg. B<-efile3> is the same
-has having both B<-efile> and B<-efile2> options with the same I<ERRFILE>).
-By default, file names are appended to any existing I<ERRFILE>, but
-I<ERRFILE> is overwritten if an exclamation point is added to the option
+files that were updated (I<NUM> is 8), files that were created (I<NUM> is
+16), or any combination thereof by summing I<NUM> (eg. B<-efile3> is the
+same has having both B<-efile> and B<-efile2> options with the same
+I<ERRFILE>). By default, file names are appended to any existing I<ERRFILE>,
+but I<ERRFILE> is overwritten if an exclamation point is added to the option
 (eg. B<-efile!>).  Saves the name of the file specified by the B<-srcfile>
 option if applicable.
 
@@ -6533,10 +6545,10 @@ option no longer suppresses the output "{readyNUM}" message.
 =item B<-file>I<NUM> I<ALTFILE>
 
 Read tags from an alternate source file.  These tags are accessed via the
-family 8 group name (eg. C<File1:TAG>, C<File2:TAG>, etc).  I<ALTFILE> may
-contain filename formatting codes %d, %f and %e.  Among other things, this
-allows tags from different files to be compared and combined using the
-B<-if> and B<-p> options.
+family 8 group name (eg. C<File1:TAG> for the B<-file1> option, C<File2:TAG>
+for B<-file2>, etc).  I<ALTFILE> may contain filename formatting codes %d,
+%f and %e.  Among other things, this allows tags from different files to be
+compared and combined using the B<-if> and B<-p> options.
 
 =item B<-list_dir>
 

@@ -1542,12 +1542,7 @@ sub ProcessPNG($$)
             # skip over data chunks if possible/necessary
             } elsif (not $validate or $len > $chunkSizeLimit) {
                 if ($md5) {
-                    while ($len) {
-                        my $n = $len > 65536 ? 65536 : $len;
-                        $raf->Read($dbuf,$n) == $n or last;
-                        $md5->add($dbuf);
-                        $len -= $n;
-                    }
+                    $et->ImageDataMD5($raf, $len);
                     $raf->Read($cbuf, 4) == 4 or $et->Warn('Truncated data'), last;
                 } else {
                     $raf->Seek($len + 4, 1) or $et->Warn('Seek error'), last;

@@ -25,7 +25,7 @@ my $testnum = 1;
     read(TESTFILE, $gifImage, 100000);
     close(TESTFILE);
     my $info = ImageInfo(\$gifImage);
-    print 'not ' unless check($info, $testname, $testnum);
+    notOK() unless check($info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -43,7 +43,7 @@ my $testnum = 1;
     my $image1;
     $exifTool->WriteInfo(\$gifImage, \$image1);
     $info = ImageInfo(\$image1);
-    print 'not ' unless check($info, $testname, $testnum);
+    notOK() unless check($info, $testname, $testnum);
     print "ok $testnum\n";
 
     ++$testnum;
@@ -56,7 +56,7 @@ my $testnum = 1;
     my $image2;
     $exifTool->WriteInfo(\$image1, \$image2);
     $info = ImageInfo(\$image2);
-    print 'not ' unless check($info, $testname, $testnum);
+    notOK() unless check($info, $testname, $testnum);
     print "ok $testnum\n";
 
     ++$testnum;
@@ -76,9 +76,9 @@ my $testnum = 1;
         binmode(TESTFILE);
         print TESTFILE $image3;
         close(TESTFILE);
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
 
-# end
+done(); # end

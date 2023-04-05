@@ -23,10 +23,9 @@ my $testnum = 1;
     foreach $file ('PLIST-xml.plist', 'PLIST-bin.plist', 'PLIST.aae') {
         ++$testnum;
         my $info = $exifTool->ImageInfo("t/images/$file");
-        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+        notOK() unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";
     }
 }
 
-
-# end
+done(); # end

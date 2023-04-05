@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/DNG.dng');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -33,8 +33,8 @@ my $testnum = 1;
         [ OriginalDecisionData => "\xff\xff\xff\xff\x03\0\0\0\0\0\0\0\0\0\0\0\x08\0\0\0Test", Protected => 1 ],
     );
     my @tags = qw(OwnerName OriginalDecisionData Warning Error);
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/DNG.dng', \@tags);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/DNG.dng', \@tags);
     print "ok $testnum\n";
 }
 
-# end
+done(); # end

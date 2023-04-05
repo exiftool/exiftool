@@ -23,9 +23,8 @@ my $testnum = 1;
     # omit FileSize since file is 9.5kB exactly and rounding errors
     # in Windows Cygwin Perl 5.8.2 round this down to 9kB in printout
     my $info = $exifTool->ImageInfo('t/images/FlashPix.ppt','-filesize');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

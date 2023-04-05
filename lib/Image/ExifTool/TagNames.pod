@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26390 tags, with 16859 unique tag names.
+They contain a total of 26393 tags, with 16860 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -498,6 +498,9 @@ for the official EXIF 2.32 specification.
   0x7035   ChromaticAberrationCorrParams SubIFD int16s[33]!
   0x7036   DistortionCorrection      SubIFD     int16s!
   0x7037   DistortionCorrParams      SubIFD     int16s[17]!
+  0x7038   SonyRawImageSize          SubIFD     int32u[2]!
+  0x7310   BlackLevel                SubIFD     int16u[4]!
+  0x7313   WB_RGGBLevels             SubIFD     int16s[4]!
   0x74c7   SonyCropTopLeft           SubIFD     int32u[2]!
   0x74c8   SonyCropSize              SubIFD     int32u[2]!
   0x800d   ImageID                   -          no

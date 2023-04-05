@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/ExifTool.t".
 
 BEGIN {
-    $| = 1; print "1..34\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..35\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -20,7 +20,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -32,7 +32,7 @@ my $testnum = 1;
     open(TESTFILE, 't/images/ExifTool.tif');
     my $info = $exifTool->ImageInfo(\*TESTFILE);
     close(TESTFILE);
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -40,7 +40,7 @@ my $testnum = 1;
 {
     ++$testnum;
     my $info = ImageInfo('t/images/Canon.jpg', {Group0 => 'EXIF'});
-    print 'not ' unless check($info, $testname, $testnum);
+    notOK() unless check($info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -52,7 +52,7 @@ my $testnum = 1;
 #    $exifTool->Options(DateFormat => '%H:%M:%S %a. %b. %e, %Y');
     my @tags = ('CreateDate', 'DateTimeOriginal', 'ModifyDate', 'Orientation#', '?Resolution');
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg', \@tags);
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -64,7 +64,7 @@ my $testnum = 1;
     my @tagList = ( '-ImageHeight', '-Make' );
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg', '-FileSize', '-*resolution',
                         \@tagList, {Group0 => '-MakerNotes'});
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -77,13 +77,13 @@ my $testnum = 1;
     my $info1 = $exifTool->GetInfo({Group0 => 'MakerNotes'});
     my $info2 = $exifTool->GetInfo({Group0 => 'EXIF'});
     my $info = $exifTool->CombineInfo($info1, $info2);
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 
     # combine information in different order
     ++$testnum;
     $info = $exifTool->CombineInfo($info2, $info1);
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -93,7 +93,7 @@ my $testnum = 1;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg',
                     { Group1 => 'Canon', Group2 => '-Camera' });
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -113,11 +113,11 @@ my $testnum = 1;
     for (my $i=0; $i<scalar(@tags); ++$i) {
         $tags[$i] = $expectedTags[$i] or $good = 0;
     }
-    print 'not ' unless $good;
+    notOK() unless $good;
     print "ok $testnum\n";
 
     ++$testnum;
-    print 'not ' unless check($exifTool, $info, $testname, $testnum, 5);
+    notOK() unless check($exifTool, $info, $testname, $testnum, 5);
     print "ok $testnum\n";
 }
 
@@ -129,13 +129,13 @@ my $testnum = 1;
     my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 0);  # don't allow duplicates
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg',{Group0=>['MakerNotes','EXIF']});
-    print 'not ' unless check($exifTool, $info, $testname, $testnum, 7);
+    notOK() unless check($exifTool, $info, $testname, $testnum, 7);
     print "ok $testnum\n";
 
     # combine information in different order
     ++$testnum;
     $info = $exifTool->ImageInfo('t/images/Canon.jpg',{Group0=>['EXIF','MakerNotes']});
-    print 'not ' unless check($exifTool, $info, $testname, $testnum, 8);
+    notOK() unless check($exifTool, $info, $testname, $testnum, 8);
     print "ok $testnum\n";
 }
 
@@ -151,13 +151,13 @@ my $testnum = 1;
         $_ eq $g or warn("\nWrong group: $_ ne $g\n"), $not = 1;
     }
     @groups and $not = 1;
-    print 'not ' if $not;
+    notOK() if $not;
     print "ok $testnum\n";
     
     ++$testnum;
     my $info = $exifTool->GetInfo({Group0 => 'EXIF'});
     @groups = $exifTool->GetGroups($info,0);
-    print 'not ' unless @groups==1 and $groups[0] eq 'EXIF';
+    notOK() unless @groups==1 and $groups[0] eq 'EXIF';
     print "ok $testnum\n";
 
     ++$testnum;
@@ -179,14 +179,14 @@ my $testnum = 1;
     }
     $/ = $oldSep;       # restore input line separator
     close(TESTFILE);
-    print 'not ' unless testCompare("$testfile.out","$testfile.failed",$testnum);
+    notOK() unless testCompare("$testfile.out","$testfile.failed",$testnum);
     print "ok $testnum\n";
 }
 
 # test 17: Test verbose output
 {
     ++$testnum;
-    print 'not ' unless testVerbose($testname, $testnum, 't/images/Canon.jpg', 3);
+    notOK() unless testVerbose($testname, $testnum, 't/images/Canon.jpg', 3);
     print "ok $testnum\n";
 }
 
@@ -197,13 +197,13 @@ my $testnum = 1;
     $exifTool->Options(Duplicates => 0);  # don't allow duplicates
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg',
                     { Group0 => ['MakerNotes','EXIF'] });
-    print 'not ' unless check($exifTool, $info, $testname, $testnum, 7);
+    notOK() unless check($exifTool, $info, $testname, $testnum, 7);
     print "ok $testnum\n";
 
     ++$testnum;
     $info = $exifTool->ImageInfo('t/images/Canon.jpg',
                     { Group0 => ['EXIF','MakerNotes'] });
-    print 'not ' unless check($exifTool, $info, $testname, $testnum, 8);
+    notOK() unless check($exifTool, $info, $testname, $testnum, 8);
     print "ok $testnum\n";
 }
 
@@ -213,7 +213,7 @@ my $testnum = 1;
     my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 0);
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg', 'EXIF:WhiteBalance');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -222,7 +222,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.tif', 'ICC_Profile');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -240,7 +240,7 @@ my $testnum = 1;
     print TESTFILE $str, "\n";
     $/ = $oldSep;       # restore input line separator
     close(TESTFILE);
-    print 'not ' unless testCompare("$testfile.out","$testfile.failed",$testnum);
+    notOK() unless testCompare("$testfile.out","$testfile.failed",$testnum);
     print "ok $testnum\n";
 }
 
@@ -249,7 +249,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', 'main:Author:IPTC3:all');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -258,7 +258,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg', 'exififd:camera:common#');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -271,7 +271,7 @@ my $testnum = 1;
         # Note: can't extract system times because this could result in a different
         # calculated global time offset (since I am shifting by 1 month)
         my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', 'time:all', '-system:all');
-        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+        notOK() unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";
     } else {
         print "ok $testnum # skip Requires Time::Local\n";
@@ -286,7 +286,7 @@ my $testnum = 1;
     $$exifTool{NO_SORT} = 1;
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg', 'encodingprocess', 'E*#', 'exposureMode',
                                     '-ExifVersion');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -296,7 +296,7 @@ my $testnum = 1;
     my $exifTool = Image::ExifTool->new;
     $exifTool->Options(ListItem => -3);
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', 'Subject', 'SupplementalCategories');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -306,7 +306,7 @@ my $testnum = 1;
     my $exifTool = Image::ExifTool->new;
     $exifTool->Options(FastScan => 3);
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -316,7 +316,7 @@ my $testnum = 1;
     my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Filter => 'tr/ /_/;tr/0-9/#/');
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', '-ExifToolVersion');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -327,7 +327,7 @@ my $testnum = 1;
     if (eval 'require Digest::MD5') {
         my $exifTool = Image::ExifTool->new;
         my $info = $exifTool->ImageInfo('t/images/Writer.jpg', 'JPEGDigest', 'JPEGQualityEstimate');
-        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+        notOK() unless check($exifTool, $info, $testname, $testnum);
     } else {
         $skip = ' # skip Requires Digest::MD5';
     }
@@ -339,7 +339,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/CanonRaw.cr2', 'Validate', 'Warning', 'Error');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -348,7 +348,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jps', 'jps:all');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -359,7 +359,7 @@ my $testnum = 1;
     $exifTool->SetAlternateFile(File1 => 't/images/Nikon.jpg');
     $exifTool->SetAlternateFile(File3 => 't/images/FujiFilm.jpg');
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg', 'file3:make', 'make', 'file1:make', 'file1:mo*');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -376,8 +376,28 @@ my $testnum = 1;
     open OUT, ">$testfile";
     print OUT $val,"\n";
     close OUT;
-    print 'not ' unless testCompare($goodfile, $testfile, $testnum);
+    notOK() unless testCompare($goodfile, $testfile, $testnum);
     print "ok $testnum\n";
 }
 
-# end
+# test 35: Test SetAlternateFile() with user-defined tags
+{
+    ++$testnum;
+    my $exifTool = Image::ExifTool->new;
+    my %tags = (
+        TestTag => {
+            Require => {
+                0 => 'Model',
+                1 => 'File1:Model',
+            },
+            ValueConv => '"$val[0] -- $val[1]"',
+        },
+    );
+    Image::ExifTool::AddUserDefinedTags('Image::ExifTool::Composite', %tags);
+    $exifTool->SetAlternateFile(File1 => 't/images/Nikon.jpg');
+    my $info = $exifTool->ImageInfo('t/images/Canon.jpg', 'TestTag');
+    notOK() unless check($exifTool, $info, $testname, $testnum);
+    print "ok $testnum\n";
+}
+
+done(); # end

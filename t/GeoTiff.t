@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/GeoTiff.tif');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -29,7 +29,7 @@ my $testnum = 1;
 {
     ++$testnum;
     my @writeInfo = (['ResolutionUnit','cm']);
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/GeoTiff.tif');
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/GeoTiff.tif');
     print "ok $testnum\n";
 }
 
@@ -45,10 +45,9 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum) and $ok) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

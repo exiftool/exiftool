@@ -430,7 +430,6 @@ sub AddImageDataMD5($$$)
     my $verbose = $et->Options('Verbose');
     my $md5 = $$et{ImageDataMD5};
     my $raf = $$dirInfo{RAF};
-    my $base = $$dirInfo{Base} || 0;
 
     foreach $tagID (sort keys %$offsetInfo) {
         next unless ref $$offsetInfo{$tagID} eq 'ARRAY'; # ignore scalar tag values used for Validate
@@ -451,14 +450,8 @@ sub AddImageDataMD5($$$)
         foreach $offset (@offsets) {
             my $size = shift @sizes;
             next unless $offset =~ /^\d+$/ and $size and $size =~ /^\d+$/ and $size;
-            next unless $raf->Seek($offset+$base, 0);
-            while ($size) {
-                my $bytes = $size > 65536 ? 65536 : $size;
-                $raf->Read($buff, $bytes) or last;
-                $md5->add($buff);
-                $total += length($buff);
-                $size -= $bytes;
-            }
+            next unless $raf->Seek($offset, 0); # (offset is absolute)
+            $total += $et->ImageDataMD5($raf, $size);
         }
         if ($verbose) {
             my $name = "$$dirInfo{DirName}:$$tagInfo{Name}";

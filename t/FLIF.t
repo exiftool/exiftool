@@ -25,7 +25,7 @@ my @checkTags = qw(Artist Creator XResolution ProfileCMMType XMP);
     if (eval { require IO::Uncompress::RawInflate }) {
         my $exifTool = Image::ExifTool->new;
         my $info = $exifTool->ImageInfo('t/images/FLIF.flif');
-        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+        notOK() unless check($exifTool, $info, $testname, $testnum);
     } else {
         $skip = ' # skip Requires IO::Uncompress::RawInflate';
     }
@@ -48,7 +48,7 @@ my @checkTags = qw(Artist Creator XResolution ProfileCMMType XMP);
         if (check($exifTool, $info, $testname, $testnum)) {
             unlink $testfile;
         } else {
-            print 'not ';
+            notOK();
         }
     } else {
         $skip = ' # skip Requires IO::Compress::RawDeflate';
@@ -71,7 +71,7 @@ my $testfile;
         $exifTool->WriteInfo('t/images/FLIF.flif', $testfile);
         my $info = $exifTool->ImageInfo($testfile);
         unless (check($exifTool, $info, $testname, $testnum)) {
-            print 'not ';
+            notOK();
             undef $testfile;
         }
     } else {
@@ -97,7 +97,7 @@ my $testfile;
             unlink $testfile;
             unlink $testfile2;
         } else {
-            print 'not ';
+            notOK();
         }
     } else {
         $skip = ' # skip Requires test 4 pass';
@@ -122,7 +122,7 @@ my $testfile;
         if (check($exifTool, $info, $testname, $testnum)) {
             unlink $testfile;
         } else {
-            print 'not ';
+            notOK();
         }
     } else {
         $skip = ' # skip Requires IO::Compress::RawDeflate';
@@ -130,4 +130,4 @@ my $testfile;
     print "ok $testnum$skip\n";
 }
 
-# end
+done(); # end

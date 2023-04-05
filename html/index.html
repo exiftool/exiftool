@@ -94,9 +94,9 @@ the site with a moderate load.  An alternate ExifTool homepage is available at
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.59.tar.gz/download">
-Download        Version 12.59</a> (5.0 MB) -
-<a href="history.html">Mar. 28, 2023</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.60.tar.gz/download">
+Download        Version 12.60</a> (5.0 MB) -
+<a href="history.html">Apr. 5, 2023</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -149,8 +149,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.59.zip/download">
-         exiftool-12.59.zip</a> (6.6 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.60.zip/download">
+         exiftool-12.60.zip</a> (6.6 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -168,7 +168,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.59.dmg</a> (3.2 MB)</b></td></tr></table></blockquote>
+         ExifTool-12.60.dmg</a> (3.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -236,6 +236,10 @@ for the SHA1 and MD5 checksums to verify these distribution packages</a>.</li>
 <li>Conditionally processes files based on value of any meta information</li>
 <li>Ability to <a href="config.html">add custom user-defined tags</a></li>
 <li><a href="TagNames/MWG.html">Support for MWG</a> (Metadata Working Group) recommendations</li>
+<li>Ability to read tags from multiple files simultaneously, allowing metadata to be compared
+and combined between files</li>
+<li>Generates MD5 hash of image data only for many file types (for comparison and validation
+of image data)</li>
 <li>Recognizes <a href="TagNames/index.html">thousands of different tags</a></li>
 <li>Tested with images from <a href="https://exiftool.org/models.html">thousands of different camera models</a></li>
 <li>Advanced <a href="verbose.html">verbose</a> and <a href="htmldump.html">HTML-based
@@ -1210,15 +1214,17 @@ Defender</b> may speed things up significantly.</p>
 
 <p>The processing speed of ExifTool can be improved when extracting information
 by reducing the amount of work that it must do.  Decrease the number of
-extracted tags by specifying them individually (<code>-TAG</code>) or by group
-(<code>-GROUP:all</code>), and disable the composite tags (<code>-e</code>) and
-the print conversions (<code>-n</code>) if these features aren't required.  Note
-that the exclude options (<code>-x</code> or <code>--TAG</code>) are not very
-efficient, and may have a negative impact on performance if a large number of
-tags are excluded individually.  The exception is XMP groups, which are bypassed
-in processing so they are never even extracted -- specifying
+extracted tags by specifying desired tags individually (<code>-TAG</code>) or by
+group (<code>-GROUP:all</code>), and disable the composite tags (<code>-e</code>)
+and the print conversions (<code>-n</code>) if these features aren't required. 
+Note that the exclude options (<code>-x</code> or <code>--TAG</code>) are not
+very efficient, and may have a negative impact on performance if a large number
+of tags are excluded individually.  The exception is XMP groups, which are
+bypassed in processing so they are never even extracted -- specifying
 <code>--XMP-crs:all</code> and <code>-XMP-crd:all</code> may speed processing
-significantly by avoiding processing of bulky Adobe image-editing information.</p>
+significantly by avoiding processing of bulky Adobe image-editing information.
+The <a href="ExifTool.html#IgnoreTags">API IgnoreTags option</a> (added in
+ExifTool 12.43) may also be used for significant speed benefits in some cases.</p>
 
 <p>The <code>-fast</code> option can significantly increase speed when
 extracting information from JPEG images which are piped across a slow network

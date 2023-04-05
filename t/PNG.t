@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/PNG.png');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -46,7 +46,7 @@ my $testnum = 1;
         binmode(TESTFILE);
         print TESTFILE $image;
         close(TESTFILE);
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -69,7 +69,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;   # erase results of any bad test
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -92,7 +92,7 @@ my $testnum = 1;
     if (testCompare('t/PNG_5.out', $txtfile, $testnum)) {
         unlink $txtfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -110,7 +110,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -130,7 +130,7 @@ my $testnum = 1;
         if (check($exifTool, $info, $testname, $testnum)) {
             unlink $testfile;
         } else {
-            print 'not ';
+            notOK();
         }
     } else {
         $skip = ' # skip Requires Compress::Zlib';
@@ -138,4 +138,4 @@ my $testnum = 1;
     print "ok $testnum$skip\n";
 }
 
-# end
+done(); # end

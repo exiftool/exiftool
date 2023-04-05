@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.58';
+$VERSION = '3.59';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1957,6 +1957,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             '3 3 3 0' => 'ARW 2.3.3', #JR (ILCE-9)
             '3 3 5 0' => 'ARW 2.3.5', #JR (DSC-HX99)
             '4 0 0 0' => 'ARW 4.0', # (ILCE-7SM3)
+            '4 0 1 0' => 'ARW 4.0.1', #github#195 (ZV-E1)
             # what about cRAW images?
         },
     },

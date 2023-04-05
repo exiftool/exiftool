@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Panasonic.jpg');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -32,7 +32,7 @@ my $testnum = 1;
         ['Keywords' => 'cool'],
         ['ShootingMode' => 'Panning'],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -41,7 +41,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Panasonic.rw2');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -53,9 +53,8 @@ my $testnum = 1;
         ['IPTC:Keywords' => 'a keyword'],
         ['ModifyDate' => '2009:03:25 12:11:46'],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, "t/images/$testname.rw2");
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, "t/images/$testname.rw2");
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

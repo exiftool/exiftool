@@ -23,9 +23,9 @@ my $testnum = 1;
     foreach $type (qw(afm dfont pfa pfb pfm ttf)) {
         ++$testnum;
         my $info = $exifTool->ImageInfo("t/images/Font.$type");
-        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+        notOK() unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";
     }
 }
 
-# end
+done(); # end

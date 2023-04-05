@@ -4,8 +4,26 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 12.50. (Other versions are
+Note: The most recent production release is Version 12.60. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Apr. 5, 2023 - Version 12.60 (production release)
+
+  - Added a new Sony FileFormat value
+  - Added Validate warning about duplicate EXIF
+  - Added ability to edit JPEG APP1 EXIF segment with incorrect header
+  - Decode a few new Sony ARW tags
+  - Improved -htmldump of non-EXIF-based maker notes
+  - Enhanced -geotag from CSV files support GPSSpeed (with variable units),
+    "bearing" for GPSTrack, and GPSDateTime in format "dd.mm.YYYY HH:MM:SS"
+  - Enhanced ImageDataMD5 to also support CRW, RAF, X3F and AVIF images
+  - Enhanced -efile option to also record updated and created file names
+  - Family 8 group names may now also be used in Composite Require/Desire tags
+  - Fixed handling of undefined tags in -if conditions to conform with
+    documentation and match -p and -tagsFromFile behaviour when -m or -f option
+    is used
+  - Fixed problem where setting the Geotime value didn't work when using an
+    advanced-formatting expression containing a greater-than symbol (>)
 
 Mar. 28, 2023 - Version 12.59
 
@@ -20,14 +38,13 @@ Mar. 28, 2023 - Version 12.59
   - Decode a new Olympus tag and improved decoding of another (thanks Herb)
   - Decode a couple of new PanasonicRaw tags
   - Decode image coordinates for a couple more VNT object types
-  - Enhanced ImageDataMD5 to also support MRW, CR3, PNG, MOV/MP4 and RIFF-based
-    files
+  - Enhanced ImageDataMD5 to also support MRW, CR3, IIQ, PNG, MOV/MP4 and some
+    RIFF-based files
   - Improved verbose messages when deleting NikonApp trailer
   - Patched to avoid structure warnings when copying tags from Nikon files
     containing NKSC metadata
   - Fixed %-C filename format code to work properly with the -fileOrder and
     -progress options
-  - Fixed new ImageDataMD5 tag to work properly with PhaseOne IIQ files
   - Fixed potential ValueConv warning when reading LIF files
   - API Changes:
       - Added SetAlternateFile method
@@ -196,6 +213,8 @@ Nov. 8, 2022 - Version 12.50 (production release)
   - Fixed inconsistent year and time zone for Kenwood dashcam timed GPS in MP4
     videos
 
+History of older versions (back to Nov. 19, 2003 - Version 1.00) -->
+
 Oct. 19, 2022 - Version 12.49
 
   - Added read support for Windows ICO and CUR files
@@ -362,8 +381,6 @@ June 1, 2022 - Version 12.42 (production release)
     output
   - Patched to allow PDF Encrypt object to be "null"
   - Fixed bug reading ICC_Profile 'meta' tags
-
-History of older versions (back to Nov. 19, 2003 - Version 1.00) -->
 
 Apr. 7, 2022 - Version 12.41
 

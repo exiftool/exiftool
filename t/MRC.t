@@ -22,9 +22,8 @@ my $testnum = 1;
     my $exifTool = Image::ExifTool->new;
     $exifTool->Options(ExtractEmbedded => 1);
     my $info = $exifTool->ImageInfo('t/images/MRC.mrc');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum, undef, 3);
+    notOK() unless check($exifTool, $info, $testname, $testnum, undef, 3);
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

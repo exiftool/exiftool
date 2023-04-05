@@ -8784,6 +8784,16 @@ sub HandleItemInfo($)
                     $et->VPrint(0, "$$et{INDENT}    [snip $snip bytes]\n") if $snip;
                 }
             }
+            # do MD5 checksum of AVIF "av01" image data
+            if ($type eq 'av01' and $$et{ImageDataMD5}) {
+                my $md5 = $$et{ImageDataMD5};
+                my $tot = 0;
+                foreach $extent (@{$$item{Extents}}) {
+                    $raf->Seek($$extent[1] + $base, 0) or $et->Warn('Seek error in av01 image data'), last;
+                    $tot += $et->ImageDataMD5($raf, $$extent[2], 'av01 image', 1);
+                }
+                $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: $tot bytes of av01 data)\n") if $tot;
+            }
             next unless $name;
             # assemble the data for this item
             undef $buff;

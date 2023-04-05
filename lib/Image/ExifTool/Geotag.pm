@@ -29,7 +29,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.70';
+$VERSION = '1.71';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -92,7 +92,7 @@ my %isOrient = ( dir => 1, pitch => 1, roll => 1 ); # test for orientation key
 # tags which may exist separately in some formats (eg. CSV)
 my %sepTags = ( dir => 1, pitch => 1, roll => 1, track => 1, speed => 1 );
 
-# conversion factors for GPSSpeed
+# conversion factors for GPSSpeed (standard EXIF units only)
 my %speedConv = (
     'K' => 1.852,       # km/h per knot
     'M' => 1.150779448, # mph per knot
@@ -102,7 +102,14 @@ my %speedConv = (
     'mph' => 'M',
 );
 
-my $secPerDay = 24 * 3600;      # a useful constant
+# all recognized speed conversion factors (non-EXIF included)
+my %otherConv = (
+    'km/h' => 1.852,
+    'mph'  => 1.150779448,
+    'm/s'  => 0.514444,
+);
+
+my $secPerDay = 24 * 3600;  # a useful constant
 
 #------------------------------------------------------------------------------
 # Load GPS track log file
@@ -140,6 +147,7 @@ sub LoadTrackLog($$;$)
     my ($raf, $from, $time, $isDate, $noDate, $noDateChanged, $lastDate, $dateFlarm);
     my ($nmeaStart, $fixSecs, @fixTimes, $lastFix, %nmea, @csvHeadings, $sortFixes);
     my ($canCut, $cutPDOP, $cutHDOP, $cutSats, $e0, $e1, @tmp, $trackFile, $trackTime);
+    my $scaleSpeed;
 
     unless (eval { require Time::Local }) {
         return 'Geotag feature requires Time::Local installed';
@@ -246,7 +254,9 @@ sub LoadTrackLog($$;$)
                 $format = 'CSV';
                 # convert recognized headings to our parameter names
                 foreach (@csvHeadings) {
+                    my $head = $_;
                     my $param;
+                    my $xtra = '';
                     s/^GPS ?//; # remove leading "GPS" to simplify regex patterns
                     if (/^Time ?\(seconds\)$/i) { # DJI
                         # DJI CSV log files have a column "Time(seconds)" which is seconds since
@@ -274,7 +284,16 @@ sub LoadTrackLog($$;$)
                         /ref$/i and $param .= 'ref';
                     } elsif (/^(Pos)?Alt/i) {
                         $param = 'alt';
-                    } elsif (/^(Angle)?(Heading|Track)/i) {
+                    } elsif (/^Speed/i) {
+                        $param = 'speed';
+                        # (recognize units in brackets)
+                        if (m{\((mph|km/h|m/s)\)}) {
+                            $scaleSpeed = $otherConv{$1};
+                            $xtra = " in $1";
+                        } else {
+                            $xtra = ' in knots';
+                        }
+                    } elsif (/^(Angle)?(Heading|Track|Bearing)/i) {
                         $param = 'track';
                     } elsif (/^(Angle)?Pitch/i or /^Camera ?Elevation ?Angle/i) {
                         $param = 'pitch';
@@ -284,10 +303,10 @@ sub LoadTrackLog($$;$)
                         $param = 'dir';
                     }
                     if ($param) {
-                        $et->VPrint(2, "CSV column '${_}' is $param\n");
+                        $et->VPrint(2, "CSV column '${head}' is $param$xtra\n");
                         $_ = $param;
                     } else {
-                        $et->VPrint(2, "CSV column '${_}' ignored\n");
+                        $et->VPrint(2, "CSV column '${head}' ignored\n");
                         $_ = '';    # ignore this column
                     }
                 }
@@ -479,9 +498,11 @@ DoneFix:    $isDate = 1;
             my ($param, $date, $secs, %neg);
             foreach $param (@csvHeadings) {
                 my $val = shift @vals;
-                last unless defined $val;
+                last unless defined $val and length($val);
                 next unless $param;
                 if ($param eq 'datetime') {
+                    # (fix formats like "24.07.2016 13:47:30")
+                    $val =~ s/^(\d{2})[^\d](\d{2})[^\d](\d{4}) /$3:$2:$1 /;
                     local $SIG{'__WARN__'} = sub { };
                     my $dateTime = $et->InverseDateTime($val);
                     if ($dateTime) {
@@ -510,6 +531,7 @@ DoneFix:    $isDate = 1;
                     $date = $trackTime;
                     $secs = $val;
                 } else {
+                    $val /= $scaleSpeed if $scaleSpeed and $param eq 'speed';
                     $$fix{$param} = $val;
                     $$has{$param} = 1 if $sepTags{$param};
                 }
@@ -1204,6 +1226,7 @@ Category:       foreach $category (qw{pos track alt orient atemp}) {
             @r = $et->SetNewValue(GPSTrackRef => (defined $$tFix{track} ? 'T' : undef), %opts);
             my ($spd, $ref);
             if (defined($spd = $$tFix{speed})) {
+                # convert to specified units if necessary
                 $ref = $$et{OPTIONS}{GeoSpeedRef};
                 if ($ref and defined $speedConv{$ref}) {
                     $ref = $speedConv{$ref} if $speedConv{$speedConv{$ref}};

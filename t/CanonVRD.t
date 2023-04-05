@@ -25,7 +25,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/CanonVRD.vrd');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -42,7 +42,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -66,7 +66,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
         if (check($exifTool, $info, $testname, $testnum)) {
             unlink $testfile;
         } else {
-            print 'not ';
+            notOK();
         }
         print "ok $testnum\n";
     }
@@ -85,7 +85,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -103,7 +103,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
     if (check($exifTool, $info, $testname, $testnum, 8)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -122,7 +122,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
         if (check($exifTool, $info, $testname, $testnum)) {
             unlink $testfile;
         } else {
-            print 'not ';
+            notOK();
         }
         print "ok $testnum\n";
     }
@@ -133,7 +133,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/CanonVRD.dr4');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -150,7 +150,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
     unlink $testfile;
     $exifTool->WriteInfo('t/images/CanonVRD.dr4', $testfile);
     my $info = $exifTool->ImageInfo($testfile, '-filename');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -172,7 +172,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
             unlink $testfile unless $testnum == 15 or $testnum == 17 or $testnum == 21;
             unlink $srcfile if $testnum == 20;
         } else {
-            print 'not ';
+            notOK();
         }
         print "ok $testnum\n";
     }
@@ -193,7 +193,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
         unlink $testfile;
         unlink $srcfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -213,7 +213,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
         unlink $testfile;
         unlink $srcfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -224,9 +224,9 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
     my $exifTool = Image::ExifTool->new;
     my @writeInfo = ( ['CanonVRD:GammaBlackPoint' => 1.5] );
     my $srcfile = "t/${testname}_21_failed.cr3";
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, $srcfile, \@checkDR4);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, $srcfile, \@checkDR4);
     print "ok $testnum\n";
     unlink $srcfile;
 }
 
-# end
+done(); # end

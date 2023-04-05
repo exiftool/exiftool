@@ -23,7 +23,7 @@ my $testnum = 1;
     foreach $file ('Casio.jpg', 'Casio2.jpg', 'CasioQVCI.jpg') {
         ++$testnum;
         my $info = $exifTool->ImageInfo("t/images/$file");
-        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+        notOK() unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";
     }
 }
@@ -35,7 +35,7 @@ my $testnum = 1;
         [MaxApertureValue => 4],
         [FocusMode => 'Macro'],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -47,9 +47,8 @@ my $testnum = 1;
         ['YResolution',300],
         ['ObjectDistance','3.5'],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/Casio2.jpg');
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/Casio2.jpg');
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

@@ -22,9 +22,8 @@ my $testnum = 1;
     my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Unknown => 1, Composite => 0);
     my $info = $exifTool->ImageInfo('t/images/Apple.jpg', '-file:all');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

@@ -30,7 +30,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.63';
+$VERSION = '1.64';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -2102,14 +2102,7 @@ sub ProcessRIFF($$)
             # do MD5 if required
             if ($md5 and $isImageData{$tag}) {
                 $rewind = $raf->Tell();
-                my $more = $len2;
-                while ($more) {
-                    my $n = $more > 65536 ? 65536 : $more;
-                    $raf->Read($buff, $n) == $n or $err = 1, last;
-                    $md5->add($buff);
-                    $more -= $n;
-                }
-                $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: '${tag}' chunk, $len2 bytes)\n");
+                $et->ImageDataMD5($raf, $len2, "'${tag}' chunk");
             }
             if ($tag eq 'LIST_movi' and $ee) {
                 $raf->Seek($rewind, 0) or $err = 1, last if $rewind;

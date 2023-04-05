@@ -24,7 +24,7 @@ my $failed;
     foreach $type (qw(zip gz)) {
         ++$testnum;
         my $info = $exifTool->ImageInfo("t/images/ZIP.$type");
-        print 'not ' and $failed = 1 unless check($exifTool, $info, $testname, $testnum);
+        notOK() and $failed = 1 unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";
     }
 }
@@ -38,7 +38,7 @@ my $failed;
         my $skip = '';
         if (eval 'require Archive::Zip') {
             my $info = $exifTool->ImageInfo("t/images/$file");
-            print 'not ' and $failed = 1 unless check($exifTool, $info, $testname, $testnum);
+            notOK() and $failed = 1 unless check($exifTool, $info, $testname, $testnum);
         } else {
             $skip = ' # skip Requires Archive::Zip';
         }
@@ -67,4 +67,4 @@ if ($failed) {
     }
 }
 
-# end
+done(); # end

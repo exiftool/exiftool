@@ -46,7 +46,7 @@ sub CryptTest($$;$)
         }
         if ($err) {
             warn "\n  $err\n";
-            print 'not ';
+            notOK();
         }
     } else {
         $skip = " # skip Requires $$cryptInfo{_req}";
@@ -59,7 +59,7 @@ sub CryptTest($$;$)
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/PDF.pdf');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -148,7 +148,7 @@ sub CryptTest($$;$)
             my $info = $exifTool->ImageInfo($testfile2,
                     qw{Filesize PDF:all XMP:Creator XMP:Author AllDates});
             my $ok = check($exifTool, $info, $testname, $testnum);
-            print 'not ' unless $ok;
+            notOK() unless $ok;
             print "ok $testnum\n";
             # erase source file if previous test was OK
             unlink $testfile1 if $lastOK;
@@ -164,7 +164,7 @@ sub CryptTest($$;$)
         if (binaryCompare($testfile2, $testfile)) {
             unlink $testfile2;
         } else {
-            print 'not ';
+            notOK();
         }
         print "ok $testnum\n";
         unlink $testfile1 if $lastOK;
@@ -185,7 +185,7 @@ sub CryptTest($$;$)
     if ($ok and check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -198,12 +198,12 @@ sub CryptTest($$;$)
     my $err = Image::ExifTool::AES::Crypt(\$data, '11223344556677889900112233445566');
     if ($err) {
         warn "\n  $err\n";
-        print 'not ';
+        notOK();
     } elsif ($data ne 'ExifTool AES Test') {
         my $hex = unpack 'H*', $data;
         warn "\n  Incorrect result from AES decryption:\n";
         warn "    $hex\n";
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -300,5 +300,4 @@ sub CryptTest($$;$)
     }
 }
 
-
-# end
+done(); # end

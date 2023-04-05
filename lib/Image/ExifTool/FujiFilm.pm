@@ -1671,11 +1671,11 @@ sub ProcessRAF($$)
     my ($rafNum, $ifdNum) = ('','');
     foreach $offset (0x5c, 0x64, 0x78, 0x80) {
         last if $offset >= $jpos;
-        unless ($raf->Seek($offset, 0) and $raf->Read($buff, 4)) {
+        unless ($raf->Seek($offset, 0) and $raf->Read($buff, 8)) {
             $warn = 1;
             last;
         }
-        my $start = unpack('N',$buff);
+        my ($start, $len) = unpack('N2',$buff);
         next unless $start;
         if ($offset == 0x64 or $offset == 0x80) {
             # parse FujiIFD directory
@@ -1686,7 +1686,10 @@ sub ProcessRAF($$)
             $$et{SET_GROUP1} = "FujiIFD$ifdNum";
             my $tagTablePtr = GetTagTable('Image::ExifTool::FujiFilm::IFD');
             # this is TIFF-format data only for some models, so no warning if it fails
-            $et->ProcessTIFF(\%dirInfo, $tagTablePtr, \&Image::ExifTool::ProcessTIFF);
+            unless ($et->ProcessTIFF(\%dirInfo, $tagTablePtr, \&Image::ExifTool::ProcessTIFF)) {
+                # do MD5 of image data if necessary
+                $et->ImageDataMD5($raf, $len, 'raw') if $$et{ImageDataMD5} and $raf->Seek($start,0);
+            }
             delete $$et{SET_GROUP1};
             $ifdNum = ($ifdNum || 1) + 1;
         } else {

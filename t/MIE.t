@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/MIE.mie', '-filename', '-directory');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -46,7 +46,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -66,7 +66,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum, 2)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -77,8 +77,8 @@ foreach (qw(Latin Cyrillic)) {
     my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Charset => $_);
     my $info = $exifTool->ImageInfo('t/images/MIE.mie', 'comment-ru_ru');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
-# end
+done(); # end

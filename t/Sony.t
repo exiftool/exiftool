@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Sony.jpg',{Unknown=>1});
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -32,7 +32,7 @@ my $testnum = 1;
         [FlashFired => 'true'],
         [ISO => undef],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -46,7 +46,7 @@ my $testnum = 1;
     unless ($got == $expected) {
         warn "\n  Test $testnum (decryption) returned wrong value:\n";
         warn sprintf("    Expected 0x%x but got 0x%x\n", $expected, $got);
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -56,8 +56,8 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Sony.pmp');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
-# end
+done(); # end

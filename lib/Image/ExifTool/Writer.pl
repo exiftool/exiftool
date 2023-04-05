@@ -3324,15 +3324,19 @@ sub InsertTagValues($$$;$$$)
             undef $advFmtSelf;
             $didExpr = 1;   # set flag indicating an expression was evaluated
         }
-        unless (defined $val or ref $opt) {
+        unless (defined $val) {
             $val = $$self{OPTIONS}{MissingTagValue};
             unless (defined $val) {
                 my $g3 = ($docGrp and $var !~ /\b(main|doc\d+):/i) ? $docGrp . ':' : '';
                 my $msg = $didExpr ? "Advanced formatting expression returned undef for '$g3${var}'" :
                                      "Tag '$g3${var}' not defined";
-                no strict 'refs';
-                $opt and ($opt eq 'Silent' or &$opt($self, $msg, 2)) and return $$self{FMT_EXPR} = undef;
-                $val = '';
+                if (ref $opt) {
+                    $self->Warn($msg,2) or $val = '';
+                } elsif ($opt) {
+                    no strict 'refs';
+                    ($opt eq 'Silent' or &$opt($self, $msg, 2)) and return $$self{FMT_EXPR} = undef;
+                    $val = '';
+                }
             }
         }
         if (ref $opt eq 'HASH') {
@@ -5566,7 +5570,7 @@ sub WriteJPEG($$)
                     $s =~ /^JFXX\0\x10/     and $dirName = 'JFXX';
                     $s =~ /^(II|MM).{4}HEAPJPGM/s and $dirName = 'CIFF';
                 } elsif ($marker == 0xe1) {
-                    if ($s =~ /^(.{0,4})$exifAPP1hdr(.{1,4})/is) {
+                    if ($s =~ /^(.{0,4})Exif\0.(.{1,4})/is) {
                         $dirName = 'IFD0';
                         my ($junk, $bytes) = ($1, $2);
                         # support multi-segment EXIF
@@ -6132,7 +6136,7 @@ sub WriteJPEG($$)
                 }
             } elsif ($marker == 0xe1) {         # APP1 (EXIF, XMP)
                 # check for EXIF data
-                if ($$segDataPt =~ /^(.{0,4})$exifAPP1hdr/is) {
+                if ($$segDataPt =~ /^(.{0,4})Exif\0./is) {
                     my $hdrLen = length $exifAPP1hdr;
                     if (length $1) {
                         $hdrLen += length $1;
@@ -6865,6 +6869,36 @@ sub SetFileTime($$;$$$$)
         return $success;
     }
     return 1; # (nothing to do)
+}
+
+#------------------------------------------------------------------------------
+# Add data to MD5 checksum
+# Inputs: 0) ExifTool ref, 1) RAF ref, 2) data size (or undef to read to end of file),
+#         3) data name (or undef for no warnings or messages), 4) flag for no verbose message
+# Returns: number of bytes read and MD5'd
+sub ImageDataMD5($$$;$$)
+{
+    my ($self, $raf, $size, $type, $noMsg) = @_;
+    my $md5 = $$self{ImageDataMD5} or return;
+    my ($bytesRead, $n) = (0, 65536);
+    my $buff;
+    for (;;) {
+        if (defined $size) {
+            last unless $size;
+            $n = $size > 65536 ? 65536 : $size;
+            $size -= $n;
+        }
+        unless ($raf->Read($buff, $n)) {
+            $self->Warn("Error reading $type data") if $type and defined $size;
+            last;
+        }
+        $md5->add($buff);
+        $bytesRead += length $buff;
+    }
+    if ($$self{OPTIONS}{Verbose} and $bytesRead and $type and not $noMsg) {
+        $self->VPrint(0, "$$self{INDENT}(ImageDataMD5: $bytesRead bytes of $type data)\n");
+    }
+    return $bytesRead;
 }
 
 #------------------------------------------------------------------------------

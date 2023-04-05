@@ -24,9 +24,9 @@ my $testnum = 1;
         ++$testnum;
         my $fname = 't/images/' . ($i < 6 ? "Text$i.txt" : 'Text.csv');
         my $info = $exifTool->ImageInfo($fname, '-system:all');
-        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+        notOK() unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";
     }
 }
 
-# end
+done(); # end

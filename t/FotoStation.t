@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/FotoStation.jpg', {Duplicates => 1});
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -32,8 +32,8 @@ my $testnum = 1;
         ['Rotation' => 0 ],
         ['Keywords' => 'FotoStation' ],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, undef, 1);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, undef, 1);
     print "ok $testnum\n";
 }
 
-# end
+done(); # end

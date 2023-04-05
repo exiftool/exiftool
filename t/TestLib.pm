@@ -27,14 +27,16 @@ use Image::ExifTool qw(ImageInfo);
 use vars qw($VERSION @ISA @EXPORT);
 $VERSION = '1.23';
 @ISA = qw(Exporter);
-@EXPORT = qw(check writeCheck writeInfo testCompare binaryCompare testVerbose);
+@EXPORT = qw(check writeCheck writeInfo testCompare binaryCompare testVerbose notOK done);
 
 my $noTimeLocal;
+my $rtnCode = 0;
 
 sub nearEnough($$);
 sub nearTime($$$$);
 sub formatValue($);
 sub writeInfo($$;$$$);
+sub notOK();
 
 #------------------------------------------------------------------------------
 # Compare 2 binary files
@@ -449,5 +451,19 @@ sub testVerbose($$$$)
     return testCompare("$testfile.out","$testfile.failed",$testnum);
 }
 
+#------------------------------------------------------------------------------
+# One of the tests failed
+sub notOK()
+{
+    print 'not ';
+    $rtnCode = 1;
+}
+
+#------------------------------------------------------------------------------
+# Done tests and exit
+sub done()
+{
+    exit $rtnCode;
+}
 
 1; #end

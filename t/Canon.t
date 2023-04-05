@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Canon1DmkIII.jpg');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -33,10 +33,9 @@ my $testnum = 1;
         [TimerLength => 'Enable; 6 sec: 5; 16 sec: 20; After release: 6'],
     );
     my @check = qw(ISOSpeedRange TimerLength OriginalDecisionData Warning);
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum,
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum,
                                    't/images/Canon1DmkIII.jpg', \@check);
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

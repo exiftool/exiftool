@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/PhaseOne.iiq');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -31,9 +31,8 @@ my $testnum = 1;
     my @writeInfo = (
         ['SerialNumber' => '1234'],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/PhaseOne.iiq');
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/PhaseOne.iiq');
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

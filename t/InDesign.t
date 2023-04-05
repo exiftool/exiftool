@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/InDesign.indd');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -37,7 +37,7 @@ my $testnum = 1;
     my $info = $exifTool->ImageInfo($testfile);
     my $not;
     unless (check($exifTool, $info, $testname, $testnum)) {
-        print 'not ';
+        notOK();
         $not = 1;
     }
     print "ok $testnum\n";
@@ -54,9 +54,9 @@ my $testnum = 1;
         unlink $testfile unless $not;
         unlink $testfile2;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
 
-# end
+done(); # end

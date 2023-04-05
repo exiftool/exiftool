@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Minolta.jpg');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -32,7 +32,7 @@ my $testnum = 1;
         ['Caption-Abstract' => 'A new caption/abstract'],
         ['MinoltaDate' => '2005:01:16'],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -43,9 +43,8 @@ my $testnum = 1;
         ['FocusMode' => 'MF'],
         ['LastFileNumber' => '123'],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/Minolta.mrw');
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/Minolta.mrw');
     print "ok $testnum\n";
 }
 
-
-# end
+done(); # end

@@ -51,7 +51,7 @@ unless (eval { require Time::Local }) {
     $exifTool->SetNewValue(Geotime => '2003:05:24 17:09:31Z');
     $exifTool->WriteInfo('t/images/Writer.jpg', $testfile2);
     my $info = $exifTool->ImageInfo($testfile2, @testTags);
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -69,7 +69,7 @@ unless (eval { require Time::Local }) {
     if (check($exifTool, $info, $testname, $testnum, 3)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 
@@ -83,7 +83,7 @@ unless (eval { require Time::Local }) {
     if (check($exifTool, $info, $testname, $testnum, 2)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 
@@ -99,7 +99,7 @@ unless (eval { require Time::Local }) {
         unlink $testfile5;
     } else {
         warn "\n  $err\n" if $err;
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -120,7 +120,7 @@ unless (eval { require Time::Local }) {
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -147,7 +147,7 @@ unless (eval { require Time::Local }) {
         unlink $testfile;
         unlink $txtfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -173,7 +173,7 @@ unless (eval { require Time::Local }) {
         if (check($exifTool, $info, $testname, $testnum)) {
             unlink $testfile;
         } else {
-            print 'not ';
+            notOK();
         }
         print "ok $testnum\n";
     }
@@ -194,7 +194,7 @@ unless (eval { require Time::Local }) {
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -213,11 +213,11 @@ unless (eval { require Time::Local }) {
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
 
 IgnoreAll:
 
-# end
+done(); # end

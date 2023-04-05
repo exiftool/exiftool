@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Sigma;
 
-$VERSION = '1.29';
+$VERSION = '1.30';
 
 sub ProcessX3FHeader($$$);
 sub ProcessX3FDirectory($$$);
@@ -545,10 +545,16 @@ sub ProcessX3FDirectory($$$)
         if  ($$tagInfo{Name} eq 'PreviewImage') {
             # check image header to see if this is a JPEG preview image
             $raf->Read($buff, 28) == 28 or return 'Error reading PreviewImage header';
-            # ignore all image data but JPEG compressed (version 2.0, type 2, format 18)
-            next unless $buff =~ /^SECi\0\0\x02\0\x02\0\0\0\x12\0\0\0/;
             $offset += 28;
             $len -= 28;
+            # ignore all image data but JPEG compressed (version 2.0, type 2, format 18)
+            unless ($buff =~ /^SECi\0\0\x02\0\x02\0\0\0\x12\0\0\0/) {
+                # do MD5 on non-preview data if requested
+                if ($$et{ImageDataMD5} and substr($buff,8,1) ne "\x02") {
+                    $et->ImageDataMD5($raf, $len, 'SigmaRaw IMAG');
+                }
+                next;
+            }
             $raf->Read($buff, $len) == $len or return "Error reading PreviewImage data";
             # check fore EXIF segment, and extract this image as the JpgFromRaw
             if ($buff =~ /^\xff\xd8\xff\xe1/) {

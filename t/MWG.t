@@ -23,7 +23,7 @@ my $testnum = 1;
     my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 0);
     my $info = $exifTool->ImageInfo('t/images/MWG.jpg', 'MWG:*');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -49,13 +49,13 @@ my $testnum = 1;
         my $info = $exifTool->GetInfo('Warning');
         if ($$info{Warning}) {
             warn "\n    Warning: $$info{Warning}\n";
-            print 'not ';
+            notOK();
         } else {
             $info = $exifTool->ImageInfo($testfile, @tags);
             if (check($exifTool, $info, $testname, $testnum)) {
                 unlink $testfile;
             } else {
-                print 'not ';
+                notOK();
             }
         }
         print "ok $testnum\n";
@@ -67,7 +67,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', 'IPTC:*', 'Warning');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -83,7 +83,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -93,8 +93,8 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', 'MWG:*');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
-# end
+done(); # end

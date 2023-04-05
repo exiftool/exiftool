@@ -23,10 +23,9 @@ my $testnum = 1;
     foreach $ext ('exe', 'macho', 'elf', 'a', 'so', 'dylib') {
         ++$testnum;
         my $info = $exifTool->ImageInfo("t/images/EXE.$ext", '-system:all');
-        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+        notOK() unless check($exifTool, $info, $testname, $testnum);
         print "ok $testnum\n";
     }
 }
 
-
-# end
+done(); # end

@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '2.13';
+$VERSION = '2.14';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -92,6 +92,7 @@ my $debug;          # set to 1 to enable debugging code
     {
         Name => 'MakerNoteDJIInfo',
         Condition => '$$valPt =~ /^\[ae_dbg_info:/',
+        NotIFD => 1,
         SubDirectory => { TagTable => 'Image::ExifTool::DJI::Info' },
     },
     {

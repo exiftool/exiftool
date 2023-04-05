@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/IPTC.jpg', {Duplicates => 1});
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -35,7 +35,7 @@ my $testnum = 1;
     my $expected = 'ExifTool-Test-IPTC';
     unless ($values eq $expected) {
         warn "\n  Test $testnum differs with \"$values\"\n";
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -86,7 +86,7 @@ my $testnum = 1;
         binmode(TESTFILE);
         print TESTFILE $image;
         close(TESTFILE);
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -102,7 +102,7 @@ my $testnum = 1;
         # (dcollins is the only tester with this problem)
         ['IPTC:CopyrightNotice' => "\xc2\xa9 2008 Phil Harvey"],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/Writer.jpg', 1);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/Writer.jpg', 1);
     print "ok $testnum\n";
 }
 
@@ -121,7 +121,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum) and $ok) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -134,7 +134,7 @@ my $testnum = 1;
         ['IPTC:Keywords' => 'One'],
         ['IPTC:Keywords' => 'Two'],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/IPTC.jpg', 1);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/IPTC.jpg', 1);
     print "ok $testnum\n";
 }
 
@@ -150,9 +150,9 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum) and $ok) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
 
-# end
+done(); # end

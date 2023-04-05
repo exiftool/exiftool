@@ -21,7 +21,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/Nikon.jpg');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -32,7 +32,7 @@ my $testnum = 1;
         [ Creator => 'Phil' ],
         [ ImageAdjustment => 'Yes, lots of it' ],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum);
+    notOK() unless writeCheck(\@writeInfo, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -48,7 +48,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -58,7 +58,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     my $info = $exifTool->ImageInfo('t/images/NikonD2Hs.jpg');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -72,7 +72,7 @@ my $testnum = 1;
     unless ($got == $expected) {
         warn "\n  Test $testnum (decryption) returned wrong value:\n";
         warn sprintf("    Expected 0x%x but got 0x%x\n", $expected, $got);
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -83,7 +83,7 @@ my $testnum = 1;
     my $exifTool = Image::ExifTool->new;
     $exifTool->Options(Duplicates => 1);
     my $info = $exifTool->ImageInfo('t/images/Nikon.nef');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 
@@ -102,7 +102,7 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {
-        print 'not ';
+        notOK();
     }
     print "ok $testnum\n";
 }
@@ -114,10 +114,10 @@ my $testnum = 1;
     foreach (sort keys %$lensIDs) {
         next if /^(([0-9A-F]{2} ){7}[0-9A-F]{2}(\.\d+)?|Notes|OTHER)$/;
         warn "\n  Bad LensID '$_' in test $testnum\n";
-        print 'not ';
+        notOK();
         last;
     }
     print "ok $testnum\n";
 }
 
-# end
+done(); # end

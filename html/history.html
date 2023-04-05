@@ -11,11 +11,30 @@
 
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.50.tar.gz">Version 12.50</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.60.tar.gz">Version 12.60</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">MetaCPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v12.60'><b>Apr. 5, 2023 - Version 12.60</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a new Sony FileFormat value
+<li>Added Validate warning about duplicate EXIF
+<li>Added ability to edit JPEG APP1 EXIF segment with incorrect header
+<li>Decode a few new Sony ARW tags
+<li>Improved -htmldump of non-EXIF-based maker notes
+<li>Enhanced -geotag from CSV files support GPSSpeed (with variable units),
+    "bearing" for GPSTrack, and GPSDateTime in format "dd.mm.YYYY HH:MM:SS"
+<li>Enhanced ImageDataMD5 to also support CRW, RAF, X3F and AVIF images
+<li>Enhanced -efile option to also record updated and created file names
+<li>Family 8 group names may now also be used in Composite Require/Desire tags
+<li>Fixed handling of undefined tags in -if conditions to conform with
+    documentation and match -p and -tagsFromFile behaviour when -m or -f option
+    is used
+<li>Fixed problem where setting the Geotime value didn't work when using an
+    advanced-formatting expression containing a greater-than symbol (&gt;)
+</ul>
 
 <a name='v12.59'><b>Mar. 28, 2023 - Version 12.59</b></a>
 <ul>
@@ -30,14 +49,13 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Decode a new Olympus tag and improved decoding of another (thanks Herb)
 <li>Decode a couple of new PanasonicRaw tags
 <li>Decode image coordinates for a couple more VNT object types
-<li>Enhanced ImageDataMD5 to also support MRW, CR3, PNG, MOV/MP4 and RIFF-based
-    files
+<li>Enhanced ImageDataMD5 to also support MRW, CR3, IIQ, PNG, MOV/MP4 and some
+    RIFF-based files
 <li>Improved verbose messages when deleting NikonApp trailer
 <li>Patched to avoid structure warnings when copying tags from Nikon files
     containing NKSC metadata
 <li>Fixed %-C filename format code to work properly with the -fileOrder and
     -progress options
-<li>Fixed new ImageDataMD5 tag to work properly with PhaseOne IIQ files
 <li>Fixed potential ValueConv warning when reading LIF files
 <li>API Changes:
     <ul>
@@ -218,184 +236,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
     videos
 </ul>
 
-<a name='v12.49'><b>Oct. 19, 2022 - Version 12.49</b></a>
-<ul>
-<li>Added read support for Windows ICO and CUR files
-<li>Added ability to shift EXIF OffsetTime tags (eg. "-OffsetTime+=+02:00")
-<li>Added a few new XMP tags and print conversions
-<li>Added a print conversion for Photoshop:PrintFlags
-<li>Added a new SonyModelID (thanks LibRaw)
-<li>Added a few new Canon RF LensType values (thanks Norbert Wasser)
-<li>Added a new Canon LensType
-<li>Added a new Nikon LensID
-<li>Decode 'riff' metadata blocks in FLAC audio files
-<li>Decode RIFF 'acid' chunk written by Acidizer
-<li>Enhanced the -d option %f sub-second date/time format code to allow the
-    decimal point to be dropped (eg. "%-3f")
-<li>Patched another Sigma Photo Pro incompatibility when writing X3F images
-    (Sigma will also fix this at their end in the next SPP release)
-</ul>
-
-<a name='v12.48'><b>Oct. 13, 2022 - Version 12.48</b></a>
-<ul>
-<li>Added support for new XMP-photoshop:CameraProfiles structure
-<li>Added a new SonyModelID and Sony LensType (thanks Jos Roost)
-<li>Decode more tags for the Sony ILME-FX30 (thanks Jos Roost)
-<li>Decode a couple of new Panasonic tags, and improved decoding of others
-<li>Decode <a href="TagNames/MISB.html">STANAG-4609 MISB</a> timed metadata from M2TS videos
-<li>Decode a new Nikon tag (thanks Warren Hatch)
-<li>Decode a couple of new FujiFilm tags (thanks Honza Pokorny)
-<li>Improved round-off errors when writing QuickTime:MatrixStructure via the
-    Composite:Rotation tag
-<li>Increased Verbose level of "nothing changed" message added in 12.45
-<li>Removed "Z" (Zulu) designation from some of the MS-DOC date/time tags
-    because they most certainly are in local time as written by Word 2011 for
-    Mac (while some other MS-DOC and FlashPix date/time tags extracted without a
-    "Z" are actually in Zulu time -- a bit of a mess really)
-<li>Prevent dynamically-generated Unknown tags from being extracted when the
-    -validate option is used without -u
-<li>Patched to better handle irregular timestamps in streaming GPS of NextBase
-    dashcam videos
-<li>Fixed incompatibility with Sigma Photo Pro which could result in Sigma Photo
-    Pro corrupting an ExifTool-edited X3F image (the section length in the
-    footer needed to include the padding to a 4-byte boundary, thanks Sigma
-    engineer Yuki Miyahara)
-<li>Fixed problem which could prevent ExifTool from reading all GPS points from
-    some INNOV M2TS videos
-</ul>
-
-<a name='v12.47'><b>Oct. 3, 2022 - Version 12.47</b></a>
-<ul>
-<li>Added a new Nikon LensID (thanks David P&uuml;schel)
-<li>Fixed bug introduced in 12.46 which resulted in a runtime error when -j was
-    combined with -b
-</ul>
-
-<a name='v12.46'><b>Oct. 1, 2022 - Version 12.46</b> - "Write WEBP"</a>
-<ul>
-<li>Added WEBP write support
-<li>Added the abilty to write Panasonic GH6 RW2 files
-<li>Added a new Canon LensType
-<li>Added a number of new Sigma LensType values (thanks LibRaw)
-<li>Added support for BigTIFF format code 16 in Apple ProRaw maker notes
-<li>Added config_files/frameCount.config to extract MP4 FrameCount
-<li>Added a MIE OriginalImageSize tag
-<li>Added some extra -validate checks for RIFF-based file formats
-<li>Extract FrameRate from MP4 tmcd box
-<li>Decode a new Apple tag (thanks Neal Krawetz)
-<li>Decode more information from Nikon Z-camera videos
-<li>Decode streaming GPS from Garmin DriveAssist 51 MP4 videos
-<li>Changed the names of two FujiFilm FirmwareVersion tags
-<li>Enhanced WEBP FileType identification to denote Extended WEBP
-<li>Preserve fractional seconds when extracting Samsung TimeStamp times
-<li>Patched to avoid reporting Photoshop:ProgressiveScans unless PhotoshopFormat
-    is Progressive
-<li>Patched to test QuickTime UserData tags with default 0x0000 language code to
-    see if they contain UTF8 characters, and if so assume UTF8 encoding and
-    ignore the CharsetQuickTime setting
-<li>Patched to avoid potential deep recursion when reading/writing malicious CRW
-    images
-<li>Fixed "Invalid ID3 frame size" problem when reading ID3v2 with an extended
-    header (very uncommon, but Audacity uses this)
-<li>Fixed typo in the name of a new DNG 1.6 tag
-<li>Fixed some verbose warnings when reading Nikon Z-camera NEF files
-<li>Fixed decoding of a couple of Nikon Z9 tags for newer firmware versions
-    (thanks Warren Hatch)
-</ul>
-
-<a name='v12.45'><b>Sept. 16, 2022 - Version 12.45</b></a>
-<ul>
-<li>Added new IPTC Video Metadata version 1.3 tags
-<li>Added a couple of new Canon lenses (thanks Norbert Wasser)
-<li>Added a new Sony LensType (thanks Jos Roost)
-<li>Added known Unknown value for IPTC ChromaticityColorant (thanks Herb)
-<li>Added new Nikon WhiteBalanceFineTune tag (thanks Milo&scaron; Komar&ccaron;evi&cacute;)
-<li>Extract the raw thermal data from all frames of a SEQ file when -ee2 is used
-<li>Decode individual tags in QuickTime ColorRepresentation
-<li>Decode a new Matroska tag
-<li>Improved verbose "nothing changed" messages when writing
-<li>Patched -ee option to extract metadata after the first Cluster in MKV videos
-    (previously only -U and -v did this)
-<li>Patched to differentiate Java bytecode .class files from Mach-O fat binaries
-<li>Patched to avoid "Use of uninitialized value" warning when deleting GPS
-    coordinates via the newly writable Composite tags
-<li>Patched to avoid duplicating raw data when writing Sony ARW images where the
-    raw data is double-referenced as both strips and tiles (affects ARW images
-    from some newer models like the ILCE-1 when SonyRawFileType is "Lossless
-    Compressed RAW 2")
-<li>Patched to avoid "fixing" the order of IFD entries in TIFF-based RAW files
-    to improve compatibility with some RAW viewers
-<li>Minor change to Composite FileNumber to remove "-" when -n is used
-<li>Fixed problem extracting some timed metadata when "-api ignoretags=all" was
-    used with "-api requesttags" to request the specific information
-<li>Fixed -validate feature to avoid incorrectly warning about non-capitalized
-    boolean values in XMP
-</ul>
-
-<a name='v12.44'><b>July 21, 2022 - Version 12.44</b></a>
-<ul>
-<li>Added a few new Sony lenses (thanks Jos Roost)
-<li>Decode Accelerometer and Gyroscope data from ARCore videos
-<li>Decode a couple of new Motorola tags (thanks Neal Krawetz)
-<li>Decode FujiFilm FirmwareVersion (thanks Justin Arkinson)
-<li>Decode MetaType for timed metadata in videos
-<li>Decode a number of new Nikon Z tags (thanks Warren Hatch)
-<li>Extract more types of embedded images from FlashPix-format files
-<li>Made Composite GPSLatitude and GPSLongitude writable for setting GPS
-    coordinates and reference directions with one assignment
-<li>Fixed bug introduced in 12.39 which broke extraction of timed GPS from some
-    INNOVV videos
-<li>Fixed bug introduced in 12.43 which broke extraction of timed GPSDateTime
-    from Insta360 videos
-</ul>
-
-<a name='v12.43'><b>July 6, 2022 - Version 12.43</b></a>
-<ul>
-<li>Added the ability to geotag from Google Takeout JSON files
-<li>Added a few new Canon RF LensType values and a couple of new CanonModelID's
-    (thanks Norbert Wasser)
-<li>Added new values to a couple of FujiFilm tags (thanks Greybeard)
-<li>Added a new Nikon LensID (thanks BertJan Bakker)
-<li>Recognize Autodesk Revit files (but don't yet support reading metadata)
-<li>Decode DriveSerialNumber from LNK files (github #145)
-<li>Decode Apple FocusDistanceRange (thanks Neal Krawetz)
-<li>Made a number of Sony SR2SubIFD tags writable
-<li>Tolerate dashes instead of colons as date separators in -geotag CSV files
-<li>Patched to read new format accelerometer data from Insta360 files
-<li>Patched to avoid outputting some Unknown tags when the -validate option is
-    used after a previously -execute'd command used the -u option
-<li>Fixed names of Canon G9 WB levels tags (changed from GRGB to GRBG) (thanks
-    Christoph)
-<li>Fixed typo in new Olympus AISubjectTrackingMode value
-<li>Fixed "use of undefined value" warning when reading DJI metadata
-<li>API Changes:
-    <ul>
-    <li>Added <a href="ExifTool.html#IgnoreTags">IgnoreTags option</a>
-    </ul>
-</ul>
-
-<a name='v12.42'><b>June 1, 2022 - Version 12.42</b></a> <span class=grn>(production release)</span>
-<ul>
-<li>Added support for reading maker notes from Panasonic DC-GH6 videos
-<li>Added conversion for Samsung MCCData
-<li>Added a new Nikon LensID (thanks Chris)
-<li>Added a few new Canon LensType values
-<li>Added a couple of new Olympus StackedImage values (thanks Eberhard)
-<li>Added a few new values for some Nikon Settings tags (thanks Warren Hatch)
-<li>Added a "lang:" element to the -json output for alternate language tags when
-    -D, -H or -t is used
-<li>Update DNG writer to not issue an error when writing DNG 1.6 files
-<li>Decode information from DJI "ae_dbg_info" maker notes
-<li>Decode Olympus AISubjectTrackingMode
-<li>Changed ExifTool FileSize print conversion to use kB/MB/GB units instead of
-    KiB/MiB/GiB
-<li>Changed "is not shiftable" warning to appear in -v (instead of just -v3)
-    output
-<li>Patched to allow PDF Encrypt object to be "null"
-<li>Fixed bug reading ICC_Profile 'meta' tags
-</ul>
-
-<a name='ancient' href="ancient_history.html"><b>History of older versions</b> (back to Nov. 19, 2003 - Version 1.00) --></a><br><br>
+<a name='ancient' href="ancient_history.html"><b>History of older versions</b> (back to Nov. 19, 2003 - Version 1.00) --&gt;</a><br><br>
 
 <hr>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>

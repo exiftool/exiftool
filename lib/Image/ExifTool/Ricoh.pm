@@ -19,7 +19,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.35';
+$VERSION = '1.36';
 
 sub ProcessRicohText($$$);
 sub ProcessRicohRMETA($$$);
@@ -949,6 +949,7 @@ sub ProcessRicohText($$$)
 
     my $data = substr($$dataPt, $dirStart, $dirLen);
     return 1 if $data =~ /^\0/;     # blank Ricoh maker notes
+    $et->VerboseDir('RicohText', undef, $dirLen);
     # validate text maker notes
     unless ($data =~ /^(Rev|Rv)/) {
         $et->Warn('Bad Ricoh maker notes');

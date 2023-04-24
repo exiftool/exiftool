@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.55';
+$VERSION = '1.56';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -41,7 +41,7 @@ my $cryptStream;    # flag that streams are encrypted
 my $lastOffset;     # last fetched object offset
 my %streamObjs;     # hash of stream objects
 my %fetched;        # dicts fetched in verbose mode (to avoid cyclical recursion)
-my $pdfVer;         # version of PDF file being processed
+my $pdfVer;         # version of PDF file being processed (from header)
 
 # filters supported in DecodeStream()
 my %supportedFilter = (
@@ -115,6 +115,7 @@ my %supportedFilter = (
     CreationDate => {
         Name => 'CreateDate',
         Writable => 'date',
+        PDF2 => 1,  # not deprecated in PDF 2.0
         Groups => { 2 => 'Time' },
         Shift => 'Time',
         PrintConv => '$self->ConvertDateTime($val)',
@@ -123,6 +124,7 @@ my %supportedFilter = (
     ModDate => {
         Name => 'ModifyDate',
         Writable => 'date',
+        PDF2 => 1,  # not deprecated in PDF 2.0
         Groups => { 2 => 'Time' },
         Shift => 'Time',
         PrintConv => '$self->ConvertDateTime($val)',
@@ -168,7 +170,10 @@ my %supportedFilter = (
     Lang       => 'Language',
     PageLayout => { },
     PageMode   => { },
-    Version    => 'PDFVersion',
+    Version    => {
+        Name => 'PDFVersion',
+        RawConv => '$$self{PDFVersion} = $val if $$self{PDFVersion} < $val; $val',
+    },
 );
 
 # tags extracted from the PDF Encrypt dictionary
@@ -1754,7 +1759,7 @@ sub ProcessDict($$$$;$$)
     my $unknown = $$tagTablePtr{EXTRACT_UNKNOWN};
     my $embedded = (defined $unknown and not $unknown and $et->Options('ExtractEmbedded'));
     my @tags = @{$$dict{_tags}};
-    my ($next, %join);
+    my ($next, %join, $validInfo);
     my $index = 0;
 
     $nesting = ($nesting || 0) + 1;
@@ -1775,6 +1780,7 @@ sub ProcessDict($$$$;$$)
             last;
         }
     }
+    $validInfo = ($et->Options('Validate') and $tagTablePtr eq \%Image::ExifTool::PDF::Info);
 #
 # extract information from all tags in the dictionary
 #
@@ -1809,6 +1815,10 @@ sub ProcessDict($$$$;$$)
             } else {
                 $isSubDoc = 1;  # treat as a sub-document
             }
+        }
+        if ($validInfo and $$et{PDFVersion} >= 2.0 and (not $tagInfo or not $$tagInfo{PDF2})) {
+            my $name = $tagInfo ? ":$$tagInfo{Name}" : " Info tag '${tag}'";
+            $et->Warn("PDF$name is deprecated in PDF 2.0");
         }
         if ($verbose) {
             my ($val2, $extra);
@@ -2118,9 +2128,8 @@ sub ReadPDF($$)
     $raf->Read($buff, 1024) >= 8 or return 0;
     $buff =~ /^(\s*)%PDF-(\d+\.\d+)/ or return 0;
     $$et{PDFBase} = length $1 and $et->Warn('PDF header is not at start of file',1);
-    $pdfVer = $2;
+    $pdfVer = $$et{PDFVersion} = $2;
     $et->SetFileType();   # set the FileType tag
-    $et->Warn("The PDF $pdfVer specification is held hostage by the ISO") if $pdfVer >= 2.0;
     # store PDFVersion tag
     my $tagTablePtr = GetTagTable('Image::ExifTool::PDF::Root');
     $et->HandleTag($tagTablePtr, 'Version', $pdfVer);

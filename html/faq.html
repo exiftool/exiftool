@@ -858,8 +858,8 @@ characters may mess up the CSV formatting.  If this is a possibility, the
 <code>-api filter</code> option may be added to the command to quote values
 if necessary.  For example:
 
-<pre><span class='blk'># in Windows</span>
-exiftool -api filter="$_ = qq{""$_""} if s/""/""""/g or /(^\s+|\s+$)/ or /[,\n\r]/" ...
+<pre><span class='blk'># in a Windows CMD shell</span>
+exiftool -api filter="$_ = qq{""""$_""""} if s/""/""""/g or /(^\s+|\s+$)/ or /[,\n\r]/" ...
 
 <span class='blk'># in Mac/Linux</span>
 exiftool -api filter='$_ = qq{"$_"} if s/"/""/g or /(^\s+|\s+$)/ or /[,\n\r]/' ...</pre>
@@ -1216,11 +1216,11 @@ tag in the command.  For instance, this command:
 
 writes only the value from the Comment tag.  This may seem strange, but it prevents
 duplicate items from being added to a list when copying a group of tags from a
-file containing duplicate information.  Alternatively, the
-<code>-addTagsFromFile</code> option may be used to accumulate items when
-copying from multiple tags:
+file containing duplicate information.  Alternatively, a leading <code>+</code>
+may be added to accumulate queued items when
+copying from multiple tags to a single list:
 
-<pre>exiftool -addTagsFromFile @ "-keywords&lt;filename" "-keywords&lt;comment" DIR
+<pre>exiftool "-keywords&lt;filename" "-+keywords&lt;comment" DIR
 </pre>
 
 Note that as with "<code>=</code>" in the first three examples above, the
@@ -1481,9 +1481,10 @@ left-to-right), but there are exceptions:
 <ol><li>When writing list-type tags (eg. <code>-keywords=one</code>), new values
 are accumulated rather than overriding earlier assignments.<br>&nbsp;</li>
 <li>When copying values to list-type tags (eg.
-<code>"-keywords&lt;filename"</code>), new values are accumulated only if
-<code>-addTagsFromFile</code> is used, otherwise they override earlier
-assignments if <code>-tagsFromFile</code> is used or implied.<br>&nbsp;</li>
+<code>"-keywords&lt;filename"</code>), subsequent copies to the same tag
+override earlier operations with the exception that new values may be added to
+the queued list if a leading <code>+</code> is added to the target tag name (eg.
+<code>"-+keywords&lt;filename"</code>).<br>&nbsp;</li>
 <li>Tags copied with the <code>-tagsFromFile</code> option are assigned in
 order, and all together at the point in the command line where the
 <code>-tagsFromFile</code> option is located, regardless of whether these tags
@@ -1806,7 +1807,7 @@ default values if necessary).
 </blockquote>
 
 <hr>
-<i>Last revised Mar 27, 2023</i>
+<i>Last revised Apr 18, 2023</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

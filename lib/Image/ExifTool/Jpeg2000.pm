@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.33';
+$VERSION = '1.34';
 
 sub ProcessJpeg2000Box($$$);
 sub ProcessJUMD($$$);
@@ -33,6 +33,9 @@ my %resolutionUnit = (
      5 => '0.01 mm',
      6 => 'um',
 );
+
+# top-level boxes containing image data
+my %isImageData = ( jp2c=>1, jbrd=>1, jxlp=>1, jxlc=>1 );
 
 # map of where information is written in JPEG2000 image
 my %jp2Map = (
@@ -428,6 +431,7 @@ my %j2cMarker = (
 # stuff seen in JPEG XL images:
 #
   # jbrd - JPEG Bitstream Reconstruction Data (allows lossless conversion back to original JPG)
+  # jxlp - partial JXL codestream
     jxlc => {
         Name => 'JXLCodestream',
         Format => 'undef',
@@ -930,7 +934,7 @@ sub ProcessJpeg2000Box($$$)
     my $raf = $$dirInfo{RAF};
     my $outfile = $$dirInfo{OutFile};
     my $dirEnd = $dirStart + $dirLen;
-    my ($err, $outBuff, $verbose, $doColour);
+    my ($err, $outBuff, $verbose, $doColour, $md5);
 
     if ($outfile) {
         unless ($raf) {
@@ -948,6 +952,8 @@ sub ProcessJpeg2000Box($$$)
         # (must not set verbose flag when writing!)
         $verbose = $$et{OPTIONS}{Verbose};
         $et->VerboseDir($$dirInfo{DirName}) if $verbose;
+        # do MD5 if requested, but only for top-level image data
+        $md5 = $$et{ImageDataMD5} if $raf;
     }
     # loop through all contained boxes
     my ($pos, $boxLen, $lastBox);
@@ -971,6 +977,11 @@ sub ProcessJpeg2000Box($$$)
         }
         $boxLen = unpack("x$pos N",$$dataPt);   # (length includes header and data)
         $boxID = substr($$dataPt, $pos+4, 4);
+        # (ftbl box contains flst boxes with absolute file offsets, not currently handled)
+        if ($outfile and $boxID eq 'ftbl') {
+            $et->Error("Can't yet handle fragmented JPX files");
+            return -1;
+        }
         # remove old colr boxes if necessary
         if ($doColour and $boxID eq 'colr') {
             if ($doColour == 1) { # did we successfully write the new colr box?
@@ -1007,9 +1018,14 @@ sub ProcessJpeg2000Box($$$)
                     while ($raf->Read($buff, 65536)) {
                         Write($outfile, $buff) or $err = 1;
                     }
-                } elsif ($verbose) {
-                    my $msg = sprintf("offset 0x%.4x to end of file", $dataPos + $base + $pos);
-                    $et->VPrint(0, "$$et{INDENT}- Tag '${boxID}' ($msg)\n");
+                } else {
+                    if ($verbose) {
+                        my $msg = sprintf("offset 0x%.4x to end of file", $dataPos + $base + $pos);
+                        $et->VPrint(0, "$$et{INDENT}- Tag '${boxID}' ($msg)\n");
+                    }
+                    if ($md5 and $isImageData{$boxID}) {
+                        $et->ImageDataMD5($raf, undef, $boxID);
+                    }
                 }
                 last;   # (ignore the rest of the file when reading)
             }
@@ -1026,6 +1042,8 @@ sub ProcessJpeg2000Box($$$)
                     Write($outfile, $$dataPt) or $err = 1;
                     $raf->Read($buff,$boxLen) == $boxLen or $err = '', last;
                     Write($outfile, $buff) or $err = 1;
+                } elsif ($md5 and $isImageData{$boxID}) {
+                    $et->ImageDataMD5($raf, $boxLen, $boxID);
                 } else {
                     $raf->Seek($boxLen, 1) or $err = 'Seek error', last;
                 }
@@ -1038,6 +1056,10 @@ sub ProcessJpeg2000Box($$$)
             # read the box data
             $dataPos = $raf->Tell() - $base;
             $raf->Read($buff,$boxLen) == $boxLen or $err = '', last;
+            if ($md5 and $isImageData{$boxID}) {
+                $md5->add($buff);
+                $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: $boxLen bytes of $boxID data)\n");
+            }
             $valuePtr = 0;
             $dataLen = $boxLen;
         } elsif ($pos + $boxLen > $dirEnd) {
@@ -1311,7 +1333,7 @@ sub ProcessJP2($$)
 }
 
 #------------------------------------------------------------------------------
-# Read meta information from a JPEG XL image
+# Read/write meta information in a JPEG XL image
 # Inputs: 0) ExifTool object reference, 1) dirInfo reference
 # Returns: 1 on success, 0 if this wasn't a valid JPEG XL file, -1 on write error
 sub ProcessJXL($$)
@@ -1340,6 +1362,9 @@ sub ProcessJXL($$)
             $$dirInfo{RAF} = new File::RandomAccess(\$buff);
         } else {
             $et->SetFileType('JXL Codestream','image/jxl', 'jxl');
+            if ($$et{ImageDataMD5} and $raf->Seek(0,0)) {
+                $et->ImageDataMD5($raf, undef, 'JXL');
+            }
             return ProcessJXLCodestream($et, \$hdr);
         }
     } else {

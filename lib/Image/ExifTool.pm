@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.60';
+$VERSION = '12.61';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1826,10 +1826,10 @@ my %systemTagsNotes = (
     ImageDataMD5 => {
         Notes => q{
             MD5 of image data. Generated only if specifically requested for JPEG and
-            TIFF-based images, PNG, CRW, CR3, MRW, RAF, X3F and AVIF images, MOV/MP4
-            videos, and some RIFF-based files.  The MD5 includes the main image data,
-            plus JpgFromRaw/OtherImage for some formats, but does not include
-            ThumbnailImage or PreviewImage.  Includes video and audio data for MOV/MP4. 
+            TIFF-based images, PNG, CRW, CR3, MRW, RAF, X3F, JP2, JXL and AVIF images,
+            MOV/MP4 videos, and some RIFF-based files.  The MD5 includes the main image
+            data, plus JpgFromRaw/OtherImage for some formats, but does not include
+            ThumbnailImage or PreviewImage.  Includes video and audio data for MOV/MP4.
             The L<XMP-et:OriginalImageMD5 tag|XMP.html#ExifTool> provides a place to
             store these values in the file.
         },
@@ -2503,23 +2503,6 @@ sub ExtractInfo($;@)
             }
         }
         ++$$self{FILE_SEQUENCE};        # count files read
-        # extract information from alternate files if necessary
-        my ($g8, $altExifTool);
-        foreach $g8 (keys %{$$self{ALT_EXIFTOOL}}) {
-            $altExifTool = $$self{ALT_EXIFTOOL}{$g8};
-            next if $$altExifTool{DID_EXTRACT}; # avoid extracting twice
-            $$altExifTool{OPTIONS} = $$self{OPTIONS};
-            $$altExifTool{GLOBAL_TIME_OFFSET} = $$self{GLOBAL_TIME_OFFSET};
-            $$altExifTool{REQ_TAG_LOOKUP} = $$self{REQ_TAG_LOOKUP};
-            $altExifTool->ExtractInfo($$altExifTool{ALT_FILE});
-            # set family 8 group name for all tags
-            foreach (keys %{$$altExifTool{VALUE}}) {
-                my $ex = $$altExifTool{TAG_EXTRA}{$_};
-                $ex or $ex = $$altExifTool{TAG_EXTRA}{$_} = { };
-                $$ex{G8} = $g8;
-            }
-            $$altExifTool{DID_EXTRACT} = 1;
-        }
     }
 
     my $filename = $$self{FILENAME};    # image file name ('' if already open)
@@ -2661,6 +2644,7 @@ sub ExtractInfo($;@)
         if ($isDir or (defined $stat[2] and ($stat[2] & 0170000) == 0040000)) {
             $self->FoundTag('FileType', 'DIR');
             $self->FoundTag('FileTypeExtension', '');
+            $self->ExtractAltInfo();
             $self->BuildCompositeTags() if $$options{Composite};
             $raf->Close() if $raf;
             return 1;
@@ -2679,6 +2663,7 @@ sub ExtractInfo($;@)
             } else {
                 $self->Error('Unknown file type');
             }
+            $self->ExtractAltInfo();
             $self->BuildCompositeTags() if $fast == 4 and $$options{Composite};
             last;   # don't read the file
         }
@@ -2845,6 +2830,7 @@ sub ExtractInfo($;@)
         }
         unless ($reEntry) {
             $$self{PATH} = [ ];     # reset PATH
+            $self->ExtractAltInfo();
             # calculate Composite tags
             $self->BuildCompositeTags() if $$options{Composite};
             # do our HTML dump if requested
@@ -4065,6 +4051,42 @@ sub CombineInfo($;@)
         }
     }
     return \%combinedInfo;
+}
+
+#------------------------------------------------------------------------------
+# Read metadata from alternate files
+# Inputs: 0) ExifTool ref
+# Notes: This is called after reading the main file so the tags are available
+#        for being used in the file name, but before building Composite tags
+#        so tags from the alternate files may be used in the Composite tags
+sub ExtractAltInfo($)
+{
+    my $self = shift;
+    # extract information from alternate files if necessary
+    my ($g8, $altExifTool);
+    foreach $g8 (sort keys %{$$self{ALT_EXIFTOOL}}) {
+        $altExifTool = $$self{ALT_EXIFTOOL}{$g8};
+        next if $$altExifTool{DID_EXTRACT}; # avoid extracting twice
+        $$altExifTool{OPTIONS} = $$self{OPTIONS};
+        $$altExifTool{GLOBAL_TIME_OFFSET} = $$self{GLOBAL_TIME_OFFSET};
+        $$altExifTool{REQ_TAG_LOOKUP} = $$self{REQ_TAG_LOOKUP};
+        my $fileName = $$altExifTool{ALT_FILE};
+        # allow tags from the main file to be used in the alternate file names
+        # (eg. -file1 '$originalfilename')
+        if ($fileName =~ /\$/) {
+            my @tags = reverse sort keys %{$$self{VALUE}};
+            $fileName = $self->InsertTagValues(\@tags, $fileName, 'Warn');
+            next unless defined $fileName;
+        }
+        $altExifTool->ExtractInfo($fileName);
+        # set family 8 group name for all tags
+        foreach (keys %{$$altExifTool{VALUE}}) {
+            my $ex = $$altExifTool{TAG_EXTRA}{$_};
+            $ex or $ex = $$altExifTool{TAG_EXTRA}{$_} = { };
+            $$ex{G8} = $g8;
+        }
+        $$altExifTool{DID_EXTRACT} = 1;
+    }
 }
 
 #------------------------------------------------------------------------------
@@ -6432,12 +6454,12 @@ sub ProcessJPEG($$)
     my $htmlDump = $$self{HTML_DUMP};
     my %dumpParms = ( Out => $out );
     my ($ch, $s, $length, $md5, $md5size);
-    my ($success, $wantTrailer, $trailInfo, $foundSOS, %jumbfChunk);
+    my ($success, $wantTrailer, $trailInfo, $foundSOS, $gotSize, %jumbfChunk);
     my (@iccChunk, $iccChunkCount, $iccChunksTotal, @flirChunk, $flirCount, $flirTotal);
     my ($preview, $scalado, @dqt, $subSampling, $dumpEnd, %extendedXMP);
 
-    # get pointer to MD5 object if it exists and we are the top-level JPEG
-    if ($$self{FILE_TYPE} eq 'JPEG' and not $$self{DOC_NUM}) {
+    # get pointer to MD5 object if it exists and we are the top-level JPEG or JP2
+    if ($$self{FILE_TYPE} =~ /^(JPEG|JP2)$/ and not $$self{DOC_NUM}) {
         $md5 = $$self{ImageDataMD5};
         $md5size = 0;
     }
@@ -6561,7 +6583,8 @@ sub ProcessJPEG($$)
                 $self->HDump($segPos-4, $length+4, "[JPEG $markerName]", undef, 0x08);
                 $dumpEnd = $segPos + $length;
             }
-            next unless $length >= 6;
+            next if $length < 6 or $gotSize;
+            $gotSize = 1; # (ignore subsequent SOF segments in probably corrupted JPEG)
             # extract some useful information
             my ($p, $h, $w, $n) = unpack('Cn2C', $$segDataPt);
             my $sof = GetTagTable('Image::ExifTool::JPEG::SOF');
@@ -6751,6 +6774,11 @@ sub ProcessJPEG($$)
             pop @$path;
             $verbose and print $out "JPEG SOD\n";
             $success = 1;
+            if ($md5 and $$self{FILE_TYPE} eq 'JP2') {
+                my $pos = $raf->Tell();
+                $self->ImageDataMD5($raf, undef, 'SOD');
+                $raf->Seek($pos, 0);
+            }
             next if $verbose > 2 or $htmlDump;
             last;   # all done parsing file
         } elsif (defined $markerLenBytes{$marker}) {
@@ -7483,8 +7511,11 @@ sub ProcessJPEG($$)
             }
         } elsif ($marker == 0x51) {         # SIZ (J2C)
             my ($w, $h) = unpack('x2N2', $$segDataPt);
-            $self->FoundTag('ImageWidth', $w);
-            $self->FoundTag('ImageHeight', $h);
+            unless ($gotSize) {
+                $gotSize = 1;
+                $self->FoundTag('ImageWidth', $w);
+                $self->FoundTag('ImageHeight', $h);
+            }
         } elsif (($marker & 0xf0) != 0xe0) {
             $dumpType = "$markerName segment";
             $desc = "[JPEG $markerName]";   # (other known JPEG segments)
@@ -7823,6 +7854,9 @@ sub DoProcessTIFF($$;$)
         }
         if ($$self{TIFF_TYPE} eq 'TIFF') {
             $self->FoundTag(PageCount => $$self{PageCount}) if $$self{MultiPage};
+        }
+        if ($$self{ImageDataMD5} and $$self{A100DataOffset} and $raf->Seek($$self{A100DataOffset},0)) {
+            $self->ImageDataMD5($raf, undef, 'A100');
         }
         return 1;
     }

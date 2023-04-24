@@ -28,7 +28,7 @@ sub Process360Fly($$$);
 sub ProcessFMAS($$$);
 sub ProcessCAMM($$$);
 
-my $debug;  # set to 1 for extra debugging messages
+my $debug;  # set to 'tEST' (all caps) for extra debugging messages
 
 # QuickTime data types that have ExifTool equivalents
 # (ref https://developer.apple.com/library/content/documentation/QuickTime/QTFF/Metadata/Metadata.html#//apple_ref/doc/uid/TP40000939-CH1-SW35)
@@ -89,6 +89,7 @@ my %insvDataLen = (
     0x600 => 8,     # timestamps (ref 6)
     0x700 => 53,    # GPS
   # 0x900 => 48,    # ? (Insta360 X3)
+  # 0xa00 => 5?,    # ? (Insta360 ONE RS)
   # 0xb00 => 10,    # ? (Insta360 X3)
 );
 
@@ -1134,6 +1135,7 @@ sub ProcessSamples($)
     my $et = shift;
     my ($raf, $ee) = @$et{qw(RAF ee)};
     my ($i, $buff, $pos, $hdrLen, $hdrFmt, @time, @dur, $oldIndent, $md5);
+    my ($mdatOffset, $mdatSize); # (for range-checking samples when MD5 is done)
 
     return unless $ee;
     delete $$et{ee};    # use only once
@@ -1230,6 +1232,10 @@ Sample:     for ($i=0; ; ) {
         $oldIndent = $$et{INDENT};
         $$et{INDENT} = '';
     }
+    if ($md5) {
+        $mdatSize = $$et{MediaDataSize};
+        $mdatOffset = $$et{MediaDataOffset} if defined $mdatSize;
+    }
     # get required information from avcC box if parsing video data
     if ($type eq 'avcC') {
         $hdrLen = (Get8u(\$$ee{avcC}, 4) & 0x03) + 1;
@@ -1243,10 +1249,25 @@ Sample:     for ($i=0; ; ) {
         delete $$et{FoundGPSLatitude};
         delete $$et{FoundGPSDateTime};
 
-        # read the sample data
+        # range check the sample data for MD5 if necessary
         my $size = $$size[$i];
-        next unless $raf->Seek($$start[$i], 0) and $raf->Read($buff, $size) == $size;
-
+        if (defined $mdatOffset) {
+            if ($$start[$i] < $mdatOffset) {
+                $et->Warn("Sample $i for '${type}' data is before start of mdat");
+            } elsif ($$start[$i] + $size > $mdatOffset + $mdatSize) {
+                $et->Warn("Sample $i for '${type}' data runs off end of mdat");
+                $size = $mdatOffset + $mdatSize - $$start[$i];
+                $size = 0 if $size < 0;
+            }
+        }
+        # read the sample data
+        $raf->Seek($$start[$i], 0) or $et->WarnOnce("Seek error in $type data"), next;
+        my $n = $raf->Read($buff, $size);
+        unless ($n == $size) {
+            $et->WarnOnce("Error reading $type data");
+            next unless $n;
+            $size = $n;
+        }
         if ($md5) {
             $md5->add($buff);
             $md5size += length $buff;
@@ -1455,16 +1476,15 @@ sub ProcessFreeGPS($$$)
             $et->VerboseDump(\$buf2);
         }
         # (extract longitude as 9 digits, not 8, ref PH)
-        return 0 unless $buf2 =~ /^.{8}(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}).(.{15})([NS])(\d{8})([EW])(\d{9})(\d{8})?/s;
-        ($yr,$mon,$day,$hr,$min,$sec,$lbl,$latRef,$lat,$lonRef,$lon,$spd) = ($1,$2,$3,$4,$5,$6,$7,$8,$9/1e4,$10,$11/1e4,$12);
-        if (defined $spd) { # (Azdome)
-            $spd += 0;  # remove leading 0's
-        } elsif ($buf2 =~ /^.{57}([-+]\d{4})(\d{3})/s) { # (EEEkit)
-            # $alt = $1 + 0;  (doesn't look right for my sample, but the Ambarella A12 text has this)
-            $spd = $2 + 0;
+        if ($buf2 =~ /^.{8}(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}).(.{15})([NS])(\d{8})([EW])(\d{9})(\d{8})?/s) {
+            ($yr,$mon,$day,$hr,$min,$sec,$lbl,$latRef,$lat,$lonRef,$lon,$spd) = ($1,$2,$3,$4,$5,$6,$7,$8,$9/1e4,$10,$11/1e4,$12);
+            if (defined $spd) { # (Azdome)
+                $spd += 0;  # remove leading 0's
+            } elsif ($buf2 =~ /^.{57}([-+]\d{4})(\d{3})/s) { # (EEEkit)
+                # $alt = $1 + 0;  (doesn't look right for my sample, but the Ambarella A12 text has this)
+                $spd = $2 + 0;
+            }
         }
-        $lbl =~ s/\0.*//s;  $lbl =~ s/\s+$//;  # truncate at null and remove trailing spaces
-        push @xtra, UserLabel => $lbl if length $lbl;
         # extract accelerometer data (ref PH)
         if ($buf2 =~ /^.{65}(([-+]\d{3})([-+]\d{3})([-+]\d{3})([-+]\d{3})*)/s) {
             $_ = $1;
@@ -1472,7 +1492,15 @@ sub ProcessFreeGPS($$$)
             s/([-+])/ $1/g;  s/^ //;
             push @xtra, AccelerometerData => $_;
         } elsif ($buf2 =~ /^.{173}([-+]\d{3})([-+]\d{3})([-+]\d{3})/s) { # (Azdome)
+            # (Adzome may contain acc and date/time/label even if GPS doesn't exist)
             @acc = ($1/100, $2/100, $3/100);
+            if (not defined $yr and $buf2 =~ /^.{8}(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}).(.{15})/s) {
+                ($yr,$mon,$day,$hr,$min,$sec,$lbl) = ($1,$2,$3,$4,$5,$6,$7);
+            }
+        }
+        if (defined $lbl) {
+            $lbl =~ s/\0.*//s;  $lbl =~ s/\s+$//;  # truncate at null and remove trailing spaces
+            push @xtra, UserLabel => $lbl if length $lbl;
         }
 
     } elsif ($$dataPt =~ /^.{52}(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/s) {
@@ -1741,8 +1769,6 @@ sub ProcessFreeGPS($$$)
 # save tag values extracted by above code
 #
     FoundSomething($et, $tagTbl, $$dirInfo{SampleTime}, $$dirInfo{SampleDuration});
-    # lat/long are in DDDMM.MMMM format
-    ConvertLatLon($lat, $lon) unless $ddd;
     $sec = '0' . $sec unless $sec =~ /^\d{2}/;   # pad integer part of seconds to 2 digits
     if (defined $yr) {
         my $time = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%sZ',$yr,$mon,$day,$hr,$min,$sec);
@@ -1751,8 +1777,12 @@ sub ProcessFreeGPS($$$)
         my $time = sprintf('%.2d:%.2d:%sZ',$hr,$min,$sec);
         $et->HandleTag($tagTbl, GPSTimeStamp => $time);
     }
-    $et->HandleTag($tagTbl, GPSLatitude  => $lat * ($latRef eq 'S' ? -1 : 1));
-    $et->HandleTag($tagTbl, GPSLongitude => $lon * ($lonRef eq 'W' ? -1 : 1));
+    if (defined $lat) {
+        # lat/long are in DDDMM.MMMM format unless $ddd is set
+        ConvertLatLon($lat, $lon) unless $ddd;
+        $et->HandleTag($tagTbl, GPSLatitude  => $lat * ($latRef eq 'S' ? -1 : 1));
+        $et->HandleTag($tagTbl, GPSLongitude => $lon * ($lonRef eq 'W' ? -1 : 1));
+    }
     $et->HandleTag($tagTbl, GPSAltitude  => $alt) if defined $alt;
     $et->HandleTag($tagTbl, GPSSpeed     => $spd) if defined $spd;
     $et->HandleTag($tagTbl, GPSTrack     => $trk) if defined $trk;
@@ -2835,7 +2865,7 @@ sub ProcessInsta360($;$)
         $raf->Read($buff, $len) == $len or last;
         $et->VerboseDump(\$buff) if $verbose > 2;
         if ($dlen) {
-            if ($len % $dlen) {
+            if ($len % $dlen and $id != 0x700) { # (have seen one 0x700 record which was expected format but not multiple of 53 bytes)
                 $et->Warn(sprintf('Unexpected Insta360 record 0x%x length',$id));
             } elsif ($id == 0x200) {
                 $et->FoundTag(PreviewImage => $buff);
@@ -2865,10 +2895,9 @@ sub ProcessInsta360($;$)
                     $et->HandleTag($tagTbl, VideoTimeStamp => sprintf('%.3f', Get64u(\$buff, $p) / 1000));
                 }
             } elsif ($id == 0x700) {
-                for ($p=0; $p<$len; $p+=$dlen) {
+                for ($p=0; $p+$dlen<=$len; $p+=$dlen) {
                     my $tmp = substr($buff, $p, $dlen);
                     my @a = unpack('VVvaa8aa8aa8a8a8', $tmp);
-                    next unless $a[3] eq 'A';   # (ignore void fixes)
                     unless (($a[5] eq 'N' or $a[5] eq 'S') and # (quick validation)
                             ($a[7] eq 'E' or $a[7] eq 'W' or 
                              # (odd, but I've seen "O" instead of "W".  Perhaps
@@ -2878,6 +2907,7 @@ sub ProcessInsta360($;$)
                         $et->Warn('Unrecognized INSV GPS format');
                         last;
                     }
+                    next unless $a[3] eq 'A';   # (ignore void fixes)
                     $$et{DOC_NUM} = ++$$et{DOC_COUNT};
                     $a[$_] = GetDouble(\$a[$_], 0) foreach 4,6,8,9,10;
                     $a[4] = -abs($a[4]) if $a[5] eq 'S'; # (abs just in case it was already signed)

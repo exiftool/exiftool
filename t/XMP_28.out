@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.61
 [File, System, Other] FileName - File Name: XMP_28_failed.xml
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 3.1 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:59-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:59-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:59-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2023:04:22 14:09:01-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2023:04:22 14:09:01-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2023:04:22 14:09:01-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: XMP
 [File, File, Other] FileTypeExtension - File Type Extension: xmp
@@ -13,13 +13,10 @@
 [XMP, XMP-pdf, Author] Author - Author: Phil
 [XML, XML-File, Unknown] File:BitsPerSample - Bits Per Sample: 8
 [XML, XML-File, Unknown] File:ColorComponents - Color Components: 3
-[XML, XML-File, Unknown] File:Directory - Directory: t/images
 [XML, XML-File, Unknown] File:EncodingProcess - Encoding Process: Baseline DCT, Huffman coding
 [XML, XML-File, Unknown] File:ExifByteOrder - Exif Byte Order: Little-endian (Intel, II)
-[XML, XML-File, Unknown] File:FileModifyDate - File Modify Date: 2006:01:04 14:02:27-05:00
-[XML, XML-File, Unknown] File:FileName - File Name: Nikon.jpg
-[XML, XML-File, Unknown] File:FileSize - File Size: 1703 bytes
 [XML, XML-File, Unknown] File:FileType - File Type: JPEG
+[XML, XML-File, Unknown] File:FileTypeExtension - File Type Extension: jpg
 [XML, XML-File, Unknown] File:ImageHeight - Image Height: 8
 [XML, XML-File, Unknown] File:ImageWidth - Image Width: 8
 [XML, XML-File, Unknown] File:MIMEType - MIME Type: image/jpeg
@@ -36,6 +33,7 @@
 [EXIF, IFD0, Unknown] IFD0:YResolution - Y Resolution: 300
 [EXIF, IFD1, Unknown] IFD1:Compression - Compression: JPEG (old-style)
 [EXIF, IFD1, Unknown] IFD1:ResolutionUnit - Resolution Unit: inches
+[EXIF, IFD1, Unknown] IFD1:ThumbnailImage - Thumbnail Image: (Binary data 28 bytes, use -b option to extract)
 [EXIF, IFD1, Unknown] IFD1:ThumbnailLength - Thumbnail Length: 28
 [EXIF, IFD1, Unknown] IFD1:ThumbnailOffset - Thumbnail Offset: 1426
 [EXIF, IFD1, Unknown] IFD1:XResolution - X Resolution: 300

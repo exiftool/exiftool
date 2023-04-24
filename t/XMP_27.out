@@ -1,21 +1,25 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.61
 [File, System, Other] FileName - File Name: XMP.xml
 [File, System, Other] Directory - Directory: t/images
-[File, System, Other] FileSize - File Size: 6.1 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2021:04:28 17:05:14-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:59-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:10:31 20:34:50-04:00
+[File, System, Other] FileSize - File Size: 6.6 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2023:04:22 14:07:47-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2023:04:22 14:07:51-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2023:04:22 14:07:47-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: XMP
 [File, File, Other] FileTypeExtension - File Type Extension: xmp
 [File, File, Other] MIMEType - MIME Type: application/rdf+xml
 [XMP, XMP-rdf, Document] about - About: t/images/Nikon.jpg
-[XML, XML-ExifTool, Unknown] ExifTool:ExifToolVersion - Exif Tool Version: 7.62
-[XML, XML-File, Unknown] File:FileName - File Name: Nikon.jpg
-[XML, XML-File, Unknown] File:Directory - Directory: t/images
-[XML, XML-File, Unknown] File:FileSize - File Size: 1703 bytes
-[XML, XML-File, Unknown] File:FileModifyDate - File Modify Date: 2006:01:04 14:02:27-05:00
+[XML, XML-ExifTool, Unknown] ExifTool:ExifToolVersion - Exif Tool Version: 12.61
+[XML, XML-System, Unknown] System:FileName - File Name: Nikon.jpg
+[XML, XML-System, Unknown] System:Directory - Directory: t/images
+[XML, XML-System, Unknown] System:FileSize - File Size: 1703 bytes
+[XML, XML-System, Unknown] System:FileModifyDate - File Modify Date: 2006:01:04 14:02:27-05:00
+[XML, XML-System, Unknown] System:FileAccessDate - File Access Date: 2023:04:22 14:07:35-04:00
+[XML, XML-System, Unknown] System:FileInodeChangeDate - File Inode Change Date: 2023:02:21 15:57:49-05:00
+[XML, XML-System, Unknown] System:FilePermissions - File Permissions: -rw-r--r--
 [XML, XML-File, Unknown] File:FileType - File Type: JPEG
+[XML, XML-File, Unknown] File:FileTypeExtension - File Type Extension: jpg
 [XML, XML-File, Unknown] File:MIMEType - MIME Type: image/jpeg
 [XML, XML-File, Unknown] File:ExifByteOrder - Exif Byte Order: Little-endian (Intel, II)
 [XML, XML-File, Unknown] File:ImageWidth - Image Width: 8
@@ -26,8 +30,8 @@
 [XML, XML-File, Unknown] File:YCbCrSubSampling - Y Cb Cr Sub Sampling: YCbCr4:2:0 (2 2)
 [XML, XML-Composite, Unknown] Composite:Aperture - Aperture: 9.4
 [XML, XML-Composite, Unknown] Composite:ImageSize - Image Size: 8x8
+[XML, XML-Composite, Unknown] Composite:Megapixels - Megapixels: 0.000064
 [XML, XML-Composite, Unknown] Composite:ShutterSpeed - Shutter Speed: 0.00469483568075117
-[XML, XML-Composite, Unknown] Composite:ThumbnailImage - Thumbnail Image: <Dummy thumbnail image data>
 [XML, XML-Composite, Unknown] Composite:FocalLength35efl - Focal Length 35efl: 8.6 mm
 [XML, XML-Composite, Unknown] Composite:LightValue - Light Value: 14.2
 [EXIF, IFD0, Unknown] IFD0:ImageDescription - Image Description:           
@@ -47,7 +51,7 @@
 [EXIF, ExifIFD, Unknown] ExifIFD:ExifVersion - Exif Version: 0210
 [EXIF, ExifIFD, Unknown] ExifIFD:DateTimeOriginal - Date Time Original: 2001:08:01 12:57:23
 [EXIF, ExifIFD, Unknown] ExifIFD:CreateDate - Create Date: 2001:08:01 12:57:23
-[EXIF, ExifIFD, Unknown] ExifIFD:ComponentsConfiguration - Components Configuration: YCbCr
+[EXIF, ExifIFD, Unknown] ExifIFD:ComponentsConfiguration - Components Configuration: Y, Cb, Cr, -
 [EXIF, ExifIFD, Unknown] ExifIFD:CompressedBitsPerPixel - Compressed Bits Per Pixel: 3
 [EXIF, ExifIFD, Unknown] ExifIFD:ExposureCompensation - Exposure Compensation: 0
 [EXIF, ExifIFD, Unknown] ExifIFD:MaxApertureValue - Max Aperture Value: 3.4
@@ -70,6 +74,7 @@
 [EXIF, IFD1, Unknown] IFD1:ResolutionUnit - Resolution Unit: inches
 [EXIF, IFD1, Unknown] IFD1:ThumbnailOffset - Thumbnail Offset: 1426
 [EXIF, IFD1, Unknown] IFD1:ThumbnailLength - Thumbnail Length: 28
+[EXIF, IFD1, Unknown] IFD1:ThumbnailImage - Thumbnail Image: (Binary data 28 bytes, use -b option to extract)
 [MakerNotes, Nikon, Unknown] Nikon:MakerNoteVersion - Maker Note Version: 1.00
 [MakerNotes, Nikon, Unknown] Nikon:iso - Iso: 0
 [MakerNotes, Nikon, Unknown] Nikon:ColorMode - Color Mode: Color
@@ -81,13 +86,14 @@
 [MakerNotes, Nikon, Unknown] Nikon:ISOSelection - ISO Selection: Auto
 [MakerNotes, Nikon, Unknown] Nikon:ImageAdjustment - Image Adjustment: Normal
 [MakerNotes, Nikon, Unknown] Nikon:AuxiliaryLens - Auxiliary Lens: Off
-[MakerNotes, Nikon, Unknown] Nikon:ManualFocusDistance - Manual Focus Distance: inf
+[MakerNotes, Nikon, Unknown] Nikon:ManualFocusDistance - Manual Focus Distance: undef
 [MakerNotes, Nikon, Unknown] Nikon:DigitalZoom - Digital Zoom: 1
 [MakerNotes, Nikon, Unknown] Nikon:AFAreaMode - AF Area Mode: Single Area
 [MakerNotes, Nikon, Unknown] Nikon:AFPoint - AF Point: Center
 [MakerNotes, Nikon, Unknown] Nikon:AFPointsInFocus - AF Points In Focus: (none)
 [MakerNotes, Nikon, Unknown] Nikon:SceneMode - Scene Mode: 
-[MakerNotes, Nikon, Unknown] Nikon:DataDump - Data Dump: (Binary data 122 bytes)
+[MakerNotes, Nikon, Unknown] Nikon:DataDump - Data Dump: (Binary data 122 bytes, use -b option to extract)
+[PrintIM, PrintIM, Unknown] PrintIM:PrintIMVersion - Print IM Version: 0100
 [Composite, Composite, Image] Exif-Aperture - Aperture: 9.4
 [Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/213
 [Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8

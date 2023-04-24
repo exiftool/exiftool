@@ -64,7 +64,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.21';
+$VERSION = '4.22';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -2300,8 +2300,8 @@ my %base64coord = (
             },
         },
         { # (Z6_2 firmware version 1.00 and Z7II firmware versions 1.00 & 1.01, ref 28)
-            # 0800=Z6/Z7  0801=Z50  0802=Z5   0803=Z6II/Z7II  0804=Zfc
-            Condition => '$$valPt =~ /^080[01234]/',
+            # 0800=Z6/Z7  0801=Z50  0802=Z5   0803=Z6II/Z7II  0804=Zfc  0807=Z30
+            Condition => '$$valPt =~ /^080[012347]/',
             Name => 'ShotInfoZ7II',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoZ7II',

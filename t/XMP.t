@@ -315,6 +315,8 @@ my $testnum = 1;
 }
 
 # test 27: Extract information from exiftool RDF/XML output file
+# (file created by application with this command line:
+#  "exiftool -X -D t/images/Nikon.jpg > t/image/XMP.xml")
 {
     ++$testnum;
     my $exifTool = Image::ExifTool->new;

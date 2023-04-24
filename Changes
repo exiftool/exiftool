@@ -7,6 +7,29 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.60. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Apr. 24, 2023 - Version 12.61
+
+  - Added ImageDataMD5 support for J2C and JXL images
+  - Added support for PDF 2.0 (specification is finally freely available)
+  - Added ability to extract timed Accelerometer data from Azdome GS63H MP4
+    videos which don't contain GPS
+  - Added some new Sony lenses (thanks Jos Roost)
+  - Decode some new tags for the Sony ZV-E1 (thanks Jos Roost)
+  - Decode more tags for the Nikon Z30 (thanks Xavier)
+  - Enhanced -fileNUM option to allow tags from the main file to be used in the
+    file name string
+  - Validate sample offset and size when calculating ImageDataMD5 for MP4 videos
+    (note: may change ImageDataMD5 value for videos where audio data runs past
+    end of media data)
+  - Return error when attempting to write a fragmented JXL file
+  - Improved robustness for determining image size for corrupted JPEG
+  - Patched to allow Insta360 GPS records of unexpected length and tweaked
+    verification algorithm to determine validity of these records
+  - Fixed bug introduced in 12.57 where -progress:%f gave runtime warnings
+  - Fixed "--" option to ignore subsequent -common_args option
+  - Fixed incorrect ImageDataMD5 for Sony A100 ARW images
+  - Fixed problem reading new XMP-et:OriginalImageMD5 tag
+
 Apr. 5, 2023 - Version 12.60 (production release)
 
   - Added a new Sony FileFormat value

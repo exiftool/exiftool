@@ -248,7 +248,11 @@ my %boolConv = (
 
 # XMP namespaces which we don't want to contribute to generated EXIF tag names
 # (Note: namespaces with non-standard prefixes aren't currently ignored)
-my %ignoreNamespace = ( 'x'=>1, rdf=>1, xmlns=>1, xml=>1, svg=>1, et=>1, office=>1 );
+my %ignoreNamespace = ( 'x'=>1, rdf=>1, xmlns=>1, xml=>1, svg=>1, office=>1 );
+
+# ExifTool properties that don't generate tag names (et:tagid is historic)
+my %ignoreEtProp = ( 'et:desc'=>1, 'et:prt'=>1, 'et:val'=>1 , 'et:id'=>1, 'et:tagid'=>1,
+                     'et:toolkit'=>1, 'et:table'=>1, 'et:index'=>1 );
 
 # XMP properties to ignore (set dynamically via dirInfo IgnoreProp)
 my %ignoreProp;
@@ -2850,7 +2854,7 @@ sub GetXMPTagID($;$$)
         # split name into namespace and property name
         # (Note: namespace can be '' for property qualifiers)
         my ($ns, $nm) = ($prop =~ /(.*?):(.*)/) ? ($1, $2) : ('', $prop);
-        if ($ignoreNamespace{$ns} or $ignoreProp{$prop}) {
+        if ($ignoreNamespace{$ns} or $ignoreProp{$prop} or $ignoreEtProp{$prop}) {
             # special case: don't ignore rdf numbered items
             # (not technically allowed in XMP, but used in RDF/XML)
             unless ($prop =~ /^rdf:(_\d+)$/) {
@@ -3420,7 +3424,10 @@ NoLoop:
             my %grps = ( 0 => $1, 1 => $2 );
             # apply a little magic to recover original group names
             # from this exiftool-written RDF/XML file
-            if ($grps{1} =~ /^\d/) {
+            if ($grps{1} eq 'System') {
+                $grps{1} = 'XML-System';
+                $grps{0} = 'XML';
+            } elsif ($grps{1} =~ /^\d/) {
                 # URI's with only family 0 are internal tags from the source file,
                 # so change the group name to avoid confusion with tags from this file
                 $grps{1} = "XML-$grps{0}";
@@ -3888,7 +3895,9 @@ sub ParseXMPElement($$$;$$$$)
                 }
             }
             my $shortVal = $attrs{$shortName};
-            if ($ignoreNamespace{$ns} or $ignoreProp{$prop}) {
+            # Note: $prop is the containing property in this loop (not the shorthand property)
+            # so $ignoreProp ignores all attributes of the ignored property
+            if ($ignoreNamespace{$ns} or $ignoreProp{$prop} or $ignoreEtProp{$propName}) {
                 $ignored = $propName;
                 # handle special attributes (extract as tags only once if not empty)
                 if (ref $recognizedAttrs{$propName} and $shortVal) {

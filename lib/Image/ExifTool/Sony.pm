@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.59';
+$VERSION = '3.60';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -161,6 +161,7 @@ sub PrintInvLensSpec($;$$);
     32876 => 'Sony E 11mm F1.8', #JR
     32877 => 'Sony E 15mm F1.4 G', #JR
     32878 => 'Sony FE 20-70mm F4 G', #JR
+    32879 => 'Sony FE 50mm F1.4 GM', #JR
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -259,7 +260,10 @@ sub PrintInvLensSpec($;$$);
     50534 => 'Sigma 20mm F1.4 DG DN | A', #JR (022)
     50535 => 'Sigma 24mm F1.4 DG DN | A', #JR (022)
     50536 => 'Sigma 60-600mm F4.5-6.3 DG DN OS | S', #JR (023)
+    50537 => 'Sigma 50mm F2 DG DN | C', #JR (023)
+    50538 => 'Sigma 17mm F4 DG DN | C', #JR (023)
     50539 => 'Sigma 50mm F1.4 DG DN | A', #JR (023)
+    50544 => 'Sigma 23mm F1.4 DC DN | C', #JR (023)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
@@ -1165,7 +1169,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             },
         },{
             Name => 'AFAreaModeSetting',
-            Condition => '$$self{Model} =~ /^(NEX-|ILCE-|ILME-|DSC-(RX10M4|RX100M6|RX100M7|RX100M5A|HX99|RX0M2))/',
+            Condition => '$$self{Model} =~ /^(NEX-|ILCE-|ILME-|ZV-E|DSC-(RX10M4|RX100M6|RX100M7|RX100M5A|HX99|RX0M2))/',
             Notes => 'NEX, ILCE and some DSC models',
             RawConv => '$$self{AFAreaILCE} = $val',
             DataMember => 'AFAreaILCE',
@@ -1201,7 +1205,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         # observed values in range (0 0) to (640 480), with center (320 240) often seen
         # for NEX-5R/6, positions appear to be in an 11x9 grid
         Name => 'FlexibleSpotPosition',
-        Condition => '$$self{Model} =~ /^(NEX-|ILCE-|ILME-|DSC-(RX10M4|RX100M6|RX100M7|RX100M5A|HX99|RX0M2))/',
+        Condition => '$$self{Model} =~ /^(NEX-|ILCE-|ILME-|ZV-E|DSC-(RX10M4|RX100M6|RX100M7|RX100M5A|HX99|RX0M2))/',
         Writable => 'int16u',
         Count => 2,
         Notes => q{
@@ -1669,6 +1673,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     # 0x28 (e) for ILCE-7RM4/9M2, DSC-RX100M7, ZV-1/E10
     # 0x31 (e) for ILCE-1/7M4/7SM3, ILME-FX3
     # 0x32 (e) for ILCE-7RM5, ILME-FX30
+    # 0x33 (e) for ZV-E1
     # first byte decoded: 40, 204, 202, 27, 58, 62, 48, 215, 28, 106, 89 respectively
     {
         Name => 'Tag9400a',
@@ -1683,7 +1688,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9400b' },
     },{
         Name => 'Tag9400c',
-        Condition => '$$valPt =~ /^[\x23\x24\x26\x28\x31\x32]/',
+        Condition => '$$valPt =~ /^[\x23\x24\x26\x28\x31\x32\x33]/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9400c' },
     },{
         Name => 'Sony_0x9400',
@@ -1896,7 +1901,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     },
     0x940c => [{
         Name => 'Tag940c',
-        Condition => '$$self{Model} =~ /^(NEX-|ILCE-|ILME-|Lunar|ZV-E10)\b/',
+        Condition => '$$self{Model} =~ /^(NEX-|ILCE-|ILME-|Lunar|ZV-E10|ZV-E1)\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag940c' },
     },{
         Name => 'Sony_0x940c',
@@ -2064,6 +2069,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             389 => 'ZV-1F', #IB
             390 => 'ILCE-7RM5', #IB
             391 => 'ILME-FX30', #JR
+            393 => 'ZV-E1', #JR
         },
     },
     0xb020 => { #2
@@ -8238,7 +8244,7 @@ my %isoSetting2010 = (
     },
     0x002a => [{
         Name => 'Quality2',
-        Condition => '$$self{Model} !~ /^(ILCE-(1|7M4|7RM5|7SM3)|ILME-FX3)\b/',
+        Condition => '$$self{Model} !~ /^(ILCE-(1|7M4|7RM5|7SM3)|ILME-(FX3|FX30)|ZV-E1)\b/',
         PrintConv => {
             0 => 'JPEG',
             1 => 'RAW',
@@ -8247,7 +8253,6 @@ my %isoSetting2010 = (
         },
     },{
         Name => 'Quality2',
-        Condition => '$$self{Model} =~ /^(ILCE-(1|7M4|7RM5|7SM3)|ILME-FX3)\b/',
         PrintConv => {
             1 => 'JPEG',
             2 => 'RAW',
@@ -8258,13 +8263,13 @@ my %isoSetting2010 = (
     }],
     0x0047 => {
         Name => 'SonyImageHeight',
-        Condition => '$$self{Model} !~ /^(ILCE-(1|7M4|7RM5|7SM3)|ILME-FX3)\b/',
+        Condition => '$$self{Model} !~ /^(ILCE-(1|7M4|7RM5|7SM3)|ILME-(FX3|FX30)|ZV-E1)\b/',
         Format => 'int16u',
         PrintConv => '$val > 0 ? 8*$val : "n.a."',
     },
     0x0053 => {
         Name => 'ModelReleaseYear',
-        Condition => '$$self{Model} !~ /^(ILCE-(1|7M4|7RM5|7SM3)|ILME-FX3)\b/',
+        Condition => '$$self{Model} !~ /^(ILCE-(1|7M4|7RM5|7SM3)|ILME-(FX3|FX30)|ZV-E1)\b/',
         Format => 'int8u',
         PrintConv => 'sprintf("20%.2d", $val)',
     },
@@ -8279,9 +8284,10 @@ my %isoSetting2010 = (
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     DATAMEMBER => [ 0 ],
-    IS_SUBDIR => [ 0x044e, 0x0498, 0x049d, 0x04a1, 0x04a2, 0x059d, 0x0634, 0x0636, 0x064c, 0x0653, 0x0678, 0x06b8, 0x06de, 0x06e7 ],
+    IS_SUBDIR => [ 0x03e2, 0x044e, 0x0498, 0x049d, 0x04a1, 0x04a2, 0x059d, 0x0634, 0x0636, 0x064c, 0x0653, 0x0678, 0x06b8, 0x06de, 0x06e7 ],
     0x0000 => { Name => 'Ver9401', Hidden => 1, RawConv => '$$self{Ver9401} = $val; $$self{OPTIONS}{Unknown}<2 ? undef : $val' },
 
+    0x03e2 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 181',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x044e => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 178',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x0498 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 148',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x049d => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 167',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },

@@ -17,6 +17,30 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.61'><b>Apr. 24, 2023 - Version 12.61</b></a>
+<ul>
+<li>Added ImageDataMD5 support for J2C and JXL images
+<li>Added support for PDF 2.0 (specification is finally freely available)
+<li>Added ability to extract timed Accelerometer data from Azdome GS63H MP4
+    videos which don't contain GPS
+<li>Added some new Sony lenses (thanks Jos Roost)
+<li>Decode some new tags for the Sony ZV-E1 (thanks Jos Roost)
+<li>Decode more tags for the Nikon Z30 (thanks Xavier)
+<li>Enhanced -fileNUM option to allow tags from the main file to be used in the
+    file name string
+<li>Validate sample offset and size when calculating ImageDataMD5 for MP4 videos
+    (note: may change ImageDataMD5 value for videos where audio data runs past
+    end of media data)
+<li>Return error when attempting to write a fragmented JXL file
+<li>Improved robustness for determining image size for corrupted JPEG
+<li>Patched to allow Insta360 GPS records of unexpected length and tweaked
+    verification algorithm to determine validity of these records
+<li>Fixed bug introduced in 12.57 where -progress:%f gave runtime warnings
+<li>Fixed "--" option to ignore subsequent -common_args option
+<li>Fixed incorrect ImageDataMD5 for Sony A100 ARW images
+<li>Fixed problem reading new XMP-et:OriginalImageMD5 tag
+</ul>
+
 <a name='v12.60'><b>Apr. 5, 2023 - Version 12.60</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added a new Sony FileFormat value

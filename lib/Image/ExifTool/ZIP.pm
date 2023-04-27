@@ -254,17 +254,19 @@ my %iWorkType = (
     },
 );
 
-sub convert_to_uleb($) {
-    my ($input) = @_;
+sub read_uleb {
+    my $buff;
     my $output = 0;
     my $counter = 0;
-    foreach my $char (split('', $input)) {
-        my $num = ord($char);
+    while(1){
+        $_[0]->Read($buff, 1);
+        my $num = ord(substr($buff, 0, 1));
         $output = $output + (($num & 0x7f) << ($counter * 7));
         $counter += 1;
-        
+        if($num < 128){
+            return ($output, $counter);
+        }
     }
-    return $output;
 }
 
 #------------------------------------------------------------------------------
@@ -335,50 +337,113 @@ sub ProcessRAR($$)
         
         for (;;) {
             # read block header
-            $raf->Read($buff, 7) == 7 or last;
-            my ($size, $type, $flags) = unpack('xxxxCCC', $buff);
-            print "HeadSize: $size HeadType: $type\n";
-            $size -= 2;
-            if ($type == 2) {  # file block
+            $raf->Seek(4, 1);  # skip CRC
+            my ($headSize, $headType, $varLength) = 0;
+            ($headSize, $varLength) = read_uleb($raf);
+            if($headSize == 0){
+                last;
+            }
+            ($headType, $varLength) = read_uleb($raf);
+            print "HeadSize: $headSize HeadType: $headType\n";
+            $headSize -= $varLength;
+            
+            if ($headType == 2) {  # file block
+                my ($headFlag, $extraSize, $fileFlag, $uncompressedSize, $attributes, $compressionInfo, $osStr, $dataSize) = 0;
+                
+                ($headFlag, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
+                
+                ($extraSize, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
+                
                 # get compressed size:   
-                $raf->Seek(1, 1);
-                $raf->Read($buff, 2) == 2 or last;
-                $size -= 3;
-                my $dataSize = convert_to_uleb($buff);
+                ($dataSize, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
                 $et->FoundTag('CompressedSize', $dataSize);
-                print("Compressed: $dataSize\n");
+                
+                ($fileFlag, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
                 
                 # get uncompressed size:
-                $raf->Seek(1, 1);
-                $raf->Read($buff, 2) == 2 or last;
-                $size -= 3;
-                $et->FoundTag('UncompressedSize', convert_to_uleb($buff));
+                ($uncompressedSize, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
+                $et->FoundTag('UncompressedSize', $uncompressedSize);
+                
+                ($attributes, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
+                
+                # skip data crc:
+                $raf->Seek(4, 1);
+                $headSize -= 4;
+                
+                ($compressionInfo, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
                 
                 # get operating system:
-                $raf->Seek(7, 1);
-                $raf->Read($buff, 1) == 1 or last;
-                if($buff eq "\x0"){
+                ($osStr, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
+                if($osStr == 0){
                     $et->FoundTag('OperatingSystem', "Win32");
                 }
-                elsif ($buff eq "\x1"){
-                    $et->FoundTag('OperatingSystem', "Linux");
+                elsif ($osStr == 1){
+                    $et->FoundTag('OperatingSystem', "Unix");
                 }
-                $size -= 8;
                 
                 # get filename length:
                 $raf->Read($buff, 1) == 1 or last;
                 my ($filenameLength) = unpack('c', $buff);
-                $size -= 1;
+                $headSize -= 1;
                 
                 # get filename:
                 $raf->Read($buff, $filenameLength) == $filenameLength or last;
                 $et->FoundTag('ArchivedFileName', $buff);
-                $size -= $filenameLength;
-               print("Length: $filenameLength, Name: $buff\n");
+                $headSize -= $filenameLength;
+                print("Length: $filenameLength, Name: $buff\n");
                 
                 $raf->Seek($dataSize, 1);
             }
-            $raf->Read($buff, $size) == $size or last;
+            elsif($headType == 3) {  # service block
+                my ($headFlag, $extraSize, $fileFlag, $uncompressedSize, $attributes, $compressionInfo, $osStr, $nameLength, $dataSize) = 0;
+                
+                ($headFlag, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
+                
+                if ($headFlag & 0x0001) {
+                    ($extraSize, $varLength) = read_uleb($raf);
+                    $headSize -= $varLength;
+                }
+                
+                if ($headFlag & 0x0002) {
+                    ($dataSize, $varLength) = read_uleb($raf);
+                    $headSize -= $varLength;
+                }
+                
+                ($fileFlag, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
+                
+                ($uncompressedSize, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
+                
+                ($attributes, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
+                
+                ($compressionInfo, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
+                
+                ($osStr, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
+                
+                ($nameLength, $varLength) = read_uleb($raf);
+                $headSize -= $varLength;
+                
+                # skip name:
+                print("NameLength: $nameLength, Data Size: $dataSize\n");
+                $raf->Seek($nameLength, 1);
+                $headSize -= $nameLength;
+                
+                $raf->Seek($dataSize, 1);
+            }
+            $raf->Read($buff, $headSize) == $headSize or last;
         }
         return 1;
     }

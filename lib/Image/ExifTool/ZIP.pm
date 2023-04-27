@@ -254,8 +254,21 @@ my %iWorkType = (
     },
 );
 
+sub convert_to_uleb($) {
+    my ($input) = @_;
+    my $output = 0;
+    my $counter = 0;
+    foreach my $char (split('', $input)) {
+        my $num = ord($char);
+        $output = $output + (($num & 0x7f) << ($counter * 7));
+        $counter += 1;
+        
+    }
+    return $output;
+}
+
 #------------------------------------------------------------------------------
-# Extract information from a RAR file (ref 4)
+# Extract information from a RAR file (ref 4 and ref 5)
 # Inputs: 0) ExifTool object reference, 1) dirInfo reference
 # Returns: 1 on success, 0 if this wasn't a valid RAR file
 sub ProcessRAR($$)
@@ -264,56 +277,116 @@ sub ProcessRAR($$)
     my $raf = $$dirInfo{RAF};
     my ($flags, $buff);
 
-    return 0 unless $raf->Read($buff, 7) and $buff eq "Rar!\x1a\x07\0";
+    $raf->Read($buff, 7);
+    if($buff eq "Rar!\x1a\x07\0") { # RARv4
+        $et->SetFileType();
+        SetByteOrder('II');
+        my $tagTablePtr = GetTagTable('Image::ExifTool::ZIP::RAR');
+        my $docNum = 0;
 
-    $et->SetFileType();
-    SetByteOrder('II');
-    my $tagTablePtr = GetTagTable('Image::ExifTool::ZIP::RAR');
-    my $docNum = 0;
-
-    for (;;) {
-        # read block header
-        $raf->Read($buff, 7) == 7 or last;
-        my ($type, $flags, $size) = unpack('xxCvv', $buff);
-        $size -= 7;
-        if ($flags & 0x8000) {
-            $raf->Read($buff, 4) == 4 or last;
-            $size += unpack('V',$buff) - 4;
-        }
-        last if $size < 0;
-        next unless $size;  # ignore blocks with no data
-        # don't try to read very large blocks unless LargeFileSupport is enabled
-        if ($size >= 0x80000000 and not $et->Options('LargeFileSupport')) {
-            $et->Warn('Large block encountered. Aborting.');
-            last;
-        }
-        # process the block
-        if ($type == 0x74) { # file block
-            # read maximum 4 KB from a file block
-            my $n = $size > 4096 ? 4096 : $size;
-            $raf->Read($buff, $n) == $n or last;
-            # add compressed size to start of data so we can extract it with the other tags
-            $buff = pack('V',$size) . $buff;
-            $$et{DOC_NUM} = ++$docNum;
-            $et->ProcessDirectory({ DataPt => \$buff }, $tagTablePtr);
-            $size -= $n;
-        } elsif ($type == 0x75 and $size > 6) { # comment block
-            $raf->Read($buff, $size) == $size or last;
-            # save comment, only if "Stored" (this is untested)
-            if (Get8u(\$buff, 3) == 0x30) {
-                $et->FoundTag('Comment', substr($buff, 6));
+        for (;;) {
+            # read block header
+            $raf->Read($buff, 7) == 7 or last;
+            my ($type, $flags, $size) = unpack('xxCvv', $buff);
+            $size -= 7;
+            if ($flags & 0x8000) {
+                $raf->Read($buff, 4) == 4 or last;
+                $size += unpack('V',$buff) - 4;
             }
-            next;
+            last if $size < 0;
+            next unless $size;  # ignore blocks with no data
+            # don't try to read very large blocks unless LargeFileSupport is enabled
+            if ($size >= 0x80000000 and not $et->Options('LargeFileSupport')) {
+                $et->Warn('Large block encountered. Aborting.');
+                last;
+            }
+            # process the block
+            if ($type == 0x74) { # file block
+                # read maximum 4 KB from a file block
+                my $n = $size > 4096 ? 4096 : $size;
+                $raf->Read($buff, $n) == $n or last;
+                # add compressed size to start of data so we can extract it with the other tags
+                $buff = pack('V',$size) . $buff;
+                $$et{DOC_NUM} = ++$docNum;
+                $et->ProcessDirectory({ DataPt => \$buff }, $tagTablePtr);
+                $size -= $n;
+            } elsif ($type == 0x75 and $size > 6) { # comment block
+                $raf->Read($buff, $size) == $size or last;
+                # save comment, only if "Stored" (this is untested)
+                if (Get8u(\$buff, 3) == 0x30) {
+                    $et->FoundTag('Comment', substr($buff, 6));
+                }
+                next;
+            }
+            # seek to the start of the next block
+            $raf->Seek($size, 1) or last if $size;
         }
-        # seek to the start of the next block
-        $raf->Seek($size, 1) or last if $size;
+        $$et{DOC_NUM} = 0;
+        if ($docNum > 1 and not $et->Options('Duplicates')) {
+            $et->Warn("Use the Duplicates option to extract tags for all $docNum files", 1);
+        }
+    
+        return 1;
     }
-    $$et{DOC_NUM} = 0;
-    if ($docNum > 1 and not $et->Options('Duplicates')) {
-        $et->Warn("Use the Duplicates option to extract tags for all $docNum files", 1);
+    elsif($buff eq "Rar!\x1a\x07\x01"){ # RARv5
+        return 0 unless $raf->Read($buff, 1) and $buff eq "\0";
+        $et->SetFileType();
+        SetByteOrder('II');
+        
+        for (;;) {
+            # read block header
+            $raf->Read($buff, 7) == 7 or last;
+            my ($size, $type, $flags) = unpack('xxxxCCC', $buff);
+            print "HeadSize: $size HeadType: $type\n";
+            $size -= 2;
+            if ($type == 2) {  # file block
+                # get compressed size:   
+                $raf->Seek(1, 1);
+                $raf->Read($buff, 2) == 2 or last;
+                $size -= 3;
+                my $dataSize = convert_to_uleb($buff);
+                $et->FoundTag('CompressedSize', $dataSize);
+                print("Compressed: $dataSize\n");
+                
+                # get uncompressed size:
+                $raf->Seek(1, 1);
+                $raf->Read($buff, 2) == 2 or last;
+                $size -= 3;
+                $et->FoundTag('UncompressedSize', convert_to_uleb($buff));
+                
+                # get operating system:
+                $raf->Seek(7, 1);
+                $raf->Read($buff, 1) == 1 or last;
+                if($buff eq "\x0"){
+                    $et->FoundTag('OperatingSystem', "Win32");
+                }
+                elsif ($buff eq "\x1"){
+                    $et->FoundTag('OperatingSystem', "Linux");
+                }
+                $size -= 8;
+                
+                # get filename length:
+                $raf->Read($buff, 1) == 1 or last;
+                my ($filenameLength) = unpack('c', $buff);
+                $size -= 1;
+                
+                # get filename:
+                $raf->Read($buff, $filenameLength) == $filenameLength or last;
+                $et->FoundTag('ArchivedFileName', $buff);
+                $size -= $filenameLength;
+               print("Length: $filenameLength, Name: $buff\n");
+                
+                $raf->Seek($dataSize, 1);
+            }
+            $raf->Read($buff, $size) == $size or last;
+        }
+        return 1;
+    }
+    else{
+        return 0;
     }
 
-    return 1;
+
 }
 
 #------------------------------------------------------------------------------

@@ -254,6 +254,7 @@ my %iWorkType = (
     },
 );
 
+# read unsigned LEB (Little Endian Base) from array of bytes
 sub read_uleb {
     my $buff;
     my $output = 0;
@@ -278,13 +279,14 @@ sub ProcessRAR($$)
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
     my ($flags, $buff);
+    my $docNum = 0;
 
     $raf->Read($buff, 7);
     if($buff eq "Rar!\x1a\x07\0") { # RARv4
         $et->SetFileType();
         SetByteOrder('II');
+        $et->FoundTag('RARVersion', "v4");
         my $tagTablePtr = GetTagTable('Image::ExifTool::ZIP::RAR');
-        my $docNum = 0;
 
         for (;;) {
             # read block header
@@ -323,28 +325,23 @@ sub ProcessRAR($$)
             # seek to the start of the next block
             $raf->Seek($size, 1) or last if $size;
         }
-        $$et{DOC_NUM} = 0;
-        if ($docNum > 1 and not $et->Options('Duplicates')) {
-            $et->Warn("Use the Duplicates option to extract tags for all $docNum files", 1);
-        }
-    
-        return 1;
     }
     elsif($buff eq "Rar!\x1a\x07\x01"){ # RARv5
         return 0 unless $raf->Read($buff, 1) and $buff eq "\0";
         $et->SetFileType();
         SetByteOrder('II');
+        $et->FoundTag('RARVersion', "v5");
         
         for (;;) {
             # read block header
-            $raf->Seek(4, 1);  # skip CRC
+            $raf->Seek(4, 1);  # skip Head CRC
             my ($headSize, $headType, $varLength) = 0;
             ($headSize, $varLength) = read_uleb($raf);
             if($headSize == 0){
                 last;
             }
             ($headType, $varLength) = read_uleb($raf);
-            print "HeadSize: $headSize HeadType: $headType\n";
+            # print "HeadSize: $headSize HeadType: $headType\n";
             $headSize -= $varLength;
             
             if ($headType == 2) {  # file block
@@ -398,7 +395,9 @@ sub ProcessRAR($$)
                 $raf->Read($buff, $filenameLength) == $filenameLength or last;
                 $et->FoundTag('ArchivedFileName', $buff);
                 $headSize -= $filenameLength;
-                print("Length: $filenameLength, Name: $buff\n");
+                # print("Length: $filenameLength, Name: $buff\n");
+                
+                $$et{DOC_NUM} = ++$docNum;
                 
                 $raf->Seek($dataSize, 1);
             }
@@ -437,21 +436,28 @@ sub ProcessRAR($$)
                 $headSize -= $varLength;
                 
                 # skip name:
-                print("NameLength: $nameLength, Data Size: $dataSize\n");
+                # print("NameLength: $nameLength, Data Size: $dataSize\n");
                 $raf->Seek($nameLength, 1);
                 $headSize -= $nameLength;
                 
                 $raf->Seek($dataSize, 1);
             }
+            elsif($headType == 4) {  # encryption block
+                $et->Warn("File is encrypted.", 0);
+                return 1;
+            }
             $raf->Read($buff, $headSize) == $headSize or last;
         }
-        return 1;
     }
     else{
         return 0;
     }
-
-
+    
+    $$et{DOC_NUM} = 0;
+    if ($docNum > 1 and not $et->Options('Duplicates')) {
+        $et->Warn("Use the Duplicates option to extract tags for all $docNum files", 1);
+    }
+    return 1;
 }
 
 #------------------------------------------------------------------------------

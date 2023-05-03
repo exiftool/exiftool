@@ -176,6 +176,7 @@ html/TagNames/Torrent.html
 html/TagNames/Unknown.html
 html/TagNames/VCard.html
 html/TagNames/Vorbis.html
+html/TagNames/WPG.html
 html/TagNames/WTV.html
 html/TagNames/XMP.html
 html/TagNames/ZIP.html
@@ -416,6 +417,7 @@ lib/Image/ExifTool/Unknown.pm
 lib/Image/ExifTool/VCard.pm
 lib/Image/ExifTool/Validate.pm
 lib/Image/ExifTool/Vorbis.pm
+lib/Image/ExifTool/WPG.pm
 lib/Image/ExifTool/WTV.pm
 lib/Image/ExifTool/WriteCanonRaw.pl
 lib/Image/ExifTool/WriteExif.pl
@@ -856,6 +858,8 @@ t/VCard_2.out
 t/VCard_3.out
 t/Vorbis.t
 t/Vorbis_2.out
+t/WPG.t
+t/WPG_2.out
 t/WTV.t
 t/WTV_2.out
 t/Writer.t
@@ -965,6 +969,7 @@ t/ZIP_4.out
 t/ZIP_5.out
 t/ZIP_6.out
 t/ZIP_7.out
+t/ZIP_8.out
 t/ZISRAW.t
 t/ZISRAW_2.out
 t/images/AFCP.jpg
@@ -1132,6 +1137,7 @@ t/images/Unknown.jpg
 t/images/VCard.ics
 t/images/VCard.vcf
 t/images/Vorbis.ogg
+t/images/WPG.wpg
 t/images/WTV.wtv
 t/images/Writer.jpg
 t/images/XMP.inx
@@ -1148,6 +1154,7 @@ t/images/XMP7.xmp
 t/images/XMP8.xmp
 t/images/XMP9.xmp
 t/images/ZIP.gz
+t/images/ZIP.rar
 t/images/ZIP.zip
 t/images/ZISRAW.czi
 t/images/iWork.numbers

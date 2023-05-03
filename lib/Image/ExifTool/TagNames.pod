@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26393 tags, with 16860 unique tag names.
+They contain a total of 26407 tags, with 16869 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1453,6 +1453,9 @@ These tags belong to the ExifTool XMP-aux family 1 group.
   --------                                      --------
   ApproximateFocusDistance                      rational
   DistortionCorrectionAlreadyApplied            boolean
+  EnhanceDenoiseAlreadyApplied                  boolean
+  EnhanceDenoiseLumaAmount                      string
+  EnhanceDenoiseVersion                         string
   EnhanceDetailsAlreadyApplied                  boolean
   EnhanceDetailsVersion                         string
   EnhanceSuperResolutionAlreadyApplied          boolean
@@ -26022,6 +26025,18 @@ Graphics) images.  See L<http://bellard.org/bpg/> for the specification.
   0x0004   ThumbnailBPG                         no
   0x0005   AnimationControl?                    no
 
+=head2 WPG Tags
+
+Tags extracted from WordPerfect Graphics (WPG) images.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  ImageHeightInches                             no
+  ImageWidthInches                              no
+  Records                                       no+
+  RecordsV2                                     no+
+  WPGVersion                                    no
+
 =head2 ICO Tags
 
 Information extracted from Windows ICO (icon) and CUR (cursor) files.
@@ -27199,10 +27214,10 @@ number of available PDF tags.  See
 L<http://www.adobe.com/devnet/pdf/pdf_reference.html> for the official PDF
 specification.
 
-ExifTool supports reading and writing PDF documents up to version 1.7
-extension level 3, including support for RC4, AES-128 and AES-256
-encryption.  A Password option is provided to allow processing of
-password-protected PDF files.
+ExifTool supports reading and writing PDF documents up to version 2.0,
+including support for RC4, AES-128 and AES-256 encryption.  A
+Password option is provided to allow processing
+of password-protected PDF files.
 
 ExifTool may be used to write native PDF and XMP metadata to PDF files. It
 uses an incremental update technique that has the advantages of being both
@@ -37722,6 +37737,19 @@ These tags are extracted from RAR archive files.
      13    ModifyDate                           no
      18    PackingMethod                        no
      25    ArchivedFileName                     no
+
+=head3 ZIP RAR5 Tags
+
+These tags are extracted from RAR v5 archive files.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  ArchivedFileName                              no
+  CompressedSize                                no
+  ModifyDate                                    no
+  OperatingSystem                               no
+  RARVersion                                    no
+  UncompressedSize                              no
 
 =head2 RTF Tags
 

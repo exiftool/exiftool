@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.61';
+$VERSION = '12.62';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -142,8 +142,8 @@ sub ReadValue($$$;$$$);
 @loadAllTables = qw(
     PhotoMechanic Exif GeoTiff CanonRaw KyoceraRaw Lytro MinoltaRaw PanasonicRaw
     SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 BMP::Extra BPG BPG::Extensions
-    ICO PICT PNG MNG FLIF DjVu DPX OpenEXR ZISRAW MRC LIF MRC::FEI12 MIFF PCX
-    PGF PSP PhotoCD Radiance Other::PFM PDF PostScript Photoshop::Header
+    WPG ICO PICT PNG MNG FLIF DjVu DPX OpenEXR ZISRAW MRC LIF MRC::FEI12 MIFF
+    PCX PGF PSP PhotoCD Radiance Other::PFM PDF PostScript Photoshop::Header
     Photoshop::Layers Photoshop::ImageData FujiFilm::RAF FujiFilm::IFD
     Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3 ID3::Lyrics3
     FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio
@@ -152,8 +152,9 @@ sub ReadValue($$$;$$$);
     Real::Media Real::Audio Real::Metafile Red RIFF AIFF ASF WTV DICOM FITS MIE
     JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
     EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard
-    Text VCard::VCalendar VCard::VNote RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF
-    OOXML iWork ISO FLIR::AFF FLIR::FPF MacOS MacOS::MDItem FlashPix::DocTable
+    Text VCard::VCalendar VCard::VNote RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR
+    ZIP::RAR5 RTF OOXML iWork ISO FLIR::AFF FLIR::FPF MacOS MacOS::MDItem
+    FlashPix::DocTable
 );
 
 # alphabetical list of current Lang modules
@@ -190,12 +191,12 @@ $defaultLang = 'en';    # default language
 # 3) PLIST must be in this list for the binary PLIST format, although it may
 #    cause a file to be checked twice for XML
 @fileTypes = qw(JPEG EXV CRW DR4 TIFF GIF MRW RAF X3F JP2 PNG MIE MIFF PS PDF
-                PSD XMP BMP BPG PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG
-                FLAC APE MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FLIF FPF LFP
-                HTML VRD RTF FITS XCF DSS QTIF FPX PICT ZIP GZIP PLIST RAR BZ2
-                CZI TAR  EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC M2TS
-                MacOS PHP PCX DCX DWF DWG DXF WTV Torrent VCard LRI R3D AA PDB
-                PFM2 MRC LIF JXL MOI ISO ALIAS JSON MP3 DICOM PCD ICO TXT);
+                PSD XMP BMP WPG BPG PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV
+                OGG FLAC APE MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FLIF FPF
+                LFP HTML VRD RTF FITS XCF DSS QTIF FPX PICT ZIP GZIP PLIST RAR
+                BZ2 CZI TAR  EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC
+                M2TS MacOS PHP PCX DCX DWF DWG DXF WTV Torrent VCard LRI R3D AA
+                PDB PFM2 MRC LIF JXL MOI ISO ALIAS JSON MP3 DICOM PCD ICO TXT);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -554,6 +555,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     XMP  => ['XMP',  'Extensible Metadata Platform'],
     WOFF => ['Font', 'Web Open Font Format'],
     WOFF2=> ['Font', 'Web Open Font Format2'],
+    WPG  => ['WPG',  'WordPerfect Graphics'],
     WTV  => ['WTV',  'Windows recorded TV show'],
     ZIP  => ['ZIP',  'ZIP archive'],
 );
@@ -789,6 +791,7 @@ my %fileDescription = (
     WMA  => 'audio/x-ms-wma',
     WMF  => 'application/x-wmf',
     WMV  => 'video/x-ms-wmv',
+    WPG  => 'image/x-wpg',
     WTV  => 'video/x-ms-wtv',
     X3F  => 'image/x-sigma-x3f',
     XCF  => 'image/x-xcf',
@@ -970,7 +973,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     QTIF => '.{4}(idsc|idat|iicc)',
     R3D  => '\0\0..RED(1|2)',
     RAF  => 'FUJIFILM',
-    RAR  => 'Rar!\x1a\x07\0',
+    RAR  => 'Rar!\x1a\x07\x01?\0',
     RAW  => '(.{25}ARECOYK|II|MM)',
     Real => '(\.RMF|\.ra\xfd|pnm://|rtsp://|http://)',
     RIFF => '(RIFF|LA0[234]|OFR |LPAC|wvpk|RF64)', # RIFF plus other variants
@@ -984,6 +987,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     VCard=> '(?i)BEGIN:(VCARD|VCALENDAR|VNOTE)\r\n',
     VRD  => 'CANON OPTIONAL DATA\0',
     WMF  => '(\xd7\xcd\xc6\x9a\0\0|\x01\0\x09\0\0\x03)',
+    WPG  => '\xff\x57\x50\x43',
     WTV  => '\xb7\xd8\x00\x20\x37\x49\xda\x11\xa6\x4e\x00\x07\xe9\x5e\xad\x8d',
     X3F  => 'FOVb',
     XCF  => 'gimp xcf ',
@@ -1825,13 +1829,13 @@ my %systemTagsNotes = (
     },
     ImageDataMD5 => {
         Notes => q{
-            MD5 of image data. Generated only if specifically requested for JPEG and
-            TIFF-based images, PNG, CRW, CR3, MRW, RAF, X3F, JP2, JXL and AVIF images,
-            MOV/MP4 videos, and some RIFF-based files.  The MD5 includes the main image
-            data, plus JpgFromRaw/OtherImage for some formats, but does not include
-            ThumbnailImage or PreviewImage.  Includes video and audio data for MOV/MP4.
-            The L<XMP-et:OriginalImageMD5 tag|XMP.html#ExifTool> provides a place to
-            store these values in the file.
+            MD5 of image data. Generated only if specifically requested for JPEG, TIFF,
+            PNG, CRW, CR3, MRW, RAF, X3F, IIQ, JP2, JXL, HEIC and AVIF images, MOV/MP4
+            videos, and some RIFF-based files such as AVI, WAV and WEBP.  The MD5
+            includes the main image data, plus JpgFromRaw/OtherImage for some formats,
+            but does not include ThumbnailImage or PreviewImage.  Includes video and
+            audio data for MOV/MP4. The L<XMP-et:OriginalImageMD5 tag|XMP.html#ExifTool>
+            provides a place to store these values in the file.
         },
     },
 );
@@ -2125,8 +2129,10 @@ sub Options($$;@)
 
     while (@_) {
         my $param = shift;
+        my $plus;
         # fix parameter case if necessary
         unless (exists $$options{$param}) {
+            $plus = $param =~ s/\+$//;
             my ($fixed) = grep /^$param$/i, keys %$options;
             if ($fixed) {
                 $param = $fixed;
@@ -2291,6 +2297,23 @@ sub Options($$;@)
                 $compact{$p} = $val; # preserve most recent setting
             }
             $$options{Compact} = $$options{XMPShorthand} = \%compact;
+        } elsif ($param eq 'NoWarning') {
+            # validate regular expression
+            undef $evalWarning;
+            if (defined $newVal) {
+                local $SIG{'__WARN__'} = \&SetWarning;
+                eval { $param =~ /$newVal/ };
+                $@ and $evalWarning = $@;
+            }
+            if ($evalWarning) {
+                warn 'NoWarning: ' . CleanWarning() . "\n";
+                next;
+            }
+            # add to existing expression if specified
+            if ($plus and defined $oldVal) {
+                $newVal = defined $newVal ? "$oldVal|$newVal" : $oldVal;
+            }
+            $$options{$param} = $newVal;
         } else {
             if ($param eq 'Escape') {
                 # set ESCAPE_PROC
@@ -2385,6 +2408,7 @@ sub ClearOptions($)
         MissingTagValue =>undef,# value for missing tags when expanded in expressions
         NoMultiExif => undef,   # raise error when writing multi-segment EXIF
         NoPDFList   => undef,   # flag to avoid splitting PDF List-type tag values
+        NoWarning   => undef,   # regular expression for warnings to suppress
         Password    => undef,   # password for password-protected PDF documents
         PrintConv   => 1,       # flag to enable print conversion
         QuickTimeHandler => 1,  # flag to add mdir Handler to newly created Meta box
@@ -2645,7 +2669,6 @@ sub ExtractInfo($;@)
             $self->FoundTag('FileType', 'DIR');
             $self->FoundTag('FileTypeExtension', '');
             $self->ExtractAltInfo();
-            $self->BuildCompositeTags() if $$options{Composite};
             $raf->Close() if $raf;
             return 1;
         }
@@ -2664,7 +2687,6 @@ sub ExtractInfo($;@)
                 $self->Error('Unknown file type');
             }
             $self->ExtractAltInfo();
-            $self->BuildCompositeTags() if $fast == 4 and $$options{Composite};
             last;   # don't read the file
         }
         if (@fileTypeList) {
@@ -2831,8 +2853,6 @@ sub ExtractInfo($;@)
         unless ($reEntry) {
             $$self{PATH} = [ ];     # reset PATH
             $self->ExtractAltInfo();
-            # calculate Composite tags
-            $self->BuildCompositeTags() if $$options{Composite};
             # do our HTML dump if requested
             if ($$self{HTML_DUMP}) {
                 $raf->Seek(0, 2);   # seek to end of file
@@ -3634,14 +3654,15 @@ sub SetNewGroups($;@)
 
 #------------------------------------------------------------------------------
 # Build Composite tags from Require'd/Desire'd tags
-# Inputs: 0) ExifTool object reference
+# Inputs: 0) ExifTool object reference, 1) flag to build only tags that require
+#         tags from alternate files (without this, these tags are ignored)
 # Note: Tag values are calculated in alphabetical order unless a tag Require's
 #       or Desire's another Composite tag, in which case the calculation is
 #       deferred until after the other tag is calculated.
 sub BuildCompositeTags($)
 {
     local $_;
-    my $self = shift;
+    my ($self, $altOnly) = @_;
 
     $$self{BuildingComposite} = 1;
 
@@ -3670,7 +3691,7 @@ COMPOSITE_TAG:
             # loop through sub-documents if necessary
             my $docNum = 0;
             for (;;) {
-                my (%tagKey, $found, $index);
+                my (%tagKey, $found, $index, $requireAlt);
                 # save Require'd and Desire'd tag values in list
                 for ($index=0; ; ++$index) {
                     my $reqTag = $$require{$index} || $$desire{$index} || $$inhibit{$index};
@@ -3725,6 +3746,8 @@ COMPOSITE_TAG:
                         if ($reqTag =~ /\b(File\d+):/i and $$self{ALT_EXIFTOOL}{$1}) {
                             $et = $$self{ALT_EXIFTOOL}{$1};
                             $altFile = $1;
+                            # set flags indicating we require tags from alternate files
+                            $$self{DoAltComposite} = $requireAlt = 1;
                         }
                         # (CAREFUL! keys may not be sequential if one was deleted)
                         for ($key=$name, $i=$$et{DUPL_TAG}{$name} || 0; ; --$i) {
@@ -3756,6 +3779,8 @@ COMPOSITE_TAG:
                     }
                     $tagKey{$index} = $reqTag;
                 }
+                # stop now if this requires alternate tags and we aren't building them
+                last if $requireAlt xor $altOnly;
                 if ($docNum) {
                     if ($found) {
                         $$self{DOC_NUM} = $docNum;
@@ -4054,7 +4079,7 @@ sub CombineInfo($;@)
 }
 
 #------------------------------------------------------------------------------
-# Read metadata from alternate files
+# Read metadata from alternate files and build composite tags
 # Inputs: 0) ExifTool ref
 # Notes: This is called after reading the main file so the tags are available
 #        for being used in the file name, but before building Composite tags
@@ -4064,6 +4089,11 @@ sub ExtractAltInfo($)
     my $self = shift;
     # extract information from alternate files if necessary
     my ($g8, $altExifTool);
+    my $opts = $$self{OPTIONS};
+    if ($$opts{Composite} and (not $$opts{FastScan} or $$opts{FastScan} < 5)) {
+        # build all composite tags except those requiring tags from alternate files
+        $self->BuildCompositeTags();
+    }
     foreach $g8 (sort keys %{$$self{ALT_EXIFTOOL}}) {
         $altExifTool = $$self{ALT_EXIFTOOL}{$g8};
         next if $$altExifTool{DID_EXTRACT}; # avoid extracting twice
@@ -4087,6 +4117,8 @@ sub ExtractAltInfo($)
         }
         $$altExifTool{DID_EXTRACT} = 1;
     }
+    # if necessary, build composite tags that rely on tags from alternate files
+    $self->BuildCompositeTags(1) if $$self{DoAltComposite};
 }
 
 #------------------------------------------------------------------------------
@@ -4939,12 +4971,14 @@ sub AUTOLOAD
 sub Warn($$;$)
 {
     my ($self, $str, $ignorable) = @_;
+    my $noWarn = $self->Options('NoWarning');
     if ($ignorable) {
         return 0 if $$self{OPTIONS}{IgnoreMinorErrors};
         return 0 if $ignorable eq '3' and $$self{OPTIONS}{Validate};
+        return 1 if defined $noWarn and eval { $str =~ /$noWarn/ };
         $str = $ignorable eq '2' ? "[Minor] $str" : "[minor] $str";
     }
-    $self->FoundTag('Warning', $str);
+    $self->FoundTag('Warning', $str) unless defined $noWarn and eval { $str =~ /$noWarn/ };
     return 1;
 }
 

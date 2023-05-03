@@ -1302,6 +1302,7 @@ sub SetNewValuesFromFile($$;@)
         MDItemTags      => $$options{MDItemTags},
         MissingTagValue => $$options{MissingTagValue},
         NoPDFList       => $$options{NoPDFList},
+        NoWarning       => $$options{NoWarning},
         Password        => $$options{Password},
         PrintConv       => $$options{PrintConv},
         QuickTimeUTC    => $$options{QuickTimeUTC},
@@ -1569,10 +1570,17 @@ SET:    foreach $set (@setList) {
         # handle expressions
         if ($$opts{EXPR}) {
             my $val = $srcExifTool->InsertTagValues(\@tags, $$set[1], 'Error');
-            if ($$srcExifTool{VALUE}{Error}) {
-                # pass on any error as a warning
-                $tag = NextFreeTagKey(\%rtnInfo, 'Warning');
-                $rtnInfo{$tag} = $$srcExifTool{VALUE}{Error};
+            my $err = $$srcExifTool{VALUE}{Error};
+            if ($err) {
+                # pass on any error as a warning unless it is suppressed
+                my $noWarn = $$srcExifTool{OPTIONS}{NoWarning};
+                unless ($noWarn and (eval { $err =~ /$noWarn/ } or
+                    # (also apply expression to warning without "[minor] " prefix)
+                    ($err =~ s/^\[minor\] //i and eval { $err =~ /$noWarn/ })))
+                {
+                    $tag = NextFreeTagKey(\%rtnInfo, 'Warning');
+                    $rtnInfo{$tag} = $$srcExifTool{VALUE}{Error};
+                }
                 delete $$srcExifTool{VALUE}{Error};
                 next unless defined $val;
             }

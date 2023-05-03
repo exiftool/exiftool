@@ -94,9 +94,9 @@ the site with a moderate load.  An alternate ExifTool homepage is available at
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.61.tar.gz/download">
-Download        Version 12.61</a> (5.0 MB) -
-<a href="history.html">Apr. 24, 2023</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.62.tar.gz/download">
+Download        Version 12.62</a> (5.0 MB) -
+<a href="history.html">May 3, 2023</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -149,8 +149,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.61.zip/download">
-         exiftool-12.61.zip</a> (6.6 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.62.zip/download">
+         exiftool-12.62.zip</a> (6.6 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -168,7 +168,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.61.dmg</a> (3.2 MB)</b></td></tr></table></blockquote>
+         ExifTool-12.62.dmg</a> (3.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -492,6 +492,7 @@ for each file format.</p>
 <tr><td>WEBM</td><td>R</td><td>Google Web Movie (<a href="TagNames/Matroska.html">Matroska</a>-based)</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Matroska.html">Matroska</a></td></tr>
 <tr><td>WEBP</td><td>R/W</td><td>Google Web Picture (<a href="TagNames/RIFF.html">RIFF</a>-based)</td><td>R/W/C</td><td>-</td><td>R/W/C</td><td>R/W/C</td><td>R <a href="TagNames/RIFF.html">RIFF</a></td></tr>
 <tr><td>WMA, WMV</td><td>R</td><td>Windows Media Audio/Video (<a href="TagNames/ASF.html">ASF</a>-based)</td><td>-</td><td>-</td><td>R</td><td>-</td><td>R <a href="TagNames/ASF.html">ASF</a></td></tr>
+<tr><td><a href="TagNames/WPG.html">WPG</a></td><td>R</td><td>WordPerfect Graphics</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/WPG.html">WPG</a></td></tr>
 <tr><td><a href="TagNames/WTV.html">WTV</a></td><td>R</td><td>Windows recorded TV show</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/WTV.html">WTV</a></td></tr>
 <tr><td>WV</td><td>R</td><td>WavePack lossless audio (<a href="TagNames/RIFF.html">RIFF</a>-based)</td><td>R<span class=sup>3</span></td><td>-</td><td>R</td><td>-</td><td>R <a href="TagNames/RIFF.html">RIFF</a></td></tr>
 <tr><td><a href="TagNames/SigmaRaw.html">X3F</a></td><td>R/W</td><td>Sigma/Foveon RAW</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W <a href="TagNames/Sigma.html">Sigma</a>, R <a href="TagNames/SigmaRaw.html">SigmaRaw</a></td></tr>
@@ -1113,18 +1114,18 @@ with these images. <i class=grn>[This bug is fixed in OS X 10.5.4]</i></li>
 
 <h2><font color='#cc6600'><a name="security">Security Issues</a></font></h2>
 <p>Some ExifTool options (<code>-config</code>, <code>-if</code>,
-<code>-p</code>, <code>-api filter</code>,  <code>-api filterw</code> and
-copying arguments like <code>"-DSTTAG&lt;STR"</code>) have the ability to
-execute Perl code from external files or within command-line arguments.  This
-may be a security problem if ExifTool is executed from another application that
-blindly passes untrusted file names on the command line (since they may be
-interpreted as ExifTool options if they begin with a dash).  To be secure the
-calling application must either place file names after the "<code>--</code>"
-option, or ensure that input file names do not start with a dash (U+002D) or a
-Unicode minus sign (U+2212).  One way to accomplish this is to prefix input file
-names with a known directory name, eg.) <code>"./FILENAME"</code>.</p>
-<p>As well, untrusted window title strings should not be used with the
-<code>-progress:TITLE</code> option.</p>
+<code>-p</code>, <code>-fileNUM</code>, <code>-api filter</code>,
+<code>-api filterw</code> and copying arguments like <code>"-DSTTAG&lt;STR"</code>)
+have the ability to execute Perl code from external files or within command-line
+arguments.  This may be a security problem if ExifTool is executed from another
+application that blindly passes untrusted file names on the command line (since
+they may be interpreted as ExifTool options if they begin with a dash).  To be
+secure the calling application must either place file names after the
+"<code>--</code>" option, or ensure that input file names do not start with a
+dash (U+002D) or a Unicode minus sign (U+2212).  One way to accomplish this is
+to prefix input file names with a known directory name, eg.)
+<code>"./FILENAME"</code>.</p> <p>As well, untrusted window title strings should
+not be used with the <code>-progress:TITLE</code> option.</p>
 
 <h2><a name="shift">Date/Time Shift Feature</a></h2>
 

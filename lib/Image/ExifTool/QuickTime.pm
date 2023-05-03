@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.84';
+$VERSION = '2.85';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -469,6 +469,9 @@ my %eeBox = (
 my %eeBox2 = (
     vide => { avcC => 'stsd' }, # (parses H264 video stream)
 );
+
+# image types in AVIF and HEIC files
+my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
 
 # QuickTime atoms
 %Image::ExifTool::QuickTime::Main = (
@@ -2884,7 +2887,7 @@ my %eeBox2 = (
                 7 => 'SMPTE 240',
                 8 => 'Generic film (color filters using illuminant C)',
                 9 => 'BT.2020, BT.2100',
-                10 => 'SMPTE 428 (CIE 1921 XYZ)',
+                10 => 'SMPTE 428 (CIE 1931 XYZ)', #forum14766
                 11 => 'SMPTE RP 431-2',
                 12 => 'SMPTE EG 432-1',
                 22 => 'EBU Tech. 3213-E',
@@ -8784,15 +8787,15 @@ sub HandleItemInfo($)
                     $et->VPrint(0, "$$et{INDENT}    [snip $snip bytes]\n") if $snip;
                 }
             }
-            # do MD5 checksum of AVIF "av01" image data
-            if ($type eq 'av01' and $$et{ImageDataMD5}) {
+            # do MD5 checksum of AVIF "av01" and HEIC image data
+            if ($isImageData{$type} and $$et{ImageDataMD5}) {
                 my $md5 = $$et{ImageDataMD5};
                 my $tot = 0;
                 foreach $extent (@{$$item{Extents}}) {
-                    $raf->Seek($$extent[1] + $base, 0) or $et->Warn('Seek error in av01 image data'), last;
-                    $tot += $et->ImageDataMD5($raf, $$extent[2], 'av01 image', 1);
+                    $raf->Seek($$extent[1] + $base, 0) or $et->Warn("Seek error in $type image data"), last;
+                    $tot += $et->ImageDataMD5($raf, $$extent[2], "$type image", 1);
                 }
-                $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: $tot bytes of av01 data)\n") if $tot;
+                $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: $tot bytes of $type data)\n") if $tot;
             }
             next unless $name;
             # assemble the data for this item

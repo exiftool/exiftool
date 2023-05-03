@@ -2393,8 +2393,8 @@ This module is loaded automatically by Image::ExifTool when required.
 This code reads meta information from PDF (Adobe Portable Document Format)
 files.  It supports object streams introduced in PDF-1.5 but only with a
 limited set of Filter and Predictor algorithms, however all standard
-encryption methods through PDF-1.7 extension level 3 are supported,
-including AESV2 (AES-128) and AESV3 (AES-256).
+encryption methods through PDF-2.0 are supported, including AESV2 (AES-128)
+and AESV3 (AES-256).
 
 =head1 AUTHOR
 

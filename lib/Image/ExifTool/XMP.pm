@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.58';
+$VERSION = '3.59';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2489,6 +2489,9 @@ my %sPantryItem = (
     EnhanceSuperResolutionAlreadyApplied => { Writable => 'boolean' },
     EnhanceSuperResolutionVersion   => { }, # integer?
     EnhanceSuperResolutionScale     => { Writable => 'rational' },
+    EnhanceDenoiseAlreadyApplied    => { Writable => 'boolean' }, #forum14760
+    EnhanceDenoiseVersion           => { }, #forum14760 integer?
+    EnhanceDenoiseLumaAmount        => { }, #forum14760 integer?
 );
 
 # IPTC Core namespace properties (Iptc4xmpCore) (ref 4)

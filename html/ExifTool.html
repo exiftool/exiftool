@@ -774,6 +774,13 @@ numerical options.</p>
 <tr id="NoPDFList"><td>NoPDFList</td><td>Flag to avoid splitting PDF list-type tag
     values into separate items.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
+<tr id="NoWarning"><td>NoWarning[+]</td><td>Regular expression to suppress matching
+    warning messages.  For example, a value of "^Ignored" suppresses all
+    warnings that begin with the word "Ignored".  Has no other effect on
+    processing, unlike <a href="#IgnoreMinorErrors">IgnoreMinorErrors</a> for
+    some warnings.  Start the expression with "(?i)" for case-insensitive
+    matching.  Use NoWarning+ to add to existing expressions.</td>
+    <td align=center>A regular expression pattern, or undef</td><td align=center>undef</td></tr>
 <tr id="Password"><td>Password</td><td>Password for reading/writing
     password-protected PDF documents. Ignored if a password is not required. Character encoding of
     the password is determined by the value of the Charset option at processing time.</td>

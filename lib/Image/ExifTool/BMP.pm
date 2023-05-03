@@ -358,4 +358,3 @@ L<Image::ExifTool::TagNames/BMP Tags>,
 L<Image::ExifTool(3pm)|Image::ExifTool>
 
 =cut
-

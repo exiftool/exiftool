@@ -582,10 +582,10 @@ number of available PDF tags.  See
 L<http://www.adobe.com/devnet/pdf/pdf_reference.html> for the official PDF
 specification.
 
-ExifTool supports reading and writing PDF documents up to version 1.7
-extension level 3, including support for RC4, AES-128 and AES-256
-encryption.  A L<Password|../ExifTool.html#Password> option is provided to allow processing of
-password-protected PDF files.
+ExifTool supports reading and writing PDF documents up to version 2.0,
+including support for RC4, AES-128 and AES-256 encryption.  A
+L<Password|../ExifTool.html#Password> option is provided to allow processing
+of password-protected PDF files.
 
 ExifTool may be used to write native PDF and XMP metadata to PDF files. It
 uses an incremental update technique that has the advantages of being both

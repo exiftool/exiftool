@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.44';
+$VERSION = '1.45';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -1539,6 +1539,7 @@ sub ReadFPXValue($$$$$;$$)
     }
     $_[2] = $valPos;    # return updated value position
 
+    push @vals, '' if $type eq 0; # (VT_EMPTY)
     if (wantarray) {
         return @vals;
     } elsif (@vals > 1) {

@@ -7,6 +7,18 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.60. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+May 3, 2023 - Version 12.62
+
+  - Added basic read support for WPG images
+  - Added ImageDataMD5 support for HEIC images
+  - Added support for RAR version 5.0 compressed files (thanks Amir Gooran)
+  - Added a few new XMP-aux tags (thanks John Ellis)
+  - Made Composite tags available for use in -fileNUM argument
+  - Better handling of FlashPix VT_EMPTY value
+  - Fixed "Can't write" error when specifying a .webp file for the -o option
+  - API Changes:
+      - Added NoWarning option
+
 Apr. 24, 2023 - Version 12.61
 
   - Added ImageDataMD5 support for J2C and JXL images

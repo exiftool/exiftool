@@ -35,6 +35,7 @@ WriteMakefile(
                 'POSIX::strptime' => 0,
                 'IO::Compress::RawDeflate'   => 0,
                 'IO::Uncompress::RawInflate' => 0,
+                'Compress::Raw::Lzma' => 0,
               # 'Unicode::LineBreak' => 0,
               # 'IO::Compress::Bzip2' => 0,
             },

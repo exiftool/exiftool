@@ -1827,6 +1827,11 @@ my %systemTagsNotes = (
             if specifically requested
         },
     },
+    ImageDataMD5 => {
+        Notes => q{
+            Alias for C<-ImageDataHash -api ImageHashAlgo MD5>
+        },
+    },
     ImageDataHash => {
         Notes => q{
             Hash of image data. Generated only if specifically requested for JPEG, TIFF,
@@ -2520,14 +2525,15 @@ sub ExtractInfo($;@)
         }
         
         # create Hash object if ImageDataHash is requested
-        if ($$req{imagedatahash} and not $$self{ImageDataHash}) {
-            if ($self->Options('ImageHashAlgo') eq 'SHA256') {
+        if (($$req{imagedatahash} or $$req{imagedatamd5}) and not $$self{ImageDataHash}) {
+            my $imageHashAlgo = $self->Options('ImageHashAlgo');
+            if ($imageHashAlgo eq 'SHA256') {
                 if (require Digest::SHA) {
                     $$self{ImageDataHash} = Digest::SHA->new(256);
                 } else {
                     $self->WarnOnce('Install Digest::SHA to calculate image data SHA256');
                 }
-            } elsif ($self->Options('ImageHashAlgo') eq 'SHA512') {
+            } elsif ($imageHashAlgo eq 'SHA512') {
                 if (require Digest::SHA) {
                     $$self{ImageDataHash} = Digest::SHA->new(512);
                 } else {
@@ -2540,8 +2546,8 @@ sub ExtractInfo($;@)
                     $self->WarnOnce('Install Digest::MD5 to calculate image data MD5');
                 }
 
-                if ($self->Options('ImageHashAlgo') ne 'MD5') {
-                    $self->WarnOnce('Unknown image hash algorithm "' . $self->Options('ImageHashAlgo') . '", defaulting to MD5');
+                if ($imageHashAlgo ne 'MD5') {
+                    $self->WarnOnce('Unknown image hash algorithm "' . $imageHashAlgo . '", defaulting to MD5');
                 }
             }
         }
@@ -2942,6 +2948,9 @@ sub ExtractInfo($;@)
             'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
             'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
         ]);
+        if ($$req{imagedatamd5}) {
+            $self->FoundTag(ImageDataMD5 => $digest) unless $digest eq 'd41d8cd98f00b204e9800998ecf8427e';
+        }
     }
 
     # ($type may be undef without an Error when processing sub-documents)

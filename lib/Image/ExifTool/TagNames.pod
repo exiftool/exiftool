@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26407 tags, with 16869 unique tag names.
+They contain a total of 26408 tags, with 16870 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -4047,7 +4047,7 @@ These tags belong to the ExifTool XMP-et family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
-  OriginalImageMD5                              string
+  OriginalImageHash                             string
 
 =head3 XMP exif Tags
 
@@ -38168,6 +38168,7 @@ FileName.
   ID3Size                    File               no
   IPTC                       IPTC               yes!
   ImageDataHash              File               no
+  ImageDataMD5               File               no
   ImageHeight                File               no
   ImageWidth                 File               no
   JPEGDigest                 File               no

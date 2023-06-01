@@ -38167,7 +38167,7 @@ FileName.
   ICC_Profile                ICC_Profile        yes!
   ID3Size                    File               no
   IPTC                       IPTC               yes!
-  ImageDataMD5               File               no
+  ImageDataHash              File               no
   ImageHeight                File               no
   ImageWidth                 File               no
   JPEGDigest                 File               no

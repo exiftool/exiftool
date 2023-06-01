@@ -114,7 +114,7 @@ sub WriteTIFF($$$);
 sub PackUTF8(@);
 sub UnpackUTF8($);
 sub SetPreferredByteOrder($;$);
-sub ImageDataMD5($$$;$$);
+sub ImageDataHash($$$;$$);
 sub CopyBlock($$$);
 sub CopyFileAttrs($$$);
 sub TimeNow(;$$);
@@ -1827,14 +1827,14 @@ my %systemTagsNotes = (
             if specifically requested
         },
     },
-    ImageDataMD5 => {
+    ImageDataHash => {
         Notes => q{
-            MD5 of image data. Generated only if specifically requested for JPEG, TIFF,
+            Hash of image data. Generated only if specifically requested for JPEG, TIFF,
             PNG, CRW, CR3, MRW, RAF, X3F, IIQ, JP2, JXL, HEIC and AVIF images, MOV/MP4
-            videos, and some RIFF-based files such as AVI, WAV and WEBP.  The MD5
+            videos, and some RIFF-based files such as AVI, WAV and WEBP.  The hash
             includes the main image data, plus JpgFromRaw/OtherImage for some formats,
             but does not include ThumbnailImage or PreviewImage.  Includes video and
-            audio data for MOV/MP4. The L<XMP-et:OriginalImageMD5 tag|XMP.html#ExifTool>
+            audio data for MOV/MP4. The L<XMP-et:OriginalImageHash tag|XMP.html#ExifTool>
             provides a place to store these values in the file.
         },
     },
@@ -2396,6 +2396,7 @@ sub ClearOptions($)
         HtmlDumpBase => undef,  # base address for HTML dump
         IgnoreMinorErrors => undef, # ignore minor errors when reading/writing
         IgnoreTags  => undef,   # list of tags to ignore when extracting
+        ImageHashAlgo => 'MD5', # image hash algorithm
         Lang        => $defaultLang,# localized language for descriptions etc
         LargeFileSupport => undef,  # flag indicating support of 64-bit file offsets
         List        => undef,   # extract lists of PrintConv values into arrays [no longer documented]
@@ -2518,12 +2519,30 @@ sub ExtractInfo($;@)
             }
         }
         
-        # create MD5 object if ImageDataMD5 is requested
-        if ($$req{imagedatamd5} and not $$self{ImageDataMD5}) {
-            if (require Digest::MD5) {
-                $$self{ImageDataMD5} = Digest::MD5->new;
+        # create Hash object if ImageDataHash is requested
+        if ($$req{imagedatahash} and not $$self{ImageDataHash}) {
+            if ($self->Options('ImageHashAlgo') eq 'SHA256') {
+                if (require Digest::SHA) {
+                    $$self{ImageDataHash} = Digest::SHA->new(256);
+                } else {
+                    $self->WarnOnce('Install Digest::SHA to calculate image data SHA256');
+                }
+            } elsif ($self->Options('ImageHashAlgo') eq 'SHA512') {
+                if (require Digest::SHA) {
+                    $$self{ImageDataHash} = Digest::SHA->new(512);
+                } else {
+                    $self->WarnOnce('Install Digest::SHA to calculate image data SHA512');
+                }
             } else {
-                $self->WarnOnce('Install Digest::MD5 to calculate image data MD5');
+                if (require Digest::MD5) {
+                    $$self{ImageDataHash} = Digest::MD5->new;
+                } else {
+                    $self->WarnOnce('Install Digest::MD5 to calculate image data MD5');
+                }
+
+                if ($self->Options('ImageHashAlgo') ne 'MD5') {
+                    $self->WarnOnce('Unknown image hash algorithm "' . $self->Options('ImageHashAlgo') . '"');
+                }
             }
         }
         ++$$self{FILE_SEQUENCE};        # count files read
@@ -2915,10 +2934,11 @@ sub ExtractInfo($;@)
         # restore necessary members when exiting re-entrant code
         $$self{$_} = $$reEntry{$_} foreach keys %$reEntry;
         SetByteOrder($saveOrder);
-    } elsif ($$self{ImageDataMD5}) {
-        my $digest = $$self{ImageDataMD5}->hexdigest;
+    } elsif ($$self{ImageDataHash}) {
+        my $digest = $$self{ImageDataHash}->hexdigest;
         # (don't store empty digest)
-        $self->FoundTag(ImageDataMD5 => $digest) unless $digest eq 'd41d8cd98f00b204e9800998ecf8427e';
+        # TODO: Calculate an empty hash using the requested algo
+        $self->FoundTag(ImageDataHash => $digest) unless $digest eq 'd41d8cd98f00b204e9800998ecf8427e';
     }
 
     # ($type may be undef without an Error when processing sub-documents)
@@ -6487,15 +6507,15 @@ sub ProcessJPEG($$)
     my $req = $$self{REQ_TAG_LOOKUP};
     my $htmlDump = $$self{HTML_DUMP};
     my %dumpParms = ( Out => $out );
-    my ($ch, $s, $length, $md5, $md5size);
+    my ($ch, $s, $length, $hash, $hashsize);
     my ($success, $wantTrailer, $trailInfo, $foundSOS, $gotSize, %jumbfChunk);
     my (@iccChunk, $iccChunkCount, $iccChunksTotal, @flirChunk, $flirCount, $flirTotal);
     my ($preview, $scalado, @dqt, $subSampling, $dumpEnd, %extendedXMP);
 
-    # get pointer to MD5 object if it exists and we are the top-level JPEG or JP2
+    # get pointer to hash object if it exists and we are the top-level JPEG or JP2
     if ($$self{FILE_TYPE} =~ /^(JPEG|JP2)$/ and not $$self{DOC_NUM}) {
-        $md5 = $$self{ImageDataMD5};
-        $md5size = 0;
+        $hash = $$self{ImageDataHash};
+        $hashsize = 0;
     }
 
     # check to be sure this is a valid JPG (or J2C, or EXV) file
@@ -6544,7 +6564,7 @@ sub ProcessJPEG($$)
 #
 # read ahead to the next segment unless we have reached EOI, SOS or SOD
 #
-        unless ($marker and ($marker==0xd9 or ($marker==0xda and not $wantTrailer and not $md5) or
+        unless ($marker and ($marker==0xd9 or ($marker==0xda and not $wantTrailer and not $hash) or
             $marker==0x93))
         {
             # read up to next marker (JPEG markers begin with 0xff)
@@ -6576,19 +6596,19 @@ sub ProcessJPEG($$)
                 $nextSegPos = $raf->Tell();
                 $len -= 4;  # subtract size of length word
                 last unless $raf->Seek($len, 1);
-            } elsif ($md5 and defined $marker and ($marker == 0x00 or $marker == 0xda or
+            } elsif ($hash and defined $marker and ($marker == 0x00 or $marker == 0xda or
                 ($marker >= 0xd0 and $marker <= 0xd7)))
             {
-                # calculate MD5 for image data (includes leading ff d9 but not trailing ff da)
-                $md5->add("\xff" . chr($marker));
+                # calculate hash for image data (includes leading ff d9 but not trailing ff da)
+                $hash->add("\xff" . chr($marker));
                 my $n = $skipped - (length($buff) - 1); # number of extra 0xff's
                 if (not $n) {
                     $buff = substr($buff, 0, -1);       # remove trailing 0xff
                 } elsif ($n > 1) {
                     $buff .= "\xff" x ($n - 1);         # add back extra 0xff's
                 }
-                $md5->add($buff);
-                $md5size += $skipped + 2;
+                $hash->add($buff);
+                $hashsize += $skipped + 2;
             }
             # read second segment too if this was the first
             next unless defined $marker;
@@ -6800,7 +6820,7 @@ sub ProcessJPEG($$)
                 next if $trailInfo or $wantTrailer or $verbose > 2 or $htmlDump;
             }
             # must scan to EOI if Validate or JpegCompressionFactor used
-            next if $$options{Validate} or $calcImageLen or $$req{trailer} or $md5;
+            next if $$options{Validate} or $calcImageLen or $$req{trailer} or $hash;
             # nothing interesting to parse after start of scan (SOS)
             $success = 1;
             last;   # all done parsing file
@@ -6808,9 +6828,9 @@ sub ProcessJPEG($$)
             pop @$path;
             $verbose and print $out "JPEG SOD\n";
             $success = 1;
-            if ($md5 and $$self{FILE_TYPE} eq 'JP2') {
+            if ($hash and $$self{FILE_TYPE} eq 'JP2') {
                 my $pos = $raf->Tell();
-                $self->ImageDataMD5($raf, undef, 'SOD');
+                $self->ImageDataHash($raf, undef, 'SOD');
                 $raf->Seek($pos, 0);
             }
             next if $verbose > 2 or $htmlDump;
@@ -6829,7 +6849,7 @@ sub ProcessJPEG($$)
             or ($$options{RequestAll} and $$options{RequestAll} > 2)))
         {
             my $num = unpack('C',$$segDataPt) & 0x0f;   # get table index
-            $dqt[$num] = $$segDataPt if $num < 4;       # save for MD5 calculation
+            $dqt[$num] = $$segDataPt if $num < 4;       # save for hash calculation
         }
         # handle all other markers
         my $dumpType = '';
@@ -7612,8 +7632,8 @@ sub ProcessJPEG($$)
             delete $extendedXMP{$guid};
         }
     }
-    # print verbose MD5 message if necessary
-    print $out "$$self{INDENT}(ImageDataMD5: $md5size bytes of JPEG image data)\n" if $md5size and $verbose;
+    # print verbose hash message if necessary
+    print $out "$$self{INDENT}(ImageDataHash: $hashsize bytes of JPEG image data)\n" if $hashsize and $verbose;
     # calculate JPEGDigest if requested
     if (@dqt) {
         require Image::ExifTool::JPEGDigest;
@@ -7889,8 +7909,8 @@ sub DoProcessTIFF($$;$)
         if ($$self{TIFF_TYPE} eq 'TIFF') {
             $self->FoundTag(PageCount => $$self{PageCount}) if $$self{MultiPage};
         }
-        if ($$self{ImageDataMD5} and $$self{A100DataOffset} and $raf->Seek($$self{A100DataOffset},0)) {
-            $self->ImageDataMD5($raf, undef, 'A100');
+        if ($$self{ImageDataHash} and $$self{A100DataOffset} and $raf->Seek($$self{A100DataOffset},0)) {
+            $self->ImageDataHash($raf, undef, 'A100');
         }
         return 1;
     }

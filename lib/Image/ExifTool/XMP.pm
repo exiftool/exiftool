@@ -2566,7 +2566,7 @@ my %sPantryItem = (
     %xmpTableDefaults,
     GROUPS => { 1 => 'XMP-et', 2 => 'Image' },
     NAMESPACE   => 'et',
-    OriginalImageMD5 => { Notes => 'used to store ExifTool ImageDataMD5 digest' },
+    OriginalImageHash => { Notes => 'used to store ExifTool ImageDataHash digest' },
 );
 
 # table to add tags in other namespaces

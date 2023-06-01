@@ -65,7 +65,7 @@ sub RebuildMakerNotes($$$);
 sub EncodeExifText($$);
 sub ValidateIFD($;$);
 sub ValidateImageData($$$;$);
-sub AddImageDataMD5($$$);
+sub AddImageDataHash($$$);
 sub ProcessTiffIFD($$$);
 sub PrintParameter($$$);
 sub GetOffList($$$$$);
@@ -5929,12 +5929,12 @@ sub ProcessExif($$$)
     my ($verbose,$validate,$saveFormat) = @{$$et{OPTIONS}}{qw(Verbose Validate SaveFormat)};
     my $htmlDump = $$et{HTML_DUMP};
     my $success = 1;
-    my ($tagKey, $dirSize, $makerAddr, $strEnc, %offsetInfo, $offName, $nextOffName, $doMD5);
+    my ($tagKey, $dirSize, $makerAddr, $strEnc, %offsetInfo, $offName, $nextOffName, $doHash);
     my $inMakerNotes = $$tagTablePtr{GROUPS}{0} eq 'MakerNotes';
     my $isExif = ($tagTablePtr eq \%Image::ExifTool::Exif::Main);
 
-    # set flag to calculate image data MD5 if requested
-    $doMD5 = 1 if $$et{ImageDataMD5} and (($$et{FILE_TYPE} eq 'TIFF' and not $base and not $inMakerNotes) or
+    # set flag to calculate image data hash if requested
+    $doHash = 1 if $$et{ImageDataHash} and (($$et{FILE_TYPE} eq 'TIFF' and not $base and not $inMakerNotes) or
         ($$et{FILE_TYPE} eq 'RAF' and $dirName eq 'FujiIFD'));
 
     # set encoding to assume for strings
@@ -6781,7 +6781,7 @@ sub ProcessExif($$$)
             }
             $val = join(' ', @vals);
         }
-        if ($validate or $doMD5) {
+        if ($validate or $doHash) {
             if ($$tagInfo{OffsetPair}) {
                 $offsetInfo{$tagID} = [ $tagInfo, $val ];
             } elsif ($saveForValidate{$tagID} and $isExif) {
@@ -6800,8 +6800,8 @@ sub ProcessExif($$$)
     }
 
     if (%offsetInfo) {
-        # calculate image data MD5 if requested
-        AddImageDataMD5($et, $dirInfo, \%offsetInfo) if $doMD5;
+        # calculate image data hash if requested
+        AddImageDataHash($et, $dirInfo, \%offsetInfo) if $doHash;
         # validate image data offsets for this IFD (note: modifies %offsetInfo)
         Image::ExifTool::Validate::ValidateOffsetInfo($et, \%offsetInfo, $dirName, $inMakerNotes) if $validate;
     }

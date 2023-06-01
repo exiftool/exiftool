@@ -420,15 +420,15 @@ sub ValidateImageData($$$;$)
 }
 
 #------------------------------------------------------------------------------
-# Add specified image data to ImageDataMD5 hash
+# Add specified image data to ImageDataHash hash
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) lookup for [tagInfo,value] based on tagID
-sub AddImageDataMD5($$$)
+sub AddImageDataHash($$$)
 {
     my ($et, $dirInfo, $offsetInfo) = @_;
     my ($tagID, $offset, $buff);
 
     my $verbose = $et->Options('Verbose');
-    my $md5 = $$et{ImageDataMD5};
+    my $hash = $$et{ImageDataHash};
     my $raf = $$dirInfo{RAF};
 
     foreach $tagID (sort keys %$offsetInfo) {
@@ -451,12 +451,12 @@ sub AddImageDataMD5($$$)
             my $size = shift @sizes;
             next unless $offset =~ /^\d+$/ and $size and $size =~ /^\d+$/ and $size;
             next unless $raf->Seek($offset, 0); # (offset is absolute)
-            $total += $et->ImageDataMD5($raf, $size);
+            $total += $et->ImageDataHash($raf, $size);
         }
         if ($verbose) {
             my $name = "$$dirInfo{DirName}:$$tagInfo{Name}";
             $name =~ s/Offsets?|Start$//;
-            $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: $total bytes of $name data)\n");
+            $et->VPrint(0, "$$et{INDENT}(ImageDataHash: $total bytes of $name data)\n");
         }
     }
 }

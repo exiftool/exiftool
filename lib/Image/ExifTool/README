@@ -412,7 +412,7 @@ numerical, and generated automatically otherwise.
                   'IsComposite' - flag set for Composite tags
 
                   'IsImageData' - flag set if this is an image data offset to
-                  be included in ImageDataMD5 calculation.  Must have an
+                  be included in ImageDataHash calculation.  Must have an
                   OffsetPair entry which is the ID of the corresponding size.
 
                   'IsOffset' - flag set if the tag represents an offset to some

@@ -791,6 +791,12 @@ allowed.  A special tag name of "All" may be used to ignore all tags except
 those specified by the L</RequestTags> option.  Set to undef to clear the
 previous IgnoreTags list.  Default is undef.
 
+=item ImageHashAlgo
+
+When using the -ImageDataHash flag, this option determines what hash
+algorithm to use.  Supported options are 'MD5', 'SHA256', and
+'SHA512'.  Default is 'MD5'.
+
 =item Lang
 
 Localized language for exiftool tag descriptions, etc.  Available languages

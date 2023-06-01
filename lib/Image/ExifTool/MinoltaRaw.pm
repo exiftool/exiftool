@@ -489,7 +489,7 @@ sub ProcessMRW($$;$)
         $err and $et->Error("MRW format error", $$et{TIFF_TYPE} eq 'ARW');
     } else {
         $err and $et->Warn("MRW format error");
-        $et->ImageDataMD5($raf, undef, 'raw') unless $$et{A100DataOffset};
+        $et->ImageDataHash($raf, undef, 'raw') unless $$et{A100DataOffset};
     }
     return $rtnVal;
 }

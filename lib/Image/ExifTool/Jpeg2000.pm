@@ -934,7 +934,7 @@ sub ProcessJpeg2000Box($$$)
     my $raf = $$dirInfo{RAF};
     my $outfile = $$dirInfo{OutFile};
     my $dirEnd = $dirStart + $dirLen;
-    my ($err, $outBuff, $verbose, $doColour, $md5);
+    my ($err, $outBuff, $verbose, $doColour, $hash);
 
     if ($outfile) {
         unless ($raf) {
@@ -952,8 +952,8 @@ sub ProcessJpeg2000Box($$$)
         # (must not set verbose flag when writing!)
         $verbose = $$et{OPTIONS}{Verbose};
         $et->VerboseDir($$dirInfo{DirName}) if $verbose;
-        # do MD5 if requested, but only for top-level image data
-        $md5 = $$et{ImageDataMD5} if $raf;
+        # do hash if requested, but only for top-level image data
+        $hash = $$et{ImageDataHash} if $raf;
     }
     # loop through all contained boxes
     my ($pos, $boxLen, $lastBox);
@@ -1023,8 +1023,8 @@ sub ProcessJpeg2000Box($$$)
                         my $msg = sprintf("offset 0x%.4x to end of file", $dataPos + $base + $pos);
                         $et->VPrint(0, "$$et{INDENT}- Tag '${boxID}' ($msg)\n");
                     }
-                    if ($md5 and $isImageData{$boxID}) {
-                        $et->ImageDataMD5($raf, undef, $boxID);
+                    if ($hash and $isImageData{$boxID}) {
+                        $et->ImageDataHash($raf, undef, $boxID);
                     }
                 }
                 last;   # (ignore the rest of the file when reading)
@@ -1042,8 +1042,8 @@ sub ProcessJpeg2000Box($$$)
                     Write($outfile, $$dataPt) or $err = 1;
                     $raf->Read($buff,$boxLen) == $boxLen or $err = '', last;
                     Write($outfile, $buff) or $err = 1;
-                } elsif ($md5 and $isImageData{$boxID}) {
-                    $et->ImageDataMD5($raf, $boxLen, $boxID);
+                } elsif ($hash and $isImageData{$boxID}) {
+                    $et->ImageDataHash($raf, $boxLen, $boxID);
                 } else {
                     $raf->Seek($boxLen, 1) or $err = 'Seek error', last;
                 }
@@ -1056,9 +1056,9 @@ sub ProcessJpeg2000Box($$$)
             # read the box data
             $dataPos = $raf->Tell() - $base;
             $raf->Read($buff,$boxLen) == $boxLen or $err = '', last;
-            if ($md5 and $isImageData{$boxID}) {
-                $md5->add($buff);
-                $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: $boxLen bytes of $boxID data)\n");
+            if ($hash and $isImageData{$boxID}) {
+                $hash->add($buff);
+                $et->VPrint(0, "$$et{INDENT}(ImageDataHash: $boxLen bytes of $boxID data)\n");
             }
             $valuePtr = 0;
             $dataLen = $boxLen;
@@ -1362,8 +1362,8 @@ sub ProcessJXL($$)
             $$dirInfo{RAF} = new File::RandomAccess(\$buff);
         } else {
             $et->SetFileType('JXL Codestream','image/jxl', 'jxl');
-            if ($$et{ImageDataMD5} and $raf->Seek(0,0)) {
-                $et->ImageDataMD5($raf, undef, 'JXL');
+            if ($$et{ImageDataHash} and $raf->Seek(0,0)) {
+                $et->ImageDataHash($raf, undef, 'JXL');
             }
             return ProcessJXLCodestream($et, \$hdr);
         }

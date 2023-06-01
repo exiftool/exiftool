@@ -2541,7 +2541,7 @@ sub ExtractInfo($;@)
                 }
 
                 if ($self->Options('ImageHashAlgo') ne 'MD5') {
-                    $self->WarnOnce('Unknown image hash algorithm "' . $self->Options('ImageHashAlgo') . '"');
+                    $self->WarnOnce('Unknown image hash algorithm "' . $self->Options('ImageHashAlgo') . '", defaulting to MD5');
                 }
             }
         }

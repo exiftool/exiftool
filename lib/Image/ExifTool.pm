@@ -1829,7 +1829,7 @@ my %systemTagsNotes = (
     },
     ImageDataMD5 => {
         Notes => q{
-            Alias for C<-ImageDataHash -api ImageHashAlgo MD5>
+            Alias for C<-ImageDataHash -api ImageHashAlgo=MD5>
         },
     },
     ImageDataHash => {

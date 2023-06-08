@@ -447,8 +447,8 @@ my %dupDirOK = ( ipco => 1, '----' => 1 );
 my %eeStd = ( stco => 'stbl', co64 => 'stbl', stsz => 'stbl', stz2 => 'stbl',
               stsc => 'stbl', stts => 'stbl' );
 
-# atoms required for generating ImageDataMD5
-my %md5Box = ( vide => { %eeStd }, soun => { %eeStd } );
+# atoms required for generating ImageDataHash
+my %hashBox = ( vide => { %eeStd }, soun => { %eeStd } );
 
 # boxes and their containers for the various handler types that we want to save
 # when the ExtractEmbedded is enabled (currently only the 'gps ' container name is
@@ -2867,6 +2867,25 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         Name => 'AV1Configuration',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::AV1Config' },
     },
+    clli => {
+        Name => 'ContentLightLevel',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::ContentLightLevel' },
+    },
+    # ref https://nokiatech.github.io/heif/technical.html
+    # cclv - Content Color Volume
+    # mdcv - Mastering Display Color Volume
+    # rrtp - Required reference types
+    # crtt - Creation time information
+    # mdft - Modification time information
+    # udes - User description
+    # altt - Accessibility text
+    # aebr - Auto exposure information
+    # wbbr - White balance information
+    # fobr - Focus information
+    # afbr - Flash exposure information
+    # dobr - Depth of field information
+    # pano - Panorama information
+    # iscl - Image Scaling
 );
 
 # ref https://aomediacodec.github.io/av1-spec/av1-spec.pdf
@@ -3126,6 +3145,16 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         RawConv => '$val & 0x10 ? undef : ($val & 0x0f) + 1',
         Unknown => 1,
     },
+);
+
+# ref https://android.googlesource.com/platform/frameworks/av/+/master/media/libstagefright/MPEG4Writer.cpp
+%Image::ExifTool::QuickTime::ContentLightLevel = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Video' },
+    FIRST_ENTRY => 0,
+    FORMAT => 'int16u',
+    0 => 'MaxContentLightLevel',
+    1 => 'MaxPicAverageLightLevel',
 );
 
 %Image::ExifTool::QuickTime::ItemRef = (
@@ -8787,15 +8816,15 @@ sub HandleItemInfo($)
                     $et->VPrint(0, "$$et{INDENT}    [snip $snip bytes]\n") if $snip;
                 }
             }
-            # do MD5 checksum of AVIF "av01" and HEIC image data
-            if ($isImageData{$type} and $$et{ImageDataMD5}) {
-                my $md5 = $$et{ImageDataMD5};
+            # do hash of AVIF "av01" and HEIC image data
+            if ($isImageData{$type} and $$et{ImageDataHash}) {
+                my $hash = $$et{ImageDataHash};
                 my $tot = 0;
                 foreach $extent (@{$$item{Extents}}) {
                     $raf->Seek($$extent[1] + $base, 0) or $et->Warn("Seek error in $type image data"), last;
-                    $tot += $et->ImageDataMD5($raf, $$extent[2], "$type image", 1);
+                    $tot += $et->ImageDataHash($raf, $$extent[2], "$type image", 1);
                 }
-                $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: $tot bytes of $type data)\n") if $tot;
+                $et->VPrint(0, "$$et{INDENT}(ImageDataHash: $tot bytes of $type data)\n") if $tot;
             }
             next unless $name;
             # assemble the data for this item
@@ -9299,8 +9328,8 @@ sub ProcessMOV($$;$)
     $$raf{NoBuffer} = 1 if $fast;   # disable buffering in FastScan mode
 
     my $ee = $$et{OPTIONS}{ExtractEmbedded};
-    my $md5 = $$et{ImageDataMD5};
-    if ($ee or $md5) {
+    my $hash = $$et{ImageDataHash};
+    if ($ee or $hash) {
         $unkOpt = $$et{OPTIONS}{Unknown};
         require 'Image/ExifTool/QuickTimeStream.pl';
     }
@@ -9382,7 +9411,7 @@ sub ProcessMOV($$;$)
         # set flag to store additional information for ExtractEmbedded option
         my $handlerType = $$et{HandlerType};
         if ($eeBox{$handlerType} and $eeBox{$handlerType}{$tag}) {
-            if ($ee or $md5) {
+            if ($ee or $hash) {
                 # (there is another 'gps ' box with a track log that doesn't contain offsets)
                 if ($tag ne 'gps ' or $eeBox{$handlerType}{$tag} eq $dirID) {
                     $eeTag = 1;
@@ -9394,7 +9423,7 @@ sub ProcessMOV($$;$)
         } elsif ($ee and $ee > 1 and $eeBox2{$handlerType} and $eeBox2{$handlerType}{$tag}) {
             $eeTag = 1;
             $$et{OPTIONS}{Unknown} = 1;
-        } elsif ($md5 and $md5Box{$handlerType} and $md5Box{$handlerType}{$tag}) {
+        } elsif ($hash and $hashBox{$handlerType} and $hashBox{$handlerType}{$tag}) {
             $eeTag = 1;
             $$et{OPTIONS}{Unknown} = 1;
         }
@@ -9629,7 +9658,7 @@ ItemID:         foreach $id (keys %$items) {
                     }
                     if ($tag eq 'stbl') {
                         # process sample data when exiting SampleTable box if extracting embedded
-                        ProcessSamples($et) if $ee or $md5;
+                        ProcessSamples($et) if $ee or $hash;
                     } elsif ($tag eq 'minf') {
                         $$et{HandlerType} = ''; # reset handler type at end of media info box
                     }

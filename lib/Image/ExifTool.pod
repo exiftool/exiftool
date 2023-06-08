@@ -65,10 +65,11 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  360   r/w   | DR4   r/w/c | JNG   r/w   | ODP   r     | RSRC  r
-  3FR   r     | DSS   r     | JP2   r/w   | ODS   r     | RTF   r
-  3G2   r/w   | DV    r     | JPEG  r/w   | ODT   r     | RW2   r/w
-  3GP   r/w   | DVB   r/w   | JSON  r     | OFR   r     | RWL   r/w
+  360   r/w   | DPX   r     | J2C   r     | O     r     | RIFF  r
+  3FR   r     | DR4   r/w/c | JNG   r/w   | ODP   r     | RSRC  r
+  3G2   r/w   | DSS   r     | JP2   r/w   | ODS   r     | RTF   r
+  3GP   r/w   | DV    r     | JPEG  r/w   | ODT   r     | RW2   r/w
+  7Z    r     | DVB   r/w   | JSON  r     | OFR   r     | RWL   r/w
   A     r     | DVR-MS r    | JXL   r     | OGG   r     | RWZ   r
   AA    r     | DYLIB r     | K25   r     | OGV   r     | RM    r
   AAE   r     | EIP   r     | KDC   r     | ONP   r     | SEQ   r
@@ -107,7 +108,6 @@ supported by ExifTool (r = read, w = write, c = create):
   DNG   r/w   | INX   r     | NKSC  r/w   | RAM   r     |
   DOC   r     | ISO   r     | NRW   r/w   | RAR   r     |
   DOCX  r     | ITC   r     | NUMBERS r   | RAW   r/w   |
-  DPX   r     | J2C   r     | O     r     | RIFF  r     |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -300,6 +300,10 @@ tag keys only if the L</Duplicates> option is 0 and L</Sort> is 'Input'.
 of tag keys, and with other L</Sort> settings the entries may not be in the
 same order as requested.)  If a requested tag doesn't exist, a tag key is
 still generated, but the tag value is undefined.
+
+B<Note:> Do not reuse this list in subsequent calls to L</ImageInfo> because
+it returns tag keys, not names, and the list will grow for each call
+resulting in increasingly slower performance.
 
 =item HASH ref
 
@@ -569,7 +573,9 @@ Flag to generate Composite tags when extracting information.  Default is 1.
 =item Compress
 
 Flag to write new values in compressed format if possible.  Has no effect
-unless Compress::Zlib is installed.  Default is undef.
+unless the relevant compression library is available.  Valid when writing
+metadata to PNG, JXL or MIE images.  Setting this to zero causes JXL
+metadata to be rewritten as uncompressed when edited.  Default is undef.
 
 =item CoordFormat
 
@@ -790,6 +796,11 @@ The tag names are case insensitive and group names and wildcards are not
 allowed.  A special tag name of "All" may be used to ignore all tags except
 those specified by the L</RequestTags> option.  Set to undef to clear the
 previous IgnoreTags list.  Default is undef.
+
+=item ImageHashType
+
+Sets type of hash algorithem used for the ImageDataHash tag calculation. 
+Supported options are 'MD5', 'SHA256', and 'SHA512'.  Default is 'MD5'.
 
 =item Lang
 

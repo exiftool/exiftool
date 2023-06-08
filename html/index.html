@@ -94,9 +94,9 @@ the site with a moderate load.  An alternate ExifTool homepage is available at
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.62.tar.gz/download">
-Download        Version 12.62</a> (5.0 MB) -
-<a href="history.html">May 3, 2023</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.63.tar.gz/download">
+Download        Version 12.63</a> (5.0 MB) -
+<a href="history.html">June 8, 2023</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -149,8 +149,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.62.zip/download">
-         exiftool-12.62.zip</a> (6.6 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.63.zip/download">
+         exiftool-12.63.zip</a> (6.9 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -168,7 +168,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.62.dmg</a> (3.2 MB)</b></td></tr></table></blockquote>
+         ExifTool-12.63.dmg</a> (3.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -238,7 +238,7 @@ for the SHA1 and MD5 checksums to verify these distribution packages</a>.</li>
 <li><a href="TagNames/MWG.html">Support for MWG</a> (Metadata Working Group) recommendations</li>
 <li>Ability to read tags from multiple files simultaneously, allowing metadata to be compared
 and combined between files</li>
-<li>Generates MD5 hash of image data only for many file types (for comparison and validation
+<li>Generates MD5/SHA256/SHA512 hashes of image data only for many file types (for comparison and validation
 of image data)</li>
 <li>Recognizes <a href="TagNames/index.html">thousands of different tags</a></li>
 <li>Tested with images from <a href="https://exiftool.org/models.html">thousands of different camera models</a></li>
@@ -303,6 +303,7 @@ for each file format.</p>
 <tr><td>3FR</td><td>R</td><td>Hasselblad RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>-</td></tr>
 <tr><td>3G2, 3GP2</td><td>R/W</td><td>3rd Gen. Partnership Project 2 a/v (<a href="TagNames/QuickTime.html">QuickTime</a>-based)</td><td>R/W<span class=sup>3</span></td><td>R/W<span class=sup>3</span></td><td>R/W/C</td><td>-</td><td>R/W/C <a href="TagNames/QuickTime.html">QuickTime</a></td></tr>
 <tr><td>3GP, 3GPP</td><td>R/W</td><td>3rd Gen. Partnership Project a/v (<a href="TagNames/QuickTime.html">QuickTime</a>-based)</td><td>R/W<span class=sup>3</span></td><td>R/W<span class=sup>3</span></td><td>R/W/C</td><td>-</td><td>R/W/C <a href="TagNames/QuickTime.html">QuickTime</a></td></tr>
+<tr><td><a href="TagNames/ZIP.html#RAR5">7z</a></td><td>R</td><td>7z Archive</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/ZIP.html#RAR5">ZIP</a></td></tr>
 <tr><td><a href="TagNames/EXE.html#AR">A</a></td><td>R</td><td>Unix static library code Archive</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/EXE.html#AR">EXE</a></td></tr>
 <tr><td><a href="TagNames/Audible.html">AA</a></td><td>R</td><td>Audible Audiobook</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Audible.html">Audible</a></td></tr>
 <tr><td>AAE</td><td>R</td><td>Apple edit information (XML <a href="TagNames/PLIST.html">PLIST</a>-based)</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/PLIST.html">PLIST</a></td></tr>
@@ -1332,7 +1333,7 @@ binary data.  The simple script above does not handle this case.</p>
 <!-- dead <li><a href="http://www.xtrasimplicity.info/archives/185">ExifyMe</a>: Restore Exif metadata from an original image</li> -->
 <li><a href="http://mjbpix.com/automatically-move-photos-to-directories-or-folders-based-on-exif-date/">PhotoMove</a>: Automatically move photos to directories or folders based on Exif date taken</li>
 <!-- dead <li><a href="http://code.google.com/p/tinyexif/">TinyExif</a>: Simple Windows GUI for ExifTool written in Python using the Qt4 toolkit</li> -->
-<li><a href="http://gui2-for-exiftool.weebly.com/">GUI2 for ExifTool</a>: An ExifTool GUI with built-in editor and browser</li>
+<!-- changed <li><a href="http://gui2-for-exiftool.weebly.com/">GUI2 for ExifTool</a>: An ExifTool GUI with built-in editor and browser</li> -->
 <li><a href="http://www.avtonomer.net/content/view/332/42/">AutoJpegTrunk</a>: Tool to remove all metadata from JPEG images</li>
 <li><a href="http://www.advancedrenamer.com/">AdvancedRenamer</a>: Rename files and folders from metadata</li>
 <li><a href="http://www.proxel.se/exif.html">Proxel EXIF Tool</a>: Photoshop plugin based on ExifTool</li>

@@ -17,8 +17,11 @@ WriteMakefile(
             "    Digest::SHA:     0\n" .
             "    Time::HiRes:     0\n" .
             "    POSIX::strptime: 0\n" .
+            "    Compress::Raw::Lzma: 0\n" .
             "    IO::Compress::RawDeflate:   0\n" .
-            "    IO::Uncompress::RawInflate: 0\n" ,
+            "    IO::Uncompress::RawInflate: 0\n" .
+            "    IO::Compress::Brotli:       0\n" .
+            "    IO::Uncompress::Brotli:     0\n",
           # (not worth recommending -- only for column alignment of some languages)
           #  "    Unicode::LineBreak: 0\n",
           # (not worth recommending -- only for Rawzor files)
@@ -33,8 +36,11 @@ WriteMakefile(
                 'Digest::SHA'    => 0,
                 'Time::HiRes'    => 0,
                 'POSIX::strptime' => 0,
+                'Compress::Raw::Lzma' => 0,
                 'IO::Compress::RawDeflate'   => 0,
                 'IO::Uncompress::RawInflate' => 0,
+                'IO::Compress::Brotli'       => 0,
+                'IO::Uncompress::Brotli'     => 0,
               # 'Unicode::LineBreak' => 0,
               # 'IO::Compress::Bzip2' => 0,
             },

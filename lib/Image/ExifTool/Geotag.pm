@@ -29,7 +29,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.71';
+$VERSION = '1.72';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -224,6 +224,9 @@ sub LoadTrackLog($$;$)
         # determine file format
         if (not $format) {
             s/^\xef\xbb\xbf//;          # remove leading BOM if it exists
+            if (/^\xff\xfe|\xfe\xff/) {
+                return "ExifTool doesn't yet read UTF16-format track logs";
+            }
             if (/^<(\?xml|gpx)[\s>]/) { # look for XML or GPX header
                 $format = 'XML';
             # check for NMEA sentence

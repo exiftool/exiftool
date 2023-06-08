@@ -4,7 +4,7 @@
       "Phil Harvey (philharvey66 at gmail.com)"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "ExtUtils::MakeMaker version 6.66, CPAN::Meta::Converter version 2.133380, CPAN::Meta::Converter version 2.143240, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "ExtUtils::MakeMaker version 7.34, CPAN::Meta::Converter version 2.143240, CPAN::Meta::Converter version 2.133380",
    "license" : [
       "perl_5"
    ],
@@ -33,10 +33,13 @@
       "runtime" : {
          "recommends" : {
             "Archive::Zip" : "0",
+            "Compress::Raw::Lzma" : "0",
             "Compress::Zlib" : "0",
             "Digest::MD5" : "0",
             "Digest::SHA" : "0",
+            "IO::Compress::Brotli" : "0",
             "IO::Compress::RawDeflate" : "0",
+            "IO::Uncompress::Brotli" : "0",
             "IO::Uncompress::RawInflate" : "0",
             "POSIX::strptime" : "0",
             "Time::HiRes" : "0"
@@ -47,6 +50,5 @@
       }
    },
    "release_status" : "stable",
-   "version" : "12.62",
-   "x_serialization_backend" : "JSON::PP version 4.02"
+   "version" : "12.63"
 }

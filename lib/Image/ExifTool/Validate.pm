@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.20';
+$VERSION = '1.21';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -56,6 +56,15 @@ use Image::ExifTool::Exif;
     0x212 => 1,  0x9204 => 1,   0xa210 => 1,   0xa500 => 221,
     0x213 => 1,  0x9205 => 1,   0xa214 => 1,
     0x214 => 1,  0x9206 => 1,   0xa215 => 1,
+
+    # new Exif 3.0 tags
+    0xa436 => 300,
+    0xa437 => 300,
+    0xa438 => 300,
+    0xa439 => 300,
+    0xa43a => 300,
+    0xa43b => 300,
+    0xa43c => 300,
 );
 
 # GPSVersionID numbers when each tag was introduced
@@ -147,6 +156,13 @@ my %stdFormat = (
         0xc68d => 'int(16|32)u',                 0xc791 => 'int(16|32)u',
         0xc68e => 'int(16|32)u',                 0xc792 => 'int(16|32)u',
         0xc6d2 => '',                            0xc793 => '(int16u|int32u|rational64u)',
+        # Exif 3.0 spec
+        0x10e  => 'string|utf8',  0xa430 => 'string|utf8',  0xa439 => 'string|utf8',
+        0x10f  => 'string|utf8',  0xa433 => 'string|utf8',  0xa43a => 'string|utf8',
+        0x110  => 'string|utf8',  0xa434 => 'string|utf8',  0xa43b => 'string|utf8',
+        0x131  => 'string|utf8',  0xa436 => 'string|utf8',  0xa43c => 'string|utf8',
+        0x13b  => 'string|utf8',  0xa437 => 'string|utf8',  0xa43a => 'string|utf8',
+        0x8298 => 'string|utf8',  0xa438 => 'string|utf8',
     },
 );
 

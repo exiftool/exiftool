@@ -10,7 +10,10 @@
 <h2 class=top>Jpeg2000 Tags</h2>
 <p>The tags below are found in JPEG 2000 images and the JUMBF metadata in JPEG
 images, but not all of these are extracted.  Note that ExifTool currently
-writes only EXIF, IPTC and XMP tags in Jpeg2000 images.</p>
+writes only EXIF, IPTC and XMP tags in Jpeg2000 images, and EXIF and XMP in
+JXL images.  ExifTool will read/write Brotli-compressed EXIF and XMP in JXL
+images, but the API Compress option must be set to create new EXIF and XMP
+in compressed format.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -47,93 +50,107 @@ writes only EXIF, IPTC and XMP tags in Jpeg2000 images.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'brob'</td>
+<td>BrotliXMP
+  <br>BrotliEXIF
+  <br>BrotliJUMB</td>
+<td class=c>-<br>-<br>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a>
+  <br>--&gt; <a href='EXIF.html'>EXIF Tags</a>
+  <br>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a></td></tr>
+<tr class=b>
 <td>'c2sh'</td>
 <td>C2PASaltHash</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'cbor'</td>
 <td>CBORData</td>
 <td class=c>-</td>
 <td>--&gt; <a href='CBOR.html'>CBOR Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'cdef'</td>
 <td>ComponentDefinition</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'cgrp'</td>
 <td>ColorGroup</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'chck'</td>
 <td>DigitalSignature</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'cmap'</td>
 <td>ComponentMapping</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'colr'</td>
 <td>ColorSpecification</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html#ColorSpec'>Jpeg2000 ColorSpec Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'comp'</td>
 <td>Composition</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'copt'</td>
 <td>CompositionOptions</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'cref'</td>
 <td>Cross-Reference</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'creg'</td>
 <td>CodestreamRegistration</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'drep'</td>
 <td>DesiredReproductions</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'dtbl'</td>
 <td>DataReference</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'flst'</td>
 <td>FragmentList</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'free'</td>
 <td>Free</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'ftbl'</td>
 <td>FragmentTable</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'ftyp'</td>
 <td>FileType</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html#FileType'>Jpeg2000 FileType Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'gtso'</td>
 <td>GraphicsTechnologyStandardOutput</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'hrgm'</td>
+<td>GainMapImage</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -203,81 +220,87 @@ BlockExtract option)</span></td></tr>
 <td><span class=s><span class=n>(Codestream in JPEG XL image.  Currently processed only to determine
 ImageSize)</span></span></td></tr>
 <tr>
+<td>'jxlp'</td>
+<td>PartialJXLCodestream</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(Partial codestreams in JPEG XL image.  Currently processed only to determine
+ImageSize)</span></span></td></tr>
+<tr class=b>
 <td>'lbl '</td>
 <td>Label</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'mdat'</td>
 <td>MediaData</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'mp7b'</td>
 <td>MPEG7Binary</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'nlst'</td>
 <td>NumberList</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'opct'</td>
 <td>Opacity</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'pclr'</td>
 <td>Palette</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'prfl'</td>
 <td>Profile</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'res '</td>
 <td>Resolution</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'resc'</td>
 <td>CaptureResolution</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html#CaptureResolution'>Jpeg2000 CaptureResolution Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'resd'</td>
 <td>DisplayResolution</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html#DisplayResolution'>Jpeg2000 DisplayResolution Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'roid'</td>
 <td>ROIDescription</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'rreq'</td>
 <td>ReaderRequirements</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'uinf'</td>
 <td>UUIDInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'ulst'</td>
 <td>UUIDList</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'url '</td>
 <td>URL</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'uuid'</td>
 <td>UUID-EXIF
   <br>UUID-EXIF2
@@ -300,7 +323,7 @@ ImageSize)</span></span></td></tr>
   <br>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br>--&gt; <a href='Photoshop.html'>Photoshop Tags</a>
   <br>--&gt; <a href='CBOR.html'>CBOR Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'xml '</td>
 <td>XML
   <br>XMP</td>
@@ -569,7 +592,7 @@ ColorSpace, or 4 when writing ColorSpecData)</span>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 21, 2022</i>
+<br><i>Last revised Jun 8, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

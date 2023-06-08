@@ -21,8 +21,7 @@ ol.index    { margin: 0; padding: 0 0 0 2em }
 
 <h1 class='up'>"Under the Hood" of ExifTool</h1>
 
-<p>This page is a work in progress, and will be used to explain some details
-of ExifTool's inner workings.</p>
+<p>This page explains some details of ExifTool's inner workings.</p>
 
 <a name="overview"></a>
 <h2>Overview of ExifTool</h2>
@@ -121,7 +120,8 @@ which have helped to influence the overall development:</p>
 <li>The <a href="ExifTool.html#Methods">API functions</a> should be isolated from
     the details of the metadata formats (otherwise the interface turns into a giant
     hairball, like the metadata).</li>
-<li>Maintain flexibility to allow users the freedom to do what they want.</li>
+<li>Maintain flexibility to allow users the freedom to do what they want
+    (eg. support user-defined tags).</li>
 <li>Design the code to be efficient for batch processing, even if it increases the
     initial overhead.</li>
 <li>When writing files, remember 3 things: 1) data integrity, 2) data integrity, and
@@ -154,12 +154,12 @@ its lack of support for Windows Unicode file names.</p>
 
 <p>The bottom line is that most of the development time is spent dealing with the
 mechanics of metadata, with the result that ExifTool is full-featured metadata
-library.  With one main developer (Phil Harvey) and 250 thousand lines of code (as of
-Jan 2019), this is a real accomplishment.</p>
+library.  With one main developer (Phil Harvey) and 280 thousand lines of code (as of
+May 2023), this is a real accomplishment.</p>
 
 <hr>
 <i>Created Jun. 24, 2009</i><br>
-<i>Last revised Nov. 1, 2021</i>
+<i>Last revised May 3, 2023</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

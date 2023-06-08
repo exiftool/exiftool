@@ -233,57 +233,65 @@ as extensions from various other sources.  See
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#hdr'>XMP hdr Tags</a></td></tr>
 <tr>
+<td>hdrgm</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html#hdrgm'>XMP hdrgm Tags</a></td></tr>
+<tr class=b>
 <td>ics</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#ics'>XMP ics Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>iptcCore</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#iptcCore'>XMP iptcCore Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>iptcExt</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#iptcExt'>XMP iptcExt Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>LImage</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#LImage'>XMP LImage Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>lr</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#Lightroom'>XMP Lightroom Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>mediapro</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#MediaPro'>XMP MediaPro Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>microsoft</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Microsoft.html#XMP'>Microsoft XMP Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>MP</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Microsoft.html#MP'>Microsoft MP Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>MP1</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Microsoft.html#MP1'>Microsoft MP1 Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>mwg-coll</td>
 <td class=c>-</td>
 <td>--&gt; <a href='MWG.html#Collections'>MWG Collections Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>mwg-kw</td>
 <td class=c>-</td>
 <td>--&gt; <a href='MWG.html#Keywords'>MWG Keywords Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>mwg-rs</td>
 <td class=c>-</td>
 <td>--&gt; <a href='MWG.html#Regions'>MWG Regions Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>nine</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#nine'>Nikon nine Tags</a></td></tr>
+<tr>
+<td>panorama</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html#panorama'>XMP panorama Tags</a></td></tr>
 <tr class=b>
 <td><u>pdf</u></td>
 <td class=c>-</td>
@@ -11608,9 +11616,17 @@ of tags available in DICOM-format files.</p>
 <tr class=h><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>OriginalImageHash</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(used to store ExifTool ImageDataHash digest)</span></span></td></tr>
+<tr class=b>
+<td>OriginalImageHashType</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(ImageHashType API setting, default &#39;MD5&#39;)</span></span></td></tr>
+<tr>
 <td>OriginalImageMD5</td>
 <td class=c>string</td>
-<td><span class=s><span class=n>(used to store ExifTool ImageDataMD5 digest)</span></span></td></tr>
+<td><span class=s><span class=n>(deprecated)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='exif'>XMP exif Tags</a></h2>
@@ -13059,6 +13075,54 @@ ExifTool shortens this for the family 1 group name.</p>
 <td>SceneReferred</td>
 <td class=c>boolean</td>
 <td><span class=s><span class=n>(called scene_referred by the spec)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='hdrgm'>XMP hdrgm Tags</a></h2>
+<p>Tags used in Adobe gain map images.</p>
+
+<p>These tags belong to the ExifTool XMP-hdrgm family 1 group.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>BaseRenditionIsHDR</td>
+<td class=c>boolean</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>GainMapMax</td>
+<td class=c title=' + = List'>real+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>GainMapMin</td>
+<td class=c title=' + = List'>real+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Gamma</td>
+<td class=c title=' / = Avoid
+ + = List'>real/+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HDRCapacityMax</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HDRCapacityMin</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OffsetHDR</td>
+<td class=c title=' + = List'>real+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OffsetSDR</td>
+<td class=c title=' + = List'>real+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Version</td>
+<td class=c title=' / = Avoid'>string/</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ics'>XMP ics Tags</a></h2>
@@ -15286,6 +15350,33 @@ is to write ImageRegion as a structure with these tags as new fields.</p>
 <tr class=b>
 <td>UserFields</td>
 <td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='panorama'>XMP panorama Tags</a></h2>
+<p>Adobe Photoshop Panorama-profile tags.</p>
+
+<p>These tags belong to the ExifTool XMP-panorama family 1 group.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Transformation</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>VirtualFocalLength</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VirtualImageXCenter</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>VirtualImageYCenter</td>
+<td class=c>real</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -19912,7 +20003,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 3, 2023</i>
+<br><i>Last revised Jun 8, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

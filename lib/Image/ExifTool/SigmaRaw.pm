@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Sigma;
 
-$VERSION = '1.30';
+$VERSION = '1.31';
 
 sub ProcessX3FHeader($$$);
 sub ProcessX3FDirectory($$$);
@@ -549,9 +549,9 @@ sub ProcessX3FDirectory($$$)
             $len -= 28;
             # ignore all image data but JPEG compressed (version 2.0, type 2, format 18)
             unless ($buff =~ /^SECi\0\0\x02\0\x02\0\0\0\x12\0\0\0/) {
-                # do MD5 on non-preview data if requested
-                if ($$et{ImageDataMD5} and substr($buff,8,1) ne "\x02") {
-                    $et->ImageDataMD5($raf, $len, 'SigmaRaw IMAG');
+                # do hash on non-preview data if requested
+                if ($$et{ImageDataHash} and substr($buff,8,1) ne "\x02") {
+                    $et->ImageDataHash($raf, $len, 'SigmaRaw IMAG');
                 }
                 next;
             }

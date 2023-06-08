@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.60';
+$VERSION = '3.61';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1061,7 +1061,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010h' },
     },{
         Name => 'Tag2010i', # ?
-        Condition => '$$self{Model} =~ /^(ILCE-(6100|6400|6600|7C|7M3|7RM3A?|7RM4A?|9|9M2)|DSC-(RX10M4|RX100M6|RX100M5A|RX100M7|HX99|RX0M2)|ZV-(1F?|E10))\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6100|6400|6600|7C|7M3|7RM3A?|7RM4A?|9|9M2)|DSC-(RX10M4|RX100M6|RX100M5A|RX100M7|HX95|HX99|RX0M2)|ZV-(1F?|E10))\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010i' },
     },{
         Name => 'Tag_0x2010',
@@ -1137,7 +1137,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         # FocusMode for SLT/HV/ILCA and NEX/ILCE; doesn't seem to apply to DSC models (always 0)
         #    from 2018: at least DSC-RX10M4 and RX100M6 also use this tag
         Name => 'FocusMode',
-        Condition => '($$self{Model} !~ /^DSC-/) or ($$self{Model} =~ /^DSC-(RX10M4|RX100M6|RX100M7|RX100M5A|HX99|RX0M2)/)',
+        Condition => '($$self{Model} !~ /^DSC-/) or ($$self{Model} =~ /^DSC-(RX10M4|RX100M6|RX100M7|RX100M5A|HX95|HX99|RX0M2)/)',
         Writable => 'int8u',
         Priority => 0,
         PrintConv => {
@@ -1169,7 +1169,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             },
         },{
             Name => 'AFAreaModeSetting',
-            Condition => '$$self{Model} =~ /^(NEX-|ILCE-|ILME-|ZV-E|DSC-(RX10M4|RX100M6|RX100M7|RX100M5A|HX99|RX0M2))/',
+            Condition => '$$self{Model} =~ /^(NEX-|ILCE-|ILME-|ZV-|DSC-(RX10M4|RX100M6|RX100M7|RX100M5A|HX95|HX99|RX0M2))/',
             Notes => 'NEX, ILCE and some DSC models',
             RawConv => '$$self{AFAreaILCE} = $val',
             DataMember => 'AFAreaILCE',
@@ -1205,7 +1205,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         # observed values in range (0 0) to (640 480), with center (320 240) often seen
         # for NEX-5R/6, positions appear to be in an 11x9 grid
         Name => 'FlexibleSpotPosition',
-        Condition => '$$self{Model} =~ /^(NEX-|ILCE-|ILME-|ZV-E|DSC-(RX10M4|RX100M6|RX100M7|RX100M5A|HX99|RX0M2))/',
+        Condition => '$$self{Model} =~ /^(NEX-|ILCE-|ILME-|ZV-|DSC-(RX10M4|RX100M6|RX100M7|RX100M5A|HX95|HX99|RX0M2))/',
         Writable => 'int16u',
         Count => 2,
         Notes => q{
@@ -1365,7 +1365,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     #    from 2018: at least DSC-RX10M4 and RX100M6 also use this tag
     0x2021 => { #JR
         Name => 'AFTracking',
-        Condition => '($$self{Model} !~ /^DSC-/) or ($$self{Model} =~ /^DSC-(RX10M4|RX100M6|RX100M7|RX100M5A|HX99|RX0M2)/)',
+        Condition => '($$self{Model} !~ /^DSC-/) or ($$self{Model} =~ /^DSC-(RX10M4|RX100M6|RX100M7|RX100M5A|HX95|HX99|RX0M2)/)',
         Writable => 'int8u',
         PrintConv => {
             0 => 'Off',
@@ -2070,6 +2070,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             390 => 'ILCE-7RM5', #IB
             391 => 'ILME-FX30', #JR
             393 => 'ZV-E1', #JR
+            395 => 'ZV-1M2', #JR
         },
     },
     0xb020 => { #2
@@ -6182,6 +6183,7 @@ my %pictureProfile2010 = (
         31 => 'Gamma S-Log3 (PP8 or PP9)', #14
         33 => 'Gamma HLG2 (PP10)', #14
         34 => 'Gamma HLG3', #IB
+        36 => 'Off',
         37 => 'FL',
         38 => 'VV2',
         39 => 'IN',
@@ -6637,8 +6639,30 @@ my %isoSetting2010 = (
     },
     #0x1914 => { Name => 'SonyImageWidth',  Format => 'int16u' },
     #0x1918 => { Name => 'SonyImageHeight', Format => 'int16u' },
+    0x192c => {
+        Name => 'AspectRatio',
+        Condition => '$$self{Model} !~ /^(DSC-RX100|Stellar)\b/',
+        PrintConv => {
+            0 => '16:9',
+            1 => '4:3',
+            2 => '3:2',
+            3 => '1:1',
+            5 => 'Panorama',
+        },
+    },
     #0x192e => { Name => 'SonyImageWidth',  Format => 'int16u' },
     #0x1930 => { Name => 'SonyImageHeight', Format => 'int16u' },
+    0x1a88 => {
+        Name => 'AspectRatio',
+        Condition => '$$self{Model} =~ /^(DSC-RX100|Stellar)\b/',
+        PrintConv => {
+            0 => '16:9',
+            1 => '4:3',
+            2 => '3:2',
+            3 => '1:1',
+            5 => 'Panorama',
+        },
+    },
 );
 
 %Image::ExifTool::Sony::Tag2010f = ( #JR
@@ -6714,6 +6738,16 @@ my %isoSetting2010 = (
     },
     #0x1914 => { Name => 'SonyImageWidth',  Format => 'int16u' },
     #0x1918 => { Name => 'SonyImageHeight', Format => 'int16u' },
+    0x192c => {
+        Name => 'AspectRatio',
+        PrintConv => {
+            0 => '16:9',
+            1 => '4:3',
+            2 => '3:2',
+            3 => '1:1',
+            5 => 'Panorama',
+        },
+    },
     #0x192e => { Name => 'SonyImageWidth',  Format => 'int16u' },
     #0x1930 => { Name => 'SonyImageHeight', Format => 'int16u' },
 );
@@ -6845,6 +6879,16 @@ my %isoSetting2010 = (
     },
     # 0x1940 => { Name => 'SonyImageWidth',  Format => 'int16u' },
     # 0x1944 => { Name => 'SonyImageHeight', Format => 'int16u' },
+    0x1958 => {
+        Name => 'AspectRatio',
+        PrintConv => {
+            0 => '16:9',
+            1 => '4:3',
+            2 => '3:2',
+            3 => '1:1',
+            5 => 'Panorama',
+        },
+    },
     # 0x195a => { Name => 'SonyImageWidth',  Format => 'int16u' },
     # 0x195c => { Name => 'SonyImageHeight', Format => 'int16u' },
 );
@@ -6982,6 +7026,16 @@ my %isoSetting2010 = (
         Condition => '$$self{Model} !~ /^DSC-/',
         PrintConv => { 11 => '11 (APS-C)', 16 => '16 (Full-frame)'},
     },
+    0x192c => {
+        Name => 'AspectRatio',
+        PrintConv => {
+            0 => '16:9',
+            1 => '4:3',
+            2 => '3:2',
+            3 => '1:1',
+            5 => 'Panorama',
+        },
+    },
     # 0x1970 => { Name => 'SonyImageWidth',  Format => 'int16u' },
     # 0x1974 => { Name => 'SonyImageHeight', Format => 'int16u' },
     # 0x198a => { Name => 'SonyImageWidth',  Format => 'int16u' },
@@ -7112,6 +7166,16 @@ my %isoSetting2010 = (
         Name => 'DistortionCorrParamsNumber',
         Condition => '$$self{Model} !~ /^DSC-/',
         PrintConv => { 11 => '11 (APS-C)', 16 => '16 (Full-frame)'},
+    },
+    0x188c => {
+        Name => 'AspectRatio',
+        PrintConv => {
+            0 => '16:9',
+            1 => '4:3',
+            2 => '3:2',
+            3 => '1:1',
+            5 => 'Panorama',
+        },
     },
 );
 
@@ -8273,6 +8337,30 @@ my %isoSetting2010 = (
         Format => 'int8u',
         PrintConv => 'sprintf("20%.2d", $val)',
     },
+    0x0133 => {
+        Name => 'ShutterType',
+        Condition => '$$self{Model} =~ /^(DSC-(HX350|HX400V|HX60V|HX80|HX90|HX90V|QX30|RX10|RX10M2|RX10M3|RX100M3|RX100M4))\b/',
+        PrintConv => {
+            7 => 'Electronic',
+            23 => 'Mechanical',
+        },
+    },
+    0x0139 => {
+        Name => 'ShutterType',
+        Condition => '$$self{Model} =~ /^(DSC-(HX95|HX99|RX0|RX0M2|RX10M4|RX100M5|RX100M5A|RX100M6))\b/',
+        PrintConv => {
+            7 => 'Electronic',
+            23 => 'Mechanical',
+        },
+    },
+    0x013f => {
+        Name => 'ShutterType',
+        Condition => '$$self{Model} =~ /^(DSC-RX100M7|ZV-(1|1F|1M2))\b/',
+        PrintConv => {
+            7 => 'Electronic',
+            23 => 'Mechanical',
+        },
+    },
 );
 
 %Image::ExifTool::Sony::Tag9401 = ( # JR
@@ -8284,7 +8372,7 @@ my %isoSetting2010 = (
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     DATAMEMBER => [ 0 ],
-    IS_SUBDIR => [ 0x03e2, 0x044e, 0x0498, 0x049d, 0x04a1, 0x04a2, 0x059d, 0x0634, 0x0636, 0x064c, 0x0653, 0x0678, 0x06b8, 0x06de, 0x06e7 ],
+    IS_SUBDIR => [ 0x03e2, 0x044e, 0x0498, 0x049d, 0x04a1, 0x04a2, 0x04ba, 0x059d, 0x0634, 0x0636, 0x064c, 0x0653, 0x0678, 0x06b8, 0x06de, 0x06e7 ],
     0x0000 => { Name => 'Ver9401', Hidden => 1, RawConv => '$$self{Ver9401} = $val; $$self{OPTIONS}{Unknown}<2 ? undef : $val' },
 
     0x03e2 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 181',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
@@ -8292,7 +8380,8 @@ my %isoSetting2010 = (
     0x0498 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 148',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x049d => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 167',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x04a1 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} =~ /^(160|164)/', Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
-    0x04a2 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} =~ /^(152|154|155)/', Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
+    0x04a2 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} =~ /^(152|154|155)/ and $$self{Model} !~ /^ZV-1M2/', Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
+    0x04ba => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 155 and $$self{Model} =~ /^ZV-1M2/', Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x059d => { Name => 'ISOInfo', Condition => '$$self{Ver9401} =~ /^(144|146)/', Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x0634 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 68',           Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x0636 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} =~ /^(73|74)/',   Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
@@ -8690,6 +8779,11 @@ my %isoSetting2010 = (
             10 => 'Night View/Portrait',
             11 => 'Autumn Leaves',
             13 => 'Sepia',
+            15 => 'FL',
+            16 => 'VV2',
+            17 => 'IN',
+            18 => 'SH',
+            255 => 'Off',
         },
     },
     0x0052 => {

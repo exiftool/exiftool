@@ -17,11 +17,44 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.63'><b>June 8, 2023 - Version 12.63</b></a>
+<ul>
+<li>Added ability to read/write/create Brotli-compressed metadata in JXL images
+    (requires IO::Compress::Brotli)
+<li>Added partial support for Exif 3.0 specification:
+    <ul>
+    <li>Added new EXIF tags
+    <li>Added MPF Original Preservation Image type
+    <li>Support for reading 'utf8' values (but still write only as 'string')
+    </ul>
+<li>Added support for Adobe HDR Gain Map (hdrgm) XMP tags
+<li>Added support for reading 7z files (thanks Amir Gooran, github #205) (but
+    currently this doesn't work for the Windows .exe version because I haven't
+    been able to install Compress::Raw::Lzma for ActivePerl)
+<li>Added <a href="TagNames/XMP.html#panorama">XMP-panorama tags</a>
+<li>Added warning if -csv is used with -p
+<li>Added warning if trying to geotag from a UTF-16 track log
+<li>Decode ImageWidth/Height from JXL images using partial codestreams
+<li>Decode more Sony tags for some newer models (thanks Jos Roost)
+<li>Extract GainMapImage (hrgm box) from JXL files
+<li>Extract Guano information from WAV files
+<li>Enhanced ImageDataMD5 feature and renamed to ImageDataHash (with
+    ImageDataMD5 alias for backward compatibility)
+<li>Changed RARVersion tag name to FileVersion
+<li>Fixed bug introduced in 12.46 which could cause a hang when reading a
+    corrupted RIFF-based file
+<li>Fixed writing of Composition:GPSPosition when -n is used
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#ImageHashType">ImageHashType option</a>
+    </ul>
+</ul>
+
 <a name='v12.62'><b>May 3, 2023 - Version 12.62</b></a>
 <ul>
 <li>Added basic read support for WPG images
 <li>Added ImageDataMD5 support for HEIC images
-<li>Added support for RAR version 5.0 compressed files (thanks Amir Gooran)
+<li>Added support for RAR version 5.0 files (thanks Amir Gooran, github #203)
 <li>Added a few new XMP-aux tags (thanks John Ellis)
 <li>Made Composite tags available for use in -fileNUM argument
 <li>Better handling of FlashPix VT_EMPTY value

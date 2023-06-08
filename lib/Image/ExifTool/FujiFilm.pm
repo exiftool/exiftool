@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.87';
+$VERSION = '1.88';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -1687,8 +1687,8 @@ sub ProcessRAF($$)
             my $tagTablePtr = GetTagTable('Image::ExifTool::FujiFilm::IFD');
             # this is TIFF-format data only for some models, so no warning if it fails
             unless ($et->ProcessTIFF(\%dirInfo, $tagTablePtr, \&Image::ExifTool::ProcessTIFF)) {
-                # do MD5 of image data if necessary
-                $et->ImageDataMD5($raf, $len, 'raw') if $$et{ImageDataMD5} and $raf->Seek($start,0);
+                # do hash of image data if necessary
+                $et->ImageDataHash($raf, $len, 'raw') if $$et{ImageDataHash} and $raf->Seek($start,0);
             }
             delete $$et{SET_GROUP1};
             $ifdNum = ($ifdNum || 1) + 1;

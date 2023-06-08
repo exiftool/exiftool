@@ -5302,38 +5302,43 @@ and are not currently writable.</p>
 <td class=c>no</td>
 <td><span class=s><span class=n>(4 numbers: width, height, left and top)</span></span></td></tr>
 <tr class=b>
+<td>'clli'</td>
+<td>ContentLightLevel</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#ContentLightLevel'>QuickTime ContentLightLevel Tags</a></td></tr>
+<tr>
 <td>'colr'</td>
 <td>ICC_Profile
   <br>ColorRepresentation</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
   <br>--&gt; <a href='QuickTime.html#ColorRep'>QuickTime ColorRep Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'hvcC'</td>
 <td>HEVCConfiguration</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#HEVCConfig'>QuickTime HEVCConfig Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'irot'</td>
 <td>Rotation</td>
 <td class=c title=' ! = Unsafe'>int8u!</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'ispe'</td>
 <td>ImageSpatialExtent</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'pasp'</td>
 <td>PixelAspectRatio</td>
 <td class=c title=' ! = Unsafe'>int32u!</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'pixi'</td>
 <td>ImagePixelDepth</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'rloc'</td>
 <td>RelativeLocation</td>
 <td class=c>no</td>
@@ -5398,6 +5403,24 @@ and are not currently writable.</p>
 <tr>
 <td class=r title='3 = 0x3'>3</td>
 <td>InitialDelaySamples?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ContentLightLevel'>QuickTime ContentLightLevel Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>MaxContentLightLevel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>MaxPicAverageLightLevel</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -8993,7 +9016,7 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 3, 2023</i>
+<br><i>Last revised Jun 8, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

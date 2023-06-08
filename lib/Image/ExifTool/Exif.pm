@@ -43,6 +43,7 @@
 #              30) http://geotiff.maptools.org/spec/geotiffhome.html
 #              31) https://android.googlesource.com/platform/external/dng_sdk/+/refs/heads/master/source/dng_tag_codes.h
 #              32) Jeffry Friedl private communication
+#              33) https://www.cipa.jp/std/documents/download_e.html?DC-008-Translation-2023-E (Exif 3.0)
 #              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
@@ -65,7 +66,7 @@ sub RebuildMakerNotes($$$);
 sub EncodeExifText($$);
 sub ValidateIFD($;$);
 sub ValidateImageData($$$;$);
-sub AddImageDataMD5($$$);
+sub AddImageDataHash($$$);
 sub ProcessTiffIFD($$$);
 sub PrintParameter($$$);
 sub GetOffList($$$$$);
@@ -79,6 +80,7 @@ sub BINARY_DATA_LIMIT { return 10 * 1024 * 1024; }
 
 # byte sizes for the various EXIF format types below
 @formatSize = (undef,1,1,2,4,8,1,1,2,4,8,4,8,4,2,8,8,8,8);
+$formatSize[129] = 1; # (Exif 3.0)
 
 @formatName = (
      undef,    'int8u',      'string',     'int16u',
@@ -87,6 +89,7 @@ sub BINARY_DATA_LIMIT { return 10 * 1024 * 1024; }
     'double',  'ifd',        'unicode',    'complex',
     'int64u',  'int64s',     'ifd64', # (new BigTIFF formats)
 );
+$formatName[129] = 'utf8';  # (Exif 3.0)
 
 # hash to look up EXIF format numbers by name
 # (format types are all lower case)
@@ -110,6 +113,7 @@ sub BINARY_DATA_LIMIT { return 10 * 1024 * 1024; }
     'int64u'      => 16, # LONG8 [BigTIFF]
     'int64s'      => 17, # SLONG8 [BigTIFF]
     'ifd64'       => 18, # IFD8 (with int64u format) [BigTIFF]
+    'utf8'        => 129,# UTF-8 (Exif 3.0)
     # Note: unicode and complex types are not yet properly supported by ExifTool.
     # These are types which have been observed in the Adobe DNG SDK code, but
     # aren't fully supported there either.  We know the sizes, but that's about it.
@@ -2823,6 +2827,13 @@ my %opcodeInfo = (
     0xa433 => { Name => 'LensMake',         Writable => 'string' }, #24
     0xa434 => { Name => 'LensModel',        Writable => 'string' }, #24
     0xa435 => { Name => 'LensSerialNumber', Writable => 'string' }, #24
+    0xa436 => { Name => 'Title',            Writable => 'string', Avoid => 1 }, #33
+    0xa437 => { Name => 'Photographer',     Writable => 'string' }, #33
+    0xa438 => { Name => 'ImageEditor',      Writable => 'string' }, #33
+    0xa439 => { Name => 'CameraFirmware',          Writable => 'string' }, #33
+    0xa43a => { Name => 'RAWDevelopingSoftware',   Writable => 'string' }, #33
+    0xa43b => { Name => 'ImageEditingSoftware',    Writable => 'string' }, #33
+    0xa43c => { Name => 'MetadataEditingSoftware', Writable => 'string' }, #33
     0xa460 => { #Exif2.32
         Name => 'CompositeImage',
         Writable => 'int16u',
@@ -4910,10 +4921,10 @@ my %subSecConv = (
         Writable => 1,
         Protected => 1,
         WriteAlso => {
-            GPSLatitude => '(defined $val and $val =~ /(.*?)( ?[NS])?,/) ? $1 : undef',
-            GPSLatitudeRef => '(defined $val and $val =~ /(-?)(.*?) ?([NS]?),/) ? ($3 || ($1 ? "S" : "N")) : undef',
-            GPSLongitude => '(defined $val and $val =~ /, ?(.*?)( ?[EW]?)$/) ? $1 : undef',
-            GPSLongitudeRef => '(defined $val and $val =~ /, ?(-?)(.*?) ?([EW]?)$/) ? ($3 || ($1 ? "W" : "E")) : undef',
+            GPSLatitude => '(defined $val and $val =~ /(.*) /) ? $1 : undef',
+            GPSLatitudeRef => '(defined $val and $val =~ /(-?)(.*?) /) ? ($1 ? "S" : "N") : undef',
+            GPSLongitude => '(defined $val and $val =~ / (.*)$/) ? $1 : undef',
+            GPSLongitudeRef => '(defined $val and $val =~ / (-?)/) ? ($1 ? "W" : "E") : undef',
         },
         PrintConvInv => q{
             return undef unless $val =~ /(.*? ?[NS]?), ?(.*? ?[EW]?)$/;
@@ -4921,7 +4932,7 @@ my %subSecConv = (
             require Image::ExifTool::GPS;
             $lat = Image::ExifTool::GPS::ToDegrees($lat, 1, "lat");
             $lon = Image::ExifTool::GPS::ToDegrees($lon, 1, "lon");
-            return "$lat, $lon";
+            return "$lat $lon";
         },
         Require => {
             0 => 'GPSLatitude',
@@ -5929,12 +5940,12 @@ sub ProcessExif($$$)
     my ($verbose,$validate,$saveFormat) = @{$$et{OPTIONS}}{qw(Verbose Validate SaveFormat)};
     my $htmlDump = $$et{HTML_DUMP};
     my $success = 1;
-    my ($tagKey, $dirSize, $makerAddr, $strEnc, %offsetInfo, $offName, $nextOffName, $doMD5);
+    my ($tagKey, $dirSize, $makerAddr, $strEnc, %offsetInfo, $offName, $nextOffName, $doHash);
     my $inMakerNotes = $$tagTablePtr{GROUPS}{0} eq 'MakerNotes';
     my $isExif = ($tagTablePtr eq \%Image::ExifTool::Exif::Main);
 
-    # set flag to calculate image data MD5 if requested
-    $doMD5 = 1 if $$et{ImageDataMD5} and (($$et{FILE_TYPE} eq 'TIFF' and not $base and not $inMakerNotes) or
+    # set flag to calculate image data hash if requested
+    $doHash = 1 if $$et{ImageDataHash} and (($$et{FILE_TYPE} eq 'TIFF' and not $base and not $inMakerNotes) or
         ($$et{FILE_TYPE} eq 'RAF' and $dirName eq 'FujiIFD'));
 
     # set encoding to assume for strings
@@ -6088,7 +6099,7 @@ sub ProcessExif($$$)
         my $format = Get16u($dataPt, $entry+2);
         my $count = Get32u($dataPt, $entry+4);
         # (Apple uses the BigTIFF format code 16 in the maker notes of their ProRaw DNG files)
-        if (($format < 1 or $format > 13) and not ($format == 16 and $$et{Make} eq 'Apple' and $inMakerNotes)) {
+        if (($format < 1 or $format > 13) and $format != 129 and not ($format == 16 and $$et{Make} eq 'Apple' and $inMakerNotes)) {
             if ($mapFmt and $$mapFmt{$format}) {
                 $format = $$mapFmt{$format};
             } else {
@@ -6404,7 +6415,13 @@ sub ProcessExif($$$)
                 # convert according to specified format
                 $val = ReadValue($valueDataPt,$valuePtr,$formatStr,$count,$readSize,\$rational);
                 # re-code if necessary
-                $val = $et->Decode($val, $strEnc) if $strEnc and $formatStr eq 'string' and defined $val;
+                if (defined $val) {
+                    if ($formatStr eq 'utf8') {
+                        $val = $et->Decode($val, 'UTF8');
+                    } elsif ($strEnc and $formatStr eq 'string') {
+                        $val = $et->Decode($val, $strEnc);
+                    }
+                }
             }
         }
 
@@ -6781,7 +6798,7 @@ sub ProcessExif($$$)
             }
             $val = join(' ', @vals);
         }
-        if ($validate or $doMD5) {
+        if ($validate or $doHash) {
             if ($$tagInfo{OffsetPair}) {
                 $offsetInfo{$tagID} = [ $tagInfo, $val ];
             } elsif ($saveForValidate{$tagID} and $isExif) {
@@ -6800,8 +6817,8 @@ sub ProcessExif($$$)
     }
 
     if (%offsetInfo) {
-        # calculate image data MD5 if requested
-        AddImageDataMD5($et, $dirInfo, \%offsetInfo) if $doMD5;
+        # calculate image data hash if requested
+        AddImageDataHash($et, $dirInfo, \%offsetInfo) if $doHash;
         # validate image data offsets for this IFD (note: modifies %offsetInfo)
         Image::ExifTool::Validate::ValidateOffsetInfo($et, \%offsetInfo, $dirName, $inMakerNotes) if $validate;
     }

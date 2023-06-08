@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Canon;
 
-$VERSION = '1.60';
+$VERSION = '1.61';
 
 sub WriteCRW($$);
 sub ProcessCanonRaw($$$);
@@ -698,9 +698,9 @@ sub ProcessCanonRaw($$$)
                           $format ne 'string' and not $subdir;
         } else {
             $valueDataPos = $ptr;
-            # do MD5 of image data if requested
-            if ($$et{ImageDataMD5} and $tagID == 0x2005) {
-                $raf->Seek($ptr, 0) and $et->ImageDataMD5($raf, $size, 'raw');
+            # do hash of image data if requested
+            if ($$et{ImageDataHash} and $tagID == 0x2005) {
+                $raf->Seek($ptr, 0) and $et->ImageDataHash($raf, $size, 'raw');
             }
             if ($size <= 512 or ($verbose > 2 and $size <= 65536)
                 or ($tagInfo and ($$tagInfo{SubDirectory}

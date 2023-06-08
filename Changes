@@ -7,11 +7,39 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.60. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+June 8, 2023 - Version 12.63
+
+  - Added ability to read/write/create Brotli-compressed metadata in JXL images
+    (requires IO::Compress::Brotli)
+  - Added partial support for Exif 3.0 specification:
+      - Added new EXIF tags
+      - Added MPF Original Preservation Image type
+      - Support for reading 'utf8' values (but still write only as 'string')
+  - Added support for Adobe HDR Gain Map (hdrgm) XMP tags
+  - Added support for reading 7z files (thanks Amir Gooran, github #205) (but
+    currently this doesn't work for the Windows .exe version because I haven't
+    been able to install Compress::Raw::Lzma for ActivePerl)
+  - Added XMP-panorama tags
+  - Added warning if -csv is used with -p
+  - Added warning if trying to geotag from a UTF-16 track log
+  - Decode ImageWidth/Height from JXL images using partial codestreams
+  - Decode more Sony tags for some newer models (thanks Jos Roost)
+  - Extract GainMapImage (hrgm box) from JXL files
+  - Extract Guano information from WAV files
+  - Enhanced ImageDataMD5 feature and renamed to ImageDataHash (with
+    ImageDataMD5 alias for backward compatibility)
+  - Changed RARVersion tag name to FileVersion
+  - Fixed bug introduced in 12.46 which could cause a hang when reading a
+    corrupted RIFF-based file
+  - Fixed writing of Composition:GPSPosition when -n is used
+  - API Changes:
+      - Added ImageHashType option
+
 May 3, 2023 - Version 12.62
 
   - Added basic read support for WPG images
   - Added ImageDataMD5 support for HEIC images
-  - Added support for RAR version 5.0 compressed files (thanks Amir Gooran)
+  - Added support for RAR version 5.0 files (thanks Amir Gooran, github #203)
   - Added a few new XMP-aux tags (thanks John Ellis)
   - Made Composite tags available for use in -fileNUM argument
   - Better handling of FlashPix VT_EMPTY value

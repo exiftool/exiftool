@@ -1,6 +1,6 @@
 Summary: perl module for image data extraction
 Name: perl-Image-ExifTool
-Version: 12.62
+Version: 12.63
 Release: 1
 License: Artistic/GPL
 Group: Development/Libraries/Perl
@@ -22,10 +22,11 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  360   r/w   | DR4   r/w/c | JNG   r/w   | ODP   r     | RSRC  r
-  3FR   r     | DSS   r     | JP2   r/w   | ODS   r     | RTF   r
-  3G2   r/w   | DV    r     | JPEG  r/w   | ODT   r     | RW2   r/w
-  3GP   r/w   | DVB   r/w   | JSON  r     | OFR   r     | RWL   r/w
+  360   r/w   | DPX   r     | J2C   r     | O     r     | RIFF  r
+  3FR   r     | DR4   r/w/c | JNG   r/w   | ODP   r     | RSRC  r
+  3G2   r/w   | DSS   r     | JP2   r/w   | ODS   r     | RTF   r
+  3GP   r/w   | DV    r     | JPEG  r/w   | ODT   r     | RW2   r/w
+  7Z    r     | DVB   r/w   | JSON  r     | OFR   r     | RWL   r/w
   A     r     | DVR-MS r    | JXL   r     | OGG   r     | RWZ   r
   AA    r     | DYLIB r     | K25   r     | OGV   r     | RM    r
   AAE   r     | EIP   r     | KDC   r     | ONP   r     | SEQ   r
@@ -64,7 +65,6 @@ supported by ExifTool (r = read, w = write, c = create):
   DNG   r/w   | INX   r     | NKSC  r/w   | RAM   r     |
   DOC   r     | ISO   r     | NRW   r/w   | RAR   r     |
   DOCX  r     | ITC   r     | NUMBERS r   | RAW   r/w   |
-  DPX   r     | J2C   r     | O     r     | RIFF  r     |
 
   Meta Information
   ----------------------+----------------------+---------------------

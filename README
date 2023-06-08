@@ -14,10 +14,11 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  360   r/w   | DR4   r/w/c | JNG   r/w   | ODP   r     | RSRC  r
-  3FR   r     | DSS   r     | JP2   r/w   | ODS   r     | RTF   r
-  3G2   r/w   | DV    r     | JPEG  r/w   | ODT   r     | RW2   r/w
-  3GP   r/w   | DVB   r/w   | JSON  r     | OFR   r     | RWL   r/w
+  360   r/w   | DPX   r     | J2C   r     | O     r     | RIFF  r
+  3FR   r     | DR4   r/w/c | JNG   r/w   | ODP   r     | RSRC  r
+  3G2   r/w   | DSS   r     | JP2   r/w   | ODS   r     | RTF   r
+  3GP   r/w   | DV    r     | JPEG  r/w   | ODT   r     | RW2   r/w
+  7Z    r     | DVB   r/w   | JSON  r     | OFR   r     | RWL   r/w
   A     r     | DVR-MS r    | JXL   r     | OGG   r     | RWZ   r
   AA    r     | DYLIB r     | K25   r     | OGV   r     | RM    r
   AAE   r     | EIP   r     | KDC   r     | ONP   r     | SEQ   r
@@ -56,7 +57,6 @@ supported by ExifTool (r = read, w = write, c = create):
   DNG   r/w   | INX   r     | NKSC  r/w   | RAM   r     |
   DOC   r     | ISO   r     | NRW   r/w   | RAR   r     |
   DOCX  r     | ITC   r     | NUMBERS r   | RAW   r/w   |
-  DPX   r     | J2C   r     | O     r     | RIFF  r     |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -108,8 +108,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-12.62.tar.gz | tar -xf -
-  cd Image-ExifTool-12.62
+  gzip -dc Image-ExifTool-12.63.tar.gz | tar -xf -
+  cd Image-ExifTool-12.63
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -158,8 +158,11 @@ for calculating digest values and providing other features listed below:
   Win32::API           (for proper handling of Windows file times)
   Win32::FindFile      (for Windows Unicode directory support, app only)
   Win32API::File       (for Windows Unicode file names and file times)
+  Compress::Raw::Lzma  (for reading encoded 7z files)
   IO::Compress::RawDeflate   (for writing FLIF images)
   IO::Uncompress::RawInflate (for reading FLIF images)
+  IO::Compress::Brotli       (for writing compressed JXL metadata)
+  IO::Uncompress::Brotli     (for reading compressed JXL metadata)
 
 COPYRIGHT AND LICENSE
 

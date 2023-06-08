@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.59';
+$VERSION = '3.60';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -144,6 +144,7 @@ my %xmpNS = (
     xmpTPg    => 'http://ns.adobe.com/xap/1.0/t/pg/',
     xmpidq    => 'http://ns.adobe.com/xmp/Identifier/qual/1.0/',
     xmpPLUS   => 'http://ns.adobe.com/xap/1.0/PLUS/',
+    panorama  => 'http://ns.adobe.com/photoshop/1.0/panorama-profile',
     dex       => 'http://ns.optimasc.com/dex/1.0/',
     mediapro  => 'http://ns.iview-multimedia.com/mediapro/1.0/',
     expressionmedia => 'http://ns.microsoft.com/expressionmedia/1.0/',
@@ -199,6 +200,7 @@ my %xmpNS = (
     ast       => 'http://ns.nikon.com/asteroid/1.0/',
     nine      => 'http://ns.nikon.com/nine/1.0/',
     hdr_metadata => 'http://ns.adobe.com/hdr-metadata/1.0/',
+    hdrgm     => 'http://ns.adobe.com/hdr-gain-map/1.0/',
 );
 
 # build reverse namespace lookup
@@ -709,6 +711,10 @@ my %sRangeMask = (
         Name => 'xmpPLUS',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::xmpPLUS' },
     },
+    panorama => {
+        Name => 'panorama',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::panorama' },
+    },
     plus => {
         Name => 'plus',
         SubDirectory => { TagTable => 'Image::ExifTool::PLUS::XMP' },
@@ -908,6 +914,10 @@ my %sRangeMask = (
     hdr => {
         Name => 'hdr',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::hdr' },
+    },
+    hdrgm => {
+        Name => 'hdrgm',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::hdrgm' },
     },
 );
 
@@ -2566,7 +2576,9 @@ my %sPantryItem = (
     %xmpTableDefaults,
     GROUPS => { 1 => 'XMP-et', 2 => 'Image' },
     NAMESPACE   => 'et',
-    OriginalImageMD5 => { Notes => 'used to store ExifTool ImageDataMD5 digest' },
+    OriginalImageHash     => { Notes => 'used to store ExifTool ImageDataHash digest' },
+    OriginalImageHashType => { Notes => "ImageHashType API setting, default 'MD5'" },
+    OriginalImageMD5      => { Notes => 'deprecated' },
 );
 
 # table to add tags in other namespaces

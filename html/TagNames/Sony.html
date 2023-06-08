@@ -1049,7 +1049,8 @@ toward magenta)</span></span></td></tr>
   <br>389 = ZV-1F
   <br>390 = ILCE-7RM5
   <br>391 = ILME-FX30
-  <br>393 = ZV-E1</td></tr></table>
+  <br>393 = ZV-E1
+  <br>395 = ZV-1M2</td></tr></table>
 </td></tr>
 <tr>
 <td title='0xb020 = 45088'>0xb020</td>
@@ -5364,6 +5365,7 @@ rotation -- the width is always the longer dimension.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -5394,6 +5396,7 @@ rotation -- the width is always the longer dimension.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -5766,6 +5769,7 @@ option is used.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -5796,6 +5800,7 @@ option is used.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -6000,6 +6005,7 @@ option is used.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -6030,6 +6036,7 @@ option is used.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -6220,6 +6227,7 @@ not valid for panorama images.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -6250,6 +6258,7 @@ not valid for panorama images.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -6444,6 +6453,7 @@ WX300, but not for panorama images.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -6474,6 +6484,7 @@ WX300, but not for panorama images.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -6581,6 +6592,24 @@ WX300, but not for panorama images.</p>
 <td class=c>int8u</td>
 <td><span class=s>11 = 11 (APS-C)
   <br>16 = 16 (Full-frame)</span></td></tr>
+<tr>
+<td class=r title='6444 = 0x192c'>6444</td>
+<td>AspectRatio</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = 16:9
+  <br>1 = 4:3
+  <br>2 = 3:2
+  <br>3 = 1:1
+  <br>5 = Panorama</span></td></tr>
+<tr class=b>
+<td class=r title='6792 = 0x1a88'>6792</td>
+<td>AspectRatio</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = 16:9
+  <br>1 = 4:3
+  <br>2 = 3:2
+  <br>3 = 1:1
+  <br>5 = Panorama</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag2010f'>Sony Tag2010f Tags</a></h2>
@@ -6719,6 +6748,7 @@ WX300, but not for panorama images.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -6749,6 +6779,7 @@ WX300, but not for panorama images.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -6805,6 +6836,15 @@ WX300, but not for panorama images.</p>
 <td>SonyISO</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='6444 = 0x192c'>6444</td>
+<td>AspectRatio</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = 16:9
+  <br>1 = 4:3
+  <br>2 = 3:2
+  <br>3 = 1:1
+  <br>5 = Panorama</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag2010g'>Sony Tag2010g Tags</a></h2>
@@ -6939,6 +6979,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -6969,6 +7010,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -7071,6 +7113,15 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.</p>
 <td class=c>int8u</td>
 <td><span class=s>11 = 11 (APS-C)
   <br>16 = 16 (Full-frame)</span></td></tr>
+<tr>
+<td class=r title='6488 = 0x1958'>6488</td>
+<td>AspectRatio</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = 16:9
+  <br>1 = 4:3
+  <br>2 = 3:2
+  <br>3 = 1:1
+  <br>5 = Panorama</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag2010h'>Sony Tag2010h Tags</a></h2>
@@ -7205,6 +7256,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -7235,6 +7287,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -7342,6 +7395,15 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
 <td class=c>int8u</td>
 <td><span class=s>11 = 11 (APS-C)
   <br>16 = 16 (Full-frame)</span></td></tr>
+<tr class=b>
+<td class=r title='6444 = 0x192c'>6444</td>
+<td>AspectRatio</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = 16:9
+  <br>1 = 4:3
+  <br>2 = 3:2
+  <br>3 = 1:1
+  <br>5 = Panorama</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag2010i'>Sony Tag2010i Tags</a></h2>
@@ -7476,6 +7538,7 @@ RX100M5A/RX100M7/HX99.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -7506,6 +7569,7 @@ RX100M5A/RX100M7/HX99.</p>
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -7608,6 +7672,15 @@ RX100M5A/RX100M7/HX99.</p>
 <td class=c>int8u</td>
 <td><span class=s>11 = 11 (APS-C)
   <br>16 = 16 (Full-frame)</span></td></tr>
+<tr>
+<td class=r title='6284 = 0x188c'>6284</td>
+<td>AspectRatio</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = 16:9
+  <br>1 = 4:3
+  <br>2 = 3:2
+  <br>3 = 1:1
+  <br>5 = Panorama</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='MeterInfo9'>Sony MeterInfo9 Tags</a></h2>
@@ -8641,6 +8714,24 @@ WX350/WX500, ILCE-1/7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/7SM3/9/9M2/5000/
 <td>ModelReleaseYear</td>
 <td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td class=r title='307 = 0x133'>307</td>
+<td>ShutterType</td>
+<td class=c>int8u</td>
+<td><span class=s>7 = Electronic
+  <br>23 = Mechanical</span></td></tr>
+<tr class=b>
+<td class=r title='313 = 0x139'>313</td>
+<td>ShutterType</td>
+<td class=c>int8u</td>
+<td><span class=s>7 = Electronic
+  <br>23 = Mechanical</span></td></tr>
+<tr>
+<td class=r title='319 = 0x13f'>319</td>
+<td>ShutterType</td>
+<td class=c>int8u</td>
+<td><span class=s>7 = Electronic
+  <br>23 = Mechanical</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag9401'>Sony Tag9401 Tags</a></h2>
@@ -8680,46 +8771,51 @@ WX350/WX500, ILCE-1/7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/7SM3/9/9M2/5000/
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#ISOInfo'>Sony ISOInfo Tags</a></td></tr>
 <tr>
+<td class=r title='1210 = 0x4ba'>1210</td>
+<td>ISOInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Sony.html#ISOInfo'>Sony ISOInfo Tags</a></td></tr>
+<tr class=b>
 <td class=r title='1437 = 0x59d'>1437</td>
 <td>ISOInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#ISOInfo'>Sony ISOInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1588 = 0x634'>1588</td>
 <td>ISOInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#ISOInfo'>Sony ISOInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1590 = 0x636'>1590</td>
 <td>ISOInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#ISOInfo'>Sony ISOInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1612 = 0x64c'>1612</td>
 <td>ISOInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#ISOInfo'>Sony ISOInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1619 = 0x653'>1619</td>
 <td>ISOInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#ISOInfo'>Sony ISOInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1656 = 0x678'>1656</td>
 <td>ISOInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#ISOInfo'>Sony ISOInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1720 = 0x6b8'>1720</td>
 <td>ISOInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#ISOInfo'>Sony ISOInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1758 = 0x6de'>1758</td>
 <td>ISOInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#ISOInfo'>Sony ISOInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1767 = 0x6e7'>1767</td>
 <td>ISOInfo</td>
 <td class=c>-</td>
@@ -9047,7 +9143,12 @@ ILCE-7/7M2/7M3/7R/7RM2/7RM3/7RM4/7S/7SM2/9/9M2/5000/5100/6000/6100/6300/
   <br>9 = Sunset
   <br>10 = Night View/Portrait
   <br>11 = Autumn Leaves
-  <br>13 = Sepia</td></tr></table>
+  <br>13 = Sepia
+  <br>15 = FL
+  <br>16 = VV2
+  <br>17 = IN
+  <br>18 = SH
+  <br>255 = Off</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='82 = 0x52'>82</td>
@@ -11112,6 +11213,7 @@ ILCE-7/7M2/7M3/7R/7RM2/7RM3/7RM4/7S/7SM2/9/9M2/5000/5100/6000/6100/6300/
   <br>31 = Gamma S-Log3 (PP8 or PP9)
   <br>33 = Gamma HLG2 (PP10)
   <br>34 = Gamma HLG3
+  <br>36 = Off
   <br>37 = FL
   <br>38 = VV2
   <br>39 = IN
@@ -11865,7 +11967,7 @@ some models when the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded<
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 24, 2023</i>
+<br><i>Last revised Jun 8, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

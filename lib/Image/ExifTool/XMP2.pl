@@ -1388,6 +1388,17 @@ my %sSubVersion = (
     ReuseAllowed    => { Writable => 'boolean' },
 );
 
+%Image::ExifTool::XMP::panorama = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-panorama', 2 => 'Image' },
+    NAMESPACE => 'panorama',
+    NOTES => 'Adobe Photoshop Panorama-profile tags.',
+    Transformation      => { },
+    VirtualFocalLength  => { Writable => 'real' },
+    VirtualImageXCenter => { Writable => 'real' },
+    VirtualImageYCenter => { Writable => 'real' },
+);
+
 # Creative Commons namespace properties (cc) (ref 5)
 %Image::ExifTool::XMP::cc = (
     %xmpTableDefaults,
@@ -2092,6 +2103,27 @@ my %sSubVersion = (
     ccv_max_luminance_nits  => { Name => 'CCVMaxLuminanceNits', Writable => 'real' },
     ccv_avg_luminance_nits  => { Name => 'CCVAvgLuminanceNits', Writable => 'real' },
     scene_referred          => { Name => 'SceneReferred', Writable => 'boolean' },
+);
+
+# HDR Gain Map metadata namespace
+%Image::ExifTool::XMP::hdrgm = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-hdrgm', 2 => 'Image' },
+    NAMESPACE   => 'hdrgm',
+    TABLE_DESC => 'XMP HDR Gain Map Metadata',
+    NOTES => 'Tags used in Adobe gain map images.',
+    Version             => { Avoid => 1 },
+    BaseRenditionIsHDR  => { Writable => 'boolean' },
+    # this is a pain in the ass: List items below may or may not be lists
+    # according to the Adobe specification -- I don't know how to handle tags
+    # with a variable format like this, so just make them lists here for now
+    OffsetSDR           => { Writable => 'real', List => 'Seq' },
+    OffsetHDR           => { Writable => 'real', List => 'Seq' },
+    HDRCapacityMin      => { Writable => 'real' },
+    HDRCapacityMax      => { Writable => 'real' },
+    GainMapMin          => { Writable => 'real', List => 'Seq' },
+    GainMapMax          => { Writable => 'real', List => 'Seq' },
+    Gamma               => { Writable => 'real', List => 'Seq', Avoid => 1 },
 );
 
 # SVG namespace properties (ref 9)

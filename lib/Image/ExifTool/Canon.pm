@@ -2092,6 +2092,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             TagTable => 'Image::ExifTool::Canon::AFConfig',
         }
     },
+  # 0x402b - crop information (forum14904)
     0x403f => { #25
         Name => 'RawBurstModeRoll',
         SubDirectory => {

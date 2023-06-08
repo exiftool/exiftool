@@ -20,7 +20,7 @@ use strict;
 use vars qw($VERSION $warnString);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.29';
+$VERSION = '1.30';
 
 sub WarnProc($) { $warnString = $_[0]; }
 
@@ -259,8 +259,8 @@ my %iWorkType = (
 %Image::ExifTool::ZIP::RAR5 = (
     GROUPS => { 2 => 'Other' },
     VARS => { NO_ID => 1 },
-    NOTES => 'These tags are extracted from RAR v5 archive files.',
-    RARVersion      => { },
+    NOTES => 'These tags are extracted from RAR v5 and 7z archive files.',
+    FileVersion     => { },
     CompressedSize  => { },
     ModifyDate => {
         Groups => { 2 => 'Time' },
@@ -310,7 +310,7 @@ sub ProcessRAR($$)
         $et->SetFileType();
         SetByteOrder('II');
         my $tagTablePtr = GetTagTable('Image::ExifTool::ZIP::RAR5');
-        $et->HandleTag($tagTablePtr, 'RARVersion', 4);
+        $et->HandleTag($tagTablePtr, 'FileVersion', 'RAR v4');
         $tagTablePtr = GetTagTable('Image::ExifTool::ZIP::RAR');
 
         for (;;) {
@@ -356,7 +356,7 @@ sub ProcessRAR($$)
         return 0 unless $raf->Read($buff, 1) and $buff eq "\0";
         $et->SetFileType();
         my $tagTablePtr = GetTagTable('Image::ExifTool::ZIP::RAR5');
-        $et->HandleTag($tagTablePtr, 'RARVersion', 5);
+        $et->HandleTag($tagTablePtr, 'FileVersion', 'RAR v5');
         $$et{INDENT} .= '| ';
 
         # loop through header blocks

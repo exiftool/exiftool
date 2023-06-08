@@ -1128,14 +1128,14 @@ sub Process_text($$$;$)
 # Inputs: 0) ExifTool ref
 # Notes: Also accesses ExifTool RAF*, SET_GROUP1, HandlerType, MetaFormat,
 #        ee*, and avcC elements (* = must exist)
-# - may be called either due to ExtractEmbedded option, or ImageDataMD5 requested
-# - MD5 includes only video and audio data
+# - may be called either due to ExtractEmbedded option, or ImageDataHash requested
+# - hash includes only video and audio data
 sub ProcessSamples($)
 {
     my $et = shift;
     my ($raf, $ee) = @$et{qw(RAF ee)};
-    my ($i, $buff, $pos, $hdrLen, $hdrFmt, @time, @dur, $oldIndent, $md5);
-    my ($mdatOffset, $mdatSize); # (for range-checking samples when MD5 is done)
+    my ($i, $buff, $pos, $hdrLen, $hdrFmt, @time, @dur, $oldIndent, $hash);
+    my ($mdatOffset, $mdatSize); # (for range-checking samples when hash is done)
 
     return unless $ee;
     delete $$et{ee};    # use only once
@@ -1144,22 +1144,22 @@ sub ProcessSamples($)
     my $type = $$et{HandlerType} || '';
     if ($type eq 'vide') {
         # only process specific types of video streams
-        $md5 = $$et{ImageDataMD5};
+        $hash = $$et{ImageDataHash};
         # only process specific video types if ExtractEmbedded was used
-        # (otherwise we are only here to calculate the audio/video MD5)
+        # (otherwise we are only here to calculate the audio/video hash)
         if ($eeOpt) {
             if    ($$ee{avcC}) { $type = 'avcC' }
             elsif ($$ee{JPEG}) { $type = 'JPEG' }
-            else { return unless $md5 }
+            else { return unless $hash }
         }
     } elsif ($type eq 'soun') {
-        $md5 = $$et{ImageDataMD5};
-        return unless $md5;
+        $hash = $$et{ImageDataHash};
+        return unless $hash;
     } else {
-        return unless $eeOpt;   # (don't do MD5 on other types)
+        return unless $eeOpt;   # (don't do hash on other types)
     }
 
-    my $md5size = 0;
+    my $hashSize = 0;
     my ($start, $size) = @$ee{qw(start size)};
 #
 # determine sample start offsets from chunk offsets (stco) and sample-to-chunk table (stsc),
@@ -1213,7 +1213,7 @@ Sample:     for ($i=0; ; ) {
             ++$iChunk;
         }
         @$start == @$size or $et->WarnOnce('Incorrect sample start/size count'), return;
-        # process as chunks if we are only interested in calculating MD5
+        # process as chunks if we are only interested in calculating hash
         if ($type eq 'soun' or $type eq 'vide') {
             $start = $stco;
             $size = \@chunkSize;
@@ -1232,7 +1232,7 @@ Sample:     for ($i=0; ; ) {
         $oldIndent = $$et{INDENT};
         $$et{INDENT} = '';
     }
-    if ($md5) {
+    if ($hash) {
         $mdatSize = $$et{MediaDataSize};
         $mdatOffset = $$et{MediaDataOffset} if defined $mdatSize;
     }
@@ -1249,7 +1249,7 @@ Sample:     for ($i=0; ; ) {
         delete $$et{FoundGPSLatitude};
         delete $$et{FoundGPSDateTime};
 
-        # range check the sample data for MD5 if necessary
+        # range check the sample data for hash if necessary
         my $size = $$size[$i];
         if (defined $mdatOffset) {
             if ($$start[$i] < $mdatOffset) {
@@ -1268,9 +1268,9 @@ Sample:     for ($i=0; ; ) {
             next unless $n;
             $size = $n;
         }
-        if ($md5) {
-            $md5->add($buff);
-            $md5size += length $buff;
+        if ($hash) {
+            $hash->add($buff);
+            $hashSize += length $buff;
         }
         if ($type eq 'avcC') {
             next if length($buff) <= $hdrLen;
@@ -1399,7 +1399,7 @@ Sample:     for ($i=0; ; ) {
     }
     if ($verbose) {
         my $str = $type eq 'soun' ? 'Audio' : 'Video';
-        $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: $md5size bytes of $str data)\n") if $md5size;
+        $et->VPrint(0, "$$et{INDENT}(ImageDataHash: $hashSize bytes of $str data)\n") if $hashSize;
         $$et{INDENT} = $oldIndent;
         $et->VPrint(0, "--------------------------\n");
     }

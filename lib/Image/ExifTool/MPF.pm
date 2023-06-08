@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 sub ProcessMPImageList($$$);
 
@@ -131,6 +131,7 @@ sub ProcessMPImageList($$$);
             0x020002 => 'Multi-frame Disparity',
             0x020003 => 'Multi-angle',
             0x030000 => 'Baseline MP Primary Image',
+            0x040000 => 'Original Preservation Image', # (Exif 3.0)
         },
     },
     4 => {

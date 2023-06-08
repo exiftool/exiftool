@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26407 tags, with 16869 unique tag names.
+They contain a total of 26443 tags, with 16891 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -798,6 +798,13 @@ for the official EXIF 2.32 specification.
   0xa433   LensMake                  ExifIFD    string
   0xa434   LensModel                 ExifIFD    string
   0xa435   LensSerialNumber          ExifIFD    string
+  0xa436   Title                     ExifIFD    string/
+  0xa437   Photographer              ExifIFD    string
+  0xa438   ImageEditor               ExifIFD    string
+  0xa439   CameraFirmware            ExifIFD    string
+  0xa43a   RAWDevelopingSoftware     ExifIFD    string
+  0xa43b   ImageEditingSoftware      ExifIFD    string
+  0xa43c   MetadataEditingSoftware   ExifIFD    string
   0xa460   CompositeImage            ExifIFD    int16u
   0xa461   CompositeImageCount       ExifIFD    int16u[2]
   0xa462   CompositeImageExposureTimes ExifIFD  undef
@@ -1306,6 +1313,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   GPano                                         XMP GPano
   GSpherical                                    XMP GSpherical
   hdr                                           XMP hdr
+  hdrgm                                         XMP hdrgm
   ics                                           XMP ics
   iptcCore                                      XMP iptcCore
   iptcExt                                       XMP iptcExt
@@ -1319,6 +1327,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   mwg-kw                                        MWG Keywords
   mwg-rs                                        MWG Regions
   nine                                          Nikon nine
+  panorama                                      XMP panorama
   pdf                                           XMP pdf
   pdfx                                          XMP pdfx
   photomech                                     PhotoMechanic XMP
@@ -4047,6 +4056,8 @@ These tags belong to the ExifTool XMP-et family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
+  OriginalImageHash                             string
+  OriginalImageHashType                         string
   OriginalImageMD5                              string
 
 =head3 XMP exif Tags
@@ -4497,6 +4508,24 @@ These tags belong to the ExifTool XMP-hdr family 1 group.
   CCVPrimariesXY                                string
   CCVWhiteXY                                    string
   SceneReferred                                 boolean
+
+=head3 XMP hdrgm Tags
+
+Tags used in Adobe gain map images.
+
+These tags belong to the ExifTool XMP-hdrgm family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  BaseRenditionIsHDR                            boolean
+  GainMapMax                                    real+
+  GainMapMin                                    real+
+  Gamma                                         real/+
+  HDRCapacityMax                                real
+  HDRCapacityMin                                real
+  OffsetHDR                                     real+
+  OffsetSDR                                     real+
+  Version                                       string/
 
 =head3 XMP ics Tags
 
@@ -5126,6 +5155,19 @@ These tags belong to the ExifTool XMP-mediapro family 1 group.
   People                                        string+
   Status                                        string
   UserFields                                    string+
+
+=head3 XMP panorama Tags
+
+Adobe Photoshop Panorama-profile tags.
+
+These tags belong to the ExifTool XMP-panorama family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  Transformation                                string
+  VirtualFocalLength                            real
+  VirtualImageXCenter                           real
+  VirtualImageYCenter                           real
 
 =head3 XMP pdf Tags
 
@@ -20439,6 +20481,8 @@ WX300, but not for panorama images.
    6294    LensType                             int16u
    6296    DistortionCorrParamsPresent          int8u
    6297    DistortionCorrParamsNumber           int8u
+   6444    AspectRatio                          int8u
+   6792    AspectRatio                          int8u
 
 =head3 Sony Tag2010f Tags
 
@@ -20469,6 +20513,7 @@ Valid for DSC-RX100M2, DSC-QX10/QX100.
    4406    MinFocalLength                       int16u
    4408    MaxFocalLength                       int16u
    4412    SonyISO                              int16u
+   6444    AspectRatio                          int8u
 
 =head3 Sony Tag2010g Tags
 
@@ -20507,6 +20552,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.
    6338    LensType                             int16u
    6340    DistortionCorrParamsPresent          int8u
    6341    DistortionCorrParamsNumber           int8u
+   6488    AspectRatio                          int8u
 
 =head3 Sony Tag2010h Tags
 
@@ -20546,6 +20592,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.
    6386    LensType                             int16u
    6388    DistortionCorrParamsPresent          int8u
    6389    DistortionCorrParamsNumber           int8u
+   6444    AspectRatio                          int8u
 
 =head3 Sony Tag2010i Tags
 
@@ -20584,6 +20631,7 @@ RX100M5A/RX100M7/HX99.
    6134    LensType                             int16u
    6136    DistortionCorrParamsPresent          int8u
    6137    DistortionCorrParamsNumber           int8u
+   6284    AspectRatio                          int8u
 
 =head3 Sony MeterInfo9 Tags
 
@@ -20825,6 +20873,9 @@ WX350/WX500, ILCE-1/7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/7SM3/9/9M2/5000/
      42    Quality2                             int8u
      71    SonyImageHeight                      int16u~
      83    ModelReleaseYear                     int8u~
+    307    ShutterType                          int8u
+    313    ShutterType                          int8u
+    319    ShutterType                          int8u
 
 =head3 Sony Tag9401 Tags
 
@@ -20836,6 +20887,7 @@ WX350/WX500, ILCE-1/7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/7SM3/9/9M2/5000/
    1181    ISOInfo                              Sony ISOInfo
    1185    ISOInfo                              Sony ISOInfo
    1186    ISOInfo                              Sony ISOInfo
+   1210    ISOInfo                              Sony ISOInfo
    1437    ISOInfo                              Sony ISOInfo
    1588    ISOInfo                              Sony ISOInfo
    1590    ISOInfo                              Sony ISOInfo
@@ -24104,7 +24156,10 @@ chunk.
 
 The tags below are found in JPEG 2000 images and the JUMBF metadata in JPEG
 images, but not all of these are extracted.  Note that ExifTool currently
-writes only EXIF, IPTC and XMP tags in Jpeg2000 images.
+writes only EXIF, IPTC and XMP tags in Jpeg2000 images, and EXIF and XMP in
+JXL images.  ExifTool will read/write Brotli-compressed EXIF and XMP in JXL
+images, but the API Compress option must be set to create new EXIF and XMP
+in compressed format.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -24114,6 +24169,9 @@ writes only EXIF, IPTC and XMP tags in Jpeg2000 images.
   'bfil'   BinaryFilter                         no
   'bidb'   BinaryData                           no
   'bpcc'   BitsPerComponent                     no
+  'brob'   BrotliXMP                            XMP
+           BrotliEXIF                           EXIF
+           BrotliJUMB                           Jpeg2000
   'c2sh'   C2PASaltHash                         no
   'cbor'   CBORData                             CBOR
   'cdef'   ComponentDefinition                  no
@@ -24132,6 +24190,7 @@ writes only EXIF, IPTC and XMP tags in Jpeg2000 images.
   'ftbl'   FragmentTable                        no
   'ftyp'   FileType                             Jpeg2000 FileType
   'gtso'   GraphicsTechnologyStandardOutput     no
+  'hrgm'   GainMapImage                         no
   'ihdr'   ImageHeader                          Jpeg2000 ImageHeader
   'inst'   InstructionSet                       no
   'jP  '   JP2Signature                         no
@@ -24145,6 +24204,7 @@ writes only EXIF, IPTC and XMP tags in Jpeg2000 images.
   'jumb'   JUMBFBox                             Jpeg2000
   'jumd'   JUMBFDescr                           Jpeg2000 JUMD
   'jxlc'   JXLCodestream                        no
+  'jxlp'   PartialJXLCodestream                 no
   'lbl '   Label                                no
   'mdat'   MediaData                            no
   'mp7b'   MPEG7Binary                          no
@@ -28588,6 +28648,7 @@ and are not currently writable.
   'auxC'   AuxiliaryImageType                   no
   'av1C'   AV1Configuration                     QuickTime AV1Config
   'clap'   CleanAperture                        no
+  'clli'   ContentLightLevel                    QuickTime ContentLightLevel
   'colr'   ICC_Profile                          ICC_Profile
            ColorRepresentation                  QuickTime ColorRep
   'hvcC'   HEVCConfiguration                    QuickTime HEVCConfig
@@ -28610,6 +28671,13 @@ and are not currently writable.
     2.3    ChromaFormat                         no
     2.4    ChromaSamplePosition                 no
       3    InitialDelaySamples?                 no
+
+=head3 QuickTime ContentLightLevel Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    MaxContentLightLevel                 no
+      1    MaxPicAverageLightLevel              no
 
 =head3 QuickTime ColorRep Tags
 
@@ -29607,6 +29675,7 @@ metadata to WEBP images, but can't yet write to other RIFF-based formats.
   'fmt '               AudioFormat              RIFF AudioFormat
   'gps0'               GPSTrack                 QuickTime Stream
   'gsen'               GSensor                  QuickTime Stream
+  'guan'               Guano                    no
   'iXML'               IXML                     XMP XML
   'id3 '               ID3                      ID3
   'inst'               Instrument               RIFF Instrument
@@ -37740,15 +37809,15 @@ These tags are extracted from RAR archive files.
 
 =head3 ZIP RAR5 Tags
 
-These tags are extracted from RAR v5 archive files.
+These tags are extracted from RAR v5 and 7z archive files.
 
   Tag Name                                      Writable
   --------                                      --------
   ArchivedFileName                              no
   CompressedSize                                no
+  FileVersion                                   no
   ModifyDate                                    no
   OperatingSystem                               no
-  RARVersion                                    no
   UncompressedSize                              no
 
 =head2 RTF Tags
@@ -38167,7 +38236,7 @@ FileName.
   ICC_Profile                ICC_Profile        yes!
   ID3Size                    File               no
   IPTC                       IPTC               yes!
-  ImageDataMD5               File               no
+  ImageDataHash              File               no
   ImageHeight                File               no
   ImageWidth                 File               no
   JPEGDigest                 File               no
@@ -38627,6 +38696,7 @@ for more details.
                        IFD0:XPAuthor
                        IFD0:XPKeywords
                        IFD0:XPSubject
+  ImageDataMD5         ImageDataHash            yes
   LargeTags            CanonVRD                 yes
                        DLOData
                        EXIF

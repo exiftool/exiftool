@@ -1293,6 +1293,7 @@ sub SetNewValuesFromFile($$;@)
         HexTagIDs       => $$options{HexTagIDs},
         IgnoreMinorErrors=>$$options{IgnoreMinorErrors},
         IgnoreTags      => $$options{IgnoreTags},
+        ImageHashType   => $$options{ImageHashType},
         Lang            => $$options{Lang},
         LargeFileSupport=> $$options{LargeFileSupport},
         List            => 1,
@@ -6880,14 +6881,14 @@ sub SetFileTime($$;$$$$)
 }
 
 #------------------------------------------------------------------------------
-# Add data to MD5 checksum
+# Add data to hash checksum
 # Inputs: 0) ExifTool ref, 1) RAF ref, 2) data size (or undef to read to end of file),
 #         3) data name (or undef for no warnings or messages), 4) flag for no verbose message
-# Returns: number of bytes read and MD5'd
-sub ImageDataMD5($$$;$$)
+# Returns: number of bytes read and hashed
+sub ImageDataHash($$$;$$)
 {
     my ($self, $raf, $size, $type, $noMsg) = @_;
-    my $md5 = $$self{ImageDataMD5} or return;
+    my $hash = $$self{ImageDataHash} or return;
     my ($bytesRead, $n) = (0, 65536);
     my $buff;
     for (;;) {
@@ -6900,11 +6901,11 @@ sub ImageDataMD5($$$;$$)
             $self->Warn("Error reading $type data") if $type and defined $size;
             last;
         }
-        $md5->add($buff);
+        $hash->add($buff);
         $bytesRead += length $buff;
     }
     if ($$self{OPTIONS}{Verbose} and $bytesRead and $type and not $noMsg) {
-        $self->VPrint(0, "$$self{INDENT}(ImageDataMD5: $bytesRead bytes of $type data)\n");
+        $self->VPrint(0, "$$self{INDENT}(ImageDataHash: $bytesRead bytes of $type data)\n");
     }
     return $bytesRead;
 }

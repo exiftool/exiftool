@@ -294,6 +294,11 @@ tag keys only if the <a href="#Duplicates">Duplicates</a> option is 0 and
 returned list of tag keys, and with other <a href="#Sort">Sort</a> settings the
 entries may not be in the same order as requested.)  If a requested tag doesn't
 exist, a tag key is still generated, but the tag value is undefined.
+<br>&nbsp;<br>
+<b>Note:</b> Do not reuse this list in subsequent calls to
+<a href="#ImageInfo">ImageInfo</a> because it returns tag keys, not names, and
+the list will grow for each call resulting in increasingly slower
+performance.
 
 </td></tr><tr><td valign=top><b>HASH&nbsp;ref</b></td><td>
 Reference to a hash containing the options settings valid for this call only.
@@ -521,9 +526,11 @@ numerical options.</p>
     </table></td><td align=center>undef</td></tr>
 <tr id="Composite"><td>Composite</td><td>Flag to generate Composite tags when extracting information.</td>
     <td align=center>0 or 1</td><td align=center>1</td></tr>
-<tr id="Compress"><td>Compress</td><td>Flag to write new values in compressed format if possible.
-    Has no effect unless Compress::Zlib is installed.</td>
-    <td align=center>0 or 1</td><td align=center>undef</td></tr>
+<tr id="Compress"><td>Compress</td><td>Flag to write new values in compressed
+    format if possible. Has no effect unless the relevant compression library is
+    available.  Valid when writing metadata to PNG, JXL or MIE images. Setting this
+    to zero causes JXL metadata to be rewritten as uncompressed when edited.</td>
+    <td align=center>0, 1 or undef</td><td align=center>undef</td></tr>
 <tr id="CoordFormat"><td>CoordFormat</td><td>Specify output format for GPS coordinates.</td>
     <td>A printf-style format string with specifiers
     for degrees, minutes and seconds in that order, however minutes and seconds
@@ -723,7 +730,10 @@ numerical options.</p>
     <td>List reference, delimited string of names (any delimiter is allowed), or undef to
     clear the previous IgnoreTags list.</td>
     <td align=center>undef</td></tr>
-<tr id="Lang"><td>Lang</td><td>Localized language for exiftool tag descriptions, etc.  If the
+<tr id="ImageHashType"><td>ImageHashType</td><td>Sets type of hash
+    algorithm used for the ImageDataHash tag calculation.</td>
+    <td align=center>'MD5', 'SHA256' or 'SHA512'</td><td align=center>'MD5'</td></tr>
+<tr id="Lang"><td>Lang</td><td>Localized language for ExifTool tag descriptions, etc.  If the
     specified language isn't available, the option is not changed.  May be set to
     undef to select the built-in default language.</td>
     <td align=left>Image::ExifTool::Lang module name (eg. 'fr', 'zh_cn'), or 'en' or undef for the default language.</td>

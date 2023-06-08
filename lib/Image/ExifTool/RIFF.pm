@@ -30,7 +30,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.64';
+$VERSION = '1.65';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -38,7 +38,7 @@ sub ProcessSLLT($$$);
 sub ProcessLucas($$$);
 sub WriteRIFF($$);
 
-# RIFF chunks containing image data (to include in ImageDataMD5 digest)
+# RIFF chunks containing image data (to include in ImageDataHash digest)
 my %isImageData = (
     LIST_movi => 1, # (AVI: contains ##db, ##dc, ##wb)
     data => 1,      # (WAV)
@@ -652,6 +652,7 @@ my %code2charset = (
         Name => 'Acidizer',
         SubDirectory => { TagTable => 'Image::ExifTool::RIFF::Acidizer' },
     },
+    guan => 'Guano', #forum14831
 );
 
 # the maker notes used by some digital cameras
@@ -1987,7 +1988,7 @@ sub ProcessRIFF($$)
     my $unknown = $et->Options('Unknown');
     my $validate = $et->Options('Validate');
     my $ee = $et->Options('ExtractEmbedded');
-    my $md5 = $$et{ImageDataMD5};
+    my $hash = $$et{ImageDataHash};
 
     # verify this is a valid RIFF file
     return 0 unless $raf->Read($buff, 12) == 12;
@@ -2045,6 +2046,7 @@ sub ProcessRIFF($$)
             } else {
                 next;
             }
+            last;
         }
         # stop when we hit the audio data or AVI index or AVI movie data
         # --> no more because Adobe Bridge stores XMP after this!!
@@ -2067,9 +2069,9 @@ sub ProcessRIFF($$)
         # (in LIST_movi chunk: ##db = uncompressed DIB, ##dc = compressed DIB, ##wb = audio data)
         if ($tagInfo or (($verbose or $unknown) and $tag !~ /^(data|idx1|LIST_movi|RIFF|\d{2}(db|dc|wb))$/)) {
             $raf->Read($buff, $len2) == $len2 or $err=1, last;
-            if ($md5 and $isImageData{$tag}) {
-                $md5->add($buff);
-                $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: '${tag}' chunk, $len2 bytes)\n");
+            if ($hash and $isImageData{$tag}) {
+                $hash->add($buff);
+                $et->VPrint(0, "$$et{INDENT}(ImageDataHash: '${tag}' chunk, $len2 bytes)\n");
             }
             my $setGroups;
             if ($tagInfo and ref $tagInfo eq 'HASH' and $$tagInfo{SetGroups}) {
@@ -2099,10 +2101,10 @@ sub ProcessRIFF($$)
             next; # (must not increment $pos)
         } else {
             my $rewind;
-            # do MD5 if required
-            if ($md5 and $isImageData{$tag}) {
+            # do hash if required
+            if ($hash and $isImageData{$tag}) {
                 $rewind = $raf->Tell();
-                $et->ImageDataMD5($raf, $len2, "'${tag}' chunk");
+                $et->ImageDataHash($raf, $len2, "'${tag}' chunk");
             }
             if ($tag eq 'LIST_movi' and $ee) {
                 $raf->Seek($rewind, 0) or $err = 1, last if $rewind;

@@ -106,8 +106,10 @@ my %coordConv = (
                 return undef unless $inv and $val =~ /^([-+0-9])/;
                 return($1 eq '-' ? 1 : 0);
             },
-            0 => 'Above Sea Level',
-            1 => 'Below Sea Level',
+            0 => 'Above Sea Level', # (ellipsoidal surface, Exif 3.0)
+            1 => 'Below Sea Level', # (ellipsoidal surface, Exif 3.0)
+            # 2 => 'Above Sea Level', # (Exif 3.0)
+            # 3 => 'Below Sea Level', # (Exif 3.0)
         },
     },
     0x0006 => {
@@ -289,6 +291,7 @@ my %coordConv = (
         Name => 'GPSProcessingMethod',
         Writable => 'undef',
         Notes => 'values of "GPS", "CELLID", "WLAN" or "MANUAL" by the EXIF spec.',
+        # (or QZZSS, GALILEO, GLONASS, BEIDOU or NAVIC in Exif 3.0)
         RawConv => 'Image::ExifTool::Exif::ConvertExifText($self,$val,1,$tag)',
         RawConvInv => 'Image::ExifTool::Exif::EncodeExifText($self,$val)',
     },

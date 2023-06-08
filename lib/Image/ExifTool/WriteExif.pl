@@ -420,15 +420,15 @@ sub ValidateImageData($$$;$)
 }
 
 #------------------------------------------------------------------------------
-# Add specified image data to ImageDataMD5 hash
+# Add specified image data to ImageDataHash hash
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) lookup for [tagInfo,value] based on tagID
-sub AddImageDataMD5($$$)
+sub AddImageDataHash($$$)
 {
     my ($et, $dirInfo, $offsetInfo) = @_;
     my ($tagID, $offset, $buff);
 
     my $verbose = $et->Options('Verbose');
-    my $md5 = $$et{ImageDataMD5};
+    my $hash = $$et{ImageDataHash};
     my $raf = $$dirInfo{RAF};
 
     foreach $tagID (sort keys %$offsetInfo) {
@@ -451,12 +451,12 @@ sub AddImageDataMD5($$$)
             my $size = shift @sizes;
             next unless $offset =~ /^\d+$/ and $size and $size =~ /^\d+$/ and $size;
             next unless $raf->Seek($offset, 0); # (offset is absolute)
-            $total += $et->ImageDataMD5($raf, $size);
+            $total += $et->ImageDataHash($raf, $size);
         }
         if ($verbose) {
             my $name = "$$dirInfo{DirName}:$$tagInfo{Name}";
             $name =~ s/Offsets?|Start$//;
-            $et->VPrint(0, "$$et{INDENT}(ImageDataMD5: $total bytes of $name data)\n");
+            $et->VPrint(0, "$$et{INDENT}(ImageDataHash: $total bytes of $name data)\n");
         }
     }
 }
@@ -780,7 +780,7 @@ Entry:  for (;;) {
                     $readFormat = $oldFormat = Get16u($dataPt, $entry+2);
                     $readCount = $oldCount = Get32u($dataPt, $entry+4);
                     undef $oldImageData;
-                    if ($oldFormat < 1 or $oldFormat > 13 and not ($oldFormat == 16 and $$et{Make} eq 'Apple' and $inMakerNotes)) {
+                    if (($oldFormat < 1 or $oldFormat > 13) and $oldFormat != 129 and not ($oldFormat == 16 and $$et{Make} eq 'Apple' and $inMakerNotes)) {
                         my $msg = "Bad format ($oldFormat) for $name entry $index";
                         # patch to preserve invalid directory entries in SubIFD3 of
                         # various Kodak Z-series cameras (Z812, Z1085IS, Z1275)
@@ -1277,7 +1277,9 @@ NoWrite:            next if $isNew > 0;
                                 $et->Warn("Writing large value for $name",1);
                             }
                             # re-code if necessary
-                            if ($strEnc and $newFormName eq 'string') {
+                            if ($newFormName eq 'utf8') {
+                                $newValue = $et->Encode($newValue, 'UTF8');
+                            } elsif ($strEnc and $newFormName eq 'string') {
                                 $newValue = $et->Encode($newValue, $strEnc);
                             }
                         } else {

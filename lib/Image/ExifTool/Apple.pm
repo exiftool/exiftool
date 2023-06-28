@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::PLIST;
 
-$VERSION = '1.08';
+$VERSION = '1.09';
 
 sub ConvertPLIST($$);
 
@@ -182,7 +182,10 @@ sub ConvertPLIST($$);
     # 0x0028 - int32s (UBMethod, ref 2)
     # 0x0029 - string (SpatialOverCaptureGroupIdentifier, ref 2)
     # 0x002A - (iCloudServerSoftwareVersionForDynamicallyGeneratedMedia, ref 2)
-    # 0x002B - (PhotoIdentifier, ref 2)
+    0x002b => {
+        Name => 'PhotoIdentifier', #2
+        Writable => 'string',
+    },
     # 0x002C - (SpatialOverCaptureImageType, ref 2)
     # 0x002D - (CCT, ref 2)
     # 0x002E - (ApsMode, ref 2)
@@ -308,7 +311,7 @@ sub ConvertPLIST($$)
     $val = $$dirInfo{Value};
     if (ref $val eq 'HASH' and not $et->Options('Struct')) {
         require 'Image/ExifTool/XMPStruct.pl';
-        $val = Image::ExifTool::XMP::SerializeStruct($val);
+        $val = Image::ExifTool::XMP::SerializeStruct($et, $val);
     }
     return $val;
 }

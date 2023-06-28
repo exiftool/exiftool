@@ -25,6 +25,7 @@ config_files/example.config
 config_files/fotoware.config
 config_files/frameCount.config
 config_files/gps2utm.config
+config_files/guano.config
 config_files/nksc.config
 config_files/photoshop_paths.config
 config_files/picasa_faces.config
@@ -634,6 +635,7 @@ t/JVC_3.out
 t/JXL.t
 t/JXL_2.out
 t/JXL_3.out
+t/JXL_4.out
 t/Jpeg2000.t
 t/Jpeg2000_2.out
 t/Jpeg2000_3.out
@@ -1053,6 +1055,7 @@ t/images/JSON.json
 t/images/JVC.jpg
 t/images/JVC2.jpg
 t/images/JXL.jxl
+t/images/JXL2.jxl
 t/images/Jpeg2000.j2c
 t/images/Jpeg2000.jp2
 t/images/Kodak.jpg

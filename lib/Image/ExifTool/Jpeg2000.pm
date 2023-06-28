@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.35';
+$VERSION = '1.36';
 
 sub ProcessJpeg2000Box($$$);
 sub ProcessJUMD($$$);
@@ -132,7 +132,7 @@ my %j2cMarker = (
         images, but not all of these are extracted.  Note that ExifTool currently
         writes only EXIF, IPTC and XMP tags in Jpeg2000 images, and EXIF and XMP in
         JXL images.  ExifTool will read/write Brotli-compressed EXIF and XMP in JXL
-        images, but the API Compress option must be set to create new EXIF and XMP
+        images, but the API L<Compress|../ExifTool.html#Compress> option must be set to create new EXIF and XMP
         in compressed format.
     },
 #
@@ -1429,7 +1429,8 @@ sub ProcessJXLCodestream($$)
 
     return 0 unless $$dataPt =~ /^(\0\0\0\0)?\xff\x0a/; # validate codestream
     # ignore if already extracted (ie. subsequent jxlp boxes)
-    return 0 if $$et{VALUE}{ImageWidth};
+    return 0 if $$et{ProcessedJXLCodestream};
+    $$et{ProcessedJXLCodestream} = 1;
     # work with first 64 bytes of codestream data
     # (and add padding if necessary to avoid unpacking past end of data)
     my $dat;

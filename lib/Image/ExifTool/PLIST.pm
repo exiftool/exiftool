@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 sub ExtractObject($$;$);
 sub Get24u($$);
@@ -288,6 +288,12 @@ sub ExtractObject($$;$)
                     my $obj = ExtractObject($et, $plistInfo, $tag);
                     next if not defined $obj;
                     unless ($tagTablePtr) {
+                        # make sure this is a valid structure field name
+                        if (not defined $key or $key !~ /^[-_a-zA-Z0-9]+$/) {
+                            $key = "Tag$i"; # (generate fake tag name if it had illegal characters)
+                        } elsif ($key !~ /^[_a-zA-Z]/) {
+                            $key = "_$key"; # (must begin with alpha or underline)
+                        }
                         $$val{$key} = $obj if defined $obj;
                         next;
                     }
@@ -298,6 +304,7 @@ sub ExtractObject($$;$)
                         my $name = $tag;
                         $name =~ s/([^A-Za-z])([a-z])/$1\u$2/g; # capitalize words
                         $name =~ tr/-_a-zA-Z0-9//dc; # remove illegal characters
+                        $name = "Tag$name" if length($name) < 2 or $name =~ /^[-0-9]/;
                         $tagInfo = { Name => ucfirst($name), List => 1 };
                         if ($$plistInfo{DateFormat}) {
                             $$tagInfo{Groups}{2} = 'Time';

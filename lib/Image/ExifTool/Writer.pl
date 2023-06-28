@@ -139,7 +139,7 @@ my @delGroups = qw(
     Adobe AFCP APP0 APP1 APP2 APP3 APP4 APP5 APP6 APP7 APP8 APP9 APP10 APP11
     APP12 APP13 APP14 APP15 CanonVRD CIFF Ducky EXIF ExifIFD File FlashPix
     FotoStation GlobParamIFD GPS ICC_Profile IFD0 IFD1 Insta360 InteropIFD IPTC
-    ItemList JFIF Jpeg2000 Keys MakerNotes Meta MetaIFD Microsoft MIE MPF
+    ItemList JFIF Jpeg2000 JUMBF Keys MakerNotes Meta MetaIFD Microsoft MIE MPF
     NikonApp NikonCapture PDF PDF-update PhotoMechanic Photoshop PNG PNG-pHYs
     PrintIM QuickTime RMETA RSRC SubIFD Trailer UserData XML XML-* XMP XMP-*
 );
@@ -1028,7 +1028,7 @@ TAG: foreach $tagInfo (@matchingTags) {
                         foreach (@vals) {
                             if (ref $_ eq 'HASH') {
                                 require 'Image/ExifTool/XMPStruct.pl';
-                                $_ = Image::ExifTool::XMP::SerializeStruct($_);
+                                $_ = Image::ExifTool::XMP::SerializeStruct($self, $_);
                             }
                             print $out "$$self{INDENT2}$verb $wgrp1:$tag$fromList if value is '${_}'\n";
                         }
@@ -1314,6 +1314,7 @@ sub SetNewValuesFromFile($$;@)
         ScanForXMP      => $$options{ScanForXMP},
         StrictDate      => defined $$options{StrictDate} ? $$options{StrictDate} : 1,
         Struct          => $structOpt,
+        StructFormat    => $$options{StructFormat},
         SystemTags      => $$options{SystemTags},
         TimeZone        => $$options{TimeZone},
         Unknown         => $$options{Unknown},
@@ -1764,7 +1765,14 @@ GNV_TagInfo:    foreach $tagInfo (@tagInfoList) {
         }
     }
     # return our value(s)
-    return @$vals if wantarray;
+    if (wantarray) {
+        # remove duplicates if requested
+        if (@$vals > 1 and $self->Options('NoDups')) {
+            my %seen;
+            @$vals = grep { !$seen{$_}++ } @$vals;
+        }
+        return @$vals;
+    }
     return $$vals[0];
 }
 
@@ -3284,7 +3292,7 @@ sub InsertTagValues($$$;$$$)
                 }
             } elsif (ref $val eq 'HASH') {
                 require 'Image/ExifTool/XMPStruct.pl';
-                $val = Image::ExifTool::XMP::SerializeStruct($val);
+                $val = Image::ExifTool::XMP::SerializeStruct($self, $val);
             } elsif (not defined $val) {
                 $val = $$self{OPTIONS}{MissingTagValue} if $asList;
             }
@@ -3768,6 +3776,8 @@ sub GetNewValueHash($$;$$$$)
         # this is a bit tricky:  we want to add to a protected nvHash only if we
         # are adding a conditional delete ($_[5] true or DelValue with no Shift)
         # or accumulating List items (NoReplace true)
+        # (NOTE: this should be looked into --> lists may be accumulated instead of being replaced
+        # as expected when copying to the same list from different dynamic -tagsFromFile source files)
         if ($protect and not ($opts{create} and ($$nvHash{NoReplace} or $_[5] or
             ($$nvHash{DelValue} and not defined $$nvHash{Shift}))))
         {
@@ -5599,6 +5609,8 @@ sub WriteJPEG($$)
                     $s =~ /^(Meta|META|Exif)\0\0/ and $dirName = 'Meta';
                 } elsif ($marker == 0xe5) {
                     $s =~ /^RMETA\0/        and $dirName = 'RMETA';
+                } elsif ($marker == 0xeb) {
+                    $s =~ /^JP/             and $dirName = 'JUMBF';
                 } elsif ($marker == 0xec) {
                     $s =~ /^Ducky/          and $dirName = 'Ducky';
                 } elsif ($marker == 0xed) {
@@ -6463,6 +6475,11 @@ sub WriteJPEG($$)
                 if ($$segDataPt =~ /^RMETA\0/) {
                     $segType = 'Ricoh RMETA';
                     $$delGroup{RMETA} and $del = 1;
+                }
+            } elsif ($marker == 0xeb) {         # APP10 (JUMBF)
+                if ($$segDataPt =~ /^JP/) {
+                    $segType = 'JUMBF';
+                    $$delGroup{JUMBF} and $del = 1;
                 }
             } elsif ($marker == 0xec) {         # APP12 (Ducky)
                 if ($$segDataPt =~ /^Ducky/) {

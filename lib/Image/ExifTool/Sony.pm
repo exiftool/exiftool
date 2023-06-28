@@ -263,6 +263,7 @@ sub PrintInvLensSpec($;$$);
     50537 => 'Sigma 50mm F2 DG DN | C', #JR (023)
     50538 => 'Sigma 17mm F4 DG DN | C', #JR (023)
     50539 => 'Sigma 50mm F1.4 DG DN | A', #JR (023)
+    50540 => 'Sigma 14mm F1.4 DG DN | A', #JR (023)
     50544 => 'Sigma 23mm F1.4 DC DN | C', #JR (023)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR

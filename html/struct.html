@@ -260,9 +260,14 @@ allowed in structures which support arbitrary XMP fields (eg.
 <a name='Serialize'></a>
 <h2>Serialization</h2>
 
-Structures are <b>serialized when reading or writing from the command line</b>.
-However, serialization is not done when reading via the API, and is optional when
-writing via the API.  The serialization algorithm is as follows:
+<p>Structures are <b>serialized when reading or writing from the command line</b>.
+However, serialization is not done when reading via the API, and is optional
+when writing via the API.  The default serialization algorithm is outlined
+below, but note that ExifTool 12.64 has an
+<a href="ExifTool.html#StructFormat">API StructFormat option</a> to allow
+JSON-format serialized structures.</p>
+
+<p><u>Default serialization algorithm</u></p>
 
 <ol>
 <li>Escape the following characters in string values (structure field values and
@@ -425,7 +430,7 @@ See the NewXMPxxxStruct tag definition in the <a href="config.html#xmp-xxx">XMP-
 examples of the sample config file</a> for more details.</p>
 
 <hr>
-<i>Last revised Sept. 7, 2016</i>
+<i>Last revised Jun 12, 2023</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

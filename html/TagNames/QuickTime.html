@@ -6282,30 +6282,79 @@ atoms.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'SA3D'</td>
+<td>SpatialAudio</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#SpatialAudio'>QuickTime SpatialAudio Tags</a></td></tr>
+<tr>
 <td>'chan'</td>
 <td>AudioChannelLayout</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#ChannelLayout'>QuickTime ChannelLayout Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'damr'</td>
 <td>DecodeConfig</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#DecodeConfig'>QuickTime DecodeConfig Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'pinf'</td>
 <td>PurchaseInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#ProtectionInfo'>QuickTime ProtectionInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'sinf'</td>
 <td>ProtectionInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#ProtectionInfo'>QuickTime ProtectionInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'wave'</td>
 <td>Wave</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Wave'>QuickTime Wave Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SpatialAudio'>QuickTime SpatialAudio Tags</a></h2>
+<p>Spatial Audio tags.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>SpatialAudioVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>AmbisonicType</td>
+<td class=c>no</td>
+<td><span class=s>0 = Periphonic</span></td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>AmbisonicOrder</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>AmbisonicChannelOrdering</td>
+<td class=c>no</td>
+<td><span class=s>0 = ACN</span></td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
+<td>AmbisonicNormalization</td>
+<td class=c>no</td>
+<td><span class=s>0 = SN3D</span></td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>AmbisonicChannels</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>AmbisonicChannelMap</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ChannelLayout'>QuickTime ChannelLayout Tags</a></h2>
@@ -6935,7 +6984,8 @@ spherical coordinates left/right degrees, down/up degrees, distance)</span></spa
 <td><span class=s>0 = Monoscopic
   <br>1 = Stereoscopic Top-Bottom
   <br>2 = Stereoscopic Left-Right
-  <br>3 = Stereoscopic Stereo-Custom</span></td></tr>
+  <br>3 = Stereoscopic Stereo-Custom
+  <br>4 = Stereoscopic Right-Left</span></td></tr>
 <tr class=b>
 <td>'sv3d'</td>
 <td>SphericalVideo</td>
@@ -9016,7 +9066,7 @@ yaw, pitch and roll angles in degrees)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 8, 2023</i>
+<br><i>Last revised Jun 28, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

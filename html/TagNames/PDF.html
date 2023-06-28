@@ -132,7 +132,10 @@ when reading)</span></span></td></tr>
 <td>'Keywords'</td>
 <td>Keywords</td>
 <td class=c title=' + = List'>string+</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(stored as a string but treated as a comma-separated list of items when
+reading if the string contains a comma, otherwise a space-separated list of
+items.  Written as a comma-separated list.  The list behaviour may be
+defeated by setting the API NoPDFList option)</span></span></td></tr>
 <tr class=b>
 <td>'ModDate'</td>
 <td>ModifyDate</td>
@@ -740,7 +743,7 @@ false)</span>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 3, 2023</i>
+<br><i>Last revised Jun 28, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

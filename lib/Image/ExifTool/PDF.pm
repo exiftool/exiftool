@@ -109,7 +109,15 @@ my %supportedFilter = (
     Title       => { },
     Author      => { Groups => { 2 => 'Author' } },
     Subject     => { },
-    Keywords    => { List => 'string' },  # this is a string list
+    Keywords    => {
+        List => 'string',  # this is a string list
+        Notes => q{
+            stored as a string but treated as a comma-separated list of items when
+            reading if the string contains a comma, otherwise a space-separated list of
+            items.  Written as a comma-separated list.  The list behaviour may be
+            defeated by setting the API NoPDFList option
+        },
+    },
     Creator     => { },
     Producer    => { },
     CreationDate => {

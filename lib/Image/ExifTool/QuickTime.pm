@@ -47,7 +47,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.85';
+$VERSION = '2.86';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -223,6 +223,9 @@ my %ftypLookup = (
     'avif' => 'AV1 Image File Format (.AVIF)', # image/avif
     'crx ' => 'Canon Raw (.CRX)', #PH (CR3 or CRM; use Canon CompressorVersion to decide)
 );
+
+# use extension to determine file type
+my %useExt = ( GLV => 'MP4' );
 
 # information for int32u date/time tags (time zero is Jan 1, 1904)
 my %timeInfo = (
@@ -1006,7 +1009,8 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
             0 => 'Monoscopic',
             1 => 'Stereoscopic Top-Bottom',
             2 => 'Stereoscopic Left-Right',
-            3 => 'Stereoscopic Stereo-Custom', # (provisional in spec as of 2017-10-10)
+            3 => 'Stereoscopic Stereo-Custom',
+            4 => 'Stereoscopic Right-Left',
         },
     },
     sv3d => {
@@ -2070,8 +2074,8 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         ValueConv => 'substr($val, 4)',
         ValueConvInv => '"\0\0\0\x01$val"',
     },
-    # hmtp - "\0\0\0\x01" followed by 408 bytes of zero
-    # vrin - "\0\0\0\x01" followed by 8 bytes of zero
+    # hmtp - 412 bytes: "\0\0\0\x01" then maybe "\0\0\0\x64" and the rest zeros
+    # vrin - 12 bytes: "\0\0\0\x01" followed by 8 bytes of zero
     # ---- GoPro ---- (ref PH)
     GoPr => 'GoProType', # (Hero3+)
     FIRM => { Name => 'FirmwareVersion', Avoid => 1 }, # (Hero4)
@@ -2920,8 +2924,8 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
                 1 => 'BT.709',
                 2 => 'Unspecified',
                 3 => 'For future use (3)',
-                4 => 'BT.470 System M (historical)',
-                5 => 'BT.470 System B, G (historical)',
+                4 => 'BT.470 System M (historical)',    # Gamma 2.2? (ref forum14960)
+                5 => 'BT.470 System B, G (historical)', # Gamma 2.8? (ref forum14960)
                 6 => 'BT.601',
                 7 => 'SMPTE 240 M',
                 8 => 'Linear',
@@ -7216,7 +7220,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
 #
 #   AudioFormat  Offset  Child atoms
 #   -----------  ------  ----------------
-#   mp4a         52 *    wave, chan, esds, SA3D(Insta360 spherical video params?,also GoPro Max)
+#   mp4a         52 *    wave, chan, esds, SA3D(Insta360 spherical video params?,also GoPro Max and Garmin VIRB 360)
 #   in24         52      wave, chan
 #   "ms\0\x11"   52      wave
 #   sowt         52      chan
@@ -7249,11 +7253,14 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     chan => {
         Name => 'AudioChannelLayout',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::ChannelLayout' },
-    }
+    },
+    SA3D => { # written by Garmin VIRB360
+        Name => 'SpatialAudio',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::SpatialAudio' },
+    },
     # alac - 28 bytes
     # adrm - AAX DRM atom? 148 bytes
     # aabd - AAX unknown 17kB (contains 'aavd' strings)
-    # SA3D - written by Garmin VIRB360
 );
 
 # AMR decode config box (ref 3)
@@ -7599,6 +7606,20 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         Format => 'float[3]',
     },
     # (arbitrarily decode only first 8 channels)
+);
+
+# spatial audio (ref https://github.com/google/spatial-media/blob/master/docs/spatial-audio-rfc.md)
+%Image::ExifTool::QuickTime::SpatialAudio = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Audio' },
+    NOTES => 'Spatial Audio tags.',
+    0 => 'SpatialAudioVersion',
+    1 => { Name => 'AmbisonicType', PrintConv => { 0 => 'Periphonic' } },
+    2 => { Name => 'AmbisonicOrder', Format => 'int32u' },
+    6 => { Name => 'AmbisonicChannelOrdering', PrintConv => { 0 => 'ACN' } },
+    7 => { Name => 'AmbisonicNormalization', PrintConv => { 0 => 'SN3D' } },
+    8 => { Name => 'AmbisonicChannels', Format => 'int32u' },
+    12 => { Name => 'AmbisonicChannelMap', Format => 'int32u[$val{8}]' },
 );
 
 # scheme type atom
@@ -9314,6 +9335,9 @@ sub ProcessMOV($$;$)
                 }
             }
             $fileType or $fileType = 'MP4'; # default to MP4
+            # set file type from extension if appropriate
+            my $ext = $$et{FILE_EXT};
+            $fileType = $ext if $ext and $useExt{$ext} and $fileType eq $useExt{$ext};
             $et->SetFileType($fileType, $mimeLookup{$fileType} || 'video/mp4');
             # temporarily set ExtractEmbedded option for CRX files
             $saveOptions{ExtractEmbedded} = $et->Options(ExtractEmbedded => 1) if $fileType eq 'CRX';

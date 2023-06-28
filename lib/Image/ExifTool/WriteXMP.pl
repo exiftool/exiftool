@@ -176,7 +176,7 @@ sub CheckXMP($$$;$)
         require 'Image/ExifTool/XMPStruct.pl';
         my ($item, $err, $w, $warn);
         unless (ref $$valPtr) {
-            ($$valPtr, $warn) = InflateStruct($valPtr);
+            ($$valPtr, $warn) = InflateStruct($et, $valPtr);
             # expect a structure HASH ref or ARRAY of structures
             unless (ref $$valPtr) {
                 $$valPtr eq '' and $$valPtr = { }, return undef; # allow empty structures
@@ -189,7 +189,7 @@ sub CheckXMP($$$;$)
             $$valPtr = \@copy;          # return the copy
             foreach $item (@copy) {
                 unless (ref $item eq 'HASH') {
-                    ($item, $w) = InflateStruct(\$item); # deserialize structure
+                    ($item, $w) = InflateStruct($et, \$item); # deserialize structure
                     $w and $warn = $w;
                     next if ref $item eq 'HASH';
                     $err = 'Improperly formed structure';

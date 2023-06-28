@@ -7,6 +7,27 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.60. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+June 28, 2023 - Version 12.64
+
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Added config_files/guano.config to the distribution (thanks StarGeek)
+  - Added support for Garmin Low-resolution Video (GLV) files
+  - Added JUMBF to the list of deletable groups
+  - Added (untested) read support for spherical video tags in Matroska videos
+  - Decode a number of new Nikon Z9 tags (thanks Warren Hatch)
+  - Decode AmbisonicAudio tags in spherical MP4 vidoes
+  - Decode another Apple tag
+  - Improved French translations (thanks Philippe Bonnaure of GraphicConverter)
+  - Patched to allow writing QuickTime-based videos where the audio/video sample
+    description comes after the sample pointers
+  - Fixed parsing of GPS from Insta360 videos to properly skip void fixes
+  - Fixed problem where Apple iPhone 14 images produced invalid XML in -X output
+    when using -struct option
+  - API Changes:
+      - Added StructFormat option to allow JSON-format serialized structures
+      - Added NoDups option to eliminate duplicate items from queued values when
+        writing List-type tags
+
 June 8, 2023 - Version 12.63
 
   - Added ability to read/write/create Brotli-compressed metadata in JXL images
@@ -15,7 +36,7 @@ June 8, 2023 - Version 12.63
       - Added new EXIF tags
       - Added MPF Original Preservation Image type
       - Support for reading 'utf8' values (but still write only as 'string')
-  - Added support for Adobe HDR Gain Map (hdrgm) XMP tags
+  - Added support for Adobe XMP-hdrgm (HDR Gain Map) tags
   - Added support for reading 7z files (thanks Amir Gooran, github #205) (but
     currently this doesn't work for the Windows .exe version because I haven't
     been able to install Compress::Raw::Lzma for ActivePerl)

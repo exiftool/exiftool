@@ -17,6 +17,30 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.64'><b>June 28, 2023 - Version 12.64</b></a>
+<ul>
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Added config_files/guano.config to the distribution (thanks StarGeek)
+<li>Added support for Garmin Low-resolution Video (GLV) files
+<li>Added JUMBF to the list of deletable groups
+<li>Added (untested) read support for spherical video tags in Matroska videos
+<li>Decode a number of new Nikon Z9 tags (thanks Warren Hatch)
+<li>Decode AmbisonicAudio tags in spherical MP4 vidoes
+<li>Decode another Apple tag
+<li>Improved French translations (thanks Philippe Bonnaure of GraphicConverter)
+<li>Patched to allow writing QuickTime-based videos where the audio/video sample
+    description comes after the sample pointers
+<li>Fixed parsing of GPS from Insta360 videos to properly skip void fixes
+<li>Fixed problem where Apple iPhone 14 images produced invalid XML in -X output
+    when using -struct option
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#StructFormat">StructFormat option</a> to allow JSON-format serialized structures
+    <li>Added <a href="ExifTool.html#NoDups">NoDups option<a> to eliminate duplicate items from queued values when
+        writing List-type tags
+    </ul>
+</ul>
+
 <a name='v12.63'><b>June 8, 2023 - Version 12.63</b></a>
 <ul>
 <li>Added ability to read/write/create Brotli-compressed metadata in JXL images
@@ -27,7 +51,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
     <li>Added MPF Original Preservation Image type
     <li>Support for reading 'utf8' values (but still write only as 'string')
     </ul>
-<li>Added support for Adobe HDR Gain Map (hdrgm) XMP tags
+<li>Added support for Adobe <a href="TagNames/XMP.html#hdrgm">XMP-hdrgm (HDR Gain Map) tags</a>
 <li>Added support for reading 7z files (thanks Amir Gooran, github #205) (but
     currently this doesn't work for the Windows .exe version because I haven't
     been able to install Compress::Raw::Lzma for ActivePerl)

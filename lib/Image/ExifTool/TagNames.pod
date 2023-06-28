@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26443 tags, with 16891 unique tag names.
+They contain a total of 26591 tags, with 16966 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -7199,6 +7199,7 @@ Tags extracted from the maker notes of iPhone images.
   0x0025   SceneFlags?                          int32s
   0x0026   SignalToNoiseRatioType?              int32s
   0x0027   SignalToNoiseRatio                   rational64s
+  0x002b   PhotoIdentifier                      string
   0x002f   FocusPosition                        int32s
   0x0030   HDRGain                              rational64s
   0x0038   AFMeasuredDepth                      int32s
@@ -14715,6 +14716,7 @@ These tags are extracted from encrypted data in images from the Z9.
       4    FirmwareVersion                      no
      48    SequenceOffset                       Nikon SeqInfoZ9
      88    Offset13                             Nikon Offset13InfoZ9
+    128    AutoCaptureOffset                    Nikon AutoCaptureInfo
     132    OrientOffset                         Nikon OrientationInfo
     140    MenuOffset                           Nikon MenuInfoZ9
 
@@ -14734,6 +14736,21 @@ These tags are extracted from encrypted data in images from the Z9.
    3050    AFAreaInitialWidth                   no
    3051    AFAreaInitialHeight                  no
 
+=head3 Nikon AutoCaptureInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      1    AutoCaptureCriteria                  int8u~
+     55    AutoCaptureRecordingTime             int8u
+     56    AutoCaptureWaitTime                  int8u
+     74    AutoCaptureDistanceFar               int8u~
+     78    AutoCaptureDistanceNear              int8u~
+     95    AutoCaptureCriteriaMotionDirection   int8u~
+     99    AutoCaptureCriteriaMotionSpeed       int8u
+    100    AutoCaptureCriteriaMotionSize        int8u
+    105    AutoCaptureCriteriaSubjectSize       int8u
+    106    AutoCaptureCriteriaSubjectType       int8u
+
 =head3 Nikon MenuInfoZ9 Tags
 
   Index1   Tag Name                             Writable
@@ -14741,6 +14758,8 @@ These tags are extracted from encrypted data in images from the Z9.
      16    MenuSettingsOffsetZ9                 Nikon MenuSettingsZ9
            MenuSettingsOffsetZ9v3               -
                                                 Nikon MenuSettingsZ9v3
+                                                -
+                                                Nikon MenuSettingsZ9v4
 
 =head3 Nikon MenuSettingsZ9 Tags
 
@@ -14899,6 +14918,144 @@ These tags are used by the Z9 firmware 3.00.
   1754   FocusShiftAutoReset?                   int8u
   1810   PreReleaseBurstLength                  int8u
   1812   PostReleaseBurstLength                 int8u
+
+=head3 Nikon MenuSettingsZ9v4 Tags
+
+These tags are used by the Z9 firmware 3.00.
+
+  Index1 Tag Name                               Writable
+  ---------------                               --------
+   72    HighFrameRate                          int8u
+  154    MultipleExposureMode                   int8u
+  156    MultiExposureShots                     int8u
+  204    Intervals                              int32u
+  208    ShotsPerInterval                       int32u
+  248    FocusShiftNumberShots                  int8u
+  252    FocusShiftStepWidth                    int8u
+  256    FocusShiftInterval                     int8u~
+  260    FocusShiftExposureLock?                int8u
+  290    PhotoShootingMenuBank                  int8u
+  292    ExtendedMenuBanks                      int8u
+  328    PhotoShootingMenuBankImageArea         int8u
+  342    AutoISO                                int8u
+  344    ISOAutoHiLimit?                        int16u
+  346    ISOAutoFlashLimit?                     int16u
+  354    ISOAutoShutterTime                     no
+  436    MovieVignetteControl?                  int8u
+  438    DiffractionCompensation                int8u
+  440    FlickerReductionShooting               int8u
+  444    FlashControlMode                       int8u
+  446    FlashMasterCompensation?               int8s
+  450    FlashGNDistance?                       no
+  454    FlashOutput?                           int8u
+  548    AFAreaMode                             int8u
+  550    VRMode                                 int8u
+  554    BracketSet                             int8u
+  556    BracketProgram                         int8u
+  558    BracketIncrement                       int8u
+  576    SecondarySlotFunction                  int8u
+  586    Slot2JpgSize?                          int8u
+  592    DXCropAlert                            int8u
+  594    SubjectDetection                       int8u
+  596    DynamicAFAreaSize                      int8u
+  636    HighFrequencyFlickerReductionShooting? int8u
+  646    MovieImageArea?                        int8u & 0x01
+  656    MovieType?                             int8u
+  658    MovieISOAutoHiLimit?                   int16u
+  660    MovieISOAutoControlManualMode?         int8u
+  662    MovieISOAutoManualMode?                int16u
+  736    MovieActiveD-Lighting?                 int8u
+  738    MovieHighISONoiseReduction?            int8u
+  744    MovieFlickerReduction                  int8u
+  746    MovieMeteringMode?                     int8u
+  748    MovieFocusMode?                        int8u
+  750    MovieAFAreaMode                        int8u
+  752    MovieVRMode?                           int8u
+  756    MovieElectronicVR?                     int8u
+  758    MovieSoundRecording?                   int8u
+  760    MicrophoneSensitivity?                 int8u
+  762    MicrophoneAttenuator?                  int8u
+  764    MicrophoneFrequencyResponse?           int8u
+  766    WindNoiseReduction?                    int8u
+  788    MovieToneMap?                          int8u
+  794    MovieFrameSize?                        int8u
+  796    MovieFrameRate?                        int8u
+  802    MicrophoneJackPower?                   int8u
+  803    MovieDXCropAlert?                      int8u
+  804    MovieSubjectDetection?                 int8u
+  812    MovieHighResZoom?                      int8u
+  847    CustomSettingsZ9                       NikonCustom SettingsZ9
+  1474   Language?                              int8u
+  1476   TimeZone                               int8u
+  1482   MonitorBrightness?                     int8u
+  1504   AFFineTune?                            int8u
+  1532   NonCPULens1FocalLength?                int16s~
+  1536   NonCPULens2FocalLength?                int16s~
+  1540   NonCPULens3FocalLength?                int16s~
+  1544   NonCPULens4FocalLength?                int16s~
+  1548   NonCPULens5FocalLength?                int16s~
+  1552   NonCPULens6FocalLength?                int16s~
+  1556   NonCPULens7FocalLength?                int16s~
+  1560   NonCPULens8FocalLength?                int16s~
+  1564   NonCPULens9FocalLength?                int16s~
+  1568   NonCPULens10FocalLength?               int16s~
+  1572   NonCPULens11FocalLength?               int16s~
+  1576   NonCPULens21FocalLength?               int16s~
+  1580   NonCPULens13FocalLength?               int16s~
+  1584   NonCPULens14FocalLength?               int16s~
+  1588   NonCPULens15FocalLength?               int16s~
+  1592   NonCPULens16FocalLength?               int16s~
+  1596   NonCPULens17FocalLength?               int16s~
+  1600   NonCPULens18FocalLength?               int16s~
+  1604   NonCPULens19FocalLength?               int16s~
+  1608   NonCPULens20FocalLength?               int16s~
+  1612   NonCPULens1MaxAperture?                int16s~
+  1616   NonCPULens2MaxAperture?                int16s~
+  1620   NonCPULens3MaxAperture?                int16s~
+  1624   NonCPULens4MaxAperture?                int16s~
+  1628   NonCPULens5MaxAperture?                int16s~
+  1632   NonCPULens6MaxAperture?                int16s~
+  1636   NonCPULens7MaxAperture?                int16s~
+  1640   NonCPULens8MaxAperture?                int16s~
+  1644   NonCPULens9MaxAperture?                int16s~
+  1648   NonCPULens10MaxAperture?               int16s~
+  1652   NonCPULens11MaxAperture?               int16s~
+  1656   NonCPULens12MaxAperture?               int16s~
+  1660   NonCPULens13MaxAperture?               int16s~
+  1664   NonCPULens14MaxAperture?               int16s~
+  1668   NonCPULens15MaxAperture?               int16s~
+  1672   NonCPULens16MaxAperture?               int16s~
+  1676   NonCPULens17MaxAperture?               int16s~
+  1680   NonCPULens18MaxAperture?               int16s~
+  1684   NonCPULens19MaxAperture?               int16s~
+  1688   NonCPULens20MaxAperture?               int16s~
+  1704   HDMIOutputResolution                   int8u
+  1717   SetClockFromLocationData?              int8u
+  1724   AirplaneMode?                          int8u
+  1725   EmptySlotRelease?                      int8u
+  1760   EnergySavingMode?                      int8u
+  1784   RecordLocationData?                    int8u
+  1788   USBPowerDelivery?                      int8u
+  1797   SensorShield?                          int8u
+  1862   AutoCapturePreset                      int8u
+  1864   FocusShiftAutoReset?                   int8u
+  1922   PreReleaseBurstLength                  int8u
+  1924   PostReleaseBurstLength                 int8u
+  1938   VerticalISOButton                      int8u
+  1940   ExposureCompensationButton             int8u
+  1942   ISOButton                              int8u
+  2002   ViewModeShowEffectsOfSettings?         int8u
+  2004   DispButton                             int8u
+  2048   ExposureDelay                          fixed32u~
+  2056   PlaybackButton                         int8u
+  2058   WBButton                               int8u
+  2060   BracketButton                          int8u
+  2062   FlashModeButton                        int8u
+  2064   LensFunc1ButtonPlaybackMode            int8u
+  2066   LensFunc2ButtonPlaybackMode            int8u
+  2068   PlaybackButtonPlaybackMode             int8u
+  2070   BracketButtonPlaybackMode              int8u
+  2072   FlashModeButtonPlaybackMode            int8u
 
 =head3 Nikon ShotInfo Tags
 
@@ -28914,11 +29071,26 @@ atoms.
      24    AudioChannels                        no
      26    AudioBitsPerSample                   no
      32    AudioSampleRate                      no
+  'SA3D'   SpatialAudio                         QuickTime SpatialAudio
   'chan'   AudioChannelLayout                   QuickTime ChannelLayout
   'damr'   DecodeConfig                         QuickTime DecodeConfig
   'pinf'   PurchaseInfo                         QuickTime ProtectionInfo
   'sinf'   ProtectionInfo                       QuickTime ProtectionInfo
   'wave'   Wave                                 QuickTime Wave
+
+=head3 QuickTime SpatialAudio Tags
+
+Spatial Audio tags.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    SpatialAudioVersion                  no
+      1    AmbisonicType                        no
+      2    AmbisonicOrder                       no
+      6    AmbisonicChannelOrdering             no
+      7    AmbisonicNormalization               no
+      8    AmbisonicChannels                    no
+     12    AmbisonicChannelMap                  no
 
 =head3 QuickTime ChannelLayout Tags
 
@@ -31198,6 +31370,7 @@ L<https://www.matroska.org/technical/tagging.html>).
   'SCREENPLAY_BY'         ScreenplayBy          no
   'SORT_WITH'             SortWith              no
   'SOUND_ENGINEER'        SoundEngineer         no
+  'SPHERICAL-VIDEO'       SphericalVideoXML     XMP
   'SUBJECT'               Subject               no
   'SUBTITLE'              Subtitle              no
   'SUMMARY'               Summary               no
@@ -31211,6 +31384,7 @@ L<https://www.matroska.org/technical/tagging.html>).
   'TVDB'                  TVDB                  no
   'URL'                   URL                   no
   'WRITTEN_BY'            WrittenBy             no
+  'spherical-video'       SphericalVideoXML     XMP
 
 =head2 MOI Tags
 

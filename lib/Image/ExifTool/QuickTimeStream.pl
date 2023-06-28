@@ -1378,7 +1378,7 @@ Sample:     for ($i=0; ; ) {
                     DataPos => $$start[$i],
                     SampleTime => $time[$i],
                     SampleDuration => $dur[$i],
-                }, $tagTbl) ;
+                }, $tagTbl);
             }
 
         } elsif ($$tagTbl{$type}) {
@@ -2904,6 +2904,7 @@ sub ProcessInsta360($;$)
                              #  when the language is french? ie. "Ouest"?)
                              $a[7] eq 'O'))
                     {
+                        next if $a[3] eq 'V';   # void fixes don't have N/S E/W
                         $et->Warn('Unrecognized INSV GPS format');
                         last;
                     }

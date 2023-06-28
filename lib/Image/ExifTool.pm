@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.63';
+$VERSION = '12.64';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -330,6 +330,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     FPF  => ['FPF',  'FLIR Public image Format'],
     FPX  => ['FPX',  'FlashPix'],
     GIF  => ['GIF',  'Compuserve Graphics Interchange Format'],
+    GLV  => ['MOV',  'Garmin Low-resolution Video'],
     GPR  => ['TIFF', 'General Purpose RAW'], # https://gopro.github.io/gpr/
     GZ   =>  'GZIP',
     GZIP => ['GZIP', 'GNU ZIP compressed archive'],
@@ -1834,11 +1835,12 @@ my %systemTagsNotes = (
             Hash of image data. Generated only if specifically requested for JPEG, TIFF,
             PNG, CRW, CR3, MRW, RAF, X3F, IIQ, JP2, JXL, HEIC and AVIF images, MOV/MP4
             videos, and some RIFF-based files such as AVI, WAV and WEBP.  The hash
-            includes the main image data, plus JpgFromRaw/OtherImage for some formats,
-            but does not include ThumbnailImage or PreviewImage.  Includes video and
-            audio data for MOV/MP4.  The L<XMP-et:OriginalImageHash and
-            XMP-et:OriginalImageHashType tags|XMP.html#ExifTool> provide a way to store the this hash value
-            and the hash type in the file.
+            algorithm is set by the API L<ImageHashType|../ExifTool.html#ImageHashType> option, and is 'MD5' by default.
+            The hash includes the main image data, plus JpgFromRaw/OtherImage for some
+            formats, but does not include ThumbnailImage or PreviewImage.  Includes
+            video and audio data for MOV/MP4.  The L<XMP-et:OriginalImageHash and
+            XMP-et:OriginalImageHashType tags|XMP.html#ExifTool> provide a way to store
+            the this hash value and the hash type in the file.
         },
     },
 );
@@ -2323,6 +2325,12 @@ sub Options($$;@)
             } else {
                 warn("Invalid $param setting '${newVal}'\n"), return $oldVal;
             }
+        } elsif ($param eq 'StructFormat') {
+            if (defined $newVal) {
+                $newVal =~ /^(JSON|JSONQ)$/i or warn("Invalid $param setting '${newVal}'\n"), return $oldVal;
+                $newVal = uc($newVal);
+            }
+            $$options{$param} = $newVal;
         } else {
             if ($param eq 'Escape') {
                 # set ESCAPE_PROC
@@ -2433,6 +2441,7 @@ sub ClearOptions($)
         Sort2       => 'File',  # secondary sort order for tags in a group (File, Tag, Descr)
         StrictDate  => undef,   # flag to return undef for invalid date conversions
         Struct      => undef,   # return structures as hash references
+        StructFormat=> undef,   # format for structure serialization when reading/writing
         SystemTags  => undef,   # extract additional File System tags
         TextOut     => \*STDOUT,# file for Verbose/HtmlDump output
         TimeZone    => undef,   # local time zone
@@ -5817,7 +5826,8 @@ sub MakeTagName($)
     my $name = shift;
     $name =~ tr/-_a-zA-Z0-9//dc;    # remove illegal characters
     $name = ucfirst $name;          # capitalize first letter
-    $name = "Tag$name" if length($name) < 2; # must at least 2 characters long
+    $name = "Tag$name" if length($name) < 2 or $name =~ /^[-0-9]/;
+    # must at least 2 characters long and not start with - or 0-9-
     return $name;
 }
 
@@ -7198,9 +7208,6 @@ sub ProcessJPEG($$)
                     $self->HandleTag($tagTablePtr, 'APP3', $$dataPt);
                     undef $combinedSegData;
                 }
-            } elsif ($$self{HasIJPEG}) {
-                $dumpType = 'InfiRay Data',
-                
             } elsif ($$segDataPt =~ /^\xff\xd8\xff\xdb/) {
                 $dumpType = 'PreviewImage'; # (Samsung, HP, BenQ)
                 $preview = $$segDataPt;

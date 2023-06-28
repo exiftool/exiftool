@@ -779,6 +779,10 @@ numerical options.</p>
     expression returns undef). If not set, a minor error is issued for missing
     values, or the value is set to '' if IgnoreMinorErrors is set.</td>
     <td align=center>Any string, or undef</td><td align=center>undef</td></tr>
+<tr id="NoDups"><td>NoDups</td><td>Flag to remove duplicate items from queued values for
+    List-type tags when writing.  This applies only to queued values, and doesn't resolve
+    duplicates with existing values in the file when adding to an existing list.</td>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="NoMultiExif"><td>NoMultiExif</td><td>Raise error when attempting to write multi-segment
     EXIF in a JPEG image.</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="NoPDFList"><td>NoPDFList</td><td>Flag to avoid splitting PDF list-type tag
@@ -892,6 +896,13 @@ numerical options.</p>
     <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>Read/copy structures</td></tr>
     <tr><td valign=top align=right><b>2</b>&nbsp;=</td><td>Read/copy both flattened and structured tags,
     but flag flattened tags as "unsafe" for copying</td></tr>
+    </table></td><td align=center>undef</td></tr>
+<tr id="StructFormat"><td>StructFormat</td><td>Format for serialized structures when reading/writing.
+    <a href="struct.html">Read here</a> for more details about structured information.</td>
+    <td><table class=clear>
+    <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>ExifTool format</td></tr>
+    <tr><td valign=top align=right><b>JSON</b>&nbsp;=</td><td>JSON format</td></tr>
+    <tr><td valign=top align=right><b>JSONQ</b>&nbsp;=</td><td>JSON with quoted numbers</td></tr>
     </table></td><td align=center>undef</td></tr>
 <tr id="SystemTags"><td>SystemTags</td><td>Flag to extract the
     following additional File System tags:  FileAttributes, FileDeviceNumber,
@@ -1555,6 +1566,10 @@ my $rawVal = $exifTool-&gt;<b>GetNewValue</b>($tag);
 my @rawVals = $exifTool-&gt;<b>GetNewValue</b>($tag);
 </pre></td></tr></table></blockquote>
 
+<p><b>Notes:</b></p>
+<p>The API NoDups option applies when this routine is called, and removes
+duplicate items from values returned for List-type tags.</p>
+
 <hr><h2><a name="SetNewValuesFromFile">SetNewValuesFromFile</a></h2>
 <p>A very powerful routine that sets new values for tags from information found
 in a specified file.</p>
@@ -2190,14 +2205,14 @@ XMP-Device, XMP-GAudio, XMP-GCamera, XMP-GCreations, XMP-GDepth, XMP-GFocus,
 XMP-GImage, XMP-GPano, XMP-GSpherical, XMP-LImage, XMP-MP, XMP-MP1,
 XMP-PixelLive, XMP-aas, XMP-acdsee, XMP-album, XMP-apple-fi, XMP-ast,
 XMP-aux, XMP-cc, XMP-cell, XMP-crd, XMP-creatorAtom, XMP-crs, XMP-dc,
-XMP-dex, XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-exif, XMP-exifEX,
-XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr, XMP-ics,
-XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft,
-XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-pdf, XMP-pdfx,
-XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism, XMP-prl,
-XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff, XMP-x, XMP-xmp,
-XMP-xmpBJ, XMP-xmpDM, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights,
-XMP-xmpTPg, ZIP, iTunes
+XMP-dex, XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-et, XMP-exif, XMP-exifEX,
+XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr, XMP-hdrgm,
+XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft,
+XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-panorama, XMP-pdf,
+XMP-pdfx, XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism,
+XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff, XMP-x,
+XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS,
+XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
 </td></tr>
 <tr><td><b>2&nbsp;(Category)</b></td>
 <td>Audio, Author, Camera, Device, Document, ExifTool, Image, Location, Other,

@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 sub HandleStruct($$;$$$$);
 
@@ -816,6 +816,21 @@ my %uidInfo = (
     PRODUCTION_COPYRIGHT => 'ProductionCopyright',
     LICENSE     => 'License',
     TERMS_OF_USE => 'TermsOfUse',
+    # (the following are untested)
+    'spherical-video' => { #https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md
+        Name => 'SphericalVideoXML',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::XMP::Main',
+            ProcessProc => 'Image::ExifTool::XMP::ProcessGSpherical',
+        },
+    },
+    'SPHERICAL-VIDEO' => { #https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md
+        Name => 'SphericalVideoXML',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::XMP::Main',
+            ProcessProc => 'Image::ExifTool::XMP::ProcessGSpherical',
+        },
+    },
 );
 
 #------------------------------------------------------------------------------

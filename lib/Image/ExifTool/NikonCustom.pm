@@ -13,11 +13,14 @@
 package Image::ExifTool::NikonCustom;
 
 use strict;
-use vars qw($VERSION);
+use vars qw($VERSION @ISA @EXPORT_OK %buttonsZ9);
 
-$VERSION = '1.22';
+$VERSION = '1.23';
 
-my %buttonsZ9= (
+@ISA = qw(Exporter);
+@EXPORT_OK = qw(%buttonsZ9);
+
+%buttonsZ9= (
     SeparateTable => 'ButtonsZ9',
     PrintConv => {
         0 => 'None',
@@ -41,9 +44,11 @@ my %buttonsZ9= (
         24 => 'Protect',
         25 => 'Zoom',
         26 => 'Focus Peaking',
+        27 => 'Flash Mode/Compensation',
         28 => 'Image Area',
         30 => 'Non-CPU Lens',
         31 => 'Active-D Lighting',
+        32 => 'Exposure Delay Mode',
         33 => '1 Stop Speed/Aperture',
         34 => 'White Balance',
         35 => 'Metering',
@@ -55,10 +60,13 @@ my %buttonsZ9= (
         41 => 'Focus Mode/AF AreaMode',
         42 => 'Select Center Focus Point',
         44 => 'Record Movie',
+        45 => 'Thumbnail On/Off',
+        46 => 'View Histograms',
         47 => 'Choose Folder',
         48 => 'Power Aperture (Open)',
         49 => 'Power Aperture (Close)',
         52 => 'Microphone Sensitivity',
+        53 => 'Release Mode',
         57 => 'Preset Focus Point',
         58 => 'AE/AWB Lock (hold)',
         59 => 'AF-AreaMode',
@@ -95,6 +103,8 @@ my %buttonsZ9= (
         109 => 'DISP - Cycle Information Display (shooting)', # Shooting Mode
         110 => 'DISP - Cycle Information Display (playback)', # Playback mode
         111 => 'Resume Shooting',
+        112 => 'Switch Eyes',
+        115 => 'Delete',
     },
 );
 my %dialsZ9 = (

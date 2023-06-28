@@ -973,16 +973,14 @@ sub WriteQuickTime($$$)
                 }
             } elsif ($tag eq 'CTBO' or $tag eq 'uuid') { # hack for updating CR3 CTBO offsets
                 push @{$$dirInfo{ChunkOffset}}, [ $tag, length($$outfile), length($hdr) + $size ];
-            } elsif (not $flg) {
-                my $grp = $$et{CUR_WRITE_GROUP} || $parent;
-                $et->Error("Can't locate data reference to update offsets for $grp");
-                return $rtnVal;
+            } elsif (not $flg or $flg == 1) {
+                # assume "1" if stsd is yet to be read
+                $flg or $$et{AssumedDataRef} = 1;
+                # must update offsets since the data is in this file
+                push @{$$dirInfo{ChunkOffset}}, [ $tag, length($$outfile) + length($hdr), $size ];
             } elsif ($flg == 3) {
                 $et->Error("Can't write files with mixed internal/external media data");
                 return $rtnVal;
-            } elsif ($flg == 1) {
-                # must update offsets since the data is in this file
-                push @{$$dirInfo{ChunkOffset}}, [ $tag, length($$outfile) + length($hdr), $size ];
             }
         }
 
@@ -1036,8 +1034,10 @@ sub WriteQuickTime($$$)
 
             if ($subdir) {  # process atoms in this container from a buffer in memory
 
-                undef $$et{HandlerType} if $tag eq 'trak';  # init handler type for this track
-
+                if ($tag eq 'trak') {
+                    undef $$et{HandlerType};  # init handler type for this track
+                    delete $$et{AssumedDataRef};
+                }
                 my $subName = $$subdir{DirName} || $$tagInfo{Name};
                 my $start = $$subdir{Start} || 0;
                 my $base = ($$dirInfo{Base} || 0) + $raf->Tell() - $size;
@@ -1102,6 +1102,11 @@ sub WriteQuickTime($$$)
                     # do nothing if trying to delete tag from a PERMANENT table
                     $$et{CHANGED} = $oldChanged;
                     undef $newData;
+                }
+                if ($tag eq 'trak' and $$et{AssumedDataRef}) {
+                    my $grp = $$et{CUR_WRITE_GROUP} || $dirName;
+                    $et->Error("Can't locate data reference to update offsets for $grp");
+                    delete $$et{AssumedDataRef};
                 }
                 $$et{CUR_WRITE_GROUP} = $oldWriteGroup;
                 SetByteOrder('MM');
@@ -1405,6 +1410,13 @@ sub WriteQuickTime($$$)
                 $flg = 1; # (this seems to be the case)
             }
             $$et{QtDataFlg} = $flg;
+            if ($$et{AssumedDataRef}) {
+                if ($flg != $$et{AssumedDataRef}) {
+                    my $grp = $$et{CUR_WRITE_GROUP} || $parent;
+                    $et->Error("Assumed incorrect data reference for $grp (was $flg)");
+                }
+                delete $$et{AssumedDataRef};
+            }
         }
         if ($tagInfo and $$tagInfo{WriteLast}) {
             $writeLast = ($writeLast || '') . $hdr . $buff;

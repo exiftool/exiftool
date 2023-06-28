@@ -637,7 +637,7 @@ numerical, and generated automatically otherwise.
                   RawConv instead to return undef if it is necessary to test the
                   value for validity, otherwise an undef tag may hide a
                   previously defined value when the Duplicates option is not
-                  enabled. If this isn't possible (as with Composite tags where
+                  enabled.  If this isn't possible (as with Composite tags where
                   the converted values of the source tags are needed), set the
                   Priority to 0 to avoid taking priority over a valid tag. If
                   ValueConv is not specified, the Raw value is not converted. 

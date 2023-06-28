@@ -94,9 +94,9 @@ the site with a moderate load.  An alternate ExifTool homepage is available at
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.63.tar.gz/download">
-Download        Version 12.63</a> (5.0 MB) -
-<a href="history.html">June 8, 2023</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.64.tar.gz/download">
+Download        Version 12.64</a> (5.0 MB) -
+<a href="history.html">June 28, 2023</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -149,8 +149,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.63.zip/download">
-         exiftool-12.63.zip</a> (6.9 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.64.zip/download">
+         exiftool-12.64.zip</a> (6.9 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -168,7 +168,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.63.dmg</a> (3.2 MB)</b></td></tr></table></blockquote>
+         ExifTool-12.64.dmg</a> (3.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -366,6 +366,7 @@ for each file format.</p>
 <tr><td><a href="TagNames/FLIR.html#FPF">FPF</a></td><td>R</td><td>FLIR Public image Format</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/FLIR.html#FPF">FLIR</a></td></tr>
 <tr><td><a href="TagNames/FlashPix.html">FPX</a></td><td>R</td><td>FlashPix image</td><td>-</td><td>-</td><td>R</td><td>R</td><td>R <a href="TagNames/FlashPix.html">FlashPix</a></td></tr>
 <tr><td><a href="TagNames/GIF.html">GIF</a></td><td>R/W</td><td>Compuserve Graphics Interchange Format</td><td>-</td><td>-</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C <a href="TagNames/GIF.html">GIF</a></td></tr>
+<tr><td>GLV</td><td>R/W</td><td>Garmin Low-resolution Video (<a href="TagNames/QuickTime.html">QuickTime</a>-based)</td><td>R/W<span class=sup>3</span></td><td>R/W<span class=sup>3</span></td><td>R/W/C</td><td>-</td><td>R/W/C <a href="TagNames/QuickTime.html">QuickTime</a></td></tr>
 <tr><td>GPR</td><td>R/W</td><td>GoPro RAW (<a href="TagNames/DNG.html">DNG</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>-</td></tr>
 <tr><td><a href="TagNames/ZIP.html#GZIP">GZ, GZIP</a></td><td>R</td><td>GNU ZIP compressed archive</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/ZIP.html#GZIP">ZIP</a></td></tr>
 <tr><td>HDP, WDP, JXR</td><td>R/W</td><td>Windows HD Photo / Media Photo / JPEG XR (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>-</td></tr>
@@ -387,7 +388,7 @@ for each file format.</p>
 <tr><td><a href="TagNames/Jpeg2000.html">JP2, JPF, JPM, JPX</a></td><td>R/W</td><td>JPEG 2000 image [Compound/Extended]</td><td>R/W/C<span class=sup>3</span></td><td>R/W/C<span class=sup>3</span></td><td>R/W/C</td><td>R</td><td>R/W/C <a href="TagNames/Jpeg2000.html">Jpeg2000</a>, R <a href="TagNames/Photoshop.html">Photoshop</a><span class=sup>3</span></td></tr>
 <tr><td><a href="TagNames/JPEG.html">JPEG, JPG, JPE</a></td><td>R/W</td><td>Joint Photographic Experts Group image</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td><a href="#JPEG">Supported JPEG Meta Information</a></td></tr>
 <tr><td><a href="TagNames/JSON.html">JSON</a></td><td>R</td><td>JavaScript Object Notation</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/JSON.html">JSON</a></td></tr>
-<tr><td>JXL</td><td>R/W</td><td>JPEG XL (codestream and ISO BMFF)</td><td>R/W/C</td><td>-</td><td>R/W/C</td><td>-</td><td>-</td></tr>
+<tr><td>JXL</td><td>R/W</td><td>JPEG XL (codestream and ISO BMFF) (<a href="TagNames/Jpeg2000.html">Jpeg200</a>-based)</td><td>R/W/C</td><td>-</td><td>R/W/C</td><td>-</td><td>-</td></tr>
 <tr><td>K25</td><td>R</td><td>Kodak DC25 RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>-</td></tr>
 <tr><td>KDC</td><td>R</td><td>Kodak Digital Camera RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>R <a href="TagNames/Kodak.html">Kodak</a></td></tr>
 <tr><td><a href="TagNames/iWork.html">KEY, KTH</a></td><td>R</td><td>Apple iWork '09 Keynote presentation/Theme</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/iWork.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
@@ -882,14 +883,14 @@ XMP-Device, XMP-GAudio, XMP-GCamera, XMP-GCreations, XMP-GDepth, XMP-GFocus,
 XMP-GImage, XMP-GPano, XMP-GSpherical, XMP-LImage, XMP-MP, XMP-MP1,
 XMP-PixelLive, XMP-aas, XMP-acdsee, XMP-album, XMP-apple-fi, XMP-ast,
 XMP-aux, XMP-cc, XMP-cell, XMP-crd, XMP-creatorAtom, XMP-crs, XMP-dc,
-XMP-dex, XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-exif, XMP-exifEX,
-XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr, XMP-ics,
-XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft,
-XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-pdf, XMP-pdfx,
-XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism, XMP-prl,
-XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff, XMP-x, XMP-xmp,
-XMP-xmpBJ, XMP-xmpDM, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights,
-XMP-xmpTPg, ZIP, iTunes
+XMP-dex, XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-et, XMP-exif, XMP-exifEX,
+XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr, XMP-hdrgm,
+XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft,
+XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-panorama, XMP-pdf,
+XMP-pdfx, XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism,
+XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff, XMP-x,
+XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS,
+XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
 </td></tr>
 <tr><td><b>2&nbsp;(Category)</b></td>
 <td>Audio, Author, Camera, Device, Document, ExifTool, Image, Location, Other,
@@ -1324,7 +1325,7 @@ binary data.  The simple script above does not handle this case.</p>
 <!-- dead <li><a href="http://home.roadrunner.com/~dick/ExifAuto.htm">ExifAuto</a>: GUI front-end for ExifTool to perform simple operations</li> -->
 <li><a href="http://www.geosetter.de/en/">GeoSetter</a>: Utility for showing and changing geo data of image files</li>
 <li><a href="https://github.com/nemethviktor/GeoTagNinja#readme">GeoTagNinja</a>: Open-source geotagger for Windows</li>
-<li><a href="http://www.moonsoftware.com/exifmixer.asp">ExifMixer</a>: GUI extension for the exiftool command-line interface</li>
+<!-- dead <li><a href="http://www.moonsoftware.com/exifmixer.asp">ExifMixer</a>: GUI extension for the exiftool command-line interface</li> -->
 <!-- dead <li><a href="http://fliggs.wordpress.com/2009/02/01/exifdropper-v090902-released/">ExifDropper</a>: Graphical front-end for ExifTool with drag-and-drop</li> -->
 <!-- dead <li><a href="http://gpstamper.wordpress.com/geotagger/">GPStamper Geotagger</a>: A simple Windows GUI front end for geotagging images</li> -->
 <li><a href="http://www.anvo-it.de/wiki/doku.php?id=avpicfacexmptagger:main">AvPicFaceXmpTagger</a>: Write Picasa 3.5 face recognition information as XMP to your images</li>

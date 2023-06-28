@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/Jpeg2000.t".
 
 BEGIN {
-    $| = 1; print "1..3\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..4\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -45,6 +45,20 @@ my $testnum = 1;
         notOK();
     }
     print "ok $testnum\n";
+}
+
+# test 4: Read compressed metadata and ImageSize from partial JXL codestream
+{
+    ++$testnum;
+    my $skip = '';
+    if (eval { require IO::Uncompress::Brotli }) {
+        my $exifTool = Image::ExifTool->new;
+        my $info = $exifTool->ImageInfo('t/images/JXL2.jxl', 'imagesize', 'exif:all', 'xmp:all');
+        notOK() unless check($exifTool, $info, $testname, $testnum);
+    } else {
+        $skip = ' # skip Requires IO::Unompress::Brotli';
+    }
+    print "ok $testnum$skip\n";
 }
 
 done(); # end

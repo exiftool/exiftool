@@ -362,11 +362,12 @@ requested)</span></span></td></tr>
 <td><span class=s><span class=n>(Hash of image data. Generated only if specifically requested for JPEG, TIFF,
 PNG, CRW, CR3, MRW, RAF, X3F, IIQ, JP2, JXL, HEIC and AVIF images, MOV/MP4
 videos, and some RIFF-based files such as AVI, WAV and WEBP.  The hash
-includes the main image data, plus JpgFromRaw/OtherImage for some formats,
-but does not include ThumbnailImage or PreviewImage.  Includes video and
-audio data for MOV/MP4.  The <a href="XMP.html#ExifTool">XMP-et:OriginalImageHash and
-XMP-et:OriginalImageHashType tags</a> provide a way to store the this hash value
-and the hash type in the file.)</span></span></td></tr>
+algorithm is set by the API <a href="../ExifTool.html#ImageHashType">ImageHashType</a> option, and is &#39;MD5&#39; by default.
+The hash includes the main image data, plus JpgFromRaw/OtherImage for some
+formats, but does not include ThumbnailImage or PreviewImage.  Includes
+video and audio data for MOV/MP4.  The <a href="XMP.html#ExifTool">XMP-et:OriginalImageHash and
+XMP-et:OriginalImageHashType tags</a> provide a way to store
+the this hash value and the hash type in the file.)</span></span></td></tr>
 <tr>
 <td>ImageHeight</td>
 <td class=c>no</td>
@@ -573,7 +574,7 @@ stream.  Requires Win32API::File)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 8, 2023</i>
+<br><i>Last revised Jun 28, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -23,7 +23,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.35';
+$VERSION = '1.36';
 
 sub ProcessCanonVRD($$;$);
 sub WriteCanonVRD($$;$);
@@ -187,6 +187,7 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     WRITABLE => 1,
+    PERMANENT => 1, # (can't add/delete these individually)
     FIRST_ENTRY => 0,
     GROUPS => { 2 => 'Image' },
     DATAMEMBER => [ 0x002 ],   # necessary for writing
@@ -485,6 +486,7 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     WRITABLE => 1,
+    PERMANENT => 1, # (can't add/delete these individually)
     FIRST_ENTRY => 0,
     FORMAT => 'int16s',
     DATAMEMBER => [ 0x58, 0xdc, 0xdf, 0xe0 ], # (required for DataMember and var-format tags)
@@ -999,6 +1001,7 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     PROCESS_PROC => \&ProcessDR4,
     WRITE_PROC => \&ProcessDR4,
     WRITABLE => 1,
+    PERMANENT => 1, # (can't add/delete these individually)
     GROUPS => { 1 => 'CanonDR4', 2 => 'Image' },
     VARS => { HEX_ID => 1, SORT_PROC => \&SortDR4 },
     NOTES => q{

@@ -633,10 +633,10 @@ my %fpxFileType = (
     },
   # 0x18 ? seen -1
   # 0x19 ? seen 0
-  # 0x1a ? seen 0
-  # 0x1b ? seen 0
-  # 0x1c ? seen 0,1
-  # 0x1d ? seen 1
+    0x1a => 'ContentType',
+    0x1b => 'ContentStatus',
+    0x1c => 'Language',
+    0x1d => 'DocVersion',
   # 0x1e ? seen 1
   # 0x1f ? seen 1,5
   # 0x20 ? seen 0,5

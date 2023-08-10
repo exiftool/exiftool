@@ -11,6 +11,7 @@
 #               4) http://msdn.microsoft.com/en-us/library/aa380374.aspx
 #               5) http://www.cpan.org/modules/by-authors/id/H/HC/HCARVEY/File-MSWord-0.1.zip
 #               6) https://msdn.microsoft.com/en-us/library/cc313153(v=office.12).aspx
+#               7) https://learn.microsoft.com/en-us/openspecs/office_file_formats/ms-oshared/3ef02e83-afef-4b6c-9585-c109edd24e07
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::FlashPix;
@@ -21,7 +22,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.45';
+$VERSION = '1.46';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -587,6 +588,7 @@ my %fpxFileType = (
         However, ExifTool will also extract any other information found in the
         UserDefined properties.
     },
+  # 0x01 => 'CodePage', #7
     0x02 => 'Category',
     0x03 => 'PresentationTarget',
     0x04 => 'Bytes',
@@ -631,12 +633,16 @@ my %fpxFileType = (
         Name => 'AppVersion',
         ValueConv => 'sprintf("%d.%.4d",$val >> 16, $val & 0xffff)',
     },
-  # 0x18 ? seen -1
+  # 0x18 ? seen -1 (DigitalSignature, VtDigSig format, ref 7)
   # 0x19 ? seen 0
   # 0x1a ? seen 0
   # 0x1b ? seen 0
   # 0x1c ? seen 0,1
   # 0x1d ? seen 1
+    0x1a => 'ContentType', #7, github#217
+    0x1b => 'ContentStatus', #7, github#217
+    0x1c => 'Language', #7, github#217
+    0x1d => 'DocVersion', #7, github#217
   # 0x1e ? seen 1
   # 0x1f ? seen 1,5
   # 0x20 ? seen 0,5

@@ -7,6 +7,32 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.60. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Aug. 10, 2023 - Version 12.65
+
+  - Added a new QuickTime Keys tag
+  - Added a new CanonModelID (thanks Laurent Clevy)
+  - Added a new Canon LensType (thanks Norbert Wasser)
+  - Added number in brackets to converted Samsung MCCData value
+  - Decode a number of new Sony tags (thanks Jos Roost)
+  - Decode a few new FlashPix tags (github #217)
+  - Improved decoding of Nikon Z9 firmware 4.0 tags (thanks Warren Hatch)
+  - Improved parsing of PDF:Keywords to support semicolon-separated lists
+  - Enhanced -api option to show list of available options if no argument is
+    provided
+  - Lowered priority of IFD1 tags in ARW images so IFD0/SubIFD take precedence
+  - Changed QuickTime tag names for atID (AlbumTitleID to ArtistID) and plID
+    (PlayListID to AlbumID) (github issue #216), and added cmID (ComposerID)
+  - Changed Apple:MediaGroupUUID tag name back to ContentIdentifier
+  - Patched the -d option to handle the %s format code internally when writing
+    (avoids problems due to inconsistent behaviour of this format code in the
+    strptime function on different systems)
+  - Patched patch of version 12.32 to restore ability to read from named pipes
+  - Fixed bug which could cause a hang when processing a corrupt BigTIFF image
+  - Fixed document number for auxiliary image metadata in HEIC files
+  - Fixed misspelt Apple tag name (thanks Neal Krawetz)
+  - API Changes:
+      - Added AvailableOptions method
+
 June 28, 2023 - Version 12.64
 
   - Added a new Sony LensType (thanks Jos Roost)

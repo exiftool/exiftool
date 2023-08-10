@@ -17,6 +17,35 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.65'><b>Aug. 10, 2023 - Version 12.65</b></a>
+<ul>
+<li>Added a new QuickTime Keys tag
+<li>Added a new CanonModelID (thanks Laurent Clevy)
+<li>Added a new Canon LensType (thanks Norbert Wasser)
+<li>Added number in brackets to converted Samsung MCCData value
+<li>Decode a number of new Sony tags (thanks Jos Roost)
+<li>Decode a few new FlashPix tags (github #217)
+<li>Improved decoding of Nikon Z9 firmware 4.0 tags (thanks Warren Hatch)
+<li>Improved parsing of PDF:Keywords to support semicolon-separated lists
+<li>Enhanced -api option to show list of available options if no argument is
+    provided
+<li>Lowered priority of IFD1 tags in ARW images so IFD0/SubIFD take precedence
+<li>Changed QuickTime tag names for atID (AlbumTitleID to ArtistID) and plID
+    (PlayListID to AlbumID) (github issue #216), and added cmID (ComposerID)
+<li>Changed Apple:MediaGroupUUID tag name back to ContentIdentifier
+<li>Patched the -d option to handle the %s format code internally when writing
+    (avoids problems due to inconsistent behaviour of this format code in the
+    strptime function on different systems)
+<li>Patched patch of version 12.32 to restore ability to read from named pipes
+<li>Fixed bug which could cause a hang when processing a corrupt BigTIFF image
+<li>Fixed document number for auxiliary image metadata in HEIC files
+<li>Fixed misspelt Apple tag name (thanks Neal Krawetz)
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#AvailableOptions">AvailableOptions method</a>
+    </ul>
+</ul>
+
 <a name='v12.64'><b>June 28, 2023 - Version 12.64</b></a>
 <ul>
 <li>Added a new Sony LensType (thanks Jos Roost)

@@ -72,6 +72,7 @@ retrieve any number of them.</p>
 </td><td valign=top>
 <ul>
 <li><a href="#BuildCompositeTags">BuildCompositeTags</a></li>
+<li><a href="#AvailableOptions">AvailableOptions</a></li>
 <li><a href="#GetTagName">GetTagName</a></li>
 <li><a href="#GetShortcuts">GetShortcuts</a></li>
 <li><a href="#GetAllTags">GetAllTags</a></li>
@@ -1331,7 +1332,9 @@ StrictDate and TimeZone.
 <hr><h2><a name="SetNewValue">SetNewValue</a></h2>
 <p>Set the new value for a tag.  The routine may be called multiple times to set
 the values of many tags before using <a href="#WriteInfo">WriteInfo</a> to write
-the new values to an image.</p>
+the new values to an image.  These values remain queued for writing to subsequent
+files until <a href="#SetNewValue">SetNewValue</a> is called without arguments
+to reset the queued values.</p>
 <p>For list-type tags (like <code>Keywords</code>), either call repeatedly with
 the same tag name for each value, or call with a reference to the list of values.</p>
 <blockquote><table class='norm'>
@@ -2092,6 +2095,25 @@ example:</p>
 <blockquote><table class='box'><tr><td><pre>
 use Image::ExifTool ':Public';
 $tagName = <a href="#GetTagName">GetTagName</a>($tag);
+</pre></td></tr></table></blockquote>
+
+<hr><h2><a name="AvailableOptions">AvailableOptions</a></h2>
+<p>Get a list of available API options. (See <a href="#Options">Options method</a>
+for option details.)</p>
+<blockquote><table class='norm'>
+<tr><td><b>Prototype</b></td><td>AvailableOptions()</td></tr>
+<tr><td valign=top><b>Inputs</b></td><td>(none)</td></tr>
+<tr><td valign=top><b>Returns</b></td><td>Reference to list of available options.
+Each entry in the list is a list reference with 3 items: 0=Option name, 1=Default value,
+2=Description</td></tr>
+</table></blockquote>
+<p><b>Example:</b></p>
+<blockquote><table class='box'><tr><td><pre>
+my $opts = Image::ExifTool::<b>AvailableOptions</b>();
+foreach (@$opts) {
+    my ($optionName, $defaultValue, $description) = @$_;
+    ...
+}
 </pre></td></tr></table></blockquote>
 
 <hr><h2><a name="GetTagName">GetTagName</a></h2>

@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.56';
+$VERSION = '1.57';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -112,10 +112,13 @@ my %supportedFilter = (
     Keywords    => {
         List => 'string',  # this is a string list
         Notes => q{
-            stored as a string but treated as a comma-separated list of items when
-            reading if the string contains a comma, otherwise a space-separated list of
-            items.  Written as a comma-separated list.  The list behaviour may be
-            defeated by setting the API NoPDFList option
+            stored as a string but treated as a comma- or semicolon-separated list of
+            items when reading if the string contains commas or semicolons, whichever is
+            more numerous, otherwise it is treated a space-separated list of items.
+            Written as a comma-separated list.  The list behaviour may be defeated by
+            setting the API NoPDFList option.  Note that the corresponding
+            XMP-pdf:Keywords tag is not treated as a list, so the NoPDFList option
+            should be used when copying between these two.
         },
     },
     Creator     => { },
@@ -1762,6 +1765,7 @@ sub ExpandArray($)
 #         4) nesting depth, 5) dictionary capture type
 sub ProcessDict($$$$;$$)
 {
+    local $_;
     my ($et, $tagTablePtr, $dict, $xref, $nesting, $type) = @_;
     my $verbose = $et->Options('Verbose');
     my $unknown = $$tagTablePtr{EXTRACT_UNKNOWN};
@@ -2025,10 +2029,16 @@ sub ProcessDict($$$$;$$)
                 }
                 if ($$tagInfo{List} and not $$et{OPTIONS}{NoPDFList}) {
                     # separate tokens in comma or whitespace delimited lists
-                    my @values = ($val =~ /,/) ? split /,+\s*/, $val : split ' ', $val;
-                    foreach $val (@values) {
-                        $et->FoundTag($tagInfo, $val);
+                    my $comma = $val =~ tr/,/,/;
+                    my $semi = $val =~ tr/;/;/;
+                    my $split;
+                    if ($comma or $semi) {
+                        $split = $comma > $semi ? ',+\\s*' : ';+\\s*';
+                    } else {
+                        $split = ' ';
                     }
+                    my @values = split $split, $val;
+                    $et->FoundTag($tagInfo, $_) foreach @values;
                 } else {
                     # a simple tag value
                     $et->FoundTag($tagInfo, $val);

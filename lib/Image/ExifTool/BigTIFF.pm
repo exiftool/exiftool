@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 my $maxOffset = 0x7fffffff; # currently supported maximum data offset/size
 
@@ -216,6 +216,13 @@ sub ProcessBigIFD($$$)
         $dirStart = Image::ExifTool::Get64u(\$nextIFD, 0);
         $dirStart or last;
         $offName = $nextOffName;
+        # protect against infinite loop
+        if ($$et{PROCESSED}{$dirStart}) {
+            $et->Warn("$dirName pointer references previous $$et{PROCESSED}{$dirStart} directory");
+            last;
+        } else {
+            $$et{PROCESSED}{$dirStart} = $dirName;
+        }
     }
     return 1;
 }

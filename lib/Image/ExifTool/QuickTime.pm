@@ -37,6 +37,7 @@
 #   25) https://cconcolato.github.io/mp4ra/atoms.html
 #   26) https://github.com/SamsungVR/android_upload_sdk/blob/master/SDKLib/src/main/java/com/samsung/msca/samsungvr/sdk/UserVideo.java
 #   27) https://exiftool.org/forum/index.php?topic=11517.0
+#   28) https://docs.mp3tag.de/mapping/
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::QuickTime;
@@ -47,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.86';
+$VERSION = '2.87';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -3396,8 +3397,9 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     },
     albm => { Name => 'Album', Avoid => 1 }, #(ffmpeg source)
     apID => 'AppleStoreAccount',
-    atID => { #10 (or TV series)
-        Name => 'AlbumTitleID',
+    atID => {
+        # (ref 10 called this AlbumTitleID or TVSeries)
+        Name => 'ArtistID', #28 (or Track ID ref https://gist.github.com/maf654321/2b44c7b15d798f0c52ee)
         Format => 'int32u',
         Writable => 'int32s', #27
     },
@@ -3408,6 +3410,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         Format => 'int32u',
         Writable => 'int32s', #27
     },
+    cmID => 'ComposerID', #28 (need sample to get format)
     cprt => { Name => 'Copyright', Groups => { 2 => 'Author' } },
     dscp => { Name => 'Description', Avoid => 1 },
     desc => { Name => 'Description', Avoid => 1 }, #7
@@ -6100,10 +6103,10 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
     perf => 'Performer',
-    plID => { #10 (or TV season)
-        Name => 'PlayListID',
-        Format => 'int8u',  # actually int64u, but split it up
-        Count => 8,
+    plID => {
+        # (ref 10 called this PlayListID or TVSeason)
+        Name => 'AlbumID', #28
+        Format => 'int64u',
         Writable => 'int32s', #27
     },
     purd => 'PurchaseDate', #7
@@ -6565,6 +6568,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     'rating.user'  => 'UserRating', # (Canon ELPH 510 HS)
     'collection.user' => 'UserCollection', #22
     'Encoded_With' => 'EncodedWith',
+    'content.identifier' => 'ContentIdentifier', #forum14874
 #
 # the following tags aren't in the com.apple.quicktime namespace:
 #
@@ -9519,13 +9523,17 @@ sub ProcessMOV($$;$)
                 my $items = $$et{ItemInfo};
                 my ($id, $prop, $docNum, $lowest);
                 my $primary = $$et{PrimaryItem} || 0;
-ItemID:         foreach $id (keys %$items) {
+ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
                     next unless $$items{$id}{Association};
                     my $item = $$items{$id};
                     foreach $prop (@{$$item{Association}}) {
                         next unless $prop == $index;
                         if ($id == $primary or (not $dontInherit{$tag} and
-                            (not $$item{RefersTo} or $$item{RefersTo}{$primary})))
+                            (($$item{RefersTo} and $$item{RefersTo}{$primary}) or
+                            # hack: assume Item 1 is from the main image (eg. hvc1 data)
+                            # to hack the case where the primary item (ie. main image)
+                            # doesn't directly reference this property
+                            (not $$item{RefersTo} and $id == 1))))
                         {
                             # this is associated with the primary item or an item describing
                             # the primary item, so consider this part of the main document
@@ -9536,7 +9544,7 @@ ItemID:         foreach $id (keys %$items) {
                             # this property is already associated with an item that has
                             # an ExifTool document number, so use the lowest associated DocNum
                             $docNum = $$item{DocNum} if not defined $docNum or $docNum > $$item{DocNum};
-                        } elsif (not defined $lowest or $lowest > $id) {
+                        } else {
                             # keep track of the lowest associated item ID
                             $lowest = $id;
                         }

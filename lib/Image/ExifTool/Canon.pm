@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.66';
+$VERSION = '4.67';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -476,6 +476,7 @@ $VERSION = '4.66';
     255.1 => 'Sigma 180mm f/2.8 EX DG OS HSM APO Macro', #50
     255.2 => 'Tamron SP 70-200mm f/2.8 Di VC USD', #exiv issue 1202 (A009)
     255.3 => 'Yongnuo YN 50mm f/1.8', #50
+    313 => 'Canon RF 28mm F2.8 STM', #42
     368 => 'Sigma 14-24mm f/2.8 DG HSM | A or other Sigma Lens', #IB (A018)
     368.1 => 'Sigma 20mm f/1.4 DG HSM | A', #50 (newer firmware)
     368.2 => 'Sigma 50mm f/1.4 DG HSM | A', #50
@@ -983,6 +984,7 @@ $VERSION = '4.66';
     0x80000480 => 'EOS R50', #42
     0x80000481 => 'EOS R6 Mark II', #42
     0x80000487 => 'EOS R8', #42
+    0x80000491 => 'PowerShot V10', #25
     0x80000520 => 'EOS D2000C', #IB
     0x80000560 => 'EOS D6000C', #PH (guess)
 );

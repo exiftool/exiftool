@@ -2025,7 +2025,7 @@ sub SetFileName($$;$$$)
     # protect against empty file name
     length $newName or $self->Warn('New file name is empty'), return -1;
     # don't replace existing file
-    if ($self->Exists($newName) and (not defined $usedFlag or $usedFlag)) {
+    if ($self->Exists($newName, 1) and (not defined $usedFlag or $usedFlag)) {
         if ($file ne $newName or $opt =~ /Link$/) {
             # allow for case-insensitive filesystem
             if ($opt =~ /Link$/ or not $self->IsSameFile($file, $newName)) {
@@ -2404,7 +2404,7 @@ sub WriteInfo($$;$$)
         $outBuff = '';
         $outRef = \$outBuff;
         $outPos = 0;
-    } elsif ($self->Exists($outfile)) {
+    } elsif ($self->Exists($outfile, 1)) {
         $self->Error("File already exists: $outfile");
     } elsif ($self->Open(\*EXIFTOOL_OUTFILE, $outfile, '>')) {
         $outRef = \*EXIFTOOL_OUTFILE;
@@ -4919,6 +4919,11 @@ sub InverseDateTime($$;$$)
         my $fs = ($fmt =~ s/%f$// and $val =~ s/(\.\d+)\s*$//) ? $1 : '';
         my ($lib, $wrn, @a);
 TryLib: for ($lib=$strptimeLib; ; $lib='') {
+            # handle %s format ourself (not supported in Fedora, see forum15032)
+            if ($fmt eq '%s') {
+                $val = ConvertUnixTime($val, 1);
+                last;
+            }
             if (not $lib) {
                 last unless $$self{OPTIONS}{StrictDate};
                 warn $wrn || "Install POSIX::strptime or Time::Piece for inverse date/time conversions\n";

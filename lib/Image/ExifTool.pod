@@ -1463,7 +1463,9 @@ value should always exist if the tag exists.
 
 Set the new value for a tag.  The routine may be called multiple times to
 set the values of many tags before using L</WriteInfo> to write the new
-values to an image.
+values to an image.  These values remain queued for writing to subsequent
+files until L</SetNewValue> is called without arguments to reset the queued
+values.
 
 For list-type tags (like Keywords), either call repeatedly with the same tag
 name for each value, or call with a reference to the list of values.
@@ -2270,6 +2272,29 @@ a filename (as opposed to a file reference or scalar reference) since in
 this case the file is closed before L</ImageInfo> returns.  Here the
 Composite option may be used so that L</BuildCompositeTags> is called from
 within L</ImageInfo>, before the file is closed.
+
+=back
+
+=head2 AvailableOptions [static]
+
+Get a list of available API options. (See L</Options> for option details.)
+
+=over 4
+
+=item Inputs:
+
+(none)
+
+=item Return Values:
+
+Reference to list of available options.  Each entry in the list is a list
+reference with 3 items: 0=Option name, 1=Default value, 2=Description.
+
+    my $opts = Image::ExifTool::<b>AvailableOptions</b>();
+    foreach (@$opts) {
+        my ($optionName, $defaultValue, $description) = @$_;
+        ...
+    }
 
 =back
 

@@ -1698,6 +1698,12 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         # Writable => 'int32u',
         # Protected => 2,
     },
+    0x82 => { # Found on 1DS
+        Name => 'RawDataLength',
+        # (can't yet write 1DS raw files)
+        # Writable => 'int32u',
+        # Protected => 2,
+    },
     0x83 => { #PH
         Name => 'OriginalDecisionDataOffset',
         Writable => 'int32u',

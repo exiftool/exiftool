@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.88';
+$VERSION = '1.89';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -670,6 +670,7 @@ my %faceCategories = (
             0x800 => 'Classic Negative', #forum10536
             0x900 => 'Bleach Bypass', #forum10890
             0xa00 => 'Nostalgic Neg', #forum12085
+            0xb00 => 'Reala ACE', #forum15190
         },
     },
     0x1402 => { #2
@@ -897,6 +898,8 @@ my %faceCategories = (
             25 => 'Aircraft Cockpit',
             26 => 'Train Front',
             27 => 'Train Cockpit',
+            28 => 'Animal Head (28)', #forum15192
+            29 => 'Animal Body (29)', #forum15192
         },'REPEAT'],
     },
     # 0x4202 int8u[-1] - number of cooredinates in each rectangle? (ref 11)

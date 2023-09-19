@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub ValidateMediaSummary($);
 
@@ -2531,6 +2531,7 @@ my %mediaMatrix = (
     Custom9     => { List => 'Bag', Writable => 'lang-alt' },
     Custom10    => { List => 'Bag', Writable => 'lang-alt' },
     DataMining => {
+        %plusVocab,
         PrintConv => {
             'DMI-UNSPECIFIED' => 'Unspecified - no prohibition defined',
             'DMI-ALLOWED'     => 'Allowed',

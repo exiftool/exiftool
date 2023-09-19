@@ -408,12 +408,12 @@ The following functions require an ExifTool object as the first argument
 <p>Get/set ExifTool options.  This function can be called to set the default
 options for an ExifTool object.  Options set this way are in effect for all
 function calls but may be overridden by options passed as arguments to some
-functions.  Option names are not case sensitive.</p>
+functions.  Option names are not case sensitive, but option values are.</p>
 <p>The default option values may be changed by defining a
 %Image::ExifTool::UserDefined::Options hash.  See the
 <a href="config.html">ExifTool_config file</a> in the full ExifTool distribution
-for examples.  A default of undef has the same behaviour as a value of 0 for
-numerical options.</p>
+for examples.  Unless otherwise noted, a default of undef has the same
+effect as a value of 0 for options with numerical values.</p>
 <blockquote><table class='norm'>
 <tr><td><b>Prototype</b></td><td>Options($$;@)</td></tr>
 <tr><td valign=top><b>Inputs</b></td><td><b>0)</b> ExifTool object reference

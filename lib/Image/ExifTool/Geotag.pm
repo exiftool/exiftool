@@ -1109,7 +1109,7 @@ sub SetGeoValues($$;$)
                     $iExt = $i1;
                 }
                 if (abs($time - $tn) > $geoMaxExtSecs) {
-                    $err or $err = 'Time is too far from nearest GPS fix';
+                    $err or $err = 'Time is too far from nearest GPS fix'.' '.abs($time-$tn).' '.$geoMaxExtSecs;
                     $et->VPrint(2, '  Nearest fix:     ', PrintFixTime($tn), "\n") if $verbose > 2;
                     $fix = { } if $$geotag{DateTimeOnly};
                 } else {

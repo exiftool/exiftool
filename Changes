@@ -7,6 +7,13 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.60. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Sept. 19, 2023 - Version 12.67
+
+  - Added a new Pentax LensType (thanks dmont)
+  - Added a new FujiFilm FilmMode and FaceElementTypes values (thanks Greybeard)
+  - Fixed error writing new DataMining tag where URI prefix wasn't being
+    properly added to the value
+
 Sept. 19, 2023 - Version 12.66
 
   - Added a few new Canon LensType values (thanks Norbert Wasser)

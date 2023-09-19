@@ -7,6 +7,19 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.60. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Sept. 19, 2023 - Version 12.66
+
+  - Added a few new Canon LensType values (thanks Norbert Wasser)
+  - Added conversions for a few Apple:ImageCaptureType values
+  - Added new XMP tag for PLUS version 2.0.1
+  - Added a new CanonModelID (thanks Laurent Clevy)
+  - Decode another tag from Canon 1DS raw images (Hubert Figuiere, github #219)
+  - Decode JPGCompression for newer Nikon models (thanks Warren Hatch)
+  - Fixed bug introduced in 12.65 where duplicate tags were not returned even
+    when the groups where specified explicitly
+  - API Changes:
+      - Added WindowsWideFile option
+
 Aug. 10, 2023 - Version 12.65
 
   - Added a new QuickTime Keys tag

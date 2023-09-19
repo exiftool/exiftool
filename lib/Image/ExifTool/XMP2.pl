@@ -1063,7 +1063,7 @@ my %prismPublicationDate = (
     NOTES => q{
         PRISM Rights Language 2.1 namespace tags.  These tags have been deprecated
         since the release of the PRISM Usage Rights 3.0. (see
-        L<http://www.prismstandard.org/>)
+        L<https://www.w3.org/submissions/2020/SUBM-prism-20200910/prism-image.html>)
     },
     geography       => { List => 'Bag' },
     industry        => { List => 'Bag' },

@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.24';
+$VERSION = '4.25';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1982,6 +1982,14 @@ my %base64coord = (
         Name => 'WhiteBalanceFineTune',
         Writable => 'rational64s',
         Count => 2,
+    },
+    0x0044 => { #28
+        Name => 'JPGCompression',
+        RawConv => '($val) ? $val : undef', # undef for raw files 
+        PrintConv => {
+            1 => 'Size Priority',
+            3 => 'Optimal Quality',
+        },
     },
     0x0045 => { #IB
         Name => 'CropArea',
@@ -9808,6 +9816,7 @@ my %nikonFocalConversions = (
     290 => { Name => 'PhotoShootingMenuBank', PrintConv => \%banksZ9 },
     292 => { Name => 'ExtendedMenuBanks',     PrintConv => \%offOn }, # single tag from both Photo & Video menus
     328 => { Name => 'PhotoShootingMenuBankImageArea', PrintConv => \%imageAreaZ9 },
+    #334  JPGCompression     0 => 'Size Priority', 1 => 'Optimal Quality',
     342 => { Name => 'AutoISO', PrintConv => \%offOn },
     344 => {
         Name => 'ISOAutoHiLimit',

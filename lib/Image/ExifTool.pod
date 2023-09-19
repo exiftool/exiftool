@@ -1081,6 +1081,14 @@ details about the tags.  Level 3 adds a hex dump of the tag data, but with
 limits on the number of bytes dumped.  Levels 4 and 5 remove the dump limit
 on tag values and JPEG segment data respectively.
 
+=item WindowsWideFile
+
+Force the use of wide-character Windows I/O functions when the 
+L</CharsetFileName> option is used.  This may be necessary when files are on
+a network drive and the current directory name contains Unicode characters.
+By default, the wide-character functions are used only if the specified file
+path contains Unicode characters.
+
 =item WriteMode
 
 Set tag write/create mode.  Value is a string of one or more characters from
@@ -1155,7 +1163,7 @@ ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase,
 IgnoreMinorErrors, IgnoreTags, Lang, LargeFileSupport, MakerNotes,
 MDItemTags, NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero),
 RequestAll, RequestTags, SaveFormat, SavePath, ScanForXMP, Struct, TextOut,
-Unknown, Verbose, XAttrTags and XMPAutoConv.
+Unknown, Verbose, WindowsWideFile, XAttrTags and XMPAutoConv.
 
 =item Return Value:
 
@@ -1294,7 +1302,7 @@ The following ExifTool options are effective in the call to L</WriteInfo>:
 
 ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
 Compress, FixBase, IgnoreMinorErrors, NoMultiExif, NoPDFList, Password,
-QuickTimeHandler, QuickTimePad, Verbose and WriteMode.
+QuickTimeHandler, QuickTimePad, Verbose, WindowsWideFile and WriteMode.
 
 =head2 GetTagList
 

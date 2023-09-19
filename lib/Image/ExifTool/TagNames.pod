@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26990 tags, with 16972 unique tag names.
+They contain a total of 26993 tags, with 16973 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -5557,7 +5557,7 @@ These tags belong to the ExifTool XMP-prism family 1 group.
 
 PRISM Rights Language 2.1 namespace tags.  These tags have been deprecated
 since the release of the PRISM Usage Rights 3.0. (see
-L<http://www.prismstandard.org/>)
+L<https://www.w3.org/submissions/2020/SUBM-prism-20200910/prism-image.html>)
 
 These tags belong to the ExifTool XMP-prl family 1 group.
 
@@ -6570,12 +6570,13 @@ GeoTiffAsciiParams.
 
 =head3 PLUS XMP Tags
 
-PLUS (Picture Licensing Universal System) License Data Format 1.2.1 XMP
+PLUS (Picture Licensing Universal System) License Data Format 2.0.1 XMP
 tags.  Note that all controlled-vocabulary tags in this table (ie. tags with
 a fixed set of values) have raw values which begin with
 "http://ns.useplus.org/ldf/vocab/", but to reduce clutter this prefix has
-been removed from the values shown below.  See L<http://ns.useplus.org/> for
-the complete specification.
+been removed from the values shown below, and from the values read and
+written with the -n option.  See L<http://ns.useplus.org/> for the complete
+specification.
 
 These tags belong to the ExifTool XMP-plus family 1 group.
 
@@ -6599,6 +6600,7 @@ These tags belong to the ExifTool XMP-plus family 1 group.
   Custom7                                       lang-alt+
   Custom8                                       lang-alt+
   Custom9                                       lang-alt+
+  DataMining                                    string
   EndUser                                       EndUser Struct+
   EndUserID                                     string_+
   EndUserName                                   string_+
@@ -7188,7 +7190,7 @@ Tags extracted from the maker notes of iPhone images.
   0x000c   FocusDistanceRange                   rational64s[2]
   0x000f   OISMode                              int32s
   0x0011   ContentIdentifier                    string
-  0x0014   ImageCaptureType?                    int32s
+  0x0014   ImageCaptureType                     int32s
   0x0015   ImageUniqueID                        string
   0x0017   LivePhotoVideoIndex                  yes
   0x0019   ImageProcessingFlags?                int32s
@@ -7516,6 +7518,7 @@ Unknown only to reduce the volume of the normal output.
   0x0038   BatteryType                          undef
   0x003c   AFInfo3                              Canon AFInfo2
   0x0081   RawDataOffset                        no
+  0x0082   RawDataLength                        no
   0x0083   OriginalDecisionDataOffset           int32u*
   0x0090   CustomFunctions1D                    CanonCustom Functions1D
   0x0091   PersonalFunctions                    CanonCustom PersonalFuncs
@@ -13764,6 +13767,7 @@ DiMAGE X and Xt.
   0x003d   BlackLevel                           int16u[4]
   0x003e   ImageSizeRAW                         yes
   0x003f   WhiteBalanceFineTune                 rational64s[2]
+  0x0044   JPGCompression                       yes
   0x0045   CropArea                             int16u[4]
   0x004e   NikonSettings                        NikonSettings
   0x004f   ColorTemperatureAuto                 int16u

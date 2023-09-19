@@ -17,6 +17,22 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.66'><b>Sept. 19, 2023 - Version 12.66</b></a>
+<ul>
+<li>Added a few new Canon LensType values (thanks Norbert Wasser)
+<li>Added conversions for a few Apple:ImageCaptureType values
+<li>Added new XMP tag for PLUS version 2.0.1
+<li>Added a new CanonModelID (thanks Laurent Clevy)
+<li>Decode another tag from Canon 1DS raw images (Hubert Figui&egrave;re, github #219)
+<li>Decode JPGCompression for newer Nikon models (thanks Warren Hatch)
+<li>Fixed bug introduced in 12.65 where duplicate tags were not returned even
+    when the groups where specified explicitly
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#WindowsWideFile">WindowsWideFile option</a>
+    </ul>
+</ul>
+
 <a name='v12.65'><b>Aug. 10, 2023 - Version 12.65</b></a>
 <ul>
 <li>Added a new QuickTime Keys tag

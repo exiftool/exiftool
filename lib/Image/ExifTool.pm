@@ -29,15 +29,15 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.65';
+$VERSION = '12.66';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
     # all public non-object-oriented functions:
     Public => [qw(
-        ImageInfo GetTagName GetShortcuts GetAllTags GetWritableTags
-        GetAllGroups GetDeleteGroups GetFileType CanWrite CanCreate
-        AddUserDefinedTags
+        ImageInfo AvailableOptions GetTagName GetShortcuts GetAllTags
+        GetWritableTags GetAllGroups GetDeleteGroups GetFileType CanWrite
+        CanCreate AddUserDefinedTags
     )],
     # exports not part of the public API, but used by ExifTool modules:
     DataAccess => [qw(
@@ -1133,6 +1133,7 @@ my @availableOptions = (
     [ 'UserParam',        { },    'user parameters for additional user-defined tag values' ],
     [ 'Validate',         undef,  'perform additional validation' ],
     [ 'Verbose',          0,      'print verbose messages (0-5, higher # = more verbose)' ],
+    [ 'WindowsWideFile',  undef,  'force the use of Windows wide-character file routines' ], # (see forum15208)
     [ 'WriteMode',        'wcg',  'enable all write modes by default' ],
     [ 'XAttrTags',        undef,  'extract MacOS extended attribute tags' ],
     [ 'XMPAutoConv',      1,      'automatic conversion of unknown XMP tag values' ],
@@ -4305,6 +4306,7 @@ sub EncodeFileName($$;$)
 {
     my ($self, $file, $force) = @_;
     my $enc = $$self{OPTIONS}{CharsetFileName};
+    $force = 1 if $$self{OPTIONS}{WindowsWideFile};
     if ($enc) {
         if ($file =~ /[\x80-\xff]/ or $force) {
             # encode for use in Windows Unicode functions if necessary
@@ -4740,13 +4742,16 @@ sub CopyAltInfo($$$)
 # Notes: index lists are returned in increasing order
 sub SetFoundTags($)
 {
+    local $_;
     my $self = shift;
     my $options = $$self{OPTIONS};
     my $reqTags = $$self{REQUESTED_TAGS} || [ ];
     my $duplicates = $$options{Duplicates};
     my $exclude = $$options{Exclude};
     my $fileOrder = $$self{FILE_ORDER};
-    my @groupOptions = sort grep /^Group/, keys %$options;
+    my @groupOptions;
+    # ignore empty group options
+    $$options{$_} and push @groupOptions, $_ foreach sort grep /^Group/, keys %$options;
     my $doDups = $duplicates || $exclude || @groupOptions;
     my ($tag, $rtnTags, @byValue, @wildTags);
 
@@ -4911,7 +4916,6 @@ sub SetFoundTags($)
                 $groupList = [ $$options{$groupOpt} ];
             }
             foreach (@$groupList) {
-                next unless defined $_;
                 # groups have priority in order they were specified
                 ++$wantOrder;
                 my ($groupName, $want);

@@ -8,12 +8,13 @@
 </head>
 <body>
 <h2 class=top><a name='XMP'>PLUS XMP Tags</a></h2>
-<p>PLUS (Picture Licensing Universal System) License Data Format 1.2.1 XMP
+<p>PLUS (Picture Licensing Universal System) License Data Format 2.0.1 XMP
 tags.  Note that all controlled-vocabulary tags in this table (ie. tags with
 a fixed set of values) have raw values which begin with
 &quot;http://ns.useplus.org/ldf/vocab/&quot;, but to reduce clutter this prefix has
-been removed from the values shown below.  See <a href="http://ns.useplus.org/">http://ns.useplus.org/</a> for
-the complete specification.</p>
+been removed from the values shown below, and from the values read and
+written with the -n option.  See <a href="http://ns.useplus.org/">http://ns.useplus.org/</a> for the complete
+specification.</p>
 
 <p>These tags belong to the ExifTool XMP-plus family 1 group.</p>
 <blockquote>
@@ -103,28 +104,40 @@ the complete specification.</p>
 <td class=c title=' + = List'>lang-alt+</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>DataMining</td>
+<td class=c>string</td>
+<td><span class=s>&#39;DMI-ALLOWED&#39; = Allowed
+  <br>&#39;DMI-PROHIBITED&#39; = Prohibited
+  <br>&#39;DMI-PROHIBITED-AIMLTRAINING&#39; = Prohibited for AI/ML training
+  <br>&#39;DMI-PROHIBITED-EXCEPTSEARCHENGINEINDEXING&#39; = Prohibited except for search engine indexing
+  <br>&#39;DMI-PROHIBITED-GENAIMLTRAINING&#39; = Prohibited for Generative AI/ML training
+  <br>&#39;DMI-PROHIBITED-SEECONSTRAINT&#39; = Prohibited, see plus:OtherConstraints
+  <br>&#39;DMI-PROHIBITED-SEEEMBEDDEDRIGHTSEXPR&#39; = Prohibited, see iptcExt:EmbdEncRightsExpr
+  <br>&#39;DMI-PROHIBITED-SEELINKEDRIGHTSEXPR&#39; = Prohibited, see iptcExt:LinkedEncRightsExpr
+  <br>&#39;DMI-UNSPECIFIED&#39; = Unspecified - no prohibition defined</span></td></tr>
+<tr class=b>
 <td>EndUser</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#EndUser'>EndUser Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>EndUserID</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(EndUserEndUserID)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>EndUserName</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(EndUserEndUserName)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>FileNameAsDelivered</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>FirstPublicationDate</td>
 <td class=c>date</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ImageAlterationConstraints</td>
 <td class=c title=' + = List'>string+</td>
 <td><table class=cols><tr>
@@ -135,38 +148,38 @@ the complete specification.</p>
   <br>&#39;AL-MRG&#39; = No Merging
   <br>&#39;AL-RET&#39; = No Retouching</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td>ImageCreator</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#ImageCreator'>ImageCreator Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>ImageCreatorID</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(ImageCreatorImageCreatorID)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ImageCreatorName</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(ImageCreatorImageCreatorName)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ImageCreatorImageID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ImageDuplicationConstraints</td>
 <td class=c>string</td>
 <td><span class=s>&#39;DP-LIC&#39; = Duplication Only as Necessary Under License
   <br>&#39;DP-NDC&#39; = No Duplication Constraints
   <br>&#39;DP-NOD&#39; = No Duplication</span></td></tr>
-<tr class=b>
+<tr>
 <td>ImageFileConstraints</td>
 <td class=c title=' + = List'>string+</td>
 <td><span class=s>&#39;IF-MFN&#39; = Maintain File Name
   <br>&#39;IF-MFT&#39; = Maintain File Type
   <br>&#39;IF-MID&#39; = Maintain ID in File Name
   <br>&#39;IF-MMD&#39; = Maintain Metadata</span></td></tr>
-<tr>
+<tr class=b>
 <td>ImageFileFormatAsDelivered</td>
 <td class=c>string</td>
 <td><span class=s>&#39;FF-BMP&#39; = Windows Bitmap (BMP)
@@ -181,7 +194,7 @@ the complete specification.</p>
   <br>&#39;FF-RAW&#39; = Proprietary RAW Image Format
   <br>&#39;FF-TIF&#39; = Tagged Image File Format (TIFF)
   <br>&#39;FF-WMP&#39; = Windows Media Photo (HD Photo)</span></td></tr>
-<tr class=b>
+<tr>
 <td>ImageFileSizeAsDelivered</td>
 <td class=c>string</td>
 <td><span class=s>&#39;SZ-G50&#39; = Greater than 50 MB
@@ -189,25 +202,25 @@ the complete specification.</p>
   <br>&#39;SZ-U10&#39; = Up to 10 MB
   <br>&#39;SZ-U30&#39; = Up to 30 MB
   <br>&#39;SZ-U50&#39; = Up to 50 MB</span></td></tr>
-<tr>
+<tr class=b>
 <td>ImageSupplier</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#ImageSupplier'>ImageSupplier Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>ImageSupplierImageID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ImageSupplierID</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(ImageSupplierImageSupplierID)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ImageSupplierName</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(ImageSupplierImageSupplierName)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ImageType</td>
 <td class=c>string</td>
 <td><span class=s>&#39;TY-ILL&#39; = Illustrated Image
@@ -215,116 +228,116 @@ the complete specification.</p>
   <br>&#39;TY-OTR&#39; = Other
   <br>&#39;TY-PHO&#39; = Photographic Image
   <br>&#39;TY-VID&#39; = Video</span></td></tr>
-<tr class=b>
+<tr>
 <td>Licensee</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#Licensee'>Licensee Struct</a></td></tr>
-<tr>
+<tr class=b>
 <td>LicenseeImageID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LicenseeImageNotes</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LicenseeID</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicenseeLicenseeID)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>LicenseeName</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicenseeLicenseeName)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>LicenseEndDate</td>
 <td class=c>date</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LicenseeProjectReference</td>
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LicenseeTransactionID</td>
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LicenseID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LicenseStartDate</td>
 <td class=c>date</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LicenseTransactionDate</td>
 <td class=c>date</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Licensor</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#Licensor'>Licensor Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>LicensorImageID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LicensorCity</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicensorLicensorCity)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>LicensorCountry</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicensorLicensorCountry)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>LicensorEmail</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicensorLicensorEmail)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>LicensorExtendedAddress</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicensorLicensorExtendedAddress)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>LicensorID</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicensorLicensorID)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>LicensorName</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicensorLicensorName)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>LicensorPostalCode</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicensorLicensorPostalCode)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>LicensorRegion</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicensorLicensorRegion)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>LicensorStreetAddress</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicensorLicensorStreetAddress)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>LicensorTelephone1</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicensorLicensorTelephone1)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>LicensorTelephone2</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicensorLicensorTelephone2)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>LicensorTelephoneType1</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
@@ -334,7 +347,7 @@ the complete specification.</p>
   <br>&#39;home&#39; = Home
   <br>&#39;pager&#39; = Pager
   <br>&#39;work&#39; = Work</span></td></tr>
-<tr>
+<tr class=b>
 <td>LicensorTelephoneType2</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
@@ -344,28 +357,28 @@ the complete specification.</p>
   <br>&#39;home&#39; = Home
   <br>&#39;pager&#39; = Pager
   <br>&#39;work&#39; = Work</span></td></tr>
-<tr class=b>
+<tr>
 <td>LicensorURL</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(LicensorLicensorURL)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>LicensorNotes</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LicensorTransactionID</td>
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>MediaConstraints</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>MediaSummaryCode</td>
 <td class=c>string</td>
 <td>--&gt; <a href='PLUS.html#MediaMatrix'>PLUS MediaMatrix Values</a></td></tr>
-<tr>
+<tr class=b>
 <td>MinorModelAgeDisclosure</td>
 <td class=c>string</td>
 <td><table class=cols><tr>
@@ -383,74 +396,74 @@ the complete specification.</p>
   <br>&#39;AG-U14&#39; = Age 14 or Under
   <br>&#39;AG-UNK&#39; = Age Unknown</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td>ModelReleaseID</td>
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ModelReleaseStatus</td>
 <td class=c>string</td>
 <td><span class=s>&#39;MR-LMR&#39; = Limited or Incomplete Model Releases
   <br>&#39;MR-NAP&#39; = Not Applicable
   <br>&#39;MR-NON&#39; = None
   <br>&#39;MR-UMR&#39; = Unlimited Model Releases</span></td></tr>
-<tr class=b>
+<tr>
 <td>OtherConditions</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>OtherConstraints</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>OtherImageInfo</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>OtherLicenseDocuments</td>
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>OtherLicenseInfo</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>OtherLicenseRequirements</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ProductOrServiceConstraints</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>PropertyReleaseID</td>
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>PropertyReleaseStatus</td>
 <td class=c>string</td>
 <td><span class=s>&#39;PR-LPR&#39; = Limited or Incomplete Property Releases
   <br>&#39;PR-NAP&#39; = Not Applicable
   <br>&#39;PR-NON&#39; = None
   <br>&#39;PR-UPR&#39; = Unlimited Property Releases</span></td></tr>
-<tr>
+<tr class=b>
 <td>RegionConstraints</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Reuse</td>
 <td class=c>string</td>
 <td><span class=s>&#39;RE-NAP&#39; = Not Applicable
   <br>&#39;RE-REU&#39; = Repeat Use</span></td></tr>
-<tr>
+<tr class=b>
 <td>TermsAndConditionsText</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>TermsAndConditionsURL</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>PLUSVersion</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(called Version by the spec)</span></span></td></tr>
@@ -2610,7 +2623,7 @@ ID&#39;s in PLUS Media Summary Codes.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 14, 2016</i>
+<br><i>Last revised Sep 19, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

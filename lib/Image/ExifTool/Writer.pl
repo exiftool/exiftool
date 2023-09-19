@@ -1320,6 +1320,7 @@ sub SetNewValuesFromFile($$;@)
         Unknown         => $$options{Unknown},
         UserParam       => $$options{UserParam},
         Validate        => $$options{Validate},
+        WindowsWideFile => $$options{WindowsWideFile},
         XAttrTags       => $$options{XAttrTags},
         XMPAutoConv     => $$options{XMPAutoConv},
     );

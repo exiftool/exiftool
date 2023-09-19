@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::PLIST;
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 sub ConvertPLIST($$);
 
@@ -123,8 +123,12 @@ sub ConvertPLIST($$);
     0x0014 => { # (StillImageCaptureType, ref 2)
         Name => 'ImageCaptureType',
         Writable => 'int32s',
-        Unknown => 1, # (don't know what the values mean)
         # seen: 1,2,3,4,5,10,12
+        PrintConv => { #forum15096
+            1 => 'ProRAW',
+            2 => 'Portrait',
+            10 => 'Photo',
+        },
     },
     0x0015 => { # (ImageGroupIdentifier, ref 2)
         Name => 'ImageUniqueID',

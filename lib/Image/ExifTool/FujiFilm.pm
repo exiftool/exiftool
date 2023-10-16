@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.89';
+$VERSION = '1.90';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -428,6 +428,14 @@ my %faceCategories = (
         Name => 'ShadowTone',
         Writable => 'int32s',
         PrintConv => {
+            OTHER => sub {
+                my ($val, $inv) = @_;
+                if ($inv) {
+                    return int(-$val * 16);
+                } else {
+                    return -$val / 16;
+                }
+            },
             -64 => '+4 (hardest)',
             -48 => '+3 (very hard)',
             -32 => '+2 (hard)',
@@ -441,6 +449,14 @@ my %faceCategories = (
         Name => 'HighlightTone',
         Writable => 'int32s',
         PrintConv => {
+            OTHER => sub {
+                my ($val, $inv) = @_;
+                if ($inv) {
+                    return int(-$val * 16);
+                } else {
+                    return -$val / 16;
+                }
+            },
             -64 => '+4 (hardest)',
             -48 => '+3 (very hard)',
             -32 => '+2 (hard)',

@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.43';
+$VERSION = '3.44';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -556,6 +556,8 @@ my %pentaxModelID = (
     0x13240 => 'K-1 Mark II', # (Ricoh)
     0x13254 => 'K-3 Mark III', #IB (Ricoh)
     0x13290 => 'WG-70', # (Ricoh)
+    0x1329a => 'GR IIIx', # (Ricoh)
+    0x132d6 => 'K-3 Mark III Monochrome', #github226 (Ricoh)
 );
 
 # Pentax city codes - (PH, Optio WP)
@@ -971,6 +973,7 @@ my %binaryDataAttrs = (
             5 => 'Premium', #PH (K20D)
             7 => 'RAW (pixel shift enabled)', #forum6536 (K-3 II)
             8 => 'Dynamic Pixel Shift', #IB
+            9 => 'Monochrome', #github226
             65535 => 'n/a', #PH (Q MOV video)
         },
     },
@@ -2144,6 +2147,7 @@ my %binaryDataAttrs = (
             11 => 'Flat', #31 (K-70)
             # 256 - seen for GR III
             # 262 - seen for GR III
+            32768 => 'n/a',
         },
     },
     0x0050 => { #PH
@@ -2230,6 +2234,7 @@ my %binaryDataAttrs = (
             18 => '18 (KP)', #PH
             19 => '19 (GR III)', #PH
             20 => '20 (K-3III)', #PH
+            21 => '21 (K-3IIIMonochrome)', #github226
         },
     },
     0x0067 => { #PH (K-5)

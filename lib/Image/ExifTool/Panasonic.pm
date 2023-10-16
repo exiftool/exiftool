@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.18';
+$VERSION = '2.19';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1070,17 +1070,17 @@ my %shootingMode = (
         },
     },
     # 0x71 - undef[128] (maybe text stamp text?)
+    # 0x72,0x73,0x74,0x75,0x77,0x78: 0
+    # 0x76: 0, (3 for G6 with HDR on, ref 18)
+    0x76 => { #18/21/forum15298
+        Name => 'MergedImages',
+        Writable => 'int16u',
+        Notes => 'number of images in HDR or Live View Composite picture',
+    },
     0x77 => { #18
         Name => 'BurstSpeed',
         Writable => 'int16u',
         Notes => 'images per second',
-    },
-    # 0x72,0x73,0x74,0x75,0x77,0x78: 0
-    # 0x76: 0, (3 for G6 with HDR on, ref 18)
-    0x76 => { #18/21
-        Name => 'HDRShot',
-        Writable => 'int16u',
-        PrintConv => { 0 => 'Off', 3 => 'On' },
     },
     0x79 => { #PH (GH2)
         Name => 'IntelligentD-Range',

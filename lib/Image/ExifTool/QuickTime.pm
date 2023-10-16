@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.87';
+$VERSION = '2.88';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -2393,6 +2393,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         Name => 'Audible_tags',
         SubDirectory => { TagTable => 'Image::ExifTool::Audible::tags' },
     },
+    # ludt - directory containing 'tlou' tag
 );
 
 # Unknown information stored in HTC One (M8) videos - PH
@@ -2903,65 +2904,69 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         Name => 'ColorPrimaries',
         Format => 'int16u',
         PrintConv => {
-                1 => 'BT.709',
-                2 => 'Unspecified',
-                4 => 'BT.470 System M (historical)',
-                5 => 'BT.470 System B, G (historical)',
-                6 => 'BT.601',
-                7 => 'SMPTE 240',
-                8 => 'Generic film (color filters using illuminant C)',
-                9 => 'BT.2020, BT.2100',
-                10 => 'SMPTE 428 (CIE 1931 XYZ)', #forum14766
-                11 => 'SMPTE RP 431-2',
-                12 => 'SMPTE EG 432-1',
-                22 => 'EBU Tech. 3213-E',
-            },
+            1 => 'BT.709',
+            2 => 'Unspecified',
+            4 => 'BT.470 System M (historical)',
+            5 => 'BT.470 System B, G (historical)',
+            6 => 'BT.601',
+            7 => 'SMPTE 240',
+            8 => 'Generic film (color filters using illuminant C)',
+            9 => 'BT.2020, BT.2100',
+            10 => 'SMPTE 428 (CIE 1931 XYZ)', #forum14766
+            11 => 'SMPTE RP 431-2',
+            12 => 'SMPTE EG 432-1',
+            22 => 'EBU Tech. 3213-E',
+        },
     },
     6 => {
         Name => 'TransferCharacteristics',
         Format => 'int16u',
         PrintConv => {
-                0 => 'For future use (0)',
-                1 => 'BT.709',
-                2 => 'Unspecified',
-                3 => 'For future use (3)',
-                4 => 'BT.470 System M (historical)',    # Gamma 2.2? (ref forum14960)
-                5 => 'BT.470 System B, G (historical)', # Gamma 2.8? (ref forum14960)
-                6 => 'BT.601',
-                7 => 'SMPTE 240 M',
-                8 => 'Linear',
-                9 => 'Logarithmic (100 : 1 range)',
-                10 => 'Logarithmic (100 * Sqrt(10) : 1 range)',
-                11 => 'IEC 61966-2-4',
-                12 => 'BT.1361',
-                13 => 'sRGB or sYCC',
-                14 => 'BT.2020 10-bit systems',
-                15 => 'BT.2020 12-bit systems',
-                16 => 'SMPTE ST 2084, ITU BT.2100 PQ',
-                17 => 'SMPTE ST 428',
-                18 => 'BT.2100 HLG, ARIB STD-B67',
-            },
+            0 => 'For future use (0)',
+            1 => 'BT.709',
+            2 => 'Unspecified',
+            3 => 'For future use (3)',
+            4 => 'BT.470 System M (historical)',    # Gamma 2.2? (ref forum14960)
+            5 => 'BT.470 System B, G (historical)', # Gamma 2.8? (ref forum14960)
+            6 => 'BT.601',
+            7 => 'SMPTE 240 M',
+            8 => 'Linear',
+            9 => 'Logarithmic (100 : 1 range)',
+            10 => 'Logarithmic (100 * Sqrt(10) : 1 range)',
+            11 => 'IEC 61966-2-4',
+            12 => 'BT.1361',
+            13 => 'sRGB or sYCC',
+            14 => 'BT.2020 10-bit systems',
+            15 => 'BT.2020 12-bit systems',
+            16 => 'SMPTE ST 2084, ITU BT.2100 PQ',
+            17 => 'SMPTE ST 428',
+            18 => 'BT.2100 HLG, ARIB STD-B67',
+        },
     },
     8 => {
         Name => 'MatrixCoefficients',
         Format => 'int16u',
         PrintConv => {
-                0 => 'Identity matrix',
-                1 => 'BT.709',
-                2 => 'Unspecified',
-                3 => 'For future use (3)',
-                4 => 'US FCC 73.628',
-                5 => 'BT.470 System B, G (historical)',
-                6 => 'BT.601',
-                7 => 'SMPTE 240 M',
-                8 => 'YCgCo',
-                9 => 'BT.2020 non-constant luminance, BT.2100 YCbCr',
-                10 => 'BT.2020 constant luminance',
-                11 => 'SMPTE ST 2085 YDzDx',
-                12 => 'Chromaticity-derived non-constant luminance',
-                13 => 'Chromaticity-derived constant luminance',
-                14 => 'BT.2100 ICtCp',
-            },
+            0 => 'Identity matrix',
+            1 => 'BT.709',
+            2 => 'Unspecified',
+            3 => 'For future use (3)',
+            4 => 'US FCC 73.628',
+            5 => 'BT.470 System B, G (historical)',
+            6 => 'BT.601',
+            7 => 'SMPTE 240 M',
+            8 => 'YCgCo',
+            9 => 'BT.2020 non-constant luminance, BT.2100 YCbCr',
+            10 => 'BT.2020 constant luminance',
+            11 => 'SMPTE ST 2085 YDzDx',
+            12 => 'Chromaticity-derived non-constant luminance',
+            13 => 'Chromaticity-derived constant luminance',
+            14 => 'BT.2100 ICtCp',
+        },
+    },
+    10 => {
+        Name => 'VideoFullRangeFlag',
+        Mask => 0x80,
     },
 );
 
@@ -6399,6 +6404,8 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         Writable => 'int8s', #27
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
+    ownr => 'Owner', #PH (obscure) (ref ChrisAdan private communication)
+    'xid ' => 'ISRC', #PH
 );
 
 # tag decoded from timed face records
@@ -7663,7 +7670,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Rights' },
     },
     name => { Name => 'UserName', Groups => { 2 => 'Author' } },
-    # chtb
+    # chtb - seen 632 bytes of random data
     # priv - private data
     # sign
     # adkm - Adobe DRM key management system (ref http://download.macromedia.com/f4v/video_file_format_spec_v10_1.pdf)
@@ -7686,6 +7693,9 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     },
     medi => 'MediaFlags', #PH (?)
     mode => 'ModeFlags', #PH (?) 0x04 is HD flag (https://compilr.com/heksesang/requiem-mac/UnDrm.java)
+    # sing - seen 4 zeros
+    # hi32 - seen "00 00 00 04"
+    
 );
 
 # MP4 hint sample description box (ref 5)

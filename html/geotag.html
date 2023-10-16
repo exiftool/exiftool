@@ -36,15 +36,16 @@ is used to determine the GPS position at the time of the image, then the
 following tags are written to the image (if the corresponding information
 is available):</p>
 
-<pre>GPSLatitude        GPSLongitude      GPSAltitude          GPSDateStamp
-GPSLatitudeRef     GPSLongitudeRef   GPSAltitudeRef       GPSTimeStamp
-GPSTrack           GPSSpeed          GPSImgDirection      GPSPitch        
-GPSTrackRef        GPSSpeedRef       GPSImgDirectionRef   GPSRoll
-AmbientTemperature CameraElevationAngle
+<pre>GPSLatitude     GPSLongitude       GPSAltitude          GPSDateStamp
+GPSLatitudeRef  GPSLongitudeRef    GPSAltitudeRef       GPSTimeStamp
+GPSTrack        GPSSpeed           GPSImgDirection      GPSPitch        
+GPSTrackRef     GPSSpeedRef        GPSImgDirectionRef   GPSRoll
+GPSCoordinates  AmbientTemperature CameraElevationAngle
 </pre>
 
 <blockquote class=lt><i>Note: GPSPitch and GPSRoll are not standard tags, and
-must be <a href="#Orient">user-defined</a>.</i></blockquote>
+must be <a href="#Orient">user-defined</a>.  GPSCoordinates is written to
+the preferred QuickTime group when writing QuickTime-format files.</i></blockquote>
 
 <p>Currently supported GPS track log file formats:</p>
 
@@ -203,15 +204,20 @@ string.</p>
 <code>"-Geotime&lt;${CreateDate}-05:00"</code>), otherwise the local system time
 is assumed.  Decimal seconds are supported in the time value.</p>
 
-<p>By default, GPS tags are created in EXIF and the corresponding
-XMP tags are updated only if they already exist.  However, an EXIF or XMP group
-name may be specified to force writing only to the specified location.  For
-example, writing <code>XMP:Geotime</code> or <code>EXIF:Geotime</code> will
-write the generated GPS tags only to XMP or EXIF respectively.  Note that when
-written to XMP, the <code>GPSLatitudeRef</code> and <code>GPSLongitudeRef</code>
-tags are not used, and the XMP <code>GPSDateTime</code> tag is written instead
-of the separate EXIF <code>GPSDateStamp</code> and <code>GPSTimeStamp</code>
-tags.</p>
+<p>By default, in image files GPS tags are created in EXIF and the corresponding
+XMP tags are updated in only if they already exist.  In QuickTime-format files
+the XMP tags are created by default as well as writing QuickTime:GPSCoordinates
+in the preferred location.  However, an EXIF, XMP or QuickTime group name may be
+specified to force writing only to the specified location.  For example, writing
+<code>XMP:Geotime</code> or <code>EXIF:Geotime</code> will write the generated
+GPS tags only to XMP or EXIF respectively.  Note that when written to XMP, the
+<code>GPSLatitudeRef</code> and <code>GPSLongitudeRef</code> tags are not used,
+and the XMP <code>GPSDateTime</code> tag is written instead of the separate EXIF
+<code>GPSDateStamp</code> and <code>GPSTimeStamp</code> tags. Using
+<code>QuickTime:Geotime</code> disables writing of XMP tags to QuickTime-format
+files creates the GPSPosition tag in the preferred QuickTime location (ItemList
+by default), but <code>ItemList:Geotime</code>, <code>UserData:Geotime</code> or
+<code>Keys:Geotime</code> may be specified to write to a specific location.</p>
 
 <p>See the <a href="#Examples">Examples</a> section below for sample command
 lines illustrating various aspects of the geotagging feature.</p>
@@ -342,6 +348,21 @@ operating systems to prevent filename expansion):</p>
 time synchronization from three already-geotagged images:</p>
 
 <pre>exiftool -geotag a.log -geosync=1.jpg -geosync=2.jpg -geosync=3.jpg dir
+</pre>
+
+<a name="E14"></a>
+<p>14. Geotag MP4 videos by writing Keys:GPSCoordinates (add 
+<code>-api QuickTimeUTC</code> to this command if CreateDate in your
+videos is UTC):</p>
+
+<pre>exiftool -geotag a.log "-keys:geotime&lt;createdate" -ext MP4 dir
+</pre>
+
+<a name="E15"></a>
+<p>15. Geotag images in EXIF by DateTimeOriginal and videos in UserData
+by CreateDate:</p>
+
+<pre>exiftool -geotag a.log "-exif:geotime&lt;datetimeoriginal" "-userdata:geotime&lt;createdate" dir
 </pre>
 
 <a name="Options"></a>
@@ -722,7 +743,7 @@ forum post</a> for more useful tips about creating KML files.</p>
 
 <hr>
 <i>Created Apr 2, 2009</i><br>
-<i>Last revised Sep 23, 2021</i>
+<i>Last revised Oct 13, 2023</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

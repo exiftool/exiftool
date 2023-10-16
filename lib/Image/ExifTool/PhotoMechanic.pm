@@ -15,7 +15,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::IPTC;
 use Image::ExifTool::XMP;
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 sub ProcessPhotoMechanic($$);
 
@@ -138,6 +138,7 @@ my %rawCropConv = (
         ValueConv => 'Image::ExifTool::Exif::ExifTime($val)',
         ValueConvInv => 'Image::ExifTool::IPTC::IptcTime($val)',
     },
+    CreatorIdentity => { },
 );
 
 #------------------------------------------------------------------------------

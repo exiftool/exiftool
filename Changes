@@ -7,6 +7,27 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.60. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Oct. 16, 2023 - Version 12.68
+
+  - Added preliminary read support for XISF images
+  - Added the ability to delete JUMBF metadata from PNG images
+  - Added support for writing Canon burst-roll CR3 images
+  - Added a new Nikon Z9 SubjectDetection value, and improved Zf support
+  - Added a couple of new PentaxModelID values
+  - Added a few couple of new tag values for the Pentax K-3 Mark III Monochrome (github #226)
+  - Added a support for a new XMP-photomech tag
+  - Added a new Nikon LensID
+  - Added a new Canon LensType
+  - Added a new QuickTime ItemList tag
+  - Support decimal values for FujiFilm ShadowTone and HighlightTone tags
+  - Decode some new Sony tags (thanks Jos Roost)
+  - Decode ShutterCount for Canon EOS R6 (thanks gamin)
+  - Decode QuickTime VideoFullRangeFlag
+  - Decode JPGCompression for the Nikon D3S
+  - Enhanced -geotag feature to allow writing QuickTime:GPSCoordinates
+  - Renamed Panasonic HDRShot tag to MergedImages (forum 15298)
+  - Fixed problem where some NEF files were misidentified as NRW
+
 Sept. 19, 2023 - Version 12.67
 
   - Added a new Pentax LensType (thanks dmont)
@@ -154,6 +175,8 @@ Apr. 5, 2023 - Version 12.60 (production release)
     is used
   - Fixed problem where setting the Geotime value didn't work when using an
     advanced-formatting expression containing a greater-than symbol (>)
+
+History of older versions (back to Nov. 19, 2003 - Version 1.00) -->
 
 Mar. 28, 2023 - Version 12.59
 
@@ -342,8 +365,6 @@ Nov. 8, 2022 - Version 12.50 (production release)
   - Fixed decoding of AF points for some newer Nikon models
   - Fixed inconsistent year and time zone for Kenwood dashcam timed GPS in MP4
     videos
-
-History of older versions (back to Nov. 19, 2003 - Version 1.00) -->
 
 Oct. 19, 2022 - Version 12.49
 

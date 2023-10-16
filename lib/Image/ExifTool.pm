@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.67';
+$VERSION = '12.68';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -149,8 +149,8 @@ sub ReadValue($$$;$$$);
     FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio
     MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile QuickTime::Stream
     QuickTime::Tags360Fly Matroska Matroska::StdTag MOI MXF DV Flash Flash::FLV
-    Real::Media Real::Audio Real::Metafile Red RIFF AIFF ASF WTV DICOM FITS MIE
-    JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
+    Real::Media Real::Audio Real::Metafile Red RIFF AIFF ASF WTV DICOM FITS XISF
+    MIE JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
     EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard
     Text VCard::VCalendar VCard::VNote RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR
     ZIP::RAR5 RTF OOXML iWork ISO FLIR::AFF FLIR::FPF MacOS MacOS::MDItem
@@ -193,10 +193,11 @@ $defaultLang = 'en';    # default language
 @fileTypes = qw(JPEG EXV CRW DR4 TIFF GIF MRW RAF X3F JP2 PNG MIE MIFF PS PDF
                 PSD XMP BMP WPG BPG PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV
                 OGG FLAC APE MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FLIF FPF
-                LFP HTML VRD RTF FITS XCF DSS QTIF FPX PICT ZIP GZIP PLIST RAR
-                7Z BZ2 CZI TAR EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC
-                M2TS MacOS PHP PCX DCX DWF DWG DXF WTV Torrent VCard LRI R3D AA
-                PDB PFM2 MRC LIF JXL MOI ISO ALIAS JSON MP3 DICOM PCD ICO TXT);
+                LFP HTML VRD RTF FITS XISF XCF DSS QTIF FPX PICT ZIP GZIP PLIST
+                RAR 7Z BZ2 CZI TAR EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font
+                RSRC M2TS MacOS PHP PCX DCX DWF DWG DXF WTV Torrent VCard LRI
+                R3D AA PDB PFM2 MRC LIF JXL MOI ISO ALIAS JSON MP3 DICOM PCD ICO
+                TXT);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -545,6 +546,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     X3F  => ['X3F',  'Sigma RAW format'],
     XCF  => ['XCF',  'GIMP native image format'],
     XHTML=> ['HTML', 'Extensible HyperText Markup Language'],
+    XISF => ['XISF', 'Extensible Image Serialization Format'],
     XLA  => ['FPX',  'Microsoft Excel Add-in'],
     XLAM => [['ZIP','FPX'], 'Office Open XML Spreadsheet Add-in Macro-enabled'],
     XLS  => ['FPX',  'Microsoft Excel Spreadsheet'],
@@ -798,6 +800,7 @@ my %fileDescription = (
     WTV  => 'video/x-ms-wtv',
     X3F  => 'image/x-sigma-x3f',
     XCF  => 'image/x-xcf',
+    XISF => 'image/x-xisf',
     XLA  => 'application/vnd.ms-excel',
     XLAM => 'application/vnd.ms-excel.addin.macroEnabled.12',
     XLS  => 'application/vnd.ms-excel',
@@ -994,6 +997,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     WTV  => '\xb7\xd8\x00\x20\x37\x49\xda\x11\xa6\x4e\x00\x07\xe9\x5e\xad\x8d',
     X3F  => 'FOVb',
     XCF  => 'gimp xcf ',
+    XISF => 'XISF0100',
     XMP  => '\0{0,3}(\xfe\xff|\xff\xfe|\xef\xbb\xbf)?\0{0,3}\s*<',
     ZIP  => 'PK\x03\x04',
 );
@@ -1581,6 +1585,7 @@ my %systemTagsNotes = (
     ImageHeight => { Notes => 'the height of the image in number of pixels' },
     XResolution => { Notes => 'the horizontal pixel resolution' },
     YResolution => { Notes => 'the vertical pixel resolution' },
+    NumPlanes   => { Notes => 'number of color planes' },
     MaxVal      => { Notes => 'maximum pixel value in PPM or PGM image' },
     EXIF => {
         Notes => q{
@@ -1844,7 +1849,7 @@ my %systemTagsNotes = (
     Geotime => {
         Writable => 1,
         WriteOnly => 1,
-        AllowGroup => '(exif|gps|xmp|xmp-exif)',
+        AllowGroup => '(exif|gps|xmp|xmp-exif|quicktime|keys|itemlist|userdata)',
         Notes => q{
             this write-only tag is used to define a date/time for interpolating a
             position in the GPS track specified by the Geotag tag.  Writing this tag
@@ -7940,6 +7945,9 @@ sub DoProcessTIFF($$;$)
         }
         if ($$self{TIFF_TYPE} eq 'TIFF') {
             $self->FoundTag(PageCount => $$self{PageCount}) if $$self{MultiPage};
+        } elsif ($$self{TIFF_TYPE} eq 'NRW' and $$self{VALUE}{NEFLinearizationTable}) {
+            # fix NEF type if misidentified as NRW
+            $self->OverrideFileType($$self{TIFF_TYPE} = 'NEF');
         }
         if ($$self{ImageDataHash} and $$self{A100DataOffset} and $raf->Seek($$self{A100DataOffset},0)) {
             $self->ImageDataHash($raf, undef, 'A100');

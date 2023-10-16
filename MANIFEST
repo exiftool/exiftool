@@ -179,6 +179,7 @@ html/TagNames/VCard.html
 html/TagNames/Vorbis.html
 html/TagNames/WPG.html
 html/TagNames/WTV.html
+html/TagNames/XISF.html
 html/TagNames/XMP.html
 html/TagNames/ZIP.html
 html/TagNames/ZISRAW.html
@@ -432,6 +433,7 @@ lib/Image/ExifTool/WriteQuickTime.pl
 lib/Image/ExifTool/WriteRIFF.pl
 lib/Image/ExifTool/WriteXMP.pl
 lib/Image/ExifTool/Writer.pl
+lib/Image/ExifTool/XISF.pm
 lib/Image/ExifTool/XMP.pm
 lib/Image/ExifTool/XMP2.pl
 lib/Image/ExifTool/XMPStruct.pl
@@ -916,6 +918,8 @@ t/Writer_6.out
 t/Writer_60.out
 t/Writer_7.out
 t/Writer_9.out
+t/XISF.t
+t/XISF_2.out
 t/XMP.t
 t/XMP_10.out
 t/XMP_11.out
@@ -1144,6 +1148,7 @@ t/images/Vorbis.ogg
 t/images/WPG.wpg
 t/images/WTV.wtv
 t/images/Writer.jpg
+t/images/XISF.xisf
 t/images/XMP.inx
 t/images/XMP.jpg
 t/images/XMP.svg

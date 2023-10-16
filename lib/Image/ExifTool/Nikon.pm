@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.25';
+$VERSION = '4.26';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -676,6 +676,7 @@ sub GetAFPointGrid($$;$);
     '07 40 30 45 2D 35 03 02.2' => 'Voigtlander Ultragon 19-35mm F3.5-4.5 VMV', #NJ
     '71 48 64 64 24 24 00 00' => 'Voigtlander APO-Skopar 90mm F2.8 SL IIs', #30
     'FD 00 50 50 18 18 DF 00' => 'Voigtlander APO-Lanthar 50mm F2 Aspherical', #35
+    'FD 00 44 44 18 18 DF 00' => 'Voigtlander APO-Lanthar 35mm F2', #30
 #
     '00 40 2D 2D 2C 2C 00 00' => 'Carl Zeiss Distagon T* 3.5/18 ZF.2',
     '00 48 27 27 24 24 00 00' => 'Carl Zeiss Distagon T* 2.8/15 ZF.2', #MykytaKozlov
@@ -1188,6 +1189,7 @@ my %subjectDetectionZ9 = (
     2 => 'People',
     3 => 'Animals',
     4 => 'Vehicles',
+    5 => 'Birds',
     6 => 'Airplanes',
 );
 
@@ -2421,8 +2423,8 @@ my %base64coord = (
             },
         },
         { # (Z6_2 firmware version 1.00 and Z7II firmware versions 1.00 & 1.01, ref 28)
-            # 0800=Z6/Z7  0801=Z50  0802=Z5   0803=Z6II/Z7II  0804=Zfc  0807=Z30
-            Condition => '$$valPt =~ /^080[012347]/',
+            # 0800=Z6/Z7  0801=Z50  0802=Z5   0803=Z6II/Z7II  0804=Zfc  0807=Z30 0808=Zf
+            Condition => '$$valPt =~ /^080[0123478]/',
             Name => 'ShotInfoZ7II',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoZ7II',
@@ -2481,7 +2483,7 @@ my %base64coord = (
     },
     0x0094 => { Name => 'SaturationAdj',    Writable => 'int16s' },
     0x0095 => { Name => 'NoiseReduction',   Writable => 'string' }, # ("Off" or "FPNR"=long exposure NR)
-    0x0096 => {
+    0x0096 => { # (not found in NRW files, but also not in all NEF's)
         Name => 'NEFLinearizationTable', # same table as DNG LinearizationTable (ref JD)
         Writable => 'undef',
         Flags => [ 'Binary', 'Protected' ],
@@ -6056,6 +6058,24 @@ my %nikonFocalConversions = (
         Format => 'int32u',
         Priority => 0,
     },
+    671.1 => { # 0x29f
+        Name => 'JPGCompression',
+        Mask => 0x40,
+        PrintConv => {
+            0 => 'Size Priority',
+            1 => 'Optimal Quality',
+        },
+    },
+    # this works for one set of D3S samples, but is 0 in some others
+    #671.2 => { # 0x29f
+    #    Name => 'Quality',
+    #    Mask => 0x03,
+    #    PrintConv => {
+    #        1 => 'Fine',
+    #        2 => 'Normal',
+    #        3 => 'Basic',
+    #    },
+    #},
     0x2ce => { #(NC)
         Name => 'CustomSettingsD3S',
         Format => 'undef[27]',
@@ -8848,7 +8868,7 @@ my %nikonFocalConversions = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     DATAMEMBER => [ 90, 176, 180, 328, 352, 858 ],
-    NOTES => 'These tags are used by the Z5, Z6, Z7, Z6II, Z7II, Z50 and Zfc.',
+    NOTES => 'These tags are used by the Z5, Z6, Z7, Z6II, Z7II, Z50, Zfc and Zf.',
     #48 SelfTimer'   #0=> no 1=> yes    works for Z7II firmware 1.40, but not 1.30.  Follow-up required.
     90 => {
         Name => 'SingleFrame',    #0=> Single Frame 1=> one of the continuous modes

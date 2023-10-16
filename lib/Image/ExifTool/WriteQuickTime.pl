@@ -96,6 +96,8 @@ my %ctboID = (
     "\xbe\x7a\xcf\xcb\x97\xa9\x42\xe8\x9c\x71\x99\x94\x91\xe3\xaf\xac" => 1, # XMP
     "\xea\xf4\x2b\x5e\x1c\x98\x4b\x88\xb9\xfb\xb7\xdc\x40\x6e\x4d\x16" => 2, # PreviewImage
     # ID 3 is used for 'mdat' atom (not a uuid)
+    # (haven't seen ID 4 yet)
+    "\x57\x66\xb8\x29\xbb\x6a\x47\xc5\xbc\xfb\x8b\x9f\x22\x60\xd0\x6d" => 5, # something to do with burst-roll image
 );
 
 # mark UserData tags that don't have ItemList counterparts as Preferred

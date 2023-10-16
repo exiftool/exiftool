@@ -29,7 +29,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.72';
+$VERSION = '1.73';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -1196,24 +1196,29 @@ Category:       foreach $category (qw{pos track alt orient atemp}) {
         # write GPSDateStamp if date included in track log, otherwise delete it
         $gpsDate = sprintf('%.2d:%.2d:%.2d', $t[5]+1900, $t[4]+1, $t[3]) unless $noDate;
         # write GPSAltitude tags if altitude included in track log, otherwise delete them
-        if (defined $$fix{alt}) {
-            $gpsAlt = abs $$fix{alt};
-            $gpsAltRef = ($$fix{alt} < 0 ? 1 : 0);
-        } elsif ($$has{alt} and defined $iExt) {
+        my $alt = $$fix{alt};
+        if (not defined $alt and $$has{alt} and defined $iExt) {
             my $tFix = FindFix($et,'alt',$times,$points,$iExt,$iDir,$geoMaxExtSecs);
-            if ($tFix) {
-                $gpsAlt = abs $$tFix{alt};
-                $gpsAltRef = ($$tFix{alt} < 0 ? 1 : 0);
-            }
+            $alt = $$tFix{alt} if $tFix;
         }
         # set new GPS tag values (EXIF, or XMP if write group is 'xmp')
-        my ($xmp, $exif, @r);
+        my ($xmp, $exif, $qt, @r);
         my %opts = ( Type => 'ValueConv' ); # write ValueConv values
         if ($writeGroup) {
             $opts{Group} = $writeGroup;
             $xmp = ($writeGroup =~ /xmp/i);
             $exif = ($writeGroup =~ /^(exif|gps)$/i);
+            $qt = $writeGroup =~ /^(quicktime|keys|itemlist|userdata)$/i;
         }
+        # set QuickTime GPSCoordinates
+        my $coords = "$$fix{lat} $$fix{lon}";
+        if (defined $alt) {
+            $gpsAlt = abs $alt;
+            $gpsAltRef = ($alt < 0 ? 1 : 0);
+            $coords .= " $alt";
+        }
+        @r = $et->SetNewValue(GPSCoordinates => $coords, %opts);
+        return $err if $qt; # all done if writing to QuickTime only
         # (capture error messages by calling SetNewValue in list context)
         @r = $et->SetNewValue(GPSLatitude => $$fix{lat}, %opts);
         @r = $et->SetNewValue(GPSLongitude => $$fix{lon}, %opts);
@@ -1288,7 +1293,7 @@ Category:       foreach $category (qw{pos track alt orient atemp}) {
                     GPSAltitude GPSAltitudeRef GPSDateStamp GPSTimeStamp GPSDateTime
                     GPSTrack GPSTrackRef GPSSpeed GPSSpeedRef GPSImgDirection
                     GPSImgDirectionRef GPSPitch GPSRoll CameraElevationAngle
-                    AmbientTemperature))
+                    AmbientTemperature GPSCoordinates))
         {
             my @r = $et->SetNewValue($_, undef, %opts);
         }

@@ -2351,6 +2351,13 @@ firmware 1.00 and earlier.</p>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='671 = 0x29f'>671.1</td>
+<td>JPGCompression</td>
+<td class=c>int8u</td>
+<td><span class=s>[val &gt;&gt; 6 &amp; 0x1]
+  <br>0 = Size Priority
+  <br>1 = Optimal Quality</span></td></tr>
+<tr>
 <td class=r title='718 = 0x2ce'>718</td>
 <td>CustomSettingsD3S</td>
 <td class=c>-</td>
@@ -4192,7 +4199,7 @@ firmware 1.01b.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='MenuSettingsZ7II'>Nikon MenuSettingsZ7II Tags</a></h2>
-<p>These tags are used by the Z5, Z6, Z7, Z6II, Z7II, Z50 and Zfc.</p>
+<p>These tags are used by the Z5, Z6, Z7, Z6II, Z7II, Z50, Zfc and Zf.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -4964,9 +4971,10 @@ firmware 1.01b.</p>
 <td><table class=cols><tr>
   <td>0 = Off
   <br>1 = Auto
-  <br>2 = People</td><td>&nbsp;&nbsp;</td>
-  <td>3 = Animals
-  <br>4 = Vehicles
+  <br>2 = People
+  <br>3 = Animals</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Vehicles
+  <br>5 = Birds
   <br>6 = Airplanes</td></tr></table>
 </td></tr>
 <tr>
@@ -5233,9 +5241,10 @@ firmware 1.01b.</p>
 <td><table class=cols><tr>
   <td>0 = Off
   <br>1 = Auto
-  <br>2 = People</td><td>&nbsp;&nbsp;</td>
-  <td>3 = Animals
-  <br>4 = Vehicles
+  <br>2 = People
+  <br>3 = Animals</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Vehicles
+  <br>5 = Birds
   <br>6 = Airplanes</td></tr></table>
 </td></tr>
 <tr class=b>
@@ -6621,9 +6630,10 @@ firmware 1.01b.</p>
 <td><table class=cols><tr>
   <td>0 = Off
   <br>1 = Auto
-  <br>2 = People</td><td>&nbsp;&nbsp;</td>
-  <td>3 = Animals
-  <br>4 = Vehicles
+  <br>2 = People
+  <br>3 = Animals</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Vehicles
+  <br>5 = Birds
   <br>6 = Airplanes</td></tr></table>
 </td></tr>
 <tr>
@@ -6877,9 +6887,10 @@ firmware 1.01b.</p>
 <td><table class=cols><tr>
   <td>0 = Off
   <br>1 = Auto
-  <br>2 = People</td><td>&nbsp;&nbsp;</td>
-  <td>3 = Animals
-  <br>4 = Vehicles
+  <br>2 = People
+  <br>3 = Animals</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Vehicles
+  <br>5 = Birds
   <br>6 = Airplanes</td></tr></table>
 </td></tr>
 <tr class=b>
@@ -7373,9 +7384,10 @@ firmware 1.01b.</p>
 <td><table class=cols><tr>
   <td>0 = Off
   <br>1 = Auto
-  <br>2 = People</td><td>&nbsp;&nbsp;</td>
-  <td>3 = Animals
-  <br>4 = Vehicles
+  <br>2 = People
+  <br>3 = Animals</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Vehicles
+  <br>5 = Birds
   <br>6 = Airplanes</td></tr></table>
 </td></tr>
 <tr class=b>
@@ -7635,9 +7647,10 @@ firmware 1.01b.</p>
 <td><table class=cols><tr>
   <td>0 = Off
   <br>1 = Auto
-  <br>2 = People</td><td>&nbsp;&nbsp;</td>
-  <td>3 = Animals
-  <br>4 = Vehicles
+  <br>2 = People
+  <br>3 = Animals</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Vehicles
+  <br>5 = Birds
   <br>6 = Airplanes</td></tr></table>
 </td></tr>
 <tr class=b>
@@ -8198,9 +8211,10 @@ firmware 1.01b.</p>
 <td><table class=cols><tr>
   <td>0 = Off
   <br>1 = Auto
-  <br>2 = People</td><td>&nbsp;&nbsp;</td>
-  <td>3 = Animals
-  <br>4 = Vehicles
+  <br>2 = People
+  <br>3 = Animals</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Vehicles
+  <br>5 = Birds
   <br>6 = Airplanes</td></tr></table>
 </td></tr>
 <tr>
@@ -8460,9 +8474,10 @@ firmware 1.01b.</p>
 <td><table class=cols><tr>
   <td>0 = Off
   <br>1 = Auto
-  <br>2 = People</td><td>&nbsp;&nbsp;</td>
-  <td>3 = Animals
-  <br>4 = Vehicles
+  <br>2 = People
+  <br>3 = Animals</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Vehicles
+  <br>5 = Birds
   <br>6 = Airplanes</td></tr></table>
 </td></tr>
 <tr>
@@ -13308,6 +13323,7 @@ for ExifTool to choose in these cases (see the
 </tr><tr><td>'FB 54 2B 50 24 24 84 06'</td><td>= Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16NII)</td>
 </tr><tr><td>'FB 54 8E 8E 24 24 4B 02'</td><td>= Sigma APO 300mm F2.8 EX DG HSM</td>
 </tr><tr><td>'FC 40 2D 80 2C 40 DF 06'</td><td>= Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14NII)</td>
+</tr><tr><td>'FD 00 44 44 18 18 DF 00'</td><td>= Voigtlander APO-Lanthar 35mm F2</td>
 </tr><tr><td>'FD 00 50 50 18 18 DF 00'</td><td>= Voigtlander APO-Lanthar 50mm F2 Aspherical</td>
 </tr><tr><td>'FD 47 50 76 24 24 4B 06'</td><td>= Sigma 50-150mm F2.8 EX APO DC HSM II</td>
 </tr><tr><td>'FE 47 00 00 24 24 4B 06'</td><td>= Sigma 4.5mm F2.8 EX DC HSM Circular Fisheye</td>
@@ -13320,7 +13336,7 @@ for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 19, 2023</i>
+<br><i>Last revised Oct 16, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

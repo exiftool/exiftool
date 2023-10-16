@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 26993 tags, with 16973 unique tag names.
+They contain a total of 27039 tags, with 16991 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -7481,6 +7481,7 @@ Unknown only to reduce the volume of the normal output.
            CanonCameraInfo1000D                 Canon CameraInfo1000D
            CanonCameraInfo1100D                 Canon CameraInfo600D
            CanonCameraInfo1200D                 Canon CameraInfo60D
+           CanonCameraInfoR6                    Canon CameraInfoR6
            CanonCameraInfoPowerShot             Canon CameraInfoPowerShot
            CanonCameraInfoPowerShot2            Canon CameraInfoPowerShot2
            CanonCameraInfoUnknown32             Canon CameraInfoUnknown32
@@ -8464,6 +8465,14 @@ CameraInfo tags for the EOS 1000D.
     323    FileIndex                            int32u
     615    PictureStyleInfo                     Canon PSInfo
    2359    LensModel                            string[64]
+
+=head3 Canon CameraInfoR6 Tags
+
+CameraInfo tags for the EOS R6.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+   2801    ShutterCount                         int32u
 
 =head3 Canon CameraInfoPowerShot Tags
 
@@ -14285,6 +14294,7 @@ firmware 1.00 and earlier.
      16    ImageArea                            int8u
     545    ISO2                                 int8u
     578    ShutterCount                         int32u
+  671.1    JPGCompression                       int8u & 0x40
     718    CustomSettingsD3S                    NikonCustom SettingsD3
 
 =head3 Nikon ShotInfoD300a Tags
@@ -14668,7 +14678,7 @@ These tags are extracted from encrypted data in images from the Z7II.
 
 =head3 Nikon MenuSettingsZ7II Tags
 
-These tags are used by the Z5, Z6, Z7, Z6II, Z7II, Z50 and Zfc.
+These tags are used by the Z5, Z6, Z7, Z6II, Z7II, Z50, Zfc and Zf.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -18314,7 +18324,7 @@ These tags are used in Panasonic/Leica cameras.
   0x006d   City                                 undef
   0x006f   Landmark                             undef
   0x0070   IntelligentResolution                int8u
-  0x0076   HDRShot                              int16u
+  0x0076   MergedImages                         int16u
   0x0077   BurstSpeed                           int16u
   0x0079   IntelligentD-Range                   int16u
   0x007c   ClearRetouch                         int16u
@@ -21404,7 +21414,7 @@ Valid from July 2020 for ILCE-1/7SM3, ILME-FX3.
 
 =head3 Sony Tag9050d Tags
 
-Valid for ILCE-6700/ZV-E1.
+Valid for ILCE-6700/7CM2/7CR/ZV-E1.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -21812,7 +21822,7 @@ E-mount models.
 
 =head3 Sony Tag9416 Tags
 
-Valid for the ILCE-1/6700/7M4/7RM5/7SM3, ILME-FX3/FX30, ZV-E1.
+Valid for the ILCE-1/6700/7CM2/7CR/7M4/7RM5/7SM3, ILME-FX3/FX30, ZV-E1.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -21824,7 +21834,9 @@ Valid for the ILCE-1/6700/7M4/7RM5/7SM3, ILME-FX3/FX30, ZV-E1.
      16    SonyFNumber2                         no
      18    SonyMaxApertureValue                 no
      29    SequenceImageNumber                  no
+     43    ReleaseMode2                         no
      53    ExposureProgram                      no
+     55    CreativeStyle                        no
      72    LensMount                            no
      73    LensFormat                           no
      74    LensMount                            no
@@ -25618,6 +25630,7 @@ These tags belong to the ExifTool XMP-photomech family 1 group.
   --------                                      --------
   ColorClass                                    integer
   CountryCode                                   string/
+  CreatorIdentity                               string
   EditStatus                                    string
   PMVersion                                     string
   Prefs                                         string
@@ -29107,6 +29120,7 @@ QuickTimeHandler option may be set to 0 to avoid this.
   'itnu'       iTunesU                          int8s
   'keyw'       Keyword                          string
   'ldes'       LongDescription                  string
+  'ownr'       Owner                            string
   'pcst'       Podcast                          int8s
   'perf'       Performer                        string
   'pgap'       PlayGap                          int8s
@@ -29135,6 +29149,7 @@ QuickTimeHandler option may be set to 0 to avoid this.
   'tvnn'       TVNetworkName                    string
   'tvsh'       TVShow                           string
   'tvsn'       TVSeason                         int32u
+  'xid '       ISRC                             string
   'yrrc'       Year                             string
   "\xa9ART"    Artist                           string
   "\xa9alb"    Album                            string
@@ -29292,6 +29307,7 @@ and are not currently writable.
       4    ColorPrimaries                       no
       6    TransferCharacteristics              no
       8    MatrixCoefficients                   no
+     10    VideoFullRangeFlag                   no
 
 =head3 QuickTime HEVCConfig Tags
 
@@ -37537,6 +37553,53 @@ L<https://fits.gsfc.nasa.gov/fits_standard.html> for the specification.
   'TIME-END'   ObservationTimeEnd               no
   'TIME-OBS'   ObservationTime                  no
 
+=head2 XISF Tags
+
+This table lists some standard Extensible Image Serialization Format (XISF)
+tags, but ExifTool will extract any other tags found.  See
+L<https://pixinsight.com/xisf/> for the specification.
+
+  Tag ID                Tag Name                Writable
+  ------                --------                --------
+  'Abstract'            Abstract                no
+  'AccessRights'        AccessRights            no
+  'Authors'             Authors                 no
+  'BibliographicReferences'
+                        BibliographicReferences no
+  'BriefDescription'    BriefDescription        no
+  'CompressionCodecs'   CompressionCodecs       no
+  'CompressionLevel'    CompressionLevel        no
+  'Contributors'        Contributors            no
+  'Copyright'           Copyright               no
+  'CreationTime'        CreateDate              no
+  'CreatorApplication'  CreatorApplication      no
+  'CreatorModule'       CreatorModule           no
+  'CreatorOS'           CreatorOS               no
+  'Description'         Description             no
+  'ImageBounds'         ImageBounds             no
+  'ImageColorSpace'     ColorSpace              no
+  'ImageData'           ImageData               no
+  'ImageGeometry'       ImageGeometry           no
+  'ImageICCProfile'     ICC_Profile             no
+  'ImageICCProfileLocation' ICCProfileLocation  no
+  'ImageId'             ImageID                 no
+  'ImageImageType'      ImageType               no
+  'ImageLocation'       ImageLocation           no
+  'ImageOffset'         ImagePixelOffset        no
+  'ImageOrientation'    Orientation             no
+  'ImagePixelStorage'   ImagePixelStorage       no
+  'ImageResolutionHorizontal' XResolution       no
+  'ImageResolutionUnit' ResolutionUnit          no
+  'ImageResolutionVertical' YResolution         no
+  'ImageSampleFormat'   ImageSampleFormat       no
+  'ImageUuid'           UUID                    no
+  'Keywords'            Keywords                no
+  'Languages'           Languages               no
+  'License'             License                 no
+  'OriginalCreationTime' DateTimeOriginal       no
+  'RelatedResources'    RelatedResources        no
+  'Title'               Title                   no
+
 =head2 HTML Tags
 
 Meta information extracted from the header of HTML and XHTML files.  This is
@@ -38868,6 +38931,7 @@ FileName.
   MaxVal                     File               no
   NewGUID                    ExifTool           no
   Now                        ExifTool           no
+  NumPlanes                  File               no
   OtherImage                 File               no
   PageCount                  File               no
   PreviewImage               File               yes

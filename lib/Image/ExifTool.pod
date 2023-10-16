@@ -102,11 +102,11 @@ supported by ExifTool (r = read, w = write, c = create):
   DCP   r/w   | ICO   r     | MPG   r     | PSB   r/w   | WV    r
   DCR   r     | ICS   r     | MPO   r/w   | PSD   r/w   | X3F   r/w
   DFONT r     | IDML  r     | MQV   r/w   | PSP   r     | XCF   r
-  DIVX  r     | IIQ   r/w   | MRC   r     | QTIF  r/w   | XLS   r
-  DJVU  r     | IND   r/w   | MRW   r/w   | R3D   r     | XLSX  r
-  DLL   r     | INSP  r/w   | MXF   r     | RA    r     | XMP   r/w/c
-  DNG   r/w   | INSV  r     | NEF   r/w   | RAF   r/w   | ZIP   r
-  DOC   r     | INX   r     | NKSC  r/w   | RAM   r     |
+  DIVX  r     | IIQ   r/w   | MRC   r     | QTIF  r/w   | XISF  r
+  DJVU  r     | IND   r/w   | MRW   r/w   | R3D   r     | XLS   r
+  DLL   r     | INSP  r/w   | MXF   r     | RA    r     | XLSX  r
+  DNG   r/w   | INSV  r     | NEF   r/w   | RAF   r/w   | XMP   r/w/c
+  DOC   r     | INX   r     | NKSC  r/w   | RAM   r     | ZIP   r
   DOCX  r     | ISO   r     | NRW   r/w   | RAR   r     |
 
   Meta Information

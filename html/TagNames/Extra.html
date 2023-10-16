@@ -430,53 +430,58 @@ unless specifically requested or the API <a href="../ExifTool.html#RequestAll">R
 <code>&quot;-modifydate&lt;now&quot;</code>.  Not generated unless specifically requested or the
 API <a href="../ExifTool.html#RequestAll">RequestAll</a> option is set)</span></span></td></tr>
 <tr class=b>
+<td>NumPlanes</td>
+<td class=c>no</td>
+<td class=c>File</td>
+<td><span class=s><span class=n>(number of color planes)</span></span></td></tr>
+<tr>
 <td>OtherImage</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(other JPEG-format embedded image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PageCount</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the number of pages in a multi-page TIFF document)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PreviewImage</td>
 <td class=c>yes</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(JPEG-format embedded preview image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PreviewPDF</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(PDF-format embedded preview image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PreviewPNG</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(PNG-format embedded preview image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PreviewTIFF</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(TIFF-format embedded preview image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PreviewWMF</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(WMF-format embedded preview image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ProcessingTime</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(the clock time in seconds taken by ExifTool to extract information from this
 file.  Not generated unless specifically requested or the <a href="../ExifTool.html#RequestAll">RequestAll</a> API
 option is set.  Requires Time::HiRes)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RAFVersion</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(RAF file version number)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ResourceForkSize</td>
 <td class=c>no</td>
 <td class=c>System</td>
@@ -485,13 +490,13 @@ tag is generated the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded<
 resource-fork information as a sub-document.  When writing, the resource
 fork is preserved by default, but it may be deleted with <code>-rsrc:all=</code> on
 the command line)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>SphericalVideoXML</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>GSpherical</td>
 <td><span class=s><span class=n>(the SphericalVideoXML block from MP4/MOV videos.  This tag is generated only
 if specifically requested)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>SymLink</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>-</td>
@@ -504,25 +509,25 @@ symbolic links.  Note that subsequent editing of the file via the symbolic
 link by exiftool will cause the link to be replaced by the edited file
 without changing the original unless the -overwrite_original_in_place option
 is used)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>TestName</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(this write-only tag may be used instead of FileName for dry-run tests of the
 file renaming feature.  Writing this tag prints the old and new file names
 to the console, but does not affect the file itself)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ThumbnailImage</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(JPEG-format embedded thumbnail image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>Trailer</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the full JPEG trailer data block.  Extracted only if specifically requested
 or the API RequestAll option is set to 3 or higher)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>Validate</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
@@ -532,7 +537,7 @@ additional validation checks when extracting metadata.  Returns the number
 of errors, warnings and minor warnings encountered.  Note that the Validate
 feature focuses mainly on validation of EXIF/TIFF metadata)</span>
   <br>&#39;0 0 0&#39; = OK</span></td></tr>
-<tr class=b>
+<tr>
 <td>Warning</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
@@ -541,28 +546,28 @@ Use the -a or <a href="../ExifTool.html#Duplicates">Duplicates</a> option to see
 occurred. Minor warnings may be ignored with the -m or <a href="../ExifTool.html#IgnoreMinorErrors">IgnoreMinorErrors</a>
 option.  Minor warnings with a capital &quot;M&quot; in the &quot;[Minor]&quot; designation
 indicate that the processing is affected by ignoring the warning)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>XML</td>
 <td class=c>no</td>
 <td class=c>XML</td>
 <td><span class=s><span class=n>(the XML data block, extracted for some file types)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>XMP</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>XMP</td>
 <td><span class=s><span class=n>(the XMP data block, but note that extended XMP in JPEG images may be split
 into multiple blocks.  This tag is generated only if specifically requested)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>XResolution</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the horizontal pixel resolution)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>YResolution</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the vertical pixel resolution)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ZoneIdentifier</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
@@ -574,7 +579,7 @@ stream.  Requires Win32API::File)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 28, 2023</i>
+<br><i>Last revised Oct 16, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

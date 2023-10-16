@@ -94,9 +94,9 @@ the site with a moderate load.  An alternate ExifTool homepage is available at
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.67.tar.gz/download">
-Download        Version 12.67</a> (5.0 MB) -
-<a href="history.html">Sept. 19, 2023</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.68.tar.gz/download">
+Download        Version 12.68</a> (5.0 MB) -
+<a href="history.html">Oct. 16, 2023</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -149,8 +149,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.67.zip/download">
-         exiftool-12.67.zip</a> (6.9 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.68.zip/download">
+         exiftool-12.68.zip</a> (6.9 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -168,7 +168,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.67.dmg</a> (3.2 MB)</b></td></tr></table></blockquote>
+         ExifTool-12.68.dmg</a> (3.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -499,6 +499,7 @@ for each file format.</p>
 <tr><td>WV</td><td>R</td><td>WavePack lossless audio (<a href="TagNames/RIFF.html">RIFF</a>-based)</td><td>R<span class=sup>3</span></td><td>-</td><td>R</td><td>-</td><td>R <a href="TagNames/RIFF.html">RIFF</a></td></tr>
 <tr><td><a href="TagNames/SigmaRaw.html">X3F</a></td><td>R/W</td><td>Sigma/Foveon RAW</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W <a href="TagNames/Sigma.html">Sigma</a>, R <a href="TagNames/SigmaRaw.html">SigmaRaw</a></td></tr>
 <tr><td><a href="TagNames/GIMP.html">XCF</a></td><td>R</td><td>GIMP native image format</td><td>R</td><td>R</td><td>R</td><td>R</td><td>R <a href="TagNames/GIMP.html">GIMP</a></td></tr>
+<tr><td><a href="TagNames/XISF.html">XISF</a></td><td>R</td><td>Extensible Image Serialization Format</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/XISF.html">XISF</a></td></tr>
 <tr><td>XLS, XLT</td><td>R</td><td>Microsoft Excel Spreadsheet/Template (<a href="TagNames/FlashPix.html">FPX</a>-like)</td><td>-</td><td>-</td><td>R</td><td>R</td><td>R <a href="TagNames/FlashPix.html">FlashPix</a></td></tr>
 <tr><td><a href="TagNames/OOXML.html">XLSX, XLSM, XLSB</a></td><td>R</td><td>Office Open XML Spreadsheet [Macro-enabled/Binary]</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/OOXML.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
 <tr><td><a href="TagNames/OOXML.html">XLTX, XLTM</a></td><td>R</td><td>Office Open XML Spreadsheet Template [Macro-enabled]</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/OOXML.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
@@ -1040,6 +1041,10 @@ for proper rendering of the image.</li>
 
 <h2><font color='#cc6600'><a name="problems">Known Problems</a></font></h2>
 <ul>
+<li><span class=red>[2023-10-02]</span>
+<b>Panasonic PHOTOfunSTUDIO 9.5</b> has problems displaying some ExifTool-edited
+FZ1000 RW2 images, although other software (such as Adobe Lightroom, Digikam and
+Windows Explorer) have no problems with these.</li>
 <li><span class=red>[2022-08-23]</span>
 <b>Sony Imaging Edge Desktop</b> has problems displaying some ExifTool-edited ARW
 images, although other software (such as Adobe utilites) have no problems with these.</li>

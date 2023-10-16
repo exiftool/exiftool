@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.68';
+$VERSION = '4.69';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -490,6 +490,7 @@ $VERSION = '4.68';
    '368.11' => 'Sigma 70mm f/2.8 DG Macro', #IB (A018)
    '368.12' => 'Sigma 18-35mm f/1.8 DC HSM | A', #50
    '368.13' => 'Sigma 24-105mm f/4 DG OS HSM | A', #forum3833
+   '368.14' => 'Sigma 18-300mm f/3.5-6.3 DC Macro OS HSM | C', #forum15280 (014)
     # Note: LensType 488 (0x1e8) is reported as 232 (0xe8) in 7D CameraSettings
     488 => 'Canon EF-S 15-85mm f/3.5-5.6 IS USM', #PH
     489 => 'Canon EF 70-300mm f/4-5.6L IS USM', #Gerald Kapounek
@@ -1388,6 +1389,11 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Name => 'CanonCameraInfo1200D',
             Condition => '$$self{Model} =~ /\b(1200D|REBEL T5|Kiss X70)\b/',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfo60D' },
+        },
+        {
+            Name => 'CanonCameraInfoR6',
+            Condition => '$$self{Model} =~ /\bEOS R6$/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR6' },
         },
         {
             Name => 'CanonCameraInfoPowerShot',
@@ -4692,6 +4698,19 @@ my %ciMaxFocal = (
         Condition => '$$self{Model} =~ /EOS 60D$/',
         Notes => '60D',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo2' },
+    },
+);
+
+%Image::ExifTool::Canon::CameraInfoR6 = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'CameraInfo tags for the EOS R6.',
+    0x0af1 => { #forum15210
+        Name => 'ShutterCount',
+        Format => 'int32u',
+        Notes => 'includes electronic + mechanical shutter',
     },
 );
 

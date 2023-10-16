@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.64';
+$VERSION = '1.65';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -973,13 +973,20 @@ sub FoundPNG($$$$;$$$$)
                 undef $processProc if $wasCompressed and $processProc and $processProc eq \&ProcessPNG_Compressed;
                 # rewrite this directory if necessary (but always process TextualData normally)
                 if ($outBuff and not $processProc and $subTable ne \%Image::ExifTool::PNG::TextualData) {
-                    return 1 unless $$et{EDIT_DIRS}{$dirName};
-                    $$outBuff = $et->WriteDirectory(\%subdirInfo, $subTable);
-                    if ($tagName eq 'XMP' and $$outBuff) {
-                        # make sure the XMP is marked as read-only
-                        Image::ExifTool::XMP::ValidateXMP($outBuff,'r');
+                    # allow JUMBF to be deleted (may want to expand this for other types too?)
+                    if ($dirName eq 'JUMBF' and $$et{DEL_GROUP}{$dirName}) {
+                        $$outBuff = '';
+                        ++$$et{CHANGED};
+                        $et->VPrint(0, "  Deleting $dirName");
+                    } else {
+                        return 1 unless $$et{EDIT_DIRS}{$dirName};
+                        $$outBuff = $et->WriteDirectory(\%subdirInfo, $subTable);
+                        if ($tagName eq 'XMP' and $$outBuff) {
+                            # make sure the XMP is marked as read-only
+                            Image::ExifTool::XMP::ValidateXMP($outBuff,'r');
+                        }
+                        DoneDir($et, $dirName, $outBuff, $$tagInfo{NonStandard});
                     }
-                    DoneDir($et, $dirName, $outBuff, $$tagInfo{NonStandard});
                 } else {
                     $processed = $et->ProcessDirectory(\%subdirInfo, $subTable, $processProc);
                 }

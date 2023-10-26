@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.60';
+$VERSION = '3.61';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -201,6 +201,8 @@ my %xmpNS = (
     nine      => 'http://ns.nikon.com/nine/1.0/',
     hdr_metadata => 'http://ns.adobe.com/hdr-metadata/1.0/',
     hdrgm     => 'http://ns.adobe.com/hdr-gain-map/1.0/',
+  # Note: Not included due to namespace prefix conflict with Device:Container
+  # Container => 'http://ns.google.com/photos/1.0/container/',
 );
 
 # build reverse namespace lookup
@@ -479,7 +481,7 @@ my %sCorrRangeMask = (
     LuminanceDepthSampleInfo => { },
 );
 # new LR2 crs structures (PH)
-my %sCorrectionMask;
+my %sCorrectionMask; # (must define this before assigning because it is self-referential)
 %sCorrectionMask = (
     STRUCT_NAME => 'CorrectionMask',
     NAMESPACE   => 'crs',
@@ -919,6 +921,11 @@ my %sRangeMask = (
         Name => 'hdrgm',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::hdrgm' },
     },
+  # Note: Note included due to namespace prefix conflict with Device:Container
+  # Container => {
+  #     Name => 'Container',
+  #     SubDirectory => { TagTable => 'Image::ExifTool::XMP::Container' },
+  # },
 );
 
 # hack to allow XML containing Dublin Core metadata to be handled like XMP (eg. EPUB - see ZIP.pm)
@@ -1699,6 +1706,8 @@ my %sPantryItem = (
                     ToneCurvePV2012Red   => { List => 'Seq' },
                     ToneCurvePV2012Green => { List => 'Seq' },
                     ToneCurvePV2012Blue  => { List => 'Seq' },
+                    Highlights2012  => { },
+                    Shadows2012     => { },
                 },
             },
         }
@@ -1760,6 +1769,62 @@ my %sPantryItem = (
     SDRShadows     => { Writable => 'real' },
     SDRWhites      => { Writable => 'real' },
     SDRBlend       => { Writable => 'real' },
+    # new for ACR 16 (ref forum15305)
+    LensBlur => {
+        Struct => {
+            STRUCT_NAME     => 'LensBlur',
+            NAMESPACE       => 'crs',
+            # (Note: all the following 'real' values could be limited to 'integer')
+            Active          => { Writable => 'boolean' },
+            BlurAmount      => { FlatName => 'Amount', Writable => 'real' },
+            BokehAspect     => { Writable => 'real' },
+            BokehRotation   => { Writable => 'real' },
+            BokehShape      => { Writable => 'real' },
+            BokehShapeDetail => { Writable => 'real' },
+            CatEyeAmount    => { Writable => 'real' },
+            CatEyeScale     => { Writable => 'real' },
+            FocalRange      => { }, # (eg. "-48 32 64 144")
+            FocalRangeSource => { Writable => 'real' },
+            HighlightsBoost => { Writable => 'real' },
+            HighlightsThreshold => { Writable => 'real' },
+            SampledArea     => { }, # (eg. "0.500000 0.500000 0.500000 0.500000")
+            SampledRange    => { }, # (eg. "0 0")
+            SphericalAberration => { Writable => 'real' },
+            SubjectRange    => { }, # (eg. "0 57");
+            Version         => { },
+         },
+    },
+    DepthMapInfo => {
+        Struct => {
+            STRUCT_NAME     => 'DepthMapInfo',
+            NAMESPACE       => 'crs',
+            BaseHighlightGuideInputDigest => { },
+            BaseHighlightGuideTable     => { },
+            BaseHighlightGuideVersion   => { },
+            BaseLayeredDepthInputDigest => { },
+            BaseLayeredDepthTable       => { },
+            BaseLayeredDepthVersion     => { },
+            BaseRawDepthInputDigest     => { },
+            BaseRawDepthTable           => { },
+            BaseRawDepthVersion         => { },
+            DepthSource                 => { },
+        },
+    },
+    DepthBasedCorrections => {
+        List => 'Seq',
+        FlatName => 'DepthBasedCorr',
+        Struct => {
+            STRUCT_NAME      => 'DepthBasedCorr',
+            NAMESPACE        => 'crs',
+            CorrectionActive => { Writable => 'boolean' },
+            CorrectionAmount => { Writable => 'real' },
+            CorrectionMasks  => { FlatName => 'Mask', List => 'Seq', Struct => \%sCorrectionMask },
+            CorrectionSyncID => { },
+            LocalCorrectedDepth => {  Writable => 'real' },
+            LocalCurveRefineSaturation => { Writable => 'real' },
+            What             => { },
+        },
+    },
 );
 
 # Tiff namespace properties (tiff)

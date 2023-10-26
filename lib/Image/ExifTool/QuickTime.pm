@@ -9502,7 +9502,7 @@ sub ProcessMOV($$;$)
             $et->HandleTag($tagTablePtr, "$tag-offset", $raf->Tell()) if $$tagTablePtr{"$tag-offset"};
         }
         # stop processing at mdat/idat if -fast2 is used
-        last if $fast > 1 and ($tag eq 'mdat' or $tag eq 'idat');
+        last if $fast > 1 and ($tag eq 'mdat' or ($tag eq 'idat' and $$et{FileType} ne 'HEIC'));
         # load values only if associated with a tag (or verbose) and not too big
         if ($size > 0x2000000) {    # start to get worried above 32 MB
             # check for RIFF trailer (written by Auto-Vox dashcam)

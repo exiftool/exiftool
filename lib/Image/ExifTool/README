@@ -343,9 +343,10 @@ numerical, and generated automatically otherwise.
                   but applied automatically to individual tags.  Value specifies
                   pattern for split, or 1 for default pattern ',?\\s+'.
 
-                  'Avoid' - avoid creating this tag if possible.  This is only
-                  effective if another tag exists with the same name.  Setting
-                  this flag also sets the default Priority to 0 for this tag.
+                  'Avoid' - avoid creating this tag when writing if possible. 
+                  This is only effective if another tag exists with the same
+                  name.  Setting this flag also sets the default Priority to 0
+                  for this tag.
 
                   'Binary' - set to 1 for binary data.  This has the same effect
                   as setting ValueConv to '\$val', but it it a bit cleaner and
@@ -916,6 +917,9 @@ numerical, and generated automatically otherwise.
 
   FixedSize     : [EXIF only] Hack to ignore value size and use this instead.
                   Only valid if Format is also defined.
+
+  TruncateOK    : [EXIF only] Hack to demote a truncated value in an IFD to a
+                   minor error.
 
   Struct        : [XMP tags only] Reference to structure hash for structured XMP
                   tags.  See "STRUCTURES" section below for more details.  (For

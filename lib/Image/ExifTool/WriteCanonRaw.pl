@@ -142,7 +142,6 @@ sub SaveMakerNotes($)
     }
     # save position of maker notes for pointer fixups
     $fixup->{Shift} += length($makerNotes);
-    $$et{MAKER_NOTE_FIXUP} = $fixup;
     $$et{MAKER_NOTE_BYTE_ORDER} = GetByteOrder();
     # add value data
     $makerNotes .= $makerInfo->{ValBuff};
@@ -150,7 +149,8 @@ sub SaveMakerNotes($)
     my $tagTablePtr = Image::ExifTool::GetTagTable('Image::ExifTool::Exif::Main');
     my $tagInfo = $et->GetTagInfo($tagTablePtr, 0x927c, \$makerNotes);
     # save the MakerNotes
-    $et->FoundTag($tagInfo, $makerNotes);
+    my $key = $et->FoundTag($tagInfo, $makerNotes);
+    $$et{TAG_EXTRA}{$key}{Fixup} = $fixup;
     # save the garbage collection some work later
     delete $makerInfo->{Entries};
     delete $makerInfo->{ValBuff};

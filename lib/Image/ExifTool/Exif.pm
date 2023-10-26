@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.44';
+$VERSION = '4.45';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -250,6 +250,7 @@ $formatName[129] = 'utf8';  # (Exif 3.0)
     34927 => 'WebP', #LibTiff
     34933 => 'PNG', # (TIFF mail list)
     34934 => 'JPEG XR', # (TIFF mail list)
+    52546 => 'JPEG XL', # (DNG 1.7)
     65000 => 'Kodak DCR Compressed', #PH
     65535 => 'Pentax PEF Compressed', #Jens
 );
@@ -3077,14 +3078,31 @@ my %opcodeInfo = (
         },
         PrintConvInv => '$val =~ /^PrintIM/ ? $val : undef',    # quick validation
     },
+    0xc519 => { # (Hasselblad X2D)
+        Name => 'HasselbladXML',
+        Format => 'undef',
+        TruncateOK => 1,    # (incorrect size written by X2D)
+        SubDirectory => {
+            DirName => 'XML',
+            TagTable => 'Image::ExifTool::PLIST::Main',
+            Start => '$valuePtr + 4',
+        },
+    },
     0xc51b => { # (Hasselblad H3D)
         Name => 'HasselbladExif',
         Format => 'undef',
-        RawConv => q{
-            $$self{DOC_NUM} = ++$$self{DOC_COUNT};
-            $self->ExtractInfo(\$val, { ReEntry => 1 });
-            $$self{DOC_NUM} = 0;
-            return undef;
+        SubDirectory => {
+            Start => '$valuePtr',
+            Base => '$start',
+            TagTable => 'Image::ExifTool::Exif::Main',
+            ProcessProc => \&Image::ExifTool::ProcessSubTIFF,
+            # Writing this is problematic due to the braindead Hasselblad programmers.
+            # One problem is that some values run outside the HasselbladExif data so they
+            # will be lost if we do a simple copy (which is what we are currently doing
+            # by returning undef from the WriteProc), but we can't rebuild this directory
+            # by writing it properly because there is an erroneous StripByteCounts value
+            # written by the X2D 100C that renders the data unreadable
+            WriteProc => sub { return undef }, 
         },
     },
     0xc573 => { #PH
@@ -3123,7 +3141,7 @@ my %opcodeInfo = (
     0xc612 => {
         Name => 'DNGVersion',
         Notes => q{
-            tags 0xc612-0xcd3b are defined by the DNG specification unless otherwise
+            tags 0xc612-0xcd48 are defined by the DNG specification unless otherwise
             noted.  See L<https://helpx.adobe.com/photoshop/digital-negative.html> for
             the specification
         },
@@ -3609,6 +3627,11 @@ my %opcodeInfo = (
         Writable => 'int16u',
         WriteGroup => 'IFD0',
         Protected => 1,
+        PrintConv => {
+            0 => 'Scene-referred',
+            1 => 'Output-referred (ICC Profile Dynamic Range)',
+            2 => 'Output-referred (High Dyanmic Range)', # DNG 1.7
+        },
     },
     0xc6c5 => { Name => 'SRawType', Description => 'SRaw Type', WriteGroup => 'IFD0' }, #exifprobe (CR2 proprietary)
     0xc6d2 => { #JD (Panasonic DMC-TZ5)
@@ -4133,7 +4156,7 @@ my %opcodeInfo = (
     0xcd2d => { # DNG 1.6
         Name => 'ProfileGainTableMap',
         Writable => 'undef',
-        WriteGroup => 'SubIFD',
+        WriteGroup => 'SubIFD', # (according to DNG 1.7 docs, this was an error and it should have been IFD0)
         Protected => 1,
         Binary => 1,
     },
@@ -4218,6 +4241,51 @@ my %opcodeInfo = (
     0xcd3b => { # DNG 1.6
         Name => 'RGBTables',
         Writable => 'undef',
+        WriteGroup => 'IFD0',
+        Protected => 1,
+    },
+    0xcd40 => { # DNG 1.7
+        Name => 'ProfileGainTableMap2',
+        Writable => 'undef',
+        WriteGroup => 'IFD0',
+        Protected => 1,
+        Binary => 1,
+    },
+    0xcd43 => { # DNG 1.7
+        Name => 'ColumnInterleaveFactor',
+        Writable => 'int32u',
+        WriteGroup => 'SubIFD',
+        Protected => 1,
+    },
+    0xcd44 => { # DNG 1.7
+        Name => 'ImageSequenceInfo',
+        Writable => 'undef',
+        WriteGroup => 'IFD0',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::DNG::ImageSeq',
+            ByteOrder => 'BigEndian',
+        },
+    },
+    0xcd46 => { # DNG 1.7
+        Name => 'ImageStats',
+        Writable => 'undef',
+        WriteGroup => 'IFD0',
+        Binary => 1,
+        Protected => 1,
+    },
+    0xcd47 => { # DNG 1.7
+        Name => 'ProfileDynamicRange',
+        Writable => 'undef',
+        WriteGroup => 'IFD0',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::DNG::ProfileDynamicRange',
+            ByteOrder => 'BigEndian', # (not indicated in spec)
+        },
+    },
+    0xcd48 => { # DNG 1.7
+        Name => 'ProfileGroupName',
+        Writable => 'string',
+        Format => 'string',
         WriteGroup => 'IFD0',
         Protected => 1,
     },
@@ -5944,6 +6012,12 @@ sub ProcessExif($$$)
     my $inMakerNotes = $$tagTablePtr{GROUPS}{0} eq 'MakerNotes';
     my $isExif = ($tagTablePtr eq \%Image::ExifTool::Exif::Main);
 
+    # warn for incorrect maker notes in CR3 files
+    if ($$dirInfo{DirName} eq 'MakerNotes' and $$et{FileType} eq 'CR3' and
+        $$dirInfo{Parent} and $$dirInfo{Parent} eq 'ExifIFD')
+    {
+        $et->WarnOnce("MakerNotes shouldn't exist ExifIFD of CR3 image", 1);
+    }
     # set flag to calculate image data hash if requested
     $doHash = 1 if $$et{ImageDataHash} and (($$et{FILE_TYPE} eq 'TIFF' and not $base and not $inMakerNotes) or
         ($$et{FILE_TYPE} eq 'RAF' and $dirName eq 'FujiIFD'));
@@ -6219,7 +6293,7 @@ sub ProcessExif($$$)
                     }
                     # read from file if necessary
                     unless (defined $buff) {
-                        my $wrn;
+                        my ($wrn, $truncOK);
                         my $readFromRAF = ($tagInfo and $$tagInfo{ReadFromRAF});
                         if (not $raf->Seek($base + $valuePtr + $dataPos, 0)) {
                             $wrn = "Invalid offset for $dir entry $index";
@@ -6229,18 +6303,22 @@ sub ProcessExif($$$)
                             $buff = "$$tagInfo{Name} data $size bytes";
                             $readSize = length $buff;
                         } elsif ($raf->Read($buff,$size) != $size) {
-                            $wrn = "Error reading value for $dir entry $index";
+                            $wrn = sprintf("Error reading value for $dir entry $index, ID 0x%.4x", $tagID);
+                            if ($tagInfo and not $$tagInfo{Unknown}) {
+                                $wrn .= " $$tagInfo{Name}";
+                                $truncOK = $$tagInfo{TruncateOK};
+                            }
                         } elsif ($readFromRAF) {
                             # seek back to the start of the value
                             $raf->Seek($base + $valuePtr + $dataPos, 0);
                         }
                         if ($wrn) {
-                            $et->Warn($wrn, $inMakerNotes);
-                            return 0 unless $inMakerNotes or $htmlDump;
+                            $et->Warn($wrn, $inMakerNotes || $truncOK);
+                            return 0 unless $inMakerNotes or $htmlDump or $truncOK;
                             ++$warnCount;
                             $buff = '' unless defined $buff;
                             $readSize = length $buff;
-                            $bad = 1;
+                            $bad = 1 unless $truncOK;
                         }
                     }
                     $valueDataLen = length $buff;
@@ -6813,6 +6891,10 @@ sub ProcessExif($$$)
             # save original components of rational numbers (used when copying)
             $$et{RATIONAL}{$tagKey} = $rational if defined $rational;
             $$et{TAG_EXTRA}{$tagKey}{G6} = $saveFormat if $saveFormat;
+            if ($$et{MAKER_NOTE_FIXUP}) {
+                $$et{TAG_EXTRA}{$tagKey}{Fixup} = $$et{MAKER_NOTE_FIXUP};
+                delete $$et{MAKER_NOTE_FIXUP};
+            }
         }
     }
 

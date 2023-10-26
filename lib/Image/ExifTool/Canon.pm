@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.69';
+$VERSION = '4.70';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -9100,6 +9100,11 @@ my %filterConv = (
     CMT3 => { # (CR3 files)
         Name => 'MakerNoteCanon',
         PreservePadding => 1,
+        Writable => 'undef', # (writable directory!)
+        # (note that ExifTool 12.68 and earlier lacked the ability to write this as a block,
+        #  and would instead add the maker notes the the CMT2 ExifIFD.  To remove these
+        #  incorrectly-placed maker notes, use "exiftool -exififd:makernotes= FILE")
+        MakerNotes => 1,
         SubDirectory => {
             TagTable => 'Image::ExifTool::Canon::Main',
             ProcessProc => \&ProcessCMT3,

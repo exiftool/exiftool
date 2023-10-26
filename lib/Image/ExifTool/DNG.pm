@@ -17,7 +17,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::MakerNotes;
 use Image::ExifTool::CanonRaw;
 
-$VERSION = '1.23';
+$VERSION = '1.24';
 
 sub ProcessOriginalRaw($$$);
 sub ProcessAdobeData($$$);
@@ -118,6 +118,25 @@ sub WriteAdobeStuff($$$);
             ProcessProc => \&ProcessAdobeIFD,
         },
     },
+);
+
+# (DNG 1.7)
+%Image::ExifTool::DNG::ImageSeq = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    0 => { Name => 'SeqID',         Format => 'var_string' },
+    1 => { Name => 'SeqType',       Format => 'var_string' },
+    2 => { Name => 'SeqFrameInfo',  Format => 'var_string' },
+    3 => { Name => 'SeqIndex',      Format => 'int32u' },
+    7 => { Name => 'SeqCount',      Format => 'int32u' },
+    11 => { Name => 'SeqFinal',     Format => 'int8u', PrintConv => { 0 => 'No', 1 => 'Yes' } },
+);
+
+# (DNG 1.7)
+%Image::ExifTool::DNG::ProfileDynamicRange = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    0 => { Name => 'PDRVersion',    Format => 'int16u' },
+    2 => { Name => 'DynamicRange',  Format => 'int16u', PrintConv => { 0 => 'Standard', 1 => 'High' } },
+    4 => { Name => 'HintMaxOutputValue', Format => 'float' },
 );
 
 # fill in maker notes
@@ -786,7 +805,11 @@ sub ProcessAdobeMakN($$$)
                 return 1 unless $$tagInfo{Writable};
             }
             $val = substr($$dataPt, 20) unless defined $val;
-            $et->FoundTag($tagInfo, $val);
+            my $key = $et->FoundTag($tagInfo, $val);
+            if ($$et{MAKER_NOTE_FIXUP}) {
+                $$et{TAG_EXTRA}{$key}{Fixup} = $$et{MAKER_NOTE_FIXUP};
+                delete $$et{MAKER_NOTE_FIXUP};
+            }
         }
     }
     return 1;

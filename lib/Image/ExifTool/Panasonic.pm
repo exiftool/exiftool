@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.19';
+$VERSION = '2.20';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -2834,10 +2834,14 @@ sub ProcessLeicaTrailer($;$)
             my $val = Image::ExifTool::Exif::RebuildMakerNotes($et, \%dirInfo, $tagTablePtr);
             unless (defined $val) {
                 $et->Warn('Error rebuilding maker notes (may be corrupt)') if $len > 4;
-                $val = $buff,
+                $val = $buff;
             }
             my $key = $et->FoundTag($tagInfo, $val);
             $et->SetGroup($key, 'ExifIFD');
+            if ($$et{MAKER_NOTE_FIXUP}) {
+                $$et{TAG_EXTRA}{$key}{Fixup} = $$et{MAKER_NOTE_FIXUP};
+                delete $$et{MAKER_NOTE_FIXUP};
+            }
         }
     }
     SetByteOrder($oldOrder);

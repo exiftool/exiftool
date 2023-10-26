@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.26';
+$VERSION = '4.27';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -4588,7 +4588,7 @@ my %base64coord = (
         RawConv => '$$self{AFInfo2Version} = $val',
     },
     5 => { #28
-        Name => 'AFAreaMode',     #reflects the mode active when the shutter is tripped, not the position of the Focus Mode button (which is recorded in MenuSettingsZ9 tag also named AfAreaMode)
+        Name => 'AFAreaMode', #reflects the mode active when the shutter is tripped, not the position of the Focus Mode button (which is recorded in MenuSettingsZ9 tag also named AfAreaMode)
         PrintConv => {
             192 => 'Pinpoint',
             193 => 'Single',
@@ -4604,7 +4604,7 @@ my %base64coord = (
     },
     10 => {
             Name => 'AFPointsUsed',
-            Condition => '$$self{AFAreaMode} == 6',    #only valid for Auto AF Area mode.  Other modes handled via AFAreaXPosition/AFAreaYPosition
+            Condition => 'defined $$self{AFAreaMode} and $$self{AFAreaMode} == 6', #only valid for Auto AF Area mode.  Other modes handled via AFAreaXPosition/AFAreaYPosition
             Format => 'undef[51]',
             ValueConv => 'join(" ", unpack("H2"x51, $val))',
             ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
@@ -5442,6 +5442,13 @@ my %nikonFocalConversions = (
             37 => 'Nikkor Z 600mm f/4 TC VR S', #28
             38 => 'Nikkor Z 85mm f/1.2 S', #28
             39 => 'Nikkor Z 17-28mm f/2.8', #IB
+            40 => 'NIKKOR Z 26mm f/2.8', #28
+            41 => 'NIKKOR Z DX 12-28mm f/3.5-5.6 PZ VR', #28
+            42 => 'Nikkor Z 180-600mm f/5.6-6.3 VR', #30
+            43 => 'NIKKOR Z DX 24mm f/1.7', #28
+            44 => 'NIKKOR Z 70-180mm f/2.8', #28
+            45 => 'NIKKOR Z 600mm f/6.3 VR S', #28
+            48 => 'Nikkor Z 135mm f/1.8 S Plena', #28
             32768 => 'Nikkor Z 400mm f/2.8 TC VR S TC-1.4x', #28
             32769 => 'Nikkor Z 600mm f/4 TC VR S TC-1.4x', #28
         },
@@ -8520,7 +8527,7 @@ my %nikonFocalConversions = (
     DATAMEMBER => [ 0x0bea, 0x0beb ],
     0x0be8 => {
         Name => 'AFAreaInitialXPosition',        #stored as a representation of the horizontal position of the center of the portion of the focus box positioned top left when in Wide Area (L/S/C1/C2) focus modes (before subject detection potentially refines focus)
-        Condition => '$$self{ShutterMode} ne 96 and $$self{AFAreaMode} < 2 ',    #not valid for C30/C60/C120 or for Area Modes 1:1 and 16:19
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and defined $$self{AFAreaMode} and $$self{AFAreaMode} < 2 ',    #not valid for C30/C60/C120 or for Area Modes 1:1 and 16:19
         Format => 'int8s',
         PrintConv => q{
             #in FX mode and Single-point, the 29 horizontal focus points are spaced 259 pixels apart starting at pixel 502 and ending at 7754.  Spacing is the same for Wide(L/C1/C2) with different start points.
@@ -8582,7 +8589,7 @@ my %nikonFocalConversions = (
     },
     0x0be9 => {
         Name =>'AFAreaInitialYPosition',    #stored as a representation of the vertical position of the center of the portion of the focus box positioned top left when in Wide Area (L/S/C1/C2) focus modes (before subject detection potentially refines focus)
-        Condition => '$$self{ShutterMode} ne 96 and $$self{AFAreaMode} < 2',    #not valid for C30/C60/C120 or for Area Modes 1:1 and 16:19
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and defined $$self{AFAreaMode} and $$self{AFAreaMode} < 2',    #not valid for C30/C60/C120 or for Area Modes 1:1 and 16:19
         Format => 'int8s',
         PrintConv => q{
             #in FX mode and Single-point, the 17 vertical focus points are spaced 291 pixels apart starting at pixel 424 and ending at 5080.  Spacing is the same for Wide(L/C1/C2)
@@ -8646,13 +8653,13 @@ my %nikonFocalConversions = (
     },
     0x0bea => {
         Name => 'AFAreaInitialWidth',
-        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
         ValueConv => '$$self{VALUE}{PhotoShootingMenuBankImageArea} eq 0 ? $val : int($val * 2 / 3)',   #DX mode requires scaling down  TODO: add support ImageAreas 1:1 and 16:9
         RawConv => '$$self{AFAreaInitialWidth} = 1 + int ($val / 4)',    #convert from [3, 11, 19, 35, 51, 75] to [1, 3, 5, 9 13, 19] to match camera options for C1/C2 focus modes .. input/output of 11/3 is for Wide(S)
     },
     0x0beb => {
         Name => 'AFAreaInitialHeight',
-        Condition => '$$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
         ValueConv => '$$self{VALUE}{PhotoShootingMenuBankImageArea} eq 0 ? $val : int($val * 2 / 3)',   #DX mode requires scaling down  TODO: add support ImageAreas 1:1 and 16:9
         RawConv => '$$self{AFAreaInitialHeight} = 1 + int ($val / 7) ',    #convert from [6, 20, 33, 46, 73] to [1, 3, 5, 7, 11] to match camera options for C1/C2 focus modes  .. input/output of 33/5 is for Wide(L)
     },

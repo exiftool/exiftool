@@ -7,18 +7,35 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.60. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Oct. 26, 2023 - Version 12.69
+
+  - Added support for DNG version 1.7.0.0
+  - Added a new XMP-GCamera tag
+  - Added a number of new Nikon Z lenses (thanks Warren Hatch and Stefan)
+  - Added a number of new XMP-crs tags
+  - Extract XML metadata from some Hasselblad images
+  - Tweaked -fast2 option to read metadata from inside mdat atom of HEIC images
+  - Patched FFF reader to be more tolerant of the mess made by incompetent
+    Hasselblad programmers (wrong IFD count for some values)
+  - Patched WebP reader to be more tolerant of the mess made by incompetent
+    Google programmers (EXIF with wrong header and XMP with wrong ID)
+  - Fixed problem which could cause "use of uninitialized variable" warnings
+    when reading images from some Nikon cameras
+  - Fixed List type for new XMP-photomech:CreatorIdentity tag
+
 Oct. 16, 2023 - Version 12.68
 
   - Added preliminary read support for XISF images
   - Added the ability to delete JUMBF metadata from PNG images
   - Added support for writing Canon burst-roll CR3 images
-  - Added a new Nikon Z9 SubjectDetection value, and improved Zf support
+  - Added a new Nikon Z9 SubjectDetection value, and improved Zf support (thanks
+    Warren Hatch)
   - Added a couple of new PentaxModelID values
   - Added a few couple of new tag values for the Pentax K-3 Mark III Monochrome (github #226)
-  - Added a support for a new XMP-photomech tag
+  - Added a new XMP-photomech tag
+  - Added a new QuickTime ItemList tag
   - Added a new Nikon LensID
   - Added a new Canon LensType
-  - Added a new QuickTime ItemList tag
   - Support decimal values for FujiFilm ShadowTone and HighlightTone tags
   - Decode some new Sony tags (thanks Jos Roost)
   - Decode ShutterCount for Canon EOS R6 (thanks gamin)

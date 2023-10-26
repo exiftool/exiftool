@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27039 tags, with 16991 unique tag names.
+They contain a total of 27322 tags, with 17138 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -838,7 +838,8 @@ for the official EXIF 2.32 specification.
   0xc42a   OceImageLogic             -          no
   0xc44f   Annotations               -          no
   0xc4a5   PrintIM                   IFD0       PrintIM
-  0xc51b   HasselbladExif            -          no
+  0xc519   HasselbladXML             -          PLIST
+  0xc51b   HasselbladExif            -          EXIF
   0xc573   OriginalFileName          -          no
   0xc580   USPTOOriginalContentType  -          no
   0xc5e0   CR2CFAPattern             -          no
@@ -969,6 +970,12 @@ for the official EXIF 2.32 specification.
   0xcd39   ProfileHueSatMapData3     IFD0       float[n]!
   0xcd3a   ReductionMatrix3          IFD0       rational64s[n]!
   0xcd3b   RGBTables                 IFD0       undef!
+  0xcd40   ProfileGainTableMap2      IFD0       undef!
+  0xcd43   ColumnInterleaveFactor    SubIFD     int32u!
+  0xcd44   ImageSequenceInfo         IFD0       DNG ImageSeq
+  0xcd46   ImageStats                IFD0       undef!
+  0xcd47   ProfileDynamicRange       IFD0       DNG ProfileDynamicRange
+  0xcd48   ProfileGroupName          IFD0       string!
   0xea1c   Padding                   ExifIFD    undef!
   0xea1d   OffsetSchema              ExifIFD    int32s!
   0xfde8   OwnerName                 ExifIFD    string/
@@ -1739,6 +1746,121 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   DefringePurpleHueHi                           integer/
   DefringePurpleHueLo                           integer/
   Dehaze                                        real/
+  DepthBasedCorrections                         DepthBasedCorr Struct+
+  DepthBasedCorrCorrectionActive                boolean/_+
+  DepthBasedCorrCorrectionAmount                real/_+
+  DepthBasedCorrMask                            CorrectionMask Struct_+
+  DepthBasedCorrMaskAlpha                       real/_
+  DepthBasedCorrMaskAngle                       real/_
+  DepthBasedCorrMaskBottom                      real/_
+  DepthBasedCorrMaskCenterValue                 real/_
+  DepthBasedCorrMaskCenterWeight                real/_
+  DepthBasedCorrMaskRange                       CorrRangeMask Struct_+
+  DepthBasedCorrMaskRangeAreaModels             AreaModels Struct_+
+  DepthBasedCorrMaskRangeAreaModelsComponents   string/_+
+  DepthBasedCorrMaskRangeAreaModelsColorSampleInfo string/_+
+  DepthBasedCorrMaskRangeColorAmount            real/_+
+  DepthBasedCorrMaskRangeDepthFeather           real/_+
+  DepthBasedCorrMaskRangeDepthMax               real/_+
+  DepthBasedCorrMaskRangeDepthMin               real/_+
+  DepthBasedCorrMaskRangeInvert                 boolean/_+
+  DepthBasedCorrMaskRangeLumFeather             real/_+
+  DepthBasedCorrMaskRangeLuminanceDepthSampleInfo string/_+
+  DepthBasedCorrMaskRangeLumMax                 real/_+
+  DepthBasedCorrMaskRangeLumMin                 real/_+
+  DepthBasedCorrMaskRangeLumRange               string/_+
+  DepthBasedCorrMaskRangeSampleType             integer/_+
+  DepthBasedCorrMaskRangeType                   string/_+
+  DepthBasedCorrMaskRangeVersion                string/_+
+  DepthBasedCorrMaskDabs                        string/_+
+  DepthBasedCorrMaskFeather                     real/_
+  DepthBasedCorrMaskFlipped                     boolean/_
+  DepthBasedCorrMaskFlow                        real/_
+  DepthBasedCorrMaskFullX                       real/_
+  DepthBasedCorrMaskFullY                       real/_
+  DepthBasedCorrMaskInputDigest                 string/_
+  DepthBasedCorrMaskLeft                        real/_
+  DepthBasedCorrMaskMaskActive                  boolean/_
+  DepthBasedCorrMaskMaskBlendMode               integer/_
+  DepthBasedCorrMaskMaskDigest                  string/_
+  DepthBasedCorrMaskMaskInverted                boolean/_
+  DepthBasedCorrMaskMaskName                    string/_
+  DepthBasedCorrMaskMasks                       CorrectionMask Struct_+
+  DepthBasedCorrMaskMasksAlpha                  real/_
+  DepthBasedCorrMaskMasksAngle                  real/_
+  DepthBasedCorrMaskMasksBottom                 real/_
+  DepthBasedCorrMaskMasksCenterValue            real/_
+  DepthBasedCorrMaskMasksCenterWeight           real/_
+  DepthBasedCorrMaskMasksDabs                   string/_+
+  DepthBasedCorrMaskMasksFeather                real/_
+  DepthBasedCorrMaskMasksFlipped                boolean/_
+  DepthBasedCorrMaskMasksFlow                   real/_
+  DepthBasedCorrMaskMasksFullX                  real/_
+  DepthBasedCorrMaskMasksFullY                  real/_
+  DepthBasedCorrMaskMasksInputDigest            string/_
+  DepthBasedCorrMaskMasksLeft                   real/_
+  DepthBasedCorrMaskMasksMaskActive             boolean/_
+  DepthBasedCorrMaskMasksMaskBlendMode          integer/_
+  DepthBasedCorrMaskMasksMaskDigest             string/_
+  DepthBasedCorrMaskMasksMaskInverted           boolean/_
+  DepthBasedCorrMaskMasksMaskName               string/_
+  DepthBasedCorrMaskMasksMaskSubType            string/_
+  DepthBasedCorrMaskMasksMaskSyncID             string/_
+  DepthBasedCorrMaskMasksValue                  real/_
+  DepthBasedCorrMaskMasksMaskVersion            string/_
+  DepthBasedCorrMaskMasksMidpoint               real/_
+  DepthBasedCorrMaskMasksOrigin                 string/_
+  DepthBasedCorrMaskMasksPerimeterValue         real/_
+  DepthBasedCorrMaskMasksRadius                 real/_
+  DepthBasedCorrMaskMasksReferencePoint         string/_
+  DepthBasedCorrMaskMasksRight                  real/_
+  DepthBasedCorrMaskMasksRoundness              real/_
+  DepthBasedCorrMaskMasksSizeX                  real/_
+  DepthBasedCorrMaskMasksSizeY                  real/_
+  DepthBasedCorrMaskMasksTop                    real/_
+  DepthBasedCorrMaskMaskSubType                 string/_
+  DepthBasedCorrMaskMasksVersion                integer/_
+  DepthBasedCorrMaskMasksWhat                   string/_
+  DepthBasedCorrMaskMasksWholeImageArea         string/_
+  DepthBasedCorrMaskMasksX                      real/_
+  DepthBasedCorrMaskMasksY                      real/_
+  DepthBasedCorrMaskMaskSyncID                  string/_
+  DepthBasedCorrMaskMasksZeroX                  real/_
+  DepthBasedCorrMaskMasksZeroY                  real/_
+  DepthBasedCorrMaskValue                       real/_
+  DepthBasedCorrMaskMaskVersion                 string/_
+  DepthBasedCorrMaskMidpoint                    real/_
+  DepthBasedCorrMaskOrigin                      string/_
+  DepthBasedCorrMaskPerimeterValue              real/_
+  DepthBasedCorrMaskRadius                      real/_
+  DepthBasedCorrMaskReferencePoint              string/_
+  DepthBasedCorrMaskRight                       real/_
+  DepthBasedCorrMaskRoundness                   real/_
+  DepthBasedCorrMaskSizeX                       real/_
+  DepthBasedCorrMaskSizeY                       real/_
+  DepthBasedCorrMaskTop                         real/_
+  DepthBasedCorrMaskVersion                     integer/_
+  DepthBasedCorrMaskWhat                        string/_
+  DepthBasedCorrMaskWholeImageArea              string/_
+  DepthBasedCorrMaskX                           real/_
+  DepthBasedCorrMaskY                           real/_
+  DepthBasedCorrMaskZeroX                       real/_
+  DepthBasedCorrMaskZeroY                       real/_
+  DepthBasedCorrCorrectionSyncID                string/_+
+  DepthBasedCorrLocalCorrectedDepth             real/_+
+  DepthBasedCorrLocalCurveRefineSaturation      real/_+
+  DepthBasedCorrWhat                            string/_+
+  DepthMapInfo                                  DepthMapInfo Struct
+  DepthMapInfoBaseHighlightGuideInputDigest     string/_
+  DepthMapInfoBaseHighlightGuideTable           string/_
+  DepthMapInfoBaseHighlightGuideVersion         string/_
+  DepthMapInfoBaseLayeredDepthInputDigest       string/_
+  DepthMapInfoBaseLayeredDepthTable             string/_
+  DepthMapInfoBaseLayeredDepthVersion           string/_
+  DepthMapInfoBaseRawDepthInputDigest           string/_
+  DepthMapInfoBaseRawDepthTable                 string/_
+  DepthMapInfoBaseRawDepthVersion               string/_
+  DepthMapInfoDepthSource                       string/_
   Description                                   lang-alt/
   DNGIgnoreSidecars                             boolean/
   Exposure                                      real/
@@ -1919,6 +2041,24 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   IncrementalTemperature                        integer/
   IncrementalTint                               integer/
   JPEGHandling                                  string/
+  LensBlur                                      LensBlur Struct
+  LensBlurActive                                boolean/_
+  LensBlurAmount                                real/_
+  LensBlurBokehAspect                           real/_
+  LensBlurBokehRotation                         real/_
+  LensBlurBokehShape                            real/_
+  LensBlurBokehShapeDetail                      real/_
+  LensBlurCatEyeAmount                          real/_
+  LensBlurCatEyeScale                           real/_
+  LensBlurFocalRange                            string/_
+  LensBlurFocalRangeSource                      real/_
+  LensBlurHighlightsBoost                       real/_
+  LensBlurHighlightsThreshold                   real/_
+  LensBlurSampledArea                           string/_
+  LensBlurSampledRange                          string/_
+  LensBlurSphericalAberration                   real/_
+  LensBlurSubjectRange                          string/_
+  LensBlurVersion                               string/_
   LensManualDistortionAmount                    integer/
   LensProfileChromaticAberrationScale           integer/
   LensProfileDigest                             string/
@@ -1947,8 +2087,10 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   LookParametersCameraProfile                   string/_
   LookParametersClarity2012                     string/_
   LookParametersConvertToGrayscale              string/_
+  LookParametersHighlights2012                  string/_
   LookParametersLookTable                       string/_
   LookParametersProcessVersion                  string/_
+  LookParametersShadows2012                     string/_
   LookParametersToneCurvePV2012                 string/_+
   LookParametersToneCurvePV2012Blue             string/_+
   LookParametersToneCurvePV2012Green            string/_+
@@ -2597,6 +2739,55 @@ Called CorrectionRangeMask by the spec.
   AreaComponents                                string+
   ColorRangeMaskAreaSampleInfo                  string
 
+=head3 XMP DepthBasedCorr Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  CorrectionActive                              boolean
+  CorrectionAmount                              real
+  CorrectionMasks                               CorrectionMask Struct+
+  CorrectionSyncID                              string
+  LocalCorrectedDepth                           real
+  LocalCurveRefineSaturation                    real
+  What                                          string
+
+=head3 XMP DepthMapInfo Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  BaseHighlightGuideInputDigest                 string
+  BaseHighlightGuideTable                       string
+  BaseHighlightGuideVersion                     string
+  BaseLayeredDepthInputDigest                   string
+  BaseLayeredDepthTable                         string
+  BaseLayeredDepthVersion                       string
+  BaseRawDepthInputDigest                       string
+  BaseRawDepthTable                             string
+  BaseRawDepthVersion                           string
+  DepthSource                                   string
+
+=head3 XMP LensBlur Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Active                                        boolean
+  BlurAmount                                    real
+  BokehAspect                                   real
+  BokehRotation                                 real
+  BokehShape                                    real
+  BokehShapeDetail                              real
+  CatEyeAmount                                  real
+  CatEyeScale                                   real
+  FocalRange                                    string
+  FocalRangeSource                              real
+  HighlightsBoost                               real
+  HighlightsThreshold                           real
+  SampledArea                                   string
+  SampledRange                                  string
+  SphericalAberration                           real
+  SubjectRange                                  string
+  Version                                       string
+
 =head3 XMP Look Struct
 
   Field Name                                    Writable
@@ -2619,8 +2810,10 @@ Called CorrectionRangeMask by the spec.
   CameraProfile                                 string
   Clarity2012                                   string
   ConvertToGrayscale                            string
+  Highlights2012                                string
   LookTable                                     string
   ProcessVersion                                string
+  Shadows2012                                   string
   ToneCurvePV2012                               string+
   ToneCurvePV2012Blue                           string+
   ToneCurvePV2012Green                          string+
@@ -2931,6 +3124,121 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   DefringePurpleHueHi                           integer
   DefringePurpleHueLo                           integer
   Dehaze                                        real
+  DepthBasedCorrections                         DepthBasedCorr Struct+
+  DepthBasedCorrCorrectionActive                boolean_+
+  DepthBasedCorrCorrectionAmount                real_+
+  DepthBasedCorrMask                            CorrectionMask Struct_+
+  DepthBasedCorrMaskAlpha                       real_
+  DepthBasedCorrMaskAngle                       real_
+  DepthBasedCorrMaskBottom                      real_
+  DepthBasedCorrMaskCenterValue                 real_
+  DepthBasedCorrMaskCenterWeight                real_
+  DepthBasedCorrMaskRange                       CorrRangeMask Struct_+
+  DepthBasedCorrMaskRangeAreaModels             AreaModels Struct_+
+  DepthBasedCorrMaskRangeAreaModelsComponents   string_+
+  DepthBasedCorrMaskRangeAreaModelsColorSampleInfo string_+
+  DepthBasedCorrMaskRangeColorAmount            real_+
+  DepthBasedCorrMaskRangeDepthFeather           real_+
+  DepthBasedCorrMaskRangeDepthMax               real_+
+  DepthBasedCorrMaskRangeDepthMin               real_+
+  DepthBasedCorrMaskRangeInvert                 boolean_+
+  DepthBasedCorrMaskRangeLumFeather             real_+
+  DepthBasedCorrMaskRangeLuminanceDepthSampleInfo string_+
+  DepthBasedCorrMaskRangeLumMax                 real_+
+  DepthBasedCorrMaskRangeLumMin                 real_+
+  DepthBasedCorrMaskRangeLumRange               string_+
+  DepthBasedCorrMaskRangeSampleType             integer_+
+  DepthBasedCorrMaskRangeType                   string_+
+  DepthBasedCorrMaskRangeVersion                string_+
+  DepthBasedCorrMaskDabs                        string_+
+  DepthBasedCorrMaskFeather                     real_
+  DepthBasedCorrMaskFlipped                     boolean_
+  DepthBasedCorrMaskFlow                        real_
+  DepthBasedCorrMaskFullX                       real_
+  DepthBasedCorrMaskFullY                       real_
+  DepthBasedCorrMaskInputDigest                 string_
+  DepthBasedCorrMaskLeft                        real_
+  DepthBasedCorrMaskMaskActive                  boolean_
+  DepthBasedCorrMaskMaskBlendMode               integer_
+  DepthBasedCorrMaskMaskDigest                  string_
+  DepthBasedCorrMaskMaskInverted                boolean_
+  DepthBasedCorrMaskMaskName                    string_
+  DepthBasedCorrMaskMasks                       CorrectionMask Struct_+
+  DepthBasedCorrMaskMasksAlpha                  real_
+  DepthBasedCorrMaskMasksAngle                  real_
+  DepthBasedCorrMaskMasksBottom                 real_
+  DepthBasedCorrMaskMasksCenterValue            real_
+  DepthBasedCorrMaskMasksCenterWeight           real_
+  DepthBasedCorrMaskMasksDabs                   string_+
+  DepthBasedCorrMaskMasksFeather                real_
+  DepthBasedCorrMaskMasksFlipped                boolean_
+  DepthBasedCorrMaskMasksFlow                   real_
+  DepthBasedCorrMaskMasksFullX                  real_
+  DepthBasedCorrMaskMasksFullY                  real_
+  DepthBasedCorrMaskMasksInputDigest            string_
+  DepthBasedCorrMaskMasksLeft                   real_
+  DepthBasedCorrMaskMasksMaskActive             boolean_
+  DepthBasedCorrMaskMasksMaskBlendMode          integer_
+  DepthBasedCorrMaskMasksMaskDigest             string_
+  DepthBasedCorrMaskMasksMaskInverted           boolean_
+  DepthBasedCorrMaskMasksMaskName               string_
+  DepthBasedCorrMaskMasksMaskSubType            string_
+  DepthBasedCorrMaskMasksMaskSyncID             string_
+  DepthBasedCorrMaskMasksValue                  real_
+  DepthBasedCorrMaskMasksMaskVersion            string_
+  DepthBasedCorrMaskMasksMidpoint               real_
+  DepthBasedCorrMaskMasksOrigin                 string_
+  DepthBasedCorrMaskMasksPerimeterValue         real_
+  DepthBasedCorrMaskMasksRadius                 real_
+  DepthBasedCorrMaskMasksReferencePoint         string_
+  DepthBasedCorrMaskMasksRight                  real_
+  DepthBasedCorrMaskMasksRoundness              real_
+  DepthBasedCorrMaskMasksSizeX                  real_
+  DepthBasedCorrMaskMasksSizeY                  real_
+  DepthBasedCorrMaskMasksTop                    real_
+  DepthBasedCorrMaskMaskSubType                 string_
+  DepthBasedCorrMaskMasksVersion                integer_
+  DepthBasedCorrMaskMasksWhat                   string_
+  DepthBasedCorrMaskMasksWholeImageArea         string_
+  DepthBasedCorrMaskMasksX                      real_
+  DepthBasedCorrMaskMasksY                      real_
+  DepthBasedCorrMaskMaskSyncID                  string_
+  DepthBasedCorrMaskMasksZeroX                  real_
+  DepthBasedCorrMaskMasksZeroY                  real_
+  DepthBasedCorrMaskValue                       real_
+  DepthBasedCorrMaskMaskVersion                 string_
+  DepthBasedCorrMaskMidpoint                    real_
+  DepthBasedCorrMaskOrigin                      string_
+  DepthBasedCorrMaskPerimeterValue              real_
+  DepthBasedCorrMaskRadius                      real_
+  DepthBasedCorrMaskReferencePoint              string_
+  DepthBasedCorrMaskRight                       real_
+  DepthBasedCorrMaskRoundness                   real_
+  DepthBasedCorrMaskSizeX                       real_
+  DepthBasedCorrMaskSizeY                       real_
+  DepthBasedCorrMaskTop                         real_
+  DepthBasedCorrMaskVersion                     integer_
+  DepthBasedCorrMaskWhat                        string_
+  DepthBasedCorrMaskWholeImageArea              string_
+  DepthBasedCorrMaskX                           real_
+  DepthBasedCorrMaskY                           real_
+  DepthBasedCorrMaskZeroX                       real_
+  DepthBasedCorrMaskZeroY                       real_
+  DepthBasedCorrCorrectionSyncID                string_+
+  DepthBasedCorrLocalCorrectedDepth             real_+
+  DepthBasedCorrLocalCurveRefineSaturation      real_+
+  DepthBasedCorrWhat                            string_+
+  DepthMapInfo                                  DepthMapInfo Struct
+  DepthMapInfoBaseHighlightGuideInputDigest     string_
+  DepthMapInfoBaseHighlightGuideTable           string_
+  DepthMapInfoBaseHighlightGuideVersion         string_
+  DepthMapInfoBaseLayeredDepthInputDigest       string_
+  DepthMapInfoBaseLayeredDepthTable             string_
+  DepthMapInfoBaseLayeredDepthVersion           string_
+  DepthMapInfoBaseRawDepthInputDigest           string_
+  DepthMapInfoBaseRawDepthTable                 string_
+  DepthMapInfoBaseRawDepthVersion               string_
+  DepthMapInfoDepthSource                       string_
   Description                                   lang-alt/
   DNGIgnoreSidecars                             boolean
   Exposure                                      real
@@ -3111,6 +3419,24 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   IncrementalTemperature                        integer
   IncrementalTint                               integer
   JPEGHandling                                  string
+  LensBlur                                      LensBlur Struct
+  LensBlurActive                                boolean_
+  LensBlurAmount                                real_
+  LensBlurBokehAspect                           real_
+  LensBlurBokehRotation                         real_
+  LensBlurBokehShape                            real_
+  LensBlurBokehShapeDetail                      real_
+  LensBlurCatEyeAmount                          real_
+  LensBlurCatEyeScale                           real_
+  LensBlurFocalRange                            string_
+  LensBlurFocalRangeSource                      real_
+  LensBlurHighlightsBoost                       real_
+  LensBlurHighlightsThreshold                   real_
+  LensBlurSampledArea                           string_
+  LensBlurSampledRange                          string_
+  LensBlurSphericalAberration                   real_
+  LensBlurSubjectRange                          string_
+  LensBlurVersion                               string_
   LensManualDistortionAmount                    integer
   LensProfileChromaticAberrationScale           integer
   LensProfileDigest                             string
@@ -3139,8 +3465,10 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   LookParametersCameraProfile                   string_
   LookParametersClarity2012                     string_
   LookParametersConvertToGrayscale              string_
+  LookParametersHighlights2012                  string_
   LookParametersLookTable                       string_
   LookParametersProcessVersion                  string_
+  LookParametersShadows2012                     string_
   LookParametersToneCurvePV2012                 string_+
   LookParametersToneCurvePV2012Blue             string_+
   LookParametersToneCurvePV2012Green            string_+
@@ -4328,6 +4656,7 @@ These tags belong to the ExifTool XMP-GCamera family 1 group.
   BurstPrimary                                  string
   DisableAutoCreation                           string+
   HDRPMakerNote                                 string
+  HdrPlusMakernote                              string
   MicroVideo                                    integer
   MicroVideoOffset                              integer
   MicroVideoPresentationTimestampUs             integer
@@ -22255,6 +22584,51 @@ information.
   0x0006   OriginalTHMFileType                  no
   0x0007   OriginalTHMCreator                   no
 
+=head3 DNG ImageSeq Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    SeqID                                no
+      1    SeqType                              no
+      2    SeqFrameInfo                         no
+      3    SeqIndex                             no
+      7    SeqCount                             no
+     11    SeqFinal                             no
+
+=head3 DNG ProfileDynamicRange Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    PDRVersion                           no
+      2    DynamicRange                         no
+      4    HintMaxOutputValue                   no
+
+=head2 PLIST Tags
+
+Apple Property List tags.  ExifTool reads both XML and binary-format PLIST
+files, and will extract any existing tags even if they aren't listed below.
+These tags belong to the family 0 "PLIST" group, but family 1 group may be
+either "XML" or "PLIST" depending on whether the format is XML or binary.
+
+  Tag ID                       Tag Name         Writable
+  ------                       --------         --------
+  'MetaDataList//DateTimeOriginal'
+                               DateTimeOriginal no
+  'MetaDataList//Duration'     Duration         no
+  'MetaDataList//Geolocation/Latitude'
+                               GPSLatitude      no
+  'MetaDataList//Geolocation/Longitude'
+                               GPSLongitude     no
+  'MetaDataList//Geolocation/MapDatum'
+                               GPSMapDatum      no
+  'XMLFileType'                XMLFileType      no
+  'cast//name'                 Cast             no+
+  'codirectors//name'          Codirectors      no+
+  'directors//name'            Directors        no+
+  'producers//name'            Producers        no+
+  'screenwriters//name'        Screenwriters    no+
+  'studio//name'               Studio           no+
+
 =head2 CanonRaw Tags
 
 These tags apply to CRW-format Canon RAW files and information in the APP0
@@ -24953,32 +25327,6 @@ metadata.  As well as these tags, ExifTool will read any existing tags.
   ThumbnailURL                                  no
   Title                                         no
 
-=head2 PLIST Tags
-
-Apple Property List tags.  ExifTool reads both XML and binary-format PLIST
-files, and will extract any existing tags even if they aren't listed below.
-These tags belong to the family 0 "PLIST" group, but family 1 group may be
-either "XML" or "PLIST" depending on whether the format is XML or binary.
-
-  Tag ID                       Tag Name         Writable
-  ------                       --------         --------
-  'MetaDataList//DateTimeOriginal'
-                               DateTimeOriginal no
-  'MetaDataList//Duration'     Duration         no
-  'MetaDataList//Geolocation/Latitude'
-                               GPSLatitude      no
-  'MetaDataList//Geolocation/Longitude'
-                               GPSLongitude     no
-  'MetaDataList//Geolocation/MapDatum'
-                               GPSMapDatum      no
-  'XMLFileType'                XMLFileType      no
-  'cast//name'                 Cast             no+
-  'codirectors//name'          Codirectors      no+
-  'directors//name'            Directors        no+
-  'producers//name'            Producers        no+
-  'screenwriters//name'        Screenwriters    no+
-  'studio//name'               Studio           no+
-
 =head2 APP12 Tags
 
 =head3 APP12 PictureInfo Tags
@@ -25630,7 +25978,7 @@ These tags belong to the ExifTool XMP-photomech family 1 group.
   --------                                      --------
   ColorClass                                    integer
   CountryCode                                   string/
-  CreatorIdentity                               string
+  CreatorIdentity                               string+
   EditStatus                                    string
   PMVersion                                     string
   Prefs                                         string
@@ -30299,6 +30647,7 @@ metadata to WEBP images, but can't yet write to other RIFF-based formats.
   'VP8 '               VP8Bitstream             RIFF VP8
   'VP8L'               VP8L                     RIFF VP8L
   'VP8X'               VP8X                     RIFF VP8X
+  "XMP\0"              XMP                      XMP
   'XMP '               XMP                      XMP
   '_PMX'               XMP                      XMP
   'aXML'               AXML                     XMP XML

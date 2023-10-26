@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.21';
+$VERSION = '1.22';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -142,20 +142,22 @@ my %stdFormat = (
         # GeoTiff tags:
         0x830e => 'double',     0x8482 => 'double',     0x87af => 'int16u',     0x87b1 => 'string',
         0x8480 => 'double',     0x85d8 => 'double',     0x87b0 => 'double',
-        # DNG tags:
-        0xc615 => '(string|int8u)',              0xc6d3 => '',
-        0xc61a => '(int16u|int32u|rational64u)', 0xc6f4 => '(string|int8u)',
-        0xc61d => 'int(16|32)u',                 0xc6f6 => '(string|int8u)',
-        0xc61f => '(int16u|int32u|rational64u)', 0xc6f8 => '(string|int8u)',
-        0xc620 => '(int16u|int32u|rational64u)', 0xc6fe => '(string|int8u)',
-        0xc628 => '(int16u|rational64u)',        0xc716 => '(string|int8u)',
-        0xc634 => 'int8u',                       0xc717 => '(string|int8u)',
-        0xc640 => '',                            0xc718 => '(string|int8u)',
-        0xc660 => '',                            0xc71e => 'int(16|32)u',
-        0xc68b => '(string|int8u)',              0xc71f => 'int(16|32)u',
-        0xc68d => 'int(16|32)u',                 0xc791 => 'int(16|32)u',
-        0xc68e => 'int(16|32)u',                 0xc792 => 'int(16|32)u',
-        0xc6d2 => '',                            0xc793 => '(int16u|int32u|rational64u)',
+        # DNG tags: (use '' for non-DNG tags in the range 0xc612-0xcd48)
+        0xc615 => '(string|int8u)',              0xc6f4 => '(string|int8u)',
+        0xc61a => '(int16u|int32u|rational64u)', 0xc6f6 => '(string|int8u)',
+        0xc61d => 'int(16|32)u',                 0xc6f8 => '(string|int8u)',
+        0xc61f => '(int16u|int32u|rational64u)', 0xc6fe => '(string|int8u)',
+        0xc620 => '(int16u|int32u|rational64u)', 0xc716 => '(string|int8u)',
+        0xc628 => '(int16u|rational64u)',        0xc717 => '(string|int8u)',
+        0xc634 => 'int8u',                       0xc718 => '(string|int8u)',
+        0xc640 => '',                            0xc71e => 'int(16|32)u',
+        0xc660 => '',                            0xc71f => 'int(16|32)u',
+        0xc68b => '(string|int8u)',              0xc791 => 'int(16|32)u',
+        0xc68d => 'int(16|32)u',                 0xc792 => 'int(16|32)u',
+        0xc68e => 'int(16|32)u',                 0xc793 => '(int16u|int32u|rational64u)',
+        0xc6d2 => '',                            0xcd43 => 'int(16|32)u',
+        0xc6d3 => '',                            0xcd48 => '(string|int8u)',
+
         # Exif 3.0 spec
         0x10e  => 'string|utf8',  0xa430 => 'string|utf8',  0xa439 => 'string|utf8',
         0x10f  => 'string|utf8',  0xa433 => 'string|utf8',  0xa43a => 'string|utf8',
@@ -430,7 +432,7 @@ sub ValidateExif($$$$$$$$)
         my $stdFmt = $stdFormat{$ifd} || $stdFormat{IFD};
         if (defined $$stdFmt{All} or ($tagTablePtr eq \%Image::ExifTool::Exif::Main and
             ($exifSpec{$tag} or $$stdFmt{$tag} or
-            ($tag >= 0xc612 and $tag <= 0xc7b5 and not defined $$stdFmt{$tag}))) or # (DNG tags)
+            ($tag >= 0xc612 and $tag <= 0xcd48 and not defined $$stdFmt{$tag}))) or # (DNG tags)
             $$tagTablePtr{SHORT_NAME} eq 'GPS::Main')
         {
             my $wgp = $$ti{WriteGroup} || $$tagTablePtr{WRITE_GROUP};

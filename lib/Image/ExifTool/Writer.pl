@@ -122,9 +122,9 @@ my %writableType = (
     XMP => [ undef,         'WriteXMP' ],
 );
 
-# RAW file types
+# RAW file types (2 = raw file where we can delete maker notes from ExifIFD)
 my %rawType = (
-   '3FR'=> 1,  CR3 => 1,  IIQ => 1,  NEF => 1,  RW2 => 1,
+   '3FR'=> 1,  CR3 => 2,  IIQ => 1,  NEF => 1,  RW2 => 1,
     ARQ => 1,  CRW => 1,  K25 => 1,  NRW => 1,  RWL => 1,
     ARW => 1,  DCR => 1,  KDC => 1,  ORF => 1,  SR2 => 1,
     ARW => 1,  ERF => 1,  MEF => 1,  PEF => 1,  SRF => 1,
@@ -278,6 +278,7 @@ my %ignorePrintConv = map { $_ => 1 } qw(OTHER BITMASK Notes);
 #           ListOnly => [internal use] set only list or non-list tags
 #           SetTags => [internal use] hash ref to return tagInfo refs of set tags
 #           Sanitized => [internal use] set to avoid double-sanitizing the value
+#           Fixup => [internal use] fixup information when writing maker notes
 # Returns: number of tags set (plus error string in list context)
 # Notes: For tag lists (like Keywords), call repeatedly with the same tag name for
 #        each value in the list.  Internally, the new information is stored in
@@ -1002,10 +1003,8 @@ TAG: foreach $tagInfo (@matchingTags) {
             $$nvHash{NoReplace} = 1 if $$tagInfo{List} and not $options{Replace};
             $$nvHash{WantGroup} = $wantGroup;
             $$nvHash{EditOnly} = 1 if $editOnly;
-            # save maker note information if writing maker notes
-            if ($$tagInfo{MakerNotes}) {
-                $$nvHash{MAKER_NOTE_FIXUP} = $$self{MAKER_NOTE_FIXUP};
-            }
+            # save maker note fixup information if writing maker notes
+            $$nvHash{MAKER_NOTE_FIXUP} = $options{Fixup} if $$tagInfo{MakerNotes};
             if ($createOnly) {  # create only (never edit)
                 # empty item in DelValue list to never edit existing value
                 $$nvHash{DelValue} = [ '' ];
@@ -1372,8 +1371,8 @@ sub SetNewValuesFromFile($$;@)
 #
     unless (@setTags) {
         # transfer maker note information to this object
-        $$self{MAKER_NOTE_FIXUP} = $$srcExifTool{MAKER_NOTE_FIXUP};
         $$self{MAKER_NOTE_BYTE_ORDER} = $$srcExifTool{MAKER_NOTE_BYTE_ORDER};
+        my $tagExtra = $$srcExifTool{TAG_EXTRA};
         foreach $tag (@tags) {
             # don't try to set errors or warnings
             next if $tag =~ /^(Error|Warning)\b/;
@@ -1381,10 +1380,13 @@ sub SetNewValuesFromFile($$;@)
             if ($opts{SrcType} and $opts{SrcType} ne $srcType) {
                 $$info{$tag} = $srcExifTool->GetValue($tag, $opts{SrcType});
             }
+            my $fixup = $$tagExtra{$tag}{Fixup};
+            $opts{Fixup} = $fixup if $fixup;
             # set value for this tag
             my ($n, $e) = $self->SetNewValue($tag, $$info{$tag}, %opts);
             # delete this tag if we couldn't set it
             $n or delete $$info{$tag};
+            delete $opts{Fixup} if $fixup;
         }
         return $info;
     }
@@ -1617,7 +1619,7 @@ SET:    foreach $set (@setList) {
             }
             # transfer maker note information if setting this tag
             if ($$srcExifTool{TAG_INFO}{$tag}{MakerNotes}) {
-                $$self{MAKER_NOTE_FIXUP} = $$srcExifTool{MAKER_NOTE_FIXUP};
+                $$opts{Fixup} = $$srcExifTool{TAG_EXTRA}{$tag}{Fixup};
                 $$self{MAKER_NOTE_BYTE_ORDER} = $$srcExifTool{MAKER_NOTE_BYTE_ORDER};
             }
             if ($dstTag eq '*') {
@@ -1649,6 +1651,7 @@ SET:    foreach $set (@setList) {
                 $rtnInfo{NextFreeTagKey(\%rtnInfo, 'Warning')} = $wrn;
                 $noWarn = 1;
             }
+            delete $$opts{Fixup};
             $rtnInfo{$tag} = $val if $rtn;  # tag was set successfully
         }
     }
@@ -4176,6 +4179,7 @@ sub WriteDirectory($$$;$)
     $out = $$self{OPTIONS}{TextOut} if $$self{OPTIONS}{Verbose};
     # set directory name from default group0 name if not done already
     my $dirName = $$dirInfo{DirName};
+    my $parent = $$dirInfo{Parent} || '';
     my $dataPt = $$dirInfo{DataPt};
     my $grp0 = $$tagTablePtr{GROUPS}{0};
     $dirName or $dirName = $$dirInfo{DirName} = $grp0;
@@ -4190,7 +4194,9 @@ sub WriteDirectory($$$;$)
                 $self->IsRawType() and
                 # allow non-permanent MakerNote directories to be deleted (ie. NikonCapture)
                 (not $$dirInfo{TagInfo} or not defined $$dirInfo{TagInfo}{Permanent} or
-                $$dirInfo{TagInfo}{Permanent}))
+                $$dirInfo{TagInfo}{Permanent}) and
+                # allow MakerNotes to be deleted from ExifIFD of CR3 file
+                not ($self->IsRawType() == 2 and $parent eq 'ExifIFD'))
             {
                 $self->WarnOnce("Can't delete $1 from $$self{FileType}",1);
                 undef $grp1;
@@ -4226,7 +4232,6 @@ sub WriteDirectory($$$;$)
                 if ($delFlag == 2 and $right) {
                     # also check grandparent because some routines create 2 levels in 1
                     my $right2 = $$self{ADD_DIRS}{$right} || '';
-                    my $parent = $$dirInfo{Parent};
                     if (not $parent or $parent eq $right or $parent eq $right2) {
                         # prevent duplicate directories from being recreated at the same path
                         my $path = join '-', @{$$self{PATH}}, $dirName;
@@ -4287,7 +4292,10 @@ sub WriteDirectory($$$;$)
         unless (defined $newVal and length $newVal) {
             return '' unless $dataPt or $$dirInfo{RAF}; # nothing to do if block never existed
             # don't allow MakerNotes to be removed from RAW files
-            if ($blockName eq 'MakerNotes' and $rawType{$$self{FileType}}) {
+            if ($blockName eq 'MakerNotes' and $self->IsRawType() and
+                # but allow MakerNotes to be deleted from ExifIFD of CR3 image (shouldn't be there)
+                not ($self->IsRawType() == 2 and $parent eq 'ExifIFD'))
+            {
                 $self->Warn("Can't delete MakerNotes from $$self{FileType}",1);
                 return undef;
             }
@@ -7186,6 +7194,39 @@ sub WriteTIFF($$$)
 {
     my ($self, $dirInfo, $tagTablePtr) = @_;
     $self or return 1;    # allow dummy access
+    # hack to allow MakeNoteCanon to be written as a block in CMT3 chunk of CR3 image
+    if ($$dirInfo{DirName} and $$dirInfo{DirName} eq 'MakerNoteCanon') {
+        require Image::ExifTool::Canon;
+        my $tagInfo = $Image::ExifTool::Canon::uuid{CMT3};
+        my $nvHash;
+        if ($tagInfo and ($nvHash = $$self{NEW_VALUE}{$tagInfo}) and
+            $self->IsOverwriting($nvHash) and not $$nvHash{CreateOnly})
+        {
+            my $newVal = $self->GetNewValue($nvHash);
+            if (defined $newVal and length $newVal) {
+                # fix up offsets
+                if ($$nvHash{MAKER_NOTE_FIXUP}) {
+                    # must clone fixup because we will be shifting it
+                    my $makerFixup = $$nvHash{MAKER_NOTE_FIXUP}->Clone();
+                    $$makerFixup{Shift} += 8;   # shift for TIFF header
+                    $makerFixup->ApplyFixup(\$newVal);
+                }
+                # add TIFF header
+                my $hdr;
+                if (substr($newVal, 0, 1) eq "\0") {
+                    $hdr = "MM\0\x2a" . pack('N', 8);
+                } else {
+                    $hdr = "II\x2a\0" . pack('V', 8);
+                }
+                $self->VPrint(0, "  Writing MakerNoteCanon as a block\n");
+                ++$$self{CHANGED};
+                return $hdr . $newVal;
+            } elsif ($$dirInfo{Parent} and $$dirInfo{Parent} eq 'UUID-Canon') {
+                $self->Warn("Can't delete CanonMakerNotes from $$dirInfo{Parent}");
+                return undef;
+            }
+        }
+    }
     my $buff = '';
     $$dirInfo{OutFile} = \$buff;
     return $buff if $self->ProcessTIFF($dirInfo, $tagTablePtr) > 0;

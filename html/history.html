@@ -17,18 +17,36 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.69'><b>Oct. 26, 2023 - Version 12.69</b></a>
+<ul>
+<li>Added support for DNG version 1.7.0.0
+<li>Added a new XMP-GCamera tag
+<li>Added a number of new Nikon Z lenses (thanks Warren Hatch and Stefan)
+<li>Added a number of new XMP-crs tags
+<li>Extract XML metadata from some Hasselblad images
+<li>Tweaked -fast2 option to read metadata from inside mdat atom of HEIC images
+<li>Patched FFF reader to be more tolerant of the mess made by incompetent
+    Hasselblad programmers (wrong IFD count for some values)
+<li>Patched WebP reader to be more tolerant of the mess made by incompetent
+    Google programmers (EXIF with wrong header and XMP with wrong ID)
+<li>Fixed problem which could cause "use of uninitialized variable" warnings
+    when reading images from some Nikon cameras
+<li>Fixed List type for new XMP-photomech:CreatorIdentity tag
+</ul>
+
 <a name='v12.68'><b>Oct. 16, 2023 - Version 12.68</b></a>
 <ul>
 <li>Added preliminary read support for XISF images
 <li>Added the ability to delete JUMBF metadata from PNG images
 <li>Added support for writing Canon burst-roll CR3 images
-<li>Added a new Nikon Z9 SubjectDetection value, and improved Zf support
+<li>Added a new Nikon Z9 SubjectDetection value, and improved Zf support (thanks
+    Warren Hatch)
 <li>Added a couple of new PentaxModelID values
 <li>Added a few couple of new tag values for the Pentax K-3 Mark III Monochrome (github #226)
-<li>Added a support for a new XMP-photomech tag
+<li>Added a new XMP-photomech tag
+<li>Added a new QuickTime ItemList tag
 <li>Added a new Nikon LensID
 <li>Added a new Canon LensType
-<li>Added a new QuickTime ItemList tag
 <li>Support decimal values for FujiFilm ShadowTone and HighlightTone tags
 <li>Decode some new Sony tags (thanks Jos Roost)
 <li>Decode ShutterCount for Canon EOS R6 (thanks gamin)

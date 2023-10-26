@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.68';
+$VERSION = '12.69';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -7480,7 +7480,8 @@ sub ProcessJPEG($$)
                 my $hdr = $1;
                 $dumpType = 'JUMBF';
                 SetByteOrder('MM');
-                my $seq = Get32u($segDataPt, 4) - 1; # (start from 0)
+                # (sequence should start from 1, but some software incorrectly writes 0)
+                my $seq = Get32u($segDataPt, 4);
                 my $len = Get32u($segDataPt, 8);
                 my $type = substr($$segDataPt, 12, 4);
                 my $hdrLen;
@@ -7490,14 +7491,13 @@ sub ProcessJPEG($$)
                 } else {
                     $hdrLen = 8;
                 }
-                $jumbfChunk{$type} or $jumbfChunk{$type} = [ ];
+                $jumbfChunk{$type} or $jumbfChunk{$type} = [ '' ];
                 if ($len < $hdrLen) {
                     $self->Warn('Invalid JUMBF segment');
-                } elsif ($seq < 0) {
-                    $self->Warn('Invalid JUMBF sequence number');
-                } elsif (defined $jumbfChunk{$type}[$seq]) {
+                } elsif (defined $jumbfChunk{$type}[$seq] and length $jumbfChunk{$type}[$seq]) {
                     $self->Warn('Duplicate JUMBF sequence number');
                 } else {
+                    $seq or $self->Warn('Incorrect JUMBF sequence numbering (should start from 0, not 1)');
                     # add to list of JUMBF chunks
                     $jumbfChunk{$type}[$seq] = substr($$segDataPt, 8 + $hdrLen);
                     # check to see if we have a complete JUMBF box
@@ -7718,6 +7718,19 @@ sub ProcessTIFF($$;$)
         $$self{EXIF_DATA} = $exifData;
         $$self{EXIF_POS} = $exifPos;
     }
+    return $rtnVal;
+}
+
+#------------------------------------------------------------------------------
+# Process TIFF as a sub-document
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) optional tag table ref
+# Returns: 1 if this looked like a valid EXIF block, 0 otherwise, or -1 on write error
+sub ProcessSubTIFF($$;$)
+{
+    my ($self, $dirInfo, $tagTablePtr) = @_;
+    $$self{DOC_NUM} = ++$$self{DOC_COUNT};
+    my $rtnVal = $self->ProcessTIFF($dirInfo, $tagTablePtr);
+    delete $$self{DOC_NUM};
     return $rtnVal;
 }
 
@@ -8089,8 +8102,8 @@ sub DoProcessTIFF($$;$)
     # check DNG version
     if ($$self{DNGVersion}) {
         my $ver = $$self{DNGVersion};
-        # currently support up to DNG version 1.6
-        unless ($ver =~ /^(\d+) (\d+)/ and "$1.$2" <= 1.6) {
+        # currently support up to DNG version 1.7
+        unless ($ver =~ /^(\d+) (\d+)/ and "$1.$2" <= 1.7) {
             $ver =~ tr/ /./;
             $self->Error("DNG Version $ver not yet tested", 1);
         }

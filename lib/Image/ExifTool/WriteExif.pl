@@ -930,8 +930,16 @@ Entry:  for (;;) {
                                     }
                                 }
                                 unless ($success) {
-                                    return undef if $et->Error("Error reading value for $name entry $index", $inMakerNotes);
-                                    ++$index;  $oldID = $newID;  next;  # drop this tag
+                                    my $wrn = sprintf("Error reading value for $name entry $index, ID 0x%.4x", $oldID);
+                                    my $truncOK;
+                                    if ($oldInfo and not $$oldInfo{Unknown}) {
+                                        $wrn .= " $$oldInfo{Name}";
+                                        $truncOK = $$oldInfo{TruncateOK};
+                                    }
+                                    return undef if $et->Error($wrn, $inMakerNotes || $truncOK);
+                                    unless ($truncOK) {
+                                        ++$index;  $oldID = $newID;  next;  # drop this tag
+                                    }
                                 }
                             } elsif (not $invalidPreview) {
                                 return undef if $et->Error("Bad $name offset for $tagStr", $inMakerNotes);
@@ -1094,6 +1102,8 @@ Entry:  for (;;) {
                 # add, edit or delete this tag
                 shift @newTags; # remove from list
                 my $curInfo = $set{$newID};
+                # don't allow MakerNotes to be added to ExifIFD of CR3 file
+                next if $newID == 0x927c and $isNew > 0 and $$et{FileType} eq 'CR3';
                 unless ($curInfo or $$addDirs{$newID}) {
                     # we can finally get the specific tagInfo reference for this tag
                     # (because we can now evaluate the Condition statement since all
@@ -1429,8 +1439,8 @@ NoOverwrite:            next if $isNew > 0;
                     if ($$et{DEL_GROUP}{MakerNotes} and
                        ($$et{DEL_GROUP}{MakerNotes} != 2 or $isNew <= 0))
                     {
-                        if ($et->IsRawType()) {
-                            $et->WarnOnce("Can't delete MakerNotes from $$et{FileType}",1);
+                        if ($et->IsRawType() and not ($et->IsRawType() == 2 and $dirName eq 'ExifIFD')) {
+                            $et->Warn("Can't delete MakerNotes from $$et{FileType}",1);
                         } else {
                             if ($isNew <= 0) {
                                 ++$$et{CHANGED};

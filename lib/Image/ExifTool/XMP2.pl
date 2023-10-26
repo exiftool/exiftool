@@ -1873,6 +1873,10 @@ my %sSubVersion = (
         ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
         ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
     },
+    HdrPlusMakernote => {
+        ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
+        ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
+    },
 );
 
 # Google creations namespace (ref PH)
@@ -2036,6 +2040,37 @@ my %sSubVersion = (
         },
     },
 );
+
+# Google container tags (ref https://developer.android.com/guide/topics/media/platform/hdr-image-format)
+# NOTE: Not included because these namespace prefixes conflict with Google's depth-map Device tags!
+# (see ../pics/GooglePixel8Pro.jpg sample image)
+# %Image::ExifTool::XMP::Container = (
+#     %xmpTableDefaults,
+#     GROUPS => { 1 => 'XMP-Container', 2 => 'Image' },
+#     NAMESPACE => 'Container',
+#     NOTES => 'Google Container namespace.',
+#     Directory => {
+#         Name => 'ContainerDirectory',
+#         FlatName => 'Directory',
+#         List => 'Seq',
+#         Struct => {
+#             STRUCT_NAME => 'Directory',
+#             Item => {
+#                 Namespace => 'Container',
+#                 Struct => {
+#                     STRUCT_NAME => 'Item',
+#                     NAMESPACE => { Item => 'http://ns.google.com/photos/1.0/container/item/'},
+#                     Mime     => { },
+#                     Semantic => { },
+#                     Length   => { Writable => 'integer' },
+#                     Label    => { },
+#                     Padding  => { Writable => 'integer' },
+#                     URI      => { },
+#                 },
+#             },
+#         },
+#     },
+# );
 
 # Getty Images namespace (ref PH)
 %Image::ExifTool::XMP::GettyImages = (

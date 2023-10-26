@@ -30,7 +30,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.65';
+$VERSION = '1.66';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -555,7 +555,7 @@ my %code2charset = (
         },
     },{ # (WebP) - have also seen with "Exif\0\0" header - PH
         Name => 'EXIF',
-        Condition => '$$valPt =~ /^Exif\0\0(II\x2a\0|MM\0\x2a)/ and $self->Warn("Improper EXIF header",1)',
+        Condition => '$$valPt =~ /^Exif\0\0(II\x2a\0|MM\0\x2a)/ and ($self->Warn("Improper EXIF header",1) or 1)',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
@@ -568,6 +568,12 @@ my %code2charset = (
    'XMP ' => { #14 (WebP)
         Name => 'XMP',
         Notes => 'WebP files',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::Main' },
+    },
+   "XMP\0" => {
+        Name => 'XMP',
+        Notes => 'incorrectly written WebP files',
+        Condition => '$self->Warn("Incorrect XMP tag ID", 1) or 1',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::Main' },
     },
     ICCP => { #14 (WebP)

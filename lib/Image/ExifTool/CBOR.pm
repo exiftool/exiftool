@@ -7,6 +7,7 @@
 #
 # References:   1) https://c2pa.org/public-draft/
 #               2) https://datatracker.ietf.org/doc/html/rfc7049
+#               3) https://www.iana.org/assignments/cbor-tags/cbor-tags.xhtml
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::CBOR;
@@ -15,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::JSON;
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub ProcessCBOR($$$);
 sub ReadCBORValue($$$$);
@@ -28,15 +29,27 @@ my %cborType6 = (
     3 => 'negative bignum',
     4 => 'decimal fraction',
     5 => 'bigfloat',
+    16 => 'COSE Encrypt0',          #3 (COSE Single Recipient Encrypted Data Object)
+    17 => 'COSE Mac0',              #3 (COSE Mac w/o Recipients Object)
+    18 => 'COSE Sign1',             #3 (COSE Single Signer Data Object)
+    19 => 'COSE Countersignature',  #3 (COSE standalone V2 countersignature)
     21 => 'expected base64url encoding',
     22 => 'expected base64 encoding',
     23 => 'expected base16 encoding',
     24 => 'encoded CBOR data',
+    25 => 'string number',          #3 (reference the nth previously seen string)
+    26 => 'serialized Perl',        #3 (Serialised Perl object with classname and constructor arguments)
+    27 => 'serialized code',        #3 (Serialised language-independent object with type name and constructor arguments)
+    28 => 'shared value',           #3 (mark value as (potentially) shared)
+    29 => 'shared value number',    #3 (reference nth marked value)
+    30 => 'rational',               #3 (Rational number)
+    31 => 'missing array value',    #3 (Absent value in a CBOR Array)
     32 => 'URI',
     33 => 'base64url',
     34 => 'base64',
     35 => 'regular expression',
     36 => 'MIME message',
+    # (lots more after this in ref 3, but don't include them unless we see them)
     55799 => 'CBOR magic number',
 );
 
@@ -212,7 +225,7 @@ sub ReadCBORValue($$$$)
         {
             $val = $$val[1] * ($num == 4 ? 10 : 2) ** $$val[0];
         }
-    } elsif ($fmt == 7) {       
+    } elsif ($fmt == 7) {
         if ($dat == 31) {
             undef $val; # "break" = end of indefinite array/hash (not used in C2PA)
         } elsif ($dat < 24) {
@@ -263,6 +276,7 @@ sub ProcessCBOR($$$)
     my ($val, $err, $tag, $i);
 
     $et->VerboseDir('CBOR', undef, $$dirInfo{DirLen});
+    SetByteOrder('MM');
 
     $$et{cbor_datapos} = $$dirInfo{DataPos} + $$dirInfo{Base};
 
@@ -319,6 +333,8 @@ under the same terms as Perl itself.
 =item L<https://c2pa.org/public-draft/>
 
 =item L<https://datatracker.ietf.org/doc/html/rfc7049>
+
+=item L<https://www.iana.org/assignments/cbor-tags/cbor-tags.xhtml>
 
 =back
 

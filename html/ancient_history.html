@@ -152,7 +152,7 @@
 <a name='v12.51'><b>Nov. 21, 2022 - Version 12.51</b></a>
 <ul>
 <li>Added a new Olympus LensType (thanks Herb)
-<li>Extract C2PA JUMBF metadata from PNG images and extract C2PA Salt values
+<li>Extract C2PA CAI JUMBF metadata from PNG images and extract C2PA Salt values
 <li>Decode NikonSettings for Z9 firmware 3.0 (thanks Warren Hatch)
 <li>Decode additional camm metadata from Insta360 Pro2 MP4 videos
 <li>Improved Verbose output when writing Composite tags to add a "+" sign to
@@ -566,8 +566,8 @@
 
 <a name='v12.32'><b>Sept. 30, 2021 - Version 12.32</b></a>
 <ul>
-<li>Added support for CBOR-format metadata in JUMBF (note that JUMBF support is
-    still experimental)
+<li>Added support for CBOR-format metadata in CAI JUMBF (note that JUMBF support
+    is still experimental)
 <li>Added a new Nikon LensID
 <li>Added a new Pentax LensType
 <li>Decode <a href="TagNames/QuickTime.html#Stream">timed GPS</a> for two more dashcam formats
@@ -629,7 +629,7 @@
 <li>Improved a QuickTime "File format error" message to be more meaningful, and
     made it a minor error
 <li>Changed PNG writer to add EXIF before IDAT
-<li>Some changes the way JUMBF metadata is handled
+<li>Some changes the way CAI JUMBF metadata is handled
 <li>Patched to read timed GPS from a different type of INSV videos
 <li>Patched a security issue
 <li>Fixed problem where ExifTool could hang when processing mebx timed metadata
@@ -710,7 +710,7 @@
 <li>Decode a few new Panasonic and FujiFilm tags (thanks LibRaw and Greybeard)
 <li>Updated acdsee.config in distribution (thanks StarGeek)
 <li>Recognize AutoCAD DXF files
-<li>More work on experimental JUMBF read support
+<li>More work on experimental CAI JUMBF read support
 <li>More work on experimental JPEG XL read/write support
 <li>Patched security vulnerability in DjVu reader
 </ul>
@@ -719,8 +719,8 @@
 <ul>
 <li>Added support for Olympus ORI files
 <li>Added experimental read/write support for JPEG XL images
-<li>Added experimental read support for JUMBF metadata in JPEG and Jpeg2000
-    images
+<li>Added experimental read support for CAI (Content Authenticity Initiative)
+    JUMBF-format metadata in JPEG and Jpeg2000 images
 <li>Added built-in support for parsing GPS track from Denver ACG-8050 videos
     with the -ee option
 <li>Added a some new Sony lenses (thanks Jos Roost and LibRaw)

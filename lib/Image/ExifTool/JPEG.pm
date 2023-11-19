@@ -251,7 +251,7 @@ sub ProcessJPEG_HDR($$$);
         Name => 'JUMBF',
         Condition => '$$valPt =~ /^JP/',
         SubDirectory => { TagTable => 'Image::ExifTool::Jpeg2000::Main' },
-        # Note: The recommended options for reading C2PA JUMBF metadata are "-G3 -b -j -u"
+        # Note: The suggested options for reading C2PA CAI JUMBF metadata are "-G3 -b -j -u"
     }],
     APP12 => [{
         Name => 'PictureInfo',

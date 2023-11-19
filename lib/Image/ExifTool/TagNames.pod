@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27322 tags, with 17138 unique tag names.
+They contain a total of 27401 tags, with 17199 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -490,6 +490,72 @@ for the official EXIF 2.32 specification.
   0x4747   XP_DIP_XML                -          no
   0x4748   StitchInfo                -          Microsoft Stitch
   0x4749   RatingPercent             IFD0       int16u/
+  0x5001   ResolutionXUnit           -          no
+  0x5002   ResolutionYUnit           -          no
+  0x5003   ResolutionXLengthUnit     -          no
+  0x5004   ResolutionYLengthUnit     -          no
+  0x5005   PrintFlags                -          no
+  0x5006   PrintFlagsVersion         -          no
+  0x5007   PrintFlagsCrop            -          no
+  0x5008   PrintFlagsBleedWidth      -          no
+  0x5009   PrintFlagsBleedWidthScale -          no
+  0x500a   HalftoneLPI               -          no
+  0x500b   HalftoneLPIUnit           -          no
+  0x500c   HalftoneDegree            -          no
+  0x500d   HalftoneShape             -          no
+  0x500e   HalftoneMisc              -          no
+  0x500f   HalftoneScreen            -          no
+  0x5010   JPEGQuality               -          no
+  0x5011   GridSize                  -          no
+  0x5012   ThumbnailFormat           -          no
+  0x5013   ThumbnailWidth            -          no
+  0x5014   ThumbnailHeight           -          no
+  0x5015   ThumbnailColorDepth       -          no
+  0x5016   ThumbnailPlanes           -          no
+  0x5017   ThumbnailRawBytes         -          no
+  0x5018   ThumbnailLength           -          no
+  0x5019   ThumbnailCompressedSize   -          no
+  0x501a   ColorTransferFunction     -          no
+  0x501b   ThumbnailData             -          no
+  0x5020   ThumbnailImageWidth       -          no
+  0x5021   ThumbnailImageHeight      -          no
+  0x5022   ThumbnailBitsPerSample    -          no
+  0x5023   ThumbnailCompression      -          no
+  0x5024   ThumbnailPhotometricInterp -         no
+  0x5025   ThumbnailDescription      -          no
+  0x5026   ThumbnailEquipMake        -          no
+  0x5027   ThumbnailEquipModel       -          no
+  0x5028   ThumbnailStripOffsets     -          no
+  0x5029   ThumbnailOrientation      -          no
+  0x502a   ThumbnailSamplesPerPixel  -          no
+  0x502b   ThumbnailRowsPerStrip     -          no
+  0x502c   ThumbnailStripByteCounts  -          no
+  0x502d   ThumbnailResolutionX      -          no
+  0x502e   ThumbnailResolutionY      -          no
+  0x502f   ThumbnailPlanarConfig     -          no
+  0x5030   ThumbnailResolutionUnit   -          no
+  0x5031   ThumbnailTransferFunction -          no
+  0x5032   ThumbnailSoftware         -          no
+  0x5033   ThumbnailDateTime         -          no
+  0x5034   ThumbnailArtist           -          no
+  0x5035   ThumbnailWhitePoint       -          no
+  0x5036   ThumbnailPrimaryChromaticities -     no
+  0x5037   ThumbnailYCbCrCoefficients -         no
+  0x5038   ThumbnailYCbCrSubsampling -          no
+  0x5039   ThumbnailYCbCrPositioning -          no
+  0x503a   ThumbnailRefBlackWhite    -          no
+  0x503b   ThumbnailCopyright        -          no
+  0x5090   LuminanceTable            -          no
+  0x5091   ChrominanceTable          -          no
+  0x5100   FrameDelay                -          no
+  0x5101   LoopCount                 -          no
+  0x5102   GlobalPalette             -          no
+  0x5103   IndexBackground           -          no
+  0x5104   IndexTransparent          -          no
+  0x5110   PixelUnits                -          no
+  0x5111   PixelsPerUnitX            -          no
+  0x5112   PixelsPerUnitY            -          no
+  0x5113   PaletteHistogram          -          no
   0x7000   SonyRawFileType           -          no
   0x7010   SonyToneCurve             -          no
   0x7031   VignettingCorrection      SubIFD     int16s!
@@ -971,6 +1037,7 @@ for the official EXIF 2.32 specification.
   0xcd3a   ReductionMatrix3          IFD0       rational64s[n]!
   0xcd3b   RGBTables                 IFD0       undef!
   0xcd40   ProfileGainTableMap2      IFD0       undef!
+  0xcd41   JUMBF                     -          Jpeg2000
   0xcd43   ColumnInterleaveFactor    SubIFD     int32u!
   0xcd44   ImageSequenceInfo         IFD0       DNG ImageSeq
   0xcd46   ImageStats                IFD0       undef!
@@ -7811,6 +7878,7 @@ Unknown only to reduce the volume of the normal output.
            CanonCameraInfo1100D                 Canon CameraInfo600D
            CanonCameraInfo1200D                 Canon CameraInfo60D
            CanonCameraInfoR6                    Canon CameraInfoR6
+           CanonCameraInfoG5XII                 Canon CameraInfoG5XII
            CanonCameraInfoPowerShot             Canon CameraInfoPowerShot
            CanonCameraInfoPowerShot2            Canon CameraInfoPowerShot2
            CanonCameraInfoUnknown32             Canon CameraInfoUnknown32
@@ -8802,6 +8870,16 @@ CameraInfo tags for the EOS R6.
   Index1   Tag Name                             Writable
   ------   --------                             --------
    2801    ShutterCount                         int32u
+
+=head3 Canon CameraInfoG5XII Tags
+
+CameraInfo tags for the EOS R6.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+    659    ShutterCount                         int32u
+   2849    DirectoryIndex                       int32u
+   2861    FileIndex                            int32u
 
 =head3 Canon CameraInfoPowerShot Tags
 
@@ -11209,7 +11287,7 @@ These tags belong to the ExifTool XMP-drone-dji family 1 group.
   FlightZSpeed                                  real
   GPSLatitude                                   real/
   GPSLongitude                                  real/
-  GPSLongtitude                                 real
+  GPSLongtitude                                 real/
   GimbalPitchDegree                             real
   GimbalReverse                                 string
   GimbalRollDegree                              real
@@ -11951,6 +12029,15 @@ Tags found in the FujiIFD information of RAF images from some models.
   0xf00e   WB_GRBLevels                         no
   0xf00f   ChromaticAberrationParams            no
   0xf010   VignettingParams                     no
+
+=head3 FujiFilm MRAW Tags
+
+Tags extracted from the M-RAW header of multi-image RAF files.  The family 1
+group name for these tags is "M-RAW".
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   RawImageNumber                       no
 
 =head3 FujiFilm FFMV Tags
 
@@ -14169,8 +14256,9 @@ DiMAGE X and Xt.
            ColorBalance0211                     Nikon ColorBalance4
            ColorBalance0213                     Nikon ColorBalance2
            ColorBalance0215                     Nikon ColorBalance4
-           ColorBalanceUnknown02                Nikon ColorBalanceUnknown
-           ColorBalanceUnknown04                Nikon ColorBalanceUnknown
+           ColorBalance0219                     Nikon ColorBalance2
+           ColorBalanceUnknown1                 Nikon ColorBalanceUnknown
+           ColorBalanceUnknown2                 Nikon ColorBalanceUnknown2
            ColorBalanceUnknown                  Nikon ColorBalanceUnknown
   0x0098   LensData0100                         Nikon LensData00
            LensData0101                         Nikon LensData01
@@ -14984,6 +15072,7 @@ These tags are extracted from encrypted data in images from the Z7II.
       4    FirmwareVersion                      no
      48    IntervalOffset                       Nikon IntervalInfoZ7II
      56    PortraitOffset                       Nikon PortraitInfoZ7II
+    136    OrientationOffset                    Nikon OrientationInfo
     152    OrientationOffset                    Nikon OrientationInfo
     160    MenuOffset                           Nikon MenuInfoZ7II
 
@@ -15592,6 +15681,12 @@ This information is encrypted for most camera models.
 =head3 Nikon ColorBalanceUnknown Tags
 
   Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    ColorBalanceVersion                  undef[4]
+
+=head3 Nikon ColorBalanceUnknown2 Tags
+
+  Index2   Tag Name                             Writable
   ------   --------                             --------
       0    ColorBalanceVersion                  undef[4]
 
@@ -18578,6 +18673,291 @@ Tags found in the OLYM atom of MP4 videos from the TG-810.
     265    ThumbnailWidth                       no
     267    ThumbnailHeight                      no
 
+=head2 PanasonicRaw Tags
+
+These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   PanasonicRawVersion                  undef
+  0x0002   SensorWidth                          no
+  0x0003   SensorHeight                         no
+  0x0004   SensorTopBorder                      no
+  0x0005   SensorLeftBorder                     no
+  0x0006   SensorBottomBorder                   no
+  0x0007   SensorRightBorder                    no
+  0x0008   SamplesPerPixel                      int16u!
+  0x0009   CFAPattern                           int16u!
+  0x000a   BitsPerSample                        int16u!
+  0x000b   Compression                          int16u!
+  0x000e   LinearityLimitRed                    int16u
+  0x000f   LinearityLimitGreen                  int16u
+  0x0010   LinearityLimitBlue                   int16u
+  0x0011   RedBalance                           int16u
+  0x0012   BlueBalance                          int16u
+  0x0013   WBInfo                               PanasonicRaw WBInfo
+  0x0017   ISO                                  int16u
+  0x0018   HighISOMultiplierRed                 int16u
+  0x0019   HighISOMultiplierGreen               int16u
+  0x001a   HighISOMultiplierBlue                int16u
+  0x001b   NoiseReductionParams                 undef[n]!
+  0x001c   BlackLevelRed                        int16u
+  0x001d   BlackLevelGreen                      int16u
+  0x001e   BlackLevelBlue                       int16u
+  0x0024   WBRedLevel                           int16u
+  0x0025   WBGreenLevel                         int16u
+  0x0026   WBBlueLevel                          int16u
+  0x0027   WBInfo2                              PanasonicRaw WBInfo2
+  0x002d   RawFormat                            int16u!
+  0x002e   JpgFromRaw                           JPEG
+  0x002f   CropTop                              int16u
+  0x0030   CropLeft                             int16u
+  0x0031   CropBottom                           int16u
+  0x0032   CropRight                            int16u
+  0x010f   Make                                 string
+  0x0110   Model                                string
+  0x0111   StripOffsets                         no
+  0x0112   Orientation                          int16u
+  0x0116   RowsPerStrip                         no
+  0x0117   StripByteCounts                      no
+  0x0118   RawDataOffset                        no
+  0x0119   DistortionInfo                       PanasonicRaw DistortionInfo
+  0x011c   Gamma                                int16u
+  0x0120   CameraIFD                            PanasonicRaw CameraIFD
+  0x0121   Multishot                            int32u
+  0x0127   JpgFromRaw2                          no
+  0x013b   Artist                               string
+  0x02bc   ApplicationNotes                     XMP
+  0x8298   Copyright                            string
+  0x83bb   IPTC-NAA                             IPTC
+  0x8769   ExifOffset                           EXIF
+  0x8825   GPSInfo                              GPS
+
+=head3 PanasonicRaw CameraIFD Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x1001   MultishotOn                          no
+  0x1100   FocusStepNear                        no
+  0x1101   FocusStepCount                       no
+  0x1102   FlashFired                           no
+  0x1105   ZoomPosition                         no
+  0x1200   LensAttached                         no
+  0x1201   LensTypeMake                         no
+  0x1202   LensTypeModel                        no
+  0x1203   FocalLengthIn35mmFormat              no
+  0x1301   ApertureValue                        no
+  0x1302   ShutterSpeedValue                    no
+  0x1303   SensitivityValue                     no
+  0x1305   HighISOMode                          no
+  0x1412   FacesDetected                        no
+  0x3200   WB_CFA0_LevelDaylight                no
+  0x3201   WB_CFA1_LevelDaylight                no
+  0x3202   WB_CFA2_LevelDaylight                no
+  0x3203   WB_CFA3_LevelDaylight                no
+  0x3300   WhiteBalanceSet                      no
+  0x3420   WB_RedLevelAuto                      no
+  0x3421   WB_BlueLevelAuto                     no
+  0x3501   Orientation                          no
+  0x3600   WhiteBalanceDetected                 no
+
+=head3 PanasonicRaw WBInfo Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    NumWBEntries                         int16u
+      1    WBType1                              int16u
+      2    WB_RBLevels1                         int16u[2]
+      4    WBType2                              int16u
+      5    WB_RBLevels2                         int16u[2]
+      7    WBType3                              int16u
+      8    WB_RBLevels3                         int16u[2]
+     10    WBType4                              int16u
+     11    WB_RBLevels4                         int16u[2]
+     13    WBType5                              int16u
+     14    WB_RBLevels5                         int16u[2]
+     16    WBType6                              int16u
+     17    WB_RBLevels6                         int16u[2]
+     19    WBType7                              int16u
+     20    WB_RBLevels7                         int16u[2]
+
+=head3 PanasonicRaw WBInfo2 Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    NumWBEntries                         int16u
+      1    WBType1                              int16u
+      2    WB_RGBLevels1                        int16u[3]
+      5    WBType2                              int16u
+      6    WB_RGBLevels2                        int16u[3]
+      9    WBType3                              int16u
+     10    WB_RGBLevels3                        int16u[3]
+     13    WBType4                              int16u
+     14    WB_RGBLevels4                        int16u[3]
+     17    WBType5                              int16u
+     18    WB_RGBLevels5                        int16u[3]
+     21    WBType6                              int16u
+     22    WB_RGBLevels6                        int16u[3]
+     25    WBType7                              int16u
+     26    WB_RGBLevels7                        int16u[3]
+
+=head3 PanasonicRaw DistortionInfo Tags
+
+Lens distortion correction information.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0002   DistortionParam02                    int16s
+  0x0004   DistortionParam04                    int16s
+  0x0005   DistortionScale                      int16s
+    7.1    DistortionCorrection                 int16s & 0x0f
+  0x0008   DistortionParam08                    int16s
+  0x0009   DistortionParam09                    int16s
+  0x000b   DistortionParam11                    int16s
+  0x000c   DistortionN?                         int16s
+
+=head2 SigmaRaw Tags
+
+These tags are used in Sigma and Foveon RAW (.X3F) images.  Metadata is also
+extracted from the JpgFromRaw image if it exists (all models but the SD9 and
+SD10).  Currently, metadata may only be written to the embedded JpgFromRaw.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'Header'             Header                   SigmaRaw Header
+  'Header4'            Header4                  SigmaRaw Header4
+  'HeaderExt'          HeaderExt                SigmaRaw HeaderExt
+  'IMA2'               PreviewImage             no
+                       JpgFromRaw               no
+  'IMAG'               PreviewImage             no
+  'PROP'               Properties               SigmaRaw Properties
+
+=head3 SigmaRaw Header Tags
+
+Information extracted from the header of an X3F file.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   FileVersion                          no
+  0x0002   ImageUniqueID                        no
+  0x0006   MarkBits                             no
+  0x0007   ImageWidth                           no
+  0x0008   ImageHeight                          no
+  0x0009   Rotation                             no
+  0x000a   WhiteBalance                         no
+  0x0012   SceneCaptureType                     no
+
+=head3 SigmaRaw Header4 Tags
+
+Header information for version 4.0 or greater X3F.
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      1    FileVersion                          no
+     10    ImageWidth                           no
+     11    ImageHeight                          no
+     12    Rotation                             no
+
+=head3 SigmaRaw HeaderExt Tags
+
+Extended header data found in version 2.1 and 2.2 files
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0000   Unused                               no
+  0x0001   ExposureAdjust                       no
+  0x0002   Contrast                             no
+  0x0003   Shadow                               no
+  0x0004   Highlight                            no
+  0x0005   Saturation                           no
+  0x0006   Sharpness                            no
+  0x0007   RedAdjust                            no
+  0x0008   GreenAdjust                          no
+  0x0009   BlueAdjust                           no
+  0x000a   X3FillLight                          no
+
+=head3 SigmaRaw Properties Tags
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'AEMODE'             MeteringMode             no
+  'AFAREA'             AFArea                   no
+  'AFINFOCUS'          AFInFocus                no
+  'AFMODE'             FocusMode                no
+  'APERTURE'           FNumber                  no
+  'AP_DESC'            ApertureDisplayed        no
+  'BRACKET'            BracketShot              no
+  'BURST'              BurstShot                no
+  'CAMMANUF'           Make                     no
+  'CAMMODEL'           Model                    no
+  'CAMNAME'            CameraName               no
+  'CAMSERIAL'          SerialNumber             no
+  'CM_DESC'            SceneCaptureType         no
+  'COLORSPACE'         ColorSpace               no
+  'DRIVE'              DriveMode                no
+  'EVAL_STATE'         EvalState                no
+  'EXPCOMP'            ExposureCompensation     no
+  'EXPNET'             NetExposureCompensation  no
+  'EXPTIME'            IntegrationTime          no
+  'FIRMVERS'           FirmwareVersion          no
+  'FLASH'              FlashMode                no
+  'FLASHEXPCOMP'       FlashExpComp             no
+  'FLASHPOWER'         FlashPower               no
+  'FLASHTTLMODE'       FlashTTLMode             no
+  'FLASHTYPE'          FlashType                no
+  'FLENGTH'            FocalLength              no
+  'FLEQ35MM'           FocalLengthIn35mmFormat  no
+  'FOCUS'              Focus                    no
+  'IMAGEBOARDID'       ImageBoardID             no
+  'IMAGERBOARDID'      ImagerBoardID            no
+  'IMAGERTEMP'         SensorTemperature        no
+  'ISO'                ISO                      no
+  'LENSARANGE'         LensApertureRange        no
+  'LENSFRANGE'         LensFocalRange           no
+  'LENSMODEL'          LensType                 no
+  'PMODE'              ExposureProgram          no
+  'RESOLUTION'         Quality                  no
+  'SENSORID'           SensorID                 no
+  'SHUTTER'            ExposureTime             no
+  'SH_DESC'            ShutterSpeedDisplayed    no
+  'TIME'               DateTimeOriginal         no
+  'VERSION_BF'         VersionBF                no
+  'WB_DESC'            WhiteBalance             no
+
+=head2 Lytro Tags
+
+Tag definitions for Lytro Light Field Picture (LFP) files.  ExifTool
+extracts the full JSON metadata blocks, as well as breaking them down into
+individual tags.  All available tags are extracted from the JSON metadata,
+even if they don't appear in the table below.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AccelerometerTime                             no
+  AccelerometerX                                no
+  AccelerometerY                                no
+  AccelerometerZ                                no
+  CameraType                                    no
+  DateTimeOriginal                              no
+  EmbeddedImage                                 no
+  ExposureTime                                  no
+  FNumber                                       no
+  FirmwareVersion                               no
+  FocalLength                                   no
+  FocalPlaneXResolution                         no
+  FrameExposureTime                             no
+  ISO                                           no
+  ImageLimitExposureBias                        no
+  ImageModulationExposureBias                   no
+  JSONMetadata                                  no+
+  LensTemperature                               no
+  Make                                          no
+  Model                                         no
+  Orientation                                   no
+  SensorSerialNumber                            no
+  SerialNumber                                  no
+  SocTemperature                                no
+
 =head2 Panasonic Tags
 
 These tags are used in Panasonic/Leica cameras.
@@ -18859,6 +19239,7 @@ This information is written by the X1, X2, X VARIO and T.
   0x0412   FilmMode                             string
   0x0413   WB_RGBLevels                         rational64u[3]
   0x0500   InternalSerialNumber                 undef
+  0x05ff   CameraIFD                            PanasonicRaw CameraIFD
 
 =head3 Panasonic FocusInfo Tags
 
@@ -20631,6 +21012,7 @@ MakerNotes.
   0x2036   Clarity                              int32s
   0x2037   FocusFrameSize                       no
   0x2039   JPEG-HEIFSwitch                      int16u
+  0x204a   FocusLocation2                       int16u[4]
   0x3000   ShotInfo                             Sony ShotInfo
   0x900b   Tag900b                              Sony Tag900b
   0x9050   Tag9050a                             Sony Tag9050a
@@ -20649,6 +21031,7 @@ MakerNotes.
   0x9405   Tag9405a                             Sony Tag9405a
            Tag9405b                             Sony Tag9405b
   0x9406   Tag9406                              Sony Tag9406
+           Tag9406b                             Sony Tag9406b
   0x940a   Tag940a                              Sony Tag940a
   0x940c   Tag940c                              Sony Tag940c
   0x940e   AFInfo                               Sony AFInfo
@@ -21805,7 +22188,6 @@ WX350/WX500, ILCE-1/7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/7SM3/9/9M2/5000/
      30    SequenceLength                       int8u
      41    CameraOrientation                    int8u
      42    Quality2                             int8u
-     71    SonyImageHeight                      int16u~
      83    ModelReleaseYear                     int8u~
     307    ShutterType                          int8u
     313    ShutterType                          int8u
@@ -21816,6 +22198,7 @@ WX350/WX500, ILCE-1/7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/7SM3/9/9M2/5000/
   Index1   Tag Name                             Writable
   ------   --------                             --------
     994    ISOInfo                              Sony ISOInfo
+   1012    ISOInfo                              Sony ISOInfo
    1102    ISOInfo                              Sony ISOInfo
    1176    ISOInfo                              Sony ISOInfo
    1181    ISOInfo                              Sony ISOInfo
@@ -21946,10 +22329,16 @@ ILCE-7/7M2/7M3/7R/7RM2/7RM3/7RM4/7S/7SM2/9/9M2/5000/5100/6000/6100/6300/
   Index1   Tag Name                             Writable
   ------   --------                             --------
       5    BatteryTemperature                   int8u
-           BatteryLevel                         int8u
       6    BatteryLevelGrip1                    int8u
       7    BatteryLevel                         int8u
       8    BatteryLevelGrip2                    int8u
+
+=head3 Sony Tag9406b Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      5    BatteryLevel                         int8u
+      7    BatteryLevel2                        int8u
 
 =head3 Sony Tag940a Tags
 
@@ -22151,7 +22540,7 @@ E-mount models.
 
 =head3 Sony Tag9416 Tags
 
-Valid for the ILCE-1/6700/7CM2/7CR/7M4/7RM5/7SM3, ILME-FX3/FX30, ZV-E1.
+Valid for the ILCE-1/6700/7CM2/7CR/7M4/7RM5/7SM3/9M3, ILME-FX3/FX30, ZV-E1.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -22865,291 +23254,6 @@ These tags are used in Minolta RAW format (MRW) images.
       0    WBScale                              int8u[4]
       4    WB_GBRGLevels                        int16u[4]
            WB_RGGBLevels                        int16u[4]
-
-=head2 PanasonicRaw Tags
-
-These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0001   PanasonicRawVersion                  undef
-  0x0002   SensorWidth                          no
-  0x0003   SensorHeight                         no
-  0x0004   SensorTopBorder                      no
-  0x0005   SensorLeftBorder                     no
-  0x0006   SensorBottomBorder                   no
-  0x0007   SensorRightBorder                    no
-  0x0008   SamplesPerPixel                      int16u!
-  0x0009   CFAPattern                           int16u!
-  0x000a   BitsPerSample                        int16u!
-  0x000b   Compression                          int16u!
-  0x000e   LinearityLimitRed                    int16u
-  0x000f   LinearityLimitGreen                  int16u
-  0x0010   LinearityLimitBlue                   int16u
-  0x0011   RedBalance                           int16u
-  0x0012   BlueBalance                          int16u
-  0x0013   WBInfo                               PanasonicRaw WBInfo
-  0x0017   ISO                                  int16u
-  0x0018   HighISOMultiplierRed                 int16u
-  0x0019   HighISOMultiplierGreen               int16u
-  0x001a   HighISOMultiplierBlue                int16u
-  0x001b   NoiseReductionParams                 undef[n]!
-  0x001c   BlackLevelRed                        int16u
-  0x001d   BlackLevelGreen                      int16u
-  0x001e   BlackLevelBlue                       int16u
-  0x0024   WBRedLevel                           int16u
-  0x0025   WBGreenLevel                         int16u
-  0x0026   WBBlueLevel                          int16u
-  0x0027   WBInfo2                              PanasonicRaw WBInfo2
-  0x002d   RawFormat                            int16u!
-  0x002e   JpgFromRaw                           JPEG
-  0x002f   CropTop                              int16u
-  0x0030   CropLeft                             int16u
-  0x0031   CropBottom                           int16u
-  0x0032   CropRight                            int16u
-  0x010f   Make                                 string
-  0x0110   Model                                string
-  0x0111   StripOffsets                         no
-  0x0112   Orientation                          int16u
-  0x0116   RowsPerStrip                         no
-  0x0117   StripByteCounts                      no
-  0x0118   RawDataOffset                        no
-  0x0119   DistortionInfo                       PanasonicRaw DistortionInfo
-  0x011c   Gamma                                int16u
-  0x0120   CameraIFD                            PanasonicRaw CameraIFD
-  0x0121   Multishot                            int32u
-  0x0127   JpgFromRaw2                          no
-  0x013b   Artist                               string
-  0x02bc   ApplicationNotes                     XMP
-  0x8298   Copyright                            string
-  0x83bb   IPTC-NAA                             IPTC
-  0x8769   ExifOffset                           EXIF
-  0x8825   GPSInfo                              GPS
-
-=head3 PanasonicRaw WBInfo Tags
-
-  Index2   Tag Name                             Writable
-  ------   --------                             --------
-      0    NumWBEntries                         int16u
-      1    WBType1                              int16u
-      2    WB_RBLevels1                         int16u[2]
-      4    WBType2                              int16u
-      5    WB_RBLevels2                         int16u[2]
-      7    WBType3                              int16u
-      8    WB_RBLevels3                         int16u[2]
-     10    WBType4                              int16u
-     11    WB_RBLevels4                         int16u[2]
-     13    WBType5                              int16u
-     14    WB_RBLevels5                         int16u[2]
-     16    WBType6                              int16u
-     17    WB_RBLevels6                         int16u[2]
-     19    WBType7                              int16u
-     20    WB_RBLevels7                         int16u[2]
-
-=head3 PanasonicRaw WBInfo2 Tags
-
-  Index2   Tag Name                             Writable
-  ------   --------                             --------
-      0    NumWBEntries                         int16u
-      1    WBType1                              int16u
-      2    WB_RGBLevels1                        int16u[3]
-      5    WBType2                              int16u
-      6    WB_RGBLevels2                        int16u[3]
-      9    WBType3                              int16u
-     10    WB_RGBLevels3                        int16u[3]
-     13    WBType4                              int16u
-     14    WB_RGBLevels4                        int16u[3]
-     17    WBType5                              int16u
-     18    WB_RGBLevels5                        int16u[3]
-     21    WBType6                              int16u
-     22    WB_RGBLevels6                        int16u[3]
-     25    WBType7                              int16u
-     26    WB_RGBLevels7                        int16u[3]
-
-=head3 PanasonicRaw DistortionInfo Tags
-
-Lens distortion correction information.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0002   DistortionParam02                    int16s
-  0x0004   DistortionParam04                    int16s
-  0x0005   DistortionScale                      int16s
-    7.1    DistortionCorrection                 int16s & 0x0f
-  0x0008   DistortionParam08                    int16s
-  0x0009   DistortionParam09                    int16s
-  0x000b   DistortionParam11                    int16s
-  0x000c   DistortionN?                         int16s
-
-=head3 PanasonicRaw CameraIFD Tags
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x1001   MultishotOn                          no
-  0x1100   FocusStepNear                        no
-  0x1101   FocusStepCount                       no
-  0x1102   FlashFired                           no
-  0x1105   ZoomPosition                         no
-  0x1200   LensAttached                         no
-  0x1201   LensTypeMake                         no
-  0x1202   LensTypeModel                        no
-  0x1203   FocalLengthIn35mmFormat              no
-  0x1301   ApertureValue                        no
-  0x1302   ShutterSpeedValue                    no
-  0x1303   SensitivityValue                     no
-  0x1305   HighISOMode                          no
-  0x1412   FacesDetected                        no
-  0x3200   WB_CFA0_LevelDaylight                no
-  0x3201   WB_CFA1_LevelDaylight                no
-  0x3202   WB_CFA2_LevelDaylight                no
-  0x3203   WB_CFA3_LevelDaylight                no
-  0x3300   WhiteBalanceSet                      no
-  0x3420   WB_RedLevelAuto                      no
-  0x3421   WB_BlueLevelAuto                     no
-  0x3501   Orientation                          no
-  0x3600   WhiteBalanceDetected                 no
-
-=head2 SigmaRaw Tags
-
-These tags are used in Sigma and Foveon RAW (.X3F) images.  Metadata is also
-extracted from the JpgFromRaw image if it exists (all models but the SD9 and
-SD10).  Currently, metadata may only be written to the embedded JpgFromRaw.
-
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'Header'             Header                   SigmaRaw Header
-  'Header4'            Header4                  SigmaRaw Header4
-  'HeaderExt'          HeaderExt                SigmaRaw HeaderExt
-  'IMA2'               PreviewImage             no
-                       JpgFromRaw               no
-  'IMAG'               PreviewImage             no
-  'PROP'               Properties               SigmaRaw Properties
-
-=head3 SigmaRaw Header Tags
-
-Information extracted from the header of an X3F file.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0001   FileVersion                          no
-  0x0002   ImageUniqueID                        no
-  0x0006   MarkBits                             no
-  0x0007   ImageWidth                           no
-  0x0008   ImageHeight                          no
-  0x0009   Rotation                             no
-  0x000a   WhiteBalance                         no
-  0x0012   SceneCaptureType                     no
-
-=head3 SigmaRaw Header4 Tags
-
-Header information for version 4.0 or greater X3F.
-
-  Index4   Tag Name                             Writable
-  ------   --------                             --------
-      1    FileVersion                          no
-     10    ImageWidth                           no
-     11    ImageHeight                          no
-     12    Rotation                             no
-
-=head3 SigmaRaw HeaderExt Tags
-
-Extended header data found in version 2.1 and 2.2 files
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0000   Unused                               no
-  0x0001   ExposureAdjust                       no
-  0x0002   Contrast                             no
-  0x0003   Shadow                               no
-  0x0004   Highlight                            no
-  0x0005   Saturation                           no
-  0x0006   Sharpness                            no
-  0x0007   RedAdjust                            no
-  0x0008   GreenAdjust                          no
-  0x0009   BlueAdjust                           no
-  0x000a   X3FillLight                          no
-
-=head3 SigmaRaw Properties Tags
-
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'AEMODE'             MeteringMode             no
-  'AFAREA'             AFArea                   no
-  'AFINFOCUS'          AFInFocus                no
-  'AFMODE'             FocusMode                no
-  'APERTURE'           FNumber                  no
-  'AP_DESC'            ApertureDisplayed        no
-  'BRACKET'            BracketShot              no
-  'BURST'              BurstShot                no
-  'CAMMANUF'           Make                     no
-  'CAMMODEL'           Model                    no
-  'CAMNAME'            CameraName               no
-  'CAMSERIAL'          SerialNumber             no
-  'CM_DESC'            SceneCaptureType         no
-  'COLORSPACE'         ColorSpace               no
-  'DRIVE'              DriveMode                no
-  'EVAL_STATE'         EvalState                no
-  'EXPCOMP'            ExposureCompensation     no
-  'EXPNET'             NetExposureCompensation  no
-  'EXPTIME'            IntegrationTime          no
-  'FIRMVERS'           FirmwareVersion          no
-  'FLASH'              FlashMode                no
-  'FLASHEXPCOMP'       FlashExpComp             no
-  'FLASHPOWER'         FlashPower               no
-  'FLASHTTLMODE'       FlashTTLMode             no
-  'FLASHTYPE'          FlashType                no
-  'FLENGTH'            FocalLength              no
-  'FLEQ35MM'           FocalLengthIn35mmFormat  no
-  'FOCUS'              Focus                    no
-  'IMAGEBOARDID'       ImageBoardID             no
-  'IMAGERBOARDID'      ImagerBoardID            no
-  'IMAGERTEMP'         SensorTemperature        no
-  'ISO'                ISO                      no
-  'LENSARANGE'         LensApertureRange        no
-  'LENSFRANGE'         LensFocalRange           no
-  'LENSMODEL'          LensType                 no
-  'PMODE'              ExposureProgram          no
-  'RESOLUTION'         Quality                  no
-  'SENSORID'           SensorID                 no
-  'SHUTTER'            ExposureTime             no
-  'SH_DESC'            ShutterSpeedDisplayed    no
-  'TIME'               DateTimeOriginal         no
-  'VERSION_BF'         VersionBF                no
-  'WB_DESC'            WhiteBalance             no
-
-=head2 Lytro Tags
-
-Tag definitions for Lytro Light Field Picture (LFP) files.  ExifTool
-extracts the full JSON metadata blocks, as well as breaking them down into
-individual tags.  All available tags are extracted from the JSON metadata,
-even if they don't appear in the table below.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  AccelerometerTime                             no
-  AccelerometerX                                no
-  AccelerometerY                                no
-  AccelerometerZ                                no
-  CameraType                                    no
-  DateTimeOriginal                              no
-  EmbeddedImage                                 no
-  ExposureTime                                  no
-  FNumber                                       no
-  FirmwareVersion                               no
-  FocalLength                                   no
-  FocalPlaneXResolution                         no
-  FrameExposureTime                             no
-  ISO                                           no
-  ImageLimitExposureBias                        no
-  ImageModulationExposureBias                   no
-  JSONMetadata                                  no+
-  LensTemperature                               no
-  Make                                          no
-  Model                                         no
-  Orientation                                   no
-  SensorSerialNumber                            no
-  SerialNumber                                  no
-  SocTemperature                                no
 
 =head2 JFIF Tags
 
@@ -25143,12 +25247,21 @@ chunk.
 
 =head2 Jpeg2000 Tags
 
-The tags below are found in JPEG 2000 images and the JUMBF metadata in JPEG
-images, but not all of these are extracted.  Note that ExifTool currently
-writes only EXIF, IPTC and XMP tags in Jpeg2000 images, and EXIF and XMP in
-JXL images.  ExifTool will read/write Brotli-compressed EXIF and XMP in JXL
-images, but the API Compress option must be set to create new EXIF and XMP
-in compressed format.
+The tags below are found in JPEG 2000 images and the C2PA CAI JUMBF metadata
+in various file types (see below).  Note that ExifTool currently writes only
+EXIF, IPTC and XMP tags in Jpeg2000 images, and EXIF and XMP in JXL images.
+ExifTool will read/write Brotli-compressed EXIF and XMP in JXL images, but
+the API Compress option must be set to create new EXIF and XMP in compressed
+format.
+
+C2PA (Coalition for Content Provenance and Authenticity) CAI (Content
+Authenticity Initiative) JUMBF (JPEG Universal Metadata Box Format) metdata
+is currently extracted from JPEG, PNG, TIFF-based (eg. TIFF, DNG),
+QuickTime-based (eg. MP4, MOV, HEIF, AVIF), RIFF-based (eg. WAV, AVI, WebP),
+GIF files and ID3v2 metadata.  The suggested ExifTool command-line arguments
+for reading C2PA metadata are C<-jumbf:all -G3 -b -j -u -struct>.  This
+metadata may be deleted from writable JPEG, PNG, WebP, TIFF-based, and
+QuickTime-based files by deleting the JUMBF group with C<-jumbf:all=>.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -25217,8 +25330,8 @@ in compressed format.
            UUID-XMP                             XMP
            UUID-GeoJP2                          EXIF
            UUID-Photoshop                       Photoshop
+           UUID-C2PAClaimSignature              CBOR
            UUID-Signature                       no
-           UUID-C2PAClaimSignature              -
            UUID-Unknown                         no
   'xml '   XML                                  XMP XML
            XMP                                  -
@@ -26926,6 +27039,7 @@ Tags extracted from GIF89a application extensions.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
+  'C2PA_GIF/'          JUMBF                    Jpeg2000
   'ICCRGBG1/012'       ICC_Profile              ICC_Profile
   'MIDICTRL/Jon'       MIDIControl              GIF MIDIControl
   'MIDISONG/Dm7'       MIDISong                 no
@@ -28590,8 +28704,11 @@ ID3 version 2.2 tags.  (These are the tags written by iTunes 5.0.)
   ------   --------                             --------
   'CNT'    PlayCounter                          no
   'COM'    Comment                              no
+  'GP1'    Grouping                             no
   'IPL'    InvolvedPeople                       no
   'ITU'    iTunesU?                             no
+  'MVI'    MovementNumber                       no
+  'MVN'    MovementName                         no
   'PCS'    Podcast?                             no
   'PIC'    Picture                              no
   'PIC-1'  PictureFormat                        no
@@ -28673,6 +28790,7 @@ software.
   'APIC-2' PictureType                          no
   'APIC-3' PictureDescription                   no
   'COMM'   Comment                              no
+  'GEOB'   GeneralEncapsulatedObject            ID3 GEOB
   'GRP1'   Grouping                             no
   'IPLS'   InvolvedPeople                       no
   'ITNU'   iTunesU?                             no
@@ -28749,6 +28867,16 @@ software.
   'XSOP'   PerformerSortOrder                   no
   'XSOT'   TitleSortOrder                       no
 
+=head3 ID3 GEOB Tags
+
+  Tag ID                              Tag Name  Writable
+  ------                              --------  --------
+  'GEOB-Data'                         GEOB-Data no
+  'GEOB-Desc'                         GEOB-Desc no
+  'GEOB-File'                         GEOB-File no
+  'GEOB-Mime'                         GEOB-Mime no
+  'application/x-c2pa-manifest-store' JUMBF     Jpeg2000
+
 =head3 ID3 Private Tags
 
 ID3 private (PRIV) tags.  ExifTool will decode any private tags found, even
@@ -28778,6 +28906,7 @@ software.
   'APIC-2' PictureType                          no
   'APIC-3' PictureDescription                   no
   'COMM'   Comment                              no
+  'GEOB'   GeneralEncapsulatedObject            ID3 GEOB
   'GRP1'   Grouping                             no
   'ITNU'   iTunesU?                             no
   'MCDI'   MusicCDIdentifier                    no
@@ -29013,6 +29142,8 @@ for the official specification.
                        UUID-Flip                QuickTime Flip
                        UUID-Canon2              Canon uuid2
                        SensorData               QuickTime Tags360Fly
+                       JUMBF                    Jpeg2000
+                       CBOR                     CBOR
                        SensorData               no
                        PreviewImage             no
                        UUID-Unknown?            no
@@ -30620,6 +30751,7 @@ metadata to WEBP images, but can't yet write to other RIFF-based formats.
   'ALPH'               ALPH                     RIFF ALPH
   'ANIM'               ANIM                     RIFF ANIM
   'ANMF'               ANMF                     RIFF ANMF
+  'C2PA'               JUMBF                    Jpeg2000
   'CSET'               CharacterSet             RIFF CSET
   'EXIF'               EXIF                     EXIF
                        UnknownEXIF              no
@@ -38736,11 +38868,10 @@ Tags extracted from V-Note VNT files.
 Although basic text files contain no metadata, the following tags are
 determined from a simple analysis of the data in TXT and CSV files.
 Statistics are generated only for 8-bit encodings, but the FastScan (-fast)
-option may be used to limit processing to the first 64 kB in which case some
-tags are not produced.  To avoid long processing delays, ExifTool will issue
-a minor warning and process only the first 64 kB of any file larger than 20
-MB unless the IgnoreMinorErrors (-m)
-option is used.
+option may be used to limit processing to the first 64 KiB in which case
+some tags are not produced.  To avoid long processing delays, ExifTool will
+issue a minor warning and process only the first 64 KiB of any file larger
+than 20 MiB unless the IgnoreMinorErrors (-m) option is used.
 
   Tag Name                                      Writable
   --------                                      --------

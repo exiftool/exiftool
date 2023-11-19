@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.88';
+$VERSION = '2.89';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -637,6 +637,33 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
             Name => 'SensorData', # sensor data for the 360Fly
             Condition => '$$valPt=~/^\xef\xe1\x58\x9a\xbb\x77\x49\xef\x80\x95\x27\x75\x9e\xb1\xdc\x6f/ and $$self{OPTIONS}{ExtractEmbedded}',
             SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Tags360Fly' },
+        },
+        { #https://c2pa.org/specifications/
+            Name => 'JUMBF',
+            Condition => '$$valPt=~/^\xd8\xfe\xc3\xd6\x1b\x0e\x48\x3c\x92\x97\x58\x28\x87\x7e\xc4\x81.{4}manifest\0/s',
+            Deletable => 1,
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Jpeg2000::Main',
+                # 16 bytes uuid
+                # +4 bytes 0
+                # +9 bytes "manifest\0"
+                # +8 bytes absolute(!!!) offset to C2PA uuid "merkle\0" box
+                # =37 bytes total
+                Start => 37,
+            },
+        },
+        { #https://c2pa.org/specifications/ (NC)
+            Name => 'CBOR',
+            Condition => '$$valPt=~/^\xd8\xfe\xc3\xd6\x1b\x0e\x48\x3c\x92\x97\x58\x28\x87\x7e\xc4\x81.{4}merkle\0/s',
+            Deletable => 1, # (NC)
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::CBOR::Main',
+                # 16 bytes uuid
+                # +4 bytes 0
+                # +7 bytes "merkle\0"
+                # =27 bytes total
+                Start => 27,
+            },
         },
         {
             Name => 'SensorData',
@@ -9504,7 +9531,7 @@ sub ProcessMOV($$;$)
         # stop processing at mdat/idat if -fast2 is used
         last if $fast > 1 and ($tag eq 'mdat' or ($tag eq 'idat' and $$et{FileType} ne 'HEIC'));
         # load values only if associated with a tag (or verbose) and not too big
-        if ($size > 0x2000000) {    # start to get worried above 32 MB
+        if ($size > 0x2000000) {    # start to get worried above 32 MiB
             # check for RIFF trailer (written by Auto-Vox dashcam)
             if ($buff =~ /^(gpsa|gps0|gsen|gsea)...\0/s) { # (yet seen only gpsa as first record)
                 $et->VPrint(0, "Found RIFF trailer");
@@ -9521,9 +9548,9 @@ sub ProcessMOV($$;$)
             if ($tagInfo and not $$tagInfo{Unknown} and not $eeTag) {
                 my $t = PrintableTagID($tag,2);
                 if ($size > 0x8000000) {
-                    $et->Warn("Skipping '${t}' atom > 128 MB", 1);
+                    $et->Warn("Skipping '${t}' atom > 128 MiB", 1);
                 } else {
-                    $et->Warn("Skipping '${t}' atom > 32 MB", 2) or $ignore = 0;
+                    $et->Warn("Skipping '${t}' atom > 32 MiB", 2) or $ignore = 0;
                 }
             }
         }

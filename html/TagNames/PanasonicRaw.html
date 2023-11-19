@@ -301,6 +301,166 @@ noise-reduction strengths the R, G and B channels)</span></span></td></tr>
 <td>--&gt; <a href='GPS.html'>GPS Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='CameraIFD'>PanasonicRaw CameraIFD Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x1001 = 4097'>0x1001</td>
+<td>MultishotOn</td>
+<td class=c>no</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td title='0x1100 = 4352'>0x1100</td>
+<td>FocusStepNear</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1101 = 4353'>0x1101</td>
+<td>FocusStepCount</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1102 = 4354'>0x1102</td>
+<td>FlashFired</td>
+<td class=c>no</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td title='0x1105 = 4357'>0x1105</td>
+<td>ZoomPosition</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(in the range 0-255 for most cameras)</span></span></td></tr>
+<tr class=b>
+<td title='0x1200 = 4608'>0x1200</td>
+<td>LensAttached</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(many CameraIFD tags are invalid if there is no lens attached)</span>
+  <br>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td title='0x1201 = 4609'>0x1201</td>
+<td>LensTypeMake</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1202 = 4610'>0x1202</td>
+<td>LensTypeModel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1203 = 4611'>0x1203</td>
+<td>FocalLengthIn35mmFormat</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1301 = 4865'>0x1301</td>
+<td>ApertureValue</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1302 = 4866'>0x1302</td>
+<td>ShutterSpeedValue</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1303 = 4867'>0x1303</td>
+<td>SensitivityValue</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1305 = 4869'>0x1305</td>
+<td>HighISOMode</td>
+<td class=c>no</td>
+<td><span class=s>1 = On
+  <br>2 = Off</span></td></tr>
+<tr class=b>
+<td title='0x1412 = 5138'>0x1412</td>
+<td>FacesDetected</td>
+<td class=c>no</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td title='0x3200 = 12800'>0x3200</td>
+<td>WB_CFA0_LevelDaylight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3201 = 12801'>0x3201</td>
+<td>WB_CFA1_LevelDaylight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3202 = 12802'>0x3202</td>
+<td>WB_CFA2_LevelDaylight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3203 = 12803'>0x3203</td>
+<td>WB_CFA3_LevelDaylight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3300 = 13056'>0x3300</td>
+<td>WhiteBalanceSet</td>
+<td class=c>no</td>
+<td>--&gt; <a href='PanasonicRaw.html#WhiteBalance'>PanasonicRaw WhiteBalance Values</a></td></tr>
+<tr class=b>
+<td title='0x3420 = 13344'>0x3420</td>
+<td>WB_RedLevelAuto</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3421 = 13345'>0x3421</td>
+<td>WB_BlueLevelAuto</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3501 = 13569'>0x3501</td>
+<td>Orientation</td>
+<td class=c>no</td>
+<td><table class=cols><tr>
+  <td>1 = Horizontal (normal)
+  <br>2 = Mirror horizontal
+  <br>3 = Rotate 180
+  <br>4 = Mirror vertical
+  <br>5 = Mirror horizontal and rotate 270 CW
+  <br>6 = Rotate 90 CW
+  <br>7 = Mirror horizontal and rotate 90 CW
+  <br>8 = Rotate 270 CW</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x3600 = 13824'>0x3600</td>
+<td>WhiteBalanceDetected</td>
+<td class=c>no</td>
+<td>--&gt; <a href='PanasonicRaw.html#WhiteBalance'>PanasonicRaw WhiteBalance Values</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='WhiteBalance'>PanasonicRaw WhiteBalance Values</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>WhiteBalance</th><th>Value</th><th>WhiteBalance</th><th>Value</th><th>WhiteBalance</th></tr>
+<tr><td class=r>0</td><td>= Auto</td>
+<td class='r b'>5</td><td class=b>= Flash</td>
+<td class=r>10</td><td>= Custom#3</td>
+</tr><tr><td class=r>1</td><td>= Daylight</td>
+<td class='r b'>6</td><td class=b>= n/a</td>
+<td class=r>11</td><td>= Custom#4</td>
+</tr><tr><td class=r>2</td><td>= Cloudy</td>
+<td class='r b'>7</td><td class=b>= n/a</td>
+<td class=r>12</td><td>= Shade</td>
+</tr><tr><td class=r>3</td><td>= Tungsten</td>
+<td class='r b'>8</td><td class=b>= Custom#1</td>
+<td class=r>13</td><td>= Kelvin</td>
+</tr><tr><td class=r>4</td><td>= n/a</td>
+<td class='r b'>9</td><td class=b>= Custom#2</td>
+<td class=r>16</td><td>= AWBc</td>
+</tr></table></td></tr></table></blockquote>
+
 <h2><a name='WBInfo'>PanasonicRaw WBInfo Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -518,169 +678,9 @@ noise-reduction strengths the R, G and B channels)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='CameraIFD'>PanasonicRaw CameraIFD Tags</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td title='0x1001 = 4097'>0x1001</td>
-<td>MultishotOn</td>
-<td class=c>no</td>
-<td><span class=s>0 = No
-  <br>1 = Yes</span></td></tr>
-<tr class=b>
-<td title='0x1100 = 4352'>0x1100</td>
-<td>FocusStepNear</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x1101 = 4353'>0x1101</td>
-<td>FocusStepCount</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x1102 = 4354'>0x1102</td>
-<td>FlashFired</td>
-<td class=c>no</td>
-<td><span class=s>0 = No
-  <br>1 = Yes</span></td></tr>
-<tr>
-<td title='0x1105 = 4357'>0x1105</td>
-<td>ZoomPosition</td>
-<td class=c>no</td>
-<td><span class=s><span class=n>(in the range 0-255 for most cameras)</span></span></td></tr>
-<tr class=b>
-<td title='0x1200 = 4608'>0x1200</td>
-<td>LensAttached</td>
-<td class=c>no</td>
-<td><span class=s><span class=n>(many CameraIFD tags are invalid if there is no lens attached)</span>
-  <br>0 = No
-  <br>1 = Yes</span></td></tr>
-<tr>
-<td title='0x1201 = 4609'>0x1201</td>
-<td>LensTypeMake</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x1202 = 4610'>0x1202</td>
-<td>LensTypeModel</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x1203 = 4611'>0x1203</td>
-<td>FocalLengthIn35mmFormat</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x1301 = 4865'>0x1301</td>
-<td>ApertureValue</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x1302 = 4866'>0x1302</td>
-<td>ShutterSpeedValue</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x1303 = 4867'>0x1303</td>
-<td>SensitivityValue</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x1305 = 4869'>0x1305</td>
-<td>HighISOMode</td>
-<td class=c>no</td>
-<td><span class=s>1 = On
-  <br>2 = Off</span></td></tr>
-<tr class=b>
-<td title='0x1412 = 5138'>0x1412</td>
-<td>FacesDetected</td>
-<td class=c>no</td>
-<td><span class=s>0 = No
-  <br>1 = Yes</span></td></tr>
-<tr>
-<td title='0x3200 = 12800'>0x3200</td>
-<td>WB_CFA0_LevelDaylight</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x3201 = 12801'>0x3201</td>
-<td>WB_CFA1_LevelDaylight</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x3202 = 12802'>0x3202</td>
-<td>WB_CFA2_LevelDaylight</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x3203 = 12803'>0x3203</td>
-<td>WB_CFA3_LevelDaylight</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x3300 = 13056'>0x3300</td>
-<td>WhiteBalanceSet</td>
-<td class=c>no</td>
-<td>--&gt; <a href='PanasonicRaw.html#WhiteBalance'>PanasonicRaw WhiteBalance Values</a></td></tr>
-<tr class=b>
-<td title='0x3420 = 13344'>0x3420</td>
-<td>WB_RedLevelAuto</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x3421 = 13345'>0x3421</td>
-<td>WB_BlueLevelAuto</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x3501 = 13569'>0x3501</td>
-<td>Orientation</td>
-<td class=c>no</td>
-<td><table class=cols><tr>
-  <td>1 = Horizontal (normal)
-  <br>2 = Mirror horizontal
-  <br>3 = Rotate 180
-  <br>4 = Mirror vertical
-  <br>5 = Mirror horizontal and rotate 270 CW
-  <br>6 = Rotate 90 CW
-  <br>7 = Mirror horizontal and rotate 90 CW
-  <br>8 = Rotate 270 CW</td></tr></table>
-</td></tr>
-<tr>
-<td title='0x3600 = 13824'>0x3600</td>
-<td>WhiteBalanceDetected</td>
-<td class=c>no</td>
-<td>--&gt; <a href='PanasonicRaw.html#WhiteBalance'>PanasonicRaw WhiteBalance Values</a></td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='WhiteBalance'>PanasonicRaw WhiteBalance Values</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class='inner sep' cellspacing=1>
-<tr class=h><th>Value</th><th>WhiteBalance</th><th>Value</th><th>WhiteBalance</th><th>Value</th><th>WhiteBalance</th></tr>
-<tr><td class=r>0</td><td>= Auto</td>
-<td class='r b'>5</td><td class=b>= Flash</td>
-<td class=r>10</td><td>= Custom#3</td>
-</tr><tr><td class=r>1</td><td>= Daylight</td>
-<td class='r b'>6</td><td class=b>= n/a</td>
-<td class=r>11</td><td>= Custom#4</td>
-</tr><tr><td class=r>2</td><td>= Cloudy</td>
-<td class='r b'>7</td><td class=b>= n/a</td>
-<td class=r>12</td><td>= Shade</td>
-</tr><tr><td class=r>3</td><td>= Tungsten</td>
-<td class='r b'>8</td><td class=b>= Custom#1</td>
-<td class=r>13</td><td>= Kelvin</td>
-</tr><tr><td class=r>4</td><td>= n/a</td>
-<td class='r b'>9</td><td class=b>= Custom#2</td>
-<td class=r>16</td><td>= AWBc</td>
-</tr></table></td></tr></table></blockquote>
-
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 28, 2023</i>
+<br><i>Last revised Nov 19, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

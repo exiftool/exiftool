@@ -16,7 +16,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.08';
+$VERSION = '1.09';
 
 sub ProcessDJIInfo($$$);
 
@@ -143,9 +143,10 @@ my %convFloat2 = (
         PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
         PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1, "lat")',
     },
-    GpsLongtitude => { # (sic)
+    GpsLongtitude => { # [sic] (misspelt in DJI original file)
         Name => 'GPSLongtitude',
         Writable => 'real',
+        Avoid => 1, # (in case someone tries to write "GPSLong*")
         PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
         PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1, "lon")',
     },

@@ -40,7 +40,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.81';
+$VERSION = '2.82';
 
 sub PrintLensInfo($$$);
 
@@ -186,7 +186,9 @@ my %olympusLensTypes = (
     '2 36 10' => 'Leica DG Elmarit 200mm F2.8 Power OIS', #IB
     '2 37 10' => 'Leica DG Vario-Elmarit 50-200mm F2.8-4 Asph. Power OIS', #IB
     '2 38 10' => 'Leica DG Vario-Summilux 10-25mm F1.7 Asph.', #IB
+    '2 39 10' => 'Leica DG Summilux 25mm F1.4 II Asph.', #forum15345
     '2 40 10' => 'Leica DG Vario-Summilux 25-50mm F1.7 Asph.', #IB (H-X2550)
+    '2 41 10' => 'Leica DG Summilux 9mm F1.7 Asph.', #forum15345
     '3 01 00' => 'Leica D Vario Elmarit 14-50mm F2.8-3.5 Asph.', #11
     '3 02 00' => 'Leica D Summilux 25mm F1.4 Asph.', #11
     # Tamron lenses
@@ -358,6 +360,7 @@ my %olympusCameraTypes = (
     D4521 => 'SH-25MR',
     D4523 => 'SP-720UZ',
     D4529 => 'VG170',
+    D4530 => 'VH210',
     D4531 => 'XZ-2',
     D4535 => 'SP-620UZ',
     D4536 => 'TG-320',
@@ -383,9 +386,11 @@ my %olympusCameraTypes = (
     D4585 => 'SH-2 / SH-3',
     D4586 => 'TG-4',
     D4587 => 'TG-860',
+    D4590 => 'TG-TRACKER',
     D4591 => 'TG-870',
     D4593 => 'TG-5', #IB
     D4603 => 'TG-6', #IB
+    D4605 => 'TG-7',
     D4809 => 'C2500L',
     D4842 => 'E-10',
     D4856 => 'C-1',
@@ -431,6 +436,7 @@ my %olympusCameraTypes = (
     S0076 => 'E-PL9', #IB
     S0080 => 'E-M1X', #IB
     S0085 => 'E-PL10', #IB
+    S0088 => 'E-M10MarkIV',
     S0089 => 'E-M5MarkIII',
     S0092 => 'E-M1MarkIII', #IB
     S0093 => 'E-P7', #IB

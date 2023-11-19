@@ -11,11 +11,42 @@
 
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.60.tar.gz">Version 12.60</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.70.tar.gz">Version 12.70</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">MetaCPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v12.70'><b>Nov. 19, 2023 - Version 12.70</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>This marks the 20th anniversary of <a href="ancient_history.html#v1.00">the initial ExifTool release</a>!
+<li>Added ability to read/delete C2PA CAI JUMBF metadata from TIFF-based images
+    (eg. DNG), QuickTime-based files (eg. MP4) and WebP images, and read JUMBF
+    from other RIFF-based files (eg. WAV, AVI), GIF images and ID3v2 metadata
+<li>Added read/write support for JPH images
+<li>Added ability to read Leica Q3 maker notes
+<li>Added ability to recognize and write FujiFilm M-RAW RAF images (multiple raw
+    images in a single file) and the ability to read preview-less RAF images
+<li>Added support for reading a number of obscure Microsoft EXIF tags
+<li>Added a few new Sony lenses and support for the ILCE-9M3 (thanks Jos Roost)
+<li>Added a couple of new Panasonic Leica lenses
+<li>Added a couple of new Canon RF lenses (thanks Norbert Wasser)
+<li>Added a number of new CPUType values for ELF executables
+<li>Added some new Olympus CameraType values
+<li>Decode a few more ID3v2.2 tags (github #142)
+<li>Decode a few new Canon G5X Mark II tags (thanks Martin B.)
+<li>Decode WB_RGGBLevels for a few more Nikon cameras
+<li>Extract information from FujiFilm M-RAW header
+<li>Improved decoding of a few Nikon Z tags (thanks Warren Hatch)
+<li>Marked misspelt XMP-drone-dji:GPSLongtitude tag to Avoid when writing
+<li>Changed RIFF MaxDataRate conversion to use SI prefixes by default
+<li>Fixed decoding of unknown ColorBalance information for some Nikon models
+<li>Fixed an incorrect Nikon Z LensID
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#ByteUnit">ByteUnit option</a>
+    </ul>
+</ul>
 
 <a name='v12.69'><b>Oct. 26, 2023 - Version 12.69</b></a>
 <ul>
@@ -29,6 +60,11 @@ considered development releases, and are not uploaded to <a href="https://metacp
     Hasselblad programmers (wrong IFD count for some values)
 <li>Patched WebP reader to be more tolerant of the mess made by incompetent
     Google programmers (EXIF with wrong header and XMP with wrong ID)
+<li>Fixed writing of MakerNotes as a block to CR3 images (now properly stored in
+    the CMT3 chunk instead of the ExifIFD) and added ability to delete them from
+    the ExifIFD of CR3 images
+<li>Fixed problem which could cause runtime error when copying MakerNotes from a
+    file that contains multiple maker note blocks
 <li>Fixed problem which could cause "use of uninitialized variable" warnings
     when reading images from some Nikon cameras
 <li>Fixed List type for new XMP-photomech:CreatorIdentity tag
@@ -37,7 +73,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <a name='v12.68'><b>Oct. 16, 2023 - Version 12.68</b></a>
 <ul>
 <li>Added preliminary read support for XISF images
-<li>Added the ability to delete JUMBF metadata from PNG images
+<li>Added the ability to delete CAI JUMBF metadata from PNG images
 <li>Added support for writing Canon burst-roll CR3 images
 <li>Added a new Nikon Z9 SubjectDetection value, and improved Zf support (thanks
     Warren Hatch)
@@ -49,7 +85,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added a new Canon LensType
 <li>Support decimal values for FujiFilm ShadowTone and HighlightTone tags
 <li>Decode some new Sony tags (thanks Jos Roost)
-<li>Decode ShutterCount for Canon EOS R6 (thanks gamin)
+<li>Decode ShutterCount for Canon EOS R6 (thanks Martin B.)
 <li>Decode QuickTime VideoFullRangeFlag
 <li>Decode JPGCompression for the Nikon D3S
 <li>Enhanced -geotag feature to allow writing QuickTime:GPSCoordinates

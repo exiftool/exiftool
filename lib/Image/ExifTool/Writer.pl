@@ -1271,6 +1271,7 @@ sub SetNewValuesFromFile($$;@)
     # +------------------------------------------+
     $srcExifTool->Options(
         Binary          => 1,
+        ByteUnit        => $$options{ByteUnit},
         Charset         => $$options{Charset},
         CharsetEXIF     => $$options{CharsetEXIF},
         CharsetFileName => $$options{CharsetFileName},
@@ -4187,7 +4188,10 @@ sub WriteDirectory($$$;$)
         my $delGroup = $$self{DEL_GROUP};
         # delete entire directory if specified
         my $grp1 = $dirName;
-        $delFlag = ($$delGroup{$grp0} or $$delGroup{$grp1}) unless $permanentDir{$grp0};
+        $delFlag = ($$delGroup{$grp0} or $$delGroup{$grp1});
+        if ($permanentDir{$grp0} and not ($$dirInfo{TagInfo} and $$dirInfo{TagInfo}{Deletable})) {
+            undef $delFlag;
+        }
         # (never delete an entire QuickTime group)
         if ($delFlag) {
             if (($grp0 =~ /^(MakerNotes)$/ or $grp1 =~ /^(IFD0|ExifIFD|MakerNotes)$/) and
@@ -4289,7 +4293,21 @@ sub WriteDirectory($$$;$)
         last unless $self->IsOverwriting($nvHash, $dataPt ? $$dataPt : '');
         my $verb = 'Writing';
         my $newVal = $self->GetNewValue($nvHash);
-        unless (defined $newVal and length $newVal) {
+        if (defined $newVal and length $newVal) {
+            # hack to add back TIFF header when writing MakerNoteCanon to CMT3 in CR3 images
+            if ($$tagInfo{Name} eq 'MakerNoteCanon') {
+                require Image::ExifTool::Canon;
+                if ($tagInfo eq $Image::ExifTool::Canon::uuid{CMT3}) {
+                    my $hdr;
+                    if (substr($newVal, 0, 1) eq "\0") {
+                        $hdr = "MM\0\x2a" . pack('N', 8);
+                    } else {
+                        $hdr = "II\x2a\0" . pack('V', 8);
+                    }
+                    $newVal = $hdr . $newVal;
+                }
+            }
+        } else {
             return '' unless $dataPt or $$dirInfo{RAF}; # nothing to do if block never existed
             # don't allow MakerNotes to be removed from RAW files
             if ($blockName eq 'MakerNotes' and $self->IsRawType() and
@@ -7075,7 +7093,7 @@ sub WriteBinaryData($$$)
             $newVal = length($data) if defined $data;
             my $format = $$tagInfo{Format} || $$tagTablePtr{FORMAT} || 'int32u';
             if ($format =~ /^int16/ and $newVal > 0xffff) {
-                $self->Error("$$tagInfo{DataTag} is too large (64 kB max. for this file)");
+                $self->Error("$$tagInfo{DataTag} is too large (64 KiB max. for this file)");
             }
         }
         my $rtnVal = WriteValue($newVal, $format, $count, $dataPt, $entry);
@@ -7194,39 +7212,6 @@ sub WriteTIFF($$$)
 {
     my ($self, $dirInfo, $tagTablePtr) = @_;
     $self or return 1;    # allow dummy access
-    # hack to allow MakeNoteCanon to be written as a block in CMT3 chunk of CR3 image
-    if ($$dirInfo{DirName} and $$dirInfo{DirName} eq 'MakerNoteCanon') {
-        require Image::ExifTool::Canon;
-        my $tagInfo = $Image::ExifTool::Canon::uuid{CMT3};
-        my $nvHash;
-        if ($tagInfo and ($nvHash = $$self{NEW_VALUE}{$tagInfo}) and
-            $self->IsOverwriting($nvHash) and not $$nvHash{CreateOnly})
-        {
-            my $newVal = $self->GetNewValue($nvHash);
-            if (defined $newVal and length $newVal) {
-                # fix up offsets
-                if ($$nvHash{MAKER_NOTE_FIXUP}) {
-                    # must clone fixup because we will be shifting it
-                    my $makerFixup = $$nvHash{MAKER_NOTE_FIXUP}->Clone();
-                    $$makerFixup{Shift} += 8;   # shift for TIFF header
-                    $makerFixup->ApplyFixup(\$newVal);
-                }
-                # add TIFF header
-                my $hdr;
-                if (substr($newVal, 0, 1) eq "\0") {
-                    $hdr = "MM\0\x2a" . pack('N', 8);
-                } else {
-                    $hdr = "II\x2a\0" . pack('V', 8);
-                }
-                $self->VPrint(0, "  Writing MakerNoteCanon as a block\n");
-                ++$$self{CHANGED};
-                return $hdr . $newVal;
-            } elsif ($$dirInfo{Parent} and $$dirInfo{Parent} eq 'UUID-Canon') {
-                $self->Warn("Can't delete CanonMakerNotes from $$dirInfo{Parent}");
-                return undef;
-            }
-        }
-    }
     my $buff = '';
     $$dirInfo{OutFile} = \$buff;
     return $buff if $self->ProcessTIFF($dirInfo, $tagTablePtr) > 0;

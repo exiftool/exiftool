@@ -616,9 +616,9 @@ numerical, and generated automatically otherwise.
                   arguments: the value, a flag which is set for the inverse
                   conversion, and a reference to the PrintConv hash, and returns
                   the converted value or undef on error -- it may call warn() to
-                  return an error message. The lookup hash may also contain a
+                  return an error message.  The lookup hash may also contain a
                   'Notes' entry which is used for documentation if the
-                  SeparateTable flag is set). In an expression, $self is a
+                  SeparateTable flag is set).  In an expression, $self is a
                   reference to the current ExifTool object, $val is the Raw
                   value, and $tag is the tag key.  The subroutine takes 2
                   arguments: the Raw value and a reference to the current
@@ -893,6 +893,11 @@ numerical, and generated automatically otherwise.
                   insensitive) to match group names which are allowed when
                   writing this tag.  Only needed if tag can be written to
                   groups other than the normal groups for this tag (very rare).
+
+  Deletable     : [Writable SubDirectory's only] Overrides internal test for
+                  metadata types with permanent directories (currently QuickTime
+                  and Jpeg2000), allowing the tag containing these directories
+                  to be deleted
 
   OffsetPair    : Used in EXIF table to specify the tagID for the corresponding
                   offset or length tag.

@@ -8,12 +8,21 @@
 </head>
 <body>
 <h2 class=top>Jpeg2000 Tags</h2>
-<p>The tags below are found in JPEG 2000 images and the JUMBF metadata in JPEG
-images, but not all of these are extracted.  Note that ExifTool currently
-writes only EXIF, IPTC and XMP tags in Jpeg2000 images, and EXIF and XMP in
-JXL images.  ExifTool will read/write Brotli-compressed EXIF and XMP in JXL
-images, but the API <a href="../ExifTool.html#Compress">Compress</a> option must be set to create new EXIF and XMP
-in compressed format.</p>
+<p>The tags below are found in JPEG 2000 images and the C2PA CAI JUMBF metadata
+in various file types (see below).  Note that ExifTool currently writes only
+EXIF, IPTC and XMP tags in Jpeg2000 images, and EXIF and XMP in JXL images.
+ExifTool will read/write Brotli-compressed EXIF and XMP in JXL images, but
+the API <a href="../ExifTool.html#Compress">Compress</a> option must be set to create new EXIF and XMP in compressed
+format.</p>
+
+<p>C2PA (Coalition for Content Provenance and Authenticity) CAI (Content
+Authenticity Initiative) JUMBF (JPEG Universal Metadata Box Format) metdata
+is currently extracted from JPEG, PNG, TIFF-based (eg. TIFF, DNG),
+QuickTime-based (eg. MP4, MOV, HEIF, AVIF), RIFF-based (eg. WAV, AVI, WebP),
+GIF files and ID3v2 metadata.  The suggested ExifTool command-line arguments
+for reading C2PA metadata are <code>-jumbf:all -G3 -b -j -u -struct</code>.  This
+metadata may be deleted from writable JPEG, PNG, WebP, TIFF-based, and
+QuickTime-based files by deleting the JUMBF group with <code>-jumbf:all=</code>.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -310,10 +319,10 @@ ImageSize)</span></span></td></tr>
   <br>UUID-XMP
   <br>UUID-GeoJP2
   <br>UUID-Photoshop
-  <br>UUID-Signature
   <br>UUID-C2PAClaimSignature
+  <br>UUID-Signature
   <br>UUID-Unknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>no<br>-<br>no</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>no<br>no</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br>--&gt; <a href='EXIF.html'>EXIF Tags</a>
@@ -420,6 +429,7 @@ ColorSpace, or 4 when writing ColorSpecData)</span>
 <td>MajorBrand</td>
 <td class=c>no</td>
 <td><span class=s>&#39;jp2 &#39; = JPEG 2000 Image (.JP2)
+  <br>&#39;jph &#39; = High-throughput JPEG 2000 (.JPH)
   <br>&#39;jpm &#39; = JPEG 2000 Compound Image (.JPM)
   <br>&#39;jpx &#39; = JPEG 2000 with extensions (.JPX)
   <br>&#39;jxl &#39; = JPEG XL Image (.JXL)</span></td></tr>
@@ -592,7 +602,7 @@ ColorSpace, or 4 when writing ColorSpecData)</span>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 28, 2023</i>
+<br><i>Last revised Nov 19, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

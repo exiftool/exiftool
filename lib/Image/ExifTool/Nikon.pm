@@ -962,8 +962,8 @@ my %imageAreaZ9b = (
 );
 
 my %infoZSeries = (
-    Condition => '$$self{Model} =~ /^NIKON Z (30|5|50|6|6_2|7|7_2|8|fc|9)\b/i',
-    Notes => 'Z Series cameras thru July 2023',
+    Condition => '$$self{Model} =~ /^NIKON Z (30|5|50|6|6_2|7|7_2|8|f|fc|9)\b/i',
+    Notes => 'Z Series cameras thru October 2023',
 );
 
 my %iSOAutoHiLimitZ7 = (
@@ -2582,9 +2582,21 @@ my %base64coord = (
                 DirOffset => 4,
             },
         },
-        {   # (D5200/D7100=0218, D5300=0219, D610/Df=0220, D3300=0221, CoolpixA=0601)
-            Name => 'ColorBalanceUnknown02',
-            Condition => '$$valPt =~ /^0[26]/',
+        {   #PH (NC)
+            # (D5300=0219, D3300=0221, D4S=0222, D750/D810=0223, D3400/D3500/D5500/D5600/D7200=0224)
+            Condition => '$$valPt =~ /^02(19|2[1234])/',
+            Name => 'ColorBalance0219',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::ColorBalance2',
+                ProcessProc => \&ProcessNikonEncrypted,
+                WriteProc => \&ProcessNikonEncrypted,
+                DecryptStart => 4,
+                DirOffset => 0x7c,
+            },
+        },
+        {   # (D610/Df=0220, CoolpixA=0601)
+            Name => 'ColorBalanceUnknown1',
+            Condition => '$$valPt =~ /^0(220|6)/',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ColorBalanceUnknown',
                 ProcessProc => \&ProcessNikonEncrypted,
@@ -2592,11 +2604,12 @@ my %base64coord = (
                 DecryptStart => 284,
             },
         },
-        {   # (1J1/1J2/1V1=0400, 1V2=0401, 1J3/1S1=0402, 1AW1=0403, Z6/Z7=0800)
-            Name => 'ColorBalanceUnknown04',
-            Condition => '$$valPt =~ /^0[48]/',
+        {   # (D5200/D7200=0218, D5/D500=0225, D7500=0226, D850=0227, D6/D780=0228,
+            #  1J1/1J2/1V1=0400, 1V2=0401, 1J3/1S1=0402, 1AW1=0403, Z6/Z7=0800)
+            Name => 'ColorBalanceUnknown2',
+            Condition => '$$valPt =~ /^0(18|[248])/',
             SubDirectory => {
-                TagTable => 'Image::ExifTool::Nikon::ColorBalanceUnknown',
+                TagTable => 'Image::ExifTool::Nikon::ColorBalanceUnknown2',
                 ProcessProc => \&ProcessNikonEncrypted,
                 WriteProc => \&ProcessNikonEncrypted, # (necessary to recrypt this if serial number changed)
                 DecryptStart => 4,
@@ -4956,6 +4969,16 @@ my %nrwLevels = (
     },
 );
 
+%Image::ExifTool::Nikon::ColorBalanceUnknown2 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    FORMAT => 'int16u',
+    0 => {
+        Name => 'ColorBalanceVersion',
+        Format => 'undef[4]',
+    },
+);
+
 %Image::ExifTool::Nikon::Type2 = (
     WRITE_PROC => \&Image::ExifTool::Exif::WriteExif,
     CHECK_PROC => \&Image::ExifTool::Exif::CheckExif,
@@ -5448,7 +5471,7 @@ my %nikonFocalConversions = (
             43 => 'NIKKOR Z DX 24mm f/1.7', #28
             44 => 'NIKKOR Z 70-180mm f/2.8', #28
             45 => 'NIKKOR Z 600mm f/6.3 VR S', #28
-            48 => 'Nikkor Z 135mm f/1.8 S Plena', #28
+            46 => 'Nikkor Z 135mm f/1.8 S Plena', #28
             32768 => 'Nikkor Z 400mm f/2.8 TC VR S TC-1.4x', #28
             32769 => 'Nikkor Z 600mm f/4 TC VR S TC-1.4x', #28
         },
@@ -8195,7 +8218,7 @@ my %nikonFocalConversions = (
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index', NIKON_OFFSETS => 0x24 },
     DATAMEMBER => [ 0x04 ],
-    IS_SUBDIR => [ 0x30, 0x38, 0x98, 0xa0 ],
+    IS_SUBDIR => [ 0x30, 0x38, 0x88, 0x98, 0xa0 ],
     WRITABLE => 1,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'These tags are extracted from encrypted data in images from the Z7II.',
@@ -8245,9 +8268,19 @@ my %nikonFocalConversions = (
             Start => '$val',
         }
     },
+    0x88 => {
+        Name => 'OrientationOffset',
+        Format => 'int32u',
+        Condition => '$$self{Model} =~ /^NIKON Z f\b/i',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::OrientationInfo',
+            Start => '$val',
+        }
+    },
     0x98 => {
         Name => 'OrientationOffset',
         Format => 'int32u',
+        Condition => '$$self{Model} =~ /^NIKON Z (30|5|50|6|6_2|7|7_2|8|fc)\b/i',   #models other then the Z f
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::OrientationInfo',
             Start => '$val',
@@ -8514,7 +8547,7 @@ my %nikonFocalConversions = (
     0x002a => {
         Name => 'IntervalFrame',
         RawConv => '$$self{IntervalFrame} = $val',
-        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{IntervalShooting} > 0',     #not valid for C30/C60/C120
         Format => 'int16u',
         Hidden => 1,
     },

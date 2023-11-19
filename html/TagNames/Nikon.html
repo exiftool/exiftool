@@ -519,10 +519,11 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>ColorBalance0211
   <br>ColorBalance0213
   <br>ColorBalance0215
-  <br>ColorBalanceUnknown02
-  <br>ColorBalanceUnknown04
+  <br>ColorBalance0219
+  <br>ColorBalanceUnknown1
+  <br>ColorBalanceUnknown2
   <br>ColorBalanceUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#ColorBalance1'>Nikon ColorBalance1 Tags</a>
   <br>--&gt; <a href='Nikon.html#ColorBalance2'>Nikon ColorBalance2 Tags</a>
   <br>--&gt; <a href='Nikon.html#ColorBalance3'>Nikon ColorBalance3 Tags</a>
@@ -532,8 +533,9 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>--&gt; <a href='Nikon.html#ColorBalance4'>Nikon ColorBalance4 Tags</a>
   <br>--&gt; <a href='Nikon.html#ColorBalance2'>Nikon ColorBalance2 Tags</a>
   <br>--&gt; <a href='Nikon.html#ColorBalance4'>Nikon ColorBalance4 Tags</a>
+  <br>--&gt; <a href='Nikon.html#ColorBalance2'>Nikon ColorBalance2 Tags</a>
   <br>--&gt; <a href='Nikon.html#ColorBalanceUnknown'>Nikon ColorBalanceUnknown Tags</a>
-  <br>--&gt; <a href='Nikon.html#ColorBalanceUnknown'>Nikon ColorBalanceUnknown Tags</a>
+  <br>--&gt; <a href='Nikon.html#ColorBalanceUnknown2'>Nikon ColorBalanceUnknown2 Tags</a>
   <br>--&gt; <a href='Nikon.html#ColorBalanceUnknown'>Nikon ColorBalanceUnknown Tags</a></td></tr>
 <tr>
 <td title='0x0098 = 152'>0x0098</td>
@@ -1265,7 +1267,7 @@ edit versions, otherwise this is extracted as a binary data block)</span>
 <td class=r title='6 = 0x6'>6</td>
 <td>VRMode</td>
 <td class=c>int8u</td>
-<td><span class=s><span class=n>(Z Series cameras thru July 2023)</span>
+<td><span class=s><span class=n>(Z Series cameras thru October 2023)</span>
   <br>0 = Off
   <br>1 = Normal
   <br>3 = Sport
@@ -4148,11 +4150,16 @@ firmware 1.01b.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#PortraitInfoZ7II'>Nikon PortraitInfoZ7II Tags</a></td></tr>
 <tr>
-<td class=r title='152 = 0x98'>152</td>
+<td class=r title='136 = 0x88'>136</td>
 <td>OrientationOffset</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#OrientationInfo'>Nikon OrientationInfo Tags</a></td></tr>
 <tr class=b>
+<td class=r title='152 = 0x98'>152</td>
+<td>OrientationOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#OrientationInfo'>Nikon OrientationInfo Tags</a></td></tr>
+<tr>
 <td class=r title='160 = 0xa0'>160</td>
 <td>MenuOffset</td>
 <td class=c>-</td>
@@ -9150,6 +9157,19 @@ only valid for specific models.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='ColorBalanceUnknown2'>Nikon ColorBalanceUnknown2 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ColorBalanceVersion</td>
+<td class=c>undef[4]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='LensData00'>Nikon LensData00 Tags</a></h2>
 <p>This structure is used by the D100, and D1X with firmware version 1.1.</p>
 <blockquote>
@@ -9536,7 +9556,7 @@ extracted.</p>
   <br>43 = NIKKOR Z DX 24mm f/1.7
   <br>44 = NIKKOR Z 70-180mm f/2.8
   <br>45 = NIKKOR Z 600mm f/6.3 VR S
-  <br>48 = Nikkor Z 135mm f/1.8 S Plena
+  <br>46 = Nikkor Z 135mm f/1.8 S Plena
   <br>32768 = Nikkor Z 400mm f/2.8 TC VR S TC-1.4x
   <br>32769 = Nikkor Z 600mm f/4 TC VR S TC-1.4x</td></tr></table>
 </td></tr>
@@ -13343,7 +13363,7 @@ for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 26, 2023</i>
+<br><i>Last revised Nov 19, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

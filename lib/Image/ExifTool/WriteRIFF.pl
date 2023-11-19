@@ -19,6 +19,8 @@ my %webpMap = (
    'XMP '        => 'RIFF', # (the RIFF chunk name is 'XMP ')
     EXIF         => 'RIFF',
     ICCP         => 'RIFF',
+    C2PA         => 'RIFF',
+    JUMBF        => 'C2PA',
     XMP          => 'XMP ',
     IFD0         => 'EXIF',
     IFD1         => 'IFD0',
@@ -168,10 +170,10 @@ sub WriteRIFF($$)
 #
 # add/edit/delete EXIF/XMP/ICCP (note: EXIF must come before XMP, and ICCP is written elsewhere)
 #
-                my %dirName = ( EXIF => 'IFD0', 'XMP ' => 'XMP', ICCP => 'ICC_Profile' );
-                my %tblName = ( EXIF => 'Exif', 'XMP ' => 'XMP', ICCP => 'ICC_Profile' );
+                my %dirName = ( EXIF => 'IFD0', 'XMP ' => 'XMP', ICCP => 'ICC_Profile', C2PA => 'JUMBF' );
+                my %tblName = ( EXIF => 'Exif', 'XMP ' => 'XMP', ICCP => 'ICC_Profile', C2PA => 'Jpeg2000' );
                 my $dir;
-                foreach $dir ('EXIF', 'XMP ', 'ICCP' ) {
+                foreach $dir ('EXIF', 'XMP ', 'ICCP', 'C2PA' ) {
                     next unless $tag eq $dir or ($$addDirs{$dir} and
                         ($tag eq '' or ($tag eq 'XMP ' and $dir eq 'EXIF')));
                     my $start;
@@ -207,6 +209,10 @@ sub WriteRIFF($$)
                             Parent   => $dir,
                             DirName  => $dirName{$dir},
                         );
+                        # must pass the TagInfo to enable deletion of C2PA information
+                        if (ref $Image::ExifTool::RIFF::Main{$dir} eq 'HASH') {
+                            $dirInfo{TagInfo} = $Image::ExifTool::RIFF::Main{$dir};
+                        }
                         my $tagTablePtr = GetTagTable("Image::ExifTool::$tblName{$dir}::Main");
                         # (override writeProc for EXIF because it has the TIFF header)
                         my $writeProc = $dir eq 'EXIF' ? \&Image::ExifTool::WriteTIFF : undef;

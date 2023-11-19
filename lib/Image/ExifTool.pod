@@ -467,6 +467,12 @@ big-endian ('MM') order is assumed.  This can also be set via the
 L<ExifByteOrder tag|Image::ExifTool::TagNames/Extra Tags>, but the ByteOrder
 option takes precedence if both are set.
 
+=item ByteUnit
+
+Units for print conversion of FileSize and other byte values.  Either 'SI'
+(eg. kB for 1000 bytes) or 'Binary' (eg. KiB for 1024 bytes).  Default is
+'SI'.
+
 =item Charset
 
 Character set for encoding character tag values passed to/from ExifTool with
@@ -554,12 +560,12 @@ without recoding.  Default is 0.
 Comma-delimited list of settings for writing compact XMP.  Below is a list
 of available settings.  Note that 'NoPadding' effects only embedded XMP
 since padding is never written for stand-alone XMP files.  Also note that
-'OneDesc' is not recommended when writing XMP larger than 64 kB to a JPG
+'OneDesc' is not recommended when writing XMP larger than 64 KiB to a JPG
 file because it interferes with ExifTool's technique of splitting off large
 rdf:Description elements into the extended XMP.  Case is not significant for
 any of these options.  Aliases are given in brackets. Default is undef.
 
-  NoPadding - Avoid 2 kB of recommended padding at end of XMP (NoPad)
+  NoPadding - Avoid 2 KiB of recommended padding at end of XMP (NoPad)
   NoIndent  - No spaces to indent lines (NoSpace, NoSpaces)
   NoNewline - Avoid unnecessary newlines (NoNewlines)
   Shorthand - Use XMP Shorthand format
@@ -2440,7 +2446,7 @@ ICC_Profile#, ID3, ID3v1, ID3v1_Enh, ID3v2_2, ID3v2_3, ID3v2_4, IFD0, IFD1,
 IPTC, IPTC#, ISO, ITC, InfiRay, Insta360, InteropIFD, ItemList, JFIF, JFXX,
 JPEG, JPEG-HDR, JPS, JSON, JUMBF, JVC, Jpeg2000, KDC_IFD, Keys, Kodak,
 KodakBordersIFD, KodakEffectsIFD, KodakIFD, KyoceraRaw, LNK, Leaf,
-LeafSubIFD, Leica, Lyrics3, Lytro, M2TS, MAC, MIE-Audio, MIE-Camera,
+LeafSubIFD, Leica, Lyrics3, Lytro, M-RAW, M2TS, MAC, MIE-Audio, MIE-Camera,
 MIE-Canon, MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS, MIE-Geo, MIE-Image,
 MIE-Lens, MIE-Main, MIE-MakerNotes, MIE-Meta, MIE-Orient, MIE-Preview,
 MIE-Thumbnail, MIE-UTM, MIE-Unknown, MIE-Video, MIFF, MISB, MNG, MOBI, MOI,

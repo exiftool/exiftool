@@ -4,8 +4,36 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 12.60. (Other versions are
+Note: The most recent production release is Version 12.70. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Nov. 19, 2023 - Version 12.70 (production release)
+
+  - This marks the 20th anniversary of the initial ExifTool release!
+  - Added ability to read/delete C2PA CAI JUMBF metadata from TIFF-based images
+    (eg. DNG), QuickTime-based files (eg. MP4) and WebP images, and read JUMBF
+    from other RIFF-based files (eg. WAV, AVI), GIF images and ID3v2 metadata
+  - Added read/write support for JPH images
+  - Added ability to read Leica Q3 maker notes
+  - Added ability to recognize and write FujiFilm M-RAW RAF images (multiple raw
+    images in a single file) and the ability to read preview-less RAF images
+  - Added support for reading a number of obscure Microsoft EXIF tags
+  - Added a few new Sony lenses and support for the ILCE-9M3 (thanks Jos Roost)
+  - Added a couple of new Panasonic Leica lenses
+  - Added a couple of new Canon RF lenses (thanks Norbert Wasser)
+  - Added a number of new CPUType values for ELF executables
+  - Added some new Olympus CameraType values
+  - Decode a few more ID3v2.2 tags (github #142)
+  - Decode a few new Canon G5X Mark II tags (thanks Martin B.)
+  - Decode WB_RGGBLevels for a few more Nikon cameras
+  - Extract information from FujiFilm M-RAW header
+  - Improved decoding of a few Nikon Z tags (thanks Warren Hatch)
+  - Marked misspelt XMP-drone-dji:GPSLongtitude tag to Avoid when writing
+  - Changed RIFF MaxDataRate conversion to use SI prefixes by default
+  - Fixed decoding of unknown ColorBalance information for some Nikon models
+  - Fixed an incorrect Nikon Z LensID
+  - API Changes:
+      - Added ByteUnit option
 
 Oct. 26, 2023 - Version 12.69
 
@@ -19,6 +47,11 @@ Oct. 26, 2023 - Version 12.69
     Hasselblad programmers (wrong IFD count for some values)
   - Patched WebP reader to be more tolerant of the mess made by incompetent
     Google programmers (EXIF with wrong header and XMP with wrong ID)
+  - Fixed writing of MakerNotes as a block to CR3 images (now properly stored in
+    the CMT3 chunk instead of the ExifIFD) and added ability to delete them from
+    the ExifIFD of CR3 images
+  - Fixed problem which could cause runtime error when copying MakerNotes from a
+    file that contains multiple maker note blocks
   - Fixed problem which could cause "use of uninitialized variable" warnings
     when reading images from some Nikon cameras
   - Fixed List type for new XMP-photomech:CreatorIdentity tag
@@ -26,7 +59,7 @@ Oct. 26, 2023 - Version 12.69
 Oct. 16, 2023 - Version 12.68
 
   - Added preliminary read support for XISF images
-  - Added the ability to delete JUMBF metadata from PNG images
+  - Added the ability to delete CAI JUMBF metadata from PNG images
   - Added support for writing Canon burst-roll CR3 images
   - Added a new Nikon Z9 SubjectDetection value, and improved Zf support (thanks
     Warren Hatch)
@@ -38,7 +71,7 @@ Oct. 16, 2023 - Version 12.68
   - Added a new Canon LensType
   - Support decimal values for FujiFilm ShadowTone and HighlightTone tags
   - Decode some new Sony tags (thanks Jos Roost)
-  - Decode ShutterCount for Canon EOS R6 (thanks gamin)
+  - Decode ShutterCount for Canon EOS R6 (thanks Martin B.)
   - Decode QuickTime VideoFullRangeFlag
   - Decode JPGCompression for the Nikon D3S
   - Enhanced -geotag feature to allow writing QuickTime:GPSCoordinates
@@ -193,8 +226,6 @@ Apr. 5, 2023 - Version 12.60 (production release)
   - Fixed problem where setting the Geotime value didn't work when using an
     advanced-formatting expression containing a greater-than symbol (>)
 
-History of older versions (back to Nov. 19, 2003 - Version 1.00) -->
-
 Mar. 28, 2023 - Version 12.59
 
   - COMPATIBILITY WARNING: Changed the calculated ImageDataMD5 for JPEG images
@@ -324,7 +355,7 @@ Dec. 6, 2022 - Version 12.52
 Nov. 21, 2022 - Version 12.51
 
   - Added a new Olympus LensType (thanks Herb)
-  - Extract C2PA JUMBF metadata from PNG images and extract C2PA Salt values
+  - Extract C2PA CAI JUMBF metadata from PNG images and extract C2PA Salt values
   - Decode NikonSettings for Z9 firmware 3.0 (thanks Warren Hatch)
   - Decode additional camm metadata from Insta360 Pro2 MP4 videos
   - Improved Verbose output when writing Composite tags to add a "+" sign to
@@ -707,8 +738,8 @@ Oct. 16, 2021 - Version 12.33
 
 Sept. 30, 2021 - Version 12.32
 
-  - Added support for CBOR-format metadata in JUMBF (note that JUMBF support is
-    still experimental)
+  - Added support for CBOR-format metadata in CAI JUMBF (note that JUMBF support
+    is still experimental)
   - Added a new Nikon LensID
   - Added a new Pentax LensType
   - Decode timed GPS for two more dashcam formats
@@ -767,7 +798,7 @@ July 9, 2021 - Version 12.29
   - Improved a QuickTime "File format error" message to be more meaningful, and
     made it a minor error
   - Changed PNG writer to add EXIF before IDAT
-  - Some changes the way JUMBF metadata is handled
+  - Some changes the way CAI JUMBF metadata is handled
   - Patched to read timed GPS from a different type of INSV videos
   - Patched a security issue
   - Fixed problem where ExifTool could hang when processing mebx timed metadata
@@ -843,7 +874,7 @@ Apr. 13, 2021 - Version 12.24
   - Decode a few new Panasonic and FujiFilm tags (thanks LibRaw and Greybeard)
   - Updated acdsee.config in distribution (thanks StarGeek)
   - Recognize AutoCAD DXF files
-  - More work on experimental JUMBF read support
+  - More work on experimental CAI JUMBF read support
   - More work on experimental JPEG XL read/write support
   - Patched security vulnerability in DjVu reader
 
@@ -851,8 +882,8 @@ Apr. 1, 2021 - Version 12.23
 
   - Added support for Olympus ORI files
   - Added experimental read/write support for JPEG XL images
-  - Added experimental read support for JUMBF metadata in JPEG and Jpeg2000
-    images
+  - Added experimental read support for CAI (Content Authenticity Initiative)
+    JUMBF-format metadata in JPEG and Jpeg2000 images
   - Added built-in support for parsing GPS track from Denver ACG-8050 videos
     with the -ee option
   - Added a some new Sony lenses (thanks Jos Roost and LibRaw)

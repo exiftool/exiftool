@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.20';
+$VERSION = '2.21';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1990,6 +1990,15 @@ my %shootingMode = (
             return "($1) $yr:$3:$4 no. $5";
         },
         PrintConvInv => '$_=$val; tr/A-Z0-9//dc; s/(.{3})(19|20)/$1/; $_',
+    },
+    0x05ff => {
+        Name => 'CameraIFD', # (Leica Q3)
+        Condition => '$$valPt =~ /^(II\x2a\0\x08\0\0\0|MM\0\x2a\0\0\0\x08)/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::PanasonicRaw::CameraIFD',
+            Base => '$start',
+            ProcessProc => \&Image::ExifTool::ProcessTIFF,
+        },
     },
 );
 

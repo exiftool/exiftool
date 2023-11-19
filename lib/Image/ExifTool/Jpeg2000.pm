@@ -89,12 +89,14 @@ my %uuid = (
 # JPEG2000 codestream markers (ref ISO/IEC FCD15444-1/2)
 my %j2cMarker = (
     0x4f => 'SOC', # start of codestream
+  # 0x50 - seen in JPH codestream
     0x51 => 'SIZ', # image and tile size
     0x52 => 'COD', # coding style default
     0x53 => 'COC', # coding style component
     0x55 => 'TLM', # tile-part lengths
     0x57 => 'PLM', # packet length, main header
     0x58 => 'PLT', # packet length, tile-part header
+  # 0x59 - seen in JPH codestream
     0x5c => 'QCD', # quantization default
     0x5d => 'QCC', # quantization component
     0x5e => 'RGN', # region of interest
@@ -128,12 +130,21 @@ my %j2cMarker = (
     WRITE_PROC => \&ProcessJpeg2000Box,
     PREFERRED => 1, # always add these tags when writing
     NOTES => q{
-        The tags below are found in JPEG 2000 images and the JUMBF metadata in JPEG
-        images, but not all of these are extracted.  Note that ExifTool currently
-        writes only EXIF, IPTC and XMP tags in Jpeg2000 images, and EXIF and XMP in
-        JXL images.  ExifTool will read/write Brotli-compressed EXIF and XMP in JXL
-        images, but the API L<Compress|../ExifTool.html#Compress> option must be set to create new EXIF and XMP
-        in compressed format.
+        The tags below are found in JPEG 2000 images and the C2PA CAI JUMBF metadata
+        in various file types (see below).  Note that ExifTool currently writes only
+        EXIF, IPTC and XMP tags in Jpeg2000 images, and EXIF and XMP in JXL images. 
+        ExifTool will read/write Brotli-compressed EXIF and XMP in JXL images, but
+        the API L<Compress|../ExifTool.html#Compress> option must be set to create new EXIF and XMP in compressed
+        format.
+
+        C2PA (Coalition for Content Provenance and Authenticity) CAI (Content
+        Authenticity Initiative) JUMBF (JPEG Universal Metadata Box Format) metdata
+        is currently extracted from JPEG, PNG, TIFF-based (eg. TIFF, DNG),
+        QuickTime-based (eg. MP4, MOV, HEIF, AVIF), RIFF-based (eg. WAV, AVI, WebP),
+        GIF files and ID3v2 metadata.  The suggested ExifTool command-line arguments
+        for reading C2PA metadata are C<-jumbf:all -G3 -b -j -u -struct>.  This
+        metadata may be deleted from writable JPEG, PNG, WebP, TIFF-based, and
+        QuickTime-based files by deleting the JUMBF group with C<-jumbf:all=>.
     },
 #
 # NOTE: ONLY TAGS WITH "Format" DEFINED ARE EXTRACTED!
@@ -346,13 +357,6 @@ my %j2cMarker = (
             },
         },
         {
-            Name => 'UUID-Signature',  # (seen in JUMB data of JPEG images)
-            # (may be able to remove this when JUMBF specification is finalized)
-            Condition => '$$valPt=~/^casg\x00\x11\x00\x10\x80\x00\x00\xaa\x00\x38\x9b\x71/',
-            Format => 'undef',
-            ValueConv => 'substr($val,16)',
-        },
-        {
             Name => 'UUID-C2PAClaimSignature',  # (seen in incorrectly-formatted JUMB data of JPEG images)
             # (may be able to remove this when JUMBF specification is finalized)
             Condition => '$$valPt=~/^c2cs\x00\x11\x00\x10\x80\x00\x00\xaa\x00\x38\x9b\x71/',
@@ -360,6 +364,13 @@ my %j2cMarker = (
                 TagTable => 'Image::ExifTool::CBOR::Main',
                 Start => '$valuePtr + 16',
             },
+        },
+        {
+            Name => 'UUID-Signature',  # (seen in JUMB data of JPEG images)
+            # (may be able to remove this when JUMBF specification is finalized)
+            Condition => '$$valPt=~/^casg\x00\x11\x00\x10\x80\x00\x00\xaa\x00\x38\x9b\x71/',
+            Format => 'undef',
+            ValueConv => 'substr($val,16)',
         },
         {
             Name => 'UUID-Unknown',
@@ -549,6 +560,7 @@ my %j2cMarker = (
             'jpm ' => 'JPEG 2000 Compound Image (.JPM)',  # image/jpm
             'jpx ' => 'JPEG 2000 with extensions (.JPX)', # image/jpx
             'jxl ' => 'JPEG XL Image (.JXL)',             # image/jxl
+            'jph ' => 'High-throughput JPEG 2000 (.JPH)', # image/jph
         },
     },
     1 => {
@@ -993,10 +1005,12 @@ sub ProcessJpeg2000Box($$$)
     my $dirLen = $$dirInfo{DirLen} || 0;
     my $dirStart = $$dirInfo{DirStart} || 0;
     my $base = $$dirInfo{Base} || 0;
-    my $raf = $$dirInfo{RAF};
     my $outfile = $$dirInfo{OutFile};
     my $dirEnd = $dirStart + $dirLen;
-    my ($err, $outBuff, $verbose, $doColour, $hash);
+    my ($err, $outBuff, $verbose, $doColour, $hash, $raf);
+
+    # read from RAF unless reading from buffer
+    $raf = $$dirInfo{RAF} unless $dataPt;
 
     if ($outfile) {
         unless ($raf) {
@@ -1516,6 +1530,7 @@ sub ProcessJP2($$)
             $fileType = 'JPX' if $1 eq 'jpx ';
             $fileType = 'JPM' if $1 eq 'jpm ';
             $fileType = 'JXL' if $1 eq 'jxl ';
+            $fileType = 'JPH' if $1 eq 'jph ';
         }
         $raf->Seek(-length($buff), 1) if defined $buff;
         $et->SetFileType($fileType);

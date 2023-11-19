@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.45';
+$VERSION = '4.46';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1005,7 +1005,7 @@ my %opcodeInfo = (
     },
     0x14d => 'InkNames', #3
     0x14e => 'NumberofInks', #3
-    0x150 => 'DotRange',
+    0x150 => 'DotRange', # (int8u or int16u)
     0x151 => {
         Name => 'TargetPrinter',
         Writable => 'string',
@@ -1492,6 +1492,75 @@ my %opcodeInfo = (
         WriteGroup => 'IFD0',
         Avoid => 1,
     },
+    # tags 0x5XXX are obscure tags defined by Microsoft:
+    # ref https://learn.microsoft.com/en-us/previous-versions/windows/embedded/ms932271(v=msdn.10)
+    # ref https://learn.microsoft.com/en-us/windows/win32/gdiplus/-gdiplus-constant-property-item-descriptions
+    0x5001 => { Name => 'ResolutionXUnit', Notes => "ID's from 0x5001 to 0x5113 are obscure tags defined by Microsoft" }, # (int16u)
+    0x5002 => 'ResolutionYUnit', # (int16u)
+    0x5003 => 'ResolutionXLengthUnit', # (int16u)
+    0x5004 => 'ResolutionYLengthUnit', # (int16u)
+    0x5005 => 'PrintFlags', # (string)
+    0x5006 => 'PrintFlagsVersion', # (int16u)
+    0x5007 => 'PrintFlagsCrop', # (int8u)
+    0x5008 => 'PrintFlagsBleedWidth', # (int32u)
+    0x5009 => 'PrintFlagsBleedWidthScale', # (int16u)
+    0x500a => 'HalftoneLPI', # (rational64u)
+    0x500b => 'HalftoneLPIUnit', # (int16u, 1=inch, 2=cm)
+    0x500c => 'HalftoneDegree', # (rational64u)
+    0x500d => 'HalftoneShape', # (int16u,0=round,1=Ellipse,2=Line,3=Square,4=Cross,5=Diamond)
+    0x500e => 'HalftoneMisc', # (int32u)
+    0x500f => 'HalftoneScreen', # (int8u)
+    0x5010 => 'JPEGQuality', # (int32u[N])
+    0x5011 => { Name => 'GridSize', Binary => 1 }, # (undef)
+    0x5012 => 'ThumbnailFormat', # (int32u,1=raw RGB,2=JPEG)
+    0x5013 => 'ThumbnailWidth', # (int32u)
+    0x5014 => 'ThumbnailHeight', # (int32u)
+    0x5015 => 'ThumbnailColorDepth', # (int16u)
+    0x5016 => 'ThumbnailPlanes', # (int16u)
+    0x5017 => 'ThumbnailRawBytes', # (int32u)
+    0x5018 => 'ThumbnailLength', # (int32u)
+    0x5019 => 'ThumbnailCompressedSize', # (int32u)
+    0x501a => { Name => 'ColorTransferFunction', Binary => 1 }, # (undef)
+    0x501b => { Name => 'ThumbnailData', Binary => 1, Format => 'undef' }, # (int8u)
+    0x5020 => 'ThumbnailImageWidth', # (int16u or int32u)
+    0x5021 => 'ThumbnailImageHeight', # (int16u or int32u)
+    0x5022 => 'ThumbnailBitsPerSample', # (int16u[N])
+    0x5023 => 'ThumbnailCompression', # (int16u)
+    0x5024 => 'ThumbnailPhotometricInterp', # (int16u)
+    0x5025 => 'ThumbnailDescription', # (string)
+    0x5026 => 'ThumbnailEquipMake', # (string)
+    0x5027 => 'ThumbnailEquipModel', # (string)
+    0x5028 => 'ThumbnailStripOffsets', # (int16u or int32u)
+    0x5029 => 'ThumbnailOrientation', # (int16u)
+    0x502a => 'ThumbnailSamplesPerPixel', # (int16u)
+    0x502b => 'ThumbnailRowsPerStrip', # (int16u or int32u)
+    0x502c => 'ThumbnailStripByteCounts', # (int16u or int32u)
+    0x502d => 'ThumbnailResolutionX',
+    0x502e => 'ThumbnailResolutionY',
+    0x502f => 'ThumbnailPlanarConfig', # (int16u)
+    0x5030 => 'ThumbnailResolutionUnit', # (int16u)
+    0x5031 => 'ThumbnailTransferFunction', # (int16u[N])
+    0x5032 => 'ThumbnailSoftware', # (string)
+    0x5033 => { Name => 'ThumbnailDateTime', Groups => { 2 => 'Time' } }, # (string)
+    0x5034 => 'ThumbnailArtist', # (string)
+    0x5035 => 'ThumbnailWhitePoint', # (rational64u[2])
+    0x5036 => 'ThumbnailPrimaryChromaticities', # (rational64u[6])
+    0x5037 => 'ThumbnailYCbCrCoefficients', # (rational64u[3])
+    0x5038 => 'ThumbnailYCbCrSubsampling', # (int16u)
+    0x5039 => 'ThumbnailYCbCrPositioning', # (int16u)
+    0x503a => 'ThumbnailRefBlackWhite', # (rational64u[6])
+    0x503b => 'ThumbnailCopyright', # (string)
+    0x5090 => 'LuminanceTable', # (int16u[64])
+    0x5091 => 'ChrominanceTable', # (int16u[64])
+    0x5100 => 'FrameDelay', # (int32u[N])
+    0x5101 => 'LoopCount', # (int16u)
+    0x5102 => 'GlobalPalette', # (int8u[N])
+    0x5103 => 'IndexBackground', # (int8u)
+    0x5104 => 'IndexTransparent', # (int8u)
+    0x5110 => 'PixelUnits', # (int8u)
+    0x5111 => 'PixelsPerUnitX', # (int32u)
+    0x5112 => 'PixelsPerUnitY', # (int32u)
+    0x5113 => 'PaletteHistogram', # (int8u[N])
     0x7000 => { #JR
         Name => 'SonyRawFileType',
         # (only valid if Sony:FileFormat >= ARW 2.0, ref IB)
@@ -3102,7 +3171,7 @@ my %opcodeInfo = (
             # by returning undef from the WriteProc), but we can't rebuild this directory
             # by writing it properly because there is an erroneous StripByteCounts value
             # written by the X2D 100C that renders the data unreadable
-            WriteProc => sub { return undef }, 
+            WriteProc => sub { return undef },
         },
     },
     0xc573 => { #PH
@@ -4250,6 +4319,16 @@ my %opcodeInfo = (
         WriteGroup => 'IFD0',
         Protected => 1,
         Binary => 1,
+    },
+    0xcd41 => {
+        Name => 'JUMBF',
+        # (set Deletable flag so we can delete this because
+        #  Jpeg2000 directories are otherwise permanent)
+        Deletable => 1,
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Jpeg2000::Main',
+            ByteOrder => 'BigEndian',
+        },
     },
     0xcd43 => { # DNG 1.7
         Name => 'ColumnInterleaveFactor',

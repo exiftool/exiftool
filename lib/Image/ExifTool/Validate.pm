@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.22';
+$VERSION = '1.23';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -86,7 +86,7 @@ my %verCheck = (
     GPS        => { GPSVersionID => \%gpsVer },
 );
 
-# tags standard in various RAW file formats
+# tags standard in various RAW file formats or IFD's
 my %otherSpec = (
     CR2 => { 0xc5d8 => 1, 0xc5d9 => 1, 0xc5e0 => 1, 0xc640 => 1, 0xc6dc => 1, 0xc6dd => 1 },
     NEF => { 0x9216 => 1, 0x9217 => 1 },
@@ -103,6 +103,7 @@ my %otherSpec = (
     SRW => { 0xa010 => 1, 0xa011 => 1, 0xa101 => 1, 0xa102 => 1 },
     NRW => { 0x9216 => 1, 0x9217 => 1 },
     X3F => { 0xa500 => 1 },
+    CameraIFD => { All => 1 }, # (exists in JPG and DNG of Leica Q3 images)
 );
 
 # standard format for tags (not necessary for exifSpec or GPS tags where Writable is defined)
@@ -458,8 +459,8 @@ sub ValidateExif($$$$$$$$)
         } elsif (not $otherSpec{$$et{FileType}} or
             (not $otherSpec{$$et{FileType}}{$tag} and not $otherSpec{$$et{FileType}}{All}))
         {
-            if ($tagTablePtr eq \%Image::ExifTool::Exif::Main or $$tagInfo{Unknown}) {
-                $et->Warn(sprintf('Non-standard %s tag 0x%.4x %s', $ifd, $tag, $$ti{Name}), 1);
+            if ($tagTablePtr eq \%Image::ExifTool::Exif::Main or $$ti{Unknown}) {
+                $et->Warn(sprintf('Non-standard %s tag 0x%.4x %s', $ifd, $tag, $$ti{Name}), 1) unless $otherSpec{$ifd};
             }
         }
         # change expected count from read Format to Writable size
@@ -480,7 +481,7 @@ sub ValidateExif($$$$$$$$)
     } elsif (not $otherSpec{$$et{FileType}} or
         (not $otherSpec{$$et{FileType}}{$tag} and not $otherSpec{$$et{FileType}}{All}))
     {
-        $et->Warn(sprintf('Unknown %s tag 0x%.4x', $ifd, $tag), 1);
+        $et->Warn(sprintf('Unknown %s tag 0x%.4x', $ifd, $tag), 1) unless $otherSpec{$ifd};
     }
 }
 

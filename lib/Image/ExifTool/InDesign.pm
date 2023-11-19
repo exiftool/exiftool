@@ -122,7 +122,7 @@ sub ProcessIND($$)
                 # memory troubles (with its apparent 1 GB limit) if the XMP is larger
                 # than about 400 MB, so guard against this
                 if ($len > 300 * 1024 * 1024) {
-                    my $msg = sprintf('Insanely large XMP (%.0f MB)', $len / (1024 * 1024));
+                    my $msg = sprintf('Insanely large XMP (%.0f MiB)', $len / (1024 * 1024));
                     if ($outfile) {
                         $et->Error($msg, 2) and $err = 1, last;
                     } elsif ($et->Options('IgnoreMinorErrors')) {

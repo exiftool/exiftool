@@ -437,6 +437,11 @@ effect as a value of 0 for options with numerical values.</p>
     are not necessarily extracted unless this option is set or the tag is
     specifically requested by name.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
+<tr id="ByteUnit"><td>ByteUnit</td><td>Units for print conversion of FileSize and other byte values.</td>
+    <td align=center><table class=clear>
+    <tr><td valign=top align=right><b>SI</b>&nbsp;=</td><td>SI units (1000 bytes = 1 kB)</td></tr>
+    <tr><td valign=top align=right><b>Binary</b>&nbsp;=</td><td>Binary units (1024 bytes = 1 KiB)</td></tr>
+    </table></td><td align=center>'SI'</td></tr>
 <tr id="BlockExtract"><td>BlockExtract</td><td>Flag to extract some directories
     (mentioned in the <a href="TagNames/index.html">Tag Name documentation</a>) as a block.</td>
     <td align=center><table class=clear>
@@ -512,11 +517,11 @@ effect as a value of 0 for options with numerical values.</p>
 <tr id="Compact"><td>Compact</td><td>Comma-delimited list of settings for writing compact XMP.
     Note that 'NoPadding' effects only embedded XMP since padding is never written for
     stand-alone XMP files.  Also note that 'OneDesc' is not recommended when writing
-    XMP larger than 64 kB to a JPG file because it interferes with ExifTool's technique
+    XMP larger than 64 KiB to a JPG file because it interferes with ExifTool's technique
     of splitting off large rdf:Description elements into the extended XMP.  Case is not
     significant for any of these options.  Some options have aliases (shown in brackets).</td>
     <td align=center><table class=clear>
-    <tr><td valign=top align=right><b>NoPadding</b>&nbsp;=</td><td>Avoid 2 kB of recommended padding at end of XMP (NoPad)</td></tr>
+    <tr><td valign=top align=right><b>NoPadding</b>&nbsp;=</td><td>Avoid 2 KiB of recommended padding at end of XMP (NoPad)</td></tr>
     <tr><td valign=top align=right><b>NoIndent</b>&nbsp;=</td><td>Avoid spaces to indent lines for readability (NoSpace, NoSpaces)</td></tr>
     <tr><td valign=top align=right><b>NoNewline</b>&nbsp;=</td><td>Avoid unnecessary newlines (NoNewlines)</td></tr>
     <tr><td valign=top align=right><b>Shorthand</b>&nbsp;=</td><td>Use XMP Shorthand format</td></tr>
@@ -2213,7 +2218,7 @@ ICC_Profile#, ID3, ID3v1, ID3v1_Enh, ID3v2_2, ID3v2_3, ID3v2_4, IFD0, IFD1,
 IPTC, IPTC#, ISO, ITC, InfiRay, Insta360, InteropIFD, ItemList, JFIF, JFXX,
 JPEG, JPEG-HDR, JPS, JSON, JUMBF, JVC, Jpeg2000, KDC_IFD, Keys, Kodak,
 KodakBordersIFD, KodakEffectsIFD, KodakIFD, KyoceraRaw, LNK, Leaf,
-LeafSubIFD, Leica, Lyrics3, Lytro, M2TS, MAC, MIE-Audio, MIE-Camera,
+LeafSubIFD, Leica, Lyrics3, Lytro, M-RAW, M2TS, MAC, MIE-Audio, MIE-Camera,
 MIE-Canon, MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS, MIE-Geo, MIE-Image,
 MIE-Lens, MIE-Main, MIE-MakerNotes, MIE-Meta, MIE-Orient, MIE-Preview,
 MIE-Thumbnail, MIE-UTM, MIE-Unknown, MIE-Video, MIFF, MISB, MNG, MOBI, MOI,

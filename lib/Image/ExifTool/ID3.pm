@@ -18,7 +18,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.59';
+$VERSION = '1.60';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -825,8 +825,8 @@ my %id3v2_common = (
 
 # lookup to check for existence of tags in other ID3 versions
 my %otherTable = (
-    \%Image::ExifTool::ID3::v2_4 => \%Image::ExifTool::ID3::v2_3,
-    \%Image::ExifTool::ID3::v2_3 => \%Image::ExifTool::ID3::v2_4,
+    \%Image::ExifTool::ID3::v2_4 => 'Image::ExifTool::ID3::v2_3',
+    \%Image::ExifTool::ID3::v2_3 => 'Image::ExifTool::ID3::v2_4',
 );
 
 # ID3 Composite tags
@@ -1098,6 +1098,7 @@ sub ProcessID3v2($$$)
     my $vers    = $$dirInfo{Version};
     my $verbose = $et->Options('Verbose');
     my $len;    # frame data length
+    my $otherTable;
 
     $et->VerboseDir($tagTablePtr->{GROUPS}->{1}, 0, $size);
     $et->VerboseDump($dataPt, Len => $size, Start => $offset);
@@ -1144,7 +1145,9 @@ sub ProcessID3v2($$$)
         last if $offset + $len > $size;
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $id);
         unless ($tagInfo) {
-            my $otherTable = $otherTable{$tagTablePtr};
+            if (not $otherTable and $otherTable{$tagTablePtr}) {
+                $otherTable = GetTagTable($otherTable{$tagTablePtr});
+            }
             $tagInfo = $et->GetTagInfo($otherTable, $id) if $otherTable;
             if ($tagInfo) {
                 $et->WarnOnce("Frame '${id}' is not valid for this ID3 version", 1);

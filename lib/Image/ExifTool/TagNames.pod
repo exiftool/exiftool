@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27401 tags, with 17199 unique tag names.
+They contain a total of 27431 tags, with 17208 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -482,6 +482,7 @@ for the official EXIF 2.32 specification.
   0x0214   ReferenceBlackWhite       IFD0       rational64u[6]
   0x022f   StripRowCounts            -          no
   0x02bc   ApplicationNotes          IFD0       XMP
+  0x0303   RenderingIntent           -          no
   0x03e7   USPTOMiscellaneous        -          no
   0x1000   RelatedImageFileFormat    InteropIFD string!
   0x1001   RelatedImageWidth         InteropIFD int16u!
@@ -8873,7 +8874,7 @@ CameraInfo tags for the EOS R6.
 
 =head3 Canon CameraInfoG5XII Tags
 
-CameraInfo tags for the EOS R6.
+CameraInfo tags for the PowerShot G5 X Mark II.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -9464,6 +9465,7 @@ These tags are used by many EOS M and PowerShot models.
     255    ColorCalib2?                         Canon ColorCalib2
     264    PerChannelBlackLevel                 int16s[4]
     333    PerChannelBlackLevel                 int16s[4]
+    662    SpecularWhiteLevel                   int16u
    1385    NormalWhiteLevel                     int16u
    1386    SpecularWhiteLevel                   int16u
 
@@ -10122,6 +10124,7 @@ This information is new in images from the EOS 7D.
       4    LongExposureNoiseReduction           int32s
       5    HighISONoiseReduction                int32s
      10    DigitalLensOptimizer                 int32s
+     11    DualPixelRaw                         int32s
 
 =head3 Canon LensInfo Tags
 
@@ -12038,6 +12041,9 @@ group name for these tags is "M-RAW".
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0001   RawImageNumber                       no
+  0x0005   ExposureTime                         no
+  0x0006   FNumber                              no
+  0x0007   ISO                                  no
 
 =head3 FujiFilm FFMV Tags
 
@@ -15028,6 +15034,7 @@ These tags are extracted from encrypted data in images from the D6.
   Index1   Tag Name                             Writable
   ------   --------                             --------
      36    IntervalShooting                     int16u~
+     43    ImageArea                            int8u
 
 =head3 Nikon IntervalInfoD6 Tags
 
@@ -15081,6 +15088,7 @@ These tags are extracted from encrypted data in images from the Z7II.
   Index1   Tag Name                             Writable
   ------   --------                             --------
      36    IntervalShooting                     int16u~
+     43    ImageArea                            int8u
 
 =head3 Nikon PortraitInfoZ7II Tags
 
@@ -15306,8 +15314,8 @@ These tags are extracted from encrypted data in images from the Z9.
   ------   --------                             --------
    3048    AFAreaInitialXPosition               int8s~
    3049    AFAreaInitialYPosition               int8s~
-   3050    AFAreaInitialWidth                   no
-   3051    AFAreaInitialHeight                  no
+   3050    AFAreaInitialWidth                   int8u
+   3051    AFAreaInitialHeight                  int8u
 
 =head3 Nikon AutoCaptureInfo Tags
 
@@ -16179,7 +16187,27 @@ cameras such as the Z6 and Z7, and NRW images from some Coolpix cameras.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  [no tags known]
+  0x0005   DistortionInfo                       Nikon DistortionInfo
+  0x0006   VignetteInfo                         Nikon VignetteInfo
+
+=head3 Nikon DistortionInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    DistortionCorrectionVersion          string[4]
+      4    DistortionCorrection                 int8u
+     20    RadialDistortionCoefficient1         rational64s~
+     28    RadialDistortionCoefficient2         rational64s~
+     36    RadialDistortionCoefficient3         rational64s~
+
+=head3 Nikon VignetteInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    VignetteCorrectionVersion            string[4]
+     36    VignetteCoefficient1                 rational64s~
+     52    VignetteCoefficient2                 rational64s~
+     68    VignetteCoefficient3                 rational64s~
 
 =head3 Nikon AVI Tags
 
@@ -20805,6 +20833,43 @@ defined below, ExifTool will extract any information found here.
   'rdc2'   RicohRDC2?                           no
   'thum'   ThumbnailImage                       no
   'ucmt'   Comment                              no
+
+=head3 Ricoh RDTA Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0000   Accelerometer                        no
+  0x0010   TimeStamp                            no
+
+=head3 Ricoh RDTB Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0000   Gyroscope                            no
+  0x0010   TimeStamp                            no
+
+=head3 Ricoh RDTC Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0000   MagneticField                        no
+  0x0010   TimeStamp                            no
+
+=head3 Ricoh RDTG Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0000   TimeStamp                            no
+  0x0064   FrameNumber                          no
+
+=head3 Ricoh RDTL Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0000   GPSDateTime                          no
+  0x0008   GPSLatitude                          no
+  0x0010   GPSLongitude                         no
+  0x0018   GPSAltitude                          no
 
 =head2 Sigma Tags
 
@@ -29154,7 +29219,7 @@ for the official specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 66 different formats of timed GPS metadata from video files.
+currently reads 67 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -29377,6 +29442,7 @@ changed via the config file.
   'direction.motion' CameraMotion               yes
   'director'    Director                        yes
   'displayname' DisplayName                     yes
+  'encoder'     Encoder                         yes
   'genre'       Genre                           yes
   'information' Information                     yes
   'keywords'    Keywords                        yes
@@ -30336,6 +30402,11 @@ the config file.
                MakerNotePentaxUnknown           string
   'PXTH'       PentaxPreview                    Pentax PXTH
   'QVMI'       CasioQVMI                        EXIF
+  'RDTA'       RicohRDTA                        Ricoh RDTA
+  'RDTB'       RicohRDTB                        Ricoh RDTB
+  'RDTC'       RicohRDTC                        Ricoh RDTC
+  'RDTG'       RicohRDTG                        Ricoh RDTG
+  'RDTL'       RicohRDTL                        Ricoh RDTL
   'RMKN'       RicohRMKN                        EXIF
   'RTHU'       PreviewImage                     no
   'SDLN'       PlayMode                         string

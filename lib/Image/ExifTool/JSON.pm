@@ -14,7 +14,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Import;
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 sub ProcessJSON($$);
 sub ProcessTag($$$$%);
@@ -59,6 +59,9 @@ sub FoundTag($$$$%)
 
     # avoid conflict with special table entries
     $tag .= '!' if $Image::ExifTool::specialTags{$tag};
+
+    # use underline instead of colon if necessary in tag name
+    $tag =~ s/([A-Z]):([A-Z]{2})/${1}_$2/g;
 
     AddTagToTable($tagTablePtr, $tag, {
         Name => Image::ExifTool::MakeTagName($tag),

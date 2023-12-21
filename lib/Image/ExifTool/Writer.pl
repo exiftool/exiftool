@@ -690,6 +690,12 @@ TAG: foreach $tagInfo (@matchingTags) {
             $writeProc = $$src{WRITE_PROC} unless $writeProc;
         }
         {
+            # make sure module is loaded if the writeProc is a string
+            unless (ref $writeProc) {
+                my $module = $writeProc;
+                $module =~ s/::\w+$//;
+                eval "require $module";
+            }
             no strict 'refs';
             next unless $writeProc and &$writeProc();
         }
@@ -3239,9 +3245,15 @@ sub InsertTagValues($$$;$$$)
                     $tag = $docGrp . ':' . $tag;
                     $lcTag = lc $tag;
                 }
-                my $et = $self;
+                my ($et, $fileTags) = ($self, $foundTags);
                 if ($tag =~ s/(\bfile\d+)://i) {
-                    $et = $$self{ALT_EXIFTOOL}{ucfirst lc $1} or $et=$self, $tag = 'no_alt_file';
+                    $et = $$self{ALT_EXIFTOOL}{ucfirst lc $1};
+                    if ($et) {
+                        $fileTags = $$et{FoundTags};
+                    } else {
+                        $et = $self;
+                        $tag = 'no_alt_file';
+                    }
                 }
                 if ($lcTag eq 'all') {
                     $val = 1;   # always some tag available
@@ -3252,11 +3264,11 @@ sub InsertTagValues($$$;$$$)
                     ($group, $tag) = ($1, $2);
                     if (lc $tag eq 'all') {
                         # see if any tag from the specified group exists
-                        my $match = $et->GroupMatches($group, $foundTags);
+                        my $match = $et->GroupMatches($group, $fileTags);
                         $val = $match ? 1 : 0;
                     } else {
                         # find the specified tag
-                        my @matches = grep /^$tag(\s|$)/i, @$foundTags;
+                        my @matches = grep /^$tag(\s|$)/i, @$fileTags;
                         @matches = $et->GroupMatches($group, \@matches);
                         foreach $tg (@matches) {
                             if (defined $val and $tg =~ / \((\d+)\)$/) {
@@ -3276,7 +3288,7 @@ sub InsertTagValues($$$;$$$)
                     $val = $et->GetValue($tag, $type);
                     unless (defined $val) {
                         # check for tag name with different case
-                        ($tg) = grep /^$tag$/i, @$foundTags;
+                        ($tg) = grep /^$tag$/i, @$fileTags;
                         if (defined $tg) {
                             $val = $et->GetValue($tg, $type);
                             $tag = $tg;

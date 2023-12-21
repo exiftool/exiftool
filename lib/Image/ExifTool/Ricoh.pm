@@ -9,6 +9,7 @@
 #               2) http://homepage3.nifty.com/kamisaka/makernote/makernote_ricoh.htm
 #               3) Tim Gray private communication (GR)
 #               4) https://github.com/atotto/ricoh-theta-tools/
+#               5) https://github.com/ricohapi/theta-api-specs/blob/main/theta-metadata/README.md
 #               IB) Iliah Borg private communication (LibRaw)
 #------------------------------------------------------------------------------
 
@@ -18,11 +19,13 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
+use Image::ExifTool::GPS;
 
-$VERSION = '1.36';
+$VERSION = '1.37';
 
 sub ProcessRicohText($$$);
 sub ProcessRicohRMETA($$$);
+sub ProcessRicohRDT($$$);
 
 # lens types for Ricoh GXR
 my %ricohLensIDs = (
@@ -908,6 +911,65 @@ my %ricohLensIDs = (
     },
 );
 
+# real-time metadata in RDTA atom (ref 5)
+%Image::ExifTool::Ricoh::RDTA = (
+    PROCESS_PROC => \&ProcessRicohRDT,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Location' },
+    0 => { Name => 'Accelerometer', Format => 'float[3]' },
+    16 => { Name => 'TimeStamp', Format => 'int64u', ValueConv => '$val * 1e-9' },
+);
+
+# real-time metadata in RDTB atom (ref 5)
+%Image::ExifTool::Ricoh::RDTB = (
+    PROCESS_PROC => \&ProcessRicohRDT,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Location' },
+    0 => { Name => 'Gyroscope', Format => 'float[3]' },
+    16 => { Name => 'TimeStamp', Format => 'int64u', ValueConv => '$val * 1e-9' },
+);
+
+# real-time metadata in RDTC atom (ref 5)
+%Image::ExifTool::Ricoh::RDTC = (
+    PROCESS_PROC => \&ProcessRicohRDT,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Location' },
+    0 => { Name => 'MagneticField', Format => 'float[3]' },
+    16 => { Name => 'TimeStamp', Format => 'int64u', ValueConv => '$val * 1e-9' },
+);
+
+# real-time metadata in RDTG atom (ref 5)
+%Image::ExifTool::Ricoh::RDTG = (
+    PROCESS_PROC => \&ProcessRicohRDT,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Video' },
+    0 => { Name => 'TimeStamp', Format => 'int64u', ValueConv => '$val * 1e-9' },
+    100 => { Name => 'FrameNumber', Notes => 'generated internally' },
+);
+
+# real-time metadata in RDTL atom (ref 5)
+%Image::ExifTool::Ricoh::RDTL = (
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Location' },
+    0 => {
+        Name => 'GPSDateTime',
+        Groups => { 2 => 'Time' },
+        Format => 'double',
+        ValueConv => 'ConvertUnixTime($val*1e-9, 1, 9)', # (NC -- what is the epoch?)
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    8 => {
+        Name => 'GPSLatitude',
+        Format => 'double',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1)',
+    },
+    16 => {
+        Name => 'GPSLongitude',
+        Format => 'double',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1)',
+    },
+    24 => {
+        Name => 'GPSAltitude',
+        Format => 'double',
+        PrintConv => '($val =~ s/^-// ? "$val m Below" : "$val m Above") . " Sea Level"',
+    },
+);
+
 # Ricoh composite tags
 %Image::ExifTool::Ricoh::Composite = (
     GROUPS => { 2 => 'Camera' },
@@ -931,6 +993,52 @@ my %ricohLensIDs = (
 # add our composite tags
 Image::ExifTool::AddCompositeTags('Image::ExifTool::Ricoh');
 
+
+#------------------------------------------------------------------------------
+# Process Ricoh RDT* real-time metadata
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success, otherwise returns 0 and sets a Warning
+sub ProcessRicohRDT($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dirLen = $$dirInfo{DirLen};
+    my $dirName = $$dirInfo{DirName};
+    my ($i, $rdtg);
+    return 0 if $dirLen < 16;
+    my $ee = $et->Options('ExtractEmbedded');
+    unless ($ee) {
+        $et->WarnOnce('Use ExtractEmbedded option to read Ricoh real-time metadata',3);
+        return 1;
+    }
+    my $endian = substr($$dataPt, 8, 2);
+    SetByteOrder($endian eq "\x23\x01" ? 'II' : 'MM');
+    my $count = Get32u($dataPt, 0);
+    my $len = Get16u($dataPt, 6);
+    if ($dirName eq 'RicohRDTG') {
+        if ($ee < 2) {
+            $et->WarnOnce('Set ExtractEmbedded option to 2 or higher to extract frame timestamps',3);
+            return 1;
+        }
+        $rdtg = 0;
+        $et->WarnOnce('Unexpected RDTG record length') if $len > 8;
+    }
+    if ($count * $len + 16 > $dirLen) {
+        $et->Warn("Truncated $dirName data");
+        $count = int(($dirLen - 16) / $len);
+    }
+    $et->VerboseDir($dirName);
+    $$dirInfo{DirStart} = 16;
+    $$dirInfo{DirLen} = $len;
+    for ($i=0; $i<$count; ++$i) {;
+        $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        $et->HandleTag($tagTablePtr, 100, $rdtg++) if defined $rdtg;
+        $et->ProcessBinaryData($dirInfo, $tagTablePtr);
+        $$dirInfo{DirStart} += $len;
+    }
+    delete $$et{DOC_NUM};
+    return 1;
+}
 
 #------------------------------------------------------------------------------
 # Process Ricoh text-based maker notes

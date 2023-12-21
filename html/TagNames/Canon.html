@@ -1897,6 +1897,8 @@ others use a range of 0 to 7 where 0 is no sharpening)</span></span></td></tr>
 </tr><tr><td>61182</td><td>= Canon RF 100-300mm F2.8L IS USM + RF2x</td>
 </tr><tr><td>61182</td><td>= Canon RF 10-20mm F4 L IS STM</td>
 </tr><tr><td>61182</td><td>= Canon RF 28mm F2.8 STM</td>
+</tr><tr><td>61182</td><td>= Canon RF 24-105mm F2.8 L IS USM Z</td>
+</tr><tr><td>61182</td><td>= Canon RF-S 10-18mm F4.5-6.3 IS STM</td>
 </tr><tr><td>61491</td><td>= Canon CN-E 14mm T3.1 L F</td>
 </tr><tr><td>61492</td><td>= Canon CN-E 24mm T1.5 L F</td>
 </tr><tr><td>61494</td><td>= Canon CN-E 85mm T1.3 L F</td>
@@ -5758,7 +5760,7 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfoG5XII'>Canon CameraInfoG5XII Tags</a></h2>
-<p>CameraInfo tags for the EOS R6.</p>
+<p>CameraInfo tags for the PowerShot G5 X Mark II.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -6656,8 +6658,13 @@ valid for all camera models)</span></span></td></tr>
   <br>306 = Canon RF 100-300mm F2.8L IS USM
   <br>307 = Canon RF 100-300mm F2.8L IS USM + RF1.4x
   <br>308 = Canon RF 100-300mm F2.8L IS USM + RF2x
+  <br>309 = Canon RF 200-800mm F6.3-9 IS USM
+  <br>310 = Canon RF 200-800mm F6.3-9 IS USM + RF1.4x
+  <br>311 = Canon RF 200-800mm F6.3-9 IS USM + RF2x
   <br>312 = Canon RF 10-20mm F4 L IS STM
-  <br>313 = Canon RF 28mm F2.8 STM</span></td></tr>
+  <br>313 = Canon RF 28mm F2.8 STM
+  <br>314 = Canon RF 24-105mm F2.8 L IS USM Z
+  <br>315 = Canon RF-S 10-18mm F4.5-6.3 IS STM</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='SerialInfo'>Canon SerialInfo Tags</a></h2>
@@ -8151,11 +8158,16 @@ option is used.</p>
 <td class=c>int16s[4]</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='662 = 0x296'>662</td>
+<td>SpecularWhiteLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='1385 = 0x569'>1385</td>
 <td>NormalWhiteLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1386 = 0x56a'>1386</td>
 <td>SpecularWhiteLevel</td>
 <td class=c>int16u</td>
@@ -11122,6 +11134,12 @@ option is used.</p>
 <td><span class=s>0 = Off
   <br>1 = Stanard
   <br>2 = High</span></td></tr>
+<tr>
+<td class=r title='11 = 0xb'>11</td>
+<td>DualPixelRaw</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='LensInfo'>Canon LensInfo Tags</a></h2>
@@ -11735,7 +11753,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 19, 2023</i>
+<br><i>Last revised Dec 21, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

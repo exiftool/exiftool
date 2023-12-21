@@ -1643,9 +1643,11 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
 # 0x203e - int8u: seen 0, 1, 2, 3, 4 and 255: possibly nr. of detected/tracked faces?
 # 0x203f - int16u
 # 0x2041 - int8u
-# 0x2044 - int32u[2] in ILCE-6700/7CM2/7CR, ILCE-7M4 v1.10, ILCE-7RM5 JPG and ZV-E1:
-#           ARW: seen 143360 53248 and 139264 53248
-#           JPG: [~filesize] 53248
+# 0x2044 - int32u[2] offset and size of some unknown data, relative to TIFF header in JPG and ARW - PH
+#    0x2044 => { #TODO
+#        Name => 'HiddenInfo',
+#        SubDirectory => { TagTable => 'Image::ExifTool::Sony::HiddenInfo' },
+#    },
 # 0x2047 - first seen for ILCE-9M3, November 2023
 # 0x2048 - first seen for ILCE-9M3
 # 0x2049 - undef[2]
@@ -5956,6 +5958,29 @@ my %faceInfo = (
     #   A33/35/55: seen 0, 1, 64
     #   NEX:       204
     # 0x001a, 0x001c appear to be 2 int16u values, meaning unknown
+);
+
+# hidden information (ref PH) TODO
+%Image::ExifTool::Sony::HiddenInfo = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    FORMAT => 'int32u',
+    IS_OFFSET => [ 0 ],   # tag 0 is 'IsOffset'
+    0 => {
+        Name => 'HiddenDataOffset',
+        IsOffset => 1,
+        OffsetPair => 1,
+        DataTag => 'HiddenData',
+        WriteGroup => 'MakerNotes',
+        Protectd => 2,
+    },
+    1 => {
+        Name => 'HiddenDataLength',
+        OffsetPair => 0,
+        DataTag => 'HiddenData',
+        WriteGroup => 'MakerNotes',
+        Protectd => 2,
+    },
 );
 
 # shot information (ref PH)
@@ -10735,6 +10760,19 @@ my %isoSetting2010 = (
         ValueConv => '$val[1] =~ /^W/i ? -$val[0] : $val[0]',
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
     },
+#    HiddenData => { #TODO
+#        Require => {
+#            0 => 'Sony:HiddenDataOffset',
+#            1 => 'Sony:HiddenDataLength',
+#        },
+#        Notes => 'hidden data in some Sony images, extracted only if specifically requested',
+#        RawConv => q{
+#            $self->HDump($val[0], $val[1], '(Sony HiddenData)', undef, 0x08);
+#            return undef unless $$self{REQ_TAG_LOOKUP}{hiddendata};
+#            my $dat = $self->ExtractBinary($val[0], $val[1], 'HiddenData');
+#            return defined $dat ? \$dat : undef;
+#        },
+#    },
 );
 
 # add our composite tags

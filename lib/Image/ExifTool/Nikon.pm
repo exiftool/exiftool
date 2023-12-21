@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.27';
+$VERSION = '4.28';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -947,6 +947,15 @@ my %highFrameRateZ9 = (
     3 => 'C30',
     5 => 'C60',
     4 => 'C120',
+);
+
+my %imageAreaD6 = (
+    0 => 'FX (36x24)',
+    1 => 'DX (24x16)',
+    2 => '5:4 (30x24)',
+    3 => '1.2x (30x20)',
+    4 => '1:1 (24x24)',
+    6 => '16:9',
 );
 
 my %imageAreaZ9 = (
@@ -1987,7 +1996,7 @@ my %base64coord = (
     },
     0x0044 => { #28
         Name => 'JPGCompression',
-        RawConv => '($val) ? $val : undef', # undef for raw files 
+        RawConv => '($val) ? $val : undef', # undef for raw files
         PrintConv => {
             1 => 'Size Priority',
             3 => 'Optimal Quality',
@@ -5933,9 +5942,9 @@ my %nikonFocalConversions = (
     0x10 => { #28
         Name => 'ImageArea',
         PrintConv => {
-            0 => 'FX (36.0 x 23.9 mm)',
-            1 => 'DX (23.5 x 15.6 mm)',
-            2 => '5:4 (30.0 x 23.9 mm)',
+            0 => 'FX (36x24)',
+            1 => 'DX (24x16)',
+            2 => '5:4 (30x24)',
         },
     },
     0x25d => {
@@ -7328,6 +7337,10 @@ my %nikonFocalConversions = (
         Format => 'int16u',
         Hidden => 1,
     },
+    0x2b => {
+        Name => 'ImageArea',
+        PrintConv => \%imageAreaD6,
+    },
 );
 
 %Image::ExifTool::Nikon::IntervalInfoD6 = (
@@ -8319,6 +8332,10 @@ my %nikonFocalConversions = (
         Format => 'int16u',
         Hidden => 1,
     },
+    0x2b => {
+        Name => 'ImageArea',
+        PrintConv => \%imageAreaD6,
+    },
 );
 
 %Image::ExifTool::Nikon::PortraitInfoZ7II = (
@@ -8519,8 +8536,8 @@ my %nikonFocalConversions = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     DATAMEMBER => [ 0x20, 0x28, 0x2a ],
-    #0x0019 => HDRFrame                # For JPG 0=> Not HDR; 1=> file is the blended exposure.  For raw files: 0=> Not from an HDR capture sequence; otherwise frame number in the HDR capture sequence -- 'Save Individual Pictures (RAW)' must be enabled.  
-    #0x001A => MultipleExposureFrame   # For JPG 0=> Not a multiple exposure; 1=> file is the blended exposure.  For raw files: 0=> Not a multiple exposure capture; otherwise frame number in the capture sequence -- 'Save Individual Pictures (RAW)' must be enabled.  
+    #0x0019 => HDRFrame                # For JPG 0=> Not HDR; 1=> file is the blended exposure.  For raw files: 0=> Not from an HDR capture sequence; otherwise frame number in the HDR capture sequence -- 'Save Individual Pictures (RAW)' must be enabled.
+    #0x001A => MultipleExposureFrame   # For JPG 0=> Not a multiple exposure; 1=> file is the blended exposure.  For raw files: 0=> Not a multiple exposure capture; otherwise frame number in the capture sequence -- 'Save Individual Pictures (RAW)' must be enabled.
     0x0020 => {
         Name => 'FocusShiftShooting',
         Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
@@ -8559,24 +8576,18 @@ my %nikonFocalConversions = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     DATAMEMBER => [ 0x0bea, 0x0beb ],
     0x0be8 => {
-        Name => 'AFAreaInitialXPosition',        #stored as a representation of the horizontal position of the center of the portion of the focus box positioned top left when in Wide Area (L/S/C1/C2) focus modes (before subject detection potentially refines focus)
-        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and defined $$self{AFAreaMode} and $$self{AFAreaMode} < 2 ',    #not valid for C30/C60/C120 or for Area Modes 1:1 and 16:19
+        Name => 'AFAreaInitialXPosition',        #the horizontal position of the center the focus box prior to any subject detection or tracking.  Origin is Top Left.
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
         Format => 'int8s',
         PrintConv => q{
-            #in FX mode and Single-point, the 29 horizontal focus points are spaced 259 pixels apart starting at pixel 502 and ending at 7754.  Spacing is the same for Wide(L/C1/C2) with different start points.
-            #in FX mode and Dynamic(L), the 27 horizontal focus points are spaced 259 pixels apart starting at pixel 761 and ending at 7495
-            #in FX mode and Dynamic(M), the 29 horizontal focus points are spaced 259 pixels apart starting at pixel 502 and ending at 7754
-            #in DX mode and Single-point, the 19 horizontal focus points are spaced 388 pixels apart starting at pixel 636 and ending at 7620.  [These correspond to FX positions and match the corresponding values in AFAreaMode tag AFAreaXPosition].
-            #in DX mode and Wide(S), the 17 horizontal focus points are spaced 393 pixels apart starting at pixel 591 and ending at 7272.
-            #in DX mode and Dynamic(L), the 17 horizontal focus points are spaced 388 pixels apart starting at pixel 1024 and ending at 7232
-            #in DX mode and Dynamic(M), the 19 horizontal focus points are spaced 388 pixels apart starting at pixel 636 and ending at 7620
-
-            my $areaMode = $$self{VALUE}{PhotoShootingMenuBankImageArea};
+            my $imageArea = $$self{ImageArea};
             my $afAreaMode = $$self{VALUE}{AFAreaMode};
-            my $dynamicAFAreaSize = $$self{VALUE}{DynamicAFAreaSize};
+            my $dynamicAFAreaSize = ( defined $$self{DynamicAFAreaSize} ? $$self{DynamicAFAreaSize} : 0 );
 
-            my $FX = 0;
-            my $DX = 1;
+            my $FX = 0;            #image size 8256 x 5504
+            my $DX = 1;            #image size 5392 x 3592
+            my $WideScreen = 4;    #16:9 image area, image size 8256x4640
+            my $OneToOne = 8;      #1:1 image area, image size 5504x5504
 
             my $Single = 1;
             my $Dynamic = 2;
@@ -8590,54 +8601,51 @@ my %nikonFocalConversions = (
             my $DynamicM = 1;
             my $DynamicL = 2;
 
-            my $start = 502;                                                                                                              #FX - all flavors
-            $start = 636 if $areaMode == $DX and ($afAreaMode == $Dynamic or $afAreaMode == $WideL or $afAreaMode == $ThreeD or $afAreaMode == $Auto  or $afAreaMode >= $WideC1);           #DX Wide(L/C1/C2) + Dynamic (L/M/S) + 3D + Auto
-            $start = 591 if $areaMode == $DX and  $afAreaMode == $WideS ;                                                                  #DX Wide(S)
+            my $start = 502;           #FX, 16:9 & 1:1 formats
+            my $increment = 259;       #FX, & 16:9 formats
 
-            my $increment = 259;                                                                                                        #FX - all flavors
-            $increment = 388 if $areaMode == $DX and ($afAreaMode == $Dynamic or $afAreaMode == $WideL or $afAreaMode == $ThreeD or $afAreaMode == $Auto  or $afAreaMode >= $WideC1);       #DX Wide(L/C1/C2) + Dynamic (L/M/S) + 3D  + Auto
-            $increment = 393 if $areaMode == $DX and  $afAreaMode == $WideS ;                                                              #DX Wide(S)
+            $start = $start + 5 * $increment if $imageArea == $OneToOne;  # need to provide additional offset for the cropped horizontal pixels in 1:1 (19 vs 29 horizontal focus positions)
+            $start = $start - $increment if $val < 49 and ($imageArea == $FX or $imageArea == $WideScreen);   #calculations for the left side of the frames are offset by 1 position from the right side
+            $start = $start - $increment if $imageArea == $OneToOne and $afAreaMode == $Auto;
 
-            my $divisor = 4;
-            $divisor = 6 if $areaMode == $DX  ;
+            if ($imageArea == $DX) {    # DX results are in FX coordinate system to match reporting of ($AFAreaXPosition , $AFAreaYPosition)
+                $start = 636;
+                $increment = 388;
+                if ( $afAreaMode == $WideS ) {  #Wide S focus box width is an unusual size
+                    $start = 591;
+                    $increment = 393;
+                }
+                $start = $start - $increment if $afAreaMode == $Auto ;
+            }
 
-            my $offsetVal = 0;
-            $offsetVal = 12 if $areaMode == $FX and $afAreaMode == $Dynamic ;                      #FX Dynamic (L/M) - force positive values so perl rounding toward zero isn't an issue
-            $offsetVal = 18 if $areaMode == $DX and $afAreaMode == $Dynamic ;                      #DX Dynamic (L/M)
+            my $divisor = 3.99;     #subtract .01 to ensure $val of 2n+2 rounds up
+            $divisor = 4.01 if $val >= 50;        #...but round up on the right side of the frame
+            $divisor = 6 if $imageArea == $DX or $imageArea == $OneToOne;
 
-            my $offsetSum = -1;
-            $offsetSum = -4  if $afAreaMode == $Dynamic ;                  # Dynamic (L/M)
+            my $roundedValOverDivisor = sprintf("%.0f", $val / $divisor);   #round to nearest int
 
-            my $ncol = $$self{AFAreaInitialWidth};
-            $ncol = int($ncol * 2 / 3)    if  $areaMode == $DX ;      #DX
+            my $focusBoxWidth = $$self{AFAreaInitialWidth}  ;     #wider focus boxes (e.g., DynM, DynL and some Wide C1/C2) will start and end closer to the center of the frame
+            $focusBoxWidth = int($focusBoxWidth * 2 / 3) if $imageArea == $DX or $imageArea == $OneToOne ;
 
-            #some sample mappings:
-            #FX Wide(S/L/C1/C2) [6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 49, 53, 57, 61, 65, 69, 73, 77, 81, 85, 89, 93, 97, 101, 105, 109, 113, 117]  to 502, 761, 1020, 1279, 1538, 1797, 2056, 2315, 2574, 2833, 3092, 3351, 3610, 3869, 4128, 4387, 4646, 4905, 5164, 5423, 5682, 5941, 6200, 6459, 6718, 6977, 7236, 7495, 7754]
-            #DX Wide(L/C1/C2) map for Wide(L)/C1/C2 [6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 67, 73, 79, 85, 91, 97, 103, 109, 115] to [636, 1024, 1412, 1800, 2188, 2576, 2964, 3352, 3740, 4128, 4516, 4904, 5292, 5680, 6068, 6456, 6844, 7232, 7620]
-            #DX Wide(S) for Wide(S) [6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 67, 73, 79, 85, 91, 97, 103] to [984, 1377, 1770, 2163, 2556, 2949, 3342, 3735, 4128, 4521, 4914, 5307, 5700, 6093, 6486, 6879, 7272]
-            #FX Dynamic (L) map [-9, -5, -1, 2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 49, 53, 57, 61, 65, 69, 73, 77, 81, 85, 89, 93] to [761, 1020, 1279, 1538, 1797, 2056, 2315, 2574, 2833, 3092, 3351, 3610, 3869, 4128, 4387, 4646, 4905, 5164, 5423, 5682, 5941, 6200, 6459, 6718, 6977, 7236, 7495]
+            my $skipPositions = int($focusBoxWidth / 2);   #jump over half the width of the focus box
 
-            return $start + $increment * (int(($val + $offsetVal) / $divisor)  + int($ncol / 2) + $offsetSum) ; #do not use simple int() becuase it rounds negative fractions toward zero resulting in duplicate values - instead use the 10xdivisor to force positive values
+            my $result =  $start + $increment * ($roundedValOverDivisor + $skipPositions  - 1 ) ;
+
+            return $result;
         },
     },
     0x0be9 => {
-        Name =>'AFAreaInitialYPosition',    #stored as a representation of the vertical position of the center of the portion of the focus box positioned top left when in Wide Area (L/S/C1/C2) focus modes (before subject detection potentially refines focus)
-        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and defined $$self{AFAreaMode} and $$self{AFAreaMode} < 2',    #not valid for C30/C60/C120 or for Area Modes 1:1 and 16:19
+        Name =>'AFAreaInitialYPosition',    #the vertical position of the center the focus box prior to any subject detection or tracking.  Origin is Top Left.
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120 or for Area Modes 1:1 and 16:9
         Format => 'int8s',
         PrintConv => q{
-            #in FX mode and Single-point, the 17 vertical focus points are spaced 291 pixels apart starting at pixel 424 and ending at 5080.  Spacing is the same for Wide(L/C1/C2)
-            #in FX mode and Dynamic(L),  the 15 vertical focus points are spaced 291 pixels apart starting at pixel 715 and ending at 4789
-            #in FX mode and Dynamic(M), the 17 vertical l focus points are spaced 291 pixels apart starting at pixel 424 and ending at 5080
-            #in DX mode and Single-point, the 11 vertical focus points are spaced 436 pixels apart starting at pixel 572 and ending at 4932.  [These correspond to FX positions and match the corresponding values in AFAreaMode tag AFAreaYPosition].
-            #in DX Mode and Wide(S) the 9 vertical focus points are spaced 442 pixels apart starting at pixel 542 and ending at 4520
-            #in DX mode and Dynamic(L), the 9 vertical focus points are spaced 436 pixels apart starting at pixel 1008 and ending at 4496
-
-            my $areaMode = $$self{VALUE}{PhotoShootingMenuBankImageArea};
+            my $imageArea = $$self{ImageArea};
             my $afAreaMode = $$self{VALUE}{AFAreaMode};
-            my $dynamicAFAreaSize = $$self{VALUE}{DynamicAFAreaSize};
 
-            my $FX = 0;
-            my $DX = 1;
+            my $FX = 0;            #image size 8256 x 5504
+            my $DX = 1;            #image size 5392 x 3592
+            my $WideScreen = 4;    #16:9 image area, image size 8256x4640
+            my $OneToOne = 8;      #1:1 image area, image size 5504x5504
 
             my $Single = 1;
             my $Dynamic = 2;
@@ -8651,49 +8659,42 @@ my %nikonFocalConversions = (
             my $DynamicM = 1;
             my $DynamicL = 2;
 
-            my $start = 424;                                                                                                              #FX - all flavors
-            $start = 572 if $areaMode == $DX and ($afAreaMode == $Dynamic or $afAreaMode == $WideL or $afAreaMode == $ThreeD or $afAreaMode == $Auto or $afAreaMode >= $WideC1);           #DX Wide(L/C1/C2) +  Dynamic(L/M/S)  + 3D + Auto
-            $start = 542 if $areaMode == $DX and  $afAreaMode == 3 ;                                                                      #DX Wide(S)
+            my $start = 424;           #FX, 16:9 & 1:1 formats
+            my $increment = 291;       #FX, & 16:9 formats
+            $start = $start + $increment if $imageArea == $WideScreen and $val > 0;
 
-            my $increment = 291;                                                                                                        #FX - all flavors
-            $increment = 436 if $areaMode == $DX and ($afAreaMode == $Dynamic or $afAreaMode == $WideL or $afAreaMode == $ThreeD or $afAreaMode == $Auto or $afAreaMode >= $WideC1);       #DX Wide(L/C1/C2) + Dynamic (L/M/S) +3D + Auto
-            $increment = 442 if $areaMode == $DX and  $afAreaMode == 3 ;                                                                  #DX Wide(S)
+            if ($imageArea == $DX) {    # DX results are in FX coordinate system to match reporting of ($AFAreaXPosition , $AFAreaYPosition)
+                $start = 572;
+                $increment = 436;
+                if ( $afAreaMode == $WideS ) {  #Wide S focus box is a strange size
+                    $start = 542;
+                    $increment = 442;
+                }
+            }
 
-            my $divisor = 7;
-            $divisor = 10 if $areaMode == $DX ;                                                  #DX
+            my $divisor = 6.67;
+            $divisor = 10.01 if $imageArea == $DX ;   #extra .01 to ensure $val of 10*n+5 rounds down
+            $divisor = 8.01 if $imageArea == $WideScreen ;
 
-            my $offsetVal = -1;
-            $offsetVal = 39 if $afAreaMode == $Dynamic and ( $dynamicAFAreaSize == $DynamicL ) ;      #Dynamic (L)  - force positive values so perl rounding toward zero isn't an issue
-            $offsetVal = 40 if $afAreaMode == $Dynamic and $dynamicAFAreaSize == $DynamicM ;      #Dynamic (M)
-            $offsetVal = 40 if $areaMode == $FX and (($afAreaMode == $Dynamic and $dynamicAFAreaSize == $DynamicS) or $afAreaMode == $ThreeD) ;      #FX Dynamic (S) or 3D
-            $offsetVal = 38 if $areaMode == $DX and ($afAreaMode == $Dynamic and $dynamicAFAreaSize == $DynamicS ) ;        #DX Dynamic (S)or 3D
+            my $roundedValOverDivisor = sprintf("%.0f", $val / $divisor);   #round to nearest int
 
-            my $offsetSum = 0;
-            $offsetSum = -6 if  $areaMode == $FX and ($afAreaMode == $Dynamic or $afAreaMode == $ThreeD);                     #FX Dynamic (L/M/S) or 3D
-            $offsetSum = -4 if  $areaMode == $DX and ($afAreaMode == $Dynamic or $afAreaMode == $ThreeD );                     #DX Dynamic (L/M/S) or 3D
+            my $focusBoxHeight = $$self{AFAreaInitialHeight}  ;    #wider focus boxes (e.g., DynM, DynL and some Wide C1/C2) will start and end closer to the center of the frame
+            $focusBoxHeight = int($focusBoxHeight * 2 / 3) if $imageArea == $DX ;
 
-            my $nrow = $$self{AFAreaInitialHeight};
-            $nrow = int($nrow * 2 / 3)    if  $areaMode == $DX;                                      #DX
+            my $skipPositions = int($focusBoxHeight / 2);   #jump over half the height of the focus box
 
-            #some sample mappings:
-            #FX Wide(S/L/C1/C2) map [7, 13, 20, 27, 33, 40, 47, 53, 60, 67, 74, 80, 87, 94, 100, 107, 114] to [424, 715, 1006, 1297, 1588, 1879, 2170, 2461, 2752, 3043, 3334, 3625, 3916, 4207, 4498, 4789, 5080]
-            #DX Wide(L/C1/C2) map [7, 17, 28, 38, 48, 58, 69, 79, 89, 100, 110] to [572, 1008, 1444, 1880, 2316, 2752, 3188, 3624, 4060, 4496, 4932]
-            #DX Wide(S) map for Wide(S) [7, 17, 28, 38, 48, 58, 69, 79, 89]  to [984, 1426, 1868, 2310, 2752, 3194, 3636, 4078, 4520]
-            #FX Dynamic (L) map [-19, -13, -6, 0, 7, 13, 20, 27, 33, 40, 47, 53, 60, 67, 74] to [715, 1006, 1297, 1588, 1879, 2170, 2461, 2752, 3043, 3334, 3625, 3916, 4207, 4498, 4789]
-
-            return $start + $increment * (int(($val + $offsetVal) / $divisor)  + int($nrow / 2) + $offsetSum) ;;
+            my $result =  $start + $increment * ($roundedValOverDivisor + $skipPositions  - 1 ) ;
+            return $result;
         },
     },
     0x0bea => {
         Name => 'AFAreaInitialWidth',
         Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
-        ValueConv => '$$self{VALUE}{PhotoShootingMenuBankImageArea} eq 0 ? $val : int($val * 2 / 3)',   #DX mode requires scaling down  TODO: add support ImageAreas 1:1 and 16:9
         RawConv => '$$self{AFAreaInitialWidth} = 1 + int ($val / 4)',    #convert from [3, 11, 19, 35, 51, 75] to [1, 3, 5, 9 13, 19] to match camera options for C1/C2 focus modes .. input/output of 11/3 is for Wide(S)
     },
     0x0beb => {
         Name => 'AFAreaInitialHeight',
         Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
-        ValueConv => '$$self{VALUE}{PhotoShootingMenuBankImageArea} eq 0 ? $val : int($val * 2 / 3)',   #DX mode requires scaling down  TODO: add support ImageAreas 1:1 and 16:9
         RawConv => '$$self{AFAreaInitialHeight} = 1 + int ($val / 7) ',    #convert from [6, 20, 33, 46, 73] to [1, 3, 5, 7, 11] to match camera options for C1/C2 focus modes  .. input/output of 33/5 is for Wide(L)
     },
 );
@@ -9384,7 +9385,7 @@ my %nikonFocalConversions = (
 %Image::ExifTool::Nikon::MenuSettingsZ9  = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    DATAMEMBER => [ 140, 188, 192, 232, 424, 528, 534, 576 ],
+    DATAMEMBER => [ 140, 188, 192, 232, 308, 424, 528, 534, 576 ],
     IS_SUBDIR => [ 799 ],
     NOTES => 'These tags are used by the Z9.',
     #90  ISO
@@ -9429,7 +9430,7 @@ my %nikonFocalConversions = (
     },
     274 => { Name => 'PhotoShootingMenuBank', PrintConv => \%banksZ9 },
     276 => { Name => 'ExtendedMenuBanks',     PrintConv => \%offOn },    #single tag from both Photo & Video menus
-    308 => { Name => 'PhotoShootingMenuBankImageArea', PrintConv => \%imageAreaZ9 },
+    308 => { Name => 'PhotoShootingMenuBankImageArea', RawConv => '$$self{ImageArea} = $val', PrintConv => \%imageAreaZ9 },
     #310 ImageQuality
     322 => { Name => 'AutoISO', PrintConv => \%offOn },
     324 => {
@@ -9595,7 +9596,7 @@ my %nikonFocalConversions = (
 %Image::ExifTool::Nikon::MenuSettingsZ9v3  = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    DATAMEMBER => [ 154, 204, 208, 248, 444, 548, 554, 596 ],
+    DATAMEMBER => [ 154, 204, 208, 248, 328, 444, 548, 554, 596 ],
     IS_SUBDIR => [ 847 ],
     NOTES => 'These tags are used by the Z9 firmware 3.00.',
     72 => {
@@ -9642,7 +9643,7 @@ my %nikonFocalConversions = (
     },
     290 => { Name => 'PhotoShootingMenuBank', PrintConv => \%banksZ9 },
     292 => { Name => 'ExtendedMenuBanks',     PrintConv => \%offOn }, # single tag from both Photo & Video menus
-    328 => { Name => 'PhotoShootingMenuBankImageArea', PrintConv => \%imageAreaZ9 },
+    328 => { Name => 'PhotoShootingMenuBankImageArea', RawConv => '$$self{ImageArea} = $val', PrintConv => \%imageAreaZ9 },
     342 => { Name => 'AutoISO', PrintConv => \%offOn },
     344 => {
         Name => 'ISOAutoHiLimit',
@@ -9828,7 +9829,7 @@ my %nikonFocalConversions = (
 %Image::ExifTool::Nikon::MenuSettingsZ9v4  = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    DATAMEMBER => [ 154, 204, 208, 248, 444, 548, 554, 570, 596 ],
+    DATAMEMBER => [ 154, 204, 208, 248, 328, 444, 548, 554, 570, 596 ],
     IS_SUBDIR => [ 847 ],
     NOTES => 'These tags are used by the Z9 firmware 3.00.',
     72 => {
@@ -9875,7 +9876,7 @@ my %nikonFocalConversions = (
     },
     290 => { Name => 'PhotoShootingMenuBank', PrintConv => \%banksZ9 },
     292 => { Name => 'ExtendedMenuBanks',     PrintConv => \%offOn }, # single tag from both Photo & Video menus
-    328 => { Name => 'PhotoShootingMenuBankImageArea', PrintConv => \%imageAreaZ9 },
+    328 => { Name => 'PhotoShootingMenuBankImageArea', RawConv => '$$self{ImageArea} = $val', PrintConv => \%imageAreaZ9 },
     #334  JPGCompression     0 => 'Size Priority', 1 => 'Optimal Quality',
     342 => { Name => 'AutoISO', PrintConv => \%offOn },
     344 => {
@@ -11429,11 +11430,78 @@ my %nikonFocalConversions = (
     # 0x02 - undef[148]
     # 0x03 - undef[284]
     # 0x04 - undef[148,212]
-    # 0x05 - undef[84] (barrel distortion params at offsets 0x14,0x1c,0x24, ref 28)
-    # 0x06 - undef[116] (vignette correction params at offsets 0x24,0x34,0x44, ref 28)
+    0x05 => { #28
+        Name => 'DistortionInfo',  # Z-series distortion correction information
+        SubDirectory => { TagTable => 'Image::ExifTool::Nikon::DistortionInfo' },
+    },
+    0x06 => { #28
+        Name => 'VignetteInfo',  # Z-series vignette correction information
+        SubDirectory => { TagTable => 'Image::ExifTool::Nikon::VignetteInfo' },
+    },
     # 0x07 - undef[104]
     # 0x08 - undef[24]
     # 0x09 - undef[36]
+);
+
+# Z-series distortion correction information (correction model is appears to be a cubic polynomial) (ref 28)
+%Image::ExifTool::Nikon::DistortionInfo = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0 => {
+        Name => 'DistortionCorrectionVersion',
+        Format => 'string[4]',
+    },
+    4 => {
+        Name => 'DistortionCorrection',   #used by ACR to determine whether the built-in lens profile is applied
+        Format => 'int8u',
+        PrintConv => {
+            1 => 'On (Optional)',
+            2 => 'Off',
+            3 => 'On (Required)',
+        },
+    },
+    #0x10  Degree of radial distortion correction polynomial? (always 4? - decodes for the first 3 coefficients follow, the 4th at 0x2c/0x30 seems to always be 0)
+    0x14 => {
+        Name => 'RadialDistortionCoefficient1',
+        Format => 'rational64s',
+        PrintConv => 'sprintf("%.5f",$val)',
+    },
+    0x1c => {
+        Name => 'RadialDistortionCoefficient2',
+        Format => 'rational64s',
+        PrintConv => 'sprintf("%.5f",$val)',
+    },
+    0x24 => {
+        Name => 'RadialDistortionCoefficient3',
+        Format => 'rational64s',
+        PrintConv => 'sprintf("%.5f",$val)',
+    },
+);
+
+# Z-series vignette correction information (correction model seems to be using a 6th order even polynomial) (ref 28)
+%Image::ExifTool::Nikon::VignetteInfo = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0 => {
+        Name => 'VignetteCorrectionVersion',
+        Format => 'string[4]',
+    },
+    #0x10  Degree of vignette correction polynomial? (always 8? - decodes for the first 3 coefficents follow, the 4th at 0x4c/0x50 seems to always be 0)
+    0x24 => {
+        Name => 'VignetteCoefficient1',
+        Format => 'rational64s',
+        PrintConv => 'sprintf("%.5f",$val)',
+    },
+    0x34 => {
+        Name => 'VignetteCoefficient2',
+        Format => 'rational64s',
+        PrintConv => 'sprintf("%.5f",$val)',
+    },
+    0x44 => {
+        Name => 'VignetteCoefficient3',
+        Format => 'rational64s',
+        PrintConv => 'sprintf("%.5f",$val)',
+    },
 );
 
 # tags in Nikon QuickTime videos (PH - observations with Coolpix S3)

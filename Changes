@@ -7,6 +7,28 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.70. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Dec. 21, 2023 - Version 12.71
+
+  - Added a warning if there was an error reading an alternate file with the
+    -fileNUM option
+  - Added the ability to write QuickTime Keys:Encoder
+  - Added a few new Canon LensType values (thanks Norbert Wasser)
+  - Added a new, obscure EXIF tag (thanks Neal Krawetz)
+  - Decode real-time metadata from Ricoh Theta videos
+  - Decode SpecularWhiteLevel for more Canon models (github #232)
+  - Decode Canon DualPixelRaw tag (thanks John Moyer)
+  - Decode a few new Nikon tags (thanks Warren Hatch)
+  - Decode more FujiFilm M-RAW tags (thanks Greybeard)
+  - Improved generation of tag names for some JSON tag ID's containing colons
+  - Fixed "Undefined subroutine" error when writing makernotes as a block
+  - Fixed missing ID in family 7 group name for ID3 tags which are not valid for
+    the specified ID3 version
+  - Fixed bug where some tags from alternate files (with the -fileNUM option)
+    could show up as "not defined" when used in expressions even though they did
+    exist
+  - API Changes:
+      - Added NoMandatory option
+
 Nov. 19, 2023 - Version 12.70 (production release)
 
   - This marks the 20th anniversary of the initial ExifTool release!

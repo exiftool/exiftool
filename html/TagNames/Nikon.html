@@ -2229,9 +2229,9 @@ firmware 1.10, 2.00, 2.01 and 2.02.</p>
 <td class=r title='16 = 0x10'>16</td>
 <td>ImageArea</td>
 <td class=c>int8u</td>
-<td><span class=s>0 = FX (36.0 x 23.9 mm)
-  <br>1 = DX (23.5 x 15.6 mm)
-  <br>2 = 5:4 (30.0 x 23.9 mm)</span></td></tr>
+<td><span class=s>0 = FX (36x24)
+  <br>1 = DX (24x16)
+  <br>2 = 5:4 (30x24)</span></td></tr>
 <tr class=b>
 <td class=r title='605 = 0x25d'>605</td>
 <td>ISO2</td>
@@ -3944,6 +3944,18 @@ firmware 1.01b.</p>
 <td>IntervalShooting</td>
 <td class=c title=' ~ = Writable only with -n'>int16u~</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='43 = 0x2b'>43</td>
+<td>ImageArea</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = FX (36x24)
+  <br>1 = DX (24x16)
+  <br>2 = 5:4 (30x24)</td><td>&nbsp;&nbsp;</td>
+  <td>3 = 1.2x (30x20)
+  <br>4 = 1:1 (24x24)
+  <br>6 = 16:9</td></tr></table>
+</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='IntervalInfoD6'>Nikon IntervalInfoD6 Tags</a></h2>
@@ -4177,6 +4189,18 @@ firmware 1.01b.</p>
 <td>IntervalShooting</td>
 <td class=c title=' ~ = Writable only with -n'>int16u~</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='43 = 0x2b'>43</td>
+<td>ImageArea</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = FX (36x24)
+  <br>1 = DX (24x16)
+  <br>2 = 5:4 (30x24)</td><td>&nbsp;&nbsp;</td>
+  <td>3 = 1.2x (30x20)
+  <br>4 = 1:1 (24x24)
+  <br>6 = 16:9</td></tr></table>
+</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='PortraitInfoZ7II'>Nikon PortraitInfoZ7II Tags</a></h2>
@@ -6114,12 +6138,12 @@ firmware 1.01b.</p>
 <tr>
 <td class=r title='3050 = 0xbea'>3050</td>
 <td>AFAreaInitialWidth</td>
-<td class=c>no</td>
+<td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='3051 = 0xbeb'>3051</td>
 <td>AFAreaInitialHeight</td>
-<td class=c>no</td>
+<td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -11985,7 +12009,79 @@ cameras such as the Z6 and Z7, and NRW images from some Coolpix cameras.</p>
 <table class=inner cellspacing=1>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+<tr>
+<td title='0x0005 = 5'>0x0005</td>
+<td>DistortionInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#DistortionInfo'>Nikon DistortionInfo Tags</a></td></tr>
+<tr class=b>
+<td title='0x0006 = 6'>0x0006</td>
+<td>VignetteInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#VignetteInfo'>Nikon VignetteInfo Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DistortionInfo'>Nikon DistortionInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>DistortionCorrectionVersion</td>
+<td class=c>string[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>DistortionCorrection</td>
+<td class=c>int8u</td>
+<td><span class=s>1 = On (Optional)
+  <br>2 = Off
+  <br>3 = On (Required)</span></td></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>RadialDistortionCoefficient1</td>
+<td class=c title=' ~ = Writable only with -n'>rational64s~</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='28 = 0x1c'>28</td>
+<td>RadialDistortionCoefficient2</td>
+<td class=c title=' ~ = Writable only with -n'>rational64s~</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='36 = 0x24'>36</td>
+<td>RadialDistortionCoefficient3</td>
+<td class=c title=' ~ = Writable only with -n'>rational64s~</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='VignetteInfo'>Nikon VignetteInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>VignetteCorrectionVersion</td>
+<td class=c>string[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='36 = 0x24'>36</td>
+<td>VignetteCoefficient1</td>
+<td class=c title=' ~ = Writable only with -n'>rational64s~</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='52 = 0x34'>52</td>
+<td>VignetteCoefficient2</td>
+<td class=c title=' ~ = Writable only with -n'>rational64s~</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='68 = 0x44'>68</td>
+<td>VignetteCoefficient3</td>
+<td class=c title=' ~ = Writable only with -n'>rational64s~</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='AVI'>Nikon AVI Tags</a></h2>
@@ -13363,7 +13459,7 @@ for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 19, 2023</i>
+<br><i>Last revised Dec 21, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

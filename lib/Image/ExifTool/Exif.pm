@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.46';
+$VERSION = '4.47';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1443,6 +1443,16 @@ my %opcodeInfo = (
         SubDirectory => {
             DirName => 'XMP',
             TagTable => 'Image::ExifTool::XMP::Main',
+        },
+    },
+    0x303 => { #https://learn.microsoft.com/en-us/windows/win32/gdiplus/-gdiplus-constant-property-item-descriptions
+        Name => 'RenderingIntent',
+        Format => 'int8u',
+        PrintConv => {
+            0 => 'Perceptual',
+            1 => 'Relative Colorimetric',
+            2 => 'Saturation',
+            3 => 'Absolute colorimetric',
         },
     },
     0x3e7 => 'USPTOMiscellaneous', #20

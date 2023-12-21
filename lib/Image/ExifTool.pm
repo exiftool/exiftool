@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.70';
+$VERSION = '12.71';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1115,6 +1115,7 @@ my @availableOptions = (
     [ 'MakerNotes',       undef,  'extract maker notes as a block' ],
     [ 'MDItemTags',       undef,  'extract MacOS metadata item tags' ],
     [ 'MissingTagValue',  undef,  'value for missing tags when expanded in expressions' ],
+    [ 'NoMandatory',      undef,  'bypass writing of mandatory EXIF tags' ],
     [ 'NoMultiExif',      undef,  'raise error when writing multi-segment EXIF' ],
     [ 'NoPDFList',        undef,  'flag to avoid splitting PDF List-type tag values' ],
     [ 'NoWarning',        undef,  'regular expression for warnings to suppress' ],
@@ -4175,12 +4176,16 @@ sub ExtractAltInfo($)
             next unless defined $fileName;
         }
         $altExifTool->ExtractInfo($fileName);
+        my $err = $$altExifTool{VALUE}{Error};
+        $err and $self->Warn(qq{$err "$fileName"});
         # set family 8 group name for all tags
         foreach (keys %{$$altExifTool{VALUE}}) {
             my $ex = $$altExifTool{TAG_EXTRA}{$_};
             $ex or $ex = $$altExifTool{TAG_EXTRA}{$_} = { };
             $$ex{G8} = $g8;
         }
+        # prepare our sorted list of found tags
+        $$altExifTool{FoundTags} = [ reverse sort keys %{$$altExifTool{VALUE}} ];
         $$altExifTool{DID_EXTRACT} = 1;
     }
     # if necessary, build composite tags that rely on tags from alternate files

@@ -124,7 +124,9 @@ automatically create many of these mandatory tags as required when writing new
 information (and remove them again when deleting information if only mandatory
 tags remain).  However, some mandatory tags (particularly in the IPTC
 information) can not be easily added automatically, so it is left up to the user
-to add these tags if required.</p>
+to add these tags if required.  Note that ExifTool 12.71 adds an API
+<a href="ExifTool.html#NoMandatory">NoMandatory</a> option which bypasses
+the creation/deletion of mandatory tags in EXIF when writing.</p>
 
 <blockquote class='aside'>
 <b>Rant:</b> Let me say that the whole concept of mandatory tags is flawed.
@@ -233,7 +235,7 @@ exists in IFD0 when it is written to ExifIFD, and vice versa.</p>
 
 <hr>
 <i>Created Dec 30, 2004</i><br>
-<i>Last revised Oct 4, 2010</i>
+<i>Last revised Dec 21, 2023</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

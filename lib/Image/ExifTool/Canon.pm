@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.71';
+$VERSION = '4.72';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -627,7 +627,8 @@ $VERSION = '4.71';
    '61182.51' => 'Canon RF 100-300mm F2.8L IS USM + RF2x', #42
    '61182.52' => 'Canon RF 10-20mm F4 L IS STM', #42
    '61182.53' => 'Canon RF 28mm F2.8 STM', #42
-    # we need the RFLensType values for the following...
+   '61182.54' => 'Canon RF 24-105mm F2.8 L IS USM Z', #42
+   '61182.55' => 'Canon RF-S 10-18mm F4.5-6.3 IS STM', #42
     65535 => 'n/a',
 );
 
@@ -4726,7 +4727,7 @@ my %ciMaxFocal = (
     FIRST_ENTRY => 0,
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => 'CameraInfo tags for the EOS R6.',
+    NOTES => 'CameraInfo tags for the PowerShot G5 X Mark II.',
     0x0293 => {
         Name => 'ShutterCount',
         Format => 'int32u',
@@ -6950,8 +6951,13 @@ my %ciMaxFocal = (
             306 => 'Canon RF 100-300mm F2.8L IS USM', #42
             307 => 'Canon RF 100-300mm F2.8L IS USM + RF1.4x', #42
             308 => 'Canon RF 100-300mm F2.8L IS USM + RF2x', #42
+            309 => 'Canon RF 200-800mm F6.3-9 IS USM', #42
+            310 => 'Canon RF 200-800mm F6.3-9 IS USM + RF1.4x', #42 (NC)
+            311 => 'Canon RF 200-800mm F6.3-9 IS USM + RF2x', #42 (NC)
             312 => 'Canon RF 10-20mm F4 L IS STM', #42
             313 => 'Canon RF 28mm F2.8 STM', #42
+            314 => 'Canon RF 24-105mm F2.8 L IS USM Z', #42
+            315 => 'Canon RF-S 10-18mm F4.5-6.3 IS STM', #42
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },
     },
@@ -7468,7 +7474,7 @@ my %ciMaxFocal = (
         RawConv => '$$self{ColorDataVersion} = $val',
         PrintConv => {
             2 => '2 (1DmkIII)',
-            3 => '3 (40D)',
+            3 => '3 (40D)', # (doesn't record SpecularWhiteLevel, ref github#233)
             4 => '4 (1DSmkIII)',
             5 => '5 (450D/1000D)',
             6 => '6 (50D/5DmkII)',
@@ -7778,9 +7784,14 @@ my %ciMaxFocal = (
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCalib2' }
     },
     0x108=> { #IB
-        Name => 'PerChannelBlackLevel',
+        Name => 'PerChannelBlackLevel', # (or perhaps AverageBlackLevel?, ref github#232)
         Condition => '$$self{ColorDataVersion} == -3',
         Format => 'int16s[4]',
+    },
+    0x296 => { #github#232
+        Name => 'SpecularWhiteLevel',
+        Condition => '$$self{ColorDataVersion} == -3',
+        Format => 'int16u',
     },
     0x14d=> { #IB
         Name => 'PerChannelBlackLevel',
@@ -8696,7 +8707,7 @@ my %ciMaxFocal = (
     },
 );
 
-# Auto Lighting Optimizater information (MakerNotes tag 0x4018) (ref PH)
+# Auto Lighting Optimizer information (MakerNotes tag 0x4018) (ref PH)
 %Image::ExifTool::Canon::LightingOpt = (
     %binaryDataAttrs,
     FORMAT => 'int32s',
@@ -8747,6 +8758,10 @@ my %ciMaxFocal = (
             1 => 'Stanard',
             2 => 'High',
         },
+    },
+    11 => { #forum15445
+        Name => 'DualPixelRaw',
+        PrintConv => \%offOn,
     },
 );
 

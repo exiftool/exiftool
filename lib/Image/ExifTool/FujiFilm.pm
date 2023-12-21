@@ -1468,12 +1468,15 @@ my %faceCategories = (
     },
     1 => { Name => 'RawImageNumber', Format => 'int32u' },
     # 3 - seen "0 100", "-300 100" and "300 100" for a sequence of 3 images
-    3 => { Name => 'MRAW_0x0003', Format => 'rational32s', Unknown => 1, Hidden => 1, PrintConv => 'sprintf("%+.2f",$val)' },
+    3 => { Name => 'ExposureCompensation', Format => 'rational32s', Unknown => 1, Hidden => 1, PrintConv => 'sprintf("%+.2f",$val)' },
     # 4 - (same value as 3 in all my samples)
-    4 => { Name => 'MRAW_0x0004', Format => 'rational32s', Unknown => 1, Hidden => 1, PrintConv => 'sprintf("%+.2f",$val)' },
+    4 => { Name => 'ExposureCompensation2', Format => 'rational32s', Unknown => 1, Hidden => 1, PrintConv => 'sprintf("%+.2f",$val)' },
     # 5 - seen "10 1600", "10 6800", "10 200", "10 35000" etc
+    5 => { Name => 'ExposureTime', Format => 'rational64u', PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)' },
     # 6 - seen "450 100", "400 100" (all images in RAF have same value)
+    6 => { Name => 'FNumber', Format => 'rational64u', PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)' },
     # 7 - seen 200, 125, 250, 2000
+    7 => 'ISO',
     # 8 - seen 0
 );
 

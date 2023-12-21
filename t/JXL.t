@@ -54,9 +54,12 @@ my $testnum = 1;
     if (eval { require IO::Uncompress::Brotli }) {
         my $exifTool = Image::ExifTool->new;
         my $info = $exifTool->ImageInfo('t/images/JXL2.jxl', 'imagesize', 'exif:all', 'xmp:all');
-        notOK() unless check($exifTool, $info, $testname, $testnum);
+        unless (check($exifTool, $info, $testname, $testnum)) {
+            notOK();
+            warn "\n  (IO::Uncompress::Brotli is version $IO::Uncompress::Brotli::VERSION)\n";
+        }
     } else {
-        $skip = ' # skip Requires IO::Unompress::Brotli';
+        $skip = ' # skip Requires IO::Uncompress::Brotli';
     }
     print "ok $testnum$skip\n";
 }

@@ -873,6 +873,10 @@ writing.  This applies only to queued values, and doesn't resolve duplicates
 with existing values in the file when adding to an existing list.  Default
 is undef.
 
+=item NoMandatory
+
+Flag to bypass writing of mandatory EXIF tags.  Default is undef.
+
 =item NoMultiExif
 
 Raise error when attempting to write multi-segment EXIF in a JPEG image. 

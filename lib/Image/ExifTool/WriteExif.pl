@@ -569,6 +569,7 @@ sub WriteExif($$$)
     my $imageDataFlag = $$dirInfo{ImageData} || '';
     my $verbose = $et->Options('Verbose');
     my $out = $et->Options('TextOut');
+    my $noMandatory = $et->Options('NoMandatory');
     my ($nextIfdPos, %offsetData, $inMakerNotes);
     my (@offsetInfo, %validateInfo, %xDelete, $strEnc);
     my $deleteAll = 0;
@@ -698,8 +699,8 @@ sub WriteExif($$$)
         }
 
         # initialize variables to handle mandatory tags
-        my $mandatory = $mandatory{$dirName};
-        my ($allMandatory, $addMandatory);
+        my ($mandatory, $allMandatory, $addMandatory);
+        $mandatory = $mandatory{$dirName} unless $noMandatory;
         if ($mandatory) {
             # use X/Y resolution values from JFIF if available
             if ($dirName eq 'IFD0' and defined $$et{JFIFYResolution}) {
@@ -1152,7 +1153,7 @@ Entry:  for (;;) {
                     }
                     my $nvHash;
                     $nvHash = $et->GetNewValueHash($curInfo, $dirName) if $isNew >= 0;
-                    unless ($nvHash or defined $$mandatory{$newID}) {
+                    unless ($nvHash or (defined $$mandatory{$newID} and not $noMandatory)) {
                         goto NoWrite unless $wrongDir;  # GOTO !
                         # delete stuff from the wrong directory if setting somewhere else
                         $nvHash = $et->GetNewValueHash($curInfo, $wrongDir);

@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.71';
+$VERSION = '12.72';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -146,8 +146,8 @@ sub ReadValue($$$;$$$);
     PCX PGF PSP PhotoCD Radiance Other::PFM PDF PostScript Photoshop::Header
     Photoshop::Layers Photoshop::ImageData FujiFilm::RAF FujiFilm::IFD
     FujiFilm::MRAW Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3
-    ID3::Lyrics3 FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible MPC
-    MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile
+    ID3::Lyrics3 FLAC AAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible
+    MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile
     QuickTime::Stream QuickTime::Tags360Fly Matroska Matroska::StdTag MOI MXF DV
     Flash Flash::FLV Real::Media Real::Audio Real::Metafile Red RIFF AIFF ASF
     WTV DICOM FITS XISF MIE JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH
@@ -197,7 +197,7 @@ $defaultLang = 'en';    # default language
                 RAR 7Z BZ2 CZI TAR EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font
                 RSRC M2TS MacOS PHP PCX DCX DWF DWG DXF WTV Torrent VCard LRI
                 R3D AA PDB PFM2 MRC LIF JXL MOI ISO ALIAS JSON MP3 DICOM PCD ICO
-                TXT);
+                TXT AAC);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -206,6 +206,7 @@ my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
 my %writeTypes; # lookup for writable file types (hash filled if required)
 
 # file extensions that we can't write for various base types
+# (See here for 3FR reason: https://exiftool.org/forum/index.php?msg=17570)
 %noWriteFile = (
     TIFF => [ qw(3FR DCR K25 KDC SRF) ],
     XMP  => [ qw(SVG INX) ],
@@ -232,6 +233,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
    '7Z'  => ['7Z', '7z archive'],
     A    => ['EXE',  'Static library'],
     AA   => ['AA',   'Audible Audiobook'],
+    AAC  => ['AAC',  'Advanced Audio Coding'],
     AAE  => ['PLIST','Apple edit information'],
     AAX  => ['MOV',  'Audible Enhanced Audiobook'],
     ACR  => ['DICOM','American College of Radiology ACR-NEMA'],
@@ -597,6 +599,7 @@ my %fileDescription = (
    '3FR' => 'image/x-hasselblad-3fr',
    '7Z'  => 'application/x-7z-compressed',
     AA   => 'audio/audible',
+    AAC  => 'audio/aac',
     AAE  => 'application/vnd.apple.photos',
     AI   => 'application/vnd.adobe.illustrator',
     AIFF => 'audio/x-aiff',
@@ -893,6 +896,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
 # - this test must not be more stringent than module logic
 %magicNumber = (
     AA   => '.{4}\x57\x90\x75\x36',
+    AAC  => '\xff[\xf0\xf1]',
     AIFF => '(FORM....AIF[FC]|AT&TFORM)',
     ALIAS=> "book\0\0\0\0mark\0\0\0\0",
     APE  => '(MAC |APETAGEX|ID3)',
@@ -6745,6 +6749,7 @@ sub ProcessJPEG($$)
             pop @$path;
             $verbose and print $out "JPEG EOI\n";
             my $pos = $raf->Tell();
+            $$self{TrailerStart} = $pos unless $$self{DOC_NUM};
             if ($htmlDump and $dumpEnd) {
                 $self->HDump($dumpEnd, $pos-2-$dumpEnd, '[JPEG Image Data]', undef, 0x08);
                 $self->HDump($pos-2, 2, 'JPEG EOI', undef);
@@ -6883,8 +6888,10 @@ sub ProcessJPEG($$)
                     require Image::ExifTool::Panasonic;
                     Image::ExifTool::Panasonic::ProcessLeicaTrailer($self);
                     $wantTrailer = 1 if $$self{LeicaTrailer};
-                } else {
-                    $wantTrailer = 1 if $$options{ExtractEmbedded};
+                } elsif ($$options{ExtractEmbedded} or ($$self{VALUE}{HiddenDataOffset} and
+                    $$self{VALUE}{HiddenDataLength} and ($$options{Validate} or $$req{hiddendata})))
+                {
+                    $wantTrailer = 1;
                 }
                 next if $trailInfo or $wantTrailer or $verbose > 2 or $htmlDump;
             }

@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.44';
+$VERSION = '3.45';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -410,7 +410,8 @@ sub DecodeAFPoints($$$$;$);
 #
 # Ricoh lenses
 #
-    '31 1' => 'GR Lens', #PH (GR III 28mm F2.8)
+    '31 1' => '18.3mm F2.8', #PH (GR III built-in)
+    '31 4' => '26.1mm F2.8', #PH (GR IIIx built-in)
 );
 
 # Pentax model ID codes - PH
@@ -1141,8 +1142,12 @@ my %binaryDataAttrs = (
                 3 => 'Manual',
                 4 => 'Super Macro', #JD
                 5 => 'Pan Focus',
-                # 8 - seen for Ricoh GR III
-                # 9 - seen for Ricoh GR III
+                6 => 'Auto-area', # (GR III)
+                8 => 'Select', # (GR III)
+                9 => 'Pinpoint', # (GR III)
+                10 => 'Tracking', # (GR III)
+                11 => 'Continuous', # (GR III)
+                12 => 'Snap', # (GR III)
                 16 => 'AF-S (Focus-priority)', #17
                 17 => 'AF-C (Focus-priority)', #17
                 18 => 'AF-A (Focus-priority)', #PH (educated guess)
@@ -1903,6 +1908,7 @@ my %binaryDataAttrs = (
             '0 28' => 'Quick Macro', # (Q)
             '0 29' => 'Forest', # (Q)
             '0 30' => 'Backlight Silhouette', # (Q)
+            '0 32' => 'DOF', #PH (GR III)
             # AUTO PICT modes (auto-selected)
             '1 4'  => 'Auto PICT (Standard)', #13
             '1 5'  => 'Auto PICT (Portrait)', #7 (K100D)
@@ -2146,6 +2152,7 @@ my %binaryDataAttrs = (
             10 => 'Cross Processing', #31 (K-70)
             11 => 'Flat', #31 (K-70)
             # 256 - seen for GR III
+            # 257 - seen for GR III
             # 262 - seen for GR III
             32768 => 'n/a',
         },
@@ -2584,8 +2591,10 @@ my %binaryDataAttrs = (
         PrintConv => {
             0 => 'Off',
             1 => 'On',
-            '0 2' => 'Off (0 2)', #PH (NC, GR III)
-            '1 2' => 'On (1 2)', #PH (NC, GR III)
+            '0 0' => 'Off (Off)', #PH (GR III)
+            '1 1' => 'On (On)', #PH (GR III)
+            '0 2' => 'Off (Auto)', #PH (GR III)
+            '1 2' => 'On (Auto)', #PH (GR III)
         },
     },
     0x008b => { #PH (LS465)

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27431 tags, with 17208 unique tag names.
+They contain a total of 27451 tags, with 17222 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -63,7 +63,8 @@ writable directly, but is written automatically by ExifTool (often when a
 corresponding L<Composite|Image::ExifTool::TagNames/Composite Tags> or
 L<Extra|Image::ExifTool::TagNames/Extra Tags> tag is written). A colon
 (C<:>) indicates a I<Mandatory> tag which may be added automatically when
-writing.  Normally MakerNotes tags may not be deleted individually, but a
+writing (use the API NoMandatory option to avoid creating mandatory EXIF
+tags).  Normally MakerNotes tags may not be deleted individually, but a
 caret (C<^>) indicates a I<Deletable> MakerNotes tag.
 
 The HTML version of these tables also lists possible B<Values> for
@@ -815,6 +816,8 @@ for the official EXIF 2.32 specification.
   0x9403   WaterDepth                ExifIFD    rational64s
   0x9404   Acceleration              ExifIFD    rational64u
   0x9405   CameraElevationAngle      ExifIFD    rational64s
+  0x9999   XiaomiSettings            ExifIFD    JSON
+  0x9a00   XiaomiModel               ExifIFD    string!
   0x9c9b   XPTitle                   IFD0       int8u
   0x9c9c   XPComment                 IFD0       int8u
   0x9c9d   XPAuthor                  IFD0       int8u
@@ -20651,6 +20654,7 @@ such as the Galaxy S4.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  'mdln'   SamsungModel                         no
   'svss'   SamsungSvss                          Samsung svss
 
 =head3 Samsung svss Tags
@@ -21077,6 +21081,7 @@ MakerNotes.
   0x2036   Clarity                              int32s
   0x2037   FocusFrameSize                       no
   0x2039   JPEG-HEIFSwitch                      int16u
+  0x2044   HiddenInfo                           Sony HiddenInfo
   0x204a   FocusLocation2                       int16u[4]
   0x3000   ShotInfo                             Sony ShotInfo
   0x900b   Tag900b                              Sony Tag900b
@@ -22048,6 +22053,13 @@ option is used.
      54    FocalPlaneAFPointLocation13          int16u[2]
      58    FocalPlaneAFPointLocation14          int16u[2]
      62    FocalPlaneAFPointLocation15          int16u[2]
+
+=head3 Sony HiddenInfo Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    HiddenDataOffset                     int32u
+      1    HiddenDataLength                     int32u
 
 =head3 Sony ShotInfo Tags
 
@@ -23057,6 +23069,41 @@ information.
       2    DynamicRange                         no
       4    HintMaxOutputValue                   no
 
+=head2 JSON Tags
+
+Other than a few tags in the table below, JSON tags have not been
+pre-defined.  However, ExifTool will read any existing tags from basic
+JSON-formatted files.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  ON1_SettingsData                              PLIST
+  ON1_SettingsMetadataCreated                   no
+  ON1_SettingsMetadataModified                  no
+  ON1_SettingsMetadataName                      no
+  ON1_SettingsMetadataPluginID                  no
+  ON1_SettingsMetadataTimestamp                 no
+  ON1_SettingsMetadataUsage                     no
+  ON1_SettingsMetadataVisibleToUser             no
+
+=head2 CBOR Tags
+
+The tags below are extracted from CBOR (Concise Binary Object
+Representation) metadata.  The C2PA specification uses this format for some
+metadata.  As well as these tags, ExifTool will read any existing tags.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AuthorIdentifier                              no
+  AuthorName                                    no
+  DocumentID                                    no
+  Format                                        no
+  InstanceID                                    no
+  Relationship                                  no
+  ThumbnailHash                                 no+
+  ThumbnailURL                                  no
+  Title                                         no
+
 =head2 PLIST Tags
 
 Apple Property List tags.  ExifTool reads both XML and binary-format PLIST
@@ -23915,6 +23962,7 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  'AALP'   AudioLevel                           no
   'ACCL'   Accelerometer                        no
   'ALLD'   AutoLowLightDuration                 no
   'ATTD'   Attitude                             no
@@ -23922,6 +23970,7 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'AUDO'   AudioSetting                         no
   'BPOS'   Controller?                          no
   'CASN'   CameraSerialNumber                   no
+  'CORI'   CameraOrientation                    no
   'CSEN'   CoyoteSense                          no
   'CYTS'   CoyoteStatus                         no
   'DEVC'   DeviceContainer                      GoPro GPMF
@@ -23939,10 +23988,14 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'GLPI'   GPSPos                               GoPro GLPI
   'GPRI'   GPSRaw?                              GoPro GPRI
   'GPS5'   GPSInfo                              GoPro GPS5
+  'GPSA'   GPSAltitudeSystem                    no
   'GPSF'   GPSMeasureMode                       no
   'GPSP'   GPSHPositioningError                 no
   'GPSU'   GPSDateTime                          no
+  'GRAV'   GravityVector                        no
   'GYRO'   Gyroscope                            no
+  'HUES'   PrediminantHue                       no
+  'IORI'   ImageOrientation                     no
   'ISOE'   ISOSpeeds                            no
   'ISOG'   ImageSensorGain                      no
   'KBAT'   BatteryStatus                        GoPro KBAT
@@ -23951,6 +24004,7 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'MINF'   Model                                no
   'MTRX'   AccelerometerMatrix                  no
   'MUID'   MediaUniqueID                        no
+  'MWET'   MicrophoneWet                        no
   'OREN'   AutoRotation                         no
   'ORIN'   InputOrientation                     no
   'ORIO'   OutputOrientation                    no
@@ -23966,6 +24020,7 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'RATE'   Rate                                 no
   'RMRK'   Comments                             no
   'SCAL'   ScaleFactor?                         no
+  'SCEN'   SceneClassification                  no
   'SCPR'   ScaledPressure                       no
   'SHUT'   ExposureTimes                        no
   'SIMU'   ScaledIMU                            no
@@ -23984,7 +24039,9 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'VFOV'   FieldOfView                          no
   'VFRH'   VisualFlightRulesHUD                 no
   'WBAL'   ColorTemperatures                    no
+  'WNDM'   WindProcessing                       no
   'WRGB'   WhiteBalanceRGB                      no
+  'YAVG'   LumaAverage                          no
 
 =head3 GoPro GLPI Tags
 
@@ -25469,41 +25526,6 @@ Information extracted from the JUMBF description box.
       4    DisplayXResolution                   no
       8    DisplayYResolutionUnit               no
       9    DisplayXResolutionUnit               no
-
-=head2 JSON Tags
-
-Other than a few tags in the table below, JSON tags have not been
-pre-defined.  However, ExifTool will read any existing tags from basic
-JSON-formatted files.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  ON1_SettingsData                              PLIST
-  ON1_SettingsMetadataCreated                   no
-  ON1_SettingsMetadataModified                  no
-  ON1_SettingsMetadataName                      no
-  ON1_SettingsMetadataPluginID                  no
-  ON1_SettingsMetadataTimestamp                 no
-  ON1_SettingsMetadataUsage                     no
-  ON1_SettingsMetadataVisibleToUser             no
-
-=head2 CBOR Tags
-
-The tags below are extracted from CBOR (Concise Binary Object
-Representation) metadata.  The C2PA specification uses this format for some
-metadata.  As well as these tags, ExifTool will read any existing tags.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  AuthorIdentifier                              no
-  AuthorName                                    no
-  DocumentID                                    no
-  Format                                        no
-  InstanceID                                    no
-  Relationship                                  no
-  ThumbnailHash                                 no+
-  ThumbnailURL                                  no
-  Title                                         no
 
 =head2 APP12 Tags
 
@@ -29424,6 +29446,7 @@ changed via the config file.
                 FrameReadoutTime                yes
   'camera.identifier' CameraIdentifier          yes
   'collection.user' UserCollection              yes
+  'com.android.capture.fps' AndroidCaptureFPS   yes
   'com.android.version' AndroidVersion          yes
   'com.apple.photos.captureMode' CaptureMode    yes
   'comment'     Comment                         yes
@@ -31446,6 +31469,15 @@ ARCore accelerometer data.
   Index1   Tag Name                             Writable
   ------   --------                             --------
   [no tags known]
+
+=head2 AAC Tags
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'Bit016-017'         ProfileType              no
+  'Bit018-021'         SampleRate               no
+  'Bit023-025'         Channels                 no
+  'Encoder'            Encoder                  no
 
 =head2 Ogg Tags
 
@@ -39661,6 +39693,8 @@ values, may created via the ExifTool configuration file.
   GPSLongitudeRef      XMP-exif:GPSLongitude    no
   GPSPosition          GPSLatitude              yes!
                        GPSLongitude
+  HiddenData           Sony:HiddenDataOffset    no
+                       Sony:HiddenDataLength
   HyperfocalDistance   FocalLength              no
                        Aperture
                        CircleOfConfusion

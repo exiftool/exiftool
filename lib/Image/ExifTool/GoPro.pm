@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::QuickTime;
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 sub ProcessGoPro($$$);
 sub ProcessString($$$);
@@ -401,6 +401,21 @@ my %addUnits = (
     ORIO => 'OutputOrientation',
     UNIF => 'InputUniformity',
     SROT => 'SensorReadoutTime',
+    # the following are ref https://exiftool.org/forum/index.php?topic=15517.0
+    CORI => { Name => 'CameraOrientation', Binary => 1, Notes => 'quaternions 0-1' },
+    AALP => { Name => 'AudioLevel', Notes => 'dBFS' },
+    GPSA => 'GPSAltitudeSystem', # (eg. 'MSLV')
+    GRAV => { Name => 'GravityVector', Binary => 1 },
+    HUES => 'PrediminantHue',
+    IORI => { Name => 'ImageOrientation', Binary => 1, Notes => 'quaternions 0-1' },
+    # LRVO - ? Part of LRV Frame Skip
+    # LRVS - ? Part of LRV Frame Skip
+    # LSKP - LRV Frame Skip
+    # MSKP - MRV Frame Skip
+    MWET => 'MicrophoneWet',
+    SCEN => 'SceneClassification', # (SNOW,URBA,INDO,WATR,VEGE,BEAC + probability)
+    WNDM => 'WindProcessing',
+    YAVG => 'LumaAverage',
 );
 
 # GoPro GPS5 tags (ref 2) (Hero5,Hero6)

@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.54';
+$VERSION = '1.55';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -904,9 +904,10 @@ my %formatMinMax = (
         Name => 'SamsungSvss',
         SubDirectory => { TagTable => 'Image::ExifTool::Samsung::svss' },
     },
+    mdln => 'SamsungModel', #PH (Samsung SM-A136U, etc)
     # swtr - 4 bytes, all zero
     # scid - 8 bytes, all zero
-    # saut - 4 bytes, all zero
+    # saut - 4 or 6 bytes, all zero
 );
 
 # Samsung MP4 svss information (PH - from SM-C101 sample)

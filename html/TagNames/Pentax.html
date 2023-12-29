@@ -220,9 +220,15 @@ different from other models)</span>
   <br>3 = Manual
   <br>4 = Super Macro
   <br>5 = Pan Focus
+  <br>6 = Auto-area
+  <br>8 = Select
+  <br>9 = Pinpoint
+  <br>10 = Tracking
+  <br>11 = Continuous</td><td>&nbsp;&nbsp;</td>
+  <td>12 = Snap
   <br>16 = AF-S (Focus-priority)
-  <br>17 = AF-C (Focus-priority)</td><td>&nbsp;&nbsp;</td>
-  <td>18 = AF-A (Focus-priority)
+  <br>17 = AF-C (Focus-priority)
+  <br>18 = AF-A (Focus-priority)
   <br>32 = Contrast-detect (Focus-priority)
   <br>33 = Tracking Contrast-detect (Focus-priority)
   <br>272 = AF-S (Release-priority)
@@ -772,12 +778,13 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>&#39;0 28&#39; = Quick Macro
   <br>&#39;0 29&#39; = Forest
   <br>&#39;0 30&#39; = Backlight Silhouette
+  <br>&#39;0 32&#39; = DOF
   <br>&#39;1 4&#39; = Auto PICT (Standard)
   <br>&#39;1 5&#39; = Auto PICT (Portrait)
   <br>&#39;1 6&#39; = Auto PICT (Landscape)
-  <br>&#39;1 7&#39; = Auto PICT (Macro)
-  <br>&#39;1 8&#39; = Auto PICT (Sport)</td><td>&nbsp;&nbsp;</td>
-  <td>&#39;2 0&#39; = Program (HyP)
+  <br>&#39;1 7&#39; = Auto PICT (Macro)</td><td>&nbsp;&nbsp;</td>
+  <td>&#39;1 8&#39; = Auto PICT (Sport)
+  <br>&#39;2 0&#39; = Program (HyP)
   <br>&#39;2 1&#39; = Hi-speed Program (HyP)
   <br>&#39;2 2&#39; = DOF Program (HyP)
   <br>&#39;2 3&#39; = MTF Program (HyP)
@@ -1325,10 +1332,14 @@ other models)</span>
 <td title='0x0088 = 136'>0x0088</td>
 <td>NeutralDensityFilter</td>
 <td class=c>int8u[n]</td>
-<td><span class=s>0 = Off
+<td><table class=cols><tr>
+  <td>0 = Off
   <br>1 = On
-  <br>&#39;0 2&#39; = Off (0 2)
-  <br>&#39;1 2&#39; = On (1 2)</span></td></tr>
+  <br>&#39;0 0&#39; = Off (Off)</td><td>&nbsp;&nbsp;</td>
+  <td>&#39;0 2&#39; = Off (Auto)
+  <br>&#39;1 1&#39; = On (On)
+  <br>&#39;1 2&#39; = On (Auto)</td></tr></table>
+</td></tr>
 <tr>
 <td title='0x008b = 139'>0x008b</td>
 <td>ISO</td>
@@ -2199,7 +2210,8 @@ identified by cameras running older firmware versions.</p>
 </tr><tr><td>'22 3'</td><td>= 03 Fish-eye 3.2mm F5.6</td>
 </tr><tr><td>'22 4'</td><td>= 04 Toy Lens Wide 6.3mm F7.1</td>
 </tr><tr><td>'22 5'</td><td>= 05 Toy Lens Telephoto 18mm F8</td>
-</tr><tr><td>'31 1'</td><td>= GR Lens</td>
+</tr><tr><td>'31 1'</td><td>= 18.3mm F2.8</td>
+</tr><tr><td>'31 4'</td><td>= 26.1mm F2.8</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='SRInfo'>Pentax SRInfo Tags</a></h2>
@@ -4926,7 +4938,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 16, 2023</i>
+<br><i>Last revised Dec 29, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

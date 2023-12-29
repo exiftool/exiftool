@@ -1,6 +1,6 @@
 Summary: perl module for image data extraction
 Name: perl-Image-ExifTool
-Version: 12.71
+Version: 12.72
 Release: 1
 License: Artistic/GPL
 Group: Development/Libraries/Perl
@@ -22,13 +22,14 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  360   r/w   | DPX   r     | ITC   r     | NUMBERS r   | RAW   r/w
-  3FR   r     | DR4   r/w/c | J2C   r     | O     r     | RIFF  r
-  3G2   r/w   | DSS   r     | JNG   r/w   | ODP   r     | RSRC  r
-  3GP   r/w   | DV    r     | JP2   r/w   | ODS   r     | RTF   r
-  7Z    r     | DVB   r/w   | JPEG  r/w   | ODT   r     | RW2   r/w
-  A     r     | DVR-MS r    | JSON  r     | OFR   r     | RWL   r/w
-  AA    r     | DYLIB r     | JXL   r     | OGG   r     | RWZ   r
+  360   r/w   | DOCX  r     | ISO   r     | NRW   r/w   | RAR   r
+  3FR   r     | DPX   r     | ITC   r     | NUMBERS r   | RAW   r/w
+  3G2   r/w   | DR4   r/w/c | J2C   r     | O     r     | RIFF  r
+  3GP   r/w   | DSS   r     | JNG   r/w   | ODP   r     | RSRC  r
+  7Z    r     | DV    r     | JP2   r/w   | ODS   r     | RTF   r
+  A     r     | DVB   r/w   | JPEG  r/w   | ODT   r     | RW2   r/w
+  AA    r     | DVR-MS r    | JSON  r     | OFR   r     | RWL   r/w
+  AAC   r     | DYLIB r     | JXL   r     | OGG   r     | RWZ   r
   AAE   r     | EIP   r     | K25   r     | OGV   r     | RM    r
   AAX   r/w   | EPS   r/w   | KDC   r     | ONP   r     | SEQ   r
   ACR   r     | EPUB  r     | KEY   r     | OPUS  r     | SKETCH r
@@ -64,7 +65,6 @@ supported by ExifTool (r = read, w = write, c = create):
   DLL   r     | INSP  r/w   | MXF   r     | RA    r     | XLSX  r
   DNG   r/w   | INSV  r     | NEF   r/w   | RAF   r/w   | XMP   r/w/c
   DOC   r     | INX   r     | NKSC  r/w   | RAM   r     | ZIP   r
-  DOCX  r     | ISO   r     | NRW   r/w   | RAR   r     |
 
   Meta Information
   ----------------------+----------------------+---------------------

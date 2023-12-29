@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.90';
+$VERSION = '2.91';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -2388,7 +2388,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     # edli - 52 bytes all zero (Samsung WB30F)
     # @etc - 4 bytes all zero (Samsung WB30F)
     # saut - 4 bytes all zero (Samsung SM-N900T)
-    # smrd - string "TRUEBLUE" (Samsung SM-C101)
+    # smrd - string "TRUEBLUE" (Samsung SM-C101, etc)
     # ---- TomTom Bandit Action Cam ----
     TTMD => {
         Name => 'TomTomMetaData',
@@ -2408,7 +2408,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     # opax - 164 bytes unknown (center and affine arrays? ref 26)
     # opai - 32 bytes (maybe contains a serial number starting at byte 16? - PH) (rgb gains, degamma, gamma? ref 26)
     # intv - 16 bytes all zero
-    # ---- Xaiomi ----
+    # ---- Xiaomi ----
     mcvr => {
         Name => 'PreviewImage',
         Groups => { 2 => 'Preview' },
@@ -6626,6 +6626,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
 #
     'com.apple.photos.captureMode' => 'CaptureMode',
     'com.android.version' => 'AndroidVersion',
+    'com.android.capture.fps' => 'AndroidCaptureFPS',
 #
 # also seen
 #

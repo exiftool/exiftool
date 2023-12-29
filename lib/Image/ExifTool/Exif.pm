@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.47';
+$VERSION = '4.48';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1426,12 +1426,12 @@ my %opcodeInfo = (
         Count => 6,
         Priority => 0,
     },
-  # 0x220 - int32u: 0 (IFD0, Xaiomi Redmi models)
-  # 0x221 - int32u: 0 (IFD0, Xaiomi Redmi models)
-  # 0x222 - int32u: 0 (IFD0, Xaiomi Redmi models)
-  # 0x223 - int32u: 0 (IFD0, Xaiomi Redmi models)
-  # 0x224 - int32u: 0,1 (IFD0, Xaiomi Redmi models)
-  # 0x225 - string: "" (IFD0, Xaiomi Redmi models)
+  # 0x220 - int32u: 0 (IFD0, Xiaomi Redmi models)
+  # 0x221 - int32u: 0 (IFD0, Xiaomi Redmi models)
+  # 0x222 - int32u: 0 (IFD0, Xiaomi Redmi models)
+  # 0x223 - int32u: 0 (IFD0, Xiaomi Redmi models)
+  # 0x224 - int32u: 0,1 (IFD0, Xiaomi Redmi models)
+  # 0x225 - string: "" (IFD0, Xiaomi Redmi models)
     0x22f => 'StripRowCounts',
     0x2bc => {
         Name => 'ApplicationNotes', # (writable directory!)
@@ -2533,8 +2533,18 @@ my %opcodeInfo = (
         Name => 'CameraElevationAngle',
         Writable => 'rational64s',
     },
-  # 0x9999 - string: camera settings (ExifIFD, Xiaomi POCO F1)
-  # 0x9aaa - int8u[2176]: ? (ExifIFD, Xiaomi POCO F1)
+    0x9999 => { # (ExifIFD, Xiaomi)
+        Name => 'XiaomiSettings', # (writable directory!)
+        Writable => 'string',
+        Protected => 1,
+        SubDirectory => { TagTable => 'Image::ExifTool::JSON::Main' },
+    },
+    0x9a00 => {
+        Name => 'XiaomiModel',
+        Writable => 'string',
+        Protected => 1,
+    },
+  # 0x9aaa - int8u[2048/2176]: ? (ExifIFD, Xiaomi POCO F1)
     0x9c9b => {
         Name => 'XPTitle',
         Format => 'undef',
@@ -2986,6 +2996,7 @@ my %opcodeInfo = (
     0xa480 => { Name => 'GDALMetadata',     Writable => 'string', WriteGroup => 'IFD0' }, #3
     0xa481 => { Name => 'GDALNoData',       Writable => 'string', WriteGroup => 'IFD0' }, #3
     0xa500 => { Name => 'Gamma',            Writable => 'rational64u' },
+  # 0xa661 - string: ? (ExifIFD, Xiaomi)
     0xafc0 => 'ExpandSoftware', #JD (Opanda)
     0xafc1 => 'ExpandLens', #JD (Opanda)
     0xafc2 => 'ExpandFilm', #JD (Opanda)

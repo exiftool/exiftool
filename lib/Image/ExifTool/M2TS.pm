@@ -32,7 +32,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.23';
+$VERSION = '1.24';
 
 # program map table "stream_type" lookup (ref 6/1/9)
 my %streamType = (
@@ -354,29 +354,32 @@ sub ParsePID($$$$$)
             my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
             Image::ExifTool::QuickTime::ProcessFreeGPS($et, { DataPt => \$dat }, $tbl);
             $more = 1;
-        } elsif ($$dataPt =~ /^A([NS])([EW])\0/s) {
-            # INNOVV TS video (same format is INNOVV MP4)
+        } elsif ($$dataPt =~ /^(V00|A([NS])([EW]))\0/s) {
+            # INNOVV TS video (same format as INNOVV MP4)
             SetByteOrder('II');
             my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
-            while ($$dataPt =~ /(A[NS][EW]\0.{28})/g) {
+            while ($$dataPt =~ /((V00|A[NS][EW])\0.{28})/g) {
                 my $dat = $1;
-                my $lat = abs(GetFloat(\$dat, 4)); # (abs just to be safe)
-                my $lon = abs(GetFloat(\$dat, 8)); # (abs just to be safe)
-                my $spd = GetFloat(\$dat, 12) * $knotsToKph;
-                my $trk = GetFloat(\$dat, 16);
+                $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                if ($2 ne 'V00') {
+                    my $lat = abs(GetFloat(\$dat, 4)); # (abs just to be safe)
+                    my $lon = abs(GetFloat(\$dat, 8)); # (abs just to be safe)
+                    my $spd = GetFloat(\$dat, 12) * $knotsToKph;
+                    my $trk = GetFloat(\$dat, 16);
+                    Image::ExifTool::QuickTime::ConvertLatLon($lat, $lon);
+                    $et->HandleTag($tagTbl, GPSLatitude  => abs($lat) * (substr($dat,1,1) eq 'S' ? -1 : 1));
+                    $et->HandleTag($tagTbl, GPSLongitude => abs($lon) * (substr($dat,2,1) eq 'W' ? -1 : 1));
+                    $et->HandleTag($tagTbl, GPSSpeed     => $spd);
+                    $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
+                    $et->HandleTag($tagTbl, GPSTrack     => $trk);
+                    $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
+                }
                 my @acc = unpack('x20V3', $dat);
                 map { $_ = $_ - 4294967296 if $_ >= 0x80000000 } @acc;
-                Image::ExifTool::QuickTime::ConvertLatLon($lat, $lon);
-                $$et{DOC_NUM} = ++$$et{DOC_COUNT};
-                $et->HandleTag($tagTbl, GPSLatitude  => abs($lat) * (substr($dat,1,1) eq 'S' ? -1 : 1));
-                $et->HandleTag($tagTbl, GPSLongitude => abs($lon) * (substr($dat,2,1) eq 'W' ? -1 : 1));
-                $et->HandleTag($tagTbl, GPSSpeed     => $spd);
-                $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
-                $et->HandleTag($tagTbl, GPSTrack     => $trk);
-                $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
                 $et->HandleTag($tagTbl, Accelerometer => "@acc");
             }
             SetByteOrder('MM');
+            $$et{HasINNOV} = 1; # (necessary to skip over empty/unknown INNOV records)
             $more = 1;
         } elsif ($$dataPt =~ /^\$(GPSINFO|GSNRINFO),/) {
             # $GPSINFO,0x0004,2021.08.09 13:27:36,2341.54561,12031.70135,8.0,51,153,0,0,\x0d
@@ -477,6 +480,8 @@ sub ParsePID($$$$$)
             $et->HandleTag($tagTbl, GPSTrack     => $trk);
             $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
             SetByteOrder('MM');
+            $more = 1;
+        } elsif ($$et{HasINNOV}) {
             $more = 1;
         }
         delete $$et{DOC_NUM};

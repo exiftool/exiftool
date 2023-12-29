@@ -41,6 +41,7 @@ fmt_files/kml_track.fmt
 html/ExifTool.html
 html/MIE1.1-20070121.pdf
 html/Shift.html
+html/TagNames/AAC.html
 html/TagNames/AFCP.html
 html/TagNames/AIFF.html
 html/TagNames/APE.html
@@ -214,6 +215,7 @@ lib/File/RandomAccess.pod
 lib/Image/ExifTool.pm
 lib/Image/ExifTool.pod
 lib/Image/ExifTool/7Z.pm
+lib/Image/ExifTool/AAC.pm
 lib/Image/ExifTool/AES.pm
 lib/Image/ExifTool/AFCP.pm
 lib/Image/ExifTool/AIFF.pm
@@ -441,6 +443,8 @@ lib/Image/ExifTool/ZIP.pm
 lib/Image/ExifTool/ZISRAW.pm
 lib/Image/ExifTool/iWork.pm
 perl-Image-ExifTool.spec
+t/AAC.t
+t/AAC_2.out
 t/AFCP.t
 t/AFCP_2.out
 t/AFCP_3.out
@@ -979,6 +983,7 @@ t/ZIP_7.out
 t/ZIP_8.out
 t/ZISRAW.t
 t/ZISRAW_2.out
+t/images/AAC.aac
 t/images/AFCP.jpg
 t/images/AIFF.aif
 t/images/APE.ape

@@ -7,6 +7,19 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.70. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Dec. 29, 2023 - Version 12.72
+
+  - Added read support for AAC audio files
+  - Added a new QuickTime Keys Android tag
+  - Added a number of new values for some Ricoh GR III tags
+  - Decode timed metadata from Intsa360 Ace Pro MP4 videos
+  - Decode GPSDateTime milliseconds in timed Insta360 metadata
+  - Decode timed metadata from INNOV K5 TS videos
+  - Decode a number of new GoPro timed-metadata tags
+  - Decode a few new Xiaomi EXIF tags
+  - Fixed writing of JPG/ARW images from some newer Sony models to preserve
+    HiddenData
+
 Dec. 21, 2023 - Version 12.71
 
   - Added a warning if there was an error reading an alternate file with the
@@ -29,7 +42,7 @@ Dec. 21, 2023 - Version 12.71
   - API Changes:
       - Added NoMandatory option
 
-Nov. 19, 2023 - Version 12.70 (production release)
+Nov. 19, 2023 - Version 12.70 (production release) - "20th Anniversary"
 
   - This marks the 20th anniversary of the initial ExifTool release!
   - Added ability to read/delete C2PA CAI JUMBF metadata from TIFF-based images

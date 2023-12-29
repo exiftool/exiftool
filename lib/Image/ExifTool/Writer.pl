@@ -3939,7 +3939,7 @@ sub RemoveNewValuesForGroup($$)
             my $wgrp = $$nvHash{WriteGroup};
             # use group1 if write group is not specific
             $wgrp = $grp1 if $wgrp eq $grp0;
-            if (grep /^($grp0|$wgrp)$/i, @groups) {
+            if ($grp0 eq '*' or $wgrp eq '*' or grep /^($grp0|$wgrp)$/i, @groups) {
                 $out and print $out "Removed new value for $wgrp:$$tagInfo{Name}\n";
                 # remove from linked list
                 $self->RemoveNewValueHash($nvHash, $tagInfo);
@@ -4675,9 +4675,18 @@ sub DumpUnknownTrailer($$)
     # account for preview/MPF image trailer
     my $prePos = $$self{VALUE}{PreviewImageStart} || $$self{PreviewImageStart};
     my $preLen = $$self{VALUE}{PreviewImageLength} || $$self{PreviewImageLength};
+    my $hidPos = $$self{VALUE}{HiddenDataOffset};
+    my $hidLen = $$self{VALUE}{HiddenDataLength};
     my $tag = 'PreviewImage';
     my $mpImageNum = 0;
     my (%image, $lastOne);
+    # add HiddenData to list of known trailer blocks
+    if ($hidPos and $hidLen) {
+        # call ReadHiddenData to validate hidden data and fix offset if necessary
+        require Image::ExifTool::Sony;
+        my $datPt = Image::ExifTool::Sony::ReadHiddenData($self, $hidPos, $hidLen);
+        $image{$hidPos} = ['HiddenData', $hidLen] if $datPt;
+    }
     for (;;) {
         # add to Preview block list if valid and in the trailer
         $image{$prePos} = [$tag, $preLen] if $prePos and $preLen and $prePos+$preLen > $pos;
@@ -5792,13 +5801,16 @@ sub WriteJPEG($$)
                         }
                     }
                     # switch to buffered output if required
-                    if (($$self{PREVIEW_INFO} or $$self{LeicaTrailer}) and not $oldOutfile) {
+                    if (($$self{PREVIEW_INFO} or $$self{LeicaTrailer} or $$self{HiddenData}) and
+                        not $oldOutfile)
+                    {
                         $writeBuffer = '';
                         $oldOutfile = $outfile;
                         $outfile = \$writeBuffer;
                         # account for segment, EXIF and TIFF headers
                         $$self{PREVIEW_INFO}{Fixup}{Start} += 18 if $$self{PREVIEW_INFO};
                         $$self{LeicaTrailer}{Fixup}{Start} += 18 if $$self{LeicaTrailer};
+                        $$self{HiddenData}{Fixup}{Start} += 18 if $$self{HiddenData};
                     }
                     # write as multi-segment
                     my $n = WriteMultiSegment($outfile, 0xe1, $exifAPP1hdr, \$buff, 'EXIF');
@@ -5944,7 +5956,9 @@ sub WriteJPEG($$)
             my $delPreview = $$self{DEL_PREVIEW};
             $trailInfo = IdentifyTrailer($raf) unless $$delGroup{Trailer};
             my $nvTrail = $self->GetNewValueHash($Image::ExifTool::Extra{Trailer});
-            unless ($oldOutfile or $delPreview or $trailInfo or $$delGroup{Trailer} or $nvTrail) {
+            unless ($oldOutfile or $delPreview or $trailInfo or $$delGroup{Trailer} or $nvTrail or
+                $$self{HiddenData})
+            {
                 # blindly copy the rest of the file
                 while ($raf->Read($buff, 65536)) {
                     Write($outfile, $buff) or $err = 1, last;
@@ -5974,7 +5988,7 @@ sub WriteJPEG($$)
                 $endedWithFF = substr($buff, 65535, 1) eq "\xff" ? 1 : 0;
             }
             # remember position of last data copied
-            $endPos = $raf->Tell() - length($buff);
+            $endPos = $$self{TrailerStart} = $raf->Tell() - length($buff);
             # write new trailer if specified
             if ($nvTrail) {
                 # access new value directly to avoid copying a potentially very large data block
@@ -5987,6 +6001,34 @@ sub WriteJPEG($$)
                     ++$$self{CHANGED};  # changed if there was previously a trailer
                 }
                 last;   # all done
+            }
+            # copy HiddenData if necessary
+            if ($$self{HiddenData}) {
+                my $pad;
+                my $hd = $$self{HiddenData};
+                my $hdOff = $$hd{Offset} + $$hd{Base};
+                require Image::ExifTool::Sony;
+                # read HiddenData, updating $hdOff with actual offset if necessary
+                my $dataPt = Image::ExifTool::Sony::ReadHiddenData($self, $hdOff, $$hd{Size});
+                if ($dataPt) {
+                    # preserve padding to avoid invalidating MPF pointers (yuk!)
+                    my $padLen = $hdOff - $endPos;
+                    unless ($padLen >= 0 and $raf->Seek($endPos,0) and $raf->Read($pad,$padLen)==$padLen) {
+                        $self->Error('Error reading HiddenData padding',1);
+                        $pad = '';
+                    }
+                    $endPos += length($pad) + length($$dataPt); # update end position
+                } else {
+                    $$dataPt = $pad = '';
+                }
+                my $fixup = $$self{HiddenData}{Fixup};
+                # set MakerNote pointer and size (subtract 10 for segment and EXIF headers)
+                $fixup->SetMarkerPointers($outfile, 'HiddenData', length($$outfile) + length($pad) - 10);
+                # clean up and write the buffered data
+                $outfile = $oldOutfile;
+                undef $oldOutfile;
+                Write($outfile, $writeBuffer, $pad, $$dataPt) or $err = 1;
+                undef $writeBuffer;
             }
             # rewrite existing trailers
             if ($trailInfo) {
@@ -6097,7 +6139,7 @@ sub WriteJPEG($$)
                     $delPreview = 1;    # remove old preview
                 }
             }
-            # copy over preview image if necessary
+            # copy over preview image (or other data) if necessary
             unless ($delPreview) {
                 my $extra;
                 if ($trailInfo) {
@@ -6264,13 +6306,16 @@ sub WriteJPEG($$)
                         }
                     }
                     # switch to buffered output if required
-                    if (($$self{PREVIEW_INFO} or $$self{LeicaTrailer}) and not $oldOutfile) {
+                    if (($$self{PREVIEW_INFO} or $$self{LeicaTrailer} or $$self{HiddenData}) and
+                        not $oldOutfile)
+                    {
                         $writeBuffer = '';
                         $oldOutfile = $outfile;
                         $outfile = \$writeBuffer;
                         # must account for segment, EXIF and TIFF headers
                         $$self{PREVIEW_INFO}{Fixup}{Start} += 18 if $$self{PREVIEW_INFO};
                         $$self{LeicaTrailer}{Fixup}{Start} += 18 if $$self{LeicaTrailer};
+                        $$self{HiddenData}{Fixup}{Start} += 18 if $$self{HiddenData};
                     }
                     # write as multi-segment
                     my $n = WriteMultiSegment($outfile, $marker, $exifAPP1hdr, $segDataPt, 'EXIF');
@@ -7135,14 +7180,24 @@ sub WriteBinaryData($$$)
             # ignore if offset is zero (eg. Ricoh DNG uses this to indicate no preview)
             next unless $offset;
             $fixup->AddFixup($entry, $$tagInfo{DataTag}, $format);
-            # handle the preview image now if this is a JPEG file
-            next unless $$self{FILE_TYPE} eq 'JPEG' and $$tagInfo{DataTag} and
-                $$tagInfo{DataTag} eq 'PreviewImage' and defined $$tagInfo{OffsetPair};
+            next unless $$tagInfo{DataTag} and defined $$tagInfo{OffsetPair};
             # NOTE: here we assume there are no var-sized tags between the
             # OffsetPair tags.  If this ever becomes possible we must recalculate
             # $varSize for the OffsetPair tag here!
             $entry = $$tagInfo{OffsetPair} * $increment + $varSize;
             my $size = ReadValue($dataPt, $entry, $format, 1, $dirLen-$entry);
+            next unless defined $size;
+            if ($$tagInfo{DataTag} eq 'HiddenData') {
+                $$self{HiddenData} = {
+                    Offset => $offset,
+                    Size   => $size,
+                    Fixup  => new Image::ExifTool::Fixup,
+                    Base   => $$dirInfo{Base},
+                };
+                next;
+            }
+            # handle the preview image now if this is a JPEG file
+            next unless $$tagInfo{DataTag} eq 'PreviewImage' and $$self{FILE_TYPE} eq 'JPEG';
             my $previewInfo = $$self{PREVIEW_INFO};
             $previewInfo or $previewInfo = $$self{PREVIEW_INFO} = {
                 Fixup => new Image::ExifTool::Fixup,

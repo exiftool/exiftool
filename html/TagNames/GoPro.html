@@ -20,40 +20,50 @@ let me know if you discover the meaning of any of these unknown tags. See
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>'AALP'</td>
+<td>AudioLevel</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(dBFS)</span></span></td></tr>
+<tr class=b>
 <td>'ACCL'</td>
 <td>Accelerometer</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(accelerator readings in m/s2)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'ALLD'</td>
 <td>AutoLowLightDuration</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'ATTD'</td>
 <td>Attitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'ATTR'</td>
 <td>AttitudeTarget</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'AUDO'</td>
 <td>AudioSetting</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'BPOS'</td>
 <td>Controller?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'CASN'</td>
 <td>CameraSerialNumber</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td>'CORI'</td>
+<td>CameraOrientation</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(quaternions 0-1)</span></span></td></tr>
 <tr class=b>
 <td>'CSEN'</td>
 <td>CoyoteSense</td>
@@ -141,19 +151,29 @@ let me know if you discover the meaning of any of these unknown tags. See
 <td class=c>-</td>
 <td>--&gt; <a href='GoPro.html#GPS5'>GoPro GPS5 Tags</a></td></tr>
 <tr>
+<td>'GPSA'</td>
+<td>GPSAltitudeSystem</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'GPSF'</td>
 <td>GPSMeasureMode</td>
 <td class=c>no</td>
 <td><span class=s>2 = 2-Dimensional Measurement
   <br>3 = 3-Dimensional Measurement</span></td></tr>
-<tr class=b>
+<tr>
 <td>'GPSP'</td>
 <td>GPSHPositioningError</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'GPSU'</td>
 <td>GPSDateTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'GRAV'</td>
+<td>GravityVector</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -161,6 +181,16 @@ let me know if you discover the meaning of any of these unknown tags. See
 <td>Gyroscope</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(gyroscope readings in rad/s)</span></span></td></tr>
+<tr>
+<td>'HUES'</td>
+<td>PrediminantHue</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IORI'</td>
+<td>ImageOrientation</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(quaternions 0-1)</span></span></td></tr>
 <tr>
 <td>'ISOE'</td>
 <td>ISOSpeeds</td>
@@ -202,81 +232,91 @@ let me know if you discover the meaning of any of these unknown tags. See
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'MWET'</td>
+<td>MicrophoneWet</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'OREN'</td>
 <td>AutoRotation</td>
 <td class=c>no</td>
 <td><span class=s>&#39;A&#39; = Auto
   <br>&#39;D&#39; = Down
   <br>&#39;U&#39; = Up</span></td></tr>
-<tr class=b>
+<tr>
 <td>'ORIN'</td>
 <td>InputOrientation</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'ORIO'</td>
 <td>OutputOrientation</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'PHDR'</td>
 <td>HDRSetting</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'PIMN'</td>
 <td>AutoISOMin</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'PIMX'</td>
 <td>AutoISOMax</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'PRES'</td>
 <td>PhotoResolution</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'PRTN'</td>
 <td>ProTune</td>
 <td class=c>no</td>
 <td><span class=s>&#39;N&#39; = Off
   <br>&#39;Y&#39; = On</span></td></tr>
-<tr>
+<tr class=b>
 <td>'PTCL'</td>
 <td>ColorMode</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'PTEV'</td>
 <td>ExposureCompensation</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'PTSH'</td>
 <td>Sharpness</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'PTWB'</td>
 <td>WhiteBalance</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'RATE'</td>
 <td>Rate</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'RMRK'</td>
 <td>Comments</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'SCAL'</td>
 <td>ScaleFactor?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'SCEN'</td>
+<td>SceneClassification</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -372,8 +412,18 @@ let me know if you discover the meaning of any of these unknown tags. See
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'WNDM'</td>
+<td>WindProcessing</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'WRGB'</td>
 <td>WhiteBalanceRGB</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'YAVG'</td>
+<td>LumaAverage</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -583,7 +633,7 @@ let me know if you discover the meaning of any of these unknown tags. See
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 22, 2021</i>
+<br><i>Last revised Dec 29, 2023</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

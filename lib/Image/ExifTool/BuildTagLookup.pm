@@ -219,7 +219,8 @@ writable directly, but is written automatically by ExifTool (often when a
 corresponding L<Composite|Image::ExifTool::TagNames/Composite Tags> or
 L<Extra|Image::ExifTool::TagNames/Extra Tags> tag is written). A colon
 (C<:>) indicates a I<Mandatory> tag which may be added automatically when
-writing.  Normally MakerNotes tags may not be deleted individually, but a
+writing (use the API L<NoMandatory|../ExifTool.html#NoMandatory> option to avoid creating mandatory EXIF
+tags).  Normally MakerNotes tags may not be deleted individually, but a
 caret (C<^>) indicates a I<Deletable> MakerNotes tag.
 
 The HTML version of these tables also lists possible B<Values> for

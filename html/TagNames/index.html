@@ -10,7 +10,7 @@
 <h2 class=top>ExifTool Tag Names</h2>
 <p>
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27431 tags, with 17208 unique tag names.
+They contain a total of 27451 tags, with 17222 unique tag names.
 </p>
 <blockquote>
 <table width='100%' class=frame><tr><td>
@@ -63,10 +63,12 @@ They contain a total of 27431 tags, with 17208 unique tag names.
 <a href='SonyIDC.html'>SonyIDC</a><br>
 <a href='Unknown.html'>Unknown</a><br>
 <a href='DNG.html'>DNG</a><br>
+<a href='JSON.html'>JSON</a><br>
+<a href='CBOR.html'>CBOR</a><br>
 <a href='PLIST.html'>PLIST</a><br>
-<a href='CanonRaw.html'>CanonRaw</a><br>
+<a href='CanonRaw.html'>CanonRaw</a></td><td width='16%'>
 <a href='KyoceraRaw.html'>KyoceraRaw</a><br>
-<a href='MinoltaRaw.html'>MinoltaRaw</a></td><td width='16%'>
+<a href='MinoltaRaw.html'>MinoltaRaw</a><br>
 <a href='JFIF.html'>JFIF</a><br>
 <a href='FlashPix.html'>FlashPix</a><br>
 <a href='MPF.html'>MPF</a><br>
@@ -79,8 +81,6 @@ They contain a total of 27431 tags, with 17208 unique tag names.
 <a href='Qualcomm.html'>Qualcomm</a><br>
 <a href='InfiRay.html'>InfiRay</a><br>
 <a href='Jpeg2000.html'>Jpeg2000</a><br>
-<a href='JSON.html'>JSON</a><br>
-<a href='CBOR.html'>CBOR</a><br>
 <a href='APP12.html'>APP12</a><br>
 <a href='AFCP.html'>AFCP</a><br>
 <a href='DarwinCore.html'>DarwinCore</a><br>
@@ -119,6 +119,7 @@ They contain a total of 27431 tags, with 17208 unique tag names.
 <a href='RIFF.html'>RIFF</a></td><td width='16%'>
 <a href='FLAC.html'>FLAC</a><br>
 <a href='Parrot.html'>Parrot</a><br>
+<a href='AAC.html'>AAC</a><br>
 <a href='Ogg.html'>Ogg</a><br>
 <a href='Vorbis.html'>Vorbis</a><br>
 <a href='Opus.html'>Opus</a><br>
@@ -140,8 +141,8 @@ They contain a total of 27431 tags, with 17208 unique tag names.
 <a href='AIFF.html'>AIFF</a><br>
 <a href='ASF.html'>ASF</a><br>
 <a href='WTV.html'>WTV</a><br>
-<a href='DICOM.html'>DICOM</a><br>
-<a href='FITS.html'>FITS</a></td><td width='16%'>
+<a href='DICOM.html'>DICOM</a></td><td width='16%'>
+<a href='FITS.html'>FITS</a><br>
 <a href='XISF.html'>XISF</a><br>
 <a href='HTML.html'>HTML</a><br>
 <a href='Palm.html'>Palm</a><br>
@@ -214,7 +215,8 @@ writable directly, but is written automatically by ExifTool (often when a
 corresponding <a href="Composite.html">Composite</a> or
 <a href="Extra.html">Extra</a> tag is written). A colon
 (<code>:</code>) indicates a <i>Mandatory</i> tag which may be added automatically when
-writing.  Normally MakerNotes tags may not be deleted individually, but a
+writing (use the API <a href="../ExifTool.html#NoMandatory">NoMandatory</a> option to avoid creating mandatory EXIF
+tags).  Normally MakerNotes tags may not be deleted individually, but a
 caret (<code>^</code>) indicates a <i>Deletable</i> MakerNotes tag.</p>
 
 <p>The HTML version of these tables also lists possible <b>Values</b> for
@@ -246,7 +248,7 @@ ExifTool.  A big thanks to everyone who has helped with this so far!)</i>
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
 <br><i>Created Feb 15, 2005</i>
-<br><i>Last revised Dec 21, 2023</i>
+<br><i>Last revised Dec 29, 2023</i>
 <p class=lf><a href='../index.html'>&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

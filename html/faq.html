@@ -960,10 +960,12 @@ exiftool -exif:gpslatitude=42.5 -exif:gpslatituderef=S a.jpg
 exiftool -xmp:gpslatitude="42 30 0.00 S" a.jpg
 exiftool -xmp:gpslatitude=42.50S a.jpg
 exiftool -xmp:gpslatitude=-42.5 a.jpg
+exiftool -xmp:gpslatitude="-42 -30" a.jpg
 </pre>
 
-Similar styles may be used for longitude.  ExifTool will convert any of these
-coordinate styles to the proper format for the specific tag used.
+Note the last example: The negative sign must be applied to all components of
+the coordinate.  Similar styles may be used for longitude.  ExifTool will convert
+any of these coordinate styles to the proper format for the specific tag used.
 </blockquote>
 
 <blockquote>ExifTool 12.22 and later allow combined lat/lon GPSCoordinates
@@ -1819,7 +1821,7 @@ default values if necessary).
 </blockquote>
 
 <hr>
-<i>Last revised Jun 12, 2023</i>
+<i>Last revised Dec 24, 2023</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

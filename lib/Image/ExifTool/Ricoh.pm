@@ -923,7 +923,7 @@ my %ricohLensIDs = (
 %Image::ExifTool::Ricoh::RDTB = (
     PROCESS_PROC => \&ProcessRicohRDT,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Location' },
-    0 => { Name => 'Gyroscope', Format => 'float[3]' },
+    0 => { Name => 'Gyroscope', Format => 'float[3]', Notes => 'rad/s' },
     16 => { Name => 'TimeStamp', Format => 'int64u', ValueConv => '$val * 1e-9' },
 );
 

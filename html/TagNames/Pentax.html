@@ -562,7 +562,8 @@ second value is not yet known)</span></span></td></tr>
 <td class=c>int16u</td>
 <td><span class=s>0 = Multi-segment
   <br>1 = Center-weighted average
-  <br>2 = Spot</span></td></tr>
+  <br>2 = Spot
+  <br>6 = Highlight</span></td></tr>
 <tr>
 <td title='0x0018 = 24'>0x0018</td>
 <td>AutoBracketing</td>
@@ -961,12 +962,24 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>3 = Landscape
   <br>4 = Vibrant
   <br>5 = Monochrome
-  <br>6 = Muted</td><td>&nbsp;&nbsp;</td>
-  <td>7 = Reversal Film
+  <br>6 = Muted
+  <br>7 = Reversal Film
   <br>8 = Bleach Bypass
   <br>9 = Radiant
   <br>10 = Cross Processing
   <br>11 = Flat
+  <br>256 = Standard</td><td>&nbsp;&nbsp;</td>
+  <td>257 = Vivid
+  <br>258 = Monotone
+  <br>259 = Soft Monotone
+  <br>260 = Hard Monotone
+  <br>261 = Hi-contrast B&amp;W
+  <br>262 = Positive Film
+  <br>263 = Bleach Bypass 2
+  <br>264 = Retro
+  <br>265 = HDR Tone
+  <br>266 = Cross Processing 2
+  <br>267 = Negative Film
   <br>32768 = n/a</td></tr></table>
 </td></tr>
 <tr class=b>
@@ -1241,11 +1254,13 @@ other models)</span>
 </td></tr>
 <tr>
 <td title='0x007a = 122'>0x007a</td>
-<td>ISOAutoParameters</td>
+<td>ISOAutoMinSpeed</td>
 <td class=c>int8u[2]</td>
-<td><span class=s>&#39;1 0&#39; = Slow
-  <br>&#39;2 0&#39; = Standard
-  <br>&#39;3 0&#39; = Fast</span></td></tr>
+<td><span class=s>[Value 0]
+  <br>1 = Shutter Speed Control
+  <br>2 = Auto Slow
+  <br>3 = Auto Standard
+  <br>4 = Auto Fast</span></td></tr>
 <tr class=b>
 <td title='0x007b = 123'>0x007b</td>
 <td>CrossProcess</td>
@@ -4938,7 +4953,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 29, 2023</i>
+<br><i>Last revised Jan 10, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

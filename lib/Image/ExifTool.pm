@@ -8,7 +8,7 @@
 # Revisions:    Nov. 12/2003 - P. Harvey Created
 #               (See html/history.html for revision history)
 #
-# Legal:        Copyright (c) 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+# Legal:        Copyright (c) 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.72';
+$VERSION = '12.73';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1111,6 +1111,7 @@ my @availableOptions = (
     [ 'ImageHashType',    'MD5',  'image hash algorithm' ],
     [ 'Lang',       $defaultLang, 'localized language for descriptions etc' ],
     [ 'LargeFileSupport', undef,  'flag indicating support of 64-bit file offsets' ],
+    [ 'LimitLongValues',  60,     'length limit for long values' ],
     [ 'List',             undef,  '[deprecated, use ListSplit and ListJoin instead]' ],
     [ 'ListItem',         undef,  'used to return a specific item from lists' ],
     [ 'ListJoin',         ', ',   'join lists together with this separator' ],
@@ -6318,6 +6319,20 @@ sub InverseFileName($$)
 }
 
 #------------------------------------------------------------------------------
+# Limit length of long values (to be used in PrintConv)
+# Inputs: 0) string value, 1) ExifTool ref
+# Returns: length-limited value
+sub LimitLongValues($$)
+{
+    my ($str, $self) = @_;
+    my $lim = $$self{OPTIONS}{LimitLongValues};
+    if (length($str) > $lim and $lim >= 5) {
+        $str = substr($str,0,$lim-5) . "[...]";
+    }
+    return $str;
+}
+
+#------------------------------------------------------------------------------
 # Save information for HTML dump
 # Inputs: 0) ExifTool hash ref, 1) start offset, 2) data size
 #         3) comment string, 4) tool tip (or SAME), 5) flags, 6) IFD name
@@ -8428,7 +8443,7 @@ sub GetTagInfo($$$;$$$)
             $printConv = $$tagTablePtr{PRINT_CONV};
         } else {
             # limit length of printout (can be very long)
-            $printConv = 'length($val) > 60 ? substr($val,0,55) . "[...]" : $val';
+            $printConv = \&LimitLongValues;
         }
         my $hex = sprintf("0x%.4x", $tagID);
         my $prefix = $$tagTablePtr{TAG_PREFIX};

@@ -137,13 +137,15 @@ sub ValidateProperty($$;$)
 
 #------------------------------------------------------------------------------
 # Check XMP date values for validity and format accordingly
-# Inputs: 1) EXIF-format date string
+# Inputs: 1) EXIF-format date string (XMP-format also accepted)
 # Returns: XMP date/time string (or undef on error)
 sub FormatXMPDate($)
 {
     my $val = shift;
     my ($y, $m, $d, $t, $tz);
-    if ($val =~ /(\d{4}):(\d{2}):(\d{2}) (\d{2}:\d{2}(?::\d{2}(?:\.\d*)?)?)(.*)/) {
+    if ($val =~ /(\d{4}):(\d{2}):(\d{2}) (\d{2}:\d{2}(?::\d{2}(?:\.\d*)?)?)(.*)/ or
+        $val =~ /(\d{4})-(\d{2})-(\d{2})T(\d{2}:\d{2}(?::\d{2}(?:\.\d*)?)?)(.*)/)
+    {
         ($y, $m, $d, $t, $tz) = ($1, $2, $3, $4, $5);
         $val = "$y-$m-${d}T$t";
     } elsif ($val =~ /^\s*\d{4}(:\d{2}){0,2}\s*$/) {
@@ -1635,7 +1637,7 @@ This file contains routines to write XMP metadata.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

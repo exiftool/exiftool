@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 sub ProcessLeaf($$$);
 
@@ -444,7 +444,7 @@ sub ProcessLeaf($$$)
                 $tagInfo = {
                     Name => $name,
                     Writable => 0,
-                    PrintConv => 'length($val) > 60 ? substr($val,0,55) . "[...]" : $val',
+                    PrintConv => \&Image::ExifTool::LimitLongValues,
                 };
                 # make tags in main table unknown because they tend to be binary
                 $$tagInfo{Unknown} = 1 if $tagTablePtr eq \%Image::ExifTool::Leaf::Main;
@@ -504,7 +504,7 @@ Capture.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

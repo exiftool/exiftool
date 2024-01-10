@@ -7,6 +7,23 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.70. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 10, 2024 - Version 12.73
+
+  - Added write support for Leica XMP-xmpDSA tags
+  - Added read support for timed GPS from Yada RoadCam Pro 4K dashcam videos
+  - Added read support for PNG cpIp chunk
+  - Added range checks on lat/long values when writing QuickTime:GPSCoordinates
+  - Decode a number of new values for Ricoh GR III tags
+  - Decode a new Leica tag
+  - Improved handling of Brotli compression errors
+  - Enhanced API NoWarning option to also apply to app "Warning:" outputs
+  - Identify PNG Plus files
+  - Changed name of Pentax ISOAutoParameters to ISOAutoMinSpeed and improved
+    decoding
+  - Fixed writing of date/time tags in XMP-xmpMM:Pantry structure
+  - API Changes:
+      - Added LimitLongValues option
+
 Dec. 29, 2023 - Version 12.72
 
   - Added read support for AAC audio files

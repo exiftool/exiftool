@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.45';
+$VERSION = '3.46';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1571,6 +1571,7 @@ my %binaryDataAttrs = (
             0 => 'Multi-segment',
             1 => 'Center-weighted average',
             2 => 'Spot',
+            6 => 'Highlight', # (GR III)
             # have seen value of 16 for E70
         },
     },
@@ -2135,7 +2136,7 @@ my %binaryDataAttrs = (
         PrintConvInv => [ 'Image::ExifTool::Exif::ConvertFraction($val)' ],
     }],
     0x004f => { #PH
-        Name => 'ImageTone', # (Called CustomImageMode in K20D manual)
+        Name => 'ImageTone', # (Called CustomImageMode for K20D and ImageControlMode for GR III)
         Writable => 'int16u',
         PrintConvColumns => 2,
         PrintConv => {
@@ -2151,6 +2152,19 @@ my %binaryDataAttrs = (
             9 => 'Radiant', # (Q)
             10 => 'Cross Processing', #31 (K-70)
             11 => 'Flat', #31 (K-70)
+            # the following values from GR III
+            256 => 'Standard',
+            257 => 'Vivid', 
+            258 => 'Monotone',
+            259 => 'Soft Monotone',
+            260 => 'Hard Monotone',
+            261 => 'Hi-contrast B&W',
+            262 => 'Positive Film',
+            263 => 'Bleach Bypass 2',
+            264 => 'Retro',
+            265 => 'HDR Tone',
+            266 => 'Cross Processing 2',
+            267 => 'Negative Film',
             # 256 - seen for GR III
             # 257 - seen for GR III
             # 262 - seen for GR III
@@ -2466,16 +2480,23 @@ my %binaryDataAttrs = (
         },
     },
     0x007a => { #PH
-        Name => 'ISOAutoParameters',
+        Name => 'ISOAutoMinSpeed',
         Writable => 'int8u',
         Count => 2,
-        PrintConv => {
-            '1 0' => 'Slow',
-            '2 0' => 'Standard',
-            '3 0' => 'Fast',
-            # '1 108' - seen for GR III
-            # '3 84' - seen for K-3III
-        },
+        # From the K-3III menus for the "ISO Auto with Min. Speed" setting: 'Fast' = "Increases
+        # the sensitivity from a shutter speed faster than the standard setting in ISO Auto"
+        ValueConv    => [ undef, '$val ? exp(-Image::ExifTool::Pentax::PentaxEv($val-68)*log(2)) : 0' ],
+        ValueConvInv => [ undef, '$val ? Image::ExifTool::Pentax::PentaxEvInv(-log($val)/log(2))+68 : 0' ],
+        PrintConv    => [
+            {
+                1 => 'Shutter Speed Control',
+                2 => 'Auto Slow',
+                3 => 'Auto Standard',
+                4 => 'Auto Fast',
+            },
+            'Image::ExifTool::Exif::PrintExposureTime($val)',
+        ],
+        PrintConvInv => [ undef, 'Image::ExifTool::Exif::ConvertFraction($val)' ],
     },
     0x007b => { #PH (K-5)
         Name => 'CrossProcess',
@@ -6339,7 +6360,7 @@ tags, and everyone who helped contribute to the LensType values.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -1302,6 +1302,7 @@ sub SetNewValuesFromFile($$;@)
         ImageHashType   => $$options{ImageHashType},
         Lang            => $$options{Lang},
         LargeFileSupport=> $$options{LargeFileSupport},
+        LimitLongValues => 10000000, # (10 MB)
         List            => 1,
         ListItem        => $$options{ListItem},
         ListSep         => $$options{ListSep},
@@ -4506,6 +4507,7 @@ sub HexDump($;$%)
 #        Count => number of values
 #        Extra => Extra Verbose=2 information to put after tag number
 #        Table => Reference to tag table
+#        Name => Name to use for unknown tag
 #        --> plus any of these HexDump() options: Start, Addr, Width
 sub VerboseInfo($$$%)
 {
@@ -4523,6 +4525,9 @@ sub VerboseInfo($$$%)
     # get tag name
     if ($tagInfo and $$tagInfo{Name}) {
         $tag = $$tagInfo{Name};
+    } elsif ($parms{Name}) { # (used for PNG Plus FPX tags)
+        $tag = $parms{Name};
+        undef $hexID;
     } else {
         my $prefix;
         $prefix = $parms{Table}{TAG_PREFIX} if $parms{Table};
@@ -7304,7 +7309,7 @@ used routines.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

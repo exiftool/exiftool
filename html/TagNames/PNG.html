@@ -71,70 +71,80 @@ check if speed is more of a concern.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a></td></tr>
 <tr class=b>
+<td>'cpIp'</td>
+<td>OLEInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html'>FlashPix Tags</a></td></tr>
+<tr>
 <td>'dSIG'</td>
 <td>DigitalSignature</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'eXIf'</td>
 <td>eXIf</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br><span class='n s'>(this is where ExifTool will create new EXIF)</span></td></tr>
-<tr class=b>
+<tr>
 <td>'fRAc'</td>
 <td>FractalParameters</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'gAMA'</td>
 <td>Gamma</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td><span class=s><span class=n>(ExifTool reports the gamma for decoding the image, which is consistent with
 the EXIF convention, but is the inverse of the stored encoding gamma)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'gIFg'</td>
 <td>GIFGraphicControlExtension</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'gIFt'</td>
 <td>GIFPlainTextExtension</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'gIFx'</td>
 <td>GIFApplicationExtension</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'hIST'</td>
 <td>PaletteHistogram</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'iCCP'</td>
 <td>ICC_Profile</td>
 <td class=c>-</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
   <br><span class='n s'>(this is where ExifTool will write a new ICC_Profile.  When creating a new
 ICC_Profile, the SRGBRendering tag should be deleted if it exists)</span></td></tr>
-<tr>
+<tr class=b>
 <td>'iCCP-name'</td>
 <td>ProfileName</td>
 <td class=c>yes</td>
 <td><span class=s><span class=n>(not a real tag ID, this tag represents the iCCP profile name, and may only
 be written when the ICC_Profile is written)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'iDOT'</td>
 <td>AppleDataOffsets</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'iTXt'</td>
 <td>InternationalText</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#TextualData'>PNG TextualData Tags</a></td></tr>
+<tr>
+<td>'meTa'</td>
+<td>MeTa</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html#XML'>XMP XML Tags</a></td></tr>
 <tr class=b>
 <td>'oFFs'</td>
 <td>ImageOffset</td>
@@ -685,7 +695,7 @@ when any of these tags is written, and may only be deleted as a group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 9, 2023</i>
+<br><i>Last revised Jan 10, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -109,11 +109,13 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 67 different formats of timed GPS metadata from video files.
+        currently reads 68 different formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
     GPSLongitude => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
+    GPSLatitude2 => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")' },
+    GPSLongitude2=> { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
     GPSAltitude  => { PrintConv => '(sprintf("%.4f", $val) + 0) . " m"' }, # round to 4 decimals
     GPSSpeed     => { PrintConv => 'sprintf("%.4f", $val) + 0', Notes => 'in km/h unless GPSSpeedRef says otherwise' },
     GPSSpeedRef  => { PrintConv => { K => 'km/h', M => 'mph', N => 'knots' } },
@@ -123,6 +125,11 @@ my %insvLimit = (
         Groups => { 2 => 'Time' },
         Description => 'GPS Date/Time',
         RawConv => '$$self{FoundGPSDateTime} = 1; $val',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    DateTimeOriginal => {
+        Groups => { 2 => 'Time' },
+        Description => 'Date/Time Original',
         PrintConv => '$self->ConvertDateTime($val)',
     },
     GPSTimeStamp => { PrintConv => 'Image::ExifTool::GPS::PrintTimeStamp($val)', Groups => { 2 => 'Time' } },
@@ -2427,6 +2434,83 @@ sub Process_gsen($$$)
 }
 
 #------------------------------------------------------------------------------
+# Process LIGOGPS JSON-format GPS from Yada RoadCam Pro 4K BT58189
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+# Sample data (chained 512-byte records starting like this):
+# 0000: 4c 49 47 4f 47 50 53 49 4e 46 4f 20 7b 22 48 6f [LIGOGPSINFO {"Ho]
+# 0010: 75 72 22 3a 20 22 32 33 22 2c 20 22 4d 69 6e 75 [ur": "23", "Minu]
+# 0020: 74 65 22 3a 20 22 31 30 22 2c 20 22 53 65 63 6f [te": "10", "Seco]
+# 0030: 6e 64 22 3a 20 22 32 32 22 2c 20 22 59 65 61 72 [nd": "22", "Year]
+# 0040: 22 3a 20 22 32 30 32 33 22 2c 20 22 4d 6f 6e 74 [": "2023", "Mont]
+# 0050: 68 22 3a 20 22 31 32 22 2c 20 22 44 61 79 22 3a [h": "12", "Day":]
+# 0060: 20 22 32 38 22 2c 20 22 73 74 61 74 75 73 22 3a [ "28", "status":]
+sub ProcessLIGO_JSON($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dirLen = $$dirInfo{DirLen};
+    require Image::ExifTool::Import;
+    $et->VerboseDir('LIGO_JSON', undef, length($$dataPt));
+    while ($$dataPt =~ /LIGOGPSINFO (\{.*?\})/g) {
+        my $json = $1;
+        my $raf = new File::RandomAccess(\$json);
+        my %dbase;
+        Image::ExifTool::Import::ReadJSON($raf, \%dbase);
+        my $info = $dbase{'*'} or next;
+        # my sample contains the following JSON fields (in this order):
+        # Hour Minute Second Year Month Day (GPS UTC time)
+        # status NS EW Latitude Longitude Speed (speed in knots)
+        # GsensorX GsensorY GsensorZ (units? - only seen "000" for all)
+        # MHour MMinute MSecond MYear MMonth MDay (local dashcam clock time)
+        # OLatitude OLongitude (? same values as Latitude/Longitude)
+        next unless defined $$info{status} and $$info{status} eq 'A'; # only read if GPS is active
+        $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        my $num = 0;
+        defined $$info{$_} and ++$num foreach qw(Year Month Day Hour Minute Second);
+        if ($num == 6) {
+            # this is the GPS time in UTC
+            my $time = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ',@$info{qw{Year Month Day Hour Minute Second}});
+            $et->HandleTag($tagTbl, GPSDateTime => $time);
+        }
+        if ($$info{Latitude} and $$info{Longitude}) {
+            my $lat = $$info{Latitude};
+            $lat = -$lat if $$info{NS} and $$info{NS} eq 'S';
+            my $lon = $$info{Longitude};
+            $lon = -$lon if $$info{EW} and $$info{EW} eq 'W';
+            $et->HandleTag($tagTbl, GPSLatitude => $lat);
+            $et->HandleTag($tagTbl, GPSLongitude => $lon);
+        }
+        $et->HandleTag($tagTbl, GPSSpeed => $$info{Speed} * $knotsToKph) if defined $$info{Speed};
+        if (defined $$info{GsensorX} and defined $$info{GsensorY} and defined $$info{GsensorZ}) {
+            # (don't know conversion factor for accel data, so leave it raw for now)
+            $et->HandleTag($tagTbl, Accelerometer => "$$info{GsensorX} $$info{GsensorY} $$info{GsensorZ}");
+        }
+        $num = 0;
+        defined $$info{$_} and ++$num foreach qw(MYear MMonth MDay MHour MMinute MSecond);
+        if ($num == 6) {
+            # this is the dashcam clock time (local time zone)
+            my $time = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d',@$info{qw{MYear MMonth MDay MHour MMinute MSecond}});
+            $et->HandleTag($tagTbl, DateTimeOriginal => $time);
+        }
+        if (defined $$info{OLatitude} and defined $$info{OLongitude}) {
+            my $lat = $$info{OLatitude};
+            $lat = -$lat if $$info{NS} and $$info{NS} eq 'S';
+            my $lon = $$info{OLongitude};
+            $lon = -$lon if $$info{EW} and $$info{EW} eq 'W';
+            $et->HandleTag($tagTbl, GPSLatitude2 => $lat);
+            $et->HandleTag($tagTbl, GPSLongitude2 => $lon);
+        }
+        unless ($et->Options('ExtractEmbedded')) {
+            $et->WarnOnce('Use the ExtractEmbedded option to extract all timed GPS',3);
+            last;
+        }
+    }
+    delete $$et{DOC_NUM};
+    return 1;
+}
+
+#------------------------------------------------------------------------------
 # Process Kenwood drv-a301w dashcam 'udta' atom (ref PH)
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
@@ -2464,6 +2548,10 @@ sub ProcessKenwood($$$)
             push @acc, $1/1000, $2/1000, $3/1000;
         }
         $et->HandleTag($tagTbl, Accelerometer => "@acc") if @acc;
+        unless ($et->Options('ExtractEmbedded')) {
+            $et->WarnOnce('Use the ExtractEmbedded option to extract all timed GPS',3);
+            last;
+        }
     }
     delete $$et{DOC_NUM};
     return 1;
@@ -3221,7 +3309,7 @@ information like GPS tracks from MOV, MP4 and INSV media data.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

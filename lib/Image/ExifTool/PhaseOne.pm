@@ -153,7 +153,7 @@ my @formatName = ( undef, 'string', 'int16s', undef, 'int32s' );
         Format => 'int16s',
         Count => -1,
         Flags => ['Unknown','Hidden'],
-        PrintConv => 'length($val) > 60 ? substr($val,0,55) . "[...]" : $val',
+        PrintConv => \&Image::ExifTool::LimitLongValues,
     },
     0x0226 => {
         Name => 'ColorMatrix2',
@@ -184,13 +184,13 @@ my @formatName = ( undef, 'string', 'int16s', undef, 'int32s' );
         Name => 'PhaseOne_0x0258',
         Format => 'int16s',
         Flags => ['Unknown','Hidden'],
-        PrintConv => 'length($val) > 60 ? substr($val,0,55) . "[...]" : $val',
+        PrintConv => \&Image::ExifTool::LimitLongValues,
     },
     0x025a => { #PH
         Name => 'PhaseOne_0x025a',
         Format => 'int16s',
         Flags => ['Unknown','Hidden'],
-        PrintConv => 'length($val) > 60 ? substr($val,0,55) . "[...]" : $val',
+        PrintConv => \&Image::ExifTool::LimitLongValues,
     },
     # 0x0300 - int32u: 100,101,102
     0x0301 => { Name => 'FirmwareVersions', Format => 'string' },
@@ -725,7 +725,7 @@ One maker notes.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

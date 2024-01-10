@@ -65,13 +65,13 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.28';
+$VERSION = '4.29';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
 sub ProcessNikonMOV($$$);
 sub ProcessNikonEncrypted($$$);
-sub FormatString($);
+sub FormatString($$);
 sub ProcessNikonCaptureEditVersions($$$);
 sub PrintAFPoints($$);
 sub PrintAFPointsInv($$);
@@ -12731,15 +12731,16 @@ sub LensIDConv($$$)
 
 #------------------------------------------------------------------------------
 # Clean up formatting of string values
-# Inputs: 0) string value
+# Inputs: 0) string value, 1) ExifTool ref
 # Returns: formatted string value
 # - removes trailing spaces and changes case to something more sensible
-sub FormatString($)
+sub FormatString($$)
 {
-    my $str = shift;
+    my ($str, $et) = @_;
     # limit string length (can be very long for some unknown tags)
-    if (length($str) > 60) {
-        $str = substr($str,0,55) . "[...]";
+    my $lim = $et->Options('LimitLongValues');
+    if (length($str) > $lim and $lim >= 5) {
+        $str = substr($str,0,$lim-5) . "[...]";
     } else {
         $str =~ s/\s+$//;   # remove trailing white space
         # Don't change case of non-words (no vowels)
@@ -13429,7 +13430,7 @@ Nikon maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.35';
+$VERSION = '1.36';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
@@ -335,6 +335,9 @@ sub ProcessJPEG_HDR($$$);
         Name => 'NikonApp',
         Condition => '$$valPt =~ m(\0{6}/NIKON APP$)',
         Notes => 'contains editing information in XMP format',
+      }, {
+        Name => 'SonyHiddenData',
+        Condition => '$$valPt =~ /^\x55\x26\x11\x05\0/',
       }, {
         Name => 'PreviewImage',
         Condition => '$$valPt =~ /^\xff\xd8\xff/',
@@ -765,7 +768,7 @@ segments are included in the Image::ExifTool module itself.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.65';
+$VERSION = '3.66';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -597,7 +597,7 @@ my %unknownCipherData = (
     Hidden => 1,    # doesn't appear in Tag Name documentation
     RawConv => sub { Decipher(\$_[0]); return $_[0] },
     ValueConv => 'PrintHex($val)',                      # print as hex
-    PrintConv => 'length($val) > 65 ? substr($val,0,60) . "[...]" : $val',  # limit length
+    PrintConv => \&Image::ExifTool::LimitLongValues,
 );
 
 my %meterInfo1 = (
@@ -11734,7 +11734,7 @@ Minolta.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

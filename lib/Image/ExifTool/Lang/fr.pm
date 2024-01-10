@@ -5881,11 +5881,10 @@ $VERSION = '1.36';
    'ISOAutoMax' => 'ISO Auto maximum',
    'ISOAutoMin' => 'ISO Auto minimum',
    'ISOAutoOffset' => 'Décalage automatique de l\'ISO',
-   'ISOAutoParameters' => {
-      Description => 'Paramètres de l\'ISO Auto',
+   'ISOAutoMinSpeed' => {
       PrintConv => {
-        'Fast' => 'Rapide',
-        'Slow' => 'Lent',
+        'Auto Fast' => 'Auto rapide',
+        'Auto Slow' => 'Auto lent',
       },
     },
    'ISOExpansion' => {
@@ -11271,7 +11270,7 @@ and values.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -17,6 +17,26 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.73'><b>Jan. 10, 2024 - Version 12.73</b></a>
+<ul>
+<li>Added write support for Leica XMP-xmpDSA tags
+<li>Added read support for timed GPS from Yada RoadCam Pro 4K dashcam videos
+<li>Added read support for PNG cpIp chunk
+<li>Added range checks on lat/long values when writing QuickTime:GPSCoordinates
+<li>Decode a number of new values for Ricoh GR III tags
+<li>Decode a new Leica tag
+<li>Improved handling of Brotli compression errors
+<li>Enhanced API NoWarning option to also apply to app "Warning:" outputs
+<li>Identify PNG Plus files
+<li>Changed name of Pentax ISOAutoParameters to ISOAutoMinSpeed and improved
+    decoding
+<li>Fixed writing of date/time tags in XMP-xmpMM:Pantry structure
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#LimitLongValues">LimitLongValues option</a>
+    </ul>
+</ul>
+
 <a name='v12.72'><b>Dec. 29, 2023 - Version 12.72</b></a>
 <ul>
 <li>Added read support for AAC audio files

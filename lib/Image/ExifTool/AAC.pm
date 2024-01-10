@@ -28,6 +28,7 @@ my %convSampleRate = (
 %Image::ExifTool::AAC::Main = (
     PROCESS_PROC => \&Image::ExifTool::FLAC::ProcessBitStream,
     GROUPS => { 2 => 'Audio' },
+    NOTES => 'Tags extracted from Advanced Audio Coding (AAC) files.',
    # Bit000-011 - sync word (all 1's)
    # Bit012     - ID (seems to be always 0)
    # Bit013-014 - layer (00)
@@ -109,7 +110,7 @@ sub ProcessAAC($$)
     $et->ProcessDirectory({ DataPt => \$buff }, $tagTablePtr);
 
     # read the first frame data to check for a filler with the encoder name
-    if ($len > 8 and $raf->Read($buff, $len-7) == $len-7) {
+    while ($len > 8 and $raf->Read($buff, $len-7) == $len-7) {
         my $noCRC = ($t[0] & 0x00010000);
         my $blocks = ($t[2] & 0x03);
         my $pos = 0;
@@ -122,16 +123,17 @@ sub ProcessAAC($$)
             my $cnt = ($tmp >> 9) & 0x0f;
             ++$pos;
             if ($cnt == 15) {
-                $cnt += (($tmp >> 1) & 0xff) - 1 if $cnt == 15;
+                $cnt += (($tmp >> 1) & 0xff) - 1;
                 ++$pos;
             }
-            if ($pos + $cnt < length($buff)) {
+            if ($pos + $cnt <= length($buff)) {
                 my $dat = substr($buff, $pos, $cnt);
                 $dat =~ s/^\0+//;
                 $dat =~ s/\0+$//;
                 $et->HandleTag($tagTablePtr, Encoder => $dat) if $dat =~ /^[\x20-\x7e]+$/;
             }
         }
+        last;
     }
 
     return 1;
@@ -151,8 +153,8 @@ This module is used by Image::ExifTool
 
 =head1 DESCRIPTION
 
-This module contains definitions required by Image::ExifTool to read AAC
-audio files.
+This module contains definitions required by Image::ExifTool to read
+Advanced Audio Coding (AAC) files.
 
 =head1 NOTES
 
@@ -161,7 +163,7 @@ based on unofficial sources which may be incomplete, inaccurate or outdated.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

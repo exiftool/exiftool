@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.61';
+$VERSION = '3.62';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -201,6 +201,7 @@ my %xmpNS = (
     nine      => 'http://ns.nikon.com/nine/1.0/',
     hdr_metadata => 'http://ns.adobe.com/hdr-metadata/1.0/',
     hdrgm     => 'http://ns.adobe.com/hdr-gain-map/1.0/',
+    xmpDSA    => 'http://leica-camera.com/digital-shift-assistant/1.0/',
   # Note: Not included due to namespace prefix conflict with Device:Container
   # Container => 'http://ns.google.com/photos/1.0/container/',
 );
@@ -920,6 +921,10 @@ my %sRangeMask = (
     hdrgm => {
         Name => 'hdrgm',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::hdrgm' },
+    },
+    xmpDSA => {
+        Name => 'xmpDSA',
+        SubDirectory => { TagTable => 'Image::ExifTool::Panasonic::DSA' },
     },
   # Note: Note included due to namespace prefix conflict with Device:Container
   # Container => {
@@ -4158,7 +4163,18 @@ sub ProcessXMP($$;$)
         $dataLen = $$dirInfo{DataLen} || length($$dataPt);
         # check leading BOM (may indicate double-encoded UTF)
         pos($$dataPt) = $dirStart;
-        $double = $1 if $$dataPt =~ /\G((\0\0)?\xfe\xff|\xff\xfe(\0\0)?|\xef\xbb\xbf)\0*<\0*\?\0*x\0*p\0*a\0*c\0*k\0*e\0*t/g;
+        if ($$dataPt =~ /\G((\0\0)?\xfe\xff|\xff\xfe(\0\0)?|\xef\xbb\xbf)\0*<\0*\?\0*x\0*p\0*a\0*c\0*k\0*e\0*t/g) {
+            $double = $1 
+        } else {
+            # handle UTF-16/32 XML
+            pos($$dataPt) = $dirStart;
+            if ($$dataPt =~ /\G((\0\0)?\xfe\xff|\xff\xfe(\0\0)?|\xef\xbb\xbf)\0*<\0*\?\0*x\0*m\0*l\0* /g) {
+                my $tmp = $1;
+                $fmt = $tmp =~ /\xfe\xff/ ? 'n' : 'v';
+                $fmt = uc($fmt) if $tmp =~ /\0\0/;
+                $isXML = 1;
+            }
+        }
     } else {
         my ($type, $mime, $buf2, $buf3);
         # read information from XMP file
@@ -4516,7 +4532,7 @@ information.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

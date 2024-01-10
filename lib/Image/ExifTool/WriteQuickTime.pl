@@ -169,8 +169,11 @@ sub ConvInvISO6709($)
         #  with more than 5 digits after the decimal place:
         #  https://exiftool.org/forum/index.php?topic=11055.msg67171#msg67171 )
         my @fmt = ('%s%02d.%s%s','%s%03d.%s%s','%s%d.%s%s');
+        my @limit = (90,180);
         foreach (@a) {
             return undef unless Image::ExifTool::IsFloat($_);
+            my $lim = shift @limit;
+            warn((@limit ? 'Lat' : 'Long') . "itude out of range\n") if $lim and abs($_) > $lim;
             $_ =~ s/^([-+]?)(\d+)\.?(\d*)/sprintf(shift(@fmt),$1||'+',$2,$3,length($3)<3 ? '0'x(3-length($3)) : '')/e;
         }
         return join '', @a, '/';
@@ -1958,7 +1961,7 @@ QuickTime-based file formats like MOV and MP4.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

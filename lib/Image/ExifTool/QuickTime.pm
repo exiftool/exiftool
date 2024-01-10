@@ -64,6 +64,7 @@ sub Process_3gf($$$);
 sub Process_gps0($$$);
 sub Process_gsen($$$);
 sub ProcessKenwood($$$);
+sub ProcessLIGO_JSON($$$);
 sub ProcessRIFFTrailer($$$);
 sub ProcessTTAD($$$);
 sub ProcessNMEA($$$);
@@ -708,6 +709,13 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
             ProcessProc => \&ProcessKenwood,
         },
     },{
+        Name => 'LIGO_JSON',
+        Condition => '$$valPt =~ /^LIGOGPSINFO \{/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => \&ProcessLIGO_JSON,
+        },
+    },{
         Name => 'FLIRData',
         SubDirectory => { TagTable => 'Image::ExifTool::FLIR::UserData' },
     }],
@@ -825,6 +833,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         # note that this may be written and/or deleted, but can't currently be added back again
         Writable => 1,
     },
+    # '35AX'? - seen "AT" (Yada RoadCam Pro 4K dashcam)
 );
 
 # stuff seen in 'skip' atom (70mai Pro Plus+ MP4 videos)
@@ -6699,6 +6708,13 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     # (mdta)com.apple.proapps.image.{TIFF}.Make (eg. "Atmos")
     # (mdta)com.apple.proapps.image.{TIFF}.Model (eg. "ShogunInferno")
     # (mdta)com.apple.proapps.image.{TIFF}.Software (eg. "9.0")
+#
+# also seen (but don't yet add support for these)
+#
+    # (mdta)major_brand
+    # (mdta)minor_version
+    # (mdta)compatible_brands
+    # (mdta)creation_time
 );
 
 # iTunes info ('----') atoms
@@ -7314,6 +7330,10 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     SA3D => { # written by Garmin VIRB360
         Name => 'SpatialAudio',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::SpatialAudio' },
+    },
+    btrt => {
+        Name => 'BitrateInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Bitrate' },
     },
     # alac - 28 bytes
     # adrm - AAX DRM atom? 148 bytes
@@ -10009,7 +10029,7 @@ information from QuickTime and MP4 video, M4A audio, and HEIC image files.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

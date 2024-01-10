@@ -746,6 +746,12 @@ effect as a value of 0 for options with numerical values.</p>
     <td align=center>'en'</td></tr>
 <tr id="LargeFileSupport"><td>LargeFileSupport</td><td>Flag to indicate that 64-bit file offsets are supported on this system.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
+<tr id="LimitLongValues"><td>LimitLongValues</td><td>When extracting some values
+    that may be very long, the PrintConv values are length-limited and the value is
+    truncated with an elipsis ("[...]") if it exceeds a specified length.  This
+    option specifies the length limit for these tags.  A setting of 4 or less
+    disables the limit (because the elipsis string is longer than this).</td>
+    <td align=center>Any integer</td><td align=center>60</td></tr>
 <!-- deprecated in ExifTool 10.54; use "ListJoin" instead
 <tr id="List"><td>List</td><td>Flag to extract lists of PrintConv values into arrays instead of combining
     them into a string of values.</td><td align=center>0 or 1</td><td align=center>undef</td></tr>

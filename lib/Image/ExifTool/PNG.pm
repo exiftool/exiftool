@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.65';
+$VERSION = '1.66';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -351,6 +351,27 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
             TagTable => 'Image::ExifTool::PNG::CICodePoints',
         },
     },
+    cpIp => { # OLE information found in PNG Plus images written by Picture It!
+        Name => 'OLEInfo',
+        Condition => q{
+            # set FileType to "PNG Plus"
+            if ($$self{VALUE}{FileType} and $$self{VALUE}{FileType} eq "PNG") {
+                $$self{VALUE}{FileType} = 'PNG Plus';
+            }
+            return 1;
+        },
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::FlashPix::Main',
+            ProcessProc => 'Image::ExifTool::FlashPix::ProcessFPX',
+        },
+    },
+    meTa => { # XML in UTF-16 BOM format written by Picture It!
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::XMP::XML',
+            IgnoreProp => { meta => 1 }, # ignore 'meta' container
+        },
+    },
+    # mkBF,mkTS,mkBS,mkBT ? - written by Adobe FireWorks
 );
 
 # PNG IHDR chunk
@@ -970,6 +991,7 @@ sub FoundPNG($$$$;$$$$)
                     TagInfo  => $tagInfo,
                     ReadOnly => 1, # (used only by WriteXMP)
                     OutBuff  => $outBuff,
+                    IgnoreProp => $$subdir{IgnoreProp}, # (XML hack for meTa chunk)
                 );
                 # no need to re-decompress if already done
                 undef $processProc if $wasCompressed and $processProc and $processProc eq \&ProcessPNG_Compressed;
@@ -1656,7 +1678,7 @@ and JNG (JPEG Network Graphics) images.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

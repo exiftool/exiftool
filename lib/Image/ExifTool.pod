@@ -5,7 +5,7 @@
 #
 # URL:          https://exiftool.org/
 #
-# Legal:        Copyright (c) 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+# Legal:        Copyright (c) 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -821,6 +821,14 @@ set to undef to select the built-in default language.  Default is 'en'.
 
 Flag to indicate that 64-bit file offsets are supported on this system.
 Default is undef.
+
+=item LimitLongValues
+
+When extracting some values that may be very long, the PrintConv values are
+length-limited and the value is truncated with an elipsis ("[...]") if it
+exceeds a specified length.  This option specifies the length limit for
+these tags.  A setting of 4 or less disables the limit (because the elipsis
+string is longer than this).  Default is 60.
 
 =item ListItem
 
@@ -2881,7 +2889,7 @@ specified by the L</Charset> option.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey
+Copyright 2003-2024, Phil Harvey
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

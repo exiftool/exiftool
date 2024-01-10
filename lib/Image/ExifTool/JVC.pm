@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub ProcessJVCText($$$);
 
@@ -88,7 +88,7 @@ sub ProcessJVCText($$$)
             $tagInfo = {
                 Name => "JVC_Text_$tag",
                 Unknown => 1,
-                PrintConv => 'length($val) > 60 ? substr($val,0,55) . "[...]" : $val',
+                PrintConv => \&Image::ExifTool::LimitLongValues,
             };
             # add tag information to table
             AddTagToTable($tagTablePtr, $tag, $tagInfo);
@@ -117,7 +117,7 @@ notes.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

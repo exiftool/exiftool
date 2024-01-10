@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.37';
+$VERSION = '1.38';
 
 sub ProcessRicohText($$$);
 sub ProcessRicohRMETA($$$);
@@ -1078,7 +1078,7 @@ sub ProcessRicohText($$$)
             $tagInfo = {
                 Name => "Ricoh_Text_$tag",
                 Unknown => 1,
-                PrintConv => 'length($val) > 60 ? substr($val,0,55) . "[...]" : $val',
+                PrintConv => \&Image::ExifTool::LimitLongValues,
             };
             # add tag information to table
             AddTagToTable($tagTablePtr, $tag, $tagInfo);
@@ -1252,7 +1252,7 @@ interpret Ricoh maker notes EXIF meta information.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

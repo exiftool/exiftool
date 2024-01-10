@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.36';
+$VERSION = '1.37';
 
 sub ProcessJpeg2000Box($$$);
 sub ProcessJUMD($$$);
@@ -855,6 +855,17 @@ sub ProcessJUMD($$$)
 }
 
 #------------------------------------------------------------------------------
+# Warn about error in Brotli compression/decompression
+# Inputs: 0) ExifTool ref, 1) box type, 2) true for decoding (Uncompress)
+sub BrotliWarn($$;$)
+{
+    my ($et, $type, $uncompress) = @_;
+    my ($enc, $mod) = $uncompress ? qw(decoding Uncompress) : qw(encoding Compress);
+    $et->WarnOnce("Error $enc '${type}' brob box");
+    $et->WarnOnce("Try updating to IO::${mod}::Brotli 0.004 or later");
+}
+
+#------------------------------------------------------------------------------
 # Create new JPEG 2000 boxes when writing
 # (Currently only supports adding top-level Writable JPEG2000 tags and certain UUID boxes)
 # Inputs: 0) ExifTool object ref, 1) Output file or scalar ref
@@ -909,7 +920,7 @@ sub CreateNewBoxes($$)
                         my $compressed;
                         eval { $compressed = IO::Compress::Brotli::bro($pad . $newdir) };
                         if ($@ or not $compressed) {
-                            $et->Warn("Error encoding $dirName brob box");
+                            BrotliWarn($et, $dirName);
                         } else {
                             $et->VPrint(0, "  Writing Brotli-compressed $dir\n");
                             $newdir = $compressed;
@@ -1248,7 +1259,7 @@ sub ProcessJpeg2000Box($$$)
                                 my $compressed;
                                 eval { $compressed = IO::Compress::Brotli::bro($pad . $newdir) };
                                 if ($@ or not $compressed) {
-                                    $et->Warn("Error encoding $boxID brob box");
+                                    BrotliWarn($et, $boxID);
                                 } else {
                                     $et->VPrint(0, "  Writing Brotli-compressed $boxID\n");
                                     $newdir = $boxID . $compressed;
@@ -1389,7 +1400,7 @@ sub ProcessBrotli($$$)
         my $verbose = $isWriting ? 0 : $et->Options('Verbose');
         my $dat = substr($$dataPt, 4);
         eval { $dat = IO::Uncompress::Brotli::unbro($dat, 100000000) };
-        $@ and $et->Warn("Error decoding $type brob box"), return 1;
+        $@ and BrotliWarn($et, $type, 1), return 1;
         $verbose > 2 and $et->VerboseDump(\$dat, Prefix => $$et{INDENT} . '  ');
         my %dirInfo = ( DataPt => \$dat );
         if ($type eq 'xml ') {
@@ -1422,7 +1433,7 @@ sub ProcessBrotli($$$)
             # rewrite as uncompressed if Compress option is set to 0 (or '')
             return $dat if defined $compress and not $compress;
             eval { $dat = IO::Compress::Brotli::bro($dat) };
-            $@ and $et->Warn("Error encoding $type brob box"), return undef;
+            $@ and BrotliWarn($et, $type), return undef;
             $et->VPrint(0, "  Writing Brotli-compressed $type\n");
             return $type . $dat;
         }
@@ -1620,7 +1631,7 @@ files.
 
 =head1 AUTHOR
 
-Copyright 2003-2023, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

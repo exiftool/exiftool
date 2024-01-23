@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.37';
+$VERSION = '1.38';
 
 sub ProcessJpeg2000Box($$$);
 sub ProcessJUMD($$$);
@@ -1583,7 +1583,7 @@ sub ProcessJXL($$)
             $$et{IsJXL} = 2;
             my $buff = "\0\0\0\x0cJXL \x0d\x0a\x87\x0a\0\0\0\x14ftypjxl \0\0\0\0jxl ";
             # add metadata to empty ISO BMFF container
-            $$dirInfo{RAF} = new File::RandomAccess(\$buff);
+            $$dirInfo{RAF} = File::RandomAccess->new(\$buff);
         } else {
             $et->SetFileType('JXL Codestream','image/jxl', 'jxl');
             if ($$et{ImageDataHash} and $raf->Seek(0,0)) {

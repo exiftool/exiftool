@@ -17,7 +17,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::MakerNotes;
 use Image::ExifTool::CanonRaw;
 
-$VERSION = '1.24';
+$VERSION = '1.25';
 
 sub ProcessOriginalRaw($$$);
 sub ProcessAdobeData($$$);
@@ -516,7 +516,7 @@ sub ProcessAdobeMRW($$$)
     my $buff = "\0MRM" . pack('N', $dirLen - 4);
     # ignore leading byte order and directory count words
     $buff .= substr($$dataPt, $dirStart + 4, $dirLen - 4);
-    my $raf = new File::RandomAccess(\$buff);
+    my $raf = File::RandomAccess->new(\$buff);
     my %dirInfo = ( RAF => $raf, OutFile => $outfile );
     my $rtnVal = Image::ExifTool::MinoltaRaw::ProcessMRW($et, \%dirInfo);
     if ($outfile and defined $$outfile and length $$outfile) {
@@ -548,7 +548,7 @@ sub ProcessAdobeRAF($$$)
     }
     $et->VerboseDir($dirInfo);
     # make fake RAF object for processing (same acronym, different meaning)
-    my $raf = new File::RandomAccess($dataPt);
+    my $raf = File::RandomAccess->new($dataPt);
     my $num = '';
     # loop through all records in Adobe RAF data:
     # 0 - RAF table (not processed)
@@ -752,7 +752,7 @@ sub ProcessAdobeMakN($$$)
     }
     if ($outfile) {
         # rewrite the maker notes directory
-        my $fixup = $subdirInfo{Fixup} = new Image::ExifTool::Fixup;
+        my $fixup = $subdirInfo{Fixup} = Image::ExifTool::Fixup->new;
         my $oldChanged = $$et{CHANGED};
         my $buff = $et->WriteDirectory(\%subdirInfo, $subTable);
         # nothing to do if error writing directory or nothing changed

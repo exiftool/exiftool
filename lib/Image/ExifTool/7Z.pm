@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 sub ReadUInt32 {
     my $buff;
@@ -569,7 +569,7 @@ sub ReadFilesInfo {
             next;
         }
         $_[0]->Read($buff, $size);
-        my $buffer = new File::RandomAccess(\$buff);
+        my $buffer = File::RandomAccess->new(\$buff);
         if($prop == 14){  # empty stream
             my @isempty = ReadBoolean($buffer, $numfiles, 0);
             my $numemptystreams = 0;
@@ -732,7 +732,7 @@ sub Process7Z($$)
                 $folder_data .= Decompress($et, $raf, $decomporessor, $remaining);
                 $remaining = $uncompressed_size - length($folder_data);
             }
-            $buffer2 = new File::RandomAccess(\$folder_data);
+            $buffer2 = File::RandomAccess->new(\$folder_data);
         }
         $buffer2->Seek(0, 0);
         $buffer2->Read($buff, 1);

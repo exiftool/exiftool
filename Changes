@@ -7,6 +7,30 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.70. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 23, 2024 - Version 12.74
+
+  - Added a couple of new Nikon lenses (thanks Chris)
+  - Added write support for a few new QuickTime Keys tags
+  - Decode ShutterCount for Canon EOS R5 (thanks John Moyer)
+  - Improved error messages in the case of file read errors
+  - Enhanced tag name strings (eg. -if option expressions) to allow values of
+    multiple matching tags to be concatenated when a group name of "All" is
+    specified
+  - Enhanced -p option to add -p- feature which avoids adding trailing newline
+  - Changed warning from "Shift results in negative time" to "Shift results in
+    date before 1970"
+  - Patched calculation of GPSDateTime for the timed metadata in Track3 of
+    Garmin videos so the API QuickTimeUTC option is no longer required
+  - Fixed conversion error when writing QuickTime:GoogleTrackDuration
+  - Fixed misidentification of non-TIFF-format files containing DNGVersion tag
+  - Fixed bug where Avoid-ed XMP structures could be created when writing
+    another same-named structure
+  - Internal Changes:
+      - Changed form of all new() calls to accommodate backward
+        incompatibilities in recent versions of Perl
+      - Changed order of InsertTagValues() arguments
+      - DateFmt() now returns value of formatted date/time string
+
 Jan. 10, 2024 - Version 12.73
 
   - Added write support for Leica XMP-xmpDSA tags
@@ -22,7 +46,8 @@ Jan. 10, 2024 - Version 12.73
     decoding
   - Fixed writing of date/time tags in XMP-xmpMM:Pantry structure
   - API Changes:
-      - Added LimitLongValues option
+      - Added LimitLongValues option to provide control over tags which
+        previously had a hard-coded length limit
 
 Dec. 29, 2023 - Version 12.72
 

@@ -378,7 +378,7 @@ sub writeCheck($$$;$$$$)
     $srcfile or $srcfile = "t/images/$testname.jpg";
     my ($ext) = ($srcfile =~ /\.(.+?)$/);
     my $testfile = "t/${testname}_${testnum}_failed.$ext";
-    my $exifTool = new Image::ExifTool;
+    my $exifTool = Image::ExifTool->new;
     my @tags;
     if (ref $onlyWritten eq 'ARRAY') {
         @tags = @$onlyWritten;

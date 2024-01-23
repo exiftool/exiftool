@@ -16,9 +16,9 @@ File::RandomAccess - Random access reads of sequential file or scalar
 
     use File::RandomAccess;
 
-    $raf = new File::RandomAccess(\*FILE, $disableSeekTest);
+    $raf = File::RandomAccess->new(\*FILE, $disableSeekTest);
 
-    $raf = new File::RandomAccess(\$data);
+    $raf = File::RandomAccess->new(\$data);
 
     $err = $raf->Seek($pos);
     $num = $raf->Read($buff, $bytes);
@@ -38,10 +38,10 @@ Creates a new RandomAccess object given a file reference or
 reference to data in memory.
 
     # Read from open file or pipe
-    $raf = new File::RandomAccess(\*FILE);
+    $raf = File::RandomAccess->new(\*FILE);
 
     # Read from data in memory
-    $raf = new File::RandomAccess(\$data);
+    $raf = File::RandomAccess->new(\$data);
 
 =over 4
 

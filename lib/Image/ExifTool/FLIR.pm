@@ -24,7 +24,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.22';
+$VERSION = '1.23';
 
 sub ProcessFLIR($$;$);
 sub ProcessFLIRText($$$);
@@ -1468,7 +1468,7 @@ sub ProcessMeasInfo($$$)
 sub ProcessFLIR($$;$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
-    my $raf = $$dirInfo{RAF} || new File::RandomAccess($$dirInfo{DataPt});
+    my $raf = $$dirInfo{RAF} || File::RandomAccess->new($$dirInfo{DataPt});
     my $verbose = $et->Options('Verbose');
     my $out = $et->Options('TextOut');
     my $base = $raf->Tell();

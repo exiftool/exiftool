@@ -290,7 +290,7 @@ sub WritePDF($$)
     $raf->Seek($pos, 0);
 
     # create a new ExifTool object and use it to read PDF and XMP information
-    my $newTool = new Image::ExifTool;
+    my $newTool = Image::ExifTool->new;
     $newTool->Options(List => 1);
     $newTool->Options(Password => $et->Options('Password'));
     $newTool->Options(NoPDFList => $et->Options('NoPDFList'));

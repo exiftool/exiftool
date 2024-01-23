@@ -19,7 +19,7 @@ use integer;    # IMPORTANT!!  use integer arithmetic throughout
 require Exporter;
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(Decode);
 
@@ -196,7 +196,7 @@ sub Decode($;$)
     if (ref $_[0] and UNIVERSAL::isa($_[0],'Image::ExifTool::BZZ')) {
         $self = shift;
     } else {
-        $self = new Image::ExifTool::BZZ;
+        $self = Image::ExifTool::BZZ->new;
     }
     my $dataPt = shift;
     if ($dataPt) {

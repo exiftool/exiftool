@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.44';
+$VERSION = '1.45';
 
 sub WritePS($$);
 sub ProcessPS($$;$);
@@ -430,7 +430,7 @@ sub ProcessPS($$;$)
 
     # allow read from data
     unless ($raf) {
-        $raf = new File::RandomAccess($$dirInfo{DataPt});
+        $raf = File::RandomAccess->new($$dirInfo{DataPt});
         $et->VerboseDir('PostScript');
     }
 #

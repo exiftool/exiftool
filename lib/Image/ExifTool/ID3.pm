@@ -18,7 +18,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.60';
+$VERSION = '1.61';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -1408,7 +1408,7 @@ sub ProcessID3($$)
     $$et{DoneID3} = 1;
 
     # allow this to be called with either RAF or DataPt
-    my $raf = $$dirInfo{RAF} || new File::RandomAccess($$dirInfo{DataPt});
+    my $raf = $$dirInfo{RAF} || File::RandomAccess->new($$dirInfo{DataPt});
     my ($buff, %id3Header, %id3Trailer, $hBuff, $tBuff, $eBuff, $tagTablePtr);
     my $rtnVal = 0;
     my $hdrEnd = 0;

@@ -128,7 +128,7 @@ sub SaveMakerNotes($)
     delete $$et{MAKER_NOTE_INFO};
     my $dirEntries = $makerInfo->{Entries};
     my $numEntries = scalar(keys %$dirEntries);
-    my $fixup = new Image::ExifTool::Fixup;
+    my $fixup = Image::ExifTool::Fixup->new;
     return unless $numEntries;
     # build the MakerNotes directory
     my $makerNotes = Set16u($numEntries);

@@ -1083,6 +1083,8 @@ sub WriteXMP($$;$)
             # delete all structure (or pseudo-structure) elements
             require 'Image/ExifTool/XMPStruct.pl';
             ($deleted, $added, $existed) = DeleteStruct($et, \%capture, \$path, $nvHash, \$changed);
+            # don't add if it didn't exist and not IsCreating and Avoid
+            undef $added if not $existed and not $$nvHash{IsCreating} and $$tagInfo{Avoid};
             next unless $deleted or $added or $et->IsOverwriting($nvHash);
             next if $existed and $$nvHash{CreateOnly};
         } elsif ($cap) {
@@ -1262,8 +1264,8 @@ sub WriteXMP($$;$)
         # check to see if we want to create this tag
         # (create non-avoided tags in XMP data files by default)
         my $isCreating = ($$nvHash{IsCreating} or (($isStruct or
-                          ($preferred and not $$tagInfo{Avoid} and
-                            not defined $$nvHash{Shift})) and not $$nvHash{EditOnly}));
+                          ($preferred and not defined $$nvHash{Shift})) and
+                          not $$tagInfo{Avoid} and not $$nvHash{EditOnly}));
 
         # don't add new values unless...
             # ...tag existed before and was deleted, or we added it to a list

@@ -9852,7 +9852,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     85 => { Name => 'HighSpeedSync',          PrintConv => \%offOn }, # CSe1-b
     87 => { # CSe2
         Name => 'FlashShutterSpeed',
-        ValueConv => 'my $t = ($val - 16) % 24; $t ? $val / 24  : 2 + ($val - 16) / 24',     #unusual decode perhaps due to need to accomodate 4 new values?
+        ValueConv => 'my $t = ($val - 16) % 24; $t ? $val / 24  : 2 + ($val - 16) / 24',     #unusual decode perhaps due to need to accommodate 4 new values?
         PrintConv => {
             0 => '1 s',
             1 => '1/2 s',
@@ -10242,7 +10242,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     85 => { Name => 'HighSpeedSync',          PrintConv => \%offOn }, # CSe1-b
     87 => { # CSe2
         Name => 'FlashShutterSpeed',
-        ValueConv => 'my $t = ($val - 16) % 24; $t ? $val / 24  : 2 + ($val - 16) / 24',     #unusual decode perhaps due to need to accomodate 4 new values?
+        ValueConv => 'my $t = ($val - 16) % 24; $t ? $val / 24  : 2 + ($val - 16) / 24',     #unusual decode perhaps due to need to accommodate 4 new values?
         PrintConv => {
             0 => '1 s',
             1 => '1/2 s',
@@ -10652,7 +10652,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     85 => { Name => 'HighSpeedSync',          PrintConv => \%offOn }, # CSe1-b
     87 => { # CSe2
         Name => 'FlashShutterSpeed',
-        ValueConv => 'my $t = ($val - 16) % 24; $t ? $val / 24  : 2 + ($val - 16) / 24',     #unusual decode perhaps due to need to accomodate 4 new values?
+        ValueConv => 'my $t = ($val - 16) % 24; $t ? $val / 24  : 2 + ($val - 16) / 24',     #unusual decode perhaps due to need to accommodate 4 new values?
         PrintConv => {
             0 => '1 s',
             1 => '1/2 s',

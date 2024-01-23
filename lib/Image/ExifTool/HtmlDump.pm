@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool;    # only for FinishTiffDump()
 use Image::ExifTool::HTML qw(EscapeHTML);
 
-$VERSION = '1.39';
+$VERSION = '1.40';
 
 sub DumpTable($$$;$$$$$$);
 sub Open($$$;@);
@@ -894,7 +894,7 @@ Image::ExifTool::HtmlDump - Dump information in hex to HTML page
 =head1 SYNOPSIS
 
     use Image::ExifTool::HtmlDump;
-    my $dump = new Image::ExifTool::HtmlDump;
+    my $dump = Image::ExifTool::HtmlDump->new;
     $dump->Add($start, $size, $comment);
     $dump->Print($dumpInfo, $raf, $dataPt, $dataPos, $outfile);
 

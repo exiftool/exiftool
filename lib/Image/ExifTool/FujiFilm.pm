@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.91';
+$VERSION = '1.92';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -1187,6 +1187,8 @@ my %faceCategories = (
         ValueConv => 'my @v=reverse split(" ",$val);"@v"', # reverse to show width first
         PrintConv => '$val=~tr/ /x/; $val',
     },
+    # 0x112 - int16u[2] same as 0x111 but with width/height swapped?
+    # 0x113 - int16u[2] same as 0x111?
     0x115 => {
         Name => 'RawImageAspectRatio',
         Format => 'int16u',
@@ -1236,6 +1238,7 @@ my %faceCategories = (
         Count => 36,
         PrintConv => '$val =~ tr/012 /RGB/d; join " ", $val =~ /....../g',
     },
+    # 0x141 - int16u[2] Bit depth? "14 42" for 14-bit RAF and "16 48" for 16-bit RAF
     0x2000 => { #IB
         Name => 'WB_GRGBLevelsAuto',
         Format => 'int16u',
@@ -1408,6 +1411,8 @@ my %faceCategories = (
     0xf00e => 'WB_GRBLevels',
     0xf00f => 'ChromaticAberrationParams', # (rational64s[23])
     0xf010 => 'VignettingParams', #9 (rational64s[31 or 64])
+    # 0xf013 - int32u[3] same as 0xf00d
+    # 0xf014 - int32u[3] - also related to WhiteBalance
 );
 
 # information found in FFMV atom of MOV videos
@@ -1688,7 +1693,7 @@ sub WriteRAF($$)
     # rewrite the embedded JPEG in memory
     my %jpegInfo = (
         Parent  => 'RAF',
-        RAF     => new File::RandomAccess(\$jpeg),
+        RAF     => File::RandomAccess->new(\$jpeg),
         OutFile => \$outJpeg,
     );
     $$et{FILE_TYPE} = 'JPEG';
@@ -1792,7 +1797,7 @@ sub ProcessRAF($$)
     # extract information from embedded JPEG
     my %dirInfo = (
         Parent => 'RAF',
-        RAF    => new File::RandomAccess(\$jpeg),
+        RAF    => File::RandomAccess->new(\$jpeg),
     );
     if ($jpos) {
         $$et{BASE} += $jpos;

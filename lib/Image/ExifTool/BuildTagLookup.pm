@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.52';
+$VERSION = '3.53';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -797,7 +797,7 @@ sub new
     }
 
     my $tableNum = 0;
-    my $et = new Image::ExifTool;
+    my $et = Image::ExifTool->new;
     my ($tableName, $tag);
     # create lookup for short table names
     foreach $tableName (@tableNames) {
@@ -1727,12 +1727,12 @@ sub WriteTagLookup($$)
 }
 
 #------------------------------------------------------------------------------
-# Sort numbers first numerically, then strings alphabetically (case insensitive)
+# Sort numbers first numerically, then strings alphabetically
+# - case-insensitive sorting set by global variable $caseInsensitive
 # - two global variables are used to change the sort algorithm:
 #   $numbersFirst: -1 = put numbers after other strings
 #                   1 = put numbers before other strings
 #                   2 = put numbers first, but negative numbers last
-#   $caseInsensitive: flag set for case-insensitive sorting
 sub NumbersFirst($$)
 {
     my ($a, $b) = @_;
@@ -2742,7 +2742,7 @@ validation and consistency checks on the tag tables.
 
   use Image::ExifTool::BuildTagLookup;
 
-  $builder = new Image::ExifTool::BuildTagLookup;
+  $builder = Image::ExifTool::BuildTagLookup->new;
 
   # update Image::ExifTool::TagLookup
   $ok = $builder->WriteTagLookup('lib/Image/ExifTool/TagLookup.pm');

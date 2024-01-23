@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.55';
+$VERSION = '1.56';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -1546,7 +1546,7 @@ sub ProcessSamsung($$$)
     my ($buff, $buf2, $index, $offsetPos, $audioNOff, $audioSize);
 
     unless ($raf) {
-        $raf = new File::RandomAccess($$dirInfo{DataPt});
+        $raf = File::RandomAccess->new($$dirInfo{DataPt});
         $et->VerboseDir('SamsungTrailer');
     }
     return 0 unless $raf->Seek(-6-$offset, 2) and $raf->Read($buff, 6) == 6 and
@@ -1675,7 +1675,7 @@ SamBlock:
                 # add a fixup so the calling routine can apply further shifts if necessary
                 require Image::ExifTool::Fixup;
                 my $fixup = $$dirInfo{Fixup};
-                $fixup or $fixup = $$dirInfo{Fixup} = new Image::ExifTool::Fixup;
+                $fixup or $fixup = $$dirInfo{Fixup} = Image::ExifTool::Fixup->new;
                 $fixup->AddFixup(length($buff) - $offsetPos);
                 $fixup->AddFixup(length($buff) - $offsetPos + 4);
             }
@@ -1697,7 +1697,7 @@ sub WriteSTMN($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
     # create a Fixup for the PreviewImage
-    $$dirInfo{Fixup} = new Image::ExifTool::Fixup;
+    $$dirInfo{Fixup} = Image::ExifTool::Fixup->new;
     my $val = Image::ExifTool::WriteBinaryData($et, $dirInfo, $tagTablePtr);
     # force PreviewImage into the trailer even if it fits in EXIF segment
     $$et{PREVIEW_INFO}{IsTrailer} = 1 if $$et{PREVIEW_INFO};

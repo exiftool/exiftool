@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '12.73';
+my $version = '12.74';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -70,7 +70,7 @@ sub PreserveTime();
 sub AbsPath($);
 sub MyConvertFileName($$);
 sub SuggestedExtension($$$);
-sub LoadPrintFormat($);
+sub LoadPrintFormat($;$);
 sub FilenameSPrintf($;$@);
 sub NextUnusedFilename($;$);
 sub CreateDirectory($);
@@ -271,7 +271,7 @@ my %optArgs = (
     '-lang' => 0, # (optional arg; cannot begin with "-")
     '-listitem' => 1,
     '-o' => 1, '-out' => 1,
-    '-p' => 1, '-printformat' => 1,
+    '-p' => 1, '-printformat' => 1, '-p-' => 1, '-printformat-' => 1,
     '-P' => 0,
     '-password' => 1,
     '-require' => 1,
@@ -573,7 +573,7 @@ if ($^O eq 'MSWin32' and eval { require File::Glob }) {
     $doGlob = 1;
 }
 
-$mt = new Image::ExifTool;      # create ExifTool object
+$mt = Image::ExifTool->new;      # create ExifTool object
 
 # don't extract duplicates by default unless set by UserDefined::Options
 $mt->Options(Duplicates => 0) unless %Image::ExifTool::UserDefined::Options
@@ -1133,10 +1133,10 @@ for (;;) {
     }
     /^overwrite_original$/i and $overwriteOrig = 1, next;
     /^overwrite_original_in_place$/i and $overwriteOrig = 2, next;
-    if (/^p$/ or $a eq 'printformat') {
+    if (/^p(-?)$/ or /^printformat(-?)$/i) {
         my $fmt = shift;
         if ($pass) {
-            LoadPrintFormat($fmt);
+            LoadPrintFormat($fmt, $1);
             # load MWG module now if necessary
             if (not $useMWG and grep /^mwg:/i, @requestTags) {
                 $useMWG = 1;
@@ -1145,7 +1145,7 @@ for (;;) {
             }
         } else {
             # defer to next pass so the filename charset is available
-            push @nextPass, '-p', $fmt;
+            push @nextPass, "-$_", $fmt;
         }
         next;
     }
@@ -1792,7 +1792,7 @@ if (not $altEnc and $mt->Options('Lang') ne 'en' and eval { require Encode }) {
 if (@fileOrder) {
     my @allFiles;
     ProcessFiles($mt, \@allFiles);
-    my $sortTool = new Image::ExifTool;
+    my $sortTool = Image::ExifTool->new;
     $sortTool->Options(FastScan => $fileOrderFast) if $fileOrderFast;
     $sortTool->Options(PrintConv => $mt->Options('PrintConv'));
     $sortTool->Options(Duplicates => 0);
@@ -2080,7 +2080,7 @@ sub GetImageInfo($$)
             @foundTags = ('*', @tags) if @tags;
             $info = $et->ImageInfo(Infile($pipe,$isWriting), \@foundTags, $opts);
             foreach $condition (@condition) {
-                my $cond = $et->InsertTagValues(\@foundTags, $condition, \%info);
+                my $cond = $et->InsertTagValues($condition, \@foundTags, \%info);
                 {
                     # set package so eval'd functions are in Image::ExifTool namespace
                     package Image::ExifTool;
@@ -2281,7 +2281,7 @@ sub GetImageInfo($$)
                 my @lines;
                 my $opt = $type eq 'IF' ? 'Silent' : 'Warn'; # silence "IF" warnings
                 foreach (@$prf) {
-                    my $line = $et->InsertTagValues(\@foundTags, $_, $opt, $grp, $cache);
+                    my $line = $et->InsertTagValues($_, \@foundTags, $opt, $grp, $cache);
                     if ($type eq 'IF') {
                         $skipBody = 1 unless defined $line;
                     } elsif (defined $line) {
@@ -2714,7 +2714,7 @@ TAG:    foreach $tag (@foundTags) {
                     } elsif ($fixLen == 1) {
                         $padLen -= length Encode::decode_utf8($desc);
                     } else {
-                        my $gcstr = eval { new Unicode::GCString(Encode::decode_utf8($desc)) };
+                        my $gcstr = eval { Unicode::GCString->new(Encode::decode_utf8($desc)) };
                         if ($gcstr) {
                             $padLen -= $gcstr->columns;
                         } else {
@@ -3640,7 +3640,7 @@ sub Infile($;$)
         if ($rafStdin) {
             $rafStdin->Seek(0); # rewind
         } elsif (open RAF_STDIN, '-') {
-            $rafStdin = new File::RandomAccess(\*RAF_STDIN);
+            $rafStdin = File::RandomAccess->new(\*RAF_STDIN);
             $rafStdin->BinMode();
         }
         return $rafStdin if $rafStdin;
@@ -4117,12 +4117,12 @@ sub SuggestedExtension($$$)
 
 #------------------------------------------------------------------------------
 # Load print format file
-# Inputs: 0) file name
+# Inputs: 0) file name, 1) flag to avoid adding newline to input argument
 # - saves lines of file to %printFmt list
 # - adds tag names to @tags list
-sub LoadPrintFormat($)
+sub LoadPrintFormat($;$)
 {
-    my $arg = shift;
+    my ($arg, $noNL) = @_;
     if (not defined $arg) {
         Error "Must specify file or expression for -p option\n";
     } elsif ($arg !~ /\n/ and -f $arg and $mt->Open(\*FMT_FILE, $arg)) {
@@ -4131,7 +4131,8 @@ sub LoadPrintFormat($)
         }
         close(FMT_FILE);
     } else {
-        AddPrintFormat($arg . "\n");
+        $arg .= "\n" unless $noNL;
+        AddPrintFormat($arg);
     }
 }
 
@@ -4295,7 +4296,7 @@ sub CreateDirectory($)
                         return 0;
                     }
                     unless ($k32CreateDir) {
-                        $k32CreateDir = new Win32::API('KERNEL32', 'CreateDirectoryW', 'PP', 'I');
+                        $k32CreateDir = Win32::API->new('KERNEL32', 'CreateDirectoryW', 'PP', 'I');
                     }
                     $success = $k32CreateDir->Call($d2, 0) if $k32CreateDir;
                 } else {
@@ -4752,7 +4753,7 @@ L<Input-output text formatting|/Input-output text formatting>
   -lang [LANG]                     Set current language
   -listItem INDEX                  Extract specific item from a list
   -n          (--printConv)        No print conversion
-  -p FMTFILE  (-printFormat)       Print output in specified format
+  -p[-] STR   (-printFormat)       Print output in specified format
   -php                             Export tags as a PHP Array
   -s[NUM]     (-short)             Short output format (-s for tag names)
   -S          (-veryShort)         Very short output format
@@ -5561,30 +5562,31 @@ when writing.  For example, the following commands all have the same effect:
     > exiftool -Orientation=6 -n a.jpg
     > exiftool -Orientation#=6 a.jpg
 
-=item B<-p> I<FMTFILE> or I<STR> (B<-printFormat>)
+=item B<-p>[-] I<STR> or I<FMTFILE> (B<-printFormat>)
 
-Print output in the format specified by the given file or string.  The
+Print output in the format specified by the given string or file.  The
 argument is interpreted as a string unless a file of that name exists, in
 which case the string is loaded from the contents of the file.  Tag names in
-the format file or string begin with a C<$> symbol and may contain leading
+the format string or file begin with a C<$> symbol and may contain leading
 group names and/or a trailing C<#> (to disable print conversion).  Case is
 not significant.  Braces C<{}> may be used around the tag name to separate
 it from subsequent text (and must be used if subsequent text begins with an
 alphanumeric character, hyphen, underline, colon or number sign).  Use C<$$>
-to represent a C<$> symbol, and C<$/> for a newline.
+to represent a C<$> symbol, and C<$/> for a newline.  When the string
+argument is used (ie. I<STR>), a newline is added to the end of the string
+unless B<-p-> is specified.
 
-Multiple B<-p> options may be used, each contributing a line (or more) of
-text to the output.  Lines beginning with C<#[HEAD]> and C<#[TAIL]> are
-output before the first processed file and after the last processed file
-respectively.  Lines beginning with C<#[SECT]> and C<#[ENDS]> are output
-before and after each section of files.  A section is defined as a group of
-consecutive files with the same section header (eg. files are grouped by
-directory if C<#[SECT]> contains C<$directory>).  Lines beginning with
-C<#[BODY]> and lines not beginning with C<#> are output for each processed
-file.  Lines beginning with C<#[IF]> are not output, but all BODY lines are
-skipped if any tag on an IF line doesn't exist.  Other lines beginning with
-C<#> are ignored.  (To output a line beginning with C<#>, use C<#[BODY]#>.)
-For example, this format file:
+Multiple B<-p> options may be used.  Lines beginning with C<#[HEAD]> and
+C<#[TAIL]> are output before the first processed file and after the last
+processed file respectively.  Lines beginning with C<#[SECT]> and C<#[ENDS]>
+are output before and after each section of files.  A section is defined as
+a group of consecutive files with the same section header (eg. files are
+grouped by directory if C<#[SECT]> contains C<$directory>).  Lines beginning
+with C<#[BODY]> and lines not beginning with C<#> are output for each
+processed file.  Lines beginning with C<#[IF]> are not output, but all BODY
+lines are skipped if any tag on an IF line doesn't exist.  Other lines
+beginning with C<#> are ignored.  (To output a line beginning with C<#>, use
+C<#[BODY]#>.) For example, this format file:
 
     # this is a comment line
     #[HEAD]-- Generated by ExifTool $exifToolVersion --
@@ -5598,16 +5600,21 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 12.73 --
+    -- Generated by ExifTool 12.74 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
     (f/8.0, 1/13s, ISO 100)
     -- end --
 
-The values of List-type tags with multiple items and Shortcut tags
-representing multiple tags are joined according the B<-sep> option setting
-when interpolated in the string.
+The values of List-type tags with multiple items, Shortcut tags representing
+multiple tags, and matching tags when the C<All> group is specified are
+joined according the B<-sep> option setting when interpolated in the string.
+(Note that when C<All> is used as a group name, dupicate tags are included
+regardless of the Duplicates option setting.)  When C<All> is used as a tag
+name, a value of 1 is returned if any tag exists in the specified group, or
+0 otherwise (unless the C<All> group is also specified, in which case the
+values of all matching tags are joined).
 
 When B<-ee> (B<-extractEmbedded>) is combined with B<-p>, embedded documents
 are effectively processed as separate input files.
@@ -6550,7 +6557,9 @@ set to undef if C<=> is used, or an empty string with C<^=>.  If I<OPT> is
 not specified a list of available options is returned.  The option name is
 not case senstive, but the option values are.  See
 L<Image::ExifTool Options|Image::ExifTool/Options> for option details.  This
-overrides API options set via the config file.
+overrides API options set via the config file.  Note that the exiftool app
+sets some API options internally, and attempts to change these via the
+command line will have no effect.
 
 =item B<-common_args>
 

@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 
 sub ProcessRSRC($$);
 
@@ -70,7 +70,7 @@ sub ProcessRSRC($$)
     my ($hdr, $map, $buff, $i, $j);
 
     # allow access with data reference
-    $raf or $raf = new File::RandomAccess($$dirInfo{DataPt});
+    $raf or $raf = File::RandomAccess->new($$dirInfo{DataPt});
 
     # attempt to validate the format as thoroughly as practical
     return 0 unless $raf->Read($hdr, 30) == 30;

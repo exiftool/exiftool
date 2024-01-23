@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 sub ExtractObject($$;$);
 sub Get24u($$);
@@ -351,9 +351,9 @@ sub ProcessBinaryPLIST($$;$)
         my $start = $$dirInfo{DirStart};
         if ($start or ($$dirInfo{DirLen} and $$dirInfo{DirLen} != length $$dataPt)) {
             my $buf2 = substr($$dataPt, $start || 0, $$dirInfo{DirLen});
-            $$dirInfo{RAF} = new File::RandomAccess(\$buf2);
+            $$dirInfo{RAF} = File::RandomAccess->new(\$buf2);
         } else {
-            $$dirInfo{RAF} = new File::RandomAccess($dataPt);
+            $$dirInfo{RAF} = File::RandomAccess->new($dataPt);
         }
         my $strt = $$dirInfo{DirStart} || 0;
     }

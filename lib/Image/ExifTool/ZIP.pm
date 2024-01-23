@@ -20,7 +20,7 @@ use strict;
 use vars qw($VERSION $warnString);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.30';
+$VERSION = '1.31';
 
 sub WarnProc($) { $warnString = $_[0]; }
 
@@ -367,7 +367,7 @@ sub ProcessRAR($$)
             # read the header and create new RAF object for reading it
             my $header;
             $raf->Read($header, $headSize) == $headSize or last;
-            my $rafHdr = new File::RandomAccess(\$header);
+            my $rafHdr = File::RandomAccess->new(\$header);
             my $headType = ReadULEB($rafHdr);   # get header type
 
             if ($headType == 4) {  # encryption block
@@ -550,14 +550,14 @@ sub ProcessZIP($$)
         } elsif (eval { require IO::String }) {
             # read the whole file into memory (what else can I do?)
             $raf->Slurp();
-            $fh = new IO::String ${$raf->{BUFF_PT}};
+            $fh = IO::String->new(${$raf->{BUFF_PT}});
         } else {
             my $type = $raf->{FILE_PT} ? 'pipe or socket' : 'scalar reference';
             $et->Warn("Install IO::String to decode compressed ZIP information from a $type");
             last;
         }
         $et->VPrint(1, "  --- using Archive::Zip ---\n");
-        $zip = new Archive::Zip;
+        $zip = Archive::Zip->new;
         # catch all warnings! (Archive::Zip is bad for this)
         local $SIG{'__WARN__'} = \&WarnProc;
         my $status = $zip->readFromFileHandle($fh);
@@ -568,8 +568,8 @@ sub ProcessZIP($$)
             # a failed test with Perl 5.6.2 GNU/Linux 2.6.32-5-686 i686-linux-64int-ld
             $raf->Seek(0,0);
             $raf->Slurp();
-            $fh = new IO::String ${$raf->{BUFF_PT}};
-            $zip = new Archive::Zip;
+            $fh = IO::String->new(${$raf->{BUFF_PT}});
+            $zip = Archive::Zip->new;
             $status = $zip->readFromFileHandle($fh);
         }
         if ($status) {

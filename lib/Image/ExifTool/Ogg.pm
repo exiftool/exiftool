@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 my $MAX_PACKETS = 2;    # maximum packets to scan from each stream at start of file
 
@@ -189,7 +189,7 @@ sub ProcessOGG($$)
     if (defined $numFlac and defined $val{$stream}) {
         # process FLAC headers as if it was a complete FLAC file
         require Image::ExifTool::FLAC;
-        my %dirInfo = ( RAF => new File::RandomAccess(\$val{$stream}) );
+        my %dirInfo = ( RAF => File::RandomAccess->new(\$val{$stream}) );
         Image::ExifTool::FLAC::ProcessFLAC($et, \%dirInfo);
     }
     return $success;

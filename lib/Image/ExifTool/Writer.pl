@@ -26,6 +26,7 @@ sub RemoveNewValuesForGroup($$);
 sub GetWriteGroup1($$);
 sub Sanitize($$);
 sub ConvInv($$$$$;$$);
+sub PushValue($$$;$);
 
 my $loadedAllTables;    # flag indicating we loaded all tables
 my $advFmtSelf;         # ExifTool object during evaluation of advanced formatting expr
@@ -1260,7 +1261,7 @@ sub SetNewValuesFromFile($$;@)
     }
     # expand shortcuts
     @setTags and ExpandShortcuts(\@setTags);
-    my $srcExifTool = new Image::ExifTool;
+    my $srcExifTool = Image::ExifTool->new;
     # set flag to indicate we are being called from inside SetNewValuesFromFile()
     $$srcExifTool{TAGS_FROM_FILE} = 1;
     # synchronize and increment the file sequence number
@@ -1582,7 +1583,7 @@ SET:    foreach $set (@setList) {
         my $opts = $$set[3];
         # handle expressions
         if ($$opts{EXPR}) {
-            my $val = $srcExifTool->InsertTagValues(\@tags, $$set[1], 'Error');
+            my $val = $srcExifTool->InsertTagValues($$set[1], \@tags, 'Error');
             my $err = $$srcExifTool{VALUE}{Error};
             if ($err) {
                 # pass on any error as a warning unless it is suppressed
@@ -2432,7 +2433,7 @@ sub WriteInfo($$;$$)
 #
     until ($$self{VALUE}{Error}) {
         # create random access file object (disable seek test in case of straight copy)
-        $raf or $raf = new File::RandomAccess($inRef, 1);
+        $raf or $raf = File::RandomAccess->new($inRef, 1);
         $raf->BinMode();
         if ($numNew == $numPseudo) {
             $rtnVal = 1;
@@ -2703,7 +2704,7 @@ sub GetAllTags(;$)
     my (%allTags, @groups);
     @groups = split ':', $group if $group;
 
-    my $et = new Image::ExifTool;
+    my $et = Image::ExifTool->new;
     LoadAllTables();    # first load all our tables
     my @tableNames = keys %allTables;
 
@@ -2748,7 +2749,7 @@ sub GetWritableTags(;$)
     my (%writableTags, @groups);
     @groups = split ':', $group if $group;
 
-    my $et = new Image::ExifTool;
+    my $et = Image::ExifTool->new;
     LoadAllTables();
     my @tableNames = keys %allTables;
 
@@ -3125,10 +3126,36 @@ Conv: for (;;) {
 }
 
 #------------------------------------------------------------------------------
+# Dereference value and push onto list
+# Inputs: 0) ExifTool ref, 1) value, 2) list ref, 3) flag to push MissingTagValue for undef value
+sub PushValue($$$;$)
+{
+    local $_;
+    my ($self, $val, $list, $missing) = @_;
+    if (ref $val eq 'ARRAY' and ref $$val[0] ne 'HASH') {
+        $self->PushValue($_, $list, $missing) foreach @$val;
+    } elsif (ref $val eq 'SCALAR') {
+        if ($$self{OPTIONS}{Binary} or $$val =~ /^Binary data/) {
+            push @$list, $$val;
+        } else {
+            push @$list, 'Binary data ' . length($$val) . ' bytes';
+        }
+    } elsif (ref $val eq 'HASH' or ref $val eq 'ARRAY') {
+        require 'Image/ExifTool/XMPStruct.pl';
+        push @$list, Image::ExifTool::XMP::SerializeStruct($self, $val);
+    } elsif (not defined $val) {
+        my $mval = $$self{OPTIONS}{MissingTagValue};
+        push @$list, $mval if $missing and defined $mval;
+    } else {
+        push @$list, $val;
+    }
+}
+
+#------------------------------------------------------------------------------
 # Convert tag names to values or variables in a string
 # (eg. '${EXIF:ISO}x $$' --> '100x $' without hash ref, or "$info{'EXIF:ISO'}x $" with)
-# Inputs: 0) ExifTool object ref, 1) reference to list of found tags
-#         2) string with embedded tag names, 3) Options:
+# Inputs: 0) ExifTool object ref, 1) string with embedded tag names,
+#         2) reference to list of found tags or undef to use FOUND_TAGS, 3) Options:
 #               undef    - set missing tags to ''
 #              'Error'   - issue minor error on missing tag (and return undef)
 #              'Warn'    - issue minor warning on missing tag (and return undef)
@@ -3145,20 +3172,22 @@ Conv: for (;;) {
 # - advanced feature allows Perl expressions inside braces (eg. '${model;tr/ //d}')
 # - an error/warning in an advanced expression ("${TAG;EXPR}") generates an error
 #   if option set to 'Error', or a warning otherwise
-sub InsertTagValues($$$;$$$)
+sub InsertTagValues($$;$$$$)
 {
     local $_;
-    my ($self, $foundTags, $line, $opt, $docGrp, $cache) = @_;
+    my ($self, $line, $foundTags, $opt, $docGrp, $cache) = @_;
     my $rtnStr = '';
     my ($docNum, $tag);
+
     if ($docGrp) {
         $docNum = $docGrp =~ /(\d+)$/ ? $1 : 0;
     } else {
         undef $cache;   # no cache if no document groups
     }
+    $foundTags or $foundTags = $$self{FOUND_TAGS} || [];
     while ($line =~ s/(.*?)\$(\{\s*)?([-\w]*\w|\$|\/)//s) {
         my ($pre, $bra, $var) = ($1, $2, $3);
-        my (@tags, $val, $tg, @val, $type, $expr, $didExpr, $level, $asList);
+        my (@tags, $tg, $val, @val, $type, $expr, $didExpr, $level, $asList);
         # "$$" represents a "$" symbol, and "$/" is a newline
         if ($var eq '$' or $var eq '/') {
             $line =~ s/^\s*\}// if $bra;
@@ -3261,15 +3290,24 @@ sub InsertTagValues($$$;$$$)
                 } elsif (defined $$et{OPTIONS}{UserParam}{$lcTag}) {
                     $val = $$et{OPTIONS}{UserParam}{$lcTag};
                 } elsif ($tag =~ /(.*):(.+)/) {
-                    my $group;
+                    my ($group, @matches);
                     ($group, $tag) = ($1, $2);
-                    if (lc $tag eq 'all') {
-                        # see if any tag from the specified group exists
-                        my $match = $et->GroupMatches($group, $fileTags);
-                        $val = $match ? 1 : 0;
+                    # join values of all matching tags if "All" group is used
+                    # (and remove "All" from group prefix)
+                    if ($group =~ s/(^|:)(all|\*)(:|$)/$1 and $3/ei) {
+                        if (lc $tag eq 'all') {
+                            @matches = $group ? $et->GroupMatches($group, $fileTags) : @$fileTags;
+                        } else {
+                            @matches = grep /^$tag(\s|$)/i, @$fileTags;
+                            @matches = $et->GroupMatches($group, \@matches) if $group;
+                        }
+                        $self->PushValue(scalar $et->GetValue($_, $type), \@val) foreach @matches;
+                    } elsif (lc $tag eq 'all') {
+                        # return "1" if any tag from the specified group exists
+                        $val = $et->GroupMatches($group, $fileTags) ? 1 : 0;
                     } else {
                         # find the specified tag
-                        my @matches = grep /^$tag(\s|$)/i, @$fileTags;
+                        @matches = grep /^$tag(\s|$)/i, @$fileTags;
                         @matches = $et->GroupMatches($group, \@matches);
                         foreach $tg (@matches) {
                             if (defined $val and $tg =~ / \((\d+)\)$/) {
@@ -3298,31 +3336,15 @@ sub InsertTagValues($$$;$$$)
                 }
             }
             $self->Options(ListJoin => $oldListJoin) if $asList;
-            if (ref $val eq 'ARRAY') {
-                push @val, @$val;
-                undef $val;
-                last unless @tags;
-            } elsif (ref $val eq 'SCALAR') {
-                if ($$self{OPTIONS}{Binary} or $$val =~ /^Binary data/) {
-                    $val = $$val;
-                } else {
-                    $val = 'Binary data ' . length($$val) . ' bytes';
-                }
-            } elsif (ref $val eq 'HASH') {
-                require 'Image/ExifTool/XMPStruct.pl';
-                $val = Image::ExifTool::XMP::SerializeStruct($self, $val);
-            } elsif (not defined $val) {
-                $val = $$self{OPTIONS}{MissingTagValue} if $asList;
-            }
-            last unless @tags;
-            push @val, $val if defined $val;
+            $self->PushValue($val, \@val, $asList);
             undef $val;
+            last unless @tags;
         }
         if (@val) {
-            push @val, $val if defined $val;
+            $self->PushValue($val, \@val) if defined $val;
             $val = join $$self{OPTIONS}{ListSep}, @val;
-        } else {
-            push @val, $val if defined $val; # (so the eval has access to @val if required)
+        } elsif (defined $val) {
+            $self->PushValue($val, \@val);  # (so the eval has access to @val if required)
         }
         # evaluate advanced formatting expression if given (eg. "${TAG;EXPR}")
         if (defined $expr and defined $val) {
@@ -3395,6 +3417,7 @@ sub InsertTagValues($$$;$$$)
 #------------------------------------------------------------------------------
 # Reformat date/time value in $_ based on specified format string
 # Inputs: 0) date/time format string
+# Returns: Reformatted date/time string
 sub DateFmt($)
 {
     my $et = bless { OPTIONS => { DateFormat => shift, StrictDate => 1 } };
@@ -3406,6 +3429,7 @@ sub DateFmt($)
     $_ = $et->ConvertDateTime($_);
     defined $_ or warn "Error converting date/time\n";
     $$advFmtSelf{GLOBAL_TIME_OFFSET} = $$et{GLOBAL_TIME_OFFSET} if $shift;
+    return $_;
 }
 
 #------------------------------------------------------------------------------
@@ -3515,7 +3539,7 @@ sub CreateDirectory($$)
                     }
                     unless ($k32CreateDir) {
                         return -1 if defined $k32CreateDir;
-                        $k32CreateDir = new Win32::API('KERNEL32', 'CreateDirectoryW', 'PP', 'I');
+                        $k32CreateDir = Win32::API->new('KERNEL32', 'CreateDirectoryW', 'PP', 'I');
                         unless ($k32CreateDir) {
                             $self->Warn('Error calling Win32::API::CreateDirectoryW');
                             $k32CreateDir = 0;
@@ -6233,7 +6257,7 @@ sub WriteJPEG($$)
                     last unless $$editDirs{CIFF};
                     my $newData = '';
                     my %dirInfo = (
-                        RAF => new File::RandomAccess($segDataPt),
+                        RAF => File::RandomAccess->new($segDataPt),
                         OutFile => \$newData,
                     );
                     require Image::ExifTool::CanonRaw;
@@ -6952,7 +6976,7 @@ sub SetFileTime($$;$$$$)
             }
             unless ($k32SetFileTime) {
                 return 0 if defined $k32SetFileTime;
-                $k32SetFileTime = new Win32::API('KERNEL32', 'SetFileTime', 'NPPP', 'I');
+                $k32SetFileTime = Win32::API->new('KERNEL32', 'SetFileTime', 'NPPP', 'I');
                 unless ($k32SetFileTime) {
                     $self->Warn('Error calling Win32::API::SetFileTime');
                     $k32SetFileTime = 0;
@@ -7196,7 +7220,7 @@ sub WriteBinaryData($$$)
                 $$self{HiddenData} = {
                     Offset => $offset,
                     Size   => $size,
-                    Fixup  => new Image::ExifTool::Fixup,
+                    Fixup  => Image::ExifTool::Fixup->new,
                     Base   => $$dirInfo{Base},
                 };
                 next;
@@ -7205,7 +7229,7 @@ sub WriteBinaryData($$$)
             next unless $$tagInfo{DataTag} eq 'PreviewImage' and $$self{FILE_TYPE} eq 'JPEG';
             my $previewInfo = $$self{PREVIEW_INFO};
             $previewInfo or $previewInfo = $$self{PREVIEW_INFO} = {
-                Fixup => new Image::ExifTool::Fixup,
+                Fixup => Image::ExifTool::Fixup->new,
             };
             # set flag indicating we are using short pointers
             $$previewInfo{IsShort} = 1 unless $format eq 'int32u';

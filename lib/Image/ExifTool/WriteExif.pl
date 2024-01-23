@@ -171,9 +171,9 @@ sub RebuildMakerNotes($$$)
     my $saveOrder = GetByteOrder();
     my $loc = Image::ExifTool::MakerNotes::LocateIFD($et,\%subdirInfo);
     if (defined $loc) {
-        my $makerFixup = $subdirInfo{Fixup} = new Image::ExifTool::Fixup;
+        my $makerFixup = $subdirInfo{Fixup} = Image::ExifTool::Fixup->new;
         # create new exiftool object to rewrite the directory without changing it
-        my $newTool = new Image::ExifTool;
+        my $newTool = Image::ExifTool->new;
         $newTool->Options(
             IgnoreMinorErrors => $$et{OPTIONS}{IgnoreMinorErrors},
             FixBase           => $$et{OPTIONS}{FixBase},
@@ -565,7 +565,7 @@ sub WriteExif($$$)
     my $firstBase = $base;
     my $raf = $$dirInfo{RAF};
     my $dirName = $$dirInfo{DirName} || 'unknown';
-    my $fixup = $$dirInfo{Fixup} || new Image::ExifTool::Fixup;
+    my $fixup = $$dirInfo{Fixup} || Image::ExifTool::Fixup->new;
     my $imageDataFlag = $$dirInfo{ImageData} || '';
     my $verbose = $et->Options('Verbose');
     my $out = $et->Options('TextOut');
@@ -745,7 +745,7 @@ sub WriteExif($$$)
         my $valBuff = '';   # buffer for value data
         my @valFixups;      # list of fixups for offsets in valBuff
         # fixup for offsets in dirBuff
-        my $dirFixup = new Image::ExifTool::Fixup;
+        my $dirFixup = Image::ExifTool::Fixup->new;
         my $entryBasedFixup;
         my $lastTagID = -1;
         my ($oldInfo, $oldFormat, $oldFormName, $oldCount, $oldSize, $oldValue, $oldImageData);
@@ -896,7 +896,7 @@ Entry:  for (;;) {
                                         TagInfo => $oldInfo || $tmpInfo,
                                         Offset  => $base + $valuePtr + $dataPos,
                                         Size    => $oldSize,
-                                        Fixup   => new Image::ExifTool::Fixup,
+                                        Fixup   => Image::ExifTool::Fixup->new,
                                     },
                                     $invalidPreview = 2;
                                     # remove SubDirectory to prevent processing (for now)
@@ -1348,7 +1348,7 @@ NoOverwrite:            next if $isNew > 0;
                     # create empty source directory
                     my %sourceDir = (
                         Parent => $dirName,
-                        Fixup => new Image::ExifTool::Fixup,
+                        Fixup => Image::ExifTool::Fixup->new,
                     );
                     $sourceDir{DirName} = $$newInfo{Groups}{1} if $$newInfo{SubIFD};
                     $newValue = $et->WriteDirectory(\%sourceDir, $subTable);
@@ -1509,7 +1509,7 @@ NoOverwrite:            next if $isNew > 0;
                         }
                         if (defined $loc) {
                             # we need fixup data for this subdirectory
-                            $subdirInfo{Fixup} = new Image::ExifTool::Fixup;
+                            $subdirInfo{Fixup} = Image::ExifTool::Fixup->new;
                             # rewrite maker notes
                             my $changed = $$et{CHANGED};
                             $subdir = $et->WriteDirectory(\%subdirInfo, $subTable, $writeProc);
@@ -1673,7 +1673,7 @@ NoOverwrite:            next if $isNew > 0;
                                 Name     => $$newInfo{Name},
                                 TagInfo  => $newInfo,
                                 Parent   => $dirName,
-                                Fixup    => new Image::ExifTool::Fixup,
+                                Fixup    => Image::ExifTool::Fixup->new,
                                 RAF      => $raf,
                                 Subdir   => $subdir,
                                 # set ImageData only for 1st level SubIFD's
@@ -1782,7 +1782,7 @@ NoOverwrite:            next if $isNew > 0;
                             #### eval Base ($start,$base)
                             $subdirBase += eval $$subdir{Base};
                         }
-                        my $subFixup = new Image::ExifTool::Fixup;
+                        my $subFixup = Image::ExifTool::Fixup->new;
                         my %subdirInfo = (
                             Base     => $subdirBase,
                             DataPt   => $valueDataPt,
@@ -1995,7 +1995,7 @@ NoOverwrite:            next if $isNew > 0;
                         # hold onto the PreviewImage until we can determine if it fits
                         $$et{PREVIEW_INFO} or $$et{PREVIEW_INFO} = {
                             Data => $$newValuePt,
-                            Fixup => new Image::ExifTool::Fixup,
+                            Fixup => Image::ExifTool::Fixup->new,
                         };
                         $$et{PREVIEW_INFO}{ChangeBase} = 1 if $$newInfo{ChangeBase};
                         if ($$newInfo{IsOffset} and $$newInfo{IsOffset} eq '2') {
@@ -2017,7 +2017,7 @@ NoOverwrite:            next if $isNew > 0;
                     $valBuff .= $$newValuePt;       # add value data to buffer
                     # must save a fixup pointer for every pointer in the directory
                     if ($entryBased) {
-                        $entryBasedFixup or $entryBasedFixup = new Image::ExifTool::Fixup;
+                        $entryBasedFixup or $entryBasedFixup = Image::ExifTool::Fixup->new;
                         $entryBasedFixup->AddFixup(length($dirBuff) + 8, $dataTag);
                     } else {
                         $dirFixup->AddFixup(length($dirBuff) + 8, $dataTag);
@@ -2451,7 +2451,7 @@ NoOverwrite:            next if $isNew > 0;
                         $newOffset += $blockSize;   # data comes after other deferred data
                         # create fixup for SubIFD ImageData
                         if ($imageDataFlag eq 'SubIFD' and not $subIfdDataFixup) {
-                            $subIfdDataFixup = new Image::ExifTool::Fixup;
+                            $subIfdDataFixup = Image::ExifTool::Fixup->new;
                             $imageData[-1][4] = $subIfdDataFixup;
                         }
                         $size += $pad; # account for pad byte if necessary
@@ -2522,7 +2522,7 @@ NoOverwrite:            next if $isNew > 0;
                             # hold onto the PreviewImage until we can determine if it fits
                             $$et{PREVIEW_INFO} or $$et{PREVIEW_INFO} = {
                                 Data => $buff,
-                                Fixup => new Image::ExifTool::Fixup,
+                                Fixup => Image::ExifTool::Fixup->new,
                             };
                             if ($$tagInfo{IsOffset} and $$tagInfo{IsOffset} eq '2') {
                                 $$et{PREVIEW_INFO}{NoBaseShift} = 1;
@@ -2603,7 +2603,7 @@ NoOverwrite:            next if $isNew > 0;
                 $fixup->AddFixup($entry + 8);
                 # create special fixup for SubIFD data
                 if ($imageDataFlag eq 'SubIFD') {
-                    my $subIfdDataFixup = new Image::ExifTool::Fixup;
+                    my $subIfdDataFixup = Image::ExifTool::Fixup->new;
                     $subIfdDataFixup->AddFixup($entry + 8);
                     # save fixup in imageData list
                     $$blockInfo[4] = $subIfdDataFixup;
@@ -2668,7 +2668,7 @@ NoOverwrite:            next if $isNew > 0;
             } else {
                 # Doesn't fit, or we still don't know, so save fixup information
                 # and put the preview at the end of the file
-                $$previewInfo{Fixup} or $$previewInfo{Fixup} = new Image::ExifTool::Fixup;
+                $$previewInfo{Fixup} or $$previewInfo{Fixup} = Image::ExifTool::Fixup->new;
                 $$previewInfo{Fixup}->AddFixup($fixup);
             }
         } elsif (defined $newData and $deleteAll) {

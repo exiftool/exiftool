@@ -12,7 +12,7 @@ require Exporter;
 
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(ReadCSV ReadJSON);
 
@@ -38,13 +38,13 @@ sub ReadCSV($$;$$)
         $raf = $file;
         $file = 'CSV file';
     } elsif (ref $file eq 'GLOB') {
-        $raf = new File::RandomAccess($file);
+        $raf = File::RandomAccess->new($file);
         $file = 'CSV file';
     } else {
         open CSVFILE, $file or return "Error opening CSV file '${file}'";
         binmode CSVFILE;
         $openedFile = 1;
-        $raf = new File::RandomAccess(\*CSVFILE);
+        $raf = File::RandomAccess->new(\*CSVFILE);
     }
     $delim = ',' unless defined $delim;
     # set input record separator by first newline found in the file
@@ -253,13 +253,13 @@ sub ReadJSON($$;$$)
         $raf = $file;
         $file = 'JSON file';
     } elsif (ref $file eq 'GLOB') {
-        $raf = new File::RandomAccess($file);
+        $raf = File::RandomAccess->new($file);
         $file = 'JSON file';
     } else {
         open JSONFILE, $file or return "Error opening JSON file '${file}'";
         binmode JSONFILE;
         $openedFile = 1;
-        $raf = new File::RandomAccess(\*JSONFILE);
+        $raf = File::RandomAccess->new(\*JSONFILE);
     }
     my $obj = ReadJSONObject($raf);
     close JSONFILE if $openedFile;

@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.73';
+$VERSION = '12.74';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -77,7 +77,7 @@ sub GetDeleteGroups();
 sub AddUserDefinedTags($%);
 sub SetAlternateFile($$$);
 # non-public routines below
-sub InsertTagValues($$$;$$$);
+sub InsertTagValues($$;$$$$);
 sub IsWritable($);
 sub IsSameFile($$$);
 sub IsRawType($);
@@ -2196,7 +2196,7 @@ sub new
 #   use Image::ExifTool 'ImageInfo';
 #   my $info = ImageInfo($file, 'DateTimeOriginal', 'ImageSize');
 #    - or -
-#   my $et = new Image::ExifTool;
+#   my $et = Image::ExifTool->new;
 #   my $info = $et->ImageInfo($file, \@tagList, {Sort=>'Group0'} );
 sub ImageInfo($;@)
 {
@@ -2206,7 +2206,7 @@ sub ImageInfo($;@)
     if (ref $_[0] and UNIVERSAL::isa($_[0],'Image::ExifTool')) {
         $self = shift;
     } else {
-        $self = new Image::ExifTool;
+        $self = Image::ExifTool->new;
     }
     my %saveOptions = %{$$self{OPTIONS}};   # save original options
 
@@ -2529,7 +2529,7 @@ sub ExtractInfo($;@)
             FILE_TYPE => $$self{FILE_TYPE},
         };
         $saveOrder = GetByteOrder(),
-        $$self{RAF} = new File::RandomAccess($_[0]);
+        $$self{RAF} = File::RandomAccess->new($_[0]);
         $$self{PROCESSED} = { };
         delete $$self{EXIF_DATA};
         delete $$self{EXIF_POS};
@@ -2636,7 +2636,7 @@ sub ExtractInfo($;@)
             # open the file
             if ($self->Open(\*EXIFTOOL_FILE, $filename)) {
                 # create random access file object
-                $raf = new File::RandomAccess(\*EXIFTOOL_FILE);
+                $raf = File::RandomAccess->new(\*EXIFTOOL_FILE);
                 # patch to force pipe to be buffered because seek returns success
                 # in Windows cmd shell pipe even though it really failed
                 $$raf{TESTED} = -1 if $filename eq '-' or $filename =~ /\|$/;
@@ -2767,12 +2767,16 @@ sub ExtractInfo($;@)
         $raf->BinMode();    # set binary mode before we start reading
         my $pos = $raf->Tell(); # get file position so we can rewind
         # loop through list of file types to test
-        my ($buff, $seekErr);
+        my ($buff, $err);
         my %dirInfo = ( RAF => $raf, Base => $pos, TestBuff => \$buff );
         # read start of file for testing
-        $raf->Read($buff, $testLen) or $buff = '';
-        $raf->Seek($pos, 0) or $seekErr = 1;
-        until ($seekErr) {
+        if ($raf->Read($buff, $testLen)) {
+            $raf->Seek($pos, 0) or $err = 'Error seeking in file';
+        } else {
+            $err = $$raf{ERROR};
+            $buff = '';
+        }
+        until ($err) {
             my $unkHeader;
             $type = shift @fileTypeList;
             if ($type) {
@@ -2795,7 +2799,7 @@ sub ExtractInfo($;@)
                 $type = ($1 eq "\xff\xd8\xff") ? 'JPEG' : 'TIFF';
                 my $skip = pos($buff) - length($1);
                 $dirInfo{Base} = $pos + $skip;
-                $raf->Seek($pos + $skip, 0) or $seekErr = 1, last;
+                $raf->Seek($pos + $skip, 0) or $err = 'Error seeking in file', last;
                 $self->Warn("Processing $type-like data after unknown $skip-byte header");
                 $unkHeader = 1 unless $$self{DOC_NUM};
             }
@@ -2841,14 +2845,13 @@ sub ExtractInfo($;@)
                 last;
             }
             # seek back to try again from the same position in the file
-            $raf->Seek($pos, 0) or $seekErr = 1, last;
+            $raf->Seek($pos, 0) or $err = 'Error seeking in file';
         }
-        if (not defined $type and not $$self{DOC_NUM}) {
+        if (not $err and not defined $type and not $$self{DOC_NUM}) {
             # if we were given a single image with a known type there
             # must be a format error since we couldn't read it, otherwise
             # it is likely we don't support images of this type
             my $fileType = GetFileType($realname) || '';
-            my $err;
             if (not length $buff) {
                 $err = 'File is empty';
             } else {
@@ -2889,10 +2892,9 @@ sub ExtractInfo($;@)
                     }
                 }
             }
-            $self->Error($err);
         }
-        if ($seekErr) {
-            $self->Error('Error seeking in file');
+        if ($err) {
+            $self->Error($err);
         } elsif ($self->Options('ScanForXMP') and (not defined $type or
             (not $fast and not $$self{FoundXMP})))
         {
@@ -4114,7 +4116,7 @@ sub Init($)
     $$self{FileType}   = '';        # identified file type
     if ($self->Options('HtmlDump')) {
         require Image::ExifTool::HtmlDump;
-        $$self{HTML_DUMP} = new Image::ExifTool::HtmlDump;
+        $$self{HTML_DUMP} = Image::ExifTool::HtmlDump->new;
     }
     # make sure our TextOut is a file reference
     $$self{OPTIONS}{TextOut} = \*STDOUT unless ref $$self{OPTIONS}{TextOut};
@@ -4177,7 +4179,7 @@ sub ExtractAltInfo($)
         # (eg. -file1 '$originalfilename')
         if ($fileName =~ /\$/) {
             my @tags = reverse sort keys %{$$self{VALUE}};
-            $fileName = $self->InsertTagValues(\@tags, $fileName, 'Warn');
+            $fileName = $self->InsertTagValues($fileName, \@tags, 'Warn');
             next unless defined $fileName;
         }
         $altExifTool->ExtractInfo($fileName);
@@ -4504,7 +4506,7 @@ sub GetFileTime($$)
             $atime = $mtime = $ctime = pack 'LL', 0, 0;
             unless ($k32GetFileTime) {
                 return () if defined $k32GetFileTime;
-                $k32GetFileTime = new Win32::API('KERNEL32', 'GetFileTime', 'NPPP', 'I');
+                $k32GetFileTime = Win32::API->new('KERNEL32', 'GetFileTime', 'NPPP', 'I');
                 unless ($k32GetFileTime) {
                     $self->Warn('Error calling Win32::API::GetFileTime');
                     $k32GetFileTime = 0;
@@ -4583,7 +4585,7 @@ sub ParseArguments($;@)
                     my $buff = $@ ? pack('C*',unpack($] < 5.010000 ? 'U0C*' : 'C0C*',$$arg)) : Encode::encode('utf8',$$arg);
                     $arg = \$buff;
                 }
-                $$self{RAF} = new File::RandomAccess($arg);
+                $$self{RAF} = File::RandomAccess->new($arg);
                 # set filename to empty string to indicate that
                 # we have a file but we didn't open it
                 $$self{FILENAME} = '';
@@ -6981,7 +6983,7 @@ sub ProcessJPEG($$)
             } elsif ($$segDataPt =~ /^(II|MM).{4}HEAPJPGM/s) {
                 next if $fast > 1;      # skip processing for very fast
                 $dumpType = 'CIFF';
-                my %dirInfo = ( RAF => new File::RandomAccess($segDataPt) );
+                my %dirInfo = ( RAF => File::RandomAccess->new($segDataPt) );
                 $$self{SET_GROUP1} = 'CIFF';
                 push @{$$self{PATH}}, 'CIFF';
                 require Image::ExifTool::CanonRaw;
@@ -7506,6 +7508,8 @@ sub ProcessJPEG($$)
             } elsif ($$segDataPt =~ /^AROT\0/ and $length > 10) {
                 # iPhone "AROT" segment containing integrated intensity per 16 scan lines
                 # (with number of elements N = ImageHeight / 16 - 1, ref PH/NealKrawetz)
+                # "Absolute ROTational difference between two frames"
+                # (see https://www.hackerfactor.com/blog/index.php?/archives/822-Apple-Rot.html)
                 $xtra = 'segment (N=' . unpack('x6N', $$segDataPt) . ')';
             }
         } elsif ($marker == 0xeb) {         # APP11 (JPEG-HDR, JUMBF)
@@ -8005,7 +8009,7 @@ sub DoProcessTIFF($$;$)
            }
         }
         # update FileType if necessary now that we know more about the file
-        if ($$self{DNGVersion} and $$self{FileType} !~ /^(DNG|GPR)$/) {
+        if ($$self{DNGVersion} and $$self{FILE_TYPE} eq 'TIFF' and $$self{FileType} !~ /^(DNG|GPR)$/) {
             # override whatever FileType we set since we now know it is DNG
             $self->OverrideFileType($$self{TIFF_TYPE} = 'DNG');
         }

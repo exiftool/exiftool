@@ -14,7 +14,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Import;
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 sub ProcessJSON($$);
 sub ProcessTag($$$$%);
@@ -120,7 +120,7 @@ sub ProcessJSON($$)
             my $buff = substr(${$$dirInfo{DataPt}}, $$dirInfo{DirStart}, $$dirInfo{DirLen});
             $dataPt = \$buff;
         }
-        $raf = new File::RandomAccess($dataPt);
+        $raf = File::RandomAccess->new($dataPt);
         # extract as a block if requested
         my $blockName = $$dirInfo{BlockInfo} ? $$dirInfo{BlockInfo}{Name} : '';
         my $blockExtract = $et->Options('BlockExtract');

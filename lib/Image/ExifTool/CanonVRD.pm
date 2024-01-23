@@ -23,7 +23,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.36';
+$VERSION = '1.37';
 
 sub ProcessCanonVRD($$;$);
 sub WriteCanonVRD($$;$);
@@ -2011,7 +2011,7 @@ sub ProcessCanonVRD($$;$)
             $verbose and print $out "  Creating CanonVRD trailer\n";
             $created = 1;
         }
-        $raf = new File::RandomAccess($dataPt);
+        $raf = File::RandomAccess->new($dataPt);
     }
     # read and validate the footer
     $raf->Seek(-0x40-$offset, 2)    or return 0;

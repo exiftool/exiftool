@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27469 tags, with 17233 unique tag names.
+They contain a total of 27473 tags, with 17233 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -29481,8 +29481,10 @@ changed via the config file.
   'com.android.version' AndroidVersion          yes
   'com.apple.photos.captureMode' CaptureMode    yes
   'comment'     Comment                         yes
+  'compatible_brands' CompatibleBrands          yes/
   'content.identifier' ContentIdentifier        yes
   'copyright'   Copyright                       yes
+  'creation_time' CreationTime                  yes/
   'creationdate' CreationDate                   yes
   'description' Description                     yes
   'detected-face' FaceInfo                      QuickTime FaceInfo
@@ -29514,7 +29516,9 @@ changed via the config file.
   'location.name' LocationName                  yes
   'location.note' LocationNote                  yes
   'location.role' LocationRole                  yes
+  'major_brand' MajorBrand                      yes/
   'make'        Make                            yes
+  'minor_version' MinorVersion                  yes/
   'model'       Model                           yes
   'player.movie.audio.balance' Balance          yes
   'player.movie.audio.bass' Bass                yes

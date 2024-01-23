@@ -848,11 +848,11 @@ sub FoundSomething($$;$$)
 #------------------------------------------------------------------------------
 # Approximate GPSDateTime value from sample time and CreateDate
 # Inputs: 0) ExifTool ref, 1) tag table ptr, 2) sample time (s)
-#         3) true if CreateDate is at end of video
+#         3) true if CreateDate is at end of video, 4) flag if CreateDate is UTC
 # Notes: Uses ExifTool CreateDateAtEnd as flag to subtract video duration
-sub SetGPSDateTime($$$)
+sub SetGPSDateTime($$$;$)
 {
-    my ($et, $tagTbl, $sampleTime) = @_;
+    my ($et, $tagTbl, $sampleTime, $isUTC) = @_;
     my $value = $$et{VALUE};
     if (defined $sampleTime and $$value{CreateDate}) {
         $sampleTime += $$value{CreateDate}; # adjust sample time to seconds since the epoch
@@ -863,7 +863,9 @@ sub SetGPSDateTime($$$)
         } else {
             $et->WarnOnce('Approximating GPSDateTime as CreateDate + SampleTime', 1);
         }
-        unless ($et->Options('QuickTimeUTC')) {
+        my $utc = $et->Options('QuickTimeUTC');
+        $utc = $isUTC unless defined $utc;  # (allow QuickTimeUTC=0 to override $isUTC default)
+        unless ($utc) {
             my $tzOff = $$et{tzOff};    # use previously calculated offset
             unless (defined $tzOff) {
                 # adjust to UTC, assuming time is local
@@ -1344,7 +1346,7 @@ Sample:     for ($i=0; ; ) {
                     $et->HandleTag($tagTbl, GPSLatitude  => Get32s(\$buff, 12+$n) * 180/0x80000000);
                     $et->HandleTag($tagTbl, GPSLongitude => Get32s(\$buff, 16+$n) * 180/0x80000000);
                     $et->HandleTag($tagTbl, GPSSpeed     => Get16u(\$buff, 8+$n) * $mphToKph);
-                    SetGPSDateTime($et, $tagTbl, $time[$i]);
+                    SetGPSDateTime($et, $tagTbl, $time[$i], 1);
                     next; # all done (don't store/process as text)
                 }
                 unless (defined $val) {
@@ -2454,7 +2456,7 @@ sub ProcessLIGO_JSON($$$)
     $et->VerboseDir('LIGO_JSON', undef, length($$dataPt));
     while ($$dataPt =~ /LIGOGPSINFO (\{.*?\})/g) {
         my $json = $1;
-        my $raf = new File::RandomAccess(\$json);
+        my $raf = File::RandomAccess->new(\$json);
         my %dbase;
         Image::ExifTool::Import::ReadJSON($raf, \%dbase);
         my $info = $dbase{'*'} or next;

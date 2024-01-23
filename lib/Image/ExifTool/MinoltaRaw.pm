@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Minolta;
 
-$VERSION = '1.19';
+$VERSION = '1.20';
 
 sub ProcessMRW($$;$);
 sub WriteMRW($$;$);
@@ -400,7 +400,7 @@ sub ProcessMRW($$;$)
 
     if ($$dirInfo{DataPt}) {
         # make a RAF object for MRW information extracted from other file types
-        $raf = new File::RandomAccess($$dirInfo{DataPt});
+        $raf = File::RandomAccess->new($$dirInfo{DataPt});
         # MRW information in DNG images may not start at beginning of data block
         $raf->Seek($$dirInfo{DirStart}, 0) if $$dirInfo{DirStart};
     }

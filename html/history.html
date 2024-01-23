@@ -17,6 +17,33 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.74'><b>Jan. 23, 2024 - Version 12.74</b></a>
+<ul>
+<li>Added a couple of new Nikon lenses (thanks Chris)
+<li>Added write support for a few new QuickTime Keys tags
+<li>Decode ShutterCount for Canon EOS R5 (thanks John Moyer)
+<li>Improved error messages in the case of file read errors
+<li>Enhanced tag name strings (eg. -if option expressions) to allow values of
+    multiple matching tags to be concatenated when a group name of "All" is
+    specified
+<li>Enhanced -p option to add -p- feature which avoids adding trailing newline
+<li>Changed warning from "Shift results in negative time" to "Shift results in
+    date before 1970"
+<li>Patched calculation of GPSDateTime for the timed metadata in Track3 of
+    Garmin videos so the API QuickTimeUTC option is no longer required
+<li>Fixed conversion error when writing QuickTime:GoogleTrackDuration
+<li>Fixed misidentification of non-TIFF-format files containing DNGVersion tag
+<li>Fixed bug where Avoid-ed XMP structures could be created when writing
+    another same-named structure
+<li>Internal Changes:
+    <ul>
+    <li>Changed form of all new() calls to accommodate backward
+        incompatibilities in recent versions of Perl
+    <li>Changed order of InsertTagValues() arguments
+    <li>DateFmt() now returns value of formatted date/time string
+    </ul>
+</ul>
+
 <a name='v12.73'><b>Jan. 10, 2024 - Version 12.73</b></a>
 <ul>
 <li>Added write support for Leica XMP-xmpDSA tags
@@ -33,7 +60,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Fixed writing of date/time tags in XMP-xmpMM:Pantry structure
 <li>API Changes:
     <ul>
-    <li>Added <a href="ExifTool.html#LimitLongValues">LimitLongValues option</a>
+    <li>Added <a href="ExifTool.html#LimitLongValues">LimitLongValues option</a> to provide control over tags which
+        previously had a hard-coded length limit
     </ul>
 </ul>
 

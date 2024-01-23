@@ -619,7 +619,8 @@ DateFormat of "%Y:%m:%d %H:%M:%S").
 =item Duplicates
 
 Flag to return values from tags with duplicate names when extracting
-information.  Default is 1.
+information.  Default is 1.  Forced to 1 when copying tags with
+L</SetNewValuesFromFile>.
 
 =item Escape
 
@@ -824,11 +825,11 @@ Default is undef.
 
 =item LimitLongValues
 
-When extracting some values that may be very long, the PrintConv values are
-length-limited and the value is truncated with an elipsis ("[...]") if it
-exceeds a specified length.  This option specifies the length limit for
-these tags.  A setting of 4 or less disables the limit (because the elipsis
-string is longer than this).  Default is 60.
+When extracting values for some specific tags (usually Unknown tags), the
+PrintConv values are length-limited and the value is truncated with an
+ellipsis ("[...]") if it exceeds a specified length.  This option specifies
+the length limit for these tags.  A setting of 4 or less disables the limit
+(because the ellipsis string is longer than this).  Default is 60.
 
 =item ListItem
 

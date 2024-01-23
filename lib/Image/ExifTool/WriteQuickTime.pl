@@ -785,7 +785,7 @@ sub WriteQuickTime($$$)
     my ($rtnVal, $rtnErr) = $dataPt ? (undef, undef) : (1, 0);
 
     if ($dataPt) {
-        $raf = new File::RandomAccess($dataPt);
+        $raf = File::RandomAccess->new($dataPt);
     } else {
         return 0 unless $raf;
     }

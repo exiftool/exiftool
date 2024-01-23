@@ -403,7 +403,7 @@ sub ShiftTime($;$$$)
             };
             $@ and return CleanWarning($@);
             $tm += $$shiftOffset{$mode};    # apply the shift
-            $tm < 0 and return 'Shift results in negative time';
+            $tm < 0 and return 'Shift results in date before 1970';
             # save fractional seconds in shifted time
             $frac = $tm - int($tm);
             if ($frac) {

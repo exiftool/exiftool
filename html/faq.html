@@ -783,8 +783,8 @@ Nikon.jpg       -       100
 OlympusE1.jpg   Auto    400
 </pre>
 
-One limitation of the <code>-T</code> option is that a list of tags to extract
-must be specified.  Otherwise, all information is extracted from each input
+One limitation of the <code>-T</code> option is that you must specify a list
+of tags to extract.  Otherwise, all information is extracted from each input
 file, and the columns would contain values from random tags.</blockquote>
 
 <blockquote> The <code>-csv</code> (comma separated values) option solves this
@@ -792,7 +792,8 @@ dilemma by pre-extracting information from all input files, then producing a
 sorted list of available tag names as the first row of the output, and
 organizing the information into columns for each tag.  As well, a first column
 labelled "SourceFile" is generated.  These features make it practical to use the
-<code>-csv</code> option for extracting all information from multiple images.
+<code>-csv</code> option for extracting all information from multiple images
+(but impractical for a large number of images due to memory restrictions).
 For example, this command:
 
 <pre>exiftool -csv -r t/images > out.csv</pre>
@@ -1821,7 +1822,7 @@ default values if necessary).
 </blockquote>
 
 <hr>
-<i>Last revised Dec 24, 2023</i>
+<i>Last revised Jan 20, 2024</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

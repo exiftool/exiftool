@@ -22,7 +22,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.47';
+$VERSION = '1.48';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -2206,7 +2206,7 @@ sub ProcessFPX($$)
     my ($tag, %hier, %objIndex, %loadedDifSect);
 
     # handle FPX format in memory from PNG cpIp chunk
-    $raf or $raf = new File::RandomAccess($$dirInfo{DataPt});
+    $raf or $raf = File::RandomAccess->new($$dirInfo{DataPt});
 
     # read header
     return 0 unless $raf->Read($buff,HDR_SIZE) == HDR_SIZE;
@@ -2353,7 +2353,7 @@ sub ProcessFPX($$)
                 $et->Warn('Error loading Mini-FAT stream');
                 last;
             }
-            $miniStream = new File::RandomAccess(\$miniStreamBuff);
+            $miniStream = File::RandomAccess->new(\$miniStreamBuff);
         }
 
         my $tagInfo;

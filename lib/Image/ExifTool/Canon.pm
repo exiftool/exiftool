@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.72';
+$VERSION = '4.73';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -1394,7 +1394,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         },
         {
             Name => 'CanonCameraInfoR6',
-            Condition => '$$self{Model} =~ /\bEOS R6$/',
+            Condition => '$$self{Model} =~ /\bEOS R[56]$/',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR6' },
         },
         {
@@ -4714,7 +4714,7 @@ my %ciMaxFocal = (
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS R6.',
-    0x0af1 => { #forum15210
+    0x0af1 => { #forum15210/15579
         Name => 'ShutterCount',
         Format => 'int32u',
         Notes => 'includes electronic + mechanical shutter',

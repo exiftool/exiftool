@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 
 sub WritePhaseOne($$$);
 sub ProcessPhaseOne($$$);
@@ -473,7 +473,7 @@ sub WritePhaseOne($$$)
     return undef if $numEntries < 2 or $numEntries > 300 or $ifdEnd > $dirLen;
     my $hdrBuff = $hdr;
     my $valBuff = '';   # buffer for value data
-    my $fixup = new Image::ExifTool::Fixup;
+    my $fixup = Image::ExifTool::Fixup->new;
     my $index;
     for ($index=0; $index<$numEntries; ++$index) {
         my $entry = $dirStart + $ifdStart + 8 + $entrySize * $index;

@@ -39,7 +39,7 @@ use Image::ExifTool qw(GetByteOrder SetByteOrder Get32u Get32s Set32u
                        Get16u Get16s Set16u);
 use vars qw($VERSION);
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 sub AddFixup($$;$$);
 sub ApplyFixup($$);
@@ -69,7 +69,7 @@ sub new
 sub Clone($)
 {
     my $self = shift;
-    my $clone = new Image::ExifTool::Fixup;
+    my $clone = Image::ExifTool::Fixup->new;
     $clone->{Start} = $self->{Start};
     $clone->{Shift} = $self->{Shift};
     my $phash = $self->{Pointers};
@@ -317,7 +317,7 @@ Image::ExifTool::Fixup - Utility to handle pointer fixups
 
     use Image::ExifTool::Fixup;
 
-    $fixup = new Image::ExifTool::Fixup;
+    $fixup = Image::ExifTool::Fixup->new;
 
     # add a new fixup to a pointer at the specified offset in data
     $fixup->AddFixup($offset);

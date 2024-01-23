@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.66';
+$VERSION = '3.67';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -859,7 +859,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         # must construct 0x20-byte header which contains length, width and height
         ValueConvInv => q{
             return 'none' unless $val;
-            my $e = new Image::ExifTool;
+            my $e = Image::ExifTool->new;
             my $info = $e->ImageInfo(\$val,'ImageWidth','ImageHeight');
             return undef unless $$info{ImageWidth} and $$info{ImageHeight};
             my $size = Set32u($$info{ImageWidth}) . Set32u($$info{ImageHeight});
@@ -11640,7 +11640,7 @@ sub ProcessSR2($$$)
                 );
                 my $subTable = GetTagTable('Image::ExifTool::Sony::SR2SubIFD');
                 if ($outfile) {
-                    my $fixup = new Image::ExifTool::Fixup;
+                    my $fixup = Image::ExifTool::Fixup->new;
                     $dirInfo{Fixup} = $fixup;
                     $result = $et->WriteDirectory(\%dirInfo, $subTable);
                     return undef unless $result;

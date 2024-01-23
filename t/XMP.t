@@ -571,18 +571,20 @@ my $testnum = 1;
     print "ok $testnum\n";
 }
 
-# test 46: Test the advanced-formatting '@' feature on an XMP:Subject list
+# test 46: Test the advanced-formatting '@' feature and "All" in the source group
 {
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
     $exifTool->Options(ListSplit => ', ');
-    my $cpy = 'subject<${subject@;/^Test/ ? $_=undef : s/Tool$//}';
-    $exifTool->SetNewValuesFromFile('t/images/XMP.jpg', $cpy);
+    my $subj = 'subject<${subject@;/^Test/ ? $_=undef : s/Tool$//}';
+    my $keyw = 'creator<${Adobe:all:all@;s/n/N/;$_=undef if /Y/}';
+    # (exclude Adobe tag because the Adobe segment would be extracted as a block when copying)
+    $exifTool->SetNewValuesFromFile('t/images/XMP.jpg', $subj, '-adobe', $keyw);
     $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
     writeInfo($exifTool, undef, $testfile);
     $exifTool->Options(ListSep => ' // ');
-    my $info = $exifTool->ImageInfo($testfile, 'Subject');
+    my $info = $exifTool->ImageInfo($testfile, 'Subject', 'Creator');
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {

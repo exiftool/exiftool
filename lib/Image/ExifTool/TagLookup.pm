@@ -17,7 +17,7 @@ require Exporter;
 use vars qw($VERSION @ISA @EXPORT_OK);
 use Image::ExifTool qw(:Utils);
 
-$VERSION = '1.19';
+$VERSION = '1.20';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(FindTagInfo TagExists);
 
@@ -1870,6 +1870,7 @@ my %tagLookup = (
 	'commanderinternalttlcompgroupb' => { 312 => '22.1', 313 => '28.1' },
 	'comment' => { 0 => 0x2, 123 => 'Comment', 160 => 'Comment', 336 => 'Comment', 399 => "\xa9cmt", 401 => 'comment', 407 => "\xa9cmt" },
 	'compass' => { 417 => 0x4 },
+	'compatiblebrands' => { 401 => 'compatible_brands' },
 	'compatibleversion' => { 509 => 'CompatibleVersion', 511 => 'CompatibleVersion' },
 	'compilation' => { 399 => 'cpil' },
 	'compimageimagespersequence' => { 516 => [\'CompositeImageExposureTimes','CompositeImageExposureTimesNumberOfImagesInSequences'] },
@@ -2022,7 +2023,7 @@ my %tagLookup = (
 	'crc32' => { 513 => 'crc32' },
 	'createdate' => { 122 => 0x9004, 160 => 'CreateDate', 332 => 'CreationDate', 336 => 'create-date', 398 => 'CreationDate', 404 => 0x1, 536 => 'CreateDate' },
 	'creationdate' => { 401 => 'creationdate', 525 => 'CreationDate', 528 => 'creationDate' },
-	'creationtime' => { 336 => 'Creation Time' },
+	'creationtime' => { 336 => 'Creation Time', 401 => 'creation_time' },
 	'creativestyle' => { 434 => 0x1a, 435 => 0x18, 445 => 0x41, 448 => 0xb020, 480 => 0x4a },
 	'creativestylesetting' => { 436 => 0xf, 453 => 0x7 },
 	'creativestylewaschanged' => { 485 => 0x8001 },
@@ -4314,6 +4315,7 @@ my %tagLookup = (
 	'mainboardversion' => { 141 => 0x438 },
 	'maindialexposurecomp' => { 314 => '0.6' },
 	'mainingredient' => { 530 => 'mainIngredient' },
+	'majorbrand' => { 401 => 'major_brand' },
 	'majorversion' => { 500 => 'MajorVersion' },
 	'make' => { 101 => 0x0, 118 => 0x1, 122 => 0x10f, 159 => 'Make', 336 => 'Make', 352 => 0x10f, 401 => 'make', 407 => ['@mak',"\xa9mak"], 527 => 'make', 534 => 'Make' },
 	'makernote' => { 515 => 'MakerNote' },
@@ -4781,7 +4783,7 @@ my %tagLookup = (
 	'minoltaquality' => { 184 => 0x5, 185 => 0xd, 186 => 0x3, 189 => [0x102,0x103] },
 	'minoltatime' => { 184 => 0x16 },
 	'minormodelagedisclosure' => { 333 => 'MinorModelAgeDisclosure' },
-	'minorversion' => { 500 => 'MinorVersion' },
+	'minorversion' => { 401 => 'minor_version', 500 => 'MinorVersion' },
 	'minsamplevalue' => { 122 => 0x118 },
 	'mirrorlockup' => { 85 => 0xc, 86 => 0xc, 87 => 0x60f, 88 => 0xb, 89 => 0xc, 90 => 0x6, 91 => 0x6, 92 => 0xc, 93 => 0x3 },
 	'mobilecountrycode' => { 508 => 'mcc' },
@@ -8509,7 +8511,6 @@ my %tagExists = (
 	'companymainphone' => 1,
 	'companyname' => 1,
 	'compatibility' => 1,
-	'compatiblebrands' => 1,
 	'compatiblefontname' => 1,
 	'complete' => 1,
 	'compobj' => 1,
@@ -10361,7 +10362,6 @@ my %tagExists = (
 	'mainboard' => 1,
 	'maininfo' => 1,
 	'maininfoifd' => 1,
-	'majorbrand' => 1,
 	'makeandmodel' => 1,
 	'makemodel' => 1,
 	'makernotepentax5a' => 1,

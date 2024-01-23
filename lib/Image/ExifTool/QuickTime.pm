@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.91';
+$VERSION = '2.92';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -267,6 +267,24 @@ my %timeInfo = (
     PrintConv => '$self->ConvertDateTime($val)',
     PrintConvInv => '$self->InverseDateTime($val)',
     # (can't put Groups here because they aren't constant!)
+);
+# properties for ISO 8601 format date/time tags
+my %iso8601Date = (
+    Shift => 'Time',
+    ValueConv => q{
+        require Image::ExifTool::XMP;
+        $val =  Image::ExifTool::XMP::ConvertXMPDate($val);
+        $val =~ s/([-+]\d{2})(\d{2})$/$1:$2/; # add colon to timezone if necessary
+        return $val;
+    },
+    ValueConvInv => q{
+        require Image::ExifTool::XMP;
+        my $tmp = Image::ExifTool::XMP::FormatXMPDate($val);
+        ($val = $tmp) =~ s/([-+]\d{2}):(\d{2})$/$1$2/ if defined $tmp; # remove time zone colon
+        return $val;
+    },
+    PrintConv => '$self->ConvertDateTime($val)',
+    PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
 );
 # information for duration tags
 my %durationInfo = (
@@ -1574,22 +1592,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     "\xa9day" => {
         Name => 'ContentCreateDate',
         Groups => { 2 => 'Time' },
-        Shift => 'Time',
-        # handle values in the form "2010-02-12T13:27:14-0800" (written by Apple iPhone)
-        ValueConv => q{
-            require Image::ExifTool::XMP;
-            $val =  Image::ExifTool::XMP::ConvertXMPDate($val);
-            $val =~ s/([-+]\d{2})(\d{2})$/$1:$2/; # add colon to timezone if necessary
-            return $val;
-        },
-        ValueConvInv => q{
-            require Image::ExifTool::XMP;
-            my $tmp = Image::ExifTool::XMP::FormatXMPDate($val);
-            ($val = $tmp) =~ s/([-+]\d{2}):(\d{2})$/$1$2/ if defined $tmp; # remove time zone colon
-            return $val;
-        },
-        PrintConv => '$self->ConvertDateTime($val)',
-        PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
+        %iso8601Date,
     },
     "\xa9ART" => 'Artist', #PH (iTunes 8.0.2)
     "\xa9alb" => 'Album', #PH (iTunes 8.0.2)
@@ -1873,21 +1876,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
             Apple Photos has been reported to show a crazy date/time for some MP4 files
             containing this tag, but perhaps only if it is missing a time zone
         }, #forum10690/11125
-        Shift => 'Time',
-        ValueConv => q{
-            require Image::ExifTool::XMP;
-            $val =  Image::ExifTool::XMP::ConvertXMPDate($val);
-            $val =~ s/([-+]\d{2})(\d{2})$/$1:$2/; # add colon to timezone if necessary
-            return $val;
-        },
-        ValueConvInv => q{
-            require Image::ExifTool::XMP;
-            $val =  Image::ExifTool::XMP::FormatXMPDate($val);
-            $val =~ s/([-+]\d{2}):(\d{2})$/$1$2/; # remove time zone colon
-            return $val;
-        },
-        PrintConv => '$self->ConvertDateTime($val)',
-        PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
+        %iso8601Date,
     },
     manu => { # (SX280)
         Name => 'Make',
@@ -2310,23 +2299,9 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
             symbol in these tag ID's for the Ricoh Theta Z1 and maybe other models
         },
         Groups => { 2 => 'Time' },
-        Shift => 'Time',
         Avoid => 1,
         # handle values in the form "2010-02-12T13:27:14-0800"
-        ValueConv => q{
-            require Image::ExifTool::XMP;
-            $val =  Image::ExifTool::XMP::ConvertXMPDate($val);
-            $val =~ s/([-+]\d{2})(\d{2})$/$1:$2/; # add colon to timezone if necessary
-            return $val;
-        },
-        ValueConvInv => q{
-            require Image::ExifTool::XMP;
-            my $tmp = Image::ExifTool::XMP::FormatXMPDate($val);
-            ($val = $tmp) =~ s/([-+]\d{2}):(\d{2})$/$1$2/ if defined $tmp; # remove time zone colon
-            return $val;
-        },
-        PrintConv => '$self->ConvertDateTime($val)',
-        PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
+        %iso8601Date,
     },
     '@xyz' => { #PH (iPhone 3GS)
         Name => 'GPSCoordinates',
@@ -3339,22 +3314,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     "\xa9day" => {
         Name => 'ContentCreateDate',
         Groups => { 2 => 'Time' },
-        Shift => 'Time',
-        # handle values in the form "2010-02-12T13:27:14-0800"
-        ValueConv => q{
-            require Image::ExifTool::XMP;
-            $val =  Image::ExifTool::XMP::ConvertXMPDate($val);
-            $val =~ s/([-+]\d{2})(\d{2})$/$1:$2/; # add colon to timezone if necessary
-            return $val;
-        },
-        ValueConvInv => q{
-            require Image::ExifTool::XMP;
-            $val =  Image::ExifTool::XMP::FormatXMPDate($val);
-            $val =~ s/([-+]\d{2}):(\d{2})$/$1$2/; # remove time zone colon
-            return $val;
-        },
-        PrintConv => '$self->ConvertDateTime($val)',
-        PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
+        %iso8601Date,
     },
     "\xa9des" => 'Description', #4
     "\xa9enc" => 'EncodedBy', #10
@@ -6403,12 +6363,10 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         ValueConvInv => '$val * 1000',
         PrintConv => 'ConvertDuration($val)',
         PrintConvInv => q{
-           $val =~ s/ s$//;
-           my @a = split /(:| days )/, $val;
-           my $sign = ($val =~ s/^-//) ? -1 : 1;
-           $a[0] += shift(@a) * 24 if @a == 4;
-           $a[0] += shift(@a) * 60 while @a > 1;
-           return $a[0] * $sign;
+            my $sign = ($val =~ s/^-//) ? -1 : 1;
+            my @a = $val =~ /(\d+(?:\.\d+)?)/g;
+            unshift @a, 0 while @a < 4;
+            return $sign * (((($a[0] * 24) + $a[1]) * 60 + $a[2]) * 60 + $a[3]);
         },
     },
 
@@ -6522,21 +6480,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     creationdate=> {
         Name => 'CreationDate',
         Groups => { 2 => 'Time' },
-        Shift => 'Time',
-        ValueConv => q{
-            require Image::ExifTool::XMP;
-            $val =  Image::ExifTool::XMP::ConvertXMPDate($val,1);
-            $val =~ s/([-+]\d{2})(\d{2})$/$1:$2/; # add colon to timezone if necessary
-            return $val;
-        },
-        ValueConvInv => q{
-            require Image::ExifTool::XMP;
-            $val =  Image::ExifTool::XMP::FormatXMPDate($val);
-            $val =~ s/([-+]\d{2}):(\d{2})$/$1$2/; # remove time zone colon
-            return $val;
-        },
-        PrintConv => '$self->ConvertDateTime($val)',
-        PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
+        %iso8601Date,
     },
     description => { },
     director    => { },
@@ -6586,21 +6530,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     'location.date' => {
         Name => 'LocationDate',
         Groups => { 2 => 'Time' },
-        Shift => 'Time',
-        ValueConv => q{
-            require Image::ExifTool::XMP;
-            $val =  Image::ExifTool::XMP::ConvertXMPDate($val);
-            $val =~ s/([-+]\d{2})(\d{2})$/$1:$2/; # add colon to timezone if necessary
-            return $val;
-        },
-        ValueConvInv => q{
-            require Image::ExifTool::XMP;
-            $val =  Image::ExifTool::XMP::FormatXMPDate($val);
-            $val =~ s/([-+]\d{2}):(\d{2})$/$1$2/; # remove time zone colon
-            return $val;
-        },
-        PrintConv => '$self->ConvertDateTime($val)',
-        PrintConvInv => '$self->InverseDateTime($val,1)', # (add time zone if it didn't exist)
+        %iso8601Date,
     },
     'location.accuracy.horizontal' => { Name => 'LocationAccuracyHorizontal' },
     'live-photo.auto'           => { Name => 'LivePhotoAuto', Writable => 'int8u' },
@@ -6693,6 +6623,16 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     'detected-face.roll-angle' => { Name => 'DetectedFaceRollAngle', Writable => 0 },
     # (fiel)com.apple.quicktime.detected-face.yaw-angle (dtyp=23, float)
     'detected-face.yaw-angle'  => { Name => 'DetectedFaceYawAngle',  Writable => 0 },
+    # the following tags generated by ShutterEncoder when "preserve metadata" is selected (forum15610)
+    major_brand       => { Name => 'MajorBrand',       Avoid => 1 },
+    minor_version     => { Name => 'MinorVersion',     Avoid => 1 },
+    compatible_brands => { Name => 'CompatibleBrands', Avoid => 1 },
+    creation_time => {
+        Name => 'CreationTime',
+        Groups => { 2 => 'Time' },
+        Avoid => 1,
+        %iso8601Date,
+    },
 #
 # seen in Apple ProRes RAW file
 #
@@ -6708,13 +6648,6 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     # (mdta)com.apple.proapps.image.{TIFF}.Make (eg. "Atmos")
     # (mdta)com.apple.proapps.image.{TIFF}.Model (eg. "ShogunInferno")
     # (mdta)com.apple.proapps.image.{TIFF}.Software (eg. "9.0")
-#
-# also seen (but don't yet add support for these)
-#
-    # (mdta)major_brand
-    # (mdta)minor_version
-    # (mdta)compatible_brands
-    # (mdta)creation_time
 );
 
 # iTunes info ('----') atoms
@@ -9373,7 +9306,7 @@ sub ProcessMOV($$;$)
     }
     # more convenient to package data as a RandomAccess file
     unless ($raf) {
-        $raf = new File::RandomAccess($dataPt);
+        $raf = File::RandomAccess->new($dataPt);
         $dirEnd = $dataPos + $$dirInfo{DirLen} + ($$dirInfo{DirStart} || 0) if $$dirInfo{DirLen};
     }
     # skip leading bytes if necessary

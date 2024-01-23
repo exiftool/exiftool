@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.29';
+$VERSION = '4.30';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -677,6 +677,7 @@ sub GetAFPointGrid($$;$);
     '71 48 64 64 24 24 00 00' => 'Voigtlander APO-Skopar 90mm F2.8 SL IIs', #30
     'FD 00 50 50 18 18 DF 00' => 'Voigtlander APO-Lanthar 50mm F2 Aspherical', #35
     'FD 00 44 44 18 18 DF 00' => 'Voigtlander APO-Lanthar 35mm F2', #30
+    'FD 00 59 59 18 18 DF 00' => 'Voigtlander Macro APO-Lanthar 65mm F2', #30
 #
     '00 40 2D 2D 2C 2C 00 00' => 'Carl Zeiss Distagon T* 3.5/18 ZF.2',
     '00 48 27 27 24 24 00 00' => 'Carl Zeiss Distagon T* 2.8/15 ZF.2', #MykytaKozlov
@@ -690,6 +691,7 @@ sub GetAFPointGrid($$;$);
     '00 54 62 62 0C 0C 00 00' => 'Carl Zeiss Planar T* 1.4/85 ZF.2',
     '00 54 68 68 18 18 00 00' => 'Carl Zeiss Makro-Planar T* 2/100 ZF.2',
     '00 54 72 72 18 18 00 00' => 'Carl Zeiss Apo Sonnar T* 2/135 ZF.2',
+    '02 54 3C 3C 0C 0C 00 00' => 'Zeiss Otus 1.4/28 ZF.2', #30
     '00 54 53 53 0C 0C 00 00' => 'Zeiss Otus 1.4/55', #IB
     '01 54 62 62 0C 0C 00 00' => 'Zeiss Otus 1.4/85',
     '03 54 68 68 0C 0C 00 00' => 'Zeiss Otus 1.4/100', #IB

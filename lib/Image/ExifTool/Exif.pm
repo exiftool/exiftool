@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.48';
+$VERSION = '4.49';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -6465,7 +6465,7 @@ sub ProcessExif($$$)
                                 TagInfo => $tagInfo || $tmpInfo,
                                 Offset  => $base + $valuePtr + $dataPos,
                                 Size    => $size,
-                                Fixup   => new Image::ExifTool::Fixup,
+                                Fixup   => Image::ExifTool::Fixup->new,
                             };
                         }
                     } else {

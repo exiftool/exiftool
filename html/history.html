@@ -11,17 +11,25 @@
 
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.75.tar.gz">Version 12.75</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.76.tar.gz">Version 12.76</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">MetaCPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.76'><b>Jan. 31, 2024 - Version 12.76</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Properly implement patch of 12.45 to avoid duplicating raw data when writing
+    Sony ARW images where the raw data is double-referenced as both strips and
+    tiles
+<li>Improved handling of bad offsets in HtmlDump output
+</ul>
+
 <a name='v12.75'><b>Jan. 30, 2024 - Version 12.75</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>CORRUPTION WARNING: Fixed bug introduced in 12.45 which could result in
-	corrupted Sony ARW images from some newer models when writing if lossless
-	compression was used
+    corrupted Sony ARW images from some newer models when rewriting lossless
+    compressed ARW images which were previously edited by 12.44 or earlier
 <li>Added ability to read C2PA JUMBF metadata from PDF and SVG files
 <li>Added ability to extract JUMBF metadata as a block
 <li>Added read support for C2PA (JUMBF-format) files

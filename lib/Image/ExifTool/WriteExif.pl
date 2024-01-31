@@ -2278,7 +2278,7 @@ NoOverwrite:            next if $isNew > 0;
                         $$offsetInfo{0x111}[2]==1) # (must be a single strip or the tile offsets could get out of sync)
                     {
                         # check the start offsets to see if they are the same
-                        if ($$offsetInfo{0x111}[3] == $$offsetInfo{0x144}[3]) {
+                        if ($$offsetInfo{0x111}[3][0] == $$offsetInfo{0x144}[3][0]) {
                             # some Sony ARW images contain double-referenced raw data stored as both strips
                             # and tiles.  Copy the data using only the strip tags, but store the TileOffets
                             # information for updating later (see PanasonicRaw:PatchRawDataOffset for a

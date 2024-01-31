@@ -4,14 +4,21 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 12.75. (Other versions are
+Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Jan. 31, 2024 - Version 12.76 (production release)
+
+  - Properly implement patch of 12.45 to avoid duplicating raw data when writing
+    Sony ARW images where the raw data is double-referenced as both strips and
+    tiles
+  - Improved handling of bad offsets in HtmlDump output
 
 Jan. 30, 2024 - Version 12.75 (production release)
 
   - CORRUPTION WARNING: Fixed bug introduced in 12.45 which could result in
-	corrupted Sony ARW images from some newer models when writing if lossless
-	compression was used
+    corrupted Sony ARW images from some newer models when rewriting lossless
+    compressed ARW images which were previously edited by 12.44 or earlier
   - Added ability to read C2PA JUMBF metadata from PDF and SVG files
   - Added ability to extract JUMBF metadata as a block
   - Added read support for C2PA (JUMBF-format) files

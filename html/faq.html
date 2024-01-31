@@ -1289,6 +1289,12 @@ using the <code>-@</code> option.  UTF&#8209;8 encoding is recommended for the
 argument file, and with this you would also set <code>-charset filename=utf8</code>
 if using special characters in filename arguments within the file.</blockquote>
 
+<blockquote>Also see
+<a href="https://stackoverflow.com/questions/57131654/using-utf-8-encoding-chcp-65001-in-command-prompt-windows-powershell-window/57134096#57134096">this StackOverflow answer</a>
+for another possible solution, but note that this option has the side effect of
+changing the fonts of some older programs and causing problems with their GUIs,
+so you'll have to decide whether this is acceptable for you.</blockquote>
+
 <blockquote>Another way to bypass the console/command-line encoding problems for
 individual tag values is to extract/write to/from a separate text file and use a
 UTF&#8209;8 aware text editor to view/edit the text.  For example:
@@ -1822,7 +1828,7 @@ default values if necessary).
 </blockquote>
 
 <hr>
-<i>Last revised Jan 20, 2024</i>
+<i>Last revised Jan 23, 2024</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

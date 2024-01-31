@@ -3353,7 +3353,7 @@ sub InsertTagValues($$;$$$$)
             $advFmtSelf = $self;
             if ($asList) {
                 foreach (@val) {
-                    #### eval advanced formatting expression ($_, $self, @val, $advFmtSelf)
+                    #### eval advanced formatting expression ($_, $self, @val, $tag, $advFmtSelf)
                     eval $expr;
                     $@ and $evalWarning = $@;
                 }
@@ -3362,7 +3362,7 @@ sub InsertTagValues($$;$$$$)
                 $val = @val ? join $$self{OPTIONS}{ListSep}, @val : undef;
             } else {
                 $_ = $val;
-                #### eval advanced formatting expression ($_, $self, @val, $advFmtSelf)
+                #### eval advanced formatting expression ($_, $self, @val, $tag, $advFmtSelf)
                 eval $expr;
                 $@ and $evalWarning = $@;
                 $val = ref $_ eq 'ARRAY' ? join($$self{OPTIONS}{ListSep}, @$_): $_;

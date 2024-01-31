@@ -1624,7 +1624,7 @@ in a specified file.</p>
  list.  An extension of this feature allows the tag value to be set from a
  string containing tag names with leading '<code>$</code>' symbols (eg.
  '<code>Comment&lt;the file is $filename</code>'). Braces '<code>{}</code>' may
- be used around the tag name to separate it from subsequent text, and a
+ be used around a tag name to separate it from subsequent text, and a
  '<code>$$</code>' is used to to represent a '<code>$</code>' symbol.  The
  behaviour for missing tags in expressions is defined by the
  <a href="#MissingTagValue">MissingTagValue</a> option.  The tag value may be
@@ -1632,7 +1632,9 @@ in a specified file.</p>
  expression placed inside the braces and after a semicolon following the tag
  name (see the last example below).  A <code>@</code> may be added after the tag
  name (before the semicolon) to make the expression act on individual list items
- instead of the concatenated string for list-type tags.  Braces within the
+ instead of the concatenated string for list-type tags.  The expression has
+ access to the full ExifTool API through the current ExifTool object
+ (<code>$self</code>) and the tag key (<code>$tag</code>).  Braces within the
  expression must be balanced.<br>&nbsp;<br>
  Multiple options hash references may be passed to set different options for
  different tags.  Options apply to subsequent tags in the argument list.
@@ -2203,16 +2205,16 @@ the specific IFD).
 <tr><th>Family</th><th>Group Names</th></tr>
 <tr><td><b>0 (Information&nbsp;Type)</b></td>
 <td>AAC, AFCP, AIFF, APE, APP0, APP1, APP11, APP12, APP13, APP14, APP15, APP2,
-APP3, APP4, APP5, APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG,
-DV, DjVu, Ducky, EXE, EXIF, ExifTool, FITS, FLAC, FLIR, File, Flash,
-FlashPix, Font, FotoStation, GIF, GIMP, GeoTiff, GoPro, H264, HTML,
-ICC_Profile, ID3, IPTC, ISO, ITC, JFIF, JPEG, JSON, JUMBF, Jpeg2000, LNK,
-Leaf, Lytro, M2TS, MIE, MIFF, MISB, MNG, MOI, MPC, MPEG, MPF, MXF,
-MakerNotes, Matroska, Meta, Ogg, OpenEXR, Opus, PDF, PICT, PLIST, PNG, PSP,
-Palm, Parrot, PanasonicRaw, PhotoCD, PhotoMechanic, Photoshop, PostScript,
-PrintIM, QuickTime, RAF, RIFF, RSRC, RTF, Radiance, Rawzor, Real, Red, SVG,
-SigmaRaw, Stim, Theora, Torrent, Trailer, UserParam, VCard, Vorbis, WTV,
-XML, XMP, ZIP
+APP3, APP4, APP5, APP6, APP7, APP8, APP9, ASF, Audible, Canon, CanonVRD,
+Composite, DICOM, DNG, DV, DjVu, Ducky, EXE, EXIF, ExifTool, FITS, FLAC,
+FLIR, File, Flash, FlashPix, Font, FotoStation, GIF, GIMP, GeoTiff, GoPro,
+H264, HTML, ICC_Profile, ID3, IPTC, ISO, ITC, JFIF, JPEG, JSON, JUMBF,
+Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MISB, MNG, MOI, MPC, MPEG, MPF,
+MXF, MakerNotes, Matroska, Meta, Ogg, OpenEXR, Opus, PDF, PICT, PLIST, PNG,
+PSP, Palm, PanasonicRaw, Parrot, PhotoCD, PhotoMechanic, Photoshop,
+PostScript, PrintIM, QuickTime, RAF, RIFF, RSRC, RTF, Radiance, Rawzor,
+Real, Red, SVG, SigmaRaw, Sony, Stim, Theora, Torrent, Trailer, VCard,
+Vorbis, WTV, XML, XMP, ZIP
 </td></tr>
 <tr><td><b>1&nbsp;(Specific&nbsp;Location)</b></td>
 <td>AAC, AC3, AFCP, AIFF, APE, ASF, AVI1, Adobe, AdobeCM, AdobeDNG, Apple,
@@ -2253,8 +2255,8 @@ XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft,
 XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-panorama, XMP-pdf,
 XMP-pdfx, XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism,
 XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff, XMP-x,
-XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS,
-XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
+XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote,
+XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
 </td></tr>
 <tr><td><b>2&nbsp;(Category)</b></td>
 <td>Audio, Author, Camera, Device, Document, ExifTool, Image, Location, Other,

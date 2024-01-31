@@ -174,50 +174,96 @@ should be used when copying between these two.)</span></span></td></tr>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>'AF'</td>
+<td>AF</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PDF.html#AF'>PDF AF Tags</a></td></tr>
+<tr class=b>
 <td>'AcroForm'</td>
 <td>AcroForm</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PDF.html#AcroForm'>PDF AcroForm Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'Lang'</td>
 <td>Language</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'MarkInfo'</td>
 <td>MarkInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PDF.html#MarkInfo'>PDF MarkInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'Metadata'</td>
 <td>Metadata</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PDF.html#Metadata'>PDF Metadata Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'PageLayout'</td>
 <td>PageLayout</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'PageMode'</td>
 <td>PageMode</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'Pages'</td>
 <td>Pages</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PDF.html#Pages'>PDF Pages Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'Perms'</td>
 <td>Perms</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PDF.html#Perms'>PDF Perms Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'Version'</td>
 <td>PDFVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AF'>PDF AF Tags</a></h2>
+<p>Processed only for C2PA information if AFRelationship is &quot;/C2PA_Manifest&quot;.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'EF'</td>
+<td>EF</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PDF.html#EF'>PDF EF Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='EF'>PDF EF Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'F'</td>
+<td>F_</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PDF.html#F'>PDF F Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='F'>PDF F Tags</a></h2>
+<p>C2PA JUMBF metadata extracted from &quot;/C2PA_Manifest&quot; file.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'_stream'</td>
+<td>JUMBF</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='AcroForm'>PDF AcroForm Tags</a></h2>
@@ -746,7 +792,7 @@ false)</span>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 10, 2023</i>
+<br><i>Last revised Jan 30, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

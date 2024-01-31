@@ -4,8 +4,22 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 12.70. (Other versions are
+Note: The most recent production release is Version 12.75. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Jan. 30, 2024 - Version 12.75 (production release)
+
+  - CORRUPTION WARNING: Fixed bug introduced in 12.45 which could result in
+	corrupted Sony ARW images from some newer models when writing if lossless
+	compression was used
+  - Added ability to read C2PA JUMBF metadata from PDF and SVG files
+  - Added ability to extract JUMBF metadata as a block
+  - Added read support for C2PA (JUMBF-format) files
+  - Removed "date before 1970" warning entirely since 64-bit systems should be
+    able to handle dates in this range
+  - Improved Canon FocusMode decoding
+  - Fixed bug introducd in 12.74 which could cause "Undefined subroutine"
+    runtime error when reading MIE files
 
 Jan. 23, 2024 - Version 12.74
 
@@ -13,8 +27,8 @@ Jan. 23, 2024 - Version 12.74
   - Added write support for a few new QuickTime Keys tags
   - Decode ShutterCount for Canon EOS R5 (thanks John Moyer)
   - Improved error messages in the case of file read errors
-  - Enhanced tag name strings (eg. -if option expressions) to allow values of
-    multiple matching tags to be concatenated when a group name of "All" is
+  - Enhanced tag name strings (eg. -if and -p option arguments) to allow values
+    of multiple matching tags to be concatenated when a group name of "All" is
     specified
   - Enhanced -p option to add -p- feature which avoids adding trailing newline
   - Changed warning from "Shift results in negative time" to "Shift results in

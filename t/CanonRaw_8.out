@@ -1,9 +1,9 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.71
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.75
 [File, System, Other] FileName - File Name: CanonRaw.cr3
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 53 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:26 22:05:16-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2023:11:22 10:53:41-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2024:01:26 22:19:33-05:00
 [File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2023:02:21 15:57:49-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: CR3
@@ -139,7 +139,7 @@
 [MakerNotes, Canon, Camera] 3 - Quality: RAW
 [MakerNotes, Canon, Camera] 4 - Canon Flash Mode: Off
 [MakerNotes, Canon, Camera] 5 - Continuous Drive: Single
-[MakerNotes, Canon, Camera] 7 - Focus Mode: AF + MF
+[MakerNotes, Canon, Camera] 7 - Focus Mode: One-shot AF (Live View)
 [MakerNotes, Canon, Camera] 9 - Record Mode: CR3+JPEG
 [MakerNotes, Canon, Camera] 10 - Canon Image Size: Large
 [MakerNotes, Canon, Camera] 11 - Easy Mode: Manual
@@ -309,7 +309,7 @@
 [MakerNotes, Track4, Camera] 3 - Quality: RAW
 [MakerNotes, Track4, Camera] 4 - Canon Flash Mode: Off
 [MakerNotes, Track4, Camera] 5 - Continuous Drive: Single
-[MakerNotes, Track4, Camera] 7 - Focus Mode: AF + MF
+[MakerNotes, Track4, Camera] 7 - Focus Mode: One-shot AF (Live View)
 [MakerNotes, Track4, Camera] 9 - Record Mode: CR3+JPEG
 [MakerNotes, Track4, Camera] 10 - Canon Image Size: Large
 [MakerNotes, Track4, Camera] 11 - Easy Mode: Manual

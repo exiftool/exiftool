@@ -65,49 +65,50 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  360   r/w   | DPX   r     | ITC   r     | NUMBERS r   | RAW   r/w
-  3FR   r     | DR4   r/w/c | J2C   r     | O     r     | RIFF  r
-  3G2   r/w   | DSS   r     | JNG   r/w   | ODP   r     | RSRC  r
-  3GP   r/w   | DV    r     | JP2   r/w   | ODS   r     | RTF   r
-  7Z    r     | DVB   r/w   | JPEG  r/w   | ODT   r     | RW2   r/w
-  A     r     | DVR-MS r    | JSON  r     | OFR   r     | RWL   r/w
-  AA    r     | DYLIB r     | JXL   r     | OGG   r     | RWZ   r
-  AAE   r     | EIP   r     | K25   r     | OGV   r     | RM    r
-  AAX   r/w   | EPS   r/w   | KDC   r     | ONP   r     | SEQ   r
-  ACR   r     | EPUB  r     | KEY   r     | OPUS  r     | SKETCH r
-  AFM   r     | ERF   r/w   | LA    r     | ORF   r/w   | SO    r
-  AI    r/w   | EXE   r     | LFP   r     | ORI   r/w   | SR2   r/w
-  AIFF  r     | EXIF  r/w/c | LIF   r     | OTF   r     | SRF   r
-  APE   r     | EXR   r     | LNK   r     | PAC   r     | SRW   r/w
-  ARQ   r/w   | EXV   r/w/c | LRV   r/w   | PAGES r     | SVG   r
-  ARW   r/w   | F4A/V r/w   | M2TS  r     | PBM   r/w   | SWF   r
-  ASF   r     | FFF   r/w   | M4A/V r/w   | PCD   r     | THM   r/w
-  AVI   r     | FITS  r     | MACOS r     | PCX   r     | TIFF  r/w
-  AVIF  r/w   | FLA   r     | MAX   r     | PDB   r     | TORRENT r
-  AZW   r     | FLAC  r     | MEF   r/w   | PDF   r/w   | TTC   r
-  BMP   r     | FLIF  r/w   | MIE   r/w/c | PEF   r/w   | TTF   r
-  BPG   r     | FLV   r     | MIFF  r     | PFA   r     | TXT   r
-  BTF   r     | FPF   r     | MKA   r     | PFB   r     | VCF   r
-  CHM   r     | FPX   r     | MKS   r     | PFM   r     | VNT   r
-  COS   r     | GIF   r/w   | MKV   r     | PGF   r     | VRD   r/w/c
-  CR2   r/w   | GLV   r/w   | MNG   r/w   | PGM   r/w   | VSD   r
-  CR3   r/w   | GPR   r/w   | MOBI  r     | PLIST r     | WAV   r
-  CRM   r/w   | GZ    r     | MODD  r     | PICT  r     | WDP   r/w
-  CRW   r/w   | HDP   r/w   | MOI   r     | PMP   r     | WEBP  r/w
-  CS1   r/w   | HDR   r     | MOS   r/w   | PNG   r/w   | WEBM  r
-  CSV   r     | HEIC  r/w   | MOV   r/w   | PPM   r/w   | WMA   r
-  CUR   r     | HEIF  r/w   | MP3   r     | PPT   r     | WMV   r
-  CZI   r     | HTML  r     | MP4   r/w   | PPTX  r     | WPG   r
-  DCM   r     | ICC   r/w/c | MPC   r     | PS    r/w   | WTV   r
-  DCP   r/w   | ICO   r     | MPG   r     | PSB   r/w   | WV    r
-  DCR   r     | ICS   r     | MPO   r/w   | PSD   r/w   | X3F   r/w
-  DFONT r     | IDML  r     | MQV   r/w   | PSP   r     | XCF   r
-  DIVX  r     | IIQ   r/w   | MRC   r     | QTIF  r/w   | XISF  r
-  DJVU  r     | IND   r/w   | MRW   r/w   | R3D   r     | XLS   r
-  DLL   r     | INSP  r/w   | MXF   r     | RA    r     | XLSX  r
-  DNG   r/w   | INSV  r     | NEF   r/w   | RAF   r/w   | XMP   r/w/c
-  DOC   r     | INX   r     | NKSC  r/w   | RAM   r     | ZIP   r
-  DOCX  r     | ISO   r     | NRW   r/w   | RAR   r     |
+  360   r/w   | DOCX  r     | ITC   r     | O     r     | RSRC  r
+  3FR   r     | DPX   r     | J2C   r     | ODP   r     | RTF   r
+  3G2   r/w   | DR4   r/w/c | JNG   r/w   | ODS   r     | RW2   r/w
+  3GP   r/w   | DSS   r     | JP2   r/w   | ODT   r     | RWL   r/w
+  7Z    r     | DV    r     | JPEG  r/w   | OFR   r     | RWZ   r
+  A     r     | DVB   r/w   | JSON  r     | OGG   r     | RM    r
+  AA    r     | DVR-MS r    | JXL   r     | OGV   r     | SEQ   r
+  AAC   r     | DYLIB r     | K25   r     | ONP   r     | SKETCH r
+  AAE   r     | EIP   r     | KDC   r     | OPUS  r     | SO    r
+  AAX   r/w   | EPS   r/w   | KEY   r     | ORF   r/w   | SR2   r/w
+  ACR   r     | EPUB  r     | LA    r     | ORI   r/w   | SRF   r
+  AFM   r     | ERF   r/w   | LFP   r     | OTF   r     | SRW   r/w
+  AI    r/w   | EXE   r     | LIF   r     | PAC   r     | SVG   r
+  AIFF  r     | EXIF  r/w/c | LNK   r     | PAGES r     | SWF   r
+  APE   r     | EXR   r     | LRV   r/w   | PBM   r/w   | THM   r/w
+  ARQ   r/w   | EXV   r/w/c | M2TS  r     | PCD   r     | TIFF  r/w
+  ARW   r/w   | F4A/V r/w   | M4A/V r/w   | PCX   r     | TORRENT r
+  ASF   r     | FFF   r/w   | MACOS r     | PDB   r     | TTC   r
+  AVI   r     | FITS  r     | MAX   r     | PDF   r/w   | TTF   r
+  AVIF  r/w   | FLA   r     | MEF   r/w   | PEF   r/w   | TXT   r
+  AZW   r     | FLAC  r     | MIE   r/w/c | PFA   r     | VCF   r
+  BMP   r     | FLIF  r/w   | MIFF  r     | PFB   r     | VNT   r
+  BPG   r     | FLV   r     | MKA   r     | PFM   r     | VRD   r/w/c
+  BTF   r     | FPF   r     | MKS   r     | PGF   r     | VSD   r
+  C2PA  r     | FPX   r     | MKV   r     | PGM   r/w   | WAV   r
+  CHM   r     | GIF   r/w   | MNG   r/w   | PLIST r     | WDP   r/w
+  COS   r     | GLV   r/w   | MOBI  r     | PICT  r     | WEBP  r/w
+  CR2   r/w   | GPR   r/w   | MODD  r     | PMP   r     | WEBM  r
+  CR3   r/w   | GZ    r     | MOI   r     | PNG   r/w   | WMA   r
+  CRM   r/w   | HDP   r/w   | MOS   r/w   | PPM   r/w   | WMV   r
+  CRW   r/w   | HDR   r     | MOV   r/w   | PPT   r     | WPG   r
+  CS1   r/w   | HEIC  r/w   | MP3   r     | PPTX  r     | WTV   r
+  CSV   r     | HEIF  r/w   | MP4   r/w   | PS    r/w   | WV    r
+  CUR   r     | HTML  r     | MPC   r     | PSB   r/w   | X3F   r/w
+  CZI   r     | ICC   r/w/c | MPG   r     | PSD   r/w   | XCF   r
+  DCM   r     | ICO   r     | MPO   r/w   | PSP   r     | XISF  r
+  DCP   r/w   | ICS   r     | MQV   r/w   | QTIF  r/w   | XLS   r
+  DCR   r     | IDML  r     | MRC   r     | R3D   r     | XLSX  r
+  DFONT r     | IIQ   r/w   | MRW   r/w   | RA    r     | XMP   r/w/c
+  DIVX  r     | IND   r/w   | MXF   r     | RAF   r/w   | ZIP   r
+  DJVU  r     | INSP  r/w   | NEF   r/w   | RAM   r     |
+  DLL   r     | INSV  r     | NKSC  r/w   | RAR   r     |
+  DNG   r/w   | INX   r     | NRW   r/w   | RAW   r/w   |
+  DOC   r     | ISO   r     | NUMBERS r   | RIFF  r     |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -1801,8 +1802,9 @@ or a trailing '#' causes the ValueConv value to be copied (same as setting
 the Type option to 'ValueConv' for this tag only).  A leading '+' sets the
 Replace option to 0 on a per-tag basis (see Options below).  Wildcards ('*'
 and '?') may be used in the tag name.  A tag name of '*' is commonly used
-when a group is specified to copy all tags in the group (eg. 'XMP:*').  A
-special feature allows tag names of the form 'DSTTAGE<lt>SRCTAG' (or
+when a group is specified to copy all tags in the group (eg. 'XMP:*').
+
+A special feature allows tag names of the form 'DSTTAGE<lt>SRCTAG' (or
 'SRCTAGE<gt>DSTTAG') to be specified to copy information to a tag with a
 different name or a specified group.  Both 'SRCTAG' and 'DSTTAG' may contain
 wildcards and/or be prefixed by a group name (eg.
@@ -1812,18 +1814,20 @@ a list with arguments of the form 'DSTTAG+E<lt>SRCTAG' or
 'DSTTAG-E<lt>SRCTAG'.  Tags are evaluated in order, so exclusions apply only
 to tags included earlier in the list.  An extension of this feature allows
 the tag value to be set from a string containing tag names with leading '$'
-symbols (eg. 'CommentE<lt>the file is $filename'). Braces '{}' may be used
-around the tag name to separate it from subsequent text, and a '$$' is used
-to to represent a '$' symbol.  The behaviour for missing tags in expressions
-is defined by the L</MissingTagValue> option. The tag value may be modified
+symbols (eg. 'CommentE<lt>the file is $filename').  Braces '{}' may be used
+around a tag name to separate it from subsequent text, and a '$$' is used to
+to represent a '$' symbol.  The behaviour for missing tags in expressions is
+defined by the L</MissingTagValue> option.  The tag value may be modified
 via changes to the default input variable ($_) in a Perl expression placed
 inside the braces and after a semicolon following the tag name (see the last
 example above).  A '@' may be added after the tag name (before the
 semicolon) to make the expression act on individual list items instead of
-the concatenated string for list-type tags. Braces within the expression
-must be balanced. Multiple options hash references may be passed to set
-different options for different tags. Options apply to subsequent tags in
-the argument list.
+the concatenated string for list-type tags.  The expression has access to
+the full ExifTool API through the current ExifTool object (C<$self>) and the
+tag key (C<$tag>).  Braces within the expression must be balanced.
+
+Multiple options hash references may be passed to set different options for
+different tags.  Options apply to subsequent tags in the argument list.
 
 By default, this routine will commute information between same-named tags in
 different groups, allowing information to be translated between images with
@@ -2435,16 +2439,16 @@ Here is a complete list of groups for each of these families:
 =item Family 0 (Information Type):
 
 AAC, AFCP, AIFF, APE, APP0, APP1, APP11, APP12, APP13, APP14, APP15, APP2,
-APP3, APP4, APP5, APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG,
-DV, DjVu, Ducky, EXE, EXIF, ExifTool, FITS, FLAC, FLIR, File, Flash,
-FlashPix, Font, FotoStation, GIF, GIMP, GeoTiff, GoPro, H264, HTML,
-ICC_Profile, ID3, IPTC, ISO, ITC, JFIF, JPEG, JSON, JUMBF, Jpeg2000, LNK,
-Leaf, Lytro, M2TS, MIE, MIFF, MISB, MNG, MOI, MPC, MPEG, MPF, MXF,
-MakerNotes, Matroska, Meta, Ogg, OpenEXR, Opus, PDF, PICT, PLIST, PNG, PSP,
-Palm, Parrot, PanasonicRaw, PhotoCD, PhotoMechanic, Photoshop, PostScript,
-PrintIM, QuickTime, RAF, RIFF, RSRC, RTF, Radiance, Rawzor, Real, Red, SVG,
-SigmaRaw, Stim, Theora, Torrent, Trailer, UserParam, VCard, Vorbis, WTV,
-XML, XMP, ZIP
+APP3, APP4, APP5, APP6, APP7, APP8, APP9, ASF, Audible, Canon, CanonVRD,
+Composite, DICOM, DNG, DV, DjVu, Ducky, EXE, EXIF, ExifTool, FITS, FLAC,
+FLIR, File, Flash, FlashPix, Font, FotoStation, GIF, GIMP, GeoTiff, GoPro,
+H264, HTML, ICC_Profile, ID3, IPTC, ISO, ITC, JFIF, JPEG, JSON, JUMBF,
+Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MISB, MNG, MOI, MPC, MPEG, MPF,
+MXF, MakerNotes, Matroska, Meta, Ogg, OpenEXR, Opus, PDF, PICT, PLIST, PNG,
+PSP, Palm, PanasonicRaw, Parrot, PhotoCD, PhotoMechanic, Photoshop,
+PostScript, PrintIM, QuickTime, RAF, RIFF, RSRC, RTF, Radiance, Rawzor,
+Real, Red, SVG, SigmaRaw, Sony, Stim, Theora, Torrent, Trailer, VCard,
+Vorbis, WTV, XML, XMP, ZIP
 
 =item Family 1 (Specific Location):
 
@@ -2486,8 +2490,8 @@ XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft,
 XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-panorama, XMP-pdf,
 XMP-pdfx, XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism,
 XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff, XMP-x,
-XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS,
-XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
+XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote,
+XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
 
 =item Family 2 (Category):
 

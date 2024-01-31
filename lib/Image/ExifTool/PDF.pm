@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.57';
+$VERSION = '1.58';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -178,6 +178,9 @@ my %supportedFilter = (
     AcroForm => {
         SubDirectory => { TagTable => 'Image::ExifTool::PDF::AcroForm' },
     },
+    AF => {
+        SubDirectory => { TagTable => 'Image::ExifTool::PDF::AF' },
+    },
     Lang       => 'Language',
     PageLayout => { },
     PageMode   => { },
@@ -248,6 +251,37 @@ my %supportedFilter = (
             uses XML Forms Architecture; not a real Tag ID
         },
         PrintConv => { 'true' => 'Yes', 'false' => 'No' },
+    },
+);
+
+# tags extracted from AF dictionary
+%Image::ExifTool::PDF::AF = (
+    PROCESS_PROC => \&ProcessAF,
+    NOTES => 'Processed only for C2PA information if AFRelationship is "/C2PA_Manifest".',
+    EF => {
+        SubDirectory => { TagTable => 'Image::ExifTool::PDF::EF' },
+    },
+);
+
+# tags extracted from EF dictionary
+%Image::ExifTool::PDF::EF = (
+    F => {
+        Name => 'F_', # (don't want single-letter tag names)
+        SubDirectory => { TagTable => 'Image::ExifTool::PDF::F' },
+    },
+);
+
+# tags extracted from F dictionary
+%Image::ExifTool::PDF::F = (
+    NOTES => 'C2PA JUMBF metadata extracted from "/C2PA_Manifest" file.',
+    _stream => {
+        Name => 'JUMBF',
+        Condition => '$$self{AFRelationship} eq "/C2PA_Manifest"',
+        SubDirectory => {
+            TagTable  => 'Image::ExifTool::Jpeg2000::Main',
+            DirName   => 'JUMBF',
+            ByteOrder => 'BigEndian',
+        },
     },
 );
 
@@ -1739,6 +1773,19 @@ sub ProcessAcroForm($$$$;$$)
 {
     my ($et, $tagTablePtr, $dict, $xref, $nesting, $type) = @_;
     $et->HandleTag($tagTablePtr, '_has_xfa', $$dict{XFA} ? 'true' : 'false');
+    return 1 unless $et->Options('Verbose');
+    return ProcessDict($et, $tagTablePtr, $dict, $xref, $nesting, $type);
+}
+
+#------------------------------------------------------------------------------
+# Process AF dictionary to extract C2PA manifest
+# Inputs: Same as ProcessDict
+sub ProcessAF($$$$;$$)
+{
+    my ($et, $tagTablePtr, $dict, $xref, $nesting, $type) = @_;
+    $$et{AFRelationship} = $$dict{AFRelationship} || '';
+    # go no further unless Verbose or this is the C2PA_Manifest item
+    return 1 unless $et->Options('Verbose') or $$et{AFRelationship} eq '/C2PA_Manifest';
     return ProcessDict($et, $tagTablePtr, $dict, $xref, $nesting, $type);
 }
 
@@ -1987,7 +2034,8 @@ sub ProcessDict($$$$;$$)
                     $$et{INDENT} .= '| ';
                     $$et{DIR_NAME} = $tag;
                     $et->VerboseDir($tag, scalar(@{$$subDict{_tags}}));
-                    ProcessDict($et, $subTablePtr, $subDict, $xref, $nesting);
+                    my $proc = $$subTablePtr{PROCESS_PROC} || \&ProcessDict;
+                    &$proc($et, $subTablePtr, $subDict, $xref, $nesting);
                     $$et{INDENT} = $oldIndent;
                     $$et{DIR_NAME} = $oldDir;
                 }
@@ -2087,7 +2135,8 @@ sub ProcessDict($$$$;$$)
         ($tag = $$dict{Subtype} . $tag) =~ s/^\/// if $$dict{Subtype};
         last unless $$tagTablePtr{$tag};
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag) or last;
-        unless ($$tagInfo{SubDirectory}) {
+        my $subdir = $$tagInfo{SubDirectory};
+        unless ($subdir) {
             # don't build filter lists across different images
             delete $$et{LIST_TAGS}{$$tagTablePtr{Filter}};
             # we arrive here only when extracting embedded images
@@ -2120,8 +2169,9 @@ sub ProcessDict($$$$;$$)
             DirStart => 0,
             DirLen   => length $$dict{_stream},
             Parent   => 'PDF',
+            DirName  => $$subdir{DirName},
         );
-        my $subTablePtr = GetTagTable($tagInfo->{SubDirectory}->{TagTable});
+        my $subTablePtr = GetTagTable($$subdir{TagTable});
         unless ($et->ProcessDirectory(\%dirInfo, $subTablePtr)) {
             $et->Warn("Error processing $$tagInfo{Name} information");
         }

@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.92';
+$VERSION = '2.93';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -663,6 +663,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
             Deletable => 1,
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Jpeg2000::Main',
+                DirName => 'JUMBF',
                 # 16 bytes uuid
                 # +4 bytes 0
                 # +9 bytes "manifest\0"

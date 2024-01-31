@@ -11,11 +11,26 @@
 
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.70.tar.gz">Version 12.70</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.75.tar.gz">Version 12.75</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">MetaCPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v12.75'><b>Jan. 30, 2024 - Version 12.75</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>CORRUPTION WARNING: Fixed bug introduced in 12.45 which could result in
+	corrupted Sony ARW images from some newer models when writing if lossless
+	compression was used
+<li>Added ability to read C2PA JUMBF metadata from PDF and SVG files
+<li>Added ability to extract JUMBF metadata as a block
+<li>Added read support for C2PA (JUMBF-format) files
+<li>Removed "date before 1970" warning entirely since 64-bit systems should be
+    able to handle dates in this range
+<li>Improved Canon FocusMode decoding
+<li>Fixed bug introducd in 12.74 which could cause "Undefined subroutine"
+    runtime error when reading MIE files
+</ul>
 
 <a name='v12.74'><b>Jan. 23, 2024 - Version 12.74</b></a>
 <ul>
@@ -23,8 +38,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added write support for a few new QuickTime Keys tags
 <li>Decode ShutterCount for Canon EOS R5 (thanks John Moyer)
 <li>Improved error messages in the case of file read errors
-<li>Enhanced tag name strings (eg. -if option expressions) to allow values of
-    multiple matching tags to be concatenated when a group name of "All" is
+<li>Enhanced tag name strings (eg. -if and -p option arguments) to allow values
+    of multiple matching tags to be concatenated when a group name of "All" is
     specified
 <li>Enhanced -p option to add -p- feature which avoids adding trailing newline
 <li>Changed warning from "Shift results in negative time" to "Shift results in

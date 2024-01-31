@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.71
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.75
 [File, System, Other] FileName - File Name: CanonRaw_9_failed.cr3
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 53 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2023:12:04 10:19:49-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2023:12:04 10:19:49-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2023:12:04 10:19:49-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2024:01:30 09:03:59-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2024:01:30 09:03:59-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2024:01:30 09:03:59-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: CR3
 [File, File, Other] FileTypeExtension - File Type Extension: cr3
@@ -167,7 +167,7 @@
 [MakerNotes, Canon, Camera] 3 - Quality: RAW
 [MakerNotes, Canon, Camera] 4 - Canon Flash Mode: Off
 [MakerNotes, Canon, Camera] 5 - Continuous Drive: Single
-[MakerNotes, Canon, Camera] 7 - Focus Mode: AF + MF
+[MakerNotes, Canon, Camera] 7 - Focus Mode: One-shot AF (Live View)
 [MakerNotes, Canon, Camera] 9 - Record Mode: CR3+JPEG
 [MakerNotes, Canon, Camera] 10 - Canon Image Size: Large
 [MakerNotes, Canon, Camera] 11 - Easy Mode: Manual
@@ -353,7 +353,7 @@
 [MakerNotes, Track4, Camera] 3 - Quality: RAW
 [MakerNotes, Track4, Camera] 4 - Canon Flash Mode: Off
 [MakerNotes, Track4, Camera] 5 - Continuous Drive: Single
-[MakerNotes, Track4, Camera] 7 - Focus Mode: AF + MF
+[MakerNotes, Track4, Camera] 7 - Focus Mode: One-shot AF (Live View)
 [MakerNotes, Track4, Camera] 9 - Record Mode: CR3+JPEG
 [MakerNotes, Track4, Camera] 10 - Canon Image Size: Large
 [MakerNotes, Track4, Camera] 11 - Easy Mode: Manual
@@ -600,7 +600,7 @@
 [EXIF, ExifIFD, Image] 42037 - Lens Serial Number: 0000000000
 [EXIF, GPS, Location] 0 - GPS Version ID: 2.3.0.0
 [EXIF, ExifIFD, Camera] 41990 - Scene Capture Type: Standard
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.71
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.75
 [XMP, XMP-dc, Image] subject - Subject: CR3 test
 [XMP, XMP-exif, Image] ExposureBiasValue - Exposure Compensation: -1.3
 [XMP, XMP-xmp, Image] Rating - Rating: 0

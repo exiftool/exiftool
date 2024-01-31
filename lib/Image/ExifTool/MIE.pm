@@ -14,7 +14,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.53';
+$VERSION = '1.54';
 
 sub ProcessMIE($$);
 sub ProcessMIEGroup($$$);
@@ -1077,7 +1077,7 @@ sub WriteMIEGroup($$$)
                         $newVal = '';
                         %subdirInfo = (
                             OutFile => \$newVal,
-                            RAF => File::RandomAccess(\$oldVal)->new,
+                            RAF => File::RandomAccess->new(\$oldVal),
                         );
                     } elsif ($optCompress and not $$dirInfo{IsCompressed}) {
                         # write to memory so we can compress the new MIE group
@@ -1585,7 +1585,7 @@ sub ProcessMIEGroup($$$)
                 WasCompressed => $wasCompressed,
             );
             # read from uncompressed data instead if necessary
-            $subdirInfo{RAF} = File::RandomAccess(\$value)->new if $valLen;
+            $subdirInfo{RAF} = File::RandomAccess->new(\$value) if $valLen;
 
             my $oldOrder = GetByteOrder();
             SetByteOrder($format & 0x08 ? 'II' : 'MM');

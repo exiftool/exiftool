@@ -55,10 +55,10 @@ i.orng          { color: #c60 }
 <h1><a name="top">ExifTool by Phil Harvey</a></h1>
 <h2 class='tight red'><b>Read</b>, <b>Write</b> and <b>Edit</b> Meta Information!</h2>
 <p><b>Also available</b> --> <a href="https://exiftool.org/fix_corrupted_nef.html">Utility to fix Nikon NEF images corrupted by Nikon software</a></p>
-<p><i class=orng><b>Note:</b> If exiftool.org goes down, it is because of the crappy DreamHost
+<!--<p><i class=orng><b>Note:</b> If exiftool.org goes down, it is because of the crappy DreamHost
 web hosting which disables an "unlimited traffic" web site if a single bot hammers
 the site with a moderate load.  An alternate ExifTool homepage is available at
-<a href="http://exiftool.sourceforge.net/">http://exiftool.sourceforge.net/</a></i></p>
+<a href="http://exiftool.sourceforge.net/">http://exiftool.sourceforge.net/</a></i></p> -->
 <div class=wide><table class=links><tr>
 <th><a href="install.html" class=wt>&nbsp;Installing&nbsp;</a></th>
 <th><a href="TagNames/index.html" class=wt>&nbsp;Tag&nbsp;Names&nbsp;</a></th>
@@ -94,9 +94,9 @@ the site with a moderate load.  An alternate ExifTool homepage is available at
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.74.tar.gz/download">
-Download        Version 12.74</a> (5.1 MB) -
-<a href="history.html">Jan. 23, 2024</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.75.tar.gz/download">
+Download        Version 12.75</a> (5.1 MB) -
+<a href="history.html">Jan. 30, 2024</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -149,8 +149,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.74.zip/download">
-         exiftool-12.74.zip</a> (7.0 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.75.zip/download">
+         exiftool-12.75.zip</a> (7.0 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -168,7 +168,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.74.dmg</a> (3.3 MB)</b></td></tr></table></blockquote>
+         ExifTool-12.75.dmg</a> (3.3 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -323,6 +323,7 @@ metadata types for each file format.  C2PA metadata is not currently <b>W</b>rit
 <tr><td><a href="TagNames/BMP.html">BMP, DIB</a></td><td>R</td><td>Windows BitMaP / Device Independent Bitmap</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/BMP.html">BMP</a></td></tr>
 <tr><td><a href="TagNames/BPG.html">BPG</a></td><td>R</td><td>Better Portable Graphics</td><td>R</td><td>-</td><td>R</td><td>R</td><td>-</td><td>R <a href="TagNames/BPG.html">BPG</a></td></tr>
 <tr><td><a href="TagNames/EXIF.html">BTF</a></td><td>R</td><td>BigTIFF (64-bit Tagged Image File Format)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>R</td><td>-</td></tr>
+<tr><td>C2PA, JUMBF</td><td>R</td><td>C2PA JPEG Universal Metadata Box Format</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R</td><td>R <a href="TagNames/Jpeg2000.html">Jpeg2000</a></td></tr>
 <tr><td><a href="TagNames/EXE.html#CHM">CHM</a></td><td>R</td><td>Microsoft Compiled HTML format</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/EXE.html#CHM">EXE</a></td></tr>
 <tr><td>COS</td><td>R</td><td>Capture One Settings (XML-based)</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R XML</td></tr>
 <tr><td>CR2</td><td>R/W</td><td>Canon RAW 2 (<a href="TagNames/EXIF.html">TIFF</a>-based) (<a href="http://lclevy.free.fr/cr2/">CR2 spec</a>)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/D</td><td>R/W <a href="TagNames/Canon.html">Canon</a>, R/W/C <a href="TagNames/CanonVRD.html">CanonVRD</a><span class=sup>2</span></td></tr>
@@ -390,7 +391,7 @@ metadata types for each file format.  C2PA metadata is not currently <b>W</b>rit
 <tr><td><a href="TagNames/Jpeg2000.html">JP2, JPF, JPM,<br>JPX, JPH</a></td><td>R/W</td><td>JPEG 2000 image [Compound/Extended/High-throughput]</td><td>R/W/C<span class=sup>3</span></td><td>R/W/C<span class=sup>3</span></td><td>R/W/C</td><td>R</td><td>-</td><td>R/W/C <a href="TagNames/Jpeg2000.html">Jpeg2000</a>, R <a href="TagNames/Photoshop.html">Photoshop</a><span class=sup>3</span></td></tr>
 <tr><td><a href="TagNames/JPEG.html">JPEG, JPG, JPE</a></td><td>R/W</td><td>Joint Photographic Experts Group image</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/D</td><td><a href="#JPEG">Supported JPEG Meta Information</a></td></tr>
 <tr><td><a href="TagNames/JSON.html">JSON</a></td><td>R</td><td>JavaScript Object Notation</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/JSON.html">JSON</a></td></tr>
-<tr><td>JXL</td><td>R/W</td><td>JPEG XL (codestream and ISO BMFF) (<a href="TagNames/Jpeg2000.html">Jpeg200</a>-based)</td><td>R/W/C</td><td>-</td><td>R/W/C</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>JXL</td><td>R/W</td><td>JPEG XL (codestream and ISO BMFF) (<a href="TagNames/Jpeg2000.html">Jpeg2000</a>-based)</td><td>R/W/C</td><td>-</td><td>R/W/C</td><td>-</td><td>-</td><td>-</td></tr>
 <tr><td>K25</td><td>R</td><td>Kodak DC25 RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>R</td><td>-</td></tr>
 <tr><td>KDC</td><td>R</td><td>Kodak Digital Camera RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>R</td><td>R <a href="TagNames/Kodak.html">Kodak</a></td></tr>
 <tr><td><a href="TagNames/iWork.html">KEY, KTH</a></td><td>R</td><td>Apple iWork '09 Keynote presentation/Theme</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/iWork.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
@@ -439,7 +440,7 @@ metadata types for each file format.  C2PA metadata is not currently <b>W</b>rit
 <tr><td><a href="TagNames/PhotoCD.html">PCD</a></td><td>R</td><td>Kodak Photo CD Image Pac</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/PhotoCD.html">PhotoCD</a></td></tr>
 <tr><td><a href="TagNames/PCX.html">PCX</a></td><td>R</td><td>PC Paintbrush</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/PCX.html">PCX</a></td></tr>
 <tr><td><a href="TagNames/Palm.html">PDB, PRC</a></td><td>R</td><td>Palm Database</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Palm.html">Palm</a></td></tr>
-<tr><td><a href="TagNames/PDF.html">PDF</a></td><td>R/W<span class=sup>7</span></td><td>Adobe Portable Document Format</td><td>R<span class=sup>3</span></td><td>R<span class=sup>3</span></td><td>R/W/C</td><td>R<span class=sup>3</span></td><td>-</td><td>R/W/C <a href="TagNames/PDF.html">PDF</a>, R <a href="TagNames/Photoshop.html">Photoshop</a></td></tr>
+<tr><td><a href="TagNames/PDF.html">PDF</a></td><td>R/W<span class=sup>7</span></td><td>Adobe Portable Document Format</td><td>R<span class=sup>3</span></td><td>R<span class=sup>3</span></td><td>R/W/C</td><td>R<span class=sup>3</span></td><td>R</td><td>R/W/C <a href="TagNames/PDF.html">PDF</a>, R <a href="TagNames/Photoshop.html">Photoshop</a></td></tr>
 <tr><td>PEF</td><td>R/W</td><td>Pentax (RAW) Electronic Format (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/D</td><td>R/W <a href="TagNames/Pentax.html">Pentax</a></td></tr>
 <tr><td><a href="TagNames/Font.html">PFA, PFB</a></td><td>R</td><td>PostScript Font ASCII/Binary</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Font.html">Font</a></td></tr>
 <tr><td><a href="TagNames/Font.html">PFM</a></td><td>R</td><td>Printer Font Metrics</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Font.html">Font</a></td></tr>
@@ -478,7 +479,7 @@ metadata types for each file format.  C2PA metadata is not currently <b>W</b>rit
 <tr><td>SR2</td><td>R/W</td><td>Sony RAW 2 (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/D</td><td>R/W <a href="TagNames/Sony.html">Sony</a></td></tr>
 <tr><td>SRF</td><td>R</td><td>Sony RAW Format (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>R</td><td>R <a href="TagNames/Sony.html">Sony</a></td></tr>
 <tr><td>SRW</td><td>R/W</td><td>Samsung RAW format (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/D</td><td>R/W <a href="TagNames/Samsung.html">Samsung</a></td></tr>
-<tr><td><a href="TagNames/XMP.html#SVG">SVG</a></td><td>R</td><td>Scalable Vector Graphics (XML-based)</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/XMP.html#SVG">SVG</a></td></tr>
+<tr><td><a href="TagNames/XMP.html#SVG">SVG</a></td><td>R</td><td>Scalable Vector Graphics (XML-based)</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R</td><td>R <a href="TagNames/XMP.html#SVG">SVG</a></td></tr>
 <tr><td><a href="TagNames/Flash.html">SWF</a></td><td>R</td><td>Shockwave Flash</td><td>-</td><td>-</td><td>R</td><td>-</td><td>-</td><td>R <a href="TagNames/Flash.html">Flash</a></td></tr>
 <tr><td>THM</td><td>R/W</td><td>Thumbnail image (<a href="TagNames/JPEG.html">JPEG</a>)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/D</td><td><a href="#JPEG">Supported JPEG Meta Information</a></td></tr>
 <tr><td><a href="TagNames/OOXML.html">THMX</a></td><td>R</td><td>Office Open XML Theme</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/OOXML.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
@@ -843,22 +844,23 @@ of the group names in each family:</p>
 <blockquote><table class=norm>
 <tr><th>Family</th><th>Group Names</th></tr>
 <tr><td><b>0 (Information&nbsp;Type)</b></td>
-<td class=sm>AFCP, AIFF, APE, APP0, APP1, APP11, APP12, APP13, APP14, APP15, APP2, APP3,
-APP4, APP5, APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG, DV,
-DjVu, Ducky, EXE, EXIF, ExifTool, FITS, FLAC, FLIR, File, Flash, FlashPix,
-Font, FotoStation, GIF, GIMP, GeoTiff, GoPro, H264, HTML, ICC_Profile, ID3,
-IPTC, ISO, ITC, JFIF, JPEG, JSON, JUMBF, Jpeg2000, LNK, Leaf, Lytro, M2TS,
-MIE, MIFF, MISB, MNG, MOI, MPC, MPEG, MPF, MXF, MakerNotes, Matroska, Meta,
-Ogg, OpenEXR, Opus, PDF, PICT, PLIST, PNG, PSP, Palm, Parrot, PanasonicRaw,
-PhotoCD, PhotoMechanic, Photoshop, PostScript, PrintIM, QuickTime, RAF,
-RIFF, RSRC, RTF, Radiance, Rawzor, Real, Red, SVG, SigmaRaw, Stim, Theora,
-Torrent, Trailer, UserParam, VCard, Vorbis, WTV, XML, XMP, ZIP
+<td class=sm>AAC, AFCP, AIFF, APE, APP0, APP1, APP11, APP12, APP13, APP14, APP15, APP2,
+APP3, APP4, APP5, APP6, APP7, APP8, APP9, ASF, Audible, Canon, CanonVRD,
+Composite, DICOM, DNG, DV, DjVu, Ducky, EXE, EXIF, ExifTool, FITS, FLAC,
+FLIR, File, Flash, FlashPix, Font, FotoStation, GIF, GIMP, GeoTiff, GoPro,
+H264, HTML, ICC_Profile, ID3, IPTC, ISO, ITC, JFIF, JPEG, JSON, JUMBF,
+Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MISB, MNG, MOI, MPC, MPEG, MPF,
+MXF, MakerNotes, Matroska, Meta, Ogg, OpenEXR, Opus, PDF, PICT, PLIST, PNG,
+PSP, Palm, PanasonicRaw, Parrot, PhotoCD, PhotoMechanic, Photoshop,
+PostScript, PrintIM, QuickTime, RAF, RIFF, RSRC, RTF, Radiance, Rawzor,
+Real, Red, SVG, SigmaRaw, Sony, Stim, Theora, Torrent, Trailer, VCard,
+Vorbis, WTV, XML, XMP, ZIP
 </td></tr>
 <tr><td><b>1&nbsp;(Specific&nbsp;Location)</b></td>
-<td class=sm>AC3, AFCP, AIFF, APE, ASF, AVI1, Adobe, AdobeCM, AdobeDNG, Apple, Audible,
-CBOR, CIFF, CameraIFD, Canon, CanonCustom, CanonDR4, CanonRaw, CanonVRD,
-Casio, Chapter#, Composite, DICOM, DJI, DNG, DV, DjVu, DjVu-Meta, Ducky,
-EPPIM, EXE, EXIF, ExifIFD, ExifTool, FITS, FLAC, FLIR, File, Flash,
+<td class=sm>AAC, AC3, AFCP, AIFF, APE, ASF, AVI1, Adobe, AdobeCM, AdobeDNG, Apple,
+Audible, CBOR, CIFF, CameraIFD, Canon, CanonCustom, CanonDR4, CanonRaw,
+CanonVRD, Casio, Chapter#, Composite, DICOM, DJI, DNG, DV, DjVu, DjVu-Meta,
+Ducky, EPPIM, EXE, EXIF, ExifIFD, ExifTool, FITS, FLAC, FLIR, File, Flash,
 FlashPix, Font, FotoStation, FujiFilm, FujiIFD, GE, GIF, GIMP, GPS,
 GSpherical, Garmin, GeoTiff, GlobParamIFD, GoPro, GraphConv, H264, HP, HTC,
 HTML, HTML-dc, HTML-ncc, HTML-office, HTML-prod, HTML-vw96, HTTP-equiv,
@@ -893,8 +895,8 @@ XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft,
 XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-panorama, XMP-pdf,
 XMP-pdfx, XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism,
 XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff, XMP-x,
-XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS,
-XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
+XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote,
+XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
 </td></tr>
 <tr><td><b>2&nbsp;(Category)</b></td>
 <td>Audio, Author, Camera, Device, Document, ExifTool, Image, Location, Other,

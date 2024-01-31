@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.49';
+$VERSION = '4.50';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -4348,6 +4348,7 @@ my %opcodeInfo = (
         Deletable => 1,
         SubDirectory => {
             TagTable => 'Image::ExifTool::Jpeg2000::Main',
+            DirName => 'JUMBF',
             ByteOrder => 'BigEndian',
         },
     },

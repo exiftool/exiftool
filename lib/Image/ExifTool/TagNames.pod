@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27473 tags, with 17233 unique tag names.
+They contain a total of 27474 tags, with 17233 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -25405,10 +25405,13 @@ C2PA (Coalition for Content Provenance and Authenticity) CAI (Content
 Authenticity Initiative) JUMBF (JPEG Universal Metadata Box Format) metdata
 is currently extracted from JPEG, PNG, TIFF-based (eg. TIFF, DNG),
 QuickTime-based (eg. MP4, MOV, HEIF, AVIF), RIFF-based (eg. WAV, AVI, WebP),
-GIF files and ID3v2 metadata.  The suggested ExifTool command-line arguments
-for reading C2PA metadata are C<-jumbf:all -G3 -b -j -u -struct>.  This
-metadata may be deleted from writable JPEG, PNG, WebP, TIFF-based, and
-QuickTime-based files by deleting the JUMBF group with C<-jumbf:all=>.
+PDF, SVG and GIF files, and ID3v2 metadata.  The suggested ExifTool
+command-line arguments for reading C2PA metadata are C<-jumbf:all -G3 -b -j
+-u -struct>.  This metadata may be deleted from writable JPEG, PNG, WebP,
+TIFF-based, and QuickTime-based files by deleting the JUMBF group with
+C<-jumbf:all=>.  The C2PA JUMBF metadata may be extracted as a block via the
+JUMBF tag.  See L<https://c2pa.org/specifications/> for the C2PA
+specification.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -28532,6 +28535,7 @@ This is the PDF document catalog.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
+  'AF'                 AF                       PDF AF
   'AcroForm'           AcroForm                 PDF AcroForm
   'Lang'               Language                 no
   'MarkInfo'           MarkInfo                 PDF MarkInfo
@@ -28541,6 +28545,28 @@ This is the PDF document catalog.
   'Pages'              Pages                    PDF Pages
   'Perms'              Perms                    PDF Perms
   'Version'            PDFVersion               no
+
+=head3 PDF AF Tags
+
+Processed only for C2PA information if AFRelationship is "/C2PA_Manifest".
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'EF'     EF                                   PDF EF
+
+=head3 PDF EF Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'F'      F_                                   PDF F
+
+=head3 PDF F Tags
+
+C2PA JUMBF metadata extracted from "/C2PA_Manifest" file.
+
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  '_stream'    JUMBF                            Jpeg2000
 
 =head3 PDF AcroForm Tags
 
@@ -39548,6 +39574,7 @@ FileName.
   JPEGDigest                 File               no
   JPEGImageLength            File               no
   JPEGQualityEstimate        File               no
+  JUMBF                      JUMBF              no
   MIMEType                   File               no
   MaxVal                     File               no
   NewGUID                    ExifTool           no

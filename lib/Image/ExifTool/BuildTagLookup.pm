@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.53';
+$VERSION = '3.54';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -1642,7 +1642,7 @@ sub WriteTagLookup($$)
                     } else {
                         my $quot = "'";
                         # escape non-printable characters in tag ID if necessary
-                        $quot = '"' if s/[\x00-\x1f,\x7f-\xff]/sprintf('\\x%.2x',ord($&))/ge;
+                        $quot = '"' if s/([\x00-\x1f,\x7f-\xff])/sprintf('\\x%.2x',ord($1))/ge;
                         $_ = $quot . $_ . $quot;
                     }
                 }
@@ -1655,7 +1655,7 @@ sub WriteTagLookup($$)
             } else {
                 my $quot = "'";
                 # escape non-printable characters in tag ID if necessary
-                $quot = '"' if $tagID =~ s/[\x00-\x1f,\x7f-\xff]/sprintf('\\x%.2x',ord($&))/ge;
+                $quot = '"' if $tagID =~ s/([\x00-\x1f,\x7f-\xff])/sprintf('\\x%.2x',ord($1))/ge;
                 $entry = "$quot${tagID}$quot";
             }
             my $wrNum = $wrNum{$tableNum};

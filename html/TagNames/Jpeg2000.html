@@ -19,10 +19,13 @@ format.</p>
 Authenticity Initiative) JUMBF (JPEG Universal Metadata Box Format) metdata
 is currently extracted from JPEG, PNG, TIFF-based (eg. TIFF, DNG),
 QuickTime-based (eg. MP4, MOV, HEIF, AVIF), RIFF-based (eg. WAV, AVI, WebP),
-GIF files and ID3v2 metadata.  The suggested ExifTool command-line arguments
-for reading C2PA metadata are <code>-jumbf:all -G3 -b -j -u -struct</code>.  This
-metadata may be deleted from writable JPEG, PNG, WebP, TIFF-based, and
-QuickTime-based files by deleting the JUMBF group with <code>-jumbf:all=</code>.</p>
+PDF, SVG and GIF files, and ID3v2 metadata.  The suggested ExifTool
+command-line arguments for reading C2PA metadata are <code>-jumbf:all -G3 -b -j
+-u -struct</code>.  This metadata may be deleted from writable JPEG, PNG, WebP,
+TIFF-based, and QuickTime-based files by deleting the JUMBF group with
+<code>-jumbf:all=</code>.  The C2PA JUMBF metadata may be extracted as a block via the
+JUMBF tag.  See <a href="https://c2pa.org/specifications/">https://c2pa.org/specifications/</a> for the C2PA
+specification.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -602,7 +605,7 @@ ColorSpace, or 4 when writing ColorSpecData)</span>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 19, 2023</i>
+<br><i>Last revised Jan 30, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

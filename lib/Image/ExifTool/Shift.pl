@@ -361,7 +361,7 @@ sub ShiftTime($;$$$)
                 };
                 # not a problem if we failed here since we'll just try again next time,
                 # so don't return error message
-                unless (@$) {
+                unless ($@) {
                     my $mode;
                     if (defined $time[0]) {
                         $mode = defined $time[3] ? 'DateTime' : 'Date';
@@ -403,7 +403,6 @@ sub ShiftTime($;$$$)
             };
             $@ and return CleanWarning($@);
             $tm += $$shiftOffset{$mode};    # apply the shift
-            $tm < 0 and return 'Shift results in date before 1970';
             # save fractional seconds in shifted time
             $frac = $tm - int($tm);
             if ($frac) {

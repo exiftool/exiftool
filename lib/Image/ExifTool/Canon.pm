@@ -2206,8 +2206,9 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             6 => 'Manual Focus (6)',
            16 => 'Pan Focus', #PH
            # 137 - Single?
-           256 => 'AF + MF', #PH (NC, EOS M)
-           257 => 'Live View', #forum12082
+           256 => 'One-shot AF (Live View)', #PH/forum15637
+           257 => 'AI Servo AF (Live View)', #PH/forum15637
+           258 => 'AI Focus AF (Live View)', #PH/forum15637
            512 => 'Movie Snap Focus', #48
            519 => 'Movie Servo AF', #PH (NC, EOS M)
         },

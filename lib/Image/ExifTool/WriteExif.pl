@@ -2277,14 +2277,17 @@ NoOverwrite:            next if $isNew > 0;
                         $$offsetInfo{0x117} and $$offsetInfo{0x145} and
                         $$offsetInfo{0x111}[2]==1) # (must be a single strip or the tile offsets could get out of sync)
                     {
-                        # some Sony ARW images contain double-referenced raw data stored as both strips
-                        # and tiles.  Copy the data using only the strip tags, but store the TileOffets
-                        # information for updating later (see PanasonicRaw:PatchRawDataOffset for a
-                        # description of offsetInfo elements)
-                        $$offsetInfo{0x111}[5] = $$offsetInfo{0x144}; # hack to save TileOffsets
-                        # delete tile information from offsetInfo because we will copy as strips
-                        delete $$offsetInfo{0x144};
-                        delete $$offsetInfo{0x145};
+                        # check the start offsets to see if they are the same
+                        if ($$offsetInfo{0x111}[3] == $$offsetInfo{0x144}[3]) {
+                            # some Sony ARW images contain double-referenced raw data stored as both strips
+                            # and tiles.  Copy the data using only the strip tags, but store the TileOffets
+                            # information for updating later (see PanasonicRaw:PatchRawDataOffset for a
+                            # description of offsetInfo elements)
+                            $$offsetInfo{0x111}[5] = $$offsetInfo{0x144}; # hack to save TileOffsets
+                            # delete tile information from offsetInfo because we will copy as strips
+                            delete $$offsetInfo{0x144};
+                            delete $$offsetInfo{0x145};
+                        }
                     } else {
                         $et->Error("TIFF $dirName contains both strip and tile data");
                     }

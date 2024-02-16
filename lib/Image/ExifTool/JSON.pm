@@ -60,15 +60,15 @@ sub FoundTag($$$$%)
     # avoid conflict with special table entries
     $tag .= '!' if $Image::ExifTool::specialTags{$tag};
 
-    # use underline instead of colon if necessary in tag name
-    $tag =~ s/([A-Z]):([A-Z]{2})/${1}_$2/g;
-
-    AddTagToTable($tagTablePtr, $tag, {
-        Name => Image::ExifTool::MakeTagName($tag),
-        %flags,
-        Temporary => 1,
-    }) unless $$tagTablePtr{$tag};
-
+    unless ($$tagTablePtr{$tag}) {
+        my $name = $tag;
+        $name =~ tr/:/_/; # use underlines in place of colons in tag name
+        AddTagToTable($tagTablePtr, $tag, {
+            Name => Image::ExifTool::MakeTagName($name),
+            %flags,
+            Temporary => 1,
+        });
+    }
     $et->HandleTag($tagTablePtr, $tag, $val);
 }
 

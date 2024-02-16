@@ -177,7 +177,7 @@ sub DecodeAFPoints($$$$;$);
     '4 6' => 'smc PENTAX-FA 35-80mm F4-5.6',
     '4 7' => 'Irix 45mm F1.4', #27
     '4 8' => 'Irix 150mm F2.8 Macro', #exiv2 issue 1084
-    '4 9' => 'Irix 11mm F4 Firefly', #27
+    '4 9' => 'Irix 11mm F4 Firefly', #27 (guessing the Blackstone version may be the same ID - PH)
     '4 10' => 'Irix 15mm F2.4', #27
     '4 12' => 'smc PENTAX-FA 50mm F1.4', #17
     '4 15' => 'smc PENTAX-FA 28-105mm F4-5.6 [IF]',

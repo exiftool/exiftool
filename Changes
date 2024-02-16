@@ -7,6 +7,17 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 16, 2024 - Version 12.77
+
+  - Added new Olympus CameraType and LensType value (thanks herb)
+  - Added a new Canon Irix LensType
+  - Added the ability to delete MacOS XAttrMDItemWhereFroms
+  - Decode a few new Canon DPP tags (thanks John Moyer)
+  - Improved handling of XML-unfriendly characters in JSON field names (fixes
+    issue where -X option could produce invalid XML when reading JSON with the
+    -struct option)
+  - Fixed decoding of ShutterCount for Canon G5X-ii CR3 files
+
 Jan. 31, 2024 - Version 12.76 (production release)
 
   - Properly implement patch of 12.45 to avoid duplicating raw data when writing
@@ -19,6 +30,7 @@ Jan. 30, 2024 - Version 12.75 (production release)
   - CORRUPTION WARNING: Fixed bug introduced in 12.45 which could result in
     corrupted Sony ARW images from some newer models when rewriting lossless
     compressed ARW images which were previously edited by 12.44 or earlier
+    (the corruption is repairable, but requires a special version of ExifTool)
   - Added ability to read C2PA JUMBF metadata from PDF and SVG files
   - Added ability to extract JUMBF metadata as a block
   - Added read support for C2PA (JUMBF-format) files

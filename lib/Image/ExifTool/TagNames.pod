@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27474 tags, with 17233 unique tag names.
+They contain a total of 27480 tags, with 17238 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -10115,6 +10115,7 @@ CameraInfo tags for the PowerShot G5 X Mark II.
   Index1   Tag Name                             Writable
   ------   --------                             --------
     659    ShutterCount                         int32u
+   2709    ShutterCount                         int32u
    2849    DirectoryIndex                       int32u
    2861    FileIndex                            int32u
 
@@ -12270,6 +12271,11 @@ below by a decimal appended to the tag ID (.0, .1 or .2).
   0x20916      PurpleHSL                        yes
   0x20917      MagentaHSL                       yes
   0x20a00      GammaInfo                        CanonVRD GammaInfo
+  0x20b10      DPRAWMicroadjustBackFront        yes
+  0x20b12      DPRAWMicroadjustStrength         yes
+  0x20b20      DPRAWBokehShift                  yes
+  0x20b21      DPRAWBokehShiftArea              yes
+  0x20b30      DPRAWGhostingReductionArea       yes
   0x30101      CropAspectRatio                  yes
   0x30102      CropAspectRatioCustom            yes
   0xf0100      CropInfo                         CanonVRD CropInfo
@@ -39363,7 +39369,7 @@ these files directly.
   XAttrLastUsedDate                             no
   XAttrMDItemDownloadedDate                     no
   XAttrMDItemFinderComment                      no
-  XAttrMDItemWhereFroms                         no
+  XAttrMDItemWhereFroms                         yes!
   XAttrMDLabel                                  no
   XAttrQuarantine                               yes!
   XAttrResourceFork                             no

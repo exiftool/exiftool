@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.73';
+$VERSION = '4.74';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -203,7 +203,8 @@ $VERSION = '4.73';
     52 => 'Canon EF-S 18-55mm f/3.5-5.6 IS II', #PH
     53 => 'Canon EF-S 18-55mm f/3.5-5.6 III', #Jon Charnas
     54 => 'Canon EF-S 55-250mm f/4-5.6 IS II', #47
-    60 => 'Irix 11mm f/4', #50
+    60 => 'Irix 11mm f/4 or 15mm f/2.4', #50
+    60.1 => 'Irix 15mm f/2.4', #forum15655
     63 => 'Irix 30mm F1.4 Dragonfly', #IB
     80 => 'Canon TS-E 50mm f/2.8L Macro', #42
     81 => 'Canon TS-E 90mm f/2.8L Macro', #42
@@ -4731,6 +4732,7 @@ my %ciMaxFocal = (
     NOTES => 'CameraInfo tags for the PowerShot G5 X Mark II.',
     0x0293 => {
         Name => 'ShutterCount',
+        Condition => '$$self{FileType} eq "JPEG"',
         Format => 'int32u',
         Notes => 'includes electronic + mechanical shutter',
         # - advances by 1 for each photo file, regardless of mechanical or electronic shutter
@@ -4738,26 +4740,27 @@ my %ciMaxFocal = (
         # - advances for time lapse video files
         # - creating a new directory or resetting the counter from the menu doesn't affect this shutter count
     },
+    0x0a95 => {
+        Name => 'ShutterCount',
+        Condition => '$$self{FileType} eq "CR3"',
+        Format => 'int32u',
+        Notes => 'includes electronic + mechanical shutter',
+    },
     0x0b21 => {
         Name => 'DirectoryIndex',
+        Condition => '$$self{FileType} eq "JPEG"',
         Groups => { 2 => 'Image' },
         Format => 'int32u',
     },
     0x0b2d => {
         Name => 'FileIndex',
+        Condition => '$$self{FileType} eq "JPEG"',
         Format => 'int32u',
         Groups => { 2 => 'Image' },
         Format => 'int32u',
         ValueConv => '$val + 1',
         ValueConvInv => '$val - 1',
     },
-    #0x0b39 => {
-    #    Name => 'DirectoryIndex',
-    #    Groups => { 2 => 'Image' },
-    #    Format => 'int32u',
-    #    ValueConv => '$val - 1',
-    #    ValueConvInv => '$val + 1',
-    #},
 );
 
 # Canon camera information for 70D (MakerNotes tag 0x0d) (ref PH)

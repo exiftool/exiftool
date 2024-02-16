@@ -23,7 +23,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.37';
+$VERSION = '1.38';
 
 sub ProcessCanonVRD($$;$);
 sub WriteCanonVRD($$;$);
@@ -51,6 +51,7 @@ my %vrdFormat = (
     8 => 'int32u',
     9 => 'int32s',
     13 => 'double',
+    24 => 'int32s', # (rectangle coordinates)
     33 => 'int32u', # (array)
     38 => 'double', # (array)
     # 254 => 'undef', ?
@@ -1226,6 +1227,11 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     # 0x20a08 - (unknown picture style settings)
     # 0x20a09 - Custom picture style settings
     # 0x20a20 - Fine Detail picture style settings
+    0x20b10 => 'DPRAWMicroadjustBackFront', #forum15660
+    0x20b12 => 'DPRAWMicroadjustStrength', #forum15660
+    0x20b20 => 'DPRAWBokehShift', #forum15660
+    0x20b21 => 'DPRAWBokehShiftArea', #PH
+    0x20b30 => 'DPRAWGhostingReductionArea', #forum15660
     0x30101 => {
         Name => 'CropAspectRatio',
         PrintConv => {

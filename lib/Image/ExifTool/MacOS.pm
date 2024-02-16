@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 sub MDItemLocalTime($);
 sub ProcessATTR($$$);
@@ -20,6 +20,11 @@ sub ProcessATTR($$$);
 my %mdDateInfo = (
     ValueConv => \&MDItemLocalTime,
     PrintConv => '$self->ConvertDateTime($val)',
+);
+
+my %delXAttr = (
+    XAttrQuarantine => 'com.apple.quarantine',
+    XAttrMDItemWhereFroms => 'com.apple.metadata:kMDItemWhereFroms',
 );
 
 # Information decoded from Mac OS sidecar files
@@ -320,7 +325,17 @@ my %mdDateInfo = (
         Groups => { 2 => 'Time' },
     },
     'com.apple.metadata:kMDItemFinderComment'  => { Name => 'XAttrMDItemFinderComment' },
-    'com.apple.metadata:kMDItemWhereFroms'     => { Name => 'XAttrMDItemWhereFroms' },
+    'com.apple.metadata:kMDItemWhereFroms' => {
+        Name => 'XAttrMDItemWhereFroms',
+        Writable => 1,
+        WritePseudo => 1,
+        WriteCheck => '"May only delete this tag"',
+        Protected => 1,
+        Notes => q{
+            information about where the file came from.  May only be deleted when
+            writing
+        },
+    },
     'com.apple.metadata:kMDLabel'              => { Name => 'XAttrMDLabel', Binary => 1 },
     'com.apple.ResourceFork'                   => { Name => 'XAttrResourceFork', Binary => 1 },
     'com.apple.lastuseddate#PS'                => {
@@ -407,9 +422,9 @@ sub SetMacOSTags($$$)
                 $et->VPrint(1,"    - $tag = (all)\n") if $overwrite > 0;
                 undef $val if $val eq '';
             }
-        } elsif ($tag eq 'XAttrQuarantine') {
+        } elsif ($delXAttr{$tag}) {
             ($f = $file) =~ s/'/'\\''/g;
-            $cmd = "/usr/bin/xattr -d com.apple.quarantine '${f}'";
+            $cmd = "/usr/bin/xattr -d $delXAttr{$tag} '${f}'";
             $silentErr = 256;   # (will get this error if attribute doesn't exist)
         } else {
             ($f = $file) =~ s/(["\\])/\\$1/g;   # escape necessary characters for script

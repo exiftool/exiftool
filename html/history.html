@@ -17,6 +17,18 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.77'><b>Feb. 16, 2024 - Version 12.77</b></a>
+<ul>
+<li>Added new Olympus CameraType and LensType value (thanks herb)
+<li>Added a new Canon Irix LensType
+<li>Added the ability to delete MacOS XAttrMDItemWhereFroms
+<li>Decode a few new Canon DPP tags (thanks John Moyer)
+<li>Improved handling of XML-unfriendly characters in JSON field names (fixes
+    issue where -X option could produce invalid XML when reading JSON with the
+    -struct option)
+<li>Fixed decoding of ShutterCount for Canon G5X-ii CR3 files
+</ul>
+
 <a name='v12.76'><b>Jan. 31, 2024 - Version 12.76</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Properly implement patch of 12.45 to avoid duplicating raw data when writing
@@ -30,6 +42,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>CORRUPTION WARNING: Fixed bug introduced in 12.45 which could result in
     corrupted Sony ARW images from some newer models when rewriting lossless
     compressed ARW images which were previously edited by 12.44 or earlier
+    (the corruption is repairable, but requires <a href="https://exiftool.org/forum/index.php?topic=15648.msg84147#msg84147">a special version of ExifTool</a>)
 <li>Added ability to read C2PA JUMBF metadata from PDF and SVG files
 <li>Added ability to extract JUMBF metadata as a block
 <li>Added read support for C2PA (JUMBF-format) files

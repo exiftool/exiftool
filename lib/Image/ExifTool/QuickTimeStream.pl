@@ -2865,6 +2865,8 @@ sub ProcessTTAD($$$)
 # Extract information from Insta360 trailer (INSV and INSP files) (ref PH)
 # Inputs: 0) ExifTool ref, 1) Optional dirInfo ref for returning trailer info
 # Returns: true on success
+# Notes: There looks to be some useful information by telemetry-parser, but
+#        the code is cryptic:  https://github.com/AdrianEddy/telemetry-parser
 sub ProcessInsta360($;$)
 {
     local $_;

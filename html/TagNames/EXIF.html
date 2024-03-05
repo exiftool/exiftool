@@ -196,12 +196,13 @@ for the official EXIF 2.32 specification.
 <td title='0x0111 = 273'>0x0111</td>
 <td><u>StripOffsets</u>
   <br>OtherImageStart
+  <br>PreviewJXLStart
   <br>StripOffsets
   <br>PreviewImageStart
   <br>PreviewImageStart
   <br>JpgFromRawStart</td>
-<td class=c title=' * = Protected'>no<br>no<br>no<br>int32u*<br>int32u*<br>int32u*</td>
-<td class=c>-<br>-<br>-<br>IFD0<br>All<br>SubIFD2</td>
+<td class=c title=' * = Protected'>no<br>no<br>no<br>no<br>int32u*<br>int32u*<br>int32u*</td>
+<td class=c>-<br>-<br>-<br>-<br>IFD0<br>All<br>SubIFD2</td>
 <td><span class=s><span class=n>(called StripOffsets in most locations, but it is PreviewImageStart in IFD0
 of CR2 images and various IFD&#39;s of DNG images except for SubIFD2 where it is
 JpgFromRawStart)</span></span></td></tr>
@@ -236,12 +237,13 @@ JpgFromRawStart)</span></span></td></tr>
 <td title='0x0117 = 279'>0x0117</td>
 <td><u>StripByteCounts</u>
   <br>OtherImageLength
+  <br>PreviewJXLLength
   <br>StripByteCounts
   <br>PreviewImageLength
   <br>PreviewImageLength
   <br>JpgFromRawLength</td>
-<td class=c title=' * = Protected'>no<br>no<br>no<br>int32u*<br>int32u*<br>int32u*</td>
-<td class=c>-<br>-<br>-<br>IFD0<br>All<br>SubIFD2</td>
+<td class=c title=' * = Protected'>no<br>no<br>no<br>no<br>int32u*<br>int32u*<br>int32u*</td>
+<td class=c>-<br>-<br>-<br>-<br>IFD0<br>All<br>SubIFD2</td>
 <td><span class=s><span class=n>(called StripByteCounts in most locations, but it is PreviewImageLength in
 IFD0 of CR2 images and various IFD&#39;s of DNG images except for SubIFD2 where
 it is JpgFromRawLength)</span></span></td></tr>
@@ -4354,7 +4356,7 @@ these unless they already exist in the file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 29, 2023</i>
+<br><i>Last revised Mar 5, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

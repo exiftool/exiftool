@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.78
 [File, System, Other] FileName - File Name: Nikon.nef
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 6.2 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2007:01:05 13:00:46-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:44-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:10:31 20:34:50-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2024:02:28 08:51:41-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2024:01:31 12:58:56-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: NEF
 [File, File, Other] FileTypeExtension - File Type Extension: nef
@@ -77,7 +77,7 @@
 [EXIF, ExifIFD, Image] 41729 - Scene Type: Directly photographed
 [EXIF, ExifIFD, Image] 41730 - CFA Pattern: [Blue,Green][Green,Red]
 [EXIF, IFD0, Time] 36867 - Date/Time Original: 2004:06:09 16:02:35
-[EXIF, IFD0, Image] 37398 - TIFF-EP Standard ID: 1 0 0 0
+[EXIF, IFD0, Image] 37398 - TIFF-EP Standard ID: 1.0.0.0
 [EXIF, SubIFD, Preview] Exif-JpgFromRaw - Jpg From Raw: (Binary data 29 bytes)
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
 [IPTC, IPTC, Other] 120 - Caption-Abstract: A caption

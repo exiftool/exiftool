@@ -20,7 +20,7 @@ supported by ExifTool (r = read, w = write, c = create):
   3GP   r/w   | DSS   r     | JP2   r/w   | ODT   r     | RWL   r/w
   7Z    r     | DV    r     | JPEG  r/w   | OFR   r     | RWZ   r
   A     r     | DVB   r/w   | JSON  r     | OGG   r     | RM    r
-  AA    r     | DVR-MS r    | JXL   r     | OGV   r     | SEQ   r
+  AA    r     | DVR-MS r    | JXL   r/w   | OGV   r     | SEQ   r
   AAC   r     | DYLIB r     | K25   r     | ONP   r     | SKETCH r
   AAE   r     | EIP   r     | KDC   r     | OPUS  r     | SO    r
   AAX   r/w   | EPS   r/w   | KEY   r     | ORF   r/w   | SR2   r/w
@@ -109,8 +109,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-12.77.tar.gz | tar -xf -
-  cd Image-ExifTool-12.77
+  gzip -dc Image-ExifTool-12.78.tar.gz | tar -xf -
+  cd Image-ExifTool-12.78
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 

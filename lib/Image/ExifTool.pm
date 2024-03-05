@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.77';
+$VERSION = '12.78';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -953,7 +953,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     JPEG => '\xff\xd8\xff',
     JSON => '(\xef\xbb\xbf)?\s*(\[\s*)?\{\s*"[^"]*"\s*:',
     JUMBF=> '.{4}jumb\0.{3}jumd',
-    JXL  => '\xff\x0a|\0\0\0\x0cJXL \x0d\x0a......ftypjxl ',
+    JXL  => '(\xff\x0a|\0\0\0\x0cJXL \x0d\x0a......ftypjxl )',
     LFP  => '\x89LFP\x0d\x0a\x1a\x0a',
     LIF  => '\x70\0{3}.{4}\x2a.{4}<\0',
     LNK  => '.{4}\x01\x14\x02\0{5}\xc0\0{6}\x46',
@@ -1101,6 +1101,9 @@ my @availableOptions = (
     [ 'Filter',           undef,  'output filter for all tag values' ],
     [ 'FilterW',          undef,  'input filter when writing tag values' ],
     [ 'FixBase',          undef,  'fix maker notes base offsets' ],
+    [ 'Geolocation',      undef,  'generate geolocation tags' ],
+    [ 'GeolocMinPop',     undef,  'minimum geolocation population' ],
+    [ 'GeolocMaxDist',    undef,  'maximum geolocation distance' ],
     [ 'GeoMaxIntSecs',    1800,   'geotag maximum interpolation time (secs)' ],
     [ 'GeoMaxExtSecs',    1800,   'geotag maximum extrapolation time (secs)' ],
     [ 'GeoMaxHDOP',       undef,  'geotag maximum HDOP' ],
@@ -1168,6 +1171,7 @@ my @defaultWriteGroups = qw(
 
 # group hash for ExifTool-generated tags
 my %allGroupsExifTool = ( 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'ExifTool' );
+my %geoGroups = ( Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'Location' } );
 
 # special tag names (not used for tag info)
 %specialTags = map { $_ => 1 } qw(
@@ -1749,6 +1753,11 @@ my %systemTagsNotes = (
         Notes => 'PDF-format embedded preview image',
         Binary => 1,
     },
+    PreviewJXL => {
+        Groups => { 2 => 'Preview' },
+        Notes => 'JXL-format embedded preview image',
+        Binary => 1,
+    },
     ExifByteOrder => {
         Writable => 1,
         DelCheck => q{"Can't delete"},
@@ -1956,6 +1965,82 @@ my %systemTagsNotes = (
             XMP-et:OriginalImageHashType tags|XMP.html#ExifTool> provide a way to store
             the this hash value and the hash type in the file.
         },
+    },
+    Geolocate => {
+        Writable => 1,
+        WriteOnly => 1,
+        WriteNothing => 1,
+        AllowGroup => '(xmp|iptc)',
+        Notes => q{
+            this write-only tag accepts GPS coordinates in the same form as GPSPosition
+            and by default writes XMP City, State, CountryCode and Country, but the IPTC
+            group may be specified to instead write IPTC City, Province-State,
+            Country-PrimaryLocationCode and Country-PrimaryLocationName.  Writable
+            regardless of the API Geolocation option setting
+        },
+        DelCheck => q{
+            my $grp = lc($wantGroup || 'xmp');
+            if ($grp eq 'xmp') {
+                $self->SetNewValue('XMP:'.$_) foreach qw(City State CountryCode Country);
+            } elsif ($grp eq 'iptc') {
+                $self->SetNewValue('IPTC:'.$_) foreach qw(City Province-State Country-PrimaryLocationCode Country-PrimaryLocationName);
+            }
+            return '';
+        },
+        ValueConvInv => q{
+            my ($lat, $lon) = split /[, ]+/, $val;
+            defined $lat and defined $lon or warn('Invalid GPS position, use "Lat, Lon"'), return undef;
+            my $grp = lc($wantGroup || 'xmp');
+            if ($grp ne 'xmp' and $grp ne 'iptc') {
+                warn "Invalid group name for Geolocate\n";
+            } else {
+                require Image::ExifTool::Geolocation;
+                my @a = Image::ExifTool::Geolocation::Geolocate($lat, $lon,
+                    $$self{OPTIONS}{GeolocMinPop}, $$self{OPTIONS}{GeolocMaxDist});
+                my $i = 0;
+                if (not defined $a[0]) {
+                    warn "No suitable geolocation found\n";
+                } elsif ($grp eq 'xmp') {
+                    foreach (qw(City State CountryCode Country)) {
+                        next unless defined $a[$i++];
+                        $self->SetNewValue('XMP:'.$_, $self->Decode($a[$i-1],'UTF8'));
+                    }
+                } else {
+                    $a[2] .= ' '; # pad country code with space to meet IPTC length requirements
+                    foreach (qw(City Province-State Country-PrimaryLocationCode Country-PrimaryLocationName)) {
+                        next unless defined $a[$i++];
+                        $self->SetNewValue('IPTC:'.$_, $self->Decode($a[$i-1],'UTF8'));
+                    }
+                }
+            }
+            return '';
+        },
+        PrintConvInv => q{
+            return undef unless $val =~ /(.*? ?[NS]?), ?(.*? ?[EW]?)$/ or
+                $val =~ /^\s*(-?\d+(?:\.\d+)?)\s*(-?\d+(?:\.\d+)?)\s*$/;
+            my ($lat, $lon) = ($1, $2);
+            require Image::ExifTool::GPS;
+            $lat = Image::ExifTool::GPS::ToDegrees($lat, 1, "lat");
+            $lon = Image::ExifTool::GPS::ToDegrees($lon, 1, "lon");
+            return "$lat $lon";
+        },
+    },        
+    GeolocationCity => {
+        %geoGroups,
+        Notes => q{
+            name of city nearest to the current GPS coordinates. Geolocation tags are
+            generated only if API Geolocation option is set
+        },
+    },
+    GeolocationRegion   => { %geoGroups, Notes => 'geolocation state, province or region' },
+    GeolocationCountry  => { %geoGroups, Notes => 'geolocation country name' },
+    GeolocationCountryCode=>{%geoGroups, Notes => 'geolocation country code' },
+    GeolocationTimeZone => { %geoGroups, Notes => 'geolocation time zone name' },
+    GeolocationPopulation=>{ %geoGroups, Notes => 'city population rounded to 1 significant digit' },
+    GeolocationDistance => { %geoGroups, Notes => 'distance in km from current GPS to city', PrintConv => '"$val km"' },
+    GeolocationBearing  => { %geoGroups, Notes => 'compass bearing to city center' },
+    GeolocationPosition => { %geoGroups, Notes => 'approximate GPS coordinates of city',
+        PrintConv => '$val =~ s/ /, /; $val',
     },
 );
 
@@ -2738,7 +2823,7 @@ sub ExtractInfo($;@)
         if ($isDir or (defined $stat[2] and ($stat[2] & 0170000) == 0040000)) {
             $self->FoundTag('FileType', 'DIR');
             $self->FoundTag('FileTypeExtension', '');
-            $self->ExtractAltInfo();
+            $self->DoneExtract();
             $raf->Close() if $raf;
             return 1;
         }
@@ -2756,7 +2841,7 @@ sub ExtractInfo($;@)
             } else {
                 $self->Error('Unknown file type');
             }
-            $self->ExtractAltInfo();
+            $self->DoneExtract();
             last;   # don't read the file
         }
         if (@fileTypeList) {
@@ -2924,7 +3009,7 @@ sub ExtractInfo($;@)
         }
         unless ($reEntry) {
             $$self{PATH} = [ ];     # reset PATH
-            $self->ExtractAltInfo();
+            $self->DoneExtract();
             # do our HTML dump if requested
             if ($$self{HTML_DUMP}) {
                 $raf->Seek(0, 2);   # seek to end of file
@@ -2959,26 +3044,9 @@ sub ExtractInfo($;@)
         last;   # (loop was a cheap "goto")
     }
 
-    # generate Validate tag if requested
-    if ($$options{Validate} and not $reEntry) {
-        Image::ExifTool::Validate::FinishValidate($self, $$req{validate});
-    }
-
+    # Note: This should be the only tag generated after BuildCompositeTags,
+    # and as such it can't be used in user-defined Composite tags
     @startTime and $self->FoundTag('ProcessingTime', Time::HiRes::tv_interval(\@startTime));
-
-    # add user-defined parameters that ended with '!'
-    if (%{$$options{UserParam}}) {
-        my $doMsg = $$options{Verbose};
-        my $table = GetTagTable('Image::ExifTool::UserParam');
-        foreach (sort keys %{$$options{UserParam}}) {
-            next unless /#$/;
-            if ($doMsg) {
-                $self->VPrint(0, "UserParam tags:\n");
-                undef $doMsg;
-            }
-            $self->HandleTag($table, $_, $$options{UserParam}{$_});
-        }
-    }
 
     # restore original options
     %saveOptions and $$self{OPTIONS} = \%saveOptions;
@@ -2987,13 +3055,6 @@ sub ExtractInfo($;@)
         # restore necessary members when exiting re-entrant code
         $$self{$_} = $$reEntry{$_} foreach keys %$reEntry;
         SetByteOrder($saveOrder);
-    } elsif ($$self{ImageDataHash}) {
-        my $digest = $$self{ImageDataHash}->hexdigest;
-        # (don't store empty digest)
-        $self->FoundTag(ImageDataHash => $digest) unless
-            $digest eq 'd41d8cd98f00b204e9800998ecf8427e' or
-            $digest eq 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' or
-            $digest eq 'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e';
     }
 
     # ($type may be undef without an Error when processing sub-documents)
@@ -4164,17 +4225,80 @@ sub CombineInfo($;@)
 }
 
 #------------------------------------------------------------------------------
-# Read metadata from alternate files and build composite tags
+# Finish generating tags after extracting information from a file
 # Inputs: 0) ExifTool ref
-# Notes: This is called after reading the main file so the tags are available
-#        for being used in the file name, but before building Composite tags
-#        so tags from the alternate files may be used in the Composite tags
-sub ExtractAltInfo($)
+# Notes: The sequencing here is a bit tricky because tags from the main file
+#        may be used in the names of alternate files, so we finish generating
+#        all main file tags first (including all Composite tags which don't
+#        rely on alternate files) before extracting tags from alternate files,
+#        then we finish by generating the remaingin Composite tags.
+sub DoneExtract($)
 {
     my $self = shift;
     # extract information from alternate files if necessary
     my ($g8, $altExifTool);
     my $opts = $$self{OPTIONS};
+
+    # generate ImageDataHash if requested
+    if ($$self{ImageDataHash}) {
+        my $digest = $$self{ImageDataHash}->hexdigest;
+        # (don't store empty digest)
+        $self->FoundTag(ImageDataHash => $digest) unless
+            $digest eq 'd41d8cd98f00b204e9800998ecf8427e' or
+            $digest eq 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' or
+            $digest eq 'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e';
+    }
+    # generate Validate tag if requested
+    if ($$opts{Validate}) {
+        Image::ExifTool::Validate::FinishValidate($self, $$self{REQ_TAG_LOOKUP}{validate});
+    }
+    # generate geolocation tags if requested
+    if ($$opts{Geolocation} and ((defined $$self{VALUE}{GPSLatitude} and
+        defined $$self{VALUE}{GPSLongitude}) or $$self{VALUE}{GPSCoordinates} or
+        $$opts{Geolocation} =~ /,/))
+    {
+        my $lat = $self->GetValue('GPSLatitude', 'ValueConv');
+        my $lon = $self->GetValue('GPSLongitude', 'ValueConv');
+        if (defined $lat and defined $lon) {
+            my $latRef = $$self{VALUE}{GPSLatitudeRef};
+            my $lonRef = $$self{VALUE}{GPSLongitudeRef};
+            $lat = -$lat if $lat and $lat > 0 and $latRef and $latRef eq 'S';
+            $lon = -$lon if $lon and $lon > 0 and $lonRef and $lonRef eq 'W';
+        } elsif ($$self{VALUE}{GPSCoordinates}) {
+            my $pos = $self->GetValue('GPSCoordinates', 'ValueConv');
+            ($lat, $lon) = split /[, ]+/, $pos;
+        } else {
+            ($lat, $lon) = split /[, ]+/, $$opts{Geolocation};
+        }
+        if (defined $lat and defined $lon) {
+            require Image::ExifTool::Geolocation;
+            my @geo = Image::ExifTool::Geolocation::Geolocate($lat, $lon, $$opts{GeolocMinPop}, $$opts{GeolocMaxDist});
+            if ($geo[0]) {
+                $self->FoundTag(GeolocationCity => $self->Decode($geo[0],'UTF8'));
+                $self->FoundTag(GeolocationRegion => $self->Decode($geo[1],'UTF8')) if $geo[1];
+                $self->FoundTag(GeolocationCountryCode => $geo[2]);
+                $self->FoundTag(GeolocationCountry => $geo[3]) if $geo[3];
+                $self->FoundTag(GeolocationTimeZone => $geo[4]) if $geo[4];
+                $self->FoundTag(GeolocationPopulation => $geo[5]);
+                $self->FoundTag(GeolocationDistance => $geo[6]);
+                $self->FoundTag(GeolocationBearing => $geo[7]) if defined $geo[7];
+                $self->FoundTag(GeolocationPosition => "$geo[8] $geo[9]");
+            }
+        }
+    }
+    # generate tags for user-defined parameters that ended with '#'
+    if (%{$$opts{UserParam}}) {
+        my $doMsg = $$opts{Verbose};
+        my $table = GetTagTable('Image::ExifTool::UserParam');
+        foreach (sort keys %{$$opts{UserParam}}) {
+            next unless /#$/;
+            if ($doMsg) {
+                $self->VPrint(0, "UserParam tags:\n");
+                undef $doMsg;
+            }
+            $self->HandleTag($table, $_, $$opts{UserParam}{$_});
+        }
+    }
     if ($$opts{Composite} and (not $$opts{FastScan} or $$opts{FastScan} < 5)) {
         # build all composite tags except those requiring tags from alternate files
         $self->BuildCompositeTags();
@@ -4185,6 +4309,7 @@ sub ExtractAltInfo($)
         $$altExifTool{OPTIONS} = $$self{OPTIONS};
         $$altExifTool{GLOBAL_TIME_OFFSET} = $$self{GLOBAL_TIME_OFFSET};
         $$altExifTool{REQ_TAG_LOOKUP} = $$self{REQ_TAG_LOOKUP};
+        $$altExifTool{ReqTagAlreadySet} = 1;
         my $fileName = $$altExifTool{ALT_FILE};
         # allow tags from the main file to be used in the alternate file names
         # (eg. -file1 '$originalfilename')
@@ -4554,7 +4679,7 @@ sub ParseArguments($;@)
     my (@exclude, $wasExcludeOpt);
 
     $$self{REQUESTED_TAGS}  = [ ];
-    $$self{REQ_TAG_LOOKUP}  = { };
+    $$self{REQ_TAG_LOOKUP}  = { } unless $$self{ReqTagAlreadySet};
     $$self{EXCL_TAG_LOOKUP} = { };
     $$self{IO_TAG_LIST} = undef;
     delete $$self{EXCL_XMP_LOOKUP};
@@ -5811,7 +5936,7 @@ sub Decode($$$;$$$)
 # Inputs: 0) ExifTool object ref, 1) string, 2) destination character set name,
 #         3) optional destination byte order (2-byte and 4-byte fixed-width sets only)
 # Returns: string in specified encoding
-sub Encode($$$;$)
+sub Encode($$;$$)
 {
     my ($self, $val, $to, $toOrder) = @_;
     return $self->Decode($val, undef, undef, $to, $toOrder);

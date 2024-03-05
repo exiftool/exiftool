@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.55';
+$VERSION = '1.56';
 
 my %coordConv = (
     ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val)',
@@ -491,7 +491,7 @@ sub PrintTimeStamp($)
 sub ToDMS($$;$$)
 {
     my ($et, $val, $doPrintConv, $ref) = @_;
-    my ($fmt, @fmt, $num, $sign, $rtnVal, $neg);
+    my ($fmt, @fmt, $num, $sign, $minus, $rtnVal, $neg);
 
     unless (length $val) {
         # don't convert an empty value
@@ -503,8 +503,10 @@ sub ToDMS($$;$$)
             $val = -$val;
             $ref = {N => 'S', E => 'W'}->{$ref};
             $sign = '-';
+            $minus = '-';
         } else {
             $sign = '+';
+            $minus = '';
         }
         $ref = " $ref" unless $doPrintConv and $doPrintConv eq '2';
     } else {
@@ -522,7 +524,7 @@ sub ToDMS($$;$$)
                 $fmt = q{%d deg %d' %.2f"} . $ref;
             } elsif ($ref) {
                 # use signed value instead of reference direction if specified
-                $fmt =~ s/%\+/$sign%/g or $fmt .= $ref;
+                $fmt =~ s/%\+/$sign%/g or $fmt =~ s/%-/$minus%/g or $fmt .= $ref;
             } else {
                 $fmt =~ s/%\+/%/g;  # don't know sign, so don't print it
             }

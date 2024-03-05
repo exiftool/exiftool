@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool;    # only for FinishTiffDump()
 use Image::ExifTool::HTML qw(EscapeHTML);
 
-$VERSION = '1.41';
+$VERSION = '1.42';
 
 sub DumpTable($$$;$$$$$$);
 sub Open($$$;@);
@@ -769,6 +769,7 @@ sub FinishTiffDump($$$)
         PreviewImageStart => 'PreviewImageLength',
         JpgFromRawStart   => 'JpgFromRawLength',
         OtherImageStart   => 'OtherImageLength',
+        PreviewJXLStart   => 'PreviewJXLLength',
         ImageOffset       => 'ImageByteCount',
         AlphaOffset       => 'AlphaByteCount',
         MPImageStart      => 'MPImageLength',

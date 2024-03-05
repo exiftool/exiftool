@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '12.77';
+my $version = '12.78';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -166,6 +166,7 @@ my $filtered;       # flag indicating file was filtered by name
 my $filterFlag;     # file filter flag (0x01=deny extensions, 0x02=allow extensions, 0x04=add ext)
 my $fixLen;         # flag to fix description lengths when writing alternate languages
 my $forcePrint;     # string to use for missing tag values (undef to not print them)
+my $geoOnly;        # flag to extract Geolocation tags only
 my $helped;         # flag to avoid printing help if no tags specified
 my $html;           # flag for html-formatted output (2=html dump)
 my $interrupted;    # flag set if CTRL-C is pressed during a critical process
@@ -490,6 +491,7 @@ undef $fileHeader;
 undef $filtered;
 undef $fixLen;
 undef $forcePrint;
+undef $geoOnly;
 undef $ignoreHidden;
 undef $joinLists;
 undef $langOpt;
@@ -585,6 +587,11 @@ $joinLists = 1 if defined $mt->Options('List') and not $mt->Options('List');
 # preserve FileCreateDate if possible
 if (not $preserveTime and $^O eq 'MSWin32') {
     $preserveTime = 2 if  eval { require Win32::API } and eval { require Win32API::File };
+}
+
+# add user-defined command-line arguments
+if (@Image::ExifTool::UserDefined::Arguments) {
+    unshift @ARGV, @Image::ExifTool::UserDefined::Arguments;
 }
 
 # parse command-line options in 2 passes...
@@ -1414,6 +1421,13 @@ if ($useMWG and not defined $mt->Options('CharsetEXIF')) {
     $mt->Options(CharsetEXIF => 'UTF8');
 }
 
+# allow geolocation without input file if set to a position
+if (not @files and not $outOpt and not @newValues) {
+    my $loc = $mt->Options('Geolocation');
+    # use undocumented feature to input JSON file directly from command line
+    $loc and $loc =~ /,/ and push(@files, qq(\@JSON:{})), $geoOnly = 1;
+}
+
 # print help
 unless ((@tags and not $outOpt) or @files or @newValues) {
     if ($doGlob and $doGlob == 2) {
@@ -2113,6 +2127,11 @@ sub GetImageInfo($$)
         # can't make use of $info if verbose because we must reprocess
         # the file anyway to generate the verbose output
         undef $info if $verbose or defined $fastCondition;
+    } elsif ($file =~ s/^(\@JSON:)(.*)/$1/) {
+        # read JSON file from command line
+        my $dat = $2;
+        $info = $et->ImageInfo(\$dat, \@foundTags);
+        if ($geoOnly) { /^Geolocation/ or delete $$info{$_} foreach keys %$info }
     }
     if (defined $deleteOrig) {
         Progress($vout, "======== $file") if defined $verbose;
@@ -2169,7 +2188,7 @@ sub GetImageInfo($$)
     }
 
     # extract information from this file
-    unless ($file eq '-' or $et->Exists($file)) {
+    unless ($file eq '-' or $et->Exists($file) or $info) {
         Warn "Error: File not found - $file\n";
         FileNotFound($file);
         defined $outfile and close($fp), undef($tmpText), $et->Unlink($outfile);
@@ -2354,7 +2373,7 @@ sub GetImageInfo($$)
                 # set delimiters for JSON or PHP output
                 ($bra, $ket, $sep) = $json == 1 ? ('{','}',':') : ('Array(',')',' =>');
                 print $fp ",\n" if $comma;
-                print $fp qq($bra\n  "SourceFile"$sep ), EscapeJSON(MyConvertFileName($et,$file));
+                print $fp qq($bra\n  "SourceFile"$sep ), EscapeJSON(MyConvertFileName($et,$file),1);
                 $comma = 1;
                 $ind = (defined $showGroup and not $allGroup) ? '    ' : '  ';
             } elsif ($csv) {
@@ -4670,7 +4689,7 @@ supported by ExifTool (r = read, w = write, c = create):
   3GP   r/w   | DSS   r     | JP2   r/w   | ODT   r     | RWL   r/w
   7Z    r     | DV    r     | JPEG  r/w   | OFR   r     | RWZ   r
   A     r     | DVB   r/w   | JSON  r     | OGG   r     | RM    r
-  AA    r     | DVR-MS r    | JXL   r     | OGV   r     | SEQ   r
+  AA    r     | DVR-MS r    | JXL   r/w   | OGV   r     | SEQ   r
   AAC   r     | DYLIB r     | K25   r     | ONP   r     | SKETCH r
   AAE   r     | EIP   r     | KDC   r     | OPUS  r     | SO    r
   AAX   r/w   | EPS   r/w   | KEY   r     | ORF   r/w   | SR2   r/w
@@ -4839,7 +4858,7 @@ L<Advanced options|/Advanced options>
   -common_args                     Define common arguments
   -config CFGFILE                  Specify configuration file name
   -echo[NUM] TEXT                  Echo text to stdout or stderr
-  -efile[NUM][!] ERRFILE           Save names of files with errors
+  -efile[NUM][!] TXTFILE           Save names of files with errors
   -execute[NUM]                    Execute multiple commands on one line
   -fileNUM ALTFILE                 Load tags from alternate file
   -list_dir                        List directories, not their contents
@@ -5231,8 +5250,9 @@ Notes:
 when copying tags using the B<-tagsFromFile> option.
 
 2) If the hemisphere is known, a reference direction (N, S, E or W) is
-appended to each printed coordinate, but adding a C<+> to the format
-specifier (eg. C<%+.6f>) prints a signed coordinate instead.
+appended to each printed coordinate, but adding a C<+> or C<-> to the format
+specifier (eg. C<%+.6f> or C<%-.6f>) prints a signed coordinate instead. 
+(C<+> adds a leading "+" for positive coordinates, but C<-> does not.)
 
 3) This print formatting may be disabled with the B<-n> option to extract
 coordinates as signed decimal degrees.
@@ -5620,7 +5640,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 12.77 --
+    -- Generated by ExifTool 12.78 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -6611,15 +6631,15 @@ respectively) after processing is complete.  For B<-echo3> and B<-echo4>,
 "${status}" may be used in the I<TEXT> string to represent the numerical
 exit status of the command (see L</EXIT STATUS>).
 
-=item B<-efile>[I<NUM>][!] I<ERRFILE>
+=item B<-efile>[I<NUM>][!] I<TXTFILE>
 
 Save the names of files giving errors (I<NUM> missing or 1), files that were
 unchanged (I<NUM> is 2), files that fail the B<-if> condition (I<NUM> is 4),
 files that were updated (I<NUM> is 8), files that were created (I<NUM> is
 16), or any combination thereof by summing I<NUM> (eg. B<-efile3> is the
 same has having both B<-efile> and B<-efile2> options with the same
-I<ERRFILE>). By default, file names are appended to any existing I<ERRFILE>,
-but I<ERRFILE> is overwritten if an exclamation point is added to the option
+I<TXTFILE>). By default, file names are appended to any existing I<TXTFILE>,
+but I<TXTFILE> is overwritten if an exclamation point is added to the option
 (eg. B<-efile!>).  Saves the name of the file specified by the B<-srcfile>
 option if applicable.
 

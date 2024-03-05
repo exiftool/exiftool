@@ -17,12 +17,45 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.78'><b>Mar. 5, 2024 - Version 12.78</b> - "Geolocation"</a>
+<ul>
+<li>Added new Geolocation feature and write-only <a href="TagNames/Extra.html">Geolocate tag</a>
+<li>Added new config file entry (@Image::ExifTool::UserDefined::Arguments) to
+    allow default command-line arguments to be specified
+<li>Added print conversion for TIFF-EPStandardID
+<li>Added ability to delete Nextbase information from MP4 videos
+<li>Decode timed GPS from MP4 videos written by Nextbase software
+<li>Decode a number of new tags from Nextbase MP4 videos
+<li>Decode a few new tags from Garmin MP4 videos
+<li>Extract PreviewJXL images from DNG 1.7 files
+<li>Generate Validate, ImageDataHash and UserParam tags earlier to allow them to
+    be used in UserDefined Composite tags
+<li>Enhanced the -c option so a minus sign in the format specification prints a
+    signed coordinate without a leading "+" for positive numbers
+<li>Changed formatting of some Accelerometer tags for consistency
+<li>Changed behaviour of -ee3 option to do a brute-force scan for freeGPS in the
+    media data even when referenced by 'gps ' atom
+<li>Other internal changes to decoding of timed GPS from videos
+<li>Fixed problem were ExifTool would give up on extracting some types of timed
+    GPS from videos after 100 void fixes
+<li>Fixed bug that could cause runtime error when reading Ogg files
+<li>Fixed issue where some tags from alternate files using the -fileNUM option
+    weren't generated as requested
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#Geolocation">Geolocation</a>,
+        <a href="ExifTool.html#GeolocMaxDist">GeolocMaxDist</a> and
+        <a href="ExifTool.html#GeolocMinPop">GeolocMinPop</a> API options
+    </ul>
+</ul>
+
 <a name='v12.77'><b>Feb. 16, 2024 - Version 12.77</b></a>
 <ul>
 <li>Added new Olympus CameraType and LensType value (thanks herb)
 <li>Added a new Canon Irix LensType
 <li>Added the ability to delete MacOS XAttrMDItemWhereFroms
 <li>Decode a few new Canon DPP tags (thanks John Moyer)
+<li>Decode timed GPS from Adzome GS65H MOV videos
 <li>Improved handling of XML-unfriendly characters in JSON field names (fixes
     issue where -X option could produce invalid XML when reading JSON with the
     -struct option)

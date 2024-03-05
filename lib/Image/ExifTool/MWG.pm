@@ -441,6 +441,7 @@ my %sRegionStruct = (
         Writable => 'real',
         Notes => 'not part of MWG 2.0 spec',
     },
+    # Title - seen in sample XMP of MWG 2.0 specification, but not in spec itself
     seeAlso => { Namespace => 'rdfs', Resource => 1 },
 );
 my %sKeywordStruct;

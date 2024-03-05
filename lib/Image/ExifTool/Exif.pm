@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.50';
+$VERSION = '4.51';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -594,6 +594,14 @@ my %opcodeInfo = (
             DataTag => 'OtherImage',
         },
         {
+            Condition => '$$self{Compression} and $$self{Compression} eq "52546"', # DNG 1.7 Jpeg XL
+            Name => 'PreviewJXLStart',
+            IsOffset => 1,
+            IsImageData => 1,
+            OffsetPair => 0x117,  # point to associated byte counts
+            DataTag => 'PreviewJXL',
+        },
+        {
             # (APP1 IFD2 is for Leica JPEG preview)
             Condition => q[
                 not ($$self{TIFF_TYPE} eq 'CR2' and $$self{DIR_NAME} eq 'IFD0') and
@@ -686,6 +694,12 @@ my %opcodeInfo = (
             Name => 'OtherImageLength',
             OffsetPair => 0x111,   # point to associated offset
             DataTag => 'OtherImage',
+        },
+        {
+            Condition => '$$self{Compression} and $$self{Compression} eq "52546"', # DNG 1.7 Jpeg XL
+            Name => 'PreviewJXLLength',
+            OffsetPair => 0x111,   # point to associated offset
+            DataTag => 'PreviewJXL',
         },
         {
             # (APP1 IFD2 is for Leica JPEG preview)
@@ -2421,7 +2435,7 @@ my %opcodeInfo = (
         Count => -1, # 2, 3 or 4 values
     },
     0x9215 => 'ExposureIndex', #12
-    0x9216 => 'TIFF-EPStandardID', #12
+    0x9216 => { Name => 'TIFF-EPStandardID', PrintConv => '$val =~ tr/ /./; $val' }, #12
     0x9217 => { #12
         Name => 'SensingMethod',
         Groups => { 2 => 'Camera' },
@@ -2711,7 +2725,7 @@ my %opcodeInfo = (
         Count => 2,
     },
     0xa215 => { Name => 'ExposureIndex', Writable => 'rational64u' },
-    0xa216 => 'TIFF-EPStandardID',
+    0xa216 => { Name => 'TIFF-EPStandardID', PrintConv => '$val =~ tr/ /./; $val' },
     0xa217 => {
         Name => 'SensingMethod',
         Groups => { 2 => 'Camera' },
@@ -4971,6 +4985,39 @@ my %subSecConv = (
             Image::ExifTool::Exif::ExtractImage($self,$val[0],$val[1],"OtherImage");
         },
     },
+    PreviewJXL => {
+        Groups => { 0 => 'EXIF', 1 => 'SubIFD', 2 => 'Preview' },
+        Require => {
+            0 => 'PreviewJXLStart',
+            1 => 'PreviewJXLLength',
+        },
+        Desire => {
+            2 => 'PreviewJXLStart (1)',
+            3 => 'PreviewJXLLength (1)',
+        },
+        # retrieve all other JXL images
+        RawConv => q{
+            if ($val[2] and $val[3]) {
+                my $i = 1;
+                for (;;) {
+                    my %val = ( 0 => $$val{2}, 1 => $$val{3} );
+                    $self->FoundTag($tagInfo, \%val);
+                    ++$i;
+                    $$val{2} = "$$val{0} ($i)";
+                    last unless defined $$self{VALUE}{$$val{2}};
+                    $$val{3} = "$$val{1} ($i)";
+                    last unless defined $$self{VALUE}{$$val{3}};
+                }
+            }
+            @grps = $self->GetGroup($$val{0});
+            my $image = $self->ExtractBinary($val[0], $val[1], 'PreviewJXL');
+            unless ($image =~ /^(Binary data|\xff\x0a|\0\0\0\x0cJXL \x0d\x0a......ftypjxl )/s) {
+                $self->Warn("$tag is not a valid JXL image",1);
+                return undef;
+            }
+            return \$image;
+        },
+    },
     PreviewImageSize => {
         Require => {
             0 => 'PreviewImageWidth',
@@ -5096,7 +5143,8 @@ my %subSecConv = (
             GPSLongitudeRef => '(defined $val and $val =~ / (-?)/) ? ($1 ? "W" : "E") : undef',
         },
         PrintConvInv => q{
-            return undef unless $val =~ /(.*? ?[NS]?), ?(.*? ?[EW]?)$/;
+            return undef unless $val =~ /(.*? ?[NS]?), ?(.*? ?[EW]?)$/ or
+                $val =~ /^\s*(-?\d+(?:\.\d+)?)\s*(-?\d+(?:\.\d+)?)\s*$/;
             my ($lat, $lon) = ($1, $2);
             require Image::ExifTool::GPS;
             $lat = Image::ExifTool::GPS::ToDegrees($lat, 1, "lat");

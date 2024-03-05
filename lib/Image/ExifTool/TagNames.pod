@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27480 tags, with 17238 unique tag names.
+They contain a total of 27565 tags, with 17308 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -376,6 +376,7 @@ for the official EXIF 2.32 specification.
   0x0110   Model                     IFD0       string
   0x0111   StripOffsets              -          no
            OtherImageStart           -          no
+           PreviewJXLStart           -          no
            StripOffsets              -          no
            PreviewImageStart         IFD0       int32u*
            PreviewImageStart         All        int32u*
@@ -385,6 +386,7 @@ for the official EXIF 2.32 specification.
   0x0116   RowsPerStrip              IFD0       int32u!
   0x0117   StripByteCounts           -          no
            OtherImageLength          -          no
+           PreviewJXLLength          -          no
            StripByteCounts           -          no
            PreviewImageLength        IFD0       int32u*
            PreviewImageLength        All        int32u*
@@ -29259,6 +29261,7 @@ for the official specification.
                        ThumbnailImage           no
                        Free?                    no
   'ftyp'               FileType                 QuickTime FileType
+  'gdat'               GPSData                  QuickTime Stream
   'gps0'               GPSTrack                 QuickTime Stream
   'gsen'               GSensor                  QuickTime Stream
   'junk'               Junk?                    no
@@ -29270,6 +29273,7 @@ for the official specification.
   'moof'               MovieFragment            QuickTime MovieFragment
   'moov'               Movie                    QuickTime Movie
   'mpvd'               MotionPhotoVideo         yes
+  'nbmt'               NextbaseMeta             QuickTime Stream
   'pict'               PreviewPICT              no
   'pnot'               Preview                  QuickTime Preview
   'prrt'               ARDroneTelemetry         no
@@ -29289,10 +29293,11 @@ for the official specification.
                        UUID-Flip                QuickTime Flip
                        UUID-Canon2              Canon uuid2
                        SensorData               QuickTime Tags360Fly
+                       SensorData               no
                        JUMBF                    Jpeg2000
                        CBOR                     CBOR
-                       SensorData               no
                        PreviewImage             no
+                       ThumbnailImage           no
                        UUID-Unknown?            no
   'wide'               Wide?                    no
 
@@ -29301,7 +29306,7 @@ for the official specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 68 different formats of timed GPS metadata from video files.
+currently reads 71 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -29310,6 +29315,7 @@ currently reads 68 different formats of timed GPS metadata from video files.
   AngularVelocity                               no
   CTMD                                          Canon CTMD
   CameraDateTime                                no
+  CameraModel                                   no
   Car                                           no
   DateTimeOriginal                              no
   Distance                                      no
@@ -30543,12 +30549,15 @@ the config file.
   'cvru'       CoverURI                         string
   'date'       DateTimeOriginal                 string
   'dscp'       Description                      string/
+  'finm'       OriginalFileName                 no
   'gnre'       Genre                            string/
   'hinf'       HintTrackInfo                    QuickTime HintTrackInfo
   'hinv'       HintVersion                      string
   'hnti'       HintInfo                         QuickTime HintInfo
   'htcb'       HTCBinary                        QuickTime HTCBinary
   'icnu'       IconURI                          string
+  'infi'       CameraInfo                       QuickTime Nextbase
+  'info'       FirmwareVersion                  string
   'infu'       InfoURL                          string
   'kgtt'       TrackType                        string
   'kywd'       Keywords                         no
@@ -30580,9 +30589,11 @@ the config file.
                ThumbnailImage                   string
                ThumbnailPNG                     string
                UnknownThumbnail                 string
+  'time'       TimeStamp                        no
   'titl'       Title                            string/
   'urat'       UserRating                       undef/
   'uuid'       GarminSoftware                   string
+               GarminModel                      no
                UUID-Unknown?                    no
   'vndr'       Vendor                           string
   'vrot'       AccelerometerData                no
@@ -30696,6 +30707,83 @@ Tags found in TomTom Bandit Action Cam MP4 videos.
   Index4   Tag Name                             Writable
   ------   --------                             --------
   [no tags known]
+
+=head3 QuickTime Nextbase Tags
+
+Tags found in 'infi' atom from some Nextbase videos.  As well as these tags,
+other existing tags are also extracted.  These tags are not currently
+writable but they may all be removed by deleting the Nextbase group.
+
+  Tag ID            Tag Name                    Writable
+  ------            --------                    --------
+  '2nd Cam'         SecondCam                   no
+  'Alerts'          Alerts                      no
+  'Alexa'           Alexa                       no
+  'Alexa - Paired Device Name'
+                    Alexa-PairedDeviceName      no
+  'Alexa - Pairing' Alexa-Pairing               no
+  'Alexa - Privacy Mode' Alexa-PrivacyMode      no
+  'Alexa - Wake Word Language'
+                    Alexa-WakeWordLanguage      no
+  'Audio'           Audio                       no
+  'Auto Power Off'  AutoPowerOff                no
+  'Battery Status'  BatteryStatus               no
+  'Bluetooth MAC Address' BluetoothMACAddress   no
+  'Bluetooth Name'  BluetoothName               no
+  'Country'         Country                     no
+  'Default Settings' DefaultSettings            no
+  'Device Sounds'   DeviceSounds                no
+  'Dual Files'      DualFiles                   no
+  'Emergency SOS'   EmergencySOS                no
+  'Exposure'        Exposure                    no
+  'Extreme Weather Mode' ExtremeWeatherMode     no
+  'FCC-ID'          FCC-ID                      no
+  'Firmware'        Firmware                    no
+  'Firmware Version' FirmwareVersion            no
+  'Format SD Card'  FormatSDCard                no
+  'G Sensor'        GSensor                     no
+  'GPS Stamp'       GPSStamp                    no
+  'Image Stabilisation' ImageStabilisation      no
+  'Keep User Settings' KeepUserSettings         no
+  'Language'        Language                    no
+  'Linux'           Linux                       no
+  'Model'           Model                       no
+  'Model Stamp'     ModelStamp                  no
+  'MyNextbase - Paired Device Name'
+                    MyNextbase-PairedDeviceName no
+  'MyNextbase - Pairing' MyNextbase-Pairing     no
+  'NBCD'            NBCD                        no
+  'Number / License Plate' NumberLicensePlate   no
+  'Parking Mode'    ParkingMode                 no
+  'RTOS'            RTOS                        no
+  'Recording History' RecordingHistory          no
+  'Resolution'      Resolution                  no
+  'Reversing Camera' ReversingCamera            no
+  'SD Card Class'   SDCardClass                 no
+  'SD Card Format'  SDCardFormat                no
+  'SD Card Manf Date' SDCardManfDate            no
+  'SD Card Manf ID' SDCardManfID                no
+  'SD Card Model No' SDCardModelNo              no
+  'SD Card OEM ID'  SDCardOEMID                 no
+  'SD Card Serial No' SDCardSerialNo            no
+  'SD Card Size'    SDCardSize                  no
+  'SD Card Type'    SDCardType                  no
+  'SD Card Used Space' SDCardUsedSpace          no
+  'Screen Dimming'  ScreenDimming               no
+  'Screen Saver'    ScreenSaver                 no
+  'Serial No'       SerialNumber                no
+  'Speed Stamp'     SpeedStamp                  no
+  'Speed Units'     SpeedUnits                  no
+  'System Info'     SystemInfo                  no
+  'Time & Date'     TimeAndDate                 no
+  'Time Lapse'      TimeLapse                   no
+  'Time Stamp'      VideoTimeStamp              no
+  'Time Zone / DST' TimeZoneDST                 no
+  'Video Length'    VideoLength                 no
+  'Wi-Fi MAC Address' Wi-FiMACAddress           no
+  'Wi-Fi Password'  Wi-FiPassword               no
+  'Wi-Fi SSID'      Wi-FiSSID                   no
+  'what3words'      What3Words                  no
 
 =head3 QuickTime Video Tags
 
@@ -39567,6 +39655,16 @@ FileName.
   FileTypeExtension          File               no
   FileUserID                 System             yes!
   ForceWrite                 -                  yes
+  Geolocate                  -                  yes
+  GeolocationBearing         ExifTool           no
+  GeolocationCity            ExifTool           no
+  GeolocationCountry         ExifTool           no
+  GeolocationCountryCode     ExifTool           no
+  GeolocationDistance        ExifTool           no
+  GeolocationPopulation      ExifTool           no
+  GeolocationPosition        ExifTool           no
+  GeolocationRegion          ExifTool           no
+  GeolocationTimeZone        ExifTool           no
   Geosync                    -                  yes
   Geotag                     -                  yes
   Geotime                    -                  yes
@@ -39589,6 +39687,7 @@ FileName.
   OtherImage                 File               no
   PageCount                  File               no
   PreviewImage               File               yes
+  PreviewJXL                 File               no
   PreviewPDF                 File               no
   PreviewPNG                 File               no
   PreviewTIFF                File               no
@@ -39852,6 +39951,10 @@ values, may created via the ExifTool configuration file.
   PreviewImage         ScreenNail               no
   PreviewImageSize     PreviewImageWidth        no
                        PreviewImageHeight
+  PreviewJXL           PreviewJXLStart          no
+                       PreviewJXLLength
+                       PreviewJXLStart (1)
+                       PreviewJXLLength (1)
   RedBalance           WB_RGGBLevels            no
                        WB_RGBGLevels
                        WB_RBGGLevels

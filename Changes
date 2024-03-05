@@ -7,12 +7,42 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Mar. 5, 2024 - Version 12.78 - "Geolocation"
+
+  - Added new Geolocation feature and write-only Geolocate tag
+  - Added new config file entry (@Image::ExifTool::UserDefined::Arguments) to
+    allow default command-line arguments to be specified
+  - Added print conversion for TIFF-EPStandardID
+  - Added ability to delete Nextbase information from MP4 videos
+  - Decode timed GPS from MP4 videos written by Nextbase software
+  - Decode a number of new tags from Nextbase MP4 videos
+  - Decode a few new tags from Garmin MP4 videos
+  - Extract PreviewJXL images from DNG 1.7 files
+  - Generate Validate, ImageDataHash and UserParam tags earlier to allow them to
+    be used in UserDefined Composite tags
+  - Enhanced the -c option so a minus sign in the format specification prints a
+    signed coordinate without a leading "+" for positive numbers
+  - Changed formatting of some Accelerometer tags for consistency
+  - Changed behaviour of -ee3 option to do a brute-force scan for freeGPS in the
+    media data even when referenced by 'gps ' atom
+  - Other internal changes to decoding of timed GPS from videos
+  - Fixed problem were ExifTool would give up on extracting some types of timed
+    GPS from videos after 100 void fixes
+  - Fixed bug that could cause runtime error when reading Ogg files
+  - Fixed issue where some tags from alternate files using the -fileNUM option
+    weren't generated as requested
+  - API Changes:
+      - Added Geolocation,
+        GeolocMaxDist and
+        GeolocMinPop API options
+
 Feb. 16, 2024 - Version 12.77
 
   - Added new Olympus CameraType and LensType value (thanks herb)
   - Added a new Canon Irix LensType
   - Added the ability to delete MacOS XAttrMDItemWhereFroms
   - Decode a few new Canon DPP tags (thanks John Moyer)
+  - Decode timed GPS from Adzome GS65H MOV videos
   - Improved handling of XML-unfriendly characters in JSON field names (fixes
     issue where -X option could produce invalid XML when reading JSON with the
     -struct option)
@@ -559,7 +589,7 @@ Oct. 13, 2022 - Version 12.48
     "Z" are actually in Zulu time -- a bit of a mess really)
   - Prevent dynamically-generated Unknown tags from being extracted when the
     -validate option is used without -u
-  - Patched to better handle irregular timestamps in streaming GPS of NextBase
+  - Patched to better handle irregular timestamps in streaming GPS of Nextbase
     dashcam videos
   - Fixed incompatibility with Sigma Photo Pro which could result in Sigma Photo
     Pro corrupting an ExifTool-edited X3F image (the section length in the
@@ -1431,7 +1461,7 @@ Mar. 19, 2020 - Version 11.92
   - Added a new Nikon LensID (thanks Wolfgang Exler)
   - Decode a few new Leica tags (thanks Tim Gray)
   - Decode AccelerometerData from Samsung Gear 360 videos
-  - Fixed a couple of problems decoding timed GPS metadata from NextBase dashcam
+  - Fixed a couple of problems decoding timed GPS metadata from Nextbase dashcam
     videos
   - Fixed problem where -X option could produce invalid XML when reading
     corrupted XMP
@@ -2320,7 +2350,7 @@ Oct. 16, 2018 - Version 11.14
 
 Oct. 9, 2018 - Version 11.13
 
-  - Decode GPS from NextBase 512G dashcam MOV videos (different than 512GW)
+  - Decode GPS from Nextbase 512G dashcam MOV videos (different than 512GW)
   - Added a new Canon LensType (thanks LibRaw)
   - Minor improvements to verbose dump of streaming GPS metadata
   - Reverted change of version 10.71 which resulted in Windows not recognizing
@@ -2339,7 +2369,7 @@ Oct. 2, 2018 - Version 11.12
   - Added a new Sony/Minolta LensType (thanks LibRaw and Jos Roost)
   - Added a new Nikon LensID
   - Decode a few new Sony SRF2 tags (thanks LibRaw)
-  - Decode GPS from NextBase 512GW dashcam MOV videos
+  - Decode GPS from Nextbase 512GW dashcam MOV videos
   - Validate MS-DOC FIB before extracting contained tags
   - Fixed bug extracting GPSSpeed for some dashcam models
 

@@ -114,11 +114,11 @@ my %supportedFilter = (
         Notes => q{
             stored as a string but treated as a comma- or semicolon-separated list of
             items when reading if the string contains commas or semicolons, whichever is
-            more numerous, otherwise it is treated a space-separated list of items.
-            Written as a comma-separated list.  The list behaviour may be defeated by
-            setting the API NoPDFList option.  Note that the corresponding
-            XMP-pdf:Keywords tag is not treated as a list, so the NoPDFList option
-            should be used when copying between these two.
+            more numerous, otherwise it is treated a space-separated list of items.  The
+            list behaviour may be defeated by setting the API NoPDFList option.  Written
+            as a comma-separated string.  Note that the corresponding XMP-pdf:Keywords
+            tag is not treated as a list, so the NoPDFList option should be used when
+            copying between these two.
         },
     },
     Creator     => { },

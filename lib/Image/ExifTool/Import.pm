@@ -12,7 +12,7 @@ require Exporter;
 
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(ReadCSV ReadJSON);
 
@@ -238,7 +238,7 @@ Tok: for (;;) {
 
 #------------------------------------------------------------------------------
 # Read JSON file
-# Inputs: 0) JSON file name, file ref or RAF ref, 1) database hash ref,
+# Inputs: 0) JSON file name, file ref, RAF ref or SCALAR ref, 1) database hash ref,
 #         2) flag to delete "-" tags, 3) character set
 # Returns: undef on success, or error string
 sub ReadJSON($$;$$)
@@ -255,6 +255,9 @@ sub ReadJSON($$;$$)
     } elsif (ref $file eq 'GLOB') {
         $raf = File::RandomAccess->new($file);
         $file = 'JSON file';
+    } elsif (ref $file eq 'SCALAR') {
+        $raf = File::RandomAccess->new($file);
+        $file = 'in memory';
     } else {
         open JSONFILE, $file or return "Error opening JSON file '${file}'";
         binmode JSONFILE;

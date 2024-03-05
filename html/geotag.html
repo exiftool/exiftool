@@ -28,6 +28,8 @@ pre   { color: #800; margin-left: 4em }
 <a href="#Inverse">Inverse Geotagging</a>
 <br>&nbsp; - <a href="#GPX">Creating GPX log</a>
 <br>&nbsp; - <a href="#KML">Creating KML file</a>
+<hr>
+<a href="#Geolocation">Geolocation</a>
 </div>
 <h1 class='up'>Geotagging with ExifTool</h1>
 <p>The ExifTool geotagging feature adds GPS tags to images based on data from a
@@ -528,7 +530,7 @@ examples.</blockquote>
 <h3>Tips</h3>
 
 <a name="TP1"></a>
-<p>1. <b>Time Synchronization</b></p>
+<p><b>1. Time Synchronization</b></p>
 
 <blockquote>One way to accurately synchronize your images with GPS time is to
 take a picture of the time displayed on your GPS unit while you are out
@@ -742,8 +744,82 @@ ExifTool distribution.  See
 forum post</a> for more useful tips about creating KML files.</p>
 
 <hr>
+<a name="Geolocation"></a>
+<h2>Geolocation</h2>
+
+<p>ExifTool has the ability to look up city, state/province and country from
+an included database of all cities with population greater than 1000 (based on
+a Creative Commons database from geonames.org).  There are two basic modes
+for using this feature:</p>
+
+<p><b>1. Writing Geolocation information</b></p>
+
+<blockquote>Writing to the write-only Geolocate tag sets the city, state/province, country
+code and country from GPS coordinates.  By default, this is written to XMP,
+but IPTC:Geolocate may be specified to write to IPTC IIM instead.  For
+example, to write the XMP City, State, CountryCode and Country tags from
+specified GPS coordinates:
+
+<pre>exiftool "-geolocate=45.6429,-72.9374" test.jpg</pre>
+
+or to set the IPTC tags from GPS coordinates in a file:
+
+<pre>exiftool "-iptc:geolocate&lt;gpsposition" test.jpg</pre>
+
+This feature may be used to perform a geolocation lookup without
+a source file to produce an XMP-format output using a command like this:
+
+<pre>exiftool "-geolocate=42.123,2.529" -o -.xmp</pre>
+
+which results in this output:</blockquote>
+
+<pre>&lt;?xpacket begin=' ' id='W5M0MpCehiHzreSzNTczkc9d'?&gt;
+&lt;x:xmpmeta xmlns:x='adobe:ns:meta/' x:xmptk='Image::ExifTool 12.78'&gt;
+&lt;rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'&gt;
+
+ &lt;rdf:Description rdf:about=''
+  xmlns:Iptc4xmpCore='http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/'&gt;
+  &lt;Iptc4xmpCore:CountryCode&gt;ES&lt;/Iptc4xmpCore:CountryCode&gt;
+ &lt;/rdf:Description&gt;
+
+ &lt;rdf:Description rdf:about=''
+  xmlns:photoshop='http://ns.adobe.com/photoshop/1.0/'&gt;
+  &lt;photoshop:City&gt;Santa Pau&lt;/photoshop:City&gt;
+  &lt;photoshop:Country&gt;Spain&lt;/photoshop:Country&gt;
+  &lt;photoshop:State&gt;Catalonia&lt;/photoshop:State&gt;
+ &lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;
+&lt;/x:xmpmeta&gt;
+&lt;?xpacket end='w'?&gt;</pre>
+
+<p><b>2. Reading Geolocation information</b></p>
+
+<blockquote>Geolocation tags may be generated when reading a file containing GPS
+coordinates by setting the API Geolocation option.  For example,
+
+<pre>exiftool -api geolocation "-geolocation*" test.jpg</pre>
+
+produces an output like this:</blockquote>
+
+<pre>Geolocation City                : Saint-Hyacinthe
+Geolocation Region              : Quebec
+Geolocation Country Code        : CA
+Geolocation Country             : Canada
+Geolocation Time Zone           : America/Toronto
+Geolocation Population          : 50000
+Geolocation Distance            : 1.8 km
+Geolocation Bearing             : 226
+Geolocation Position            : 45.632, -72.955</pre>
+
+<blockquote>A special feature of ExifTool, documented only here, allows Geolocation
+tags to be generated (as above) without an input file by setting the API Geolocation
+option to a comma-separated GPS position with a command like this:
+
+<pre>exiftool -api geolocation=44.234,-75.445</pre></blockquote>
+
+<hr>
 <i>Created Apr 2, 2009</i><br>
-<i>Last revised Oct 13, 2023</i>
+<i>Last revised Mar 5, 2024</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

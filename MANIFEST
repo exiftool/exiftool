@@ -294,6 +294,8 @@ lib/Image/ExifTool/GIF.pm
 lib/Image/ExifTool/GIMP.pm
 lib/Image/ExifTool/GPS.pm
 lib/Image/ExifTool/GeoTiff.pm
+lib/Image/ExifTool/Geolocation.dat
+lib/Image/ExifTool/Geolocation.pm
 lib/Image/ExifTool/Geotag.pm
 lib/Image/ExifTool/GoPro.pm
 lib/Image/ExifTool/H264.pm
@@ -543,6 +545,7 @@ t/ExifTool_32.out
 t/ExifTool_33.out
 t/ExifTool_34.out
 t/ExifTool_35.out
+t/ExifTool_36.out
 t/ExifTool_4.out
 t/ExifTool_5.out
 t/ExifTool_6.out
@@ -920,6 +923,7 @@ t/Writer_58.out
 t/Writer_59.out
 t/Writer_6.out
 t/Writer_60.out
+t/Writer_61.out
 t/Writer_7.out
 t/Writer_9.out
 t/XISF.t

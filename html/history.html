@@ -17,9 +17,31 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.79'><b>Mar. 15, 2024 - Version 12.79</b></a>
+<ul>
+<li>Improvements to new <a href="geolocation.html">Geolocation</a> feature:
+    <ul>
+    <li>Added ability to obtain GPS coordinates from city name
+    <li>Added -listgeo option to list the Geolocation database
+    <li>Added the ability to include user-defined cities in the Geolocation
+        database
+    <li>Added the ability to write XMP-iptcExt LocationShown tags using Geolocate
+        feature
+    <li>Added the ability to specify which tags to read from file for the API
+        <a href="ExifTool.html#Geolocation">Geolocation</a> option
+    <li>Added language translations for Geolocation names
+    <li>Increased resolution of Geolocation GPS positions and stored populations
+</ul>
+<li>API Changes:
+    <ul>
+    <li>Save necessary data members to allow GetInfo to be accessed by
+        user-defined tags
+    </ul>
+</ul>
+
 <a name='v12.78'><b>Mar. 5, 2024 - Version 12.78</b> - "Geolocation"</a>
 <ul>
-<li>Added new Geolocation feature and write-only <a href="TagNames/Extra.html">Geolocate tag</a>
+<li>Added new <a href="geolocation.html">Geolocation feature</a> and write-only <a href="TagNames/Extra.html">Geolocate tag</a>
 <li>Added new config file entry (@Image::ExifTool::UserDefined::Arguments) to
     allow default command-line arguments to be specified
 <li>Added print conversion for TIFF-EPStandardID
@@ -43,9 +65,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
     weren't generated as requested
 <li>API Changes:
     <ul>
-    <li>Added <a href="ExifTool.html#Geolocation">Geolocation</a>,
-        <a href="ExifTool.html#GeolocMaxDist">GeolocMaxDist</a> and
-        <a href="ExifTool.html#GeolocMinPop">GeolocMinPop</a> API options
+    <li>Added <a href="ExifTool.html#Geolocation">Geolocation</a>, <a href="ExifTool.html#GeolocMaxDist">GeolocMaxDist</a> and <a href="ExifTool.html#GeolocMinPop">GeolocMinPop</a> API options
     </ul>
 </ul>
 

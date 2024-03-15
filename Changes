@@ -7,6 +7,24 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Mar. 15, 2024 - Version 12.79
+
+  - Improvements to new Geolocation feature:
+      - Added ability to obtain GPS coordinates from city name
+      - Added -listgeo option to list the Geolocation database
+      - Added the ability to include user-defined cities in the Geolocation
+        database
+      - Added the ability to write XMP-iptcExt LocationShown tags using Geolocate
+        feature
+      - Added the ability to specify which tags to read from file for the API
+        Geolocation option
+      - Added language translations for Geolocation names
+      - Increased resolution of Geolocation GPS positions and stored populations
+
+  - API Changes:
+      - Save necessary data members to allow GetInfo to be accessed by
+        user-defined tags
+
 Mar. 5, 2024 - Version 12.78 - "Geolocation"
 
   - Added new Geolocation feature and write-only Geolocate tag
@@ -32,9 +50,7 @@ Mar. 5, 2024 - Version 12.78 - "Geolocation"
   - Fixed issue where some tags from alternate files using the -fileNUM option
     weren't generated as requested
   - API Changes:
-      - Added Geolocation,
-        GeolocMaxDist and
-        GeolocMinPop API options
+      - Added Geolocation, GeolocMaxDist and GeolocMinPop API options
 
 Feb. 16, 2024 - Version 12.77
 

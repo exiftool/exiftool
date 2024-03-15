@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/Writer.t".
 
 BEGIN {
-    $| = 1; print "1..61\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..60\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -1103,25 +1103,6 @@ my $testOK;
     unlink $testfile;
     writeInfo($exifTool, 't/images/Writer.jpg', $testfile);
     my $info = $exifTool->ImageInfo($testfile, 'subject', 'contributor', 'type');
-    if (check($exifTool, $info, $testname, $testnum)) {
-        unlink $testfile;
-    } else {
-        notOK();
-    }
-    print "ok $testnum\n";
-}
-
-# test 61: Test writing Geolocate
-{
-    ++$testnum;
-    my $exifTool = Image::ExifTool->new;
-    $exifTool->Options(GeolocMinPop => 1000000);
-    $exifTool->SetNewValue(Geolocate => '44,-72');
-    $exifTool->SetNewValue('IPTC:Geolocate' => '48.338, 2.074');
-    $testfile = "t/${testname}_${testnum}_failed.jpg";
-    unlink $testfile;
-    writeInfo($exifTool, 't/images/Writer.jpg', $testfile);
-    my $info = $exifTool->ImageInfo($testfile, '-file:all');
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {

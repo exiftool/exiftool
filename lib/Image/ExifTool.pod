@@ -717,12 +717,16 @@ or undef (the default) for no base adjustment.
 
 =item Geolocation
 
-Flag to generate geolocation tags based on current GPSLatitude/GPSLongitude.
-This feature uses a database with cities over a population of 1000 from
-geonames.org.  May be set to a string of the form "Lat,Lon" (eg.
-"44.56,-72.33") to act as default GPS coordinates for files not containing
-this information.  See the comments in Geolocation.pm for more details. 
-Default is undef.
+Flag to generate geolocation tags based on the GPSLatitude/GPSLongitude or
+City/State/Province/Country read from a file.  This feature uses an included
+database with cities over a population of 2000 from geonames.org. May be set
+to a string of the form "Lat,Lon" (eg. "44.56,-72.33") or city with optional
+state/province, country and/or country code (eg. "Paris,France") to act as a
+default for files not containing GPS or geolocation information, or include
+tag names with leading dollar signs separated by commas to specify the tags
+to use for the geolocation input.  May also include regular expressions for
+more flexible matching.  See L<https://exiftool.org/geolocation.html> for
+more details.  Default is undef.
 
 =item GeolocMaxDist
 
@@ -731,7 +735,8 @@ not generated if the distance is greater than this.  Default is undef.
 
 =item GeolocMinPop
 
-Minimum population for the Geolocation city.
+Minimum population for the Geolocation city.  Cities smaller than this are
+ignored.  Default is undef.
 
 =item GeoMaxIntSecs
 

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27565 tags, with 17308 unique tag names.
+They contain a total of 27567 tags, with 17310 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -39664,7 +39664,9 @@ FileName.
   GeolocationPopulation      ExifTool           no
   GeolocationPosition        ExifTool           no
   GeolocationRegion          ExifTool           no
+  GeolocationSubregion       ExifTool           no
   GeolocationTimeZone        ExifTool           no
+  GeolocationWarning         ExifTool           no
   Geosync                    -                  yes
   Geotag                     -                  yes
   Geotime                    -                  yes

@@ -126,7 +126,7 @@ updated whenever any software, including ExifTool, reads the file)</span></span>
 <td>FileAttributes</td>
 <td class=c>no</td>
 <td class=c>System</td>
-<td><span class=s><span class=n>(extracted only if specifically requested or the <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a> API
+<td><span class=s><span class=n>(extracted only if specifically requested or the API <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a>
 option is set.  2 or 3 values: 0. File type, 1. Attribute bits, 2. Windows
 attribute bits if Win32API::File is available)</span>
   <br>[Value 0]</span><table class=cols><tr>
@@ -170,13 +170,13 @@ attribute bits if Win32API::File is available)</span>
 <td>FileBlockCount</td>
 <td class=c>no</td>
 <td class=c>System</td>
-<td><span class=s><span class=n>(extracted only if specifically requested or the <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a> API
+<td><span class=s><span class=n>(extracted only if specifically requested or the API <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a>
 option is set)</span></span></td></tr>
 <tr>
 <td>FileBlockSize</td>
 <td class=c>no</td>
 <td class=c>System</td>
-<td><span class=s><span class=n>(extracted only if specifically requested or the <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a> API
+<td><span class=s><span class=n>(extracted only if specifically requested or the API <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a>
 option is set)</span></span></td></tr>
 <tr class=b>
 <td>FileCreateDate</td>
@@ -192,26 +192,26 @@ installed by typing <code>xcode-select --install</code> in the Terminal)</span><
 <td>FileDeviceID</td>
 <td class=c>no</td>
 <td class=c>System</td>
-<td><span class=s><span class=n>(extracted only if specifically requested or the <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a> API
+<td><span class=s><span class=n>(extracted only if specifically requested or the API <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a>
 option is set)</span></span></td></tr>
 <tr class=b>
 <td>FileDeviceNumber</td>
 <td class=c>no</td>
 <td class=c>System</td>
-<td><span class=s><span class=n>(extracted only if specifically requested or the <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a> API
+<td><span class=s><span class=n>(extracted only if specifically requested or the API <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a>
 option is set)</span></span></td></tr>
 <tr>
 <td>FileGroupID</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
-<td><span class=s><span class=n>(extracted only if specifically requested or the <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a> API
+<td><span class=s><span class=n>(extracted only if specifically requested or the API <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a>
 option is set.  Returns group ID number with the -n option, or name
 otherwise.  May be written with either group name or number)</span></span></td></tr>
 <tr class=b>
 <td>FileHardLinks</td>
 <td class=c>no</td>
 <td class=c>System</td>
-<td><span class=s><span class=n>(extracted only if specifically requested or the <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a> API
+<td><span class=s><span class=n>(extracted only if specifically requested or the API <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a>
 option is set)</span></span></td></tr>
 <tr>
 <td>FileInodeChangeDate</td>
@@ -223,7 +223,7 @@ Non-Windows systems only)</span></span></td></tr>
 <td>FileInodeNumber</td>
 <td class=c>no</td>
 <td class=c>System</td>
-<td><span class=s><span class=n>(extracted only if specifically requested or the <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a> API
+<td><span class=s><span class=n>(extracted only if specifically requested or the API <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a>
 option is set)</span></span></td></tr>
 <tr>
 <td>FileModifyDate</td>
@@ -286,7 +286,7 @@ option)</span></span></td></tr>
 <td>FileUserID</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
-<td><span class=s><span class=n>(extracted only if specifically requested or the <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a> API
+<td><span class=s><span class=n>(extracted only if specifically requested or the API <a href="../ExifTool.html#SystemTags">SystemTags</a> or <a href="../ExifTool.html#RequestAll">RequestAll</a>
 option is set.  Returns user ID number with the -n option, or name
 otherwise.  May be written with either user name or number)</span></span></td></tr>
 <tr class=b>
@@ -303,22 +303,23 @@ multiple values may be separated with commas, eg. <code>-ForceWrite=exif,xmp</co
 <td>Geolocate</td>
 <td class=c>yes</td>
 <td class=c>-</td>
-<td><span class=s><span class=n>(this write-only tag accepts GPS coordinates in the same form as GPSPosition
-and by default writes XMP City, State, CountryCode and Country, but the IPTC
-group may be specified to instead write IPTC City, Province-State,
-Country-PrimaryLocationCode and Country-PrimaryLocationName.  Writable
-regardless of the API Geolocation option setting)</span></span></td></tr>
+<td><span class=s><span class=n>(this write-only tag may be used to write geolocation city, region, country
+code and country based in input GPS coordinates, or to write GPS
+coordinates based on geolocation name.  See the
+<a href="../geolocation.html">Geolocation section of the Geotag page</a> for
+details.  This tag is writable regardless of the API <a href="../ExifTool.html#Geolocation">Geolocation</a>
+option setting)</span></span></td></tr>
 <tr class=b>
 <td>GeolocationBearing</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
-<td><span class=s><span class=n>(compass bearing to city center)</span></span></td></tr>
+<td><span class=s><span class=n>(compass bearing to GeolocationCity center. Geolocation tags are
+generated only if API <a href="../ExifTool.html#Geolocation">Geolocation</a> option is set)</span></span></td></tr>
 <tr>
 <td>GeolocationCity</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
-<td><span class=s><span class=n>(name of city nearest to the current GPS coordinates. Geolocation tags are
-generated only if API Geolocation option is set)</span></span></td></tr>
+<td><span class=s><span class=n>(name of city nearest to the current GPS coordinates)</span></span></td></tr>
 <tr class=b>
 <td>GeolocationCountry</td>
 <td class=c>no</td>
@@ -338,7 +339,7 @@ generated only if API Geolocation option is set)</span></span></td></tr>
 <td>GeolocationPopulation</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
-<td><span class=s><span class=n>(city population rounded to 1 significant digit)</span></span></td></tr>
+<td><span class=s><span class=n>(city population rounded to 2 significant digits)</span></span></td></tr>
 <tr class=b>
 <td>GeolocationPosition</td>
 <td class=c>no</td>
@@ -350,10 +351,20 @@ generated only if API Geolocation option is set)</span></span></td></tr>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(geolocation state, province or region)</span></span></td></tr>
 <tr class=b>
+<td>GeolocationSubregion</td>
+<td class=c>no</td>
+<td class=c>ExifTool</td>
+<td><span class=s><span class=n>(geolocation county or subregion)</span></span></td></tr>
+<tr>
 <td>GeolocationTimeZone</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(geolocation time zone name)</span></span></td></tr>
+<tr class=b>
+<td>GeolocationWarning</td>
+<td class=c>no</td>
+<td class=c>ExifTool</td>
+<td>&nbsp;</td></tr>
 <tr>
 <td>Geosync</td>
 <td class=c>yes</td>
@@ -540,7 +551,7 @@ API <a href="../ExifTool.html#RequestAll">RequestAll</a> option is set)</span></
 <td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(the clock time in seconds taken by ExifTool to extract information from this
-file.  Not generated unless specifically requested or the <a href="../ExifTool.html#RequestAll">RequestAll</a> API
+file.  Not generated unless specifically requested or the API <a href="../ExifTool.html#RequestAll">RequestAll</a>
 option is set.  Requires Time::HiRes)</span></span></td></tr>
 <tr>
 <td>RAFVersion</td>
@@ -592,7 +603,7 @@ to the console, but does not affect the file itself)</span></span></td></tr>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the full JPEG trailer data block.  Extracted only if specifically requested
-or the API RequestAll option is set to 3 or higher)</span></span></td></tr>
+or the API <a href="../ExifTool.html#RequestAll">RequestAll</a> option is set to 3 or higher)</span></span></td></tr>
 <tr class=b>
 <td>Validate</td>
 <td class=c>no</td>
@@ -645,7 +656,7 @@ stream.  Requires Win32API::File)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 5, 2024</i>
+<br><i>Last revised Mar 15, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

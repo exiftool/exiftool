@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.78';
+$VERSION = '12.79';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -103,6 +103,7 @@ sub VerboseValue($$$;$);
 sub VPrint($$@);
 sub Rationalize($;$);
 sub Write($@);
+sub GetGeolocateTags($$;$);
 sub WriteTrailerBuffer($$$);
 sub AddNewTrailers($;@);
 sub Tell($);
@@ -1171,7 +1172,7 @@ my @defaultWriteGroups = qw(
 
 # group hash for ExifTool-generated tags
 my %allGroupsExifTool = ( 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'ExifTool' );
-my %geoGroups = ( Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'Location' } );
+my %geoInfo = ( Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'Location' }, Priority => 0 );
 
 # special tag names (not used for tag info)
 %specialTags = map { $_ => 1 } qw(
@@ -1201,7 +1202,7 @@ sub DummyWriteProc { return 1; }
 
 my %systemTagsNotes = (
     Notes => q{
-        extracted only if specifically requested or the L<SystemTags|../ExifTool.html#SystemTags> or L<RequestAll|../ExifTool.html#RequestAll> API
+        extracted only if specifically requested or the API L<SystemTags|../ExifTool.html#SystemTags> or L<RequestAll|../ExifTool.html#RequestAll>
         option is set
     },
 );
@@ -1484,7 +1485,7 @@ my %systemTagsNotes = (
     FileAttributes => {
         Groups => { 1 => 'System', 2 => 'Other' },
         Notes => q{
-            extracted only if specifically requested or the L<SystemTags|../ExifTool.html#SystemTags> or L<RequestAll|../ExifTool.html#RequestAll> API
+            extracted only if specifically requested or the API L<SystemTags|../ExifTool.html#SystemTags> or L<RequestAll|../ExifTool.html#RequestAll>
             option is set.  2 or 3 values: 0. File type, 1. Attribute bits, 2. Windows
             attribute bits if Win32API::File is available
         },
@@ -1539,7 +1540,7 @@ my %systemTagsNotes = (
     FileUserID => {
         Groups => { 1 => 'System', 2 => 'Other' },
         Notes => q{
-            extracted only if specifically requested or the L<SystemTags|../ExifTool.html#SystemTags> or L<RequestAll|../ExifTool.html#RequestAll> API
+            extracted only if specifically requested or the API L<SystemTags|../ExifTool.html#SystemTags> or L<RequestAll|../ExifTool.html#RequestAll>
             option is set.  Returns user ID number with the -n option, or name
             otherwise.  May be written with either user name or number
         },
@@ -1553,7 +1554,7 @@ my %systemTagsNotes = (
     FileGroupID => {
         Groups => { 1 => 'System', 2 => 'Other' },
         Notes => q{
-            extracted only if specifically requested or the L<SystemTags|../ExifTool.html#SystemTags> or L<RequestAll|../ExifTool.html#RequestAll> API
+            extracted only if specifically requested or the API L<SystemTags|../ExifTool.html#SystemTags> or L<RequestAll|../ExifTool.html#RequestAll>
             option is set.  Returns group ID number with the -n option, or name
             otherwise.  May be written with either group name or number
         },
@@ -1796,7 +1797,7 @@ my %systemTagsNotes = (
         Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'Other' },
         Notes => q{
             the clock time in seconds taken by ExifTool to extract information from this
-            file.  Not generated unless specifically requested or the L<RequestAll|../ExifTool.html#RequestAll> API
+            file.  Not generated unless specifically requested or the API L<RequestAll|../ExifTool.html#RequestAll>
             option is set.  Requires Time::HiRes
         },
         PrintConv => 'sprintf("%.3g s", $val)',
@@ -1937,7 +1938,7 @@ my %systemTagsNotes = (
         Groups => { 0 => 'Trailer' },
         Notes => q{
             the full JPEG trailer data block.  Extracted only if specifically requested
-            or the API RequestAll option is set to 3 or higher
+            or the API L<RequestAll|../ExifTool.html#RequestAll> option is set to 3 or higher
         },
         Writable => 1,
         Protected => 1,
@@ -1970,78 +1971,78 @@ my %systemTagsNotes = (
         Writable => 1,
         WriteOnly => 1,
         WriteNothing => 1,
-        AllowGroup => '(xmp|iptc)',
+        AllowGroup => '(exif|gps|xmp|xmp-exif|xmp-iptcext|xmp-iptccore|xmp-photoshop|iptc|quicktime|itemlist|keys|userdata)',
         Notes => q{
-            this write-only tag accepts GPS coordinates in the same form as GPSPosition
-            and by default writes XMP City, State, CountryCode and Country, but the IPTC
-            group may be specified to instead write IPTC City, Province-State,
-            Country-PrimaryLocationCode and Country-PrimaryLocationName.  Writable
-            regardless of the API Geolocation option setting
+            this write-only tag may be used to write geolocation city, region, country
+            code and country based in input GPS coordinates, or to write GPS
+            coordinates based on geolocation name.  See the
+            L<Geolocation section of the Geotag page|../geolocation.html> for
+            details.  This tag is writable regardless of the API L<Geolocation|../ExifTool.html#Geolocation>
+            option setting
         },
         DelCheck => q{
-            my $grp = lc($wantGroup || 'xmp');
-            if ($grp eq 'xmp') {
-                $self->SetNewValue('XMP:'.$_) foreach qw(City State CountryCode Country);
-            } elsif ($grp eq 'iptc') {
-                $self->SetNewValue('IPTC:'.$_) foreach qw(City Province-State Country-PrimaryLocationCode Country-PrimaryLocationName);
-            }
+            my @tags = $self->GetGeolocateTags($wantGroup);
+            $self->SetNewValue($_) foreach @tags;
             return '';
         },
         ValueConvInv => q{
-            my ($lat, $lon) = split /[, ]+/, $val;
-            defined $lat and defined $lon or warn('Invalid GPS position, use "Lat, Lon"'), return undef;
-            my $grp = lc($wantGroup || 'xmp');
-            if ($grp ne 'xmp' and $grp ne 'iptc') {
-                warn "Invalid group name for Geolocate\n";
-            } else {
-                require Image::ExifTool::Geolocation;
-                my @a = Image::ExifTool::Geolocation::Geolocate($lat, $lon,
-                    $$self{OPTIONS}{GeolocMinPop}, $$self{OPTIONS}{GeolocMaxDist});
-                my $i = 0;
-                if (not defined $a[0]) {
-                    warn "No suitable geolocation found\n";
-                } elsif ($grp eq 'xmp') {
-                    foreach (qw(City State CountryCode Country)) {
-                        next unless defined $a[$i++];
-                        $self->SetNewValue('XMP:'.$_, $self->Decode($a[$i-1],'UTF8'));
-                    }
+            require Image::ExifTool::Geolocation;
+            return $val if lc($val) eq 'geotag';
+            my $opts = $$self{OPTIONS};
+            my $geo = Image::ExifTool::Geolocation::Geolocate($self->Encode($val,'UTF8'),
+                $$opts{GeolocMinPop}, $$opts{GeolocMaxDist}, $$opts{Lang});
+            return '' unless $geo;
+            if ($$geo[11] and $self->Warn('Multiple matching cities found',2)) {
+                warn "$$self{VALUE}{Warning}\n";
+                return '';
+            }
+            my @tags = $self->GetGeolocateTags($wantGroup, defined $$geo[9] ? 0 : 1);
+            my %geoNum = ( City => 0, Province => 1, State => 1, Code => 3, Country => 4,
+                           Coordinates => 78, Latitude => 7, Longitude => 8 );
+            my ($tag, $value);
+            foreach $tag (@tags) {
+                if ($tag =~ /GPS(Coordinates|Latitude|Longitude)?/) {
+                    $value = $geoNum{$1} == 78 ? "$$geo[7],$$geo[8]" : $$geo[$geoNum{$1}];
+                } elsif ($tag =~ /(Code)/ or $tag =~ /(City|Province|State|Country)/) {
+                    $value = $$geo[$geoNum{$1}];
+                    next unless defined $value;
+                    $value = $self->Decode($value,'UTF8');
+                    $value .= ' ' if $tag eq 'iptc:Country-PrimaryLocationCode'; # (IPTC requires 3-char code)
                 } else {
-                    $a[2] .= ' '; # pad country code with space to meet IPTC length requirements
-                    foreach (qw(City Province-State Country-PrimaryLocationCode Country-PrimaryLocationName)) {
-                        next unless defined $a[$i++];
-                        $self->SetNewValue('IPTC:'.$_, $self->Decode($a[$i-1],'UTF8'));
-                    }
+                    next; # (shouldn't happen)
                 }
+                $self->SetNewValue($tag => $value, Type => 'PrintConv');
             }
             return '';
         },
         PrintConvInv => q{
-            return undef unless $val =~ /(.*? ?[NS]?), ?(.*? ?[EW]?)$/ or
+            return $val unless $val =~ /^([-+]?\d.*?[NS]?), ?([-+]?\d.*?[EW]?)$/ or
                 $val =~ /^\s*(-?\d+(?:\.\d+)?)\s*(-?\d+(?:\.\d+)?)\s*$/;
             my ($lat, $lon) = ($1, $2);
             require Image::ExifTool::GPS;
             $lat = Image::ExifTool::GPS::ToDegrees($lat, 1, "lat");
             $lon = Image::ExifTool::GPS::ToDegrees($lon, 1, "lon");
-            return "$lat $lon";
+            return "$lat, $lon";
         },
     },        
-    GeolocationCity => {
-        %geoGroups,
+    GeolocationBearing  => { %geoInfo, 
         Notes => q{
-            name of city nearest to the current GPS coordinates. Geolocation tags are
-            generated only if API Geolocation option is set
+            compass bearing to GeolocationCity center. Geolocation tags are
+            generated only if API L<Geolocation|../ExifTool.html#Geolocation> option is set
         },
     },
-    GeolocationRegion   => { %geoGroups, Notes => 'geolocation state, province or region' },
-    GeolocationCountry  => { %geoGroups, Notes => 'geolocation country name' },
-    GeolocationCountryCode=>{%geoGroups, Notes => 'geolocation country code' },
-    GeolocationTimeZone => { %geoGroups, Notes => 'geolocation time zone name' },
-    GeolocationPopulation=>{ %geoGroups, Notes => 'city population rounded to 1 significant digit' },
-    GeolocationDistance => { %geoGroups, Notes => 'distance in km from current GPS to city', PrintConv => '"$val km"' },
-    GeolocationBearing  => { %geoGroups, Notes => 'compass bearing to city center' },
-    GeolocationPosition => { %geoGroups, Notes => 'approximate GPS coordinates of city',
+    GeolocationCity     => { %geoInfo, Notes => 'name of city nearest to the current GPS coordinates', ValueConv => '$self->Decode($val,"UTF8")' },
+    GeolocationRegion   => { %geoInfo, Notes => 'geolocation state, province or region', ValueConv => '$self->Decode($val,"UTF8")' },
+    GeolocationSubregion=> { %geoInfo, Notes => 'geolocation county or subregion', ValueConv => '$self->Decode($val,"UTF8")' },
+    GeolocationCountry  => { %geoInfo, Notes => 'geolocation country name', ValueConv => '$self->Decode($val,"UTF8")' },
+    GeolocationCountryCode=>{%geoInfo, Notes => 'geolocation country code' },
+    GeolocationTimeZone => { %geoInfo, Notes => 'geolocation time zone name' },
+    GeolocationPopulation=>{ %geoInfo, Notes => 'city population rounded to 2 significant digits' },
+    GeolocationDistance => { %geoInfo, Notes => 'distance in km from current GPS to city', PrintConv => '"$val km"' },
+    GeolocationPosition => { %geoInfo, Notes => 'approximate GPS coordinates of city',
         PrintConv => '$val =~ s/ /, /; $val',
     },
+    GeolocationWarning  => { %geoInfo },
 );
 
 # tags defined by UserParam option (added at runtime)
@@ -2648,6 +2649,7 @@ sub ExtractInfo($;@)
         }
         # initialize ExifTool object members
         $self->Init();
+        $$self{InExtract} = 1;  # set flag indicating we are inside ExtractInfo
 
         delete $$self{MAKER_NOTE_FIXUP};    # fixup information for extracted maker notes
         delete $$self{MAKER_NOTE_BYTE_ORDER};
@@ -2825,6 +2827,7 @@ sub ExtractInfo($;@)
             $self->FoundTag('FileTypeExtension', '');
             $self->DoneExtract();
             $raf->Close() if $raf;
+            delete $$self{InExtract} unless $reEntry;
             return 1;
         }
         # get list of file types to check
@@ -3056,6 +3059,7 @@ sub ExtractInfo($;@)
         $$self{$_} = $$reEntry{$_} foreach keys %$reEntry;
         SetByteOrder($saveOrder);
     }
+    delete $$self{InExtract} unless $reEntry;
 
     # ($type may be undef without an Error when processing sub-documents)
     return 0 if not defined $type or exists $$self{VALUE}{Error};
@@ -3075,8 +3079,13 @@ sub GetInfo($;@)
 {
     local $_;
     my $self = shift;
-    my %saveOptions;
+    my (%saveOptions, @saveMembers, @savedMembers);
 
+    # save necessary members to allow GetInfo to be called from within ExtractInfo
+    if ($$self{InExtract}) {
+        @saveMembers = qw(REQUESTED_TAGS REQ_TAG_LOOKUP IO_TAG_LIST);
+        @savedMembers = @$self{@saveMembers};
+    }
     unless (@_ and not defined $_[0]) {
         %saveOptions = %{$$self{OPTIONS}}; # save original options
         # must set FILENAME so it isn't parsed from the arguments
@@ -3159,8 +3168,9 @@ sub GetInfo($;@)
         @{$$self{IO_TAG_LIST}} = $self->GetTagList($rtnTags, $sort, $$self{OPTIONS}{Sort2});
     }
 
-    # restore original options
+    # restore original options and member variables
     %saveOptions and $$self{OPTIONS} = \%saveOptions;
+    @$self{@saveMembers} = @savedMembers if @saveMembers;
 
     return \%info;
 }
@@ -4253,36 +4263,94 @@ sub DoneExtract($)
         Image::ExifTool::Validate::FinishValidate($self, $$self{REQ_TAG_LOOKUP}{validate});
     }
     # generate geolocation tags if requested
-    if ($$opts{Geolocation} and ((defined $$self{VALUE}{GPSLatitude} and
-        defined $$self{VALUE}{GPSLongitude}) or $$self{VALUE}{GPSCoordinates} or
-        $$opts{Geolocation} =~ /,/))
-    {
-        my $lat = $self->GetValue('GPSLatitude', 'ValueConv');
-        my $lon = $self->GetValue('GPSLongitude', 'ValueConv');
-        if (defined $lat and defined $lon) {
-            my $latRef = $$self{VALUE}{GPSLatitudeRef};
-            my $lonRef = $$self{VALUE}{GPSLongitudeRef};
-            $lat = -$lat if $lat and $lat > 0 and $latRef and $latRef eq 'S';
-            $lon = -$lon if $lon and $lon > 0 and $lonRef and $lonRef eq 'W';
-        } elsif ($$self{VALUE}{GPSCoordinates}) {
-            my $pos = $self->GetValue('GPSCoordinates', 'ValueConv');
-            ($lat, $lon) = split /[, ]+/, $pos;
-        } else {
-            ($lat, $lon) = split /[, ]+/, $$opts{Geolocation};
+    if ($$opts{Geolocation}) {
+        my ($arg, @defaults, @tags, $tag, @coord, @ref, @city, $doneCity);
+        my $geoOpt = $$opts{Geolocation};
+        my @args = split /\s*,\s*/, $$opts{Geolocation};
+        foreach $arg (@args) {
+            $arg !~ s/^\$// and push(@defaults, $arg), next;
+            push @tags, $arg;   # argument is a tag name
         }
-        if (defined $lat and defined $lon) {
+        unless (@tags) {
+            # default tags to read if not specified
+            @tags = qw(GPSLatitude GPSLongitude GPSLatitudeRef GPSLongitudeRef
+                       GPSCoordinates LocationShownGPSLatitude LocationShownGPSLongitude
+                       XMP:City State CountryCode Country
+                       IPTC:City Province-State Country-PrimaryLocationCode Country-PrimaryLocationName
+                       LocationShownCity LocationShownProvinceState LocationShownCountryCode LocationShownCountryName);
+        }
+        # get information for specified tags
+        my $info = $self->GetInfo(\@tags, { PrintConv => 0, Duplicates => 0 }); # (returns tags in proper case)
+        $opts = $$self{OPTIONS};    # (necessary because GetInfo changes the OPTIONS hash)
+        foreach $tag (@tags) {
+            my $val = $$info{$tag};
+            next unless defined $val;
+            if ($tag =~ /Coordinates/) {
+                next if defined $coord[0] and defined $coord[1];
+                @coord = split ' ', $val;
+                next;
+            }
+            my $n = $tag =~ /Latitude/ ? 0 : ($tag =~ /Longitude/ ? 1 : undef);
+            if (defined $n) {
+                if ($tag =~ /Ref$/) {
+                    $ref[$n] = $val unless $ref[$n];
+                } else {
+                    $coord[$n] = $val unless defined $coord[$n];
+                }
+                next;
+            }
+            # handle city tags (save info for first city found)
+            if ($tag =~ /City/) {
+                @city and $doneCity = 1, next;
+                push @city, $val;
+            } elsif (@city) {
+                push @city, $val unless $doneCity;
+                next if $doneCity;
+            }
+        }
+        if (defined $coord[0] and defined $coord[1]) {
+            $coord[0] = -$coord[0] if $ref[0] and $coord[0] > 0 and $ref[0] eq 'S';
+            $coord[1] = -$coord[1] if $ref[1] and $coord[1] > 0 and $ref[1] eq 'W';
+            $arg = join ',', @coord;
+        } elsif (@city) {
+            $arg = join ',', @city;
+        }
+        if (not defined $arg) {
+            $arg = join ',', @defaults; # use specified default values if no tags found
+            undef $arg if $arg eq '1';
+        }
+        if ($arg) {
+            $arg = $self->Encode($arg, 'UTF8');
             require Image::ExifTool::Geolocation;
-            my @geo = Image::ExifTool::Geolocation::Geolocate($lat, $lon, $$opts{GeolocMinPop}, $$opts{GeolocMaxDist});
-            if ($geo[0]) {
-                $self->FoundTag(GeolocationCity => $self->Decode($geo[0],'UTF8'));
-                $self->FoundTag(GeolocationRegion => $self->Decode($geo[1],'UTF8')) if $geo[1];
-                $self->FoundTag(GeolocationCountryCode => $geo[2]);
-                $self->FoundTag(GeolocationCountry => $geo[3]) if $geo[3];
-                $self->FoundTag(GeolocationTimeZone => $geo[4]) if $geo[4];
-                $self->FoundTag(GeolocationPopulation => $geo[5]);
-                $self->FoundTag(GeolocationDistance => $geo[6]);
-                $self->FoundTag(GeolocationBearing => $geo[7]) if defined $geo[7];
-                $self->FoundTag(GeolocationPosition => "$geo[8] $geo[9]");
+            if ($$opts{Verbose}) {
+                if ($Image::ExifTool::Geolocation::dbInfo) {
+                    print "Loaded $Image::ExifTool::Geolocation::dbInfo\n";
+                } else {
+                    print "Error loading Geolocation.dat\n";
+                }
+            }
+            local $SIG{'__WARN__'} = \&SetWarning;
+            undef $evalWarning;
+            my $geo = Image::ExifTool::Geolocation::Geolocate($arg, $$opts{GeolocMinPop},
+                                $$opts{GeolocMaxDist}, $$opts{Lang}, $$opts{Duplicates});
+            # ($$geo[0] will be an ARRAY ref if multiple matches were found and the Duplicates option is set)
+            if ($geo and (ref $$geo[0] or not $$geo[11] or not $self->Warn('Multiple Geolocation cities are possible',2))) {
+                my $geoList = ref $$geo[0] ? $geo : [ $geo ];  # make a list if not done alreaday
+                foreach $geo (@$geoList) {
+                    $self->FoundTag(GeolocationCity => $$geo[0]);
+                    $self->FoundTag(GeolocationRegion => $$geo[1]) if $$geo[1];
+                    $self->FoundTag(GeolocationSubregion => $$geo[2]) if $$geo[2];
+                    $self->FoundTag(GeolocationCountryCode => $$geo[3]);
+                    $self->FoundTag(GeolocationCountry => $$geo[4]) if $$geo[4];
+                    $self->FoundTag(GeolocationTimeZone => $$geo[5]) if $$geo[5];
+                    $self->FoundTag(GeolocationPopulation => $$geo[6]);
+                    $self->FoundTag(GeolocationPosition => "$$geo[7] $$geo[8]");
+                    $self->FoundTag(GeolocationDistance => $$geo[9]) if defined $$geo[9];
+                    $self->FoundTag(GeolocationBearing => $$geo[10]) if defined $$geo[10];
+                    $self->FoundTag(GeolocationWarning => "Search matched $$geo[11] cities") if $$geo[11] and $geo eq $$geoList[0];
+                }
+            } elsif ($evalWarning) {
+                $self->Warn(CleanWarning());
             }
         }
     }

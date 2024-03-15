@@ -148,6 +148,7 @@ sub PrintInvGPSCoordinates($)
         $v[2] = Image::ExifTool::ToFloat($v[2]) * ($below ? -1 : 1) if @v == 3;
         return "@v";
     }
+    return $val if $val =~ /^([-+]?\d+(\.\d*)?)\s+([-+]?\d+(\.\d*)?)$/; # already 2 floats?
     return $val if $val =~ /^([-+]\d+(\.\d*)?){2,3}(CRS.*)?\/?$/; # already in ISO6709 format?
     return undef;
 }

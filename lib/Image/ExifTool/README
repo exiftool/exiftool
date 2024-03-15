@@ -176,11 +176,12 @@ key:
   where tags have variable namespaces (in this case each tag must have a
   Namespace entry).
 
-  PREFERRED : Set to true if the tags in this table should always be added when
-  writing information.  Overrides the order specified by SetNewGroups().  When
-  this feature is used, it may also be desirable to specify a preferred group
-  when calling InitWriteDirs() to write these tags; this avoids creating other
-  directories for tags which are already being creating in the preferred group.
+  PREFERRED : Set if the tags in this table should always be added when writing
+  information.  Higher number are higher precedence.  Overrides the order
+  specified by SetNewGroups().  When this feature is used, it may also be
+  desirable to specify a preferred group when calling InitWriteDirs() to write
+  these tags -- this avoids creating other directories for tags which are
+  already being creating in the preferred group.
 
   PERMANENT : Tags in this table are Permanent, and can't be deleted.  Maker
   notes tags are Permanent by default, without the need to set this property.

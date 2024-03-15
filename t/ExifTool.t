@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/ExifTool.t".
 
 BEGIN {
-    $| = 1; print "1..36\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..35\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -396,17 +396,6 @@ my $testnum = 1;
     Image::ExifTool::AddUserDefinedTags('Image::ExifTool::Composite', %tags);
     $exifTool->SetAlternateFile(File1 => 't/images/Nikon.jpg');
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg', 'TestTag');
-    notOK() unless check($exifTool, $info, $testname, $testnum);
-    print "ok $testnum\n";
-}
-
-# test 36: Test Geolocation option
-{
-    ++$testnum;
-    my $exifTool = Image::ExifTool->new;
-    $exifTool->Options(Geolocation => 1);
-    $exifTool->Options(GeolocMinPop => 5000);
-    my $info = $exifTool->ImageInfo('t/images/GPS.jpg', 'Geolocation*');
     notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }

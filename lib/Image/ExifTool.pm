@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.79';
+$VERSION = '12.80';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1103,6 +1103,7 @@ my @availableOptions = (
     [ 'FilterW',          undef,  'input filter when writing tag values' ],
     [ 'FixBase',          undef,  'fix maker notes base offsets' ],
     [ 'Geolocation',      undef,  'generate geolocation tags' ],
+    [ 'GeolocFeature',    undef,  'regular expression of geolocation features to match' ],
     [ 'GeolocMinPop',     undef,  'minimum geolocation population' ],
     [ 'GeolocMaxDist',    undef,  'maximum geolocation distance' ],
     [ 'GeoMaxIntSecs',    1800,   'geotag maximum interpolation time (secs)' ],
@@ -1976,7 +1977,7 @@ my %systemTagsNotes = (
             this write-only tag may be used to write geolocation city, region, country
             code and country based in input GPS coordinates, or to write GPS
             coordinates based on geolocation name.  See the
-            L<Geolocation section of the Geotag page|../geolocation.html> for
+            L<Writing section of the Geolocation page|../geolocation.html#Write> for
             details.  This tag is writable regardless of the API L<Geolocation|../ExifTool.html#Geolocation>
             option setting
         },
@@ -1990,19 +1991,19 @@ my %systemTagsNotes = (
             return $val if lc($val) eq 'geotag';
             my $opts = $$self{OPTIONS};
             my $geo = Image::ExifTool::Geolocation::Geolocate($self->Encode($val,'UTF8'),
-                $$opts{GeolocMinPop}, $$opts{GeolocMaxDist}, $$opts{Lang});
+                $$opts{GeolocMinPop}, $$opts{GeolocMaxDist}, $$opts{Lang}, undef, $$opts{GeolocFeature});
             return '' unless $geo;
-            if ($$geo[11] and $self->Warn('Multiple matching cities found',2)) {
+            if ($$geo[12] and $self->Warn('Multiple matching cities found',2)) {
                 warn "$$self{VALUE}{Warning}\n";
                 return '';
             }
-            my @tags = $self->GetGeolocateTags($wantGroup, defined $$geo[9] ? 0 : 1);
+            my @tags = $self->GetGeolocateTags($wantGroup, defined $$geo[10] ? 0 : 1);
             my %geoNum = ( City => 0, Province => 1, State => 1, Code => 3, Country => 4,
-                           Coordinates => 78, Latitude => 7, Longitude => 8 );
+                           Coordinates => 89, Latitude => 8, Longitude => 9 );
             my ($tag, $value);
             foreach $tag (@tags) {
                 if ($tag =~ /GPS(Coordinates|Latitude|Longitude)?/) {
-                    $value = $geoNum{$1} == 78 ? "$$geo[7],$$geo[8]" : $$geo[$geoNum{$1}];
+                    $value = $geoNum{$1} == 89 ? "$$geo[8],$$geo[9]" : $$geo[$geoNum{$1}];
                 } elsif ($tag =~ /(Code)/ or $tag =~ /(City|Province|State|Country)/) {
                     $value = $$geo[$geoNum{$1}];
                     next unless defined $value;
@@ -2037,6 +2038,7 @@ my %systemTagsNotes = (
     GeolocationCountry  => { %geoInfo, Notes => 'geolocation country name', ValueConv => '$self->Decode($val,"UTF8")' },
     GeolocationCountryCode=>{%geoInfo, Notes => 'geolocation country code' },
     GeolocationTimeZone => { %geoInfo, Notes => 'geolocation time zone name' },
+    GeolocationFeatureCode=>{%geoInfo, Notes => 'feature code, see L<http://www.geonames.org/export/codes.html#P>' },
     GeolocationPopulation=>{ %geoInfo, Notes => 'city population rounded to 2 significant digits' },
     GeolocationDistance => { %geoInfo, Notes => 'distance in km from current GPS to city', PrintConv => '"$val km"' },
     GeolocationPosition => { %geoInfo, Notes => 'approximate GPS coordinates of city',
@@ -4264,10 +4266,11 @@ sub DoneExtract($)
     }
     # generate geolocation tags if requested
     if ($$opts{Geolocation}) {
-        my ($arg, @defaults, @tags, $tag, @coord, @ref, @city, $doneCity);
+        my ($arg, @defaults, @tags, $tag, @coord, @ref, @city, $doneCity, $both);
         my $geoOpt = $$opts{Geolocation};
         my @args = split /\s*,\s*/, $$opts{Geolocation};
         foreach $arg (@args) {
+            lc $arg eq 'both' and $both = 1, next;
             $arg !~ s/^\$// and push(@defaults, $arg), next;
             push @tags, $arg;   # argument is a tag name
         }
@@ -4285,6 +4288,7 @@ sub DoneExtract($)
         foreach $tag (@tags) {
             my $val = $$info{$tag};
             next unless defined $val;
+            $self->VPrint(0, "Found $tag ($val)\n");
             if ($tag =~ /Coordinates/) {
                 next if defined $coord[0] and defined $coord[1];
                 @coord = split ' ', $val;
@@ -4316,10 +4320,13 @@ sub DoneExtract($)
             $arg = join ',', @city;
         }
         if (not defined $arg) {
-            $arg = join ',', @defaults; # use specified default values if no tags found
+            # use specified default values if no tags found
+            $arg = join ',', @defaults;
             undef $arg if $arg eq '1';
+            $both = 1;  # use 'both' GPS and place names if provided
         }
         if ($arg) {
+            $arg .= ',both' if $both;
             $arg = $self->Encode($arg, 'UTF8');
             require Image::ExifTool::Geolocation;
             if ($$opts{Verbose}) {
@@ -4332,9 +4339,10 @@ sub DoneExtract($)
             local $SIG{'__WARN__'} = \&SetWarning;
             undef $evalWarning;
             my $geo = Image::ExifTool::Geolocation::Geolocate($arg, $$opts{GeolocMinPop},
-                                $$opts{GeolocMaxDist}, $$opts{Lang}, $$opts{Duplicates});
+                                $$opts{GeolocMaxDist}, $$opts{Lang}, $$opts{Duplicates},
+                                $$opts{GeolocFeature});
             # ($$geo[0] will be an ARRAY ref if multiple matches were found and the Duplicates option is set)
-            if ($geo and (ref $$geo[0] or not $$geo[11] or not $self->Warn('Multiple Geolocation cities are possible',2))) {
+            if ($geo and (ref $$geo[0] or not $$geo[12] or not $self->Warn('Multiple Geolocation cities are possible',2))) {
                 my $geoList = ref $$geo[0] ? $geo : [ $geo ];  # make a list if not done alreaday
                 foreach $geo (@$geoList) {
                     $self->FoundTag(GeolocationCity => $$geo[0]);
@@ -4343,11 +4351,12 @@ sub DoneExtract($)
                     $self->FoundTag(GeolocationCountryCode => $$geo[3]);
                     $self->FoundTag(GeolocationCountry => $$geo[4]) if $$geo[4];
                     $self->FoundTag(GeolocationTimeZone => $$geo[5]) if $$geo[5];
-                    $self->FoundTag(GeolocationPopulation => $$geo[6]);
-                    $self->FoundTag(GeolocationPosition => "$$geo[7] $$geo[8]");
-                    $self->FoundTag(GeolocationDistance => $$geo[9]) if defined $$geo[9];
-                    $self->FoundTag(GeolocationBearing => $$geo[10]) if defined $$geo[10];
-                    $self->FoundTag(GeolocationWarning => "Search matched $$geo[11] cities") if $$geo[11] and $geo eq $$geoList[0];
+                    $self->FoundTag(GeolocationFeatureCode => $$geo[6]);
+                    $self->FoundTag(GeolocationPopulation => $$geo[7]);
+                    $self->FoundTag(GeolocationPosition => "$$geo[8] $$geo[9]");
+                    $self->FoundTag(GeolocationDistance => $$geo[10]) if defined $$geo[10];
+                    $self->FoundTag(GeolocationBearing => $$geo[11]) if defined $$geo[11];
+                    $self->FoundTag(GeolocationWarning => "Search matched $$geo[12] cities") if $$geo[12] and $geo eq $$geoList[0];
                 }
             } elsif ($evalWarning) {
                 $self->Warn(CleanWarning());
@@ -6085,8 +6094,8 @@ sub MakeTagName($)
     my $name = shift;
     $name =~ tr/-_a-zA-Z0-9//dc;    # remove illegal characters
     $name = ucfirst $name;          # capitalize first letter
-    $name = "Tag$name" if length($name) < 2 or $name =~ /^[-0-9]/;
     # must at least 2 characters long and not start with - or 0-9-
+    $name = "Tag$name" if length($name) < 2 or $name =~ /^[-0-9]/;
     return $name;
 }
 

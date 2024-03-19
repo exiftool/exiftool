@@ -1297,6 +1297,7 @@ sub SetNewValuesFromFile($$;@)
         Filter          => $$options{Filter},
         FixBase         => $$options{FixBase},
         Geolocation     => $$options{Geolocation},
+        GeolocFeature   => $$options{GeolocFeature},
         GeolocMinPop    => $$options{GeolocMinPop},
         GeolocMaxDist   => $$options{GeolocMaxDist},
         GlobalTimeShift => $$options{GlobalTimeShift},

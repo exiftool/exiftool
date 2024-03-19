@@ -528,6 +528,7 @@ my %faceCategories = (
             1 => 'Full-frame on GFX', #IB
             2 => 'Sports Finder Mode', # (mechanical shutter)
             4 => 'Electronic Shutter 1.25x Crop', # (continuous high)
+            8 => 'Digital Tele-Conv', #forum15784
         },
     },
     0x104e => { #forum10800 (X-Pro3)
@@ -549,6 +550,8 @@ my %faceCategories = (
             3 => 'Electronic Front Curtain', #10
         },
     },
+    0x1051 => { Name => 'CropTopLeft', Writable => 'int32u' }, #forum15784
+    0x1052 => { Name => 'CropCenter',  Writable => 'int32u' }, #forum15784
     # 0x1100 - This may not work well for newer cameras (ref forum12682)
     0x1100 => [{
         Name => 'AutoBracketing',

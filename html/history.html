@@ -17,11 +17,32 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.80'><b>Mar. 19, 2024 - Version 12.80</b></a>
+<ul>
+<li>Added GeolocationFeatureCode tag
+<li>Added XMP-acdsee-rs tags and a new XMP-xmpDM tag
+<li>Added ACDSeeRegion2MWGRegion conversion to config_files/acdsee.config
+<li>Added GPSAltitudeRef to XMP-iptcExt LocationDetails structure
+<li>Added a couple of new FujiFilm tags and a new CropMode value
+<li>Added conversion for XMP-aux:ApproximateFocusDistance "infinity"
+<li>Improved Geolocation regular expressions to allow negative matches
+<li>Improved accuracy of Geolocation distance/bearing calculations
+<li>Changed structure of Geolocation database (now version 1.02)
+<li>Minor change to key format for user-defined Geolocation name translations
+<li>Fixed case/spacing of "C2PA" in some CBOR tag descriptions
+<li>Fixed bug extracting binary data from EXR files
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#GeolocFeature">GeolocFeature</a> option
+    </ul>
+</ul>
+
 <a name='v12.79'><b>Mar. 15, 2024 - Version 12.79</b></a>
 <ul>
-<li>Improvements to new <a href="geolocation.html">Geolocation</a> feature:
+<li>Improvements to new <a href="geolocation.html">Geolocation feature</a>:
     <ul>
-    <li>Added ability to obtain GPS coordinates from city name
+    <li>Added reverse Geolocation ability (obtain GPS coordinates from city
+        name), with support for regular expressions
     <li>Added -listgeo option to list the Geolocation database
     <li>Added the ability to include user-defined cities in the Geolocation
         database
@@ -31,7 +52,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
         <a href="ExifTool.html#Geolocation">Geolocation</a> option
     <li>Added language translations for Geolocation names
     <li>Increased resolution of Geolocation GPS positions and stored populations
-</ul>
+    </ul>
 <li>API Changes:
     <ul>
     <li>Save necessary data members to allow GetInfo to be accessed by

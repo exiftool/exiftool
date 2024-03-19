@@ -7,10 +7,28 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Mar. 19, 2024 - Version 12.80
+
+  - Added GeolocationFeatureCode tag
+  - Added XMP-acdsee-rs tags and a new XMP-xmpDM tag
+  - Added ACDSeeRegion2MWGRegion conversion to config_files/acdsee.config
+  - Added GPSAltitudeRef to XMP-iptcExt LocationDetails structure
+  - Added a couple of new FujiFilm tags and a new CropMode value
+  - Added conversion for XMP-aux:ApproximateFocusDistance "infinity"
+  - Improved Geolocation regular expressions to allow negative matches
+  - Improved accuracy of Geolocation distance/bearing calculations
+  - Changed structure of Geolocation database (now version 1.02)
+  - Minor change to key format for user-defined Geolocation name translations
+  - Fixed case/spacing of "C2PA" in some CBOR tag descriptions
+  - Fixed bug extracting binary data from EXR files
+  - API Changes:
+      - Added GeolocFeature option
+
 Mar. 15, 2024 - Version 12.79
 
   - Improvements to new Geolocation feature:
-      - Added ability to obtain GPS coordinates from city name
+      - Added reverse Geolocation ability (obtain GPS coordinates from city
+        name), with support for regular expressions
       - Added -listgeo option to list the Geolocation database
       - Added the ability to include user-defined cities in the Geolocation
         database
@@ -20,7 +38,6 @@ Mar. 15, 2024 - Version 12.79
         Geolocation option
       - Added language translations for Geolocation names
       - Increased resolution of Geolocation GPS positions and stored populations
-
   - API Changes:
       - Save necessary data members to allow GetInfo to be accessed by
         user-defined tags

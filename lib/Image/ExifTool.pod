@@ -728,6 +728,14 @@ to use for the geolocation input.  May also include regular expressions for
 more flexible matching.  See L<https://exiftool.org/geolocation.html> for
 more details.  Default is undef.
 
+=item GeolocFeature
+
+Comma-separated list of feature codes to include in city search, or exclude
+if the list begins with a dash (-).  Valid feature codes are PPL, PPLA,
+PPLA2, PPLA3, PPLA4, PPLA5, PPLC, PPLCH, PPLF, PPLG, PPLL, PPLR, PPLS, STLMT
+and Other.  See L<http://www.geonames.org/export/codes.html#P> for a
+description of these codes.  Default is undef.
+
 =item GeolocMaxDist
 
 Maximum distance in km to the geolocation city.  The Geolocation tags are

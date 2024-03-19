@@ -236,7 +236,7 @@ sub CheckXMP($$$;$)
             return 'Not a floating point number';
         }
         if ($format eq 'rational') {
-            $$valPtr = join('/', Image::ExifTool::Rationalize($$valPtr));
+            $$valPtr = join('/', Image::ExifTool::Rationalize($$valPtr,0xffffffff));
         }
     } elsif ($format eq 'integer') {
         # make sure the value is integer

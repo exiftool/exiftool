@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27567 tags, with 17310 unique tag names.
+They contain a total of 27593 tags, with 17336 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1362,6 +1362,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   ---------                                     --------
   aas                                           XMP aas
   acdsee                                        XMP acdsee
+  acdsee-rs                                     XMP ACDSeeRegions
   album                                         XMP Album
   apple-fi                                      XMP apple_fi
   ast                                           Nikon ast
@@ -1504,6 +1505,66 @@ These tags belong to the ExifTool XMP-acdsee family 1 group.
   RPP                                           lang-alt/
   Snapshots                                     string/+
   Tagged                                        boolean/
+
+=head3 XMP ACDSeeRegions Tags
+
+These tags belong to the ExifTool XMP-acdsee-rs family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  RegionInfoACDSee                              ACDSeeRegionInfo Struct
+  ACDSeeRegionAppliedToDimensions               ACDSeeDimensions Struct_
+  ACDSeeRegionAppliedToDimensionsH              real/_
+  ACDSeeRegionAppliedToDimensionsUnit           string/_
+  ACDSeeRegionAppliedToDimensionsW              real/_
+  ACDSeeRegion                                  ACDSeeRegion Struct_+
+  ACDSeeRegionALGArea                           ACDSeeArea Struct_+
+  ACDSeeRegionALGAreaH                          real/_+
+  ACDSeeRegionALGAreaW                          real/_+
+  ACDSeeRegionALGAreaX                          real/_+
+  ACDSeeRegionALGAreaY                          real/_+
+  ACDSeeRegionDLYArea                           ACDSeeArea Struct_+
+  ACDSeeRegionDLYAreaH                          real/_+
+  ACDSeeRegionDLYAreaW                          real/_+
+  ACDSeeRegionDLYAreaX                          real/_+
+  ACDSeeRegionDLYAreaY                          real/_+
+  ACDSeeRegionName                              string/_+
+  ACDSeeRegionNameAssignType                    string/_+
+  ACDSeeRegionType                              string/_+
+
+=head3 XMP ACDSeeRegionInfo Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  AppliedToDimensions                           ACDSeeDimensions Struct
+  RegionList                                    ACDSeeRegion Struct+
+
+=head3 XMP ACDSeeDimensions Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  H                                             real
+  Unit                                          string
+  W                                             real
+
+=head3 XMP ACDSeeRegion Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  ALGArea                                       ACDSeeArea Struct
+  DLYArea                                       ACDSeeArea Struct
+  Name                                          string
+  NameAssignType                                string
+  Type                                          string
+
+=head3 XMP ACDSeeArea Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  H                                             real
+  W                                             real
+  X                                             real
+  Y                                             real
 
 =head3 XMP Album Tags
 
@@ -5149,6 +5210,7 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   LocationCreatedCountryCode                    string_+
   LocationCreatedCountryName                    string_+
   LocationCreatedGPSAltitude                    rational_+
+  LocationCreatedGPSAltitudeRef                 integer_+
   LocationCreatedGPSLatitude                    string_+
   LocationCreatedGPSLongitude                   string_+
   LocationCreatedIdentifier                     string_+
@@ -5162,6 +5224,7 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   LocationShownCountryCode                      string_+
   LocationShownCountryName                      string_+
   LocationShownGPSAltitude                      rational_+
+  LocationShownGPSAltitudeRef                   integer_+
   LocationShownGPSLatitude                      string_+
   LocationShownGPSLongitude                     string_+
   LocationShownIdentifier                       string_+
@@ -5215,6 +5278,7 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   RatingRegionCountryCode                       string_+
   RatingRegionCountryName                       string_+
   RatingRegionGPSAltitude                       rational_+
+  RatingRegionGPSAltitudeRef                    integer_+
   RatingRegionGPSLatitude                       string_+
   RatingRegionGPSLongitude                      string_+
   RatingRegionIdentifier                        string_+
@@ -5423,6 +5487,7 @@ is to write ImageRegion as a structure with these tags as new fields.
   CountryCode                                   string
   CountryName                                   string
   GPSAltitude                                   rational
+  GPSAltitudeRef                                integer
   GPSLatitude                                   string
   GPSLongitude                                  string
   Identifier                                    string+
@@ -6260,6 +6325,7 @@ These tags belong to the ExifTool XMP-xmpDM family 1 group.
   OutCueScale                                   rational_
   OutCueValue                                   integer_
   PartOfCompilation                             boolean
+  Pick                                          integer
   ProjectName                                   string
   ProjectRef                                    ProjectLink Struct
   ProjectRefPath                                string_
@@ -13099,6 +13165,8 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x104d   CropMode                             int16u
   0x104e   ColorChromeFXBlue                    int32s
   0x1050   ShutterType                          int16u
+  0x1051   CropTopLeft                          int32u
+  0x1052   CropCenter                           int32u
   0x1100   AutoBracketing                       int16u
   0x1101   SequenceNumber                       int16u
   0x1103   DriveSettings                        FujiFilm DriveSettings
@@ -39661,6 +39729,7 @@ FileName.
   GeolocationCountry         ExifTool           no
   GeolocationCountryCode     ExifTool           no
   GeolocationDistance        ExifTool           no
+  GeolocationFeatureCode     ExifTool           no
   GeolocationPopulation      ExifTool           no
   GeolocationPosition        ExifTool           no
   GeolocationRegion          ExifTool           no

@@ -19,15 +19,16 @@
 #       "# <comment>\n"
 #   NNNN City entries:
 #     Offset Format   Description
-#        0   int16u - longitude high 16 bits (converted to 0-0x100000 range)
-#        2   int8u  - longitude low 4 bits, latitude low 4 bits
-#        3   int16u - latitude high 16 bits
+#        0   int16u - latitude high 16 bits (converted to 0-0x100000 range)
+#        2   int8u  - latitude low 4 bits, longitude low 4 bits
+#        3   int16u - longitude high 16 bits
 #        5   int8u  - index of country in country list
 #        6   int8u  - 0xf0 = population E exponent (in format "N.Fe+0E"), 0x0f = population N digit
 #        7   int16u - 0xf000 = population F digit, 0x0fff = index in region list (admin1)
 #        9   int16u - 0x7fff = index in subregion (admin2), 0x8000 = high bit of time zone
 #       11   int8u  - low byte of time zone index
-#       12   string - UTF8 City name, terminated by newline
+#       12   int8u  - 0x0f - feature code index (see below)
+#       13   string - UTF8 City name, terminated by newline
 #   "\0\0\0\0\x01"
 #   Country entries:
 #       1. 2-character country code
@@ -42,6 +43,12 @@
 #   Time zone entries:
 #       1. Time zone name, terminated by newline
 #   "\0\0\0\0\0"
+#
+# Feature Codes: (see http://www.geonames.org/export/codes.html#P for descriptions)
+#
+#       0. Other    3. PPLA2    6. PPLA5    9. PPLF    12. PPLR
+#       1. PPL      4. PPLA3    7. PPLC    10. PPLG    13. PPLS
+#       2. PPLA     5. PPLA4    8. PPLCH   11. PPLL    14. STLMT
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Geolocation;
@@ -49,19 +56,26 @@ package Image::ExifTool::Geolocation;
 use strict;
 use vars qw($VERSION $geoDir $dbInfo);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
-my $databaseVersion = '1.01';
+my $databaseVersion = '1.02';
 
 sub ReadDatabase($);
 sub SortDatabase($);
 sub AddEntry(@);
 sub GetEntry($;$);
-sub Geolocate($;$$$$);
+sub Geolocate($;$$$$$);
 
 my (@cityList, @countryList, @regionList, @subregionList, @timezoneList);
 my (%countryNum, %regionNum, %subregionNum, %timezoneNum, %langLookup);
-my $sortedBy = 'Longitude';
+my $sortedBy = 'Latitude';
+my $pi = 3.1415926536;
+my $earthRadius = 6371;    # earth radius in km
+
+my @featureCodes = qw(Other PPL PPLA PPLA2 PPLA3 PPLA4 PPLA5
+                      PPLC PPLCH PPLF PPLG PPLL PPLR PPLS STLMT ?);
+my $i = 0;
+my %featureCodes = map { lc($_) => $i++ } @featureCodes;
 
 # get path name for database file from lib/Image/ExifTool/Geolocation.dat by default,
 # or according to $Image::ExifTool::Geolocation::directory if specified
@@ -110,7 +124,8 @@ sub ReadDatabase($)
         return 0;
     }
     if ($1 != $databaseVersion) {
-        warn("Wrong Geolocation database version\n");
+        my $which = $1 < $databaseVersion ? 'database' : 'ExifTool';
+        warn("Incompatible Geolocation database (update your $which)\n");
         close(DATFILE);
         return 0;
     }
@@ -125,7 +140,7 @@ sub ReadDatabase($)
     for (;;) {
         $line = <DATFILE>;
         last if length($line) == 6 and $line =~ /\0\0\0\0/;
-        $line .= <DATFILE> while length($line) < 13;
+        $line .= <DATFILE> while length($line) < 14;
         chomp $line;
         push @cityList, $line;
     }
@@ -168,21 +183,20 @@ sub ReadDatabase($)
 
 #------------------------------------------------------------------------------
 # Sort database by specified field
-# Inputs: 0) Field name to sort (Longitude,City,Country)
+# Inputs: 0) Field name to sort (Latitude,City,Country)
 # Returns: 1 on success
 sub SortDatabase($)
 {
     my $field = shift;
-    if ($field eq $sortedBy) {
-        # (already sorted)
-    } elsif ($field eq 'Longitude') {
+    return 1 if $field eq $sortedBy;    # already sorted?
+    if ($field eq 'Latitude') {
         @cityList = sort { $a cmp $b } @cityList;
     } elsif ($field eq 'City') {
-        @cityList = sort { substr($a,12) cmp substr($b,12) } @cityList;
+        @cityList = sort { substr($a,13) cmp substr($b,13) } @cityList;
     } elsif ($field eq 'Country') {
         my %lkup;
         foreach (@cityList) {
-            my $city = substr($_,12);
+            my $city = substr($_,13);
             my $ctry = substr($countryList[ord substr($_,5,1)], 2);
             $lkup{$_} = "$ctry $city";
         }
@@ -196,16 +210,17 @@ sub SortDatabase($)
 
 #------------------------------------------------------------------------------
 # Add cities to the Geolocation database
-# Inputs: 0-8) city,region,subregion,country code,country,timezone,population,lat,lon
-# eg. AddEntry('Sinemorets','Burgas','Obshtina Tsarevo','BG','Bulgaria','Europe/Sofia',400,42.06115,27.97833)
+# Inputs: 0-8) city,region,subregion,country_code,country,timezone,feature_code,population,lat,lon
+# eg. AddEntry('Sinemorets','Burgas','Obshtina Tsarevo','BG','Bulgaria','Europe/Sofia','',400,42.06115,27.97833)
 sub AddEntry(@)
 {
-    my ($city, $region, $subregion, $cc, $country, $timezone, $pop, $lat, $lon) = @_;
-    if (length($cc) != 2) {
+    my ($city, $region, $subregion, $cc, $country, $timezone, $fc, $pop, $lat, $lon) = @_;
+    @_ < 10 and warn("Too few arguments in $city definition (check for updated format)\n"), return;
+    if (@_ != 10 or length($cc) != 2) {
         warn "Country code '${cc}' in UserDefined::Geolocation is not 2 characters\n";
         return;
     }
-    @_ < 9 and warn("Too few arguments in $city definition\n"), return;
+    $fc = $featureCodes{lc $fc} || 0;
     chomp $lon; # (just in case it was read from file)
     # create reverse lookups for country/region/subregion/timezone if not done already
     # (eg. if the entries are being added manually instead of via UserDefined::Geolocation)
@@ -245,7 +260,7 @@ sub AddEntry(@)
     $tn > 255 and $sn |= 0x8000, $tn -= 256;
     $lat = int(($lat + 90)  / 180 * 0x100000 + 0.5) & 0xfffff;
     $lon = int(($lon + 180) / 360 * 0x100000 + 0.5) & 0xfffff;
-    my $hdr = pack('nCnNnC', $lon>>4, (($lon&0x0f)<<4)|($lat&0x0f), $lat>>4,$code, $sn, $tn);
+    my $hdr = pack('nCnNnCC', $lat>>4, (($lat&0x0f)<<4)|($lon&0x0f), $lon>>4, $code, $sn, $tn, $fc);
     push @cityList, "$hdr$city";
     $sortedBy = '';
 }
@@ -253,21 +268,22 @@ sub AddEntry(@)
 #------------------------------------------------------------------------------
 # Unpack entry in database
 # Inputs: 0) entry number, 1) optional language code
-# Returns: 0-8) city,region,subregion,country code,country,timezone,population,lat,lon
+# Returns: 0-9) city,region,subregion,country_code,country,timezone,feature_code,pop,lat,lon
 sub GetEntry($;$)
 {
     my ($entryNum, $lang) = @_;
     return() if $entryNum > $#cityList;
-    my ($ln,$f,$lt,$code,$sb,$tn) = unpack('nCnNnC', $cityList[$entryNum]);
-    my $city = substr($cityList[$entryNum],12);
+    my ($lt,$f,$ln,$code,$sb,$tn,$fc) = unpack('nCnNnCC', $cityList[$entryNum]);
+    my $city = substr($cityList[$entryNum],13);
     my $ctry = $countryList[$code >> 24];
     my $rgn = $regionList[$code & 0x0fff];
     my $sub = $subregionList[$sb & 0x7fff];
     # convert population digits back into exponent format
     my $pop = (($code>>16 & 0x0f) . '.' . ($code>>12 & 0x0f) . 'e+' . ($code>>20 & 0x0f)) + 0;
     $tn += 256 if $sb & 0x8000;
-    $lt = sprintf('%.4f', (($lt<<4)|($f & 0x0f)) * 180 / 0x100000 - 90);
-    $ln = sprintf('%.4f', (($ln<<4)|($f >> 4))   * 360 / 0x100000 - 180);
+    $lt = sprintf('%.4f', (($lt<<4)|($f >> 4))  * 180 / 0x100000 - 90);
+    $ln = sprintf('%.4f', (($ln<<4)|($f & 0x0f))* 360 / 0x100000 - 180);
+    $fc = $featureCodes[$fc & 0x0f];
     my $cc = substr($ctry, 0, 2);
     my $country = substr($ctry, 2);
     if ($lang) {
@@ -295,18 +311,18 @@ sub GetEntry($;$)
         }
         if ($xlat) {
             my $r2 = $rgn;
-            # City-specific: "CCRgn,Sub,City", "CCRgn,,City", "CC,,City", ",City"
+            # City-specific: "CCRgn,Sub,City", "CCRgn,City", "CC,City", ",City"
             # Subregion-specific: "CCRgn,Sub,"
             # Region-specific: "CCRgn,"
             # Country-specific: "CC,"
-            $city = $$xlat{"$cc$r2,$sub,$city"} || $$xlat{"$cc,,$city"} ||
-                    $$xlat{",$city"} || $$xlat{$city} || $city;
+            $city = $$xlat{"$cc$r2,$sub,$city"} || $$xlat{"$cc$r2,$city"} ||
+                    $$xlat{"$cc,$city"} || $$xlat{",$city"} || $$xlat{$city} || $city;
             $sub = $$xlat{"$cc$rgn,$sub,"} || $$xlat{$sub} || $sub;
             $rgn = $$xlat{"$cc$rgn,"} || $$xlat{$rgn} || $rgn;
             $country = $$xlat{"$cc,"} || $$xlat{$country} || $country;
         }
     }
-    return($city,$rgn,$sub,$cc,$country,$timezoneList[$tn],$pop,$lt,$ln);
+    return($city,$rgn,$sub,$cc,$country,$timezoneList[$tn],$fc,$pop,$lt,$ln);
 }
 
 #------------------------------------------------------------------------------
@@ -314,6 +330,7 @@ sub GetEntry($;$)
 # Inputs: 0) "lat,lon", "city,region,country", etc, (city must be first)
 #         1) optional min population, 2) optional max distance (km)
 #         3) optional language code, 4) flag to return multiple cities
+#         5) comma-separated list of feature codes to match (or ignore if leading "-")
 # Returns: Reference to list of city information, or list of city information
 #          lists if returning multiple cities.
 # City information list elements:
@@ -321,16 +338,16 @@ sub GetEntry($;$)
 #         1) UTF8 state, province or region (or empty),
 #         2) UTF8 subregion (or empty)
 #         3) country code, 4) country name,
-#         5) time zone name (empty string possible), 6) approx population,
-#         7/8) approx lat/lon (or undef if geolocation is unsuccessful,
-#         9) approx distance (km), 10) compass bearing to city,
-#         11) non-zero if multiple matches were possible (and city with
+#         5) time zone name (empty string possible), 6) feature code, 7) population,
+#         8/9) approx lat/lon (or undef if geolocation is unsuccessful,
+#         10) approx distance (km), 11) compass bearing to city,
+#         12) non-zero if multiple matches were possible (and city with
 #             the largest population is returned)
-sub Geolocate($;$$$$)
+sub Geolocate($;$$$$$)
 {
-    my ($arg, $pop, $maxDist, $lang, $multi) = @_;
-    my ($minPop, $minDist2, $km, $minN, @dxy);
-    my $earthCirc = 40000;  # earth circumference in km
+    my ($arg, $pop, $maxDist, $lang, $multi, $fcodes) = @_;
+    my ($city, $i, %found, @exact, %regex, @multiCity, $other, $idx);
+    my ($minPop, $minDistU, $minDistC, @matchParms, @matches, @coords, $fcmask, $both);
 
     @cityList or warn('No Geolocation database'), return();
     # make population code for comparing with 2 bytes at offset 6 in database
@@ -338,33 +355,57 @@ sub Geolocate($;$$$$)
         $pop = sprintf('%.1e', $pop);
         $minPop = chr((substr($pop,-1,1)<<4) | (substr($pop,0,1))) . chr(substr($pop,2,1)<<4);
     }
+    if ($fcodes) {
+        my $neg = $fcodes =~ s/^-//;
+        my @fcodes = split /\s*,\s*/, $fcodes;
+        if ($neg) {
+            $fcmask = 0xffff;
+            defined $featureCodes{lc $_} and $fcmask &= ~((1 << $featureCodes{lc $_})) foreach @fcodes;
+        } else {
+            defined $featureCodes{lc $_} and $fcmask |= (1 << $featureCodes{lc $_}) foreach @fcodes;
+        }
+    }
+#
+# process input argument
+#
     $arg =~ s/^\s+//; $arg =~ s/\s+$//; # remove leading/trailing spaces
-    unless ($arg =~ /^([-+]?\d+(?:\.\d+)?)\s*,\s*([-+]?\d+(?:\.\d+)?)$/) {
+    my @args = split /\s*,\s*/, $arg;
+    my %ri = ( cc => 0, co => 1, re => 2, sr => 3, ci => 8, '' => 9 );
+    foreach (@args) {
+        # allow regular expressions optionally prefixed by "ci", "cc", "co", "re" or "sr"
+        if (m{^(-)?(\w{2})?/(.*)/(i?)$}) {
+            my $re = $4 ? qr/$3/im : qr/$3/m;
+            next if not defined($idx = $ri{$2});
+            $other = 1 if $idx < 5;
+            $idx += 10 if $1;   # add 10 for negative matches
+            push @{$regex{$idx}}, $re;
+            $city = '' unless defined $city;
+        } elsif (/^[-+]?\d+(\.\d+)?$/) {    # coordinate format
+            push @coords, $_ if @coords < 2;
+        } elsif (lc eq 'both') {
+            $both = 1;
+        } elsif ($city) {
+            push @exact, lc $_;
+        } else {
+            $city = lc $_;
+        }
+    }
+    unless (defined $city or @coords == 2) {
+        warn("Insufficient information to determine geolocation\n");
+        return();
+    }
+    # sort database by logitude if finding entry based on coordinates
+    SortDatabase('Latitude') if @coords == 2 and ($both or not defined $city);
 #
 # perform reverse Geolocation lookup to determine GPS based on city, country, etc.
 #
-        my @args = split /\s*,\s*/, $arg;
-        my ($city, $i, %found, @exact, %regex, @multiCity, @ciReg, @anyReg, %otherReg, $type );
-        my %ri = ( ci => -1, cc => 0, co => 1, re => 2, sr => 3 );
-        foreach (@args) {
-            # allow regular expressions optionally prefixed by "ci", "cc", "co", "re" or "sr"
-            if (m{^(\w{2})?/(.*)/(i?)$}) {
-                my $re = $3 ? qr/$2/im : qr/$2/m;
-                next if $1 and not defined $ri{$1};
-                $1 or push(@anyReg, $re), next;
-                $1 eq 'ci' and push(@ciReg, $re), next;
-                $otherReg{$ri{$1}} or $otherReg{$ri{$1}} = [ ];
-                push @{$otherReg{$1}}, $re;
-            } elsif ($city) {
-                push @exact, lc $_;
-            } else {
-                $city = lc $_;
-            }
-        }
+    while (defined $city and (@coords != 2 or $both)) {
 Entry:  for ($i=0; $i<@cityList; ++$i) {
-            my $cty = substr($cityList[$i],12);
+            my $cty = substr($cityList[$i],13);
             next if $city and $city ne lc $cty; # test exact city name first
-            $cty =~ $_ or next Entry foreach @ciReg;
+            # test with city-specific regexes
+            if ($regex{8})  { $cty =~ $_ or next Entry foreach @{$regex{8}} }
+            if ($regex{18}) { $cty !~ $_ or next Entry foreach @{$regex{18}} }
             # test other arguments
             my ($cd,$sb) = unpack('x5Nn', $cityList[$i]);
             my $ct = $countryList[$cd >> 24];
@@ -375,26 +416,31 @@ Entry:  for ($i=0; $i<@cityList; ++$i) {
                 $_ and $geoLkup{lc $_} = 1 foreach @geo;
                 $geoLkup{$_} or next Entry foreach @exact;
             }
-            if (%otherReg) {
-                foreach $type (keys %otherReg) {
-                    $geo[$ri{$type}] =~ /$_/ or next Entry foreach @{$otherReg{$type}};
-                }
-            }
-            if (@anyReg) {
+            # test with cc, co, re and sr regexes
+            if ($other) { foreach $idx (0..3) {
+                if ($regex{$idx})    { $geo[$idx] =~ $_ or next Entry foreach @{$regex{$idx}} }
+                if ($regex{$idx+10}) { $geo[$idx] !~ $_ or next Entry foreach @{$regex{$idx+10}} }
+            } }
+            # test regexes for any place name
+            if ($regex{9} or $regex{19}) {
                 my $str = join "\n", $cty, @geo;
-                $str =~ /$_/ or next Entry foreach @anyReg;
+                $str =~ $_ or next Entry foreach @{$regex{9}};
+                $str !~ $_ or next Entry foreach @{$regex{19}};
             }
-            scalar(keys %found) > 200 and warn("Too many matching cities\n"), return();
+            # test feature code and population
+            next if $fcmask and not $fcmask & (1 << (ord(substr($cityList[$i],12,1)) & 0x0f));
             my $pc = substr($cityList[$i],6,2);
             $found{$i} = $pc if not defined $minPop or $pc ge $minPop;
         }
         if (%found) {
-            my @f = keys %found;
-            @f = sort { $found{$b} cmp $found{$a} or $cityList[$a] cmp $cityList[$b] } @f if @f > 1;
-            foreach (@f) {
+            @matches = keys %found;
+            @coords == 2 and @matches = sort({ $a <=> $b } @matches), last; # continue to use coords
+            scalar(keys %found) > 200 and warn("Too many matching cities\n"), return();
+            @matches = sort { $found{$b} cmp $found{$a} or $cityList[$a] cmp $cityList[$b] } @matches if @matches > 1;
+            foreach (@matches) {
                 my @cityInfo = GetEntry($_, $lang);
-                $cityInfo[11] = @f if @f > 1;
-                return \@cityInfo unless @f > 1 and $multi;
+                $cityInfo[12] = @matches if @matches > 1;
+                return \@cityInfo unless @matches > 1 and $multi;
                 push @multiCity, \@cityInfo;
             }
             return \@multiCity;
@@ -405,26 +451,26 @@ Entry:  for ($i=0; $i<@cityList; ++$i) {
 #
 # determine Geolocation based on GPS coordinates
 #
-    my ($lat, $lon) = ($1, $2);
-    # re-sort if necessary
-    SortDatabase('Longitude') unless $sortedBy eq 'Longitude';
+    my ($lat, $lon) = @coords;
     if ($maxDist) {
-        # convert max distance to reduced coordinate units
-        my $tmp = $maxDist * 2 * 0x100000 / $earthCirc;
-        $minDist2 = $tmp * $tmp;
+        $minDistU = $maxDist / (2 * $earthRadius);              # min distance on unit sphere
+        $minDistC = $maxDist * 0x100000 / ($pi * $earthRadius); # min distance in coordinate units
     } else {
-        $minDist2 = 0x100000 * 0x100000;
+        $minDistU = $pi;
+        $minDistC = 0x200000;
     }
-    my $cos = cos($lat * 3.14159 / 180); # cosine factor for longitude distances
+    my $cos = cos($lat * $pi / 180); # cosine factor for longitude distances
     # reduce lat/lon to the range 0-0x100000
     $lat = int(($lat + 90)  / 180 * 0x100000 + 0.5) & 0xfffff;
     $lon = int(($lon + 180) / 360 * 0x100000 + 0.5) & 0xfffff;
-    my $coord = pack('nCn',$lon>>4,(($lon&0x0f)<<4)|($lat&0x0f),$lat>>4);;
+    $lat or $lat = $coords[0] < 0 ? 1 : 0xfffff;    # (zero latitude is a problem for our calculations)
+    my $coord = pack('nCn',$lat>>4,(($lat&0x0f)<<4)|($lon&0x0f),$lon>>4);;
     # binary search to find closest longitude
-    my ($n0, $n1) = (0, scalar(@cityList)-1);
+    my $numEntries = @matches || @cityList;
+    my ($n0, $n1) = (0, $numEntries - 1);
     while ($n1 - $n0 > 1) {
         my $n = int(($n0 + $n1) / 2);
-        if ($coord lt $cityList[$n]) {
+        if ($coord lt $cityList[@matches ? $matches[$n] : $n]) {
             $n1 = $n;
         } else {
             $n0 = $n;
@@ -432,42 +478,44 @@ Entry:  for ($i=0; $i<@cityList; ++$i) {
     }
     # step backward then forward through database to find nearest city
     my ($inc, $end, $n) = (-1, -1, $n0+1);
+    my ($p0, $t0) = ($lat*$pi/0x100000 - $pi/2, $lon*$pi/0x080000 - $pi);
+    my $cp0 = cos($p0);
     for (;;) {
         if (($n += $inc) == $end) {
             last if $inc == 1;
-            ($inc, $end, $n) = (1, scalar(@cityList), $n1);
+            ($inc, $end, $n) = (1, $numEntries, $n1);
         }
-        my ($x,$f,$y) = unpack('nCn', $cityList[$n]);
-        $x = ($x << 4) | ($f >> 4);
-        $y = ($y << 4) | ($f & 0x0f);
-        my ($dy,$dx) = ($y-$lat, $x-$lon);
-        $dx += 0x100000 if $dx < -524288;   # measure the short way around the world
-        $dx -= 0x100000 if $dx > 0x80000;
-        $dx = 2 * $cos * $dx;           # adjust for longitude spacing
-        my $dx2 = $dx * $dx;
-        # searched far enough if longitude alone is further than best distance
-        $dx2 > $minDist2 and $n = $end - $inc, next;
-        my $dist2 = $dx2 + $dy * $dy;
-        next if $dist2 > $minDist2;     # skip if distance is too great
+        my $entryNum = @matches ? $matches[$n] : $n;
+        # get city latitude/longitude
+        my ($lt,$f,$ln) = unpack('nCn', $cityList[$entryNum]);
+        $lt = ($lt << 4) | ($f >> 4);
+        # searched far enough if latitude alone is further than best distance
+        abs($lt - $lat) > $minDistC and $n = $end - $inc, next;
         # ignore if population is below threshold
-        next if defined $minPop and $minPop ge substr($cityList[$n],6,2);
-        $minDist2 = $dist2;
-        @dxy = ($dx, $dy);
-        $minN = $n;
+        next if defined $minPop and $minPop ge substr($cityList[$entryNum],6,2);
+        next if $fcmask and not $fcmask & (1 << (ord(substr($cityList[$entryNum],12,1)) & 0x0f));
+        $ln = ($ln << 4) | ($f & 0x0f);
+        # calculate great circle distance to this city on unit sphere
+        my ($p1, $t1) = ($lt*$pi/0x100000 - $pi/2, $ln*$pi/0x080000 - $pi);
+        my ($sp, $st) = (sin(($p1-$p0)/2), sin(($t1-$t0)/2));
+        my $a = $sp * $sp + $cp0 * cos($p1) * $st * $st;
+        my $distU = atan2(sqrt($a), sqrt(1-$a));
+        next if $distU > $minDistU;
+        $minDistU = $distU;
+        $minDistC = $minDistU * 0x200000 / $pi;
+        @matchParms = ($entryNum, $p1, $t1, $distU);
     }
-    defined $minN or warn("No suitable location in Geolocation database\n"), return();
+    @matchParms or warn("No suitable location in Geolocation database\n"), return();
 
-    my $be; # calculate bearing to geolocated city
-    if ($dxy[0] or $dxy[1]) {
-        $be = atan2($dxy[0],$dxy[1]) * 180 / 3.14159;
-        $be += 360 if $be < 0;
-        $be = int($be + 0.5);
-    }
-    $km = sprintf('%.2f', sqrt($minDist2) * $earthCirc / (2 * 0x100000));
+    # calculate distance in km and bearing to matching city
+    my ($en, $p1, $t1, $distU) = @matchParms;
+    my $km = sprintf('%.2f', 2 * $earthRadius * $distU);
+    my $be = atan2(sin($t1-$t0)*cos($p1-$p0), $cp0*sin($p1)-sin($p0)*cos($p1)*cos($t1-$t0));
+    $be = int($be * 180 / $pi + 360.5) % 360; # convert from radians to integer degrees
 
     # unpack return values from database entry
-    my @cityInfo = GetEntry($minN, $lang);
-    @cityInfo[9,10] = ($km, $be);   # add distance and heading
+    my @cityInfo = GetEntry($en, $lang);
+    @cityInfo[10,11] = ($km, $be);   # add distance and heading
     return \@cityInfo;
 }
 
@@ -524,7 +572,7 @@ Sort database in specified order.
 
 =item Inputs:
 
-0) Sort order: 'Longitude', 'City' or 'Country'
+0) Sort order: 'Latitude', 'City' or 'Country'
 
 =item Return Value:
 
@@ -537,31 +585,34 @@ Sort database in specified order.
 Add entry to Geolocation database.
 
     Image::ExifTool::Geolocation::AddEntry($city, $region,
-        $countryCode, $country, $timezone, $population, $lat, $lon);
+        $countryCode, $country, $timezone, $featureCode
+        $population, $lat, $lon);
 
 =over 4
 
 =item Inputs:
 
-0) GPS latitude (signed floating point degrees)
+0) City name (UTF8)
 
-1) GPS longitude
+1) Region, state or province name (UTF8), or empty string if unknown
 
-2) City name (UTF8)
+2) Subregion name (UTF8), or empty string if unknown
 
-3) Region, state or province name (UTF8), or empty string if unknown
+3) 2-character ISO 3166 country code
 
-4) Subregion name (UTF8), or empty string if unknown
-
-5) 2-character ISO 3166 country code
-
-6) Country name (UTF8), or empty string to use existing definition. If the
+4) Country name (UTF8), or empty string to use existing definition. If the
 country name is provided for a country code that already exists in the
 database, then the database entry is updated with the new country name.
 
-7) Time zone identifier (eg. "America/New_York")
+5) Time zone identifier (eg. "America/New_York")
 
-8) City population
+6) Feature code (eg. "PPL"), or empty if not known
+
+7) City population
+
+8) GPS latitude (signed floating point degrees)
+
+9) GPS longitude
 
 =back
 
@@ -593,11 +644,13 @@ Get entry from Geolocation database.
 
 5) Time zone
 
-6) City population
+6) Feature code
 
-7) GPS latitude
+7) City population
 
-8) GPS longitude
+8) GPS latitude
+
+9) GPS longitude
 
 =item Notes:
 
@@ -612,7 +665,7 @@ L<https://exiftool.org/geolocation.html> for more information.
 Return geolocation information for specified GPS coordinates or city name.
 
     my @cityInfo =
-        Image::ExifTool::Geolocation::Geolocate($arg,$pop,$dist,$lang,$multi);
+        Image::ExifTool::Geolocation::Geolocate($arg,$pop,$dist,$lang,$multi,$codes);
 
 =over 4
 
@@ -636,6 +689,9 @@ L<https://exiftool.org/geolocation.html#Read> for details.
 4) Flag to return multiple cities if there is more than one match.  In this
 case the return value is a list of city information lists.
 
+5) Comma-separated list of feature codes to include in search, or to exclude
+if the list starts with a dash (-).
+
 =item Return Value:
 
 Reference to list of information about the matching city.  If multiple
@@ -657,17 +713,19 @@ The city information list contains the following entries:
 
 5) Standard time zone identifier name
 
-6) City population rounded to 2 significant figures
+6) Feature code
 
-7) Approximate city latitude (signed degrees)
+7) City population rounded to 2 significant figures
 
-8) Approximate city longitude
+8) Approximate city latitude (signed degrees)
 
-9) Distance to city in km if "lat,lon" specified
+9) Approximate city longitude
 
-10) Compass bearing for direction to city if "lat,lon" specified
+10) Distance to city in km if "lat,lon" specified
 
-11) Flag set if multiple matches were found
+11) Compass bearing for direction to city if "lat,lon" specified
+
+12) Flag set if multiple matches were found
 
 =back
 

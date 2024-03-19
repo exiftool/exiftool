@@ -665,6 +665,14 @@ effect as a value of 0 for options with numerical values.</p>
     tag names to use as input to the geolocation determination.  See
     <a href="geolocation.html#Read">here</a> for details.</td>
     <td align=center>undef</td></tr>
+<tr id="GeolocFeature"><td>GeolocFeature</td>
+    <td>Feature codes to include or exclude in city search.  Valid feature codes are
+    PPL, PPLA, PPLA2, PPLA3, PPLA4, PPLA5, PPLC, PPLCH, PPLF, PPLG, PPLL, PPLR, PPLS,
+    STLMT and Other.  Read <a href="http://www.geonames.org/export/codes.html#P">here</a>
+    for a description of these codes.</td>
+    <td align=center>Comma-separated list of feature codes, with leading dash (-) to
+    exclude these features</td>
+    <td align=center>undef</td></tr>
 <tr id="GeolocMaxDist"><td>GeolocMaxDist</td>
     <td>Maximum distance in km to the Geolocation city.  The Geolocation tags are
     not generated if the distance is greater than this.</td>

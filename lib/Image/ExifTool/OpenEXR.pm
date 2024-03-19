@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 # supported EXR value format types (other types are extracted as undef binary data)
 my %formatType = (
@@ -134,7 +134,7 @@ my %formatType = (
     multiView           => { },
     owner               => { Groups => { 2 => 'Author' } },
     pixelAspectRatio    => { },
-    preview             => { },
+    preview             => { Groups => { 2 => 'Preview' } },
     renderingTransform  => { },
     screenWindowCenter  => { },
     screenWindowWidth   => { },
@@ -219,25 +219,25 @@ sub ProcessEXR($$)
             AddTagToTable($tagTablePtr, $tag, $tagInfo);
             $et->VPrint(0, $$et{INDENT}, "[adding $tag]\n");
         }
-        my ($val, $success);
+        my ($val, $success, $buf2);
         my $format = $formatType{$type};
         if ($format or $binary) {
-            $raf->Read($buff, $size) == $size and $success = 1;
+            $raf->Read($buf2, $size) == $size and $success = 1;
             if (not $format) {
-                $val = \$buff;  # treat as undef binary data
+                $val = \$buf2;  # treat as undef binary data
             } elsif ($format ne '1') {
                 # handle formats which map nicely into ExifTool format codes
                 if ($format =~ /^(\w+)\[?(\d*)/) {
                     my ($fmt, $cnt) = ($1, $2);
                     $cnt = $fmt eq 'string' ? $size : 1 unless $cnt;
-                    $val = ReadValue(\$buff, 0, $fmt, $cnt, $size);
+                    $val = ReadValue(\$buf2, 0, $fmt, $cnt, $size);
                 }
             # handle other format types
             } elsif ($type eq 'tiledesc') {
                 if ($size >= 9) {
-                    my $x = Get32u(\$buff, 0);
-                    my $y = Get32u(\$buff, 4);
-                    my $mode = Get8u(\$buff, 8);
+                    my $x = Get32u(\$buf2, 0);
+                    my $y = Get32u(\$buf2, 4);
+                    my $mode = Get8u(\$buf2, 8);
                     my $lvl = { 0 => 'One Level', 1 => 'MIMAP Levels', 2 => 'RIPMAP Levels' }->{$mode & 0x0f};
                     $lvl or $lvl = 'Unknown Levels (' . ($mode & 0xf) . ')';
                     my $rnd = { 0 => 'Round Down', 1 => 'Round Up' }->{$mode >> 4};
@@ -246,7 +246,7 @@ sub ProcessEXR($$)
                 }
             } elsif ($type eq 'chlist') {
                 $val = [ ];
-                while ($buff =~ /\G([^\0]{1,31})\0(.{16})/sg) {
+                while ($buf2 =~ /\G([^\0]{1,31})\0(.{16})/sg) {
                     my ($str, $dat) = ($1, $2);
                     my ($pix,$lin,$x,$y) = unpack('VCx3VV', $dat);
                     $pix = { 0 => 'int8u', 1 => 'half', 2 => 'float' }->{$pix} || "unknown($pix)";
@@ -255,14 +255,14 @@ sub ProcessEXR($$)
             } elsif ($type eq 'stringvector') {
                 $val = [ ];
                 my $pos = 0;
-                while ($pos + 4 <= length($buff)) {
-                    my $len = Get32u(\$buff, $pos);
-                    last if $pos + 4 + $len > length($buff);
-                    push @$val, substr($buff, $pos + 4, $len);
+                while ($pos + 4 <= length($buf2)) {
+                    my $len = Get32u(\$buf2, $pos);
+                    last if $pos + 4 + $len > length($buf2);
+                    push @$val, substr($buf2, $pos + 4, $len);
                     $pos += 4 + $len;
                 }
             } else {
-                $val = \$buff;  # (shouldn't happen)
+                $val = \$buf2;  # (shouldn't happen)
             }
         } else {
             # avoid loading binary data
@@ -282,13 +282,13 @@ sub ProcessEXR($$)
             $dim = [$3 - $1 + 1, $4 - $2 + 1];
         }
         if ($verbose) {
-            my $dataPt = ref $val ? $val : \$val,
+            my $dataPt = ref $val eq 'SCALAR' ? $val : \$buf2;
             $et->VerboseInfo($tag, $tagInfo,
                 Table   => $tagTablePtr,
                 Value   => $val,
                 Size    => $size,
                 Format  => $type,
-                DataPt  => \$buff,
+                DataPt  => $dataPt,
                 Addr    => $raf->Tell() - $size,
             );
         }

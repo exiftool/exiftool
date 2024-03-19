@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.63';
+$VERSION = '3.64';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -171,6 +171,7 @@ my %xmpNS = (
     pmi       => 'http://prismstandard.org/namespaces/pmi/2.2/',
     prm       => 'http://prismstandard.org/namespaces/prm/3.0/',
     acdsee    => 'http://ns.acdsee.com/iptc/1.0/',
+   'acdsee-rs'=> 'http://ns.acdsee.com/regions/',
     digiKam   => 'http://www.digikam.org/ns/1.0/',
     swf       => 'http://ns.adobe.com/swf/1.0/',
     cell      => 'http://developer.sonyericsson.com/cell/1.0/',
@@ -801,6 +802,10 @@ my %sRangeMask = (
     acdsee => {
         Name => 'acdsee',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::acdsee' },
+    },
+   'acdsee-rs' => {
+        Name => 'acdsee-rs',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::ACDSeeRegions' },
     },
     digiKam => {
         Name => 'digiKam',
@@ -2554,7 +2559,17 @@ my %sPantryItem = (
             return $val;
         },
     },
-    ApproximateFocusDistance => { Writable => 'rational' }, #PH (LR3)
+    ApproximateFocusDistance => {
+        Writable => 'rational',
+        PrintConv => {
+            4294967295 => 'infinity',
+            OTHER => sub {
+                my ($val, $inv) = @_;
+                return $val eq 'infinity' ? 4294967295 : $val if $inv;
+                return $val eq 4294967295 ? 'infinity' : $val;
+            },
+        },
+    }, #PH (LR3)
     # the following new in LR6 (ref forum6497)
     IsMergedPanorama         => { Writable => 'boolean' },
     IsMergedHDR              => { Writable => 'boolean' },

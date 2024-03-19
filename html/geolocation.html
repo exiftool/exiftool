@@ -1,0 +1,441 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>ExifTool Geolocation Feature</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+<style type="text/css">
+<!--
+pre   { color: #800; margin-left: 4em }
+.indent { margin-left: 22% }
+-->
+</style>
+</head>
+<body>
+<div class='index'>
+<a href="#Read">Reading Geolocation</a>
+<br>&nbsp; - <a href="#Reg">Regular expressions</a>
+<br>&nbsp; - <a href="#DefTags">Default tags</a>
+<br>&nbsp; - <a href="#DefInput">Default input</a>
+<br><a href="#Write">Writing Geolocation</a>
+<br><a href="#Extra">Extra Features</a>
+<br>&nbsp; - <a href="#Lang">Language translations</a>
+<br>&nbsp; - <a href="#Params">Optional parameters</a>
+<br>&nbsp; - <a href="#Alt">Alternate database</a>
+<br>&nbsp; - <a href="#List">Listing the database</a>
+<br>&nbsp; - <a href="#Custom">Customization</a>
+</div>
+<a name="Geolocation"></a>
+<h1>ExifTool Geolocation Feature</h1>
+
+<p>ExifTool has the ability to generate geolocation information (including city,
+region, subregion and country) from GPS coordinates (and visa versa) using an
+included database of all cities with population 2000 or greater based
+on a Creative Commons database from <a href="http://www.geonames.org/export/">geonames.org</a>.
+(An extended version of the ExifTool database is available with cities down to a
+population of 500. <a href="#Alt">See below</a> for more information.) There are
+two basic modes of operation: one to generate geolocation information when
+reading from a file, and another to write geolocation information to a file.</p>
+
+<a name="Read"></a>
+<h3>Reading Geolocation Information</h3>
+
+<blockquote>Geolocation tags may be generated when reading a file by setting the
+<a href="ExifTool.html#Geolocation">API Geolocation option</a>.  For example,
+
+<pre>exiftool -api geolocation "-geolocation*" test.jpg</pre>
+
+produces an output similar to this for a file containing GPS coordinates:
+
+<pre class=blk>Geolocation City                : Saint-Hyacinthe
+Geolocation Region              : Quebec
+Geolocation Subregion           : Montérégie
+Geolocation Country Code        : CA
+Geolocation Country             : Canada
+Geolocation Time Zone           : America/Toronto
+Geolocation Feature Code        : PPL
+Geolocation Population          : 50000
+Geolocation Distance            : 1.8 km
+Geolocation Bearing             : 226
+Geolocation Position            : 45.6307, -72.9571</pre>
+
+The above tags are generated based on either a GPS position (preferentially), or
+from city, state/province and country information.  The meanings of the
+resulting region and subregion tags vary by country.  In North America for
+example, region corresponds to state or province, and subregion corresponds to
+county. The population is rounded to 2 significant digits, and the distance and
+bearing are generated only when an input GPS position is provided, and give the
+distance in km and the compass bearing from the input GPS point to the
+GeolocationPosition of the returned city.  See the
+<a href="TagNames/Extra.html">Extra Tags documentation</a> for a brief description
+of each Geolocation tag.</blockquote>
+
+<a name="DefTags"></a>
+<p><b>Default tags</b></p>
+
+<blockquote>The Geolocation option has a list of default tags that it looks for
+in the source file to use as inputs for determining the nearest city.  These tags
+are, in order:
+
+<blockquote>GPSLatitude, GPSLongitude, GPSLatitudeRef, GPSLongitudeRef,
+GPSCoordinates, LocationShownGPSLatitude, LocationShownGPSLongitude,
+XMP:City, State, CountryCode, Country,
+IPTC:City, Province-State, Country-PrimaryLocationCode, Country-PrimaryLocationName,
+LocationShownCity, LocationShownProvinceState, LocationShownCountryCode,
+LocationShownCountryName</blockquote>
+
+First, the file is checked for GPS tags in this list, and coordinates from the
+first available of these tags are used as inputs to determine the geolocation. 
+If no GPS position is found, the file is checked for
+city/state/province/country/countrycode tags in the list, and the inputs are
+taken from the first available city information.  Note that each specified city
+tag must come before the corresponding state/province, etc.  If multiple
+matches are found, the city with the largest population is returned unless
+the <code>-a</code> (API <a href="ExifTool.html#Duplicates">Duplicates</a>)
+option is used in which case all matching cities are returned.</blockquote>
+
+<blockquote>To override the default list of tags, set the Geolocation option
+to a comma-separated list of tags beginning with dollar signs, but note that
+Composite tags may not be used.  For example:
+
+<pre>exiftool -api geolocation="$XMP:GPSLatitude,$XMP:GPSLongitude" test.jpg</pre>
+
+<i>(Note: On Mac/Linux/PowerShell, use single quotes (<code>'</code>) instead
+of double quotes (<code>"</code>) around arguments containing a dollar sign
+(<code>$</code>).)</i></blockquote>
+
+<a name="DefInput"></a>
+<p><b>Default input</b></p>
+
+<blockquote>It may be useful to specify a default input for the case where none
+of the specified tags are found.  For this, the default input is added to the
+Geolocation setting.  For example, the information returned by this command
+includes Geolocation information for the specified coordinates if none of the
+default tags listed above are found:
+
+<pre>exiftool -api geolocation="44.3414,-72,1234" test.jpg</pre>
+
+Alternately, default city information may be specified.  When doing this, the
+city name comes first, and is optionally followed by region (eg. state or
+province), subregion (eg. county), country code and/or country name in any
+order, separated by commas.  For example:
+
+<pre>exiftool -api geolocation="London,England" test.jpg</pre>
+
+The default tags may be specified at the same time as the default value, for example:
+
+<pre>exiftool -api geolocation="$gpslatitude,$gpslongitude,-37.81,144.96" test.jpg</pre>
+
+This feature may be used to generate geolocation information with no input file
+at all.  For example, this command:
+
+<pre>exiftool -api geolocation=Munich,Germany</pre>
+
+produces this output:
+
+<pre class=blk>Geolocation City                : Munich
+Geolocation Region              : Bavaria
+Geolocation Subregion           : Upper Bavaria
+Geolocation Country Code        : DE
+Geolocation Country             : Germany
+Geolocation Time Zone           : Europe/Berlin
+Geolocation Feature Code        : PPLA
+Geolocation Population          : 1300000
+Geolocation Position            : 48.1375, 11.5755</pre></blockquote>
+
+<a name="Reg"></a>
+<p><b>Regular expressions</b></p>
+
+<blockquote>An advanced feature allows regular expressions of the form
+<code>/expr/</code> to be used to match city, region, etc names. The regular
+expression may be prefixed by "<code>ci</code>", "<code>re</code>",
+"<code>sr</code>", "<code>cc</code>" or "<code>co</code>" to apply only to City,
+Region, Subregion, CountryCode or Country names, otherwise the expression
+matches any of these. A dash at the start is used to exclude matching entries
+(eg. <code>-co/Canada/</code> excludes cities in Canada from the search).  The
+<b>regular expression matches are case sensitive</b> unless "<code>i</code>" is
+added after the expression.  For example:
+
+<pre><span class=blk># this matches "Frontenac" in any place name (case insensitive)</span>
+exiftool -api geolocation=/frontenac/i
+
+<span class=blk># while this matches "Frontenac" only in subregion names</span>
+exiftool -api geolocation=sr/frontenac/i
+
+<span class=blk># and this matches the city "Kingston" with "Ontario" in any other field</span>
+exiftool -api geolocation=kingston,/ontario/i</pre>
+
+One more feature allows both GPS and place names to be used together if no input
+tags are found and the default value includes both of these.  In this case the
+closest city matching all of the specified names is returned.  For example, to
+find the closest city in Canada to a specified location, you could do this:
+
+<pre>exiftool -api geolocation="40.784,-73.966,co/Canada/"</pre>
+
+Note that a regular expression must be used to specify a country name because
+otherwise simply using "Canada" would match only cities of that name.
+This technique may be useful if you were travelling near the border of
+a country and want to keep the geolocated cities within that country.</blockquote>
+
+<hr>
+<a name="Write"></a>
+<h3>Writing Geolocation Information</h3>
+
+<blockquote>A write-only <a href="TagNames/Extra.html">Geolocate tag</a> is
+provided as a convenience to simplify the writing of standard geolocation tags.
+This is an alternative to using the API Geolocation option and copying the
+generated Geolocation tags individually to the desired locations.</blockquote>
+
+<blockquote>Writing the Geolocate tag with GPS coordinates generates city,
+state/province, country code and country tags.  By default, XMP tags are
+generated, but group name(s) may be specified to write tags to other locations
+(see table below).  For example, to write the XMP City, State, CountryCode and
+Country tags from specified GPS coordinates:
+
+<pre>exiftool "-geolocate=45.6429,-72.9374" test.jpg</pre>
+
+or to write the IPTC tags from GPS coordinates in a file:
+
+<pre>exiftool "-iptc:geolocate&lt;gpsposition" test.jpg</pre>
+
+Conversely, GPS coordinates may be generated by writing Geolocate with a city
+name.  A region, subregion, country code and/or country name may be added in any
+order after the city name, separated by commas.  Fields must match exactly the
+entries in the database, but case is not significant.  Regular expressions may
+also be used as described in the previous section.  If more than one matching
+city is found then a minor warning is issued and the tags are not written,
+but the IgnoreMinorErrors option may be used to write tags for the matching city
+with the largest population.  For example, the following command writes
+XMP:GPSLatitude, etc and IPTC:City, etc for Paris France.
+
+<pre>exiftool -xmp:iptc:geolocate="paris,fr" test.jpg</pre>
+
+Additionally, the Geolocate tag may be set to the value "geotag" to generate the
+geolocation tags from GPS coordinates when <a href="geotag.html">geotagging</a>.
+For example:
+
+<pre>exiftool -geolocate=geotag -geotag track.gpx c:\images</pre>
+
+The table below lists the tags that are written based on the group name(s)
+specified for the Geolocate tag.
+
+<blockquote><table width='90%' class='norm'>
+<tr><th rowspan='2'>Group Name(s) Specified</th><th colspan='2'>Tags Written based on input...</th></tr>
+<tr><th width='35%'>GPS coordinates</th><th width='35%'>City name</th></tr>
+<tr><td align='center'><i>(none)</i></td><td>
+    XMP:City<br>
+    XMP:State<br>
+    XMP:CountryCode<br>
+    XMP:Country</td><td>
+    GPSLatitude<br>
+    GPSLongitude<br>
+    GPSLatitudeRef<br>
+    GPSLongitudeRef<br>
+    QuickTime::GPSCoordinates</td></tr>
+<tr><td align='center'>XMP</td><td>
+    XMP:City<br>
+    XMP:State<br>
+    XMP:CountryCode<br>
+    XMP:Country</td><td>
+    <i>(only if XMP-exif not specified)</i><br>
+    XMP:GPSLatitude<br>
+    XMP:GPSLongitude</td></tr>
+<tr><td align='center'>XMP-photoshop</td><td colspan='2'><div class='indent'>
+    XMP-photoshop:City<br>
+    XMP-photoshop:State<br>
+    XMP-photoshop:Country</div></td></tr>
+<tr><td align='center'>XMP-iptcCore</td><td colspan='2'><div class='indent'>
+    XMP-iptcCore:CountryCode</div></td></tr>
+<tr><td align='center'>XMP-exif</td><td colspan='2'><div class='indent'>
+    XMP-exif:GPSLatitude<br>
+    XMP-exif:GPSLongitude</div></td></tr>
+<tr><td align='center'>XMP-iptcExt</td><td colspan='2'><div class='indent'>
+    XMP-iptcExt:LocationShownCity<br>
+    XMP-iptcExt:LocationShownProvinceState<br>
+    XMP-iptcExt:LocationShownCountryCode<br>
+    XMP-iptcExt:LocationShownCountryName<br>
+    XMP-iptcExt:LocationShownGPSLatitude<br>
+    XMP-iptcExt:LocationShownGPSLongitude</div></td></tr>
+<tr><td align='center'>IPTC<br><i>(older IIM spec.)</i></td><td colspan='2'><div class='indent'>
+    IPTC:City<br>
+    IPTC:Province-State<br>
+    IPTC:Country-PrimaryLocationCode<br>
+    IPTC:Country-PrimaryLocationName</div></td></tr>
+<tr><td align='center'>GPS or EXIF</td><td colspan='2'><div class='indent'>
+    GPS:GPSLatitude<br>
+    GPS:GPSLongitude<br>
+    GPS:GPSLatitudeRef<br>
+    GPS:GPSLongitudeRef</div></td></tr>
+<tr><td align='center'>Keys</td><td colspan='2'><div class='indent'>
+    Keys:GPSCoordinates</div></td></tr>
+<tr><td align='center'>ItemList</td><td colspan='2'><div class='indent'>
+    ItemList:GPSCoordinates</div></td></tr>
+<tr><td align='center'>UserData</td><td colspan='2'><div class='indent'>
+    UserData:GPSCoordinates</div></td></tr>
+<tr><td align='center'>QuickTime</td><td colspan='2'><div class='indent'>
+    <i>(only if Keys, ItemList or UserData not specified)</i><br>
+    QuickTime:GPSCoordinates</div></td></tr>
+</table></blockquote></blockquote>
+
+<hr>
+<a name="Extra"></a>
+<h3>Extra Features</h3>
+
+<a name="Lang"></a>
+<p><b>Language translations</b></p>
+
+<blockquote>The exiftool <code>-lang</code> option (API <a href="ExifTool.html#Lang">Lang</a>
+option) applies to the tags generated by the API Geolocation option.  For example,
+
+<pre>exiftool -api geolocation=Munich,Germany -lang de</pre>
+
+gives this output
+
+<pre class=blk>Geolocation City                : Muenchen
+Geolocation Region              : Bayern
+Geolocation Subregion           : Regierungsbezirk Oberbayern
+Geolocation Country Code        : DE
+Geolocation Country             : Bundesrepublik Deutschland
+Geolocation Time Zone           : Europe/Berlin
+Geolocation Feature Code        : PPLA
+Geolocation Population          : 1300000
+Geolocation Position            : 48.1375, 11.5755</pre>
+
+Note that the language coverage currently isn't very comprehensive, and may
+only be used when reading (ie. not when writing the Geolocate tag or in the API
+Geolocation option setting), but may be extended via user-defined translations
+(see <a href="#Custom">Customization</a> below).</blockquote>
+
+<a name="Params"></a>
+<p><b>Optional parameters</b></p>
+
+<blockquote>Two special API options are used as parameters in the geolocation
+search for both the API Geolocation option and when writing the Geolocate tag.
+
+<blockquote>
+<table class='norm'>
+<tr><th>API Option</th><th>Description</th></tr>
+<tr><td><a href="ExifTool.html#GeolocMinPop">GeolocMinPop</a></td>
+<td>Minimum city population to consider when searching for a city in the
+database.  This is compared with the populations from the database which are
+stored with 2 significant digits.  Cities with populations lower than this are
+not considered in the search.</td></tr>
+<tr><td><a href="ExifTool.html#GeolocMaxDist">GeolocMaxDist</a></td>
+<td>When determining geolocation from input GPS coordinates, cities with
+distances in km greater than this are ignored.</td></tr>
+<tr><td><a href="ExifTool.html#GeolocFeature">GeolocFeature</a></td>
+<td>Comma-separated list of feature codes to include in search, or to exclude
+if the list starts with a dash (-). Valid feature codes are PPL, PPLA, PPLA2,
+PPLA3, PPLA4, PPLA5, PPLC, PPLCH, PPLF, PPLG, PPLL, PPLR, PPLS, STLMT and
+Other.  See <a href="http://www.geonames.org/export/codes.html#P">here</a>
+for a description of these codes.</td></tr>
+</table></blockquote></blockquote>
+
+<a name="Alt"></a>
+<p><b>Alternate database</b></p>
+
+<blockquote>ExifTool is distributed with a geolocation database of cities
+with population 2000 or greater (plus adm div down to
+<a href="http://www.geonames.org/export/codes.html#P">PPLA2</a>), but a larger
+database of cities with population 500 or greater and adm div down to
+<a href="http://www.geonames.org/export/codes.html#P">PPLA4</a> may be downloaded here:
+<a href="https://exiftool.org/Geolocation500-1.02.zip">Geolocation500-1.02.zip</a> (3.9 MB).
+To use the new database, unzip the downloaded file and add the following line to
+your <a href="config.html">ExifTool config file</a>:
+
+<pre>$Image::ExifTool::Geolocation::geoDir = '/PATH/TO/Geolocation500';</pre>
+
+where <code>/PATH/TO</code> is the name of the directory containing the
+unzipped Geolocation500 directory.  The <code>$geoDir</code> variable
+may also be set to an empty string to completely disable loading of a
+Geolocation database, which may be useful for working with only a user-defined
+database.  <i>(Note that this may not work in Windows if there are Unicode
+characters in the path name.)</i></blockquote>
+
+<a name="List"></a>
+<p><b>Listing the database</b></p>
+
+<blockquote>The exiftool application <code>-listgeo</code> option may be used to
+list all entries in the Geolocation database, including any user-defined entries
+(see below for a description of how to create these).  For this output, the API
+GeoMinPop option is in effect, and the application <code>-sort</code> and
+<code>-lang</code> options may be used to sort the output alphabetically and/or
+apply a language translation.</blockquote>
+
+<a name="Custom"></a>
+<p><b>Customization</b></p>
+
+<blockquote>User-defined database entries and language translations may be added
+through definitions in the <a href="config.html">ExifTool config file</a>.
+(Note that the config file must be UTF-8 encoded.)</blockquote>
+
+<blockquote>Database entries are added in this format:
+
+<pre>
+<span class=blk># Add user-defined cities to the Geolocation lookup</span>
+@Image::ExifTool::UserDefined::Geolocation = (
+    <span class=blk># (city,region,subregion,country_code,country,timezone,feature_code,population,lat,lon)</span>
+    ['Sinemorets','Burgas','Obshtina Tsarevo','BG','','Europe/Sofia','PPL',400,42.06115,27.97833],
+    ['Silistar','Burgas','Obshtina Tsarevo','BG','','Europe/Sofia','PPL',0,42.02199,28.00959],
+    ['Krapets','Dobrich','Obshtina Shabla','BG','','Europe/Sofia','PPL',300,43.62621,28.56669],
+);</pre>
+
+The region, subregion, timezone and country may be set to empty strings if they
+are not applicable or not known, but all other fields must be filled.  If the
+country name is empty (as above), then the name from the database is used if
+available, based on the specified country code.</blockquote>
+
+<blockquote>User-defined language translations take this format:
+
+<pre><span class=blk># Add user-defined language translations (note that user-defined
+# translations override any preexisting translations)</span>
+%Image::ExifTool::Geolocation::geoLang = (
+    <span class=blk># translations for the Russian language</span>
+    ru => {
+        <span class=blk># city, region, subregion and/or country names may be specified
+        # alone to provide a translation for any matching name</span>
+        'Sinemorets' =&gt; 'синеморец',
+        'Bulgaria' =&gt; 'Болгария',
+        <span class=blk># a country code and optional region (joined without a comma) and an
+        # optional subregion may be added before the city to be more specific</span>
+        'BGBurgas,Obshtina Shabla,Silistar' =&gt; 'силистар',
+        'BG,Krapets' =&gt; 'Крапец',
+        <span class=blk># the city is omitted to specify only region, subregion or country name</span>
+        'GR,' => 'Греция',          <span class=blk># translate country name only</span>
+        'BGBurgas,' => 'Бургас',    <span class=blk># translate region name only</span>
+        'BGBurgas,Obshtina Tsarevo,' => 'Муниципалитет Царево',<span class=blk># subregion only</span>
+    },
+    <span class=blk># (add other languages here)</span>
+);
+</pre>
+
+Translations in are organized into sections in the <code>%geoLang</code> hash
+based on the language code (eg. "<code>ru</code>" in the example above). Within
+each section are the key/value pairs which are used to apply the translation for
+that language. The keys on the left are used to match names in the database,
+translating them to the values on the right.  Here is a breakdown of the format
+of the keys on the left:
+
+<blockquote><table class='norm'><tr><th>Key format</th><th>Matches...</th></tr>
+<tr><td>Nnnn</td><td>any city, region, subregion or country with name "Nnnn"</td></tr>
+<tr><td>,Nnnn</td><td>any city with name "Nnnn" in any region or country</td></tr>
+<tr><td>CC,Nnnn</td><td>any city with name "Nnnn" in any region and any subregion of the country with code "CC"</td></tr>
+<tr><td>CCRrrr,Nnnn</td><td>any city with name "Nnnn" in region "Rrrr" and any subregion of the country with code "CC"</td></tr>
+<tr><td>CCRrrr,Ssss,Nnnn</td><td>any city with name "Nnnn" in region "Rrrr" and subregion "Ssss" of the country with code "CC"</td></tr>
+<tr><td>CC,</td><td>the country with code "CC"</td></tr>
+<tr><td>CCRrrr,</td><td>the region "Rrrr" in the country with code "CC"</td></tr>
+<tr><td>CCRrrr,Ssss,</td><td>the subregion "Ssss" in region "Rrrr" of the country with code "CC"</td></tr>
+</table></blockquote>
+
+Entries in the table above are ordered from lowest at the top to highest
+priority at the bottom, with the match of highest priority taking precedence
+when translating a name.
+</blockquote>
+
+<hr>
+<i>Created Mar 12, 2024</i><br>
+<i>Last revised Mar 15, 2024</i>
+<p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
+</body>
+</html>

@@ -17,6 +17,32 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.81'><b>Mar. 27, 2024 - Version 12.81</b></a>
+<ul>
+<li>Added ability to read EXIF and XMP from EXR images
+<li>Added ability to delete unknown trailer when writing MOV/MP4 videos
+<li>Added ability to write a couple of Stable Diffusion PNG tags
+<li>Added ability to write one of the Microsoft Xtra Description tags (github
+    #248)
+<li>Added support for using alternate city names in reverse Geolocation
+<li>Added support for reading timed GPS from DOD LS600W TS videos
+<li>Added support for new version of Canon DR4 files
+<li>Added a number of new iTunesInfo tags
+<li>Added a new Olympus LensType
+<li>Allow regular expressions to be used when writing Geolocate tag
+<li>Decode a number of new Nikon tags (thanks Warren Hatch)
+<li>Enhanced writing of Geolocate tag to also write Keys:LocationName
+<li>Cache the results of the last reverse geolocation search to speed batch
+    processing when multiple files have the same search parameters
+<li>Patched problem that could cause runtime errors with some invaid tag names
+<li>Fixed a couple of newly added FujiFilm tags
+<li>Fixed decoding of FujiFilm AFAreaZoneSize
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#GeolocAltNames">GeolocAltNames</a> option
+    </ul>
+</ul>
+
 <a name='v12.80'><b>Mar. 19, 2024 - Version 12.80</b></a>
 <ul>
 <li>Added GeolocationFeatureCode tag
@@ -29,6 +55,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Improved accuracy of Geolocation distance/bearing calculations
 <li>Changed structure of Geolocation database (now version 1.02)
 <li>Minor change to key format for user-defined Geolocation name translations
+<li>Ignore API Geolocation option when copying tags if none of the Geolocation
+    tags are being copied
 <li>Fixed case/spacing of "C2PA" in some CBOR tag descriptions
 <li>Fixed bug extracting binary data from EXR files
 <li>API Changes:
@@ -43,6 +71,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
     <ul>
     <li>Added reverse Geolocation ability (obtain GPS coordinates from city
         name), with support for regular expressions
+    <li>Added ability to geolocate while geotagging
     <li>Added -listgeo option to list the Geolocation database
     <li>Added the ability to include user-defined cities in the Geolocation
         database

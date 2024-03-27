@@ -6728,7 +6728,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
 %Image::ExifTool::QuickTime::iTunesInfo = (
     PROCESS_PROC => \&ProcessMOV,
     GROUPS => { 1 => 'iTunes', 2 => 'Audio' },
-    VARS => { LONG_TAGS => 0 }, # (hack for discrepancy in the way long tags are counted in BuildTagLookup)
+    VARS => { LONG_TAGS => 1 }, # (hack for discrepancy in the way long tags are counted in BuildTagLookup)
     NOTES => q{
         ExifTool will extract any iTunesInfo tags that exist, even if they are not
         defined in this table.  These tags belong to the family 1 "iTunes" group,
@@ -6804,6 +6804,17 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     BARCODE             => 'Barcode',
     LABEL               => 'Label',
     MOOD                => 'Mood',
+    DIRECTOR            => 'Director',
+    DIRECTOR_OF_PHOTOGRAPHY => 'DirectorOfPhotography',
+    PRODUCTION_DESIGNER => 'ProductionDesigner',
+    COSTUME_DESIGNER    => 'CostumeDesigner',
+    SCREENPLAY_BY       => 'ScreenplayBy',
+    EDITED_BY           => 'EditedBy',
+    PRODUCER            => 'Producer',
+    IMDB_ID             => { },
+    TMDB_ID             => { },
+    Actors              => { },
+    TIPL                => { },
     popularimeter       => 'Popularimeter',
     'Dynamic Range (DR)'=> 'DynamicRange',
     initialkey          => 'InitialKey',

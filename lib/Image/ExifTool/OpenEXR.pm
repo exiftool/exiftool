@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 # supported EXR value format types (other types are extracted as undef binary data)
 my %formatType = (
@@ -154,6 +154,19 @@ my %formatType = (
     type                => { },
     version             => { },
     chunkCount          => { },
+    # exif and xmp written by PanoramaStudio4.0.2Pro
+    exif => {
+        Name => 'EXIF',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Exif::Main',
+            ProcessProc => \&Image::ExifTool::ProcessTIFF,
+            Start => 4, # (skip leading 4 bytes with data length)
+        },
+    },
+    xmp  => {
+        Name => 'XMP',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::Main' },
+    },
     # also observed:
     # ilut
 );
@@ -221,9 +234,14 @@ sub ProcessEXR($$)
         }
         my ($val, $success, $buf2);
         my $format = $formatType{$type};
-        if ($format or $binary) {
+        my $subdir = $$tagInfo{SubDirectory};
+        if ($format or $binary or $subdir) {
             $raf->Read($buf2, $size) == $size and $success = 1;
-            if (not $format) {
+            if ($subdir) {
+                $et->HandleTag($tagTablePtr, $tag, undef,
+                    DataPt => \$buf2, DataPos => $raf->Tell() - length($buf2));
+                next if $success;
+            } elsif (not $format) {
                 $val = \$buf2;  # treat as undef binary data
             } elsif ($format ne '1') {
                 # handle formats which map nicely into ExifTool format codes

@@ -728,6 +728,12 @@ to use for the geolocation input.  May also include regular expressions for
 more flexible matching.  See L<https://exiftool.org/geolocation.html> for
 more details.  Default is undef.
 
+=item GeolocAltNames
+
+Flag to search alternate Geolocation city names if available (ie. if
+$Image::ExifTool::Geolocation::altDir has been set).  Set to 0 to disable
+use of the alternate names.  Default is 1.
+
 =item GeolocFeature
 
 Comma-separated list of feature codes to include in city search, or exclude

@@ -29,7 +29,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.74';
+$VERSION = '1.75';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -1221,9 +1221,14 @@ Category:       foreach $category (qw{pos track alt orient atemp}) {
         # also Geolocate if specified
         my $nvHash;
         my $geoloc = $et->GetNewValue('Geolocate', \$nvHash);
-        if ($geoloc and lc($geoloc) eq 'geotag') {
-            $geoloc = ($$nvHash{WantGroup} ? "$$nvHash{WantGroup}:" : '') . 'Geolocate';
-            $et->SetNewValue($geoloc => "$$fix{lat},$$fix{lon}");
+        if ($geoloc and $geoloc =~ /\bgeotag\b/i) {
+            my $tag = ($$nvHash{WantGroup} ? "$$nvHash{WantGroup}:" : '') . 'Geolocate';
+            # pass along any regular expressions to qualify geolocation search
+            my $parms = join ',', grep m(/), split /\s*,\s*/, $geoloc;
+            $parms and $parms = ",$parms,both"; 
+            $et->SetNewValue($tag => "$$fix{lat},$$fix{lon}$parms");
+            # (the Geolocate tag will be restored to its original value
+            # by RestoreNewValues before the next file in batch processing)
         }
         return $err if $qt; # all done if writing to QuickTime only
         # (capture error messages by calling SetNewValue in list context)

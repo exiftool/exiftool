@@ -15,7 +15,7 @@ package Image::ExifTool::NikonCustom;
 use strict;
 use vars qw($VERSION @ISA @EXPORT_OK %buttonsZ9);
 
-$VERSION = '1.24';
+$VERSION = '1.25';
 
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(%buttonsZ9);
@@ -77,6 +77,7 @@ $VERSION = '1.24';
         66 => 'Voice Memo',
         70 => 'Photo Shooting Bank',
         71 => 'ISO',
+        72 => 'Shooting Mode',
         73 => 'Exposure Compensation',
         76 => 'Silent Mode',
         78 => 'LiveView Information',
@@ -90,6 +91,9 @@ $VERSION = '1.24';
         86 => 'Save Focus Position',
         87 => 'Recall Focus Position',
         88 => 'Recall Shooting Functions (Hold)',
+        89 => 'Set Picture Control (HLG)',
+        90 => 'Skin Softening',
+        91 => 'Portrait Impression Balance',
         97 => 'High Frequency Flicker Reduction',
         98 => 'Switch FX/DX',
         99 => 'View Mode (Photo LV)',
@@ -104,7 +108,25 @@ $VERSION = '1.24';
         110 => 'DISP - Cycle Information Display (playback)', # Playback mode
         111 => 'Resume Shooting',
         112 => 'Switch Eyes',
+        113 => 'Power Zoom +',
+        114 => 'Power Zoom -',
         115 => 'Delete',
+        116 => 'Pixel Shift Shooting',
+        117 => 'Cycle AF-area Mode',
+        118 => 'Raw Processing (Current)',  #118-131 are Retouch options
+        119 => 'Raw Processing (Multiple)',
+        120 => 'Trim',
+        121 => 'Resize (Current)',
+        122 => 'Resize (Multiple)',
+        123 => 'D-Lighting',
+        124 => 'Straighten',
+        125 => 'Distortion Control',
+        126 => 'Perspective Control',
+        127 => 'Monochrome',
+        128 => 'Overlay (Add)',
+        129 => 'Lighten',
+        130 => 'Darken',
+        131 => 'Motion Blend',
     },
 );
 my %dialsZ9 = (
@@ -118,6 +140,18 @@ my %dialsZ9 = (
     7 => 'Rating',
     8 => 'Page',
     9 => 'Skip To First Shot In Series',
+    10 => 'Uploaded to FTP',
+    11 => 'Uploaded to Computer',
+);
+my %dialsVideoZ9 = (
+    0 => '2 s',
+    1 => '5 s',
+    2 => '10 s',
+    3 => '1 Frame',
+    4 => '5 Frames',
+    5 => '10 Frames',
+    6 => 'First/Last Frame',
+    7 => 'Playback Speed',
 );
 my %evfGridsZ9 = (
     0 => '3x3',
@@ -9974,6 +10008,9 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     421 => { Name => 'Func1ButtonPlaybackMode',        %buttonsZ9, Unknown => 1}, # CSf3-a
     423 => { Name => 'Func2ButtonPlaybackMode',        %buttonsZ9, Unknown => 1}, # CSf3-b
     437 => { Name => 'MovieRecordButtonPlaybackMode',  %buttonsZ9, Unknown => 1}, # CSf3-m
+    453 => { Name => 'WBButtonPlaybackMode',   %buttonsZ9},     #CSf2
+    461 => { Name => 'CommandDialVideoPlaybackMode',        PrintConv => \%dialsVideoZ9,   Unknown => 1}, # CSf3-b
+    465 => { Name => 'SubCommandDialVideoPlaybackMode',     PrintConv => \%dialsVideoZ9,   Unknown => 1}, # CSf3-b
     467 => { Name => 'FocusPointLock',                 PrintConv => \%offOn,     Unknown => 1}, # CSf4-c
     459 => { Name => 'CommandDialPlaybackMode',        PrintConv => \%dialsZ9,   Unknown => 1}, # CSf3-k
     463 => { Name => 'SubCommandDialPlaybackMode',     PrintConv => \%dialsZ9,   Unknown => 1}, # CSf3-l
@@ -10055,6 +10092,11 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     },
     681 => { Name => 'ViewModeShowEffectsOfSettings', PrintConv => { 0=>'Always', 1=> 'Only When Flash Not Used'}, Unknown => 1 },     #CS8-a
     683 => { Name => 'DispButton',                  %buttonsZ9},    #CSf2
+    753 => {  #CSd5
+        Name => 'ExposureDelay',
+        Format => 'int16u',
+        PrintConv => '$val ? sprintf("%.1f sec",$val/1000) : "Off"',
+    },
 );
 
 # Z9 custom settings (ref 1)   #base at offset26 + 1035 (firmware 1.0.0)
@@ -10806,7 +10848,19 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     471 => { Name => 'QualityButtonPlaybackMode',      %buttonsZ9, Unknown => 1}, # CSf3-h
     477 => { Name => 'WhiteBalanceButtonPlaybackMode', %buttonsZ9, Unknown => 1}, # CSf3-i
     483 => { Name => 'CommandDialPlaybackMode',        PrintConv => \%dialsZ9,   Unknown => 1}, # CSf3-k
+    485 => { # CSf3-m2
+        Name => 'CommandDialVideoPlaybackMode',
+        Condition => '$$self{FirmwareVersion} and $$self{FirmwareVersion} ge "05.00"',
+        PrintConv => \%dialsVideoZ9,
+        Unknown => 1
+    },
     487 => { Name => 'SubCommandDialPlaybackMode',     PrintConv => \%dialsZ9,   Unknown => 1}, # CSf3-l
+    489 => { # CSf3-n2
+        Name => 'SubCommandDialVideoPlaybackMode',
+        Condition => '$$self{FirmwareVersion} and $$self{FirmwareVersion} ge "05.00"',
+        PrintConv => \%dialsVideoZ9,
+        Unknown => 1
+    },
     491 => { Name => 'FocusPointLock',                 PrintConv => \%offOn,     Unknown => 1}, # CSf4-c
     493 => { Name => 'ControlRingResponse',            PrintConv => { 0 => 'High', 1 => 'Low' } }, # CSf10
     505 => { Name => 'VerticalMovieFuncButton',        %buttonsZ9, Unknown => 1}, # CSg2-d

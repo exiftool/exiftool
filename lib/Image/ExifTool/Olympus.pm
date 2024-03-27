@@ -197,6 +197,7 @@ my %olympusLensTypes = (
   # '65535 07 40' - Seen for LUMIX S 16-35/F4 on Panasonic DC-S1H (ref PH)
     # Other makes
     '24 01 10' => 'Venus Optics Laowa 50mm F2.8 2x Macro', #DonKomarechka
+    'f7 03 10' => 'LAOWA C&D-Dreamer MFT 7.5mm F2.0', #forum3833
 );
 
 # lookup for Olympus camera types (ref PH)

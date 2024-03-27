@@ -23,7 +23,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.38';
+$VERSION = '1.39';
 
 sub ProcessCanonVRD($$;$);
 sub WriteCanonVRD($$;$);
@@ -1758,7 +1758,7 @@ sub ProcessDR4($$;$)
     } else {
         # load DR4 file into memory
         my $buff;
-        $raf->Read($buff, 8) == 8 and $buff eq "IIII\x04\0\x04\0" or return 0;
+        $raf->Read($buff, 8) == 8 and $buff =~ /^IIII[\x04|\x05]\0\x04\0/ or return 0;
         $et->SetFileType();
         $raf->Seek(0, 2) or return $err = 1;
         $dirLen = $raf->Tell();

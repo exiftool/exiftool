@@ -2587,6 +2587,7 @@ my %sPantryItem = (
     EnhanceDenoiseAlreadyApplied    => { Writable => 'boolean' }, #forum14760
     EnhanceDenoiseVersion           => { }, #forum14760 integer?
     EnhanceDenoiseLumaAmount        => { }, #forum14760 integer?
+    # FujiRatingAlreadyApplied - boolean written by LR classic 13.2 (forum15815)
 );
 
 # IPTC Core namespace properties (Iptc4xmpCore) (ref 4)

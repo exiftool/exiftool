@@ -275,7 +275,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <p>The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 71 different formats of timed GPS metadata from video files.</p>
+currently reads 72 different formats of timed GPS metadata from video files.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -5066,13 +5066,33 @@ and are not currently writable.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'Actors'</td>
+<td>Actors</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'BARCODE'</td>
 <td>Barcode</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'CATALOGNUMBER'</td>
 <td>CatalogNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'COSTUME_DESIGNER'</td>
+<td>CostumeDesigner</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'DIRECTOR'</td>
+<td>Director</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'DIRECTOR_OF_PHOTOGRAPHY'</td>
+<td>DirectorOfPhotography</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -5091,10 +5111,20 @@ and are not currently writable.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'EDITED_BY'</td>
+<td>EditedBy</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'Encoding Params'</td>
 <td>EncodingParams</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#EncodingParams'>QuickTime EncodingParams Tags</a></td></tr>
+<tr>
+<td>'IMDB_ID'</td>
+<td>IMDB_ID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td>'LABEL'</td>
 <td>Label</td>
@@ -5108,6 +5138,16 @@ and are not currently writable.</p>
 <tr class=b>
 <td>'MOOD'</td>
 <td>Mood</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'PRODUCER'</td>
+<td>Producer</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'PRODUCTION_DESIGNER'</td>
+<td>ProductionDesigner</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -5126,91 +5166,106 @@ and are not currently writable.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'SCREENPLAY_BY'</td>
+<td>ScreenplayBy</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'SCRIPT'</td>
 <td>Script</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TIPL'</td>
+<td>TIPL</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr>
+<td>'TMDB_ID'</td>
+<td>TMDB_ID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'TRACKNUMBER'</td>
 <td>TrackNumber</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'Volume Level (R128)'</td>
 <td>VolumeLevelR128</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'Volume Level (ReplayGain)'</td>
 <td>ReplayVolumeLevel</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'iTunEXTC'</td>
 <td>ContentRating</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(standard | rating | score | reasons)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'iTunMOVI'</td>
 <td>iTunMOVI</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PLIST.html'>PLIST Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'iTunNORM'</td>
 <td>VolumeNormalization</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'iTunSMPB'</td>
 <td>iTunSMPB</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'iTunes_CDDB_1'</td>
 <td>CDDB1Info</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'iTunes_CDDB_TrackNumber'</td>
 <td>CDDBTrackNumber</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'initialkey'</td>
 <td>InitialKey</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'originaldate'</td>
 <td>OriginalDate</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'originalyear'</td>
 <td>OriginalYear</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'popularimeter'</td>
 <td>Popularimeter</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'replaygain_track_gain'</td>
 <td>ReplayTrackGain</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'replaygain_track_peak'</td>
 <td>ReplayTrackPeak</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tool'</td>
 <td>iTunTool</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'~length'</td>
 <td>Length</td>
 <td class=c>no</td>
@@ -9541,7 +9596,7 @@ writable but they may all be removed by deleting the Nextbase group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 5, 2024</i>
+<br><i>Last revised Mar 27, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

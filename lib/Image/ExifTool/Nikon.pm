@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.30';
+$VERSION = '4.31';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -890,6 +890,12 @@ my %bracketProgramZ9 = (
     9 => '9F',
 );
 
+my %dialsFrameAdvanceZoomPositionZ9 = (
+    0 => 'Hold',
+    1 => 'Focus Point',
+    2 => 'Face Priority',
+);
+
 my %dynamicAfAreaModesZ9 = (
     0 => 'Small',
     1 => 'Medium',
@@ -949,6 +955,7 @@ my %highFrameRateZ9 = (
     3 => 'C30',
     5 => 'C60',
     4 => 'C120',
+    6 => 'C15',
 );
 
 my %imageAreaD6 = (
@@ -1118,6 +1125,12 @@ my %movieFrameSizeZ9 = (
     3 => '7680x4320',
 );
 
+my %movieSlowMotion = (
+    0 => 'Off',
+    1 => 'On (4x)', # 120p recording with playback @ 30p [1920 x 1080; 30p x 4] or 100p recording with playback @ 25p [1920 x 1080; 25p x 4]
+    2 => 'On (5x)', # 120p recording with playback @ 24p [1920 x 1080; 20p x 5]
+);
+
 my %movieToneMapZ9 = (
     0 => 'SDR',
     1 => 'HLG',
@@ -1125,7 +1138,7 @@ my %movieToneMapZ9 = (
 );
 
 my %movieTypeZ9 = (
-    1 => 'H.265 8-bit (MP4)',
+    1 => 'H.264 8-bit (MP4)',
     2 => 'H.265 8-bit (MOV)',
     3 => 'H.265 10-bit (MOV)',
     4 => 'ProRes 422 HQ 10-bit (MOV)',
@@ -1170,6 +1183,22 @@ my %offLowNormalHighZ7 = (
     1 => 'Low',
     2 => 'Normal',
     3 => 'High',
+);
+
+my %pixelShiftDelay = (
+    0 => 'Off',
+    1 => '1 s',
+    2 => '2 s',
+    3 => '3 s',
+    4 => '5 s',
+    5 => '10 s',
+);
+
+my %pixelShiftNumberShots = (
+    0 => '4',
+    1 => '8',
+    2 => '16',
+    3 => '32',
 );
 
 my %portraitImpressionBalanceZ8 = (
@@ -8382,7 +8411,7 @@ my %nikonFocalConversions = (
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index', NIKON_OFFSETS => 0x24 },
     DATAMEMBER => [ 0x04 ],
-    IS_SUBDIR => [ 0x30, 0x84, 0x8c ],
+    IS_SUBDIR => [ 0x30, 0x80, 0x84, 0x8c ],
     WRITABLE => 1,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'These tags are extracted from encrypted data in images from the Z8.',
@@ -8422,6 +8451,16 @@ my %nikonFocalConversions = (
         Format => 'int32u',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::SeqInfoZ9',
+            Start => '$val',
+        },
+    },
+    0x80 => {
+        Name => 'AutoCaptureOffset',
+        Condition => '$$self{FirmwareVersion} and $$self{FirmwareVersion} ge "02.00"',
+        Format => 'int32u',
+        AlwaysDecrypt => 1, # (necessary because FirmwareVersion is extracted after decryption time)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::AutoCaptureInfo',
             Start => '$val',
         },
     },
@@ -8709,10 +8748,21 @@ my %nikonFocalConversions = (
     0x10 => [
         {
             Name => 'MenuSettingsOffsetZ8',
+            Condition => '$$self{FirmwareVersion} and $$self{FirmwareVersion} lt "02.00"',
             Format => 'int32u',
-            Notes => 'Firmware versions 1.0.0',
+            Notes => 'Firmware versions 1.0.0 and 1.1.0',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ8',
+                Start => '$dirStart + $val',
+            },
+        },
+        {
+            Name => 'MenuSettingsOffsetZ8v2',
+            Condition => '$$self{FirmwareVersion} and $$self{FirmwareVersion} ge "02.00"',
+            Notes => 'Firmware version 2.0',
+            Format => 'int32u',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ8v2',
                 Start => '$dirStart + $val',
             },
         },
@@ -9065,15 +9115,7 @@ my %nikonFocalConversions = (
     #463 => SilentPhotography
     502 => { Name => 'MovieFrameSize',   PrintConv => \%movieFrameSizeZ9, Unknown => 1 },
     504 => { Name => 'MovieFrameRate',   PrintConv => \%movieFrameRateZ7, Unknown => 1 },
-    506 => {
-        Name => 'MovieSlowMotion',
-        Unknown => 1,
-        PrintConv => {
-            0 => 'Off',
-            1 => 'On (4x)', # 120p recording with playback @ 30p [1920 x 1080; 30p x 4] or 100p recording with playback @ 25p [1920 x 1080; 25p x 4]
-            2 => 'On (5x)', # 120p recording with playback @ 24p [1920 x 1080; 20p x 5]
-        },
-    },
+    506 => { Name => 'MovieSlowMotion',  PrintConv => \%movieSlowMotion,  Unknown => 1 },
     510 => {
         Name => 'MovieType',
         Unknown => 1,
@@ -9284,7 +9326,7 @@ my %nikonFocalConversions = (
     },
     618 => { Name => 'ToneMap',                    PrintConv => { 0 => 'SDR', 1 => 'HLG' }, Unknown => 1 },
     622 => { Name => 'PortraitImpressionBalance',  PrintConv => \%portraitImpressionBalanceZ8 },
-    636 => { Name => 'HighFrequencyFlickerReductionShooting', PrintConv => \%offOn, Unknown => 1 }, # new with firmware 3.0
+    636 => { Name => 'HighFrequencyFlickerReduction', PrintConv => \%offOn, Unknown => 1 }, # new with firmware 3.0
     730 => {
         Name => 'MovieImageArea',
         Unknown => 1,
@@ -9333,7 +9375,7 @@ my %nikonFocalConversions = (
         Format => 'undef[730]',
         SubDirectory => { TagTable => 'Image::ExifTool::NikonCustom::SettingsZ8' },
     },
-    1682 => { Name => 'Language',           PrintConv => \%languageZ9, Unknown => 1 },
+    1698 => { Name => 'Language',           PrintConv => \%languageZ9, Unknown => 1 },
     1684 => { Name => 'TimeZone',           PrintConv => \%timeZoneZ9 },
     1690 => { Name => 'MonitorBrightness',  PrintConv => \%monitorBrightnessZ9, Unknown => 1 },        # settings: -5 to +5.  Added with firmware 3.0:  Lo1, Lo2, Hi1, Hi2
     1712 => { Name => 'AFFineTune',         PrintConv => \%offOn, Unknown => 1 },
@@ -9383,6 +9425,260 @@ my %nikonFocalConversions = (
     1862 => { Name => 'EnergySavingMode',   PrintConv => \%offOn, Unknown => 1 },
     1890 => { Name => 'USBPowerDelivery',   PrintConv => \%offOn, Unknown => 1 },
     1899 => { Name => 'SensorShield',       PrintConv => { 0 => 'Stays Open', 1 => 'Closes' }, Unknown => 1 },
+);
+%Image::ExifTool::Nikon::MenuSettingsZ8v2  = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 152, 200, 204, 244, 440, 548, 554, 570, 596, 2046 ],
+    IS_SUBDIR => [ 943 ],
+    NOTES => 'These tags are used by the Z8 firmware 1.00.',
+    72 => {
+        Name => 'HighFrameRate',        #CH and C30/C60/C120 but not CL
+        PrintConv => \%highFrameRateZ9,
+    },
+    152 => {
+        Name => 'MultipleExposureMode',
+        RawConv => '$$self{MultipleExposureMode} = $val',
+        PrintConv => \%multipleExposureModeZ9,
+    },
+    154 => {Name => 'MultiExposureShots', Condition => '$$self{MultipleExposureMode} != 0'},  #range 2-9
+    184 => {
+        Name => 'IntervalDurationHours',
+        Format => 'int32u',
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{IntervalShooting} > 0',
+    },
+    188 => {
+        Name => 'IntervalDurationMinutes',
+        Format => 'int32u',
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{IntervalShooting} > 0',
+    },
+    192 => {
+        Name => 'IntervalDurationSeconds',
+        Format => 'int32u',
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{IntervalShooting} > 0',
+    },
+    200 => {
+        Name => 'Intervals',
+        Format => 'int32u',
+        RawConv => '$$self{IntervalShootingIntervals} = $val',
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{IntervalShooting} > 0',
+    },
+    204 => {
+        Name => 'ShotsPerInterval',
+        Format => 'int32u',
+        RawConv => '$$self{IntervalShootingShotsPerInterval} = $val',
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{IntervalShooting} > 0',
+    },
+    208 => {
+        Name => 'IntervalExposureSmoothing',
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{IntervalShooting} > 0',
+        Format => 'int8u',
+        PrintConv => \%offOn,
+    },
+    210 => {
+        Name => 'IntervalPriority',
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{IntervalShooting} > 0',
+        Format => 'int8u',
+        PrintConv => \%offOn,
+    },
+    244 => {
+        Name => 'FocusShiftNumberShots',    #1-300
+        RawConv => '$$self{FocusShiftNumberShots} = $val',
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
+    },
+    248 => {
+        Name => 'FocusShiftStepWidth',     #1(Narrow) to 10 (Wide)
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
+    },
+    252 => {
+        Name => 'FocusShiftInterval',
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
+        PrintConv => '$val == 1? "1 Second" : sprintf("%.0f Seconds",$val)',
+    },
+    256 => {
+        Name => 'FocusShiftExposureLock',
+        Unknown => 1,
+        PrintConv => \%offOn,
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{FocusShiftShooting} > 0',     #not valid for C30/C60/C120
+    },
+    286 => { Name => 'PhotoShootingMenuBank', PrintConv => \%banksZ9 },
+    288 => { Name => 'ExtendedMenuBanks',     PrintConv => \%offOn }, # single tag from both Photo & Video menus
+    324 => { Name => 'PhotoShootingMenuBankImageArea', PrintConv => \%imageAreaZ9 },
+    338 => { Name => 'AutoISO', PrintConv => \%offOn },
+    340 => {
+        Name => 'ISOAutoHiLimit',
+        Format => 'int16u',
+        Unknown => 1,
+        ValueConv => '($val-104)/8',
+        ValueConvInv => '8 * ($val + 104)',
+        PrintConv => \%iSOAutoHiLimitZ7,
+    },
+    342 => {
+        Name => 'ISOAutoFlashLimit',
+        Format => 'int16u',
+        Unknown => 1,
+        ValueConv => '($val-104)/8',
+        ValueConvInv => '8 * ($val + 104)',
+        PrintConv => \%iSOAutoHiLimitZ7,
+    },
+    350 => {
+        Name => 'ISOAutoShutterTime', # shutter speed is 2 ** (-$val/24)
+        ValueConv => '$val / 8',
+        Format => 'int16s',
+        PrintConv => \%iSOAutoShutterTimeZ9,
+    },
+    432 => { Name => 'MovieVignetteControl',    PrintConv => \%offLowNormalHighZ7, Unknown => 1 },
+    434 => { Name => 'DiffractionCompensation', PrintConv => \%offOn }, # value can be set from both the Photo Shoot Menu and the Video Shooting Menu
+    436 => { Name => 'FlickerReductionShooting',PrintConv => \%offOn },
+    440 => {
+        Name => 'FlashControlMode', # this and nearby tag values for flash may be set from either the Photo Shooting Menu or using the Flash unit menu
+        RawConv => '$$self{FlashControlMode} = $val',
+        PrintConv => \%flashControlModeZ7,
+    },
+    548 => { Name => 'AFAreaMode', RawConv => '$$self{AFAreaMode} = $val', PrintConv => \%aFAreaModeZ9},
+    550 => { Name => 'VRMode',   PrintConv => \%vRModeZ9},
+    554 => {
+        Name => 'BracketSet',
+        RawConv => '$$self{BracketSet} = $val',
+        PrintConv => \%bracketSetZ9,
+    },
+    556 => {
+        Name => 'BracketProgram',
+        Condition => '$$self{BracketSet} < 3',
+        Notes => 'AE and/or Flash Bracketing',
+        PrintConv => \%bracketProgramZ9,
+    },
+    558 => {
+        Name => 'BracketIncrement',
+        Condition => '$$self{BracketSet} < 3',
+        Notes => 'AE and/or Flash Bracketing',
+        PrintConv => \%bracketIncrementZ9,
+    },
+    570 => { Name => 'HDR',                   RawConv => '$$self{HDR} = $val', PrintConv => \%multipleExposureModeZ9 },
+    #572  HDRSaveRaw 0=> No; 1=> Yes
+    576 => { Name => 'SecondarySlotFunction', PrintConv => \%secondarySlotFunctionZ9 },
+    582 => { Name => 'HDRLevel',              Condition => '$$self{HDR} ne 0', PrintConv => \%hdrLevelZ8 },
+    586 => { Name => 'Slot2JpgSize',          PrintConv => { 0 => 'Large (8256x5504)', 1 => 'Medium (6192x4128)', 2 => 'Small (4128x2752)' }, Unknown => 1},
+    592 => { Name => 'DXCropAlert',           PrintConv => \%offOn },
+    594 => { Name => 'SubjectDetection',      PrintConv => \%subjectDetectionZ9 },
+    596 => {
+        Name => 'DynamicAFAreaSize',
+        Condition => '$$self{AFAreaMode} == 2',
+        RawConv => '$$self{DynamicAFAreaSize} = $val',
+        PrintConv => \%dynamicAfAreaModesZ9,
+    },
+    618 => { Name => 'ToneMap',                    PrintConv => { 0 => 'SDR', 1 => 'HLG' }, Unknown => 1 },
+    622 => { Name => 'PortraitImpressionBalance',  PrintConv => \%portraitImpressionBalanceZ8 },
+    636 => { Name => 'HighFrequencyFlickerReduction', PrintConv => \%offOn, Unknown => 1 }, # new with firmware 3.0
+    730 => {
+        Name => 'MovieImageArea',
+        Unknown => 1,
+        Mask => 0x01, # without the mask 4 => 'FX'  5 => DX   only the 2nd Z-series field encountered with a mask.
+        PrintConv => \%imageAreaZ9b,
+    },
+    #736 => { Name => 'MovieSlowMotion', PrintConv => \%movieSlowMotion,  Unknown => 1 },   #only valid for MovieType H.264 8-bit
+    740 => { Name => 'MovieType',        PrintConv => \%movieTypeZ9,      Unknown => 1 },
+    742 => {
+        Name => 'MovieISOAutoHiLimit',
+        Format => 'int16u',
+        Unknown => 1,
+        ValueConv => '($val-104)/8',
+        ValueConvInv => '8 * ($val + 104)',
+        PrintConv => \%iSOAutoHiLimitZ7,
+    },
+    744 => { Name => 'MovieISOAutoControlManualMode', PrintConv => \%offOn, Unknown => 1 },
+    746 => {
+        Name => 'MovieISOAutoManualMode',
+        Format => 'int16u',
+        Unknown => 1,
+        ValueConv => '($val-104)/8',
+        ValueConvInv => '8 * ($val + 104)',
+        PrintConv => \%iSOAutoHiLimitZ7,
+    },
+    820 => { Name => 'MovieActiveD-Lighting',      PrintConv => \%activeDLightingZ7, Unknown => 1 },
+    822 => { Name => 'MovieHighISONoiseReduction', PrintConv => \%offLowNormalHighZ7, Unknown => 1 },
+    828 => { Name => 'MovieFlickerReduction',      PrintConv => \%movieFlickerReductionZ9 },
+    830 => { Name => 'MovieMeteringMode',          PrintConv => \%meteringModeZ7, Unknown => 1 },
+    832 => { Name => 'MovieFocusMode',             PrintConv => \%focusModeZ7, Unknown => 1 },
+    834 => { Name => 'MovieAFAreaMode',            PrintConv => \%aFAreaModeZ9 },
+    836 => { Name => 'MovieVRMode',                PrintConv => \%vRModeZ9, Unknown => 1 },
+    840 => { Name => 'MovieElectronicVR',          PrintConv => \%offOn, Unknown => 1 }, # distinct from MoveieVRMode
+    842 => { Name => 'MovieSoundRecording',        PrintConv => { 0 => 'Off', 1 => 'Auto', 2 => 'Manual' }, Unknown => 1 },
+    844 => { Name => 'MicrophoneSensitivity',      Unknown => 1 }, # 1-20
+    846 => { Name => 'MicrophoneAttenuator',       PrintConv => \%offOn, Unknown => 1 }, # distinct from MoveieVRMode
+    848 => { Name => 'MicrophoneFrequencyResponse',PrintConv => { 0 => 'Wide Range', 1 => 'Vocal Range' }, Unknown => 1 },
+    850 => { Name => 'WindNoiseReduction',         PrintConv =>  \%offOn, Unknown => 1 },
+    878 => { Name => 'MovieFrameSize',             PrintConv => \%movieFrameSizeZ9, Unknown => 1 },
+    880 => { Name => 'MovieFrameRate',             PrintConv => \%movieFrameRateZ7, Unknown => 1 },
+    886 => { Name => 'MicrophoneJackPower',        PrintConv => \%offOn, Unknown => 1 },
+    887 => { Name => 'MovieDXCropAlert',           PrintConv => \%offOn, Unknown => 1 },
+    888 => { Name => 'MovieSubjectDetection',      PrintConv => \%subjectDetectionZ9, Unknown => 1 },
+    896 => { Name => 'MovieHighResZoom',           PrintConv =>  \%offOn, Unknown => 1 },
+    943 => {
+        Name => 'CustomSettingsZ8',
+        Format => 'undef[755]',
+        SubDirectory => { TagTable => 'Image::ExifTool::NikonCustom::SettingsZ8' },
+    },
+    1698 => { Name => 'Language',           PrintConv => \%languageZ9, Unknown => 1 },
+    1700 => { Name => 'TimeZone',           PrintConv => \%timeZoneZ9 },
+    1706 => { Name => 'MonitorBrightness',  PrintConv => \%monitorBrightnessZ9, Unknown => 1 },        # settings: -5 to +5.  Added with firmware 3.0:  Lo1, Lo2, Hi1, Hi2
+    1728 => { Name => 'AFFineTune',         PrintConv => \%offOn, Unknown => 1 },
+    1732 => { Name => 'NonCPULens1FocalLength',  Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},  #should probably hide altogther if $val is 0
+    1734 => { Name => 'NonCPULens2FocalLength',  Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1736 => { Name => 'NonCPULens3FocalLength',  Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1738 => { Name => 'NonCPULens4FocalLength',  Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1740 => { Name => 'NonCPULens5FocalLength',  Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1742 => { Name => 'NonCPULens6FocalLength',  Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1744 => { Name => 'NonCPULens7FocalLength',  Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1746 => { Name => 'NonCPULens8FocalLength',  Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1748 => { Name => 'NonCPULens9FocalLength',  Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1750 => { Name => 'NonCPULens10FocalLength', Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1752 => { Name => 'NonCPULens11FocalLength', Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1754 => { Name => 'NonCPULens12FocalLength', Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1756 => { Name => 'NonCPULens13FocalLength', Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1758 => { Name => 'NonCPULens14FocalLength', Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1760 => { Name => 'NonCPULens15FocalLength', Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1762 => { Name => 'NonCPULens16FocalLength', Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1764 => { Name => 'NonCPULens17FocalLength', Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1766 => { Name => 'NonCPULens18FocalLength', Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1768 => { Name => 'NonCPULens19FocalLength', Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1770 => { Name => 'NonCPULens20FocalLength', Format => 'int16u', PrintConv => 'sprintf("%.1fmm",$val/10)',  Unknown => 1},
+    1812 => { Name => 'NonCPULens1MaxAperture',  Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1816 => { Name => 'NonCPULens2MaxAperture',  Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1820 => { Name => 'NonCPULens3MaxAperture',  Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1824 => { Name => 'NonCPULens4MaxAperture',  Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1828 => { Name => 'NonCPULens5MaxAperture',  Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1832 => { Name => 'NonCPULens6MaxAperture',  Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1836 => { Name => 'NonCPULens7MaxAperture',  Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1840 => { Name => 'NonCPULens8MaxAperture',  Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1844 => { Name => 'NonCPULens9MaxAperture',  Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1848 => { Name => 'NonCPULens10MaxAperture', Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1852 => { Name => 'NonCPULens11MaxAperture', Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1856 => { Name => 'NonCPULens12MaxAperture', Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1860 => { Name => 'NonCPULens13MaxAperture', Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1864 => { Name => 'NonCPULens14MaxAperture', Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1868 => { Name => 'NonCPULens15MaxAperture', Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1872 => { Name => 'NonCPULens16MaxAperture', Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1876 => { Name => 'NonCPULens17MaxAperture', Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1880 => { Name => 'NonCPULens18MaxAperture', Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1884 => { Name => 'NonCPULens19MaxAperture', Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1888 => { Name => 'NonCPULens20MaxAperture', Format => 'int32u', PrintConv => 'sprintf("%.1fmm",$val/100)', Unknown => 1},
+    1824 => { Name => 'HDMIOutputResolution', PrintConv => \%hDMIOutputResolutionZ9 },
+    1842 => { Name => 'AirplaneMode',       PrintConv => \%offOn, Unknown => 1 },
+    1843 => { Name => 'EmptySlotRelease',   PrintConv => { 0 => 'Disable Release', 1 => 'Enable Release' }, Unknown => 1 },
+    1878 => { Name => 'EnergySavingMode',   PrintConv => \%offOn, Unknown => 1 },
+    1906 => { Name => 'USBPowerDelivery',   PrintConv => \%offOn, Unknown => 1 },
+    1915 => { Name => 'SensorShield',       PrintConv => { 0 => 'Stays Open', 1 => 'Closes' }, Unknown => 1 },
+    2046 => { Name => 'PixelShiftShooting', RawConv => '$$self{PixelShiftShooting} = $val',  PrintConv => \%multipleExposureModeZ9 },   #off/on/on (series)
+    2048 => { Name => 'PixelShiftNumberShots', Condition => '$$self{PixelShiftShooting} > 0', PrintConv => \%pixelShiftNumberShots },
+    2050 => { Name => 'PixelShiftDelay',       Condition => '$$self{PixelShiftShooting} > 0', PrintConv => \%pixelShiftDelay },
+    2052 => { Name => 'PlaybackButton',  %buttonsZ9 },  #CSf2
+    2054 => { Name => 'WBButton',        %buttonsZ9},   #CSf2
+    2056 => { Name => 'BracketButton',   %buttonsZ9},   #CSf2
+    2058 => { Name => 'LensFunc1ButtonPlaybackMode', %buttonsZ9},     #CSf2
+    2060 => { Name => 'LensFunc2ButtonPlaybackMode', %buttonsZ9},     #CSf2
+    2062 => { Name => 'PlaybackButtonPlaybackMode',  %buttonsZ9},     #CSf2
+    2064 => { Name => 'BracketButtonPlaybackMode',   %buttonsZ9},     #CSf2
 );
 %Image::ExifTool::Nikon::MenuSettingsZ9  = (
     %binaryDataAttrs,
@@ -9733,7 +10029,7 @@ my %nikonFocalConversions = (
         RawConv => '$$self{DynamicAFAreaSize} = $val',
         PrintConv => \%dynamicAfAreaModesZ9,
     },
-    636 => { Name => 'HighFrequencyFlickerReductionShooting', PrintConv => \%offOn, Unknown => 1 }, # new with firmware 3.0
+    636 => { Name => 'HighFrequencyFlickerReduction', PrintConv => \%offOn, Unknown => 1 }, # new with firmware 3.0
     646 => {
         Name => 'MovieImageArea',
         Unknown => 1,
@@ -9833,7 +10129,7 @@ my %nikonFocalConversions = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     DATAMEMBER => [ 154, 204, 208, 248, 328, 444, 548, 554, 570, 596 ],
     IS_SUBDIR => [ 847 ],
-    NOTES => 'These tags are used by the Z9 firmware 3.00.',
+    NOTES => 'These tags are used by the Z9 firmware 4.0.0 and 4.1.0',
     72 => {
         Name => 'HighFrameRate',        #CH and C30/C60/C120 but not CL
         PrintConv => \%highFrameRateZ9,
@@ -9970,7 +10266,7 @@ my %nikonFocalConversions = (
         RawConv => '$$self{DynamicAFAreaSize} = $val',
         PrintConv => \%dynamicAfAreaModesZ9,
     },
-    636 => { Name => 'HighFrequencyFlickerReductionShooting', PrintConv => \%offOn, Unknown => 1 }, # new with firmware 3.0
+    636 => { Name => 'HighFrequencyFlickerReduction', PrintConv => \%offOn, Unknown => 1 }, # new with firmware 3.0
     646 => {
         Name => 'MovieImageArea',
         Unknown => 1,
@@ -10115,6 +10411,18 @@ my %nikonFocalConversions = (
         Name => 'ExposureDelay',
         Format => 'fixed32u',
         PrintConv => '$val ? sprintf("%.1f sec",$val/1000) : "Off"',
+    },
+    2052 => {  #CSf2-m3
+        Name => 'CommandDialFrameAdvanceZoom',
+        Condition => '$$self{FirmwareVersion} and $$self{FirmwareVersion} ge "05.00"',
+        PrintConv => \%dialsFrameAdvanceZoomPositionZ9,
+        Unknown => 1
+    },
+    2054 => {  #CSf2-n3
+        Name => 'SubCommandDialFrameAdvanceZoom',
+        Condition => '$$self{FirmwareVersion} and $$self{FirmwareVersion} ge "05.00"',
+        PrintConv => \%dialsFrameAdvanceZoomPositionZ9,
+        Unknown => 1
     },
     2056 => { Name => 'PlaybackButton',  %buttonsZ9},     #CSf2
     2058 => { Name => 'WBButton',        %buttonsZ9},     #CSf2
@@ -11406,7 +11714,7 @@ my %nikonFocalConversions = (
     },
 );
 
-# MakerNotes0x56 - burst info for Z9
+# MakerNotes0x56 - burst info for Z8 and Z9
 %Image::ExifTool::Nikon::MakerNotes0x56 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes' },
@@ -11416,7 +11724,7 @@ my %nikonFocalConversions = (
         Writable => 0,
     },
     4 => {
-        Name => 'BurstGroupID',    #all frames shot within a burst (using CL/CH/C30/C60/C120) will share the same BurstGroupID.  Value will be > 0 for all images shot in continuous modes.  0 for single-frame.
+        Name => 'BurstGroupID',    #all frames shot within a burst (using CL/CH/C30/C60/C120) will share the same BurstGroupID.  Value will be > 0 for all images shot in continuous modes (or via Pixel Shift).  0 for single-frame.
         Format => 'int16u'
     },
 );
@@ -11440,7 +11748,7 @@ my %nikonFocalConversions = (
         Name => 'VignetteInfo',  # Z-series vignette correction information
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::VignetteInfo' },
     },
-    # 0x07 - undef[104]
+    # 0x07 - undef[104]   #possibly Z-series diffration correction information (#28)
     # 0x08 - undef[24]
     # 0x09 - undef[36]
 );

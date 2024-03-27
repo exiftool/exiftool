@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.66';
+$VERSION = '1.67';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -642,8 +642,8 @@ my %unreg = ( Notes => 'unregistered' );
     Label       => { %unreg },
     Make        => { %unreg, Groups => { 2 => 'Camera' } },
     Model       => { %unreg, Groups => { 2 => 'Camera' } },
-    # parameters      (written by Stable Diffusion)
-    # aesthetic_score (written by Stable Diffusion)
+    parameters  => { %unreg }, # (written by Stable Diffusion)
+    aesthetic_score => { Name => 'AestheticScore', %unreg }, # (written by Stable Diffusion)
    'create-date'=> {
         Name => 'CreateDate',
         Groups => { 2 => 'Time' },

@@ -7,6 +7,29 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Mar. 27, 2024 - Version 12.81
+
+  - Added ability to read EXIF and XMP from EXR images
+  - Added ability to delete unknown trailer when writing MOV/MP4 videos
+  - Added ability to write a couple of Stable Diffusion PNG tags
+  - Added ability to write one of the Microsoft Xtra Description tags (github
+    #248)
+  - Added support for using alternate city names in reverse Geolocation
+  - Added support for reading timed GPS from DOD LS600W TS videos
+  - Added support for new version of Canon DR4 files
+  - Added a number of new iTunesInfo tags
+  - Added a new Olympus LensType
+  - Allow regular expressions to be used when writing Geolocate tag
+  - Decode a number of new Nikon tags (thanks Warren Hatch)
+  - Enhanced writing of Geolocate tag to also write Keys:LocationName
+  - Cache the results of the last reverse geolocation search to speed batch
+    processing when multiple files have the same search parameters
+  - Patched problem that could cause runtime errors with some invaid tag names
+  - Fixed a couple of newly added FujiFilm tags
+  - Fixed decoding of FujiFilm AFAreaZoneSize
+  - API Changes:
+      - Added GeolocAltNames option
+
 Mar. 19, 2024 - Version 12.80
 
   - Added GeolocationFeatureCode tag
@@ -19,6 +42,8 @@ Mar. 19, 2024 - Version 12.80
   - Improved accuracy of Geolocation distance/bearing calculations
   - Changed structure of Geolocation database (now version 1.02)
   - Minor change to key format for user-defined Geolocation name translations
+  - Ignore API Geolocation option when copying tags if none of the Geolocation
+    tags are being copied
   - Fixed case/spacing of "C2PA" in some CBOR tag descriptions
   - Fixed bug extracting binary data from EXR files
   - API Changes:
@@ -29,6 +54,7 @@ Mar. 15, 2024 - Version 12.79
   - Improvements to new Geolocation feature:
       - Added reverse Geolocation ability (obtain GPS coordinates from city
         name), with support for regular expressions
+      - Added ability to geolocate while geotagging
       - Added -listgeo option to list the Geolocation database
       - Added the ability to include user-defined cities in the Geolocation
         database

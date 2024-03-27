@@ -109,8 +109,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-12.80.tar.gz | tar -xf -
-  cd Image-ExifTool-12.80
+  gzip -dc Image-ExifTool-12.81.tar.gz | tar -xf -
+  cd Image-ExifTool-12.81
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -238,6 +238,7 @@ information:
   html/ExifTool.html        - API documentation
   html/TagNames/index.html  - Tag name documentation
   html/geotag.html          - Geotag feature
+  html/geolocation.html     - Geolocation feature
   html/faq.html             - Frequently asked questions
   html/filename.html        - Renaming/moving files
   html/metafiles.html       - Working with metadata sidecar files

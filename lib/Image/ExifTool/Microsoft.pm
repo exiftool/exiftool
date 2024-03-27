@@ -245,7 +245,7 @@ my %sRegions = (
     Copyright                   => { Groups => { 2 => 'Author' } },
     Count                       => { },
     CurrentBitrate              => { },
-    Description                 => { },
+    Description                 => { Writable => 'Unicode', Avoid => 1 },
     DisplayArtist               => { },
     DLNAServerUDN               => { },
     DLNASourceURI               => { },

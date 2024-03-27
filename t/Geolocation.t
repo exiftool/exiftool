@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/Geolocation.t".
 
 BEGIN {
-    $| = 1; print "1..6\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..8\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -92,6 +92,35 @@ my $testnum = 1;
     $exifTool->Options(Geolocation => 'Munich,Germany');
     $exifTool->Options(Lang => 'de');
     my $dat = '';
+    my $info = $exifTool->ImageInfo(\$dat, 'geolocation*');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        notOK();
+    }
+    print "ok $testnum\n";
+}
+
+# tests 7-8: Test regular expression with combined search with user-defined
+#            database entry
+{
+    ++$testnum;
+    my $exifTool = Image::ExifTool->new;
+    Image::ExifTool::Geolocation::AddEntry('Sinemorets','burgas','Obshtina Tsarevo',
+        'BG','','Europe/Sofia','',400,42.06115,27.97833,'abcde,fghij,klmno');
+    $exifTool->Options(Geolocation => '1,2,co/Canada/');
+    my $dat = '';
+    my $info = $exifTool->ImageInfo(\$dat, 'geolocation*');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        notOK();
+    }
+    print "ok $testnum\n";
+
+    ++$testnum;
+    $exifTool->Options(GeolocAltNames => 1);
+    $exifTool->Options(Geolocation => 'fghij');
     my $info = $exifTool->ImageInfo(\$dat, 'geolocation*');
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;

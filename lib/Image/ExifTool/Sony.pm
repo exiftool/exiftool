@@ -10553,7 +10553,7 @@ my %isoSetting2010 = (
         ValueConv => '2 ** (8-$val/8192)',
         PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
     },
-    0x8001 => { Name => 'Sony_rtmd_0x8001', Format => 'int16u', %hidUnk },
+    0x8001 => { Name => 'Sony_rtmd_0x8001', Format => 'int16u', %hidUnk }, # (perhaps related to focus distance? forum15856)
     0x8004 => { Name => 'Sony_rtmd_0x8004', Format => 'int16u', %hidUnk }, # (FocalLength35efl?, forum14315)
     0x8005 => { Name => 'Sony_rtmd_0x8005', Format => 'int16u', %hidUnk }, # (FocalLength?, forum14315)
     0x800a => { Name => 'Sony_rtmd_0x800a', Format => 'int16u', %hidUnk }, # (FocusRingPosition?, forum14315)

@@ -1297,6 +1297,7 @@ sub SetNewValuesFromFile($$;@)
         Filter          => $$options{Filter},
         FixBase         => $$options{FixBase},
         Geolocation     => $$options{Geolocation},
+        GeolocAltNames  => $$options{GeolocAltNames},
         GeolocFeature   => $$options{GeolocFeature},
         GeolocMinPop    => $$options{GeolocMinPop},
         GeolocMaxDist   => $$options{GeolocMaxDist},
@@ -1336,6 +1337,11 @@ sub SetNewValuesFromFile($$;@)
         XAttrTags       => $$options{XAttrTags},
         XMPAutoConv     => $$options{XMPAutoConv},
     );
+    # reset Geolocation option if we aren't copying any geolocation tags
+    if ($$options{Geolocation} and not grep /\bGeolocation/i, @setTags) {
+        $self->VPrint(0, '(resetting unnecessary Geolocation option)');
+        $$srcExifTool{OPTIONS}{Geolocation} = undef;
+    }
     $$srcExifTool{GLOBAL_TIME_OFFSET} = $$self{GLOBAL_TIME_OFFSET};
     $$srcExifTool{ALT_EXIFTOOL} = $$self{ALT_EXIFTOOL};
     foreach $tag (@setTags) {
@@ -3806,7 +3812,7 @@ sub GetGeolocateTags($$;$)
         'iptc'          => [ qw(City Province-State Country-PrimaryLocationCode Country-PrimaryLocationName) ],
         'gps'           => [ qw(GPSLatitude GPSLongitude GPSLatitudeRef GPSLongitudeRef) ],
         'xmp-exif'      => [ qw(GPSLatitude GPSLongitude) ],
-        'keys'          => [ 'GPSCoordinates' ],
+        'keys'          => [ 'GPSCoordinates', 'LocationName' ],
         'itemlist'      => [ 'GPSCoordinates' ],
         'userdata'      => [ 'GPSCoordinates' ],
         # more general groups not in this lookup: XMP and QuickTime 
@@ -3818,7 +3824,7 @@ sub GetGeolocateTags($$;$)
     }
     # set default XMP City tags if necessary
     if (not $writeGPS and ($grps{xmp} or (not @tags and not $grps{quicktime}))) {
-        push @tags, qw(XMP:City XMP:State XMP:CountryCode XMP:Country);
+        push @tags, qw(XMP:City XMP:State XMP:CountryCode XMP:Country Keys:LocationName);
     }
     $writeGPS = 1 unless defined $writeGPS; # (delete both City and GPS)
     # set default QuickTime tag if necessary

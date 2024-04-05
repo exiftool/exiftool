@@ -22,12 +22,12 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::QuickTime;
 
 sub Process_tx3g($$$);
-sub Process_marl($$$);
 sub Process_mebx($$$);
 sub Process_text($$$;$);
 sub ProcessFreeGPS($$$);
 sub Process360Fly($$$);
 sub ProcessFMAS($$$);
+sub ProcessWolfbox($$$);
 sub ProcessCAMM($$$);
 
 # QuickTime data types that have ExifTool equivalents
@@ -109,7 +109,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 72 different formats of timed GPS metadata from video files.
+        currently reads 74 different formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
@@ -208,6 +208,13 @@ my %insvLimit = (
             ProcessProc => \&ProcessFMAS,
         },
     },{
+        Name => 'gpmd_Wolfbox', # Wolfbox G900 Dashcam
+        Condition => '$$valPt =~ /^.{136}0{16}HYTH/s',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => \&ProcessWolfbox,
+        },
+    },{
         Name => 'gpmd_GoPro',
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
     }],
@@ -223,7 +230,7 @@ my %insvLimit = (
     },
     marl => {
         Name => 'marl',
-        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::marl' },
+        SubDirectory => { TagTable => 'Image::ExifTool::GM::marl' },
     },
     CTMD => { # (Canon Timed MetaData)
         Name => 'CTMD',
@@ -325,6 +332,11 @@ my %insvLimit = (
     INSV => {
         Groups => { 0 => 'Trailer', 1 => 'Insta360' }, # (so these groups will appear in the -listg options)
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::INSV_MakerNotes' },
+    },
+    ssmd => { # Chigee AIO-5 dashcam
+        Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
+        RawConv => '$self->ValidateImage(\$val,$tag)',
     },
     Unknown00 => { Unknown => 1 },
     Unknown01 => { Unknown => 1 },
@@ -739,13 +751,6 @@ my %insvLimit = (
         PrintConv => 'ConvertDuration($val)',
     },
     10 => { Name => 'FusionYPR', Format => 'float[3]' },
-);
-
-# tags found in 'marl' ctbx timed metadata (ref PH)
-%Image::ExifTool::QuickTime::marl = (
-    PROCESS_PROC => \&Process_marl,
-    GROUPS => { 2 => 'Other' },
-    NOTES => 'Tags extracted from the marl ctbx timed metadata of GM cars.',
 );
 
 #------------------------------------------------------------------------------
@@ -2220,26 +2225,6 @@ sub Process_tx3g($$$)
 }
 
 #------------------------------------------------------------------------------
-# Process GM 'marl' ctbx metadata (ref PH)
-# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
-# Returns: 1 on success
-sub Process_marl($$$)
-{
-    my ($et, $dirInfo, $tagTablePtr) = @_;
-    my $dataPt = $$dirInfo{DataPt};
-    return 0 if length $$dataPt < 2;
-
-    # 8-byte records:
-    # byte 0 seems to be tag ID (0=timestamp in sec * 1e7)
-    # bytes 1-3 seem to be 24-bit signed integer (unknown meaning)
-    # bytes 4-7 are an int32u value, usually a multiple of 10000
-
-    $et->WarnOnce("Can't yet decode timed GM data", 1);
-    # (see https://exiftool.org/forum/index.php?topic=11335.msg61393#msg61393)
-    return 1;
-}
-
-#------------------------------------------------------------------------------
 # Process QuickTime 'mebx' timed metadata
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
@@ -3225,6 +3210,52 @@ sub ProcessFMAS($$$)
     $et->HandleTag($tagTbl, GPSSpeed     => $a[17] * $mphToKph); # convert mph -> kph
     $et->HandleTag($tagTbl, GPSTrack     => $a[18]);
     $et->HandleTag($tagTbl, Accelerometer=> $acc);
+    SetByteOrder('MM');
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process GPS from Wolfbox G900 Dashcam
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessWolfbox($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    return 0 if length($$dataPt) < 0xc8;
+    $et->VerboseDir('Wolfbox', undef, length($$dataPt));
+    # 0000: 65 00 00 00 00 00 00 00 31 01 01 00 e3 ff 00 00 [e.......1.......]
+    # 0010: 04 00 00 00 10 00 00 00 2a 00 00 00 00 00 00 00 [........*.......]
+    # 0020: 01 00 00 00 00 00 00 00 8b 33 ff 51 00 00 00 00 [.........3.Q....]
+    # 0030: a0 86 01 00 00 00 00 00 4d 5e 07 fa ff ff ff ff [........M^......]
+    # 0040: a0 86 01 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+    # 0050: 64 00 00 00 00 00 00 00 90 21 00 00 00 00 00 00 [d........!......]
+    # 0060: 64 00 00 00 00 00 00 00 18 00 00 00 03 00 00 00 [d...............]
+    # 0070: e8 07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+    # 0080: 00 00 00 00 00 00 00 00 30 30 30 30 30 30 30 30 [........00000000]
+    # 0090: 30 30 30 30 30 30 30 30 48 59 54 48 00 00 00 00 [00000000HYTH....]
+    # 00a0: 0c 00 00 00 10 00 00 00 2a 00 00 00 00 00 00 00 [........*.......]
+    # 00b0: 4f 3f 0c 1f 00 00 00 00 a0 86 01 00 00 00 00 00 [O?..............]
+    # 00c0: 7f cf 2d ff ff ff ff ff a0 86 01 00 00 00 00 00 [..-.............]
+    # 00d0: 01 00 00 00 08 00 00 00 0a 00 00 00 00 00 00 00 [................]
+    # 00e0: 0a 00 00 00 00 00 00 00 e8 03 00 00 00 00 00 00 [................]
+    # 00f0: 0a 00 00 00 00 00 00 00 4d 00 00 00 00 00 00 00 [........M.......]
+    # lat/lon at 0xb0/0xc0 and 0x128/0x138
+    # h/m/s at 0x10 and 0xa0 and 0x148 (the first imprinted on the video, the latter 2 presumed UTC)
+    # spd at 0x48, dir at 0x58, alt at 0xe8
+    SetByteOrder('II');
+    my ($spd,$dir,$d,$mo,$yr,$h,$m,$s) = unpack('x72Vx12Vx12V3x44V3',$$dataPt);
+    # offset 0xa0 also stores hh mm ss, but is out by 8 hours!
+    my $time = sprintf '%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $yr, $mo, $d, $h, $m, $s;
+    my ($lat, $lon) = (Get32s($dataPt, 0xb0) / 1e5, Get32s($dataPt, 0xc0) / 1e5);
+    my $alt = Get32s($dataPt, 0xe8);
+    ConvertLatLon($lat, $lon);
+    $et->HandleTag($tagTbl, GPSDateTime  => $time);
+    $et->HandleTag($tagTbl, GPSLatitude  => $lat);
+    $et->HandleTag($tagTbl, GPSLongitude => $lon);
+    $et->HandleTag($tagTbl, GPSSpeed     => $spd * $knotsToKph / 100);
+    $et->HandleTag($tagTbl, GPSTrack     => $dir / 100);
+    $et->HandleTag($tagTbl, GPSAltitude  => $alt / 10); # (NC)
     SetByteOrder('MM');
     return 1;
 }

@@ -3167,8 +3167,8 @@ sub PushValue($$$;$)
 # Inputs: 0) ExifTool object ref, 1) string with embedded tag names,
 #         2) reference to list of found tags or undef to use FOUND_TAGS, 3) Options:
 #               undef    - set missing tags to ''
-#              'Error'   - issue minor error on missing tag (and return undef)
-#              'Warn'    - issue minor warning on missing tag (and return undef)
+#              'Error'   - issue minor error on missing tag (and return undef if error sent)
+#              'Warn'    - issue minor warning on missing tag (and return undef if warning sent)
 #              'Silent'  - just return undef on missing tag (no errors/warnings)
 #               Hash ref - defined to interpolate as variables in string instead of values
 #                          --> receives tag/value pairs for interpolation of the variables

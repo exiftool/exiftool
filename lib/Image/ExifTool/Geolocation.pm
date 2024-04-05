@@ -34,9 +34,10 @@
 #        5   int8u  - index of country in country list
 #        6   int8u  - 0xf0 = population E exponent (in format "N.Fe+0E"), 0x0f = population N digit
 #        7   int16u - 0xf000 = population F digit, 0x0fff = index in region list (admin1)
-#        9   int16u - 0x7fff = index in subregion (admin2), 0x8000 = high bit of time zone
+#        9   int16u - v1.02: 0x7fff = index in subregion (admin2), 0x8000 = high bit of time zone
+#        9   int16u - v1.03: index in subregion (admin2)
 #       11   int8u  - low byte of time zone index
-#       12   int8u  - 0x0f - feature code index (see below)
+#       12   int8u  - 0x0f = feature code index (see below), v1.03: 0x80 = high bit of time zone
 #       13   string - UTF8 City name, terminated by newline
 #   "\0\0\0\0\x01"
 #   Country entries:
@@ -55,7 +56,7 @@
 #
 # Feature Codes: (see http://www.geonames.org/export/codes.html#P for descriptions)
 #
-#       0. Other    3. PPLA2    6. PPLA5    9. PPLF    12. PPLR
+#       0. Other    3. PPLA2    6. PPLA5    9. PPLF    12. PPLR   15. PPLX
 #       1. PPL      4. PPLA3    7. PPLC    10. PPLG    13. PPLS
 #       2. PPLA     5. PPLA4    8. PPLCH   11. PPLL    14. STLMT
 #------------------------------------------------------------------------------
@@ -65,9 +66,7 @@ package Image::ExifTool::Geolocation;
 use strict;
 use vars qw($VERSION $geoDir $altDir $dbInfo);
 
-$VERSION = '1.03';
-
-my $databaseVersion = '1.02';
+$VERSION = '1.04';  # (this is the module version number, not the database version)
 
 my $debug; # set to output processing time for testing
 
@@ -81,12 +80,13 @@ my (@cityList, @countryList, @regionList, @subregionList, @timezoneList);
 my (%countryNum, %regionNum, %subregionNum, %timezoneNum); # reverse lookups
 my (@sortOrder, @altNames, %langLookup, $nCity);
 my ($lastArgs, %lastFound, @lastByPop, @lastByLat); # cached city matches
+my $dbVer = '1.03';
 my $sortedBy = 'Latitude';
 my $pi = 3.1415926536;
 my $earthRadius = 6371;    # earth radius in km
 
-my @featureCodes = qw(Other PPL PPLA PPLA2 PPLA3 PPLA4 PPLA5
-                      PPLC PPLCH PPLF PPLG PPLL PPLR PPLS STLMT ?);
+my @featureCodes = qw(Other PPL PPLA PPLA2 PPLA3 PPLA4 PPLA5 PPLC
+                      PPLCH PPLF PPLG PPLL PPLR PPLS STLMT PPLX);
 my $i = 0;
 my %featureCodes = map { lc($_) => $i++ } @featureCodes;
 
@@ -136,16 +136,16 @@ sub ReadDatabase($)
         close(DATFILE);
         return 0;
     }
-    if ($1 != $databaseVersion) {
-        my $which = $1 < $databaseVersion ? 'database' : 'ExifTool';
+    ($dbVer, $nCity) = ($1, $2);
+    if ($dbVer !~ /^1\.0[23]$/) {
+        my $which = $dbVer < 1.03 ? 'database' : 'ExifTool';
         warn("Incompatible Geolocation database (update your $which)\n");
         close(DATFILE);
         return 0;
     }
-    $nCity = $2;
     my $comment = <DATFILE>;
     defined $comment and $comment =~ /(\d+)/ or close(DATFILE), return 0;
-    $dbInfo = "$datfile v$databaseVersion: $nCity cities with population > $1";
+    $dbInfo = "$datfile v$dbVer: $nCity cities with population > $1";
     my $isUserDefined = @Image::ExifTool::UserDefined::Geolocation;
 
     undef @altNames;    # reset altNames
@@ -268,11 +268,12 @@ sub SortDatabase($)
 # Add cities to the Geolocation database
 # Inputs: 0-8) city,region,subregion,country_code,country,timezone,feature_code,population,lat,lon,altNames
 # eg. AddEntry('Sinemorets','Burgas','Obshtina Tsarevo','BG','Bulgaria','Europe/Sofia','',400,42.06115,27.97833)
+# Returns: true on success, otherwise issues warning
 sub AddEntry(@)
 {
     my ($city, $region, $subregion, $cc, $country, $timezone, $fc, $pop, $lat, $lon, $altNames) = @_;
-    @_ < 10 and warn("Too few arguments in $city definition (check for updated format)\n"), return;
-    length($cc) != 2 and warn("Country code '${cc}' is not 2 characters\n"), return;
+    @_ < 10 and warn("Too few arguments in $city definition (check for updated format)\n"), return 0;
+    length($cc) != 2 and warn("Country code '${cc}' is not 2 characters\n"), return 0;
     $fc = $featureCodes{lc $fc} || 0;
     chomp $lon; # (just in case it was read from file)
     # create reverse lookups for country/region/subregion/timezone if not done already
@@ -286,6 +287,7 @@ sub AddEntry(@)
     }
     my $cn = $countryNum{lc $cc};
     unless (defined $cn) {
+        $#countryList >= 0xff and warn("AddEntry: Too many countries\n"), return 0;
         push @countryList, "$cc$country";
         $cn = $countryNum{lc $cc} = $#countryList;
     } elsif ($country) {
@@ -293,16 +295,20 @@ sub AddEntry(@)
     }
     my $tn = $timezoneNum{lc $timezone};
     unless (defined $tn) {
+        $#timezoneList >= 0x1ff and warn("AddEntry: Too many time zones\n"), return 0;
         push @timezoneList, $timezone;
         $tn = $timezoneNum{lc $timezone} = $#timezoneList;
     }
     my $rn = $regionNum{lc $region};
     unless (defined $rn) {
+        $#regionList >= 0xfff and warn("AddEntry: Too many regions\n"), return 0;
         push @regionList, $region;
         $rn = $regionNum{lc $region} = $#regionList;
     }
     my $sn = $subregionNum{lc $subregion};
     unless (defined $sn) {
+        my $max = $dbVer eq '1.02' ? 0x0fff : 0xffff;
+        $#subregionList >= $max and warn("AddEntry: Too many subregions\n"), return 0;
         push @subregionList, $subregion;
         $sn = $subregionNum{lc $subregion} = $#subregionList;
     }
@@ -310,7 +316,14 @@ sub AddEntry(@)
     # pack CC index, population and region index into a 32-bit integer
     my $code = ($cn << 24) | (substr($pop,-1,1)<<20) | (substr($pop,0,1)<<16) | (substr($pop,2,1)<<12) | $rn;
     # store high bit of timezone index
-    $tn > 255 and $sn |= 0x8000, $tn -= 256;
+    if ($tn > 255) {
+        if ($dbVer eq '1.02') {
+            $sn |= 0x8000;
+        } else {
+            $fc |= 0x80;
+        }
+        $tn -= 256;
+    }
     $lat = int(($lat + 90)  / 180 * 0x100000 + 0.5) & 0xfffff;
     $lon = int(($lon + 180) / 360 * 0x100000 + 0.5) & 0xfffff;
     my $hdr = pack('nCnNnCC', $lat>>4, (($lat&0x0f)<<4)|($lon&0x0f), $lon>>4, $code, $sn, $tn, $fc);
@@ -328,6 +341,7 @@ sub AddEntry(@)
     }
     $sortedBy = '';
     undef $lastArgs;    # (faster than ClearLastArgs)
+    return 1;
 }
 
 #------------------------------------------------------------------------------
@@ -341,14 +355,18 @@ sub GetEntry($;$$)
     my ($entryNum, $lang, $sort) = @_;
     return() if $entryNum > $#cityList;
     $entryNum = $sortOrder[$entryNum] if $sort and @sortOrder > $entryNum;
-    my ($lt,$f,$ln,$code,$sb,$tn,$fc) = unpack('nCnNnCC', $cityList[$entryNum]);
+    my ($lt,$f,$ln,$code,$sn,$tn,$fc) = unpack('nCnNnCC', $cityList[$entryNum]);
     my $city = substr($cityList[$entryNum],13);
     my $ctry = $countryList[$code >> 24];
     my $rgn = $regionList[$code & 0x0fff];
-    my $sub = $subregionList[$sb & 0x7fff];
+    if ($dbVer eq '1.02') {
+        $sn & 0x8000 and $tn += 256, $sn &= 0x7fff;
+    } else {
+        $fc & 0x80 and $tn += 256;
+    }
+    my $sub = $subregionList[$sn];
     # convert population digits back into exponent format
     my $pop = (($code>>16 & 0x0f) . '.' . ($code>>12 & 0x0f) . 'e+' . ($code>>20 & 0x0f)) + 0;
-    $tn += 256 if $sb & 0x8000;
     $lt = sprintf('%.4f', (($lt<<4)|($f >> 4))  * 180 / 0x100000 - 90);
     $ln = sprintf('%.4f', (($ln<<4)|($f & 0x0f))* 360 / 0x100000 - 180);
     $fc = $featureCodes[$fc & 0x0f];
@@ -511,9 +529,10 @@ Entry:  for (; $i<@cityList; ++$i) {
             if ($regex{8})  { $cty =~ $_ or next Entry foreach @{$regex{8}} }
             if ($regex{18}) { $cty !~ $_ or next Entry foreach @{$regex{18}} }
             # test other arguments
-            my ($cd,$sb) = unpack('x5Nn', $cityList[$i]);
+            my ($cd,$sn) = unpack('x5Nn', $cityList[$i]);
             my $ct = $countryList[$cd >> 24];
-            my @geo = (substr($ct,0,2), substr($ct,2), $regionList[$cd & 0x0fff], $subregionList[$sb & 0x7fff]);
+            $sn &= 0x7fff if $dbVer eq '1.02';
+            my @geo = (substr($ct,0,2), substr($ct,2), $regionList[$cd & 0x0fff], $subregionList[$sn]);
             if (@exact) {
                 # make quick lookup for all names at this location
                 my %geoLkup;
@@ -745,6 +764,10 @@ database, then the database entry is updated with the new country name.
 9) GPS longitude
 
 10) Optional comma-separated list of alternate names for the city
+
+=item Return Value:
+
+1 on success, otherwise sends a warning message to stderr
 
 =back
 

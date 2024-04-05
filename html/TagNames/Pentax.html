@@ -3071,25 +3071,6 @@ are roughly 8 steps per F-stop, but it varies slightly by lens)</span></span></t
 <td>--&gt; <a href='Pentax.html#LensData'>Pentax LensData Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='LensInfo2'>Pentax LensInfo2 Tags</a></h2>
-<p>Pentax lens information structure for models such as the K10D and K20D.</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Index1</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td class=r title='0 = 0x0'>0</td>
-<td>LensType</td>
-<td class=c>int8u[4]</td>
-<td>--&gt; <a href='Pentax.html#LensType'>Pentax LensType Values</a></td></tr>
-<tr class=b>
-<td class=r title='4 = 0x4'>4</td>
-<td>LensData</td>
-<td class=c>-</td>
-<td>--&gt; <a href='Pentax.html#LensData'>Pentax LensData Tags</a></td></tr>
-</table></td></tr></table></blockquote>
-
 <h2><a name='LensData'>Pentax LensData Tags</a></h2>
 <p>Pentax lens data information.  Some of these tags require interesting binary
 gymnastics to decode them into useful values.</p>
@@ -3246,6 +3227,25 @@ gymnastics to decode them into useful values.</p>
 <td>LC15?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LensInfo2'>Pentax LensInfo2 Tags</a></h2>
+<p>Pentax lens information structure for models such as the K10D and K20D.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>LensType</td>
+<td class=c>int8u[4]</td>
+<td>--&gt; <a href='Pentax.html#LensType'>Pentax LensType Values</a></td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>LensData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Pentax.html#LensData'>Pentax LensData Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='LensInfo3'>Pentax LensInfo3 Tags</a></h2>
@@ -4953,7 +4953,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 10, 2024</i>
+<br><i>Last revised Apr 5, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

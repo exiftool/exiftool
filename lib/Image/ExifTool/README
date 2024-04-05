@@ -1132,6 +1132,8 @@ keys in structure hashes are:
   GROUPS      : Same as in tag table, but only the family 2 group name is used,
                 as the default for the flattened tags.
 
+  SORT_ORDER  : Order for sorting fields in documentation.
+
 The contained structure field information hashes are similar to tag information
 hashes, except that only the following elements are used:
 

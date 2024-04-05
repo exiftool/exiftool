@@ -7,6 +7,24 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Apr. 5, 2024 - Version 12.82 - "GM PDR"
+
+  - Added support for reading GM PDR data from MP4 videos written by cars such
+    as Corvettes and Cameros
+  - Added support for reading timed GPS from Wolfbox dashcam videos
+  - Added "Unknown trailer" to QuickTime warnings originating from an unknown
+    trailer
+  - Added a new Nikon LensID
+  - Extract PreviewImage from Chigee AIO-5 dashcam videos
+  - Changed name and print conversion of a recently added FujiFilm tag
+  - Only issue "Tag not defined" warnings for the first sub-document when using
+    the -p option
+  - Fixed a Nikon Z lens name (github #250)
+  - Fixed Windows version so -sort works properly with -listgeo
+  - API Changes:
+      - Added PrintCSV option for optimized extraction of GM PDR data in CSV
+        format
+
 Mar. 27, 2024 - Version 12.81
 
   - Added ability to read EXIF and XMP from EXR images
@@ -19,8 +37,8 @@ Mar. 27, 2024 - Version 12.81
   - Added support for new version of Canon DR4 files
   - Added a number of new iTunesInfo tags
   - Added a new Olympus LensType
-  - Allow regular expressions to be used when writing Geolocate tag
   - Decode a number of new Nikon tags (thanks Warren Hatch)
+  - Allow regular expressions to be used when writing Geolocate tag
   - Enhanced writing of Geolocate tag to also write Keys:LocationName
   - Cache the results of the last reverse geolocation search to speed batch
     processing when multiple files have the same search parameters

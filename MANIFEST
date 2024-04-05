@@ -80,6 +80,7 @@ html/TagNames/FujiFilm.html
 html/TagNames/GE.html
 html/TagNames/GIF.html
 html/TagNames/GIMP.html
+html/TagNames/GM.html
 html/TagNames/GPS.html
 html/TagNames/GeoTiff.html
 html/TagNames/GoPro.html
@@ -293,6 +294,7 @@ lib/Image/ExifTool/FujiFilm.pm
 lib/Image/ExifTool/GE.pm
 lib/Image/ExifTool/GIF.pm
 lib/Image/ExifTool/GIMP.pm
+lib/Image/ExifTool/GM.pm
 lib/Image/ExifTool/GPS.pm
 lib/Image/ExifTool/GeoLang/cs.pm
 lib/Image/ExifTool/GeoLang/de.pm

@@ -1452,7 +1452,9 @@ sub WriteQuickTime($$$)
     }
     # ($errStr is set if there was an error that could possibly be due to an unknown trailer)
     if ($errStr) {
-        if ($lastTag eq 'mdat' and not $dataPt and not $$tagTablePtr{$tag}) {
+        if (($lastTag eq 'mdat' or $lastTag eq 'moov') and not $dataPt and (not $$tagTablePtr{$tag} or
+            ref $$tagTablePtr{$tag} eq 'HASH' and $$tagTablePtr{$tag}{Unknown}))
+        {
             my $nvTrail = $et->GetNewValueHash($Image::ExifTool::Extra{Trailer});
             if ($$et{DEL_GROUP}{Trailer} or ($nvTrail and not ($$nvTrail{Value} and $$nvTrail{Value}[0]))) {
                 $errStr =~ s/ is too large.*//;

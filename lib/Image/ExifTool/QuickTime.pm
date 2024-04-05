@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.94';
+$VERSION = '2.95';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -59,6 +59,9 @@ sub ProcessSampleDesc($$$);
 sub ProcessHybrid($$$);
 sub ProcessRights($$$);
 sub ProcessNextbase($$$);
+sub Process_mrlh($$$);
+sub Process_mrlv($$$);
+sub Process_mrld($$$);
 # ++vvvvvvvvvvvv++ (in QuickTimeStream.pl)
 sub Process_mebx($$$);
 sub Process_3gf($$$);
@@ -7870,20 +7873,9 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
 #
     ftab => { Name => 'FontTable',  Format => 'undef', ValueConv => 'substr($val, 5)' },
     name => { Name => 'OtherName',  Format => 'undef', ValueConv => 'substr($val, 4)' },
-    # mrlh = GM header?
-    # mrlv = GM data
-    # mrld = GM data (448-byte records):
-    #            0 - int32u count
-    #            4 - int32u ? (related to units) 0=none,1=m/km,2=L,3=kph,4=C,7=deg,8=rpm,9=kPa,10=G,11=V,15=Nm,16=%
-    #            8 - int32u ? (0,1,3,4,5)
-    #           12 - string[64] units
-    #           76 - int32u ? (1,3,7,15)
-    #           80 - int32u 0
-    #           84 - undef[4] ?
-    #           88 - int16u[6] ?
-    #           100 - undef[32] ?
-    #           132 - string[64] measurement name
-    #           196 - string[64] measurement name
+    mrlh => { Name => 'MarlinHeader',    SubDirectory => { TagTable => 'Image::ExifTool::GM::mrlh' } },
+    mrlv => { Name => 'MarlinValues',    SubDirectory => { TagTable => 'Image::ExifTool::GM::mrlv' } },
+    mrld => { Name => 'MarlinDictionary',SubDirectory => { TagTable => 'Image::ExifTool::GM::mrld' } },
 );
 
 # MP4 data information box (ref 5)
@@ -9478,7 +9470,7 @@ sub ProcessMOV($$;$)
     my $dirID = $$dirInfo{DirID} || '';
     my $charsetQuickTime = $et->Options('CharsetQuickTime');
     my ($buff, $tag, $size, $track, $isUserData, %triplet, $doDefaultLang, $index);
-    my ($dirEnd, $unkOpt, %saveOptions, $atomCount);
+    my ($dirEnd, $unkOpt, %saveOptions, $atomCount, $warnStr);
 
     my $topLevel = not $$et{InQuickTime};
     $$et{InQuickTime} = 1;
@@ -9558,6 +9550,7 @@ sub ProcessMOV($$;$)
         $index = $$tagTablePtr{VARS}{START_INDEX};
         $atomCount = $$tagTablePtr{VARS}{ATOM_COUNT};
     }
+    my $lastTag = '';
     for (;;) {
         my ($eeTag, $ignore);
         last if defined $atomCount and --$atomCount < 0;
@@ -9584,22 +9577,22 @@ sub ProcessMOV($$;$)
                 }
                 last;
             }
-            $size == 1 or $et->Warn('Invalid atom size'), last;
+            $size == 1 or $warnStr = 'Invalid atom size', last;
             # read extended atom size
-            $raf->Read($buff, 8) == 8 or $et->Warn('Truncated atom header'), last;
+            $raf->Read($buff, 8) == 8 or $warnStr = 'Truncated atom header', last;
             $dataPos += 8;
             my ($hi, $lo) = unpack('NN', $buff);
             if ($hi or $lo > 0x7fffffff) {
                 if ($hi > 0x7fffffff) {
-                    $et->Warn('Invalid atom size');
+                    $warnStr = 'Invalid atom size';
                     last;
                 } elsif (not $et->Options('LargeFileSupport')) {
-                    $et->Warn('End of processing at large atom (LargeFileSupport not enabled)');
+                    $warnStr = 'End of processing at large atom (LargeFileSupport not enabled)';
                     last;
                 }
             }
             $size = $hi * 4294967296 + $lo - 16;
-            $size < 0 and $et->Warn('Invalid extended size'), last;
+            $size < 0 and $warnStr = 'Invalid extended size', last;
         } else {
             $size -= 8;
         }
@@ -9755,7 +9748,7 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
             my $missing = $size - $raf->Read($val, $size);
             if ($missing) {
                 my $t = PrintableTagID($tag,2);
-                $et->Warn("Truncated '${t}' data (missing $missing bytes)");
+                $warnStr = "Truncated '${t}' data (missing $missing bytes)";
                 last;
             }
             # use value to get tag info if necessary
@@ -10070,15 +10063,27 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
             ) if $verbose;
             if ($size and (not $raf->Seek($size-1, 1) or $raf->Read($buff, 1) != 1)) {
                 my $t = PrintableTagID($tag,2);
-                $et->Warn("Truncated '${t}' data");
+                $warnStr = "Truncated '${t}' data";
                 last;
             }
         }
         $dataPos += $size + 8;  # point to start of next atom data
         last if $dirEnd and $dataPos >= $dirEnd; # (note: ignores last value if 0 bytes)
         $raf->Read($buff, 8) == 8 or last;
+        $lastTag = $tag if $$tagTablePtr{$tag};
         ($size, $tag) = unpack('Na4', $buff);
         ++$index if defined $index;
+    }
+    if ($warnStr) {
+        # assume this is an unknown trailer if it comes immediately after
+        # mdat or moov and has a tag name we don't recognize
+        if (($lastTag eq 'mdat' or $lastTag eq 'moov') and (not $$tagTablePtr{$tag} or
+            ref $$tagTablePtr{$tag} eq 'HASH' and $$tagTablePtr{$tag}{Unknown}))
+        {
+            $et->Warn('Unknown trailer with '.lcfirst($warnStr));
+        } else {
+            $et->Warn($warnStr);
+        }
     }
     # tweak file type based on track content ("iso*" and "dash" ftyp only)
     if ($topLevel and $$et{FileType} and $$et{FileType} eq 'MP4' and

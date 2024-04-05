@@ -17,6 +17,27 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.82'><b>Apr. 5, 2024 - Version 12.82</b></a> - "<a href="TagNames/GM.html">GM PDR</a>"
+<ul>
+<li>Added support for reading <a href="TagNames/GM.html">GM PDR data</a> from MP4 videos written by cars such
+    as Corvettes and Cameros
+<li>Added support for reading timed GPS from Wolfbox dashcam videos
+<li>Added "Unknown trailer" to QuickTime warnings originating from an unknown
+    trailer
+<li>Added a new Nikon LensID
+<li>Extract PreviewImage from Chigee AIO-5 dashcam videos
+<li>Changed name and print conversion of a recently added FujiFilm tag
+<li>Only issue "Tag not defined" warnings for the first sub-document when using
+    the -p option
+<li>Fixed a Nikon Z lens name (github #250)
+<li>Fixed Windows version so -sort works properly with -listgeo
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#PrintCSV">PrintCSV</a> option for optimized extraction of <a href="TagNames/GM.html">GM PDR data</a> in CSV
+        format
+    </ul>
+</ul>
+
 <a name='v12.81'><b>Mar. 27, 2024 - Version 12.81</b></a>
 <ul>
 <li>Added ability to read EXIF and XMP from EXR images
@@ -29,8 +50,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added support for new version of Canon DR4 files
 <li>Added a number of new iTunesInfo tags
 <li>Added a new Olympus LensType
-<li>Allow regular expressions to be used when writing Geolocate tag
 <li>Decode a number of new Nikon tags (thanks Warren Hatch)
+<li>Allow regular expressions to be used when writing Geolocate tag
 <li>Enhanced writing of Geolocate tag to also write Keys:LocationName
 <li>Cache the results of the last reverse geolocation search to speed batch
     processing when multiple files have the same search parameters

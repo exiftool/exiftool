@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27738 tags, with 17349 unique tag names.
+They contain a total of 27840 tags, with 17432 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -7940,15 +7940,6 @@ Pentax lens information structure for models such as the *istD.
       0    LensType                             int8u[2]
       3    LensData                             Pentax LensData
 
-=head3 Pentax LensInfo2 Tags
-
-Pentax lens information structure for models such as the K10D and K20D.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    LensType                             int8u[4]
-      4    LensData                             Pentax LensData
-
 =head3 Pentax LensData Tags
 
 Pentax lens data information.  Some of these tags require interesting binary
@@ -7978,6 +7969,15 @@ gymnastics to decode them into useful values.
    14.1    MaxAperture                          int8u & 0x7f
      15    LC14?                                int8u
      16    LC15?                                int8u
+
+=head3 Pentax LensInfo2 Tags
+
+Pentax lens information structure for models such as the K10D and K20D.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    LensType                             int8u[4]
+      4    LensData                             Pentax LensData
 
 =head3 Pentax LensInfo3 Tags
 
@@ -13165,7 +13165,7 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x104d   CropMode                             int16u
   0x104e   ColorChromeFXBlue                    int32s
   0x1050   ShutterType                          int16u
-  0x1051   Cropped                              int8u
+  0x1051   CropFlag                             int8u
   0x1052   CropTopLeft                          int32u
   0x1053   CropSize                             int32u
   0x1100   AutoBracketing                       int16u
@@ -22936,6 +22936,21 @@ written by the Sony DSC-F828 and DSC-V3.
   0x0000   SRF2Key                              no
   0x0001   DataKey                              no
 
+=head3 Sony SR2Private Tags
+
+The SR2 format uses the DNGPrivateData tag to reference a private IFD
+containing these tags.  SR2 images are written by the Sony DSC-R1, but
+this information is also written to ARW images by other models.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x7200   SR2SubIFDOffset                      no
+  0x7201   SR2SubIFDLength                      no
+  0x7221   SR2SubIFDKey                         no
+  0x7240   IDC_IFD                              SonyIDC
+  0x7241   IDC2_IFD                             SonyIDC
+  0x7250   MRWInfo                              MinoltaRaw
+
 =head3 Sony SRF2 Tags
 
 These tags are found in the SRF2 through SRF5 IFD's.
@@ -22968,21 +22983,6 @@ These tags are found in the SRF2 through SRF5 IFD's.
   0x00d0   WBRedAsShot                          no
   0x00d1   WBGreenAsShot                        no
   0x00d2   WBBlueAsShot                         no
-
-=head3 Sony SR2Private Tags
-
-The SR2 format uses the DNGPrivateData tag to reference a private IFD
-containing these tags.  SR2 images are written by the Sony DSC-R1, but
-this information is also written to ARW images by other models.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x7200   SR2SubIFDOffset                      no
-  0x7201   SR2SubIFDLength                      no
-  0x7221   SR2SubIFDKey                         no
-  0x7240   IDC_IFD                              SonyIDC
-  0x7241   IDC2_IFD                             SonyIDC
-  0x7250   MRWInfo                              MinoltaRaw
 
 =head3 Sony SR2SubIFD Tags
 
@@ -24082,6 +24082,112 @@ in JPEGs taken with the P2 Pro camera app.
      76    VisibleImageHeight                   no
      78    VisibleImageBpp                      no
 
+=head3 InfiRay Factory Tags
+
+This table lists tags found in the InfiRay APP4 IJPEG camera factory
+defaults and calibration data.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    IJPEGTempVersion                     no
+      4    FactDefEmissivity                    no
+      5    FactDefTau                           no
+      6    FactDefTa                            no
+      8    FactDefTu                            no
+     10    FactDefDist                          no
+     12    FactDefA0                            no
+     16    FactDefB0                            no
+     20    FactDefA1                            no
+     24    FactDefB1                            no
+     28    FactDefP0                            no
+     32    FactDefP1                            no
+     36    FactDefP2                            no
+     68    FactRelSensorTemp                    no
+     70    FactRelShutterTemp                   no
+     72    FactRelLensTemp                      no
+    100    FactStatusGain                       no
+    101    FactStatusEnvOK                      no
+    102    FactStatusDistOK                     no
+    103    FactStatusTempMap                    no
+
+=head3 InfiRay Picture Tags
+
+This table lists tags found in the InfiRay APP5 IJPEG picture temperature
+information.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    EnvironmentTemp                      no
+      4    Distance                             no
+      8    Emissivity                           no
+     12    Humidity                             no
+     16    ReferenceTemp                        no
+     32    TempUnit                             no
+     33    ShowCenterTemp                       no
+     34    ShowMaxTemp                          no
+     35    ShowMinTemp                          no
+     36    TempMeasureCount                     no
+
+=head3 InfiRay MixMode Tags
+
+This table lists tags found in the InfiRay APP6 IJPEG visual-infrared mixing
+mode section.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    MixMode                              no
+      1    FusionIntensity                      no
+      5    OffsetAdjustment                     no
+      9    CorrectionAsix                       no
+
+=head3 InfiRay OpMode Tags
+
+This table lists tags found in the InfiRay APP7 IJPEG camera operation mode
+section.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    WorkingMode                          no
+      1    IntegralTime                         no
+      5    IntegratTimeHdr                      no
+      9    GainStable                           no
+     10    TempControlEnable                    no
+     11    DeviceTemp                           no
+
+=head3 InfiRay Isothermal Tags
+
+This table lists tags found in the InfiRay APP8 IJPEG picture isothermal
+information.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    IsothermalMax                        no
+      4    IsothermalMin                        no
+      8    ChromaBarMax                         no
+     12    ChromaBarMin                         no
+
+=head3 InfiRay Sensor Tags
+
+This table lists tags found in the InfiRay APP9 IJPEG sensor information
+chunk.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    IRSensorManufacturer                 no
+     64    IRSensorName                         no
+    128    IRSensorPartNumber                   no
+    192    IRSensorSerialNumber                 no
+    256    IRSensorFirmware                     no
+    320    IRSensorAperture                     no
+    324    IRFocalLength                        no
+    384    VisibleSensorManufacturer            no
+    448    VisibleSensorName                    no
+    512    VisibleSensorPartNumber              no
+    576    VisibleSensorSerialNumber            no
+    640    VisibleSensorFirmware                no
+    704    VisibleSensorAperture                no
+    708    VisibleFocalLength                   no
+
 =head2 Stim Tags
 
 These tags are part of the CIPA Stereo Still Image specification, and are
@@ -24144,54 +24250,6 @@ L<http://www.scalado.com/>.)
   'QUAL'   PreviewQuality                       no
   'SPMO'   DataLength?                          no
   'WDTH'   PreviewImageWidth                    no
-
-=head2 InfiRay Tags
-
-=head3 InfiRay Factory Tags
-
-This table lists tags found in the InfiRay APP4 IJPEG camera factory
-defaults and calibration data.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    IJPEGTempVersion                     no
-      4    FactDefEmissivity                    no
-      5    FactDefTau                           no
-      6    FactDefTa                            no
-      8    FactDefTu                            no
-     10    FactDefDist                          no
-     12    FactDefA0                            no
-     16    FactDefB0                            no
-     20    FactDefA1                            no
-     24    FactDefB1                            no
-     28    FactDefP0                            no
-     32    FactDefP1                            no
-     36    FactDefP2                            no
-     68    FactRelSensorTemp                    no
-     70    FactRelShutterTemp                   no
-     72    FactRelLensTemp                      no
-    100    FactStatusGain                       no
-    101    FactStatusEnvOK                      no
-    102    FactStatusDistOK                     no
-    103    FactStatusTempMap                    no
-
-=head3 InfiRay Picture Tags
-
-This table lists tags found in the InfiRay APP5 IJPEG picture temperature
-information.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    EnvironmentTemp                      no
-      4    Distance                             no
-      8    Emissivity                           no
-     12    Humidity                             no
-     16    ReferenceTemp                        no
-     32    TempUnit                             no
-     33    ShowCenterTemp                       no
-     34    ShowMaxTemp                          no
-     35    ShowMinTemp                          no
-     36    TempMeasureCount                     no
 
 =head2 GoPro Tags
 
@@ -24348,20 +24406,6 @@ Tags extracted from the MP4 "fdsc" timed metadata when the ExtractEmbedded
      23    SerialNumber                         no
      87    OtherSerialNumber                    no
     102    Model                                no
-
-=head2 InfiRay Tags
-
-=head3 InfiRay MixMode Tags
-
-This table lists tags found in the InfiRay APP6 IJPEG visual-infrared mixing
-mode section.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    MixMode                              no
-      1    FusionIntensity                      no
-      5    OffsetAdjustment                     no
-      9    CorrectionAsix                       no
 
 =head2 Qualcomm Tags
 
@@ -25561,56 +25605,6 @@ even if it is not listed in this table.
   YhiYloCorK1                                   no
   YhiYloCorK2                                   no
 
-=head2 InfiRay Tags
-
-=head3 InfiRay OpMode Tags
-
-This table lists tags found in the InfiRay APP7 IJPEG camera operation mode
-section.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    WorkingMode                          no
-      1    IntegralTime                         no
-      5    IntegratTimeHdr                      no
-      9    GainStable                           no
-     10    TempControlEnable                    no
-     11    DeviceTemp                           no
-
-=head3 InfiRay Isothermal Tags
-
-This table lists tags found in the InfiRay APP8 IJPEG picture isothermal
-information.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    IsothermalMax                        no
-      4    IsothermalMin                        no
-      8    ChromaBarMax                         no
-     12    ChromaBarMin                         no
-
-=head3 InfiRay Sensor Tags
-
-This table lists tags found in the InfiRay APP9 IJPEG sensor information
-chunk.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    IRSensorManufacturer                 no
-     64    IRSensorName                         no
-    128    IRSensorPartNumber                   no
-    192    IRSensorSerialNumber                 no
-    256    IRSensorFirmware                     no
-    320    IRSensorAperture                     no
-    324    IRFocalLength                        no
-    384    VisibleSensorManufacturer            no
-    448    VisibleSensorName                    no
-    512    VisibleSensorPartNumber              no
-    576    VisibleSensorSerialNumber            no
-    640    VisibleSensorFirmware                no
-    704    VisibleSensorAperture                no
-    708    VisibleFocalLength                   no
-
 =head2 Jpeg2000 Tags
 
 The tags below are found in JPEG 2000 images and the C2PA CAI JUMBF metadata
@@ -26458,30 +26452,6 @@ These tags belong to the ExifTool XMP-microsoft family 1 group.
   LensModel                                     string/
   RatingPercent                                 string
 
-=head3 Microsoft MP1 Tags
-
-Microsoft Photo 1.1 schema XMP tags which have been observed.
-
-These tags belong to the ExifTool XMP-MP1 family 1 group.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  Brightness                                    string/
-  CameraModelID                                 string/
-  Contrast                                      string/
-  ExposureCompensation                          string/
-  PanoramicStitchCameraMotion                   string
-  PanoramicStitchMapType                        string
-  PanoramicStitchPhi0                           real
-  PanoramicStitchPhi1                           real
-  PanoramicStitchTheta0                         real
-  PanoramicStitchTheta1                         real
-  PipelineVersion                               string
-  StreamType                                    string
-  WhiteBalance0                                 real
-  WhiteBalance1                                 real
-  WhiteBalance2                                 real
-
 =head3 Microsoft MP Tags
 
 Microsoft Photo 1.2 schema XMP tags which have been observed.
@@ -26519,6 +26489,30 @@ PersonLiveIdCID, so ExifTool uses this too.
   PersonLiveIdCID                               string
   PersonSourceID                                string
   Rectangle                                     string
+
+=head3 Microsoft MP1 Tags
+
+Microsoft Photo 1.1 schema XMP tags which have been observed.
+
+These tags belong to the ExifTool XMP-MP1 family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  Brightness                                    string/
+  CameraModelID                                 string/
+  Contrast                                      string/
+  ExposureCompensation                          string/
+  PanoramicStitchCameraMotion                   string
+  PanoramicStitchMapType                        string
+  PanoramicStitchPhi0                           real
+  PanoramicStitchPhi1                           real
+  PanoramicStitchTheta0                         real
+  PanoramicStitchTheta1                         real
+  PipelineVersion                               string
+  StreamType                                    string
+  WhiteBalance0                                 real
+  WhiteBalance1                                 real
+  WhiteBalance2                                 real
 
 =head3 Microsoft Stitch Tags
 
@@ -29521,7 +29515,7 @@ for the official specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 72 different formats of timed GPS metadata from video files.
+currently reads 74 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -29556,6 +29550,7 @@ currently reads 72 different formats of timed GPS metadata from video files.
   ISO                                           no
   JpgFromRaw                                    no
   KiloCalories                                  no
+  PreviewImage                                  no
   PreviewInfo                                   QuickTime PreviewInfo
   RVMI_gReV                                     QuickTime RVMI_gReV
   RVMI_sReV                                     QuickTime RVMI_sReV
@@ -29584,8 +29579,9 @@ currently reads 72 different formats of timed GPS metadata from video files.
   gpmd_Kingslim                                 QuickTime Stream
   gpmd_Rove                                     QuickTime Stream
   gpmd_FMAS                                     QuickTime Stream
+  gpmd_Wolfbox                                  QuickTime Stream
   gpmd_GoPro                                    GoPro GPMF
-  marl                                          QuickTime marl
+  marl                                          GM marl
   mebx                                          QuickTime Keys
   mett                                          Parrot mett
   rtmd                                          Sony rtmd
@@ -29692,14 +29688,6 @@ specification.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0004   MagneticField                        no
-
-=head3 QuickTime marl Tags
-
-Tags extracted from the marl ctbx timed metadata of GM cars.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  [no tags known]
 
 =head3 QuickTime Keys Tags
 
@@ -30633,6 +30621,9 @@ MP4 metadata sample description.
   0x0004   OtherFormat                          no
   0x0018   PlaybackFrameRate                    no
   'ftab'   FontTable                            no
+  'mrld'   MarlinDictionary                     GM mrld
+  'mrlh'   MarlinHeader                         GM mrlh
+  'mrlv'   MarlinValues                         GM mrlv
   'name'   OtherName                            no
 
 =head3 QuickTime VideoHeader Tags
@@ -31674,6 +31665,170 @@ FLAC is big-endian, so bit 0 is the high-order bit in this table.
       6    PictureIndexedColors                 no
       7    PictureLength                        no
       8    Picture                              no
+
+=head2 GM Tags
+
+These tags are extracted from GM/Cosworth PDR (Performance Data Recorder)
+information found in videos from General Motors cars such as Corvette and
+Camero.
+
+Use the API PrintCSV option to output all timed
+PDR data in CSV format at greatly increased speed and with much lower memory
+usage.
+
+=head3 GM marl Tags
+
+Tags extracted from the 'ctbx' 'marl' (Marlin) box of timed PDR metadata
+from GM cars.  Use the -ee (API ExtractEmbedded) option to extract this
+information, or the API PrintCSV option to output in CSV format.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  ABSActive                                     no
+  AccelPos                                      no
+  BatteryVoltage                                no
+  Beacon                                        no
+  BoostPressureInd                              no
+  BrakePos                                      no
+  CPUFree                                       no
+  CPUIO                                         no
+  CPUIRQ                                        no
+  CPUSystem                                     no
+  CPUUser                                       no
+  ClutchPos                                     no
+  CoolantTemp                                   no
+  CornerExitSetting                             no
+  DiskReadOperations                            no
+  DiskReadRate                                  no
+  DiskReadTime                                  no
+  DiskWriteOperations                           no
+  DiskWriteRate                                 no
+  DiskWriteTime                                 no
+  Distance                                      no
+  DriverPerformanceMode                         no
+  EngineSpeedRequest                            no
+  EngineTorqureReq                              no
+  FuelCapacity                                  no
+  FuelLevel                                     no
+  GPSAltitude                                   no
+  GPSDateTime                                   no
+  GPSFix                                        no
+  GPSLatitude                                   no
+  GPSLongitude                                  no
+  GPSTrack                                      no
+  Gear                                          no
+  InfotainOpMode                                no
+  IntakeAirTemperature                          no
+  IntakeBoostPressure                           no
+  LFTyrePressure                                no
+  LFTyreTemp                                    no
+  LRTyrePressure                                no
+  LRTyreTemp                                    no
+  LateralAcceleration                           no
+  LongitudinalAcceleration                      no
+  OilPressure                                   no
+  OilTemp                                       no
+  OutsideAirTemperature                         no
+  RFTyrePressure                                no
+  RFTyreTemp                                    no
+  RPM                                           no
+  RRTyrePressure                                no
+  RRTyreTemp                                    no
+  RecordingEventOdometer                        no
+  Speed                                         no
+  SpeedControlResponse                          no
+  SpeedRequestIntervention                      no
+  Steering1Switch                               no
+  Steering2Switch                               no
+  SteeringAngle                                 no
+  SuspensionDisplacementLeftFront               no
+  SuspensionDisplacementLeftRear                no
+  SuspensionDisplacementRightFront              no
+  SuspensionDisplacementRightRear               no
+  SystemBackupPowerEnabled                      no
+  SystemBackupPowerMode                         no
+  SystemPowerMode                               no
+  TimeStamp                                     no
+  TractionControlActive                         no
+  TransOilTemp                                  no
+  TransportStorageMode                          no
+  ValetMode                                     no
+  VehicleStabilityActive                        no
+  VerticalAcceleration                          no
+  WheelspeedLeftDriven                          no
+  WheelspeedLeftNon-Driven                      no
+  WheelspeedRightDriven                         no
+  WheelspeedRightNon-Driven                     no
+  YawRate                                       no
+
+=head3 GM mrld Tags
+
+The Marlin dictionary.  Only one channel is listed but all available
+channels are extracted.  Use the -struct (API Struct) option to extract the
+channel information as structures.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  Channel01                                     GM Channel Struct
+  Channel01Description                          no_
+  Channel01DispMax                              no_
+  Channel01DispMin                              no_
+  Channel01Flags                                no_
+  Channel01ID                                   no_
+  Channel01Interval                             no_
+  Channel01Max                                  no_
+  Channel01Min                                  no_
+  Channel01Multiplier                           no_
+  Channel01Name                                 no_
+  Channel01Num                                  no_
+  Channel01Offset                               no_
+  Channel01Type                                 no_
+  Channel01Units                                no_
+
+=head3 GM Channel Struct
+
+Information stored for each channel in the Marlin dictionary.
+
+  Field Name                                    Writable
+  ----------                                    --------
+  ID                                            no
+  Type                                          no
+  Num                                           no
+  Units                                         no
+  Flags                                         no
+  Interval                                      no
+  Min                                           no
+  Max                                           no
+  DispMin                                       no
+  DispMax                                       no
+  Multiplier                                    no
+  Offset                                        no
+  Name                                          no
+  Description                                   no
+
+=head3 GM mrlh Tags
+
+The Marlin PDR header.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    MarlinDataVersion                    no
+
+=head3 GM mrlv Tags
+
+Tags found in the 'mrlv' (Marlin values) box.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'date'   Date1                                no
+  'lang'   Language                             no
+  'ldat'   Date2                                no
+  'ltim'   Time2                                no
+  'swvs'   SoftwareVersion                      no
+  'time'   Time1                                no
+  'tstm'   StartTime                            no
+  'unit'   Units                                no
+  'zone'   TimeZone                             no
 
 =head2 Parrot Tags
 
@@ -40639,6 +40794,74 @@ implements this policy and changes EXIF:Artist to a list-type tag.
                        CurrentIPTCDigest
                        IPTCDigest
 
+=head3 MWG Collections Tags
+
+Collections metadata defined by the MWG 2.0 specification.  See
+L<https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf>
+for the official specification.
+
+These tags belong to the ExifTool XMP-mwg-coll family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  Collections                                   MWG CollectionInfo Struct+
+  CollectionName                                string_+
+  CollectionURI                                 string_+
+
+=head3 MWG CollectionInfo Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  CollectionName                                string
+  CollectionURI                                 string
+
+=head3 MWG Keywords Tags
+
+Hierarchical keywords metadata defined by the MWG 2.0 specification.
+ExifTool unrolls keyword structures to an arbitrary depth of 6 to allow
+individual levels to be accessed with different tag names, and to avoid
+infinite recursion.  See
+L<https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf>
+for the official specification.
+
+These tags belong to the ExifTool XMP-mwg-kw family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  KeywordInfo                                   MWG KeywordInfo Struct
+  HierarchicalKeywords                          MWG KeywordStruct Struct_+
+  HierarchicalKeywords1Applied                  boolean_+
+  HierarchicalKeywords1Children                 MWG KeywordStruct Struct_+
+  HierarchicalKeywords2Applied                  boolean_+
+  HierarchicalKeywords2Children                 MWG KeywordStruct Struct_+
+  HierarchicalKeywords3Applied                  boolean_+
+  HierarchicalKeywords3Children                 MWG KeywordStruct Struct_+
+  HierarchicalKeywords4Applied                  boolean_+
+  HierarchicalKeywords4Children                 MWG KeywordStruct Struct_+
+  HierarchicalKeywords5Applied                  boolean_+
+  HierarchicalKeywords5Children                 MWG KeywordStruct Struct_+
+  HierarchicalKeywords6Applied                  boolean_+
+  HierarchicalKeywords6                         string_+
+  HierarchicalKeywords5                         string_+
+  HierarchicalKeywords4                         string_+
+  HierarchicalKeywords3                         string_+
+  HierarchicalKeywords2                         string_+
+  HierarchicalKeywords1                         string_+
+
+=head3 MWG KeywordInfo Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Hierarchy                                     MWG KeywordStruct Struct+
+
+=head3 MWG KeywordStruct Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Applied                                       boolean
+  Children                                      MWG KeywordStruct Struct+
+  Keyword                                       string
+
 =head3 MWG Regions Tags
 
 Image region metadata defined by the MWG 2.0 specification.  These tags
@@ -40706,74 +40929,6 @@ conversion).
   Field Name                                    Writable
   ----------                                    --------
   [no tags known]
-
-=head3 MWG Keywords Tags
-
-Hierarchical keywords metadata defined by the MWG 2.0 specification.
-ExifTool unrolls keyword structures to an arbitrary depth of 6 to allow
-individual levels to be accessed with different tag names, and to avoid
-infinite recursion.  See
-L<https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf>
-for the official specification.
-
-These tags belong to the ExifTool XMP-mwg-kw family 1 group.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  KeywordInfo                                   MWG KeywordInfo Struct
-  HierarchicalKeywords                          MWG KeywordStruct Struct_+
-  HierarchicalKeywords1Applied                  boolean_+
-  HierarchicalKeywords1Children                 MWG KeywordStruct Struct_+
-  HierarchicalKeywords2Applied                  boolean_+
-  HierarchicalKeywords2Children                 MWG KeywordStruct Struct_+
-  HierarchicalKeywords3Applied                  boolean_+
-  HierarchicalKeywords3Children                 MWG KeywordStruct Struct_+
-  HierarchicalKeywords4Applied                  boolean_+
-  HierarchicalKeywords4Children                 MWG KeywordStruct Struct_+
-  HierarchicalKeywords5Applied                  boolean_+
-  HierarchicalKeywords5Children                 MWG KeywordStruct Struct_+
-  HierarchicalKeywords6Applied                  boolean_+
-  HierarchicalKeywords6                         string_+
-  HierarchicalKeywords5                         string_+
-  HierarchicalKeywords4                         string_+
-  HierarchicalKeywords3                         string_+
-  HierarchicalKeywords2                         string_+
-  HierarchicalKeywords1                         string_+
-
-=head3 MWG KeywordInfo Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  Hierarchy                                     MWG KeywordStruct Struct+
-
-=head3 MWG KeywordStruct Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  Applied                                       boolean
-  Children                                      MWG KeywordStruct Struct+
-  Keyword                                       string
-
-=head3 MWG Collections Tags
-
-Collections metadata defined by the MWG 2.0 specification.  See
-L<https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf>
-for the official specification.
-
-These tags belong to the ExifTool XMP-mwg-coll family 1 group.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  Collections                                   MWG CollectionInfo Struct+
-  CollectionName                                string_+
-  CollectionURI                                 string_+
-
-=head3 MWG CollectionInfo Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  CollectionName                                string
-  CollectionURI                                 string
 
 =head1 NOTES
 

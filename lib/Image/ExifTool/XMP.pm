@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.64';
+$VERSION = '3.65';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -283,11 +283,12 @@ my %recognizedAttrs = (
 # NOTE: this lookup is duplicated in TagLookup.pm!!
 %specialStruct = (
     STRUCT_NAME => 1, # [optional] name of structure
-    NAMESPACE   => 1, # [mandatory] namespace prefix used for fields of this structure
+    NAMESPACE   => 1, # [mandatory for XMP] namespace prefix used for fields of this structure
     NOTES       => 1, # [optional] notes for documentation about this structure
     TYPE        => 1, # [optional] rdf:type resource for struct (if used, the StructType flag
                       # will be set automatically for all derived flattened tags when writing)
     GROUPS      => 1, # [optional] specifies family group 2 name for the structure
+    SORT_ORDER  => 1, # [optional] order for sorting fields in documentation
 );
 # XMP structures (each structure is similar to a tag table so we can
 # recurse through them in SetPropertyPath() as if they were tag tables)

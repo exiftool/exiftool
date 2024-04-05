@@ -184,6 +184,198 @@ implements this policy and changes EXIF:Artist to a list-type tag.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='Collections'>MWG Collections Tags</a></h2>
+<p>Collections metadata defined by the MWG 2.0 specification.  See
+<a href="https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf">https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf</a>
+for the official specification.</p>
+
+<p>These tags belong to the ExifTool XMP-mwg-coll family 1 group.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Collections</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='MWG.html#CollectionInfo'>MWG CollectionInfo Struct</a></td></tr>
+<tr class=b>
+<td>CollectionName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(CollectionsCollectionName)</span></span></td></tr>
+<tr>
+<td>CollectionURI</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(CollectionsCollectionURI)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CollectionInfo'>MWG CollectionInfo Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>CollectionName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CollectionURI</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Keywords'>MWG Keywords Tags</a></h2>
+<p>Hierarchical keywords metadata defined by the MWG 2.0 specification.
+ExifTool unrolls keyword structures to an arbitrary depth of 6 to allow
+individual levels to be accessed with different tag names, and to avoid
+infinite recursion.  See
+<a href="https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf">https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf</a>
+for the official specification.</p>
+
+<p>These tags belong to the ExifTool XMP-mwg-kw family 1 group.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>KeywordInfo</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='MWG.html#KeywordInfo'>MWG KeywordInfo Struct</a>
+  <br><span class='n s'>(called Keywords by the spec)</span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
+  <br><span class='n s'>(KeywordsHierarchy)</span></td></tr>
+<tr>
+<td>HierarchicalKeywords1Applied</td>
+<td class=c title=' _ = Flattened
+ + = List'>boolean_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyApplied)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords1Children</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
+  <br><span class='n s'>(KeywordsHierarchyChildren)</span></td></tr>
+<tr>
+<td>HierarchicalKeywords2Applied</td>
+<td class=c title=' _ = Flattened
+ + = List'>boolean_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenApplied)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords2Children</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
+  <br><span class='n s'>(KeywordsHierarchyChildrenChildren)</span></td></tr>
+<tr>
+<td>HierarchicalKeywords3Applied</td>
+<td class=c title=' _ = Flattened
+ + = List'>boolean_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenApplied)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords3Children</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
+  <br><span class='n s'>(KeywordsHierarchyChildrenChildrenChildren)</span></td></tr>
+<tr>
+<td>HierarchicalKeywords4Applied</td>
+<td class=c title=' _ = Flattened
+ + = List'>boolean_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenApplied)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords4Children</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
+  <br><span class='n s'>(KeywordsHierarchyChildrenChildrenChildrenChildren)</span></td></tr>
+<tr>
+<td>HierarchicalKeywords5Applied</td>
+<td class=c title=' _ = Flattened
+ + = List'>boolean_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenChildrenApplied)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords5Children</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
+  <br><span class='n s'>(KeywordsHierarchyChildrenChildrenChildrenChildrenChildren)</span></td></tr>
+<tr>
+<td>HierarchicalKeywords6Applied</td>
+<td class=c title=' _ = Flattened
+ + = List'>boolean_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenChildrenChildrenApplied)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords6</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenChildrenChildrenKeyword)</span></span></td></tr>
+<tr>
+<td>HierarchicalKeywords5</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenChildrenKeyword)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords4</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenKeyword)</span></span></td></tr>
+<tr>
+<td>HierarchicalKeywords3</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenKeyword)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords2</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenKeyword)</span></span></td></tr>
+<tr>
+<td>HierarchicalKeywords1</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyKeyword)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='KeywordInfo'>MWG KeywordInfo Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Hierarchy</td>
+<td class=c title=' + = List'>MWG KeywordStruct+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='KeywordStruct'>MWG KeywordStruct Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Applied</td>
+<td class=c>boolean</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Children</td>
+<td class=c title=' + = List'>MWG KeywordStruct+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a></td></tr>
+<tr>
+<td>Keyword</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='Regions'>MWG Regions Tags</a></h2>
 <p>Image region metadata defined by the MWG 2.0 specification.  These tags
 may be accessed without the need to load the MWG Composite tags above.  See
@@ -391,201 +583,9 @@ conversion).</p>
 <tr><td colspan=3 class=c><i>[no tags known]</i></td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='Keywords'>MWG Keywords Tags</a></h2>
-<p>Hierarchical keywords metadata defined by the MWG 2.0 specification.
-ExifTool unrolls keyword structures to an arbitrary depth of 6 to allow
-individual levels to be accessed with different tag names, and to avoid
-infinite recursion.  See
-<a href="https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf">https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf</a>
-for the official specification.</p>
-
-<p>These tags belong to the ExifTool XMP-mwg-kw family 1 group.</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>KeywordInfo</td>
-<td class=c>struct</td>
-<td>--&gt; <a href='MWG.html#KeywordInfo'>MWG KeywordInfo Struct</a>
-  <br><span class='n s'>(called Keywords by the spec)</span></td></tr>
-<tr class=b>
-<td>HierarchicalKeywords</td>
-<td class=c title=' _ = Flattened
- + = List'>struct_+</td>
-<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
-  <br><span class='n s'>(KeywordsHierarchy)</span></td></tr>
-<tr>
-<td>HierarchicalKeywords1Applied</td>
-<td class=c title=' _ = Flattened
- + = List'>boolean_+</td>
-<td><span class=s><span class=n>(KeywordsHierarchyApplied)</span></span></td></tr>
-<tr class=b>
-<td>HierarchicalKeywords1Children</td>
-<td class=c title=' _ = Flattened
- + = List'>struct_+</td>
-<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
-  <br><span class='n s'>(KeywordsHierarchyChildren)</span></td></tr>
-<tr>
-<td>HierarchicalKeywords2Applied</td>
-<td class=c title=' _ = Flattened
- + = List'>boolean_+</td>
-<td><span class=s><span class=n>(KeywordsHierarchyChildrenApplied)</span></span></td></tr>
-<tr class=b>
-<td>HierarchicalKeywords2Children</td>
-<td class=c title=' _ = Flattened
- + = List'>struct_+</td>
-<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
-  <br><span class='n s'>(KeywordsHierarchyChildrenChildren)</span></td></tr>
-<tr>
-<td>HierarchicalKeywords3Applied</td>
-<td class=c title=' _ = Flattened
- + = List'>boolean_+</td>
-<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenApplied)</span></span></td></tr>
-<tr class=b>
-<td>HierarchicalKeywords3Children</td>
-<td class=c title=' _ = Flattened
- + = List'>struct_+</td>
-<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
-  <br><span class='n s'>(KeywordsHierarchyChildrenChildrenChildren)</span></td></tr>
-<tr>
-<td>HierarchicalKeywords4Applied</td>
-<td class=c title=' _ = Flattened
- + = List'>boolean_+</td>
-<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenApplied)</span></span></td></tr>
-<tr class=b>
-<td>HierarchicalKeywords4Children</td>
-<td class=c title=' _ = Flattened
- + = List'>struct_+</td>
-<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
-  <br><span class='n s'>(KeywordsHierarchyChildrenChildrenChildrenChildren)</span></td></tr>
-<tr>
-<td>HierarchicalKeywords5Applied</td>
-<td class=c title=' _ = Flattened
- + = List'>boolean_+</td>
-<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenChildrenApplied)</span></span></td></tr>
-<tr class=b>
-<td>HierarchicalKeywords5Children</td>
-<td class=c title=' _ = Flattened
- + = List'>struct_+</td>
-<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
-  <br><span class='n s'>(KeywordsHierarchyChildrenChildrenChildrenChildrenChildren)</span></td></tr>
-<tr>
-<td>HierarchicalKeywords6Applied</td>
-<td class=c title=' _ = Flattened
- + = List'>boolean_+</td>
-<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenChildrenChildrenApplied)</span></span></td></tr>
-<tr class=b>
-<td>HierarchicalKeywords6</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenChildrenChildrenKeyword)</span></span></td></tr>
-<tr>
-<td>HierarchicalKeywords5</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenChildrenKeyword)</span></span></td></tr>
-<tr class=b>
-<td>HierarchicalKeywords4</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenKeyword)</span></span></td></tr>
-<tr>
-<td>HierarchicalKeywords3</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenKeyword)</span></span></td></tr>
-<tr class=b>
-<td>HierarchicalKeywords2</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(KeywordsHierarchyChildrenKeyword)</span></span></td></tr>
-<tr>
-<td>HierarchicalKeywords1</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(KeywordsHierarchyKeyword)</span></span></td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='KeywordInfo'>MWG KeywordInfo Struct</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Field Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>Hierarchy</td>
-<td class=c title=' + = List'>MWG KeywordStruct+</td>
-<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a></td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='KeywordStruct'>MWG KeywordStruct Struct</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Field Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>Applied</td>
-<td class=c>boolean</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>Children</td>
-<td class=c title=' + = List'>MWG KeywordStruct+</td>
-<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a></td></tr>
-<tr>
-<td>Keyword</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='Collections'>MWG Collections Tags</a></h2>
-<p>Collections metadata defined by the MWG 2.0 specification.  See
-<a href="https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf">https://web.archive.org/web/20180919181934/http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf</a>
-for the official specification.</p>
-
-<p>These tags belong to the ExifTool XMP-mwg-coll family 1 group.</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>Collections</td>
-<td class=c title=' + = List'>struct+</td>
-<td>--&gt; <a href='MWG.html#CollectionInfo'>MWG CollectionInfo Struct</a></td></tr>
-<tr class=b>
-<td>CollectionName</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(CollectionsCollectionName)</span></span></td></tr>
-<tr>
-<td>CollectionURI</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(CollectionsCollectionURI)</span></span></td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='CollectionInfo'>MWG CollectionInfo Struct</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Field Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>CollectionName</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>CollectionURI</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 1, 2021</i>
+<br><i>Last revised Apr 5, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -378,11 +378,11 @@ Geolocation database, which may be useful for working with only a user-defined
 database.  <i>(Note that this may not work in Windows if there are Unicode
 characters in the path name.)</i></blockquote>
 
-<blockquote>A database of alternate city names is also available, and is used
-when performing a reverse geolocation search based on city name. To use this,
-the Geolocation500 database must also be installed.  To activate the alternate
-names feature, download the AltNames500 database below and add the following
-line to your ExifTool config file:
+<blockquote>A database of alternate city names is also available, and is
+consulted when performing a reverse geolocation search based on city name. To
+use this, the Geolocation500 database must also be installed.  To activate the
+alternate names feature, download the AltNames500 database below and add the
+following line to your ExifTool config file:
 
 <pre>$Image::ExifTool::Geolocation::altDir = '/PATH/TO/AltNames500';</pre>
 

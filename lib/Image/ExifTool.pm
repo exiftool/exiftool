@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.81';
+$VERSION = '12.82';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1137,6 +1137,7 @@ my @availableOptions = (
     [ 'NoPDFList',        undef,  'flag to avoid splitting PDF List-type tag values' ],
     [ 'NoWarning',        undef,  'regular expression for warnings to suppress' ],
     [ 'Password',         undef,  'password for password-protected PDF documents' ],
+    [ 'PrintCSV',         undef,  'flag to print CSV directly (selected metadata types only)' ],
     [ 'PrintConv',        1,      'flag to enable print conversion' ],
     [ 'QuickTimeHandler', 1,      'flag to add mdir Handler to newly created Meta box' ],
     [ 'QuickTimePad',     undef,  'flag to preserve padding of QuickTime CR3 tags' ],
@@ -2035,8 +2036,8 @@ my %systemTagsNotes = (
             }
             return join(',', @args);
         },
-    },        
-    GeolocationBearing  => { %geoInfo, 
+    },
+    GeolocationBearing  => { %geoInfo,
         Notes => q{
             compass bearing to GeolocationCity center. Geolocation tags are
             generated only if API L<Geolocation|../ExifTool.html#Geolocation> option is set
@@ -2650,7 +2651,6 @@ sub ExtractInfo($;@)
             $self->Options(Duplicates => 1) if $$options{HtmlDump};
             # enable Validate option if Validate tag is requested
             $self->Options(Validate => 1) if $$req{validate};
-
             if (defined $_[0]) {
                 # only initialize filename if called with arguments
                 $$self{FILENAME} = undef;   # name of file (or '' if we didn't open it)
@@ -2658,6 +2658,11 @@ sub ExtractInfo($;@)
 
                 $self->ParseArguments(@_);  # initialize from our arguments
             }
+        }
+        # ignore all tags and set ExtractEmbedded if outputting CSV directly
+        if ($self->Options('PrintCSV')) {
+            $$self{OPTIONS}{IgnoreTags} = { all => 1 };
+            $self->Options(ExtractEmbedded => 1);
         }
         # initialize ExifTool object members
         $self->Init();
@@ -2839,6 +2844,7 @@ sub ExtractInfo($;@)
             $self->FoundTag('FileTypeExtension', '');
             $self->DoneExtract();
             $raf->Close() if $raf;
+            %saveOptions and $$self{OPTIONS} = \%saveOptions;
             delete $$self{InExtract} unless $reEntry;
             return 1;
         }
@@ -3070,8 +3076,14 @@ sub ExtractInfo($;@)
         # restore necessary members when exiting re-entrant code
         $$self{$_} = $$reEntry{$_} foreach keys %$reEntry;
         SetByteOrder($saveOrder);
+    } else {
+        # call cleanup routines if necessary
+        if ($$self{Cleanup}) {
+            &$_($self) foreach @{$$self{Cleanup}};
+            delete $$self{Cleanup};
+        }
+        delete $$self{InExtract};
     }
-    delete $$self{InExtract} unless $reEntry;
 
     # ($type may be undef without an Error when processing sub-documents)
     return 0 if not defined $type or exists $$self{VALUE}{Error};
@@ -5271,6 +5283,16 @@ sub DoAutoLoad(@)
 sub AUTOLOAD
 {
     return DoAutoLoad($AUTOLOAD, @_);
+}
+
+#------------------------------------------------------------------------------
+# Add cleanup routine to call before returning from Extract
+# Inputs: 0) ExifTool ref, 1) code ref to routine with ExifTool ref as an argument
+sub AddCleanup($)
+{
+    my ($self, $sub) = @_;
+    $$self{Cleanup} or $$self{Cleanup} = [ ];
+    push @{$$self{Cleanup}}, $sub;
 }
 
 #------------------------------------------------------------------------------

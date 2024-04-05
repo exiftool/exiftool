@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.93';
+$VERSION = '1.94';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -550,7 +550,14 @@ my %faceCategories = (
             3 => 'Electronic Front Curtain', #10
         },
     },
-    0x1051 => { Name => 'Cropped',     Writable => 'int8u', PrintConv => { 0 => 'No', 1 => 'Yes' } }, #forum15784
+    0x1051 => { #forum15784
+        Name => 'CropFlag',
+        Writable => 'int8u',
+        Notes => q(
+            this tag exists only if the image was cropped, and is 0 for cropped JPG
+            image or 1 for a cropped RAF
+        ),
+    },
     0x1052 => { Name => 'CropTopLeft', Writable => 'int32u' }, #forum15784
     0x1053 => { Name => 'CropSize',    Writable => 'int32u' }, #forum15784
     # 0x1100 - This may not work well for newer cameras (ref forum12682)

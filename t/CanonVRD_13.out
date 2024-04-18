@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.53
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.83
 [File, System, Other] FileName - File Name: CanonVRD.dr4
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 5.5 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2015:05:18 15:43:16-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:12:28 12:46:11-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:09:18 10:49:22-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2024:04:17 10:40:37-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2024:04:15 15:09:50-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: DR4
 [File, File, Other] FileTypeExtension - File Type Extension: dr4
@@ -93,7 +93,8 @@
 [CanonVRD, CanonDR4, Image] 4 - Crop Y: 1291
 [CanonVRD, CanonDR4, Image] 5 - Crop Width: 2952
 [CanonVRD, CanonDR4, Image] 6 - Crop Height: 1476
-[CanonVRD, CanonDR4, Image] 8 - Crop Rotation: 13.08
+[CanonVRD, CanonDR4, Image] 7 - Crop Rotation: 0
+[CanonVRD, CanonDR4, Image] 8 - Crop Angle: 13.08
 [CanonVRD, CanonDR4, Image] 10 - Crop Original Width: 5472
 [CanonVRD, CanonDR4, Image] 11 - Crop Original Height: 3648
 [CanonVRD, CanonDR4, Image] 2 - Stamp Tool Count: 0

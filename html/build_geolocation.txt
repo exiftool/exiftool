@@ -1,0 +1,65 @@
+Description:  Build ExifTool Geolocation database.
+
+Syntax:       build_geolocation [OPTIONS] [DBFILE] ...
+
+Options:
+  DBFILE    - Input database file name or directory.  Multiple input database
+              files may be specified.  The -p, -c and -cp options apply to
+              the database that comes after them on the command line.
+              Default is "allCountries.txt".
+  -p POP    - Minimum population for cities to include.  POP may be a number
+              or be of the form "CC[,C2...]=###" to set different limits for
+              specific countries/regions, where CC and C2 are country codes
+              with optional region name or code appended after a period (eg.
+              "CA.Ontario,US=500" sets the minimum population to 500 for
+              cities on Ontario Canada or the U.S.).  If a region is
+              specified, either the full name or the geonames admin1 code may
+              be used, and case and spaces are not significant.  May be
+              multiple -p options for each input DBFILE.  Default is "2000".
+  -c CODE   - Feature codes to always include, regardless of population. CODE
+              is a comma-separated list of feature codes, with an optional
+              leading comma-separated list of country/region codes followed
+              by an equals sign to apply only to specific countries.  The
+              feature-code list may begin with a dash to remove entries from
+              the default list, or a plus sign to add entries.  May be
+              multiple -c options for each intput DBFILE.  Country/region and
+              feature names are case insensitive. Default is "PPLA,PPLA2".
+  -cp CODE  - Additional features to include if above minimum population.
+              Default is "PPL,PPLA,PPLA2,PPLA3,PPLA4,PPLA5,PPLC,PPLCH,PPLF,
+              PPLG,PPLH,PPLL,PPLQ,PPLR,PPLS,PPLW,PPLX,STLMT".
+  -l LANG   - Alternate languages to read from alternateNamesV2.txt if
+              available.  These are used to generate AltNames.dat an the
+              GeoLang files.  LANG is a comma-separated list of language
+              codes, starting with a dash to remove items from the default
+              list.  May be set to an empty string to disable generation
+              of alternate language files even if alternateNamesV2.txt
+              exists.  The same set of languages applies to all input
+              database files.  Default is "cs,de,en,en-ca,en-gb,es,fi,fr,it,
+              ja,ko,nl,pl,ru,sk,sv,tr,zh,zh-cn,zh-tw".
+  -o OUTDIR - Output directory name.  Default is the same directory as the
+              first input database file.  A directory named Geolocation_out
+              containing the output files will be created in this directory.
+  -ver VER  - Version for output geolocation database (default is 1.02).
+  -v        - Verbose messages.
+  -h        - Show this help.
+
+Input files (download from https://download.geonames.org/export/dump/):
+  allCountries.txt      - default database file (smaller files with names
+                          like "cities###.txt" may be specified instead)
+  countryInfo.txt       - mandatory country names file
+  admin1CodesASCII.txt  - mandatory region names file
+  admin2Codes.txt       - mandatory subregion names file
+  alternateNamesV2.txt  - optional alternate names file (must exist to
+                          to generate AltNames.dat and GeoLang files)
+
+Output files:
+  Geolocation_out       - default output directory name
+  Geolocation.dat       - ExifTool database file
+  AltNames.dat          - alternate names file
+  GeoLang               - directory for alternate language files
+
+Author:
+  Copyright 2024, Phil Harvey
+
+  This is free software; you can redistribute it and/or modify it under the
+  same terms as Perl itself.

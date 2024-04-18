@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 sub Process_marl($$$);
 sub Process_mrld($$$);
@@ -30,6 +30,8 @@ my %convertUnits = (
     ltr => 'L',
 );
 
+my $pi = 3.141592653589793;
+
 # offsets and scaling factors to convert to reasonable units
 my %changeOffset = (
     C => -273.15,           # K to C
@@ -37,8 +39,8 @@ my %changeOffset = (
 my %changeScale = (
     G => 1 / 9.80665,       # m/s2 to G
     kph => 3.6,             # m/s to km/h
-    deg => 180 / 3.1415926536,   # radians to degrees
-    'deg/sec' => 180 / 3.1415926536,   # rad/s to deg/s
+    deg => 180 / $pi,       # radians to degrees
+    'deg/sec' => 180 / $pi, # rad/s to deg/s
     '%' => 100,             # decimal to %
     kPa => 1/1000,          # Pa to kPa
     rpm => 10,              # ? (arbitrary factor of 10)
@@ -181,7 +183,7 @@ my %channelStruct = (
         Name => 'GPSTrack',
         Description => 'GPS Track',
         Groups => { 2 => 'Location' },
-        PrintConv => 'sprintf("%.2f",$val)',
+        PrintConv => '$val > 360 ? "n/a" : sprintf("%.2f",$val)', # (seen 655.35)
     },
     ABSActive => { },
     AccelPos => { },
@@ -209,7 +211,14 @@ my %channelStruct = (
     EngineTorqureReq => { },
     FuelCapacity => { },
     FuelLevel => { },
-    Gear => { ValueConv => { 1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 13=>'N', 14=>'R' } },
+    Gear => {
+        Notes => q{
+            in the PrintCSV output, the value for Neutral is set to -1, and Reverse to
+            -100 for compatibility with RaceRender
+        },
+        CSVConv => { 13 => -1, 14 => -100 },
+        PrintConv => { 1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 13=>'N', 14=>'R' }
+    },
     GPSFix => { },
     InfotainOpMode => { },
     IntakeAirTemperature => { },
@@ -261,7 +270,7 @@ my %channelStruct = (
 sub PrintCSV($;$)
 {
     my ($et, $ts) = @_;
-    my $csv = $$et{GMCsv} or return;
+    my $csv = $$et{GMCsv} or return; # get the list of channels with measurements
     @$csv or return;
     my $vals = $$et{GMVals};
     my $gmDict = $$et{GMDictionary};
@@ -271,7 +280,7 @@ sub PrintCSV($;$)
     foreach (@$csv) {
         my $gmChan = $$gmDict[$_];
         $items[$_] = $$vals[$_] * $$gmChan{Mult} + $$gmChan{Off};
-        # apply lookup conversion if applicable (ie. Gear)
+        # apply CSV conversion if applicable (ie. Gear)
         next unless $$gmChan{Conv} and defined $$gmChan{Conv}{$items[$_]};
         $items[$_] = $$gmChan{Conv}{$items[$_]};
     }
@@ -397,7 +406,7 @@ sub Process_mrld($$$)
         my $init = int(($a[6] + $a[7]) / 2); # initial value for difference readings
         # save information about this channel necessary for processing the marl data
         $$gmDict[$chan] = { Name => $name, Mult => $mult, Off => $off, Init => $init };
-        $$gmDict[$chan]{Conv} = $$tagInfo{ValueConv} if ref $$tagInfo{ValueConv} eq 'HASH';
+        $$gmDict[$chan]{Conv} = $$tagInfo{CSVConv};
         $csv and $$csv[$chan] = $a[12] . ($a[3] ? " ($a[3])" : '');
     }
     # channel 0 must not be defined because we use it for the TimeStamp

@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.51';
+$VERSION = '4.52';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -4342,7 +4342,7 @@ my %opcodeInfo = (
         Count => -1,
         Protected => 1,
     },
-    0xcd3b => { # DNG 1.6
+    0xcd3f => { # DNG 1.6
         Name => 'RGBTables',
         Writable => 'undef',
         WriteGroup => 'IFD0',
@@ -4403,6 +4403,23 @@ my %opcodeInfo = (
         Format => 'string',
         WriteGroup => 'IFD0',
         Protected => 1,
+    },
+    0xcd49 => { # DNG 1.7.1
+        Name => 'JXLDistance',
+        Writable => 'float',
+        WriteGroup => 'IFD0',
+    },
+    0xcd4a => { # DNG 1.7.1
+        Name => 'JXLEffort',
+        Notes => 'values range from 1=low to 9=high',
+        Writable => 'int32u',
+        WriteGroup => 'IFD0',
+    },
+    0xcd4b => { # DNG 1.7.1
+        Name => 'JXLDecodeSpeed',
+        Notes => 'values range from 1=slow to 4=fast',
+        Writable => 'int32u',
+        WriteGroup => 'IFD0',
     },
     0xea1c => { #13
         Name => 'Padding',

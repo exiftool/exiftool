@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.55';
+$VERSION = '3.56';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -672,7 +672,10 @@ Camero.
 
 Use the API L<PrintCSV|../ExifTool.html#PrintCSV> option to output all timed
 PDR data in CSV format at greatly increased speed and with much lower memory
-usage.
+usage.  This option prints the numerical values for each channel in CSV
+format, suitable for import into RaceRender.  In this output, the gear
+numbers for Neutral and Reverse are changed to -1 and -100 respectively for
+compatibility with RaceRender.
 },
     PodTrailer => q{
 ~head1 NOTES

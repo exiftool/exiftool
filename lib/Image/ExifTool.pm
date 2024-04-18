@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.82';
+$VERSION = '12.83';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1118,6 +1118,7 @@ my @availableOptions = (
     [ 'HexTagIDs',        0,      'use hex tag ID\'s in family 7 group names' ],
     [ 'HtmlDump',         0,      'HTML dump (0-3, higher # = bigger limit)' ],
     [ 'HtmlDumpBase',     undef,  'base address for HTML dump' ],
+    [ 'IgnoreGroups',     undef,  'list of groups to ignore when extracting' ],
     [ 'IgnoreMinorErrors',undef,  'ignore minor errors when reading/writing' ],
     [ 'IgnoreTags',       undef,  'list of tags to ignore when extracting' ],
     [ 'ImageHashType',    'MD5',  'image hash algorithm' ],
@@ -2470,12 +2471,12 @@ sub Options($$;@)
             } else {
                 $$options{$param} = undef;  # clear the list
             }
-        } elsif ($param eq 'IgnoreTags') {
+        } elsif ($param =~ /^(IgnoreTags|IgnoreGroups)$/) {
             if (defined $newVal) {
                 # parse list from delimited string if necessary
-                my @ignoreList = (ref $newVal eq 'ARRAY') ? @$newVal : ($newVal =~ /[-\w?*:]+/g);
-                ExpandShortcuts(\@ignoreList);
-                # add to existing tags to ignore
+                my @ignoreList = (ref $newVal eq 'ARRAY') ? @$newVal : ($newVal =~ /[-\w?*:#]+/g);
+                ExpandShortcuts(\@ignoreList) if $param eq 'IgnoreTags';
+                # add to existing tags/groups to ignore
                 $$options{$param} or $$options{$param} = { };
                 foreach (@ignoreList) {
                     /^(.*:)?([-\w?*]+)#?$/ or next;
@@ -8936,6 +8937,12 @@ sub FoundTag($$$;@)
     }
     $grps[0] or $grps[0] = $$self{SET_GROUP0};
     $grps[1] or $grps[1] = $$self{SET_GROUP1};
+    if ($$options{IgnoreGroups}) {
+        foreach (0..1) {
+            my $g = lc($grps[$_] || $$tagInfo{Groups}{$_} || $$tagInfo{Table}{GROUPS}{$_});
+            return undef if $$options{IgnoreGroups}{$g} or $$options{IgnoreGroups}{"$_$g"};
+        }
+    }
     my $valueHash = $$self{VALUE};
 
     if ($$tagInfo{RawConv}) {

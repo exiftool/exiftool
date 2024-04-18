@@ -15,7 +15,10 @@ Camero.</p>
 
 <p>Use the API <a href="../ExifTool.html#PrintCSV">PrintCSV</a> option to output all timed
 PDR data in CSV format at greatly increased speed and with much lower memory
-usage.
+usage.  This option prints the numerical values for each channel in CSV
+format, suitable for import into RaceRender.  In this output, the gear
+numbers for Neutral and Reverse are changed to -1 and -100 respectively for
+compatibility with RaceRender.
 </p>
 <h2><a name='marl'>GM marl Tags</a></h2>
 <p>Tags extracted from the &#39;ctbx&#39; &#39;marl&#39; (Marlin) box of timed PDR metadata
@@ -157,7 +160,17 @@ information, or the <a href="../ExifTool.html#PrintCSV">API PrintCSV</a> option 
 <tr>
 <td>Gear</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(in the PrintCSV output, the value for Neutral is set to -1, and Reverse to
+-100 for compatibility with RaceRender)</span></span><table class=cols><tr>
+  <td>1 = 1
+  <br>2 = 2
+  <br>3 = 3
+  <br>4 = 4</td><td>&nbsp;&nbsp;</td>
+  <td>5 = 5
+  <br>6 = 6
+  <br>13 = N
+  <br>14 = R</td></tr></table>
+</td></tr>
 <tr class=b>
 <td>InfotainOpMode</td>
 <td class=c>no</td>
@@ -540,7 +553,7 @@ channel information as structures.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 5, 2024</i>
+<br><i>Last revised Apr 18, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

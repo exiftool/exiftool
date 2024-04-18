@@ -19,6 +19,7 @@ use Image::ExifTool::GPS;
 $VERSION = '1.09';
 
 sub ProcessDJIInfo($$$);
+sub Process_djmd($$$);
 
 my %convFloat2 = (
     PrintConv => 'sprintf("%+.2f", $val)',
@@ -185,6 +186,34 @@ my %convFloat2 = (
         PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1, "lon")',
     },
 );
+
+# TODO - eventually add ability to decode this?
+%Image::ExifTool::DJI::djmd = (
+    PROCESS_PROC => \&Process_djmd,
+);
+
+#------------------------------------------------------------------------------
+# Process DJI djmd timed data from Action4 videos (ref PH)
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+# TODO: work in progress
+sub Process_djmd($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my ($pos, $bit, $val) = (6, 0, 0);
+    for (;;) {
+        my $v = Get8u($dataPt, $pos);
+        $val += ($v & 0x7f) << $bit;
+        last unless $v & 0x80;
+        ++$pos;
+        $bit += 7;
+    }
+    $pos += 49;
+    my @a = unpack("x${pos}fxfxfxfx3fxfxf", $$dataPt);
+    print "$val @a\n";
+    return 1;
+}
 
 #------------------------------------------------------------------------------
 # Process DJI info (ref PH)

@@ -17,6 +17,29 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.83'><b>Apr. 18, 2024 - Version 12.83</b></a>
+<ul>
+<li>Added SetTags <a href="exiftool_pod.html#Helper-functions">helper function</a> for use in advanced formatting expressions
+<li>Added a couple of new tags from the DNG 1.7.1 specification
+<li>Added a new Nikon Z lens
+<li>Added a couple of new QuickTime tags
+<li>Added a few more XMP-GCamera tags
+<li>Added build_geolocation to the full distribution
+<li>Decode a new CanonVRD tag and rename another one
+<li>Updates to Sony maker note decoding for newer models (thanks Jos Roost)
+<li>Minor change in -p option to avoid adding the trailing newline if the -b
+    option is also used
+<li>Minor changes to GM PDR decoding for Gear and angle measurements
+<li>Removed Geolocation alternate language support from the standard
+    distribution, and added PPLX feature codes
+<li>Set family 1 group name for NextBase 'nbmt' information to "Nextbase"
+<li>Fixed incorrect ID of a DNG tag
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#IgnoreGroups">IgnoreGroups</a> option
+    </ul>
+</ul>
+
 <a name='v12.82'><b>Apr. 5, 2024 - Version 12.82</b></a> - "<a href="TagNames/GM.html">GM PDR</a>"
 <ul>
 <li>Added support for reading <a href="TagNames/GM.html">GM PDR data</a> from MP4 videos written by cars such
@@ -293,219 +316,6 @@ considered development releases, and are not uploaded to <a href="https://metacp
     <ul>
     <li>Added <a href="ExifTool.html#ByteUnit">ByteUnit option</a>
     </ul>
-</ul>
-
-<a name='v12.69'><b>Oct. 26, 2023 - Version 12.69</b></a>
-<ul>
-<li>Added support for DNG version 1.7.0.0
-<li>Added a new XMP-GCamera tag
-<li>Added a number of new Nikon Z lenses (thanks Warren Hatch and Stefan)
-<li>Added a number of new XMP-crs tags
-<li>Extract XML metadata from some Hasselblad images
-<li>Tweaked -fast2 option to read metadata from inside mdat atom of HEIC images
-<li>Patched FFF reader to be more tolerant of the mess made by incompetent
-    Hasselblad programmers (wrong IFD count for some values)
-<li>Patched WebP reader to be more tolerant of the mess made by incompetent
-    Google programmers (EXIF with wrong header and XMP with wrong ID)
-<li>Fixed writing of MakerNotes as a block to CR3 images (now properly stored in
-    the CMT3 chunk instead of the ExifIFD) and added ability to delete them from
-    the ExifIFD of CR3 images
-<li>Fixed problem which could cause runtime error when copying MakerNotes from a
-    file that contains multiple maker note blocks
-<li>Fixed problem which could cause "use of uninitialized variable" warnings
-    when reading images from some Nikon cameras
-<li>Fixed List type for new XMP-photomech:CreatorIdentity tag
-</ul>
-
-<a name='v12.68'><b>Oct. 16, 2023 - Version 12.68</b></a>
-<ul>
-<li>Added preliminary read support for XISF images
-<li>Added the ability to delete CAI JUMBF metadata from PNG images
-<li>Added support for writing Canon burst-roll CR3 images
-<li>Added a new Nikon Z9 SubjectDetection value, and improved Zf support (thanks
-    Warren Hatch)
-<li>Added a couple of new PentaxModelID values
-<li>Added a few couple of new tag values for the Pentax K-3 Mark III Monochrome (github #226)
-<li>Added a new XMP-photomech tag
-<li>Added a new QuickTime ItemList tag
-<li>Added a new Nikon LensID
-<li>Added a new Canon LensType
-<li>Support decimal values for FujiFilm ShadowTone and HighlightTone tags
-<li>Decode some new Sony tags (thanks Jos Roost)
-<li>Decode ShutterCount for Canon EOS R6 (thanks Martin B.)
-<li>Decode QuickTime VideoFullRangeFlag
-<li>Decode JPGCompression for the Nikon D3S
-<li>Enhanced -geotag feature to allow writing QuickTime:GPSCoordinates
-<li>Renamed Panasonic HDRShot tag to MergedImages (<a href='https://exiftool.org/forum/index.php?topic=15298'>forum 15298</a>)
-<li>Fixed problem where some NEF files were misidentified as NRW
-</ul>
-
-<a name='v12.67'><b>Sept. 19, 2023 - Version 12.67</b></a>
-<ul>
-<li>Added a new Pentax LensType (thanks dmont)
-<li>Added a new FujiFilm FilmMode and FaceElementTypes values (thanks Greybeard)
-<li>Fixed error writing new DataMining tag where URI prefix wasn't being
-    properly added to the value
-</ul>
-
-<a name='v12.66'><b>Sept. 19, 2023 - Version 12.66</b></a>
-<ul>
-<li>Added a few new Canon LensType values (thanks Norbert Wasser)
-<li>Added conversions for a few Apple:ImageCaptureType values
-<li>Added new XMP tag for PLUS version 2.0.1
-<li>Added a new CanonModelID (thanks Laurent Clevy)
-<li>Decode another tag from Canon 1DS raw images (Hubert Figui&egrave;re, github #219)
-<li>Decode JPGCompression for newer Nikon models (thanks Warren Hatch)
-<li>Fixed bug introduced in 12.65 where duplicate tags were not returned even
-    when the groups where specified explicitly
-<li>API Changes:
-    <ul>
-    <li>Added <a href="ExifTool.html#WindowsWideFile">WindowsWideFile option</a>
-    </ul>
-</ul>
-
-<a name='v12.65'><b>Aug. 10, 2023 - Version 12.65</b></a>
-<ul>
-<li>Added a new QuickTime Keys tag
-<li>Added a new CanonModelID (thanks Laurent Clevy)
-<li>Added a new Canon LensType (thanks Norbert Wasser)
-<li>Added number in brackets to converted Samsung MCCData value
-<li>Decode a number of new Sony tags (thanks Jos Roost)
-<li>Decode a few new FlashPix tags (github #217)
-<li>Improved decoding of Nikon Z9 firmware 4.0 tags (thanks Warren Hatch)
-<li>Improved parsing of PDF:Keywords to support semicolon-separated lists
-<li>Enhanced -api option to show list of available options if no argument is
-    provided
-<li>Lowered priority of IFD1 tags in ARW images so IFD0/SubIFD take precedence
-<li>Changed QuickTime tag names for atID (AlbumTitleID to ArtistID) and plID
-    (PlayListID to AlbumID) (github issue #216), and added cmID (ComposerID)
-<li>Changed Apple:MediaGroupUUID tag name back to ContentIdentifier
-<li>Patched the -d option to handle the %s format code internally when writing
-    (avoids problems due to inconsistent behaviour of this format code in the
-    strptime function on different systems)
-<li>Patched patch of version 12.32 to restore ability to read from named pipes
-<li>Fixed bug which could cause a hang when processing a corrupt BigTIFF image
-<li>Fixed document number for auxiliary image metadata in HEIC files
-<li>Fixed misspelt Apple tag name (thanks Neal Krawetz)
-<li>API Changes:
-    <ul>
-    <li>Added <a href="ExifTool.html#AvailableOptions">AvailableOptions method</a>
-    </ul>
-</ul>
-
-<a name='v12.64'><b>June 28, 2023 - Version 12.64</b></a>
-<ul>
-<li>Added a new Sony LensType (thanks Jos Roost)
-<li>Added config_files/guano.config to the distribution (thanks StarGeek)
-<li>Added support for Garmin Low-resolution Video (GLV) files
-<li>Added JUMBF to the list of deletable groups
-<li>Added (untested) read support for spherical video tags in Matroska videos
-<li>Decode a number of new Nikon Z9 tags (thanks Warren Hatch)
-<li>Decode AmbisonicAudio tags in spherical MP4 vidoes
-<li>Decode another Apple tag
-<li>Improved French translations (thanks Philippe Bonnaure of GraphicConverter)
-<li>Patched to allow writing QuickTime-based videos where the audio/video sample
-    description comes after the sample pointers
-<li>Fixed parsing of GPS from Insta360 videos to properly skip void fixes
-<li>Fixed problem where Apple iPhone 14 images produced invalid XML in -X output
-    when using -struct option
-<li>API Changes:
-    <ul>
-    <li>Added <a href="ExifTool.html#StructFormat">StructFormat option</a> to allow JSON-format serialized structures
-    <li>Added <a href="ExifTool.html#NoDups">NoDups option</a> to eliminate duplicate items from queued values when
-        writing List-type tags
-    </ul>
-</ul>
-
-<a name='v12.63'><b>June 8, 2023 - Version 12.63</b></a>
-<ul>
-<li>Added ability to read/write/create Brotli-compressed metadata in JXL images
-    (requires IO::Compress::Brotli)
-<li>Added partial support for Exif 3.0 specification:
-    <ul>
-    <li>Added new EXIF tags
-    <li>Added MPF Original Preservation Image type
-    <li>Support for reading 'utf8' values (but still write only as 'string')
-    </ul>
-<li>Added support for Adobe <a href="TagNames/XMP.html#hdrgm">XMP-hdrgm (HDR Gain Map) tags</a>
-<li>Added support for reading 7z files (thanks Amir Gooran, github #205) (but
-    currently this doesn't work for the Windows .exe version because I haven't
-    been able to install Compress::Raw::Lzma for ActivePerl)
-<li>Added <a href="TagNames/XMP.html#panorama">XMP-panorama tags</a>
-<li>Added warning if -csv is used with -p
-<li>Added warning if trying to geotag from a UTF-16 track log
-<li>Decode ImageWidth/Height from JXL images using partial codestreams
-<li>Decode more Sony tags for some newer models (thanks Jos Roost)
-<li>Extract GainMapImage (hrgm box) from JXL files
-<li>Extract Guano information from WAV files
-<li>Enhanced ImageDataMD5 feature and renamed to ImageDataHash (with
-    ImageDataMD5 alias for backward compatibility)
-<li>Changed RARVersion tag name to FileVersion
-<li>Fixed bug introduced in 12.46 which could cause a hang when reading a
-    corrupted RIFF-based file
-<li>Fixed writing of Composition:GPSPosition when -n is used
-<li>API Changes:
-    <ul>
-    <li>Added <a href="ExifTool.html#ImageHashType">ImageHashType option</a>
-    </ul>
-</ul>
-
-<a name='v12.62'><b>May 3, 2023 - Version 12.62</b></a>
-<ul>
-<li>Added basic read support for WPG images
-<li>Added ImageDataMD5 support for HEIC images
-<li>Added support for RAR version 5.0 files (thanks Amir Gooran, github #203)
-<li>Added a few new XMP-aux tags (thanks John Ellis)
-<li>Made Composite tags available for use in -fileNUM argument
-<li>Better handling of FlashPix VT_EMPTY value
-<li>Fixed "Can't write" error when specifying a .webp file for the -o option
-<li>API Changes:
-    <ul>
-    <li>Added <a href="ExifTool.html#NoWarning">NoWarning option</a>
-    </ul>
-</ul>
-
-<a name='v12.61'><b>Apr. 24, 2023 - Version 12.61</b></a>
-<ul>
-<li>Added ImageDataMD5 support for J2C and JXL images
-<li>Added support for PDF 2.0 (specification is finally freely available)
-<li>Added ability to extract timed Accelerometer data from Azdome GS63H MP4
-    videos which don't contain GPS
-<li>Added some new Sony lenses (thanks Jos Roost)
-<li>Decode some new tags for the Sony ZV-E1 (thanks Jos Roost)
-<li>Decode more tags for the Nikon Z30 (thanks Xavier)
-<li>Enhanced -fileNUM option to allow tags from the main file to be used in the
-    file name string
-<li>Validate sample offset and size when calculating ImageDataMD5 for MP4 videos
-    (note: may change ImageDataMD5 value for videos where audio data runs past
-    end of media data)
-<li>Return error when attempting to write a fragmented JXL file
-<li>Improved robustness for determining image size for corrupted JPEG
-<li>Patched to allow Insta360 GPS records of unexpected length and tweaked
-    verification algorithm to determine validity of these records
-<li>Fixed bug introduced in 12.57 where -progress:%f gave runtime warnings
-<li>Fixed "--" option to ignore subsequent -common_args option
-<li>Fixed incorrect ImageDataMD5 for Sony A100 ARW images
-<li>Fixed problem reading new XMP-et:OriginalImageMD5 tag
-</ul>
-
-<a name='v12.60'><b>Apr. 5, 2023 - Version 12.60</b></a> <span class=grn>(production release)</span>
-<ul>
-<li>Added a new Sony FileFormat value
-<li>Added Validate warning about duplicate EXIF
-<li>Added ability to edit JPEG APP1 EXIF segment with incorrect header
-<li>Decode a few new Sony ARW tags
-<li>Improved -htmldump of non-EXIF-based maker notes
-<li>Enhanced -geotag from CSV files support GPSSpeed (with variable units),
-    "bearing" for GPSTrack, and GPSDateTime in format "dd.mm.YYYY HH:MM:SS"
-<li>Enhanced ImageDataMD5 to also support CRW, RAF, X3F and AVIF images
-<li>Enhanced -efile option to also record updated and created file names
-<li>Family 8 group names may now also be used in Composite Require/Desire tags
-<li>Fixed handling of undefined tags in -if conditions to conform with
-    documentation and match -p and -tagsFromFile behaviour when -m or -f option
-    is used
-<li>Fixed problem where setting the Geotime value didn't work when using an
-    advanced-formatting expression containing a greater-than symbol (&gt;)
 </ul>
 
 <a name='ancient' href="ancient_history.html"><b>History of older versions</b> (back to Nov. 19, 2003 - Version 1.00) --&gt;</a><br><br>

@@ -332,7 +332,7 @@ below).</blockquote>
 <a name="Params"></a>
 <p><b>Optional parameters</b></p>
 
-<blockquote>Two special API options are used as parameters in the geolocation
+<blockquote>Four special API options are used as parameters in the geolocation
 search for both the API Geolocation option and when writing the Geolocate tag.
 
 <blockquote>
@@ -371,36 +371,50 @@ the following line to your <a href="config.html">ExifTool config file</a>:
 
 <pre>$Image::ExifTool::Geolocation::geoDir = '/PATH/TO/Geolocation500';</pre>
 
-where <code>/PATH/TO</code> is the name of the directory containing the
-unzipped Geolocation500 directory.  The <code>$geoDir</code> variable
+where <code>/PATH/TO</code> is the name of the directory containing the unzipped
+Geolocation500 directory.  <i>(Note that this may not work in Windows if there
+are Unicode characters in the path name.)</i>  The <code>$geoDir</code> variable
 may also be set to an empty string to completely disable loading of a
 Geolocation database, which may be useful for working with only a user-defined
-database.  <i>(Note that this may not work in Windows if there are Unicode
-characters in the path name.)</i></blockquote>
+database.</blockquote>
 
-<blockquote>A database of alternate city names is also available, and is
-consulted when performing a reverse geolocation search based on city name. To
-use this, the Geolocation500 database must also be installed.  To activate the
-alternate names feature, download the AltNames500 database below and add the
-following line to your ExifTool config file:
-
-<pre>$Image::ExifTool::Geolocation::altDir = '/PATH/TO/AltNames500';</pre>
-
-The alternate names database is loaded only when a full city name is given
-(not using a regular expression), the API
-<a href="ExifTool.html#GeolocAltNames">GeolocAltNames</a> option is set, the
-<code>$altDir</code> directory is specified in the config file, and the
-AltNames.dat file exists in this directory and matches the number of entries
-in the currently loaded Geolocation.dat database.
+<blockquote>A database of alternate city names and language translation files are
+also included in the zip file.  The alternate names are consulted only when a full
+city name is provided in a search (ie. not using a regular expression), the API
+<a href="ExifTool.html#GeolocAltNames">GeolocAltNames</a> option is set (which is
+the default), and the AltNames.dat file is found and matches the number of
+entries in the currently loaded Geolocation.dat database.
 
 <blockquote><table class='dl'>
-<tr><td>Cities with population 500 or greater:</td>
-<td><a href="https://exiftool.org/Geolocation500-1.02.zip">Geolocation500-1.02.zip</a></td>
-<td>(3.9 MB, requires ExifTool 12.80 or later)</td></tr>
-<tr><td>Alternate city names, population 500:</td>
-<td><a href="https://exiftool.org/AltNames500-1.02.zip">AltNames500-1.02.zip</a></td>
-<td>(3.2 MB, requires ExifTool 12.81 or later)</td></tr>
+<tr><td>Download database with cities of population 500 or<br>
+greater, including alternate names and translations:<br>
+(requires ExifTool 12.81 or later)</td>
+<td><a href="https://exiftool.org/Geolocation500-1.02.zip">Geolocation500-20240417.zip</a> (7.3 MB)</td></tr>
 </table></blockquote></blockquote>
+
+<blockquote>A "build_geolocation" utility script is available to allow users
+to build their own alternate geolocation databases for ExifTool.  This utility
+requires that the necessary input database files from
+<a href="https://download.geonames.org/export/dump/">geonames.org</a> have been
+downloaded, and provides control over the population thresholds and included
+feature codes on a per-country basis.
+<a href="build_geolocation.txt">Read the help documentation</a> or
+<a href="https://exiftool.org/build_geolocation.zip">download this utility</a>
+(requires Perl to run).</blockquote>
+
+<blockquote>For example, the command below generates a database including cities
+of population 2000 or greater, except 500 or greater in Canada and the U.S.,
+plus all cities with feature class "PPL" regardless of population in Ontario
+Canada and New York State:
+
+<pre>build_geolocation -p 2000 -p ca,us=500 -c "ca.ontario,us.new york=+PPL" DB_DIR</pre>
+
+For this command, the necessary geonames database files must exist in the
+<code>DB_DIR</code> directory, and the output will go to
+"DB_DIR/Geolocation_out" but the <code>-o</code> option may be used to specify
+anohter directory (see <code>build_geolocation -h</code> for details). The
+"<code>+PPL</code>" adds PPL to the list of features to always keep (which is
+"PPLA,PPLA2" by default).</blockquote>
 
 <a name="List"></a>
 <p><b>Listing the database</b></p>
@@ -418,8 +432,8 @@ sort the output alphabetically and/or apply a language translation.</blockquote>
 <p><b>Customization</b></p>
 
 <blockquote>User-defined database entries and language translations may be added
-through definitions in the <a href="config.html">ExifTool config file</a>.
-(Note that the config file must be UTF-8 encoded.)</blockquote>
+through definitions in the <a href="config.html">ExifTool config file</a>. (Note
+that the config file must be UTF-8 encoded.)</blockquote>
 
 <blockquote>Database entries are added in this format:
 
@@ -490,7 +504,7 @@ language to affect the returned names when no language is specified.</blockquote
 
 <hr>
 <i>Created Mar 12, 2024</i><br>
-<i>Last revised Mar 23, 2024</i>
+<i>Last revised Apr 12, 2024</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

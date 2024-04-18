@@ -9,14 +9,15 @@
 #
 # References:   https://download.geonames.org/export/
 #
-# Notes:        Set $Image::ExifTool::Geolocation::geoDir to override
-#               default directory for the database file Geolocation.dat
-#               and language directory GeoLang.
+# Notes:        Set $Image::ExifTool::Geolocation::geoDir to override the
+#               default directory containing the database file Geolocation.dat
+#               and the GeoLang directory with the alternate language files.
+#               If set, this directory is 
 #
-#               Set $Image::ExifTool::Geolocation::altDir to use a database
-#               of alternate city names.  The file is called AltNames.dat
-#               with entries in the same order as Geolocation.dat.  Each
-#               entry is a newline-separated list of alternate names
+#               AltNames.dat may be loaded from a different directory by
+#               specifying $Image::ExifTool::Geolocation::altDir.  This
+#               database and has entries in the same order as Geolocation.dat,
+#               and each entry is a newline-separated list of alternate names
 #               terminated by a null byte.
 #
 #               Databases are based on data from geonames.org with a
@@ -52,9 +53,12 @@
 #   "\0\0\0\0\x04"
 #   Time zone entries:
 #       1. Time zone name, terminated by newline
+#   "\0\0\0\0\x05" (feature codes added in v1.03)
+#   Feature codes:
+#       1. Feature code, terminated by newline
 #   "\0\0\0\0\0"
 #
-# Feature Codes: (see http://www.geonames.org/export/codes.html#P for descriptions)
+# Feature Codes (v1.02): (see http://www.geonames.org/export/codes.html#P for descriptions)
 #
 #       0. Other    3. PPLA2    6. PPLA5    9. PPLF    12. PPLR   15. PPLX
 #       1. PPL      4. PPLA3    7. PPLC    10. PPLG    13. PPLS
@@ -66,7 +70,7 @@ package Image::ExifTool::Geolocation;
 use strict;
 use vars qw($VERSION $geoDir $altDir $dbInfo);
 
-$VERSION = '1.04';  # (this is the module version number, not the database version)
+$VERSION = '1.06';  # (this is the module version number, not the database version)
 
 my $debug; # set to output processing time for testing
 
@@ -78,17 +82,15 @@ sub Geolocate($;$$$$$);
 
 my (@cityList, @countryList, @regionList, @subregionList, @timezoneList);
 my (%countryNum, %regionNum, %subregionNum, %timezoneNum); # reverse lookups
-my (@sortOrder, @altNames, %langLookup, $nCity);
+my (@sortOrder, @altNames, %langLookup, $nCity, %featureCodes);
 my ($lastArgs, %lastFound, @lastByPop, @lastByLat); # cached city matches
 my $dbVer = '1.03';
 my $sortedBy = 'Latitude';
 my $pi = 3.1415926536;
 my $earthRadius = 6371;    # earth radius in km
-
+# hard-coded feature codes for v1.02 database
 my @featureCodes = qw(Other PPL PPLA PPLA2 PPLA3 PPLA4 PPLA5 PPLC
                       PPLCH PPLF PPLG PPLL PPLR PPLS STLMT PPLX);
-my $i = 0;
-my %featureCodes = map { lc($_) => $i++ } @featureCodes;
 
 # get path name for database file from lib/Image/ExifTool/Geolocation.dat by default,
 # or according to $Image::ExifTool::Geolocation::directory if specified
@@ -107,12 +109,10 @@ unless (defined $geoDir and not $geoDir) {
     }
 }
 
-# set directory for language files
-my $geoLang;
-if ($geoDir and -d "$geoDir/GeoLang") {
-    $geoLang = "$geoDir/GeoLang";
-} elsif ($geoDir or not defined $geoDir) {
-    $geoLang = "$defaultDir/GeoLang";
+# set directory for language files and alternate names
+$geoDir = $defaultDir unless defined $geoDir;
+if (not defined $altDir and $geoDir and -e "$geoDir/AltNames.dat") {
+    $altDir = $geoDir;
 }
 
 # add user-defined entries to the database
@@ -144,7 +144,7 @@ sub ReadDatabase($)
         return 0;
     }
     my $comment = <DATFILE>;
-    defined $comment and $comment =~ /(\d+)/ or close(DATFILE), return 0;
+    defined $comment and $comment =~ / (\d+) / or close(DATFILE), return 0;
     $dbInfo = "$datfile v$dbVer: $nCity cities with population > $1";
     my $isUserDefined = @Image::ExifTool::UserDefined::Geolocation;
 
@@ -193,7 +193,20 @@ sub ReadDatabase($)
         push @timezoneList, $line;
         $timezoneNum{lc $line} = $#timezoneList if $isUserDefined;
     }
+    # read feature codes if available
+    if ($line eq "\0\0\0\0\x05\n") {
+        undef @featureCodes;
+        for (;;) {
+            $line = <DATFILE>;
+            last if length($line) == 6 and $line =~ /\0\0\0\0/;
+            chomp $line;
+            push @featureCodes, $line;
+        }
+    }
     close DATFILE;
+    # initialize featureCodes lookup
+    $i = 0;
+    %featureCodes = map { lc($_) => $i++ } @featureCodes;
     return 1;
 }
 
@@ -369,14 +382,14 @@ sub GetEntry($;$$)
     my $pop = (($code>>16 & 0x0f) . '.' . ($code>>12 & 0x0f) . 'e+' . ($code>>20 & 0x0f)) + 0;
     $lt = sprintf('%.4f', (($lt<<4)|($f >> 4))  * 180 / 0x100000 - 90);
     $ln = sprintf('%.4f', (($ln<<4)|($f & 0x0f))* 360 / 0x100000 - 180);
-    $fc = $featureCodes[$fc & 0x0f];
+    $fc = $featureCodes[$fc & 0x1f];
     my $cc = substr($ctry, 0, 2);
     my $country = substr($ctry, 2);
     if ($lang) {
         my $xlat = $langLookup{$lang};
         # load language lookups if  not done already
         if (not defined $xlat) {
-            if (eval "require '$geoLang/$lang.pm'") {
+            if (eval "require '$geoDir/GeoLang/$lang.pm'") {
                 my $trans = "Image::ExifTool::GeoLang::${lang}::Translate";
                 no strict 'refs';
                 $xlat = \%$trans if %$trans;
@@ -691,10 +704,10 @@ True on success.
 =head2 ReadAltNames
 
 Load the alternate names database.  Before calling this method the $altDir
-package variable must be set to a directory containing the AltNames.dat
-database that matches the current Geolocation.dat. This method is called
-automatically by L</Geolocate> if $altDir is set and the GeolocAltNames
-option is used and an input city name is provided.
+package variable may be set, otherwise AltNames.dat is loaded from the same
+directory as Geolocation.dat.  This method is called automatically by
+L</Geolocate> if the GeolocAltNames option is used and an input city name is
+provided.
 
     Image::ExifTool::Geolocation::ReadAltNames();
 
@@ -706,8 +719,8 @@ option is used and an input city name is provided.
 
 =item Return Value:
 
-True on success.  Resets the value of $altDir to prevent further attempts at
-re-loading the same database.
+True on success.  May be called repeatedly, but AltNames.dat is loaded only
+on the first call.
 
 =back
 
@@ -833,8 +846,7 @@ Comma-separated string of alternate names for this city.
 
 =item Notes:
 
-Must set the $altDir package variable and call L</ReadAltNames> before
-calling this routine.
+L</ReadAltNames> must be called before calling this routine.
 
 =back
 
@@ -896,11 +908,12 @@ contain the Geolocation.dat file, and optionally a GeoLang directory for the
 language translations.  The $geoDir variable may be set to an empty string
 to disable loading of a database.
 
-A database of alternate city names may be loaded by setting the package
-$altDir variable.  This directory should contain the AltNames.dat database
-that matches the version of Geolocation.dat being used.  When searching for
-a city by name, the alternate-names database is checked to provide
-additional possibilities for matches.
+When searching for a city by name, AltNames.dat is checked to provide
+additional possibilities for matches if the GeolocAltNames option is set.
+The package $altDir variable may be set to specify a different directory for
+AltNames.dat, otherwise the Geolocation.dat directory is assumed.  The
+entries in AltNames.dat must match those in the currently loaded version of
+Geolocation.dat.
 
 =head1 ADDING USER-DEFINED DATABASE ENTRIES
 

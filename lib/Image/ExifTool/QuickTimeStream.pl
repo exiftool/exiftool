@@ -338,6 +338,9 @@ my %insvLimit = (
         Groups => { 2 => 'Preview' },
         RawConv => '$self->ValidateImage(\$val,$tag)',
     },
+    # djmd - DJI AC003 Osmo Action 4 cam 
+    #TODO djmd => { SubDirectory => { TagTable => 'Image::ExifTool::DJI::djmd', ByteOrder => 'Little-Endian' } },
+    # dbgi - DJI AC003 Osmo Action 4 cam -- lots more unknown stuff
     Unknown00 => { Unknown => 1 },
     Unknown01 => { Unknown => 1 },
     Unknown02 => { Unknown => 1 },
@@ -2428,7 +2431,9 @@ sub Process_nbmt($$$)
         $$et{DOC_NUM} = $$et{DOC_COUNT} + 1;
         delete $$et{UnknownTextCount};
         delete $$et{NoMoreTextDecoding};
+        $$et{SET_GROUP1} = 'Nextbase';
         Process_text($et, $dataPt, $tagTbl, 1);
+        delete $$et{SET_GROUP1};
         delete $$et{UnknownTextCount};
         delete $$et{NoMoreTextDecoding};
         delete $$et{DOC_NUM};

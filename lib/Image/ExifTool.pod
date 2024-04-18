@@ -825,6 +825,12 @@ goes to the file specified by the TextOut option (\*STDOUT by default).
 Base for HTML dump offsets.  If not defined, the EXIF/TIFF base offset is
 used.  Set to 0 for absolute offsets.  Default is undef.
 
+=item IgnoreGroups
+
+Comma-separated list of group names to ignore when reading.  The group names
+are case insensitive and may be preceeded by a family number.  Set to undef
+to clear the previous IgnoreGroups list.  Default is undef.
+
 =item IgnoreMinorErrors
 
 Flag to ignore minor errors.  Causes minor errors to be downgraded to
@@ -838,12 +844,12 @@ warnings are denoted by "[minor]" at the start of the message, or "[Minor]"
 
 =item IgnoreTags
 
-List of tag names to ignore when reading.  This may help in situations where
-memory is limited because the ignored tag values are not stored in memory.
-The tag names are case insensitive and group names and wildcards are not
-allowed.  A special tag name of "All" may be used to ignore all tags except
-those specified by the L</RequestTags> option.  Set to undef to clear the
-previous IgnoreTags list.  Default is undef.
+Comma-separated list of tag names to ignore when reading.  This may help in
+situations where memory is limited because the ignored tag values are not
+stored in memory. The tag names are case insensitive and group names and
+wildcards are not allowed.  A special tag name of "All" may be used to
+ignore all tags except those specified by the L</RequestTags> option.  Set
+to undef to clear the previous IgnoreTags list.  Default is undef.
 
 =item ImageHashType
 
@@ -1226,7 +1232,7 @@ L</ExtractInfo>:
 
 Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3, CharsetIPTC,
 CharsetPhotoshop, CharsetQuickTime, CharsetRIFF, Composite, ExtendedXMP,
-ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase,
+ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase, IgnoreGroups,
 IgnoreMinorErrors, IgnoreTags, Lang, LargeFileSupport, MakerNotes,
 MDItemTags, NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero),
 RequestAll, RequestTags, SaveFormat, SavePath, ScanForXMP, Struct, TextOut,

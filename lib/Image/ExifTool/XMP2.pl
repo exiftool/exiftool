@@ -1941,6 +1941,9 @@ my %sACDSeeRegionStruct = (
         ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
         ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
     },
+    MotionPhoto        => { Writable => 'integer' },
+    MotionPhotoVersion => { Writable => 'integer' },
+    MotionPhotoPresentationTimestampUs => { Writable => 'integer' },
 );
 
 # Google creations namespace (ref PH)

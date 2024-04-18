@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27840 tags, with 17432 unique tag names.
+They contain a total of 27849 tags, with 17438 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1042,7 +1042,7 @@ for the official EXIF 2.32 specification.
   0xcd38   MaskSubArea               SubIFD     no
   0xcd39   ProfileHueSatMapData3     IFD0       float[n]!
   0xcd3a   ReductionMatrix3          IFD0       rational64s[n]!
-  0xcd3b   RGBTables                 IFD0       undef!
+  0xcd3f   RGBTables                 IFD0       undef!
   0xcd40   ProfileGainTableMap2      IFD0       undef!
   0xcd41   JUMBF                     -          Jpeg2000
   0xcd43   ColumnInterleaveFactor    SubIFD     int32u!
@@ -1050,6 +1050,9 @@ for the official EXIF 2.32 specification.
   0xcd46   ImageStats                IFD0       undef!
   0xcd47   ProfileDynamicRange       IFD0       DNG ProfileDynamicRange
   0xcd48   ProfileGroupName          IFD0       string!
+  0xcd49   JXLDistance               IFD0       float
+  0xcd4a   JXLEffort                 IFD0       int32u
+  0xcd4b   JXLDecodeSpeed            IFD0       int32u
   0xea1c   Padding                   ExifIFD    undef!
   0xea1d   OffsetSchema              ExifIFD    int32s!
   0xfde8   OwnerName                 ExifIFD    string/
@@ -4797,6 +4800,9 @@ These tags belong to the ExifTool XMP-GCamera family 1 group.
   MicroVideoOffset                              integer
   MicroVideoPresentationTimestampUs             integer
   MicroVideoVersion                             integer
+  MotionPhoto                                   integer
+  MotionPhotoPresentationTimestampUs            integer
+  MotionPhotoVersion                            integer
   PortraitNote                                  string
   PortraitRequest                               string
   PortraitVersion                               string
@@ -12402,7 +12408,8 @@ below by a decimal appended to the tag ID (.0, .1 or .2).
       4    CropY                                int32s
       5    CropWidth                            int32s
       6    CropHeight                           int32s
-      8    CropRotation                         double
+      7    CropRotation                         int32s
+      8    CropAngle                            double
      10    CropOriginalWidth                    int32s
      11    CropOriginalHeight                   int32s
 
@@ -22520,6 +22527,7 @@ WX350/WX500, ILCE-1/7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/7SM3/9/9M2/5000/
    1102    ISOInfo                              Sony ISOInfo
    1176    ISOInfo                              Sony ISOInfo
    1181    ISOInfo                              Sony ISOInfo
+   1182    ISOInfo                              Sony ISOInfo
    1185    ISOInfo                              Sony ISOInfo
    1186    ISOInfo                              Sony ISOInfo
    1210    ISOInfo                              Sony ISOInfo
@@ -29978,6 +29986,7 @@ QuickTimeHandler option may be set to 0 to avoid this.
   'sdes'       StoreDescription                 string
   'sfID'       AppleStoreCountry                int32s
   'shwm'       ShowMovement                     int8s
+  'snal'       PreviewImage                     string
   'soaa'       SortAlbumArtist                  string
   'soal'       SortAlbum                        string
   'soar'       SortArtist                       string
@@ -29987,6 +29996,7 @@ QuickTimeHandler option may be set to 0 to avoid this.
   'stik'       MediaType                        int8s
   'titl'       Title                            string/
   'tmpo'       BeatsPerMinute                   int16s
+  'tnal'       ThumbnailImage                   string
   'trkn'       TrackNumber                      undef
   'tven'       TVEpisodeID                      string
   'tves'       TVEpisode                        int32s
@@ -31674,7 +31684,10 @@ Camero.
 
 Use the API PrintCSV option to output all timed
 PDR data in CSV format at greatly increased speed and with much lower memory
-usage.
+usage.  This option prints the numerical values for each channel in CSV
+format, suitable for import into RaceRender.  In this output, the gear
+numbers for Neutral and Reverse are changed to -1 and -100 respectively for
+compatibility with RaceRender.
 
 =head3 GM marl Tags
 

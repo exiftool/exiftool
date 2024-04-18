@@ -760,6 +760,11 @@ effect as a value of 0 for options with numerical values.</p>
     <tr><td valign=top align=right><i>non&#8209;zero</i>&nbsp;=</td><td>Relative offsets</td></tr>
     <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>EXIF/TIFF offsets</td></tr>
     </table></td><td align=center>undef</td></tr>
+<tr id="IgnoreGroups"><td>IgnoreGroups</td><td>List of group names to ignore when reading.
+    The group names are case insensitive and may be preceeded by a family number.</td>
+    <td>List reference, delimited string of names (any delimiter is allowed), or undef to
+    clear the previous IgnoreGroups list.</td>
+    <td align=center>undef</td></tr>
 <tr id="IgnoreMinorErrors"><td>IgnoreMinorErrors</td><td>Flag to ignore minor errors.  Causes minor
     errors to be downgraded to warnings, and minor warnings to be ignored.  This
     option is provided mainly to allow writing of files when minor errors occur,
@@ -1118,11 +1123,11 @@ $success = $exifTool-&gt;<b>ExtractInfo</b>('image.jpg', \%options);
 <blockquote>
 Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3, CharsetIPTC,
 CharsetPhotoshop, CharsetQuickTime, CharsetRIFF, Composite, ExtendedXMP,
-ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase,
-IgnoreMinorErrors, Lang, LargeFileSupport, MakerNotes, MDItemTags,
-NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero), RequestAll,
-RequestTags, SaveFormat, SavePath, ScanForXMP, Struct, TextOut, Unknown,
-Verbose, WindowsWideFile, XAttrTags and XMPAutoConv.
+ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase, IgnoreGroups,
+IgnoreMinorErrors, IgnoreTags, Lang, LargeFileSupport, MakerNotes,
+MDItemTags, NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero),
+RequestAll, RequestTags, SaveFormat, SavePath, ScanForXMP, Struct, TextOut,
+Unknown, Verbose, WindowsWideFile, XAttrTags and XMPAutoConv.
 </blockquote>
 
 <hr><h2><a name="GetInfo">GetInfo</a></h2>

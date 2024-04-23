@@ -7,7 +7,7 @@
 <body>
 <pre>
 <span class=com>#------------------------------------------------------------------------------
-# File:         example.config
+# File:         example.config  --&gt;  ~/.ExifTool_config
 #
 # Description:  Example user configuration file for Image::ExifTool
 #
@@ -173,15 +173,8 @@
         # the Composite tag to be evaluated.  If no Require'd tags are
         # specified, then at least one of the Desire'd tags must exist.  See
         # the Composite table in Image::ExifTool::Exif for more examples,
-        # and lib/Image/ExifTool/README for all of the details.</span>
-        BaseName =&gt; {
-            Require =&gt; {
-                0 =&gt; 'FileName',
-            },
-            <span class=com># remove the extension from FileName</span>
-            ValueConv =&gt; '$val[0] =~ /(.*)\./ ? $1 : $val[0]',
-        },
-        <span class=com># the next few examples demonstrate simplifications which may be
+        # and lib/Image/ExifTool/README for all of the details.
+        # The first few examples demonstrate simplifications which may be
         # used if only one tag is Require'd or Desire'd:
         # 1) the Require lookup may be replaced with a simple tag name
         # 2) "$val" may be used to represent "$val[0]" in the expression</span>
@@ -226,6 +219,7 @@
                 3 =&gt; 'PreviewImage (1)',
                 <span class=com># (if the MPF has 2 previews, MPImage3 could be the larger one)</span>
                 4 =&gt; 'MPImage3',
+                5 =&gt; 'JpgFromRaw2', # in RW2 from newer Panasonic models
             },
             <span class=com># ValueConv may also be a code reference
             # Inputs: 0) reference to list of values, 1) ExifTool object</span>
@@ -281,7 +275,7 @@
             STRUCT_NAME =&gt; 'MyStruct',
             <span class=com># optional rdf:type property for the structure</span>
             TYPE =&gt; 'http://x.y.z/test/xystruct',
-            <span class=com># structure fields (very similar to tag definitions)</span>
+            <span class=com># structure field definitions (very similar to tag definitions)</span>
             X =&gt; { Writable =&gt; 'integer' },
             Y =&gt; { Writable =&gt; 'integer' },
             <span class=com># a nested structure...</span>
@@ -378,8 +372,8 @@ $Image::ExifTool::QuickTime::Keys{PREFERRED} = 3;
 
 <span class=com># Add user-defined cities to the Geolocation lookup</span>
 @Image::ExifTool::UserDefined::Geolocation = (
-    <span class=com># (city,region,country code,country,timezone,population,lat,lon)</span>
-    ['Sinemorets','Burgas','BG','Bulgaria','Europe/Sofia',400,42.06115,27.97833],
+    <span class=com># (city,region,subregion,country_code,country,timezone,feature_code,population,lat,lon)</span>
+    ['Sinemorets','burgas','Obshtina Tsarevo','BG','','Europe/Sofia','PPL',400,42.06115,27.97833],
 );
 
 <span class=com>#------------------------------------------------------------------------------</span>

@@ -1415,6 +1415,8 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         %durationInfo,
         # this is int64u if MovieHeaderVersion == 1 (ref 13)
         Hook => '$$self{MovieHeaderVersion} and $format = "int64u", $varSize += 4',
+        # (Note: this Duration seems to be the time of the key frame in
+        #  the NRT Metadata track of iPhone live-photo MOV videos)
     },
     5 => {
         Name => 'PreferredRate',

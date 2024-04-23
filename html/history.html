@@ -17,6 +17,24 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.84'><b>Apr. 23, 2024 - Version 12.84</b></a>
+<ul>
+<li>Added ability to read speed and accuracy_horizontal when geotagging from
+    OpenTracks GPX files
+<li>Decode a few more Apple tags and a new CanonVRD tag
+<li>Enhanced Geolocation option with the ability to return any number of nearby
+    cities
+<li>Fixed long-standing bug in Windows version that didn't properly handle dates
+    older than 50 years when writing FileModifyDate or FileCreateDate
+<li>Fixed <a href="ExifTool.html#TimeZone">API TimeZone option</a> to work in Windows
+<li>Fixed problem where the SetTags helper function didn't properly copy tags
+    which have print conversions
+<li>Fixed problem where a new subregion couldn't be added through a user-defined
+    Geolocation database entry
+<li>Fixed problem where GeolocFeature option didn't work for some features if a
+    user-generated custom database was used
+</ul>
+
 <a name='v12.83'><b>Apr. 18, 2024 - Version 12.83</b></a>
 <ul>
 <li>Added SetTags <a href="exiftool_pod.html#Helper-functions">helper function</a> for use in advanced formatting expressions
@@ -24,7 +42,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added a new Nikon Z lens
 <li>Added a couple of new QuickTime tags
 <li>Added a few more XMP-GCamera tags
-<li>Added build_geolocation to the full distribution
+<li>Added <a href="geolocation.html#Alt">build_geolocation</a> utility to the full distribution
 <li>Decode a new CanonVRD tag and rename another one
 <li>Updates to Sony maker note decoding for newer models (thanks Jos Roost)
 <li>Minor change in -p option to avoid adding the trailing newline if the -b

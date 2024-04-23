@@ -738,9 +738,10 @@ use of the alternate names.  Default is 1.
 
 Comma-separated list of feature codes to include in city search, or exclude
 if the list begins with a dash (-).  Valid feature codes are PPL, PPLA,
-PPLA2, PPLA3, PPLA4, PPLA5, PPLC, PPLCH, PPLF, PPLG, PPLL, PPLR, PPLS, STLMT
-and Other.  See L<http://www.geonames.org/export/codes.html#P> for a
-description of these codes.  Default is undef.
+PPLA2, PPLA3, PPLA4, PPLA5, PPLC, PPLCH, PPLF, PPLG, PPLH, PPLL, PPLQ, PPLR,
+PPLS, PPLW, PPLX, STLMT and Other, plus possible user-include codes if an
+alternate database is used.  See L<http://www.geonames.org/export/codes.html#P>
+for a description of these codes.  Default is undef.
 
 =item GeolocMaxDist
 
@@ -1105,10 +1106,12 @@ Output file reference for Verbose and HtmlDump options.  Default is
 
 =item TimeZone
 
-Time zone for local date/time values.  May be set to any valid TZ string.
-Uses the system time zone if not specified.  Default is undef.  (Requires
-POSIX::tzset, which may not be available in Windows.  A work-around in
-Windows is to C<set TZ=E<lt>zoneE<gt>> before running ExifTool.)
+Set the time zone for local date/time values.  The value is a time zone
+offset like "+05:00" (but note that the offset is to UTC, not from UTC, so
+it is positive for western time zones), or a time zone name like "EST5EDT".
+For Unix-based systems, the value may also be a time zone ID like
+"America/New_York".  Requires Time::Piece on Windows, or POSIX::tzset on
+other systems.  Default is undef.
 
 =item Unknown
 

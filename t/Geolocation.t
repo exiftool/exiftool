@@ -85,12 +85,12 @@ my $testnum = 1;
 }
 
 # test 6: Generate geolocation information from dummy file in memory,
-#         with alternate language translation
+#         returning the two nearest cities, avoiding PPLX features
 {
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
-    $exifTool->Options(Geolocation => 'Munich,Germany');
-    $exifTool->Options(Lang => 'de');
+    $exifTool->Options(Geolocation => '48.1375,11.5755,num=2');
+    $exifTool->Options(GeolocFeature => '-PPLX');
     my $dat = '';
     my $info = $exifTool->ImageInfo(\$dat, 'geolocation*');
     if (check($exifTool, $info, $testname, $testnum)) {
@@ -119,7 +119,6 @@ my $testnum = 1;
     print "ok $testnum\n";
 
     ++$testnum;
-    $exifTool->Options(GeolocAltNames => 1);
     $exifTool->Options(Geolocation => 'fghij');
     my $info = $exifTool->ImageInfo(\$dat, 'geolocation*');
     if (check($exifTool, $info, $testname, $testnum)) {

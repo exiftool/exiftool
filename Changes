@@ -7,6 +7,23 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Apr. 23, 2024 - Version 12.84
+
+  - Added ability to read speed and accuracy_horizontal when geotagging from
+    OpenTracks GPX files
+  - Decode a few more Apple tags and a new CanonVRD tag
+  - Enhanced Geolocation option with the ability to return any number of nearby
+    cities
+  - Fixed long-standing bug in Windows version that didn't properly handle dates
+    older than 50 years when writing FileModifyDate or FileCreateDate
+  - Fixed API TimeZone option to work in Windows
+  - Fixed problem where the SetTags helper function didn't properly copy tags
+    which have print conversions
+  - Fixed problem where a new subregion couldn't be added through a user-defined
+    Geolocation database entry
+  - Fixed problem where GeolocFeature option didn't work for some features if a
+    user-generated custom database was used
+
 Apr. 18, 2024 - Version 12.83
 
   - Added SetTags helper function for use in advanced formatting expressions
@@ -14,7 +31,7 @@ Apr. 18, 2024 - Version 12.83
   - Added a new Nikon Z lens
   - Added a couple of new QuickTime tags
   - Added a few more XMP-GCamera tags
-  - Added build_geolocation to the full distribution
+  - Added build_geolocation utility to the full distribution
   - Decode a new CanonVRD tag and rename another one
   - Updates to Sony maker note decoding for newer models (thanks Jos Roost)
   - Minor change in -p option to avoid adding the trailing newline if the -b

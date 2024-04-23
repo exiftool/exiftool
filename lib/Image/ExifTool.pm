@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars);
 
-$VERSION = '12.83';
+$VERSION = '12.84';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1176,7 +1176,7 @@ my @defaultWriteGroups = qw(
 
 # group hash for ExifTool-generated tags
 my %allGroupsExifTool = ( 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'ExifTool' );
-my %geoInfo = ( Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'Location' }, Priority => 0 );
+my %geoInfo = ( Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'Location' } );
 
 # special tag names (not used for tag info)
 %specialTags = map { $_ => 1 } qw(
@@ -1995,14 +1995,14 @@ my %systemTagsNotes = (
             return $val if $val =~ /\bgeotag\b/i;
             $val .= ',both';
             my $opts = $$self{OPTIONS};
-            my ($n, $i, $km, $be) = Image::ExifTool::Geolocation::Geolocate($self->Encode($val,'UTF8'), $opts);
-            return '' unless $n;
-            if ($n > 1 and $self->Warn('Multiple matching cities found',2)) {
+            my ($cities, $dist) = Image::ExifTool::Geolocation::Geolocate($self->Encode($val,'UTF8'), $opts);
+            return '' unless $cities;
+            if (@$cities > 1 and $self->Warn('Multiple matching cities found',2)) {
                 warn "$$self{VALUE}{Warning}\n";
                 return '';
             }
-            my @geo = Image::ExifTool::Geolocation::GetEntry($i, $$opts{Lang});
-            my @tags = $self->GetGeolocateTags($wantGroup, $km ? 0 : 1);
+            my @geo = Image::ExifTool::Geolocation::GetEntry($$cities[0], $$opts{Lang});
+            my @tags = $self->GetGeolocateTags($wantGroup, $dist ? 0 : 1);
             my %geoNum = ( City => 0, Province => 1, State => 1, Code => 3, Country => 4,
                            Coordinates => 89, Latitude => 8, Longitude => 9 );
             my ($tag, $value);
@@ -2049,7 +2049,7 @@ my %systemTagsNotes = (
     GeolocationSubregion=> { %geoInfo, Notes => 'geolocation county or subregion', ValueConv => '$self->Decode($val,"UTF8")' },
     GeolocationCountry  => { %geoInfo, Notes => 'geolocation country name', ValueConv => '$self->Decode($val,"UTF8")' },
     GeolocationCountryCode=>{%geoInfo, Notes => 'geolocation country code' },
-    GeolocationTimeZone => { %geoInfo, Notes => 'geolocation time zone name' },
+    GeolocationTimeZone => { %geoInfo, Notes => 'geolocation time zone ID' },
     GeolocationFeatureCode=>{%geoInfo, Notes => 'feature code, see L<http://www.geonames.org/export/codes.html#P>' },
     GeolocationPopulation=>{ %geoInfo, Notes => 'city population rounded to 2 significant digits' },
     GeolocationDistance => { %geoInfo, Notes => 'distance in km from current GPS to city', PrintConv => '"$val km"' },
@@ -2556,6 +2556,8 @@ sub Options($$;@)
             } else {
                 warn("Can't set $param to undef\n");
             }
+        } elsif (lc $param eq 'geodir') {
+            $Image::ExifTool::Geolocation::geoDir = $newVal; # (undocumented)
         } else {
             if ($param eq 'Escape') {
                 # set ESCAPE_PROC
@@ -2574,7 +2576,15 @@ sub Options($$;@)
                 delete $$self{GLOBAL_TIME_OFFSET};  # reset our calculated offset
             } elsif ($param eq 'TimeZone' and defined $newVal and length $newVal) {
                 $ENV{TZ} = $newVal;
-                eval { require POSIX; POSIX::tzset() };
+                if ($^O eq 'MSWin32') {
+                    if (eval { require Time::Piece }) {
+                        eval { Time::Piece::_tzset() };
+                    } else {
+                        warn("Install Time::Piece to set time zone in Windows\n");
+                    }
+                } else {
+                    eval { require POSIX; POSIX::tzset() };
+                }
             } elsif ($param eq 'Validate') {
                 # load Validate module if Validate option enabled
                 $newVal and require Image::ExifTool::Validate;
@@ -4362,13 +4372,14 @@ sub DoneExtract($)
             local $SIG{'__WARN__'} = \&SetWarning;
             undef $evalWarning;
             $$opts{GeolocMulti} = $$opts{Duplicates};
-            my ($n, $i, $km, $be) = Image::ExifTool::Geolocation::Geolocate($arg, $opts);
+            my ($cities, $dist) = Image::ExifTool::Geolocation::Geolocate($arg, $opts);
             delete $$opts{GeolocMulti};
-            # ($i will be an ARRAY ref if multiple matches were found and the Duplicates option is set)
-            if ($n and (ref $i or $n < 2 or not $self->Warn('Multiple Geolocation cities are possible',2))) {
-                my $list = ref $i ? $i : [ $i ];  # make a list if not done alreaday
-                foreach $i (@$list) {
-                    my @geo = Image::ExifTool::Geolocation::GetEntry($i, $$opts{Lang});
+            if ($cities and (@$cities < 2 or $dist or not $self->Warn('Multiple Geolocation cities are possible',2))) {
+                $self->FoundTag(GeolocationWarning => 'Search matched '.scalar(@$cities).' cities') if @$cities > 1;
+                my $city;
+                foreach $city (@$cities) {
+                    $$self{DOC_NUM} = ++$$self{DOC_COUNT} unless $city eq $$cities[0];
+                    my @geo = Image::ExifTool::Geolocation::GetEntry($city, $$opts{Lang});
                     $self->FoundTag(GeolocationCity => $geo[0]);
                     $self->FoundTag(GeolocationRegion => $geo[1]) if $geo[1];
                     $self->FoundTag(GeolocationSubregion => $geo[2]) if $geo[2];
@@ -4378,11 +4389,14 @@ sub DoneExtract($)
                     $self->FoundTag(GeolocationFeatureCode => $geo[6]);
                     $self->FoundTag(GeolocationPopulation => $geo[7]);
                     $self->FoundTag(GeolocationPosition => "$geo[8] $geo[9]");
-                    next if $i != $$list[0];
-                    $self->FoundTag(GeolocationDistance => $km) if defined $km;
-                    $self->FoundTag(GeolocationBearing => $be) if defined $be;
-                    $self->FoundTag(GeolocationWarning => "Search matched $n cities") if $n > 1;
+                    if ($dist) {
+                        $self->FoundTag(GeolocationDistance => $$dist[0][0]);
+                        $self->FoundTag(GeolocationBearing => $$dist[0][1]);
+                        shift @$dist;
+                    }
+                    last unless $$opts{Duplicates};
                 }
+                delete $$self{DOC_NUM};
             } elsif ($evalWarning) {
                 $self->Warn(CleanWarning());
             }
@@ -6363,6 +6377,7 @@ sub TimeLocal(@)
     if ($^O eq 'MSWin32') {
         # patch for ActivePerl timezone bug
         my @t2 = localtime($tm);
+        $t2[5] += 1900;
         my $t2 = Time::Local::timelocal(@t2);
         # adjust timelocal() return value to be consistent with localtime()
         $tm += $tm - $t2;

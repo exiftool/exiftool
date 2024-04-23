@@ -10,6 +10,8 @@
 #
 # Created:      2024-03-03 - P. Harvey
 #               2024-04-15 - PH Clean up and add options for public release
+#               2024-04-22 - PH Increased number of possible feature codes from
+#                               32 to 64. Convert backslashes in directory names
 #
 # Notes:        Requires these files from https://download.geonames.org/export/
 #
@@ -35,7 +37,7 @@
 #        9   int16u - v1.02: 0x7fff = index in subregion (admin2), 0x8000 = high bit of time zone
 #        9   int16u - v1.03: index in subregion (admin2)
 #       11   int8u  - low byte of time zone index
-#       12   int8u  - 0x1f = feature code index (see below), v1.03: 0x80 = high bit of time zone
+#       12   int8u  - 0x3f = feature code index (see below), v1.03: 0x80 = high bit of time zone
 #       13   string - UTF8 City name, terminated by newline
 #   "\0\0\0\0\x01"
 #   Country entries:
@@ -110,6 +112,9 @@ my $opts = { };
 while (@ARGV) {
     my $opt = shift;
     if (not $opt =~ s/^-//) {
+        $opt = '.' unless length $opt;
+        $opt =~ tr(\\)(/);  # use forward slashes
+        $opt =~ s(/$)();    # remove trailing slash
         $opt = "$opt/$defaults{file}" if -d $opt;
         -e $opt or die "Error opening database $opt\n";
         push @dbfiles, { %defaults, %$opts, file => $opt };
@@ -437,8 +442,8 @@ foreach $dbfile (@dbfiles) {
         $haveCountry{$cc} = 1;
         $haveRegion{"$cc$rgn"} = 1;
         $haveSubRgn{"$cc$rgn.$sub"} = 1;
-        # add new feature codes (up to maximum index of 0x1f)
-        unless ($featureCodes{$code} or @featureCodes > 0x1f) {
+        # add new feature codes (up to maximum index of 0x3f)
+        unless ($featureCodes{$code} or @featureCodes > 0x3f) {
             if ($dbVer eq '1.02') {
                 next if $code =~ /^(PPLH|PPLQ|PPLW)$/; # (stored as "Other" in v1.02)
                 $dbVer = '1.03';

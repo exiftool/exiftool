@@ -666,14 +666,14 @@ effect as a value of 0 for options with numerical values.</p>
     <a href="geolocation.html#Read">here</a> for details.</td>
     <td align=center>undef</td></tr>
 <tr id="GeolocAltNames"><td>GeolocAltNames</td>
-    <td>Flag to search alternate Geolocation city names if available (ie. if
-    <a href="geolocation.html#Alt">$Image::ExifTool::Geolocation::altDir</a> has been set).</td>
+    <td>Flag to search alternate Geolocation city names if available.</td>
     <td align=center>0 or 1</td>
     <td align=center>1</td></tr>
 <tr id="GeolocFeature"><td>GeolocFeature</td>
     <td>Feature codes to include or exclude in city search.  Valid feature codes are
-    PPL, PPLA, PPLA2, PPLA3, PPLA4, PPLA5, PPLC, PPLCH, PPLF, PPLG, PPLL, PPLR, PPLS,
-    STLMT and Other.  Read <a href="http://www.geonames.org/export/codes.html#P">here</a>
+    PPL, PPLA, PPLA2, PPLA3, PPLA4, PPLA5, PPLC, PPLCH, PPLF, PPLG, PPLH, PPLL, PPLQ,
+    PPLR, PPLS, PPLW, PPLX, STLMT and Other, plus possible user-included codes if an
+    alternate database is used.  Read <a href="http://www.geonames.org/export/codes.html#P">here</a>
     for a description of these codes.</td>
     <td align=center>Comma-separated list of feature codes, with leading dash (-) to
     exclude these features</td>
@@ -978,10 +978,12 @@ effect as a value of 0 for options with numerical values.</p>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="TextOut"><td>TextOut</td><td>Output file for Verbose and HtmlDump options.</td>
     <td align=center>File reference</td><td align=center>\*STDOUT</td></tr>
-<tr id="TimeZone"><td>TimeZone</td><td>Time zone for local date/time values.  (Requires POSIX::tzset,
-    which may not be available in Windows. A work-around in Windows is to
-    <code>set TZ=&lt;zone&gt;</code> before running ExifTool.)</td>
-    <td>Any valid TZ string, or undef to use the system time zone</td><td align=center>undef</td></tr>
+<tr id="TimeZone"><td>TimeZone</td><td>Set the time zone for local date/time values. The
+    value is a time zone offset like "+05:00" (but note that the offset is to UTC, not
+    from UTC, so it is positive for western time zones), or a time zone name like "EST5EDT".
+    For Unix-based systems, the value may also be a time zone ID like "America/New_York".
+    Requires Time::Piece on Windows, or POSIX::tzset on other systems.</td>
+    <td>Time zone offset or ID, or undef to use the system time zone</td><td align=center>undef</td></tr>
 <tr id="Unknown"><td>Unknown</td><td>Control extraction of unknown tags.</td>
     <td><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Unknown tags not extracted</td></tr>

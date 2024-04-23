@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27849 tags, with 17438 unique tag names.
+They contain a total of 27855 tags, with 17441 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -8903,12 +8903,16 @@ Tags extracted from the maker notes of iPhone images.
   0x0019   ImageProcessingFlags?                int32s
   0x001a   QualityHint?                         string
   0x001d   LuminanceNoiseAmplitude              rational64s
+  0x001f   PhotosAppFeatureFlags                int32s
   0x0020   ImageCaptureRequestID?               string
   0x0021   HDRHeadroom                          rational64s
+  0x0023   AFPerformance                        int32s[2]
   0x0025   SceneFlags?                          int32s
   0x0026   SignalToNoiseRatioType?              int32s
   0x0027   SignalToNoiseRatio                   rational64s
   0x002b   PhotoIdentifier                      string
+  0x002d   ColorTemperature                     int32s
+  0x002e   CameraType                           int32s
   0x002f   FocusPosition                        int32s
   0x0030   HDRGain                              rational64s
   0x0038   AFMeasuredDepth                      int32s
@@ -8918,7 +8922,8 @@ Tags extracted from the maker notes of iPhone images.
   0x0040   SemanticStyle                        no
   0x0041   SemanticStyleRenderingVer            no
   0x0042   SemanticStylePreset                  no
-  0x0045   FrontFacingCamera                    int32s
+  0x004e   Apple_0x004e?                        no
+  0x004f   Apple_0x004f?                        no
 
 =head3 Apple RunTime Tags
 
@@ -12287,6 +12292,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).
   0x10002      Rotation                         yes
   0x10003      AngleAdj                         yes
   0x10021      CustomPictureStyle               yes
+  0x10100      Rating                           yes
   0x10101      CheckMark                        yes
   0x10200      WorkColorSpace                   yes
   0x20001      RawBrightnessAdj                 yes

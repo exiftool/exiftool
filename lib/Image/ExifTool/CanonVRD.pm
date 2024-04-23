@@ -23,7 +23,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.40';
+$VERSION = '1.41';
 
 sub ProcessCanonVRD($$;$);
 sub WriteCanonVRD($$;$);
@@ -1020,6 +1020,18 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     # 0x10018 - fmt=8: 0
     # 0x10020 - fmt=2: ''
     0x10021 => 'CustomPictureStyle', # (string)
+    0x10100 => { #forum15965
+        Name => 'Rating',
+        PrintConv => {
+            0 => 'Unrated',
+            1 => 1,
+            2 => 2,
+            3 => 3,
+            4 => 4,
+            5 => 5,
+            4294967295 => 'Rejected',
+        },
+    },
     0x10101 => {
         Name => 'CheckMark',
         PrintConv => {

@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.96';
+$VERSION = '2.97';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -2332,6 +2332,16 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         Binary => 1,
     }],
     # ---- Ricoh ----
+    RICO => { #PH (G900SE)
+        Name => 'RicohInfo',
+        Condition => '$$valPt =~ /^\xff\xe1..Exif\0\0/s',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Exif::Main',
+            ProcessProc => \&Image::ExifTool::ProcessTIFF,
+            Start => 10,
+            Base => '$start',
+        }
+    },
     RTHU => { #PH (GR)
         Name => 'PreviewImage',
         Groups => { 2 => 'Preview' },
@@ -2929,8 +2939,12 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         Format => 'int8u',
         Writable => 'int8u',
         Protected => 1,
-        ValueConv => '$val * 90',
-        ValueConvInv => 'int($val / 90 + 0.5)',
+        PrintConv => {
+            0 => 'Horizontal (Normal)',
+            1 => 'Rotate 270 CW',
+            2 => 'Rotate 180',
+            3 => 'Rotate 90 CW',
+        },
     },
     ispe => {
         Name => 'ImageSpatialExtent',
@@ -3425,7 +3439,7 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::iTunesInfo' },
     },
     aART => { Name => 'AlbumArtist', Groups => { 2 => 'Author' } },
-    covr => { Name => 'CoverArt',    Groups => { 2 => 'Preview' } },
+    covr => { Name => 'CoverArt',    Groups => { 2 => 'Preview' }, Binary => 1 },
     cpil => { #10
         Name => 'Compilation',
         Format => 'int8u', #27 (ref 23 contradicts what AtomicParsley actually writes, which is int8s)
@@ -6497,8 +6511,8 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     ownr => 'Owner', #PH (obscure) (ref ChrisAdan private communication)
     'xid ' => 'ISRC', #PH
     # found in DJI Osmo Action4 video
-    tnal => { Name => 'ThumbnailImage',  Groups => { 2 => 'Preview' } },
-    snal => { Name => 'PreviewImage',    Groups => { 2 => 'Preview' } },
+    tnal => { Name => 'ThumbnailImage',  Binary => 1, Groups => { 2 => 'Preview' } },
+    snal => { Name => 'PreviewImage',    Binary => 1, Groups => { 2 => 'Preview' } },
 );
 
 # tag decoded from timed face records
@@ -8255,8 +8269,8 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
     GROUPS => { 2 => 'Video' },
     Rotation => {
         Notes => q{
-            writing this tag updates QuickTime MatrixStructure for all tracks with a
-            non-zero image size
+            degrees of clockwise camera rotation. Writing this tag updates QuickTime
+            MatrixStructure for all tracks with a non-zero image size
         },
         Require => {
             0 => 'QuickTime:MatrixStructure',
@@ -9758,7 +9772,7 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
             }
             # use value to get tag info if necessary
             $tagInfo or $tagInfo = $et->GetTagInfo($tagTablePtr, $tag, \$val);
-            my $hasData = ($$dirInfo{HasData} and $val =~ /\0...data\0/s);
+            my $hasData = ($$dirInfo{HasData} and $val =~ /^....data\0/s);
             if ($verbose and not $hasData) {
                 my $tval;
                 if ($tagInfo and $$tagInfo{Format}) {

@@ -876,7 +876,8 @@ sub WriteQuickTime($$$)
                 # --> hold this terminator to the end
                 $term = $hdr;
             } elsif ($n != 0) {
-                $et->Error("Unknown $n bytes at end of file", 1);
+                # warn unless this is 1-3 pad bytes
+                $et->Error("Unknown $n bytes at end of file", 1) if $n > 3 or $hdr ne "\0" x $n;
             }
             last;
         }

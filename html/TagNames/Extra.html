@@ -339,38 +339,43 @@ generated only if API <a href="../ExifTool.html#Geolocation">Geolocation</a> opt
 <td>GeolocationFeatureCode</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
-<td><span class=s><span class=n>(feature code, see <a href="http://www.geonames.org/export/codes.html#P">http://www.geonames.org/export/codes.html#P</a>)</span></span></td></tr>
+<td><span class=s><span class=n>(geolocation feature code, see <a href="http://www.geonames.org/export/codes.html#P">http://www.geonames.org/export/codes.html#P</a>)</span></span></td></tr>
 <tr class=b>
+<td>GeolocationFeatureType</td>
+<td class=c>no</td>
+<td class=c>ExifTool</td>
+<td><span class=s><span class=n>(geolocation feature type)</span></span></td></tr>
+<tr>
 <td>GeolocationPopulation</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(city population rounded to 2 significant digits)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GeolocationPosition</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(approximate GPS coordinates of city)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GeolocationRegion</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(geolocation state, province or region)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GeolocationSubregion</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(geolocation county or subregion)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GeolocationTimeZone</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(geolocation time zone ID)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GeolocationWarning</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Geosync</td>
 <td class=c>yes</td>
 <td class=c>-</td>
@@ -380,7 +385,7 @@ camera clock is 12 seconds faster than GPS time.  Input format is
 &quot;[+-][[[DD ]HH:]MM:]SS[.ss]&quot;.  Additional features allow calculation of time
 differences and time drifts, and extraction of synchronization times from
 image files.  See the <a href="../geotag.html">geotagging documentation</a> for details)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>Geotag</td>
 <td class=c>yes</td>
 <td class=c>-</td>
@@ -390,7 +395,7 @@ KML, IGC, Garmin XML and TCX, Magellan PMGNTRK, Honeywell PTNTHPR, Winplus
 Beacon text, and Bramor gEO log files.  May be set to the special value of
 &quot;DATETIMEONLY&quot; (all caps) to set GPS date/time tags if no input track points
 are available.  See <a href="../geotag.html">geotag.html</a> for details)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>Geotime</td>
 <td class=c>yes</td>
 <td class=c>-</td>
@@ -401,7 +406,7 @@ files.  The local system timezone is assumed if the date/time value does not
 contain a timezone.  May be deleted to delete associated GPS tags.  A group
 name of &quot;EXIF&quot; or &quot;XMP&quot; may be specified to write or delete only EXIF or XMP
 GPS tags)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>HardLink</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>-</td>
@@ -410,24 +415,24 @@ the source file.  If the source file is edited, copied, renamed or moved in
 the same operation as writing HardLink, then the link is made to the updated
 file.  Note that subsequent editing of either hard-linked file by exiftool
 will break the link unless the -overwrite_original_in_place option is used)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ICC_Profile</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>ICC_Profile</td>
 <td><span class=s><span class=n>(the full ICC_Profile data block.  This tag is generated only if specifically
 requested)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ID3Size</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(size of the ID3 data block)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>IPTC</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>IPTC</td>
 <td><span class=s><span class=n>(the full IPTC data block.  This tag is generated only if specifically
 requested)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ImageDataHash</td>
 <td class=c>no</td>
 <td class=c>File</td>
@@ -440,17 +445,17 @@ formats, but does not include ThumbnailImage or PreviewImage.  Includes
 video and audio data for MOV/MP4.  The <a href="XMP.html#ExifTool">XMP-et:OriginalImageHash and
 XMP-et:OriginalImageHashType tags</a> provide a way to store
 the this hash value and the hash type in the file.)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ImageHeight</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the height of the image in number of pixels)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ImageWidth</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the width of the image in number of pixels)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>JPEGDigest</td>
 <td class=c>no</td>
 <td class=c>File</td>
@@ -460,14 +465,14 @@ compared to known values in an attempt to deduce the originating software
 based only on the JPEG image data.  For performance reasons, this tag is
 generated only if specifically requested or the API <a href="../ExifTool.html#RequestAll">RequestAll</a> option is set
 to 3 or higher)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>JPEGImageLength</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(byte length of JPEG image without metadata.  For performance reasons, this
 tag is generated only if specifically requested or the API <a href="../ExifTool.html#RequestAll">RequestAll</a> option
 is set to 3 or higher)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>JPEGQualityEstimate</td>
 <td class=c>no</td>
 <td class=c>File</td>
@@ -475,22 +480,22 @@ is set to 3 or higher)</span></span></td></tr>
 the quantization tables.  For performance reasons, this tag is generated
 only if specifically requested or the API <a href="../ExifTool.html#RequestAll">RequestAll</a> option is set to 3 or
 higher)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>JUMBF</td>
 <td class=c>no</td>
 <td class=c>JUMBF</td>
 <td><span class=s><span class=n>(the C2PA JUMBF data block, extracted only if specifically requested)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>MIMEType</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the MIME type of the source file)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>MaxVal</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(maximum pixel value in PPM or PGM image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>NewGUID</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
@@ -499,71 +504,71 @@ YYYYmmdd-HHMM-SSNN-PPPP-RRRRRRRRRRRR, where Y=year, m=month, d=day, H=hour,
 M=minute, S=second, N=file sequence number in hex, P=process ID in hex, and
 R=random hex number; without dashes with the -n option.  Not generated
 unless specifically requested or the API <a href="../ExifTool.html#RequestAll">RequestAll</a> option is set)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>Now</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(the current date/time.  Useful when setting the tag values, eg.
 <code>&quot;-modifydate&lt;now&quot;</code>.  Not generated unless specifically requested or the
 API <a href="../ExifTool.html#RequestAll">RequestAll</a> option is set)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>NumPlanes</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(number of color planes)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>OtherImage</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(other JPEG-format embedded image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PageCount</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the number of pages in a multi-page TIFF document)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PreviewImage</td>
 <td class=c>yes</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(JPEG-format embedded preview image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PreviewJXL</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(JXL-format embedded preview image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PreviewPDF</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(PDF-format embedded preview image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PreviewPNG</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(PNG-format embedded preview image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PreviewTIFF</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(TIFF-format embedded preview image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PreviewWMF</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(WMF-format embedded preview image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ProcessingTime</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(the clock time in seconds taken by ExifTool to extract information from this
 file.  Not generated unless specifically requested or the API <a href="../ExifTool.html#RequestAll">RequestAll</a>
 option is set.  Requires Time::HiRes)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RAFVersion</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(RAF file version number)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ResourceForkSize</td>
 <td class=c>no</td>
 <td class=c>System</td>
@@ -572,13 +577,13 @@ tag is generated the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded<
 resource-fork information as a sub-document.  When writing, the resource
 fork is preserved by default, but it may be deleted with <code>-rsrc:all=</code> on
 the command line)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>SphericalVideoXML</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>GSpherical</td>
 <td><span class=s><span class=n>(the SphericalVideoXML block from MP4/MOV videos.  This tag is generated only
 if specifically requested)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>SymLink</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>-</td>
@@ -591,25 +596,25 @@ symbolic links.  Note that subsequent editing of the file via the symbolic
 link by exiftool will cause the link to be replaced by the edited file
 without changing the original unless the -overwrite_original_in_place option
 is used)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>TestName</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(this write-only tag may be used instead of FileName for dry-run tests of the
 file renaming feature.  Writing this tag prints the old and new file names
 to the console, but does not affect the file itself)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ThumbnailImage</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(JPEG-format embedded thumbnail image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>Trailer</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the full JPEG trailer data block.  Extracted only if specifically requested
 or the API <a href="../ExifTool.html#RequestAll">RequestAll</a> option is set to 3 or higher)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>Validate</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
@@ -619,7 +624,7 @@ additional validation checks when extracting metadata.  Returns the number
 of errors, warnings and minor warnings encountered.  Note that the Validate
 feature focuses mainly on validation of EXIF/TIFF metadata)</span>
   <br>&#39;0 0 0&#39; = OK</span></td></tr>
-<tr class=b>
+<tr>
 <td>Warning</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
@@ -628,28 +633,28 @@ Use the -a or <a href="../ExifTool.html#Duplicates">Duplicates</a> option to see
 occurred. Minor warnings may be ignored with the -m or <a href="../ExifTool.html#IgnoreMinorErrors">IgnoreMinorErrors</a>
 option.  Minor warnings with a capital &quot;M&quot; in the &quot;[Minor]&quot; designation
 indicate that the processing is affected by ignoring the warning)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>XML</td>
 <td class=c>no</td>
 <td class=c>XML</td>
 <td><span class=s><span class=n>(the XML data block, extracted for some file types)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>XMP</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>XMP</td>
 <td><span class=s><span class=n>(the XMP data block, but note that extended XMP in JPEG images may be split
 into multiple blocks.  This tag is generated only if specifically requested)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>XResolution</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the horizontal pixel resolution)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>YResolution</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the vertical pixel resolution)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ZoneIdentifier</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
@@ -661,7 +666,7 @@ stream.  Requires Win32API::File)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 23, 2024</i>
+<br><i>Last revised May 21, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

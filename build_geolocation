@@ -12,6 +12,9 @@
 #               2024-04-15 - PH Clean up and add options for public release
 #               2024-04-22 - PH Increased number of possible feature codes from
 #                               32 to 64. Convert backslashes in directory names
+#               2024-04-24 - PH Fixed problem with population exponent when run
+#                               under ActivePerl
+#               2024-04-29 - PH Added feature types and default to db v1.03
 #
 # Notes:        Requires these files from https://download.geonames.org/export/
 #
@@ -19,6 +22,7 @@
 #               countryInfo.txt
 #               admin1CodesASCII.txt
 #               admin2Codes.txt
+#               featureCodes_XX.txt (optional)
 #               alternateNamesV2.txt (optional)
 #
 # Output datbase format (Geolocation.dat):
@@ -54,7 +58,7 @@
 #       1. Time zone name, terminated by newline
 #   "\0\0\0\0\x05" (feature codes added in v1.03)
 #   Feature codes:
-#       1. Feature code, terminated by newline
+#       1. Feature code, optional space-followed-by-feature-name, then newline
 #   "\0\0\0\0\0"
 #
 # Feature Codes v1.02: (see http://www.geonames.org/export/codes.html#P for descriptions)
@@ -68,12 +72,12 @@
 
 use strict;
 
-my $dbVer        = '1.02'; # database version
-
+my $dbVer        = '1.03';                  # default output database version
 my $dbFile       = 'allCountries.txt';      # default database file
 my $countryFile  = 'countryInfo.txt';       # mandatory country names file
 my $regionFile   = 'admin1CodesASCII.txt';  # mandatory region names file
 my $admin2File   = 'admin2Codes.txt';       # mandatory subregion names file
+my $featureFile  = 'featureCodes_en.txt';   # optional feature names file
 my $altNamesFile = 'alternateNamesV2.txt';  # optional alternate names file
 my $outFile      = 'Geolocation.dat';       # output ExifTool database file
 my $outAltNames  = 'AltNames.dat';          # output alternate names file
@@ -103,6 +107,7 @@ my @fc103 = qw(
 my $i = 0;
 my @featureCodes = $dbVer eq '1.02' ? @fc102 : @fc103;
 my %featureCodes = map { $_ => $i++ } @featureCodes;
+my %featureNames;
 
 my ($dbfile, @dbfiles, $outDir, $verbose, $noLang, %needRgn);
 my %optArgs = ( p => 1, c => 1, cp => 1, l => 1, o => 1, ver => 1 );
@@ -240,12 +245,13 @@ Options:
   -h        - Show this help.
 
 Input files (download from https://download.geonames.org/export/dump/):
-  allCountries.txt      - default database file (smaller files with names
+  $dbFile      - default database file (smaller files with names
                           like "cities###.txt" may be specified instead)
-  countryInfo.txt       - mandatory country names file
-  admin1CodesASCII.txt  - mandatory region names file
-  admin2Codes.txt       - mandatory subregion names file
-  alternateNamesV2.txt  - optional alternate names file (must exist to
+  $countryFile       - mandatory country names file
+  $regionFile  - mandatory region names file
+  $admin2File       - mandatory subregion names file
+  $featureFile   - optional feature codes file
+  $altNamesFile  - optional alternate names file (must exist to
                           to generate $outAltNames and $geoLang files)
 
 Output files:
@@ -374,7 +380,7 @@ my @supportedLangs = qw(cs de en-ca en-gb es fi fr it ja ko nl pl ru sk sv tr zh
 
 # supported country-specific languages
 my %ccLang = ( TW => 'zh', CN => 'zh', CA => 'en', GB => 'en' );
-my (%lang, %haveCountry, %cityFlags, %rgnFlags, %subFlags, %ccFlags, %flags);
+my (%lang, %featureLang, %haveCountry, %cityFlags, %rgnFlags, %subFlags, %ccFlags, %flags);
 my (%haveRegion, %haveSubRgn, $filesize, $percent);
 
 sub GetFileSize($)
@@ -386,7 +392,8 @@ sub GetFileSize($)
     return $size;
 }
 
-# pre-scan database to determine which countries, regions and subregions we will be using
+# pre-scan database to determine which countries, regions subregions and
+# feature codes we will be using
 foreach $dbfile (@dbfiles) {
     my $database = $$dbfile{file};
     my $upgraded;
@@ -422,7 +429,7 @@ foreach $dbfile (@dbfiles) {
         }
         # keep regardless of population
         if ($needRgn{$cc} and $$dbfile{keep}{"$cc$rgn"}) {
-            $keep = $$dbfile{keep}{"$cc$rgn"}{$code};#TEST
+            $keep = $$dbfile{keep}{"$cc$rgn"}{$code};
         } elsif ($$dbfile{keep}{$cc}) {
             $keep = $$dbfile{keep}{$cc}{$code};
         } else {
@@ -462,9 +469,27 @@ foreach $dbfile (@dbfiles) {
     warn "Some feature codes not supported by version 1.02, writing as 1.03 instead.\n" if $upgraded;
 }
 
+# read feature names
+if (open INFILE, '<', "$dbdir/$featureFile") {
+    print "Reading $dbdir/$featureFile\n";
+    while (<INFILE>) {
+        my @items = split /\t/;
+        $items[0] =~ s/^.\.//;  # remove feature group and "." separator
+        next unless $featureCodes{$items[0]};
+        my $name = ucfirst $items[1];
+        $name =~ s/ ([a-z])/ \U$1/g;
+        $featureNames{$items[0]} = $name;
+    }
+    close INFILE;
+} else {
+    print "Not found: $dbdir/$featureFile\n";
+    print "--> Not storing feature type names\n";
+}
+
 # read country names
 $i = 0;
 open INFILE, '<', "$dbdir/$countryFile" or die "Error opening $dbdir/$countryFile\n";
+print "Reading $dbdir/$countryFile\n";
 while (<INFILE>) {
     next if /^#/;
     my @items = split /\t/;
@@ -479,6 +504,7 @@ die "Too many countries!\n" if $i > 0x100;  # (no default 0 entry)
 # read region (admin1) names
 $i = 0;
 open REGION, '<', "$dbdir/$regionFile" or die "Error opening $dbdir/$regionFile\n";
+print "Reading $dbdir/$regionFile\n";
 while (<REGION>) {
     chomp;
     my @items = split /\t/;
@@ -494,6 +520,7 @@ die "Too many regions!\n" if $i > 0x0fff;   # (account for default 0 entry)
 # read subregion (admin2) names
 $i = 0;
 open ADMIN2, '<', "$dbdir/$admin2File" or die "Error opening $dbdir/$admin2File\n";
+print "Reading $dbdir/$admin2File\n";
 while (<ADMIN2>) {
     chomp;
     my @items = split /\t/;
@@ -544,8 +571,35 @@ if (not $noLang and open INFILE, '<', "$dbdir/$altNamesFile") {
     }
     print "\b\b\b\bDone.\n";
     close INFILE;
+    # read alternate feature names
+    if (%featureNames) {
+        my $lng;
+        foreach $lng (@languages) {
+            next if $lng eq 'en' or not $languages{$lng};
+            my $file = "$dbdir/$featureFile";
+            $file =~ s/_en\./_$lng./ or next;
+            next unless open INFILE, '<', $file;
+            print "Reading $file\n";
+            while (<INFILE>) {
+                my @items = split /\t/;
+                $items[0] =~ s/^.\.//;  # remove feature group and "." separator
+                next unless $featureNames{$items[0]};
+                utf8::decode($items[1]);
+                my $name = ucfirst $items[1];
+                $name =~ s/ (.)/ \U$1/g;
+                # change $name back to byte string
+                if ($] >= 5.006 and (eval { require Encode; Encode::is_utf8($name) } or $@)) {
+                    $name = $@ ? pack('C*',unpack($] < 5.010000 ? 'U0C*' : 'C0C*',$name)) : Encode::encode('utf8',$name);
+                }
+                next if $name eq $featureNames{$items[0]};
+                $featureLang{$lng}{$items[0]} = $name;
+            }
+            close INFILE;
+        }
+    }
 } else {
-    print "Not writing alternate languages ($dbdir/$altNamesFile not found)\n";
+    print "Not found: $dbdir/$altNamesFile\n--> " unless $noLang;
+    print "Not writing alternate languages\n";
     $noLang = 1;
 }
 
@@ -554,7 +608,7 @@ my (%coords, %langLookups);
 foreach $dbfile (@dbfiles) {
     my $database = $$dbfile{file};
 
-    print "Processing $database...   0%";
+    print "Processing database entries...   0%";
     my $i = 0;
     my $num = scalar @{$$dbfile{kept}};
 
@@ -623,6 +677,7 @@ foreach (sort { $a cmp $b } keys %coords) {
     my $items = $coords{$_};
     # @$items=(0.lat,1.lon,2.city,3.cc,4.rgn,5.admin2,6.population,7.timezone,8.feature code,9.alt names)
     my $iCC = $orderCC{$$items[3]};
+    defined $iCC or warn("Unknown country code $$items[3]\n"), next;
     my $iRgn = $orderRgn{"$$items[3]$$items[4]"} || 0;
     my $iSub = $orderSub{"$$items[3]$$items[4].$$items[5]"} || 0;
     my $tn = $tz{$$items[7]};
@@ -631,9 +686,12 @@ foreach (sort { $a cmp $b } keys %coords) {
         $tn = $tz{$$items[7]} = $tzNum++;
     }
     # convert population to our binary format
-    my $pop = sprintf('%.1e',$$items[6]); # format: "3.1e+04"
+    # Note: format in ActivePerl is "3.1e+004", but "3.1+04" in other Perls,
+    # but other Perls will round 34500 to "3.4e+04", so add 1 to get "3.5e+04"
+    $$items[6] += 1 if $$items[6] > 100 and not $$items[6] % 10;
+    my $pop = sprintf('%.1e',$$items[6]);
     # pack CC, population and region index into a 32-bit integer
-    my $code = ($iCC << 24) | (substr($pop,6,1)<<20) | (substr($pop,0,1)<<16) | (substr($pop,2,1)<<12) | $iRgn;
+    my $code = ($iCC << 24) | (substr($pop,-1,1)<<20) | (substr($pop,0,1)<<16) | (substr($pop,2,1)<<12) | $iRgn;
     $fcodes{$$items[8]} = ($fcodes{$$items[8]} || 0) + 1;
     my $fc = $featureCodes{$$items[8]} || 0;
     # store high bit of timezone index
@@ -761,8 +819,12 @@ print OUTFILE $_,"\n" foreach @tz;
 
 print OUTFILE "\0\0\0\0\x05\n"; # section terminator
 
-# write feature codes
-print OUTFILE $_,"\n" foreach @featureCodes;
+# write feature codes and optional names
+foreach (@featureCodes) {
+    print OUTFILE $_;
+    print OUTFILE ' ', $featureNames{$_} if $featureNames{$_};
+    print OUTFILE "\n";
+}
 
 # write terminator and close Geolocation.dat
 print OUTFILE "\0\0\0\0\0\n";   # file terminator
@@ -774,7 +836,9 @@ my $langSize = 0;
 my $langDir = "$outDir/$geoLang";
 # delete existing languages
 unlink <"$langDir/*.pm">;
-unless ($noLang) {
+if ($noLang) {
+    rmdir $langDir;
+} else {
     my $n = scalar(keys %langLookups);
     print "Writing $n language files to $outDir/$geoLang...\n";
     mkdir $langDir, 0777;
@@ -785,6 +849,7 @@ unless ($noLang) {
         my $lkup = $langLookups{$lng};
         my $file = "$myLng.pm";
         open OUT, ">$langDir/$file" or die "Error creating $file\n";
+        binmode OUT;
         print OUT "# Geolocation language translations for $myLng\n";
         print OUT "#\n# Based on Creative Commons database from geonames.org\n\n";
         print OUT "%Image::ExifTool::GeoLang::${myLng}::Translate = (\n";
@@ -840,6 +905,14 @@ unless ($noLang) {
                         print OUT "\t'$code,$sub,$nm' => '$val',\n";
                     }
                 }
+            }
+        }
+        if ($featureLang{$lng}) {
+            print OUT "\n\t# feature types\n";
+            foreach (sort keys %{$featureLang{$lng}}) {
+                my $ftype = $featureLang{$lng}{$_};
+                $ftype =~ s/'/\\'/g;
+                print OUT "\t$_ => '$ftype',\n" 
             }
         }
         print OUT ");\n\n1; #end\n";

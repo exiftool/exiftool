@@ -103,6 +103,14 @@ my %dateTimeConv = (
     },
 );
 
+%Image::ExifTool::ID3::UserDefined = (
+    GROUPS => { 1 => 'UserDefined', 2 => 'Other' },
+    NOTES => q{
+        ID3 user-defined text and URL tags will be dynamically added to this table
+        by name when found.
+    },
+);
+
 # Lyrics3 tags (ref 4)
 %Image::ExifTool::ID3::Lyrics3 = (
     GROUPS => { 1 => 'Lyrics3', 2 => 'Audio' },
@@ -493,7 +501,7 @@ my %genre = (
     TT2 => 'Title',
     TT3 => 'Subtitle',
     TXT => 'Lyricist',
-    TXX => 'UserDefinedText',
+    TXX => { SubDirectory => { TagTable => 'Image::ExifTool::ID3::UserDefined' } },
     TYE => { Name => 'Year', Groups => { 2 => 'Time' } },
     ULT => 'Lyrics',
     WAF => 'FileURL',
@@ -502,7 +510,7 @@ my %genre = (
     WCM => 'CommercialURL',
     WCP => { Name => 'CopyrightURL', Groups => { 2 => 'Author' } },
     WPB => 'PublisherURL',
-    WXX => 'UserDefinedURL',
+    WXX => { SubDirectory => { TagTable => 'Image::ExifTool::ID3::UserDefined' } },
     # the following written by iTunes 10.5 (ref PH)
     RVA => 'RelativeVolumeAdjustment',
     TST => 'TitleSortOrder',
@@ -605,7 +613,7 @@ my %id3v2_common = (
     TRSO => 'InternetRadioStationOwner',
     TSRC => 'ISRC', # (international standard recording code)
     TSSE => 'EncoderSettings',
-    TXXX => 'UserDefinedText',
+    TXXX => { SubDirectory => { TagTable => 'Image::ExifTool::ID3::UserDefined' } },
   # UFID => 'UniqueFileID', (not extracted because it is long and nasty and not very useful)
     USER => 'TermsOfUse',
     USLT => 'Lyrics',
@@ -617,7 +625,7 @@ my %id3v2_common = (
     WORS => 'InternetRadioStationURL',
     WPAY => 'PaymentURL',
     WPUB => 'PublisherURL',
-    WXXX => 'UserDefinedURL',
+    WXXX => { SubDirectory => { TagTable => 'Image::ExifTool::ID3::UserDefined' } },
 #
 # non-standard frames
 #
@@ -1247,7 +1255,14 @@ sub ProcessID3v2($$$)
             # two encoded strings separated by a null
             my @vals = DecodeString($et, $val);
             foreach (0..1) { $vals[$_] = '' unless defined $vals[$_]; }
-            ($val = "($vals[0]) $vals[1]") =~ s/^\(\) //;
+            $vals[0] .= ' ' if $Image::ExifTool::specialTags{$vals[0]};
+            my $tbl = GetTagTable('Image::ExifTool::ID3::UserDefined');
+            unless (defined $$tbl{$vals[0]}) {
+                my $name = Image::ExifTool::MakeTagName($vals[0]);
+                AddTagToTable($tbl, $vals[0], $name, 1);
+            }
+            $et->HandleTag($tbl, $vals[0], $vals[1]);
+            next;
         } elsif ($id =~ /^T/ or $id =~ /^(IPL|IPLS|GP1|MVI|MVN)$/) {
             $val = DecodeString($et, $val);
         } elsif ($id =~ /^(WXX|WXXX)$/) {
@@ -1265,7 +1280,14 @@ sub ProcessID3v2($$$)
             }
             $val = DecodeString($et, $val);
             $url =~ s/\0.*//s;
-            $val = length($val) ? "($val) $url" : $url;
+            $val .= '_URL';
+            my $tbl = GetTagTable('Image::ExifTool::ID3::UserDefined');
+            unless (defined $$tbl{$val}) {
+                my $name = Image::ExifTool::MakeTagName($val);
+                AddTagToTable($tbl, $val, $name, 1);
+            }
+            $et->HandleTag($tbl, $val, $url);
+            next;
         } elsif ($id =~ /^W/) {
             $val =~ s/\0.*//s;  # truncate at null
         } elsif ($id =~ /^(COM|COMM|ULT|USLT)$/) {

@@ -97,9 +97,9 @@ the site with a moderate load.  An alternate ExifTool homepage is available at
 the distribution files or access web pages too quickly will be blocked.</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.84.tar.gz/download">
-Download        Version 12.84</a> (7.1 MB) -
-<a href="history.html">Apr. 23, 2024</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.85.tar.gz/download">
+Download        Version 12.85</a> (7.1 MB) -
+<a href="history.html">May 21, 2024</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -152,8 +152,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.84.zip/download">
-         exiftool-12.84.zip</a> (8.8 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.85.zip/download">
+         exiftool-12.85.zip</a> (8.8 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -171,7 +171,7 @@ if you have any problems/comments with this version.)</i></p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.84.dmg</a> (5.2 MB)</b></td></tr></table></blockquote>
+         ExifTool-12.85.dmg</a> (5.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -184,7 +184,8 @@ installing ExifTool on Windows, MacOS and Unix systems.</p>
 <li><a href="checksums.txt">Click here
 for the SHA1 and MD5 checksums to verify these distribution packages</a>.</li>
 <li>The version number of the latest ExifTool release may be found
-<a href="ver.txt">here</a>.</li>
+<a href="ver.txt">here</a>, and the name of the most recent alternate
+geolocation database is <a href="geo.txt">here</a>.</li>
 </ul>
 
 <h2><a name="features">Features</a></h2>
@@ -429,9 +430,11 @@ metadata types for each file format.  C2PA metadata is not currently <b>W</b>rit
 <tr><td><a href="TagNames/MRC.html">MRC</a></td><td>R</td><td>Medical Research Council</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/MRC.html">MRC</a></td></tr>
 <tr><td><a href="TagNames/MXF.html">MXF</a></td><td>R</td><td>Material Exchange Format</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/MXF.html">MXF</a></td></tr>
 <tr><td>NEF</td><td>R/W</td><td>Nikon (RAW) Electronic Format (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/D</td><td>R/W <a href="TagNames/Nikon.html">Nikon</a> <a href="TagNames/NikonCapture.html">NikonCapture</a></td></tr>
+<tr><td>NXA</td><td>R</td><td>Nikon NX Studio Adjustments</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R XML</td></tr>
 <tr><td>NKSC</td><td>R/W</td><td>Nikon Sidecar (<a href="TagNames/XMP.html">XMP</a>-based)</td><td>-</td><td>-</td><td>R/W/C</td><td>-</td><td>-</td><td>-</td></tr>
 <tr><td><a href="TagNames/iWork.html">NMBTEMPLATE</a></td><td>R</td><td>Apple iWork '09 Numbers Template</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/iWork.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
 <tr><td>NRW</td><td>R/W</td><td>Nikon RAW (2) (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/D</td><td>R/W <a href="TagNames/Nikon.html">Nikon</a> <a href="TagNames/NikonCapture.html">NikonCapture</a></td></tr>
+<tr><td>NXD</td><td>R</td><td>Nikon Capture NX-D adjustments (XMP-based)</td><td>-</td><td>-</td><td>R</td><td>-</td><td>-</td><td>-</td></tr>
 <tr><td><a href="TagNames/iWork.html">NUMBERS</a></td><td>R</td><td>Apple iWork '09 Numbers spreadsheet</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/iWork.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
 <tr><td><a href="TagNames/EXE.html#ELF">O</a></td><td>R</td><td>Unix compiled code Object</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/EXE.html#ELF">EXE</a></td></tr>
 <tr><td>ODB, ODC, ODF, ODG,<br>ODI, ODP, ODS, ODT</td><td>R</td><td>Open Document Database/Chart/Formula/Graphics/<br>Image/Presentation/Spreadsheet/Text (ZIP/XML-based)</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R XML <a href="TagNames/ZIP.html">ZIP</a></td></tr>
@@ -890,19 +893,20 @@ RIFF, RMETA, RSRC, RTF, Radiance, Rawzor, Real, Real-CONT, Real-MDPR,
 Real-PROP, Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx, Red, Ricoh,
 SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado,
 Sigma, SigmaRaw, Sony, SonyIDC, Stim, SubIFD, System, Theora, Torrent,
-Track#, UserData, VCalendar, VCard, VNote, Version0, Vorbis, WTV, XML, XMP,
-XMP-DICOM, XMP-Device, XMP-GAudio, XMP-GCamera, XMP-GCreations, XMP-GDepth,
-XMP-GFocus, XMP-GImage, XMP-GPano, XMP-GSpherical, XMP-LImage, XMP-MP,
-XMP-MP1, XMP-PixelLive, XMP-aas, XMP-acdsee, XMP-album, XMP-apple-fi,
-XMP-ast, XMP-aux, XMP-cc, XMP-cell, XMP-crd, XMP-creatorAtom, XMP-crs,
-XMP-dc, XMP-dex, XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-et, XMP-exif,
-XMP-exifEX, XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr,
-XMP-hdrgm, XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro,
-XMP-microsoft, XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-panorama,
-XMP-pdf, XMP-pdfx, XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi,
-XMP-prism, XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff,
-XMP-x, XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote,
-XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
+Track#, UserData, UserDefined, VCalendar, VCard, VNote, Version0, Vorbis,
+WTV, XML, XMP, XMP-DICOM, XMP-Device, XMP-GAudio, XMP-GCamera,
+XMP-GCreations, XMP-GDepth, XMP-GFocus, XMP-GImage, XMP-GPano,
+XMP-GSpherical, XMP-LImage, XMP-MP, XMP-MP1, XMP-PixelLive, XMP-aas,
+XMP-acdsee, XMP-album, XMP-apple-fi, XMP-ast, XMP-aux, XMP-cc, XMP-cell,
+XMP-crd, XMP-creatorAtom, XMP-crs, XMP-dc, XMP-dex, XMP-digiKam,
+XMP-drone-dji, XMP-dwc, XMP-et, XMP-exif, XMP-exifEX, XMP-expressionmedia,
+XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr, XMP-hdrgm, XMP-ics, XMP-iptcCore,
+XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft, XMP-mwg-coll, XMP-mwg-kw,
+XMP-mwg-rs, XMP-nine, XMP-panorama, XMP-pdf, XMP-pdfx, XMP-photomech,
+XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism, XMP-prl, XMP-prm, XMP-pur,
+XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff, XMP-x, XMP-xmp, XMP-xmpBJ, XMP-xmpDM,
+XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg,
+ZIP, iTunes
 </td></tr>
 <tr><td><b>2&nbsp;(Category)</b></td>
 <td>Audio, Author, Camera, Device, Document, ExifTool, Image, Location, Other,
@@ -1369,6 +1373,7 @@ binary data.  The simple script above does not handle this case.</p>
 <li><a href="https://onedrive.live.com/?authkey=%21ACLDz87Pi7VH%5FWA&amp;id=6266D5E1E0FBB1B8%2193728&amp;cid=6266D5E1E0FBB1B8">PictureTools</a>: Tools for viewing pictures and editing EXIF data or renaming files</li>
 <li><a href="https://nordlien.github.io/PhotoTags-Synchronizer/">PhotoTags-Synchronizer</a>: Windows GUI for tagging and synchronizing metadata</li>
 <li><a href="https://github.com/electro-logic/DngOpcodesEditor">DNG Opcodes Editor</a>: Change DNG opcodes and see the effect on the image in real-time</li>
+<li><a href="https://phototoolbox.fotoblog-reiseberichte.de/index.php/en/welcome-to-the-photography-toolbox-homepage/">Photography Toolbox</a>: Organize your digital photographs</li>
 </ul>
 
 <p><b><a name="related_mac">MacOS</a></b></p>

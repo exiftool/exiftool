@@ -649,6 +649,11 @@ effect as a value of 0 for options with numerical values.</p>
     maker notes base offset, or the empty string ('') for ExifTool to take its
     best guess at the correct base.</td>
     <td align=center>undef</td></tr>
+<tr id="GeoDir"><td>GeoDir</td>
+    <td>[Not a real option] Provided as a convenience to allow $Image::ExifTool::geoDir
+    to be set at runtime.  This variable specifies the directory for the Geolocation
+    databases, and is used only once when these databases are loaded.</td>
+    <td>-</td><td align=center>-</td></tr>
 <tr id="Geolocation"><td>Geolocation</td>
     <td>Flag to generate geolocation tags based on the GPSLatitude/GPSLongitude
     or City/State/Province/Country information read from a file.
@@ -2298,19 +2303,20 @@ RIFF, RMETA, RSRC, RTF, Radiance, Rawzor, Real, Real-CONT, Real-MDPR,
 Real-PROP, Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx, Red, Ricoh,
 SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado,
 Sigma, SigmaRaw, Sony, SonyIDC, Stim, SubIFD, System, Theora, Torrent,
-Track#, UserData, VCalendar, VCard, VNote, Version0, Vorbis, WTV, XML, XMP,
-XMP-DICOM, XMP-Device, XMP-GAudio, XMP-GCamera, XMP-GCreations, XMP-GDepth,
-XMP-GFocus, XMP-GImage, XMP-GPano, XMP-GSpherical, XMP-LImage, XMP-MP,
-XMP-MP1, XMP-PixelLive, XMP-aas, XMP-acdsee, XMP-album, XMP-apple-fi,
-XMP-ast, XMP-aux, XMP-cc, XMP-cell, XMP-crd, XMP-creatorAtom, XMP-crs,
-XMP-dc, XMP-dex, XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-et, XMP-exif,
-XMP-exifEX, XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr,
-XMP-hdrgm, XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro,
-XMP-microsoft, XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-panorama,
-XMP-pdf, XMP-pdfx, XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi,
-XMP-prism, XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff,
-XMP-x, XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote,
-XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
+Track#, UserData, UserDefined, VCalendar, VCard, VNote, Version0, Vorbis,
+WTV, XML, XMP, XMP-DICOM, XMP-Device, XMP-GAudio, XMP-GCamera,
+XMP-GCreations, XMP-GDepth, XMP-GFocus, XMP-GImage, XMP-GPano,
+XMP-GSpherical, XMP-LImage, XMP-MP, XMP-MP1, XMP-PixelLive, XMP-aas,
+XMP-acdsee, XMP-album, XMP-apple-fi, XMP-ast, XMP-aux, XMP-cc, XMP-cell,
+XMP-crd, XMP-creatorAtom, XMP-crs, XMP-dc, XMP-dex, XMP-digiKam,
+XMP-drone-dji, XMP-dwc, XMP-et, XMP-exif, XMP-exifEX, XMP-expressionmedia,
+XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr, XMP-hdrgm, XMP-ics, XMP-iptcCore,
+XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft, XMP-mwg-coll, XMP-mwg-kw,
+XMP-mwg-rs, XMP-nine, XMP-panorama, XMP-pdf, XMP-pdfx, XMP-photomech,
+XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism, XMP-prl, XMP-prm, XMP-pur,
+XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff, XMP-x, XMP-xmp, XMP-xmpBJ, XMP-xmpDM,
+XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg,
+ZIP, iTunes
 </td></tr>
 <tr><td><b>2&nbsp;(Category)</b></td>
 <td>Audio, Author, Camera, Device, Document, ExifTool, Image, Location, Other,

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27855 tags, with 17441 unique tag names.
+They contain a total of 27859 tags, with 17442 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -7746,7 +7746,8 @@ These tags are used in Pentax/Asahi cameras.
   0x0229   SerialNumber                         string
   0x022a   FilterInfo                           Pentax FilterInfo
                                                 Pentax FilterInfo
-  0x022b   LevelInfo                            Pentax LevelInfo
+  0x022b   LevelInfoK3III                       Pentax LevelInfoK3III
+           LevelInfo                            Pentax LevelInfo
   0x022d   WBLevels                             Pentax WBLevels
   0x022e   Artist                               string
   0x022f   Copyright                            string
@@ -7919,7 +7920,8 @@ Auto-exposure information for the K-01.
 
 =head3 Pentax AEInfo3 Tags
 
-Auto-exposure information for the K-3, K-30, K-50 and K-500.
+Auto-exposure information for the K-1mkII, K-3, K-30, K-50, K-70, K-500 and
+KP.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -8050,7 +8052,9 @@ Flash information tags for the K10D, K20D and K200D.
   Index1   Tag Name                             Writable
   ------   --------                             --------
     0.1    PowerSource                          int8u & 0x0f
+           Tag01                                int8u & 0x0f
     1.1    BodyBatteryState                     int8u & 0xf0
+           BodyBatteryState?                    int8u & 0xf0
     1.2    GripBatteryState                     int8u & 0x0f
            GripBatteryState?                    int8u & 0x0f
       2    BodyBatteryADNoLoad                  int8u
@@ -8072,6 +8076,7 @@ Flash information tags for the K10D, K20D and K200D.
       6    AFDefocus                            int8u
       7    AFIntegrationTime                    int8u
      11    AFPointsInFocus                      int8u
+    506    LiveView                             int8u
     509    AFHold                               int8u
 
 =head3 Pentax KelvinWB Tags
@@ -8111,6 +8116,7 @@ White balance Blue/Red gains as a function of color temperature.
   ------   --------                             --------
       0    EVSteps                              int8u
       1    SensitivitySteps                     int8u
+      3    LiveView                             int8u
 
 =head3 Pentax ShotInfo Tags
 
@@ -8223,6 +8229,15 @@ used.
     294    DigitalFilter18                      undef[17]
     311    DigitalFilter19                      undef[17]
     328    DigitalFilter20                      undef[17]
+
+=head3 Pentax LevelInfoK3III Tags
+
+Tags decoded from the electronic level information for the K-3 III.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      3    RollAngle                            int16s
+      5    PitchAngle                           int16s
 
 =head3 Pentax LevelInfo Tags
 
@@ -9338,6 +9353,7 @@ Unknown only to reduce the volume of the normal output.
      41    ManualFlashOutput                    int16s
      42    ColorTone                            int16s
      46    SRAWQuality                          int16s
+     51    Clarity                              int16s
 
 =head3 Canon FocalLength Tags
 
@@ -10460,6 +10476,8 @@ WB tags for the Canon G9.
      11    DigitalGain                          int16s
      12    WBShiftAB                            int16s
      13    WBShiftGM                            int16s
+     14    UnsharpMaskFineness                  int16s
+     15    UnsharpMaskThreshold                 int16s
 
 =head3 Canon ColorBalance Tags
 
@@ -29128,7 +29146,7 @@ ID3 version 2.2 tags.  (These are the tags written by iTunes 5.0.)
   'TT2'    Title                                no
   'TT3'    Subtitle                             no
   'TXT'    Lyricist                             no
-  'TXX'    UserDefinedText                      no
+  'TXX'    TXX                                  ID3 UserDefined
   'TYE'    Year                                 no
   'ULT'    Lyrics                               no
   'WAF'    FileURL                              no
@@ -29137,7 +29155,7 @@ ID3 version 2.2 tags.  (These are the tags written by iTunes 5.0.)
   'WCM'    CommercialURL                        no
   'WCP'    CopyrightURL                         no
   'WPB'    PublisherURL                         no
-  'WXX'    UserDefinedURL                       no
+  'WXX'    WXX                                  ID3 UserDefined
 
 =head3 ID3 SynLyrics Tags
 
@@ -29148,6 +29166,15 @@ The following tags are extracted from synchronized lyrics/text frames.
   SynchronizedLyricsDescription                 no
   SynchronizedLyricsText                        no+
   SynchronizedLyricsType                        no
+
+=head3 ID3 UserDefined Tags
+
+ID3 user-defined text and URL tags will be dynamically added to this table
+by name when found.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
 
 =head3 ID3 v2_3 Tags
 
@@ -29218,7 +29245,7 @@ software.
   'TSOC'   ComposerSortOrder                    no
   'TSRC'   ISRC                                 no
   'TSSE'   EncoderSettings                      no
-  'TXXX'   UserDefinedText                      no
+  'TXXX'   TXXX                                 ID3 UserDefined
   'TYER'   Year                                 no
   'USER'   TermsOfUse                           no
   'USLT'   Lyrics                               no
@@ -29231,7 +29258,7 @@ software.
   'WORS'   InternetRadioStationURL              no
   'WPAY'   PaymentURL                           no
   'WPUB'   PublisherURL                         no
-  'WXXX'   UserDefinedURL                       no
+  'WXXX'   WXXX                                 ID3 UserDefined
   'XDOR'   OriginalReleaseTime                  no
   'XOLY'   OlympusDSS                           Olympus DSS
   'XSOA'   AlbumSortOrder                       no
@@ -29342,7 +29369,7 @@ software.
   'TSRC'   ISRC                                 no
   'TSSE'   EncoderSettings                      no
   'TSST'   SetSubtitle                          no
-  'TXXX'   UserDefinedText                      no
+  'TXXX'   TXXX                                 ID3 UserDefined
   'USER'   TermsOfUse                           no
   'USLT'   Lyrics                               no
   'WCOM'   CommercialURL                        no
@@ -29354,7 +29381,7 @@ software.
   'WORS'   InternetRadioStationURL              no
   'WPAY'   PaymentURL                           no
   'WPUB'   PublisherURL                         no
-  'WXXX'   UserDefinedURL                       no
+  'WXXX'   WXXX                                 ID3 UserDefined
   'XDOR'   OriginalReleaseTime                  no
   'XOLY'   OlympusDSS                           Olympus DSS
   'XSOA'   AlbumSortOrder                       no
@@ -30738,6 +30765,7 @@ the config file.
   'RDTC'       RicohRDTC                        Ricoh RDTC
   'RDTG'       RicohRDTG                        Ricoh RDTG
   'RDTL'       RicohRDTL                        Ricoh RDTL
+  'RICO'       RicohInfo                        EXIF
   'RMKN'       RicohRMKN                        EXIF
   'RTHU'       PreviewImage                     no
   'SDLN'       PlayMode                         string
@@ -40063,6 +40091,7 @@ FileName.
   GeolocationCountryCode     ExifTool           no
   GeolocationDistance        ExifTool           no
   GeolocationFeatureCode     ExifTool           no
+  GeolocationFeatureType     ExifTool           no
   GeolocationPopulation      ExifTool           no
   GeolocationPosition        ExifTool           no
   GeolocationRegion          ExifTool           no

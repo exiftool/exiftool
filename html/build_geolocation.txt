@@ -39,7 +39,7 @@ Options:
   -o OUTDIR - Output directory name.  Default is the same directory as the
               first input database file.  A directory named Geolocation_out
               containing the output files will be created in this directory.
-  -ver VER  - Version for output geolocation database (default is 1.02).
+  -ver VER  - Version for output geolocation database (default is 1.03).
   -v        - Verbose messages.
   -h        - Show this help.
 
@@ -49,6 +49,7 @@ Input files (download from https://download.geonames.org/export/dump/):
   countryInfo.txt       - mandatory country names file
   admin1CodesASCII.txt  - mandatory region names file
   admin2Codes.txt       - mandatory subregion names file
+  featureCodes_en.txt   - optional feature codes file
   alternateNamesV2.txt  - optional alternate names file (must exist to
                           to generate AltNames.dat and GeoLang files)
 

@@ -65,50 +65,50 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  360   r/w   | DOCX  r     | ITC   r     | O     r     | RSRC  r
-  3FR   r     | DPX   r     | J2C   r     | ODP   r     | RTF   r
-  3G2   r/w   | DR4   r/w/c | JNG   r/w   | ODS   r     | RW2   r/w
-  3GP   r/w   | DSS   r     | JP2   r/w   | ODT   r     | RWL   r/w
-  7Z    r     | DV    r     | JPEG  r/w   | OFR   r     | RWZ   r
-  A     r     | DVB   r/w   | JSON  r     | OGG   r     | RM    r
-  AA    r     | DVR-MS r    | JXL   r/w   | OGV   r     | SEQ   r
-  AAC   r     | DYLIB r     | K25   r     | ONP   r     | SKETCH r
-  AAE   r     | EIP   r     | KDC   r     | OPUS  r     | SO    r
-  AAX   r/w   | EPS   r/w   | KEY   r     | ORF   r/w   | SR2   r/w
-  ACR   r     | EPUB  r     | LA    r     | ORI   r/w   | SRF   r
-  AFM   r     | ERF   r/w   | LFP   r     | OTF   r     | SRW   r/w
-  AI    r/w   | EXE   r     | LIF   r     | PAC   r     | SVG   r
-  AIFF  r     | EXIF  r/w/c | LNK   r     | PAGES r     | SWF   r
-  APE   r     | EXR   r     | LRV   r/w   | PBM   r/w   | THM   r/w
-  ARQ   r/w   | EXV   r/w/c | M2TS  r     | PCD   r     | TIFF  r/w
-  ARW   r/w   | F4A/V r/w   | M4A/V r/w   | PCX   r     | TORRENT r
-  ASF   r     | FFF   r/w   | MACOS r     | PDB   r     | TTC   r
-  AVI   r     | FITS  r     | MAX   r     | PDF   r/w   | TTF   r
-  AVIF  r/w   | FLA   r     | MEF   r/w   | PEF   r/w   | TXT   r
-  AZW   r     | FLAC  r     | MIE   r/w/c | PFA   r     | VCF   r
-  BMP   r     | FLIF  r/w   | MIFF  r     | PFB   r     | VNT   r
-  BPG   r     | FLV   r     | MKA   r     | PFM   r     | VRD   r/w/c
-  BTF   r     | FPF   r     | MKS   r     | PGF   r     | VSD   r
-  C2PA  r     | FPX   r     | MKV   r     | PGM   r/w   | WAV   r
-  CHM   r     | GIF   r/w   | MNG   r/w   | PLIST r     | WDP   r/w
-  COS   r     | GLV   r/w   | MOBI  r     | PICT  r     | WEBP  r/w
-  CR2   r/w   | GPR   r/w   | MODD  r     | PMP   r     | WEBM  r
-  CR3   r/w   | GZ    r     | MOI   r     | PNG   r/w   | WMA   r
-  CRM   r/w   | HDP   r/w   | MOS   r/w   | PPM   r/w   | WMV   r
-  CRW   r/w   | HDR   r     | MOV   r/w   | PPT   r     | WPG   r
-  CS1   r/w   | HEIC  r/w   | MP3   r     | PPTX  r     | WTV   r
-  CSV   r     | HEIF  r/w   | MP4   r/w   | PS    r/w   | WV    r
-  CUR   r     | HTML  r     | MPC   r     | PSB   r/w   | X3F   r/w
-  CZI   r     | ICC   r/w/c | MPG   r     | PSD   r/w   | XCF   r
-  DCM   r     | ICO   r     | MPO   r/w   | PSP   r     | XISF  r
-  DCP   r/w   | ICS   r     | MQV   r/w   | QTIF  r/w   | XLS   r
-  DCR   r     | IDML  r     | MRC   r     | R3D   r     | XLSX  r
-  DFONT r     | IIQ   r/w   | MRW   r/w   | RA    r     | XMP   r/w/c
-  DIVX  r     | IND   r/w   | MXF   r     | RAF   r/w   | ZIP   r
-  DJVU  r     | INSP  r/w   | NEF   r/w   | RAM   r     |
-  DLL   r     | INSV  r     | NKSC  r/w   | RAR   r     |
-  DNG   r/w   | INX   r     | NRW   r/w   | RAW   r/w   |
-  DOC   r     | ISO   r     | NUMBERS r   | RIFF  r     |
+  360   r/w   | DOCX  r     | ITC   r     | NUMBERS r   | RAW   r/w
+  3FR   r     | DPX   r     | J2C   r     | NXD   r     | RIFF  r
+  3G2   r/w   | DR4   r/w/c | JNG   r/w   | O     r     | RSRC  r
+  3GP   r/w   | DSS   r     | JP2   r/w   | ODP   r     | RTF   r
+  7Z    r     | DV    r     | JPEG  r/w   | ODS   r     | RW2   r/w
+  A     r     | DVB   r/w   | JSON  r     | ODT   r     | RWL   r/w
+  AA    r     | DVR-MS r    | JXL   r/w   | OFR   r     | RWZ   r
+  AAC   r     | DYLIB r     | K25   r     | OGG   r     | RM    r
+  AAE   r     | EIP   r     | KDC   r     | OGV   r     | SEQ   r
+  AAX   r/w   | EPS   r/w   | KEY   r     | ONP   r     | SKETCH r
+  ACR   r     | EPUB  r     | LA    r     | OPUS  r     | SO    r
+  AFM   r     | ERF   r/w   | LFP   r     | ORF   r/w   | SR2   r/w
+  AI    r/w   | EXE   r     | LIF   r     | ORI   r/w   | SRF   r
+  AIFF  r     | EXIF  r/w/c | LNK   r     | OTF   r     | SRW   r/w
+  APE   r     | EXR   r     | LRV   r/w   | PAC   r     | SVG   r
+  ARQ   r/w   | EXV   r/w/c | M2TS  r     | PAGES r     | SWF   r
+  ARW   r/w   | F4A/V r/w   | M4A/V r/w   | PBM   r/w   | THM   r/w
+  ASF   r     | FFF   r/w   | MACOS r     | PCD   r     | TIFF  r/w
+  AVI   r     | FITS  r     | MAX   r     | PCX   r     | TORRENT r
+  AVIF  r/w   | FLA   r     | MEF   r/w   | PDB   r     | TTC   r
+  AZW   r     | FLAC  r     | MIE   r/w/c | PDF   r/w   | TTF   r
+  BMP   r     | FLIF  r/w   | MIFF  r     | PEF   r/w   | TXT   r
+  BPG   r     | FLV   r     | MKA   r     | PFA   r     | VCF   r
+  BTF   r     | FPF   r     | MKS   r     | PFB   r     | VNT   r
+  C2PA  r     | FPX   r     | MKV   r     | PFM   r     | VRD   r/w/c
+  CHM   r     | GIF   r/w   | MNG   r/w   | PGF   r     | VSD   r
+  COS   r     | GLV   r/w   | MOBI  r     | PGM   r/w   | WAV   r
+  CR2   r/w   | GPR   r/w   | MODD  r     | PLIST r     | WDP   r/w
+  CR3   r/w   | GZ    r     | MOI   r     | PICT  r     | WEBP  r/w
+  CRM   r/w   | HDP   r/w   | MOS   r/w   | PMP   r     | WEBM  r
+  CRW   r/w   | HDR   r     | MOV   r/w   | PNG   r/w   | WMA   r
+  CS1   r/w   | HEIC  r/w   | MP3   r     | PPM   r/w   | WMV   r
+  CSV   r     | HEIF  r/w   | MP4   r/w   | PPT   r     | WPG   r
+  CUR   r     | HTML  r     | MPC   r     | PPTX  r     | WTV   r
+  CZI   r     | ICC   r/w/c | MPG   r     | PS    r/w   | WV    r
+  DCM   r     | ICO   r     | MPO   r/w   | PSB   r/w   | X3F   r/w
+  DCP   r/w   | ICS   r     | MQV   r/w   | PSD   r/w   | XCF   r
+  DCR   r     | IDML  r     | MRC   r     | PSP   r     | XISF  r
+  DFONT r     | IIQ   r/w   | MRW   r/w   | QTIF  r/w   | XLS   r
+  DIVX  r     | IND   r/w   | MXF   r     | R3D   r     | XLSX  r
+  DJVU  r     | INSP  r/w   | NEF   r/w   | RA    r     | XMP   r/w/c
+  DLL   r     | INSV  r     | NKA   r     | RAF   r/w   | ZIP   r
+  DNG   r/w   | INX   r     | NKSC  r/w   | RAM   r     |
+  DOC   r     | ISO   r     | NRW   r/w   | RAR   r     |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -714,6 +714,13 @@ note entries when reading the edited file.  FixBase specifies an integer
 value to be added to the maker notes base offset.  It may also be set to the
 empty string ('') for ExifTool will take its best guess at the correct base,
 or undef (the default) for no base adjustment.
+
+=item GeoDir
+
+[Not a real option] Provided as a convenience to allow
+$Image::ExifTool::geoDir to be set at runtime.  This variable specifies the
+directory for the Geolocation databases, and is used only once when these
+databases are loaded.
 
 =item Geolocation
 
@@ -2533,19 +2540,20 @@ RIFF, RMETA, RSRC, RTF, Radiance, Rawzor, Real, Real-CONT, Real-MDPR,
 Real-PROP, Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx, Red, Ricoh,
 SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado,
 Sigma, SigmaRaw, Sony, SonyIDC, Stim, SubIFD, System, Theora, Torrent,
-Track#, UserData, VCalendar, VCard, VNote, Version0, Vorbis, WTV, XML, XMP,
-XMP-DICOM, XMP-Device, XMP-GAudio, XMP-GCamera, XMP-GCreations, XMP-GDepth,
-XMP-GFocus, XMP-GImage, XMP-GPano, XMP-GSpherical, XMP-LImage, XMP-MP,
-XMP-MP1, XMP-PixelLive, XMP-aas, XMP-acdsee, XMP-album, XMP-apple-fi,
-XMP-ast, XMP-aux, XMP-cc, XMP-cell, XMP-crd, XMP-creatorAtom, XMP-crs,
-XMP-dc, XMP-dex, XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-et, XMP-exif,
-XMP-exifEX, XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr,
-XMP-hdrgm, XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro,
-XMP-microsoft, XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-panorama,
-XMP-pdf, XMP-pdfx, XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi,
-XMP-prism, XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff,
-XMP-x, XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote,
-XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
+Track#, UserData, UserDefined, VCalendar, VCard, VNote, Version0, Vorbis,
+WTV, XML, XMP, XMP-DICOM, XMP-Device, XMP-GAudio, XMP-GCamera,
+XMP-GCreations, XMP-GDepth, XMP-GFocus, XMP-GImage, XMP-GPano,
+XMP-GSpherical, XMP-LImage, XMP-MP, XMP-MP1, XMP-PixelLive, XMP-aas,
+XMP-acdsee, XMP-album, XMP-apple-fi, XMP-ast, XMP-aux, XMP-cc, XMP-cell,
+XMP-crd, XMP-creatorAtom, XMP-crs, XMP-dc, XMP-dex, XMP-digiKam,
+XMP-drone-dji, XMP-dwc, XMP-et, XMP-exif, XMP-exifEX, XMP-expressionmedia,
+XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr, XMP-hdrgm, XMP-ics, XMP-iptcCore,
+XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft, XMP-mwg-coll, XMP-mwg-kw,
+XMP-mwg-rs, XMP-nine, XMP-panorama, XMP-pdf, XMP-pdfx, XMP-photomech,
+XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism, XMP-prl, XMP-prm, XMP-pur,
+XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff, XMP-x, XMP-xmp, XMP-xmpBJ, XMP-xmpDM,
+XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg,
+ZIP, iTunes
 
 =item Family 2 (Category):
 

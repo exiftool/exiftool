@@ -29,7 +29,6 @@ sub ConvInv($$$$$;$$);
 sub PushValue($$$;$);
 
 my $loadedAllTables;    # flag indicating we loaded all tables
-my $advFmtSelf;         # ExifTool object during evaluation of advanced formatting expr
 
 # the following is a road map of where we write each directory
 # in the different types of files.
@@ -3380,7 +3379,7 @@ sub InsertTagValues($$;$$$$)
         if (defined $expr and defined $val) {
             local $SIG{'__WARN__'} = \&SetWarning;
             undef $evalWarning;
-            $advFmtSelf = $self;
+            $advFmtSelf = $self;    # set variable for access to $self in helper functions
             if ($asList) {
                 foreach (@val) {
                     #### eval advanced formatting expression ($_, $self, @val, $tag, $advFmtSelf)

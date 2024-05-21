@@ -1569,9 +1569,11 @@ segments for the K-3, converted to LV)</span></span></td></tr>
   <br>--&gt; <a href='Pentax.html#FilterInfo'>Pentax FilterInfo Tags</a></td></tr>
 <tr>
 <td title='0x022b = 555'>0x022b</td>
-<td>LevelInfo</td>
-<td class=c>-</td>
-<td>--&gt; <a href='Pentax.html#LevelInfo'>Pentax LevelInfo Tags</a></td></tr>
+<td>LevelInfoK3III
+  <br>LevelInfo</td>
+<td class=c>-<br>-</td>
+<td>--&gt; <a href='Pentax.html#LevelInfoK3III'>Pentax LevelInfoK3III Tags</a>
+  <br>--&gt; <a href='Pentax.html#LevelInfo'>Pentax LevelInfo Tags</a></td></tr>
 <tr class=b>
 <td title='0x022d = 557'>0x022d</td>
 <td>WBLevels</td>
@@ -3000,7 +3002,8 @@ are roughly 8 steps per F-stop, but it varies slightly by lens)</span></span></t
 </table></td></tr></table></blockquote>
 
 <h2><a name='AEInfo3'>Pentax AEInfo3 Tags</a></h2>
-<p>Auto-exposure information for the K-3, K-30, K-50 and K-500.</p>
+<p>Auto-exposure information for the K-1mkII, K-3, K-30, K-50, K-70, K-500 and
+KP.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -3471,31 +3474,38 @@ serviced)</span></span></td></tr>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td class=r title='0 = 0x0'>0.1</td>
-<td>PowerSource</td>
-<td class=c>int8u</td>
+<td>PowerSource
+  <br>Tag01</td>
+<td class=c>int8u<br>int8u</td>
 <td><span class=s>[val &amp; 0xf]
   <br>1 = Camera Battery
   <br>2 = Body Battery
   <br>3 = Grip Battery
+  <br>4 = External Power Supply
+  <br><span class=n>(K-3III)</span>
+  <br>[val &amp; 0xf]
+  <br>1 = Body Battery
+  <br>2 = Grip Battery
   <br>4 = External Power Supply</span></td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1.1</td>
-<td>BodyBatteryState</td>
-<td class=c>int8u</td>
+<td>BodyBatteryState
+  <br>BodyBatteryState?</td>
+<td class=c>int8u<br>int8u</td>
 <td><span class=s><span class=n>(*istD, K100D, K200D, K10D and K20D)</span>
   <br>[val &gt;&gt; 4 &amp; 0xf]
   <br>1 = Empty or Missing
   <br>2 = Almost Empty
   <br>3 = Running Low
   <br>4 = Full
-  <br><span class=n>(other models except the K110D, K2000 and K-m)</span>
+  <br><span class=n>(most other models except the K110D, K2000, K-m and K-3III)</span>
   <br>[val &gt;&gt; 4 &amp; 0xf]
   <br>1 = Empty or Missing
   <br>2 = Almost Empty
   <br>3 = Running Low
   <br>4 = Close to Full
   <br>5 = Full
-  <br><span class=n>(decoding unknown for other models)</span>
+  <br><span class=n>(decoding unknown for some models)</span>
   <br>[val &gt;&gt; 4 &amp; 0xf]</span></td></tr>
 <tr>
 <td class=r title='1 = 0x1'>1.2</td>
@@ -3633,6 +3643,13 @@ AFPoint is the first reported)</span></span><table class=cols><tr>
   <br>20 = Mid-right</td></tr></table>
 </td></tr>
 <tr>
+<td class=r title='506 = 0x1fa'>506</td>
+<td>LiveView</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(decoded only for the K-3 III)</span>
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
 <td class=r title='509 = 0x1fd'>509</td>
 <td>AFHold</td>
 <td class=c>int8u</td>
@@ -3773,6 +3790,12 @@ AFPoint is the first reported)</span></span><table class=cols><tr>
 <td class=c>int8u</td>
 <td><span class=s>0 = 1 EV Steps
   <br>1 = As EV Steps</span></td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>LiveView</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfo'>Pentax ShotInfo Tags</a></h2>
@@ -4286,6 +4309,25 @@ used.</p>
 <td class='r b'>19</td><td class=b>= Sketch Filter</td>
 <td class=r>&nbsp;</td><td>&nbsp;</td>
 </tr></table></td></tr></table></blockquote>
+
+<h2><a name='LevelInfoK3III'>Pentax LevelInfoK3III Tags</a></h2>
+<p>Tags decoded from the electronic level information for the K-3 III.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>RollAngle</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>PitchAngle</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
 
 <h2><a name='LevelInfo'>Pentax LevelInfo Tags</a></h2>
 <p>Tags decoded from the electronic level information for the K-5.  May not be
@@ -4953,7 +4995,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 5, 2024</i>
+<br><i>Last revised May 21, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

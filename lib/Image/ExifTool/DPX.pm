@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 # DPX tags
 %Image::ExifTool::DPX::Main = (
@@ -97,7 +97,7 @@ $VERSION = '1.06';
             3 => 'Logarithmic',
             4 => 'Unspecified video',
             5 => 'SMPTE 274M',
-            6 => 'ITU-R 704-4',
+            6 => 'ITU-R 709-4',
             7 => 'ITU-R 601-5 system B or G (625)',
             8 => 'ITU-R 601-5 system M (525)',
             9 => 'Composite video (NTSC)',
@@ -124,7 +124,7 @@ $VERSION = '1.06';
             1 => 'Printing density',
             4 => 'Unspecified video',
             5 => 'SMPTE 274M',
-            6 => 'ITU-R 704-4',
+            6 => 'ITU-R 709-4',
             7 => 'ITU-R 601-5 system B or G (625)',
             8 => 'ITU-R 601-5 system M (525)',
             9 => 'Composite video (NTSC)',

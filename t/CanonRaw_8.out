@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.85
 [File, System, Other] FileName - File Name: CanonRaw.cr3
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 53 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:26 22:05:16-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2024:01:26 22:19:33-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2023:02:21 15:57:49-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2024:04:15 15:09:50-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2024:04:15 15:09:50-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: CR3
 [File, File, Other] FileTypeExtension - File Type Extension: cr3
@@ -252,6 +252,8 @@
 [MakerNotes, Canon, Image] 11 - Digital Gain: 0
 [MakerNotes, Canon, Image] 12 - WB Shift AB: 0
 [MakerNotes, Canon, Image] 13 - WB Shift GM: 0
+[MakerNotes, Canon, Image] 14 - Unsharp Mask Fineness: 2
+[MakerNotes, Canon, Image] 15 - Unsharp Mask Threshold: 4
 [MakerNotes, Canon, Camera] 1 - Measured RGGB: 1183 1024 1024 461
 [MakerNotes, Canon, Camera] 180 - Color Space: sRGB
 [MakerNotes, Canon, Camera] 208 - VRD Offset: 0
@@ -394,6 +396,8 @@
 [MakerNotes, Track4, Image] 11 - Digital Gain: 0
 [MakerNotes, Track4, Image] 12 - WB Shift AB: 0
 [MakerNotes, Track4, Image] 13 - WB Shift GM: 0
+[MakerNotes, Track4, Image] 14 - Unsharp Mask Fineness: 2
+[MakerNotes, Track4, Image] 15 - Unsharp Mask Threshold: 4
 [MakerNotes, Track4, Camera] 5 - Peripheral Lighting Setting: On
 [MakerNotes, Track4, Camera] 6 - Chromatic Aberration Setting: On
 [MakerNotes, Track4, Camera] 7 - Distortion Correction Setting: Off

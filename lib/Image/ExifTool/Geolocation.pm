@@ -55,7 +55,7 @@
 #       1. Time zone name, terminated by newline
 #   "\0\0\0\0\x05" (feature codes added in v1.03)
 #   Feature codes:
-#       1. Feature code, terminated by newline
+#       1. Feature code, optional space-followed-by-feature-name, then newline
 #   "\0\0\0\0\0"
 #
 # Feature Codes v1.02: (see http://www.geonames.org/export/codes.html#P for descriptions)
@@ -70,7 +70,7 @@ package Image::ExifTool::Geolocation;
 use strict;
 use vars qw($VERSION $geoDir $altDir $dbInfo);
 
-$VERSION = '1.07';  # (this is the module version number, not the database version)
+$VERSION = '1.08';  # (this is the module version number, not the database version)
 
 my $debug; # set to output processing time for testing
 
@@ -82,7 +82,7 @@ sub Geolocate($;$);
 
 my (@cityList, @countryList, @regionList, @subregionList, @timezoneList);
 my (%countryNum, %regionNum, %subregionNum, %timezoneNum); # reverse lookups
-my (@sortOrder, @altNames, %langLookup, $nCity, %featureCodes);
+my (@sortOrder, @altNames, %langLookup, $nCity, %featureCodes, %featureTypes);
 my ($lastArgs, %lastFound, @lastByPop, @lastByLat); # cached city matches
 my $dbVer = '1.03';
 my $sortedBy = 'Latitude';
@@ -200,7 +200,7 @@ sub ReadDatabase($)
             $line = <DATFILE>;
             last if length($line) == 6 and $line =~ /\0\0\0\0/;
             chomp $line;
-            $line =~ s/ .*//;  # (hook to be able to add feature descriptions later)
+            $featureTypes{$line} = $1 if $line =~ s/ (.*)//;
             push @featureCodes, $line;
         }
     }
@@ -288,7 +288,7 @@ sub AddEntry(@)
     my ($city, $region, $subregion, $cc, $country, $timezone, $fc, $pop, $lat, $lon, $altNames) = @_;
     @_ < 10 and warn("Too few arguments in $city definition (check for updated format)\n"), return 0;
     length($cc) != 2 and warn("Country code '${cc}' is not 2 characters\n"), return 0;
-    $fc =~ s/ .*//; # (allow for descriptions to be added after a space -- future feature?)
+    $featureTypes{$fc} = $1 if $fc =~ s/ (.*)//;
     my $fn = $featureCodes{lc $fc};
     unless (defined $fn) {
         if ($dbVer eq '1.02' or @featureCodes > 0x3f or not length $fc) {
@@ -372,7 +372,7 @@ sub AddEntry(@)
 # Inputs: 0) entry number or index into sorted database,
 #         1) optional language code, 2) flag to use index into sorted database
 # Returns: 0-10) city,region,subregion,country_code,country,timezone,
-#                feature_code,pop,lat,lon,altNames
+#                feature_code,pop,lat,lon,feature_type
 sub GetEntry($;$$)
 {
     my ($entryNum, $lang, $sort) = @_;
@@ -395,7 +395,8 @@ sub GetEntry($;$$)
     my $fc = $featureCodes[$fn & 0x3f] || 'Other';
     my $cc = substr($ctry, 0, 2);
     my $country = substr($ctry, 2);
-    if ($lang) {
+    my $ft = $featureTypes{$fc};
+    if ($lang and $lang ne 'en') {
         my $xlat = $langLookup{$lang};
         # load language lookups if  not done already
         if (not defined $xlat) {
@@ -429,9 +430,10 @@ sub GetEntry($;$$)
             $sub = $$xlat{"$cc$rgn,$sub,"} || $$xlat{$sub} || $sub;
             $rgn = $$xlat{"$cc$rgn,"} || $$xlat{$rgn} || $rgn;
             $country = $$xlat{"$cc,"} || $$xlat{$country} || $country;
+            $ft = $$xlat{$fc} if $$xlat{$fc};
         }
     }
-    return($city,$rgn,$sub,$cc,$country,$timezoneList[$tn],$fc,$pop,$lt,$ln);
+    return($city,$rgn,$sub,$cc,$country,$timezoneList[$tn],$fc,$pop,$lt,$ln,$ft);
 }
 
 #------------------------------------------------------------------------------
@@ -862,6 +864,8 @@ item Return Values:
 8) GPS latitude
 
 9) GPS longitude
+
+10) Feature type, or undef
 
 =back
 

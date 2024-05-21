@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.74';
+$VERSION = '4.75';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -2590,6 +2590,13 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     },
     # 47 - related to aspect ratio: 100=4:3,70=1:1/16:9,90=3:2,60=4:5 (PH G12)
     #      (roughly image area in percent - 4:3=100%,1:1/16:9=75%,3:2=89%,4:5=60%)
+    51 => { #forum16036 (EOS R models)
+        Name => 'Clarity',
+        PrintConv => {
+            OTHER => sub { shift },
+            0x7fff => 'n/a',
+        },
+    },
 );
 
 # focal length information (MakerNotes tag 0x02)
@@ -7031,7 +7038,7 @@ my %ciMaxFocal = (
         },
     },
     2 => { #12
-        Name => 'Sharpness',
+        Name => 'Sharpness', # (unsharp mask strength for the EOS R5)
         Notes => 'all models except the 20D and 350D',
         Condition => '$$self{Model} !~ /\b(20D|350D|REBEL XT|Kiss Digital N)\b/',
         Priority => 0,  # (maybe not as reliable as other sharpness values)
@@ -7077,6 +7084,8 @@ my %ciMaxFocal = (
         Name => 'WBShiftGM',
         Notes => 'positive is a shift toward green',
     },
+    14 => 'UnsharpMaskFineness', #forum16036
+    15 => 'UnsharpMaskThreshold', #forum16036
 );
 
 # Color balance information (MakerNotes tag 0xa9) (ref PH)

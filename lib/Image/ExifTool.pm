@@ -27,9 +27,9 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %noWriteFile %magicNumber @langs $defaultLang %langName %charsetName
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
-            %static_vars);
+            %static_vars $advFmtSelf);
 
-$VERSION = '12.84';
+$VERSION = '12.85';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -198,7 +198,7 @@ $defaultLang = 'en';    # default language
                 RAR 7Z BZ2 CZI TAR EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font
                 JUMBF RSRC M2TS MacOS PHP PCX DCX DWF DWG DXF WTV Torrent VCard
                 LRI R3D AA PDB PFM2 MRC LIF JXL MOI ISO ALIAS JSON MP3 DICOM PCD
-                ICO TXT AAC);
+                NKA ICO TXT AAC);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -210,7 +210,7 @@ my %writeTypes; # lookup for writable file types (hash filled if required)
 # (See here for 3FR reason: https://exiftool.org/forum/index.php?msg=17570)
 %noWriteFile = (
     TIFF => [ qw(3FR DCR K25 KDC SRF) ],
-    XMP  => [ qw(SVG INX) ],
+    XMP  => [ qw(SVG INX NXD) ],
     JP2  => [ qw(J2C JPC) ],
     MOV  => [ qw(INSV) ],
 );
@@ -426,10 +426,12 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
   # NDPI => ['TIFF', 'Hamamatsu NanoZoomer Digital Pathology Image'],
     NEF  => ['TIFF', 'Nikon (RAW) Electronic Format'],
     NEWER => 'COS',
+    NKA  => ['NKA',  'Nikon NX Studio Settings'],
     NKSC => ['XMP',  'Nikon Sidecar'],
     NMBTEMPLATE => ['ZIP','Apple Numbers Template'],
     NRW  => ['TIFF', 'Nikon RAW (2)'],
     NUMBERS => ['ZIP','Apple Numbers spreadsheet'],
+    NXD  => ['XMP',  'Nikon NX-D Settings'],
     O    => ['EXE',  'Relocatable Object'],
     ODB  => ['ZIP',  'Open Document Database'],
     ODC  => ['ZIP',  'Open Document Chart'],
@@ -869,6 +871,7 @@ my %moduleName = (
     MKV  => 'Matroska',
     MP3  => 'ID3',
     MRW  => 'MinoltaRaw',
+    NKA  => 'Nikon',
     OGG  => 'Ogg',
     ORF  => 'Olympus',
     PDB  => 'Palm',
@@ -972,6 +975,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     MRC  => '.{64}[\x01\x02\x03]\0\0\0[\x01\x02\x03]\0\0\0[\x01\x02\x03]\0\0\0.{132}MAP[\0 ](\x44\x44|\x44\x41|\x11\x11)\0\0',
     MRW  => '\0MR[MI]',
     MXF  => '\x06\x0e\x2b\x34\x02\x05\x01\x01\x0d\x01\x02', # (not tested if extension recognized)
+    NKA  => 'NIKONADJ',
     OGG  => '(OggS|ID3)',
     ORF  => '(II|MM)',
   # PCD  =>  signature is at byte 2048
@@ -1269,6 +1273,7 @@ my %systemTagsNotes = (
         },
         Writable => 1,
         WritePseudo => 1,
+        Priority => 2,
         DelCheck => q{"Can't delete"},
         Protected => 1,
         RawConv => '$self->ConvertFileName($val)',
@@ -1281,6 +1286,7 @@ my %systemTagsNotes = (
         WritePseudo => 1,
         DelCheck => q{"Can't delete"},
         Protected => 1,
+        Priority => 2,
         Notes => q{
             may be written with a full path name to set FileName and Directory in one
             operation.  This is such a powerful feature that a TestName tag is provided
@@ -1293,6 +1299,7 @@ my %systemTagsNotes = (
     },
     BaseName => {
         Groups => { 1 => 'System', 2 => 'Other' },
+        Priority => 2,
         Notes => q{
             file name without extension. Not generated unless specifically requested or
             the API L<RequestAll|../ExifTool.html#RequestAll> option is set
@@ -1362,6 +1369,7 @@ my %systemTagsNotes = (
     },
     FileType => {
         Groups => { 2 => 'Other' },
+        Priority => 2,
         Notes => q{
             a short description of the file type.  For many file types this is the just
             the uppercase file extension
@@ -2050,7 +2058,8 @@ my %systemTagsNotes = (
     GeolocationCountry  => { %geoInfo, Notes => 'geolocation country name', ValueConv => '$self->Decode($val,"UTF8")' },
     GeolocationCountryCode=>{%geoInfo, Notes => 'geolocation country code' },
     GeolocationTimeZone => { %geoInfo, Notes => 'geolocation time zone ID' },
-    GeolocationFeatureCode=>{%geoInfo, Notes => 'feature code, see L<http://www.geonames.org/export/codes.html#P>' },
+    GeolocationFeatureCode=>{%geoInfo, Notes => 'geolocation feature code, see L<http://www.geonames.org/export/codes.html#P>' },
+    GeolocationFeatureType=>{%geoInfo, Notes => 'geolocation feature type' },
     GeolocationPopulation=>{ %geoInfo, Notes => 'city population rounded to 2 significant digits' },
     GeolocationDistance => { %geoInfo, Notes => 'distance in km from current GPS to city', PrintConv => '"$val km"' },
     GeolocationPosition => { %geoInfo, Notes => 'approximate GPS coordinates of city',
@@ -4387,6 +4396,7 @@ sub DoneExtract($)
                     $self->FoundTag(GeolocationCountry => $geo[4]) if $geo[4];
                     $self->FoundTag(GeolocationTimeZone => $geo[5]) if $geo[5];
                     $self->FoundTag(GeolocationFeatureCode => $geo[6]);
+                    $self->FoundTag(GeolocationFeatureType => $geo[10]) if $geo[10];
                     $self->FoundTag(GeolocationPopulation => $geo[7]);
                     $self->FoundTag(GeolocationPosition => "$geo[8] $geo[9]");
                     if ($dist) {

@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.46';
+$VERSION = '3.47';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -2741,8 +2741,8 @@ my %binaryDataAttrs = (
         SubDirectory => { TagTable => 'Image::ExifTool::Pentax::AEInfo2' },
     },{
         Name => 'AEInfo3',
-        # size: K-30=48
-        Condition => '$count == 48',
+        # size: K-30=48, K-1mkII,K-70,KP=64
+        Condition => '$count == 48 or $count == 64',
         SubDirectory => { TagTable => 'Image::ExifTool::Pentax::AEInfo3' },
     },{
         Name => 'AEInfoUnknown',
@@ -2972,10 +2972,14 @@ my %binaryDataAttrs = (
             ByteOrder => 'BigEndian',
         },
     }],
-    0x022b => { #PH (K-5)
+    0x022b => [{
+        Name => 'LevelInfoK3III',
+        Condition => '$$self{Model} eq "PENTAX K-3 Mark III"',
+        SubDirectory => { TagTable => 'Image::ExifTool::Pentax::LevelInfoK3III' },
+    },{ #PH (K-5)
         Name => 'LevelInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Pentax::LevelInfo' },
-    },
+    }],
     # 0x022c - undef[46] (K-5)
     0x022d => { #28
         Name => 'WBLevels',
@@ -4034,7 +4038,10 @@ my %binaryDataAttrs = (
 %Image::ExifTool::Pentax::AEInfo3 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => 'Auto-exposure information for the K-3, K-30, K-50 and K-500.',
+    NOTES => q{
+        Auto-exposure information for the K-1mkII, K-3, K-30, K-50, K-70, K-500 and
+        KP.
+    },
     # instead of /8, should these be PentaxEv(), as in CameraSettings? - PH
     16 => {
         Name => 'AEExposureTime',
@@ -4060,6 +4067,7 @@ my %binaryDataAttrs = (
         PrintConv => 'int($val + 0.5)',
         PrintConvInv => '$val',
     },
+    # 23 - bit 0 is related to LiveView, but it isn't reliable
     28 => {
         Name => 'AEMaxAperture',
         Notes => 'val = 2**((raw-68)/16)',
@@ -4676,8 +4684,9 @@ my %binaryDataAttrs = (
 # battery grips available for:
 # BG1 (*istD), BG2 (K10D/K20D), BG3 (K200D), BG4 (K-7,K-5)
 # no grip available: K-x
-    0.1 => { #19
+    0.1 => [{ #19
         Name => 'PowerSource',
+        Condition => '$$self{Model} !~ /K-3 Mark III/',
         Mask => 0x0f,
         # have seen the upper bit set (value of 0x82) for the
         # *istDS and K100D, but I'm not sure what this means - PH
@@ -4688,7 +4697,20 @@ my %binaryDataAttrs = (
             3 => 'Grip Battery',
             4 => 'External Power Supply', #PH
         },
-    },
+    },{ #PH
+        Name => 'PowerSource',
+        Mask => 0x0f,
+        Notes => 'K-3III',
+        # have seen the upper bit set (value of 0x82) for the
+        # *istDS and K100D, but I'm not sure what this means - PH
+        # I've also seen: 0x42 (K2000), 0xf2 (K-7,K-r,K-5), 0x12,0x22 (K-x) - PH
+        PrintConv => {
+            1 => 'Body Battery',
+            2 => 'Grip Battery',
+            4 => 'External Power Supply',
+        },
+    },{
+    }],
     1.1 => [
         {
             Name => 'BodyBatteryState',
@@ -4703,8 +4725,8 @@ my %binaryDataAttrs = (
             },
         },{
             Name => 'BodyBatteryState',
-            Condition => '$$self{Model} !~ /(K110D|K2000|K-m)\b/',
-            Notes => 'other models except the K110D, K2000 and K-m',
+            Condition => '$$self{Model} !~ /(K110D|K2000|K-m|K-3 Mark III)\b/',
+            Notes => 'most other models except the K110D, K2000, K-m and K-3III',
             Mask => 0xf0,
             PrintConv => {
                  1 => 'Empty or Missing',
@@ -4715,7 +4737,8 @@ my %binaryDataAttrs = (
             },
         },{
             Name => 'BodyBatteryState',
-            Notes => 'decoding unknown for other models',
+            Notes => 'decoding unknown for some models',
+            Unknown => 1, # (doesn't appear to be valid for the K-3 III)
             Mask => 0xf0,
         },
     ],
@@ -4758,7 +4781,7 @@ my %binaryDataAttrs = (
         },
         {
             Name => 'BodyBatteryVoltage1', # (static?)
-            Condition => '$$self{Model} !~ /(K100D|K110D|K2000|K-m|Q\d*)\b/',
+            Condition => '$$self{Model} =~ /(645D|645Z|K-(1|01|3|5|7|30|50|70|500|r|x|S[12])|KP)\b/ and $$self{Model} !~ /III/',
             Format => 'int16u',
             ValueConv => '$val / 100',
             ValueConvInv => '$val * 100',
@@ -4797,7 +4820,7 @@ my %binaryDataAttrs = (
         },
         {
             Name => 'BodyBatteryVoltage2', # (less than BodyBatteryVoltage1 -- under load?)
-            Condition => '$$self{Model} !~ /(K100D|K110D|K2000|K-m|Q\d*)\b/',
+            Condition => '$$self{Model} =~ /(645D|645Z|K-(1|01|3|5|7|30|50|70|500|r|x|S[12])|KP)\b/ and $$self{Model} !~ /III/',
             Format => 'int16u',
             ValueConv => '$val / 100',
             ValueConvInv => '$val * 100',
@@ -4940,6 +4963,12 @@ my %binaryDataAttrs = (
             20 => 'Mid-right',
         },
     },
+    0x1fa => {
+        Name => 'LiveView',
+        Notes => 'decoded only for the K-3 III',
+        Condition => '$$self{Model} eq "PENTAX K-3 Mark III"', # and other models?
+        PrintConv => { 0 => 'Off', 1 => 'On' },
+    },
     0x1fd => {
         Name => 'AFHold',
         Notes => 'decoded only for the K-3 II',
@@ -5005,6 +5034,10 @@ my %binaryDataAttrs = (
             0 => '1 EV Steps',
             1 => 'As EV Steps',
         },
+    },
+    3 => { #PH
+        Name => 'LiveView',
+        PrintConv => { 0 => 'Off', 1 => 'On' },
     },
 );
 
@@ -5483,6 +5516,24 @@ my %binaryDataAttrs = (
     },
 );
 
+%Image::ExifTool::Pentax::LevelInfoK3III = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    FORMAT => 'int8s',
+    NOTES => 'Tags decoded from the electronic level information for the K-3 III.',
+    3 => {
+        Name => 'RollAngle',
+        Format => 'int16s',
+        ValueConv => '-$val / 2',
+        ValueConvInv => '-$val * 2',
+    },
+    5 => {
+        Name => 'PitchAngle',
+        Format => 'int16s',
+        ValueConv => '-$val / 2',
+        ValueConvInv => '-$val * 2',
+    },
+);
 # white balance RGGB levels (ref 28)
 %Image::ExifTool::Pentax::WBLevels = (
     %binaryDataAttrs,

@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.33';
+$VERSION = '4.34';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -13686,6 +13686,24 @@ sub ProcessNikonCaptureOffsets($$$)
         ) and $success = 1;
     }
     return $success;
+}
+
+#------------------------------------------------------------------------------
+# Read Nikon NKA file
+# Inputs: 0) ExifTool ref, 1) dirInfo ref
+# Returns: 1 on success
+sub ProcessNKA($$)
+{
+    my ($et, $dirInfo) = @_;
+    my $raf = $$et{RAF};
+    my $buff;
+    $raf->Read($buff, 0x35) == 0x35 or return 0;
+    my $len = unpack('x49V', $buff);
+    $raf->Read($buff, $len) == $len or return 0;
+    $et->SetFileType('NKA', 'application/x-nikon-nxstudio');
+    my %dirInfo = ( DataPt => \$buff, DataPos => 0x35 );
+    my $tagTablePtr = GetTagTable('Image::ExifTool::XMP::XML');
+    return $et->ProcessDirectory(\%dirInfo, $tagTablePtr);
 }
 
 #------------------------------------------------------------------------------

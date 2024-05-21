@@ -3794,6 +3794,8 @@ sub ParseXMPElement($$$;$$$$)
                         if ($stdNS) {
                             $val = $try;
                             $et->WarnOnce("Fixed incorrect URI for xmlns:$ns", 1);
+                        } elsif ($val =~ m(^http://ns.nikon.com/BASIC_PARAM)) {
+                            $et->OverrideFileType('NXD','application/x-nikon-nxd');
                         } else {
                             # look for same namespace with different version number
                             $try = quotemeta $val; # (note: escapes slashes too)

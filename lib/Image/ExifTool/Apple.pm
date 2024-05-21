@@ -128,7 +128,8 @@ sub ConvertPLIST($$);
             1 => 'ProRAW',
             2 => 'Portrait',
             10 => 'Photo',
-            12 => 'Photo (12)', #PH (NC)
+            11 => 'Manual Focus', #forum16044
+            12 => 'Scene', #forum16044
         },
     },
     0x0015 => { # (ImageGroupIdentifier, ref 2)

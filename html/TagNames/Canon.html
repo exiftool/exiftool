@@ -1384,6 +1384,11 @@ others use a range of 0 to 7 where 0 is no sharpening)</span></span></td></tr>
 <td><span class=s>0 = n/a
   <br>1 = sRAW1 (mRAW)
   <br>2 = sRAW2 (sRAW)</span></td></tr>
+<tr class=b>
+<td class=r title='51 = 0x33'>51</td>
+<td>Clarity</td>
+<td class=c>int16s</td>
+<td><span class=s>32767 = n/a</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='LensType'>Canon LensType Values</a></h2>
@@ -6837,6 +6842,16 @@ valid for all camera models)</span></span></td></tr>
 <td>WBShiftGM</td>
 <td class=c>int16s</td>
 <td><span class=s><span class=n>(positive is a shift toward green)</span></span></td></tr>
+<tr class=b>
+<td class=r title='14 = 0xe'>14</td>
+<td>UnsharpMaskFineness</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='15 = 0xf'>15</td>
+<td>UnsharpMaskThreshold</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorBalance'>Canon ColorBalance Tags</a></h2>
@@ -11760,7 +11775,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 16, 2024</i>
+<br><i>Last revised May 21, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

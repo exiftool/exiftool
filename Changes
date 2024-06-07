@@ -7,6 +7,17 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+June 7, 2024 - Version 12.86
+
+  - Added a new value for a couple of Olympus tags (thanks Herb)
+  - Improved handling of ID3 user-defined tags
+  - Decode all JPEG segments from RICO box in Ricoh MOV videos
+  - Decode a few new values for some tags written by Canon EOS R cameras
+  - Patched some Olympus WB_RBLevels tags to allow 4 values to be written as per
+    some newer models
+  - Fixed issue when writing IPTC date tags with a date/time value containing
+subseconds with 4 or more digits
+
 May 21, 2024 - Version 12.85
 
   - Added GeolocationFeatureType tag

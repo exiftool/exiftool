@@ -18,7 +18,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.61';
+$VERSION = '1.62';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -68,6 +68,12 @@ my %dateTimeConv = (
     PrintConv => '$self->ConvertDateTime($val)',
 );
 
+# patch for names of user-defined tags which don't automatically generate very well
+my %userTagName = (
+    ALBUMARTISTSORT => 'AlbumArtistSort',
+    ASIN => 'ASIN',
+);
+
 # This table is just for documentation purposes
 %Image::ExifTool::ID3::Main = (
     VARS => { NO_ID => 1 },
@@ -100,14 +106,6 @@ my %dateTimeConv = (
     ID3v24 => {
         Name => 'ID3v2_4',
         SubDirectory => { TagTable => 'Image::ExifTool::ID3::v2_4' },
-    },
-);
-
-%Image::ExifTool::ID3::UserDefined = (
-    GROUPS => { 1 => 'UserDefined', 2 => 'Other' },
-    NOTES => q{
-        ID3 user-defined text and URL tags will be dynamically added to this table
-        by name when found.
     },
 );
 
@@ -501,7 +499,7 @@ my %genre = (
     TT2 => 'Title',
     TT3 => 'Subtitle',
     TXT => 'Lyricist',
-    TXX => { SubDirectory => { TagTable => 'Image::ExifTool::ID3::UserDefined' } },
+    TXX => 'UserDefinedText',
     TYE => { Name => 'Year', Groups => { 2 => 'Time' } },
     ULT => 'Lyrics',
     WAF => 'FileURL',
@@ -510,7 +508,7 @@ my %genre = (
     WCM => 'CommercialURL',
     WCP => { Name => 'CopyrightURL', Groups => { 2 => 'Author' } },
     WPB => 'PublisherURL',
-    WXX => { SubDirectory => { TagTable => 'Image::ExifTool::ID3::UserDefined' } },
+    WXX => 'UserDefinedURL',
     # the following written by iTunes 10.5 (ref PH)
     RVA => 'RelativeVolumeAdjustment',
     TST => 'TitleSortOrder',
@@ -613,7 +611,7 @@ my %id3v2_common = (
     TRSO => 'InternetRadioStationOwner',
     TSRC => 'ISRC', # (international standard recording code)
     TSSE => 'EncoderSettings',
-    TXXX => { SubDirectory => { TagTable => 'Image::ExifTool::ID3::UserDefined' } },
+    TXXX => 'UserDefinedText',
   # UFID => 'UniqueFileID', (not extracted because it is long and nasty and not very useful)
     USER => 'TermsOfUse',
     USLT => 'Lyrics',
@@ -625,7 +623,7 @@ my %id3v2_common = (
     WORS => 'InternetRadioStationURL',
     WPAY => 'PaymentURL',
     WPUB => 'PublisherURL',
-    WXXX => { SubDirectory => { TagTable => 'Image::ExifTool::ID3::UserDefined' } },
+    WXXX => 'UserDefinedURL',
 #
 # non-standard frames
 #
@@ -877,6 +875,19 @@ Image::ExifTool::AddCompositeTags('Image::ExifTool::ID3');
         $tagInfo{Groups} = { %$groups } if $groups;
         $Image::ExifTool::ID3::v2_4{$tag} = \%tagInfo;
     }
+}
+
+#------------------------------------------------------------------------------
+# Make tag name for user-defined tag
+# Inputs: 0) User defined tag description
+# Returns: Tag name
+sub MakeTagName($)
+{
+    my $name = shift;
+    return $userTagName{$name} if $userTagName{$name};
+    $name = ucfirst(lc $name) unless $name =~ /[a-z]/;  # convert all uppercase to mixed case
+    $name =~ s/([a-z])[_ ]([a-z])/$1\U$2/g;
+    return Image::ExifTool::MakeTagName($name);
 }
 
 #------------------------------------------------------------------------------
@@ -1255,39 +1266,34 @@ sub ProcessID3v2($$$)
             # two encoded strings separated by a null
             my @vals = DecodeString($et, $val);
             foreach (0..1) { $vals[$_] = '' unless defined $vals[$_]; }
-            $vals[0] .= ' ' if $Image::ExifTool::specialTags{$vals[0]};
-            my $tbl = GetTagTable('Image::ExifTool::ID3::UserDefined');
-            unless (defined $$tbl{$vals[0]}) {
-                my $name = Image::ExifTool::MakeTagName($vals[0]);
-                AddTagToTable($tbl, $vals[0], $name, 1);
+            if (length $vals[0]) {
+                $id .= "_$vals[0]";
+                $tagInfo = $$tagTablePtr{$id} || AddTagToTable($tagTablePtr, $id, MakeTagName($vals[0]));
             }
-            $et->HandleTag($tbl, $vals[0], $vals[1]);
-            next;
+            $val = $vals[1];
         } elsif ($id =~ /^T/ or $id =~ /^(IPL|IPLS|GP1|MVI|MVN)$/) {
             $val = DecodeString($et, $val);
         } elsif ($id =~ /^(WXX|WXXX)$/) {
             # one encoded string and one Latin string separated by a null
             my $enc = unpack('C', $val);
-            my $url;
+            my ($tag, $url);
             if ($enc == 1 or $enc == 2) {
-                ($val, $url) = ($val =~ /^(.(?:..)*?)\0\0(.*)/s);
+                ($tag, $url) = ($tag =~ /^(.(?:..)*?)\0\0(.*)/s);
             } else {
-                ($val, $url) = ($val =~ /^(..*?)\0(.*)/s);
+                ($tag, $url) = ($tag =~ /^(..*?)\0(.*)/s);
             }
-            unless (defined $val and defined $url) {
+            unless (defined $tag and defined $url) {
                 $et->Warn("Invalid $id frame value");
                 next;
             }
-            $val = DecodeString($et, $val);
-            $url =~ s/\0.*//s;
-            $val .= '_URL';
-            my $tbl = GetTagTable('Image::ExifTool::ID3::UserDefined');
-            unless (defined $$tbl{$val}) {
-                my $name = Image::ExifTool::MakeTagName($val);
-                AddTagToTable($tbl, $val, $name, 1);
+            $tag = DecodeString($et, $tag);
+            if (length $tag) {
+                $id .= "_$tag";
+                $tag .= '_URL' unless $tag =~ /url/i;
+                $tagInfo = $$tagTablePtr{$id} || AddTagToTable($tagTablePtr, $id, MakeTagName($tag));
             }
-            $et->HandleTag($tbl, $val, $url);
-            next;
+            $url =~ s/\0.*//s;
+            $val = $url;
         } elsif ($id =~ /^W/) {
             $val =~ s/\0.*//s;  # truncate at null
         } elsif ($id =~ /^(COM|COMM|ULT|USLT)$/) {

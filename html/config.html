@@ -301,6 +301,11 @@
     NewXMPxxxStructX =&gt; { Name =&gt; 'SomeOtherName', Flat =&gt; 1 },
 );
 
+<span class=com># the namespace may be registered so ExifTool generates the expected family 1
+# group names when reading if the UserDefined namespace uses a different prefix</span>
+require Image::ExifTool::XMP;
+Image::ExifTool::XMP::RegisterNamespace(\%Image::ExifTool::UserDefined::xxx);
+
 <a name='MIE'><span class=com># Adding a new MIE group requires a few extra definitions</span></a>
 use Image::ExifTool::MIE;
 %Image::ExifTool::UserDefined::MIETest = (

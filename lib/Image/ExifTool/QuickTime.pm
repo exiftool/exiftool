@@ -503,6 +503,11 @@ my %eeBox2 = (
 # image types in AVIF and HEIC files
 my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
 
+my %userDefined = (
+    ALBUMARTISTSORT => 'AlbumArtistSort',
+    ASIN => 'ASIN',
+);
+
 # QuickTime atoms
 %Image::ExifTool::QuickTime::Main = (
     PROCESS_PROC => \&ProcessMOV,
@@ -2336,10 +2341,8 @@ my %isImageData = ( av01 => 1, avc1 => 1, hvc1 => 1, lhv1 => 1, hvt1 => 1 );
         Name => 'RicohInfo',
         Condition => '$$valPt =~ /^\xff\xe1..Exif\0\0/s',
         SubDirectory => {
-            TagTable => 'Image::ExifTool::Exif::Main',
-            ProcessProc => \&Image::ExifTool::ProcessTIFF,
-            Start => 10,
-            Base => '$start',
+            TagTable => 'Image::ExifTool::JPEG::Main',
+            ProcessProc => \&Image::ExifTool::ProcessJPEG,
         }
     },
     RTHU => { #PH (GR)

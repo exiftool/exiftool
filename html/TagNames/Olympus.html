@@ -1509,10 +1509,11 @@ the Make and Model are used to identify the extender)</span>
 <td><span class=s>[Value 0]</span><table class=cols><tr>
   <td>0 = Off
   <br>1 = Motorsports
-  <br>2 = Airplanes</td><td>&nbsp;&nbsp;</td>
-  <td>3 = Trains
-  <br>4 = Birds
-  <br>5 = Dogs &amp; Cats</td></tr></table>
+  <br>2 = Airplanes
+  <br>3 = Trains</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Birds
+  <br>5 = Dogs &amp; Cats
+  <br>6 = Human</td></tr></table>
 <span class=s>[Value 1]
   <br>0 = Object Not Found
   <br>1 = Object Found</span></td></tr>
@@ -2426,87 +2427,88 @@ the Make and Model are used to identify the extender)</span>
 <tr class=b>
 <td title='0x0100 = 256'>0x0100</td>
 <td>WB_RBLevels</td>
-<td class=c>int16u[2]</td>
-<td>&nbsp;</td></tr>
+<td class=c>int16u[n]</td>
+<td><span class=s><span class=n>(These tags store 2 values, red and blue levels, for some models, but 4
+values, presumably RBGG levels, for other models)</span></span></td></tr>
 <tr>
 <td title='0x0102 = 258'>0x0102</td>
 <td>WB_RBLevels3000K</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0103 = 259'>0x0103</td>
 <td>WB_RBLevels3300K</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0104 = 260'>0x0104</td>
 <td>WB_RBLevels3600K</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0105 = 261'>0x0105</td>
 <td>WB_RBLevels3900K</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0106 = 262'>0x0106</td>
 <td>WB_RBLevels4000K</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0107 = 263'>0x0107</td>
 <td>WB_RBLevels4300K</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0108 = 264'>0x0108</td>
 <td>WB_RBLevels4500K</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0109 = 265'>0x0109</td>
 <td>WB_RBLevels4800K</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x010a = 266'>0x010a</td>
 <td>WB_RBLevels5300K</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x010b = 267'>0x010b</td>
 <td>WB_RBLevels6000K</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x010c = 268'>0x010c</td>
 <td>WB_RBLevels6600K</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x010d = 269'>0x010d</td>
 <td>WB_RBLevels7500K</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x010e = 270'>0x010e</td>
 <td>WB_RBLevelsCWB1</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x010f = 271'>0x010f</td>
 <td>WB_RBLevelsCWB2</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0110 = 272'>0x0110</td>
 <td>WB_RBLevelsCWB3</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0111 = 273'>0x0111</td>
 <td>WB_RBLevelsCWB4</td>
-<td class=c>int16u[2]</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0113 = 275'>0x0113</td>
@@ -2896,7 +2898,8 @@ give AF point, upper bits give AF target selection mode)</span>
   <td>0x2 = Airplanes
   <br>0x3 = Trains</td><td>&nbsp;&nbsp;</td>
   <td>0x4 = Birds
-  <br>0x5 = Dogs &amp; Cats</td></tr></table>
+  <br>0x5 = Dogs &amp; Cats</td><td>&nbsp;&nbsp;</td>
+  <td>0x6 = Human</td></tr></table>
 <span class=s>[Value 1]</span><table class=cols><tr>
   <td>0x0 = Face Priority</td><td>&nbsp;&nbsp;</td>
   <td>0x1 = Target Priority</td></tr></table>
@@ -3801,7 +3804,7 @@ such as the OM E-M5.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 27, 2024</i>
+<br><i>Last revised Jun 7, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

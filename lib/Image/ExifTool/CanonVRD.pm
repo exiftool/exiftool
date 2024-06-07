@@ -1212,9 +1212,9 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
             4 => 'Emphasize Center',
         },
     },
+    0x2070b => { Name => 'DiffractionCorrectionOn', %noYes },
     # 0x20800 - fmt=1: 0
     # 0x20801 - fmt=1: 0
-    0x2070b => { Name => 'DiffractionCorrectionOn', %noYes },
     0x20900 => 'ColorHue',
     0x20901 => 'SaturationAdj',
     0x20910 => 'RedHSL',
@@ -1282,6 +1282,9 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     # 0xf0521 - DLO data
     # 0xf0520 - DLO data
     # 0xf0530 - created when dust delete data applied (4 bytes, all zero)
+    # 0xf0561 - 1932 bytes, related to Partial Adjustment Tool Palette (ref forum15660)
+    # 0xf0562 - 1596 bytes, related to Partial Adjustment Tool Palette (ref forum15660)
+    # 0xf0566 - 1520 bytes, related to Partial Adjustment Tool Palette (ref forum15660)
     # 0xf0600 - fmt=253 (2308 bytes, JPG images)
     # 0xf0601 - fmt=253 (2308 bytes, JPG images)
     # 0x1ff52c - values: 129,130,132 (related to custom picture style somehow)

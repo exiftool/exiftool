@@ -232,9 +232,10 @@ locations, and is completely independent of the API Geolocation setting
 
 <blockquote>Writing the Geolocate tag with GPS coordinates generates city,
 state/province, country code and country tags.  By default, XMP tags are
-generated, but group name(s) may be specified to write tags to other locations
-(see table below).  For example, to write the XMP City, State, CountryCode and
-Country tags from specified GPS coordinates:
+generated (plus Keys:LocationName for videos), but group name(s) may be
+specified to write tags to other locations (see table below).  For example, to
+write the XMP City, State, CountryCode and Country tags from specified GPS
+coordinates:
 
 <pre>exiftool "-geolocate=45.6429,-72.9374" test.jpg</pre>
 
@@ -257,7 +258,7 @@ IPTC:City, etc for Paris France.
 
 The table below lists the tags that are written for each group name specified
 for the Geolocate tag.  Multiple group names may be used.  In some cases,
-different tags are written based on whether or not input GPS coordinates or a
+different tags are written based on whether input GPS coordinates or a
 city name were used.
 
 <blockquote><table width='90%' class='norm'>

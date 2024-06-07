@@ -11412,7 +11412,13 @@ to the one printed on the lens)</span></span></td></tr>
 <td class=r title='7 = 0x7'>7</td>
 <td>USMLensElectronicMF</td>
 <td class=c>int32s</td>
-<td><span class=s>0 = Enable After AF
+<td><span class=s><span class=n>(EOS R models)</span>
+  <br>0 = Disable After One-Shot
+  <br>1 = One-Shot -&gt; Enabled
+  <br>2 = One-Shot -&gt; Enabled (magnify)
+  <br>3 = Disable in AF Mode
+  <br><span class=n>(Other models)</span>
+  <br>0 = Enable After AF
   <br>1 = Disable After AF
   <br>2 = Disable in AF Mode</span></td></tr>
 <tr class=b>
@@ -11421,7 +11427,8 @@ to the one printed on the lens)</span></span></td></tr>
 <td class=c>int32s</td>
 <td><span class=s>0 = Enable
   <br>1 = Disable
-  <br>2 = IR AF Assist Beam Only</span></td></tr>
+  <br>2 = IR AF Assist Beam Only
+  <br>3 = LED AF Assist Beam Only</span></td></tr>
 <tr>
 <td class=r title='9 = 0x9'>9</td>
 <td>OneShotAFRelease</td>
@@ -11503,6 +11510,20 @@ to the one printed on the lens)</span></span></td></tr>
   <br>0 = Initial AF Point Selected
   <br>1 = Manual AF Point
   <br>2 = Auto</span></td></tr>
+<tr class=b>
+<td class=r title='20 = 0x14'>20</td>
+<td>SubjectToDetect</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = None
+  <br>1 = People
+  <br>2 = Animals
+  <br>3 = Vehicles</span></td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>EyeDetection</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='RawBurstInfo'>Canon RawBurstInfo Tags</a></h2>
@@ -11775,7 +11796,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 21, 2024</i>
+<br><i>Last revised Jun 7, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

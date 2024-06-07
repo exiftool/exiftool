@@ -1935,6 +1935,7 @@ my %indexInfo = (
             3 => 'Trains',
             4 => 'Birds',
             5 => 'Dogs & Cats',
+            6 => 'Human', #forum16072
         },{
             0 => 'Object Not Found',
             1 => 'Object Found',
@@ -2842,24 +2843,32 @@ my %indexInfo = (
         RawConv => '$val=~s/\0+$//; $val',  # (may be null terminated)
         Count => 4,
     },
-    0x100 => { Name => 'WB_RBLevels',       Writable => 'int16u', Count => 2 }, #6
+    0x100 => {  #6
+        Name => 'WB_RBLevels',
+        Writable => 'int16u',
+        Notes => q{
+            These tags store 2 values, red and blue levels, for some models, but 4
+            values, presumably RBGG levels, for other models
+        },
+        Count => -1,
+    }, #6
     # 0x101 - in-camera AutoWB unless it is all 0's or all 256's (ref IB)
-    0x102 => { Name => 'WB_RBLevels3000K',  Writable => 'int16u', Count => 2 }, #11
-    0x103 => { Name => 'WB_RBLevels3300K',  Writable => 'int16u', Count => 2 }, #11
-    0x104 => { Name => 'WB_RBLevels3600K',  Writable => 'int16u', Count => 2 }, #11
-    0x105 => { Name => 'WB_RBLevels3900K',  Writable => 'int16u', Count => 2 }, #11
-    0x106 => { Name => 'WB_RBLevels4000K',  Writable => 'int16u', Count => 2 }, #11
-    0x107 => { Name => 'WB_RBLevels4300K',  Writable => 'int16u', Count => 2 }, #11
-    0x108 => { Name => 'WB_RBLevels4500K',  Writable => 'int16u', Count => 2 }, #11
-    0x109 => { Name => 'WB_RBLevels4800K',  Writable => 'int16u', Count => 2 }, #11
-    0x10a => { Name => 'WB_RBLevels5300K',  Writable => 'int16u', Count => 2 }, #11
-    0x10b => { Name => 'WB_RBLevels6000K',  Writable => 'int16u', Count => 2 }, #11
-    0x10c => { Name => 'WB_RBLevels6600K',  Writable => 'int16u', Count => 2 }, #11
-    0x10d => { Name => 'WB_RBLevels7500K',  Writable => 'int16u', Count => 2 }, #11
-    0x10e => { Name => 'WB_RBLevelsCWB1',   Writable => 'int16u', Count => 2 }, #11
-    0x10f => { Name => 'WB_RBLevelsCWB2',   Writable => 'int16u', Count => 2 }, #11
-    0x110 => { Name => 'WB_RBLevelsCWB3',   Writable => 'int16u', Count => 2 }, #11
-    0x111 => { Name => 'WB_RBLevelsCWB4',   Writable => 'int16u', Count => 2 }, #11
+    0x102 => { Name => 'WB_RBLevels3000K',  Writable => 'int16u', Count => -1 }, #11
+    0x103 => { Name => 'WB_RBLevels3300K',  Writable => 'int16u', Count => -1 }, #11
+    0x104 => { Name => 'WB_RBLevels3600K',  Writable => 'int16u', Count => -1 }, #11
+    0x105 => { Name => 'WB_RBLevels3900K',  Writable => 'int16u', Count => -1 }, #11
+    0x106 => { Name => 'WB_RBLevels4000K',  Writable => 'int16u', Count => -1 }, #11
+    0x107 => { Name => 'WB_RBLevels4300K',  Writable => 'int16u', Count => -1 }, #11
+    0x108 => { Name => 'WB_RBLevels4500K',  Writable => 'int16u', Count => -1 }, #11
+    0x109 => { Name => 'WB_RBLevels4800K',  Writable => 'int16u', Count => -1 }, #11
+    0x10a => { Name => 'WB_RBLevels5300K',  Writable => 'int16u', Count => -1 }, #11
+    0x10b => { Name => 'WB_RBLevels6000K',  Writable => 'int16u', Count => -1 }, #11
+    0x10c => { Name => 'WB_RBLevels6600K',  Writable => 'int16u', Count => -1 }, #11
+    0x10d => { Name => 'WB_RBLevels7500K',  Writable => 'int16u', Count => -1 }, #11
+    0x10e => { Name => 'WB_RBLevelsCWB1',   Writable => 'int16u', Count => -1 }, #11
+    0x10f => { Name => 'WB_RBLevelsCWB2',   Writable => 'int16u', Count => -1 }, #11
+    0x110 => { Name => 'WB_RBLevelsCWB3',   Writable => 'int16u', Count => -1 }, #11
+    0x111 => { Name => 'WB_RBLevelsCWB4',   Writable => 'int16u', Count => -1 }, #11
     0x113 => { Name => 'WB_GLevel3000K',    Writable => 'int16u' }, #11
     0x114 => { Name => 'WB_GLevel3300K',    Writable => 'int16u' }, #11
     0x115 => { Name => 'WB_GLevel3600K',    Writable => 'int16u' }, #11
@@ -3246,6 +3255,7 @@ my %indexInfo = (
                     3 => 'Trains',
                     4 => 'Birds',
                     5 => 'Dogs & Cats',
+                    6 => 'Human', #forum16072
                 },{
                     0 => 'Face Priority',
                     1 => 'Target Priority',

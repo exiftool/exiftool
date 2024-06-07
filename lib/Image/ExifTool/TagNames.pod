@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27859 tags, with 17442 unique tag names.
+They contain a total of 27868 tags, with 17446 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -11539,6 +11539,8 @@ Information about creative filter settings.
      17    VFDisplayIllumination                int32s
      18    AFStatusViewfinder                   int32s
      19    InitialAFPointInServo                int32s
+     20    SubjectToDetect                      int32s
+     24    EyeDetection                         int32s
 
 =head3 Canon RawBurstInfo Tags
 
@@ -19839,23 +19841,23 @@ any information found here will be extracted, even if the tag is not listed.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0000   ImageProcessingVersion               undef[4]
-  0x0100   WB_RBLevels                          int16u[2]
-  0x0102   WB_RBLevels3000K                     int16u[2]
-  0x0103   WB_RBLevels3300K                     int16u[2]
-  0x0104   WB_RBLevels3600K                     int16u[2]
-  0x0105   WB_RBLevels3900K                     int16u[2]
-  0x0106   WB_RBLevels4000K                     int16u[2]
-  0x0107   WB_RBLevels4300K                     int16u[2]
-  0x0108   WB_RBLevels4500K                     int16u[2]
-  0x0109   WB_RBLevels4800K                     int16u[2]
-  0x010a   WB_RBLevels5300K                     int16u[2]
-  0x010b   WB_RBLevels6000K                     int16u[2]
-  0x010c   WB_RBLevels6600K                     int16u[2]
-  0x010d   WB_RBLevels7500K                     int16u[2]
-  0x010e   WB_RBLevelsCWB1                      int16u[2]
-  0x010f   WB_RBLevelsCWB2                      int16u[2]
-  0x0110   WB_RBLevelsCWB3                      int16u[2]
-  0x0111   WB_RBLevelsCWB4                      int16u[2]
+  0x0100   WB_RBLevels                          int16u[n]
+  0x0102   WB_RBLevels3000K                     int16u[n]
+  0x0103   WB_RBLevels3300K                     int16u[n]
+  0x0104   WB_RBLevels3600K                     int16u[n]
+  0x0105   WB_RBLevels3900K                     int16u[n]
+  0x0106   WB_RBLevels4000K                     int16u[n]
+  0x0107   WB_RBLevels4300K                     int16u[n]
+  0x0108   WB_RBLevels4500K                     int16u[n]
+  0x0109   WB_RBLevels4800K                     int16u[n]
+  0x010a   WB_RBLevels5300K                     int16u[n]
+  0x010b   WB_RBLevels6000K                     int16u[n]
+  0x010c   WB_RBLevels6600K                     int16u[n]
+  0x010d   WB_RBLevels7500K                     int16u[n]
+  0x010e   WB_RBLevelsCWB1                      int16u[n]
+  0x010f   WB_RBLevelsCWB2                      int16u[n]
+  0x0110   WB_RBLevelsCWB3                      int16u[n]
+  0x0111   WB_RBLevelsCWB4                      int16u[n]
   0x0113   WB_GLevel3000K                       int16u
   0x0114   WB_GLevel3300K                       int16u
   0x0115   WB_GLevel3600K                       int16u
@@ -23188,7 +23190,8 @@ The following tags are decoded in unsupported maker notes.  Use the Unknown
 
 The main DNG tags are found in the EXIF table.  The tables below define only
 information found within structures of these main DNG tag values.  See
-L<http://www.adobe.com/products/dng/> for the official DNG specification.
+L<https://helpx.adobe.com/camera-raw/digital-negative.html> for the official
+DNG specification.
 
 =head3 DNG AdobeData Tags
 
@@ -29146,7 +29149,7 @@ ID3 version 2.2 tags.  (These are the tags written by iTunes 5.0.)
   'TT2'    Title                                no
   'TT3'    Subtitle                             no
   'TXT'    Lyricist                             no
-  'TXX'    TXX                                  ID3 UserDefined
+  'TXX'    UserDefinedText                      no
   'TYE'    Year                                 no
   'ULT'    Lyrics                               no
   'WAF'    FileURL                              no
@@ -29155,7 +29158,7 @@ ID3 version 2.2 tags.  (These are the tags written by iTunes 5.0.)
   'WCM'    CommercialURL                        no
   'WCP'    CopyrightURL                         no
   'WPB'    PublisherURL                         no
-  'WXX'    WXX                                  ID3 UserDefined
+  'WXX'    UserDefinedURL                       no
 
 =head3 ID3 SynLyrics Tags
 
@@ -29166,15 +29169,6 @@ The following tags are extracted from synchronized lyrics/text frames.
   SynchronizedLyricsDescription                 no
   SynchronizedLyricsText                        no+
   SynchronizedLyricsType                        no
-
-=head3 ID3 UserDefined Tags
-
-ID3 user-defined text and URL tags will be dynamically added to this table
-by name when found.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  [no tags known]
 
 =head3 ID3 v2_3 Tags
 
@@ -29245,7 +29239,7 @@ software.
   'TSOC'   ComposerSortOrder                    no
   'TSRC'   ISRC                                 no
   'TSSE'   EncoderSettings                      no
-  'TXXX'   TXXX                                 ID3 UserDefined
+  'TXXX'   UserDefinedText                      no
   'TYER'   Year                                 no
   'USER'   TermsOfUse                           no
   'USLT'   Lyrics                               no
@@ -29258,7 +29252,7 @@ software.
   'WORS'   InternetRadioStationURL              no
   'WPAY'   PaymentURL                           no
   'WPUB'   PublisherURL                         no
-  'WXXX'   WXXX                                 ID3 UserDefined
+  'WXXX'   UserDefinedURL                       no
   'XDOR'   OriginalReleaseTime                  no
   'XOLY'   OlympusDSS                           Olympus DSS
   'XSOA'   AlbumSortOrder                       no
@@ -29369,7 +29363,7 @@ software.
   'TSRC'   ISRC                                 no
   'TSSE'   EncoderSettings                      no
   'TSST'   SetSubtitle                          no
-  'TXXX'   TXXX                                 ID3 UserDefined
+  'TXXX'   UserDefinedText                      no
   'USER'   TermsOfUse                           no
   'USLT'   Lyrics                               no
   'WCOM'   CommercialURL                        no
@@ -29381,7 +29375,7 @@ software.
   'WORS'   InternetRadioStationURL              no
   'WPAY'   PaymentURL                           no
   'WPUB'   PublisherURL                         no
-  'WXXX'   WXXX                                 ID3 UserDefined
+  'WXXX'   UserDefinedURL                       no
   'XDOR'   OriginalReleaseTime                  no
   'XOLY'   OlympusDSS                           Olympus DSS
   'XSOA'   AlbumSortOrder                       no
@@ -30765,7 +30759,7 @@ the config file.
   'RDTC'       RicohRDTC                        Ricoh RDTC
   'RDTG'       RicohRDTG                        Ricoh RDTG
   'RDTL'       RicohRDTL                        Ricoh RDTL
-  'RICO'       RicohInfo                        EXIF
+  'RICO'       RicohInfo                        JPEG
   'RMKN'       RicohRMKN                        EXIF
   'RTHU'       PreviewImage                     no
   'SDLN'       PlayMode                         string

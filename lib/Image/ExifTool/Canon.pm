@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.75';
+$VERSION = '4.76';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -9001,20 +9001,32 @@ my %filterConv = (
              4 => 'Focus High Priority',
         },
     },
-    7 => { #52
+    7 => [{ #forum16068
         Name => 'USMLensElectronicMF',
+        Condition => '$$self{Model} =~ /EOS R\d/',
+        Notes => 'EOS R models',
+        PrintConv => {
+             0 => 'Disable After One-Shot',
+             1 => 'One-Shot -> Enabled',
+             2 => 'One-Shot -> Enabled (magnify)',
+             3 => 'Disable in AF Mode',
+        },
+    },{ #52
+        Name => 'USMLensElectronicMF',
+        Notes => 'Other models',
         PrintConv => {
              0 => 'Enable After AF',
              1 => 'Disable After AF',
              2 => 'Disable in AF Mode',
         },
-    },
+    }],
     8 => { #52
         Name => 'AFAssistBeam',
         PrintConv => {
              0 => 'Enable',
              1 => 'Disable',
              2 => 'IR AF Assist Beam Only',
+             3 => 'LED AF Assist Beam Only', #forum16068
         },
     },
     9 => { #52
@@ -9112,6 +9124,19 @@ my %filterConv = (
              1 => 'Manual AF Point',
              2 => 'Auto', #PH (1DXmkII)
         },
+    },
+    20 => { #forum16068
+        Name => 'SubjectToDetect',
+        PrintConv => {
+            0 => 'None',
+            1 => 'People',
+            2 => 'Animals',
+            3 => 'Vehicles',
+        },
+    },
+    24 => { #forum16068
+        Name => 'EyeDetection',
+        PrintConv => \%offOn,
     },
 );
 

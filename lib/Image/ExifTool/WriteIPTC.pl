@@ -215,7 +215,7 @@ sub FormatIPTC($$$$$;$)
 sub IptcDate($)
 {
     my $val = shift;
-    unless ($val =~ s{^.*(\d{4})[-:/.]?(\d{2})[-:/.]?(\d{2}).*}{$1$2$3}s) {
+    unless ($val =~ s{^.*?(\d{4})[-:/.]?(\d{2})[-:/.]?(\d{2}).*}{$1$2$3}s) {
         warn "Invalid date format (use YYYY:mm:dd)\n";
         undef $val;
     }

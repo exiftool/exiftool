@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '12.85';
+$VERSION = '12.86';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -6859,11 +6859,12 @@ sub DirStart($$;$)
 #------------------------------------------------------------------------------
 # Extract metadata from a jpg image
 # Inputs: 0) ExifTool object reference, 1) dirInfo ref with RAF set
+#         2) tag table ref to process JPEG-like metadata
 # Returns: 1 on success, 0 if this wasn't a valid JPEG file
-sub ProcessJPEG($$)
+sub ProcessJPEG($$;$)
 {
     local $_;
-    my ($self, $dirInfo) = @_;
+    my ($self, $dirInfo, $optionalTagTable) = @_;
     my $options = $$self{OPTIONS};
     my $verbose = $$options{Verbose};
     my $out = $$options{TextOut};
@@ -6871,20 +6872,29 @@ sub ProcessJPEG($$)
     my $raf = $$dirInfo{RAF};
     my $req = $$self{REQ_TAG_LOOKUP};
     my $htmlDump = $$self{HTML_DUMP};
-    my %dumpParms = ( Out => $out );
-    my ($ch, $s, $length, $hash, $hashsize);
+    my %dumpParms = ( Out => $out, Prefix => $$self{INDENT} );
+    my ($ch, $s, $length, $hash, $hashsize, $indent);
     my ($success, $wantTrailer, $trailInfo, $foundSOS, $gotSize, %jumbfChunk);
     my (@iccChunk, $iccChunkCount, $iccChunksTotal, @flirChunk, $flirCount, $flirTotal);
     my ($preview, $scalado, @dqt, $subSampling, $dumpEnd, %extendedXMP);
 
+    ($indent = $$self{INDENT}) =~ s/  $//;
+    unless ($raf) {
+        $raf = File::RandomAccess->new($$dirInfo{DataPt});
+        $self->VerboseDir('JPEG', undef, length(${$$dirInfo{DataPt}}));
+    }
     # get pointer to hash object if it exists and we are the top-level JPEG or JP2
     if ($$self{FILE_TYPE} =~ /^(JPEG|JP2)$/ and not $$self{DOC_NUM}) {
         $hash = $$self{ImageDataHash};
         $hashsize = 0;
     }
-
     # check to be sure this is a valid JPG (or J2C, or EXV) file
-    return 0 unless $raf->Read($s, 2) == 2 and $s =~ /^\xff[\xd8\x4f\x01]/;
+    if ($raf->Read($s, 2) == 2 and $s =~ /^\xff[\xd8\x4f\x01]/) {
+        undef $optionalTagTable;
+    } else {
+        return 0 unless $optionalTagTable and $s =~ /^\xff[\xe0-\xef]/;
+        $raf->Seek(-2, 1) or $self->Error('Seek error'), return 1;
+    }
     if ($s eq "\xff\x01") {
         return 0 unless $raf->Read($s, 5) == 5 and $s eq 'Exiv2';
         $$self{FILE_TYPE} = 'EXV';
@@ -6902,7 +6912,7 @@ sub ProcessJPEG($$)
     $$raf{NoBuffer} = 1 if $self->Options('FastScan'); # disable buffering in FastScan mode
 
     $dumpParms{MaxLen} = 128 if $verbose < 4;
-    if ($htmlDump) {
+    if ($htmlDump and not $optionalTagTable) {
         $dumpEnd = $raf->Tell();
         my ($n, $t, $m) = $s eq 'Exiv2' ? (7,'EXV','TEM') : (2,'JPEG','SOI');
         my $pos = $dumpEnd - $n;
@@ -6921,6 +6931,7 @@ sub ProcessJPEG($$)
     Marker: for (;;) {
         # set marker and data pointer for current segment
         my $marker = $nextMarker;
+        last if $marker and $marker < 0;
         my $segDataPt = $nextSegDataPt;
         my $segPos = $nextSegPos;
         my $skipped;
@@ -6929,12 +6940,17 @@ sub ProcessJPEG($$)
 #
 # read ahead to the next segment unless we have reached EOI, SOS or SOD
 #
-        unless ($marker and ($marker==0xd9 or ($marker==0xda and not $wantTrailer and not $hash) or
+        until ($marker and ($marker==0xd9 or ($marker==0xda and not $wantTrailer and not $hash) or
             $marker==0x93))
         {
             # read up to next marker (JPEG markers begin with 0xff)
             my $buff;
-            $raf->ReadLine($buff) or last;
+            unless ($raf->ReadLine($buff)) {
+                last Marker unless $optionalTagTable;
+                $nextMarker = -1;
+                $success = 1;
+                last;
+            }
             $skipped = length($buff) - 1;
             # JPEG markers can be padded with unlimited 0xff's
             for (;;) {
@@ -6946,21 +6962,21 @@ sub ProcessJPEG($$)
             # read segment data if it exists
             if (not defined $markerLenBytes{$nextMarker}) {
                 # read record length word
-                last unless $raf->Read($s, 2) == 2;
+                last Marker unless $raf->Read($s, 2) == 2;
                 my $len = unpack('n',$s);   # get data length
-                last unless defined($len) and $len >= 2;
+                last Marker unless defined($len) and $len >= 2;
                 $nextSegPos = $raf->Tell();
                 $len -= 2;  # subtract size of length word
-                last unless $raf->Read($buff, $len) == $len;
+                last Marker unless $raf->Read($buff, $len) == $len;
                 $nextSegDataPt = \$buff;    # set pointer to our next data
             } elsif ($markerLenBytes{$nextMarker} == 4) {
                 # handle J2C extensions with 4-byte length word
-                last unless $raf->Read($s, 4) == 4;
+                last Marker unless $raf->Read($s, 4) == 4;
                 my $len = unpack('N',$s);   # get data length
-                last unless defined($len) and $len >= 4;
+                last Marker unless defined($len) and $len >= 4;
                 $nextSegPos = $raf->Tell();
                 $len -= 4;  # subtract size of length word
-                last unless $raf->Seek($len, 1);
+                last Marker unless $raf->Seek($len, 1);
             } elsif ($hash and defined $marker and ($marker == 0x00 or $marker == 0xda or
                 ($marker >= 0xd0 and $marker <= 0xd7)))
             {
@@ -6976,7 +6992,8 @@ sub ProcessJPEG($$)
                 $hashsize += $skipped + 2;
             }
             # read second segment too if this was the first
-            next unless defined $marker;
+            next Marker unless defined $marker;
+            last;
         }
         # set some useful variables for the current segment
         my $markerName = JpegMarkerName($marker);
@@ -6996,7 +7013,7 @@ sub ProcessJPEG($$)
         if (($marker & 0xf0) == 0xc0 and ($marker == 0xc0 or $marker & 0x03)) {
             $length = length $$segDataPt;
             if ($verbose) {
-                print $out "JPEG $markerName ($length bytes):\n";
+                print $out "${indent}JPEG $markerName ($length bytes):\n";
                 HexDump($segDataPt, undef, %dumpParms, Addr=>$segPos) if $verbose>2;
             } elsif ($htmlDump) {
                 $self->HDump($segPos-4, $length+4, "[JPEG $markerName]", undef, 0x08);
@@ -7039,7 +7056,7 @@ sub ProcessJPEG($$)
             next;
         } elsif ($marker == 0xd9) {         # EOI
             pop @$path;
-            $verbose and print $out "JPEG EOI\n";
+            $verbose and print $out "${indent}JPEG EOI\n";
             my $pos = $raf->Tell();
             $$self{TrailerStart} = $pos unless $$self{DOC_NUM};
             if ($htmlDump and $dumpEnd) {
@@ -7100,7 +7117,7 @@ sub ProcessJPEG($$)
                             # adjust PreviewImageStart to this location
                             my $actual = $pos + pos($buff) - 4;
                             if ($start and $start ne $actual and $verbose > 1) {
-                                print $out "(Fixed PreviewImage location: $start -> $actual)\n";
+                                print $out "${indent}(Fixed PreviewImage location: $start -> $actual)\n";
                             }
                             # update preview image offsets
                             if ($start) {
@@ -7154,7 +7171,7 @@ sub ProcessJPEG($$)
             pop @$path;
             $foundSOS = 1;
             # all done with meta information unless we have a trailer
-            $verbose and print $out "JPEG SOS\n";
+            $verbose and print $out "${indent}JPEG SOS\n";
             unless ($fast) {
                 $trailInfo = IdentifyTrailer($raf);
                 # process trailer now unless we are doing verbose dump
@@ -7194,7 +7211,7 @@ sub ProcessJPEG($$)
             last;   # all done parsing file
         } elsif ($marker == 0x93) {
             pop @$path;
-            $verbose and print $out "JPEG SOD\n";
+            $verbose and print $out "${indent}JPEG SOD\n";
             $success = 1;
             if ($hash and $$self{FILE_TYPE} eq 'JP2') {
                 my $pos = $raf->Tell();
@@ -7205,7 +7222,7 @@ sub ProcessJPEG($$)
             last;   # all done parsing file
         } elsif (defined $markerLenBytes{$marker}) {
             # handle other stand-alone markers and segments we skipped over
-            $verbose and $marker and print $out "JPEG $markerName\n";
+            $verbose and $marker and print $out "${indent}JPEG $markerName\n";
             next;
         } elsif ($marker == 0xdb and length($$segDataPt) and    # DQT
             # save the DQT data only if JPEGDigest has been requested
@@ -7225,7 +7242,7 @@ sub ProcessJPEG($$)
         $length = length $$segDataPt;
         $appBytes += $length + 4 if ($marker & 0xf0) == 0xe0;  # total size of APP segments
         if ($verbose) {
-            print $out "JPEG $markerName ($length bytes):\n";
+            print $out "${indent}JPEG $markerName ($length bytes):\n";
             if ($verbose > 2) {
                 my %extraParms = ( Addr => $segPos );
                 $extraParms{MaxLen} = 128 if $verbose == 4;
@@ -7383,7 +7400,7 @@ sub ProcessJPEG($$)
                 # some software erroneously writes zeros for the chunk counts)
                 my $chunkNum = Get8u($segDataPt, 6);
                 my $chunksTot = Get8u($segDataPt, 7) + 1; # (note the "+ 1"!)
-                $verbose and printf $out "$$self{INDENT}FLIR chunk %d of %d\n",
+                $verbose and printf $out "${indent}FLIR chunk %d of %d\n",
                                     $chunkNum + 1, $chunksTot;
                 if (defined $flirTotal) {
                     # abort parsing FLIR if the total chunk count is inconsistent
@@ -7448,7 +7465,7 @@ sub ProcessJPEG($$)
                 # some software erroneously writes zeros for the chunk counts)
                 my $chunkNum = Get8u($segDataPt, 12);
                 my $chunksTot = Get8u($segDataPt, 13);
-                $verbose and print $out "$$self{INDENT}ICC_Profile chunk $chunkNum of $chunksTot\n";
+                $verbose and print $out "${indent}ICC_Profile chunk $chunkNum of $chunksTot\n";
                 if (defined $iccChunksTotal) {
                     # abort parsing ICC_Profile if the total chunk count is inconsistent
                     undef $iccChunkCount if $chunksTot != $iccChunksTotal;
@@ -8001,7 +8018,7 @@ sub ProcessJPEG($$)
         }
     }
     # print verbose hash message if necessary
-    print $out "$$self{INDENT}(ImageDataHash: $hashsize bytes of JPEG image data)\n" if $hashsize and $verbose;
+    print $out "${indent}(ImageDataHash: $hashsize bytes of JPEG image data)\n" if $hashsize and $verbose;
     # calculate JPEGDigest if requested
     if (@dqt) {
         require Image::ExifTool::JPEGDigest;

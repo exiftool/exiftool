@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.65';
+$VERSION = '3.66';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -203,8 +203,9 @@ my %xmpNS = (
     hdr_metadata => 'http://ns.adobe.com/hdr-metadata/1.0/',
     hdrgm     => 'http://ns.adobe.com/hdr-gain-map/1.0/',
     xmpDSA    => 'http://leica-camera.com/digital-shift-assistant/1.0/',
-  # Note: Not included due to namespace prefix conflict with Device:Container
-  # Container => 'http://ns.google.com/photos/1.0/container/',
+    # Note: Google uses a prefix of 'Container', but this conflicts with the
+    # Device Container namespace, also by Google.  So call this one GContainer
+    GContainer=> 'http://ns.google.com/photos/1.0/container/',
 );
 
 # build reverse namespace lookup
@@ -932,11 +933,10 @@ my %sRangeMask = (
         Name => 'xmpDSA',
         SubDirectory => { TagTable => 'Image::ExifTool::Panasonic::DSA' },
     },
-  # Note: Note included due to namespace prefix conflict with Device:Container
-  # Container => {
-  #     Name => 'Container',
-  #     SubDirectory => { TagTable => 'Image::ExifTool::XMP::Container' },
-  # },
+    GContainer => {
+        Name => 'GContainer',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::GContainer' },
+    },
 );
 
 # hack to allow XML containing Dublin Core metadata to be handled like XMP (eg. EPUB - see ZIP.pm)

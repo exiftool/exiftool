@@ -10,7 +10,8 @@
 <h2 class=top>Matroska Tags</h2>
 <p>The following tags are extracted from Matroska multimedia container files.
 This container format is used by file types such as MKA, MKV, MKS and WEBM.
-For speed, by default ExifTool extracts tags only up to the first Cluster.
+For speed, by default ExifTool extracts tags only up to the first Cluster
+unless a Seek element specifies the position of a Tags element after this.
 However, the <a href="../ExifTool.html#Verbose">Verbose</a> (-v) and <a href="../ExifTool.html#Unknown">Unknown</a> = 2 (-U) options force processing of
 Cluster data, and the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded</a> (-ee) option skips over Clusters to
 read subsequent tags.  See
@@ -101,8 +102,9 @@ Matroska specification.</p>
 <td title='0x001a = 26'>0x001a</td>
 <td>VideoScanType</td>
 <td class=c>no</td>
-<td><span class=s>0 = Progressive
-  <br>1 = Interlaced</span></td></tr>
+<td><span class=s>0 = Undetermined
+  <br>1 = Interlaced
+  <br>2 = Progressive</span></td></tr>
 <tr>
 <td title='0x001b = 27'>0x001b</td>
 <td>BlockDuration?</td>
@@ -1645,7 +1647,7 @@ for the specification.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 28, 2023</i>
+<br><i>Last revised Jun 13, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

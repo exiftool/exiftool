@@ -238,7 +238,11 @@ my %useExt = ( GLV => 'MP4' );
 
 # information for int32u date/time tags (time zero is Jan 1, 1904)
 my %timeInfo = (
-    Notes => 'converted from UTC to local time if the QuickTimeUTC option is set',
+    Notes => q{
+        converted from UTC to local time if the QuickTimeUTC option is set.  This
+        tag is part of a binary data structure so it may not be deleted -- instead
+        the value is set to zero if the tag is deleted individually
+    },
     Shift => 'Time',
     Writable => 1,
     Permanent => 1,
@@ -9488,7 +9492,8 @@ sub ProcessMOV($$;$)
     my $dataPt = $$dirInfo{DataPt};
     my $verbose = $et->Options('Verbose');
     my $validate = $$et{OPTIONS}{Validate};
-    my $dataPos = $$dirInfo{Base} || 0;
+    my $dirBase = $$dirInfo{Base} || 0;
+    my $dataPos = $dirBase;
     my $dirID = $$dirInfo{DirID} || '';
     my $charsetQuickTime = $et->Options('CharsetQuickTime');
     my ($buff, $tag, $size, $track, $isUserData, %triplet, $doDefaultLang, $index);
@@ -9573,6 +9578,7 @@ sub ProcessMOV($$;$)
         $atomCount = $$tagTablePtr{VARS}{ATOM_COUNT};
     }
     my $lastTag = '';
+    my $lastPos = 0;
     for (;;) {
         my ($eeTag, $ignore);
         last if defined $atomCount and --$atomCount < 0;
@@ -10085,14 +10091,15 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
             ) if $verbose;
             if ($size and (not $raf->Seek($size-1, 1) or $raf->Read($buff, 1) != 1)) {
                 my $t = PrintableTagID($tag,2);
-                $warnStr = "Truncated '${t}' data";
+                $warnStr = sprintf("Truncated '${t}' data at offset 0x%x", $lastPos);
                 last;
             }
         }
         $dataPos += $size + 8;  # point to start of next atom data
         last if $dirEnd and $dataPos >= $dirEnd; # (note: ignores last value if 0 bytes)
+        $lastPos = $raf->Tell() + $dirBase;
         $raf->Read($buff, 8) == 8 or last;
-        $lastTag = $tag if $$tagTablePtr{$tag};
+        $lastTag = $tag if $$tagTablePtr{$tag} and $tag ne 'free'; # (Insta360 sometimes puts free block before trailer)
         ($size, $tag) = unpack('Na4', $buff);
         ++$index if defined $index;
     }
@@ -10102,7 +10109,11 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
         if (($lastTag eq 'mdat' or $lastTag eq 'moov') and (not $$tagTablePtr{$tag} or
             ref $$tagTablePtr{$tag} eq 'HASH' and $$tagTablePtr{$tag}{Unknown}))
         {
-            $et->Warn('Unknown trailer with '.lcfirst($warnStr));
+            if ($size == 0x1000000 - 8 and $tag =~ /^(\x94\xc0\x7e\0|\0\x02\0\0)/) {
+                $et->Warn(sprintf('Insta360 trailer at offset 0x%x', $lastPos), 1);
+            } else {
+                $et->Warn('Unknown trailer with '.lcfirst($warnStr));
+            }
         } else {
             $et->Warn($warnStr);
         }

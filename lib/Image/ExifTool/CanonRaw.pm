@@ -562,7 +562,7 @@ sub BuildMakerNotes($$$$$$);
     3 => {
         Name => 'Rotation',
         Format => 'int32s',
-        Writable => 'int32s',
+        Writable => 1,
     },
     4 => 'ComponentBitDepth', #3
     5 => 'ColorBitDepth', #3

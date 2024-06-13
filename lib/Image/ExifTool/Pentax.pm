@@ -4697,7 +4697,7 @@ my %binaryDataAttrs = (
             3 => 'Grip Battery',
             4 => 'External Power Supply', #PH
         },
-    },{ #PH
+    },{ #PH (forum15976)
         Name => 'PowerSource',
         Mask => 0x0f,
         Notes => 'K-3III',
@@ -4709,8 +4709,18 @@ my %binaryDataAttrs = (
             2 => 'Grip Battery',
             4 => 'External Power Supply',
         },
-    },{
     }],
+    0.2 => {
+        Name => 'PowerAvailable',
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
+        Notes => 'K-3III',
+        Mask => 0xf0,
+        PrintConv => { BITMASK => {
+            0 => 'Body Battery',
+            1 => 'Grip Battery',
+            3 => 'External Power Supply',
+        }},
+    },
     1.1 => [
         {
             Name => 'BodyBatteryState',
@@ -4735,11 +4745,6 @@ my %binaryDataAttrs = (
                  4 => 'Close to Full',
                  5 => 'Full',
             },
-        },{
-            Name => 'BodyBatteryState',
-            Notes => 'decoding unknown for some models',
-            Unknown => 1, # (doesn't appear to be valid for the K-3 III)
-            Mask => 0xf0,
         },
     ],
     1.2 => [
@@ -4754,11 +4759,6 @@ my %binaryDataAttrs = (
                  3 => 'Running Low',
                  4 => 'Full',
             },
-        },{
-            Name => 'GripBatteryState',
-            Notes => 'decoding unknown for other models',
-            Unknown => 1, # (doesn't appear to be valid for the K-5)
-            Mask => 0x0f,
         },
     ],
     # internal and grip battery voltage Analogue to Digital measurements,
@@ -4794,7 +4794,19 @@ my %binaryDataAttrs = (
             # BodyBatteryVoltage4  6.10 V   7.55 V     7.45 V
             # "Meas" open-circuit voltages with DVM: AB=0V, AC=+8.33V, BC=+8.22V
             # (terminal "C" is closest to edge of battery)
-        },
+        },{
+            Name => 'BodyBatteryState',
+            Condition => '$$self{Model} =~ /K-3 Mark III/',
+            Notes => 'K-3III',
+            PrintConv => {
+                0 => 'Empty or Missing',
+                1 => 'Almost Empty',
+                2 => 'Running Low',
+                3 => 'Half Full',
+                4 => 'Close to Full',
+                5 => 'Full',
+            },
+        }
     ],
     3 => [
         {
@@ -4810,7 +4822,11 @@ my %binaryDataAttrs = (
             Name => 'BodyBatteryADLoad',
             Description => 'Body Battery A/D Load',
             Condition => '$$self{Model} =~ /(\*ist|K100D|K200D)\b/',
-        },
+        },{
+            Name => 'BodyBatteryPercent',
+            Condition => '$$self{Model} =~ /K-3 Mark III/',
+            Notes => 'K-3III',
+        }
     ],
     4 => [
         {
@@ -4824,6 +4840,15 @@ my %binaryDataAttrs = (
             Format => 'int16u',
             ValueConv => '$val / 100',
             ValueConvInv => '$val * 100',
+            PrintConv => 'sprintf("%.2f V", $val)',
+            PrintConvInv => '$val =~ s/\s*V$//',
+        },
+        {
+            Name => 'BodyBatteryVoltage',
+            Condition => '$$self{Model} =~ /K-3 Mark III/',
+            Format => 'int32u',
+            ValueConv => '$val * 4e-8 + 0.27219',
+            ValueConvInv => '($val - 0.27219) / 4e-8',
             PrintConv => 'sprintf("%.2f V", $val)',
             PrintConvInv => '$val =~ s/\s*V$//',
         },
@@ -4850,6 +4875,34 @@ my %binaryDataAttrs = (
         Notes => 'K-5 and K-r only',
         ValueConv => '$val / 100',
         ValueConvInv => '$val * 100',
+        PrintConv => 'sprintf("%.2f V", $val)',
+        PrintConvInv => '$val =~ s/\s*V$//',
+    },
+    16 => {
+        Name => 'GripBatteryState',
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
+        Notes => 'K-3III',
+        PrintConv => {
+            0 => 'Empty or Missing',
+            1 => 'Almost Empty',
+            2 => 'Running Low',
+            3 => 'Half Full',
+            4 => 'Close to Full',
+            5 => 'Full',
+        },
+    },
+    17 => {
+        Name => 'GripBatteryPercent',
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
+        Notes => 'K-3III',
+    },
+    18 => {
+        Name => 'GripBatteryVoltage',
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
+        Notes => 'K-3III',
+        Format => 'int32u',
+        ValueConv => '$val * 4e-8 + 0.27219',
+        ValueConvInv => '($val - 0.27219) / 4e-8',
         PrintConv => 'sprintf("%.2f V", $val)',
         PrintConvInv => '$val =~ s/\s*V$//',
     },
@@ -5521,6 +5574,7 @@ my %binaryDataAttrs = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     FORMAT => 'int8s',
     NOTES => 'Tags decoded from the electronic level information for the K-3 III.',
+    # 1 - 0 for Horizontal, 3 for rotate 90, 4 for pointing straight up
     3 => {
         Name => 'RollAngle',
         Format => 'int16s',

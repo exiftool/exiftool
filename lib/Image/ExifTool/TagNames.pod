@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27868 tags, with 17446 unique tag names.
+They contain a total of 27888 tags, with 17458 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1390,6 +1390,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   fpv                                           XMP fpv
   GAudio                                        XMP GAudio
   GCamera                                       XMP GCamera
+  GContainer                                    XMP GContainer
   GCreations                                    XMP GCreations
   GDepth                                        XMP GDepth
   getty                                         XMP GettyImages
@@ -4809,6 +4810,42 @@ These tags belong to the ExifTool XMP-GCamera family 1 group.
   ShotLogData                                   string
   SpecialTypeID                                 string+
 
+=head3 XMP GContainer Tags
+
+Google Container namespace.  ExifTool uses the prefix 'GContainer' instead
+of 'Container' to avoid a conflict with the Google Device Container
+namespace.
+
+These tags belong to the ExifTool XMP-GContainer family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  ContainerDirectory                            Directory Struct+
+  DirectoryItem                                 Item Struct_+
+  DirectoryItemLabel                            string_+
+  DirectoryItemLength                           integer_+
+  DirectoryItemMime                             string_+
+  DirectoryItemPadding                          integer_+
+  DirectoryItemSemantic                         string_+
+  DirectoryItemURI                              string_+
+
+=head3 XMP Directory Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Item                                          Item Struct
+
+=head3 XMP Item Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Label                                         string
+  Length                                        integer
+  Mime                                          string
+  Padding                                       integer
+  Semantic                                      string
+  URI                                           string
+
 =head3 XMP GCreations Tags
 
 Google creations tags.
@@ -8052,19 +8089,23 @@ Flash information tags for the K10D, K20D and K200D.
   Index1   Tag Name                             Writable
   ------   --------                             --------
     0.1    PowerSource                          int8u & 0x0f
-           Tag01                                int8u & 0x0f
+    0.2    PowerAvailable                       int8u & 0xf0
     1.1    BodyBatteryState                     int8u & 0xf0
-           BodyBatteryState?                    int8u & 0xf0
     1.2    GripBatteryState                     int8u & 0x0f
-           GripBatteryState?                    int8u & 0x0f
       2    BodyBatteryADNoLoad                  int8u
            BodyBatteryVoltage1                  int16u
+           BodyBatteryState                     int8u
       3    BodyBatteryADLoad                    int8u
+           BodyBatteryPercent                   int8u
       4    GripBatteryADNoLoad                  int8u
            BodyBatteryVoltage2                  int16u
+           BodyBatteryVoltage                   int32u
       5    GripBatteryADLoad                    int8u
       6    BodyBatteryVoltage3                  int16u
       8    BodyBatteryVoltage4                  int16u
+     16    GripBatteryState                     int8u
+     17    GripBatteryPercent                   int8u
+     18    GripBatteryVoltage                   int32u
 
 =head3 Pentax AFInfo Tags
 
@@ -9311,6 +9352,7 @@ Unknown only to reduce the volume of the normal output.
   0x4026   LogInfo                              Canon LogInfo
   0x4028   AFConfig                             Canon AFConfig
   0x403f   RawBurstModeRoll                     Canon RawBurstInfo
+  0x4059   LevelInfo                            Canon LevelInfo
 
 =head3 Canon CameraSettings Tags
 
@@ -10197,7 +10239,7 @@ CameraInfo tags for the EOS 1000D.
 
 =head3 Canon CameraInfoR6 Tags
 
-CameraInfo tags for the EOS R6.
+CameraInfo tags for the EOS R5 and R6.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -11548,6 +11590,16 @@ Information about creative filter settings.
   ------   --------                             --------
       1    RawBurstImageNum                     int32u
       2    RawBurstImageCount                   int32u
+
+=head3 Canon LevelInfo Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      4    RollAngle                            int32s
+      5    PitchAngle                           int32s
+      7    FocalLength                          int32s
+      8    MinFocalLength                       int32s
+      9    MaxFocalLength                       int32s
 
 =head3 Canon CTMD Tags
 
@@ -13317,6 +13369,15 @@ Face recognition information.
   Face8Birthday                                 no
   Face8Category                                 no
   Face8Name                                     no
+
+=head3 FujiFilm RAFHeader Tags
+
+Tags extracted from the header of RAF images.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     60    RAFVersion                           no
+    108    RAFCompression                       no
 
 =head3 FujiFilm RAF Tags
 
@@ -15950,7 +16011,7 @@ Tags written by some Nikon GPS-equipped cameras like the AW100.
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    FirmwareVersion51                    no
-     10    NEFCompression                       int16u[0.5]
+     10    NEFCompression                       int16u
 
 =head3 Nikon MakerNotes0x56 Tags
 
@@ -23612,7 +23673,7 @@ These tags are used in Minolta RAW format (MRW) images.
       4    WBMode                               int8u~
       5    ProgramMode                          int8u
       6    ISOSetting                           int8u
-      7    ColorMode                            int32u[0.25]
+      7    ColorMode                            int8u
       8    WB_RBLevelsTungsten                  int16u[2]
      12    WB_RBLevelsDaylight                  int16u[2]
      16    WB_RBLevelsCloudy                    int16u[2]
@@ -25753,7 +25814,7 @@ the image undisplayable.
       2    ColorSpecApproximation               int8s!
       3    ICC_Profile                          ICC_Profile
            ColorSpace                           int32u!
-           ColorSpecData                        undef!
+           ColorSpecData                        undef[$size-3]!
 
 =head3 Jpeg2000 FileType Tags
 
@@ -32672,7 +32733,8 @@ Other tags are extracted with the Unknown option.
 
 The following tags are extracted from Matroska multimedia container files.
 This container format is used by file types such as MKA, MKV, MKS and WEBM.
-For speed, by default ExifTool extracts tags only up to the first Cluster.
+For speed, by default ExifTool extracts tags only up to the first Cluster
+unless a Seek element specifies the position of a Tags element after this.
 However, the Verbose (-v) and Unknown = 2 (-U) options force processing of
 Cluster data, and the ExtractEmbedded (-ee) option skips over Clusters to
 read subsequent tags.  See
@@ -40120,6 +40182,7 @@ FileName.
   PreviewTIFF                File               no
   PreviewWMF                 File               no
   ProcessingTime             ExifTool           no
+  RAFCompression             File               no
   RAFVersion                 File               no
   ResourceForkSize           System             no
   SphericalVideoXML          GSpherical         yes!

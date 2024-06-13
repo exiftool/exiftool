@@ -6021,12 +6021,16 @@ ExifTool, but these entries are not extracted as tags.</p>
 <td class=r title='1 = 0x1'>1</td>
 <td>MediaCreateDate</td>
 <td class=c>int32u</td>
-<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set)</span></span></td></tr>
+<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set.  This
+tag is part of a binary data structure so it may not be deleted -- instead
+the value is set to zero if the tag is deleted individually)</span></span></td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>MediaModifyDate</td>
 <td class=c>int32u</td>
-<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set)</span></span></td></tr>
+<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set.  This
+tag is part of a binary data structure so it may not be deleted -- instead
+the value is set to zero if the tag is deleted individually)</span></span></td></tr>
 <tr class=b>
 <td class=r title='3 = 0x3'>3</td>
 <td>MediaTimeScale</td>
@@ -7482,12 +7486,16 @@ for the specification.</p>
 <td class=r title='1 = 0x1'>1</td>
 <td>TrackCreateDate</td>
 <td class=c>int32u</td>
-<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set)</span></span></td></tr>
+<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set.  This
+tag is part of a binary data structure so it may not be deleted -- instead
+the value is set to zero if the tag is deleted individually)</span></span></td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>TrackModifyDate</td>
 <td class=c>int32u</td>
-<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set)</span></span></td></tr>
+<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set.  This
+tag is part of a binary data structure so it may not be deleted -- instead
+the value is set to zero if the tag is deleted individually)</span></span></td></tr>
 <tr class=b>
 <td class=r title='3 = 0x3'>3</td>
 <td>TrackID</td>
@@ -9080,12 +9088,16 @@ writable but they may all be removed by deleting the Nextbase group.</p>
 <td class=r title='1 = 0x1'>1</td>
 <td>CreateDate</td>
 <td class=c>int32u</td>
-<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set)</span></span></td></tr>
+<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set.  This
+tag is part of a binary data structure so it may not be deleted -- instead
+the value is set to zero if the tag is deleted individually)</span></span></td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>ModifyDate</td>
 <td class=c>int32u</td>
-<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set)</span></span></td></tr>
+<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set.  This
+tag is part of a binary data structure so it may not be deleted -- instead
+the value is set to zero if the tag is deleted individually)</span></span></td></tr>
 <tr class=b>
 <td class=r title='3 = 0x3'>3</td>
 <td>TimeScale</td>
@@ -9158,7 +9170,9 @@ writable but they may all be removed by deleting the Nextbase group.</p>
 <td class=r title='0 = 0x0'>0</td>
 <td>PreviewDate</td>
 <td class=c>int32u</td>
-<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set)</span></span></td></tr>
+<td><span class=s><span class=n>(converted from UTC to local time if the QuickTimeUTC option is set.  This
+tag is part of a binary data structure so it may not be deleted -- instead
+the value is set to zero if the tag is deleted individually)</span></span></td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>PreviewVersion</td>
@@ -9625,7 +9639,7 @@ writable but they may all be removed by deleting the Nextbase group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 7, 2024</i>
+<br><i>Last revised Jun 13, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

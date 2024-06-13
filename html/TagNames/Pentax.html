@@ -3474,9 +3474,8 @@ serviced)</span></span></td></tr>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td class=r title='0 = 0x0'>0.1</td>
-<td>PowerSource
-  <br>Tag01</td>
-<td class=c>int8u<br>int8u</td>
+<td>PowerSource</td>
+<td class=c>int8u</td>
 <td><span class=s>[val &amp; 0xf]
   <br>1 = Camera Battery
   <br>2 = Body Battery
@@ -3488,10 +3487,18 @@ serviced)</span></span></td></tr>
   <br>2 = Grip Battery
   <br>4 = External Power Supply</span></td></tr>
 <tr class=b>
+<td class=r title='0 = 0x0'>0.2</td>
+<td>PowerAvailable</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(K-3III)</span>
+  <br>[val &gt;&gt; 4 &amp; 0xf]
+  <br>Bit 0 = Body Battery
+  <br>Bit 1 = Grip Battery
+  <br>Bit 3 = External Power Supply</span></td></tr>
+<tr>
 <td class=r title='1 = 0x1'>1.1</td>
-<td>BodyBatteryState
-  <br>BodyBatteryState?</td>
-<td class=c>int8u<br>int8u</td>
+<td>BodyBatteryState</td>
+<td class=c>int8u</td>
 <td><span class=s><span class=n>(*istD, K100D, K200D, K10D and K20D)</span>
   <br>[val &gt;&gt; 4 &amp; 0xf]
   <br>1 = Empty or Missing
@@ -3504,54 +3511,83 @@ serviced)</span></span></td></tr>
   <br>2 = Almost Empty
   <br>3 = Running Low
   <br>4 = Close to Full
-  <br>5 = Full
-  <br><span class=n>(decoding unknown for some models)</span>
-  <br>[val &gt;&gt; 4 &amp; 0xf]</span></td></tr>
-<tr>
+  <br>5 = Full</span></td></tr>
+<tr class=b>
 <td class=r title='1 = 0x1'>1.2</td>
-<td>GripBatteryState
-  <br>GripBatteryState?</td>
-<td class=c>int8u<br>int8u</td>
+<td>GripBatteryState</td>
+<td class=c>int8u</td>
 <td><span class=s><span class=n>(K10D and K20D)</span>
   <br>[val &amp; 0xf]
   <br>1 = Empty or Missing
   <br>2 = Almost Empty
   <br>3 = Running Low
-  <br>4 = Full
-  <br><span class=n>(decoding unknown for other models)</span>
-  <br>[val &amp; 0xf]</span></td></tr>
-<tr class=b>
+  <br>4 = Full</span></td></tr>
+<tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>BodyBatteryADNoLoad
-  <br>BodyBatteryVoltage1</td>
-<td class=c>int8u<br>int16u</td>
-<td><span class=s><span class=n>(roughly calibrated for K10D with a new Pentax battery)</span></span></td></tr>
-<tr>
-<td class=r title='3 = 0x3'>3</td>
-<td>BodyBatteryADLoad</td>
-<td class=c>int8u</td>
-<td><span class=s><span class=n>(roughly calibrated for K10D with a new Pentax battery)</span></span></td></tr>
+  <br>BodyBatteryVoltage1
+  <br>BodyBatteryState</td>
+<td class=c>int8u<br>int16u<br>int8u</td>
+<td><span class=s><span class=n>(roughly calibrated for K10D with a new Pentax battery)</span>
+  <br><span class=n>(K-3III)</span></span><table class=cols><tr>
+  <td>0 = Empty or Missing
+  <br>1 = Almost Empty
+  <br>2 = Running Low</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Half Full
+  <br>4 = Close to Full
+  <br>5 = Full</td></tr></table>
+</td></tr>
 <tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>BodyBatteryADLoad
+  <br>BodyBatteryPercent</td>
+<td class=c>int8u<br>int8u</td>
+<td><span class=s><span class=n>(roughly calibrated for K10D with a new Pentax battery)</span>
+  <br><span class=n>(K-3III)</span></span></td></tr>
+<tr>
 <td class=r title='4 = 0x4'>4</td>
 <td>GripBatteryADNoLoad
-  <br>BodyBatteryVoltage2</td>
-<td class=c>int8u<br>int16u</td>
+  <br>BodyBatteryVoltage2
+  <br>BodyBatteryVoltage</td>
+<td class=c>int8u<br>int16u<br>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='5 = 0x5'>5</td>
 <td>GripBatteryADLoad</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='6 = 0x6'>6</td>
 <td>BodyBatteryVoltage3</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(K-5, K-r and 645D only)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='8 = 0x8'>8</td>
 <td>BodyBatteryVoltage4</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(K-5 and K-r only)</span></span></td></tr>
+<tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>GripBatteryState</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(K-3III)</span></span><table class=cols><tr>
+  <td>0 = Empty or Missing
+  <br>1 = Almost Empty
+  <br>2 = Running Low</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Half Full
+  <br>4 = Close to Full
+  <br>5 = Full</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='17 = 0x11'>17</td>
+<td>GripBatteryPercent</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(K-3III)</span></span></td></tr>
+<tr>
+<td class=r title='18 = 0x12'>18</td>
+<td>GripBatteryVoltage</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(K-3III)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='AFInfo'>Pentax AFInfo Tags</a></h2>
@@ -4995,7 +5031,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 21, 2024</i>
+<br><i>Last revised Jun 13, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

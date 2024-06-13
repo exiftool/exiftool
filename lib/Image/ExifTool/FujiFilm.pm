@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.94';
+$VERSION = '1.95';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -1169,6 +1169,46 @@ my %faceCategories = (
     Face8Birthday => { },
 );
 
+# tags extracted from RAF header
+%Image::ExifTool::FujiFilm::RAFHeader = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 0 => 'RAF', 1 => 'RAF', 2 => 'Image' },
+    NOTES => 'Tags extracted from the header of RAF images.',
+  # 0x00 - eg. "FUJIFILMCCD-RAW 0201FA392001FinePix S3Pro"
+    0x3c => { #PH
+        Name => 'RAFVersion',
+        Format => 'undef[4]',
+    },
+    # (all int32u values)
+  # 0x40 - 1 for M-RAW, 0 otherwise?
+  # 0x44 - high word of M-RAW offset? (only seen zero)
+  # 0x48 - M-RAW header offset
+  # 0x4c - M-RAW header length
+  # 0x50 - ? (only seen zero)
+  # 0x54 - JPEG offset
+  # 0x58 - JPEG length
+  # 0x5c - RAF directory offset
+  # 0x60 - RAF directory length
+  # 0x64 - FujiIFD dir offset
+  # 0x68 - FujiIFD dir length
+  # 0x6c - RAFCompression or JPEG start
+    0x6c => { #10
+        Name => 'RAFCompression',
+        Condition => '$$valPt =~ /^\0\0\0/', # (JPEG header is in this location for some RAF versions)
+        Format => 'int32u',
+        PrintConv => { 0 => 'None', 2 => 'Lossless', 3 => 'Lossy'  },
+    },
+  # 0x70 - ? same as 0x68?
+  # 0x74 - ? usually 0, but have seen 0x1700
+  # 0x78 - RAF1 dir offset
+  # 0x7c - RAF1 dir length
+  # 0x80 - FujiIFD1 dir offset
+  # 0x84 - FujiIFD1 dir length
+  # 0x88-0x8c - always zero?
+  # 0x90 - ? same as 0x74?
+  # 0x94 - JPEG or M-RAW start
+);
+
 # tags in RAF images (ref 5)
 %Image::ExifTool::FujiFilm::RAF = (
     PROCESS_PROC => \&ProcessFujiDir,
@@ -1797,7 +1837,7 @@ sub ProcessRAF($$)
     my ($buff, $jpeg, $warn, $offset);
 
     my $raf = $$dirInfo{RAF};
-    $raf->Read($buff,0x5c) == 0x5c    or return 0;
+    $raf->Read($buff,0x70) == 0x70    or return 0;
     $buff =~ /^FUJIFILM/              or return 0;
     # get position and size of M-RAW header and jpeg preview
     my ($mpos, $mlen) = unpack('x72NN', $buff);
@@ -1807,9 +1847,11 @@ sub ProcessRAF($$)
         $raf->Seek($jpos, 0)              or return 0;
         $raf->Read($jpeg, $jlen) == $jlen or return 0;
     }
+    SetByteOrder('MM');
     $et->SetFileType();
-    $et->FoundTag('RAFVersion', substr($buff, 0x3c, 4));
-
+    my $tbl = GetTagTable('Image::ExifTool::FujiFilm::RAFHeader');
+    $et->ProcessDirectory({ DataPt => \$buff, DirName => 'RAFHeader' }, $tbl);
+    
     # extract information from embedded JPEG
     my %dirInfo = (
         Parent => 'RAF',

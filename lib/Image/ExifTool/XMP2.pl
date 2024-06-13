@@ -101,8 +101,22 @@ my %sPose = (
 my %sEarthPose = (
     STRUCT_NAME => 'EarthPose',
     NAMESPACE => { EarthPose => 'http://ns.google.com/photos/dd/1.0/earthpose/' },
-    Latitude  => { Writable => 'real', Groups => { 2 => 'Location' }, %latConv },
-    Longitude => { Writable => 'real', Groups => { 2 => 'Location' }, %longConv },
+    Latitude  => {
+        Writable => 'real',
+        Groups => { 2 => 'Location' }, 
+        ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
+        ValueConvInv => '$val',
+        PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
+        PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1, "lat")',
+    },
+    Longitude => {
+        Writable => 'real',
+        Groups => { 2 => 'Location' },
+        ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
+        ValueConvInv => '$val',
+        PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
+        PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1, "lon")',
+    },
     Altitude  => {
         Writable => 'real',
         Groups => { 2 => 'Location' },
@@ -2109,35 +2123,41 @@ my %sACDSeeRegionStruct = (
 );
 
 # Google container tags (ref https://developer.android.com/guide/topics/media/platform/hdr-image-format)
-# NOTE: Not included because these namespace prefixes conflict with Google's depth-map Device tags!
+# NOTE: The namespace prefix used by ExifTool is 'GContainer' instead of 'Container'
+# dueo to a conflict with Google's depth-map Device 'Container' namespace!
 # (see ../pics/GooglePixel8Pro.jpg sample image)
-# %Image::ExifTool::XMP::Container = (
-#     %xmpTableDefaults,
-#     GROUPS => { 1 => 'XMP-Container', 2 => 'Image' },
-#     NAMESPACE => 'Container',
-#     NOTES => 'Google Container namespace.',
-#     Directory => {
-#         Name => 'ContainerDirectory',
-#         FlatName => 'Directory',
-#         List => 'Seq',
-#         Struct => {
-#             STRUCT_NAME => 'Directory',
-#             Item => {
-#                 Namespace => 'Container',
-#                 Struct => {
-#                     STRUCT_NAME => 'Item',
-#                     NAMESPACE => { Item => 'http://ns.google.com/photos/1.0/container/item/'},
-#                     Mime     => { },
-#                     Semantic => { },
-#                     Length   => { Writable => 'integer' },
-#                     Label    => { },
-#                     Padding  => { Writable => 'integer' },
-#                     URI      => { },
-#                 },
-#             },
-#         },
-#     },
-# );
+%Image::ExifTool::XMP::GContainer = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-GContainer', 2 => 'Image' },
+    NAMESPACE => 'GContainer',
+    NOTES => q{
+        Google Container namespace.  ExifTool uses the prefix 'GContainer' instead
+        of 'Container' to avoid a conflict with the Google Device Container
+        namespace.
+    },
+    Directory => {
+        Name => 'ContainerDirectory',
+        FlatName => 'Directory',
+        List => 'Seq',
+        Struct => {
+            STRUCT_NAME => 'Directory',
+            Item => {
+                Namespace => 'GContainer',
+                Struct => {
+                    STRUCT_NAME => 'Item',
+                    # (use 'GItem' to avoid conflict with Google Device Container Item)
+                    NAMESPACE => { GItem => 'http://ns.google.com/photos/1.0/container/item/'},
+                    Mime     => { },
+                    Semantic => { },
+                    Length   => { Writable => 'integer' },
+                    Label    => { },
+                    Padding  => { Writable => 'integer' },
+                    URI      => { },
+                },
+            },
+        },
+    },
+);
 
 # Getty Images namespace (ref PH)
 %Image::ExifTool::XMP::GettyImages = (

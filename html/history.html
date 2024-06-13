@@ -17,12 +17,33 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.87'><b>June 13, 2024 - Version 12.87</b></a>
+<ul>
+<li>Added ability to write Google Container XMP tags (using the namespace prefix
+    'GContainer' to avoid conflict with the Google Device Container prefix)
+<li>Decode a few new tags for the Canon EOS R5 (thanks John Moyer)
+<li>Decode battery information for the Pentax K-3 III
+<li>Decode RAFCompression from FujiFilm RAF images (thanks Albert Shan)
+<li>Avoid reporting FileSize of 0 for pipes
+<li>Updated Geolocation databases from current geonames.org files
+<li>Skip over Matroska Cluster if necessary to read Tags if referenced in
+    SeekHead
+<li>Changed conversion for Matroska SeekID (now in hex with tag name in
+    brackets) and SeekPosition (now returns an absolute offset)
+<li>Fixed problem writing XMP-Device:EarthPos coordinates
+<li>Fixed typo in a value of Canon:DigitalLensOptimizer (thanks Martin B.)
+<li>Fixed decoding of Matroska VideoScanType
+<li>Fixed misleading error message when -o option was used to write to an
+    unsupported file type
+</ul>
+
 <a name='v12.86'><b>June 7, 2024 - Version 12.86</b></a>
 <ul>
 <li>Added a new value for a couple of Olympus tags (thanks Herb)
 <li>Improved handling of ID3 user-defined tags
 <li>Decode all JPEG segments from RICO box in Ricoh MOV videos
-<li>Decode a few new values for some tags written by Canon EOS R cameras
+<li>Decode a few new values for some tags written by Canon EOS R cameras (thanks
+    John Moyer and Martin B.)
 <li>Patched some Olympus WB_RBLevels tags to allow 4 values to be written as per
     some newer models
 <li>Fixed issue when writing IPTC date tags with a date/time value containing
@@ -59,6 +80,8 @@ subseconds with 4 or more digits
 <li>Decode a few more Apple tags and a new CanonVRD tag
 <li>Enhanced <a href="geolocation.html">Geolocation feature</a> with the ability to return any number of nearby
     cities
+<li>Allow coordinates to be entered without comma separator for the Geolocation
+    feature as long as both coordinates have a decimal point
 <li>Fixed long-standing bug in Windows version that didn't properly handle dates
     older than 50 years when writing FileModifyDate or FileCreateDate
 <li>Fixed API <a href="ExifTool.html#TimeZone">TimeZone</a> option to work in Windows

@@ -558,6 +558,11 @@
 <td>RawBurstModeRoll</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#RawBurstInfo'>Canon RawBurstInfo Tags</a></td></tr>
+<tr class=b>
+<td title='0x4059 = 16473'>0x4059</td>
+<td>LevelInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#LevelInfo'>Canon LevelInfo Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CanonModelID'>Canon CanonModelID Values</a></h2>
@@ -5753,7 +5758,7 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfoR6'>Canon CameraInfoR6 Tags</a></h2>
-<p>CameraInfo tags for the EOS R6.</p>
+<p>CameraInfo tags for the EOS R5 and R6.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -11154,7 +11159,7 @@ option is used.</p>
 <td>DigitalLensOptimizer</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Off
-  <br>1 = Stanard
+  <br>1 = Standard
   <br>2 = High</span></td></tr>
 <tr>
 <td class=r title='11 = 0xb'>11</td>
@@ -11544,6 +11549,39 @@ to the one printed on the lens)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='LevelInfo'>Canon LevelInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>RollAngle</td>
+<td class=c>int32s</td>
+<td><span class=s><span class=n>(converted to degrees of clockwise camera rotation)</span></span></td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>PitchAngle</td>
+<td class=c>int32s</td>
+<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
+<td>FocalLength</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>MinFocalLength</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>MaxFocalLength</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='CTMD'>Canon CTMD Tags</a></h2>
 <p>Canon Timed MetaData tags found in CR3 images.  The <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded</a> option
 is automatically applied when reading CR3 files to be able to extract this
@@ -11796,7 +11834,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 7, 2024</i>
+<br><i>Last revised Jun 13, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

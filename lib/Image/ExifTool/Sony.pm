@@ -9530,7 +9530,6 @@ my %isoSetting2010 = (
         Name => 'FocusMode',
         Condition => '$$self{Model} =~ /^ILCA-/',
         Notes => 'ILCA models only',
-        Writable => 'int8u',
         Priority => 0,
         PrintConv => {
             0 => 'Manual',

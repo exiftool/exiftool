@@ -1306,7 +1306,7 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     # 2 - value: 6
     3 => {
         Name => 'DR4CameraModel',
-        Writable => 'int32u',
+        Format => 'int32u',
         PrintHex => 1,
         SeparateTable => 'Canon CanonModelID',
         PrintConv => \%Image::ExifTool::Canon::canonModelID,

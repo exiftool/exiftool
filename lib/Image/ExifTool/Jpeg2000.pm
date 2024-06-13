@@ -727,7 +727,6 @@ my %j2cMarker = (
         {
             Name => 'ColorSpecData',
             Format => 'undef[$size-3]',
-            Writable => 'undef',
             Protected => 1,
             Binary => 1,
         },

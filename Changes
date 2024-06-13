@@ -7,12 +7,32 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+June 13, 2024 - Version 12.87
+
+  - Added ability to write Google Container XMP tags (using the namespace prefix
+    'GContainer' to avoid conflict with the Google Device Container prefix)
+  - Decode a few new tags for the Canon EOS R5 (thanks John Moyer)
+  - Decode battery information for the Pentax K-3 III
+  - Decode RAFCompression from FujiFilm RAF images (thanks Albert Shan)
+  - Avoid reporting FileSize of 0 for pipes
+  - Updated Geolocation databases from current geonames.org files
+  - Skip over Matroska Cluster if necessary to read Tags if referenced in
+    SeekHead
+  - Changed conversion for Matroska SeekID (now in hex with tag name in
+    brackets) and SeekPosition (now returns an absolute offset)
+  - Fixed problem writing XMP-Device:EarthPos coordinates
+  - Fixed typo in a value of Canon:DigitalLensOptimizer (thanks Martin B.)
+  - Fixed decoding of Matroska VideoScanType
+  - Fixed misleading error message when -o option was used to write to an
+    unsupported file type
+
 June 7, 2024 - Version 12.86
 
   - Added a new value for a couple of Olympus tags (thanks Herb)
   - Improved handling of ID3 user-defined tags
   - Decode all JPEG segments from RICO box in Ricoh MOV videos
-  - Decode a few new values for some tags written by Canon EOS R cameras
+  - Decode a few new values for some tags written by Canon EOS R cameras (thanks
+    John Moyer and Martin B.)
   - Patched some Olympus WB_RBLevels tags to allow 4 values to be written as per
     some newer models
   - Fixed issue when writing IPTC date tags with a date/time value containing
@@ -47,6 +67,8 @@ Apr. 23, 2024 - Version 12.84
   - Decode a few more Apple tags and a new CanonVRD tag
   - Enhanced Geolocation feature with the ability to return any number of nearby
     cities
+  - Allow coordinates to be entered without comma separator for the Geolocation
+    feature as long as both coordinates have a decimal point
   - Fixed long-standing bug in Windows version that didn't properly handle dates
     older than 50 years when writing FileModifyDate or FileCreateDate
   - Fixed API TimeZone option to work in Windows

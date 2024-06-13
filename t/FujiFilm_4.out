@@ -1,9 +1,8 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.87
 [File, System, Other] FileSize - File Size: 38 kB
 [File, File, Other] FileType - File Type: RAF
 [File, File, Other] FileTypeExtension - File Type Extension: raf
 [File, File, Other] MIMEType - MIME Type: image/x-fujifilm-raf
-[File, File, Image] RAFVersion - RAF Version: 0106
 [File, File, Image] ExifByteOrder - Exif Byte Order: Little-endian (Intel, II)
 [File, File, Image] ImageWidth - Image Width: 8
 [File, File, Image] ImageHeight - Image Height: 8
@@ -12,6 +11,42 @@
 [File, File, Image] ColorComponents - Color Components: 3
 [File, File, Image] YCbCrSubSampling - Y Cb Cr Sub Sampling: YCbCr4:2:0 (2 2)
 [File, File, Preview] PreviewImage - Preview Image: (Binary data 12167 bytes)
+[RAF, RAF, Image] 60 - RAF Version: 0106
+[RAF, RAF, Image] 108 - RAF Compression: None
+[RAF, RAF, Image] 256 - Raw Image Full Size: 4352x1444
+[RAF, RAF, Image] 272 - Raw Image Crop Top Left: 10 48
+[RAF, RAF, Image] 273 - Raw Image Cropped Size: 4256x1424
+[RAF, RAF, Image] 289 - Raw Image Size: 4288x1440
+[RAF, RAF, Image] 304 - Fuji Layout: 1 2 1 0
+[RAF, RAF, Image] 8192 - WB GRGB Levels Auto: 384 601 384 515
+[RAF, RAF, Image] 8448 - WB GRGB Levels Daylight: 384 601 384 515
+[RAF, RAF, Image] 8704 - WB GRGB Levels Cloudy: 384 679 384 438
+[RAF, RAF, Image] 8960 - WB GRGB Levels Daylight Fluor: 384 775 384 460
+[RAF, RAF, Image] 8961 - WB GRGB Levels Day White Fluor: 384 648 384 573
+[RAF, RAF, Image] 8962 - WB GRGB Levels White Fluorescent: 384 644 384 711
+[RAF, RAF, Image] 8976 - WB GRGB Levels Warm White Fluor: 384 509 384 878
+[RAF, RAF, Image] 8977 - WB GRGB Levels Living Room Warm White Fluor: 384 419 384 920
+[RAF, RAF, Image] 9216 - WB GRGB Levels Tungsten: 384 384 384 832
+[RAF, RAF, Image] 12272 - WB GRGB Levels: 384 601 384 515
+[RAF, RAF, Image] 37376 - Relative Exposure: 0
+[RAF, RAF, Image] 38480 - Raw Exposure Bias: 0
+[RAF, RAF2, Image] 256 - Raw Image Full Size: 4352x1444
+[RAF, RAF2, Image] 272 - Raw Image Crop Top Left: 10 48
+[RAF, RAF2, Image] 273 - Raw Image Cropped Size: 4256x1424
+[RAF, RAF2, Image] 289 - Raw Image Size: 4284x1440
+[RAF, RAF2, Image] 304 - Fuji Layout: 1 2 1 0
+[RAF, RAF2, Image] 8192 - WB GRGB Levels Auto: 384 685 384 603
+[RAF, RAF2, Image] 8448 - WB GRGB Levels Daylight: 384 685 384 603
+[RAF, RAF2, Image] 8704 - WB GRGB Levels Cloudy: 384 774 384 513
+[RAF, RAF2, Image] 8960 - WB GRGB Levels Daylight Fluor: 384 883 384 539
+[RAF, RAF2, Image] 8961 - WB GRGB Levels Day White Fluor: 384 739 384 671
+[RAF, RAF2, Image] 8962 - WB GRGB Levels White Fluorescent: 384 734 384 833
+[RAF, RAF2, Image] 8976 - WB GRGB Levels Warm White Fluor: 384 580 384 1028
+[RAF, RAF2, Image] 8977 - WB GRGB Levels Living Room Warm White Fluor: 384 477 384 1078
+[RAF, RAF2, Image] 9216 - WB GRGB Levels Tungsten: 384 438 384 975
+[RAF, RAF2, Image] 12272 - WB GRGB Levels: 384 685 384 603
+[RAF, RAF2, Image] 37376 - Relative Exposure: -4.0
+[RAF, RAF2, Image] 38480 - Raw Exposure Bias: 0
 [EXIF, IFD0, Camera] 271 - Make: FUJIFILM
 [EXIF, IFD0, Camera] 272 - Camera Model Name: FinePix S5Pro
 [EXIF, IFD0, Image] 274 - Orientation: Horizontal (normal)
@@ -99,40 +134,6 @@
 [MakerNotes, FujiFilm, Camera] 5127 - Max Aperture At Max Focal: 2.8
 [MakerNotes, FujiFilm, Camera] 16640 - Faces Detected: 0
 [PrintIM, PrintIM, Printing] PrintIMVersion - PrintIM Version: 0250
-[RAF, RAF, Image] 256 - Raw Image Full Size: 4352x1444
-[RAF, RAF, Image] 272 - Raw Image Crop Top Left: 10 48
-[RAF, RAF, Image] 273 - Raw Image Cropped Size: 4256x1424
-[RAF, RAF, Image] 289 - Raw Image Size: 4288x1440
-[RAF, RAF, Image] 304 - Fuji Layout: 1 2 1 0
-[RAF, RAF, Image] 8192 - WB GRGB Levels Auto: 384 601 384 515
-[RAF, RAF, Image] 8448 - WB GRGB Levels Daylight: 384 601 384 515
-[RAF, RAF, Image] 8704 - WB GRGB Levels Cloudy: 384 679 384 438
-[RAF, RAF, Image] 8960 - WB GRGB Levels Daylight Fluor: 384 775 384 460
-[RAF, RAF, Image] 8961 - WB GRGB Levels Day White Fluor: 384 648 384 573
-[RAF, RAF, Image] 8962 - WB GRGB Levels White Fluorescent: 384 644 384 711
-[RAF, RAF, Image] 8976 - WB GRGB Levels Warm White Fluor: 384 509 384 878
-[RAF, RAF, Image] 8977 - WB GRGB Levels Living Room Warm White Fluor: 384 419 384 920
-[RAF, RAF, Image] 9216 - WB GRGB Levels Tungsten: 384 384 384 832
-[RAF, RAF, Image] 12272 - WB GRGB Levels: 384 601 384 515
-[RAF, RAF, Image] 37376 - Relative Exposure: 0
-[RAF, RAF, Image] 38480 - Raw Exposure Bias: 0
-[RAF, RAF2, Image] 256 - Raw Image Full Size: 4352x1444
-[RAF, RAF2, Image] 272 - Raw Image Crop Top Left: 10 48
-[RAF, RAF2, Image] 273 - Raw Image Cropped Size: 4256x1424
-[RAF, RAF2, Image] 289 - Raw Image Size: 4284x1440
-[RAF, RAF2, Image] 304 - Fuji Layout: 1 2 1 0
-[RAF, RAF2, Image] 8192 - WB GRGB Levels Auto: 384 685 384 603
-[RAF, RAF2, Image] 8448 - WB GRGB Levels Daylight: 384 685 384 603
-[RAF, RAF2, Image] 8704 - WB GRGB Levels Cloudy: 384 774 384 513
-[RAF, RAF2, Image] 8960 - WB GRGB Levels Daylight Fluor: 384 883 384 539
-[RAF, RAF2, Image] 8961 - WB GRGB Levels Day White Fluor: 384 739 384 671
-[RAF, RAF2, Image] 8962 - WB GRGB Levels White Fluorescent: 384 734 384 833
-[RAF, RAF2, Image] 8976 - WB GRGB Levels Warm White Fluor: 384 580 384 1028
-[RAF, RAF2, Image] 8977 - WB GRGB Levels Living Room Warm White Fluor: 384 477 384 1078
-[RAF, RAF2, Image] 9216 - WB GRGB Levels Tungsten: 384 438 384 975
-[RAF, RAF2, Image] 12272 - WB GRGB Levels: 384 685 384 603
-[RAF, RAF2, Image] 37376 - Relative Exposure: -4.0
-[RAF, RAF2, Image] 38480 - Raw Exposure Bias: 0
 [Composite, Composite, Image] Exif-Aperture - Aperture: 8.0
 [Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/250
 [Composite, Composite, Camera] Exif-BlueBalance - Blue Balance: 1.341146

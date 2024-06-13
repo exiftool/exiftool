@@ -11710,7 +11710,7 @@ my %nikonFocalConversions = (
     },
     10 => {
         Name => 'NEFCompression',
-        Writable => 'int16u',
+        Format => 'int16u',
         SeparateTable => 'NEFCompression',
         PrintConv => \%nefCompression,
     },

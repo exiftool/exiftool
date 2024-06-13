@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '12.86';
+$VERSION = '12.87';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -145,17 +145,18 @@ sub ReadValue($$$;$$$);
     SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 BMP::Extra BPG BPG::Extensions
     WPG ICO PICT PNG MNG FLIF DjVu DPX OpenEXR ZISRAW MRC LIF MRC::FEI12 MIFF
     PCX PGF PSP PhotoCD Radiance Other::PFM PDF PostScript Photoshop::Header
-    Photoshop::Layers Photoshop::ImageData FujiFilm::RAF FujiFilm::IFD
-    FujiFilm::MRAW Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3
-    ID3::Lyrics3 FLAC AAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible
-    MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile
-    QuickTime::Stream QuickTime::Tags360Fly Matroska Matroska::StdTag MOI MXF DV
-    Flash Flash::FLV Real::Media Real::Audio Real::Metafile Red RIFF AIFF ASF
-    WTV DICOM FITS XISF MIE JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH
-    Torrent EXE EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF
-    EXE::AR EXE::CHM LNK Font VCard Text VCard::VCalendar VCard::VNote RSRC
-    Rawzor ZIP ZIP::GZIP ZIP::RAR ZIP::RAR5 RTF OOXML iWork ISO FLIR::AFF
-    FLIR::FPF MacOS MacOS::MDItem FlashPix::DocTable
+    Photoshop::Layers Photoshop::ImageData FujiFilm::RAFHeader FujiFilm::RAF
+    FujiFilm::IFD FujiFilm::MRAW Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD
+    Sony::PMP ITC ID3 ID3::Lyrics3 FLAC AAC Ogg Vorbis APE APE::NewHeader
+    APE::OldHeader Audible MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime
+    QuickTime::ImageFile QuickTime::Stream QuickTime::Tags360Fly Matroska
+    Matroska::StdTag MOI MXF DV Flash Flash::FLV Real::Media Real::Audio
+    Real::Metafile Red RIFF AIFF ASF WTV DICOM FITS XISF MIE JSON HTML XMP::SVG
+    Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion EXE::PEString
+    EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard Text
+    VCard::VCalendar VCard::VNote RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR ZIP::RAR5
+    RTF OOXML iWork ISO FLIR::AFF FLIR::FPF MacOS MacOS::MDItem
+    FlashPix::DocTable
 );
 
 # alphabetical list of current Lang modules
@@ -1815,6 +1816,7 @@ my %systemTagsNotes = (
         PrintConv => 'sprintf("%.3g s", $val)',
     },
     RAFVersion => { Notes => 'RAF file version number' },
+    RAFCompression => { PrintConv => { 0 => 'Uncompressed', 2 => 'Compressed' } }, # 1 maybe lossy?
     JPEGDigest => {
         Notes => q{
             an MD5 digest of the JPEG quantization tables is combined with the component
@@ -2039,6 +2041,8 @@ my %systemTagsNotes = (
             my $lat = 1;
             foreach (@args) {
                 next unless /^[-+]?\d/;
+                my @reals = /\.\d+/g;
+                next if @reals > 1; # (allow floating "lat lon" format)
                 require Image::ExifTool::GPS;
                 $_ = Image::ExifTool::GPS::ToDegrees($_, 1, $lat ? 'lat' : 'lon');
                 $lat ^= 1;
@@ -2805,6 +2809,7 @@ sub ExtractInfo($;@)
             # (note that Windows directories will still show the
             #  daylight savings time bug -- should fix this sometime)
             @stat = stat $$raf{FILE_PT};
+            $stat[7] = undef if -p $$raf{FILE_PT};  # (pipe buffer size isn't useful)
         }
         my $fileSize = $stat[7];
         $self->FoundTag('FileSize', $stat[7]) if defined $stat[7];
@@ -4153,7 +4158,8 @@ sub GetFileType(;$$)
 #------------------------------------------------------------------------------
 # Return true if we can write the specified file type
 # Inputs: 0) file name or ext
-# Returns: true if writable, 0 if not writable, undef if unrecognized
+# Returns: true if writable, 0 if not writable, '' if not writable due to extension,
+#          undef if unrecognized
 sub CanWrite($)
 {
     local $_;
@@ -4162,7 +4168,7 @@ sub CanWrite($)
     if ($noWriteFile{$type}) {
         # can't write TIFF files with certain extensions (various RAW formats)
         my $ext = GetFileExtension($file) || uc($file);
-        return grep(/^$ext$/, @{$noWriteFile{$type}}) ? 0 : 1 if $ext;
+        return grep(/^$ext$/, @{$noWriteFile{$type}}) ? '' : 1 if $ext;
     }
     if ($onlyWriteFile{$type}) {
         my $ext = GetFileExtension($file) || uc($file);

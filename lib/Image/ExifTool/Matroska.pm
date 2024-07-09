@@ -894,7 +894,7 @@ sub HandleStruct($$;$$$$)
         $code = $lang ? "${lang}-${ctry}" : "eng-${ctry}" if $ctry; # ('eng' is default lang)
 
         if ($$tagInfo{List}) {
-            my @values = split ',+\\s*', $val;
+            my @values = split ',\\s?', $val;
             $et->FoundTag($tagInfo, $_) foreach @values;
         } elsif ($code) {
             $tagInfo = Image::ExifTool::GetLangInfo($tagInfo, $code);

@@ -28,6 +28,7 @@ table.dl td     { padding: .4em .8em }
 <br>&nbsp; - <a href="#Alt">Alternate databases</a>
 <br>&nbsp; - <a href="#List">Listing the database</a>
 <br>&nbsp; - <a href="#Custom">Customization</a>
+<br><a href="#Troubleshooting">Troubleshooting</a>
 </div>
 <a name="Geolocation"></a>
 <h1>ExifTool Geolocation Feature</h1>
@@ -258,8 +259,12 @@ IPTC:City, etc for Paris France.
 
 The table below lists the tags that are written for each group name specified
 for the Geolocate tag.  Multiple group names may be used.  In some cases,
-different tags are written based on whether input GPS coordinates or a
-city name were used.
+different tags are written based on whether input GPS coordinates or a city name
+were used.  As mentioned, the Geolocate tag is for convenience only, and makes
+it easier to write common tags listed in the table below.  The API
+<a href="ExifTool.html#Geolocation">Geolocation</a> option is more flexible and
+may be used with the <code>-tagsFromFile</code> option to write any combination
+of tags, but the command may be more complicated.
 
 <blockquote><table width='90%' class='norm'>
 <tr><th rowspan='2'>Group Name(s) Specified</th><th colspan='2'>Tags Written based on input...</th></tr>
@@ -309,15 +314,15 @@ city name were used.
     GPS:GPSLongitude<br>
     GPS:GPSLatitudeRef<br>
     GPS:GPSLongitudeRef</div></td></tr>
-<tr><td align='center'>Keys</td><td colspan='2'><div class='indent'>
-    Keys:GPSCoordinates<br>
-    Keys:LocationName (with "City, Region, Country")</div></td></tr>
+<tr><td align='center'>Keys</td>
+    <td>Keys:LocationName<br>(with "City, Region, Country")</td>
+    <td>Keys:GPSCoordinates</td></tr>
 <tr><td align='center'>ItemList</td><td colspan='2'><div class='indent'>
     ItemList:GPSCoordinates</div></td></tr>
 <tr><td align='center'>UserData</td><td colspan='2'><div class='indent'>
     UserData:GPSCoordinates</div></td></tr>
 <tr><td align='center'>QuickTime</td><td colspan='2'><div class='indent'>
-    <i>(only if Keys, ItemList or UserData not specified)</i><br>
+    <i>(only if not written to Keys, ItemList or UserData)</i><br>
     QuickTime:GPSCoordinates</div></td></tr>
 </table></blockquote></blockquote>
 
@@ -553,8 +558,59 @@ translating a name.</blockquote>
 language to affect the returned names when no language is specified.</blockquote>
 
 <hr>
+<a name="Troubleshooting"></a>
+<h3>Troubleshooting</h3>
+
+<a name="TR1"></a>
+<p>1. <b>"ExifTool returns an unexpected city for the specified GPS coordinates"</b></p>
+
+<blockquote>First, try listing a number of nearby cities to see if ExifTool is
+just finding something closer.  For example the following command lists the
+10 cities nearest to a specified GPS position, where "LAT" and "LON" are signed
+floating-point latitude and longitude:
+
+<pre>exiftool -api geolocation=LAT,LON,num=10 -a -g3</pre>
+
+If the expected city is in this list, take note of the feature codes and populations
+of these cities.  The API <a href="ExifTool.html#GeolocFeature">GeolocFeature</a>
+and API <a href="ExifTool.html#GeolocMinPop">GeolocMinPop</a> options may be used
+to limit the feature types and/or population of the returned cities according
+to your requirements.  For example, to avoid returning PPLX city types and cities
+with population less than 10000, you could do this:
+
+<pre>exiftool -api geolocfeature=-PPLX -api geolocminpop=10000 ...</pre>
+
+However, if your city doesn't appear in the list, then it is likely that it
+doesn't exist in the ExifTool Geolocation database.  You can  check this by
+searching for the specific city in the ExifTool database.  This command returns
+all cities with name "CITYNAME" exactly (case insensitive):
+
+<pre>exiftool -api geolocation="CITYNAME" -m -a -g3</pre>
+
+or this command may be used to match cities with "STRING" anywhere in their name
+(the added "<code>i</code>" makes the match case insensitive):
+
+<pre>exiftool -api geolocation="ci/STRING/i" -m -a -g3</pre>
+
+A city may not appear in the ExifTool Geolocation database if the population
+is lower than a minimum, which is 2000 for the standard database.  An
+<a href="#Alt">alternate database</a> is available with cities down to population
+500, but it may be a good idea to first see if the city exists in the source
+geonames.org database.  Use the search field <a href="https://www.geonames.org">here</a>
+to see if the city does exist and to determine its population and feature codes
+(click on the appropriate city in the list returned by the search).</blockquote>
+
+<blockquote>If the city doesn't exist at geonames.org or has incorrect information,
+there are two things you can do:  1. Create an account and geonames.org and update
+their database with the correct information.  This information will eventually
+propagate down to ExifTool (probably within a few months), or you can build your
+own <a href="#Alt">alternate database</a>.  Or 2. Create a
+<a href="#Custom">user-defined entry</a> for your city in the ExifTool config file.
+</blockquote>
+
+<hr>
 <i>Created Mar 12, 2024</i><br>
-<i>Last revised Jun 13, 2024</i>
+<i>Last revised Jun 14, 2024</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

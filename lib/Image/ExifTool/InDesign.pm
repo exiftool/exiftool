@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 # map for writing metadata to InDesign files (currently only write XMP)
 my %indMap = (
@@ -73,9 +73,13 @@ sub ProcessIND($$)
     my $pages = Get32u($curPage, 280);
     $pages < 2 and $err = 'Invalid page count', goto DONE;
     my $pos = $pages * 4096;
-    if ($pos > 0x7fffffff and not $et->Options('LargeFileSupport')) {
-        $err = 'InDesign files larger than 2 GB not supported (LargeFileSupport not set)';
-        goto DONE;
+    if ($pos > 0x7fffffff) {
+        if (not $et->Options('LargeFileSupport')) {
+            $err = 'InDesign files larger than 2 GB not supported (LargeFileSupport not set)';
+            goto DONE;
+        } elsif ($et->Options('LargeFileSupport') eq '2') {
+            $et->WarnOnce('Processing large file (LargeFileSupport is 2)');
+        }
     }
     if ($outfile) {
         # make XMP the preferred group for writing

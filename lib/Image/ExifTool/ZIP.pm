@@ -20,7 +20,7 @@ use strict;
 use vars qw($VERSION $warnString);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.31';
+$VERSION = '1.32';
 
 sub WarnProc($) { $warnString = $_[0]; }
 
@@ -325,9 +325,13 @@ sub ProcessRAR($$)
             last if $size < 0;
             next unless $size;  # ignore blocks with no data
             # don't try to read very large blocks unless LargeFileSupport is enabled
-            if ($size >= 0x80000000 and not $et->Options('LargeFileSupport')) {
-                $et->Warn('Large block encountered. Aborting.');
-                last;
+            if ($size >= 0x80000000) {
+                if (not $et->Options('LargeFileSupport')) {
+                    $et->Warn('Large block encountered. Aborting.');
+                    last;
+                } elsif ($et->Options('LargeFileSupport') eq '2') {
+                    $et->WarnOnce('Processing large block (LargeFileSupport is 2)');
+                }
             }
             # process the block
             if ($type == 0x74) { # file block

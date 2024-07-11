@@ -109,8 +109,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-12.87.tar.gz | tar -xf -
-  cd Image-ExifTool-12.87
+  gzip -dc Image-ExifTool-12.88.tar.gz | tar -xf -
+  cd Image-ExifTool-12.88
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -209,6 +209,7 @@ distribution package:
     gps2utm.config            - Generate UTM coordinate tags from GPS info
     guano.config              - Decode individual tags from Guano metadata
     nksc.config               - Decode tags in Nikon ViewNX NKSC files
+    onone.config              - Definitions for writing On1 XMP tags
     photoshop_paths.config    - For extracting or copying Photoshop paths
     picasa_faces.config       - Convert from Picasa to MWG/MP face regions
     pix4d.config              - Definitions for writing Pix4D XMP tags

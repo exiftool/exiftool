@@ -507,10 +507,16 @@ sub WriteItemInfo($$$)
         my ($warn, $extent, $buff, @edit);
         $warn = 'Missing iloc box' unless $$boxPos{iloc};
         $warn = "No Extents for $type item" unless $$item{Extents} and @{$$item{Extents}};
-        $warn = "Can't currently decode encoded $type metadata" if $$item{ContentEncoding};
+        if ($$item{ContentEncoding}) {
+            if ($$item{ContentEncoding} ne 'deflate') {
+                $warn = "Can't currently decode $$item{ContentEncoding} encoded $type metadata";
+            } elsif (not eval { require Compress::Zlib }) {
+                $warn = "Install Compress::Zlib to decode deflated $type metadata";
+            }
+        }
         $warn = "Can't currently decode protected $type metadata" if $$item{ProtectionIndex};
         $warn = "Can't currently extract $type with construction method $$item{ConstructionMethod}" if $$item{ConstructionMethod};
-        $warn = "$type metadata is not this file" if $$item{DataReferenceIndex};
+        $warn = "$type metadata is not in this file" if $$item{DataReferenceIndex};
         $warn and $et->Warn($warn), next;
         my $base = $$item{BaseOffset} || 0;
         my $val = '';
@@ -527,6 +533,25 @@ sub WriteItemInfo($$$)
         }
         next unless defined $buff;
         $buff = $val . $buff if length $val;
+        my $comp = $et->Options('Compress');
+        if (defined $comp and ($comp xor $$item{ContentEncoding})) {
+            #TODO: add ability to edit infe entry in iinf to change encoding according to Compress option if set
+            $et->Warn("Can't currently change compression when rewriting $name in HEIC");
+        }
+        my $wasDeflated;
+        if ($$item{ContentEncoding}) {
+            my ($v2, $stat);
+            my $inflate = Compress::Zlib::inflateInit();
+            $inflate and ($v2, $stat) = $inflate->inflate($buff);
+            $et->VPrint(0, "  (Inflating stored $name metadata)\n");
+            if ($inflate and $stat == Compress::Zlib::Z_STREAM_END()) {
+                $buff = $v2;
+                $wasDeflated = 1;
+            } else {
+                $et->WarnOnce("Error inflating $name metadata");
+                next;
+            }
+        }
         my ($hdr, $subTable, $proc);
         if ($name eq 'EXIF') {
             if (not length $buff) {
@@ -560,6 +585,17 @@ sub WriteItemInfo($$$)
             ($dirInfo{DirLen} or length $newVal))
         {
             $newVal = $hdr . $newVal if length $hdr and length $newVal;
+            if ($wasDeflated) {
+                my $deflate = Compress::Zlib::deflateInit();
+                if ($deflate) {
+                    $et->VPrint(0, "  (Re-deflating new $name metadata)\n");
+                    $buff = $deflate->deflate($newVal);
+                    if (defined $buff) {
+                        $buff .= $deflate->flush();
+                        $newVal = $buff;
+                    }
+                }
+            }
             $edit[0][2] = \$newVal;     # replace the old chunk with the new data
             $edit[0][3] = $id;          # mark this chunk with the item ID
             push @mdatEdit, @edit;
@@ -640,21 +676,38 @@ sub WriteItemInfo($$$)
             # add new infe to iinf
             $add{iinf} = $add{iref} = $add{iloc} = '' unless defined $add{iinf};
             my ($type, $mime);
+            my $enc = '';
             if ($name eq 'XMP') {
                 $type = "mime\0";
                 $mime = "application/rdf+xml\0";
+                # write compressed XMP if Compress option is set
+                if ($et->Options('Compress') and length $newVal) {
+                    if (not eval { require Compress::Zlib }) {
+                        $et->WarnOnce('Install Compress::Zlib to write compressed metadata');
+                    } else {
+                        my $deflate = Compress::Zlib::deflateInit();
+                        if ($deflate) {
+                            $et->VPrint(0, "  (Deflating new $name metadata)\n");
+                            my $buff = $deflate->deflate($newVal);
+                            if (defined $buff) {
+                                $newVal = $buff . $deflate->flush();
+                                $enc = "deflate\0";
+                            }
+                        }
+                    }
+                }
             } else {
                 $type = "Exif\0";
                 $mime = '';
             }
             my $id = 1;
             ++$id while $$items{$id} or $usedID{$id};   # find next unused item ID
-            my $n = length($type) + length($mime) + 16;
+            my $n = length($type) + length($mime) + length($enc) + 16;
             if ($id < 0x10000) {
-                $add{iinf} .= pack('Na4CCCCnn', $n, 'infe', 2, 0, 0, 1, $id, 0) . $type . $mime;
+                $add{iinf} .= pack('Na4CCCCnn', $n, 'infe', 2, 0, 0, 1, $id, 0) . $type . $mime . $enc;
             } else {
                 $n += 2;
-                $add{iinf} .= pack('Na4CCCCNn', $n, 'infe', 3, 0, 0, 1, $id, 0) . $type . $mime;
+                $add{iinf} .= pack('Na4CCCCNn', $n, 'infe', 3, 0, 0, 1, $id, 0) . $type . $mime . $enc;
             }
             # add new cdsc to iref
             if ($irefVer) {
@@ -733,28 +786,36 @@ sub WriteItemInfo($$$)
                 $add{$tag} = Set32u(12 + length $add{$tag}) . $tag .
                              Set8u($$boxPos{$tag}[2]) . "\0\0\0" . $add{$tag};
             } elsif ($tag ne 'hdlr') {
-                my $n = Get32u($outfile, $pos);
-                Set32u($n + length($add{$tag}), $outfile, $pos);    # increase box size
+                my $n = Get32u($outfile, $pos) +  length($add{$tag});
+                Set32u($n, $outfile, $pos);    # increase box size
             }
             if ($tag eq 'iinf') {
                 my $iinfVer = Get8u($outfile, $pos + 8);
                 if ($iinfVer == 0) {
-                    my $n = Get16u($outfile, $pos + 12);
-                    Set16u($n + $countNew, $outfile, $pos + 12);    # incr count
+                    my $n = Get16u($outfile, $pos + 12) + $countNew;
+                    if ($n > 0xffff) {
+                        $et->Error("Can't currently handle rollover to long item count");
+                        return undef;
+                    }
+                    Set16u($n, $outfile, $pos + 12);    # incr count
                 } else {
-                    my $n = Get32u($outfile, $pos + 12);
-                    Set32u($n + $countNew, $outfile, $pos + 12);    # incr count
+                    my $n = Get32u($outfile, $pos + 12) + $countNew;
+                    Set32u($n, $outfile, $pos + 12);    # incr count
                 }
             } elsif ($tag eq 'iref') {
                 # nothing more to do
             } elsif ($tag eq 'iloc') {
                 my $ilocVer = Get8u($outfile, $pos + 8);
                 if ($ilocVer < 2) {
-                    my $n = Get16u($outfile, $pos + 14);
-                    Set16u($n + $countNew, $outfile, $pos + 14);    # incr count
+                    my $n = Get16u($outfile, $pos + 14) + $countNew;
+                    Set16u($n, $outfile, $pos + 14);    # incr count
+                    if ($n > 0xffff) {
+                        $et->Error("Can't currently handle rollover to long item count");
+                        return undef;
+                    }
                 } else {
-                    my $n = Get32u($outfile, $pos + 14);
-                    Set32u($n + $countNew, $outfile, $pos + 14);    # incr count
+                    my $n = Get32u($outfile, $pos + 14) + $countNew;
+                    Set32u($n, $outfile, $pos + 14);    # incr count
                 }
                 # must also update pointer locations in this box
                 if ($added) {
@@ -895,6 +956,8 @@ sub WriteQuickTime($$$)
                 } elsif (not $et->Options('LargeFileSupport')) {
                     $et->Error('End of processing at large atom (LargeFileSupport not enabled)');
                     last;
+                } elsif ($et->Options('LargeFileSupport') eq '2') {
+                    $et->WarnOnce('Processing large atom (LargeFileSupport is 2)');
                 }
             }
             $size = $hi * 4294967296 + $lo - 16;
@@ -1447,7 +1510,13 @@ sub WriteQuickTime($$$)
             $writeLast = ($writeLast || '') . $hdr . $buff;
         } else {
             # save position of this box in the output buffer
+#TODO do this:
+#TODO            my $bp = $boxPos{$tag} || ($boxPos{$tag} = [ ]);
+#TODO            push @$bp, length($$outfile), length($hdr) + length($buff);
+#TODO instead of this:
             $boxPos{$tag} = [ length($$outfile), length($hdr) + length($buff) ];
+#TODO then we have the positions of all the infe boxes -- we then only need
+#TODO to know the index of the box to edit if the encoding changes for one of them
             # copy the existing atom
             Write($outfile, $hdr, $buff) or $rtnVal=$rtnErr, $err=1, last;
         }

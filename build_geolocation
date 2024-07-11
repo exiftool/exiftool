@@ -15,6 +15,7 @@
 #               2024-04-24 - PH Fixed problem with population exponent when run
 #                               under ActivePerl
 #               2024-04-29 - PH Added feature types and default to db v1.03
+#               2024-06-13 - PH Tweaked case of imported feature types
 #
 # Notes:        Requires these files from https://download.geonames.org/export/
 #
@@ -208,8 +209,9 @@ Syntax:       build_geolocation [OPTIONS] [DBFILE] ...
 Options:
   DBFILE    - Input database file name or directory.  Multiple input database
               files may be specified.  The -p, -c and -cp options apply to
-              the database that comes after them on the command line.
-              Default is "$dbFile".
+              the database that comes after them on the command line.  The
+              other input files are assumed to be in the same directory as
+              the first database file.  Default is "$dbFile".
   -p POP    - Minimum population for cities to include.  POP may be a number
               or be of the form "CC[,C2...]=###" to set different limits for
               specific countries/regions, where CC and C2 are country codes
@@ -250,7 +252,7 @@ Input files (download from https://download.geonames.org/export/dump/):
   $countryFile       - mandatory country names file
   $regionFile  - mandatory region names file
   $admin2File       - mandatory subregion names file
-  $featureFile   - optional feature codes file
+  $featureFile   - optional feature codes file(s)
   $altNamesFile  - optional alternate names file (must exist to
                           to generate $outAltNames and $geoLang files)
 
@@ -478,6 +480,7 @@ if (open INFILE, '<', "$dbdir/$featureFile") {
         next unless $featureCodes{$items[0]};
         my $name = ucfirst $items[1];
         $name =~ s/ ([a-z])/ \U$1/g;
+        $name =~ s/(.)\b(Of|Or|A|An|On|In|The|By|For|And)\b/$1\L$2/g;
         $featureNames{$items[0]} = $name;
     }
     close INFILE;

@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.77';
+$VERSION = '4.78';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -630,6 +630,7 @@ $VERSION = '4.77';
    '61182.53' => 'Canon RF 28mm F2.8 STM', #42
    '61182.54' => 'Canon RF 24-105mm F2.8 L IS USM Z', #42
    '61182.55' => 'Canon RF-S 10-18mm F4.5-6.3 IS STM', #42
+   '61182.56' => 'Canon RF 35mm F1.4 L VCM', #42
     65535 => 'n/a',
 );
 
@@ -6400,8 +6401,12 @@ my %ciMaxFocal = (
             10 => 'AF Point Expansion (8 point)', #forum6237
             11 => 'Flexizone Multi (49 point)', #PH (NC, EOS M, live view; 750D 49 points)
             12 => 'Flexizone Multi (9 point)', #PH (750D, 9 points)
-            13 => 'Flexizone Single', #PH (EOS M default, live view)
+            13 => 'Flexizone Single', #PH (EOS M default, live view) (R7 calls this '1-point AF', ref github268)
             14 => 'Large Zone AF', #PH/forum6237 (7DmkII)
+            19 => 'Flexible Zone AF 1', #github268 (R7)
+            20 => 'Flexible Zone AF 2', #github268 (R7)
+            21 => 'Flexible Zone AF 3', #github268 (R7)
+            22 => 'Whole Area AF', #github268 (R7)
         },
     },
     2 => {
@@ -6980,6 +6985,7 @@ my %ciMaxFocal = (
             313 => 'Canon RF 28mm F2.8 STM', #42
             314 => 'Canon RF 24-105mm F2.8 L IS USM Z', #42
             315 => 'Canon RF-S 10-18mm F4.5-6.3 IS STM', #42
+            316 => 'Canon RF 35mm F1.4 L VCM', #42
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },
     },

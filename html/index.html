@@ -98,9 +98,9 @@ the distribution files or access web pages too quickly will be blocked.</i></p>
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.87.tar.gz/download">
-Download        Version 12.87</a> (7.1 MB) -
-<a href="history.html">June 13, 2024</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.88.tar.gz/download">
+Download        Version 12.88</a> (7.1 MB) -
+<a href="history.html">July 11, 2024</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -146,33 +146,34 @@ as well as the maker notes of many digital cameras by
 <a href="TagNames/Sigma.html">Sigma/Foveon</a> and
 <a href="TagNames/Sony.html">Sony</a>.</p>
 
-<p>ExifTool is also available as a <b>stand-alone Windows executable</b> and a
+<p>ExifTool is also available as a <b>Windows executable</b> and a
 <b>MacOS package</b>:  <i>(Note that these versions contain the executable
 only, and do not include the HTML documentation or other files of the full
 distribution above.)</i></p>
 
-<blockquote><table class='dl lg'><tr><td><b>
-<a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.87.zip/download">
-         exiftool-12.87.zip</a> (8.8 MB)</b></td></tr></table></blockquote>
+<blockquote><table class='dl lg'><tr><td rowspan=2><b><a name="alone">Windows</a></b></td><td><b>
+32-bit:<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.88_32.zip/download">
+         exiftool-12.88_32.zip</a> (10.7 MB)</b></td></tr>
+<tr><td><b>64-bit:
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.88_64.zip/download">
+         exiftool-12.88_64.zip</a> (10.6 MB)</b></td></tr>
+         </table></blockquote>
 
-<p><b>The stand-alone Windows executable</b> does not require Perl. Just
-download and un-zip the archive then double-click on
-"<code>exiftool(-k).exe</code>" to read the application documentation,
-drag-and-drop files and folders to view meta information, or rename to
-"<code>exiftool.exe</code>" for command-line use.  Runs on all versions
-of Windows.</p>
+<p><b>The Windows executable</b> archive includes Perl. Just download and un-zip
+the archive then double-click on "<code>exiftool(-k).exe</code>" to read the
+application documentation, drag-and-drop files and folders to view meta
+information, or rename to "<code>exiftool.exe</code>" for command-line use.</p>
 
-<p><i>(Note: Oliver Betz provides an
-<a href="https://oliverbetz.de/pages/Artikel/ExifTool-for-Windows">alternate ExifTool Windows installer</a>
-that avoids some problems of the self-extracting archive version above.  Please post
-<a href="https://exiftool.org/forum/index.php/topic,10128.0.html">here</a>
-if you have any problems/comments with this version.)</i></p>
+<p><i>(Note: The Windows packages are based on work by Oliver Betz, and use his
+launcher.  Oliver also provides self-installing versions of these executables
+<a href="https://oliverbetz.de/pages/Artikel/ExifTool-for-Windows">here</a>.
+See <a href="https://exiftool.org/forum/index.php/topic,10128.0.html">this forum post</a>
+if you have any problems/comments with these versions.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
-<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-12.87.dmg</a> (5.2 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-12.88.pkg/download">
+         ExifTool-12.88.pkg</a> (5.1 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -183,10 +184,12 @@ installing ExifTool on Windows, MacOS and Unix systems.</p>
 
 <ul>
 <li><a href="checksums.txt">Click here
-for the SHA1 and MD5 checksums to verify these distribution packages</a>.</li>
+for the SHA256 (recommended), SHA1 and MD5 checksums to verify these
+distribution packages</a>.</li>
 <li>The version number of the latest ExifTool release may be found
-<a href="ver.txt">here</a>, and the name of the most recent alternate
-geolocation database is <a href="geo.txt">here</a>.</li>
+<a href="ver.txt">here</a>, and the name of the most recent
+<a href="geolocation.html#Alt">alternate geolocation database</a>
+is <a href="geo.txt">here</a>.</li>
 </ul>
 
 <h2><a name="features">Features</a></h2>
@@ -650,7 +653,7 @@ exiftool</code>". Alternately, you may be able to rename it to
 requires that the proper Windows associations have been made for the
 "<code>.pl</code>" extension.</p>
 
-<p>The stand-alone version ("<code>exiftool(-k).exe</code>") should be
+<p>The ExifTool .exe file ("<code>exiftool(-k).exe</code>") should be
 renamed to "<code>exiftool.exe</code>" to allow it to be run by typing
 "<code>exiftool</code>" at the command line.</p>
 
@@ -669,8 +672,8 @@ quotes instead of single quotes as shown in some examples.</p>
 documentation, or drag-and-drop files and folders to run exiftool on the
 selected files.</p>
 
-<p>Simple options may be added inside brackets in the name of the stand-alone
-executable.  (But note that the characters <code>/\?*:|"&lt;&gt;</code> may not
+<p>Simple options may be added inside brackets in the name of the .exe file.
+(But note that the characters <code>/\?*:|"&lt;&gt;</code> may not
 be used because they are invalid in Windows file names.)  In this way, the
 behaviour of the drag-and-drop application can be customized.  For example:</p>
 
@@ -1255,7 +1258,9 @@ bypassed in processing so they are never even extracted -- specifying
 <code>--XMP-crs:all</code> and <code>-XMP-crd:all</code> may speed processing
 significantly by avoiding processing of bulky Adobe image-editing information.
 The <a href="ExifTool.html#IgnoreTags">API IgnoreTags option</a> (added in
-ExifTool 12.43) may also be used for significant speed benefits in some cases.</p>
+ExifTool 12.43) may also be used for significant speed benefits in some cases,
+especially when memory usage is significant because this may significantly
+reduced the required memory.</p>
 
 <p>The <code>-fast</code> option can significantly increase speed when
 extracting information from JPEG images which are piped across a slow network
@@ -1601,11 +1606,11 @@ book.</p>
 <h2><a name="contact">Contact Me</a></h2>
 
 <p>If you have any comments, suggestions or questions, please post to the
-<a href="https://exiftool.org/forum/">ExifTool Forum</a> so
-other people may benefit from your experiences.  (I check the forum at least as
-often as my email.)  Otherwise, if you must contact me directly, my e-mail
-address is on the first line of the README file in the full distribution. 
-Thanks. &nbsp; - <i>Phil Harvey</i></p>
+<a href="https://exiftool.org/forum/">ExifTool Forum</a> so other people may
+benefit from your experiences.  (I will respond in the forum more quickly than
+by email.)  Otherwise, if you must contact me directly, my e-mail address is on
+the first line of the README file in the full distribution. Thanks. &nbsp; -
+<i>Phil Harvey</i></p>
 
 <div class=wide><table class=links><tr>
 <th><a href="install.html" class=wt>&nbsp;Installing&nbsp;</a></th>

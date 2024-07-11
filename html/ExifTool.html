@@ -534,8 +534,8 @@ effect as a value of 0 for options with numerical values.</p>
     <td align=center>0 or 1</td><td align=center>1</td></tr>
 <tr id="Compress"><td>Compress</td><td>Flag to write new values in compressed
     format if possible. Has no effect unless the relevant compression library is
-    available.  Valid when writing metadata to PNG, JXL or MIE images. Setting this
-    to zero causes JXL metadata to be rewritten as uncompressed when edited.</td>
+    available.  Valid when writing metadata to PNG, JXL, HEIC or MIE images.
+    Setting this to zero causes JXL metadata to be rewritten as uncompressed when edited.</td>
     <td align=center>0, 1 or undef</td><td align=center>undef</td></tr>
 <tr id="CoordFormat"><td>CoordFormat</td><td>Specify output format for GPS coordinates.</td>
     <td>A printf-style format string with specifiers
@@ -663,9 +663,13 @@ effect as a value of 0 for options with numerical values.</p>
     country code (eg. "Paris,France") to act as a default for files not
     containing GPS or geolocation information, or include tag names with leading
     dollar signs separated by commas to specify the tags to use for the
-    geolocation input. May also include regular expressions for more flexible
-    matching. See <a href="geolocation.html#Read">Reading Geolocation information</a>
-    for more details.</td>
+    geolocation input. When "Lat,Lon" is specified, "num=##" may be added to
+    return the specified number of nearby cities (the
+    <a href="#Duplicates">Duplicates</a> option must also be used for the duplicate
+    tags to be returned).  May include regular expressions for more flexible
+    matching of city names.  See
+    <a href="geolocation.html#Read">Reading Geolocation information</a> for more
+    details.</td>
     <td align=center>0, 1, or comma-separated string with default location and/or
     tag names to use as input to the geolocation determination.  See
     <a href="geolocation.html#Read">here</a> for details.</td>
@@ -796,8 +800,11 @@ effect as a value of 0 for options with numerical values.</p>
     undef to select the built-in default language.</td>
     <td align=left>Image::ExifTool::Lang module name (eg. 'fr', 'zh_cn'), or 'en' or undef for the default language.</td>
     <td align=center>'en'</td></tr>
-<tr id="LargeFileSupport"><td>LargeFileSupport</td><td>Flag to indicate that 64-bit file offsets are supported on this system.</td>
-    <td align=center>0 or 1</td><td align=center>undef</td></tr>
+<tr id="LargeFileSupport"><td>LargeFileSupport</td><td>Flag to indicate that 64-bit file offsets
+    are supported on this system.  If not set, processing is aborted if a chunk
+    larger than 2 GB is encountered.  Set to 1 to process large chunks, or 2
+    to process with a warning.</td>
+    <td align=center>0, 1 or 2</td><td align=center>2</td></tr>
 <tr id="LimitLongValues"><td>LimitLongValues</td><td>When extracting some values for
     some specific tags (usually Unknown tags), the PrintConv values are length-limited
     and the value is truncated with an ellipsis ("[...]") if it exceeds a specified
@@ -970,7 +977,9 @@ effect as a value of 0 for options with numerical values.</p>
     but flag flattened tags as "unsafe" for copying</td></tr>
     </table></td><td align=center>undef</td></tr>
 <tr id="StructFormat"><td>StructFormat</td><td>Format for serialized structures when reading/writing.
-    <a href="struct.html">Read here</a> for more details about structured information.</td>
+    <a href="struct.html">Read here</a> for more details about structured information.
+    Note that the JSONQ setting causes all values in the exiftool application -json
+    output to be quoted, regardless of whether or not they are in a structure.</td>
     <td><table class=clear>
     <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>ExifTool format</td></tr>
     <tr><td valign=top align=right><b>JSON</b>&nbsp;=</td><td>JSON format</td></tr>

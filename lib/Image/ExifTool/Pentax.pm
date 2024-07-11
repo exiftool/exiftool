@@ -5574,15 +5574,27 @@ my %binaryDataAttrs = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     FORMAT => 'int8s',
     NOTES => 'Tags decoded from the electronic level information for the K-3 III.',
-    # 1 - 0 for Horizontal, 3 for rotate 90, 4 for pointing straight up
+    1 => {
+        Name => 'CameraOrientation',
+        PrintConv => {
+            0 => 'Horizontal (normal)',
+            1 => 'Rotate 270 CW',
+            2 => 'Rotate 180',
+            3 => 'Rotate 90 CW',
+            4 => 'Upwards', # (to the sky)
+            5 => 'Downwards', # (to the ground)
+        },
+    },
     3 => {
         Name => 'RollAngle',
+        Notes => 'converted to degrees of clockwise camera rotation',
         Format => 'int16s',
         ValueConv => '-$val / 2',
         ValueConvInv => '-$val * 2',
     },
     5 => {
         Name => 'PitchAngle',
+        Notes => 'converted to degrees of upward camera tilt',
         Format => 'int16s',
         ValueConv => '-$val / 2',
         ValueConvInv => '-$val * 2',

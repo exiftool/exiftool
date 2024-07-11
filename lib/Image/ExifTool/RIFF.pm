@@ -30,7 +30,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.67';
+$VERSION = '1.68';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -2041,11 +2041,16 @@ sub ProcessRIFF($$)
             last unless $moviEnd;
             # we arrived here because there was a problem parsing the movie data
             # so seek to the end to continue processing
-            if ($moviEnd > 0x7fffffff and not $et->Options('LargeFileSupport')) {
-                $et->Warn('Possibly corrupt LIST_movi data');
-                $et->Warn('Stopped parsing at large LIST_movi chunk (LargeFileSupport not set)');
-                undef $err;
-                last;
+            if ($moviEnd > 0x7fffffff) {
+                unless ($et->Options('LargeFileSupport')) {
+                    $et->Warn('Possibly corrupt LIST_movi data');
+                    $et->Warn('Stopped parsing at large LIST_movi chunk (LargeFileSupport not set)');
+                    undef $err;
+                    last;
+                }
+                if ($et->Options('LargeFileSupport') eq '2') {
+                    $et->WarnOnce('Processing large chunk (LargeFileSupport is 2)');
+                }
             }
             if ($validate) {
                 # (must actually try to read something after seeking to detect error)
@@ -2159,10 +2164,15 @@ sub ProcessRIFF($$)
                 $moviEnd = $raf->Tell() + $len2;
                 next; # parse into movi chunk
             } elsif (not $rewind) {
-                if ($len > 0x7fffffff and not $et->Options('LargeFileSupport')) {
-                    $tag =~ s/([\0-\x1f\x7f-\xff])/sprintf('\\x%.2x',ord $1)/eg;
-                    $et->Warn("Stopped parsing at large $tag chunk (LargeFileSupport not set)");
-                    last;
+                if ($len > 0x7fffffff) {
+                    unless ($et->Options('LargeFileSupport')) {
+                        $tag =~ s/([\0-\x1f\x7f-\xff])/sprintf('\\x%.2x',ord $1)/eg;
+                        $et->Warn("Stopped parsing at large $tag chunk (LargeFileSupport not set)");
+                        last;
+                    }
+                    if ($et->Options('LargeFileSupport') eq '2') {
+                        $et->WarnOnce('Processing large chunk (LargeFileSupport is 2)');
+                    }
                 }
                 if ($validate and $len2) {
                     # (must actually try to read something after seeking to detect error)

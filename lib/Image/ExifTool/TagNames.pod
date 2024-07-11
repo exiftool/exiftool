@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27888 tags, with 17458 unique tag names.
+They contain a total of 27892 tags, with 17459 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -4795,6 +4795,7 @@ These tags belong to the ExifTool XMP-GCamera family 1 group.
   BurstID                                       string
   BurstPrimary                                  string
   DisableAutoCreation                           string+
+  DisableSuggestedAction                        string+
   HDRPMakerNote                                 string
   HdrPlusMakernote                              string
   MicroVideo                                    integer
@@ -8277,6 +8278,7 @@ Tags decoded from the electronic level information for the K-3 III.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      1    CameraOrientation                    int8s
       3    RollAngle                            int16s
       5    PitchAngle                           int16s
 
@@ -20291,6 +20293,7 @@ These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.
   0x0030   CropLeft                             int16u
   0x0031   CropBottom                           int16u
   0x0032   CropRight                            int16u
+  0x0037   ISO                                  int32u
   0x010f   Make                                 string
   0x0110   Model                                string
   0x0111   StripOffsets                         no
@@ -29496,11 +29499,11 @@ parameters, as well as proprietary information written by many camera
 models.  Tags with a question mark after their name are not extracted unless
 the Unknown option is set.
 
-When writing, ExifTool creates both QuickTime and XMP tags by default, but
-the group may be specified to write one or the other separately.  If no
-location is specified, newly created QuickTime tags are added in the
-L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> location if
-possible, otherwise in
+When writing video files, ExifTool creates both QuickTime and XMP tags by
+default, but the group may be specified to write one or the other
+separately.  If no location is specified, newly created QuickTime tags are
+added in the L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags>
+location if possible, otherwise in
 L<UserData|Image::ExifTool::TagNames/QuickTime UserData Tags>, and
 finally in L<Keys|Image::ExifTool::TagNames/QuickTime Keys Tags>,
 but this order may be changed by setting the PREFERRED level of the
@@ -29551,7 +29554,7 @@ the original size by padding with nulls if necessary.
 
 See
 L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/>
-for the official specification.
+for the official QuickTime specification.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
@@ -29623,6 +29626,7 @@ currently reads 74 different formats of timed GPS metadata from video files.
   CameraModel                                   no
   Car                                           no
   DateTimeOriginal                              no
+  DateTimeStamp                                 no
   Distance                                      no
   ExposureCompensation                          no
   ExposureTime                                  no

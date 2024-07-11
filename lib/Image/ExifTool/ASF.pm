@@ -17,7 +17,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::RIFF;
 
-$VERSION = '1.25';
+$VERSION = '1.26';
 
 sub ProcessASF($$;$);
 sub ProcessContentDescription($$$);
@@ -780,6 +780,9 @@ sub ProcessASF($$;$)
             if ($size > 0x7fffffff * 4294967296) {
                 $err = 'Invalid ASF object size';
             } elsif ($et->Options('LargeFileSupport')) {
+                if ($et->Options('LargeFileSupport') eq '2') {
+                    $et->WarnOnce('Skipping large ASF object (LargeFileSupport is 2)');
+                }
                 if ($raf->Seek($size, 1)) {
                     $et->VPrint(0, "  Skipped large ASF object ($size bytes)\n");
                     $pos += $size;

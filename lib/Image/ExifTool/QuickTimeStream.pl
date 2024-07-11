@@ -143,6 +143,7 @@ my %insvLimit = (
     ExposureCompensation => { PrintConv => 'Image::ExifTool::Exif::PrintFraction($val)', Groups => { 2 => 'Camera' } },
     ISO          => { Groups => { 2 => 'Camera' } },
     CameraDateTime=>{ PrintConv => '$self->ConvertDateTime($val)', Groups => { 2 => 'Time' } },
+    DateTimeStamp =>{ PrintConv => '$self->ConvertDateTime($val)', Groups => { 2 => 'Time' } },
     VideoTimeStamp => { Groups => { 2 => 'Video' } },
     Accelerometer=> { Notes => '3-axis acceleration in units of g' },
     AccelerometerData => { },
@@ -992,8 +993,29 @@ sub Process_text($$$;$)
             $tags{Text} = defined $tags{Text} ? $tags{Text} . "\$$tag$dat" : "\$$tag$dat";
         }
     }
-    %tags and HandleTextTags($et, $tagTbl, \%tags), return;
-
+    if (%tags) {
+        unless ($tags{Accelerometer}) { # (probably unnecessary test)
+            # check for NextBase 622GW accelerometer data
+            # Example data (leading 2-byte length word has been stripped by ProcessSamples):
+            # 0000: 00 00 00 00 32 30 32 32 30 39 30 35 31 36 34 30 [....202209051640]
+            # 0010: 33 33 00 00 29 00 ba ff 48 ff 18 00 f2 07 5a ff [33..)...H.....Z.]
+            # 0020: 64 ff e8 ff 58 ff e8 ff c1 07 43 ff 41 ff d2 ff [d...X.....C.A...]
+            # 0030: 58 ff ea ff dc 07 50 ff 30 ff e0 ff 72 ff d8 ff [X.....P.0...r...]
+            # 0040: f5 07 51 ff 16 ff dc ff 6a ff ca ff 33 08 45 ff [..Q.....j...3.E.]
+            if ($$dataPt =~ /^\0{4}(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})\0\0.{2}/s) {
+                $tags{DateTimeStamp} = "$1:$2:$2 $4:$5:$6";
+                my $num = unpack('x20v', $$dataPt); # number of accelerometer readings
+                if ($num and $num * 12 + 22 < length $$dataPt) {
+                    $num *= 6;
+                    my @acc = unpack("x22v$num", $$dataPt);
+                    map { $_ = $_ - 0x10000 if $_ >= 0x8000 } @acc;
+                    $tags{AccelerometerData} = "@acc";
+                }
+            }
+        }
+        HandleTextTags($et, $tagTbl, \%tags);
+        return;
+    }
     # check for enciphered binary GPS data
     # BlueSkySea:
     #   0000: 00 00 aa aa aa aa 54 54 98 9a 9b 93 9a 92 98 9a [......TT........]

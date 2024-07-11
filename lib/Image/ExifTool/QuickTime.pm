@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.97';
+$VERSION = '2.98';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -8992,12 +8992,20 @@ sub HandleItemInfo($)
                 if ($$item{Extents} and @{$$item{Extents}}) {
                     $len += $$_[2] foreach @{$$item{Extents}};
                 }
-                $et->VPrint(0, "$$et{INDENT}Item $id) '${type}' ($len bytes)\n");
+                my $enc = $$item{ContentEncoding} ? ", $$item{ContentEncoding} encoded" : '';
+                $et->VPrint(0, "$$et{INDENT}Item $id) '${type}' ($len bytes$enc)\n");
             }
             # get ExifTool name for this item
             my $name = { Exif => 'EXIF', 'application/rdf+xml' => 'XMP', jpeg => 'PreviewImage' }->{$type} || '';
             my ($warn, $extent);
-            $warn = "Can't currently decode encoded $type metadata" if $$item{ContentEncoding};
+            if ($$item{ContentEncoding}) {
+                if ($$item{ContentEncoding} ne 'deflate') {
+                    # (other possible values are 'gzip' and 'compress', but I don't have samples of these)
+                    $warn = "Can't currently decode $$item{ContentEncoding} encoded $type metadata";
+                } elsif (not eval { require Compress::Zlib }) {
+                    $warn = "Install Compress::Zlib to decode deflated $type metadata";
+                }
+            }
             $warn = "Can't currently decode protected $type metadata" if $$item{ProtectionIndex};
             $warn = "Can't currently extract $type with construction method $$item{ConstructionMethod}" if $$item{ConstructionMethod};
             $et->WarnOnce($warn) if $warn and $name;
@@ -9057,6 +9065,22 @@ sub HandleItemInfo($)
             next unless defined $buff;
             $buff = $val . $buff if length $val;
             next unless length $buff;   # ignore empty directories
+            if ($$item{ContentEncoding}) {
+                my ($v2, $stat);
+                my $inflate = Compress::Zlib::inflateInit();
+                $inflate and ($v2, $stat) = $inflate->inflate($buff);
+                if ($inflate and $stat == Compress::Zlib::Z_STREAM_END()) {
+                    $buff = $v2;
+                    my $len = length $buff;
+                    $et->VPrint(0, "$$et{INDENT}Inflated Item $id) '${type}' ($len bytes)\n");
+                    $et->VerboseDump(\$buff);
+                } else {
+                    $warn = "Error inflating $name metadata";
+                    $et->WarnOnce($warn);
+                    $et->VPrint(0, "$$et{INDENT}    [not extracted]  ($warn)\n") if $verbose > 2;
+                    next;
+                }
+            }
             my ($start, $subTable, $proc);
             my $pos = $$item{Extents}[0][1] + $base;
             if ($name eq 'EXIF' and length $buff >= 4) {
@@ -9617,6 +9641,8 @@ sub ProcessMOV($$;$)
                 } elsif (not $et->Options('LargeFileSupport')) {
                     $warnStr = 'End of processing at large atom (LargeFileSupport not enabled)';
                     last;
+                } elsif ($et->Options('LargeFileSupport') eq '2') {
+                    $et->WarnOnce('Processing large atom (LargeFileSupport is 2)');
                 }
             }
             $size = $hi * 4294967296 + $lo - 16;

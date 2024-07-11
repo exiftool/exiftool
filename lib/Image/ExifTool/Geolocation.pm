@@ -509,7 +509,7 @@ sub Geolocate($;$)
             $city = '' unless defined $city;
         } elsif (/^[-+]?\d+(\.\d+)?$/) {    # coordinate format
             push @coords, $_ if @coords < 2;
-        } elsif (/^([-+]?\d*\.\d+) *(([NS])[A-Z]*)? +([-+]?\d*\.\d+) *(([EW])[A-Z]*)?$/i) { # "lat lon" format
+        } elsif (/^([-+]?\d+(?:\.\d+)?) *(([NS])[A-Z]*)? +([-+]?\d+(?:\.\d+)?) *(([EW])[A-Z]*)?/i) { # "lat lon" format
             next if @coords;
             my ($lat, $lon) = ($1, $4);
             $lat = -abs($lat) if $3 and uc($3) eq 'S';

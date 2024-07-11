@@ -7,16 +7,43 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+July 11, 2024 - Version 12.88 - "New Windows/MacOS packages"
+
+  - Windows EXE version now uses Oliver Betz's bundle with Strawberry Perl and
+    comes in 32- and 64-bit versions
+  - MacOS distribution now uses a flattened package
+  - Added ability to read/write deflate-compressed XMP in HEIC files
+  - Added a new Canon LensType (thanks Norbert Wasser)
+  - Added a new XMP-GCamera tag (thanks Herb)
+  - Added a new Nikon LensID
+  - Added a few new Canon AFAreaMode values (thanks Wernfried)
+  - Added config_files/onone.config to the distribution
+  - Decode timed accelerometer readings from NextBase 622GW videos
+  - Decode Pentax K-3III CameraOrentation (thanks Peter)
+  - Improved German translation for LensModel
+  - Enhanced the API StructFormat JSONQ setting to quote all JSON values, even
+    if they aren't in a structure
+  - Changed -geolocate option so specifying the Keys group writes
+    Keys:GPSPosition only if an input city is specified, and Keys:LocationName
+    only for input GPS coordinates
+  - Tweaked API Geolocation option recognized space-separated lat/lon even when
+    there is no decimal point in the numbers
+  - API Changes:
+      - Changed LargeFileSupport default to 2 and added a warning if a large
+        chunk is encountered.  Set to 1 to avoid the warning.
+
 June 13, 2024 - Version 12.87
 
   - Added ability to write Google Container XMP tags (using the namespace prefix
     'GContainer' to avoid conflict with the Google Device Container prefix)
   - Decode a few new tags for the Canon EOS R5 (thanks John Moyer)
-  - Decode battery information for the Pentax K-3 III
+  - Decode battery information for the Pentax K-3 III (thanks Peter)
   - Decode RAFCompression from FujiFilm RAF images (thanks Albert Shan)
-  - Avoid reporting FileSize of 0 for pipes
+  - Avoid reporting FileSize for pipes
   - Updated Geolocation databases from current geonames.org files
-  - Skip over Matroska Cluster if necessary to read Tags if referenced in
+  - Enhanced Geolocation feature to allow lat/lon to be input with a space
+    separator instead of a comma
+  - Skip over Matroska Cluster if necessary to read Tags when referenced from
     SeekHead
   - Changed conversion for Matroska SeekID (now in hex with tag name in
     brackets) and SeekPosition (now returns an absolute offset)

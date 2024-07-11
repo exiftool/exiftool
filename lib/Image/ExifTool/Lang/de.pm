@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::de;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.36';
+$VERSION = '1.37';
 
 %Image::ExifTool::Lang::de::Translate = (
    'AEAperture' => 'AE-Blende',
@@ -5118,7 +5118,7 @@ $VERSION = '1.36';
    'LensMake' => 'Objektivhersteller',
    'LensManufacturer' => 'Objektivhersteller',
    'LensMaxApertureRange' => 'Objektiv Blendenbereich',
-   'LensModel' => 'Objektiv-Typ',
+   'LensModel' => 'Objektivmodell',
    'LensProfileDigest' => 'Kennwert des Objektivprofils',
    'LensProperties' => 'Objektivfunktionen?',
    'LensSerialNumber' => 'Objektiv-Seriennummer',

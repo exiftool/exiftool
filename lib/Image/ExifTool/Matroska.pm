@@ -1086,7 +1086,12 @@ sub ProcessMKV($$)
             # just skip unknown and large data blocks
             if (not $tagInfo or $more > 10000000) {
                 # don't try to skip very large blocks unless LargeFileSupport is enabled
-                last if $more >= 0x80000000 and not $et->Options('LargeFileSupport');
+                if ($more >= 0x80000000) {
+                    last unless $et->Options('LargeFileSupport');
+                    if ($et->Options('LargeFileSupport') eq '2') {
+                        $et->WarnOnce('Processing large block (LargeFileSupport is 2)');
+                    }
+                }
                 $raf->Seek($more, 1) or last;
                 $buff = '';
                 $dataPos += $dataLen + $more;

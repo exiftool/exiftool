@@ -1935,6 +1935,7 @@ my %sACDSeeRegionStruct = (
     SpecialTypeID   => { List => 'Bag' },
     PortraitNote    => { },
     DisableAutoCreation => { List => 'Bag' },
+    DisableSuggestedAction => { List => 'Bag' }, #forum16147
     hdrp_makernote => {
         Name => 'HDRPMakerNote',
         # decoded data starts with the following bytes, but nothing yet is known about its contents:

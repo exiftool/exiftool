@@ -583,7 +583,7 @@ Flag to generate Composite tags when extracting information.  Default is 1.
 
 Flag to write new values in compressed format if possible.  Has no effect
 unless the relevant compression library is available.  Valid when writing
-metadata to PNG, JXL or MIE images.  Setting this to zero causes JXL
+metadata to PNG, JXL, HEIC or MIE images.  Setting this to zero causes JXL
 metadata to be rewritten as uncompressed when edited.  Default is undef.
 
 =item CoordFormat
@@ -731,9 +731,12 @@ to a string of the form "Lat,Lon" (eg. "44.56,-72.33") or city with optional
 state/province, country and/or country code (eg. "Paris,France") to act as a
 default for files not containing GPS or geolocation information, or include
 tag names with leading dollar signs separated by commas to specify the tags
-to use for the geolocation input.  May also include regular expressions for
-more flexible matching.  See L<https://exiftool.org/geolocation.html> for
-more details.  Default is undef.
+to use for the geolocation input.  When "Lat,Lon" is specified, "num=##" may
+be added to return the specified number of nearby cities (the L</Duplicates>
+option must also be used for the duplicate tags to be returned).  May
+include regular expressions for more flexible matching of city names.  See
+L<https://exiftool.org/geolocation.html> for more details.  Default is
+undef.
 
 =item GeolocAltNames
 
@@ -873,8 +876,10 @@ set to undef to select the built-in default language.  Default is 'en'.
 
 =item LargeFileSupport
 
-Flag to indicate that 64-bit file offsets are supported on this system.
-Default is undef.
+Flag to indicate that 64-bit file offsets are supported on this system. If
+not set, processing is aborted if a chunk larger than 2 GB is encountered.
+Set to 1 to process large chunks, or 2 to process with a warning.  Default
+is 2.
 
 =item LimitLongValues
 
@@ -1099,6 +1104,10 @@ Format for serialized structures when reading/writing.
   undef - Default ExifTool format
   JSON  - JSON format
   JSONQ - JSON with quoted numerical values
+
+Note that the JSONQ setting causes all values in the exiftool application
+-json output to be quoted, regardless of whether or not they are in a
+structure.
 
 =item SystemTags
 

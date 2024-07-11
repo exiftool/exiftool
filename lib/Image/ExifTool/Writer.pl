@@ -3844,7 +3844,6 @@ sub GetGeolocateTags($$;$)
         'iptc'          => [ qw(City Province-State Country-PrimaryLocationCode Country-PrimaryLocationName) ],
         'gps'           => [ qw(GPSLatitude GPSLongitude GPSLatitudeRef GPSLongitudeRef) ],
         'xmp-exif'      => [ qw(GPSLatitude GPSLongitude) ],
-        'keys'          => [ 'GPSCoordinates', 'LocationName' ],
         'itemlist'      => [ 'GPSCoordinates' ],
         'userdata'      => [ 'GPSCoordinates' ],
         # more general groups not in this lookup: XMP and QuickTime 
@@ -3855,12 +3854,16 @@ sub GetGeolocateTags($$;$)
         $tagGroups{$grp} and push @tags, map("$grp:$_", @{$tagGroups{$grp}});
     }
     # set default XMP City tags if necessary
-    if (not $writeGPS and ($grps{xmp} or (not @tags and not $grps{quicktime}))) {
-        push @tags, qw(XMP:City XMP:State XMP:CountryCode XMP:Country Keys:LocationName);
+    if (not $writeGPS) {
+        push @tags, 'Keys:LocationName' if $grps{'keys'};
+        if  ($grps{xmp} or (not @tags and not $grps{quicktime})) {
+            push @tags, qw(XMP:City XMP:State XMP:CountryCode XMP:Country Keys:LocationName);
+        }
     }
     $writeGPS = 1 unless defined $writeGPS; # (delete both City and GPS)
+    push @tags, 'Keys:GPSCoordinates' if $writeGPS and $grps{'keys'};
     # set default QuickTime tag if necessary
-    my $didQT = grep /Coordinates$/, @tags;
+    my $didQT = grep /GPSCoordinates$/, @tags;
     if (($grps{quicktime} and not $didQT) or ($writeGPS and not @tags and not $grps{xmp})) {
         push @tags, 'QuickTime:GPSCoordinates';
     }

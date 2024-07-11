@@ -4354,15 +4354,27 @@ used.</p>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>CameraOrientation</td>
+<td class=c>int8s</td>
+<td><table class=cols><tr>
+  <td>0 = Horizontal (normal)
+  <br>1 = Rotate 270 CW
+  <br>2 = Rotate 180</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Rotate 90 CW
+  <br>4 = Upwards
+  <br>5 = Downwards</td></tr></table>
+</td></tr>
+<tr class=b>
 <td class=r title='3 = 0x3'>3</td>
 <td>RollAngle</td>
 <td class=c>int16s</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
+<td><span class=s><span class=n>(converted to degrees of clockwise camera rotation)</span></span></td></tr>
+<tr>
 <td class=r title='5 = 0x5'>5</td>
 <td>PitchAngle</td>
 <td class=c>int16s</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='LevelInfo'>Pentax LevelInfo Tags</a></h2>
@@ -5031,7 +5043,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 13, 2024</i>
+<br><i>Last revised Jul 10, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

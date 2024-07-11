@@ -18,7 +18,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::ID3;
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 # information for time/date-based tags (time zero is Jan 1, 1904)
 my %timeInfo = (
@@ -226,9 +226,13 @@ sub ProcessAIFF($$)
         # AIFF chunks are padded to an even number of bytes
         my $len2 = $len + ($len & 0x01);
         if ($len2 > 100000000) {
-            if ($len2 >= 0x80000000 and not $et->Options('LargeFileSupport')) {
-                $et->Warn('End of processing at large chunk (LargeFileSupport not enabled)');
-                last;
+            if ($len2 >= 0x80000000) {
+                if (not $et->Options('LargeFileSupport')) {
+                    $et->Warn('End of processing at large chunk (LargeFileSupport not enabled)');
+                    last;
+                } elsif ($et->Options('LargeFileSupport') eq '2') {
+                    $et->WarnOnce('Skipping large chunk (LargeFileSupport is 2)');
+                }
             }
             if ($tagInfo) {
                 $et->Warn("Skipping large $$tagInfo{Name} chunk (> 100 MB)");

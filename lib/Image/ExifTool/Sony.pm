@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.68';
+$VERSION = '3.69';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -169,6 +169,7 @@ sub PrintInvLensSpec($;$$);
     32884 => 'Sony FE 70-200mm F4 Macro G OSS II', #JR
     32885 => 'Sony FE 16-35mm F2.8 GM II', #JR
     32886 => 'Sony FE 300mm F2.8 GM OSS', #JR
+    32887 => 'Sony E PZ 16-50mm F3.5-5.6 OSS II', #JR
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -239,6 +240,7 @@ sub PrintInvLensSpec($;$$);
     49474.8 => 'Viltrox 50mm F1.8 FE', #JR
     49474.9 => 'Viltrox 75mm F1.2 E', #JR
    '49474.10' => 'Viltrox 20mm F2.8 FE', #JR
+    49475 => 'Tamron 50-300mm F4.5-6.3 Di III VC VXD', #JR (Model A069)
 
     49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
     49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)
@@ -292,15 +294,18 @@ sub PrintInvLensSpec($;$$);
     50540 => 'Sigma 14mm F1.4 DG DN | A', #JR (023)
     50543 => 'Sigma 70-200mm F2.8 DG DN OS | S', #JR (023)
     50544 => 'Sigma 23mm F1.4 DC DN | C', #JR (023)
+    50545 => 'Sigma 24-70mm F2.8 DG DN II | A', #JR (024)
     50546 => 'Sigma 500mm F5.6 DG DN OS | S', #JR (024)
     50547 => 'Sigma 10-18mm F2.8 DC DN | C', #JR (023)
     50548 => 'Sigma 15mm F1.4 DG DN DIAGONAL FISHEYE | A', #JR (024)
+    50549 => 'Sigma 50mm F1.2 DG DN | A', #JR (024)
+    50551 => 'Sigma 28-45mm F1.8 DG DN | A', #JR (024)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
     50994 => 'Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III', #IB
     50995 => 'Voigtlander MACRO APO-LANTHAR 65mm F2 Aspherical', #JR
-    50996 => 'Voigtlander NOKTON 40mm F1.2 Aspherical', #JR
+    50996 => 'Voigtlander NOKTON 40mm F1.2 Aspherical', #JR (also SE version)
     50997 => 'Voigtlander NOKTON classic 35mm F1.4', #JR
     50998 => 'Voigtlander MACRO APO-LANTHAR 110mm F2.5', #JR
     50999 => 'Voigtlander COLOR-SKOPAR 21mm F3.5 Aspherical', #IB
@@ -309,6 +314,7 @@ sub PrintInvLensSpec($;$$);
     51002 => 'Voigtlander APO-LANTHAR 50mm F2 Aspherical', #JR
     51003 => 'Voigtlander NOKTON 35mm F1.2 Aspherical SE', #JR
     51006 => 'Voigtlander APO-LANTHAR 35mm F2 Aspherical', #JR
+    51007 => 'Voigtlander NOKTON 50mm F1 Aspherical', #JR
 
     # lenses listed in the Sigma MC-11 list, but not yet seen:
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)
@@ -330,6 +336,8 @@ sub PrintInvLensSpec($;$$);
     51516 => 'Samyang AF 24-70mm F2.8', #JR
     51517 => 'Samyang AF 50mm F1.4 II', #JR
     51518 => 'Samyang AF 135mm F1.8', #JR
+
+    61569 => 'LAOWA FFII 10mm F2.8 C&D Dreamer', #JR
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)
@@ -1713,7 +1721,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         },
     },{
         Name => 'Tag9050d',
-        Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR)|ZV-E1)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR)|ZV-(E1|E10M2))\b/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Tag9050d',
             ByteOrder => 'LittleEndian',
@@ -1975,7 +1983,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     },
     0x940c => [{
         Name => 'Tag940c',
-        Condition => '$$self{Model} =~ /^(NEX-|ILCE-|ILME-|Lunar|ZV-E10|ZV-E1)\b/',
+        Condition => '$$self{Model} =~ /^(NEX-|ILCE-|ILME-|Lunar|ZV-E10|ZV-E10M2|ZV-E1)\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag940c' },
     },{
         Name => 'Sony_0x940c',
@@ -2151,6 +2159,8 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             395 => 'ZV-1M2', #JR
             396 => 'ILCE-7CR', #JR
             397 => 'ILCE-7CM2', #JR
+            398 => 'ILX-LR1', #JR
+            399 => 'ZV-E10M2', #JR
         },
     },
     0xb020 => { #2
@@ -8201,7 +8211,7 @@ my %isoSetting2010 = (
         # number of mechanical shutter actuations, does not increase during electronic shutter / Silent Shooting
         Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR))/',
         Format => 'int32u',
-        Notes => 'total number of image exposures made by the camera',
+        Notes => 'total number of mechanical shutter actuations',
         RawConv => '$val & 0x00ffffff',
         PrintConv => 'sprintf("%6d",$val)',
         PrintConvInv => '$val',
@@ -8228,6 +8238,7 @@ my %isoSetting2010 = (
     },
     0x0038 => {
         Name => 'InternalSerialNumber', #(NC)
+        Condition => '$$self{Model} !~ /^(ZV-E10M2)/',
         Format => 'int8u[6]',
         PrintConv => 'unpack "H*", pack "C*", split " ", $val',
     },
@@ -8459,7 +8470,7 @@ my %isoSetting2010 = (
     },
     0x002a => [{
         Name => 'Quality2',
-        Condition => '$$self{Model} !~ /^(ILCE-(1|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX3|FX30)|ZV-E1)\b/',
+        Condition => '$$self{Model} !~ /^(ILCE-(1|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX3|FX30)|ZV-(E1|E10M2))\b/',
         PrintConv => {
             0 => 'JPEG',
             1 => 'RAW',
@@ -8484,7 +8495,7 @@ my %isoSetting2010 = (
 #    },
     0x0053 => {
         Name => 'ModelReleaseYear',
-        Condition => '$$self{Model} !~ /^(ILCE-(1|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX3|FX30)|ZV-E1)\b/',
+        Condition => '$$self{Model} !~ /^(ILCE-(1|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX3|FX30)|ZV-(E1|E10M2))\b/',
         Format => 'int8u',
         PrintConv => 'sprintf("20%.2d", $val)',
     },
@@ -9854,7 +9865,7 @@ my %isoSetting2010 = (
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     FORMAT => 'int8u',
-    NOTES => 'Valid for the ILCE-1/6700/7CM2/7CR/7M4/7RM5/7SM3/9M3, ILME-FX3/FX30, ZV-E1.',
+    NOTES => 'Valid for the ILCE-1/6700/7CM2/7CR/7M4/7RM5/7SM3/9M3, ILME-FX3/FX30, ZV-E1/E10M2.',
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     0x0000 => { Name => 'Tag9416_0000', PrintConv => 'sprintf("%3d",$val)', RawConv => '$$self{TagVersion} = $val' },
@@ -10017,7 +10028,7 @@ my %isoSetting2010 = (
     },
     0x089d => { # Note: 32 values for these newer models, and 32 non-zero values present for new lenses like SEL2470GM2 and SEL2070G
         Name => 'VignettingCorrParams',
-        Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR|7RM5)|ILME-FX30|ZV-E1)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR|7RM5)|ILME-FX30|ZV-(E1|E10M2))\b/',
         Format => 'int16s[32]',
     },
     0x08b5 => {
@@ -10056,7 +10067,7 @@ my %isoSetting2010 = (
     },
     0x0945 => {
         Name => 'ChromaticAberrationCorrParams',
-        Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR|7RM5)|ILME-FX30|ZV-E1)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR|7RM5)|ILME-FX30|ZV-(E1|E10M2))\b/',
         Format => 'int16s[32]',
     },
 );

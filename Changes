@@ -7,8 +7,17 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+July 12, 2024 - Version 12.89
+
+  - Added new Sony lenses and updated decoding of some tags (thanks Jos Roost)
+  - Minor change to description of NKA files
+  - Fixed Archive::Zip problem in Windows executable version
+
 July 11, 2024 - Version 12.88 - "New Windows/MacOS packages"
 
+  - 
+
+NOTE: The install procedure for the Windows executable has changed!
   - Windows EXE version now uses Oliver Betz's bundle with Strawberry Perl and
     comes in 32- and 64-bit versions
   - MacOS distribution now uses a flattened package

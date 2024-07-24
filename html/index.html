@@ -1292,7 +1292,10 @@ to meta information.  Here is an example of a very simple script that uses
 Image::ExifTool to print out all recognized meta information in a file:</p>
 
 <blockquote><table class=box><tr><td><pre class=blk>
-<span class=com>#!/usr/bin/env perl -w</span>
+<span class=com>#!/usr/bin/env perl</span>
+use strict;
+use warnings;
+
 use Image::ExifTool ':Public';
 my $file = shift or die "Please specify filename";
 my $info = <a href="ExifTool.html#ImageInfo">ImageInfo</a>($file);

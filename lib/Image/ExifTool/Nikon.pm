@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.35';
+$VERSION = '4.36';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -2495,6 +2495,7 @@ my %base64coord = (
         { # D7100=0227
             Condition => '$$valPt =~ /^0[28]/',
             Name => 'ShotInfo02xx',
+            Drop => 50000, # drop if too large (>64k for Z6iii)
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfo',
                 ProcessProc => \&ProcessNikonEncrypted,
@@ -5635,6 +5636,38 @@ my %nikonFocalConversions = (
         Notes => 'P6000',
         PrintConv => \%offOn,
     },
+    # for Nikon Z6iii JPG and RAW images (version 0809),
+    # the offset table starts at 0x24 and is as follows
+    # JPG Offset Size    NEF Offset Size
+    #  0) 0x0000 0        0) 0x009c 21604
+    #  1) 0x0000 0        1) 0x5500 6008
+    #  2) 0x009c 2528     2) 0x6c78 2528
+    #  3) 0x0a7c 200      3) 0x7658 200
+    #  4) 0x0b44 2488     4) 0x7720 2488
+    #  5) 0x14fc 1468     5) 0x80d8 1468
+    #  6) 0x1ab8 1032     6) 0x8694 1032
+    #  7) 0x1ec0 256      7) 0x8a9c 256
+    #  8) 0x1fc0 800      8) 0x8b9c 800
+    #  9) 0x22e0 144      9) 0x8ebc 144
+    # 10) 0x2370 64      10) 0x8f4c 64
+    # 11) 0x0000 0       11) 0x0000 0
+    # 12) 0x23b0 5009    12) 0x8f8c 5009
+    # 13) 0x3741 1536    13) 0xa31d 1536
+    # 14) 0x3d41 11928   14) 0xa91d 11928
+    # 15) 0x6bd9 5937    15) 0xd7b5 5937
+    # 16) 0x830a 500     16) 0xeee6 500
+    # 17) 0x84fe 160     17) 0xf0da 160
+    # 18) 0x859e 464     18) 0xf17a 464
+    # 19) 0x876e 8       19) 0xf34a 8
+    # 20) 0x8776 64      20) 0xf352 64
+    # 21) 0x87b6 6       21) 0xf392 6
+    # 22) 0x87bc 48      22) 0xf398 48
+    # 23) 0x87ec 20      23) 0xf3c8 20
+    # 24) 0x8800 108     24) 0xf3dc 108
+    # 25) 0x886c 8       25) 0xf448 8
+    # 26) 0x8874 2420    26) 0xf450 2420
+    # 27) 0x0000 0       27) 0x0000 0
+    # 28) 0x0000 0       28) 0x0000 0
     0x66 => {
         Name => 'VR_0x66',
         Condition => '$$self{ShotInfoVersion} eq "0204"',

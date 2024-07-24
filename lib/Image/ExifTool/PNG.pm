@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.67';
+$VERSION = '1.68';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -1400,7 +1400,7 @@ sub ProcessPNG($$)
     my $fastScan = $et->Options('FastScan');
     my $hash = $$et{ImageDataHash};
     my ($n, $sig, $err, $hbuf, $dbuf, $cbuf);
-    my ($wasHdr, $wasEnd, $wasDat, $doTxt, @txtOffset);
+    my ($wasHdr, $wasEnd, $wasDat, $doTxt, @txtOffset, $wasTrailer);
 
     # check to be sure this is a valid PNG/MNG/JNG image
     return 0 unless $raf->Read($sig,8) == 8 and $pngLookup{$sig};
@@ -1461,6 +1461,7 @@ sub ProcessPNG($$)
         if ($wasEnd) {
             last unless $n; # stop now if normal end of PNG
             $et->WarnOnce("Trailer data after $fileType $endChunk chunk", 1);
+            $wasTrailer = 1;
             last if $n < 8;
             $$et{SET_GROUP1} = 'Trailer';
         } elsif ($n != 8) {
@@ -1654,6 +1655,13 @@ sub ProcessPNG($$)
         }
     }
     delete $$et{SET_GROUP1};
+    # read Samsung trailer if it exists
+    if ($wasTrailer and not $outfile and $raf->Seek(-8, 2) and
+        $raf->Read($dbuf,8) and $dbuf =~ /\0\0(QDIOBS|SEFT)$/) # (have only seen SEFT type)
+    {
+        require Image::ExifTool::Samsung;
+        Image::ExifTool::Samsung::ProcessSamsung($et, { DirName => 'Samsung', RAF => $raf });
+    }
     return -1 if $outfile and ($err or not $wasEnd);
     return 1;   # this was a valid PNG/MNG/JNG image
 }

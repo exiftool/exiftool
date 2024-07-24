@@ -46,20 +46,20 @@ install.  The Perl distribution requires Perl to be installed on your system.
 (A good, free Perl interpreter can be downloaded from
 <a href="https://www.activestate.com/products/perl/">activeperl.com</a> or
 <a href="https://strawberryperl.com/">strawberryperl.com</a>.)</p>
-<p>If you don't already have Perl, it is easier to install the stand-alone ExifTool
-executable, but note that the stand-alone version doesn't include the HTML
+<p>If you don't already have Perl, it is easier to install the ExifTool
+executable version, but note that this version doesn't include the HTML
 documentation or some other files of the full distribution.</p>
 
 <h3>Windows Executable</h3>
 <ol>
 <li><b>Download</b> the 32-bit or 64-bit <b>Windows Executable</b> from the <a href="index.html">ExifTool home page</a>.
-<br><span class=lt>(The file you download should be named "<code>exiftool-12.89_32.zip</code>"
-or "<code>exiftool-12.89_64.zip</code>".)</span></li>
-<li><b>Extract the "<code>exiftool-12.89_xx</code>" folder</b> from
+<br><span class=lt>(The file you download should be named "<code>exiftool-12.90_32.zip</code>"
+or "<code>exiftool-12.90_64.zip</code>".)</span></li>
+<li><b>Extract the "<code>exiftool-12.90_xx</code>" folder</b> from
 the "<code>.zip</code>" file, and place it <b>on your Desktop</b>.
-<br><span class=lt>(Double-click on "<code>exiftool-12.89_xx.zip</code>" to open
-the archive, then drag "<code>exiftool-12.89_xx</code>" folder to your Desktop.)</span></li>
-<li>Open the "<code>exiftool-12.89_xx</code>" folder from your Desktop.</li>
+<br><span class=lt>(Double-click on "<code>exiftool-12.90_xx.zip</code>" to open
+the archive, then drag "<code>exiftool-12.90_xx</code>" folder to your Desktop.)</span></li>
+<li>Open the "<code>exiftool-12.90_xx</code>" folder from your Desktop.</li>
 </ol>
 <p>You can now double-click on "<code>exiftool(-k).exe</code>" in this folder to read
 the application documentation, or drag-and-drop files and folders to run exiftool on
@@ -70,11 +70,12 @@ continue with the following steps:</p>
 <br><span class=lt>(or "<code>exiftool(-k)</code>" to "<code>exiftool</code>" if file name
 extensions are hidden on your system)</span></li>
 <li><b>Move "<code>exiftool.exe</code>" and the "<code>exiftool_files</code>" folder</b>
-to the "<code>C:\WINDOWS</code>" directory (or any other directory in your PATH).</li>
+to any directory in your PATH (or any other directory of your choosing).</li>
 </ol>
 <p>You can now run exiftool by typing "<code>exiftool</code>" at the command
-prompt.  (To get to the command prompt, select "Run..." from the Windows "Start"
-menu, then type "<code>cmd</code>" and press Return.)</p>
+prompt (or "<code>c:\path\to\exiftool</code>" if the directory isn't in your
+PATH).  <br><span class=lt>(To get to the command prompt, select "Run..." from
+the Windows "Start" menu, then type "<code>cmd</code>" and press Return.)</span></p>
 <p><b>Notes:</b></p>
 <ol type='a'>
 <li>In Windows 7, running exiftool may require administrator privileges.  If
@@ -87,35 +88,35 @@ that exiftool may still run more slowly if you just add an exclusion).</li>
 </ol>
 <p><a name="uninstall_Windows_exe"><b>Uninstalling:</b></a></p>
 <ol type='i'>
-<li>Drag "<code>exiftool(-k).exe</code>" and the "<code>exiftool_files</code>" folder
-into the Recycle bin.</li>
+<li>Drag "<code>exiftool(-k).exe</code>" (or "<code>exiftool.exe</code>" if you renamed
+it) and the "<code>exiftool_files</code>" folder into the Recycle bin.</li>
 </ol>
 <h3>Full Perl Distribution</h3>
 <p>You must have Perl installed to use this version.  (A free version of Perl
 can be downloaded from
-<a href="http://www.activestate.com/activeperl/">activeperl.com</a>.)</p>
+<a href="http://www.activestate.com/activeperl/">activeperl.com</a> or
+<a href="https://strawberryperl.com/">strawberryperl.com</a>.)</p>
 <ol>
 <li><b>Download</b> the <b>Image-ExifTool distribution</b> from the <a href="index.html">ExifTool home page</a>
-<br><span class=lt>(The file you download should be named "<code>Image-ExifTool-12.89.tar.gz</code>".)</span></li>
+<br><span class=lt>(The file you download should be named "<code>Image-ExifTool-12.90.tar.gz</code>".)</span></li>
 <li><b>Extract the ExifTool files</b> from the archive.
 <br><span class=lt>(The archive is a gzipped tar file, and can be opened with
 various Windows utilities, including WinZip.)</span></li>
 <li><b>Rename</b> "<code>exiftool</code>" to <b>"<code>exiftool.pl</code>"</b>
 in the exiftool distribution.</li>
 <li><b>Move "<code>exiftool.pl</code>"</b> and the <b>"<code>lib</code>"</b>
-directory from the exiftool distribution to "<code>C:\WINDOWS</code>"
-(or any other directory in your PATH).</li>
+directory from the exiftool distribution to any directory in your PATH.</li>
 </ol>
 <p>Now, if you have made the proper Windows associations for the
 "<code>.pl</code>" extension (an option in the ActivePerl installation), you
 can run exiftool by typing "<code>exiftool.pl</code>" at the
 "<code>cmd.exe</code>" prompt.  Otherwise you should type
-"<code>perl c:\windows\exiftool.pl</code>".</p>
+"<code>perl c:\path\to\exiftool.pl</code>".</p>
 <p><a name="uninstall_Windows_perl"><b>Uninstalling:</b></a></p>
 <ol type='i'>
-<li>Drag "<code>C:\WINDOWS\exiftool.pl</code>" and
-"<code>C:\WINDOWS\lib</code>" into the Recycle bin.  You should first confirm
-that "<code>C:\WINDOWS\lib</code>" contains only the "<code>File</code>"
+<li>Drag "<code>exiftool.pl</code>" and the
+"<code>lib</code>" into the Recycle bin.  You should first confirm
+that "<code>lib</code>" contains only the "<code>File</code>"
 and "<code>Image</code>" sub-directories.  Do not delete it if it
 contains anything else.</li>
 </ol>
@@ -138,7 +139,7 @@ in the MacOS package.  Both versions run natively on PPC and Intel Macs.</p>
 <h3>MacOS Package</h3>
 <ol>
 <li><b>Download</b> the <b>ExifTool MacOS Package</b> from the <a href="index.html">ExifTool home page</a>.
-<br><span class=lt>(The file you download should be named "<code>ExifTool-12.89.pkg</code>".)</span></li>
+<br><span class=lt>(The file you download should be named "<code>ExifTool-12.90.pkg</code>".)</span></li>
 <li><b>Install</b> as a normal <b>MacOS package</b>.
 <br><span class=lt>(Double-click on the install package, and follow the instructions.
 See the second item in the Notes section below if you are stopped with an "unidentified developer" message.)
@@ -154,12 +155,12 @@ See the second item in the Notes section below if you are stopped with an "unide
 <ol>
 <li><b>Download</b> the <b>Image-ExifTool distribution</b> from the <a href="index.html">ExifTool home page</a>
 to your Desktop.
-<br><span class=lt>(The file you download should be named "<code>Image-ExifTool-12.89.tar.gz</code>".)</span></li>
+<br><span class=lt>(The file you download should be named "<code>Image-ExifTool-12.90.tar.gz</code>".)</span></li>
 <li><b>Launch</b> the <b>Terminal</b> application from the Utilities folder in your Applications folder.</li>
 <li>In the Terminal window, <b>type the following</b>:
 <pre class='code'>    cd ~/Desktop
-    tar -xzf Image-ExifTool-12.89.tar.gz
-    cd Image-ExifTool-12.89
+    tar -xzf Image-ExifTool-12.90.tar.gz
+    cd Image-ExifTool-12.90
     sudo cp -r exiftool lib /usr/local/bin
 </pre>
 <span class=lt>(Note: The last step above will require you to enter your
@@ -175,7 +176,7 @@ your Perl version. If both sets of libraries exist, /usr/local/bin/lib takes
 precedence for exiftool, but /Library/Perl/#.#.# is the default for any other
 Perl scripts.</li>
 <li>In MacOS 10.8 or later, you may see this message when you try to open the install package:
-<blockquote class=red>"ExifTool-12.89.pkg" can't be opened because it is from an
+<blockquote class=red>"ExifTool-12.90.pkg" can't be opened because it is from an
 unidentified developer.</blockquote> The solution is to control-click on the pkg
 then select "Open" from the pop-up menu instead of just double-clicking.  An alternative
 is to lower the security settings by changing "Allow applications downloaded from" to
@@ -185,7 +186,7 @@ is to lower the security settings by changing "Allow applications downloaded fro
 for a full description.)
 <br><br>Another possibility if you already have another version of ExifTool installed
 is to remove the quarantine flag with this command, allowing the installer to run:
-<blockquote><pre class=code>exiftool -XAttrQuarantine= ExifTool-12.89.pkg</pre></blockquote>
+<blockquote><pre class=code>exiftool -XAttrQuarantine= ExifTool-12.90.pkg</pre></blockquote>
 </li></ul>
 
 <h3><a name="uninstall_MacOS">Uninstalling</a></h3>
@@ -206,11 +207,11 @@ have the wrong "<code>lib</code>" folder.</li>
 
 <ol>
 <li><b>Download</b> the <b>Image-ExifTool distribution</b> from the <a href="index.html">ExifTool home page</a>
-<br><span class=lt>(The file you download should be named "<code>Image-ExifTool-12.89.tar.gz</code>".)</span></li>
+<br><span class=lt>(The file you download should be named "<code>Image-ExifTool-12.90.tar.gz</code>".)</span></li>
 <li><b>Unpack the distribution</b> and <b>make it your current directory</b> by typing:
 <pre class='code'>    cd <i>&lt;your download directory&gt;</i>
-    gzip -dc Image-ExifTool-12.89.tar.gz | tar -xf -
-    cd Image-ExifTool-12.89
+    gzip -dc Image-ExifTool-12.90.tar.gz | tar -xf -
+    cd Image-ExifTool-12.90
 </pre>
 <span class=lt>(At this point you may run exiftool by typing
 "<code>./exiftool <i>&lt;image file name&gt;</i></code>".)</span></li>

@@ -6247,6 +6247,8 @@ may be 7, 9, 11, 19, 31, 45 or 61, depending on the camera model.</p>
   <br>12 = Flexizone Multi (9 point)
   <br>13 = Flexizone Single
   <br>14 = Large Zone AF
+  <br>16 = Large Zone AF (vertical)
+  <br>17 = Large Zone AF (horizontal)
   <br>19 = Flexible Zone AF 1
   <br>20 = Flexible Zone AF 2
   <br>21 = Flexible Zone AF 3
@@ -6624,6 +6626,12 @@ valid for all camera models)</span></span></td></tr>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
 <tr>
+<td class=r title='32 = 0x20'>32</td>
+<td>AntiFlicker</td>
+<td class=c>int16s</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
 <td class=r title='61 = 0x3d'>61</td>
 <td>RFLensType</td>
 <td class=c>int16u</td>
@@ -11510,14 +11518,14 @@ to the one printed on the lens)</span></span></td></tr>
 <td class=r title='18 = 0x12'>18</td>
 <td>AFStatusViewfinder</td>
 <td class=c>int32s</td>
-<td><span class=s><span class=n>(1D X only)</span>
+<td><span class=s><span class=n>(1D X and R models)</span>
   <br>0 = Show in Field of View
   <br>1 = Show Outside View</span></td></tr>
 <tr>
 <td class=r title='19 = 0x13'>19</td>
 <td>InitialAFPointInServo</td>
 <td class=c>int32s</td>
-<td><span class=s><span class=n>(1D X only)</span>
+<td><span class=s><span class=n>(1D X and R models)</span>
   <br>0 = Initial AF Point Selected
   <br>1 = Manual AF Point
   <br>2 = Auto</span></td></tr>
@@ -11840,7 +11848,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 10, 2024</i>
+<br><i>Last revised Jul 21, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

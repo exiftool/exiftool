@@ -536,7 +536,7 @@ sub WriteItemInfo($$$)
         my $comp = $et->Options('Compress');
         if (defined $comp and ($comp xor $$item{ContentEncoding})) {
             #TODO: add ability to edit infe entry in iinf to change encoding according to Compress option if set
-            $et->Warn("Can't currently change compression when rewriting $name in HEIC");
+            $et->Warn("Can't currently change compression when rewriting $name in HEIC",1);
         }
         my $wasDeflated;
         if ($$item{ContentEncoding}) {

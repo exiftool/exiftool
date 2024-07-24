@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27892 tags, with 17459 unique tag names.
+They contain a total of 27895 tags, with 17462 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -10476,6 +10476,7 @@ WB tags for the Canon G9.
      21    FocusDistanceLower                   int16u
      23    ShutterMode                          int16s
      25    FlashExposureLock                    int16s
+     32    AntiFlicker                          int16s
      61    RFLensType                           int16u
 
 =head3 Canon SerialInfo Tags
@@ -20869,10 +20870,10 @@ Camera orientation information written by the Gear 360 (SM-C200).
 
 =head3 Samsung Trailer Tags
 
-Tags extracted from the trailer of JPEG images written when using certain
-features (such as "Sound & Shot" or "Shot & More") from Samsung models such
-as the Galaxy S4 and Tab S, and from the 'sefd' atom in HEIC images from the
-Samsung S10+.
+Tags extracted from the SEFT trailer of JPEG and PNG images written when
+using certain features (such as "Sound & Shot" or "Shot & More") from
+Samsung models such as the Galaxy S4 and Tab S, and from the 'sefd' atom in
+HEIC images from models such as the S10+.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -20890,6 +20891,9 @@ Samsung S10+.
   EmbeddedVideoFile                             no
   EmbeddedVideoType                             no
   MCCData                                       no
+  PEg_Info                                      JSON
+  RemasterInfo                                  no
+  SamsungCaptureInfo                            no
   SingleShotDepthMap                            no
   SingleShotMeta                                Samsung SingleShotMeta
   SurroundShotVideo                             no
@@ -29614,7 +29618,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 74 different formats of timed GPS metadata from video files.
+currently reads 76 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------

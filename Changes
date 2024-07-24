@@ -7,6 +7,19 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+July 24, 2024 - Version 12.90
+
+  - Added support for reading Samsung trailer from PNG images
+  - Decode two more formats of timed GPS from MP4 videos
+  - Decode a few more Samung trailer tags (thanks Neal Krawetz)
+  - Decode Canon AntiFlicker tag
+  - Drop Nikon ShotInfo record when copying MakerNotes from NEF to JPG if it is
+    larger than 50000 bytes (then MakerNotes would be too large for a single
+    JPEG segment)
+  - Changed exiftool shebang from "#!/usr/bin/perl" to "#!/usr/bin/env perl"
+  - Revert change of 12.84 to iterate through sub-documents with the -p option
+    only if -ee is used
+
 July 12, 2024 - Version 12.89
 
   - Added new Sony lenses and updated decoding of some tags (thanks Jos Roost)
@@ -15,9 +28,7 @@ July 12, 2024 - Version 12.89
 
 July 11, 2024 - Version 12.88 - "New Windows/MacOS packages"
 
-  - 
-
-NOTE: The install procedure for the Windows executable has changed!
+  - NOTE: The install procedure for the Windows executable has changed!
   - Windows EXE version now uses Oliver Betz's bundle with Strawberry Perl and
     comes in 32- and 64-bit versions
   - MacOS distribution now uses a flattened package
@@ -105,6 +116,8 @@ Apr. 23, 2024 - Version 12.84
     cities
   - Allow coordinates to be entered without comma separator for the Geolocation
     feature as long as both coordinates have a decimal point
+  - Changed -p option to iterate through sub-documents if they exist even if -ee
+    isn't used
   - Fixed long-standing bug in Windows version that didn't properly handle dates
     older than 50 years when writing FileModifyDate or FileCreateDate
   - Fixed API TimeZone option to work in Windows

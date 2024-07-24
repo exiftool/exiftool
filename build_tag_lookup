@@ -4,19 +4,18 @@
 #
 # Syntax:       build_tag_lookup [-p] [-v]
 #
-# Options:      -p  - preserve existing revision date in html files
+# Options:      -c  - check dates and only build if necessary
+#               -p  - preserve existing revision date in html files
 #               -v  - verbose mode
 #
 # Created:      12/31/04 - P. Harvey
 #
 use strict;
 
-print "Building tag lookup...\n";
-
 my $file = 'lib/Image/ExifTool/TagLookup.pm';
 my $podFile = 'lib/Image/ExifTool/TagNames.pod';
 my $htmldir = 'html';
-my $verbose;
+my ($verbose, $check, $preserve);
 
 BEGIN {
     # get exe directory (and change to forward slashes)
@@ -25,20 +24,37 @@ BEGIN {
     unshift @INC, "$exeDir/lib";
 }
 
+foreach (@ARGV) {
+    if ($_ eq '-p') {
+        $preserve = 1;
+    } elsif ($_ eq '-v') {
+        $verbose = 1;
+    } elsif ($_ eq '-c') {
+        $check = 1;
+    } else {
+        die "Unknown option '$_'\n";
+    }
+}
+
+if ($check and -e '.built_tag_lookup') {
+    # find most recent .p? file
+    my $latest = 1e6;
+    $latest > -M and $latest = -M foreach <lib/Image/ExifTool/*.p?>;
+    if ($latest > -M '.built_tag_lookup') {
+        print "Tag Lookup is up-to-date\n";
+        exit 0;
+    }
+}
+
+print "Building tag lookup...\n";
+
 require Image::ExifTool::BuildTagLookup;
 
 my $builder = new Image::ExifTool::BuildTagLookup;
 
-foreach (@ARGV) {
-    if ($_ eq '-p') {
-        $$builder{PRESERVE_DATE} = 1;
-        print("(preserving revision dates)\n");
-        next;
-    } elsif ($_ eq '-v') {
-        $verbose = 1;
-    } else {
-        die "Unknown option '$_'\n";
-    }
+if ($preserve) {
+    $$builder{PRESERVE_DATE} = 1;
+    print("(preserving revision dates)\n");
 }
 
 my $count = $builder->{COUNT};
@@ -77,6 +93,8 @@ if ($diff > $same) {
 } else {
     printf "%5d HTML files changed\n", $diff;
 }
+
+system 'echo `date` > .built_tag_lookup';
 
 exit(0);
 

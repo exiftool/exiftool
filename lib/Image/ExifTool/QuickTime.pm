@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.98';
+$VERSION = '2.99';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -9737,7 +9737,7 @@ sub ProcessMOV($$;$)
         if ($size > 0x2000000) {    # start to get worried above 32 MiB
             # check for RIFF trailer (written by Auto-Vox dashcam)
             if ($buff =~ /^(gpsa|gps0|gsen|gsea)...\0/s) { # (yet seen only gpsa as first record)
-                $et->VPrint(0, "Found RIFF trailer");
+                $et->VPrint(0, sprintf("Found RIFF trailer at offset 0x%x",$lastPos));
                 if ($et->Options('ExtractEmbedded')) {
                     $raf->Seek(-8, 1) or last;  # seek back to start of trailer
                     my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
@@ -9745,6 +9745,11 @@ sub ProcessMOV($$;$)
                 } else {
                     EEWarn($et);
                 }
+                last;
+            } elsif ($buff eq 'CCCCCCCC') {
+                $et->VPrint(0, sprintf("Found Kenwood trailer at offset 0x%x",$lastPos));
+                my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+                ProcessKenwoodTrailer($et, { RAF => $raf }, $tbl);
                 last;
             }
             $ignore = 1;

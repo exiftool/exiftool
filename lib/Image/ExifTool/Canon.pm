@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.78';
+$VERSION = '4.79';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -6403,6 +6403,8 @@ my %ciMaxFocal = (
             12 => 'Flexizone Multi (9 point)', #PH (750D, 9 points)
             13 => 'Flexizone Single', #PH (EOS M default, live view) (R7 calls this '1-point AF', ref github268)
             14 => 'Large Zone AF', #PH/forum6237 (7DmkII)
+            16 => 'Large Zone AF (vertical)', #forum16223
+            17 => 'Large Zone AF (horizontal)', #forum16223
             19 => 'Flexible Zone AF 1', #github268 (R7)
             20 => 'Flexible Zone AF 2', #github268 (R7)
             21 => 'Flexible Zone AF 3', #github268 (R7)
@@ -6919,6 +6921,10 @@ my %ciMaxFocal = (
     },
     25 => { #PH
         Name => 'FlashExposureLock',
+        PrintConv => \%offOn,
+    },
+    32 => { #forum16257
+        Name => 'AntiFlicker',
         PrintConv => \%offOn,
     },
     0x3d => { #IB
@@ -9123,19 +9129,19 @@ my %filterConv = (
              2 => 'Disable',
         },
     },
-    18 => { #52
+    18 => { #52/forum16223
         Name => 'AFStatusViewfinder',
-        Condition => '$$self{Model} =~ /1D X/',
-        Notes => '1D X only',
+        Condition => '$$self{Model} =~ /EOS-1D X|EOS R/',
+        Notes => '1D X and R models',
         PrintConv => {
              0 => 'Show in Field of View',
              1 => 'Show Outside View',
         },
     },
-    19 => { #52
+    19 => { #52/forum16223
         Name => 'InitialAFPointInServo',
-        Condition => '$$self{Model} =~ /1D X/',
-        Notes => '1D X only',
+        Condition => '$$self{Model} =~ /EOS-1D X|EOS R/',
+        Notes => '1D X and R models',
         PrintConv => {
              0 => 'Initial AF Point Selected',
              1 => 'Manual AF Point',

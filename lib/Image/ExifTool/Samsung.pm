@@ -22,13 +22,13 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.56';
+$VERSION = '1.57';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
 sub ProcessSamsungMeta($$$);
 sub ProcessSamsungIFD($$$);
-sub ProcessSamsung($$$);
+sub ProcessSamsung($$;$);
 
 # Samsung LensType lookup
 %samsungLensTypes = (
@@ -943,25 +943,25 @@ my %formatMinMax = (
 );
 
 # information extracted from Samsung trailer (ie. Samsung SM-T805 "Sound & Shot" JPEG) (ref PH)
+# NOTE: These tags may use $$self{SamsungTagName} in a Condition statement
+#       if necessary to differentiate tags with the same ID but different names
 %Image::ExifTool::Samsung::Trailer = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Other' },
     VARS => { NO_ID => 1, HEX_ID => 0 },
     PROCESS_PROC => \&ProcessSamsung,
+    TAG_PREFIX => 'SamsungTrailer',
     PRIORITY => 0, # (first one takes priority so DepthMapWidth/Height match first DepthMapData)
     NOTES => q{
-        Tags extracted from the trailer of JPEG images written when using certain
-        features (such as "Sound & Shot" or "Shot & More") from Samsung models such
-        as the Galaxy S4 and Tab S, and from the 'sefd' atom in HEIC images from the
-        Samsung S10+.
+        Tags extracted from the SEFT trailer of JPEG and PNG images written when
+        using certain features (such as "Sound & Shot" or "Shot & More") from
+        Samsung models such as the Galaxy S4 and Tab S, and from the 'sefd' atom in
+        HEIC images from models such as the S10+.
     },
-    '0x0001-name' => {
-        Name => 'EmbeddedImageName', # ("DualShot_1","DualShot_2")
-        RawConv => '$$self{EmbeddedImageName} = $val',
-    },
+    '0x0001-name' => 'EmbeddedImageName', # ("DualShot_1","DualShot_2")
     '0x0001' => [
         {
             Name => 'EmbeddedImage',
-            Condition => '$$self{EmbeddedImageName} eq "DualShot_1"',
+            Condition => '$$self{SamsungTagName} ne "DualShot_2"',
             Groups => { 2 => 'Preview' },
             Binary => 1,
         },
@@ -1277,8 +1277,10 @@ my %formatMinMax = (
    # 0x0bd0-name - seen 'Dual_Relighting_Bokeh_Info' #forum16086
    # 0x0be0-name - seen 'Livefocus_JDM_Info' #forum16086
    # 0x0bf0-name - seen 'Remaster_Info' #forum16086
+   '0x0bf0' => 'RemasterInfo', #forum16086/16242
    # 0x0c21-name - seen 'Portrait_Effect_Info' #forum16086
    # 0x0c51-name - seen 'Samsung_Capture_Info' #forum16086
+   '0x0c51' => 'SamsungCaptureInfo', #forum16086/16242
    # 0x0c61-name - seen 'Camera_Capture_Mode_Info' #forum16086
    # 0x0c71-name - seen 'Pro_White_Balance_Info' #forum16086
    # 0x0c81-name - seen 'Watermark_Info' #forum16086
@@ -1289,7 +1291,11 @@ my %formatMinMax = (
    # 0x0d11-name - seen 'Video_Snapshot_Info' #forum16086
    # 0x0d21-name - seen 'Camera_Scene_Info' #forum16086
    # 0x0d31-name - seen 'Food_Blur_Effect_Info' #forum16086
-   # 0x0d91-name - seen 'PEg_Info' #forum16086
+    '0x0d91' => { #forum16086/16242
+        Name => 'PEg_Info',
+        Description => 'PEg Info',
+        SubDirectory => { TagTable => 'Image::ExifTool::JSON::Main' },
+    },
    # 0x0da1-name - seen 'Captured_App_Info' #forum16086
    # 0xa050-name - seen 'Jpeg360_2D_Info' (Samsung Gear 360)
    # 0xa050 - seen 'Jpeg3602D' (Samsung Gear 360)
@@ -1563,7 +1569,7 @@ sub ProcessSamsungIFD($$$)
 # Returns: 1 on success, 0 not valid Samsung trailer, or -1 error writing
 # - updates DataPos to point to start of Samsung trailer
 # - updates DirLen to existing trailer length
-sub ProcessSamsung($$$)
+sub ProcessSamsung($$;$)
 {
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
@@ -1653,8 +1659,13 @@ SamBlock:
                 $audioSize = $size - 8 - $len;
                 next;
             }
-            # add unknown tags if necessary
+            last unless $raf->Seek($dirPos-$noff, 0) and $raf->Read($buf2, $size) == $size;
+            # (could validate the first 4 bytes of the block because they
+            # are the same as the first 4 bytes of the directory entry)
+            $len = Get32u(\$buf2, 4);
+            last if $len + 8 > $size;
             my $tag = sprintf("0x%.4x", $type);
+            # add unknown tags if necessary
             unless ($$tagTablePtr{$tag}) {
                 next unless $unknown or $verbose;
                 my %tagInfo = (
@@ -1673,11 +1684,8 @@ SamBlock:
                 );
                 AddTagToTable($tagTablePtr, "$tag-name", \%tagInfo2);
             }
-            last unless $raf->Seek($dirPos-$noff, 0) and $raf->Read($buf2, $size) == $size;
-            # (could validate the first 4 bytes of the block because they
-            # are the same as the first 4 bytes of the directory entry)
-            $len = Get32u(\$buf2, 4);
-            last if $len + 8 > $size;
+            # set SamsungTagName ExifTool member for use in tag Condition
+            $$et{SamsungTagName} = substr($buf2, 8, $len);
             # extract tag name and value
             $et->HandleTag($tagTablePtr, "$tag-name", undef,
                 DataPt  => \$buf2,
@@ -1691,6 +1699,7 @@ SamBlock:
                 Start   => 8 + $len,
                 Size    => $size - (8 + $len),
             );
+            delete $$et{SamsungTagName};
         }
         if ($outfile) {
             last unless $raf->Seek($dataPos, 0) and $raf->Read($buff, $dirLen) == $dirLen;

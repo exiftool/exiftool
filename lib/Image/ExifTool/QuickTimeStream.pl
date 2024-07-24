@@ -109,7 +109,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 74 different formats of timed GPS metadata from video files.
+        currently reads 76 different formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
@@ -1420,9 +1420,10 @@ Sample:     for ($i=0; ; ) {
         } elsif ($type eq 'gps ') { # (ie. GPSDataList tag)
 
             if ($buff =~ /^....freeGPS /s) {
-                # process by brute scan instead if ExtractEmbedded >= 3
-                # (some videos don't reference all freeGPS info from 'gps ' table, eg. INNOV)
-                last if $eeOpt >= 3;
+                # parse freeGPS data unless done already in brute-force scan
+                # (some videos don't reference all freeGPS info from 'gps ' table, eg. INNOV,
+                #  and some videos don't put 'gps ' data in mdat, eg XGODY 12" 4K Dashcam)
+                last if $$et{FoundGPSByScan};
                 # decode "freeGPS " data (Novatek and others)
                 ProcessFreeGPS($et, {
                     DataPt => \$buff,
@@ -2049,9 +2050,41 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
             }
         }
 
-    } else {
+    } elsif ($$dataPt =~ m<^.{23}(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}) [N|S]>s) {
 
         $debug and $et->FoundTag(GPSType => 16);
+        # XGODY 12" 4K Dashcam
+        #  0000: 00 00 00 a8 66 72 65 65 47 50 53 20 98 00 00 00 [....freeGPS ....]
+        #  0010: 6e 6f 72 6d 61 6c 3a 32 30 32 34 2f 30 35 2f 32 [normal:2024/05/2]
+        #  0020: 32 20 30 32 3a 35 34 3a 32 39 20 4e 3a 34 32 2e [2 02:54:29 N:42.]
+        #  0030: 33 38 32 34 37 30 20 57 3a 38 33 2e 33 38 39 35 [382470 W:83.3895]
+        #  0040: 37 30 20 35 33 2e 36 20 6b 6d 2f 68 20 78 3a 2d [70 53.6 km/h x:-]
+        #  0050: 30 2e 30 32 20 79 3a 30 2e 39 39 20 7a 3a 30 2e [0.02 y:0.99 z:0.]
+        #  0060: 31 30 20 41 3a 32 36 39 2e 32 20 48 3a 32 34 35 [10 A:269.2 H:245]
+        #  0070: 2e 35 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [.5..............]
+        ($yr,$mon,$day,$hr,$min,$sec) = ($1,$2,$3,$4,$5,$6);
+        $$dataPt =~ s/\0+$//;   # remove trailing nulls
+        my @a = split ' ', substr($$dataPt,43);
+        $ddd = 1;
+        foreach (@a) {
+            unless (/^([A-Z]):([-+]?\d+(\.\d+)?)$/i) {
+                # (the "km/h" after spd is display units? because the value is stored in knots)
+                defined $lon and not defined $spd and /^\d+\.\d+$/ and $spd = $_ * $knotsToKph;
+                next;
+            }
+            ($1 eq 'N' or $1 eq 'S') and $lat = $2, $latRef = $1, next;
+            ($1 eq 'E' or $1 eq 'W') and $lon = $2, $lonRef = $1, next;
+            ($1 eq 'x' or $1 eq 'y' or $1 eq 'z') and push(@acc,$2), next;
+            $1 eq 'A' and $trk = $2, next; # (verified, but why 'A'?)
+            # seen 'H' - one might expect altitude ('H'eight), but it doesn't fit
+            # the sample data, so save all other information as an "Unknown_X" tag
+            $$tagTbl{$1} or AddTagToTable($tagTbl, $1, { Name => "Unknown_$1", Unknown => 1 });
+            push(@xtra, $1 => $2), next;
+        }
+
+    } else {
+
+        $debug and $et->FoundTag(GPSType => 17);
         # (look for binary GPS as stored by Nextbase 512G, ref PH)
         #  0000: 00 00 80 00 66 72 65 65 47 50 53 20 78 01 00 00 [....freeGPS x...]
         #  0010: 78 2e 78 78 00 00 00 00 00 00 00 00 00 00 00 00 [x.xx............]
@@ -2115,7 +2148,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
         my $time = sprintf('%.2d:%.2d:%sZ',$hr,$min,$sec);
         $et->HandleTag($tagTbl, GPSTimeStamp => $time);
     }
-    if (defined $lat) {
+    if (defined $lat and defined $lon) {
         # lat/long are in DDDMM.MMMM format unless $ddd is set
         ConvertLatLon($lat, $lon) unless $ddd;
         $et->HandleTag($tagTbl, GPSLatitude  => $lat * ($latRef eq 'S' ? -1 : 1));
@@ -2677,6 +2710,53 @@ sub ProcessRIFFTrailer($$$)
     }
     delete $$et{DOC_NUM};
     SetByteOrder('MM');
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process Kenwood Dashcam trailer (forum16229)
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+# Sample data (chained 512-byte records starting like this):
+# 0000:  43 43 43 43 43 43 43 43 43 43 43 43 43 43 47 50 [CCCCCCCCCCCCCCGP]
+# 0010:  53 44 41 54 41 2d 2d 32 30 32 34 30 37 31 31 31 [SDATA--202407111]
+# 0020:  32 30 34 31 32 4e 35 30 2e 36 31 32 33 38 36 30 [20412N50.6123860]
+# 0030:  36 37 37 45 38 2e 37 30 32 37 31 38 30 39 38 39 [677E8.7027180989]
+# 0040:  35 33 33 2e 30 30 30 30 30 30 30 30 30 30 30 30 [533.000000000000]
+# 0050:  2e 30 30 30 30 30 30 30 30 30 30 30 30 30 2e 30 [.0000000000000.0]
+# 0060:  31 39 39 39 39 39 39 39 35 35 33 2d 30 2e 30 39 [19999999553-0.09]
+# 0070:  30 30 30 30 30 30 33 35 37 2d 30 2e 31 34 30 30 [000000357-0.1400]
+# 0080:  30 30 30 30 30 35 39 47 50 53 44 41 54 41 2d 2d [0000059GPSDATA--]
+sub ProcessKenwoodTrailer($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $raf = $$dirInfo{RAF};
+    my $buff;
+    # current file position is 8 bytes into the 14 C's, so test the next 6:
+    $raf->Read($buff, 14) and $buff eq 'CCCCCCCCCCCCCC' or return 0;
+    $et->VerboseDir('Kenwood trailer', undef, undef);
+    unless ($$et{OPTIONS}{ExtractEmbedded}) {
+        $et->WarnOnce('Use the ExtractEmbedded option to extract timed GPSData from Kenwood trailer',3);
+        return 1;
+    }
+    while ($raf->Read($buff, 121) and $buff =~ /^GPSDATA--(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/) {
+        FoundSomething($et, $tagTbl);
+        $et->HandleTag($tagTbl, GPSDateTime => "$1:$2:$3 $4:$5:$6");
+        my $i = 9 + 14;
+        my ($val, @acc, $tag);
+        foreach $tag (qw(GPSLatitude GPSLongitude GPSSpeed unk acc acc acc)) {
+            $val = substr($buff, $i, 14); $i += 14;
+            next if $tag eq 'unk';
+            my $hemi;
+            $hemi = $1 if $val =~ s/^([NSEW])//;
+            $val =~ /^[-+]?\d+\.\d+$/ or next;
+            $tag eq 'acc' and push(@acc,$val), next;
+            $val = -$val if $hemi and ($hemi eq 'S' or $hemi eq 'W');
+            $et->HandleTag($tagTbl, $tag => $val);
+        }
+        $et->HandleTag($tagTbl, Accelerometer => "@acc") if @acc == 3;
+    }
+    delete $$et{DOC_NUM};
     return 1;
 }
 
@@ -3353,6 +3433,7 @@ sub ScanMediaData($)
             }
             my $dirInfo = { DataPt => \$buff, DataPos => $pos + $dataPos, DirLen => $len };
             ProcessFreeGPS($et, $dirInfo, $tagTbl);
+            $$et{FoundGPSByScan} = 1;
         }
         $pos += $len;
         $buf2 = substr($buff, $len);

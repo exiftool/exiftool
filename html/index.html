@@ -98,9 +98,9 @@ the distribution files or access web pages too quickly will be blocked.</i></p>
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.89.tar.gz/download">
-Download        Version 12.89</a> (7.1 MB) -
-<a href="history.html">July 12, 2024</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.90.tar.gz/download">
+Download        Version 12.90</a> (7.1 MB) -
+<a href="history.html">July 24, 2024</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -152,28 +152,30 @@ only, and do not include the HTML documentation or other files of the full
 distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td rowspan=2><b><a name="alone">Windows</a></b></td><td><b>
-32-bit:<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.89_32.zip/download">
-         exiftool-12.89_32.zip</a> (10.8 MB)</b></td></tr>
+32-bit:<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.90_32.zip/download">
+         exiftool-12.90_32.zip</a> (10.8 MB)</b></td></tr>
 <tr><td><b>64-bit:
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.89_64.zip/download">
-         exiftool-12.89_64.zip</a> (10.6 MB)</b></td></tr>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.90_64.zip/download">
+         exiftool-12.90_64.zip</a> (10.6 MB)</b></td></tr>
          </table></blockquote>
 
 <p><b>The Windows executable</b> archives include Perl. Just download and un-zip
 the appropriate archive then double-click on "<code>exiftool(-k).exe</code>" to read the
 application documentation, drag-and-drop files and folders to view meta
-information, or rename to "<code>exiftool.exe</code>" for command-line use.</p>
+information, or rename to "<code>exiftool.exe</code>" for command-line use.
+Note that if you move the .exe to another folder, you <b>must also move
+the "<code>exiftool_files</code>" folder</b> to the same location.</p>
 
 <p><i>(Note: The Windows packages are based on work by Oliver Betz, and use his
-launcher.  Oliver also provides self-installing versions of these executables
-<a href="https://oliverbetz.de/pages/Artikel/ExifTool-for-Windows">here</a>.
+launcher.  <a href="https://oliverbetz.de/pages/Artikel/ExifTool-for-Windows">Oliver
+also provides self-installing versions of these executables</a>.
 See <a href="https://exiftool.org/forum/index.php/topic,10128.0.html">this forum post</a>
 if you have any problems/comments with these versions.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
-<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-12.89.pkg/download">
-         ExifTool-12.89.pkg</a> (5.1 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-12.90.pkg/download">
+         ExifTool-12.90.pkg</a> (5.1 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -615,11 +617,12 @@ some optional Perl modules may be added to enable certain ExifTool features (for
 details, see the DEPENDENCIES section of the README file included in the full
 distribution).</p>
 
-<p><b>Windows users:</b> A <a href="#alone">stand-alone Windows executable</a>
+<p><b>Windows users:</b> A <a href="#alone">Windows executable</a>
 version of ExifTool is available which doesn't require Perl.  You can also use
 the pure Perl version if you already have Perl installed. (You can get a good,
 free Perl interpreter from
-<a href="http://www.activestate.com/activeperl/">activeperl.com</a>.)</p>
+<a href="http://www.activestate.com/activeperl/">activeperl.com</a> or
+<a href="https://strawberryperl.com/">strawberryperl.com</a>.)</p>
 
 <p><b>Everyone else (Mac, Unix, etc):</b> Don't worry, you already have
 Perl installed.</p>
@@ -666,7 +669,7 @@ PATH, then its directory must be specified on the command line (eg. by typing
 <p>Note that when typing commands in the "cmd.exe" shell, you should use double
 quotes instead of single quotes as shown in some examples.</p>
 
-<p><b>ii) Stand-alone version in the Windows GUI:</b></p>
+<p><b>ii) Running in the Windows GUI (not from command line):</b></p>
 
 <p>Double-click on "<code>exiftool(-k).exe</code>" to read the application
 documentation, or drag-and-drop files and folders to run exiftool on the
@@ -1289,7 +1292,7 @@ to meta information.  Here is an example of a very simple script that uses
 Image::ExifTool to print out all recognized meta information in a file:</p>
 
 <blockquote><table class=box><tr><td><pre class=blk>
-<span class=com>#!/usr/bin/perl -w</span>
+<span class=com>#!/usr/bin/env perl -w</span>
 use Image::ExifTool ':Public';
 my $file = shift or die "Please specify filename";
 my $info = <a href="ExifTool.html#ImageInfo">ImageInfo</a>($file);

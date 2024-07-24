@@ -17,6 +17,20 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.90'><b>July 24, 2024 - Version 12.90</b></a>
+<ul>
+<li>Added support for reading Samsung trailer from PNG images
+<li>Decode two more formats of timed GPS from MP4 videos
+<li>Decode a few more Samung trailer tags (thanks Neal Krawetz)
+<li>Decode Canon AntiFlicker tag
+<li>Drop Nikon ShotInfo record when copying MakerNotes from NEF to JPG if it is
+    larger than 50000 bytes (then MakerNotes would be too large for a single
+    JPEG segment)
+<li>Changed exiftool shebang from "#!/usr/bin/perl" to "#!/usr/bin/env perl"
+<li>Revert change of 12.84 to iterate through sub-documents with the -p option
+    only if -ee is used
+</ul>
+
 <a name='v12.89'><b>July 12, 2024 - Version 12.89</b></a>
 <ul>
 <li>Added new Sony lenses and updated decoding of some tags (thanks Jos Roost)
@@ -120,6 +134,8 @@ subseconds with 4 or more digits
     cities
 <li>Allow coordinates to be entered without comma separator for the Geolocation
     feature as long as both coordinates have a decimal point
+<li>Changed -p option to iterate through sub-documents if they exist even if -ee
+    isn't used
 <li>Fixed long-standing bug in Windows version that didn't properly handle dates
     older than 50 years when writing FileModifyDate or FileCreateDate
 <li>Fixed API <a href="ExifTool.html#TimeZone">TimeZone</a> option to work in Windows

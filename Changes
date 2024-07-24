@@ -7,6 +7,11 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+July 24, 2024 - Version 12.91
+
+  - Fixed 2 test files that were causing failed tests (ExifTool itself is
+unchanged)
+
 July 24, 2024 - Version 12.90
 
   - Added support for reading Samsung trailer from PNG images

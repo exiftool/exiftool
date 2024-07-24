@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.85
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.90
 [File, System, Other] FileName - File Name: CanonRaw.cr3
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 53 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:26 22:05:16-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2024:04:15 15:09:50-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2024:04:15 15:09:50-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2024:07:24 15:39:35-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2024:07:24 09:42:40-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: CR3
 [File, File, Other] FileTypeExtension - File Type Extension: cr3
@@ -222,6 +222,7 @@
 [MakerNotes, Canon, Image] 21 - Focus Distance Lower: 0.22 m
 [MakerNotes, Canon, Image] 23 - Shutter Mode: Electronic First Curtain
 [MakerNotes, Canon, Image] 25 - Flash Exposure Lock: Off
+[MakerNotes, Canon, Image] 32 - Anti Flicker: Off
 [MakerNotes, Canon, Image] 61 - RF Lens Type: n/a
 [MakerNotes, Canon, Camera] 149 - Lens Model: EF-M15-45mm f/3.5-6.3 IS STM
 [MakerNotes, Canon, Camera] 150 - Internal Serial Number: CG0156580
@@ -383,6 +384,7 @@
 [MakerNotes, Track4, Image] 21 - Focus Distance Lower: 0.22 m
 [MakerNotes, Track4, Image] 23 - Shutter Mode: Electronic First Curtain
 [MakerNotes, Track4, Image] 25 - Flash Exposure Lock: Off
+[MakerNotes, Track4, Image] 32 - Anti Flicker: Off
 [MakerNotes, Track4, Image] 61 - RF Lens Type: n/a
 [MakerNotes, Track4, Image] 1 - Tone Curve: Standard
 [MakerNotes, Track4, Image] 2 - Sharpness: 4

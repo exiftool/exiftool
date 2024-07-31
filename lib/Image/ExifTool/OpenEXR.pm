@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 # supported EXR value format types (other types are extracted as undef binary data)
 my %formatType = (
@@ -42,6 +42,20 @@ my %formatType = (
     v2i            => 'int32s[2]',
     v3f            => 'float[3]',
     v3i            => 'int32s[3]',
+);
+
+# chomaticities names correspondances
+my %chromaticityToColorspace = (
+    '0.712999999523163 0.293000012636185 0.165000006556511 0.829999983310699 0.128000006079674 0.0439999997615814 0.321680009365082 0.337669998407364' => 'ACEScg',
+    '0.7124263048172 0.293813675642014 0.180122509598732 0.807839155197144 0.125906214118004 0.0442668609321117 0.345702916383743 0.358537524938583' => 'ACEScg AMPAS S-2014-004',
+    '0.733956277370453 0.268055468797684 0.0164710879325867 0.972419202327728 -0.0559232085943222 -0.121274426579475 0.345702916383743 0.358537524938583' => 'ACES SMPTE ST 2065-1',
+    '0.639999985694885 0.330000013113022 0.300000011920929 0.600000023841858 0.150000005960464 0.0599999986588955 0.312700003385544 0.328999996185303' => 'sRGB',
+    '0.648453652858734 0.330852478742599 0.321197688579559 0.597844362258911 0.155884742736816 0.0660382062196732 0.345702916383743 0.358538597822189' => 'sRGB IEC61966-2.1',
+    '0.648438155651093 0.330855995416641 0.230178281664848 0.701570689678192 0.155893236398697 0.0660597011446953 0.345702916383743 0.358538597822189' => 'Adobe RGB (1998)',
+    '0.734698474407196 0.265301525592804 0.159599378705025 0.840400636196136 0.0365994907915592 0.000106911851617042 0.345702916383743 0.358538597822189' => 'ProPhoto RGB',
+    '0.708493113517761 0.293545454740524 0.190204367041588 0.775371015071869 0.129246488213539 0.0471405945718288 0.345702916383743 0.358537524938583' => 'Rec.2020 Gamma 2.4',
+    '0.734700918197632 0.265299111604691 0.115173131227493 0.826431155204773 0.156608253717422 0.017684992402792 0.345702916383743 0.358538597822189' => 'Wide Gamut RGB',
+    # Add more entries as needed
 );
 
 # OpenEXR tags
@@ -91,6 +105,8 @@ my %formatType = (
             5 => 'PXR24',
             6 => 'B44',
             7 => 'B44A',
+            8 => 'DWAA',
+            9 => 'DWAB',
         },
     },
     dataWindow          => { },
@@ -170,6 +186,7 @@ my %formatType = (
     # also observed:
     # ilut
 );
+
 
 #------------------------------------------------------------------------------
 # Extract information from an OpenEXR file
@@ -293,6 +310,17 @@ sub ProcessEXR($$)
         }
         $val = '<bad>' unless defined $val;
 
+        # translates chromaticities 
+        if ($tag eq 'chromaticities') {
+            my $colorspace;
+            if (exists $chromaticityToColorspace{$val}) { # in the %chromaticityToColorspace hash, search for the key named as the value stored in chromaticites's $val
+                $colorspace = $chromaticityToColorspace{$val}; # if above condition true, assign the value of the found key to the "colorspace" variable
+            }else{
+                $colorspace = "no match found";
+            }
+            $et->FoundTag('Colorspace', $colorspace); # add the colorspace attribute to the list of attributes to be displayerd in the $et hash under the 'Colorspace' label
+        }
+
         # take image dimensions from dataWindow (with displayWindow as backup)
         if (($tag eq 'dataWindow' or (not $dim and $tag eq 'displayWindow')) and
             $val =~ /^(-?\d+) (-?\d+) (-?\d+) (-?\d+)$/ and not $$et{DOC_NUM})
@@ -318,7 +346,7 @@ sub ProcessEXR($$)
         $et->FoundTag('ImageHeight', $$dim[1]);
     }
     return 1;
-}
+    }
 
 1;  # end
 

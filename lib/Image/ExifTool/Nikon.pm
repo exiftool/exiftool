@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.36';
+$VERSION = '4.37';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -367,6 +367,7 @@ sub GetAFPointGrid($$;$);
     '02 46 37 37 25 25 02 00' => 'Sigma 24mm F2.8 Super Wide II Macro',
     '7E 54 37 37 0C 0C 4B 06' => 'Sigma 24mm F1.4 DG HSM | A', #30
     '26 58 3C 3C 14 14 1C 02' => 'Sigma 28mm F1.8 EX DG Aspherical Macro',
+    'BC 54 3C 3C 0C 0C 4B 46' => 'Sigma 28mm F1.4 DG HSM | A', #30
     '48 54 3E 3E 0C 0C 4B 06' => 'Sigma 30mm F1.4 EX DC HSM',
     'F8 54 3E 3E 0C 0C 4B 06' => 'Sigma 30mm F1.4 EX DC HSM', #JD
     '91 54 44 44 0C 0C 4B 06' => 'Sigma 35mm F1.4 DG HSM', #30

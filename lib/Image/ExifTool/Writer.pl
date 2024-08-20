@@ -2835,7 +2835,10 @@ sub GetAllGroups($;$)
     $family == 3 and return('Doc#', 'Main');
     $family == 4 and return('Copy#');
     $family == 5 and return('[too many possibilities to list]');
-    $family == 6 and return(@Image::ExifTool::Exif::formatName[1..$#Image::ExifTool::Exif::formatName]);
+    if ($family == 6) {
+        my $fn = \%Image::ExifTool::Exif::formatNumber;
+        return(sort { $$fn{$a} <=> $$fn{$b} } keys %$fn);
+    }
     $family == 8 and return('File#');
 
     LoadAllTables();    # first load all our tables

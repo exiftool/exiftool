@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.57';
+$VERSION = '1.58';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -957,7 +957,7 @@ my %formatMinMax = (
         Samsung models such as the Galaxy S4 and Tab S, and from the 'sefd' atom in
         HEIC images from models such as the S10+.
     },
-    '0x0001-name' => 'EmbeddedImageName', # ("DualShot_1","DualShot_2")
+    '0x0001-name' => 'EmbeddedImageName', # ("DualShot_1","DualShot_2","SingleShot")
     '0x0001' => [
         {
             Name => 'EmbeddedImage',
@@ -970,6 +970,7 @@ my %formatMinMax = (
             Groups => { 2 => 'Preview' },
             Binary => 1,
         },
+        # (have also seen the string "BOKEH" here (SM-A226B)
     ],
     '0x0100-name' => 'EmbeddedAudioFileName', # ("SoundShot_000")
     '0x0100' => { Name => 'EmbeddedAudioFile', Groups => { 2 => 'Audio' }, Binary => 1 },
@@ -1265,6 +1266,7 @@ my %formatMinMax = (
     '0x0b40' => { # (SM-N975X front camera)
         Name => 'SingleShotMeta',
         SubDirectory => { TagTable => 'Image::ExifTool::Samsung::SingleShotMeta' },
+        # (have also see the string "BOKEH_INFO" here (SM-A226B)
      },
    # 0x0b41-name - seen 'SingeShot_DepthMap_1' (Yes, "Singe") (SM-N975X front camera)
     '0x0b41' => { Name => 'SingleShotDepthMap', Binary => 1 },
@@ -1493,7 +1495,7 @@ sub ProcessSamsungMeta($$$)
     my $pos = $$dirInfo{DirStart};
     my $end = $$dirInfo{DirLen} + $pos;
     unless ($pos + 8 <= $end and substr($$dataPt, $pos, 4) eq 'DOFS') {
-        $et->Warn("Unrecognized $dirName data");
+        $et->Warn("Unrecognized $dirName data", 1);
         return 0;
     }
     my $ver = Get32u($dataPt, $pos + 4);

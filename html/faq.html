@@ -48,6 +48,7 @@ ol.index { margin: 0; padding: 0 0 0 2em }
 <li><a href="#Q30">Extracting all metadata</a></li>
 <li><a href="#Q31">Rewriting the entire file</a></li>
 <li><a href="#Q32">Safely removing all metadata</a></li>
+<li><a href="#Q33">No writable tags set from &lt;file&gt;</a></li>
 </ol>
 </div>
 
@@ -1828,8 +1829,19 @@ copies back any EXIF color space tags (adding any mandatory EXIF tags using
 default values if necessary).
 </blockquote>
 
+<a name="Q33"></a>
+<p>33. <b>"Why do I get a '<code>No writable tags set from &lt;file&gt;</code>' warning?"</b></p>
+
+<blockquote>This warning occurs when copying tags from a file if
+nothing was copied (ie. if none of the specified tags were found in the
+source file, or tags existed but weren't copied to any writable tags).  There
+are no warnings for individual tags which weren't copied; just this warning if
+no tags were copied.  This message may be expected for some files when using
+certain commands, but may be suppressed by adding
+<code>-api "NoWarning=No writable tags"</code> to the command if desired.</blockquote>
+
 <hr>
-<i>Last revised Feb 23, 2024</i>
+<i>Last revised Aug 17, 2024</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 # supported EXR value format types (other types are extracted as undef binary data)
 my %formatType = (
@@ -91,6 +91,8 @@ my %formatType = (
             5 => 'PXR24',
             6 => 'B44',
             7 => 'B44A',
+            8 => 'DWAA', #github276
+            9 => 'DWAB', #github276
         },
     },
     dataWindow          => { },

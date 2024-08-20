@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.99';
+$VERSION = '3.00';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -6606,6 +6606,12 @@ my %userDefined = (
         PrintConv => '$val * 1e6 . " microseconds"',
         PrintConvInv => '$val =~ s/ .*//; $val * 1e-6',
     },
+    'camera.focal_length.35mm_equivalent' => {
+        Name => 'FocalLengthIn35mmFormat',
+        PrintConv => '"$val mm"',
+        PrintConvInv => '$val=~s/\s*mm$//;$val',
+    },
+    'camera.lens_model' => { Name => 'LensModel' },
     'location.ISO6709' => {
         Name => 'GPSCoordinates',
         Groups => { 2 => 'Location' },

@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.39';
+$VERSION = '1.40';
 
 sub ProcessJpeg2000Box($$$);
 sub ProcessJUMD($$$);
@@ -1442,7 +1442,7 @@ sub ProcessBrotli($$$)
             }
         } elsif ($type eq 'jumb') {
             return undef if $isWriting; # (can't yet write JUMBF)
-            Image::ExifTool::ProcessJUMB($et, \%dirInfo, $tagTablePtr); # (untested)
+            Image::ExifTool::Jpeg2000::ProcessJUMB($et, \%dirInfo, $tagTablePtr); # (untested)
         }
         if ($isWriting) {
             return undef unless defined $dat;

@@ -7,13 +7,25 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Aug. 20, 2024 - Version 12.93
+
+  - Added a new Nikon LensID
+  - Added a couple of new OpenEXR Compression types
+  - Added a couple of new QuickTime Keys tags
+  - Decode timed metadata from E-ACE B44 DashCam videos
+  - Make "Unrecognized" Samsung Meta warnings minor
+  - Fixed bug in -listg6 option which resulted in "uninitialized value" warnings
+  - Fixed decoding of Func1Button and Func2Button for the Nikon Z6/Z7
+  - Fixed bug reading JUMB metadata from JXL images
+
 July 24, 2024 - Version 12.92
 
-  - Removed -w from exiftool shebang
+  - Removed -w from exiftool shebang due to compatibility issues on some systems
 
 July 24, 2024 - Version 12.91
 
-  - Fixed 2 test files that were causing failed tests (ExifTool itself is
+  - Added a couple of new OpenEXR Compression values (github#276)
+  - Updated 2 test files that were causing failed tests (ExifTool itself is
     unchanged)
 
 July 24, 2024 - Version 12.90
@@ -25,7 +37,7 @@ July 24, 2024 - Version 12.90
   - Drop Nikon ShotInfo record when copying MakerNotes from NEF to JPG if it is
     larger than 50000 bytes (then MakerNotes would be too large for a single
     JPEG segment)
-  - Changed exiftool shebang from "#!/usr/bin/perl" to "#!/usr/bin/env perl"
+  - Changed exiftool shebang to use env: "#!/usr/bin/env perl -w"
   - Revert change of 12.84 to iterate through sub-documents with the -p option
     only if -ee is used
 

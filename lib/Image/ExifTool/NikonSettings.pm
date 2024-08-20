@@ -17,11 +17,56 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 sub ProcessNikonSettings($$$);
 
 my %enableDisable = ( 1 => 'Enable', 2 => 'Disable' );
+
+my %funcButtonZ6 = ( #forum16316
+    1 => 'AF-On or Subject Tracking', # (bug in 3.xx firmware?)
+    2 => 'AF Lock Only',
+    3 => 'AE Lock (hold)',
+    4 => 'AE Lock (reset on release)',
+    5 => 'AE Lock Only',
+    6 => 'AE/AF Lock',
+    7 => 'FV Lock',
+    8 => 'Flash Disable/Enable',
+    9 => 'Preview',
+    10 => 'Matrix Metering',
+    11 => 'Center-weighted Metering',
+    12 => 'Spot Metering',
+    13 => 'Highlight-weighted Metering',
+    14 => 'Bracketing Burst',
+    15 => 'Synchronized Release (Master)',
+    16 => 'Synchronized Release (Remote)',    # no settings map to 17 or 18
+    19 => '+NEF(RAW)',
+    20 => 'Framing Grid Display',
+  # 21 - missing
+    22 => 'Zoom On/Off',
+  # 23 - missing
+    24 => 'My Menu',
+    25 => 'My Menu Top Item',
+    26 => 'Playback',
+    27 => 'Protect',
+    28 => 'Image Area',
+    29 => 'Image Quality',
+    30 => 'White Balance',
+    31 => 'Picture Control',
+    32 => 'Active D-Lighting',
+    33 => 'Metering',
+    34 => 'Flash Mode',
+    35 => 'Focus Mode',
+    36 => 'Auto Bracketing',
+    37 => 'Multiple Exposure',
+    38 => 'HDR',
+    39 => 'Exposure Delay Mode',
+    40 => 'Shutter/Aperture Lock',
+    41 => 'Focus Peaking',
+    42 => 'Rating',
+    43 => 'Non-CPU Lens',
+    44 => 'None',
+);
 
 my %funcButtonZ7m2 = (
     1 => 'AF-On',
@@ -1117,6 +1162,11 @@ my %infoZSeries = (
         Name => 'Func1Button',
         PrintConv => \%previewButtonD6,
         %infoD6,
+    },{ # CSf2-a (Z6)
+        Name => 'Func1Button',
+        Condition => '$$self{Model} =~ /^NIKON Z [67]\b/',
+        Notes => 'Z6 and Z7',
+        PrintConv => \%funcButtonZ6,
     },{ # CSf2-a (Z7_2)
         Name => 'Func1Button',
         PrintConv => \%funcButtonZ7m2,
@@ -1126,6 +1176,11 @@ my %infoZSeries = (
         Name => 'Func2Button',
         PrintConv => \%previewButtonD6,
         %infoD6,
+    },{ # CSf2-b (Z6)
+        Name => 'Func2Button',
+        Condition => '$$self{Model} =~ /^NIKON Z [67]\b/',
+        Notes => 'Z6 and Z7',
+        PrintConv => \%funcButtonZ6,
     },{ # CSf2-b (Z7_2)
         Name => 'Func2Button',
         PrintConv => \%funcButtonZ7m2,

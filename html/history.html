@@ -17,14 +17,27 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.93'><b>Aug. 20, 2024 - Version 12.93</b></a>
+<ul>
+<li>Added a new Nikon LensID
+<li>Added a couple of new OpenEXR Compression types
+<li>Added a couple of new QuickTime Keys tags
+<li>Decode timed metadata from E-ACE B44 DashCam videos
+<li>Make "Unrecognized" Samsung Meta warnings minor
+<li>Fixed bug in -listg6 option which resulted in "uninitialized value" warnings
+<li>Fixed decoding of Func1Button and Func2Button for the Nikon Z6/Z7
+<li>Fixed bug reading JUMB metadata from JXL images
+</ul>
+
 <a name='v12.92'><b>July 24, 2024 - Version 12.92</b></a>
 <ul>
-<li>Removed -w from exiftool shebang
+<li>Removed -w from exiftool shebang due to compatibility issues on some systems
 </ul>
 
 <a name='v12.91'><b>July 24, 2024 - Version 12.91</b></a>
 <ul>
-<li>Fixed 2 test files that were causing failed tests (ExifTool itself is
+<li>Added a couple of new OpenEXR Compression values (github#276)
+<li>Updated 2 test files that were causing failed tests (ExifTool itself is
     unchanged)
 </ul>
 
@@ -37,7 +50,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Drop Nikon ShotInfo record when copying MakerNotes from NEF to JPG if it is
     larger than 50000 bytes (then MakerNotes would be too large for a single
     JPEG segment)
-<li>Changed exiftool shebang from "#!/usr/bin/perl" to "#!/usr/bin/env perl"
+<li>Changed exiftool shebang to use env: "#!/usr/bin/env perl -w"
 <li>Revert change of 12.84 to iterate through sub-documents with the -p option
     only if -ee is used
 </ul>

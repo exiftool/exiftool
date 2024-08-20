@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.79';
+$VERSION = '4.80';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -9199,14 +9199,19 @@ my %filterConv = (
         PrintConvInv => '$val=~s/\s*mm//;$val',
     },
     8 => {
-        Name => 'MinFocalLength',
+        Name => 'MinFocalLength2',
+        Notes => q{
+            these seem to be min/max focal length without teleconverter, as opposed to
+            MinFocalLength and MaxFocalLength which include the effect of a
+            teleconverter
+        }, #forum16309
         ValueConv => '$val / 10',
         ValueConvInv => 'int($val * 10 + 0.5)',
         PrintConv => '"$val mm"',
         PrintConvInv => '$val=~s/\s*mm//;$val',
     },
     9 => {
-        Name => 'MaxFocalLength',
+        Name => 'MaxFocalLength2',
         ValueConv => '$val / 10',
         ValueConvInv => 'int($val * 10 + 0.5)',
         PrintConv => '"$val mm"',

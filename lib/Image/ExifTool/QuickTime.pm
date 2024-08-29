@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.00';
+$VERSION = '3.01';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -6552,7 +6552,7 @@ my %userDefined = (
     PROCESS_PROC => \&ProcessKeys,
     WRITE_PROC => \&WriteKeys,
     CHECK_PROC => \&CheckQTValue,
-    VARS => { LONG_TAGS => 7 },
+    VARS => { LONG_TAGS => 8 },
     WRITABLE => 1,
     # (not PREFERRED when writing)
     GROUPS => { 1 => 'Keys' },
@@ -6606,12 +6606,8 @@ my %userDefined = (
         PrintConv => '$val * 1e6 . " microseconds"',
         PrintConvInv => '$val =~ s/ .*//; $val * 1e-6',
     },
-    'camera.focal_length.35mm_equivalent' => {
-        Name => 'FocalLengthIn35mmFormat',
-        PrintConv => '"$val mm"',
-        PrintConvInv => '$val=~s/\s*mm$//;$val',
-    },
-    'camera.lens_model' => { Name => 'LensModel' },
+  # 'camera.focal_length.35mm_equivalent' - not top level (written to Keys in video track)
+  # 'camera.lens_model'                   - not top level (written to Keys in video track)
     'location.ISO6709' => {
         Name => 'GPSCoordinates',
         Groups => { 2 => 'Location' },
@@ -6674,7 +6670,12 @@ my %userDefined = (
 #
     'com.apple.photos.captureMode' => 'CaptureMode',
     'com.android.version' => 'AndroidVersion',
-    'com.android.capture.fps' => 'AndroidCaptureFPS',
+    'com.android.capture.fps' => { Name  => 'AndroidCaptureFPS', Writable => 'float' },
+    'com.android.manufacturer' => 'AndroidMake',
+    'com.android.model' => 'AndroidModel',
+    'com.xiaomi.preview_video_cover' => { Name => 'XiaomiPreviewVideoCover', Writable => 'int32s' },
+    'xiaomi.exifInfo.videoinfo' => 'XiaomiExifInfo',
+    'com.xiaomi.hdr10' => { Name => 'XiaomiHDR10', Writable => 'int32s' },
 #
 # also seen
 #
@@ -9490,7 +9491,7 @@ sub ProcessKeys($$$)
             $$newInfo{KeysID} = $tag;  # save original ID for use in family 7 group name
             AddTagToTable($itemList, $id, $newInfo);
             $msg or $msg = '';
-            $out and print $out "$$et{INDENT}Added ItemList Tag $id = ($ns) $tag$msg\n";
+            $out and print $out "$$et{INDENT}Added ItemList Tag $id = ($ns) $full$msg\n";
         }
         $pos += $len;
         ++$index;
@@ -10177,7 +10178,10 @@ QTLang: foreach $tag (@{$$et{QTLang}}) {
             for ($i=0, $key=$name; $$infoHash{$key}; ++$i, $key="$name ($i)") {
                 next QTLang if $et->GetGroup($key, 0) eq 'QuickTime';
             }
-            $et->FoundTag($tagInfo, $$et{VALUE}{$tag});
+            $key = $et->FoundTag($tagInfo, $$et{VALUE}{$tag});
+            # copy extra tag information (groups, etc) to the synthetic tag
+            $$et{TAG_EXTRA}{$key} = $$et{TAG_EXTRA}{$tag};
+            $et->VPrint(0, "(synthesized default-language tag for QuickTime:$$tagInfo{Name})");
         }
         delete $$et{QTLang};
     }

@@ -19,7 +19,6 @@ use Image::ExifTool::Fixup;
 
 sub AssembleRational($$@);
 sub LastInList($);
-sub CreateDirectory($$);
 sub NextFreeTagKey($$);
 sub RemoveNewValueHash($$$);
 sub RemoveNewValuesForGroup($$);
@@ -2085,9 +2084,10 @@ sub SetFileName($$;$$$)
         return 1;
     }
     # create directory for new file if necessary
-    my $result;
-    if (($result = $self->CreateDirectory($newName)) != 0) {
-        if ($result < 0) {
+    my $err = $self->CreateDirectory($newName);
+    if (defined $err) {
+        if ($err) {
+            $self->Warn($err) unless $err =~ /^Error creating/;
             $self->Warn("Error creating directory for '${newName}'");
             return -1;
         }
@@ -3552,55 +3552,6 @@ sub IsRawType($)
 {
     my $self = shift;
     return $rawType{$$self{FileType}};
-}
-
-#------------------------------------------------------------------------------
-# Create directory for specified file
-# Inputs: 0) ExifTool ref, 1) complete file name including path
-# Returns: 1 = directory created, 0 = nothing done, -1 = error
-my $k32CreateDir;
-sub CreateDirectory($$)
-{
-    local $_;
-    my ($self, $file) = @_;
-    my $rtnVal = 0;
-    my $enc = $$self{OPTIONS}{CharsetFileName};
-    my $dir;
-    ($dir = $file) =~ s/[^\/]*$//;  # remove filename from path specification
-    # recode as UTF-8 if necessary
-    if ($dir and not $self->IsDirectory($dir)) {
-        my @parts = split /\//, $dir;
-        $dir = '';
-        foreach (@parts) {
-            $dir .= $_;
-            if (length $dir and not $self->IsDirectory($dir)) {
-                # create directory since it doesn't exist
-                my $d2 = $dir; # (must make a copy in case EncodeFileName recodes it)
-                if ($self->EncodeFileName($d2)) {
-                    # handle Windows Unicode directory names
-                    unless (eval { require Win32::API }) {
-                        $self->Warn('Install Win32::API to create directories with Unicode names');
-                        return -1;
-                    }
-                    unless ($k32CreateDir) {
-                        return -1 if defined $k32CreateDir;
-                        $k32CreateDir = Win32::API->new('KERNEL32', 'CreateDirectoryW', 'PP', 'I');
-                        unless ($k32CreateDir) {
-                            $self->Warn('Error calling Win32::API::CreateDirectoryW');
-                            $k32CreateDir = 0;
-                            return -1;
-                        }
-                    }
-                    $k32CreateDir->Call($d2, 0) or return -1;
-                } else {
-                    mkdir($d2, 0777) or return -1;
-                }
-                $rtnVal = 1;
-            }
-            $dir .= '/';
-        }
-    }
-    return $rtnVal;
 }
 
 #------------------------------------------------------------------------------

@@ -17,13 +17,28 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.94'><b>Aug. 29, 2024 - Version 12.94</b></a>
+<ul>
+<li>Added ability to geotag from new-format Google Takeout JSON files
+<li>Added a few new Android and Xiaomi QuickTime Keys tags
+<li>Added ability to read C2PA JUMBF metadata from TTF/OTF files
+<li>Internal changes to code for creating new directories
+<li>Changed Windows packages to have the application help text file in the
+    exiftool_files folder instead of writing it to a temporary directory
+<li>Removed new QuickTime Keys tags added in 12.93 because these aren't used in
+    top-level metadata (written to the video track by Apple devices)
+<li>Fixed the group names for synthesized default-language QuickTime tags and
+    added a verbose message when generating these tags
+<li>Fixed warning in Geolocation.t self test
+</ul>
+
 <a name='v12.93'><b>Aug. 20, 2024 - Version 12.93</b></a>
 <ul>
 <li>Added a new Nikon LensID
 <li>Added a couple of new OpenEXR Compression types
 <li>Added a couple of new QuickTime Keys tags
-<li>Decode timed metadata from E-ACE B44 DashCam videos
-<li>Make "Unrecognized" Samsung Meta warnings minor
+<li>Decode timed metadata from E-ACE B44 dashcam videos
+<li>Made "Unrecognized" Samsung Meta warnings minor
 <li>Fixed bug in -listg6 option which resulted in "uninitialized value" warnings
 <li>Fixed decoding of Func1Button and Func2Button for the Nikon Z6/Z7
 <li>Fixed bug reading JUMB metadata from JXL images

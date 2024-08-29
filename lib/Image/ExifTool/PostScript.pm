@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.45';
+$VERSION = '1.46';
 
 sub WritePS($$);
 sub ProcessPS($$;$);
@@ -157,15 +157,6 @@ sub AUTOLOAD
 }
 
 #------------------------------------------------------------------------------
-# Is this a PC system
-# Returns: true for PC systems
-my %isPC = (MSWin32 => 1, os2 => 1, dos => 1, NetWare => 1, symbian => 1, cygwin => 1);
-sub IsPC()
-{
-    return $isPC{$^O};
-}
-
-#------------------------------------------------------------------------------
 # Get image width or height
 # Inputs: 0) value list ref (ImageData, BoundingBox), 1) true to get height
 sub ImageSize($$)
@@ -284,7 +275,7 @@ sub GetNextLine($$)
         $$raf{PSEnd} and CheckPSEnd($raf, \$data);
         # split line if it contains other newline sequences
         if ($data =~ /$altnl/) {
-            if (length($data) > 500000 and IsPC()) {
+            if (length($data) > 500000 and Image::ExifTool::IsPC()) {
                 # patch for Windows memory problem
                 unless ($changedNL) {
                     $changedNL = $/;
@@ -537,7 +528,7 @@ sub ProcessPS($$;$)
             $raf->ReadLine($data) or last;
             # check for alternate newlines as efficiently as possible
             if ($data =~ /$altnl/) {
-                if (length($data) > 500000 and IsPC()) {
+                if (length($data) > 500000 and Image::ExifTool::IsPC()) {
                     # Windows can't split very long lines due to poor memory handling,
                     # so re-read the file with the other newline character instead
                     # (slower but uses less memory)

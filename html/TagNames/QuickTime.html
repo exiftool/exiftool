@@ -844,23 +844,13 @@ changed via <a href="../config.html#PREF">the config file</a>.</p>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'camera.focal_length.35mm_equivalent'</td>
-<td>FocalLengthIn35mmFormat</td>
-<td class=c>yes</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
 <td>'camera.framereadouttimeinmicroseconds'</td>
 <td>FrameReadoutTime</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'camera.identifier'</td>
 <td>CameraIdentifier</td>
-<td class=c>yes</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'camera.lens_model'</td>
-<td>LensModel</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -871,6 +861,16 @@ changed via <a href="../config.html#PREF">the config file</a>.</p>
 <tr class=b>
 <td>'com.android.capture.fps'</td>
 <td>AndroidCaptureFPS</td>
+<td class=c>float</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'com.android.manufacturer'</td>
+<td>AndroidMake</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'com.android.model'</td>
+<td>AndroidModel</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -882,6 +882,16 @@ changed via <a href="../config.html#PREF">the config file</a>.</p>
 <td>'com.apple.photos.captureMode'</td>
 <td>CaptureMode</td>
 <td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'com.xiaomi.hdr10'</td>
+<td>XiaomiHDR10</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'com.xiaomi.preview_video_cover'</td>
+<td>XiaomiPreviewVideoCover</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'comment'</td>
@@ -1168,6 +1178,11 @@ from the associated SampleTime)</span></span></td></tr>
   <br>8 = Rotate 270 CW</td></tr></table>
 </td></tr>
 <tr>
+<td>'xiaomi.exifInfo.videoinfo'</td>
+<td>XiaomiExifInfo</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'year'</td>
 <td>Year</td>
 <td class=c>yes</td>
@@ -9653,7 +9668,7 @@ the value is set to zero if the tag is deleted individually)</span></span></td><
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 20, 2024</i>
+<br><i>Last revised Aug 28, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

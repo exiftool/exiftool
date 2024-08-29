@@ -120,7 +120,7 @@ my $testnum = 1;
 
     ++$testnum;
     $exifTool->Options(Geolocation => 'fghij');
-    my $info = $exifTool->ImageInfo(\$dat, 'geolocation*');
+    $info = $exifTool->ImageInfo(\$dat, 'geolocation*');
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {

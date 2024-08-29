@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27899 tags, with 17464 unique tag names.
+They contain a total of 27902 tags, with 17469 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -29818,16 +29818,18 @@ changed via the config file.
   'artist'      Artist                          yes
   'artwork'     Artwork                         yes
   'author'      Author                          yes
-  'camera.focal_length.35mm_equivalent'
-                FocalLengthIn35mmFormat         yes
   'camera.framereadouttimeinmicroseconds'
                 FrameReadoutTime                yes
   'camera.identifier' CameraIdentifier          yes
-  'camera.lens_model' LensModel                 yes
   'collection.user' UserCollection              yes
-  'com.android.capture.fps' AndroidCaptureFPS   yes
+  'com.android.capture.fps' AndroidCaptureFPS   float
+  'com.android.manufacturer' AndroidMake        yes
+  'com.android.model' AndroidModel              yes
   'com.android.version' AndroidVersion          yes
   'com.apple.photos.captureMode' CaptureMode    yes
+  'com.xiaomi.hdr10' XiaomiHDR10                int32s
+  'com.xiaomi.preview_video_cover'
+                XiaomiPreviewVideoCover         int32s
   'comment'     Comment                         yes
   'compatible_brands' CompatibleBrands          yes/
   'content.identifier' ContentIdentifier        yes
@@ -29887,6 +29889,7 @@ changed via the config file.
   'title'       Title                           yes
   'version'     Version                         yes
   'video-orientation' VideoOrientation          no
+  'xiaomi.exifInfo.videoinfo' XiaomiExifInfo    yes
   'year'        Year                            yes
 
 =head3 QuickTime FaceInfo Tags
@@ -39366,6 +39369,7 @@ AFM, ACFM and AMFM font files.
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
   'AFM'        AFM                              Font AFM
+  'C2PA'       C2PA                             Jpeg2000
   'PFM'        PFMHeader                        Font PFM
   'PSInfo'     PSFontInfo                       Font PSInfo
   'fontname'   FontName                         no

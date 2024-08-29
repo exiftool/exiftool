@@ -758,10 +758,10 @@ my %insvLimit = (
 );
 
 #------------------------------------------------------------------------------
-# Convert unsigned 4-byte integer to signed
+# Convert unsigned 32-bit integer to signed
 # Inputs: <none> (uses value in $_)
-# Returns: signed integet
-sub MakeSigned()
+# Returns: signed integer
+sub SignedInt32()
 {
     return $_ < 0x80000000 ? $_ : $_ - 4294967296;
 }
@@ -1624,7 +1624,7 @@ sub ProcessFreeGPS($$$)
         if (defined $lat) {
             # extract accelerometer readings if GPS was valid
             # and change to signed integer and divide by 256
-            @acc = map { MakeSigned / 256 } unpack('x68V3', $$dataPt);
+            @acc = map { SignedInt32 / 256 } unpack('x68V3', $$dataPt);
         }
 
     } elsif ($$dataPt =~ /^.{37}\0\0\0A([NS])([EW])\0/s) {
@@ -1666,7 +1666,7 @@ sub ProcessFreeGPS($$$)
             # (may be all zeros or int16u counting from 1 to 6 if not valid)
             my $tmp = substr($$dataPt, 60, 12);
             if ($tmp ne "\0\0\0\0\0\0\0\0\0\0\0\0" and $tmp ne "\x01\0\x02\0\x03\0\x04\0\x05\0\x06\0") {
-                @acc = map { MakeSigned / 256 } unpack('V3', $tmp);
+                @acc = map { SignedInt32 / 256 } unpack('V3', $tmp);
             }
 
         } else {
@@ -1684,9 +1684,9 @@ sub ProcessFreeGPS($$$)
             # (16-byte string at 0x68 is base64 encoded and encrypted 'luckychip' string)
             $spd = GetFloat($dataPt, 0x54) * $knotsToKph;
             $trk = GetFloat($dataPt, 0x58);
-            @acc = map MakeSigned, unpack('x92V3', $$dataPt);
-            # (accelerometer scaling is roughly 300=1G, but this doesn't seem to be exact for each
-            #  axis, so leave the values as raw.  The axes are positive acceleration up,left,forward)
+            @acc = map SignedInt32, unpack('x92V3', $$dataPt);
+            # (accelerometer scaling is roughly 1G=250-300, but it varies depending on the axis,
+            #  so leave the values as raw.  The axes are positive acceleration up,left,forward)
             if ($notEnc) { # (not encrypted)
                 ($lat = $lt) =~ s/\0+$//;
                 ($lon = $ln) =~ s/\0+$//;
@@ -1764,7 +1764,7 @@ sub ProcessFreeGPS($$$)
             $trk -= 360 if $trk >= 360;
             undef @acc;
         } else {
-            @acc = map { MakeSigned / 1000 } @acc; # (NC)
+            @acc = map { SignedInt32 / 1000 } @acc; # (NC)
         }
 
     } elsif ($$dataPt =~ /^.{60}4W`b]S</s and length($$dataPt) >= 140) {
@@ -1868,7 +1868,7 @@ sub ProcessFreeGPS($$$)
             return 0;
         }
         # (not sure about acc scaling)
-        @acc = map { MakeSigned / 1000 } @acc;
+        @acc = map { SignedInt32 / 1000 } @acc;
         $lon = GetFloat($dataPt, 0x5c);
         $lat = GetFloat($dataPt, 0x60);
         $spd = GetFloat($dataPt, 0x64) * $knotsToKph;
@@ -2013,7 +2013,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
         # 0x7c - int32s[3] accelerometer * 1000
         ($latRef, $lonRef) = ($1, $2);
         ($hr,$min,$sec,$yr,$mon,$day,@acc) = unpack('x48V3x52V6', $$dataPt);
-        @acc = map { MakeSigned / 1000 } @acc;
+        @acc = map { SignedInt32 / 1000 } @acc;
         $lat = GetDouble($dataPt, 0x40);
         $lon = GetDouble($dataPt, 0x50);
         $spd = GetDouble($dataPt, 0x60) * $knotsToKph;
@@ -2029,7 +2029,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
             $lon = abs(GetFloat(\$dat, 8)); # (abs just to be safe)
             $spd = GetFloat(\$dat, 12) * $knotsToKph;
             $trk = GetFloat(\$dat, 16);
-            @acc = map MakeSigned, unpack('x20V3', $dat);
+            @acc = map SignedInt32, unpack('x20V3', $dat);
             ConvertLatLon($lat, $lon);
             $$et{DOC_NUM} = ++$$et{DOC_COUNT};
             $et->HandleTag($tagTbl, GPSLatitude  => $lat * (substr($dat,1,1) eq 'S' ? -1 : 1));
@@ -2063,7 +2063,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
         $lon = abs(GetDouble($dataPt, 48)); # (abs just to be safe)
         $spd = GetDouble($dataPt, 64) * $knotsToKph;
         $trk = GetDouble($dataPt, 72);
-        @acc = map { MakeSigned / 1000 } @acc; # (NC)
+        @acc = map { SignedInt32 / 1000 } @acc; # (NC)
         # (not necessary to read RMC sentence because we already have it all)
 
     } elsif ($$dataPt =~ /^.{72}A[NS][EW]\0/s) {
@@ -2197,7 +2197,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
                     $day < 1 or $day > 31 or
                     $hr > 59 or $min > 59 or $sec > 600;
             # change lat/lon to signed integer and divide by 1e7
-            ($lat, $lon) = map { MakeSigned / 1e7 } $lat, $lon;
+            ($lat, $lon) = map { SignedInt32 / 1e7 } $lat, $lon;
             $trk -= 0x10000 if $trk >= 0x8000;  # make it signed
             $trk /= 100;
             $trk += 360 if $trk < 0;

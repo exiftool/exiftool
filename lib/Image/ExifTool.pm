@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '12.93';
+$VERSION = '12.94';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1873,9 +1873,10 @@ my %systemTagsNotes = (
             this write-only tag is used to define the GPS track log data or track log
             file name.  Currently supported track log formats are GPX, NMEA RMC/GGA/GLL,
             KML, IGC, Garmin XML and TCX, Magellan PMGNTRK, Honeywell PTNTHPR, Winplus
-            Beacon text, and Bramor gEO log files.  May be set to the special value of
-            "DATETIMEONLY" (all caps) to set GPS date/time tags if no input track points
-            are available.  See L<geotag.html|../geotag.html> for details
+            Beacon text, Bramor gEO, Google Takeout JSON, and CSV log files.  May be set
+            to the special value of "DATETIMEONLY" (all caps) to set GPS date/time tags
+            if no input track points are available.  See L<geotag.html|../geotag.html>
+            for details
         },
         DelCheck => q{
             require Image::ExifTool::Geotag;
@@ -4735,6 +4736,56 @@ sub IsDirectory($$)
 }
 
 #------------------------------------------------------------------------------
+# Create directory for specified file
+# Inputs: 0) ExifTool ref, 1) complete file name including path
+# Returns: '' = directory created, undef = nothing done, otherwise error string
+my $k32CreateDir;
+sub CreateDirectory($$)
+{
+    local $_;
+    my ($self, $file) = @_;
+    my ($err, $dir);
+    ($dir = $file) =~ s/[^\/]*$//;  # remove filename from path specification
+    if ($dir and not $self->IsDirectory($dir)) {
+        my @parts = split /\//, $dir;
+        $dir = '';
+        foreach (@parts) {
+            $dir .= $_;
+            if (length and not $self->IsDirectory($dir) and
+                # don't try to create a network drive root directory
+                not (IsPC() and $dir =~ m{^//[^/]*$}))
+            {
+                my $success;
+                # create directory since it doesn't exist
+                my $d2 = $dir; # (must make a copy in case EncodeFileName recodes it)
+                if ($self->EncodeFileName($d2)) {
+                    # handle Windows Unicode directory names
+                    unless (eval { require Win32::API }) {
+                        $err = 'Install Win32::API to create directories with Unicode names';
+                        last;
+                    }
+                    unless (defined $k32CreateDir) {
+                        $k32CreateDir = Win32::API->new('KERNEL32', 'CreateDirectoryW', 'PP', 'I');
+                        unless ($k32CreateDir) {
+                            $k32CreateDir = 0;
+                            # give this error once, then just "Error creating" for subsequent attempts
+                            return 'Error accessing Win32::API::CreateDirectoryW';
+                        }
+                    }
+                    $success = $k32CreateDir->Call($d2, 0) if $k32CreateDir;
+                } else {
+                    $success = mkdir($d2, 0777);
+                }
+                $success or $err = "Error creating directory $dir", last;
+                $err = '';
+            }
+            $dir .= '/';
+        }
+    }
+    return $err;
+}
+
+#------------------------------------------------------------------------------
 # Get file times (Unix seconds since the epoch)
 # Inputs: 0) ExifTool ref, 1) file name or ref
 # Returns: 0) access time, 1) modification time, 2) creation time (or undefs on error)
@@ -5646,6 +5697,17 @@ sub SetupTagTable($)
             $$tagInfo{Index} = $index++;
         }
     }
+}
+
+#------------------------------------------------------------------------------
+# Is this a PC system?
+# Returns: true for PC systems
+# uses lookup for O/S names which may use a backslash as a directory separator
+# (ref File::Spec of PathTools-3.2701)
+my %isPC = (MSWin32 => 1, os2 => 1, dos => 1, NetWare => 1, symbian => 1, cygwin => 1);
+sub IsPC()
+{
+    return $isPC{$^O};
 }
 
 #------------------------------------------------------------------------------

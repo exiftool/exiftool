@@ -16,6 +16,7 @@
 #               2020/12/01 - PH Added ability to read DJI CSV log files
 #               2022/06/21 - PH Added ability to read Google Takeout JSON files
 #               2024/04/23 - PH Added ability to read more OpenTracks GPS tags
+#               2024/08/28 - PH Added support for new Google Takeout JSON format
 #
 # References:   1) http://www.topografix.com/GPX/1/1/
 #               2) http://www.gpsinformation.org/dale/nmea.htm#GSA
@@ -30,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.76';
+$VERSION = '1.77';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -151,7 +152,7 @@ sub LoadTrackLog($$;$)
     my ($raf, $from, $time, $isDate, $noDate, $noDateChanged, $lastDate, $dateFlarm);
     my ($nmeaStart, $fixSecs, @fixTimes, $lastFix, %nmea, @csvHeadings, $sortFixes);
     my ($canCut, $cutPDOP, $cutHDOP, $cutSats, $e0, $e1, @tmp, $trackFile, $trackTime);
-    my $scaleSpeed;
+    my ($scaleSpeed, $startTime);
 
     unless (eval { require Time::Local }) {
         return 'Geotag feature requires Time::Local installed';
@@ -318,10 +319,13 @@ sub LoadTrackLog($$;$)
                     }
                 }
                 next;
-            } elsif (/"(timelineObjects|placeVisit|activitySegment|latitudeE7)":/) {
+            } elsif (/"(timelineObjects|placeVisit|activitySegment|latitudeE7)"\s*:/) {
                 # Google Takeout JSON format
                 $format = 'JSON';
                 $sortFixes = 1; # (fixes are not all in order for this format)
+            } elsif (/"durationMinutesOffsetFromStartTime"\s*:/) {
+                $format = 'JSON';   # new Google Takeout JSON format (fixes seem to be in order)
+                $raf->Seek(0,0);    # rewind to start of file
             } else {
                 # search only first 50 lines of file for a valid fix
                 last if ++$skipped > 50;
@@ -558,14 +562,24 @@ DoneFix:    $isDate = 1;
             next;
         } elsif ($format eq 'JSON') {
             # Google Takeout JSON format
-            if (/"(latitudeE7|longitudeE7|latE7|lngE7|timestamp)":\s*"?(.*?)"?,?\s*[\x0d\x0a]/) {
+            if (/"(latitudeE7|longitudeE7|latE7|lngE7|timestamp|startTime|point|durationMinutesOffsetFromStartTime)"\s*:\s*"?(.*?)"?,?\s*[\x0d\x0a]/) {
                 if ($1 eq 'timestamp') {
                     $time = GetTime($2);
                     goto DoneFix if $time and $$fix{lat} and $$fix{lon};
+                } elsif ($1 eq 'startTime') { # (new format)
+                    $startTime = GetTime($2);
                 } elsif ($1 eq 'latitudeE7' or $1 eq 'latE7') {
                     $$fix{lat} = $2 * 1e-7;
-                } else {
+                } elsif ($1 eq 'longitudeE7' or $1 eq 'lngE7') {
                     $$fix{lon} = $2 * 1e-7;
+                } elsif ($1 eq 'point') { # (new format)
+                    my $point = $2;
+                    my @coords = $point =~ /[-+]?\d+\.\d+/g;
+                    @$fix{'lat','lon'} = @coords[0,1] if @coords == 2;
+                } elsif ($1 eq 'durationMinutesOffsetFromStartTime' and defined $startTime) { # (new format)
+                    $time = $startTime + $2 * 60;
+                    # note: this assumes that "point" comes first, which it does in my sample
+                    goto DoneFix if $time and $$fix{lat} and $$fix{lon};
                 }
             }
             next;

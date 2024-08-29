@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION %ttLang);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 sub ProcessOTF($$);
 
@@ -188,6 +188,9 @@ my %ttCharset = (
     },
     name => {
         SubDirectory => { TagTable => 'Image::ExifTool::Font::Name' },
+    },
+    C2PA => {
+        SubDirectory => { TagTable => 'Image::ExifTool::Jpeg2000::Main', Start => 20 },
     },
     PFM  => {
         Name => 'PFMHeader',
@@ -389,10 +392,12 @@ sub ProcessOTF($$)
     $$et{INDENT} .= '| ';
     $et->VerboseDir('TrueType', $numTables) if $verbose;
 
+    my %processTag = ( name => 1, C2PA => 1 );  # tags to process (skip all others)
+
     for ($pos=0; $pos<$len; $pos+=16) {
-        # look for 'name' table
+        # look for tags to process
         my $tag = substr($tbl, $pos, 4);
-        next unless $tag eq 'name' or $verbose;
+        next unless $processTag{$tag} or $verbose;
         my $offset = Get32u(\$tbl, $pos + 8);
         my $size   = Get32u(\$tbl, $pos + 12);
         unless ($raf->Seek($offset+$base, 0) and $raf->Read($buff, $size) == $size) {
@@ -405,9 +410,15 @@ sub ProcessOTF($$)
                               $$et{INDENT}, $pos/16, $tag, $offset, $size);
             $et->VPrint(0, $str);
             $et->VerboseDump(\$buff, Addr => $offset) if $verbose > 2;
-            next unless $tag eq 'name';
+            next unless $processTag{$tag};
         }
         next unless $size >= 8;
+        unless ($tag eq 'name') {
+            my $tagTablePtr = GetTagTable('Image::ExifTool::Font::Main');
+            $et->HandleTag($tagTablePtr, $tag, undef, DataPt => \$buff, Size => length($buff));
+            next;
+        }
+        # process the 'name' tag
         my $entries = Get16u(\$buff, 2);
         my $recEnd = 6 + $entries * 12;
         if ($recEnd > $size) {

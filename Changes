@@ -7,6 +7,12 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Aug. 30, 2024 - Version 12.95
+
+  - Added a couple of new CanonModelID values
+  - Decode ColorData for a couple of new Canon models
+  - Fixed problem writing video files which have some known trailer types
+
 Aug. 29, 2024 - Version 12.94
 
   - Added ability to geotag from new-format Google Takeout JSON files

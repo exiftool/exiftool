@@ -10143,11 +10143,15 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
     }
     if ($warnStr) {
         # assume this is an unknown trailer if it comes immediately after
-        # mdat or moov and has a tag name we don't recognize
-        if (($lastTag eq 'mdat' or $lastTag eq 'moov') and (not $$tagTablePtr{$tag} or
-            ref $$tagTablePtr{$tag} eq 'HASH' and $$tagTablePtr{$tag}{Unknown}))
+        # mdat or moov or free and has a tag name we don't recognize
+        # (Insta360 can write trailer after a 'free' atom)
+        if (($lastTag eq 'mdat' or $lastTag eq 'moov' or $lastTag eq 'free') and
+            (not $$tagTablePtr{$tag} or ref $$tagTablePtr{$tag} eq 'HASH' and $$tagTablePtr{$tag}{Unknown}))
         {
-            if ($size == 0x1000000 - 8 and $tag =~ /^(\x94\xc0\x7e\0|\0\x02\0\0)/) {
+            if ($raf->Seek(-40, 2) and $raf->Read($buff, 40) == 40 and
+                substr($buff, 8) eq '8db42d694ccc418790edff439fe026bf' and
+                $lastPos == $raf->Tell() - unpack('V',$buff))
+            {
                 $et->Warn(sprintf('Insta360 trailer at offset 0x%x', $lastPos), 1);
             } else {
                 $et->Warn('Unknown trailer with '.lcfirst($warnStr));

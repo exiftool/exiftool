@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27902 tags, with 17469 unique tag names.
+They contain a total of 27985 tags, with 17475 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -9331,6 +9331,7 @@ Unknown only to reduce the volume of the normal output.
            ColorData9                           Canon ColorData9
            ColorData10                          Canon ColorData10
            ColorData11                          Canon ColorData11
+           ColorData12                          Canon ColorData12
            ColorDataUnknown                     Canon ColorDataUnknown
   0x4002   CRWParam?                            no
   0x4003   ColorInfo                            Canon ColorInfo
@@ -11436,6 +11437,97 @@ These tags are used by the EOS R3, R7 and R6mkII
     640    NormalWhiteLevel                     int16u
     641    SpecularWhiteLevel                   int16u
     642    LinearityUpperMargin                 int16u
+
+=head3 Canon ColorData12 Tags
+
+These tags are used by the EOS R1 and R5mkII
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    ColorDataVersion                     int16s
+    105    WB_RGGBLevelsAsShot                  int16s[4]
+    109    ColorTempAsShot                      int16s
+    110    WB_RGGBLevelsDaylight                int16s[4]
+    114    ColorTempDaylight                    int16s
+    115    WB_RGGBLevelsShade                   int16s[4]
+    119    ColorTempShade                       int16s
+    120    WB_RGGBLevelsCloudy                  int16s[4]
+    124    ColorTempCloudy                      int16s
+    125    WB_RGGBLevelsTungsten                int16s[4]
+    129    ColorTempTungsten                    int16s
+    130    WB_RGGBLevelsFluorescent             int16s[4]
+    134    ColorTempFluorescent                 int16s
+    135    WB_RGGBLevelsFlash                   int16s[4]
+    139    ColorTempFlash                       int16s
+    140    WB_RGGBLevelsUnknown2?               int16s[4]
+    144    ColorTempUnknown2?                   int16s
+    145    WB_RGGBLevelsUnknown3?               int16s[4]
+    149    ColorTempUnknown3?                   int16s
+    150    WB_RGGBLevelsUnknown4?               int16s[4]
+    154    ColorTempUnknown4?                   int16s
+    155    WB_RGGBLevelsUnknown5?               int16s[4]
+    159    ColorTempUnknown5?                   int16s
+    160    WB_RGGBLevelsUnknown6?               int16s[4]
+    164    ColorTempUnknown6?                   int16s
+    165    WB_RGGBLevelsUnknown7?               int16s[4]
+    169    ColorTempUnknown7?                   int16s
+    170    WB_RGGBLevelsUnknown8?               int16s[4]
+    174    ColorTempUnknown8?                   int16s
+    175    WB_RGGBLevelsUnknown9?               int16s[4]
+    179    ColorTempUnknown9?                   int16s
+    180    WB_RGGBLevelsUnknown10?              int16s[4]
+    184    ColorTempUnknown10?                  int16s
+    185    WB_RGGBLevelsUnknown11?              int16s[4]
+    189    ColorTempUnknown11?                  int16s
+    190    WB_RGGBLevelsUnknown12?              int16s[4]
+    194    ColorTempUnknown12?                  int16s
+    195    WB_RGGBLevelsUnknown13?              int16s[4]
+    199    ColorTempUnknown13?                  int16s
+    200    WB_RGGBLevelsUnknown14?              int16s[4]
+    204    ColorTempUnknown14?                  int16s
+    205    WB_RGGBLevelsUnknown15?              int16s[4]
+    209    ColorTempUnknown15?                  int16s
+    210    WB_RGGBLevelsUnknown16?              int16s[4]
+    214    ColorTempUnknown16?                  int16s
+    215    WB_RGGBLevelsUnknown17?              int16s[4]
+    219    ColorTempUnknown17?                  int16s
+    220    WB_RGGBLevelsUnknown18?              int16s[4]
+    224    ColorTempUnknown18?                  int16s
+    225    WB_RGGBLevelsUnknown19?              int16s[4]
+    229    ColorTempUnknown19?                  int16s
+    230    WB_RGGBLevelsUnknown20?              int16s[4]
+    234    ColorTempUnknown20?                  int16s
+    235    WB_RGGBLevelsUnknown21?              int16s[4]
+    239    ColorTempUnknown21?                  int16s
+    240    WB_RGGBLevelsUnknown22?              int16s[4]
+    244    ColorTempUnknown22?                  int16s
+    245    WB_RGGBLevelsUnknown23?              int16s[4]
+    249    ColorTempUnknown23?                  int16s
+    250    WB_RGGBLevelsUnknown24?              int16s[4]
+    254    ColorTempUnknown24?                  int16s
+    255    WB_RGGBLevelsUnknown25?              int16s[4]
+    259    ColorTempUnknown25?                  int16s
+    260    WB_RGGBLevelsUnknown26?              int16s[4]
+    264    ColorTempUnknown26?                  int16s
+    265    WB_RGGBLevelsUnknown27?              int16s[4]
+    269    ColorTempUnknown27?                  int16s
+    270    WB_RGGBLevelsUnknown28?              int16s[4]
+    274    ColorTempUnknown28?                  int16s
+    275    WB_RGGBLevelsUnknown29?              int16s[4]
+    279    ColorTempUnknown29?                  int16s
+    280    WB_RGGBLevelsUnknown30?              int16s[4]
+    284    ColorTempUnknown30?                  int16s
+    285    WB_RGGBLevelsUnknown31?              int16s[4]
+    289    ColorTempUnknown31?                  int16s
+    290    WB_RGGBLevelsUnknown32?              int16s[4]
+    294    ColorTempUnknown32?                  int16s
+    295    WB_RGGBLevelsUnknown33?              int16s[4]
+    299    ColorTempUnknown33?                  int16s
+    320    ColorCalib?                          Canon ColorCalib
+    383    PerChannelBlackLevel                 int16u[4]
+    660    NormalWhiteLevel                     int16u
+    661    SpecularWhiteLevel                   int16u
+    662    LinearityUpperMargin                 int16u
 
 =head3 Canon ColorDataUnknown Tags
 

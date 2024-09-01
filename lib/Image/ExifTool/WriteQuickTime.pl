@@ -847,7 +847,7 @@ sub WriteQuickTime($$$)
     $et or return 1;    # allow dummy access to autoload this package
     my ($mdat, @mdat, @mdatEdit, $edit, $track, $outBuff, $co, $term, $delCount);
     my (%langTags, $canCreate, $delGrp, %boxPos, %didDir, $writeLast, $err, $atomCount);
-    my ($tag, $lastTag, $lastPos, $errStr, $copyTrailer, $buf2);
+    my ($tag, $lastTag, $lastPos, $errStr, $trailer, $buf2);
     my $outfile = $$dirInfo{OutFile} || return 0;
     my $raf = $$dirInfo{RAF};       # (will be null for lower-level atoms)
     my $dataPt = $$dirInfo{DataPt}; # (will be null for top-level atoms)
@@ -860,6 +860,16 @@ sub WriteQuickTime($$$)
     my $createKeys = 0;
     my ($rtnVal, $rtnErr) = $dataPt ? (undef, undef) : (1, 0);
 
+    # check for Insta360 trailer at top level
+    if ($raf) {
+        my $pos = $raf->Tell();
+        if ($raf->Seek(-40, 2) and $raf->Read($buf2, 40) == 40 and
+            substr($buf2, 8) eq '8db42d694ccc418790edff439fe026bf')
+        {
+            $trailer = [ 'Insta360', $raf->Tell() - unpack('V',$buf2) ];
+        }
+        $raf->Seek($pos, 0) or return 0;
+    }
     if ($dataPt) {
         $raf = File::RandomAccess->new($dataPt);
     } else {
@@ -924,6 +934,11 @@ sub WriteQuickTime($$$)
 
     for (;;) {      # loop through all atoms at this level
         $lastPos = $raf->Tell();
+        # stop processing if we reached a known trailer
+        if ($trailer and $lastPos >= $$trailer[1]) {
+            $errStr = "Corrupted $$trailer[0] trailer" if $lastPos != $$trailer[1];
+            last;
+        }
         $lastTag = $tag if $$tagTablePtr{$tag};    # keep track of last known tag
         if (defined $atomCount and --$atomCount < 0 and $dataPt) {
             # stop processing now and just copy the rest of the atom
@@ -1524,38 +1539,18 @@ sub WriteQuickTime($$$)
     }
     # ($errStr is set if there was an error that could possibly be due to an unknown trailer)
     if ($errStr) {
-        if (($lastTag eq 'mdat' or $lastTag eq 'moov' or ($lastTag eq 'free' and @mdat)) and not $dataPt and
-            (not $$tagTablePtr{$tag} or ref $$tagTablePtr{$tag} eq 'HASH' and $$tagTablePtr{$tag}{Unknown}))
+        if (($lastTag eq 'mdat' or $lastTag eq 'moov') and not $dataPt and (not $$tagTablePtr{$tag} or
+            ref $$tagTablePtr{$tag} eq 'HASH' and $$tagTablePtr{$tag}{Unknown}))
         {
-            # identify known trailers
-            if ($raf->Seek(-40,2) and $raf->Read($buf2,40)==40 and
-                substr($buf2, 8) eq '8db42d694ccc418790edff439fe026bf' and
-                $lastPos == $raf->Tell() - unpack('V',$buf2))
-            {
-                $copyTrailer = [ $lastPos, 'Insta360' ];
+            # identify other known trailers
+            $buf2 = '';
+            $raf->Seek($lastPos,0) and $raf->Read($buf2,8);
+            if ($buf2 eq 'CCCCCCCC') {
+                $trailer = [ 'Kenwood', $lastPos ];
+            } elsif ($buf2 =~ /^(gpsa|gps0|gsen|gsea)...\0/s) {
+                $trailer = [ 'RIFF', $lastPos ];
             } else {
-                $buf2 = '';
-                $raf->Seek($lastPos,0) and $raf->Read($buf2,8);
-                if ($buf2 eq 'CCCCCCCC') {
-                    $copyTrailer = [ $lastPos, 'Kenwood' ];
-                } elsif ($buf2 =~ /^(gpsa|gps0|gsen|gsea)...\0/s) {
-                    $copyTrailer = [ $lastPos, 'RIFF' ];
-                }
-            }
-            # are we deleting the trailer?
-            my $nvTrail = $et->GetNewValueHash($Image::ExifTool::Extra{Trailer});
-            if ($$et{DEL_GROUP}{Trailer} or ($nvTrail and not ($$nvTrail{Value} and $$nvTrail{Value}[0]))) {
-                $errStr =~ s/ is too large.*//;
-                if ($copyTrailer) {
-                    $et->Warn("Deleted $$copyTrailer[1] trailer", 1);
-                    undef $copyTrailer;
-                } else {
-                    $et->Warn('Deleted unknown trailer with ' . lcfirst($errStr), 1);
-                }
-            } elsif (not $copyTrailer) {
-                $et->Warn('Unknown trailer with ' . lcfirst($errStr));
-                $et->Error('Use "-trailer=" to delete unknown trailer');
-                # (we don't currently copy an unknown trailer due to the chance it could be corrupted data)
+                $trailer = [ 'Unknown', $lastPos ];
             }
         } else {
             $et->Error($errStr);
@@ -2011,16 +2006,20 @@ sub WriteQuickTime($$$)
     Write($outfile, $writeLast) or $rtnVal = 0 if $writeLast;
 
     # copy trailer if necessary
-    if ($copyTrailer) {
-        if ($raf->Seek($$copyTrailer[0])) {
-            $et->Warn(sprintf('Copying %s trailer from offset 0x%x', $$copyTrailer[1], $lastPos), 1);
+    if ($rtnVal and $trailer) {
+        # are we deleting the trailer?
+        my $nvTrail = $et->GetNewValueHash($Image::ExifTool::Extra{Trailer});
+        if ($$et{DEL_GROUP}{Trailer} or ($nvTrail and not ($$nvTrail{Value} and $$nvTrail{Value}[0]))) {
+            $et->Warn("Deleted $$trailer[0] trailer", 1);
+        } elsif ($raf->Seek($$trailer[1])) {
+            $et->Warn(sprintf('Copying %s trailer from offset 0x%x', @$trailer), 1);
             while ($raf->Read($buf2, 65536)) {
                 Write($outfile, $buf2) or $rtnVal = 0, last;
             }
         } else {
-            $et->Error('Error copying Insta360 trailer');
             $rtnVal = 0;
         }
+        $rtnVal or $et->Error("Error copying $$trailer[0] trailer");
     }
     return $rtnVal;
 }

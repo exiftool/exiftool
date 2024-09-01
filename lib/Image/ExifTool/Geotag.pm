@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.77';
+$VERSION = '1.78';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -323,7 +323,7 @@ sub LoadTrackLog($$;$)
                 # Google Takeout JSON format
                 $format = 'JSON';
                 $sortFixes = 1; # (fixes are not all in order for this format)
-            } elsif (/"durationMinutesOffsetFromStartTime"\s*:/) {
+            } elsif (/"(durationMinutesOffsetFromStartTime|startTime)"\s*:/) {
                 $format = 'JSON';   # new Google Takeout JSON format (fixes seem to be in order)
                 $raf->Seek(0,0);    # rewind to start of file
             } else {

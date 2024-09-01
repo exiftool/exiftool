@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.01';
+$VERSION = '3.02';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -9528,7 +9528,7 @@ sub ProcessMOV($$;$)
     my $dirID = $$dirInfo{DirID} || '';
     my $charsetQuickTime = $et->Options('CharsetQuickTime');
     my ($buff, $tag, $size, $track, $isUserData, %triplet, $doDefaultLang, $index);
-    my ($dirEnd, $unkOpt, %saveOptions, $atomCount, $warnStr);
+    my ($dirEnd, $unkOpt, %saveOptions, $atomCount, $warnStr, $trailer);
 
     my $topLevel = not $$et{InQuickTime};
     $$et{InQuickTime} = 1;
@@ -9557,6 +9557,17 @@ sub ProcessMOV($$;$)
         $tagTablePtr = GetTagTable('Image::ExifTool::QuickTime::Main');
     }
     ($size, $tag) = unpack('Na4', $buff);
+    my $fast = $$et{OPTIONS}{FastScan} || 0;
+    # check for Insta360 trailer
+    if ($topLevel and not $fast) {
+        my $pos = $raf->Tell();
+        if ($raf->Seek(-40, 2) and $raf->Read($buff, 40) == 40 and
+            substr($buff, 8) eq '8db42d694ccc418790edff439fe026bf')
+        {
+            $trailer = [ 'Insta360', $raf->Tell() - unpack('V',$buff) ];
+        }
+        $raf->Seek($pos,0) or return 0;
+    }
     if ($dataPt) {
         $verbose and $et->VerboseDir($$dirInfo{DirName});
     } else {
@@ -9595,7 +9606,6 @@ sub ProcessMOV($$;$)
         # have XMP take priority except for HEIC
         $$et{PRIORITY_DIR} = 'XMP' unless $fileType and $fileType eq 'HEIC';
     }
-    my $fast = $$et{OPTIONS}{FastScan} || 0;
     $$raf{NoBuffer} = 1 if $fast;   # disable buffering in FastScan mode
 
     my $ee = $$et{OPTIONS}{ExtractEmbedded};
@@ -10136,6 +10146,10 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
         $dataPos += $size + 8;  # point to start of next atom data
         last if $dirEnd and $dataPos >= $dirEnd; # (note: ignores last value if 0 bytes)
         $lastPos = $raf->Tell() + $dirBase;
+        if ($trailer and $lastPos >= $$trailer[1]) {
+            $et->Warn(sprintf('%s trailer at offset 0x%x', @$trailer), 1);
+            last;
+        }
         $raf->Read($buff, 8) == 8 or last;
         $lastTag = $tag if $$tagTablePtr{$tag} and $tag ne 'free'; # (Insta360 sometimes puts free block before trailer)
         ($size, $tag) = unpack('Na4', $buff);
@@ -10143,19 +10157,11 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
     }
     if ($warnStr) {
         # assume this is an unknown trailer if it comes immediately after
-        # mdat or moov or free and has a tag name we don't recognize
-        # (Insta360 can write trailer after a 'free' atom)
-        if (($lastTag eq 'mdat' or $lastTag eq 'moov' or $lastTag eq 'free') and
+        # mdat or moov and has a tag name we don't recognize
+        if (($lastTag eq 'mdat' or $lastTag eq 'moov') and
             (not $$tagTablePtr{$tag} or ref $$tagTablePtr{$tag} eq 'HASH' and $$tagTablePtr{$tag}{Unknown}))
         {
-            if ($raf->Seek(-40, 2) and $raf->Read($buff, 40) == 40 and
-                substr($buff, 8) eq '8db42d694ccc418790edff439fe026bf' and
-                $lastPos == $raf->Tell() - unpack('V',$buff))
-            {
-                $et->Warn(sprintf('Insta360 trailer at offset 0x%x', $lastPos), 1);
-            } else {
-                $et->Warn('Unknown trailer with '.lcfirst($warnStr));
-            }
+            $et->Warn('Unknown trailer with '.lcfirst($warnStr));
         } else {
             $et->Warn($warnStr);
         }

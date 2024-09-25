@@ -17,6 +17,20 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.97'><b>Sept. 25, 2024 - Version 12.97</b></a>
+<ul>
+<li>Added ability to ignore up to 4095 bytes of garbage at the end of an INDD
+    file with the -m option
+<li>Added a new Canon RFLensType value (thanks Norbert Wasser)
+<li>Added a new Nikon Z LensID
+<li>Decode a number of new Nikon Z6_3 tags (thanks Warren Hatch)
+<li>Decode a few more FujiFilm tags (thanks Greybeard)
+<li>Enhanced %C format code to allow file-name collisions to be avoided by using
+    a colon instead of a decimal in the format modifier
+<li>Fixed bug which could result in hang when using %C code in an output file
+    name
+</ul>
+
 <a name='v12.96'><b>Sept. 1, 2024 - Version 12.96</b></a>
 <ul>
 <li>More improvements to handling of trailers on video files (and add ability to

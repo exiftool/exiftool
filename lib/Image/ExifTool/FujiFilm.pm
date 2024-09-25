@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.95';
+$VERSION = '1.96';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -1251,6 +1251,28 @@ my %faceCategories = (
         Count => 2,
         ValueConv => 'my @v=reverse split(" ",$val);"@v"', # reverse to show width first
         PrintConv => '$val=~tr/ /:/; $val',
+    },
+    0x117 => {
+        Name => 'RawZoomActive',
+        Format => 'int32u',
+        Count => 1,
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
+    0x118 => {
+        Name => 'RawZoomTopLeft',
+        Format => 'int16u',
+        Count => 2,
+        Notes => 'relative to RawCroppedImageSize',
+        ValueConv => 'my @v=reverse split(" ",$val);"@v"', # reverse to show width first
+        PrintConv => '$val=~tr/ /x/; $val',
+    },
+    0x119 => {
+        Name => 'RawZoomSize',
+        Format => 'int16u',
+        Count => 2,
+        Notes => 'relative to RawCroppedImageSize',
+        ValueConv => 'my @v=reverse split(" ",$val);"@v"', # reverse to show width first
+        PrintConv => '$val=~tr/ /x/; $val',
     },
     0x121 => [
         {

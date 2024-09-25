@@ -7,6 +7,19 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 12.76. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Sept. 25, 2024 - Version 12.97
+
+  - Added ability to ignore up to 4095 bytes of garbage at the end of an INDD
+    file with the -m option
+  - Added a new Canon RFLensType value (thanks Norbert Wasser)
+  - Added a new Nikon Z LensID
+  - Decode a number of new Nikon Z6_3 tags (thanks Warren Hatch)
+  - Decode a few more FujiFilm tags (thanks Greybeard)
+  - Enhanced %C format code to allow file-name collisions to be avoided by using
+    a colon instead of a decimal in the format modifier
+  - Fixed bug which could result in hang when using %C code in an output file
+    name
+
 Sept. 1, 2024 - Version 12.96
 
   - More improvements to handling of trailers on video files (and add ability to

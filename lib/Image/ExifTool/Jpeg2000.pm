@@ -1543,7 +1543,7 @@ sub ProcessJP2($$)
 
     # check to be sure this is a valid JPG2000 file
     return 0 unless $raf->Read($hdr,12) == 12;
-    unless ($hdr eq "\0\0\0\x0cjP  \x0d\x0a\x87\x0a" or     # (ref 1)
+    unless ($hdr eq "\0\0\0\x0cjP  \x0d\x0a\x87\x0a" or       # (ref 1)
             $hdr eq "\0\0\0\x0cjP\x1a\x1a\x0d\x0a\x87\x0a" or # (ref 2)
             $$et{IsJXL})
     {

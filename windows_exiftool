@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '12.96';
+my $version = '12.97';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -4298,17 +4298,20 @@ sub Num2Alpha($)
 sub NextUnusedFilename($;$)
 {
     my ($fmt, $okfile) = @_;
-    return $fmt unless $fmt =~ /%[-+]?\d*\.?\d*[lun]?[cC]/;
+    return $fmt unless $fmt =~ /%[-+]?\d*[.:]?\d*[lun]?[cC]/;
     my %sep = ( '-' => '-', '+' => '_' );
     my ($copy, $alpha) = (0, 'a');
+    my $lastFile;
     for (;;) {
         my ($filename, $pos) = ('', 0);
-        while ($fmt =~ /(%([-+]?)(\d*)(\.?)(\d*)([lun]?)([cC]))/g) {
+        while ($fmt =~ /(%([-+]?)(\d*)([.:]?)(\d*)([lun]?)([cC]))/g) {
             $filename .= substr($fmt, $pos, pos($fmt) - $pos - length($1));
             $pos = pos($fmt);
             my ($sign, $wid, $dec, $wid2, $mod, $tok) = ($2, $3 || 0, $4, $5 || 0, $6, $7);
             my $seq;
             if ($tok eq 'C') {
+                # increment sequence number for %C on collision if ':' is used
+                $sign eq '-' ? ++$seqFileDir : ++$seqFileNum if $copy and $dec eq ':';
                 $seq = $wid + ($sign eq '-' ? $seqFileDir : $seqFileNum) - 1;
                 $wid = $wid2;
             } else {
@@ -4337,6 +4340,8 @@ sub NextUnusedFilename($;$)
             my ($fn, $ok) = (AbsPath($filename), AbsPath($okfile));
             return $okfile if defined $fn and defined $ok and $fn eq $ok;
         }
+        return $filename if defined $lastFile and $lastFile eq $filename;
+        $lastFile = $filename;
         ++$copy;
         ++$alpha;
     }

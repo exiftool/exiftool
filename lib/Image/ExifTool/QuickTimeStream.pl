@@ -341,6 +341,7 @@ my %insvLimit = (
     },
     # djmd - DJI AC003 Osmo Action 4 cam 
     #TODO djmd => { SubDirectory => { TagTable => 'Image::ExifTool::DJI::djmd', ByteOrder => 'Little-Endian' } },
+    # (also DJI_20240615181302_0006_D.LRF)
     # dbgi - DJI AC003 Osmo Action 4 cam -- lots more unknown stuff
     Unknown00 => { Unknown => 1 },
     Unknown01 => { Unknown => 1 },

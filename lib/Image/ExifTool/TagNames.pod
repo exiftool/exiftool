@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 27985 tags, with 17475 unique tag names.
+They contain a total of 28148 tags, with 17486 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -5878,7 +5878,7 @@ These tags belong to the ExifTool XMP-pmi family 1 group.
 
 Publishing Requirements for Industry Standard Metadata 3.0 namespace
 tags.  (see
-L<https://www.w3.org/Submission/2020/SUBM-prism-20200910/prism-basic.html/>)
+L<https://www.w3.org/Submission/2020/SUBM-prism-20200910/prism-basic.html>)
 
 These tags belong to the ExifTool XMP-prism family 1 group.
 
@@ -13487,6 +13487,9 @@ RAF-format information.
   0x0110  RawImageCropTopLeft                   no
   0x0111  RawImageCroppedSize                   no
   0x0115  RawImageAspectRatio                   no
+  0x0117  RawZoomActive                         no
+  0x0118  RawZoomTopLeft                        no
+  0x0119  RawZoomSize                           no
   0x0121  RawImageSize                          no
   0x0130  FujiLayout                            no
   0x0131  XTransLayout                          no
@@ -15745,6 +15748,7 @@ DiMAGE X and Xt.
            ShotInfoD500                         Nikon ShotInfoD500
            ShotInfoD6                           Nikon ShotInfoD6
            ShotInfoD610                         Nikon ShotInfoD610
+           ShotInfoZ6III                        Nikon ShotInfoZ6III
            ShotInfoZ7II                         Nikon ShotInfoZ7II
            ShotInfoZ8                           Nikon ShotInfoZ8
            ShotInfoZ9                           Nikon ShotInfoZ9
@@ -16570,6 +16574,86 @@ These tags are extracted from encrypted data in images from the D610.
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
    1999    CustomSettingsD610                   NikonCustom SettingsD610
+
+=head3 Nikon ShotInfoZ6III Tags
+
+These tags are extracted from encrypted data in images from the Z6III.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    ShotInfoVersion                      no
+      4    FirmwareVersion                      no
+    136    OrientationOffset                    Nikon OrientationInfo
+    144    MenuOffset                           Nikon MenuSettingsZ6III
+
+=head3 Nikon MenuSettingsZ6III Tags
+
+These tags are used by the Z6III.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+    364    HighFrameRate                        int8u
+    444    MultipleExposureMode                 int8u
+    446    MultiExposureShots                   int8u
+    476    IntervalDurationHours                int32u
+    480    IntervalDurationMinutes              int32u
+    484    IntervalDurationSeconds              int32u
+    492    Intervals                            int32u
+    496    ShotsPerInterval                     int32u
+    500    IntervalExposureSmoothing            int8u
+    502    IntervalPriority                     int8u
+    536    FocusShiftNumberShots                int8u
+    540    FocusShiftStepWidth                  int8u
+    544    FocusShiftInterval                   int8u~
+    548    FocusShiftExposureLock               int8u
+    648    AutoISO                              int8u
+    650    ISOAutoHiLimit?                      int16u
+    718    DiffractionCompensation              int8u
+    719    AutoDistortionControl                int8u
+    720    FlickerReductionShooting             int8u
+    722    NikonMeteringMode                    int8u
+    724    FlashControlMode                     int8u
+    730    FlashGNDistance?                     no
+    734    FlashOutput?                         int8u
+    742    FlashWirelessOption?                 int8u
+    744    FlashRemoteControl?                  int8u
+    748    FlashMasterControlMode               int8u
+    750    FlashMasterCompensation?             int8s
+    754    FlashMasterOutput?                   int8u
+    832    AFAreaMode                           int8u
+    834    VRMode                               int8u
+    838    BracketSet                           int8u
+    840    BracketProgram                       int8u
+    842    BracketIncrement                     int8u
+    852    HDR                                  int8u
+    858    SecondarySlotFunction                int8u
+    864    HDRLevel                             int8u
+    868    Slot2JpgSize?                        int8u
+    878    SubjectDetection                     int8u
+    880    DynamicAFAreaSize                    int8u
+    884    ToneMap?                             int8u
+    888    PortraitImpressionBalance            int8u
+    902    HighFrequencyFlickerReduction?       int8u
+    904    PixelShiftShooting                   int8u
+    906    PixelShiftNumberShots                int8u
+    908    PixelShiftDelay                      int8u~
+    910    PixelShiftInterval                   int8u~
+   1002    SubjectDetectionAreaMF               int8u
+   1004    LinkVRToFocusPoint?                  int8u
+   1046    MovieSlowMotion?                     int8u
+   1050    MovieType                            int8u
+   1162    MovieFrameSize?                      int8u
+   1164    MovieFrameRate?                      int8u
+   1255    CustomSettingsZ6III                  NikonCustom SettingsZ6III
+   2300    Language?                            int8u
+   2302    TimeZone                             int8u
+   2308    MonitorBrightness?                   int8u
+   2444    EmptySlotRelease?                    int8u
+   2450    EnergySavingMode?                    int8u
+   2476    USBPowerDelivery?                    int8u
+   2480    SaveFocusPosition?                   int8u
+   2487    SilentPhotography?                   int8u
+   2496    AirplaneMode?                        int8u
 
 =head3 Nikon ShotInfoZ7II Tags
 
@@ -17445,7 +17529,7 @@ Tags found in the encrypted LensData from cameras such as the Z6 and Z7.
      20    EffectiveMaxAperture                 int8u
      47    NewLensData                          undef[17]
      48    LensID                               int16u
-     53    LensMountType                        int8u
+     52    LensFirmwareVersion                  int16u~
      54    MaxAperture                          int16u
      56    FNumber                              int16u
      60    FocalLength                          int16u
@@ -17454,6 +17538,7 @@ Tags found in the encrypted LensData from cameras such as the Z6 and Z7.
      86    LensDriveEnd?                        int8u
      88    FocusStepsFromInfinity?              int8u
      90    LensPositionAbsolute                 int32s
+     95    LensMountType                        int8u & 0x01
 
 =head3 Nikon LensDataUnknown Tags
 
@@ -19050,6 +19135,108 @@ Custom settings for the D610.
    21.1    MenuMonitorOffTime                   int8u & 0xe0
    21.2    ShootingInfoMonitorOffTime           int8u & 0x1c
    35.1    PlaybackMonitorOffTime               int8u & 0xe0
+
+=head3 NikonCustom SettingsZ6III Tags
+
+Custom settings for the Z6III.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      3    AF-CPrioritySelection                int8u
+      5    AF-SPrioritySelection                int8u
+      7    BlockShotAFResponse                  int8u
+     11    AFPointSel                           int8u
+     13    StoreByOrientation                   int8u
+     15    AFActivation                         int8u
+     16    AF-OnOutOfFocusRelease?              int8u
+     17    LimitAF-AreaModeSelPinpoint?         int8u
+     19    LimitAF-AreaModeSelWideAF_S?         int8u
+     20    LimitAF-AreaModeSelWideAF_L?         int8u
+     21    LimitAFAreaModeSelAuto?              int8u
+     22    FocusPointWrap?                      int8u
+     23    ManualFocusPointIllumination?        int8u
+     24    DynamicAreaAFAssist?                 int8u
+     26    AF-AssistIlluminator                 int8u
+     27    ManualFocusRingInAFMode              int8u
+     29    ExposureControlStepSize              int8u
+     31    EasyExposureCompensation             int8u
+     33    CenterWeightedAreaSize               int8u
+     35    FineTuneOptMatrixMetering            int8s
+     37    FineTuneOptCenterWeighted            int8s
+     39    FineTuneOptSpotMetering              int8s
+     41    FineTuneOptHighlightWeighted         int8s
+     43    ShutterReleaseButtonAE-L             int8u
+     45    SelfTimerTime                        int8u
+     49    SelfTimerShotCount                   int8u
+     53    SelfTimerShotInterval                int8u
+     55    PlaybackMonitorOffTime               int8u
+     57    MenuMonitorOffTime                   int8u
+     59    ImageReviewMonitorOffTime            int8u
+     61    ShootingInfoMonitorOffTime           int8u
+     63    CLModeShootingSpeed                  int8u
+     65    MaxContinuousRelease                 no
+     69    SyncReleaseMode?                     int8u
+     75    LimitSelectableImageAreaDX?          int8u
+     76    LimitSelectableImageArea1To1?        int8u
+     77    LimitSelectableImageArea16To9?       int8u
+     78    FileNumberSequence                   int8u
+     81    FocusPeakingLevel?                   int8u
+     83    FocusPeakingHighlightColor?          int8u
+     85    ContinuousModeDisplay                int8u
+     87    FlashSyncSpeed                       no
+     89    HighSpeedSync                        int8u
+     91    FlashShutterSpeed                    no
+     93    FlashExposureCompArea                int8u
+     95    AutoFlashISOSensitivity              int8u
+     97    ModelingFlash                        int8u
+     99    AutoBracketModeM                     int8u
+    101    AutoBracketOrder                     int8u
+    103    Func1Button                          int8u
+    119    Func2Button                          int8u
+    135    AFOnButton                           int8u
+    147    SubSelector?                         int8u
+    159    AssignMovieRecordButton?             int8u
+    163    LensFunc1Button                      int8u
+    171    LensFunc2Button                      int8u
+    177    LensControlRing                      int8u
+    179    MultiSelectorShootMode               int8u
+    183    MultiSelectorPlaybackMode            int8u
+    187    ShutterSpeedLock                     int8u
+    188    ApertureLock                         int8u
+    190    CmdDialsReverseRotation              int8u
+    195    UseDialWithoutHold?                  int8u
+    197    ReverseIndicators?                   int8u
+    199    MovieFunc1Button                     int8u
+    205    MovieFunc2Button                     int8u
+    211    MovieAF-OnButton                     int8u
+    223    MovieLensControlRing                 int8u
+    225    MovieMultiSelector?                  int8u
+    229    MovieAFSpeed                         int8u
+    231    MovieAFSpeedApply                    int8u
+    233    MovieAFTrackingSensitivity           int8u
+    241    LCDIllumination?                     int8u
+    242    ExtendedShutterSpeeds                int8u
+    245    FocusPointPersistence                int8u
+    257    FlashBurstPriority?                  int8u
+    319    LimitAF-AreaModeSelDynamic_S?        int8u
+    320    LimitAF-AreaModeSelDynamic_M?        int8u
+    321    LimitAF-AreaModeSelDynamic_L?        int8u
+    323    LimitAF-AreaModeSel3DTracking?       int8u
+    325    PlaybackFlickUp?                     int8u
+    329    PlaybackFlickDown?                   int8u
+    333    ISOStepSize                          int8u
+    340    TouchFn?                             int8u
+    341    TouchFnRole?                         int8u
+    345    TouchFnAreaWide?                     int8u
+    347    TouchFnAreaTall?                     int8u
+    350    EVFImageFrame?                       int8u
+    351    EVFGrid?                             int8u
+    353    VirtualHorizonStyle?                 int8u
+    415    Func1ButtonPlaybackMode?             int8u
+    417    Func2ButtonPlaybackMode?             int8u
+    431    MovieRecordButtonPlaybackMode?       int8u
+    463    ControlRingResponse                  int8u
+    559    FocusPeakingDisplay?                 int8u
 
 =head3 NikonCustom SettingsZ8 Tags
 

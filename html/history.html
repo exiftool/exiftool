@@ -17,6 +17,15 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.98'><b>Oct. 8, 2024 - Version 12.98</b></a>
+<ul>
+<li>Added write support for PDF files with huge offsets
+<li>Added a number of new Sony LensType values (thanks Jos Roost)
+<li>Require -v4 or higher to output "JPG RST" lines
+<li>Patched problem with -fast option when reading HEIC file via a pipe
+<li>Patched to avoid hang when reading some corrupted XMP
+</ul>
+
 <a name='v12.97'><b>Sept. 25, 2024 - Version 12.97</b></a>
 <ul>
 <li>Added ability to ignore up to 4095 bytes of garbage at the end of an INDD
@@ -166,7 +175,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Patched some Olympus WB_RBLevels tags to allow 4 values to be written as per
     some newer models
 <li>Fixed issue when writing IPTC date tags with a date/time value containing
-subseconds with 4 or more digits
+    subseconds with 4 or more digits
 </ul>
 
 <a name='v12.85'><b>May 21, 2024 - Version 12.85</b></a>

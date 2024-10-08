@@ -26108,7 +26108,7 @@ the image undisplayable.
   ------   --------                             --------
       0    MajorBrand                           no
       1    MinorVersion                         no
-      2    CompatibleBrands                     no
+      2    CompatibleBrands                     no+
 
 =head3 Jpeg2000 ImageHeader Tags
 
@@ -30230,7 +30230,7 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
   ------   --------                             --------
       0    MajorBrand                           no
       1    MinorVersion                         no
-      2    CompatibleBrands                     no
+      2    CompatibleBrands                     no+
 
 =head3 QuickTime OtherMeta Tags
 
@@ -31280,7 +31280,7 @@ Tags found in TomTom Bandit Action Cam MP4 videos.
   'TTAD'   TomTomAD                             QuickTime Stream
   'TTHL'   TomTomHL?                            no
   'TTID'   TomTomID                             no
-  'TTVD'   TomTomVD                             no
+  'TTVD'   TomTomVD                             no+
   'TTVI'   TomTomVI?                            no
 
 =head3 QuickTime HintTrackInfo Tags

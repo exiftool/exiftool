@@ -1584,10 +1584,10 @@ OPTIONS
          the corresponding family 8 group name is specified for the tag. See
          the -fileNUM option details for more information.
 
-         5) The -a option has no effect on the evaluation of the expression,
-         and the values of duplicate tags are accessible only by specifying
-         a group name (such as a family 4 instance number, eg. $Copy1:TAG,
-         $Copy2:TAG, etc).
+         5) The -a (Duplicates) option is implied when -if is used without a
+         fast *NUM*, and the values of duplicate tags are accessible by
+         specifying a group name in the expression (such as a family 4
+         instance number, eg. $Copy1:TAG, $Copy2:TAG, etc).
 
          6) A special "OK" UserParam is available to test the success of the
          previous command when -execute was used, and may be used like any
@@ -1849,9 +1849,9 @@ OPTIONS
          The flags are formatted as a comma-separated list of the following
          possible values: Avoid, Binary, List, Mandatory, Permanent,
          Protected, Unknown and Unsafe (see the Tag Name documentation). For
-         XMP List tags, the list type (Alt, Bag or Seq) is added to the
-         flags, and flattened structure tags are indicated by a Flattened
-         flag with 'struct' giving the ID of the parent structure.
+         XMP List tags, the list type (Alt, Bag or Seq) is also given, and
+         flattened structure tags are indicated by a Flattened flag with
+         'struct' giving the ID of the parent structure.
 
          Note that none of the -list options require an input *FILE*.
 

@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.66';
+$VERSION = '3.67';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3777,8 +3777,13 @@ sub ParseXMPElement($$$;$$$$)
 
         # extract property attributes
         my ($parseResource, %attrs, @attrs);
-        while ($attrs =~ m/(\S+?)\s*=\s*(['"])(.*?)\2/sg) {
-            my ($attr, $val) = ($1, $3);
+# this hangs Perl (v5.18.4) for a specific capture string [patched in ExifTool 12.98]
+#        while ($attrs =~ m/(\S+?)\s*=\s*(['"])(.*?)\2/sg) {
+        while ($attrs =~ /(\S+?)\s*=\s*(['"])/g) {
+            my ($attr, $quote) = ($1, $2);
+            my $p0 = pos($attrs);
+            last unless $attrs =~ /$quote/g;
+            my $val = substr($attrs, $p0, pos($attrs)-$p0-1);
             # handle namespace prefixes (defined by xmlns:PREFIX, or used with PREFIX:tag)
             if ($attr =~ /(.*?):/) {
                 if ($1 eq 'xmlns') {

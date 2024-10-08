@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '12.97';
+$VERSION = '12.98';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1466,12 +1466,12 @@ my %systemTagsNotes = (
         PrintConv => sub {
             my ($mask, $val) = (0400, oct(shift));
             my %types = (
-                0010000 => 'p',
-                0020000 => 'c',
-                0040000 => 'd',
-                0060000 => 'b',
-                0120000 => 'l',
-                0140000 => 's',
+                0010000 => 'p', # FIFO
+                0020000 => 'c', # character special file
+                0040000 => 'd', # directory
+                0060000 => 'b', # block special file
+                0120000 => 'l', # sym link
+                0140000 => 's', # socket link
             );
             my $str = $types{$val & 0170000} || '-';
             while ($mask) {
@@ -7290,7 +7290,10 @@ sub ProcessJPEG($$;$)
             last;   # all done parsing file
         } elsif (defined $markerLenBytes{$marker}) {
             # handle other stand-alone markers and segments we skipped over
-            $verbose and $marker and print $out "${indent}JPEG $markerName\n";
+            if ($verbose and $marker) {
+                next if $verbose < 4 and ($marker & 0xf8) == 0xd0;
+                print $out "${indent}JPEG $markerName\n";
+            }
             next;
         } elsif ($marker == 0xdb and length($$segDataPt) and    # DQT
             # save the DQT data only if JPEGDigest has been requested

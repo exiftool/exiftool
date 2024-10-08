@@ -41,7 +41,7 @@ require 5.002;
 require Exporter;
 
 use vars qw($VERSION @ISA @EXPORT_OK);
-$VERSION = '1.12';
+$VERSION = '1.13';
 @ISA = qw(Exporter);
 
 sub Read($$$);
@@ -158,7 +158,10 @@ sub Seek($$;$)
             $self->Slurp();                 # read whole file into buffer
             $newPos = $num + $self->{LEN};  # relative to end of file
         }
-        if ($newPos >= 0) {
+        if ($newPos >= 0 and
+            # can't go backwards in unbuffered non-seekable file
+            (not $self->{NoBuffer} or $newPos >= $self->{POS}))
+        {
             $self->{POS} = $newPos;
             $rtnVal = 1;
         }

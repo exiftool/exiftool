@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.69';
+$VERSION = '3.70';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -170,6 +170,7 @@ sub PrintInvLensSpec($;$$);
     32885 => 'Sony FE 16-35mm F2.8 GM II', #JR
     32886 => 'Sony FE 300mm F2.8 GM OSS', #JR
     32887 => 'Sony E PZ 16-50mm F3.5-5.6 OSS II', #JR
+    32888 => 'Sony FE 85mm F1.4 GM II', #JR
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -241,6 +242,8 @@ sub PrintInvLensSpec($;$$);
     49474.9 => 'Viltrox 75mm F1.2 E', #JR
    '49474.10' => 'Viltrox 20mm F2.8 FE', #JR
     49475 => 'Tamron 50-300mm F4.5-6.3 Di III VC VXD', #JR (Model A069)
+    49476 => 'Tamron 28-300mm F4-7.1 Di III VC VXD', #JR (Model A074)
+    49477 => 'Tamron 90mm F2.8 Di III Macro VXD', #JR (Model F072)
 
     49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
     49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)
@@ -299,6 +302,7 @@ sub PrintInvLensSpec($;$$);
     50547 => 'Sigma 10-18mm F2.8 DC DN | C', #JR (023)
     50548 => 'Sigma 15mm F1.4 DG DN DIAGONAL FISHEYE | A', #JR (024)
     50549 => 'Sigma 50mm F1.2 DG DN | A', #JR (024)
+    50550 => 'Sigma 28-105mm F2.8 DG DN | A', #JR (024)
     50551 => 'Sigma 28-45mm F1.8 DG DN | A', #JR (024)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
@@ -315,6 +319,7 @@ sub PrintInvLensSpec($;$$);
     51003 => 'Voigtlander NOKTON 35mm F1.2 Aspherical SE', #JR
     51006 => 'Voigtlander APO-LANTHAR 35mm F2 Aspherical', #JR
     51007 => 'Voigtlander NOKTON 50mm F1 Aspherical', #JR
+    51008 => 'Voigtlander NOKTON 75mm F1.5 Aspherical', #JR
 
     # lenses listed in the Sigma MC-11 list, but not yet seen:
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)

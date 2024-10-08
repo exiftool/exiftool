@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.40';
+$VERSION = '1.41';
 
 sub ProcessJpeg2000Box($$$);
 sub ProcessJUMD($$$);
@@ -574,6 +574,7 @@ my %j2cMarker = (
     2 => {
         Name => 'CompatibleBrands',
         Format => 'undef[$size-8]',
+        List => 1, # (for documentation only)
         # ignore any entry with a null, and return others as a list
         ValueConv => 'my @a=($val=~/.{4}/sg); @a=grep(!/\0/,@a); \@a',
     },

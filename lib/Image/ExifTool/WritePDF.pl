@@ -184,11 +184,19 @@ sub GetFreeEntries($)
 {
     my $dict = shift;
     my %xrefFree;
-    # from the start we have only written xref stream entries in 'CNn' format,
-    # so we can simplify things for now and only support this type of entry
+    # we write xref stream entries in 'CNn' or 'CNNn' format (with 8-byte 'NN' offset),
     my $w = $$dict{W};
-    if (ref $w eq 'ARRAY' and "@$w" eq '1 4 2') {
-        my $size = $$dict{_entry_size}; # this will be 7 for 'CNn'
+    if (ref $w eq 'ARRAY') {
+        my $bytes = "@$w";
+        my $fmt;
+        if ($bytes eq '1 4 2') {
+            $fmt = 'CNn';
+        } elsif ($bytes eq '1 8 2') {
+            $fmt = 'CNNn';
+        } else {
+            return \%xrefFree;
+        }
+        my $size = $$dict{_entry_size}; # this will be 7 for 'CNn' or 11 for 'CNNn'
         my $index = $$dict{Index};
         my $len = length $$dict{_stream};
         # scan the table for free objects
@@ -200,7 +208,12 @@ sub GetFreeEntries($)
             my $count = $$index[$i*2+1];
             for ($j=0; $j<$count; ++$j) {
                 last if $pos + $size > $len;
-                my @t = unpack("x$pos CNn", $$dict{_stream});
+                my @t = unpack("x$pos $fmt", $$dict{_stream});
+                if (@t == 4) {
+                    $t[1] = $t[1] * 4294967296 + $t[2];
+                    $t[2] = $t[3];
+                    @t = 3;
+                }
                 # add entry if object was free
                 $xrefFree{$start+$j} = [ $t[1], $t[2], 'f' ] if $t[0] == 0;
                 $pos += $size;  # step to next entry
@@ -657,24 +670,37 @@ sub WritePDF($$)
             $newXRef{$nextObject++} = [ Tell($outfile) - $$et{PDFBase} + length($/), 0, 'n' ];
             $$mainDict{Size} = $nextObject;
             # create xref stream and Index entry
-            $$mainDict{W} = [ 1, 4, 2 ];    # int8u, int32u, int16u ('CNn')
-            $$mainDict{Index} = [ ];
-            $$mainDict{_stream} = '';
-            my @ids = sort { $a <=> $b } keys %newXRef;
-            while (@ids) {
-                my $startID = $ids[0];
-                for (;;) {
-                    $id = shift @ids;
-                    my ($pos, $gen, $type) = @{$newXRef{$id}};
-                    if ($pos > 0xffffffff) {
-                        $et->Error('Huge files not yet supported');
-                        last;
+            my $bits = 4;
+Restart:    for (;;) {
+                $$mainDict{W} = [ 1, $bits, 2 ];    # int8u, int32u/int64u, int16u ('CNn' or 'CNNn')
+                $$mainDict{Index} = [ ];
+                $$mainDict{_stream} = '';
+                my @ids = sort { $a <=> $b } keys %newXRef;
+                while (@ids) {
+                    my $startID = $ids[0];
+                    for (;;) {
+                        $id = shift @ids;
+                        my ($pos, $gen, $type) = @{$newXRef{$id}};
+                        if ($pos > 0xffffffff) {
+                            if ($bits == 4) {
+                                # switch to 64-bit integer offsets
+                                $bits = 8;
+                                next Restart;
+                            }
+                        }
+                        if ($bits == 4) {
+                            $$mainDict{_stream} .= pack('CNn', $type eq 'f' ? 0 : 1, $pos, $gen);
+                        } else {
+                            my $hi = int($pos / 4294967296);
+                            my $lo = $pos - $hi * 4294967296;
+                            $$mainDict{_stream} .= pack('CNNn', $type eq 'f' ? 0 : 1, $hi, $lo, $gen);
+                        }
+                        last if not @ids or $ids[0] != $id + 1;
                     }
-                    $$mainDict{_stream} .= pack('CNn', $type eq 'f' ? 0 : 1, $pos, $gen);
-                    last if not @ids or $ids[0] != $id + 1;
+                    # add Index entries for this section of the xref stream
+                    push @{$$mainDict{Index}}, $startID, $id - $startID + 1;
                 }
-                # add Index entries for this section of the xref stream
-                push @{$$mainDict{Index}}, $startID, $id - $startID + 1;
+                last;
             }
             # write the xref stream object
             $keyExt = "$id 0 obj";  # (set anyway, but xref stream should NOT be encrypted)

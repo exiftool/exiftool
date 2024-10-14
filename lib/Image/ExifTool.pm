@@ -4642,6 +4642,8 @@ sub Open($*$;$)
 {
     my ($self, $fh, $file, $mode) = @_;
 
+    my $supportsWin32LongPath = ($^O eq 'MSWin32') && eval { require Win32::LongPath };
+
     $file =~ s/^([\s&])/.\/$1/; # protect leading whitespace or ampersand
     # default to read mode ('<') unless input is a trusted pipe
     $mode = (($file =~ /\|$/ and $$self{TRUST_PIPE}) ? '' : '<') unless $mode;
@@ -4682,12 +4684,17 @@ sub Open($*$;$)
                 return undef;
             }
             $file = "&=$fd";    # specify file by descriptor
-        } else {
+        } elsif (not $supportsWin32LongPath) {
             # add leading space to protect against leading characters like '>'
             # in file name, and trailing "\0" to protect trailing spaces
             $file = " $file\0";
         }
     }
+
+    if ($supportsWin32LongPath) {
+        return Win32::LongPath::openL($fh, $mode, $file);
+    }
+
     return open $fh, "$mode$file";
 }
 
@@ -4698,6 +4705,8 @@ sub Open($*$;$)
 sub Exists($$;$)
 {
     my ($self, $file, $writing) = @_;
+
+    my $existsWithWin32LongPath = ($^O eq 'MSWin32') && eval { require Win32::LongPath } && Win32::LongPath::testL('e', "$file");
 
     if ($self->EncodeFileName($file)) {
         local $SIG{'__WARN__'} = \&SetWarning;
@@ -4710,9 +4719,9 @@ sub Exists($$;$)
     } elsif ($writing) {
         # (named pipes already exist, but we pretend that they don't
         #  so we will be able to write them, so test with for pipe -p)
-        return(-e $file and not -p $file);
+        return((-e $file or $existsWithWin32LongPath) and not -p $file);
     } else {
-        return(-e $file);
+        return(-e $file or $existsWithWin32LongPath);
     }
     return 1;
 }

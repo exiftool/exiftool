@@ -158,6 +158,7 @@ for calculating digest values and providing other features listed below:
   Unicode::LineBreak   (for column alignment of alternate-language output)
   Win32::API           (for proper handling of Windows file times)
   Win32::FindFile      (for Windows Unicode directory support, app only)
+  Win32::LongPath      (for reading files with paths longer than 260 characters in Windows)
   Win32API::File       (for Windows Unicode file names and file times)
   Compress::Raw::Lzma  (for reading encoded 7z files)
   IO::Compress::RawDeflate   (for writing FLIF images)

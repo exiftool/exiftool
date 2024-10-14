@@ -303,6 +303,7 @@ my @recommends = qw(
     IO::Uncompress::Brotli
     Win32::API
     Win32::FindFile
+    Win32::LongPath
     Win32API::File
 );
 my %altRecommends = (

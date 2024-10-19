@@ -925,19 +925,31 @@ sub WriteXMP($$;$)
     # get hash of all information we want to change
     # (sorted by tag name so alternate languages come last, but with structures
     # first so flattened tags may be used to override individual structure elements)
-    my (@tagInfoList, $delLangPath, %delLangPaths, %delAllLang, $firstNewPath);
+    my (@tagInfoList, @structList, $delLangPath, %delLangPaths, %delAllLang, $firstNewPath, @langTags);
     my $writeGroup = $$dirInfo{WriteGroup};
     foreach $tagInfo (sort ByTagName $et->GetNewTagInfoList()) {
         next unless $et->GetGroup($tagInfo, 0) eq 'XMP';
         next if $$tagInfo{Name} eq 'XMP'; # (ignore full XMP block if we didn't write it already)
         next if $writeGroup and $writeGroup ne $$et{NEW_VALUE}{$tagInfo}{WriteGroup};
-        if ($$tagInfo{Struct}) {
-            unshift @tagInfoList, $tagInfo;
+        if ($$tagInfo{LangCode}) {
+            push @langTags, $tagInfo
+        } elsif ($$tagInfo{Struct}) {
+            push @structList, $tagInfo;
         } else {
             push @tagInfoList, $tagInfo;
         }
     }
-    foreach $tagInfo (@tagInfoList) {
+    if (@langTags) {
+        # keep original order in which lang-alt entries were added
+        foreach $tagInfo (sort { $$et{NEW_VALUE}{$a}{Order} <=> $$et{NEW_VALUE}{$b}{Order} } @langTags) {
+            if ($$tagInfo{Struct}) {
+                push @structList, $tagInfo;
+            } else {
+                push @tagInfoList, $tagInfo;
+            }
+        }
+    }
+    foreach $tagInfo (@structList, @tagInfoList) {
         my @delPaths;   # list of deleted paths
         my $tag = $$tagInfo{TagID};
         my $path = GetPropertyPath($tagInfo);

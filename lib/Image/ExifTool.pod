@@ -332,13 +332,14 @@ L</ImageInfo>:
 
 Values of the returned hash are usually simple scalars, but a scalar
 reference is used to indicate binary data and an array reference may be used
-to indicate a list.  Also, a hash reference may be returned if the L</Struct>
-option is used.  Lists of values are joined by commas into a single
-string only if the PrintConv option is enabled and the ListJoin option is
-enabled (which are the defaults).  Note that binary values are not
-necessarily extracted unless specifically requested, or the Binary option is
-enabled and the tag is not specifically excluded.  If not extracted the
-value is a reference to a string of the form "Binary data ##### bytes".
+to indicate a list.  Also, a hash reference may be returned if the
+L</Struct> option is used (see the L</OrderedKeys> option to obtain the hash
+keys).  Lists of values are joined by commas into a single string only if
+the PrintConv option is enabled and the ListJoin option is enabled (which
+are the defaults).  Note that binary values are not necessarily extracted
+unless specifically requested, or the Binary option is enabled and the tag
+is not specifically excluded.  If not extracted the value is a reference to
+a string of the form "Binary data ##### bytes".
 
 The code below gives an example of how to handle these return values, as
 well as illustrating the use of other ExifTool functions:
@@ -1089,7 +1090,9 @@ values in standard format).
 
 Flag to return XMP structures as hash references instead of flattening into
 individual tags.  Has no effect when writing since both flattened and
-structured tags may always be written.  Possible values are:
+structured tags may always be written.  A special "_ordered_keys_" element
+containing a list of ordered keys may exist if the structure elements are
+ordered (see the L<OrderedKeys> method).  Possible values are:
 
   undef - (default) Same as 0 for reading, 2 for copying
     0   - Read/copy flattened tags
@@ -2746,6 +2749,26 @@ The number of tags added.
 Pre-existing tags with the same ID will be replaced in the destination
 table. See lib/Image/ExifTool/README in the full distribution for full
 details on the elements of the tag information hash.
+
+=back
+
+=head2 OrderedKeys [static]
+
+Return a list of ordered keys from a tag value that is a HASH reference
+when the Struct option is used.
+
+    use Image::ExifTool ':Public';
+    my @keys = OrderedKeys($structRef);
+
+=over 4
+
+=item Inputs:
+
+0) Structure HASH reference
+
+=item Return Value:
+
+List of ordered keys, or sorted alphabetically if not ordered.
 
 =back
 

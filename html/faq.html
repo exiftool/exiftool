@@ -1512,13 +1512,13 @@ the queued list if a leading <code>+</code> is added to the target tag name (eg.
 order, and all together at the point in the command line where the
 <code>-tagsFromFile</code> option is located, regardless of whether these tags
 are specified immediately after the <code>-tagsFromFile</code> option or later
-on the command line.  Remember that "<code>-tagsFromFile @</code>" is implied
-unless another file is specified when redirecting information with arguments
-like <code>"-DSTTAG&lt;SRCTAG"</code>.</li></ol> Note: When copying tag values,
-adding to lists, or shifting date/time values, the source value is always the
-original value found in the file, regardless of any previous assignments.  For
-example, the following command sets Subject to the original value of Title in
-the file (NOT to "test"):
+on the command line.  Remember that unless otherwise specified,
+"<code>-tagsFromFile @</code>" is implied before the first argument to redirect
+tags (ie. <code>"-DSTTAG&lt;SRCTAG"</code>).</li></ol>
+Note: When copying tag values, adding to lists, or shifting date/time values,
+the source value is always the original value found in the file, regardless of
+any previous assignments.  For example, the following command sets Subject to
+the original value of Title in the file (NOT to "test"):
 <pre>exiftool -title=test "-subject&lt;title" a.jpg</pre></blockquote>
 
 <a name="Q23"></a>

@@ -1,19 +1,19 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.99
 [File, System, Other] FileName - File Name: JSON.json
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 344 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2017:03:14 09:08:39-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:16-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
-[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2017:03:14 13:36:45-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2024:10:10 17:43:58-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2024:10:08 15:48:32-04:00
+[File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JSON
 [File, File, Other] FileTypeExtension - File Type Extension: json
 [File, File, Other] MIMEType - MIME Type: application/json
 [JSON, JSON, Other] description - Description: test description
-[JSON, JSON, Other] imageViews - Image Views: 0
-[JSON, JSON, Other] people - People: one, two, three
-[JSON, JSON, Other] test - Test: [{thing=[3,4],this=[1,2]},{thing=[7,8],this=[5,6]}]
-[JSON, JSON, Other] testThing - Test Thing: 3, 4, 7, 8
-[JSON, JSON, Other] testThis - Test This: 1, 2, 5, 6
 [JSON, JSON, Other] title - Title: 2013-02-02
+[JSON, JSON, Other] people - People: one, two, three
 [JSON, JSON, Other] url - Url: https://(removed)
+[JSON, JSON, Other] imageViews - Image Views: 0
+[JSON, JSON, Other] test - Test: [{this=[1,2],thing=[3,4]},{this=[5,6],thing=[7,8]}]
+[JSON, JSON, Other] testThis - Test This: 1, 2, 5, 6
+[JSON, JSON, Other] testThing - Test Thing: 3, 4, 7, 8

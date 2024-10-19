@@ -83,6 +83,7 @@ retrieve any number of them.</p>
 <li><a href="#CanWrite">CanWrite</a></li>
 <li><a href="#CanCreate">CanCreate</a></li>
 <li><a href="#AddUserDefinedTags">AddUserDefinedTags</a></li>
+<li><a href="#OrderedKeys">OrderedKeys</a></li>
 </ul>
 </td></tr></table>
 
@@ -321,13 +322,14 @@ requested.</p>
 <p>Values of the returned hash are usually simple scalars, but a scalar
 reference is used to indicate binary data and an array reference may be used to
 indicate a list.  Also, a hash reference may be returned if the
-<a href="#Struct">Struct</a> option is used.  Lists of values are joined by
-commas into a single string only if the PrintConv option is enabled and the
-ListJoin option is enabled (which are the defaults).  Note that binary values
-are not necessarily extracted unless specifically requested, or the Binary
-option is enabled and the tag is not specifically excluded. If not extracted the
-value is a reference to a string of the form "<code>Binary data #####
-bytes</code>".</p>
+<a href="#Struct">Struct</a> option is used (see the
+<a href="#OrderedKeys">OrderedKeys</a> option to obtain the hash keys).  Lists
+of values are joined by commas into a single string only if the PrintConv option
+is enabled and the ListJoin option is enabled (which are the defaults).  Note
+that binary values are not necessarily extracted unless specifically requested,
+or the Binary option is enabled and the tag is not specifically excluded. If not
+extracted the value is a reference to a string of the form
+"<code>Binary data ##### bytes</code>".</p>
 
 <p>Here is a simple example to print out the information returned by
 <a href="#ImageInfo">ImageInfo</a>:</p>
@@ -968,7 +970,9 @@ effect as a value of 0 for options with numerical values.</p>
     instead of flattening into individual tags.  This setting has no effect
     when writing since both flattened and structured tags may always be written.
     See the <a href="struct.html">Structured Information documentation</a> for
-    more details about structured information.</td>
+    more details about structured information.  A special "_ordered_keys_" element
+    containing a list of ordered keys may exist if the structure elements are ordered
+    (see the <a href="#OrderedKeys">OrderedKeys</a> method).</td>
     <td><table class=clear>
     <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>Same as 0 for reading and 2 for copying</td></tr>
     <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Read/copy flattened tags</td></tr>
@@ -2476,6 +2480,22 @@ my $num = <b>AddUserDefinedTags</b>('Image::ExifTool::PDF::Info', %tags);
 <p>Pre-existing tags with the same ID will be replaced in the destination table.
 See lib/Image/ExifTool/README in the full distribution for full details on the
 elements of the tag information hash.</p>
+
+<hr><h2><a name="OrderedKeys">OrderedKeys</a></h2>
+<p>Return a list of ordered keys of a structured tag (ie. a tag value returned
+as a HASH reference when the <a href="#Struct">Struct</a> option is used).</p>
+<blockquote><table class='norm'>
+<tr><td><b>Prototype</b></td><td>OrderedKeys($)</td></tr>
+<tr><td valign=top><b>Inputs</b></td><td><b>0)</b> Structure HASH reference
+</td></tr>
+<tr><td valign=top><b>Returns</b></td><td>List of ordered keys, or keys
+sorted in alphabetical order if not ordered.</td></tr>
+</table></blockquote>
+<p><b>Example:</b></p>
+<blockquote><table class='box'><tr><td><pre>
+use Image::ExifTool ':Public';
+my @keys = OrderedKeys($structRef);
+</pre></td></tr></table></blockquote>
 
 <hr>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>

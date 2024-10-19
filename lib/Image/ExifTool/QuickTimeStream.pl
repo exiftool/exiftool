@@ -109,7 +109,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 77 different formats of timed GPS metadata from video files.
+        currently reads 78 different formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
@@ -2163,9 +2163,26 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
             push(@xtra, $1 => $2), next;
         }
 
+    } elsif ($$dataPt =~ m/^.{30}A.{20}VV/) {
+    
+        $debug and $et->FoundTag(GPSType => 17);
+        # 70mai A810 dashcam (note: no timestamps in the samples I have)
+        #  0000: 00 00 40 00 66 72 65 65 47 50 53 20 ed 01 00 00 [..@.freeGPS ....]
+        #  0010: 03 00 ed 01 00 00 00 0f 00 00 70 08 00 00 41 66 [..........p...Af]
+        #  0020: 13 7d 1e 3c 11 dc 03 5d 01 00 00 01 00 00 00 23 [.}.<...].......#]
+        #  0030: 00 00 00 56 56 00 00 00 00 00 00 00 00 00 00 00 [...VV...........]
+        #  0040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+        SetByteOrder('II');
+        SetGPSDateTime($et, $tagTbl, $$dirInfo{SampleTime});
+        $lat = Get32s($dataPt, 31) / 1e5;
+        $lon = Get32s($dataPt, 35) / 1e5;
+        $spd = Get32s($dataPt, 43);  # (seems to be km/h but not confirmed)
+        # offset 475 - int16u=N string[N] - some sort of settings?:
+        # eg. "\x15\x00{pA:V,rA:V,sF:0,tF:2}"
+
     } else {
 
-        $debug and $et->FoundTag(GPSType => 17);
+        $debug and $et->FoundTag(GPSType => 18);
         # (look for binary GPS as stored by Nextbase 512G, ref PH)
         #  0000: 00 00 80 00 66 72 65 65 47 50 53 20 78 01 00 00 [....freeGPS x...]
         #  0010: 78 2e 78 78 00 00 00 00 00 00 00 00 00 00 00 00 [x.xx............]

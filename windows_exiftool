@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '12.98';
+my $version = '12.99';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -47,6 +47,8 @@ sub PrintCSV();
 sub AddGroups($$$$);
 sub ConvertBinary($);
 sub IsEqual($$);
+sub Printable($);
+sub LengthUTF8($);
 sub Infile($;$);
 sub AddSetTagsFile($;$);
 sub Warning($$);
@@ -142,6 +144,7 @@ my $csvAdd;         # flag to add CSV information to existing lists
 my $csvDelim;       # delimiter for CSV files
 my $csvSaveCount;   # save counter for last CSV file loaded
 my $deleteOrig;     # 0=restore original files, 1=delete originals, 2=delete w/o asking
+my $diff;           # file name for comparing differences
 my $disableOutput;  # flag to disable normal output
 my $doSetFileName;  # flag set if FileName may be written
 my $doUnzip;        # flag to extract info from .gz and .bz2 files
@@ -248,11 +251,13 @@ my %optArgs = (
     '-csvdelim' => 1,
     '-d' => 1, '-dateformat' => 1,
     '-D' => 0, # necessary to avoid matching lower-case equivalent
+    '-diff' => 1,
     '-echo' => 1, '-echo#' => 1,
     '-efile' => 1, '-efile#' => 1, '-efile!' => 1, '-efile#!' => 1,
     '-ext' => 1, '--ext' => 1, '-ext+' => 1, '--ext+' => 1,
         '-extension' => 1, '--extension' => 1, '-extension+' => 1, '--extension+' => 1,
     '-fileorder' => 1, '-fileorder#' => 1,
+    '-file#' => 1,
     '-geotag' => 1,
     '-globaltimeshift' => 1,
     '-i' => 1, '-ignore' => 1,
@@ -324,7 +329,7 @@ sub Exit {
     exit shift;
 }
 # my warning and error routines (NEVER say "die"!)
-sub Warn  {
+sub Warn {
     if ($quiet < 2 or $_[0] =~ /^Error/) {
         my $oldWarn = $SIG{'__WARN__'};
         delete $SIG{'__WARN__'};
@@ -485,6 +490,7 @@ undef $comma;
 undef $csv;
 undef $csvAdd;
 undef $deleteOrig;
+undef $diff;
 undef $disableOutput;
 undef $doSetFileName;
 undef $doUnzip;
@@ -956,6 +962,11 @@ for (;;) {
         next;
     }
     (/^D$/ or $a eq 'decimal') and $showTagID = 'D', next;
+    if (/^diff$/i) {
+        $diff = shift;
+        defined $diff or Error("Expecting file name for -$_ option\n"), $badCmd=1;
+        next;
+    }
     /^delete_original(!?)$/i and $deleteOrig = ($1 ? 2 : 1), next;
     /^list_dir$/i and $listDir = 1, next;
     (/^e$/ or $a eq '-composite') and $mt->Options(Composite => 0), next;
@@ -1498,8 +1509,11 @@ if ($overwriteOrig > 1 and $outOpt) {
     next;
 }
 
-if ($tagOut and ($csv or %printFmt or $tabFormat or $xml or ($verbose and $html))) {
-    Warn "Sorry, -W may not be combined with -csv, -htmlDump, -j, -p, -t or -X\n";
+if (($tagOut or defined $diff) and ($csv or $json or %printFmt or $tabFormat or $xml or
+    ($verbose and $html)))
+{
+    my $opt = $tagOut ? '-W' : '-diff';
+    Warn "Sorry, $opt may not be combined with -csv, -htmlDump, -j, -p, -t or -X\n";
     $rtnVal = 1;
     next;
 }
@@ -1754,9 +1768,14 @@ if (@newValues) {
     $rtnVal = 1;
     next;
 }
-if ($isWriting and @tags and not $outOpt) {
-    my ($tg, $s) = @tags > 1 ? ("$tags[0] ...", 's') : ($tags[0], '');
-    Warn "Ignored superfluous tag name$s or invalid option$s: -$tg\n";
+if ($isWriting) {
+    if (defined $diff) {
+        Error "Can't use -diff option when writing tags\n";
+        next;
+    } elsif (@tags and not $outOpt) {
+        my ($tg, $s) = @tags > 1 ? ("$tags[0] ...", 's') : ($tags[0], '');
+        Warn "Ignored superfluous tag name$s or invalid option$s: -$tg\n";
+    }
 }
 # save current state of new values if setting values from target file
 # or if we may be translating to a different format
@@ -1801,8 +1820,7 @@ if ($outOpt) {
                 $type = Image::ExifTool::GetFileExtension($outOpt);
                 $type = uc($outOpt) unless defined $type;
             }
-            Warn "Can't write $type files\n";
-            $rtnVal = 1;
+            Error "Can't write $type files\n";
             next;
         }
         $scanWritable = $type unless CanCreate($type);
@@ -1900,10 +1918,7 @@ if (@dbKeys) {
 # process all specified files
 ProcessFiles($mt);
 
-if ($filtered and not $validFile) {
-    Warn "No file with specified extension\n";
-    $rtnVal = 1;
-}
+Error "No file with specified extension\n" if $filtered and not $validFile;
 
 # print CSV information if necessary
 PrintCSV() if $csv and not $isWriting;
@@ -2011,7 +2026,7 @@ Exit $rtnValApp;    # all done
 sub GetImageInfo($$)
 {
     my ($et, $orig) = @_;
-    my (@foundTags, $info, $file, $ind, $g8);
+    my (@foundTags, @found2, $info, $info2, $et2, $file, $file2, $ind, $g8);
 
     # set window title for this file if necessary
     if (defined $windowTitle) {
@@ -2148,7 +2163,7 @@ sub GetImageInfo($$)
         }
         # can't make use of $info if verbose because we must reprocess
         # the file anyway to generate the verbose output
-        undef $info if $verbose or defined $fastCondition;
+        undef $info if $verbose or defined $fastCondition or defined $diff;
     } elsif ($file =~ s/^(\@JSON:)(.*)/$1/) {
         # read JSON file from command line
         my $dat = $2;
@@ -2180,7 +2195,7 @@ sub GetImageInfo($$)
 
     my $lineCount = 0;
     my ($fp, $outfile, $append);
-    if ($textOut and ($verbose or $et->Options('PrintCSV')) and not $tagOut) {
+    if ($textOut and ($verbose or $et->Options('PrintCSV')) and not ($tagOut or defined $diff)) {
         ($fp, $outfile, $append) = OpenOutputFile($orig);
         $fp or EFile($file), ++$countBad, return;
         # delete file if we exit prematurely (unless appending)
@@ -2225,7 +2240,7 @@ sub GetImageInfo($$)
             require Image::ExifTool::HTML;
             my $f = Image::ExifTool::HTML::EscapeHTML($file);
             print "<!-- $f -->\n";
-        } elsif (not ($json or $xml)) {
+        } elsif (not ($json or $xml or defined $diff)) {
             $o = \*STDOUT if ($multiFile and not $quiet) or $progress;
         }
     }
@@ -2254,10 +2269,37 @@ sub GetImageInfo($$)
         } else {
             @foundTags = @tags;
         }
+        if (defined $diff) {
+            $file2 = FilenameSPrintf($diff, $orig);
+            if ($file eq $file2) {
+                Warn "Error: Diffing file with itself - $file2\n";
+                EFile($file);
+                ++$countBad;
+                return;
+            }
+            if ($et->Exists($file2)) {
+                $showGroup = 1 unless defined $showGroup;
+                $allGroup = 1 unless defined $allGroup;
+                $et->Options(Duplicates => 1, Sort => "Group$showGroup", Verbose => 0);
+                $et2 = Image::ExifTool->new;
+                $et2->Options(%{$$et{OPTIONS}});
+                @found2 = @foundTags;
+                $info2 = $et2->ImageInfo($file2, \@found2);
+            } else {
+                $info2 = { Error => "Diff file not found" };
+            }
+            if ($$info2{Error}) {
+                Warn "Error: $$info2{Error} - $file2\n";
+                EFile($file);
+                ++$countBad;
+                return;
+            }
+        }
         # extract the information
         $info = $et->ImageInfo(Infile($pipe), \@foundTags);
         $et->Options(Duplicates => $oldDups);
     }
+
     # all done now if we already wrote output text file (eg. verbose option)
     if ($fp) {
         if (defined $outfile) {
@@ -2271,7 +2313,7 @@ sub GetImageInfo($$)
             }
         }
         if ($info->{Error}) {
-            Warn "Error: $info->{Error} - $file\n";
+            Warn "Error: $$info{Error} - $file\n";
             EFile($file);
             ++$countBad;
             return;
@@ -2295,6 +2337,105 @@ sub GetImageInfo($$)
         $tmpText = $outfile unless $append;
     }
 
+    # print differences if requested
+    if (defined $diff) {
+        my (%done2, $wasDiff, @diffs, @groupTags2);
+        my $v = $verbose || 0;
+        print $fp "======== diff < $file > $file2\n";
+        my ($g2, $same) = (0, 0); # start with $g2 false, but not equal to '' to avoid infinite loop
+        for (;;) {
+            my $tag = shift @foundTags;
+            my ($g, $tag2);
+            if (defined $tag) {
+                $g = $et->GetGroup($tag, $showGroup);
+            } else {
+                for (;;) {
+                    $tag2 = shift @found2;
+                    defined $tag2 or $g = '', last;
+                    $done2{$tag2} or $g = $et2->GetGroup($tag2, $showGroup), last;
+                }
+            }
+            if ($g ne $g2) {
+                my $t2;
+                # add any outstanding tags from diff file not yet handled in previous group ($g2)
+                foreach $t2 (@groupTags2) {
+                    next if $done2{$t2};
+                    my $val2 = $et2->GetValue($t2);
+                    next unless defined $val2;
+                    my $name = $outFormat < 1 ? $et2->GetDescription($t2) : GetTagName($t2);
+                    my $len = LengthUTF8($name);
+                    my $pad = $outFormat < 2 ? ' ' x ($len < 32 ? 32 - $len : 0) : '';
+                    if ($allGroup) {
+                        my $grp = "[$g2]";
+                        $grp .= ' ' x (15 - length($grp)) if length($grp) < 15 and $outFormat < 2;
+                        push @diffs, sprintf "> %s %s%s: %s\n", $grp, $name, $pad, Printable($val2);
+                    } else {
+                        push @diffs, sprintf "> %s%s: %s\n", $name, $pad, Printable($val2);
+                    }
+                    $done2{$t2} = 1;
+                }
+                my $str = '';
+                ($v > 1 or $same) and $str = "  ($same same tag" . ($same==1 ? '' : 's') . ')';
+                if (not $allGroup) {
+                    print $fp "---- $g2 ----$str\n" if $g2 and ($str or @diffs);
+                } elsif ($str and $g2) {
+                    printf $fp "   %-13s%s\n", $g2, $str;
+                }
+                # print all differences for this group
+                @diffs and print($fp @diffs), $wasDiff = 1, @diffs = ();
+                last unless $g;
+                ($g2, $same) = ($g, 0);
+                # build list of all tags in the new group of the diff file
+                @groupTags2 = ();
+                foreach $t2 (@found2) {
+                    $done2{$t2} or $g ne $et2->GetGroup($t2, $showGroup) or push @groupTags2, $t2;
+                }
+            }
+            next unless defined $tag;
+            my $val = $et->GetValue($tag);
+            next unless defined $val;  # (just in case)
+            my $name = GetTagName($tag);
+            # get matching tag key from diff file
+            my @tags2 = grep /^$name( |$)/, @groupTags2;
+            $name = $et->GetDescription($tag) if $outFormat < 1;
+            my ($val2, $t2);
+            foreach $t2 (@tags2) {
+                next if $done2{$t2};
+                $tag2 = $t2;
+                $val2 = $et2->GetValue($t2);
+                last;
+            }
+            if (defined $val2 and IsEqual($val, $val2)) {
+                ++$same;
+            } else {
+                my $len = LengthUTF8($name);
+                my $pad = $outFormat < 2 ? ' ' x ($len < 32 ? 32 - $len : 0) : '';
+                if ($allGroup) {
+                    my $grp = "[$g]";
+                    $grp .= ' ' x (15 - length($grp)) if length($grp) < 15 and $outFormat < 2;
+                    push @diffs, sprintf "< %s %s%s: %s\n", $grp, $name, $pad, Printable($val);
+                    if (defined $val2) {
+                        $v < 3 and $grp = ' ' x length($grp), $name = ' ' x $len;
+                        push @diffs, sprintf "> %s %s%s: %s\n", $grp, $name, $pad, Printable($val2);
+                    }
+                } else {
+                    push @diffs, sprintf "< %s%s: %s\n", $name, $pad, Printable($val);
+                    $v < 3 and $name = ' ' x $len;
+                    push @diffs, sprintf "> %s%s  %s\n", $name, $pad, Printable($val2) if defined $val2;
+                }
+            }
+            $done2{$tag2} = 1 if defined $tag2;
+        }
+        print $fp "(no metadata differences)\n" unless $wasDiff;
+        undef $tmpText;
+        if (defined $outfile) {
+            ++$created{$outfile};
+            close($fp);
+            undef $tmpText;
+        }
+        ++$count;
+        return;
+    }
     # restore state of comma flag for this file if appending
     $comma = $outComma{$outfile} if $append and ($textOverwrite & 0x02);
 
@@ -2763,21 +2904,7 @@ TAG:    foreach $tag (@foundTags) {
                     # pad description to a constant length
                     # (get actual character length when using alternate languages
                     # because these descriptions may contain UTF8-encoded characters)
-                    my $padLen = $wid;
-                    if (not $fixLen) {
-                        $padLen -= length $desc;
-                    } elsif ($fixLen == 1) {
-                        $padLen -= length Encode::decode_utf8($desc);
-                    } else {
-                        my $gcstr = eval { Unicode::GCString->new(Encode::decode_utf8($desc)) };
-                        if ($gcstr) {
-                            $padLen -= $gcstr->columns;
-                        } else {
-                            $padLen -= length Encode::decode_utf8($desc);
-                            Warning($et, 'Unicode::GCString problem.  Columns may be misaligned');
-                            $fixLen = 1;
-                        }
-                    }
+                    my $padLen = $wid - LengthUTF8($desc);
                     $padLen = 0 if $padLen < 0;
                     $buff .= $desc . (' ' x $padLen) . ": $val\n";
                 } elsif ($outFormat == 2) {
@@ -3008,7 +3135,7 @@ sub SetImageInfo($$$)
                     }
                     $found = 1;
                     $verbose and print $vout "Setting new values from $csv database\n";
-                    foreach $tag (sort keys %$csvInfo) {
+                    foreach $tag (OrderedKeys($csvInfo)) {
                         next if $tag =~ /\b(SourceFile|Directory|FileName)$/i; # don't write these
                         my ($rtn, $wrn) = $et->SetNewValue($tag, $$csvInfo{$tag},
                                           Protected => 1, AddValue => $csvAdd,
@@ -3424,8 +3551,7 @@ sub FormatXML($$$)
     } elsif (ref $val eq 'HASH') {
         $gt = " rdf:parseType='Resource'>";
         my $val2 = '';
-        my @keys = $$val{_ordered_keys_} ? @{$$val{_ordered_keys_}} : sort keys %$val;
-        foreach (@keys) {
+        foreach (OrderedKeys($val)) {
             # (some variable-namespace XML structure fields may have a different group)
             my ($ns, $tg) = ($grp, $_);
             if (/^(.*?):(.*)/) {
@@ -3517,8 +3643,7 @@ sub FormatJSON($$$;$)
     } elsif (ref $val eq 'HASH') {
         my ($bra, $ket, $sep) = $json == 1 ? ('{','}',':') : ('Array(',')',' =>');
         print $fp $bra;
-        my @keys = $$val{_ordered_keys_} ? @{$$val{_ordered_keys_}} : sort keys %$val;
-        foreach (@keys) {
+        foreach (OrderedKeys($val)) {
             print $fp ',' if $comma;
             my $key = EscapeJSON($_, 1);
             print $fp qq(\n$ind  $key$sep );
@@ -3673,6 +3798,52 @@ sub IsEqual($$)
         }
     }
     return 1;
+}
+
+#------------------------------------------------------------------------------
+# Get the printable rendition of a value
+# Inputs: 0) value (may be a reference)
+# Returns: de-referenced value
+sub Printable($)
+{
+    my $val = shift;
+    if (ref $val) {
+        if ($structOpt) {
+            require Image::ExifTool::XMP;
+            $val = Image::ExifTool::XMP::SerializeStruct($mt, $val);
+        } elsif (ref $val eq 'ARRAY') {
+            $val = join($listSep, @$val);
+        } elsif (ref $val eq 'SCALAR') {
+            $val = '(Binary data '.length($$val).' bytes)';
+        }
+    }
+    $val =~ tr/\0-\x1f\x7f/./;  # translate unprintable characters
+    return $val;
+}
+
+#------------------------------------------------------------------------------
+# Get character length of a UTF-8 string
+# Inputs: 0) string
+# Returns: number of characters (not bytes) in the UTF-8 string
+sub LengthUTF8($)
+{
+    my $str = shift;
+    my $len;
+    if (not $fixLen) {
+        $len = length $str;
+    } elsif ($fixLen == 1) {
+        $len = length Encode::decode_utf8($str);
+    } else {
+        my $gcstr = eval { Unicode::GCString->new(Encode::decode_utf8($str)) };
+        if ($gcstr) {
+            $len = $gcstr->columns;
+        } else {
+            $len = length Encode::decode_utf8($str);
+            Warning($mt, 'Unicode::GCString problem.  Columns may be misaligned');
+            $fixLen = 1;
+        }
+    }
+    return $len;
 }
 
 #------------------------------------------------------------------------------

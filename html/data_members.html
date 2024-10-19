@@ -176,17 +176,30 @@ value.</p>
 
 <tr><td>NEW_VALUE</td><td>Hash of new value information keyed by tag info reference.
     Elements of new value information hash are:
-    <table class='clear'><tr><td>TagInfo</td><td>-</td><td>tag information reference</td></tr>
-    <tr><td>DelValue</td><td>-</td><td>list of specific values to delete</td></tr>
-    <tr><td>Value</td><td>-</td><td>list of values to add</td></tr>
+    <table class='clear'>
+    <tr valign='top'><td>TagInfo</td><td>-</td><td>tag information reference</td></tr>
+    <tr valign='top'><td>DelValue</td><td>-</td><td>list of specific values to delete</td></tr>
+    <tr valign='top'><td>Value</td><td>-</td><td>list of values to add</td></tr>
     <tr valign='top'><td>IsCreating</td><td>-</td><td>must be set for the tag to be added, otherwise just
         changed if it already exists.  A value of 2 will create a new tag if its group already
         exists, but won't add a new group</td></tr>
+    <tr valign='top'><td>EditOnly</td><td>-</td><td>flag set if tag should never be created (regardless
+        of file type). If this is set, then IsCreating must be false</td></tr>
+    <tr valign='top'><td>CreateOnly</td><td>-</td><td>flag set if creating only (never edit existing tag)</td></tr>
+    <tr valign='top'><td>CreateGroups</td><td>-</td><td>hash of all family 0 group names where tag may be created</td></tr>
+    <tr valign='top'><td>WriteGroup</td><td>-</td><td>group name where information is being written (correct case)</td></tr>
+    <tr valign='top'><td>WantGroup</td><td>-</td><td>group name as specified in call to function (case insensitive)</td></tr>
     <tr valign='top'><td>Next</td><td>-</td><td>reference to next new value hash in linked list
         if there is more than one new value hash (for writing to different groups) for this
         tagInfo</td></tr>
+    <tr valign='top'><td>NoReplace</td><td>-</td><td>set if value was created with Replace=0</td></tr>
+    <tr valign='top'><td>AddBefore</td><td>-</td><td>number of list items added by a subsequent Replace=0 call</td></tr>
+    <tr valign='top'><td>IsNVH</td><td>-</td><td>flag indicating this is a new value hash (always 1)</td></tr>
+    <tr valign='top'><td>Order</td><td>-</td><td>counter to indicate the order that new value hashes were created</td></tr>
+    <tr valign='top'><td>Shift</td><td>-</td><td>shift value</td></tr>
     <tr valign='top'><td>Save</td><td>-</td><td>flag set by call to SaveNewValues() if this value
         should be saved</td></tr>
+    <tr><td colspan=3>MAKER_NOTE_FIXUP - pointer to fixup if necessary for a maker note value</td></tr>
     </table></td></tr>
 
 <tr><td>NewIPTCDigest</td><td>MD5 digest for most recently written IPTC data (undefined if IPTC doesn't
@@ -206,6 +219,8 @@ value.</p>
 <tr><td>NO_UNKNOWN</td><td>Don't generate unknown tags automatically even if Unknown option is set</td></tr>
 
 <tr><td>NUM_FOUND</td><td>Number of tags found</td></tr>
+
+<tr><td>NV_COUNT</td><td>Counter incremented for each NEW_VALUE hash created</td></tr>
 
 <tr><td>OldIPTCDigest</td><td>MD5 digest for original IPTC data (undefined if IPTC didn't
     exist).  Calculated only if a value of 'old' is being written/deleted to/from the

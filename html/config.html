@@ -90,7 +90,8 @@
         },
         <span class=com># add more user-defined EXIF tags here...</span>
     },
-    <span class=com># the <a href="geotag.html">Geotag feature</a> writes these additional GPS tags if available:</span>
+    <span class=com># the <a href="geotag.html">Geotag feature</a> writes GPSPitch and GPSRoll tags, but these
+    # aren't standard EXIF so we define custom tags here:</span>
     'Image::ExifTool::GPS::Main' =&gt; {
         <span class=com># Example 2.  GPS:GPSPitch</span>
         0xd000 =&gt; {

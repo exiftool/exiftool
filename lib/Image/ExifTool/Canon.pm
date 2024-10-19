@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.81';
+$VERSION = '4.82';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -6999,6 +6999,7 @@ my %ciMaxFocal = (
             314 => 'Canon RF 24-105mm F2.8 L IS USM Z', #42
             315 => 'Canon RF-S 10-18mm F4.5-6.3 IS STM', #42
             316 => 'Canon RF 35mm F1.4 L VCM', #42
+            317 => 'Canon RF-S 3.9mm F3.5 STM DUAL FISHEYE', #42
             318 => 'Canon RF 28-70mm F2.8 IS STM', #42
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },

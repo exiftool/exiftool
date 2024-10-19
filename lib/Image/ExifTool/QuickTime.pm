@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.03';
+$VERSION = '3.04';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -901,6 +901,7 @@ my %userDefined = (
         Writable => 1,
     },
     # '35AX'? - seen "AT" (Yada RoadCam Pro 4K dashcam)
+    cust => 'CustomInfo', # 70mai A810
 );
 
 # stuff seen in 'skip' atom (70mai Pro Plus+ MP4 videos)
@@ -3351,6 +3352,7 @@ my %userDefined = (
         PrintConv => '"Track $val"',
     },
     # cdep (Structural Dependency QT tag?)
+    # fall - ? int32u, seen: 2
 );
 
 # track aperture mode dimensions atoms
@@ -6744,6 +6746,13 @@ my %userDefined = (
         Avoid => 1,
         %iso8601Date,
     },
+    # (mdta)com.apple.quicktime.scene-illuminance
+    'scene-illuminance' => {
+        Name => 'SceneIlluminance',
+        Notes => 'milli-lux',
+        ValueConv => 'unpack("N", $val)',
+        Writable => 0, # (don't make this writable because it is found in timed metadata)
+    },
 #
 # seen in Apple ProRes RAW file
 #
@@ -7393,6 +7402,7 @@ my %userDefined = (
     # alac - 28 bytes
     # adrm - AAX DRM atom? 148 bytes
     # aabd - AAX unknown 17kB (contains 'aavd' strings)
+    # dapa - ? 203 bytes
 );
 
 # AMR decode config box (ref 3)

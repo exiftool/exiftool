@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Import;
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub ExtractTags($$$);
 
@@ -106,7 +106,7 @@ sub ExtractTags($$$)
     my ($et, $meta, $parent) = @_;
     ref $meta eq 'HASH' or $et->Warn('Invalid LFP metadata'), return;
     my ($key, $val, $name, $tagTablePtr);
-    foreach $key (sort keys %$meta) {
+    foreach $key (Image::ExifTool::OrderedKeys($meta)) {
         my $tag = $parent . ucfirst($key);
         foreach $val (ref $$meta{$key} eq 'ARRAY' ? @{$$meta{$key}} : $$meta{$key}) {
             ref $val eq 'HASH' and ExtractTags($et, $val, $tag), next;

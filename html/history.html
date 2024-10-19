@@ -17,6 +17,28 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v12.99'><b>Oct. 18, 2024 - Version 12.99</b></a>
+<ul>
+<li>Added -diff option to compare the metadata in two files
+<li>Added a new Canon lens (thanks Norbert Wasser)
+<li>Decode GPS from 70mai A810 dashcam videos
+<li>Decode a new QuickTime tag
+<li>Patched to recognize C2PA APP11 JUMBF header with incorrect byte order
+    written by buggy Microsoft software
+<li>Patched to maintain order of entries in a JSON object when reading
+<li>Patched to maintain order of CSV columns when setting tags from a CSV file
+<li>Patched to maintain order of XMP lang-alt entries when writing/copying
+<li>Fixed typo in an APP12 tag name
+<li>API Changes:
+    <ul>
+    <li>Structured values returned as HASH references with the Struct option may
+        contain a new "_ordered_keys_" entry used to preserve the order of the
+        entries
+    <li>Added the <a href="ExifTool.html#OrderedKeys">OrderedKeys</a> method to
+        return the ordered or sorted keys from a returned structure value
+    </ul>
+</ul>
+
 <a name='v12.98'><b>Oct. 8, 2024 - Version 12.98</b></a>
 <ul>
 <li>Added write support for PDF files with huge offsets

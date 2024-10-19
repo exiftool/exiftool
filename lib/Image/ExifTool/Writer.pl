@@ -295,10 +295,11 @@ my %ignorePrintConv = map { $_ => 1 } qw(OTHER BITMASK Notes);
 #           CreateGroups - hash of all family 0 group names where tag may be created
 #           WriteGroup - group name where information is being written (correct case)
 #           WantGroup - group name as specified in call to function (case insensitive)
-#           Next - pointer to next new value hash (if more than one)
+#           Next - pointer to next new value hash (if more than one for this tag)
 #           NoReplace - set if value was created with Replace=0
 #           AddBefore - number of list items added by a subsequent Replace=0 call
-#           IsNVH - Flag indicating this is a new value hash
+#           IsNVH - flag indicating this is a new value hash
+#           Order - counter to indicate the order that new value hashes were created
 #           Shift - shift value
 #           Save - counter used by SaveNewValues()/RestoreNewValues()
 #           MAKER_NOTE_FIXUP - pointer to fixup if necessary for a maker note value
@@ -317,7 +318,7 @@ sub SetNewValue($;$$%)
 
     unless (defined $tag) {
         delete $$self{NEW_VALUE};
-        $$self{SAVE_COUNT} = 0;
+        $$self{SAVE_COUNT} = $$self{NV_COUNT} = 0;
         $$self{DEL_GROUP} = { };
         return 1;
     }
@@ -1389,8 +1390,16 @@ sub SetNewValuesFromFile($$;@)
     return $info if $$info{Error} and $$info{Error} eq 'Error opening file';
     delete $$srcExifTool{VALUE}{Error}; # delete so we can check this later
 
-    # sort tags in reverse order so we get priority tag last
-    my @tags = reverse sort keys %$info;
+    # sort tags in file order with priority tags last
+    my (@tags, @prio);
+    foreach (sort { $$srcExifTool{FILE_ORDER}{$a} <=> $$srcExifTool{FILE_ORDER}{$b} } keys %$info) {
+        if (/ /) {
+            push @tags, $_;
+        } else {
+            push @prio, $_;
+        }
+    }
+    push @tags, @prio;
 #
 # simply transfer all tags from source image if no tags specified
 #
@@ -3896,6 +3905,7 @@ sub GetNewValueHash($$;$$$$)
             TagInfo => $tagInfo,
             WriteGroup => $writeGroup,
             IsNVH => 1, # set flag so we can recognize a new value hash
+            Order => $$self{NV_COUNT}++,
         };
         # add entry to our NEW_VALUE hash
         if ($$self{NEW_VALUE}{$tagInfo}) {
@@ -4023,7 +4033,7 @@ sub RemoveNewValuesForGroup($$)
 #------------------------------------------------------------------------------
 # Get list of tagInfo hashes for all new data
 # Inputs: 0) ExifTool object reference, 1) optional tag table pointer
-# Returns: list of tagInfo hashes
+# Returns: list of tagInfo hashes in no particular order
 sub GetNewTagInfoList($;$)
 {
     my ($self, $tagTablePtr) = @_;

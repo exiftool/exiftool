@@ -288,7 +288,7 @@ sub formatValue($)
         $str = '[' . join(',', @a) . ']';
     } elsif (ref $val eq 'HASH') {
         my $key;
-        foreach $key (sort keys %$val) {
+        foreach $key (Image::ExifTool::OrderedKeys($val)) {
             push @a, $key . '=' . formatValue($$val{$key});
         }
         $str = '{' . join(',', @a) . '}';

@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '12.98';
+$VERSION = '12.99';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -37,7 +37,7 @@ $RELEASE = '';
     Public => [qw(
         ImageInfo AvailableOptions GetTagName GetShortcuts GetAllTags
         GetWritableTags GetAllGroups GetDeleteGroups GetFileType CanWrite
-        CanCreate AddUserDefinedTags
+        CanCreate AddUserDefinedTags OrderedKeys
     )],
     # exports not part of the public API, but used by ExifTool modules:
     DataAccess => [qw(
@@ -2292,6 +2292,7 @@ sub new
     $$self{PATH} = [ ];         # (this too)
     $$self{DEL_GROUP} = { };    # lookup for groups to delete when writing
     $$self{SAVE_COUNT} = 0;     # count calls to SaveNewValues()
+    $$self{NV_COUNT} = 0;       # count of NEW_VALUE entries
     $$self{FILE_SEQUENCE} = 0;  # sequence number for files when reading
     $$self{FILES_WRITTEN} = 0;  # count of files successfully written
     $$self{INDENT2} = '';       # indentation of verbose messages from SetNewValue
@@ -2517,6 +2518,8 @@ sub Options($$;@)
             # set Compact and XMPShorthand options, preserving backward compatibility
             my ($p, %compact);
             foreach $p ('Compact','XMPShorthand') {
+                # (allow setting from a HASH (undocumented)
+                ref $newVal eq 'HASH' and %compact = %{$newVal}, next;
                 my $val = $param eq $p ? $newVal : $$options{Compact}{$p};
                 if (defined $val) {
                     my @v = ($val =~ /\w+/g);
@@ -4193,6 +4196,16 @@ sub CanCreate($)
     my $type = GetFileType($file) or return undef;
     return 1 if $createTypes{$ext} or $createTypes{$type};
     return 0;
+}
+
+#------------------------------------------------------------------------------
+# Return list of ordered keys if available, otherwise just sort alphabetically
+# Inputs: 0) hash ref
+# Returns: List of ordered/sorted keys
+sub OrderedKeys($)
+{
+    my $hash = shift;
+    return $$hash{_ordered_keys_} ? @{$$hash{_ordered_keys_}} : sort keys %$hash;
 }
 
 #==============================================================================
@@ -7904,8 +7917,17 @@ sub ProcessJPEG($$;$)
                 my $seq = Get32u($segDataPt, 4);
                 my $len = Get32u($segDataPt, 8);
                 my $type = substr($$segDataPt, 12, 4);
+                # a Microsoft bug writes $len and $type incorrectly as little-endian
+                if ($type eq 'bmuj') {
+                    $self->WarnOnce('Wrong byte order in C2PA APP11 JUMBF header');
+                    $type = 'jumb';
+                    $len = unpack('x8V', $$segDataPt);
+                    # fix the header
+                    substr($$segDataPt, 8, 8) = Set32u($len) . $type;
+                }
                 my $hdrLen;
                 if ($len == 1 and length($$segDataPt) >= 24) {
+                    # (haven't seen this with the Microsoft bug)
                     $len = Get64u($$segDataPt, 16);
                     $hdrLen = 16;
                 } else {

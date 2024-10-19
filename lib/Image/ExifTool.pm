@@ -4616,7 +4616,13 @@ sub EncodeFileName($$;$)
                 local $SIG{'__WARN__'} = \&SetWarning;
                 if (eval { require Win32API::File }) {
                     # recode as UTF-16LE and add null terminator
-                    $_[1] = $self->Decode($file, $enc, undef, 'UTF16', 'II') . "\0\0";
+                    if (eval { require Encode; Encode::encode('utf16-le', $file) }) {
+                        # use Encode module as it is more reliable when detecting the source encoding
+                        $_[1] = Encode::encode('utf16-le', $file) . "\0\0";
+                    } else {
+                        # fall back to using our own UTF-16LE encoder
+                        $_[1] = $self->Decode($file, $enc, undef, 'UTF16', 'II') . "\0\0";
+                    }
                     return 1;
                 }
                 $self->WarnOnce('Install Win32API::File for Windows Unicode file support');
@@ -4631,6 +4637,78 @@ sub EncodeFileName($$;$)
     return 0;
 }
 
+sub ContainsWildcards($)
+{
+    my $path = shift;
+
+    # translate forward slashes to backslashes to test for Windows long path prefix
+    $path =~ tr/\//\\/;
+
+    # if this is a Windows path with the long path prefix, then wildcards are not supported
+    if ($^O eq 'MSWin32' and $path =~ /^\\\\\?\\/) {
+        return 0
+    }
+
+    return $path =~ /[*?]/;
+}
+
+#------------------------------------------------------------------------------
+# Mainly for Windows: Rebuild a path as an absolute long path to be usable in system calls that support long paths
+# Otherwise, convert the path delimiters to forward slashes
+# Inputs: 0) path
+# Returns: normalized path
+sub NormalizePath
+{
+    my $path = shift;
+    if ($^O eq 'MSWin32') {
+        $path =~ s{/}{\\}g;
+
+        if (ContainsWildcards $path or $path =~ /^\\\\\?\\/) {
+            return $path;
+        }
+
+        # already absolute path -> add long path prefix and return
+        if ($path =~ /^[a-z]:/i) {
+            $path = "\\\\?\\$path";
+            return $path;
+        }
+
+        # need current working directory to build absolute path
+        if (not {eval { require Cwd }}) {
+            return $path;
+        }
+
+        my $cwd = Cwd::getcwd();
+        $cwd =~ s{/}{\\}g;
+
+        my @cwdParts = split /\\/, $cwd;
+        my @pathParts = split /\\/, $path;
+        my @combinedParts = @cwdParts;
+
+        foreach my $part (@pathParts) {
+            if ($part eq '.' or $part eq '') {
+                next;
+            }
+            elsif ($part eq '..') {
+                if (@combinedParts > 1) {
+                    pop @combinedParts;
+                }
+            }
+            else {
+                push @combinedParts, $part;
+            }
+        }
+
+        $path = join '\\', @combinedParts;
+        $path = "\\\\?\\$path";
+    }
+    else {
+        $path =~ s{\\}{/}g;
+    }
+
+    return $path;
+}
+
 #------------------------------------------------------------------------------
 # Modified perl open() routine to properly handle special characters in file names
 # Inputs: 0) ExifTool ref, 1) filehandle, 2) filename,
@@ -4642,13 +4720,12 @@ sub Open($*$;$)
 {
     my ($self, $fh, $file, $mode) = @_;
 
-    my $supportsWin32LongPath = ($^O eq 'MSWin32') && eval { require Win32::LongPath };
-
     $file =~ s/^([\s&])/.\/$1/; # protect leading whitespace or ampersand
     # default to read mode ('<') unless input is a trusted pipe
     $mode = (($file =~ /\|$/ and $$self{TRUST_PIPE}) ? '' : '<') unless $mode;
     delete $$self{TRUST_PIPE};
     if ($mode) {
+        $file = NormalizePath $file;
         if ($self->EncodeFileName($file)) {
             # handle Windows Unicode file name
             local $SIG{'__WARN__'} = \&SetWarning;
@@ -4684,17 +4761,12 @@ sub Open($*$;$)
                 return undef;
             }
             $file = "&=$fd";    # specify file by descriptor
-        } elsif (not $supportsWin32LongPath) {
+        } else {
             # add leading space to protect against leading characters like '>'
             # in file name, and trailing "\0" to protect trailing spaces
             $file = " $file\0";
         }
     }
-
-    if ($supportsWin32LongPath) {
-        return Win32::LongPath::openL($fh, $mode, $file);
-    }
-
     return open $fh, "$mode$file";
 }
 
@@ -4706,8 +4778,7 @@ sub Exists($$;$)
 {
     my ($self, $file, $writing) = @_;
 
-    my $existsWithWin32LongPath = ($^O eq 'MSWin32') && eval { require Win32::LongPath } && Win32::LongPath::testL('e', "$file");
-
+    $file = NormalizePath $file;
     if ($self->EncodeFileName($file)) {
         local $SIG{'__WARN__'} = \&SetWarning;
         my $wh = eval { Win32API::File::CreateFileW($file,
@@ -4719,9 +4790,9 @@ sub Exists($$;$)
     } elsif ($writing) {
         # (named pipes already exist, but we pretend that they don't
         #  so we will be able to write them, so test with for pipe -p)
-        return((-e $file or $existsWithWin32LongPath) and not -p $file);
+        return(-e $file and not -p $file);
     } else {
-        return(-e $file or $existsWithWin32LongPath);
+        return(-e $file);
     }
     return 1;
 }
@@ -4733,6 +4804,7 @@ sub Exists($$;$)
 sub IsDirectory($$)
 {
     my ($et, $file) = @_;
+    $file = NormalizePath $file;
     if ($et->EncodeFileName($file)) {
         local $SIG{'__WARN__'} = \&SetWarning;
         my $attrs = eval { Win32API::File::GetFileAttributesW($file) };

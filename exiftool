@@ -303,7 +303,6 @@ my @recommends = qw(
     IO::Uncompress::Brotli
     Win32::API
     Win32::FindFile
-    Win32::LongPath
     Win32API::File
 );
 my %altRecommends = (
@@ -1029,7 +1028,7 @@ for (;;) {
         }
         $trkfile or Error("Expecting file name for -geotag option\n"), $badCmd=1, next;
         # allow wildcards in filename
-        if ($trkfile =~ /[*?]/) {
+        if (Image::ExifTool::ContainsWildcards $trkfile) {
             # CORE::glob() splits on white space, so use File::Glob if possible
             my @trks;
             if ($^O eq 'MSWin32' and eval { require Win32::FindFile }) {
@@ -1415,7 +1414,7 @@ for (;;) {
         push @nextPass, $_;
         next;
     }
-    if ($doGlob and /[*?]/) {
+    if ($doGlob and Image::ExifTool::ContainsWildcards $_) {
         if ($^O eq 'MSWin32' and eval { require Win32::FindFile }) {
             push @files, FindFileWindows($mt, $_);
         } else {
@@ -3894,14 +3893,20 @@ sub ScanDir($$;$)
     return if $ignore{$dir};
     # use Win32::FindFile on Windows if available
     # (ReadDir will croak if there is a wildcard, so check for this)
-    if ($^O eq 'MSWin32' and $dir !~ /[*?]/) {
+    if ($^O eq 'MSWin32' and not Image::ExifTool::ContainsWildcards $dir) {
         undef $evalWarning;
         local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };;
-        if (CheckUTF8($dir, $enc) >= 0) {
+        if (1 or CheckUTF8($dir, $enc) >= 0) { # CheckUTF8 here doesn't seem to be necessary
             if (eval { require Win32::FindFile }) {
                 eval {
+                    # Unfortunately, Win32::FindFile::ReadDir doesn't handle long paths correctly, and will always return an empty list.
+                    # We should consider moving away from this, as its last update was in 2014.
                     @fileList = Win32::FindFile::ReadDir($dir);
                     $_ = $_->cFileName foreach @fileList;
+
+                    if (eval { require Encode }) {
+                        $_ = Encode::decode('utf8', $_) foreach @fileList;
+                    }
                 };
                 $@ and $evalWarning = $@;
                 if ($evalWarning) {
@@ -4020,7 +4025,7 @@ sub FindFileWindows($$)
     $wildfile = $et->Decode($wildfile, $enc, undef, 'UTF8') if $enc and $enc ne 'UTF8';
     $wildfile =~ tr/\\/\//; # use forward slashes
     my ($dir, $wildname) = ($wildfile =~ m{(.*[:/])(.*)}) ? ($1, $2) : ('', $wildfile);
-    if ($dir =~ /[*?]/) {
+    if (Image::ExifTool::ContainsWildcards $dir) {
         Warn "Wildcards don't work in the directory specification\n";
         return ();
     }

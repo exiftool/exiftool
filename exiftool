@@ -3896,17 +3896,11 @@ sub ScanDir($$;$)
     if ($^O eq 'MSWin32' and not Image::ExifTool::ContainsWildcards $dir) {
         undef $evalWarning;
         local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };;
-        if (1 or CheckUTF8($dir, $enc) >= 0) { # CheckUTF8 here doesn't seem to be necessary
+        if (CheckUTF8($dir, $enc) >= 0) {
             if (eval { require Win32::FindFile }) {
                 eval {
-                    # Unfortunately, Win32::FindFile::ReadDir doesn't handle long paths correctly, and will always return an empty list.
-                    # We should consider moving away from this, as its last update was in 2014.
                     @fileList = Win32::FindFile::ReadDir($dir);
                     $_ = $_->cFileName foreach @fileList;
-
-                    if (eval { require Encode }) {
-                        $_ = Encode::decode('utf8', $_) foreach @fileList;
-                    }
                 };
                 $@ and $evalWarning = $@;
                 if ($evalWarning) {

@@ -4616,13 +4616,7 @@ sub EncodeFileName($$;$)
                 local $SIG{'__WARN__'} = \&SetWarning;
                 if (eval { require Win32API::File }) {
                     # recode as UTF-16LE and add null terminator
-                    if (eval { require Encode; Encode::encode('utf16-le', $file) }) {
-                        # use Encode module as it is more reliable when detecting the source encoding
-                        $_[1] = Encode::encode('utf16-le', $file) . "\0\0";
-                    } else {
-                        # fall back to using our own UTF-16LE encoder
-                        $_[1] = $self->Decode($file, $enc, undef, 'UTF16', 'II') . "\0\0";
-                    }
+                    $_[1] = $self->Decode($file, $enc, undef, 'UTF16', 'II') . "\0\0";
                     return 1;
                 }
                 $self->WarnOnce('Install Win32API::File for Windows Unicode file support');

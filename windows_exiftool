@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '12.99';
+my $version = '13.00';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -2375,7 +2375,7 @@ sub GetImageInfo($$)
                     $done2{$t2} = 1;
                 }
                 my $str = '';
-                ($v > 1 or $same) and $str = "  ($same same tag" . ($same==1 ? '' : 's') . ')';
+                $v and ($same or $v > 1) and $str = "  ($same same tag" . ($same==1 ? '' : 's') . ')';
                 if (not $allGroup) {
                     print $fp "---- $g2 ----$str\n" if $g2 and ($str or @diffs);
                 } elsif ($str and $g2) {
@@ -2415,12 +2415,12 @@ sub GetImageInfo($$)
                     $grp .= ' ' x (15 - length($grp)) if length($grp) < 15 and $outFormat < 2;
                     push @diffs, sprintf "< %s %s%s: %s\n", $grp, $name, $pad, Printable($val);
                     if (defined $val2) {
-                        $v < 3 and $grp = ' ' x length($grp), $name = ' ' x $len;
+                        $grp = ' ' x length($grp), $name = ' ' x $len if $v < 3;
                         push @diffs, sprintf "> %s %s%s: %s\n", $grp, $name, $pad, Printable($val2);
                     }
                 } else {
                     push @diffs, sprintf "< %s%s: %s\n", $name, $pad, Printable($val);
-                    $v < 3 and $name = ' ' x $len;
+                    $name = ' ' x $len if $v < 3;
                     push @diffs, sprintf "> %s%s  %s\n", $name, $pad, Printable($val2) if defined $val2;
                 }
             }
@@ -3635,7 +3635,7 @@ sub FormatJSON($$$;$)
             print $fp $bra;
             foreach (@$val) {
                 print $fp ',' if $comma;
-                FormatJSON($fp, $_, $ind);
+                FormatJSON($fp, $_, $ind, $quote);
                 $comma = 1,
             }
             print $fp $ket,
@@ -3651,7 +3651,7 @@ sub FormatJSON($$$;$)
             if ($showTagID and $_ eq 'id' and $showTagID eq 'H' and $$val{$_} =~ /^\d+\.\d+$/) {
                 print $fp qq{"$$val{$_}"};
             } else {
-                FormatJSON($fp, $$val{$_}, "$ind  ");
+                FormatJSON($fp, $$val{$_}, "$ind  ", $quote);
             }
             $comma = 1,
         }
@@ -3817,7 +3817,14 @@ sub Printable($)
             $val = '(Binary data '.length($$val).' bytes)';
         }
     }
-    $val =~ tr/\0-\x1f\x7f/./;  # translate unprintable characters
+    if ($escapeC) {
+        $val =~ s/([\0-\x1f\\\x7f])/$escC{$1} || sprintf('\x%.2x', ord $1)/eg;
+    } else {
+        # translate unprintable chars in value and remove trailing spaces
+        $val =~ tr/\x01-\x1f\x7f/./;
+        $val =~ s/\x00//g;
+        $val =~ s/\s+$//;
+    }
     return $val;
 }
 
@@ -4819,7 +4826,9 @@ sub Help()
     my $docFile = "$Image::ExifTool::exeDir/exiftool_files/windows_exiftool.txt";
     # try backslashes first if it seems we may be running in cmd.exe
     $docFile =~ tr/\//\\/ if $ENV{ComSpec} or $docFile =~ /\\/;
-    system(qq{more < "$docFile"}) and warn "Error running more $docFile\n";
+    # trap warnings and run in eval to avoid Perl bug which gives "Can't spawn" warning on ^C
+    local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };
+    eval { system(qq{more < "$docFile"}) };
 }
 
 # end

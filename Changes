@@ -4,8 +4,27 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 12.76. (Other versions are
+Note: The most recent production release is Version 13.00. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Oct. 29, 2024 - Version 13.00 (production release)
+
+  - Added support for reading GPS from Autel Evo II drone videos
+  - Added a new PhaseOne RawFormat value
+  - Updated XMP-exifEX tags, exif2xmp.args and xmp2exif.args according to the
+    2024 EXIF for XMP specification
+  - Updated Geolocation databases from current geonames.org files
+  - Updated the MIME types for a couple of font formats
+  - Enhanced -diff option to work with -ec (C-style escape of special chars)
+  - Changed name of EXIF Title tag to ImageTitle to correspond with specifiation
+  - Reverted a geotag warning message to remove debugging information that was
+    added in version 12.67 and moved this information into a -v3 verbose message
+  - Patched Perl bug which gave "Can't spawn" warning in Windows if control-C
+    was pressed while displaying the exiftool application help
+  - Fixed API StructFormat JSONQ setting to properly quote values in structures
+  - Fixed incorrect AudioStreamType for M2TS videos containing a PGS stream
+  - Fixed -diff option so "same tags" messages are only shown when -v is added
+    (as per the documentation)
 
 Oct. 18, 2024 - Version 12.99
 
@@ -23,8 +42,8 @@ Oct. 18, 2024 - Version 12.99
       - Structured values returned as HASH references with the Struct option may
         contain a new "_ordered_keys_" entry used to preserve the order of the
         entries
-      - Added the OrderedKeys method to
-        return the ordered or sorted keys from a returned structure value
+      - Added the OrderedKeys method to return the ordered or sorted keys from a
+        returned structure value
 
 Oct. 8, 2024 - Version 12.98
 

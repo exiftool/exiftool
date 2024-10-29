@@ -13,6 +13,7 @@
 #               2015/01/12 - PH Avoid copying to non-standard namespaces
 #               2018/05/07 - PH Added support for GPSDestXxxRef tags
 #               2022/03/31 - PH IPTC Photometadata Mapping Guidelines 2202.1 update
+#               2024/10/24 - PH Additions for the 2024 EXIF for XMP spec
 #
 # References:   http://www.metadataworkinggroup.org/specs/
 #               https://iptc.org/std/photometadata/documentation/mappingguidelines/
@@ -50,4 +51,7 @@
 -XMP:GPSDestLatitude < Composite:GPSDestLatitude
 -XMP:GPSDestLongitude < Composite:GPSDestLongitude
 -XMP:GPSDateTime < Composite:GPSDateTime
+# new for the 2024 EXIF for XMP specification
+-XMP-exifEX:PhotographicSensitivity < EXIF:ISO
+-XMP-exif:DateTimeDigitized < EXIF:CreateDate
 # end

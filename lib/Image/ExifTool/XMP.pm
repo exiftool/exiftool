@@ -2016,6 +2016,7 @@ my %sPantryItem = (
         Writable => 'integer',
         List => 'Seq',
         AutoSplit => 1,
+        Notes => 'deprecated',
     },
     OECF => {
         Name => 'Opto-ElectricConvFactor',
@@ -2267,7 +2268,7 @@ my %sPantryItem = (
             3 => 'Distant',
         },
     },
-    ImageUniqueID   => { },
+    ImageUniqueID   => { Avoid => 1, Notes => 'moved to exifEX namespace in 2024 spec' },
     GPSVersionID    => { Groups => { 2 => 'Location' } },
     GPSLatitude     => { Groups => { 2 => 'Location' }, %latConv },
     GPSLongitude    => { Groups => { 2 => 'Location' }, %longConv },
@@ -2509,6 +2510,15 @@ my %sPantryItem = (
             Values =>   { List => 'Seq', Writable => 'rational' },
         },
     },
+    # new in Exif 3.0
+    ImageUniqueID   => { },
+    ImageTitle      => { },
+    ImageEditor     => { },
+    Photographer    => { Groups => { 2 => 'Author' } },
+    CameraFirmware  => { Groups => { 2 => 'Camera' } },
+    RAWDevelopingSoftware   => { },
+    ImageEditingSoftware    => { },
+    MetadataEditingSoftware => { },
 );
 
 # Auxiliary namespace properties (aux) - not fully documented (ref PH)

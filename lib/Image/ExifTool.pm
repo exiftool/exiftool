@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '12.99';
+$VERSION = '13.00';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -740,7 +740,7 @@ my %fileDescription = (
     OGV  => 'video/ogg',
     ONP  => 'application/on1',
     ORF  => 'image/x-olympus-orf',
-    OTF  => 'application/x-font-otf',
+    OTF  => 'application/font-otf',
     PAGES=> 'application/x-iwork-pages-sffpages',
     PBM  => 'image/x-portable-bitmap',
     PCD  => 'image/x-photo-cd',
@@ -798,8 +798,8 @@ my %fileDescription = (
     THMX => 'application/vnd.ms-officetheme',
     TIFF => 'image/tiff',
     Torrent => 'application/x-bittorrent',
-    TTC  => 'application/x-font-ttf',
-    TTF  => 'application/x-font-ttf',
+    TTC  => 'application/font-ttf',
+    TTF  => 'application/font-ttf',
     TXT  => 'text/plain',
     VCard=> 'text/vcard',
     VRD  => 'application/octet-stream', #PH (NC)

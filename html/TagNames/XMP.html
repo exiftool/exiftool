@@ -13626,12 +13626,12 @@ Composite:GPSDateTime when copying from EXIF)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>ImageUniqueID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
+<td class=c title=' / = Avoid'>string/</td>
+<td><span class=s><span class=n>(moved to exifEX namespace in 2024 spec)</span></span></td></tr>
 <tr>
 <td>ISO</td>
 <td class=c title=' + = List'>integer+</td>
-<td><span class=s><span class=n>(called ISOSpeedRatings by the spec)</span></span></td></tr>
+<td><span class=s><span class=n>(called ISOSpeedRatings by the spec; deprecated)</span></span></td></tr>
 <tr class=b>
 <td>LightSource</td>
 <td class=c>string</td>
@@ -13914,116 +13914,148 @@ Composite:GPSDateTime when copying from EXIF)</span></span></td></tr>
 <td class=c>rational</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>CameraFirmware</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>OwnerName</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(called CameraOwnerName by the spec)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>CompositeImage</td>
 <td class=c>integer</td>
 <td><span class=s>0 = Unknown
   <br>1 = Not a Composite Image
   <br>2 = General Composite Image
   <br>3 = Composite Image Captured While Shooting</span></td></tr>
-<tr class=b>
+<tr>
 <td>CompositeImageCount</td>
 <td class=c title=' + = List'>integer+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>CompositeImageExposureTimes</td>
 <td class=c>struct</td>
 <td>--&gt; <a href='XMP.html#CompImageExp'>CompImageExp Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>CompImageMaxExposureAll</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesMaxExposureTimesOfAll)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>CompImageMaxExposureUsed</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesMaxExposureTimesOfUsed)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>CompImageMinExposureAll</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesMinExposureTimesOfAll)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>CompImageMinExposureUsed</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesMinExposureTimesOfUsed)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>CompImageImagesPerSequence</td>
 <td class=c title=' _ = Flattened'>integer_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesNumberOfImagesInSequences)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>CompImageNumSequences</td>
 <td class=c title=' _ = Flattened'>integer_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesNumberOfSequences)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>CompImageSumExposureAll</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesSumOfExposureTimesOfAll)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>CompImageSumExposureUsed</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesSumOfExposureTimesOfUsed)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>CompImageTotalExposurePeriod</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesTotalExposurePeriod)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>CompImageValues</td>
 <td class=c title=' _ = Flattened
  + = List'>rational_+</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesValues)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>Gamma</td>
 <td class=c>rational</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Humidity</td>
 <td class=c>rational</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td>ImageEditingSoftware</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
+<td>ImageEditor</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ImageTitle</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ImageUniqueID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>InteropIndex</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(called InteroperabilityIndex by the spec)</span>
   <br>&#39;R03&#39; = R03 - DCF option file (Adobe RGB)
   <br>&#39;R98&#39; = R98 - DCF basic file (sRGB)
   <br>&#39;THM&#39; = THM - DCF thumbnail file</span></td></tr>
-<tr>
+<tr class=b>
 <td>ISOSpeed</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ISOSpeedLatitudeyyy</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ISOSpeedLatitudezzz</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LensMake</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LensModel</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LensSerialNumber</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LensInfo</td>
 <td class=c title=' + = List'>rational+</td>
 <td><span class=s><span class=n>(called LensSpecification by the spec; unfortunately the EXIF 2.3 for XMP specification defined this new tag
 instead of using the existing XMP-aux:LensInfo)</span></span></td></tr>
+<tr>
+<td>MetadataEditingSoftware</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
+<td>Photographer</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>PhotographicSensitivity</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Pressure</td>
 <td class=c>rational</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RAWDevelopingSoftware</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>RecommendedExposureIndex</td>
@@ -21804,7 +21836,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 25, 2024</i>
+<br><i>Last revised Oct 24, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

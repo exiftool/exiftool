@@ -98,9 +98,9 @@ the distribution files or access web pages too quickly will be blocked.</i></p>
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-12.99.tar.gz/download">
-Download        Version 12.99</a> (7.1 MB) -
-<a href="history.html">Oct. 18, 2024</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.00.tar.gz/download">
+Download        Version 13.00</a> (7.2 MB) -
+<a href="history.html">Oct. 29, 2024</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -152,11 +152,11 @@ only, and do not include the HTML documentation or other files of the full
 distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td rowspan=2><b><a name="alone">Windows</a></b></td><td><b>
-32-bit:<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.99_32.zip/download">
-         exiftool-12.99_32.zip</a> (10.8 MB)</b></td></tr>
+32-bit: <a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.00_32.zip/download">
+         exiftool-13.00_32.zip</a> (10.8 MB)</b></td></tr>
 <tr><td><b>64-bit:
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-12.99_64.zip/download">
-         exiftool-12.99_64.zip</a> (10.6 MB)</b></td></tr>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.00_64.zip/download">
+         exiftool-13.00_64.zip</a> (10.6 MB)</b></td></tr>
          </table></blockquote>
 
 <p><b>The Windows executable</b> archives include Perl. Just download and un-zip
@@ -174,8 +174,8 @@ if you have any problems/comments with these versions.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
-<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-12.99.pkg/download">
-         ExifTool-12.99.pkg</a> (5.1 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-13.00.pkg/download">
+         ExifTool-13.00.pkg</a> (5.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -225,7 +225,7 @@ is <a href="geo.txt">here</a>.</li>
 <li>Reads <a href="TagNames/GM.html">GM PDR data</a> from videos written by cars such as Corvette and Camero</li>
 <li>Numerous output formatting options (including tab-delimited, HTML, XML and JSON)</li>
 <li>Multi-lingual output (cs, de, en, en-ca, en-gb, es, fi, fr, it, ja, ko, nl, pl, ru, sk, sv, tr, zh-cn or zh-tw)</li>
-<li>Compares two files for metadata differences (<code>-diff</code> option)</li>
+<li><a href="#diff">Compares two files for metadata differences</a></li>
 <li><a href="geotag.html">Geotags images</a> from GPS track log files (with time drift correction!)</li>
 <li><a href="geotag.html#Reverse">Generates track logs</a> from geotagged images</li>
 <li><a href="geolocation.html">Geolocation feature</a> identifies nearest city, state/province, county and country based on GPS position</li>
@@ -779,6 +779,57 @@ more information:  Right-click on the window's title bar then select
 <p>The <a href="verbose.html">Verbose</a> (<code>-v</code>) and <a
 href="htmldump.html">HtmlDump</a> (<code>-htmlDump</code>) options print additional
 information that can be very useful for debugging or when decoding new tags.</p>
+
+<a name='diff'><h3>Compare Two Files for Metadata Differences</h3></a>
+
+<p>The <code>-diff</code> option provides a method to show the metadata differences
+between two files.  For example, here is a comparison of two files excluding System
+and Composite tags:</p>
+
+<blockquote>&gt; <code>exiftool a.jpg -diff b.jpg --system:all -e</code><br>&nbsp;
+<table class='box sm tight'><tr><td>
+<pre class=blk>======== diff < a.jpg > b.jpg
+< [IFD0]          Modify Date                     : 2024:09:05 14:37:40 
+>                                                 : 2024:09:05 14:41:05
+< [ExifIFD]       Exposure Time                   : 1/400
+>                                                 : 1/1000
+< [ExifIFD]       F Number                        : 4.0
+>                                                 : 5.6
+< [ExifIFD]       Date/Time Original              : 2024:09:05 14:37:40
+>                                                 : 2024:09:05 14:41:05
+< [ExifIFD]       Create Date                     : 2024:09:05 14:37:40
+>                                                 : 2024:09:05 14:41:05
+< [ExifIFD]       Brightness Value                : 8.49765625
+>                                                 : 10.728125
+< [ExifIFD]       Max Aperture Value              : 2.8
+>                                                 : 4.0
+< [ExifIFD]       Focal Length                    : 9.0 mm
+>                                                 : 32.7 mm
+< [ExifIFD]       Focal Length In 35mm Format     : 24 mm
+>                                                 : 89 mm
+< [Sony]          Camera Temperature              : 36 C
+>                                                 : 35 C
+< [Sony]          Exposure Time                   : 1/400
+>                                                 : 1/1000
+< [Sony]          Sony Max Aperture Value         : 3.0
+>                                                 : 4.1
+< [Sony]          Lens Zoom Position              : 0%
+>                                                 : 59%
+< [Sony]          Brightness Value                : 8.49765625
+>                                                 : 10.728125
+< [Sony]          WB RGB Levels                   : 578 256 478
+>                                                 : 592 256 466
+< [Sony]          Focal Length                    : 9.0 mm
+>                                                 : 32.7 mm
+< [IFD1]          Thumbnail Length                : 12771
+>                                                 : 5940
+< [MPImage1]      MP Image Length                 : 7696566
+>                                                 : 5839721
+< [MPImage2]      MP Image Length                 : 1167032
+>                                                 : 492263
+< [MPImage2]      MP Image Start                  : 7699456
+>                                                 : 5840896
+</pre></td></tr></table></blockquote>
 
 <h2><a name="tagnames">Tag Names Explained</a></h2>
 

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28150 tags, with 17488 unique tag names.
+They contain a total of 28165 tags, with 17491 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -871,7 +871,7 @@ for the official EXIF 2.32 specification.
   0xa433   LensMake                  ExifIFD    string
   0xa434   LensModel                 ExifIFD    string
   0xa435   LensSerialNumber          ExifIFD    string
-  0xa436   Title                     ExifIFD    string/
+  0xa436   ImageTitle                ExifIFD    string
   0xa437   Photographer              ExifIFD    string
   0xa438   ImageEditor               ExifIFD    string
   0xa439   CameraFirmware            ExifIFD    string
@@ -4605,7 +4605,7 @@ These tags belong to the ExifTool XMP-exif family 1 group.
   GPSTrack                                      rational
   GPSTrackRef                                   string
   GPSVersionID                                  string
-  ImageUniqueID                                 string
+  ImageUniqueID                                 string/
   ISO                                           integer+
   LightSource                                   string
   MakerNote                                     string
@@ -4686,6 +4686,7 @@ These tags belong to the ExifTool XMP-exifEX family 1 group.
   Acceleration                                  rational
   SerialNumber                                  string
   CameraElevationAngle                          rational
+  CameraFirmware                                string
   OwnerName                                     string
   CompositeImage                                integer
   CompositeImageCount                           integer+
@@ -4702,6 +4703,10 @@ These tags belong to the ExifTool XMP-exifEX family 1 group.
   CompImageValues                               rational_+
   Gamma                                         rational
   Humidity                                      rational
+  ImageEditingSoftware                          string
+  ImageEditor                                   string
+  ImageTitle                                    string
+  ImageUniqueID                                 string
   InteropIndex                                  string
   ISOSpeed                                      integer
   ISOSpeedLatitudeyyy                           integer
@@ -4710,8 +4715,11 @@ These tags belong to the ExifTool XMP-exifEX family 1 group.
   LensModel                                     string
   LensSerialNumber                              string
   LensInfo                                      rational+
+  MetadataEditingSoftware                       string
+  Photographer                                  string
   PhotographicSensitivity                       integer
   Pressure                                      rational
+  RAWDevelopingSoftware                         string
   RecommendedExposureIndex                      integer
   SensitivityType                               integer
   StandardOutputSensitivity                     integer
@@ -30187,22 +30195,29 @@ changed via the config file.
 
 =head3 QuickTime tx3g Tags
 
-Tags extracted from the tx3g sbtl timed metadata of Yuneec drones, and
-subtitle text in some other videos.
+Tags extracted from the tx3g sbtl timed metadata of Yuneec and Autel drones,
+and subtitle text in some other videos.
 
-  Tag ID       Tag Name                         Writable
-  ------       --------                         --------
-  'Alt'        GPSAltitude                      no
-  'DateTime'   DateTime                         no
-  'GimPitch'   GimbalPitch                      no
-  'GimRoll'    GimbalRoll                       no
-  'GimYaw'     GimbalYaw                        no
-  'Lat'        GPSLatitude                      no
-  'Lon'        GPSLongitude                     no
-  'Pitch'      Pitch                            no
-  'Roll'       Roll                             no
-  'Text'       Text                             no
-  'Yaw'        Yaw                              no
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'Alt'                GPSAltitude              no
+  'DateTime'           DateTime                 no
+  'EV'                 ExposureCompensation     no
+  'F-NUM'              FNumber                  no
+  'GPSDateTime'        GPSDateTime              no
+  'GimPitch'           GimbalPitch              no
+  'GimRoll'            GimbalRoll               no
+  'GimYaw'             GimbalYaw                no
+  'HomeLat'            GPSHomeLatitude          no
+  'HomeLon'            GPSHomeLongitude         no
+  'ISO'                ISO                      no
+  'Lat'                GPSLatitude              no
+  'Lon'                GPSLongitude             no
+  'Pitch'              Pitch                    no
+  'Roll'               Roll                     no
+  'SHUTTER'            ExposureTime             no
+  'Text'               Text                     no
+  'Yaw'                Yaw                      no
 
 =head3 QuickTime HTCInfo Tags
 

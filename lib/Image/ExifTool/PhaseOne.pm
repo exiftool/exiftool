@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 sub WritePhaseOne($$$);
 sub ProcessPhaseOne($$$);
@@ -71,6 +71,7 @@ my @formatName = ( undef, 'string', 'int16s', undef, 'int32s' );
         # >2 = compressed
         # 5 = non-linear
         PrintConv => { #PH
+            0 => 'Uncompressed', #https://github.com/darktable-org/darktable/issues/7308
             1 => 'RAW 1', #? (encrypted)
             2 => 'RAW 2', #? (encrypted)
             3 => 'IIQ L', # (now "L14", ref IB)

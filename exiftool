@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '12.99';
+my $version = '13.00';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -2378,7 +2378,7 @@ sub GetImageInfo($$)
                     $done2{$t2} = 1;
                 }
                 my $str = '';
-                ($v > 1 or $same) and $str = "  ($same same tag" . ($same==1 ? '' : 's') . ')';
+                $v and ($same or $v > 1) and $str = "  ($same same tag" . ($same==1 ? '' : 's') . ')';
                 if (not $allGroup) {
                     print $fp "---- $g2 ----$str\n" if $g2 and ($str or @diffs);
                 } elsif ($str and $g2) {
@@ -2418,12 +2418,12 @@ sub GetImageInfo($$)
                     $grp .= ' ' x (15 - length($grp)) if length($grp) < 15 and $outFormat < 2;
                     push @diffs, sprintf "< %s %s%s: %s\n", $grp, $name, $pad, Printable($val);
                     if (defined $val2) {
-                        $v < 3 and $grp = ' ' x length($grp), $name = ' ' x $len;
+                        $grp = ' ' x length($grp), $name = ' ' x $len if $v < 3;
                         push @diffs, sprintf "> %s %s%s: %s\n", $grp, $name, $pad, Printable($val2);
                     }
                 } else {
                     push @diffs, sprintf "< %s%s: %s\n", $name, $pad, Printable($val);
-                    $v < 3 and $name = ' ' x $len;
+                    $name = ' ' x $len if $v < 3;
                     push @diffs, sprintf "> %s%s  %s\n", $name, $pad, Printable($val2) if defined $val2;
                 }
             }
@@ -3638,7 +3638,7 @@ sub FormatJSON($$$;$)
             print $fp $bra;
             foreach (@$val) {
                 print $fp ',' if $comma;
-                FormatJSON($fp, $_, $ind);
+                FormatJSON($fp, $_, $ind, $quote);
                 $comma = 1,
             }
             print $fp $ket,
@@ -3654,7 +3654,7 @@ sub FormatJSON($$$;$)
             if ($showTagID and $_ eq 'id' and $showTagID eq 'H' and $$val{$_} =~ /^\d+\.\d+$/) {
                 print $fp qq{"$$val{$_}"};
             } else {
-                FormatJSON($fp, $$val{$_}, "$ind  ");
+                FormatJSON($fp, $$val{$_}, "$ind  ", $quote);
             }
             $comma = 1,
         }
@@ -3820,7 +3820,14 @@ sub Printable($)
             $val = '(Binary data '.length($$val).' bytes)';
         }
     }
-    $val =~ tr/\0-\x1f\x7f/./;  # translate unprintable characters
+    if ($escapeC) {
+        $val =~ s/([\0-\x1f\\\x7f])/$escC{$1} || sprintf('\x%.2x', ord $1)/eg;
+    } else {
+        # translate unprintable chars in value and remove trailing spaces
+        $val =~ tr/\x01-\x1f\x7f/./;
+        $val =~ s/\x00//g;
+        $val =~ s/\s+$//;
+    }
     return $val;
 }
 
@@ -5130,13 +5137,13 @@ may be used to to indicate any XMP namespace (eg. C<--xmp-all:dabs>).
 Write a new value for the specified tag (eg. C<-comment=wow>), or delete the
 tag if no I<VALUE> is given (eg. C<-comment=>).  C<+=> and C<-=> are used to
 add or remove existing entries from a list, or to shift date/time values
-(see L<Image::ExifTool::Shift.pl|Image::ExifTool::Shift.pl> and note 6 below
-for more details).  C<+=> may also be used to increment numerical values (or
-decrement if I<VALUE> is negative), and C<-=> may be used to conditionally
-delete or replace a tag (see L</WRITING EXAMPLES> for examples).  C<^=> is
-used to write an empty string instead of deleting the tag when no I<VALUE>
-is given, but otherwise it is equivalent to C<=>.  (Note that the caret must
-be quoted on the Windows command line.)
+(see L<Image::ExifTool::Shift.pl|Image::ExifTool::Shift.pl> and notes 6 and
+7 below for more details).  C<+=> may also be used to increment numerical
+values (or decrement if I<VALUE> is negative), and C<-=> may be used to
+conditionally delete or replace a tag (see L</WRITING EXAMPLES> for
+examples).  C<^=> is used to write an empty string instead of deleting the
+tag when no I<VALUE> is given, but otherwise it is equivalent to C<=>. 
+(Note that the caret must be quoted on the Windows command line.)
 
 I<TAG> may contain one or more leading family 0, 1, 2 or 7 group names,
 prefixed by optional family numbers, and separated colons.  If no group name
@@ -5210,6 +5217,10 @@ deleting all information.
 tag, overriding any other values previously assigned to the tag on the same
 command line.  To shift a date/time value and copy it to another tag in the
 same operation, use the B<-globalTimeShift> option.
+
+7) The C<+=> operator may not be used to shift a List-type date/time tag
+(eg. XMP-dc:Date) because C<+=> is used to add elements to the list. 
+Instead, the B<-globalTimeShift> option should be used.
 
 Special feature:  Integer values may be specified in hexadecimal with a
 leading C<0x>, and simple rational values may be specified as fractions.
@@ -5834,7 +5845,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 12.99 --
+    -- Generated by ExifTool 13.00 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -6683,8 +6694,8 @@ The B<-g> and B<-G> options may be used to organize the output by the
 specified family of groups, with B<-G1> being the default.  The B<-a> option
 is implied.  Adding B<-v> includes a count of the number of tags that are
 the same in each group.  The following text formatting options are valid
-when B<-diff> is used: B<-c>, B<-charset>, B<-d>, B<-E>, B<-L>, B<-lang>,
-B<-n>, B<-s>, B<-sep>, B<-struct> and B<-w>.
+when B<-diff> is used: B<-c>, B<-charset>, B<-d>, B<-E>, B<-ec>, B<-ex>,
+B<-L>, B<-lang>, B<-n>, B<-s>, B<-sep>, B<-struct> and B<-w>.
 
 =item B<-geotag> I<TRKFILE>
 

@@ -32,7 +32,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.25';
+$VERSION = '1.26';
 
 # program map table "stream_type" lookup (ref 6/1/9)
 my %streamType = (
@@ -82,7 +82,7 @@ my %streamType = (
     0x86 => 'DTS-HD Audio',
     0x87 => 'E-AC-3 Audio',
     0x8a => 'DTS Audio',
-    0x90 => 'PGS Audio', #https://www.avsforum.com/threads/bass-eq-for-filtered-movies.2995212/page-399
+    0x90 => 'Presentation Graphic Stream (subtitle)', #https://en.wikipedia.org/wiki/Program-specific_information
     0x91 => 'A52b/AC-3 Audio',
     0x92 => 'DVD_SPU vls Subtitle',
     0x94 => 'SDDS Audio',

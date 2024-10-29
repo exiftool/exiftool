@@ -2931,7 +2931,7 @@ my %opcodeInfo = (
     0xa433 => { Name => 'LensMake',         Writable => 'string' }, #24
     0xa434 => { Name => 'LensModel',        Writable => 'string' }, #24
     0xa435 => { Name => 'LensSerialNumber', Writable => 'string' }, #24
-    0xa436 => { Name => 'Title',            Writable => 'string', Avoid => 1 }, #33
+    0xa436 => { Name => 'ImageTitle',       Writable => 'string' }, #33
     0xa437 => { Name => 'Photographer',     Writable => 'string' }, #33
     0xa438 => { Name => 'ImageEditor',      Writable => 'string' }, #33
     0xa439 => { Name => 'CameraFirmware',          Writable => 'string' }, #33

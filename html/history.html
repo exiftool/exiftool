@@ -11,11 +11,31 @@
 
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-12.76.tar.gz">Version 12.76</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-13.00.tar.gz">Version 13.00</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">MetaCPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v13.00'><b>Oct. 29, 2024 - Version 13.00</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added support for reading GPS from Autel Evo II drone videos
+<li>Added a new PhaseOne RawFormat value
+<li>Updated XMP-exifEX tags, exif2xmp.args and xmp2exif.args according to the
+    2024 EXIF for XMP specification
+<li>Updated Geolocation databases from current geonames.org files
+<li>Updated the MIME types for a couple of font formats
+<li>Enhanced -diff option to work with -ec (C-style escape of special chars)
+<li>Changed name of EXIF Title tag to ImageTitle to correspond with specifiation
+<li>Reverted a geotag warning message to remove debugging information that was
+    added in version 12.67 and moved this information into a -v3 verbose message
+<li>Patched Perl bug which gave "Can't spawn" warning in Windows if control-C
+    was pressed while displaying the exiftool application help
+<li>Fixed API StructFormat JSONQ setting to properly quote values in structures
+<li>Fixed incorrect AudioStreamType for M2TS videos containing a PGS stream
+<li>Fixed -diff option so "same tags" messages are only shown when -v is added
+    (as per the documentation)
+</ul>
 
 <a name='v12.99'><b>Oct. 18, 2024 - Version 12.99</b></a>
 <ul>
@@ -34,8 +54,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
     <li>Structured values returned as HASH references with the Struct option may
         contain a new "_ordered_keys_" entry used to preserve the order of the
         entries
-    <li>Added the <a href="ExifTool.html#OrderedKeys">OrderedKeys</a> method to
-        return the ordered or sorted keys from a returned structure value
+    <li>Added the <a href="ExifTool.html#OrderedKeys">OrderedKeys</a> method to return the ordered or sorted keys from a
+        returned structure value
     </ul>
 </ul>
 

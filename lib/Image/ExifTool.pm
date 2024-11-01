@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.00';
+$VERSION = '13.01';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1165,6 +1165,7 @@ my @availableOptions = (
     [ 'UserParam',        { },    'user parameters for additional user-defined tag values' ],
     [ 'Validate',         undef,  'perform additional validation' ],
     [ 'Verbose',          0,      'print verbose messages (0-5, higher # = more verbose)' ],
+    [ 'WindowsLongPath',  undef,  'force the use of long pathnames' ], # (see github PR#283)
     [ 'WindowsWideFile',  undef,  'force the use of Windows wide-character file routines' ], # (see forum15208)
     [ 'WriteMode',        'wcg',  'enable all write modes by default' ],
     [ 'XAttrTags',        undef,  'extract MacOS extended attribute tags' ],
@@ -4621,27 +4622,87 @@ sub EncodeFileName($$;$)
 {
     my ($self, $file, $force) = @_;
     my $enc = $$self{OPTIONS}{CharsetFileName};
-    $force = 1 if $$self{OPTIONS}{WindowsWideFile};
-    if ($enc) {
-        if ($file =~ /[\x80-\xff]/ or $force) {
-            # encode for use in Windows Unicode functions if necessary
-            if ($^O eq 'MSWin32') {
-                local $SIG{'__WARN__'} = \&SetWarning;
-                if (eval { require Win32API::File }) {
-                    # recode as UTF-16LE and add null terminator
-                    $_[1] = $self->Decode($file, $enc, undef, 'UTF16', 'II') . "\0\0";
-                    return 1;
-                }
-                $self->WarnOnce('Install Win32API::File for Windows Unicode file support');
+    my $hasSpecialChars;
+    if ($file =~ /[\x80-\xff]/) {
+        $hasSpecialChars = 1;
+        if (not $enc and $^O eq 'MSWin32') {
+            if (IsUTF8(\$file) < 0) {
+                $self->WarnOnce('FileName encoding must be specified') if not defined $enc;
+                return 0;
             } else {
-                # recode as UTF-8 for other platforms if necessary
-                $_[1] = $self->Decode($file, $enc, undef, 'UTF8') unless $enc eq 'UTF8';
+                $enc = 'UTF8';  # assume UTF8
             }
         }
-    } elsif ($^O eq 'MSWin32' and $file =~ /[\x80-\xff]/ and not defined $enc) {
-        $self->WarnOnce('FileName encoding not specified') if IsUTF8(\$file) < 0;
+    }
+    $force = 1 if $$self{OPTIONS}{WindowsWideFile} or $$self{OPTIONS}{WindowsLongPath};
+    if ($hasSpecialChars or $force) {
+        # encode for use in Windows Unicode functions if necessary
+        if ($^O eq 'MSWin32') {
+            local $SIG{'__WARN__'} = \&SetWarning;
+            if (eval { require Win32API::File }) {
+                $file = WindowsLongPath($file) if $$self{OPTIONS}{WindowsLongPath};
+                # recode as UTF-16LE and add null terminator
+                $_[1] = $self->Decode($file, $enc, undef, 'UTF16', 'II') . "\0\0";
+                return 1;
+            }
+            $self->WarnOnce('Install Win32API::File for Windows wide/long file name support');
+        } elsif ($enc ne 'UTF8') {
+            # recode as UTF-8 for other platforms if necessary
+            $_[1] = $self->Decode($file, $enc, undef, 'UTF8');
+        }
     }
     return 0;
+}
+
+#------------------------------------------------------------------------------
+# Does path name contain wildcards (from Github PR#283)
+# Inputs: 0) path name
+# Returns: true if path contains wildcards
+sub ContainsWildcards($)
+{
+    my $path = shift;
+
+    # if this is a Windows path with the long path prefix, then wildcards are not supported
+    return 0 if $^O eq 'MSWin32' and $path =~ m{^[\\/]{2}\?[\\/]};
+    return $path =~ /[*?]/;
+}
+
+#------------------------------------------------------------------------------
+# Rebuild a path as an absolute long path to be usable in Windows system calls (from PR#283)
+# Inputs: 0) path
+# Returns: normalized long path
+# Note: This should only be called for Windows systems
+sub WindowsLongPath($)
+{
+    my $path = shift;
+    $path =~ tr{/}{\\}; # use backslashes
+
+    return $path if ContainsWildcards($path) or $path =~ /^\\\\\?\\/;
+
+    # already absolute path -> add long path prefix and return
+    return "\\\\?\\$path" if $path =~ /^[a-z]:/i;
+
+    # need current working directory to build absolute path
+    return $path unless { eval { require Cwd } };
+    my $cwd = Cwd::getcwd();
+    $cwd =~ tr{/}{\\};
+
+    my @cwdParts = split /\\/, $cwd;
+    my @pathParts = split /\\/, $path;
+    my @combinedParts = @cwdParts;
+    my $part;
+
+    # remove "." and ".." from path (not handled by Win32API functions)
+    foreach $part (@pathParts) {
+        if ($part eq '.' or $part eq '') {
+            next;
+        } elsif ($part eq '..') {
+            pop @combinedParts if @combinedParts > 1;
+        } else {
+            push @combinedParts, $part;
+        }
+    }
+    return '\\\\?\\' . join '\\', @combinedParts;
 }
 
 #------------------------------------------------------------------------------
@@ -6322,10 +6383,12 @@ sub Filter($$$)
 # Return printable value
 # Inputs: 0) ExifTool object reference
 #         1) value to print, 2) line length limit (undef defaults to 60, 0=unlimited)
+# Returns: Printable string
 sub Printable($;$)
 {
     my ($self, $outStr, $maxLen) = @_;
     return '(undef)' unless defined $outStr;
+    ref $outStr eq 'SCALAR' and return '(Binary data '.length($$outStr).' bytes)';
     $outStr =~ tr/\x01-\x1f\x7f-\xff/./;
     $outStr =~ s/\x00//g;
     my $verbose = $$self{OPTIONS}{Verbose};

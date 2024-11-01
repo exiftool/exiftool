@@ -520,9 +520,9 @@ set to undef to pass through EXIF "ASCII" values without recoding.  Set to
 =item CharsetFileName
 
 External character set used for file names passed to ExifTool functions. 
-When set in Windows, this triggers use of Windows wide-character i/o library
-routines (requires Win32API::File).  Default is undef.  May also be set to
-an empty string to avoid "encoding not specified" warnings on Windows.
+Default is undef but "UTF8" is assumed in Windows if the file name contains
+special characters and is valid UTF8.  May also be set to an empty string to
+avoid "encoding must be specified" warnings on Windows.
 
 =item CharsetID3
 
@@ -1176,13 +1176,17 @@ details about the tags.  Level 3 adds a hex dump of the tag data, but with
 limits on the number of bytes dumped.  Levels 4 and 5 remove the dump limit
 on tag values and JPEG segment data respectively.
 
+=item WindowsLongPath
+
+Support long path names in Windows.  Enabling this option automatically
+enables the WindowsWideFile feature.
+
 =item WindowsWideFile
 
-Force the use of wide-character Windows I/O functions when the 
-L</CharsetFileName> option is used.  This may be necessary when files are on
-a network drive and the current directory name contains Unicode characters.
-By default, the wide-character functions are used only if the specified file
-path contains Unicode characters.
+Force the use of wide-character Windows I/O functions.  This may be
+necessary when files are on a network drive and the current directory name
+contains Unicode characters. By default, the wide-character functions are
+used only if the specified file path contains Unicode characters.
 
 =item WriteMode
 
@@ -1258,7 +1262,8 @@ ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase, IgnoreGroups,
 IgnoreMinorErrors, IgnoreTags, Lang, LargeFileSupport, MakerNotes,
 MDItemTags, NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero),
 RequestAll, RequestTags, SaveFormat, SavePath, ScanForXMP, Struct, TextOut,
-Unknown, Verbose, WindowsWideFile, XAttrTags and XMPAutoConv.
+Unknown, Verbose, WindowsLongPath, WindowsWideFile, XAttrTags and
+XMPAutoConv.
 
 =item Return Value:
 
@@ -1397,7 +1402,8 @@ The following ExifTool options are effective in the call to L</WriteInfo>:
 
 ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
 Compress, FixBase, IgnoreMinorErrors, NoMultiExif, NoPDFList, Password,
-QuickTimeHandler, QuickTimePad, Verbose, WindowsWideFile and WriteMode.
+QuickTimeHandler, QuickTimePad, Verbose, WindowsLongPath, WindowsWideFile
+and WriteMode.
 
 =head2 GetTagList
 
@@ -2553,17 +2559,18 @@ Real-PROP, Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx, Red, Ricoh,
 SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado,
 Sigma, SigmaRaw, Sony, SonyIDC, Stim, SubIFD, System, Theora, Torrent,
 Track#, UserData, VCalendar, VCard, VNote, Version0, Vorbis, WTV, XML, XMP,
-XMP-DICOM, XMP-Device, XMP-GAudio, XMP-GCamera, XMP-GCreations, XMP-GDepth,
-XMP-GFocus, XMP-GImage, XMP-GPano, XMP-GSpherical, XMP-LImage, XMP-MP,
-XMP-MP1, XMP-PixelLive, XMP-aas, XMP-acdsee, XMP-album, XMP-apple-fi,
-XMP-ast, XMP-aux, XMP-cc, XMP-cell, XMP-crd, XMP-creatorAtom, XMP-crs,
-XMP-dc, XMP-dex, XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-et, XMP-exif,
-XMP-exifEX, XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr,
-XMP-hdrgm, XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro,
-XMP-microsoft, XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-panorama,
-XMP-pdf, XMP-pdfx, XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi,
-XMP-prism, XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff,
-XMP-x, XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote,
+XMP-DICOM, XMP-Device, XMP-GAudio, XMP-GCamera, XMP-GContainer,
+XMP-GCreations, XMP-GDepth, XMP-GFocus, XMP-GImage, XMP-GPano,
+XMP-GSpherical, XMP-LImage, XMP-MP, XMP-MP1, XMP-PixelLive, XMP-aas,
+XMP-acdsee, XMP-acdsee-rs, XMP-album, XMP-apple-fi, XMP-ast, XMP-aux,
+XMP-cc, XMP-cell, XMP-crd, XMP-creatorAtom, XMP-crs, XMP-dc, XMP-dex,
+XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-et, XMP-exif, XMP-exifEX,
+XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr, XMP-hdrgm,
+XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft,
+XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-panorama, XMP-pdf,
+XMP-pdfx, XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism,
+XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff, XMP-x,
+XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote,
 XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
 
 =item Family 2 (Category):

@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 # Text tags
 %Image::ExifTool::Text::Main = (
@@ -191,7 +191,8 @@ sub ProcessTXT($$)
             $enc = 'unknown-8bit';
         }
     }
-    if ($$et{VALUE}{MIMEEncoding} ne $enc) {
+    # ($$et{VALUE}{MIMEEncoding} may be undef if it was ignored)
+    if (defined $$et{VALUE}{MIMEEncoding} and $$et{VALUE}{MIMEEncoding} ne $enc) {
         $$et{VALUE}{MIMEEncoding} = $enc;
         $et->VPrint(0,"  MIMEEncoding [override] = $enc\n");
     }

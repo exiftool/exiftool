@@ -7,6 +7,21 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.00. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Nov. 1, 2024 - Version 13.01
+
+  - NOTE: Please test the new API WindowsLongPath option because the idea is to
+    enable this by default if everything works out well
+  - Fixed bug which could result in runtime warning if when API IgnoreTags
+    option is set to "all" when reading a TXT file format
+  - Fixed problem reading some information from LNK files
+  - Fixed verbose output to show "Binary data" message for SCALAR values
+  - Fixed bug where part of the hex dump from a -v3 output could go to stdout
+    instead of the file specified by a -w option
+  - API Changes:
+      - Added WindowsLongPath option for testing
+      - Changed CharsetFileName option to automatically assume UTF8 if the file
+        name contains special characters and is valid UTF8
+
 Oct. 29, 2024 - Version 13.00 (production release)
 
   - Added support for reading GPS from Autel Evo II drone videos

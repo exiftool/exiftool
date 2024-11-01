@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.82';
+$VERSION = '4.83';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -10448,6 +10448,7 @@ sub ProcessCTMD($$$)
             Start  => $pos + 6,
             Addr   => $$dirInfo{Base} + $pos + 6,
             Prefix => $$et{INDENT},
+            Out    => $et->Options('TextOut'),
         ) if $verbose > 2;
         if ($$tagTablePtr{$type}) {
             $et->HandleTag($tagTablePtr, $type, undef,

@@ -98,9 +98,9 @@ the distribution files or access web pages too quickly will be blocked.</i></p>
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.00.tar.gz/download">
-Download        Version 13.00</a> (7.2 MB) -
-<a href="history.html">Oct. 29, 2024</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.01.tar.gz/download">
+Download        Version 13.01</a> (7.2 MB) -
+<a href="history.html">Nov. 1, 2024</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -152,11 +152,11 @@ only, and do not include the HTML documentation or other files of the full
 distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td rowspan=2><b><a name="alone">Windows</a></b></td><td><b>
-32-bit: <a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.00_32.zip/download">
-         exiftool-13.00_32.zip</a> (10.8 MB)</b></td></tr>
+32-bit: <a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.01_32.zip/download">
+         exiftool-13.01_32.zip</a> (10.8 MB)</b></td></tr>
 <tr><td><b>64-bit:
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.00_64.zip/download">
-         exiftool-13.00_64.zip</a> (10.6 MB)</b></td></tr>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.01_64.zip/download">
+         exiftool-13.01_64.zip</a> (10.6 MB)</b></td></tr>
          </table></blockquote>
 
 <p><b>The Windows executable</b> archives include Perl. Just download and un-zip
@@ -174,8 +174,8 @@ if you have any problems/comments with these versions.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
-<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-13.00.pkg/download">
-         ExifTool-13.00.pkg</a> (5.2 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-13.01.pkg/download">
+         ExifTool-13.01.pkg</a> (5.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -276,7 +276,7 @@ Phil Harvey's exiftool ... I've never seen anything that's in the same ballpark 
 <blockquote><i>"While there are a lot of image tools available, nothing comes close for accessing/updating
 the metadata like ExifTool"</i> - <a href="http://web.archive.org/web/20080307105031/http://blog.merg.be/?p=242">merg's blog</a></blockquote>
 <blockquote><i>"Fast, reliable and amazingly comprehensive ..."</i>
-- <a href="http://cpanratings.perl.org/dist/Image-ExifTool">CPAN ratings</a></blockquote>
+- <a href="http://web.archive.org/web/20120111033005/http://cpanratings.perl.org/dist/Image-ExifTool">CPAN ratings</a></blockquote>
 <blockquote><i>"... the one piece of free software that gets the most
 detailed exif data of /any/ tool I've found."</i>
 - <a href="http://mail.gnome.org/archives/eog-list/2005-August/msg00002.html">gnome mail archives</a>
@@ -780,7 +780,7 @@ more information:  Right-click on the window's title bar then select
 href="htmldump.html">HtmlDump</a> (<code>-htmlDump</code>) options print additional
 information that can be very useful for debugging or when decoding new tags.</p>
 
-<a name='diff'><h3>Compare Two Files for Metadata Differences</h3></a>
+<h3><a name='diff'>Compare Two Files for Metadata Differences</a></h3>
 
 <p>The <code>-diff</code> option provides a method to show the metadata differences
 between two files.  For example, here is a comparison of two files excluding System
@@ -788,47 +788,47 @@ and Composite tags:</p>
 
 <blockquote>&gt; <code>exiftool a.jpg -diff b.jpg --system:all -e</code><br>&nbsp;
 <table class='box sm tight'><tr><td>
-<pre class=blk>======== diff < a.jpg > b.jpg
-< [IFD0]          Modify Date                     : 2024:09:05 14:37:40 
->                                                 : 2024:09:05 14:41:05
-< [ExifIFD]       Exposure Time                   : 1/400
->                                                 : 1/1000
-< [ExifIFD]       F Number                        : 4.0
->                                                 : 5.6
-< [ExifIFD]       Date/Time Original              : 2024:09:05 14:37:40
->                                                 : 2024:09:05 14:41:05
-< [ExifIFD]       Create Date                     : 2024:09:05 14:37:40
->                                                 : 2024:09:05 14:41:05
-< [ExifIFD]       Brightness Value                : 8.49765625
->                                                 : 10.728125
-< [ExifIFD]       Max Aperture Value              : 2.8
->                                                 : 4.0
-< [ExifIFD]       Focal Length                    : 9.0 mm
->                                                 : 32.7 mm
-< [ExifIFD]       Focal Length In 35mm Format     : 24 mm
->                                                 : 89 mm
-< [Sony]          Camera Temperature              : 36 C
->                                                 : 35 C
-< [Sony]          Exposure Time                   : 1/400
->                                                 : 1/1000
-< [Sony]          Sony Max Aperture Value         : 3.0
->                                                 : 4.1
-< [Sony]          Lens Zoom Position              : 0%
->                                                 : 59%
-< [Sony]          Brightness Value                : 8.49765625
->                                                 : 10.728125
-< [Sony]          WB RGB Levels                   : 578 256 478
->                                                 : 592 256 466
-< [Sony]          Focal Length                    : 9.0 mm
->                                                 : 32.7 mm
-< [IFD1]          Thumbnail Length                : 12771
->                                                 : 5940
-< [MPImage1]      MP Image Length                 : 7696566
->                                                 : 5839721
-< [MPImage2]      MP Image Length                 : 1167032
->                                                 : 492263
-< [MPImage2]      MP Image Start                  : 7699456
->                                                 : 5840896
+<pre class=blk>======== diff &lt; a.jpg &gt; b.jpg
+&lt; [IFD0]          Modify Date                     : 2024:09:05 14:37:40 
+&gt;                                                 : 2024:09:05 14:41:05
+&lt; [ExifIFD]       Exposure Time                   : 1/400
+&gt;                                                 : 1/1000
+&lt; [ExifIFD]       F Number                        : 4.0
+&gt;                                                 : 5.6
+&lt; [ExifIFD]       Date/Time Original              : 2024:09:05 14:37:40
+&gt;                                                 : 2024:09:05 14:41:05
+&lt; [ExifIFD]       Create Date                     : 2024:09:05 14:37:40
+&gt;                                                 : 2024:09:05 14:41:05
+&lt; [ExifIFD]       Brightness Value                : 8.49765625
+&gt;                                                 : 10.728125
+&lt; [ExifIFD]       Max Aperture Value              : 2.8
+&gt;                                                 : 4.0
+&lt; [ExifIFD]       Focal Length                    : 9.0 mm
+&gt;                                                 : 32.7 mm
+&lt; [ExifIFD]       Focal Length In 35mm Format     : 24 mm
+&gt;                                                 : 89 mm
+&lt; [Sony]          Camera Temperature              : 36 C
+&gt;                                                 : 35 C
+&lt; [Sony]          Exposure Time                   : 1/400
+&gt;                                                 : 1/1000
+&lt; [Sony]          Sony Max Aperture Value         : 3.0
+&gt;                                                 : 4.1
+&lt; [Sony]          Lens Zoom Position              : 0%
+&gt;                                                 : 59%
+&lt; [Sony]          Brightness Value                : 8.49765625
+&gt;                                                 : 10.728125
+&lt; [Sony]          WB RGB Levels                   : 578 256 478
+&gt;                                                 : 592 256 466
+&lt; [Sony]          Focal Length                    : 9.0 mm
+&gt;                                                 : 32.7 mm
+&lt; [IFD1]          Thumbnail Length                : 12771
+&gt;                                                 : 5940
+&lt; [MPImage1]      MP Image Length                 : 7696566
+&gt;                                                 : 5839721
+&lt; [MPImage2]      MP Image Length                 : 1167032
+&gt;                                                 : 492263
+&lt; [MPImage2]      MP Image Start                  : 7699456
+&gt;                                                 : 5840896
 </pre></td></tr></table></blockquote>
 
 <h2><a name="tagnames">Tag Names Explained</a></h2>
@@ -953,17 +953,18 @@ Real-PROP, Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx, Red, Ricoh,
 SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado,
 Sigma, SigmaRaw, Sony, SonyIDC, Stim, SubIFD, System, Theora, Torrent,
 Track#, UserData, VCalendar, VCard, VNote, Version0, Vorbis, WTV, XML, XMP,
-XMP-DICOM, XMP-Device, XMP-GAudio, XMP-GCamera, XMP-GCreations, XMP-GDepth,
-XMP-GFocus, XMP-GImage, XMP-GPano, XMP-GSpherical, XMP-LImage, XMP-MP,
-XMP-MP1, XMP-PixelLive, XMP-aas, XMP-acdsee, XMP-album, XMP-apple-fi,
-XMP-ast, XMP-aux, XMP-cc, XMP-cell, XMP-crd, XMP-creatorAtom, XMP-crs,
-XMP-dc, XMP-dex, XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-et, XMP-exif,
-XMP-exifEX, XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr,
-XMP-hdrgm, XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro,
-XMP-microsoft, XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-panorama,
-XMP-pdf, XMP-pdfx, XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi,
-XMP-prism, XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff,
-XMP-x, XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote,
+XMP-DICOM, XMP-Device, XMP-GAudio, XMP-GCamera, XMP-GContainer,
+XMP-GCreations, XMP-GDepth, XMP-GFocus, XMP-GImage, XMP-GPano,
+XMP-GSpherical, XMP-LImage, XMP-MP, XMP-MP1, XMP-PixelLive, XMP-aas,
+XMP-acdsee, XMP-acdsee-rs, XMP-album, XMP-apple-fi, XMP-ast, XMP-aux,
+XMP-cc, XMP-cell, XMP-crd, XMP-creatorAtom, XMP-crs, XMP-dc, XMP-dex,
+XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-et, XMP-exif, XMP-exifEX,
+XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-hdr, XMP-hdrgm,
+XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft,
+XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-panorama, XMP-pdf,
+XMP-pdfx, XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism,
+XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-swf, XMP-tiff, XMP-x,
+XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote,
 XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP, iTunes
 </td></tr>
 <tr><td><b>2&nbsp;(Category)</b></td>
@@ -1122,10 +1123,10 @@ for files.  Longer path lengths give an "Error opening file" message.
 <b>Panasonic PHOTOfunSTUDIO 9.5</b> has problems displaying some ExifTool-edited
 FZ1000 RW2 images, although other software (such as Adobe Lightroom, Digikam and
 Windows Explorer) have no problems with these.</li>
-<li><span class=red>[2022-08-23]</span>
+<!-- (repeat of 2018-09-27 issue) <li><span class=red>[2022-08-23]</span>
 <b>Sony Imaging Edge Desktop</b> has problems displaying some ExifTool-edited ARW
-images, although other software (such as Adobe utilites) have no problems with these.</li>
-<li><span class=red>[2020-02-18]</span>
+images, although other software (such as Adobe utilites) have no problems with these.</li> -->
+<li><span class=grn>[2020-02-18]</span>
 <b>Hasselblad Phocus</b> software will no longer update the small preview or
 thumbnail images of <b>FFF files</b> edited by ExifTool.  This is perhaps due to
 some <a href="idiosyncracies.html#HasselbladFFF">unreferenced preview information</a>
@@ -1145,7 +1146,7 @@ The <b>Sony Imaging Edge applications</b> give an error when trying to open
 utilities including Sony IDC (Sony's older RAW image converter), Adobe
 Photoshop, Lightroom and DNG Converter, Apple Preview, dcraw, Capture One,
 Affinity Photo, and LibRaw's SonyPixelShift2DNG have no problems with these.</li>
-<li><span class=red>[2016-08-03]</span>
+<li><span class=grn>[2016-08-03]</span>
 Some antivirus software has been known to cause problems for the <b>Windows</b>
 version of ExifTool. <b>Norton Antivirus</b> may delete ExifTool when it is run,
 <b>Windows Defender</b> may slow down launching of ExifTool or hang it altogether,
@@ -1153,7 +1154,9 @@ and <b>Bitdefender Antivirus</b> may block ExifTool from writing files.
 Presumably this is due to the way the ExifTool package for Windows works -- it
 unpacks executable files into a temporary directory and runs from there, which
 apparently may be seen as a threat by antivirus software.  A work-around is to
-add ExifTool to the exclusion list of the antivirus software.</li>
+add ExifTool to the exclusion list of the antivirus software. <i class=grn>[This
+shouldn't be a problem since the changes to the Windows EXE package in ExifTool
+12.88]</i></li>
 <li><span class=grn>[2016-05-27]</span>
 <b>Adobe Camera Raw and DNG Converter 9.5.1</b> fail to recognize edited
 <b>Samsung SRW</b> images from some models (NX30, NX300, NX2000 and EK-GN120).
@@ -1176,11 +1179,13 @@ provides the PNGEarlyXMP API option to allow writing XMP before the IDAT chunk,
 but there are caveats associated with its use.  ExifTool 11.58 and later remove
 this option and always write XMP before IDAT, and 11.63 and later write all
 text chunks before IDAT.]</i></li>
-<li><span class=red>[2013-04-21]</span>
+<li><span class=grn>[2013-04-21]</span>
 Memory available to ExifTool in the <b>Windows EXE version</b> is limited to
 a few hundred MB.  This limitation has been known to cause <b>unreasonably long
 processing times</b> (almost 7 minutes) for some large EPS files (> 200 MB) which
-are processed much faster by the Perl version (&lt; 6 seconds).</li>
+are processed much faster by the Perl version (&lt; 6 seconds).
+<i class=grn>[These memory issues are alleviated by the new Windows EXE package
+of ExifTool 12.88 and later.]</i></li>
 <li><span class=grn>[2010-01-12]</span>
 There is a bug in a number of <b>Adobe</b> utilities which causes some
 edited <b>Sony ARW</b> images to be displayed with the wrong tone curve. This
@@ -1388,6 +1393,8 @@ binary data.  The simple script above does not handle this case.</p>
 <li><a href="https://exiftool.org/sample_images.html">JPEG Image Samples</a> (and
     <a href="https://exiftool.org/makernote_types.html">Table of Makernote Types</a>)</li>
 <li><a href="https://metacpan.org/release/Image-ExifTool">Image::ExifTool at MetaCPAN</a></li>
+<li><a href="https://exiftool.org/forum/index.php?board=6.0">ExifTool Bug Reports</a> (ExifTool Forum -- the preferred method)</li>
+<li><a href="https://github.com/exiftool/exiftool/issues">ExifTool Bug Reports</a> (Github)</li>
 <li><a href="https://rt.cpan.org/Public/Dist/Display.html?Name=Image-ExifTool">ExifTool Bug Reports</a> (CPAN Request Tracker)</li>
 <li><a href="http://www.cpantesters.org/distro/I/Image-ExifTool.html">ExifTool Test Reports</a> (CPAN Testers)</li>
 <li><a href="http://matrix.cpantesters.org/?dist=Image-ExifTool;maxver=1">CPAN Testers Matrix</a> (max version with a PASS)</li>

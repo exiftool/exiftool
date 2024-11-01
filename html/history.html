@@ -17,6 +17,24 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.01'><b>Nov. 1, 2024 - Version 13.01</b></a></span>
+<ul>
+<li>NOTE: Please test the new API WindowsLongPath option because the idea is to
+    enable this by default if everything works out well
+<li>Fixed bug which could result in runtime warning if when API IgnoreTags
+    option is set to "all" when reading a TXT file format
+<li>Fixed problem reading some information from LNK files
+<li>Fixed verbose output to show "Binary data" message for SCALAR values
+<li>Fixed bug where part of the hex dump from a -v3 output could go to stdout
+    instead of the file specified by a -w option
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option for testing
+    <li>Changed <a href="ExifTool.html#WindowsLongPath">CharsetFileName</a> option to automatically assume UTF8 if the file
+        name contains special characters and is valid UTF8
+    </ul>
+</ul>
+
 <a name='v13.00'><b>Oct. 29, 2024 - Version 13.00</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added support for reading GPS from Autel Evo II drone videos

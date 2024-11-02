@@ -788,7 +788,10 @@ my %uidInfo = (
     CONTENT_TYPE => 'ContentType',
     SUBJECT     => 'Subject',
     DESCRIPTION => 'Description',
-    KEYWORDS    => 'Keywords',
+    KEYWORDS    => {
+        Name => 'Keywords',
+        List => 1,
+    },
     SUMMARY     => 'Summary',
     SYNOPSIS    => 'Synopsis',
     INITIAL_KEY => 'InitialKey',
@@ -889,7 +892,11 @@ sub HandleStruct($$;$$$$)
         # (Note: not currently handling TagDefault attribute)
         my $code = $lang;
         $code = $lang ? "${lang}-${ctry}" : "eng-${ctry}" if $ctry; # ('eng' is default lang)
-        if ($code) {
+
+        if ($$tagInfo{List}) {
+            my @values = split ',\\s?', $val;
+            $et->FoundTag($tagInfo, $_) foreach @values;
+        } elsif ($code) {
             $tagInfo = Image::ExifTool::GetLangInfo($tagInfo, $code);
             $et->HandleTag($tagTbl, $$tagInfo{TagID}, $val);
         } else {

@@ -14,7 +14,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.54';
+$VERSION = '1.55';
 
 sub ProcessMIE($$);
 sub ProcessMIEGroup($$$);
@@ -1596,9 +1596,10 @@ sub ProcessMIEGroup($$$)
         } else {
             # process MIE data format types
             if ($tagInfo) {
-                my $rational;
+                my ($rational, $binVal);
                 # extract tag value
                 my $val = ReadMIEValue(\$value, 0, $formatStr, undef, $valLen, \$rational);
+                $binVal = substr($value, 0, $valLen) if $$et{OPTIONS}{SaveBin};
                 unless (defined $val) {
                     $et->Warn("Error reading $tag value");
                     $val = '<err>';
@@ -1661,7 +1662,12 @@ sub ProcessMIEGroup($$$)
                         $val .= "($units)" if defined $units;
                     }
                     my $key = $et->FoundTag($tagInfo, $val);
-                    $$et{RATIONAL}{$key} = $rational if defined $rational and defined $key;
+                    if (defined $key) {
+                        my $ex = $$et{TAG_EXTRA}{$key};
+                        $$ex{Rational} = $rational if defined $rational;
+                        $$ex{BinVal} = $binVal if defined $binVal;
+                        $$ex{G6} = $formatStr if $$et{OPTIONS}{SaveFormat};
+                    }
                 }
             } else {
                 # skip over unknown information or free bytes

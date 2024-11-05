@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.83';
+$VERSION = '4.84';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -9830,35 +9830,39 @@ sub LensWithTC($$)
 
 #------------------------------------------------------------------------------
 # Attempt to calculate sensor size for Canon cameras
-# Inputs: 0/1) rational values for FocalPlaneX/YResolution
+# Inputs: 0) ExifTool ref
 # Returns: Sensor diagonal size in mm, or undef
 # Notes: This algorithm is fairly reliable, but has been found to give incorrect
 #        values for some firmware versions of the EOS 20D, A310, SD40 and IXUS 65
 # (ref http://wyw.dcweb.cn/download.asp?path=&file=jhead-2.96-ccdwidth_hack.zip)
-sub CalcSensorDiag($$)
+sub CalcSensorDiag($)
 {
-    my ($xres, $yres) = @_;
-    # most Canon cameras store the sensor size in the denominator
-    if ($xres and $yres) {
-        # assumptions: 1) numerators are image width/height * 1000
-        # 2) denominators are sensor width/height in inches * 1000
-        my @xres = split /[ \/]/, $xres;
-        my @yres = split /[ \/]/, $yres;
-        # verify assumptions as best we can:
-            # numerators are always divisible by 1000
-        if ($xres[0] % 1000 == 0 and $yres[0] % 1000 == 0 and
-            # at least 640x480 pixels (DC models - PH)
-            $xres[0] >= 640000 and $yres[0] >= 480000 and
-            # ... but not too big!
-            $xres[0] < 10000000 and $yres[0] < 10000000 and
-            # minimum sensor size is 0.061 inches (DC models - PH)
-            $xres[1] >= 61 and $xres[1] < 1500 and
-            $yres[1] >= 61 and $yres[1] < 1000 and
-            # sensor isn't square (may happen if rationals have been reduced)
-            $xres[1] != $yres[1])
-        {
-            return sqrt($xres[1]*$xres[1] + $yres[1]*$yres[1]) * 0.0254;
-        }
+    my $et = shift;
+    # calculation is based on the rational value of FocalPlaneX/YResolution
+    # (most Canon cameras store the sensor size in the denominator)
+    return undef unless $$et{TAG_EXTRA}{FocalPlaneXResolution} and
+                        $$et{TAG_EXTRA}{FocalPlaneYResolution};
+    my $xres = $$et{TAG_EXTRA}{FocalPlaneXResolution}{Rational};
+    my $yres = $$et{TAG_EXTRA}{FocalPlaneYResolution}{Rational};
+    return undef unless $xres and $yres;
+    # assumptions: 1) numerators are image width/height * 1000
+    # 2) denominators are sensor width/height in inches * 1000
+    my @xres = split /[ \/]/, $xres;
+    my @yres = split /[ \/]/, $yres;
+    # verify assumptions as best we can:
+        # numerators are always divisible by 1000
+    if ($xres[0] % 1000 == 0 and $yres[0] % 1000 == 0 and
+        # at least 640x480 pixels (DC models - PH)
+        $xres[0] >= 640000 and $yres[0] >= 480000 and
+        # ... but not too big!
+        $xres[0] < 10000000 and $yres[0] < 10000000 and
+        # minimum sensor size is 0.061 inches (DC models - PH)
+        $xres[1] >= 61 and $xres[1] < 1500 and
+        $yres[1] >= 61 and $yres[1] < 1000 and
+        # sensor isn't square (may happen if rationals have been reduced)
+        $xres[1] != $yres[1])
+    {
+        return sqrt($xres[1]*$xres[1] + $yres[1]*$yres[1]) * 0.0254;
     }
     return undef;
 }
@@ -10251,7 +10255,11 @@ sub ProcessSerialData($$$)
             $et->ProcessDirectory(\%dirInfo, $subTablePtr);
         } elsif (not $$tagInfo{Unknown} or $unknown) {
             # don't extract zero-length information
-            $et->FoundTag($tagInfo, $val) if $count;
+            my $key = $et->FoundTag($tagInfo, $val) if $count;
+            if ($key) {
+                $$et{TAG_EXTRA}{$key}{G6} = $format if $$et{OPTIONS}{SaveFormat};
+                $$et{TAG_EXTRA}{$key}{BinVal} = substr($$dataPt, $pos+$offset, $len) if $$et{OPTIONS}{SaveBin};
+            }
         }
         $pos += $len;
     }

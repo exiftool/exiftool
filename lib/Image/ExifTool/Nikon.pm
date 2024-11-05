@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.38';
+$VERSION = '4.39';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -13609,7 +13609,10 @@ sub ProcessNikonMOV($$$)
                     Size    => $size,
                     Base    => $$dirInfo{Base},
                 );
-                $$et{RATIONAL}{$key} = $rational if $rational and $key;
+                if ($key) {
+                    $$et{TAG_EXTRA}{$key}{Rational} = $rational if $rational;
+                    $$et{TAG_EXTRA}{$key}{BinVal} = substr($$dataPt, $pos, $size) if $$et{OPTIONS}{SaveBin};
+                }
             } elsif (exists $needTags{$tag}) {
                 $needTags{$tag} = ReadValue($dataPt, $pos, $fmtStr, $count, $size);
                 $$et{NikonSerialKey} = SerialKey($et, $needTags{0x110a431});

@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub MDItemLocalTime($);
 sub ProcessATTR($$$);
@@ -394,6 +394,7 @@ sub SetMacOSTags($$$)
             if ($val =~ /[-+Z]/) {
                 my $time = Image::ExifTool::GetUnixTime($val, 1);
                 $val = Image::ExifTool::ConvertUnixTime($time, 1) if $time;
+                $val =~ s/[-+].*//; # remove time zone
             }
             $val =~ s{(\d{4}):(\d{2}):(\d{2})}{$2/$3/$1};   # reformat for setfile
             $cmd = "/usr/bin/setfile -d '${val}' '${f}'";

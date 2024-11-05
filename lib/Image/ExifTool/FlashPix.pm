@@ -22,7 +22,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.48';
+$VERSION = '1.49';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -1717,16 +1717,14 @@ sub ProcessDocumentTable($)
         my $offsets = $$value{$key};
         last unless defined $offsets;
         my $doc;
-        $doc = $$extra{$key}{G3} if $$extra{$key};
-        $doc = '' unless $doc;
+        $doc = $$extra{$key}{G3} || '';
         # get DocFlags for this sub-document
         my ($docFlags, $docTable);
         for ($j=0; ; ++$j) {
             my $key = 'DocFlags' . ($j ? " ($j)" : '');
             last unless defined $$value{$key};
             my $tmp;
-            $tmp = $$extra{$key}{G3} if $$extra{$key};
-            $tmp = '' unless $tmp;
+            $tmp = $$extra{$key}{G3} || '';
             if ($tmp eq $doc) {
                 $docFlags = $$value{$key};
                 last;
@@ -1739,8 +1737,7 @@ sub ProcessDocumentTable($)
             my $key = $tag . ($j ? " ($j)" : '');
             last unless defined $$value{$key};
             my $tmp;
-            $tmp = $$extra{$key}{G3} if $$extra{$key};
-            $tmp = '' unless $tmp;
+            $tmp = $$extra{$key}{G3} || '';
             if ($tmp eq $doc) {
                 $docTable = \$$value{$key};
                 last;
@@ -2505,8 +2502,7 @@ sub ProcessFPX($$)
             for ($copy=1; ;++$copy) {
                 my $key = "$tag ($copy)";
                 last unless defined $$et{VALUE}{$key};
-                my $extra = $$et{TAG_EXTRA}{$key};
-                next if $extra and $$extra{G3}; # not Main if family 3 group is set
+                next if $$et{TAG_EXTRA}{$key}{G3}; # not Main if family 3 group is set
                 foreach $member ('PRIORITY','VALUE','FILE_ORDER','TAG_INFO','TAG_EXTRA') {
                     my $pHash = $$et{$member};
                     my $t = $$pHash{$tag};

@@ -981,7 +981,7 @@ normally.  Currently this feature applies only to GM PDR data (see
 L<Image::ExifTool::TagNames/GM Tags>).  Setting this option automatically
 sets L</IgnoreTags> to "all", and L</ExtractEmbedded> to 1.  Default is
 undef.
-    
+
 =item QuickTimeHandler
 
 Flag set to add an 'mdir' Handler to a newly created Meta box when adding
@@ -1027,6 +1027,11 @@ delimited string of names (any delimiter is allowed), or undef to clear the
 current RequestTags list.  Groups are requested by adding a colon after the
 name (eg. "MacOS:").  Names are converted to lower case as they are added to
 the list.  Default is undef.
+
+=item SaveBin
+
+Flag to save binary values of tags, accessible through calls to L</GetValue>
+with a value type of "Bin".
 
 =item SaveFormat
 
@@ -1261,8 +1266,8 @@ CharsetPhotoshop, CharsetQuickTime, CharsetRIFF, Composite, ExtendedXMP,
 ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase, IgnoreGroups,
 IgnoreMinorErrors, IgnoreTags, Lang, LargeFileSupport, MakerNotes,
 MDItemTags, NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero),
-RequestAll, RequestTags, SaveFormat, SavePath, ScanForXMP, Struct, TextOut,
-Unknown, Verbose, WindowsLongPath, WindowsWideFile, XAttrTags and
+RequestAll, RequestTags, SaveBin, SaveFormat, SavePath, ScanForXMP, Struct,
+TextOut, Unknown, Verbose, WindowsLongPath, WindowsWideFile, XAttrTags and
 XMPAutoConv.
 
 =item Return Value:
@@ -1541,14 +1546,15 @@ StrictDate and TimeZone.
 
 1) Tag key, or case-sensitive tag name with optional group prefix(es)
 
-2) [optional] Value type: 'PrintConv', 'ValueConv', 'Both', 'Raw' or
+2) [optional] Value type: 'PrintConv', 'ValueConv', 'Both', 'Raw', 'Bin' or
 'Rational'
 
 The default value type is 'PrintConv' if the PrintConv option is set,
 otherwise the default is 'ValueConv'.  A value type of 'Both' returns both
-ValueConv and PrintConv values as a list.  'Rational' returns the raw
-rational value as a string fraction for rational types, or undef for other
-types.
+ValueConv and PrintConv values as a list.  'Raw' returns the raw decoded tag
+value.  'Bin' returns the original binary data for EXIF tags if the
+L</SaveBin> option was set.  'Rational' returns the raw rational value as a
+string fraction for rational types, or undef for other types.
 
 =item Return Values:
 
@@ -2400,7 +2406,8 @@ Get a list of available API options. (See L</Options> for option details.)
 =item Return Values:
 
 Reference to list of available options.  Each entry in the list is a list
-reference with 3 items: 0=Option name, 1=Default value, 2=Description.
+reference with 4 items: 0=Option name, 1=Default value, 2=Description,
+3=flag set if option is undocumented.
 
     my $opts = Image::ExifTool::<b>AvailableOptions</b>();
     foreach (@$opts) {

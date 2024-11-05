@@ -262,8 +262,6 @@ value.</p>
 
 <tr><td>RAF</td><td>Random access file object for reading from input file</td></tr>
 
-<tr><td>RATIONAL</td><td>Hash of rational values as a string fraction keyed by tag key</td></tr>
-
 <tr><td>Recreated</td><td>Directories recreated when writing (used to prevent recreating
     multiple directories of the same type)</td></tr>
 
@@ -279,7 +277,8 @@ value.</p>
     a call to SaveNewValues()</td></tr>
 
 <tr><td>SaveFormat</td><td>Hash reference to check which TIFF format types were used
-    in the file.  Valid only if the (undocumented) SaveFormat option is used.</td></tr>
+    in the file.  Valid only if the (undocumented) SaveFormat option is used.
+    Used by config_files/tiff_version.config.</td></tr>
     
 <tr><td>SET_GROUP0</td><td>Value to use for family 0 group name when new tags
     are found</td></tr>
@@ -303,6 +302,8 @@ information may include:
     <tr valign='top'><td>NoList</td><td>-</td><td>used internally to store values for List-type tags</td></tr>
     <tr valign='top'><td>NoListDel</td><td>-</td><td>flag used internally to delete value if included in another list</td></tr>
     <tr valign='top'><td>Fixup</td><td>-</td><td>fixup information for maker notes block</td></tr>
+    <tr valign='top'><td>BinVal</td><td>-</td><td>raw binary value of tag if SaveBin option is set</td></tr>
+    <tr valign='top'><td>Rational</td><td>-</td><td>rational tag value as a string fraction</td></tr>
     </table></td></tr>
 
 <tr><td>TAG_INFO</td><td>Hash of tagInfo hash references, keyed by tag key</td></tr>

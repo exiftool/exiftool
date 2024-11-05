@@ -714,7 +714,6 @@ sub RestoreStruct($;$)
     my $fileOrder = $$et{FILE_ORDER};
     my $tagExtra = $$et{TAG_EXTRA};
     foreach $key (keys %{$$et{TAG_INFO}}) {
-        $$tagExtra{$key} or next;
         my $structProps = $$tagExtra{$key}{Struct} or next;
         delete $$tagExtra{$key}{Struct};    # (don't re-use)
         my $tagInfo = $$et{TAG_INFO}{$key}; # tagInfo for flattened tag
@@ -880,7 +879,7 @@ sub RestoreStruct($;$)
             }
             # preserve original flattened tags if requested
             if ($keepFlat) {
-                my $extra = $$tagExtra{$key} or next;
+                my $extra = $$tagExtra{$key};
                 # restore list behaviour of this flattened tag
                 if ($$extra{NoList}) {
                     $$valueHash{$key} = $$extra{NoList};

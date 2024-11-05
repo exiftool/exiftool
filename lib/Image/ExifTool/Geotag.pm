@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.79';
+$VERSION = '1.80';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -562,8 +562,8 @@ DoneFix:    $isDate = 1;
             next;
         } elsif ($format eq 'JSON') {
             # Google Takeout JSON format
-            if (/"(latitudeE7|longitudeE7|latE7|lngE7|timestamp|startTime|point|durationMinutesOffsetFromStartTime)"\s*:\s*"?(.*?)"?,?\s*[\x0d\x0a]/) {
-                if ($1 eq 'timestamp') {
+            if (/"(latitudeE7|longitudeE7|latE7|lngE7|timestamp|startTime|point|durationMinutesOffsetFromStartTime|time)"\s*:\s*"?(.*?)"?,?\s*[\x0d\x0a]/) {
+                if ($1 eq 'timestamp' or $1 eq 'time') {
                     $time = GetTime($2);
                     goto DoneFix if $time and $$fix{lat} and $$fix{lon};
                 } elsif ($1 eq 'startTime') { # (new format)

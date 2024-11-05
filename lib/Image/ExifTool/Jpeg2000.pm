@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.41';
+$VERSION = '1.42';
 
 sub ProcessJpeg2000Box($$$);
 sub ProcessJUMD($$$);
@@ -1338,7 +1338,7 @@ sub ProcessJpeg2000Box($$$)
             if (defined $val) {
                 my $key = $et->FoundTag($tagInfo, $val);
                 # save Rational value
-                $$et{RATIONAL}{$key} = $rational if defined $rational and defined $key;
+                $$et{TAG_EXTRA}{$key}{Rational} = $rational if defined $rational and defined $key;
             }
         } elsif ($outfile) {
             my $boxhdr = pack('N', $boxLen + 8) . $boxID;

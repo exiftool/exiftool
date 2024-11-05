@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.58';
+$VERSION = '1.59';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -1595,9 +1595,13 @@ sub DecryptInit($$$)
             $password = $et->Options('Password');
             return 'Document is password protected (use Password option)' unless defined $password;
             # make sure there is no UTF-8 flag on the password
-            if ($] >= 5.006 and (eval { require Encode; Encode::is_utf8($password) } or $@)) {
+            if ($] >= 5.006 and ($$et{OPTIONS}{EncodeHangs} or
+                eval { require Encode; Encode::is_utf8($password) } or $@))
+            {
+                local $SIG{'__WARN__'} = sub { };
                 # repack by hand if Encode isn't available
-                $password = $@ ? pack('C*',unpack($] < 5.010000 ? 'U0C*' : 'C0C*',$password)) : Encode::encode('utf8',$password);
+                $password = ($$et{OPTIONS}{EncodeHangs} or $@) ? pack('C*', unpack($] < 5.010000 ?
+                            'U0C*' : 'C0C*', $password)) : Encode::encode('utf8', $password);
             }
         } else {
             return 'Incorrect password';

@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::QuickTime;
 
-$VERSION = '1.08';
+$VERSION = '1.09';
 
 sub ProcessGoPro($$$);
 sub ProcessString($$$);
@@ -604,7 +604,7 @@ sub ScaleValues($$)
 sub AddUnits($$$)
 {
     my ($et, $val, $tag) = @_;
-    if ($et and $$et{TAG_EXTRA}{$tag} and $$et{TAG_EXTRA}{$tag}{Units}) {
+    if ($et and $$et{TAG_EXTRA}{$tag}{Units}) {
         my $u = $$et{TAG_EXTRA}{$tag}{Units};
         $u = [ $u ] unless ref $u eq 'ARRAY';
         my @a = split ' ', $val;

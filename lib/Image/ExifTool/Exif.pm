@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.52';
+$VERSION = '4.53';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -5346,10 +5346,7 @@ sub CalcScaleFactor35efl
     # calculate Canon sensor size using a dedicated algorithm
     if ($$et{Make} eq 'Canon') {
         require Image::ExifTool::Canon;
-        my $canonDiag = Image::ExifTool::Canon::CalcSensorDiag(
-            $$et{RATIONAL}{FocalPlaneXResolution},
-            $$et{RATIONAL}{FocalPlaneYResolution},
-        );
+        my $canonDiag = Image::ExifTool::Canon::CalcSensorDiag($et);
         $diag = $canonDiag if $canonDiag;
     }
     unless ($diag and Image::ExifTool::IsFloat($diag)) {
@@ -6171,7 +6168,7 @@ sub ProcessExif($$$)
     my $base = $$dirInfo{Base} || 0;
     my $firstBase = $base;
     my $raf = $$dirInfo{RAF};
-    my ($verbose,$validate,$saveFormat) = @{$$et{OPTIONS}}{qw(Verbose Validate SaveFormat)};
+    my ($verbose,$validate,$saveFormat,$saveBin) = @{$$et{OPTIONS}}{qw(Verbose Validate SaveFormat SaveBin)};
     my $htmlDump = $$et{HTML_DUMP};
     my $success = 1;
     my ($tagKey, $dirSize, $makerAddr, $strEnc, %offsetInfo, $offName, $nextOffName, $doHash);
@@ -6361,7 +6358,7 @@ sub ProcessExif($$$)
         my $valueDataLen = $dataLen;
         my $valuePtr = $entry + 8;      # pointer to value within $$dataPt
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tagID);
-        my ($origFormStr, $bad, $rational, $subOffName);
+        my ($origFormStr, $bad, $rational, $binVal, $subOffName);
         # save the EXIF format codes if requested
         $$et{SaveFormat}{$saveFormat = $formatStr} = 1 if $saveFormat;
         # hack to patch incorrect count in Kodak SubIFD3 tags
@@ -6658,6 +6655,7 @@ sub ProcessExif($$$)
             } else {
                 # convert according to specified format
                 $val = ReadValue($valueDataPt,$valuePtr,$formatStr,$count,$readSize,\$rational);
+                $binVal = substr($$valueDataPt,$valuePtr,$readSize) if $saveBin;
                 # re-code if necessary
                 if (defined $val) {
                     if ($formatStr eq 'utf8') {
@@ -7055,7 +7053,8 @@ sub ProcessExif($$$)
             # set the group 1 name for tags in specified tables
             $et->SetGroup($tagKey, $dirName) if $$tagTablePtr{SET_GROUP1};
             # save original components of rational numbers (used when copying)
-            $$et{RATIONAL}{$tagKey} = $rational if defined $rational;
+            $$et{TAG_EXTRA}{$tagKey}{Rational} = $rational if defined $rational;
+            $$et{TAG_EXTRA}{$tagKey}{BinVal} = $binVal if defined $binVal;
             $$et{TAG_EXTRA}{$tagKey}{G6} = $saveFormat if $saveFormat;
             if ($$et{MAKER_NOTE_FIXUP}) {
                 $$et{TAG_EXTRA}{$tagKey}{Fixup} = $$et{MAKER_NOTE_FIXUP};

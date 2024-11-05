@@ -562,10 +562,16 @@ effect as a value of 0 for options with numerical values.</p>
     The default setting of undef causes date/time values to remain in standard EXIF
     format (similar to a DateFormat of <code>"%Y:%m:%d %H:%M:%S"</code>).</td>
     <td align=center>undef</td></tr>
+<!-- <tr id="Debug"><td>Debug</td><td>Enable debugging messages</td>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr> -->
 <tr id="Duplicates"><td>Duplicates</td><td>Flag to return values from
     tags with duplicate names when extracting information.  Forced to 1
     when copying tags with <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a>.</td>
     <td align=center>0 or 1</td><td align=center>1</td></tr>
+<!-- <tr id="EncodeHangs"><td>EncodeHangs</td><td>Avoid using the Encode module
+    because it hangs.  This was a problem when running in a Windows 10 virtual
+    machine and the current working directory was a long path name.</td>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr> -->
 <tr id="Escape"><td>Escape</td>
     <td>Escape special characters in extracted values for
     HTML or XML.  Also unescapes HTML or XML character entities in input values
@@ -923,6 +929,9 @@ effect as a value of 0 for options with numerical values.</p>
     case as they are added to the list.</td><td>List reference, delimited string of names
     (any delimiter is allowed), or undef to clear the previous RequestTags list.</td>
     <td align=center>undef</td></tr>
+<tr id="SaveBin"><td>SaveBin</td><td>Flag to save binary values of tags, accessible through
+    calls to <a href="#GetValue">GetValue</a> with a value type of "Bin".</td>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="SaveFormat"><td>SaveFormat</td><td>Flag to save EXIF/TIFF format type as the
     family 6 group name when extracting information.  Without this option set, the
     family 6 group names are not generated.  See <a href="#GetGroup">GetGroup</a>
@@ -1149,8 +1158,9 @@ CharsetPhotoshop, CharsetQuickTime, CharsetRIFF, Composite, ExtendedXMP,
 ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase, IgnoreGroups,
 IgnoreMinorErrors, IgnoreTags, Lang, LargeFileSupport, MakerNotes,
 MDItemTags, NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero),
-RequestAll, RequestTags, SaveFormat, SavePath, ScanForXMP, Struct, TextOut,
-Unknown, Verbose, WindowsLongPath, WindowsWideFile, XAttrTags and XMPAutoConv.
+RequestAll, RequestTags, SaveBin, SaveFormat, SavePath, ScanForXMP, Struct,
+TextOut, Unknown, Verbose, WindowsLongPath, WindowsWideFile, XAttrTags and
+XMPAutoConv.
 </blockquote>
 
 <hr><h2><a name="GetInfo">GetInfo</a></h2>
@@ -1368,11 +1378,13 @@ instead.</p>
 <tr><td valign=top><b>Inputs</b></td><td><b>0)</b> ExifTool object reference
     <br><b>1)</b> Tag key, or case-sensitive tag name with optional group prefix(es)
     <br><b>2)</b> [<i>optional</i>] Value type, 'PrintConv', 'ValueConv', 'Both',
-    'Raw' or 'Rational'
-    <br>&nbsp;<br>The default value type is 'PrintConv' if the PrintConv option
-    is set, otherwise the default is 'ValueConv'.  A value type of 'Both'
-    returns both ValueConv and PrintConv values as a list.  'Rational' returns
-    the raw rational value as a string fraction for rational types, or undef for
+    'Raw', 'Bin' or 'Rational'
+    <br>&nbsp;<br>The default value type is 'PrintConv' if the PrintConv option is set,
+    otherwise the default is 'ValueConv'.  A value type of 'Both' returns both
+    ValueConv and PrintConv values as a list.  'Raw' returns the raw decoded tag
+    value.  'Bin' returns the original binary data for EXIF tags if the
+    <a href="#SaveBin">SaveBin</a> option was set.  'Rational' returns the raw
+    rational value as a string fraction for rational types, or undef for
     other types.
 </td></tr>
 <tr><td valign=top><b>Returns</b></td><td>
@@ -2203,7 +2215,7 @@ for option details.)</p>
 <tr><td valign=top><b>Inputs</b></td><td>(none)</td></tr>
 <tr><td valign=top><b>Returns</b></td><td>Reference to list of available options.
 Each entry in the list is a list reference with 3 items: 0=Option name, 1=Default value,
-2=Description</td></tr>
+2=Description, 3=flag set if option is undocumented</td></tr>
 </table></blockquote>
 <p><b>Example:</b></p>
 <blockquote><table class='box'><tr><td><pre>

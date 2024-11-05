@@ -17,7 +17,29 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
-<a name='v13.01'><b>Nov. 1, 2024 - Version 13.01</b></a></span>
+<a name='v13.02'><b>Nov. 5, 2024 - Version 13.02</b></a>
+<ul>
+<li>Enhanced -j -l output to add optional "fmt" and "hex" fields
+<li>Enhanced -geotag option to support Android "Export Timeline data" JSON
+    format
+<li>Changed ProductVersion of Windows launcher to match ExifTool version
+<li>Patched to use empty group name instead of "Copy0" for family 4 group name
+    of missing tag when the -f option is used
+<li>Patched to avoid showing "Unknown" for group of primary tag when -g4 or -G4
+    was used with the -j or -csv option
+<li>Patched to avoid using Encode module in Windows because it can hang if run
+    from a working directory with a long path name
+<li>Patched to use -csv output if -j also used
+<li>Fixed problem setting FileCreateDate on MacOS Sequoia if the date/time
+    contains a time zone
+<li>Fixed problem in -csv output when combined with -g
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#BinVal">BinVal</a> option
+    </ul>
+</ul>
+
+<a name='v13.01'><b>Nov. 1, 2024 - Version 13.01</b></a>
 <ul>
 <li>NOTE: Please test the new API WindowsLongPath option because the idea is to
     enable this by default if everything works out well

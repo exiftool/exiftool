@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.01';
+my $version = '13.02';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -63,6 +63,7 @@ sub AddSetTagsFile($;$);
 sub Warning($$);
 sub DoSetFromFile($$$);
 sub CleanFilename($);
+sub HasWildcards($);
 sub SetWindowTitle($);
 sub ProcessFiles($;$);
 sub ScanDir($$;$);
@@ -856,7 +857,7 @@ for (;;) {
         } else {
             print "Available API Options:\n";
             my $availableOptions = Image::ExifTool::AvailableOptions();
-            printf("  %-17s - %s\n", $$_[0], $$_[2]) foreach @$availableOptions;
+            $$_[3] or printf("  %-17s - %s\n", $$_[0], $$_[2]) foreach @$availableOptions;
             $helped = 1;
         }
         next;
@@ -1039,7 +1040,7 @@ for (;;) {
         }
         $trkfile or Error("Expecting file name for -geotag option\n"), $badCmd=1, next;
         # allow wildcards in filename
-        if (Image::ExifTool::ContainsWildcards($trkfile)) {
+        if (HasWildcards($trkfile)) {
             # CORE::glob() splits on white space, so use File::Glob if possible
             my @trks;
             if ($^O eq 'MSWin32' and eval { require Win32::FindFile }) {
@@ -1425,7 +1426,7 @@ for (;;) {
         push @nextPass, $_;
         next;
     }
-    if ($doGlob and Image::ExifTool::ContainsWildcards($_)) {
+    if ($doGlob and HasWildcards($_)) {
         if ($^O eq 'MSWin32' and eval { require Win32::FindFile }) {
             push @files, FindFileWindows($mt, $_);
         } else {
@@ -1522,6 +1523,7 @@ if (($tagOut or defined $diff) and ($csv or $json or %printFmt or $tabFormat or 
 }
 
 if ($csv and $csv eq 'CSV' and not $isWriting) {
+    undef $json;    # (not compatible)
     if ($textOut) {
         Warn "Sorry, -w may not be combined with -csv\n";
         $rtnVal = 1;
@@ -1802,7 +1804,7 @@ if ($binaryOutput) {
 }
 
 # sort by groups to look nicer depending on options
-if (defined $showGroup and not (@tags and $allGroup) and ($sortOpt or not defined $sortOpt)) {
+if (defined $showGroup and not (@tags and ($allGroup or $csv)) and ($sortOpt or not defined $sortOpt)) {
     $mt->Options(Sort => "Group$showGroup");
 }
 
@@ -1840,7 +1842,7 @@ $altEnc = $mt->Options('Charset');
 undef $altEnc if $altEnc eq 'UTF8';
 
 # set flag to fix description lengths if necessary
-if (not $altEnc and $mt->Options('Lang') ne 'en' and eval { require Encode }) {
+if (not $altEnc and $mt->Options('Lang') ne 'en') {
     # (note that Unicode::GCString is part of the Unicode::LineBreak package)
     $fixLen = eval { require Unicode::GCString } ? 2 : 1;
 }
@@ -2621,7 +2623,13 @@ TAG:    foreach $tag (@foundTags) {
                 # (note that the tag key may look like "TAG #(1)" when the "#" feature is used)
                 next if $noDups and $tag =~ /^(.*?) ?\(/ and defined $$info{$1} and
                         $group eq $et->GetGroup($1, $showGroup);
-                $group = 'Unknown' if not $group and ($xml or $json or $csv);
+                if (not $group and ($xml or $json or $csv)) {
+                    if ($showGroup !~ /\b4\b/) {
+                        $group = 'Unknown';
+                    } elsif ($json and not $allGroup) {
+                        $group = 'Copy0';
+                    }
+                }
                 if ($fp and not ($allGroup or $csv)) {
                     if ($lastGroup ne $group) {
                         if ($html) {
@@ -2843,6 +2851,9 @@ TAG:    foreach $tag (@foundTags) {
                             my $num = $et->GetValue($tag, 'ValueConv');
                             $$val{num} = $num if defined $num and not IsEqual($num, $$val{val});
                         }
+                        my $ex = $$et{TAG_EXTRA}{$tag};
+                        $$val{'hex'} = join ' ', unpack '(H2)*', $$ex{BinVal} if defined $$ex{BinVal};
+                        $$val{'fmt'} = $$ex{G6} if defined $$ex{G6};
                     }
                 }
                 FormatJSON($fp, $val, $ind, $quote);
@@ -3838,17 +3849,23 @@ sub Printable($)
 sub LengthUTF8($)
 {
     my $str = shift;
-    my $len;
-    if (not $fixLen) {
-        $len = length $str;
-    } elsif ($fixLen == 1) {
-        $len = length Encode::decode_utf8($str);
+    return length $str unless $fixLen;
+    local $SIG{'__WARN__'} = sub { };
+    if (not $$mt{OPTIONS}{EncodeHangs} and eval { require Encode }) {
+        $str = Encode::decode_utf8($str);
     } else {
-        my $gcstr = eval { Unicode::GCString->new(Encode::decode_utf8($str)) };
+        $str = pack('U0C*', unpack 'C*', $str);
+    }
+    my $len;
+    if ($fixLen == 1) {
+        $len = length $str;
+    } else {
+        my $gcstr = eval { Unicode::GCString->new($str) };
         if ($gcstr) {
             $len = $gcstr->columns;
         } else {
-            $len = length Encode::decode_utf8($str);
+            $len = length $str;
+            delete $SIG{'__WARN__'};
             Warning($mt, 'Unicode::GCString problem.  Columns may be misaligned');
             $fixLen = 1;
         }
@@ -3949,6 +3966,19 @@ sub DoSetFromFile($$$)
 sub CleanFilename($)
 {
     $_[0] =~ tr/\\/\// if Image::ExifTool::IsPC();
+}
+
+#------------------------------------------------------------------------------
+# Does path name contain wildcards
+# Inputs: 0) path name
+# Returns: true if path contains wildcards
+sub HasWildcards($)
+{
+    my $path = shift;
+
+    # if this is a Windows path with the long path prefix, then wildcards are not supported
+    return 0 if $^O eq 'MSWin32' and $path =~ m{^[\\/]{2}\?[\\/]};
+    return $path =~ /[*?]/;
 }
 
 #------------------------------------------------------------------------------
@@ -4071,7 +4101,7 @@ sub ScanDir($$;$)
     return if $ignore{$dir};
     # use Win32::FindFile on Windows if available
     # (ReadDir will croak if there is a wildcard, so check for this)
-    if ($^O eq 'MSWin32' and not Image::ExifTool::ContainsWildcards($dir)) {
+    if ($^O eq 'MSWin32' and not HasWildcards($dir)) {
         undef $evalWarning;
         local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };;
         if (CheckUTF8($dir, $enc) >= 0) {
@@ -4197,7 +4227,7 @@ sub FindFileWindows($$)
     $wildfile = $et->Decode($wildfile, $enc, undef, 'UTF8') if $enc and $enc ne 'UTF8';
     $wildfile =~ tr/\\/\//; # use forward slashes
     my ($dir, $wildname) = ($wildfile =~ m{(.*[:/])(.*)}) ? ($1, $2) : ('', $wildfile);
-    if (Image::ExifTool::ContainsWildcards($dir)) {
+    if (HasWildcards($dir)) {
         Warn "Wildcards don't work in the directory specification\n";
         return ();
     }
@@ -5682,16 +5712,17 @@ output as simple strings).  The B<-a> option is implied when B<-json> is
 used, but entries with identical JSON names are suppressed in the output. 
 (B<-G4> may be used to ensure that all tags have unique JSON names.)  Adding
 the B<-D> or B<-H> option changes tag values to JSON objects with "val" and
-"id" fields, and adding B<-l> adds a "desc" field, and a "num" field if the
-numerical value is different from the converted "val".  The B<-b> option may
-be added to output binary data, encoded in base64 if necessary (indicated by
-ASCII "base64:" as the first 7 bytes of the value), and B<-t> may be added
-to include tag table information (see B<-t> for details).  The JSON output
-is UTF-8 regardless of any B<-L> or B<-charset> option setting, but the
-UTF-8 validation is disabled if a character set other than UTF-8 is
-specified.  Note that ExifTool quotes JSON values only if they don't look
-like numbers (regardless of the original storage format or the relevant
-metadata specification).
+"id" fields.  Adding B<-l> adds a "desc" field, and a "num" field if the
+numerical value is different from the converted "val", and "fmt" and "hex"
+fields for EXIF metadata if the API SaveFormat and SaveBin options are set
+respectively.  The B<-b> option may be added to output binary data, encoded
+in base64 if necessary (indicated by ASCII "base64:" as the first 7 bytes of
+the value), and B<-t> may be added to include tag table information (see
+B<-t> for details).  The JSON output is UTF-8 regardless of any B<-L> or
+B<-charset> option setting, but the UTF-8 validation is disabled if a
+character set other than UTF-8 is specified.  Note that ExifTool quotes JSON
+values only if they don't look like numbers (regardless of the original
+storage format or the relevant metadata specification).
 
 If I<JSONFILE> is specified, the file is imported and the tag definitions
 from the file are used to set tag values on a per-file basis.  The special
@@ -5845,7 +5876,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 13.01 --
+    -- Generated by ExifTool 13.02 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38

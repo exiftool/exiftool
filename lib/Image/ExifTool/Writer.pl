@@ -1291,68 +1291,29 @@ sub SetNewValuesFromFile($$;@)
         # ! DON'T FORGET!!  Must consider each new   !
         # ! option to decide how it is handled here. !
         # +------------------------------------------+
+        foreach (qw(ByteUnit Charset CharsetEXIF CharsetFileName CharsetID3 CharsetIPTC
+                    CharsetPhotoshop Composite DateFormat Debug EncodeHangs Escape ExtendedXMP
+                    ExtractEmbedded FastScan Filter FixBase Geolocation GeolocAltNames
+                    GeolocFeature GeolocMinPop GeolocMaxDist GlobalTimeShift HexTagIDs
+                    IgnoreGroups IgnoreMinorErrors IgnoreTags ImageHashType Lang
+                    LargeFileSupport ListItem ListSep MDItemTags MissingTagValue NoPDFList
+                    NoWarning Password PrintConv QuickTimeUTC RequestTags SaveFormat SavePath
+                    ScanForXMP StructFormat SystemTags TimeZone Unknown UserParam Validate
+                    WindowsLongPath WindowsWideFile XAttrTags XMPAutoConv))
+        {
+            $srcExifTool->Options($_ => $$options{$_});
+        }
         $srcExifTool->Options(
             Binary          => 1,
-            ByteUnit        => $$options{ByteUnit},
-            Charset         => $$options{Charset},
-            CharsetEXIF     => $$options{CharsetEXIF},
-            CharsetFileName => $$options{CharsetFileName},
-            CharsetID3      => $$options{CharsetID3},
-            CharsetIPTC     => $$options{CharsetIPTC},
-            CharsetPhotoshop=> $$options{CharsetPhotoshop},
-            Composite       => $$options{Composite},
             CoordFormat     => $$options{CoordFormat} || '%d %d %.8f', # copy coordinates at high resolution unless otherwise specified
-            DateFormat      => $$options{DateFormat},
             Duplicates      => 1,
-            Escape          => $$options{Escape},
           # Exclude (set below)
-            ExtendedXMP     => $$options{ExtendedXMP},
-            ExtractEmbedded => $$options{ExtractEmbedded},
-            FastScan        => $$options{FastScan},
-            Filter          => $$options{Filter},
-            FixBase         => $$options{FixBase},
-            Geolocation     => $$options{Geolocation},
-            GeolocAltNames  => $$options{GeolocAltNames},
-            GeolocFeature   => $$options{GeolocFeature},
-            GeolocMinPop    => $$options{GeolocMinPop},
-            GeolocMaxDist   => $$options{GeolocMaxDist},
-            GlobalTimeShift => $$options{GlobalTimeShift},
-            HexTagIDs       => $$options{HexTagIDs},
-            IgnoreGroups    => $$options{IgnoreGroups},
-            IgnoreMinorErrors=>$$options{IgnoreMinorErrors},
-            IgnoreTags      => $$options{IgnoreTags},
-            ImageHashType   => $$options{ImageHashType},
-            Lang            => $$options{Lang},
-            LargeFileSupport=> $$options{LargeFileSupport},
             LimitLongValues => 10000000, # (10 MB)
             List            => 1,
-            ListItem        => $$options{ListItem},
-            ListSep         => $$options{ListSep},
             MakerNotes      => $$options{FastScan} && $$options{FastScan} > 1 ? undef : 1,
-            MDItemTags      => $$options{MDItemTags},
-            MissingTagValue => $$options{MissingTagValue},
-            NoPDFList       => $$options{NoPDFList},
-            NoWarning       => $$options{NoWarning},
-            Password        => $$options{Password},
-            PrintConv       => $$options{PrintConv},
-            QuickTimeUTC    => $$options{QuickTimeUTC},
             RequestAll      => $$options{RequestAll} || 1, # (is this still necessary now that RequestTags are being set?)
-            RequestTags     => $$options{RequestTags},
-            SaveFormat      => $$options{SaveFormat},
-            SavePath        => $$options{SavePath},
-            ScanForXMP      => $$options{ScanForXMP},
             StrictDate      => defined $$options{StrictDate} ? $$options{StrictDate} : 1,
             Struct          => $structOpt,
-            StructFormat    => $$options{StructFormat},
-            SystemTags      => $$options{SystemTags},
-            TimeZone        => $$options{TimeZone},
-            Unknown         => $$options{Unknown},
-            UserParam       => $$options{UserParam},
-            Validate        => $$options{Validate},
-            WindowsLongPath => $$options{WindowsLongPath},
-            WindowsWideFile => $$options{WindowsWideFile},
-            XAttrTags       => $$options{XAttrTags},
-            XMPAutoConv     => $$options{XMPAutoConv},
         );
         # reset Geolocation option if we aren't copying any geolocation tags
         if ($$options{Geolocation} and not grep /\bGeolocation/i, @setTags) {
@@ -2377,9 +2338,13 @@ sub WriteInfo($$;$$)
         } elsif (UNIVERSAL::isa($inRef,'File::RandomAccess')) {
             $inRef->Seek(0);
             $raf = $inRef;
-        } elsif ($] >= 5.006 and (eval { require Encode; Encode::is_utf8($$inRef) } or $@)) {
+        } elsif ($] >= 5.006 and ($$self{OPTIONS}{EncodeHangs} or
+            eval { require Encode; Encode::is_utf8($$inRef) } or $@))
+        {
+            local $SIG{'__WARN__'} = \&SetWarning;
             # convert image data from UTF-8 to character stream if necessary
-            my $buff = $@ ? pack('C*',unpack($] < 5.010000 ? 'U0C*' : 'C0C*',$$inRef)) : Encode::encode('utf8',$$inRef);
+            my $buff = ($$self{OPTIONS}{EncodeHangs} or $@) ? pack('C*', unpack($] < 5.010000 ?
+                       'U0C*' : 'C0C*', $$inRef)) : Encode::encode('utf8', $$inRef);
             if (defined $outfile) {
                 $inRef = \$buff;
             } else {
@@ -2952,10 +2917,15 @@ sub Sanitize($$)
     $$valPt = $$$valPt if ref $$valPt eq 'SCALAR';
     # make sure the Perl UTF-8 flag is OFF for the value if perl 5.6 or greater
     # (otherwise our byte manipulations get corrupted!!)
-    if ($] >= 5.006 and (eval { require Encode; Encode::is_utf8($$valPt) } or $@)) {
+    # NOTE: Don't use Encode on Windows becase "require Encode" on Windows hangs if cwd is a long path name!!
+    if ($] >= 5.006 and ($$self{OPTIONS}{EncodeHangs} or
+        eval { require Encode; Encode::is_utf8($$valPt) } or $@))
+    {
+        # (SIG handling was added in 10.39.  Not sure why, but I've added this to other similar code for 13.02)
         local $SIG{'__WARN__'} = \&SetWarning;
         # repack by hand if Encode isn't available
-        $$valPt = $@ ? pack('C*',unpack($] < 5.010000 ? 'U0C*' : 'C0C*',$$valPt)) : Encode::encode('utf8',$$valPt);
+        $$valPt = ($$self{OPTIONS}{EncodeHangs} or $@) ? pack('C*', unpack($] < 5.010000 ?
+                   'U0C*' : 'C0C*', $$valPt)) : Encode::encode('utf8', $$valPt);
     }
     # un-escape value if necessary
     if ($$self{OPTIONS}{Escape}) {
@@ -3296,7 +3266,7 @@ sub InsertTagValues($$;$$$$)
                     my @matches = grep /^$tag(\s|$)/i, @$foundTags;
                     @matches = $self->GroupMatches($group, \@matches) if defined $group;
                     foreach (@matches) {
-                        my $doc = $$ex{$_} ? $$ex{$_}{G3} || 0 : 0;
+                        my $doc = $$ex{$_}{G3} || 0;
                         if (defined $$cacheTag[$doc]) {
                             next unless $$cacheTag[$doc] =~ / \((\d+)\)$/;
                             my $cur = $1;

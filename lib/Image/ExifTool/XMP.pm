@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.67';
+$VERSION = '3.68';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3626,7 +3626,7 @@ NoLoop:
     # store the value for this tag
     my $key = $et->FoundTag($tagInfo, $val) or return 0;
     # save original components of rational numbers (used when copying)
-    $$et{RATIONAL}{$key} = $rational if defined $rational;
+    $$et{TAG_EXTRA}{$key}{Rational} = $rational if defined $rational;
     # save structure/list information if necessary
     if (@structProps and (@structProps > 1 or defined $structProps[0][1]) and
         not $$et{NO_STRUCT})

@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.68';
+$VERSION = '1.69';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -370,6 +370,10 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
             TagTable => 'Image::ExifTool::XMP::XML',
             IgnoreProp => { meta => 1 }, # ignore 'meta' container
         },
+    },
+    seAl => {
+        Name => 'SEAL',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::SEAL' },
     },
     # mkBF,mkTS,mkBS,mkBT ? - written by Adobe FireWorks
 );
@@ -980,8 +984,15 @@ sub FoundPNG($$$$;$$$$)
                 my $processProc = $$subdir{ProcessProc};
                 # nothing more to do if writing and subdirectory is not writable
                 my $subTable = GetTagTable($$subdir{TagTable});
-                return 1 if $outBuff and not $$subTable{WRITE_PROC};
-                my $dirName = $$subdir{DirName} || $tagName;
+                if ($outBuff and not $$subTable{WRITE_PROC}) {
+                    if ($$et{DEL_GROUP}{$dirName}) {
+                        # non-writable directories may be deleted as a group (eg. SEAL)
+                        $et->VPrint(0, "  Deleting $dirName\n");
+                        $$outBuff = '';
+                        ++$$et{CHANGED};
+                    }
+                    return 1;
+                }
                 my %subdirInfo = (
                     DataPt   => \$val,
                     DirStart => 0,

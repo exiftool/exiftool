@@ -7,6 +7,25 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.00. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Nov. 12, 2024 - Version 13.03
+
+  - Added ability to include or exclude tags from CSV and JSON imports
+    (-csv=CSVFILE and -json=JSONFILE) by adding -TAG or --TAG options
+  - Added read/delete support for SEAL metadata in JPG, TIFF, XMP, PNG, WEBP,
+    HEIC, PPM, MOV and MP4 files, and read support in PDF, MKV and WAV files
+  - Added support for user-defined application extensions in GIF images
+  - Added print conversion for QuickTime VideoFullRangeFlag
+  - Apply API LimitLongValues option to hex field in -j output
+  - Avoid extracting some large AES-encrypted data from PDF files for
+    performance reasons unless the -m option is used (current limits are 100 kB
+    for XMP and 10 kB for everything else)
+  - Fixed WindowsLongPath option to support wide characters (thanks Frank B)
+  - Fixed problem writing ICC_Profile to a GIF image which already had one
+  - Fixed problem writing Apple:FocusDistanceRange
+  - API Changes:
+      - Enchanced GlobalTimeShift option to allow the base tag to be specified,
+        otherwise use the first specified source date/time tag when copying tags
+
 Nov. 5, 2024 - Version 13.02
 
   - Enhanced -j -l output to add optional "fmt" and "hex" fields
@@ -20,11 +39,12 @@ Nov. 5, 2024 - Version 13.02
   - Patched to avoid using Encode module in Windows because it can hang if run
     from a working directory with a long path name
   - Patched to use -csv output if -j also used
-  - Fixed problem setting FileCreateDate on MacOS Sequoia if the date/time
-    contains a time zone
+  - Fixed a few problems with the new WindowsLongPath option
+  - Fixed problem setting FileCreateDate with Xcode 16 command line tools if the
+    date/time contains a time zone
   - Fixed problem in -csv output when combined with -g
   - API Changes:
-      - Added BinVal option
+      - Added SaveBin option
 
 Nov. 1, 2024 - Version 13.01
 

@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.68';
+$VERSION = '3.69';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -203,6 +203,7 @@ my %xmpNS = (
     hdr_metadata => 'http://ns.adobe.com/hdr-metadata/1.0/',
     hdrgm     => 'http://ns.adobe.com/hdr-gain-map/1.0/',
     xmpDSA    => 'http://leica-camera.com/digital-shift-assistant/1.0/',
+    seal      => 'http://ns.seal/2024/1.0/',
     # Note: Google uses a prefix of 'Container', but this conflicts with the
     # Device Container namespace, also by Google.  So call this one GContainer
     GContainer=> 'http://ns.google.com/photos/1.0/container/',
@@ -932,6 +933,10 @@ my %sRangeMask = (
     xmpDSA => {
         Name => 'xmpDSA',
         SubDirectory => { TagTable => 'Image::ExifTool::Panasonic::DSA' },
+    },
+    seal => {
+        Name => 'seal',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::seal' },
     },
     GContainer => {
         Name => 'GContainer',
@@ -4142,7 +4147,7 @@ sub ParseXMPElement($$$;$$$$)
 
 #------------------------------------------------------------------------------
 # Process XMP data
-# Inputs: 0) ExifTool object reference, 1) DirInfo reference, 2) Pointer to tag table
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
 # Notes: The following flavours of XMP files are currently recognized:
 # - standard XMP with xpacket, x:xmpmeta and rdf:RDF elements

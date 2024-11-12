@@ -25,6 +25,7 @@ use strict;
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::XMP;
 
+sub ProcessSEAL($$;$);
 sub Init_crd($);
 
 #------------------------------------------------------------------------------
@@ -2289,6 +2290,65 @@ my %sACDSeeRegionStruct = (
         },
     },
 );
+
+%Image::ExifTool::XMP::seal = (
+    GROUPS => { 0 => 'XMP', 1 => 'XMP-seal', 2 => 'Image' },
+    NAMESPACE => 'seal',
+    WRITABLE => 'string',
+    NOTES => 'SEAL embedded in XMP.',
+    seal => {
+        Name => 'Seal',
+        Binary => 1,
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::SEAL' },
+    },
+);
+
+%Image::ExifTool::XMP::SEAL = (
+    GROUPS => { 0 => 'XML', 1 => 'SEAL', 2 => 'Document' },
+    PROCESS_PROC => \&ProcessSEAL,
+    NOTES => q{
+        These tags are used in SEAL content authentification, which is actually XML
+        format, not XMP.  ExifTool has read/delete support for SEAL information in
+        JPG, TIFF, XMP, PNG, WEBP, HEIC, PPM, MOV and MP4 files, and read-only
+        support in PDF, MKV and WAV.  Use C<-seal:all=> on the command line to
+        delete SEAL information in supported formats.
+    },
+    seal=> 'SEALVersion',
+    kv  => 'KeyVersion',
+    ka  => 'KeyAlgorithm',
+    da  => 'DigestAlgorithm',
+    sf  => 'SignatureFormat',
+    d   => 'Domain',
+    b   => 'ByteRange',
+   's'  => 'Signature',
+    info=> 'SEALComment',
+    copyright => { Name => 'Copyright', Groups => { 2 => 'Author' } },
+);
+
+#------------------------------------------------------------------------------
+# We found a SEAL property name/value
+# Inputs: 0) ExifTool ref, 1) tag table ref, 2) xmp property list ref
+#         3) property value, 4) attribute hash ref
+# Returns: 1 if valid tag was found
+sub FoundSEAL($$$$;$)
+{
+    my ($et, $tagTablePtr, $props, $val, $attrs) = @_;
+    # remove 'seal' container property from name
+    my @sealProps = @$props;
+    shift @sealProps if @sealProps and $sealProps[0] eq 'seal';
+    return FoundXMP($et, $tagTablePtr, \@sealProps, $val, $attrs);
+}
+
+#------------------------------------------------------------------------------
+# Process SEAL XML
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessSEAL($$;$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    $$dirInfo{XMPParseOpts}{FoundProc} = \&FoundSEAL;
+    return ProcessXMP($et, $dirInfo, $tagTablePtr);
+}
 
 #------------------------------------------------------------------------------
 # Generate crd tags

@@ -43,6 +43,7 @@ my %tiffMap = (
     PrintIM      => 'IFD0',
     IPTC         => 'IFD0',
     Photoshop    => 'IFD0',
+    SEAL         => 'IFD0',
     InteropIFD   => 'ExifIFD',
     MakerNotes   => 'ExifIFD',
     CanonVRD     => 'MakerNotes', # (so VRDOffset will get updated)
@@ -74,6 +75,7 @@ my %jpegMap = (
     Meta         => 'APP3',
     MetaIFD      => 'Meta',
     RMETA        => 'APP5',
+    SEAL         => ['APP8','APP9'], # (note: add 'IFD0' if this is a possibility)
     Ducky        => 'APP12',
     Photoshop    => 'APP13',
     Adobe        => 'APP14',
@@ -140,7 +142,7 @@ my @delGroups = qw(
     GlobParamIFD GPS ICC_Profile IFD0 IFD1 Insta360 InteropIFD IPTC ItemList JFIF
     Jpeg2000 JUMBF Keys MakerNotes Meta MetaIFD Microsoft MIE MPF Nextbase NikonApp
     NikonCapture PDF PDF-update PhotoMechanic Photoshop PNG PNG-pHYs PrintIM
-    QuickTime RMETA RSRC SubIFD Trailer UserData XML XML-* XMP XMP-*
+    QuickTime RMETA RSRC SEAL SubIFD Trailer UserData XML XML-* XMP XMP-*
 );
 # family 2 group names that we can delete
 my @delGroup2 = qw(
@@ -152,6 +154,7 @@ my %delMore = (
     QuickTime => [ qw(ItemList UserData Keys) ],
     XMP => [ 'XMP-*' ],
     XML => [ 'XML-*' ],
+    SEAL => [ 'XMP-SEAL' ],
 );
 
 # family 0 groups where directories should never be deleted
@@ -1311,7 +1314,7 @@ sub SetNewValuesFromFile($$;@)
             LimitLongValues => 10000000, # (10 MB)
             List            => 1,
             MakerNotes      => $$options{FastScan} && $$options{FastScan} > 1 ? undef : 1,
-            RequestAll      => $$options{RequestAll} || 1, # (is this still necessary now that RequestTags are being set?)
+            RequestAll      => $$options{RequestAll} || 1, # (must request all because reqTags doesn't cover wildcards)
             StrictDate      => defined $$options{StrictDate} ? $$options{StrictDate} : 1,
             Struct          => $structOpt,
         );
@@ -1324,11 +1327,8 @@ sub SetNewValuesFromFile($$;@)
         $$srcExifTool{ALT_EXIFTOOL} = $$self{ALT_EXIFTOOL};
         foreach $tag (@setTags) {
             next if ref $tag;
-            if ($tag =~ /^-(.*)/) {
-                # avoid extracting tags that are excluded
-                push @exclude, $1;
-                next;
-            }
+            # avoid extracting tags that are excluded
+            $tag =~ /^-(.*)/ and push(@exclude, $1), next;
             # add specified tags to list of requested tags
             $_ = $tag;
             if (/(.+?)\s*(>|<)\s*(.+)/) {
@@ -2983,7 +2983,7 @@ Conv: for (;;) {
                 $err2 = eval $$tagInfo{WriteCheck};
                 $@ and warn($@), $err2 = 'Error evaluating WriteCheck';
             }
-            unless ($err2) {
+            unless (defined $err2) {
                 my $table = $$tagInfo{Table};
                 if ($table and $$table{CHECK_PROC} and not $$tagInfo{RawConvInv}) {
                     my $checkProc = $$table{CHECK_PROC};
@@ -6621,6 +6621,11 @@ sub WriteJPEG($$)
                     $segType = 'Ricoh RMETA';
                     $$delGroup{RMETA} and $del = 1;
                 }
+            } elsif ($marker == 0xe8 or $marker == 0xe9) { # APP8/9 (SEAL)
+                if ($$segDataPt =~ /^SEAL\0/) {
+                    $segType = 'SEAL';
+                    $$delGroup{SEAL} and $del = 1;
+                }
             } elsif ($marker == 0xeb) {         # APP10 (JUMBF)
                 if ($$segDataPt =~ /^JP/) {
                     $segType = 'JUMBF';
@@ -6987,7 +6992,7 @@ sub SetFileTime($$;$$$$)
             # get Win32 handle, needed for SetFileTime
             my $win32Handle = eval { Win32API::File::GetOsFHandle($file) };
             unless ($win32Handle) {
-                $self->Warn('Win32API::File::GetOsFHandle returned invalid handle');
+                $self->Warn('Win32API::File GetOsFHandle returned invalid handle');
                 return 0;
             }
             # convert Unix seconds to FILETIME structs
@@ -7005,13 +7010,13 @@ sub SetFileTime($$;$$$$)
                 return 0 if defined $k32SetFileTime;
                 $k32SetFileTime = Win32::API->new('KERNEL32', 'SetFileTime', 'NPPP', 'I');
                 unless ($k32SetFileTime) {
-                    $self->Warn('Error calling Win32::API::SetFileTime');
+                    $self->Warn('Error loading Win32::API SetFileTime');
                     $k32SetFileTime = 0;
                     return 0;
                 }
             }
             unless ($k32SetFileTime->Call($win32Handle, $ctime, $atime, $mtime)) {
-                $self->Warn('Win32::API::SetFileTime returned ' . Win32::GetLastError());
+                $self->Warn('Win32::API SetFileTime returned ' . Win32::GetLastError());
                 return 0;
             }
             return 1;

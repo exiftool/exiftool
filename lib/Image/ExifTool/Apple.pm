@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::PLIST;
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 sub ConvertPLIST($$);
 
@@ -99,7 +99,7 @@ sub ConvertPLIST($$);
             my @a = split ' ', $val;
             sprintf('%.2f - %.2f m', $a[0] <= $a[1] ? @a : reverse @a);
         },
-        PrintConvInv => '$val =~ s/ - //; $val =~ s/ ?m$//; $val',
+        PrintConvInv => '$val =~ s/ - / /; $val =~ s/ ?m$//; $val',
     },
     # 0x000d - int32s: 0,1,6,20,24,32,40 (SphereHealthAverageCurrent, ref 2)
     # 0x000e - int32s: 0,1,4,12 (Orientation? 0=landscape? 4=portrait? ref 1) (SphereMotionDataStatus, ref 2)

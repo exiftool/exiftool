@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 sub HandleStruct($$;$$$$);
 
@@ -685,6 +685,14 @@ my %uidInfo = (
         Name => 'Projection',
         SubDirectory => { TagTable => 'Image::ExifTool::Matroska::Projection' },
     },
+#
+# other
+#
+    0x5345414c => { # ('SEAL' in hex)
+        Name => 'SEAL',
+        NotEBML => 1,   # don't process SubDirectory as EBML elements
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::SEAL' },
+    },
 );
 
 # Spherical video v2 projection tags (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md)
@@ -1047,7 +1055,7 @@ sub ProcessMKV($$)
             $seekInfoOnly = 1;
         }
         if ($tagInfo) {
-            if ($$tagInfo{SubDirectory}) {
+            if ($$tagInfo{SubDirectory} and not $$tagInfo{NotEBML}) {
                 # stop processing at first cluster unless we are using -v -U or -ee
                 # or there are Tags after this
                 if ($$tagInfo{Name} eq 'Cluster' and $processAll < 2) {

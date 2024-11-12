@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28165 tags, with 17491 unique tag names.
+They contain a total of 28175 tags, with 17499 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -147,8 +147,10 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
                DJI-DBG                          DJI Info
   'APP8'       SPIFF                            JPEG SPIFF
                InfiRayIsothermal                InfiRay Isothermal
+               SEAL                             XMP SEAL
   'APP9'       MediaJukebox                     JPEG MediaJukebox
                InfiRaySensor                    InfiRay Sensor
+               SEAL                             XMP SEAL
   'APP10'      Comment                          no
   'APP11'      JPEG-HDR                         JPEG HDR
                JUMBF                            Jpeg2000
@@ -1053,6 +1055,7 @@ for the official EXIF 2.32 specification.
   0xcd49   JXLDistance               IFD0       float
   0xcd4a   JXLEffort                 IFD0       int32u
   0xcd4b   JXLDecodeSpeed            IFD0       int32u
+  0xcea1   SEAL                      IFD0       XMP SEAL
   0xea1c   Padding                   ExifIFD    undef!
   0xea1d   OffsetSchema              ExifIFD    int32s!
   0xfde8   OwnerName                 ExifIFD    string/
@@ -1427,6 +1430,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   pur                                           XMP pur
   rdf                                           XMP rdf
   sdc                                           Nikon sdc
+  seal                                          XMP seal
   swf                                           XMP swf
   tiff                                          XMP tiff
   x                                             XMP x
@@ -6151,6 +6155,37 @@ These tags belong to the ExifTool XMP-rdf family 1 group.
   Tag Name                                      Writable
   --------                                      --------
   About                                         string!
+
+=head3 XMP seal Tags
+
+SEAL embedded in XMP.
+
+These tags belong to the ExifTool XMP-seal family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  Seal                                          XMP SEAL
+
+=head3 XMP SEAL Tags
+
+These tags are used in SEAL content authentification, which is actually XML
+format, not XMP.  ExifTool has read/delete support for SEAL information in
+JPG, TIFF, XMP, PNG, WEBP, HEIC, PPM, MOV and MP4 files, and read-only
+support in PDF, MKV and WAV.  Use C<-seal:all=> on the command line to
+delete SEAL information in supported formats.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'b'                  ByteRange                no
+  'copyright'          Copyright                no
+  'd'                  Domain                   no
+  'da'                 DigestAlgorithm          no
+  'info'               SEALComment              no
+  'ka'                 KeyAlgorithm             no
+  'kv'                 KeyVersion               no
+  's'                  Signature                no
+  'seal'               SEALVersion              no
+  'sf'                 SignatureFormat          no
 
 =head3 XMP swf Tags
 
@@ -28129,6 +28164,7 @@ check if speed is more of a concern.
   'sPLT'             SuggestedPalette           no
   'sRGB'             SRGBRendering              yes!
   'sTER'             StereoImage                PNG StereoImage
+  'seAl'             SEAL                       XMP SEAL
   'tEXt'             TextualData                PNG TextualData
   'tIME'             ModifyDate                 yes
   'tRNS'             Transparency               no
@@ -29232,7 +29268,7 @@ C2PA JUMBF metadata extracted from "/C2PA_Manifest" file.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
-  '_stream'    _stream                          Photoshop
+  '_stream'    PhotoshopStream                  Photoshop
 
 =head3 PDF Illustrator Tags
 
@@ -29255,7 +29291,7 @@ C2PA JUMBF metadata extracted from "/C2PA_Manifest" file.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
-  '_stream'    _stream                          PostScript
+  '_stream'    AIStream                         PostScript
 
 =head3 PDF Resources Tags
 
@@ -29284,7 +29320,7 @@ C2PA JUMBF metadata extracted from "/C2PA_Manifest" file.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
-  '_stream'    _stream                          ICC_Profile
+  '_stream'    ICC_Profile                      ICC_Profile
 
 =head3 PDF Properties Tags
 
@@ -29852,6 +29888,7 @@ for the official QuickTime specification.
   'GPS '               GPSDataList2?            no
   'IDIT'               DateTimeOriginal         string
   'PICT'               PreviewPICT              no
+  'SEAL'               SEAL                     XMP SEAL
   '_htc'               HTCInfo                  QuickTime HTCInfo
   'ardt'               ARDroneFile              no
   'cust'               CustomInfo               no
@@ -31651,6 +31688,7 @@ metadata to WEBP images, but can't yet write to other RIFF-based formats.
   'LIST_hydt'          PentaxData               Pentax AVI
   'LIST_ncdt'          NikonData                Nikon AVI
   'LIST_pntx'          PentaxData2              Pentax AVI
+  'SEAL'               SEAL                     XMP SEAL
   'SGLT'               BikeBroAccel             QuickTime Stream
   'SLLT'               BikeBroGPS               QuickTime Stream
   'VP8 '               VP8Bitstream             RIFF VP8
@@ -33258,6 +33296,7 @@ Matroska specification.
   0xb538667    SignatureSlot                    Matroska
   0xc53bb6b    Cues                             Matroska
   0xf43b675    Cluster                          Matroska
+  0x5345414c   SEAL                             XMP SEAL
 
 =head3 Matroska Projection Tags
 

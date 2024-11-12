@@ -353,50 +353,54 @@ as extensions from various other sources.  See
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#sdc'>Nikon sdc Tags</a></td></tr>
 <tr>
+<td>seal</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html#seal'>XMP seal Tags</a></td></tr>
+<tr class=b>
 <td>swf</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#swf'>XMP swf Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td><u>tiff</u></td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#tiff'>XMP tiff Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td><u>x</u></td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#x'>XMP x Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td><u>xmp</u></td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#xmp'>XMP xmp Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td><u>xmpBJ</u></td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#xmpBJ'>XMP xmpBJ Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td><u>xmpDM</u></td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#xmpDM'>XMP xmpDM Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>xmpDSA</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Panasonic.html#DSA'>Panasonic DSA Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td><u>xmpMM</u></td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#xmpMM'>XMP xmpMM Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td><u>xmpNote</u></td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#xmpNote'>XMP xmpNote Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>xmpPLUS</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#xmpPLUS'>XMP xmpPLUS Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td><u>xmpRights</u></td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#xmpRights'>XMP xmpRights Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td><u>xmpTPg</u></td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#xmpTPg'>XMP xmpTPg Tags</a></td></tr>
@@ -18759,6 +18763,84 @@ treated specially to allow it to be set to a specific value if required.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='seal'>XMP seal Tags</a></h2>
+<p>SEAL embedded in XMP.</p>
+
+<p>These tags belong to the ExifTool XMP-seal family 1 group.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Seal</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html#SEAL'>XMP SEAL Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SEAL'>XMP SEAL Tags</a></h2>
+<p>These tags are used in SEAL content authentification, which is actually XML
+format, not XMP.  ExifTool has read/delete support for SEAL information in
+JPG, TIFF, XMP, PNG, WEBP, HEIC, PPM, MOV and MP4 files, and read-only
+support in PDF, MKV and WAV.  Use <code>-seal:all=</code> on the command line to
+delete SEAL information in supported formats.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'b'</td>
+<td>ByteRange</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'copyright'</td>
+<td>Copyright</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'d'</td>
+<td>Domain</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'da'</td>
+<td>DigestAlgorithm</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'info'</td>
+<td>SEALComment</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ka'</td>
+<td>KeyAlgorithm</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'kv'</td>
+<td>KeyVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'s'</td>
+<td>Signature</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'seal'</td>
+<td>SEALVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'sf'</td>
+<td>SignatureFormat</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='swf'>XMP swf Tags</a></h2>
 <p>Adobe SWF namespace tags.</p>
 
@@ -21836,7 +21918,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 24, 2024</i>
+<br><i>Last revised Nov 11, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.02';
+$VERSION = '13.03';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -4660,74 +4660,56 @@ sub EncodeFileName($$;$)
 # References:
 # - https://learn.microsoft.com/en-us/dotnet/standard/io/file-path-formats
 # - https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
+# GetFullPathName supported by Windows XP and later. It handles:
+# full path names                EG: c:\foto\sub\abc.jpg
+# relative                       EG: .\abc.jpg,  ..\abc.jpg
+# full UNC paths                 EG: \\server\share\abc.jpg
+# relative UNC paths             EG: .\abc.jpg,  ..\abc.jpg
+# Dos device paths               EG: \\.\c:\fotoabc.jpg
+# relative path on other drives  EG: z:abc.jpg (working dir on z: z:\foto called from c:\foto)
+# Wide chars                     EG: Chars that need UTF8.
+my $k32GetFullPathName;
 sub WindowsLongPath($$)
 {
     my ($self, $path) = @_;
     my $debug = $$self{OPTIONS}{Debug};
     my $out = $$self{OPTIONS}{TextOut};
-    my @fullParts;
-    my $prefixLen = 0;
 
     $debug and print $out "WindowsLongPath input : $path\n";
-    $path =~ tr(/)(\\); # convert slashes to backslashes
-    my @pathParts = split /\\/, $path;
 
-    if ($path =~ /^\\\\\?\\/ or        # already a device path in the format we want
-        $path =~ s/^\\\\\.\\/\\\\?\\/) # convert //./ to //?/
-    {
-        # path is already long-path compatible
-        $prefixLen = 3; # path already contains prefix of 3 parts ('', '' and '?')
-    } elsif ($path =~ /[*?]/) {
-        return $path;   # do nothing because we don't support wildcards
-    } elsif ($path =~ /^\\\\/) {
-        # UNC path starts with two slashes change to "\\?\UNC\"
-        splice @pathParts, 2, 0, '?', 'UNC';
-        $prefixLen = (@pathParts > 6 ? 6 : @pathParts); # ('', '', '?', 'UNC', <server>, <share>)
-    } elsif ($path =~ /^[a-z]:\\/i) {
-        # path is already absolute but we need to add the device path prefix
-        unshift @pathParts, '', '', '?';
-        $prefixLen = 4;
-    } elsif ({ eval { require Cwd } }) {
-        my $drive;
-        $drive = $1 if $pathParts[0] =~ s/^([a-z]:)//;
-        my $cwd = Cwd::getdcwd($drive); # ($drive is undef for current working drive)
-        $debug and print $out "WindowsLongPath getcwd: $cwd\n";
-        @fullParts = split /[\\\/]/, $cwd;
-        # UNC path starts with "\\", so first 2 elements are empty
-        # --> shift and put UNC in first element.
-        if (@fullParts > 1 and $fullParts[0] eq '' and $fullParts[1] eq '') {
-            shift @fullParts;
-            $fullParts[0] = 'UNC';
-            unshift @fullParts, '', '', '?';
-            $prefixLen = (@fullParts > 6 ? 6 : @fullParts);
-        } else {
-            $prefixLen = 1; # drive designator only
+    for (;;) { # (cheap goto)
+        $path =~ tr(/)(\\); # convert slashes to backslashes    
+        last if $path =~ /^\\\\\?\\/;   # already a device path in the format we want
+    
+        unless ($k32GetFullPathName) {  # need to import (once) GetFullPathNameW
+            last if defined $k32GetFullPathName;
+            unless (eval { require Win32::API }) {
+                $self->WarnOnce('Install Win32::API to use WindowsLongPath option');
+                last;
+            }
+            $k32GetFullPathName = Win32::API->new('KERNEL32', 'GetFullPathNameW', 'PNPP', 'I');
+            unless ($k32GetFullPathName) {
+                $k32GetFullPathName = 0;
+                $self->Warn('Error loading Win32::API GetFullPathNameW');
+                last;
+            }
         }
-        # if absolute path on current drive starts with "\"
-        # just keep prefix and drop the rest of the cwd
-        $#fullParts = $prefixLen - 1 if $pathParts[0] eq '';
-    } else {
-        $prefixLen = @pathParts; # (nothing more we can do)
-    }
-    # remove "." and ".." from path (not handled for device paths)
-    my $part;
-    foreach $part (@pathParts) {
-        if ($part eq '.') {
-            next;
-        } elsif ($part eq '') {
-            # only allow double slashes at start of path name (max 2)
-            push @fullParts, $part if not @fullParts or (@fullParts == 1 and $fullParts[0] eq '');
-        } elsif ($part eq '..') {
-            # step up one directory, but not into the prefix
-            pop @fullParts if @fullParts > $prefixLen;
+        my $enc = $$self{OPTIONS}{CharsetFileName};
+        my $encPath = $self->Encode($path, 'UTF16', 'II', $enc);    # need to encode to UTF16
+        my $lenReq = $k32GetFullPathName->Call($encPath,0,0,0) + 1; # first pass gets length required, +1 for safety (null?)
+        my $fullPath = "\0" x $lenReq x 2;                          # create buffer to hold full path
+        $k32GetFullPathName->Call($encPath, $lenReq, $fullPath, 0); # fullPath is UTF16 now
+        $path = $self->Decode($fullPath, 'UTF16', 'II', $enc);
+    
+        last if length($path) <= 247;
+
+        if ($path =~ /^\\\\/) {
+            $path = '\\\\?\\UNC' . substr($path, 1);
         } else {
-            push @fullParts, $part;
+            $path = '\\\\?\\' . $path;
         }
+        last;
     }
-    $path = join '\\', @fullParts;
-    # add device path prefix ("\\?\") if path length near the limit (the most
-    # conservative limit I can find is 247, which is the limit on the directory name)
-    $path = '\\\\?\\' . $path unless $prefixLen > 1 or length($path) <= 247;
     $debug and print $out "WindowsLongPath return: $path\n";
     return $path;
 }
@@ -4861,16 +4843,16 @@ sub CreateDirectory($$)
                 my $d2 = $dir; # (must make a copy in case EncodeFileName recodes it)
                 if ($self->EncodeFileName($d2)) {
                     # handle Windows Unicode directory names
-                    unless (eval { require Win32::API }) {
-                        $err = 'Install Win32::API to create directories with Unicode names';
-                        last;
-                    }
                     unless (defined $k32CreateDir) {
+                        unless (eval { require Win32::API }) {
+                            $err = 'Install Win32::API to create directories with Unicode names';
+                            last;
+                        }
                         $k32CreateDir = Win32::API->new('KERNEL32', 'CreateDirectoryW', 'PP', 'I');
                         unless ($k32CreateDir) {
                             $k32CreateDir = 0;
                             # give this error once, then just "Error creating" for subsequent attempts
-                            return 'Error accessing Win32::API::CreateDirectoryW';
+                            return 'Error loading Win32::API CreateDirectoryW';
                         }
                     }
                     $success = $k32CreateDir->Call($d2, 0) if $k32CreateDir;
@@ -4928,13 +4910,13 @@ sub GetFileTime($$)
                 return () if defined $k32GetFileTime;
                 $k32GetFileTime = Win32::API->new('KERNEL32', 'GetFileTime', 'NPPP', 'I');
                 unless ($k32GetFileTime) {
-                    $self->Warn('Error calling Win32::API::GetFileTime');
+                    $self->Warn('Error loading Win32::API GetFileTime');
                     $k32GetFileTime = 0;
                     return ();
                 }
             }
             unless ($k32GetFileTime->Call($win32Handle, $ctime, $atime, $mtime)) {
-                $self->Warn("Win32::API::GetFileTime returned " . Win32::GetLastError());
+                $self->Warn("Win32::API GetFileTime returned " . Win32::GetLastError());
                 return ();
             }
             # convert FILETIME structs to Unix seconds
@@ -5085,7 +5067,7 @@ sub IsSameID($$)
 
 #------------------------------------------------------------------------------
 # Get list of tags in specified group
-# Inputs: 0) ExifTool ref, 1) group spec, 2) tag key or reference to list of tag keys
+# Inputs: 0) ExifTool ref, 1) group spec (case insensitive), 2) tag key or reference to list of tag keys
 # Returns: list of matching tags in list context, or first match in scalar context
 # Notes: Group spec may contain multiple groups separated by colons, each
 #        possibly with a leading family number
@@ -6450,9 +6432,45 @@ sub ConvertDateTime($$)
     my $fmt = $$self{OPTIONS}{DateFormat};
     my $shift = $$self{OPTIONS}{GlobalTimeShift};
     if ($shift) {
-        my $dir = ($shift =~ s/^([-+])// and $1 eq '-') ? -1 : 1;
         my $offset = $$self{GLOBAL_TIME_OFFSET};
-        $offset or $offset = $$self{GLOBAL_TIME_OFFSET} = { };
+        my ($g, $t, $dir, @matches);
+        if ($shift =~ s/^((\d?[A-Z][-\w]*\w:)*)([A-Z][-\w]*\w)([-+])//i) {
+            ($g, $t, $dir) = ($1, $3, ($4 eq '-' ? -1 : 1));
+        } else {
+            $dir = ($shift =~ s/^([-+])// and $1 eq '-') ? -1 : 1;
+        }
+        unless ($offset) {
+            $offset = $$self{GLOBAL_TIME_OFFSET} = { };
+            # (see forum16692 for a discussion about why this code was added)
+            if ($t) {
+                # determine initial shift from specified tag
+                @matches = sort grep(/^$t( \(|$)/i, keys %{$$self{VALUE}});
+                if ($g and @matches) {
+                    $g =~ s/:$//;
+                    @matches = $self->GroupMatches($g, \@matches);
+                }
+            }
+            if (not @matches and $$self{TAGS_FROM_FILE} and $$self{OPTIONS}{RequestTags}) {
+                # determine initial shift from first requested date/time tag
+                my @reqDate = grep /date/i, @{$$self{OPTIONS}{RequestTags}};
+                while (@reqDate) {
+                    $t = shift @reqDate;
+                    @matches = sort grep(/^$t( \(|$)/i, keys %{$$self{VALUE}});
+                    my $ti = $$self{TAG_INFO};
+                    for (; @matches; shift @matches) {
+                        # select the first tag that calls this routine in its PrintConv
+                        next unless $$ti{$matches[0]}{PrintConv};
+                        next unless $$ti{$matches[0]}{PrintConv} =~ /ConvertDateTime/;
+                        undef @reqDate;
+                        last;
+                    }
+                }
+            }
+            if (@matches) {
+                my $val = $self->GetValue($matches[0], 'ValueConv');
+                ShiftTime($val, $shift, $dir, $offset) if defined $val;
+            }
+        }
         ShiftTime($date, $shift, $dir, $offset);
     }
     # only convert date if a format was specified and the date is recognizable
@@ -7952,6 +7970,10 @@ sub ProcessJPEG($$;$)
                 SetByteOrder('II');
                 my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::Isothermal');
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            } elsif ($$segDataPt =~ /^SEAL\0/) {
+                $dumpType = 'SEAL';
+                DirStart(\%dirInfo, 5);
+                $self->ProcessDirectory(\%dirInfo, GetTagTable("Image::ExifTool::XMP::SEAL"));
             }
         } elsif ($marker == 0xe9) {         # APP9 (InfiRay, Media Jukebox)
             if ($$segDataPt =~ /^Media Jukebox\0/ and $length > 22) {
@@ -7967,6 +7989,10 @@ sub ProcessJPEG($$;$)
                 SetByteOrder('II');
                 my $tagTablePtr = GetTagTable('Image::ExifTool::InfiRay::Sensor');
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            } elsif ($$segDataPt =~ /^SEAL\0/) {
+                $dumpType = 'SEAL';
+                DirStart(\%dirInfo, 5);
+                $self->ProcessDirectory(\%dirInfo, GetTagTable("Image::ExifTool::XMP::SEAL"));
             }
         } elsif ($marker == 0xea) {         # APP10 (PhotoStudio Unicode comments)
             if ($$segDataPt =~ /^UNICODE\0/) {
@@ -9102,6 +9128,7 @@ sub HandleTag($$$$;%)
                 Base     => $parms{Base},
                 Multi    => $$subdir{Multi},
                 TagInfo  => $tagInfo,
+                IgnoreProp => $$subdir{IgnoreProp},
                 RAF      => $parms{RAF},
             );
             my $oldOrder = GetByteOrder();

@@ -20,13 +20,16 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.20';
+$VERSION = '1.21';
 
 # road map of directory locations in GIF images
 my %gifMap = (
     XMP         => 'GIF',
     ICC_Profile => 'GIF',
 );
+
+# application extensions that we can write, and the order they are written
+my @appExtensions = ( 'XMP Data/XMP', 'ICCRGBG1/012' );
 
 %Image::ExifTool::GIF::Main = (
     GROUPS => { 2 => 'Image' },
@@ -61,19 +64,26 @@ my %gifMap = (
 %Image::ExifTool::GIF::Extensions = (
     GROUPS => { 2 => 'Image' },
     NOTES => 'Tags extracted from GIF89a application extensions.',
+    WRITE_PROC => sub { return 1 }, # (dummy proc to facilitate writable directories)
     'NETSCAPE/2.0' => { #3
         Name => 'Animation',
         SubDirectory => { TagTable => 'Image::ExifTool::GIF::Animation' },
     },
     'XMP Data/XMP' => { #2
         Name => 'XMP',
-        IncludeLengthBytes => 1, # length bytes are included in the data
-        Writable => 2,
+        # IncludeLengthBytes indicates the length bytes are part of the data value...
+        #  undef = data may contain nulls and is split into 255-byte blocks
+        #  1 = data may not contain nulls and is not split; NULL padding is added as necessary
+        #  2 = data is not split and may be edited in place; 257-byte landing zone is added
+        #  (Terminator may be specified for a value of 1 above, but must be specified for 2)
+        IncludeLengthBytes => 2,
+        Terminator => q(<\\?xpacket end=['"][wr]['"]\\?>), # (regex to match end of valid data)
+        Writable => 2,  # (writable directory!)
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::Main' },
     },
     'ICCRGBG1/012' => { #4
         Name => 'ICC_Profile',
-        Writable => 2,
+        Writable => 2,  # (writable directory!)
         SubDirectory => { TagTable => 'Image::ExifTool::ICC_Profile::Main' },
     },
     'MIDICTRL/Jon' => { #5
@@ -162,7 +172,7 @@ my %gifMap = (
 );
 
 #------------------------------------------------------------------------------
-# Process meta information in GIF image
+# Read/write meta information in GIF image
 # Inputs: 0) ExifTool object reference, 1) Directory information ref
 # Returns: 1 on success, 0 if this wasn't a valid GIF file, or -1 if
 #          an output file was specified and a write error occurred
@@ -174,7 +184,7 @@ sub ProcessGIF($$)
     my $verbose = $et->Options('Verbose');
     my $out = $et->Options('TextOut');
     my ($a, $s, $ch, $length, $buff);
-    my ($err, $newComment, $setComment, $nvComment);
+    my ($err, $newComment, $setComment, $nvComment, $newExt);
     my ($addDirs, %doneDir);
     my ($frameCount, $delayTime) = (0, 0);
 
@@ -186,9 +196,19 @@ sub ProcessGIF($$)
     my $ver = $1;
     my $rtnVal = 0;
     my $tagTablePtr = GetTagTable('Image::ExifTool::GIF::Main');
+    my $extTable = GetTagTable('Image::ExifTool::GIF::Extensions');
     SetByteOrder('II');
 
     if ($outfile) {
+        # add any user-defined writable app extensions to the list
+        my $ext;
+        foreach $ext (sort keys %$extTable) {
+            next unless ref $$extTable{$ext} eq 'HASH';
+            my $extInfo = $$extTable{$ext};
+            next unless $$extInfo{SubDirectory} and $$extInfo{Writable} and not $gifMap{$$extInfo{Name}};
+            $gifMap{$$extInfo{Name}} = 'GIF';
+            push @appExtensions, $ext;
+        }
         $et->InitWriteDirs(\%gifMap, 'XMP'); # make XMP the preferred group for GIF
         $addDirs = $$et{ADD_DIRS};
         # determine if we are editing the File:Comment tag
@@ -196,8 +216,9 @@ sub ProcessGIF($$)
         $newComment = $et->GetNewValue('Comment', \$nvComment);
         $setComment = 1 if $nvComment or $$delGroup{File};
         # change to GIF 89a if adding comment, XMP or ICC_Profile
-        $buff = 'GIF89a' if $$addDirs{XMP} or $$addDirs{ICC_Profile} or defined $newComment;
+        $buff = 'GIF89a' if %$addDirs or defined $newComment;
         Write($outfile, $buff, $s) or $err = 1;
+        $newExt = $et->GetNewTagInfoHash($extTable);
     } else {
         $et->SetFileType();   # set file type
         $et->HandleTag($tagTablePtr, 'GIFVersion', $ver);
@@ -238,45 +259,50 @@ Block:
                 undef $nvComment;   # delete any other extraneous comments
                 ++$$et{CHANGED};    # increment file changed flag
             }
-            # add application extension containing XMP block if necessary
-            # (this will place XMP before the first non-extension block)
-            if (exists $$addDirs{XMP} and not defined $doneDir{XMP}) {
-                $doneDir{XMP} = 1;
-                # write new XMP data
-                my $xmpTable = GetTagTable('Image::ExifTool::XMP::Main');
-                my %dirInfo = ( Parent => 'GIF' );
-                $verbose and print $out "Creating XMP application extension block:\n";
-                $buff = $et->WriteDirectory(\%dirInfo, $xmpTable);
-                if (defined $buff and length $buff) {
-                    my $lz = pack('C*',1,reverse(0..255),0);
-                    Write($outfile, "\x21\xff\x0bXMP DataXMP", $buff, $lz) or $err = 1;
-                    ++$doneDir{XMP};    # set to 2 to indicate we added XMP
+            # add application extensions if necessary
+            my $ext;
+            my @new = sort keys %$newExt;
+            foreach $ext (@appExtensions, @new) {
+                my $extInfo = $$extTable{$ext};
+                my $name = $$extInfo{Name};
+                if ($$newExt{$ext}) {
+                    delete $$newExt{$ext};
+                    $doneDir{$name} = 1;    # (we wrote this as a block instead)
+                    $buff = $et->GetNewValue($extInfo);
+                    $et->VerboseValue("+ GIF:$name", $buff);
+                } elsif (exists $$addDirs{$name} and not defined $doneDir{$name}) {
+                    $doneDir{$name} = 1;
+                    my $tbl = GetTagTable($$extInfo{SubDirectory}{TagTable});
+                    my %dirInfo = ( Parent => 'GIF' );
+                    $verbose and print $out "Creating $name application extension block:\n";
+                    $buff = $et->WriteDirectory(\%dirInfo, $tbl);
                 } else {
-                    $verbose and print $out "  -> no XMP to add\n";
+                    next;
                 }
-            }
-            # add application extension containing ICC_Profile if necessary
-            if (exists $$addDirs{ICC_Profile} and not defined $doneDir{ICC_Profile}) {
-                $doneDir{ICC_Profile} = 1;
-                # write new ICC_Profile
-                my $iccTable = GetTagTable('Image::ExifTool::ICC_Profile::Main');
-                my %dirInfo = ( Parent => 'GIF' );
-                $verbose and print $out "Creating ICC_Profile application extension block:\n";
-                $buff = $et->WriteDirectory(\%dirInfo, $iccTable);
                 if (defined $buff and length $buff) {
+                    ++$$et{CHANGED};
+                    Write($outfile, "\x21\xff\x0b", substr($ext,0,8), substr($ext,9,3)) or $err = 1;
                     my $pos = 0;
-                    Write($outfile, "\x21\xff\x0bICCRGBG1012") or $err = 1;
-                    my $len = length $buff;
-                    while ($pos < $len) {
-                        my $n = $len - $pos;
-                        $n = 255 if $n > 255;
-                        Write($outfile, chr($n), substr($buff, $pos, $n)) or $err = 1;
-                        $pos += $n;
+                    if (not $$extTable{$ext}{IncludeLengthBytes}) {
+                        my $len = length $buff;
+                        while ($pos < length $buff) {
+                            my $n = length($buff) - $pos;
+                            $n = 255 if $n > 255;
+                            Write($outfile, chr($n), substr($buff, $pos, $n)) or $err = 1;
+                            $pos += $n;
+                        }
+                        Write($outfile, "\0") or $err = 1;  # write null terminator
+                    } elsif ($$extTable{$ext}{IncludeLengthBytes} < 2) {
+                        $pos += ord(substr($buff,$pos,1)) + 1 while $pos < length $buff;
+                        # write data, null padding and terminator
+                        Write($outfile, $buff, "\0" x ($pos - length($buff) + 1)) or $err = 1;
+                    } else {
+                        # write data, landing zone and null terminator
+                        Write($outfile, $buff, pack('C*',1,reverse(0..255),0)) or $err = 1;
                     }
-                    Write($outfile, "\0") or $err = 1;  # write null terminator
-                    ++$doneDir{ICC_Profile};    # set to 2 to indicate we added a new profile
+                    ++$doneDir{$name};  # set to 2 to indicate we added it
                 } else {
-                    $verbose and print $out "  -> no ICC_Profile to add\n";
+                    $verbose and print $out "  -> no $name to add\n";
                 }
             }
         }
@@ -286,7 +312,7 @@ Block:
             # image descriptor
             last unless $raf->Read($buff, 8) == 8 and $raf->Read($ch, 1);
             Write($outfile, $buff, $ch) or $err = 1 if $outfile;
-            if ($verbose) {
+            if ($verbose and not $outfile) {
                 my ($left, $top, $w, $h) = unpack('v*', $buff);
                 print $out "Image: left=$left top=$top width=$w height=$h\n";
             }
@@ -352,9 +378,9 @@ Block:
                 }
                 if ($isOverwriting) {
                     ++$$et{CHANGED};     # increment file changed flag
-                    $et->VerboseValue('- Comment', $comment);
+                    $et->VerboseValue('- GIF:Comment', $comment);
                     $comment = $newComment;
-                    $et->VerboseValue('+ Comment', $comment) if defined $comment;
+                    $et->VerboseValue('+ GIF:Comment', $comment) if defined $comment;
                     undef $nvComment;   # just delete remaining comments
                 } else {
                     undef $setComment;  # leave remaining comments alone
@@ -393,14 +419,19 @@ Block:
             $tag =~ tr/\0-\x1f//d;   # remove nulls and control characters
             $verbose and print $out "Application Extension: $tag\n";
 
-            my $extTable = GetTagTable('Image::ExifTool::GIF::Extensions');
             my $extInfo = $$extTable{$tag};
-            my ($subdir, $inclLen, $justCopy);
+            my ($subdir, $inclLen, $justCopy, $name);
             if ($extInfo) {
-                $subdir = $$extInfo{SubDirectory};
+                if ($outfile and $$newExt{$$extInfo{TagID}}) {
+                    delete $$newExt{$$extInfo{TagID}};  # don't create again
+                    # (write as a block -- don't define $subdir)
+                } else {
+                    $subdir = $$extInfo{SubDirectory};
+                }
                 $inclLen = $$extInfo{IncludeLengthBytes};
-                # rewrite as-is unless this is a writable subdirectory
-                $justCopy = 1 if $outfile and (not $subdir or not $$extInfo{Writable});
+                $name = $$extInfo{Name};
+                # rewrite as-is unless this is a writable
+                $justCopy = 1 if $outfile and not $$extInfo{Writable};
             } else {
                 $justCopy = 1 if $outfile;
             }
@@ -415,62 +446,82 @@ Block:
                 Write($outfile, $ch, $buff) or $err = 1 if $justCopy;
                 $dat .= $inclLen ? $ch . $buff : $buff;
             }
-            Write($outfile, "\0") if $justCopy;
-
-            if ($subdir) {
-                my $dirLen = length $dat;
-                my $name = $$extInfo{Name};
-                if ($name eq 'XMP') {
-                    # get length of XMP without landing zone data
-                    # (note that LZ data may not be exactly the same as what we use)
-                    $dirLen = pos($dat) if $dat =~ /<\?xpacket end=['"][wr]['"]\?>/g;
+            if ($justCopy) {
+                Write($outfile, "\0") or $err = 1;
+                next;
+            } elsif ($inclLen) {
+                # remove landing zone or padding
+                if ($$extInfo{Terminator} and $dat =~ /$$extInfo{Terminator}/g) {
+                    $dat = substr($dat, 0, pos($dat));
+                } elsif ($dat =~ /\0/g) {
+                    $dat = substr($dat, 0, pos($dat) - 1);
                 }
+            }
+            if ($subdir) {
                 my %dirInfo = (
                     DataPt  => \$dat,
                     DataLen => length $dat,
-                    DirLen  => $dirLen,
+                    DirLen  => length $dat,
                     DirName => $name,
                     Parent  => 'GIF',
                 );
                 my $subTable = GetTagTable($$subdir{TagTable});
-                if (not $outfile) {
+                unless ($outfile) {
                     $et->ProcessDirectory(\%dirInfo, $subTable);
-                } elsif ($$extInfo{Writable}) {
-                    if ($doneDir{$name} and $doneDir{$name} > 1) {
-                        $et->Warn("Duplicate $name block created");
-                    }
-                    $buff = $et->WriteDirectory(\%dirInfo, $subTable);
-                    if (defined $buff) {
-                        next unless length $buff;   # delete this extension if length is zero
-                        # check for null just to be safe
-                        $et->Error("$name contained NULL character") if $buff =~ /\0/;
-                        $dat = $buff;
-                        # add landing zone (without terminator, which will be added later)
-                        $dat .= pack('C*',1,reverse(0..255)) if $$extInfo{IncludeLengthBytes};
-                    } # (else rewrite original data)
-
-                    $doneDir{$name} = 1;
-
-                    if ($$extInfo{IncludeLengthBytes}) {
-                        # write data and landing zone
-                        Write($outfile, $hdr, $dat) or $err = 1;
-                    } else {
-                        # write as sub-blocks
-                        Write($outfile, $hdr) or $err = 1;
-                        my $pos = 0;
-                        my $len = length $dat;
-                        while ($pos < $len) {
-                            my $n = $len - $pos;
-                            $n = 255 if $n > 255;
-                            Write($outfile, chr($n), substr($dat, $pos, $n)) or $err = 1;
-                            $pos += $n;
-                        }
-                    }
-                    Write($outfile, "\0") or $err = 1;  # write null terminator
+                    next;
+                }
+                next if $justCopy;
+                if ($doneDir{$name} and $doneDir{$name} > 1) {
+                    $et->Warn("Duplicate $name block created");
+                }
+                $buff = $et->WriteDirectory(\%dirInfo, $subTable);
+                if (defined $buff) {
+                    next unless length $buff;   # delete this extension if length is zero
+                    $dat = $buff;
+                }
+                $doneDir{$name} = 1;
+            } elsif ($outfile and not $justCopy) {
+                my $nvHash = $et->GetNewValueHash($extInfo);
+                if ($nvHash and $et->IsOverwriting($nvHash, $dat)) {
+                    ++$$et{CHANGED};
+                    my $val = $et->GetNewValue($extInfo);
+                    $et->VerboseValue("- GIF:$name", $dat);
+                    next unless defined $val and length $val;
+                    $dat = $val;
+                    $et->VerboseValue("+ GIF:$name", $dat);
+                    $doneDir{$name} = 1;    # (possibly wrote dir as a block)
                 }
             } elsif (not $outfile) {
                 $et->HandleTag($extTable, $tag, $dat);
+                next;
             }
+            Write($outfile, $hdr) or $err = 1;  # write extension header
+            if ($inclLen) {
+                # check for null just to be safe
+                $et->Error("$name contained NULL character") if $inclLen and $dat =~ /\0/;
+                if ($inclLen > 1) {
+                    # add landing zone (without terminator, which will be added later)
+                    $dat .= pack('C*',1,reverse(0..255)) if $inclLen;
+                } else {
+                    # pad with nulls as required
+                    my $pos = 0;
+                    $pos += ord(substr($dat,$pos,1)) + 1 while $pos < length $dat;
+                    $dat .= "\0" x ($pos - length($dat));
+                }
+                # write data and landing zone
+                Write($outfile, $dat) or $err = 1;
+            } else {
+                # write as sub-blocks
+                my $pos = 0;
+                my $len = length $dat;
+                while ($pos < $len) {
+                    my $n = $len - $pos;
+                    $n = 255 if $n > 255;
+                    Write($outfile, chr($n), substr($dat, $pos, $n)) or $err = 1;
+                    $pos += $n;
+                }
+            }
+            Write($outfile, "\0") or $err = 1;  # write null terminator
             next;
 
         } elsif ($a == 0xf9 and $length == 4) {     # graphic control extension
@@ -489,7 +540,7 @@ Block:
 
             last unless $raf->Read($buff, $length) == $length;
             Write($outfile, $ch, $s, $buff) or $err = 1 if $outfile;
-            if ($verbose) {
+            if ($verbose and not $outfile) {
                 my ($left, $top, $w, $h) = unpack('v4', $buff);
                 print $out "Text: left=$left top=$top width=$w height=$h\n";
             }

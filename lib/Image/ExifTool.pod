@@ -809,8 +809,21 @@ Reference units for writing GPSSpeed when geotagging:
 
 Time shift to apply to all extracted date/time PrintConv values.  Does not
 affect ValueConv values.  Value is a date/time shift string (see
-L<Image::ExifTool::Shift(3pm)|Image::ExifTool::Shift.pl>), with a leading
-'-' for negative shifts.  Default is undef.
+L<Image::ExifTool::Shift(3pm)|Image::ExifTool::Shift.pl>) with a leading
+'-' for negative shifts, or a tag name with option group prefix followed
+by '+' or '-' then the shift string.  Default is undef.
+
+Note: When specifying a number of months and/or years to shift, the tag for
+the starting date should be specified so the number of days can be
+determined unambiguously.  For example:
+
+    'createdate-1:0:0 0:0:0' - shift back by the length of the
+                               year before the CreateDate value
+    'xmp:createdate+0:2:0 0' - shift forward by the length of
+                               the 2 months after XMP:CreateDate
+
+If the starting tag is not specified, or the specified tag isn't available,
+then the shift is calculated based on the first shifted tag.
 
 =item Group#
 
@@ -2563,7 +2576,7 @@ Pentax, PhaseOne, PhotoCD, PhotoMechanic, Photoshop, PictureInfo,
 PostScript, PreviewIFD, PrintIM, ProfileIFD, Qualcomm, QuickTime, RAF, RAF2,
 RIFF, RMETA, RSRC, RTF, Radiance, Rawzor, Real, Real-CONT, Real-MDPR,
 Real-PROP, Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx, Red, Ricoh,
-SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado,
+SEAL, SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado,
 Sigma, SigmaRaw, Sony, SonyIDC, Stim, SubIFD, System, Theora, Torrent,
 Track#, UserData, VCalendar, VCard, VNote, Version0, Vorbis, WTV, XML, XMP,
 XMP-DICOM, XMP-Device, XMP-GAudio, XMP-GCamera, XMP-GContainer,

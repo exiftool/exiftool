@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.04';
+$VERSION = '3.05';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -902,6 +902,10 @@ my %userDefined = (
     },
     # '35AX'? - seen "AT" (Yada RoadCam Pro 4K dashcam)
     cust => 'CustomInfo', # 70mai A810
+    SEAL => {
+        Name => 'SEAL',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::SEAL' },
+    },
 );
 
 # stuff seen in 'skip' atom (70mai Pro Plus+ MP4 videos)
@@ -3097,6 +3101,7 @@ my %userDefined = (
     10 => {
         Name => 'VideoFullRangeFlag',
         Mask => 0x80,
+        PrintConv => { 0 => 'Limited', 1 => 'Full' },
     },
 );
 

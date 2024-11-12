@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.36';
+$VERSION = '1.37';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
@@ -228,6 +228,10 @@ sub ProcessJPEG_HDR($$$);
         Name => 'InfiRayIsothermal',
         Condition => '$$self{HasIJPEG}',
         SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::Isothermal' },
+      }, {
+        Name => 'SEAL',
+        Condition => '$$valPt =~ /^SEAL\0/',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::SEAL' },
     }],
     APP9 => [{
         Name => 'MediaJukebox',
@@ -237,6 +241,10 @@ sub ProcessJPEG_HDR($$$);
         Name => 'InfiRaySensor',
         Condition => '$$self{HasIJPEG}',
         SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::Sensor' },
+      }, {
+        Name => 'SEAL',
+        Condition => '$$valPt =~ /^SEAL\0/',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::SEAL' },
     }],
     APP10 => {
         Name => 'Comment',

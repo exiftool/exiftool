@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 #------------------------------------------------------------------------------
 # Read or write information in a PPM/PGM/PBM image
@@ -29,7 +29,7 @@ sub ProcessPPM($$)
     my $outfile = $$dirInfo{OutFile};
     my $verbose = $et->Options('Verbose');
     my $out = $et->Options('TextOut');
-    my ($buff, $num, $type, %info);
+    my ($buff, $num, $type, %info, $seal);
 #
 # read as much of the image as necessary to extract the header and comments
 #
@@ -77,6 +77,7 @@ sub ProcessPPM($$)
     if (defined $info{Comment}) {
         $info{Comment} =~ s/^# ?//mg;   # remove "# " at the start of each line
         $info{Comment} =~ s/[\n\r]+$//; # remove trailing newline
+        $seal = 1 if $info{Comment} =~ /^<seal seal=/;
     }
     $et->SetFileType($type);
     my $len = pos($buff);
@@ -91,6 +92,10 @@ sub ProcessPPM($$)
             ++$$et{CHANGED};
             $et->VerboseValue('- Comment', $oldComment) if defined $oldComment;
             $et->VerboseValue('+ Comment', $newComment) if defined $newComment;
+        } elsif ($seal and $$et{DEL_GROUP}{SEAL}) {
+            # delete SEAL comment
+            $et->VerboseValue('- Comment', $oldComment);
+            ++$$et{CHANGED};            
         } else {
             $newComment = $oldComment;  # use existing comment
         }
@@ -115,6 +120,10 @@ sub ProcessPPM($$)
     if ($verbose > 2) {
         print $out "$type header ($len bytes):\n";
         $et->VerboseDump(\$buff, Len => $len);
+    }
+    if ($seal) {
+        $et->ProcessDirectory({ DataPt => \$info{Comment} }, GetTagTable('Image::ExifTool::XMP::SEAL'));
+        delete $info{Comment};
     }
     my $tag;
     foreach $tag (qw{Comment ImageWidth ImageHeight MaxVal}) {

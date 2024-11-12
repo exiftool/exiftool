@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.59';
+$VERSION = '1.60';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -349,6 +349,7 @@ my %supportedFilter = (
 # tags in PDF ICCBased, Cs1 and CS0 dictionaries
 %Image::ExifTool::PDF::ICCBased = (
     _stream => {
+        Name => 'ICC_Profile',
         SubDirectory => { TagTable => 'Image::ExifTool::ICC_Profile::Main' },
     },
 );
@@ -470,6 +471,7 @@ my %supportedFilter = (
 # tags in PDF AIMetaData dictionary
 %Image::ExifTool::PDF::AIMetaData = (
     _stream => {
+        Name => 'AIStream',
         SubDirectory => { TagTable => 'Image::ExifTool::PostScript::Main' },
     },
 );
@@ -477,6 +479,7 @@ my %supportedFilter = (
 # tags in PDF ImageResources dictionary
 %Image::ExifTool::PDF::ImageResources = (
     _stream => {
+        Name => 'PhotoshopStream',
         SubDirectory => { TagTable => 'Image::ExifTool::Photoshop::Main' },
     },
 );
@@ -2161,6 +2164,20 @@ sub ProcessDict($$$$;$$)
             last;
         }
         # decode stream if necessary
+        if ($cryptInfo and ($$cryptInfo{_aesv2} or $$cryptInfo{_aesv3} and
+            $$dict{Length} and $$dict{Length} > 10000) and not $$dict{_decrypted} and
+            not $$et{PDF_CAPTURE}) # (capturing PDF for writing?)
+        {
+            my $type = $$dict{Type} || '';
+            if ($type ne '/Metadata' or $$dict{Length} > 100000) {
+                if ($$et{OPTIONS}{IgnoreMinorErrors}) {
+                    $et->WarnOnce("Decrypting large $$tagInfo{Name} (will be slow)");
+                } else {
+                    $et->WarnOnce("Skipping large AES-encrypted $$tagInfo{Name}", 2);
+                    last;
+                }
+            }
+        }
         DecodeStream($et, $dict) or last;
         if ($verbose > 2) {
             $et->VPrint(2,"$$et{INDENT}$$et{DIR_NAME} stream data\n");
@@ -2237,7 +2254,17 @@ sub ReadPDF($$)
     $raf->Read($buff, $len) == $len or return -3;
     # find the LAST xref table in the file (may be multiple %%EOF marks,
     # and comments between "startxref" and "%%EOF")
-    $buff =~ /^.*startxref(\s+)(\d+)(\s+)(%[^\x0d\x0a]*\s+)*%%EOF/s or return -4;
+    $buff =~ /^.*startxref(\s+)(\d+)(\s+)((%[^\x0d\x0a]*\s+)*)%%EOF/s or return -4;
+    # parse comments to read SEAL information
+    if ($4) {
+        my @com = split /[\x0d\x0d]+/, $4;
+        foreach (@com) {
+            /^(%+\s*)<seal seal=/ or next;
+            my $dat = substr $_, length($1);
+            my $tbl = GetTagTable('Image::ExifTool::XMP::SEAL');
+            $et->ProcessDirectory({ DataPt => \$dat }, $tbl);
+        }
+    }
     my $ws = $1 . $3;
     my $xr = $2;
     push @xrefOffsets, $xr, 'Main';

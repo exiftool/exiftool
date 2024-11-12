@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.02';
+my $version = '13.03';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -1774,7 +1774,7 @@ if ($isWriting) {
     if (defined $diff) {
         Error "Can't use -diff option when writing tags\n";
         next;
-    } elsif (@tags and not $outOpt) {
+    } elsif (@tags and not $outOpt and not $csv) {
         my ($tg, $s) = @tags > 1 ? ("$tags[0] ...", 's') : ($tags[0], '');
         Warn "Ignored superfluous tag name$s or invalid option$s: -$tg\n";
     }
@@ -2849,8 +2849,16 @@ TAG:    foreach $tag (@foundTags) {
                             $$val{num} = $num if defined $num and not IsEqual($num, $$val{val});
                         }
                         my $ex = $$et{TAG_EXTRA}{$tag};
-                        $$val{'hex'} = join ' ', unpack '(H2)*', $$ex{BinVal} if defined $$ex{BinVal};
                         $$val{'fmt'} = $$ex{G6} if defined $$ex{G6};
+                        if (defined $$ex{BinVal}) {
+                            my $max = ($$et{OPTIONS}{LimitLongValues} - 5) / 3;
+                            if ($max >= 0 and length($$ex{BinVal}) > int($max)) {
+                                $max = int $max;
+                                $$val{'hex'} = join ' ', unpack("(H2)$max", $$ex{BinVal}), '[...]';
+                            } else {
+                                $$val{'hex'} = join ' ', unpack '(H2)*', $$ex{BinVal};
+                            }
+                        }
                     }
                 }
                 FormatJSON($fp, $val, $ind, $quote);
@@ -3145,9 +3153,15 @@ sub SetImageInfo($$$)
                         next unless defined $absPath and $csvInfo = $database{$absPath};
                     }
                     $found = 1;
-                    $verbose and print $vout "Setting new values from $csv database\n";
+                    if ($verbose) {
+                        print $vout "Setting new values from $csv database\n";
+                        print $vout 'Including tags: ',join(' ',@tags),"\n" if @tags;
+                        print $vout 'Excluding tags: ',join(' ',@exclude),"\n" if @exclude;
+                    }
                     foreach $tag (OrderedKeys($csvInfo)) {
                         next if $tag =~ /\b(SourceFile|Directory|FileName)$/i; # don't write these
+                        next if @tags and not grep /^\Q$tag\E$/i, @tags;
+                        next if @exclude and grep /^\Q$tag\E$/i, @exclude;
                         my ($rtn, $wrn) = $et->SetNewValue($tag, $$csvInfo{$tag},
                                           Protected => 1, AddValue => $csvAdd,
                                           ProtectSaved => $csvSaveCount);

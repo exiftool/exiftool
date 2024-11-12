@@ -34,6 +34,11 @@ my %webpMap = (
     MakerNotes   => 'ExifIFD',
 );
 
+my %deletableGroup = (
+    "XMP\0" => 'XMP', # delete incorrectly written "XMP\0" tag with XMP group
+    SEAL => 'SEAL',   # delete SEAL tag with SEAL group
+);
+
 #------------------------------------------------------------------------------
 # Write RIFF file (currently WebP-type only)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref
@@ -46,6 +51,7 @@ sub WriteRIFF($$)
     my $outfile = $$dirInfo{OutFile};
     my $outsize = 0;
     my $raf = $$dirInfo{RAF};
+    my $verbose = $et->Options('Verbose');
     my ($buff, $err, $pass, %has, %dirDat, $imageWidth, $imageHeight);
 
     # do this in 2 passes so we can set the size of the containing RIFF chunk
@@ -65,6 +71,7 @@ sub WriteRIFF($$)
         SetByteOrder('II');
 
         # determine which directories we must write for this file type
+        $et->Options(Verbose => 0) if $pass;    # (avoid duplicate Verbose options here)
         $et->InitWriteDirs(\%webpMap);
         my $addDirs = $$et{ADD_DIRS};
         my $editDirs = $$et{EDIT_DIRS};
@@ -73,6 +80,7 @@ sub WriteRIFF($$)
 
         # write header
         if ($pass) {
+            $et->Options(Verbose => $verbose);
             my $needsVP8X = ($has{ANIM} or $has{'XMP '} or $has{EXIF} or
                              $has{ALPH} or $has{ICCP});
             if ($has{VP8X} and not $needsVP8X and $$et{CHANGED}) {
@@ -146,13 +154,14 @@ sub WriteRIFF($$)
             # RIFF chunks are padded to an even number of bytes
             my $len2 = $len + ($len & 0x01);
             # handle incorrect "XMP\0" chunk ID written by Google software
-            if ($tag eq "XMP\0") {
-                if ($$et{DEL_GROUP}{XMP}) {
-                    # just ignore this chunk if deleting XMP
+            if ($deletableGroup{$tag}) {
+                if ($$et{DEL_GROUP}{$deletableGroup{$tag}}) {
+                    # just ignore this chunk if deleting the associated group
                     $raf->Seek($len2, 1) or $et->Error('Seek error'), last;
+                    $et->VPrint(0, "  Deleting $deletableGroup{$tag}\n") if $pass;
                     ++$$et{CHANGED};
                     next;
-                } else {
+                } elsif ($tag eq "XMP\0") {
                     $et->Warn('Incorrect XMP tag ID',1) if $pass;
                 }
             }

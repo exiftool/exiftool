@@ -748,9 +748,18 @@ effect as a value of 0 for options with numerical values.</p>
     <tr><td valign=top align=right><i>(anything else)</i></td><td>=&nbsp;knots</td></tr>
     </table></td><td align=center>undef</td></tr>
 <tr id="GlobalTimeShift"><td>GlobalTimeShift</td>
-    <td>Time shift to apply to all extracted
-    date/time PrintConv values.  Does not affect ValueConv values.</td>
-    <td align=center>Date/time shift string with leading '-' for negative shifts<br>(see <a href="Shift.html">Image::ExifTool::Shift.pl</a>)</td>
+    <td>Time shift to apply to all extracted date/time PrintConv values.  Does
+    not affect ValueConv values. When specifying a number of months and/or years
+    to shift, the tag for the starting date should be specified so the number of
+    days can be determined unambiguously. If not specified, or the specified tag
+    isn't available, the shift is calculated based on the first shifted tag.</td>
+    <td>Date/time shift string with leading '-' for negative shifts
+    (see <a href="Shift.html">Image::ExifTool::Shift.pl</a>), or tag name
+    with optional group prefix followed by '+' or '-' then shift string.  eg)<br>
+    <code>'createdate-1:0:0&nbsp;0:0:0'</code> - shift back by the length of the year
+    before the CreateDate value<br><code>'xmp:createdate+0:2:0&nbsp;0'</code> -
+    shift forward by the length of the 2 months after XMP:CreateDate
+</td>
     <td align=center>undef</td></tr>
 <tr id="GroupNum"><td>Group#</td><td>Extract tags only for specified groups in family #
     (Group0 assumed if # not given).</td>
@@ -2330,7 +2339,7 @@ Pentax, PhaseOne, PhotoCD, PhotoMechanic, Photoshop, PictureInfo,
 PostScript, PreviewIFD, PrintIM, ProfileIFD, Qualcomm, QuickTime, RAF, RAF2,
 RIFF, RMETA, RSRC, RTF, Radiance, Rawzor, Real, Real-CONT, Real-MDPR,
 Real-PROP, Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx, Red, Ricoh,
-SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado,
+SEAL, SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado,
 Sigma, SigmaRaw, Sony, SonyIDC, Stim, SubIFD, System, Theora, Torrent,
 Track#, UserData, VCalendar, VCard, VNote, Version0, Vorbis, WTV, XML, XMP,
 XMP-DICOM, XMP-Device, XMP-GAudio, XMP-GCamera, XMP-GContainer,

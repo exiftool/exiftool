@@ -30,7 +30,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.68';
+$VERSION = '1.69';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -664,6 +664,10 @@ my %code2charset = (
         SubDirectory => { TagTable => 'Image::ExifTool::RIFF::Acidizer' },
     },
     guan => 'Guano', #forum14831
+    SEAL => {
+        Name => 'SEAL',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::SEAL' },
+    },
 );
 
 # the maker notes used by some digital cameras
@@ -2120,7 +2124,8 @@ sub ProcessRIFF($$)
         my $tagInfo = $$tagTbl{$tag};
         # (in LIST_movi chunk: ##db = uncompressed DIB, ##dc = compressed DIB, ##wb = audio data)
         if ($tagInfo or (($verbose or $unknown) and $tag !~ /^(data|idx1|LIST_movi|RIFF|\d{2}(db|dc|wb))$/)) {
-            $raf->Read($buff, $len2) == $len2 or $err=1, next;
+            $raf->Read($buff, $len2) >= $len or $err=1, next;
+            length($buff) == $len2 or $et->Warn("No padding on odd-sized $tag chunk");
             if ($hash and $isImageData{$tag}) {
                 $hash->add($buff);
                 $et->VPrint(0, "$$et{INDENT}(ImageDataHash: '${tag}' chunk, $len2 bytes)\n");

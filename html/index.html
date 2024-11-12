@@ -98,9 +98,9 @@ the distribution files or access web pages too quickly will be blocked.</i></p>
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.02.tar.gz/download">
-Download        Version 13.02</a> (7.2 MB) -
-<a href="history.html">Nov. 5, 2024</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.03.tar.gz/download">
+Download        Version 13.03</a> (7.2 MB) -
+<a href="history.html">Nov. 12, 2024</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -152,11 +152,11 @@ only, and do not include the HTML documentation or other files of the full
 distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td rowspan=2><b><a name="alone">Windows</a></b></td><td><b>
-32-bit: <a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.02_32.zip/download">
-         exiftool-13.02_32.zip</a> (10.8 MB)</b></td></tr>
+32-bit: <a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.03_32.zip/download">
+         exiftool-13.03_32.zip</a> (10.8 MB)</b></td></tr>
 <tr><td><b>64-bit:
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.02_64.zip/download">
-         exiftool-13.02_64.zip</a> (10.6 MB)</b></td></tr>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.03_64.zip/download">
+         exiftool-13.03_64.zip</a> (10.6 MB)</b></td></tr>
          </table></blockquote>
 
 <p><b>The Windows executable</b> archives include Perl. Just download and un-zip
@@ -174,8 +174,8 @@ if you have any problems/comments with these versions.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
-<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-13.02.pkg/download">
-         ExifTool-13.02.pkg</a> (5.2 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-13.03.pkg/download">
+         ExifTool-13.03.pkg</a> (5.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -581,9 +581,11 @@ of meta information in JPEG images:</p>
 <tr><td>APP7 - <a href="TagNames/InfiRay.html#OpMode">InfiRay OpMode</a></td><td>R</td><td>InfiRay IJPEG Operation Mode</td></tr>
 <tr><td>APP6 - <a href="TagNames/DJI.html#Info">DJI Info</a></td><td>R</td><td>DJI debug information</td></tr>
 <tr><td>APP8 - <a href="TagNames/JPEG.html#SPIFF">SPIFF</a></td><td>R</td><td>Still Picture Interchange File Format</td></tr>
+<tr><td>APP8 - <a href="TagNames/XMP.html#SEAL">SEAL</a></td><td>R</td><td>SEAL content authentification</td></tr>
 <tr><td>APP8 - <a href="TagNames/InfiRay.html#Isothermal">InfiRay Isothermal</a></td><td>R</td><td>InfiRay IJPEG Isothermal</td></tr>
 <tr><td>APP9 - <a href="TagNames/JPEG.html#MediaJukebox">Media Jukebox</a></td><td>R</td><td>Media Jukebox XML information</td></tr>
 <tr><td>APP9 - <a href="TagNames/InfiRay.html#Sensor">InfiRay Sensor</a></td><td>R</td><td>InfiRay IJPEG Sensor Information</td></tr>
+<tr><td>APP9 - <a href="TagNames/XMP.html#SEAL">SEAL</a></td><td>R</td><td>SEAL content authentification</td></tr>
 <tr><td>APP10 - Comment</td><td>R</td><td>PhotoStudio Unicode Comment</td></tr>
 <tr><td>APP11 - <a href="TagNames/JPEG.html#HDR">JPEG-HDR</a></td><td>R</td><td>JPEG-HDR compressed ratio image</td></tr>
 <tr><td>APP11 - <a href="TagNames/Jpeg2000.html">JUMBF (C2PA)</a></td><td>R</td><td>Jpeg Universal Metadata Box Format (multi-segment)</td></tr>
@@ -950,7 +952,7 @@ Pentax, PhaseOne, PhotoCD, PhotoMechanic, Photoshop, PictureInfo,
 PostScript, PreviewIFD, PrintIM, ProfileIFD, Qualcomm, QuickTime, RAF, RAF2,
 RIFF, RMETA, RSRC, RTF, Radiance, Rawzor, Real, Real-CONT, Real-MDPR,
 Real-PROP, Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx, Red, Ricoh,
-SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado,
+SEAL, SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado,
 Sigma, SigmaRaw, Sony, SonyIDC, Stim, SubIFD, System, Theora, Torrent,
 Track#, UserData, VCalendar, VCard, VNote, Version0, Vorbis, WTV, XML, XMP,
 XMP-DICOM, XMP-Device, XMP-GAudio, XMP-GCamera, XMP-GContainer,
@@ -1514,6 +1516,7 @@ three droplets to extract information [exiftool must be installed] (thanks to Ro
 <li><a href="http://ronmevissen.com/FreezeFrame">FreezeFrame</a>: Photo/video library manager (requires Java 8)</li>
 <li><a href="https://github.com/JorgenMygindPilgaard/MemoryMate">MemoryMate</a>: Maintain photo and video metadata for family collections</li>
 <li><a href="https://blog.mapillary.com/update/2023/09/07/Mapillary-Desktop-Uploader-4.0.html">Mapillary Desktop Uploader</a>: Upload street-level imagery to an open platform database</li>
+<li><a href="https:/Digikam.org/">Digikam</a>: Open-source digital photo management</li>
 </ul>
 
 <p><b><a name="related_online">Online</a></b></p>

@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.53';
+$VERSION = '4.54';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -4420,6 +4420,13 @@ my %opcodeInfo = (
         Notes => 'values range from 1=slow to 4=fast',
         Writable => 'int32u',
         WriteGroup => 'IFD0',
+    },
+    0xcea1 => {
+        Name => 'SEAL', # (writable directory!)
+        Writable => 'string',
+        WriteGroup => 'IFD0',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::SEAL' },
+        WriteCheck => 'return "Can only delete"',  # (don't allow writing)
     },
     0xea1c => { #13
         Name => 'Padding',

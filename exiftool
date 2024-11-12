@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.02';
+my $version = '13.03';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -1777,7 +1777,7 @@ if ($isWriting) {
     if (defined $diff) {
         Error "Can't use -diff option when writing tags\n";
         next;
-    } elsif (@tags and not $outOpt) {
+    } elsif (@tags and not $outOpt and not $csv) {
         my ($tg, $s) = @tags > 1 ? ("$tags[0] ...", 's') : ($tags[0], '');
         Warn "Ignored superfluous tag name$s or invalid option$s: -$tg\n";
     }
@@ -2852,8 +2852,16 @@ TAG:    foreach $tag (@foundTags) {
                             $$val{num} = $num if defined $num and not IsEqual($num, $$val{val});
                         }
                         my $ex = $$et{TAG_EXTRA}{$tag};
-                        $$val{'hex'} = join ' ', unpack '(H2)*', $$ex{BinVal} if defined $$ex{BinVal};
                         $$val{'fmt'} = $$ex{G6} if defined $$ex{G6};
+                        if (defined $$ex{BinVal}) {
+                            my $max = ($$et{OPTIONS}{LimitLongValues} - 5) / 3;
+                            if ($max >= 0 and length($$ex{BinVal}) > int($max)) {
+                                $max = int $max;
+                                $$val{'hex'} = join ' ', unpack("(H2)$max", $$ex{BinVal}), '[...]';
+                            } else {
+                                $$val{'hex'} = join ' ', unpack '(H2)*', $$ex{BinVal};
+                            }
+                        }
                     }
                 }
                 FormatJSON($fp, $val, $ind, $quote);
@@ -3148,9 +3156,15 @@ sub SetImageInfo($$$)
                         next unless defined $absPath and $csvInfo = $database{$absPath};
                     }
                     $found = 1;
-                    $verbose and print $vout "Setting new values from $csv database\n";
+                    if ($verbose) {
+                        print $vout "Setting new values from $csv database\n";
+                        print $vout 'Including tags: ',join(' ',@tags),"\n" if @tags;
+                        print $vout 'Excluding tags: ',join(' ',@exclude),"\n" if @exclude;
+                    }
                     foreach $tag (OrderedKeys($csvInfo)) {
                         next if $tag =~ /\b(SourceFile|Directory|FileName)$/i; # don't write these
+                        next if @tags and not grep /^\Q$tag\E$/i, @tags;
+                        next if @exclude and grep /^\Q$tag\E$/i, @exclude;
                         my ($rtn, $wrn) = $et->SetNewValue($tag, $$csvInfo{$tag},
                                           Protected => 1, AddValue => $csvAdd,
                                           ProtectSaved => $csvSaveCount);
@@ -5143,7 +5157,7 @@ information.  Use the B<-s> option to see the tag names instead.
 =item B<-->I<TAG>
 
 Exclude specified tag from extracted information.  Same as the B<-x> option.
-Group names and wildcards are permitted as described above for B<-TAG>. 
+Group names and wildcards are permitted as described above for B<->I<TAG>. 
 Once excluded from the output, a tag may not be re-included by a subsequent
 option.  May also be used following a B<-tagsFromFile> option to exclude
 tags from being copied (when redirecting to another tag, it is the source
@@ -5574,7 +5588,9 @@ deleted).  Also, FileName and Directory columns are ignored if they exist
 all other columns are imported.  To force a tag to be deleted, use the B<-f>
 option and set the value to "-" in the CSV file (or to the MissingTagValue
 if this API option was used).  Multiple databases may be imported in a
-single command.
+single command.  Specific tags may be imported from the database by adding
+B<->I<TAG> options to the command, or excluded with B<-->I<TAG> options.
+If no tags are specified, then all except FileName and Directory are used.
 
 When exporting a CSV file, the B<-g> or B<-G> option adds group names to the
 tag headings.  If the B<-a> option is used to allow duplicate tag names, the
@@ -5710,19 +5726,28 @@ preserved with the B<-struct> option (this also causes all list-type XMP
 tags to be output as JSON arrays, otherwise single-item lists would be
 output as simple strings).  The B<-a> option is implied when B<-json> is
 used, but entries with identical JSON names are suppressed in the output. 
-(B<-G4> may be used to ensure that all tags have unique JSON names.)  Adding
-the B<-D> or B<-H> option changes tag values to JSON objects with "val" and
-"id" fields.  Adding B<-l> adds a "desc" field, and a "num" field if the
-numerical value is different from the converted "val", and "fmt" and "hex"
-fields for EXIF metadata if the API SaveFormat and SaveBin options are set
-respectively.  The B<-b> option may be added to output binary data, encoded
-in base64 if necessary (indicated by ASCII "base64:" as the first 7 bytes of
-the value), and B<-t> may be added to include tag table information (see
-B<-t> for details).  The JSON output is UTF-8 regardless of any B<-L> or
-B<-charset> option setting, but the UTF-8 validation is disabled if a
-character set other than UTF-8 is specified.  Note that ExifTool quotes JSON
-values only if they don't look like numbers (regardless of the original
-storage format or the relevant metadata specification).
+(B<-G4> may be used to ensure that all tags have unique JSON names.)
+
+Adding the B<-D> or B<-H> option changes tag values to JSON objects with
+"val" and "id" fields.  Adding B<-l> adds a "desc" field, and a "num" field
+if the numerical value is different from the converted "val", and "fmt" and
+"hex" fields for EXIF metadata if the API SaveFormat and SaveBin options are
+set respectively, and the length of the "hex" output is limited by the API
+LimitLongValues setting.  The B<-b> option may be added to output binary
+data, encoded in base64 if necessary (indicated by ASCII "base64:" as the
+first 7 bytes of the value), and B<-t> may be added to include tag table
+information (see B<-t> for details).  The JSON output is UTF-8 regardless of
+any B<-L> or B<-charset> option setting, but the UTF-8 validation is
+disabled if a character set other than UTF-8 is specified.
+
+Note that ExifTool quotes JSON values only if they don't look like numbers
+(regardless of the original storage format or the relevant metadata
+specification).  This may be a problem when reading the JSON via a strongly
+typed language.  However, the API StructFormat option may be set to "JSONQ"
+to force quoting of numbers.  As well, the B<-sep> option may be used to
+convert arrays into strings.  For example:
+
+    exiftool -j -api structformat=jsonq -sep ", " ...
 
 If I<JSONFILE> is specified, the file is imported and the tag definitions
 from the file are used to set tag values on a per-file basis.  The special
@@ -5735,7 +5760,9 @@ that options exporting JSON objects instead of simple values are not
 compatible with the import file format (ie. export with B<-D>, B<-H>, B<-l>,
 or B<-T> is not compatible, and use B<-G> instead of B<-g>).  Additionally,
 tag names in the input JSON file may be suffixed with a C<#> to disable
-print conversion.
+print conversion.  Specific tags may be imported from the database by adding
+B<->I<TAG> options to the command, or excluded with B<-->I<TAG> options.
+If no tags are specified, then all except FileName and Directory are used.
 
 Unlike CSV import, empty values are not ignored, and will cause an empty
 value to be written if supported by the specific metadata type.  Tags are
@@ -5876,7 +5903,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 13.02 --
+    -- Generated by ExifTool 13.03 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -6305,7 +6332,8 @@ ExifTool will not scan to the end of a JPEG image to check for an AFCP or
 PreviewImage trailer, or past the first comment in GIF images or the
 audio/video data in WAV/AVI files to search for additional metadata.  These
 speed benefits are small when reading images directly from disk, but can be
-substantial if piping images through a network connection.  For more
+substantial if piping images through a network connection.  Also bypasses
+CRC validation when writing PNG images which can be very slow.  For more
 substantial speed benefits, B<-fast2> also causes exiftool to avoid
 extracting any EXIF MakerNote information, and to stop processing at the
 IDAT chunk of PNG images and the mdat atom of QuickTime-format files (but
@@ -6716,8 +6744,9 @@ names, even if they begin with a dash (C<->).
 Compare metadata in I<FILE> with I<FILE2>.  The I<FILE2> name may include
 filename formatting codes (see the B<-w> option).  All extracted tags from
 the files are compared, but the extracted tags may be controlled by adding
-B<-TAG> or B<--TAG> options.  For example, below is a command to compare all
-the same-named files in two different directories, ignoring the System tags:
+B<->I<TAG> or B<-->I<TAG> options.  For example, below is a command to
+compare all the same-named files in two different directories, ignoring the
+System tags:
 
     exiftool DIR1 -diff DIR2/%f.%e --system:all
 

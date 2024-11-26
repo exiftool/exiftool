@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.54';
+$VERSION = '4.55';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -6697,8 +6697,9 @@ sub ProcessExif($$$)
                           "Format: $fstr\nSize: $size bytes\n";
                 if ($size > 4) {
                     my $offPt = Get32u($dataPt,$entry+8);
-                    # (test this with ../pics/{CanonEOS-1D_XMarkIII.hif,PanasonicDC-G9.rw2})
-                    my $actPt = $valuePtr + $valueDataPos + $base - ($$et{EXIF_POS} || 0) + ($$et{BASE_FUDGE} || 0);
+                    # (test this with ../pics/{CanonEOS-1D_XMarkIII.hif,PanasonicDC-G9.rw2,*.raf})
+                    my $actPt = $valuePtr + $valueDataPos + $base - ($$et{EXIF_POS} || 0) +
+                                ($$et{BASE_FUDGE} || $$et{BASE} || 0);
                     $tip .= sprintf("Value offset: 0x%.4x\n", $offPt);
                     # highlight tag name (red for bad size)
                     my $style = ($bad or not defined $tval) ? 'V' : 'H';
@@ -6729,11 +6730,14 @@ sub ProcessExif($$$)
                     } elsif ($tagInfo and Image::ExifTool::IsInt($tval)) {
                         if ($$tagInfo{IsOffset} or $$tagInfo{SubIFD}) {
                             $tval = sprintf('0x%.4x', $tval);
-                            my $actPt = $val + $base - ($$et{EXIF_POS} || 0) + ($$et{BASE_FUDGE} || 0);
+                            my $actPt = $val + $base - ($$et{EXIF_POS} || 0) + ($$et{BASE_FUDGE} || $$et{BASE} || 0);
                             if ($actPt != $val) {
                                 $tval .= sprintf("\nActual offset: 0x%.4x", $actPt);
                                 my $sign = $actPt < $val ? '-' : '';
                                 $tval .= sprintf("\nOffset base: ${sign}0x%.4x", abs($actPt - $val));
+                            }
+                            if ($$et{EXIF_POS} and not $$et{BASE_FUDGE}) {
+                                $tip .= sprintf("File offset:   0x%.4x\n", $actPt + $$et{EXIF_POS})
                             }
                         } elsif ($$tagInfo{PrintHex}) {
                             $tval = sprintf('0x%x', $tval);

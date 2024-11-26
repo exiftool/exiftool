@@ -172,7 +172,8 @@ Geolocation Bearing             : 296</pre>
 Multiple nearby cities may be returned instead of just the nearest by adding
 <code>num=##</code> to the Geolocation option string, where <code>##</code> is
 the desired number of cities.  The returned cities are ordered from nearest
-to furthest.  For example:
+to furthest, and distinguished by the family 3 group which allows them to
+be output as separate lines with the <code>-p</code> option.  For example:
 
 <pre class=blk>> <span class=code>exiftool -a -p geo.fmt -api geolocation=49.48,6.37,num=4</span>
 7.00 km,286 deg,PPLA3,Mondorf-les-Bains,Luxembourg
@@ -184,6 +185,10 @@ Note that the <code>-a</code> option must be used to allow duplicate tags to be
 returned.  Here is the "geo.fmt" file used in the above command:
 
 <pre>$geolocationdistance,$geolocationbearing deg,$geolocationfeaturecode,$geolocationcity,$geolocationcountry</pre>
+
+Or for a JSON-format output, a command like this may be useful:
+
+<pre class=blk><span class=code>exiftool -j -a -g3 -api geolocation=49.48,6.37,num=4</span></pre>
 </blockquote>
 
 <a name="Reg"></a>
@@ -610,7 +615,7 @@ own <a href="#Alt">alternate database</a>.  Or 2. Create a
 
 <hr>
 <i>Created Mar 12, 2024</i><br>
-<i>Last revised Oct 23, 2024</i>
+<i>Last revised Nov 25, 2024</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

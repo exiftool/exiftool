@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.03';
+$VERSION = '13.04';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2583,7 +2583,7 @@ sub Options($$;@)
                 warn("Can't set $param to undef\n");
             }
         } elsif (lc $param eq 'geodir') {
-            $Image::ExifTool::Geolocation::geoDir = $newVal; # (undocumented)
+            $Image::ExifTool::Geolocation::geoDir = $newVal;
         } else {
             if ($param eq 'Escape') {
                 # set ESCAPE_PROC
@@ -4404,6 +4404,7 @@ sub DoneExtract($)
             local $SIG{'__WARN__'} = \&SetWarning;
             undef $evalWarning;
             $$opts{GeolocMulti} = $$opts{Duplicates};
+            $self->VPrint(0, "Geolocation arguments: '${arg}'\n");
             my ($cities, $dist) = Image::ExifTool::Geolocation::Geolocate($arg, $opts);
             delete $$opts{GeolocMulti};
             if ($cities and (@$cities < 2 or $dist or not $self->Warn('Multiple Geolocation cities are possible',2))) {
@@ -8915,6 +8916,7 @@ sub GetTagInfo($$$;$$$)
     my ($valPt, $format, $count);
 
     my @infoArray = GetTagInfoList($tagTablePtr, $tagID);
+    my $options = $$self{OPTIONS};
     # evaluate condition
     my $tagInfo;
     foreach $tagInfo (@infoArray) {
@@ -8933,9 +8935,9 @@ sub GetTagInfo($$$;$$$)
             }
         }
         # don't return Unknown tags unless that option is set (also see forum13716)
-        if ($$tagInfo{Unknown} and not $$self{OPTIONS}{Unknown} and not
-            ($$self{OPTIONS}{Verbose} or $$self{HTML_DUMP} or
-            ($$self{OPTIONS}{Validate} and not $$tagInfo{AddedUnknown})))
+        if ($$tagInfo{Unknown} and not $$options{Unknown} and not
+            ($$options{Verbose} or $$self{HTML_DUMP} or
+            ($$options{Validate} and not $$tagInfo{AddedUnknown})))
         {
             return undef;
         }
@@ -8943,7 +8945,7 @@ sub GetTagInfo($$$;$$$)
         return $tagInfo;
     }
     # generate information for unknown tags (numerical only) if required
-    if (not $tagInfo and ($$self{OPTIONS}{Unknown} or $$self{OPTIONS}{Verbose}) and
+    if (not $tagInfo and ($$options{Unknown} or $$options{Verbose} or $$self{HTML_DUMP}) and
         $tagID =~ /^\d+$/ and not $$self{NO_UNKNOWN})
     {
         my $printConv;

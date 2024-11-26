@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo %printFlags);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.70';
+$VERSION = '1.71';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -322,7 +322,7 @@ my %unicodeString = (
     0x0432 => { Unknown => 1, Name => 'MeasurementScale' }, #7
     0x0433 => { Unknown => 1, Name => 'TimelineInfo' }, #7
     0x0434 => { Unknown => 1, Name => 'SheetDisclosure' }, #7
-    0x0435 => { Unknown => 1, Name => 'DisplayInfo' }, #7
+    0x0435 => { Unknown => 1, Name => 'ChannelOptions' }, #7/forum16762
     0x0436 => { Unknown => 1, Name => 'OnionSkins' }, #7
     0x0438 => { Unknown => 1, Name => 'CountInfo' }, #7
     0x043a => { Unknown => 1, Name => 'PrintInfo2' }, #7

@@ -2307,19 +2307,23 @@ my %sACDSeeRegionStruct = (
     GROUPS => { 0 => 'XML', 1 => 'SEAL', 2 => 'Document' },
     PROCESS_PROC => \&ProcessSEAL,
     NOTES => q{
-        These tags are used in SEAL content authentification, which is actually XML
-        format, not XMP.  ExifTool has read/delete support for SEAL information in
-        JPG, TIFF, XMP, PNG, WEBP, HEIC, PPM, MOV and MP4 files, and read-only
-        support in PDF, MKV and WAV.  Use C<-seal:all=> on the command line to
-        delete SEAL information in supported formats.
+        These tags are used in SEAL (Secure Evidence Attribution Label) content
+        authentification, which is actually XML format, not XMP.  ExifTool has
+        read/delete support for SEAL information in JPG, TIFF, XMP, PNG, WEBP, HEIC,
+        PPM, MOV and MP4 files, and read-only support in PDF, MKV and WAV.  Use
+        C<-seal:all=> on the command line to delete SEAL information in supported
+        formats.  See L<https://github.com/hackerfactor/SEAL> for the specification.
     },
     seal=> 'SEALVersion',
-    kv  => 'KeyVersion',
     ka  => 'KeyAlgorithm',
+    kv  => 'KeyVersion',
     da  => 'DigestAlgorithm',
-    sf  => 'SignatureFormat',
-    d   => 'Domain',
     b   => 'ByteRange',
+    d   => 'Domain',
+    uid => 'UniqueIdentifier',
+    id  => 'Identifier',
+    sf  => 'SignatureFormat',
+    sl  => 'SignatureLength',
    's'  => 'Signature',
     info=> 'SEALComment',
     copyright => { Name => 'Copyright', Groups => { 2 => 'Author' } },

@@ -18779,11 +18779,12 @@ treated specially to allow it to be set to a specific value if required.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='SEAL'>XMP SEAL Tags</a></h2>
-<p>These tags are used in SEAL content authentification, which is actually XML
-format, not XMP.  ExifTool has read/delete support for SEAL information in
-JPG, TIFF, XMP, PNG, WEBP, HEIC, PPM, MOV and MP4 files, and read-only
-support in PDF, MKV and WAV.  Use <code>-seal:all=</code> on the command line to
-delete SEAL information in supported formats.</p>
+<p>These tags are used in SEAL (Secure Evidence Attribution Label) content
+authentification, which is actually XML format, not XMP.  ExifTool has
+read/delete support for SEAL information in JPG, TIFF, XMP, PNG, WEBP, HEIC,
+PPM, MOV and MP4 files, and read-only support in PDF, MKV and WAV.  Use
+<code>-seal:all=</code> on the command line to delete SEAL information in supported
+formats.  See <a href="https://github.com/hackerfactor/SEAL">https://github.com/hackerfactor/SEAL</a> for the specification.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -18810,33 +18811,48 @@ delete SEAL information in supported formats.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'id'</td>
+<td>Identifier</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'info'</td>
 <td>SEALComment</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'ka'</td>
 <td>KeyAlgorithm</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'kv'</td>
 <td>KeyVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'s'</td>
 <td>Signature</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'seal'</td>
 <td>SEALVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'sf'</td>
 <td>SignatureFormat</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'sl'</td>
+<td>SignatureLength</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'uid'</td>
+<td>UniqueIdentifier</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -21918,7 +21934,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 11, 2024</i>
+<br><i>Last revised Nov 25, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

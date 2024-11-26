@@ -17,6 +17,24 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.04'><b>Nov. 26, 2024 - Version 13.04</b></a>
+<ul>
+<li>Added the ability to write GPSDOP and GPSMeasureMode from the -geotag option
+    if hdop or pdop information exists in the input track file
+<li>Added a few new Canon RFLensTypes (thanks Norbert Wasser)
+<li>Decode timed GPS from GoPro Hero 13 videos
+<li>Improved writing of GPSDestLatitudeRef and GPSDestLongitudeRef tags to allow
+    signed numbers to be written in the same way as GPSLatitudeRef and
+    GPSLongitudeRef
+<li>Warn if using an Image::ExifTool library that doesn't match the application
+    version
+<li>Renamed an Unknown Photoshop tag
+<li>Convert GoPro GPSSpeed and GPSSpeed3D from m/s to km/h
+<li>Patched to tolerate XML header in DOCX xml files
+<li>Fixed -htmldump output to show the same names for unknown EXIF tags as with
+    the -u option
+</ul>
+
 <a name='v13.03'><b>Nov. 12, 2024 - Version 13.03</b></a>
 <ul>
 <li>Added ability to include or exclude tags from CSV and JSON imports

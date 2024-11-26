@@ -14,7 +14,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 use Image::ExifTool::ZIP;
 
-$VERSION = '1.08';
+$VERSION = '1.09';
 
 # test for recognized OOXML document extensions
 my %isOOXML = (
@@ -360,12 +360,12 @@ sub ProcessDOCX($$)
         }
         # process XML files (docProps/app.xml, docProps/core.xml, docProps/custom.xml)
         my %dirInfo = (
-            DataPt => \$buff,
-            DirLen => length $buff,
-            DataLen => length $buff,
-            XMPParseOpts => {
-                FoundProc => \&FoundTag,
-            },
+            DataPt   => \$buff,
+            DirLen   => length $buff,
+            # (skip over XML header if it exists)
+            DirStart => ($buff =~ /<\?xml\s+.*?\?>/g ? pos($buff) : 0),
+            DataLen  => length $buff,
+            XMPParseOpts => { FoundProc => \&FoundTag },
         );
         $et->ProcessDirectory(\%dirInfo, $tagTablePtr);
         undef $buff;    # (free memory now)

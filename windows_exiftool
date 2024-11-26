@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.03';
+my $version = '13.04';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -608,6 +608,10 @@ if (not $preserveTime and $^O eq 'MSWin32') {
 # add user-defined command-line arguments
 if (@Image::ExifTool::UserDefined::Arguments) {
     unshift @ARGV, @Image::ExifTool::UserDefined::Arguments;
+}
+
+if ($version ne $Image::ExifTool::VERSION) {
+    Warn "Application version $version does not match Image::ExifTool library version $Image::ExifTool::VERSION\n";
 }
 
 # parse command-line options in 2 passes...

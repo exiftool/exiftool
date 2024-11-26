@@ -12,12 +12,40 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.56';
+$VERSION = '1.57';
 
 my %coordConv = (
     ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val)',
     ValueConvInv => 'Image::ExifTool::GPS::ToDMS($self, $val)',
     PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1)',
+);
+
+my %printConvLatRef = (
+    # extract N/S if written from Composite:GPSLatitude
+    # (also allow writing from a signed number)
+    OTHER => sub {
+        my ($val, $inv) = @_;
+        return undef unless $inv;
+        return uc $2 if $val =~ /(^|[^A-Z])([NS])(orth|outh)?\b/i;
+        return $1 eq '-' ? 'S' : 'N' if $val =~ /([-+]?)\d+/;
+        return undef;
+    },
+    N => 'North',
+    S => 'South',
+);
+
+my %printConvLonRef = (
+    # extract E/W if written from Composite:GPSLongitude
+    # (also allow writing from a signed number)
+    OTHER => sub {
+        my ($val, $inv) = @_;
+        return undef unless $inv;
+        return uc $2 if $val =~ /(^|[^A-Z])([EW])(ast|est)?\b/i;
+        return $1 eq '-' ? 'W' : 'E' if $val =~ /([-+]?)\d+/;
+        return undef;
+    },
+    E => 'East',
+    W => 'West',
 );
 
 %Image::ExifTool::GPS::Main = (
@@ -43,19 +71,7 @@ my %coordConv = (
             latitudes or negative for south, or a string containing N, North, S or South
         },
         Count => 2,
-        PrintConv => {
-            # extract N/S if written from Composite:GPSLatitude
-            # (also allow writing from a signed number)
-            OTHER => sub {
-                my ($val, $inv) = @_;
-                return undef unless $inv;
-                return uc $2 if $val =~ /(^|[^A-Z])([NS])(orth|outh)?\b/i;
-                return $1 eq '-' ? 'S' : 'N' if $val =~ /([-+]?)\d+/;
-                return undef;
-            },
-            N => 'North',
-            S => 'South',
-        },
+        PrintConv => \%printConvLatRef,
     },
     0x0002 => {
         Name => 'GPSLatitude',
@@ -72,19 +88,7 @@ my %coordConv = (
             ExifTool will also accept a number when writing this tag, positive for east
             longitudes or negative for west, or a string containing E, East, W or West
         },
-        PrintConv => {
-            # extract E/W if written from Composite:GPSLongitude
-            # (also allow writing from a signed number)
-            OTHER => sub {
-                my ($val, $inv) = @_;
-                return undef unless $inv;
-                return uc $2 if $val =~ /(^|[^A-Z])([EW])(ast|est)?\b/i;
-                return $1 eq '-' ? 'W' : 'E' if $val =~ /([-+]?)\d+/;
-                return undef;
-            },
-            E => 'East',
-            W => 'West',
-        },
+        PrintConv => \%printConvLonRef,
     },
     0x0004 => {
         Name => 'GPSLongitude',
@@ -238,7 +242,7 @@ my %coordConv = (
         Writable => 'string',
         Notes => 'tags 0x0013-0x001a used for subject location according to MWG 2.0',
         Count => 2,
-        PrintConv => { N => 'North', S => 'South' },
+        PrintConv => \%printConvLatRef,
     },
     0x0014 => {
         Name => 'GPSDestLatitude',
@@ -251,7 +255,7 @@ my %coordConv = (
         Name => 'GPSDestLongitudeRef',
         Writable => 'string',
         Count => 2,
-        PrintConv => { E => 'East', W => 'West' },
+        PrintConv => \%printConvLonRef,
     },
     0x0016 => {
         Name => 'GPSDestLongitude',

@@ -7,6 +7,23 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.00. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Nov. 26, 2024 - Version 13.04
+
+  - Added the ability to write GPSDOP and GPSMeasureMode from the -geotag option
+    if hdop or pdop information exists in the input track file
+  - Added a few new Canon RFLensTypes (thanks Norbert Wasser)
+  - Decode timed GPS from GoPro Hero 13 videos
+  - Improved writing of GPSDestLatitudeRef and GPSDestLongitudeRef tags to allow
+    signed numbers to be written in the same way as GPSLatitudeRef and
+    GPSLongitudeRef
+  - Warn if using an Image::ExifTool library that doesn't match the application
+    version
+  - Renamed an Unknown Photoshop tag
+  - Convert GoPro GPSSpeed and GPSSpeed3D from m/s to km/h
+  - Patched to tolerate XML header in DOCX xml files
+  - Fixed -htmldump output to show the same names for unknown EXIF tags as with
+    the -u option
+
 Nov. 12, 2024 - Version 13.03
 
   - Added ability to include or exclude tags from CSV and JSON imports

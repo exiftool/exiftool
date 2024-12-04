@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::QuickTime;
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 sub ProcessGoPro($$$);
 sub ProcessString($$$);
@@ -423,7 +423,7 @@ my %addUnits = (
         },
     },
   # VLTA (GPMF) - seen: 78 ('N') (fmt B -- wrong format?)
-  # VFPS (GPMF) - seen: '24000 1001' (fmt L)
+    VFPS => { Name => 'VideoFrameRate', PrintConv => '$val=~s( )(/);$val' }, #PH (GPMF, fmt L)
     VFRH => { #PH (Karma)
         Name => 'VisualFlightRulesHUD',
         BinaryData => 1,
@@ -431,7 +431,7 @@ my %addUnits = (
         # TYPE=ffffsS
     },
   # VLTE (GPMF) - seen: 'Y','N' (fmt c)
-  # VRES (GPMF) - seen: '3840 3660' (fmt L)
+    VRES => { Name => 'VideoFrameSize', PrintConv => '$val=~s/ /x/;$val' }, #PH (GPMF, fmt L)
     WBAL => 'ColorTemperatures', #PH (gpmd)
     WRGB => { #PH (gpmd)
         Name => 'WhiteBalanceRGB',

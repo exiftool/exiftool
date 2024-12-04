@@ -7,6 +7,17 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.00. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Dec. 4, 2024 - Version 13.05
+
+  - Added a new SonyModelID
+  - Added support for XMP HDRGainMap and apdi namespaces
+  - Decode DJI timed djmd and dbgi protobuf-format metadata
+  - Decode APP10 AROT HDRGainCurve and APP2 URN UniformResourceName
+  - Decode a couple of new GoPro tags
+  - API Changes:
+      - Changed default  WindowsLongPath option to 1 (please report if this
+        causes any problems)
+
 Nov. 26, 2024 - Version 13.04
 
   - Added the ability to write GPSDOP and GPSMeasureMode from the -geotag option
@@ -21,6 +32,8 @@ Nov. 26, 2024 - Version 13.04
   - Renamed an Unknown Photoshop tag
   - Convert GoPro GPSSpeed and GPSSpeed3D from m/s to km/h
   - Patched to tolerate XML header in DOCX xml files
+  - Fixed incorrect file offsets for tags in some embedded files of -htmldump
+    output
   - Fixed -htmldump output to show the same names for unknown EXIF tags as with
     the -u option
 

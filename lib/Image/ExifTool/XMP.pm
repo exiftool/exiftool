@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.69';
+$VERSION = '3.70';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -207,6 +207,8 @@ my %xmpNS = (
     # Note: Google uses a prefix of 'Container', but this conflicts with the
     # Device Container namespace, also by Google.  So call this one GContainer
     GContainer=> 'http://ns.google.com/photos/1.0/container/',
+    HDRGainMap=> 'http://ns.apple.com/HDRGainMap/1.0/',
+    apdi      => 'http://ns.apple.com/pixeldatainfo/1.0/',
 );
 
 # build reverse namespace lookup
@@ -933,6 +935,14 @@ my %sRangeMask = (
     xmpDSA => {
         Name => 'xmpDSA',
         SubDirectory => { TagTable => 'Image::ExifTool::Panasonic::DSA' },
+    },
+    HDRGainMap => {
+        Name => 'HDRGainMap',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::HDRGainMap' },
+    },
+    apdi => {
+        Name => 'apdi',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::apdi' },
     },
     seal => {
         Name => 'seal',

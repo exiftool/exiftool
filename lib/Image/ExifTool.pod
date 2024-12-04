@@ -1197,14 +1197,15 @@ on tag values and JPEG segment data respectively.
 =item WindowsLongPath
 
 Support long path names in Windows.  Enabling this option automatically
-enables the WindowsWideFile feature.
+enables the WindowsWideFile feature.  Default is 1.
 
 =item WindowsWideFile
 
 Force the use of wide-character Windows I/O functions.  This may be
 necessary when files are on a network drive and the current directory name
-contains Unicode characters. By default, the wide-character functions are
-used only if the specified file path contains Unicode characters.
+contains Unicode characters.  Without this option the wide-character
+functions are used only if the specified file path contains Unicode
+characters.
 
 =item WriteMode
 
@@ -2545,9 +2546,9 @@ GoPro, H264, HTML, ICC_Profile, ID3, IPTC, ISO, ITC, JFIF, JPEG, JSON,
 JUMBF, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MISB, MNG, MOI, MPC,
 MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg, OpenEXR, Opus, PDF, PICT,
 PLIST, PNG, PSP, Palm, PanasonicRaw, Parrot, PhotoCD, PhotoMechanic,
-Photoshop, PostScript, PrintIM, QuickTime, RAF, RIFF, RSRC, RTF, Radiance,
-Rawzor, Real, Red, SVG, SigmaRaw, Sony, Stim, Theora, Torrent, Trailer,
-VCard, Vorbis, WTV, XML, XMP, ZIP
+Photoshop, PostScript, PrintIM, Protobuf, QuickTime, RAF, RIFF, RSRC, RTF,
+Radiance, Rawzor, Real, Red, SVG, SigmaRaw, Sony, Stim, Theora, Torrent,
+Trailer, VCard, Vorbis, WTV, XML, XMP, ZIP
 
 =item Family 1 (Specific Location):
 

@@ -148,7 +148,11 @@ value.</p>
 
 <tr><td>LIST_TAGS</td><td>Hash of tag keys by tagInfo reference for active list-type
     tags.  This hash is cleared at the start of processing for each directory.
-    Not used during when writing.</td></tr>
+    Not used when writing.</td></tr>
+
+<tr><td>LONG_PATH_IN</td><td>Cached input to the WindowsLongPath function</td></tr>
+
+<tr><td>LONG_PATH_OUT</td><td>Cached return value from the WindowsLongPath function</td></tr>
 
 <tr><td>LOW_PRIORITY_DIR</td><td>Lookup based on directory name for directories where
     undefined Priority tags get set to Priority 0 (eg. PreviewIFD in all images,

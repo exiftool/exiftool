@@ -109,7 +109,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 82 different formats of timed GPS metadata from video files.
+        currently reads 84 different formats of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
@@ -339,10 +339,16 @@ my %insvLimit = (
         Groups => { 2 => 'Preview' },
         RawConv => '$self->ValidateImage(\$val,$tag)',
     },
-    # djmd - DJI AC003 Osmo Action 4 cam 
-    #TODO djmd => { SubDirectory => { TagTable => 'Image::ExifTool::DJI::djmd', ByteOrder => 'Little-Endian' } },
-    # (also DJI_20240615181302_0006_D.LRF)
-    # dbgi - DJI AC003 Osmo Action 4 cam -- lots more unknown stuff
+    djmd => { # (DJI AC003 Osmo Action 4 cam)
+        Name => 'DJIMetadata',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::Protobuf' },
+    },
+    dbgi => { # (DJI AC003 Osmo Action 4 cam)
+        Name => 'DJIDebug',
+        Unknown => 2,
+        Notes => 'extracted only if Unknown option is 2 or greater',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::Protobuf' },
+    },
     Unknown00 => { Unknown => 1 },
     Unknown01 => { Unknown => 1 },
     Unknown02 => { Unknown => 1 },
@@ -894,7 +900,7 @@ sub FoundSomething($$;$$)
 #------------------------------------------------------------------------------
 # Approximate GPSDateTime value from sample time and CreateDate
 # Inputs: 0) ExifTool ref, 1) tag table ptr, 2) sample time (s)
-#         3) true if CreateDate is at end of video, 4) flag if CreateDate is UTC
+#         3) true if CreateDate is UTC
 # Notes: Uses ExifTool CreateDateAtEnd as flag to subtract video duration
 sub SetGPSDateTime($$$;$)
 {
@@ -1432,7 +1438,7 @@ Sample:     for ($i=0; ; ) {
 
             if ($$tagTbl{$metaFormat}) {
                 my $tagInfo = $et->GetTagInfo($tagTbl, $metaFormat, \$buff);
-                if ($tagInfo) {
+                if ($tagInfo and (not $$tagInfo{Unknown} or $$et{OPTIONS}{Unknown} >= $$tagInfo{Unknown})) {
                     FoundSomething($et, $tagTbl, $time[$i], $dur[$i]);
                     $$et{ee} = $ee; # need ee information for 'keys'
                     $et->HandleTag($tagTbl, $metaFormat, undef,
@@ -1442,6 +1448,15 @@ Sample:     for ($i=0; ; ) {
                         TagInfo => $tagInfo,
                     );
                     delete $$et{ee};
+                    # synthesize GPSDateTime if necessary for djmd metadata
+                    if ($metaFormat eq 'djmd') {
+                        if (defined $$et{GPSLatitude} and defined $$et{GPSLongitude} and not $$et{GPSDateTime}) {
+                            SetGPSDateTime($et, $tagTbl, $time[$i], 1); # (NC)
+                        }
+                        delete $$et{GPSLatitude};
+                        delete $$et{GPSLongitude};
+                        delete $$et{GPSDateTime};
+                    }
                 } elsif ($metaFormat eq 'camm' and $buff =~ /^X/) {
                     # seen 'camm' metadata in this format (X/Y/Z acceleration and G force? + GPRMC + ?)
                     # "X0000.0000Y0000.0000Z0000.0000G0000.0000$GPRMC,000125,V,,,,,000.0,,280908,002.1,N*71~, 794021  \x0a"

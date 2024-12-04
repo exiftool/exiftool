@@ -18,7 +18,8 @@
 #               specifying $Image::ExifTool::Geolocation::altDir.  This
 #               database and has entries in the same order as Geolocation.dat,
 #               and each entry is a newline-separated list of alternate names
-#               terminated by a null byte.
+#               terminated by a null byte.  These alternate names are used
+#               only when searching for a city by name (eg. "Big Apple").
 #
 #               Databases are based on data from geonames.org with a
 #               Creative Commons license, reformatted as follows in the

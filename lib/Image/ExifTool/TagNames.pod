@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28187 tags, with 17502 unique tag names.
+They contain a total of 28212 tags, with 17509 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -115,6 +115,7 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
                FPXR                             FlashPix
                MPF                              MPF
                InfiRayVersion                   InfiRay Version
+               UniformResourceName              no
                PreviewImage                     no
   'APP3'       Meta                             Kodak Meta
                Stim                             Stim
@@ -152,6 +153,7 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
                InfiRaySensor                    InfiRay Sensor
                SEAL                             XMP SEAL
   'APP10'      Comment                          no
+               HDRGainCurve                     no
   'APP11'      JPEG-HDR                         JPEG HDR
                JUMBF                            Jpeg2000
   'APP12'      PictureInfo                      APP12 PictureInfo
@@ -1370,6 +1372,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   acdsee                                        XMP acdsee
   acdsee-rs                                     XMP ACDSeeRegions
   album                                         XMP Album
+  apdi                                          XMP apdi
   apple-fi                                      XMP apple_fi
   ast                                           Nikon ast
   aux                                           XMP aux
@@ -1402,6 +1405,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   GPano                                         XMP GPano
   GSpherical                                    XMP GSpherical
   hdr                                           XMP hdr
+  HDRGainMap                                    XMP HDRGainMap
   hdrgm                                         XMP hdrgm
   ics                                           XMP ics
   iptcCore                                      XMP iptcCore
@@ -1583,6 +1587,18 @@ These tags belong to the ExifTool XMP-album family 1 group.
   Tag Name                                      Writable
   --------                                      --------
   Notes                                         string
+
+=head3 XMP apdi Tags
+
+Used in Apple HDR GainMap images.
+
+These tags belong to the ExifTool XMP-apdi family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AuxiliaryImageType                            string
+  NativeFormat                                  string
+  StoredFormat                                  string
 
 =head3 XMP apple_fi Tags
 
@@ -5029,6 +5045,16 @@ These tags belong to the ExifTool XMP-hdr family 1 group.
   CCVPrimariesXY                                string
   CCVWhiteXY                                    string
   SceneReferred                                 boolean
+
+=head3 XMP HDRGainMap Tags
+
+Used in Apple HDR GainMap images.
+
+These tags belong to the ExifTool XMP-HDRGainMap family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  HDRGainMapVersion                             string
 
 =head3 XMP hdrgm Tags
 
@@ -12911,6 +12937,35 @@ Thermal parameters extracted from APP4 of some DJI RJPEG files.
       6    ObjectDistance                       no
       8    Emissivity                           no
      10    ReflectedTemperature                 no
+
+=head3 DJI Protobuf Tags
+
+Tags found in protobuf-format DJI meta djmd and dbgi timed metadata.  Only a
+few tags are currently known, but unknown djmd tags may be extracted by
+setting the Unknown option to 1 (or 2 to also extract unknown dbgi debug
+tags).  Tag ID's are composed of the corresponding .proto file name combined
+with the hierarchical protobuf field numbers.  "dvtm_AVATA2.proto" is used
+by the DJI Avanta 2 and the "dvtm_ac203.proto" by the OsmoAction4.
+
+  Tag ID                  Tag Name              Writable
+  ------                  --------              --------
+  'Protocol'              Protocol              no
+  'dvtm_AVATA2_1-1-10'    Model                 no
+  'dvtm_AVATA2_2-2-3-1'   SerialNumber          no
+  'dvtm_AVATA2_2-3-1'     FrameWidth            no
+  'dvtm_AVATA2_2-3-2'     FrameHeight           no
+  'dvtm_AVATA2_2-3-3'     FrameRate             no
+  'dvtm_AVATA2_3-1-2'     TimeStamp             no
+  'dvtm_AVATA2_3-4-4-1-2' GPSLatitude           no
+  'dvtm_AVATA2_3-4-4-1-3' GPSLongitude          no
+  'dvtm_ac203_1-1-10'     Model                 no
+  'dvtm_ac203_2-3-1'      FrameWidth            no
+  'dvtm_ac203_2-3-2'      FrameHeight           no
+  'dvtm_ac203_2-3-3'      FrameRate             no
+  'dvtm_ac203_3-4-2-1-2'  GPSLatitude           no
+  'dvtm_ac203_3-4-2-1-3'  GPSLongitude          no
+  'dvtm_ac203_3-4-2-2'    GPSAltitude           no
+  'dvtm_ac203_3-4-2-6-1'  GPSDateTime           no
 
 =head2 FLIR Tags
 
@@ -24770,7 +24825,9 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'UNIT'   Units?                               no
   'VERS'   MetadataVersion                      no
   'VFOV'   FieldOfView                          no
+  'VFPS'   VideoFrameRate                       no
   'VFRH'   VisualFlightRulesHUD                 no
+  'VRES'   VideoFrameSize                       no
   'WBAL'   ColorTemperatures                    no
   'WNDM'   WindProcessing                       no
   'WRGB'   WhiteBalanceRGB                      no
@@ -29962,7 +30019,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 82 different formats of timed GPS metadata from video files.
+currently reads 84 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -29973,6 +30030,8 @@ currently reads 82 different formats of timed GPS metadata from video files.
   CameraDateTime                                no
   CameraModel                                   no
   Car                                           no
+  DJIDebug?                                     DJI Protobuf
+  DJIMetadata                                   DJI Protobuf
   DateTimeOriginal                              no
   DateTimeStamp                                 no
   Distance                                      no

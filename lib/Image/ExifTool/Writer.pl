@@ -2194,7 +2194,7 @@ sub SetSystemTags($$)
         } elsif (ref $file) {
             $self->Warn('Writing ZoneIdentifer requires a file name');
         } elsif (defined $self->GetNewValue('ZoneIdentifier', \$zhash)) {
-            $self->Warn('ZoneIndentifier may only be delted');
+            $self->Warn('ZoneIndentifier may only be deleted');
         } elsif (not eval { require Win32API::File }) {
             $self->Warn('Install Win32API::File to write ZoneIdentifier');
         } else {

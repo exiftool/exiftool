@@ -11,6 +11,7 @@ pre   { color: #800; margin-left: 4em }
 .indent { margin-left: 22% }
 table.dl        { border: 1px solid gray; border-collapse: collapse }
 table.dl td     { padding: .4em .8em }
+i.sm  { font-size: 12pt }
 -->
 </style>
 </head>
@@ -31,7 +32,8 @@ table.dl td     { padding: .4em .8em }
 <br><a href="#Troubleshooting">Troubleshooting</a>
 </div>
 <a name="Geolocation"></a>
-<h1>ExifTool Geolocation Feature</h1>
+<h1>ExifTool Geolocation Feature
+<i class='sm lt'>(aka "Reverse Geocoding")</i></h1>
 
 <p>ExifTool has the ability to generate geolocation information (including city,
 region, subregion and country) from GPS coordinates (and visa versa) using an
@@ -170,10 +172,10 @@ Geolocation Distance            : 46.12 km
 Geolocation Bearing             : 296</pre>
 
 Multiple nearby cities may be returned instead of just the nearest by adding
-<code>num=##</code> to the Geolocation option string, where <code>##</code> is
-the desired number of cities.  The returned cities are ordered from nearest
-to furthest, and distinguished by the family 3 group which allows them to
-be output as separate lines with the <code>-p</code> option.  For example:
+<code>num=##</code> to the Geolocation option string, where <code>##</code> is the
+desired number of cities.  The returned cities are ordered from nearest to
+furthest, and distinguished by the family 3 (document number) group which allows
+them to be output as separate lines with the <code>-p</code> option.  For example:
 
 <pre class=blk>> <span class=code>exiftool -a -p geo.fmt -api geolocation=49.48,6.37,num=4</span>
 7.00 km,286 deg,PPLA3,Mondorf-les-Bains,Luxembourg
@@ -440,7 +442,9 @@ also included in the zip file.  The alternate names are consulted only when a fu
 city name is provided in a search (ie. not using a regular expression), the API
 <a href="ExifTool.html#GeolocAltNames">GeolocAltNames</a> option is set (which is
 the default), and the AltNames.dat file is found and matches the number of
-entries in the currently loaded Geolocation.dat database.
+entries in the currently loaded Geolocation.dat database.  For example, searching
+for "Big Apple" with the alternate names enabled would return the information for
+New York City.
 
 <blockquote><table class='dl'>
 <tr><td>Download database with cities of population 500 or<br>
@@ -615,7 +619,7 @@ own <a href="#Alt">alternate database</a>.  Or 2. Create a
 
 <hr>
 <i>Created Mar 12, 2024</i><br>
-<i>Last revised Nov 25, 2024</i>
+<i>Last revised Dec 2, 2024</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

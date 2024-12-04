@@ -17,6 +17,20 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.05'><b>Dec. 4, 2024 - Version 13.05</b></a>
+<ul>
+<li>Added a new SonyModelID
+<li>Added support for XMP HDRGainMap and apdi namespaces
+<li>Decode DJI timed djmd and dbgi protobuf-format metadata
+<li>Decode APP10 AROT HDRGainCurve and APP2 URN UniformResourceName
+<li>Decode a couple of new GoPro tags
+<li>API Changes:
+    <ul>
+    <li>Changed default  <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option to 1 (please report if this
+        causes any problems)
+    </ul>
+</ul>
+
 <a name='v13.04'><b>Nov. 26, 2024 - Version 13.04</b></a>
 <ul>
 <li>Added the ability to write GPSDOP and GPSMeasureMode from the -geotag option
@@ -31,6 +45,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Renamed an Unknown Photoshop tag
 <li>Convert GoPro GPSSpeed and GPSSpeed3D from m/s to km/h
 <li>Patched to tolerate XML header in DOCX xml files
+<li>Fixed incorrect file offsets for tags in some embedded files of -htmldump
+    output
 <li>Fixed -htmldump output to show the same names for unknown EXIF tags as with
     the -u option
 </ul>

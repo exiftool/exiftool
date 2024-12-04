@@ -431,9 +431,108 @@ Phantom drones.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='Protobuf'>DJI Protobuf Tags</a></h2>
+<p>Tags found in protobuf-format DJI meta djmd and dbgi timed metadata.  Only a
+few tags are currently known, but unknown djmd tags may be extracted by
+setting the Unknown option to 1 (or 2 to also extract unknown dbgi debug
+tags).  Tag ID&#39;s are composed of the corresponding .proto file name combined
+with the hierarchical protobuf field numbers.  &quot;dvtm_AVATA2.proto&quot; is used
+by the DJI Avanta 2 and the &quot;dvtm_ac203.proto&quot; by the OsmoAction4.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Protocol'</td>
+<td>Protocol</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_AVATA2_1-1-10'</td>
+<td>Model</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_AVATA2_2-2-3-1'</td>
+<td>SerialNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_AVATA2_2-3-1'</td>
+<td>FrameWidth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_AVATA2_2-3-2'</td>
+<td>FrameHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_AVATA2_2-3-3'</td>
+<td>FrameRate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_AVATA2_3-1-2'</td>
+<td>TimeStamp</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_AVATA2_3-4-4-1-2'</td>
+<td>GPSLatitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_AVATA2_3-4-4-1-3'</td>
+<td>GPSLongitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_ac203_1-1-10'</td>
+<td>Model</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_ac203_2-3-1'</td>
+<td>FrameWidth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_ac203_2-3-2'</td>
+<td>FrameHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_ac203_2-3-3'</td>
+<td>FrameRate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_ac203_3-4-2-1-2'</td>
+<td>GPSLatitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_ac203_3-4-2-1-3'</td>
+<td>GPSLongitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_ac203_3-4-2-2'</td>
+<td>GPSAltitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_ac203_3-4-2-6-1'</td>
+<td>GPSDateTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 19, 2023</i>
+<br><i>Last revised Dec 4, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

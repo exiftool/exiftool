@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.04';
+$VERSION = '13.05';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1173,7 +1173,7 @@ my @availableOptions = (
     [ 'UserParam',        { },    'user parameters for additional user-defined tag values' ],
     [ 'Validate',         undef,  'perform additional validation' ],
     [ 'Verbose',          0,      'print verbose messages (0-5, higher # = more verbose)' ],
-    [ 'WindowsLongPath',  undef,  'enable support for long pathnames (enables WindowsWideFile)' ],
+    [ 'WindowsLongPath',  1,      'enable support for long pathnames (enables WindowsWideFile)' ],
     [ 'WindowsWideFile',  undef,  'force the use of Windows wide-character file routines' ], # (see forum15208)
     [ 'WriteMode',        'wcg',  'enable all write modes by default' ],
     [ 'XAttrTags',        undef,  'extract MacOS extended attribute tags' ],
@@ -2763,10 +2763,16 @@ sub ExtractInfo($;@)
                 if ($$req{filepath} or
                    ($reqAll and not $$self{EXCL_TAG_LOOKUP}{filepath}))
                 {
+                    my $path;
                     local $SIG{'__WARN__'} = \&SetWarning;
-                    if (eval { require Cwd }) {
-                        my $path = eval { Cwd::abs_path($filename) };
-                        $self->FoundTag('FilePath', $path) if defined $path;
+                    if ($^O eq 'MSWin32' and $$options{WindowsLongPath}) {
+                        $path = $self->WindowsLongPath($filename);
+                    } elsif (eval { require Cwd }) {
+                        $path = eval { Cwd::abs_path($filename) };
+                    }
+                    if (defined $path) {
+                        $path =~ tr/\\/\// if $^O eq 'MSWin32'; # return forward slashes
+                        $self->FoundTag('FilePath', $path);
                     } elsif ($$req{filepath}) {
                         $self->WarnOnce('The Perl Cwd module must be installed to use FilePath');
                     }
@@ -4633,8 +4639,7 @@ sub EncodeFileName($$;$)
             }
         }
     }
-    $force = 1 if $$self{OPTIONS}{WindowsWideFile} or $$self{OPTIONS}{WindowsLongPath};
-    if ($hasSpecialChars or $force) {
+    if ($hasSpecialChars or $force or $$self{OPTIONS}{WindowsLongPath} or $$self{OPTIONS}{WindowsWideFile}) {
         $enc or $enc = 'UTF8';
         if ($^O eq 'MSWin32') {
             local $SIG{'__WARN__'} = \&SetWarning;
@@ -4655,8 +4660,8 @@ sub EncodeFileName($$;$)
 
 #------------------------------------------------------------------------------
 # Rebuild a path as an absolute long path to be usable in Windows system calls
-# Inputs: 0) ExifTool ref, 1) path string
-# Returns: normalized long path
+# Inputs: 0) ExifTool ref, 1) path string (CharsetFileName)
+# Returns: normalized long path (CharsetFileName)
 # Note: this should only be called for Windows systems
 # References:
 # - https://learn.microsoft.com/en-us/dotnet/standard/io/file-path-formats
@@ -4675,12 +4680,25 @@ sub WindowsLongPath($$)
     my ($self, $path) = @_;
     my $debug = $$self{OPTIONS}{Debug};
     my $out = $$self{OPTIONS}{TextOut};
+    my $suffix = '';
+    my $longPath;
 
-    $debug and print $out "WindowsLongPath input : $path\n";
+    # remove common suffixes to make cache more effective
+    if ($path =~ s/(_original|_exiftool_tmp|:Zone\.Identifier)$//) {
+        $suffix = $1;
+        if (not length $path or $path =~ m([:./\\]$)) {
+            # don't remove suffix if it could be the whole file name
+            $path .= $suffix;
+            $suffix = '';
+        }
+    }
+    return $$self{LONG_PATH_OUT}.$suffix if defined $$self{LONG_PATH_IN} and $$self{LONG_PATH_IN} eq $path;
+
+    $debug and print $out "WindowsLongPath input : $path$suffix\n";
 
     for (;;) { # (cheap goto)
-        $path =~ tr(/)(\\); # convert slashes to backslashes    
-        last if $path =~ /^\\\\\?\\/;   # already a device path in the format we want
+        ($longPath = $path) =~ tr(/)(\\); # convert slashes to backslashes    
+        last if $longPath =~ /^\\\\\?\\/;   # already a device path in the format we want
     
         unless ($k32GetFullPathName) {  # need to import (once) GetFullPathNameW
             last if defined $k32GetFullPathName;
@@ -4696,23 +4714,27 @@ sub WindowsLongPath($$)
             }
         }
         my $enc = $$self{OPTIONS}{CharsetFileName};
-        my $encPath = $self->Encode($path, 'UTF16', 'II', $enc);    # need to encode to UTF16
+        my $encPath = $self->Encode($longPath, 'UTF16', 'II', $enc);# need to encode to UTF16
         my $lenReq = $k32GetFullPathName->Call($encPath,0,0,0) + 1; # first pass gets length required, +1 for safety (null?)
         my $fullPath = "\0" x $lenReq x 2;                          # create buffer to hold full path
         $k32GetFullPathName->Call($encPath, $lenReq, $fullPath, 0); # fullPath is UTF16 now
-        $path = $self->Decode($fullPath, 'UTF16', 'II', $enc);
+        $longPath = $self->Decode($fullPath, 'UTF16', 'II', $enc);
     
-        last if length($path) <= 247;
+        last if length($longPath) <= 247 - length($suffix);
 
-        if ($path =~ /^\\\\/) {
-            $path = '\\\\?\\UNC' . substr($path, 1);
+        if ($longPath =~ /^\\\\/) {
+            $longPath = '\\\\?\\UNC' . substr($longPath, 1);
         } else {
-            $path = '\\\\?\\' . $path;
+            $longPath = '\\\\?\\' . $longPath;
         }
         last;
     }
-    $debug and print $out "WindowsLongPath return: $path\n";
-    return $path;
+    # this may be called repeatedly for the same file file (exists, stat, open),
+    # so cache the last return value (without any of the suffixes that we use)
+    $$self{LONG_PATH_IN} = $path;
+    $$self{LONG_PATH_OUT} = $longPath;
+    $debug and print $out "WindowsLongPath return: $longPath$suffix\n";
+    return $longPath . $suffix;
 }
 
 #------------------------------------------------------------------------------
@@ -7433,7 +7455,7 @@ sub ProcessJPEG($$;$)
         }
         # handle all other markers
         my $dumpType = '';
-        my ($desc, $tip, $xtra);
+        my ($desc, $tip, $xtra, $useJpegMain);
         $length = length $$segDataPt;
         $appBytes += $length + 4 if ($marker & 0xf0) == 0xe0;  # total size of APP segments
         if ($verbose) {
@@ -7653,7 +7675,7 @@ sub ProcessJPEG($$;$)
                     $self->Warn("Ignored APP1 segment length $length (unknown header)");
                 }
             }
-        } elsif ($marker == 0xe2) {         # APP2 (ICC Profile, FPXR, MPF, InfiRay, PreviewImage)
+        } elsif ($marker == 0xe2) {         # APP2 (ICC Profile, FPXR, MPF, InfiRay, URN, PreviewImage)
             if ($$segDataPt =~ /^ICC_PROFILE\0/ and $length >= 14) {
                 $dumpType = 'ICC_Profile';
                 # must concatenate profile chunks (note: handle the case where
@@ -7726,6 +7748,9 @@ sub ProcessJPEG($$;$)
                 # Digilife DDC-690/Rollei="BGTH"
                 $dumpType = 'Preview Image';
                 $preview = substr($$segDataPt, length($1));
+            } elsif ($$segDataPt =~ /^urn:/) {  # (found in Apple HDR images)
+                $dumpType = 'URN';
+                $useJpegMain = 1;
             } elsif ($preview) {
                 $dumpType = 'Preview Image';
                 $preview .= $$segDataPt;
@@ -7995,17 +8020,14 @@ sub ProcessJPEG($$;$)
                 DirStart(\%dirInfo, 5);
                 $self->ProcessDirectory(\%dirInfo, GetTagTable("Image::ExifTool::XMP::SEAL"));
             }
-        } elsif ($marker == 0xea) {         # APP10 (PhotoStudio Unicode comments)
+        } elsif ($marker == 0xea) {         # APP10 (PhotoStudio Unicode comments, HDR gain curve)
             if ($$segDataPt =~ /^UNICODE\0/) {
                 $dumpType = 'PhotoStudio';
                 my $comment = $self->Decode(substr($$segDataPt,8), 'UCS2', 'MM');
                 $self->FoundTag('Comment', $comment);
-            } elsif ($$segDataPt =~ /^AROT\0/ and $length > 10) {
-                # iPhone "AROT" segment containing integrated intensity per 16 scan lines
-                # (with number of elements N = ImageHeight / 16 - 1, ref PH/NealKrawetz)
-                # "Absolute ROTational difference between two frames"
-                # (see https://www.hackerfactor.com/blog/index.php?/archives/822-Apple-Rot.html)
-                $xtra = 'segment (N=' . unpack('x6N', $$segDataPt) . ')';
+            } elsif ($$segDataPt =~ /^AROT\0\0.{4}/s) {
+                $dumpType = 'AROT', # (HDR gain curve? PH guess)
+                $useJpegMain = 1;
             }
         } elsif ($marker == 0xeb) {         # APP11 (JPEG-HDR, JUMBF)
             if ($$segDataPt =~ /^HDR_RI /) {
@@ -8172,6 +8194,10 @@ sub ProcessJPEG($$;$)
             $desc = "[JPEG $markerName]";   # (other known JPEG segments)
         }
         if (defined $dumpType) {
+            if ($useJpegMain) {
+                my $tagTablePtr = GetTagTable('Image::ExifTool::JPEG::Main');
+                $self->HandleTag($tagTablePtr, $markerName, $$segDataPt);
+            }
             if (not $dumpType and ($$options{Unknown} or $$options{Validate})) {
                 my $str = ($$segDataPt =~ /^([\x20-\x7e]{1,20})\0/) ? " '${1}'" : '';
                 $xtra = 'segment' unless $xtra;

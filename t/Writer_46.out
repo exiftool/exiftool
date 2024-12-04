@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.80
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.05
 [File, System, Other] FileName - File Name: Writer_46_failed.jpg
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 13 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2024:03:19 12:57:05-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2024:03:19 12:57:05-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2024:03:19 12:57:05-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2024:11:29 07:59:14-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2024:11:29 07:59:14-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2024:11:29 07:59:14-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -37,7 +37,7 @@
 [IPTC, IPTC, Other] 152 - Audio Sampling Resolution: 07
 [IPTC, IPTC, Other] 153 - Audio Duration: 000007
 [IPTC, IPTC, Other] 154 - Audio Outcue: 7
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.80
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.05
 [XMP, XMP-Device, Camera] AppInfoApplication - App Info Application: 7
 [XMP, XMP-Device, Camera] AppInfoItemURI - App Info Item URI: 7
 [XMP, XMP-Device, Camera] AppInfoVersion - App Info Version: 7
@@ -88,6 +88,7 @@
 [XMP, XMP-acdsee-rs, Image] RegionsRegionListName - ACD See Region Name: 7
 [XMP, XMP-acdsee-rs, Image] RegionsRegionListNameAssignType - ACD See Region Name Assign Type: 7
 [XMP, XMP-acdsee-rs, Image] RegionsRegionListType - ACD See Region Type: 7
+[XMP, XMP-apdi, Image] AuxiliaryImageType - Auxiliary Image Type: 7
 [XMP, XMP-apple-fi, Image] AngleInfoRoll - Angle Info Roll: 7
 [XMP, XMP-apple-fi, Image] AngleInfoYaw - Angle Info Yaw: 7
 [XMP, XMP-aux, Camera] ApproximateFocusDistance - Approximate Focus Distance: 7

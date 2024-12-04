@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.04';
+my $version = '13.05';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -1915,7 +1915,7 @@ if (@dbKeys) {
                     print $vout "Imported entry for '${_}' (full path: '${absPath}')\n";
                 }
             } elsif ($verbose and $verbose > 1) {
-                print $vout "Imported entry for '${_}' (non-existent file)\n";
+                print $vout "Imported entry for '${_}' (no full path)\n";
             }
         }
     }
@@ -4160,11 +4160,12 @@ sub ScanDir($$;$)
     }
     $dir =~ /\/$/ or $dir .= '/';   # make sure directory name ends with '/'
     foreach $file (@fileList) {
+        next if $file eq '.' or $file eq '..';
         my $path = "$dir$file";
         if ($et->IsDirectory($path)) {
             next unless $recurse;
             # ignore directories starting with "." by default
-            next if $file =~ /^\./ and ($recurse == 1 or $file eq '.' or $file eq '..');
+            next if $file =~ /^\./ and $recurse == 1;
             next if $ignore{$file} or ($ignore{SYMLINKS} and -l $path);
             ScanDir($et, $path, $list);
             last if $end;
@@ -4312,14 +4313,15 @@ sub AbsPath($)
 {
     my $file = shift;
     my $path;
-    if (defined $file and eval { require Cwd }) {
-        $path = eval { Cwd::abs_path($file) };
-        # make the delimiters and case consistent
-        # (abs_path is very inconsistent about what it returns in Windows)
-        if (defined $path and Image::ExifTool::IsPC()) {
-            $path =~ tr/\\/\//;
-            $path = lc $path;
+    if (defined $file) {
+        return undef if $file eq '*';   # (CSV SourceFile may be '*' -- no absolute path for that)
+        if ($^O eq 'MSWin32' and $mt->Options('WindowsLongPath')) {
+            $path = $mt->WindowsLongPath($file);
+        } elsif (eval { require Cwd }) {
+            local $SIG{'__WARN__'} = sub { };
+            $path = eval { Cwd::abs_path($file) };
         }
+        $path =~ tr/\\/\// if $^O eq 'MSWin32' and defined $path;   # use forward slashes
     }
     return $path;
 }

@@ -2250,6 +2250,44 @@ my %sACDSeeRegionStruct = (
     Gamma               => { Writable => 'real', List => 'Seq', Avoid => 1 },
 );
 
+%Image::ExifTool::XMP::HDRGainMap = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-HDRGainMap', 2 => 'Unknown' },
+    NAMESPACE   => 'HDRGainMap',
+    NOTES => 'Used in Apple HDR GainMap images.',
+    HDRGainMapVersion => {
+        PrintConv => 'IsInt($val) ? join(".",unpack("C*", pack "N", $val)) : $val',
+        PrintConvInv => q{
+            return $val unless $val =~ /^\d+\.\d+\.\d+\.\d+$/;
+            return unpack('N', pack('C*', split /\./, $val));
+        },
+    },
+);
+
+%Image::ExifTool::XMP::apdi = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-apdi', 2 => 'Image' },
+    NAMESPACE   => 'apdi',
+    NOTES => 'Used in Apple HDR GainMap images.',
+    NativeFormat => {
+        PrintConv => q{
+            return $val unless IsInt($val);
+            my $tmp = pack("N", $val);
+            $tmp =~ /^\w{4}$/ ? $tmp : $val;
+        },
+        PrintConvInv => '$val =~ /^\w{4}$/ ? unpack("N", $val) : $val',
+    },
+    AuxiliaryImageType => { },
+    StoredFormat => {
+        PrintConv => q{
+            return $val unless IsInt($val);
+            my $tmp = pack("N", $val);
+            $tmp =~ /^\w{4}$/ ? $tmp : $val;
+        },
+        PrintConvInv => '$val =~ /^\w{4}$/ ? unpack("N", $val) : $val',
+    },
+);
+
 # SVG namespace properties (ref 9)
 %Image::ExifTool::XMP::SVG = (
     GROUPS => { 0 => 'SVG', 1 => 'SVG', 2 => 'Image' },

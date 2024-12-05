@@ -197,8 +197,8 @@ my %convFloat2 = (
         few tags are currently known, but unknown djmd tags may be extracted by
         setting the Unknown option to 1 (or 2 to also extract unknown dbgi debug
         tags).  Tag ID's are composed of the corresponding .proto file name combined
-        with the hierarchical protobuf field numbers.  "dvtm_AVATA2.proto" is used
-        by the DJI Avanta 2 and the "dvtm_ac203.proto" by the OsmoAction4.
+        with the hierarchical protobuf field numbers.  The "dvtm_AVATA2.proto" file
+        is used by the DJI Avanta 2, and "dvtm_ac203.proto" by the OsmoAction4.
     },
     Protocol => { },
    # dvtm_ac203_1-1-6 - some version number

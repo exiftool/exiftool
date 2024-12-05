@@ -17,11 +17,23 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.06'><b>Dec. 5, 2024 - Version 13.06</b></a>
+<ul>
+<li>Decode timed metadata from MP4 videos of yet another dashcam model
+<li>Patched issue where FileSequence could increment twice for each file when a
+    -if condition was used
+<li>API Changes:
+    <ul>
+    <li>Revert default <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option until we can solve the pipe
+        problem
+    </ul>
+</ul>
+
 <a name='v13.05'><b>Dec. 4, 2024 - Version 13.05</b></a>
 <ul>
 <li>Added a new SonyModelID
 <li>Added support for XMP HDRGainMap and apdi namespaces
-<li>Decode DJI timed djmd and dbgi protobuf-format metadata
+<li>Decode DJI timed djmd and dbgi <a href="TagNames/DJI.html#Protobuf">protobuf-format metadata</a>
 <li>Decode APP10 AROT HDRGainCurve and APP2 URN UniformResourceName
 <li>Decode a couple of new GoPro tags
 <li>API Changes:

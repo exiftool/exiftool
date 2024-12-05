@@ -12944,8 +12944,8 @@ Tags found in protobuf-format DJI meta djmd and dbgi timed metadata.  Only a
 few tags are currently known, but unknown djmd tags may be extracted by
 setting the Unknown option to 1 (or 2 to also extract unknown dbgi debug
 tags).  Tag ID's are composed of the corresponding .proto file name combined
-with the hierarchical protobuf field numbers.  "dvtm_AVATA2.proto" is used
-by the DJI Avanta 2 and the "dvtm_ac203.proto" by the OsmoAction4.
+with the hierarchical protobuf field numbers.  The "dvtm_AVATA2.proto" file
+is used by the DJI Avanta 2, and "dvtm_ac203.proto" by the OsmoAction4.
 
   Tag ID                  Tag Name              Writable
   ------                  --------              --------
@@ -30019,7 +30019,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 84 different formats of timed GPS metadata from video files.
+currently reads 85 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------

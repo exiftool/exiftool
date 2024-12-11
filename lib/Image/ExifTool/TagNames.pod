@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28212 tags, with 17509 unique tag names.
+They contain a total of 28214 tags, with 17511 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -29993,7 +29993,8 @@ for the official QuickTime specification.
   'sefd'               SamsungTrailer           Samsung Trailer
   'skip'               CanonSkip                Canon Skip
                        PreviewImage             no
-                       SkipInfo                 -
+                       SkipInfo                 QuickTime Stream
+                       LigoGPSInfo              -
                        Skip?                    no
   'thm '               ThumbnailImage           no
   'thum'               ThumbnailImage           no
@@ -30019,7 +30020,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 85 different formats of timed GPS metadata from video files.
+currently reads 96 different formats of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -30071,6 +30072,8 @@ currently reads 85 different formats of timed GPS metadata from video files.
   Unknown01?                                    no
   Unknown02?                                    no
   Unknown03?                                    no
+  Unknown_H?                                    no
+  Unknown_M?                                    no
   UserLabel                                     no
   VerticalSpeed                                 no
   VideoTimeStamp                                no

@@ -405,7 +405,7 @@ sub ProcessOTF($$)
             next;
         }
         if ($verbose) {
-            $tag =~ s/([\0-\x1f\x80-\xff])/sprintf('\x%.2x',ord $1)/ge;
+            $tag =~ s/([\0-\x1f\x7f-\xff])/sprintf('\x%.2x',ord $1)/ge;
             my $str = sprintf("%s%d) Tag '%s' (offset 0x%.4x, %d bytes)\n",
                               $$et{INDENT}, $pos/16, $tag, $offset, $size);
             $et->VPrint(0, $str);

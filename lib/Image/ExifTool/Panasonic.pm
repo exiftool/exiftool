@@ -2802,7 +2802,7 @@ sub ProcessLeicaTrailer($;$)
                 }
             } else { # M (Type 240)
                 # scan for the lens type (M writes 114 bytes of garbage first)
-                if ($buff =~ /\G.{114}([\x20-\x7f]*\0*)/sg and length($1) >= 50) {
+                if ($buff =~ /\G.{114}([\x20-\x7e]*\0*)/sg and length($1) >= 50) {
                     $expect = 114;
                 }
             }

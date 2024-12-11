@@ -32,7 +32,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.26';
+$VERSION = '1.27';
 
 # program map table "stream_type" lookup (ref 6/1/9)
 my %streamType = (
@@ -305,6 +305,15 @@ sub ParsePID($$$$$)
         # MPEG-1/MPEG-2 Audio
         require Image::ExifTool::MPEG;
         Image::ExifTool::MPEG::ParseMPEGAudio($et, $dataPt);
+    } elsif ($type == 6 and $pid == 0x0300) {
+        # LIGOGPSINFO from unknown dashcam (../testpics/gps_video/Wrong Way pass.ts)
+        if ($$dataPt =~ /^LIGOGPSINFO/s) {
+            my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+            my %dirInfo = ( DataPt => $dataPt );
+            Image::ExifTool::QuickTime::ProcessLigoGPS($et, \%dirInfo, $tbl, 1);
+            $$et{FoundGoodGPS} = 1;
+            $more = 1;
+        }
     } elsif ($type == 0x1b) {
         # H.264 Video
         require Image::ExifTool::H264;
@@ -514,9 +523,16 @@ sub ParsePID($$$$$)
                 $et->HandleTag($tagTbl, GPSTrack     => $a[2] / 100);
             }
             # Note: 10 bytes after last GPS record look like a single 3-axis accelerometer reading:
-            # eg. fd ff 00 00 ff ff 00 00 01 00 
+            # eg. fd ff 00 00 ff ff 00 00 01 00
             $$et{FoundGoodGPS} = 1; # so we skip over unrecognized packets
             $more = 1;
+        } elsif ($$dataPt =~ /^skip.{4}LIGOGPSINFO\0/s) {
+            # (this record contains 2 copies of the same 'skip' atom in my sample --
+            #  only extract data from the first one)
+            my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+            my %dirInfo = ( DataPt => $dataPt, DirStart => 8 );
+            Image::ExifTool::QuickTime::ProcessLigoGPS($et, \%dirInfo, $tbl, 1);
+            $$et{FoundGoodGPS} = 1;
         } elsif ($$et{FoundGoodGPS}) {
             $more = 1;
         }
@@ -694,7 +710,7 @@ sub ProcessM2TS($$)
         # or if we are just looking for the last timestamp
         next unless $payload_data_exists and not defined $backScan;
 
-        # decode payload data
+       # decode payload data
         if ($pid == 0 or            # program association table
             defined $pmt{$pid})     # program map table(s)
         {
@@ -787,7 +803,7 @@ sub ProcessM2TS($$)
                     last if $j + $descriptor_length > $program_info_length;
                     my $desc = substr($buf2, $pos+$j, $descriptor_length);
                     $j += $descriptor_length;
-                    $desc =~ s/([\x00-\x1f\x80-\xff])/sprintf("\\x%.2x",ord $1)/eg;
+                    $desc =~ s/([\x00-\x1f\x7f-\xff])/sprintf("\\x%.2x",ord $1)/eg;
                     printf $out "    Program Descriptor: Type=0x%.2x \"$desc\"\n", $descriptor_tag;
                 }}
                 $pos += $program_info_length; # skip descriptors (for now)
@@ -822,7 +838,7 @@ sub ProcessM2TS($$)
                         $j += $descriptor_length;
                         if ($verbose > 1) {
                             my $dstr = $desc;
-                            $dstr =~ s/([\x00-\x1f\x80-\xff])/sprintf("\\x%.2x",ord $1)/eg;
+                            $dstr =~ s/([\x00-\x1f\x7f-\xff])/sprintf("\\x%.2x",ord $1)/eg;
                             printf $out "    ES Descriptor: Type=0x%.2x \"$dstr\"\n", $descriptor_tag;
                         }
                         # parse type-specific descriptor information (once)
@@ -954,6 +970,20 @@ sub ProcessM2TS($$)
         ParsePID($et, $pid, $pidType{$pid}, $pidName{$pid}, \$data{$pid});
         delete $data{$pid};
     }
+
+    # look for LIGOGPSINFO trailer
+    if ($et->Options('ExtractEmbedded') and
+        $raf->Seek(-8, 2) and $raf->Read($buff, 8) == 8 and
+        $buff =~ /^&&&&/)
+    {
+        my $len = unpack('x4N', $buff);
+        if ($len < $raf->Tell() and $raf->Seek(-$len, 2) and $raf->Read($buff,$len) == $len) {
+            my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+            my %dirInfo = ( DataPt => \$buff, DirStart => 8 );
+            Image::ExifTool::QuickTime::ProcessLigoGPS($et, \%dirInfo, $tbl);
+        }
+    }
+
     return 1;
 }
 

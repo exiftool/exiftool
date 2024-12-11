@@ -2849,7 +2849,7 @@ sub FullEscapeXML($)
     $str =~ s/\\/&#92;/sg;                  # escape backslashes too
     # then use C-escape sequences for invalid characters
     if ($str =~ /[\0-\x1f]/ or Image::ExifTool::IsUTF8(\$str) < 0) {
-        $str =~ s/([\0-\x1f\x80-\xff])/sprintf("\\x%.2x",ord $1)/sge;
+        $str =~ s/([\0-\x1f\x7f-\xff])/sprintf("\\x%.2x",ord $1)/sge;
     }
     return $str;
 }

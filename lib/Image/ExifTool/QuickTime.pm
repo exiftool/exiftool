@@ -69,8 +69,9 @@ sub Process_gps0($$$);
 sub Process_gsen($$$);
 sub Process_gdat($$$);
 sub Process_nbmt($$$);
+sub ProcessLigoGPS($$$;$);
+sub ProcessLigoJSON($$$);
 sub ProcessKenwood($$$);
-sub ProcessLIGO_JSON($$$);
 sub ProcessRIFFTrailer($$$);
 sub ProcessTTAD($$$);
 sub ProcessNMEA($$$);
@@ -584,6 +585,14 @@ my %userDefined = (
             Condition => '$$valPt =~ /^\0[\0-\x04]..[a-zA-Z ]{4}/s',
             SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::SkipInfo' },
         },
+        {
+            Name => 'LigoGPSInfo',
+            Condition => '$$valPt =~ /^LIGOGPSINFO\0/',
+            SubDirectory => { 
+                TagTable => 'Image::ExifTool::QuickTime::Stream',
+                ProcessProc => \&ProcessLigoGPS,
+            },
+        },
         { Name => 'Skip', Unknown => 1, Binary => 1 },
     ],
     wide => { Unknown => 1, Binary => 1 },
@@ -766,7 +775,7 @@ my %userDefined = (
         Condition => '$$valPt =~ /^LIGOGPSINFO \{/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::Stream',
-            ProcessProc => \&ProcessLIGO_JSON,
+            ProcessProc => \&ProcessLigoJSON,
         },
     },{
         Name => 'FLIRData',
@@ -2557,7 +2566,7 @@ my %userDefined = (
     TTID => { Name => 'TomTomID', ValueConv => 'unpack("x4H*",$val)' },
     TTVI => { Name => 'TomTomVI', Format => 'int32u', Unknown => 1 }, # seen: "0 1 61 508 508"
     # TTVD seen: "normal 720p 60fps 60fps 16/9 wide 1x"
-    TTVD => { Name => 'TomTomVD', ValueConv => 'my @a = ($val =~ /[\x20-\x7f]+/g); "@a"', List => 1 },
+    TTVD => { Name => 'TomTomVD', ValueConv => 'my @a = ($val =~ /[\x20-\x7e]+/g); "@a"', List => 1 },
 );
 
 # User-specific media data atoms (ref 11)

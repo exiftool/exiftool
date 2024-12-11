@@ -17,6 +17,22 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.07'><b>Dec. 11, 2024 - Version 13.07</b></a>
+<ul>
+<li>Decode a number new encrypted timed GPS formats written by various dashcam
+    models (long overdue, but it took me a couple of years to acquire enough
+    sample videos to have a good cross-section of different formats)
+<li>Fixed another place where FileSequence could be incremented twice when a -if
+    condition was used
+<li>Fixed a few places where character 0x7f may not have been escaped in string
+    values
+<li>API Changes:
+    <ul>
+    <li>Changed default  <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option back to 1 after adding
+        a patch to fix issue with piping from stdin
+    </ul>
+</ul>
+
 <a name='v13.06'><b>Dec. 5, 2024 - Version 13.06</b></a>
 <ul>
 <li>Decode timed metadata from MP4 videos of yet another dashcam model
@@ -24,8 +40,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
     -if condition was used
 <li>API Changes:
     <ul>
-    <li>Revert default <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option until we can solve the pipe
-        problem
+    <li>Revert default <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option to the pre-13.05 setting
+        until we can solve the pipe problem
     </ul>
 </ul>
 

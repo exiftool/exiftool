@@ -145,7 +145,7 @@ sub ProcessProtobuf($$$;$)
         if ($type == 2 and $$tagInfo{Unknown}) {
             if ($$tagInfo{IsProtobuf}) {
                 $$tagInfo{IsProtobuf} = 0 unless IsProtobuf(\$buff);
-            } elsif (not defined $$tagInfo{IsProtobuf} and $buff =~ /[^\x20-\x7f]/ and
+            } elsif (not defined $$tagInfo{IsProtobuf} and $buff =~ /[^\x20-\x7e]/ and
                 IsProtobuf(\$buff))
             {
                 $$tagInfo{IsProtobuf} = 1;
@@ -175,7 +175,7 @@ sub ProcessProtobuf($$$;$)
                 my %subdir = ( DataPt => \$buff, Base => $addr, DirName => $dirName );
                 ProcessProtobuf($et, \%subdir, $tagTbl, "$prefix$id-");
                 next;
-            } elsif ($buff !~ /[^\x20-\x7f]/) {
+            } elsif ($buff !~ /[^\x20-\x7e]/) {
                 $val = $buff;   # assume this is an ASCII string
             } elsif (length($buff) % 4) {
                 $val = '0x' . unpack('H*', $buff);

@@ -295,7 +295,7 @@ sub ProcessDJIInfo($$$)
     while ($$dataPt =~ /\G\[(.*?)\](?=(\[|$))/sg) {
         my ($tag, $val) = split /:/, $1, 2;
         next unless defined $tag and defined $val;
-        if ($val =~ /^([\x20-\x7f]+)\0*$/) {
+        if ($val =~ /^([\x20-\x7e]+)\0*$/) {
             $val = $1;
         } else {
             my $buff = $val;

@@ -225,7 +225,7 @@ sub ProcessHP($$$)
     # scan for other tag ID's
     foreach $tagID (sort(TagTableKeys($tagTablePtr))) {
         next if $tagID eq 'PreviewImage';
-        next unless $$dataPt =~ /$tagID:\s*([\x20-\x7f]+)/i;
+        next unless $$dataPt =~ /$tagID:\s*([\x20-\x7e]+)/i;
         $et->HandleTag($tagTablePtr, $tagID, $1);
     }
     return 1;

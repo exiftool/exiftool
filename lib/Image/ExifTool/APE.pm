@@ -217,7 +217,7 @@ sub ProcessAPE($$)
             $val = \$buf2;
             # extract cover art description separately (hackitty hack)
             if ($tag =~ /^Cover Art/) {
-                $buf2 =~ s/^([\x20-\x7f]*)\0//;
+                $buf2 =~ s/^([\x20-\x7e]*)\0//;
                 if ($1) {
                     my $t = "$tag Desc";
                     my $v = $1;

@@ -7,14 +7,27 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.00. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Dec. 11, 2024 - Version 13.07
+
+  - Decode a number new encrypted timed GPS formats written by various dashcam
+    models (long overdue, but it took me a couple of years to acquire enough
+    sample videos to have a good cross-section of different formats)
+  - Fixed another place where FileSequence could be incremented twice when a -if
+    condition was used
+  - Fixed a few places where character 0x7f may not have been escaped in string
+    values
+  - API Changes:
+      - Changed default  WindowsLongPath option back to 1 after adding
+        a patch to fix issue with piping from stdin
+
 Dec. 5, 2024 - Version 13.06
 
   - Decode timed metadata from MP4 videos of yet another dashcam model
   - Patched issue where FileSequence could increment twice for each file when a
     -if condition was used
   - API Changes:
-      - Revert default  WindowsLongPath option until we can solve the pipe
-        problem)
+      - Revert default WindowsLongPath option to the pre-13.05 setting
+        until we can solve the pipe problem
 
 Dec. 4, 2024 - Version 13.05
 

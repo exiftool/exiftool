@@ -231,7 +231,7 @@ sub ProcessAIFF($$)
                     $et->Warn('End of processing at large chunk (LargeFileSupport not enabled)');
                     last;
                 } elsif ($et->Options('LargeFileSupport') eq '2') {
-                    $et->WarnOnce('Skipping large chunk (LargeFileSupport is 2)');
+                    $et->Warn('Skipping large chunk (LargeFileSupport is 2)');
                 }
             }
             if ($tagInfo) {

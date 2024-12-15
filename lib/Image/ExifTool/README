@@ -209,7 +209,7 @@ key:
                   name documentation.  When this is set, numerical TagID's are
                   not converted to hexadecimal notation.  Unless otherwise set,
                   an ID_LABEL of "Index" is assumed for tables which use
-                  ProcessBinaryData.
+                  ProcessBinaryData or set the IS_BINARY flag.
 
     NO_ID         Avoid printing "Tag ID" column in tag name documentation.
 
@@ -256,6 +256,9 @@ key:
 
     ALLOW_REPROCESS Flag to allow reprocessing of another directory at this
                   same location in the file, bypassing recursion avoidance test.
+
+    IS_BINARY     Set if this is a binary table and should show an Index in the
+                  first column instead of a Tag ID.
 
   DATAMEMBER : BinaryData tables only.  A reference to a list of sorted tag ID's
   which must be extracted as data members when writing.  Must also list "var_"

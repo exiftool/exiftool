@@ -339,7 +339,7 @@ sub FormatQTValue($$;$$)
         $flags = 0x01;  # UTF8
         $$valPt = $et->Encode($$valPt, 'UTF8');
     }
-    defined $$valPt or $et->WarnOnce("Error converting value for $$tagInfo{Name}");
+    defined $$valPt or $et->Warn("Error converting value for $$tagInfo{Name}");
     return $flags;
 }
 
@@ -548,7 +548,7 @@ sub WriteItemInfo($$$)
                 $buff = $v2;
                 $wasDeflated = 1;
             } else {
-                $et->WarnOnce("Error inflating $name metadata");
+                $et->Warn("Error inflating $name metadata");
                 next;
             }
         }
@@ -683,7 +683,7 @@ sub WriteItemInfo($$$)
                 # write compressed XMP if Compress option is set
                 if ($et->Options('Compress') and length $newVal) {
                     if (not eval { require Compress::Zlib }) {
-                        $et->WarnOnce('Install Compress::Zlib to write compressed metadata');
+                        $et->Warn('Install Compress::Zlib to write compressed metadata');
                     } else {
                         my $deflate = Compress::Zlib::deflateInit();
                         if ($deflate) {
@@ -973,7 +973,7 @@ sub WriteQuickTime($$$)
                     $et->Error('End of processing at large atom (LargeFileSupport not enabled)');
                     last;
                 } elsif ($et->Options('LargeFileSupport') eq '2') {
-                    $et->WarnOnce('Processing large atom (LargeFileSupport is 2)');
+                    $et->Warn('Processing large atom (LargeFileSupport is 2)');
                 }
             }
             $size = $hi * 4294967296 + $lo - 16;

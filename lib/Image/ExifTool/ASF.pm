@@ -781,7 +781,7 @@ sub ProcessASF($$;$)
                 $err = 'Invalid ASF object size';
             } elsif ($et->Options('LargeFileSupport')) {
                 if ($et->Options('LargeFileSupport') eq '2') {
-                    $et->WarnOnce('Skipping large ASF object (LargeFileSupport is 2)');
+                    $et->Warn('Skipping large ASF object (LargeFileSupport is 2)');
                 }
                 if ($raf->Seek($size, 1)) {
                     $et->VPrint(0, "  Skipped large ASF object ($size bytes)\n");

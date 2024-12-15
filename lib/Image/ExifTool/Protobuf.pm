@@ -127,7 +127,7 @@ sub ProcessProtobuf($$$;$)
         my $pos = $$dirInfo{Pos};
         last if $pos >= length $$dataPt;
         my ($buff, $id, $type) = ReadRecord($dirInfo);
-        defined $buff or $et->WarnOnce('Protobuf format error'), last;
+        defined $buff or $et->Warn('Protobuf format error'), last;
         if ($type == 2 and $buff =~ /\.proto$/) {
             # save protocol name separately for directory type
             $$et{ProtocolName}{$dirName} = substr($buff, 0, -6);
@@ -201,7 +201,7 @@ sub ProcessProtobuf($$$;$)
         );
     }
     # warn if we didn't finish exactly at the end of the buffer
-    $et->WarnOnce('Truncated protobuf data') unless $prefix or $$dirInfo{Pos} == length $$dataPt;
+    $et->Warn('Truncated protobuf data') unless $prefix or $$dirInfo{Pos} == length $$dataPt;
     return 1;
 }
 

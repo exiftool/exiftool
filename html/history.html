@@ -17,19 +17,33 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.08'><b>Dec. 14, 2024 - Version 13.08</b></a>
+<ul>
+<li>Decode ShutterCount for Canon EOS R6 Mark II (thanks Agoston Kapitany)
+<li>Decode a few new Photoshop tags
+<li>Suppress all duplicate Warning tags and add count to end of message
+<li>Changed format of bitmask keys in -list x output
+<li>Internal streamlining of LIGOGPSINFO decoding
+<li>Fixed issue where some tags were incorrectly shown as writable in -listx
+    output
+<li>Fixed incorrect scaling for GPSSpeed in one LIGOGPSINFO variant
+<li>Fixed an issue with filename encoding when the -L option is used and the API
+    WindowsLongPath option is active
+</ul>
+
 <a name='v13.07'><b>Dec. 11, 2024 - Version 13.07</b></a>
 <ul>
-<li>Decode a number new encrypted timed GPS formats written by various dashcam
-    models (long overdue, but it took me a couple of years to acquire enough
-    sample videos to have a good cross-section of different formats)
+<li>Decode a number of LIGOGPSINFO encrypted and enciphered timed GPS types
+    (long overdue, but it took me a couple of years to acquire enough sample
+    videos to have a good cross-section of the different formats)
 <li>Fixed another place where FileSequence could be incremented twice when a -if
     condition was used
 <li>Fixed a few places where character 0x7f may not have been escaped in string
     values
 <li>API Changes:
     <ul>
-    <li>Changed default  <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option back to 1 after adding
-        a patch to fix issue with piping from stdin
+    <li>Changed default <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option back to 1 after adding a patch to
+        fix issue with piping from stdin
     </ul>
 </ul>
 
@@ -54,7 +68,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Decode a couple of new GoPro tags
 <li>API Changes:
     <ul>
-    <li>Changed default  <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option to 1 (please report if this
+    <li>Changed default <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option to 1 (please report if this
         causes any problems)
     </ul>
 </ul>

@@ -1126,7 +1126,7 @@ my %code2charset = (
             Name => 'TextFormat',
             Condition => '$$self{RIFFStreamType} eq "txts"',
             Hidden => 1,
-            RawConv => '$self->Options("ExtractEmbedded") or $self->WarnOnce("Use ExtractEmbedded option to extract timed text",3); undef',
+            RawConv => '$self->Options("ExtractEmbedded") or $self->Warn("Use ExtractEmbedded option to extract timed text",3); undef',
         },
     ],
 );
@@ -2053,7 +2053,7 @@ sub ProcessRIFF($$)
                     last;
                 }
                 if ($et->Options('LargeFileSupport') eq '2') {
-                    $et->WarnOnce('Processing large chunk (LargeFileSupport is 2)');
+                    $et->Warn('Processing large chunk (LargeFileSupport is 2)');
                 }
             }
             if ($validate) {
@@ -2176,7 +2176,7 @@ sub ProcessRIFF($$)
                         last;
                     }
                     if ($et->Options('LargeFileSupport') eq '2') {
-                        $et->WarnOnce('Processing large chunk (LargeFileSupport is 2)');
+                        $et->Warn('Processing large chunk (LargeFileSupport is 2)');
                     }
                 }
                 if ($validate and $len2) {

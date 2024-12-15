@@ -965,7 +965,7 @@ sub FoundPNG($$$$;$$$$)
         my $processed;
         if ($$tagInfo{SubDirectory}) {
             if ($$et{OPTIONS}{Validate} and $$tagInfo{NonStandard}) {
-                $et->WarnOnce("Non-standard $$tagInfo{NonStandard} in PNG $tag chunk", 1);
+                $et->Warn("Non-standard $$tagInfo{NonStandard} in PNG $tag chunk", 1);
             }
             my $subdir = $$tagInfo{SubDirectory};
             my $dirName = $$subdir{DirName} || $tagName;
@@ -1471,7 +1471,7 @@ sub ProcessPNG($$)
 
         if ($wasEnd) {
             last unless $n; # stop now if normal end of PNG
-            $et->WarnOnce("Trailer data after $fileType $endChunk chunk", 1);
+            $et->Warn("Trailer data after $fileType $endChunk chunk", 1);
             $wasTrailer = 1;
             last if $n < 8;
             $$et{SET_GROUP1} = 'Trailer';
@@ -1500,7 +1500,7 @@ sub ProcessPNG($$)
             } elsif ($hdrChunk eq 'IHDR' and $chunk eq 'CgBI') {
                 $et->Warn('Non-standard PNG image (Apple iPhone format)');
             } else {
-                $et->WarnOnce("$fileType image did not start with $hdrChunk");
+                $et->Warn("$fileType image did not start with $hdrChunk");
             }
         }
         if ($outfile and ($isDatChunk{$chunk} or $chunk eq $endChunk) and @txtOffset) {
@@ -1594,7 +1594,7 @@ sub ProcessPNG($$)
             } else {
                 $msg = 'fixed';
             }
-            $et->WarnOnce("Text/EXIF chunk(s) found after $$et{FileType} $wasDat ($msg)", 1);
+            $et->Warn("Text/EXIF chunk(s) found after $$et{FileType} $wasDat ($msg)", 1);
         }
         # read chunk data and CRC
         unless ($raf->Read($dbuf,$len)==$len and $raf->Read($cbuf, 4)==4) {

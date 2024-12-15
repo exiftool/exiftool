@@ -11377,7 +11377,7 @@ sub ProcessEnciphered($$$)
     Decipher(\$data);
     if ($$et{DoubleCipher}) {
         Decipher(\$data);
-        $et->WarnOnce('Some Sony metadata is double-enciphered. Write any tag to fix',1);
+        $et->Warn('Some Sony metadata is double-enciphered. Write any tag to fix',1);
     }
     if ($et->Options('Verbose') > 2) {
         my $tagInfo = $$dirInfo{TagInfo} || { Name => 'data' };
@@ -11409,7 +11409,7 @@ sub WriteEnciphered($$$)
     if ($$et{DoubleCipher}) {
         Decipher(\$data);
         ++$$et{CHANGED};
-        $et->WarnOnce('Fixed double-enciphered Sony metadata',1);
+        $et->Warn('Fixed double-enciphered Sony metadata',1);
     }
     my %dirInfo = (
         %$dirInfo,

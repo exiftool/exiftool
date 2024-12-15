@@ -112,7 +112,7 @@ sub ValidateProperty($$;$)
                             my $valLang = $$et{XmpValidateLangAlt} || ($$et{XmpValidateLangAlt} = { });
                             $$valLang{$langPath} or $$valLang{$langPath} = { };
                             if ($$valLang{$langPath}{$lang}) {
-                                $et->WarnOnce("Duplicate language ($lang) in lang-alt list: $langPath");
+                                $et->Warn("Duplicate language ($lang) in lang-alt list: $langPath");
                             } else {
                                 $$valLang{$langPath}{$lang} = 1;
                             }
@@ -984,7 +984,7 @@ sub WriteXMP($$;$)
                         (not @fixInfo or $fixInfo[0] ne $info);
                     pop @props;
                 }
-                $et->WarnOnce("Error finding parent structure for $$tagInfo{Name}") unless @fixInfo;
+                $et->Warn("Error finding parent structure for $$tagInfo{Name}") unless @fixInfo;
             }
             # fix property path for this tag (last in the @fixInfo list)
             push @fixInfo, $tagInfo unless @fixInfo and $isStruct;

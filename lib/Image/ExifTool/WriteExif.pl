@@ -387,8 +387,8 @@ sub ValidateImageData($$$;$)
             }
             push @bitsPerSample, $bitsPerSample[0] while @bitsPerSample < $samplesPerPix;
             foreach (@bitsPerSample) {
-                $et->WarnOnce("$dirName BitsPerSample values are different", $minor) if $_ ne $bitsPerSample[0];
-                $et->WarnOnce("Invalid $dirName BitsPerSample value", $minor) if $_ < 1 or $_ > 32;
+                $et->Warn("$dirName BitsPerSample values are different", $minor) if $_ ne $bitsPerSample[0];
+                $et->Warn("Invalid $dirName BitsPerSample value", $minor) if $_ < 1 or $_ > 32;
             }
         }
         my $bitsPerPixel = 0;

@@ -1025,7 +1025,7 @@ sub TranslateCodedString($$$$)
         $$valPtr = $et->Decode($$valPtr, $$xlatPtr);
     } else {
         # don't yet support reading ISO 2022 shifted character sets
-        $et->WarnOnce('Some IPTC characters not converted (ISO 2022 shifting not supported)');
+        $et->Warn('Some IPTC characters not converted (ISO 2022 shifting not supported)');
     }
 }
 
@@ -1164,7 +1164,7 @@ sub ProcessIPTC($$$)
             }
             my $tableInfo = $tagTablePtr->{$rec};
             unless ($tableInfo) {
-                $et->WarnOnce("Unrecognized IPTC record $rec (ignored)");
+                $et->Warn("Unrecognized IPTC record $rec (ignored)");
                 $pos += $len;
                 next;   # ignore this entry
             }

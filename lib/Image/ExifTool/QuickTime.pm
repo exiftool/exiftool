@@ -256,7 +256,7 @@ my %timeInfo = (
         my $offset = (66 * 365 + 17) * 24 * 3600;
         return $val - $offset if $val >= $offset or $$self{OPTIONS}{QuickTimeUTC};
         if ($val and not $$self{IsWriting}) {
-            $self->WarnOnce('Patched incorrect time zero for QuickTime date/time tag',1);
+            $self->Warn('Patched incorrect time zero for QuickTime date/time tag',1);
         }
         return $val;
     },
@@ -686,7 +686,7 @@ my %userDefined = (
             Condition => '$$valPt=~/^\xef\xe1\x58\x9a\xbb\x77\x49\xef\x80\x95\x27\x75\x9e\xb1\xdc\x6f/',
             Notes => 'raw 360Fly sensor data without ExtractEmbedded option',
             RawConv => q{
-                $self->WarnOnce('Use the ExtractEmbedded option to decode timed SensorData',3);
+                $self->Warn('Use the ExtractEmbedded option to decode timed SensorData',3);
                 return \$val;
             },
         },
@@ -771,7 +771,7 @@ my %userDefined = (
             ProcessProc => \&ProcessKenwood,
         },
     },{
-        Name => 'LIGO_JSON',
+        Name => 'LigoJSON',
         Condition => '$$valPt =~ /^LIGOGPSINFO \{/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::Stream',
@@ -1312,7 +1312,7 @@ my %userDefined = (
             Condition => '$$valPt=~/^\x9b\x63\x0f\x8d\x63\x74\x40\xec\x82\x04\xbc\x5f\xf5\x09\x17\x28/',
             Notes => 'Garmin GPS sensor data',
             RawConv => q{
-                $self->WarnOnce('Use the ExtractEmbedded option to decode timed Garmin GPS',3);
+                $self->Warn('Use the ExtractEmbedded option to decode timed Garmin GPS',3);
                 return \$val;
             },
         },
@@ -1416,7 +1416,7 @@ my %userDefined = (
             if ($val >= $offset or $$self{OPTIONS}{QuickTimeUTC}) {
                 $val -= $offset;
             } elsif ($val and not $$self{IsWriting}) {
-                $self->WarnOnce('Patched incorrect time zero for QuickTime date/time tag',1);
+                $self->Warn('Patched incorrect time zero for QuickTime date/time tag',1);
             }
             return $$self{CreateDate} = $val;
         },
@@ -9040,11 +9040,11 @@ sub HandleItemInfo($)
             }
             $warn = "Can't currently decode protected $type metadata" if $$item{ProtectionIndex};
             $warn = "Can't currently extract $type with construction method $$item{ConstructionMethod}" if $$item{ConstructionMethod};
-            $et->WarnOnce($warn) if $warn and $name;
+            $et->Warn($warn) if $warn and $name;
             $warn = 'Not this file' if $$item{DataReferenceIndex}; # (can only extract from "this file")
             unless (($$item{Extents} and @{$$item{Extents}}) or $warn) {
                 $warn = "No Extents for $type item";
-                $et->WarnOnce($warn) if $name;
+                $et->Warn($warn) if $name;
             }
             if ($warn) {
                 $et->VPrint(0, "$$et{INDENT}    [not extracted]  ($warn)\n") if $verbose > 2;
@@ -9108,7 +9108,7 @@ sub HandleItemInfo($)
                     $et->VerboseDump(\$buff);
                 } else {
                     $warn = "Error inflating $name metadata";
-                    $et->WarnOnce($warn);
+                    $et->Warn($warn);
                     $et->VPrint(0, "$$et{INDENT}    [not extracted]  ($warn)\n") if $verbose > 2;
                     next;
                 }
@@ -9197,7 +9197,7 @@ sub HandleItemInfo($)
 sub EEWarn($)
 {
     my $et = shift;
-    $et->WarnOnce('The ExtractEmbedded option may find more tags in the media data',3);
+    $et->Warn('The ExtractEmbedded option may find more tags in the media data',3);
 }
 
 #------------------------------------------------------------------------------
@@ -9684,7 +9684,7 @@ sub ProcessMOV($$;$)
                     $warnStr = 'End of processing at large atom (LargeFileSupport not enabled)';
                     last;
                 } elsif ($et->Options('LargeFileSupport') eq '2') {
-                    $et->WarnOnce('Processing large atom (LargeFileSupport is 2)');
+                    $et->Warn('Processing large atom (LargeFileSupport is 2)');
                 }
             }
             $size = $hi * 4294967296 + $lo - 16;
@@ -9699,7 +9699,7 @@ sub ProcessMOV($$;$)
             if ($$et{ValidatePath}{$path} and not $dupTagOK{$tag} and not $dupDirOK{$dirID}) {
                 my $i = Get32u(\$tag,0);
                 my $str = $i < 255 ? "index $i" : "tag '" . PrintableTagID($tag,2) . "'";
-                $et->WarnOnce("Duplicate $str at " . join('-', @{$$et{PATH}}));
+                $et->Warn("Duplicate $str at " . join('-', @{$$et{PATH}}));
                 $$et{ValidatePath} = { } if $path eq 'MOV-moov'; # avoid warnings for all contained dups
             }
             $$et{ValidatePath}{$path} = 1;

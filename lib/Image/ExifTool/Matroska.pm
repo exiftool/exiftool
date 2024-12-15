@@ -1097,7 +1097,7 @@ sub ProcessMKV($$)
                 if ($more >= 0x80000000) {
                     last unless $et->Options('LargeFileSupport');
                     if ($et->Options('LargeFileSupport') eq '2') {
-                        $et->WarnOnce('Processing large block (LargeFileSupport is 2)');
+                        $et->Warn('Processing large block (LargeFileSupport is 2)');
                     }
                 }
                 $raf->Seek($more, 1) or last;

@@ -7,18 +7,31 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.00. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Dec. 14, 2024 - Version 13.08
+
+  - Decode ShutterCount for Canon EOS R6 Mark II (thanks Agoston Kapitany)
+  - Decode a few new Photoshop tags
+  - Suppress all duplicate Warning tags and add count to end of message
+  - Changed format of bitmask keys in -list x output
+  - Internal streamlining of LIGOGPSINFO decoding
+  - Fixed issue where some tags were incorrectly shown as writable in -listx
+    output
+  - Fixed incorrect scaling for GPSSpeed in one LIGOGPSINFO variant
+  - Fixed an issue with filename encoding when the -L option is used and the API
+    WindowsLongPath option is active
+
 Dec. 11, 2024 - Version 13.07
 
-  - Decode a number new encrypted timed GPS formats written by various dashcam
-    models (long overdue, but it took me a couple of years to acquire enough
-    sample videos to have a good cross-section of different formats)
+  - Decode a number of LIGOGPSINFO encrypted and enciphered timed GPS types
+    (long overdue, but it took me a couple of years to acquire enough sample
+    videos to have a good cross-section of the different formats)
   - Fixed another place where FileSequence could be incremented twice when a -if
     condition was used
   - Fixed a few places where character 0x7f may not have been escaped in string
     values
   - API Changes:
-      - Changed default  WindowsLongPath option back to 1 after adding
-        a patch to fix issue with piping from stdin
+      - Changed default WindowsLongPath option back to 1 after adding a patch to
+        fix issue with piping from stdin
 
 Dec. 5, 2024 - Version 13.06
 
@@ -37,7 +50,7 @@ Dec. 4, 2024 - Version 13.05
   - Decode APP10 AROT HDRGainCurve and APP2 URN UniformResourceName
   - Decode a couple of new GoPro tags
   - API Changes:
-      - Changed default  WindowsLongPath option to 1 (please report if this
+      - Changed default WindowsLongPath option to 1 (please report if this
         causes any problems)
 
 Nov. 26, 2024 - Version 13.04

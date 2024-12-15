@@ -421,7 +421,7 @@ sub ValidateExif($$$$$$$$)
 {
     my ($et, $tagTablePtr, $tag, $tagInfo, $lastTag, $ifd, $count, $formatStr) = @_;
 
-    $et->WarnOnce("Entries in $ifd are out of order") if $tag <= $lastTag;
+    $et->Warn("Entries in $ifd are out of order") if $tag <= $lastTag;
 
     # (get tagInfo for unknown tags if Unknown option not used)
     if (not defined $tagInfo and $$tagTablePtr{$tag} and ref $$tagTablePtr{$tag} eq 'HASH') {
@@ -532,8 +532,8 @@ sub ValidateOffsetInfo($$$;$)
         while (@offsets) {
             my $start = pop @offsets;
             my $end = $start + pop @sizes;
-            $et->WarnOnce("$dirName:$$offsets[0]{Name} is zero", $minor) if $start == 0;
-            $et->WarnOnce("$dirName:$$sizes[0]{Name} is zero", $minor) if $start == $end;
+            $et->Warn("$dirName:$$offsets[0]{Name} is zero", $minor) if $start == 0;
+            $et->Warn("$dirName:$$sizes[0]{Name} is zero", $minor) if $start == $end;
             next unless $end > $fileSize;
             if ($start >= $fileSize) {
                 if ($start == 0xffffffff) {

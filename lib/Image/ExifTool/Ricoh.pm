@@ -1008,7 +1008,7 @@ sub ProcessRicohRDT($$$)
     return 0 if $dirLen < 16;
     my $ee = $et->Options('ExtractEmbedded');
     unless ($ee) {
-        $et->WarnOnce('Use ExtractEmbedded option to read Ricoh real-time metadata',3);
+        $et->Warn('Use ExtractEmbedded option to read Ricoh real-time metadata',3);
         return 1;
     }
     my $endian = substr($$dataPt, 8, 2);
@@ -1017,11 +1017,11 @@ sub ProcessRicohRDT($$$)
     my $len = Get16u($dataPt, 6);
     if ($dirName eq 'RicohRDTG') {
         if ($ee < 2) {
-            $et->WarnOnce('Set ExtractEmbedded option to 2 or higher to extract frame timestamps',3);
+            $et->Warn('Set ExtractEmbedded option to 2 or higher to extract frame timestamps',3);
             return 1;
         }
         $rdtg = 0;
-        $et->WarnOnce('Unexpected RDTG record length') if $len > 8;
+        $et->Warn('Unexpected RDTG record length') if $len > 8;
     }
     if ($count * $len + 16 > $dirLen) {
         $et->Warn("Truncated $dirName data");

@@ -1215,7 +1215,7 @@ sub DecodeStream($$)
     # be sure we can process all the filters before we take the time to do the decryption
     foreach $filter (@filters) {
         next if $supportedFilter{$filter};
-        $et->WarnOnce("Unsupported Filter $filter");
+        $et->Warn("Unsupported Filter $filter");
         return 0;
     }
     # apply decryption first if required (and if the default encryption
@@ -1244,7 +1244,7 @@ sub DecodeStream($$)
             if (ref $decodeParms eq 'HASH') {
                 $pre = $$decodeParms{Predictor};
                 if ($pre and $pre ne '1' and $pre ne '12') {
-                    $et->WarnOnce("FlateDecode Predictor $pre currently not supported");
+                    $et->Warn("FlateDecode Predictor $pre currently not supported");
                     return 0;
                 }
             }
@@ -1259,7 +1259,7 @@ sub DecodeStream($$)
                     return 0;
                 }
             } else {
-                $et->WarnOnce('Install Compress::Zlib to process filtered streams');
+                $et->Warn('Install Compress::Zlib to process filtered streams');
                 return 0;
             }
             next unless $pre and $pre eq '12';  # 12 = 'up' prediction
@@ -1268,7 +1268,7 @@ sub DecodeStream($$)
             my $cols = $$decodeParms{Columns};
             unless ($cols) {
                 # currently only support 'up' prediction
-                $et->WarnOnce('No Columns for decoding stream');
+                $et->Warn('No Columns for decoding stream');
                 return 0;
             }
             my @bytes = unpack('C*', $$dict{_stream});
@@ -1276,7 +1276,7 @@ sub DecodeStream($$)
             my $buff = '';
             while (@bytes > $cols) {
                 unless (($_ = shift @bytes) == 2) {
-                    $et->WarnOnce("Unsupported PNG filter $_"); # (yes, PNG)
+                    $et->Warn("Unsupported PNG filter $_"); # (yes, PNG)
                     return 0;
                 }
                 foreach (@pre) {
@@ -1296,11 +1296,11 @@ sub DecodeStream($$)
             my $name = $$decodeParms{Name};
             next unless defined $name or $name eq 'Identity';
             if ($name ne 'StdCF') {
-                $et->WarnOnce("Unsupported Crypt Filter $name");
+                $et->Warn("Unsupported Crypt Filter $name");
                 return 0;
             }
             unless ($cryptInfo) {
-                $et->WarnOnce('Missing Encrypt StdCF entry');
+                $et->Warn('Missing Encrypt StdCF entry');
                 return 0;
             }
             # decrypt the stream manually because we want to:
@@ -1318,15 +1318,15 @@ sub DecodeStream($$)
             # make sure we don't have any unsupported decoding parameters
             if (ref $decodeParms eq 'HASH') {
                 if ($$decodeParms{Predictor}) {
-                    $et->WarnOnce("LZWDecode Predictor $$decodeParms{Predictor} currently not supported");
+                    $et->Warn("LZWDecode Predictor $$decodeParms{Predictor} currently not supported");
                     return 0;
                 } elsif ($$decodeParms{EarlyChange}) {
-                    $et->WarnOnce("LZWDecode EarlyChange currently not supported");
+                    $et->Warn("LZWDecode EarlyChange currently not supported");
                     return 0;
                 }
             }
             unless (DecodeLZW(\$$dict{_stream})) {
-                $et->WarnOnce('LZW decompress error');
+                $et->Warn('LZW decompress error');
                 return 0;
             }
 
@@ -1362,7 +1362,7 @@ sub DecodeStream($$)
                 last if $_ eq '~';
                 # (both $n and $val are zero again now)
             }
-            $err and $et->WarnOnce("ASCII85Decode error $err");
+            $err and $et->Warn("ASCII85Decode error $err");
             $$dict{_stream} = pack('C*', @out);
         }
     }
@@ -1830,7 +1830,7 @@ sub ProcessDict($$$$;$$)
 
     $nesting = ($nesting || 0) + 1;
     if ($nesting > 50) {
-        $et->WarnOnce('Nesting too deep (directory ignored)');
+        $et->Warn('Nesting too deep (directory ignored)');
         return;
     }
     # save entire dictionary for rewriting if specified
@@ -1990,7 +1990,7 @@ sub ProcessDict($$$$;$$)
                     if ($$tagInfo{IgnoreDuplicates}) {
                         my $flag = "ProcessedPDF_$tag";
                         if ($$et{$flag}) {
-                            next if $et->WarnOnce("Ignored duplicate $tag dictionary", 2);
+                            next if $et->Warn("Ignored duplicate $tag dictionary", 2);
                         } else {
                             $$et{$flag} = 1;
                         }
@@ -2171,9 +2171,9 @@ sub ProcessDict($$$$;$$)
             my $type = $$dict{Type} || '';
             if ($type ne '/Metadata' or $$dict{Length} > 100000) {
                 if ($$et{OPTIONS}{IgnoreMinorErrors}) {
-                    $et->WarnOnce("Decrypting large $$tagInfo{Name} (will be slow)");
+                    $et->Warn("Decrypting large $$tagInfo{Name} (will be slow)");
                 } else {
-                    $et->WarnOnce("Skipping large AES-encrypted $$tagInfo{Name}", 2);
+                    $et->Warn("Skipping large AES-encrypted $$tagInfo{Name}", 2);
                     last;
                 }
             }

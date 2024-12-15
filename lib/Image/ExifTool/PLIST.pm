@@ -269,7 +269,7 @@ sub ExtractObject($$;$)
             if ($type == 13) { # dict
                 # prevent infinite recursion
                 if (defined $parent and length $parent > 1000) {
-                    $et->WarnOnce('Possible deep recursion while parsing PLIST');
+                    $et->Warn('Possible deep recursion while parsing PLIST');
                     return undef;
                 }
                 my $tagTablePtr = $$plistInfo{TagTablePtr};

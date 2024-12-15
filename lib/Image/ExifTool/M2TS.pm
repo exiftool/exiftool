@@ -32,7 +32,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.27';
+$VERSION = '1.28';
 
 # program map table "stream_type" lookup (ref 6/1/9)
 my %streamType = (
@@ -309,7 +309,7 @@ sub ParsePID($$$$$)
         # LIGOGPSINFO from unknown dashcam (../testpics/gps_video/Wrong Way pass.ts)
         if ($$dataPt =~ /^LIGOGPSINFO/s) {
             my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
-            my %dirInfo = ( DataPt => $dataPt );
+            my %dirInfo = ( DataPt => $dataPt, DirName => 'Ligo0x0300' );
             Image::ExifTool::QuickTime::ProcessLigoGPS($et, \%dirInfo, $tbl, 1);
             $$et{FoundGoodGPS} = 1;
             $more = 1;
@@ -322,7 +322,7 @@ sub ParsePID($$$$$)
         if ($$et{OPTIONS}{ExtractEmbedded}) {
             $more = 1;
         } elsif (not $$et{OPTIONS}{Validate}) {
-            $et->WarnOnce('The ExtractEmbedded option may find more tags in the video data',3);
+            $et->Warn('The ExtractEmbedded option may find more tags in the video data',3);
         }
     } elsif ($type == 0x81 or $type == 0x87 or $type == 0x91) {
         # AC-3 audio
@@ -468,11 +468,11 @@ sub ParsePID($$$$$)
                     $bad = 1 if $_ < 0x30 or $_ > 0x39;
                 }
                 if ($bad) {
-                    $et->WarnOnce('Error decrypting GPS degrees');
+                    $et->Warn('Error decrypting GPS degrees');
                 } else {
                     my $la = pack('C*', @chars[0,1]);
                     my $lo = pack('C*', @chars[2,3,4]);
-                    $et->WarnOnce('Decryption of this GPS is highly experimental. More testing samples are required');
+                    $et->Warn('Decryption of this GPS is highly experimental. More testing samples are required');
                     $et->HandleTag($tagTbl, GPSLatitude  => (($la || 0) + (($6-85.95194)/2.43051724137931+42.2568)/60) * ($7 eq 'N' ? 1 : -1));
                     $et->HandleTag($tagTbl, GPSLongitude => (($lo || 0) + (($9-70.14674)/1.460987654320988+9.2028)/60) * ($10 eq 'E' ? 1 : -1));
                 }
@@ -485,7 +485,7 @@ sub ParsePID($$$$$)
             my $lon = abs(GetFloat($dataPt, 56)); # (abs just to be safe)
             my $spd = GetFloat($dataPt, 64);
             my $trk = GetFloat($dataPt, 68);
-            $et->WarnOnce('GPSLatitude/Longitude encryption is not yet known, so these will be wrong');
+            $et->Warn('GPSLatitude/Longitude encryption is not yet known, so these will be wrong');
             $$et{DOC_NUM} = ++$$et{DOC_COUNT};
             my @date = unpack('x32V3x28V3', $$dataPt);
             $date[3] += 2000;
@@ -530,7 +530,7 @@ sub ParsePID($$$$$)
             # (this record contains 2 copies of the same 'skip' atom in my sample --
             #  only extract data from the first one)
             my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
-            my %dirInfo = ( DataPt => $dataPt, DirStart => 8 );
+            my %dirInfo = ( DataPt => $dataPt, DirStart => 8, DirName => sprintf('Ligo0x%.4x',$pid));
             Image::ExifTool::QuickTime::ProcessLigoGPS($et, \%dirInfo, $tbl, 1);
             $$et{FoundGoodGPS} = 1;
         } elsif ($$et{FoundGoodGPS}) {
@@ -979,7 +979,7 @@ sub ProcessM2TS($$)
         my $len = unpack('x4N', $buff);
         if ($len < $raf->Tell() and $raf->Seek(-$len, 2) and $raf->Read($buff,$len) == $len) {
             my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
-            my %dirInfo = ( DataPt => \$buff, DirStart => 8 );
+            my %dirInfo = ( DataPt => \$buff, DirStart => 8, DirName => 'LigoTrailer' );
             Image::ExifTool::QuickTime::ProcessLigoGPS($et, \%dirInfo, $tbl);
         }
     }

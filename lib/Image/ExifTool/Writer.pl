@@ -1299,10 +1299,10 @@ sub SetNewValuesFromFile($$;@)
                     ExtractEmbedded FastScan Filter FixBase Geolocation GeolocAltNames
                     GeolocFeature GeolocMinPop GeolocMaxDist GlobalTimeShift HexTagIDs
                     IgnoreGroups IgnoreMinorErrors IgnoreTags ImageHashType Lang
-                    LargeFileSupport ListItem ListSep MDItemTags MissingTagValue NoPDFList
-                    NoWarning Password PrintConv QuickTimeUTC RequestTags SaveFormat SavePath
-                    ScanForXMP StructFormat SystemTags TimeZone Unknown UserParam Validate
-                    WindowsLongPath WindowsWideFile XAttrTags XMPAutoConv))
+                    LargeFileSupport LigoGPSScale ListItem ListSep MDItemTags MissingTagValue
+                    NoPDFList NoWarning Password PrintConv QuickTimeUTC RequestTags SaveFormat
+                    SavePath ScanForXMP StructFormat SystemTags TimeZone Unknown UserParam
+                    Validate WindowsLongPath WindowsWideFile XAttrTags XMPAutoConv))
         {
             $srcExifTool->Options($_ => $$options{$_});
         }
@@ -1749,7 +1749,7 @@ GNV_TagInfo:    foreach $tagInfo (@tagInfoList) {
                 my $err = &$checkProc($self, $tagInfo, \$val);
                 if ($err or not defined $val) {
                     $err or $err = 'Error generating raw value';
-                    $self->WarnOnce("$err for $$tagInfo{Name}");
+                    $self->Warn("$err for $$tagInfo{Name}");
                     @$vals = ();
                     last;
                 }
@@ -1769,7 +1769,7 @@ GNV_TagInfo:    foreach $tagInfo (@tagInfoList) {
                 # an empty warning ("\n") ignores tag with no error
                 if ($evalWarning ne "\n") {
                     my $err = CleanWarning() . " in $$tagInfo{Name} (RawConvInv)";
-                    $self->WarnOnce($err);
+                    $self->Warn($err);
                 }
                 @$vals = ();
                 last;
@@ -1953,8 +1953,8 @@ sub SetFileModifyDate($$;$$$)
     }
     my ($aTime, $mTime, $cTime);
     if ($tag eq 'FileCreateDate') {
-        eval { require Win32::API } or $self->WarnOnce("Install Win32::API to set $tag"), return -1;
-        eval { require Win32API::File } or $self->WarnOnce("Install Win32API::File to set $tag"), return -1;
+        eval { require Win32::API } or $self->Warn("Install Win32::API to set $tag"), return -1;
+        eval { require Win32API::File } or $self->Warn("Install Win32API::File to set $tag"), return -1;
         $cTime = $val;
     } else {
         $aTime = $mTime = $val;
@@ -2151,7 +2151,7 @@ sub SetSystemTags($$)
             $self->VerboseValue('+ FilePermissions', $perm);
             $result = 1;
         } else {
-            $self->WarnOnce('Error setting FilePermissions');
+            $self->Warn('Error setting FilePermissions');
             $result = -1;
         }
     }
@@ -2165,7 +2165,7 @@ sub SetSystemTags($$)
             $self->VerboseValue('+ FileGroupID', $gid) if $gid >= 0;
             $result = 1;
         } else {
-            $self->WarnOnce('Error setting FileGroup/UserID');
+            $self->Warn('Error setting FileGroup/UserID');
             $result = -1 unless $result;
         }
     }
@@ -2181,7 +2181,7 @@ sub SetSystemTags($$)
             $result = $res if $res == 1 or not $result;
             last;
         } elsif ($tag ne 'FileCreateDate') {
-            $self->WarnOnce('Can only set MDItem tags on MacOS');
+            $self->Warn('Can only set MDItem tags on MacOS');
             last;
         }
     }
@@ -4266,7 +4266,7 @@ sub WriteDirectory($$$;$)
                 # allow MakerNotes to be deleted from ExifIFD of CR3 file
                 not ($self->IsRawType() == 2 and $parent eq 'ExifIFD'))
             {
-                $self->WarnOnce("Can't delete $1 from $$self{FileType}",1);
+                $self->Warn("Can't delete $1 from $$self{FileType}",1);
                 undef $grp1;
             } elsif (not $blockExifTypes{$$self{FILE_TYPE}}) {
                 # restrict delete logic to prevent entire tiff image from being killed
@@ -6430,7 +6430,7 @@ sub WriteJPEG($$)
                                 # warn of subsequent XMP blocks specifying a different
                                 # HasExtendedXMP (have never seen this)
                                 if ($goodGuid and $goodGuid ne $2) {
-                                    $self->WarnOnce('Multiple XMP segments specifying different extended XMP GUID');
+                                    $self->Warn('Multiple XMP segments specifying different extended XMP GUID');
                                 }
                                 $goodGuid = $2; # GUID for the standard extended XMP
                             }
@@ -6578,7 +6578,7 @@ sub WriteJPEG($$)
                         undef $$segDataPt;
                         next Marker;
                     } elsif (defined $chunkNum) {
-                        $self->WarnOnce('Invalid or extraneous ICC_Profile chunk(s)');
+                        $self->Warn('Invalid or extraneous ICC_Profile chunk(s)');
                         # fall through to preserve this extra profile...
                     }
                 } elsif ($$segDataPt =~ /^FPXR\0/) {
@@ -6985,9 +6985,9 @@ sub SetFileTime($$;$$$$)
     # on Windows, try to work around incorrect file times when daylight saving time is in effect
     if ($^O eq 'MSWin32') {
         if (not eval { require Win32::API }) {
-            $self->WarnOnce('Install Win32::API for proper handling of Windows file times');
+            $self->Warn('Install Win32::API for proper handling of Windows file times');
         } elsif (not eval { require Win32API::File }) {
-            $self->WarnOnce('Install Win32API::File for proper handling of Windows file times');
+            $self->Warn('Install Win32API::File for proper handling of Windows file times');
         } else {
             # get Win32 handle, needed for SetFileTime
             my $win32Handle = eval { Win32API::File::GetOsFHandle($file) };

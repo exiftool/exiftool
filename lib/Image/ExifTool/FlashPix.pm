@@ -1449,7 +1449,7 @@ sub ReadFPXValue($$$$$;$$)
                 $noPad = 1;     # values sometimes aren't padded inside vectors!!
                 my $size = $oleFormatSize{VT_VECTOR};
                 if ($valPos + $size > $dirEnd) {
-                    $et->WarnOnce('Incorrect FPX VT_VECTOR size');
+                    $et->Warn('Incorrect FPX VT_VECTOR size');
                     last;
                 }
                 $count = Get32u($dataPt, $valPos);
@@ -1457,14 +1457,14 @@ sub ReadFPXValue($$$$$;$$)
                 $valPos += 4;
             } else {
                 # can't yet handle this property flag
-                $et->WarnOnce('Unknown FPX property');
+                $et->Warn('Unknown FPX property');
                 last;
             }
         }
         unless ($format =~ /^VT_/) {
             my $size = Image::ExifTool::FormatSize($format) * $count;
             if ($valPos + $size > $dirEnd) {
-                $et->WarnOnce("Incorrect FPX $format size");
+                $et->Warn("Incorrect FPX $format size");
                 last;
             }
             @vals = ReadValue($dataPt, $valPos, $format, $count, $size);
@@ -1476,7 +1476,7 @@ sub ReadFPXValue($$$$$;$$)
         my ($item, $val, $len);
         for ($item=0; $item<$count; ++$item) {
             if ($valPos + $size > $dirEnd) {
-                $et->WarnOnce("Truncated FPX $format value");
+                $et->Warn("Truncated FPX $format value");
                 last;
             }
             # sometimes VT_VECTOR items are padded to even 4-byte boundaries, and sometimes they aren't
@@ -1528,7 +1528,7 @@ sub ReadFPXValue($$$$$;$$)
                 $len = Get32u($dataPt, $valPos);
                 $len *= 2 if $format eq 'VT_LPWSTR';    # convert to byte count
                 if ($valPos + $len + 4 > $dirEnd) {
-                    $et->WarnOnce("Truncated $format value");
+                    $et->Warn("Truncated $format value");
                     last;
                 }
                 $val = substr($$dataPt, $valPos + 4, $len);
@@ -1551,7 +1551,7 @@ sub ReadFPXValue($$$$$;$$)
             } elsif ($format eq 'VT_BLOB' or $format eq 'VT_CF') {
                 my $len = Get32u($dataPt, $valPos); # (use local $len because we always expect padding)
                 if ($valPos + $len + 4 > $dirEnd) {
-                    $et->WarnOnce("Truncated $format value");
+                    $et->Warn("Truncated $format value");
                     last;
                 }
                 $val = substr($$dataPt, $valPos + 4, $len);
@@ -1627,7 +1627,7 @@ sub ProcessContents($$$)
             while ($$dataPt =~ /\x0bTargetRole1(?:.\x80|\xff\xff.\0.\0Vn(\w+))\0\0\x01.{4}(.{24})/sg) {
                 my ($index, @coords) = unpack('Vx4V4', $2);
                 next if $index == 0xffffffff;
-                $$et{IeImg_lkup}{$index} and $et->WarnOnce('Duplicate image index');
+                $$et{IeImg_lkup}{$index} and $et->Warn('Duplicate image index');
                 $$et{IeImg_lkup}{$index} = "@coords";
                 $$et{IeImg_class}{$index} = $1 if $1;
             }
@@ -1661,7 +1661,7 @@ sub ProcessWordDocument($$$)
     my $dirLen = length $$dataPt;
     # validate the FIB signature
     unless ($dirLen > 2 and Get16u($dataPt,0) == 0xa5ec) {
-        $et->WarnOnce('Invalid FIB signature', 1);
+        $et->Warn('Invalid FIB signature', 1);
         return 0;
     }
     $et->ProcessBinaryData($dirInfo, $tagTablePtr); # process FIB
@@ -2098,7 +2098,7 @@ sub ProcessFPXR($$$)
                 my $overlap = length($$obj{Stream}) - $offset;
                 my $start = $dirStart + 13;
                 if ($overlap < 0 or $dirLen - $overlap < 13) {
-                    $et->WarnOnce("Bad FPXR stream $index offset",1);
+                    $et->Warn("Bad FPXR stream $index offset",1);
                 } else {
                     # ignore any overlapping data in this segment
                     # (this seems to be the convention)
@@ -2338,7 +2338,7 @@ sub ProcessFPX($$)
         $tag =~ s/\0.*//s;  # truncate at null (in case length was wrong)
 
         if ($tag eq '0' and not defined $ee) {
-            $et->WarnOnce('Use the ExtractEmbedded option to extract embedded information', 3);
+            $et->Warn('Use the ExtractEmbedded option to extract embedded information', 3);
         }
         my $sect = Get32u(\$dir, $pos + 0x74);  # start sector number
         my $size = Get32u(\$dir, $pos + 0x78);  # stream length
@@ -2441,7 +2441,7 @@ sub ProcessFPX($$)
                 my $subTablePtr = GetTagTable($$subdir{TagTable});
                 $et->ProcessDirectory(\%dirInfo, $subTablePtr,  $$subdir{ProcessProc});
             } elsif (defined $size and $size > length($buff)) {
-                $et->WarnOnce('Truncated object');
+                $et->Warn('Truncated object');
             } else {
                 $buff = substr($buff, 0, $size) if defined $size and $size < length($buff);
                 if ($tag =~ /^IeImg_0*(\d+)$/) {

@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.07';
+$VERSION = '13.08';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1142,6 +1142,7 @@ my @availableOptions = (
     [ 'ListJoin',         ', ',   'join lists together with this separator' ],
     [ 'ListSep',          ', ',   '[deprecated, use ListSplit and ListJoin instead]', 1 ],
     [ 'ListSplit',        undef,  'regex for splitting list-type tag values when writing' ],
+    #  LigoGPSScale - undocumented scale for unfuzzing LIGO GPS: 1,2,3 for standard scales (1 default), or scale value
     [ 'MakerNotes',       undef,  'extract maker notes as a block' ],
     [ 'MDItemTags',       undef,  'extract MacOS metadata item tags' ],
     [ 'MissingTagValue',  undef,  'value for missing tags when expanded in expressions' ],
@@ -1265,7 +1266,9 @@ my %systemTagsNotes = (
             Use the -a or L<Duplicates|../ExifTool.html#Duplicates> option to see all warnings if more than one
             occurred. Minor warnings may be ignored with the -m or L<IgnoreMinorErrors|../ExifTool.html#IgnoreMinorErrors>
             option.  Minor warnings with a capital "M" in the "[Minor]" designation
-            indicate that the processing is affected by ignoring the warning
+            indicate that the processing is affected by ignoring the warning.  Multiple
+            identical warnings are indicated by a count after the warning message, eg.
+            "[x2]" if the same warning occurred twice
         },
     },
     Comment => {
@@ -2661,7 +2664,7 @@ sub ExtractInfo($;@)
     my $fast = $$options{FastScan} || 0;
     my $req = $$self{REQ_TAG_LOOKUP};
     my $reqAll = $$options{RequestAll} || 0;
-    my (%saveOptions, $reEntry, $rsize, $zid, $type, @startTime, $saveOrder, $isDir);
+    my (%saveOptions, $reEntry, $rsize, $zid, $type, @startTime, $saveOrder, $isDir, $i);
 
     # check for internal ReEntry option to allow recursive calls to ExtractInfo
     if (ref $_[1] eq 'HASH' and $_[1]{ReEntry} and
@@ -2718,7 +2721,7 @@ sub ExtractInfo($;@)
         if ($$req{processingtime} or $reqAll) {
             eval { require Time::HiRes; @startTime = Time::HiRes::gettimeofday() };
             if (not @startTime and $$req{processingtime}) {
-                $self->WarnOnce('Install Time::HiRes to generate ProcessingTime');
+                $self->Warn('Install Time::HiRes to generate ProcessingTime');
             }
         }
 
@@ -2729,12 +2732,12 @@ sub ExtractInfo($;@)
                 if (require Digest::SHA) {
                     $$self{ImageDataHash} = Digest::SHA->new($1);
                 } else {
-                    $self->WarnOnce("Install Digest::SHA to calculate image data SHA$1");
+                    $self->Warn("Install Digest::SHA to calculate image data SHA$1");
                 }
             } elsif (require Digest::MD5) {
                 $$self{ImageDataHash} = Digest::MD5->new;
             } else {
-                $self->WarnOnce('Install Digest::MD5 to calculate image data MD5');
+                $self->Warn('Install Digest::MD5 to calculate image data MD5');
             }
         }
         ++$$self{FILE_SEQUENCE};        # count files read
@@ -2774,7 +2777,7 @@ sub ExtractInfo($;@)
                         $path =~ tr/\\/\// if $^O eq 'MSWin32'; # return forward slashes
                         $self->FoundTag('FilePath', $path);
                     } elsif ($$req{filepath}) {
-                        $self->WarnOnce('The Perl Cwd module must be installed to use FilePath');
+                        $self->Warn('The Perl Cwd module must be installed to use FilePath');
                     }
                 }
                 # get size of resource fork on Mac OS
@@ -3113,6 +3116,15 @@ sub ExtractInfo($;@)
     # and as such it can't be used in user-defined Composite tags
     @startTime and $self->FoundTag('ProcessingTime', Time::HiRes::tv_interval(\@startTime));
 
+    # add numbers to warnings with multiple occurrences
+    if (%{$$self{WAS_WARNED}}) {
+        my ($tag, $val) = ( 'Warning', $$self{VALUE} );
+        for ($i=1; $$val{$tag}; ++$i) {
+            my $n = $$self{WAS_WARNED}{$$val{$tag}};
+            $$val{$tag} .= " [x$n]" if $n and $n > 1;
+            $tag = "Warning ($i)";
+        }
+    }
     # restore original options
     %saveOptions and $$self{OPTIONS} = \%saveOptions;
 
@@ -4252,7 +4264,7 @@ sub Init($)
     $$self{PROCESSED}  = { };       # hash of processed directory start positions
     $$self{DIR_COUNT}  = { };       # count various types of directories
     $$self{DUPL_TAG}   = { };       # last-used index for duplicate-tag keys
-    $$self{WARNED_ONCE}= { };       # WarnOnce() warnings already issued
+    $$self{WAS_WARNED} = { };       # number of times each warning was issued
     $$self{WRITTEN}    = { };       # list of tags written (selected tags only)
     $$self{FORCE_WRITE}= { };       # ForceWrite lookup (set from ForceWrite tag)
     $$self{FOUND_DIR}  = { };       # hash of directory names found in file
@@ -4633,7 +4645,7 @@ sub EncodeFileName($$;$)
         $hasSpecialChars = 1;
         if (not $enc and $^O eq 'MSWin32') {
             if (IsUTF8(\$file) < 0) {
-                $self->WarnOnce('FileName encoding must be specified') if not defined $enc;
+                $self->Warn('FileName encoding must be specified') if not defined $enc;
                 return 0;
             } else {
                 $enc = 'UTF8';  # assume UTF8
@@ -4650,7 +4662,7 @@ sub EncodeFileName($$;$)
                 $_[1] = $self->Decode($file, $enc, undef, 'UTF16', 'II') . "\0\0";
                 return 1;
             }
-            $self->WarnOnce('Install Win32API::File for Windows wide/long file name support');
+            $self->Warn('Install Win32API::File for Windows wide/long file name support');
         } elsif ($enc ne 'UTF8') {
             # recode as UTF-8 for other platforms if necessary
             $_[1] = $self->Decode($file, $enc, undef, 'UTF8');
@@ -4698,13 +4710,13 @@ sub WindowsLongPath($$)
     $debug and print $out "WindowsLongPath input : $path$suffix\n";
 
     for (;;) { # (cheap goto)
-        ($longPath = $path) =~ tr(/)(\\); # convert slashes to backslashes    
+        ($longPath = $path) =~ tr(/)(\\); # convert slashes to backslashes
         last if $longPath =~ /^\\\\\?\\/;   # already a device path in the format we want
-    
+
         unless ($k32GetFullPathName) {  # need to import (once) GetFullPathNameW
             last if defined $k32GetFullPathName;
             unless (eval { require Win32::API }) {
-                $self->WarnOnce('Install Win32::API to use WindowsLongPath option');
+                $self->Warn('Install Win32::API to use WindowsLongPath option');
                 last;
             }
             $k32GetFullPathName = Win32::API->new('KERNEL32', 'GetFullPathNameW', 'PNPP', 'I');
@@ -4714,13 +4726,13 @@ sub WindowsLongPath($$)
                 last;
             }
         }
-        my $enc = $$self{OPTIONS}{CharsetFileName};
-        my $encPath = $self->Encode($longPath, 'UTF16', 'II', $enc);# need to encode to UTF16
+        my $enc = $$self{OPTIONS}{CharsetFileName} || 'UTF8';
+        my $encPath = $self->Decode($longPath, $enc, undef, 'UTF16', 'II');# need to encode to UTF16
         my $lenReq = $k32GetFullPathName->Call($encPath,0,0,0) + 1; # first pass gets length required, +1 for safety (null?)
         my $fullPath = "\0" x $lenReq x 2;                          # create buffer to hold full path
         $k32GetFullPathName->Call($encPath, $lenReq, $fullPath, 0); # fullPath is UTF16 now
         $longPath = $self->Decode($fullPath, 'UTF16', 'II', $enc);
-    
+
         last if length($longPath) <= 247 - length($suffix);
 
         if ($longPath =~ /^\\\\/) {
@@ -4917,9 +4929,9 @@ sub GetFileTime($$)
     # on Windows, try to work around incorrect file times when daylight saving time is in effect
     if ($^O eq 'MSWin32') {
         if (not eval { require Win32::API }) {
-            $self->WarnOnce('Install Win32::API for proper handling of Windows file times', 1);
+            $self->Warn('Install Win32::API for proper handling of Windows file times', 1);
         } elsif (not eval { require Win32API::File }) {
-            $self->WarnOnce('Install Win32API::File for proper handling of Windows file times', 1);
+            $self->Warn('Install Win32API::File for proper handling of Windows file times', 1);
         } else {
             # get Win32 handle, needed for GetFileTime
             my $win32Handle = eval { Win32API::File::GetOsFHandle($file) };
@@ -5495,28 +5507,21 @@ sub AddCleanup($)
 sub Warn($$;$)
 {
     my ($self, $str, $ignorable) = @_;
-    my $noWarn = $self->Options('NoWarning');
+    my $noWarn = $$self{OPTIONS}{NoWarning};
     if ($ignorable) {
         return 0 if $$self{OPTIONS}{IgnoreMinorErrors};
         return 0 if $ignorable eq '3' and $$self{OPTIONS}{Validate};
         return 1 if defined $noWarn and eval { $str =~ /$noWarn/ };
         $str = $ignorable eq '2' ? "[Minor] $str" : "[minor] $str";
     }
-    $self->FoundTag('Warning', $str) unless defined $noWarn and eval { $str =~ /$noWarn/ };
-    return 1;
-}
-
-#------------------------------------------------------------------------------
-# Add warning tag only once per processed file
-# Inputs: 0) ExifTool object reference, 1) warning message, 2) true if minor
-# Returns: true if warning tag was added
-sub WarnOnce($$;$)
-{
-    my ($self, $str, $ignorable) = @_;
-    return 0 if $ignorable and $$self{OPTIONS}{IgnoreMinorErrors};
-    unless ($$self{WARNED_ONCE}{$str}) {
-        $self->Warn($str, $ignorable);
-        $$self{WARNED_ONCE}{$str} = 1;
+    unless (defined $noWarn and eval { $str =~ /$noWarn/ }) {
+        # add each warning only once but count number of occurrences
+        if ($$self{WAS_WARNED}{$str}) {
+            ++$$self{WAS_WARNED}{$str};
+        } else {
+            $self->FoundTag('Warning', $str);
+            $$self{WAS_WARNED}{$str} = 1;
+        }
     }
     return 1;
 }
@@ -6247,7 +6252,7 @@ sub Decode($$$;$$$)
 }
 
 #------------------------------------------------------------------------------
-# Encode string with specified encoding
+# Encode string (in Charset encoding) to specified encoding
 # Inputs: 0) ExifTool object ref, 1) string, 2) destination character set name,
 #         3) optional destination byte order (2-byte and 4-byte fixed-width sets only)
 # Returns: string in specified encoding
@@ -7591,13 +7596,13 @@ sub ProcessJPEG($$;$)
                     my ($size, $off) = unpack('x67N2', $$segDataPt);
                     my $guid = substr($$segDataPt, 35, 32);
                     if ($guid =~ /[^A-Za-z0-9]/) { # (technically, should be uppercase)
-                        $self->WarnOnce($tip = 'Invalid extended XMP GUID');
+                        $self->Warn($tip = 'Invalid extended XMP GUID');
                     } else {
                         my $extXMP = $extendedXMP{$guid};
                         if (not $extXMP) {
                             $extXMP = $extendedXMP{$guid} = { };
                         } elsif ($size != $$extXMP{Size}) {
-                            $self->WarnOnce('Inconsistent extended XMP size');
+                            $self->Warn('Inconsistent extended XMP size');
                         }
                         $$extXMP{Size} = $size;
                         $$extXMP{$off} = substr($$segDataPt, 75);
@@ -7606,7 +7611,7 @@ sub ProcessJPEG($$;$)
                         # (delay processing extended XMP until after reading all segments)
                     }
                 } else {
-                    $self->WarnOnce($tip = 'Invalid extended XMP segment');
+                    $self->Warn($tip = 'Invalid extended XMP segment');
                 }
             } elsif ($$segDataPt =~ /^QVCI\0/) {
                 $dumpType = 'QVCI';
@@ -7629,7 +7634,7 @@ sub ProcessJPEG($$;$)
                 }
                 if (defined $flirCount) {
                     if (defined $flirChunk[$chunkNum]) {
-                        $self->WarnOnce('Duplicate FLIR chunk number(s)');
+                        $self->Warn('Duplicate FLIR chunk number(s)');
                         $flirChunk[$chunkNum] .= substr($$segDataPt, 8);
                     } else {
                         $flirChunk[$chunkNum] = substr($$segDataPt, 8);
@@ -7649,7 +7654,7 @@ sub ProcessJPEG($$;$)
                         undef $flirCount;   # prevent reprocessing
                     }
                 } else {
-                    $self->WarnOnce('Invalid or extraneous FLIR chunk(s)');
+                    $self->Warn('Invalid or extraneous FLIR chunk(s)');
                 }
             } elsif ($$segDataPt =~ /^PARROT\0(II\x2a\0|MM\0\x2a)/) {
                 # (don't know if this could span multiple segments)
@@ -7694,7 +7699,7 @@ sub ProcessJPEG($$;$)
                 }
                 if (defined $iccChunkCount) {
                     if (defined $iccChunk[$chunkNum]) {
-                        $self->WarnOnce('Duplicate ICC_Profile chunk number(s)');
+                        $self->Warn('Duplicate ICC_Profile chunk number(s)');
                         $iccChunk[$chunkNum] .= substr($$segDataPt, 14);
                     } else {
                         $iccChunk[$chunkNum] = substr($$segDataPt, 14);
@@ -7717,7 +7722,7 @@ sub ProcessJPEG($$;$)
                         undef $iccChunkCount;     # prevent reprocessing
                     }
                 } else {
-                    $self->WarnOnce('Invalid or extraneous ICC_Profile chunk(s)');
+                    $self->Warn('Invalid or extraneous ICC_Profile chunk(s)');
                 }
             } elsif ($$segDataPt =~ /^FPXR\0/) {
                 next if $fast > 1;      # skip processing for very fast
@@ -8061,7 +8066,7 @@ sub ProcessJPEG($$;$)
                 my $type = substr($$segDataPt, 12, 4);
                 # a Microsoft bug writes $len and $type incorrectly as little-endian
                 if ($type eq 'bmuj') {
-                    $self->WarnOnce('Wrong byte order in C2PA APP11 JUMBF header');
+                    $self->Warn('Wrong byte order in C2PA APP11 JUMBF header');
                     $type = 'jumb';
                     $len = unpack('x8V', $$segDataPt);
                     # fix the header
@@ -8738,23 +8743,18 @@ sub GetTagTable($)
             # try to load module for this table
             if ($tableName =~ /(.*)::/) {
                 my $module = $1;
-                if (eval "require $module") {
-                    # load additional modules if required
-                    if (not %$tableName) {
-                        if ($module eq 'Image::ExifTool::XMP') {
-                            require 'Image/ExifTool/XMP2.pl';
-                        } elsif ($tableName eq 'Image::ExifTool::QuickTime::Stream') {
-                            require 'Image/ExifTool/QuickTimeStream.pl';
-                        }
-                    }
-                } else {
+                if (not eval "require $module") {
                     $@ and warn $@;
+                } elsif (not %$tableName) {
+                    # load additional modules if required
+                    if ($module eq 'Image::ExifTool::XMP') {
+                        require 'Image/ExifTool/XMP2.pl';
+                    } elsif ($tableName eq 'Image::ExifTool::QuickTime::Stream') {
+                        require 'Image/ExifTool/QuickTimeStream.pl';
+                    }
                 }
             }
-            unless (%$tableName) {
-                warn "Can't find table $tableName\n";
-                return undef;
-            }
+            %$tableName or warn("Can't find table $tableName\n"), return undef;
         }
         no strict 'refs';
         $table = \%$tableName;

@@ -2525,7 +2525,7 @@ sub ReadMXFValue($$$)
     } elsif ($type =~ /(Array|Batch)/ and $len > 16) {
         my ($count, $size) = unpack('NN', $val);
         # validate data length
-        $len == 8 + $count * $size or $et->WarnOnce("Bad array or batch size");
+        $len == 8 + $count * $size or $et->Warn("Bad array or batch size");
         my ($i, @a);
         for ($i=0; $i<$count; ++$i) {
             my $pos = 8 + $i * $size;
@@ -2626,7 +2626,7 @@ sub ProcessLocalSet($$$)
             $extra = sprintf(', Local 0x%.4x', $loc);
         } else {
             $tag = $loc;
-          # $et->WarnOnce('Missing local key for at least one tag');
+          # $et->Warn('Missing local key for at least one tag');
             $extra = ', NOT IN PRIMER!';
         }
         my $tagInfo = $$tagTablePtr{$tag};

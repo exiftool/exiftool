@@ -330,7 +330,7 @@ sub ProcessRAR($$)
                     $et->Warn('Large block encountered. Aborting.');
                     last;
                 } elsif ($et->Options('LargeFileSupport') eq '2') {
-                    $et->WarnOnce('Processing large block (LargeFileSupport is 2)');
+                    $et->Warn('Processing large block (LargeFileSupport is 2)');
                 }
             }
             # process the block

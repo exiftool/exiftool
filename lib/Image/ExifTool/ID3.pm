@@ -1169,7 +1169,7 @@ sub ProcessID3v2($$$)
             }
             $tagInfo = $et->GetTagInfo($otherTable, $id) if $otherTable;
             if ($tagInfo) {
-                $et->WarnOnce("Frame '${id}' is not valid for this ID3 version", 1);
+                $et->Warn("Frame '${id}' is not valid for this ID3 version", 1);
             } else {
                 next unless $verbose or $et->Options('Unknown');
                 $id =~ tr/-A-Za-z0-9_//dc;
@@ -1198,7 +1198,7 @@ sub ProcessID3v2($$$)
             }
         }
         if ($flags{Encrypt}) {
-            $et->WarnOnce('Encrypted frames currently not supported');
+            $et->Warn('Encrypted frames currently not supported');
             next;
         }
         # extract the value
@@ -1232,7 +1232,7 @@ sub ProcessID3v2($$$)
                     next;
                 }
             } else {
-                $et->WarnOnce('Install Compress::Zlib to decode compressed frames');
+                $et->Warn('Install Compress::Zlib to decode compressed frames');
                 next;
             }
         }

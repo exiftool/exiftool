@@ -244,7 +244,7 @@ sub WriteFLIF($$)
                     }
                 }
             } else {
-                $et->WarnOnce('Install IO::Compress::RawDeflate to write FLIF metadata');
+                $et->Warn('Install IO::Compress::RawDeflate to write FLIF metadata');
             }
             Write($outfile, $tag, SetVarInt(length $buff), $buff) or return -1;
         } elsif (not defined $soi) {
@@ -301,7 +301,7 @@ sub ProcessFLIF($$)
                     $et->Warn("Error inflating FLIF $tag chunk");
                 }
             } else {
-                $et->WarnOnce('Install IO::Uncompress::RawInflate to decode FLIF metadata');
+                $et->Warn('Install IO::Uncompress::RawInflate to decode FLIF metadata');
             }
         } else {
             $raf->Seek($size, 1) or $et->Warn('Seek error'), last;

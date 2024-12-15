@@ -3630,9 +3630,9 @@ NoLoop:
         }
         if ($$et{XmpValidate} and $fmt and $fmt eq 'boolean' and $val!~/^True|False$/) {
             if ($val =~ /^true|false$/) {
-                $et->WarnOnce("Boolean value for XMP-$ns:$$tagInfo{Name} should be capitalized",1);
+                $et->Warn("Boolean value for XMP-$ns:$$tagInfo{Name} should be capitalized",1);
             } else {
-                $et->WarnOnce(qq(Boolean value for XMP-$ns:$$tagInfo{Name} should be "True" or "False"),1);
+                $et->Warn(qq(Boolean value for XMP-$ns:$$tagInfo{Name} should be "True" or "False"),1);
             }
         }
         # protect against large binary data in unknown tags
@@ -3823,7 +3823,7 @@ sub ParseXMPElement($$$;$$$$)
                         $stdNS = $uri2ns{$try};
                         if ($stdNS) {
                             $val = $try;
-                            $et->WarnOnce("Fixed incorrect URI for xmlns:$ns", 1);
+                            $et->Warn("Fixed incorrect URI for xmlns:$ns", 1);
                         } elsif ($val =~ m(^http://ns.nikon.com/BASIC_PARAM)) {
                             $et->OverrideFileType('NXD','application/x-nikon-nxd');
                         } else {
@@ -3904,9 +3904,9 @@ sub ParseXMPElement($$$;$$$$)
             if ($nItems == 1000) {
                 my ($tg,$ns) = GetXMPTagID($propList);
                 if ($isWriting) {
-                    $et->WarnOnce("Excessive number of items for $ns:$tg. Processing may be slow", 1);
+                    $et->Warn("Excessive number of items for $ns:$tg. Processing may be slow", 1);
                 } elsif (not $$et{OPTIONS}{IgnoreMinorErrors}) {
-                    $et->WarnOnce("Extracted only 1000 $ns:$tg items. Ignore minor errors to extract all", 2);
+                    $et->Warn("Extracted only 1000 $ns:$tg items. Ignore minor errors to extract all", 2);
                     last;
                 }
             }
@@ -4006,12 +4006,12 @@ sub ParseXMPElement($$$;$$$$)
                 } elsif ($$et{XmpAbout} ne $attrs{$shortName}) {
                     if ($isWriting) {
                         my $str = "Different 'rdf:about' attributes not handled";
-                        unless ($$et{WARNED_ONCE}{$str}) {
+                        unless ($$et{WAS_WARNED}{$str}) {
                             $et->Error($str, 1);
-                            $$et{WARNED_ONCE}{$str} = 1;
+                            $$et{WAS_WARNED}{$str} = 1;
                         }
                     } elsif ($$et{XmpValidate}) {
-                        $et->WarnOnce("Different 'rdf:about' attributes");
+                        $et->Warn("Different 'rdf:about' attributes");
                     }
                 }
             }

@@ -907,7 +907,7 @@ sub WriteXtraValue($$$)
                 $type = 72;
             }
         } else {
-            $et->WarnOnce("Error converting value for Microsoft:$$tagInfo{Name}");
+            $et->Warn("Error converting value for Microsoft:$$tagInfo{Name}");
         }
         SetByteOrder('MM');
         if (defined $type) {

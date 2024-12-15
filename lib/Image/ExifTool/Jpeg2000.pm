@@ -866,8 +866,8 @@ sub BrotliWarn($$;$)
 {
     my ($et, $type, $uncompress) = @_;
     my ($enc, $mod) = $uncompress ? qw(decoding Uncompress) : qw(encoding Compress);
-    $et->WarnOnce("Error $enc '${type}' brob box");
-    $et->WarnOnce("Try updating to IO::${mod}::Brotli 0.004 or later");
+    $et->Warn("Error $enc '${type}' brob box");
+    $et->Warn("Try updating to IO::${mod}::Brotli 0.004 or later");
 }
 
 #------------------------------------------------------------------------------
@@ -933,7 +933,7 @@ sub CreateNewBoxes($$)
                             $tag = 'brob';
                         }
                     } else {
-                        $et->WarnOnce('Install IO::Compress::Brotli to create Brotli-compressed metadata');
+                        $et->Warn('Install IO::Compress::Brotli to create Brotli-compressed metadata');
                     }
                 }
                 my $boxhdr = pack('N', length($newdir) + length($pad) + 8) . $tag;
@@ -1285,7 +1285,7 @@ sub ProcessJpeg2000Box($$$)
                                     ++$$et{CHANGED};
                                 }
                             } else {
-                                $et->WarnOnce('Install IO::Compress::Brotli to write Brotli-compressed metadata');
+                                $et->Warn('Install IO::Compress::Brotli to write Brotli-compressed metadata');
                             }
                         } elsif (not $compress and $boxID eq 'brob') {
                             # (in this case, ProcessBrotli has returned uncompressed data,
@@ -1410,7 +1410,7 @@ sub ProcessBrotli($$$)
     }
     if (eval { require IO::Uncompress::Brotli }) {
         if ($isWriting and not eval { require IO::Compress::Brotli }) {
-            $et->WarnOnce('Install IO::Compress::Brotli to write Brotli-compressed metadata');
+            $et->Warn('Install IO::Compress::Brotli to write Brotli-compressed metadata');
             return undef;
         }
         my $compress = $et->Options('Compress');
@@ -1455,7 +1455,7 @@ sub ProcessBrotli($$$)
             return $type . $dat;
         }
     } else {
-        $et->WarnOnce('Install IO::Uncompress::Brotli to decode Brotli-compressed metadata');
+        $et->Warn('Install IO::Uncompress::Brotli to decode Brotli-compressed metadata');
         return undef if $isWriting;
     }
     return 1;

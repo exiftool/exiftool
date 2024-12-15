@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28214 tags, with 17511 unique tag names.
+They contain a total of 28218 tags, with 17514 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -8903,7 +8903,7 @@ access to this information.
   0x0432   MeasurementScale?                    no
   0x0433   TimelineInfo?                        no
   0x0434   SheetDisclosure?                     no
-  0x0435   ChannelOptions?                      no
+  0x0435   ChannelOptions                       Photoshop ChannelOptions
   0x0436   OnionSkins?                          no
   0x0438   CountInfo?                           no
   0x043a   PrintInfo2?                          no
@@ -8965,6 +8965,15 @@ access to this information.
   Index1   Tag Name                             Writable
   ------   --------                             --------
       4    PixelAspectRatio                     no
+
+=head3 Photoshop ChannelOptions Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    ChannelColorSpace                    no
+      2    ChannelColorData                     no
+     11    ChannelOpacity                       no
+     12    ChannelColorIndicates                no
 
 =head3 Photoshop DocumentData Tags
 
@@ -9325,6 +9334,7 @@ Unknown only to reduce the volume of the normal output.
            CanonCameraInfo1100D                 Canon CameraInfo600D
            CanonCameraInfo1200D                 Canon CameraInfo60D
            CanonCameraInfoR6                    Canon CameraInfoR6
+           CanonCameraInfoR6m2                  Canon CameraInfoR6m2
            CanonCameraInfoG5XII                 Canon CameraInfoG5XII
            CanonCameraInfoPowerShot             Canon CameraInfoPowerShot
            CanonCameraInfoPowerShot2            Canon CameraInfoPowerShot2
@@ -10320,6 +10330,14 @@ CameraInfo tags for the EOS R5 and R6.
   Index1   Tag Name                             Writable
   ------   --------                             --------
    2801    ShutterCount                         int32u
+
+=head3 Canon CameraInfoR6m2 Tags
+
+CameraInfo tags for the EOS R6 Mark II.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+   3369    ShutterCount                         int32u
 
 =head3 Canon CameraInfoG5XII Tags
 
@@ -30000,7 +30018,7 @@ for the official QuickTime specification.
   'thum'               ThumbnailImage           no
   'udat'               GPSLog                   no
   'udta'               KenwoodData              QuickTime Stream
-                       LIGO_JSON                QuickTime Stream
+                       LigoJSON                 QuickTime Stream
                        FLIRData                 FLIR UserData
   'uuid'               XMP                      XMP
                        UUID-PROF                QuickTime Profile
@@ -30020,7 +30038,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 96 different formats of timed GPS metadata from video files.
+currently reads 96 different types of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------

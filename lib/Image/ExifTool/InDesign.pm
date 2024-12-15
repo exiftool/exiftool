@@ -78,7 +78,7 @@ sub ProcessIND($$)
             $err = 'InDesign files larger than 2 GB not supported (LargeFileSupport not set)';
             goto DONE;
         } elsif ($et->Options('LargeFileSupport') eq '2') {
-            $et->WarnOnce('Processing large file (LargeFileSupport is 2)');
+            $et->Warn('Processing large file (LargeFileSupport is 2)');
         }
     }
     if ($outfile) {

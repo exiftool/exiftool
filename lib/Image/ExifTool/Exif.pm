@@ -6186,7 +6186,7 @@ sub ProcessExif($$$)
     if ($$dirInfo{DirName} eq 'MakerNotes' and $$et{FileType} eq 'CR3' and
         $$dirInfo{Parent} and $$dirInfo{Parent} eq 'ExifIFD')
     {
-        $et->WarnOnce("MakerNotes shouldn't exist ExifIFD of CR3 image", 1);
+        $et->Warn("MakerNotes shouldn't exist ExifIFD of CR3 image", 1);
     }
     # set flag to calculate image data hash if requested
     $doHash = 1 if $$et{ImageDataHash} and (($$et{FILE_TYPE} eq 'TIFF' and not $base and not $inMakerNotes) or
@@ -6656,7 +6656,7 @@ sub ProcessExif($$$)
             if ($count > 500 and $formatStr !~ /^(undef|string|binary)$/ and
                 (not $tagInfo or $$tagInfo{LongBinary} or $warned) and not $$et{OPTIONS}{IgnoreMinorErrors})
             {
-                $et->WarnOnce('Not decoding some large array(s). Ignore minor errors to decode', 2) unless $warned;
+                $et->Warn('Not decoding some large array(s). Ignore minor errors to decode', 2) unless $warned;
                 next if $$et{TAGS_FROM_FILE};   # don't generate bogus value when copying tags
                 $val = "(large array of $count $formatStr values)";
             } else {

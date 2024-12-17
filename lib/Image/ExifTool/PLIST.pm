@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 sub ExtractObject($$;$);
 sub Get24u($$);
@@ -344,7 +344,7 @@ sub ProcessBinaryPLIST($$;$)
     my ($i, $buff, @table);
     my $dataPt = $$dirInfo{DataPt};
 
-    $et->VerboseDir('Binary PLIST');
+    $et->VerboseDir('Binary PLIST') unless $$dirInfo{NoVerboseDir};
     SetByteOrder('MM');
 
     if ($dataPt) {

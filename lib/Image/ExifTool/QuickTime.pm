@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.05';
+$VERSION = '3.06';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -2894,6 +2894,17 @@ my %userDefined = (
             %unknownInfo,
         },
     ],
+    grpl => {
+        Name => 'Unknown_grpl',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::grpl' },
+    },
+);
+
+# unknown grpl container
+%Image::ExifTool::QuickTime::grpl = (
+    PROCESS_PROC => \&ProcessMOV,
+    GROUPS => { 2 => 'Video' },
+    # altr - seen "00 00 00 00 00 00 00 41 00 00 00 02 00 00 00 42 00 00 00 2e"
 );
 
 # additional metadata container (ref ISO14496-12:2015)
@@ -3038,6 +3049,7 @@ my %userDefined = (
 );
 
 # ref https://aomediacodec.github.io/av1-spec/av1-spec.pdf
+# (NOTE: conversions are the same as Image::ExifTool::ICC_Profile::ColorRep tags)
 %Image::ExifTool::QuickTime::ColorRep = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 2 => 'Video' },
@@ -3321,7 +3333,13 @@ my %userDefined = (
         the associations between items in the file.  This information is used by
         ExifTool, but these entries are not extracted as tags.
     },
-    dimg => { Name => 'DerivedImageRef',   RawConv => 'undef' },
+    dimg => {
+        Name => 'DerivedImageRef',
+        # also parse these for the ID of the primary 'tmap' item
+        # (tone-mapped image in HDRGainMap HEIC by iPhone 15 and 16)
+        RawConv => \&ParseContentDescribes,
+        WriteHook => \&ParseContentDescribes,
+    },
     thmb => { Name => 'ThumbnailRef',      RawConv => 'undef' },
     auxl => { Name => 'AuxiliaryImageRef', RawConv => 'undef' },
     cdsc => {
@@ -3339,7 +3357,8 @@ my %userDefined = (
     # hvc1 - HEVC image
     # lhv1 - L-HEVC image
     # infe - ItemInformationEntry
-    # infe types: avc1,hvc1,lhv1,Exif,xml1,iovl(overlay image),grid,mime,hvt1(tile image)
+    # infe types: avc1,hvc1,lhv1,Exif,xml1,iovl(overlay image),grid,mime,tmap,hvt1(tile image)
+    # ('tmap' has something to do with the new gainmap written by iPhone 15 and 16)
     infe => {
         Name => 'ItemInfoEntry',
         RawConv => \&ParseItemInfoEntry,
@@ -6569,7 +6588,7 @@ my %userDefined = (
     PROCESS_PROC => \&ProcessKeys,
     WRITE_PROC => \&WriteKeys,
     CHECK_PROC => \&CheckQTValue,
-    VARS => { LONG_TAGS => 8 },
+    VARS => { LONG_TAGS => 9 },
     WRITABLE => 1,
     # (not PREFERRED when writing)
     GROUPS => { 1 => 'Keys' },
@@ -6767,6 +6786,7 @@ my %userDefined = (
         ValueConv => 'unpack("N", $val)',
         Writable => 0, # (don't make this writable because it is found in timed metadata)
     },
+    'full-frame-rate-playback-intent' => 'FullFrameRatePlaybackIntent', #forum16824
 #
 # seen in Apple ProRes RAW file
 #
@@ -8940,6 +8960,7 @@ sub ParseItemInfoEntry($$)
     $et->VPrint(1, "$$et{INDENT}  Item $id: Type=", $$items{$id}{Type} || '',
                    ' Name=', $$items{$id}{Name} || '',
                    ' ContentType=', $$items{$id}{ContentType} || '',
+                   ($$et{PrimaryItem} and $$et{PrimaryItem} == $id) ? ' (PrimaryItem)' : '',
                    "\n") if $verbose > 1;
     return undef;
 }
@@ -9039,6 +9060,7 @@ sub HandleItemInfo($)
                 }
             }
             $warn = "Can't currently decode protected $type metadata" if $$item{ProtectionIndex};
+            # Note: In HEIC's, these seem to indicate data in 'idat' instead of 'mdat'
             $warn = "Can't currently extract $type with construction method $$item{ConstructionMethod}" if $$item{ConstructionMethod};
             $et->Warn($warn) if $warn and $name;
             $warn = 'Not this file' if $$item{DataReferenceIndex}; # (can only extract from "this file")

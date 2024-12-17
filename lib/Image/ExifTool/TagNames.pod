@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28218 tags, with 17514 unique tag names.
+They contain a total of 28224 tags, with 17515 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -8643,6 +8643,7 @@ specification.
   'cept'   ColorEncodingParams                  no
   'chad'   ChromaticAdaptation                  no
   'chrm'   Chromaticity                         ICC_Profile Chromaticity
+  'cicp'   ColorRepresentation                  ICC_Profile ColorRep
   'ciis'   ColorimetricIntentImageState         no
   'clio'   ColorantInfoOut                      no
   'cloo'   ColorantOrderOut                     no
@@ -8681,6 +8682,7 @@ specification.
   'gdb1'   GamutBoundaryDescription1            no
   'gdb2'   GamutBoundaryDescription2            no
   'gdb3'   GamutBoundaryDescription3            no
+  'hdgm'   HDGainMapInfo                        no
   'kTRC'   GrayTRC                              no
   'lumi'   Luminance                            no
   'mcta'   MultiplexTypeArray                   no
@@ -8761,6 +8763,15 @@ specification.
      20    ChromaticityChannel2                 no
      28    ChromaticityChannel3                 no
      36    ChromaticityChannel4                 no
+
+=head3 ICC_Profile ColorRep Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      8    ColorPrimaries                       no
+      9    TransferCharacteristics              no
+     10    MatrixCoefficients                   no
+     11    VideoFullRangeFlag                   no
 
 =head3 ICC_Profile ColorantTable Tags
 
@@ -30273,6 +30284,8 @@ changed via the config file.
   'director'    Director                        yes
   'displayname' DisplayName                     yes
   'encoder'     Encoder                         yes
+  'full-frame-rate-playback-intent'
+                FullFrameRatePlaybackIntent     yes
   'genre'       Genre                           yes
   'information' Information                     yes
   'keywords'    Keywords                        yes
@@ -30405,6 +30418,7 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
   'bxml'   BinaryXML?                           no
   'dinf'   DataInfo                             QuickTime DataInfo
   'free'   Free?                                no
+  'grpl'   Unknown_grpl                         QuickTime grpl
   'hdlr'   Handler                              QuickTime Handler
   'idat'   MetaImageSize                        no
   'iinf'   ItemInformation                      QuickTime ItemInfo
@@ -30438,6 +30452,12 @@ MP4 data reference box.
   "url\0"  URL                                  no
   'url '   URL                                  no
   'urn '   URN                                  no
+
+=head3 QuickTime grpl Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
 
 =head3 QuickTime Handler Tags
 

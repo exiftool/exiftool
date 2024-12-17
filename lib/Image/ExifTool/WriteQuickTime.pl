@@ -485,7 +485,7 @@ sub WriteItemInfo($$$)
     my $boxPos = $$dirInfo{BoxPos};     # hash of [length,position] for each box
     my $raf = $$et{RAF};
     my $items = $$et{ItemInfo};
-    my (%did, @mdatEdit, $name);
+    my (%did, @mdatEdit, $name, $tmap);
 
     return () unless $items and $raf;
 
@@ -493,12 +493,15 @@ sub WriteItemInfo($$$)
     my $primary = $$et{PrimaryItem};
     my $curPos = $raf->Tell();
     my $id;
+    my $lastID = 0;
     foreach $id (sort { $a <=> $b } keys %$items) {
+        $lastID = $id;
         $primary = $id unless defined $primary; # assume primary is lowest-number item if pitm missing
         my $item = $$items{$id};
         # only edit primary EXIF/XMP metadata
         next unless $$item{RefersTo} and $$item{RefersTo}{$primary};
         my $type = $$item{ContentType} || $$item{Type} || next;
+        $tmap = $id if $type eq 'tmap'; # save ID of primary 'tmap' item (tone-mapped image)
         # get ExifTool name for this item
         $name = { Exif => 'EXIF', 'application/rdf+xml' => 'XMP' }->{$type};
         next unless $name;  # only care about EXIF and XMP
@@ -700,8 +703,7 @@ sub WriteItemInfo($$$)
                 $type = "Exif\0";
                 $mime = '';
             }
-            my $id = 1;
-            ++$id while $$items{$id} or $usedID{$id};   # find next unused item ID
+            my $id = ++$lastID;
             my $n = length($type) + length($mime) + length($enc) + 16;
             if ($id < 0x10000) {
                 $add{iinf} .= pack('Na4CCCCnn', $n, 'infe', 2, 0, 0, 1, $id, 0) . $type . $mime . $enc;
@@ -709,11 +711,13 @@ sub WriteItemInfo($$$)
                 $n += 2;
                 $add{iinf} .= pack('Na4CCCCNn', $n, 'infe', 3, 0, 0, 1, $id, 0) . $type . $mime . $enc;
             }
-            # add new cdsc to iref
+            # add new cdsc to iref (also refer to primary 'tmap' if it exists)
             if ($irefVer) {
-                $add{iref} .= pack('Na4NnN', 18, 'cdsc', $id, 1, $primary);
+                my ($fmt, $siz, $num) = defined $tmap ? ('N', 22, 2) : ('', 18, 1);
+                $add{iref} .= pack('Na4NnN'.$fmt, $siz, 'cdsc', $id, $num, $primary, $tmap);
             } else {
-                $add{iref} .= pack('Na4nnn', 14, 'cdsc', $id, 1, $primary);
+                my ($fmt, $siz, $num) = defined $tmap ? ('n', 16, 2) : ('', 14, 1);
+                $add{iref} .= pack('Na4nnn'.$fmt, $siz, 'cdsc', $id, $num, $primary, $tmap);
             }
             # add new entry to iloc table (see ISO14496-12:2015 pg.79)
             my $ilocVer = Get8u($outfile, $$boxPos{iloc}[0] + 8);

@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.69';
+$VERSION = '1.70';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -435,6 +435,7 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
 %Image::ExifTool::PNG::PhysicalPixel = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     WRITABLE => 1,
     GROUPS => { 1 => 'PNG-pHYs', 2 => 'Image' },
     WRITE_GROUP => 'PNG-pHYs',

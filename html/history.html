@@ -17,12 +17,23 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.09'><b>Dec. 17, 2024 - Version 13.09</b></a>
+<ul>
+<li>Added a new QuickTimetag (thanks Matti)
+<li>Added a missing format check on a few tags when writing
+<li>Decode a couple of new ICC_Profile tags
+<li>Patched HEIC writer so any newly added XMP or EXIF refers to the 'tmap' item
+    as well as the primary item (since iPhone 15 and 16 do it this way)
+<li>Fixed compatibility issue where Apple Preview would no longer show the gain
+    map after adding new XMP to an HEIC with an HDR gain map
+</ul>
+
 <a name='v13.08'><b>Dec. 14, 2024 - Version 13.08</b></a>
 <ul>
 <li>Decode ShutterCount for Canon EOS R6 Mark II (thanks Agoston Kapitany)
 <li>Decode a few new Photoshop tags
 <li>Suppress all duplicate Warning tags and add count to end of message
-<li>Changed format of bitmask keys in -list x output
+<li>Changed format of bitmask keys in -listx output
 <li>Internal streamlining of LIGOGPSINFO decoding
 <li>Fixed issue where some tags were incorrectly shown as writable in -listx
     output

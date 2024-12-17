@@ -7,12 +7,22 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.00. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Dec. 17, 2024 - Version 13.09
+
+  - Added a new QuickTimetag (thanks Matti)
+  - Added a missing format check on a few tags when writing
+  - Decode a couple of new ICC_Profile tags
+  - Patched HEIC writer so any newly added XMP or EXIF refers to the 'tmap' item
+    as well as the primary item (since iPhone 15 and 16 do it this way)
+  - Fixed compatibility issue where Apple Preview would no longer show the gain
+    map after adding new XMP to an HEIC with an HDR gain map
+
 Dec. 14, 2024 - Version 13.08
 
   - Decode ShutterCount for Canon EOS R6 Mark II (thanks Agoston Kapitany)
   - Decode a few new Photoshop tags
   - Suppress all duplicate Warning tags and add count to end of message
-  - Changed format of bitmask keys in -list x output
+  - Changed format of bitmask keys in -listx output
   - Internal streamlining of LIGOGPSINFO decoding
   - Fixed issue where some tags were incorrectly shown as writable in -listx
     output

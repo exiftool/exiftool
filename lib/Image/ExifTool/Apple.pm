@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::PLIST;
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub ConvertPLIST($$);
 
@@ -291,12 +291,12 @@ sub ConvertPLIST($$);
     # 0x0047 - (LeaderFollowerAutoFocusLeaderDepth, ref 2)
     # 0x0048 - (LeaderFollowerAutoFocusLeaderFocusMethod, ref 2)
     # 0x0049 - (LeaderFollowerAutoFocusLeaderConfidence, ref 2)
-    # 0x004A - (LeaderFollowerAutoFocusLeaderROIType, ref 2)
+    # 0x004a - (LeaderFollowerAutoFocusLeaderROIType, ref 2)
     # 0x004a - 2=back normal, 4=back wide angle, 5=front (ref PH)
-    # 0x004B - (ZeroShutterLagFailureReason, ref 2)
-    # 0x004C - (TimeOfFlightAssistedAutoFocusEstimatorMSPMeasuredDepth, ref 2)
-    # 0x004D - (TimeOfFlightAssistedAutoFocusEstimatorMSPSensorConfidence, ref 2)
-    # 0x004E - (Camera, ref 2)
+    # 0x004b - (ZeroShutterLagFailureReason, ref 2)
+    # 0x004c - (TimeOfFlightAssistedAutoFocusEstimatorMSPMeasuredDepth, ref 2)
+    # 0x004d - (TimeOfFlightAssistedAutoFocusEstimatorMSPSensorConfidence, ref 2)
+    # 0x004e - (Camera, ref 2)
     0x004e => {
         Name => 'Apple_0x004e',
         Unknown => 1,
@@ -358,7 +358,8 @@ Image::ExifTool::AddCompositeTags('Image::ExifTool::Apple');
 sub ConvertPLIST($$)
 {
     my ($val, $et) = @_;
-    my $dirInfo = { DataPt => \$val };
+    my $dirInfo = { DataPt => \$val, NoVerboseDir => 1 };
+    my $oldOrder = $et->GetByteOrder();
     require Image::ExifTool::PLIST;
     Image::ExifTool::PLIST::ProcessBinaryPLIST($et, $dirInfo);
     $val = $$dirInfo{Value};
@@ -366,6 +367,7 @@ sub ConvertPLIST($$)
         require 'Image/ExifTool/XMPStruct.pl';
         $val = Image::ExifTool::XMP::SerializeStruct($et, $val);
     }
+    $et->SetByteOrder($oldOrder);
     return $val;
 }
 

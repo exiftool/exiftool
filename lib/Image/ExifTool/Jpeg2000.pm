@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.42';
+$VERSION = '1.43';
 
 sub ProcessJpeg2000Box($$$);
 sub ProcessJUMD($$$);
@@ -631,6 +631,7 @@ my %j2cMarker = (
 %Image::ExifTool::Jpeg2000::ColorSpec = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     WRITE_PROC => \&Image::ExifTool::WriteBinaryData, # (we don't actually call this)
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     GROUPS => { 2 => 'Image' },
     FORMAT => 'int8s',
     WRITABLE => 1,

@@ -561,11 +561,13 @@ effect as a value of 0 for options with numerical values.</p>
     </td><td align=center>undef</td></tr>
 <tr id="DateFormat"><td>DateFormat</td><td>Output format for date/time values. If date can not
     be converted, value is left unchanged unless the <a href="#StrictDate">StrictDate</a>
-    option is set.  Timezones are ignored.  The inversion conversion (ie. when calling
+    option is set.  The inversion conversion (ie. when calling
     <a href="#SetNewValue">SetNewValue</a>) is performed only if POSIX::strptime
-    or Time::Piece is installed.</td><td>See strftime manpage for details.
-    The default setting of undef causes date/time values to remain in standard EXIF
-    format (similar to a DateFormat of <code>"%Y:%m:%d %H:%M:%S"</code>).</td>
+    or Time::Piece is installed.</td><td>See strftime manpage for details, and
+    <a href="filename.html#codes">this page</a> for common date/time formatting
+    codes and additional ExifTool codes. The default setting of undef causes
+    date/time values to remain in standard EXIF format (similar to a DateFormat
+    of <code>"%Y:%m:%d %H:%M:%S"</code>).</td>
     <td align=center>undef</td></tr>
 <!-- <tr id="Debug"><td>Debug</td><td>Enable debugging messages</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr> -->

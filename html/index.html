@@ -98,9 +98,9 @@ the distribution files or access web pages too quickly will be blocked.</i></p>
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.09.tar.gz/download">
-Download        Version 13.09</a> (7.2 MB) -
-<a href="history.html">Dec. 17, 2024</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.10.tar.gz/download">
+Download        Version 13.10</a> (7.2 MB) -
+<a href="history.html">Dec. 20, 2024</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -152,11 +152,11 @@ only, and do not include the HTML documentation or other files of the full
 distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td rowspan=2><b><a name="alone">Windows</a></b></td><td><b>
-32-bit: <a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.09_32.zip/download">
-         exiftool-13.09_32.zip</a> (10.8 MB)</b></td></tr>
+32-bit: <a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.10_32.zip/download">
+         exiftool-13.10_32.zip</a> (10.9 MB)</b></td></tr>
 <tr><td><b>64-bit:
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.09_64.zip/download">
-         exiftool-13.09_64.zip</a> (10.6 MB)</b></td></tr>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.10_64.zip/download">
+         exiftool-13.10_64.zip</a> (10.7 MB)</b></td></tr>
          </table></blockquote>
 
 <p><b>The Windows executable</b> archives include Perl. Just download and un-zip
@@ -174,8 +174,8 @@ if you have any problems/comments with these versions.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
-<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-13.09.pkg/download">
-         ExifTool-13.09.pkg</a> (5.2 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-13.10.pkg/download">
+         ExifTool-13.10.pkg</a> (5.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -1125,12 +1125,10 @@ for proper rendering of the image.</li>
 <h2><font color='#cc6600'><a name="problems">Known Problems</a></font></h2>
 <ul>
 <li><span class=grn>[2024-12-16]</span>
-<b>HEIC images with an HDR gain map</b> may not show the gain map image in Apple Preview
-after being edited by ExifTool.  The reason for this is unclear, but there seems
-to be nothing fundamentally wrong with the ExifTool-edited image because the gain
-map may be restored by subsequently rewriting the file using the Apple API.
-<i class=grn>[ExifTool 13.09 patches what is most certainly an Apple issue by
-adding the new XMP with an item ID to be greater than all other items.]</i></li>
+<b>HEIC images with an HDR gain map</b> may not show the gain map image in
+Apple Preview after being edited by ExifTool to add new XMP.
+<i class=grn>[ExifTool 13.09 fixes this by adding the new XMP with an
+item ID greater than existing items.]</i></li>
 <li><span class=grn>[2024-08-01]</span>
 <b>ExifTool for Windows</b> supports a maximum path length of 246 characters
 for files.  Longer path lengths give an "Error opening file" message.

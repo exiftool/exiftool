@@ -362,6 +362,7 @@ my %unicodeString = (
     PROCESS_PROC => \&ProcessChannelOptions,
     VARS => { IS_BINARY => 1 },
     GROUPS => { 2 => 'Image' },
+    NOTES => 'These tags relate only to the appearance of a channel.',
     0 => {
         Name => 'ChannelColorSpace',
         Format => 'int16u',

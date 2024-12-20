@@ -11,21 +11,37 @@
 
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-13.00.tar.gz">Version 13.00</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-13.10.tar.gz">Version 13.10</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">MetaCPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.10'><b>Dec. 20, 2024 - Version 13.10</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added warnings for out-of-order entries in 'iinf' and 'ipma' boxes of HEIC
+    images
+<li>Added support for date/time formatting codes %f and %z in the inverse
+    print conversion when writing tags
+<li>Updated Geolocation databases from current geonames.org files
+<li>Improved verbose output to show values stored with construction method 1 in
+    MP4-based files
+<li>Enhanced the date/time timezone format specifier %z so that %:z returns the
+    time zone with a colon separator (eg. "-05:00")
+<li>Fixed bug where the existing tag wasn't being removed when writing a new
+    value for an Unknown QuickTime UserData or ItemList tag
+</ul>
+
 <a name='v13.09'><b>Dec. 17, 2024 - Version 13.09</b></a>
 <ul>
-<li>Added a new QuickTimetag (thanks Matti)
+<li>Added a new QuickTime tag (thanks Matti)
 <li>Added a missing format check on a few tags when writing
 <li>Decode a couple of new ICC_Profile tags
-<li>Patched HEIC writer so any newly added XMP or EXIF refers to the 'tmap' item
-    as well as the primary item (since iPhone 15 and 16 do it this way)
+<li>Patched HEIC writer so newly added XMP or EXIF refers to the 'tmap' item as
+    well as the primary item of an HDRGainMap image (since iPhone 15 and 16 do
+    it this way)
 <li>Fixed compatibility issue where Apple Preview would no longer show the gain
-    map after adding new XMP to an HEIC with an HDR gain map
+    map image after adding new XMP to an HEIC with an HDR gain map
 </ul>
 
 <a name='v13.08'><b>Dec. 14, 2024 - Version 13.08</b></a>

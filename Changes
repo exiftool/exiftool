@@ -4,18 +4,33 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 13.00. (Other versions are
+Note: The most recent production release is Version 13.10. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Dec. 20, 2024 - Version 13.10 (production release)
+
+  - Added warnings for out-of-order entries in 'iinf' and 'ipma' boxes of HEIC
+    images
+  - Added support for date/time formatting codes %f and %z in the inverse
+    print conversion when writing tags
+  - Updated Geolocation databases from current geonames.org files
+  - Improved verbose output to show values stored with construction method 1 in
+    MP4-based files
+  - Enhanced the date/time timezone format specifier %z so that %:z returns the
+    time zone with a colon separator (eg. "-05:00")
+  - Fixed bug where the existing tag wasn't being removed when writing a new
+    value for an Unknown QuickTime UserData or ItemList tag
 
 Dec. 17, 2024 - Version 13.09
 
-  - Added a new QuickTimetag (thanks Matti)
+  - Added a new QuickTime tag (thanks Matti)
   - Added a missing format check on a few tags when writing
   - Decode a couple of new ICC_Profile tags
-  - Patched HEIC writer so any newly added XMP or EXIF refers to the 'tmap' item
-    as well as the primary item (since iPhone 15 and 16 do it this way)
+  - Patched HEIC writer so newly added XMP or EXIF refers to the 'tmap' item as
+    well as the primary item of an HDRGainMap image (since iPhone 15 and 16 do
+    it this way)
   - Fixed compatibility issue where Apple Preview would no longer show the gain
-    map after adding new XMP to an HEIC with an HDR gain map
+    map image after adding new XMP to an HEIC with an HDR gain map
 
 Dec. 14, 2024 - Version 13.08
 

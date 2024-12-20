@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.06';
+$VERSION = '3.07';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -2222,8 +2222,8 @@ my %userDefined = (
     _cx_ => { Name => 'CX',    Format => 'rational64s', Unknown => 1 },
     _cy_ => { Name => 'CY',    Format => 'rational64s', Unknown => 1 },
     rads => { Name => 'Rads',  Format => 'rational64s', Unknown => 1 },
-    lvlm => { Name => 'LevelMeter', Format => 'rational64s', Unknown => 1 }, # (guess)
-    Lvlm => { Name => 'LevelMeter', Format => 'rational64s', Unknown => 1 }, # (guess)
+    lvlm => { Name => 'LevelMeter', Format => 'rational64s', Unknown => 1 }, # (guess, Kodak proprietary)
+    Lvlm => { Name => 'LevelMeter', Format => 'rational64s', Unknown => 1 }, # (guess, Kodak proprietary)
     pose => { Name => 'pose', SubDirectory => { TagTable => 'Image::ExifTool::Kodak::pose' } },
     # AMBA => Ambarella AVC atom (unknown data written by Kodak Playsport video cam)
     # tmlp - 1 byte: 0 (PixPro SP360/4KVR360)
@@ -2822,7 +2822,7 @@ my %userDefined = (
     },
     iinf => [{
         Name => 'ItemInformation',
-        Condition => '$$valPt =~ /^\0/', # (check for version 0)
+        Condition => '$$self{LastItemID} = -1; $$valPt =~ /^\0/', # (check for version 0)
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::ItemInfo',
             Start => 6, # (4-byte version/flags + 2-byte count)
@@ -8807,6 +8807,7 @@ sub PrintableTagID($;$)
 #  ContentType        - mime type of item
 #  ContentEncoding    - item encoding
 #  URI                - URI of a 'uri '-type item
+#  infe               - raw data for 'infe' box (when writing only) [retracted]
 # ipma:
 #  Association        - list of associated properties in the ipco container
 #  Essential          - list of "essential" flags for the associated properties
@@ -8957,11 +8958,18 @@ sub ParseItemInfoEntry($$)
             $$items{$id}{URI} = GetString(\$val, $pos);
         }
     }
+    #[retracted] # save raw infe box when writing in case we need to sort items later
+    #[retracted] $$items{$id}{infe} = pack('N', length($val)+8) . 'infe' . $val if $$et{IsWriting};
     $et->VPrint(1, "$$et{INDENT}  Item $id: Type=", $$items{$id}{Type} || '',
                    ' Name=', $$items{$id}{Name} || '',
                    ' ContentType=', $$items{$id}{ContentType} || '',
                    ($$et{PrimaryItem} and $$et{PrimaryItem} == $id) ? ' (PrimaryItem)' : '',
                    "\n") if $verbose > 1;
+    unless ($id > $$et{LastItemID}) {
+        $et->Warn('Item info entries are out of order'); #[retracted] unless $$et{IsWriting};
+        #[retracted] $$et{ItemsNotSorted} = 1;   # set flag indicating the items weren't sorted
+    }
+    $$et{LastItemID} = $id;
     return undef;
 }
 
@@ -8982,6 +8990,7 @@ sub ParseItemPropAssoc($$)
     my $flg = Get32u(\$val, 0);
     my $num = Get32u(\$val, 4);
     my $pos = 8;
+    my $lastID = -1;
     for ($i=0; $i<$num; ++$i) {
         if ($ver == 0) {
             return undef if $pos + 3 > $len;
@@ -9014,6 +9023,9 @@ sub ParseItemPropAssoc($$)
         $$items{$id}{Association} = \@association;
         $$items{$id}{Essential} = \@essential;
         $et->VPrint(1, "$$et{INDENT}  Item $id properties: @association\n") if $verbose > 1;
+        # (according to ISO/IEC 23008-12, these entries must be sorted by item ID)
+        $et->Warn('Item property association entries are out of order') unless $id > $lastID;
+        $lastID = $id;
     }
     return undef;
 }
@@ -9061,7 +9073,9 @@ sub HandleItemInfo($)
             }
             $warn = "Can't currently decode protected $type metadata" if $$item{ProtectionIndex};
             # Note: In HEIC's, these seem to indicate data in 'idat' instead of 'mdat'
-            $warn = "Can't currently extract $type with construction method $$item{ConstructionMethod}" if $$item{ConstructionMethod};
+            my $constMeth = $$item{ConstructionMethod} || 0;
+            $warn = "Can't currently extract $type with construction method $constMeth" if $constMeth > 1;
+            $warn = "No 'idat' for $type object with construction method 1" if $constMeth == 1 and not $$et{MediaDataInfo};
             $et->Warn($warn) if $warn and $name;
             $warn = 'Not this file' if $$item{DataReferenceIndex}; # (can only extract from "this file")
             unless (($$item{Extents} and @{$$item{Extents}}) or $warn) {
@@ -9072,7 +9086,7 @@ sub HandleItemInfo($)
                 $et->VPrint(0, "$$et{INDENT}    [not extracted]  ($warn)\n") if $verbose > 2;
                 next;
             }
-            my $base = $$item{BaseOffset} || 0;
+            my $base = ($$item{BaseOffset} || 0) + ($constMeth ? $$et{MediaDataInfo}[0] : 0);
             if ($verbose > 2) {
                 # do verbose hex dump
                 my $len = 0;
@@ -9211,6 +9225,7 @@ sub HandleItemInfo($)
         delete $$et{DOC_NUM};
     }
     delete $$et{ItemInfo};
+    delete $$et{MediaDataInfo};
 }
 
 #------------------------------------------------------------------------------
@@ -9793,8 +9808,10 @@ sub ProcessMOV($$;$)
         # save required tag sizes
         if ($$tagTablePtr{"$tag-size"}) {
             $et->HandleTag($tagTablePtr, "$tag-size", $size);
-            $et->HandleTag($tagTablePtr, "$tag-offset", $raf->Tell()) if $$tagTablePtr{"$tag-offset"};
+            $et->HandleTag($tagTablePtr, "$tag-offset", $raf->Tell()+$dirBase) if $$tagTablePtr{"$tag-offset"};
         }
+        # save position/size of 'idat'
+        $$et{MediaDataInfo} = [ $raf->Tell() + $dirBase, $size ] if $tag eq 'idat';
         # stop processing at mdat/idat if -fast2 is used
         last if $fast > 1 and ($tag eq 'mdat' or ($tag eq 'idat' and $$et{FileType} ne 'HEIC'));
         # load values only if associated with a tag (or verbose) and not too big

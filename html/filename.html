@@ -357,7 +357,7 @@ with these name format codes.</p>
 <p><b>Notes:</b></p>
 <ol>
 <li>The <code>%f</code> format code is an ExifTool-specific enhancement and
-supports an optional number of digits after the decimal point. For example,
+supports an optional number of digits after the decimal point.  For example,
 <code>%3f</code> gives fractional seconds with 3 digits (eg. ".123"). 
 <code>%f</code> alone returns an empty string if the date/time contains no
 subseconds.  A "<code>-</code>" may be added to drop the decimal (eg.
@@ -366,11 +366,15 @@ number of digits, and the date/time value is incremented by one second if the
 rounding would overflow to the next second, even if the number of decimal digits
 is zero (ie. <code>%0f</code>).  Without <code>%f</code>, the fractional seconds
 are simply discarded and no rounding is performed.<br><br></li>
+
 <li>The <code>%s</code> and <code>%z</code> format codes use the time zone
 specified by the date/time value.  If the date/time value does not include a
 time zone specification, then it is interpreted as a local time in the system
-time zone.  These format codes are parsed by ExifTool, so they should work on
-all systems.<br><br></li>
+time zone.  <code>%z</code> returns the time zone in the format "-0500", and
+adding a colon to the format specifier (ie. <code>%:z</code>) adds a colon to
+the returned time zone (eg. "-05:00").  These format codes are parsed by
+ExifTool, so they should work on all systems.<br><br></li>
+
 <li>The <code>%Z</code> format code ignores any time zone specified in the
 date/time value, and returns the system time-zone name for the given date/time
 interpreted as a local system time.</li>

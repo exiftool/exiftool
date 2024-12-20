@@ -4993,7 +4993,7 @@ my $strptimeLib; # strptime library name if available
 sub InverseDateTime($$;$$)
 {
     my ($self, $val, $tzFlag, $dateOnly) = @_;
-    my ($rtnVal, $tz);
+    my ($rtnVal, $tz, $fs);
     my $fmt = $$self{OPTIONS}{DateFormat};
     # strip off timezone first if it exists
     if (not $fmt and $val =~ s/([-+])(\d{1,2}):?(\d{2})\s*(DST)?$//i) {
@@ -5019,8 +5019,17 @@ sub InverseDateTime($$;$$)
                 $strptimeLib = '';
             }
         }
-        # handle factional seconds (%f), but only at the end of the string
-        my $fs = ($fmt =~ s/%f$// and $val =~ s/(\.\d+)\s*$//) ? $1 : '';
+        # handle fractional seconds (%f) and time zone (%z)
+        ($fs, $tz) = ('', '');
+        if ($fmt =~ /%(f|:?z)/) {
+            if ($fmt =~ s/(.*[^%])%f/$1/) {
+                $fs = $2 if $val =~ s/(.*)(\.\d+)/$1/;  # (take last .### as fractional seconds)
+            }
+            if ($fmt =~ s/(.*[^%])%(:?)z/$1/) {
+                my $colon = $2;
+                $tz = "$2:$3" if $val =~ s/(.*)([-+]\d{2})$colon(\d{2})/$1/;
+            }
+        }
         my ($lib, $wrn, @a);
 TryLib: for ($lib=$strptimeLib; ; $lib='') {
             # handle %s format ourself (not supported in Fedora, see forum15032)
@@ -5065,7 +5074,7 @@ TryLib: for ($lib=$strptimeLib; ; $lib='') {
                     $a[$i] = "0$a[$i]"; # pad to 2 digits if necessary
                 }
             }
-            $val = join(':', @a[5,4,3]) . ' ' . join(':', @a[2,1,0]) . $fs;
+            $val = join(':', @a[5,4,3]) . ' ' . join(':', @a[2,1,0]) . $fs . $tz;
             last;
         }
     }
@@ -5077,7 +5086,9 @@ TryLib: for ($lib=$strptimeLib; ; $lib='') {
             my $ss = $a[4];             # get SS
             push @a, '00' while @a < 5; # add MM, SS if not given
             # get sub-seconds if they exist (must be after SS, and have leading ".")
-            my $fs = (@a > 5 and $val =~ /(\.\d+)\s*$/) ? $1 : '';
+            unless ($fmt) {
+                $fs = (@a > 5 and $val =~ /(\.\d+)\s*$/) ? $1 : '';
+            }
             # add/remove timezone if necessary
             if ($tzFlag) {
                 if (not $tz) {

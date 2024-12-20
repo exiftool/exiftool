@@ -8979,6 +8979,8 @@ access to this information.
 
 =head3 Photoshop ChannelOptions Tags
 
+These tags relate only to the appearance of a channel.
+
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    ChannelColorSpace                    no

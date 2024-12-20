@@ -613,8 +613,10 @@ different when copying tags with L</SetNewValuesFromFile>.
 Format for printing date/time values.  See C<strftime> in the L<POSIX>
 package and L<https://exiftool.org/filename.html#codes> for details about
 the format string.  If the date can not be converted, the value is left
-unchanged unless the StrictDate option is set.  Timezones are ignored.  The
-inverse conversion (ie. when calling L</SetNewValue>) is performed only if
+unchanged unless the StrictDate option is set.  ExifTool adds a few
+additional format specifiers (C<%f>, C<%s> and C<%z>), see
+L<https://exiftool.org/filename.html#codes> for more details. The inverse
+conversion (ie. when calling L</SetNewValue>) is performed only if
 POSIX::strptime or Time::Piece is installed.  The default setting of undef
 causes date/time values to remain in standard EXIF format (similar to a
 DateFormat of "%Y:%m:%d %H:%M:%S").

@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.09';
+$VERSION = '13.10';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -6551,11 +6551,13 @@ sub ConvertDateTime($$)
                 $fmt =~ s/(^|[^%])((%%)*)%-?\.?\d*f/$1$2$frac/g;
             }
             # parse %z and %s ourself (to handle time zones properly)
-            if ($fmt =~ /%[sz]/) {
+            if ($fmt =~ /%:?[sz]/) {
                 # use system time zone unless otherwise specified
                 $tz = TimeZoneString(\@a, TimeLocal(@a)) if not $tz and eval { require Time::Local };
                 # remove colon, setting to UTC if time zone is not numeric
-                $tz = ($tz and $tz=~/^([-+]\d{2}):(\d{2})$/) ? "$1$2" : '+0000';
+                $tz = '+00:00' unless $tz and $tz=~/^[-+]\d{2}:\d{2}$/;
+                $fmt =~ s/(^|[^%])((%%)*)%:z/$1$2$tz/g;     # convert '%:z' format codes
+                $tz =~ s/://;
                 $fmt =~ s/(^|[^%])((%%)*)%z/$1$2$tz/g;      # convert '%z' format codes
                 if ($fmt =~ /%s/ and eval { require Time::Local }) {
                     # calculate seconds since the Epoch, UTC
@@ -8961,8 +8963,9 @@ sub GetTagInfo($$$;$$$)
                 next;
             }
         }
-        # don't return Unknown tags unless that option is set (also see forum13716)
-        if ($$tagInfo{Unknown} and not $$options{Unknown} and not
+        # don't return Unknown tags unless that option is set or we are writing (also see forum13716)
+        if ($$tagInfo{Unknown} and not $$options{Unknown} and
+            (not $$self{IsWriting} or $$tagInfo{AddedUnknown}) and not
             ($$options{Verbose} or $$self{HTML_DUMP} or
             ($$options{Validate} and not $$tagInfo{AddedUnknown})))
         {

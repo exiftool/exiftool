@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/Writer.t".
 
 BEGIN {
-    $| = 1; print "1..60\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..61\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -1103,6 +1103,25 @@ my $testOK;
     unlink $testfile;
     writeInfo($exifTool, 't/images/Writer.jpg', $testfile);
     my $info = $exifTool->ImageInfo($testfile, 'subject', 'contributor', 'type');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        notOK();
+    }
+    print "ok $testnum\n";
+}
+
+# test 61: Test the %f and %z date/time format codes for writing
+{
+    ++$testnum;
+    my $exifTool = Image::ExifTool->new;
+    $exifTool->Options(DateFormat => '%H:%M:%S%f%:z %m-%d-%Y');
+    $exifTool->SetNewValue('XMP:CreateDate' => '09:11:12.345-07:00 01-02-2024');
+    $testfile = "t/${testname}_${testnum}_failed.xmp";
+    unlink $testfile;
+    writeInfo($exifTool, undef, $testfile);
+    $exifTool->Options(DateFormat => undef);
+    my $info = $exifTool->ImageInfo($testfile, '-system:all');
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
     } else {

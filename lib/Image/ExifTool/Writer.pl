@@ -1297,12 +1297,13 @@ sub SetNewValuesFromFile($$;@)
         foreach (qw(ByteUnit Charset CharsetEXIF CharsetFileName CharsetID3 CharsetIPTC
                     CharsetPhotoshop Composite DateFormat Debug EncodeHangs Escape ExtendedXMP
                     ExtractEmbedded FastScan Filter FixBase Geolocation GeolocAltNames
-                    GeolocFeature GeolocMinPop GeolocMaxDist GlobalTimeShift HexTagIDs
-                    IgnoreGroups IgnoreMinorErrors IgnoreTags ImageHashType Lang
-                    LargeFileSupport LigoGPSScale ListItem ListSep MDItemTags MissingTagValue
-                    NoPDFList NoWarning Password PrintConv QuickTimeUTC RequestTags SaveFormat
-                    SavePath ScanForXMP StructFormat SystemTags TimeZone Unknown UserParam
-                    Validate WindowsLongPath WindowsWideFile XAttrTags XMPAutoConv))
+                    GeolocFeature GeolocMinPop GeolocMaxDist GlobalTimeShift GPSQuadrant
+                    HexTagIDs IgnoreGroups IgnoreMinorErrors IgnoreTags ImageHashType Lang
+                    LargeFileSupport LigoGPSScale ListItem ListSep MDItemTags
+                    MissingTagValue NoPDFList NoWarning Password PrintConv QuickTimeUTC
+                    RequestTags SaveFormat SavePath ScanForXMP StructFormat SystemTags
+                    TimeZone Unknown UserParam Validate WindowsLongPath WindowsWideFile
+                    XAttrTags XMPAutoConv))
         {
             $srcExifTool->Options($_ => $$options{$_});
         }
@@ -7376,7 +7377,7 @@ used routines.
 
 =head1 AUTHOR
 
-Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

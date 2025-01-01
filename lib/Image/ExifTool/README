@@ -443,6 +443,10 @@ numerical, and generated automatically otherwise.
                   list-type tag (unless it is a list of lang-alt lists, which is
                   uncommon).
 
+                  'IsList' - Flag to mark tag as List-type in the documentation
+                  without accumulating entries from subsequent tags.  Used when
+                  the value for a single tag is a complete list.
+
                   'MakerNotes' - set if this tag is maker note data.
 
                   'MakerPreview' - set in the PreviewImageStart tag information

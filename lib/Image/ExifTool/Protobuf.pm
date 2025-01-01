@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 sub ProcessProtobuf($$$;$);
 
@@ -105,7 +105,7 @@ sub IsProtobuf($)
 
 #------------------------------------------------------------------------------
 # Process protobuf data (eg. DJI djmd timed data from Action4 videos) (ref 1)
-# Inputs: 0) ExifTool ref, 1) dirInfo ref with DataPt, DirName and Base,
+# Inputs: 0) ExifTool ref, 1) dirInfo ref with DataPt, DataPos, DirName and Base,
 #         2) tag table ptr, 3) prefix of parent protobuf ID's
 # Returns: true on success
 sub ProcessProtobuf($$$;$)
@@ -113,27 +113,32 @@ sub ProcessProtobuf($$$;$)
     my ($et, $dirInfo, $tagTbl, $prefix) = @_;
     my $dataPt = $$dirInfo{DataPt};
     my $dirName = $$dirInfo{DirName};
+    my $dirStart = $$dirInfo{DirStart} || 0;
+    my $dirLen = $$dirInfo{DirLen} || (length($$dataPt) - $dirStart);
+    my $dirEnd = $dirStart + $dirLen;
+    my $dataPos = ($$dirInfo{Base} || 0) + ($$dirInfo{DataPos} || 0);
     my $unknown = $et->Options('Unknown') || $et->Options('Verbose');
 
     $$dirInfo{Pos} = $$dirInfo{DirStart} || 0; # initialize buffer Pos
+    $et->VerboseDir('Protobuf', undef, $dirLen);
 
     unless ($prefix) {
         $prefix = '';
-        $$et{ProtocolName}{$dirName} = '*' unless defined $$et{ProtocolName}{$dirName};
+        $$et{ProtoPrefix}{$dirName} = '' unless defined $$et{ProtoPrefix}{$dirName};
         SetByteOrder('II');
     }
     # loop through protobuf records
     for (;;) {
         my $pos = $$dirInfo{Pos};
-        last if $pos >= length $$dataPt;
+        last if $pos >= $dirEnd;
         my ($buff, $id, $type) = ReadRecord($dirInfo);
         defined $buff or $et->Warn('Protobuf format error'), last;
         if ($type == 2 and $buff =~ /\.proto$/) {
             # save protocol name separately for directory type
-            $$et{ProtocolName}{$dirName} = substr($buff, 0, -6);
+            $$et{ProtoPrefix}{$dirName} = substr($buff, 0, -6) . '_';
             $et->HandleTag($tagTbl, Protocol => $buff);
         }
-        my $tag = "$$et{ProtocolName}{$dirName}_$prefix$id";
+        my $tag = "$$et{ProtoPrefix}{$dirName}$prefix$id";
         my $tagInfo = $$tagTbl{$tag};
         if ($tagInfo) {
             next if $type != 2 and $$tagInfo{Unknown} and not $unknown;
@@ -168,12 +173,17 @@ sub ProcessProtobuf($$$;$)
         } elsif ($type == 1) {
             $val = '0x' . unpack('H*', $buff) . ' (double ' . GetDouble(\$buff,0) . ')';
         } elsif ($type == 2) {
-            if ($$tagInfo{IsProtobuf}) {
-                $et->VPrint(1, "+ Protobuf $tag (" . length($buff) . " bytes)\n");
-                my $addr = $$dirInfo{Base} + $$dirInfo{Pos} - length($buff);
-                $et->VerboseDump(\$buff, Addr => $addr);
-                my %subdir = ( DataPt => \$buff, Base => $addr, DirName => $dirName );
+            if ($$tagInfo{SubDirectory}) {
+                # (fall through to process known SubDirectory)
+            } elsif ($$tagInfo{IsProtobuf}) {
+                # process Unknown protobuf directories
+                $et->VPrint(1, "$$et{INDENT}Protobuf $tag (" . length($buff) . " bytes) -->\n");
+                my $addr = $dataPos + $$dirInfo{Pos} - length($buff);
+                $et->VerboseDump(\$buff, Addr => $addr, Prefix => $$et{INDENT});
+                my %subdir = ( DataPt => \$buff, DataPos => $addr, DirName => $dirName );
+                $$et{INDENT} .= '| ';
                 ProcessProtobuf($et, \%subdir, $tagTbl, "$prefix$id-");
+                $$et{INDENT} = substr($$et{INDENT}, 0, -2);
                 next;
             } elsif ($buff !~ /[^\x20-\x7e]/) {
                 $val = $buff;   # assume this is an ASCII string
@@ -193,7 +203,7 @@ sub ProcessProtobuf($$$;$)
         my $start = $type == 0 ? $pos + 1 : $$dirInfo{Pos} - length $buff;
         $et->HandleTag($tagTbl, $tag, $val,
             DataPt => $dataPt,
-            DataPos=> $$dirInfo{Base},
+            DataPos=> $dataPos,
             Start  => $start,
             Size   => $$dirInfo{Pos} - $start,
             Extra  => ", type=$type",
@@ -201,7 +211,7 @@ sub ProcessProtobuf($$$;$)
         );
     }
     # warn if we didn't finish exactly at the end of the buffer
-    $et->Warn('Truncated protobuf data') unless $prefix or $$dirInfo{Pos} == length $$dataPt;
+    $et->Warn('Truncated protobuf data') unless $prefix or $$dirInfo{Pos} == $dirEnd;
     return 1;
 }
 
@@ -222,7 +232,7 @@ information in protocol buffer (protobuf) format.
 
 =head1 AUTHOR
 
-Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

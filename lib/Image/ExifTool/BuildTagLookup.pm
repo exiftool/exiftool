@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.59';
+$VERSION = '3.60';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -688,7 +688,7 @@ L<Image::ExifTool::BuildTagLookup|Image::ExifTool::BuildTagLookup>.
 
 ~head1 AUTHOR
 
-Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
@@ -1340,7 +1340,7 @@ TagID:  foreach $tagID (@keys) {
                         $writable = 'yes' if $tw and $writable eq '1' or $writable eq '2';
                         $writable = '-' . ($tw ? $writable : '');
                         $writable .= '!' if $tw and ($$tagInfo{Protected} || 0) & 0x01;
-                        $writable .= '+' if $$tagInfo{List};
+                        $writable .= '+' if $$tagInfo{List} or $$tagInfo{IsList};
                         if (defined $$tagInfo{Permanent}) {
                             $writable .= '^' unless $$tagInfo{Permanent};
                         } elsif (defined $$table{PERMANENT}) {
@@ -1398,7 +1398,7 @@ TagID:  foreach $tagID (@keys) {
                     }
                     $writable = "=struct" if $struct;
                     $writable .= '_' if defined $$tagInfo{Flat};
-                    $writable .= '+' if $$tagInfo{List};
+                    $writable .= '+' if $$tagInfo{List} or $$tagInfo{IsList};
                     $writable .= ':' if $$tagInfo{Mandatory};
                     if (defined $$tagInfo{Permanent}) {
                         $writable .= '^' unless $$tagInfo{Permanent};
@@ -1566,7 +1566,7 @@ TagID:  foreach $tagID (@keys) {
                     $writable = 'string';
                 }
             }
-            $writable .= '+' if $$tagInfo{List};
+            $writable .= '+' if $$tagInfo{List} or $$tagInfo{IsList};
             push @vals, "($$tagInfo{Notes})" if $$tagInfo{Notes};
             # handle PrintConv lookups in Structure elements
             my $printConv = $$tagInfo{PrintConv};
@@ -2811,7 +2811,7 @@ Returned list of writable pseudo tags.
 
 =head1 AUTHOR
 
-Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

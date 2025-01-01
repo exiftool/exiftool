@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.17';
+$VERSION = '1.18';
 
 sub HandleStruct($$;$$$$);
 
@@ -752,7 +752,11 @@ my %uidInfo = (
     SUBTITLE    => 'Subtitle',
     URL         => 'URL',       # nested
     SORT_WITH   => 'SortWith',  # nested
-    INSTRUMENTS => 'Instruments', # nested
+    INSTRUMENTS => {            # nested
+        Name => 'Instruments',
+        IsList => 1,
+        ValueConv => 'my @a = split /,\s?/, $val; \@a',
+    },
     EMAIL       => 'Email',     # nested
     ADDRESS     => 'Address',   # nested
     FAX         => 'FAX',       # nested
@@ -796,7 +800,11 @@ my %uidInfo = (
     CONTENT_TYPE => 'ContentType',
     SUBJECT     => 'Subject',
     DESCRIPTION => 'Description',
-    KEYWORDS    => 'Keywords',
+    KEYWORDS    => {
+        Name => 'Keywords',
+        IsList => 1,
+        ValueConv => 'my @a = split /,\s?/, $val; \@a',
+    },
     SUMMARY     => 'Summary',
     SYNOPSIS    => 'Synopsis',
     INITIAL_KEY => 'InitialKey',
@@ -1219,7 +1227,7 @@ information from Matroska multimedia files (MKA, MKV, MKS and WEBM).
 
 =head1 AUTHOR
 
-Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

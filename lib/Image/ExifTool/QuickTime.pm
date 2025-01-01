@@ -69,8 +69,6 @@ sub Process_gps0($$$);
 sub Process_gsen($$$);
 sub Process_gdat($$$);
 sub Process_nbmt($$$);
-sub ProcessLigoGPS($$$;$);
-sub ProcessLigoJSON($$$);
 sub ProcessKenwood($$$);
 sub ProcessRIFFTrailer($$$);
 sub ProcessTTAD($$$);
@@ -590,7 +588,7 @@ my %userDefined = (
             Condition => '$$valPt =~ /^LIGOGPSINFO\0/',
             SubDirectory => { 
                 TagTable => 'Image::ExifTool::QuickTime::Stream',
-                ProcessProc => \&ProcessLigoGPS,
+                ProcessProc => 'Image::ExifTool::LigoGPS::ProcessLigoGPS',
             },
         },
         { Name => 'Skip', Unknown => 1, Binary => 1 },
@@ -775,7 +773,7 @@ my %userDefined = (
         Condition => '$$valPt =~ /^LIGOGPSINFO \{/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::Stream',
-            ProcessProc => \&ProcessLigoJSON,
+            ProcessProc => 'Image::ExifTool::LigoGPS::ProcessLigoJSON',
         },
     },{
         Name => 'FLIRData',
@@ -10280,6 +10278,24 @@ sub ProcessQTIF($$)
     return ProcessMOV($et, $dirInfo, $table);
 }
 
+#==============================================================================
+# Autoload LigoGPS module if necessary
+# NOTE: Switches to package LigoGPS!
+#
+package Image::ExifTool::LigoGPS;
+use vars qw($AUTOLOAD);
+sub AUTOLOAD {
+    require Image::ExifTool::LigoGPS;
+    unless (defined &$AUTOLOAD) {
+        my @caller = caller(0);
+        # reproduce Perl's standard 'undefined subroutine' message:
+        die "Undefined subroutine $AUTOLOAD called at $caller[1] line $caller[2]\n";
+    }
+    no strict 'refs';
+    return &$AUTOLOAD(@_);  # call the function
+}
+#==============================================================================
+
 1;  # end
 
 __END__
@@ -10299,7 +10315,7 @@ information from QuickTime and MP4 video, M4A audio, and HEIC image files.
 
 =head1 AUTHOR
 
-Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

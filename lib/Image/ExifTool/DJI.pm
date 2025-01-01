@@ -5,21 +5,28 @@
 #
 # Revisions:    2016-07-25 - P. Harvey Created
 #               2017-06-23 - PH Added XMP tags
+#               2024-12-04 - PH Added protobuf tags
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::DJI;
 
 use strict;
-use vars qw($VERSION);
+use vars qw($VERSION %knownProtocol);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 use Image::ExifTool::Protobuf;
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 sub ProcessDJIInfo($$$);
+
+%knownProtocol = (
+    'dvtm_ac203.proto' => 1,
+    'dvtm_ac204.proto' => 1,
+    'dvtm_AVATA2.proto' => 1,
+);
 
 my %convFloat2 = (
     PrintConv => 'sprintf("%+.2f", $val)',
@@ -189,47 +196,42 @@ my %convFloat2 = (
 
 # metadata in protobuf format (djmd and dbgi meta types, ref PH)
 %Image::ExifTool::DJI::Protobuf = (
-    GROUPS => { 0 => 'Protobuf', 1 => 'DJI', 2 => 'Location' },
+    GROUPS => { 0 => 'Protobuf', 1 => 'DJI', 2 => 'Camera' },
     TAG_PREFIX => '',
     PROCESS_PROC => \&Image::ExifTool::Protobuf::ProcessProtobuf,
     NOTES => q{
-        Tags found in protobuf-format DJI meta djmd and dbgi timed metadata.  Only a
-        few tags are currently known, but unknown djmd tags may be extracted by
-        setting the Unknown option to 1 (or 2 to also extract unknown dbgi debug
-        tags).  Tag ID's are composed of the corresponding .proto file name combined
-        with the hierarchical protobuf field numbers.  The "dvtm_AVATA2.proto" file
-        is used by the DJI Avanta 2, and "dvtm_ac203.proto" by the OsmoAction4.
+        Tags found in protobuf-format DJI djmd and dbgi timed metadata.  Only a few
+        tags are currently known, but unknown djmd tags may be extracted by setting
+        the Unknown option to 1 (or 2 to also extract unknown dbgi debug tags).  Tag
+        ID's are composed of the corresponding .proto file name combined with the
+        hierarchical protobuf field numbers.
+
+        ExifTool currently extracts timed GPS plus a few other tags from DJI devices
+        which use the following protocols:  dvtm_AVATA2.proto (Avanta 2),
+        dvtm_ac203.proto (Osmo Action 4), and dvtm_ac204.proto (Osmo Action 5).
     },
-    Protocol => { },
+    Protocol => {
+        RawConv => q{
+            unless ($Image::ExifTool::DJI::knownProtocol{$val}) {
+                $self->Warn("Unknown protocol $val (please submit sample for testing)");
+            }
+            return $val;
+        },
+    },
    # dvtm_ac203_1-1-6 - some version number
     'dvtm_ac203_1-1-10' => 'Model',
-    'dvtm_ac203_2-3-1' => { Name => 'FrameWidth',  Format => 'unsigned' },
-    'dvtm_ac203_2-3-2' => { Name => 'FrameHeight', Format => 'unsigned' },
-    'dvtm_ac203_2-3-3' => { Name => 'FrameRate',   Format => 'float' },
+    'dvtm_ac203_2-3' => {
+        Name => 'FrameInfo', 
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::FrameInfo' },
+    },
    # dvtm_ac203_3-4-1-4 - model code?
-    'dvtm_ac203_3-4-2-1-1' => {
-        Name => 'CoordinateUnits',
-        Format  => 'unsigned',
-        # don't extract this -- just convert to degrees
-        RawConv => '$$self{CoordUnits} = $val; undef',
-        Hidden => 1,
-        # PrintConv => { 0 => 'Radians', 1 => 'Degrees' },
-    },
-    'dvtm_ac203_3-4-2-1-2' => {
-        Name => 'GPSLatitude',
-        Format => 'double',
-        # set ExifTool GPSLatitude/GPSLongitude members so GPSDateTime will be generated if necessary
-        RawConv => '$$self{GPSLatitude} = $$self{CoordUnits} ? $val : $val * 180 / 3.141592653589793', # (NC)
-        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
-    },
-    'dvtm_ac203_3-4-2-1-3' => {
-        Name => 'GPSLongitude',
-        Format => 'double',
-        RawConv => '$$self{GPSLongitude} = $$self{CoordUnits} ? $val : $val * 180 / 3.141592653589793', # (NC)
-        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
+    'dvtm_ac203_3-4-2-1' => {
+        Name => 'GPSInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
     },
     'dvtm_ac203_3-4-2-2' => {
         Name => 'GPSAltitude',
+        Groups => { 2 => 'Location' },
         Format => 'unsigned',
         ValueConv => '$val / 1000',
     },
@@ -241,38 +243,87 @@ my %convFloat2 = (
         ValueConv => '$val =~ tr/-/:/; $val',
         PrintConv => '$self->ConvertDateTime($val)',
     },
+   # dvtm_ac204_1-1-6 - some version number
+    'dvtm_ac204_1-1-10' => 'Model',
+    'dvtm_ac204_2-3' => {
+        Name => 'FrameInfo', 
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::FrameInfo' },
+    },
+   # dvtm_ac204_3-4-1-4 - model code?
+    'dvtm_ac204_3-4-2-1' => {
+        Name => 'GPSInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
+    },
+    'dvtm_ac204_3-4-2-2' => {
+        Name => 'GPSAltitude',
+        Groups => { 2 => 'Location' },
+        Format => 'unsigned',
+        ValueConv => '$val / 1000',
+    },
+    'dvtm_ac204_3-4-2-6-1' => {
+        Name => 'GPSDateTime',
+        Format => 'string',
+        Groups => { 2 => 'Time' },
+        RawConv => '$$self{GPSDateTime} = $val',
+        ValueConv => '$val =~ tr/-/:/; $val',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
    # dvtm_AVATA2_1-1-2 - some version number
    # dvtm_AVATA2_1-1-3 - some version number
     'dvtm_AVATA2_1-1-10' => 'Model',
     'dvtm_AVATA2_2-2-3-1' => 'SerialNumber', # (NC)
-    'dvtm_AVATA2_2-3-1' => { Name => 'FrameWidth',  Format => 'unsigned' },
-    'dvtm_AVATA2_2-3-2' => { Name => 'FrameHeight', Format => 'unsigned' },
-    'dvtm_AVATA2_2-3-3' => { Name => 'FrameRate',   Format => 'float' },
+    'dvtm_AVATA2_2-3' => {
+        Name => 'FrameInfo', 
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::FrameInfo' },
+    },
    # dvtm_AVATA2_3-1-1 - frame number (starting at 1)
     'dvtm_AVATA2_3-1-2' => { # (also 3-2-1-6 and 3-4-1-6)
         Name => 'TimeStamp',
+        Groups => { 2 => 'Time' },
         Format => 'unsigned',
         # milliseconds, but I don't know what the zero is
         ValueConv => '$val / 1e6',
     },
    # dvtm_AVATA2_3-2-1-4 - model code?
    # dvtm_AVATA2_3-4-1-4 - model code?
-    'dvtm_AVATA2_3-4-4-1-1' => { # (NC) (default seems to be radians if missing)
-        Name => 'CoordinateDegrees',
-        Format  => 'unsigned',
-        RawConv => '$$self{CoordDegrees} = $val; undef',
-        Hidden => 1,
+    'dvtm_AVATA2_3-4-4-1' => {
+        Name => 'GPSInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
     },
-    'dvtm_AVATA2_3-4-4-1-2' => {
+);
+
+%Image::ExifTool::DJI::FrameInfo = (
+    GROUPS => { 0 => 'Protobuf', 1 => 'DJI', 2 => 'Video' },
+    PROCESS_PROC => \&Image::ExifTool::Protobuf::ProcessProtobuf,
+    VARS => { HEX_ID => 0 },
+    1 => { Name => 'FrameWidth',  Format => 'unsigned' },
+    2 => { Name => 'FrameHeight', Format => 'unsigned' },
+    3 => { Name => 'FrameRate',   Format => 'float' },
+);
+
+%Image::ExifTool::DJI::GPSInfo = (
+    GROUPS => { 0 => 'Protobuf', 1 => 'DJI', 2 => 'Location' },
+    PROCESS_PROC => \&Image::ExifTool::Protobuf::ProcessProtobuf,
+    VARS => { HEX_ID => 0 },
+    1 => {
+        Name => 'CoordinateUnits',
+        Format  => 'unsigned',
+        Notes => 'not extracted, but used internally to convert coordinates to degrees',
+        # don't extract this -- just convert to degrees
+        RawConv => '$$self{CoordUnits} = $val; undef',
+        # PrintConv => { 0 => 'Radians', 1 => 'Degrees' },
+    },
+    2 => {
         Name => 'GPSLatitude',
         Format => 'double',
-        RawConv => '$$self{GPSLatitude} = $$self{CoordDegrees} ? $val : $val * 180 / 3.141592653589793', # (NC)
+        # set ExifTool GPSLatitude/GPSLongitude members so GPSDateTime will be generated if necessary
+        RawConv => '$$self{GPSLatitude} = $$self{CoordUnits} ? $val : $val * 180 / 3.141592653589793', # (NC)
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
     },
-    'dvtm_AVATA2_3-4-4-1-3' => {
+    3 => {
         Name => 'GPSLongitude',
         Format => 'double',
-        RawConv => '$$self{GPSLongitude} = $$self{CoordDegrees} ? $val : $val * 180 / 3.141592653589793', # (NC)
+        RawConv => '$$self{GPSLongitude} = $$self{CoordUnits} ? $val : $val * 180 / 3.141592653589793', # (NC)
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
     },
 );
@@ -328,7 +379,7 @@ the maker notes in images from some DJI Phantom drones.
 
 =head1 AUTHOR
 
-Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

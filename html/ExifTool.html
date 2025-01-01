@@ -765,9 +765,15 @@ effect as a value of 0 for options with numerical values.</p>
     with optional group prefix followed by '+' or '-' then shift string.  eg)<br>
     <code>'createdate-1:0:0&nbsp;0:0:0'</code> - shift back by the length of the year
     before the CreateDate value<br><code>'xmp:createdate+0:2:0&nbsp;0'</code> -
-    shift forward by the length of the 2 months after XMP:CreateDate
-</td>
+    shift forward by the length of the 2 months after XMP:CreateDate</td>
     <td align=center>undef</td></tr>
+<tr id="GPSQuadrant"><td>GPSQuadrant</td>
+    <td>This option is used to specify the GPS quadrant in the case where a
+    warning was issued because the GPS quadrant couldn't be determined.</td>
+    <td>2-character quadrant code where the first character is 'N' or
+    'S' and the second is 'E' or 'W' (case insensitive).  If this option is not
+    set and the quadrant is unknown, a warning is issued and the quadrant is
+    assumed to be 'NE'.</td><td align=center>undef</td></tr>
 <tr id="GroupNum"><td>Group#</td><td>Extract tags only for specified groups in family #
     (Group0 assumed if # not given).</td>
     <td>Group name or reference to list of group names.
@@ -795,7 +801,7 @@ effect as a value of 0 for options with numerical values.</p>
     <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>EXIF/TIFF offsets</td></tr>
     </table></td><td align=center>undef</td></tr>
 <tr id="IgnoreGroups"><td>IgnoreGroups</td><td>List of group names to ignore when reading.
-    The group names are case insensitive and may be preceeded by a family number.</td>
+    The group names are case insensitive and may be preceded by a family number.</td>
     <td>List reference, delimited string of names (any delimiter is allowed), or undef to
     clear the previous IgnoreGroups list.</td>
     <td align=center>undef</td></tr>
@@ -927,7 +933,7 @@ effect as a value of 0 for options with numerical values.</p>
     specification date/time values should be UTC, but many digital cameras store
     local time instead (presumably because they don't know the time zone), so
     the default is to not convert these times (except for Canon CR3 files, which
-    always use UTC times).  This option also disables the autodetection of
+    always use UTC times).  This option also disables the auto-detection of
     incorrect time-zero offsets in QuickTime date/time values, and enforces a
     time zero of 1904 as per the QuickTime specification.</td>
     <td align=center>0 or 1</td>

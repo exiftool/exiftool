@@ -7,6 +7,16 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.10. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 1, 2025 - Version 13.11
+
+  - Added warning for an unknown DJI protobuf schema
+  - Decode timed GPS from the DJI Osmo Action 5
+  - Decode yet another type of LIGOGPSINFO timed GPS from a dashcam video
+  - Made Matroska Keywords and Instruments List-type tags
+  - Fixed problem were EXIF couldn't be added to some AVIF files
+  - API Changes:
+      - Added GPSQuadrant option
+
 Dec. 20, 2024 - Version 13.10 (production release)
 
   - Added warnings for out-of-order entries in 'iinf' and 'ipma' boxes of HEIC

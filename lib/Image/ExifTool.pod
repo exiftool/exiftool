@@ -5,7 +5,7 @@
 #
 # URL:          https://exiftool.org/
 #
-# Legal:        Copyright (c) 2003-2024, Phil Harvey (philharvey66 at gmail.com)
+# Legal:        Copyright (c) 2003-2025, Phil Harvey (philharvey66 at gmail.com)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -827,6 +827,15 @@ determined unambiguously.  For example:
 If the starting tag is not specified, or the specified tag isn't available,
 then the shift is calculated based on the first shifted tag.
 
+=item GPSQuadrant
+
+This option is used to specify the GPS quadrant in the case where a warning
+was issued because the GPS quadrant couldn't be determined.  The value is a
+2-character code where the first character is 'N' or 'S' and the second
+character is 'E' or 'W' (case insensitive).  If this option is not set and
+the quadrant is unknown, a warning is issued and the quadrant is assumed to
+be 'NE'.
+
 =item Group#
 
 Extract tags only for specified groups in family # (Group0 assumed if #
@@ -855,7 +864,7 @@ used.  Set to 0 for absolute offsets.  Default is undef.
 =item IgnoreGroups
 
 Comma-separated list of group names to ignore when reading.  The group names
-are case insensitive and may be preceeded by a family number.  Set to undef
+are case insensitive and may be preceded by a family number.  Set to undef
 to clear the previous IgnoreGroups list.  Default is undef.
 
 =item IgnoreMinorErrors
@@ -880,7 +889,7 @@ to undef to clear the previous IgnoreTags list.  Default is undef.
 
 =item ImageHashType
 
-Sets type of hash algorithem used for the ImageDataHash tag calculation. 
+Sets type of hash algorithm used for the ImageDataHash tag calculation. 
 Supported options are 'MD5', 'SHA256', and 'SHA512'.  Default is 'MD5'.
 
 =item Lang
@@ -1021,7 +1030,7 @@ when written.  According to the QuickTime specification date/time values
 should be UTC, but many digital cameras store local time instead (presumably
 because they don't know the time zone), so the default is to not convert
 these times (except for Canon CR3 files, which always use UTC times).  This
-option also disables the autodetection of incorrect time-zero offsets in
+option also disables the auto-detection of incorrect time-zero offsets in
 QuickTime date/time values, and enforces a time zero of 1904 as per the
 QuickTime specification.
 
@@ -3021,7 +3030,7 @@ specified by the L</Charset> option.
 
 =head1 AUTHOR
 
-Copyright 2003-2024, Phil Harvey
+Copyright 2003-2025, Phil Harvey
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

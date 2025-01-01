@@ -310,7 +310,7 @@ sub ParsePID($$$$$)
         if ($$dataPt =~ /^LIGOGPSINFO/s) {
             my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
             my %dirInfo = ( DataPt => $dataPt, DirName => 'Ligo0x0300' );
-            Image::ExifTool::QuickTime::ProcessLigoGPS($et, \%dirInfo, $tbl, 1);
+            Image::ExifTool::LigoGPS::ProcessLigoGPS($et, \%dirInfo, $tbl, 1);
             $$et{FoundGoodGPS} = 1;
             $more = 1;
         }
@@ -531,7 +531,7 @@ sub ParsePID($$$$$)
             #  only extract data from the first one)
             my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
             my %dirInfo = ( DataPt => $dataPt, DirStart => 8, DirName => sprintf('Ligo0x%.4x',$pid));
-            Image::ExifTool::QuickTime::ProcessLigoGPS($et, \%dirInfo, $tbl, 1);
+            Image::ExifTool::LigoGPS::ProcessLigoGPS($et, \%dirInfo, $tbl, 1);
             $$et{FoundGoodGPS} = 1;
         } elsif ($$et{FoundGoodGPS}) {
             $more = 1;
@@ -980,7 +980,7 @@ sub ProcessM2TS($$)
         if ($len < $raf->Tell() and $raf->Seek(-$len, 2) and $raf->Read($buff,$len) == $len) {
             my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
             my %dirInfo = ( DataPt => \$buff, DirStart => 8, DirName => 'LigoTrailer' );
-            Image::ExifTool::QuickTime::ProcessLigoGPS($et, \%dirInfo, $tbl);
+            Image::ExifTool::LigoGPS::ProcessLigoGPS($et, \%dirInfo, $tbl);
         }
     }
 
@@ -1007,7 +1007,7 @@ video.
 
 =head1 AUTHOR
 
-Copyright 2003-2024, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

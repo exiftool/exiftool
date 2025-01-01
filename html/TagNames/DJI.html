@@ -432,12 +432,15 @@ Phantom drones.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Protobuf'>DJI Protobuf Tags</a></h2>
-<p>Tags found in protobuf-format DJI meta djmd and dbgi timed metadata.  Only a
-few tags are currently known, but unknown djmd tags may be extracted by
-setting the Unknown option to 1 (or 2 to also extract unknown dbgi debug
-tags).  Tag ID&#39;s are composed of the corresponding .proto file name combined
-with the hierarchical protobuf field numbers.  The &quot;dvtm_AVATA2.proto&quot; file
-is used by the DJI Avanta 2, and &quot;dvtm_ac203.proto&quot; by the OsmoAction4.</p>
+<p>Tags found in protobuf-format DJI djmd and dbgi timed metadata.  Only a few
+tags are currently known, but unknown djmd tags may be extracted by setting
+the Unknown option to 1 (or 2 to also extract unknown dbgi debug tags).  Tag
+ID&#39;s are composed of the corresponding .proto file name combined with the
+hierarchical protobuf field numbers.</p>
+
+<p>ExifTool currently extracts timed GPS plus a few other tags from DJI devices
+which use the following protocols:  dvtm_AVATA2.proto (Avanta 2),
+dvtm_ac203.proto (Osmo Action 4), and dvtm_ac204.proto (Osmo Action 5).</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -459,65 +462,35 @@ is used by the DJI Avanta 2, and &quot;dvtm_ac203.proto&quot; by the OsmoAction4
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'dvtm_AVATA2_2-3-1'</td>
-<td>FrameWidth</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'dvtm_AVATA2_2-3-2'</td>
-<td>FrameHeight</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'dvtm_AVATA2_2-3-3'</td>
-<td>FrameRate</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td>'dvtm_AVATA2_2-3'</td>
+<td>FrameInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#FrameInfo'>DJI FrameInfo Tags</a></td></tr>
 <tr>
 <td>'dvtm_AVATA2_3-1-2'</td>
 <td>TimeStamp</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'dvtm_AVATA2_3-4-4-1-2'</td>
-<td>GPSLatitude</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td>'dvtm_AVATA2_3-4-4-1'</td>
+<td>GPSInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#GPSInfo'>DJI GPSInfo Tags</a></td></tr>
 <tr>
-<td>'dvtm_AVATA2_3-4-4-1-3'</td>
-<td>GPSLongitude</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
 <td>'dvtm_ac203_1-1-10'</td>
 <td>Model</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
-<td>'dvtm_ac203_2-3-1'</td>
-<td>FrameWidth</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
 <tr class=b>
-<td>'dvtm_ac203_2-3-2'</td>
-<td>FrameHeight</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td>'dvtm_ac203_2-3'</td>
+<td>FrameInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#FrameInfo'>DJI FrameInfo Tags</a></td></tr>
 <tr>
-<td>'dvtm_ac203_2-3-3'</td>
-<td>FrameRate</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'dvtm_ac203_3-4-2-1-2'</td>
-<td>GPSLatitude</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'dvtm_ac203_3-4-2-1-3'</td>
-<td>GPSLongitude</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td>'dvtm_ac203_3-4-2-1'</td>
+<td>GPSInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#GPSInfo'>DJI GPSInfo Tags</a></td></tr>
 <tr class=b>
 <td>'dvtm_ac203_3-4-2-2'</td>
 <td>GPSAltitude</td>
@@ -528,11 +501,82 @@ is used by the DJI Avanta 2, and &quot;dvtm_ac203.proto&quot; by the OsmoAction4
 <td>GPSDateTime</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_ac204_1-1-10'</td>
+<td>Model</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_ac204_2-3'</td>
+<td>FrameInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#FrameInfo'>DJI FrameInfo Tags</a></td></tr>
+<tr class=b>
+<td>'dvtm_ac204_3-4-2-1'</td>
+<td>GPSInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#GPSInfo'>DJI GPSInfo Tags</a></td></tr>
+<tr>
+<td>'dvtm_ac204_3-4-2-2'</td>
+<td>GPSAltitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_ac204_3-4-2-6-1'</td>
+<td>GPSDateTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FrameInfo'>DJI FrameInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>FrameWidth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>FrameHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>FrameRate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='GPSInfo'>DJI GPSInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>CoordinateUnits</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(not extracted, but used internally to convert coordinates to degrees)</span></span></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>GPSLatitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>GPSLongitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 4, 2024</i>
+<br><i>Last revised Dec 23, 2024</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -355,8 +355,7 @@ my %insvLimit = (
     Unknown01 => { Unknown => 1 },
     Unknown02 => { Unknown => 1 },
     Unknown03 => { Unknown => 1 },
-    M => { Name => 'Unknown_M', Unknown => 1 }, # (from LIGOGPSINFO)
-    H => { Name => 'Unknown_H', Unknown => 1 }, # (from LIGOGPSINFO)
+    MagneticVariation => { }, # (from LIGOGPSINFO)
 );
 
 # tags found in 'camm' type 0 timed metadata (ref 4)

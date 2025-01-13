@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28223 tags, with 17516 unique tag names.
+They contain a total of 28231 tags, with 17521 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -7431,6 +7431,7 @@ These tags are used in Panasonic/Leica cameras.
   0x00d6   NoiseReductionStrength               rational64s
   0x00e4   LensTypeModel                        int16u
   0x00e8   MinimumISO                           int32u
+  0x00e9   AFSubjectDetection                   int16u
   0x00ee   DynamicRangeBoost                    int16u
   0x0e00   PrintIM                              PrintIM
   0x2003   TimeInfo                             Panasonic TimeInfo
@@ -17897,17 +17898,20 @@ These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
 
 =head3 Nikon AFInfo2V0400 Tags
 
+AF information for Nikon cameras with the Expeed 7 processor: The Zf, Z6_3,
+Z8, Z9 and Z50_3.
+
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    AFInfo2Version                       no
       5    AFAreaMode                           int8u
      10    AFPointsUsed                         undef[51]
+           AFPointsUsed                         undef[35]
+           AFPointsUsed                         undef[27]
      62    AFImageWidth                         int16u
      64    AFImageHeight                        int16u
      66    AFAreaXPosition                      int16u
-     67    FocusPositionHorizontal              int8u~
      68    AFAreaYPosition                      int16u
-     69    FocusPositionVertical                int8u~
      70    AFAreaWidth                          int16u
      72    AFAreaHeight                         int16u
      74    FocusResult                          int8u
@@ -30107,6 +30111,7 @@ currently reads 98 different types of timed GPS metadata from video files.
   ISO                                           no
   JpgFromRaw                                    no
   KiloCalories                                  no
+  MagneticVariation                             no
   PreviewImage                                  no
   PreviewInfo                                   QuickTime PreviewInfo
   RVMI_gReV                                     QuickTime RVMI_gReV
@@ -30121,8 +30126,6 @@ currently reads 98 different types of timed GPS metadata from video files.
   Unknown01?                                    no
   Unknown02?                                    no
   Unknown03?                                    no
-  Unknown_H?                                    no
-  Unknown_M?                                    no
   UserLabel                                     no
   VerticalSpeed                                 no
   VideoTimeStamp                                no
@@ -39677,6 +39680,35 @@ existing StringFileInfo tags even if not listed in this table.
   ProductName                                   no
   ProductVersion                                no
   SpecialBuild                                  no
+
+=head3 EXE DebugRSDS Tags
+
+CodeView RSDS debug information found in some Windows EXE files.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    PDBModifyDate                        no
+     20    PDBAge                               no
+     24    PDBFileName                          no
+
+=head3 EXE DebugNB10 Tags
+
+CodeView NB10 debug information found in some Windows EXE files.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    PDBModifyDate                        no
+      8    PDBCreateDate                        no
+     12    PDBAge                               no
+     16    PDBFileName                          no
+
+=head3 EXE Misc Tags
+
+Miscellaneous CodeView debug information in Windows EXE files.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     12    EXEFileName                          no
 
 =head3 EXE MachO Tags
 

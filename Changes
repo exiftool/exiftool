@@ -7,6 +7,29 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.10. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 13, 2025 - Version 13.12
+
+  - Added a few new Panasonic AFAreaMode values (thanks Andrew J)
+  - Added a couple of new Canon RFLensType values (thanks Norbert Wasser)
+  - Added a -validate warning for duplicate IPTC tags
+  - Decode AF points for some newer Nikon models (thanks Warren Hatch)
+  - Decode a new Panasonic tag (thanks Andrew J)
+  - Decode a couple of previously unknown tags from LIGOGPSINFO records
+  - Extract some PDB information if available from Win32 EXE files (github#303)
+  - Improved handling of duplicate tags in -diff output
+  - Improved handling of QuickTime zero date/time values
+  - Enchanced -csv= and -json= options to allow group names and wildcards to be
+    used when specifying which tags to import
+  - Updated some EXIF:Compression values (github#304)
+  - Changed wording of warning when file time couldn't be updated
+  - Fixed bug introduced in 13.11 reading EXIF from some EXV files
+  - Fixed bug introduced in 12.99 where empty entries in a CSV file weren't
+    ignored as they should be when importing with -csv=
+  - Fixed problem where MWG module wasn't loaded automatically when specifying
+    Composite:MWG:TAG instead of MWG:TAG
+  - Fixed bug where -diff option was inconsistent in its treatment of List
+    values when used with the -sep option
+
 Jan. 1, 2025 - Version 13.11
 
   - Added warning for an unknown DJI protobuf schema

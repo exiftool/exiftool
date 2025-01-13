@@ -86,10 +86,14 @@ reference number and not the actual firmware version)</span></span></td></tr>
   <br>&#39;1 1&#39; = 5-area
   <br>&#39;16 0&#39; = 1-area
   <br>&#39;16 16&#39; = 1-area (high speed)
+  <br>&#39;16 32&#39; = 1-area +
+  <br>&#39;17 0&#39; = Full Area
   <br>&#39;32 0&#39; = Tracking
   <br>&#39;32 1&#39; = 3-area (left)?
   <br>&#39;32 2&#39; = 3-area (center)?
   <br>&#39;32 3&#39; = 3-area (right)?
+  <br>&#39;32 16&#39; = Zone
+  <br>&#39;32 18&#39; = Zone (horizontal/vertical)
   <br>&#39;64 0&#39; = Face Detect
   <br>&#39;64 1&#39; = Face Detect (animal detect on)
   <br>&#39;64 2&#39; = Face Detect (animal detect off)
@@ -1013,27 +1017,41 @@ camera contrast)</span></span></td></tr>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x00e9 = 233'>0x00e9</td>
+<td>AFSubjectDetection</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = n/a
+  <br>1 = Human Eye/Face/Body
+  <br>2 = Animal
+  <br>3 = Human Eye/Face</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Animal Body
+  <br>5 = Animal Eye/Body
+  <br>6 = Car
+  <br>7 = Motorcycle</td></tr></table>
+</td></tr>
+<tr>
 <td title='0x00ee = 238'>0x00ee</td>
 <td>DynamicRangeBoost</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0e00 = 3584'>0x0e00</td>
 <td>PrintIM</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PrintIM.html'>PrintIM Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2003 = 8195'>0x2003</td>
 <td>TimeInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Panasonic.html#TimeInfo'>Panasonic TimeInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x8000 = 32768'>0x8000</td>
 <td>MakerNoteVersion</td>
 <td class=c>undef</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x8001 = 32769'>0x8001</td>
 <td>SceneMode</td>
 <td class=c>int16u</td>
@@ -1120,52 +1138,52 @@ camera contrast)</span></span></td></tr>
   <br>90 = Creative Control
   <br>92 = Handheld Night Shot</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x8002 = 32770'>0x8002</td>
 <td>HighlightWarning</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Disabled
   <br>1 = No
   <br>2 = Yes</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x8003 = 32771'>0x8003</td>
 <td>DarkFocusEnvironment</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = No
   <br>2 = Yes</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x8004 = 32772'>0x8004</td>
 <td>WBRedLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x8005 = 32773'>0x8005</td>
 <td>WBGreenLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x8006 = 32774'>0x8006</td>
 <td>WBBlueLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x8008 = 32776'>0x8008</td>
 <td>TextStamp</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = Off
   <br>2 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x8009 = 32777'>0x8009</td>
 <td>TextStamp</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = Off
   <br>2 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x8010 = 32784'>0x8010</td>
 <td>BabyAge</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(or pet age)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x8012 = 32786'>0x8012</td>
 <td>Transform</td>
 <td class=c>undef[4]</td>
@@ -2191,7 +2209,7 @@ various Panasonic and Leica models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 10, 2024</i>
+<br><i>Last revised Jan 13, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

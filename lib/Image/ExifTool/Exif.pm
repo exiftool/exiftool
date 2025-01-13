@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.55';
+$VERSION = '4.56';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -246,10 +246,13 @@ $formatName[129] = 'utf8';  # (Exif 3.0)
   # 34888,34889 - ESRI reserved
     34892 => 'Lossy JPEG', # (DNG 1.4)
     34925 => 'LZMA2', #LibTiff
-    34926 => 'Zstd', #LibTiff
-    34927 => 'WebP', #LibTiff
+    34926 => 'Zstd (old)', #LibTiff
+    34927 => 'WebP (old)', #LibTiff
     34933 => 'PNG', # (TIFF mail list)
     34934 => 'JPEG XR', # (TIFF mail list)
+    50000 => 'Zstd', #LibTiff 4.7
+    50001 => 'WebP', #LibTiff 4.7
+    50002 => 'JPEG XL (old)', #LibTiff 4.7
     52546 => 'JPEG XL', # (DNG 1.7)
     65000 => 'Kodak DCR Compressed', #PH
     65535 => 'Pentax PEF Compressed', #Jens

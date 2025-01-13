@@ -12232,6 +12232,8 @@ D5200, D7000.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='AFInfo2V0400'>Nikon AFInfo2V0400 Tags</a></h2>
+<p>AF information for Nikon cameras with the Expeed 7 processor: The Zf, Z6_3,
+Z8, Z9 and Z50_3.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -12260,9 +12262,11 @@ D5200, D7000.</p>
 </td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
-<td>AFPointsUsed</td>
-<td class=c>undef[51]</td>
-<td>&nbsp;</td></tr>
+<td>AFPointsUsed
+  <br>AFPointsUsed
+  <br>AFPointsUsed</td>
+<td class=c>undef[51]<br>undef[35]<br>undef[27]</td>
+<td><span class=s><span class=n>(either AFPointsUsed or AFAreaX/YPosition will be set, but not both)</span></span></td></tr>
 <tr class=b>
 <td class=r title='62 = 0x3e'>62</td>
 <td>AFImageWidth</td>
@@ -12279,21 +12283,9 @@ D5200, D7000.</p>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='67 = 0x43'>67</td>
-<td>FocusPositionHorizontal</td>
-<td class=c title=' ~ = Writable only with -n'>int8u~</td>
-<td><span class=s><span class=n>(the focus points form a 29x17 grid, but the X,Y coordinate values run from 1,1
-to 30,19.  The horizontal coordinate 11R (5) and the vertical coordinates 6U
-(4) and 2D (12) are not used for some reason)</span></span></td></tr>
-<tr class=b>
 <td class=r title='68 = 0x44'>68</td>
 <td>AFAreaYPosition</td>
 <td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='69 = 0x45'>69</td>
-<td>FocusPositionVertical</td>
-<td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='70 = 0x46'>70</td>
@@ -12937,8 +12929,8 @@ point is E9)</span>
   <br>13 = B6
   <br>14 = A6
   <br>15 = F6
-  <br>16 = G6
-  <br>17 = H6
+  <br>16 = G6</td><td>&nbsp;&nbsp;</td>
+  <td>17 = H6
   <br>18 = I6
   <br>19 = E4
   <br>20 = D4
@@ -12954,15 +12946,15 @@ point is E9)</span>
   <br>30 = C7
   <br>31 = B7
   <br>32 = A7
-  <br>33 = F7
-  <br>34 = G7
+  <br>33 = F7</td><td>&nbsp;&nbsp;</td>
+  <td>34 = G7
   <br>35 = H7
   <br>36 = I7
   <br>37 = E3
   <br>38 = D3
   <br>39 = C3
-  <br>40 = B3</td><td>&nbsp;&nbsp;</td>
-  <td>41 = A3
+  <br>40 = B3
+  <br>41 = A3
   <br>42 = F3
   <br>43 = G3
   <br>44 = H3
@@ -12971,8 +12963,8 @@ point is E9)</span>
   <br>47 = D8
   <br>48 = C8
   <br>49 = B8
-  <br>50 = A8
-  <br>51 = F8
+  <br>50 = A8</td><td>&nbsp;&nbsp;</td>
+  <td>51 = F8
   <br>52 = G8
   <br>53 = H8
   <br>54 = I8
@@ -12988,8 +12980,8 @@ point is E9)</span>
   <br>64 = E9
   <br>65 = D9
   <br>66 = C9
-  <br>67 = B9
-  <br>68 = A9
+  <br>67 = B9</td><td>&nbsp;&nbsp;</td>
+  <td>68 = A9
   <br>69 = F9
   <br>70 = G9
   <br>71 = H9
@@ -15167,7 +15159,7 @@ for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 25, 2024</i>
+<br><i>Last revised Jan 12, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

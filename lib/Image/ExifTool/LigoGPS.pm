@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool;
 
-$VERSION = '1.00';
+$VERSION = '1.02';
 
 sub ProcessLigoGPS($$$;$);
 sub ProcessLigoJSON($$$);
@@ -173,7 +173,9 @@ sub DecipherLigoGPS($$$;$)
             $$next{$ch1} = [ $ch2 ];
         }
         # must wait until the lookup contains all 10 digits
-        return 1 if scalar(keys %$next) < 10;
+        scalar(keys %$next) < 10 and return 1;
+        # protect against trying to decipher bad data
+        scalar(keys %$next) > 10 and $$cipherInfo{'next'} = { }, return 1;
         my (@order, $two);
         return 1 unless OrderCipherDigits($ch1, $next, \@order);
         # get index of enciphered "2" in ordered array
@@ -255,10 +257,10 @@ sub ParseLigoGPS($$$;$)
     $et->HandleTag($tagTbl, 'GPSLongitude', $lon * (($lonNeg or $lonRef eq 'W') ? -1 : 1));
     $et->HandleTag($tagTbl, 'GPSSpeed',     $spd * $spdScl);
     $et->HandleTag($tagTbl, 'GPSTrack', $1) if $str =~ /\bA:(\S+)/;
+    $et->HandleTag($tagTbl, 'GPSAltitude', $1) if $str =~ /\bH:(\S+)/;
+    $et->HandleTag($tagTbl, 'MagneticVariation', $1) if $str =~ /\bM:(\S+)/;
     # (have a sample where tab is used to separate acc components)
     $et->HandleTag($tagTbl, 'Accelerometer',"$1 $2 $3") if $str =~ /x:(\S+)\sy:(\S+)\sz:(\S+)/;
-    $et->HandleTag($tagTbl, 'M', $1) if $str =~ /\bM:(\S+)/;
-    $et->HandleTag($tagTbl, 'H', $1) if $str =~ /\bH:(\S+)/;
     delete $$et{SET_GROUP1};
 }
 

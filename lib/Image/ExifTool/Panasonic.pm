@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.22';
+$VERSION = '2.23';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -360,12 +360,16 @@ my %shootingMode = (
                 '16'    => 'Normal?', # (only mode for DMC-LC20)
                 '16 0'  => '1-area', # (FZ8)
                 '16 16' => '1-area (high speed)', # (FZ8)
+                '16 32' => '1-area +', #forum16903 (G9M2)
+                '17 0'  => 'Full Area', #forum16903 (G9M2)
                 # '32 0' is Face Detect for FS7, and Face Detect or Focus Tracking
                 # for the DMC-FZ200 (ref 17), and Auto is DMC-L1 guess,
                 '32 0'  => 'Tracking',
                 '32 1'  => '3-area (left)?', # (DMC-L1 guess)
                 '32 2'  => '3-area (center)?', # (DMC-L1 guess)
                 '32 3'  => '3-area (right)?', # (DMC-L1 guess)
+                '32 16' => 'Zone', #forum16903 (G9M2)
+                '32 18' => 'Zone (horizontal/vertical)', #forum16903 (G9M2)
                 # '32 16' ? (DC-GH6)
                 '64 0'  => 'Face Detect',
                 '64 1' => 'Face Detect (animal detect on)', #forum11194
@@ -1447,6 +1451,20 @@ my %shootingMode = (
     0xe8 => { #PH (DC-GH6)
         Name => 'MinimumISO',
         Writable => 'int32u',
+    },
+    0xe9 => { #forum16903 (DC-G9M2)
+        Name => 'AFSubjectDetection',
+        Writable => 'int16u',
+        PrintConv => {
+            0 => 'n/a',
+            1 => 'Human Eye/Face/Body',
+            2 => 'Animal', #PH (NC) (DC-S5 and DC-S5M2)
+            3 => 'Human Eye/Face',
+            4 => 'Animal Body',
+            5 => 'Animal Eye/Body',
+            6 => 'Car',
+            7 => 'Motorcycle',
+        }
     },
     0xee => { #PH (DC-GH6)
         Name => 'DynamicRangeBoost',

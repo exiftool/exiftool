@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.39';
+$VERSION = '4.40';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1546,7 +1546,108 @@ my %afPoints81 = (
      17 => 'H6',  34 => 'G7',  51 => 'F8',  68 => 'A9',
 );
 
-# AF point indices for models with 493 focus points, eg. Z8/Z9 (ref 28)
+# AF point indices for 209 focus point(single-point AF) cameras equipped with Expeed 7 processor eg. Z50ii).  Single-point AF array is 11 rows x 19 columns.  (ref 28)
+# - Auto Area AF has 2 additional columns available and provides 231 focus points. Uses 11 rows (A-K) and 21 columns (1-21), center is F11
+my %afPoints209 = (
+      1 => 'A1',    22 => 'B1',    43 => 'C1',   64 => 'D1',     85 => 'E1',   106 => 'F1',   127 => 'G1',   148 => 'H1',
+      2 => 'A2',    23 => 'B2',    44 => 'C2',   65 => 'D2',     86 => 'E2',   107 => 'F2',   128 => 'G2',   149 => 'H2',
+      3 => 'A3',    24 => 'B3',    45 => 'C3',   66 => 'D3',     87 => 'E3',   108 => 'F3',   129 => 'G3',   150 => 'H3',
+      4 => 'A4',    25 => 'B4',    46 => 'C4',   67 => 'D4',     88 => 'E4',   109 => 'F4',   130 => 'G4',   151 => 'H4',
+      5 => 'A5',    26 => 'B5',    47 => 'C5',   68 => 'D5',     89 => 'E5',   110 => 'F5',   131 => 'G5',   152 => 'H5',
+      6 => 'A6',    27 => 'B6',    48 => 'C6',   69 => 'D6',     90 => 'E6',   111 => 'F6',   132 => 'G6',   153 => 'H6',
+      7 => 'A7',    28 => 'B7',    49 => 'C7',   70 => 'D7',     91 => 'E7',   112 => 'F7',   133 => 'G7',   154 => 'H7',
+      8 => 'A8',    29 => 'B8',    50 => 'C8',   71 => 'D8',     92 => 'E8',   113 => 'F8',   134 => 'G8',   155 => 'H8',
+      9 => 'A9',    30 => 'B9',    51 => 'C9',   72 => 'D9',     93 => 'E9',   114 => 'F9',   135 => 'G9',   156 => 'H9',
+     10 => 'A10',   31 => 'B10',   52 => 'C10',  73 => 'D10',    94 => 'E10',  115 => 'F10',  136 => 'G10',  157 => 'H10',
+     11 => 'A11',   32 => 'B11' ,  53 => 'C11',  74 => 'D11',    95 => 'E11',  116 => 'F11',  137 => 'G11',  158 => 'H11',
+     12 => 'A12',   33 => 'B12' ,  54 => 'C12',  75 => 'D12',    96 => 'E12',  117 => 'F12',  138 => 'G12',  159 => 'H12',
+     13 => 'A13',   34 => 'B13' ,  55 => 'C13',  76 => 'D13',    97 => 'E13',  118 => 'F13',  139 => 'G13',  160 => 'H13',
+     14 => 'A14',   35 => 'B14' ,  56 => 'C14',  77 => 'D14',    98 => 'E14',  119 => 'F14',  140 => 'G14',  161 => 'H14',
+     15 => 'A15',   36 => 'B15',   57 => 'C15',  78 => 'D15',    99 => 'E15',  120 => 'F15',  141 => 'G15',  162 => 'H15',
+     16 => 'A16',   37 => 'B16' ,  58 => 'C16',  79 => 'D16',   100 => 'E16',  121 => 'F16',  142 => 'G16',  163 => 'H16',
+     17 => 'A17',   38 => 'B17',   59 => 'C17',  80 => 'D17',   101 => 'E17',  122 => 'F17',  143 => 'G17',  164 => 'H17',
+     18 => 'A18',   39 => 'B18',   60 => 'C18',  81 => 'D18',   102 => 'E18',  123 => 'F18',  144 => 'G18',  165 => 'H18',
+     19 => 'A19',   40 => 'B19',   61 => 'C19',  82 => 'D19',   103 => 'E19',  124 => 'F19',  145 => 'G19',  166 => 'H19',
+     20 => 'A20',   41 => 'B20',   62 => 'C20',  83 => 'D20',   104 => 'E20',  125 => 'F20',  146 => 'G20',  167 => 'H20',
+     21 => 'A21',   42 => 'B21',   63 => 'C21',  84 => 'D21',   105 => 'E21',  126 => 'F21',  147 => 'G21',  168 => 'H21',
+
+    169 => 'I1',   190 => 'J1',   211 => 'K1',
+    170 => 'I2',   191 => 'J2',   212 => 'K2',
+    171 => 'I3',   192 => 'J3',   213 => 'K3',
+    172 => 'I4',   193 => 'J4',   214 => 'K4',
+    173 => 'I5',   194 => 'J5',   215 => 'K5',
+    174 => 'I6',   195 => 'J6',   216 => 'K6',
+    175 => 'I7',   196 => 'J7',   217 => 'K7',
+    176 => 'I8',   197 => 'J8',   218 => 'K8',
+    177 => 'I9',   198 => 'J9',   219 => 'K9',
+    178 => 'I10',  199 => 'J10',  220 => 'K10',
+    179 => 'I11',  200 => 'J11',  221 => 'K11',
+    180 => 'I12',  201 => 'J12',  222 => 'K12',
+    181 => 'I13',  202 => 'J13',  223 => 'K13',
+    182 => 'I14',  203 => 'J14',  224 => 'K14',
+    183 => 'I15',  204 => 'J15',  225 => 'K15',
+    184 => 'I16',  205 => 'J16',  226 => 'K16',
+    185 => 'I17',  206 => 'J17',  227 => 'K17',
+    186 => 'I18',  207 => 'J18',  228 => 'K18',
+    187 => 'I19',  208 => 'J19',  229 => 'K19',
+    188 => 'I20',  209 => 'J20',  230 => 'K20',
+    189 => 'I21',  210 => 'J21',  231 => 'K21',
+);
+
+# AF point indices for 273 focus point (single-point AF) cameras equipped with Expeed 7 processor (eg. Z6iii and Zf).  Single-point AF array is 13 rows x 21 columns  (ref 28)
+# - Auto Area AF has 2 additional columns available and provides 299 focus points. Uses 13 rows (A-M) and 23 columns (1-23), center is G12
+#
+my %afPoints273 = (
+      1 => 'A1',    24 => 'B1',    47 => 'C1',   70 => 'D1',     93 => 'E1',   116 => 'F1',   139 => 'G1',   162 => 'H1',
+      2 => 'A2',    25 => 'B2',    48 => 'C2',   71 => 'D2',     94 => 'E2',   117 => 'F2',   140 => 'G2',   163 => 'H2',
+      3 => 'A3',    26 => 'B3',    49 => 'C3',   72 => 'D3',     95 => 'E3',   118 => 'F3',   141 => 'G3',   164 => 'H3',
+      4 => 'A4',    27 => 'B4',    50 => 'C4',   73 => 'D4',     96 => 'E4',   119 => 'F4',   142 => 'G4',   165 => 'H4',
+      5 => 'A5',    28 => 'B5',    51 => 'C5',   74 => 'D5',     97 => 'E5',   120 => 'F5',   143 => 'G5',   166 => 'H5',
+      6 => 'A6',    29 => 'B6',    52 => 'C6',   75 => 'D6',     98 => 'E6',   121 => 'F6',   144 => 'G6',   167 => 'H6',
+      7 => 'A7',    30 => 'B7',    53 => 'C7',   76 => 'D7',     99 => 'E7',   122 => 'F7',   145 => 'G7',   168 => 'H7',
+      8 => 'A8',    31 => 'B8',    54 => 'C8',   77 => 'D8',    100 => 'E8',   123 => 'F8',   146 => 'G8',   169 => 'H8',
+      9 => 'A9',    32 => 'B9',    55 => 'C9',   78 => 'D9',    101 => 'E9',   124 => 'F9',   147 => 'G9',   170 => 'H9',
+     10 => 'A10',   33 => 'B10',   56 => 'C10',  79 => 'D10',   102 => 'E10',  125 => 'F10',  148 => 'G10',  171 => 'H10',
+     11 => 'A11',   34 => 'B11' ,  57 => 'C11',  80 => 'D11',   103 => 'E11',  126 => 'F11',  149 => 'G11',  172 => 'H11',
+     12 => 'A12',   35 => 'B12' ,  58 => 'C12',  81 => 'D12',   104 => 'E12',  127 => 'F12',  150 => 'G12',  173 => 'H12',
+     13 => 'A13',   36 => 'B13' ,  59 => 'C13',  82 => 'D13',   105 => 'E13',  128 => 'F13',  151 => 'G13',  174 => 'H13',
+     14 => 'A14',   37 => 'B14' ,  60 => 'C14',  83 => 'D14',   106 => 'E14',  129 => 'F14',  152 => 'G14',  175 => 'H14',
+     15 => 'A15',   38 => 'B15',   61 => 'C15',  84 => 'D15',   107 => 'E15',  130 => 'F15',  153 => 'G15',  176 => 'H15',
+     16 => 'A16',   39 => 'B16' ,  62 => 'C16',  85 => 'D16',   108 => 'E16',  131 => 'F16',  154 => 'G16',  177 => 'H16',
+     17 => 'A17',   40 => 'B17',   63 => 'C17',  86 => 'D17',   109 => 'E17',  132 => 'F17',  155 => 'G17',  178 => 'H17',
+     18 => 'A18',   41 => 'B18',   64 => 'C18',  87 => 'D18',   110 => 'E18',  133 => 'F18',  156 => 'G18',  179 => 'H18',
+     19 => 'A19',   42 => 'B19',   65 => 'C19',  88 => 'D19',   111 => 'E19',  134 => 'F19',  157 => 'G19',  180 => 'H19',
+     20 => 'A20',   43 => 'B20',   66 => 'C20',  89 => 'D20',   112 => 'E20',  135 => 'F20',  158 => 'G20',  181 => 'H20',
+     21 => 'A21',   44 => 'B21',   67 => 'C21',  90 => 'D21',   113 => 'E21',  136 => 'F21',  159 => 'G21',  182 => 'H21',
+     22 => 'A22',   45 => 'B22',   68 => 'C22',  91 => 'D22',   114 => 'E22',  137 => 'F22',  160 => 'G22',  183 => 'H22',
+     23 => 'A23',   46 => 'B23',   69 => 'C23',  92 => 'D23',   115 => 'E23',  138 => 'F23',  161 => 'G23',  184 => 'H23',
+
+    185 => 'I1',   208 => 'J1',   231 => 'K1',   254 => 'L1',   277 => 'M1',
+    186 => 'I2',   209 => 'J2',   232 => 'K2',   255 => 'L2',   278 => 'M2',
+    187 => 'I3',   210 => 'J3',   233 => 'K3',   256 => 'L3',   279 => 'M3',
+    188 => 'I4',   211 => 'J4',   234 => 'K4',   257 => 'L4',   280 => 'M4',
+    189 => 'I5',   212 => 'J5',   235 => 'K5',   258 => 'L5',   281 => 'M5',
+    190 => 'I6',   213 => 'J6',   236 => 'K6',   259 => 'L6',   282 => 'M6',
+    191 => 'I7',   214 => 'J7',   237 => 'K7',   260 => 'L7',   283 => 'M7',
+    192 => 'I8',   215 => 'J8',   238 => 'K8',   261 => 'L8',   284 => 'M8',
+    193 => 'I9',   216 => 'J9',   239 => 'K9',   262 => 'L9',   285 => 'M9',
+    194 => 'I10',  217 => 'J10',  240 => 'K10',  263 => 'L10',  286 => 'M10',
+    195 => 'I11',  218 => 'J11',  241 => 'K11',  264 => 'L11',  287 => 'M11',
+    196 => 'I12',  219 => 'J12',  242 => 'K12',  265 => 'L12',  288 => 'M12',
+    197 => 'I13',  220 => 'J13',  243 => 'K13',  266 => 'L13',  289 => 'M13',
+    198 => 'I14',  221 => 'J14',  244 => 'K14',  267 => 'L14',  290 => 'M14',
+    199 => 'I15',  222 => 'J15',  245 => 'K15',  268 => 'L15',  291 => 'M15',
+    200 => 'I16',  223 => 'J16',  246 => 'K16',  269 => 'L16',  292 => 'M16',
+    201 => 'I17',  224 => 'J17',  247 => 'K17',  270 => 'L17',  293 => 'M17',
+    202 => 'I18',  225 => 'J18',  248 => 'K18',  271 => 'L18',  294 => 'M18',
+    203 => 'I19',  226 => 'J19',  249 => 'K19',  272 => 'L19',  295 => 'M19',
+    204 => 'I20',  227 => 'J20',  250 => 'K20',  273 => 'L20',  296 => 'M20',
+    205 => 'I21',  228 => 'J21',  251 => 'K21',  274 => 'L21',  297 => 'M21',
+    206 => 'I22',  229 => 'J22',  252 => 'K22',  275 => 'L22',  298 => 'M22',
+    208 => 'I23',  230 => 'J23',  253 => 'K23',  276 => 'L23',  299 => 'M23',
+);
+
+# AF point indices for 493 focus point (single-point AF) cameras equipped with Expeed 7 processor (eg. Z8 and Z9).  Single-point AF array is 17 rows x 29 columns  (ref 28)
 # - Auto Area AF uses 15 of the 17 rows (A-Q) and 27 of the 29 columns (1-27), center is H14 (405 of the 493 focus points can be used by Auto-area AF)
 #
 my %afPoints493 = (
@@ -1606,6 +1707,7 @@ my %afPoints493 = (
     242 => 'I26',  269 => 'J26',  296 => 'K26',  323 => 'L26',  350 => 'M26',  377 => 'N26',  404 => 'O26',
     243 => 'I27',  270 => 'J27',  297 => 'K27',  324 => 'L27',  351 => 'M27',  378 => 'N27',  405 => 'O27',
 );
+
 my %cropHiSpeed = ( #IB
     0 => 'Off',
     1 => '1.3x Crop', # (1.3x Crop, Large)
@@ -3011,7 +3113,9 @@ my %base64coord = (
     },
     0x00b7 => [{
         Name => 'AFInfo2',
-        Condition => '$$self{Model} =~ /^NIKON (Z 8|Z 9)\b/i',    #AFInfo2Version 0400
+        # Expeed 7 processor models - Z8 & Z9 (AFInfo2Version 0400), Z6iii & Zf (AFInfo2Version 0401)
+        #  and Z50ii (AFInfo2Version 0402)
+        Condition => '$$valPt =~ /^040[012]/',
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::AFInfo2V0400' },
     },{ #JD
         Name => 'AFInfo2',
@@ -4413,6 +4517,7 @@ my %base64coord = (
         { #PH (Z7)
             Name => 'PrimaryAFPoint',
             Condition => '$$self{PhaseDetectAF} == 8 and $$self{AFInfo2Version} =~ /^03/',
+            PrintConvColumns => 5,
             PrintConv => {
                 0 => '(none)',
                 %afPoints81,
@@ -4697,10 +4802,14 @@ my %base64coord = (
     },
 );
 
-%Image::ExifTool::Nikon::AFInfo2V0400 = (       #V0400 related fields begin at x'3c' (Z9)
+%Image::ExifTool::Nikon::AFInfo2V0400 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    DATAMEMBER => [ 0 ],
+    DATAMEMBER => [ 0, 5 ],
+    NOTES => q{
+        AF information for Nikon cameras with the Expeed 7 processor: The Zf, Z6_3,
+        Z8, Z9 and Z50_3.
+    },
     0 => {
         Name => 'AFInfo2Version',
         Format => 'undef[4]',
@@ -4709,6 +4818,7 @@ my %base64coord = (
     },
     5 => { #28
         Name => 'AFAreaMode', #reflects the mode active when the shutter is tripped, not the position of the Focus Mode button (which is recorded in MenuSettingsZ9 tag also named AfAreaMode)
+        RawConv => '$$self{AFAreaModeUsed} = $val',
         PrintConv => {
             192 => 'Pinpoint',
             193 => 'Single',
@@ -4722,15 +4832,34 @@ my %base64coord = (
             208 => 'Wide (C1/C2)',
         },
     },
-    10 => {
-            Name => 'AFPointsUsed',
-            Condition => 'defined $$self{AFAreaMode} and $$self{AFAreaMode} == 6', #only valid for Auto AF Area mode.  Other modes handled via AFAreaXPosition/AFAreaYPosition
-            Format => 'undef[51]',
-            ValueConv => 'join(" ", unpack("H2"x51, $val))',
-            ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
-            PrintConv => sub { PrintAFPoints(shift, \%afPoints493); },
-            PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints493); },
-    },
+    10 => [{
+        # valid only for AFAreaModes where the camera selects the focus point (i.e., AutoArea & 3D-Tracking)
+        # and the camera has yet to determine a focus target (in these cases tags AFAreaXPosition and AFAreaYPosition will be zeroes)
+        Name => 'AFPointsUsed', # Z8 and Z9 (AFInfo2Version 0400)
+        Condition => '$$self{Model} =~ /^NIKON (Z 8|Z 9)\b/i and ($$self{AFAreaModeUsed} == 197 or $$self{AFAreaModeUsed} == 207)',
+        Format => 'undef[51]',
+        Notes => 'either AFPointsUsed or AFAreaX/YPosition will be set, but not both',
+        ValueConv => 'join(" ", unpack("H2"x51, $val))',
+        ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
+        PrintConv => sub { PrintAFPoints(shift, \%afPoints493); },
+        PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints493); },
+    },{
+        Name => 'AFPointsUsed', # Z6iii and Zf (AFInfo2Version 0401)
+        Condition => '$$self{Model} =~ /^NIKON (Z6_3|Z f)\b/i and ($$self{AFAreaModeUsed} == 197 or $$self{AFAreaModeUsed} == 207)',
+        Format => 'undef[35]',
+        ValueConv => 'join(" ", unpack("H2"x35, $val))',
+        ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
+        PrintConv => sub { PrintAFPoints(shift, \%afPoints273); },
+        PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints273); },
+    },{
+        Name => 'AFPointsUsed', # Z50ii (AFInfo2Version 0402)
+        Condition => '$$self{Model} =~ /^NIKON Z50_2\b/i and ($$self{AFAreaModeUsed} == 197 or $$self{AFAreaModeUsed} == 207)',
+        Format => 'undef[27]',
+        ValueConv => 'join(" ", unpack("H2"x27, $val))',
+        ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
+        PrintConv => sub { PrintAFPoints(shift, \%afPoints209); },
+        PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints209); },
+    }],
     0x3e => {
         Name => 'AFImageWidth',
         Format => 'int16u',
@@ -4744,27 +4873,27 @@ my %base64coord = (
         Format => 'int16u', # (decodes same byte as 0x43)
         RawConv => '$val ? $val : undef',
     },
-    0x43 => {
-        Name => 'FocusPositionHorizontal',
-        Notes => q{
-            the focus points form a 29x17 grid, but the X,Y coordinate values run from 1,1
-            to 30,19.  The horizontal coordinate 11R (5) and the vertical coordinates 6U
-            (4) and 2D (12) are not used for some reason
-        },
-        # 493 focus points for Z9 fall in a 30x19 grid
-        # (the 11R (5) position is not used, for a total of 29 columns, ref AlbertShan email)
-        PrintConv => sub { my ($val) = @_; PrintAFPointsLeftRight($val, 29); },
-    },
+    #0x43 => {
+    #    Name => 'FocusPositionHorizontal',
+    #    Notes => q{
+    #        the focus points form a 29x17 grid, but the X,Y coordinate values run from 1,1
+    #        to 30,19.  The horizontal coordinate 11R (5) and the vertical coordinates 6U
+    #        (4) and 2D (12) are not used for some reason
+    #    },
+    #    # 493 focus points for Z9 fall in a 30x19 grid
+    #    # (the 11R (5) position is not used, for a total of 29 columns, ref AlbertShan email)
+    #    PrintConv => sub { my ($val) = @_; PrintAFPointsLeftRight($val, 29); },
+    #},
     0x44 => { #28
         Name => 'AFAreaYPosition',
         Format => 'int16u', # (decodes same byte as 0x45)
         RawConv => '$val ? $val : undef',
     },
-    0x45 => {
-        Name => 'FocusPositionVertical',
-        # (the 6U (4) and 2D (12) are not used, for a total of 17 rows, ref AlbertShan email)
-        PrintConv => sub { my ($val) = @_; PrintAFPointsUpDown($val, 17); },
-    },
+    #0x45 => {
+    #    Name => 'FocusPositionVertical',
+    #    # (the 6U (4) and 2D (12) are not used, for a total of 17 rows, ref AlbertShan email)
+    #    PrintConv => sub { my ($val) = @_; PrintAFPointsUpDown($val, 17); },
+    #},
     0x46 => {
         Name => 'AFAreaWidth',
         Format => 'int16u',
@@ -5587,9 +5716,9 @@ my %nikonFocalConversions = (
         },
     },
     0x34 => { #28
-        Name => 'LensFirmwareVersion',    
+        Name => 'LensFirmwareVersion',
         Condition => '$$self{LensID} and $$self{LensID} != 0',  #only valid for Z-mount lenses
-        Format => 'int16u',     #4 bits each for version, release amd modification in VRM scheme. 
+        Format => 'int16u',     #4 bits each for version, release amd modification in VRM scheme.
         PrintConv => q{
             my $version = int($val / 256);
             my $release =  int(($val - 256 * $version)/16);
@@ -8395,7 +8524,7 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ6III',
             Start => '$val',
         },
-    },    
+    },
 );
 
 # shot information for the Z7II firmware 1.00 (encrypted) - ref 28
@@ -9191,7 +9320,7 @@ my %nikonFocalConversions = (
     720 => { Name => 'FlickerReductionShooting',PrintConv => \%offOn },
     722 => { Name => 'NikonMeteringMode',   PrintConv => \%meteringModeZ7},
     724 => {
-        Name => 'FlashControlMode', 
+        Name => 'FlashControlMode',
         RawConv => '$$self{FlashControlMode} = $val',
         PrintConv => \%flashControlModeZ7,
     },

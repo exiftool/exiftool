@@ -434,6 +434,73 @@ for the full list of Microsoft language codes.</p>
 <td>&nbsp;</td><td>&nbsp;</td>
 </tr></table></td></tr></table></blockquote>
 
+<h2><a name='DebugRSDS'>EXE DebugRSDS Tags</a></h2>
+<p>CodeView RSDS debug information found in some Windows EXE files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PDBModifyDate</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(Taken from debug directory entry pointing to RSDS record.)</span></span></td></tr>
+<tr class=b>
+<td class=r title='20 = 0x14'>20</td>
+<td>PDBAge</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>PDBFileName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DebugNB10'>EXE DebugNB10 Tags</a></h2>
+<p>CodeView NB10 debug information found in some Windows EXE files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PDBModifyDate</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(Taken from debug directory entry pointing to NB10 record.)</span></span></td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>PDBCreateDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>PDBAge</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>PDBFileName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Misc'>EXE Misc Tags</a></h2>
+<p>Miscellaneous CodeView debug information in Windows EXE files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>EXEFileName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='MachO'>EXE MachO Tags</a></h2>
 <p>Information extracted from Mach-O (Mac OS X) executable files and DYLIB
 libraries.</p>
@@ -807,7 +874,7 @@ libraries.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 19, 2023</i>
+<br><i>Last revised Jan 6, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

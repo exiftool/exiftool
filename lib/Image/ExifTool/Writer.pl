@@ -6988,7 +6988,7 @@ sub SetFileTime($$;$$$$)
                 $mtime = $m unless defined $mtime;
                 $success = eval { utime($atime, $mtime, $file) } if defined $atime and defined $mtime;
             }
-            $self->Warn('Error opening file for update') unless $success;
+            $self->Warn('Error updating file time') unless $success;
             return $success;
         }
         $saveFile = $file;

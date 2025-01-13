@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %iptcCharset);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.58';
+$VERSION = '1.59';
 
 %iptcCharset = (
     "\x1b%G"  => 'UTF8',
@@ -1057,7 +1057,7 @@ sub ProcessIPTC($$$)
     my $verbose = $et->Options('Verbose');
     my $validate = $et->Options('Validate');
     my $success = 0;
-    my ($lastRec, $recordPtr, $recordName);
+    my ($lastRec, $recordPtr, $recordName, %seen);
 
     $verbose and $dirInfo and $et->VerboseDir('IPTC', 0, $$dirInfo{DirLen});
 
@@ -1083,7 +1083,7 @@ sub ProcessIPTC($$$)
                 $et->FoundTag('CurrentIPTCDigest', $md5);
             }
         } else {
-            if (($Image::ExifTool::MWG::strict or $et->Options('Validate')) and
+            if (($Image::ExifTool::MWG::strict or $validate) and
                 $$et{FILE_TYPE} =~ /^(JPEG|TIFF|PSD)$/)
             {
                 if ($Image::ExifTool::MWG::strict) {
@@ -1186,8 +1186,11 @@ sub ProcessIPTC($$$)
             # - no Name so name is generated automatically with decimal tag number
             AddTagToTable($recordPtr, $tag, { Unknown => 1 });
         }
-
         my $tagInfo = $et->GetTagInfo($recordPtr, $tag);
+        if ($validate and not $$tagInfo{List} and not $$tagInfo{Unknown}) {
+            $et->Warn("Multiple IPTC $$tagInfo{Name} tags") if $seen{$tagInfo};
+            $seen{$tagInfo} = 1;
+        }
         my $format;
         # (could use $$recordPtr{FORMAT} if no Format below, but don't do this to
         #  be backward compatible with improperly written PhotoMechanic tags)

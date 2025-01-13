@@ -12,7 +12,7 @@ require Exporter;
 
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(ReadCSV ReadJSON);
 
@@ -80,14 +80,15 @@ sub ReadCSV($$;$$)
         }
         if (@tags) {
             # save values for each tag
+            $fileInfo{_ordered_keys_} = [ ];
             for ($i=0; $i<@vals and $i<@tags; ++$i) {
                 # ignore empty entries unless missingValue is empty too
                 next unless length $vals[$i] or defined $missingValue and $missingValue eq '';
                 # delete tag (set value to undef) if value is same as missing tag
                 $fileInfo{$tags[$i]} =
                     (defined $missingValue and $vals[$i] eq $missingValue) ? undef : $vals[$i];
+                push @{$fileInfo{_ordered_keys_}}, $tags[$i];
             }
-            $fileInfo{_ordered_keys_} = \@tags;
             # figure out the file name to use
             if ($fileInfo{SourceFile}) {
                 $$database{$fileInfo{SourceFile}} = \%fileInfo;
@@ -99,7 +100,7 @@ sub ReadCSV($$;$$)
                 # terminate at first blank tag name (eg. extra comma at end of line)
                 last unless length $_;
                 @tags or s/^\xef\xbb\xbf//; # remove UTF-8 BOM if it exists
-                /^[-\w]+(:[-\w+]+)?#?$/ or $err = "Invalid tag name '${_}'", last;
+                /^([-_0-9A-Z]+:)*[-_0-9A-Z]+#?$/i or $err = "Invalid tag name '${_}'", last;
                 push(@tags, $_);
             }
             last if $err;

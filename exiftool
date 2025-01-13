@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.11';
+my $version = '13.12';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -641,7 +641,7 @@ for (;;) {
         }
         # require MWG module if used in any argument
         # (note: doesn't cover the -p option because these tags will be parsed on the 2nd pass)
-        $useMWG = 1 if not $useMWG and grep /^mwg:/i, @tags, @requestTags;
+        $useMWG = 1 if not $useMWG and grep /^([--_0-9A-Z]+:)*1?mwg:/i, @tags, @requestTags;
         if ($useMWG) {
             require Image::ExifTool::MWG;
             Image::ExifTool::MWG::Load();
@@ -1093,7 +1093,7 @@ for (;;) {
         # prevent processing file unnecessarily for simple case of failed '$ok' or 'not $ok'
         $cond =~ /^\s*(not\s*)\$ok\s*$/i and ($1 xor $rtnValPrev) and $failCondition=1;
         # add to list of requested tags
-        push @requestTags, $cond =~ /\$\{?((?:[-\w]+:)*[-\w?*]+)/g;
+        push @requestTags, $cond =~ /\$\{?((?:[-_0-9A-Z]+:)*[-_0-9A-Z?*]+)/ig;
         push @condition, $cond;
         next;
     }
@@ -1181,7 +1181,7 @@ for (;;) {
         if ($pass) {
             LoadPrintFormat($fmt, $1 || $binaryOutput);
             # load MWG module now if necessary
-            if (not $useMWG and grep /^mwg:/i, @requestTags) {
+            if (not $useMWG and grep /^([-_0-9A-Z]+:)*1?mwg:/i, @requestTags) {
                 $useMWG = 1;
                 require Image::ExifTool::MWG;
                 Image::ExifTool::MWG::Load();
@@ -1380,11 +1380,11 @@ for (;;) {
             push @newValues, { SaveCount => ++$saveCount };
         }
         push @newValues, $_;
-        if (/^mwg:/i) {
+        if (/^([-_0-9A-Z]+:)*1?mwg:/i) {
             $useMWG = 1;
-        } elsif (/^([-\w]+:)*(filename|directory|testname)\b/i) {
+        } elsif (/^([-_0-9A-Z]+:)*(filename|directory|testname)\b/i) {
             $doSetFileName = 1;
-        } elsif (/^([-\w]+:)*(geotag|geotime|geosync|geolocate)\b/i) {
+        } elsif (/^([-_0-9A-Z]+:)*(geotag|geotime|geosync|geolocate)\b/i) {
             if (lc $2 eq 'geotime') {
                 $addGeotime = '';
             } else {
@@ -1402,25 +1402,23 @@ for (;;) {
         if ($setTagsFile) {
             push @{$setTags{$setTagsFile}}, $_;
             if ($1 eq '>') {
-                $useMWG = 1 if /^(.*>\s*)?mwg:/si;
+                $useMWG = 1 if /^(.*>\s*)?([-_0-9A-Z]+:)*1?mwg:/si;
                 if (/\b(filename|directory|testname)#?$/i) {
                     $doSetFileName = 1;
                 } elsif (/\bgeotime#?$/i) {
                     $addGeotime = '';
                 }
             } else {
-                $useMWG = 1 if /^([^<]+<\s*(.*\$\{?)?)?mwg:/si;
-                if (/^([-\w]+:)*(filename|directory|testname)\b/i) {
+                $useMWG = 1 if /^([^<]+<\s*(.*\$\{?)?)?([-_0-9A-Z]+:)*1?mwg:/si;
+                if (/^([-_0-9A-Z]+:)*(filename|directory|testname)\b/i) {
                     $doSetFileName = 1;
-                } elsif (/^([-\w]+:)*geotime\b/i) {
+                } elsif (/^([-_0-9A-Z]+:)*geotime\b/i) {
                     $addGeotime = '';
                 }
             }
         } else {
             my $lst = s/^-// ? \@exclude : \@tags;
-            unless (/^([-\w*]+:)*([-\w*?]+)#?$/) {
-                Warn(qq(Invalid TAG name: "$_"\n));
-            }
+            Warn(qq(Invalid TAG name: "$_"\n)) unless /^([-_0-9A-Z*]+:)*([-_0-9A-Z*?]+)#?$/i;
             push @$lst, $_; # (push everything for backward compatibility)
         }
     }
@@ -1763,9 +1761,11 @@ if (@newValues) {
         $wrn and Warning($mt, $wrn);
     }
     # exclude specified tags
-    foreach (@exclude) {
-        $mt->SetNewValue($_, undef, Replace => 2);
-        $needSave = 1;
+    unless ($csv) {
+        foreach (@exclude) {
+            $mt->SetNewValue($_, undef, Replace => 2);
+            $needSave = 1;
+        }
     }
     unless ($isWriting or $outOpt or @tags) {
         Warn "Nothing to do.\n";
@@ -2296,6 +2296,10 @@ sub GetImageInfo($$)
                 $et->Options(Duplicates => 1, Sort => "Group$showGroup", Verbose => 0);
                 $et2 = Image::ExifTool->new;
                 $et2->Options(%{$$et{OPTIONS}});
+                # must set list options specifically because they may have been
+                # set incorrectly from deprecated List settings
+                $et2->Options(ListSep => $$et{OPTIONS}{ListSep});
+                $et2->Options(ListSplit => $$et{OPTIONS}{ListSplit});
                 @found2 = @foundTags;
                 $info2 = $et2->ImageInfo($file2, \@found2);
             } else {
@@ -2352,14 +2356,15 @@ sub GetImageInfo($$)
 
     # print differences if requested
     if (defined $diff) {
-        my (%done2, $wasDiff, @diffs, @groupTags2);
+        my (%done, %done2, $wasDiff, @diffs, @groupTags2);
         my $v = $verbose || 0;
         print $fp "======== diff < $file > $file2\n";
         my ($g2, $same) = (0, 0); # start with $g2 false, but not equal to '' to avoid infinite loop
         for (;;) {
+            my ($g, $tag2, $i, $key, @dupl, $val2, $t2, $equal, %used);
             my $tag = shift @foundTags;
-            my ($g, $tag2);
             if (defined $tag) {
+                $done{$tag} = 1;
                 $g = $et->GetGroup($tag, $showGroup);
             } else {
                 for (;;) {
@@ -2369,7 +2374,6 @@ sub GetImageInfo($$)
                 }
             }
             if ($g ne $g2) {
-                my $t2;
                 # add any outstanding tags from diff file not yet handled in previous group ($g2)
                 foreach $t2 (@groupTags2) {
                     next if $done2{$t2};
@@ -2408,33 +2412,50 @@ sub GetImageInfo($$)
             my $val = $et->GetValue($tag);
             next unless defined $val;  # (just in case)
             my $name = GetTagName($tag);
-            # get matching tag key from diff file
+            my $desc = $outFormat < 1 ? $et->GetDescription($tag) : $name;
+            # get matching tag key(s) from diff file
             my @tags2 = grep /^$name( |$)/, @groupTags2;
-            $name = $et->GetDescription($tag) if $outFormat < 1;
-            my ($val2, $t2);
-            foreach $t2 (@tags2) {
+T2:         foreach $t2 (@tags2) {
                 next if $done2{$t2};
                 $tag2 = $t2;
                 $val2 = $et2->GetValue($t2);
+                next unless defined $val2;
+                IsEqual($val, $val2) and $equal = 1, last;
+                # look ahead for upcoming duplicate tags in this group to see
+                # if any would later match this value (and skip those for now)
+                if ($$et{DUPL_TAG}{$name} and not @dupl) {
+                    for ($i=0, $key=$name; $i<=$$et{DUPL_TAG}{$name}; ++$i, $key="$name ($i)") {
+                        push @dupl, $key unless $done{$key} or $g ne $et->GetGroup($key, $showGroup);
+                    }
+                    @dupl = sort { $$et{FILE_ORDER}{$a} <=> $$et{FILE_ORDER}{$b} } @dupl if @dupl > 1;
+                }
+                foreach (@dupl) {
+                    next if $used{$_};
+                    my $v = $et->GetValue($_);
+                    next unless defined($v) and IsEqual($v, $val2);
+                    $used{$_} = 1;  # would match this upcoming tag
+                    undef($tag2); undef($val2);
+                    next T2;
+                }
                 last;
             }
-            if (defined $val2 and IsEqual($val, $val2)) {
+            if ($equal) {
                 ++$same;
             } else {
-                my $len = LengthUTF8($name);
+                my $len = LengthUTF8($desc);
                 my $pad = $outFormat < 2 ? ' ' x ($len < 32 ? 32 - $len : 0) : '';
                 if ($allGroup) {
                     my $grp = "[$g]";
                     $grp .= ' ' x (15 - length($grp)) if length($grp) < 15 and $outFormat < 2;
-                    push @diffs, sprintf "< %s %s%s: %s\n", $grp, $name, $pad, Printable($val);
+                    push @diffs, sprintf "< %s %s%s: %s\n", $grp, $desc, $pad, Printable($val);
                     if (defined $val2) {
-                        $grp = ' ' x length($grp), $name = ' ' x $len if $v < 3;
-                        push @diffs, sprintf "> %s %s%s: %s\n", $grp, $name, $pad, Printable($val2);
+                        $grp = ' ' x length($grp), $desc = ' ' x $len if $v < 3;
+                        push @diffs, sprintf "> %s %s%s: %s\n", $grp, $desc, $pad, Printable($val2);
                     }
                 } else {
-                    push @diffs, sprintf "< %s%s: %s\n", $name, $pad, Printable($val);
-                    $name = ' ' x $len if $v < 3;
-                    push @diffs, sprintf "> %s%s  %s\n", $name, $pad, Printable($val2) if defined $val2;
+                    push @diffs, sprintf "< %s%s: %s\n", $desc, $pad, Printable($val);
+                    $desc = ' ' x $len if $v < 3;
+                    push @diffs, sprintf "> %s%s  %s\n", $desc, $pad, Printable($val2) if defined $val2;
                 }
             }
             $done2{$tag2} = 1 if defined $tag2;
@@ -3147,7 +3168,7 @@ sub SetImageInfo($$$)
                 next;
             } elsif (ref $dyFile eq 'SCALAR') {
                 # set new values from CSV or JSON database
-                my ($f, $found, $tag);
+                my ($f, $found, $csvTag, $tryTag, $tg);
                 undef $evalWarning;
                 local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };
                 # force UTF-8 if the database was JSON
@@ -3169,11 +3190,39 @@ sub SetImageInfo($$$)
                         print $vout 'Including tags: ',join(' ',@tags),"\n" if @tags;
                         print $vout 'Excluding tags: ',join(' ',@exclude),"\n" if @exclude;
                     }
-                    foreach $tag (OrderedKeys($csvInfo)) {
-                        next if $tag =~ /\b(SourceFile|Directory|FileName)$/i; # don't write these
-                        next if @tags and not grep /^\Q$tag\E$/i, @tags;
-                        next if @exclude and grep /^\Q$tag\E$/i, @exclude;
-                        my ($rtn, $wrn) = $et->SetNewValue($tag, $$csvInfo{$tag},
+                    my @tryTags = (@exclude, @tags); # (exclude first because it takes priority)
+                    foreach (@tryTags) {
+                        tr/-0-9a-zA-Z_:#?*//dc;     # remove illegal characters
+                        s/(^|:)(all:)+/$1/ig;       # remove 'all' group names
+                        s/(^|:)all(#?)$/$1*$2/i;    # convert 'all' tag name to '*'
+                        tr/?/./;  s/\*/.*/g;        # convert wildcards for regex
+                    }
+                    foreach $csvTag (OrderedKeys($csvInfo)) {
+                        # don't write SourceFile, Directory or FileName
+                        next if $csvTag =~ /^([-_0-9A-Z]+:)*(SourceFile|Directory|FileName)$/i;
+                        if (@tryTags) {
+                            my ($i, $tryGrp, $matched);
+TryMatch:                   for ($i=0; $i<@tryTags; ++$i) {
+                                $tryTag = $tryTags[$i];
+                                if ($tryTag =~ /:/) {
+                                    next unless $csvTag =~ /:/;     # db entry must also specify group
+                                    my @csvGrps = split /:/, $csvTag;
+                                    my @tryGrps = split /:/, $tryTag;
+                                    my $tryName = pop @tryGrps;
+                                    next unless pop(@csvGrps) =~ /^$tryName$/i; # tag name must match
+                                    foreach $tryGrp (@tryGrps) {
+                                        # each specified group name must match db entry
+                                        next TryMatch unless grep /^$tryGrp$/i, @csvGrps;
+                                    }
+                                    $matched = 1;
+                                    last;
+                                }
+                                # no group specified, so match by tag name only
+                                $csvTag =~ /^([-_0-9A-Z]+:)*$tryTag$/i and $matched = 1, last;
+                            }
+                            next if $matched ? $i < @exclude : @tags;
+                        }
+                        my ($rtn, $wrn) = $et->SetNewValue($csvTag, $$csvInfo{$csvTag},
                                           Protected => 1, AddValue => $csvAdd,
                                           ProtectSaved => $csvSaveCount);
                         $wrn and Warn "$wrn\n" if $verbose;
@@ -4363,7 +4412,7 @@ sub AddPrintFormat($)
     $printFmt{$type} or $printFmt{$type} = [ ];
     push @{$printFmt{$type}}, $expr;
     # add to list of requested tags
-    push @requestTags, $expr =~ /\$\{?((?:[-\w]+:)*[-\w?*]+)/g;
+    push @requestTags, $expr =~ /\$\{?((?:[-_0-9A-Z]+:)*[-_0-9A-Z?*]+)/ig;
     $printFmt{SetTags} = 1 if $expr =~ /\bSetTags\b/;
 }
 
@@ -4718,7 +4767,7 @@ sub FilterArgfileLine($)
         $arg =~ s/^\s+//;           # remove leading white space
         $arg =~ s/[\x0d\x0a]+$//s;  # remove trailing newline
         # remove white space before, and single space after '=', '+=', '-=' or '<='
-        $arg =~ s/^(-[-:\w]+#?)\s*([-+<]?=) ?/$1$2/;
+        $arg =~ s/^(-[-_0-9A-Z:]+#?)\s*([-+<]?=) ?/$1$2/i;
         return undef if $arg eq '';
     }
     return $arg;
@@ -5598,9 +5647,13 @@ deleted).  Also, FileName and Directory columns are ignored if they exist
 all other columns are imported.  To force a tag to be deleted, use the B<-f>
 option and set the value to "-" in the CSV file (or to the MissingTagValue
 if this API option was used).  Multiple databases may be imported in a
-single command.  Specific tags may be imported from the database by adding
-B<->I<TAG> options to the command, or excluded with B<-->I<TAG> options.
-If no tags are specified, then all except FileName and Directory are used.
+single command.
+
+Specific tags may be imported from the CSV database by adding B<->I<TAG>
+options to the command, or excluded with B<-->I<TAG>, with exclusions taking
+priority.  Group names and wildcards are allowed.  If no tags are specified,
+then all except FileName and Directory are used.  Tags are imported in the
+same order as the database entries.
 
 When exporting a CSV file, the B<-g> or B<-G> option adds group names to the
 tag headings.  If the B<-a> option is used to allow duplicate tag names, the
@@ -5783,9 +5836,13 @@ that options exporting JSON objects instead of simple values are not
 compatible with the import file format (ie. export with B<-D>, B<-H>, B<-l>,
 or B<-T> is not compatible, and use B<-G> instead of B<-g>).  Additionally,
 tag names in the input JSON file may be suffixed with a C<#> to disable
-print conversion.  Specific tags may be imported from the database by adding
-B<->I<TAG> options to the command, or excluded with B<-->I<TAG> options.
-If no tags are specified, then all except FileName and Directory are used.
+print conversion.
+
+Specific tags may be imported from the JSON database by adding B<->I<TAG>
+options to the command, or excluded with B<-->I<TAG>, with exclusions taking
+priority.  Group names and wildcards are allowed.  If no tags are specified,
+then all except FileName and Directory are used.  Tags are imported in the
+same order as the database entries.
 
 Unlike CSV import, empty values are not ignored, and will cause an empty
 value to be written if supported by the specific metadata type.  Tags are
@@ -5926,7 +5983,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 13.11 --
+    -- Generated by ExifTool 13.12 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -6778,9 +6835,10 @@ System tags:
 The B<-g> and B<-G> options may be used to organize the output by the
 specified family of groups, with B<-G1> being the default.  The B<-a> option
 is implied.  Adding B<-v> includes a count of the number of tags that are
-the same in each group.  The following text formatting options are valid
-when B<-diff> is used: B<-c>, B<-charset>, B<-d>, B<-E>, B<-ec>, B<-ex>,
-B<-L>, B<-lang>, B<-n>, B<-s>, B<-sep>, B<-struct> and B<-w>.
+the same in each group, and B<-v2> also indicates when zero tags were the
+same.  The following text formatting options are valid when B<-diff> is
+used: B<-c>, B<-charset>, B<-d>, B<-E>, B<-ec>, B<-ex>, B<-L>, B<-lang>,
+B<-n>, B<-s>, B<-sep>, B<-struct> and B<-w>.
 
 =item B<-geotag> I<TRKFILE>
 

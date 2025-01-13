@@ -32,7 +32,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.28';
+$VERSION = '1.29';
 
 # program map table "stream_type" lookup (ref 6/1/9)
 my %streamType = (
@@ -437,13 +437,16 @@ sub ParsePID($$$$$)
             $more = 1;
         } elsif ($$dataPt =~ /\$GPRMC,/) {
             # Jomise T860S-GM dashcam
-            # $GPRMC,hhmmss.ss,A,ddmm.mmmmm,N,dddmm.mmmmm,W,spd-kts,dir-dg,DDMMYY,,*cs
-            # $GPRMC,172255.00,A,:985.95194,N,17170.14674,W,029.678,170.68,240822,,,D*7B
-            # $GPRMC,172355.00,A,:984.76779,N,17170.00473,W,032.219,172.04,240822,,,D*7B
-            # ddmm.mmmm: from    4742.2568    12209.2028 (should be)
-            # to                 4741.7696    12209.1056
-            # stamped on video:  47.70428N, 122.15338W, 35mph (dd.ddddd)
-            # to                 47.69616N, 122.15176W, 37mph
+            # $GPRMC,hhmmss.ss,A,ddmm.mmmmm,N,dddmm.mmmmm,W,spd-kts,dir-dg,DDMMYY,,M*cs - lat,lon,spd from video
+            # $GPRMC,172255.00,A,:985.95194,N,17170.14674,W,029.678,170.68,240822,,,D*7B - N47.70428,W122.15338,35mph
+            # $GPRMC,192643.00,A,:987.94979,N,17171.07268,W,010.059,079.61,111122,,,A*73 - N47.71862,W122.16437,12mph
+            # $GPRMC,192743.00,A,:988.72110,N,17171.04873,W,017.477,001.03,111122,,,A*78 - N47.72421,W122.16408,20mph
+            # $GPRMC,192844.00,A,:989.43771,N,17171.03538,W,016.889,001.20,111122,,,A*7B - N47.72932,W122.16393,19mph
+            # $GPRMC,005241.00,A,:987.70873,N,17171.81293,W,000.284,354.78,141122,,,A*7F - N47.71687,W122.17318,0mph
+            # $GPRMC,005341.00,A,:987.90851,N,17171.85380,W,000.080,349.36,141122,,,A*7C - N47.71832,W122.17367,0mph
+            # $GPRMC,005441.00,A,:987.94538,N,17171.21783,W,029.686,091.09,141122,,,A*7A - N47.71859,W122.16630,35mph
+            # $GPRMC,002816.00,A,6820.67273,N,13424.26599,W,000.045,000.00,261122,,,A*79 - N29.52096,W95.55953,0mph (seattle)
+            # $GPRMC,035136.00,A,:981.47322,N,17170.14105,W,024.594,180.50,291122,,,D*79 - N47.67180,W122.15328,28mph
             my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
             while ($$dataPt =~ /\$[A-Z]{2}RMC,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(.{2})(\d{2}\.\d+),([NS]),(.{3})(\d{2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/g and
                 # do some basic sanity checks on the date
@@ -477,6 +480,11 @@ sub ParsePID($$$$$)
                     $et->HandleTag($tagTbl, GPSLongitude => (($lo || 0) + (($9-70.14674)/1.460987654320988+9.2028)/60) * ($10 eq 'E' ? 1 : -1));
                 }
             }
+        } elsif ($$dataPt =~ /\$GSENSORD,\s*(\d+),\s*(\d+),\s*(\d+),/) {
+            # Jomise T860S-GM dashcam
+            my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+            $$et{DOC_NUM} = $$et{DOC_COUNT};
+            $et->HandleTag($tagTbl, Accelerometer => "$1 $2 $3"); # (NC - values range from 0 to 6)
         } elsif ($$dataPt =~ /^.{44}A\0{3}.{4}([NS])\0{3}.{4}([EW])\0{3}/s and length($$dataPt) >= 84) {
             #forum11320
             SetByteOrder('II');
@@ -592,7 +600,8 @@ sub ProcessM2TS($$)
     my %gpsPID = (
         0x0300 => 1,    # Novatek INNOVV, DOD_LS600W
         0x01e4 => 1,    # vsys a6l dashcam
-        0x0e1b => 1,    # Jomise T860S-GM dashcam
+        0x0e1b => 1,    # Jomise T860S-GM dashcam GPS
+        0x0e1a => 1,    # Jomise T860S-GM dashcam accelerometer
     );
     my $pEnd = 0;
 

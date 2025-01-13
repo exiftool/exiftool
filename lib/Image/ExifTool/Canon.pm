@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.86';
+$VERSION = '4.87';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -632,8 +632,10 @@ $VERSION = '4.86';
    '61182.55' => 'Canon RF-S 10-18mm F4.5-6.3 IS STM', #42
    '61182.56' => 'Canon RF 35mm F1.4 L VCM', #42
    '61182.57' => 'Canon RF 70-200mm F2.8 L IS USM Z', #42
-   '61182.58' => 'Canon RF 50mm F1.4 L VCM', #42
-   '61182.59' => 'Canon RF 24mm F1.4 L VCM', #42
+   '61182.58' => 'Canon RF 70-200mm F2.8 L IS USM Z + RF1.4x', #42
+   '61182.59' => 'Canon RF 70-200mm F2.8 L IS USM Z + RF2x', #42
+   '61182.60' => 'Canon RF 50mm F1.4 L VCM', #42
+   '61182.61' => 'Canon RF 24mm F1.4 L VCM', #42
     65535 => 'n/a',
 );
 
@@ -7023,6 +7025,8 @@ my %ciMaxFocal = (
             317 => 'Canon RF-S 3.9mm F3.5 STM DUAL FISHEYE', #42
             318 => 'Canon RF 28-70mm F2.8 IS STM', #42
             319 => 'Canon RF 70-200mm F2.8 L IS USM Z', #42
+            320 => 'Canon RF 70-200mm F2.8 L IS USM Z + RF1.4x', #42
+            321 => 'Canon RF 70-200mm F2.8 L IS USM Z + RF2x', #42
             325 => 'Canon RF 50mm F1.4 L VCM', #42
             326 => 'Canon RF 24mm F1.4 L VCM', #42
             # Note: add new RF lenses to %canonLensTypes with ID 61182

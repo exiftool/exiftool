@@ -23702,6 +23702,16 @@ Tags written by the Sony Image Data Converter utility in ARW images.
   0xd100   VersionCreateDate                    string
   0xd101   VersionModifyDate                    string
 
+=head2 Vivo Tags
+
+Proprietary information written by some Vivo phones.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  HDRImage                                      no
+  HiddenData                                    no
+  JSONInfo                                      no
+
 =head2 Unknown Tags
 
 The following tags are decoded in unsupported maker notes.  Use the Unknown
@@ -27921,16 +27931,6 @@ to avoid name conflicts.
   'Duration'   Duration                         rational64u~
   'data'       RelatedVideoFile                 undef
 
-=head2 Vivo Tags
-
-Proprietary information written by some Vivo phones.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  HDRImage                                      no
-  HiddenData                                    no
-  JSONInfo                                      no
-
 =head2 GIF Tags
 
 This table lists information extracted from GIF images. See
@@ -30011,10 +30011,11 @@ L<AudioKeys|Image::ExifTool::TagNames/QuickTime AudioKeys Tags> and
 L<VideoKeys|Image::ExifTool::TagNames/QuickTime VideoKeys Tags> tags for
 more information.
 
-Beware that the Keys tags are actually stored inside an ItemList in the
-file, so deleting the ItemList group as a block (ie. C<-ItemList:all=>) also
-deletes Keys tags.  Instead, to preserve Keys tags the ItemList tags may be
-deleted individually with C<-QuickTime:ItemList:all=>.
+Beware that the values of the Keys tags are actually stored inside an
+ItemList atom in the file, so deleting the ItemList group as a block (ie.
+C<-ItemList:all=>) also deletes Keys tags.  Instead, to preserve Keys tags
+the ItemList tags may be deleted individually with
+C<-QuickTime:ItemList:all=>.
 
 Alternate language tags may be accessed for
 L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and

@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/QuickTime.t".
 
 BEGIN {
-    $| = 1; print "1..18\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..20\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -237,14 +237,64 @@ my $testnum = 1;
     print "ok $testnum\n";
 }
 
-# test 18: Write to audio and video tracks
+# test 18-20: Write to audio and video tracks, clear the data and write again
 {
     ++$testnum;
     my @writeInfo = (
         ['VideoKeys:LensModel' => 'test lens'],
         ['AudioKeys:Treble' => '50'],
     );
-    notOK() unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/QuickTime.mov', 1);
+    my @writeMore = (
+        ['Keys:Title' => 'Keys'],
+        ['ItemList:Title' => 'ItemList'],
+        ['UserData:Title' => 'UserData'],
+    );
+    my @tags = (qw(keys:all audiokeys:all videokeys:all itemlist:all userdata:all));
+    my $testfile = "t/${testname}_${testnum}_failed.mov";
+    my $exifTool = Image::ExifTool->new;
+    $exifTool->SetNewValue(@$_) foreach @writeInfo;
+    unlink $testfile;
+    my $ok = writeInfo($exifTool, 't/images/QuickTime.mov', $testfile);
+    if ($ok) {
+        my $info = $exifTool->ImageInfo($testfile,{Duplicates=>1,Unknown=>1},@tags);
+        $ok = check($exifTool, $info, $testname, $testnum);
+    }
+    notOK() unless $ok;
+    print "ok $testnum\n";
+
+    ++$testnum;
+    my $testfile2 = "t/${testname}_${testnum}_failed.mov";
+    $exifTool->SetNewValue();
+    $exifTool->SetNewValue(all => undef);   # delete all
+    unlink $testfile2;
+    $ok = writeInfo($exifTool, $testfile, $testfile2);
+    if ($ok) {
+        my $info = $exifTool->ImageInfo($testfile2,{Duplicates=>1,Unknown=>1},@tags);
+        $ok = check($exifTool, $info, $testname, $testnum);
+    }
+    if ($ok) {
+        unlink $testfile;
+    } else {
+        notOK();
+    }
+    print "ok $testnum\n";
+
+    ++$testnum;
+    my $testfile3 = "t/${testname}_${testnum}_failed.mov";
+    $exifTool->SetNewValue();
+    $exifTool->SetNewValue(@$_) foreach @writeInfo, @writeMore;
+    unlink $testfile3;
+    $ok = writeInfo($exifTool, $testfile2, $testfile3);
+    if ($ok) {
+        my $info = $exifTool->ImageInfo($testfile3,{Duplicates=>1,Unknown=>1},@tags);
+        $ok = check($exifTool, $info, $testname, $testnum);
+    }
+    if ($ok) {
+        unlink $testfile2;
+        unlink $testfile3;
+    } else {
+        notOK();
+    }
     print "ok $testnum\n";
 }
 

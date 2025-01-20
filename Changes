@@ -7,11 +7,17 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.10. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 20, 2025 - Version 13.14
+
+  - Fixed bug where ItemList tags weren't created when creating new AudioKeys or
+    VideoKeys tags in the same command and neither tag group pre-existed in the
+    file
+
 Jan. 20, 2025 - Version 13.13
 
-  - Added ability to write some tags to the audio/video tracks of MP4/MOV videos
+  - Added ability to write tags to the audio/video tracks of MOV/MP4 videos
     using the new AudioKeys and VideoKeys group names
-  - Added support for another DJI protobuf format (for the Mavic 3)
+  - Added support for another DJI protobuf format (Mavic 3)
   - Decode yet another type of LIGOGPSINFO timed GPS from a dashcam video
   - Extract some proprietary information from JPEG images of Vivo phones
   - Enhanced Geolocation feature to allow the nearest cities to a specified city

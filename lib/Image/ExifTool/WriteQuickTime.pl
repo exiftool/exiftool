@@ -978,7 +978,8 @@ sub WriteQuickTime($$$)
     }
     if ($curPath eq $writePath or $createKeys) {
         $canCreate = 1;
-        $delGrp = $$et{DEL_GROUP}{$dirName};
+        # (must check the appropriate Keys delete flag if this is a Keys ItemList)
+        $delGrp = $$et{DEL_GROUP}{$createKeys ? $keysGrp : $dirName};
     }
     $atomCount = $$tagTablePtr{VARS}{ATOM_COUNT} if $$tagTablePtr{VARS};
 
@@ -1781,8 +1782,8 @@ sub WriteQuickTime($$$)
                 }
             }
             # add only once (must delete _after_ call to WriteDirectory())
-            # (Keys is a special case, and will be removed after Meta is processed)
-            delete $$addDirs{$subName} unless $subName eq 'Keys';
+            # (Keys tags are a special case, and are handled separately)
+            delete $$addDirs{$subName} unless $createKeys;
         }
     }
     # write HEIC metadata after top-level 'meta' box has been processed if editing this information

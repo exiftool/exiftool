@@ -84,7 +84,8 @@ my %tweakOrder = (
     Nintendo => 'NikonCapture',
     Pentax  => 'Panasonic',
     SonyIDC => 'Sony',
-    Unknown => 'SonyIDC',
+    Vivo    => 'SonyIDC',
+    Unknown => 'Vivo',
     DNG     => 'Unknown',
     PrintIM => 'ICC_Profile',
     Vorbis  => 'Ogg',
@@ -450,10 +451,11 @@ L<AudioKeys|Image::ExifTool::TagNames/QuickTime AudioKeys Tags> and
 L<VideoKeys|Image::ExifTool::TagNames/QuickTime VideoKeys Tags> tags for
 more information.
 
-Beware that the Keys tags are actually stored inside an ItemList in the
-file, so deleting the ItemList group as a block (ie. C<-ItemList:all=>) also
-deletes Keys tags.  Instead, to preserve Keys tags the ItemList tags may be
-deleted individually with C<-QuickTime:ItemList:all=>.
+Beware that the values of the Keys tags are actually stored inside an
+ItemList atom in the file, so deleting the ItemList group as a block (ie.
+C<-ItemList:all=>) also deletes Keys tags.  Instead, to preserve Keys tags
+the ItemList tags may be deleted individually with
+C<-QuickTime:ItemList:all=>.
 
 Alternate language tags may be accessed for
 L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and

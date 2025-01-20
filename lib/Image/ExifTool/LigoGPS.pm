@@ -269,6 +269,7 @@ sub ParseLigoGPS($$$;$)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 #         3) 1=LIGOGPS lat/lon/spd weren't fuzzed
 # Returns: 1 on success
+# Notes:  The directory data should start with the string "LIGOGPSINFO\0"
 sub ProcessLigoGPS($$$;$)
 {
     my ($et, $dirInfo, $tagTbl, $noFuzz) = @_;

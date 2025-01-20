@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.12';
+my $version = '13.13';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -2452,7 +2452,7 @@ T2:         foreach $t2 (@tags2) {
                 } else {
                     push @diffs, sprintf "< %s%s: %s\n", $desc, $pad, Printable($val);
                     $desc = ' ' x $len if $v < 3;
-                    push @diffs, sprintf "> %s%s  %s\n", $desc, $pad, Printable($val2) if defined $val2;
+                    push @diffs, sprintf "> %s%s: %s\n", $desc, $pad, Printable($val2) if defined $val2;
                 }
             }
             $done2{$tag2} = 1 if defined $tag2;

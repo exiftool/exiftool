@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.46
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.13
 [ExifTool, ExifTool, ExifTool] Warning - Warning: IPTCDigest is not current. XMP may be out of sync
 [File, System, Other] FileName - File Name: ExifTool.jpg
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 26 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2021:03:19 14:14:12-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:09:19 14:15:32-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:09:18 10:49:22-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2025:01:14 14:27:04-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2025:01:14 14:42:49-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:01:14 14:27:04-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -368,6 +368,7 @@
 [APP14, Adobe, Image] 2 - APP14 Flags 1: (none)
 [APP14, Adobe, Image] 3 - Color Transform: YCbCr
 [APP15, GraphConv, Image] Q - Quality: 70
+[Trailer, Vivo, Image] JSONInfo - JSON Info: {"com.android.camera.joint.fullview.orientation":0,"com.android.camera.hdr":20737,"com.android.camera.fisheye":-1,"com.android.camera.joint.conshoot":0,"com.android.camera.moduleid":"photo","com.android.camera.joint.motioncapture":0,"version":1000,"com.android.camera.joint.fullview":false}
 [MIE, MIE-Doc, Author] Copyright - Copyright: © 2006 Phil Harvey
 [MIE, MIE-Main, Other] zmie - Trailer Signature: 
 [PhotoMechanic, PhotoMechanic, Image] 221 - Tagged: Yes

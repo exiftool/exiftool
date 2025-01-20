@@ -5,8 +5,9 @@
 #
 # Revisions:    2024-12-04 - P. Harvey Created
 #
-# Notes:        Tag definitions for Protobuf tags support additional 'signed'
-#               and 'unsigned' formats for varInt (type 0) values
+# Notes:        Tag definitions for Protobuf tags support additional 'signed',
+#               'unsigned' and 'int64s' formats for varInt (type 0) values,
+#               and 'rational' for byte (type 2) values
 #
 # References:   1) https://protobuf.dev/programming-guides/encoding/
 #------------------------------------------------------------------------------
@@ -17,13 +18,13 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub ProcessProtobuf($$$;$);
 
 #------------------------------------------------------------------------------
 # Read bytes from dirInfo object
-# Inputs: 0) dirInfo ref, 1) number of bytes
+# Inputs: 0) dirInfo ref (with DataPt and Pos set), 1) number of bytes
 # Returns: binary data or undef on error
 sub GetBytes($$)
 {
@@ -162,14 +163,31 @@ sub ProcessProtobuf($$$;$)
         if ($$tagInfo{Format}) {
             if ($type == 0) {
                 $val = $buff;
-                $val = ($val & 1) ? -($val >> 1)-1 : ($val >> 1) if $$tagInfo{Format} eq 'signed';
+                if ($$tagInfo{Format} eq 'signed') {
+                    $val = ($val & 1) ? -($val >> 1)-1 : ($val >> 1);
+                } elsif ($$tagInfo{Format} eq 'int64s' and $val > 0xffffffff) {
+                    # hack for DJI drones which store 64-bit signed integers improperly
+                    # (just toss upper 32 bits which should be all 1's anyway)
+                    $val = ($val & 0xffffffff) - 4294967296;
+                }
+            } elsif ($type == 2 and $$tagInfo{Format} eq 'rational') {
+                my $dir = { DataPt => \$buff, Pos => 0 };
+                my $num = VarInt($dir);
+                my $den = VarInt($dir);
+                $val = (defined $num and $den) ? "$num/$den" : 'err';
             } else {
                 $val = ReadValue(\$buff, 0, $$tagInfo{Format}, undef, length($buff));
             }
         } elsif ($type == 0) {
             $val = $buff;
-            my $signed = ($val & 1) ? -($val >> 1)-1 : ($val >> 1);
-            $val .= sprintf(" (0x%x, signed $signed)", $val);
+            my $hex = sprintf('%x', $val);
+            if (length($hex) == 16 and $hex =~ /^ffffffff/) {
+                my $s64 = hex(substr($hex, 8)) - 4294967296;
+                $val .= " (0x$hex, int64s $s64)";
+            } else {
+                my $signed = ($val & 1) ? -($val >> 1)-1 : ($val >> 1);
+                $val .= " (0x$hex, signed $signed)";
+            }
         } elsif ($type == 1) {
             $val = '0x' . unpack('H*', $buff) . ' (double ' . GetDouble(\$buff,0) . ')';
         } elsif ($type == 2) {

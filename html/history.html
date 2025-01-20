@@ -17,6 +17,24 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.13'><b>Jan. 20, 2025 - Version 13.13</b></a>
+<ul>
+<li>Added ability to write some tags to the audio/video tracks of MP4/MOV videos
+    using the new <a href="TagNames/QuickTime.html#AudioKeys">AudioKeys</a> and <a href="TagNames/QuickTime.html#VideoKeys">VideoKeys</a> group names
+<li>Added support for another DJI protobuf format (for the Mavic 3)
+<li>Decode yet another type of LIGOGPSINFO timed GPS from a dashcam video
+<li>Extract some proprietary information from JPEG images of Vivo phones
+<li>Enhanced Geolocation feature to allow the nearest cities to a specified city
+    to be returned
+<li>Updated xmp2exif.args and exif2xmp.args to properly handle time zones in
+    XMP-exif date/time tags
+<li>Changed family 1 group names for Keys, ItemList and UserData tags in a track
+<li>Patched <a href="https://github.com/exiftool/exiftool/issues/306">github #306</a> issue where a torrent file would return a format error
+    when reading if it didn't contain an "announce" or "created by" entry
+<li>Fixed "uninitialized value" runtime warning when reading some EXE files
+<li>Fixed -diff output to add colon missing from some lines when used with -g
+</ul>
+
 <a name='v13.12'><b>Jan. 13, 2025 - Version 13.12</b></a>
 <ul>
 <li>Added a few new Panasonic AFAreaMode values (thanks Andrew J)
@@ -25,12 +43,12 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Decode AF points for some newer Nikon models (thanks Warren Hatch)
 <li>Decode a new Panasonic tag (thanks Andrew J)
 <li>Decode a couple of previously unknown tags from LIGOGPSINFO records
-<li>Extract some PDB information if available from Win32 EXE files (github#303)
+<li>Extract some PDB information if available from Win32 EXE files (<a href="https://github.com/exiftool/exiftool/issues/303">github #303</a>)
 <li>Improved handling of duplicate tags in -diff output
 <li>Improved handling of QuickTime zero date/time values
 <li>Enchanced -csv= and -json= options to allow group names and wildcards to be
     used when specifying which tags to import
-<li>Updated some EXIF:Compression values (github#304)
+<li>Updated some EXIF:Compression values (<a href="https://github.com/exiftool/exiftool/issues/304">github #304</a>)
 <li>Changed wording of warning when file time couldn't be updated
 <li>Fixed bug introduced in 13.11 reading EXIF from some EXV files
 <li>Fixed bug introduced in 12.99 where empty entries in a CSV file weren't
@@ -44,7 +62,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <a name='v13.11'><b>Jan. 1, 2025 - Version 13.11</b></a>
 <ul>
 <li>Added warning for an unknown DJI protobuf schema
-<li>Decode timed GPS from the DJI Osmo Action 5
+<li>Decode timed GPS from DJI Osmo Action 5 videos
 <li>Decode yet another type of LIGOGPSINFO timed GPS from a dashcam video
 <li>Made Matroska Keywords and Instruments List-type tags
 <li>Fixed problem were EXIF couldn't be added to some AVIF files

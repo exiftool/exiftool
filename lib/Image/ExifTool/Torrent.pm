@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 sub ReadBencode($$$);
 sub ExtractTags($$$;$$@);
@@ -282,7 +282,7 @@ sub ProcessTorrent($$)
     my $dict = ReadBencode($et, $raf, \$buff);
     my $err = $$raf{BencodeError};
     $et->Warn("Bencode error: $err") if $err;
-    if (ref $dict eq 'HASH' and ($$dict{announce} or $$dict{'created by'})) {
+    if (ref $dict eq 'HASH' and ($$dict{announce} or $$dict{'created by'} or $$dict{info})) {
         $et->SetFileType();
         my $tagTablePtr = GetTagTable('Image::ExifTool::Torrent::Main');
         ExtractTags($et, $dict, $tagTablePtr) and $success = 1;

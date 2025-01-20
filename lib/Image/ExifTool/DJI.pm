@@ -18,14 +18,15 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 use Image::ExifTool::Protobuf;
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 sub ProcessDJIInfo($$$);
 
 %knownProtocol = (
-    'dvtm_ac203.proto' => 1,
-    'dvtm_ac204.proto' => 1,
-    'dvtm_AVATA2.proto' => 1,
+    'dvtm_ac203.proto' => 1,    # Osmo Action 4
+    'dvtm_ac204.proto' => 1,    # Osmo Action 5
+    'dvtm_AVATA2.proto' => 1,   # Avanta 2
+    'dvtm_wm265e.proto' => 1,   # Mavic 3
 );
 
 my %convFloat2 = (
@@ -200,15 +201,19 @@ my %convFloat2 = (
     TAG_PREFIX => '',
     PROCESS_PROC => \&Image::ExifTool::Protobuf::ProcessProtobuf,
     NOTES => q{
-        Tags found in protobuf-format DJI djmd and dbgi timed metadata.  Only a few
-        tags are currently known, but unknown djmd tags may be extracted by setting
-        the Unknown option to 1 (or 2 to also extract unknown dbgi debug tags).  Tag
-        ID's are composed of the corresponding .proto file name combined with the
-        hierarchical protobuf field numbers.
+        Tags found in protobuf-format DJI djmd and dbgi timed metadata.  The known
+        tags listed below are extracted by default, but unknown djmd tags may be
+        extracted as well by setting the Unknown option to 1, or 2 to also extract
+        unknown dbgi debug tags.  Tag ID's are composed of the corresponding .proto
+        file name combined with the hierarchical protobuf field numbers.
 
         ExifTool currently extracts timed GPS plus a few other tags from DJI devices
         which use the following protocols:  dvtm_AVATA2.proto (Avanta 2),
-        dvtm_ac203.proto (Osmo Action 4), and dvtm_ac204.proto (Osmo Action 5).
+        dvtm_ac203.proto (Osmo Action 4), dvtm_ac204.proto (Osmo Action 5) and
+        dvtm_wm265e.proto (Mavic 3).
+
+        Note that with the protobuf format, numerical tags missing from the output
+        for a given protocol should be considered to have the default value of 0.
     },
     Protocol => {
         RawConv => q{
@@ -218,6 +223,10 @@ my %convFloat2 = (
             return $val;
         },
     },
+#
+# Osmo Action 4
+#
+    'dvtm_ac203_1-1-5' => 'SerialNumber', # (NC)
    # dvtm_ac203_1-1-6 - some version number
     'dvtm_ac203_1-1-10' => 'Model',
     'dvtm_ac203_2-3' => {
@@ -243,6 +252,10 @@ my %convFloat2 = (
         ValueConv => '$val =~ tr/-/:/; $val',
         PrintConv => '$self->ConvertDateTime($val)',
     },
+#
+# Osmo Action 5
+#
+    'dvtm_ac204_1-1-5' => 'SerialNumber', # (NC)
    # dvtm_ac204_1-1-6 - some version number
     'dvtm_ac204_1-1-10' => 'Model',
     'dvtm_ac204_2-3' => {
@@ -254,6 +267,7 @@ my %convFloat2 = (
         Name => 'GPSInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
     },
+   # dvtm_ac204_3-2-4-1 - shutter speed? (rational)
     'dvtm_ac204_3-4-2-2' => {
         Name => 'GPSAltitude',
         Groups => { 2 => 'Location' },
@@ -268,10 +282,15 @@ my %convFloat2 = (
         ValueConv => '$val =~ tr/-/:/; $val',
         PrintConv => '$self->ConvertDateTime($val)',
     },
+#
+# Avanta 2
+#
    # dvtm_AVATA2_1-1-2 - some version number
    # dvtm_AVATA2_1-1-3 - some version number
+    'dvtm_AVATA2_1-1-5' => 'SerialNumber', # (NC)
     'dvtm_AVATA2_1-1-10' => 'Model',
-    'dvtm_AVATA2_2-2-3-1' => 'SerialNumber', # (NC)
+   # dvtm_AVATA2_2-2-1-4 - model code?
+    'dvtm_AVATA2_2-2-3-1' => 'SerialNumber2', # (NC)
     'dvtm_AVATA2_2-3' => {
         Name => 'FrameInfo', 
         SubDirectory => { TagTable => 'Image::ExifTool::DJI::FrameInfo' },
@@ -285,11 +304,45 @@ my %convFloat2 = (
         ValueConv => '$val / 1e6',
     },
    # dvtm_AVATA2_3-2-1-4 - model code?
+   # dvtm_AVATA2_3-2-1-5 - frame rate?
+   # dvtm_AVATA2_3-2-4-1 - shutter speed? (rational)
    # dvtm_AVATA2_3-4-1-4 - model code?
+   # dvtm_AVATA2_3-4-3-1,2,3 - YPR? (int64s)
     'dvtm_AVATA2_3-4-4-1' => {
         Name => 'GPSInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
     },
+#
+# Mavic 3
+#
+    'dvtm_wm265e_1-1-5' => 'SerialNumber', # (confirmed)
+    'dvtm_wm265e_1-1-10' => 'Model',
+    'dvtm_wm265e_2-2' => {
+        Name => 'FrameInfo', 
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::FrameInfo' },
+    },
+   # dvtm_wm265e_3-2-1-4 - model code?
+    'dvtm_wm265e_3-2-2-1' => { Name => 'ISO', Format => 'float' },
+    'dvtm_wm265e_3-2-3-1' => {
+        Name => 'ShutterSpeed',
+        Format => 'rational',
+        ValueConv => '$val =~ m{(.*)/(.*)} ? $1 / $2 : $val',
+        PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
+    },
+   # dvtm_wm265e_3-2-5-1 - unknown rational (xxxx / 1000)
+    'dvtm_wm265e_3-2-6-1' => { Name => 'DigitalZoom', Format => 'float' },
+    'dvtm_wm265e_3-3-4-1' => {
+        Name => 'GPSInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
+    },
+    'dvtm_wm265e_3-3-3-1' => { Name => 'DroneRoll',  Format => 'int64s', ValueConv => '$val/10' },
+    'dvtm_wm265e_3-3-3-2' => { Name => 'DronePitch', Format => 'int64s', ValueConv => '$val/10' },
+    'dvtm_wm265e_3-3-3-3' => { Name => 'DroneYaw',   Format => 'int64s', ValueConv => '$val/10' },
+    'dvtm_wm265e_3-3-4-2' => { Name => 'AbsoluteAltitude', ValueConv => '$val / 1000' },
+    'dvtm_wm265e_3-3-5-1' => { Name => 'RelativeAltitude', Format => 'float', ValueConv => '$val / 1000' },
+    'dvtm_wm265e_3-4-3-1' => { Name => 'GimbalPitch',Format => 'int64s', ValueConv => '$val / 10' },
+    'dvtm_wm265e_3-4-3-2' => { Name => 'GimbalRoll', Format => 'int64s', ValueConv => '$val / 10' },
+    'dvtm_wm265e_3-4-3-3' => { Name => 'GimbalYaw',  Format => 'int64s', ValueConv => '$val / 10' },
 );
 
 %Image::ExifTool::DJI::FrameInfo = (

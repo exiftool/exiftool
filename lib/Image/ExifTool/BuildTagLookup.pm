@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.60';
+$VERSION = '3.61';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -100,6 +100,8 @@ my %tweakOrder = (
     MWG     => 'Shortcuts',
     'FujiFilm::RAF' => 'FujiFilm::RAFHeader',
     'FujiFilm::RAFData' => 'FujiFilm::RAF',
+    'QuickTime::AudioKeys' => 'QuickTime::Keys',
+    'QuickTime::VideoKeys' => 'QuickTime::AudioKeys',
 );
 
 # list of all recognized Format strings
@@ -437,12 +439,18 @@ appropriate table in the config file (see
 L<example.config|../config.html#PREF> in the full distribution for an
 example).  Note that some tags with the same name but different ID's may
 exist in the same location, but the family 7 group names may be used to
-differentiate these.  ExifTool currently writes only top-level metadata in
-QuickTime-based files; it extracts other track-specific and timed metadata,
-but can not yet edit tags in these locations (with the exception of
-track-level date/time tags).
+differentiate these.
 
-Beware that the Keys tags are actually stored inside the ItemList in the
+ExifTool currently writes
+L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and
+L<UserData|Image::ExifTool::TagNames/QuickTime UserData Tags> only as
+top-level metadata, but select Keys tags are may be written to the audio or
+video track.  See the
+L<AudioKeys|Image::ExifTool::TagNames/QuickTime AudioKeys Tags> and
+L<VideoKeys|Image::ExifTool::TagNames/QuickTime VideoKeys Tags> tags for
+more information.
+
+Beware that the Keys tags are actually stored inside an ItemList in the
 file, so deleting the ItemList group as a block (ie. C<-ItemList:all=>) also
 deletes Keys tags.  Instead, to preserve Keys tags the ItemList tags may be
 deleted individually with C<-QuickTime:ItemList:all=>.
@@ -1783,9 +1791,10 @@ sub NumbersFirst($$)
         $rtnVal = $numbersFirst;
     } else {
         my ($a2, $b2) = ($a, $b);
-        # expand numbers to 3 digits (with restrictions to avoid messing up ascii-hex tags)
-        $a2 =~ s/(\d+)/sprintf("%.3d",$1)/eg if $a2 =~ /^(APP|DMC-\w+ )?[.0-9 ]*$/ and length($a2)<16;
-        $b2 =~ s/(\d+)/sprintf("%.3d",$1)/eg if $b2 =~ /^(APP|DMC-\w+ )?[.0-9 ]*$/ and length($b2)<16;
+        # expand numbers to 3 digits (with restrictions to avoid messing up
+        # ascii-hex tags -- Nikon LensID's are 23 characters long)
+        $a2 =~ s/(\d+)/sprintf("%.3d",$1)/eg if $a2 =~ /^(APP|DMC-\w+ |dvtm_.*)?[.0-9 ]*$/ and length($a2)<23;
+        $b2 =~ s/(\d+)/sprintf("%.3d",$1)/eg if $b2 =~ /^(APP|DMC-\w+ |dvtm_.*)?[.0-9 ]*$/ and length($b2)<23;
         $caseInsensitive and $rtnVal = (lc($a2) cmp lc($b2));
         $rtnVal or $rtnVal = ($a2 cmp $b2);
     }

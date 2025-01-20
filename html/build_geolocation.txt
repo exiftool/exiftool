@@ -24,7 +24,7 @@ Options:
               feature-code list may begin with a dash to remove entries from
               the default list, or a plus sign to add entries.  May be
               multiple -c options for each intput DBFILE.  Country/region and
-              feature names are case insensitive. Default is "PPLA,PPLA2".
+              feature names are case insensitive.  Default is "PPLA,PPLA2".
   -cp CODE  - Additional features to include if above minimum population.
               Default is "PPL,PPLA,PPLA2,PPLA3,PPLA4,PPLA5,PPLC,PPLCH,PPLF,
               PPLG,PPLH,PPLL,PPLQ,PPLR,PPLS,PPLW,PPLX,STLMT".

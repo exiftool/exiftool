@@ -175,22 +175,33 @@ Multiple nearby cities may be returned instead of just the nearest by adding
 <code>num=##</code> to the Geolocation option string, where <code>##</code> is the
 desired number of cities.  The returned cities are ordered from nearest to
 furthest, and distinguished by the family 3 (document number) group which allows
-them to be output as separate lines with the <code>-p</code> option.  For example:
+them to be output as separate lines with the <code>-p</code> option.  For example,
+the nearest cities to a specified GPS position:
 
-<pre class=blk>> <span class=code>exiftool -a -p geo.fmt -api geolocation=49.48,6.37,num=4</span>
+<pre class=blk>> <span class=code>exiftool -ee -p geo.fmt -api geolocation=49.48,6.37,num=4</span>
 7.00 km,286 deg,PPLA3,Mondorf-les-Bains,Luxembourg
 7.24 km,357 deg,PPLA2,Remich,Luxembourg
 11.55 km,80 deg,PPL,Orscholz,Germany
 12.32 km,240 deg,PPL,Cattenom,France</pre>
 
-Note that the <code>-a</code> option must be used to allow duplicate tags to be
-returned.  Here is the "geo.fmt" file used in the above command:
+or the nearest cities to a specified city:
+
+<pre class=blk>> <span class=code>exiftool -ee -p geo.fmt -api geolocation="new york city,num=5"</span>
+0.00 km,0 deg,PPL,New York City,United States
+0.31 km,287 deg,PPL,Tribeca,United States
+0.74 km,203 deg,PPLX,Financial District,United States
+0.85 km,77 deg,PPLX,Chinatown,United States
+0.92 km,255 deg,PPL,Battery Park City,United States</pre>
+
+Note that the <code>-ee</code> option must be used for the <code>-p</code>
+option to iterate through the returned cities since they are returned as
+sub-documents.  Here is the "geo.fmt" file used in the above commands:
 
 <pre>$geolocationdistance,$geolocationbearing deg,$geolocationfeaturecode,$geolocationcity,$geolocationcountry</pre>
 
 Or for a JSON-format output, a command like this may be useful:
 
-<pre class=blk><span class=code>exiftool -j -a -g3 -api geolocation=49.48,6.37,num=4</span></pre>
+<pre class=blk><span class=code>exiftool -j -g3 -api geolocation=49.48,6.37,num=4</span></pre>
 </blockquote>
 
 <a name="Reg"></a>
@@ -619,7 +630,7 @@ own <a href="#Alt">alternate database</a>.  Or 2. Create a
 
 <hr>
 <i>Created Mar 12, 2024</i><br>
-<i>Last revised Dec 20, 2024</i>
+<i>Last revised Jan 13, 2024</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

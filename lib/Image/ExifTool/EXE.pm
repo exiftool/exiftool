@@ -22,7 +22,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.20';
+$VERSION = '1.21';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -1283,7 +1283,7 @@ sub ProcessEXE($$)
                     # read the rest of the optional header if necessary
                     my $optSize = Get16u(\$buff, 20);
                     my $more = $optSize + 24 - $size;
-                    my $magic;
+                    my $magic = 0;
                     if ($more > 0) {
                         if ($raf->Read($buf2, $more) == $more) {
                             $buff .= $buf2;

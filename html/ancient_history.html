@@ -106,7 +106,7 @@
 
 <a name='v12.91'><b>July 24, 2024 - Version 12.91</b></a>
 <ul>
-<li>Added a couple of new OpenEXR Compression values (github#276)
+<li>Added a couple of new OpenEXR Compression values (<a href="https://github.com/exiftool/exiftool/issues/276">github #276</a>)
 <li>Updated 2 test files that were causing failed tests (ExifTool itself is
     unchanged)
 </ul>
@@ -276,7 +276,7 @@
 <li>Changed name and print conversion of a recently added FujiFilm tag
 <li>Only issue "Tag not defined" warnings for the first sub-document when using
     the -p option
-<li>Fixed a Nikon Z lens name (github #250)
+<li>Fixed a Nikon Z lens name (<a href="https://github.com/exiftool/exiftool/issues/250">github #250</a>)
 <li>Fixed Windows version so -sort works properly with -listgeo
 <li>API Changes:
     <ul>
@@ -290,8 +290,8 @@
 <li>Added ability to read EXIF and XMP from EXR images
 <li>Added ability to delete unknown trailer when writing MOV/MP4 videos
 <li>Added ability to write a couple of Stable Diffusion PNG tags
-<li>Added ability to write one of the Microsoft Xtra Description tags (github
-    #248)
+<li>Added ability to write one of the Microsoft Xtra Description tags (<a href="https://github.com/exiftool/exiftool/issues/248">github
+    #248</a>)
 <li>Added support for using alternate city names in reverse Geolocation
 <li>Added support for reading timed GPS from DOD LS600W TS videos
 <li>Added support for new version of Canon DR4 files
@@ -494,7 +494,7 @@
 <li>Added a few new Canon LensType values (thanks Norbert Wasser)
 <li>Added a new, obscure EXIF tag (thanks Neal Krawetz)
 <li>Decode real-time metadata from Ricoh Theta videos
-<li>Decode SpecularWhiteLevel for more Canon models (github #232)
+<li>Decode SpecularWhiteLevel for more Canon models (<a href="https://github.com/exiftool/exiftool/issues/232">github #232</a>)
 <li>Decode Canon DualPixelRaw tag (thanks John Moyer)
 <li>Decode a few new Nikon tags (thanks Warren Hatch)
 <li>Decode more FujiFilm M-RAW tags (thanks Greybeard)
@@ -527,7 +527,7 @@
 <li>Added a couple of new Canon RF lenses (thanks Norbert Wasser)
 <li>Added a number of new CPUType values for ELF executables
 <li>Added some new Olympus CameraType values
-<li>Decode a few more ID3v2.2 tags (github #142)
+<li>Decode a few more ID3v2.2 tags (<a href="https://github.com/exiftool/exiftool/issues/142">github #142</a>)
 <li>Decode a few new Canon G5X Mark II tags (thanks Martin B.)
 <li>Decode WB_RGGBLevels for a few more Nikon cameras
 <li>Extract information from FujiFilm M-RAW header
@@ -572,7 +572,7 @@
 <li>Added a new Nikon Z9 SubjectDetection value, and improved Zf support (thanks
     Warren Hatch)
 <li>Added a couple of new PentaxModelID values
-<li>Added a few couple of new tag values for the Pentax K-3 Mark III Monochrome (github #226)
+<li>Added a few couple of new tag values for the Pentax K-3 Mark III Monochrome (<a href="https://github.com/exiftool/exiftool/issues/226">github #226</a>)
 <li>Added a new XMP-photomech tag
 <li>Added a new QuickTime ItemList tag
 <li>Added a new Nikon LensID
@@ -601,7 +601,7 @@
 <li>Added conversions for a few Apple:ImageCaptureType values
 <li>Added new XMP tag for PLUS version 2.0.1
 <li>Added a new CanonModelID (thanks Laurent Clevy)
-<li>Decode another tag from Canon 1DS raw images (Hubert Figui&egrave;re, github #219)
+<li>Decode another tag from Canon 1DS raw images (Hubert Figui&egrave;re, <a href="https://github.com/exiftool/exiftool/issues/219">github #219</a>)
 <li>Decode JPGCompression for newer Nikon models (thanks Warren Hatch)
 <li>Fixed bug introduced in 12.65 where duplicate tags were not returned even
     when the groups where specified explicitly
@@ -618,14 +618,14 @@
 <li>Added a new Canon LensType (thanks Norbert Wasser)
 <li>Added number in brackets to converted Samsung MCCData value
 <li>Decode a number of new Sony tags (thanks Jos Roost)
-<li>Decode a few new FlashPix tags (github #217)
+<li>Decode a few new FlashPix tags (<a href="https://github.com/exiftool/exiftool/issues/217">github #217</a>)
 <li>Improved decoding of Nikon Z9 firmware 4.0 tags (thanks Warren Hatch)
 <li>Improved parsing of PDF:Keywords to support semicolon-separated lists
 <li>Enhanced -api option to show list of available options if no argument is
     provided
 <li>Lowered priority of IFD1 tags in ARW images so IFD0/SubIFD take precedence
 <li>Changed QuickTime tag names for atID (AlbumTitleID to ArtistID) and plID
-    (PlayListID to AlbumID) (github issue #216), and added cmID (ComposerID)
+    (PlayListID to AlbumID) (<a href="https://github.com/exiftool/exiftool/issues/216">github #216</a>), and added cmID (ComposerID)
 <li>Changed Apple:MediaGroupUUID tag name back to ContentIdentifier
 <li>Patched the -d option to handle the %s format code internally when writing
     (avoids problems due to inconsistent behaviour of this format code in the
@@ -675,7 +675,7 @@
     <li>Support for reading 'utf8' values (but still write only as 'string')
     </ul>
 <li>Added support for Adobe <a href="TagNames/XMP.html#hdrgm">XMP-hdrgm (HDR Gain Map) tags</a>
-<li>Added support for reading 7z files (thanks Amir Gooran, github #205) (but
+<li>Added support for reading 7z files (thanks Amir Gooran, <a href="https://github.com/exiftool/exiftool/issues/205">github #205</a>) (but
     currently this doesn't work for the Windows .exe version because I haven't
     been able to install Compress::Raw::Lzma for ActivePerl)
 <li>Added <a href="TagNames/XMP.html#panorama">XMP-panorama tags</a>
@@ -701,7 +701,7 @@
 <ul>
 <li>Added basic read support for WPG images
 <li>Added ImageDataMD5 support for HEIC images
-<li>Added support for RAR version 5.0 files (thanks Amir Gooran, github #203)
+<li>Added support for RAR version 5.0 files (thanks Amir Gooran, <a href="https://github.com/exiftool/exiftool/issues/203">github #203</a>)
 <li>Added a few new XMP-aux tags (thanks John Ellis)
 <li>Made Composite tags available for use in -fileNUM argument
 <li>Better handling of FlashPix VT_EMPTY value
@@ -1094,7 +1094,7 @@
 <li>Added new values to a couple of FujiFilm tags (thanks Greybeard)
 <li>Added a new Nikon LensID (thanks BertJan Bakker)
 <li>Recognize Autodesk Revit files (but don't yet support reading metadata)
-<li>Decode DriveSerialNumber from LNK files (github #145)
+<li>Decode DriveSerialNumber from LNK files (<a href="https://github.com/exiftool/exiftool/issues/145">github #145</a>)
 <li>Decode Apple FocusDistanceRange (thanks Neal Krawetz)
 <li>Made a number of Sony SR2SubIFD tags writable
 <li>Tolerate dashes instead of colons as date separators in -geotag CSV files
@@ -1204,7 +1204,7 @@
 <li>Patched incorrect decoding of AEBShotCount for the Canon EOS 90D
 <li>Patched EXR reader to support long tag names
 <li>Patched security issue (thanks Joe Lothan)
-<li>Fixed an incorrect tag ID for a new Nikon MakerNote tag (github #108)
+<li>Fixed an incorrect tag ID for a new Nikon MakerNote tag (<a href="https://github.com/exiftool/exiftool/issues/108">github #108</a>)
 <li>Fixed XMP-exif:GPSMeasureMode conversions to match EXIF
 <li>Fixed problem where some namespaces may be undeclared in the -X output when
     using the -struct option
@@ -1218,7 +1218,7 @@
 <li>Extract TransparentColor from GIF images
 <li>Improved parsing of input time values for GPSTimeStamp to properly handle a
     "." separator
-<li>Improved warning when incorrectly using "<" instead of "=" to assign a tag
+<li>Improved warning when incorrectly using "&lt;" instead of "=" to assign a tag
     value
 <li>Shortened a few of the new obscenely-long XMP-crs tag names 
 <li>Avoid writing XMP-dwc:EventID and XMP-tiff:NativeDigest
@@ -1566,7 +1566,7 @@
 <li>Avoid extracting audio/video data from AVI videos when -ee -u is used
 <li>Patched decoding of Canon ContinuousShootingSpeed for newer firmware
     versions of the EOS-1DXmkIII
-<li>Re-worked LensID patch of version 12.00 (github issue #51)
+<li>Re-worked LensID patch of version 12.00 (<a href="https://github.com/exiftool/exiftool/issues/51">github #51</a>)
 <li>Fixed a few typos in newly-added NikonSettings tags (thanks Herb)
 <li>Fixed problem where group could not be specified for PNG-pHYs tags when
     writing
@@ -1645,7 +1645,7 @@
 <ul>
 <li>Added -csvDelim option
 <li>Added new Canon and Olympus LensType values (thanks LibRaw)
-<li>Added a warning if ICC_Profile is deleted from an image (github issue #63)
+<li>Added a warning if ICC_Profile is deleted from an image (<a href="https://github.com/exiftool/exiftool/issues/63">github #63</a>)
 <li>EndDir() function for -if option now works when -fileOrder is used
 <li>Changed FileSize conversion to use binary prefixes since that is how the
     conversion is currently done (eg. MiB instead of MB)
@@ -2058,7 +2058,7 @@
 <li>Added a new Canon LensType
 <li>Added a new CanonModelID (thanks LibRaw)
 <li>Added ability to process SubDirectories in QuickTime Keys tags
-<li>Removed minor error when writing PDF 2.0 files (github issue #30)
+<li>Removed minor error when writing PDF 2.0 files (<a href="https://github.com/exiftool/exiftool/issues/30">github #30</a>)
 <li>Fixed problem where trailing null bytes were removed from binary values in
     the -php output when the -b option was used
 </ul>
@@ -2073,8 +2073,7 @@
 <li>Patched Composite sub-second date/time tags to do additional validation of
     source EXIF date/time tags before adding sub seconds
 <li>Fixed problem where -json output could produce invalid JSON when -struct was
-    used and the structure field names contained special characters (github
-    issue #32)
+    used and the structure field names contained special characters (<a href="https://github.com/exiftool/exiftool/issues/32">github #32</a>)
 <li>Fixed spelling in a Panasonic SceneMode value (thanks Hubert)
 </ul>
 
@@ -2096,7 +2095,7 @@
 <ul>
 <li>Added support for AVIF files
 <li>Added new Canon, Sigma and Sony LensType values (thanks LibRaw)
-<li>Made PDF 2.0 writable at your own risk with the -m option (github issue #30)
+<li>Made PDF 2.0 writable at your own risk with the -m option (<a href="https://github.com/exiftool/exiftool/issues/30">github #30</a>)
 <li>Enhanced -validate feature to warn about duplicate languages in an XMP
     lang-alt list
 <li>Fixed inconsistency between documentation and ExifTool capabilities for
@@ -2193,7 +2192,7 @@
 <a name='v11.70'><b>Oct. 10, 2019 - Version 11.70</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added a new CanonModelID (thanks Laurent Cl&eacute;vy)
-<li>Improved identification of Office Open XML files (github issue #27)
+<li>Improved identification of Office Open XML files (<a href="https://github.com/exiftool/exiftool/issues/27">github #27</a>)
 <li>Removed RAF version check when writing FujiFilm RAF files
 <li>Limited the number of accelerometer records that ExifTool will read by
     default with the -ee option from INSV files to avoid excessive processing
@@ -2284,7 +2283,7 @@
 <li>Added a few new Sigma lenses (thanks LibRaw)
 <li>Improved handling of Canon CNTH atom in MOV/MP4 videos
 <li>Changed PNG writer to place all text chunks before IDAT (not just XMP)
-    (github issue #23)
+    (<a href="https://github.com/exiftool/exiftool/issues/23">github #23</a>)
 <li>Issue minor warning for any text chunk after PNG IDAT (not just XMP)
 <li>Enhanced ForceWrite feature to allow "PNG" to be specified (to move existing
     text chunks to before IDAT without editing any metadata)
@@ -2463,7 +2462,7 @@
     excessively long time
 <li>API Changes:
     <ul>
-    <li>Enhanced <a href="ExifTool.html#Compact">Compact option</a> to add levels 3, 4 and 5 (github issue #16)
+    <li>Enhanced <a href="ExifTool.html#Compact">Compact option</a> to add levels 3, 4 and 5 (<a href="https://github.com/exiftool/exiftool/issues/16">github #16</a>)
     </ul>
 </ul>
 
@@ -2617,7 +2616,7 @@
 <li>Decode Canon EOS D60 black levels
 <li>Split off some QuickTime tags into different family 1 groups
 <li>Fixed "Chunk offset outside movie data" error when writing some HEIC files
-<li>Fixed decoding of Pentax AutoBracketing for K-1 and K-5 (github issue #15)
+<li>Fixed decoding of Pentax AutoBracketing for K-1 and K-5 (<a href="https://github.com/exiftool/exiftool/issues/15">github #15</a>)
 <li>Fixed some QuickTime family 2 group names
 <li>Fixed bug introduced in 11.38 that broke extraction of thumbnail images from
     Canon MOV videos
@@ -2737,7 +2736,7 @@
 <a name='v11.31'><b>Mar. 7, 2019 - Version 11.31</b></a>
 <ul>
 <li>Added read support for FITS images
-<li>Another try at removing spaces from some DICOM values (github issues #10/12)
+<li>Another try at removing spaces from some DICOM values (<a href="https://github.com/exiftool/exiftool/issues/10">github #10</a> and <a href="https://github.com/exiftool/exiftool/issues/12">#12</a>)
 </ul>
 
 <a name='v11.30'><b>Mar. 6, 2019 - Version 11.30</b></a> <span class=grn>(production release)</span>
@@ -2747,7 +2746,7 @@
 <li>Decode Reconyx HF2 PRO maker notes
 <li>Decode ColorData for some new Canon models (thanks LibRaw)
 <li>Enhanced -geotag feature to set AmbientTemperature if available
-<li>Remove non-significant spaces from some DICOM values (github issues #10/12)
+<li>Remove non-significant spaces from some DICOM values (<a href="https://github.com/exiftool/exiftool/issues/10">github #10</a> and <a href="https://github.com/exiftool/exiftool/issues/12">#12</a>)
 <li>Fixed possible "'x' outside of string" error when reading corrupted EXIF
 <li>Fixed incorrect write group for GeoTIFF tags added in version 11.24
 </ul>
@@ -2756,13 +2755,13 @@
 <ul>
 <li>Added support for Ricoh GR III maker notes
 <li>Added a new Canon LensType (thanks Claude Jolicoeur)
-<li>Added a new XMP-crs tag (github issue #8)
+<li>Added a new XMP-crs tag (<a href="https://github.com/exiftool/exiftool/issues/8">github #8</a>)
 <li>Enhanced -csv option to output base64-encoded binary data when combined with
     -b or when the -charset option is used and the text has invalid characters
-    (github issue #11)
-<li>Remove trailing space from even-length DICOM values (github issue #9)
+    (<a href="https://github.com/exiftool/exiftool/issues/11">github #11</a>)
+<li>Remove trailing space from even-length DICOM values (<a href="https://github.com/exiftool/exiftool/issues/9">github #9</a>)
 <li>Patched to avoid "Hexadecimal number > 0xffffffff non-portable" warning
-    (github issue #6)
+    (<a href="https://github.com/exiftool/exiftool/issues/6">github #6</a>)
 <li>Fixed meta charset attribute in -htmlDump output
 </ul>
 

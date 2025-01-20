@@ -3118,6 +3118,7 @@ my %base64coord = (
         Condition => '$$valPt =~ /^040[012]/',
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::AFInfo2V0400' },
     },{ #JD
+        # (expeed 5 processor cameras are version 0101, expeed 6 are version 03xx)
         Name => 'AFInfo2',
         # (this structure may be byte swapped when rewritten by CaptureNX)
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::AFInfo2' },
@@ -4160,6 +4161,7 @@ my %base64coord = (
     DATAMEMBER => [ 0, 4, 6 ],
     NOTES => "These tags are written by Nikon DSLR's which have the live view feature.",
     0 => {
+        # (expeed 5 processor cameras are version 0101, expeed 6 are version 03xx)
         Name => 'AFInfo2Version',
         Format => 'undef[4]',
         Writable => 0,

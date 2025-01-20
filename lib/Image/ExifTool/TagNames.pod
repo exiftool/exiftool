@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28231 tags, with 17521 unique tag names.
+They contain a total of 28258 tags, with 17524 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -171,6 +171,7 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
                PhotoMechanic                    PhotoMechanic
                MIE                              MIE
                Samsung                          Samsung Trailer
+               Vivo                             Vivo
                EmbeddedVideo                    no
                Insta360                         no
                NikonApp                         no
@@ -12972,34 +12973,56 @@ Thermal parameters extracted from APP4 of some DJI RJPEG files.
 
 =head3 DJI Protobuf Tags
 
-Tags found in protobuf-format DJI djmd and dbgi timed metadata.  Only a few
-tags are currently known, but unknown djmd tags may be extracted by setting
-the Unknown option to 1 (or 2 to also extract unknown dbgi debug tags).  Tag
-ID's are composed of the corresponding .proto file name combined with the
-hierarchical protobuf field numbers.
+Tags found in protobuf-format DJI djmd and dbgi timed metadata.  The known
+tags listed below are extracted by default, but unknown djmd tags may be
+extracted as well by setting the Unknown option to 1, or 2 to also extract
+unknown dbgi debug tags.  Tag ID's are composed of the corresponding .proto
+file name combined with the hierarchical protobuf field numbers.
 
 ExifTool currently extracts timed GPS plus a few other tags from DJI devices
 which use the following protocols:  dvtm_AVATA2.proto (Avanta 2),
-dvtm_ac203.proto (Osmo Action 4), and dvtm_ac204.proto (Osmo Action 5).
+dvtm_ac203.proto (Osmo Action 4), dvtm_ac204.proto (Osmo Action 5) and
+dvtm_wm265e.proto (Mavic 3).
+
+Note that with the protobuf format, numerical tags missing from the output
+for a given protocol should be considered to have the default value of 0.
 
   Tag ID                 Tag Name               Writable
   ------                 --------               --------
   'Protocol'             Protocol               no
+  'dvtm_AVATA2_1-1-5'    SerialNumber           no
   'dvtm_AVATA2_1-1-10'   Model                  no
-  'dvtm_AVATA2_2-2-3-1'  SerialNumber           no
+  'dvtm_AVATA2_2-2-3-1'  SerialNumber2          no
   'dvtm_AVATA2_2-3'      FrameInfo              DJI FrameInfo
   'dvtm_AVATA2_3-1-2'    TimeStamp              no
   'dvtm_AVATA2_3-4-4-1'  GPSInfo                DJI GPSInfo
+  'dvtm_ac203_1-1-5'     SerialNumber           no
   'dvtm_ac203_1-1-10'    Model                  no
   'dvtm_ac203_2-3'       FrameInfo              DJI FrameInfo
   'dvtm_ac203_3-4-2-1'   GPSInfo                DJI GPSInfo
   'dvtm_ac203_3-4-2-2'   GPSAltitude            no
   'dvtm_ac203_3-4-2-6-1' GPSDateTime            no
+  'dvtm_ac204_1-1-5'     SerialNumber           no
   'dvtm_ac204_1-1-10'    Model                  no
   'dvtm_ac204_2-3'       FrameInfo              DJI FrameInfo
   'dvtm_ac204_3-4-2-1'   GPSInfo                DJI GPSInfo
   'dvtm_ac204_3-4-2-2'   GPSAltitude            no
   'dvtm_ac204_3-4-2-6-1' GPSDateTime            no
+  'dvtm_wm265e_1-1-5'    SerialNumber           no
+  'dvtm_wm265e_1-1-10'   Model                  no
+  'dvtm_wm265e_2-2'      FrameInfo              DJI FrameInfo
+  'dvtm_wm265e_3-2-2-1'  ISO                    no
+  'dvtm_wm265e_3-2-3-1'  ShutterSpeed           no
+  'dvtm_wm265e_3-2-6-1'  DigitalZoom            no
+  'dvtm_wm265e_3-3-3-1'  DroneRoll              no
+  'dvtm_wm265e_3-3-3-2'  DronePitch             no
+  'dvtm_wm265e_3-3-3-3'  DroneYaw               no
+  'dvtm_wm265e_3-3-4-1'  GPSInfo                DJI GPSInfo
+  'dvtm_wm265e_3-3-4-2'  AbsoluteAltitude       no
+  'dvtm_wm265e_3-3-5-1'  RelativeAltitude       no
+  'dvtm_wm265e_3-4-3-1'  GimbalPitch            no
+  'dvtm_wm265e_3-4-3-2'  GimbalRoll             no
+  'dvtm_wm265e_3-4-3-3'  GimbalYaw              no
 
 =head3 DJI FrameInfo Tags
 
@@ -27898,6 +27921,16 @@ to avoid name conflicts.
   'Duration'   Duration                         rational64u~
   'data'       RelatedVideoFile                 undef
 
+=head2 Vivo Tags
+
+Proprietary information written by some Vivo phones.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  HDRImage                                      no
+  HiddenData                                    no
+  JSONInfo                                      no
+
 =head2 GIF Tags
 
 This table lists information extracted from GIF images. See
@@ -29967,12 +30000,18 @@ appropriate table in the config file (see
 example.config in the full distribution for an
 example).  Note that some tags with the same name but different ID's may
 exist in the same location, but the family 7 group names may be used to
-differentiate these.  ExifTool currently writes only top-level metadata in
-QuickTime-based files; it extracts other track-specific and timed metadata,
-but can not yet edit tags in these locations (with the exception of
-track-level date/time tags).
+differentiate these.
 
-Beware that the Keys tags are actually stored inside the ItemList in the
+ExifTool currently writes
+L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and
+L<UserData|Image::ExifTool::TagNames/QuickTime UserData Tags> only as
+top-level metadata, but select Keys tags are may be written to the audio or
+video track.  See the
+L<AudioKeys|Image::ExifTool::TagNames/QuickTime AudioKeys Tags> and
+L<VideoKeys|Image::ExifTool::TagNames/QuickTime VideoKeys Tags> tags for
+more information.
+
+Beware that the Keys tags are actually stored inside an ItemList in the
 file, so deleting the ItemList group as a block (ie. C<-ItemList:all=>) also
 deletes Keys tags.  Instead, to preserve Keys tags the ItemList tags may be
 deleted individually with C<-QuickTime:ItemList:all=>.
@@ -30073,7 +30112,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 98 different types of timed GPS metadata from video files.
+currently reads 100 different types of timed GPS metadata from video files.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -30276,15 +30315,11 @@ changed via the config file.
   'artist'      Artist                          yes
   'artwork'     Artwork                         yes
   'author'      Author                          yes
-  'camera.framereadouttimeinmicroseconds'
-                FrameReadoutTime                yes
-  'camera.identifier' CameraIdentifier          yes
   'collection.user' UserCollection              yes
   'com.android.capture.fps' AndroidCaptureFPS   float
   'com.android.manufacturer' AndroidMake        yes
   'com.android.model' AndroidModel              yes
   'com.android.version' AndroidVersion          yes
-  'com.apple.photos.captureMode' CaptureMode    yes
   'com.xiaomi.hdr10' XiaomiHDR10                int32s
   'com.xiaomi.preview_video_cover'
                 XiaomiPreviewVideoCover         int32s
@@ -30352,6 +30387,35 @@ changed via the config file.
   'video-orientation' VideoOrientation          no
   'xiaomi.exifInfo.videoinfo' XiaomiExifInfo    yes
   'year'        Year                            yes
+
+=head3 QuickTime AudioKeys Tags
+
+Keys tags written in the audio track by some Apple devices.  These tags
+belong to the ExifTool AudioKeys family 1 gorup.
+
+  Tag ID                          Tag Name      Writable
+  ------                          --------      --------
+  'player.movie.audio.balance'    Balance       yes
+  'player.movie.audio.bass'       Bass          yes
+  'player.movie.audio.gain'       AudioGain     yes
+  'player.movie.audio.mute'       Mute          int8u
+  'player.movie.audio.pitchshift' PitchShift    yes
+  'player.movie.audio.treble'     Treble        yes
+
+=head3 QuickTime VideoKeys Tags
+
+Keys tags written in the video track.  These tags belong to the ExifTool
+VideoKeys family 1 gorup.
+
+  Tag ID                Tag Name                Writable
+  ------                --------                --------
+  'camera.focal_length.35mm_equivalent'
+                        FocalLengthIn35mmFormat yes
+  'camera.framereadouttimeinmicroseconds'
+                        FrameReadoutTime        yes
+  'camera.identifier'   CameraIdentifier        yes
+  'camera.lens_model'   LensModel               yes
+  'com.apple.photos.captureMode' CaptureMode    yes
 
 =head3 QuickTime FaceInfo Tags
 
@@ -30452,7 +30516,9 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
   'ipro'   ItemProtection?                      no
   'iprp'   ItemProperties                       QuickTime ItemProp
   'iref'   ItemReference                        QuickTime ItemRef
-  'keys'   Keys                                 QuickTime Keys
+  'keys'   AudioKeys                            QuickTime AudioKeys
+           VideoKeys                            QuickTime VideoKeys
+           Keys                                 QuickTime Keys
   'pitm'   PrimaryItemReference                 no
   'uuid'   MetaVersion                          no
            UUID-Unknown?                        no

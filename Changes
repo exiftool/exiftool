@@ -7,6 +7,23 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.10. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 20, 2025 - Version 13.13
+
+  - Added ability to write some tags to the audio/video tracks of MP4/MOV videos
+    using the new AudioKeys and VideoKeys group names
+  - Added support for another DJI protobuf format (for the Mavic 3)
+  - Decode yet another type of LIGOGPSINFO timed GPS from a dashcam video
+  - Extract some proprietary information from JPEG images of Vivo phones
+  - Enhanced Geolocation feature to allow the nearest cities to a specified city
+    to be returned
+  - Updated xmp2exif.args and exif2xmp.args to properly handle time zones in
+    XMP-exif date/time tags
+  - Changed family 1 group names for Keys, ItemList and UserData tags in a track
+  - Patched github #306 issue where a torrent file would return a format error
+    when reading if it didn't contain an "announce" or "created by" entry
+  - Fixed "uninitialized value" runtime warning when reading some EXE files
+  - Fixed -diff output to add colon missing from some lines when used with -g
+
 Jan. 13, 2025 - Version 13.12
 
   - Added a few new Panasonic AFAreaMode values (thanks Andrew J)
@@ -15,12 +32,12 @@ Jan. 13, 2025 - Version 13.12
   - Decode AF points for some newer Nikon models (thanks Warren Hatch)
   - Decode a new Panasonic tag (thanks Andrew J)
   - Decode a couple of previously unknown tags from LIGOGPSINFO records
-  - Extract some PDB information if available from Win32 EXE files (github#303)
+  - Extract some PDB information if available from Win32 EXE files (github #303)
   - Improved handling of duplicate tags in -diff output
   - Improved handling of QuickTime zero date/time values
   - Enchanced -csv= and -json= options to allow group names and wildcards to be
     used when specifying which tags to import
-  - Updated some EXIF:Compression values (github#304)
+  - Updated some EXIF:Compression values (github #304)
   - Changed wording of warning when file time couldn't be updated
   - Fixed bug introduced in 13.11 reading EXIF from some EXV files
   - Fixed bug introduced in 12.99 where empty entries in a CSV file weren't
@@ -33,7 +50,7 @@ Jan. 13, 2025 - Version 13.12
 Jan. 1, 2025 - Version 13.11
 
   - Added warning for an unknown DJI protobuf schema
-  - Decode timed GPS from the DJI Osmo Action 5
+  - Decode timed GPS from DJI Osmo Action 5 videos
   - Decode yet another type of LIGOGPSINFO timed GPS from a dashcam video
   - Made Matroska Keywords and Instruments List-type tags
   - Fixed problem were EXIF couldn't be added to some AVIF files
@@ -286,7 +303,7 @@ July 24, 2024 - Version 12.92
 
 July 24, 2024 - Version 12.91
 
-  - Added a couple of new OpenEXR Compression values (github#276)
+  - Added a couple of new OpenEXR Compression values (github #276)
   - Updated 2 test files that were causing failed tests (ExifTool itself is
     unchanged)
 
@@ -753,7 +770,7 @@ Aug. 10, 2023 - Version 12.65
     provided
   - Lowered priority of IFD1 tags in ARW images so IFD0/SubIFD take precedence
   - Changed QuickTime tag names for atID (AlbumTitleID to ArtistID) and plID
-    (PlayListID to AlbumID) (github issue #216), and added cmID (ComposerID)
+    (PlayListID to AlbumID) (github #216), and added cmID (ComposerID)
   - Changed Apple:MediaGroupUUID tag name back to ContentIdentifier
   - Patched the -d option to handle the %s format code internally when writing
     (avoids problems due to inconsistent behaviour of this format code in the
@@ -1304,7 +1321,15 @@ Dec. 8, 2021 - Version 12.37
   - Extract TransparentColor from GIF images
   - Improved parsing of input time values for GPSTimeStamp to properly handle a
     "." separator
-  - Improved warning when incorrectly using "
+  - Improved warning when incorrectly using "<" instead of "=" to assign a tag
+    value
+  - Shortened a few of the new obscenely-long XMP-crs tag names 
+  - Avoid writing XMP-dwc:EventID and XMP-tiff:NativeDigest
+  - Avoid printing same structure twice in -j and -X output when -l is used
+  - Fixed typo in a QuickTime tag name (thanks Hubert)
+  - Fixed two XMP-crs tag names and typo in a NikonSettings value (thanks Herb)
+  - Fixed patch of version 12.25 to avoid writing XMP which contains an
+    undefined namespace
 
 Nov. 16, 2021 - Version 12.36
 
@@ -1616,7 +1641,7 @@ Feb. 3, 2021 - Version 12.17
   - Avoid extracting audio/video data from AVI videos when -ee -u is used
   - Patched decoding of Canon ContinuousShootingSpeed for newer firmware
     versions of the EOS-1DXmkIII
-  - Re-worked LensID patch of version 12.00 (github issue #51)
+  - Re-worked LensID patch of version 12.00 (github #51)
   - Fixed a few typos in newly-added NikonSettings tags (thanks Herb)
   - Fixed problem where group could not be specified for PNG-pHYs tags when
     writing
@@ -1687,7 +1712,7 @@ Nov. 27, 2020 - Version 12.11
 
   - Added -csvDelim option
   - Added new Canon and Olympus LensType values (thanks LibRaw)
-  - Added a warning if ICC_Profile is deleted from an image (github issue #63)
+  - Added a warning if ICC_Profile is deleted from an image (github #63)
   - EndDir() function for -if option now works when -fileOrder is used
   - Changed FileSize conversion to use binary prefixes since that is how the
     conversion is currently done (eg. MiB instead of MB)
@@ -2061,7 +2086,7 @@ Jan. 8, 2020 - Version 11.82
   - Added a new Canon LensType
   - Added a new CanonModelID (thanks LibRaw)
   - Added ability to process SubDirectories in QuickTime Keys tags
-  - Removed minor error when writing PDF 2.0 files (github issue #30)
+  - Removed minor error when writing PDF 2.0 files (github #30)
   - Fixed problem where trailing null bytes were removed from binary values in
     the -php output when the -b option was used
 
@@ -2075,8 +2100,7 @@ Jan. 2, 2020 - Version 11.81
   - Patched Composite sub-second date/time tags to do additional validation of
     source EXIF date/time tags before adding sub seconds
   - Fixed problem where -json output could produce invalid JSON when -struct was
-    used and the structure field names contained special characters (github
-    issue #32)
+    used and the structure field names contained special characters (github #32)
   - Fixed spelling in a Panasonic SceneMode value (thanks Hubert)
 
 Dec. 17, 2019 - Version 11.80
@@ -2096,7 +2120,7 @@ Dec. 12, 2019 - Version 11.79
 
   - Added support for AVIF files
   - Added new Canon, Sigma and Sony LensType values (thanks LibRaw)
-  - Made PDF 2.0 writable at your own risk with the -m option (github issue #30)
+  - Made PDF 2.0 writable at your own risk with the -m option (github #30)
   - Enhanced -validate feature to warn about duplicate languages in an XMP
     lang-alt list
   - Fixed inconsistency between documentation and ExifTool capabilities for
@@ -2182,7 +2206,7 @@ Oct. 16, 2019 - Version 11.71
 Oct. 10, 2019 - Version 11.70 (production release)
 
   - Added a new CanonModelID (thanks Laurent Clevy)
-  - Improved identification of Office Open XML files (github issue #27)
+  - Improved identification of Office Open XML files (github #27)
   - Removed RAF version check when writing FujiFilm RAF files
   - Limited the number of accelerometer records that ExifTool will read by
     default with the -ee option from INSV files to avoid excessive processing
@@ -2264,7 +2288,7 @@ Aug. 20, 2019 - Version 11.63 - "PNG Early Text"
   - Added a few new Sigma lenses (thanks LibRaw)
   - Improved handling of Canon CNTH atom in MOV/MP4 videos
   - Changed PNG writer to place all text chunks before IDAT (not just XMP)
-    (github issue #23)
+    (github #23)
   - Issue minor warning for any text chunk after PNG IDAT (not just XMP)
   - Enhanced ForceWrite feature to allow "PNG" to be specified (to move existing
     text chunks to before IDAT without editing any metadata)
@@ -2421,7 +2445,7 @@ June 17, 2019 - Version 11.52
   - Fixed problem where reading a large, corrupt AIFF file may could take an
     excessively long time
   - API Changes:
-      - Enhanced Compact option to add levels 3, 4 and 5 (github issue #16)
+      - Enhanced Compact option to add levels 3, 4 and 5 (github #16)
 
 June 13, 2019 - Version 11.51
 
@@ -2559,7 +2583,7 @@ May 3, 2019 - Version 11.39 - "Create QuickTime tags"
   - Decode Canon EOS D60 black levels
   - Split off some QuickTime tags into different family 1 groups
   - Fixed "Chunk offset outside movie data" error when writing some HEIC files
-  - Fixed decoding of Pentax AutoBracketing for K-1 and K-5 (github issue #15)
+  - Fixed decoding of Pentax AutoBracketing for K-1 and K-5 (github #15)
   - Fixed some QuickTime family 2 group names
   - Fixed bug introduced in 11.38 that broke extraction of thumbnail images from
     Canon MOV videos
@@ -2663,7 +2687,7 @@ Mar. 14, 2019 - Version 11.32
 Mar. 7, 2019 - Version 11.31
 
   - Added read support for FITS images
-  - Another try at removing spaces from some DICOM values (github issues #10/12)
+  - Another try at removing spaces from some DICOM values (github #10 and #12)
 
 Mar. 6, 2019 - Version 11.30 (production release)
 
@@ -2672,7 +2696,7 @@ Mar. 6, 2019 - Version 11.30 (production release)
   - Decode Reconyx HF2 PRO maker notes
   - Decode ColorData for some new Canon models (thanks LibRaw)
   - Enhanced -geotag feature to set AmbientTemperature if available
-  - Remove non-significant spaces from some DICOM values (github issues #10/12)
+  - Remove non-significant spaces from some DICOM values (github #10 and #12)
   - Fixed possible "'x' outside of string" error when reading corrupted EXIF
   - Fixed incorrect write group for GeoTIFF tags added in version 11.24
 
@@ -2680,13 +2704,13 @@ Feb. 28, 2019 - Version 11.29
 
   - Added support for Ricoh GR III maker notes
   - Added a new Canon LensType (thanks Claude Jolicoeur)
-  - Added a new XMP-crs tag (github issue #8)
+  - Added a new XMP-crs tag (github #8)
   - Enhanced -csv option to output base64-encoded binary data when combined with
     -b or when the -charset option is used and the text has invalid characters
-    (github issue #11)
-  - Remove trailing space from even-length DICOM values (github issue #9)
+    (github #11)
+  - Remove trailing space from even-length DICOM values (github #9)
   - Patched to avoid "Hexadecimal number > 0xffffffff non-portable" warning
-    (github issue #6)
+    (github #6)
   - Fixed meta charset attribute in -htmlDump output
 
 Feb. 21, 2019 - Version 11.28

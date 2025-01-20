@@ -18,6 +18,7 @@
 #               2023/01/30 - PH Also write Composite:SubSecDateTimeOriginal from
 #                               XMP-exif:DateTimeOriginal
 #               2024/10/24 - PH Additions for the 2024 EXIF for XMP spec
+#               2025/01/16 - PH Write Composite:SubSecCreateDate from XMP-exif
 #
 # References:   http://www.metadataworkinggroup.org/specs/
 #               https://iptc.org/std/photometadata/documentation/mappingguidelines/
@@ -39,11 +40,11 @@
 -EXIF:DateTimeOriginal < XMP-photoshop:DateCreated
 # new for the 2024 EXIF for XMP specification
 -EXIF:ISO < XMP-exifEX:PhotographicSensitivity
--EXIF:CreateDate < XMP-exif:DateTimeDigitized
 # the following SubSec tags also write/delete the corresponding EXIF
 # SubSecTime and OffsetTime tags as appropriate
 -Composite:SubSecDateTimeOriginal < XMP-exif:DateTimeOriginal
 -Composite:SubSecDateTimeOriginal < XMP-photoshop:DateCreated
+-Composite:SubSecCreateDate < XMP-exif:DateTimeDigitized
 -Composite:SubSecCreateDate < XMP-xmp:CreateDate
 -Composite:SubSecModifyDate < XMP-xmp:ModifyDate
 -EXIF:Software < XMP-xmp:CreatorTool

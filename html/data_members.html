@@ -134,6 +134,9 @@ value.</p>
 
 <tr><td>GLOBAL_TIME_OFFSET</td><td>Time offset hash for first shifted date/time value of GlobalTimeShift option</td></tr>
 
+<tr><td>HandlerType</td><td>[QuickTime only] Handler type for most recent Meta or Media object,
+    except for 'alis' and 'url ' typs.</td></tr>
+
 <tr><td>HTML_DUMP</td><td>Reference to HtmlDump object when using HtmlDump feature</td></tr>
 
 <tr><td>INDENT</td><td>Indent string for verbose output</td></tr>
@@ -172,6 +175,8 @@ value.</p>
 <tr><td>MAKER_NOTE_FIXUP</td><td>Fixup information for maker notes extracted with the MakerNotes
     option (unless MakerNotes option is 2). Used by SetNewValuesFromFile() to adjust offsets
     in maker note IFD</td></tr>
+
+<tr><td>MediaType</td><td>[QuickTime only] Handler type for most recent Media object.</td></tr>
 
 <tr><td>Model</td><td>Camera model name set during reading and writing</td></tr>
 
@@ -233,7 +238,8 @@ value.</p>
 <tr><td>OPTIONS</td><td>ExifTool options</td></tr>
 
 <tr><td>PATH</td><td>List reference to SubDirectory path.  eg)
-    [qw(JPEG APP13 Photoshop IPTC)]</td></tr>
+    [qw(JPEG APP13 Photoshop IPTC)].  Among other things, used to generate the family 5
+    group names.</td></tr>
 
 <tr><td>PDF_CAPTURE</td><td>Used by PDF module to store information when writing</td></tr>
 

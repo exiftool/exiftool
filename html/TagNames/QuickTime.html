@@ -28,12 +28,18 @@ appropriate table in the config file (see
 <a href="../config.html#PREF">example.config</a> in the full distribution for an
 example).  Note that some tags with the same name but different ID&#39;s may
 exist in the same location, but the family 7 group names may be used to
-differentiate these.  ExifTool currently writes only top-level metadata in
-QuickTime-based files; it extracts other track-specific and timed metadata,
-but can not yet edit tags in these locations (with the exception of
-track-level date/time tags).</p>
+differentiate these.</p>
 
-<p>Beware that the Keys tags are actually stored inside the ItemList in the
+<p>ExifTool currently writes
+<a href="QuickTime.html#ItemList">ItemList</a> and
+<a href="QuickTime.html#UserData">UserData</a> only as
+top-level metadata, but select Keys tags are may be written to the audio or
+video track.  See the
+<a href="QuickTime.html#AudioKeys">AudioKeys</a> and
+<a href="QuickTime.html#VideoKeys">VideoKeys</a> tags for
+more information.</p>
+
+<p>Beware that the Keys tags are actually stored inside an ItemList in the
 file, so deleting the ItemList group as a block (ie. <code>-ItemList:all=</code>) also
 deletes Keys tags.  Instead, to preserve Keys tags the ItemList tags may be
 deleted individually with <code>-QuickTime:ItemList:all=</code>.</p>
@@ -287,7 +293,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <p>The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 98 different types of timed GPS metadata from video files.</p>
+currently reads 100 different types of timed GPS metadata from video files.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -869,16 +875,6 @@ changed via <a href="../config.html#PREF">the config file</a>.</p>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'camera.framereadouttimeinmicroseconds'</td>
-<td>FrameReadoutTime</td>
-<td class=c>yes</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'camera.identifier'</td>
-<td>CameraIdentifier</td>
-<td class=c>yes</td>
-<td>&nbsp;</td></tr>
-<tr>
 <td>'collection.user'</td>
 <td>UserCollection</td>
 <td class=c>yes</td>
@@ -904,203 +900,329 @@ changed via <a href="../config.html#PREF">the config file</a>.</p>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'com.apple.photos.captureMode'</td>
-<td>CaptureMode</td>
-<td class=c>yes</td>
-<td>&nbsp;</td></tr>
-<tr>
 <td>'com.xiaomi.hdr10'</td>
 <td>XiaomiHDR10</td>
 <td class=c>int32s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'com.xiaomi.preview_video_cover'</td>
 <td>XiaomiPreviewVideoCover</td>
 <td class=c>int32s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'comment'</td>
 <td>Comment</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'compatible_brands'</td>
 <td>CompatibleBrands</td>
 <td class=c title=' / = Avoid'>yes/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'content.identifier'</td>
 <td>ContentIdentifier</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'copyright'</td>
 <td>Copyright</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'creation_time'</td>
 <td>CreationTime</td>
 <td class=c title=' / = Avoid'>yes/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'creationdate'</td>
 <td>CreationDate</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'description'</td>
 <td>Description</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'detected-face'</td>
 <td>FaceInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#FaceInfo'>QuickTime FaceInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'detected-face.bounds'</td>
 <td>DetectedFaceBounds</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'detected-face.face-id'</td>
 <td>DetectedFaceID</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'detected-face.roll-angle'</td>
 <td>DetectedFaceRollAngle</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'detected-face.yaw-angle'</td>
 <td>DetectedFaceYawAngle</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'direction.facing'</td>
 <td>CameraDirection</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'direction.motion'</td>
 <td>CameraMotion</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'director'</td>
 <td>Director</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'displayname'</td>
 <td>DisplayName</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'encoder'</td>
 <td>Encoder</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'full-frame-rate-playback-intent'</td>
 <td>FullFrameRatePlaybackIntent</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'genre'</td>
 <td>Genre</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'information'</td>
 <td>Information</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'keywords'</td>
 <td>Keywords</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'live-photo-info'</td>
 <td>LivePhotoInfo</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'live-photo.auto'</td>
 <td>LivePhotoAuto</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'live-photo.vitality-score'</td>
 <td>LivePhotoVitalityScore</td>
 <td class=c>float</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'live-photo.vitality-scoring-version'</td>
 <td>LivePhotoVitalityScoringVersion</td>
 <td class=c>int64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'location.ISO6709'</td>
 <td>GPSCoordinates</td>
 <td class=c>yes</td>
-<td><span class=s><span class=n>(Google Photos may ignore this if the coorinates have more than 5 digits
+<td><span class=s><span class=n>(Google Photos may ignore this if the coordinates have more than 5 digits
 after the decimal)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'location.accuracy.horizontal'</td>
 <td>LocationAccuracyHorizontal</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'location.body'</td>
 <td>LocationBody</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'location.date'</td>
 <td>LocationDate</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'location.name'</td>
 <td>LocationName</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'location.note'</td>
 <td>LocationNote</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'location.role'</td>
 <td>LocationRole</td>
 <td class=c>yes</td>
 <td><span class=s>0 = Shooting Location
   <br>1 = Real Location
   <br>2 = Fictional Location</span></td></tr>
-<tr>
+<tr class=b>
 <td>'major_brand'</td>
 <td>MajorBrand</td>
 <td class=c title=' / = Avoid'>yes/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'make'</td>
 <td>Make</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'minor_version'</td>
 <td>MinorVersion</td>
 <td class=c title=' / = Avoid'>yes/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'model'</td>
 <td>Model</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td>'player.movie.audio.balance'</td>
+<td>Balance</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'player.movie.audio.bass'</td>
+<td>Bass</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'player.movie.audio.gain'</td>
+<td>AudioGain</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'player.movie.audio.mute'</td>
+<td>Mute</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td>'player.movie.audio.pitchshift'</td>
+<td>PitchShift</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'player.movie.audio.treble'</td>
+<td>Treble</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'player.movie.visual.brightness'</td>
+<td>Brightness</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'player.movie.visual.color'</td>
+<td>Color</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'player.movie.visual.contrast'</td>
+<td>Contrast</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'player.movie.visual.tint'</td>
+<td>Tint</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'player.version'</td>
+<td>PlayerVersion</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'producer'</td>
+<td>Producer</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'publisher'</td>
+<td>Publisher</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'rating.user'</td>
+<td>UserRating</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'scene-illuminance'</td>
+<td>SceneIlluminance</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(milli-lux)</span></span></td></tr>
+<tr>
+<td>'software'</td>
+<td>Software</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'still-image-time'</td>
+<td>StillImageTime</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(this tag always has a value of -1; the time of the still image is obtained
+from the associated SampleTime)</span></span></td></tr>
+<tr>
+<td>'title'</td>
+<td>Title</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'version'</td>
+<td>Version</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'video-orientation'</td>
+<td>VideoOrientation</td>
+<td class=c>no</td>
+<td><table class=cols><tr>
+  <td>1 = Horizontal (normal)
+  <br>2 = Mirror horizontal
+  <br>3 = Rotate 180
+  <br>4 = Mirror vertical
+  <br>5 = Mirror horizontal and rotate 270 CW
+  <br>6 = Rotate 90 CW
+  <br>7 = Mirror horizontal and rotate 90 CW
+  <br>8 = Rotate 270 CW</td></tr></table>
+</td></tr>
+<tr class=b>
+<td>'xiaomi.exifInfo.videoinfo'</td>
+<td>XiaomiExifInfo</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'year'</td>
+<td>Year</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AudioKeys'>QuickTime AudioKeys Tags</a></h2>
+<p>Keys tags written in the audio track by some Apple devices.  These tags
+belong to the ExifTool AudioKeys family 1 gorup.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td>'player.movie.audio.balance'</td>
 <td>Balance</td>
@@ -1132,94 +1254,39 @@ after the decimal)</span></span></td></tr>
 <td>Treble</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='VideoKeys'>QuickTime VideoKeys Tags</a></h2>
+<p>Keys tags written in the video track.  These tags belong to the ExifTool
+VideoKeys family 1 gorup.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td>'player.movie.visual.brightness'</td>
-<td>Brightness</td>
+<td>'camera.focal_length.35mm_equivalent'</td>
+<td>FocalLengthIn35mmFormat</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'player.movie.visual.color'</td>
-<td>Color</td>
+<td>'camera.framereadouttimeinmicroseconds'</td>
+<td>FrameReadoutTime</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'player.movie.visual.contrast'</td>
-<td>Contrast</td>
+<td>'camera.identifier'</td>
+<td>CameraIdentifier</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'player.movie.visual.tint'</td>
-<td>Tint</td>
+<td>'camera.lens_model'</td>
+<td>LensModel</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'player.version'</td>
-<td>PlayerVersion</td>
-<td class=c>yes</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'producer'</td>
-<td>Producer</td>
-<td class=c>yes</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'publisher'</td>
-<td>Publisher</td>
-<td class=c>yes</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'rating.user'</td>
-<td>UserRating</td>
-<td class=c>yes</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'scene-illuminance'</td>
-<td>SceneIlluminance</td>
-<td class=c>no</td>
-<td><span class=s><span class=n>(milli-lux)</span></span></td></tr>
-<tr class=b>
-<td>'software'</td>
-<td>Software</td>
-<td class=c>yes</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'still-image-time'</td>
-<td>StillImageTime</td>
-<td class=c>no</td>
-<td><span class=s><span class=n>(this tag always has a value of -1; the time of the still image is obtained
-from the associated SampleTime)</span></span></td></tr>
-<tr class=b>
-<td>'title'</td>
-<td>Title</td>
-<td class=c>yes</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'version'</td>
-<td>Version</td>
-<td class=c>yes</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'video-orientation'</td>
-<td>VideoOrientation</td>
-<td class=c>no</td>
-<td><table class=cols><tr>
-  <td>1 = Horizontal (normal)
-  <br>2 = Mirror horizontal
-  <br>3 = Rotate 180
-  <br>4 = Mirror vertical
-  <br>5 = Mirror horizontal and rotate 270 CW
-  <br>6 = Rotate 90 CW
-  <br>7 = Mirror horizontal and rotate 90 CW
-  <br>8 = Rotate 270 CW</td></tr></table>
-</td></tr>
-<tr>
-<td>'xiaomi.exifInfo.videoinfo'</td>
-<td>XiaomiExifInfo</td>
-<td class=c>yes</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'year'</td>
-<td>Year</td>
+<td>'com.apple.photos.captureMode'</td>
+<td>CaptureMode</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -1631,9 +1698,13 @@ and subtitle text in some other videos.</p>
 <td>--&gt; <a href='QuickTime.html#ItemRef'>QuickTime ItemRef Tags</a></td></tr>
 <tr class=b>
 <td>'keys'</td>
-<td>Keys</td>
-<td class=c>-</td>
-<td>--&gt; <a href='QuickTime.html#Keys'>QuickTime Keys Tags</a></td></tr>
+<td>AudioKeys
+  <br>VideoKeys
+  <br>Keys</td>
+<td class=c>-<br>-<br>-</td>
+<td>--&gt; <a href='QuickTime.html#AudioKeys'>QuickTime AudioKeys Tags</a>
+  <br>--&gt; <a href='QuickTime.html#VideoKeys'>QuickTime VideoKeys Tags</a>
+  <br>--&gt; <a href='QuickTime.html#Keys'>QuickTime Keys Tags</a></td></tr>
 <tr>
 <td>'pitm'</td>
 <td>PrimaryItemReference</td>
@@ -9754,7 +9825,7 @@ the value is set to zero if the tag is deleted individually)</span></span></td><
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 7, 2025</i>
+<br><i>Last revised Jan 19, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

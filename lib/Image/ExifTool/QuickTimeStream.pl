@@ -111,7 +111,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 98 different types of timed GPS metadata from video files.
+        currently reads 100 different types of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
@@ -1512,7 +1512,7 @@ Sample:     for ($i=0; ; ) {
     # clean up
     $raf->Seek($tell, 0); # restore original file position
     delete $$et{DOC_NUM};
-    $$et{HandlerType} = $$et{HanderDesc} = '';
+    $$et{HandlerType} = '';
 }
 
 #------------------------------------------------------------------------------

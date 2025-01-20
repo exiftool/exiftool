@@ -14,6 +14,7 @@
 #               2018/05/07 - PH Added support for GPSDestXxxRef tags
 #               2022/03/31 - PH IPTC Photometadata Mapping Guidelines 2202.1 update
 #               2024/10/24 - PH Additions for the 2024 EXIF for XMP spec
+#               2025/01/16 - PH Copy Composite SubSec tags to XMP-exif
 #
 # References:   http://www.metadataworkinggroup.org/specs/
 #               https://iptc.org/std/photometadata/documentation/mappingguidelines/
@@ -54,4 +55,7 @@
 # new for the 2024 EXIF for XMP specification
 -XMP-exifEX:PhotographicSensitivity < EXIF:ISO
 -XMP-exif:DateTimeDigitized < EXIF:CreateDate
+# add sub-seconds and time-zone to XMP-exif tags if available
+-XMP-exif:DateTimeOriginal < Composite:SubSecDateTimeOriginal
+-XMP-exif:DateTimeDigitized < Composite:SubSecCreateDate
 # end

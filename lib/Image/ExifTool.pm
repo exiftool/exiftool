@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.12';
+$VERSION = '13.13';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -6896,6 +6896,8 @@ sub IdentifyTrailer($;$)
             $type = 'Insta360';
         } elsif ($buff =~ m(\0{6}/NIKON APP$)) {
             $type = 'NikonApp';
+        } elsif ($buff =~ /\xff{4}\x1b\*9HWfu\x84\x93\xa2\xb1$/) {
+            $type = 'Vivo';
         }
         last;
     }
@@ -6908,7 +6910,8 @@ sub IdentifyTrailer($;$)
 # Inputs: 0) ExifTool object ref, 1) DirInfo ref:
 # - requires RAF and DirName
 # - OutFile is a scalar reference for writing
-# - scans from current file position if ScanForAFCP is set
+# - scans from current file position for each trailer if ScanForTrailer is set
+#   (current file position is just after JPEG EOF for a JPEG image)
 # Returns: 1 if trailer was processed or couldn't be processed (or written OK)
 #          0 if trailer was recognized but offsets need fixing (or write error)
 # - DirName, DirLen, DataPos, Offset, Fixup and OutFile are updated
@@ -6954,7 +6957,7 @@ sub ProcessTrailers($$)
         # read or write this trailer
         # (proc takes Offset as positive offset from end of trailer to end of file,
         #  and returns DataPos and DirLen, and Fixup if applicable, and updates
-        #  OutFile when writing)
+        #  OutFile when writing.  Returns < 0 if we must scan for this trailer)
         no strict 'refs';
         my $result = &$proc($self, $dirInfo);
         use strict 'refs';
@@ -7364,7 +7367,7 @@ sub ProcessJPEG($$;$)
             # and scan for AFCP if necessary
             my $fromEnd = 0;
             if ($trailInfo) {
-                $$trailInfo{ScanForAFCP} = 1;   # scan now if necessary
+                $$trailInfo{ScanForTrailer} = 1;   # scan now if necessary
                 $self->ProcessTrailers($trailInfo);
                 # save offset from end of file to start of first trailer
                 $fromEnd = $$trailInfo{Offset};
@@ -7564,6 +7567,19 @@ sub ProcessJPEG($$;$)
                 $$self{SkipData} = \@skipData if @skipData;
                 # extract the EXIF information (it is in standard TIFF format)
                 $self->ProcessTIFF(\%dirInfo) or $self->Warn('Malformed APP1 EXIF segment');
+                # scan for Vivo HiddenData if necessary
+                if ($$self{Make} eq 'vivo' and
+                    # (stored as UserComment by some models)
+                    not ($$self{VALUE}{UserComment} and $$self{VALUE}{UserComment} =~ /^filter:/) and
+                    $$dataPt =~ /(filter: .*?; \n)\0/sg)
+                {
+                    if ($htmlDump) {
+                        my $n = length($1) + 1;
+                        $self->HDump($segPos+pos($$dataPt)-$n, $n, '[Vivo HiddenData]', undef, 0x08);
+                    }
+                    my $tbl = GetTagTable('Image::ExifTool::Vivo::Main');
+                    $self->HandleTag($tbl, HiddenData => $1);
+                }
                 # avoid looking for preview unless necessary because it really slows
                 # us down -- only look for it if we found pointer, and preview is
                 # outside EXIF, and PreviewImage is specifically requested
@@ -8541,7 +8557,7 @@ sub DoProcessTIFF($$;$)
         if ($raf) {
             my $trailInfo = IdentifyTrailer($raf);
             if ($trailInfo) {
-                $$trailInfo{ScanForAFCP} = 1;   # scan to find AFCP if necessary
+                $$trailInfo{ScanForTrailer} = 1;   # scan to find AFCP if necessary
                 $self->ProcessTrailers($trailInfo);
             }
             # dump any other known trailer (eg. A100 RAW Data)
@@ -8646,7 +8662,7 @@ sub DoProcessTIFF($$;$)
             last unless $trailInfo;
             my $tbuf = '';
             $$trailInfo{OutFile} = \$tbuf;  # rewrite trailer(s)
-            $$trailInfo{ScanForAFCP} = 1;   # scan for AFCP if necessary
+            $$trailInfo{ScanForTrailer} = 1;   # scan for AFCP if necessary
             # rewrite all trailers to buffer
             unless ($self->ProcessTrailers($trailInfo)) {
                 undef $trailInfo;

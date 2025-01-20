@@ -43,12 +43,12 @@
 package Image::ExifTool::QuickTime;
 
 use strict;
-use vars qw($VERSION $AUTOLOAD %stringEncoding);
+use vars qw($VERSION $AUTOLOAD %stringEncoding %avType);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.08';
+$VERSION = '3.09';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -358,6 +358,19 @@ my %vendorID = (
     5 => 'UTF16',
 );
 
+# media types for which we have separate Keys tables (AudioKeys, VideoKeys)
+%avType = (
+    soun => 'Audio',
+    vide => 'Video',
+);
+
+# path to Keys/ItemList/UserData tags stored in tracks
+my %trackPath = (
+    'MOV-Movie-Track-Meta-ItemList' => 'Keys',
+    'MOV-Movie-Track-UserData-Meta-ItemList' => 'ItemList',
+    'MOV-Movie-Track-UserData' => 'UserData',
+);
+
 my %graphicsMode = (
     # (ref http://homepage.mac.com/vanhoek/MovieGuts%20docs/64.html)
     0x00 => 'srcCopy',
@@ -594,13 +607,24 @@ my %userDefined = (
         },
         {
             Name => 'LigoGPSInfo',
-            Condition => '$$valPt =~ /^LIGOGPSINFO\0/',
-            SubDirectory => { 
+            Condition => '$$valPt =~ /^LIGOGPSINFO\0/ and $$self{OPTIONS}{ExtractEmbedded}',
+            SubDirectory => {
                 TagTable => 'Image::ExifTool::QuickTime::Stream',
                 ProcessProc => 'Image::ExifTool::LigoGPS::ProcessLigoGPS',
             },
         },
-        { Name => 'Skip', Unknown => 1, Binary => 1 },
+        {
+            Name => 'Skip',
+            RawConv => q{
+                if ($val =~ /^LIGOGPSINFO\0/) {
+                    $self->Warn('Use the ExtractEmbedded option to decode timed GPS',3);
+                    return undef;
+                }
+                return $val;
+            },
+            Unknown => 1,
+            Binary => 1,
+        },
     ],
     wide => { Unknown => 1, Binary => 1 },
     ftyp => { #MP4
@@ -1525,7 +1549,7 @@ my %userDefined = (
             # (this tag is readable/writable as a block through the Extra SphericalVideoXML tags)
             Condition => '$$valPt=~/^\xff\xcc\x82\x63\xf8\x55\x4a\x93\x88\x14\x58\x7a\x02\x52\x1f\xdd/',
             WriteGroup => 'GSpherical', # write only GSpherical XMP tags here
-            HandlerType => 'vide',      # only write in video tracks
+            MediaType => 'vide',        # only write in video tracks
             SubDirectory => {
                 TagTable => 'Image::ExifTool::XMP::Main',
                 Start => 16,
@@ -2853,10 +2877,18 @@ my %userDefined = (
             IgnoreProp => { NonRealTimeMeta => 1 }, # ignore container for Sony 'nrtm'
         },
     },
-   'keys' => {
+   'keys' => [{
+        Name => 'AudioKeys',
+        Condition => '$$self{MediaType} eq "soun"',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::AudioKeys' },
+    },{
+        Name => 'VideoKeys',
+        Condition => '$$self{MediaType} eq "vide"',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::VideoKeys' },
+    },{
         Name => 'Keys',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Keys' },
-    },
+    }],
     bxml => {
         Name => 'BinaryXML',
         Flags => ['Binary','Unknown'],
@@ -3597,7 +3629,7 @@ my %userDefined = (
             my $id = Image::ExifTool::ID3::GetGenreID($val);
             return unless defined $id and $id =~ /^\d+$/;
             return $id + 1;
-        }, 
+        },
     },
     egid => 'EpisodeGlobalUniqueID', #7
     geID => { #10
@@ -6599,7 +6631,7 @@ my %userDefined = (
     PROCESS_PROC => \&ProcessKeys,
     WRITE_PROC => \&WriteKeys,
     CHECK_PROC => \&CheckQTValue,
-    VARS => { LONG_TAGS => 9 },
+    VARS => { LONG_TAGS => 8 },
     WRITABLE => 1,
     # (not PREFERRED when writing)
     GROUPS => { 1 => 'Keys' },
@@ -6645,21 +6677,11 @@ my %userDefined = (
     publisher   => { },
     software    => { },
     year        => { Groups => { 2 => 'Time' } },
-    'camera.identifier' => 'CameraIdentifier', # (iPhone 4)
-    'camera.framereadouttimeinmicroseconds' => { # (iPhone 4)
-        Name => 'FrameReadoutTime',
-        ValueConv => '$val * 1e-6',
-        ValueConvInv => 'int($val * 1e6 + 0.5)',
-        PrintConv => '$val * 1e6 . " microseconds"',
-        PrintConvInv => '$val =~ s/ .*//; $val * 1e-6',
-    },
-  # 'camera.focal_length.35mm_equivalent' - not top level (written to Keys in video track)
-  # 'camera.lens_model'                   - not top level (written to Keys in video track)
     'location.ISO6709' => {
         Name => 'GPSCoordinates',
         Groups => { 2 => 'Location' },
         Notes => q{
-            Google Photos may ignore this if the coorinates have more than 5 digits
+            Google Photos may ignore this if the coordinates have more than 5 digits
             after the decimal
         },
         ValueConv => \&ConvertISO6709,
@@ -6715,7 +6737,6 @@ my %userDefined = (
 #
 # the following tags aren't in the com.apple.quicktime namespace:
 #
-    'com.apple.photos.captureMode' => 'CaptureMode',
     'com.android.version' => 'AndroidVersion',
     'com.android.capture.fps' => { Name  => 'AndroidCaptureFPS', Writable => 'float' },
     'com.android.manufacturer' => 'AndroidMake',
@@ -6813,6 +6834,58 @@ my %userDefined = (
     # (mdta)com.apple.proapps.image.{TIFF}.Make (eg. "Atmos")
     # (mdta)com.apple.proapps.image.{TIFF}.Model (eg. "ShogunInferno")
     # (mdta)com.apple.proapps.image.{TIFF}.Software (eg. "9.0")
+);
+
+# Keys tags in the audio track (ref PH)
+%Image::ExifTool::QuickTime::AudioKeys = (
+    PROCESS_PROC => \&ProcessKeys,
+    WRITE_PROC => \&WriteKeys,
+    CHECK_PROC => \&CheckQTValue,
+    WRITABLE => 1,
+    GROUPS => { 1 => 'AudioKeys', 2 => 'Audio' },
+    WRITE_GROUP => 'AudioKeys',
+    LANG_INFO => \&GetLangInfo,
+    NOTES => q{
+        Keys tags written in the audio track by some Apple devices.  These tags
+        belong to the ExifTool AudioKeys family 1 gorup.
+    },
+    'player.movie.audio.gain'       => 'AudioGain',
+    'player.movie.audio.treble'     => 'Treble',
+    'player.movie.audio.bass'       => 'Bass',
+    'player.movie.audio.balance'    => 'Balance',
+    'player.movie.audio.pitchshift' => 'PitchShift',
+    'player.movie.audio.mute' => {
+        Name => 'Mute',
+        Format => 'int8u',
+        PrintConv => { 0 => 'Off', 1 => 'On' },
+    },
+);
+
+# Keys tags in the video track (ref PH)
+%Image::ExifTool::QuickTime::VideoKeys = (
+    PROCESS_PROC => \&ProcessKeys,
+    WRITE_PROC => \&WriteKeys,
+    CHECK_PROC => \&CheckQTValue,
+    VARS => { LONG_TAGS => 2 },
+    WRITABLE => 1,
+    GROUPS => { 1 => 'VideoKeys', 2 => 'Camera' },
+    WRITE_GROUP => 'VideoKeys',
+    LANG_INFO => \&GetLangInfo,
+    NOTES => q{
+        Keys tags written in the video track.  These tags belong to the ExifTool
+        VideoKeys family 1 gorup.
+    },
+    'camera.identifier' => 'CameraIdentifier',
+    'camera.lens_model' => 'LensModel',
+    'camera.focal_length.35mm_equivalent' => 'FocalLengthIn35mmFormat',
+    'camera.framereadouttimeinmicroseconds' => {
+        Name => 'FrameReadoutTime',
+        ValueConv => '$val * 1e-6',
+        ValueConvInv => 'int($val * 1e6 + 0.5)',
+        PrintConv => '$val * 1e6 . " microseconds"',
+        PrintConvInv => '$val =~ s/ .*//; $val * 1e-6',
+    },
+    'com.apple.photos.captureMode' => 'CaptureMode',
 );
 
 # iTunes info ('----') atoms
@@ -7280,7 +7353,7 @@ my %userDefined = (
         {
             Name => 'VideoFrameRate',
             Notes => 'average rate calculated from time-to-sample table for video media',
-            Condition => '$$self{HandlerType} and $$self{HandlerType} eq "vide"',
+            Condition => '$$self{MediaType} eq "vide"',
             Format => 'undef',  # (necessary to prevent decoding as string!)
             # (must be RawConv so appropriate MediaTS is used in calculation)
             RawConv => 'Image::ExifTool::QuickTime::CalcSampleRate($self, \$val)',
@@ -7871,7 +7944,6 @@ my %userDefined = (
     mode => 'ModeFlags', #PH (?) 0x04 is HD flag (https://compilr.com/heksesang/requiem-mac/UnDrm.java)
     # sing - seen 4 zeros
     # hi32 - seen "00 00 00 04"
-    
 );
 
 # MP4 hint sample description box (ref 5)
@@ -8119,6 +8191,7 @@ my %userDefined = (
         Format => 'undef[4]',
         RawConv => q{
             $$self{HandlerType} = $val unless $val eq 'alis' or $val eq 'url ';
+            $$self{MediaType} = $val if @{$$self{PATH}} > 1 and $$self{PATH}[-2] eq 'Media';
             $$self{HasHandler}{$val} = 1; # remember all our handlers
             return $val;
         },
@@ -9538,6 +9611,8 @@ sub ProcessKeys($$$)
             my $groups = $$tagInfo{Groups};
             $$newInfo{Groups} = $groups ? { %$groups } : { };
             $$newInfo{Groups}{$_} or $$newInfo{Groups}{$_} = $$tagTablePtr{GROUPS}{$_} foreach 0..2;
+            # set Keys group.  This is necessary for logic when reading the associated ItemList entry,
+            # but note that the group name will be overridden by TAG_EXTRA G1 for tags in a track
             $$newInfo{Groups}{1} = 'Keys';
         } elsif ($tag =~ /^[-\w. ]+$/ or $tag =~ /\w{4}/) {
             # create info for tags with reasonable id's
@@ -9605,7 +9680,7 @@ sub ProcessMOV($$;$)
 
     my $topLevel = not $$et{InQuickTime};
     $$et{InQuickTime} = 1;
-    $$et{HandlerType} = $$et{MetaFormat} = '' unless defined $$et{HandlerType};
+    $$et{HandlerType} = $$et{MetaFormat} = $$et{MediaType} = '' if $topLevel;
 
     unless (defined $$et{KeysCount}) {
         $$et{KeysCount} = 0;    # initialize ItemList key directory count
@@ -9631,13 +9706,15 @@ sub ProcessMOV($$;$)
     }
     ($size, $tag) = unpack('Na4', $buff);
     my $fast = $$et{OPTIONS}{FastScan} || 0;
-    # check for Insta360 trailer
+    # check for Insta360 or LIGOGPSINFO trailer
     if ($topLevel and not $fast) {
         my $pos = $raf->Tell();
-        if ($raf->Seek(-40, 2) and $raf->Read($buff, 40) == 40 and
-            substr($buff, 8) eq '8db42d694ccc418790edff439fe026bf')
-        {
-            $trailer = [ 'Insta360', $raf->Tell() - unpack('V',$buff) ];
+        if ($raf->Seek(-40, 2) and $raf->Read($buff, 40) == 40) {
+            if (substr($buff, 8) eq '8db42d694ccc418790edff439fe026bf') {
+                $trailer = [ 'Insta360', $raf->Tell() - unpack('V',$buff) ];
+            } elsif ($buff =~ /\&\&\&\&(.{4})$/) {
+                $trailer = [ 'LigoGPS', $raf->Tell() - Get32u(\$buff, 36) ];
+            }
         }
         $raf->Seek($pos,0) or return 0;
     }
@@ -9754,16 +9831,18 @@ sub ProcessMOV($$;$)
         }
         if ($isUserData and $$et{SET_GROUP1}) {
             my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
-            # add track name to UserData tags inside tracks
-            $tag = $$et{SET_GROUP1} . $tag;
-            if (not $$tagTablePtr{$tag} and $tagInfo) {
-                my %newInfo = %$tagInfo;
-                foreach ('Name', 'Description') {
-                    next unless $$tagInfo{$_};
-                    $newInfo{$_} = $$et{SET_GROUP1} . $$tagInfo{$_};
-                    $newInfo{$_} =~ s/^(Track\d+)Track/$1/; # remove duplicate "Track" in name
+            unless ($$tagInfo{SubDirectory}) {
+                # add track name to UserData tags inside tracks
+                $tag = $$et{SET_GROUP1} . $tag;
+                if (not $$tagTablePtr{$tag} and $tagInfo) {
+                    my %newInfo = %$tagInfo;
+                    foreach ('Name', 'Description') {
+                        next unless $$tagInfo{$_};
+                        $newInfo{$_} = $$et{SET_GROUP1} . $$tagInfo{$_};
+                        $newInfo{$_} =~ s/^(Track\d+)Track/$1/; # remove duplicate "Track" in name
+                    }
+                    AddTagToTable($tagTablePtr, $tag, \%newInfo);
                 }
-                AddTagToTable($tagTablePtr, $tag, \%newInfo);
             }
         }
         # set flag to store additional information for ExtractEmbedded option
@@ -9830,7 +9909,7 @@ sub ProcessMOV($$;$)
             # check for RIFF trailer (written by Auto-Vox dashcam)
             if ($buff =~ /^(gpsa|gps0|gsen|gsea)...\0/s) { # (yet seen only gpsa as first record)
                 $et->VPrint(0, sprintf("Found RIFF trailer at offset 0x%x",$lastPos));
-                if ($et->Options('ExtractEmbedded')) {
+                if ($ee) {
                     $raf->Seek(-8, 1) or last;  # seek back to start of trailer
                     my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
                     ProcessRIFFTrailer($et, { RAF => $raf }, $tbl);
@@ -9980,6 +10059,7 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
                 }
             }
             if ($tagInfo) {
+                my @found;
                 my $subdir = $$tagInfo{SubDirectory};
                 if ($subdir) {
                     my $start = $$subdir{Start} || 0;
@@ -10098,21 +10178,23 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
                             Index   => $index,
                             Extra   => sprintf(", Type='${type}', Flags=0x%x%s, Lang=0x%.4x",$flags,$str,$lang),
                         ) if $verbose;
-                        # use "Keys" in path instead of ItemList if this was defined by a Keys tag
-                        my $isKey = $$tagInfo{Groups} && $$tagInfo{Groups}{1} && $$tagInfo{Groups}{1} eq 'Keys';
-                        if ($isKey) {
-                            $oldDir = $$et{PATH}[-1];
-                            $$et{PATH}[-1] = 'Keys';
+                        if (defined $value) {
+                            # use "Keys" in path instead of ItemList if this was defined by a Keys tag
+                            # (the only reason for this is to have "Keys" in the family 5 group name)
+                            # Note that the Keys group is specifically set by the ProcessKeys routine,
+                            # even though this tag would be in the ItemList table
+                            my $isKeys = $$tagInfo{Groups} && $$tagInfo{Groups}{1} && $$tagInfo{Groups}{1} eq 'Keys';
+                            $isKeys and $oldDir = $$et{PATH}[-1], $$et{PATH}[-1] = 'Keys';
+                            push @found, $et->FoundTag($langInfo, $value);
+                            $$et{PATH}[-1] = $oldDir if $isKeys;
                         }
-                        $et->FoundTag($langInfo, $value) if defined $value;
-                        $$et{PATH}[-1] = $oldDir if $isKey;
                         $pos += $len;
                     }
                 } elsif ($tag =~ /^\xa9/ or $$tagInfo{IText}) {
                     # parse international text to extract all languages
                     my $pos = 0;
                     if ($$tagInfo{Format}) {
-                        $et->FoundTag($tagInfo, ReadValue(\$val, 0, $$tagInfo{Format}, undef, length($val)));
+                        push @found, $et->FoundTag($tagInfo, ReadValue(\$val, 0, $$tagInfo{Format}, undef, length($val)));
                         $pos = $size;
                     }
                     for (;;) {
@@ -10177,7 +10259,7 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
                             $str = substr($val, $pos-$n-2, $n) . $str;
                         }
                         $langInfo = GetLangInfoQT($et, $tagInfo, $lang) if $lang;
-                        $et->FoundTag($langInfo || $tagInfo, $str);
+                        push @found, $et->FoundTag($langInfo || $tagInfo, $str);
                         $pos += $len;
                     }
                 } else {
@@ -10191,6 +10273,7 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
                         $$et{BASE} = $dataPos;
                     }
                     my $key = $et->FoundTag($tagInfo, $val);
+                    push @found, $key;
                     $$et{BASE} = $oldBase if defined $oldBase;
                     # decode if necessary (NOTE: must be done after RawConv)
                     if (defined $key and (not $format or $format =~ /^string/) and
@@ -10206,6 +10289,14 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
                         }
                     }
                 }
+                # tweak family 1 group names for Keys/ItemList/UserData tags in a track
+                if ($$et{SET_GROUP1} and ($dirID eq 'ilst' or $dirID eq 'udta') and @found) {
+                    my $type = $trackPath{join '-', @{$$et{PATH}}};
+                    if ($type) {
+                        my $grp = ($avType{$$et{MediaType}} || $$et{SET_GROUP1}) . $type;
+                        defined and $et->SetGroup($_, $grp) foreach @found;
+                    }
+                }
             }
         } else {
             $et->VerboseInfo($tag, $tagInfo,
@@ -10218,6 +10309,7 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
                 last;
             }
         }
+        $$et{MediaType} = '' if $tag eq 'trak';  # reset track type at end of track
         $dataPos += $size + 8;  # point to start of next atom data
         last if $dirEnd and $dataPos >= $dirEnd; # (note: ignores last value if 0 bytes)
         $lastPos = $raf->Tell() + $dirBase;
@@ -10273,7 +10365,26 @@ QTLang: foreach $tag (@{$$et{QTLang}}) {
     # process item information now that we are done processing its 'meta' container
     HandleItemInfo($et) if $topLevel or $dirID eq 'meta';
 
-    ScanMediaData($et) if $ee and $topLevel;  # brute force scan for metadata embedded in media data
+    # process LigoGPS trailer now if it exists and we haven't already processed it
+    if ($trailer and $$trailer[0] eq 'LigoGPS' and $lastPos <= $$trailer[1] and
+        $raf->Seek($$trailer[1]) and $raf->Read($buff, 8) == 8 and $buff =~ /skip$/)
+    {
+        if ($ee) {
+            my $len = Get32u(\$buff, 0) - 16;
+            if ($len > 0 and $raf->Read($buff, $len) == $len and $buff =~ /^LIGOGPSINFO\0/) {
+                my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+                my %dirInfo = ( DataPt => \$buff, DataPos => $$trailer[1] + 8, DirName => 'LigoGPSTrailer' );
+                Image::ExifTool::LigoGPS::ProcessLigoGPS($et, \%dirInfo, $tbl);
+            } else {
+                $et->Warn('Unrecognized data in LigoGPS trailer');
+            }
+        } else {
+            $et->Warn('Use the ExtractEmbedded option to decode timed GPS',3);
+        }
+    }
+    # brute force scan for metadata embedded in media data
+    # (and process Insta360 trailer if it exists)
+    ScanMediaData($et) if $ee and $topLevel;
 
     # restore any changed options
     $et->Options($_ => $saveOptions{$_}) foreach keys %saveOptions;

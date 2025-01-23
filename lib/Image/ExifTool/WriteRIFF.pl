@@ -324,8 +324,10 @@ sub WriteRIFF($$)
                     $raf->Read($buff, 6) == 6 or $et->Error('Truncated VP8L chunk'), return 1;
                     $outsize += 6;
                     if ($buff =~ /^\x2f/s) {
+                        my $word = Get32u(\$buff, 2);
                         $imageWidth  =  (Get16u(\$buff, 1) & 0x3fff) + 1;
-                        $imageHeight = ((Get32u(\$buff, 2) >> 6) & 0x3fff) + 1;
+                        $imageHeight = (($word >> 6) & 0x3fff) + 1;
+                        $has{ALPH} = 1 if $word & 0x100000; # set alpha flag if necessary
                     }
                     $len2 -= 6;
                 }

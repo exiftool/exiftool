@@ -30,7 +30,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.69';
+$VERSION = '1.70';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -1319,6 +1319,11 @@ my %code2charset = (
         Name => 'ImageWidth',
         Format => 'int16u',
         Priority => 0,
+        # add " (lossless)" to FileType since image has a VP8L (lossless) chunk
+        RawConv => q{
+            $self->OverrideFileType($$self{VALUE}{FileType} . ' (lossless)', undef, 'webp');
+            return $val;
+        },
         ValueConv => '($val & 0x3fff) + 1',
     },
     2 => {
@@ -1326,6 +1331,11 @@ my %code2charset = (
         Format => 'int32u',
         Priority => 0,
         ValueConv => '(($val >> 6) & 0x3fff) + 1',
+    },
+    4 => {
+        Name => 'AlphaIsUsed',
+        Mask => 0x10,
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
 );
 

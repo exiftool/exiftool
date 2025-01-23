@@ -451,12 +451,6 @@ L<AudioKeys|Image::ExifTool::TagNames/QuickTime AudioKeys Tags> and
 L<VideoKeys|Image::ExifTool::TagNames/QuickTime VideoKeys Tags> tags for
 more information.
 
-Beware that the values of the Keys tags are actually stored inside an
-ItemList atom in the file, so deleting the ItemList group as a block (ie.
-C<-ItemList:all=>) also deletes Keys tags.  Instead, to preserve Keys tags
-the ItemList tags may be deleted individually with
-C<-QuickTime:ItemList:all=>.
-
 Alternate language tags may be accessed for
 L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and
 L<Keys|Image::ExifTool::TagNames/QuickTime Keys Tags> tags by adding
@@ -467,8 +461,8 @@ L<UserData|Image::ExifTool::TagNames/QuickTime UserData Tags> tags support a
 language code, but without a country code.  If no language code is specified
 when writing, the default language is written and alternate languages for
 the tag are deleted.  Use the "und" language code to write the default
-language without deleting alternate languages.  Note that "eng" is treated
-as a default language when reading, but not when writing.
+language without deleting alternate languages.  Note that when reading,
+"eng" is also treated as the default language if there is no country code.
 
 According to the specification, integer-format QuickTime date/time tags
 should be stored as UTC.  Unfortunately, digital cameras often store local

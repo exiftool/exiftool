@@ -17,11 +17,23 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.15'><b>Jan. 23, 2025 - Version 13.15</b></a>
+<ul>
+<li>Added a few new Panasonic AFSubjectDetection values (thanks Andrew J)
+<li>Added " (lossless)" to FileType for lossless WebP images
+<li>Avoid treating the QuickTime 'eng' language code as the default 'und' unless
+    the country code is also the default
+<li>Fixed issue where writing metadata to a non-extended lossless WebP image
+    with an alpha channel could mess up rendering of the transparency
+<li>Fixed problem decoding ID3 WXXX frames (<a href="https://github.com/exiftool/exiftool/issues/307">github #307</a>)
+</ul>
+
 <a name='v13.14'><b>Jan. 20, 2025 - Version 13.14</b></a>
 <ul>
-<li>Fixed bug where ItemList tags weren't created when creating new AudioKeys or
-    VideoKeys tags in the same command and neither tag group pre-existed in the
-    file
+<li>Changed so that deleting QuickTime ItemList group no longer deletes Keys
+<li>Fixed bug where new ItemList tags weren't created when also creating new
+    AudioKeys or VideoKeys tags in the same command if neither tag group
+    pre-existed in the file
 </ul>
 
 <a name='v13.13'><b>Jan. 20, 2025 - Version 13.13</b></a>

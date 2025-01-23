@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.09';
+$VERSION = '3.10';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -8776,24 +8776,28 @@ sub UnpackLang($;$)
 # Get language code string given QuickTime language and country codes
 # Inputs: 0) numerical language code, 1) numerical country code, 2) no defaults
 # Returns: language code string (ie. "fra-FR") or undef for default language
+# ex) 0x15c7 0x0000 is 'eng' with no country (ie. returns 'und' unless $noDef)
+#     0x15c7 0x5553 is 'eng-US'
+#     0x1a41 0x4652 is 'fra-FR'
+#     0x55c4 is 'und'
 sub GetLangCode($;$$)
 {
     my ($lang, $ctry, $noDef) = @_;
     # ignore country ('ctry') and language lists ('lang') for now
     undef $ctry if $ctry and $ctry <= 255;
     undef $lang if $lang and $lang <= 255;
-    $lang = UnpackLang($lang, $noDef);
+    my $langCode = UnpackLang($lang, $noDef);
     # add country code if specified
     if ($ctry) {
         $ctry = unpack('a2',pack('n',$ctry)); # unpack as ISO 3166-1
         # treat 'ZZ' like a default country (see ref 12)
         undef $ctry if $ctry eq 'ZZ';
         if ($ctry and $ctry =~ /^[A-Z]{2}$/) {
-            $lang or $lang = 'und';
-            $lang .= "-$ctry";
+            $langCode or $langCode = UnpackLang($lang,1) || 'und';
+            $langCode .= "-$ctry";
         }
     }
-    return $lang;
+    return $langCode;
 }
 
 #------------------------------------------------------------------------------

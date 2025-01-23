@@ -7,11 +7,22 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.10. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 23, 2025 - Version 13.15
+
+  - Added a few new Panasonic AFSubjectDetection values (thanks Andrew J)
+  - Added " (lossless)" to FileType for lossless WebP images
+  - Avoid treating the QuickTime 'eng' language code as the default 'und' unless
+    the country code is also the default
+  - Fixed issue where writing metadata to a non-extended lossless WebP image
+    with an alpha channel could mess up rendering of the transparency
+  - Fixed problem decoding ID3 WXXX frames (github #307)
+
 Jan. 20, 2025 - Version 13.14
 
-  - Fixed bug where ItemList tags weren't created when creating new AudioKeys or
-    VideoKeys tags in the same command and neither tag group pre-existed in the
-    file
+  - Changed so that deleting QuickTime ItemList group no longer deletes Keys
+  - Fixed bug where new ItemList tags weren't created when also creating new
+    AudioKeys or VideoKeys tags in the same command if neither tag group
+    pre-existed in the file
 
 Jan. 20, 2025 - Version 13.13
 

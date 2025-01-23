@@ -7783,6 +7783,7 @@ my %tagExists = (
 	'alphafiltering' => 1,
 	'alphaidentifiers' => 1,
 	'alphainterlace' => 1,
+	'alphaisused' => 1,
 	'alphamask' => 1,
 	'alphaoffset' => 1,
 	'alphapreprocessing' => 1,

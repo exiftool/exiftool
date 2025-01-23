@@ -378,6 +378,9 @@ sub WriteNextbase($$$)
 # Write Meta Keys to add/delete entries as necessary ('mdta' handler) (ref PH)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: updated keys box data
+# Note: Residual entries may be left in the 'keys' directory when deleting tags
+#       with language codes because the language code(s) are not known until the
+#       corresponding ItemList entry(s) are processed
 sub WriteKeys($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;

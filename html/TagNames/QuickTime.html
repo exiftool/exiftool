@@ -39,12 +39,6 @@ video track.  See the
 <a href="QuickTime.html#VideoKeys">VideoKeys</a> tags for
 more information.</p>
 
-<p>Beware that the values of the Keys tags are actually stored inside an
-ItemList atom in the file, so deleting the ItemList group as a block (ie.
-<code>-ItemList:all=</code>) also deletes Keys tags.  Instead, to preserve Keys tags
-the ItemList tags may be deleted individually with
-<code>-QuickTime:ItemList:all=</code>.</p>
-
 <p>Alternate language tags may be accessed for
 <a href="QuickTime.html#ItemList">ItemList</a> and
 <a href="QuickTime.html#Keys">Keys</a> tags by adding
@@ -55,8 +49,8 @@ country code to the tag name (eg. &quot;ItemList:Artist-deu&quot; or
 language code, but without a country code.  If no language code is specified
 when writing, the default language is written and alternate languages for
 the tag are deleted.  Use the &quot;und&quot; language code to write the default
-language without deleting alternate languages.  Note that &quot;eng&quot; is treated
-as a default language when reading, but not when writing.</p>
+language without deleting alternate languages.  Note that when reading,
+&quot;eng&quot; is also treated as the default language if there is no country code.</p>
 
 <p>According to the specification, integer-format QuickTime date/time tags
 should be stored as UTC.  Unfortunately, digital cameras often store local
@@ -9826,7 +9820,7 @@ the value is set to zero if the tag is deleted individually)</span></span></td><
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 20, 2025</i>
+<br><i>Last revised Jan 23, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

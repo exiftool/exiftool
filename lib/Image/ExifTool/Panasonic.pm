@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.23';
+$VERSION = '2.24';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1464,6 +1464,12 @@ my %shootingMode = (
             5 => 'Animal Eye/Body',
             6 => 'Car',
             7 => 'Motorcycle',
+            8 => 'Car (main part priority)',
+            9 => 'Motorcycle (helmet priority)',
+            10 => 'Train',
+            11 => 'Train (main part priority)',
+            12 => 'Airplane',
+            13 => 'Airplane (nose priority)',
         }
     },
     0xee => { #PH (DC-GH6)

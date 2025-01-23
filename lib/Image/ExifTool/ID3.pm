@@ -18,7 +18,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.62';
+$VERSION = '1.63';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -1278,9 +1278,9 @@ sub ProcessID3v2($$$)
             my $enc = unpack('C', $val);
             my ($tag, $url);
             if ($enc == 1 or $enc == 2) {
-                ($tag, $url) = ($tag =~ /^(.(?:..)*?)\0\0(.*)/s);
+                ($tag, $url) = ($val =~ /^(.(?:..)*?)\0\0(.*)/s);
             } else {
-                ($tag, $url) = ($tag =~ /^(..*?)\0(.*)/s);
+                ($tag, $url) = ($val =~ /^(..*?)\0(.*)/s);
             }
             unless (defined $tag and defined $url) {
                 $et->Warn("Invalid $id frame value");
@@ -1293,7 +1293,7 @@ sub ProcessID3v2($$$)
                 $tagInfo = $$tagTablePtr{$id} || AddTagToTable($tagTablePtr, $id, MakeTagName($tag));
             }
             $url =~ s/\0.*//s;
-            $val = $url;
+            $val = $et->Decode($url, 'Latin');
         } elsif ($id =~ /^W/) {
             $val =~ s/\0.*//s;  # truncate at null
         } elsif ($id =~ /^(COM|COMM|ULT|USLT)$/) {

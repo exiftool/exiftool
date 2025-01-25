@@ -206,6 +206,7 @@ my %int32uTime = (
             0x0184 => 'Alpha AXP',
             0x01a2 => 'Hitachi SH3',
             0x01a3 => 'Hitachi SH3 DSP',
+            0x01a4 => 'Hitachi SH3E',
             0x01a6 => 'Hitachi SH4',
             0x01a8 => 'Hitachi SH5',
             0x01c0 => 'ARM little endian',

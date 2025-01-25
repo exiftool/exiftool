@@ -3154,16 +3154,18 @@ sub ProcessInsta360($;$)
     my $verbose = $et->Options('Verbose');
     my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
     my $fileEnd = $raf->Tell();
+    my $trailEnd = $fileEnd - $offset;
     my $trailerLen = unpack('x38V', $buff);
-    $trailerLen > $fileEnd and $et->Warn('Bad Insta360 trailer size'), return 0;
+    $trailerLen > $trailEnd and $et->Warn('Bad Insta360 trailer size'), return 0;
     if ($dirInfo) {
         $$dirInfo{DirLen} = $trailerLen;
-        $$dirInfo{DataPos} = $fileEnd - $trailerLen;
+        $$dirInfo{DataPos} = $trailEnd - $trailerLen;
         if ($$dirInfo{OutFile}) {
             if ($$et{DEL_GROUP}{Insta360}) {
                 ++$$et{CHANGED};
+                return 1;
             # just copy the trailer when writing
-            } elsif ($trailerLen > $fileEnd or not $raf->Seek($$dirInfo{DataPos}, 0) or
+            } elsif ($trailerLen > $trailEnd or not $raf->Seek($$dirInfo{DataPos}, 0) or
                      $raf->Read(${$$dirInfo{OutFile}}, $trailerLen) != $trailerLen)
             {
                 return 0;
@@ -3181,7 +3183,7 @@ sub ProcessInsta360($;$)
 
     my $unknown = $et->Options('Unknown');
     # position relative to end of trailer (avoids using large offsets for files > 2 GB)
-    my $epos = -78-$offset;
+    my $epos = -78;
     my ($i, $p);
     $$et{SET_GROUP0} = 'Trailer';
     $$et{SET_GROUP1} = 'Insta360';
@@ -3190,7 +3192,7 @@ sub ProcessInsta360($;$)
     for (;;) {
         my ($id, $len) = unpack('vV', $buff);
         ($epos -= $len) + $trailerLen < 0 and last;
-        $raf->Seek($epos, 2) or last;
+        $raf->Seek($epos-$offset, 2) or last;
         if ($verbose) {
             $et->VPrint(0, sprintf("Insta360 Record 0x%x (offset 0x%x, %d bytes):\n", $id, $fileEnd + $epos, $len));
         }
@@ -3218,7 +3220,7 @@ sub ProcessInsta360($;$)
                             $dlen = 20;
                         }
                     }
-                    $raf->Seek($epos, 2) or last;
+                    $raf->Seek($epos-$offset, 2) or last;
                 }
             } elsif ($id == 0x200) {
                 $dlen = $len;
@@ -3347,8 +3349,8 @@ sub ProcessInsta360($;$)
         } else {
             ($epos -= 6) + $trailerLen < 0 and last;    # step back to previous record
         }
-        $raf->Seek($epos, 2) or last;       # seek to start of next footer
-        $raf->Read($buff, 6) == 6 or last;  # read footer
+        $raf->Seek($epos-$offset, 2) or last;   # seek to start of next footer
+        $raf->Read($buff, 6) == 6 or last;      # read footer
     }
     delete $$et{DOC_NUM};
     SetByteOrder('MM');
@@ -3607,8 +3609,6 @@ sub ScanMediaData($)
         $et->VPrint(0, "--------------------------\n");
         $$et{INDENT} = substr $$et{INDENT}, 0, -2;
     }
-    # process Insta360 trailer if it exists
-    ProcessInsta360($et);
 }
 
 1;  # end

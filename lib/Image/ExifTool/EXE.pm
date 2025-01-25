@@ -22,7 +22,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.21';
+$VERSION = '1.22';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -194,6 +194,8 @@ my %int32uTime = (
         Name => 'MachineType',
         PrintHex => 1,
         PrintConv => {
+            0x0 => 'Unknown',
+            0x01 => 'Target host',
             0x014c => 'Intel 386 or later, and compatibles',
             0x014d => 'Intel i860', #5
             0x0162 => 'MIPS R3000',
@@ -204,10 +206,12 @@ my %int32uTime = (
             0x0184 => 'Alpha AXP',
             0x01a2 => 'Hitachi SH3',
             0x01a3 => 'Hitachi SH3 DSP',
+            0x01a4 => 'Hitachi SH3E',
             0x01a6 => 'Hitachi SH4',
             0x01a8 => 'Hitachi SH5',
             0x01c0 => 'ARM little endian',
             0x01c2 => 'Thumb',
+            0x01c4 => 'Thumb 2 little endian',
             0x01d3 => 'Matsushita AM33',
             0x01f0 => 'PowerPC little endian',
             0x01f1 => 'PowerPC with floating point support',
@@ -217,16 +221,26 @@ my %int32uTime = (
             0x0284 => 'Alpha AXP 64-bit',
             0x0366 => 'MIPS with FPU',
             0x0466 => 'MIPS16 with FPU',
+            0x0520 => 'Infineon Tricore',
             0x0ebc => 'EFI Byte Code',
+            0x3a64 => 'Compiled Hybrid PE',
+            0x5032 => 'RISC-V 32-bit',
+            0x5064 => 'RISC-V 64-bit',
+            0x5128 => 'RISC-V 128-bit',
+            0x6232 => 'LoongArch 32-bit',
+            0x6264 => 'LoongArch 64-bit',
             0x8664 => 'AMD AMD64',
             0x9041 => 'Mitsubishi M32R little endian',
+            0xaa64 => 'ARM64 little endian',
             0xc0ee => 'clr pure MSIL',
+            0x0cef => 'CEF',
+            0xec20 => 'Dotnet 0xEC20'
         },
     },
     2 => { Name => 'TimeStamp', %int32uTime },
     9 => {
         Name => 'ImageFileCharacteristics',
-        # ref https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_image_file_header
+        # ref https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-image_file_header
         PrintConv => { BITMASK => {
             0 => 'No relocs',
             1 => 'Executable',

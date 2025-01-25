@@ -905,7 +905,10 @@ numerical, and generated automatically otherwise.
   Deletable     : [Writable SubDirectory's only] Overrides internal test for
                   metadata types with permanent directories (currently QuickTime
                   and Jpeg2000), allowing the tag containing these directories
-                  to be deleted
+                  to be deleted.  Note that either the tag's SubDirectory
+                  DirName (which defaults to the TagName if not specified) or
+                  the family 0 group name of the SubDirectory TagTable must
+                  match a deletable group name.
 
   OffsetPair    : Used in EXIF table to specify the tagID for the corresponding
                   offset or length tag.

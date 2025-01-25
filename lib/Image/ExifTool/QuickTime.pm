@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.10';
+$VERSION = '3.11';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -3522,7 +3522,11 @@ my %userDefined = (
 #
     '----' => {
         Name => 'iTunesInfo',
-        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::iTunesInfo' },
+        Deletable => 1, # (deletable via 'iTunes' group)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::iTunesInfo',
+            DirName => 'iTunes', # (necessary for group 'iTunes' delete)
+        },
     },
     aART => { Name => 'AlbumArtist', Groups => { 2 => 'Author' } },
     covr => { Name => 'CoverArt',    Groups => { 2 => 'Preview' }, Binary => 1 },
@@ -9664,6 +9668,43 @@ sub ProcessMetaKeys($$$)
 }
 
 #------------------------------------------------------------------------------
+# Identify trailers at specified offset from end of file
+# Inputs: 0) RAF reference, 1) Offset from end of file
+# Returns: Array ref to first trailer in linked list: 0) name of trailer,
+#          1) absolute offset to start of this trailer, 2) trailer length,
+#          3) ref to next trailer. Or undef if no trailer found, or error string on error
+# - file position is returned to its original location
+sub IdentifyTrailers($)
+{
+    my $raf = shift;
+    my ($trailer, $nextTrail, $buff, $type, $len);
+    my $pos = $raf->Tell();
+    my $offset = 0; # positive offset back from end of file
+    while ($raf->Seek(-40-$offset, 2) and $raf->Read($buff, 40) == 40) {
+        if (substr($buff, 8) eq '8db42d694ccc418790edff439fe026bf') {
+            ($type, $len) = ('Insta360', unpack('V',$buff));
+        } elsif ($buff =~ /\&\&\&\&(.{4})$/) {
+            ($type, $len) = ('LigoGPS', Get32u(\$buff, 36));
+        } elsif ($buff =~ /~\0\x04\0zmie~\0\0\x06.{4}([\x10\x18])(\x04)$/s or
+                 $buff =~ /~\0\x04\0zmie~\0\0\x0a.{8}([\x10\x18])(\x08)$/s)
+        {
+            my $oldOrder = GetByteOrder();
+            SetByteOrder($1 eq "\x10" ? 'MM' : 'II');
+            $type = 'MIE';
+            $len = ($2 eq "\x04") ? Get32u(\$buff, 34) : Get64u(\$buff, 30);
+            SetByteOrder($oldOrder);
+        } else {
+            last;
+        }
+        $trailer = [ $type , $raf->Tell() - $len, $len, $nextTrail ];
+        $nextTrail = $trailer;
+        $offset += $len;
+    }
+    $raf->Seek($pos,0) or return 'Seek error';
+    return $trailer;
+}
+
+#------------------------------------------------------------------------------
 # Process a QuickTime atom
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) optional tag table ref
 # Returns: 1 on success
@@ -9710,17 +9751,10 @@ sub ProcessMOV($$;$)
     }
     ($size, $tag) = unpack('Na4', $buff);
     my $fast = $$et{OPTIONS}{FastScan} || 0;
-    # check for Insta360 or LIGOGPSINFO trailer
+    # check for Insta360, LIGOGPSINFO or MIE trailer
     if ($topLevel and not $fast) {
-        my $pos = $raf->Tell();
-        if ($raf->Seek(-40, 2) and $raf->Read($buff, 40) == 40) {
-            if (substr($buff, 8) eq '8db42d694ccc418790edff439fe026bf') {
-                $trailer = [ 'Insta360', $raf->Tell() - unpack('V',$buff) ];
-            } elsif ($buff =~ /\&\&\&\&(.{4})$/) {
-                $trailer = [ 'LigoGPS', $raf->Tell() - Get32u(\$buff, 36) ];
-            }
-        }
-        $raf->Seek($pos,0) or return 0;
+        $trailer = IdentifyTrailers($raf);
+        $trailer and not ref $trailer and $et->Warn($trailer), return 0;
     }
     if ($dataPt) {
         $verbose and $et->VerboseDir($$dirInfo{DirName});
@@ -10318,7 +10352,7 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
         last if $dirEnd and $dataPos >= $dirEnd; # (note: ignores last value if 0 bytes)
         $lastPos = $raf->Tell() + $dirBase;
         if ($trailer and $lastPos >= $$trailer[1]) {
-            $et->Warn(sprintf('%s trailer at offset 0x%x', @$trailer), 1);
+            $et->Warn(sprintf('%s trailer at offset 0x%x (%d bytes)', @$trailer[0..2]), 1);
             last;
         }
         $raf->Read($buff, 8) == 8 or last;
@@ -10369,11 +10403,12 @@ QTLang: foreach $tag (@{$$et{QTLang}}) {
     # process item information now that we are done processing its 'meta' container
     HandleItemInfo($et) if $topLevel or $dirID eq 'meta';
 
-    # process LigoGPS trailer now if it exists and we haven't already processed it
-    if ($trailer and $$trailer[0] eq 'LigoGPS' and $lastPos <= $$trailer[1] and
-        $raf->Seek($$trailer[1]) and $raf->Read($buff, 8) == 8 and $buff =~ /skip$/)
-    {
-        if ($ee) {
+    # process linked list of trailers
+    for (; $trailer; $trailer=$$trailer[3]) {
+        next if $lastPos > $$trailer[1];    # skip if we have already processed this as an atom
+        last unless $raf->Seek($$trailer[1], 0);
+        if ($$trailer[0] eq 'LigoGPS' and $raf->Read($buff, 8) == 8 and $buff =~ /skip$/) {
+            $ee or $et->Warn('Use the ExtractEmbedded option to decode timed GPS',3), next;
             my $len = Get32u(\$buff, 0) - 16;
             if ($len > 0 and $raf->Read($buff, $len) == $len and $buff =~ /^LIGOGPSINFO\0/) {
                 my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
@@ -10382,8 +10417,14 @@ QTLang: foreach $tag (@{$$et{QTLang}}) {
             } else {
                 $et->Warn('Unrecognized data in LigoGPS trailer');
             }
-        } else {
-            $et->Warn('Use the ExtractEmbedded option to decode timed GPS',3);
+        } elsif ($$trailer[0] eq 'Insta360' and $ee) {
+            # process Insta360 trailer if it exists
+            $raf->Seek(0, 2) or $et->Warn('Seek error'), last;
+            my $offset = $raf->Tell() - $$trailer[1] - $$trailer[2];
+            ProcessInsta360($et, { RAF => $raf, DirName => $$trailer[0], Offset => $offset });
+        } elsif ($$trailer[0] eq 'MIE') {
+            require Image::ExifTool::MIE;
+            Image::ExifTool::MIE::ProcessMIE($et, { RAF => $raf, DirName => 'MIE', Trailer => 1 });
         }
     }
     # brute force scan for metadata embedded in media data

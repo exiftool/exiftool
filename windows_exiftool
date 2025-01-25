@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.15';
+my $version = '13.16';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -2401,6 +2401,7 @@ sub GetImageInfo($$)
                 ($g2, $same) = ($g, 0);
                 # build list of all tags in the new group of the diff file
                 @groupTags2 = ();
+                push @groupTags2, $tag2 if defined $tag2;
                 foreach $t2 (@found2) {
                     $done2{$t2} or $g ne $et2->GetGroup($t2, $showGroup) or push @groupTags2, $t2;
                 }

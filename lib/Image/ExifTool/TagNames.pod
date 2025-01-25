@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28259 tags, with 17525 unique tag names.
+They contain a total of 28393 tags, with 17525 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -17237,6 +17237,8 @@ These tags are extracted from encrypted data in images from the Z9.
            MenuSettingsOffsetZ9v4               Nikon MenuSettingsZ9v3
                                                 -
                                                 Nikon MenuSettingsZ9v4
+                                                -
+                                                Nikon MenuSettingsZ9v5
 
 =head3 Nikon MenuSettingsZ9 Tags
 
@@ -17398,7 +17400,7 @@ These tags are used by the Z9 firmware 3.00.
 
 =head3 Nikon MenuSettingsZ9v4 Tags
 
-These tags are used by the Z9 firmware 4.0.0 and 4.1.0
+These tags are used by the Z9 firmware 4.0.0 and 4.1.0.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -17537,6 +17539,148 @@ These tags are used by the Z9 firmware 4.0.0 and 4.1.0
    2068    PlaybackButtonPlaybackMode           int8u
    2070    BracketButtonPlaybackMode            int8u
    2072    FlashModeButtonPlaybackMode          int8u
+
+=head3 Nikon MenuSettingsZ9v5 Tags
+
+These tags are used by the Z9 firmware 5.1.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     72    HighFrameRate                        int8u
+    158    MultipleExposureMode                 int8u
+    160    MultiExposureShots                   int8u
+    208    Intervals                            int32u
+    212    ShotsPerInterval                     int32u
+    252    FocusShiftNumberShots                int8u
+    256    FocusShiftStepWidth                  int8u
+    260    FocusShiftInterval                   int8u~
+    264    FocusShiftExposureLock?              int8u
+    294    PhotoShootingMenuBank                int8u
+    296    ExtendedMenuBanks                    int8u
+    332    PhotoShootingMenuBankImageArea       int8u
+    346    AutoISO                              int8u
+    348    ISOAutoHiLimit?                      int16u
+    350    ISOAutoFlashLimit?                   int16u
+    358    ISOAutoShutterTime                   no
+    440    MovieVignetteControl?                int8u
+    442    DiffractionCompensation              int8u
+    444    FlickerReductionShooting             int8u
+    448    FlashControlMode                     int8u
+    450    FlashMasterCompensation?             int8s
+    454    FlashGNDistance?                     no
+    458    FlashOutput?                         int8u
+    552    AFAreaMode                           int8u
+    554    VRMode                               int8u
+    558    BracketSet                           int8u
+    560    BracketProgram                       int8u
+    562    BracketIncrement                     int8u
+    574    HDR                                  int8u
+    580    SecondarySlotFunction                int8u
+    586    HDRLevel                             int8u
+    590    Slot2JpgSize?                        int8u
+    596    DXCropAlert                          int8u
+    598    SubjectDetection                     int8u
+    600    DynamicAFAreaSize                    int8u
+    640    HighFrequencyFlickerReduction?       int8u
+    650    MovieImageArea?                      int8u & 0x01
+    660    MovieType?                           int8u
+    662    MovieISOAutoHiLimit?                 int16u
+    664    MovieISOAutoControlManualMode?       int8u
+    666    MovieISOAutoManualMode?              int16u
+    740    MovieActiveD-Lighting?               int8u
+    742    MovieHighISONoiseReduction?          int8u
+    748    MovieFlickerReduction                int8u
+    750    MovieMeteringMode?                   int8u
+    752    MovieFocusMode?                      int8u
+    754    MovieAFAreaMode                      int8u
+    756    MovieVRMode?                         int8u
+    760    MovieElectronicVR?                   int8u
+    762    MovieSoundRecording?                 int8u
+    764    MicrophoneSensitivity?               int8u
+    766    MicrophoneAttenuator?                int8u
+    768    MicrophoneFrequencyResponse?         int8u
+    770    WindNoiseReduction?                  int8u
+    792    MovieToneMap?                        int8u
+    798    MovieFrameSize?                      int8u
+    800    MovieFrameRate?                      int8u
+    806    MicrophoneJackPower?                 int8u
+    807    MovieDXCropAlert?                    int8u
+    808    MovieSubjectDetection?               int8u
+    816    MovieHighResZoom?                    int8u
+    851    CustomSettingsZ9v4                   NikonCustom SettingsZ9v4
+   1502    Language?                            int8u
+   1504    TimeZone                             int8u
+   1510    MonitorBrightness?                   int8u
+   1532    AFFineTune?                          int8u
+   1536    NonCPULens1FocalLength?              int16s~
+   1540    NonCPULens2FocalLength?              int16s~
+   1542    NonCPULens3FocalLength?              int16s~
+   1548    NonCPULens4FocalLength?              int16s~
+   1552    NonCPULens5FocalLength?              int16s~
+   1556    NonCPULens6FocalLength?              int16s~
+   1560    NonCPULens7FocalLength?              int16s~
+   1564    NonCPULens8FocalLength?              int16s~
+   1568    NonCPULens9FocalLength?              int16s~
+   1572    NonCPULens10FocalLength?             int16s~
+   1576    NonCPULens11FocalLength?             int16s~
+   1580    NonCPULens12FocalLength?             int16s~
+   1584    NonCPULens13FocalLength?             int16s~
+   1588    NonCPULens14FocalLength?             int16s~
+   1592    NonCPULens15FocalLength?             int16s~
+   1596    NonCPULens16FocalLength?             int16s~
+   1600    NonCPULens17FocalLength?             int16s~
+   1604    NonCPULens18FocalLength?             int16s~
+   1608    NonCPULens19FocalLength?             int16s~
+   1612    NonCPULens20FocalLength?             int16s~
+   1616    NonCPULens1MaxAperture?              int16s~
+   1620    NonCPULens2MaxAperture?              int16s~
+   1624    NonCPULens3MaxAperture?              int16s~
+   1628    NonCPULens4MaxAperture?              int16s~
+   1632    NonCPULens5MaxAperture?              int16s~
+   1636    NonCPULens6MaxAperture?              int16s~
+   1640    NonCPULens7MaxAperture?              int16s~
+   1644    NonCPULens8MaxAperture?              int16s~
+   1648    NonCPULens9MaxAperture?              int16s~
+   1652    NonCPULens10MaxAperture?             int16s~
+   1656    NonCPULens11MaxAperture?             int16s~
+   1660    NonCPULens12MaxAperture?             int16s~
+   1664    NonCPULens13MaxAperture?             int16s~
+   1668    NonCPULens14MaxAperture?             int16s~
+   1672    NonCPULens15MaxAperture?             int16s~
+   1676    NonCPULens16MaxAperture?             int16s~
+   1680    NonCPULens17MaxAperture?             int16s~
+   1684    NonCPULens18MaxAperture?             int16s~
+   1688    NonCPULens19MaxAperture?             int16s~
+   1692    NonCPULens20MaxAperture?             int16s~
+   1708    HDMIOutputResolution                 int8u
+   1721    SetClockFromLocationData?            int8u
+   1728    AirplaneMode?                        int8u
+   1729    EmptySlotRelease?                    int8u
+   1764    EnergySavingMode?                    int8u
+   1788    RecordLocationData?                  int8u
+   1792    USBPowerDelivery?                    int8u
+   1801    SensorShield?                        int8u
+   1866    AutoCapturePreset                    int8u
+   1868    FocusShiftAutoReset?                 int8u
+   1926    PreReleaseBurstLength                int8u
+   1928    PostReleaseBurstLength               int8u
+   1942    VerticalISOButton                    int8u
+   1944    ExposureCompensationButton           int8u
+   1946    ISOButton                            int8u
+   2006    ViewModeShowEffectsOfSettings?       int8u
+   2008    DispButton                           int8u
+   2052    ExposureDelay                        fixed32u~
+   2056    CommandDialFrameAdvanceZoom?         int8u
+   2058    SubCommandDialFrameAdvanceZoom?      int8u
+   2060    PlaybackButton                       int8u
+   2062    WBButton                             int8u
+   2064    BracketButton                        int8u
+   2066    FlashModeButton                      int8u
+   2068    LensFunc1ButtonPlaybackMode          int8u
+   2070    LensFunc2ButtonPlaybackMode          int8u
+   2072    PlaybackButtonPlaybackMode           int8u
+   2074    BracketButtonPlaybackMode            int8u
+   2076    FlashModeButtonPlaybackMode          int8u
 
 =head3 Nikon ShotInfo Tags
 

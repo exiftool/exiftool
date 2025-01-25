@@ -140,10 +140,10 @@ my @delGroups = qw(
     Adobe AFCP APP0 APP1 APP2 APP3 APP4 APP5 APP6 APP7 APP8 APP9 APP10 APP11 APP12
     APP13 APP14 APP15 AudioKeys CanonVRD CIFF Ducky EXIF ExifIFD File FlashPix
     FotoStation GlobParamIFD GPS ICC_Profile IFD0 IFD1 Insta360 InteropIFD IPTC
-    ItemList JFIF Jpeg2000 JUMBF Keys MakerNotes Meta MetaIFD Microsoft MIE MPF
-    Nextbase NikonApp NikonCapture PDF PDF-update PhotoMechanic Photoshop PNG
-    PNG-pHYs PrintIM QuickTime RMETA RSRC SEAL SubIFD Trailer UserData VideoKeys
-    Vivo XML XML-* XMP XMP-*
+    ItemList iTunes JFIF Jpeg2000 JUMBF Keys MakerNotes Meta MetaIFD Microsoft
+    MIE MPF Nextbase NikonApp NikonCapture PDF PDF-update PhotoMechanic
+    Photoshop PNG PNG-pHYs PrintIM QuickTime RMETA RSRC SEAL SubIFD Trailer
+    UserData VideoKeys Vivo XML XML-* XMP XMP-*
 );
 # family 2 group names that we can delete
 my @delGroup2 = qw(
@@ -2856,7 +2856,7 @@ sub GetAllGroups($;$)
         }
     }
     delete $allGroups{'*'};     # (not a real group)
-    return sort keys %allGroups;
+    return sort { lc $a cmp lc $b } keys %allGroups;
 }
 
 #------------------------------------------------------------------------------
@@ -2874,7 +2874,7 @@ sub GetNewGroups($)
 # Returns: List of group names (sorted alphabetically)
 sub GetDeleteGroups()
 {
-    return sort @delGroups, @delGroup2;
+    return sort { lc $a cmp lc $b } @delGroups, @delGroup2;
 }
 
 #------------------------------------------------------------------------------
@@ -3340,7 +3340,8 @@ sub InsertTagValues($$;$$$$)
                 } elsif ($tag eq 'self') {
                     $val = $et; # ("$self{var}" or "$file1:self{var}" in string)
                 } else {
-                    # get the tag value
+                    # get the tag value (note: this direct access allows excluded tags
+                    # to be accessed if the case is correct and a group name is not used)
                     $val = $et->GetValue($tag, $type);
                     unless (defined $val) {
                         # check for tag name with different case

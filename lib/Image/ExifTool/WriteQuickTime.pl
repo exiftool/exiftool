@@ -904,15 +904,10 @@ sub WriteQuickTime($$$)
     my $createKeys = 0;
     my ($rtnVal, $rtnErr) = $dataPt ? (undef, undef) : (1, 0);
 
-    # check for Insta360 trailer at top level
+    # check for trailer at end of file
     if ($raf) {
-        my $pos = $raf->Tell();
-        if ($raf->Seek(-40, 2) and $raf->Read($buf2, 40) == 40 and
-            substr($buf2, 8) eq '8db42d694ccc418790edff439fe026bf')
-        {
-            $trailer = [ 'Insta360', $raf->Tell() - unpack('V',$buf2) ];
-        }
-        $raf->Seek($pos, 0) or return 0;
+        $trailer = IdentifyTrailers($raf);
+        $trailer and not ref $trailer and $et->Error($trailer), return 1;
     }
     if ($dataPt) {
         $raf = File::RandomAccess->new($dataPt);
@@ -1601,16 +1596,26 @@ sub WriteQuickTime($$$)
         if (($lastTag eq 'mdat' or $lastTag eq 'moov') and not $dataPt and (not $$tagTablePtr{$tag} or
             ref $$tagTablePtr{$tag} eq 'HASH' and $$tagTablePtr{$tag}{Unknown}))
         {
-            # identify other known trailers
+            # identify other known trailers from their first bytes
             $buf2 = '';
             $raf->Seek($lastPos,0) and $raf->Read($buf2,8);
+            my ($type, $len);
             if ($buf2 eq 'CCCCCCCC') {
-                $trailer = [ 'Kenwood', $lastPos ];
+                $type = 'Kenwood';
             } elsif ($buf2 =~ /^(gpsa|gps0|gsen|gsea)...\0/s) {
-                $trailer = [ 'RIFF', $lastPos ];
+                $type = 'RIFF';
             } else {
-                $trailer = [ 'Unknown', $lastPos ];
+                $type = 'Unknown';
             }
+            # determine length of this trailer
+            if ($trailer) {
+                $len = $$trailer[1] - $lastPos; # runs to start of next trailer
+            } else {
+                $raf->Seek(0, 2) or $et->Error('Seek error'), return $dataPt ? undef : 1;
+                $len = $raf->Tell() - $lastPos; # runs to end of file
+            }
+            # add to start of linked list of trailers
+            $trailer = [ $type, $lastPos, $len, $trailer ];
         } else {
             $et->Error($errStr);
             return $dataPt ? undef : 1;
@@ -2072,21 +2077,35 @@ sub WriteQuickTime($$$)
     # write the stuff that must come last
     Write($outfile, $writeLast) or $rtnVal = 0 if $writeLast;
 
-    # copy trailer if necessary
-    if ($rtnVal and $trailer) {
-        # are we deleting the trailer?
+    # copy trailers if necessary
+    while ($rtnVal and $trailer) {
+        # are we deleting the trailers?
         my $nvTrail = $et->GetNewValueHash($Image::ExifTool::Extra{Trailer});
-        if ($$et{DEL_GROUP}{Trailer} or ($nvTrail and not ($$nvTrail{Value} and $$nvTrail{Value}[0]))) {
+        if ($$et{DEL_GROUP}{Trailer} or $$et{DEL_GROUP}{$$trailer[0]} or
+            ($nvTrail and not ($$nvTrail{Value} and $$nvTrail{Value}[0])))
+        {
             $et->Warn("Deleted $$trailer[0] trailer", 1);
-        } elsif ($raf->Seek($$trailer[1])) {
-            $et->Warn(sprintf('Copying %s trailer from offset 0x%x', @$trailer), 1);
-            while ($raf->Read($buf2, 65536)) {
-                Write($outfile, $buf2) or $rtnVal = 0, last;
-            }
-        } else {
-            $rtnVal = 0;
+            ++$$et{CHANGED};
+            $trailer = $$trailer[3];
+            next;
         }
-        $rtnVal or $et->Error("Error copying $$trailer[0] trailer");
+        $raf->Seek($$trailer[1], 0) or $rtnVal = 0, last;
+        if ($$trailer[0] eq 'MIE') {
+            require Image::ExifTool::MIE;
+            my %dirInfo = ( RAF => $raf, OutFile => $outfile );
+            my $result = Image::ExifTool::MIE::ProcessMIE($et, \%dirInfo);
+            $result > 0 or $et->Error('Error writing MIE trailer'), $rtnVal = 0, last;
+        } else {
+            $et->Warn(sprintf('Copying %s trailer from offset 0x%x (%d bytes)', @$trailer[0..2]), 1);
+            my $len = $$trailer[2];
+            while ($len) {
+                my $n = $len > 65536 ? 65536 : $len;
+                $raf->Read($buf2, $n) == $n and Write($outfile, $buf2) or $rtnVal = 0, last;
+                $len -= $n;
+            }
+            $rtnVal or $et->Error("Error copying $$trailer[0] trailer"), last;
+        }
+        $trailer = $$trailer[3];    # step to next trailer in linked list
     }
     return $rtnVal;
 }

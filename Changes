@@ -7,6 +7,22 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.10. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 25, 2025 - Version 13.16
+
+  - Added a couple of new Nikon Z lenses (thanks Warren Hatch)
+  - Added a new Canon RFLensType (thanks Norbert Wasser)
+  - Added support for a MIE trailer on QuickTime-format files
+  - Added a number of new EXE MachineType values (github #309)
+  - Made "iTunes" a deletable group
+  - Updated decoding of many Nikon tags for the Z9 firmware version 5.1 (thanks
+    Warren Hatch)
+  - Fixed issue where -diff option would miss showing 1 tag from a group that
+    exists in the difference file but not in the source file
+  - Fixed issue where tag exclusions for alternate files weren't honoured in a
+    -p formatting expression when using "$file#:all:all" in the expression and
+    the -file#, -x, and -p options all together
+  - Fixed FileTypeDescription for lossless extended WebP images
+
 Jan. 23, 2025 - Version 13.15
 
   - Added a few new Panasonic AFSubjectDetection values (thanks Andrew J)

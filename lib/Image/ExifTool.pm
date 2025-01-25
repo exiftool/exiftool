@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.15';
+$VERSION = '13.16';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -4166,7 +4166,7 @@ sub GetFileType(;$$)
                 $desc = $$fileType[1];
             }
         } else {
-            $desc = $fileDescription{$file};
+            $desc = $fileDescription{$file} || $file;
         }
         $desc .= ", $subType" if $subType;
         return $desc;
@@ -4494,7 +4494,7 @@ sub DoneExtract($)
         # set family 8 group name for all tags
         $$altExifTool{TAG_EXTRA}{$_}{G8} = $g8 foreach keys %{$$altExifTool{VALUE}};
         # prepare our sorted list of found tags
-        $$altExifTool{FoundTags} = [ reverse sort keys %{$$altExifTool{VALUE}} ];
+        $$altExifTool{FoundTags} = $altExifTool->SetFoundTags();
         $$altExifTool{DID_EXTRACT} = 1;
     }
     # if necessary, build composite tags that rely on tags from alternate files

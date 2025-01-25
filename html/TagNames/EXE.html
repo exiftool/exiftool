@@ -22,7 +22,9 @@ DLL libraries.</p>
 <td>MachineType</td>
 <td class=c>no</td>
 <td><table class=cols><tr>
-  <td>0x14c = Intel 386 or later, and compatibles
+  <td>0x0 = Unknown
+  <br>0x1 = Target host
+  <br>0x14c = Intel 386 or later, and compatibles
   <br>0x14d = Intel i860
   <br>0x162 = MIPS R3000
   <br>0x166 = MIPS little endian (R4000)
@@ -32,10 +34,12 @@ DLL libraries.</p>
   <br>0x184 = Alpha AXP
   <br>0x1a2 = Hitachi SH3
   <br>0x1a3 = Hitachi SH3 DSP
+  <br>0x1a4 = Hitachi SH3E
   <br>0x1a6 = Hitachi SH4
   <br>0x1a8 = Hitachi SH5
   <br>0x1c0 = ARM little endian
   <br>0x1c2 = Thumb
+  <br>0x1c4 = Thumb 2 little endian
   <br>0x1d3 = Matsushita AM33
   <br>0x1f0 = PowerPC little endian
   <br>0x1f1 = PowerPC with floating point support
@@ -45,10 +49,20 @@ DLL libraries.</p>
   <br>0x284 = Alpha AXP 64-bit
   <br>0x366 = MIPS with FPU
   <br>0x466 = MIPS16 with FPU
+  <br>0x520 = Infineon Tricore
+  <br>0xcef = CEF
   <br>0xebc = EFI Byte Code
+  <br>0x3a64 = Compiled Hybrid PE
+  <br>0x5032 = RISC-V 32-bit
+  <br>0x5064 = RISC-V 64-bit
+  <br>0x5128 = RISC-V 128-bit
+  <br>0x6232 = LoongArch 32-bit
+  <br>0x6264 = LoongArch 64-bit
   <br>0x8664 = AMD AMD64
   <br>0x9041 = Mitsubishi M32R little endian
-  <br>0xc0ee = clr pure MSIL</td></tr></table>
+  <br>0xaa64 = ARM64 little endian
+  <br>0xc0ee = clr pure MSIL
+  <br>0xec20 = Dotnet 0xEC20</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
@@ -874,7 +888,7 @@ libraries.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 6, 2025</i>
+<br><i>Last revised Jan 25, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

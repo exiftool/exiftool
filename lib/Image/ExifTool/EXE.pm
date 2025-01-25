@@ -239,7 +239,7 @@ my %int32uTime = (
     2 => { Name => 'TimeStamp', %int32uTime },
     9 => {
         Name => 'ImageFileCharacteristics',
-        # ref https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_image_file_header
+        # ref https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-image_file_header
         PrintConv => { BITMASK => {
             0 => 'No relocs',
             1 => 'Executable',

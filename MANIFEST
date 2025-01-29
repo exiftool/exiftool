@@ -178,9 +178,9 @@ html/TagNames/Stim.html
 html/TagNames/Text.html
 html/TagNames/Theora.html
 html/TagNames/Torrent.html
+html/TagNames/Trailer.html
 html/TagNames/Unknown.html
 html/TagNames/VCard.html
-html/TagNames/Vivo.html
 html/TagNames/Vorbis.html
 html/TagNames/WPG.html
 html/TagNames/WTV.html
@@ -429,10 +429,10 @@ lib/Image/ExifTool/TagNames.pod
 lib/Image/ExifTool/Text.pm
 lib/Image/ExifTool/Theora.pm
 lib/Image/ExifTool/Torrent.pm
+lib/Image/ExifTool/Trailer.pm
 lib/Image/ExifTool/Unknown.pm
 lib/Image/ExifTool/VCard.pm
 lib/Image/ExifTool/Validate.pm
-lib/Image/ExifTool/Vivo.pm
 lib/Image/ExifTool/Vorbis.pm
 lib/Image/ExifTool/WPG.pm
 lib/Image/ExifTool/WTV.pm

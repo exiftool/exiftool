@@ -17,6 +17,22 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.17'><b>Jan. 29, 2025 - Version 13.17</b></a>
+<ul>
+<li>Added support for reading more embedded images and videos written in the
+    JPEG trailer by some phones
+<li>Added support for reading JPEG trailer written by some OnePlus phones
+<li>Added a -validate warning for QuickTime 'wide' atoms with an invalid size
+<li>Added a new CanonLensType
+<li>Extract more embedded videos and depth/gain maps from JPEG images written 
+<li>Avoid decoding Sony 0x9050 data for the ILCE-1M2 because the encoding has
+    changed since the ILCE-1 and the new encoding is not yet known
+<li>Fixed issue that could cause runtime error when using -j with -b
+<li>Fixed some issues decoding AFPointsUsed for some newer Nikon models
+<li>Fixed problem corrupting QuickTime-format videos when writing if they
+    contain a 'wide' atom with an invalid size
+</ul>
+
 <a name='v13.16'><b>Jan. 25, 2025 - Version 13.16</b></a>
 <ul>
 <li>Added a couple of new Nikon Z lenses (thanks Warren Hatch)

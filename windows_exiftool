@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.16';
+my $version = '13.17';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exePath;
@@ -1522,7 +1522,7 @@ if (($tagOut or defined $diff) and ($csv or $json or %printFmt or $tabFormat or 
 }
 
 if ($csv and $csv eq 'CSV' and not $isWriting) {
-    undef $json;    # (not compatible)
+    $json = 0;    # (not compatible)
     if ($textOut) {
         Warn "Sorry, -w may not be combined with -csv\n";
         $rtnVal = 1;

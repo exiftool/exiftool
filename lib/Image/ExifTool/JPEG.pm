@@ -350,7 +350,13 @@ sub ProcessJPEG_HDR($$$);
       }, {
         Name => 'Vivo',
         Condition => '$$valPt =~ /^(streamdata|vivo\{")/',
-        SubDirectory => { TagTable => 'Image::ExifTool::Vivo::Main' },
+        SubDirectory => { TagTable => 'Image::ExifTool::Trailer::Vivo' },
+      }, {
+        Name => 'OnePlus',
+        SubDirectory => { TagTable => 'Image::ExifTool::Trailer::OnePlus' },
+      }, {
+        Name => 'Google',
+        SubDirectory => { TagTable => 'Image::ExifTool::Trailer::Google' },
       }, {
         Name => 'EmbeddedVideo',
         Notes => 'extracted only when ExtractEmbedded option is used',

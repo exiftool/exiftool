@@ -9838,7 +9838,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
             5 => '5 (Delayed)',
         },
     },
-    11 => {Name => 'AFPointSel',PrintConv => { 0 => 'Use All',1 => 'Use Half' }},    # CSa4
+    11 => { Name => 'AFPointSel',PrintConv => { 0 => 'Use All',1 => 'Use Half' }},    # CSa4
     13 => { # CSa5
         Name => 'StoreByOrientation',
         PrintConv => {
@@ -10149,7 +10149,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
             5 => '5 (Delayed)',
         },
     },
-    11 => {Name => 'AFPointSel',PrintConv => { 0 => 'Use All',1 => 'Use Half' }},    # CSa4
+    11 => { Name => 'AFPointSel',PrintConv => { 0 => 'Use All',1 => 'Use Half' }},    # CSa4
     13 => { # CSa5
         Name => 'StoreByOrientation',
         PrintConv => {
@@ -10547,7 +10547,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
             5 => '5 (Delayed)',
         },
     },
-    11 => {Name => 'AFPointSel',PrintConv => { 0 => 'Use All',1 => 'Use Half' }},    # CSa4
+    11 => { Name => 'AFPointSel',PrintConv => { 0 => 'Use All',1 => 'Use Half' }},    # CSa4
     13 => { # CSa5
         Name => 'StoreByOrientation',
         PrintConv => {
@@ -10957,7 +10957,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
             5 => '5 (Delayed)',
         },
     },
-    11 => {Name => 'AFPointSel',PrintConv => { 0 => 'Use All',1 => 'Use Half' }},    # CSa4
+    11 => { Name => 'AFPointSel',PrintConv => { 0 => 'Use All',1 => 'Use Half' }},    # CSa4
     13 => { # CSa5
         Name => 'StoreByOrientation',
         PrintConv => {

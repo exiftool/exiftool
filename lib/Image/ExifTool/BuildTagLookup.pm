@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.61';
+$VERSION = '3.62';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -74,26 +74,32 @@ my %tweakOrder = (
     DJI     => 'Casio',
     FLIR    => 'DJI',
     FujiFilm => 'FLIR',
+    GoPro   => 'GE',
     Kodak   => 'JVC',
     Leaf    => 'Kodak',
-    Minolta => 'Leaf',
+    Lytro   => 'Leaf',
+    Minolta => 'Lytro',
     Motorola => 'Minolta',
     Nikon   => 'Motorola',
-    NikonCustom => 'Nikon',
-    NikonCapture => 'NikonCustom',
-    Nintendo => 'NikonCapture',
+    NikonCapture => 'Nikon',
+    NikonCustom => 'NikonCapture',
+    NikonSettings => 'NikonCustom',
+    Nintendo => 'NikonSettings',
+    Panasonic => 'Olympus',
     Pentax  => 'Panasonic',
+    Ricoh   => 'Reconyx',
+    Samsung => 'Ricoh',
     SonyIDC => 'Sony',
-    Vivo    => 'SonyIDC',
-    Unknown => 'Vivo',
+    Unknown => 'SonyIDC',
     DNG     => 'Unknown',
     PrintIM => 'ICC_Profile',
     Vorbis  => 'Ogg',
     ID3     => 'PostScript',
     MinoltaRaw => 'KyoceraRaw',
     KyoceraRaw => 'CanonRaw',
+    MinoltaRaw => 'KyoceraRaw',
+    PanasonicRaw => 'MinoltaRaw',
     SigmaRaw => 'PanasonicRaw',
-    Lytro   => 'SigmaRaw',
     PhotoMechanic => 'FotoStation',
     Microsoft     => 'PhotoMechanic',
     GIMP    => 'Microsoft',

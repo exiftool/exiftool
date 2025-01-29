@@ -1061,6 +1061,10 @@ sub WriteQuickTime($$$)
             $et->Error("Can't yet write compressed movie metadata");
             return $rtnVal;
         } elsif ($tag eq 'wide') {
+            if ($size) {
+                $et->Warn("Incorrect size for 'wide' atom ($size bytes)");
+                $raf->Seek($size, 1) or $et->Error('Truncated wide atom');
+            }
             next;   # drop 'wide' tag
         }
 

@@ -98,9 +98,9 @@ the distribution files or access web pages too quickly will be blocked.</i></p>
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.16.tar.gz/download">
-Download        Version 13.16</a> (7.3 MB) -
-<a href="history.html">Jan. 25, 2025</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.17.tar.gz/download">
+Download        Version 13.17</a> (7.3 MB) -
+<a href="history.html">Jan. 29, 2025</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -152,11 +152,11 @@ only, and do not include the HTML documentation or other files of the full
 distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td rowspan=2><b><a name="alone">Windows</a></b></td><td><b>
-32-bit: <a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.16_32.zip/download">
-         exiftool-13.16_32.zip</a> (10.9 MB)</b></td></tr>
+32-bit: <a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.17_32.zip/download">
+         exiftool-13.17_32.zip</a> (10.9 MB)</b></td></tr>
 <tr><td><b>64-bit:
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.16_64.zip/download">
-         exiftool-13.16_64.zip</a> (10.7 MB)</b></td></tr>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-13.17_64.zip/download">
+         exiftool-13.17_64.zip</a> (10.7 MB)</b></td></tr>
          </table></blockquote>
 
 <p><b>The Windows executable</b> archives include Perl. Just download and un-zip
@@ -174,8 +174,8 @@ if you have any problems/comments with these versions.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
-<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-13.16.pkg/download">
-         ExifTool-13.16.pkg</a> (5.2 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/ExifTool-13.17.pkg/download">
+         ExifTool-13.17.pkg</a> (5.2 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -611,13 +611,15 @@ of meta information in JPEG images:</p>
 <tr><td><a href="TagNames/PhotoMechanic.html">PhotoMechanic trailer</a></td><td>R/W</td><td>Camera Bits Photo Mechanic</td></tr>
 <tr><td><a href="TagNames/MIE.html">MIE trailer</a></td><td>R/W</td><td><a href="MIE1.1-20070121.pdf">Meta Information Encapsulation</a></td></tr>
 <tr><td><a href="TagNames/Samsung.html#Trailer">Samsung trailer</a></td><td>R</td><td>Samsung Galaxy trailer</td></tr>
-<tr><td><a href="TagNames/Vivo.html">Vivo trailer</a></td><td>R</td><td>Trailer written by some Vivo phones</td></tr>
+<tr><td><a href="TagNames/Trailer.html#Vivo">Vivo trailer</a></td><td>R</td><td>Trailer written by some Vivo phones</td></tr>
+<tr><td><a href="TagNames/Trailer.html#OnePlus">OnePlus trailer</a></td><td>R</td><td>Trailer written by some OnePlus phones</td></tr>
+<tr><td><a href="TagNames/Trailer.html#Google">Google trailer</a></td><td>R</td><td>Trailer written by some Google phones</td></tr>
 <tr><td>Insta360 trailer</td><td>R</td><td>Insta360 trailer found in INSP files</td></tr>
 <tr><td>NikonApp trailer</td><td>R</td><td>Nikon trailer added by NX Studio to NEF/NRW files</td></tr>
 <tr><td>Sony HiddenData trailer</td><td>R</td><td>Hidden data written by some Sony models</td></tr>
 <tr><td>PreviewImage trailer</td><td>R/W/C</td><td>(preview image written after JPEG EOI)</td></tr>
 <tr><td>EmbeddedVideo trailer</td><td>R</td><td>(extracted only with ExtractEmbedded option)</td></tr>
-</table><span class=sm><span class=sup>1</span> All trailers except Samsung, Insta360, Vivo, PreviewImage and EmbeddedVideo also have
+</table><span class=sm><span class=sup>1</span> All trailers except Samsung, Insta360, Vivo, OnePlus, PreviewImage and EmbeddedVideo also have
 R/W support in TIFF images, and the NikonApp trailer is used in NEF/NRW files.</span></blockquote>
 
 <h2><a name="system">System Requirements</a></h2>
@@ -940,44 +942,44 @@ Canon, CanonCustom, CanonDR4, CanonRaw, CanonVRD, Casio, CBOR, Chapter#,
 CIFF, Composite, DICOM, DJI, DjVu, DjVu-Meta, DNG, Ducky, DV, EPPIM, EXE,
 EXIF, ExifIFD, ExifTool, File, FITS, FLAC, Flash, FlashPix, FLIR, Font,
 FotoStation, FujiFilm, FujiIFD, Garmin, GE, GeoTiff, GIF, GIMP,
-GlobParamIFD, GM, GoPro, GPS, GraphConv, GSpherical, H264, HP, HTC, HTML,
-HTML-dc, HTML-ncc, HTML-office, HTML-prod, HTML-vw96, HTTP-equiv, ICC-chrm,
-ICC-cicp, ICC-clrt, ICC-header, ICC-meas, ICC-meta, ICC-view, ICC_Profile,
-ICC_Profile#, ID3, ID3v1, ID3v1_Enh, ID3v2_2, ID3v2_3, ID3v2_4, IFD0, IFD1,
-InfiRay, Insta360, InteropIFD, IPTC, IPTC#, ISO, ITC, ItemList, iTunes,
-JFIF, JFXX, JPEG, JPEG-HDR, Jpeg2000, JPS, JSON, JUMBF, JVC, KDC_IFD, Keys,
-Kodak, KodakBordersIFD, KodakEffectsIFD, KodakIFD, KyoceraRaw, Leaf,
-LeafSubIFD, Leica, LNK, Lyrics3, Lytro, M-RAW, M2TS, MAC, MacOS, MakerNotes,
-MakerUnknown, Matroska, MediaJukebox, Meta, MetaIFD, Microsoft, MIE-Audio,
-MIE-Camera, MIE-Canon, MIE-Doc, MIE-Extender, MIE-Flash, MIE-Geo, MIE-GPS,
-MIE-Image, MIE-Lens, MIE-Main, MIE-MakerNotes, MIE-Meta, MIE-Orient,
-MIE-Preview, MIE-Thumbnail, MIE-Unknown, MIE-UTM, MIE-Video, MIFF, Minolta,
-MinoltaRaw, MISB, MNG, MOBI, MOI, Motorola, MPC, MPEG, MPF0, MPImage,
-MS-DOC, MXF, Nextbase, Nikon, NikonCapture, NikonCustom, NikonScan,
-NikonSettings, NineEdits, Nintendo, NITF, Ocad, Ogg, Olympus, OpenEXR, Opus,
-Palm, Panasonic, PanasonicRaw, Parrot, PDF, Pentax, PhaseOne, PhotoCD,
-PhotoMechanic, Photoshop, PICT, PictureInfo, PNG, PNG-cICP, PNG-pHYs,
-PostScript, PreviewIFD, PrintIM, ProfileIFD, PSP, Qualcomm, QuickTime,
-Radiance, RAF, RAF2, Rawzor, Real, Real-CONT, Real-MDPR, Real-PROP,
-Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx, Red, Ricoh, RIFF, RMETA,
-RSRC, RTF, Samsung, Sanyo, Scalado, SEAL, Sigma, SigmaRaw, Sony, SonyIDC,
-SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, Stim, SubIFD, SVG, System, Theora,
-Torrent, Track#, Track#ItemList, Track#Keys, Track#UserData, UserData,
-VCalendar, VCard, Version0, VideoItemList, VideoKeys, VideoUserData, Vivo,
-VNote, Vorbis, WTV, XML, XMP, XMP-aas, XMP-acdsee, XMP-acdsee-rs, XMP-album,
-XMP-apdi, XMP-apple-fi, XMP-ast, XMP-aux, XMP-cc, XMP-cell, XMP-crd,
-XMP-creatorAtom, XMP-crs, XMP-dc, XMP-Device, XMP-dex, XMP-DICOM,
-XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-et, XMP-exif, XMP-exifEX,
-XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-GAudio, XMP-GCamera,
-XMP-GContainer, XMP-GCreations, XMP-GDepth, XMP-getty, XMP-GFocus,
-XMP-GImage, XMP-GPano, XMP-GSpherical, XMP-hdr, XMP-HDRGainMap, XMP-hdrgm,
-XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-LImage, XMP-lr, XMP-mediapro,
-XMP-microsoft, XMP-MP, XMP-MP1, XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs,
-XMP-nine, XMP-panorama, XMP-pdf, XMP-pdfx, XMP-photomech, XMP-photoshop,
-XMP-PixelLive, XMP-plus, XMP-pmi, XMP-prism, XMP-prl, XMP-prm, XMP-pur,
-XMP-rdf, XMP-sdc, XMP-seal, XMP-swf, XMP-tiff, XMP-x, XMP-xmp, XMP-xmpBJ,
-XMP-xmpDM, XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights,
-XMP-xmpTPg, ZIP
+GlobParamIFD, GM, Google, GoPro, GPS, GraphConv, GSpherical, H264, HP, HTC,
+HTML, HTML-dc, HTML-ncc, HTML-office, HTML-prod, HTML-vw96, HTTP-equiv,
+ICC-chrm, ICC-cicp, ICC-clrt, ICC-header, ICC-meas, ICC-meta, ICC-view,
+ICC_Profile, ICC_Profile#, ID3, ID3v1, ID3v1_Enh, ID3v2_2, ID3v2_3, ID3v2_4,
+IFD0, IFD1, InfiRay, Insta360, InteropIFD, IPTC, IPTC#, ISO, ITC, ItemList,
+iTunes, JFIF, JFXX, JPEG, JPEG-HDR, Jpeg2000, JPS, JSON, JUMBF, JVC,
+KDC_IFD, Keys, Kodak, KodakBordersIFD, KodakEffectsIFD, KodakIFD,
+KyoceraRaw, Leaf, LeafSubIFD, Leica, LNK, Lyrics3, Lytro, M-RAW, M2TS, MAC,
+MacOS, MakerNotes, MakerUnknown, Matroska, MediaJukebox, Meta, MetaIFD,
+Microsoft, MIE-Audio, MIE-Camera, MIE-Canon, MIE-Doc, MIE-Extender,
+MIE-Flash, MIE-Geo, MIE-GPS, MIE-Image, MIE-Lens, MIE-Main, MIE-MakerNotes,
+MIE-Meta, MIE-Orient, MIE-Preview, MIE-Thumbnail, MIE-Unknown, MIE-UTM,
+MIE-Video, MIFF, Minolta, MinoltaRaw, MISB, MNG, MOBI, MOI, Motorola, MPC,
+MPEG, MPF0, MPImage, MS-DOC, MXF, Nextbase, Nikon, NikonCapture,
+NikonCustom, NikonScan, NikonSettings, NineEdits, Nintendo, NITF, Ocad, Ogg,
+Olympus, OnePlus, OpenEXR, Opus, Palm, Panasonic, PanasonicRaw, Parrot, PDF,
+Pentax, PhaseOne, PhotoCD, PhotoMechanic, Photoshop, PICT, PictureInfo, PNG,
+PNG-cICP, PNG-pHYs, PostScript, PreviewIFD, PrintIM, ProfileIFD, PSP,
+Qualcomm, QuickTime, Radiance, RAF, RAF2, Rawzor, Real, Real-CONT,
+Real-MDPR, Real-PROP, Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx, Red,
+Ricoh, RIFF, RMETA, RSRC, RTF, Samsung, Sanyo, Scalado, SEAL, Sigma,
+SigmaRaw, Sony, SonyIDC, SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, Stim,
+SubIFD, SVG, System, Theora, Torrent, Track#, Track#ItemList, Track#Keys,
+Track#UserData, UserData, VCalendar, VCard, Version0, VideoItemList,
+VideoKeys, VideoUserData, Vivo, VNote, Vorbis, WTV, XML, XMP, XMP-aas,
+XMP-acdsee, XMP-acdsee-rs, XMP-album, XMP-apdi, XMP-apple-fi, XMP-ast,
+XMP-aux, XMP-cc, XMP-cell, XMP-crd, XMP-creatorAtom, XMP-crs, XMP-dc,
+XMP-Device, XMP-dex, XMP-DICOM, XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-et,
+XMP-exif, XMP-exifEX, XMP-expressionmedia, XMP-extensis, XMP-fpv,
+XMP-GAudio, XMP-GCamera, XMP-GContainer, XMP-GCreations, XMP-GDepth,
+XMP-getty, XMP-GFocus, XMP-GImage, XMP-GPano, XMP-GSpherical, XMP-hdr,
+XMP-HDRGainMap, XMP-hdrgm, XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-LImage,
+XMP-lr, XMP-mediapro, XMP-microsoft, XMP-MP, XMP-MP1, XMP-mwg-coll,
+XMP-mwg-kw, XMP-mwg-rs, XMP-nine, XMP-panorama, XMP-pdf, XMP-pdfx,
+XMP-photomech, XMP-photoshop, XMP-PixelLive, XMP-plus, XMP-pmi, XMP-prism,
+XMP-prl, XMP-prm, XMP-pur, XMP-rdf, XMP-sdc, XMP-seal, XMP-swf, XMP-tiff,
+XMP-x, XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpDSA, XMP-xmpMM, XMP-xmpNote,
+XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP
 </td></tr>
 <tr><td><b>2&nbsp;(Category)</b></td>
 <td>Audio, Author, Camera, Device, Document, ExifTool, Image, Location, Other,

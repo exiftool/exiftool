@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.11';
+$VERSION = '3.12';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -9856,6 +9856,7 @@ sub ProcessMOV($$;$)
             $size -= 8;
         }
         if ($validate) {
+            $et->Warn("Invalid 'wide' atom size") if $tag eq 'wide' and $size;
             $$et{ValidatePath} or $$et{ValidatePath} = { };
             my $path = join('-', @{$$et{PATH}}, $tag);
             $path =~ s/-Track-/-$$et{SET_GROUP1}-/ if $$et{SET_GROUP1};

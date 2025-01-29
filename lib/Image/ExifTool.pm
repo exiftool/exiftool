@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.16';
+$VERSION = '13.17';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -6898,6 +6898,8 @@ sub IdentifyTrailer($;$)
             $type = 'NikonApp';
         } elsif ($buff =~ /\xff{4}\x1b\*9HWfu\x84\x93\xa2\xb1$/) {
             $type = 'Vivo';
+        } elsif ($buff =~ /jxrs...\0$/s) {
+            $type = 'OnePlus';
         }
         last;
     }
@@ -6929,18 +6931,24 @@ sub ProcessTrailers($$)
     my $success = 1;
     my $path = $$self{PATH};
 
+    # get position of end of file
+    $raf->Seek(0,2);
+    $$self{FileEnd} = $raf->Tell();
+
     for (;;) { # loop through all trailers
+        $raf->Seek($pos);
         my ($proc, $outBuff);
-        if ($dirName eq 'Insta360') {
-            require 'Image/ExifTool/QuickTimeStream.pl';
-            $proc = 'Image::ExifTool::QuickTime::ProcessInsta360';
-        } elsif ($dirName eq 'NikonApp') {
-            require Image::ExifTool::Nikon;
-            $proc = 'Image::ExifTool::Nikon::ProcessNikonApp';
-        } else {
-            require "Image/ExifTool/$dirName.pm";
-            $proc = "Image::ExifTool::${dirName}::Process$dirName";
-        }
+        # trailer-processing procs residing in modules of a different name
+        my $module = {
+            Insta360 => 'QuickTimeStream.pl',
+            NikonApp => 'Nikon.pm',
+            Vivo     => 'Trailer.pm',
+            OnePlus  => 'Trailer.pm',
+            Google   => 'Trailer.pm',
+        }->{$dirName} || "$dirName.pm";
+        require "Image/ExifTool/$module";
+        $module =~ s/(Stream)?\..*//;   # remove extension and change QuickTimeStream to QuickTime
+        $proc = "Image::ExifTool::${module}::Process$dirName";
         if ($outfile) {
             # write to local buffer so we can add trailer in proper order later
             $$outfile and $$dirInfo{OutFile} = \$outBuff, $outBuff = '';
@@ -6953,11 +6961,38 @@ sub ProcessTrailers($$)
         $$dirInfo{Trailer} = 1;         # set Trailer flag in case proc cares
         # add trailer and DirName to SubDirectory PATH
         push @$path, 'Trailer', $dirName;
-
-        # read or write this trailer
-        # (proc takes Offset as positive offset from end of trailer to end of file,
-        #  and returns DataPos and DirLen, and Fixup if applicable, and updates
-        #  OutFile when writing.  Returns < 0 if we must scan for this trailer)
+#
+# Call proc to read or write this trailer
+#
+# Proc inputs:
+#   0) ExifTool ref, with FileEnd set, and TrailerStart possibly set (start of all trailers)
+#   1) DirInfo with the following elements:
+#        DirName - name of this trailer
+#        RAF     - RAF reference
+#        Offset  - positive offset from end of this trailer to the end of file
+#        OutFile - (write mode) scalar reference for output buffer consisting of an empty string
+#        Trailer - flag set so proc knows we are processing a trailer (if it cares)
+#        Fixup   - optional fixup for pointers in trailer
+#        ScanForTrailer - set if we should now scan for the trailer start.  For JPEG
+#           images the ExifTool TrailerStart member will also be set, but for TIFF
+#           images TrailerStart will only be set when writing, so the proc should
+#           scan from the current file position when reading in a TIFF image.
+# Proc returns in read mode (OutFile not set):
+#   1 = success
+#   0 = error processing trailer (no warning will be issued and remaining trailers will be ignored)
+#  -1 = must scan from TrailerStart since length can not be determined
+#       (in which case this routine will be called again later when TrailerStart is known)
+# Proc returns in write mode:
+#   1 = success (and proc updates OutFile with the trailer to write, or empty string to delete)
+#   0 = error processing trailer (will issue minor error)
+#  -1 = caller to copy or delete the trailer as-is (from TrailerStart if DataPos isn't set)
+#   - TrailerStart will always be set in write mode
+#   - the write routine will not be called if all trailers are being deleted
+# Proc sets the following elements of $dirInfo in both read and write mode:
+#   DataPos - file position for start of this trailer
+#   DirLen  - length of this trailer (subsequent trailers are not processed if this is not set)
+#   Fixup   - for any pointers in the trailer that need adjusting
+#
         no strict 'refs';
         my $result = &$proc($self, $dirInfo);
         use strict 'refs';
@@ -6965,8 +7000,27 @@ sub ProcessTrailers($$)
         # restore PATH (pop last 2 items)
         splice @$path, -2;
 
-        # check result
+        my ($dataPos, $dirLen) = @$dirInfo{'DataPos','DirLen'};
         if ($outfile) {
+            if ($result < 0) {
+                # copy or delete the trailer ourself
+                $result = 1;
+                if ($$self{TrailerStart}) {
+                    $dataPos or $dataPos = $$self{TrailerStart};
+                    $dirLen or $dirLen = $$self{FileEnd} - $offset - $dataPos;
+                }
+                if ($$self{DEL_GROUP}{Trailer} or $$self{DEL_GROUP}{$dirName}) {
+                    my $bytes = $dirLen ? " ($dirLen bytes)" : '';
+                    $self->VPrint(0, "Deleting $dirName trailer$bytes\n");
+                    ++$$self{CHANGED};
+                } elsif ($dataPos and $dirLen) {
+                    $self->VPrint(0, "Copying $dirName trailer ($dirLen bytes)\n");
+                    $result = 0 unless $raf->Seek($dataPos) and
+                        $raf->Read(${$$dirInfo{OutFile}}, $dirLen) == $dirLen;
+                } else {
+                    $result = 0;
+                }
+            }
             if ($result > 0) {
                 if ($outBuff) {
                     # write trailers to OutFile in original order
@@ -6994,15 +7048,20 @@ sub ProcessTrailers($$)
             $success = 0;
             last;
         }
-        last unless $result > 0 and $$dirInfo{DirLen};
+        last unless $result > 0 and $dirLen;
+        $offset += $dirLen;
+        last if $dataPos and $$self{TrailerStart} and $dataPos <= $$self{TrailerStart};
         # look for next trailer
-        $offset += $$dirInfo{DirLen};
-        my $nextTrail = IdentifyTrailer($raf, $offset) or last;
+        my $nextTrail = IdentifyTrailer($raf, $offset);
+        # process Google trailer after all others if necessary and not done already
+        unless ($nextTrail) {
+            last unless $$self{ProcessGoogleTrailer};
+            $nextTrail = { DirName => 'Google', RAF => $raf };
+        }
         $dirName = $$dirInfo{DirName} = $$nextTrail{DirName};
-        $raf->Seek($pos, 0);
     }
     SetByteOrder($byteOrder);       # restore original byte order
-    $raf->Seek($pos, 0);            # restore original file position
+    $raf->Seek($pos);               # restore original file position
     $$dirInfo{OutFile} = $outfile;  # restore original outfile
     $$dirInfo{Offset} = $offset;    # return offset from EOF to start of first trailer
     $$dirInfo{Fixup} = $fixup;      # return fixup information
@@ -7399,12 +7458,61 @@ sub ProcessJPEG($$;$)
             $foundSOS = 1;
             # all done with meta information unless we have a trailer
             $verbose and print $out "${indent}JPEG SOS\n";
+            # process extended XMP now if it existed
+            # (must do this before trailers because XMP is required to process Google trailer)
+            if (%extendedXMP) {
+                my $guid;
+                # GUID indicated by the last main XMP segment
+                my $goodGuid = $$self{VALUE}{HasExtendedXMP} || '';
+                # GUID of the extended XMP that we will process ('2' for all)
+                my $readGuid = $$options{ExtendedXMP} || 0;
+                $readGuid = $goodGuid if $readGuid eq '1';
+                foreach $guid (sort keys %extendedXMP) {
+                    next unless length $guid == 32;     # ignore other (internal) keys
+                    my $extXMP = $extendedXMP{$guid};
+                    my ($off, @offsets, $warn);
+                    # make sure we have all chunks, and create a list of sorted offsets
+                    for ($off=0; $off<$$extXMP{Size}; ) {
+                        last unless defined $$extXMP{$off};
+                        push @offsets, $off;
+                        $off += length $$extXMP{$off};
+                    }
+                    unless ($off == $$extXMP{Size}) {
+                        $self->Warn("Incomplete extended XMP (GUID $guid)");
+                        next;
+                    }
+                    if ($guid eq $readGuid or $readGuid eq '2') {
+                        $warn = 'Reading non-' if $guid ne $goodGuid;
+                        my $buff = '';
+                        # assemble XMP all together
+                        $buff .= $$extXMP{$_} foreach @offsets;
+                        my $tagTablePtr = GetTagTable('Image::ExifTool::XMP::Main');
+                        my %dirInfo = (
+                            DataPt      => \$buff,
+                            Parent      => 'APP1',
+                            IsExtended  => 1,
+                        );
+                        $$path[$pn] = 'APP1';
+                        $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+                        pop @$path;
+                    } else {
+                        $warn = 'Ignored ';
+                        $warn .= 'non-' if $guid ne $goodGuid;
+                    }
+                    $self->Warn("${warn}standard extended XMP (GUID $guid)") if $warn;
+                    delete $extendedXMP{$guid};
+                }
+            }
             unless ($fast) {
                 $trailInfo = IdentifyTrailer($raf);
+                # check for Google trailer information if specific XMP tags exist
+                if (not $trailInfo and $$self{ProcessGoogleTrailer}) {
+                    $trailInfo = { DirName => 'Google', RAF => $raf };
+                }
                 # process trailer now unless we are doing verbose dump
                 if ($trailInfo and $verbose < 3 and not $htmlDump) {
                     # process trailers (keep trailInfo to finish processing later
-                    # only if we can't finish without scanning from end of file)
+                    # only if we can't finish without scanning from JPEG EOF)
                     $self->ProcessTrailers($trailInfo) and undef $trailInfo;
                 }
                 if ($wantTrailer and $$self{PreviewImageStart}) {
@@ -7577,7 +7685,7 @@ sub ProcessJPEG($$;$)
                         my $n = length($1) + 1;
                         $self->HDump($segPos+pos($$dataPt)-$n, $n, '[Vivo HiddenData]', undef, 0x08);
                     }
-                    my $tbl = GetTagTable('Image::ExifTool::Vivo::Main');
+                    my $tbl = GetTagTable('Image::ExifTool::Trailer::Vivo');
                     $self->HandleTag($tbl, HiddenData => $1);
                 }
                 # avoid looking for preview unless necessary because it really slows
@@ -8237,50 +8345,6 @@ sub ProcessJPEG($$;$)
         }
         undef $$segDataPt;
     }
-    # process extended XMP now if it existed
-    if (%extendedXMP) {
-        my $guid;
-        # GUID indicated by the last main XMP segment
-        my $goodGuid = $$self{VALUE}{HasExtendedXMP} || '';
-        # GUID of the extended XMP that we will process ('2' for all)
-        my $readGuid = $$options{ExtendedXMP} || 0;
-        $readGuid = $goodGuid if $readGuid eq '1';
-        foreach $guid (sort keys %extendedXMP) {
-            next unless length $guid == 32;     # ignore other (internal) keys
-            my $extXMP = $extendedXMP{$guid};
-            my ($off, @offsets, $warn);
-            # make sure we have all chunks, and create a list of sorted offsets
-            for ($off=0; $off<$$extXMP{Size}; ) {
-                last unless defined $$extXMP{$off};
-                push @offsets, $off;
-                $off += length $$extXMP{$off};
-            }
-            unless ($off == $$extXMP{Size}) {
-                $self->Warn("Incomplete extended XMP (GUID $guid)");
-                next;
-            }
-            if ($guid eq $readGuid or $readGuid eq '2') {
-                $warn = 'Reading non-' if $guid ne $goodGuid;
-                my $buff = '';
-                # assemble XMP all together
-                $buff .= $$extXMP{$_} foreach @offsets;
-                my $tagTablePtr = GetTagTable('Image::ExifTool::XMP::Main');
-                my %dirInfo = (
-                    DataPt      => \$buff,
-                    Parent      => 'APP1',
-                    IsExtended  => 1,
-                );
-                $$path[$pn] = 'APP1';
-                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
-                pop @$path;
-            } else {
-                $warn = 'Ignored ';
-                $warn .= 'non-' if $guid ne $goodGuid;
-            }
-            $self->Warn("${warn}standard extended XMP (GUID $guid)") if $warn;
-            delete $extendedXMP{$guid};
-        }
-    }
     # print verbose hash message if necessary
     print $out "${indent}(ImageDataHash: $hashsize bytes of JPEG image data)\n" if $hashsize and $verbose;
     # calculate JPEGDigest if requested
@@ -8557,7 +8621,9 @@ sub DoProcessTIFF($$;$)
         if ($raf) {
             my $trailInfo = IdentifyTrailer($raf);
             if ($trailInfo) {
-                $$trailInfo{ScanForTrailer} = 1;   # scan to find AFCP if necessary
+                # scan to find AFCP if necessary (Note: we are scanning
+                # from a random file position in the TIFF)
+                $$trailInfo{ScanForTrailer} = 1;
                 $self->ProcessTrailers($trailInfo);
             }
             # dump any other known trailer (eg. A100 RAW Data)
@@ -8663,6 +8729,7 @@ sub DoProcessTIFF($$;$)
             my $tbuf = '';
             $$trailInfo{OutFile} = \$tbuf;  # rewrite trailer(s)
             $$trailInfo{ScanForTrailer} = 1;   # scan for AFCP if necessary
+            $$self{TrailerStart} = $tiffEnd;
             # rewrite all trailers to buffer
             unless ($self->ProcessTrailers($trailInfo)) {
                 undef $trailInfo;

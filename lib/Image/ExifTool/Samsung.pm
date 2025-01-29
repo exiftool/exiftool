@@ -1002,6 +1002,10 @@ my %formatMinMax = (
     '0x0a20-name' => 'DualCameraImageName', # ("FlipPhoto_002")
     '0x0a20' => { Name => 'DualCameraImage', Groups => { 2 => 'Preview' }, Binary => 1 },
     '0x0a30-name' => 'EmbeddedVideoType', # ("MotionPhoto_Data")
+    # Note: A duplicate of this video may be extracted as MotionPhotoVideo from
+    #       the Google trailer, but keep this copy named as EmbeddedVideoFile
+    #       for backward compatibility and to avoid confusion due to extracting
+    #       multiple tags with the same name
     '0x0a30' => { Name => 'EmbeddedVideoFile', Groups => { 2 => 'Video' }, Binary => 1 }, #forum7161
    # 0x0a41-name - seen 'BackupRestore_Data' #forum16086
    # 0x0aa1-name - seen 'MCC_Data'

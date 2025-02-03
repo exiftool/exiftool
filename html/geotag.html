@@ -199,10 +199,11 @@ DateTimeOriginal, CreateDate, ModifyDate, FileModifyDate</li>
 position is calculated (by interpolating between fixes in the GPS track log). 
 Unless a group is specified, exiftool writes the generated tags to the default
 groups.  If a value for <code>Geotime</code> is not given, it is taken from
-unformatted value of <code>DateTimeOriginal</code> for each image (as if
-<code>"-Geotime&lt;DateTimeOriginal#"</code> had been specified), but the value
-may be copied from any other date/time tag or set directly from a date/time
-string.</p>
+unformatted value of <code>SubSecDateTimeOriginal</code> (preferentially) or
+<code>DateTimeOriginal</code> for each image (as if
+<code>"-Geotime&lt;DateTimeOriginal#" "-Geotime&lt;SubSecDateTimeOriginal#"</code>
+had been specified), but the value may be copied from any other date/time tag or
+set directly from a date/time string.</p>
 
 <p>If the date/time tag does not include a timezone then one may be added (eg.
 <code>"-Geotime&lt;${CreateDate}-05:00"</code>), otherwise the local system time
@@ -227,11 +228,10 @@ by default), but <code>ItemList:Geotime</code>, <code>UserData:Geotime</code> or
 lines illustrating various aspects of the geotagging feature.</p>
 
 <blockquote class=prog><b>Programmers</b>:  Note that <code>Geotime</code> must always
-be specified when geotagging via the API (the default value of
-<code>DateTimeOriginal#</code> is implemented by the application).  Also,
-<code>Geotime</code> must be set after both <code>Geotag</code> and
-<code>Geosync</code> (the exiftool application reorders the assignments to
-ensure this).
+be specified when geotagging via the API (the default value is implemented by
+the application).  Also, <code>Geotime</code> must be set after both
+<code>Geotag</code> and <code>Geosync</code> (the exiftool application reorders
+the assignments to ensure this).
 </blockquote>
 
 <a name="Geolocation"></a>
@@ -284,9 +284,9 @@ columns are ignored.</p>
 <a name="E1"></a>
 <p>1. Geotag all images in the "c:\images" directory from position information in a
 GPS track log ("c:\gps logs\track.log").  Since the <code>Geotime</code> time is
-not specified, the value of <code>DateTimeOriginal#</code> is used.  Local
-system time is assumed unless <code>DateTimeOriginal#</code> contains a
-timezone:</p>
+not specified, the value of <code>SubSecDateTimeOriginal#</code> (preferentially)
+or <code>DateTimeOriginal#</code> is used.  Local system time is assumed unless
+the date/time value contains a timezone:</p>
 
 <pre>exiftool -geotag "c:\gps logs\track.log" c:\images</pre>
 
@@ -337,7 +337,7 @@ not remove all GPS tags -- to do this instead use <code>-gps:all=</code>):</p>
 
 <a name="E9"></a>
 <p>9. Geotag an image with XMP tags, using the time from
-<code>DateTimeOriginal</code>:</p>
+<code>SubSecDateTimeOriginal</code> or <code>DateTimeOriginal</code>:</p>
 
 <pre>exiftool -xmp:geotag=track.log a.jpg</pre>
 
@@ -355,7 +355,7 @@ operating systems to prevent filename expansion):</p>
 
 <a name="E12"></a>
 <p>12. Geotag from a sub-second date/time value with a sub-second time synchronization
-(only possible if the EXIF sub-second time stamps are available):</p>
+(only possible if the EXIF sub-second time stamps or time zone are available):</p>
 
 <pre>exiftool -Geotag a.log -Geosync=+13.42 "-Geotime&lt;SubSecDateTimeOriginal" dir
 </pre>

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28402 tags, with 17530 unique tag names.
+They contain a total of 28442 tags, with 17565 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -5565,6 +5565,8 @@ is to write ImageRegion as a structure with these tags as new fields.
   RightsExprLangId                              string
 
 =head3 XMP LocationDetails Struct
+
+Note that the GPS elements of this structure are in the "exif" namespace.
 
   Field Name                                    Writable
   ----------                                    --------
@@ -12307,24 +12309,40 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'AALP'   AudioLevel                           no
+  'ABSC'   AutoBoostScore                       no
   'ACCL'   Accelerometer                        no
   'ALLD'   AutoLowLightDuration                 no
+  'APTO'   AudioProtuneOption                   no
+  'ARUW'   AspectRatioUnwarped                  no
+  'ARWA'   AspectRatioWarped                    no
   'ATTD'   Attitude                             no
   'ATTR'   AttitudeTarget                       no
+  'AUBT'   AudioBlueTooth                       no
   'AUDO'   AudioSetting                         no
+  'AUPT'   AutoProtune                          no
+  'BITR'   BitrateSetting                       no
   'BPOS'   Controller?                          no
   'CASN'   CameraSerialNumber                   no
+  'CDAT'   CreationDate                         no
+  'CDTM'   CaptureDelayTimer                    no
+  'CLDP'   ClassificationDataPresent            no
   'CORI'   CameraOrientation                    no
+  'CPIN'   ChapterNumber                        no
   'CSEN'   CoyoteSense                          no
+  'CTRL'   ControlLevel                         no
   'CYTS'   CoyoteStatus                         no
   'DEVC'   DeviceContainer                      GoPro GPMF
+  'DUST'   DurationSetting                      no
   'DVID'   DeviceID?                            no
   'DVNM'   DeviceName                           no
-  'DZOM'   DigitalZoom                          no
+  'DZMX'   DigitalZoomAmount                    no
+  'DZOM'   DigitalZoomOn                        no
+  'DZST'   DigitalZoom                          no
   'EISA'   ElectronicImageStabilization         no
+  'EISE'   ElectronicStabilizationOn            no
   'EMPT'   Empty?                               no
   'ESCS'   EscapeStatus?                        no
-  'EXPT'   MaximumShutterAngle                  no
+  'EXPT'   ExposureType                         no
   'FACE'   FaceDetected                         no
   'FCNM'   FaceNumbers                          no
   'FMWR'   FirmwareVersion                      no
@@ -12339,6 +12357,9 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'GPSU'   GPSDateTime                          no
   'GRAV'   GravityVector                        no
   'GYRO'   Gyroscope                            no
+  'HCLT'   HorizonControl                       no
+  'HDRV'   HDRVideo                             no
+  'HSGT'   HindsightSettings                    no
   'HUES'   PrediminantHue                       no
   'IORI'   ImageOrientation                     no
   'ISOE'   ISOSpeeds                            no
@@ -12346,30 +12367,45 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'KBAT'   BatteryStatus                        GoPro KBAT
   'LNED'   LocalPositionNED                     no
   'MAGN'   Magnetometer                         no
+  'MAPX'   MappingXCoefficients                 no
+  'MAPY'   MappingYCoefficients                 no
   'MINF'   Model                                no
+  'MMOD'   MediaMode                            no
   'MTRX'   AccelerometerMatrix                  no
   'MUID'   MediaUniqueID                        no
   'MWET'   MicrophoneWet                        no
+  'MXCF'   MappingXMode                         no
+  'MYCF'   MappingYMode                         no
+  'ORDP'   OrientationDataPresent               no
   'OREN'   AutoRotation                         no
   'ORIN'   InputOrientation                     no
   'ORIO'   OutputOrientation                    no
   'PHDR'   HDRSetting                           no
+  'PIMD'   ProtuneISOMode                       no
   'PIMN'   AutoISOMin                           no
   'PIMX'   AutoISOMax                           no
+  'POLY'   PolynomialCoefficients               no
   'PRES'   PhotoResolution                      no
-  'PRTN'   ProTune                              no
+  'PRJT'   LensProjection                       no
+  'PRTN'   Protune                              no
   'PTCL'   ColorMode                            no
   'PTEV'   ExposureCompensation                 no
   'PTSH'   Sharpness                            no
   'PTWB'   WhiteBalance                         no
+  'PWPR'   PowerProfile                         no
+  'PYCF'   PolynomialPower                      no
+  'RAMP'   SpeedRampSetting                     no
   'RATE'   Rate                                 no
   'RMRK'   Comments                             no
   'SCAL'   ScaleFactor?                         no
+  'SCAP'   ScheduleCapture                      no
   'SCEN'   SceneClassification                  no
   'SCPR'   ScaledPressure                       no
+  'SCTM'   ScheduleCaptureTime                  no
   'SHUT'   ExposureTimes                        no
   'SIMU'   ScaledIMU                            no
   'SIUN'   SIUnits?                             no
+  'SMTR'   SpotMeter                            no
   'SROT'   SensorReadoutTime                    no
   'STMP'   TimeStamp                            no
   'STNM'   StreamName?                          no
@@ -12390,6 +12426,8 @@ L<https://github.com/gopro/gpmf-parser> for details about this format.
   'WNDM'   WindProcessing                       no
   'WRGB'   WhiteBalanceRGB                      no
   'YAVG'   LumaAverage                          no
+  'ZFOV'   DiagonalFieldOfView                  no
+  'ZMPL'   ZoomScaleNormalization               no
 
 =head3 GoPro GLPI Tags
 
@@ -16858,12 +16896,14 @@ These tags are written by Nikon DSLR's which have the live view feature.
      26    AFAreaHeight                         int16u
      28    ContrastDetectAFInFocus              int8u
            AFPointsSelected                     undef[20]
+           AFPointsSelected                     int16u
      42    AFImageWidth                         int16u
      44    AFImageHeight                        int16u
      46    AFAreaXPosition                      int16u
      47    FocusPositionHorizontal              int8u~
      48    AFAreaYPosition                      int16u
            AFPointsInFocus                      undef[20]
+           AFPointsInFocus                      undef[7]
      49    FocusPositionVertical                int8u~
      50    AFAreaWidth                          int16u
      52    AFAreaHeight                         int16u
@@ -31192,7 +31232,7 @@ MP4 sample table box.
   'stps'   PartialSyncSamples                   no
   'stsc'   SampleToChunk?                       no
   'stsd'   AudioSampleDesc                      QuickTime AudioSampleDesc
-           VideoSampleDesc                      QuickTime ImageDesc
+           VisualSampleDesc                     QuickTime VisualSampleDesc
            HintSampleDesc                       QuickTime HintSampleDesc
            MetaSampleDesc                       QuickTime MetaSampleDesc
            OtherSampleDesc                      QuickTime OtherSampleDesc
@@ -31338,7 +31378,7 @@ Child atoms found in "sinf" and/or "pinf" atoms.
   'enda'   Endianness                           no
   'frma'   PurchaseFileFormat                   no
 
-=head3 QuickTime ImageDesc Tags
+=head3 QuickTime VisualSampleDesc Tags
 
   ID/Index Tag Name                             Writable
   -------- --------                             --------
@@ -31533,6 +31573,7 @@ the config file.
   'Lvlm'       LevelMeter?                      rational64s
   'MMA0'       MinoltaMMA0                      Minolta MMA
   'MMA1'       MinoltaMMA1                      Minolta MMA
+  'MUID'       MediaUID                         no
   'MVTG'       FujiFilmMVTG                     EXIF
   'NCDT'       NikonNCDT                        Nikon NCDT
   'PANA'       PanasonicPANA                    Panasonic PANA
@@ -32021,7 +32062,7 @@ Tags used in QTIF QuickTime Image Files.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'idat'   ImageData                            no
-  'idsc'   ImageDescription                     QuickTime ImageDesc
+  'idsc'   ImageDescription                     QuickTime VisualSampleDesc
   'iicc'   ICC_Profile                          ICC_Profile
 
 =head2 RIFF Tags

@@ -402,6 +402,7 @@ my %sLocationDetails = (
     STRUCT_NAME => 'LocationDetails',
     NAMESPACE   => 'Iptc4xmpExt',
     GROUPS      => { 2 => 'Location' },
+    NOTES => 'Note that the GPS elements of this structure are in the "exif" namespace.',
     Identifier  => { List => 'Bag', Namespace => 'xmp' },
     City        => { },
     CountryCode => { },
@@ -420,6 +421,7 @@ my %sLocationDetails = (
         PrintConvInv => '$val=~s/\s*m$//;$val',
     },
     GPSAltitudeRef  => {
+        Namespace => 'exif',
         Writable => 'integer',
         PrintConv => {
             OTHER => sub {

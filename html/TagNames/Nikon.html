@@ -14175,10 +14175,25 @@ point is D8)</span></span></td></tr>
 <tr class=b>
 <td class=r title='28 = 0x1c'>28</td>
 <td>ContrastDetectAFInFocus
+  <br>AFPointsSelected
   <br>AFPointsSelected</td>
-<td class=c>int8u<br>undef[20]</td>
+<td class=c>int8u<br>undef[20]<br>int16u</td>
 <td><span class=s>0 = No
-  <br>1 = Yes</span></td></tr>
+  <br>1 = Yes</span><table class=cols><tr>
+  <td>0x0 = (none)
+  <br>0x7ff = All 11 Points
+  <br>Bit 0 = Center
+  <br>Bit 1 = Top
+  <br>Bit 2 = Bottom
+  <br>Bit 3 = Mid-left
+  <br>Bit 4 = Mid-right</td><td>&nbsp;&nbsp;</td>
+  <td>Bit 5 = Upper-left
+  <br>Bit 6 = Upper-right
+  <br>Bit 7 = Lower-left
+  <br>Bit 8 = Lower-right
+  <br>Bit 9 = Far Left
+  <br>Bit 10 = Far Right</td></tr></table>
+</td></tr>
 <tr>
 <td class=r title='42 = 0x2a'>42</td>
 <td>AFImageWidth</td>
@@ -14202,8 +14217,9 @@ point is D8)</span></span></td></tr>
 <tr>
 <td class=r title='48 = 0x30'>48</td>
 <td>AFAreaYPosition
+  <br>AFPointsInFocus
   <br>AFPointsInFocus</td>
-<td class=c>int16u<br>undef[20]</td>
+<td class=c>int16u<br>undef[20]<br>undef[7]</td>
 <td><span class=s><span class=n>(AF points in focus at the time time image was captured)</span></span></td></tr>
 <tr class=b>
 <td class=r title='49 = 0x31'>49</td>
@@ -14504,6 +14520,59 @@ point is D8)</span></span></td></tr>
   <br>9 = Upper-right
   <br>10 = Lower-right
   <br>11 = Far Right</td></tr></table>
+<table class=cols><tr>
+  <td>0 = (none)
+  <br>1 = C6 (Center)
+  <br>2 = B6
+  <br>3 = A5
+  <br>4 = D6
+  <br>5 = E5
+  <br>6 = C7
+  <br>7 = B7
+  <br>8 = A6
+  <br>9 = D7
+  <br>10 = E6</td><td>&nbsp;&nbsp;</td>
+  <td>11 = C5
+  <br>12 = B5
+  <br>13 = A4
+  <br>14 = D5
+  <br>15 = E4
+  <br>16 = C8
+  <br>17 = B8
+  <br>18 = A7
+  <br>19 = D8
+  <br>20 = E7
+  <br>21 = C9</td><td>&nbsp;&nbsp;</td>
+  <td>22 = B9
+  <br>23 = A8
+  <br>24 = D9
+  <br>25 = E8
+  <br>26 = C10
+  <br>27 = B10
+  <br>28 = A9
+  <br>29 = D10
+  <br>30 = E9
+  <br>31 = C11
+  <br>32 = B11</td><td>&nbsp;&nbsp;</td>
+  <td>33 = D11
+  <br>34 = C4
+  <br>35 = B4
+  <br>36 = A3
+  <br>37 = D4
+  <br>38 = E3
+  <br>39 = C3
+  <br>40 = B3
+  <br>41 = A2
+  <br>42 = D3
+  <br>43 = E2</td><td>&nbsp;&nbsp;</td>
+  <td>44 = C2
+  <br>45 = B2
+  <br>46 = A1
+  <br>47 = D2
+  <br>48 = E1
+  <br>49 = C1
+  <br>50 = B1
+  <br>51 = D1</td></tr></table>
 <span class=s><span class=n>(future models?...)</span>
   <br>0 = (none)
   <br>1 = Center</span></td></tr>
@@ -16294,7 +16363,7 @@ for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 28, 2025</i>
+<br><i>Last revised Feb 3, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

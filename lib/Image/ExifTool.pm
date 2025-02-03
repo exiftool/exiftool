@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.17';
+$VERSION = '13.18';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -6868,10 +6868,10 @@ sub HDump($$$$;$$$)
 # Returns: Trailer info hash (with RAF and DirName set),
 #          or undef if no recognized trailer was found
 # Notes: leaves file position unchanged
-sub IdentifyTrailer($;$)
+sub IdentifyTrailer($$;$)
 {
-    my $raf = shift;
-    my $offset = shift || 0;
+    my ($self, $raf, $offset) = @_;
+    $offset or $offset = 0;
     my $pos = $raf->Tell();
     my ($buff, $type, $len);
     while ($raf->Seek(-$offset, 2) and ($len = $raf->Tell()) > 0) {
@@ -6900,6 +6900,9 @@ sub IdentifyTrailer($;$)
             $type = 'Vivo';
         } elsif ($buff =~ /jxrs...\0$/s) {
             $type = 'OnePlus';
+        } elsif ($$self{ProcessGoogleTrailer}) {
+            # check for Google trailer information if specific XMP tags exist
+            $type = 'Google';
         }
         last;
     }
@@ -7052,7 +7055,7 @@ sub ProcessTrailers($$)
         $offset += $dirLen;
         last if $dataPos and $$self{TrailerStart} and $dataPos <= $$self{TrailerStart};
         # look for next trailer
-        my $nextTrail = IdentifyTrailer($raf, $offset);
+        my $nextTrail = $self->IdentifyTrailer($raf, $offset);
         # process Google trailer after all others if necessary and not done already
         unless ($nextTrail) {
             last unless $$self{ProcessGoogleTrailer};
@@ -7504,11 +7507,7 @@ sub ProcessJPEG($$;$)
                 }
             }
             unless ($fast) {
-                $trailInfo = IdentifyTrailer($raf);
-                # check for Google trailer information if specific XMP tags exist
-                if (not $trailInfo and $$self{ProcessGoogleTrailer}) {
-                    $trailInfo = { DirName => 'Google', RAF => $raf };
-                }
+                $trailInfo = $self->IdentifyTrailer($raf);
                 # process trailer now unless we are doing verbose dump
                 if ($trailInfo and $verbose < 3 and not $htmlDump) {
                     # process trailers (keep trailInfo to finish processing later
@@ -8619,7 +8618,7 @@ sub DoProcessTIFF($$;$)
         }
         # process information in recognized trailers
         if ($raf) {
-            my $trailInfo = IdentifyTrailer($raf);
+            my $trailInfo = $self->IdentifyTrailer($raf);
             if ($trailInfo) {
                 # scan to find AFCP if necessary (Note: we are scanning
                 # from a random file position in the TIFF)
@@ -8724,7 +8723,7 @@ sub DoProcessTIFF($$;$)
         for (;;) {
             last unless $extra > 12;
             $raf->Seek($tiffEnd);  # seek back to end of image
-            $trailInfo = IdentifyTrailer($raf);
+            $trailInfo = $self->IdentifyTrailer($raf);
             last unless $trailInfo;
             my $tbuf = '';
             $$trailInfo{OutFile} = \$tbuf;  # rewrite trailer(s)

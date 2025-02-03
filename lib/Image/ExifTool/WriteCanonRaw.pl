@@ -566,7 +566,7 @@ sub WriteCRW($$)
     my $trailPt;
     while ($success) {
         # check to see if trailer(s) exist(s)
-        my $trailInfo = Image::ExifTool::IdentifyTrailer($raf) or last;
+        my $trailInfo = $et->IdentifyTrailer($raf) or last;
         # rewrite the trailer(s)
         $buff = '';
         $$trailInfo{OutFile} = \$buff;

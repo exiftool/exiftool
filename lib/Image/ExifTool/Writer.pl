@@ -4262,9 +4262,11 @@ sub WriteDirectory($$$;$)
         if ($permanentDir{$grp0} and not ($$dirInfo{TagInfo} and $$dirInfo{TagInfo}{Deletable})) {
             undef $delFlag;
         }
-        # (never delete an entire QuickTime group)
         if ($delFlag) {
-            if (($grp0 =~ /^(MakerNotes)$/ or $grp1 =~ /^(IFD0|ExifIFD|MakerNotes)$/) and
+            if ($$dirInfo{Permanent}) {
+                $self->Warn("Not deleting permanent $dirName directory");
+                undef $grp1;
+            } elsif (($grp0 =~ /^(MakerNotes)$/ or $grp1 =~ /^(IFD0|ExifIFD|MakerNotes)$/) and
                 $self->IsRawType() and
                 # allow non-permanent MakerNote directories to be deleted (ie. NikonCapture)
                 (not $$dirInfo{TagInfo} or not defined $$dirInfo{TagInfo}{Permanent} or
@@ -6027,7 +6029,7 @@ sub WriteJPEG($$)
             Write($outfile, $hdr, $s, $segData) or $err = 1;
             my ($buff, $endPos, $trailInfo);
             my $delPreview = $$self{DEL_PREVIEW};
-            $trailInfo = IdentifyTrailer($raf) unless $$delGroup{Trailer};
+            $trailInfo = $self->IdentifyTrailer($raf) unless $$delGroup{Trailer};
             my $nvTrail = $self->GetNewValueHash($Image::ExifTool::Extra{Trailer});
             unless ($oldOutfile or $delPreview or $trailInfo or $$delGroup{Trailer} or $nvTrail or
                 $$self{HiddenData})

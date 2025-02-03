@@ -1225,6 +1225,7 @@ sub WriteQuickTime($$$)
                     OutFile  => $outfile,
                     NoRefTest=> 1,     # don't check directory references
                     WriteGroup => $$tagInfo{WriteGroup},
+                    Permanent => $$tagInfo{Permanent},
                     # initialize array to hold details about chunk offset table
                     # (each entry has 3-5 items: 0=atom type, 1=table offset, 2=table size,
                     #  3=optional base offset, 4=optional item ID)
@@ -1564,7 +1565,9 @@ sub WriteQuickTime($$$)
             }
             if ($msg) {
                 # (allow empty sample description for non-audio/video handler types, eg. 'url ', 'meta')
-                if ($$et{MediaType}) {
+                # (also, incorrectly written 'mett' SampleEntry by Google phones,
+                #  see https://exiftool.org/forum/index.php?msg=91158)
+                if ($avType{$$et{MediaType}}) {
                     my $grp = $$et{CUR_WRITE_GROUP} || $parent;
                     $et->Error("$msg for $grp");
                     return $rtnErr;

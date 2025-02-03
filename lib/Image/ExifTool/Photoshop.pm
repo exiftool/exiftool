@@ -1165,7 +1165,7 @@ sub ProcessPSD($$)
             $len = Set32u(length $data);
             Write($outfile, $len, $data) or $err = 1;
             # look for trailer and edit if necessary
-            my $trailInfo = Image::ExifTool::IdentifyTrailer($raf);
+            my $trailInfo = $et->IdentifyTrailer($raf);
             if ($trailInfo) {
                 my $tbuf = '';
                 $$trailInfo{OutFile} = \$tbuf;  # rewrite trailer(s)
@@ -1223,7 +1223,7 @@ sub ProcessPSD($$)
         }
         $$et{INDENT} = $oldIndent;
         # process trailers if they exist
-        my $trailInfo = Image::ExifTool::IdentifyTrailer($raf);
+        my $trailInfo = $et->IdentifyTrailer($raf);
         $et->ProcessTrailers($trailInfo) if $trailInfo;
     }
     return $rtnVal;

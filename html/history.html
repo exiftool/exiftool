@@ -17,6 +17,21 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.18'><b>Feb. 3, 2025 - Version 13.18</b></a>
+<ul>
+<li>Decode a number of new GoPro tags
+<li>Enhanced -geotag option to set Geotime from either SubSecDateTimeOriginal
+    (preferentially) or DateTimeOriginal if not otherwise specified
+<li>Don't allow ICC_Profile to be deleted from QuickTime-based files
+    (specifically HEIC, to avoid problem where Apple Preview wouldn't display the
+    resulting file)
+<li>Improved decoding of AF points for Nikon D3400 and D7500
+<li>Patched issue introduced in 13.13 which could give a "No data reference"
+    error when writing MP4 videos from some Google phones
+<li>Fixed problem writing XMP-iptcExt:LocationCreatedGPSAltitudeRef with an
+    incorrect namespace
+</ul>
+
 <a name='v13.17'><b>Jan. 29, 2025 - Version 13.17</b></a>
 <ul>
 <li>Added support for reading more embedded images and videos written in the
@@ -24,10 +39,9 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added support for reading JPEG trailer written by some OnePlus phones
 <li>Added a -validate warning for QuickTime 'wide' atoms with an invalid size
 <li>Added a new CanonLensType
-<li>Extract more embedded videos and depth/gain maps from JPEG images written 
 <li>Avoid decoding Sony 0x9050 data for the ILCE-1M2 because the encoding has
-    changed since the ILCE-1 and the new encoding is not yet known
-<li>Fixed issue that could cause runtime error when using -j with -b
+    changed since the ILCE-1 and the new encoding is not yet known (<a href="https://github.com/exiftool/exiftool/issues/310">github #310</a>)
+<li>Fixed issue that could cause runtime warning when using -j with -b
 <li>Fixed some issues decoding AFPointsUsed for some newer Nikon models
 <li>Fixed problem corrupting QuickTime-format videos when writing if they
     contain a 'wide' atom with an invalid size

@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.42';
+$VERSION = '4.43';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1368,6 +1368,25 @@ my %retouchValues = ( #PH
     52 => 'High-contrast Monochrome', # (S3500)
     53 => 'High Key', # (S3500)
     54 => 'Low Key', # (S3500)
+);
+
+# AF points for models with 11 focus points (eg. D3400)
+my %afPoints11 = (
+    0 => '(none)',
+    0x7ff => 'All 11 Points',
+    BITMASK => {
+        0 => 'Center',
+        1 => 'Top',
+        2 => 'Bottom',
+        3 => 'Mid-left',
+        4 => 'Mid-right',
+        5 => 'Upper-left',
+        6 => 'Upper-right',
+        7 => 'Lower-left',
+        8 => 'Lower-right',
+        9 => 'Far Left',
+        10 => 'Far Right',
+    },
 );
 
 # AF point indices for models with 51 focus points, eg. D3 (ref JD/PH)
@@ -4027,23 +4046,7 @@ my %base64coord = (
         Name => 'AFPointsInFocus',
         Format => 'int16u',
         PrintConvColumns => 2,
-        PrintConv => {
-            0 => '(none)',
-            0x7ff => 'All 11 Points',
-            BITMASK => {
-                0 => 'Center',
-                1 => 'Top',
-                2 => 'Bottom',
-                3 => 'Mid-left',
-                4 => 'Mid-right',
-                5 => 'Upper-left',
-                6 => 'Upper-right',
-                7 => 'Lower-left',
-                8 => 'Lower-right',
-                9 => 'Far Left',
-                10 => 'Far Right',
-            },
-        },
+        PrintConv => \%afPoints11,
     },
 );
 
@@ -4515,7 +4518,7 @@ my %base64coord = (
     0x1c => [
         { #PH
             Name => 'ContrastDetectAFInFocus',
-            Condition => '$$self{AFInfo2Version} eq "0100"',
+            Condition => '$$self{AFInfo2Version} eq "0100" and $$self{ContrastDetectAF}',
             PrintConv => { 0 => 'No', 1 => 'Yes' },
         },{ #PH (D500, see forum11190)
             Name => 'AFPointsSelected',
@@ -4525,6 +4528,11 @@ my %base64coord = (
             ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
             PrintConv => sub { PrintAFPoints(shift, \%afPoints153); },
             PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints153); },
+        },{ #PH (D3400) (NC "selected")
+            Name => 'AFPointsSelected',
+            Condition => '$$self{AFInfo2Version} eq "0101" and $$self{PhaseDetectAF} == 2',
+            Format => 'int16u',
+            PrintConv => \%afPoints11,
         },
     ],
     # 0x1d - always zero (with or without live view)
@@ -4573,6 +4581,14 @@ my %base64coord = (
             ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
             PrintConv => sub { PrintAFPoints(shift, \%afPoints153); },
             PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints153); },
+        },{ #PH (D7500) (NC "in focus")
+            Name => 'AFPointsInFocus',
+            Condition => '$$self{AFInfo2Version} eq "0101" and $$self{PhaseDetectAF} == 1',
+            Format => 'undef[7]',
+            ValueConv => 'join(" ", unpack("H2"x7, $val))',
+            ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
+            PrintConv => sub { PrintAFPoints(shift, \%afPoints51); },
+            PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints51); },
         },
     ],
     0x31 => { #28 (Z7)
@@ -4637,6 +4653,16 @@ my %base64coord = (
                 9 => 'Upper-right',
                 10 => 'Lower-right',
                 11 => 'Far Right',
+            },
+        },
+        {
+            Name => 'PrimaryAFPoint',
+            Condition => '$$self{PhaseDetectAF} == 1 and $$self{AFInfo2Version} eq "0101"',
+            PrintConvColumns => 5,
+            PrintConv => {
+                0 => '(none)',
+                %afPoints51,
+                1 => 'C6 (Center)',
             },
         },
         {

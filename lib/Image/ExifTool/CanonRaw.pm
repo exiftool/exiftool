@@ -854,7 +854,7 @@ sub ProcessCRW($$)
 
     # process trailers if they exist in CRW file (not in CIFF information!)
     if ($$et{FILE_TYPE} eq 'CRW') {
-        my $trailInfo = Image::ExifTool::IdentifyTrailer($raf);
+        my $trailInfo = $et->IdentifyTrailer($raf);
         $et->ProcessTrailers($trailInfo) if $trailInfo;
     }
 

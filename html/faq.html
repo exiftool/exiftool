@@ -1434,11 +1434,12 @@ when creating new EXIF (eg. "<code>-ExifByteOrder=II</code>" for little-endian).
 <blockquote>When reading, by default exiftool converts all control characters to
 "." to avoid messing up the output formatting, so newlines will appear as a "."
 in the output.  The <code>-b</code> option may be used to bypass all output
-formatting (except that a line-feed character is inserted between items in a
-list), but this may not be appropriate when the values of many tags must be
-extracted.  In this case, the formatted output (<code>-p</code>), JSON
-(<code>-j</code>), XML (<code>-X</code>) and PHP (<code>-php</code>) options
-provide alternative output formats which preserve newlines in values.</blockquote>
+formatting (except that a line-feed character or other separator specified by
+the <code>-sep</code> option is inserted between items in a list), but this may
+not be appropriate when the values of many tags must be extracted.  In this
+case, the formatted output (<code>-p</code>), JSON (<code>-j</code>), XML
+(<code>-X</code>) and PHP (<code>-php</code>) options provide alternative output
+formats which preserve newlines in values.</blockquote>
 
 <blockquote>Alternatively, the <a href="ExifTool.html#Filter">API Filter option</a>
 may be used to apply an arbitrary filter to all extracted values.  For example,
@@ -1841,7 +1842,7 @@ certain commands, but may be suppressed by adding
 <code>-api "NoWarning=No writable tags"</code> to the command if desired.</blockquote>
 
 <hr>
-<i>Last revised Aug 17, 2024</i>
+<i>Last revised Feb 3, 2025</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

@@ -214,7 +214,7 @@ sub ProcessGoogle($$)
 
     delete $$et{ProcessGoogleTrailer};  # reset flag to process the Google trailer
 
-    return -1 if $$dirInfo{OutFile};
+    return -1 if $$dirInfo{OutFile};    # let caller handle the writing
 
     # sometimes DirectoryItemLength is missing the Primary entry
     $len = [ $len ] unless ref $len eq 'ARRAY';

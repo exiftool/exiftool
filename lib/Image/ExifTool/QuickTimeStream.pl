@@ -111,7 +111,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 100 different types of timed GPS metadata from video files.
+        currently reads 103 different types of timed GPS metadata from video files.
     },
     VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
@@ -2208,7 +2208,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
             unpack('x48V6a1a1a1x1V4', $$dataPt);
         if (substr($$dataPt, 16, 3) eq 'IQS') {
             $debug and $et->FoundTag(GPSType => 16);
-            # Type 3b (ref PH)
+            # IQS variant (ref PH)
             # header looks like this in my sample:
             #  0000: 00 00 80 00 66 72 65 65 47 50 53 20 4c 00 00 00 [....freeGPS L...]
             #  0010: 49 51 53 5f 41 37 5f 32 30 31 35 30 34 31 37 00 [IQS_A7_20150417.]
@@ -2219,12 +2219,26 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
             $spd = Get32s($dataPt, 0x54) / 100 * $mpsToKph;
             $alt = GetFloat($dataPt, 0x58) / 1000; # (NC)
         } else {
-            $debug and $et->FoundTag(GPSType => 17);
             $lat = GetFloat($dataPt, 0x4c);
             $lon = GetFloat($dataPt, 0x50);
             $spd = GetFloat($dataPt, 0x54) * $knotsToKph;
-            $trk = GetFloat($dataPt, 0x58);
-            # ($trk is not confirmed; may be GPSImageDirection, ref PH)
+            $trk = GetFloat($dataPt, 0x58); # (NC, may be GPSImageDirection)
+            # Rexing V1-4k dashcam scales the lat/lon
+            # (recognize this dashcam by the KodakVersion, "3.01.054" for my sample)
+            #  0000: 00 00 80 00 66 72 65 65 47 50 53 20 4c 00 00 00 [....freeGPS L...]
+            #  0010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+            #  0020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+            #  0030: 0e 00 00 00 22 00 00 00 28 00 00 00 14 00 00 00 [...."...(.......]
+            #  0040: 02 00 00 00 16 00 00 00 41 4e 57 00 e9 7e 90 43 [........ANW..~.C]
+            #  0050: 48 76 17 45 0c 02 48 42 14 6e 85 43 00 00 00 00 [Hv.E..HB.n.C....]
+            if ($$et{KodakVersion} and $$et{KodakVersion} eq '3.01.054') {
+                $debug and $et->FoundTag(GPSType => '17b');
+                $lat = ($lat - 187.982162849635) / 3;
+                $lon = ($lon - 2199.19873715495) / 2;
+                $ddd = 1;
+            } else {
+                $debug and $et->FoundTag(GPSType => 17);
+            }
         }
         if ($dirLen >= 0xb0) {
             # lat/lon also stored as doubles by Transcend Driver Pro 230 (ref PH)

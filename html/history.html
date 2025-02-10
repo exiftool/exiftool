@@ -17,6 +17,23 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.19'><b>Feb. 10, 2025 - Version 13.19</b></a>
+<ul>
+<li>Added read/write support for PDF and XMP-pdfx SourceModified
+<li>Decode GPS from two more DJI protobuf formats (Matrice 30 and Mini 4 Pro)
+<li>Decode timed GPS from Rexing V1-4k dashcam
+<li>Decode more information from AAE files
+<li>Made a new icon for the Windows EXE application
+<li>Changed family 3 groups for ICO files so the first icon is in the Doc1
+    instead of the Main group
+<li>Improved handling of ICC_Profile in HEIC images:
+    <ul>
+    <li>Profiles for sub-images are extracted as sub-documents
+    <li>Allow only the profile of the main image to be written
+    </ul>
+<li>Updated Sony decoding for ILCE-1M2 (thanks Jos Roost)
+</ul>
+
 <a name='v13.18'><b>Feb. 3, 2025 - Version 13.18</b></a>
 <ul>
 <li>Decode a number of new GoPro tags
@@ -87,7 +104,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <ul>
 <li>Added ability to write tags to the audio/video tracks of MOV/MP4 videos
     using the new <a href="TagNames/QuickTime.html#AudioKeys">AudioKeys</a> and <a href="TagNames/QuickTime.html#VideoKeys">VideoKeys</a> group names
-<li>Added support for another DJI protobuf format (Mavic 3)
+<li>Decode GPS from another DJI protobuf format (Mavic 3)
 <li>Decode yet another type of LIGOGPSINFO timed GPS from a dashcam video
 <li>Extract some proprietary information from JPEG images of Vivo phones
 <li>Enhanced Geolocation feature to allow the nearest cities to a specified city

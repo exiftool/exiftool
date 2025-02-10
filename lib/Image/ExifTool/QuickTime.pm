@@ -43,7 +43,7 @@
 package Image::ExifTool::QuickTime;
 
 use strict;
-use vars qw($VERSION $AUTOLOAD %stringEncoding %avType);
+use vars qw($VERSION $AUTOLOAD %stringEncoding %avType %dontInherit);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
@@ -487,9 +487,13 @@ my %qtFlags = ( #12
 );
 
 # properties which don't get inherited from the parent
-my %dontInherit = (
-    ispe => 1,  # size of parent may be different
-    hvcC => 1,  # (likely redundant)
+# 1 = parent doesn't inherit this property
+# 2 = parent doesn't inherit, but child does
+%dontInherit = (
+    ispe => 1,  # primary item must have an ispe and pixi, so no need to inherit these
+    pixi => 1,
+    hvcC => 2,  # (hvcC is a property of hvc1 referred to by primary grid)
+    colr => 2,  # (colr is a property of primary grid or hvc1 referred to by primary)
 );
 
 # tags that may be duplicated and directories that may contain duplicate tags
@@ -2835,7 +2839,8 @@ my %userDefined = (
     ipma => {
         Name => 'ItemPropertyAssociation',
         RawConv => \&ParseItemPropAssoc,
-        WriteHook => \&ParseItemPropAssoc,
+        # (comment out because we do this manually _before_ ipco when writing)
+        # WriteHook => \&ParseItemPropAssoc,
         Notes => 'parsed, but not extracted as a tag',
     },
 );
@@ -9982,17 +9987,19 @@ sub ProcessMOV($$;$)
                 my $items = $$et{ItemInfo};
                 my ($id, $prop, $docNum, $lowest);
                 my $primary = $$et{PrimaryItem} || 0;
+                my $pitem = $$items{$primary} || { };
+                $$pitem{RefersTo} or $$pitem{RefersTo} = { };
 ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
                     next unless $$items{$id}{Association};
                     my $item = $$items{$id};
                     foreach $prop (@{$$item{Association}}) {
                         next unless $prop == $index;
-                        if ($id == $primary or (not $dontInherit{$tag} and
-                            (($$item{RefersTo} and $$item{RefersTo}{$primary}) or
-                            # hack: assume Item 1 is from the main image (eg. hvc1 data)
-                            # to hack the case where the primary item (ie. main image)
-                            # doesn't directly reference this property
-                            (not $$item{RefersTo} and $id == 1))))
+                        my $dont = $dontInherit{$tag} || 0;
+                        if ($id == $primary or (not $dont and
+                            ($$item{RefersTo} and $$item{RefersTo}{$primary})) or
+                            # special case to assume this property belongs to the primary
+                            # image if it belongs to an item referred to by the primary
+                            ($dont != 1 and $$pitem{RefersTo}{$id}))
                         {
                             # this is associated with the primary item or an item describing
                             # the primary item, so consider this part of the main document

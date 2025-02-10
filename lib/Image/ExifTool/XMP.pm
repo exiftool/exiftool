@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.70';
+$VERSION = '3.71';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -1247,8 +1247,22 @@ my %sPantryItem = (
     NAMESPACE   => 'pdfx',
     NOTES => q{
         PDF extension tags.  This namespace is used to store application-defined PDF
-        information, so there are no pre-defined tags.  User-defined tags must be
-        created to enable writing of XMP-pdfx information.
+        information, so there are few pre-defined tags.  User-defined tags must be
+        created to enable writing of other XMP-pdfx information.
+    },
+    SourceModified => {
+        Name => 'SourceModified',
+        Groups => { 2 => 'Time' },
+        Shift => 'Time',
+        ValueConv => 'require Image::ExifTool::PDF; $val = Image::ExifTool::PDF::ConvertPDFDate($val)',
+        ValueConvInv => q{
+            require Image::ExifTool::PDF;
+            $val = Image::ExifTool::PDF::WritePDFValue($self,$val,"date");
+            $val =~ tr/()//d;
+            return $val;
+        },
+        PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
     },
 );
 

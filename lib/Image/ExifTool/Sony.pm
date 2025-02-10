@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.71';
+$VERSION = '3.72';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -171,6 +171,7 @@ sub PrintInvLensSpec($;$$);
     32886 => 'Sony FE 300mm F2.8 GM OSS', #JR
     32887 => 'Sony E PZ 16-50mm F3.5-5.6 OSS II', #JR
     32888 => 'Sony FE 85mm F1.4 GM II', #JR
+    32889 => 'Sony FE 28-70mm F2 GM',
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -1226,6 +1227,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
                 9 => 'Center (LA-EA4)', # seen for ILCE-7RM2 with LA-EA4
                 11 => 'Zone',
                 12 => 'Expanded Flexible Spot',
+                13 => 'Custom AF Area', # NC, new AFArea option for ILCE-9M3, ILCE-1M2
             },
         },{
             Name => 'AFAreaModeSetting',
@@ -1726,7 +1728,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         },
     },{
         Name => 'Tag9050d',
-        Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR)|ZV-(E1|E10M2))\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR)|ZV-(E1|E10M2))\b/ or ($$self{Model} =~ /^(ILCE-1M2)/ and $$valPt =~ /^\x00/)',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Tag9050d',
             ByteOrder => 'LittleEndian',
@@ -8208,14 +8210,17 @@ my %isoSetting2010 = (
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     FORMAT => 'int8u',
-    NOTES => 'Valid for ILCE-6700/7CM2/7CR/ZV-E1.',
+    NOTES => q{
+        Valid for ILCE-6700/7CM2/7CR/ZV-E1. Also for ILCE-1M2 when using mechanical
+        shutter.
+    },
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     0x000a => {
         Name => 'ShutterCount',
         # number of mechanical shutter actuations, does not increase during electronic shutter / Silent Shooting
-        Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR))/',
+        Condition => '$$self{Model} =~ /^(ILCE-(1M2|6700|7CM2|7CR))/',
         Format => 'int32u',
         Notes => 'total number of mechanical shutter actuations',
         RawConv => '$val & 0x00ffffff',
@@ -8451,7 +8456,7 @@ my %isoSetting2010 = (
             200 => 'Continuous - Sweep Panorama',
         },
     },
-    0x001a => { %sequenceFileNumber },
+    0x001a => { %sequenceFileNumber }, # ILCE-9M3/1M2 have sometimes deviating values.
     0x001e => {
         Name => 'SequenceLength',
         PrintConv => {
@@ -8476,7 +8481,7 @@ my %isoSetting2010 = (
     },
     0x002a => [{
         Name => 'Quality2',
-        Condition => '$$self{Model} !~ /^(ILCE-(1|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX3|FX30)|ZV-(E1|E10M2))\b/',
+        Condition => '$$self{Model} !~ /^(ILCE-(1|1M2|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX3|FX30)|ZV-(E1|E10M2))\b/',
         PrintConv => {
             0 => 'JPEG',
             1 => 'RAW',
@@ -8544,7 +8549,7 @@ my %isoSetting2010 = (
     0x0000 => { Name => 'Ver9401', Hidden => 1, RawConv => '$$self{Ver9401} = $val; $$self{OPTIONS}{Unknown}<2 ? undef : $val' },
 
     0x03e2 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 181',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
-    0x03f4 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 185',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
+    0x03f4 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} =~ /^(185|186)/', Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x044e => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 178',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x0498 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 148',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x049d => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 167 and $$self{Software} !~ /^ILCE-7M4 (v2|v3)/', Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
@@ -8619,6 +8624,7 @@ my %isoSetting2010 = (
             10 => 'Selective (for Miniature effect)', # seen for DSC-HX30V,TX30,WX60,WX100
             11 => 'Zone', #JR (ILCE-7 series)
             12 => 'Expanded Flexible Spot', #JR (HX90V, ILCE-7 series)
+            13 => 'Custom AF Area', # NC, new AFArea option for ILCE-9M3, ILCE-1M2
             14 => 'Tracking',
             15 => 'Face Tracking',
             20 => 'Animal Eye Tracking',
@@ -10034,7 +10040,7 @@ my %isoSetting2010 = (
     },
     0x089d => { # Note: 32 values for these newer models, and 32 non-zero values present for new lenses like SEL2470GM2 and SEL2070G
         Name => 'VignettingCorrParams',
-        Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR|7RM5)|ILME-FX30|ZV-(E1|E10M2))\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(1M2|6700|7CM2|7CR|7RM5)|ILME-FX30|ZV-(E1|E10M2))\b/',
         Format => 'int16s[32]',
     },
     0x08b5 => {
@@ -10055,7 +10061,7 @@ my %isoSetting2010 = (
     },
     0x08e5 => {
         Name => 'APS-CSizeCapture',
-        Condition => '$$self{Model} =~ /^(ILCE-(7CM2|7CR|7RM5)|ZV-E1)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(1M2|7CM2|7CR|7RM5)|ZV-E1)\b/',
         PrintConv => {
             0 => 'Off',
             1 => 'On',
@@ -10073,7 +10079,7 @@ my %isoSetting2010 = (
     },
     0x0945 => {
         Name => 'ChromaticAberrationCorrParams',
-        Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR|7RM5)|ILME-FX30|ZV-(E1|E10M2))\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(1M2|6700|7CM2|7CR|7RM5)|ILME-FX30|ZV-(E1|E10M2))\b/',
         Format => 'int16s[32]',
     },
 );

@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.18';
+$VERSION = '13.19';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -9223,10 +9223,11 @@ sub HandleTag($$$$;%)
                 }
                 $self->Warn("RawConv $tag: " . CleanWarning()) if $evalWarning;
                 return undef unless defined $val;
-                $val = $$val if ref $val eq 'SCALAR';
-                $dataPt = \$val;
+                $dataPt = ref $val eq 'SCALAR' ? $val : \$val;
                 $subdirStart = 0;
-                $subdirLen = length $val;
+                $subdirLen = length $$dataPt;
+            } elsif (not $dataPt) {
+                $dataPt = ref $val eq 'SCALAR' ? $val : \$val;
             }
             if ($$subdir{Start}) {
                 my $valuePtr = 0;
@@ -9235,7 +9236,6 @@ sub HandleTag($$$$;%)
                 $subdirStart += $off;
                 $subdirLen -= $off;
             }
-            $dataPt or $dataPt = \$val;
             # process subdirectory information
             my %dirInfo = (
                 DirName  => $$subdir{DirName} || $$tagInfo{Name},

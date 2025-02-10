@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub ExtractObject($$;$);
 sub Get24u($$);
@@ -46,7 +46,7 @@ my %plistType = (
 %Image::ExifTool::PLIST::Main = (
     PROCESS_PROC => \&ProcessPLIST,
     GROUPS => { 0 => 'PLIST', 1 => 'XML', 2 => 'Document' },
-    VARS => { LONG_TAGS => 4 },
+    VARS => { LONG_TAGS => 12 },
     NOTES => q{
         Apple Property List tags.  ExifTool reads both XML and binary-format PLIST
         files, and will extract any existing tags even if they aren't listed below.
@@ -92,6 +92,35 @@ my %plistType = (
         Name => 'GPSMapDatum',
         Groups => { 2 => 'Location' },
     },
+    # slow motion stuff found in AAE files
+    'slowMotion/regions/timeRange/start/flags' => {
+        Name => 'SlowMotionRegionsStartTimeFlags',
+        PrintConv => { BITMASK => {
+            0 => 'Valid',
+            1 => 'Has been rounded',
+            2 => 'Positive infinity',
+            3 => 'Negative infinity',
+            4 => 'Indefinite',
+        }},
+    },
+    'slowMotion/regions/timeRange/start/value'     => 'SlowMotionRegionsStartTimeValue',
+    'slowMotion/regions/timeRange/start/timescale' => 'SlowMotionRegionsStartTimeScale',
+    'slowMotion/regions/timeRange/start/epoch'     => 'SlowMotionRegionsStartTimeEpoch',
+    'slowMotion/regions/timeRange/duration/flags'  => {
+        Name => 'SlowMotionRegionsDurationFlags',
+        PrintConv => { BITMASK => {
+            0 => 'Valid',
+            1 => 'Has been rounded',
+            2 => 'Positive infinity',
+            3 => 'Negative infinity',
+            4 => 'Indefinite',
+        }},
+    },
+    'slowMotion/regions/timeRange/duration/value'     => 'SlowMotionRegionsDurationValue',
+    'slowMotion/regions/timeRange/duration/timescale' => 'SlowMotionRegionsDurationTimeScale',
+    'slowMotion/regions/timeRange/duration/epoch'     => 'SlowMotionRegionsDurationEpoch',
+    'slowMotion/regions' => 'SlowMotionRegions',
+    'slowMotion/rate' => 'SlowMotionRate',
     XMLFileType => {
         # recognize MODD files by their content
         RawConv => q{
@@ -100,6 +129,10 @@ my %plistType = (
             }
             return $val;
         },
+    },
+    adjustmentData => { # AAE file
+        Name => 'AdjustmentData',
+        SubDirectory => { TagTable => 'Image::ExifTool::PLIST::Main' },
     },
 );
 
@@ -404,8 +437,13 @@ sub ProcessPLIST($$;$)
 
     unless ($result) {
         my $buff;
-        my $raf = $$dirInfo{RAF} or return 0;
-        $raf->Seek(0,0) and $raf->Read($buff, 64) or return 0;
+        my $raf = $$dirInfo{RAF};
+        if ($raf) {
+            $raf->Seek(0,0) and $raf->Read($buff, 64) or return 0;
+        } else {
+            return 0 unless $$dirInfo{DataPt};
+            $buff = ${$$dirInfo{DataPt}};
+        }
         if ($buff =~ /^bplist0/) {
             # binary PLIST file
             my $tagTablePtr = GetTagTable('Image::ExifTool::PLIST::Main');

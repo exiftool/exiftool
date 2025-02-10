@@ -891,7 +891,7 @@ sub WriteQuickTime($$$)
     $et or return 1;    # allow dummy access to autoload this package
     my ($mdat, @mdat, @mdatEdit, $edit, $track, $outBuff, $co, $term, $delCount);
     my (%langTags, $canCreate, $delGrp, %boxPos, %didDir, $writeLast, $err, $atomCount);
-    my ($tag, $lastTag, $lastPos, $errStr, $trailer, $buf2, $keysGrp, $keysPath);
+    my ($tag, $lastTag, $lastPos, $errStr, $trailer, $buf2, $keysGrp, $keysPath, $itemIndex);
     my $outfile = $$dirInfo{OutFile} || return 0;
     my $raf = $$dirInfo{RAF};       # (will be null for lower-level atoms)
     my $dataPt = $$dirInfo{DataPt}; # (will be null for top-level atoms)
@@ -982,8 +982,25 @@ sub WriteQuickTime($$$)
     $atomCount = $$tagTablePtr{VARS}{ATOM_COUNT} if $$tagTablePtr{VARS};
 
     $tag = $lastTag = '';
+    $itemIndex = 0 if $dirName eq 'ItemPropertyContainer';
 
+    # read ahead to parse item property associations if this is 'iprp' ItemProperties
+    # (necessary to determine which properties belong to primary item in HEIC file)
+    if ($dirName eq 'ItemProperties') {
+        my $pos = $raf->Tell();
+        for (;;) {
+            $raf->Read($buf2, 8) == 8 or last;
+            my $size = Get32u(\$buf2, 0) - 8;    # (atom size without 8-byte header)
+            $tag = substr($buf2, 4, 4);
+            last if $size < 0;
+            $tag eq 'ipma' or $raf->Seek($size, 1), next;
+            ParseItemPropAssoc($buf2,$et) if $raf->Read($buf2,$size) == $size;
+            last;
+        }
+        $raf->Seek($pos);
+    }
     for (;;) {      # loop through all atoms at this level
+        ++$itemIndex if defined $itemIndex;
         $lastPos = $raf->Tell();
         # stop processing if we reached a known trailer
         if ($trailer and $lastPos >= $$trailer[1]) {
@@ -1185,6 +1202,32 @@ sub WriteQuickTime($$$)
             }
         }
         undef $tagInfo if $tagInfo and $$tagInfo{AddedUnknown};
+
+        # don't write this tag unless associated with the primary item
+        # (Note: This relies on iinf and dimg coming before iprp)
+        if (defined $itemIndex and $$et{ItemInfo}) {
+            my $items = $$et{ItemInfo};
+            my ($id, $prop, $isPrimary);
+            my $primary = $$et{PrimaryItem} || 0;
+            my $pitem = $$items{$primary} || { };
+            $$pitem{RefersTo} or $$pitem{RefersTo} = { };
+ItemID2:    foreach $id (reverse sort { $a <=> $b } keys %$items) {
+                next unless $$items{$id}{Association};
+                my $item = $$items{$id};
+                foreach $prop (@{$$item{Association}}) {
+                    next unless $prop == $itemIndex;
+                    my $dont = $dontInherit{$tag} || 0;
+                    last unless $id == $primary or (not $dont and
+                        ($$item{RefersTo} and $$item{RefersTo}{$primary})) or
+                        # special case to assume this property belongs to the primary
+                        # image if it belongs to an item referred to by the primary
+                        ($dont != 1 and $$pitem{RefersTo}{$id});
+                    $isPrimary = 1;
+                    last ItemID2;
+                }
+            }
+            undef $tagInfo unless $isPrimary;
+        }
 
         if ($tagInfo and (not defined $$tagInfo{Writable} or $$tagInfo{Writable})) {
             my $subdir = $$tagInfo{SubDirectory};

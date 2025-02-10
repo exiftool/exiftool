@@ -1,16 +1,25 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.75
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.19
 [File, System, Other] FileName - File Name: PLIST.aae
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 827 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2018:09:07 08:00:15-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:31 14:56:46-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:29 08:21:01-04:00
-[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, System, Time] FileAccessDate - File Access Date/Time: 2025:02:07 14:21:55-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:02:03 10:20:41-05:00
+[File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: AAE
 [File, File, Other] FileTypeExtension - File Type Extension: aae
 [File, File, Other] MIMEType - MIME Type: application/vnd.apple.photos
 [PLIST, XML, Document] adjustmentBaseVersion - Adjustment Base Version: 0
-[PLIST, XML, Document] adjustmentData - Adjustment Data: (Binary data 208 bytes)
+[PLIST, PLIST, Document] slowMotion/regions/timeRange/start/flags - Slow Motion Regions Start Time Flags: Valid
+[PLIST, PLIST, Document] slowMotion/regions/timeRange/start/value - Slow Motion Regions Start Time Value: 6296250000
+[PLIST, PLIST, Document] slowMotion/regions/timeRange/start/timescale - Slow Motion Regions Start Time Scale: 1000000000
+[PLIST, PLIST, Document] slowMotion/regions/timeRange/start/epoch - Slow Motion Regions Start Time Epoch: 0
+[PLIST, PLIST, Document] slowMotion/regions/timeRange/duration/flags - Slow Motion Regions Duration Flags: Valid
+[PLIST, PLIST, Document] slowMotion/regions/timeRange/duration/value - Slow Motion Regions Duration Value: 29382500000
+[PLIST, PLIST, Document] slowMotion/regions/timeRange/duration/timescale - Slow Motion Regions Duration Time Scale: 1000000000
+[PLIST, PLIST, Document] slowMotion/regions/timeRange/duration/epoch - Slow Motion Regions Duration Epoch: 0
+[PLIST, PLIST, Document] slowMotion/regions - Slow Motion Regions: 
+[PLIST, PLIST, Document] slowMotion/rate - Slow Motion Rate: 0.125
 [PLIST, XML, Document] adjustmentEditorBundleID - Adjustment Editor Bundle ID: 
 [PLIST, XML, Document] adjustmentFormatIdentifier - Adjustment Format Identifier: com.apple.video.slomo
 [PLIST, XML, Document] adjustmentFormatVersion - Adjustment Format Version: 1.1

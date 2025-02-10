@@ -7,6 +7,20 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.10. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 10, 2025 - Version 13.19
+
+  - Added read/write support for PDF and XMP-pdfx SourceModified
+  - Decode GPS from two more DJI protobuf formats (Matrice 30 and Mini 4 Pro)
+  - Decode timed GPS from Rexing V1-4k dashcam
+  - Decode more information from AAE files
+  - Made a new icon for the Windows EXE application
+  - Changed family 3 groups for ICO files so the first icon is in the Doc1
+    instead of the Main group
+  - Improved handling of ICC_Profile in HEIC images:
+      - Profiles for sub-images are extracted as sub-documents
+      - Allow only the profile of the main image to be written
+  - Updated Sony decoding for ILCE-1M2 (thanks Jos Roost)
+
 Feb. 3, 2025 - Version 13.18
 
   - Decode a number of new GoPro tags
@@ -72,7 +86,7 @@ Jan. 20, 2025 - Version 13.13
 
   - Added ability to write tags to the audio/video tracks of MOV/MP4 videos
     using the new AudioKeys and VideoKeys group names
-  - Added support for another DJI protobuf format (Mavic 3)
+  - Decode GPS from another DJI protobuf format (Mavic 3)
   - Decode yet another type of LIGOGPSINFO timed GPS from a dashcam video
   - Extract some proprietary information from JPEG images of Vivo phones
   - Enhanced Geolocation feature to allow the nearest cities to a specified city
@@ -410,8 +424,8 @@ July 11, 2024 - Version 12.88 - "New Windows/MacOS packages"
   - Tweaked API Geolocation option recognized space-separated lat/lon even when
     there is no decimal point in the numbers
   - API Changes:
-      - Changed LargeFileSupport default to 2 and added a warning if a large
-        chunk is encountered.  Set to 1 to avoid the warning.
+      - Changed LargeFileSupport default to 1 and added a setting of 2 to warn
+        if a large chunk is encountered
 
 June 13, 2024 - Version 12.87
 

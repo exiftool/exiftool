@@ -174,7 +174,7 @@ sub ProcessProtobuf($$$;$)
                 my $dir = { DataPt => \$buff, Pos => 0 };
                 my $num = VarInt($dir);
                 my $den = VarInt($dir);
-                $val = (defined $num and $den) ? "$num/$den" : 'err';
+                $val = (defined $num and $den) ? $num/$den : 'err';
             } else {
                 $val = ReadValue(\$buff, 0, $$tagInfo{Format}, undef, length($buff));
             }

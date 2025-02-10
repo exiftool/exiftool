@@ -25,7 +25,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.47';
+$VERSION = '1.48';
 
 sub ProcessKodakIFD($$$);
 sub ProcessKodakText($$$);
@@ -2983,7 +2983,8 @@ my %sceneModeUsed = (
         Priority => 0,  # (only integer seconds)
         PrintConv => 'ConvertDuration($val)',
     },
-   'ver '=> { Name => 'KodakVersion' },
+    # (save KodakVersion to recognize Rexing Dashcam video for GPS scaling)
+   'ver '=> { Name => 'KodakVersion', RawConv => '$$self{KodakVersion} = $val' },
     thma => { Name => 'ThumbnailImage', Groups => { 2 => 'Preview' }, Binary => 1 },
     scra => { Name => 'PreviewImage',   Groups => { 2 => 'Preview' }, Binary => 1 },
 );

@@ -159,11 +159,13 @@ just an extension.</p>
 
 <p>This example uses the same data set as example 1, but using the <code>Scatter</code>
 plot type to show the correlation betweent CameraTemperature and AmbientTemperature.
-Note that in this case the legend doesn't appear because there is only one plot
-line and it has the same name as the default label for the Y axis.  The plot
-<code>Style</code> has been changed to <code>Marker</code> to show markers for
-the data points instead of connecting them with lines, and <code>Fill</code> has
-been added to show filled markers instead of outlines.</p>
+The first tag specified on the command line is the independent variable (plotted
+along the X axis), and the rest are the dependent variables (Y axis). Note that
+the legend doesn't appear in this plot because there is only one dependent
+variable and its name is used for the Y-axis label.  The plot <code>Style</code>
+has been changed to <code>Marker</code> to show markers for the data points
+instead of connecting them with lines, and <code>Fill</code> has been added to
+show filled markers instead of outlines.</p>
 
 <pre>exiftool C:/pics -w plot3.svg "-*temperature" -plot -api plot="type=scatter,style=marker+fill"</pre>
 
@@ -191,7 +193,7 @@ file:</p>
 
 <hr>
 <i>Created Feb 19, 2025</i><br>
-<i>Last revised Feb 19, 2025</i><br>
+<i>Last revised Feb 20, 2025</i><br>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

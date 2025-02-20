@@ -7,9 +7,14 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.10. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 20, 2025 - Version 13.21
+
+  - Patched issue that could result in runtime warning for some video files
+  - Fixed a bug that could cause a compiler error when using the -plot option
+
 Feb. 20, 2025 - Version 13.20
 
-  - Added -plot option for generating SVG-format plots from tag values
+  - Added new -plot option for generating SVG-format plots from tag values
   - Added a new Olympus CameraType
   - Added a new Nikon Z LensID (thanks Warren Hatch)
   - Overhauled decoding of Nikon AF tags (thanks Warren Hatch)

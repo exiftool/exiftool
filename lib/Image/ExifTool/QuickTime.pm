@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.12';
+$VERSION = '3.13';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -9891,7 +9891,7 @@ sub ProcessMOV($$;$)
         }
         if ($isUserData and $$et{SET_GROUP1}) {
             my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
-            unless ($$tagInfo{SubDirectory}) {
+            unless ($tagInfo and $$tagInfo{SubDirectory}) {
                 # add track name to UserData tags inside tracks
                 $tag = $$et{SET_GROUP1} . $tag;
                 if (not $$tagTablePtr{$tag} and $tagInfo) {

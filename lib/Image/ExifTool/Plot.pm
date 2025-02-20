@@ -11,7 +11,7 @@ package Image::ExifTool::Plot;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 # default plot settings (lower-case settings may be overridden by the user)
 my %defaults = (
@@ -133,7 +133,7 @@ sub AddPoints($$$)
             if ($$self{'split'}) {
                 # make an array
                 $$info{$tag} = [ split /[ ,;\t\n\r][\n\r]? */, $val ];
-                unshift $tags, $tag;
+                unshift @$tags, $tag;
                 # split into lists of 'split' elements if split > 1
                 $mod = $$self{'split'} if $$self{'split'} > 1;
                 next;
@@ -254,6 +254,7 @@ sub Draw($$)
         $xmin = 0;
     }
     if ($hist) {
+        $$self{nbins} > 0 or $$self{Error} = 'Invalid number of histogram bins', return;
         $noLegend = 1;
         # y axis becomes histogram x axis after binning
         $min = $$self{xmin} if defined $$self{xmin};

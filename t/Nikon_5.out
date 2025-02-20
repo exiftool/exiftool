@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.20
 [File, System, Other] FileName - File Name: NikonD2Hs.jpg
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 3.5 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:01:04 14:02:27-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:44-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:10:31 20:34:50-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2025:02:19 12:20:00-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:02:10 11:10:30-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -154,6 +154,7 @@
 [Composite, Composite, Time] Exif-SubSecCreateDate - Create Date: 2005:03:18 02:55:18.16
 [Composite, Composite, Time] Exif-SubSecDateTimeOriginal - Date/Time Original: 2005:03:18 02:55:18.16
 [Composite, Composite, Time] Exif-SubSecModifyDate - Modify Date: 2005:03:18 02:55:18.16
+[Composite, Composite, Camera] Nikon-AutoFocus - Auto Focus: On
 [Composite, Composite, Camera] Nikon-LensID - Lens ID: AF Nikkor 50mm f/1.8D
 [Composite, Composite, Camera] Nikon-LensSpec - Lens Spec: 50mm f/1.8 D
 [Composite, Composite, Camera] Exif-BlueBalance - Blue Balance: 2.097656

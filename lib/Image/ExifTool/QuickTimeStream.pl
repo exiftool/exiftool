@@ -1446,7 +1446,6 @@ Sample:     for ($i=0; ; ) {
                     $$et{ee} = $ee; # need ee information for 'keys'
                     $et->HandleTag($tagTbl, $metaFormat, undef,
                         DataPt  => \$buff,
-                        DataPos => 0,
                         Base    => $$start[$i], # (Base must be set for CR3 files)
                         TagInfo => $tagInfo,
                     );
@@ -1494,7 +1493,6 @@ Sample:     for ($i=0; ; ) {
                 FoundSomething($et, $tagTbl, $time[$i], $dur[$i]);
                 $et->HandleTag($tagTbl, $type, undef,
                     DataPt  => \$buff,
-                    DataPos => 0,
                     Base    => $$start[$i], # (Base must be set for CR3 files)
                     TagInfo => $tagInfo,
                 );
@@ -1571,6 +1569,7 @@ sub ProcessFreeGPS($$$)
     my $debug = $et->Options('Debug');
     my $oldOrder = GetByteOrder();
     SetByteOrder('II');
+    $$et{FoundEmbedded} = 1;
 
     if (substr($$dataPt,18,8) eq "\xaa\xaa\xf2\xe1\xf0\xee\x54\x54") {
 
@@ -3548,50 +3547,85 @@ sub ProcessWolfbox($$$)
 }
 
 #------------------------------------------------------------------------------
-# Scan media data for "freeGPS" metadata if not found already (ref PH)
+# Scan media data for "freeGPS" and GoPro metadata if not found already (ref PH)
 # Inputs: 0) ExifTool ref
 sub ScanMediaData($)
 {
     my $et = shift;
     my $raf = $$et{RAF} or return;
-    my ($tagTbl, $verbose, $buff, $dataLen);
-    my ($pos, $buf2) = (0, '');
+    my ($tagTbl, $verbose, $buff, $dataLen, $found);
 
     # don't rescan for freeGPS if we already found embedded metadata
     my $dataPos = $$et{MediaDataOffset};
-    if ($dataPos and not $$et{DOC_COUNT}) {
+    return if $$et{FoundEmbedded} or not $dataPos;
+
+    my ($pos, $buf2) = (0, '');
+    my $ee = $et->Options('ExtractEmbedded');
+    if ($ee > 2) { # scan entire file from start of mdat if ExtractEmbedded > 2
+        $raf->Seek(0,2);
+        $dataLen = $raf->Tell() - $$et{MediaDataOffset};
+    } else {
         $dataLen = $$et{MediaDataSize};
-        if ($dataLen) {
-            if ($raf->Seek($dataPos, 0)) {
-                $$et{FreeGPS2} = { };   # initialize variable space for FreeGPS2()
-            } else {
-                undef $dataLen;
-            }
-        }
     }
+    return unless $dataLen and $raf->Seek($dataPos);
 
     # loop through 'mdat' media data looking for GPS information
     while ($dataLen) {
-        last if $pos + $gpsBlockSize > $dataLen;
-        last unless $raf->Read($buff, $gpsBlockSize);
+        my $n = $gpsBlockSize;
+        $n = $dataLen - $pos if $n + $pos > $dataLen;
+        last unless $n > length($buf2) and $raf->Read($buff, $n - length($buf2));
         $buff = $buf2 . $buff if length $buf2;
-        last if length $buff < $gpsBlockSize;
-        # look for "freeGPS " block
-        # (found on an absolute 0x8000-byte boundary in all of my samples,
+        # look for "freeGPS " or GoPro record
+        # (freeGPS found on an absolute 0x8000-byte boundary in all of my samples,
         #  but allow for any alignment when searching)
-        if ($buff !~ /\0..\0freeGPS /sg) { # (seen ".." = "\0\x80","\x01\0")
+        if ($buff !~ /(\0..\0freeGPS |GP\x06\0\0)/sg) {
             $buf2 = substr($buff,-12);
             $pos += length($buff)-12;
             # in all of my samples the first freeGPS block is within 2 MB of the start
             # of the mdat, so limit the scan to the first 20 MB to be fast and safe
-            next if $tagTbl or $pos < 20e6;
+            next if $found or $pos < 20e6 or $ee > 1;
             last;
-        } elsif (not $tagTbl) {
+        } elsif ($1 eq "GP\x06\0\0") { # (GoPro GPS record header)
+            # (found in Chigee Aio-5 Lite and some Insta360 videos)
+            my $buffPos = pos($buff);
+            my $filePos = $raf->Tell();
+            my $start = $filePos - length($buff) + $buffPos - length($1);
+            $raf->Seek($start) or last;
+            unless (defined $found) {
+                $et->VPrint(0, "---- Extract Embedded ----\n");
+                $$et{INDENT} .= '| ';
+                $found = 0;
+            }
+            my $maxLen = $dataLen - ($start - $$et{MediaDataOffset});
+            require Image::ExifTool::GoPro;
+            $et->VPrint(0, sprintf("Unreferenced GoPro record at 0x%x\n",$filePos));
+            my $size = Image::ExifTool::GoPro::ProcessGP6($et, { RAF => $raf, DirLen => $maxLen });
+            if ($size) {
+                unless ($found) {
+                    # scan entire file if we found a valid GoPro record
+                    # (some records may exist in trailer)
+                    $raf->Seek(0, 2) and $dataLen = $raf->Tell() - $$et{MediaDataOffset};
+                    $found = 2;
+                }
+                $raf->Seek($start + $size) or last;
+                $pos = $start + $size - $$et{MediaDataOffset};
+                $buf2 = '';
+            } else {
+                # (could have been a random match -- continue with search)
+                $raf->Seek($filePos) or last;
+                $buf2 = substr($buff, $buffPos);
+                $pos += $buffPos;
+            }
+            next;
+        }
+        last if length $buff < $gpsBlockSize;
+        if (not $tagTbl) {
             # initialize variables for extracting metadata from this block
             $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
             $verbose = $$et{OPTIONS}{Verbose};
             $et->VPrint(0, "---- Extract Embedded ----\n");
             $$et{INDENT} .= '| ';
+            $found = 1;
         }
         if (pos($buff) > 12) {
             $pos += pos($buff) - 12;
@@ -3618,7 +3652,7 @@ sub ScanMediaData($)
         $pos += $len;
         $buf2 = substr($buff, $len);
     }
-    if ($tagTbl) {
+    if ($found) {
         delete $$et{DOC_NUM}; # reset DOC_NUM after extracting embedded metadata
         $et->VPrint(0, "--------------------------\n");
         $$et{INDENT} = substr $$et{INDENT}, 0, -2;

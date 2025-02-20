@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.78
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.20
 [File, System, Other] FileName - File Name: Nikon.nef
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 6.2 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2007:01:05 13:00:46-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2024:02:28 08:51:41-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2024:01:31 12:58:56-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2025:02:19 12:20:00-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:02:10 11:10:30-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: NEF
 [File, File, Other] FileTypeExtension - File Type Extension: nef
@@ -251,6 +251,7 @@
 [Composite, Composite, Time] Exif-SubSecCreateDate - Create Date: 2004:06:09 16:02:35.00
 [Composite, Composite, Time] Exif-SubSecDateTimeOriginal - Date/Time Original: 2004:06:09 16:02:35.00
 [Composite, Composite, Time] Exif-SubSecModifyDate - Modify Date: 2005:08:25 13:09:05.00
+[Composite, Composite, Camera] Nikon-AutoFocus - Auto Focus: On
 [Composite, Composite, Camera] Nikon-LensID - Lens ID: AF-S DX Zoom-Nikkor 18-70mm f/3.5-4.5G IF-ED
 [Composite, Composite, Camera] Nikon-LensSpec - Lens Spec: 18-70mm f/3.5-4.5 G
 [Composite, Composite, Camera] Exif-BlueBalance - Blue Balance: 1.860377

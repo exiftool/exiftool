@@ -8,6 +8,7 @@
 <!--
 pre  { padding: 0; margin: 0px 2px }
 ul   { margin-top: 0 }
+table.top td { vertical-align: top }
 -->
 </style>
 </head>
@@ -903,6 +904,32 @@ effect as a value of 0 for options with numerical values.</p>
     password-protected PDF documents. Ignored if a password is not required. Character encoding of
     the password is determined by the value of the Charset option at processing time.</td>
     <td align=center>Any string</td><td align=center>undef</td></tr>
+<tr id="Plot"><td>Plot</td><td>Settings for SVG plot feature as a comma-delimited
+    string.  Commas in the values must be escaped as "&amp;#44;". Valid settings and their default values are:
+    <table class="clear top">
+    <tr><td>"Type=Line"</td><td>-</td><td>type of plot (Line, Scatter or Histogram)</td></tr>
+    <tr><td>"Style=Line"</td><td>-</td><td>data style (Line, Marker and/or Fill)</td></tr>
+    <tr><td>"NBins=20"</td><td>-</td><td>number of histogram bins</td></tr>
+    <tr><td>"Size=800 600"</td><td>-</td><td>width,height of output image</td></tr>
+    <tr><td>"Margin=60&nbsp;15&nbsp;15&nbsp;30"</td><td>-</td><td>left,top,right,bottom margins around plot area</td></tr>
+    <tr><td>"Legend=0 0"</td><td>-</td><td>x,y offset to shift plot legend</td></tr>
+    <tr><td>"TxtPad=10 10"</td><td>-</td><td>padding between text and x,y scale</td></tr>
+    <tr><td>"LineSpacing=20"</td><td>-</td><td>spacing between text lines</td></tr>
+    <tr><td>Title, XLabel, YLabel</td><td>-</td><td>plot title and x/y axis labels (no default)</td></tr>
+    <tr><td>XMin, XMax</td><td>-</td><td>x axis minimum/maximum (auto scaling if not set)</td></tr>
+    <tr><td>YMin, YMax</td><td>-</td><td>y axis minimum/maximum</td></tr>
+    <tr><td>"Split="</td><td>-</td><td>flag to split strings of numbers into lists
+    (&gt;1 to split into lists of N items)</td></tr>
+    <tr><td>"Grid=darkgray"</td><td>-</td><td>grid color</td></tr>
+    <tr><td>"Text=black"</td><td>-</td><td>text and border color</td></tr>
+    <tr><td>"Bkg="</td><td>-</td><td>background color (default transparent)</td></tr>
+    <tr><td colspan=3>"Cols=red green blue black orange gray purple cyan
+    brown pink" - colors for plot data</td></tr>
+    </table></td>
+    <td>Comma-delimited string of settings to override default values, or
+    undef to revert to default settings.  Settings are accumulated if this option
+    is set multiple times.<br><br>See <a href="plot.html">The ExifTool Plot Feature</a>
+    for more details and examples.</td><td align=center>undef</td></tr>
 <tr id="PrintConv"><td>PrintConv</td><td>Flag to enable print conversion.  Also enables inverse print
     conversion for writing.</td><td align=center>0 or 1</td><td align=center>1</td></tr>
 <tr id="PrintCSV"><td>PrintCSV</td><td>Flag to directly print CSV-format output rather
@@ -968,21 +995,21 @@ effect as a value of 0 for options with numerical values.</p>
     the FastScan option, only unrecognized file types are scanned for XMP.  
     </td><td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="Sort"><td>Sort</td><td>Specifies order to sort tags in the returned tag list.</td>
-    <td><table class=clear>
-    <tr><td valign=top align=right><b>Input</b>&nbsp;=</td><td>Sort in same order as input tag arguments</td></tr>
-    <tr><td valign=top align=right><b>File</b>&nbsp;=</td><td>Sort in order that tags were found in the file</td></tr>
-    <tr><td valign=top align=right><b>Tag</b>&nbsp;=</td><td>Sort alphabetically by tag name</td></tr>
-    <tr><td valign=top align=right><b>Descr</b>&nbsp;=</td><td>Sort by tag description (with current Lang setting)</td></tr>
-    <tr valign=top><td valign=top align=right><b>Group#</b>&nbsp;=</td><td>Sort by tag group,
+    <td><table class="clear top">
+    <tr><td align=right><b>Input</b>&nbsp;=</td><td>Sort in same order as input tag arguments</td></tr>
+    <tr><td align=right><b>File</b>&nbsp;=</td><td>Sort in order that tags were found in the file</td></tr>
+    <tr><td align=right><b>Tag</b>&nbsp;=</td><td>Sort alphabetically by tag name</td></tr>
+    <tr><td align=right><b>Descr</b>&nbsp;=</td><td>Sort by tag description (with current Lang setting)</td></tr>
+    <tr><td align=right><b>Group#</b>&nbsp;=</td><td>Sort by tag group,
         where # is zero or more family numbers separated by colons. If # is not specified,
         Group0 is assumed.  See <a href="#GetGroup">GetGroup</a> for a description of group
         families.</td></tr>
     </table></td><td align=center>'Input'</td></tr>
 <tr id="Sort2"><td>Sort2</td><td>Secondary sort order used for tags within each group when Sort is 'Group'.</td>
-    <td><table class=clear>
-    <tr><td valign=top align=right><b>File</b>&nbsp;=</td><td>Sort in order that tags were found in the file</td></tr>
-    <tr><td valign=top align=right><b>Tag</b>&nbsp;=</td><td>Sort alphabetically by tag name</td></tr>
-    <tr><td valign=top align=right><b>Descr</b>&nbsp;=</td><td>Sort by tag description (with current Lang setting)</td></tr>
+    <td><table class="clear top">
+    <tr><td align=right><b>File</b>&nbsp;=</td><td>Sort in order that tags were found in the file</td></tr>
+    <tr><td align=right><b>Tag</b>&nbsp;=</td><td>Sort alphabetically by tag name</td></tr>
+    <tr><td align=right><b>Descr</b>&nbsp;=</td><td>Sort by tag description (with current Lang setting)</td></tr>
     </table></td><td align=center>'File'</td></tr>
 <tr id="StrictDate"><td>StrictDate</td><td>Flag to return undefined value for
     any date which can't be converted when the DateFormat option is used.  When
@@ -993,10 +1020,10 @@ effect as a value of 0 for options with numerical values.</p>
     reformatted according to PNG 1.2 recommendation (RFC-1123) when writing, and
     a warning to be issued for any non-standard value when reading (but note
     that Windows may not recognize PNG date/time values in standard format).</td>
-    <td><table class=clear>
-    <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>Same as 0 for reading/writing or 1 for copying</td></tr>
-    <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Return bad date/time values unchanged</td></tr>
-    <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>Return undef if date/time value can't be converted</td></tr>
+    <td><table class="clear top">
+    <tr><td align=right><b>undef</b>&nbsp;=</td><td>Same as 0 for reading/writing or 1 for copying</td></tr>
+    <tr><td align=right><b>0</b>&nbsp;=</td><td>Return bad date/time values unchanged</td></tr>
+    <tr><td align=right><b>1</b>&nbsp;=</td><td>Return undef if date/time value can't be converted</td></tr>
     </table></td><td align=center>undef</td></tr>
 <tr id="Struct"><td>Struct</td><td>Flag to return XMP structures as HASH references
     instead of flattening into individual tags.  This setting has no effect
@@ -1005,21 +1032,21 @@ effect as a value of 0 for options with numerical values.</p>
     more details about structured information.  A special "_ordered_keys_" element
     containing a list of ordered keys may exist if the structure elements are ordered
     (see the <a href="#OrderedKeys">OrderedKeys</a> method).</td>
-    <td><table class=clear>
-    <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>Same as 0 for reading and 2 for copying</td></tr>
-    <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Read/copy flattened tags</td></tr>
-    <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>Read/copy structures</td></tr>
-    <tr><td valign=top align=right><b>2</b>&nbsp;=</td><td>Read/copy both flattened and structured tags,
+    <td><table class="clear top">
+    <tr><td align=right><b>undef</b>&nbsp;=</td><td>Same as 0 for reading and 2 for copying</td></tr>
+    <tr><td align=right><b>0</b>&nbsp;=</td><td>Read/copy flattened tags</td></tr>
+    <tr><td align=right><b>1</b>&nbsp;=</td><td>Read/copy structures</td></tr>
+    <tr><td align=right><b>2</b>&nbsp;=</td><td>Read/copy both flattened and structured tags,
     but flag flattened tags as "unsafe" for copying</td></tr>
     </table></td><td align=center>undef</td></tr>
 <tr id="StructFormat"><td>StructFormat</td><td>Format for serialized structures when reading/writing.
     <a href="struct.html">Read here</a> for more details about structured information.
     Note that the JSONQ setting causes all values in the exiftool application -json
     output to be quoted, regardless of whether or not they are in a structure.</td>
-    <td><table class=clear>
-    <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>ExifTool format</td></tr>
-    <tr><td valign=top align=right><b>JSON</b>&nbsp;=</td><td>JSON format</td></tr>
-    <tr><td valign=top align=right><b>JSONQ</b>&nbsp;=</td><td>JSON with quoted numbers</td></tr>
+    <td><table class="clear top">
+    <tr><td align=right><b>undef</b>&nbsp;=</td><td>ExifTool format</td></tr>
+    <tr><td align=right><b>JSON</b>&nbsp;=</td><td>JSON format</td></tr>
+    <tr><td align=right><b>JSONQ</b>&nbsp;=</td><td>JSON with quoted numbers</td></tr>
     </table></td><td align=center>undef</td></tr>
 <tr id="SystemTags"><td>SystemTags</td><td>Flag to extract the
     following additional File System tags:  FileAttributes, FileDeviceNumber,
@@ -1035,11 +1062,11 @@ effect as a value of 0 for options with numerical values.</p>
     Requires Time::Piece on Windows, or POSIX::tzset on other systems.</td>
     <td>Time zone offset or ID, or undef to use the system time zone</td><td align=center>undef</td></tr>
 <tr id="Unknown"><td>Unknown</td><td>Control extraction of unknown tags.</td>
-    <td><table class=clear>
-    <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Unknown tags not extracted</td></tr>
-    <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Unknown tags are extracted from EXIF
+    <td><table class="clear top">
+    <tr><td align=center><b>0</b>&nbsp;=</td><td>Unknown tags not extracted</td></tr>
+    <tr><td align=center><b>1</b>&nbsp;=</td><td>Unknown tags are extracted from EXIF
         (and other tagged-format) directories</td></tr>
-    <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Unknown tags also extracted from binary data blocks</td></tr>
+    <tr><td align=center><b>2</b>&nbsp;=</td><td>Unknown tags also extracted from binary data blocks</td></tr>
     </table></td><td align=center>0</td></tr>
 <tr id="UserParam"><td>UserParam</td><td>Special option to set/get user-defined parameters.
     Useful to allow external input into tag name expressions and ValueConv logic.
@@ -1051,15 +1078,15 @@ effect as a value of 0 for options with numerical values.</p>
     additional arguments, <code>Options('UserParam')</code> returns a reference to the
     hash of all user parameters (with lower-case names).
 </td>
-    <td><table class=clear>
-    <tr><td valign=top><i>PARAM</i></td><td valign=top>-</td><td>Get parameter</td></tr>
-    <tr><td valign=top><i>PARAM=</i></td><td valign=top>-</td><td>Clear parameter</td></tr>
-    <tr><td valign=top><i>PARAM^=</i></td><td valign=top>-</td><td>Set parameter to empty string</td></tr></table>
+    <td><table class="clear top">
+    <tr><td><i>PARAM</i></td><td>-</td><td>Get parameter</td></tr>
+    <tr><td><i>PARAM=</i></td><td>-</td><td>Clear parameter</td></tr>
+    <tr><td><i>PARAM^=</i></td><td>-</td><td>Set parameter to empty string</td></tr></table>
     <table class=clear>
-    <tr><td valign=top><i>PARAM=VALUE</i></td><td valign=top>-</td><td>Set parameter</td></tr>
+    <tr><td><i>PARAM=VALUE</i></td><td>-</td><td>Set parameter</td></tr>
     </table><table class=clear>
-    <tr><td valign=top><i>hash&nbsp;ref</i></td><td valign=top>-</td><td>Set UserParam hash</td></tr>
-    <tr><td valign=top><b>undef</b></td><td valign=top>-</td><td>Clear UserParam hash</td></tr>
+    <tr><td><i>hash&nbsp;ref</i></td><td>-</td><td>Set UserParam hash</td></tr>
+    <tr><td><b>undef</b></td><td>-</td><td>Clear UserParam hash</td></tr>
     </table>
     </td><td align=center>{ }</td></tr>
 <tr id="Validate"><td>Validate</td><td>Flag to perform extra metadata validation checks
@@ -1067,13 +1094,13 @@ effect as a value of 0 for options with numerical values.</p>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="Verbose"><td>Verbose</td><td>Print verbose messages to file specified by TextOut option.
     <a href="verbose.html">Click here</a> for example outputs.</td>
-    <td><table class=clear>
-    <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>No verbose messages</td></tr>
-    <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Print tag names and raw values</td></tr>
-    <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Add additional tag details</td></tr>
-    <tr><td valign=top align=center><b>3</b>&nbsp;=</td><td>Add hex dump of tag data (with length limits)</td></tr>
-    <tr><td valign=top align=center><b>4</b>&nbsp;=</td><td>Remove length limit on dump of tag values</td></tr>
-    <tr><td valign=top align=center><b>5</b>&nbsp;=</td><td>Remove length limit on dump of JPEG segments</td></tr>
+    <td><table class="clear top">
+    <tr><td align=center><b>0</b>&nbsp;=</td><td>No verbose messages</td></tr>
+    <tr><td align=center><b>1</b>&nbsp;=</td><td>Print tag names and raw values</td></tr>
+    <tr><td align=center><b>2</b>&nbsp;=</td><td>Add additional tag details</td></tr>
+    <tr><td align=center><b>3</b>&nbsp;=</td><td>Add hex dump of tag data (with length limits)</td></tr>
+    <tr><td align=center><b>4</b>&nbsp;=</td><td>Remove length limit on dump of tag values</td></tr>
+    <tr><td align=center><b>5</b>&nbsp;=</td><td>Remove length limit on dump of JPEG segments</td></tr>
     </table></td><td align=center>0</td></tr>
 <tr id="WindowsLongPath"><td>WindowsLongPath</td><td>Support long path names in Windows.
     Enabling this option automatically enables the WindowsWideFile feature.</td>
@@ -1088,10 +1115,10 @@ effect as a value of 0 for options with numerical values.</p>
     (the family 0 group), but for EXIF this is the individual IFD (the family 1 group).
     The 'w' and 'c' modes are tested only when <a href="#SetNewValue">SetNewValue</a>
     is called, but the 'g' mode is also tested in <a href="#WriteInfo">WriteInfo</a>.</td>
-    <td>A string with one or more of these characters:<table class=clear>
-    <tr><td valign=top align=center><b>w</b>&nbsp;=</td><td><b>W</b>rite existing tags</td></tr>
-    <tr><td valign=top align=center><b>c</b>&nbsp;=</td><td><b>C</b>reate new tags</td></tr>
-    <tr><td valign=top align=center><b>g</b>&nbsp;=</td><td>Create new <b>g</b>roups <sup>&dagger;</sup></td></tr>
+    <td>A string with one or more of these characters:<table class="clear top">
+    <tr><td align=center><b>w</b>&nbsp;=</td><td><b>W</b>rite existing tags</td></tr>
+    <tr><td align=center><b>c</b>&nbsp;=</td><td><b>C</b>reate new tags</td></tr>
+    <tr><td align=center><b>g</b>&nbsp;=</td><td>Create new <b>g</b>roups <sup>&dagger;</sup></td></tr>
     </table></td><td align=center>'wcg'</td></tr>
 <tr id="XAttrTags"><td>XAttrTags</td><td>Flag to extract the OS X
     extended attribute tags (see the "xattr" man page and the
@@ -1504,10 +1531,10 @@ errors are printed to STDERR.
 <tr><th>Option</th><th>Description</th><th width='30%'>Values</th><th>Default</th></tr>
 <tr><td>AddValue</td><td>Add value to existing list <b>in a file</b> rather than
     overwriting the existing values</td>
-    <td><table class=clear>
-    <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Overwrite existing value(s)</td></tr>
-    <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Add to existing list, or warn for non-list tags</td></tr>
-    <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Add to existing list, or overwrite non-list tags</td></tr>
+    <td><table class="clear top">
+    <tr><td align=center><b>0</b>&nbsp;=</td><td>Overwrite existing value(s)</td></tr>
+    <tr><td align=center><b>1</b>&nbsp;=</td><td>Add to existing list, or warn for non-list tags</td></tr>
+    <tr><td align=center><b>2</b>&nbsp;=</td><td>Add to existing list, or overwrite non-list tags</td></tr>
     </table></td><td align=center>0</td></tr>
 <tr><td>DelValue</td><td>Delete existing tag from a file if it has the specified
     value.  For list-type tags this deletes a specified item from the list.  For
@@ -1533,11 +1560,11 @@ errors are printed to STDERR.
     shortcuts if not found otherwise.</td><td align=center>0 or 1</td><td align=center>0</td></tr>
 <tr><td>Protected</td><td>Allow unsafe and protected tags to be written</td>
     <td>Bitmask of tag protection levels to write:
-    <table class=clear>
-    <tr><td valign=top align=center><b>0x01</b>&nbsp;=</td>
+    <table class="clear top">
+    <tr><td align=center><b>0x01</b>&nbsp;=</td>
     <td>Write '<a href="TagNames/index.html">unsafe</a>' tags (ie. tags not copied
         automatically via <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a>)</td></tr>
-    <tr><td valign=top align=center><b>0x02</b>&nbsp;=</td>
+    <tr><td align=center><b>0x02</b>&nbsp;=</td>
     <td>Write '<a href="TagNames/index.html">protected</a>' tags (internal use only)</td></tr>
     </table></td><td align=center>0</td></tr>
 <tr><td>ProtectSaved</td><td>Avoid setting new values which were saved after the Nth
@@ -1546,22 +1573,22 @@ errors are printed to STDERR.
 <tr><td>Replace</td><td>Replace previous new values for this tag (ie. replace the values
     set in previous calls to <a href="#SetNewValue">SetNewValue</a>). This option
     is most commonly used to replace previously-set new values for list-type tags.</td>
-    <td><table class=clear>
-    <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Set new value normally (adds to new values for list-type tags)</td></tr>
-    <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Reset any previous new values before setting new value</td></tr>
-    <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Reset previous new values only (new value argument is ignored)</td></tr>
+    <td><table class="clear top">
+    <tr><td align=center><b>0</b>&nbsp;=</td><td>Set new value normally (adds to new values for list-type tags)</td></tr>
+    <tr><td align=center><b>1</b>&nbsp;=</td><td>Reset any previous new values before setting new value</td></tr>
+    <tr><td align=center><b>2</b>&nbsp;=</td><td>Reset previous new values only (new value argument is ignored)</td></tr>
     </table></td><td align=center>0</td></tr>
 <tr><td>Shift</td><td>Shift the tag by the specified value.  Currently only date/time tags
     and tags with numerical values may be shifted.  Value is added if Shift is 1, or subtracted
     if Shift is -1.  See <a href="Shift.html">Image::ExifTool::Shift.pl</a> for details time shift formats.</td>
-    <td><table class=clear>
-    <tr><td valign=top align=left colspan=2><b>undef</b>&nbsp;= No shift</td></tr>
-    <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Shift if shiftable:<br>
+    <td><table class="clear top">
+    <tr><td align=left colspan=2><b>undef</b>&nbsp;= No shift</td></tr>
+    <tr><td align=right><b>0</b>&nbsp;=</td><td>Shift if shiftable:<br>
     Positive if AddValue set, or<br>
     Negative if DelValue set and<br>
     tag is date/time</td></tr>
-    <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>Positive shift</td></tr>
-    <tr><td valign=top align=right><b>-1</b>&nbsp;=</td><td>Negative shift</td></tr>
+    <tr><td align=right><b>1</b>&nbsp;=</td><td>Positive shift</td></tr>
+    <tr><td align=right><b>-1</b>&nbsp;=</td><td>Negative shift</td></tr>
     </table></td><td align=center>undef</td></tr>
 <tr><td>Type</td><td>The type of value being set</td>
     <td>PrintConv, ValueConv or Raw (default depends on <a href="#PrintConv">PrintConv</a> Option)</td>

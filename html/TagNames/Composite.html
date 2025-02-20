@@ -45,8 +45,7 @@ values, may created via the <a href="../config.html">ExifTool configuration file
 <tr class=b>
 <td>AutoFocus</td>
 <td class=c>no</td>
-<td class=n>Nikon:PhaseDetectAF
-  <br>Nikon:ContrastDetectAF</td>
+<td class=n>Nikon:FocusMode</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
 <tr>
@@ -99,6 +98,13 @@ may be incorrect if the image has been resized)</span></span></td></tr>
   <br>FlashBits</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>ContrastDetectAF</td>
+<td class=c>no</td>
+<td class=n>Nikon:FocusMode
+  <br>Nikon:AFDetectionMethod</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
 <td>DOF</td>
 <td class=c>no</td>
 <td class=n>FocalLength
@@ -111,26 +117,26 @@ may be incorrect if the image has been resized)</span></span></td></tr>
   <br>FocusDistanceLower
   <br>FocusDistanceUpper</td>
 <td><span class=s><span class=n>(this value may be incorrect if the image has been resized)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>DateCreated</td>
 <td class=c>no</td>
 <td class=n>Kodak:YearCreated
   <br>Kodak:MonthDayCreated</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>DateTimeCreated</td>
 <td class=c>no</td>
 <td class=n>IPTC:DateCreated
   <br>IPTC:TimeCreated</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>DateTimeOriginal</td>
 <td class=c>no</td>
 <td class=n>DateTimeCreated
   <br>DateCreated
   <br>TimeCreated</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>DateTimeOriginal</td>
 <td class=c>no</td>
 <td class=n>ID3:RecordingTime
@@ -138,27 +144,27 @@ may be incorrect if the image has been resized)</span></span></td></tr>
   <br>ID3:Date
   <br>ID3:Time</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>DepthMapTiff</td>
 <td class=c>no</td>
 <td class=n>DepthMapData
   <br>DepthMapWidth
   <br>DepthMapHeight</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>DigitalCreationDateTime</td>
 <td class=c>no</td>
 <td class=n>IPTC:DigitalCreationDate
   <br>IPTC:DigitalCreationTime</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>DigitalZoom</td>
 <td class=c>no</td>
 <td class=n>Canon:ZoomSourceWidth
   <br>Canon:ZoomTargetWidth
   <br>Canon:DigitalZoom</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>DriveMode</td>
 <td class=c>no</td>
 <td class=n>ContinuousDrive
@@ -166,13 +172,13 @@ may be incorrect if the image has been resized)</span></span></td></tr>
 <td><span class=s>0 = Continuous Shooting
   <br>1 = Self-timer Operation
   <br>2 = Single-frame Shooting</span></td></tr>
-<tr>
+<tr class=b>
 <td>Duration</td>
 <td class=c>no</td>
 <td class=n>AIFF:SampleRate
   <br>AIFF:NumSampleFrames</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Duration</td>
 <td class=c>no</td>
 <td class=n>APE:SampleRate
@@ -180,13 +186,13 @@ may be incorrect if the image has been resized)</span></span></td></tr>
   <br>APE:BlocksPerFrame
   <br>APE:FinalFrameBlocks</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Duration</td>
 <td class=c>no</td>
 <td class=n>FLAC:SampleRate
   <br>FLAC:TotalSamples</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Duration</td>
 <td class=c>no</td>
 <td class=n>FileSize
@@ -197,7 +203,7 @@ may be incorrect if the image has been resized)</span></span></td></tr>
   <br>MPEG:SampleRate
   <br>MPEG:MPEGAudioVersion</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Duration</td>
 <td class=c>no</td>
 <td class=n>RIFF:FrameRate
@@ -205,7 +211,7 @@ may be incorrect if the image has been resized)</span></span></td></tr>
   <br>VideoFrameRate
   <br>VideoFrameCount</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Duration</td>
 <td class=c>no</td>
 <td class=n>RIFF:AvgBytesPerSec
@@ -213,13 +219,13 @@ may be incorrect if the image has been resized)</span></span></td></tr>
   <br>FrameCount
   <br>VideoFrameCount</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Duration</td>
 <td class=c>no</td>
 <td class=n>Vorbis:NominalBitrate
   <br>FileSize</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ExtenderStatus</td>
 <td class=c>no</td>
 <td class=n>Olympus:Extender
@@ -231,7 +237,7 @@ an attempt to represent the actual status of the extender.)</span>
   <br>0 = Not attached
   <br>1 = Attached
   <br>2 = Removed</span></td></tr>
-<tr>
+<tr class=b>
 <td>FOV</td>
 <td class=c>no</td>
 <td class=n>FocalLength
@@ -239,13 +245,13 @@ an attempt to represent the actual status of the extender.)</span>
   <br>FocusDistance</td>
 <td><span class=s><span class=n>(calculated for the long image dimension.  This value may be incorrect for
 fisheye lenses, or if the image has been resized)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>FileNumber</td>
 <td class=c>yes</td>
 <td class=n>DirectoryIndex
   <br>FileIndex</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Flash</td>
 <td class=c>yes</td>
 <td class=n>XMP:FlashFired
@@ -256,7 +262,7 @@ fisheye lenses, or if the image has been resized)</span></span></td></tr>
   <br>XMP:Flash</td>
 <td>--&gt; <a href='EXIF.html#Flash'>EXIF Flash Values</a>
   <br><span class='n s'>(facilitates copying camera flash information between XMP and EXIF)</span></td></tr>
-<tr class=b>
+<tr>
 <td>FlashType</td>
 <td class=c>no</td>
 <td class=n>FlashBits</td>
@@ -264,25 +270,25 @@ fisheye lenses, or if the image has been resized)</span></span></td></tr>
 manual mode)</span>
   <br>0 = Built-In Flash
   <br>1 = External</span></td></tr>
-<tr>
+<tr class=b>
 <td>FocalLength35efl</td>
 <td class=c>no</td>
 <td class=n>FocalLength
   <br>ScaleFactor35efl</td>
 <td><span class=s><span class=n>(this value may be incorrect if the image has been resized)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>FocusDistance</td>
 <td class=c>no</td>
 <td class=n>Sony:FocusPosition
   <br>FocalLength</td>
 <td><span class=s><span class=n>(distance in metres = FocusPosition * FocalLength / 1000)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>FocusDistance2</td>
 <td class=c>no</td>
 <td class=n>Sony:FocusPosition2
   <br>FocalLengthIn35mmFormat</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GPSAltitude</td>
 <td class=c>no</td>
 <td class=n>GPS:GPSAltitude
@@ -290,128 +296,128 @@ manual mode)</span>
   <br>XMP:GPSAltitude
   <br>XMP:GPSAltitudeRef</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GPSAltitude</td>
 <td class=c>no</td>
 <td class=n>QuickTime:GPSCoordinates</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GPSAltitude</td>
 <td class=c>no</td>
 <td class=n>QuickTime:LocationInformation</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GPSAltitudeRef</td>
 <td class=c>no</td>
 <td class=n>QuickTime:GPSCoordinates</td>
 <td><span class=s>0 = Above Sea Level
   <br>1 = Below Sea Level</span></td></tr>
-<tr class=b>
+<tr>
 <td>GPSAltitudeRef</td>
 <td class=c>no</td>
 <td class=n>QuickTime:LocationInformation</td>
 <td><span class=s>0 = Above Sea Level
   <br>1 = Below Sea Level</span></td></tr>
-<tr>
+<tr class=b>
 <td>GPSDateTime</td>
 <td class=c>no</td>
 <td class=n>GPS:GPSDateStamp
   <br>GPS:GPSTimeStamp</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GPSDateTime</td>
 <td class=c>no</td>
 <td class=n>Parrot:GPSLatitude
   <br>Main:CreateDate
   <br>SampleTime</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GPSDateTime</td>
 <td class=c>no</td>
 <td class=n>Sony:GPSDateStamp
   <br>Sony:GPSTimeStamp</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GPSDestLatitude</td>
 <td class=c>no</td>
 <td class=n>GPS:GPSDestLatitude
   <br>GPS:GPSDestLatitudeRef</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GPSDestLatitudeRef</td>
 <td class=c>no</td>
 <td class=n>XMP-exif:GPSDestLatitude</td>
 <td><span class=s>&#39;N&#39; = North
   <br>&#39;S&#39; = South</span></td></tr>
-<tr class=b>
+<tr>
 <td>GPSDestLongitude</td>
 <td class=c>no</td>
 <td class=n>GPS:GPSDestLongitude
   <br>GPS:GPSDestLongitudeRef</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GPSDestLongitudeRef</td>
 <td class=c>no</td>
 <td class=n>XMP-exif:GPSDestLongitude</td>
 <td><span class=s>&#39;E&#39; = East
   <br>&#39;W&#39; = West</span></td></tr>
-<tr class=b>
+<tr>
 <td>GPSLatitude</td>
 <td class=c title=' / = Avoid'>yes/</td>
 <td class=n>GPS:GPSLatitude
   <br>GPS:GPSLatitudeRef</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GPSLatitude</td>
 <td class=c>no</td>
 <td class=n>QuickTime:GPSCoordinates</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GPSLatitude</td>
 <td class=c>no</td>
 <td class=n>QuickTime:LocationInformation</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GPSLatitude</td>
 <td class=c>no</td>
 <td class=n>Sony:GPSLatitude
   <br>Sony:GPSLatitudeRef</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GPSLatitudeRef</td>
 <td class=c>no</td>
 <td class=n>XMP-exif:GPSLatitude</td>
 <td><span class=s>&#39;N&#39; = North
   <br>&#39;S&#39; = South</span></td></tr>
-<tr>
+<tr class=b>
 <td>GPSLongitude</td>
 <td class=c title=' / = Avoid'>yes/</td>
 <td class=n>GPS:GPSLongitude
   <br>GPS:GPSLongitudeRef</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GPSLongitude</td>
 <td class=c>no</td>
 <td class=n>QuickTime:GPSCoordinates</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GPSLongitude</td>
 <td class=c>no</td>
 <td class=n>QuickTime:LocationInformation</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GPSLongitude</td>
 <td class=c>no</td>
 <td class=n>Sony:GPSLongitude
   <br>Sony:GPSLongitudeRef</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GPSLongitudeRef</td>
 <td class=c>no</td>
 <td class=n>XMP-exif:GPSLongitude</td>
 <td><span class=s>&#39;E&#39; = East
   <br>&#39;W&#39; = West</span></td></tr>
-<tr class=b>
+<tr>
 <td>GPSPosition</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=n>GPSLatitude
@@ -419,46 +425,46 @@ manual mode)</span>
 <td><span class=s><span class=n>(when written, writes GPSLatitude, GPSLatitudeRef, GPSLongitude and
 GPSLongitudeRef.  This tag may be written using the same coordinate
 format as provided by Google Maps when right-clicking on a location)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>HiddenData</td>
 <td class=c>no</td>
 <td class=n>Sony:HiddenDataOffset
   <br>Sony:HiddenDataLength</td>
 <td><span class=s><span class=n>(hidden data in some Sony JPG and ARW images, extracted only if specifically
 requested)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>HyperfocalDistance</td>
 <td class=c>no</td>
 <td class=n>FocalLength
   <br>Aperture
   <br>CircleOfConfusion</td>
 <td><span class=s><span class=n>(this value may be incorrect if the image has been resized)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>IDCPreviewImage</td>
 <td class=c>no</td>
 <td class=n>IDCPreviewStart
   <br>IDCPreviewLength</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ISO</td>
 <td class=c>no</td>
 <td class=n>Canon:CameraISO
   <br>Canon:BaseISO
   <br>Canon:AutoISO</td>
 <td><span class=s><span class=n>(use CameraISO if numerical, otherwise calculate as BaseISO * AutoISO / 100)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ImageHeight</td>
 <td class=c>no</td>
 <td class=n>IFD0:SensorTopBorder
   <br>IFD0:SensorBottomBorder</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ImageHeight</td>
 <td class=c>no</td>
 <td class=n>Main:PostScript:ImageData
   <br>PostScript:BoundingBox</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ImageSize</td>
 <td class=c>no</td>
 <td class=n>ImageWidth
@@ -467,32 +473,32 @@ requested)</span></span></td></tr>
   <br>ExifImageHeight
   <br>RawImageCroppedSize</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ImageWidth</td>
 <td class=c>no</td>
 <td class=n>IFD0:SensorLeftBorder
   <br>IFD0:SensorRightBorder</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ImageWidth</td>
 <td class=c>no</td>
 <td class=n>Main:PostScript:ImageData
   <br>PostScript:BoundingBox</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>JpgFromRaw</td>
 <td class=c>yes</td>
 <td class=n>JpgFromRawStart
   <br>JpgFromRawLength</td>
 <td><span class=s><span class=n>(this tag is writable, and may be used to update existing embedded images,
 but not create or delete them)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>Lens</td>
 <td class=c>no</td>
 <td class=n>Canon:MinFocalLength
   <br>Canon:MaxFocalLength</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Lens35efl</td>
 <td class=c>no</td>
 <td class=n>Canon:MinFocalLength
@@ -500,7 +506,7 @@ but not create or delete them)</span></span></td></tr>
   <br>Lens
   <br>ScaleFactor35efl</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LensID</td>
 <td class=c>no</td>
 <td class=n>LensType
@@ -519,7 +525,7 @@ but not create or delete them)</span></span></td></tr>
 <td><span class=s><span class=n>(attempt to identify the actual lens from all lenses with a given LensType.
 Applies only to LensType values with a lookup table.  May be configured
 by adding user-defined lenses)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>LensID</td>
 <td class=c>no</td>
 <td class=n>LensModel
@@ -527,7 +533,7 @@ by adding user-defined lenses)</span></span></td></tr>
   <br>XMP-aux:LensID
   <br>Make</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LensID</td>
 <td class=c>no</td>
 <td class=n>Nikon:LensIDNumber
@@ -539,12 +545,12 @@ by adding user-defined lenses)</span></span></td></tr>
   <br>MCUVersion
   <br>Nikon:LensType</td>
 <td>--&gt; <a href='Nikon.html#LensID'>Nikon LensID Values</a></td></tr>
-<tr class=b>
+<tr>
 <td>LensID</td>
 <td class=c>no</td>
 <td class=n>Ricoh:LensFirmware</td>
 <td>--&gt; <a href='Ricoh.html#LensID'>Ricoh LensID Values</a></td></tr>
-<tr>
+<tr class=b>
 <td>LensID</td>
 <td class=c>no</td>
 <td class=n>XMP-aux:LensID
@@ -554,20 +560,20 @@ by adding user-defined lenses)</span></span></td></tr>
   <br>LensModel
   <br>MaxApertureValue</td>
 <td><span class=s><span class=n>(attempt to convert numerical XMP-aux:LensID stored by Adobe applications)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>LensSpec</td>
 <td class=c>no</td>
 <td class=n>Nikon:Lens
   <br>Nikon:LensType</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LensType</td>
 <td class=c>no</td>
 <td class=n>LensTypeMake
   <br>LensTypeModel</td>
 <td>--&gt; <a href='Olympus.html#LensType'>Olympus LensType Values</a>
   <br><span class='n s'>(based on tags found in some Panasonic RW2 images)</span></td></tr>
-<tr class=b>
+<tr>
 <td>LightValue</td>
 <td class=c>no</td>
 <td class=n>Aperture
@@ -575,7 +581,7 @@ by adding user-defined lenses)</span></span></td></tr>
   <br>ISO</td>
 <td><span class=s><span class=n>(calculated LV = 2 * log2(Aperture) - log2(ShutterSpeed) - log2(ISO/100);
 similar to exposure value but normalized to ISO 100)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>MPImage</td>
 <td class=c>no</td>
 <td class=n>MPImageStart
@@ -584,17 +590,17 @@ similar to exposure value but normalized to ISO 100)</span></span></td></tr>
 <td><span class=s><span class=n>(the first MPF &quot;Large Thumbnail&quot; is extracted as PreviewImage, and the rest
 of the embedded MPF images are extracted as MPImage#.  The <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded</a>
 option may be used to extract information from these embedded images.)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>Megapixels</td>
 <td class=c>no</td>
 <td class=n>ImageSize</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>OriginalDecisionData</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=n>OriginalDecisionDataOffset</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>OtherImage</td>
 <td class=c>yes</td>
 <td class=n>OtherImageStart
@@ -603,11 +609,24 @@ option may be used to extract information from these embedded images.)</span></s
   <br>OtherImageLength (1)</td>
 <td><span class=s><span class=n>(this tag is writable, and may be used to update existing embedded images,
 but not create or delete them)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PeakSpectralSensitivity</td>
 <td class=c>no</td>
 <td class=n>FLIR:PlanckB</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td>PhaseDetectAF</td>
+<td class=c>no</td>
+<td class=n>Nikon:FocusPointSchema
+  <br>Nikon:AFDetectionMethod</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = On (51-point)
+  <br>2 = On (11-point)</td><td>&nbsp;&nbsp;</td>
+  <td>3 = On (39-point)
+  <br>7 = On (153-point)
+  <br>9 = On (105-point)</td></tr></table>
+</td></tr>
 <tr class=b>
 <td>PreviewImage</td>
 <td class=c>yes</td>
@@ -841,7 +860,7 @@ those of the originating tags)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 21, 2024</i>
+<br><i>Last revised Feb 19, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

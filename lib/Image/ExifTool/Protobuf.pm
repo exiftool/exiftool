@@ -18,7 +18,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 sub ProcessProtobuf($$$;$);
 
@@ -178,7 +178,7 @@ sub ProcessProtobuf($$$;$)
             } else {
                 $val = ReadValue(\$buff, 0, $$tagInfo{Format}, undef, length($buff));
             }
-        } elsif ($type == 0) {
+        } elsif ($type == 0) { # varInt
             $val = $buff;
             my $hex = sprintf('%x', $val);
             if (length($hex) == 16 and $hex =~ /^ffffffff/) {
@@ -188,9 +188,9 @@ sub ProcessProtobuf($$$;$)
                 my $signed = ($val & 1) ? -($val >> 1)-1 : ($val >> 1);
                 $val .= " (0x$hex, signed $signed)";
             }
-        } elsif ($type == 1) {
+        } elsif ($type == 1) { # 64-bit number
             $val = '0x' . unpack('H*', $buff) . ' (double ' . GetDouble(\$buff,0) . ')';
-        } elsif ($type == 2) {
+        } elsif ($type == 2) { # string, bytes or protobuf
             if ($$tagInfo{SubDirectory}) {
                 # (fall through to process known SubDirectory)
             } elsif ($$tagInfo{IsProtobuf}) {
@@ -203,14 +203,25 @@ sub ProcessProtobuf($$$;$)
                 ProcessProtobuf($et, \%subdir, $tagTbl, "$prefix$id-");
                 $$et{INDENT} = substr($$et{INDENT}, 0, -2);
                 next;
-            } elsif ($buff !~ /[^\x20-\x7e]/) {
-                $val = $buff;   # assume this is an ASCII string
-            } elsif (length($buff) % 4) {
-                $val = '0x' . unpack('H*', $buff);
             } else {
-                $val = '0x' . join(' ', unpack('(H8)*', $buff)); # (group in 4-byte blocks)
+                # check for rational value (2 varInt values)
+                my $rat;
+                my %dir = ( DataPt => \$buff, Pos => 0 );
+                my $num = VarInt(\%dir);
+                if (defined $num) {
+                    my $denom = VarInt(\%dir);
+                    $rat = " (rational $num/$denom)" if $denom and $dir{Pos} == length($buff);
+                }
+                if ($buff !~ /[^\x20-\x7e]/) {
+                    $val = $buff;   # assume this is an ASCII string
+                } elsif (length($buff) % 4) {
+                    $val = '0x' . unpack('H*', $buff);
+                } else {
+                    $val = '0x' . join(' ', unpack('(H8)*', $buff)); # (group in 4-byte blocks)
+                }
+                $val .= $rat if $rat;
             }
-        } elsif ($type == 5) {
+        } elsif ($type == 5) { # 32-bit number
             $val = '0x' . unpack('H*', $buff) . ' (int32u ' . Get32u(\$buff, 0);
             $val .= ', int32s ' . Get32s(\$buff, 0) if ord(substr($buff,3,1)) & 0x80;
             $val .= ', float ' . GetFloat(\$buff, 0) . ')';

@@ -14,7 +14,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Import;
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 
 sub ProcessJSON($$);
 sub ProcessTag($$$$%);
@@ -43,6 +43,10 @@ sub ProcessTag($$$$%);
     ON1_SettingsMetadataTimestamp   => { Groups => { 2 => 'Time' } },
     ON1_SettingsMetadataUsage       => { },
     ON1_SettingsMetadataVisibleToUser=>{ },
+    adjustmentsSettingsStatisticsLightMap => { # (in JSON of AAE files)
+        Name => 'AdjustmentsSettingsStatisticsLightMap',
+        ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
+    },
 );
 
 #------------------------------------------------------------------------------

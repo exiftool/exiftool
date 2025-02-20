@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28469 tags, with 17576 unique tag names.
+They contain a total of 28526 tags, with 17595 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -11519,7 +11519,7 @@ unknown dbgi debug tags.  Tag ID's are composed of the corresponding .proto
 file name combined with the hierarchical protobuf field numbers.
 
 ExifTool currently extracts timed GPS plus a few other tags from DJI devices
-which use the following protocols:  dvtm_AVATA2.proto (Avanta 2),
+which use the following protocols:  dvtm_AVATA2.proto (Avata 2),
 dvtm_ac203.proto (Osmo Action 4), dvtm_ac204.proto (Osmo Action 5),
 dvtm_wm265e.proto (Mavic 3), dvtm_pm320.proto (Matrice 30) and
 dvtm_pm320.proto (Mini 4 Pro).
@@ -11535,7 +11535,14 @@ for a given protocol should be considered to have the default value of 0.
   'dvtm_AVATA2_2-2-3-1'     SerialNumber2       no
   'dvtm_AVATA2_2-3'         FrameInfo           DJI FrameInfo
   'dvtm_AVATA2_3-1-2'       TimeStamp           no
+  'dvtm_AVATA2_3-2-2-1'     ISO                 no
+  'dvtm_AVATA2_3-2-4-1'     ShutterSpeed        no
+  'dvtm_AVATA2_3-2-6-1'     ColorTemperature    no
+  'dvtm_AVATA2_3-2-10-1'    FNumber             no
+  'dvtm_AVATA2_3-4-3'       DroneInfo           DJI DroneInfo
   'dvtm_AVATA2_3-4-4-1'     GPSInfo             DJI GPSInfo
+  'dvtm_AVATA2_3-4-4-2'     AbsoluteAltitude    no
+  'dvtm_AVATA2_3-4-5-1'     RelativeAltitude    no
   'dvtm_Mini4_Pro_1-1-5'    SerialNumber        no
   'dvtm_Mini4_Pro_1-1-10'   Model               no
   'dvtm_Mini4_Pro_2-3'      FrameInfo           DJI FrameInfo
@@ -11551,12 +11558,17 @@ for a given protocol should be considered to have the default value of 0.
   'dvtm_ac203_1-1-5'        SerialNumber        no
   'dvtm_ac203_1-1-10'       Model               no
   'dvtm_ac203_2-3'          FrameInfo           DJI FrameInfo
+  'dvtm_ac203_3-2-2-1'      ISO                 no
+  'dvtm_ac203_3-2-4-1'      ShutterSpeed        no
+  'dvtm_ac203_3-2-6-1'      ColorTemperature    no
   'dvtm_ac203_3-4-2-1'      GPSInfo             DJI GPSInfo
   'dvtm_ac203_3-4-2-2'      GPSAltitude         no
   'dvtm_ac203_3-4-2-6-1'    GPSDateTime         no
   'dvtm_ac204_1-1-5'        SerialNumber        no
   'dvtm_ac204_1-1-10'       Model               no
   'dvtm_ac204_2-3'          FrameInfo           DJI FrameInfo
+  'dvtm_ac204_3-2-4-1'      ShutterSpeed        no
+  'dvtm_ac204_3-2-6-1'      ColorTemperature    no
   'dvtm_ac204_3-4-2-1'      GPSInfo             DJI GPSInfo
   'dvtm_ac204_3-4-2-2'      GPSAltitude         no
   'dvtm_ac204_3-4-2-6-1'    GPSDateTime         no
@@ -11585,35 +11597,57 @@ for a given protocol should be considered to have the default value of 0.
 
 =head3 DJI FrameInfo Tags
 
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
+  Field #  Tag Name                             Writable
+  -------  --------                             --------
       1    FrameWidth                           no
       2    FrameHeight                          no
       3    FrameRate                            no
 
-=head3 DJI GPSInfo Tags
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-      1    CoordinateUnits                      no
-      2    GPSLatitude                          no
-      3    GPSLongitude                         no
-
 =head3 DJI DroneInfo Tags
 
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
+  Field #  Tag Name                             Writable
+  -------  --------                             --------
       1    DroneRoll                            no
       2    DronePitch                           no
       3    DroneYaw                             no
 
+=head3 DJI GPSInfo Tags
+
+  Field #  Tag Name                             Writable
+  -------  --------                             --------
+      1    CoordinateUnits                      no
+      2    GPSLatitude                          no
+      3    GPSLongitude                         no
+
 =head3 DJI GimbalInfo Tags
 
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
+  Field #  Tag Name                             Writable
+  -------  --------                             --------
       1    GimbalPitch                          no
       2    GimbalRoll                           no
       3    GimbalYaw                            no
+
+=head3 DJI Glamour Tags
+
+Glamour settings used by some DJI models.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'acne_spot_removal'  AcneSpotRemoval          no
+  'beauty_enable'      BeautyEnable             no
+  'blush'              Blush                    no
+  'dark_circle'        DarkCircle               no
+  'eye_enlarge'        EyeEnlarge               no
+  'eyebrows'           Eyebrows                 no
+  'face_slimming'      FaceSlimming             no
+  'head_shrinking'     HeadShrinking            no
+  'leg_longer'         LegLonger                no
+  'lipstick'           Lipstick                 no
+  'mouth_beautify'     MouthModify              no
+  'nose_slimming'      NoseSlimming             no
+  'smoother'           Smoother                 no
+  'teeth_whitening'    TeethWhitening           no
+  'whitening'          Whitening                no
 
 =head2 FLIR Tags
 
@@ -14802,8 +14836,11 @@ DiMAGE X and Xt.
   0x00b1   HighISONoiseReduction                int16u
   0x00b3   ToningEffect                         string
   0x00b6   PowerUpTime                          undef
-  0x00b7   AFInfo2                              Nikon AFInfo2V0400
-                                                Nikon AFInfo2
+  0x00b7   AFInfo2                              Nikon AFInfo2V0100
+                                                Nikon AFInfo2V0101
+                                                Nikon AFInfo2V0200
+                                                Nikon AFInfo2V0300
+                                                Nikon AFInfo2V0400
   0x00b8   FileInfo                             Nikon FileInfo
                                                 Nikon FileInfo
   0x00b9   AFTune                               Nikon AFTune
@@ -16881,49 +16918,22 @@ These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
       2    MultiExposureShots                   int32u
       3    MultiExposureOverlayMode             int32u
 
-=head3 Nikon AFInfo2V0400 Tags
+=head3 Nikon AFInfo2V0100 Tags
 
-AF information for Nikon cameras with the Expeed 7 processor: The Zf, Z6_3,
-Z8, Z9 and Z50_3.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    AFInfo2Version                       no
-      5    AFAreaMode                           int8u
-     10    AFPointsUsed                         undef[51]
-           AFPointsUsed                         undef[38]
-           AFPointsUsed                         undef[29]
-     62    AFImageWidth                         int16u
-     64    AFImageHeight                        int16u
-     66    AFAreaXPosition                      int16u
-     68    AFAreaYPosition                      int16u
-     70    AFAreaWidth                          int16u
-     72    AFAreaHeight                         int16u
-     74    FocusResult                          int8u
-
-=head3 Nikon AFInfo2 Tags
-
-These tags are written by Nikon DSLR's which have the live view feature.
+AF information for Nikon cameras with LiveView that were introduced 2007
+thru 2015 (and the D5600 in 2016), including D3, D4, D3000, D3100-D3300,
+D5000-D5600, D6x0, D700, D7000, D7100, D810
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    AFInfo2Version                       no
-      4    ContrastDetectAF                     int8u
+      4    AFDetectionMethod                    int8u
       5    AFAreaMode                           int8u
-      6    PhaseDetectAF                        int8u
       7    PrimaryAFPoint                       int8u
       8    AFPointsUsed                         undef[7]
            AFPointsUsed                         undef[2]
            AFPointsUsed                         undef[5]
-           AFPointsUsed                         undef[17]
-           AFPointsUsed                         undef[21]
-           AFPointsUsed                         undef[29]
-           AFPointsUsed                         undef[20]
-           AFPointsUsed                         undef[7]
-           PrimaryAFPoint                       int8u
-     10    AFPointsUsed                         undef[7]
-           AFPointsUsed                         undef[11]
-           AFPointsUsed                         undef[14]
+           AFPointsUsed                         int8u
      16    AFImageWidth                         int16u
      18    AFImageHeight                        int16u
      20    AFAreaXPosition                      int16u
@@ -16932,18 +16942,25 @@ These tags are written by Nikon DSLR's which have the live view feature.
      26    AFAreaHeight                         int16u
      28    ContrastDetectAFInFocus              int8u
            AFPointsSelected                     undef[20]
-           AFPointsSelected                     int16u
-     42    AFImageWidth                         int16u
-     44    AFImageHeight                        int16u
-     46    AFAreaXPosition                      int16u
-     47    FocusPositionHorizontal              int8u~
-     48    AFAreaYPosition                      int16u
+
+=head3 Nikon AFInfo2V0101 Tags
+
+AF information for Nikon cameras D5, D500, D850, D3400, D3500 and D7500
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    AFInfo2Version                       no
+      4    AFDetectionMethod                    int8u
+      5    AFAreaMode                           int8u
+      8    AFPointsUsed                         undef[7]
+           AFPointsUsed                         undef[2]
+           AFPointsUsed                         undef[20]
+           AFPointsUsed                         int8u
+     28    ContrastDetectAFInFocus              int8u
+           AFPointsUsed                         undef[7]
+           AFPointsSelected                     undef[20]
+     48    AFPointsInFocus                      undef[7]
            AFPointsInFocus                      undef[20]
-           AFPointsInFocus                      undef[7]
-     49    FocusPositionVertical                int8u~
-     50    AFAreaWidth                          int16u
-     52    AFAreaHeight                         int16u
-     56    PrimaryAFPoint                       int8u
      68    PrimaryAFPoint                       int8u
      70    AFImageWidth                         int16u
      72    AFImageHeight                        int16u
@@ -16952,6 +16969,69 @@ These tags are written by Nikon DSLR's which have the live view feature.
      78    AFAreaWidth                          int16u
      80    AFAreaHeight                         int16u
      82    ContrastDetectAFInFocus              int8u
+
+=head3 Nikon AFInfo2V0200 Tags
+
+AF information for Nikon 1 series cameras: Nikon 1 V1, V2, V3, J1, J2, J3,
+S1, S2 AW1.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    AFInfo2Version                       no
+      5    AFAreaMode                           int8u
+      6    PhaseDetectAF                        int8u
+      7    PrimaryAFPoint                       int8u
+      8    AFPointsUsed                         undef[17]
+           AFPointsUsed                         undef[21]
+           AFPointsUsed                         undef[29]
+
+=head3 Nikon AFInfo2V0300 Tags
+
+AF information for Nikon cameras with the Expeed 6 processor: D6, D780, Z5,
+Z6, Z6ii, Z7, Z7ii, Z50 and Zfc.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    AFInfo2Version                       no
+      4    AFDetectionMethod                    int8u
+      5    AFAreaMode                           int8u
+      7    AFCoordinatesAvailable               int8u
+     10    AFPointsUsed                         undef[7]
+           AFPointsUsed                         undef[11]
+           AFPointsUsed                         undef[14]
+     42    AFImageWidth                         int16u
+     44    AFImageHeight                        int16u
+     46    AFAreaXPosition                      int16u
+     47    FocusPositionHorizontal              no
+     48    AFAreaYPosition                      int16u
+     49    FocusPositionVertical                no
+     50    AFAreaWidth                          int16u
+     52    AFAreaHeight                         int16u
+     56    PrimaryAFPoint                       int8u
+
+=head3 Nikon AFInfo2V0400 Tags
+
+AF information for Nikon cameras with the Expeed 7 processor: The Zf, Z6_3,
+Z8, Z9 and Z50_3.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    AFInfo2Version                       no
+      4    AFDetectionMethod                    int8u
+      5    AFAreaMode                           int8u
+      7    AFCoordinatesAvailable               int8u
+     10    AFPointsUsed                         undef[51]
+           AFPointsUsed                         undef[38]
+           AFPointsUsed                         undef[29]
+     62    AFImageWidth                         int16u
+     64    AFImageHeight                        int16u
+     66    AFAreaXPosition                      int16u
+     67    FocusPositionHorizontal              no
+     68    AFAreaYPosition                      int16u
+     69    FocusPositionVertical                no
+     70    AFAreaWidth                          int16u
+     72    AFAreaHeight                         int16u
+     74    FocusResult                          int8u
 
 =head3 Nikon FileInfo Tags
 
@@ -17231,7 +17311,11 @@ videos from some Nikon cameras.
                FlashInfoUnknown                 Nikon FlashInfoUnknown
   0x20000ab    VariProgram                      no
   0x20000b1    HighISONoiseReduction            no
-  0x20000b7    AFInfo2                          Nikon AFInfo2
+  0x20000b7    AFInfo2                          Nikon AFInfo2V0100
+                                                Nikon AFInfo2V0101
+                                                Nikon AFInfo2V0200
+                                                Nikon AFInfo2V0300
+                                                Nikon AFInfo2V0400
   0x20000c3    BarometerInfo                    Nikon BarometerInfo
 
 =head3 Nikon MOV Tags
@@ -24022,6 +24106,7 @@ JSON-formatted files.
 
   Tag Name                                      Writable
   --------                                      --------
+  AdjustmentsSettingsStatisticsLightMap         no
   ON1_SettingsData                              PLIST
   ON1_SettingsMetadataCreated                   no
   ON1_SettingsMetadataModified                  no
@@ -31677,6 +31762,7 @@ the config file.
   'angl'       CameraAngle                      string
   'apmd'       ApertureMode                     undef
   'auth'       Author                           string/
+  'btec'       GlamourSettings                  DJI Glamour
   'ccid'       ContentID                        string
   'cdis'       ContentDistributorID             string
   'chpl'       ChapterList                      no
@@ -31692,6 +31778,7 @@ the config file.
   'date'       DateTimeOriginal                 string
   'dscp'       Description                      string/
   'finm'       OriginalFileName                 no
+  'fsid'       OriginalFilePath                 string
   'gnre'       Genre                            string/
   'hinf'       HintTrackInfo                    QuickTime HintTrackInfo
   'hinv'       HintVersion                      string
@@ -41076,8 +41163,7 @@ values, may created via the ExifTool configuration file.
                        MPEG:SampleRate
                        MPEG:VBRBytes
                        MPEG:VBRFrames
-  AutoFocus            Nikon:PhaseDetectAF      no
-                       Nikon:ContrastDetectAF
+  AutoFocus            Nikon:FocusMode          no
   AvgBitrate           QuickTime::MediaDataSize no
                        QuickTime::Duration
   BlueBalance          WB_RGGBLevels            no
@@ -41098,6 +41184,8 @@ values, may created via the ExifTool configuration file.
   CircleOfConfusion    ScaleFactor35efl         no
   ConditionalFEC       FlashExposureComp        no
                        FlashBits
+  ContrastDetectAF     Nikon:FocusMode          no
+                       Nikon:AFDetectionMethod
   DOF                  FocalLength              no
                        Aperture
                        CircleOfConfusion
@@ -41291,6 +41379,8 @@ values, may created via the ExifTool configuration file.
                        OtherImageStart (1)
                        OtherImageLength (1)
   PeakSpectralSensitivity FLIR:PlanckB          no
+  PhaseDetectAF        Nikon:FocusPointSchema   no
+                       Nikon:AFDetectionMethod
   PreviewImage         PreviewImageStart        yes
                        PreviewImageLength
                        PreviewImageValid

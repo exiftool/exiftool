@@ -17,6 +17,27 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.20'><b>Feb. 20, 2025 - Version 13.20</b></a>
+<ul>
+<li>Added <a href="plot.html">-plot option</a> for generating SVG-format plots from tag values
+<li>Added a new Olympus CameraType
+<li>Added a new Nikon Z LensID (thanks Warren Hatch)
+<li>Overhauled decoding of Nikon AF tags (thanks Warren Hatch)
+<li>Decode timed GPS from yet another model dashcam
+<li>Decode more information from AAE files
+<li>Decode more tags from DJI videos
+<li>Updated Windows launcher (thanks Oliver Betz)
+<li>Enhanced -w option to be available for use with the -csv output
+<li>Attempted to patch a problem writing some PDF files
+<li>Fail if a required module is missing when attempting to write a formatted
+    date/time value instead of falling back to write as unformatted
+<li>Minor change to WebP lossless FileType text
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#Plot">Plot</a> option
+    </ul>
+</ul>
+
 <a name='v13.19'><b>Feb. 10, 2025 - Version 13.19</b></a>
 <ul>
 <li>Added read/write support for PDF and XMP-pdfx SourceModified
@@ -24,13 +45,13 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Decode timed GPS from Rexing V1-4k dashcam
 <li>Decode more information from AAE files
 <li>Made a new icon for the Windows EXE application
-<li>Changed family 3 groups for ICO files so the first icon is in the Doc1
-    instead of the Main group
 <li>Improved handling of ICC_Profile in HEIC images:
     <ul>
     <li>Profiles for sub-images are extracted as sub-documents
     <li>Allow only the profile of the main image to be written
     </ul>
+<li>Changed family 3 groups for ICO files so the first icon is in the Doc1
+    instead of the Main group
 <li>Updated Sony decoding for ILCE-1M2 (thanks Jos Roost)
 </ul>
 

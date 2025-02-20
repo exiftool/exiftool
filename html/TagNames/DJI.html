@@ -439,7 +439,7 @@ unknown dbgi debug tags.  Tag ID&#39;s are composed of the corresponding .proto
 file name combined with the hierarchical protobuf field numbers.</p>
 
 <p>ExifTool currently extracts timed GPS plus a few other tags from DJI devices
-which use the following protocols:  dvtm_AVATA2.proto (Avanta 2),
+which use the following protocols:  dvtm_AVATA2.proto (Avata 2),
 dvtm_ac203.proto (Osmo Action 4), dvtm_ac204.proto (Osmo Action 5),
 dvtm_wm265e.proto (Mavic 3), dvtm_pm320.proto (Matrice 30) and
 dvtm_pm320.proto (Mini 4 Pro).</p>
@@ -460,7 +460,7 @@ for a given protocol should be considered to have the default value of 0.</p>
 <td>'dvtm_AVATA2_1-1-5'</td>
 <td>SerialNumber</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(Avata 2)</span></span></td></tr>
 <tr>
 <td>'dvtm_AVATA2_1-1-10'</td>
 <td>Model</td>
@@ -482,85 +482,135 @@ for a given protocol should be considered to have the default value of 0.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'dvtm_AVATA2_3-4-4-1'</td>
-<td>GPSInfo</td>
-<td class=c>-</td>
-<td>--&gt; <a href='DJI.html#GPSInfo'>DJI GPSInfo Tags</a></td></tr>
-<tr class=b>
-<td>'dvtm_Mini4_Pro_1-1-5'</td>
-<td>SerialNumber</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'dvtm_Mini4_Pro_1-1-10'</td>
-<td>Model</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'dvtm_Mini4_Pro_2-3'</td>
-<td>FrameInfo</td>
-<td class=c>-</td>
-<td>--&gt; <a href='DJI.html#FrameInfo'>DJI FrameInfo Tags</a></td></tr>
-<tr>
-<td>'dvtm_Mini4_Pro_3-2-7-1'</td>
+<td>'dvtm_AVATA2_3-2-2-1'</td>
 <td>ISO</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'dvtm_Mini4_Pro_3-3-3'</td>
-<td>DroneInfo</td>
-<td class=c>-</td>
-<td>--&gt; <a href='DJI.html#DroneInfo'>DJI DroneInfo Tags</a></td></tr>
-<tr>
-<td>'dvtm_Mini4_Pro_3-3-4-1'</td>
-<td>GPSInfo</td>
-<td class=c>-</td>
-<td>--&gt; <a href='DJI.html#GPSInfo'>DJI GPSInfo Tags</a></td></tr>
-<tr class=b>
-<td>'dvtm_Mini4_Pro_3-3-4-2'</td>
-<td>AbsoluteAltitude</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'dvtm_Mini4_Pro_3-3-5-1'</td>
-<td>RelativeAltitude</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'dvtm_Mini4_Pro_3-4-3'</td>
-<td>GimbalInfo</td>
-<td class=c>-</td>
-<td>--&gt; <a href='DJI.html#GimbalInfo'>DJI GimbalInfo Tags</a></td></tr>
-<tr>
-<td>'dvtm_Mini4_Pro_3-2-10-1'</td>
+<td>'dvtm_AVATA2_3-2-4-1'</td>
 <td>ShutterSpeed</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
-<td>'dvtm_Mini4_Pro_3-2-11-1'</td>
-<td>FNumber</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
 <tr>
-<td>'dvtm_Mini4_Pro_3-2-32-1'</td>
+<td>'dvtm_AVATA2_3-2-6-1'</td>
 <td>ColorTemperature</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'dvtm_ac203_1-1-5'</td>
-<td>SerialNumber</td>
+<td>'dvtm_AVATA2_3-2-10-1'</td>
+<td>FNumber</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'dvtm_AVATA2_3-4-3'</td>
+<td>DroneInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#DroneInfo'>DJI DroneInfo Tags</a></td></tr>
+<tr class=b>
+<td>'dvtm_AVATA2_3-4-4-1'</td>
+<td>GPSInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#GPSInfo'>DJI GPSInfo Tags</a></td></tr>
+<tr>
+<td>'dvtm_AVATA2_3-4-4-2'</td>
+<td>AbsoluteAltitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_AVATA2_3-4-5-1'</td>
+<td>RelativeAltitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_Mini4_Pro_1-1-5'</td>
+<td>SerialNumber</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(Mini 4 Pro)</span></span></td></tr>
+<tr class=b>
+<td>'dvtm_Mini4_Pro_1-1-10'</td>
+<td>Model</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_Mini4_Pro_2-3'</td>
+<td>FrameInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#FrameInfo'>DJI FrameInfo Tags</a></td></tr>
+<tr class=b>
+<td>'dvtm_Mini4_Pro_3-2-7-1'</td>
+<td>ISO</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_Mini4_Pro_3-3-3'</td>
+<td>DroneInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#DroneInfo'>DJI DroneInfo Tags</a></td></tr>
+<tr class=b>
+<td>'dvtm_Mini4_Pro_3-3-4-1'</td>
+<td>GPSInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#GPSInfo'>DJI GPSInfo Tags</a></td></tr>
+<tr>
+<td>'dvtm_Mini4_Pro_3-3-4-2'</td>
+<td>AbsoluteAltitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_Mini4_Pro_3-3-5-1'</td>
+<td>RelativeAltitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_Mini4_Pro_3-4-3'</td>
+<td>GimbalInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#GimbalInfo'>DJI GimbalInfo Tags</a></td></tr>
+<tr class=b>
+<td>'dvtm_Mini4_Pro_3-2-10-1'</td>
+<td>ShutterSpeed</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_Mini4_Pro_3-2-11-1'</td>
+<td>FNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_Mini4_Pro_3-2-32-1'</td>
+<td>ColorTemperature</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_ac203_1-1-5'</td>
+<td>SerialNumber</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(Osmo Action 4)</span></span></td></tr>
+<tr class=b>
 <td>'dvtm_ac203_1-1-10'</td>
 <td>Model</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'dvtm_ac203_2-3'</td>
 <td>FrameInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='DJI.html#FrameInfo'>DJI FrameInfo Tags</a></td></tr>
+<tr class=b>
+<td>'dvtm_ac203_3-2-2-1'</td>
+<td>ISO</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_ac203_3-2-4-1'</td>
+<td>ShutterSpeed</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_ac203_3-2-6-1'</td>
+<td>ColorTemperature</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr>
 <td>'dvtm_ac203_3-4-2-1'</td>
 <td>GPSInfo</td>
@@ -580,7 +630,7 @@ for a given protocol should be considered to have the default value of 0.</p>
 <td>'dvtm_ac204_1-1-5'</td>
 <td>SerialNumber</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(Osmo Action 5)</span></span></td></tr>
 <tr>
 <td>'dvtm_ac204_1-1-10'</td>
 <td>Model</td>
@@ -591,6 +641,16 @@ for a given protocol should be considered to have the default value of 0.</p>
 <td>FrameInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='DJI.html#FrameInfo'>DJI FrameInfo Tags</a></td></tr>
+<tr>
+<td>'dvtm_ac204_3-2-4-1'</td>
+<td>ShutterSpeed</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_ac204_3-2-6-1'</td>
+<td>ColorTemperature</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr>
 <td>'dvtm_ac204_3-4-2-1'</td>
 <td>GPSInfo</td>
@@ -610,7 +670,7 @@ for a given protocol should be considered to have the default value of 0.</p>
 <td>'dvtm_pm320_1-1-5'</td>
 <td>SerialNumber</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(Matrice 30)</span></span></td></tr>
 <tr>
 <td>'dvtm_pm320_1-1-10'</td>
 <td>Model</td>
@@ -665,7 +725,7 @@ for a given protocol should be considered to have the default value of 0.</p>
 <td>'dvtm_wm265e_1-1-5'</td>
 <td>SerialNumber</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(Mavic 3)</span></span></td></tr>
 <tr class=b>
 <td>'dvtm_wm265e_1-1-10'</td>
 <td>Model</td>
@@ -722,7 +782,7 @@ for a given protocol should be considered to have the default value of 0.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
-<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<tr class=h><th>Field&nbsp;#</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td class=r title='1 = 0x1'>1</td>
@@ -741,34 +801,11 @@ for a given protocol should be considered to have the default value of 0.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='GPSInfo'>DJI GPSInfo Tags</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td class=r title='1 = 0x1'>1</td>
-<td>CoordinateUnits</td>
-<td class=c>no</td>
-<td><span class=s><span class=n>(not extracted, but used internally to convert coordinates to degrees)</span></span></td></tr>
-<tr class=b>
-<td class=r title='2 = 0x2'>2</td>
-<td>GPSLatitude</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='3 = 0x3'>3</td>
-<td>GPSLongitude</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
 <h2><a name='DroneInfo'>DJI DroneInfo Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
-<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<tr class=h><th>Field&nbsp;#</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td class=r title='1 = 0x1'>1</td>
@@ -787,11 +824,34 @@ for a given protocol should be considered to have the default value of 0.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='GPSInfo'>DJI GPSInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field&nbsp;#</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>CoordinateUnits</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(not extracted, but used internally to convert coordinates to degrees)</span></span></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>GPSLatitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>GPSLongitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='GimbalInfo'>DJI GimbalInfo Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
-<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<tr class=h><th>Field&nbsp;#</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td class=r title='1 = 0x1'>1</td>
@@ -810,9 +870,93 @@ for a given protocol should be considered to have the default value of 0.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='Glamour'>DJI Glamour Tags</a></h2>
+<p>Glamour settings used by some DJI models.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'acne_spot_removal'</td>
+<td>AcneSpotRemoval</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'beauty_enable'</td>
+<td>BeautyEnable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'blush'</td>
+<td>Blush</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dark_circle'</td>
+<td>DarkCircle</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'eye_enlarge'</td>
+<td>EyeEnlarge</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'eyebrows'</td>
+<td>Eyebrows</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'face_slimming'</td>
+<td>FaceSlimming</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'head_shrinking'</td>
+<td>HeadShrinking</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'leg_longer'</td>
+<td>LegLonger</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'lipstick'</td>
+<td>Lipstick</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'mouth_beautify'</td>
+<td>MouthModify</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'nose_slimming'</td>
+<td>NoseSlimming</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'smoother'</td>
+<td>Smoother</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'teeth_whitening'</td>
+<td>TeethWhitening</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'whitening'</td>
+<td>Whitening</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 10, 2025</i>
+<br><i>Last revised Feb 13, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

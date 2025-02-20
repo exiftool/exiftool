@@ -993,6 +993,33 @@ Password for reading/writing password-protected PDF documents.  Ignored if a
 password is not required.  Character encoding of the password is determined
 by the value of the Charset option at processing time.  Default is undef.
 
+=item Plot
+
+Settings to override defaults for SVG plot feature.  Value is a comma
+delimited string of settings, or undef to revert to default settings.
+Settings are accumulated if this option is set multiple times.  Commas in
+the settings must be escaped as "&#44;".  Valid settings and their default
+values are:
+
+  "Type=Line"           - plot type (Line, Scatter or Histogram)
+  "Style=Line"          - data style (Line, Marker and/or Fill)
+  "NBins=20"            - number of bins for histogram plot
+  "Size=800 600"        - width,height of output image
+  "Margin=60 15 15 30"  - left,top,right,bottom margins around plot area
+  "Legend=0 0"          - x,y offset to shift plot legend
+  "TxtPad=10 10"        - padding between text and x,y scale
+  "LineSpacing=20"      - spacing between text lines
+  Title, XLabel, YLabel - plot title and x/y axis labels (no default)
+  XMin, XMax            - x axis minimum/maximum (autoscaling if not set)
+  YMin, YMax            - y axis minimum/maximum
+  Split                 - flag to split strings of numbers into lists
+                          (> 1 to split into lists of N items)
+  "Grid=darkgray"       - grid color
+  "Text=black"          - color of text and plot border
+  "Bkg="                - background color (default is transparent)
+  "Cols=red green blue black orange gray purple cyan brown pink"
+                       - colors for plot data
+
 =item PrintConv
 
 Flag to enable automatic print conversion.  Also enables inverse

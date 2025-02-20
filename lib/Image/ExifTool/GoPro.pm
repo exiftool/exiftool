@@ -762,6 +762,32 @@ sub ProcessString($$$)
 }
 
 #------------------------------------------------------------------------------
+# Process "GP\x06\0" records in MP4 'mdat'atom
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref (RAF and DirLen)
+# Returns: size of GoPro record, or 0 on error
+sub ProcessGP6($$)
+{
+    my ($et, $dirInfo) = @_;
+    my $raf = $$dirInfo{RAF};
+    my $len = $$dirInfo{DirLen};
+    my $buff;
+    while ($len > 16) {
+        $raf->Read($buff, 16) == 16 or last;
+        my ($tag, $size) = unpack('a4N', $buff);
+        last if $size + 16 > $len or $buff !~ /^GP..\0/s;
+        $raf->Read($buff, $size) == $size or last;
+        if ($buff =~ /^DEVC/) {
+            $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+            my $tagTbl = GetTagTable('Image::ExifTool::GoPro::GPMF');
+            ProcessGoPro($et, { DataPt => \$buff, DataPos => $raf->Tell()-$size }, $tagTbl);
+        }
+        $len -= $size + 16;
+    }
+    delete $$et{DOC_NUM};
+    return $$dirInfo{DirLen} - $len;
+}
+
+#------------------------------------------------------------------------------
 # Process GoPro metadata (gpmd samples, GPMF box, or APP6) (ref PH/1/2)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
@@ -778,6 +804,7 @@ sub ProcessGoPro($$$)
     my ($size, $type, $unit, $scal, $setGroup0);
 
     $et->VerboseDir($$dirInfo{DirName} || 'GPMF', undef, $dirEnd-$pos) if $verbose;
+    $$et{FoundEmbedded} = 1;
     if ($pos) {
         my $parent = $$dirInfo{Parent};
         $setGroup0 = $$et{SET_GROUP0} = 'APP6' if $parent and $parent eq 'APP6';
@@ -835,6 +862,7 @@ sub ProcessGoPro($$$)
         ScaleValues($val, $scal) if $scal and $tag ne 'SCAL' and $pos+$size+3>=$dirEnd;
         my $key = $et->HandleTag($tagTablePtr, $tag, $val,
             DataPt  => $dataPt,
+            DataPos => $$dirInfo{DataPos},
             Base    => $base,
             Start   => $pos,
             Size    => $size,

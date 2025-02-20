@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.20
 [File, System, Other] FileName - File Name: Nikon_4_failed.jpg
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 7.0 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:44-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:44-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:44-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2025:02:19 12:27:23-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2025:02:19 12:27:23-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:02:19 12:27:23-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -137,7 +137,7 @@
 [MakerNotes, Nikon, Camera] 169 - Image Optimization: Custom
 [MakerNotes, Nikon, Camera] 170 - Saturation: Enhanced
 [MakerNotes, Nikon, Camera] 171 - Vari Program: 
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.42
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.20
 [XMP, XMP-aux, Camera] FlashCompensation - Flash Compensation: 0
 [XMP, XMP-aux, Camera] Lens - Lens: 18-70mm f/3.5-4.5
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: Y, Cb, Cr, -
@@ -160,6 +160,7 @@
 [Composite, Composite, Time] Exif-SubSecCreateDate - Create Date: 2005:01:14 08:57:59.20
 [Composite, Composite, Time] Exif-SubSecDateTimeOriginal - Date/Time Original: 2005:01:14 08:57:59.20
 [Composite, Composite, Time] Exif-SubSecModifyDate - Modify Date: 2005:01:14 08:57:59.20
+[Composite, Composite, Camera] Nikon-AutoFocus - Auto Focus: On
 [Composite, Composite, Camera] Nikon-LensID - Lens ID: AF-S DX Zoom-Nikkor 18-70mm f/3.5-4.5G IF-ED
 [Composite, Composite, Camera] Nikon-LensSpec - Lens Spec: 18-70mm f/3.5-4.5 G
 [Composite, Composite, Camera] XMP-Flash - Flash: Auto, Fired, Return detected

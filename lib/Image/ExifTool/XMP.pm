@@ -165,7 +165,7 @@ my %xmpNS = (
 #
     plus      => 'http://ns.useplus.org/ldf/xmp/1.0/',
     # (prism recommendations from http://www.prismstandard.org/specifications/3.0/Image_Guide_3.0.htm)
-    prism     => 'http://prismstandard.org/namespaces/basic/2.0/',
+    prism     => 'http://prismstandard.org/namespaces/basic/2.0/', # (maybe left at 2.0 to avoid compatibility issues -- think hard before changing this)
     prl       => 'http://prismstandard.org/namespaces/prl/2.1/',
     pur       => 'http://prismstandard.org/namespaces/prismusagerights/2.1/',
     pmi       => 'http://prismstandard.org/namespaces/pmi/2.2/',

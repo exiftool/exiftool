@@ -211,6 +211,11 @@ html/install.html
 html/metafiles.html
 html/mistakes.html
 html/overview.png
+html/plot.html
+html/plot1.svg
+html/plot2.svg
+html/plot3.svg
+html/plot4.svg
 html/standards.html
 html/struct.html
 html/style.css
@@ -398,6 +403,7 @@ lib/Image/ExifTool/PhaseOne.pm
 lib/Image/ExifTool/PhotoCD.pm
 lib/Image/ExifTool/PhotoMechanic.pm
 lib/Image/ExifTool/Photoshop.pm
+lib/Image/ExifTool/Plot.pm
 lib/Image/ExifTool/PostScript.pm
 lib/Image/ExifTool/PrintIM.pm
 lib/Image/ExifTool/Protobuf.pm

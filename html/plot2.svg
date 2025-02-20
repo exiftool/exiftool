@@ -1,0 +1,76 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600"
+ preserveAspectRatio="xMidYMid meet" viewBox="0 0 800 600">
+<title>Plot by ExifTool 13.20</title>
+<!-- X axis -->
+<g dominant-baseline='hanging' text-anchor='middle'>
+<text x='432.5' y='580'>FocalLength35efl</text>
+<text x='10' y='282.5' transform='rotate(-90,10,282.5)'>Count</text>
+<text x='80' y='560'>20</text>
+<text x='119.2' y='560'>30</text>
+<text x='158.3' y='560'>40</text>
+<text x='197.5' y='560'>50</text>
+<text x='236.7' y='560'>60</text>
+<text x='275.8' y='560'>70</text>
+<text x='315' y='560'>80</text>
+<text x='354.2' y='560'>90</text>
+<text x='393.3' y='560'>100</text>
+<text x='432.5' y='560'>110</text>
+<text x='471.7' y='560'>120</text>
+<text x='510.8' y='560'>130</text>
+<text x='550' y='560'>140</text>
+<text x='589.2' y='560'>150</text>
+<text x='628.3' y='560'>160</text>
+<text x='667.5' y='560'>170</text>
+<text x='706.7' y='560'>180</text>
+<text x='745.8' y='560'>190</text>
+<text x='785' y='560'>200</text>
+<path stroke='darkgray' stroke-width='0.5' d='
+M80 15 v535 M99.6 15 v535 M119.2 15 v535 M138.8 15 v535 M158.3 15 v535 M177.9 15 v535 
+M197.5 15 v535 M217.1 15 v535 M236.7 15 v535 M256.3 15 v535 M275.8 15 v535 M295.4 15 v535 
+M315 15 v535 M334.6 15 v535 M354.2 15 v535 M373.8 15 v535 M393.3 15 v535 M412.9 15 v535 
+M432.5 15 v535 M452.1 15 v535 M471.7 15 v535 M491.3 15 v535 M510.8 15 v535 M530.4 15 v535 
+M550 15 v535 M569.6 15 v535 M589.2 15 v535 M608.8 15 v535 M628.3 15 v535 M647.9 15 v535 
+M667.5 15 v535 M687.1 15 v535 M706.7 15 v535 M726.3 15 v535 M745.8 15 v535 M765.4 15 v535 
+M785 15 v535 '/>
+</g>
+<!-- Y axis -->
+<g dominant-baseline='middle' text-anchor='end'>
+<text x='70' y='550'>0</text>
+<text x='70' y='496.5'>5</text>
+<text x='70' y='443'>10</text>
+<text x='70' y='389.5'>15</text>
+<text x='70' y='336'>20</text>
+<text x='70' y='282.5'>25</text>
+<text x='70' y='229'>30</text>
+<text x='70' y='175.5'>35</text>
+<text x='70' y='122'>40</text>
+<text x='70' y='68.5'>45</text>
+<text x='70' y='15'>50</text>
+<path stroke='darkgray' stroke-width='0.5' d='
+M80 496.5 h705 M80 443 h705 M80 389.5 h705 M80 336 h705 M80 282.5 h705 M80 229 h705 
+M80 175.5 h705 M80 122 h705 M80 68.5 h705 M80 15 h705 '/>
+</g>
+<!-- Plot box and legend-->
+<g dominant-baseline='middle' text-anchor='start'>
+<path stroke='black' fill='none' d='M80 15 l0 535 705 0 0 -535 z'/>
+</g>
+<!-- Definitions -->
+<defs>
+<clipPath id='plot-area'><rect x='74' y='9' width='717' height='547' /></clipPath>
+</defs><style>
+  text { fill: black }
+</style>
+<g fill='none' clip-path='url(#plot-area)' stroke-linejoin='round' stroke-linecap='round' stroke-width='1.5'>
+<!-- FocalLength35efl -->
+<path fill="blue" style="fill-opacity: .20" stroke='blue' d=' M
+80 -2777.6 h19.58 L 99.6 357.4 h19.58 L 119.2 475.1 h19.58 L 138.8 303.9 h19.58 L 158.3 421.6 h19.58 L
+177.9 378.8 h19.58 L 197.5 539.3 h19.58 L 217.1 432.3 h19.58 L 236.7 432.3 h19.58 L 256.3 432.3 h19.58 L
+275.8 507.2 h19.58 L 295.4 464.4 h19.58 L 315 485.8 h19.58 L 334.6 485.8 h19.58 L 354.2 539.3 h19.58 L
+373.8 539.3 h19.58 L 393.3 517.9 h19.58 L 412.9 507.2 h19.58 L 432.5 528.6 h19.58 L 452.1 517.9 h19.58 L
+471.7 496.5 h19.58 L 491.3 550 h19.58 L 510.8 539.3 h19.58 L 530.4 550 h19.58 L 550 528.6 h19.58 L
+569.6 539.3 h19.58 L 589.2 539.3 h19.58 L 608.8 550 h19.58 L 628.3 550 h19.58 L 647.9 550 h19.58 L
+667.5 539.3 h19.58 L 687.1 550 h19.58 L 706.7 550 h19.58 L 726.3 550 h19.58 L 745.8 539.3 h19.58 L
+765.4 314.6 h19.58 V550 H80 z'/>
+</g></svg>

@@ -7,6 +7,24 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.10. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 20, 2025 - Version 13.20
+
+  - Added -plot option for generating SVG-format plots from tag values
+  - Added a new Olympus CameraType
+  - Added a new Nikon Z LensID (thanks Warren Hatch)
+  - Overhauled decoding of Nikon AF tags (thanks Warren Hatch)
+  - Decode timed GPS from yet another model dashcam
+  - Decode more information from AAE files
+  - Decode more tags from DJI videos
+  - Updated Windows launcher (thanks Oliver Betz)
+  - Enhanced -w option to be available for use with the -csv output
+  - Attempted to patch a problem writing some PDF files
+  - Fail if a required module is missing when attempting to write a formatted
+    date/time value instead of falling back to write as unformatted
+  - Minor change to WebP lossless FileType text
+  - API Changes:
+      - Added Plot option
+
 Feb. 10, 2025 - Version 13.19
 
   - Added read/write support for PDF and XMP-pdfx SourceModified
@@ -14,11 +32,11 @@ Feb. 10, 2025 - Version 13.19
   - Decode timed GPS from Rexing V1-4k dashcam
   - Decode more information from AAE files
   - Made a new icon for the Windows EXE application
-  - Changed family 3 groups for ICO files so the first icon is in the Doc1
-    instead of the Main group
   - Improved handling of ICC_Profile in HEIC images:
       - Profiles for sub-images are extracted as sub-documents
       - Allow only the profile of the main image to be written
+  - Changed family 3 groups for ICO files so the first icon is in the Doc1
+    instead of the Main group
   - Updated Sony decoding for ILCE-1M2 (thanks Jos Roost)
 
 Feb. 3, 2025 - Version 13.18

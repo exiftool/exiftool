@@ -43,7 +43,7 @@
 package Image::ExifTool::QuickTime;
 
 use strict;
-use vars qw($VERSION $AUTOLOAD %stringEncoding %avType %dontInherit);
+use vars qw($VERSION $AUTOLOAD %stringEncoding %avType %dontInherit %eeBox);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
@@ -513,7 +513,7 @@ my %hashBox = ( vide => { %eeStd }, soun => { %eeStd } );
 # when the ExtractEmbedded is enabled (currently only the 'gps ' container name is
 # used, but others have been checked against all available sample files and may be
 # useful in the future if the names are used for different boxes on other locations)
-my %eeBox = (
+%eeBox = (
     # (note: vide is only processed if specific atoms exist in the VisualSampleDesc)
     vide => { %eeStd, JPEG => 'stsd' },
     text => { %eeStd },
@@ -1600,28 +1600,6 @@ my %userDefined = (
         PrintConv => \&PrintGPSCoordinates,
         PrintConvInv => \&PrintInvGPSCoordinates,
     },
-    # \xa9 tags written by DJI Phantom 3: (ref PH)
-    "\xa9xsp" => 'SpeedX', #PH (guess)
-    "\xa9ysp" => 'SpeedY', #PH (guess)
-    "\xa9zsp" => 'SpeedZ', #PH (guess)
-    "\xa9fpt" => 'Pitch', #PH
-    "\xa9fyw" => 'Yaw', #PH
-    "\xa9frl" => 'Roll', #PH
-    "\xa9gpt" => 'CameraPitch', #PH
-    "\xa9gyw" => 'CameraYaw', #PH
-    "\xa9grl" => 'CameraRoll', #PH
-    "\xa9enc" => 'EncoderID', #PH (forum9271)
-    # and the following entries don't have the proper 4-byte header for \xa9 tags:
-    "\xa9dji" => { Name => 'UserData_dji', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
-    "\xa9res" => { Name => 'UserData_res', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
-    "\xa9uid" => { Name => 'UserData_uid', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
-    "\xa9mdl" => {
-        Name => 'Model',
-        Notes => 'non-standard-format DJI tag',
-        Format => 'string',
-        Avoid => 1,
-    },
-    # end DJI tags
     name => 'Name',
     WLOC => {
         Name => 'WindowLocation',
@@ -2092,7 +2070,35 @@ my %userDefined = (
     "\xa9TSC" => 'StartTimeScale', # (Hero6)
     "\xa9TSZ" => 'StartTimeSampleSize', # (Hero6)
     "\xa9TIM" => 'StartTimecode', #PH (NC)
-    # --- HTC ----
+    # ---- DJI ----
+    # \xa9 tags written by DJI Phantom 3: (ref PH)
+    "\xa9xsp" => 'SpeedX', #PH (guess)
+    "\xa9ysp" => 'SpeedY', #PH (guess)
+    "\xa9zsp" => 'SpeedZ', #PH (guess)
+    "\xa9fpt" => 'Pitch', #PH
+    "\xa9fyw" => 'Yaw', #PH
+    "\xa9frl" => 'Roll', #PH
+    "\xa9gpt" => 'CameraPitch', #PH
+    "\xa9gyw" => 'CameraYaw', #PH
+    "\xa9grl" => 'CameraRoll', #PH
+    "\xa9enc" => 'EncoderID', #PH (forum9271)
+    # and the following entries don't have the proper 4-byte header for \xa9 tags:
+    "\xa9dji" => { Name => 'UserData_dji', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
+    "\xa9res" => { Name => 'UserData_res', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
+    "\xa9uid" => { Name => 'UserData_uid', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
+    "\xa9mdl" => {
+        Name => 'Model',
+        Notes => 'non-standard-format DJI tag',
+        Format => 'string',
+        Avoid => 1,
+    },
+    btec => {
+        Name => 'GlamourSettings',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::Glamour' },
+    },
+    fsid => 'OriginalFilePath',
+    # dbcm - seen "\0\0\0\x04"
+    # ---- HTC ----
     htcb => {
         Name => 'HTCBinary',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::HTCBinary' },
@@ -8081,6 +8087,7 @@ my %userDefined = (
         Name => 'TimeCode',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::TimeCode' },
     },
+    # dbgi - used by DJI - seen "\0\0\0\0"
 );
 
 # TimeCode header
@@ -8203,6 +8210,11 @@ my %userDefined = (
         Name => 'HandlerType',
         Format => 'undef[4]',
         RawConv => q{
+            unless ($$self{HasHandler}{$val} or not $Image::ExifTool::QuickTime::eeBox{$val}
+                or $val eq 'vide' or $$self{OPTIONS}{ExtractEmbedded} or $$self{OPTIONS}{Validate})
+            {
+                Image::ExifTool::QuickTime::EEWarn($self);
+            }
             $$self{HandlerType} = $val unless $val eq 'alis' or $val eq 'url ';
             $$self{MediaType} = $val if @{$$self{PATH}} > 1 and $$self{PATH}[-2] eq 'Media';
             $$self{HasHandler}{$val} = 1; # remember all our handlers
@@ -9805,7 +9817,7 @@ sub ProcessMOV($$;$)
     }
     $$raf{NoBuffer} = 1 if $fast;   # disable buffering in FastScan mode
 
-    my $ee = $$et{OPTIONS}{ExtractEmbedded};
+    my $ee = $$et{OPTIONS}{ExtractEmbedded} || 0;
     my $hash = $$et{ImageDataHash};
     if ($ee or $hash) {
         $unkOpt = $$et{OPTIONS}{Unknown};
@@ -9902,10 +9914,8 @@ sub ProcessMOV($$;$)
                     $eeTag = 1;
                     $$et{OPTIONS}{Unknown} = 1; # temporarily enable "Unknown" option
                 }
-            } elsif ($handlerType ne 'vide' and not $$et{OPTIONS}{Validate}) {
-                EEWarn($et);
             }
-        } elsif ($ee and $ee > 1 and $eeBox2{$handlerType} and $eeBox2{$handlerType}{$tag}) {
+        } elsif ($ee > 1 and $eeBox2{$handlerType} and $eeBox2{$handlerType}{$tag}) {
             $eeTag = 1;
             $$et{OPTIONS}{Unknown} = 1;
         } elsif ($hash and $hashBox{$handlerType} and $hashBox{$handlerType}{$tag}) {

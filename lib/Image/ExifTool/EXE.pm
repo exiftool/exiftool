@@ -22,7 +22,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.22';
+$VERSION = '1.23';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -1005,20 +1005,13 @@ sub ProcessPEVersion($$)
                     next;
                 }
                 my $tag = $string;
-                # create entry in tag table if it doesn't already exist
-                unless ($$tagTablePtr{$tag}) {
-                    my $name = $tag;
-                    $name =~ tr/-_a-zA-Z0-9//dc; # remove illegal characters
-                    next unless length $name;
-                    AddTagToTable($tagTablePtr, $tag, { Name => $name });
-                }
                 # get tag value (converted to current Charset)
                 if ($valLen) {
                     ($string, $pt) = ReadUnicodeStr($dataPt, $pt, $entryEnd, $et);
                 } else {
                     $string = '';
                 }
-                $et->HandleTag($tagTablePtr, $tag, $string);
+                $et->HandleTag($tagTablePtr, $tag, $string, MakeTagInfo => 1);
                 # step to next entry (padded to an even word)
                 $pt = ($entryEnd + 3) & 0xfffffffc;
             }

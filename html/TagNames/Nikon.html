@@ -738,8 +738,11 @@ new key)</span></span></td></tr>
 <td title='0x00b7 = 183'>0x00b7</td>
 <td>AFInfo2</td>
 <td class=c>-</td>
-<td>--&gt; <a href='Nikon.html#AFInfo2V0400'>Nikon AFInfo2V0400 Tags</a>
-  <br>--&gt; <a href='Nikon.html#AFInfo2'>Nikon AFInfo2 Tags</a></td></tr>
+<td>--&gt; <a href='Nikon.html#AFInfo2V0100'>Nikon AFInfo2V0100 Tags</a>
+  <br>--&gt; <a href='Nikon.html#AFInfo2V0101'>Nikon AFInfo2V0101 Tags</a>
+  <br>--&gt; <a href='Nikon.html#AFInfo2V0200'>Nikon AFInfo2V0200 Tags</a>
+  <br>--&gt; <a href='Nikon.html#AFInfo2V0300'>Nikon AFInfo2V0300 Tags</a>
+  <br>--&gt; <a href='Nikon.html#AFInfo2V0400'>Nikon AFInfo2V0400 Tags</a></td></tr>
 <tr>
 <td title='0x00b8 = 184'>0x00b8</td>
 <td>FileInfo</td>
@@ -12409,6 +12412,7 @@ extracted.</p>
   <br>44 = Nikkor Z 70-180mm f/2.8
   <br>45 = Nikkor Z 600mm f/6.3 VR S
   <br>46 = Nikkor Z 135mm f/1.8 S Plena
+  <br>47 = Nikkor Z 35mm f/1.2 S
   <br>48 = Nikkor Z 28-400mm f/4-8 VR
   <br>51 = Nikkor Z 35mm f/1.4
   <br>52 = Nikkor Z 50mm f/1.4
@@ -13366,82 +13370,10 @@ D5200, D7000.</p>
   <br>3 = Dark</span></td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='AFInfo2V0400'>Nikon AFInfo2V0400 Tags</a></h2>
-<p>AF information for Nikon cameras with the Expeed 7 processor: The Zf, Z6_3,
-Z8, Z9 and Z50_3.</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Index1</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td class=r title='0 = 0x0'>0</td>
-<td>AFInfo2Version</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='5 = 0x5'>5</td>
-<td>AFAreaMode</td>
-<td class=c>int8u</td>
-<td><table class=cols><tr>
-  <td>192 = Pinpoint
-  <br>193 = Single
-  <br>195 = Wide (S)
-  <br>196 = Wide (L)
-  <br>197 = Auto</td><td>&nbsp;&nbsp;</td>
-  <td>204 = Dynamic Area (S)
-  <br>205 = Dynamic Area (M)
-  <br>206 = Dynamic Area (L)
-  <br>207 = 3D-tracking
-  <br>208 = Wide (C1/C2)</td></tr></table>
-</td></tr>
-<tr>
-<td class=r title='10 = 0xa'>10</td>
-<td>AFPointsUsed
-  <br>AFPointsUsed
-  <br>AFPointsUsed</td>
-<td class=c>undef[51]<br>undef[38]<br>undef[29]</td>
-<td><span class=s><span class=n>(either AFPointsUsed or AFAreaX/YPosition will be set, but not both)</span></span></td></tr>
-<tr class=b>
-<td class=r title='62 = 0x3e'>62</td>
-<td>AFImageWidth</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='64 = 0x40'>64</td>
-<td>AFImageHeight</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='66 = 0x42'>66</td>
-<td>AFAreaXPosition</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='68 = 0x44'>68</td>
-<td>AFAreaYPosition</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='70 = 0x46'>70</td>
-<td>AFAreaWidth</td>
-<td class=c>int16u</td>
-<td><span class=s><span class=n>(size of AF area in AFImage pixels)</span></span></td></tr>
-<tr>
-<td class=r title='72 = 0x48'>72</td>
-<td>AFAreaHeight</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='74 = 0x4a'>74</td>
-<td>FocusResult</td>
-<td class=c>int8u</td>
-<td><span class=s>0 = Out of Focus
-  <br>1 = Focus</span></td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='AFInfo2'>Nikon AFInfo2 Tags</a></h2>
-<p>These tags are written by Nikon DSLR&#39;s which have the live view feature.</p>
+<h2><a name='AFInfo2V0100'>Nikon AFInfo2V0100 Tags</a></h2>
+<p>AF information for Nikon cameras with LiveView that were introduced 2007
+thru 2015 (and the D5600 in 2016), including D3, D4, D3000, D3100-D3300,
+D5000-D5600, D6x0, D700, D7000, D7100, D810</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -13454,17 +13386,16 @@ Z8, Z9 and Z50_3.</p>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
-<td>ContrastDetectAF</td>
+<td>AFDetectionMethod</td>
 <td class=c>int8u</td>
-<td><span class=s><span class=n>(this is Off for the hybrid AF used in Nikon 1 models)</span>
-  <br>0 = Off
-  <br>1 = On
-  <br>2 = On (2)</span></td></tr>
+<td><span class=s>0 = Phase Detect
+  <br>1 = Contrast Detect
+  <br>2 = Hybrid</span></td></tr>
 <tr>
 <td class=r title='5 = 0x5'>5</td>
 <td>AFAreaMode</td>
 <td class=c>int8u</td>
-<td><span class=s><span class=n>(ContrastDetectAF Off)</span></span><table class=cols><tr>
+<td><table class=cols><tr>
   <td>0 = Single Area
   <br>1 = Dynamic Area
   <br>2 = Dynamic Area (closest subject)
@@ -13490,10 +13421,12 @@ Z8, Z9 and Z50_3.</p>
   <br>131 = Face Priority (41 points)
   <br>192 = Pinpoint
   <br>193 = Single
+  <br>194 = Dynamic
   <br>195 = Wide (S)
   <br>196 = Wide (L)
-  <br>197 = Auto</td></tr></table>
-<span class=s><span class=n>(ContrastDetectAF On)</span></span><table class=cols><tr>
+  <br>197 = Auto
+  <br>199 = Auto</td></tr></table>
+<table class=cols><tr>
   <td>0 = Contrast-detect
   <br>1 = Contrast-detect (normal area)
   <br>2 = Contrast-detect (wide area)
@@ -13522,27 +13455,11 @@ Z8, Z9 and Z50_3.</p>
   <br>208 = Wide-Area (C1/C2)</td></tr></table>
 </td></tr>
 <tr class=b>
-<td class=r title='6 = 0x6'>6</td>
-<td>PhaseDetectAF</td>
-<td class=c>int8u</td>
-<td><span class=s><span class=n>(PrimaryAFPoint and AFPointsUsed below are only valid when this is On)</span></span><table class=cols><tr>
-  <td>0 = Off
-  <br>1 = On (51-point)
-  <br>2 = On (11-point)
-  <br>3 = On (39-point)
-  <br>4 = On (73-point)</td><td>&nbsp;&nbsp;</td>
-  <td>5 = On (5)
-  <br>6 = On (105-point)
-  <br>7 = On (153-point)
-  <br>8 = On (81-point)
-  <br>9 = On (105-point)</td></tr></table>
-</td></tr>
-<tr>
 <td class=r title='7 = 0x7'>7</td>
 <td>PrimaryAFPoint</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(models with 51-point AF -- 5 rows (A-E) and 11 columns (1-11): D3, D3S, D3X,
-D4, D4S, D300, D300S, D700, D800, D800e and D810)</span></span><table class=cols><tr>
+D4, D4S, D300, D300S, D700, D750, D800, D800E, D810, D7100 and D7200)</span></span><table class=cols><tr>
   <td>0 = (none)
   <br>1 = C6 (Center)
   <br>2 = B6
@@ -13595,7 +13512,7 @@ D4, D4S, D300, D300S, D700, D800, D800e and D810)</span></span><table class=cols
   <br>49 = C1
   <br>50 = B1
   <br>51 = D1</td></tr></table>
-<span class=s><span class=n>(models with 11-point AF: D90, D3000, D3100, D5000 and D5100)</span></span><table class=cols><tr>
+<span class=s><span class=n>(models with 11-point AF: D90, D3000-D3300, D5000 and D5100)</span></span><table class=cols><tr>
   <td>0 = (none)
   <br>1 = Center
   <br>2 = Top
@@ -13608,7 +13525,7 @@ D4, D4S, D300, D300S, D700, D800, D800e and D810)</span></span><table class=cols
   <br>9 = Upper-right
   <br>10 = Lower-right
   <br>11 = Far Right</td></tr></table>
-<span class=s><span class=n>(models with 39-point AF: D600 and D7000)</span></span><table class=cols><tr>
+<span class=s><span class=n>(models with 39-point AF: D600, D610, D5200-D5600, D7000 and Df)</span></span><table class=cols><tr>
   <td>0 = (none)
   <br>1 = C6 (Center)
   <br>2 = B6
@@ -13649,154 +13566,265 @@ D4, D4S, D300, D300S, D700, D800, D800e and D810)</span></span><table class=cols
   <br>37 = C1
   <br>38 = B1
   <br>39 = D1</td></tr></table>
-<span class=s><span class=n>(Nikon 1 models with older 135-point AF and 73-point phase-detect AF)</span></span><table class=cols><tr>
+<span class=s>0 = (none)</span></td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>AFPointsUsed
+  <br>AFPointsUsed
+  <br>AFPointsUsed
+  <br>AFPointsUsed</td>
+<td class=c>undef[7]<br>undef[2]<br>undef[5]<br>int8u</td>
+<td><span class=s><span class=n>(models with 51-point AF -- 5 rows: A1-9, B1-11, C1-11, D1-11, E1-9.  Center
+point is C6)</span>
+  <br><span class=n>(models with 11-point AF)</span></span><table class=cols><tr>
+  <td>0x0 = (none)
+  <br>0x7ff = All 11 Points
+  <br>Bit 0 = Center
+  <br>Bit 1 = Top
+  <br>Bit 2 = Bottom
+  <br>Bit 3 = Mid-left
+  <br>Bit 4 = Upper-left</td><td>&nbsp;&nbsp;</td>
+  <td>Bit 5 = Lower-left
+  <br>Bit 6 = Far Left
+  <br>Bit 7 = Mid-right
+  <br>Bit 8 = Upper-right
+  <br>Bit 9 = Lower-right
+  <br>Bit 10 = Far Right</td></tr></table>
+<span class=s><span class=n>(models with 39-point AF -- 5 rows: A1-3, B1-11, C1-11, D1-11, E1-3.  Center
+point is C6)</span>
+  <br>0 = (none)</span></td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>AFImageWidth</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(this and the following tags are valid only for contrast-detect AF)</span></span></td></tr>
+<tr>
+<td class=r title='18 = 0x12'>18</td>
+<td>AFImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='20 = 0x14'>20</td>
+<td>AFAreaXPosition</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(center of AF area in AFImage coordinates)</span></span></td></tr>
+<tr>
+<td class=r title='22 = 0x16'>22</td>
+<td>AFAreaYPosition</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
+<td>AFAreaWidth</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(size of AF area in AFImage coordinates)</span></span></td></tr>
+<tr>
+<td class=r title='26 = 0x1a'>26</td>
+<td>AFAreaHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='28 = 0x1c'>28</td>
+<td>ContrastDetectAFInFocus
+  <br>AFPointsSelected</td>
+<td class=c>int8u<br>undef[20]</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AFInfo2V0101'>Nikon AFInfo2V0101 Tags</a></h2>
+<p>AF information for Nikon cameras D5, D500, D850, D3400, D3500 and D7500</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>AFInfo2Version</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>AFDetectionMethod</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Phase Detect
+  <br>1 = Contrast Detect
+  <br>2 = Hybrid</span></td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>AFAreaMode</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Single Area
+  <br>1 = Dynamic Area
+  <br>2 = Dynamic Area (closest subject)
+  <br>3 = Group Dynamic
+  <br>4 = Dynamic Area (9 points)
+  <br>5 = Dynamic Area (21 points)
+  <br>6 = Dynamic Area (51 points)
+  <br>7 = Dynamic Area (51 points, 3D-tracking)
+  <br>8 = Auto-area
+  <br>9 = Dynamic Area (3D-tracking)
+  <br>10 = Single Area (wide)
+  <br>11 = Dynamic Area (wide)
+  <br>12 = Dynamic Area (wide, 3D-tracking)
+  <br>13 = Group Area
+  <br>14 = Dynamic Area (25 points)
+  <br>15 = Dynamic Area (72 points)
+  <br>16 = Group Area (HL)
+  <br>17 = Group Area (VL)
+  <br>18 = Dynamic Area (49 points)
+  <br>128 = Single
+  <br>129 = Auto (41 points)
+  <br>130 = Subject Tracking (41 points)
+  <br>131 = Face Priority (41 points)
+  <br>192 = Pinpoint
+  <br>193 = Single
+  <br>194 = Dynamic
+  <br>195 = Wide (S)
+  <br>196 = Wide (L)
+  <br>197 = Auto
+  <br>199 = Auto</td></tr></table>
+<table class=cols><tr>
+  <td>0 = Contrast-detect
+  <br>1 = Contrast-detect (normal area)
+  <br>2 = Contrast-detect (wide area)
+  <br>3 = Contrast-detect (face priority)
+  <br>4 = Contrast-detect (subject tracking)
+  <br>128 = Single
+  <br>129 = Auto (41 points)
+  <br>130 = Subject Tracking (41 points)
+  <br>131 = Face Priority (41 points)
+  <br>192 = Pinpoint
+  <br>193 = Single
+  <br>194 = Dynamic
+  <br>195 = Wide (S)
+  <br>196 = Wide (L)
+  <br>197 = Auto
+  <br>198 = Auto (People)
+  <br>199 = Auto (Animal)
+  <br>200 = Normal-area AF
+  <br>201 = Wide-area AF
+  <br>202 = Face-priority AF
+  <br>203 = Subject-tracking AF
+  <br>204 = Dynamic Area (S)
+  <br>205 = Dynamic Area (M)
+  <br>206 = Dynamic Area (L)
+  <br>207 = 3D-tracking
+  <br>208 = Wide-Area (C1/C2)</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>AFPointsUsed
+  <br>AFPointsUsed
+  <br>AFPointsUsed
+  <br>AFPointsUsed</td>
+<td class=c>undef[7]<br>undef[2]<br>undef[20]<br>int8u</td>
+<td><span class=s><span class=n>(models with 51-point AF -- 5 rows: A1-9, B1-11, C1-11, D1-11, E1-9.  Center
+point is C6)</span>
+  <br><span class=n>(models with 11-point AF)</span></span><table class=cols><tr>
+  <td>0x0 = (none)
+  <br>0x7ff = All 11 Points
+  <br>Bit 0 = Center
+  <br>Bit 1 = Top
+  <br>Bit 2 = Bottom
+  <br>Bit 3 = Mid-left
+  <br>Bit 4 = Upper-left</td><td>&nbsp;&nbsp;</td>
+  <td>Bit 5 = Lower-left
+  <br>Bit 6 = Far Left
+  <br>Bit 7 = Mid-right
+  <br>Bit 8 = Upper-right
+  <br>Bit 9 = Lower-right
+  <br>Bit 10 = Far Right</td></tr></table>
+<span class=s><span class=n>(models with 153-point AF -- 9 rows (A-I) and 17 columns (1-17). Center
+point is E9)</span>
+  <br>0 = (none)</span></td></tr>
+<tr>
+<td class=r title='28 = 0x1c'>28</td>
+<td>ContrastDetectAFInFocus
+  <br>AFPointsUsed
+  <br>AFPointsSelected</td>
+<td class=c>int8u<br>undef[7]<br>undef[20]</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td class=r title='48 = 0x30'>48</td>
+<td>AFPointsInFocus
+  <br>AFPointsInFocus</td>
+<td class=c>undef[7]<br>undef[20]</td>
+<td><span class=s><span class=n>(AF points in focus at the time time image was captured)</span></span></td></tr>
+<tr>
+<td class=r title='68 = 0x44'>68</td>
+<td>PrimaryAFPoint</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(models with 51-point AF -- 5 rows (A-E) and 11 columns (1-11): D7500)</span></span><table class=cols><tr>
   <td>0 = (none)
-  <br>1 = E8 (Center)
-  <br>2 = D8
-  <br>3 = C8
-  <br>4 = B8
-  <br>5 = A8
-  <br>6 = F8
-  <br>7 = G8
-  <br>8 = H8
-  <br>9 = I8
-  <br>10 = E9
-  <br>11 = D9
-  <br>12 = C9
-  <br>13 = B9
-  <br>14 = A9
-  <br>15 = F9
-  <br>16 = G9
-  <br>17 = H9
-  <br>18 = I9
-  <br>19 = E7
-  <br>20 = D7
-  <br>21 = C7
-  <br>22 = B7
-  <br>23 = A7
-  <br>24 = F7
-  <br>25 = G7
-  <br>26 = H7
-  <br>27 = I7</td><td>&nbsp;&nbsp;</td>
-  <td>28 = E10
+  <br>1 = C6 (Center)
+  <br>2 = B6
+  <br>3 = A5
+  <br>4 = D6
+  <br>5 = E5
+  <br>6 = C7
+  <br>7 = B7
+  <br>8 = A6
+  <br>9 = D7
+  <br>10 = E6</td><td>&nbsp;&nbsp;</td>
+  <td>11 = C5
+  <br>12 = B5
+  <br>13 = A4
+  <br>14 = D5
+  <br>15 = E4
+  <br>16 = C8
+  <br>17 = B8
+  <br>18 = A7
+  <br>19 = D8
+  <br>20 = E7
+  <br>21 = C9</td><td>&nbsp;&nbsp;</td>
+  <td>22 = B9
+  <br>23 = A8
+  <br>24 = D9
+  <br>25 = E8
+  <br>26 = C10
+  <br>27 = B10
+  <br>28 = A9
   <br>29 = D10
-  <br>30 = C10
-  <br>31 = B10
-  <br>32 = A10
-  <br>33 = F10
-  <br>34 = G10
-  <br>35 = H10
-  <br>36 = I10
-  <br>37 = E11
-  <br>38 = D11
-  <br>39 = C11
-  <br>40 = B11
-  <br>41 = A11
-  <br>42 = F11
-  <br>43 = G11
-  <br>44 = H11
-  <br>45 = I11
-  <br>46 = E12
-  <br>47 = D12
-  <br>48 = C12
-  <br>49 = B12
-  <br>50 = A12
-  <br>51 = F12
-  <br>52 = G12
-  <br>53 = H12
-  <br>54 = I12
-  <br>55 = E13</td><td>&nbsp;&nbsp;</td>
-  <td>56 = D13
-  <br>57 = C13
-  <br>58 = B13
-  <br>59 = A13
-  <br>60 = F13
-  <br>61 = G13
-  <br>62 = H13
-  <br>63 = I13
-  <br>64 = E14
-  <br>65 = D14
-  <br>66 = C14
-  <br>67 = B14
-  <br>68 = A14
-  <br>69 = F14
-  <br>70 = G14
-  <br>71 = H14
-  <br>72 = I14
-  <br>73 = E15
-  <br>74 = D15
-  <br>75 = C15
-  <br>76 = B15
-  <br>77 = A15
-  <br>78 = F15
-  <br>79 = G15
-  <br>80 = H15
-  <br>81 = I15
-  <br>82 = E6
-  <br>83 = D6</td><td>&nbsp;&nbsp;</td>
-  <td>84 = C6
-  <br>85 = B6
-  <br>86 = A6
-  <br>87 = F6
-  <br>88 = G6
-  <br>89 = H6
-  <br>90 = I6
-  <br>91 = E5
-  <br>92 = D5
-  <br>93 = C5
-  <br>94 = B5
-  <br>95 = A5
-  <br>96 = F5
-  <br>97 = G5
-  <br>98 = H5
-  <br>99 = I5
-  <br>100 = E4
-  <br>101 = D4
-  <br>102 = C4
-  <br>103 = B4
-  <br>104 = A4
-  <br>105 = F4
-  <br>106 = G4
-  <br>107 = H4
-  <br>108 = I4
-  <br>109 = E3
-  <br>110 = D3
-  <br>111 = C3</td><td>&nbsp;&nbsp;</td>
-  <td>112 = B3
-  <br>113 = A3
-  <br>114 = F3
-  <br>115 = G3
-  <br>116 = H3
-  <br>117 = I3
-  <br>118 = E2
-  <br>119 = D2
-  <br>120 = C2
-  <br>121 = B2
-  <br>122 = A2
-  <br>123 = F2
-  <br>124 = G2
-  <br>125 = H2
-  <br>126 = I2
-  <br>127 = E1
-  <br>128 = D1
-  <br>129 = C1
-  <br>130 = B1
-  <br>131 = A1
-  <br>132 = F1
-  <br>133 = G1
-  <br>134 = H1
-  <br>135 = I1</td></tr></table>
-<span class=s><span class=n>(Nikon 1 models with newer 135-point AF and 73-point phase-detect AF -- 9
-rows (B-J) and 15 columns (1-15), inside a grid of 11 rows by 15 columns.
-The points are numbered sequentially, with F8 at the center)</span>
-  <br>0 = (none)
-  <br>82 = F8 (Center)
-  <br><span class=n>(Nikon 1 models with 171-point AF and 105-point phase-detect AF -- 9 rows
-(B-J) and 19 columns (2-20), inside a grid of 11 rows by 21 columns.  The
-points are numbered sequentially, with F11 at the center)</span>
-  <br>0 = (none)
-  <br>115 = F11 (Center)
-  <br><span class=n>(Nikon models with 153-point AF -- 9 rows (A-I) and 17 columns (1-17): D5,
+  <br>30 = E9
+  <br>31 = C11
+  <br>32 = B11</td><td>&nbsp;&nbsp;</td>
+  <td>33 = D11
+  <br>34 = C4
+  <br>35 = B4
+  <br>36 = A3
+  <br>37 = D4
+  <br>38 = E3
+  <br>39 = C3
+  <br>40 = B3
+  <br>41 = A2
+  <br>42 = D3
+  <br>43 = E2</td><td>&nbsp;&nbsp;</td>
+  <td>44 = C2
+  <br>45 = B2
+  <br>46 = A1
+  <br>47 = D2
+  <br>48 = E1
+  <br>49 = C1
+  <br>50 = B1
+  <br>51 = D1</td></tr></table>
+<span class=s><span class=n>(models with 11-point AF: D3400, D3500)</span></span><table class=cols><tr>
+  <td>0 = (none)
+  <br>1 = Center
+  <br>2 = Top
+  <br>3 = Bottom
+  <br>4 = Mid-left
+  <br>5 = Upper-left</td><td>&nbsp;&nbsp;</td>
+  <td>6 = Lower-left
+  <br>7 = Far Left
+  <br>8 = Mid-right
+  <br>9 = Upper-right
+  <br>10 = Lower-right
+  <br>11 = Far Right</td></tr></table>
+<span class=s><span class=n>(Nikon models with 153-point AF -- 9 rows (A-I) and 17 columns (1-17): D5,
 D500 and D850)</span></span><table class=cols><tr>
   <td>0 = (none)
   <br>1 = E9 (Center)
@@ -13952,49 +13980,384 @@ D500 and D850)</span></span><table class=cols><tr>
   <br>151 = G1
   <br>152 = H1
   <br>153 = I1</td></tr></table>
-<span class=s><span class=n>(future models?...)</span>
-  <br>0 = (none)
-  <br>1 = Center</span></td></tr>
+<span class=s>0 = (none)</span></td></tr>
 <tr class=b>
+<td class=r title='70 = 0x46'>70</td>
+<td>AFImageWidth</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(this and the following tags are valid only for contrast-detect AF)</span></span></td></tr>
+<tr>
+<td class=r title='72 = 0x48'>72</td>
+<td>AFImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='74 = 0x4a'>74</td>
+<td>AFAreaXPosition</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(center of AF area in AFImage coordinates)</span></span></td></tr>
+<tr>
+<td class=r title='76 = 0x4c'>76</td>
+<td>AFAreaYPosition</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='78 = 0x4e'>78</td>
+<td>AFAreaWidth</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(size of AF area in AFImage coordinates)</span></span></td></tr>
+<tr>
+<td class=r title='80 = 0x50'>80</td>
+<td>AFAreaHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='82 = 0x52'>82</td>
+<td>ContrastDetectAFInFocus</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AFInfo2V0200'>Nikon AFInfo2V0200 Tags</a></h2>
+<p>AF information for Nikon 1 series cameras: Nikon 1 V1, V2, V3, J1, J2, J3,
+S1, S2 AW1.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>AFInfo2Version</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>AFAreaMode</td>
+<td class=c>int8u</td>
+<td><span class=s>128 = Single
+  <br>129 = Auto (41 points)
+  <br>130 = Subject Tracking (41 points)
+  <br>131 = Face Priority (41 points)</span></td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>PhaseDetectAF</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(PrimaryAFPoint and AFPointsUsed below are only valid when this is On)</span>
+  <br>4 = On (73-point)
+  <br>5 = On (5)
+  <br>6 = On (105-point)</span></td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7</td>
+<td>PrimaryAFPoint</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(Nikon 1 models with older 135-point AF and 73-point phase-detect AF)</span></span><table class=cols><tr>
+  <td>0 = (none)
+  <br>1 = E8 (Center)
+  <br>2 = D8
+  <br>3 = C8
+  <br>4 = B8
+  <br>5 = A8
+  <br>6 = F8
+  <br>7 = G8
+  <br>8 = H8
+  <br>9 = I8
+  <br>10 = E9
+  <br>11 = D9
+  <br>12 = C9
+  <br>13 = B9
+  <br>14 = A9
+  <br>15 = F9
+  <br>16 = G9
+  <br>17 = H9
+  <br>18 = I9
+  <br>19 = E7
+  <br>20 = D7
+  <br>21 = C7
+  <br>22 = B7
+  <br>23 = A7
+  <br>24 = F7
+  <br>25 = G7
+  <br>26 = H7
+  <br>27 = I7</td><td>&nbsp;&nbsp;</td>
+  <td>28 = E10
+  <br>29 = D10
+  <br>30 = C10
+  <br>31 = B10
+  <br>32 = A10
+  <br>33 = F10
+  <br>34 = G10
+  <br>35 = H10
+  <br>36 = I10
+  <br>37 = E11
+  <br>38 = D11
+  <br>39 = C11
+  <br>40 = B11
+  <br>41 = A11
+  <br>42 = F11
+  <br>43 = G11
+  <br>44 = H11
+  <br>45 = I11
+  <br>46 = E12
+  <br>47 = D12
+  <br>48 = C12
+  <br>49 = B12
+  <br>50 = A12
+  <br>51 = F12
+  <br>52 = G12
+  <br>53 = H12
+  <br>54 = I12
+  <br>55 = E13</td><td>&nbsp;&nbsp;</td>
+  <td>56 = D13
+  <br>57 = C13
+  <br>58 = B13
+  <br>59 = A13
+  <br>60 = F13
+  <br>61 = G13
+  <br>62 = H13
+  <br>63 = I13
+  <br>64 = E14
+  <br>65 = D14
+  <br>66 = C14
+  <br>67 = B14
+  <br>68 = A14
+  <br>69 = F14
+  <br>70 = G14
+  <br>71 = H14
+  <br>72 = I14
+  <br>73 = E15
+  <br>74 = D15
+  <br>75 = C15
+  <br>76 = B15
+  <br>77 = A15
+  <br>78 = F15
+  <br>79 = G15
+  <br>80 = H15
+  <br>81 = I15
+  <br>82 = E6
+  <br>83 = D6</td><td>&nbsp;&nbsp;</td>
+  <td>84 = C6
+  <br>85 = B6
+  <br>86 = A6
+  <br>87 = F6
+  <br>88 = G6
+  <br>89 = H6
+  <br>90 = I6
+  <br>91 = E5
+  <br>92 = D5
+  <br>93 = C5
+  <br>94 = B5
+  <br>95 = A5
+  <br>96 = F5
+  <br>97 = G5
+  <br>98 = H5
+  <br>99 = I5
+  <br>100 = E4
+  <br>101 = D4
+  <br>102 = C4
+  <br>103 = B4
+  <br>104 = A4
+  <br>105 = F4
+  <br>106 = G4
+  <br>107 = H4
+  <br>108 = I4
+  <br>109 = E3
+  <br>110 = D3
+  <br>111 = C3</td><td>&nbsp;&nbsp;</td>
+  <td>112 = B3
+  <br>113 = A3
+  <br>114 = F3
+  <br>115 = G3
+  <br>116 = H3
+  <br>117 = I3
+  <br>118 = E2
+  <br>119 = D2
+  <br>120 = C2
+  <br>121 = B2
+  <br>122 = A2
+  <br>123 = F2
+  <br>124 = G2
+  <br>125 = H2
+  <br>126 = I2
+  <br>127 = E1
+  <br>128 = D1
+  <br>129 = C1
+  <br>130 = B1
+  <br>131 = A1
+  <br>132 = F1
+  <br>133 = G1
+  <br>134 = H1
+  <br>135 = I1</td></tr></table>
+<span class=s><span class=n>(Nikon 1 models with newer 135-point AF and 73-point phase-detect AF -- 9
+rows (B-J) and 15 columns (1-15), inside a grid of 11 rows by 15 columns.
+The points are numbered sequentially, with F8 at the center)</span>
+  <br>0 = (none)
+  <br>82 = F8 (Center)
+  <br><span class=n>(Nikon 1 models with 171-point AF and 105-point phase-detect AF -- 9 rows
+(B-J) and 19 columns (2-20), inside a grid of 11 rows by 21 columns.  The
+points are numbered sequentially, with F11 at the center)</span>
+  <br>0 = (none)
+  <br>115 = F11 (Center)</span></td></tr>
+<tr>
 <td class=r title='8 = 0x8'>8</td>
 <td>AFPointsUsed
   <br>AFPointsUsed
-  <br>AFPointsUsed
-  <br>AFPointsUsed
-  <br>AFPointsUsed
-  <br>AFPointsUsed
-  <br>AFPointsUsed
-  <br>AFPointsUsed
-  <br>PrimaryAFPoint</td>
-<td class=c>undef[7]<br>undef[2]<br>undef[5]<br>undef[17]<br>undef[21]<br>undef[29]<br>undef[20]<br>undef[7]<br>int8u</td>
-<td><span class=s><span class=n>(models with 51-point AF -- 5 rows: A1-9, B1-11, C1-11, D1-11, E1-9.  Center
-point is C6)</span>
-  <br><span class=n>(models with 11-point AF)</span></span><table class=cols><tr>
-  <td>0x0 = (none)
-  <br>0x7ff = All 11 Points
-  <br>Bit 0 = Center
-  <br>Bit 1 = Top
-  <br>Bit 2 = Bottom
-  <br>Bit 3 = Mid-left
-  <br>Bit 4 = Upper-left</td><td>&nbsp;&nbsp;</td>
-  <td>Bit 5 = Lower-left
-  <br>Bit 6 = Far Left
-  <br>Bit 7 = Mid-right
-  <br>Bit 8 = Upper-right
-  <br>Bit 9 = Lower-right
-  <br>Bit 10 = Far Right</td></tr></table>
-<span class=s><span class=n>(models with 39-point AF -- 5 rows: A1-3, B1-11, C1-11, D1-11, E1-3.  Center
-point is C6)</span>
-  <br><span class=n>(older models with 135-point AF -- 9 rows (A-I) and 15 columns (1-15).
+  <br>AFPointsUsed</td>
+<td class=c>undef[17]<br>undef[21]<br>undef[29]</td>
+<td><span class=s><span class=n>(older models with 135-point AF -- 9 rows (A-I) and 15 columns (1-15).
 Center point is E8.  The odd-numbered columns, columns 2 and 14, and the
 remaining corner points are not used for 41-point AF mode)</span>
   <br><span class=n>(newer models with 135-point AF -- 9 rows (B-J) and 15 columns (1-15). Center
 point is F8)</span>
   <br><span class=n>(models with 171-point AF -- 9 rows (B-J) and 19 columns (2-20).  Center
-point is F10)</span>
-  <br><span class=n>(models with 153-point AF -- 9 rows (A-I) and 17 columns (1-17). Center
-point is E9)</span>
-  <br><span class=n>(newer models with 51-point AF)</span></span><table class=cols><tr>
+point is F10)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AFInfo2V0300'>Nikon AFInfo2V0300 Tags</a></h2>
+<p>AF information for Nikon cameras with the Expeed 6 processor: D6, D780, Z5,
+Z6, Z6ii, Z7, Z7ii, Z50 and Zfc.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>AFInfo2Version</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>AFDetectionMethod</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Phase Detect
+  <br>1 = Contrast Detect
+  <br>2 = Hybrid</span></td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>AFAreaMode</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Single Area
+  <br>1 = Dynamic Area
+  <br>2 = Dynamic Area (closest subject)
+  <br>3 = Group Dynamic
+  <br>4 = Dynamic Area (9 points)
+  <br>5 = Dynamic Area (21 points)
+  <br>6 = Dynamic Area (51 points)
+  <br>7 = Dynamic Area (51 points, 3D-tracking)
+  <br>8 = Auto-area
+  <br>9 = Dynamic Area (3D-tracking)
+  <br>10 = Single Area (wide)
+  <br>11 = Dynamic Area (wide)
+  <br>12 = Dynamic Area (wide, 3D-tracking)
+  <br>13 = Group Area
+  <br>14 = Dynamic Area (25 points)
+  <br>15 = Dynamic Area (72 points)
+  <br>16 = Group Area (HL)
+  <br>17 = Group Area (VL)
+  <br>18 = Dynamic Area (49 points)
+  <br>128 = Single
+  <br>129 = Auto (41 points)
+  <br>130 = Subject Tracking (41 points)
+  <br>131 = Face Priority (41 points)
+  <br>192 = Pinpoint
+  <br>193 = Single
+  <br>194 = Dynamic
+  <br>195 = Wide (S)
+  <br>196 = Wide (L)
+  <br>197 = Auto
+  <br>199 = Auto</td></tr></table>
+<table class=cols><tr>
+  <td>0 = Contrast-detect
+  <br>1 = Contrast-detect (normal area)
+  <br>2 = Contrast-detect (wide area)
+  <br>3 = Contrast-detect (face priority)
+  <br>4 = Contrast-detect (subject tracking)
+  <br>128 = Single
+  <br>129 = Auto (41 points)
+  <br>130 = Subject Tracking (41 points)
+  <br>131 = Face Priority (41 points)
+  <br>192 = Pinpoint
+  <br>193 = Single
+  <br>194 = Dynamic
+  <br>195 = Wide (S)
+  <br>196 = Wide (L)
+  <br>197 = Auto
+  <br>198 = Auto (People)
+  <br>199 = Auto (Animal)
+  <br>200 = Normal-area AF
+  <br>201 = Wide-area AF
+  <br>202 = Face-priority AF
+  <br>203 = Subject-tracking AF
+  <br>204 = Dynamic Area (S)
+  <br>205 = Dynamic Area (M)
+  <br>206 = Dynamic Area (L)
+  <br>207 = 3D-tracking
+  <br>208 = Wide-Area (C1/C2)</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7</td>
+<td>AFCoordinatesAvailable</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>AFPointsUsed
+  <br>AFPointsUsed
+  <br>AFPointsUsed</td>
+<td class=c>undef[7]<br>undef[11]<br>undef[14]</td>
+<td><span class=s><span class=n>(models with 51-point AF -- 5 rows: A1-9, B1-11, C1-11, D1-11, E1-9.  Center
+point is C6)</span>
+  <br><span class=n>(models with hybrid detect AF have 81 auto-area points -- 9 rows (A-I) and 9 columns (1-9). Center point is E5)</span></span></td></tr>
+<tr class=b>
+<td class=r title='42 = 0x2a'>42</td>
+<td>AFImageWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='44 = 0x2c'>44</td>
+<td>AFImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='46 = 0x2e'>46</td>
+<td>AFAreaXPosition</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='47 = 0x2f'>47</td>
+<td>FocusPositionHorizontal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='48 = 0x30'>48</td>
+<td>AFAreaYPosition</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='49 = 0x31'>49</td>
+<td>FocusPositionVertical</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='50 = 0x32'>50</td>
+<td>AFAreaWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='52 = 0x34'>52</td>
+<td>AFAreaHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='56 = 0x38'>56</td>
+<td>PrimaryAFPoint</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(models with 51-point AF -- 5 rows (A-E) and 11 columns (1-11): D3, D3S, D3X,
+D4, D4S, D300, D300S, D700, D750, D800, D800E, D810, D7100 and D7200)</span></span><table class=cols><tr>
   <td>0 = (none)
   <br>1 = C6 (Center)
   <br>2 = B6
@@ -14047,7 +14410,7 @@ point is E9)</span>
   <br>49 = C1
   <br>50 = B1
   <br>51 = D1</td></tr></table>
-<table class=cols><tr>
+<span class=s><span class=n>(models with hybrid detect AF have 81 auto-area points -- 9 rows (A-I) and 9 columns (1-9). Center point is E5)</span></span><table class=cols><tr>
   <td>0 = (none)
   <br>1 = E5 (Center)
   <br>2 = D5
@@ -14130,117 +14493,7 @@ point is E9)</span>
   <br>79 = G1
   <br>80 = H1
   <br>81 = I1</td></tr></table>
-</td></tr>
-<tr>
-<td class=r title='10 = 0xa'>10</td>
-<td>AFPointsUsed
-  <br>AFPointsUsed
-  <br>AFPointsUsed</td>
-<td class=c>undef[7]<br>undef[11]<br>undef[14]</td>
-<td><span class=s><span class=n>(newer models with 51-point AF)</span>
-  <br><span class=n>(models with 81-selectable point AF -- 9 rows (A-I) and 9 columns (1-9) for
-phase detect AF points. Center point is E5)</span>
-  <br><span class=n>(models with 105-point AF -- 7 rows (A-G) and 15 columns (1-15). Center
-point is D8)</span></span></td></tr>
-<tr class=b>
-<td class=r title='16 = 0x10'>16</td>
-<td>AFImageWidth</td>
-<td class=c>int16u</td>
-<td><span class=s><span class=n>(this and the following tags are valid only for contrast-detect AF)</span></span></td></tr>
-<tr>
-<td class=r title='18 = 0x12'>18</td>
-<td>AFImageHeight</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='20 = 0x14'>20</td>
-<td>AFAreaXPosition</td>
-<td class=c>int16u</td>
-<td><span class=s><span class=n>(center of AF area in AFImage coordinates)</span></span></td></tr>
-<tr>
-<td class=r title='22 = 0x16'>22</td>
-<td>AFAreaYPosition</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='24 = 0x18'>24</td>
-<td>AFAreaWidth</td>
-<td class=c>int16u</td>
-<td><span class=s><span class=n>(size of AF area in AFImage coordinates)</span></span></td></tr>
-<tr>
-<td class=r title='26 = 0x1a'>26</td>
-<td>AFAreaHeight</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='28 = 0x1c'>28</td>
-<td>ContrastDetectAFInFocus
-  <br>AFPointsSelected
-  <br>AFPointsSelected</td>
-<td class=c>int8u<br>undef[20]<br>int16u</td>
-<td><span class=s>0 = No
-  <br>1 = Yes</span><table class=cols><tr>
-  <td>0x0 = (none)
-  <br>0x7ff = All 11 Points
-  <br>Bit 0 = Center
-  <br>Bit 1 = Top
-  <br>Bit 2 = Bottom
-  <br>Bit 3 = Mid-left
-  <br>Bit 4 = Mid-right</td><td>&nbsp;&nbsp;</td>
-  <td>Bit 5 = Upper-left
-  <br>Bit 6 = Upper-right
-  <br>Bit 7 = Lower-left
-  <br>Bit 8 = Lower-right
-  <br>Bit 9 = Far Left
-  <br>Bit 10 = Far Right</td></tr></table>
-</td></tr>
-<tr>
-<td class=r title='42 = 0x2a'>42</td>
-<td>AFImageWidth</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='44 = 0x2c'>44</td>
-<td>AFImageHeight</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='46 = 0x2e'>46</td>
-<td>AFAreaXPosition</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='47 = 0x2f'>47</td>
-<td>FocusPositionHorizontal</td>
-<td class=c title=' ~ = Writable only with -n'>int8u~</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='48 = 0x30'>48</td>
-<td>AFAreaYPosition
-  <br>AFPointsInFocus
-  <br>AFPointsInFocus</td>
-<td class=c>int16u<br>undef[20]<br>undef[7]</td>
-<td><span class=s><span class=n>(AF points in focus at the time time image was captured)</span></span></td></tr>
-<tr class=b>
-<td class=r title='49 = 0x31'>49</td>
-<td>FocusPositionVertical</td>
-<td class=c title=' ~ = Writable only with -n'>int8u~</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='50 = 0x32'>50</td>
-<td>AFAreaWidth</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='52 = 0x34'>52</td>
-<td>AFAreaHeight</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='56 = 0x38'>56</td>
-<td>PrimaryAFPoint</td>
-<td class=c>int8u</td>
-<td><span class=s><span class=n>(Nikon models with 105-point AF -- 7 rows (A-G) and 15 columns (1-15): D6)</span></span><table class=cols><tr>
+<span class=s><span class=n>(Nikon models with 105-point AF -- 7 rows (A-G) and 15 columns (1-15): D6)</span></span><table class=cols><tr>
   <td>0 = (none)
   <br>1 = D8 (Center)
   <br>2 = C8
@@ -14348,270 +14601,103 @@ point is D8)</span></span></td></tr>
   <br>104 = F1
   <br>105 = G1</td></tr></table>
 </td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AFInfo2V0400'>Nikon AFInfo2V0400 Tags</a></h2>
+<p>AF information for Nikon cameras with the Expeed 7 processor: The Zf, Z6_3,
+Z8, Z9 and Z50_3.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>AFInfo2Version</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='68 = 0x44'>68</td>
-<td>PrimaryAFPoint</td>
+<td class=r title='4 = 0x4'>4</td>
+<td>AFDetectionMethod</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Phase Detect
+  <br>1 = Contrast Detect
+  <br>2 = Hybrid</span></td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>AFAreaMode</td>
 <td class=c>int8u</td>
 <td><table class=cols><tr>
-  <td>0 = (none)
-  <br>1 = E9 (Center)
-  <br>2 = D9
-  <br>3 = C9
-  <br>4 = B9
-  <br>5 = A9
-  <br>6 = F9
-  <br>7 = G9
-  <br>8 = H9
-  <br>9 = I9
-  <br>10 = E10
-  <br>11 = D10
-  <br>12 = C10
-  <br>13 = B10
-  <br>14 = A10
-  <br>15 = F10
-  <br>16 = G10
-  <br>17 = H10
-  <br>18 = I10
-  <br>19 = E11
-  <br>20 = D11
-  <br>21 = C11
-  <br>22 = B11
-  <br>23 = A11
-  <br>24 = F11
-  <br>25 = G11
-  <br>26 = H11
-  <br>27 = I11
-  <br>28 = E8
-  <br>29 = D8
-  <br>30 = C8</td><td>&nbsp;&nbsp;</td>
-  <td>31 = B8
-  <br>32 = A8
-  <br>33 = F8
-  <br>34 = G8
-  <br>35 = H8
-  <br>36 = I8
-  <br>37 = E7
-  <br>38 = D7
-  <br>39 = C7
-  <br>40 = B7
-  <br>41 = A7
-  <br>42 = F7
-  <br>43 = G7
-  <br>44 = H7
-  <br>45 = I7
-  <br>46 = E12
-  <br>47 = D12
-  <br>48 = C12
-  <br>49 = B12
-  <br>50 = A12
-  <br>51 = F12
-  <br>52 = G12
-  <br>53 = H12
-  <br>54 = I12
-  <br>55 = E13
-  <br>56 = D13
-  <br>57 = C13
-  <br>58 = B13
-  <br>59 = A13
-  <br>60 = F13
-  <br>61 = G13</td><td>&nbsp;&nbsp;</td>
-  <td>62 = H13
-  <br>63 = I13
-  <br>64 = E14
-  <br>65 = D14
-  <br>66 = C14
-  <br>67 = B14
-  <br>68 = A14
-  <br>69 = F14
-  <br>70 = G14
-  <br>71 = H14
-  <br>72 = I14
-  <br>73 = E15
-  <br>74 = D15
-  <br>75 = C15
-  <br>76 = B15
-  <br>77 = A15
-  <br>78 = F15
-  <br>79 = G15
-  <br>80 = H15
-  <br>81 = I15
-  <br>82 = E16
-  <br>83 = D16
-  <br>84 = C16
-  <br>85 = B16
-  <br>86 = A16
-  <br>87 = F16
-  <br>88 = G16
-  <br>89 = H16
-  <br>90 = I16
-  <br>91 = E17
-  <br>92 = D17</td><td>&nbsp;&nbsp;</td>
-  <td>93 = C17
-  <br>94 = B17
-  <br>95 = A17
-  <br>96 = F17
-  <br>97 = G17
-  <br>98 = H17
-  <br>99 = I17
-  <br>100 = E6
-  <br>101 = D6
-  <br>102 = C6
-  <br>103 = B6
-  <br>104 = A6
-  <br>105 = F6
-  <br>106 = G6
-  <br>107 = H6
-  <br>108 = I6
-  <br>109 = E5
-  <br>110 = D5
-  <br>111 = C5
-  <br>112 = B5
-  <br>113 = A5
-  <br>114 = F5
-  <br>115 = G5
-  <br>116 = H5
-  <br>117 = I5
-  <br>118 = E4
-  <br>119 = D4
-  <br>120 = C4
-  <br>121 = B4
-  <br>122 = A4
-  <br>123 = F4</td><td>&nbsp;&nbsp;</td>
-  <td>124 = G4
-  <br>125 = H4
-  <br>126 = I4
-  <br>127 = E3
-  <br>128 = D3
-  <br>129 = C3
-  <br>130 = B3
-  <br>131 = A3
-  <br>132 = F3
-  <br>133 = G3
-  <br>134 = H3
-  <br>135 = I3
-  <br>136 = E2
-  <br>137 = D2
-  <br>138 = C2
-  <br>139 = B2
-  <br>140 = A2
-  <br>141 = F2
-  <br>142 = G2
-  <br>143 = H2
-  <br>144 = I2
-  <br>145 = E1
-  <br>146 = D1
-  <br>147 = C1
-  <br>148 = B1
-  <br>149 = A1
-  <br>150 = F1
-  <br>151 = G1
-  <br>152 = H1
-  <br>153 = I1</td></tr></table>
-<span class=s><span class=n>(D3500)</span></span><table class=cols><tr>
-  <td>0 = (none)
-  <br>1 = Center
-  <br>2 = Top
-  <br>3 = Bottom
-  <br>4 = Mid-left
-  <br>5 = Upper-left</td><td>&nbsp;&nbsp;</td>
-  <td>6 = Lower-left
-  <br>7 = Far Left
-  <br>8 = Mid-right
-  <br>9 = Upper-right
-  <br>10 = Lower-right
-  <br>11 = Far Right</td></tr></table>
-<table class=cols><tr>
-  <td>0 = (none)
-  <br>1 = C6 (Center)
-  <br>2 = B6
-  <br>3 = A5
-  <br>4 = D6
-  <br>5 = E5
-  <br>6 = C7
-  <br>7 = B7
-  <br>8 = A6
-  <br>9 = D7
-  <br>10 = E6</td><td>&nbsp;&nbsp;</td>
-  <td>11 = C5
-  <br>12 = B5
-  <br>13 = A4
-  <br>14 = D5
-  <br>15 = E4
-  <br>16 = C8
-  <br>17 = B8
-  <br>18 = A7
-  <br>19 = D8
-  <br>20 = E7
-  <br>21 = C9</td><td>&nbsp;&nbsp;</td>
-  <td>22 = B9
-  <br>23 = A8
-  <br>24 = D9
-  <br>25 = E8
-  <br>26 = C10
-  <br>27 = B10
-  <br>28 = A9
-  <br>29 = D10
-  <br>30 = E9
-  <br>31 = C11
-  <br>32 = B11</td><td>&nbsp;&nbsp;</td>
-  <td>33 = D11
-  <br>34 = C4
-  <br>35 = B4
-  <br>36 = A3
-  <br>37 = D4
-  <br>38 = E3
-  <br>39 = C3
-  <br>40 = B3
-  <br>41 = A2
-  <br>42 = D3
-  <br>43 = E2</td><td>&nbsp;&nbsp;</td>
-  <td>44 = C2
-  <br>45 = B2
-  <br>46 = A1
-  <br>47 = D2
-  <br>48 = E1
-  <br>49 = C1
-  <br>50 = B1
-  <br>51 = D1</td></tr></table>
-<span class=s><span class=n>(future models?...)</span>
-  <br>0 = (none)
-  <br>1 = Center</span></td></tr>
-<tr>
-<td class=r title='70 = 0x46'>70</td>
-<td>AFImageWidth</td>
-<td class=c>int16u</td>
-<td><span class=s><span class=n>(this and the following tags are valid only for contrast-detect AF)</span></span></td></tr>
+  <td>192 = Pinpoint
+  <br>193 = Single
+  <br>195 = Wide (S)
+  <br>196 = Wide (L)
+  <br>197 = Auto</td><td>&nbsp;&nbsp;</td>
+  <td>204 = Dynamic Area (S)
+  <br>205 = Dynamic Area (M)
+  <br>206 = Dynamic Area (L)
+  <br>207 = 3D-tracking
+  <br>208 = Wide (C1/C2)</td></tr></table>
+</td></tr>
 <tr class=b>
-<td class=r title='72 = 0x48'>72</td>
-<td>AFImageHeight</td>
+<td class=r title='7 = 0x7'>7</td>
+<td>AFCoordinatesAvailable</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>AFPointsUsed
+  <br>AFPointsUsed
+  <br>AFPointsUsed</td>
+<td class=c>undef[51]<br>undef[38]<br>undef[29]</td>
+<td><span class=s><span class=n>(either AFPointsUsed or AFAreaX/YPosition will be set, but not both)</span></span></td></tr>
+<tr class=b>
+<td class=r title='62 = 0x3e'>62</td>
+<td>AFImageWidth</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='74 = 0x4a'>74</td>
+<td class=r title='64 = 0x40'>64</td>
+<td>AFImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='66 = 0x42'>66</td>
 <td>AFAreaXPosition</td>
 <td class=c>int16u</td>
-<td><span class=s><span class=n>(center of AF area in AFImage coordinates)</span></span></td></tr>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='67 = 0x43'>67</td>
+<td>FocusPositionHorizontal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='76 = 0x4c'>76</td>
+<td class=r title='68 = 0x44'>68</td>
 <td>AFAreaYPosition</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='78 = 0x4e'>78</td>
+<td class=r title='69 = 0x45'>69</td>
+<td>FocusPositionVertical</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='70 = 0x46'>70</td>
 <td>AFAreaWidth</td>
 <td class=c>int16u</td>
-<td><span class=s><span class=n>(size of AF area in AFImage coordinates)</span></span></td></tr>
-<tr class=b>
-<td class=r title='80 = 0x50'>80</td>
+<td><span class=s><span class=n>(size of AF area in AFImage pixels)</span></span></td></tr>
+<tr>
+<td class=r title='72 = 0x48'>72</td>
 <td>AFAreaHeight</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
-<td class=r title='82 = 0x52'>82</td>
-<td>ContrastDetectAFInFocus</td>
+<tr class=b>
+<td class=r title='74 = 0x4a'>74</td>
+<td>FocusResult</td>
 <td class=c>int8u</td>
-<td><span class=s>0 = No
-  <br>1 = Yes</span></td></tr>
+<td><span class=s>0 = Out of Focus
+  <br>1 = Focus</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='FileInfo'>Nikon FileInfo Tags</a></h2>
@@ -15666,7 +15752,11 @@ videos from some Nikon cameras.</p>
 <td title='0x20000b7 = 33554615'>0x20000b7</td>
 <td>AFInfo2</td>
 <td class=c>-</td>
-<td>--&gt; <a href='Nikon.html#AFInfo2'>Nikon AFInfo2 Tags</a></td></tr>
+<td>--&gt; <a href='Nikon.html#AFInfo2V0100'>Nikon AFInfo2V0100 Tags</a>
+  <br>--&gt; <a href='Nikon.html#AFInfo2V0101'>Nikon AFInfo2V0101 Tags</a>
+  <br>--&gt; <a href='Nikon.html#AFInfo2V0200'>Nikon AFInfo2V0200 Tags</a>
+  <br>--&gt; <a href='Nikon.html#AFInfo2V0300'>Nikon AFInfo2V0300 Tags</a>
+  <br>--&gt; <a href='Nikon.html#AFInfo2V0400'>Nikon AFInfo2V0400 Tags</a></td></tr>
 <tr class=b>
 <td title='0x20000c3 = 33554627'>0x20000c3</td>
 <td>BarometerInfo</td>
@@ -16363,7 +16453,7 @@ for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 3, 2025</i>
+<br><i>Last revised Feb 19, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

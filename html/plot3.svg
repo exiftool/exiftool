@@ -1,0 +1,81 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600"
+ preserveAspectRatio="xMidYMid meet" viewBox="0 0 800 600">
+<title>CameraTemperature vs AmbientTemperature</title>
+<!-- X axis -->
+<g dominant-baseline='hanging' text-anchor='middle'>
+<text x='432.5' y='14' font-size='150%'>CameraTemperature vs AmbientTemperature</text>
+<text x='432.5' y='580'>AmbientTemperature</text>
+<text x='10' y='297.5' transform='rotate(-90,10,297.5)'>CameraTemperature</text>
+<text x='80' y='560'>11</text>
+<text x='121.5' y='560'>12</text>
+<text x='162.9' y='560'>13</text>
+<text x='204.4' y='560'>14</text>
+<text x='245.9' y='560'>15</text>
+<text x='287.4' y='560'>16</text>
+<text x='328.8' y='560'>17</text>
+<text x='370.3' y='560'>18</text>
+<text x='411.8' y='560'>19</text>
+<text x='453.2' y='560'>20</text>
+<text x='494.7' y='560'>21</text>
+<text x='536.2' y='560'>22</text>
+<text x='577.6' y='560'>23</text>
+<text x='619.1' y='560'>24</text>
+<text x='660.6' y='560'>25</text>
+<text x='702.1' y='560'>26</text>
+<text x='743.5' y='560'>27</text>
+<text x='785' y='560'>28</text>
+<path stroke='darkgray' stroke-width='0.5' d='
+M80 45 v505 M121.5 45 v505 M162.9 45 v505 M204.4 45 v505 M245.9 45 v505 M287.4 45 v505 
+M328.8 45 v505 M370.3 45 v505 M411.8 45 v505 M453.2 45 v505 M494.7 45 v505 M536.2 45 v505 
+M577.6 45 v505 M619.1 45 v505 M660.6 45 v505 M702.1 45 v505 M743.5 45 v505 M785 45 v505 '/>
+</g>
+<!-- Y axis -->
+<g dominant-baseline='middle' text-anchor='end'>
+<text x='70' y='550'>14</text>
+<text x='70' y='518.4'>15</text>
+<text x='70' y='486.9'>16</text>
+<text x='70' y='455.3'>17</text>
+<text x='70' y='423.8'>18</text>
+<text x='70' y='392.2'>19</text>
+<text x='70' y='360.6'>20</text>
+<text x='70' y='329.1'>21</text>
+<text x='70' y='297.5'>22</text>
+<text x='70' y='265.9'>23</text>
+<text x='70' y='234.4'>24</text>
+<text x='70' y='202.8'>25</text>
+<text x='70' y='171.3'>26</text>
+<text x='70' y='139.7'>27</text>
+<text x='70' y='108.1'>28</text>
+<text x='70' y='76.6'>29</text>
+<text x='70' y='45'>30</text>
+<path stroke='darkgray' stroke-width='0.5' d='
+M80 550 h705 M80 518.4 h705 M80 486.9 h705 M80 455.3 h705 M80 423.8 h705 M80 392.2 h705 
+M80 360.6 h705 M80 329.1 h705 M80 297.5 h705 M80 265.9 h705 M80 234.4 h705 M80 202.8 h705 
+M80 171.3 h705 M80 139.7 h705 M80 108.1 h705 M80 76.6 h705 M80 45 h705 '/>
+</g>
+<!-- Plot box and legend-->
+<g dominant-baseline='middle' text-anchor='start'>
+<path stroke='black' fill='none' d='M80 45 l0 505 705 0 0 -505 z'/>
+</g>
+<!-- Definitions -->
+<defs>
+<clipPath id='plot-area'><rect x='74' y='39' width='717' height='517' /></clipPath>
+<marker id='circle' markerWidth='12' markerHeight='12' refX='6' refY='6' markerUnits='userSpaceOnUse'>
+<circle cx="6" cy="6" r="4" stroke-width="1.5" stroke="context-stroke" fill="red" />
+</marker>
+</defs>
+<style>
+  path.circle { marker: url(#circle) }
+  text { fill: black] }
+</style>
+<g fill='none' clip-path='url(#plot-area)' stroke-linejoin='round' stroke-linecap='round' stroke-width='1.5'>
+<!-- CameraTemperature -->
+<path class="circle" stroke='red' d=' M
+536.2 202.8 M 121.5 486.9 M 536.2 202.8 M 536.2 202.8 M 121.5 518.4 M 121.5 518.4 M 536.2 202.8 M 536.2 202.8 M 536.2 202.8 M 536.2 202.8 M 536.2 202.8 M 577.6 171.3 M 536.2 202.8 M 536.2 202.8 M 494.7 234.4 M 619.1 139.7 M 702.1 76.6 M 162.9 486.9 M 328.8 360.6 M 660.6 108.1 M
+660.6 108.1 M 328.8 360.6 M 204.4 455.3 M 702.1 76.6 M 619.1 139.7 M 494.7 234.4 M 453.2 265.9 M 536.2 202.8 M 453.2 265.9 M 743.5 76.6 M 619.1 139.7 M 328.8 360.6 M 204.4 455.3 M 328.8 360.6 M 619.1 139.7 M 536.2 202.8 M 453.2 265.9 M 494.7 234.4 M 702.1 76.6 M 660.6 108.1 M
+245.9 423.8 M 204.4 455.3 M 204.4 455.3 M 702.1 76.6 M 494.7 234.4 M 494.7 234.4 M 494.7 234.4 M 453.2 265.9 M 660.6 108.1 M 702.1 76.6 M 619.1 139.7 M 245.9 423.8 M 204.4 455.3 M 619.1 139.7 M 702.1 76.6 M 660.6 108.1 M 453.2 265.9 M 494.7 234.4 M 494.7 234.4 M 494.7 234.4 M
+702.1 76.6 M 494.7 234.4 M 494.7 234.4 M 660.6 108.1 M 204.4 455.3 M 204.4 455.3 M 702.1 76.6 M 453.2 265.9 M 453.2 265.9 M 702.1 76.6 M 494.7 265.9 M 536.2 202.8 M 494.7 234.4 M 702.1 76.6 M 702.1 76.6 M 660.6 108.1 M 494.7 234.4 M 536.2 202.8 M 494.7 265.9 M 494.7 265.9 M
+702.1 76.6 M 702.1 76.6 M 702.1 76.6 M 702.1 76.6 M 702.1 76.6 M 536.2 202.8 M 494.7 265.9 M 536.2 202.8 M 702.1 76.6 M 660.6 108.1 M 702.1 108.1 M 702.1 76.6 M 453.2 265.9 M 536.2 202.8 M 536.2 202.8 M 577.6 171.3 M 162.9 486.9'/>
+</g></svg>

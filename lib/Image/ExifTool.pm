@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.19';
+$VERSION = '13.20';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1152,6 +1152,7 @@ my @availableOptions = (
     [ 'NoPDFList',        undef,  'flag to avoid splitting PDF List-type tag values' ],
     [ 'NoWarning',        undef,  'regular expression for warnings to suppress' ],
     [ 'Password',         undef,  'password for password-protected PDF documents' ],
+    [ 'Plot',             undef,  'SVG plot settings' ],
     [ 'PrintCSV',         undef,  'flag to print CSV directly (selected metadata types only)' ],
     [ 'PrintConv',        1,      'flag to enable print conversion' ],
     [ 'QuickTimeHandler', 1,      'flag to add mdir Handler to newly created Meta box' ],
@@ -2587,6 +2588,10 @@ sub Options($$;@)
             } else {
                 warn("Can't set $param to undef\n");
             }
+        } elsif ($param eq 'Plot') {
+            # add to existing plot settings
+            $newVal = "$oldVal,$newVal" if defined $oldVal and defined $newVal;
+            $$options{$param} = $newVal;
         } elsif (lc $param eq 'geodir') {
             $Image::ExifTool::Geolocation::geoDir = $newVal;
         } else {
@@ -9151,10 +9156,11 @@ sub AddTagToTable($$;$$)
 # Handle simple extraction of new tag information
 # Inputs: 0) ExifTool object ref, 1) tag table reference, 2) tagID, 3) value,
 #         4-N) parameters hash: Index, DataPt, DataPos, Base, Start, Size, Parent,
-#              TagInfo, ProcessProc, RAF, Format, Count
+#              TagInfo, ProcessProc, RAF, Format, Count, MakeTagInfo
 # Returns: tag key or undef if tag not found
 # Notes: if value is not defined, it is extracted from DataPt using TagInfo
 #        Format and Count if provided
+# - set MakeTagInfo to add tag info for unknown tags with name made from tag ID
 sub HandleTag($$$$;%)
 {
     my ($self, $tagTablePtr, $tag, $val, %parms) = @_;
@@ -9166,6 +9172,14 @@ sub HandleTag($$$$;%)
 
     if ($tagInfo) {
         $subdir = $$tagInfo{SubDirectory};
+    } elsif ($parms{MakeTagInfo}) {
+        $self->VPrint(0, $$self{INDENT}, "[adding $tag]\n") if $verbose;
+        my $name = $tag;
+        $name =~ s/([^A-Za-z])([a-z])/$1\u$2/g; # capitalize words
+        $name =~ tr/-_a-zA-Z0-9//dc; # remove illegal characters
+        $name = "Tag$name" if length($name) < 2 or $name =~ /^[-0-9]/;
+        $tagInfo = { Name => ucfirst($name) };
+        AddTagToTable($tagTablePtr, $tag, $tagInfo);
     } else {
         return undef unless $verbose;
         $tagInfo = { Name => "tag $tag" };  # create temporary tagInfo hash

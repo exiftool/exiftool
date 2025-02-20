@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>ExifTool Plot Feature</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+<style type="text/css">
+<!--
+pre   { color: #800; margin-left: 4em }
+.nr   { white-space: nowrap }
+.prog { padding: 0.5em; border: 1px solid gray; background: #fee }
+.indent { margin-left: 22% }
+-->
+</style>
+</head>
+<body>
+<h1>The ExifTool Plot Feature</h1>
+<p>The <code>-plot</code> option of the exiftool application is used to generate
+SVG-format output plot files from the values of tags.  This feature has many
+applications, including plotting timed metadata when combined with the
+<code>-ee</code> (ExtractEmbedded) option, and plotting values of one or more tags
+across a set of images.</p>
+
+<p>Any tag with a numerical value may be plotted, including strings and lists
+of numbers.</p>
+
+<p>The plot may be viewed by opening the SVG file in your favourite web browser
+or SVG-aware image viewer.  Most modern web browsers support display of SVG
+images.</p>
+
+<p>Three basic plot types are provided:  Line, Scatter and Histogram.  Examples
+of each are given in the <a href="#examples">Examples section</a> below.</p>
+
+<h2>Plot Settings</h2>
+
+<p>Plot settings are changed via the <a href="ExifTool.html#Plot">API Plot option</a>.
+Multiple options may be set at the same time either by stringing them together in a
+comma-separated list, or through multiple API Plot options.</p>
+
+<p>The syntax for each setting is <code><i>NAME</i>=<i>VALUE</i></code>.  Case is
+not significant for setting names.  Using <code><i>NAME</i>=</code>
+without a value sets the value to <i>undef</i>.  Using <code><i>NAME</i></code>
+alone sets the value to 1.  For example, to set the plot title and color
+for the first data line, a command could be:</p>
+
+<pre>exiftool -plot -api plot="title=some title,cols=turquoise" ...</pre>
+
+<blockquote>
+<table class='norm'>
+<tr><th colspan=4 bgcolor='#dddddd'><font size='+1'>ExifTool Plot Settings</font></th></tr>
+<tr><th>Name</th><th>Description</th><th>Value</th><th>Default</th></tr>
+<tr><td>Type</td><td>Type of plot</td>
+    <td align=center>'Line', 'Scatter' or 'Histogram' <sup>1</sup></td><td align=center>'Line'</td></tr>
+<tr><td>Style</td><td>Style of plot data points</td>
+    <td align=center>String of names: <sup>2,3</sup><br>'Line', 'Marker' and/or 'Fill'</td>
+    <td align=center>'Line'</td></tr>
+<tr><td>Title</td><td>Title of the plot</td>
+    <td align=center>Any string <sup>4</sup></td><td align=center>'' (auto-generated) <sup>5</sup></td></tr>
+<tr><td>XLabel</td><td>X-axis label string</td>
+    <td align=center>Any string <sup>4</sup></td><td align=center>'' (auto-generated) <sup>5</sup></td></tr>
+<tr><td>YLabel</td><td>Y-axis label string</td>
+    <td align=center>Any string <sup>4</sup></td><td align=center>'' (auto-generated) <sup>5</sup></td></tr>
+<tr><td>XMin, XMax</td><td>X-axis minimum and maximum</td>
+    <td align=center>A number</td><td align=center><i>undef</i> (autoscaling)</td></tr>
+<tr><td>YMin, YMax</td><td>Y-axis minimum and maximum</td>
+    <td align=center>A number</td><td align=center><i>undef</i> (autoscaling)</td></tr>
+<tr><td>NBins</td><td>Number of bins for histogram plot</td>
+    <td align=center>A number</td><td align=center>'20'</td></tr>
+<tr><td>Split</td><td>Split strings of numbers into separate plot lines</td>
+    <td align=center>Number of lines to create,<br>or 1 to split all <sup>6</sup></td><td align=center><i>undef</i></td></tr>
+<tr><td>Size</td><td>Width and height of output image</td>
+    <td align=center>String of 2 numbers <sup>7</sup></td><td align=center>'800 600'</td></tr>
+<tr><td>Margin</td><td>Left, right, top, bottom margins around plotting area</td>
+    <td align=center>String of 4 numbers <sup>7</sup></td><td align=center>'60 15 15 30'</td></tr>
+<tr><td>Legend</td><td>X and Y shift of legend from default location</td>
+    <td align=center>String of 2 numbers <sup>7</sup></td><td align=center>'0 0'</td></tr>
+<tr><td>TxtPad</td><td>Padding between text and X/Y scales</td>
+    <td align=center>String of 2 numbers <sup>7</sup></td><td align=center>'10 10'</td></tr>
+<tr><td>LineSpacing</td><td>Text line spacing</td>
+    <td align=center>A number</td><td align=center>'20'</td></tr>
+<tr><td>Cols</td><td>Colors of plot lines/markers for each dataset</td>
+    <td align=center>String of SVG color codes <sup>2</sup></td>
+    <td align=center>'red green blue black orange<br>gray purple cyan brown pink'</td></tr>
+<tr><td>Grid</td><td>Grid color</td>
+    <td align=center>SVG color code</td><td align=center>'darkgray'</td></tr>
+<tr><td>Text</td><td>Color of text and plot border</td>
+    <td align=center>SVG color code</td><td align=center>'black'</td></tr>
+<tr><td>Bkg</td><td>Background color</td>
+    <td align=center>SVG color code or <i>undef</i></td><td align=center><i>undef</i> (transparent)</td></tr>
+</table>
+</blockquote>
+
+<p>Notes:</p>
+<blockquote><table class='clear'>
+<tr><td valign=top><sup>1</sup></td><td>The scatter plot uses the first specified tag
+as the X coordinate and the remaining tags as the plot data.</td></tr>
+<tr><td valign=top><sup>2</sup></td><td>Strings of names may use whitespace, slash
+(<code>/</code>) or a plus sign (<code>+</code>) as a delimiter.</td></tr>
+<tr><td valign=top><sup>3</sup></td><td>The <code>Fill</code>
+style applies only for the <code>Histogram</code> plot style, or when <code>Marker</code>
+style is also used.  Without <code>Fill</code>, histogram bars and markers are hollow.
+<code>Line</code> and <code>Marker</code> may also be used together (eg. <code>Line+Marker</code>).
+For brevity, only the first letter of each setting is required (eg. <code>L+M</code>).</td></tr>
+<tr><td valign=top><sup>4</sup></td><td>Commas in labels must be escaped as either "<code>&amp;#44;</code>"
+or "<code>&amp;#x2c;</code>".  No other characters require escaping, but other XML numeric
+character references may be used.</td></tr>
+<tr><td valign=top><sup>5</sup></td><td>The auto-generation of labels applies only in limited
+situations, and may be disabled with <code>SETTING=</code>.</td></tr>
+<tr><td valign=top><sup>6</sup></td><td>For example, if a tag contains a set of N accelerometer readings,
+each composed of 3 values (X, Y and Z directions), then these could be plotted
+as 3 separate lines by setting <code>Split=3</code>.</td></tr>
+<tr><td valign=top><sup>7</sup></td><td>Strings of numbers may use either
+whitespace or slash (<code>/</code>) as a delimiter.</td></tr>
+</table></blockquote>
+
+<a name="examples"></a>
+<h2>Examples</h2>
+
+<a name="EX1"></a>
+<h3>Example 1 - Line Plot</h3>
+
+<p>The first example plots AmbientTemperature and CameraTemperature from a set of
+images in a directory.  The <code>-fileOrder</code> option is used to order the
+files (and hence the data points) chronologically.  Here is the command that was used:</p>
+
+<pre>exiftool C:/pics "-*temperature" -plot -fileorder createdate > plot1.svg
+</pre>
+
+<p>And this is the resulting SVG plot (plot1.svg):</p>
+
+<blockquote><img src="plot1.svg" alt="SVG-format plot" width=800 height=600></blockquote>
+
+<a name="EX2"></a>
+<h3>Example 2 - Histogram Plot</h3>
+
+<p>This example shows a histogram of the number of pictures taken at different
+focal lengths for a set of images.  It also demonstrates the use of the
+<a href="ExifTool.html#Plot">API Plot option</a> to change various plot settings.
+The <code>YMax</code> setting was used to limit the Y scale because otherwise the
+effect of the autoscaling with the tall 20-25 mm bar would have made the other bars
+too small. With this rescaling, the 20-25 mm bar extends off the top of the plot.</p>
+
+<p>Unlike the other plot types, the histogram type supports plotting of only
+a single dataset (ie. you may specify only one tag on the command line).</p>
+
+<p>The <code>-w</code> option was used to write the output file
+(plot2.svg) instead of using shell redirection.  Note that when the <code>-plot</code>
+option is used, the <code>-w</code> option takes a full file name instead of
+just an extension.</p>
+
+<pre>exiftool C:/my_trip -focallength35efl# -w plot2.svg \
+  -api plot="type=hist,style=fill,nbins=40,ymax=50,cols=blue"</pre>
+
+<blockquote><img src="plot2.svg" alt="SVG-format plot" width=800 height=600></blockquote>
+
+<a name="EX3"></a>
+<h3>Example 3 - Scatter Plot</h3>
+
+<p>This example uses the same data set as example 1, but using the <code>Scatter</code>
+plot type to show the correlation betweent CameraTemperature and AmbientTemperature.
+Note that in this case the legend doesn't appear because there is only one plot
+line and it has the same name as the default label for the Y axis.  The plot
+<code>Style</code> has been changed to <code>Marker</code> to show markers for
+the data points instead of connecting them with lines, and <code>Fill</code> has
+been added to show filled markers instead of outlines.</p>
+
+<pre>exiftool C:/pics -w plot3.svg "-*temperature" -plot -api plot="type=scatter,style=marker+fill"</pre>
+
+<blockquote><img src="plot3.svg" alt="SVG-format plot" width=800 height=600></blockquote>
+
+<a name="EX4"></a>
+<h3>Example 4 - Splitting Values</h3>
+
+<p>To plot timed accelerometer readings from a video where the Accelerometer values are
+strings of numbers, the <code>Split</code> setting of the 
+<a href="ExifTool.html#Plot">API Plot option</a> must be used to split the values into
+separate lines in the plot. Here is an example of the first Accelerometer value in the
+file:</p>
+
+<pre><span class='blk'>&gt; </span>exiftool test.mp4 -ee -accelerometer -s2 --a
+<span class='blk'>Accelerometer: +0.12 +0.96 -0.09</span></pre>
+
+<p>And this command was used to generate the following plot:</p>
+
+<pre>exiftool test.mp4 -w plot4.svg -ee -accelerometer -plot -api plot="split,legend=30 190" \
+  -api plot="title=Accelerometer Readings,ylabel=G Force,xlabel=Sample Number"
+</pre>
+
+<blockquote><img src="plot4.svg" alt="SVG-format plot" width=800 height=600></blockquote>
+
+<hr>
+<i>Created Feb 19, 2025</i><br>
+<i>Last revised Feb 19, 2025</i><br>
+<p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
+</body>
+</html>
+

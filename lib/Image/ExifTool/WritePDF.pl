@@ -546,7 +546,7 @@ sub WritePDF($$)
     }
     if ($metaChanged) {
         if ($newXMP) {
-            unless ($metaRef) {
+            unless (ref $metaRef) {
                 # allocate new PDF object
                 $metaRef = \ "$nextObject 0 R";
                 ++$nextObject;

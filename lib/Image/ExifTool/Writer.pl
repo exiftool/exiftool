@@ -5046,7 +5046,6 @@ TryLib: for ($lib=$strptimeLib; ; $lib='') {
                 last;
             }
             if (not $lib) {
-                last unless $$self{OPTIONS}{StrictDate};
                 warn $wrn || "Install POSIX::strptime or Time::Piece for inverse date/time conversions\n";
                 return undef;
             } elsif ($lib eq 'POSIX::strptime') {

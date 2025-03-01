@@ -2,7 +2,18 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600"
  preserveAspectRatio="xMidYMid meet" viewBox="0 0 800 600">
-<title>CameraTemperature vs AmbientTemperature</title>
+<title>Plot by ExifTool 13.22</title>
+<!-- Definitions -->
+<defs>
+<clipPath id='plot-area'><rect x='71' y='36' width='723' height='523'/></clipPath>
+<marker id='mark0' markerWidth='8' markerHeight='8' refX='4' refY='4'>
+<circle cx="4" cy="4" r="2.667" fill="red" style="fill-opacity: 10%" stroke="context-stroke"/>
+</marker>
+</defs>
+<style>
+  path.mark0 { marker: url(#mark0) }
+  text { fill: black }
+</style>
 <!-- X axis -->
 <g dominant-baseline='hanging' text-anchor='middle'>
 <text x='432.5' y='14' font-size='150%'>CameraTemperature vs AmbientTemperature</text>
@@ -27,9 +38,9 @@
 <text x='743.5' y='560'>27</text>
 <text x='785' y='560'>28</text>
 <path stroke='darkgray' stroke-width='0.5' d='
-M80 45 v505 M121.5 45 v505 M162.9 45 v505 M204.4 45 v505 M245.9 45 v505 M287.4 45 v505 
-M328.8 45 v505 M370.3 45 v505 M411.8 45 v505 M453.2 45 v505 M494.7 45 v505 M536.2 45 v505 
-M577.6 45 v505 M619.1 45 v505 M660.6 45 v505 M702.1 45 v505 M743.5 45 v505 M785 45 v505 '/>
+M80 45 v510 M121.5 45 v510 M162.9 45 v510 M204.4 45 v510 M245.9 45 v510 M287.4 45 v510 
+M328.8 45 v510 M370.3 45 v510 M411.8 45 v510 M453.2 45 v510 M494.7 45 v510 M536.2 45 v510 
+M577.6 45 v510 M619.1 45 v510 M660.6 45 v510 M702.1 45 v510 M743.5 45 v510 M785 45 v510 '/>
 </g>
 <!-- Y axis -->
 <g dominant-baseline='middle' text-anchor='end'>
@@ -51,31 +62,26 @@ M577.6 45 v505 M619.1 45 v505 M660.6 45 v505 M702.1 45 v505 M743.5 45 v505 M785 
 <text x='70' y='76.6'>29</text>
 <text x='70' y='45'>30</text>
 <path stroke='darkgray' stroke-width='0.5' d='
-M80 550 h705 M80 518.4 h705 M80 486.9 h705 M80 455.3 h705 M80 423.8 h705 M80 392.2 h705 
-M80 360.6 h705 M80 329.1 h705 M80 297.5 h705 M80 265.9 h705 M80 234.4 h705 M80 202.8 h705 
-M80 171.3 h705 M80 139.7 h705 M80 108.1 h705 M80 76.6 h705 M80 45 h705 '/>
+M75 550 h710 M75 518.4 h710 M75 486.9 h710 M75 455.3 h710 M75 423.8 h710 M75 392.2 h710 
+M75 360.6 h710 M75 329.1 h710 M75 297.5 h710 M75 265.9 h710 M75 234.4 h710 M75 202.8 h710 
+M75 171.3 h710 M75 139.7 h710 M75 108.1 h710 M75 76.6 h710 M75 45 h710 '/>
 </g>
-<!-- Plot box and legend-->
+<!-- Plot box and legend -->
 <g dominant-baseline='middle' text-anchor='start'>
 <path stroke='black' fill='none' d='M80 45 l0 505 705 0 0 -505 z'/>
 </g>
-<!-- Definitions -->
-<defs>
-<clipPath id='plot-area'><rect x='74' y='39' width='717' height='517' /></clipPath>
-<marker id='circle' markerWidth='12' markerHeight='12' refX='6' refY='6' markerUnits='userSpaceOnUse'>
-<circle cx="6" cy="6" r="4" stroke-width="1.5" stroke="context-stroke" fill="red" />
-</marker>
-</defs>
-<style>
-  path.circle { marker: url(#circle) }
-  text { fill: black] }
-</style>
-<g fill='none' clip-path='url(#plot-area)' stroke-linejoin='round' stroke-linecap='round' stroke-width='1.5'>
+<!-- Datasets -->
+<g fill='none' clip-path='url(#plot-area)' stroke-linejoin='round' stroke-linecap='round' stroke-width='2.25'>
 <!-- CameraTemperature -->
-<path class="circle" stroke='red' d=' M
-536.2 202.8 M 121.5 486.9 M 536.2 202.8 M 536.2 202.8 M 121.5 518.4 M 121.5 518.4 M 536.2 202.8 M 536.2 202.8 M 536.2 202.8 M 536.2 202.8 M 536.2 202.8 M 577.6 171.3 M 536.2 202.8 M 536.2 202.8 M 494.7 234.4 M 619.1 139.7 M 702.1 76.6 M 162.9 486.9 M 328.8 360.6 M 660.6 108.1 M
-660.6 108.1 M 328.8 360.6 M 204.4 455.3 M 702.1 76.6 M 619.1 139.7 M 494.7 234.4 M 453.2 265.9 M 536.2 202.8 M 453.2 265.9 M 743.5 76.6 M 619.1 139.7 M 328.8 360.6 M 204.4 455.3 M 328.8 360.6 M 619.1 139.7 M 536.2 202.8 M 453.2 265.9 M 494.7 234.4 M 702.1 76.6 M 660.6 108.1 M
-245.9 423.8 M 204.4 455.3 M 204.4 455.3 M 702.1 76.6 M 494.7 234.4 M 494.7 234.4 M 494.7 234.4 M 453.2 265.9 M 660.6 108.1 M 702.1 76.6 M 619.1 139.7 M 245.9 423.8 M 204.4 455.3 M 619.1 139.7 M 702.1 76.6 M 660.6 108.1 M 453.2 265.9 M 494.7 234.4 M 494.7 234.4 M 494.7 234.4 M
-702.1 76.6 M 494.7 234.4 M 494.7 234.4 M 660.6 108.1 M 204.4 455.3 M 204.4 455.3 M 702.1 76.6 M 453.2 265.9 M 453.2 265.9 M 702.1 76.6 M 494.7 265.9 M 536.2 202.8 M 494.7 234.4 M 702.1 76.6 M 702.1 76.6 M 660.6 108.1 M 494.7 234.4 M 536.2 202.8 M 494.7 265.9 M 494.7 265.9 M
-702.1 76.6 M 702.1 76.6 M 702.1 76.6 M 702.1 76.6 M 702.1 76.6 M 536.2 202.8 M 494.7 265.9 M 536.2 202.8 M 702.1 76.6 M 660.6 108.1 M 702.1 108.1 M 702.1 76.6 M 453.2 265.9 M 536.2 202.8 M 536.2 202.8 M 577.6 171.3 M 162.9 486.9'/>
+<path class='mark0' stroke='red' d=' M
+536.2 202.8 M 121.5 486.9 M 536.2 202.8 M 536.2 202.8 M 121.5 518.4 M 121.5 518.4 M 536.2 202.8 M 536.2 202.8 M 536.2 202.8 M 536.2 202.8 M
+536.2 202.8 M 577.6 171.3 M 536.2 202.8 M 536.2 202.8 M 494.7 234.4 M 619.1 139.7 M 702.1 76.6 M 162.9 486.9 M 328.8 360.6 M 660.6 108.1 M
+660.6 108.1 M 328.8 360.6 M 204.4 455.3 M 702.1 76.6 M 619.1 139.7 M 494.7 234.4 M 453.2 265.9 M 536.2 202.8 M 453.2 265.9 M 743.5 76.6 M
+619.1 139.7 M 328.8 360.6 M 204.4 455.3 M 328.8 360.6 M 619.1 139.7 M 536.2 202.8 M 453.2 265.9 M 494.7 234.4 M 702.1 76.6 M 660.6 108.1 M
+245.9 423.8 M 204.4 455.3 M 204.4 455.3 M 702.1 76.6 M 494.7 234.4 M 494.7 234.4 M 494.7 234.4 M 453.2 265.9 M 660.6 108.1 M 702.1 76.6 M
+619.1 139.7 M 245.9 423.8 M 204.4 455.3 M 619.1 139.7 M 702.1 76.6 M 660.6 108.1 M 453.2 265.9 M 494.7 234.4 M 494.7 234.4 M 494.7 234.4 M
+702.1 76.6 M 494.7 234.4 M 494.7 234.4 M 660.6 108.1 M 204.4 455.3 M 204.4 455.3 M 702.1 76.6 M 453.2 265.9 M 453.2 265.9 M 702.1 76.6 M
+494.7 265.9 M 536.2 202.8 M 494.7 234.4 M 702.1 76.6 M 702.1 76.6 M 660.6 108.1 M 494.7 234.4 M 536.2 202.8 M 494.7 265.9 M 494.7 265.9 M
+702.1 76.6 M 702.1 76.6 M 702.1 76.6 M 702.1 76.6 M 702.1 76.6 M 536.2 202.8 M 494.7 265.9 M 536.2 202.8 M 702.1 76.6 M 660.6 108.1 M
+702.1 108.1 M 702.1 76.6 M 453.2 265.9 M 536.2 202.8 M 536.2 202.8 M 577.6 171.3 M 162.9 486.9'/>
 </g></svg>

@@ -437,7 +437,7 @@ sub Process_marl($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my $dataPt = $$dirInfo{DataPt};
-    my $dataPos = $$dirInfo{DataPos} + $$dirInfo{Base};
+    my $dataPos = ($$dirInfo{DataPos} || 0) + ($$dirInfo{Base} || 0);
     my $dataLen = length $$dataPt;
     my $vals = $$et{GMVals}; # running values for each channel (0=TimeStamp)
     my $chan = $$et{GMChan}; # running channel number

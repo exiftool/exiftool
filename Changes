@@ -7,10 +7,22 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.10. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Mar. 1, 2025 - Version 13.22
+
+  - Improvements and additions to the new plot feature
+  - Decode a few more DJI timed metadata tags
+  - Extract GainMapImage from PNG images
+  - Reverted WebP FileType change of version 13.20
+  - Set $^W in the exiftool application to re-enable global warnings (they have
+    been disabled since version 12.92 due to the shebang change)
+  - Fixed possible incorrect IFD number in "No size tag" warning
+  - Fixed "File is empty" error when using -plot with -w to write the output
+    file into the same directory as the input files
+
 Feb. 20, 2025 - Version 13.21
 
   - Patched issue that could result in runtime warning for some video files
-  - Fixed a bug that could cause a compiler error when using the -plot option
+  - Fixed a bug with the new -plot option that could generate a compiler error
 
 Feb. 20, 2025 - Version 13.20
 

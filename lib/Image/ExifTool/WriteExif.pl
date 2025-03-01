@@ -2269,6 +2269,11 @@ NoOverwrite:            next if $isNew > 0;
             # build list of offsets to process
             my @offsetList;
             if ($ifd >= 0) {
+                $dirName = $$dirInfo{DirName} || 'unknown';
+                if ($ifd) {
+                    $dirName =~ s/\d+$//;
+                    $dirName .= $ifd;
+                }
                 my $offsetInfo = $offsetInfo[$ifd] or next;
                 if ($$offsetInfo{0x111} and $$offsetInfo{0x144}) {
                     # SubIFD may contain double-referenced data as both strips and tiles

@@ -18,7 +18,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 use Image::ExifTool::Protobuf;
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub ProcessDJIInfo($$$);
 sub ProcessSettings($$$);
@@ -266,6 +266,9 @@ my %convFloat2 = (
     },
     'dvtm_ac203_3-2-6-1' => { Name => 'ColorTemperature', Format => 'unsigned' }, # (NC)
    # dvtm_ac203_3-2-9-1 - looks like Z accerometer measurement, but 2 and 3 don't look like other components
+    'dvtm_ac203_3-2-10-2' => { Name => 'AccelerometerX', Format => 'float' } , # (NC) left/right
+    'dvtm_ac203_3-2-10-3' => { Name => 'AccelerometerY', Format => 'float' } , # (NC) front/back
+    'dvtm_ac203_3-2-10-4' => { Name => 'AccelerometerZ', Format => 'float' } , # (NC) up/down
    # dvtm_ac203_3-4-1-4 - model code?
     'dvtm_ac203_3-4-2-1' => {
         Name => 'GPSInfo',
@@ -301,6 +304,9 @@ my %convFloat2 = (
         PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
     },
     'dvtm_ac204_3-2-6-1' => { Name => 'ColorTemperature', Format => 'unsigned' }, # (NC)
+    'dvtm_ac204_3-2-10-2' => { Name => 'AccelerometerX', Format => 'float' } , # (NC) left/right
+    'dvtm_ac204_3-2-10-3' => { Name => 'AccelerometerY', Format => 'float' } , # (NC) front/back
+    'dvtm_ac204_3-2-10-4' => { Name => 'AccelerometerZ', Format => 'float' } , # (NC) up/down
    # dvtm_ac204_3-4-1-4 - model code?
     'dvtm_ac204_3-4-2-1' => {
         Name => 'GPSInfo',
@@ -412,6 +418,11 @@ my %convFloat2 = (
         Name => 'ShutterSpeed',
         Format => 'rational',
         PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
+    },
+    'dvtm_pm320_3-2-4-1' => { # (NC)
+        Name => 'FNumber',
+        Format => 'rational',
+        PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
     },
     'dvtm_pm320_3-2-6-1' => { Name => 'DigitalZoom', Format => 'float' },
     'dvtm_pm320_3-3-4-1' => {

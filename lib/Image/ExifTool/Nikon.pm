@@ -4833,17 +4833,17 @@ my %base64coord = (
     0x2f => [
     {
         Name => 'FocusPositionHorizontal',   # 209/231 focus point cameras
-        Condition => '$$self{Model} =~ /^NIKON (Z 30|Z 50|Z fc)\b/i  and $$self{AFAreaXPosition} != 0',   #models Z30, Z50, Zfc
+        Condition => '$$self{Model} =~ /^NIKON (Z 30|Z 50|Z fc)\b/i and $$self{AFAreaXPosition}',   #models Z30, Z50, Zfc
         ValueConv => 'int($$self{AFAreaXPosition} / 260 )',     #divisor is an estimate (chosen to cause center point to report 'C')
         PrintConv => sub { my ($val) = @_; PrintAFPointsLeftRight($val, 19 ) },
     },{
         Name => 'FocusPositionHorizontal',  #273/299 focus point cameras
-        Condition => '$$self{Model} =~ /^NIKON (Z 5|Z 6|Z 6_2|D780)\b/i  and $$self{AFAreaXPosition} != 0',   #models Z5, Z6, Z6ii, D780
+        Condition => '$$self{Model} =~ /^NIKON (Z 5|Z 6|Z 6_2|D780)\b/i and $$self{AFAreaXPosition}',   #models Z5, Z6, Z6ii, D780
         ValueConv => 'int($$self{AFAreaXPosition} / 260 )',     #divisor is an estimate (chosen to cause center point to report 'C')
         PrintConv => sub { my ($val) = @_; PrintAFPointsLeftRight($val, 21 ) },
     },{
         Name => 'FocusPositionHorizontal',   #405/493 focus point cameras
-        Condition => '$$self{Model} =~ /^NIKON (Z 7|Z 7_2)\b/i  and $$self{AFAreaXPosition} != 0',   #models Z7/Z7ii
+        Condition => '$$self{Model} =~ /^NIKON (Z 7|Z 7_2)\b/i and $$self{AFAreaXPosition}',   #models Z7/Z7ii
         ValueConv => 'int($$self{AFAreaXPosition} / 260 )',     #divisor is the measured horizontal pixel separation between adjacent points
         PrintConv => sub { my ($val) = @_; PrintAFPointsLeftRight($val, 29 ) },
     },
@@ -4858,17 +4858,17 @@ my %base64coord = (
     0x31 => [
     {
         Name => 'FocusPositionVertical',   # 209/233 focus point cameras
-        Condition => '$$self{Model} =~ /^NIKON (Z 30|Z 50|Z fc)\b/i  and $$self{AFAreaYPosition} != 0',   #models Z30, Z50, Zfc
+        Condition => '$$self{Model} =~ /^NIKON (Z 30|Z 50|Z fc)\b/i and $$self{AFAreaYPosition}',   #models Z30, Z50, Zfc
         ValueConv => 'int($$self{AFAreaYPosition} / 286 )',      #divisor is an estimate (chosen to cause center point to report 'C')
         PrintConv => sub { my ($val) = @_; PrintAFPointsUpDown($val, 11 ) },
     },{
         Name => 'FocusPositionVertical',  #273/299 focus point cameras
-        Condition => '$$self{Model} =~ /^NIKON (Z 5|Z 6|Z 6_2|D780)\b/i  and $$self{AFAreaYPosition} != 0',   #models Z5, Z6, Z6ii, D780
+        Condition => '$$self{Model} =~ /^NIKON (Z 5|Z 6|Z 6_2|D780)\b/i and $$self{AFAreaYPosition}',   #models Z5, Z6, Z6ii, D780
         ValueConv => 'int($$self{AFAreaYPosition} / 286 )',     #divisor is an estimate (chosen to cause center point to report 'C')
         PrintConv => sub { my ($val) = @_; PrintAFPointsUpDown($val, 13 ) },
     },{
         Name => 'FocusPositionVertical',   #405/493 focus point cameras
-        Condition => '$$self{Model} =~ /^NIKON (Z 7|Z 7_2)\b/i  and $$self{AFAreaYPosition} != 0',   #models Z7/Z7ii
+        Condition => '$$self{Model} =~ /^NIKON (Z 7|Z 7_2)\b/i and $$self{AFAreaYPosition}',   #models Z7/Z7ii
         ValueConv => 'int($$self{AFAreaYPosition} / 292 )',     #divisor is the measured vertical pixel separation between adjacent points
         PrintConv => sub { my ($val) = @_; PrintAFPointsUpDown($val, 17 ) },
     },

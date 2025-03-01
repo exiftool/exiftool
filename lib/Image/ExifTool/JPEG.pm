@@ -202,7 +202,7 @@ sub ProcessJPEG_HDR($$$);
         Groups => { 0 => 'APP6', 1 => 'DJI' },
         Notes => 'DJI Thermal Analysis Tool record',
         ValueConv => 'substr($val,7)',
-      # also seen Motorola APP6 "MMIMETA\0", with sub-types: AL3A,ALED,MMI0,MOTD,QC3A
+      # also seen Motorola APP6 "MMIMETA\0", with sub-types: AL3A,ALED,MMI0,MOTD,QC3A,LMB1
     }],
     APP7 => [{
         Name => 'Pentax',

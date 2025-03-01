@@ -915,16 +915,20 @@ effect as a value of 0 for options with numerical values.</p>
     <tr><td>"Legend=0 0"</td><td>-</td><td>x,y offset to shift plot legend</td></tr>
     <tr><td>"TxtPad=10 10"</td><td>-</td><td>padding between text and x,y scale</td></tr>
     <tr><td>"LineSpacing=20"</td><td>-</td><td>spacing between text lines</td></tr>
+    <tr><td>"Stroke=1"</td><td>-</td><td>plot stroke width and marker-size scaling</td></tr>
     <tr><td>Title, XLabel, YLabel</td><td>-</td><td>plot title and x/y axis labels (no default)</td></tr>
     <tr><td>XMin, XMax</td><td>-</td><td>x axis minimum/maximum (auto scaling if not set)</td></tr>
     <tr><td>YMin, YMax</td><td>-</td><td>y axis minimum/maximum</td></tr>
+    <tr><td>"Multi="</td><td>-</td><td>flag to draw multiple plots, one for each dataset</td></tr>
     <tr><td>"Split="</td><td>-</td><td>flag to split strings of numbers into lists
     (&gt;1 to split into lists of N items)</td></tr>
     <tr><td>"Grid=darkgray"</td><td>-</td><td>grid color</td></tr>
     <tr><td>"Text=black"</td><td>-</td><td>text and border color</td></tr>
     <tr><td>"Bkg="</td><td>-</td><td>background color (default transparent)</td></tr>
-    <tr><td colspan=3>"Cols=red green blue black orange gray purple cyan
-    brown pink" - colors for plot data</td></tr>
+    <tr><td colspan=3>"Cols=red green blue black orange gray fuchsia brown turquoise gold"
+    - colors for plot data</td></tr>
+    <tr><td colspan=3>"Marks=circle square triangle diamond star plus pentagon left down right"
+    - marker-shape names for each dataset</td></tr>
     </table></td>
     <td>Comma-delimited string of settings to override default values, or
     undef to revert to default settings.  Settings are accumulated if this option

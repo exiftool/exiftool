@@ -2,7 +2,14 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600"
  preserveAspectRatio="xMidYMid meet" viewBox="0 0 800 600">
-<title>Plot by ExifTool 13.20</title>
+<title>Plot by ExifTool 13.22</title>
+<!-- Definitions -->
+<defs>
+<clipPath id='plot-area'><rect x='74' y='9' width='717' height='547'/></clipPath>
+</defs>
+<style>
+  text { fill: black }
+</style>
 <!-- X axis -->
 <g dominant-baseline='hanging' text-anchor='middle'>
 <text x='432.5' y='580'>FocalLength35efl</text>
@@ -27,13 +34,13 @@
 <text x='745.8' y='560'>190</text>
 <text x='785' y='560'>200</text>
 <path stroke='darkgray' stroke-width='0.5' d='
-M80 15 v535 M99.6 15 v535 M119.2 15 v535 M138.8 15 v535 M158.3 15 v535 M177.9 15 v535 
-M197.5 15 v535 M217.1 15 v535 M236.7 15 v535 M256.3 15 v535 M275.8 15 v535 M295.4 15 v535 
-M315 15 v535 M334.6 15 v535 M354.2 15 v535 M373.8 15 v535 M393.3 15 v535 M412.9 15 v535 
-M432.5 15 v535 M452.1 15 v535 M471.7 15 v535 M491.3 15 v535 M510.8 15 v535 M530.4 15 v535 
-M550 15 v535 M569.6 15 v535 M589.2 15 v535 M608.8 15 v535 M628.3 15 v535 M647.9 15 v535 
-M667.5 15 v535 M687.1 15 v535 M706.7 15 v535 M726.3 15 v535 M745.8 15 v535 M765.4 15 v535 
-M785 15 v535 '/>
+M80 15 v540 M99.6 15 v535 M119.2 15 v540 M138.8 15 v535 M158.3 15 v540 M177.9 15 v535 
+M197.5 15 v540 M217.1 15 v535 M236.7 15 v540 M256.3 15 v535 M275.8 15 v540 M295.4 15 v535 
+M315 15 v540 M334.6 15 v535 M354.2 15 v540 M373.8 15 v535 M393.3 15 v540 M412.9 15 v535 
+M432.5 15 v540 M452.1 15 v535 M471.7 15 v540 M491.3 15 v535 M510.8 15 v540 M530.4 15 v535 
+M550 15 v540 M569.6 15 v535 M589.2 15 v540 M608.8 15 v535 M628.3 15 v540 M647.9 15 v535 
+M667.5 15 v540 M687.1 15 v535 M706.7 15 v540 M726.3 15 v535 M745.8 15 v540 M765.4 15 v535 
+M785 15 v540 '/>
 </g>
 <!-- Y axis -->
 <g dominant-baseline='middle' text-anchor='end'>
@@ -49,22 +56,17 @@ M785 15 v535 '/>
 <text x='70' y='68.5'>45</text>
 <text x='70' y='15'>50</text>
 <path stroke='darkgray' stroke-width='0.5' d='
-M80 496.5 h705 M80 443 h705 M80 389.5 h705 M80 336 h705 M80 282.5 h705 M80 229 h705 
-M80 175.5 h705 M80 122 h705 M80 68.5 h705 M80 15 h705 '/>
+M75 550 h710 M75 496.5 h710 M75 443 h710 M75 389.5 h710 M75 336 h710 M75 282.5 h710 
+M75 229 h710 M75 175.5 h710 M75 122 h710 M75 68.5 h710 M75 15 h710 '/>
 </g>
-<!-- Plot box and legend-->
+<!-- Plot box and legend -->
 <g dominant-baseline='middle' text-anchor='start'>
 <path stroke='black' fill='none' d='M80 15 l0 535 705 0 0 -535 z'/>
 </g>
-<!-- Definitions -->
-<defs>
-<clipPath id='plot-area'><rect x='74' y='9' width='717' height='547' /></clipPath>
-</defs><style>
-  text { fill: black }
-</style>
+<!-- Datasets -->
 <g fill='none' clip-path='url(#plot-area)' stroke-linejoin='round' stroke-linecap='round' stroke-width='1.5'>
 <!-- FocalLength35efl -->
-<path fill="blue" style="fill-opacity: .20" stroke='blue' d=' M
+<path fill='blue' style='fill-opacity: 20%' stroke='blue' d='M
 80 -2777.6 h19.58 L 99.6 357.4 h19.58 L 119.2 475.1 h19.58 L 138.8 303.9 h19.58 L 158.3 421.6 h19.58 L
 177.9 378.8 h19.58 L 197.5 539.3 h19.58 L 217.1 432.3 h19.58 L 236.7 432.3 h19.58 L 256.3 432.3 h19.58 L
 275.8 507.2 h19.58 L 295.4 464.4 h19.58 L 315 485.8 h19.58 L 334.6 485.8 h19.58 L 354.2 539.3 h19.58 L

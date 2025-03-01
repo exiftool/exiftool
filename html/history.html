@@ -17,10 +17,23 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.22'><b>Mar. 1, 2025 - Version 13.22</b></a>
+<ul>
+<li>Improvements and additions to the new <a href="plot.html">plot feature</a>
+<li>Decode a few more DJI timed metadata tags
+<li>Extract GainMapImage from PNG images
+<li>Reverted WebP FileType change of version 13.20
+<li>Set $^W in the exiftool application to re-enable global warnings (they have
+    been disabled since version 12.92 due to the shebang change)
+<li>Fixed possible incorrect IFD number in "No size tag" warning
+<li>Fixed "File is empty" error when using -plot with -w to write the output
+    file into the same directory as the input files
+</ul>
+
 <a name='v13.21'><b>Feb. 20, 2025 - Version 13.21</b></a>
 <ul>
 <li>Patched issue that could result in runtime warning for some video files
-<li>Fixed a bug that could cause a compiler error when using the -plot option
+<li>Fixed a bug with the new <a href="plot.html">-plot option</a> that could generate a compiler error
 </ul>
 
 <a name='v13.20'><b>Feb. 20, 2025 - Version 13.20</b></a>

@@ -17,20 +17,24 @@ pre   { color: #800; margin-left: 4em }
 <body>
 <h1>The ExifTool Plot Feature</h1>
 <p>The <code>-plot</code> option of the exiftool application is used to generate
-SVG-format output plot files from the values of tags.  This feature has many
-applications, including plotting timed metadata when combined with the
-<code>-ee</code> (ExtractEmbedded) option, and plotting values of one or more tags
-across a set of images.</p>
-
-<p>Any tag with a numerical value may be plotted, including strings and lists
-of numbers.</p>
-
-<p>The plot may be viewed by opening the SVG file in your favourite web browser
-or SVG-aware image viewer.  Most modern web browsers support display of SVG
+SVG-format output plot files from the values of tags.  This feature has many uses,
+including plotting timed metadata when combined with the <code>-ee</code>
+(ExtractEmbedded) option, and plotting values of one or more tags across a set of
 images.</p>
 
-<p>Three basic plot types are provided:  Line, Scatter and Histogram.  Examples
-of each are given in the <a href="#examples">Examples section</a> below.</p>
+<p>Any tag with a numerical value may be plotted, including strings and lists of numbers. 
+Up to 20 datasets (eg. tags) may be plotted together in the same plot, except for
+histogram plots which are limited to only one (but the <code>Multi</code> setting may be
+used to draw multiple plots at once).  Attempting to plot too many tags at once will result
+in a warning and the extra datasets will be ignored.  The X and Y scales are common to
+all datasets within each plot (ie. multiple datasets in a single plot all use the same
+scales).</p>
+
+<p>The plot may be viewed by opening the SVG file in your favourite web browser or
+SVG-aware image viewer.  Most modern web browsers support display of SVG images.</p>
+
+<p>Three basic plot types are provided:  Line, Scatter and Histogram.  Examples of each
+are given in the <a href="#examples">Examples section</a> below.</p>
 
 <h2>Plot Settings</h2>
 
@@ -38,80 +42,122 @@ of each are given in the <a href="#examples">Examples section</a> below.</p>
 Multiple options may be set at the same time either by stringing them together in a
 comma-separated list, or through multiple API Plot options.</p>
 
-<p>The syntax for each setting is <code><i>NAME</i>=<i>VALUE</i></code>.  Case is
-not significant for setting names.  Using <code><i>NAME</i>=</code>
-without a value sets the value to <i>undef</i>.  Using <code><i>NAME</i></code>
-alone sets the value to 1.  For example, to set the plot title and color
-for the first data line, a command could be:</p>
+<p>The syntax for each setting is <code><i>NAME</i>=<i>VALUE</i></code>.  Case is not
+significant for setting names.  Using <code><i>NAME</i>=</code> without a value sets the
+value to <i>undef</i>.  Using <code><i>NAME</i></code> alone sets the value to 1.  For
+example, to set the plot title and color for the first data line, a command could be:</p>
 
-<pre>exiftool -plot -api plot="title=some title,cols=turquoise" ...</pre>
+<pre>exiftool -plot -api plot="title=some title,cols=pink" ...</pre>
 
 <blockquote>
 <table class='norm'>
-<tr><th colspan=4 bgcolor='#dddddd'><font size='+1'>ExifTool Plot Settings</font></th></tr>
-<tr><th>Name</th><th>Description</th><th>Value</th><th>Default</th></tr>
+<tr><th colspan=6 bgcolor='#dddddd'><font size='+1'>ExifTool Plot Settings</font></th></tr>
+<tr><th>Name</th><th>Description</th><th colspan=2>Value</th><th colspan=2>Default</th></tr>
 <tr><td>Type</td><td>Type of plot</td>
-    <td align=center>'Line', 'Scatter' or 'Histogram' <sup>1</sup></td><td align=center>'Line'</td></tr>
+    <td align=center colspan=2>'Line', 'Scatter' or 'Histogram'&nbsp;<sup>1</sup></td>
+    <td align=center colspan=2>'Line'</td></tr>
 <tr><td>Style</td><td>Style of plot data points</td>
-    <td align=center>String of names: <sup>2,3</sup><br>'Line', 'Marker' and/or 'Fill'</td>
-    <td align=center>'Line'</td></tr>
+    <td align=center colspan=2>String of names:&nbsp;<sup>2,3</sup> 'Line', 'Marker' and/or 'Fill'</td>
+    <td align=center colspan=2>'Line+Fill'&nbsp;for&nbsp;Histogram plots,&nbsp;or&nbsp;'Line'&nbsp;otherwise</td></tr>
 <tr><td>Title</td><td>Title of the plot</td>
-    <td align=center>Any string <sup>4</sup></td><td align=center>'' (auto-generated) <sup>5</sup></td></tr>
+    <td align=center colspan=2>Any string&nbsp;<sup>4</sup></td>
+    <td align=center colspan=2>'' (auto-generated)&nbsp;<sup>5</sup></td></tr>
 <tr><td>XLabel</td><td>X-axis label string</td>
-    <td align=center>Any string <sup>4</sup></td><td align=center>'' (auto-generated) <sup>5</sup></td></tr>
+    <td align=center colspan=2>Any string&nbsp;<sup>4</sup></td>
+    <td align=center colspan=2>'' (auto-generated)&nbsp;<sup>5</sup></td></tr>
 <tr><td>YLabel</td><td>Y-axis label string</td>
-    <td align=center>Any string <sup>4</sup></td><td align=center>'' (auto-generated) <sup>5</sup></td></tr>
-<tr><td>XMin, XMax</td><td>X-axis minimum and maximum</td>
-    <td align=center>A number</td><td align=center><i>undef</i> (autoscaling)</td></tr>
-<tr><td>YMin, YMax</td><td>Y-axis minimum and maximum</td>
-    <td align=center>A number</td><td align=center><i>undef</i> (autoscaling)</td></tr>
+    <td align=center colspan=2>Any string&nbsp;<sup>4</sup></td>
+    <td align=center colspan=2>'' (auto-generated)&nbsp;<sup>5</sup></td></tr>
+<tr><td>XMin, XMax</td><td>X-axis minimum and maximum for Scatter and Histogram plot types</td>
+    <td align=center colspan=2>A number</td>
+    <td align=center colspan=2><i>undef</i> (autoscaling)</td></tr>
+<tr><td>YMin, YMax</td><td>Y-axis minimum and maximum (the YMin setting does not apply to Histogram plots)</td>
+    <td align=center colspan=2>A number</td>
+    <td align=center colspan=2><i>undef</i> (autoscaling)</td></tr>
 <tr><td>NBins</td><td>Number of bins for histogram plot</td>
-    <td align=center>A number</td><td align=center>'20'</td></tr>
-<tr><td>Split</td><td>Split strings of numbers into separate plot lines</td>
-    <td align=center>Number of lines to create,<br>or 1 to split all <sup>6</sup></td><td align=center><i>undef</i></td></tr>
+    <td align=center colspan=2>A number</td>
+    <td align=center colspan=2>'20'</td></tr>
+<tr><td>Multi</td><td>Flag to draw multiple plots, one for each dataset</td>
+    <td align=center colspan=2>Number of plots per row in output image&nbsp;<sup>6</sup></td>
+    <td align=center colspan=2><i>undef</i></td></tr>
+<tr><td>Split</td><td>Split strings of numbers into separate datasets</td>
+    <td align=center colspan=2>Number of datasets, or 1 to split all&nbsp;<sup>7</sup></td>
+    <td align=center colspan=2><i>undef</i></td></tr>
 <tr><td>Size</td><td>Width and height of output image</td>
-    <td align=center>String of 2 numbers <sup>7</sup></td><td align=center>'800 600'</td></tr>
+    <td align=center colspan=2>String of 2 numbers&nbsp;<sup>2</sup></td>
+    <td align=center colspan=2>'800 600'</td></tr>
 <tr><td>Margin</td><td>Left, right, top, bottom margins around plotting area</td>
-    <td align=center>String of 4 numbers <sup>7</sup></td><td align=center>'60 15 15 30'</td></tr>
+    <td align=center colspan=2>String of 4 numbers&nbsp;<sup>2</sup></td>
+    <td align=center colspan=2>'60 15 15 30'</td></tr>
 <tr><td>Legend</td><td>X and Y shift of legend from default location</td>
-    <td align=center>String of 2 numbers <sup>7</sup></td><td align=center>'0 0'</td></tr>
+    <td align=center colspan=2>String of 2 numbers&nbsp;<sup>2</sup></td>
+    <td align=center colspan=2>'0 0'</td></tr>
 <tr><td>TxtPad</td><td>Padding between text and X/Y scales</td>
-    <td align=center>String of 2 numbers <sup>7</sup></td><td align=center>'10 10'</td></tr>
+    <td align=center colspan=2>String of 2 numbers&nbsp;<sup>2</sup></td>
+    <td align=center colspan=2>'10 10'</td></tr>
 <tr><td>LineSpacing</td><td>Text line spacing</td>
-    <td align=center>A number</td><td align=center>'20'</td></tr>
+    <td align=center colspan=2>A number</td>
+    <td align=center colspan=2>'20'</td></tr>
+<tr><td>Stroke</td><td>Scaling factor for plot stroke width and marker size</td>
+    <td align=center colspan=2>A number</td>
+    <td align=center colspan=2>'1'</td></tr>
+<tr><td>Marks</td><td>Marker characteristics for each dataset</td>
+    <td align=center>String of marker names (or 'none') with optional fill style, color and opacity&nbsp;<sup>2,8</sup></td>
+    <td rowspan=2 colspan=2><img alt="markers" src="markers.svg" width=80 height=200></td>
+    <td align=center>'circle square triangle diamond star plus pentagon left down right'</td></tr>
 <tr><td>Cols</td><td>Colors of plot lines/markers for each dataset</td>
-    <td align=center>String of SVG color codes <sup>2</sup></td>
-    <td align=center>'red green blue black orange<br>gray purple cyan brown pink'</td></tr>
+    <td align=center>String of SVG color codes or 'none' for no line or marker border&nbsp;<sup>2</sup></td>
+    <td align=center>'red green blue black orange gray fuchsia brown turquoise gold'</td></tr>
 <tr><td>Grid</td><td>Grid color</td>
-    <td align=center>SVG color code</td><td align=center>'darkgray'</td></tr>
+    <td align=center colspan=2>SVG color code</td>
+    <td align=center colspan=2>'darkgray'</td></tr>
 <tr><td>Text</td><td>Color of text and plot border</td>
-    <td align=center>SVG color code</td><td align=center>'black'</td></tr>
+    <td align=center colspan=2>SVG color code</td>
+    <td align=center colspan=2>'black'</td></tr>
 <tr><td>Bkg</td><td>Background color</td>
-    <td align=center>SVG color code or <i>undef</i></td><td align=center><i>undef</i> (transparent)</td></tr>
+    <td align=center colspan=2>SVG color code or <i>undef</i></td>
+    <td align=center colspan=2><i>undef</i> (transparent)</td></tr>
 </table>
 </blockquote>
 
 <p>Notes:</p>
 <blockquote><table class='clear'>
-<tr><td valign=top><sup>1</sup></td><td>The scatter plot uses the first specified tag
-as the X coordinate and the remaining tags as the plot data.</td></tr>
-<tr><td valign=top><sup>2</sup></td><td>Strings of names may use whitespace, slash
-(<code>/</code>) or a plus sign (<code>+</code>) as a delimiter.</td></tr>
+<tr><td valign=top><sup>1</sup></td><td>The scatter plot uses the first specified
+tag as the X coordinate and the remaining tags as the datasets for the Y values.</td></tr>
+<tr><td valign=top><sup>2</sup></td><td>Strings of names or numbers may use
+whitespace, slash (<code>/</code>) or a plus sign (<code>+</code>) as a
+delimiter.  The numbers themselves should not contain a plus sign.  Numbers
+may also use '<code>x</code>' as a delimiter (eg. '<code>size=320x200</code>').</td></tr>
 <tr><td valign=top><sup>3</sup></td><td>The <code>Fill</code>
 style applies only for the <code>Histogram</code> plot style, or when <code>Marker</code>
 style is also used.  Without <code>Fill</code>, histogram bars and markers are hollow.
-<code>Line</code> and <code>Marker</code> may also be used together (eg. <code>Line+Marker</code>).
-For brevity, only the first letter of each setting is required (eg. <code>L+M</code>).</td></tr>
-<tr><td valign=top><sup>4</sup></td><td>Commas in labels must be escaped as either "<code>&amp;#44;</code>"
-or "<code>&amp;#x2c;</code>".  No other characters require escaping, but other XML numeric
+<code>Line</code> and <code>Marker</code> may also be used together (eg. '<code>Style=Line+Marker</code>').
+For brevity, only the first letter of each setting is required (eg. '<code>Style=L+M</code>').</td></tr>
+<tr><td valign=top><sup>4</sup></td><td>Commas in labels must be escaped as either '<code>&amp;#44;</code>'
+or '<code>&amp;#x2c;</code>'.  No other characters require escaping, but other XML numeric
 character references may be used.</td></tr>
 <tr><td valign=top><sup>5</sup></td><td>The auto-generation of labels applies only in limited
-situations, and may be disabled with <code>SETTING=</code>.</td></tr>
-<tr><td valign=top><sup>6</sup></td><td>For example, if a tag contains a set of N accelerometer readings,
-each composed of 3 values (X, Y and Z directions), then these could be plotted
-as 3 separate lines by setting <code>Split=3</code>.</td></tr>
-<tr><td valign=top><sup>7</sup></td><td>Strings of numbers may use either
-whitespace or slash (<code>/</code>) as a delimiter.</td></tr>
+situations, and may be disabled with <code><i>NAME</i>=</code>.</td></tr>
+<tr><td valign=top><sup>6</sup></td><td>Multiple plots are draw together in the same SVG
+image with the specified number of columns within the width of the output image. The image
+height is adjusted to fit the required number of rows. The X axes of all plots are the
+same, but the Y axes are independent.  See <a href='#EX5'>example 5</a>.</td></tr>
+<tr><td valign=top><sup>7</sup></td><td>For example, if a tag contains a set of N accelerometer
+readings, each composed of 3 values (X, Y and Z directions), then these could be plotted
+as 3 separate datasets by setting <code>Split=3</code>.  See <a href='#EX4'>example 4</a>
+for a demonstration of the <code>Split</code> setting.</td></tr>
+<tr><td valign=top><sup>8</sup></td><td>A value of 'none' may be used to override the plot
+<code>Style</code> <code>Marker</code> setting to disable marks for a specific dataset.
+For brevity, only the first letter of the marker name is required, except for 'star',
+'pentagon', and 'down' which require 2 letters to distinguish them from 'square', 'plus'
+and 'diamond' respectively.  An optional fill style, color and opacity may be appended to
+the marker name, separated by dashes.  The fill style overrides the plot
+<code>Style</code> <code>Fill</code> setting for the specific dataset, and may be 'Fill'
+(or just 'F') for filled markers, or 'none' for hollow markers. Filled markers may also
+specify a fill color and opacity (ranging from 1 to 100 percent). For example, to use a
+right-pointing triangle for dataset 1, and the default marker with solid black fill for
+dataset 3: '<code>marks=r++-f-black-100</code>'. The default opacity for marker and
+histogram fill is 20% if they have a border, or 50% otherwise.</td></tr>
 </table></blockquote>
 
 <a name="examples"></a>
@@ -141,8 +187,13 @@ The <code>YMax</code> setting was used to limit the Y scale because otherwise th
 effect of the autoscaling with the tall 20-25 mm bar would have made the other bars
 too small. With this rescaling, the 20-25 mm bar extends off the top of the plot.</p>
 
+<p>The default histogram plot <code>Style</code> is <code>Line+Fill</code>. The fill
+is partially transparent, with a default 20% opacity if the <code>Line</code> style is
+used, or 50% otherwise, but this may be changed with the <code>Marks</code> setting.</p>
+
 <p>Unlike the other plot types, the histogram type supports plotting of only
-a single dataset (ie. you may specify only one tag on the command line).</p>
+a single dataset (ie. only the first tag specified on the command line is used
+unless the <code>Multi</code> plot setting is used to generate multiple plots).</p>
 
 <p>The <code>-w</code> option was used to write the output file
 (plot2.svg) instead of using shell redirection.  Note that when the <code>-plot</code>
@@ -150,7 +201,7 @@ option is used, the <code>-w</code> option takes a full file name instead of
 just an extension.</p>
 
 <pre>exiftool C:/my_trip -focallength35efl# -w plot2.svg \
-  -api plot="type=hist,style=fill,nbins=40,ymax=50,cols=blue"</pre>
+  -api plot="type=hist,nbins=40,ymax=50,cols=blue"</pre>
 
 <blockquote><img src="plot2.svg" alt="SVG-format plot" width=800 height=600></blockquote>
 
@@ -162,12 +213,18 @@ plot type to show the correlation betweent CameraTemperature and AmbientTemperat
 The first tag specified on the command line is the independent variable (plotted
 along the X axis), and the rest are the dependent variables (Y axis). Note that
 the legend doesn't appear in this plot because there is only one dependent
-variable and its name is used for the Y-axis label.  The plot <code>Style</code>
+variable, so instead the Y-axis is labelled with its name.</p>
+
+<p>The plot <code>Style</code>
 has been changed to <code>Marker</code> to show markers for the data points
 instead of connecting them with lines, and <code>Fill</code> has been added to
-show filled markers instead of outlines.</p>
+show filled markers instead of outlines.  The fill is partially transparent with a
+default opacity of 20%, but this has been changed to 10% via the <code>Marks</code>
+setting so points which occur few times in the dataset will show a noticably lighter
+color.</p>
 
-<pre>exiftool C:/pics -w plot3.svg "-*temperature" -plot -api plot="type=scatter,style=marker+fill"</pre>
+<pre>exiftool C:/pics -w plot3.svg "-*temperature" -plot \
+  -api plot="type=scatter,style=marker+fill,stroke=1.5,marks=---10"</pre>
 
 <blockquote><img src="plot3.svg" alt="SVG-format plot" width=800 height=600></blockquote>
 
@@ -185,15 +242,28 @@ file:</p>
 
 <p>And this command was used to generate the following plot:</p>
 
-<pre>exiftool test.mp4 -w plot4.svg -ee -accelerometer -plot -api plot="split,legend=30 190" \
+<pre>exiftool test.mp4 -w plot4.svg -ee -accelerometer -plot -api plot="split,legend=30 107" \
   -api plot="title=Accelerometer Readings,ylabel=G Force,xlabel=Sample Number"
 </pre>
 
 <blockquote><img src="plot4.svg" alt="SVG-format plot" width=800 height=600></blockquote>
 
+<a name="EX5"></a>
+<h3>Example 5 - Multi Plots</h3>
+
+<p>This example demonstrates the <code>Multi</code> setting to draw multiple
+<code>Histogram</code> plots in 2 columns.  The <a href="ExifTool.html#Filter">API Filter</a>
+option is used to convert shutter speed from a value like 1/640 to 640 so the denominator
+of the value is plotted.</p>
+
+<pre>exiftool C:\my_trip -w! plot5.svg -fnumber -focallength35efl# -shutterspeed -iso -plot \
+  -api filter="s(1/)()" -api plot="multi=2,type=hist,style=fill,cols=green,ylabel="</pre>
+
+<blockquote><img src="plot5.svg" alt="SVG-format plot" width=800 height=600></blockquote>
+
 <hr>
 <i>Created Feb 19, 2025</i><br>
-<i>Last revised Feb 20, 2025</i><br>
+<i>Last revised Mar 1, 2025</i><br>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

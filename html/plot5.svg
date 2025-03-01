@@ -1,0 +1,227 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600"
+ preserveAspectRatio="xMidYMid meet" viewBox="0 0 800 600">
+<title>Plot by ExifTool 13.22</title>
+<g transform='translate(0,0)'>
+<!-- Definitions -->
+<defs>
+<clipPath id='plot-area'><rect x='54' y='9' width='337' height='247'/></clipPath>
+</defs>
+<style>
+  text { fill: black }
+</style>
+<!-- X axis -->
+<g dominant-baseline='hanging' text-anchor='middle'>
+<text x='222.5' y='280'>FNumber</text>
+<text x='77.1' y='260'>2</text>
+<text x='111.3' y='260'>3</text>
+<text x='145.5' y='260'>4</text>
+<text x='179.7' y='260'>5</text>
+<text x='213.9' y='260'>6</text>
+<text x='248.2' y='260'>7</text>
+<text x='282.4' y='260'>8</text>
+<text x='316.6' y='260'>9</text>
+<text x='350.8' y='260'>10</text>
+<text x='385' y='260'>11</text>
+<path stroke='darkgray' stroke-width='0.5' d='
+M60 15 v235 M77.1 15 v240 M94.2 15 v235 M111.3 15 v240 M128.4 15 v235 M145.5 15 v240 
+M162.6 15 v235 M179.7 15 v240 M196.8 15 v235 M213.9 15 v240 M231.1 15 v235 M248.2 15 v240 
+M265.3 15 v235 M282.4 15 v240 M299.5 15 v235 M316.6 15 v240 M333.7 15 v235 M350.8 15 v240 
+M367.9 15 v235 M385 15 v240 '/>
+</g>
+<!-- Y axis -->
+<g dominant-baseline='middle' text-anchor='end'>
+<text x='50' y='250'>0</text>
+<text x='50' y='220.6'>5</text>
+<text x='50' y='191.3'>10</text>
+<text x='50' y='161.9'>15</text>
+<text x='50' y='132.5'>20</text>
+<text x='50' y='103.1'>25</text>
+<text x='50' y='73.8'>30</text>
+<text x='50' y='44.4'>35</text>
+<text x='50' y='15'>40</text>
+<path stroke='darkgray' stroke-width='0.5' d='
+M55 250 h330 M55 220.6 h330 M55 191.3 h330 M55 161.9 h330 M55 132.5 h330 M55 103.1 h330 
+M55 73.8 h330 M55 44.4 h330 M55 15 h330 '/>
+</g>
+<!-- Plot box and legend -->
+<g dominant-baseline='middle' text-anchor='start'>
+<path stroke='black' fill='none' d='M60 15 l0 235 325 0 0 -235 z'/>
+</g>
+<!-- Datasets -->
+<g fill='none' clip-path='url(#plot-area)' stroke-linejoin='round' stroke-linecap='round' stroke-width='1.5'>
+<!-- FNumber -->
+<path fill='green' style='fill-opacity: 50%' stroke='none' d=' M
+60 85.5 h17.11 L 77.1 232.4 h17.11 L 94.2 79.6 h17.11 L 111.3 226.5 h17.11 L 128.4 220.6 h17.11 L
+145.5 38.5 h17.11 L 162.6 214.8 h17.11 L 179.7 232.4 h17.11 L 196.8 238.3 h17.11 L 213.9 203 h17.11 L
+231.1 250 h17.11 L 248.2 220.6 h17.11 L 265.3 250 h17.11 L 282.4 244.1 h17.11 L 299.5 250 h17.11 L
+316.6 250 h17.11 L 333.7 250 h17.11 L 350.8 250 h17.11 L 367.9 244.1 h17.11 V250 H60 z'/>
+</g>
+</g>
+<g transform='translate(400,0)'>
+<!-- Definitions -->
+<defs>
+<clipPath id='plot-area'><rect x='54' y='9' width='337' height='247'/></clipPath>
+</defs><style>
+  text { fill: black }
+</style>
+<!-- X axis -->
+<g dominant-baseline='hanging' text-anchor='middle'>
+<text x='222.5' y='280'>FocalLength35efl</text>
+<text x='77.1' y='260'>20</text>
+<text x='111.3' y='260'>40</text>
+<text x='145.5' y='260'>60</text>
+<text x='179.7' y='260'>80</text>
+<text x='213.9' y='260'>100</text>
+<text x='248.2' y='260'>120</text>
+<text x='282.4' y='260'>140</text>
+<text x='316.6' y='260'>160</text>
+<text x='350.8' y='260'>180</text>
+<text x='385' y='260'>200</text>
+<path stroke='darkgray' stroke-width='0.5' d='
+M60 15 v235 M77.1 15 v240 M94.2 15 v235 M111.3 15 v240 M128.4 15 v235 M145.5 15 v240 
+M162.6 15 v235 M179.7 15 v240 M196.8 15 v235 M213.9 15 v240 M231.1 15 v235 M248.2 15 v240 
+M265.3 15 v235 M282.4 15 v240 M299.5 15 v235 M316.6 15 v240 M333.7 15 v235 M350.8 15 v240 
+M367.9 15 v235 M385 15 v240 '/>
+</g>
+<!-- Y axis -->
+<g dominant-baseline='middle' text-anchor='end'>
+<text x='50' y='250'>0</text>
+<text x='50' y='226.5'>10</text>
+<text x='50' y='203'>20</text>
+<text x='50' y='179.5'>30</text>
+<text x='50' y='156'>40</text>
+<text x='50' y='132.5'>50</text>
+<text x='50' y='109'>60</text>
+<text x='50' y='85.5'>70</text>
+<text x='50' y='62'>80</text>
+<text x='50' y='38.5'>90</text>
+<text x='50' y='15'>100</text>
+<path stroke='darkgray' stroke-width='0.5' d='
+M55 250 h330 M55 226.5 h330 M55 203 h330 M55 179.5 h330 M55 156 h330 M55 132.5 h330 
+M55 109 h330 M55 85.5 h330 M55 62 h330 M55 38.5 h330 M55 15 h330 '/>
+</g>
+<!-- Plot box and legend -->
+<g dominant-baseline='middle' text-anchor='start'>
+<path stroke='black' fill='none' d='M60 15 l0 235 325 0 0 -235 z'/>
+</g>
+<!-- Datasets -->
+<g fill='none' clip-path='url(#plot-area)' stroke-linejoin='round' stroke-linecap='round' stroke-width='1.5'>
+<!-- FocalLength35efl -->
+<path fill='green' style='fill-opacity: 50%' stroke='none' d=' M
+60 245.3 h17.11 L 77.1 26.8 h17.11 L 94.2 231.2 h17.11 L 111.3 240.6 h17.11 L 128.4 240.6 h17.11 L
+145.5 240.6 h17.11 L 162.6 247.7 h17.11 L 179.7 243 h17.11 L 196.8 243 h17.11 L 213.9 247.7 h17.11 L
+231.1 247.7 h17.11 L 248.2 247.7 h17.11 L 265.3 250 h17.11 L 282.4 247.7 h17.11 L 299.5 250 h17.11 L
+316.6 250 h17.11 L 333.7 250 h17.11 L 350.8 250 h17.11 L 367.9 243 h17.11 V250 H60 z'/>
+</g>
+</g>
+<g transform='translate(0,300)'>
+<!-- Definitions -->
+<defs>
+<clipPath id='plot-area'><rect x='54' y='9' width='337' height='247'/></clipPath>
+</defs><style>
+  text { fill: black }
+</style>
+<!-- X axis -->
+<g dominant-baseline='hanging' text-anchor='middle'>
+<text x='222.5' y='280'>ShutterSpeed</text>
+<text x='60' y='260'>0</text>
+<text x='110.8' y='260'>500</text>
+<text x='161.6' y='260'>1000</text>
+<text x='212.3' y='260'>1500</text>
+<text x='263.1' y='260'>2000</text>
+<text x='313.9' y='260'>2500</text>
+<text x='364.7' y='260'>3000</text>
+<path stroke='darkgray' stroke-width='0.5' d='
+M60 15 v240 M70.2 15 v235 M80.3 15 v235 M90.5 15 v235 M100.6 15 v235 M110.8 15 v240 
+M120.9 15 v235 M131.1 15 v235 M141.3 15 v235 M151.4 15 v235 M161.6 15 v240 M171.7 15 v235 
+M181.9 15 v235 M192 15 v235 M202.2 15 v235 M212.3 15 v240 M222.5 15 v235 M232.7 15 v235 
+M242.8 15 v235 M253 15 v235 M263.1 15 v240 M273.3 15 v235 M283.4 15 v235 M293.6 15 v235 
+M303.8 15 v235 M313.9 15 v240 M324.1 15 v235 M334.2 15 v235 M344.4 15 v235 M354.5 15 v235 
+M364.7 15 v240 M374.8 15 v235 M385 15 v235 '/>
+</g>
+<!-- Y axis -->
+<g dominant-baseline='middle' text-anchor='end'>
+<text x='50' y='250'>0</text>
+<text x='50' y='216.4'>5</text>
+<text x='50' y='182.9'>10</text>
+<text x='50' y='149.3'>15</text>
+<text x='50' y='115.7'>20</text>
+<text x='50' y='82.1'>25</text>
+<text x='50' y='48.6'>30</text>
+<text x='50' y='15'>35</text>
+<path stroke='darkgray' stroke-width='0.5' d='
+M55 250 h330 M55 216.4 h330 M55 182.9 h330 M55 149.3 h330 M55 115.7 h330 M55 82.1 h330 
+M55 48.6 h330 M55 15 h330 '/>
+</g>
+<!-- Plot box and legend -->
+<g dominant-baseline='middle' text-anchor='start'>
+<path stroke='black' fill='none' d='M60 15 l0 235 325 0 0 -235 z'/>
+</g>
+<!-- Datasets -->
+<g fill='none' clip-path='url(#plot-area)' stroke-linejoin='round' stroke-linecap='round' stroke-width='1.5'>
+<!-- ShutterSpeed -->
+<path fill='green' style='fill-opacity: 50%' stroke='none' d=' M
+60 41.9 h10.16 L 70.2 75.4 h10.16 L 80.3 95.6 h10.16 L 90.5 203 h10.16 L 100.6 209.7 h10.16 L
+110.8 209.7 h10.16 L 120.9 223.1 h10.16 L 131.1 236.6 h10.16 L 141.3 216.4 h10.16 L 151.4 229.9 h10.16 L
+161.6 176.1 h10.16 L 171.7 243.3 h10.16 L 181.9 236.6 h10.16 L 192 243.3 h10.16 L 202.2 250 h10.16 L
+212.3 250 h10.16 L 222.5 243.3 h10.16 L 232.7 250 h10.16 L 242.8 250 h10.16 L 253 250 h10.16 L
+263.1 250 h10.16 L 273.3 250 h10.16 L 283.4 250 h10.16 L 293.6 243.3 h10.16 L 303.8 250 h10.16 L
+313.9 250 h10.16 L 324.1 250 h10.16 L 334.2 250 h10.16 L 344.4 250 h10.16 L 354.5 250 h10.16 L
+364.7 250 h10.16 L 374.8 243.3 h10.16 V250 H60 z'/>
+</g>
+</g>
+<g transform='translate(400,300)'>
+<!-- Definitions -->
+<defs>
+<clipPath id='plot-area'><rect x='54' y='9' width='337' height='247'/></clipPath>
+</defs><style>
+  text { fill: black }
+</style>
+<!-- X axis -->
+<g dominant-baseline='hanging' text-anchor='middle'>
+<text x='222.5' y='280'>ISO</text>
+<text x='60' y='260'>0</text>
+<text x='125' y='260'>500</text>
+<text x='190' y='260'>1000</text>
+<text x='255' y='260'>1500</text>
+<text x='320' y='260'>2000</text>
+<text x='385' y='260'>2500</text>
+<path stroke='darkgray' stroke-width='0.5' d='
+M60 15 v240 M73 15 v235 M86 15 v235 M99 15 v235 M112 15 v235 M125 15 v240 M138 15 v235 
+M151 15 v235 M164 15 v235 M177 15 v235 M190 15 v240 M203 15 v235 M216 15 v235 M229 15 v235 
+M242 15 v235 M255 15 v240 M268 15 v235 M281 15 v235 M294 15 v235 M307 15 v235 M320 15 v240 
+M333 15 v235 M346 15 v235 M359 15 v235 M372 15 v235 M385 15 v240 '/>
+</g>
+<!-- Y axis -->
+<g dominant-baseline='middle' text-anchor='end'>
+<text x='50' y='250'>0</text>
+<text x='50' y='223.9'>10</text>
+<text x='50' y='197.8'>20</text>
+<text x='50' y='171.7'>30</text>
+<text x='50' y='145.6'>40</text>
+<text x='50' y='119.4'>50</text>
+<text x='50' y='93.3'>60</text>
+<text x='50' y='67.2'>70</text>
+<text x='50' y='41.1'>80</text>
+<text x='50' y='15'>90</text>
+<path stroke='darkgray' stroke-width='0.5' d='
+M55 250 h330 M55 223.9 h330 M55 197.8 h330 M55 171.7 h330 M55 145.6 h330 M55 119.4 h330 
+M55 93.3 h330 M55 67.2 h330 M55 41.1 h330 M55 15 h330 '/>
+</g>
+<!-- Plot box and legend -->
+<g dominant-baseline='middle' text-anchor='start'>
+<path stroke='black' fill='none' d='M60 15 l0 235 325 0 0 -235 z'/>
+</g>
+<!-- Datasets -->
+<g fill='none' clip-path='url(#plot-area)' stroke-linejoin='round' stroke-linecap='round' stroke-width='1.5'>
+<!-- ISO -->
+<path fill='green' style='fill-opacity: 50%' stroke='none' d=' M
+60 184.7 h13 L 73 17.6 h13 L 86 236.9 h13 L 99 244.8 h13 L 112 247.4 h13 L
+125 247.4 h13 L 138 244.8 h13 L 151 250 h13 L 164 250 h13 L 177 250 h13 L
+190 242.2 h13 L 203 250 h13 L 216 250 h13 L 229 250 h13 L 242 250 h13 L
+255 250 h13 L 268 247.4 h13 L 281 250 h13 L 294 250 h13 L 307 250 h13 L
+320 247.4 h13 L 333 250 h13 L 346 250 h13 L 359 250 h13 L 372 247.4 h13 V250 H60 z'/>
+</g>
+</g></svg>

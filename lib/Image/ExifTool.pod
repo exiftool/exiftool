@@ -1009,16 +1009,20 @@ values are:
   "Legend=0 0"          - x,y offset to shift plot legend
   "TxtPad=10 10"        - padding between text and x,y scale
   "LineSpacing=20"      - spacing between text lines
+  "Stroke=1"            - plot stroke width and marker-size scaling
   Title, XLabel, YLabel - plot title and x/y axis labels (no default)
   XMin, XMax            - x axis minimum/maximum (autoscaling if not set)
   YMin, YMax            - y axis minimum/maximum
+  Multi                 - flag to draw multiple plots, one for each dataset
   Split                 - flag to split strings of numbers into lists
                           (> 1 to split into lists of N items)
   "Grid=darkgray"       - grid color
   "Text=black"          - color of text and plot border
   "Bkg="                - background color (default is transparent)
-  "Cols=red green blue black orange gray purple cyan brown pink"
-                       - colors for plot data
+  "Cols=red green blue black orange gray fuchsia brown turquoise gold"
+                        - colors for plot data
+  "Marks=circle square triangle diamond star plus pentagon left down right"
+                        - marker-shape names for each dataset
 
 =item PrintConv
 

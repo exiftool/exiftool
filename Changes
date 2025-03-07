@@ -7,6 +7,12 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.10. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Mar. 7, 2025 - Version 13.24
+
+  - Changed -listf, -listr and -listwf options to print descriptions when either
+    -v or -l is added (previously only -l did this)
+  - Patched to avoid failed PCAP test due to differing time zones (github #319)
+
 Mar. 7, 2025 - Version 13.23
 
   - Added read support for CAP, PCAP and PACPNG files

@@ -25,7 +25,7 @@ require Exporter;
 use Image::ExifTool qw(ImageInfo);
 
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = '1.23';
+$VERSION = '1.24';
 @ISA = qw(Exporter);
 @EXPORT = qw(check writeCheck writeInfo testCompare binaryCompare testVerbose notOK done);
 
@@ -183,11 +183,11 @@ sub nearEnough($$)
             }
             next;   # ignore times if Time::Local not available
         # account for different timezones
-        } elsif ($tok1 =~ /^(\d{2}:\d{2}:\d{2})(Z|[-+]\d{2}:\d{2})$/i) {
+        } elsif ($tok1 =~ /^(\d{2}:\d{2}:\d{2}(?:\.\d+)?)(Z|[-+]\d{2}:\d{2})$/i) {
             my $time = $1;  # remove timezone
             # timezone may be wrong if writing date/time value in a different timezone
-            next if $tok2 =~ /^(\d{2}:\d{2}:\d{2})(Z|[-+]\d{2}:\d{2})$/i and $time eq $1;
-            # date/time may be wrong to if converting GMT value to local time
+            next if $tok2 =~ /^(\d{2}:\d{2}:\d{2}(?:\.\d+)?)(Z|[-+]\d{2}:\d{2})$/i and $time eq $1;
+            # date/time may be wrong too if converting GMT value to local time
             last unless $i and $toks1[$i-1] =~ /^\d{4}:\d{2}:\d{2}$/ and
                                $toks2[$i-1] =~ /^\d{4}:\d{2}:\d{2}$/;
             $tok1 = $toks1[$i-1] . ' ' . $tok1; # add date to give date/time value
@@ -196,8 +196,8 @@ sub nearEnough($$)
         # date may be different if timezone shifted into next day
         } elsif ($tok1 =~ /^\d{4}:\d{2}:\d{2}$/ and $tok2 =~ /^\d{4}:\d{2}:\d{2}$/ and
                  defined $toks1[$i+1] and defined $toks2[$i+1] and
-                 $toks1[$i+1] =~ /^(\d{2}:\d{2}:\d{2})(Z|[-+]\d{2}:\d{2})$/i and
-                 $toks2[$i+1] =~ /^(\d{2}:\d{2}:\d{2})(Z|[-+]\d{2}:\d{2})$/i)
+                 $toks1[$i+1] =~ /^(\d{2}:\d{2}:\d{2}(?:\.\d+)?)(Z|[-+]\d{2}:\d{2})$/i and
+                 $toks2[$i+1] =~ /^(\d{2}:\d{2}:\d{2}(?:\.\d+)?)(Z|[-+]\d{2}:\d{2})$/i)
         {
             ++$i;
             $tok1 .= ' ' . $toks1[$i];      # add time to give date/time value

@@ -188,10 +188,10 @@ my %validValue = (
             0x115 => undef,     # SamplesPerPixel
             0x116 => undef,     # RowsPerStrip
             0x117 => undef,     # StripByteCounts
-            0x11a => 'defined $val',        # XResolution
-            0x11b => 'defined $val',        # YResolution
+            # (optional as of 3.0) 0x11a => 'defined $val',        # XResolution
+            # (optional as of 3.0) 0x11b => 'defined $val',        # YResolution
             0x11c => undef,     # PlanarConfiguration
-            0x128 => '$val =~ /^[123]$/',   # ResolutionUnit
+            # (optional as of 3.0) 0x128 => '$val =~ /^[123]$/',   # ResolutionUnit
             0x201 => undef,     # JPEGInterchangeFormat
             0x202 => undef,     # JPEGInterchangeFormatLength
             0x212 => undef,     # YCbCrSubSampling
@@ -218,7 +218,7 @@ my %validValue = (
         ExifIFD => {
             0x9000 => 'defined $val and $val =~ /^\d{4}$/', # ExifVersion
             0x9101 => 'defined $val',       # ComponentsConfiguration
-            0xa000 => 'defined $val',       # FlashpixVersion
+            # (optional as of 3.0) 0xa000 => 'defined $val',       # FlashpixVersion
             0xa001 => '$val == 1 or $val == 0xffff',    # ColorSpace
             0xa002 => 'defined $val',       # PixelXDimension
             0xa003 => 'defined $val',       # PixelYDimension

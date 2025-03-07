@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.72';
+$VERSION = '3.73';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -76,7 +76,9 @@ sub PrintInvLensSpec($;$$);
     6 => 'Sony LA-EA4 Adapter',
     7 => 'Sony LA-EA5 Adapter', #JR
     13 => 'Samyang AF 35-150mm F2-2.8',
-    # 27 => Venus Optics Laowa 12mm f2.8 Zero-D or 105mm f2 (T3.2) Smooth Trans Focus (ref IB)
+    20 => 'Samyang AF 35mm F1.4 P FE', #JR
+    21 => 'Samyang AF 14-24mm F2.8', #JR
+  # 27 => Venus Optics Laowa 12mm f2.8 Zero-D or 105mm f2 (T3.2) Smooth Trans Focus (ref IB)
     44 => 'Metabones Canon EF Smart Adapter', #JR
     78 => 'Metabones Canon EF Smart Adapter Mark III or Other Adapter', #PH/JR (also Mark IV, Fotodiox and Viltrox)
     184 => 'Metabones Canon EF Speed Booster Ultra', #JR ('Green' mode, LensMount reported as A-mount)
@@ -164,6 +166,7 @@ sub PrintInvLensSpec($;$$);
     32877 => 'Sony E 15mm F1.4 G', #JR
     32878 => 'Sony FE 20-70mm F4 G', #JR
     32879 => 'Sony FE 50mm F1.4 GM', #JR
+    32880 => 'Sony FE 16mm F1.8 G', #JR
     32881 => 'Sony FE 24-50mm F2.8 G', #JR
     32882 => 'Sony FE 16-25mm F2.8 G', #JR
     32884 => 'Sony FE 70-200mm F4 Macro G OSS II', #JR
@@ -172,6 +175,7 @@ sub PrintInvLensSpec($;$$);
     32887 => 'Sony E PZ 16-50mm F3.5-5.6 OSS II', #JR
     32888 => 'Sony FE 85mm F1.4 GM II', #JR
     32889 => 'Sony FE 28-70mm F2 GM',
+    32890 => 'Sony FE 400-800mm F6.3-8 G OSS', #JR
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -194,6 +198,8 @@ sub PrintInvLensSpec($;$$);
     33088 => 'Sony FE 70-200mm F4 Macro G OSS II + 2X Teleconverter', #JR
     33089 => 'Sony FE 300mm F2.8 GM OSS + 1.4X Teleconverter', #JR (NC)
     33090 => 'Sony FE 300mm F2.8 GM OSS + 2X Teleconverter', #JR
+    33091 => 'Sony FE 400-800mm F6.3-8 G OSS + 1.4X Teleconverter', #JR
+    33092 => 'Sony FE 400-800mm F6.3-8 G OSS + 2X Teleconverter', #JR
 
     49201 => 'Zeiss Touit 12mm F2.8', #JR (lens firmware Ver.02)
     49202 => 'Zeiss Touit 32mm F1.8', #JR (lens firmware Ver.02)
@@ -305,6 +311,11 @@ sub PrintInvLensSpec($;$$);
     50549 => 'Sigma 50mm F1.2 DG DN | A', #JR (024)
     50550 => 'Sigma 28-105mm F2.8 DG DN | A', #JR (024)
     50551 => 'Sigma 28-45mm F1.8 DG DN | A', #JR (024)
+    50553 => 'Sigma 300-600mm F4 DG OS | S', #JR (025)
+
+    # lenses listed in the Sigma MC-11 list, but not yet seen:
+    # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)
+    # 504xx => 'Sigma 30mm F1.4 DC HSM | A + MC-11', # (013)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
@@ -321,10 +332,10 @@ sub PrintInvLensSpec($;$$);
     51006 => 'Voigtlander APO-LANTHAR 35mm F2 Aspherical', #JR
     51007 => 'Voigtlander NOKTON 50mm F1 Aspherical', #JR
     51008 => 'Voigtlander NOKTON 75mm F1.5 Aspherical', #JR
+    51009 => 'Voigtlander NOKTON 28mm F1.5 Aspherical', #JR
 
-    # lenses listed in the Sigma MC-11 list, but not yet seen:
-    # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)
-    # 504xx => 'Sigma 30mm F1.4 DC HSM | A + MC-11', # (013)
+    51072 => 'ZEISS Otus ML 50mm F1.4', #JR
+    51073 => 'ZEISS Otus ML 85mm F1.4', #JR
 
     # Note: For Samyang lenses, the "FE" designation isn't written to
     # EXIF:LensModel, so it isn't included in these strings either - JR/PH
@@ -344,6 +355,8 @@ sub PrintInvLensSpec($;$$);
     51518 => 'Samyang AF 135mm F1.8', #JR
 
     61569 => 'LAOWA FFII 10mm F2.8 C&D Dreamer', #JR
+
+    61761 => 'Viltrox 28mm F4.5 FE', #JR
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)

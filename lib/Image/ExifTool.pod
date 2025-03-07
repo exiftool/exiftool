@@ -65,50 +65,50 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  360   r/w   | DOCX  r     | ITC   r     | NUMBERS r   | RAW   r/w
-  3FR   r     | DPX   r     | J2C   r     | NXD   r     | RIFF  r
-  3G2   r/w   | DR4   r/w/c | JNG   r/w   | O     r     | RSRC  r
-  3GP   r/w   | DSS   r     | JP2   r/w   | ODP   r     | RTF   r
-  7Z    r     | DV    r     | JPEG  r/w   | ODS   r     | RW2   r/w
-  A     r     | DVB   r/w   | JSON  r     | ODT   r     | RWL   r/w
-  AA    r     | DVR-MS r    | JXL   r/w   | OFR   r     | RWZ   r
-  AAC   r     | DYLIB r     | K25   r     | OGG   r     | RM    r
-  AAE   r     | EIP   r     | KDC   r     | OGV   r     | SEQ   r
-  AAX   r/w   | EPS   r/w   | KEY   r     | ONP   r     | SKETCH r
-  ACR   r     | EPUB  r     | LA    r     | OPUS  r     | SO    r
-  AFM   r     | ERF   r/w   | LFP   r     | ORF   r/w   | SR2   r/w
-  AI    r/w   | EXE   r     | LIF   r     | ORI   r/w   | SRF   r
-  AIFF  r     | EXIF  r/w/c | LNK   r     | OTF   r     | SRW   r/w
-  APE   r     | EXR   r     | LRV   r/w   | PAC   r     | SVG   r
-  ARQ   r/w   | EXV   r/w/c | M2TS  r     | PAGES r     | SWF   r
-  ARW   r/w   | F4A/V r/w   | M4A/V r/w   | PBM   r/w   | THM   r/w
-  ASF   r     | FFF   r/w   | MACOS r     | PCD   r     | TIFF  r/w
-  AVI   r     | FITS  r     | MAX   r     | PCX   r     | TORRENT r
-  AVIF  r/w   | FLA   r     | MEF   r/w   | PDB   r     | TTC   r
-  AZW   r     | FLAC  r     | MIE   r/w/c | PDF   r/w   | TTF   r
-  BMP   r     | FLIF  r/w   | MIFF  r     | PEF   r/w   | TXT   r
-  BPG   r     | FLV   r     | MKA   r     | PFA   r     | VCF   r
-  BTF   r     | FPF   r     | MKS   r     | PFB   r     | VNT   r
-  C2PA  r     | FPX   r     | MKV   r     | PFM   r     | VRD   r/w/c
-  CHM   r     | GIF   r/w   | MNG   r/w   | PGF   r     | VSD   r
-  COS   r     | GLV   r/w   | MOBI  r     | PGM   r/w   | WAV   r
-  CR2   r/w   | GPR   r/w   | MODD  r     | PLIST r     | WDP   r/w
-  CR3   r/w   | GZ    r     | MOI   r     | PICT  r     | WEBP  r/w
-  CRM   r/w   | HDP   r/w   | MOS   r/w   | PMP   r     | WEBM  r
-  CRW   r/w   | HDR   r     | MOV   r/w   | PNG   r/w   | WMA   r
-  CS1   r/w   | HEIC  r/w   | MP3   r     | PPM   r/w   | WMV   r
-  CSV   r     | HEIF  r/w   | MP4   r/w   | PPT   r     | WPG   r
-  CUR   r     | HTML  r     | MPC   r     | PPTX  r     | WTV   r
-  CZI   r     | ICC   r/w/c | MPG   r     | PS    r/w   | WV    r
-  DCM   r     | ICO   r     | MPO   r/w   | PSB   r/w   | X3F   r/w
-  DCP   r/w   | ICS   r     | MQV   r/w   | PSD   r/w   | XCF   r
-  DCR   r     | IDML  r     | MRC   r     | PSP   r     | XISF  r
-  DFONT r     | IIQ   r/w   | MRW   r/w   | QTIF  r/w   | XLS   r
-  DIVX  r     | IND   r/w   | MXF   r     | R3D   r     | XLSX  r
-  DJVU  r     | INSP  r/w   | NEF   r/w   | RA    r     | XMP   r/w/c
-  DLL   r     | INSV  r     | NKA   r     | RAF   r/w   | ZIP   r
-  DNG   r/w   | INX   r     | NKSC  r/w   | RAM   r     |
-  DOC   r     | ISO   r     | NRW   r/w   | RAR   r     |
+  360   r/w   | DOCX  r     | ITC   r     | NUMBERS r   | RAM   r
+  3FR   r     | DPX   r     | J2C   r     | NXD   r     | RAR   r
+  3G2   r/w   | DR4   r/w/c | JNG   r/w   | O     r     | RAW   r/w
+  3GP   r/w   | DSS   r     | JP2   r/w   | ODP   r     | RIFF  r
+  7Z    r     | DV    r     | JPEG  r/w   | ODS   r     | RSRC  r
+  A     r     | DVB   r/w   | JSON  r     | ODT   r     | RTF   r
+  AA    r     | DVR-MS r    | JXL   r/w   | OFR   r     | RW2   r/w
+  AAC   r     | DYLIB r     | K25   r     | OGG   r     | RWL   r/w
+  AAE   r     | EIP   r     | KDC   r     | OGV   r     | RWZ   r
+  AAX   r/w   | EPS   r/w   | KEY   r     | ONP   r     | RM    r
+  ACR   r     | EPUB  r     | LA    r     | OPUS  r     | SEQ   r
+  AFM   r     | ERF   r/w   | LFP   r     | ORF   r/w   | SKETCH r
+  AI    r/w   | EXE   r     | LIF   r     | ORI   r/w   | SO    r
+  AIFF  r     | EXIF  r/w/c | LNK   r     | OTF   r     | SR2   r/w
+  APE   r     | EXR   r     | LRV   r/w   | PAC   r     | SRF   r
+  ARQ   r/w   | EXV   r/w/c | M2TS  r     | PAGES r     | SRW   r/w
+  ARW   r/w   | F4A/V r/w   | M4A/V r/w   | PBM   r/w   | SVG   r
+  ASF   r     | FFF   r/w   | MACOS r     | PCAP  r     | SWF   r
+  AVI   r     | FITS  r     | MAX   r     | PCAPNG r    | THM   r/w
+  AVIF  r/w   | FLA   r     | MEF   r/w   | PCD   r     | TIFF  r/w
+  AZW   r     | FLAC  r     | MIE   r/w/c | PCX   r     | TORRENT r
+  BMP   r     | FLIF  r/w   | MIFF  r     | PDB   r     | TTC   r
+  BPG   r     | FLV   r     | MKA   r     | PDF   r/w   | TTF   r
+  BTF   r     | FPF   r     | MKS   r     | PEF   r/w   | TXT   r
+  C2PA  r     | FPX   r     | MKV   r     | PFA   r     | VCF   r
+  CHM   r     | GIF   r/w   | MNG   r/w   | PFB   r     | VNT   r
+  COS   r     | GLV   r/w   | MOBI  r     | PFM   r     | VRD   r/w/c
+  CR2   r/w   | GPR   r/w   | MODD  r     | PGF   r     | VSD   r
+  CR3   r/w   | GZ    r     | MOI   r     | PGM   r/w   | WAV   r
+  CRM   r/w   | HDP   r/w   | MOS   r/w   | PLIST r     | WDP   r/w
+  CRW   r/w   | HDR   r     | MOV   r/w   | PICT  r     | WEBP  r/w
+  CS1   r/w   | HEIC  r/w   | MP3   r     | PMP   r     | WEBM  r
+  CSV   r     | HEIF  r/w   | MP4   r/w   | PNG   r/w   | WMA   r
+  CUR   r     | HTML  r     | MPC   r     | PPM   r/w   | WMV   r
+  CZI   r     | ICC   r/w/c | MPG   r     | PPT   r     | WPG   r
+  DCM   r     | ICO   r     | MPO   r/w   | PPTX  r     | WTV   r
+  DCP   r/w   | ICS   r     | MQV   r/w   | PS    r/w   | WV    r
+  DCR   r     | IDML  r     | MRC   r     | PSB   r/w   | X3F   r/w
+  DFONT r     | IIQ   r/w   | MRW   r/w   | PSD   r/w   | XCF   r
+  DIVX  r     | IND   r/w   | MXF   r     | PSP   r     | XISF  r
+  DJVU  r     | INSP  r/w   | NEF   r/w   | QTIF  r/w   | XLS   r
+  DLL   r     | INSV  r     | NKA   r     | R3D   r     | XLSX  r
+  DNG   r/w   | INX   r     | NKSC  r/w   | RA    r     | XMP   r/w/c
+  DOC   r     | ISO   r     | NRW   r/w   | RAF   r/w   | ZIP   r
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -904,7 +904,7 @@ set to undef to select the built-in default language.  Default is 'en'.
 Flag to indicate that 64-bit file offsets are supported on this system. If
 not set, processing is aborted if a chunk larger than 2 GB is encountered.
 Set to 1 to process large chunks, or 2 to process with a warning.  Default
-is 2.
+is 1.
 
 =item LimitLongValues
 

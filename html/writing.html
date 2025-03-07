@@ -140,6 +140,12 @@ get this information from the user, but conditions like this add an unnecessary
 level complexity to the user interface.
 </blockquote>
 
+<p><b>2025-03-03</b>: To make matters worse, some EXIF tags which were
+previously listed as mandatory have been changed to optional under the EXIF 3.0
+specification. Introducing a version dependency only complicates the situation.
+ExifTool 13.23 and later will simplify this problem by treating these newly
+re-categorized tags as optional for all EXIF versions.</p>
+
 <a name='JPEG'></a>
 <h3>The JPEG Segment Size Limitation</h3>
 
@@ -235,7 +241,7 @@ exists in IFD0 when it is written to ExifIFD, and vice versa.</p>
 
 <hr>
 <i>Created Dec 30, 2004</i><br>
-<i>Last revised Dec 21, 2023</i>
+<i>Last revised Mar 3, 2025</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

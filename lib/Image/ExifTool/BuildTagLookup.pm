@@ -1795,8 +1795,8 @@ sub NumbersFirst($$)
         my ($a2, $b2) = ($a, $b);
         # expand numbers to 3 digits (with restrictions to avoid messing up
         # ascii-hex tags -- Nikon LensID's are 23 characters long)
-        $a2 =~ s/(\d+)/sprintf("%.3d",$1)/eg if $a2 =~ /^(APP|DMC-\w+ |dvtm_.*)?[.0-9 ]*$/ and length($a2)<23;
-        $b2 =~ s/(\d+)/sprintf("%.3d",$1)/eg if $b2 =~ /^(APP|DMC-\w+ |dvtm_.*)?[.0-9 ]*$/ and length($b2)<23;
+        $a2 =~ s/(\d+)/sprintf("%.3d",$1)/eg if $a2 =~ /^(APP|DMC-\w+ |dvtm_.*|(IDB|SHB)-)?[.0-9 ]*$/ and length($a2)<23;
+        $b2 =~ s/(\d+)/sprintf("%.3d",$1)/eg if $b2 =~ /^(APP|DMC-\w+ |dvtm_.*|(IDB|SHB)-)?[.0-9 ]*$/ and length($b2)<23;
         $caseInsensitive and $rtnVal = (lc($a2) cmp lc($b2));
         $rtnVal or $rtnVal = ($a2 cmp $b2);
     }

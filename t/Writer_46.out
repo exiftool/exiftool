@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.05
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.23
 [File, System, Other] FileName - File Name: Writer_46_failed.jpg
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 13 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2024:11:29 07:59:14-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2024:11:29 07:59:14-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2024:11:29 07:59:14-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2025:03:03 15:57:45-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2025:03:03 15:57:45-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:03:03 15:57:45-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -17,9 +17,6 @@
 [File, File, Image] BitsPerSample - Bits Per Sample: 8
 [File, File, Image] ColorComponents - Color Components: 3
 [File, File, Image] YCbCrSubSampling - Y Cb Cr Sub Sampling: YCbCr4:2:0 (2 2)
-[EXIF, IFD0, Image] 282 - X Resolution: 72
-[EXIF, IFD0, Image] 283 - Y Resolution: 72
-[EXIF, IFD0, Image] 296 - Resolution Unit: inches
 [EXIF, IFD0, Author] 315 - Artist: 7
 [EXIF, IFD0, Image] 531 - Y Cb Cr Positioning: Centered
 [EXIF, ExifIFD, Image] 36864 - Exif Version: 0232
@@ -27,7 +24,6 @@
 [EXIF, ExifIFD, Image] 37378 - Aperture Value: 7.0
 [EXIF, ExifIFD, Image] 37888 - Ambient Temperature: 7 C
 [EXIF, ExifIFD, Image] 37892 - Acceleration: 7
-[EXIF, ExifIFD, Image] 40960 - Flashpix Version: 0100
 [EXIF, ExifIFD, Image] 40961 - Color Space: Uncalibrated
 [IPTC, IPTC, Other] 120 - ARM Identifier: 7
 [IPTC, IPTC, Other] 122 - ARM Version: 7
@@ -37,7 +33,7 @@
 [IPTC, IPTC, Other] 152 - Audio Sampling Resolution: 07
 [IPTC, IPTC, Other] 153 - Audio Duration: 000007
 [IPTC, IPTC, Other] 154 - Audio Outcue: 7
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.05
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.23
 [XMP, XMP-Device, Camera] AppInfoApplication - App Info Application: 7
 [XMP, XMP-Device, Camera] AppInfoItemURI - App Info Item URI: 7
 [XMP, XMP-Device, Camera] AppInfoVersion - App Info Version: 7

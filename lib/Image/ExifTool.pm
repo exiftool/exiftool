@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.22';
+$VERSION = '13.23';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -155,9 +155,9 @@ sub ReadValue($$$;$$$);
     Real::Metafile Red RIFF AIFF ASF WTV DICOM FITS XISF MIE JSON HTML XMP::SVG
     Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion EXE::PEString
     EXE::DebugRSDS EXE::DebugNB10 EXE::Misc EXE::MachO EXE::PEF EXE::ELF EXE::AR
-    EXE::CHM LNK Font VCard Text VCard::VCalendar VCard::VNote RSRC Rawzor ZIP
-    ZIP::GZIP ZIP::RAR ZIP::RAR5 RTF OOXML iWork ISO FLIR::AFF FLIR::FPF MacOS
-    MacOS::MDItem FlashPix::DocTable
+    EXE::CHM LNK PCAP Font VCard Text VCard::VCalendar VCard::VNote RSRC Rawzor
+    ZIP ZIP::GZIP ZIP::RAR ZIP::RAR5 RTF OOXML iWork ISO FLIR::AFF FLIR::FPF
+    MacOS MacOS::MDItem FlashPix::DocTable
 );
 
 # alphabetical list of current Lang modules
@@ -199,8 +199,8 @@ $defaultLang = 'en';    # default language
                 LFP HTML VRD RTF FITS XISF XCF DSS QTIF FPX PICT ZIP GZIP PLIST
                 RAR 7Z BZ2 CZI TAR EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font
                 JUMBF RSRC M2TS MacOS PHP PCX DCX DWF DWG DXF WTV Torrent VCard
-                LRI R3D AA PDB PFM2 MRC LIF JXL MOI ISO ALIAS JSON MP3 DICOM PCD
-                NKA ICO TXT AAC);
+                LRI R3D AA PDB PFM2 MRC LIF JXL MOI ISO ALIAS PCAP JSON MP3
+                DICOM PCD NKA ICO TXT AAC);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -263,6 +263,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     BPG  => ['BPG',  'Better Portable Graphics'],
     BTF  => ['BTF',  'Big Tagged Image File Format'], #(unofficial)
     BZ2  => ['BZ2',  'BZIP2 archive'],
+    CAP  =>  'PCAP',
     C2PA => ['JUMBF','Coalition for Content Provenance and Authenticity'],
     CHM  => ['CHM',  'Microsoft Compiled HTML format'],
     CIFF => ['CRW',  'Camera Image File Format'],
@@ -454,6 +455,8 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     PAC  => ['RIFF', 'Lossless Predictive Audio Compression'],
     PAGES => ['ZIP', 'Apple Pages document'],
     PBM  => ['PPM',  'Portable BitMap'],
+    PCAP => ['PCAP', 'Packet Capture'],
+    PCAPNG => ['PCAP', 'Packet Capture Next Generation'],
     PCD  => ['PCD',  'Kodak Photo CD Image Pac'],
     PCT  =>  'PICT',
     PCX  => ['PCX',  'PC Paintbrush'],
@@ -744,6 +747,7 @@ my %fileDescription = (
     OTF  => 'application/font-otf',
     PAGES=> 'application/x-iwork-pages-sffpages',
     PBM  => 'image/x-portable-bitmap',
+    PCAP => 'application/vnd.tcpdump.pcap',
     PCD  => 'image/x-photo-cd',
     PCX  => 'image/pcx',
     PDB  => 'application/vnd.palm',
@@ -980,6 +984,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     NKA  => 'NIKONADJ',
     OGG  => '(OggS|ID3)',
     ORF  => '(II|MM)',
+    PCAP => '\xa1\xb2(\xc3\xd4|\x3c\x4d)\0.\0.|(\xd4\xc3|\x4d\x3c)\xb2\xa1.\0.\0|\x0a\x0d\x0d\x0a.{4}(\x1a\x2b\x3c\x4d|\x4d\x3c\x2b\x1a)|GMBU\0\x02',
   # PCD  =>  signature is at byte 2048
     PCX  => '\x0a[\0-\x05]\x01[\x01\x02\x04\x08].{64}[\0-\x02]',
     PDB  => '.{60}(\.pdfADBE|TEXtREAd|BVokBDIC|DB99DBOS|PNRdPPrs|DataPPrs|vIMGView|PmDBPmDB|InfoINDB|ToGoToGo|SDocSilX|JbDbJBas|JfDbJFil|DATALSdb|Mdb1Mdb1|BOOKMOBI|DataPlkr|DataSprd|SM01SMem|TEXtTlDc|InfoTlIf|DataTlMl|DataTlPt|dataTDBP|TdatTide|ToRaTRPW|zTXTGPlm|BDOCWrdS)',
@@ -7967,6 +7972,12 @@ sub ProcessJPEG($$;$)
                     $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
                     undef $scalado;
                 }
+            } elsif ($$segDataPt =~ /^Qualcomm Dual Camera Attributes/) {
+                $dumpType = 'Qualcomm Dual Camera';
+                my $tagTablePtr = GetTagTable('Image::ExifTool::Qualcomm::DualCamera');
+                DirStart(\%dirInfo, 31);
+                $dirInfo{DirName} = 'Qualcomm Dual Camera';
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
             } elsif ($$segDataPt =~ /^FPXR\0/) {
                 next if $fast > 1;      # skip processing for very fast
                 $dumpType = 'FPXR';
@@ -8945,7 +8956,7 @@ sub ProcessDirectory($$$;$)
         ($$dirInfo{DirLen} or not defined $$dirInfo{DirLen}))
     {
         my $addr = $$dirInfo{DirStart} + $$dirInfo{DataPos} + ($$dirInfo{Base}||0) + $$self{BASE};
-        if ($$self{PROCESSED}{$addr}) {
+        if ($$self{PROCESSED}{$addr} and not $$dirInfo{NotDup}) {
             $self->Warn("$dirName pointer references previous $$self{PROCESSED}{$addr} directory");
             # patch for bug in Windows phone 7.5 O/S that writes incorrect InteropIFD pointer
             return 0 unless $dirName eq 'GPS' and $$self{PROCESSED}{$addr} eq 'InteropIFD';
@@ -9175,8 +9186,9 @@ sub HandleTag($$$$;%)
     } elsif ($parms{MakeTagInfo}) {
         $self->VPrint(0, $$self{INDENT}, "[adding $tag]\n") if $verbose;
         my $name = $tag;
-        $name =~ s/([^A-Za-z])([a-z])/$1\u$2/g; # capitalize words
-        $name =~ tr/-_a-zA-Z0-9//dc; # remove illegal characters
+        $name =~ s/([A-Z]) ([A-Z][ A-Z])/${1}_$2/g; # underline between acronyms
+        $name =~ s/([^A-Za-z])([a-z])/$1\u$2/g;     # capitalize words
+        $name =~ tr/-_a-zA-Z0-9//dc;                # remove illegal characters
         $name = "Tag$name" if length($name) < 2 or $name =~ /^[-0-9]/;
         $tagInfo = { Name => ucfirst($name) };
         AddTagToTable($tagTablePtr, $tag, $tagInfo);
@@ -9970,6 +9982,7 @@ sub ProcessBinaryData($$$)
                 $subdirBase = eval($$subdir{Base}) + $base;
             }
             my $start = $$subdir{Start} || 0;
+            my $notDup;
             if ($start =~ /\$/) {
                 # ignore directories with a zero offset (ie. missing Nikon ShotInfo entries)
                 next unless $val;
@@ -9980,6 +9993,7 @@ sub ProcessBinaryData($$$)
                 $len = $dataLen - $start unless $len and $len <= $dataLen - $start;
             } else {
                 $start += $dirStart + $entry;
+                $notDup = 1,
             }
             my %subdirInfo = (
                 DataPt   => $dataPt,
@@ -9988,6 +10002,7 @@ sub ProcessBinaryData($$$)
                 DirStart => $start,
                 DirLen   => $len,
                 Base     => $subdirBase,
+                NotDup   => $notDup,
             );
             delete $$self{NO_UNKNOWN};
             $self->ProcessDirectory(\%subdirInfo, $subTablePtr, $$subdir{ProcessProc});

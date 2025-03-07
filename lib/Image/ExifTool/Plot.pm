@@ -11,7 +11,7 @@ package Image::ExifTool::Plot;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 # default plot settings (lower-case settings may be overridden by the user)
 my %defaults = (
@@ -448,7 +448,8 @@ sub Draw($$)
             } else {
                 $mark .= ' fill="none"';
             }
-            $mark .= ' stroke="context-stroke"/>';
+            # (was using 'context-stroke', but Chrome didn't show this properly)
+            $mark .= " stroke='$$cols[$i]'/>";
             # don't re-define mark if it is the same as a previous one
             $markID{$mark} and $markID{$i} = $markID{$mark}, next;
             $markID{$mark} = $markID{$i} = "mark$i";

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28534 tags, with 17595 unique tag names.
+They contain a total of 28408 tags, with 17642 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -125,6 +125,7 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
                PreviewImage                     no
   'APP4'       Scalado                          Scalado
                FPXR                             FlashPix
+               QualcommDualCamera               Qualcomm DualCamera
                InfiRayFactory                   InfiRay Factory
                ThermalParams                    DJI ThermalParams
                ThermalParams2                   DJI ThermalParams2
@@ -15153,7 +15154,7 @@ Tags written by some Nikon GPS-equipped cameras like the AW100.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-      0    FirmwareVersion                      no
+      0    FirmwareVersion56                    no
       4    BurstGroupID                         int16u
 
 =head3 Nikon AFInfo Tags
@@ -15810,13 +15811,72 @@ These tags are extracted from encrypted data in images from the Z8.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-     16    MenuSettingsOffsetZ8                 Nikon MenuSettingsZ8
+     16    MenuSettingsOffsetZ8v1               Nikon MenuSettingsZ8v1
            MenuSettingsOffsetZ8v2               -
                                                 Nikon MenuSettingsZ8v2
 
+=head3 Nikon MenuSettingsZ8v1 Tags
+
+These tags are used by the Z8 firmware 1.00 and 1.10.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    MenuSettingsZ8                       Nikon MenuSettingsZ8
+    943    CustomSettingsZ8                     NikonCustom SettingsZ8
+   1684    TimeZone                             int8u
+   1690    MonitorBrightness?                   int8u
+   1698    Language?                            int8u
+   1712    AFFineTune?                          int8u
+   1716    NonCPULens1FocalLength?              int16u~
+   1718    NonCPULens2FocalLength?              int16u~
+   1720    NonCPULens3FocalLength?              int16u~
+   1722    NonCPULens4FocalLength?              int16u~
+   1724    NonCPULens5FocalLength?              int16u~
+   1726    NonCPULens6FocalLength?              int16u~
+   1728    NonCPULens7FocalLength?              int16u~
+   1730    NonCPULens8FocalLength?              int16u~
+   1732    NonCPULens9FocalLength?              int16u~
+   1734    NonCPULens10FocalLength?             int16u~
+   1736    NonCPULens11FocalLength?             int16u~
+   1738    NonCPULens12FocalLength?             int16u~
+   1740    NonCPULens13FocalLength?             int16u~
+   1742    NonCPULens14FocalLength?             int16u~
+   1744    NonCPULens15FocalLength?             int16u~
+   1746    NonCPULens16FocalLength?             int16u~
+   1748    NonCPULens17FocalLength?             int16u~
+   1750    NonCPULens18FocalLength?             int16u~
+   1752    NonCPULens19FocalLength?             int16u~
+   1754    NonCPULens20FocalLength?             int16u~
+   1756    NonCPULens1MaxAperture?              int16u
+   1758    NonCPULens2MaxAperture?              int16u
+   1760    NonCPULens3MaxAperture?              int16u
+   1762    NonCPULens4MaxAperture?              int16u
+   1764    NonCPULens5MaxAperture?              int16u
+   1766    NonCPULens6MaxAperture?              int16u
+   1768    NonCPULens7MaxAperture?              int16u
+   1770    NonCPULens8MaxAperture?              int16u
+   1772    NonCPULens9MaxAperture?              int16u
+   1774    NonCPULens10MaxAperture?             int16u
+   1776    NonCPULens11MaxAperture?             int16u
+   1778    NonCPULens12MaxAperture?             int16u
+   1780    NonCPULens13MaxAperture?             int16u
+   1782    NonCPULens14MaxAperture?             int16u
+   1784    NonCPULens15MaxAperture?             int16u
+   1786    NonCPULens16MaxAperture?             int16u
+   1788    NonCPULens17MaxAperture?             int16u
+   1790    NonCPULens18MaxAperture?             int16u
+   1792    NonCPULens19MaxAperture?             int16u
+   1794    NonCPULens20MaxAperture?             int16u
+   1808    HDMIOutputResolution                 int8u
+   1826    AirplaneMode?                        int8u
+   1827    EmptySlotRelease?                    int8u
+   1862    EnergySavingMode?                    int8u
+   1890    USBPowerDelivery?                    int8u
+   1899    SensorShield?                        int8u
+
 =head3 Nikon MenuSettingsZ8 Tags
 
-These tags are used by the Z8 firmware 1.00.
+These tags are common to all Z8 firmware versions.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -15884,128 +15944,14 @@ These tags are used by the Z8 firmware 1.00.
     887    MovieDXCropAlert?                    int8u
     888    MovieSubjectDetection?               int8u
     896    MovieHighResZoom?                    int8u
-    943    CustomSettingsZ8                     NikonCustom SettingsZ8
-   1684    TimeZone                             int8u
-   1690    MonitorBrightness?                   int8u
-   1698    Language?                            int8u
-   1712    AFFineTune?                          int8u
-   1716    NonCPULens1FocalLength?              int16u~
-   1718    NonCPULens2FocalLength?              int16u~
-   1720    NonCPULens3FocalLength?              int16u~
-   1722    NonCPULens4FocalLength?              int16u~
-   1724    NonCPULens5FocalLength?              int16u~
-   1726    NonCPULens6FocalLength?              int16u~
-   1728    NonCPULens7FocalLength?              int16u~
-   1730    NonCPULens8FocalLength?              int16u~
-   1732    NonCPULens9FocalLength?              int16u~
-   1734    NonCPULens10FocalLength?             int16u~
-   1736    NonCPULens11FocalLength?             int16u~
-   1738    NonCPULens12FocalLength?             int16u~
-   1740    NonCPULens13FocalLength?             int16u~
-   1742    NonCPULens14FocalLength?             int16u~
-   1744    NonCPULens15FocalLength?             int16u~
-   1746    NonCPULens16FocalLength?             int16u~
-   1748    NonCPULens17FocalLength?             int16u~
-   1750    NonCPULens18FocalLength?             int16u~
-   1752    NonCPULens19FocalLength?             int16u~
-   1754    NonCPULens20FocalLength?             int16u~
-   1756    NonCPULens1MaxAperture?              int16u
-   1758    NonCPULens2MaxAperture?              int16u
-   1760    NonCPULens3MaxAperture?              int16u
-   1762    NonCPULens4MaxAperture?              int16u
-   1764    NonCPULens5MaxAperture?              int16u
-   1766    NonCPULens6MaxAperture?              int16u
-   1768    NonCPULens7MaxAperture?              int16u
-   1770    NonCPULens8MaxAperture?              int16u
-   1772    NonCPULens9MaxAperture?              int16u
-   1774    NonCPULens10MaxAperture?             int16u
-   1776    NonCPULens11MaxAperture?             int16u
-   1778    NonCPULens12MaxAperture?             int16u
-   1780    NonCPULens13MaxAperture?             int16u
-   1782    NonCPULens14MaxAperture?             int16u
-   1784    NonCPULens15MaxAperture?             int16u
-   1786    NonCPULens16MaxAperture?             int16u
-   1788    NonCPULens17MaxAperture?             int16u
-   1790    NonCPULens18MaxAperture?             int16u
-   1792    NonCPULens19MaxAperture?             int16u
-   1794    NonCPULens20MaxAperture?             int16u
-   1808    HDMIOutputResolution                 int8u
-   1826    AirplaneMode?                        int8u
-   1827    EmptySlotRelease?                    int8u
-   1862    EnergySavingMode?                    int8u
-   1890    USBPowerDelivery?                    int8u
-   1899    SensorShield?                        int8u
 
 =head3 Nikon MenuSettingsZ8v2 Tags
 
-These tags are used by the Z8 firmware 1.00.
+These tags are used by the Z8 firmware 2.00 and 2.10.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-     72    HighFrameRate                        int8u
-    152    MultipleExposureMode                 int8u
-    154    MultiExposureShots                   int8u
-    184    IntervalDurationHours                int32u
-    188    IntervalDurationMinutes              int32u
-    192    IntervalDurationSeconds              int32u
-    200    Intervals                            int32u
-    204    ShotsPerInterval                     int32u
-    208    IntervalExposureSmoothing            int8u
-    210    IntervalPriority                     int8u
-    244    FocusShiftNumberShots                int8u
-    248    FocusShiftStepWidth                  int8u
-    252    FocusShiftInterval                   int8u~
-    256    FocusShiftExposureLock?              int8u
-    286    PhotoShootingMenuBank                int8u
-    288    ExtendedMenuBanks                    int8u
-    324    PhotoShootingMenuBankImageArea       int8u
-    338    AutoISO                              int8u
-    340    ISOAutoHiLimit?                      int16u
-    342    ISOAutoFlashLimit?                   int16u
-    350    ISOAutoShutterTime                   no
-    432    MovieVignetteControl?                int8u
-    434    DiffractionCompensation              int8u
-    436    FlickerReductionShooting             int8u
-    440    FlashControlMode                     int8u
-    548    AFAreaMode                           int8u
-    550    VRMode                               int8u
-    554    BracketSet                           int8u
-    556    BracketProgram                       int8u
-    558    BracketIncrement                     int8u
-    570    HDR                                  int8u
-    576    SecondarySlotFunction                int8u
-    582    HDRLevel                             int8u
-    586    Slot2JpgSize?                        int8u
-    592    DXCropAlert                          int8u
-    594    SubjectDetection                     int8u
-    596    DynamicAFAreaSize                    int8u
-    618    ToneMap?                             int8u
-    622    PortraitImpressionBalance            int8u
-    636    HighFrequencyFlickerReduction?       int8u
-    730    MovieImageArea?                      int8u & 0x01
-    740    MovieType?                           int8u
-    742    MovieISOAutoHiLimit?                 int16u
-    744    MovieISOAutoControlManualMode?       int8u
-    746    MovieISOAutoManualMode?              int16u
-    820    MovieActiveD-Lighting?               int8u
-    822    MovieHighISONoiseReduction?          int8u
-    828    MovieFlickerReduction                int8u
-    830    MovieMeteringMode?                   int8u
-    832    MovieFocusMode?                      int8u
-    834    MovieAFAreaMode                      int8u
-    836    MovieVRMode?                         int8u
-    840    MovieElectronicVR?                   int8u
-    842    MovieSoundRecording?                 int8u
-    844    MicrophoneSensitivity?               int8u
-    846    MicrophoneAttenuator?                int8u
-    848    MicrophoneFrequencyResponse?         int8u
-    850    WindNoiseReduction?                  int8u
-    878    MovieFrameSize?                      int8u
-    880    MovieFrameRate?                      int8u
-    886    MicrophoneJackPower?                 int8u
-    887    MovieDXCropAlert?                    int8u
-    888    MovieSubjectDetection?               int8u
-    896    MovieHighResZoom?                    int8u
+      0    MenuSettingsZ8                       Nikon MenuSettingsZ8
     943    CustomSettingsZ8                     NikonCustom SettingsZ8
    1698    Language?                            int8u
    1700    TimeZone                             int8u
@@ -16099,8 +16045,6 @@ These tags are extracted from encrypted data in images from the Z9.
            MenuSettingsOffsetZ9v4               Nikon MenuSettingsZ9v3
                                                 -
                                                 Nikon MenuSettingsZ9v4
-                                                -
-                                                Nikon MenuSettingsZ9v5
 
 =head3 Nikon MenuSettingsZ9 Tags
 
@@ -16262,7 +16206,7 @@ These tags are used by the Z9 firmware 3.00.
 
 =head3 Nikon MenuSettingsZ9v4 Tags
 
-These tags are used by the Z9 firmware 4.0.0 and 4.1.0.
+These tags are used by the Z9 firmware 4.00, 4.10, 5.00 and 5.10.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -16401,148 +16345,6 @@ These tags are used by the Z9 firmware 4.0.0 and 4.1.0.
    2068    PlaybackButtonPlaybackMode           int8u
    2070    BracketButtonPlaybackMode            int8u
    2072    FlashModeButtonPlaybackMode          int8u
-
-=head3 Nikon MenuSettingsZ9v5 Tags
-
-These tags are used by the Z9 firmware 5.1.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-     72    HighFrameRate                        int8u
-    158    MultipleExposureMode                 int8u
-    160    MultiExposureShots                   int8u
-    208    Intervals                            int32u
-    212    ShotsPerInterval                     int32u
-    252    FocusShiftNumberShots                int8u
-    256    FocusShiftStepWidth                  int8u
-    260    FocusShiftInterval                   int8u~
-    264    FocusShiftExposureLock?              int8u
-    294    PhotoShootingMenuBank                int8u
-    296    ExtendedMenuBanks                    int8u
-    332    PhotoShootingMenuBankImageArea       int8u
-    346    AutoISO                              int8u
-    348    ISOAutoHiLimit?                      int16u
-    350    ISOAutoFlashLimit?                   int16u
-    358    ISOAutoShutterTime                   no
-    440    MovieVignetteControl?                int8u
-    442    DiffractionCompensation              int8u
-    444    FlickerReductionShooting             int8u
-    448    FlashControlMode                     int8u
-    450    FlashMasterCompensation?             int8s
-    454    FlashGNDistance?                     no
-    458    FlashOutput?                         int8u
-    552    AFAreaMode                           int8u
-    554    VRMode                               int8u
-    558    BracketSet                           int8u
-    560    BracketProgram                       int8u
-    562    BracketIncrement                     int8u
-    574    HDR                                  int8u
-    580    SecondarySlotFunction                int8u
-    586    HDRLevel                             int8u
-    590    Slot2JpgSize?                        int8u
-    596    DXCropAlert                          int8u
-    598    SubjectDetection                     int8u
-    600    DynamicAFAreaSize                    int8u
-    640    HighFrequencyFlickerReduction?       int8u
-    650    MovieImageArea?                      int8u & 0x01
-    660    MovieType?                           int8u
-    662    MovieISOAutoHiLimit?                 int16u
-    664    MovieISOAutoControlManualMode?       int8u
-    666    MovieISOAutoManualMode?              int16u
-    740    MovieActiveD-Lighting?               int8u
-    742    MovieHighISONoiseReduction?          int8u
-    748    MovieFlickerReduction                int8u
-    750    MovieMeteringMode?                   int8u
-    752    MovieFocusMode?                      int8u
-    754    MovieAFAreaMode                      int8u
-    756    MovieVRMode?                         int8u
-    760    MovieElectronicVR?                   int8u
-    762    MovieSoundRecording?                 int8u
-    764    MicrophoneSensitivity?               int8u
-    766    MicrophoneAttenuator?                int8u
-    768    MicrophoneFrequencyResponse?         int8u
-    770    WindNoiseReduction?                  int8u
-    792    MovieToneMap?                        int8u
-    798    MovieFrameSize?                      int8u
-    800    MovieFrameRate?                      int8u
-    806    MicrophoneJackPower?                 int8u
-    807    MovieDXCropAlert?                    int8u
-    808    MovieSubjectDetection?               int8u
-    816    MovieHighResZoom?                    int8u
-    851    CustomSettingsZ9v4                   NikonCustom SettingsZ9v4
-   1502    Language?                            int8u
-   1504    TimeZone                             int8u
-   1510    MonitorBrightness?                   int8u
-   1532    AFFineTune?                          int8u
-   1536    NonCPULens1FocalLength?              int16s~
-   1540    NonCPULens2FocalLength?              int16s~
-   1542    NonCPULens3FocalLength?              int16s~
-   1548    NonCPULens4FocalLength?              int16s~
-   1552    NonCPULens5FocalLength?              int16s~
-   1556    NonCPULens6FocalLength?              int16s~
-   1560    NonCPULens7FocalLength?              int16s~
-   1564    NonCPULens8FocalLength?              int16s~
-   1568    NonCPULens9FocalLength?              int16s~
-   1572    NonCPULens10FocalLength?             int16s~
-   1576    NonCPULens11FocalLength?             int16s~
-   1580    NonCPULens12FocalLength?             int16s~
-   1584    NonCPULens13FocalLength?             int16s~
-   1588    NonCPULens14FocalLength?             int16s~
-   1592    NonCPULens15FocalLength?             int16s~
-   1596    NonCPULens16FocalLength?             int16s~
-   1600    NonCPULens17FocalLength?             int16s~
-   1604    NonCPULens18FocalLength?             int16s~
-   1608    NonCPULens19FocalLength?             int16s~
-   1612    NonCPULens20FocalLength?             int16s~
-   1616    NonCPULens1MaxAperture?              int16s~
-   1620    NonCPULens2MaxAperture?              int16s~
-   1624    NonCPULens3MaxAperture?              int16s~
-   1628    NonCPULens4MaxAperture?              int16s~
-   1632    NonCPULens5MaxAperture?              int16s~
-   1636    NonCPULens6MaxAperture?              int16s~
-   1640    NonCPULens7MaxAperture?              int16s~
-   1644    NonCPULens8MaxAperture?              int16s~
-   1648    NonCPULens9MaxAperture?              int16s~
-   1652    NonCPULens10MaxAperture?             int16s~
-   1656    NonCPULens11MaxAperture?             int16s~
-   1660    NonCPULens12MaxAperture?             int16s~
-   1664    NonCPULens13MaxAperture?             int16s~
-   1668    NonCPULens14MaxAperture?             int16s~
-   1672    NonCPULens15MaxAperture?             int16s~
-   1676    NonCPULens16MaxAperture?             int16s~
-   1680    NonCPULens17MaxAperture?             int16s~
-   1684    NonCPULens18MaxAperture?             int16s~
-   1688    NonCPULens19MaxAperture?             int16s~
-   1692    NonCPULens20MaxAperture?             int16s~
-   1708    HDMIOutputResolution                 int8u
-   1721    SetClockFromLocationData?            int8u
-   1728    AirplaneMode?                        int8u
-   1729    EmptySlotRelease?                    int8u
-   1764    EnergySavingMode?                    int8u
-   1788    RecordLocationData?                  int8u
-   1792    USBPowerDelivery?                    int8u
-   1801    SensorShield?                        int8u
-   1866    AutoCapturePreset                    int8u
-   1868    FocusShiftAutoReset?                 int8u
-   1926    PreReleaseBurstLength                int8u
-   1928    PostReleaseBurstLength               int8u
-   1942    VerticalISOButton                    int8u
-   1944    ExposureCompensationButton           int8u
-   1946    ISOButton                            int8u
-   2006    ViewModeShowEffectsOfSettings?       int8u
-   2008    DispButton                           int8u
-   2052    ExposureDelay                        fixed32u~
-   2056    CommandDialFrameAdvanceZoom?         int8u
-   2058    SubCommandDialFrameAdvanceZoom?      int8u
-   2060    PlaybackButton                       int8u
-   2062    WBButton                             int8u
-   2064    BracketButton                        int8u
-   2066    FlashModeButton                      int8u
-   2068    LensFunc1ButtonPlaybackMode          int8u
-   2070    LensFunc2ButtonPlaybackMode          int8u
-   2072    PlaybackButtonPlaybackMode           int8u
-   2074    BracketButtonPlaybackMode            int8u
-   2076    FlashModeButtonPlaybackMode          int8u
 
 =head3 Nikon ShotInfo Tags
 
@@ -26515,6 +26317,57 @@ even if it is not listed in this table.
   YhiYloCorK0                                   no
   YhiYloCorK1                                   no
   YhiYloCorK2                                   no
+
+=head3 Qualcomm DualCamera Tags
+
+Found in JPEG APP4 "Qualcomm Dual Camera Attributes" written by some Nokia
+phones.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AF_ROIHeight                                  no
+  AF_ROILeft                                    no
+  AF_ROITop                                     no
+  AF_ROIWidth                                   no
+  CAMIFCropHeight                               no
+  CAMIFCropLeft                                 no
+  CAMIFCropTop                                  no
+  CAMIFCropWidth                                no
+  CAMIF_ROIMapHeight                            no
+  CAMIF_ROIMapLeft                              no
+  CAMIF_ROIMapTop                               no
+  CAMIF_ROIMapWidth                             no
+  CPPCropHeight                                 no
+  CPPCropLeft                                   no
+  CPPCropTop                                    no
+  CPPCropWidth                                  no
+  CPP_ROIMapHeight                              no
+  CPP_ROIMapLeft                                no
+  CPP_ROIMapTop                                 no
+  CPP_ROIMapWidth                               no
+  CurrentPipelineMirrorFlipSetting              no
+  CurrentPipelineRotationSetting                no
+  DDMCropHeight                                 no
+  DDMCropLeft                                   no
+  DDMCropTop                                    no
+  DDMCropWidth                                  no
+  FocalLengthRatio                              no
+  ISPCropHeight                                 no
+  ISPCropLeft                                   no
+  ISPCropTop                                    no
+  ISPCropWidth                                  no
+  ISP_ROIMapHeight                              no
+  ISP_ROIMapLeft                                no
+  ISP_ROIMapTop                                 no
+  ISP_ROIMapWidth                               no
+  SensorCropHeight                              no
+  SensorCropLeft                                no
+  SensorCropTop                                 no
+  SensorCropWidth                               no
+  SensorROIMapHeight                            no
+  SensorROIMapLeft                              no
+  SensorROIMapTop                               no
+  SensorROIMapWidth                             no
 
 =head2 Jpeg2000 Tags
 
@@ -40297,6 +40150,42 @@ Information extracted from MS Shell Link (Windows shortcut) files.
   Index1   Tag Name                             Writable
   ------   --------                             --------
       8    CodePage                             no
+
+=head2 PCAP Tags
+
+Tags extracted from  CAP, PCAP and PCAPNG Packet Capture files.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  0x0001               Comment                  no
+  0x0bac               CustomOption1            no
+  0x0bad               CustomOption2            no
+  0x4bac               CustomOption3            no
+  0x4bad               CustomOption3            no
+  'ByteOrder'          ByteOrder                no
+  'IDB-2'              DeviceName               no
+  'IDB-3'              Description              no
+  'IDB-4'              IPv4Addr                 no
+  'IDB-5'              IPv6Addr                 no
+  'IDB-6'              MACAddr                  no
+  'IDB-7'              EUIAddr                  no
+  'IDB-8'              Speed                    no
+  'IDB-9'              TimeStampResolution      no
+  'IDB-10'             TimeZone                 no
+  'IDB-11'             Filter                   no
+  'IDB-12'             OperatingSytem           no
+  'IDB-13'             FCSLen                   no
+  'IDB-14'             TimeStampOffset          no
+  'IDB-15'             Hardware                 no
+  'IDB-16'             TXSpeed                  no
+  'IDB-17'             RXSpeed                  no
+  'IDB-18'             TimezoneName             no
+  'LinkType'           LinkType                 no
+  'PCAPVersion'        PCAPVersion              no
+  'SHB-2'              Hardware                 no
+  'SHB-3'              OperatingSytem           no
+  'SHB-4'              UserApplication          no
+  'TimeStamp'          TimeStamp                no
 
 =head2 Font Tags
 

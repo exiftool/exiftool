@@ -2,12 +2,12 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600"
  preserveAspectRatio="xMidYMid meet" viewBox="0 0 800 600">
-<title>Plot by ExifTool 13.22</title>
+<title>Plot by ExifTool 13.23</title>
 <!-- Definitions -->
 <defs>
 <clipPath id='plot-area'><rect x='71' y='36' width='723' height='523'/></clipPath>
 <marker id='mark0' markerWidth='8' markerHeight='8' refX='4' refY='4'>
-<circle cx="4" cy="4" r="2.667" fill="red" style="fill-opacity: 10%" stroke="context-stroke"/>
+<circle cx="4" cy="4" r="2.667" fill="red" style="fill-opacity: 10%" stroke='red'/>
 </marker>
 </defs>
 <style>

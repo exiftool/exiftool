@@ -135,6 +135,10 @@ sub ProcessJPEG_HDR($$$);
         Condition => '$$valPt =~ /^FPXR\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::FlashPix::Main' },
       }, {
+        Name => 'QualcommDualCamera',
+        Condition => '$$valPt =~ /^Qualcomm Dual Camera Attributes/',
+        SubDirectory => { TagTable => 'Image::ExifTool::Qualcomm::DualCamera' },
+      }, {
         Name => 'InfiRayFactory',
         Condition => '$$self{HasIJPEG}"',
         SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::Factory' },

@@ -12,9 +12,10 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub ProcessQualcomm($$$);
+sub ProcessDualCamera($$$);
 sub MakeNameAndDesc($$);
 
 # Qualcomm format codes (ref PH (NC))
@@ -1224,6 +1225,59 @@ my @qualcommFormat = (
     'HJR_texture_threshold' => { },
 );
 
+%Image::ExifTool::Qualcomm::DualCamera = (
+    PROCESS_PROC => \&ProcessDualCamera,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    VARS => { NO_ID => 1, NO_LOOKUP => 1 }, # too long, too many, and too obscure
+    NOTES => q{
+        Found in JPEG APP4 "Qualcomm Dual Camera Attributes" written by some Nokia
+        phones.
+    },
+    'Sensor Crop left'      => 'SensorCropLeft',
+    'Sensor Crop top'       => 'SensorCropTop',
+    'Sensor Crop width'     => 'SensorCropWidth',
+    'Sensor Crop height'    => 'SensorCropHeight',
+    'Sensor ROI Map left'   => 'SensorROIMapLeft',
+    'Sensor ROI Map top'    => 'SensorROIMapTop',
+    'Sensor ROI Map width'  => 'SensorROIMapWidth',
+    'Sensor ROI Map height' => 'SensorROIMapHeight',
+    'CAMIF Crop left'       => 'CAMIFCropLeft',
+    'CAMIF Crop top'        => 'CAMIFCropTop',
+    'CAMIF Crop width'      => 'CAMIFCropWidth',
+    'CAMIF Crop height'     => 'CAMIFCropHeight',
+    'CAMIF ROI Map left'    => 'CAMIF_ROIMapLeft',
+    'CAMIF ROI Map top'     => 'CAMIF_ROIMapTop',
+    'CAMIF ROI Map width'   => 'CAMIF_ROIMapWidth',
+    'CAMIF ROI Map height'  => 'CAMIF_ROIMapHeight',
+    'ISP Crop left'         => 'ISPCropLeft',
+    'ISP Crop top'          => 'ISPCropTop',
+    'ISP Crop width'        => 'ISPCropWidth',
+    'ISP Crop height'       => 'ISPCropHeight',
+    'ISP ROI Map left'      => 'ISP_ROIMapLeft',
+    'ISP ROI Map top'       => 'ISP_ROIMapTop',
+    'ISP ROI Map width'     => 'ISP_ROIMapWidth',
+    'ISP ROI Map height'    => 'ISP_ROIMapHeight',
+    'CPP Crop left'         => 'CPPCropLeft',
+    'CPP Crop top'          => 'CPPCropTop',
+    'CPP Crop width'        => 'CPPCropWidth',
+    'CPP Crop height'       => 'CPPCropHeight',
+    'CPP ROI Map left'      => 'CPP_ROIMapLeft',
+    'CPP ROI Map top'       => 'CPP_ROIMapTop',
+    'CPP ROI Map width'     => 'CPP_ROIMapWidth',
+    'CPP ROI Map height'    => 'CPP_ROIMapHeight',
+    'DDM Crop left'         => 'DDMCropLeft',
+    'DDM Crop top'          => 'DDMCropTop',
+    'DDM Crop width'        => 'DDMCropWidth',
+    'DDM Crop height'       => 'DDMCropHeight',
+    'Focal length Ratio'    => 'FocalLengthRatio',
+    'Current pipeline mirror flip setting' => 'CurrentPipelineMirrorFlipSetting',
+    'Current pipeline rotation setting' => 'CurrentPipelineRotationSetting',
+    'AF ROI left'           => 'AF_ROILeft',
+    'AF ROI top'            => 'AF_ROITop',
+    'AF ROI width'          => 'AF_ROIWidth',
+    'AF ROI height'         => 'AF_ROIHeight',
+);
+
 # generate tag names and descriptions
 {
     local $_;
@@ -1255,6 +1309,29 @@ sub MakeNameAndDesc($$)
     return 0 unless length;
     $$tagInfo{Name} = $_;
     $$tagInfo{Description} = $desc;
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process Qualcomm Dual Camera APP4 metadata (ref PH)
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessDualCamera($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dataPos = $$dirInfo{DataPos};
+    my $pos = $$dirInfo{DirStart};
+
+    $et->VerboseDir('Qualcomm Dual Camera', undef, $$dirInfo{DirLen});
+    pos($$dataPt) = $pos;
+    while ($$dataPt =~ /\x0a/g) {
+        my $str = substr($$dataPt, $pos, pos($$dataPt) - $pos - 1);
+        next unless $str =~ /^(.*?)\s*=\s*(.*)/;
+        my ($tag, $val) = ($1, $2);
+        $et->HandleTag($tagTablePtr, $tag, $val, MakeTagInfo => 1);
+        $pos = pos($$dataPt);
+    }
     return 1;
 }
 

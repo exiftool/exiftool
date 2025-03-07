@@ -1,38 +1,38 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="80" height="200"
- preserveAspectRatio="xMidYMid meet" viewBox="0 0 80 200">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="90" height="200"
+ preserveAspectRatio="xMidYMid meet" viewBox="0 0 90 200">
 <title>ExifTool Plot Markers</title>
 <defs>
 <marker id='mark0' markerWidth='8' markerHeight='8' refX='4' refY='4'>
-<circle cx="4" cy="4" r="2.667" stroke="context-stroke" fill="none"/>
+<circle cx="4" cy="4" r="2.667" stroke="red" fill="none"/>
 </marker>
 <marker id='mark1' markerWidth='8' markerHeight='8' refX='4' refY='4'>
-<path stroke="context-stroke" fill="none" d="M1.667 1.667 l4.667 0 0 4.667 -4.667 0 z"/>
+<path stroke="green" fill="none" d="M1.667 1.667 l4.667 0 0 4.667 -4.667 0 z"/>
 </marker>
 <marker id='mark2' markerWidth='8' markerHeight='8' refX='4' refY='4'>
-<path stroke="context-stroke" fill="none" d="M4 0.8 l2.667 5.333 -5.333 0 z"/>
+<path stroke="blue" fill="none" d="M4 0.8 l2.667 5.333 -5.333 0 z"/>
 </marker>
 <marker id='mark3' markerWidth='8' markerHeight='8' refX='4' refY='4'>
-<path stroke="context-stroke" fill="none" d="M4 1 l3 3 -3 3 -3 -3 z"/>
+<path stroke="black" fill="none" d="M4 1 l3 3 -3 3 -3 -3 z"/>
 </marker>
 <marker id='mark4' markerWidth='8' markerHeight='8' refX='4' refY='4'>
-<path stroke="context-stroke" fill="none" d="M4 0.8 L5 2.625 7.043 3.011 5.617 4.525 5.881 6.589 4 5.7 2.119 6.589 2.383 4.525 0.957 3.011 3 2.625 z"/>
+<path stroke="orange" fill="none" d="M4 0.8 L5 2.625 7.043 3.011 5.617 4.525 5.881 6.589 4 5.7 2.119 6.589 2.383 4.525 0.957 3.011 3 2.625 z"/>
 </marker>
 <marker id='mark5' markerWidth='8' markerHeight='8' refX='4' refY='4'>
-<path stroke="context-stroke" fill="none" d="M2.75 1 l2.5 0 0 1.75 1.75 0 0 2.5 -1.75 0 0 1.75 -2.5 0 0 -1.75 -1.75 0 0 -2.5 1.75 0 z"/>
+<path stroke="gray" fill="none" d="M2.75 1 l2.5 0 0 1.75 1.75 0 0 2.5 -1.75 0 0 1.75 -2.5 0 0 -1.75 -1.75 0 0 -2.5 1.75 0 z"/>
 </marker>
 <marker id='mark6' markerWidth='8' markerHeight='8' refX='4' refY='4'>
-<path stroke="context-stroke" fill="none" d="M4 1 L6.853 3.073 5.763 6.427 2.237 6.427 1.147 3.073 z"/>
+<path stroke="fuchsia" fill="none" d="M4 1 L6.853 3.073 5.763 6.427 2.237 6.427 1.147 3.073 z"/>
 </marker>
 <marker id='mark7' markerWidth='8' markerHeight='8' refX='4' refY='4'>
-<path stroke="context-stroke" fill="none" d="M0.8 4 l5.333 2.667 0 -5.333 z"/>
+<path stroke="brown" fill="none" d="M0.8 4 l5.333 2.667 0 -5.333 z"/>
 </marker>
 <marker id='mark8' markerWidth='8' markerHeight='8' refX='4' refY='4'>
-<path stroke="context-stroke" fill="none" d="M4 7.2 l2.667 -5.333 -5.333 0 z"/>
+<path stroke="turquoise" fill="none" d="M4 7.2 l2.667 -5.333 -5.333 0 z"/>
 </marker>
 <marker id='mark9' markerWidth='8' markerHeight='8' refX='4' refY='4'>
-<path stroke="context-stroke" fill="none" d="M7.2 4 l-5.333 2.667 0 -5.333 z"/>
+<path stroke="gold" fill="none" d="M7.2 4 l-5.333 2.667 0 -5.333 z"/>
 </marker>
 </defs>
 <g dominant-baseline='middle' text-anchor='start' stroke-width='1.5'>

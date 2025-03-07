@@ -17,6 +17,26 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.23'><b>Mar. 7, 2025 - Version 13.23</b></a>
+<ul>
+<li>Added read support for <a href="TagNames/PCAP.html">CAP, PCAP and PACPNG files</a>
+<li>Added a number of new Sony LensType2 values (thanks Jos Roost)
+<li>Added the 2 new GPSAltitudeRef values defined by EXIF 3.0
+<li>Decode APP4 "Qualcomm Dual Camera Attributes" metadata
+<li>EXIF X/YResolution, ResolutionUnit and FlashpixVersion are no longer treated
+    as mandatory tags (they were changed to optional in the EXIF 3.0 specification)
+<li>Patched decoding of Nikon Z8 MenuSettings to accommodate changes in the data
+    structure as of firmware version 2.1
+<li>Patched to avoid bug in Perl v5.26.3 which could cause hang when reading
+    very large and corrupted XMP
+<li>Patched -plot option to avoid bug in Google Chrome SVG marker rendering
+<li>API Changes:
+    <ul>
+    <li>Fixed documentation for <a href="ExifTool.html#LargeFileSupport">LargeFileSupport option</a> to reflect current
+        default
+    </ul>
+</ul>
+
 <a name='v13.22'><b>Mar. 1, 2025 - Version 13.22</b></a>
 <ul>
 <li>Improvements and additions to the new <a href="plot.html">plot feature</a>

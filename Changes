@@ -7,6 +7,23 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.10. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Mar. 7, 2025 - Version 13.23
+
+  - Added read support for CAP, PCAP and PACPNG files
+  - Added a number of new Sony LensType2 values (thanks Jos Roost)
+  - Added the 2 new GPSAltitudeRef values defined by EXIF 3.0
+  - Decode APP4 "Qualcomm Dual Camera Attributes" metadata
+  - EXIF X/YResolution, ResolutionUnit and FlashpixVersion are no longer treated
+    as mandatory tags (they were changed to optional in the EXIF 3.0 specification)
+  - Patched decoding of Nikon Z8 MenuSettings to accommodate changes in the data
+    structure as of firmware version 2.1
+  - Patched to avoid bug in Perl v5.26.3 which could cause hang when reading
+    very large and corrupted XMP
+  - Patched -plot option to avoid bug in Google Chrome SVG marker rendering
+  - API Changes:
+      - Fixed documentation for LargeFileSupport option to reflect current
+        default
+
 Mar. 1, 2025 - Version 13.22
 
   - Improvements and additions to the new plot feature

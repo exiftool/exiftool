@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.71';
+$VERSION = '3.72';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3818,8 +3818,22 @@ sub ParseXMPElement($$$;$$$$)
         my ($parseResource, %attrs, @attrs);
 # this hangs Perl (v5.18.4) for a specific capture string [patched in ExifTool 12.98]
 #        while ($attrs =~ m/(\S+?)\s*=\s*(['"])(.*?)\2/sg) {
-        while ($attrs =~ /(\S+?)\s*=\s*(['"])/g) {
-            my ($attr, $quote) = ($1, $2);
+# this may hang Perl v5.26.3 (but not v5.18.4) if there is lots of garbage in the XMP [patched in 13.23]
+#        while ($attrs =~ /(\S+?)\s*=\s*(['"])/g) {
+        for (;;) {
+            my ($attr, $quote);
+            if (length($attrs) < 2000) { # (do it the easy way if attributes aren't stupid long)
+                last unless $attrs =~ /(\S+)\s*=\s*(['"])/g;
+                ($attr, $quote) = ($1, $2);
+            } else {
+                # 13.23 patch to avoid capturing tons of garbage if XMP is corrupted
+                last unless $attrs =~ /=\s*(['"])/g;
+                $quote = $1;
+                my $p = pos($attrs) > 1000 ? pos($attrs) - 1000 : 0;
+                my $tmp = substr($attrs, $p, pos($attrs)-$p);
+                last unless $tmp =~ /(\S+)\s*=\s*$quote$/;
+                $attr = $1;
+            }
             my $p0 = pos($attrs);
             last unless $attrs =~ /$quote/g;
             my $val = substr($attrs, $p0, pos($attrs)-$p0-1);

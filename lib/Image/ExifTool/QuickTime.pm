@@ -48,7 +48,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.13';
+$VERSION = '3.14';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -492,6 +492,8 @@ my %qtFlags = ( #12
 %dontInherit = (
     ispe => 1,  # primary item must have an ispe and pixi, so no need to inherit these
     pixi => 1,
+    irot => 1,  # (tmap may have a different irot)
+    pasp => 1,  # (NC)
     hvcC => 2,  # (hvcC is a property of hvc1 referred to by primary grid)
     colr => 2,  # (colr is a property of primary grid or hvc1 referred to by primary)
 );
@@ -2854,6 +2856,7 @@ my %userDefined = (
 %Image::ExifTool::QuickTime::ItemPropCont = (
     PROCESS_PROC => \&ProcessMOV,
     WRITE_PROC => \&WriteQuickTime,
+    CHECK_PROC => \&CheckQTValue,
     PERMANENT => 1, # (can't be deleted)
     GROUPS => { 2 => 'Image' },
     VARS => { START_INDEX => 1 },   # show verbose indices starting at 1
@@ -2911,6 +2914,7 @@ my %userDefined = (
         Name => 'PixelAspectRatio',
         Format => 'int32u',
         Writable => 'int32u',
+        Count => 2,
         Protected => 1,
     },
     rloc => {
@@ -9174,7 +9178,8 @@ sub HandleItemInfo($)
                 $et->VPrint(0, "$$et{INDENT}Item $id) '${type}' ($len bytes$enc)\n");
             }
             # get ExifTool name for this item
-            my $name = { Exif => 'EXIF', 'application/rdf+xml' => 'XMP', jpeg => 'PreviewImage' }->{$type} || '';
+            my $name = { Exif => 'EXIF', 'application/rdf+xml' => 'XMP', jpeg => 'PreviewImage',
+                         'uri ' => 'PLIST' }->{$type} || '';
             my ($warn, $extent);
             if ($$item{ContentEncoding}) {
                 if ($$item{ContentEncoding} ne 'deflate') {
@@ -9267,7 +9272,6 @@ sub HandleItemInfo($)
             if ($name eq 'EXIF' and length $buff >= 4) {
                 if ($buff =~ /^(MM\0\x2a|II\x2a\0)/) {
                     $et->Warn('Missing Exif header');
-                    $start = 0;
                 } elsif ($buff =~ /^Exif\0\0/) {
                     # (haven't seen this yet, but it is just a matter of time
                     #  until someone screws it up like this)
@@ -9302,10 +9306,14 @@ sub HandleItemInfo($)
                 }
                 $et->FoundTag($type => $buff);
                 next;
+            } elsif ($name eq 'PLIST') {
+                # extract PLIST information from 'uri ' if available
+                next unless $buff =~ /^bplist00/;
+                $subTable = GetTagTable('Image::ExifTool::PLIST::Main');
             } else {
-                $start = 0;
                 $subTable = GetTagTable('Image::ExifTool::XMP::Main');
             }
+            $start or $start = 0;
             my %dirInfo = (
                 DataPt   => \$buff,
                 DataLen  => length $buff,

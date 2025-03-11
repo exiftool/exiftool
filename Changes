@@ -4,8 +4,18 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 13.10. (Other versions are
+Note: The most recent production release is Version 13.25. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Mar. 11, 2025 - Version 13.25 (production release)
+
+  - IMPORTANT: Fixed issue which could corrupt HEIC images from newer iPhones
+    when writing QuickTime:Rotation
+  - Decode more PLIST information from HEIC images
+  - Updated Geolocation databases from current geonames.org files
+  - Updated DarwinCore for the 2023 specification (thanks Herb)
+  - API Changes:
+      - Added KeepUTCTime option
 
 Mar. 7, 2025 - Version 13.24
 
@@ -15,7 +25,7 @@ Mar. 7, 2025 - Version 13.24
 
 Mar. 7, 2025 - Version 13.23
 
-  - Added read support for CAP, PCAP and PACPNG files
+  - Added read support for CAP, PCAP and PACPNG files (github #318)
   - Added a number of new Sony LensType2 values (thanks Jos Roost)
   - Added the 2 new GPSAltitudeRef values defined by EXIF 3.0
   - Decode APP4 "Qualcomm Dual Camera Attributes" metadata

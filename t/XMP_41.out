@@ -1,15 +1,15 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.44
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.25
 [File, System, Other] FileName - File Name: XMP_41_failed.xmp
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 14 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:07:12 14:20:45-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:07:12 14:20:45-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:07:12 14:20:45-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2025:03:11 07:48:53-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2025:03:11 07:48:53-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:03:11 07:48:53-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: XMP
 [File, File, Other] FileTypeExtension - File Type Extension: xmp
 [File, File, Other] MIMEType - MIME Type: application/rdf+xml
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.44
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.25
 [XMP, XMP-dwc, Time] EventDay - Event Day: 2013
 [XMP, XMP-dwc, Time] EventEarliestDate - Event Earliest Date: 2013
 [XMP, XMP-dwc, Time] EventEndDayOfYear - Event End Day Of Year: 2013
@@ -17,6 +17,7 @@
 [XMP, XMP-dwc, Other] EventEventID - Event ID: 2013
 [XMP, XMP-dwc, Other] EventEventRemarks - Event Remarks: 2013
 [XMP, XMP-dwc, Time] EventEventTime - Event Time: 2013
+[XMP, XMP-dwc, Other] EventEventType - Event Event Type: 2013
 [XMP, XMP-dwc, Other] EventFieldNotes - Event Field Notes: 2013
 [XMP, XMP-dwc, Other] EventFieldNumber - Event Field Number: 2013
 [XMP, XMP-dwc, Other] EventHabitat - Event Habitat: 2013
@@ -56,6 +57,7 @@
 [XMP, XMP-dwc, Other] HumanObservationEventID - Human Observation Event ID: 2013
 [XMP, XMP-dwc, Other] HumanObservationEventRemarks - Human Observation Event Remarks: 2013
 [XMP, XMP-dwc, Time] HumanObservationEventTime - Human Observation Event Time: 2013
+[XMP, XMP-dwc, Other] HumanObservationEventType - Human Observation Event Type: 2013
 [XMP, XMP-dwc, Other] HumanObservationFieldNotes - Human Observation Field Notes: 2013
 [XMP, XMP-dwc, Other] HumanObservationFieldNumber - Human Observation Field Number: 2013
 [XMP, XMP-dwc, Other] HumanObservationHabitat - Human Observation Habitat: 2013
@@ -87,6 +89,7 @@
 [XMP, XMP-dwc, Other] MachineObservationEventID - Machine Observation Event ID: 2013
 [XMP, XMP-dwc, Other] MachineObservationEventRemarks - Machine Observation Event Remarks: 2013
 [XMP, XMP-dwc, Time] MachineObservationEventTime - Machine Observation Event Time: 2013
+[XMP, XMP-dwc, Other] MachineObservationEventType - Machine Observation Event Type: 2013
 [XMP, XMP-dwc, Other] MachineObservationFieldNotes - Machine Observation Field Notes: 2013
 [XMP, XMP-dwc, Other] MachineObservationFieldNumber - Machine Observation Field Number: 2013
 [XMP, XMP-dwc, Other] MachineObservationHabitat - Machine Observation Habitat: 2013
@@ -110,12 +113,14 @@
 [XMP, XMP-dwc, Other] MeasurementOrFactMeasurementType - Measurement Type: 2013
 [XMP, XMP-dwc, Other] MeasurementOrFactMeasurementUnit - Measurement Unit: 2013
 [XMP, XMP-dwc, Other] MeasurementOrFactMeasurementValue - Measurement Value: 2013
+[XMP, XMP-dwc, Other] MeasurementOrFactParentMeasurementID - Parent Measurement ID: 2013
 [XMP, XMP-dwc, Other] OccurrenceAssociatedMedia - Occurrence Associated Media: 2013
 [XMP, XMP-dwc, Other] OccurrenceAssociatedOccurrences - Occurrence Associated Occurrences: 2013
 [XMP, XMP-dwc, Other] OccurrenceAssociatedReferences - Occurrence Associated References: 2013
 [XMP, XMP-dwc, Other] OccurrenceAssociatedSequences - Occurrence Associated Sequences: 2013
 [XMP, XMP-dwc, Other] OccurrenceAssociatedTaxa - Occurrence Associated Taxa: 2013
 [XMP, XMP-dwc, Other] OccurrenceBehavior - Occurrence Behavior: 2013
+[XMP, XMP-dwc, Other] OccurrenceCaste - Occurrence Caste: 2013
 [XMP, XMP-dwc, Other] OccurrenceCatalogNumber - Occurrence Catalog Number: 2013
 [XMP, XMP-dwc, Other] OccurrenceDegreeOfEstablishment - Occurrence Degree Of Establishment: 2013
 [XMP, XMP-dwc, Other] OccurrenceDisposition - Occurrence Disposition: 2013
@@ -139,6 +144,7 @@
 [XMP, XMP-dwc, Other] OccurrenceRecordedByID - Occurrence Recorded By ID: 2013
 [XMP, XMP-dwc, Other] OccurrenceReproductiveCondition - Occurrence Reproductive Condition: 2013
 [XMP, XMP-dwc, Other] OccurrenceSex - Occurrence Sex: 2013
+[XMP, XMP-dwc, Other] OccurrenceVitality - Occurrence Vitality: 2013
 [XMP, XMP-dwc, Other] OrganismAssociatedOccurrences - Organism Associated Occurrences: 2013
 [XMP, XMP-dwc, Other] OrganismAssociatedOrganisms - Organism Associated Organisms: 2013
 [XMP, XMP-dwc, Other] OrganismOrganismID - Organism ID: 2013
@@ -171,8 +177,10 @@
 [XMP, XMP-dwc, Other] TaxonClass - Taxon Class: 2013
 [XMP, XMP-dwc, Other] TaxonCultivarEpithet - Taxon Cultivar Epithet: 2013
 [XMP, XMP-dwc, Other] TaxonFamily - Taxon Family: 2013
+[XMP, XMP-dwc, Other] TaxonGenericName - Taxon Generic Name: 2013
 [XMP, XMP-dwc, Other] TaxonGenus - Taxon Genus: 2013
 [XMP, XMP-dwc, Other] TaxonHigherClassification - Taxon Higher Classification: 2013
+[XMP, XMP-dwc, Other] TaxonInfragenericEpithet - Taxon Infrageneric Epithet: 2013
 [XMP, XMP-dwc, Other] TaxonInfraspecificEpithet - Taxon Infraspecific Epithet: 2013
 [XMP, XMP-dwc, Other] TaxonKingdom - Taxon Kingdom: 2013
 [XMP, XMP-dwc, Other] TaxonNameAccordingTo - Taxon Name According To: 2013
@@ -192,12 +200,16 @@
 [XMP, XMP-dwc, Other] TaxonScientificNameAuthorship - Taxon Scientific Name Authorship: 2013
 [XMP, XMP-dwc, Other] TaxonScientificNameID - Taxon Scientific Name ID: 2013
 [XMP, XMP-dwc, Other] TaxonSpecificEpithet - Taxon Specific Epithet: 2013
+[XMP, XMP-dwc, Other] TaxonSubFamily - Taxon Sub Family: 2013
+[XMP, XMP-dwc, Other] TaxonSubTribe - Taxon Sub Tribe: 2013
 [XMP, XMP-dwc, Other] TaxonSubgenus - Taxon Subgenus: 2013
+[XMP, XMP-dwc, Other] TaxonSuperFamily - Taxon Super Family: 2013
 [XMP, XMP-dwc, Other] TaxonTaxonConceptID - Taxon Concept ID: 2013
 [XMP, XMP-dwc, Other] TaxonTaxonID - Taxon ID: 2013
 [XMP, XMP-dwc, Other] TaxonTaxonRank - Taxon Rank: 2013
 [XMP, XMP-dwc, Other] TaxonTaxonRemarks - Taxon Remarks: 2013
 [XMP, XMP-dwc, Other] TaxonTaxonomicStatus - Taxon Taxonomic Status: 2013
+[XMP, XMP-dwc, Other] TaxonTribe - Taxon Tribe: 2013
 [XMP, XMP-dwc, Other] TaxonVerbatimTaxonRank - Taxon Verbatim Taxon Rank: 2013
 [XMP, XMP-dwc, Other] TaxonVernacularName - Taxon Vernacular Name: 2013
 [XMP, XMP-dwc, Location] dctermsLocationContinent - DC Continent: 2013

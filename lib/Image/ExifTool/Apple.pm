@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::PLIST;
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 sub ConvertPLIST($$);
 
@@ -307,7 +307,17 @@ sub ConvertPLIST($$);
         Name => 'Apple_0x004f',
         Unknown => 1,
         ValueConv => \&ConvertPLIST,
-    }
+    },
+    0x0054 => {
+        Name => 'Apple_0x0054',
+        Unknown => 1,
+        ValueConv => \&ConvertPLIST,
+    },
+    0x005a => {
+        Name => 'Apple_0x005a',
+        Unknown => 1,
+        ValueConv => \&ConvertPLIST,
+    },
 );
 
 # PLIST-format CMTime structure (ref PH)

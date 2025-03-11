@@ -1296,15 +1296,15 @@ sub SetNewValuesFromFile($$;@)
         # ! option to decide how it is handled here. !
         # +------------------------------------------+
         foreach (qw(ByteUnit Charset CharsetEXIF CharsetFileName CharsetID3 CharsetIPTC
-                    CharsetPhotoshop Composite DateFormat Debug EncodeHangs Escape ExtendedXMP
-                    ExtractEmbedded FastScan Filter FixBase Geolocation GeolocAltNames
-                    GeolocFeature GeolocMinPop GeolocMaxDist GlobalTimeShift GPSQuadrant
-                    HexTagIDs IgnoreGroups IgnoreMinorErrors IgnoreTags ImageHashType Lang
-                    LargeFileSupport LigoGPSScale ListItem ListSep MDItemTags
-                    MissingTagValue NoPDFList NoWarning Password PrintConv QuickTimeUTC
-                    RequestTags SaveFormat SavePath ScanForXMP StructFormat SystemTags
-                    TimeZone Unknown UserParam Validate WindowsLongPath WindowsWideFile
-                    XAttrTags XMPAutoConv))
+                    CharsetPhotoshop Composite DateFormat Debug EncodeHangs Escape
+                    ExtendedXMP ExtractEmbedded FastScan Filter FixBase Geolocation
+                    GeolocAltNames GeolocFeature GeolocMinPop GeolocMaxDist
+                    GlobalTimeShift GPSQuadrant HexTagIDs IgnoreGroups IgnoreMinorErrors
+                    IgnoreTags ImageHashType KeepUTCTime Lang LargeFileSupport
+                    LigoGPSScale ListItem ListSep MDItemTags MissingTagValue NoPDFList
+                    NoWarning Password PrintConv QuickTimeUTC RequestTags SaveFormat
+                    SavePath ScanForXMP StructFormat SystemTags TimeZone Unknown UserParam
+                    Validate WindowsLongPath WindowsWideFile XAttrTags XMPAutoConv))
         {
             $srcExifTool->Options($_ => $$options{$_});
         }

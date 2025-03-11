@@ -827,6 +827,9 @@ effect as a value of 0 for options with numerical values.</p>
 <tr id="ImageHashType"><td>ImageHashType</td><td>Sets type of hash
     algorithm used for the ImageDataHash tag calculation.</td>
     <td align=center>'MD5', 'SHA256' or 'SHA512'</td><td align=center>'MD5'</td></tr>
+<tr id="KeepUTCTime"><td>KeepUTCTime</td><td>Flag to keep UTC times in Zulu
+    time zone instead of converting to local time.</td>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="Lang"><td>Lang</td><td>Localized language for ExifTool tag descriptions, etc.  If the
     specified language isn't available, the option is not changed.  May be set to
     undef to select the built-in default language.</td>
@@ -1204,17 +1207,6 @@ the .ExifTool_config file if it exists.</p>
 <blockquote><table class='box'><tr><td><pre>
 $success = $exifTool-&gt;<b>ExtractInfo</b>('image.jpg', \%options);
 </pre></td></tr></table></blockquote>
-<p>The following options are effective in the call to <a href="#ExtractInfo">ExtractInfo</a>:</p>
-<blockquote>
-Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3, CharsetIPTC,
-CharsetPhotoshop, CharsetQuickTime, CharsetRIFF, Composite, ExtendedXMP,
-ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase, IgnoreGroups,
-IgnoreMinorErrors, IgnoreTags, Lang, LargeFileSupport, MakerNotes,
-MDItemTags, NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero),
-RequestAll, RequestTags, SaveBin, SaveFormat, SavePath, ScanForXMP, Struct,
-TextOut, Unknown, Verbose, WindowsLongPath, WindowsWideFile, XAttrTags and
-XMPAutoConv.
-</blockquote>
 
 <hr><h2><a name="GetInfo">GetInfo</a></h2>
 <p><a href="#GetInfo">GetInfo</a> is called to return meta information
@@ -1251,12 +1243,6 @@ $info = $exifTool-&gt;<b>GetInfo</b>(\@ioTagList);
 <span class=com># get all information in Author or Location groups</span>
 $info = $exifTool-&gt;<b>GetInfo</b>({Group2 =&gt; ['Author', 'Location']});
 </pre></td></tr></table></blockquote>
-<p>The following options are effective in the call to <a href="#GetInfo">GetInfo</a>:</p>
-<blockquote>
-Charset, CoordFormat, DateFormat, Duplicates, Escape, Exclude, Filter, Group#,
-GlobalTimeShift, Lang, ListItem, ListJoin, PrintConv, QuickTimeUTC (conversion
-to local time), Sort (if a tag list reference is given) and StrictDate.
-</blockquote>
 
 <hr><h2><a name="WriteInfo">WriteInfo</a></h2>
 <p>Write meta information to a file.  The specified source file is rewritten to
@@ -1339,14 +1325,6 @@ $warningMessage = $exifTool-&gt;<a href="#GetValue">GetValue</a>('Warning');
 be called to obtain the error description.  A Warning tag may be set even if
 this routine is successful.  Calling WriteInfo clears any pre-existing Error
 and Warning tags.</p>
-<p>The following ExifTool options are effective in the call to
-<a href="#WriteInfo">WriteInfo</a>:</p>
-<blockquote>
-ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
-Compress, FixBase, IgnoreMinorErrors, NoMultiExif, NoPDFList, Password,
-QuickTimeHandler, QuickTimePad, Verbose, WindowsLongPath, WindowsWideFile
-and WriteMode.
-</blockquote>
 
 <hr><h2><a name="GetTagList">GetTagList</a></h2>
 <p>Get a sorted list of tags from the specified information hash or tag list.</p>
@@ -1482,13 +1460,6 @@ if (ref $val eq 'ARRAY') {
 <span class=com># list example</span>
 my @keywords = $exifTool-&gt;<b>GetValue</b>('Keywords', 'ValueConv');
 </pre></td></tr></table></blockquote>
-<p>The following options are in effect when <a href="#GetValue">GetValue</a> is
-called:</p>
-<blockquote>
-Charset, CoordFormat, DateFormat, Escape, Filter, GlobalTimeShift, Lang,
-ListItem, ListJoin, PrintConv, QuickTimeUTC (conversion to local time),
-StrictDate and TimeZone.
-</blockquote>
 
 <hr><h2><a name="SetNewValue">SetNewValue</a></h2>
 <p>Set the new value for a tag.  The routine may be called multiple times to set
@@ -1698,12 +1669,6 @@ of individual tags after deleting a group.</p>
 not deleted by default because doing so may affect the appearance of the image.
 However, this information may be deleted by specifying it explicitly, either by
 group (with '<code>Adobe:*</code>') or as a block (with '<code>Adobe</code>').</p>
-<p>The following ExifTool options are effective in the call to
-<a href="#SetNewValue">SetNewValue</a>:</p>
-<blockquote>
-Charset, DateFormat, Escape, IgnoreMinorErrors, Lang, ListJoin, ListSplit,
-PrintConv, QuickTimeUTC, StrictDate, TimeZone, Verbose and WriteMode.
-</blockquote>
 
 <hr><h2><a name="GetNewValue">GetNewValue</a><a name="GetNewValues"></a></h2>
 <p>Get the new Raw value for a tag.  This is the value set by

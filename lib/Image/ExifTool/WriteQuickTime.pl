@@ -1208,7 +1208,11 @@ sub WriteQuickTime($$$)
         if (defined $itemIndex and $$et{ItemInfo}) {
             my $items = $$et{ItemInfo};
             my ($id, $prop, $isPrimary);
-            my $primary = $$et{PrimaryItem} || 0;
+            my $primary = $$et{PrimaryItem};
+            unless (defined $primary) {
+                ($primary) = sort { $a <=> $b } keys %{$$et{ItemInfo}} if $$et{ItemInfo};
+                $primary = 0 unless defined $primary;
+            }
             my $pitem = $$items{$primary} || { };
             $$pitem{RefersTo} or $$pitem{RefersTo} = { };
 ItemID2:    foreach $id (reverse sort { $a <=> $b } keys %$items) {
@@ -1512,7 +1516,10 @@ ItemID2:    foreach $id (reverse sort { $a <=> $b } keys %$items) {
                             ++$$et{CHANGED};
                             my $grp = $et->GetGroup($langInfo, 1);
                             $et->VerboseValue("- $grp:$$langInfo{Name}", $val);
-                            next unless defined $newData and not $$didTag{$nvHash};
+                            unless (defined $newData and not $$didTag{$nvHash}) {
+                                # must not delete items from iprp because it will mess up the ordering
+                                next unless defined $itemIndex;
+                            }
                             $et->VerboseValue("+ $grp:$$langInfo{Name}", $newData);
                             # add back necessary header and encode as necessary
                             if (defined $lang) {
@@ -1541,7 +1548,7 @@ ItemID2:    foreach $id (reverse sort { $a <=> $b } keys %$items) {
                                 $newData = $et->Encode($newData, 'UTF8');
                             } elsif ($format and not $$tagInfo{Binary}) {
                                 # format new value for writing
-                                $newData = WriteValue($newData, $format);
+                                $newData = WriteValue($newData, $format, $$tagInfo{Count});
                             }
                         }
                         $$didTag{$nvHash} = 1;   # set flag so we don't add this tag again

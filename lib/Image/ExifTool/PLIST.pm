@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 sub ExtractObject($$;$);
 sub Get24u($$);
@@ -352,7 +352,7 @@ sub ExtractObject($$;$)
                         my $name = $tag;
                         $name =~ s/([^A-Za-z])([a-z])/$1\u$2/g; # capitalize words
                         $name =~ tr/-_a-zA-Z0-9//dc; # remove illegal characters
-                        $name = "Tag$name" if length($name) < 2 or $name =~ /^[-0-9]/;
+                        $name = 'Tag'.ucfirst($name) if length($name) < 2 or $name =~ /^[-0-9]/;
                         $tagInfo = { Name => ucfirst($name), List => 1 };
                         if ($$plistInfo{DateFormat}) {
                             $$tagInfo{Groups}{2} = 'Time';

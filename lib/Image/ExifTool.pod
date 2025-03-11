@@ -892,6 +892,11 @@ to undef to clear the previous IgnoreTags list.  Default is undef.
 Sets type of hash algorithm used for the ImageDataHash tag calculation. 
 Supported options are 'MD5', 'SHA256', and 'SHA512'.  Default is 'MD5'.
 
+=item KeepUTCTime
+
+Flag to keep UTC times in Zulu time zone instead of converting to local
+time.  Default is undef.
+
 =item Lang
 
 Localized language for exiftool tag descriptions, etc.  Available languages
@@ -1314,17 +1319,7 @@ Extract all meta information from an image.
 
 L</ExtractInfo> takes exactly the same arguments as L</ImageInfo>.  The only
 difference is that a list of tag keys is not returned if an ARRAY reference
-is given.  The following options are effective in the call to
-L</ExtractInfo>:
-
-Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3, CharsetIPTC,
-CharsetPhotoshop, CharsetQuickTime, CharsetRIFF, Composite, ExtendedXMP,
-ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase, IgnoreGroups,
-IgnoreMinorErrors, IgnoreTags, Lang, LargeFileSupport, MakerNotes,
-MDItemTags, NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero),
-RequestAll, RequestTags, SaveBin, SaveFormat, SavePath, ScanForXMP, Struct,
-TextOut, Unknown, Verbose, WindowsLongPath, WindowsWideFile, XAttrTags and
-XMPAutoConv.
+is given.
 
 =item Return Value:
 
@@ -1356,24 +1351,13 @@ L</ImageInfo>.
 =item Inputs:
 
 Inputs are the same as L</ExtractInfo> and L</ImageInfo> except that an
-image can not be specified.  Options in effect are:
-
-Charset, CoordFormat, DateFormat, Duplicates, Escape, Exclude, Filter,
-Group#, GlobalTimeShift, Lang, ListItem, ListJoin, PrintConv, Sort (if a tag
-list reference is given) and StrictDate.
+image can not be specified.
 
 =item Return Value:
 
 Reference to information hash, the same as with L</ImageInfo>.
 
 =back
-
-The following options are effective in the call to L</GetInfo>:
-
-Charset, CoordFormat, DateFormat, Duplicates, Escape, Exclude, Filter,
-Group#, GlobalTimeShift, Lang, ListItem, ListJoin, PrintConv, QuickTimeUTC
-(conversion to local time), Sort (if a tag list reference is given) and
-StrictDate.
 
 =head2 WriteInfo
 
@@ -1458,13 +1442,6 @@ On Mac OS systems, the file resource fork is preserved if this routine is
 called with a source file name.
 
 =back
-
-The following ExifTool options are effective in the call to L</WriteInfo>:
-
-ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
-Compress, FixBase, IgnoreMinorErrors, NoMultiExif, NoPDFList, Password,
-QuickTimeHandler, QuickTimePad, Verbose, WindowsLongPath, WindowsWideFile
-and WriteMode.
 
 =head2 GetTagList
 
@@ -1587,12 +1564,6 @@ optional group specifier), use L</GetInfo> instead.
     }
 
     my @keywords = $exifTool->GetValue('Keywords', 'ValueConv');
-
-The following options are in effect when L</GetValue> is called:
-
-Charset, CoordFormat, DateFormat, Escape, Filter, GlobalTimeShift, Lang,
-ListItem, ListJoin, PrintConv, QuickTimeUTC (conversion to local time),
-StrictDate and TimeZone.
 
 =over 4
 
@@ -1846,11 +1817,6 @@ image.  However, this information may be deleted by specifying it
 explicitly, either by group (with 'Adobe:*') or as a block (with 'Adobe').
 
 =back
-
-The following ExifTool options are effective in the call to L</SetNewValue>:
-
-Charset, DateFormat, Escape, IgnoreMinorErrors, Lang, ListJoin, ListSplit,
-PrintConv, QuickTimeUTC, StrictDate, TimeZone, Verbose and WriteMode.
 
 =head2 GetNewValue
 

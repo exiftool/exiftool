@@ -13,6 +13,177 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v13.09'><b>Dec. 17, 2024 - Version 13.09</b></a>
+<ul>
+<li>Added a new QuickTime tag (thanks Matti)
+<li>Added a missing format check on a few tags when writing
+<li>Decode a couple of new ICC_Profile tags
+<li>Patched HEIC writer so newly added XMP or EXIF refers to the 'tmap' item as
+    well as the primary item of an HDRGainMap image (since iPhone 15 and 16 do
+    it this way)
+<li>Fixed compatibility issue where Apple Preview would no longer show the gain
+    map image after adding new XMP to an HEIC with an HDR gain map
+</ul>
+
+<a name='v13.08'><b>Dec. 14, 2024 - Version 13.08</b></a>
+<ul>
+<li>Decode ShutterCount for Canon EOS R6 Mark II (thanks Agoston Kapitany)
+<li>Decode a few new Photoshop tags
+<li>Suppress all duplicate Warning tags and add count to end of message
+<li>Changed format of bitmask keys in -listx output
+<li>Internal streamlining of LIGOGPSINFO decoding
+<li>Fixed issue where some tags were incorrectly shown as writable in -listx
+    output
+<li>Fixed incorrect scaling for GPSSpeed in one LIGOGPSINFO variant
+<li>Fixed an issue with filename encoding when the -L option is used and the API
+    WindowsLongPath option is active
+</ul>
+
+<a name='v13.07'><b>Dec. 11, 2024 - Version 13.07</b></a>
+<ul>
+<li>Decode a number of LIGOGPSINFO encrypted and enciphered timed GPS types
+    (long overdue, but it took me a couple of years to acquire enough sample
+    videos to have a good cross-section of the different formats)
+<li>Fixed another place where FileSequence could be incremented twice when a -if
+    condition was used
+<li>Fixed a few places where character 0x7f may not have been escaped in string
+    values
+<li>API Changes:
+    <ul>
+    <li>Changed default <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option back to 1 after adding a patch to
+        fix issue with piping from stdin
+    </ul>
+</ul>
+
+<a name='v13.06'><b>Dec. 5, 2024 - Version 13.06</b></a>
+<ul>
+<li>Decode timed metadata from MP4 videos of yet another dashcam model
+<li>Patched issue where FileSequence could increment twice for each file when a
+    -if condition was used
+<li>API Changes:
+    <ul>
+    <li>Revert default <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option to the pre-13.05 setting
+        until we can solve the pipe problem
+    </ul>
+</ul>
+
+<a name='v13.05'><b>Dec. 4, 2024 - Version 13.05</b></a>
+<ul>
+<li>Added a new SonyModelID
+<li>Added support for XMP HDRGainMap and apdi namespaces
+<li>Decode DJI timed djmd and dbgi <a href="TagNames/DJI.html#Protobuf">protobuf-format metadata</a>
+<li>Decode APP10 AROT HDRGainCurve and APP2 URN UniformResourceName
+<li>Decode a couple of new GoPro tags
+<li>API Changes:
+    <ul>
+    <li>Changed default <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option to 1 (please report if this
+        causes any problems)
+    </ul>
+</ul>
+
+<a name='v13.04'><b>Nov. 26, 2024 - Version 13.04</b></a>
+<ul>
+<li>Added the ability to write GPSDOP and GPSMeasureMode from the -geotag option
+    if hdop or pdop information exists in the input track file
+<li>Added a few new Canon RFLensTypes (thanks Norbert Wasser)
+<li>Decode timed GPS from GoPro Hero 13 videos
+<li>Improved writing of GPSDestLatitudeRef and GPSDestLongitudeRef tags to allow
+    signed numbers to be written in the same way as GPSLatitudeRef and
+    GPSLongitudeRef
+<li>Warn if using an Image::ExifTool library that doesn't match the application
+    version
+<li>Renamed an Unknown Photoshop tag
+<li>Convert GoPro GPSSpeed and GPSSpeed3D from m/s to km/h
+<li>Patched to tolerate XML header in DOCX xml files
+<li>Fixed incorrect file offsets for tags in some embedded files of -htmldump
+    output
+<li>Fixed -htmldump output to show the same names for unknown EXIF tags as with
+    the -u option
+</ul>
+
+<a name='v13.03'><b>Nov. 12, 2024 - Version 13.03</b></a>
+<ul>
+<li>Added ability to include or exclude tags from CSV and JSON imports
+    (-csv=CSVFILE and -json=JSONFILE) by adding -TAG or --TAG options
+<li>Added read/delete support for <a href="TagNames/XMP.html#SEAL">SEAL</a> metadata in JPG, TIFF, XMP, PNG, WEBP,
+    HEIC, PPM, MOV and MP4 files, and read support in PDF, MKV and WAV files
+<li>Added support for user-defined application extensions in GIF images
+<li>Added print conversion for QuickTime VideoFullRangeFlag
+<li>Apply API LimitLongValues option to hex field in -j output
+<li>Avoid extracting some large AES-encrypted data from PDF files for
+    performance reasons unless the -m option is used (current limits are 100 kB
+    for XMP and 10 kB for everything else)
+<li>Fixed WindowsLongPath option to support wide characters (thanks Frank B)
+<li>Fixed problem writing ICC_Profile to a GIF image which already had one
+<li>Fixed problem writing Apple:FocusDistanceRange
+<li>API Changes:
+    <ul>
+    <li>Enchanced <a href="ExifTool.html#GlobalTimeShift">GlobalTimeShift</a> option to allow the base tag to be specified,
+        otherwise use the first specified source date/time tag when copying tags
+    </ul>
+</ul>
+
+<a name='v13.02'><b>Nov. 5, 2024 - Version 13.02</b></a>
+<ul>
+<li>Enhanced -j -l output to add optional "fmt" and "hex" fields
+<li>Enhanced -geotag option to support Android "Export Timeline data" JSON
+    format
+<li>Changed ProductVersion of Windows launcher to match ExifTool version
+<li>Patched to use empty group name instead of "Copy0" for family 4 group name
+    of missing tag when the -f option is used
+<li>Patched to avoid showing "Unknown" for group of primary tag when -g4 or -G4
+    was used with the -j or -csv option
+<li>Patched to avoid using Encode module in Windows because it can hang if run
+    from a working directory with a long path name
+<li>Patched to use -csv output if -j also used
+<li>Fixed a few problems with the new WindowsLongPath option
+<li>Fixed problem setting FileCreateDate with Xcode 16 command line tools if the
+    date/time contains a time zone
+<li>Fixed problem in -csv output when combined with -g
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#SaveBin">SaveBin</a> option
+    </ul>
+</ul>
+
+<a name='v13.01'><b>Nov. 1, 2024 - Version 13.01</b></a>
+<ul>
+<li>NOTE: Please test the new API WindowsLongPath option because the idea is to
+    enable this by default if everything works out well
+<li>Fixed bug which could result in runtime warning if when API IgnoreTags
+    option is set to "all" when reading a TXT file format
+<li>Fixed problem reading some information from LNK files
+<li>Fixed verbose output to show "Binary data" message for SCALAR values
+<li>Fixed bug where part of the hex dump from a -v3 output could go to stdout
+    instead of the file specified by a -w option
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#WindowsLongPath">WindowsLongPath</a> option for testing
+    <li>Changed <a href="ExifTool.html#WindowsLongPath">CharsetFileName</a> option to automatically assume UTF8 if the file
+        name contains special characters and is valid UTF8
+    </ul>
+</ul>
+
+<a name='v13.00'><b>Oct. 29, 2024 - Version 13.00</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added support for reading GPS from Autel Evo II drone videos
+<li>Added a new PhaseOne RawFormat value
+<li>Updated XMP-exifEX tags, exif2xmp.args and xmp2exif.args according to the
+    2024 EXIF for XMP specification
+<li>Updated Geolocation databases from current geonames.org files
+<li>Updated the MIME types for a couple of font formats
+<li>Enhanced -diff option to work with -ec (C-style escape of special chars)
+<li>Changed name of EXIF Title tag to ImageTitle to correspond with specifiation
+<li>Reverted a geotag warning message to remove debugging information that was
+    added in version 12.67 and moved this information into a -v3 verbose message
+<li>Patched Perl bug which gave "Can't spawn" warning in Windows if control-C
+    was pressed while displaying the exiftool application help
+<li>Fixed API StructFormat JSONQ setting to properly quote values in structures
+<li>Fixed incorrect AudioStreamType for M2TS videos containing a PGS stream
+<li>Fixed -diff option so "same tags" messages are only shown when -v is added
+    (as per the documentation)
+</ul>
+
 <a name='v12.99'><b>Oct. 18, 2024 - Version 12.99</b></a>
 <ul>
 <li>Added -diff option to compare the metadata in two files

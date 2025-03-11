@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28408 tags, with 17642 unique tag names.
+They contain a total of 28422 tags, with 17656 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -7832,6 +7832,8 @@ Tags extracted from the maker notes of iPhone images.
   0x0042   SemanticStylePreset                  no
   0x004e   Apple_0x004e?                        no
   0x004f   Apple_0x004f?                        no
+  0x0054   Apple_0x0054?                        no
+  0x005a   Apple_0x005a?                        no
 
 =head3 Apple RunTime Tags
 
@@ -26666,6 +26668,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   EventID                                       string/_
   EventRemarks                                  lang-alt_
   EventTime                                     string_
+  EventEventType                                string_
   EventFieldNotes                               string_
   EventFieldNumber                              string_
   EventHabitat                                  string_
@@ -26708,6 +26711,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   HumanObservationEventID                       string/_
   HumanObservationEventRemarks                  lang-alt_
   HumanObservationEventTime                     string_
+  HumanObservationEventType                     string_
   HumanObservationFieldNotes                    string_
   HumanObservationFieldNumber                   string_
   HumanObservationHabitat                       string_
@@ -26742,6 +26746,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   MachineObservationEventID                     string/_
   MachineObservationEventRemarks                lang-alt_
   MachineObservationEventTime                   string_
+  MachineObservationEventType                   string_
   MachineObservationFieldNotes                  string_
   MachineObservationFieldNumber                 string_
   MachineObservationHabitat                     string_
@@ -26767,6 +26772,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   MeasurementType                               string_
   MeasurementUnit                               string_
   MeasurementValue                              string_
+  ParentMeasurementID                           string_
   Occurrence                                    DarwinCore Occurrence Struct
   OccurrenceAssociatedMedia                     string_
   OccurrenceAssociatedOccurrences               string_
@@ -26774,6 +26780,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   OccurrenceAssociatedSequences                 string_
   OccurrenceAssociatedTaxa                      string_
   OccurrenceBehavior                            string_
+  OccurrenceCaste                               string_
   OccurrenceCatalogNumber                       string_
   OccurrenceDegreeOfEstablishment               string_
   OccurrenceDisposition                         string_
@@ -26797,6 +26804,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   OccurrenceRecordNumber                        string_
   OccurrenceReproductiveCondition               string_
   OccurrenceSex                                 string_
+  OccurrenceVitality                            string_
   Organism                                      DarwinCore Organism Struct
   OrganismAssociatedOccurrences                 string_
   OrganismAssociatedOrganisms                   string_
@@ -26834,8 +26842,10 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   TaxonClass                                    string_
   TaxonCultivarEpithet                          string_
   TaxonFamily                                   string_
+  TaxonGenericName                              string_
   TaxonGenus                                    string_
   TaxonHigherClassification                     string_
+  TaxonInfragenericEpithet                      string_
   TaxonInfraspecificEpithet                     string_
   TaxonKingdom                                  string_
   TaxonNameAccordingTo                          string_
@@ -26855,12 +26865,16 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   TaxonScientificNameAuthorship                 string_
   TaxonScientificNameID                         string_
   TaxonSpecificEpithet                          string_
+  TaxonSubFamily                                string_
   TaxonSubgenus                                 string_
+  TaxonSubTribe                                 string_
+  TaxonSuperFamily                              string_
   TaxonConceptID                                string_
   TaxonID                                       string_
   TaxonTaxonomicStatus                          string_
   TaxonRank                                     string_
   TaxonRemarks                                  string_
+  TaxonTribe                                    string_
   TaxonVerbatimTaxonRank                        string_
   TaxonVernacularName                           lang-alt_
 
@@ -26925,6 +26939,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   EventID                                       string
   EventRemarks                                  lang-alt
   EventTime                                     string
+  EventType                                     string
   FieldNotes                                    string
   FieldNumber                                   string
   Habitat                                       string
@@ -26996,6 +27011,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   MeasurementType                               string
   MeasurementUnit                               string
   MeasurementValue                              string
+  ParentMeasurementID                           string
 
 =head3 DarwinCore Occurrence Struct
 
@@ -27007,6 +27023,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   AssociatedSequences                           string
   AssociatedTaxa                                string
   Behavior                                      string
+  Caste                                         string
   CatalogNumber                                 string
   DegreeOfEstablishment                         string
   Disposition                                   string
@@ -27030,6 +27047,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   RecordedByID                                  string
   ReproductiveCondition                         string
   Sex                                           string
+  Vitality                                      string
 
 =head3 DarwinCore Organism Struct
 
@@ -27081,8 +27099,10 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   Class                                         string
   CultivarEpithet                               string
   Family                                        string
+  GenericName                                   string
   Genus                                         string
   HigherClassification                          string
+  InfragenericEpithet                           string
   InfraspecificEpithet                          string
   Kingdom                                       string
   NameAccordingTo                               string
@@ -27102,12 +27122,16 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   ScientificNameAuthorship                      string
   ScientificNameID                              string
   SpecificEpithet                               string
+  SubFamily                                     string
+  SubTribe                                      string
   Subgenus                                      string
+  SuperFamily                                   string
   TaxonConceptID                                string
   TaxonID                                       string
   TaxonRank                                     string
   TaxonRemarks                                  string
   TaxonomicStatus                               string
+  Tribe                                         string
   VerbatimTaxonRank                             string
   VernacularName                                lang-alt
 
@@ -30998,7 +31022,7 @@ and are not currently writable.
   'hvcC'   HEVCConfiguration                    QuickTime HEVCConfig
   'irot'   Rotation                             int8u!
   'ispe'   ImageSpatialExtent                   no
-  'pasp'   PixelAspectRatio                     int32u!
+  'pasp'   PixelAspectRatio                     int32u[2]!
   'pixi'   ImagePixelDepth                      no
   'rloc'   RelativeLocation                     no
 

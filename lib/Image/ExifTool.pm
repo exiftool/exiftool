@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.24';
+$VERSION = '13.25';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -571,7 +571,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     XLTX => [['ZIP','FPX'], 'Office Open XML Spreadsheet Template'],
     XMP  => ['XMP',  'Extensible Metadata Platform'],
     WOFF => ['Font', 'Web Open Font Format'],
-    WOFF2=> ['Font', 'Web Open Font Format2'],
+    WOFF2=> ['Font', 'Web Open Font Format 2'],
     WPG  => ['WPG',  'WordPerfect Graphics'],
     WTV  => ['WTV',  'Windows recorded TV show'],
     ZIP  => ['ZIP',  'ZIP archive'],
@@ -1140,6 +1140,7 @@ my @availableOptions = (
     [ 'IgnoreMinorErrors',undef,  'ignore minor errors when reading/writing' ],
     [ 'IgnoreTags',       undef,  'list of tags to ignore when extracting' ],
     [ 'ImageHashType',    'MD5',  'image hash algorithm' ],
+    [ 'KeepUTCTime',      undef,  'do not convert times stored as UTC' ],
     [ 'Lang',       $defaultLang, 'localized language for descriptions etc' ],
     [ 'LargeFileSupport', 1,      'flag indicating support of 64-bit file offsets' ],
     [ 'LimitLongValues',  60,     'length limit for long values' ],
@@ -2597,6 +2598,8 @@ sub Options($$;@)
             # add to existing plot settings
             $newVal = "$oldVal,$newVal" if defined $oldVal and defined $newVal;
             $$options{$param} = $newVal;
+        } elsif ($param eq 'KeepUTCTime') {
+            $$options{$param} = $static_vars{$param} = $newVal;
         } elsif (lc $param eq 'geodir') {
             $Image::ExifTool::Geolocation::geoDir = $newVal;
         } else {
@@ -4255,7 +4258,7 @@ sub Init($)
     my $self = shift;
     # delete all DataMember variables (lower-case names)
     delete $$self{$_} foreach grep /[a-z]/, keys %$self;
-    undef %static_vars;             # clear all static variables
+    %static_vars = ( KeepUTCTime => $$self{OPTIONS}{KeepUTCTime} ); # reset static variables
     delete $$self{FOUND_TAGS};      # list of found tags
     delete $$self{EXIF_DATA};       # the EXIF data block
     delete $$self{EXIF_POS};        # EXIF position in file
@@ -6690,12 +6693,15 @@ sub ConvertUnixTime($;$$)
         $time = int($time + 1e-6) if $time != int($time);  # avoid round-off errors
         $dec = '';
     }
-    if ($toLocal) {
-        @tm = localtime($time);
-        $tz = TimeZoneString(\@tm, $time);
-    } else {
+    if (not $toLocal) {
         @tm = gmtime($time);
         $tz = '';
+    } elsif ($static_vars{KeepUTCTime}) {
+        @tm = gmtime($time);
+        $tz = 'Z';
+    } else {
+        @tm = localtime($time);
+        $tz = TimeZoneString(\@tm, $time);
     }
     my $str = sprintf("%4d:%.2d:%.2d %.2d:%.2d:%.2d$dec%s",
                       $tm[5]+1900, $tm[4]+1, $tm[3], $tm[2], $tm[1], $tm[0], $tz);

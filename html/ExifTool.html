@@ -828,7 +828,8 @@ effect as a value of 0 for options with numerical values.</p>
     algorithm used for the ImageDataHash tag calculation.</td>
     <td align=center>'MD5', 'SHA256' or 'SHA512'</td><td align=center>'MD5'</td></tr>
 <tr id="KeepUTCTime"><td>KeepUTCTime</td><td>Flag to keep UTC times in Zulu
-    time zone instead of converting to local time.</td>
+    time zone instead of converting to local time.  Affects only times which are
+    stored as seconds since the UTC epoch.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="Lang"><td>Lang</td><td>Localized language for ExifTool tag descriptions, etc.  If the
     specified language isn't available, the option is not changed.  May be set to

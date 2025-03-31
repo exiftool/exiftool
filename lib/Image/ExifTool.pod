@@ -895,7 +895,8 @@ Supported options are 'MD5', 'SHA256', and 'SHA512'.  Default is 'MD5'.
 =item KeepUTCTime
 
 Flag to keep UTC times in Zulu time zone instead of converting to local
-time.  Default is undef.
+time.  Affects only times which are stored as seconds since the UTC epoch. 
+Default is undef.
 
 =item Lang
 

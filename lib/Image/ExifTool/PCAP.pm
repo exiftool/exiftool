@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 %Image::ExifTool::PCAP::Main = (
     GROUPS => { 0 => 'File', 1 => 'File', 2 => 'Other' },
@@ -261,14 +261,14 @@ $VERSION = '1.00';
         },
     },
     19373 => {
-        Name => 'CustomOption3',
+        Name => 'CustomOption4',
         Binary => 1,
     },
 #
 # "options" tags in Section Header Block
 #
     'SHB-2' => 'Hardware',
-    'SHB-3' => 'OperatingSytem',
+    'SHB-3' => 'OperatingSystem',
     'SHB-4' => 'UserApplication',
 #
 # "options" tags in Interface Description Block
@@ -308,8 +308,8 @@ $VERSION = '1.00';
         Name => 'Filter',
         ValueConv => 'Get8u(\$val,0) . ": " . substr($val, 1)',
     },
-    'IDB-12' => 'OperatingSytem',
-    'IDB-13' => { Name => 'FCSLen',  Format => 'int8u' },
+    'IDB-12' => 'OperatingSystem',
+    'IDB-13' => { Name => 'FrameCheckSequenceLength',  Format => 'int8u' },
     'IDB-14' => {
         Name => 'TimeStampOffset',
         Format => 'int64u',

@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.72';
+$VERSION = '3.73';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3539,14 +3539,19 @@ NoLoop:
                     }
                     last unless $sti;
                 }
-                # generate new tagInfo hash based on existing top-level tag
-                $tagInfo = { %$sti, Name => $flat . $$sti{Name} };
-                # be careful not to copy elements we shouldn't...
-                delete $$tagInfo{Description}; # Description will be different
-                # can't copy group hash because group 1 will be different and
-                # we need to check this when writing tag to a specific group
-                delete $$tagInfo{Groups};
-                $$tagInfo{Groups}{2} = $$sti{Groups}{2} if $$sti{Groups};
+                # use existing definition if we already added this tag
+                if ($$tagTablePtr{$tagID}) {
+                    $tagInfo = $$tagTablePtr{$tagID};
+                } else {
+                    # generate new tagInfo hash based on existing top-level tag
+                    $tagInfo = { %$sti, Name => $flat . $$sti{Name} };
+                    # be careful not to copy elements we shouldn't...
+                    delete $$tagInfo{Description}; # Description will be different
+                    # can't copy group hash because group 1 will be different and
+                    # we need to check this when writing tag to a specific group
+                    delete $$tagInfo{Groups};
+                    $$tagInfo{Groups}{2} = $$sti{Groups}{2} if $$sti{Groups};
+                }
                 last;
             }
         }
@@ -3592,13 +3597,15 @@ NoLoop:
         #} elsif (grep / /, @$props) {
         #    $$tagInfo{List} = 1;
         }
-        # save property list for verbose "adding" message unless this tag already exists
-        $added = \@tagList unless $$tagTablePtr{$tagID};
-        # if this is an empty structure, we must add a Struct field
-        if (not length $val and $$attrs{'rdf:parseType'} and $$attrs{'rdf:parseType'} eq 'Resource') {
-            $$tagInfo{Struct} = { STRUCT_NAME => 'XMP Unknown' };
+        unless ($$tagTablePtr{$tagID} and $$tagTablePtr{$tagID} eq $tagInfo) {
+            # save property list for verbose "adding" message unless this tag already exists
+            $added = \@tagList unless $$tagTablePtr{$tagID};
+            # if this is an empty structure, we must add a Struct field
+            if (not length $val and $$attrs{'rdf:parseType'} and $$attrs{'rdf:parseType'} eq 'Resource') {
+                $$tagInfo{Struct} = { STRUCT_NAME => 'XMP Unknown' } unless $$tagInfo{Struct};
+            }
+            AddTagToTable($tagTablePtr, $tagID, $tagInfo);
         }
-        AddTagToTable($tagTablePtr, $tagID, $tagInfo);
         last;
     }
     # decode value if necessary (et:encoding was used before exiftool 7.71)

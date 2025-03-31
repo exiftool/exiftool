@@ -38,6 +38,7 @@
 #   26) https://github.com/SamsungVR/android_upload_sdk/blob/master/SDKLib/src/main/java/com/samsung/msca/samsungvr/sdk/UserVideo.java
 #   27) https://exiftool.org/forum/index.php?topic=11517.0
 #   28) https://docs.mp3tag.de/mapping/
+#   29) https://developer.apple.com/documentation/quicktime-file-format/media_data_reference_atom
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::QuickTime;
@@ -48,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.14';
+$VERSION = '3.15';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -502,7 +503,7 @@ my %qtFlags = ( #12
 # (used only to avoid warnings when Validate-ing)
 my %dupTagOK = ( mdat => 1, trak => 1, free => 1, infe => 1, sgpd => 1, dimg => 1, CCDT => 1,
                  sbgp => 1, csgm => 1, uuid => 1, cdsc => 1, maxr => 1, '----' => 1 );
-my %dupDirOK = ( ipco => 1, '----' => 1 );
+my %dupDirOK = ( ipco => 1, iref => 1, '----' => 1 );
 
 # the usual atoms required to decode timed metadata with the ExtractEmbedded option
 my %eeStd = ( stco => 'stbl', co64 => 'stbl', stsz => 'stbl', stz2 => 'stbl',
@@ -1227,6 +1228,7 @@ my %userDefined = (
     # clip - clipping --> contains crgn (clip region) (ref 12)
     # mvex - movie extends --> contains mehd (movie extends header), trex (track extends) (ref 14)
     # ICAT - 4 bytes: "6350" (Nikon CoolPix S6900), "6500" (Panasonic FT7)
+    # ctab - color table (ref 29)
 );
 
 # (ref CFFMediaFormat-2_1.pdf)
@@ -1426,6 +1428,7 @@ my %userDefined = (
     # load - track loading settings
     # imap - track input map --> contains '  in' --> contains '  ty', obid
     # prfl - Profile (ref 12)
+    # txas - track exclude from autoselection (ref 29)
 );
 
 # track header data block
@@ -1629,6 +1632,10 @@ my %userDefined = (
             TagTable => 'Image::ExifTool::QuickTime::Meta',
             Start => 4, # must skip 4-byte version number header
         },
+    },
+    tnam => { #29 (NC)
+        Name => 'TrackName',
+        IText => 4,
     },
    'ptv '=> {
         Name => 'PrintToVideo',
@@ -2801,6 +2808,8 @@ my %userDefined = (
         Name => 'Unknown_grpl',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::grpl' },
     },
+    # ctry - country list (ref 29)
+    # lang - language list (ref 29)
 );
 
 # unknown grpl container
@@ -3279,21 +3288,28 @@ my %userDefined = (
 %Image::ExifTool::QuickTime::TrackRef = (
     PROCESS_PROC => \&ProcessMOV,
     GROUPS => { 1 => 'Track#', 2 => 'Video' },
-    chap => { Name => 'ChapterListTrackID', Format => 'int32u' },
-    tmcd => { Name => 'TimeCode', Format => 'int32u' },
+    chap => { Name => 'ChapterListTrackID',     Format => 'int32u' },
+    tmcd => { Name => 'TimecodeTrack',          Format => 'int32u' },
     mpod => { #PH (FLIR MP4)
         Name => 'ElementaryStreamTrack',
         Format => 'int32u',
         ValueConv => '$val =~ s/^1 //; $val',  # (why 2 numbers? -- ignore the first if "1")
     },
-    # also: sync, scpt, ssrc, iTunesInfo
+    # also: iTunesInfo
     cdsc => {
         Name => 'ContentDescribes',
         Format => 'int32u',
         PrintConv => '"Track $val"',
     },
-    # cdep (Structural Dependency QT tag?)
-    # fall - ? int32u, seen: 2
+    clcp => { Name => 'ClosedCaptionTrack',     Format => 'int32u' }, #29
+    fall => { Name => 'AlternateFormatTrack',   Format => 'int32u' }, #29
+    folw => { Name => 'SubtitleTrack',          Format => 'int32u' }, #29
+    forc => { Name => 'ForcedSubtitleTrack',    Format => 'int32u' }, #29
+    scpt => { Name => 'TranscriptTrack',        Format => 'int32u' }, #29
+    ssrc => { Name => 'Non-primarySourceTrack', Format => 'int32u' }, #29
+    sync => { Name => 'SyncronizedTrack',       Format => 'int32u' }, #29
+    # hint - Original media for hint track (ref 29)
+    # cdep (Structural Dependency QT tag?)    
 );
 
 # track aperture mode dimensions atoms
@@ -6582,7 +6598,6 @@ my %userDefined = (
     'apple.photos.variation-identifier'   => { Name => 'ApplePhotosVariationIdentifier',  Writable => 'int64s' },
     'direction.facing' => { Name => 'CameraDirection', Groups => { 2 => 'Location' } },
     'direction.motion' => { Name => 'CameraMotion',    Groups => { 2 => 'Location' } },
-    'location.body'    => { Name => 'LocationBody',    Groups => { 2 => 'Location' } },
     'player.version'                => 'PlayerVersion',
     'player.movie.visual.brightness'=> 'Brightness',
     'player.movie.visual.color'     => 'Color',
@@ -7046,6 +7061,7 @@ my %userDefined = (
         Name => 'MediaInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::MediaInfo' },
     },
+    elng => 'ExtendedLanguageTag', #29 (NC) eg. "zh-CN"
 );
 
 # MP4 media header box (ref 5)
@@ -7637,6 +7653,8 @@ my %userDefined = (
     mrlh => { Name => 'MarlinHeader',    SubDirectory => { TagTable => 'Image::ExifTool::GM::mrlh' } },
     mrlv => { Name => 'MarlinValues',    SubDirectory => { TagTable => 'Image::ExifTool::GM::mrlv' } },
     mrld => { Name => 'MarlinDictionary',SubDirectory => { TagTable => 'Image::ExifTool::GM::mrld' } },
+  # tbox - text box (ref 29)
+  # styl - subtitle style (ref 29)
 );
 
 # AMR decode config box (ref 3)

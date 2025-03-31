@@ -40,7 +40,7 @@
 #        6   int8u  - 0xf0 = population E exponent (in format "N.Fe+0E"), 0x0f = population N digit
 #        7   int16u - 0xf000 = population F digit, 0x0fff = index in region list (admin1)
 #        9   int16u - v1.02: 0x7fff = index in subregion (admin2), 0x8000 = high bit of time zone
-#        9   int16u - v1.03: index in subregion (admin2)
+#        9   int16u - v1.03: index in subregion list (admin2)
 #       11   int8u  - low byte of time zone index
 #       12   int8u  - 0x3f = feature code index (see below), v1.03: 0x80 = high bit of time zone
 #       13   string - UTF8 City name, terminated by newline

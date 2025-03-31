@@ -7,10 +7,23 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.25. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Mar. 31, 2025 - Version 13.26
+
+  - Added a new Olympus CameraType (thanks Herb)
+  - Added a new PentaxModelID (github #322)
+  - Added a new Nikon LensID
+  - Improved Duration calculation for some WAV files
+  - Changed a PCAP tag name and fixed typos in a few others (thanks blue-j)
+  - Patched to avoid VignettingCorr warning for images from some Canon cameras
+  - Patched to avoid some unnecessary duplicate tag warnings when -validate used
+    with HEIC images
+  - Fixed issue with XMP-xmpMM:Pantry items not exhibiting proper List-type
+    behaviour
+
 Mar. 11, 2025 - Version 13.25 (production release)
 
   - IMPORTANT: Fixed issue which could corrupt HEIC images from newer iPhones
-    when writing QuickTime:Rotation
+    under certain conditions when writing QuickTime:Rotation
   - Decode more PLIST information from HEIC images
   - Updated Geolocation databases from current geonames.org files
   - Updated DarwinCore for the 2023 specification (thanks Herb)
@@ -25,7 +38,7 @@ Mar. 7, 2025 - Version 13.24
 
 Mar. 7, 2025 - Version 13.23
 
-  - Added read support for CAP, PCAP and PACPNG files (github #318)
+  - Added read support for CAP, PCAP and PCAPNG files (github #318)
   - Added a number of new Sony LensType2 values (thanks Jos Roost)
   - Added the 2 new GPSAltitudeRef values defined by EXIF 3.0
   - Decode APP4 "Qualcomm Dual Camera Attributes" metadata
@@ -57,7 +70,7 @@ Feb. 20, 2025 - Version 13.21
   - Patched issue that could result in runtime warning for some video files
   - Fixed a bug with the new -plot option that could generate a compiler error
 
-Feb. 20, 2025 - Version 13.20
+Feb. 20, 2025 - Version 13.20 - "SVG Plot"
 
   - Added new -plot option for generating SVG-format plots from tag values
   - Added a new Olympus CameraType

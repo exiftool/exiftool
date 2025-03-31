@@ -170,7 +170,11 @@ my %sAppInfo = (
     %xmpTableDefaults,
     GROUPS => { 1 => 'XMP-xmpDM', 2 => 'Image' },
     NAMESPACE => 'xmpDM',
-    NOTES => 'XMP Dynamic Media namespace tags.',
+    NOTES => q{
+        XMP Dynamic Media namespace tags.  See
+        L<https://developer.adobe.com/xmp/docs/XMPNamespaces/xmpDM/> for the
+        specification.
+    },
     absPeakAudioFilePath=> { },
     album               => { },
     altTapeName         => { },

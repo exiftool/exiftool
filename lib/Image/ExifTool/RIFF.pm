@@ -30,7 +30,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.70';
+$VERSION = '1.71';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -547,6 +547,10 @@ my %code2charset = (
         Name => 'ID3',
         SubDirectory => { TagTable => 'Image::ExifTool::ID3::Main' },
     },        
+   'ID3 ' => { # (NC)
+        Name => 'ID3-2',
+        SubDirectory => { TagTable => 'Image::ExifTool::ID3::Main' },
+    },        
 #
 # WebP-specific tags
 #
@@ -668,6 +672,9 @@ my %code2charset = (
         Name => 'SEAL',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::SEAL' },
     },
+    # LGWV - written by Logic Pro
+    # minf, elm1, regn, umid, DGDA - written by Pro Tools
+    # MXrt, muma, chrp - written by Sequoia Pro
 );
 
 # the maker notes used by some digital cameras
@@ -1554,9 +1561,9 @@ my %code2charset = (
         Name => 'Duration',
         Require => {
             0 => 'RIFF:AvgBytesPerSec',
-            1 => 'FileSize',
         },
         Desire => {
+            1 => 'FileSize', # (only used if 'data' length isn't available)
             # check FrameCount because this calculation only applies
             # to audio-only files (eg. WAV)
             2 => 'FrameCount',
@@ -1564,8 +1571,9 @@ my %code2charset = (
         },
         # (can't calculate duration like this for compressed audio types)
         RawConv => q{
-            return undef if $$self{FileType} =~ /^(LA|OFR|PAC|WV)$/;
-            return(($val[0] and not ($val[2] or $val[3])) ? $val[1] / $val[0] : undef);
+            return undef if $$self{FileType} =~ /^(LA|OFR|PAC|WV)$/ or $val[2] or $val[3];
+            return undef unless $val[0] and ($$self{RIFFDataLen} or $val[1]);
+            return(($$self{RIFFDataLen} || $val[1]) / $val[0]);
         },
         PrintConv => 'ConvertDuration($val)',
     },
@@ -2098,8 +2106,9 @@ sub ProcessRIFF($$)
             $pos += 4;
             $tag .= "_$buff";
             $len -= 4;  # already read 4 bytes (the LIST type)
-        } elsif ($tag eq 'data' and $len == 0xffffffff and $$et{DataSize64}) {
-            $len = $$et{DataSize64};
+        } elsif ($tag eq 'data') {
+            $len = $$et{DataSize64} if $len == 0xffffffff and $$et{DataSize64};
+            $$et{RIFFDataLen} = ($$et{RIFFDataLen} || 0) + $len;
         }
         $et->VPrint(0, "RIFF '${tag}' chunk ($len bytes of data):\n");
         if ($len <= 0) {

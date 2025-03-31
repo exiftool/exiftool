@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28422 tags, with 17656 unique tag names.
+They contain a total of 28431 tags, with 17665 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -6366,7 +6366,9 @@ These tags belong to the ExifTool XMP-xmpBJ family 1 group.
 
 =head3 XMP xmpDM Tags
 
-XMP Dynamic Media namespace tags.
+XMP Dynamic Media namespace tags.  See
+L<https://developer.adobe.com/xmp/docs/XMPNamespaces/xmpDM/> for the
+specification.
 
 These tags belong to the ExifTool XMP-xmpDM family 1 group.
 
@@ -31157,6 +31159,7 @@ MP4 media box.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  'elng'   ExtendedLanguageTag                  no
   'hdlr'   Handler                              QuickTime Handler
   'mdhd'   MediaHeader                          QuickTime MediaHeader
   'minf'   MediaInfo                            QuickTime MediaInfo
@@ -31556,8 +31559,15 @@ MP4 video media header.
   ------   --------                             --------
   'cdsc'   ContentDescribes                     no
   'chap'   ChapterListTrackID                   no
+  'clcp'   ClosedCaptionTrack                   no
+  'fall'   AlternateFormatTrack                 no
+  'folw'   SubtitleTrack                        no
+  'forc'   ForcedSubtitleTrack                  no
   'mpod'   ElementaryStreamTrack                no
-  'tmcd'   TimeCode                             no
+  'scpt'   TranscriptTrack                      no
+  'ssrc'   Non-primarySourceTrack               no
+  'sync'   SyncronizedTrack                     no
+  'tmcd'   TimecodeTrack                        no
 
 =head3 QuickTime UserData Tags
 
@@ -31705,6 +31715,7 @@ the config file.
                UnknownThumbnail                 string
   'time'       TimeStamp                        no
   'titl'       Title                            string/
+  'tnam'       TrackName                        string
   'urat'       UserRating                       undef/
   'uuid'       GarminSoftware                   string
                GarminModel                      no
@@ -32120,6 +32131,7 @@ metadata to WEBP images, but can't yet write to other RIFF-based formats.
   'EXIF'               EXIF                     EXIF
                        UnknownEXIF              no
   'ICCP'               ICC_Profile              ICC_Profile
+  'ID3 '               ID3-2                    ID3
   'IDIT'               DateTimeOriginal         no
   'JUNK'               OlympusJunk              Olympus AVI
                        CasioJunk                EXIF
@@ -40185,7 +40197,7 @@ Tags extracted from  CAP, PCAP and PCAPNG Packet Capture files.
   0x0bac               CustomOption1            no
   0x0bad               CustomOption2            no
   0x4bac               CustomOption3            no
-  0x4bad               CustomOption3            no
+  0x4bad               CustomOption4            no
   'ByteOrder'          ByteOrder                no
   'IDB-2'              DeviceName               no
   'IDB-3'              Description              no
@@ -40197,8 +40209,8 @@ Tags extracted from  CAP, PCAP and PCAPNG Packet Capture files.
   'IDB-9'              TimeStampResolution      no
   'IDB-10'             TimeZone                 no
   'IDB-11'             Filter                   no
-  'IDB-12'             OperatingSytem           no
-  'IDB-13'             FCSLen                   no
+  'IDB-12'             OperatingSystem          no
+  'IDB-13'             FrameCheckSequenceLength no
   'IDB-14'             TimeStampOffset          no
   'IDB-15'             Hardware                 no
   'IDB-16'             TXSpeed                  no
@@ -40207,7 +40219,7 @@ Tags extracted from  CAP, PCAP and PCAPNG Packet Capture files.
   'LinkType'           LinkType                 no
   'PCAPVersion'        PCAPVersion              no
   'SHB-2'              Hardware                 no
-  'SHB-3'              OperatingSytem           no
+  'SHB-3'              OperatingSystem          no
   'SHB-4'              UserApplication          no
   'TimeStamp'          TimeStamp                no
 

@@ -17,10 +17,24 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.26'><b>Mar. 31, 2025 - Version 13.26</b></a>
+<ul>
+<li>Added a new Olympus CameraType (thanks Herb)
+<li>Added a new PentaxModelID (<a href="https://github.com/exiftool/exiftool/issues/322">github #322</a>)
+<li>Added a new Nikon LensID
+<li>Improved Duration calculation for some WAV files
+<li>Changed a PCAP tag name and fixed typos in a few others (thanks blue-j)
+<li>Patched to avoid VignettingCorr warning for images from some Canon cameras
+<li>Patched to avoid some unnecessary duplicate tag warnings when -validate used
+    with HEIC images
+<li>Fixed issue with XMP-xmpMM:Pantry items not exhibiting proper List-type
+    behaviour
+</ul>
+
 <a name='v13.25'><b>Mar. 11, 2025 - Version 13.25</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>IMPORTANT: Fixed issue which could corrupt HEIC images from newer iPhones
-    when writing QuickTime:Rotation
+    under certain conditions when writing QuickTime:Rotation
 <li>Decode more PLIST information from HEIC images
 <li>Updated Geolocation databases from current geonames.org files
 <li>Updated DarwinCore for the 2023 specification (thanks Herb)
@@ -39,7 +53,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 
 <a name='v13.23'><b>Mar. 7, 2025 - Version 13.23</b></a>
 <ul>
-<li>Added read support for <a href="TagNames/PCAP.html">CAP, PCAP and PACPNG files</a> (<a href="https://github.com/exiftool/exiftool/issues/318">github #318</a>)
+<li>Added read support for <a href="TagNames/PCAP.html">CAP, PCAP and PCAPNG files</a> (<a href="https://github.com/exiftool/exiftool/issues/318">github #318</a>)
 <li>Added a number of new Sony LensType2 values (thanks Jos Roost)
 <li>Added the 2 new GPSAltitudeRef values defined by EXIF 3.0
 <li>Decode APP4 "Qualcomm Dual Camera Attributes" metadata
@@ -76,7 +90,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Fixed a bug with the new <a href="plot.html">-plot option</a> that could generate a compiler error
 </ul>
 
-<a name='v13.20'><b>Feb. 20, 2025 - Version 13.20</b></a>
+<a name='v13.20'><b>Feb. 20, 2025 - Version 13.20</b> - "SVG Plot"</a>
 <ul>
 <li>Added new <a href="plot.html">-plot option</a> for generating SVG-format plots from tag values
 <li>Added a new Olympus CameraType

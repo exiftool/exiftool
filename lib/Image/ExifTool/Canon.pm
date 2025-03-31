@@ -2053,7 +2053,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     # 0x4014 (similar to 0x83?)
     0x4015 => [{
         Name => 'VignettingCorr', # (LensPacket)
-        Condition => '$$valPt =~ /^\0/ and $$valPt !~ /^\0\0\0\0/', # (data may be all zeros for 60D)
+        Condition => '$$valPt =~ /^\0/ and $$valPt !~ /^(\0\0\0\0|\x00\x40\xdc\x05)/', # (data may be all zeros for 60D)
         SubDirectory => {
             # (the size word is at byte 2 in this structure)
             Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart+2,$size)',
@@ -2061,7 +2061,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         },
     },{
         Name => 'VignettingCorrUnknown1',
-        Condition => '$$valPt =~ /^[\x01\x02\x10\x20]/ and $$valPt !~ /^\0\0\0\0/',
+        Condition => '$$valPt =~ /^[\x01\x02\x10\x20]/ and $$valPt !~ /^(\0\0\0\0|\x02\x50\x7c\x04)/',
         SubDirectory => {
             # (the size word is at byte 2 in this structure)
             Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart+2,$size)',
@@ -4758,6 +4758,7 @@ my %ciMaxFocal = (
         Format => 'int32u',
         Notes => 'includes electronic + mechanical shutter',
     },
+    # 0x0b5a - related to image stabilization (ref forum17239) (R5)
     # 0x0bb7 - counts down during focus stack (ref forum16111)
 );
 

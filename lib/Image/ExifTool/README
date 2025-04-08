@@ -982,6 +982,11 @@ numerical, and generated automatically otherwise.
                   for use when ExtractInfo is called with the ReEntry flag from
                   inside the RawConv of a tag.
 
+  ByteOrder     : [Non-writable tags extracted with HandleTag and writable EXIF
+                  offset-pair tags only] Specifies byte order if tag value is
+                  stored with a constant byte order that is different from that
+                  of the parent directory.
+
   TagID         : [reserved] Used internally to save the table key for this tag.
                   Note: For XMP tables this corresponds to the XMP property
                   name, but the table key may have a full XMP namespace prefix
@@ -1071,8 +1076,8 @@ numerical, and generated automatically otherwise.
      ByteOrder  : Specifies byte ordering if different than than the rest of the
                   file.  Must be either BigEndian, LittleEndian or Unknown.  If
                   Unknown is specified, the byte order will be determined from
-                  the directory count (however, this can not be done if OffsetPt
-                  is specified).
+                  the directory count for EXIF (however, this can not be done if
+                  OffsetPt is specified).
 
      Validate   : If given, specifies Perl expression which is used to validate
                   the subdirectory data (regardless of Validate option setting).

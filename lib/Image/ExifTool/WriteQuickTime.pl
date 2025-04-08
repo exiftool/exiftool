@@ -1729,6 +1729,7 @@ ItemID2:    foreach $id (reverse sort { $a <=> $b } keys %$items) {
         # (note that $tag may be a binary Keys index here)
         foreach $tag (@addTags) {
             my $tagInfo = $$dirs{$tag} || $$newTags{$tag};
+            next unless ref $tagInfo eq 'HASH'; # (shouldn't happen, but somehow there is forum17260)
             next if defined $$tagInfo{CanCreate} and not $$tagInfo{CanCreate};
             next if defined $$tagInfo{MediaType} and $$et{MediaType} ne $$tagInfo{MediaType};
             my $subdir = $$tagInfo{SubDirectory};

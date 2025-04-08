@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28431 tags, with 17665 unique tag names.
+They contain a total of 28440 tags, with 17667 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -20666,6 +20666,9 @@ Flash information tags for the K10D, K20D and K200D.
       6    AFDefocus                            int8u
       7    AFIntegrationTime                    int8u
      11    AFPointsInFocus                      int8u
+     20    AFPointValues?                       no
+    298    AFPoints                             int8u[41]~
+    399    AFPointsUnknown?                     int8u[41]~
     506    LiveView                             int8u
     509    AFHold                               int8u
 
@@ -20902,6 +20905,7 @@ sensors are located in the camera.
      14    SensorTemperature2                   int16s
      20    CameraTemperature4                   int16s
      22    CameraTemperature5                   int16s
+     42    SensorTemperature                    int16s
 
 =head3 Pentax UnknownInfo Tags
 
@@ -30318,7 +30322,7 @@ for the official QuickTime specification.
   'meta'               Meta                     QuickTime Meta
   'moof'               MovieFragment            QuickTime MovieFragment
   'moov'               Movie                    QuickTime Movie
-  'mpvd'               MotionPhotoVideo         yes
+  'mpvd'               MotionPhotoVideo         undef
   'nbmt'               NextbaseMeta             QuickTime Stream
   'pict'               PreviewPICT              no
   'pnot'               Preview                  QuickTime Preview
@@ -30353,81 +30357,83 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 103 different types of timed GPS metadata from video files.
+currently reads 104 different types of timed GPS metadata from video files.
 
-  Tag Name                                      Writable
-  --------                                      --------
-  Accelerometer                                 no
-  AccelerometerData                             no
-  AngularVelocity                               no
-  CTMD                                          Canon CTMD
-  CameraDateTime                                no
-  CameraModel                                   no
-  Car                                           no
-  DJIDebug?                                     DJI Protobuf
-  DJIMetadata                                   DJI Protobuf
-  DateTimeOriginal                              no
-  DateTimeStamp                                 no
-  Distance                                      no
-  ExposureCompensation                          no
-  ExposureTime                                  no
-  FNumber                                       no
-  FrameNumber                                   no
-  GPSAltitude                                   no
-  GPSDOP                                        no
-  GPSDateTime                                   no
-  GPSLatitude                                   no
-  GPSLatitude2                                  no
-  GPSLongitude                                  no
-  GPSLongitude2                                 no
-  GPSSatellites                                 no
-  GPSSpeed                                      no
-  GPSSpeedRef                                   no
-  GPSTimeStamp                                  no
-  GPSTrack                                      no
-  GPSTrackRef                                   no
-  GSensor                                       no
-  INSV                                          QuickTime INSV_MakerNotes
-  ISO                                           no
-  JpgFromRaw                                    no
-  KiloCalories                                  no
-  MagneticVariation                             no
-  PreviewImage                                  no
-  PreviewInfo                                   QuickTime PreviewInfo
-  RVMI_gReV                                     QuickTime RVMI_gReV
-  RVMI_sReV                                     QuickTime RVMI_sReV
-  RawGSensor                                    no
-  SampleDateTime                                no
-  SampleDuration                                no
-  SampleTime                                    no
-  Text                                          no
-  TimeCode                                      no
-  Unknown00?                                    no
-  Unknown01?                                    no
-  Unknown02?                                    no
-  Unknown03?                                    no
-  UserLabel                                     no
-  VerticalSpeed                                 no
-  VideoTimeStamp                                no
-  camm0                                         QuickTime camm0
-  camm1                                         QuickTime camm1
-  camm2                                         QuickTime camm2
-  camm3                                         QuickTime camm3
-  camm4                                         QuickTime camm4
-  camm5                                         QuickTime camm5
-  camm6                                         QuickTime camm6
-  camm7                                         QuickTime camm7
-  fdsc                                          GoPro fdsc
-  gpmd_Kingslim                                 QuickTime Stream
-  gpmd_Rove                                     QuickTime Stream
-  gpmd_FMAS                                     QuickTime Stream
-  gpmd_Wolfbox                                  QuickTime Stream
-  gpmd_GoPro                                    GoPro GPMF
-  marl                                          GM marl
-  mebx                                          QuickTime Keys
-  mett                                          Parrot mett
-  rtmd                                          Sony rtmd
-  tx3g                                          QuickTime tx3g
+  Tag ID                 Tag Name               Writable
+  ------                 --------               --------
+  'Accelerometer'        Accelerometer          no
+  'AccelerometerData'    AccelerometerData      no
+  'AngularVelocity'      AngularVelocity        no
+  'CTMD'                 CTMD                   Canon CTMD
+  'CameraDateTime'       CameraDateTime         no
+  'CameraModel'          CameraModel            no
+  'Car'                  Car                    no
+  'DateTimeOriginal'     DateTimeOriginal       no
+  'DateTimeStamp'        DateTimeStamp          no
+  'Distance'             Distance               no
+  'ExposureCompensation' ExposureCompensation   no
+  'ExposureTime'         ExposureTime           no
+  'FNumber'              FNumber                no
+  'FrameNumber'          FrameNumber            no
+  'GPSAltitude'          GPSAltitude            no
+  'GPSDOP'               GPSDOP                 no
+  'GPSDateTime'          GPSDateTime            no
+  'GPSLatitude'          GPSLatitude            no
+  'GPSLatitude2'         GPSLatitude2           no
+  'GPSLongitude'         GPSLongitude           no
+  'GPSLongitude2'        GPSLongitude2          no
+  'GPSSatellites'        GPSSatellites          no
+  'GPSSpeed'             GPSSpeed               no
+  'GPSSpeedRef'          GPSSpeedRef            no
+  'GPSTimeStamp'         GPSTimeStamp           no
+  'GPSTrack'             GPSTrack               no
+  'GPSTrackRef'          GPSTrackRef            no
+  'GSensor'              GSensor                no
+  'INSV'                 INSV                   QuickTime INSV_MakerNotes
+  'ISO'                  ISO                    no
+  'JPEG'                 JpgFromRaw             no
+  'KiloCalories'         KiloCalories           no
+  'MagneticVariation'    MagneticVariation      no
+  'RVMI'                 RVMI_gReV              QuickTime RVMI_gReV
+                         RVMI_sReV              QuickTime RVMI_sReV
+  'RawGSensor'           RawGSensor             no
+  'SampleDateTime'       SampleDateTime         no
+  'SampleDuration'       SampleDuration         no
+  'SampleTime'           SampleTime             no
+  'Text'                 Text                   no
+  'TimeCode'             TimeCode               no
+  'Unknown00'            Unknown00?             no
+  'Unknown01'            Unknown01?             no
+  'Unknown02'            Unknown02?             no
+  'Unknown03'            Unknown03?             no
+  'UserLabel'            UserLabel              no
+  'VerticalSpeed'        VerticalSpeed          no
+  'VideoTimeStamp'       VideoTimeStamp         no
+  'camm'                 camm0                  QuickTime camm0
+                         camm1                  QuickTime camm1
+                         camm2                  QuickTime camm2
+                         camm3                  QuickTime camm3
+                         camm4                  QuickTime camm4
+                         camm5                  QuickTime camm5
+                         camm6                  QuickTime camm6
+                         camm7                  QuickTime camm7
+  'dbgi'                 DJIDebug?              DJI Protobuf
+  'djmd'                 DJIMetadata            DJI Protobuf
+  'fdsc'                 fdsc                   GoPro fdsc
+  'gpmd'                 gpmd_Kingslim          QuickTime Stream
+                         gpmd_Rove              QuickTime Stream
+                         gpmd_FMAS              QuickTime Stream
+                         gpmd_Wolfbox           QuickTime Stream
+                         gpmd_GoPro             GoPro GPMF
+  'marl'                 marl                   GM marl
+  'mebx'                 mebx                   QuickTime Keys
+  'mett'                 mett                   Parrot mett
+  'rtmd'                 rtmd                   Sony rtmd
+  'ssmd'                 RoveGPS                QuickTime RoveGPS
+                         Accelerometer          no
+                         PreviewImage           no
+  'text'                 PreviewInfo            QuickTime PreviewInfo
+  'tx3g'                 tx3g                   QuickTime tx3g
 
 =head3 QuickTime INSV_MakerNotes Tags
 
@@ -30437,14 +30443,6 @@ currently reads 103 different types of timed GPS metadata from video files.
   0x0012   Model                                no
   0x001a   Firmware                             no
   0x002a   Parameters                           no
-
-=head3 QuickTime PreviewInfo Tags
-
-Preview stored by TomTom Bandit ActionCam.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      8    PreviewImage                         no
 
 =head3 QuickTime RVMI_gReV Tags
 
@@ -30669,6 +30667,23 @@ VideoKeys family 1 gorup.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'cits'   FaceItem                             QuickTime Keys
+
+=head3 QuickTime RoveGPS Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    GPSLatitude                          no
+      8    GPSLongitude                         no
+     20    GPSSpeed                             no
+     22    GPSDateTime                          no
+
+=head3 QuickTime PreviewInfo Tags
+
+Preview stored by TomTom Bandit ActionCam.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      8    PreviewImage                         no
 
 =head3 QuickTime tx3g Tags
 

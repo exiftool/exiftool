@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.48';
+$VERSION = '3.49';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -736,6 +736,19 @@ my %filterSettings = (
     51 => ['ColorScale', '%d'], #31 Replace Color (1-5)
     52 => ['Toning2', '%+d'], #31 Extract Color (-3-+3)
 );
+
+# order of K-3iii AF points
+my @k3iiiAF = qw(C3 C4 C5 C6 C7 D3 D4 D5 D6 D7 E3 E4 E5 E6 E7 F3 F4 F5 F6 F7
+                 G3 G4 G5 G6 G7 E1 E9 D2 D8 E2 E8 F2 F8 C2 C8 G2 G8 D1 D9 F1 F9);
+
+# print AF Point names
+sub AFPointsK3iii($;$)
+{
+    my @a = split ' ', shift;
+    my @pts;
+    $a[$_] and push @pts, $k3iiiAF[$_] || "Unknown($_)" foreach 0..$#a;
+    return @pts ? join '.', sort @pts : '(none)';
+}
 
 # decoding for Pentax Firmware ID tags - PH
 my %pentaxFirmwareID = (
@@ -5017,6 +5030,31 @@ my %binaryDataAttrs = (
             20 => 'Mid-right',
         },
     },
+    0x14 => {
+        Name => 'AFPointValues',
+        Format => 'int16uRev[61]',
+        Unknown => 1,
+        Notes => 'some unknown values related to each AFPoint',
+        # order is the same as AFPoints below, but there is an additional value for the
+        # following AFPoints in this order starting at index 28 in the array: C3 C4 C5 C6 C7
+        # D3 D4 D5 D6 D7 E3 E4 E5 E6 E7 F3 F4 F5 F6 F7 G3 G4 G5 G6 G7 E1 E9 D2 D8 E2 E8 F2 F8
+        # (values are int16s stored in reversed byte order)
+        ValueConv => 'my @a=split " ",$val;$_>32767 and $_-=65536 foreach @a;join " ",@a',
+    },
+    0x12a => { # byte has a value of 2 if corresponding AF point is selected
+        Name => 'AFPoints',
+        Condition => '$$self{Model} eq "PENTAX K-3 Mark III"', # any other models?
+        Format => 'int8u[41]',
+        PrintConv => \&AFPointsK3iii,
+    },
+    0x18f => { # byte has a value of 1 if corresponding AF point is in focus maybe?
+        # usually the same points as AFPoints above, but not always
+        Name => 'AFPointsUnknown',
+        Condition => '$$self{Model} eq "PENTAX K-3 Mark III"', # any other models?
+        Unknown => 1,
+        Format => 'int8u[41]',
+        PrintConv => \&AFPointsK3iii,
+    },
     0x1fa => {
         Name => 'LiveView',
         Notes => 'decoded only for the K-3 III',
@@ -5740,6 +5778,7 @@ my %binaryDataAttrs = (
     #  more quickly than CameraTemperature when shooting video.)
     0x0c => {
         Name => 'SensorTemperature', #forum6677 (was CameraTemperature2)
+        Condition => '$$self{Model} !~ /K-3 Mark III/', # (and maybe others?)
         Format => 'int16s',
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
@@ -5748,6 +5787,7 @@ my %binaryDataAttrs = (
     },
     0x0e => {
         Name => 'SensorTemperature2', #forum6677 (was CameraTemperature3)
+        Condition => '$$self{Model} ne "K-3 Mark III"', # (and maybe others?)
         Format => 'int16s',
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
@@ -5769,6 +5809,15 @@ my %binaryDataAttrs = (
         PrintConvInv => '$val=~s/ ?c$//i; $val',
     },
     # 0x18,0x1a,0x1c,0x1e = int16u[4] BlackPoint - PH
+    0x2a => {
+        Name => 'SensorTemperature',
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
+        Format => 'int16s',
+        ValueConv => '$val / 10',
+        ValueConvInv => '$val * 10',
+        PrintConv => 'sprintf("%.1f C", $val)',
+        PrintConvInv => '$val=~s/ ?c$//i; $val',
+    },
 );
 
 # currently unknown info

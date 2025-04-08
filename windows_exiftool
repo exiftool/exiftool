@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.26';
+my $version = '13.27';
 
 $^W = 1;    # enable global warnings
 
@@ -4291,6 +4291,7 @@ sub ScanDir($$;$)
             next unless $recurse;
             # ignore directories starting with "." by default
             next if $file =~ /^\./ and $recurse == 1;
+            # note: this doesn't work in Windows cmd (see forum17243)
             next if $ignore{$file} or ($ignore{SYMLINKS} and -l $path);
             ScanDir($et, $path, $list);
             last if $end;

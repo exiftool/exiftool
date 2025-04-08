@@ -3679,13 +3679,28 @@ AFPoint is the first reported)</span></span><table class=cols><tr>
   <br>20 = Mid-right</td></tr></table>
 </td></tr>
 <tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>AFPointValues?</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(some unknown values related to each AFPoint)</span></span></td></tr>
+<tr class=b>
+<td class=r title='298 = 0x12a'>298</td>
+<td>AFPoints</td>
+<td class=c title=' ~ = Writable only with -n'>int8u[41]~</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='399 = 0x18f'>399</td>
+<td>AFPointsUnknown?</td>
+<td class=c title=' ~ = Writable only with -n'>int8u[41]~</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='506 = 0x1fa'>506</td>
 <td>LiveView</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(decoded only for the K-3 III)</span>
   <br>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='509 = 0x1fd'>509</td>
 <td>AFHold</td>
 <td class=c>int8u</td>
@@ -4594,6 +4609,11 @@ sensors are located in the camera.</p>
 <td>CameraTemperature5</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td class=r title='42 = 0x2a'>42</td>
+<td>SensorTemperature</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='UnknownInfo'>Pentax UnknownInfo Tags</a></h2>
@@ -5043,7 +5063,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 31, 2025</i>
+<br><i>Last revised Apr 8, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

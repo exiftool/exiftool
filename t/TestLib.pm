@@ -254,7 +254,7 @@ sub nearTime($$$$)
     my $t1 = Image::ExifTool::GetUnixTime($tok1, 'local') or return 0;
     my $t2 = Image::ExifTool::GetUnixTime($tok2, 'local') or return 0;
     my $td = $t2 - $t1;
-    if ($td) {
+    if (abs($td) > 0.0001) { # (allow for round-off errors in fractional seconds)
         # patch for the MirBSD leap-second unconformity
         # (120 leap seconds should cover us until _well_ into the future)
         return 0 unless $^O eq 'mirbsd' and $td < 0 and $td > -120;

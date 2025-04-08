@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf);
 
-$VERSION = '13.26';
+$VERSION = '13.27';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -9213,10 +9213,14 @@ sub HandleTag($$$$;%)
         if ($start >= 0 and $start + $size <= $dLen) {
             $format = $$tagInfo{Format} || $$tagTablePtr{FORMAT};
             $format = $pfmt if not $format and $pfmt and $formatSize{$pfmt};
-            if ($format) {
+            if (not $format) {
+                $val = substr($$dataPt, $start, $size);
+            } elsif (not $$tagInfo{ByteOrder}) {
                 $val = ReadValue($dataPt, $start, $format, $$tagInfo{Count}, $size, \$rational);
             } else {
-                $val = substr($$dataPt, $start, $size);
+                my $oldOrder = GetByteOrder(), SetByteOrder($$tagInfo{ByteOrder});
+                $val = ReadValue($dataPt, $start, $format, $$tagInfo{Count}, $size, \$rational);
+                SetByteOrder($oldOrder);
             }
             $binVal = substr($$dataPt, $start, $size) if $$self{OPTIONS}{SaveBin};
         } else {

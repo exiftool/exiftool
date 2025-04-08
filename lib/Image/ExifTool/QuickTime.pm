@@ -945,7 +945,7 @@ my %userDefined = (
         Notes => 'MP4-format video saved in Samsung motion-photo HEIC images.',
         Binary => 1,
         # note that this may be written and/or deleted, but can't currently be added back again
-        Writable => 1,
+        Writable => 'undef',
     },
     # '35AX'? - seen "AT" (Yada RoadCam Pro 4K dashcam)
     cust => 'CustomInfo', # 70mai A810

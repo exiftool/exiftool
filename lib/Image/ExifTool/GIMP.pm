@@ -279,7 +279,7 @@ under the same terms as Perl itself.
 
 =over 4
 
-=item L<GIMP source code>
+=item L<https://developer.gimp.org/core/setup/git/>
 
 =item L<http://svn.gnome.org/viewvc/gimp/trunk/devel-docs/xcf.txt?view=markup>
 

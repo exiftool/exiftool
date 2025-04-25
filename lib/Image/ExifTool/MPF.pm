@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.15';
+$VERSION = '1.16';
 
 sub ProcessMPImageList($$$);
 
@@ -127,11 +127,15 @@ sub ProcessMPImageList($$$);
             0x000000 => 'Undefined',
             0x010001 => 'Large Thumbnail (VGA equivalent)',
             0x010002 => 'Large Thumbnail (full HD equivalent)',
+            0x010003 => 'Large Thumbnail (4K equivalent)',
+            0x010004 => 'Large Thumbnail (8K equivalent)',
+            0x010005 => 'Large Thumbnail (16K equivalent)',
             0x020001 => 'Multi-frame Panorama',
             0x020002 => 'Multi-frame Disparity',
             0x020003 => 'Multi-angle',
             0x030000 => 'Baseline MP Primary Image',
             0x040000 => 'Original Preservation Image', # (Exif 3.0)
+            0x050000 => 'Gain Map Image',
         },
     },
     4 => {

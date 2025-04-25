@@ -783,9 +783,9 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>&#39;1 4&#39; = Auto PICT (Standard)
   <br>&#39;1 5&#39; = Auto PICT (Portrait)
   <br>&#39;1 6&#39; = Auto PICT (Landscape)
-  <br>&#39;1 7&#39; = Auto PICT (Macro)</td><td>&nbsp;&nbsp;</td>
-  <td>&#39;1 8&#39; = Auto PICT (Sport)
-  <br>&#39;2 0&#39; = Program (HyP)
+  <br>&#39;1 7&#39; = Auto PICT (Macro)
+  <br>&#39;1 8&#39; = Auto PICT (Sport)</td><td>&nbsp;&nbsp;</td>
+  <td>&#39;2 0&#39; = Program (HyP)
   <br>&#39;2 1&#39; = Hi-speed Program (HyP)
   <br>&#39;2 2&#39; = DOF Program (HyP)
   <br>&#39;2 3&#39; = MTF Program (HyP)
@@ -810,6 +810,7 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>&#39;18 22&#39; = Auto Program (Shallow DOF)
   <br>&#39;19 0&#39; = Astrotracer
   <br>&#39;20 22&#39; = Blur Control
+  <br>&#39;26 0&#39; = Shutter and Aperture Priority (TAv)
   <br>&#39;249 0&#39; = Movie (TAv)
   <br>&#39;250 0&#39; = Movie (TAv, Auto Aperture)
   <br>&#39;251 0&#39; = Movie (Manual)
@@ -3685,9 +3686,10 @@ AFPoint is the first reported)</span></span><table class=cols><tr>
 <td><span class=s><span class=n>(some unknown values related to each AFPoint)</span></span></td></tr>
 <tr class=b>
 <td class=r title='298 = 0x12a'>298</td>
-<td>AFPoints</td>
+<td>AFPointsSelected</td>
 <td class=c title=' ~ = Writable only with -n'>int8u[41]~</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(K-3III only. 41 selectable AF points from a total of 101 available in a 13x9
+grid. Columns are labelled A-M and rows are 1-9. The center point is G5)</span></span></td></tr>
 <tr>
 <td class=r title='399 = 0x18f'>399</td>
 <td>AFPointsUnknown?</td>
@@ -5063,7 +5065,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 8, 2025</i>
+<br><i>Last revised Apr 16, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

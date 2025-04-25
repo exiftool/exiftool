@@ -7,6 +7,24 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.25. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Apr. 25, 2025 - Version 13.28
+
+  - Added print conversion for Pentax AFPointValues
+  - Added another Pentax PictureMode value
+  - Decode timed GPS from GKU D900 dashcam videos
+  - Decode Panasonic AFAreaSize (thanks andrewj)
+  - Decode timed telemetry data from newer ARCore videos
+  - Decode ShutterCount for Canon EOS R8 and R50 (github #325)
+  - Decode ThumbnailTIFF from some Insta360 videos
+  - Decode AROT:HDRGainCurveSize from APP10
+  - Updated to the 2025 MPF specification
+  - Renamed K-3III AFPoints to AFPointsSelected and changed decoding
+  - Fixed bug introduced in 13.23 that could cause an incorrect parsing of XMP
+    attributes containing an equals sign
+  - Fixed issue reading timed GPS from some Insta360 videos, and issue where
+    writing these videos would fail
+  - Fixed exif2xmp.args and xmp2exif.args to properly handle EXIF:ImageUniqueID
+
 Apr. 8, 2025 - Version 13.27
 
   - Decode AF points for the Pentax K-3III

@@ -987,6 +987,11 @@ numerical, and generated automatically otherwise.
                   stored with a constant byte order that is different from that
                   of the parent directory.
 
+  DontRead      : [QuickTime tags with compatible SubDirectory entries only]
+                  Avoid reading subdirectory data from file.  Instead, pass RAF
+                  reference (with current position at start of directory) and
+                  DirEnd.
+
   TagID         : [reserved] Used internally to save the table key for this tag.
                   Note: For XMP tables this corresponds to the XMP property
                   name, but the table key may have a full XMP namespace prefix

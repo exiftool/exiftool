@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.49';
+$VERSION = '3.50';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -737,18 +737,17 @@ my %filterSettings = (
     52 => ['Toning2', '%+d'], #31 Extract Color (-3-+3)
 );
 
-# order of K-3iii AF points
-my @k3iiiAF = qw(C3 C4 C5 C6 C7 D3 D4 D5 D6 D7 E3 E4 E5 E6 E7 F3 F4 F5 F6 F7
-                 G3 G4 G5 G6 G7 E1 E9 D2 D8 E2 E8 F2 F8 C2 C8 G2 G8 D1 D9 F1 F9);
-
-# print AF Point names
-sub AFPointsK3iii($;$)
-{
-    my @a = split ' ', shift;
-    my @pts;
-    $a[$_] and push @pts, $k3iiiAF[$_] || "Unknown($_)" foreach 0..$#a;
-    return @pts ? join '.', sort @pts : '(none)';
-}
+# order of selectable K-3iii AF points.  The array looks like this:
+#     B1 C1 E1 G1 I1 K1 L1
+#  A3 B3 C3 E3 G3 I3 K3 L3 M3
+#  A5 B5 C5 E5 G5 I5 K5 L5 M5
+#  A7 B7 C7 E7 G7 I7 K7 L7 M7
+#     B9 C9 E9 G9 I9 K9 L9
+my @k3iiiAF = qw(
+    C1 E1 G1 I1 K1 C3 E3 G3 I3 K3 C5 E5 G5
+    I5 K5 C7 E7 G7 I7 K7 C9 E9 G9 I9 K9 A5 M5 B3
+    L3 B5 L5 B7 L7 B1 L1 B9 L9 A3 M3 A7 M7
+);
 
 # decoding for Pentax Firmware ID tags - PH
 my %pentaxFirmwareID = (
@@ -1957,6 +1956,7 @@ my %binaryDataAttrs = (
             '18 3' => 'Auto Program (MTF)', #PH (NC)
             '18 22' => 'Auto Program (Shallow DOF)', #PH (NC)
             '20 22' => 'Blur Control', #PH (Q)
+            '26 0' => 'Shutter and Aperture Priority (TAv)', #PH (K-3III)
             '249 0' => 'Movie (TAv)', #31
             '250 0' => 'Movie (TAv, Auto Aperture)', #31
             '251 0' => 'Movie (Manual)', #31
@@ -4931,6 +4931,7 @@ my %binaryDataAttrs = (
     # CalFlag, ContrastFlag, PrecalFlag, SelectSensor
     0x00 => { #PH
         Name => 'AFPointsUnknown1',
+        Condition => '$$self{Model} !~ /K-3 Mark III/', # (and maybe others?)
         Unknown => 1,
         Format => 'int16u',
         ValueConv => '$self->Options("Unknown") ? $val : $val & 0x7ff',
@@ -4958,6 +4959,7 @@ my %binaryDataAttrs = (
     },
     0x02 => { #PH
         Name => 'AFPointsUnknown2',
+        Condition => '$$self{Model} !~ /K-3 Mark III/', # (and maybe others?)
         Unknown => 1,
         Format => 'int16u',
         ValueConv => '$self->Options("Unknown") ? $val : $val & 0x7ff',
@@ -5032,22 +5034,32 @@ my %binaryDataAttrs = (
     },
     0x14 => {
         Name => 'AFPointValues',
-        Format => 'int16uRev[61]',
+        Condition => '$$self{Model} eq "PENTAX K-3 Mark III"', # any other models?
+        Format => 'int16uRev[69]',
         Unknown => 1,
         Notes => 'some unknown values related to each AFPoint',
-        # order is the same as AFPoints below, but there is an additional value for the
-        # following AFPoints in this order starting at index 28 in the array: C3 C4 C5 C6 C7
-        # D3 D4 D5 D6 D7 E3 E4 E5 E6 E7 F3 F4 F5 F6 F7 G3 G4 G5 G6 G7 E1 E9 D2 D8 E2 E8 F2 F8
+        # order is the same as AFPoints below, but there is an additional value for
+        # each AF point starting at offset 28 in the array (yes, the range overlaps
+        # with the 1st values)
         # (values are int16s stored in reversed byte order)
         ValueConv => 'my @a=split " ",$val;$_>32767 and $_-=65536 foreach @a;join " ",@a',
+        PrintConv => \&AFPointValues,
     },
     0x12a => { # byte has a value of 2 if corresponding AF point is selected
-        Name => 'AFPoints',
+        Name => 'AFPointsSelected',
         Condition => '$$self{Model} eq "PENTAX K-3 Mark III"', # any other models?
+        Notes => q{
+            K-3III only. 41 selectable AF points from a total of 101 available in a 13x9
+            grid. Columns are labelled A-M and rows are 1-9. The center point is G5
+        },
         Format => 'int8u[41]',
-        PrintConv => \&AFPointsK3iii,
+        PrintConv => 'Image::ExifTool::Pentax::AFPointsK3iii($val,$self,2)',
     },
-    0x18f => { # byte has a value of 1 if corresponding AF point is in focus maybe?
+#
+# (maybe not coincidentally, there are 60 unknown bytes
+#  here, and there are also 60 non-selectable AF points)
+#
+    0x18f => { # byte has a value of 1 if corresponding AF point is ... in focus maybe?
         # usually the same points as AFPoints above, but not always
         Name => 'AFPointsUnknown',
         Condition => '$$self{Model} eq "PENTAX K-3 Mark III"', # any other models?
@@ -5787,7 +5799,7 @@ my %binaryDataAttrs = (
     },
     0x0e => {
         Name => 'SensorTemperature2', #forum6677 (was CameraTemperature3)
-        Condition => '$$self{Model} ne "K-3 Mark III"', # (and maybe others?)
+        Condition => '$$self{Model} !~ /K-3 Mark III/', # (and maybe others?)
         Format => 'int16s',
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
@@ -6404,6 +6416,45 @@ sub DecodeAFPoints($$$$;$)
         }
     }
     return join(',', @bitList);
+}
+
+#------------------------------------------------------------------------------
+# Print AF Point names for K-3III (ref PH)
+# Inputs: 0) value, 1) ExifTool ref, 2) optional value to match
+sub AFPointsK3iii($$;$)
+{
+    my @a = split ' ', $_[0];
+    my $match = $_[2];
+    my @pts;
+    if ($match) {
+        $a[$_] == $match and push @pts, $k3iiiAF[$_] || "Unknown($_)" foreach 0..$#a;
+    } else {
+        $a[$_] and push @pts, $k3iiiAF[$_] || "Unknown($_)" foreach 0..$#a;
+    }
+    return @pts ? join ',', sort @pts : '(none)';
+}
+
+#------------------------------------------------------------------------------
+# Print AF point values for K-3III (ref PH)
+# Inputs: 0) value, 1) ExifTool ref
+# Notes: this is experimental and not well understood
+sub AFPointValues($$)
+{
+    my @a = split ' ', shift;
+    my @vals;
+    # (I really don't understand why Pentax seemed to use 28 instead of 41 for
+    # the first index of the 2nd value, because as it stands there is
+    # overlap between the ranges of the 1st and 2nd values, and there is
+    # no way to tell which is which for cases were multiple points have values)
+    foreach (0 .. $#a) {
+        next unless $a[$_];
+        my $pt = $k3iiiAF[$_] ? $k3iiiAF[$_] . '=' : $k3iiiAF[$_-28] . '=/';
+        push @vals, "$pt$a[$_]";
+        next unless $a[$_ + 28];
+        $vals[-1] .= '/' . $a[$_ + 28];
+        $a[$_ + 28] = undef;
+    }
+    return @vals ? join ',', sort @vals : '(none)';
 }
 
 #------------------------------------------------------------------------------

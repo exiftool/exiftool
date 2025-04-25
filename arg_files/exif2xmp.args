@@ -15,6 +15,7 @@
 #               2022/03/31 - PH IPTC Photometadata Mapping Guidelines 2202.1 update
 #               2024/10/24 - PH Additions for the 2024 EXIF for XMP spec
 #               2025/01/16 - PH Copy Composite SubSec tags to XMP-exif
+#               2025-04-22 - PH Fixed DigitalImageGUID source tag
 #
 # References:   http://www.metadataworkinggroup.org/specs/
 #               https://iptc.org/std/photometadata/documentation/mappingguidelines/
@@ -43,7 +44,7 @@
 -XMP-xmp:CreatorTool < EXIF:Software
 -XMP-dc:Rights < EXIF:Copyright
 -XMP-dc:Creator < EXIF:Artist
--XMP-iptcExt:DigitalImageGUID < EXIF:DigImageGUID
+-XMP-iptcExt:DigitalImageGUID < EXIF:ImageUniqueID
 # XMP flash information is translated by the Composite Flash tag
 -Composite:Flash < EXIF:Flash
 # overwrite GPS tags which have different formats in XMP

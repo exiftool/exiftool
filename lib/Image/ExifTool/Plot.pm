@@ -11,7 +11,7 @@ package Image::ExifTool::Plot;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 # default plot settings (lower-case settings may be overridden by the user)
 my %defaults = (
@@ -262,23 +262,35 @@ sub Draw($$)
 {
     my ($self, $fp) = @_;
     my ($min, $max, $xmin, $xmax, $name, $style) = @$self{qw(Min Max XMin XMax Name style)};
+    my ($plotNum, $multiMulti);
 
     if (not defined $min or not defined $xmin) {
         $$self{Error} = 'Nothing to plot';
         return;
     }
-    my ($i, $n, %col, %class, $dx, $dy, $dx2, $xAxis, $x, $y, $px, $py, @og);
-    my ($noLegend, $xname, $xdat, $xdiff, $diff, %markID, $plotNum);
     my $scat = $$self{type} =~ /^s/ ? 1 : 0;
     my $hist = $$self{type} =~ /^h/ ? [ ] : 0;
-    my $multi = int($$self{multi} || 0);
+    my $multi = $$self{multi} || 0;
+    my @multi = $multi =~ /\d+/g;
+    my @names = @$name;
+    shift @names if $scat;
+    $multi = shift @multi;
     $multi = 0 unless $multi > 0;
     $style or $style = $hist ? 'line+fill' : 'line';
     unless ($style =~ /\b[mpl]/ or ($hist and $style =~ /\bf/)) {
         $$self{Error} = 'Invalid plot Style setting';
         return;
     }
-    my $numPlots = $multi ? scalar(@$name) - $scat : 1;
+    my $numPlots = 0;
+    if ($multi) {
+        my $n;
+        for ($n=0; $n<scalar(@$name)-$scat; ++$numPlots) {
+            $n += ($multi[$numPlots] || 1);
+            $multiMulti = 1 if $multi[$numPlots] and $multi[$numPlots] > 1;
+        }
+    } else {
+        $numPlots = 1;
+    }
     my @size = @{$$self{size}};
     my $sy = $size[1];
     if ($multi) {
@@ -293,6 +305,8 @@ sub Draw($$)
 <title>$tmp</title>};
   # loop through all plots
   for ($plotNum=0; $plotNum<$numPlots; ++$plotNum) {
+    my ($i, $n, %col, %class, $dx, $dy, $dx2, $xAxis, $x, $y, $px, $py, @og);
+    my ($noLegend, $xname, $xdat, $xdiff, $diff, %markID);
     if ($numPlots > 1) {
         print $fp "\n<g transform='translate(", ($plotNum % $multi) * $size[0],
                   ',', int($plotNum/$multi) * $size[1], ")'>";
@@ -304,14 +318,19 @@ sub Draw($$)
         }
         $name = $$self{Name} = [ ];
         push @{$$self{Name}}, $$self{SaveName}[0] if $scat;
-        push @{$$self{Name}}, $$self{SaveName}[$scat + $plotNum];
-        my $dat = $$self{Data}{$$self{Name}[$scat]};
+        foreach (0 .. (($multi[$plotNum] || 1) - 1)) {
+            push @{$$self{Name}}, shift(@names);
+        }
+warn "@{$$self{Name}}\n";
         undef $min; undef $max;
-        foreach (@$dat) {
-            defined or next;
-            defined $min or $min = $max = $_, next;
-            $min > $_ and $min = $_;
-            $max < $_ and $max = $_;
+        foreach ($scat .. (@{$$self{Name}} - 1)) {
+            my $dat = $$self{Data}{$$self{Name}[$_]};
+            foreach (@$dat) {
+                defined or next;
+                defined $min or $min = $max = $_, next;
+                $min > $_ and $min = $_;
+                $max < $_ and $max = $_;
+            }
         }
     }
     my ($data, $title, $xlabel, $ylabel, $cols, $marks, $tpad, $wid) =
@@ -321,12 +340,12 @@ sub Draw($$)
 
     # set reasonable default titles and labels
     $xname = shift @name if $scat;
-    $title = "$name[0] vs $xname" if $scat and defined $title and not $title and @name == 1;
+    $title = "$name[0] vs $xname" if $scat and defined $title and not $title and @name == 1 and not $multi;
     if ($scat || $hist and defined $xlabel and not $xlabel) {
         $xlabel = $$name[0];
         $noLegend = 1 if $hist;
     }
-    if (defined $ylabel and not $ylabel and @name == 1) {
+    if (defined $ylabel and not $ylabel and @name == 1 and not $multiMulti) {
         $ylabel = $hist ? 'Count' : $name[0];
         $noLegend = 1 unless $hist;
     }
@@ -645,7 +664,9 @@ Change plot settings.
   Title, XLabel, YLabel - plot title and x/y axis labels (no default)
   XMin, XMax            - x axis minimum/maximum (autoscaling if not set)
   YMin, YMax            - y axis minimum/maximum
-  Multi                 - flag to draw multiple plots, one for each dataset
+  Multi                 - number of columns when drawing multiple plots,
+                          followed optional number of datasets for each
+                          plot (1 by default) using any separator
   Split                 - flag to split strings of numbers into lists
                           (> 1 to split into lists of N items)
   "Grid=darkgray"       - grid color

@@ -2,7 +2,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="600"
  preserveAspectRatio="xMidYMid meet" viewBox="0 0 800 600">
-<title>Plot by ExifTool 13.22</title>
+<title>Plot by ExifTool 13.28</title>
 <g transform='translate(0,0)'>
 <!-- Definitions -->
 <defs>
@@ -63,7 +63,8 @@ M55 73.8 h330 M55 44.4 h330 M55 15 h330 '/>
 <!-- Definitions -->
 <defs>
 <clipPath id='plot-area'><rect x='54' y='9' width='337' height='247'/></clipPath>
-</defs><style>
+</defs>
+<style>
   text { fill: black }
 </style>
 <!-- X axis -->
@@ -120,7 +121,8 @@ M55 109 h330 M55 85.5 h330 M55 62 h330 M55 38.5 h330 M55 15 h330 '/>
 <!-- Definitions -->
 <defs>
 <clipPath id='plot-area'><rect x='54' y='9' width='337' height='247'/></clipPath>
-</defs><style>
+</defs>
+<style>
   text { fill: black }
 </style>
 <!-- X axis -->
@@ -176,7 +178,8 @@ M55 48.6 h330 M55 15 h330 '/>
 <!-- Definitions -->
 <defs>
 <clipPath id='plot-area'><rect x='54' y='9' width='337' height='247'/></clipPath>
-</defs><style>
+</defs>
+<style>
   text { fill: black }
 </style>
 <!-- X axis -->

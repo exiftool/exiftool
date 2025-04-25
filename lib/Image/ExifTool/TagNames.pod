@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28440 tags, with 17667 unique tag names.
+They contain a total of 28445 tags, with 17669 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -154,7 +154,7 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
                InfiRaySensor                    InfiRay Sensor
                SEAL                             XMP SEAL
   'APP10'      Comment                          no
-               HDRGainCurve                     no
+               HDRGainInfo                      -
   'APP11'      JPEG-HDR                         JPEG HDR
                JUMBF                            Jpeg2000
   'APP12'      PictureInfo                      APP12 PictureInfo
@@ -171,6 +171,7 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
                FotoStation                      FotoStation
                PhotoMechanic                    PhotoMechanic
                MIE                              MIE
+               MPF                              MPF
                Samsung                          Samsung Trailer
                Vivo                             Trailer Vivo
                OnePlus                          Trailer OnePlus
@@ -276,6 +277,13 @@ Tags found in the XML metadata of the APP9 "Media Jukebox" segment.
   Places                                        no
   Tool_Name                                     no
   Tool_Version                                  no
+
+=head3 JPEG HDRGainInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      6    HDRGainCurveSize                     no
+     10    HDRGainCurve                         no
 
 =head3 JPEG HDR Tags
 
@@ -19903,6 +19911,7 @@ These tags are used in Panasonic/Leica cameras.
   0x00d1   ISO                                  int32u
   0x00d2   MonochromeGrainEffect                int16u
   0x00d6   NoiseReductionStrength               rational64s
+  0x00de   AFAreaSize                           rational64u[2]
   0x00e4   LensTypeModel                        int16u
   0x00e8   MinimumISO                           int32u
   0x00e9   AFSubjectDetection                   int16u
@@ -20667,7 +20676,7 @@ Flash information tags for the K10D, K20D and K200D.
       7    AFIntegrationTime                    int8u
      11    AFPointsInFocus                      int8u
      20    AFPointValues?                       no
-    298    AFPoints                             int8u[41]~
+    298    AFPointsSelected                     int8u[41]~
     399    AFPointsUnknown?                     int8u[41]~
     506    LiveView                             int8u
     509    AFHold                               int8u
@@ -30314,6 +30323,7 @@ for the official QuickTime specification.
   'gdat'               GPSData                  QuickTime Stream
   'gps0'               GPSTrack                 QuickTime Stream
   'gsen'               GSensor                  QuickTime Stream
+  'inst'               Insta360Info             QuickTime Stream
   'junk'               Junk?                    no
   'mdat'               MediaData?               no
   'mdat-offset'        MediaDataOffset          no
@@ -30338,6 +30348,7 @@ for the official QuickTime specification.
   'udat'               GPSLog                   no
   'udta'               KenwoodData              QuickTime Stream
                        LigoJSON                 QuickTime Stream
+                       GKUData                  QuickTime Stream
                        FLIRData                 FLIR UserData
   'uuid'               XMP                      XMP
                        UUID-PROF                QuickTime Profile
@@ -30357,7 +30368,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 104 different types of timed GPS metadata from video files.
+currently reads 107 different types of timed GPS metadata from video files.
 
   Tag ID                 Tag Name               Writable
   ------                 --------               --------
@@ -31707,6 +31718,7 @@ the config file.
   'mcvr'       PreviewImage                     string
   'meta'       Meta                             QuickTime Meta
   'modl'       Model                            no
+  'nail'       ThumbnailTIFF                    no
   'name'       Name                             string
   'perf'       Performer                        string/
   'pmcc'       GarminSettings                   string
@@ -32775,9 +32787,11 @@ specification.
   'E2'                         ParrotFollowMe   Parrot FollowMe
   'E3'                         ParrotAutomation Parrot Automation
   'application/arcore-accel'   ARCoreAccel      Parrot ARCoreAccel
+  'application/arcore-accel-0' ARCoreAccel0     Parrot ARCoreAccel0
   'application/arcore-custom-event'
                                ARCoreCustom     Parrot ARCoreCustom
   'application/arcore-gyro'    ARCoreGyro       Parrot ARCoreGyro
+  'application/arcore-gyro-0'  ARCoreGyro0      Parrot ARCoreGyro0
   'application/arcore-video-0' ARCoreVideo      Parrot ARCoreVideo
 
 =head3 Parrot V1 Tags
@@ -32915,6 +32929,14 @@ ARCore accelerometer data.
       4    AccelerometerUnknown?                no
       5    Accelerometer                        no
 
+=head3 Parrot ARCoreAccel0 Tags
+
+ARCore accelerometer data.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      9    Accelerometer                        no
+
 =head3 Parrot ARCoreCustom Tags
 
   Index1   Tag Name                             Writable
@@ -32923,12 +32945,20 @@ ARCore accelerometer data.
 
 =head3 Parrot ARCoreGyro Tags
 
-ARCore accelerometer data.
+ARCore gyro data.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
       4    GyroscopeUnknown?                    no
       5    Gyroscope                            no
+
+=head3 Parrot ARCoreGyro0 Tags
+
+ARCore gyro data.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      9    Gyroscope                            no
 
 =head3 Parrot ARCoreVideo Tags
 

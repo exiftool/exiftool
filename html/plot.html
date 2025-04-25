@@ -141,7 +141,10 @@ situations, and may be disabled with <code><i>NAME</i>=</code>.</td></tr>
 <tr><td valign=top><sup>6</sup></td><td>Multiple plots are draw together in the same SVG
 image with the specified number of columns within the width of the output image. The image
 height is adjusted to fit the required number of rows. The X axes of all plots are the
-same, but the Y axes are independent.  See <a href='#EX5'>example 5</a>.</td></tr>
+same, but the Y axes are independent.  May be followed by the number of datasets
+for each plot, using any separator.  For example, '<code>Multi=1.3.3</code>' draws
+the plots in a single column, with 3 datasets each in the first and second plots.
+<a href='#EX5'>Example 5</a> shows a simple usage.</td></tr>
 <tr><td valign=top><sup>7</sup></td><td>For example, if a tag contains a set of N accelerometer
 readings, each composed of 3 values (X, Y and Z directions), then these could be plotted
 as 3 separate datasets by setting <code>Split=3</code>.  See <a href='#EX4'>example 4</a>

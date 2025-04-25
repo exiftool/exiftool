@@ -4,7 +4,7 @@
       "Phil Harvey (philharvey66 at gmail.com)"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "ExtUtils::MakeMaker version 7.34, CPAN::Meta::Converter version 2.143240, CPAN::Meta::Converter version 2.133380",
+   "generated_by" : "ExtUtils::MakeMaker version 7.34, CPAN::Meta::Converter version 2.143240, CPAN::Meta::Converter version 2.133380, CPAN::Meta::Converter version 2.150010",
    "license" : [
       "perl_5"
    ],
@@ -50,5 +50,6 @@
       }
    },
    "release_status" : "stable",
-   "version" : "13.27"
+   "version" : "13.28",
+   "x_serialization_backend" : "JSON::PP version 4.06"
 }

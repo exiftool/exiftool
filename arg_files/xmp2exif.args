@@ -19,6 +19,7 @@
 #                               XMP-exif:DateTimeOriginal
 #               2024/10/24 - PH Additions for the 2024 EXIF for XMP spec
 #               2025/01/16 - PH Write Composite:SubSecCreateDate from XMP-exif
+#               2025-04-22 - PH Fixed DigitalImageGUID translation
 #
 # References:   http://www.metadataworkinggroup.org/specs/
 #               https://iptc.org/std/photometadata/documentation/mappingguidelines/
@@ -51,7 +52,7 @@
 -EXIF:Copyright < XMP-dc:Rights
 -EXIF:Artist < XMP-plus:ImageCreatorName
 -EXIF:Artist < XMP-dc:Creator
--EXIF:DigImageGUID < XMP-iptcExt:DigitalImageGUID
+-EXIF:ImageUniqueID < XMP-iptcExt:DigitalImageGUID
 # XMP flash information is translated by the Composite Flash tag
 -EXIF:Flash < Composite:Flash
 # generate GPS tags which have been combined into other XMP tags

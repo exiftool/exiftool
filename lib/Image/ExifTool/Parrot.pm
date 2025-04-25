@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 sub Process_mett($$$);
 
@@ -61,9 +61,17 @@ sub Process_mett($$$);
         Name => 'ARCoreAccel',
         SubDirectory => { TagTable => 'Image::ExifTool::Parrot::ARCoreAccel', ByteOrder => 'II' },
     },
+    'application/arcore-accel-0' => {
+        Name => 'ARCoreAccel0',
+        SubDirectory => { TagTable => 'Image::ExifTool::Parrot::ARCoreAccel0', ByteOrder => 'II' },
+    },
     'application/arcore-gyro' => {
         Name => 'ARCoreGyro',
         SubDirectory => { TagTable => 'Image::ExifTool::Parrot::ARCoreGyro', ByteOrder => 'II' },
+    },
+    'application/arcore-gyro-0' => {
+        Name => 'ARCoreGyro0',
+        SubDirectory => { TagTable => 'Image::ExifTool::Parrot::ARCoreGyro0', ByteOrder => 'II' },
     },
     'application/arcore-video-0' => {
         Name => 'ARCoreVideo',
@@ -684,11 +692,24 @@ sub Process_mett($$$);
     # 33: increments slowly (about once every 56 samples or so)
 );
 
+# ARCore Accel data (ref PH)
+%Image::ExifTool::Parrot::ARCoreAccel0 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    NOTES => 'ARCore accelerometer data.',
+    FIRST_ENTRY => 0,
+    9  => { # (NC)
+        Name => 'Accelerometer',
+        Format => 'undef[14]',
+        RawConv => 'GetFloat(\$val,0) . " " . GetFloat(\$val,5) . " " . GetFloat(\$val,10)',
+    },
+);
+
 # ARCore Gyro data (ref PH)
 %Image::ExifTool::Parrot::ARCoreGyro = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 2 => 'Location' },
-    NOTES => 'ARCore accelerometer data.',
+    NOTES => 'ARCore gyro data.',
     FIRST_ENTRY => 0,
     # 00-04: always 10 34 16 3 29
     4  => {
@@ -698,6 +719,19 @@ sub Process_mett($$$);
         ValueConv => 'join " ", unpack("Cx4Cx4Cx4C", $val)',
     },
     5  => { # (NC)
+        Name => 'Gyroscope',
+        Format => 'undef[14]',
+        RawConv => 'GetFloat(\$val,0) . " " . GetFloat(\$val,5) . " " . GetFloat(\$val,10)',
+    },
+);
+
+# ARCore Gyro data (ref PH)
+%Image::ExifTool::Parrot::ARCoreGyro0 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    NOTES => 'ARCore gyro data.',
+    FIRST_ENTRY => 0,
+    9  => { # (NC)
         Name => 'Gyroscope',
         Format => 'undef[14]',
         RawConv => 'GetFloat(\$val,0) . " " . GetFloat(\$val,5) . " " . GetFloat(\$val,10)',
@@ -766,11 +800,24 @@ sub Process_mett($$$)
     $et->VerboseDir('Parrot mett', undef, $dirEnd);
 
     if ($$tagTbl{$metaType}) {
-        $et->HandleTag($tagTbl, $metaType, undef,
-            DataPt  => $dataPt,
-            DataPos => $dataPos,
-            Base    => $$dirInfo{Base},
-        );
+        # loop through ARCore records
+        while ($pos < $dirEnd - 2) {
+            last unless substr($$dataPt,$pos,1) eq "\x0a";
+            my $len = ord(substr($$dataPt, $pos+1, 1));
+            if ($pos + $len + 2 > $dirEnd) {
+                $et->Warn("Unexpected length for $metaType record", 1);
+                last;
+            }
+            $len or $len = $dirEnd - $pos - 2;  # use entire record if length is 0
+            $et->HandleTag($tagTbl, $metaType, undef,
+                DataPt   => $dataPt,
+                DataPos  => $dataPos,
+                DirStart => $pos,
+                DirLen   => $len,
+                Base     => $$dirInfo{Base},
+            );
+            $pos += $len + 2;
+        }
         return 1;
     }
     while ($pos + 4 < $dirEnd) {

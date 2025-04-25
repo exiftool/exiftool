@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.73';
+$VERSION = '3.74';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3830,7 +3830,7 @@ sub ParseXMPElement($$$;$$$$)
         for (;;) {
             my ($attr, $quote);
             if (length($attrs) < 2000) { # (do it the easy way if attributes aren't stupid long)
-                last unless $attrs =~ /(\S+)\s*=\s*(['"])/g;
+                last unless $attrs =~ /(\S+?)\s*=\s*(['"])/g;
                 ($attr, $quote) = ($1, $2);
             } else {
                 # 13.23 patch to avoid capturing tons of garbage if XMP is corrupted

@@ -1248,6 +1248,8 @@ ItemID2:    foreach $id (reverse sort { $a <=> $b } keys %$items) {
                 my $base = ($$dirInfo{Base} || 0) + $raf->Tell() - $size;
                 my $dPos = 0;
                 my $hdrLen = $start;
+                # handle case where known trailer is the payload of a "DontRead" box (eg. 'inst')
+                $trailer = $$trailer[3] if $$tagInfo{DontRead} and $trailer and $base == $$trailer[1];
                 if ($$subdir{Base}) {
                     my $localBase = eval $$subdir{Base};
                     $dPos -= $localBase;

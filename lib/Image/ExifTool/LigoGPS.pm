@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool;
 
-$VERSION = '1.02';
+$VERSION = '1.04';
 
 sub ProcessLigoGPS($$$;$);
 sub ProcessLigoJSON($$$);
@@ -265,6 +265,20 @@ sub ParseLigoGPS($$$;$)
 }
 
 #------------------------------------------------------------------------------
+# Process GKU dashcam trailer containing JSON-format LigoGPS
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessGKU($$$;$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $pos = unpack('V', $$dataPt);
+    return 0 if $pos + 13 > length $$dataPt or substr($$dataPt, $pos, 13) ne 'LIGOGPSINFO {';
+    pos($$dataPt) = $pos;
+    return ProcessLigoJSON($et, $dirInfo, $tagTbl);
+}
+
+#------------------------------------------------------------------------------
 # Process LIGOGPSINFO data (non-JSON format)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 #         3) 1=LIGOGPS lat/lon/spd weren't fuzzed
@@ -315,7 +329,7 @@ sub ProcessLigoJSON($$$)
     my $dataPt = $$dirInfo{DataPt};
     my $dirLen = $$dirInfo{DirLen};
     require Image::ExifTool::Import;
-    $et->VerboseDir('LIGO_JSON', undef, length($$dataPt));
+    $et->VerboseDir('LIGO_JSON', undef, length($$dataPt) - pos($$dataPt));
     $$et{SET_GROUP1} = 'LIGO';
     while ($$dataPt =~ /LIGOGPSINFO (\{.*?\})/g) {
         my $json = $1;

@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.15';
+$VERSION = '3.16';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -816,6 +816,13 @@ my %userDefined = (
             ProcessProc => 'Image::ExifTool::LigoGPS::ProcessLigoJSON',
         },
     },{
+        Name => 'GKUData',
+        Condition => '$$valPt =~ /^.{8}__V35AX_QVDATA__/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => 'Image::ExifTool::LigoGPS::ProcessGKU',
+        },
+    },{
         Name => 'FLIRData',
         SubDirectory => { TagTable => 'Image::ExifTool::FLIR::UserData' },
     }],
@@ -952,6 +959,15 @@ my %userDefined = (
     SEAL => {
         Name => 'SEAL',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::SEAL' },
+    },
+    inst => {
+        Name => 'Insta360Info',
+        DontRead => 1,  # don't read into memory when extracting
+        WriteLast => 1, # must go at end of file
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => \&ProcessInsta360,
+        },
     },
 );
 
@@ -2385,6 +2401,19 @@ my %userDefined = (
     mcvr => {
         Name => 'PreviewImage',
         Groups => { 2 => 'Preview' },
+        Binary => 1,
+    },
+    # ---- Insta360 ----
+    nail => {
+        Name => 'ThumbnailTIFF',
+        Notes => 'image found in some Insta360 videos, converted to TIFF format',
+        Groups => { 2 => 'Preview' },
+        RawConv => q{
+            return undef if length $val < 8;
+            my ($w, $h) = unpack('NN', $val);
+            return undef if length $val < $w * $h + 8;
+            return MakeTiffHeader($w, $h, 1, 8) . substr($val, 8, $w * $h);
+        },
         Binary => 1,
     },
     # ---- Nextbase ----
@@ -9743,6 +9772,7 @@ sub IdentifyTrailers($)
         } else {
             last;
         }
+        # 0) trailer type, 1) trailer start, 2) trailer length, 3) pointer to next trailer
         $trailer = [ $type , $raf->Tell() - $len, $len, $nextTrail ];
         $nextTrail = $trailer;
         $offset += $len;
@@ -10017,7 +10047,7 @@ sub ProcessMOV($$;$)
                 }
             }
         }
-        if (defined $tagInfo and not $ignore) {
+        if (defined $tagInfo and not $ignore and not ($tagInfo and $$tagInfo{DontRead})) {
             # set document number for this item property if necessary
             if ($$et{IsItemProperty}) {
                 my $items = $$et{ItemInfo};
@@ -10070,7 +10100,7 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
             # use value to get tag info if necessary
             $tagInfo or $tagInfo = $et->GetTagInfo($tagTablePtr, $tag, \$val);
             my $hasData = ($$dirInfo{HasData} and $val =~ /^....data\0/s);
-            if ($verbose and not $hasData) {
+            if ($verbose and defined $val and not $hasData) {
                 my $tval;
                 if ($tagInfo and $$tagInfo{Format}) {
                     $tval = ReadValue(\$val, 0, $$tagInfo{Format}, $$tagInfo{Count}, length($val));
@@ -10389,7 +10419,25 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
                 Size  => $size,
                 Extra => sprintf(' at offset 0x%.4x', $raf->Tell()),
             ) if $verbose;
-            if ($size and (not $raf->Seek($size-1, 1) or $raf->Read($buff, 1) != 1)) {
+            my $seekTo = $raf->Tell() + $size;
+            if ($tagInfo and $$tagInfo{DontRead} and $$tagInfo{SubDirectory}) {
+                # ignore first trailer if it is the payload of this box
+                $trailer = $$trailer[3] if $trailer and $$trailer[1] == $raf->Tell();
+                my $subdir = $$tagInfo{SubDirectory};
+                my %dirInfo = (
+                    RAF     => $raf,
+                    DirName => $$tagInfo{Name},
+                    DirID   => $tag,
+                    DirEnd  => $seekTo,
+                );
+                my $subTable = GetTagTable($$subdir{TagTable});
+                my $proc = $$subdir{ProcessProc};
+                # make ProcessMOV() the default processing procedure for subdirectories
+                $proc = \&ProcessMOV unless $proc or $$subTable{PROCESS_PROC};
+                $et->ProcessDirectory(\%dirInfo, $subTable, $proc);
+                $raf->Seek($seekTo);
+            }
+            unless ($raf->Seek($seekTo-1) and $raf->Read($buff, 1) == 1) {
                 my $t = PrintableTagID($tag,2);
                 $warnStr = sprintf("Truncated '${t}' data at offset 0x%x", $lastPos);
                 last;

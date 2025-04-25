@@ -10766,6 +10766,11 @@ my %isoSetting2010 = (
             0 => 'Sony:FocusPosition2',
             1 => 'FocalLengthIn35mmFormat',
         },
+        # (NOTE: This calculation may be wrong. "Focus Distance 2 is the result of an erroneous
+        #  user supplied formula to exiftool. It does use data embedded in the raw file,
+        #  but it is not the data. The actual embedded data seems to be proportional to
+        #  magnification not a focus distance. The camera needs to calculate magnification
+        #  for translation stabilization.", ref https://www.fredmiranda.com/forum/topic/1858744/0)
         ValueConv => q{
             return undef unless $val;
             return 'inf' if $val >= 255;

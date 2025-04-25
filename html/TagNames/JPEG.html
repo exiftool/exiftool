@@ -154,9 +154,10 @@
 <tr>
 <td>'APP10'</td>
 <td>Comment
-  <br>HDRGainCurve</td>
-<td class=c>no<br>no</td>
-<td><span class=s><span class=n>(PhotoStudio Unicode comment)</span></span></td></tr>
+  <br>HDRGainInfo</td>
+<td class=c>no<br>-</td>
+<td><span class=s><span class=n>(PhotoStudio Unicode comment)</span>
+  <br>JPEG HDRGainInfo</span></td></tr>
 <tr class=b>
 <td>'APP11'</td>
 <td>JPEG-HDR
@@ -210,6 +211,7 @@
   <br>FotoStation
   <br>PhotoMechanic
   <br>MIE
+  <br>MPF
   <br>Samsung
   <br>Vivo
   <br>OnePlus
@@ -219,12 +221,13 @@
   <br>NikonApp
   <br>SonyHiddenData
   <br>PreviewImage</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>no<br>no<br>no<br>no<br>yes</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>no<br>no<br>no<br>no<br>yes</td>
 <td>--&gt; <a href='AFCP.html'>AFCP Tags</a>
   <br>--&gt; <a href='CanonVRD.html'>CanonVRD Tags</a>
   <br>--&gt; <a href='FotoStation.html'>FotoStation Tags</a>
   <br>--&gt; <a href='PhotoMechanic.html'>PhotoMechanic Tags</a>
   <br>--&gt; <a href='MIE.html'>MIE Tags</a>
+  <br>--&gt; <a href='MPF.html'>MPF Tags</a>
   <br>--&gt; <a href='Samsung.html#Trailer'>Samsung Trailer Tags</a>
   <br>--&gt; <a href='Trailer.html#Vivo'>Trailer Vivo Tags</a>
   <br>--&gt; <a href='Trailer.html#OnePlus'>Trailer OnePlus Tags</a>
@@ -536,6 +539,24 @@ SPIFF sample, version 1.2)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='HDRGainInfo'>JPEG HDRGainInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>HDRGainCurveSize</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>HDRGainCurve</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='HDR'>JPEG HDR Tags</a></h2>
 <p>Information extracted from APP11 of a JPEG-HDR image.</p>
 <blockquote>
@@ -706,7 +727,7 @@ because it may affect the appearance of the image.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 24, 2025</i>
+<br><i>Last revised Apr 25, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -260,15 +260,9 @@ sub ProcessJPEG_HDR($$$);
         Condition => '$$valPt =~ /^UNICODE\0/',
         Notes => 'PhotoStudio Unicode comment',
       }, {
-        Name => 'HDRGainCurve', #PH (NC)
+        Name => 'HDRGainInfo', #PH (NC)
         Condition => '$$valPt =~ /^AROT\0\0.{4}/s',
-        Groups => { 1 => 'APP10', 2 => 'Image' },
-        ValueConv => q{
-            my $n = unpack('x6N', $val);
-            return '<truncated AROT data>' if length($val)-6 < $n * 4;
-            my $str = join ' ', unpack("x10V$n", $val);
-            return \$str;
-        },
+        SubDirectory => { TagTable => 'Image::ExifTool::JPEG::HDRGainInfo' },
     }],
     APP11 => [{
         Name => 'JPEG-HDR',
@@ -348,6 +342,9 @@ sub ProcessJPEG_HDR($$$);
         },
         SubDirectory => { TagTable => 'Image::ExifTool::MIE::Main' },
       }, {
+        Name => 'MPF',
+        SubDirectory => { TagTable => 'Image::ExifTool::MPF::Main' },
+      }, {
         Name => 'Samsung',
         Condition => '$$valPt =~ /QDIOBS$/',
         SubDirectory => { TagTable => 'Image::ExifTool::Samsung::Trailer' },
@@ -380,6 +377,21 @@ sub ProcessJPEG_HDR($$$);
         Condition => '$$valPt =~ /^\xff\xd8\xff/',
         Writable => 2,  # (for docs only)
     }],
+);
+
+# HDR gain information (ref PH)
+%Image::ExifTool::JPEG::HDRGainInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 0 => 'APP10', 1 => 'AROT', 2 => 'Image' },
+    6 => {
+        Name => 'HDRGainCurveSize',
+        Format => 'int32u',
+    },
+    10 => {
+        Name => 'HDRGainCurve', # (NC)
+        Format => 'int32uRev[$val{6}]',
+        Binary => 1,
+    },
 );
 
 # JPS APP3 segment (ref http://paulbourke.net/stereographics/stereoimage/)

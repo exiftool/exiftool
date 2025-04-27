@@ -1076,15 +1076,15 @@ absolute offsets then this could result in corrupted makernote information when
 writing, but this is very unlikely.</blockquote>
 
 <a name="Q16"></a>
-<p>16. <b>"Why doesn't ExifTool rename my AVI files?"</b></p>
+<p>16. <b>"Why doesn't ExifTool rename my video files?"</b></p>
 
-<blockquote>By default, ExifTool only processes <u>writable file
-types</u><span class='sm'><sup>&dagger;</sup></span> when <u>any
-tag</u><span class='sm'><sup>&Dagger;</sup></span> is being written and a
-directory name is specified on the command line.  To force exiftool to process
-other files, they must either be listed on the command line by name, or be
-specified using the <code>-ext</code> or <code>-ext+</code> option, something
-like this:
+<blockquote>By default, ExifTool only processes <u>writable file types</u>
+<span class='sm'><sup>&dagger;</sup></span> when <u>any tag</u>
+<span class='sm'><sup>&Dagger;</sup></span> is being written and a directory
+name is specified on the command line, so AVI files won't be processed by
+default.  To force exiftool to process other files, they must either be listed
+on the command line by name, or be specified using the <code>-ext</code> or
+<code>-ext+</code> option, something like this:
 
 <pre><span class=blk># process AVI files in addition to other writable file types</span>
 exiftool -ext+ AVI -d pics/%Y/%m "-directory&lt;dateTimeOriginal" DIR
@@ -1100,6 +1100,14 @@ processed files (as in the first example above).  Multiple <code>-ext</code> or
 example above) to process any number of different file types, or
 <code>-ext "*"</code> may be used to process files with any extension (or none at all).
 </blockquote>
+
+<blockquote><b>Note:</b> The above commands generally still won't work for
+MOV/MP4 videos because these files typically don't contain a DateTimeOriginal
+tag. For these types of files, CreateDate should be used instead (possibly with
+the addition of <code>-api QuickTimeUTC</code> if these timestamps are based on
+UTC). Use this command to see which date/time tags are available:
+
+<pre>exiftool -time:all -a -G1 -s FILE</pre></blockquote>
 
 <blockquote class='sm'><sup>&dagger;</sup> <span class=lt>The
 <code>-listwf</code> option may be used to list the extensions of all writable
@@ -1842,7 +1850,7 @@ certain commands, but may be suppressed by adding
 <code>-api "NoWarning=No writable tags"</code> to the command if desired.</blockquote>
 
 <hr>
-<i>Last revised Feb 3, 2025</i>
+<i>Last revised Apr 26, 2025</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

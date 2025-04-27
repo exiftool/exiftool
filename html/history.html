@@ -17,13 +17,24 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.29'><b>Apr. 27, 2025 - Version 13.29</b></a>
+<ul>
+<li>Changed default -geotime argument to use SubSecDateTimeOriginal if available
+    instead of DateTimeOriginal, instead of applying both (as was done since
+    ExifTool 13.18).  This is more efficient, and avoids an unnecessary warning
+<li>Properly return warnings from inverse value conversions when copying a tag
+    using -tagsFromFile with a tag name string
+<li>Fixed issue where RW2 images from the Panasonic DC-S1RM2 could be corrupted
+    when writing
+</ul>
+
 <a name='v13.28'><b>Apr. 25, 2025 - Version 13.28</b></a>
 <ul>
 <li>Added print conversion for Pentax AFPointValues
 <li>Added another Pentax PictureMode value
 <li>Decode timed GPS from GKU D900 dashcam videos
-<li>Decode Panasonic AFAreaSize (thanks andrewj)
 <li>Decode timed telemetry data from newer ARCore videos
+<li>Decode Panasonic AFAreaSize (thanks andrewj)
 <li>Decode ShutterCount for Canon EOS R8 and R50 (<a href="https://github.com/exiftool/exiftool/issues/325">github #325</a>)
 <li>Decode ThumbnailTIFF from some Insta360 videos
 <li>Decode AROT:HDRGainCurveSize from APP10

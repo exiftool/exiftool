@@ -1606,6 +1606,8 @@ SET:    foreach $set (@setList) {
             $$opts{Group} = $dstGrp if $dstGrp;
             my @rtnVals = $self->SetNewValue($dstTag, $val, %$opts);
             $rtnInfo{$dstTag} = $val if $rtnVals[0]; # tag was set successfully
+            # return warning if any
+            $rtnInfo{NextFreeTagKey(\%rtnInfo, 'Warning')} = $rtnVals[1] if $rtnVals[1];
             next;
         }
         foreach $tag (@{$setMatches{$set}}) {

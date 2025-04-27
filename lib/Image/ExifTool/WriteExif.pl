@@ -2434,6 +2434,8 @@ NoOverwrite:            next if $isNew > 0;
                             } else {
                                 my $fixedOffset = Get32u(\$newData, $offsets);
                                 my $padToFixedOffset = $fixedOffset - ($newOffset + $dpos);
+                                # account for blocks that come before this (Pansonic DC-S1RM2, forum17319)
+                                $padToFixedOffset -= $$_[1] + $$_[2] foreach @imageData;
                                 if ($padToFixedOffset < 0) {
                                     $et->Error('Metadata too large to fit before fixed-offset image data');
                                 } else {

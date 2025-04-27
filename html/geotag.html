@@ -200,10 +200,11 @@ position is calculated (by interpolating between fixes in the GPS track log).
 Unless a group is specified, exiftool writes the generated tags to the default
 groups.  If a value for <code>Geotime</code> is not given, it is taken from
 unformatted value of <code>SubSecDateTimeOriginal</code> (preferentially) or
-<code>DateTimeOriginal</code> for each image (as if
-<code>"-Geotime&lt;DateTimeOriginal#" "-Geotime&lt;SubSecDateTimeOriginal#"</code>
-had been specified), but the value may be copied from any other date/time tag or
-set directly from a date/time string.</p>
+<code>DateTimeOriginal</code> for each image, but the value may be copied from
+any other date/time tag or set directly from a date/time string.  The exact form
+of the default <code>Geotime</code> argument is:</p>
+
+<pre>"-Geotime<${DateTimeOriginal#;$_=$self->GetValue('SubSecDateTimeOriginal','ValueConv') || $_}"</pre>
 
 <p>If the date/time tag does not include a timezone then one may be added (eg.
 <code>"-Geotime&lt;${CreateDate}-05:00"</code>), otherwise the local system time

@@ -3410,7 +3410,7 @@ sub InsertTagValues($$;$$$$)
                 my $msg = $didExpr ? "Advanced formatting expression returned undef for '$g3${var}'" :
                                      "Tag '$g3${var}' not defined";
                 if (ref $opt) {
-                    $self->Warn($msg,2) or $val = '';
+                    $val = '' if $$self{OPTIONS}{IgnoreMinorErrors};
                 } elsif ($opt) {
                     no strict 'refs';
                     ($opt eq 'Silent' or &$opt($self, $msg, 2)) and return $$self{FMT_EXPR} = undef;

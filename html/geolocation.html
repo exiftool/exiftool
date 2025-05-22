@@ -103,8 +103,8 @@ the <code>-a</code> (API <a href="ExifTool.html#Duplicates">Duplicates</a>)
 option is used in which case all matching cities are returned.</blockquote>
 
 <blockquote>To override the default list of tags, set the Geolocation option
-to a comma-separated list of tags beginning with dollar signs, but note that
-Composite tags may not be used.  For example:
+to a comma-separated list of tags beginning with dollar signs, but <b>note that
+Composite tags may not be used</b>.  For example:
 
 <pre>exiftool -api geolocation="$XMP:GPSLatitude,$XMP:GPSLongitude" test.jpg</pre>
 
@@ -130,9 +130,11 @@ order, separated by commas.  For example:
 
 <pre>exiftool -api geolocation="London,England" test.jpg</pre>
 
-The default tags may be specified at the same time as the default value, for example:
+The default tags may be specified at the same time as the default value to
+override the pre-defined list of default tags, for example:
 
-<pre>exiftool -api geolocation="$gpslatitude,$gpslongitude,-37.81,144.96" test.jpg</pre>
+<pre>exiftool -api geolocation="$gpslatitude,$gpslatituderef,\
+    $gpslongitude,$gpslongituderef,-37.81,144.96" test.jpg</pre>
 
 This feature may be used to generate geolocation information with no input file
 at all.  For example, this command:
@@ -462,7 +464,7 @@ New York City.
 greater, including alternate names and translations:<br>
 (requires ExifTool 12.82 or later)</td>
 <!-- NOTE: geo.txt on the web site is automatically updated by the publish script from this file name -->
-<td><a href="https://exiftool.org/Geolocation500-20250311.zip">Geolocation500-20250311.zip</a> (7.6 MB)</td></tr>
+<td><a href="https://exiftool.org/Geolocation500-20250522.zip">Geolocation500-20250522.zip</a> (7.7 MB)</td></tr>
 </table></blockquote></blockquote>
 
 <blockquote>A "build_geolocation" utility script is available to allow users
@@ -630,7 +632,7 @@ own <a href="#Alt">alternate database</a>.  Or 2. Create a
 
 <hr>
 <i>Created Mar 12, 2024</i><br>
-<i>Last revised Mar 21, 2025</i>
+<i>Last revised May 22, 2025</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

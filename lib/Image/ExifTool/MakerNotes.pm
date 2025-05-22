@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '2.16';
+$VERSION = '2.17';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -991,9 +991,9 @@ my $debug;          # set to 1 to enable debugging code
     {
         Name => 'MakerNoteSigma',
         Condition => q{
-            return undef unless $$self{Make}=~/^(SIGMA|FOVEON)/;
+            return undef unless $$self{Make}=~/^(SIGMA|FOVEON)/i;
             # save version number in "MakerNoteSigmaVer" member variable
-            $$self{MakerNoteSigmaVer} = $$valPt=~/^SIGMA\0\0\0\0(.)/ ? ord($1) : -1;
+            $$self{MakerNoteSigmaVer} = $$valPt=~/^SIGMA\0\0\0.(.)/s ? ord($1) : -1;
             return 1;
         },
         SubDirectory => {

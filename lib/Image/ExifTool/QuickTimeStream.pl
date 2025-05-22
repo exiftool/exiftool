@@ -2287,6 +2287,16 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
                 $lat = ($lat - 187.982162849635) / 3;
                 $lon = ($lon - 2199.19873715495) / 2;
                 $ddd = 1;
+            } elsif (Get32u($dataPt,0) == 0x400000 and abs($lat) <= 90 and abs($lon) <= 180) {
+                # Transcend Drive Body Camera 70
+                #  0000: 00 00 40 00 66 72 65 65 47 50 53 20 4c 00 00 00 [..@.freeGPS L...]
+                #  0010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+                #  0020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+                #  0030: 09 00 00 00 26 00 00 00 15 00 00 00 e9 07 00 00 [....&...........]
+                #  0040: 05 00 00 00 10 00 00 00 41 53 45 00 6c 59 ee 41 [........ASE.lY.A]
+                #  0050: 9f 1a f7 41 3c 6b 0f 41 9a 99 99 43 00 00 00 00 [...A<k.A...C....]
+                $ddd = 1;               # already in decimal degrees
+                $spd /= $knotsToKph;    # already in km/h
             } else {
                 $debug and $et->FoundTag(GPSType => 17);
             }

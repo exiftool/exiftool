@@ -995,7 +995,7 @@ TagID:  foreach $tagID (@keys) {
                     if ($format and $format =~ /\$val\{/ and
                         ($$tagInfo{Writable} or not defined $$tagInfo{Writable}))
                     {
-                        warn "Warning: \$var{} used in Format of writable tag - $short $name\n"
+                        warn "Warning: \$val{} used in Format of writable tag - $short $name\n"
                     }
                 }
                 if ($$tagInfo{Hidden}) {

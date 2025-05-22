@@ -4,8 +4,31 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 13.25. (Other versions are
+Note: The most recent production release is Version 13.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+May 22, 2025 - Version 13.30 (production release)
+
+  - Added a new Canon RF lens (thanks Norbert Wasser)
+  - Added some new Olympus ArtFilter values
+  - Added support for reading timed GPS from Transcend Drive Body Camera 70 MP4
+    videos
+  - Added a new FujiFilm AdvancedFilter value (thanks Greybeard)
+  - Decode maker notes from Sigma BF images
+  - Decode a few more Pentax AF-related tags (thanks Karsten Gieselmann)
+  - Extract PreviewImage and its metadata from Sigma BF MOV videos
+  - Allow multiple config files to be specified on the command line (but leave
+    undocumented for now because the config files currently included in the full
+    ExifTool package aren't compatible with this feature)
+  - Removed warning introduced in version 12.60 for an undefined tag in a -if
+    condition, but leave the 12.60 change that sets these tags to an empty
+    string when -m is used
+  - Patched LensID conversion to better handle a manual lens on a Sony ILCE-7M2
+  - Patched to avoid runtime warning when using -fast option and reading and
+    HEIC file via a pipe (but you will still get a seek error)
+  - Fixed some tag format types in the config_files/pix4d.config file
+  - Fixed possible "uninitialized value" warning when reading some types of Ligo
+    timed GPS
 
 Apr. 27, 2025 - Version 13.29
 

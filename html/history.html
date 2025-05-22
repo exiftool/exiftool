@@ -11,11 +11,35 @@
 
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-13.25.tar.gz">Version 13.25</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-13.30.tar.gz">Version 13.30</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">MetaCPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v13.30'><b>May 22, 2025 - Version 13.30</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a new Canon RF lens (thanks Norbert Wasser)
+<li>Added some new Olympus ArtFilter values
+<li>Added support for reading timed GPS from Transcend Drive Body Camera 70 MP4
+    videos
+<li>Added a new FujiFilm AdvancedFilter value (thanks Greybeard)
+<li>Decode maker notes from Sigma BF images
+<li>Decode a few more Pentax AF-related tags (thanks Karsten Gieselmann)
+<li>Extract PreviewImage and its metadata from Sigma BF MOV videos
+<li>Allow multiple config files to be specified on the command line (but leave
+    undocumented for now because the config files currently included in the full
+    ExifTool package aren't compatible with this feature)
+<li>Removed warning introduced in version 12.60 for an undefined tag in a -if
+    condition, but leave the 12.60 change that sets these tags to an empty
+    string when -m is used
+<li>Patched LensID conversion to better handle a manual lens on a Sony ILCE-7M2
+<li>Patched to avoid runtime warning when using -fast option and reading and
+    HEIC file via a pipe (but you will still get a seek error)
+<li>Fixed some tag format types in the config_files/pix4d.config file
+<li>Fixed possible "uninitialized value" warning when reading some types of Ligo
+    timed GPS
+</ul>
 
 <a name='v13.29'><b>Apr. 27, 2025 - Version 13.29</b></a>
 <ul>

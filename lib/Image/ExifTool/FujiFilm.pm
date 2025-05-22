@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.96';
+$VERSION = '1.97';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -628,6 +628,7 @@ my %faceCategories = (
             0x60006 => 'Partial Color Purple',
             0x70000 => 'Soft Focus',
             0x90000 => 'Low Key',
+            0x100000 => 'Light Leak', #forum17392
         },
     },
     0x1210 => { #2

@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.56';
+$VERSION = '4.57';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -5804,6 +5804,8 @@ sub PrintLensID($$@)
     }
     if ($$et{Make} eq 'SONY') {
         if ($lensType eq 65535) {
+            # patch for manual lens (forum17379)
+            return $$printConv{$lensType} if $$printConv{$lensType} and not $focalLength and $maxAperture == 1;
             # handle Sony E-type lenses when LensType2 isn't valid (NEX/ILCE models only)
             if ($$et{Model} =~ /NEX|ILCE/) {
                 unless (%sonyEtype) {

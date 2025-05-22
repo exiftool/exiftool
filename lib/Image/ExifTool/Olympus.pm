@@ -40,7 +40,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.85';
+$VERSION = '2.86';
 
 sub PrintLensInfo($$$);
 
@@ -550,6 +550,7 @@ my %filters = (
     4 => 'Light Tone',
     5 => 'Pin Hole', # (SZ-10 magic filter 2,SZ-31MR,E-PL3)
     6 => 'Grainy Film',
+    8 => 'Underwater', #forum17348
     9 => 'Diorama',
     10 => 'Cross Process',
     12 => 'Fish Eye', # (SZ-10 magic filter 3)
@@ -581,6 +582,9 @@ my %filters = (
     39 => 'Partial Color', #forum6269
     40 => 'Partial Color II', #forum6269
     41 => 'Partial Color III', #forum6269
+    42 => 'Bleach Bypass', #forum17348
+    43 => 'Bleach Bypass II', #forum17348
+    44 => 'Instant Film', #forum17348
 );
 
 my %toneLevelType = (

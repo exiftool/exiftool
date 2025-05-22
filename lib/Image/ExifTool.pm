@@ -27,9 +27,9 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %noWriteFile %magicNumber @langs $defaultLang %langName %charsetName
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
-            %static_vars $advFmtSelf);
+            %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.29';
+$VERSION = '13.30';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -10047,8 +10047,9 @@ sub ProcessBinaryData($$$)
 #..............................................................................
 # Load .ExifTool_config file from user's home directory
 # (use of noConfig is now deprecated, use configFile = '' instead)
-until ($Image::ExifTool::noConfig) {
-    my $config = $Image::ExifTool::configFile;
+push @configFiles, $configFile if defined $configFile;
+until ($noConfig) {
+    my $config = shift @configFiles;
     my $file;
     if (not defined $config) {
         $config = '.ExifTool_config';
@@ -10073,7 +10074,7 @@ until ($Image::ExifTool::noConfig) {
     shift @INC;
     # print warning (minus "Compilation failed" part)
     $@ and $_=$@, s/Compilation failed.*//s, warn $_;
-    last;
+    last unless @configFiles;
 }
 # read user-defined lenses (may have been defined by script instead of config file)
 if (@Image::ExifTool::UserDefined::Lenses) {

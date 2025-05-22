@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.29';
+my $version = '13.30';
 
 $^W = 1;    # enable global warnings
 
@@ -26,9 +26,9 @@ BEGIN {
     # add lib directory at start of include path
     unshift @INC, ($0 =~ /(.*)[\\\/]/) ? "$1/lib" : './lib';
     # load or disable config file if specified
-    if (@ARGV and lc($ARGV[0]) eq '-config') {
+    while (@ARGV and lc($ARGV[0]) eq '-config') {
         shift;
-        $Image::ExifTool::configFile = shift;
+        push @Image::ExifTool::configFiles, shift;
     }
 }
 use Image::ExifTool qw{:Public};
@@ -1409,8 +1409,7 @@ for (;;) {
                 # add geotag/geosync/geolocate commands first
                 unshift @newValues, pop @newValues;
                 if (lc $2 eq 'geotag' and (not defined $addGeotime or $addGeotime) and length $val) {
-                    $addGeotime = [ ($1 || '') . 'Geotime<DateTimeOriginal#',
-                                    ($1 || '') . 'Geotime<SubSecDateTimeOriginal#' ];
+                    $addGeotime = ($1 || '') . q[Geotime<${DateTimeOriginal#;$_=$self->GetValue('SubSecDateTimeOriginal','ValueConv') || $_}];
                 }
             }
         }
@@ -1698,9 +1697,8 @@ if (@newValues) {
     # assume -geotime value if -geotag specified without -geotime
     if ($addGeotime) {
         AddSetTagsFile($setTagsFile = '@') unless $setTagsFile and $setTagsFile eq '@';
-        push @{$setTags{$setTagsFile}}, @$addGeotime;
-        my @a = map qq("-$_"), @$addGeotime;
-        $verbose and print $vout 'Arguments ',join(' and ', @a)," are assumed\n";
+        push @{$setTags{$setTagsFile}}, $addGeotime;
+        $verbose and print $vout qq(Using default "-$addGeotime"\n);
     }
     my %setTagsIndex;
     # add/delete option lookup

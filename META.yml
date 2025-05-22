@@ -31,5 +31,5 @@ recommends:
   Time::HiRes: '0'
 requires:
   perl: '5.004'
-version: '13.29'
+version: '13.30'
 x_serialization_backend: 'JSON::PP version 4.06'

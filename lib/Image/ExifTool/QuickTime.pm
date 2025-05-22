@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.16';
+$VERSION = '3.17';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -2378,6 +2378,25 @@ my %userDefined = (
     # @etc - 4 bytes all zero (Samsung WB30F)
     # saut - 4 bytes all zero (Samsung SM-N900T)
     # smrd - string "TRUEBLUE" (Samsung SM-C101, etc)
+    # ---- Sigma ----
+    SIGM => {
+        Name => 'PreviewImage',
+        # 32-byte header followed by preview image.  Length at offset 6 in header
+        Condition => 'length($$valPt) > 0x20 and length($$valPt) == unpack("x6V",$$valPt) + 0x20',
+        Groups => { 2 => 'Preview' },
+        SetBase => 1,   # so $$self{BASE} will be set for correct offsets in verbose/html dumps
+        RawConv => q{
+            $val = substr($val, 0x20);
+            my $pt = $self->ValidateImage(\$val, $tag);
+            if ($pt) {
+                $$self{BASE} += 0x20;
+                $$self{DOC_NUM} = ++$$self{DOC_COUNT};
+                $self->ExtractInfo($pt, { ReEntry => 1 });
+                $$self{DOC_NUM} = 0;
+            }
+            return $pt;
+        },
+    },
     # ---- TomTom Bandit Action Cam ----
     TTMD => {
         Name => 'TomTomMetaData',
@@ -9380,7 +9399,7 @@ sub HandleItemInfo($)
             $et->ProcessDirectory(\%dirInfo, $subTable, $proc);
             delete $$et{DOC_NUM};
         }
-        $raf->Seek($curPos, 0) or $et->Warn('Seek error'), last;     # seek back to original position
+        $raf->Seek($curPos, 0) or $et->Warn('Seek error');  # seek back to original position
         pop @{$$et{PATH}};
     }
     # process the item properties now that we should know their associations and document numbers

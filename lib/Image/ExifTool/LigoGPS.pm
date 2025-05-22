@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool;
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 sub ProcessLigoGPS($$$;$);
 sub ProcessLigoJSON($$$);
@@ -329,7 +329,7 @@ sub ProcessLigoJSON($$$)
     my $dataPt = $$dirInfo{DataPt};
     my $dirLen = $$dirInfo{DirLen};
     require Image::ExifTool::Import;
-    $et->VerboseDir('LIGO_JSON', undef, length($$dataPt) - pos($$dataPt));
+    $et->VerboseDir('LIGO_JSON', undef, length($$dataPt) - (pos($$dataPt) || 0));
     $$et{SET_GROUP1} = 'LIGO';
     while ($$dataPt =~ /LIGOGPSINFO (\{.*?\})/g) {
         my $json = $1;

@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.50';
+$VERSION = '3.51';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1263,7 +1263,7 @@ my %binaryDataAttrs = (
         }],
     },{
         Name => 'AFPointSelected',
-        Condition => '$$self{Model} =~ /K-3\b/',
+        Condition => '$$self{Model} =~ /(K-3|KP)\b/',
         Writable => 'int16u',
         Notes => 'K-3',
         PrintConvColumns => 2,
@@ -3038,6 +3038,10 @@ my %binaryDataAttrs = (
     # 0x0236 - undef[52] (Q)
     # 0x0237 - undef[11] possibly related to smart effect setting? (Q)
     # 0x0238 - undef[9] (Q)
+    0x0238 => { #KarstenGieselmann
+        Name => 'CAFPointInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Pentax::CAFPointInfo' },
+    },
     0x0239 => { #PH
         Name => 'LensInfoQ',
         SubDirectory => { TagTable => 'Image::ExifTool::Pentax::LensInfoQ' },
@@ -5001,10 +5005,10 @@ my %binaryDataAttrs = (
     # 0x0a - values: 00,05,0d,15,86,8e,a6,ae
     0x0b => { #JD
         Name => 'AFPointsInFocus',
-        Condition => '$$self{Model} !~ /K-[13]\b/',
+        Condition => '$$self{Model} !~ /(K-(1|3|70)|KP)\b/',
         Notes => q{
-            models other than the K-1 and K-3.  May report two points in focus even
-            though a single AFPoint has been selected, in which case the selected
+            models other than the K-1, K-3, K-70 and KP.  May report two points in focus
+            even though a single AFPoint has been selected, in which case the selected
             AFPoint is the first reported
         },
         PrintConvColumns => 2,
@@ -5078,6 +5082,37 @@ my %binaryDataAttrs = (
         Notes => 'decoded only for the K-3 II',
         Condition => '$$self{Model} eq "PENTAX K-3 II"',
         PrintConv => { 0 => 'Off', 1 => 'Short', 2 => 'Medium', 3 => 'Long' },
+    },
+);
+
+# AF information for K-01 and later (ref Karsten Gieselmann private communication)
+%Image::ExifTool::Pentax::CAFPointInfo = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    DATAMEMBER => [ 1 ],
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'Contrast-detect AF-point information for the K-01 and later models.',
+    1 => {
+        Name => 'NumCAFPoints',
+        RawConv => '$$self{NumCAFPoints} = ($val & 0x0f) * ($val >> 4); $val',
+        ValueConv => '($val >> 4) * ($val & 0x0f)',
+    }, 
+    1.1 => {
+        Name => 'CAFGridSize',
+        ValueConv => '($val >> 4) . " " . ($val & 0x0f)', # (width x height)
+        PrintConv => '$val =~ tr/ /x/; $val',
+    },
+    2 => {
+        Name => 'CAFPointsInFocus',
+        Format => 'int8u[int(($val{1}+3)/4)]',
+        Writable => 0,
+        PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,$$self{NumCAFPoints},2,0x02)',
+    },
+    2.1 => {
+        Name => 'CAFPointsSelected',
+        Format => 'int8u[int(($val{1}+3)/4)]',
+        Writable => 0,
+        PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,$$self{NumCAFPoints},2,0x03)',
     },
 );
 
@@ -5747,29 +5782,34 @@ my %binaryDataAttrs = (
 %Image::ExifTool::Pentax::AFPointInfo = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 2 ],
     NOTES => 'AF point information written by the K-1.',
     # 0 - int16u: 1 (version?)
     2 => {
         Name => 'NumAFPoints',
         Format => 'int16u',
+        RawConv => '$$self{NumAFPoints} = $val',
     },
     4 => {
         Name => 'AFPointsInFocus',
         Condition => '$$self{Model} =~ /K-1\b/',
-        Format => 'int8u[9]',
-        PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,33,2,0x02)',
+        Format => 'int8u[int(($val{2}+3)/4)]',
+        Writable => 0,
+        PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,$$self{NumAFPoints},2,0x02)',
     },
     4.1 => {
         Name => 'AFPointsSelected',
         Condition => '$$self{Model} =~ /K-1\b/',
-        Format => 'int8u[9]',
-        PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,33,2,0x03)',
+        Format => 'int8u[int(($val{2}+3)/4)]',
+        Writable => 0,
+        PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,$$self{NumAFPoints},2,0x03)',
     },
     4.2 => {
         Name => 'AFPointsSpecial',
         Condition => '$$self{Model} =~ /K-1\b/',
-        Format => 'int8u[9]',
-        PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,33,2,0x03,0x03)',
+        Format => 'int8u[int(($val{2}+3)/4)]',
+        Writable => 0,
+        PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,$$self{NumAFPoints},2,0x03,0x03)',
     },
 );
 

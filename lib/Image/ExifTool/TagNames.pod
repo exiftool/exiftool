@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28445 tags, with 17669 unique tag names.
+They contain a total of 28450 tags, with 17673 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -20349,6 +20349,7 @@ These tags are used in Pentax/Asahi cameras.
   0x0230   FirmwareVersion                      string
   0x0231   ContrastDetectAFArea                 int16u[4]
   0x0235   CrossProcessParams                   undef[10]
+  0x0238   CAFPointInfo                         Pentax CAFPointInfo
   0x0239   LensInfoQ                            Pentax LensInfoQ
   0x023f   Model                                string
   0x0243   PixelShiftInfo                       Pentax PixelShiftInfo
@@ -20873,6 +20874,17 @@ valid for other models.
      83    WB_RGGBLevelsUnknown?                int16u[4]
      92    WB_RGGBLevelsUserSelected            int16u[4]
 
+=head3 Pentax CAFPointInfo Tags
+
+Contrast-detect AF-point information for the K-01 and later models.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      1    NumCAFPoints                         no
+    1.1    CAFGridSize                          no
+      2    CAFPointsInFocus                     no
+    2.1    CAFPointsSelected                    no
+
 =head3 Pentax LensInfoQ Tags
 
 More lens information stored by the Pentax Q.
@@ -20897,9 +20909,9 @@ AF point information written by the K-1.
   Index1   Tag Name                             Writable
   ------   --------                             --------
       2    NumAFPoints                          int16u
-      4    AFPointsInFocus                      int8u[9]~
-    4.1    AFPointsSelected                     int8u[9]~
-    4.2    AFPointsSpecial                      int8u[9]~
+      4    AFPointsInFocus                      no
+    4.1    AFPointsSelected                     no
+    4.2    AFPointsSpecial                      no
 
 =head3 Pentax TempInfo Tags
 
@@ -31655,6 +31667,7 @@ the config file.
   'RMKN'       RicohRMKN                        EXIF
   'RTHU'       PreviewImage                     no
   'SDLN'       PlayMode                         string
+  'SIGM'       PreviewImage                     no
   'SNum'       SerialNumber                     string/
   'SelO'       PlaySelection                    int8u
   'TAGS'       FujiFilmTags                     FujiFilm MOV

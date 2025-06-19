@@ -234,6 +234,7 @@ my %supportedFilter = (
     Kids => {
         SubDirectory => { TagTable => 'Image::ExifTool::PDF::Kids' },
     },
+    MediaBox => { Name => 'MediaBox', List => 1 },
 );
 
 # tags in PDF Perms dictionary

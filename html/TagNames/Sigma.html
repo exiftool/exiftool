@@ -293,80 +293,90 @@ models report the maximum aperture here)</span></span></td></tr>
 <td class=c>string</td>
 <td><span class=s><span class=n>(same as ColorMode, but &quot;Standard&quot; when ColorMode is Sepia or B&amp;W)</span></span></td></tr>
 <tr class=b>
+<td title='0x0047 = 71'>0x0047</td>
+<td>ExposureCompensation</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x0048 = 72'>0x0048</td>
 <td>LensApertureRange</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(some newer models only)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0049 = 73'>0x0049</td>
 <td>FNumber</td>
 <td class=c>rational64u</td>
 <td><span class=s><span class=n>(some newer models only)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x004a = 74'>0x004a</td>
 <td>ExposureTime</td>
 <td class=c>rational64u</td>
 <td><span class=s><span class=n>(some newer models only)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x004b = 75'>0x004b</td>
 <td>ExposureTime2</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(SD1 and DP Merrill models only)</span>
   <br><span class=n>(DP Quattro models only)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x004d = 77'>0x004d</td>
 <td>ExposureCompensation</td>
 <td class=c>rational64s</td>
 <td><span class=s><span class=n>(some newer models only)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0055 = 85'>0x0055</td>
 <td>SensorTemperature</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(some newer models only)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0056 = 86'>0x0056</td>
 <td>FlashExposureComp</td>
 <td class=c>rational64s</td>
 <td><span class=s><span class=n>(some newer models only)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0057 = 87'>0x0057</td>
 <td>Firmware2</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(some newer models only)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0058 = 88'>0x0058</td>
 <td>WhiteBalance</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(some newer models only)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0059 = 89'>0x0059</td>
 <td>DigitalFilter</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(some newer models only)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0084 = 132'>0x0084</td>
 <td>Model</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0086 = 134'>0x0086</td>
 <td>ISO</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0087 = 135'>0x0087</td>
 <td>ResolutionMode</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0088 = 136'>0x0088</td>
 <td>WhiteBalance</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x008c = 140'>0x008c</td>
 <td>Firmware</td>
 <td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0113 = 275'>0x0113</td>
+<td>PictureModeStrength</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x011f = 287'>0x011f</td>
@@ -383,6 +393,16 @@ models report the maximum aperture here)</span></span></td></tr>
 <td>WBSettings2</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sigma.html#WBSettings2'>Sigma WBSettings2 Tags</a></td></tr>
+<tr class=b>
+<td title='0x0138 = 312'>0x0138</td>
+<td>Fade</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0139 = 313'>0x0139</td>
+<td>Vignette</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='LensType'>Sigma LensType Values</a></h2>
@@ -730,7 +750,7 @@ the leading &quot;0x&quot;).</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 4, 2025</i>
+<br><i>Last revised Jun 3, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

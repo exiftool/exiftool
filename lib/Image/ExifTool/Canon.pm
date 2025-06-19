@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.91';
+$VERSION = '4.92';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -636,9 +636,10 @@ $VERSION = '4.91';
    '61182.58' => 'Canon RF 70-200mm F2.8 L IS USM Z + RF1.4x', #42
    '61182.59' => 'Canon RF 70-200mm F2.8 L IS USM Z + RF2x', #42
    '61182.60' => 'Canon RF 16-28mm F2.8 IS STM', #42
-   '61182.61' => 'Canon RF 50mm F1.4 L VCM', #42
-   '61182.62' => 'Canon RF 24mm F1.4 L VCM', #42
-   '61182.63' => 'Canon RF 20mm F1.4 L VCM', #42
+   '61182.61' => 'Canon RF-S 14-30mm F4-6.3 IS STM PZ', #42
+   '61182.62' => 'Canon RF 50mm F1.4 L VCM', #42
+   '61182.63' => 'Canon RF 24mm F1.4 L VCM', #42
+   '61182.64' => 'Canon RF 20mm F1.4 L VCM', #42
     65535 => 'n/a',
 );
 
@@ -1006,6 +1007,7 @@ $VERSION = '4.91';
     0x80000495 => 'EOS R1', #PH
     0x80000496 => 'R5 Mark II', #forum16406
     0x80000498 => 'EOS R100', #25
+    0x80000516 => 'EOS R50 V', #42
     0x80000520 => 'EOS D2000C', #IB
     0x80000560 => 'EOS D6000C', #PH (guess)
 );
@@ -7032,6 +7034,7 @@ my %ciMaxFocal = (
             320 => 'Canon RF 70-200mm F2.8 L IS USM Z + RF1.4x', #42
             321 => 'Canon RF 70-200mm F2.8 L IS USM Z + RF2x', #42
             323 => 'Canon RF 16-28mm F2.8 IS STM', #42
+            324 => 'Canon RF-S 14-30mm F4-6.3 IS STM PZ', #42
             325 => 'Canon RF 50mm F1.4 L VCM', #42
             326 => 'Canon RF 24mm F1.4 L VCM', #42
             327 => 'Canon RF 20mm F1.4 L VCM', #42

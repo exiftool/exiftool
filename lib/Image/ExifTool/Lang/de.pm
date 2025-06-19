@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::de;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.37';
+$VERSION = '1.38';
 
 %Image::ExifTool::Lang::de::Translate = (
    'AEAperture' => 'AE-Blende',
@@ -5126,6 +5126,7 @@ $VERSION = '1.37';
    'LensType' => {
       Description => 'Objektivtyp',
       PrintConv => {
+        'None' => 'Keiner',
         'Uncoded lens' => 'Nicht kodiertes Objektiv',
       },
     },

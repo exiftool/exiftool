@@ -4,12 +4,12 @@
 <head>
 <title>ExifTool Date/Time Shift Module</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<link rev="made" href="mailto:root@osx219.apple.com" />
-<style type='text/css'><!-- --></style></head>
+<link rev="made" href="mailto:root@ln86f.p1s.plx.sd.apple.com" />
+<style type='text/css'><!-- pre { margin-left: 2em } --></style></head>
 
-<body style="background-color: white">
+<body>
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
-<tr><td class="_podblock_" style="background-color: #cccccc" valign="middle">
+<tr><td class="_podblock_" style="background-color: #cccccc; color: #000" valign="middle">
 <big><strong><span class="_podblock_">&nbsp;ExifTool Date/Time Shift Module</span></strong></big>
 </td></tr>
 </table>
@@ -46,8 +46,8 @@
 
 <p>Shift date/time value</p>
 
-<pre><code>    use Image::ExifTool;
-    $err = Image::ExifTool::ShiftTime($dateTime, $shift);</code></pre>
+<pre><code>use Image::ExifTool;
+$err = Image::ExifTool::ShiftTime($dateTime, $shift);</code></pre>
 
 <dl>
 
@@ -81,68 +81,68 @@
 
 <p>Date-only values are shifted using the following formats:</p>
 
-<pre><code>    &#39;Y:M:D&#39;     - shift date by &#39;Y&#39; years, &#39;M&#39; months and &#39;D&#39; days
-    &#39;M:D&#39;       - shift months and days only
-    &#39;D&#39;         - shift specified number of days</code></pre>
+<pre><code>&#39;Y:M:D&#39;     - shift date by &#39;Y&#39; years, &#39;M&#39; months and &#39;D&#39; days
+&#39;M:D&#39;       - shift months and days only
+&#39;D&#39;         - shift specified number of days</code></pre>
 
 <p>Time-only values are shifted using the following formats:</p>
 
-<pre><code>    &#39;h:m:s&#39;     - shift time by &#39;h&#39; hours, &#39;m&#39; minutes and &#39;s&#39; seconds
-    &#39;h:m&#39;       - shift hours and minutes only
-    &#39;h&#39;         - shift specified number of hours</code></pre>
+<pre><code>&#39;h:m:s&#39;     - shift time by &#39;h&#39; hours, &#39;m&#39; minutes and &#39;s&#39; seconds
+&#39;h:m&#39;       - shift hours and minutes only
+&#39;h&#39;         - shift specified number of hours</code></pre>
 
 <p>Timezone shifts are specified in the following formats:</p>
 
-<pre><code>    &#39;+h:m&#39;      - shift timezone by &#39;h&#39; hours and &#39;m&#39; minutes
-    &#39;-h:m&#39;      - negative shift of timezone hours and minutes
-    &#39;+h&#39;        - shift timezone hours only
-    &#39;-h&#39;        - negative shift of timezone hours only</code></pre>
+<pre><code>&#39;+h:m&#39;      - shift timezone by &#39;h&#39; hours and &#39;m&#39; minutes
+&#39;-h:m&#39;      - negative shift of timezone hours and minutes
+&#39;+h&#39;        - shift timezone hours only
+&#39;-h&#39;        - negative shift of timezone hours only</code></pre>
 
 <p>A valid shift value consists of one or two arguments, separated by a space. If only one is provided, it is assumed to be a time shift when applied to a time-only or a date/time value, or a date shift when applied to a date-only value. For example:</p>
 
-<pre><code>    &#39;1&#39;         - shift by 1 hour if applied to a time or date/time
-                  value, or by one day if applied to a date value
-    &#39;2:0&#39;       - shift 2 hours (time, date/time), or 2 months (date)
-    &#39;5:0:0&#39;     - shift 5 hours (time, date/time), or 5 years (date)
-    &#39;0:0:1&#39;     - shift 1 s (time, date/time), or 1 day (date)</code></pre>
+<pre><code>&#39;1&#39;         - shift by 1 hour if applied to a time or date/time
+              value, or by one day if applied to a date value
+&#39;2:0&#39;       - shift 2 hours (time, date/time), or 2 months (date)
+&#39;5:0:0&#39;     - shift 5 hours (time, date/time), or 5 years (date)
+&#39;0:0:1&#39;     - shift 1 s (time, date/time), or 1 day (date)</code></pre>
 
 <p>If two arguments are given, the date shift is first, followed by the time shift:</p>
 
-<pre><code>    &#39;3:0:0 0&#39;         - shift date by 3 years
-    &#39;0 15:30&#39;         - shift time by 15 hours and 30 minutes
-    &#39;1:0:0 0:0:0+5:0&#39; - shift date by 1 year and timezone by 5 hours</code></pre>
+<pre><code>&#39;3:0:0 0&#39;         - shift date by 3 years
+&#39;0 15:30&#39;         - shift time by 15 hours and 30 minutes
+&#39;1:0:0 0:0:0+5:0&#39; - shift date by 1 year and timezone by 5 hours</code></pre>
 
 <p>A date shift is simply ignored if applied to a time value or visa versa.</p>
 
 <p>Numbers specified in shift fields may contain a decimal point:</p>
 
-<pre><code>    &#39;1.5&#39;       - 1 hour 30 minutes (time, date/time), or 1 day (date)
-    &#39;2.5 0&#39;     - 2 days 12 hours (date/time), 12 hours (time) or
-                  2 days (date)</code></pre>
+<pre><code>&#39;1.5&#39;       - 1 hour 30 minutes (time, date/time), or 1 day (date)
+&#39;2.5 0&#39;     - 2 days 12 hours (date/time), 12 hours (time) or
+              2 days (date)</code></pre>
 
 <p>And to save typing, a zero is assumed for any missing numbers:</p>
 
-<pre><code>    &#39;1::&#39;       - shift by 1 hour (time, date/time) or 1 year (date)
-    &#39;26:: 0&#39;    - shift date by 26 years
-    &#39;+:30&#39;      - shift timezone by 30 minutes</code></pre>
+<pre><code>&#39;1::&#39;       - shift by 1 hour (time, date/time) or 1 year (date)
+&#39;26:: 0&#39;    - shift date by 26 years
+&#39;+:30&#39;      - shift timezone by 30 minutes</code></pre>
 
 <p>Below are some specific examples applied to real date and/or time values (&#39;Dir&#39; is the applied shift direction: &#39;+&#39; is positive, &#39;-&#39; is negative):</p>
 
-<pre><code>     Original Value         Shift   Dir    Shifted Value
-    ---------------------  -------  ---  ---------------------
-    &#39;20:30:00&#39;             &#39;5&#39;       +   &#39;01:30:00&#39;
-    &#39;2005:01:27&#39;           &#39;5&#39;       +   &#39;2005:02:01&#39;
-    &#39;2005:01:27 20:30:00&#39;  &#39;5&#39;       +   &#39;2005:01:28 01:30:00&#39;
-    &#39;11:54:00&#39;             &#39;2.5 0&#39;   -   &#39;23:54:00&#39;
-    &#39;2005:11:02&#39;           &#39;2.5 0&#39;   -   &#39;2005:10:31&#39;
-    &#39;2005:11:02 11:54:00&#39;  &#39;2.5 0&#39;   -   &#39;2005:10:30 23:54:00&#39;
-    &#39;2004:02:28 08:00:00&#39;  &#39;1 1.3&#39;   +   &#39;2004:02:29 09:18:00&#39;
-    &#39;07:00:00&#39;             &#39;-5&#39;      +   &#39;07:00:00&#39;
-    &#39;07:00:00+01:00&#39;       &#39;-5&#39;      +   &#39;07:00:00-04:00&#39;
-    &#39;07:00:00Z&#39;            &#39;+2:30&#39;   -   &#39;07:00:00-02:30&#39;
-    &#39;1970:01:01&#39;           &#39;35::&#39;    +   &#39;2005:01:01&#39;
-    &#39;2005:01:01&#39;           &#39;400&#39;     +   &#39;2006:02:05&#39;
-    &#39;10:00:00.00&#39;          &#39;::1.33&#39;  -   &#39;09:59:58.67&#39;</code></pre>
+<pre><code> Original Value         Shift   Dir    Shifted Value
+---------------------  -------  ---  ---------------------
+&#39;20:30:00&#39;             &#39;5&#39;       +   &#39;01:30:00&#39;
+&#39;2005:01:27&#39;           &#39;5&#39;       +   &#39;2005:02:01&#39;
+&#39;2005:01:27 20:30:00&#39;  &#39;5&#39;       +   &#39;2005:01:28 01:30:00&#39;
+&#39;11:54:00&#39;             &#39;2.5 0&#39;   -   &#39;23:54:00&#39;
+&#39;2005:11:02&#39;           &#39;2.5 0&#39;   -   &#39;2005:10:31&#39;
+&#39;2005:11:02 11:54:00&#39;  &#39;2.5 0&#39;   -   &#39;2005:10:30 23:54:00&#39;
+&#39;2004:02:28 08:00:00&#39;  &#39;1 1.3&#39;   +   &#39;2004:02:29 09:18:00&#39;
+&#39;07:00:00&#39;             &#39;-5&#39;      +   &#39;07:00:00&#39;
+&#39;07:00:00+01:00&#39;       &#39;-5&#39;      +   &#39;07:00:00-04:00&#39;
+&#39;07:00:00Z&#39;            &#39;+2:30&#39;   -   &#39;07:00:00-02:30&#39;
+&#39;1970:01:01&#39;           &#39;35::&#39;    +   &#39;2005:01:01&#39;
+&#39;2005:01:01&#39;           &#39;400&#39;     +   &#39;2006:02:05&#39;
+&#39;10:00:00.00&#39;          &#39;::1.33&#39;  -   &#39;09:59:58.67&#39;</code></pre>
 
 <h1 id="NOTES">NOTES</h1>
 
@@ -171,7 +171,7 @@
 <p><a>Image::ExifTool(3pm)</a></p>
 
 <table border="0" width="100%" cellspacing="0" cellpadding="3">
-<tr><td class="_podblock_" style="background-color: #cccccc" valign="middle">
+<tr><td class="_podblock_" style="background-color: #cccccc; color: #000" valign="middle">
 <big><strong><span class="_podblock_">&nbsp;ExifTool Date/Time Shift Module</span></strong></big>
 </td></tr>
 </table>

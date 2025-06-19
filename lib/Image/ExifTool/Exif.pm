@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.57';
+$VERSION = '4.58';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2081,7 +2081,7 @@ my %opcodeInfo = (
     0x8822 => {
         Name => 'ExposureProgram',
         Groups => { 2 => 'Camera' },
-        Notes => 'the value of 9 is not standard EXIF, but is used by the Canon EOS 7D',
+        Notes => 'the value of 9 is not standard EXIF, but is used by some Canon models',
         Writable => 'int16u',
         PrintConv => {
             0 => 'Not Defined',
@@ -4350,6 +4350,7 @@ my %opcodeInfo = (
         Writable => 'undef',
         WriteGroup => 'IFD0',
         Protected => 1,
+        Binary => 1,
     },
     0xcd40 => { # DNG 1.7
         Name => 'ProfileGainTableMap2',

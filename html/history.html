@@ -17,6 +17,24 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.31'><b>June 19, 2025 - Version 13.31</b></a>
+<ul>
+<li>Added a new CanonModelID and RFLensType (thanks Norbert Wasser)
+<li>Added some new FujiFilm AdvancedFilter values (thanks Greybeard)
+<li>Added a new Nikon Z LensID (thanks Warren Hatch)
+<li>Decode a few new Sigma tags
+<li>Decode two more types of timed GPS from MP4 videos
+<li>Decode more Pentax AF tags for some models (thanks Karsten Gieselmann)
+<li>Extract Pages MediaBox from PDF files (<a href="https://github.com/exiftool/exiftool/issues/333">github #333</a>)
+<li>Enhanced Validate feature to check some embedded images
+<li>Remove sub-seconds if they exist when writing a PDF date
+<li>Removed a debugging warning left in the -plot update of 13.28
+<li>Changed DNG ProfileIFD RGBTables to Binary-type tag (<a href="https://github.com/exiftool/exiftool/issues/334">github #334</a>)
+<li>Internal code improvements in the handling of some trailers
+<li>Patched LNK string parsing for Windows nonconformity (<a href="https://github.com/exiftool/exiftool/issues/332">github #332</a>)
+<li>Fixed a few possible "uninitialized value" warnings
+</ul>
+
 <a name='v13.30'><b>May 22, 2025 - Version 13.30</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added a new Canon RF lens (thanks Norbert Wasser)
@@ -62,6 +80,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Decode ShutterCount for Canon EOS R8 and R50 (<a href="https://github.com/exiftool/exiftool/issues/325">github #325</a>)
 <li>Decode ThumbnailTIFF from some Insta360 videos
 <li>Decode AROT:HDRGainCurveSize from APP10
+<li>Enhanced the -plot feature to allow Multi option to specify a different
+    number of datasets for each plot
 <li>Updated to the 2025 MPF specification
 <li>Renamed K-3III AFPoints to AFPointsSelected and changed decoding
 <li>Fixed bug introduced in 13.23 that could cause an incorrect parsing of XMP

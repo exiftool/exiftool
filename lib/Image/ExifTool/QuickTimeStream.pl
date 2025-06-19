@@ -111,7 +111,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 107 different types of timed GPS metadata from video files.
+        currently reads 110 different types of timed GPS metadata from video files.
     },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
     GPSLongitude => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
@@ -210,8 +210,8 @@ my %insvLimit = (
             ProcessProc => \&ProcessFMAS,
         },
     },{
-        Name => 'gpmd_Wolfbox', # Wolfbox G900 Dashcam
-        Condition => '$$valPt =~ /^.{136}0{16}HYTH/s',
+        Name => 'gpmd_Wolfbox', # Wolfbox G900 Dashcam and Redtiger F9 4K
+        Condition => '$$valPt =~ /^.{136}0{16}(HYTH|XXXX)/s',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::Stream',
             ProcessProc => \&ProcessWolfbox,
@@ -317,6 +317,8 @@ my %insvLimit = (
             ByteOrder => 'Little-Endian',
         },
     }],
+    # (have also seen unknown mett from Google Pixel with MetaType 'application/meta'
+    #  and 'application/microvideo-image-meta')
     mett => { # Parrot drones and iPhone/Android using ARCore
         Name => 'mett',
         SubDirectory => { TagTable => 'Image::ExifTool::Parrot::mett' },
@@ -2288,6 +2290,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $dirLen; $recPos += 52) {
                 $lon = ($lon - 2199.19873715495) / 2;
                 $ddd = 1;
             } elsif (Get32u($dataPt,0) == 0x400000 and abs($lat) <= 90 and abs($lon) <= 180) {
+                $debug and $et->FoundTag(GPSType => '17c');
                 # Transcend Drive Body Camera 70
                 #  0000: 00 00 40 00 66 72 65 65 47 50 53 20 4c 00 00 00 [..@.freeGPS L...]
                 #  0010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
@@ -3567,14 +3570,14 @@ sub ProcessFMAS($$$)
 }
 
 #------------------------------------------------------------------------------
-# Process GPS from Wolfbox G900 Dashcam
+# Process GPS from Wolfbox G900 Dashcam and Redtiger F9 4K
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
 sub ProcessWolfbox($$$)
 {
     my ($et, $dirInfo, $tagTbl) = @_;
     my $dataPt = $$dirInfo{DataPt};
-    return 0 if length($$dataPt) < 0xc8;
+    return 0 if length($$dataPt) < 0xf8;
     $et->VerboseDir('Wolfbox', undef, length($$dataPt));
     # 0000: 65 00 00 00 00 00 00 00 31 01 01 00 e3 ff 00 00 [e.......1.......]
     # 0010: 04 00 00 00 10 00 00 00 2a 00 00 00 00 00 00 00 [........*.......]
@@ -3593,22 +3596,43 @@ sub ProcessWolfbox($$$)
     # 00e0: 0a 00 00 00 00 00 00 00 e8 03 00 00 00 00 00 00 [................]
     # 00f0: 0a 00 00 00 00 00 00 00 4d 00 00 00 00 00 00 00 [........M.......]
     # lat/lon at 0xb0/0xc0 and 0x128/0x138
-    # h/m/s at 0x10 and 0xa0 and 0x148 (the first imprinted on the video, the latter 2 presumed UTC)
+    # h/m/s at 0x10 and 0xa0 and 0x148 (the first imprinted on the video, and
+    # the latter 2 presumed UTC, but there is a 1 second offset for the Redtiger)
     # spd at 0x48, dir at 0x58, alt at 0xe8
+    # Redtiger F9 4K Dual Front and Rear Mini Dash Cam
+    # 0000: 01 00 00 00 00 00 00 00 f4 ff 5d fe 24 00 00 00 [..........].$...]
+    # 0010: 10 00 00 00 2d 00 00 00 25 00 00 00 00 00 00 00 [....-...%.......]
+    # 0020: 01 00 00 00 00 00 00 00 44 eb 8f 00 00 00 00 00 [........D.......]
+    # 0030: 10 27 00 00 00 00 00 00 1b 94 8a 04 00 00 00 00 [.'..............]
+    # 0040: 10 27 00 00 00 00 00 00 8c 69 00 00 00 00 00 00 [.'.......i......]
+    # 0050: e8 03 00 00 00 00 00 00 ba 47 00 00 00 00 00 00 [.........G......]
+    # 0060: 64 00 00 00 00 00 00 00 19 00 00 00 05 00 00 00 [d...............]
+    # 0070: e9 07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+    # 0080: 00 00 00 00 00 00 00 00 30 30 30 30 30 30 30 30 [........00000000]
+    # 0090: 30 30 30 30 30 30 30 30 58 58 58 58 00 00 00 00 [00000000XXXX....]
+    # 00a0: 08 00 00 00 2d 00 00 00 24 00 00 00 00 00 00 00 [....-...$.......]
+    # 00b0: 90 eb 8f 00 00 00 00 00 10 27 00 00 00 00 00 00 [.........'......]
+    # 00c0: 20 94 8a 04 00 00 00 00 10 27 00 00 00 00 00 00 [ ........'......]
+    # 00d0: 01 00 00 00 11 00 00 00 40 00 00 00 00 00 00 00 [........@.......]
+    # 00e0: 64 00 00 00 00 00 00 00 8a 00 00 00 00 00 00 00 [d...............]
+    # 00f0: 0a 00 00 00 00 00 00 00 4d 00 00 00 00 00 00 00 [........M.......]
     SetByteOrder('II');
-    my ($spd,$dir,$d,$mo,$yr,$h,$m,$s) = unpack('x72Vx12Vx12V3x44V3',$$dataPt);
-    # offset 0xa0 also stores hh mm ss, but is out by 8 hours!
+    my ($d,$mo,$yr,$h,$m,$s) = unpack('x104V3x44V3',$$dataPt);
     my $time = sprintf '%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $yr, $mo, $d, $h, $m, $s;
-    my ($lat, $lon) = (Get32s($dataPt, 0xb0) / 1e5, Get32s($dataPt, 0xc0) / 1e5);
-    my $alt = Get32s($dataPt, 0xe8);
-    ConvertLatLon($lat, $lon);
+    my ($pos, @a);
+    #             0=spd 1=dir 2=lat 3=lon 4=alt
+    foreach $pos (0x48, 0x58, 0xb0, 0xc0, 0xe8) {
+        my $val = Get64s($dataPt, $pos);
+        my $scl = Get64s($dataPt, $pos + 8);
+        push @a, $val / ($scl || 1);
+    }
+    ConvertLatLon($a[2], $a[3]);
     $et->HandleTag($tagTbl, GPSDateTime  => $time);
-    $et->HandleTag($tagTbl, GPSLatitude  => $lat);
-    $et->HandleTag($tagTbl, GPSLongitude => $lon);
-    $et->HandleTag($tagTbl, GPSSpeed     => $spd * $knotsToKph / 100);
-    $et->HandleTag($tagTbl, GPSTrack     => $dir / 100);
-    $et->HandleTag($tagTbl, GPSAltitude  => $alt / 10); # (NC)
-    SetByteOrder('MM');
+    $et->HandleTag($tagTbl, GPSLatitude  => $a[2]);
+    $et->HandleTag($tagTbl, GPSLongitude => $a[3]);
+    $et->HandleTag($tagTbl, GPSSpeed     => $a[0] * $knotsToKph);
+    $et->HandleTag($tagTbl, GPSTrack     => $a[1]);
+    $et->HandleTag($tagTbl, GPSAltitude  => $a[4]);
     return 1;
 }
 

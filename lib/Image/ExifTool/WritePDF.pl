@@ -81,6 +81,7 @@ sub WritePDFValue($$$)
         EncodeString(\$val);
     } elsif ($format eq 'date') {
         # convert date to "D:YYYYmmddHHMMSS+-HH'MM'" format
+        $val =~ s/(:\d{2})\.\d*/$1/;              # remove sub-seconds
         $val =~ s/([-+]\d{2}):(\d{2})/${1}'${2}'/;  # change timezone delimiters if necessary
         $val =~ tr/ ://d;                       # remove spaces and colons
         $val =  "D:$val";                       # add leading "D:"

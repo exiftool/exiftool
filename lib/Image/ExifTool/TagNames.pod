@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28450 tags, with 17673 unique tag names.
+They contain a total of 28455 tags, with 17676 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -21811,6 +21811,7 @@ are less than consistent about their metadata formats.
   0x003b   Firmware                             string
   0x003c   WhiteBalance                         string
   0x003d   PictureMode                          string
+  0x0047   ExposureCompensation                 rational64s
   0x0048   LensApertureRange                    string
   0x0049   FNumber                              rational64u
   0x004a   ExposureTime                         rational64u
@@ -21826,9 +21827,12 @@ are less than consistent about their metadata formats.
   0x0087   ResolutionMode                       string
   0x0088   WhiteBalance                         string
   0x008c   Firmware                             string
+  0x0113   PictureModeStrength                  int32s
   0x011f   CameraCalibration                    float[9]
   0x0120   WBSettings                           Sigma WBSettings
   0x0121   WBSettings2                          Sigma WBSettings2
+  0x0138   Fade                                 rational64u
+  0x0139   Vignette                             rational64u
 
 =head3 Sigma WBSettings Tags
 
@@ -29664,10 +29668,11 @@ C2PA JUMBF metadata extracted from "/C2PA_Manifest" file.
 
 =head3 PDF Pages Tags
 
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'Count'  PageCount                            no
-  'Kids'   Kids                                 PDF Kids
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  'Count'      PageCount                        no
+  'Kids'       Kids                             PDF Kids
+  'MediaBox'   MediaBox                         no+
 
 =head3 PDF Kids Tags
 
@@ -30380,7 +30385,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 107 different types of timed GPS metadata from video files.
+currently reads 110 different types of timed GPS metadata from video files.
 
   Tag ID                 Tag Name               Writable
   ------                 --------               --------

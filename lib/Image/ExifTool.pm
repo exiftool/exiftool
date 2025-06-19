@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.30';
+$VERSION = '13.31';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -42,7 +42,7 @@ $RELEASE = '';
     # exports not part of the public API, but used by ExifTool modules:
     DataAccess => [qw(
         ReadValue GetByteOrder SetByteOrder ToggleByteOrder Get8u Get8s Get16u
-        Get16s Get32u Get32s Get64u GetFloat GetDouble GetFixed32s Write
+        Get16s Get32u Get32s Get64u Get64s GetFloat GetDouble GetFixed32s Write
         WriteValue Tell Set8u Set8s Set16u Set32u Set64u Set64s
     )],
     Utils => [qw(GetTagTable TagTableKeys GetTagInfoList AddTagToTable HexDump)],
@@ -9719,8 +9719,10 @@ sub ExtractBinary($$$;$)
             $isPreview = 1;
         }
         my $lcTag = lc $tag;
-        if ((not $$self{OPTIONS}{Binary} or $$self{EXCL_TAG_LOOKUP}{$lcTag}) and
-             not $$self{OPTIONS}{Verbose} and not $$self{REQ_TAG_LOOKUP}{$lcTag})
+        my $options = $$self{OPTIONS};
+        if ((not $$options{Binary} or $$self{EXCL_TAG_LOOKUP}{$lcTag}) and
+             not $$options{Verbose} and not $$options{Validate} and
+             not $$self{REQ_TAG_LOOKUP}{$lcTag})
         {
             return "Binary data $length bytes";
         }

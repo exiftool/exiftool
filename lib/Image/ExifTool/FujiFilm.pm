@@ -629,6 +629,9 @@ my %faceCategories = (
             0x70000 => 'Soft Focus',
             0x90000 => 'Low Key',
             0x100000 => 'Light Leak', #forum17392
+            0x130000 => 'Expired Film Green', #forum17392
+            0x130001 => 'Expired Film Red', #forum17392 (NC)
+            0x130002 => 'Expired Film Neutral', #forum17392
         },
     },
     0x1210 => { #2

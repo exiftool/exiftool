@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.17';
+$VERSION = '3.18';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -10522,12 +10522,13 @@ QTLang: foreach $tag (@{$$et{QTLang}}) {
     for (; $trailer; $trailer=$$trailer[3]) {
         next if $lastPos > $$trailer[1];    # skip if we have already processed this as an atom
         last unless $raf->Seek($$trailer[1], 0);
-        if ($$trailer[0] eq 'LigoGPS' and $raf->Read($buff, 8) == 8 and $buff =~ /skip$/) {
+        if ($$trailer[0] eq 'LigoGPS' and $raf->Read($buff, 8) == 8 and $buff =~ /skip$/i) {
             $ee or $et->Warn('Use the ExtractEmbedded option to decode timed GPS',3), next;
             my $len = Get32u(\$buff, 0) - 16;
             if ($len > 0 and $raf->Read($buff, $len) == $len and $buff =~ /^LIGOGPSINFO\0/) {
                 my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
                 my %dirInfo = ( DataPt => \$buff, DataPos => $$trailer[1] + 8, DirName => 'LigoGPSTrailer' );
+                $et->VerboseDump(\$buff, DataPos => $dirInfo{DataPos});
                 Image::ExifTool::LigoGPS::ProcessLigoGPS($et, \%dirInfo, $tbl);
             } else {
                 $et->Warn('Unrecognized data in LigoGPS trailer');

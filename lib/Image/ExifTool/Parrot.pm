@@ -56,7 +56,7 @@ sub Process_mett($$$);
         Name => 'ParrotAutomation',
         SubDirectory => { TagTable => 'Image::ExifTool::Parrot::Automation' },
     },
-    # timed metadata written by ARCore (see forum13653)
+    # MetaType of timed metadata written by ARCore (see forum13653)
     'application/arcore-accel' => {
         Name => 'ARCoreAccel',
         SubDirectory => { TagTable => 'Image::ExifTool::Parrot::ARCoreAccel', ByteOrder => 'II' },

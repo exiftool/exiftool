@@ -10,7 +10,7 @@
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
-      "version" : "2"
+      "version" : 2
    },
    "name" : "Image-ExifTool",
    "no_index" : {
@@ -50,6 +50,6 @@
       }
    },
    "release_status" : "stable",
-   "version" : "13.30",
+   "version" : "13.31",
    "x_serialization_backend" : "JSON::PP version 4.06"
 }

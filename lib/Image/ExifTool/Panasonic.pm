@@ -1439,7 +1439,7 @@ my %shootingMode = (
     0xde => { #forum17299
         Name => 'AFAreaSize',
         Writable => 'rational64u',
-        Notes => 'relative to size of image',
+        Notes => 'relative to size of image.  "n/a" for manual focus',
         Count => 2,
         PrintConv => '$val =~ /^4194303.999/ ? "n/a" : $val',
         PrintConvInv => '$val eq "n/a" ? "4194303.999 4194303.999" : $val',

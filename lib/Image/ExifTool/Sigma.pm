@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.35';
+$VERSION = '1.36';
 
 # sigma LensType lookup (ref IB)
 %sigmaLensTypes = (
@@ -704,6 +704,12 @@ $VERSION = '1.35';
         Name => 'PictureMode',
         Notes => 'same as ColorMode, but "Standard" when ColorMode is Sepia or B&W',
     },
+    0x0047 => { #forum17338
+        Name => 'ExposureCompensation',
+        Writable => 'rational64s',
+        PrintConv => '$val and $val =~ s/^(\d)/\+$1/; $val',
+        PrintConvInv => '$val',
+    },
     0x0048 => { #PH
         Name => 'LensApertureRange',
         Condition => '$$self{MakerNoteSigmaVer} >= 3',
@@ -797,6 +803,10 @@ $VERSION = '1.35';
     0x0087 => 'ResolutionMode', #PH (Quattro models)
     0x0088 => 'WhiteBalance', #PH (Quattro models)
     0x008c => 'Firmware', #PH (Quattro models)
+    0x0113 => { #forum17338
+        Name => 'PictureModeStrength',
+        Writable => 'int32s',
+    },
     0x011f => { #IB (FP DNG images)
         Name => 'CameraCalibration',
         Writable => 'float',
@@ -809,6 +819,14 @@ $VERSION = '1.35';
     0x0121 => { #IB (FP DNG images)
         Name => 'WBSettings2',
         SubDirectory => { TagTable => 'Image::ExifTool::Sigma::WBSettings2' },
+    },
+    0x0138 => { #forum17338
+        Name => 'Fade',
+        Writable => 'rational64u',
+    },
+    0x0139 => { #forum17338
+        Name => 'Vignette',
+        Writable => 'rational64u',
     },
 );
 

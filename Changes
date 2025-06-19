@@ -7,6 +7,23 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+June 19, 2025 - Version 13.31
+
+  - Added a new CanonModelID and RFLensType (thanks Norbert Wasser)
+  - Added some new FujiFilm AdvancedFilter values (thanks Greybeard)
+  - Added a new Nikon Z LensID (thanks Warren Hatch)
+  - Decode a few new Sigma tags
+  - Decode two more types of timed GPS from MP4 videos
+  - Decode more Pentax AF tags for some models (thanks Karsten Gieselmann)
+  - Extract Pages MediaBox from PDF files (github #333)
+  - Enhanced Validate feature to check some embedded images
+  - Remove sub-seconds if they exist when writing a PDF date
+  - Removed a debugging warning left in the -plot update of 13.28
+  - Changed DNG ProfileIFD RGBTables to Binary-type tag (github #334)
+  - Internal code improvements in the handling of some trailers
+  - Patched LNK string parsing for Windows nonconformity (github #332)
+  - Fixed a few possible "uninitialized value" warnings
+
 May 22, 2025 - Version 13.30 (production release)
 
   - Added a new Canon RF lens (thanks Norbert Wasser)
@@ -50,6 +67,8 @@ Apr. 25, 2025 - Version 13.28
   - Decode ShutterCount for Canon EOS R8 and R50 (github #325)
   - Decode ThumbnailTIFF from some Insta360 videos
   - Decode AROT:HDRGainCurveSize from APP10
+  - Enhanced the -plot feature to allow Multi option to specify a different
+    number of datasets for each plot
   - Updated to the 2025 MPF specification
   - Renamed K-3III AFPoints to AFPointsSelected and changed decoding
   - Fixed bug introduced in 13.23 that could cause an incorrect parsing of XMP

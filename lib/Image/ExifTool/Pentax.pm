@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.51';
+$VERSION = '3.52';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1354,6 +1354,7 @@ my %binaryDataAttrs = (
             0xfffd => 'Automatic Tracking AF', #JD
             0xfffc => 'Face Detect AF', #JD
             0xfffb => 'AF Select', #PH (Q select from 25-areas)
+            0xfffa => 'Auto 2', #KarstenGieselmann
             0 => 'None', #PH (Q in manual focus mode)
             1 => 'Upper-left',
             2 => 'Top',
@@ -5792,21 +5793,21 @@ my %binaryDataAttrs = (
     },
     4 => {
         Name => 'AFPointsInFocus',
-        Condition => '$$self{Model} =~ /K-1\b/',
+        Condition => '$$self{Model} =~ /K(P|-1|-70)\b/',
         Format => 'int8u[int(($val{2}+3)/4)]',
         Writable => 0,
         PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,$$self{NumAFPoints},2,0x02)',
     },
     4.1 => {
         Name => 'AFPointsSelected',
-        Condition => '$$self{Model} =~ /K-1\b/',
+        Condition => '$$self{Model} =~ /K(P|-1|-70)\b/',
         Format => 'int8u[int(($val{2}+3)/4)]',
         Writable => 0,
         PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,$$self{NumAFPoints},2,0x03)',
     },
     4.2 => {
         Name => 'AFPointsSpecial',
-        Condition => '$$self{Model} =~ /K-1\b/',
+        Condition => '$$self{Model} =~ /K(P|-1|-70)\b/',
         Format => 'int8u[int(($val{2}+3)/4)]',
         Writable => 0,
         PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,$$self{NumAFPoints},2,0x03,0x03)',
@@ -6437,6 +6438,7 @@ sub DecodeAFPoints($$$$;$)
 {
     my ($val, $num, $bits, $mask, $bitVal) = @_;
     my @bytes = split ' ', $val;
+    return '(none)' unless @bytes;
     my $i = 1;  # (starts at AF point number 1)
     my $shift = 8 - $bits;
     my $byte = shift @bytes;

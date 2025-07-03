@@ -1907,7 +1907,7 @@ sub RestoreNewValues($)
 #------------------------------------------------------------------------------
 # Set alternate file for extracting information
 # Inputs: 0) ExifTool ref, 1) family 8 group name (of the form "File#" where # is any number)
-#         2) alternate file name, or undef to reset
+#         2) alternate file name (may contain tag names with leading "$"), or undef to reset
 # Returns: 1 on success, or 0 on invalid group name
 sub SetAlternateFile($$$)
 {
@@ -1917,7 +1917,9 @@ sub SetAlternateFile($$$)
     # keep the same file if already initialized (possibly has metadata extracted)
     if (not defined $file) {
         delete $$self{ALT_EXIFTOOL}{$g8};
-    } elsif (not ($$self{ALT_EXIFTOOL}{$g8} and $$self{ALT_EXIFTOOL}{$g8}{ALT_FILE} eq $file)) {
+    } elsif (not ($$self{ALT_EXIFTOOL}{$g8} and $file !~ /\$/ and
+        $$self{ALT_EXIFTOOL}{$g8}{ALT_FILE} eq $file))
+    {
         my $altExifTool = Image::ExifTool->new;
         $$altExifTool{ALT_FILE} = $file;
         $$self{ALT_EXIFTOOL}{$g8} = $altExifTool;
@@ -6921,7 +6923,7 @@ sub CheckBinaryData($$$)
         $format = $1;
         $count = $2;
         # can't evaluate $count now because we don't know $size yet
-        undef $count if $count =~ /\$size/;
+        $count = -1 if $count =~ /\$size/;  # (-1 = any count allowed)
     }
     return CheckValue($valPtr, $format, $count);
 }
@@ -7247,6 +7249,8 @@ sub WriteBinaryData($$$)
             $self->VerboseValue("- $dirName:$$tagInfo{Name}", $val);
             $self->VerboseValue("+ $dirName:$$tagInfo{Name}", $newVal);
             ++$$self{CHANGED};
+        } else {
+            $self->Warn("Error packing $$tagInfo{Name} value");
         }
     }
     # add necessary fixups for any offsets

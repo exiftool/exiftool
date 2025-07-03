@@ -46,6 +46,7 @@
 #              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #              NJ) Niels Kristian Bech Jensen private communication
+#              KG) Karsten Gieselmann private communication
 #
 # Notes:        See POD documentation at the bottom of this file
 #------------------------------------------------------------------------------
@@ -58,11 +59,14 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.52';
+$VERSION = '3.53';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
 sub DecodeAFPoints($$$$;$);
+sub AFPointNamesK3III($$;$);
+sub AFPointValuesK3III($$);
+sub AFAreasK3III($$);
 
 # pentax lens type codes (ref 4)
 # The first number gives the lens series, and the 2nd gives the model number
@@ -1148,31 +1152,38 @@ my %binaryDataAttrs = (
             Notes => 'Pentax models',
             Writable => 'int16u',
             PrintConvColumns => 2,
+            PrintHex => 1,
             PrintConv => { #PH
-                0 => 'Normal',
-                1 => 'Macro',
-                2 => 'Infinity',
-                3 => 'Manual',
-                4 => 'Super Macro', #JD
-                5 => 'Pan Focus',
-                6 => 'Auto-area', # (GR III)
-                8 => 'Select', # (GR III)
-                9 => 'Pinpoint', # (GR III)
-                10 => 'Tracking', # (GR III)
-                11 => 'Continuous', # (GR III)
-                12 => 'Snap', # (GR III)
-                16 => 'AF-S (Focus-priority)', #17
-                17 => 'AF-C (Focus-priority)', #17
-                18 => 'AF-A (Focus-priority)', #PH (educated guess)
-                32 => 'Contrast-detect (Focus-priority)', #PH (K-5)
-                33 => 'Tracking Contrast-detect (Focus-priority)', #PH (K-5)
+                0x00 => 'Normal',
+                0x01 => 'Macro',
+                0x02 => 'Infinity',
+                0x03 => 'Manual',
+                0x04 => 'Super Macro', #JD
+                0x05 => 'Pan Focus',
+                0x06 => 'Auto-area', # (GR III)
+                0x07 => 'Zone Select', # (GR III)
+                0x08 => 'Select', # (GR III)
+                0x09 => 'Pinpoint', # (GR III)
+                0x0a => 'Tracking', # (GR III)
+                0x0b => 'Continuous', # (GR III)
+                0x0c => 'Snap', # (GR III)
+                0x10 => 'AF-S (Focus-priority)', #17
+                0x11 => 'AF-C (Focus-priority)', #17
+                0x12 => 'AF-A (Focus-priority)', #PH (educated guess)
+                0x20 => 'Contrast-detect (Focus-priority)', #PH (K-5)
+                0x21 => 'Tracking Contrast-detect (Focus-priority)', #PH (K-5)
                 # bit 8 indicates release priority
-                272 => 'AF-S (Release-priority)', #PH (K-5,K-3)
-                273 => 'AF-C (Release-priority)', #PH (K-5,K-3)
-                274 => 'AF-A (Release-priority)', #PH (K-3)
-                288 => 'Contrast-detect (Release-priority)', #PH (K-01)
-                # 32777 (0x8009) - seen for Ricoh GR III
-                # 32779 (0x800b) - seen for Ricoh GR III
+                0x110 => 'AF-S (Release-priority)', #PH (K-5,K-3)
+                0x111 => 'AF-C (Release-priority)', #PH (K-5,K-3)
+                0x112 => 'AF-A (Release-priority)', #PH (K-3)
+                0x120 => 'Contrast-detect (Release-priority)', #PH (K-01)
+                # bit 15 indicates macro mode (disabled for MF, and defaults to Select for Snap, Infinity)
+                0x8006 => 'Auto-area (Macro)', # (GR III)
+                0x8007 => 'Zone Select (Macro)', # (GR III)
+                0x8008 => 'Select (Macro)', # (GR III)
+                0x8009 => 'Pinpoint (Macro)', # (GR III)
+                0x800a => 'Tracking (Macro)', # (GR III)
+                0x800b => 'Continuous (Macro)', # (GR III)
             },
         },{
             Name => 'FocusMode',
@@ -1188,7 +1199,7 @@ my %binaryDataAttrs = (
     ],
     0x000e => [{ #29
         Name => 'AFPointSelected',
-        Condition => '$$self{Model} =~ /K-1\b/',
+        Condition => '$$self{Model} =~ /(K-1|645Z)\b/', # (NC for 645Z)
         Writable => 'int16u',
         Notes => 'K-1',
         PrintConvColumns => 2,
@@ -1367,16 +1378,20 @@ my %binaryDataAttrs = (
             9 => 'Lower-left',
             10 => 'Bottom',
             11 => 'Lower-right',
-        },
+        },{
         # (second number exists for K-5II(s) is usually 0, but is 1 for AF.C with
         # AFPointMode=='Select' and extended tracking focus points are enabled in the settings)
-        ],
+        # -----
+        #KG: for K-70 and older models with 11 PDAF points (K-S2, K-S1, K-50, K-500, K-30, K-5II(s) )
+            0 => 'Single Point',     # Select AF (1-point) in both PDAF and CAF modes
+            1 => 'Expanded Area',    # Expanded Area AF in AF-C
+        }],
     }],
     0x000f => [{ #PH
         Name => 'AFPointsInFocus',
-        Condition => '$$self{Model} =~ /K-3\b/',
+        Condition => '$$self{Model} =~ /K-(3|S1|S2)\b/',  #KG: valid also for K-S1/S2
         Writable => 'int32u',
-        Notes => 'K-3 only',
+        Notes => 'K-3, K-S1 and K-S2 only',
         PrintHex => 1,
         PrintConv => {
             0 => '(none)',
@@ -2169,7 +2184,7 @@ my %binaryDataAttrs = (
             11 => 'Flat', #31 (K-70)
             # the following values from GR III
             256 => 'Standard',
-            257 => 'Vivid', 
+            257 => 'Vivid',
             258 => 'Monotone',
             259 => 'Soft Monotone',
             260 => 'Hard Monotone',
@@ -3097,13 +3112,15 @@ my %binaryDataAttrs = (
     # 0x0406 - undef[4116] (K-5)
     # 0x0407 - undef[3072] (Q DNG)
     # 0x0408 - undef[1024] (Q DNG)
+    0x040c => {
+        Name => 'AFInfoK3III',
+        SubDirectory => { TagTable => 'Image::ExifTool::Pentax::AFInfoK3III' },
+    },
     0x0e00 => {
         Name => 'PrintIM',
         Description => 'Print Image Matching',
         Writable => 0,
-        SubDirectory => {
-            TagTable => 'Image::ExifTool::PrintIM::Main',
-        },
+        SubDirectory => { TagTable => 'Image::ExifTool::PrintIM::Main' },
     },
 );
 
@@ -5006,11 +5023,11 @@ my %binaryDataAttrs = (
     # 0x0a - values: 00,05,0d,15,86,8e,a6,ae
     0x0b => { #JD
         Name => 'AFPointsInFocus',
-        Condition => '$$self{Model} !~ /(K-(1|3|70)|KP)\b/',
+        Condition => '$$self{Model} !~ /(K-(1|3|70|S1|S2)|KP)\b/',  #KG: valid also for K-S1/S2
         Notes => q{
-            models other than the K-1, K-3, K-70 and KP.  May report two points in focus
-            even though a single AFPoint has been selected, in which case the selected
-            AFPoint is the first reported
+            models other than the K-1, K-3, K-70, KP and K-S1/S2. May report two points
+            in focus even though a single AFPoint has been selected, in which case the
+            selected AFPoint is the first reported
         },
         PrintConvColumns => 2,
         PrintConv => {
@@ -5043,34 +5060,34 @@ my %binaryDataAttrs = (
         Format => 'int16uRev[69]',
         Unknown => 1,
         Notes => 'some unknown values related to each AFPoint',
-        # order is the same as AFPoints below, but there is an additional value for
+        # order is the same as AFPointsSelected below, but there is an additional value for
         # each AF point starting at offset 28 in the array (yes, the range overlaps
         # with the 1st values)
         # (values are int16s stored in reversed byte order)
         ValueConv => 'my @a=split " ",$val;$_>32767 and $_-=65536 foreach @a;join " ",@a',
-        PrintConv => \&AFPointValues,
+        PrintConv => \&AFPointValuesK3III,
     },
     0x12a => { # byte has a value of 2 if corresponding AF point is selected
-        Name => 'AFPointsSelected',
+        Name => 'AFPointsSelected', # (should probably be "AFPointSelected", but the bitmask allows multiple points)
         Condition => '$$self{Model} eq "PENTAX K-3 Mark III"', # any other models?
         Notes => q{
             K-3III only. 41 selectable AF points from a total of 101 available in a 13x9
             grid. Columns are labelled A-M and rows are 1-9. The center point is G5
         },
         Format => 'int8u[41]',
-        PrintConv => 'Image::ExifTool::Pentax::AFPointsK3iii($val,$self,2)',
+        PrintConv => 'Image::ExifTool::Pentax::AFPointNamesK3III($val,$self,2)',
     },
 #
 # (maybe not coincidentally, there are 60 unknown bytes
 #  here, and there are also 60 non-selectable AF points)
 #
     0x18f => { # byte has a value of 1 if corresponding AF point is ... in focus maybe?
-        # usually the same points as AFPoints above, but not always
+        # usually the same points as AFPointsSelected above, but not always
         Name => 'AFPointsUnknown',
         Condition => '$$self{Model} eq "PENTAX K-3 Mark III"', # any other models?
         Unknown => 1,
         Format => 'int8u[41]',
-        PrintConv => \&AFPointsK3iii,
+        PrintConv => \&AFPointNamesK3III,
     },
     0x1fa => {
         Name => 'LiveView',
@@ -5097,7 +5114,7 @@ my %binaryDataAttrs = (
         Name => 'NumCAFPoints',
         RawConv => '$$self{NumCAFPoints} = ($val & 0x0f) * ($val >> 4); $val',
         ValueConv => '($val >> 4) * ($val & 0x0f)',
-    }, 
+    },
     1.1 => {
         Name => 'CAFGridSize',
         ValueConv => '($val >> 4) . " " . ($val & 0x0f)', # (width x height)
@@ -5687,6 +5704,95 @@ my %binaryDataAttrs = (
         ValueConvInv => '-$val * 2',
     },
 );
+
+%Image::ExifTool::Pentax::AFInfoK3III = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    FORMAT => 'int16u',
+    DATAMEMBER => [ 3 ],
+    NOTES => 'AF tags written by the K-3 Mark III, GR III and GR IIIx.',
+    0 => {
+        Name => 'AFInfo',
+        Format => 'int16u[$size/2]',
+        Notes => q{
+            entire AFInfoK3III structure. Provides access to raw numerical values and
+            facilitates the writing of the whole structure
+        },
+        Unknown => 1,
+    },
+    0.1 => {
+        Name => 'AFMode',
+        PrintConv => {
+            0 => 'Phase Detect',
+            2 => 'Contrast Detect',
+            255 => 'Manual Focus',
+        },
+    },
+    1 => {
+        Name => 'AFSelectionMode',
+        PrintHex => 1,
+        PrintConv => {
+            0 => 'Manual Focus',
+            1 => 'Spot',
+            2 => 'Select (5-points)',
+            3 => 'Expanded Area (S)',
+            4 => 'Expanded Area (M)',
+            5 => 'Expanded Area (L)',
+            6 => 'Select (S)',
+            7 => 'Zone Select (21-point)',
+            8 => 'Select XS',
+            0xff => 'Auto Area',
+            # Contrast-detect modes
+            0x2001 => 'Contrast-detect Auto Area',
+            0x2002 => 'Contrast-detect Select', # (GR III)
+            0x2003 => 'Pinpoint', # (GR III)
+            0x2004 => 'Tracking',
+            0x2005 => 'Continuous', # (GR III)
+            0x2006 => 'Face Detection',
+            0x2007 => 'Contrast-detect Select (S)',
+            0x2008 => 'Contrast-detect Select (M)',
+            0x2009 => 'Contrast-detect Select (L)',
+            0x200a => 'Contrast-detect Zone Select', # (GR III)
+            0x200b => 'Contrast-detect Spot',
+        },
+    },
+    3 => {
+        Name => 'NumAFPoints',
+        RawConv => '$$self{NumAFPoints} = $val',
+    },
+    # the data for each AF point consists of 7 int16u values:
+    # the frame width/height, the X/Y position of the focus area,
+    # width/height of the focus area (0/0 for phase-detect modes),
+    # followed by a flags word
+    7 => { # (the same for all areas in my samples, so only extract the first)
+        Name => 'AFFrameSize',
+        Condition => '$$self{NumAFPoints} > 0',
+        Format => 'int16u[2]',
+        Writable => 0,
+        PrintConv => '$val=~s/ /x/; $val',
+    },
+    7.1 => {
+        Name => 'AFAreas',
+        Format => 'int16u[7 * $val{3}]',
+        Notes => q{
+            X,Y position of each AF area, width, with "in-focus" for points in focus,
+            "central" for the center of the selected area, or "peripheral" for points
+            outside the selected area
+        },
+        Writable => 0,
+        List => 1, # (for documentation purposes only)
+        PrintConv => \&AFAreasK3III,
+    },
+    11 => { # (the same for all areas in my samples, so only extract the first)
+        Name => 'AFAreaSize',
+        Condition => '$$self{NumAFPoints} > 0 and $$valPt !~ /^\0\0\0\0/',
+        Notes => 'only for contrast-detect modes',
+        Format => 'int16u[2]',
+        Writable => 0,
+        PrintConv => '$val=~s/ /x/; $val',
+    },
+);
+
 # white balance RGGB levels (ref 28)
 %Image::ExifTool::Pentax::WBLevels = (
     %binaryDataAttrs,
@@ -5750,7 +5856,7 @@ my %binaryDataAttrs = (
     },
 );
 
-# lens information for Penax Q (ref PH)
+# lens information for Pentax Q (ref PH)
 # (306 bytes long, I wonder if this contains vignetting information too?)
 %Image::ExifTool::Pentax::LensInfoQ = (
     %binaryDataAttrs,
@@ -6461,9 +6567,9 @@ sub DecodeAFPoints($$$$;$)
 }
 
 #------------------------------------------------------------------------------
-# Print AF Point names for K-3III (ref PH)
+# Print K-3III AF Point names (ref PH)
 # Inputs: 0) value, 1) ExifTool ref, 2) optional value to match
-sub AFPointsK3iii($$;$)
+sub AFPointNamesK3III($$;$)
 {
     my @a = split ' ', $_[0];
     my $match = $_[2];
@@ -6477,10 +6583,10 @@ sub AFPointsK3iii($$;$)
 }
 
 #------------------------------------------------------------------------------
-# Print AF point values for K-3III (ref PH)
+# Print K-3III AF point values (ref PH)
 # Inputs: 0) value, 1) ExifTool ref
 # Notes: this is experimental and not well understood
-sub AFPointValues($$)
+sub AFPointValuesK3III($$)
 {
     my @a = split ' ', shift;
     my @vals;
@@ -6497,6 +6603,25 @@ sub AFPointValues($$)
         $a[$_ + 28] = undef;
     }
     return @vals ? join ',', sort @vals : '(none)';
+}
+
+#------------------------------------------------------------------------------
+# Print K-3III AF point positions from tag 0x040c (ref KG)
+# Inputs: 0) raw value, 1) ExifTool ref
+sub AFAreasK3III($$)
+{
+    my ($val, $et) = @_;
+    return '(none)' unless $val;
+    my @vals = split ' ', $val;
+    # flags bits: [mask, value, description]
+    my @flags = ([0x10,0x10,'central'],[0x08,0,'peripheral'],[0x04,0x04,'in-focus']);
+    my ($i, @strs);
+    for ($i=0; $i+7<=@vals; $i+=7) {
+        my @a;
+        ($vals[$i+6] & $$_[0]) == $$_[1] and push @a, $$_[2] foreach @flags;
+        push @strs, $vals[$i+2] . ',' . $vals[$i+3] . (@a ? '(' . join(',',@a) . ')' : '');
+    }
+    return \@strs;
 }
 
 #------------------------------------------------------------------------------

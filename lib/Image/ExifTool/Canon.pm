@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.92';
+$VERSION = '4.93';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -2627,6 +2627,10 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             OTHER => sub { shift },
             0x7fff => 'n/a',
         },
+    },
+    52 => { #github336
+        Name  => 'HDR-PQ',
+        PrintConv => { %offOn, -1 => 'n/a' },
     },
 );
 

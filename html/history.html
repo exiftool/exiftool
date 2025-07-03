@@ -17,6 +17,23 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.32'><b>July 2, 2025 - Version 13.32</b></a>
+<ul>
+<li>Added a new Olympus CameraType (thanks Herb and Albert Shan)
+<li>Added a new Sony LensType (<a href="https://github.com/exiftool/exiftool/issues/335">github #335</a>)
+<li>Added a new Nikon CropHiSpeed value (thanks Albert Shan)
+<li>Added a warning if a tag value couldn't be packed for writing to a binary
+    data structure
+<li>Decode more Ricoh/Pentax AF tags for some models (thanks Karsten Gieselmann)
+<li>Decode Canon HDR-PQ tag (<a href="https://github.com/exiftool/exiftool/issues/336">github #336</a>)
+<li>Extract a couple more EXIF tags
+<li>Patched to allow a dot (.) in the name of a structure element when writing
+<li>Fixed "uninitialized value" bug when using -w with the -stay_open feature
+<li>Fixed bug in -file option when tag names were used to specify the name of
+    the alternate file (the tags were taken only from the first input file
+    unless a file name formatting code was also specified)
+</ul>
+
 <a name='v13.31'><b>June 19, 2025 - Version 13.31</b></a>
 <ul>
 <li>Added a new CanonModelID and RFLensType (thanks Norbert Wasser)

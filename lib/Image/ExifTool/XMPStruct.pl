@@ -86,7 +86,7 @@ sub InflateStruct($$;$)
         my %struct;
         for (;;) {
             last unless $sfmt ? $$obj =~ s/^\s*"(.*?)"\s*://s :
-                                $$obj =~ s/^\s*([-\w:]+#?)\s*=//s;
+                                $$obj =~ s/^\s*([-\w:.]+#?)\s*=//s;
             my $tag = $1;
             my ($v, $w) = InflateStruct($et, $obj, '}');
             $warn = $w if $w and not $warn;

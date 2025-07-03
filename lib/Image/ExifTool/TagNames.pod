@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28455 tags, with 17676 unique tag names.
+They contain a total of 28465 tags, with 17681 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -364,11 +364,11 @@ tags remain.
 
 The table below lists all EXIF tags.  Also listed are TIFF, DNG, HDP and
 other tags which are not part of the EXIF specification, but may co-exist
-with EXIF tags in some images.  Tags which are part of the EXIF 2.32
+with EXIF tags in some images.  Tags which are part of the EXIF 3.0
 specification have an underlined B<Tag Name> in the HTML version of this
 documentation.  See
-L<https://web.archive.org/web/20190624045241if_/http://www.cipa.jp:80/std/documents/e/DC-008-Translation-2019-E.pdf>
-for the official EXIF 2.32 specification.
+L<https://www.cipa.jp/std/documents/download_e.html?CIPA_DC-008-2024-E>
+for the official EXIF 3.0 specification.
 
   Tag ID   Tag Name                  Group      Writable
   ------   --------                  -----      --------
@@ -1039,6 +1039,8 @@ for the official EXIF 2.32 specification.
   0xc7aa   CacheVersion              SubIFD2    int32u!
   0xc7b5   DefaultUserCrop           SubIFD     rational64u[4]!
   0xc7d5   NikonNEFInfo              -          Nikon NEFInfo
+  0xc7d7   ZIFMetadata               -          no
+  0xc7d8   ZIFAnnotations            -          no
   0xc7e9   DepthFormat               IFD0       int16u!
   0xc7ea   DepthNear                 IFD0       rational64u!
   0xc7eb   DepthFar                  IFD0       rational64u!
@@ -8049,6 +8051,7 @@ boot, not including standby time.
      42    ColorTone                            int16s
      46    SRAWQuality                          int16s
      51    Clarity                              int16s
+     52    HDR-PQ                               int16s
 
 =head3 Canon FocalLength Tags
 
@@ -20360,6 +20363,7 @@ These tags are used in Pentax/Asahi cameras.
   0x0402   ToneCurve                            yes~
   0x0403   ToneCurves                           yes~
   0x0405   UnknownBlock?                        undef
+  0x040c   AFInfoK3III                          Pentax AFInfoK3III
   0x0e00   PrintIM                              PrintIM
 
 =head3 Pentax LensRec Tags
@@ -20933,6 +20937,20 @@ sensors are located in the camera.
   Index1   Tag Name                             Writable
   ------   --------                             --------
   [no tags known]
+
+=head3 Pentax AFInfoK3III Tags
+
+AF tags written by the K-3 Mark III, GR III and GR IIIx.
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    AFInfo?                              int16u[$size/2]
+    0.1    AFMode                               int16u
+      1    AFSelectionMode                      int16u
+      3    NumAFPoints                          int16u
+      7    AFFrameSize                          no
+    7.1    AFAreas                              no+
+     11    AFAreaSize                           no
 
 =head3 Pentax Type2 Tags
 

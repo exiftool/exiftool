@@ -7,6 +7,22 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+July 2, 2025 - Version 13.32
+
+  - Added a new Olympus CameraType (thanks Herb and Albert Shan)
+  - Added a new Sony LensType (github #335)
+  - Added a new Nikon CropHiSpeed value (thanks Albert Shan)
+  - Added a warning if a tag value couldn't be packed for writing to a binary
+    data structure
+  - Decode more Ricoh/Pentax AF tags for some models (thanks Karsten Gieselmann)
+  - Decode Canon HDR-PQ tag (github #336)
+  - Extract a couple more EXIF tags
+  - Patched to allow a dot (.) in the name of a structure element when writing
+  - Fixed "uninitialized value" bug when using -w with the -stay_open feature
+  - Fixed bug in -file option when tag names were used to specify the name of
+    the alternate file (the tags were taken only from the first input file
+    unless a file name formatting code was also specified)
+
 June 19, 2025 - Version 13.31
 
   - Added a new CanonModelID and RFLensType (thanks Norbert Wasser)

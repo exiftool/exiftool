@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.58';
+$VERSION = '4.59';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2029,7 +2029,7 @@ my %opcodeInfo = (
         OffsetPair => -1,
     },
     0x8782 => 'T88Options', #20
-    0x87ac => 'ImageLayer',
+    0x87ac => 'ImageLayer', # Defined in the Mixed Raster Content part of RFC 2301
     0x87af => { #30
         Name => 'GeoTiffDirectory',
         Format => 'undef',
@@ -4209,6 +4209,8 @@ my %opcodeInfo = (
         },
     },
     # 0xc7d6 - int8u: 1 (SubIFD1 of Nikon Z6/Z7 NEF)
+    0xc7d7 => { Name => 'ZIFMetadata',    Binary => 1 },
+    0xc7d8 => { Name => 'ZIFAnnotations', Binary => 1 },
     0xc7e9 => { # DNG 1.5
         Name => 'DepthFormat',
         Writable => 'int16u',

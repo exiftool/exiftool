@@ -26,11 +26,11 @@ tags remain.</p>
 
 <p>The table below lists all EXIF tags.  Also listed are TIFF, DNG, HDP and
 other tags which are not part of the EXIF specification, but may co-exist
-with EXIF tags in some images.  Tags which are part of the EXIF 2.32
+with EXIF tags in some images.  Tags which are part of the EXIF 3.0
 specification have an underlined <b>Tag Name</b> in the HTML version of this
 documentation.  See
-<a href="https://web.archive.org/web/20190624045241if_/http://www.cipa.jp:80/std/documents/e/DC-008-Translation-2019-E.pdf">https://web.archive.org/web/20190624045241if_/http://www.cipa.jp:80/std/documents/e/DC-008-Translation-2019-E.pdf</a>
-for the official EXIF 2.32 specification.
+<a href="https://www.cipa.jp/std/documents/download_e.html?CIPA_DC-008-2024-E">https://www.cipa.jp/std/documents/download_e.html?CIPA_DC-008-2024-E</a>
+for the official EXIF 3.0 specification.
 </p>
 <blockquote>
 <table class=frame><tr><td>
@@ -3958,6 +3958,18 @@ one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</sp
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#NEFInfo'>Nikon NEFInfo Tags</a></td></tr>
 <tr>
+<td title='0xc7d7 = 51159'>0xc7d7</td>
+<td>ZIFMetadata</td>
+<td class=c>no</td>
+<td class=c>-</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc7d8 = 51160'>0xc7d8</td>
+<td>ZIFAnnotations</td>
+<td class=c>no</td>
+<td class=c>-</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0xc7e9 = 51177'>0xc7e9</td>
 <td>DepthFormat</td>
 <td class=c title=' ! = Unsafe'>int16u!</td>
@@ -4383,7 +4395,7 @@ these unless they already exist in the file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 19, 2025</i>
+<br><i>Last revised Jun 27, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

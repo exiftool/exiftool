@@ -214,27 +214,34 @@ different from other models)</span>
 <td>FocusMode</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(Pentax models)</span></span><table class=cols><tr>
-  <td>0 = Normal
-  <br>1 = Macro
-  <br>2 = Infinity
-  <br>3 = Manual
-  <br>4 = Super Macro
-  <br>5 = Pan Focus
-  <br>6 = Auto-area
-  <br>8 = Select
-  <br>9 = Pinpoint
-  <br>10 = Tracking
-  <br>11 = Continuous</td><td>&nbsp;&nbsp;</td>
-  <td>12 = Snap
-  <br>16 = AF-S (Focus-priority)
-  <br>17 = AF-C (Focus-priority)
-  <br>18 = AF-A (Focus-priority)
-  <br>32 = Contrast-detect (Focus-priority)
-  <br>33 = Tracking Contrast-detect (Focus-priority)
-  <br>272 = AF-S (Release-priority)
-  <br>273 = AF-C (Release-priority)
-  <br>274 = AF-A (Release-priority)
-  <br>288 = Contrast-detect (Release-priority)</td></tr></table>
+  <td>0x0 = Normal
+  <br>0x1 = Macro
+  <br>0x2 = Infinity
+  <br>0x3 = Manual
+  <br>0x4 = Super Macro
+  <br>0x5 = Pan Focus
+  <br>0x6 = Auto-area
+  <br>0x7 = Zone Select
+  <br>0x8 = Select
+  <br>0x9 = Pinpoint
+  <br>0xa = Tracking
+  <br>0xb = Continuous
+  <br>0xc = Snap
+  <br>0x10 = AF-S (Focus-priority)</td><td>&nbsp;&nbsp;</td>
+  <td>0x11 = AF-C (Focus-priority)
+  <br>0x12 = AF-A (Focus-priority)
+  <br>0x20 = Contrast-detect (Focus-priority)
+  <br>0x21 = Tracking Contrast-detect (Focus-priority)
+  <br>0x110 = AF-S (Release-priority)
+  <br>0x111 = AF-C (Release-priority)
+  <br>0x112 = AF-A (Release-priority)
+  <br>0x120 = Contrast-detect (Release-priority)
+  <br>0x8006 = Auto-area (Macro)
+  <br>0x8007 = Zone Select (Macro)
+  <br>0x8008 = Select (Macro)
+  <br>0x8009 = Pinpoint (Macro)
+  <br>0x800a = Tracking (Macro)
+  <br>0x800b = Continuous (Macro)</td></tr></table>
 <span class=s><span class=n>(Asahi models)</span>
   <br>0 = Normal
   <br>1 = Macro (1)
@@ -394,13 +401,16 @@ different from other models)</span>
   <br>65533 = Automatic Tracking AF
   <br>65534 = Fixed Center
   <br>65535 = Auto</td></tr></table>
+<span class=s>[Value 1]</span><table class=cols><tr>
+  <td>0 = Single Point</td><td>&nbsp;&nbsp;</td>
+  <td>1 = Expanded Area</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x000f = 15'>0x000f</td>
 <td>AFPointsInFocus
   <br>AFPointsInFocus</td>
 <td class=c>int32u<br>int16u</td>
-<td><span class=s><span class=n>(K-3 only)</span></span><table class=cols><tr>
+<td><span class=s><span class=n>(K-3, K-S1 and K-S2 only)</span></span><table class=cols><tr>
   <td>0x0 = (none)
   <br>Bit 0 = Top-left
   <br>Bit 1 = Top Near-left
@@ -1660,6 +1670,11 @@ are left, top, width and height in a 720x480 frame, with Y downwards)</span></sp
 <td class=c>undef</td>
 <td><span class=s><span class=n>(large unknown data block in PEF/DNG images but not JPG images)</span></span></td></tr>
 <tr class=b>
+<td title='0x040c = 1036'>0x040c</td>
+<td>AFInfoK3III</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Pentax.html#AFInfoK3III'>Pentax AFInfoK3III Tags</a></td></tr>
+<tr>
 <td title='0x0e00 = 3584'>0x0e00</td>
 <td>PrintIM</td>
 <td class=c>-</td>
@@ -3660,9 +3675,9 @@ serviced)</span></span></td></tr>
 <td class=r title='11 = 0xb'>11</td>
 <td>AFPointsInFocus</td>
 <td class=c>int8u</td>
-<td><span class=s><span class=n>(models other than the K-1, K-3, K-70 and KP.  May report two points in focus
-even though a single AFPoint has been selected, in which case the selected
-AFPoint is the first reported)</span></span><table class=cols><tr>
+<td><span class=s><span class=n>(models other than the K-1, K-3, K-70, KP and K-S1/S2. May report two points
+in focus even though a single AFPoint has been selected, in which case the
+selected AFPoint is the first reported)</span></span><table class=cols><tr>
   <td>0 = None
   <br>1 = Lower-left, Bottom
   <br>2 = Bottom
@@ -4662,6 +4677,77 @@ sensors are located in the camera.</p>
 <tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='AFInfoK3III'>Pentax AFInfoK3III Tags</a></h2>
+<p>AF tags written by the K-3 Mark III, GR III and GR IIIx.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>AFInfo?</td>
+<td class=c>int16u[$size/2]</td>
+<td><span class=s><span class=n>(entire AFInfoK3III structure. Provides access to raw numerical values and
+facilitates the writing of the whole structure)</span></span></td></tr>
+<tr class=b>
+<td class=r title='0 = 0x0'>0.1</td>
+<td>AFMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Phase Detect
+  <br>2 = Contrast Detect
+  <br>255 = Manual Focus</span></td></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>AFSelectionMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0x0 = Manual Focus
+  <br>0x1 = Spot
+  <br>0x2 = Select (5-points)
+  <br>0x3 = Expanded Area (S)
+  <br>0x4 = Expanded Area (M)
+  <br>0x5 = Expanded Area (L)
+  <br>0x6 = Select (S)
+  <br>0x7 = Zone Select (21-point)
+  <br>0x8 = Select XS
+  <br>0xff = Auto Area
+  <br>0x2001 = Contrast-detect Auto Area
+  <br>0x2002 = Contrast-detect Select
+  <br>0x2003 = Pinpoint
+  <br>0x2004 = Tracking
+  <br>0x2005 = Continuous
+  <br>0x2006 = Face Detection
+  <br>0x2007 = Contrast-detect Select (S)
+  <br>0x2008 = Contrast-detect Select (M)
+  <br>0x2009 = Contrast-detect Select (L)
+  <br>0x200a = Contrast-detect Zone Select
+  <br>0x200b = Contrast-detect Spot</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>NumAFPoints</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
+<td>AFFrameSize</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7.1</td>
+<td>AFAreas</td>
+<td class=c title=' + = List'>no+</td>
+<td><span class=s><span class=n>(X,Y position of each AF area, width, with &quot;in-focus&quot; for points in focus,
+&quot;central&quot; for the center of the selected area, or &quot;peripheral&quot; for points
+outside the selected area)</span></span></td></tr>
+<tr>
+<td class=r title='11 = 0xb'>11</td>
+<td>AFAreaSize</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(only for contrast-detect modes)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='Type2'>Pentax Type2 Tags</a></h2>
 <p>These tags are used by the Pentax Optio 330 and 430, and are similar to the
 tags used by Casio.</p>
@@ -5100,7 +5186,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 3, 2025</i>
+<br><i>Last revised Jul 2, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

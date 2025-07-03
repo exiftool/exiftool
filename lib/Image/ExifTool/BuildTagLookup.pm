@@ -271,11 +271,11 @@ tags remain.
 
 The table below lists all EXIF tags.  Also listed are TIFF, DNG, HDP and
 other tags which are not part of the EXIF specification, but may co-exist
-with EXIF tags in some images.  Tags which are part of the EXIF 2.32
+with EXIF tags in some images.  Tags which are part of the EXIF 3.0
 specification have an underlined B<Tag Name> in the HTML version of this
 documentation.  See
-L<https://web.archive.org/web/20190624045241if_/http://www.cipa.jp:80/std/documents/e/DC-008-Translation-2019-E.pdf>
-for the official EXIF 2.32 specification.
+L<https://www.cipa.jp/std/documents/download_e.html?CIPA_DC-008-2024-E>
+for the official EXIF 3.0 specification.
 },
     GPS => q{
 These GPS tags are part of the EXIF standard, and are stored in a separate

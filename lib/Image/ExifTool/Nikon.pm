@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.47';
+$VERSION = '4.48';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1691,14 +1691,15 @@ my %cropHiSpeed = ( #IB
     4 => '3:2 Crop', # (1.2x, ref 36)
     6 => '16:9 Crop',
     8 => '2.7x Crop', #36 (D4/D500)
-    9 => 'DX Movie Crop', # (DX during movie recording, Large)
+    9 => 'DX Movie 16:9 Crop', # (DX during movie recording, Large)
     10 => '1.3x Movie Crop', #36 (D4/D500)
     11 => 'FX Uncropped',
     12 => 'DX Uncropped',
     13 => '2.8x Movie Crop', #28 (D5/D6)    5584/1936
     14 => '1.4x Movie Crop', #28 (D5/D6)    5584/3856
     15 => '1.5x Movie Crop', #36 (D4/D500)  5600/3872
-    17 => '1:1 Crop',
+    17 => 'FX 1:1 Crop',
+    18 => 'DX 1:1 Crop',
     OTHER => sub {
         my ($val, $inv, $conv) = @_;
         return undef if $inv;

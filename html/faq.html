@@ -921,7 +921,9 @@ record (ExifTool adds 2424 bytes by default, but this padding is omitted if the
 partly due to the flexibility of the XMP format which allows the information to
 be written in various styles, some of which are more compact than others (the
 <code>-z</code> option and the <a href="ExifTool.html#Compact">API Compact</a>
-settings also cause a more compact form to be written).</blockquote>
+settings also cause a more compact form to be written).  As well, the order
+of the tags in the XMP may change -- the specification doesn't dictate an order,
+and ExifTool sorts them alphabetically when writing.</blockquote>
 
 <blockquote>You may also notice that the values of some "offset" tags (like
 ThumbnailOffset and PreviewImageStart) may change when the file is rewritten. 
@@ -1850,7 +1852,7 @@ certain commands, but may be suppressed by adding
 <code>-api "NoWarning=No writable tags"</code> to the command if desired.</blockquote>
 
 <hr>
-<i>Last revised Apr 26, 2025</i>
+<i>Last revised Jun 27, 2025</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

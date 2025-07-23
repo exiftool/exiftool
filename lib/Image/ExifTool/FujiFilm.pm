@@ -832,6 +832,13 @@ my %faceCategories = (
     },
     0x1447 => { Name => 'FujiModel',  Writable => 'string' },
     0x1448 => { Name => 'FujiModel2', Writable => 'string' },
+
+    # Found in X-M5, X-E5
+    # White balance as shot. Same valus as 0xf00e.
+    0x144a => { Name => 'WBRed',      Writable => 'int16u' },
+    0x144b => { Name => 'WBGreen',    Writable => 'int16u' },
+    0x144c => { Name => 'WBBlue',     Writable => 'int16u' },
+
     0x144d => { Name => 'RollAngle',  Writable => 'rational64s' }, #forum14319
     0x3803 => { #forum10037
         Name => 'VideoRecordingMode',

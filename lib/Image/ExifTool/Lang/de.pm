@@ -6912,7 +6912,6 @@ $VERSION = '1.38';
    'Rotation' => {
       Description => 'Ausrichtung',
       PrintConv => {
-        'Horizontal (Normal)' => 'Horizontal (normal)',
         'Rotate 180' => '180° gedreht',
         'Rotate 270 CW' => '90° gegen den Uhrzeigersinn',
         'Rotate 90 CW' => '90° im Uhrzeigersinn',

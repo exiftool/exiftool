@@ -177,6 +177,7 @@ html/TagNames/SigmaRaw.html
 html/TagNames/Sony.html
 html/TagNames/SonyIDC.html
 html/TagNames/Stim.html
+html/TagNames/TNEF.html
 html/TagNames/Text.html
 html/TagNames/Theora.html
 html/TagNames/Torrent.html
@@ -434,6 +435,7 @@ lib/Image/ExifTool/SigmaRaw.pm
 lib/Image/ExifTool/Sony.pm
 lib/Image/ExifTool/SonyIDC.pm
 lib/Image/ExifTool/Stim.pm
+lib/Image/ExifTool/TNEF.pm
 lib/Image/ExifTool/TagInfoXML.pm
 lib/Image/ExifTool/TagLookup.pm
 lib/Image/ExifTool/TagNames.pod
@@ -887,6 +889,8 @@ t/Sony.t
 t/Sony_2.out
 t/Sony_3.out
 t/Sony_5.out
+t/TNEF.t
+t/TNEF_2.out
 t/TestLib.pm
 t/Text.t
 t/Text_2.out
@@ -1179,6 +1183,7 @@ t/images/Sigma.x3f
 t/images/SigmaDP2.x3f
 t/images/Sony.jpg
 t/images/Sony.pmp
+t/images/TNEF.tnef
 t/images/Text.csv
 t/images/Text1.txt
 t/images/Text2.txt

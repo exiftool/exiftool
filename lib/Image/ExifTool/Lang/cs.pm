@@ -1198,7 +1198,6 @@ $VERSION = '1.07';
    'Rotation' => {
       PrintConv => {
         'Horizontal' => '0° (nahoru/vlevo)',
-        'Horizontal (Normal)' => '0° (nahoru/vlevo)',
         'Horizontal (normal)' => '0° (nahoru/vlevo)',
         'Rotate 180' => '180° (dolů/vpravo)',
         'Rotate 270 CW' => '90° po směru HR (vlevo/dolů)',

@@ -2411,7 +2411,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     0x5a => { #15
         Name => 'Rotation',
         PrintConv => {
-            0 => 'Horizontal (Normal)',
+            0 => 'Horizontal (normal)',
             1 => 'Rotate 270 CW',
             2 => 'Rotate 90 CW',
         },

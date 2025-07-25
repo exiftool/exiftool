@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.33
 [File, System, Other] FileName - File Name: XMP3.xmp
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 2.4 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2019:12:04 21:22:58-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:58-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:10:31 20:34:50-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2025:07:02 20:58:46-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:07:02 20:56:41-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: XMP
 [File, File, Other] FileTypeExtension - File Type Extension: xmp
@@ -15,8 +15,8 @@
 [XMP, XMP-dc, Author] creator - Creator: bad_list_type_A, bad_list_type_B
 [XMP, XMP-iptcCore, Location] CountryCode - Country Code: CA
 [XMP, XMP-iptcCore, Other] Scene - Scene: scene1
-[XMP, XMP-pdfx, Document] Customↂ0020Propertyↂ00201 - Custom 0020 Property 00201: a custom property value
-[XMP, XMP-pdfx, Document] Customↂ0020Propertyↂ00202 - Custom 0020 Property 00202: some other value
+[XMP, XMP-pdfx, Document] Custom\xe2\x86\x820020Property\xe2\x86\x8200201 - Custom 0020 Property 00201: a custom property value
+[XMP, XMP-pdfx, Document] Custom\xe2\x86\x820020Property\xe2\x86\x8200202 - Custom 0020 Property 00202: some other value
 [XMP, XMP-xmpMM, Other] ManifestLinkForm - Manifest Link Form: EmbedByReference
 [XMP, XMP-xmpMM, Other] ManifestReferenceFilePath - Manifest Reference File Path: C:\some path\file.ext
 [XMP, XMP-cc, Author] attributionName - Attribution Name: some attr

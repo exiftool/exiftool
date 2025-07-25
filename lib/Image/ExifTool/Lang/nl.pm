@@ -2567,7 +2567,6 @@ $VERSION = '1.13';
    'Rotation' => {
       PrintConv => {
         'Horizontal' => '0° (boven/links)',
-        'Horizontal (Normal)' => '0° (boven/links)',
         'Horizontal (normal)' => '0° (boven/links)',
         'Rotate 180' => '180° (onder/rechts)',
         'Rotate 270 CW' => 'Draai 270° met de klok mee',

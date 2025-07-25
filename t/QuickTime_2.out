@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.33
 [File, System, Other] FileName - File Name: QuickTime.mov
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 3.9 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:22 19:58:22-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:50-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:10:31 20:34:50-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:03:22 19:58:22-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:07:02 20:56:41-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: MOV
 [File, File, Other] FileTypeExtension - File Type Extension: mov
@@ -87,27 +87,27 @@
 [QuickTime, Keys, Other] album - Album: ålbum
 [QuickTime, Keys, Other] artist - Artist: årtist
 [QuickTime, Keys, Other] comment - Comment: çømménts
-[QuickTime, UserData, Video] �fmt - Format: Digital Camera
-[QuickTime, UserData, Video] �inf - Information: PENTAX DIGITAL CAMERA                            
-[QuickTime, UserData, Video] �alb - Album: ålbum
-[QuickTime, UserData, Video] �ART - Artist: årtist
-[QuickTime, UserData, Video] �cmt - Comment: çømménts
-[QuickTime, UserData, Video] �com - Composer: cømpøsér
-[QuickTime, UserData, Video] �gen - Genre: Genré
+[QuickTime, UserData, Video] \xa9fmt - Format: Digital Camera
+[QuickTime, UserData, Video] \xa9inf - Information: PENTAX DIGITAL CAMERA                            
+[QuickTime, UserData, Video] \xa9alb - Album: ålbum
+[QuickTime, UserData, Video] \xa9ART - Artist: årtist
+[QuickTime, UserData, Video] \xa9cmt - Comment: çømménts
+[QuickTime, UserData, Video] \xa9com - Composer: cømpøsér
+[QuickTime, UserData, Video] \xa9gen - Genre: Genré
 [QuickTime, QuickTime, Video] 8 - Handler Type: Metadata
 [QuickTime, QuickTime, Video] 12 - Handler Vendor ID: Apple
-[QuickTime, ItemList, Audio] �lyr - Lyrics: These are lyrics
+[QuickTime, ItemList, Audio] \xa9lyr - Lyrics: These are lyrics
 [QuickTime, ItemList, Preview] covr - Cover Art: (Binary data 251 bytes)
-[QuickTime, ItemList, Audio] �ART - Artist: årtist
+[QuickTime, ItemList, Audio] \xa9ART - Artist: årtist
 [QuickTime, ItemList, Author] aART - Album Artist: ålbüm årtîst
-[QuickTime, ItemList, Audio] �wrt - Composer: cømpøsér
-[QuickTime, ItemList, Audio] �alb - Album: ålbum
-[QuickTime, ItemList, Audio] �grp - Grouping: grøuping
-[QuickTime, ItemList, Audio] �gen - Genre: Genré
+[QuickTime, ItemList, Audio] \xa9wrt - Composer: cømpøsér
+[QuickTime, ItemList, Audio] \xa9alb - Album: ålbum
+[QuickTime, ItemList, Audio] \xa9grp - Grouping: grøuping
+[QuickTime, ItemList, Audio] \xa9gen - Genre: Genré
 [QuickTime, ItemList, Audio] trkn - Track Number: 1 of 2
 [QuickTime, ItemList, Audio] disk - Disk Number: 3 of 4
-[QuickTime, ItemList, Time] �day - Content Create Date: 2010
-[QuickTime, ItemList, Audio] �cmt - Comment: çømménts
+[QuickTime, ItemList, Time] \xa9day - Content Create Date: 2010
+[QuickTime, ItemList, Audio] \xa9cmt - Comment: çømménts
 [QuickTime, ItemList, Audio] tmpo - Beats Per Minute: 128
 [QuickTime, QuickTime, Video] mdat-size - Media Data Size: 0
 [QuickTime, QuickTime, Video] mdat-offset - Media Data Offset: 3871

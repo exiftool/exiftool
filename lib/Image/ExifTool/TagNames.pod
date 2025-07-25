@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28465 tags, with 17681 unique tag names.
+They contain a total of 28629 tags, with 17828 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -8050,6 +8050,7 @@ boot, not including standby time.
      41    ManualFlashOutput                    int16s
      42    ColorTone                            int16s
      46    SRAWQuality                          int16s
+     50    FocusBracketing                      int16s
      51    Clarity                              int16s
      52    HDR-PQ                               int16s
 
@@ -12188,6 +12189,9 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1446   FlickerReduction                     int32u
   0x1447   FujiModel                            string
   0x1448   FujiModel2                           string
+  0x144a   WBRed                                int16u
+  0x144b   WBGreen                              int16u
+  0x144c   WBBlue                               int16u
   0x144d   RollAngle                            rational64s
   0x3803   VideoRecordingMode                   int32u
   0x3804   PeripheralLighting                   int16u
@@ -15995,13 +15999,11 @@ These tags are used by the Z8 firmware 2.00 and 2.10.
    1812    NonCPULens1MaxAperture?              int32u~
    1816    NonCPULens2MaxAperture?              int32u~
    1820    NonCPULens3MaxAperture?              int32u~
-   1824    HDMIOutputResolution                 int8u
+   1824    NonCPULens4MaxAperture?              int32u~
    1828    NonCPULens5MaxAperture?              int32u~
    1832    NonCPULens6MaxAperture?              int32u~
    1836    NonCPULens7MaxAperture?              int32u~
    1840    NonCPULens8MaxAperture?              int32u~
-   1842    AirplaneMode?                        int8u
-   1843    EmptySlotRelease?                    int8u
    1844    NonCPULens9MaxAperture?              int32u~
    1848    NonCPULens10MaxAperture?             int32u~
    1852    NonCPULens11MaxAperture?             int32u~
@@ -16011,12 +16013,15 @@ These tags are used by the Z8 firmware 2.00 and 2.10.
    1868    NonCPULens15MaxAperture?             int32u~
    1872    NonCPULens16MaxAperture?             int32u~
    1876    NonCPULens17MaxAperture?             int32u~
-   1878    EnergySavingMode?                    int8u
    1880    NonCPULens18MaxAperture?             int32u~
    1884    NonCPULens19MaxAperture?             int32u~
    1888    NonCPULens20MaxAperture?             int32u~
-   1906    USBPowerDelivery?                    int8u
-   1915    SensorShield?                        int8u
+   1904    HDMIOutputResolution                 int8u
+   1922    AirplaneMode?                        int8u
+   1923    EmptySlotRelease?                    int8u
+   1958    EnergySavingMode?                    int8u
+   1986    USBPowerDelivery?                    int8u
+   1995    SensorShield?                        int8u
    2046    PixelShiftShooting                   int8u
    2048    PixelShiftNumberShots                int8u
    2050    PixelShiftDelay                      int8u
@@ -16027,6 +16032,9 @@ These tags are used by the Z8 firmware 2.00 and 2.10.
    2060    LensFunc2ButtonPlaybackMode          int8u
    2062    PlaybackButtonPlaybackMode           int8u
    2064    BracketButtonPlaybackMode            int8u
+   2206    MaximumApertureLV?                   int8u
+   2208    ReleaseModeButton                    int8u
+   2216    ReleaseModeButtonPlaybackMode        int8u
 
 =head3 Nikon ShotInfoZ9 Tags
 
@@ -16836,7 +16844,7 @@ Z6, Z6ii, Z7, Z7ii, Z50 and Zfc.
 =head3 Nikon AFInfo2V0400 Tags
 
 AF information for Nikon cameras with the Expeed 7 processor: The Zf, Z6_3,
-Z8, Z9 and Z50_3.
+Z8, Z9, Z50_2 and Z5_2.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -18560,6 +18568,7 @@ Custom settings for the Z8.
     263    AutoFocusModeRestrictions?           int8u
     267    CHModeShootingSpeed                  int8u
     273    FlashBurstPriority?                  int8u
+    281    Func3Button                          int8u
     335    LimitAF-AreaModeSelDynamic_S?        int8u
     336    LimitAF-AreaModeSelDynamic_M?        int8u
     337    LimitAF-AreaModeSelDynamic_L?        int8u
@@ -18581,7 +18590,6 @@ Custom settings for the Z8.
     465    SubCommandDialVideoPlaybackMode?     int8u
     467    FocusPointLock?                      int8u
     469    ControlRingResponse                  int8u
-    515    MovieAFAreaMode?                     int8u
     529    ZebraPatternToneRange?               int8u
     531    MovieZebraPattern?                   int8u
     533    MovieHighlightDisplayThreshold?      int8u
@@ -18881,7 +18889,6 @@ Custom settings for the Z9.
     493    ControlRingResponse                  int8u
     505    VerticalMovieFuncButton?             int8u
     529    VerticalMovieAFOnButton?             int8u
-    539    MovieAFAreaMode?                     int8u
     551    HDMIViewAssist?                      int8u
     553    ZebraPatternToneRange?               int8u
     555    MovieZebraPattern?                   int8u
@@ -19343,6 +19350,8 @@ any information found here will be extracted, even if the tag is not listed.
   0x0307   AFFineTuneAdj                        int16s[3]
   0x0308   FocusBracketStepSize                 int8u
   0x0309   AISubjectTrackingMode                int16u
+  0x030a   AFTargetInfo                         Olympus AFTargetInfo
+  0x030b   SubjectDetectInfo                    Olympus SubjectDetectInfo
   0x0400   FlashMode                            int16u
   0x0401   FlashExposureComp                    rational64s
   0x0403   FlashRemoteControl                   int16u
@@ -19387,12 +19396,32 @@ any information found here will be extracted, even if the tag is not listed.
   0x0603   ImageQuality2                        int16u
   0x0604   ImageStabilization                   int32u
   0x0804   StackedImage                         int32u[2]
+  0x0821   ISOAutoSettings                      int16u[2]
   0x0900   ManometerPressure                    int16u
   0x0901   ManometerReading                     int32s[2]
   0x0902   ExtendedWBDetect                     int16u
   0x0903   RollAngle                            int16s[2]
   0x0904   PitchAngle                           int16s[2]
   0x0908   DateTimeUTC                          string
+
+=head3 Olympus AFTargetInfo Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    AFFrameSize                          int16u[2]
+      2    AFFocusArea                          int16u[4]
+      6    AFSelectedArea                       int16u[4]
+
+=head3 Olympus SubjectDetectInfo Tags
+
+Subject Detection for OM cameras.
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    SubjectDetectFrameSize               int16u[2]
+      2    SubjectDetectArea                    int16u[4]
+      6    SubjectDetectDetail                  int16u[4]
+     10    SubjectDetectStatus                  int16u
 
 =head3 Olympus RawDevelopment Tags
 
@@ -19441,6 +19470,13 @@ any information found here will be extracted, even if the tag is not listed.
   0x0119   RawDevAutoGradation                  int16u
   0x0120   RawDevPMNoiseFilter                  int16u
   0x0121   RawDevArtFilter                      int16u[4]
+  0x8000   RawDevSubIFD                         Olympus RawDevSubIFD
+
+=head3 Olympus RawDevSubIFD Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
 
 =head3 Olympus ImageProcessing Tags
 
@@ -19509,6 +19545,7 @@ any information found here will be extracted, even if the tag is not listed.
   0x1900   KeystoneCompensation                 int8u[2]
   0x1901   KeystoneDirection                    int8u[2]
   0x1906   KeystoneValue                        int16s[3]
+  0x2110   GNDFilterType                        int8u
 
 =head3 Olympus FocusInfo Tags
 
@@ -19537,12 +19574,13 @@ any information found here will be extracted, even if the tag is not listed.
   0x120a   MacroLED                             int16u
   0x1500   SensorTemperature                    int16s
   0x1600   ImageStabilization                   undef~
+  0x2100   AntiShockWaitingTime                 yes
 
 =head3 Olympus AFInfo Tags
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-  [no tags known]
+   1580    CAFSensitivity                       no
 
 =head3 Olympus FE Tags
 
@@ -20363,6 +20401,7 @@ These tags are used in Pentax/Asahi cameras.
   0x0402   ToneCurve                            yes~
   0x0403   ToneCurves                           yes~
   0x0405   UnknownBlock?                        undef
+  0x040b   FaceInfoK3III                        Pentax FaceInfoK3III
   0x040c   AFInfoK3III                          Pentax AFInfoK3III
   0x0e00   PrintIM                              PrintIM
 
@@ -20681,8 +20720,8 @@ Flash information tags for the K10D, K20D and K200D.
       7    AFIntegrationTime                    int8u
      11    AFPointsInFocus                      int8u
      20    AFPointValues?                       no
-    298    AFPointsSelected                     int8u[41]~
-    399    AFPointsUnknown?                     int8u[41]~
+    298    AFPointsSelected                     int8u[101]~
+    399    AFPointsUnknown?                     int8u[101]~
     506    LiveView                             int8u
     509    AFHold                               int8u
 
@@ -20937,6 +20976,76 @@ sensors are located in the camera.
   Index1   Tag Name                             Writable
   ------   --------                             --------
   [no tags known]
+
+=head3 Pentax FaceInfoK3III Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    FaceImageSize                        int32u[2]
+    0.1    FaceInfoK3III?                       int32u[$size/4]
+      2    CAFArea                              int32u[4]
+      6    FacesDetectedA                       int32u
+      8    FacesDetectedB                       int32u
+     10    Face1AArea                           int32u[4]
+     14    Face1AEye1                           int32u[4]
+     18    Face1AEye2                           int32u[4]
+     30    Face2AArea                           int32u[4]
+     34    Face2AEye1                           int32u[4]
+     38    Face2AEye2                           int32u[4]
+     50    Face3AArea                           int32u[4]
+     54    Face3AEye1                           int32u[4]
+     58    Face3AEye2                           int32u[4]
+     70    Face4AArea                           int32u[4]
+     74    Face4AEye1                           int32u[4]
+     78    Face4AEye2                           int32u[4]
+     90    Face5AArea                           int32u[4]
+     94    Face5AEye1                           int32u[4]
+     98    Face5AEye2                           int32u[4]
+    110    Face6AArea                           int32u[4]
+    114    Face6AEye1                           int32u[4]
+    118    Face6AEye2                           int32u[4]
+    130    Face7AArea                           int32u[4]
+    134    Face7AEye1                           int32u[4]
+    138    Face7AEye2                           int32u[4]
+    150    Face8AArea                           int32u[4]
+    154    Face8AEye1                           int32u[4]
+    158    Face8AEye2                           int32u[4]
+    170    Face9AArea                           int32u[4]
+    174    Face9AEye1                           int32u[4]
+    178    Face9AEye2                           int32u[4]
+    190    Face10AArea                          int32u[4]
+    194    Face10AEye1                          int32u[4]
+    198    Face10AEye2                          int32u[4]
+    210    Face1BArea                           int32u[4]
+    214    Face1BEye1                           int32u[4]
+    218    Face1BEye2                           int32u[4]
+    230    Face2BArea                           int32u[4]
+    234    Face2BEye1                           int32u[4]
+    238    Face2BEye2                           int32u[4]
+    250    Face3BArea                           int32u[4]
+    254    Face3BEye1                           int32u[4]
+    258    Face3BEye2                           int32u[4]
+    270    Face4BArea                           int32u[4]
+    274    Face4BEye1                           int32u[4]
+    278    Face4BEye2                           int32u[4]
+    290    Face5BArea                           int32u[4]
+    294    Face5BEye1                           int32u[4]
+    298    Face5BEye2                           int32u[4]
+    310    Face6BArea                           int32u[4]
+    314    Face6BEye1                           int32u[4]
+    318    Face6BEye2                           int32u[4]
+    330    Face7BArea                           int32u[4]
+    334    Face7BEye1                           int32u[4]
+    338    Face7BEye2                           int32u[4]
+    350    Face8BArea                           int32u[4]
+    354    Face8BEye1                           int32u[4]
+    358    Face8BEye2                           int32u[4]
+    370    Face9BArea                           int32u[4]
+    374    Face9BEye1                           int32u[4]
+    378    Face9BEye2                           int32u[4]
+    390    Face10BArea                          int32u[4]
+    394    Face10BEye1                          int32u[4]
+    398    Face10BEye2                          int32u[4]
 
 =head3 Pentax AFInfoK3III Tags
 
@@ -31690,7 +31799,8 @@ the config file.
   'RMKN'       RicohRMKN                        EXIF
   'RTHU'       PreviewImage                     no
   'SDLN'       PlayMode                         string
-  'SIGM'       PreviewImage                     no
+  'SIGM'       SigmaEXIF                        EXIF
+               PreviewImage                     string
   'SNum'       SerialNumber                     string/
   'SelO'       PlaySelection                    int8u
   'TAGS'       FujiFilmTags                     FujiFilm MOV
@@ -36400,6 +36510,110 @@ Tags with index 54 and greater are conditional based on the StreamType.
      56    AudioChannels                        no
      58    AudioSampleRate                      no
            ImageHeight                          no
+
+=head2 TNEF Tags
+
+Information extracted from Transport Neutral Encapsulation Format (TNEF)
+files (eg. winmail.dat).  But note that the exiftool application doesn't
+process files with a .DAT extension by default when a directory name is
+given, so in this case either specify the .DAT file(s) by name or add
+C<-ext+ dat> to the command.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x8000   From                                 no
+  0x18004  Subject                              no
+  0x18009  MessageID                            no
+  0x18010  AttachTitle                          no
+  0x2800c  MessageBody                          no
+  0x30006  StartDate                            no
+  0x30007  EndDate                              no
+  0x38005  SentDate                             no
+  0x38006  ReceivedDate                         no
+  0x38012  AttachCreateDate                     no
+  0x38013  AttachModifyDate                     no
+  0x38020  MessageModifyDate                    no
+  0x40009  ResponseRequested                    no
+  0x4800d  Priority                             no
+  0x50008  OwnerAppointmentID                   no
+  0x60000  Owner                                no
+  0x60001  SentFor                              no
+  0x60002  Delegate                             no
+  0x68007  MessageStatus                        no
+  0x6800f  AttachData                           no
+  0x68011  AttachMetaFile                       no
+  0x69001  AttachTransportFilename              no
+  0x69002  AttachRenderingData                  no
+  0x69003  MessageProps                         TNEF MsgProps
+  0x69004  RecipientTable                       no
+  0x69005  AttachInfo                           TNEF AttachInfo
+  0x69007  CodePage                             no
+  0x70600  OriginalMessageClass                 no
+  0x78008  MessageClass                         no
+  0x89006  TNEFVersion                          no
+
+=head3 TNEF MsgProps Tags
+
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  0x0002       AlternateRecipientAllowed        no
+  0x0039       ClientSubmitTime                 no
+  0x0040       ReceivedByName                   no
+  0x0044       ReceivedRepresentingName         no
+  0x004d       OriginalAuthorName               no
+  0x0055       OriginalDeliveryTime             no
+  0x0070       Subject                          no
+  0x0075       ReceivedByAddressType            no
+  0x0076       ReceivedByEmailAddress           no
+  0x0077       ReceivedRepresentingAddressType  no
+  0x0078       ReceivedRepresentingEmailAddress no
+  0x007f       CorrelationKey                   no
+  0x0c1a       SenderName                       no
+  0x0c1d       SenderSearchKey                  no
+  0x0e06       MessageDeliveryTime              no
+  0x0e1d       NormalizedSubject                no
+  0x0e28       PrimarySendAccount               no
+  0x0e29       NextSendAccount                  no
+  0x0f02       DeliveryOrRenewTime              no
+  0x1000       MessageBodyText                  no
+  0x1007       SyncBodyCount                    no
+  0x1008       SyncBodyData                     no
+  0x1009       MessageBodyRTF                   no
+  0x1013       MessageBodyHTML                  no
+  0x1035       InternetMessageID                no
+  0x10f4       Hidden                           no
+  0x10f6       ReadOnly                         no
+  0x3007       CreateDate                       no
+  0x3008       ModifyDate                       no
+  0x3fde       InternetCodePage                 no
+  0x3ff1       LocalUserID                      no
+  0x3ff8       CreatorName                      no
+  0x3ffa       LastModifierName                 no
+  0x3ffd       MessageCodePage                  no
+  0x4076       SpamConfidenceLevel              no
+  '00020329_Author' Author                      no
+  '00020329_LastAuthor' LastAuthor              no
+  '00062004_0000801A' HomeAddress               no
+  '00062004_000080DA' HomeAddressCountryCode    no
+  '00062008_00008554' AppVersion                no
+
+=head3 TNEF AttachInfo Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0e20   AttachSize                           no
+  0x0e21   AttachNum                            no
+  0x0ff8   MappingSignature?                    no
+  0x3001   AttachFileName                       no
+  0x3701   AttachBinary                         no
+  0x3703   AttachFileExtension                  no
+  0x3705   AttachMethod                         no
+  0x3707   AttachLongFileName                   no
+  0x3708   AttachPathName                       no
+  0x370d   AttachLongPathName                   no
+  0x370e   AttachMIMEType                       no
+  0x7ffb   ExceptionStartTime?                  no
+  0x7ffc   ExceptionEndTime?                    no
 
 =head2 WTV Tags
 

@@ -7,6 +7,27 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+July 25, 2025 - Version 13.33
+
+  - Added read support for TNEF files (eg. "winmail.dat")
+  - Added a new Canon HighlightTonePriority value (github #339)
+  - Decode Canon FocusBracketing tag (github #340)
+  - Decode more tags for newer Nikon Z models (thanks Warren Hatch)
+  - Decode a few more Olympus tags (thanks Karsten Gieselmann)
+  - Decode a few more FujiFilm tags (github #343)
+  - Handle Olympus RawDev2IFD tag 0x8000 (named it RawDevSubIFD)
+  - Improved recognition of some Sony lenses (github #342)
+  - Enhanced the -p option to cycle through sub-subdocuments
+  - Improved extraction of GoPro timed GPS to use sub-subdocuments to separate
+    the individual fixes, allowing -p to extract all fixes at sub-second
+    resolution (althought for earlier models these don't all contain timestamps)
+  - Extract EXIF information from Sigma fp MOV videos
+  - Patched to avoid "multi-segment EXIF with external pointers" error when
+    writing Olympus OM-1 JPG files converted by some utilities
+  - Fixed decoding of Panasonic LongExposureNRUsed (thanks AndrewJ)
+  - Fixed long-standing bug when using special characters in the -d option
+    argument
+
 July 2, 2025 - Version 13.32
 
   - Added a new Olympus CameraType (thanks Herb and Albert Shan)
@@ -19,9 +40,9 @@ July 2, 2025 - Version 13.32
   - Extract a couple more EXIF tags
   - Patched to allow a dot (.) in the name of a structure element when writing
   - Fixed "uninitialized value" bug when using -w with the -stay_open feature
-  - Fixed bug in -file option when tag names were used to specify the name of
-    the alternate file (the tags were taken only from the first input file
-    unless a file name formatting code was also specified)
+  - Fixed bug in -file option when using tag names to specify the name of the
+    alternate file (the tags were taken only from the first input file unless a
+    file name formatting code was also specified)
 
 June 19, 2025 - Version 13.31
 
@@ -423,7 +444,7 @@ Nov. 12, 2024 - Version 13.03
 Nov. 5, 2024 - Version 13.02
 
   - Enhanced -j -l output to add optional "fmt" and "hex" fields
-  - Enhanced -geotag option to support Android "Export Timeline data" JSON
+  - Enhanced -geotag option to support Google Maps "Export Timeline data" JSON
     format
   - Changed ProductVersion of Windows launcher to match ExifTool version
   - Patched to use empty group name instead of "Copy0" for family 4 group name

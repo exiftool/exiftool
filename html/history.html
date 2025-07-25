@@ -17,6 +17,28 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.33'><b>July 25, 2025 - Version 13.33</b></a>
+<ul>
+<li>Added read support for <a href="TagNames/TNEF.html">TNEF files</a> (eg. "winmail.dat")
+<li>Added a new Canon HighlightTonePriority value (<a href="https://github.com/exiftool/exiftool/issues/339">github #339</a>)
+<li>Decode Canon FocusBracketing tag (<a href="https://github.com/exiftool/exiftool/issues/340">github #340</a>)
+<li>Decode more tags for newer Nikon Z models (thanks Warren Hatch)
+<li>Decode a few more Olympus tags (thanks Karsten Gieselmann)
+<li>Decode a few more FujiFilm tags (<a href="https://github.com/exiftool/exiftool/issues/343">github #343</a>)
+<li>Handle Olympus RawDev2IFD tag 0x8000 (named it RawDevSubIFD)
+<li>Improved recognition of some Sony lenses (<a href="https://github.com/exiftool/exiftool/issues/342">github #342</a>)
+<li>Enhanced the -p option to cycle through sub-subdocuments
+<li>Improved extraction of GoPro timed GPS to use sub-subdocuments to separate
+    the individual fixes, allowing -p to extract all fixes at sub-second
+    resolution (althought for earlier models these don't all contain timestamps)
+<li>Extract EXIF information from Sigma fp MOV videos
+<li>Patched to avoid "multi-segment EXIF with external pointers" error when
+    writing Olympus OM-1 JPG files converted by some utilities
+<li>Fixed decoding of Panasonic LongExposureNRUsed (thanks AndrewJ)
+<li>Fixed long-standing bug when using special characters in the -d option
+    argument
+</ul>
+
 <a name='v13.32'><b>July 2, 2025 - Version 13.32</b></a>
 <ul>
 <li>Added a new Olympus CameraType (thanks Herb and Albert Shan)
@@ -29,9 +51,9 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Extract a couple more EXIF tags
 <li>Patched to allow a dot (.) in the name of a structure element when writing
 <li>Fixed "uninitialized value" bug when using -w with the -stay_open feature
-<li>Fixed bug in -file option when tag names were used to specify the name of
-    the alternate file (the tags were taken only from the first input file
-    unless a file name formatting code was also specified)
+<li>Fixed bug in -file option when using tag names to specify the name of the
+    alternate file (the tags were taken only from the first input file unless a
+    file name formatting code was also specified)
 </ul>
 
 <a name='v13.31'><b>June 19, 2025 - Version 13.31</b></a>

@@ -402,7 +402,7 @@ my %opcodeInfo = (
             THM => 'THM - DCF thumbnail file',
         },
     },
-    0x2 => { #5
+    0x2 => { #5 (not in the EXIF spec)
         Name => 'InteropVersion',
         Description => 'Interoperability Version',
         Protected => 1,

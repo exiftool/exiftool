@@ -8874,7 +8874,6 @@ $VERSION = '1.37';
         '270' => '270°',
         '90' => '90°',
         'Horizontal' => 'Horizontale',
-        'Horizontal (Normal)' => 'Horizontale (normale)',
         'Horizontal (normal)' => 'Horizontale (normale)',
         'Rotate 180' => 'Rotation de 180°',
         'Rotate 270 CW' => 'Rotation antihoraire de 270°',

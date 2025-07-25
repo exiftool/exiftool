@@ -43,12 +43,12 @@
 [QuickTime, Track1, Video] stco - Chunk Offset: (Binary data 184 bytes)
 [QuickTime, QuickTime, Video] 8 - Handler Type: Metadata
 [QuickTime, QuickTime, Video] 12 - Handler Vendor ID: Apple
-[QuickTime, ItemList, Audio] ©ART - Artist: me
-[QuickTime, UserData, Video] ©arg - Arranger: arr
+[QuickTime, ItemList, Audio] \xa9ART - Artist: me
+[QuickTime, UserData, Video] \xa9arg - Arranger: arr
 [QuickTime, QuickTime, Video] 8 - Handler Type: Metadata Tags
 [QuickTime, Keys, Other] director - Director: dir
 [QuickTime, QuickTime, Video] mdat-size - Media Data Size: 0
 [QuickTime, QuickTime, Video] mdat-offset - Media Data Offset: 7449
 [QuickTime, QuickTime, Video] mdat - Media Data: (Binary data 0 bytes)
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.27
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.33
 [XMP, XMP-tiff, Author] Artist - Artist: me

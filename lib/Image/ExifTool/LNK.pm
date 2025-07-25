@@ -15,8 +15,9 @@ package Image::ExifTool::LNK;
 use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
+use Image::ExifTool::Microsoft;
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 sub ProcessItemID($$$);
 sub ProcessLinkInfo($$$);
@@ -441,6 +442,8 @@ sub ProcessLinkInfo($$$);
     0x08 => {
         Name => 'CodePage',
         Format => 'int32u',
+        SeparateTable => 'Microsoft CodePage',
+        PrintConv => \%Image::ExifTool::Microsoft::codePage,
     },
 );
 

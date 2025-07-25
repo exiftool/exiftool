@@ -1,10 +1,10 @@
-  ExifToolVersion = 11.70
+  ExifToolVersion = 13.33
   FileName = Olympus_7_failed.jpg
   Directory = t
   FileSize = 7335
-  FileModifyDate = 1570452448
-  FileAccessDate = 1570452448
-  FileInodeChangeDate = 1570452448
+  FileModifyDate = 1752672219
+  FileAccessDate = 1752672219
+  FileInodeChangeDate = 1752672219
   FilePermissions = 33188
   FileType = JPEG
   FileTypeExtension = JPG
@@ -106,7 +106,7 @@ JPEG APP1 (7080 bytes):
   | | | |     - Tag 0x0000 (4 bytes, undef[4])
   | | | | 1)  PreviewImageValid = 0
   | | | |     - Tag 0x0100 (4 bytes, int32u[1])
-  | | | | 2)  PreviewImageStart = 6037
+  | | | | 2)  PreviewImageStart = 1168
   | | | |     - Tag 0x0101 (4 bytes, int32u[1])
   | | | | 3)  PreviewImageLength = 0
   | | | |     - Tag 0x0102 (4 bytes, int32u[1])

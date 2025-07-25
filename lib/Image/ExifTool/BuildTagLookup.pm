@@ -2338,7 +2338,8 @@ sub WriteTagNames($$)
         my ($hid, $showGrp);
         # widths of the different columns in the POD documentation
         my ($wID,$wTag,$wReq,$wGrp) = (8,36,24,10);
-        my ($composite, $derived, $notes, $longTags, $wasLong, $prefix);
+        my ($composite, $derived, $notes, $longTags, $prefix);
+        my $wasLong = 0;
         if ($short eq 'Shortcuts') {
             $derived = '<th>Refers To</th>';
             $composite = 2;
@@ -2396,7 +2397,7 @@ sub WriteTagNames($$)
                     $wID -= $longTag - $wTag;
                     $wTag = $longTag;
                 }
-                $wasLong = 1 if $wID <= $self->{LONG_ID}->{$tableName};
+                ++$wasLong if $wID <= $self->{LONG_ID}->{$tableName};
             }
         } elsif ($composite) {
             $wTag += $wID - $wReq;
@@ -2471,6 +2472,7 @@ sub WriteTagNames($$)
                     if ($over <= $wTag - length($$tagNames[0])) {
                         $wTag2 -= $over;
                         $w += $over;
+                        --$wasLong;
                     } else {
                         # put tag name on next line if ID is too long
                         $idStr = "  $tagIDstr\n   " . (' ' x $w);

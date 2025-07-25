@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::QuickTime;
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub ProcessGoPro($$$);
 sub ProcessString($$$);
@@ -750,14 +750,26 @@ sub ProcessString($$$)
     my @list = ref $$dataPt eq 'ARRAY' ? @{$$dataPt} : ( $$dataPt );
     my ($string, $val);
     $et->VerboseDir('GoPro structure');
+    my $docNum = $$et{DOC_NUM};
+    my $subDoc = 0;
     foreach $string (@list) {
         my @val = split ' ', $string;
         my $i = 0;
         foreach $val (@val) {
             $et->HandleTag($tagTablePtr, $i, $val);
-            $$tagTablePtr{++$i} or $i = 0;
+            next if $$tagTablePtr{++$i};
+            # increment subdoc for records stored as string of values (eg. GPS5)
+            $i = 0;
+            ++$subDoc;
+            $$et{DOC_NUM} = "$docNum-$subDoc";
+        }
+        if ($i) {
+            # increment subdoc for records stored as array of strings (eg. GPS9)
+            ++$subDoc;
+            $$et{DOC_NUM} = "$docNum-$subDoc";
         }
     }
+    $$et{DOC_NUM} = $docNum;
     return 1;
 }
 

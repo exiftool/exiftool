@@ -1273,7 +1273,7 @@ edit versions, otherwise this is extracted as a binary data block)</span>
 <td class=r title='6 = 0x6'>6</td>
 <td>VRMode</td>
 <td class=c>int8u</td>
-<td><span class=s><span class=n>(Z Series cameras thru October 2023)</span>
+<td><span class=s><span class=n>(Z Series cameras thru July 2025)</span>
   <br>0 = Off
   <br>1 = Normal
   <br>3 = Sport
@@ -5611,11 +5611,14 @@ firmware 1.01b.</p>
 <td class=r title='1808 = 0x710'>1808</td>
 <td>HDMIOutputResolution</td>
 <td class=c>int8u</td>
-<td><span class=s>0 = Auto
+<td><table class=cols><tr>
+  <td>0 = Auto
   <br>1 = 4320p
-  <br>2 = 2160p
-  <br>3 = 1080p
-  <br>5 = 720p</span></td></tr>
+  <br>2 = 2160p</td><td>&nbsp;&nbsp;</td>
+  <td>3 = 1080p
+  <br>4 = 1080i
+  <br>5 = 720p</td></tr></table>
+</td></tr>
 <tr class=b>
 <td class=r title='1826 = 0x722'>1826</td>
 <td>AirplaneMode?</td>
@@ -6394,13 +6397,9 @@ firmware 1.01b.</p>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1824 = 0x720'>1824</td>
-<td>HDMIOutputResolution</td>
-<td class=c>int8u</td>
-<td><span class=s>0 = Auto
-  <br>1 = 4320p
-  <br>2 = 2160p
-  <br>3 = 1080p
-  <br>5 = 720p</span></td></tr>
+<td>NonCPULens4MaxAperture?</td>
+<td class=c title=' ~ = Writable only with -n'>int32u~</td>
+<td>&nbsp;</td></tr>
 <tr>
 <td class=r title='1828 = 0x724'>1828</td>
 <td>NonCPULens5MaxAperture?</td>
@@ -6421,18 +6420,6 @@ firmware 1.01b.</p>
 <td>NonCPULens8MaxAperture?</td>
 <td class=c title=' ~ = Writable only with -n'>int32u~</td>
 <td>&nbsp;</td></tr>
-<tr>
-<td class=r title='1842 = 0x732'>1842</td>
-<td>AirplaneMode?</td>
-<td class=c>int8u</td>
-<td><span class=s>0 = Off
-  <br>1 = On</span></td></tr>
-<tr class=b>
-<td class=r title='1843 = 0x733'>1843</td>
-<td>EmptySlotRelease?</td>
-<td class=c>int8u</td>
-<td><span class=s>0 = Disable Release
-  <br>1 = Enable Release</span></td></tr>
 <tr>
 <td class=r title='1844 = 0x734'>1844</td>
 <td>NonCPULens9MaxAperture?</td>
@@ -6479,46 +6466,70 @@ firmware 1.01b.</p>
 <td class=c title=' ~ = Writable only with -n'>int32u~</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='1878 = 0x756'>1878</td>
+<td class=r title='1880 = 0x758'>1880</td>
+<td>NonCPULens18MaxAperture?</td>
+<td class=c title=' ~ = Writable only with -n'>int32u~</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1884 = 0x75c'>1884</td>
+<td>NonCPULens19MaxAperture?</td>
+<td class=c title=' ~ = Writable only with -n'>int32u~</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1888 = 0x760'>1888</td>
+<td>NonCPULens20MaxAperture?</td>
+<td class=c title=' ~ = Writable only with -n'>int32u~</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1904 = 0x770'>1904</td>
+<td>HDMIOutputResolution</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Auto
+  <br>1 = 4320p
+  <br>2 = 2160p</td><td>&nbsp;&nbsp;</td>
+  <td>3 = 1080p
+  <br>4 = 1080i
+  <br>5 = 720p</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='1922 = 0x782'>1922</td>
+<td>AirplaneMode?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='1923 = 0x783'>1923</td>
+<td>EmptySlotRelease?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Disable Release
+  <br>1 = Enable Release</span></td></tr>
+<tr class=b>
+<td class=r title='1958 = 0x7a6'>1958</td>
 <td>EnergySavingMode?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
 <tr>
-<td class=r title='1880 = 0x758'>1880</td>
-<td>NonCPULens18MaxAperture?</td>
-<td class=c title=' ~ = Writable only with -n'>int32u~</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='1884 = 0x75c'>1884</td>
-<td>NonCPULens19MaxAperture?</td>
-<td class=c title=' ~ = Writable only with -n'>int32u~</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='1888 = 0x760'>1888</td>
-<td>NonCPULens20MaxAperture?</td>
-<td class=c title=' ~ = Writable only with -n'>int32u~</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='1906 = 0x772'>1906</td>
+<td class=r title='1986 = 0x7c2'>1986</td>
 <td>USBPowerDelivery?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
-<td class=r title='1915 = 0x77b'>1915</td>
+<tr class=b>
+<td class=r title='1995 = 0x7cb'>1995</td>
 <td>SensorShield?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Stays Open
   <br>1 = Closes</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='2046 = 0x7fe'>2046</td>
 <td>PixelShiftShooting</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On
   <br>2 = On (Series)</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='2048 = 0x800'>2048</td>
 <td>PixelShiftNumberShots</td>
 <td class=c>int8u</td>
@@ -6526,7 +6537,7 @@ firmware 1.01b.</p>
   <br>1 = 8
   <br>2 = 16
   <br>3 = 32</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='2050 = 0x802'>2050</td>
 <td>PixelShiftDelay</td>
 <td class=c>int8u</td>
@@ -6538,154 +6549,172 @@ firmware 1.01b.</p>
   <br>4 = 5 s
   <br>5 = 10 s</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='2052 = 0x804'>2052</td>
 <td>PlaybackButton</td>
 <td class=c>int8u</td>
-<td>--&gt; <a href='Nikon.html#ButtonsZ9'>Nikon ButtonsZ9 Values</a></td></tr>
-<tr class=b>
+<td>--&gt; <a href='Nikon.html#ButtonsZ8'>Nikon ButtonsZ8 Values</a></td></tr>
+<tr>
 <td class=r title='2054 = 0x806'>2054</td>
 <td>WBButton</td>
 <td class=c>int8u</td>
-<td>--&gt; <a href='Nikon.html#ButtonsZ9'>Nikon ButtonsZ9 Values</a></td></tr>
-<tr>
+<td>--&gt; <a href='Nikon.html#ButtonsZ8'>Nikon ButtonsZ8 Values</a></td></tr>
+<tr class=b>
 <td class=r title='2056 = 0x808'>2056</td>
 <td>BracketButton</td>
 <td class=c>int8u</td>
-<td>--&gt; <a href='Nikon.html#ButtonsZ9'>Nikon ButtonsZ9 Values</a></td></tr>
-<tr class=b>
+<td>--&gt; <a href='Nikon.html#ButtonsZ8'>Nikon ButtonsZ8 Values</a></td></tr>
+<tr>
 <td class=r title='2058 = 0x80a'>2058</td>
 <td>LensFunc1ButtonPlaybackMode</td>
 <td class=c>int8u</td>
-<td>--&gt; <a href='Nikon.html#ButtonsZ9'>Nikon ButtonsZ9 Values</a></td></tr>
-<tr>
+<td>--&gt; <a href='Nikon.html#ButtonsZ8'>Nikon ButtonsZ8 Values</a></td></tr>
+<tr class=b>
 <td class=r title='2060 = 0x80c'>2060</td>
 <td>LensFunc2ButtonPlaybackMode</td>
 <td class=c>int8u</td>
-<td>--&gt; <a href='Nikon.html#ButtonsZ9'>Nikon ButtonsZ9 Values</a></td></tr>
-<tr class=b>
+<td>--&gt; <a href='Nikon.html#ButtonsZ8'>Nikon ButtonsZ8 Values</a></td></tr>
+<tr>
 <td class=r title='2062 = 0x80e'>2062</td>
 <td>PlaybackButtonPlaybackMode</td>
 <td class=c>int8u</td>
-<td>--&gt; <a href='Nikon.html#ButtonsZ9'>Nikon ButtonsZ9 Values</a></td></tr>
-<tr>
+<td>--&gt; <a href='Nikon.html#ButtonsZ8'>Nikon ButtonsZ8 Values</a></td></tr>
+<tr class=b>
 <td class=r title='2064 = 0x810'>2064</td>
 <td>BracketButtonPlaybackMode</td>
 <td class=c>int8u</td>
-<td>--&gt; <a href='Nikon.html#ButtonsZ9'>Nikon ButtonsZ9 Values</a></td></tr>
+<td>--&gt; <a href='Nikon.html#ButtonsZ8'>Nikon ButtonsZ8 Values</a></td></tr>
+<tr>
+<td class=r title='2206 = 0x89e'>2206</td>
+<td>MaximumApertureLV?</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='2208 = 0x8a0'>2208</td>
+<td>ReleaseModeButton</td>
+<td class=c>int8u</td>
+<td>--&gt; <a href='Nikon.html#ButtonsZ8'>Nikon ButtonsZ8 Values</a></td></tr>
+<tr>
+<td class=r title='2216 = 0x8a8'>2216</td>
+<td>ReleaseModeButtonPlaybackMode</td>
+<td class=c>int8u</td>
+<td>--&gt; <a href='Nikon.html#ButtonsZ8'>Nikon ButtonsZ8 Values</a></td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='ButtonsZ9'>Nikon ButtonsZ9 Values</a></h2>
+<h2><a name='ButtonsZ8'>Nikon ButtonsZ8 Values</a></h2>
 <blockquote>
 <table class=frame><tr><td>
 <table class='inner sep' cellspacing=1>
-<tr class=h><th>Value</th><th>ButtonsZ9</th><th>Value</th><th>ButtonsZ9</th></tr>
+<tr class=h><th>Value</th><th>ButtonsZ8</th><th>Value</th><th>ButtonsZ8</th></tr>
 <tr><td class=r>0</td><td>= None</td>
-<td class='r b'>71</td><td class=b>= ISO</td>
-</tr><tr><td class=r>1</td><td>= Preview</td>
 <td class='r b'>72</td><td class=b>= Shooting Mode</td>
-</tr><tr><td class=r>3</td><td>= FV Lock</td>
+</tr><tr><td class=r>1</td><td>= Preview</td>
 <td class='r b'>73</td><td class=b>= Exposure Compensation</td>
-</tr><tr><td class=r>4</td><td>= AE/AF Lock</td>
+</tr><tr><td class=r>3</td><td>= FV Lock</td>
 <td class='r b'>76</td><td class=b>= Silent Mode</td>
-</tr><tr><td class=r>5</td><td>= AE Lock Only</td>
+</tr><tr><td class=r>4</td><td>= AE/AF Lock</td>
 <td class='r b'>78</td><td class=b>= LiveView Information</td>
-</tr><tr><td class=r>6</td><td>= AE Lock (reset on release)</td>
+</tr><tr><td class=r>5</td><td>= AE Lock Only</td>
 <td class='r b'>79</td><td class=b>= AWB Lock (hold)</td>
-</tr><tr><td class=r>7</td><td>= AE Lock (hold)</td>
+</tr><tr><td class=r>6</td><td>= AE Lock (reset on release)</td>
 <td class='r b'>80</td><td class=b>= Grid Display</td>
-</tr><tr><td class=r>8</td><td>= AF Lock Only</td>
+</tr><tr><td class=r>7</td><td>= AE Lock (hold)</td>
 <td class='r b'>81</td><td class=b>= Starlight View</td>
-</tr><tr><td class=r>9</td><td>= AF-On</td>
+</tr><tr><td class=r>8</td><td>= AF Lock Only</td>
 <td class='r b'>82</td><td class=b>= Select To Send (PC)</td>
-</tr><tr><td class=r>10</td><td>= Flash Disable/Enable</td>
+</tr><tr><td class=r>9</td><td>= AF-On</td>
 <td class='r b'>83</td><td class=b>= Select To Send (FTP)</td>
-</tr><tr><td class=r>11</td><td>= Bracketing Burst</td>
+</tr><tr><td class=r>10</td><td>= Flash Disable/Enable</td>
 <td class='r b'>84</td><td class=b>= Pattern Tone Range</td>
-</tr><tr><td class=r>12</td><td>= +NEF(RAW)</td>
+</tr><tr><td class=r>11</td><td>= Bracketing Burst</td>
 <td class='r b'>85</td><td class=b>= Control Lock</td>
-</tr><tr><td class=r>18</td><td>= Virtual Horizon</td>
+</tr><tr><td class=r>12</td><td>= +NEF(RAW)</td>
 <td class='r b'>86</td><td class=b>= Save Focus Position</td>
-</tr><tr><td class=r>19</td><td>= Synchronized Release</td>
+</tr><tr><td class=r>18</td><td>= Virtual Horizon</td>
 <td class='r b'>87</td><td class=b>= Recall Focus Position</td>
-</tr><tr><td class=r>20</td><td>= My Menu</td>
+</tr><tr><td class=r>19</td><td>= Synchronized Release</td>
 <td class='r b'>88</td><td class=b>= Recall Shooting Functions (Hold)</td>
-</tr><tr><td class=r>21</td><td>= My Menu Top Item</td>
+</tr><tr><td class=r>20</td><td>= My Menu</td>
 <td class='r b'>89</td><td class=b>= Set Picture Control (HLG)</td>
-</tr><tr><td class=r>22</td><td>= Playback</td>
+</tr><tr><td class=r>21</td><td>= My Menu Top Item</td>
 <td class='r b'>90</td><td class=b>= Skin Softening</td>
-</tr><tr><td class=r>23</td><td>= Rating</td>
+</tr><tr><td class=r>22</td><td>= Playback</td>
 <td class='r b'>91</td><td class=b>= Portrait Impression Balance</td>
-</tr><tr><td class=r>24</td><td>= Protect</td>
+</tr><tr><td class=r>23</td><td>= Rating</td>
 <td class='r b'>92</td><td class=b>= Fast AF-On</td>
-</tr><tr><td class=r>25</td><td>= Zoom</td>
+</tr><tr><td class=r>24</td><td>= Protect</td>
 <td class='r b'>97</td><td class=b>= High Frequency Flicker Reduction</td>
-</tr><tr><td class=r>26</td><td>= Focus Peaking</td>
+</tr><tr><td class=r>25</td><td>= Zoom</td>
 <td class='r b'>98</td><td class=b>= Switch FX/DX</td>
-</tr><tr><td class=r>27</td><td>= Flash Mode/Compensation</td>
+</tr><tr><td class=r>26</td><td>= Focus Peaking</td>
 <td class='r b'>99</td><td class=b>= View Mode (Photo LV)</td>
-</tr><tr><td class=r>28</td><td>= Image Area</td>
+</tr><tr><td class=r>27</td><td>= Flash Mode/Compensation</td>
 <td class='r b'>100</td><td class=b>= Photo Flicker Reduction</td>
-</tr><tr><td class=r>30</td><td>= Non-CPU Lens</td>
+</tr><tr><td class=r>28</td><td>= Image Area</td>
 <td class='r b'>101</td><td class=b>= Filtered Playback (Select Criteria)</td>
-</tr><tr><td class=r>31</td><td>= Active-D Lighting</td>
+</tr><tr><td class=r>30</td><td>= Non-CPU Lens</td>
 <td class='r b'>103</td><td class=b>= Start Series Playback</td>
-</tr><tr><td class=r>32</td><td>= Exposure Delay Mode</td>
+</tr><tr><td class=r>31</td><td>= Active-D Lighting</td>
 <td class='r b'>104</td><td class=b>= View Assist</td>
-</tr><tr><td class=r>33</td><td>= 1 Stop Speed/Aperture</td>
+</tr><tr><td class=r>32</td><td>= Exposure Delay Mode</td>
 <td class='r b'>105</td><td class=b>= Hi-Res Zoom+</td>
-</tr><tr><td class=r>34</td><td>= White Balance</td>
+</tr><tr><td class=r>33</td><td>= 1 Stop Speed/Aperture</td>
 <td class='r b'>106</td><td class=b>= Hi-Res Zoom-</td>
-</tr><tr><td class=r>35</td><td>= Metering</td>
+</tr><tr><td class=r>34</td><td>= White Balance</td>
 <td class='r b'>108</td><td class=b>= Override Other Cameras</td>
-</tr><tr><td class=r>36</td><td>= Auto Bracketing</td>
+</tr><tr><td class=r>35</td><td>= Metering</td>
 <td class='r b'>109</td><td class=b>= DISP - Cycle Information Display (shooting)</td>
-</tr><tr><td class=r>37</td><td>= Multiple Exposure</td>
+</tr><tr><td class=r>36</td><td>= Auto Bracketing</td>
 <td class='r b'>110</td><td class=b>= DISP - Cycle Information Display (playback)</td>
-</tr><tr><td class=r>38</td><td>= HDR Overlay</td>
+</tr><tr><td class=r>37</td><td>= Multiple Exposure</td>
 <td class='r b'>111</td><td class=b>= Resume Shooting</td>
-</tr><tr><td class=r>39</td><td>= Picture Control</td>
+</tr><tr><td class=r>38</td><td>= HDR Overlay</td>
 <td class='r b'>112</td><td class=b>= Switch Eyes</td>
-</tr><tr><td class=r>40</td><td>= Quality</td>
+</tr><tr><td class=r>39</td><td>= Picture Control</td>
 <td class='r b'>113</td><td class=b>= Power Zoom +</td>
-</tr><tr><td class=r>41</td><td>= Focus Mode/AF AreaMode</td>
+</tr><tr><td class=r>40</td><td>= Quality</td>
 <td class='r b'>114</td><td class=b>= Power Zoom -</td>
-</tr><tr><td class=r>42</td><td>= Select Center Focus Point</td>
+</tr><tr><td class=r>41</td><td>= Focus Mode/AF AreaMode</td>
 <td class='r b'>115</td><td class=b>= Delete</td>
-</tr><tr><td class=r>44</td><td>= Record Movie</td>
+</tr><tr><td class=r>42</td><td>= Select Center Focus Point</td>
 <td class='r b'>116</td><td class=b>= Pixel Shift Shooting</td>
-</tr><tr><td class=r>45</td><td>= Thumbnail On/Off</td>
+</tr><tr><td class=r>44</td><td>= Record Movie</td>
 <td class='r b'>117</td><td class=b>= Cycle AF-area Mode</td>
+</tr><tr><td class=r>45</td><td>= Thumbnail On/Off</td>
+<td class='r b'>119</td><td class=b>= Focus Limiter</td>
 </tr><tr><td class=r>46</td><td>= View Histograms</td>
-<td class='r b'>118</td><td class=b>= Raw Processing (Current)</td>
+<td class='r b'>120</td><td class=b>= Jump to Source Image</td>
 </tr><tr><td class=r>47</td><td>= Choose Folder</td>
-<td class='r b'>119</td><td class=b>= Raw Processing (Multiple)</td>
+<td class='r b'>121</td><td class=b>= Raw Processing (Current)</td>
 </tr><tr><td class=r>48</td><td>= Power Aperture (Open)</td>
-<td class='r b'>120</td><td class=b>= Trim</td>
+<td class='r b'>122</td><td class=b>= Raw Processing (Multiple)</td>
 </tr><tr><td class=r>49</td><td>= Power Aperture (Close)</td>
-<td class='r b'>121</td><td class=b>= Resize (Current)</td>
+<td class='r b'>123</td><td class=b>= Trim</td>
 </tr><tr><td class=r>52</td><td>= Microphone Sensitivity</td>
-<td class='r b'>122</td><td class=b>= Resize (Multiple)</td>
+<td class='r b'>124</td><td class=b>= Resize (Current)</td>
 </tr><tr><td class=r>53</td><td>= Release Mode</td>
-<td class='r b'>123</td><td class=b>= D-Lighting</td>
+<td class='r b'>125</td><td class=b>= Resize (Multiple)</td>
 </tr><tr><td class=r>57</td><td>= Preset Focus Point</td>
-<td class='r b'>124</td><td class=b>= Straighten</td>
+<td class='r b'>126</td><td class=b>= D-Lighting</td>
 </tr><tr><td class=r>58</td><td>= AE/AWB Lock (hold)</td>
-<td class='r b'>125</td><td class=b>= Distortion Control</td>
+<td class='r b'>127</td><td class=b>= Straighten</td>
 </tr><tr><td class=r>59</td><td>= AF-AreaMode</td>
-<td class='r b'>126</td><td class=b>= Perspective Control</td>
+<td class='r b'>128</td><td class=b>= Distortion Control</td>
 </tr><tr><td class=r>60</td><td>= AF-AreaMode + AF-On</td>
-<td class='r b'>127</td><td class=b>= Monochrome</td>
+<td class='r b'>129</td><td class=b>= Perspective Control</td>
 </tr><tr><td class=r>61</td><td>= Recall Shooting Functions</td>
-<td class='r b'>128</td><td class=b>= Overlay (Add)</td>
+<td class='r b'>130</td><td class=b>= Monochrome</td>
 </tr><tr><td class=r>64</td><td>= Filtered Playback</td>
-<td class='r b'>129</td><td class=b>= Lighten</td>
+<td class='r b'>131</td><td class=b>= Overlay (Add)</td>
 </tr><tr><td class=r>65</td><td>= Same as AF-On</td>
-<td class='r b'>130</td><td class=b>= Darken</td>
+<td class='r b'>132</td><td class=b>= Lighten</td>
 </tr><tr><td class=r>66</td><td>= Voice Memo</td>
-<td class='r b'>131</td><td class=b>= Motion Blend</td>
+<td class='r b'>133</td><td class=b>= Darken</td>
 </tr><tr><td class=r>70</td><td>= Photo Shooting Bank</td>
-<td class='r b'>&nbsp;</td><td class=b>&nbsp;</td>
+<td class='r b'>134</td><td class=b>= Motion Blend</td>
+</tr><tr><td class=r>71</td><td>= ISO</td>
+<td class='r b'>135</td><td class=b>= Cycle Monitor Mode</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoZ9'>Nikon ShotInfoZ9 Tags</a></h2>
@@ -7339,11 +7368,14 @@ firmware 1.01b.</p>
 <td class=r title='1552 = 0x610'>1552</td>
 <td>HDMIOutputResolution</td>
 <td class=c>int8u</td>
-<td><span class=s>0 = Auto
+<td><table class=cols><tr>
+  <td>0 = Auto
   <br>1 = 4320p
-  <br>2 = 2160p
-  <br>3 = 1080p
-  <br>5 = 720p</span></td></tr>
+  <br>2 = 2160p</td><td>&nbsp;&nbsp;</td>
+  <td>3 = 1080p
+  <br>4 = 1080i
+  <br>5 = 720p</td></tr></table>
+</td></tr>
 <tr class=b>
 <td class=r title='1565 = 0x61d'>1565</td>
 <td>SetClockFromLocationData?</td>
@@ -7973,11 +8005,14 @@ firmware 1.01b.</p>
 <td class=r title='1600 = 0x640'>1600</td>
 <td>HDMIOutputResolution</td>
 <td class=c>int8u</td>
-<td><span class=s>0 = Auto
+<td><table class=cols><tr>
+  <td>0 = Auto
   <br>1 = 4320p
-  <br>2 = 2160p
-  <br>3 = 1080p
-  <br>5 = 720p</span></td></tr>
+  <br>2 = 2160p</td><td>&nbsp;&nbsp;</td>
+  <td>3 = 1080p
+  <br>4 = 1080i
+  <br>5 = 720p</td></tr></table>
+</td></tr>
 <tr>
 <td class=r title='1613 = 0x64d'>1613</td>
 <td>SetClockFromLocationData?</td>
@@ -8852,11 +8887,14 @@ firmware 1.01b.</p>
 <td class=r title='1704 = 0x6a8'>1704</td>
 <td>HDMIOutputResolution</td>
 <td class=c>int8u</td>
-<td><span class=s>0 = Auto
+<td><table class=cols><tr>
+  <td>0 = Auto
   <br>1 = 4320p
-  <br>2 = 2160p
-  <br>3 = 1080p
-  <br>5 = 720p</span></td></tr>
+  <br>2 = 2160p</td><td>&nbsp;&nbsp;</td>
+  <td>3 = 1080p
+  <br>4 = 1080i
+  <br>5 = 720p</td></tr></table>
+</td></tr>
 <tr class=b>
 <td class=r title='1717 = 0x6b5'>1717</td>
 <td>SetClockFromLocationData?</td>
@@ -9021,6 +9059,119 @@ firmware 1.01b.</p>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Nikon.html#ButtonsZ9'>Nikon ButtonsZ9 Values</a></td></tr>
 </table></td></tr></table></blockquote>
+
+<h2><a name='ButtonsZ9'>Nikon ButtonsZ9 Values</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>ButtonsZ9</th><th>Value</th><th>ButtonsZ9</th></tr>
+<tr><td class=r>0</td><td>= None</td>
+<td class='r b'>71</td><td class=b>= ISO</td>
+</tr><tr><td class=r>1</td><td>= Preview</td>
+<td class='r b'>72</td><td class=b>= Shooting Mode</td>
+</tr><tr><td class=r>3</td><td>= FV Lock</td>
+<td class='r b'>73</td><td class=b>= Exposure Compensation</td>
+</tr><tr><td class=r>4</td><td>= AE/AF Lock</td>
+<td class='r b'>76</td><td class=b>= Silent Mode</td>
+</tr><tr><td class=r>5</td><td>= AE Lock Only</td>
+<td class='r b'>78</td><td class=b>= LiveView Information</td>
+</tr><tr><td class=r>6</td><td>= AE Lock (reset on release)</td>
+<td class='r b'>79</td><td class=b>= AWB Lock (hold)</td>
+</tr><tr><td class=r>7</td><td>= AE Lock (hold)</td>
+<td class='r b'>80</td><td class=b>= Grid Display</td>
+</tr><tr><td class=r>8</td><td>= AF Lock Only</td>
+<td class='r b'>81</td><td class=b>= Starlight View</td>
+</tr><tr><td class=r>9</td><td>= AF-On</td>
+<td class='r b'>82</td><td class=b>= Select To Send (PC)</td>
+</tr><tr><td class=r>10</td><td>= Flash Disable/Enable</td>
+<td class='r b'>83</td><td class=b>= Select To Send (FTP)</td>
+</tr><tr><td class=r>11</td><td>= Bracketing Burst</td>
+<td class='r b'>84</td><td class=b>= Pattern Tone Range</td>
+</tr><tr><td class=r>12</td><td>= +NEF(RAW)</td>
+<td class='r b'>85</td><td class=b>= Control Lock</td>
+</tr><tr><td class=r>18</td><td>= Virtual Horizon</td>
+<td class='r b'>86</td><td class=b>= Save Focus Position</td>
+</tr><tr><td class=r>19</td><td>= Synchronized Release</td>
+<td class='r b'>87</td><td class=b>= Recall Focus Position</td>
+</tr><tr><td class=r>20</td><td>= My Menu</td>
+<td class='r b'>88</td><td class=b>= Recall Shooting Functions (Hold)</td>
+</tr><tr><td class=r>21</td><td>= My Menu Top Item</td>
+<td class='r b'>89</td><td class=b>= Set Picture Control (HLG)</td>
+</tr><tr><td class=r>22</td><td>= Playback</td>
+<td class='r b'>90</td><td class=b>= Skin Softening</td>
+</tr><tr><td class=r>23</td><td>= Rating</td>
+<td class='r b'>91</td><td class=b>= Portrait Impression Balance</td>
+</tr><tr><td class=r>24</td><td>= Protect</td>
+<td class='r b'>92</td><td class=b>= Fast AF-On</td>
+</tr><tr><td class=r>25</td><td>= Zoom</td>
+<td class='r b'>97</td><td class=b>= High Frequency Flicker Reduction</td>
+</tr><tr><td class=r>26</td><td>= Focus Peaking</td>
+<td class='r b'>98</td><td class=b>= Switch FX/DX</td>
+</tr><tr><td class=r>27</td><td>= Flash Mode/Compensation</td>
+<td class='r b'>99</td><td class=b>= View Mode (Photo LV)</td>
+</tr><tr><td class=r>28</td><td>= Image Area</td>
+<td class='r b'>100</td><td class=b>= Photo Flicker Reduction</td>
+</tr><tr><td class=r>30</td><td>= Non-CPU Lens</td>
+<td class='r b'>101</td><td class=b>= Filtered Playback (Select Criteria)</td>
+</tr><tr><td class=r>31</td><td>= Active-D Lighting</td>
+<td class='r b'>103</td><td class=b>= Start Series Playback</td>
+</tr><tr><td class=r>32</td><td>= Exposure Delay Mode</td>
+<td class='r b'>104</td><td class=b>= View Assist</td>
+</tr><tr><td class=r>33</td><td>= 1 Stop Speed/Aperture</td>
+<td class='r b'>105</td><td class=b>= Hi-Res Zoom+</td>
+</tr><tr><td class=r>34</td><td>= White Balance</td>
+<td class='r b'>106</td><td class=b>= Hi-Res Zoom-</td>
+</tr><tr><td class=r>35</td><td>= Metering</td>
+<td class='r b'>108</td><td class=b>= Override Other Cameras</td>
+</tr><tr><td class=r>36</td><td>= Auto Bracketing</td>
+<td class='r b'>109</td><td class=b>= DISP - Cycle Information Display (shooting)</td>
+</tr><tr><td class=r>37</td><td>= Multiple Exposure</td>
+<td class='r b'>110</td><td class=b>= DISP - Cycle Information Display (playback)</td>
+</tr><tr><td class=r>38</td><td>= HDR Overlay</td>
+<td class='r b'>111</td><td class=b>= Resume Shooting</td>
+</tr><tr><td class=r>39</td><td>= Picture Control</td>
+<td class='r b'>112</td><td class=b>= Switch Eyes</td>
+</tr><tr><td class=r>40</td><td>= Quality</td>
+<td class='r b'>113</td><td class=b>= Power Zoom +</td>
+</tr><tr><td class=r>41</td><td>= Focus Mode/AF AreaMode</td>
+<td class='r b'>114</td><td class=b>= Power Zoom -</td>
+</tr><tr><td class=r>42</td><td>= Select Center Focus Point</td>
+<td class='r b'>115</td><td class=b>= Delete</td>
+</tr><tr><td class=r>44</td><td>= Record Movie</td>
+<td class='r b'>116</td><td class=b>= Save and Load Power Zoom Position</td>
+</tr><tr><td class=r>45</td><td>= Thumbnail On/Off</td>
+<td class='r b'>117</td><td class=b>= Cycle AF-area Mode</td>
+</tr><tr><td class=r>46</td><td>= View Histograms</td>
+<td class='r b'>118</td><td class=b>= Raw Processing (Current)</td>
+</tr><tr><td class=r>47</td><td>= Choose Folder</td>
+<td class='r b'>119</td><td class=b>= Raw Processing (Multiple)</td>
+</tr><tr><td class=r>48</td><td>= Power Aperture (Open)</td>
+<td class='r b'>120</td><td class=b>= Trim</td>
+</tr><tr><td class=r>49</td><td>= Power Aperture (Close)</td>
+<td class='r b'>121</td><td class=b>= Resize (Current)</td>
+</tr><tr><td class=r>52</td><td>= Microphone Sensitivity</td>
+<td class='r b'>122</td><td class=b>= Resize (Multiple)</td>
+</tr><tr><td class=r>53</td><td>= Release Mode</td>
+<td class='r b'>123</td><td class=b>= D-Lighting</td>
+</tr><tr><td class=r>57</td><td>= Preset Focus Point</td>
+<td class='r b'>124</td><td class=b>= Straighten</td>
+</tr><tr><td class=r>58</td><td>= AE/AWB Lock (hold)</td>
+<td class='r b'>125</td><td class=b>= Distortion Control</td>
+</tr><tr><td class=r>59</td><td>= AF-AreaMode</td>
+<td class='r b'>126</td><td class=b>= Perspective Control</td>
+</tr><tr><td class=r>60</td><td>= AF-AreaMode + AF-On</td>
+<td class='r b'>127</td><td class=b>= Monochrome</td>
+</tr><tr><td class=r>61</td><td>= Recall Shooting Functions</td>
+<td class='r b'>128</td><td class=b>= Overlay (Add)</td>
+</tr><tr><td class=r>64</td><td>= Filtered Playback</td>
+<td class='r b'>129</td><td class=b>= Lighten</td>
+</tr><tr><td class=r>65</td><td>= Same as AF-On</td>
+<td class='r b'>130</td><td class=b>= Darken</td>
+</tr><tr><td class=r>66</td><td>= Voice Memo</td>
+<td class='r b'>131</td><td class=b>= Motion Blend</td>
+</tr><tr><td class=r>70</td><td>= Photo Shooting Bank</td>
+<td class='r b'>&nbsp;</td><td class=b>&nbsp;</td>
+</tr></table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfo'>Nikon ShotInfo Tags</a></h2>
 <p>This information is encrypted for ShotInfoVersion 02xx, and some tags are
@@ -11761,7 +11912,7 @@ D4, D4S, D300, D300S, D700, D750, D800, D800E, D810, D7100 and D7200)</span></sp
 
 <h2><a name='AFInfo2V0400'>Nikon AFInfo2V0400 Tags</a></h2>
 <p>AF information for Nikon cameras with the Expeed 7 processor: The Zf, Z6_3,
-Z8, Z9 and Z50_3.</p>
+Z8, Z9, Z50_2 and Z5_2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -12177,7 +12328,8 @@ cameras such as the Z6 and Z7, and NRW images from some Coolpix cameras.</p>
 <td class=r title='4 = 0x4'>4</td>
 <td>DistortionCorrection</td>
 <td class=c>int8u</td>
-<td><span class=s>1 = On (Optional)
+<td><span class=s>0 = No Lens Attached
+  <br>1 = On (Optional)
   <br>2 = Off
   <br>3 = On (Required)</span></td></tr>
 <tr>
@@ -13611,7 +13763,7 @@ for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 26, 2025</i>
+<br><i>Last revised Jul 25, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

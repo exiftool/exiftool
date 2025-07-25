@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.25';
+$VERSION = '2.26';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1374,10 +1374,10 @@ my %shootingMode = (
         Writable => 'int16u',
         Format => 'int16s',
     },
-    0xbe => { #forum11194
+    0xbe => { #forum11194/17508
         Name => 'LongExposureNRUsed',
         Writable => 'int16u',
-        PrintConv => { 0 => 'No', 1 => 'Yes' },
+        PrintConv => { 1 => 'No', 2 => 'Yes' },
     },
     0xbf => { #forum11194
         Name => 'PostFocusMerging',

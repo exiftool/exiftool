@@ -25,7 +25,7 @@ require Exporter;
 use Image::ExifTool qw(ImageInfo);
 
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = '1.24';
+$VERSION = '1.25';
 @ISA = qw(Exporter);
 @EXPORT = qw(check writeCheck writeInfo testCompare binaryCompare testVerbose notOK done);
 
@@ -349,6 +349,7 @@ sub check($$$;$$$)
             my @groups = $exifTool->GetGroup($_);
             my $groups = join ', ', @groups[0..($topGroup||2)];
             my $tagID = $exifTool->GetTagID($_);
+            $tagID =~ s/([\0-\x1f\x7f-\xff])/sprintf('\\x%.2x',ord $1)/eg;
             my $desc = $exifTool->GetDescription($_);
             print FILE "[$groups] $tagID - $desc: $val";
         } else {

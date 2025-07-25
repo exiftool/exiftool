@@ -648,7 +648,9 @@ be stored in a variety of poorly documented formats, and ExifTool does its best
 to decode these according to the <code>-charset</code> option setting.  For some
 QuickTime strings where the internal encoding is not known, ExifTool assumes a
 default encoding of MacRoman, but this may be changed with
-"<code>-charset QuickTime=CHARSET</code>".</blockquote>
+"<code>-charset QuickTime=CHARSET</code>".  When writing, ExifTool prefers
+to store as UTF&#8209;8 if possible, and converts to this from the character
+set specified by the <code>-charset</code> option (UTF&#8209;8 by default).</blockquote>
 
 <blockquote><a name="aiff"><b>AIFF</b></a>: AIFF strings are assumed to be
 stored in MacRoman, and are converted according to the <code>-charset</code>
@@ -1852,7 +1854,7 @@ certain commands, but may be suppressed by adding
 <code>-api "NoWarning=No writable tags"</code> to the command if desired.</blockquote>
 
 <hr>
-<i>Last revised Jun 27, 2025</i>
+<i>Last revised Jul 23, 2025</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

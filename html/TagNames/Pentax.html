@@ -1670,11 +1670,16 @@ are left, top, width and height in a 720x480 frame, with Y downwards)</span></sp
 <td class=c>undef</td>
 <td><span class=s><span class=n>(large unknown data block in PEF/DNG images but not JPG images)</span></span></td></tr>
 <tr class=b>
+<td title='0x040b = 1035'>0x040b</td>
+<td>FaceInfoK3III</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Pentax.html#FaceInfoK3III'>Pentax FaceInfoK3III Tags</a></td></tr>
+<tr>
 <td title='0x040c = 1036'>0x040c</td>
 <td>AFInfoK3III</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#AFInfoK3III'>Pentax AFInfoK3III Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0e00 = 3584'>0x0e00</td>
 <td>PrintIM</td>
 <td class=c>-</td>
@@ -3708,13 +3713,15 @@ selected AFPoint is the first reported)</span></span><table class=cols><tr>
 <tr class=b>
 <td class=r title='298 = 0x12a'>298</td>
 <td>AFPointsSelected</td>
-<td class=c title=' ~ = Writable only with -n'>int8u[41]~</td>
+<td class=c title=' ~ = Writable only with -n'>int8u[101]~</td>
 <td><span class=s><span class=n>(K-3III only. 41 selectable AF points from a total of 101 available in a 13x9
-grid. Columns are labelled A-M and rows are 1-9. The center point is G5)</span></span></td></tr>
+grid. Columns are labelled A-M and rows are 1-9. The center point is G5. The
+exact meaning of this tag is not fully understood, although it does seem
+related to the selected AF point)</span></span></td></tr>
 <tr>
 <td class=r title='399 = 0x18f'>399</td>
 <td>AFPointsUnknown?</td>
-<td class=c title=' ~ = Writable only with -n'>int8u[41]~</td>
+<td class=c title=' ~ = Writable only with -n'>int8u[101]~</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='506 = 0x1fa'>506</td>
@@ -4677,6 +4684,340 @@ sensors are located in the camera.</p>
 <tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='FaceInfoK3III'>Pentax FaceInfoK3III Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FaceImageSize</td>
+<td class=c>int32u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='0 = 0x0'>0.1</td>
+<td>FaceInfoK3III?</td>
+<td class=c>int32u[$size/4]</td>
+<td><span class=s><span class=n>(entire FaceInfoK3III structure. Provides access to raw numerical values and
+facilitates the writing of the whole structure)</span></span></td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>CAFArea</td>
+<td class=c>int32u[4]</td>
+<td><span class=s><span class=n>(top, left, width, height)</span></span></td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>FacesDetectedA</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>FacesDetectedB</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>Face1AArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='14 = 0xe'>14</td>
+<td>Face1AEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18</td>
+<td>Face1AEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='30 = 0x1e'>30</td>
+<td>Face2AArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='34 = 0x22'>34</td>
+<td>Face2AEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='38 = 0x26'>38</td>
+<td>Face2AEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='50 = 0x32'>50</td>
+<td>Face3AArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='54 = 0x36'>54</td>
+<td>Face3AEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='58 = 0x3a'>58</td>
+<td>Face3AEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='70 = 0x46'>70</td>
+<td>Face4AArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='74 = 0x4a'>74</td>
+<td>Face4AEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='78 = 0x4e'>78</td>
+<td>Face4AEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='90 = 0x5a'>90</td>
+<td>Face5AArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='94 = 0x5e'>94</td>
+<td>Face5AEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='98 = 0x62'>98</td>
+<td>Face5AEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='110 = 0x6e'>110</td>
+<td>Face6AArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='114 = 0x72'>114</td>
+<td>Face6AEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='118 = 0x76'>118</td>
+<td>Face6AEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='130 = 0x82'>130</td>
+<td>Face7AArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='134 = 0x86'>134</td>
+<td>Face7AEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='138 = 0x8a'>138</td>
+<td>Face7AEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='150 = 0x96'>150</td>
+<td>Face8AArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='154 = 0x9a'>154</td>
+<td>Face8AEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='158 = 0x9e'>158</td>
+<td>Face8AEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='170 = 0xaa'>170</td>
+<td>Face9AArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='174 = 0xae'>174</td>
+<td>Face9AEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='178 = 0xb2'>178</td>
+<td>Face9AEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='190 = 0xbe'>190</td>
+<td>Face10AArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='194 = 0xc2'>194</td>
+<td>Face10AEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='198 = 0xc6'>198</td>
+<td>Face10AEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='210 = 0xd2'>210</td>
+<td>Face1BArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='214 = 0xd6'>214</td>
+<td>Face1BEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='218 = 0xda'>218</td>
+<td>Face1BEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='230 = 0xe6'>230</td>
+<td>Face2BArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='234 = 0xea'>234</td>
+<td>Face2BEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='238 = 0xee'>238</td>
+<td>Face2BEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='250 = 0xfa'>250</td>
+<td>Face3BArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='254 = 0xfe'>254</td>
+<td>Face3BEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='258 = 0x102'>258</td>
+<td>Face3BEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='270 = 0x10e'>270</td>
+<td>Face4BArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='274 = 0x112'>274</td>
+<td>Face4BEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='278 = 0x116'>278</td>
+<td>Face4BEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='290 = 0x122'>290</td>
+<td>Face5BArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='294 = 0x126'>294</td>
+<td>Face5BEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='298 = 0x12a'>298</td>
+<td>Face5BEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='310 = 0x136'>310</td>
+<td>Face6BArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='314 = 0x13a'>314</td>
+<td>Face6BEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='318 = 0x13e'>318</td>
+<td>Face6BEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='330 = 0x14a'>330</td>
+<td>Face7BArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='334 = 0x14e'>334</td>
+<td>Face7BEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='338 = 0x152'>338</td>
+<td>Face7BEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='350 = 0x15e'>350</td>
+<td>Face8BArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='354 = 0x162'>354</td>
+<td>Face8BEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='358 = 0x166'>358</td>
+<td>Face8BEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='370 = 0x172'>370</td>
+<td>Face9BArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='374 = 0x176'>374</td>
+<td>Face9BEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='378 = 0x17a'>378</td>
+<td>Face9BEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='390 = 0x186'>390</td>
+<td>Face10BArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='394 = 0x18a'>394</td>
+<td>Face10BEye1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='398 = 0x18e'>398</td>
+<td>Face10BEye2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='AFInfoK3III'>Pentax AFInfoK3III Tags</a></h2>
 <p>AF tags written by the K-3 Mark III, GR III and GR IIIx.</p>
 <blockquote>
@@ -5186,7 +5527,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 2, 2025</i>
+<br><i>Last revised Jul 25, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

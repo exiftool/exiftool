@@ -204,7 +204,7 @@ unformatted value of <code>SubSecDateTimeOriginal</code> (preferentially) or
 any other date/time tag or set directly from a date/time string.  The exact form
 of the default <code>Geotime</code> argument is:</p>
 
-<pre>"-Geotime<${DateTimeOriginal#;$_=$self->GetValue('SubSecDateTimeOriginal','ValueConv') || $_}"</pre>
+<pre>"-Geotime&lt;${DateTimeOriginal#;$_=$self->GetValue('SubSecDateTimeOriginal','ValueConv') || $_}"</pre>
 
 <p>If the date/time tag does not include a timezone then one may be added (eg.
 <code>"-Geotime&lt;${CreateDate}-05:00"</code>), otherwise the local system time
@@ -356,7 +356,9 @@ operating systems to prevent filename expansion):</p>
 
 <a name="E12"></a>
 <p>12. Geotag from a sub-second date/time value with a sub-second time synchronization
-(only possible if the EXIF sub-second time stamps or time zone are available):</p>
+(only possible if the EXIF sub-second time stamps or time zone are available).
+<i>[Note that this example is obsolete since ExifTool 13.29 because
+SubSecDateTimeOriginal is used by default if available.]</i></p>
 
 <pre>exiftool -Geotag a.log -Geosync=+13.42 "-Geotime&lt;SubSecDateTimeOriginal" dir
 </pre>
@@ -765,7 +767,7 @@ forum post</a> for more useful tips about creating KML files.</p>
 
 <hr>
 <i>Created Apr 2, 2009</i><br>
-<i>Last revised Dec 2, 2024</i>
+<i>Last revised Jul 7, 2025</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

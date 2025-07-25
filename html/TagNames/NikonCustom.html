@@ -9725,7 +9725,8 @@ custom settings for the currently supported models.
 <td><span class=s>0 = 0.5 s
   <br>1 = 1 s
   <br>2 = 2 s
-  <br>3 = 3 s</span></td></tr>
+  <br>3 = 3 s
+  <br>4 = Min</span></td></tr>
 <tr>
 <td class=r title='51 = 0x33'>51</td>
 <td>PlaybackMonitorOffTime</td>
@@ -10061,30 +10062,35 @@ custom settings for the currently supported models.
 <td><span class=s>0 = Frame Rate
   <br>1 = Exposure</span></td></tr>
 <tr>
+<td class=r title='281 = 0x119'>281</td>
+<td>Func3Button</td>
+<td class=c>int8u</td>
+<td>--&gt; <a href='NikonCustom.html#ButtonsZ9'>NikonCustom ButtonsZ9 Values</a></td></tr>
+<tr class=b>
 <td class=r title='335 = 0x14f'>335</td>
 <td>LimitAF-AreaModeSelDynamic_S?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Limit
   <br>1 = No Limit</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='336 = 0x150'>336</td>
 <td>LimitAF-AreaModeSelDynamic_M?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Limit
   <br>1 = No Limit</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='337 = 0x151'>337</td>
 <td>LimitAF-AreaModeSelDynamic_L?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Limit
   <br>1 = No Limit</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='339 = 0x153'>339</td>
 <td>LimitAF-AreaModeSel3DTracking?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Limit
   <br>1 = No Limit</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='341 = 0x155'>341</td>
 <td>PlaybackFlickUp?</td>
 <td class=c>int8u</td>
@@ -10096,7 +10102,7 @@ custom settings for the currently supported models.
   <br>4 = Voice Memo
   <br>5 = None</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='345 = 0x159'>345</td>
 <td>PlaybackFlickDown?</td>
 <td class=c>int8u</td>
@@ -10108,26 +10114,26 @@ custom settings for the currently supported models.
   <br>4 = Voice Memo
   <br>5 = None</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='349 = 0x15d'>349</td>
 <td>ISOStepSize</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = 1/3 EV
   <br>1 = 1/2 EV
   <br>2 = 1 EV</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='355 = 0x163'>355</td>
 <td>ReverseFocusRing</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Not Reversed
   <br>1 = Reversed</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='356 = 0x164'>356</td>
 <td>EVFImageFrame?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='357 = 0x165'>357</td>
 <td>EVFGrid?</td>
 <td class=c>int8u</td>
@@ -10142,33 +10148,33 @@ custom settings for the currently supported models.
   <br>7 = 16:9
   <br>8 = 90%</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='359 = 0x167'>359</td>
 <td>VirtualHorizonStyle?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Type A (Cockpit)
   <br>1 = Type B (Sides)</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='421 = 0x1a5'>421</td>
 <td>Func1ButtonPlaybackMode?</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='NikonCustom.html#ButtonsZ9'>NikonCustom ButtonsZ9 Values</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='423 = 0x1a7'>423</td>
 <td>Func2ButtonPlaybackMode?</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='NikonCustom.html#ButtonsZ9'>NikonCustom ButtonsZ9 Values</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='437 = 0x1b5'>437</td>
 <td>MovieRecordButtonPlaybackMode?</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='NikonCustom.html#ButtonsZ9'>NikonCustom ButtonsZ9 Values</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='453 = 0x1c5'>453</td>
 <td>WBButtonPlaybackMode</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='NikonCustom.html#ButtonsZ9'>NikonCustom ButtonsZ9 Values</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='459 = 0x1cb'>459</td>
 <td>CommandDialPlaybackMode?</td>
 <td class=c>int8u</td>
@@ -10186,7 +10192,7 @@ custom settings for the currently supported models.
   <br>10 = Uploaded to FTP
   <br>11 = Uploaded to Computer</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='461 = 0x1cd'>461</td>
 <td>CommandDialVideoPlaybackMode?</td>
 <td class=c>int8u</td>
@@ -10200,7 +10206,7 @@ custom settings for the currently supported models.
   <br>6 = First/Last Frame
   <br>7 = Playback Speed</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='463 = 0x1cf'>463</td>
 <td>SubCommandDialPlaybackMode?</td>
 <td class=c>int8u</td>
@@ -10218,7 +10224,7 @@ custom settings for the currently supported models.
   <br>10 = Uploaded to FTP
   <br>11 = Uploaded to Computer</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='465 = 0x1d1'>465</td>
 <td>SubCommandDialVideoPlaybackMode?</td>
 <td class=c>int8u</td>
@@ -10232,23 +10238,18 @@ custom settings for the currently supported models.
   <br>6 = First/Last Frame
   <br>7 = Playback Speed</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='467 = 0x1d3'>467</td>
 <td>FocusPointLock?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='469 = 0x1d5'>469</td>
 <td>ControlRingResponse</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = High
   <br>1 = Low</span></td></tr>
-<tr class=b>
-<td class=r title='515 = 0x203'>515</td>
-<td>MovieAFAreaMode?</td>
-<td class=c>int8u</td>
-<td>--&gt; <a href='NikonCustom.html#ButtonsZ9'>NikonCustom ButtonsZ9 Values</a></td></tr>
 <tr>
 <td class=r title='529 = 0x211'>529</td>
 <td>ZebraPatternToneRange?</td>
@@ -10479,7 +10480,7 @@ custom settings for the currently supported models.
 </tr><tr><td class=r>42</td><td>= Select Center Focus Point</td>
 <td class='r b'>115</td><td class=b>= Delete</td>
 </tr><tr><td class=r>44</td><td>= Record Movie</td>
-<td class='r b'>116</td><td class=b>= Pixel Shift Shooting</td>
+<td class='r b'>116</td><td class=b>= Save and Load Power Zoom Position</td>
 </tr><tr><td class=r>45</td><td>= Thumbnail On/Off</td>
 <td class='r b'>117</td><td class=b>= Cycle AF-area Mode</td>
 </tr><tr><td class=r>46</td><td>= View Histograms</td>
@@ -12256,45 +12257,40 @@ custom settings for the currently supported models.
 <td class=c>int8u</td>
 <td>--&gt; <a href='NikonCustom.html#ButtonsZ9'>NikonCustom ButtonsZ9 Values</a></td></tr>
 <tr>
-<td class=r title='539 = 0x21b'>539</td>
-<td>MovieAFAreaMode?</td>
-<td class=c>int8u</td>
-<td>--&gt; <a href='NikonCustom.html#ButtonsZ9'>NikonCustom ButtonsZ9 Values</a></td></tr>
-<tr class=b>
 <td class=r title='551 = 0x227'>551</td>
 <td>HDMIViewAssist?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='553 = 0x229'>553</td>
 <td>ZebraPatternToneRange?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = Highlights
   <br>2 = Midtones</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='555 = 0x22b'>555</td>
 <td>MovieZebraPattern?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Pattern 1
   <br>1 = Pattern 2</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='557 = 0x22d'>557</td>
 <td>MovieHighlightDisplayThreshold?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='559 = 0x22f'>559</td>
 <td>MovieMidtoneDisplayValue?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='561 = 0x231'>561</td>
 <td>MovieMidtoneDisplayRange?</td>
 <td class=c title=' ~ = Writable only with -n'>int8u~</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='565 = 0x235'>565</td>
 <td>MovieEVFGrid?</td>
 <td class=c>int8u</td>
@@ -12309,62 +12305,62 @@ custom settings for the currently supported models.
   <br>7 = 16:9
   <br>8 = 90%</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='573 = 0x23d'>573</td>
 <td>MovieShutterSpeedLock?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='574 = 0x23e'>574</td>
 <td>MovieFocusPointLock?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='587 = 0x24b'>587</td>
 <td>MatrixMetering?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Face Detection Off
   <br>1 = Face Detection On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='588 = 0x24c'>588</td>
 <td>AF-CFocusDisplay</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='589 = 0x24d'>589</td>
 <td>FocusPeakingDisplay?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='591 = 0x24f'>591</td>
 <td>KeepExposure</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = Shutter Speed
   <br>2 = ISO</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='609 = 0x261'>609</td>
 <td>StarlightView?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='611 = 0x263'>611</td>
 <td>EVFWarmDisplayMode?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = Mode 1
   <br>2 = Mode 2</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='613 = 0x265'>613</td>
 <td>EVFWarmDisplayBrightness?</td>
 <td class=c>int8s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='615 = 0x267'>615</td>
 <td>EVFReleaseIndicator?</td>
 <td class=c>int8u</td>
@@ -12372,13 +12368,13 @@ custom settings for the currently supported models.
   <br>1 = Type A (Dark)
   <br>2 = Type B (Border)
   <br>3 = Type C (Sides)</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='625 = 0x271'>625</td>
 <td>MovieApertureLock?</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='631 = 0x277'>631</td>
 <td>FlickAdvanceDirection?</td>
 <td class=c>int8u</td>
@@ -12388,7 +12384,7 @@ custom settings for the currently supported models.
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 5, 2025</i>
+<br><i>Last revised Jul 25, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

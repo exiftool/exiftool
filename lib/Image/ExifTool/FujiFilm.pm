@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.97';
+$VERSION = '1.98';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -832,6 +832,13 @@ my %faceCategories = (
     },
     0x1447 => { Name => 'FujiModel',  Writable => 'string' },
     0x1448 => { Name => 'FujiModel2', Writable => 'string' },
+
+    # Found in X-M5, X-E5
+    # White balance as shot. Same valus as 0xf00e.
+    0x144a => { Name => 'WBRed',      Writable => 'int16u' },
+    0x144b => { Name => 'WBGreen',    Writable => 'int16u' },
+    0x144c => { Name => 'WBBlue',     Writable => 'int16u' },
+    
     0x144d => { Name => 'RollAngle',  Writable => 'rational64s' }, #forum14319
     0x3803 => { #forum10037
         Name => 'VideoRecordingMode',
@@ -1564,7 +1571,7 @@ my %faceCategories = (
     6 => { Name => 'FNumber', Format => 'rational64u', PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)' },
     # 7 - seen 200, 125, 250, 2000
     7 => 'ISO',
-    # 8 - seen 0
+    # 8 - seen 0, 65536
 );
 
 #------------------------------------------------------------------------------
@@ -1673,7 +1680,7 @@ sub ProcessFujiDir($$$)
 #------------------------------------------------------------------------------
 # get information from FujiFilm M-RAW header
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
-# Returns: 1 if this was a valid M-RAW headerx
+# Returns: 1 if this was a valid M-RAW header
 sub ProcessMRAW($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;

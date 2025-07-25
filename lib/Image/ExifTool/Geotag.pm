@@ -18,6 +18,8 @@
 #               2024/04/23 - PH Added ability to read more OpenTracks GPS tags
 #               2024/08/28 - PH Added support for new Google Takeout JSON format
 #               2024/11/26 - PH Also write GPSMeasureMode and GPSDOP
+#               2024/11/05 - PH Added support for Google Maps "Export timeline data"
+#                               JSON format
 #
 # References:   1) http://www.topografix.com/GPX/1/1/
 #               2) http://www.gpsinformation.org/dale/nmea.htm#GSA
@@ -1545,9 +1547,9 @@ This module is used by Image::ExifTool
 
 This module loads GPS track logs, interpolates to determine position based
 on time, and sets new GPS values for geotagging images.  Currently supported
-formats are GPX, NMEA RMC/GGA/GLL, KML, IGC, Garmin XML and TCX, Magellan
-PMGNTRK, Honeywell PTNTHPR, Bramor gEO, Winplus Beacon text, Google Takeout
-JSON, GPS/IMU CSV, DJI CSV, ExifTool CSV log files.
+formats are GPX, NMEA RMC/GGA/GLL/GSA/ZDA, KML, IGC, Garmin XML and TCX,
+Magellan PMGNTRK, Honeywell PTNTHPR, Bramor gEO, Winplus Beacon text,
+GPS/IMU CSV, DJI CSV, ExifTool CSV and 3 different Google JSON formats.
 
 Methods in this module should not be called directly.  Instead, the Geotag
 feature is accessed by writing the values of the ExifTool Geotag, Geosync

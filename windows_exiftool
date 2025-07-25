@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.32';
+my $version = '13.33';
 
 $^W = 1;    # enable global warnings
 
@@ -2538,7 +2538,7 @@ T2:         foreach $t2 (@tags2) {
     # print the results for this file
     if (%printFmt) {
         # output using print format file (-p) option
-        my ($type, $doc, $grp, $lastDoc, $cache);
+        my ($type, @doc, $grp, $lastDoc, $cache);
         $fileTrailer = '';
         # repeat for each embedded document if necessary (only if -ee used)
         if ($et->Options('ExtractEmbedded')) {
@@ -2547,7 +2547,8 @@ T2:         foreach $t2 (@tags2) {
         } else {
             $lastDoc = 0;
         }
-        for ($doc=0; $doc<=$lastDoc; ++$doc) {
+        for ($doc[0]=0; $doc[0]<=$lastDoc; ) {
+            my $doc = join '-', @doc;
             my ($skipBody, $opt);
             foreach $type (qw(HEAD SECT IF BODY ENDS TAIL)) {
                 my $prf = $printFmt{$type} or next;
@@ -2557,7 +2558,7 @@ T2:         foreach $t2 (@tags2) {
                 }
                 next if $type eq 'BODY' and $skipBody;
                 # silence "IF" warnings and warnings for subdocuments > 1
-                if ($type eq 'IF' or ($doc > 1 and not $$et{OPTIONS}{IgnoreMinorErrors})) {
+                if ($type eq 'IF' or (($doc[0] > 1 or @doc > 1) and not $$et{OPTIONS}{IgnoreMinorErrors})) {
                     $opt = 'Silent';
                 } else {
                     $opt = 'Warn';
@@ -2595,6 +2596,14 @@ T2:         foreach $t2 (@tags2) {
                 } elsif (@lines) {
                     print $fp @lines;
                 }
+            }
+            # find next available doc-subdoc
+            push @doc, 1;
+            while (@doc > 1) {
+                my $nextDoc = join '-', @doc;
+                last if $$et{HAS_DOC}{$nextDoc};
+                pop @doc;
+                ++$doc[-1];
             }
         }
         delete $printFmt{HEAD} unless defined $outfile; # print header only once per output file
@@ -4527,6 +4536,10 @@ sub SuggestedExtension($$$)
     } elsif ($$valPt =~ /^.{4}ftyp(3gp|mp4|f4v|qt  )/s) {
         my %movType = ( 'qt  ' => 'mov' );
         $ext = $movType{$1} || $1;
+    } elsif ($$valPt =~ /^<(!DOCTYPE )?html/i) {
+        $ext = 'html';
+    } elsif ($$valPt =~ /^[\n\r]*\{[\n\r]*\\rtf/) {
+        $ext = 'rtf';
     } elsif ($$valPt !~ /^.{0,4096}\0/s) {
         $ext = 'txt';
     } elsif ($$valPt =~ /^BM.{15}\0/s) {

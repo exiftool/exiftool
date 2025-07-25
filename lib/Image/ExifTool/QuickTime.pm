@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.18';
+$VERSION = '3.19';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -2379,7 +2379,14 @@ my %userDefined = (
     # saut - 4 bytes all zero (Samsung SM-N900T)
     # smrd - string "TRUEBLUE" (Samsung SM-C101, etc)
     # ---- Sigma ----
-    SIGM => {
+    SIGM => [{
+        Name => 'SigmaEXIF',
+        Condition => '$$valPt =~ /^(II\x2a\0|MM\0\x2a)/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Exif::Main',
+            ProcessProc => \&Image::ExifTool::ProcessTIFF, # (because ProcessMOV is default)
+        },
+    },{
         Name => 'PreviewImage',
         # 32-byte header followed by preview image.  Length at offset 6 in header
         Condition => 'length($$valPt) > 0x20 and length($$valPt) == unpack("x6V",$$valPt) + 0x20',
@@ -2396,7 +2403,7 @@ my %userDefined = (
             }
             return $pt;
         },
-    },
+    }],
     # ---- TomTom Bandit Action Cam ----
     TTMD => {
         Name => 'TomTomMetaData',
@@ -2937,7 +2944,7 @@ my %userDefined = (
         Writable => 'int8u',
         Protected => 1,
         PrintConv => {
-            0 => 'Horizontal (Normal)',
+            0 => 'Horizontal (normal)',
             1 => 'Rotate 270 CW',
             2 => 'Rotate 180',
             3 => 'Rotate 90 CW',

@@ -955,7 +955,6 @@ $VERSION = '1.12';
       Description => 'Obrót',
       PrintConv => {
         'Horizontal' => '0° (góra/lewo)',
-        'Horizontal (Normal)' => '0° (góra/lewo)',
         'Horizontal (normal)' => '0° (góra/lewo)',
         'Rotate 180' => '180° (dół/prawo)',
         'Rotate 270 CW' => '90° CW (lewo/dół)',

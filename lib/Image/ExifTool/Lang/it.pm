@@ -6424,7 +6424,6 @@ $VERSION = '1.14';
       Description => 'Rotazione',
       PrintConv => {
         'Horizontal' => 'Orizzontale',
-        'Horizontal (Normal)' => 'Orizzontale (normale)',
         'Horizontal (normal)' => 'Orizzontale (normale)',
         'Rotate 180' => 'Ruota di 180°',
         'Rotate 270 CW' => 'Ruota di 270° in senso orario',

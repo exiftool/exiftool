@@ -3203,7 +3203,7 @@ sub InsertTagValues($$;$$$$)
     my ($docNum, $tag);
 
     if ($docGrp) {
-        $docNum = $docGrp =~ /(\d+)$/ ? $1 : 0;
+        $docNum = $docGrp =~ /(\d+(-\d+)*)$/ ? $1 : 0;
     } else {
         undef $cache;   # no cache if no document groups
     }
@@ -3271,25 +3271,25 @@ sub InsertTagValues($$;$$$$)
                 # (similar to code in BuildCompositeTags(), but this is case-insensitive)
                 my $cacheTag = $$cache{$lcTag};
                 unless ($cacheTag) {
-                    $cacheTag = $$cache{$lcTag} = [ ];
+                    $cacheTag = $$cache{$lcTag} = { };
                     # find all matching keys, organize into groups, and store in cache
                     my $ex = $$self{TAG_EXTRA};
                     my @matches = grep /^$tag(\s|$)/i, @$foundTags;
                     @matches = $self->GroupMatches($group, \@matches) if defined $group;
                     foreach (@matches) {
                         my $doc = $$ex{$_}{G3} || 0;
-                        if (defined $$cacheTag[$doc]) {
-                            next unless $$cacheTag[$doc] =~ / \((\d+)\)$/;
+                        if (defined $$cacheTag{$doc}) {
+                            next unless $$cacheTag{$doc} =~ / \((\d+)\)$/;
                             my $cur = $1;
                             # keep the most recently extracted tag
                             next if / \((\d+)\)$/ and $1 < $cur;
                         }
-                        $$cacheTag[$doc] = $_;
+                        $$cacheTag{$doc} = $_;
                     }
                 }
-                my $doc = $lcTag =~ /\b(main|doc(\d+)):/ ? ($2 || 0) : $docNum;
-                if ($$cacheTag[$doc]) {
-                    $tag = $$cacheTag[$doc];
+                my $doc = $lcTag =~ /\b(main|doc(\d+(-\d+)*)):/ ? ($2 || 0) : $docNum;
+                if ($$cacheTag{$doc}) {
+                    $tag = $$cacheTag{$doc};
                     $val = $self->GetValue($tag, $type);
                 }
             } else {

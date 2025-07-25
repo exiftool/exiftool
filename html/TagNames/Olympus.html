@@ -1509,17 +1509,35 @@ the Make and Model are used to identify the extender)</span>
 <td title='0x0309 = 777'>0x0309</td>
 <td>AISubjectTrackingMode</td>
 <td class=c>int16u</td>
-<td><span class=s>[Value 0]</span><table class=cols><tr>
+<td><table class=cols><tr>
   <td>0 = Off
-  <br>1 = Motorsports
-  <br>2 = Airplanes
-  <br>3 = Trains</td><td>&nbsp;&nbsp;</td>
-  <td>4 = Birds
-  <br>5 = Dogs &amp; Cats
-  <br>6 = Human</td></tr></table>
-<span class=s>[Value 1]
-  <br>0 = Object Not Found
-  <br>1 = Object Found</span></td></tr>
+  <br>256 = Motorsports; Object Not Found
+  <br>257 = Motorsports; Racing Car Found
+  <br>258 = Motorsports; Car Found
+  <br>259 = Motorsports; Motorcyle Found
+  <br>512 = Airplanes; Object Not Found
+  <br>513 = Airplanes; Passenger/Transport Plane Found
+  <br>514 = Airplanes; Small Plane/Fighter Jet Found
+  <br>515 = Airplanes; Helicopter Found
+  <br>768 = Trains, Object Not Found
+  <br>769 = Trains, Object Found
+  <br>1024 = Birds, Object Not Found
+  <br>1025 = Birds Object Found
+  <br>1280 = Dogs &amp; Cats, Object Not Found
+  <br>1281 = Dogs &amp; Cats, Object Found
+  <br>1536 = Human, Object Not Found
+  <br>1537 = Human, Object Found</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x030a = 778'>0x030a</td>
+<td>AFTargetInfo</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='Olympus.html#AFTargetInfo'>Olympus AFTargetInfo Tags</a></td></tr>
+<tr>
+<td title='0x030b = 779'>0x030b</td>
+<td>SubjectDetectInfo</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='Olympus.html#SubjectDetectInfo'>Olympus SubjectDetectInfo Tags</a></td></tr>
 <tr class=b>
 <td title='0x0400 = 1024'>0x0400</td>
 <td>FlashMode</td>
@@ -2064,7 +2082,8 @@ the Make and Model are used to identify the extender)</span>
 <td title='0x0600 = 1536'>0x0600</td>
 <td>DriveMode</td>
 <td class=c title=' ~ = Writable only with -n'>int16u[n]~</td>
-<td><span class=s><span class=n>(2, 3 or 5 numbers: 1. Mode, 2. Shot number, 3. Mode bits, 5. Shutter mode)</span></span></td></tr>
+<td><span class=s><span class=n>(2, 3, 5 or  numbers: 1. Mode, 2. Shot number, 3. Mode bits, 5. Shutter mode,
+6. Shooting mode (E-M1 II and later models))</span></span></td></tr>
 <tr class=b>
 <td title='0x0601 = 1537'>0x0601</td>
 <td>PanoramaMode</td>
@@ -2084,10 +2103,10 @@ the Make and Model are used to identify the extender)</span>
 <td>ImageStabilization</td>
 <td class=c>int32u</td>
 <td><span class=s>0 = Off
-  <br>1 = On, Mode 1
-  <br>2 = On, Mode 2
-  <br>3 = On, Mode 3
-  <br>4 = On, Mode 4</span></td></tr>
+  <br>1 = On, S-IS1 (All Direction Shake I.S.)
+  <br>2 = On, S-IS2 (Vertical Shake I.S.)
+  <br>3 = On, S-IS3 (Horizontal Shake I.S.)
+  <br>4 = On, S-IS Auto (Auto I.S.)</span></td></tr>
 <tr>
 <td title='0x0804 = 2052'>0x0804</td>
 <td>StackedImage</td>
@@ -2105,41 +2124,166 @@ the Make and Model are used to identify the extender)</span>
   <br>&#39;8 8&#39; = Tripod high resolution
   <br>&#39;11 12&#39; = Hand-held high resolution (11 12)
   <br>&#39;11 16&#39; = Hand-held high resolution (11 16)
+  <br>&#39;13 2&#39; = GND2 (1EV)
+  <br>&#39;13 4&#39; = GND4 (2EV)
+  <br>&#39;13 8&#39; = GND8 (3EV)
   <br>&#39;1 *&#39; = Live Composite (* images)
   <br>&#39;4 *&#39; = Live Time/Bulb (* images)
   <br>&#39;9 *&#39; = Focus-stacked (* images)</td></tr></table>
 </td></tr>
 <tr class=b>
+<td title='0x0821 = 2081'>0x0821</td>
+<td>ISOAutoSettings</td>
+<td class=c>int16u[2]</td>
+<td><span class=s><span class=n>(2 numbers: 1. Default sensitivty, 2. Maximum sensitivity)</span>
+  <br>[Value 0]</span><table class=cols><tr>
+  <td>0 = n/a
+  <br>1536 = 200
+  <br>1621 = 250
+  <br>1706 = 320
+  <br>1792 = 400
+  <br>1877 = 500
+  <br>1962 = 640
+  <br>2048 = 800
+  <br>2133 = 1000
+  <br>2218 = 1250</td><td>&nbsp;&nbsp;</td>
+  <td>2304 = 1600
+  <br>2389 = 2000
+  <br>2474 = 2500
+  <br>2560 = 3200
+  <br>2645 = 4000
+  <br>2730 = 5000
+  <br>2816 = 6400
+  <br>2901 = 8000
+  <br>2986 = 10000
+  <br>3072 = 12800</td><td>&nbsp;&nbsp;</td>
+  <td>3157 = 16000
+  <br>3242 = 20000
+  <br>3328 = 25600
+  <br>3413 = 32000
+  <br>3498 = 40000
+  <br>3584 = 51200
+  <br>3669 = 64000
+  <br>3754 = 80000
+  <br>3840 = 102400</td></tr></table>
+<span class=s>[Value 1]</span><table class=cols><tr>
+  <td>0 = n/a
+  <br>1536 = 200
+  <br>1621 = 250
+  <br>1706 = 320
+  <br>1792 = 400
+  <br>1877 = 500
+  <br>1962 = 640
+  <br>2048 = 800
+  <br>2133 = 1000
+  <br>2218 = 1250</td><td>&nbsp;&nbsp;</td>
+  <td>2304 = 1600
+  <br>2389 = 2000
+  <br>2474 = 2500
+  <br>2560 = 3200
+  <br>2645 = 4000
+  <br>2730 = 5000
+  <br>2816 = 6400
+  <br>2901 = 8000
+  <br>2986 = 10000
+  <br>3072 = 12800</td><td>&nbsp;&nbsp;</td>
+  <td>3157 = 16000
+  <br>3242 = 20000
+  <br>3328 = 25600
+  <br>3413 = 32000
+  <br>3498 = 40000
+  <br>3584 = 51200
+  <br>3669 = 64000
+  <br>3754 = 80000
+  <br>3840 = 102400</td></tr></table>
+</td></tr>
+<tr>
 <td title='0x0900 = 2304'>0x0900</td>
 <td>ManometerPressure</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0901 = 2305'>0x0901</td>
 <td>ManometerReading</td>
 <td class=c>int32s[2]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0902 = 2306'>0x0902</td>
 <td>ExtendedWBDetect</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0903 = 2307'>0x0903</td>
 <td>RollAngle</td>
 <td class=c>int16s[2]</td>
 <td><span class=s><span class=n>(converted to degrees of clockwise camera rotation)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0904 = 2308'>0x0904</td>
 <td>PitchAngle</td>
 <td class=c>int16s[2]</td>
 <td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0908 = 2312'>0x0908</td>
 <td>DateTimeUTC</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AFTargetInfo'>Olympus AFTargetInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>AFFrameSize</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>AFFocusArea</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>AFSelectedArea</td>
+<td class=c>int16u[4]</td>
+<td><span class=s><span class=n>(X Y width height. Subject Detection OFF: User selected AF target area.
+Subject Detection ON: Area related to subject)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SubjectDetectInfo'>Olympus SubjectDetectInfo Tags</a></h2>
+<p>Subject Detection for OM cameras.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>SubjectDetectFrameSize</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>SubjectDetectArea</td>
+<td class=c>int16u[4]</td>
+<td><span class=s><span class=n>(X Y width height)</span></span></td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>SubjectDetectDetail</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>SubjectDetectStatus</td>
+<td class=c>int16u</td>
+<td><span class=s>256 = Level 2 Detail
+  <br>257 = Level 1 Detail
+  <br>260 = Subject Detected, No Detail
+  <br>772 = No Detection</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='RawDevelopment'>Olympus RawDevelopment Tags</a></h2>
@@ -2430,6 +2574,20 @@ the Make and Model are used to identify the extender)</span>
   <br>43 = Bleach Bypass II
   <br>44 = Instant Film</td></tr></table>
 </td></tr>
+<tr>
+<td title='0x8000 = 32768'>0x8000</td>
+<td>RawDevSubIFD</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Olympus.html#RawDevSubIFD'>Olympus RawDevSubIFD Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='RawDevSubIFD'>Olympus RawDevSubIFD Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ImageProcessing'>Olympus ImageProcessing Tags</a></h2>
@@ -2783,6 +2941,13 @@ of the face detect square)</span></span></td></tr>
 <td>KeystoneValue</td>
 <td class=c>int16s[3]</td>
 <td><span class=s><span class=n>(3 numbers: 1. Keystone Value, 2. Min, 3. Max)</span></span></td></tr>
+<tr class=b>
+<td title='0x2110 = 8464'>0x2110</td>
+<td>GNDFilterType</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = High
+  <br>1 = Medium
+  <br>2 = Soft</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='FocusInfo'>Olympus FocusInfo Tags</a></h2>
@@ -3004,6 +3169,11 @@ give AF point, upper bits give AF target selection mode)</span>
 <td>ImageStabilization</td>
 <td class=c title=' ~ = Writable only with -n'>undef~</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0x2100 = 8448'>0x2100</td>
+<td>AntiShockWaitingTime</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='AFInfo'>Olympus AFInfo Tags</a></h2>
@@ -3012,7 +3182,11 @@ give AF point, upper bits give AF target selection mode)</span>
 <table class=inner cellspacing=1>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+<tr>
+<td class=r title='1580 = 0x62c'>1580</td>
+<td>CAFSensitivity</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='FE'>Olympus FE Tags</a></h2>
@@ -3823,7 +3997,7 @@ such as the OM E-M5.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 24, 2025</i>
+<br><i>Last revised Jul 21, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

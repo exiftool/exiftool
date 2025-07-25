@@ -970,7 +970,6 @@ $VERSION = '1.08';
    'Rotation' => {
       PrintConv => {
         'Horizontal' => '0° (上/左)',
-        'Horizontal (Normal)' => '0° (上/左)',
         'Horizontal (normal)' => '0° (上/左)',
         'Rotate 180' => '180° (底/右)',
         'Rotate 270 CW' => '90° CW (左/底)',

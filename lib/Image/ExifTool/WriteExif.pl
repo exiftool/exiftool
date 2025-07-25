@@ -49,7 +49,7 @@ my %mandatory = (
         0x0000 => '2 3 0 0',# GPSVersionID
     },
     InteropIFD => {
-        0x0002 => '0100',   # InteropVersion
+        0x0002 => '0100',   # InteropVersion (from the DCF spec, not the EXIF spec)
     },
 );
 
@@ -2529,17 +2529,19 @@ NoOverwrite:            next if $isNew > 0;
                     }
                     if ($$tagInfo{Name} eq 'PreviewImageStart') {
                         if ($$et{FILE_TYPE} eq 'JPEG' and not $$tagInfo{MakerPreview}) {
-                            # hold onto the PreviewImage until we can determine if it fits
-                            $$et{PREVIEW_INFO} or $$et{PREVIEW_INFO} = {
-                                Data => $buff,
-                                Fixup => Image::ExifTool::Fixup->new,
-                            };
-                            if ($$tagInfo{IsOffset} and $$tagInfo{IsOffset} eq '2') {
-                                $$et{PREVIEW_INFO}{NoBaseShift} = 1;
-                            }
-                            if ($offset >= 0 and $offset+$size <= $dataLen) {
-                                # set flag indicating this preview wasn't in a trailer
-                                $$et{PREVIEW_INFO}{WasContained} = 1;
+                            if ($size) {
+                                # hold onto the PreviewImage until we can determine if it fits
+                                $$et{PREVIEW_INFO} or $$et{PREVIEW_INFO} = {
+                                    Data => $buff,
+                                    Fixup => Image::ExifTool::Fixup->new,
+                                };
+                                if ($$tagInfo{IsOffset} and $$tagInfo{IsOffset} eq '2') {
+                                    $$et{PREVIEW_INFO}{NoBaseShift} = 1;
+                                }
+                                if ($offset >= 0 and $offset+$size <= $dataLen) {
+                                    # set flag indicating this preview wasn't in a trailer
+                                    $$et{PREVIEW_INFO}{WasContained} = 1;
+                                }
                             }
                             $buff = '';
                         } elsif ($$et{TIFF_TYPE} eq 'ARW' and $$et{Model}  eq 'DSLR-A100') {

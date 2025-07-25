@@ -4475,7 +4475,6 @@ $VERSION = '1.25';
       Description => '回転',
       PrintConv => {
         'Horizontal' => '水平（標準）',
-        'Horizontal (Normal)' => '水平（標準）',
         'Horizontal (normal)' => '水平（標準）',
         'Rotate 180' => '180度回転',
         'Rotate 270 CW' => '270度回転 CW',

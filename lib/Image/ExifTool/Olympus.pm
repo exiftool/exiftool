@@ -41,7 +41,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.88';
+$VERSION = '2.89';
 
 sub PrintLensInfo($$$);
 
@@ -1944,14 +1944,14 @@ my %indexInfo = (
             0x201 => 'Airplanes; Passenger/Transport Plane Found',
             0x202 => 'Airplanes; Small Plane/Fighter Jet Found',
             0x203 => 'Airplanes; Helicopter Found',
-            0x300 => 'Trains, Object Not Found',
-            0x301 => 'Trains, Object Found',
-            0x400 => 'Birds, Object Not Found',
-            0x401 => 'Birds Object Found',
-            0x500 => 'Dogs & Cats, Object Not Found',
-            0x501 => 'Dogs & Cats, Object Found',
-            0x600 => 'Human, Object Not Found',
-            0x601 => 'Human, Object Found',
+            0x300 => 'Trains; Object Not Found',
+            0x301 => 'Trains; Object Found',
+            0x400 => 'Birds; Object Not Found',
+            0x401 => 'Birds; Object Found',
+            0x500 => 'Dogs & Cats; Object Not Found',
+            0x501 => 'Dogs & Cats; Object Found',
+            0x600 => 'Human; Object Not Found',
+            0x601 => 'Human; Object Found',
         },
     },
     0x030a => {
@@ -2514,7 +2514,7 @@ my %indexInfo = (
             2, 3, 5 or  numbers: 1. Mode, 2. Shot number, 3. Mode bits, 5. Shutter mode,
             6. Shooting mode (E-M1 II and later models)
         },
-        PrintConv => q {
+        PrintConv => q{
             my ($a,$b,$c,$d,$e,$f) = split ' ',$val;
             if ($b) {
                 $b = ', Shot ' . $b;
@@ -2618,10 +2618,10 @@ my %indexInfo = (
         RawConv => '$$self{ImageStabilization} = $val',
         PrintConv => {
             0 => 'Off',
-            1 => 'On, S-IS1 (All Direction Shake I.S.)', #25
-            2 => 'On, S-IS2 (Vertical Shake I.S.)', #25
-            3 => 'On, S-IS3 (Horizontal Shake I.S.)', #25
-            4 => 'On, S-IS Auto (Auto I.S.)', #25
+            1 => 'On, S-IS1 (All Direction Shake IS)', #25
+            2 => 'On, S-IS2 (Vertical Shake IS)', #25
+            3 => 'On, S-IS3 (Horizontal Shake IS)', #25
+            4 => 'On, S-IS Auto', #25
         },
     },
     0x804 => { #PH (E-M1 with firmware update)
@@ -2793,15 +2793,16 @@ my %indexInfo = (
     FIRST_ENTRY => 0,
     FORMAT => 'int16u',
     WRITABLE => 1,
-    0 => { Name => 'AFFrameSize', Format => 'int16u[2]' },
-    2 => { Name => 'AFFocusArea', Format => 'int16u[4]' },
+    NOTES => 'Position and size of selected AF Area and focus areas for OM cameras.',
+    0 => { Name => 'AFFrameSize', Format => 'int16u[2]' , Notes => 'width/height of the focus/select frame' },
+    2 => { Name => 'AFFocusArea', Format => 'int16u[4]' , Notes => 'X Y width height. The center is identical to AFPointSelected' },
     6 => {
         Name => 'AFSelectedArea',
         Format => 'int16u[4]',
         Notes => q{
-            X Y width height. Subject Detection OFF: User selected AF target area.
-            Subject Detection ON: Area related to subject
-        }
+            X Y width height. Subject and Face Detection OFF: User selected AF target
+            area. Subject or Face Detection ON: Area related to detection process.
+        },
     },
 );
 
@@ -2810,21 +2811,35 @@ my %indexInfo = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
-    NOTES => 'Subject Detection for OM cameras.',
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     FIRST_ENTRY => 0,
     FORMAT => 'int16u',
     WRITABLE => 1,
-    0 => { Name => 'SubjectDetectFrameSize', Format => 'int16u[2]' },
+    NOTES => q{
+        Subject Detection data for OM cameras. These tags contain the areas of a
+        subject and its elements detected by Subject Detection, or the main face and
+        eyes detected by Face Detection. These elements can be either L1 details
+        (level 1, such as head, chassis, airplane nose, etc.) or L2 details (level
+        2, such as eye, driver, airplane cockpit, etc.).
+    },
+    0 => { Name => 'SubjectDetectFrameSize', Format => 'int16u[2]', Notes => 'width/height of the subject detect frame' },
     2 => { Name => 'SubjectDetectArea',      Format => 'int16u[4]', Notes => 'X Y width height' },
-    6 => { Name => 'SubjectDetectDetail',    Format => 'int16u[4]' },
+    6 => { Name => 'SubjectDetectDetail',    Format => 'int16u[4]', Notes => 'X Y width height' },
     10 => {
         Name => 'SubjectDetectStatus',
+        Notes => q{
+            Indicates the presence of data related to subject and face detection, not
+            necessarily corresponding to the detection result
+        },
         PrintConv => {
-            256 => 'Level 2 Detail', # (eye, airplane cockpit, ...)
-            257 => 'Level 1 Detail', # (head, airplane nose, ...)
-            260 => 'Subject Detected, No Detail',
-            772 => 'No Detection',
+              0 => 'No Data',
+            257 => 'Subject and L1 Detail Detected', # (head, airplane nose, ...)
+            258 => 'Subject and L2 Detail Detected', # (eye, airplane cockpit, ...)
+            260 => 'Subject Detected, No Details',
+            515 => 'Face and Eye Detected',
+            516 => 'Face Detected',
+            771 => 'Subject Detail or Eye Detected',
+            772 => 'No Subject or Face Detected',
         },
     },
 );

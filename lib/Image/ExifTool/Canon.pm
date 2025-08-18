@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.94';
+$VERSION = '4.95';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -2151,6 +2151,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             TagTable => 'Image::ExifTool::Canon::RawBurstInfo',
         }
     },
+  # 0x4049 - related to croping (forum13491) - "8 0 0 0" = no crop, "8 1 0 1" = crop enabled
     0x4059 => { #forum16111
         Name => 'LevelInfo',
         SubDirectory => {
@@ -9329,6 +9330,14 @@ my %filterConv = (
             1 => 'People',
             2 => 'Animals',
             3 => 'Vehicles',
+        },
+    },
+    21 => { #github344 (R6)
+        Name => 'SubjectSwitching',
+        PrintConv => {
+            0 => 'Initial Priority',
+            1 => 'On Subject',
+            2 => 'Switch Subject',
         },
     },
     24 => { #forum16068

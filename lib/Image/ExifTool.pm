@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.33';
+$VERSION = '13.34';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1181,6 +1181,7 @@ my @availableOptions = (
     [ 'SystemTags',       undef,  'extract additional File System tags' ],
     [ 'TextOut',        \*STDOUT, 'file for Verbose/HtmlDump output' ],
     [ 'TimeZone',         undef,  'local time zone' ],
+    [ 'UndefTags',        undef,  'leave undef tags in -if conditions when -m or -f are used' ],
     [ 'Unknown',          0,      'flag to get values of unknown tags (0-2)' ],
     [ 'UserParam',        { },    'user parameters for additional user-defined tag values' ],
     [ 'Validate',         undef,  'perform additional validation' ],

@@ -1816,6 +1816,7 @@ sub WriteRAF($$)
         # make sure padding is only zero bytes (can be >100k for HS10)
         # (have seen non-null padding in X-Pro1)
         if ($buff =~ /[^\0]/) {
+HexDump(\$buff);
             return 1 if $et->Error('Non-null bytes found in padding', 2);
         }
     }

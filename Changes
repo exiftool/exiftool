@@ -7,6 +7,22 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.30. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Aug. 18, 2025 - Version 13.34
+
+  - Decode a number of new Pentax tags (thanks Karsten Gieselmann)
+  - Decode a new Canon tag (thanks Peter Wem, github #344)
+  - Updated Sony decoding for the ILME-FX2 and DSC-RX1RM3 (thanks Jos Roost)
+  - Minor fixes to decoding of new Olympus tags (thanks Karsten Gieselmann)
+  - Reverted change of 13.20 which changed the behaviour when writing
+    incorrectly-formatted date/time values
+  - Patched to avoid "uninitialized value $module" when using some custom config
+    files
+  - Fixed issue reading maker notes from some Sony ILCE models
+  - API Changes:
+      - Added UndefTags option to allow -m
+        and/or -f to be used without modifying the value of undef tags in -if
+        expressions (which was the behaviour prior to version 12.60)
+
 July 25, 2025 - Version 13.33
 
   - Added read support for TNEF files (eg. "winmail.dat")
@@ -14,13 +30,15 @@ July 25, 2025 - Version 13.33
   - Decode Canon FocusBracketing tag (github #340)
   - Decode more tags for newer Nikon Z models (thanks Warren Hatch)
   - Decode a few more Olympus tags (thanks Karsten Gieselmann)
+  - Decode face detection tags for the Pentax K-3III (thanks Karsten Gieselmann)
   - Decode a few more FujiFilm tags (github #343)
   - Handle Olympus RawDev2IFD tag 0x8000 (named it RawDevSubIFD)
   - Improved recognition of some Sony lenses (github #342)
-  - Enhanced the -p option to cycle through sub-subdocuments
-  - Improved extraction of GoPro timed GPS to use sub-subdocuments to separate
-    the individual fixes, allowing -p to extract all fixes at sub-second
-    resolution (althought for earlier models these don't all contain timestamps)
+  - Enhanced the -p option to cycle through sub-documents
+  - Improved extraction of GoPro timed GPS to use sub-document numbers to
+    separate the individual fixes, allowing -p to extract all fixes at
+    sub-second resolution (although for earlier models these may not contain
+    timestamps)
   - Extract EXIF information from Sigma fp MOV videos
   - Patched to avoid "multi-segment EXIF with external pointers" error when
     writing Olympus OM-1 JPG files converted by some utilities

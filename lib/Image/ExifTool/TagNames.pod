@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28629 tags, with 17828 unique tag names.
+They contain a total of 28636 tags, with 17834 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -10339,6 +10339,7 @@ Information about creative filter settings.
      18    AFStatusViewfinder                   int32s
      19    InitialAFPointInServo                int32s
      20    SubjectToDetect                      int32s
+     21    SubjectSwitching                     int32s
      24    EyeDetection                         int32s
 
 =head3 Canon RawBurstInfo Tags
@@ -19406,6 +19407,8 @@ any information found here will be extracted, even if the tag is not listed.
 
 =head3 Olympus AFTargetInfo Tags
 
+Position and size of selected AF Area and focus areas for OM cameras.
+
   Index2   Tag Name                             Writable
   ------   --------                             --------
       0    AFFrameSize                          int16u[2]
@@ -19414,7 +19417,11 @@ any information found here will be extracted, even if the tag is not listed.
 
 =head3 Olympus SubjectDetectInfo Tags
 
-Subject Detection for OM cameras.
+Subject Detection data for OM cameras. These tags contain the areas of a
+subject and its elements detected by Subject Detection, or the main face and
+eyes detected by Face Detection. These elements can be either L1 details
+(level 1, such as head, chassis, airplane nose, etc.) or L2 details (level
+2, such as eye, driver, airplane cockpit, etc.).
 
   Index2   Tag Name                             Writable
   ------   --------                             --------
@@ -20724,6 +20731,12 @@ Flash information tags for the K10D, K20D and K200D.
     399    AFPointsUnknown?                     int8u[101]~
     506    LiveView                             int8u
     509    AFHold                               int8u
+    543    FirstFrameActionInAFC                int8u
+    544    ActionInAFCCont                      int8u
+    545    AFCHold                              int8u & 0x03
+  545.1    AFCSensitivity                       int8u & 0x0c
+  545.2    AFCPointTracking                     int8u & 0x70
+   2400    SubjectRecognition                   int8u
 
 =head3 Pentax KelvinWB Tags
 
@@ -20965,6 +20978,7 @@ sensors are located in the camera.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+     10    ShotNumber                           no
      12    SensorTemperature                    int16s
      14    SensorTemperature2                   int16s
      20    CameraTemperature4                   int16s
@@ -23614,11 +23628,11 @@ E-mount models.
 
 =head3 Sony Tag9416 Tags
 
-Valid for the ILCE-1/6700/7CM2/7CR/7M4/7RM5/7SM3/9M3, ILME-FX3/FX30, ZV-E1/E10M2.
+Valid for the ILCE-1/6700/7CM2/7CR/7M4/7RM5/7SM3/9M3, ILME-FX2/FX3/FX30,
+ZV-E1/E10M2.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-      0    Tag9416_0000                         no
       4    SonyISO                              no
       6    StopsAboveBaseISO                    no
      10    SonyExposureTime2                    no

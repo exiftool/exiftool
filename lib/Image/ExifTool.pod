@@ -1199,6 +1199,11 @@ For Unix-based systems, the value may also be a time zone ID like
 "America/New_York".  Requires Time::Piece on Windows, or POSIX::tzset on
 other systems.  Default is undef.
 
+=item UndefTags
+
+Flag to maintain undefined tag values in the application B<-if> expression
+when the B<-f> or B<-m> option is also used.  Default is undef.
+
 =item Unknown
 
 Flag to get the values of unknown tags.  If set to 1, unknown tags are

@@ -695,12 +695,11 @@ TAG: foreach $tagInfo (@matchingTags) {
             my $src = GetTagTable($$table{SRC_TABLE});
             $writeProc = $$src{WRITE_PROC} unless $writeProc;
         }
-        {
+        if ($writeProc) {
             # make sure module is loaded if the writeProc is a string
             unless (ref $writeProc) {
                 my $module = $writeProc;
-                $module =~ s/::\w+$//;
-                eval "require $module";
+                $module =~ s/::\w+$// and eval "require $module";
             }
             no strict 'refs';
             next unless $writeProc and &$writeProc();
@@ -3405,7 +3404,7 @@ sub InsertTagValues($$;$$$$)
             undef $advFmtSelf;
             $didExpr = 1;   # set flag indicating an expression was evaluated
         }
-        unless (defined $val) {
+        unless (defined $val or (ref $opt and $$self{OPTIONS}{UndefTags})) {
             $val = $$self{OPTIONS}{MissingTagValue};
             unless (defined $val) {
                 my $g3 = ($docGrp and $var !~ /\b(main|doc\d+):/i) ? $docGrp . ':' : '';
@@ -5053,6 +5052,7 @@ TryLib: for ($lib=$strptimeLib; ; $lib='') {
                 last;
             }
             if (not $lib) {
+                last unless $$self{OPTIONS}{StrictDate};
                 warn $wrn || "Install POSIX::strptime or Time::Piece for inverse date/time conversions\n";
                 return undef;
             } elsif ($lib eq 'POSIX::strptime') {

@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.49';
+$VERSION = '4.50';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -723,6 +723,7 @@ sub GetAFPointGrid($$;$);
     '9F 48 48 48 24 24 A1 06' => 'Yongnuo YN40mm F2.8N', #30
     '9F 54 68 68 18 18 A2 06' => 'Yongnuo YN100mm F2N', #30
     '9F 4C 44 44 18 18 A1 06' => 'Yongnuo YN35mm F2', #30
+    '9F 4D 50 50 14 14 A0 06' => 'Yongnuo YN50mm F1.8N', #30
 #
     '02 40 44 5C 2C 34 02 00' => 'Exakta AF 35-70mm 1:3.5-4.5 MC',
 #

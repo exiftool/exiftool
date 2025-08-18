@@ -59,7 +59,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.54';
+$VERSION = '3.55';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1977,6 +1977,8 @@ my %binaryDataAttrs = (
             '18 3' => 'Auto Program (MTF)', #PH (NC)
             '18 22' => 'Auto Program (Shallow DOF)', #PH (NC)
             '20 22' => 'Blur Control', #PH (Q)
+            '24 0' => 'Aperture Priority (Adv.Hyp)', #KG
+            '25 0' => 'Manual Exposure (Adv.Hyp)', #KG
             '26 0' => 'Shutter and Aperture Priority (TAv)', #PH (K-3III)
             '249 0' => 'Movie (TAv)', #31
             '250 0' => 'Movie (TAv, Auto Aperture)', #31
@@ -1998,10 +2000,13 @@ my %binaryDataAttrs = (
         Count => 4,
         PrintConv => [{
             0 => 'Single-frame', # (also Interval Shooting for K-01 - PH)
-            1 => 'Continuous', # (K-5 Hi)
-            2 => 'Continuous (Lo)', #PH (K-5)
+            1 => 'Continuous',   #KG  *ist D, *ist Ds, *ist DS2, K110D, K10D, K100D, K100D Super, K20D, Ricoh GR III / GR IIIx
+                                 #KG  Hi:   K200D, K-x, K-7, K-r, K-5, K-01, K-5 II, K-5 IIs, K-30, K-500, K-50, K-S1, K-S2, K-70
+                                 #KG  High: K-3, K-3 II, K-1, K-1 II, KP, K-3 III, K-3 III Mono
+            2 => 'Continuous (Lo)',     #KG all models listed under 'Hi'
             3 => 'Burst', #PH (K20D)
-            4 => 'Continuous (Medium)', #PH (K-3)
+            4 => 'Continuous (Medium)', #KG all models listed under 'High'
+            5 => 'Continuous (Low)',    #KG all models listed under 'High'
             255 => 'Video', #PH (K-x)
         },{
             0 => 'No Timer',
@@ -3009,7 +3014,7 @@ my %binaryDataAttrs = (
     }],
     0x022b => [{
         Name => 'LevelInfoK3III',
-        Condition => '$$self{Model} eq "PENTAX K-3 Mark III"',
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
         SubDirectory => { TagTable => 'Image::ExifTool::Pentax::LevelInfoK3III' },
     },{ #PH (K-5)
         Name => 'LevelInfo',
@@ -5066,7 +5071,7 @@ my %binaryDataAttrs = (
     },
     0x14 => {
         Name => 'AFPointValues',
-        Condition => '$$self{Model} eq "PENTAX K-3 Mark III"', # any other models?
+        Condition => '$$self{Model} =~ /K-3 Mark III/', #KG
         Format => 'int16uRev[69]',
         Unknown => 1,
         Notes => 'some unknown values related to each AFPoint',
@@ -5079,7 +5084,7 @@ my %binaryDataAttrs = (
     },
     0x12a => {
         Name => 'AFPointsSelected', # (should probably be "AFPointSelected", but the bitmask allows multiple points)
-        Condition => '$$self{Model} eq "PENTAX K-3 Mark III"', # any other models?
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
         Notes => q{
             K-3III only. 41 selectable AF points from a total of 101 available in a 13x9
             grid. Columns are labelled A-M and rows are 1-9. The center point is G5. The
@@ -5097,7 +5102,7 @@ my %binaryDataAttrs = (
     0x18f => { # byte has a value of 1 if corresponding AF point is ... in focus maybe?
         # usually the same points as AFPointsSelected above, but not always
         Name => 'AFPointsUnknown',
-        Condition => '$$self{Model} eq "PENTAX K-3 Mark III"', # any other models?
+        Condition => '$$self{Model} =~ /K-3 Mark III/', #KG
         Unknown => 1,
         Format => 'int8u[101]',
         PrintConv => \&AFPointNamesK3III,
@@ -5105,7 +5110,7 @@ my %binaryDataAttrs = (
     0x1fa => {
         Name => 'LiveView',
         Notes => 'decoded only for the K-3 III',
-        Condition => '$$self{Model} eq "PENTAX K-3 Mark III"', # and other models?
+        Condition => '$$self{Model} =~ /K-3 Mark III/', #KG
         PrintConv => { 0 => 'Off', 1 => 'On' },
     },
     0x1fd => {
@@ -5113,6 +5118,54 @@ my %binaryDataAttrs = (
         Notes => 'decoded only for the K-3 II',
         Condition => '$$self{Model} eq "PENTAX K-3 II"',
         PrintConv => { 0 => 'Off', 1 => 'Short', 2 => 'Medium', 3 => 'Long' },
+    },
+    0x021f => { #KG
+          Name => 'FirstFrameActionInAFC',
+          Condition => '$$self{Model} =~ /K-3 Mark III/',
+          PrintConv => {
+              '0'   => 'Auto',
+              '1'   => 'Release Priority',
+              '2'   => 'Focus Priority',
+              # there is at least another value '3' but I couldn't figure out the
+              # meaning. However, this occurs for a few AF-S captures, so it has
+              # no real practical meaning.
+          },
+    },
+    0x0220 => { #KG
+          Name => 'ActionInAFCCont',
+          Condition => '$$self{Model} =~ /K-3 Mark III/',
+          PrintConv => {
+              '0'   => 'Auto',
+              '1'   => 'Focus Priority',
+              '2'   => 'FPS Priority',
+          },
+    },
+    545 => { #KG
+          Name => 'AFCHold',
+          Condition => '$$self{Model} =~ /K-3 Mark III/',
+          Mask => 0x03,
+          PrintConv => { 0 => 'Low', 1 => 'Medium', 2 => 'High', 3 => 'Off' },
+    },
+    545.1 => { #KG
+        Name => 'AFCSensitivity',
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
+        Mask => 0x0c,
+        PrintConv => '5 - $val',
+        PrintConvInv => '5 - $val',
+    },
+    545.2 => { #KG
+        Name => 'AFCPointTracking',
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
+        Mask => 0x70,
+        PrintConv => { 0 => 'Type 1', 1 => 'Type 2', 2 => 'Type 3' },
+    },
+    0x0960 => { #KG
+          Name => 'SubjectRecognition',
+          Condition => '$$self{Model} =~ /K-3 Mark III/',
+          PrintConv => {
+              0 => 'Off',
+              1 => 'On',
+          },
     },
 );
 
@@ -6022,6 +6075,14 @@ my %binaryDataAttrs = (
         binary-data block in images from models such as the K-01, K-3, K-5, K-50 and
         K-500.  It is currently not known where the corresponding temperature
         sensors are located in the camera.
+    },
+    0x0a => { #KG
+          Name => 'ShotNumber',
+          Condition => '$$self{Model} =~ /K-3 Mark III/',
+          # The exact same method to detect this tag with a similar set of files
+          # does not reveal anything for K-1. Is this only available for K-3-III ?
+          # Internal representation starts at 0 for the 1st shot
+          ValueConv => '$val+1',
     },
     # (it would be nice to know where these temperature sensors are located,
     #  but since according to the manual the Slow Shutter Speed NR Auto mode

@@ -962,15 +962,15 @@ effect as a value of 0 for options with numerical values.</p>
     than the original.</td>
     <td align=center>0 or 1</td>
     <td align=center>undef</td></tr>
-<tr id="QuickTimeUTC"><td>QuickTimeUTC</td><td>Flag set to assume that QuickTime
-    date/time values are stored as UTC, causing conversion to local time when they are
-    extracted and from local time when written. According to the QuickTime
-    specification date/time values should be UTC, but many digital cameras store
-    local time instead (presumably because they don't know the time zone), so
-    the default is to not convert these times (except for Canon CR3 files, which
-    always use UTC times).  This option also disables the auto-detection of
-    incorrect time-zero offsets in QuickTime date/time values, and enforces a
-    time zero of 1904 as per the QuickTime specification.</td>
+<tr id="QuickTimeUTC"><td>QuickTimeUTC</td><td>Flag set to assume that integer-valued
+    QuickTime date/time values are stored as UTC, causing conversion to local
+    time when they are extracted and from local time when written. According to
+    the QuickTime specification these date/time values should be UTC, but many
+    digital cameras store local time instead (presumably because they don't know
+    the time zone), so the default is to not convert these times (except for
+    Canon CR3 files, which always use UTC times).  This option also disables the
+    auto-detection of incorrect time-zero offsets in these date/time values,
+    and enforces a time zero of 1904 as per the QuickTime specification.</td>
     <td align=center>0 or 1</td>
     <td align=center>undef</td></tr>
 <tr id="RequestAll"><td>RequestAll</td><td>Flag to request all tags to be extracted.
@@ -1069,6 +1069,10 @@ effect as a value of 0 for options with numerical values.</p>
     For Unix-based systems, the value may also be a time zone ID like "America/New_York".
     Requires Time::Piece on Windows, or POSIX::tzset on other systems.</td>
     <td>Time zone offset or ID, or undef to use the system time zone</td><td align=center>undef</td></tr>
+<tr id="UndefTags"><td>UndefTags</td><td>Flag to maintain undefined tag values
+    in the application <code>-if</code> expression when the <code>-f</code> or
+    <code>-m</code> option is also used.</td>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="Unknown"><td>Unknown</td><td>Control extraction of unknown tags.</td>
     <td><table class="clear top">
     <tr><td align=center><b>0</b>&nbsp;=</td><td>Unknown tags not extracted</td></tr>

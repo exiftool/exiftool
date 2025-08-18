@@ -795,9 +795,9 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>&#39;1 5&#39; = Auto PICT (Portrait)
   <br>&#39;1 6&#39; = Auto PICT (Landscape)
   <br>&#39;1 7&#39; = Auto PICT (Macro)
-  <br>&#39;1 8&#39; = Auto PICT (Sport)</td><td>&nbsp;&nbsp;</td>
-  <td>&#39;2 0&#39; = Program (HyP)
-  <br>&#39;2 1&#39; = Hi-speed Program (HyP)
+  <br>&#39;1 8&#39; = Auto PICT (Sport)
+  <br>&#39;2 0&#39; = Program (HyP)</td><td>&nbsp;&nbsp;</td>
+  <td>&#39;2 1&#39; = Hi-speed Program (HyP)
   <br>&#39;2 2&#39; = DOF Program (HyP)
   <br>&#39;2 3&#39; = MTF Program (HyP)
   <br>&#39;2 22&#39; = Shallow DOF (HyP)
@@ -821,6 +821,8 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>&#39;18 22&#39; = Auto Program (Shallow DOF)
   <br>&#39;19 0&#39; = Astrotracer
   <br>&#39;20 22&#39; = Blur Control
+  <br>&#39;24 0&#39; = Aperture Priority (Adv.Hyp)
+  <br>&#39;25 0&#39; = Manual Exposure (Adv.Hyp)
   <br>&#39;26 0&#39; = Shutter and Aperture Priority (TAv)
   <br>&#39;249 0&#39; = Movie (TAv)
   <br>&#39;250 0&#39; = Movie (TAv, Auto Aperture)
@@ -841,9 +843,10 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
 <td><span class=s>[Value 0]</span><table class=cols><tr>
   <td>0 = Single-frame
   <br>1 = Continuous
-  <br>2 = Continuous (Lo)</td><td>&nbsp;&nbsp;</td>
-  <td>3 = Burst
-  <br>4 = Continuous (Medium)
+  <br>2 = Continuous (Lo)
+  <br>3 = Burst</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Continuous (Medium)
+  <br>5 = Continuous (Low)
   <br>255 = Video</td></tr></table>
 <span class=s>[Value 1]</span><table class=cols><tr>
   <td>0 = No Timer
@@ -3739,6 +3742,48 @@ related to the selected AF point)</span></span></td></tr>
   <br>1 = Short
   <br>2 = Medium
   <br>3 = Long</span></td></tr>
+<tr class=b>
+<td class=r title='543 = 0x21f'>543</td>
+<td>FirstFrameActionInAFC</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Auto
+  <br>1 = Release Priority
+  <br>2 = Focus Priority</span></td></tr>
+<tr>
+<td class=r title='544 = 0x220'>544</td>
+<td>ActionInAFCCont</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Auto
+  <br>1 = Focus Priority
+  <br>2 = FPS Priority</span></td></tr>
+<tr class=b>
+<td class=r title='545 = 0x221'>545</td>
+<td>AFCHold</td>
+<td class=c>int8u</td>
+<td><span class=s>[val &amp; 0x3]
+  <br>0 = Low
+  <br>1 = Medium
+  <br>2 = High
+  <br>3 = Off</span></td></tr>
+<tr>
+<td class=r title='545 = 0x221'>545.1</td>
+<td>AFCSensitivity</td>
+<td class=c>int8u</td>
+<td><span class=s>[val &gt;&gt; 2 &amp; 0x3]</span></td></tr>
+<tr class=b>
+<td class=r title='545 = 0x221'>545.2</td>
+<td>AFCPointTracking</td>
+<td class=c>int8u</td>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0x7]
+  <br>0 = Type 1
+  <br>1 = Type 2
+  <br>2 = Type 3</span></td></tr>
+<tr>
+<td class=r title='2400 = 0x960'>2400</td>
+<td>SubjectRecognition</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='KelvinWB'>Pentax KelvinWB Tags</a></h2>
@@ -4649,26 +4694,31 @@ sensors are located in the camera.</p>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>ShotNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='12 = 0xc'>12</td>
 <td>SensorTemperature</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='14 = 0xe'>14</td>
 <td>SensorTemperature2</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='20 = 0x14'>20</td>
 <td>CameraTemperature4</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='22 = 0x16'>22</td>
 <td>CameraTemperature5</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='42 = 0x2a'>42</td>
 <td>SensorTemperature</td>
 <td class=c>int16s</td>
@@ -5527,7 +5577,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 25, 2025</i>
+<br><i>Last revised Aug 17, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

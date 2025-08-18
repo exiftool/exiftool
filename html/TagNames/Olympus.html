@@ -1519,14 +1519,14 @@ the Make and Model are used to identify the extender)</span>
   <br>513 = Airplanes; Passenger/Transport Plane Found
   <br>514 = Airplanes; Small Plane/Fighter Jet Found
   <br>515 = Airplanes; Helicopter Found
-  <br>768 = Trains, Object Not Found
-  <br>769 = Trains, Object Found
-  <br>1024 = Birds, Object Not Found
-  <br>1025 = Birds Object Found
-  <br>1280 = Dogs &amp; Cats, Object Not Found
-  <br>1281 = Dogs &amp; Cats, Object Found
-  <br>1536 = Human, Object Not Found
-  <br>1537 = Human, Object Found</td></tr></table>
+  <br>768 = Trains; Object Not Found
+  <br>769 = Trains; Object Found
+  <br>1024 = Birds; Object Not Found
+  <br>1025 = Birds; Object Found
+  <br>1280 = Dogs &amp; Cats; Object Not Found
+  <br>1281 = Dogs &amp; Cats; Object Found
+  <br>1536 = Human; Object Not Found
+  <br>1537 = Human; Object Found</td></tr></table>
 </td></tr>
 <tr class=b>
 <td title='0x030a = 778'>0x030a</td>
@@ -2103,10 +2103,10 @@ the Make and Model are used to identify the extender)</span>
 <td>ImageStabilization</td>
 <td class=c>int32u</td>
 <td><span class=s>0 = Off
-  <br>1 = On, S-IS1 (All Direction Shake I.S.)
-  <br>2 = On, S-IS2 (Vertical Shake I.S.)
-  <br>3 = On, S-IS3 (Horizontal Shake I.S.)
-  <br>4 = On, S-IS Auto (Auto I.S.)</span></td></tr>
+  <br>1 = On, S-IS1 (All Direction Shake IS)
+  <br>2 = On, S-IS2 (Vertical Shake IS)
+  <br>3 = On, S-IS3 (Horizontal Shake IS)
+  <br>4 = On, S-IS Auto</span></td></tr>
 <tr>
 <td title='0x0804 = 2052'>0x0804</td>
 <td>StackedImage</td>
@@ -2231,6 +2231,7 @@ the Make and Model are used to identify the extender)</span>
 </table></td></tr></table></blockquote>
 
 <h2><a name='AFTargetInfo'>Olympus AFTargetInfo Tags</a></h2>
+<p>Position and size of selected AF Area and focus areas for OM cameras.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -2240,22 +2241,26 @@ the Make and Model are used to identify the extender)</span>
 <td class=r title='0 = 0x0'>0</td>
 <td>AFFrameSize</td>
 <td class=c>int16u[2]</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(width/height of the focus/select frame)</span></span></td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>AFFocusArea</td>
 <td class=c>int16u[4]</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(X Y width height. The center is identical to AFPointSelected)</span></span></td></tr>
 <tr>
 <td class=r title='6 = 0x6'>6</td>
 <td>AFSelectedArea</td>
 <td class=c>int16u[4]</td>
-<td><span class=s><span class=n>(X Y width height. Subject Detection OFF: User selected AF target area.
-Subject Detection ON: Area related to subject)</span></span></td></tr>
+<td><span class=s><span class=n>(X Y width height. Subject and Face Detection OFF: User selected AF target
+area. Subject or Face Detection ON: Area related to detection process.)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='SubjectDetectInfo'>Olympus SubjectDetectInfo Tags</a></h2>
-<p>Subject Detection for OM cameras.</p>
+<p>Subject Detection data for OM cameras. These tags contain the areas of a
+subject and its elements detected by Subject Detection, or the main face and
+eyes detected by Face Detection. These elements can be either L1 details
+(level 1, such as head, chassis, airplane nose, etc.) or L2 details (level
+2, such as eye, driver, airplane cockpit, etc.).</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -2265,7 +2270,7 @@ Subject Detection ON: Area related to subject)</span></span></td></tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>SubjectDetectFrameSize</td>
 <td class=c>int16u[2]</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(width/height of the subject detect frame)</span></span></td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>SubjectDetectArea</td>
@@ -2275,15 +2280,22 @@ Subject Detection ON: Area related to subject)</span></span></td></tr>
 <td class=r title='6 = 0x6'>6</td>
 <td>SubjectDetectDetail</td>
 <td class=c>int16u[4]</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(X Y width height)</span></span></td></tr>
 <tr class=b>
 <td class=r title='10 = 0xa'>10</td>
 <td>SubjectDetectStatus</td>
 <td class=c>int16u</td>
-<td><span class=s>256 = Level 2 Detail
-  <br>257 = Level 1 Detail
-  <br>260 = Subject Detected, No Detail
-  <br>772 = No Detection</span></td></tr>
+<td><span class=s><span class=n>(Indicates the presence of data related to subject and face detection, not
+necessarily corresponding to the detection result)</span></span><table class=cols><tr>
+  <td>0 = No Data
+  <br>257 = Subject and L1 Detail Detected
+  <br>258 = Subject and L2 Detail Detected
+  <br>260 = Subject Detected, No Details
+  <br>515 = Face and Eye Detected
+  <br>516 = Face Detected
+  <br>771 = Subject Detail or Eye Detected
+  <br>772 = No Subject or Face Detected</td></tr></table>
+</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='RawDevelopment'>Olympus RawDevelopment Tags</a></h2>
@@ -3997,7 +4009,7 @@ such as the OM E-M5.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 21, 2025</i>
+<br><i>Last revised Jul 31, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

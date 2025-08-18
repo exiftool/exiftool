@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.88';
+$VERSION = '2.89';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -603,6 +603,8 @@ $VERSION = '2.88';
     19 => 'Vivid 2', #JR (7SM3)
     20 => 'IN', #JR (7SM3)
     21 => 'SH', #JR (7SM3)
+    22 => 'FL2', #JR (ILME-FX2)
+    23 => 'FL3', #JR (ILME-FX2)
     100 => 'Neutral', #JD
     101 => 'Clear', #JD
     102 => 'Deep', #JD

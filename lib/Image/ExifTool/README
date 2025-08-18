@@ -802,7 +802,8 @@ numerical, and generated automatically otherwise.
   Shift         : [Writable tags only] Specifies type of shift to apply if this
                   value may be shifted.  Set to 'Time' for shifting date/time
                   tags, or '0' to prevent tag from being shifted or
-                  conditionally deleted.
+                  conditionally deleted.  May not be used for Writable Composite
+                  tags.
 
   Writable      : Indicates this tag can be written (or not written if Writable
                   is set to zero), and for EXIF and QuickTime tables gives

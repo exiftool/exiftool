@@ -564,6 +564,7 @@ my %pentaxModelID = (
     0x1329a => 'GR IIIx', # (Ricoh)
     0x132b8 => 'KF', #github322 (Ricoh)
     0x132d6 => 'K-3 Mark III Monochrome', #github226 (Ricoh)
+    0x132e0 => 'GR IV', # (Ricoh)
 );
 
 # Pentax city codes - (PH, Optio WP)

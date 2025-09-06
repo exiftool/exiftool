@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.34';
+my $version = '13.35';
 
 $^W = 1;    # enable global warnings
 
@@ -48,7 +48,7 @@ sub FormatJSON($$$;$);
 sub PrintCSV(;$);
 sub AddGroups($$$$);
 sub ConvertBinary($);
-sub IsEqual($$);
+sub IsEqual($$;$);
 sub Printable($);
 sub LengthUTF8($);
 sub Infile($;$);
@@ -982,6 +982,7 @@ for (;;) {
     if (/^diff$/i) {
         $diff = shift;
         defined $diff or Error("Expecting file name for -$_ option\n"), $badCmd=1;
+        CleanFilename($diff);   # change to forward slashes if necessary
         next;
     }
     /^delete_original(!?)$/i and $deleteOrig = ($1 ? 2 : 1), next;
@@ -2151,10 +2152,12 @@ sub GetImageInfo($$)
     # set alternate file names
     foreach $g8 (sort keys %altFile) {
         my $altName = $orig;
-        # must double any '$' symbols in the original file name because
-        # they are used for tag names in a -fileNUM argument
-        $altName =~ s/\$/\$\$/g;
-        $altName = FilenameSPrintf($altFile{$g8}, $altName);
+        unless ($altFile{$g8} eq '@') {
+            # must double any '$' symbols in the original file name because
+            # they are used for tag names in a -fileNUM argument
+            $altName =~ s/\$/\$\$/g;
+            $altName = FilenameSPrintf($altFile{$g8}, $altName);
+        }
         $et->SetAlternateFile($g8, $altName);
     }
 
@@ -2179,15 +2182,7 @@ sub GetImageInfo($$)
     }
     # evaluate -if expression for conditional processing
     if (@condition) {
-        unless ($file eq '-' or $et->Exists($file)) {
-            Warn "Error: File not found - $file\n";
-            EFile($file);
-            FileNotFound($file);
-            ++$countBad;
-            return;
-        }
         my $result;
-
         unless ($failCondition) {
             # catch run time errors as well as compile errors
             undef $evalWarning;
@@ -2226,7 +2221,10 @@ sub GetImageInfo($$)
             }
             undef @foundTags if $fastCondition; # ignore if we didn't get all tags
         }
-        unless ($result) {
+        if ($result) {
+            # discard $info for non-existent file
+            undef $info unless $file eq '-' or $et->Exists($file);
+        } else {
             Progress($vout, "-------- $file (failed condition)") if $verbose;
             EFile($file, 2);
             ++$countFailed;
@@ -2923,7 +2921,7 @@ TAG:    foreach $tag (@foundTags) {
                             $val = $et->GetValue($tag, 'ValueConv');
                             $val = '' unless defined $val;
                             # go back to print ValueConv value only if different
-                            next unless IsEqual($val, $lastVal);
+                            next unless IsEqual($val, $lastVal, 1);
                             print $fp "$descClose\n </$tok>";
                             last;
                         }
@@ -2960,7 +2958,7 @@ TAG:    foreach $tag (@foundTags) {
                         $$val{desc} = $desc;
                         if ($printConv) {
                             my $num = $et->GetValue($tag, 'ValueConv');
-                            $$val{num} = $num if defined $num and not IsEqual($num, $$val{val});
+                            $$val{num} = $num if defined $num and not IsEqual($num, $$val{val}, 1);
                         }
                         my $ex = $$et{TAG_EXTRA}{$tag};
                         $$val{'fmt'} = $$ex{G6} if defined $$ex{G6};
@@ -2973,6 +2971,7 @@ TAG:    foreach $tag (@foundTags) {
                                 $$val{'hex'} = join ' ', unpack '(H2)*', $$ex{BinVal};
                             }
                         }
+                        $$val{rat} = $$ex{Rational} if defined $$ex{Rational} and $$et{OPTIONS}{SaveBin};
                     }
                 }
                 FormatJSON($fp, $val, $ind, $quote);
@@ -3946,24 +3945,29 @@ sub ConvertBinary($)
 
 #------------------------------------------------------------------------------
 # Compare ValueConv and PrintConv values of a tag to see if they are equal
-# Inputs: 0) value1, 1) value2
+# Inputs: 0) value1, 1) value2, 2) flag to return true for any scalar references
 # Returns: true if they are equal
-sub IsEqual($$)
+sub IsEqual($$;$)
 {
-    my ($a, $b) = @_;
+    my ($a, $b, $trueScalar) = @_;
     # (scalar values are not print-converted)
-    return 1 if $a eq $b or ref $a eq 'SCALAR';
+    return 1 if $a eq $b;
+    if (ref $a eq 'SCALAR') {
+        return 1 if $trueScalar;
+        return 1 if ref $b eq 'SCALAR' and $$a eq $$b;
+        return 0;
+    }
     if (ref $a eq 'HASH' and ref $b eq 'HASH') {
         return 0 if scalar(keys %$a) != scalar(keys %$b);
         my $key;
         foreach $key (keys %$a) {
-            return 0 unless IsEqual($$a{$key}, $$b{$key});
+            return 0 unless IsEqual($$a{$key}, $$b{$key}, $trueScalar);
         }
     } else {
         return 0 if ref $a ne 'ARRAY' or ref $b ne 'ARRAY' or @$a != @$b;
         my $i;
         for ($i=0; $i<scalar(@$a); ++$i) {
-            return 0 unless IsEqual($$a[$i], $$b[$i]);
+            return 0 unless IsEqual($$a[$i], $$b[$i], $trueScalar);
         }
     }
     return 1;
@@ -4381,7 +4385,7 @@ sub FindFileWindows($$)
     # recode file name as UTF-8 if necessary
     my $enc = $et->Options('CharsetFileName');
     $wildfile = $et->Decode($wildfile, $enc, undef, 'UTF8') if $enc and $enc ne 'UTF8';
-    $wildfile =~ tr/\\/\//; # use forward slashes
+    CleanFilename($wildfile); # use forward slashes
     my ($dir, $wildname) = ($wildfile =~ m{(.*[:/])(.*)}) ? ($1, $2) : ('', $wildfile);
     if (HasWildcards($dir)) {
         Warn "Wildcards don't work in the directory specification\n";
@@ -4461,7 +4465,7 @@ sub AbsPath($)
             local $SIG{'__WARN__'} = sub { };
             $path = eval { Cwd::abs_path($file) };
         }
-        $path =~ tr/\\/\// if $^O eq 'MSWin32' and defined $path;   # use forward slashes
+        CleanFilename($path) if defined $path;  # use forward slashes
     }
     return $path;
 }

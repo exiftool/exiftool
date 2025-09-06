@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.98';
+$VERSION = '1.99';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -426,6 +426,16 @@ my %faceCategories = (
             0x300 => 'DR (Dynamic Range priority)',
         },
     },
+    0x1037 => { #forum17591
+        Name => 'MultipleExposure',
+        Writable => 'int16u', # (NC)
+        PrintConv => {
+            1 => 'Additive',
+            2 => 'Average',
+            3 => 'Light',
+            4 => 'Dark',
+        },
+    },
     0x1040 => { #8
         Name => 'ShadowTone',
         Writable => 'int32s',
@@ -586,16 +596,44 @@ my %faceCategories = (
         Name => 'SequenceNumber',
         Writable => 'int16u',
     },
+    0x1102 => { #forum17602
+        Name => 'WhiteBalanceBracketing',
+        Writable => 'int16u', # (NC)
+        PrintHex => 1,
+        PrintConv => {
+            0x01ff => '+/- 1',
+            0x02ff => '+/- 2',
+            0x03ff => '+/- 3',
+        },
+    },
     0x1103 => {
         Name => 'DriveSettings',
         SubDirectory => { TagTable => 'Image::ExifTool::FujiFilm::DriveSettings' },
     },
     0x1105 => { Name => 'PixelShiftShots',  Writable => 'int16u' }, #IB
     0x1106 => { Name => 'PixelShiftOffset', Writable => 'rational64s', Count => 2 }, #IB
-    # (0x1150-0x1152 exist only for Pro Low-light and Pro Focus PictureModes)
-    # 0x1150 - Pro Low-light - val=1; Pro Focus - val=2 (ref 7); HDR - val=128 (forum10799)
-    # 0x1151 - Pro Low-light - val=4 (number of pictures taken?); Pro Focus - val=2,3 (ref 7); HDR - val=3 (forum10799)
-    # 0x1152 - Pro Low-light - val=1,3,4 (stacked pictures used?); Pro Focus - val=1,2 (ref 7); HDR - val=3 (forum10799)
+    0x1150 => {
+        Name => 'CompositeImageMode',
+        Writable => 'int32u',
+        PrintConv => {
+            0 => 'n/a', #PH
+            1 => 'Pro Low-light', #7
+            2 => 'Pro Focus', #7
+            32 => 'Panorama', #PH
+            128 => 'HDR', #forum10799
+            1024 => 'Multi-exposure', #forum17591
+        },
+    },
+    0x1151 => {
+        Name => 'CompositeImageCount1',
+        Writable => 'int16u',
+        # Pro Low-light - val=4 (number of pictures taken?); Pro Focus - val=2,3 (ref 7); HDR - val=3 (forum10799)
+    },
+    0x1152 => {
+        Name => 'CompositeImageCount2',
+        Writable => 'int16u',
+        # Pro Low-light - val=1,3,4 (stacked pictures used?); Pro Focus - val=1,2 (ref 7); HDR - val=3 (forum10799)
+    },
     0x1153 => { #forum7668
         Name => 'PanoramaAngle',
         Writable => 'int16u',
@@ -1558,20 +1596,21 @@ my %faceCategories = (
     TAG_PREFIX => 'MRAW',
     NOTES => q{
         Tags extracted from the M-RAW header of multi-image RAF files.  The family 1
-        group name for these tags is "M-RAW".
+        group name for these tags is "M-RAW".  Additional metadata may be extracted
+        from the embedded RAW images with the ExtractEmbedded option.
     },
-    1 => { Name => 'RawImageNumber', Format => 'int32u' },
-    # 3 - seen "0 100", "-300 100" and "300 100" for a sequence of 3 images
-    3 => { Name => 'ExposureCompensation', Format => 'rational32s', Unknown => 1, Hidden => 1, PrintConv => 'sprintf("%+.2f",$val)' },
-    # 4 - (same value as 3 in all my samples)
-    4 => { Name => 'ExposureCompensation2', Format => 'rational32s', Unknown => 1, Hidden => 1, PrintConv => 'sprintf("%+.2f",$val)' },
-    # 5 - seen "10 1600", "10 6800", "10 200", "10 35000" etc
-    5 => { Name => 'ExposureTime', Format => 'rational64u', PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)' },
-    # 6 - seen "450 100", "400 100" (all images in RAF have same value)
-    6 => { Name => 'FNumber', Format => 'rational64u', PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)' },
-    # 7 - seen 200, 125, 250, 2000
-    7 => 'ISO',
-    # 8 - seen 0, 65536
+    0x2001 => { Name => 'RawImageNumber', Format => 'int32u' },
+    # 0x2003 - seen "0 100", "-300 100" and "300 100" for a sequence of 3 images
+    0x2003 => { Name => 'ExposureCompensation', Format => 'rational32s', Unknown => 1, Hidden => 1, PrintConv => 'sprintf("%+.2f",$val)' },
+    # 0x2004 - (same value as 3 in all my samples)
+    0x2004 => { Name => 'ExposureCompensation2', Format => 'rational32s', Unknown => 1, Hidden => 1, PrintConv => 'sprintf("%+.2f",$val)' },
+    # 0x2005 - seen "10 1600", "10 6800", "10 200", "10 35000" etc
+    0x2005 => { Name => 'ExposureTime', Format => 'rational64u', PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)' },
+    # 0x2006 - seen "450 100", "400 100" (all images in RAF have same value)
+    0x2006 => { Name => 'FNumber', Format => 'rational64u', PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)' },
+    # 0x2007 - seen 200, 125, 250, 2000
+    0x2007 => 'ISO',
+    # 0x2008 - seen 0, 65536
 );
 
 #------------------------------------------------------------------------------
@@ -1684,6 +1723,7 @@ sub ProcessFujiDir($$$)
 sub ProcessMRAW($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
+    return 1 if $$et{DOC_NUM};
     my $dataPt = $$dirInfo{DataPt};
     my $dataPos = $$dirInfo{DataPos};
     my $dataLen = length $$dataPt;
@@ -1697,15 +1737,16 @@ sub ProcessMRAW($$$)
     my $pos = 44;
     my ($i, $n);
     for ($n=0; ; ++$n) {
-        $pos += 16;  # skip offset/size fields
-        my $end = $pos + $size;
+        my $end = $pos + 16 + $size;
         last if $end > $dataLen;
+        my $rafStart = Get64u($dataPt, $pos);
+        my $rafLen = Get64u($dataPt, $pos+8);
+        $pos += 16;  # skip offset/size fields
         $$et{DOC_NUM} = ++$$et{DOC_COUNT} if $pos > 60;
         $et->VPrint(0, "$$et{INDENT}(Raw image $n parameters: $size bytes, $num entries)\n");
         for ($i=0; $i<$num; ++$i) {
             last if $pos + 4 > $end;
-            # (don't know what the byte at the current $pos is for, value = 0x20)
-            my $tag = Get8u($dataPt, $pos+1);
+            my $tag = Get16u($dataPt, $pos);
             my $size = Get16u($dataPt, $pos+2);
             $pos += 4;
             last if $pos + $size > $end;
@@ -1716,6 +1757,21 @@ sub ProcessMRAW($$$)
                 Size    => $size,
             );
             $pos += $size;
+        }
+        if ($rafStart and $et->Options('ExtractEmbedded')) {
+            if ($et->Options('Verbose')) {
+                my $msg = sprintf("$$et{INDENT}(RAW image $n data: Start=0x%x, Length=0x%x)\n",$rafStart,$rafLen);
+                $et->VPrint(0, $msg);
+            }
+            my $raf = $$et{RAF};
+            my $tell = $raf->Tell();
+            my $order = GetByteOrder();
+            my $fujiWidth = $$et{FujiWidth};
+            $raf->Seek($rafStart, 0) or next;
+            ProcessRAF($et, { RAF => $raf, Base => $rafStart });
+            $$et{FujiWidth} = $fujiWidth;
+            SetByteOrder($order);
+            $raf->Seek($tell, 0);
         }
     }
     delete $$et{DOC_NUM};
@@ -1816,7 +1872,6 @@ sub WriteRAF($$)
         # make sure padding is only zero bytes (can be >100k for HS10)
         # (have seen non-null padding in X-Pro1)
         if ($buff =~ /[^\0]/) {
-HexDump(\$buff);
             return 1 if $et->Error('Non-null bytes found in padding', 2);
         }
     }
@@ -1871,6 +1926,7 @@ sub ProcessRAF($$)
     my ($buff, $jpeg, $warn, $offset);
 
     my $raf = $$dirInfo{RAF};
+    my $base = $$dirInfo{Base} || 0;
     $raf->Read($buff,0x70) == 0x70    or return 0;
     $buff =~ /^FUJIFILM/              or return 0;
     # get position and size of M-RAW header and jpeg preview
@@ -1878,13 +1934,13 @@ sub ProcessRAF($$)
     my ($jpos, $jlen) = unpack('x84NN', $buff);
     $jpos & 0x8000                   and return 0;
     if ($jpos) {
-        $raf->Seek($jpos, 0)              or return 0;
+        $raf->Seek($jpos+$base, 0)        or return 0;
         $raf->Read($jpeg, $jlen) == $jlen or return 0;
     }
     SetByteOrder('MM');
-    $et->SetFileType();
+    $et->SetFileType() unless $$et{DOC_NUM};
     my $tbl = GetTagTable('Image::ExifTool::FujiFilm::RAFHeader');
-    $et->ProcessDirectory({ DataPt => \$buff, DirName => 'RAFHeader' }, $tbl);
+    $et->ProcessDirectory({ DataPt => \$buff, DirName => 'RAFHeader', Base => $base }, $tbl);
     
     # extract information from embedded JPEG
     my %dirInfo = (
@@ -1892,21 +1948,22 @@ sub ProcessRAF($$)
         RAF    => File::RandomAccess->new(\$jpeg),
     );
     if ($jpos) {
-        $$et{BASE} += $jpos;
+        $$et{BASE} += $jpos + $base;
         my $ok = $et->ProcessJPEG(\%dirInfo);
-        $$et{BASE} -= $jpos;
+        $$et{BASE} -= $jpos + $base;
         $et->FoundTag('PreviewImage', \$jpeg) if $ok;
     }
     # extract information from Fuji RAF and TIFF directories
     my ($rafNum, $ifdNum) = ('','');
     foreach $offset (0x48, 0x5c, 0x64, 0x78, 0x80) {
         last if $jpos and $offset >= $jpos;
-        unless ($raf->Seek($offset, 0) and $raf->Read($buff, 8)) {
+        unless ($raf->Seek($offset+$base, 0) and $raf->Read($buff, 8)) {
             $warn = 1;
             last;
         }
         my ($start, $len) = unpack('N2',$buff);
         next unless $start;
+        $start += $base;
         if ($offset == 0x64 or $offset == 0x80) {
             # parse FujiIFD directory
             %dirInfo = (

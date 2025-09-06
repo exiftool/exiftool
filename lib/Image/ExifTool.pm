@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.34';
+$VERSION = '13.35';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2825,6 +2825,8 @@ sub ExtractInfo($;@)
                 $isDir = 1;
             } else {
                 $self->Error('Error opening file');
+                # continue to process alt files if necessary
+                $self->DoneExtract() if $$self{ALT_EXIFTOOL};
             }
         } else {
             $self->Error('No file specified');

@@ -4,8 +4,31 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 13.30. (Other versions are
+Note: The most recent production release is Version 13.35. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Sept. 6, 2025 - Version 13.35 (production release)
+
+  - Added a new CanonModelID
+  - Added new Olympus PictureMode and LensType values (thanks Michael Meissner)
+  - Decode GPS from another DJI protobuf format (DJI Neo)
+  - Decode a few new FujiFilm tags
+  - Enhanced -ee option to extract M-RAW information from all images in FujiFilm
+    RAF files
+  - Improved handling of standard-format unknown XMP date/time tags when the API
+    XMPAutoConv option is set (which is the default) to put them in the "Time"
+    group and apply the -d date/time formatting
+  - Improved -fileNUM option so it may be used to access tags from alternate
+    files when the specified target FILE doesn't exist
+  - Improved print conversions for some Canon tags to handle "n/a" values
+  - Enhanced JSON long output (-j -l) so the API SaveBin option also returns the
+    Rational ("rat") value if available
+  - Changed -if option so the expression is evaluated even when the source file
+    doesn't exist (to allow more flexibily when using -fileNUM option or when
+    creating the output file when writing)
+  - Fixed decoding of a few new Pentax tags (thanks Karsten Gieselmann)
+  - Fixed -diff feature to report differences in binary-data values and to be
+    consistent with handling of backslashes in Windows path names
 
 Aug. 18, 2025 - Version 13.34
 

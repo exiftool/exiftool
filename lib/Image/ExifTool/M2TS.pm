@@ -32,7 +32,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.29';
+$VERSION = '1.30';
 
 # program map table "stream_type" lookup (ref 6/1/9)
 my %streamType = (
@@ -557,7 +557,7 @@ sub ProcessM2TS($$)
 {
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
-    my ($buff, $pLen, $upkPrefix, $j, $fileType, $eof);
+    my ($buff, $pLen, $j, $fileType, $eof);
     my (%pmt, %pidType, %data, %sectLen, %packLen, %fromStart);
     my ($startTime, $endTime, $fwdTime, $backScan, $maxBack);
     my $verbose = $et->Options('Verbose');
@@ -570,10 +570,8 @@ sub ProcessM2TS($$)
     unless ($1) {
         $pLen = 188;        # no timecode
         $fileType = 'M2T';  # (just as a way to tell there is no timecode)
-        $upkPrefix = 'N';
     } else {
         $pLen = 192; # 188-byte transport packet + leading 4-byte timecode (ref 4)
-        $upkPrefix = 'x4N';
     }
     my $prePos = $pLen - 188;       # byte position of packet prefix
     my $readSize = 64 * $pLen;      # size of our read buffer

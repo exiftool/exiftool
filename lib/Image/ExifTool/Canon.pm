@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.95';
+$VERSION = '4.96';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -1006,6 +1006,7 @@ $VERSION = '4.95';
     0x80000491 => 'PowerShot V10', #25
     0x80000495 => 'EOS R1', #PH
     0x80000496 => 'R5 Mark II', #forum16406
+    0x80000497 => 'PowerShot V1', #PH
     0x80000498 => 'EOS R100', #25
     0x80000516 => 'EOS R50 V', #42
     0x80000520 => 'EOS D2000C', #IB
@@ -9172,15 +9173,37 @@ my %filterConv = (
         Name => 'AFConfigTool',
         ValueConv => '$val + 1',
         ValueConvInv => '$val - 1',
-        PrintConv => '"Case $val"',
-        PrintConvInv => '$val=~/(\d+)/ ? $1 : undef',
+        PrintHex => 1,
+        PrintConv => {
+            0x80000000 => 'n/a',
+            OTHER => sub { 'Case ' . shift },
+        },
+        PrintConvInv => '$val=~/(\d+)/ ? $1 : 0x80000000',
     },
-    2 => 'AFTrackingSensitivity',
+    2 => {
+        Name => 'AFTrackingSensitivity',
+        PrintHex => 1,
+        PrintConv => {
+            0x7fffffff => 'n/a',
+            OTHER => sub { shift },
+        },
+    },
     3 => {
         Name => 'AFAccelDecelTracking',
         Description => 'AF Accel/Decel Tracking',
+        PrintHex => 1,
+        PrintConv => {
+            0x7fffffff => 'n/a',
+            OTHER => sub { shift },
+        },
     },
-    4 => 'AFPointSwitching',
+    4 => {
+        Name => 'AFPointSwitching',
+        PrintConv => {
+            0x7fffffff => 'n/a',
+            OTHER => sub { shift },
+        },
+    },
     5 => { #52
         Name => 'AIServoFirstImage',
         PrintConv => {

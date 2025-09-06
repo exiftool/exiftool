@@ -1352,7 +1352,8 @@ sub SetNewValuesFromFile($$;@)
         # get all tags from source file (including MakerNotes block)
         $info = $srcExifTool->ImageInfo($srcFile);
     }
-    return $info if $$info{Error} and $$info{Error} eq 'Error opening file';
+    # (allow processing to continue if we have alternate files that may have been read OK)
+    return $info if $$info{Error} and $$info{Error} eq 'Error opening file' and not $$self{ALT_EXIFTOOL};
     delete $$srcExifTool{VALUE}{Error}; # delete so we can check this later
 
     # sort tags in file order with priority tags last

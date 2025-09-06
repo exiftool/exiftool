@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28636 tags, with 17834 unique tag names.
+They contain a total of 28650 tags, with 17839 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -11539,8 +11539,8 @@ file name combined with the hierarchical protobuf field numbers.
 ExifTool currently extracts timed GPS plus a few other tags from DJI devices
 which use the following protocols:  dvtm_AVATA2.proto (Avata 2),
 dvtm_ac203.proto (Osmo Action 4), dvtm_ac204.proto (Osmo Action 5),
-dvtm_wm265e.proto (Mavic 3), dvtm_pm320.proto (Matrice 30) and
-dvtm_pm320.proto (Mini 4 Pro).
+dvtm_wm265e.proto (Mavic 3), dvtm_pm320.proto (Matrice 30),
+dvtm_Mini4_Pro.proto (Mini 4 Pro) and dvtm_dji_neo.proto (DJI Neo).
 
 Note that with the protobuf format, numerical tags missing from the output
 for a given protocol should be considered to have the default value of 0.
@@ -11596,6 +11596,18 @@ for a given protocol should be considered to have the default value of 0.
   'dvtm_ac204_3-4-2-1'      GPSInfo             DJI GPSInfo
   'dvtm_ac204_3-4-2-2'      GPSAltitude         no
   'dvtm_ac204_3-4-2-6-1'    GPSDateTime         no
+  'dvtm_dji_neo_1-1-5'      SerialNumber        no
+  'dvtm_dji_neo_1-1-10'     Model               no
+  'dvtm_dji_neo_2-2-3-1'    SerialNumber2       no
+  'dvtm_dji_neo_2-3'        FrameInfo           DJI FrameInfo
+  'dvtm_dji_neo_3-1-2'      TimeStamp           no
+  'dvtm_dji_neo_3-2-2-1'    ISO                 no
+  'dvtm_dji_neo_3-2-4-1'    ShutterSpeed        no
+  'dvtm_dji_neo_3-2-6-1'    ColorTemperature    no
+  'dvtm_dji_neo_3-2-10-1'   FNumber             no
+  'dvtm_dji_neo_3-4-3'      DroneInfo           DJI DroneInfo
+  'dvtm_dji_neo_3-4-4-1'    GPSInfo             DJI GPSInfo
+  'dvtm_dji_neo_3-4-4-2'    AbsoluteAltitude    no
   'dvtm_pm320_1-1-5'        SerialNumber        no
   'dvtm_pm320_1-1-10'       Model               no
   'dvtm_pm320_2-2'          FrameInfo           DJI FrameInfo
@@ -12142,6 +12154,7 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1032   ExposureCount                        int16u
   0x1033   EXRAuto                              int16u
   0x1034   EXRMode                              int16u
+  0x1037   MultipleExposure                     int16u
   0x1040   ShadowTone                           int32s
   0x1041   HighlightTone                        int32s
   0x1044   DigitalZoom                          int32u
@@ -12159,9 +12172,13 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1053   CropSize                             int32u
   0x1100   AutoBracketing                       int16u
   0x1101   SequenceNumber                       int16u
+  0x1102   WhiteBalanceBracketing               int16u
   0x1103   DriveSettings                        FujiFilm DriveSettings
   0x1105   PixelShiftShots                      int16u
   0x1106   PixelShiftOffset                     rational64s[2]
+  0x1150   CompositeImageMode                   int32u
+  0x1151   CompositeImageCount1                 int16u
+  0x1152   CompositeImageCount2                 int16u
   0x1153   PanoramaAngle                        int16u
   0x1154   PanoramaDirection                    int16u
   0x1201   AdvancedFilter                       int32u
@@ -12353,14 +12370,15 @@ Tags found in the FujiIFD information of RAF images from some models.
 =head3 FujiFilm MRAW Tags
 
 Tags extracted from the M-RAW header of multi-image RAF files.  The family 1
-group name for these tags is "M-RAW".
+group name for these tags is "M-RAW".  Additional metadata may be extracted
+from the embedded RAW images with the ExtractEmbedded option.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  0x0001   RawImageNumber                       no
-  0x0005   ExposureTime                         no
-  0x0006   FNumber                              no
-  0x0007   ISO                                  no
+  0x2001   RawImageNumber                       no
+  0x2005   ExposureTime                         no
+  0x2006   FNumber                              no
+  0x2007   ISO                                  no
 
 =head3 FujiFilm FFMV Tags
 
@@ -20734,8 +20752,8 @@ Flash information tags for the K10D, K20D and K200D.
     543    FirstFrameActionInAFC                int8u
     544    ActionInAFCCont                      int8u
     545    AFCHold                              int8u & 0x03
-  545.1    AFCSensitivity                       int8u & 0x0c
-  545.2    AFCPointTracking                     int8u & 0x70
+  545.1    AFCPointTracking                     int8u & 0x0c
+  545.2    AFCSensitivity                       int8u & 0x70
    2400    SubjectRecognition                   int8u
 
 =head3 Pentax KelvinWB Tags
@@ -30526,7 +30544,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 110 different types of timed GPS metadata from video files.
+currently reads 111 different types of timed GPS metadata from video files.
 
   Tag ID                 Tag Name               Writable
   ------                 --------               --------

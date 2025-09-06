@@ -3350,13 +3350,14 @@ sub PrintLensID(@)
 #------------------------------------------------------------------------------
 # Convert XMP date/time to EXIF format
 # Inputs: 0) XMP date/time string, 1) set if we aren't sure this is a date
-# Returns: EXIF date/time
+# Returns: EXIF date/time, and flag in list context if this was a standard date/time value
 sub ConvertXMPDate($;$)
 {
     my ($val, $unsure) = @_;
     if ($val =~ /^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}:\d{2})(:\d{2})?\s*(\S*)$/) {
         my $s = $5 || '';           # seconds may be missing
         $val = "$1:$2:$3 $4$s$6";   # convert back to EXIF time format
+        return($val, 1) if wantarray;
     } elsif (not $unsure and $val =~ /^(\d{4})(-\d{2}){0,2}/) {
         $val =~ tr/-/:/;
     }
@@ -3647,7 +3648,12 @@ NoLoop:
         if (($new or $fmt eq 'rational') and ConvertRational($val)) {
             $rational = $rawVal;
         } else {
-            $val = ConvertXMPDate($val, $new) if $new or $fmt eq 'date';
+            my $stdDate;
+            ($val, $stdDate) = ConvertXMPDate($val, $new) if $new or $fmt eq 'date';
+            if ($stdDate and $added) {
+                $$tagInfo{Groups}{2} = 'Time';
+                $$tagInfo{PrintConv} = '$self->ConvertDateTime($val)';
+            }
         }
         if ($$et{XmpValidate} and $fmt and $fmt eq 'boolean' and $val!~/^True|False$/) {
             if ($val =~ /^true|false$/) {

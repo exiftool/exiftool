@@ -41,7 +41,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.89';
+$VERSION = '2.90';
 
 sub PrintLensInfo($$$);
 
@@ -117,6 +117,7 @@ my %olympusLensTypes = (
     '0 35 10' => 'Olympus M.Zuiko 100-400mm F5.0-6.3', #IB (also OM System M.Zuiko Digital ED 100-400mm F5.0-6.3 IS II", forum2833)
     '0 36 10' => 'Olympus M.Zuiko Digital ED 8-25mm F4 Pro', #IB
     '0 37 10' => 'Olympus M.Zuiko Digital ED 40-150mm F4.0 Pro', #forum3833
+    '0 38 10' => 'Olympus M.Zuiko Digital ED 20mm F1.4 Pro',
     '0 39 10' => 'Olympus M.Zuiko Digital ED 90mm F3.5 Macro IS Pro', #forum3833
     '0 40 10' => 'Olympus M.Zuiko Digital ED 150-600mm F5.0-6.3', #forum15652
     # Sigma lenses
@@ -2252,12 +2253,15 @@ my %indexInfo = (
             5 => 'i-Enhance', #11
             6 => 'e-Portrait', #23
             7 => 'Color Creator', #23
+            8 => 'Underwater', #7
             9 => 'Color Profile 1', #23
             10 => 'Color Profile 2', #23
             11 => 'Color Profile 3', #23
             12 => 'Monochrome Profile 1', #23
             13 => 'Monochrome Profile 2', #23
             14 => 'Monochrome Profile 3', #23
+            17 => 'Art Mode', #7
+            18 => 'Monochrome Profile 4', #7
             256 => 'Monotone',
             512 => 'Sepia',
         }],

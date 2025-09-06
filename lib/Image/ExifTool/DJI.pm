@@ -18,7 +18,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 use Image::ExifTool::Protobuf;
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 sub ProcessDJIInfo($$$);
 sub ProcessSettings($$$);
@@ -30,6 +30,8 @@ sub ProcessSettings($$$);
     'dvtm_wm265e.proto' => 1,   # Mavic 3
     'dvtm_pm320.proto' => 1,    # Matrice 30
     'dvtm_Mini4_Pro.proto' => 1,    # Matrice 30
+    'dvtm_Mini4_Pro.proto' => 1,    # Matrice 30
+    'dvtm_dji_neo.proto' => 1,  # Neo
 );
 
 my %convFloat2 = (
@@ -234,13 +236,14 @@ my %convFloat2 = (
         ExifTool currently extracts timed GPS plus a few other tags from DJI devices
         which use the following protocols:  dvtm_AVATA2.proto (Avata 2),
         dvtm_ac203.proto (Osmo Action 4), dvtm_ac204.proto (Osmo Action 5),
-        dvtm_wm265e.proto (Mavic 3), dvtm_pm320.proto (Matrice 30) and
-        dvtm_pm320.proto (Mini 4 Pro).
+        dvtm_wm265e.proto (Mavic 3), dvtm_pm320.proto (Matrice 30),
+        dvtm_Mini4_Pro.proto (Mini 4 Pro) and dvtm_dji_neo.proto (DJI Neo).
 
         Note that with the protobuf format, numerical tags missing from the output
         for a given protocol should be considered to have the default value of 0.
     },
     Protocol => {
+        Notes => "typically protobuf field 1-1-1, but ExifTool doesn't rely on this",
         RawConv => q{
             unless ($Image::ExifTool::DJI::knownProtocol{$val}) {
                 $self->Warn("Unknown protocol $val (please submit sample for testing)");
@@ -475,6 +478,53 @@ my %convFloat2 = (
         Name => 'GimbalInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::DJI::GimbalInfo' },
     },
+#
+# DJI Neo (very similar to AVATA2)
+#
+   # dvtm_dji_neo_1-1-2 - some version number
+   # dvtm_dji_neo_1-1-3 - some version number
+    'dvtm_dji_neo_1-1-5' => { Name => 'SerialNumber', Notes => 'DJI Neo' }, # (NC)
+    'dvtm_dji_neo_1-1-10' => 'Model',
+   # dvtm_dji_neo_2-2-1-4 - model code?
+   # dvtm_dji_neo_2-2-2-1 - some firmware version?
+   # dvtm_dji_neo_2-2-2-2 - some version number?
+    'dvtm_dji_neo_2-2-3-1' => 'SerialNumber2', # (NC)
+    'dvtm_dji_neo_2-3' => {
+        Name => 'FrameInfo', 
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::FrameInfo' },
+    },
+   # dvtm_dji_neo_3-1-1 - frame number (starting at 1)
+    'dvtm_dji_neo_3-1-2' => { # (also 3-2-1-6 and 3-4-1-6)
+        Name => 'TimeStamp',
+        Groups => { 2 => 'Time' },
+        Format => 'unsigned',
+        # milliseconds, but I don't know what the zero is
+        ValueConv => '$val / 1e6',
+    },
+   # dvtm_dji_neo_3-2-1-4 - model code?
+   # dvtm_dji_neo_3-2-1-5 - frame rate?
+    'dvtm_dji_neo_3-2-2-1' => { Name => 'ISO', Format => 'float' }, # (NC)
+    'dvtm_dji_neo_3-2-4-1' => {
+        Name => 'ShutterSpeed',
+        Format => 'rational',
+        PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
+    },
+    'dvtm_dji_neo_3-2-6-1' => { Name => 'ColorTemperature', Format => 'unsigned' }, # (NC)
+    'dvtm_dji_neo_3-2-10-1' => { # (NC)
+        Name => 'FNumber',
+        Format => 'rational',
+        PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
+    },
+   # dvtm_dji_neo_3-4-1-4 - model code?
+    'dvtm_dji_neo_3-4-3' => { # (NC)
+        Name => 'DroneInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::DroneInfo' },
+    },
+    'dvtm_dji_neo_3-4-4-1' => {
+        Name => 'GPSInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
+    },
+    'dvtm_dji_neo_3-4-4-2' => { Name => 'AbsoluteAltitude', Format => 'int64s', ValueConv => '$val / 1000' }, # (NC)
 );
 
 %Image::ExifTool::DJI::DroneInfo = (
@@ -502,6 +552,7 @@ my %convFloat2 = (
     1 => { Name => 'FrameWidth',  Format => 'unsigned' },
     2 => { Name => 'FrameHeight', Format => 'unsigned' },
     3 => { Name => 'FrameRate',   Format => 'float' },
+  # 4-8: seen these values respectively for DJI Neo: 1,8,4,1,4
 );
 
 %Image::ExifTool::DJI::GPSInfo = (

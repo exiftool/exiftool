@@ -1934,7 +1934,7 @@ my %sACDSeeRegionStruct = (
     BurstPrimary    => { },
     PortraitNote    => { },
     PortraitRequest => {
-        Notes => 'High Definition Render Pipeline (HDRP) data', #PH (guess)
+        Notes => 'HDRPlus (HDRP) data', #NealKrawetz
         ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
         ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
     },

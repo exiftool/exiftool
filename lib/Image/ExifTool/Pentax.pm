@@ -59,7 +59,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.55';
+$VERSION = '3.56';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -5120,52 +5120,52 @@ my %binaryDataAttrs = (
         PrintConv => { 0 => 'Off', 1 => 'Short', 2 => 'Medium', 3 => 'Long' },
     },
     0x021f => { #KG
-          Name => 'FirstFrameActionInAFC',
-          Condition => '$$self{Model} =~ /K-3 Mark III/',
-          PrintConv => {
-              '0'   => 'Auto',
-              '1'   => 'Release Priority',
-              '2'   => 'Focus Priority',
-              # there is at least another value '3' but I couldn't figure out the
-              # meaning. However, this occurs for a few AF-S captures, so it has
-              # no real practical meaning.
-          },
+        Name => 'FirstFrameActionInAFC',
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
+        PrintConv => {
+            '0'   => 'Auto',
+            '1'   => 'Release Priority',
+            '2'   => 'Focus Priority',
+            # there is at least another value '3' but I couldn't figure out the
+            # meaning. However, this occurs for a few AF-S captures, so it has
+            # no real practical meaning.
+        },
     },
     0x0220 => { #KG
-          Name => 'ActionInAFCCont',
-          Condition => '$$self{Model} =~ /K-3 Mark III/',
-          PrintConv => {
-              '0'   => 'Auto',
-              '1'   => 'Focus Priority',
-              '2'   => 'FPS Priority',
-          },
+        Name => 'ActionInAFCCont',
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
+        PrintConv => {
+            '0'   => 'Auto',
+            '1'   => 'Focus Priority',
+            '2'   => 'FPS Priority',
+        },
     },
     545 => { #KG
-          Name => 'AFCHold',
-          Condition => '$$self{Model} =~ /K-3 Mark III/',
-          Mask => 0x03,
-          PrintConv => { 0 => 'Low', 1 => 'Medium', 2 => 'High', 3 => 'Off' },
+        Name => 'AFCHold',
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
+        Mask => 0x03,
+        PrintConv => { 0 => 'Low', 1 => 'Medium', 2 => 'High', 3 => 'Off' },
     },
     545.1 => { #KG
-        Name => 'AFCSensitivity',
+        Name => 'AFCPointTracking',
         Condition => '$$self{Model} =~ /K-3 Mark III/',
         Mask => 0x0c,
+        PrintConv => { 0 => 'Type 1', 1 => 'Type 2', 2 => 'Type 3' },
+    },
+    545.2 => { #KG
+        Name => 'AFCSensitivity',
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
+        Mask => 0x70,
         PrintConv => '5 - $val',
         PrintConvInv => '5 - $val',
     },
-    545.2 => { #KG
-        Name => 'AFCPointTracking',
-        Condition => '$$self{Model} =~ /K-3 Mark III/',
-        Mask => 0x70,
-        PrintConv => { 0 => 'Type 1', 1 => 'Type 2', 2 => 'Type 3' },
-    },
     0x0960 => { #KG
-          Name => 'SubjectRecognition',
-          Condition => '$$self{Model} =~ /K-3 Mark III/',
-          PrintConv => {
-              0 => 'Off',
-              1 => 'On',
-          },
+        Name => 'SubjectRecognition',
+        Condition => '$$self{Model} =~ /K-3 Mark III/',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+        },
     },
 );
 

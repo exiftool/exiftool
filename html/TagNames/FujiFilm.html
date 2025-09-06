@@ -305,6 +305,14 @@ the date of manufacture)</span></span></td></tr>
   <br>0x200 = SN (Signal to Noise priority)
   <br>0x300 = DR (Dynamic Range priority)</span></td></tr>
 <tr class=b>
+<td title='0x1037 = 4151'>0x1037</td>
+<td>MultipleExposure</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Additive
+  <br>2 = Average
+  <br>3 = Light
+  <br>4 = Dark</span></td></tr>
+<tr>
 <td title='0x1040 = 4160'>0x1040</td>
 <td>ShadowTone</td>
 <td class=c>int32s</td>
@@ -317,7 +325,7 @@ the date of manufacture)</span></span></td></tr>
   <br>16 = -1 (medium soft)
   <br>32 = -2 (soft)</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x1041 = 4161'>0x1041</td>
 <td>HighlightTone</td>
 <td class=c>int32s</td>
@@ -330,49 +338,49 @@ the date of manufacture)</span></span></td></tr>
   <br>16 = -1 (medium soft)
   <br>32 = -2 (soft)</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x1044 = 4164'>0x1044</td>
 <td>DigitalZoom</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1045 = 4165'>0x1045</td>
 <td>LensModulationOptimizer</td>
 <td class=c>int32u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1047 = 4167'>0x1047</td>
 <td>GrainEffectRoughness</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Off
   <br>32 = Weak
   <br>64 = Strong</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1048 = 4168'>0x1048</td>
 <td>ColorChromeEffect</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Off
   <br>32 = Weak
   <br>64 = Strong</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1049 = 4169'>0x1049</td>
 <td>BWAdjustment</td>
 <td class=c>int8s</td>
 <td><span class=s><span class=n>(positive values are warm, negative values are cool)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x104b = 4171'>0x104b</td>
 <td>BWMagentaGreen</td>
 <td class=c>int8s</td>
 <td><span class=s><span class=n>(positive values are green, negative values are magenta)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x104c = 4172'>0x104c</td>
 <td>GrainEffectSize</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>16 = Small
   <br>32 = Large</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x104d = 4173'>0x104d</td>
 <td>CropMode</td>
 <td class=c>int16u</td>
@@ -381,14 +389,14 @@ the date of manufacture)</span></span></td></tr>
   <br>2 = Sports Finder Mode
   <br>4 = Electronic Shutter 1.25x Crop
   <br>8 = Digital Tele-Conv</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x104e = 4174'>0x104e</td>
 <td>ColorChromeFXBlue</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Off
   <br>32 = Weak
   <br>64 = Strong</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1050 = 4176'>0x1050</td>
 <td>ShutterType</td>
 <td class=c>int16u</td>
@@ -396,23 +404,23 @@ the date of manufacture)</span></span></td></tr>
   <br>1 = Electronic
   <br>2 = Electronic (long shutter speed)
   <br>3 = Electronic Front Curtain</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1051 = 4177'>0x1051</td>
 <td>CropFlag</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(this tag exists only if the image was cropped, and is 0 for cropped JPG
 image or 1 for a cropped RAF)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1052 = 4178'>0x1052</td>
 <td>CropTopLeft</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1053 = 4179'>0x1053</td>
 <td>CropSize</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1100 = 4352'>0x1100</td>
 <td>AutoBracketing</td>
 <td class=c>int16u</td>
@@ -425,11 +433,18 @@ image or 1 for a cropped RAF)</span></span></td></tr>
   <br>1 = On
   <br>2 = No flash &amp; flash
   <br>6 = Pixel Shift</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1101 = 4353'>0x1101</td>
 <td>SequenceNumber</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1102 = 4354'>0x1102</td>
+<td>WhiteBalanceBracketing</td>
+<td class=c>int16u</td>
+<td><span class=s>0x1ff = +/- 1
+  <br>0x2ff = +/- 2
+  <br>0x3ff = +/- 3</span></td></tr>
 <tr>
 <td title='0x1103 = 4355'>0x1103</td>
 <td>DriveSettings</td>
@@ -446,11 +461,33 @@ image or 1 for a cropped RAF)</span></span></td></tr>
 <td class=c>rational64s[2]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x1150 = 4432'>0x1150</td>
+<td>CompositeImageMode</td>
+<td class=c>int32u</td>
+<td><table class=cols><tr>
+  <td>0 = n/a
+  <br>1 = Pro Low-light
+  <br>2 = Pro Focus</td><td>&nbsp;&nbsp;</td>
+  <td>32 = Panorama
+  <br>128 = HDR
+  <br>1024 = Multi-exposure</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x1151 = 4433'>0x1151</td>
+<td>CompositeImageCount1</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1152 = 4434'>0x1152</td>
+<td>CompositeImageCount2</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x1153 = 4435'>0x1153</td>
 <td>PanoramaAngle</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1154 = 4436'>0x1154</td>
 <td>PanoramaDirection</td>
 <td class=c>int16u</td>
@@ -458,7 +495,7 @@ image or 1 for a cropped RAF)</span></span></td></tr>
   <br>2 = Up
   <br>3 = Left
   <br>4 = Down</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1201 = 4609'>0x1201</td>
 <td>AdvancedFilter</td>
 <td class=c>int32u</td>
@@ -481,43 +518,43 @@ image or 1 for a cropped RAF)</span></span></td></tr>
   <br>0x130001 = Expired Film Red
   <br>0x130002 = Expired Film Neutral</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x1210 = 4624'>0x1210</td>
 <td>ColorMode</td>
 <td class=c>int16u</td>
 <td><span class=s>0x0 = Standard
   <br>0x10 = Chrome
   <br>0x30 = B &amp; W</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1300 = 4864'>0x1300</td>
 <td>BlurWarning</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = None
   <br>1 = Blur Warning</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1301 = 4865'>0x1301</td>
 <td>FocusWarning</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Good
   <br>1 = Out of focus</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1302 = 4866'>0x1302</td>
 <td>ExposureWarning</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Good
   <br>1 = Bad exposure</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1304 = 4868'>0x1304</td>
 <td>GEImageSize</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(GE models only)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1400 = 5120'>0x1400</td>
 <td>DynamicRange</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = Standard
   <br>3 = Wide</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1401 = 5121'>0x1401</td>
 <td>FilmMode</td>
 <td class=c>int16u</td>
@@ -537,7 +574,7 @@ image or 1 for a cropped RAF)</span></span></td></tr>
   <br>0x900 = Bleach Bypass
   <br>0xa00 = Nostalgic Neg
   <br>0xb00 = Reala ACE</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1402 = 5122'>0x1402</td>
 <td>DynamicRangeSetting</td>
 <td class=c>int16u</td>
@@ -549,37 +586,37 @@ image or 1 for a cropped RAF)</span></span></td></tr>
   <br>0x201 = Wide2 (400%)
   <br>0x8000 = Film Simulation</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x1403 = 5123'>0x1403</td>
 <td>DevelopmentDynamicRange</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1404 = 5124'>0x1404</td>
 <td>MinFocalLength</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1405 = 5125'>0x1405</td>
 <td>MaxFocalLength</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1406 = 5126'>0x1406</td>
 <td>MaxApertureAtMinFocal</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1407 = 5127'>0x1407</td>
 <td>MaxApertureAtMaxFocal</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x140b = 5131'>0x140b</td>
 <td>AutoDynamicRange</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1422 = 5154'>0x1422</td>
 <td>ImageStabilization</td>
 <td class=c>int16u[3]</td>
@@ -594,7 +631,7 @@ image or 1 for a cropped RAF)</span></span></td></tr>
   <br>0 = Off
   <br>1 = On (mode 1, continuous)
   <br>2 = On (mode 2, shooting only)</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1425 = 5157'>0x1425</td>
 <td>SceneRecognition</td>
 <td class=c>int16u</td>
@@ -607,77 +644,77 @@ image or 1 for a cropped RAF)</span></span></td></tr>
   <br>0x300 = Night Scene
   <br>0x400 = Macro</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x1431 = 5169'>0x1431</td>
 <td>Rating</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1436 = 5174'>0x1436</td>
 <td>ImageGeneration</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Original Image
   <br>1 = Re-developed from RAW</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1438 = 5176'>0x1438</td>
 <td>ImageCount</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(may reset to 0 when new firmware is installed)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1443 = 5187'>0x1443</td>
 <td>DRangePriority</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Auto
   <br>1 = Fixed</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1444 = 5188'>0x1444</td>
 <td>DRangePriorityAuto</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = Weak
   <br>2 = Strong
   <br>3 = Plus</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1445 = 5189'>0x1445</td>
 <td>DRangePriorityFixed</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = Weak
   <br>2 = Strong</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1446 = 5190'>0x1446</td>
 <td>FlickerReduction</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1447 = 5191'>0x1447</td>
 <td>FujiModel</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1448 = 5192'>0x1448</td>
 <td>FujiModel2</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x144a = 5194'>0x144a</td>
 <td>WBRed</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x144b = 5195'>0x144b</td>
 <td>WBGreen</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x144c = 5196'>0x144c</td>
 <td>WBBlue</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x144d = 5197'>0x144d</td>
 <td>RollAngle</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x3803 = 14339'>0x3803</td>
 <td>VideoRecordingMode</td>
 <td class=c>int32u</td>
@@ -685,61 +722,61 @@ image or 1 for a cropped RAF)</span></span></td></tr>
   <br>0x10 = F-log
   <br>0x20 = HLG
   <br>0x30 = F-log2</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x3804 = 14340'>0x3804</td>
 <td>PeripheralLighting</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x3806 = 14342'>0x3806</td>
 <td>VideoCompression</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = Log GOP
   <br>2 = All Intra</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x3820 = 14368'>0x3820</td>
 <td>FrameRate</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x3821 = 14369'>0x3821</td>
 <td>FrameWidth</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x3822 = 14370'>0x3822</td>
 <td>FrameHeight</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x3824 = 14372'>0x3824</td>
 <td>FullHDHighSpeedRec</td>
 <td class=c>int32u</td>
 <td><span class=s>1 = Off
   <br>2 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x4005 = 16389'>0x4005</td>
 <td>FaceElementSelected</td>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x4100 = 16640'>0x4100</td>
 <td>FacesDetected</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x4103 = 16643'>0x4103</td>
 <td>FacePositions</td>
 <td class=c>int16u[n]</td>
 <td><span class=s><span class=n>(left, top, right and bottom coordinates in full-sized image for each face
 detected)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x4200 = 16896'>0x4200</td>
 <td>NumFaceElements</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x4201 = 16897'>0x4201</td>
 <td>FaceElementTypes</td>
 <td class=c>int8u[n]</td>
@@ -768,33 +805,33 @@ detected)</span></span></td></tr>
   <br>28 = Animal Head (28)
   <br>29 = Animal Body (29)</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x4203 = 16899'>0x4203</td>
 <td>FaceElementPositions</td>
 <td class=c>int16u[n]</td>
 <td><span class=s><span class=n>(left, top, right and bottom coordinates in full-sized image for each face
 element)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x4282 = 17026'>0x4282</td>
 <td>FaceRecInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='FujiFilm.html#FaceRecInfo'>FujiFilm FaceRecInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x8000 = 32768'>0x8000</td>
 <td>FileSource</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x8002 = 32770'>0x8002</td>
 <td>OrderNumber</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x8003 = 32771'>0x8003</td>
 <td>FrameNumber</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xb211 = 45585'>0xb211</td>
 <td>Parallax</td>
 <td class=c>rational64s</td>
@@ -1299,29 +1336,30 @@ RAF-format information.</p>
 
 <h2><a name='MRAW'>FujiFilm MRAW Tags</a></h2>
 <p>Tags extracted from the M-RAW header of multi-image RAF files.  The family 1
-group name for these tags is &quot;M-RAW&quot;.</p>
+group name for these tags is &quot;M-RAW&quot;.  Additional metadata may be extracted
+from the embedded RAW images with the ExtractEmbedded option.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td title='0x0001 = 1'>0x0001</td>
+<td title='0x2001 = 8193'>0x2001</td>
 <td>RawImageNumber</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td title='0x0005 = 5'>0x0005</td>
+<td title='0x2005 = 8197'>0x2005</td>
 <td>ExposureTime</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td title='0x0006 = 6'>0x0006</td>
+<td title='0x2006 = 8198'>0x2006</td>
 <td>FNumber</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td title='0x0007 = 7'>0x0007</td>
+<td title='0x2007 = 8199'>0x2007</td>
 <td>ISO</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
@@ -1377,7 +1415,7 @@ group name for these tags is &quot;M-RAW&quot;.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 23, 2025</i>
+<br><i>Last revised Sep 6, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

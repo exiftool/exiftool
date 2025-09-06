@@ -441,8 +441,8 @@ file name combined with the hierarchical protobuf field numbers.</p>
 <p>ExifTool currently extracts timed GPS plus a few other tags from DJI devices
 which use the following protocols:  dvtm_AVATA2.proto (Avata 2),
 dvtm_ac203.proto (Osmo Action 4), dvtm_ac204.proto (Osmo Action 5),
-dvtm_wm265e.proto (Mavic 3), dvtm_pm320.proto (Matrice 30) and
-dvtm_pm320.proto (Mini 4 Pro).</p>
+dvtm_wm265e.proto (Mavic 3), dvtm_pm320.proto (Matrice 30),
+dvtm_Mini4_Pro.proto (Mini 4 Pro) and dvtm_dji_neo.proto (DJI Neo).</p>
 
 <p>Note that with the protobuf format, numerical tags missing from the output
 for a given protocol should be considered to have the default value of 0.</p>
@@ -455,7 +455,7 @@ for a given protocol should be considered to have the default value of 0.</p>
 <td>'Protocol'</td>
 <td>Protocol</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(typically protobuf field 1-1-1, but ExifTool doesn&#39;t rely on this)</span></span></td></tr>
 <tr class=b>
 <td>'dvtm_AVATA2_1-1-5'</td>
 <td>SerialNumber</td>
@@ -694,6 +694,66 @@ for a given protocol should be considered to have the default value of 0.</p>
 <tr>
 <td>'dvtm_ac204_3-4-2-6-1'</td>
 <td>GPSDateTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_dji_neo_1-1-5'</td>
+<td>SerialNumber</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(DJI Neo)</span></span></td></tr>
+<tr>
+<td>'dvtm_dji_neo_1-1-10'</td>
+<td>Model</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_dji_neo_2-2-3-1'</td>
+<td>SerialNumber2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_dji_neo_2-3'</td>
+<td>FrameInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#FrameInfo'>DJI FrameInfo Tags</a></td></tr>
+<tr class=b>
+<td>'dvtm_dji_neo_3-1-2'</td>
+<td>TimeStamp</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_dji_neo_3-2-2-1'</td>
+<td>ISO</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_dji_neo_3-2-4-1'</td>
+<td>ShutterSpeed</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_dji_neo_3-2-6-1'</td>
+<td>ColorTemperature</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dvtm_dji_neo_3-2-10-1'</td>
+<td>FNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'dvtm_dji_neo_3-4-3'</td>
+<td>DroneInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#DroneInfo'>DJI DroneInfo Tags</a></td></tr>
+<tr class=b>
+<td>'dvtm_dji_neo_3-4-4-1'</td>
+<td>GPSInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DJI.html#GPSInfo'>DJI GPSInfo Tags</a></td></tr>
+<tr>
+<td>'dvtm_dji_neo_3-4-4-2'</td>
+<td>AbsoluteAltitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -991,7 +1051,7 @@ for a given protocol should be considered to have the default value of 0.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 24, 2025</i>
+<br><i>Last revised Sep 4, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

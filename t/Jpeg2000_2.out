@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.35
 [File, System, Other] FileName - File Name: Jpeg2000.jp2
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 2.0 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2016:10:10 15:46:32-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:39-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:10:31 20:34:50-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2025:08:18 13:45:57-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:08:18 13:44:29-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JP2
 [File, File, Other] FileTypeExtension - File Type Extension: jp2
@@ -46,7 +46,7 @@
 [GeoTiff, GeoTiff, Location] 3076 - Proj Linear Units: Linear Meter
 [XML, XML, Unknown] imageCreationXmlns - Image Creation Xmlns: http://www.jpeg.org/jpx/1.0/xml
 [XML, XML-xsi, Unknown] xsi:imageCreationSchemaLocation - Image Creation Schema Location: http://www.jpeg.org/jpx/1.0/xml;http://www.jpeg.org/metadata/15444-2.xsd
-[XML, XML, Unknown] imageCreationGeneralCreationInfoCreationTime - Image Creation General Creation Info Creation Time: 2001:08:01 15:40:00.000-06:00
+[XML, XML, Time] imageCreationGeneralCreationInfoCreationTime - Image Creation General Creation Info Creation Time: 2001:08:01 15:40:00.000-06:00
 [XML, XML, Unknown] contentDescriptionXmlns - Content Description Xmlns: http://www.jpeg.org/jpx/1.0/xml
 [XML, XML-xsi, Unknown] xsi:contentDescriptionSchemaLocation - Content Description Schema Location: http://www.jpeg.org/jpx/1.0/xml;http://www.jpeg.org/metadata/15444-2.xsd
 [XML, XML, Unknown] contentDescriptionCaption - Content Description Caption: Wide Dynamic Range Scene

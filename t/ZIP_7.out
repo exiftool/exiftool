@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.35
 [File, System, Other] FileName - File Name: OpenDoc.ods
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 7.0 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2010:05:13 10:39:54-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:17:00-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:10:31 20:34:50-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2010:05:13 10:39:54-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:08:18 13:44:29-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: ODS
 [File, File, Other] FileTypeExtension - File Type Extension: ods
@@ -12,7 +12,7 @@
 [File, File, Preview] PreviewPNG - Preview PNG: (Binary data 697 bytes)
 [XMP, XMP-grddl, Unknown] grddl:transformation - Transformation: http://docs.oasis-open.org/office/1.2/xslt/odf2rdf.xsl
 [XMP, XMP-meta, Unknown] meta:initial-creator - Initial-creator: IDHW IDHW Informatica
-[XMP, XMP-meta, Unknown] meta:creation-date - Creation-date: 2010:04:19 11:16:49.13
+[XMP, XMP-meta, Time] meta:creation-date - Creation-date: 2010:04:19 11:16:49.13
 [XMP, XMP-dc, Image] title - Title: test
 [XMP, XMP-dc, Image] subject - Subject: test
 [XMP, XMP-dc, Image] description - Description: test

@@ -643,8 +643,8 @@ my %faceCategories = (
         Writable => 'int16u',
         PrintConv => {
             1 => 'Right',
-            2 => 'Up',
-            3 => 'Left',
+            2 => 'Up', # (or Left?, forum17591)
+            3 => 'Left', # (or Up?, forum17591)
             4 => 'Down',
         },
     },

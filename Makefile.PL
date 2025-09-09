@@ -46,6 +46,7 @@ WriteMakefile(
             },
         } ) : ()),
     clean         => { FILES => 't/*.tmp' },
+    dist          => { TAR => 'gtar' },
     EXE_FILES     => [ 'exiftool' ],
     ($] >= 5.005 ?
         (ABSTRACT_FROM => $ExifTool_pod,

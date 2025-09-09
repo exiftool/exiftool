@@ -30,7 +30,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.71';
+$VERSION = '1.72';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -2031,6 +2031,7 @@ sub ProcessRIFF($$)
     my $validate = $et->Options('Validate');
     my $ee = $et->Options('ExtractEmbedded');
     my $hash = $$et{ImageDataHash};
+    my $base = 0;
 
     # verify this is a valid RIFF file
     return 0 unless $raf->Read($buff, 12) == 12;
@@ -2042,7 +2043,8 @@ sub ProcessRIFF($$)
         return 0 unless $buff =~ /^(LA0[234]|OFR |LPAC|wvpk)/ and $raf->Read($buf2, 1024);
         $type = $riffType{$1};
         $buff .= $buf2;
-        return 0 unless $buff =~ /WAVE(.{4})?fmt /sg and $raf->Seek(pos($buff) - 4, 0);
+        return 0 unless $buff =~ /WAVE(.{4})?(junk|fmt )/sg and $raf->Seek(pos($buff) - 4, 0);
+        $base = pos($buff) - 16;
     }
     $$raf{NoBuffer} = 1 if $et->Options('FastScan'); # disable buffering in FastScan mode
     $mime = $riffMimeType{$type} if $type;
@@ -2159,7 +2161,7 @@ sub ProcessRIFF($$)
                 DataPos => 0,   # (relative to Base)
                 Start   => 0,
                 Size    => $len,
-                Base    => $pos,
+                Base    => $pos + $base,
             );
             if ($setGroups) {
                 delete $$et{SET_GROUP0};

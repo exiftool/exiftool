@@ -4,8 +4,16 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 13.35. (Other versions are
+Note: The most recent production release is Version 13.36. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Sept. 9, 2025 - Version 13.36 (production release)
+
+  - Added a new Nikon LensID (thanks Max, github #345)
+  - Added new Sony and Pentax camera ID's (thanks Hubert Figuiere, github #347)
+  - Tolerate 'junk' after 'WAVE' chunk in LA, PAC, OFR and WV audio files
+  - Use gnu tar 1.35 to build the .tar.gz distribution package (versions
+    13.31-13.35 used bsdtar 3.5.3, and earlier versions used bsdtar 2.8.3)
 
 Sept. 6, 2025 - Version 13.35 (production release)
 

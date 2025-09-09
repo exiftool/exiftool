@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.50';
+$VERSION = '4.51';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -583,6 +583,7 @@ sub GetAFPointGrid($$;$);
     '0E 4A 31 48 23 2D 0E 02' => 'Tamron SP AF 20-40mm f/2.7-3.5 (166D)',
     'FE 48 37 5C 24 24 DF 0E' => 'Tamron SP 24-70mm f/2.8 Di VC USD (A007)', #24
     'CE 47 37 5C 25 25 DF 4E' => 'Tamron SP 24-70mm f/2.8 Di VC USD G2 (A032)', #forum9110
+    'CE 00 37 5C 25 25 DF 4E' => 'Tamron SP 24-70mm f/2.8 Di VC USD G2 (A032)', #github345
     '45 41 37 72 2C 3C 48 02' => 'Tamron SP AF 24-135mm f/3.5-5.6 AD Aspherical (IF) Macro (190D)',
     '33 54 3C 5E 24 24 62 02' => 'Tamron SP AF 28-75mm f/2.8 XR Di LD Aspherical (IF) Macro (A09)',
     'FA 54 3C 5E 24 24 84 06' => 'Tamron SP AF 28-75mm f/2.8 XR Di LD Aspherical (IF) Macro (A09NII)', #JD

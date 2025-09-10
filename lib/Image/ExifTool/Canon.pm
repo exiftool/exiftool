@@ -640,6 +640,7 @@ $VERSION = '4.96';
    '61182.62' => 'Canon RF 50mm F1.4 L VCM', #42
    '61182.63' => 'Canon RF 24mm F1.4 L VCM', #42
    '61182.64' => 'Canon RF 20mm F1.4 L VCM', #42
+   '61182.65' => 'Canon RF 85mm F1.4 L VCM',
     65535 => 'n/a',
 );
 
@@ -892,6 +893,7 @@ $VERSION = '4.96';
 
 # (see http://cweb.canon.jp/e-support/faq/answer/digitalcamera/10447-1.html for PowerShot/IXUS/IXY names)
 
+    0x40000227 => 'EOS C50',
     0x4007d673 => 'DC19/DC21/DC22',
     0x4007d674 => 'XH A1',
     0x4007d675 => 'HV10',
@@ -7048,6 +7050,7 @@ my %ciMaxFocal = (
             325 => 'Canon RF 50mm F1.4 L VCM', #42
             326 => 'Canon RF 24mm F1.4 L VCM', #42
             327 => 'Canon RF 20mm F1.4 L VCM', #42
+            328 => 'Canon RF 85mm F1.4 L VCM',
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },
     },

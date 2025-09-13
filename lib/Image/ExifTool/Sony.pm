@@ -319,9 +319,13 @@ sub PrintInvLensSpec($;$$);
     50549 => 'Sigma 50mm F1.2 DG DN | A', #JR (024)
     50550 => 'Sigma 28-105mm F2.8 DG DN | A', #JR (024)
     50551 => 'Sigma 28-45mm F1.8 DG DN | A', #JR (024)
+    50552 => 'Sigma 35mm F1.2 DG II | A', # (025)',
     50553 => 'Sigma 300-600mm F4 DG OS | S', #JR (025)
     50554 => 'Sigma 16-300mm F3.5-6.7 DC OS | C', #JR (025)
     50556 => 'Sigma 17-40mm F1.8 DC | C', #JR (025)
+    50557 => 'Sigma 200mm F2 DG OS | S', # (025)
+    50558 => 'Sigma 20-200mm F3.5-6.3 DG | C', # (025)
+    50559 => 'Sigma 135mm F1.4 DG | A', # (025)
 
     # lenses listed in the Sigma MC-11 list, but not yet seen:
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)

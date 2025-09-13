@@ -562,6 +562,7 @@ $VERSION = '4.96';
     4160 => 'Canon EF-S 35mm f/2.8 Macro IS STM', #42
     4208 => 'Sigma 56mm f/1.4 DC DN | C or other Sigma Lens', #forum10603
     4208.1 => 'Sigma 30mm F1.4 DC DN | C', #git issue#83 (016)
+    6512 => 'Sigma 12mm F1.4 DC | C', # (025)
     # (Nano USM lenses - 0x90xx)
     36910 => 'Canon EF 70-300mm f/4-5.6 IS II USM', #42
     36912 => 'Canon EF-S 18-135mm f/3.5-5.6 IS USM', #42

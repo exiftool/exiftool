@@ -322,7 +322,7 @@ sub PrintInvLensSpec($;$$);
     50552 => 'Sigma 35mm F1.2 DG II | A', # (025)',
     50553 => 'Sigma 300-600mm F4 DG OS | S', #JR (025)
     50554 => 'Sigma 16-300mm F3.5-6.7 DC OS | C', #JR (025)
-    50556 => 'Sigma 17-40mm F1.8 DC | C', #JR (025)
+    50556 => 'Sigma 17-40mm F1.8 DC | A', #JR (025)
     50557 => 'Sigma 200mm F2 DG OS | S', # (025)
     50558 => 'Sigma 20-200mm F3.5-6.3 DG | C', # (025)
     50559 => 'Sigma 135mm F1.4 DG | A', # (025)

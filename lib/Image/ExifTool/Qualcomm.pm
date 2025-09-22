@@ -28,7 +28,7 @@ my @qualcommFormat = (
 %Image::ExifTool::Qualcomm::Main = (
     PROCESS_PROC => \&ProcessQualcomm,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    VARS => { NO_ID => 1, NO_LOOKUP => 1 }, # too long, too many, and too obscure
+    VARS => { ID_FMT => 'none', NO_LOOKUP => 1 }, # too long, too many, and too obscure
     NOTES => q{
         The tags below have been observed in the JPEG APP7 "Qualcomm Camera
         Attributes" segment written by some cameras such as the HP iPAQ Voice
@@ -1228,7 +1228,7 @@ my @qualcommFormat = (
 %Image::ExifTool::Qualcomm::DualCamera = (
     PROCESS_PROC => \&ProcessDualCamera,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    VARS => { NO_ID => 1, NO_LOOKUP => 1 }, # too long, too many, and too obscure
+    VARS => { ID_FMT => 'none', NO_LOOKUP => 1 }, # too long, too many, and too obscure
     NOTES => q{
         Found in JPEG APP4 "Qualcomm Dual Camera Attributes" written by some Nokia
         phones.

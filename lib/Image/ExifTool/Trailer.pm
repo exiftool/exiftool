@@ -16,7 +16,7 @@ $VERSION = '1.01';
 
 %Image::ExifTool::Trailer::Vivo = (
     GROUPS => { 0 => 'Trailer', 1 => 'Vivo', 2 => 'Image' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => 'Information written in JPEG trailer by some Vivo phones.',
     # (don't know for sure what type of image this is, but it is in JPEG format)
     HDRImage => {

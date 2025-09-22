@@ -17,6 +17,32 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.37'><b>Sept. 22, 2025 - Version 13.37</b></a>
+<ul>
+<li>Added support for geotagging from Columbus GPS logger CSV files
+<li>Added some new Canon, Sony and Olympus lenses (thanks Hubert Figui&egrave;re,
+    <a href="https://github.com/exiftool/exiftool/issues/352">github #352</a> and Jos Roost)
+<li>Added new Canon RFLensType and CanonModelID values (thanks Norbert Wasser
+    and Hubert Figui&egrave;re, <a href="https://github.com/exiftool/exiftool/issues/350">github #350</a>)
+<li>Added a new FujiFilm FaceElementType value
+<li>Decode Reconyx MicroFire and Hyperfire 4K maker notes (thanks Reconyx)
+<li>Decode a number of new Canon and Pentax tags and add a number of new values
+    (thanks Karsten Gieselmann)
+<li>Decode maker notes from Ricoh GR III videos
+<li>Decode a new Sony tag (thanks Jos Roost)
+<li>Decode Google HDRP maker notes
+<li>Raised size limit on QuickTime atoms extracted for the -ee option, and added
+    a minor warning and allow bypassing with the -m option if over this limit
+<li>Minor change to verbose output for XMP metadata
+<li>Fixed possible hang/crash when reading Windows executables (<a href="https://github.com/exiftool/exiftool/issues/351">github #351</a>)
+<li>Fixed incorrect FujiFilm PanoramaDirection values
+<li>API Changes:
+    <ul>
+    <li>Fixed <a href="ExifTool.html#GeoDir">GeoDir</a> option so alternate languages are loaded properly when a
+        relative path is used
+    </ul>
+</ul>
+
 <a name='v13.36'><b>Sept. 9, 2025 - Version 13.36</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added a new Nikon LensID (thanks Max, <a href="https://github.com/exiftool/exiftool/issues/345">github #345</a>)

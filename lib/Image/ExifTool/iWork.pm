@@ -48,7 +48,7 @@ my %mimeType = (
 %Image::ExifTool::iWork::Main = (
     GROUPS => { 0 => 'XML', 1 => 'XML', 2 => 'Document' },
     PROCESS_PROC => \&Image::ExifTool::XMP::ProcessXMP,
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         The Apple iWork '09 file format is a ZIP archive containing XML files
         similar to the Office Open XML (OOXML) format.  Metadata tags in iWork

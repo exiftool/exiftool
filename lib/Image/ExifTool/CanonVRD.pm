@@ -1004,7 +1004,7 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     WRITABLE => 1,
     PERMANENT => 1, # (can't add/delete these individually)
     GROUPS => { 1 => 'CanonDR4', 2 => 'Image' },
-    VARS => { HEX_ID => 1, SORT_PROC => \&SortDR4 },
+    VARS => { ID_FMT => 'hex', SORT_PROC => \&SortDR4 },
     NOTES => q{
         Tags written by Canon DPP version 4 in CanonVRD trailers and DR4 files. Each
         tag has three associated flag words which are stored with the directory

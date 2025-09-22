@@ -123,7 +123,7 @@ my @dvTags = (
 # DV tags
 %Image::ExifTool::DV::Main = (
     GROUPS => { 2 => 'Video' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => 'The following tags are extracted from DV videos.',
     DateTimeOriginal => {
         Description => 'Date/Time Original',

@@ -19,7 +19,7 @@ $VERSION = '1.05';
 
 # Text tags
 %Image::ExifTool::Text::Main = (
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     GROUPS => { 0 => 'File', 1 => 'File', 2 => 'Document' },
     NOTES => q{
         Although basic text files contain no metadata, the following tags are

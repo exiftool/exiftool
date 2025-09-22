@@ -52,7 +52,7 @@ my %delXAttr = (
 # "mdls" tags (ref PH)
 %Image::ExifTool::MacOS::MDItem = (
     WRITE_PROC => \&Image::ExifTool::DummyWriteProc,
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     GROUPS => { 0 => 'File', 1 => 'MacOS', 2 => 'Other' },
     NOTES => q{
         MDItem tags are extracted using the "mdls" utility.  They are extracted if
@@ -245,7 +245,7 @@ my %delXAttr = (
 %Image::ExifTool::MacOS::XAttr = (
     WRITE_PROC => \&Image::ExifTool::DummyWriteProc,
     GROUPS => { 0 => 'File', 1 => 'MacOS', 2 => 'Other' },
-    VARS => { NO_ID => 1 }, # (id's are too long)
+    VARS => { ID_FMT => 'none' }, # (id's are too long)
     NOTES => q{
         XAttr tags are extracted using the "xattr" utility.  They are extracted if
         any "XAttr*" tag or the MacOS group is specifically requested, or by setting

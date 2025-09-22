@@ -36,7 +36,7 @@ my %flifMap = (
 # FLIF tags
 %Image::ExifTool::FLIF::Main = (
     GROUPS => { 0 => 'File', 1 => 'File', 2 => 'Image' },
-    VARS => { HEX_ID => 0 },
+    VARS => { ID_FMT => 'dec' },
     NOTES => q{
         Information extracted from Free Lossless Image Format files.  See
         L<http://flif.info/> for more information.

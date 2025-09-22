@@ -16,6 +16,9 @@
 #                               under ActivePerl
 #               2024-04-29 - PH Added feature types and default to db v1.03
 #               2024-06-13 - PH Tweaked case of imported feature types
+#               2025-09-11 - PH Changed priority of alternate-language names to
+#                               use the preferred name if available and fixed
+#                               flag counts in verbose output
 #
 # Notes:        Requires these files from https://download.geonames.org/export/
 #
@@ -564,7 +567,8 @@ if (not $noLang and open INFILE, '<', "$dbdir/$altNamesFile") {
         $items[$_] and $flags |= (1<<($_-4)) foreach 4,5,6,7;
         $flags{$items[1]} = ( $flags{$items[1]} || 0 ) | $flags;
         next if $items[6] or $items[7]; # ignore colloquial and historic names
-        my $pri = $items[5] ? 0 : ($items[4] ? 1 : 2); # priority for best type of name
+        # give more weight to preferred name and less weight to short name
+        my $pri = ($items[4] ? 2 : 0) + ($items[5] ? 0 : 1);
         my $langPri = $bestPri{$lng};
         $langPri or $langPri = $bestPri{$lng} = { };
         next if $$langPri{$items[1]} and $$langPri{$items[1]} > $pri;
@@ -930,9 +934,9 @@ if ($noLang) {
             print "$type flags:\n";
             printf("  0x%.2x - %d\n", 0, $$flags{0} || 0);
             my @label = qw(preferred short colloquial historic);
-            foreach my $bit (0..5) {
+            foreach my $bit (0..3) {
                 my $n = 0;
-                $_ & (1<<$bit) and ++$n foreach keys %$flags;
+                $_ & (1<<$bit) and $n += $$flags{$_} foreach keys %$flags;
                 printf("  0x%.2x - %d (%s)\n", (1<<$bit), $n, shift(@label)) if $n;
             }
         }

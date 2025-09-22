@@ -814,6 +814,7 @@
 </tr><tr><td class=r>0x4170000</td><td>= PowerShot SX730 HS</td>
 </tr><tr><td class=r>0x4180000</td><td>= PowerShot G1 X Mark III</td>
 </tr><tr><td class=r>0x6040000</td><td>= PowerShot S100 / Digital IXUS / IXY Digital</td>
+</tr><tr><td class=r>0x40000227</td><td>= EOS C50</td>
 </tr><tr><td class=r>0x4007d673</td><td>= DC19/DC21/DC22</td>
 </tr><tr><td class=r>0x4007d674</td><td>= XH A1</td>
 </tr><tr><td class=r>0x4007d675</td><td>= HV10</td>
@@ -1875,6 +1876,7 @@ others use a range of 0 to 7 where 0 is no sharpening)</span></span></td></tr>
 </tr><tr><td>4160</td><td>= Canon EF-S 35mm f/2.8 Macro IS STM</td>
 </tr><tr><td>4208</td><td>= Sigma 56mm f/1.4 DC DN | C or other Sigma Lens</td>
 </tr><tr><td>4208</td><td>= Sigma 30mm F1.4 DC DN | C</td>
+</tr><tr><td>6512</td><td>= Sigma 12mm F1.4 DC | C</td>
 </tr><tr><td>36910</td><td>= Canon EF 70-300mm f/4-5.6 IS II USM</td>
 </tr><tr><td>36912</td><td>= Canon EF-S 18-135mm f/3.5-5.6 IS USM</td>
 </tr><tr><td>61182</td><td>= Canon RF 50mm F1.2L USM or other Canon RF Lens</td>
@@ -1942,6 +1944,7 @@ others use a range of 0 to 7 where 0 is no sharpening)</span></span></td></tr>
 </tr><tr><td>61182</td><td>= Canon RF 50mm F1.4 L VCM</td>
 </tr><tr><td>61182</td><td>= Canon RF 24mm F1.4 L VCM</td>
 </tr><tr><td>61182</td><td>= Canon RF 20mm F1.4 L VCM</td>
+</tr><tr><td>61182</td><td>= Canon RF 85mm F1.4 L VCM</td>
 </tr><tr><td>61491</td><td>= Canon CN-E 14mm T3.1 L F</td>
 </tr><tr><td>61492</td><td>= Canon CN-E 24mm T1.5 L F</td>
 </tr><tr><td>61494</td><td>= Canon CN-E 85mm T1.3 L F</td>
@@ -6749,7 +6752,8 @@ valid for all camera models)</span></span></td></tr>
   <br>324 = Canon RF-S 14-30mm F4-6.3 IS STM PZ
   <br>325 = Canon RF 50mm F1.4 L VCM
   <br>326 = Canon RF 24mm F1.4 L VCM
-  <br>327 = Canon RF 20mm F1.4 L VCM</span></td></tr>
+  <br>327 = Canon RF 20mm F1.4 L VCM
+  <br>328 = Canon RF 85mm F1.4 L VCM</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='SerialInfo'>Canon SerialInfo Tags</a></h2>
@@ -11879,17 +11883,20 @@ to the one printed on the lens)</span></span></td></tr>
 <td class=r title='1 = 0x1'>1</td>
 <td>AFConfigTool</td>
 <td class=c>int32s</td>
-<td><span class=s>0x80000000 = n/a</span></td></tr>
+<td><span class=s>0xb = Case A
+  <br>0x80000000 = n/a</span></td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>AFTrackingSensitivity</td>
 <td class=c>int32s</td>
-<td><span class=s>0x7fffffff = n/a</span></td></tr>
+<td><span class=s>0x7f = Auto
+  <br>0x7fffffff = n/a</span></td></tr>
 <tr>
 <td class=r title='3 = 0x3'>3</td>
 <td>AFAccelDecelTracking</td>
 <td class=c>int32s</td>
-<td><span class=s>0x7fffffff = n/a</span></td></tr>
+<td><span class=s>0x7f = Auto
+  <br>0x7fffffff = n/a</span></td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>AFPointSwitching</td>
@@ -12020,7 +12027,8 @@ to the one printed on the lens)</span></span></td></tr>
 <td><span class=s>0 = None
   <br>1 = People
   <br>2 = Animals
-  <br>3 = Vehicles</span></td></tr>
+  <br>3 = Vehicles
+  <br>4 = Auto</span></td></tr>
 <tr>
 <td class=r title='21 = 0x15'>21</td>
 <td>SubjectSwitching</td>
@@ -12033,7 +12041,42 @@ to the one printed on the lens)</span></span></td></tr>
 <td>EyeDetection</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Off
+  <br>1 = Auto
+  <br>2 = Left Eye
+  <br>3 = Right Eye</span></td></tr>
+<tr>
+<td class=r title='26 = 0x1a'>26</td>
+<td>WholeAreaTracking</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='27 = 0x1b'>27</td>
+<td>ServoAFCharacteristics</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Case Auto
+  <br>1 = Case Manual</span></td></tr>
+<tr>
+<td class=r title='28 = 0x1c'>28</td>
+<td>CaseAutoSetting</td>
+<td class=c>int32s</td>
+<td><span class=s>-1 = Locked On
+  <br>0 = Standard
+  <br>1 = Responsive
+  <br>2147483647 = n/a</span></td></tr>
+<tr class=b>
+<td class=r title='29 = 0x1d'>29</td>
+<td>ActionPriority</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='30 = 0x1e'>30</td>
+<td>SportEvents</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Soccer
+  <br>1 = Basketball
+  <br>2 = Volleyball</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='RawBurstInfo'>Canon RawBurstInfo Tags</a></h2>
@@ -12341,7 +12384,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 6, 2025</i>
+<br><i>Last revised Sep 19, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -25,7 +25,7 @@ $VERSION = '1.04';
 %Image::ExifTool::CaptureOne::Main = (
     GROUPS => { 0 => 'XML', 1 => 'XML', 2 => 'Image' },
     PROCESS_PROC => \&Image::ExifTool::XMP::ProcessXMP,
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     ColorCorrections => { ValueConv => '\$val' }, # (long list of floating point numbers)
 );
 

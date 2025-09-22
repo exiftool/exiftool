@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '2.17';
+$VERSION = '2.18';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -156,6 +156,13 @@ my $debug;          # set to 1 to enable debugging code
             # hard patch for crazy offsets
             FixOffsets => '$valuePtr -= 210 if $tagID >= 0x1303',
        },
+    },
+    {
+        Name => 'MakerNoteGoogle',
+        Condition => '$$valPt =~ /^HDRP[\x02\x03]/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Google::HDRPlusMakerNote',
+        },
     },
     {
         Name => 'MakerNoteHasselblad',
@@ -843,29 +850,45 @@ my $debug;          # set to 1 to enable debugging code
         PutFirst => 1,      # place immediately after TIFF header
     },
     {
-        Name => 'MakerNoteReconyx',
+        Name => 'MakerNoteReconyxHyperFire',
         Condition => q{
             $$valPt =~ /^\x01\xf1([\x02\x03]\x00)?/ and
             ($1 or $$self{Make} eq "RECONYX")
         },
         SubDirectory => {
-            TagTable => 'Image::ExifTool::Reconyx::Main',
+            TagTable => 'Image::ExifTool::Reconyx::HyperFire',
             ByteOrder => 'Little-endian',
         },
     },
     {
-        Name => 'MakerNoteReconyx2',
+        Name => 'MakerNoteReconyxUltraFire',
         Condition => '$$valPt =~ /^RECONYXUF\0/',
         SubDirectory => {
-            TagTable => 'Image::ExifTool::Reconyx::Type2',
+            TagTable => 'Image::ExifTool::Reconyx::UltraFire',
             ByteOrder => 'Little-endian',
         },
     },
     {
-        Name => 'MakerNoteReconyx3',
+        Name => 'MakerNoteReconyxHyperFire2',
         Condition => '$$valPt =~ /^RECONYXH2\0/',
         SubDirectory => {
-            TagTable => 'Image::ExifTool::Reconyx::Type3',
+            TagTable => 'Image::ExifTool::Reconyx::HyperFire2',
+            ByteOrder => 'Little-endian',
+        },
+    },
+    {
+        Name => 'MakerNoteReconyxMicroFire',
+        Condition => '$$valPt =~ /^RECONYXMF\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Reconyx::MicroFire',
+            ByteOrder => 'Little-endian',
+        },
+    },
+    {
+        Name => 'MakerNoteReconyxHyperFire4K',
+        Condition => '$$valPt =~ /^RECONYXHF4K\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Reconyx::HyperFire4K',
             ByteOrder => 'Little-endian',
         },
     },

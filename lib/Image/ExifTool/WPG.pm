@@ -23,7 +23,7 @@ sub PrintRecord($$$);
 # WPG metadata
 %Image::ExifTool::WPG::Main = (
     GROUPS => { 0 => 'File', 1 => 'File', 2 => 'Image' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => 'Tags extracted from WordPerfect Graphics (WPG) images.',
     WPGVersion => { },
     ImageWidthInches  => { PrintConv => 'sprintf("%.2f",$val)' },

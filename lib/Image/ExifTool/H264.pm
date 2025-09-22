@@ -42,7 +42,7 @@ my $parsePictureTiming; # flag to enable parsing of picture timing information (
 # information extracted from H.264 video streams
 %Image::ExifTool::H264::Main = (
     GROUPS => { 2 => 'Video' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         Tags extracted from H.264 video streams.  The metadata for AVCHD videos is
         stored in this stream.

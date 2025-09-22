@@ -22,7 +22,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.23';
+$VERSION = '1.24';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -450,7 +450,7 @@ my %int32uTime = (
 # (see http://msdn.microsoft.com/en-us/library/aa381049.aspx)
 %Image::ExifTool::EXE::PEString = (
     GROUPS => { 2 => 'Other' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         Resource strings found in Windows PE files.  The B<TagID>'s are not shown
         because they are the same as the B<Tag Name>.  ExifTool will extract any
@@ -985,6 +985,7 @@ sub ProcessPEVersion($$)
             my $tagTablePtr = GetTagTable('Image::ExifTool::EXE::PEString');
             for ($index = 0; $pt + 6 < $pos; ++$index) {
                 $len = Get16u($dataPt, $pt);
+                $len or $et->Warn('Invalid PEString entry'), last;
                 $valLen = Get16u($dataPt, $pt + 2);
                 # $type = Get16u($dataPt, $pt + 4);
                 my $entryEnd = $pt + $len;

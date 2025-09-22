@@ -52,7 +52,7 @@ my %bool = ( PrintConv => { 0 => 'No', 1 => 'Yes' }, PrintConvColumns => 2 );
     GROUPS => { 0 => 'WTV', 1 => 'WTV', 2 => 'Video' },
     PROCESS_PROC => \&ProcessMetadata,
     NOTES => 'ExifTool will extract any tag found, even if not in this table.',
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     'Duration'  => {
         Name => 'Duration',
         ValueConv => '$val/1e7',

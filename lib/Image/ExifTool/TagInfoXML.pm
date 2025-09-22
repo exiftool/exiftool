@@ -376,9 +376,10 @@ sub BuildLangModules($;$)
                 $id = Image::ExifTool::XMP::FullUnescapeXML($1);
                 $name = $2;
                 $index = $4;
-                # convert hex ID's unless HEX_ID is 0 (for string ID's that look like hex)
+                # convert hex ID's unless ID_FMT is something other than 'hex'
+                # (for string ID's that look like hex)
                 if ($id =~ /^0x[\da-fA-F]+$/ and (not defined $$table{VARS} or
-                    not defined $$table{VARS}{HEX_ID} or $$table{VARS}{HEX_ID}))
+                    not defined $$table{VARS}{ID_FMT} or $$table{VARS}{ID_FMT} eq 'hex'))
                 {
                     $id = hex($id);
                 }

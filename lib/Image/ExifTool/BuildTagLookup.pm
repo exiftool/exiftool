@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.62';
+$VERSION = '3.63';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -109,6 +109,7 @@ my %tweakOrder = (
     'FujiFilm::RAFData' => 'FujiFilm::RAF',
     'QuickTime::AudioKeys' => 'QuickTime::Keys',
     'QuickTime::VideoKeys' => 'QuickTime::AudioKeys',
+    'Google::HDRPText' => 'Google::HDRPlusMakerNote',
 );
 
 # list of all recognized Format strings
@@ -867,15 +868,15 @@ sub new
         $longID{$tableName} = 0;
         $longName{$tableName} = 0;
         # save all tag names
-        my ($tagID, $binaryTable, $noID, $hexID, $isIPTC, $isXMP);
+        my ($tagID, $binaryTable, $noID, $prtID, $isIPTC, $isXMP);
         $isIPTC = 1 if $writeProc and $writeProc eq \&Image::ExifTool::IPTC::WriteIPTC;
         # generate flattened tag names for structure fields if this is an XMP table
         if ($$table{GROUPS} and $$table{GROUPS}{0} eq 'XMP' or $$vars{ADD_FLATTENED}) {
             Image::ExifTool::XMP::AddFlattenedTags($table);
             $isXMP = 1;
         }
-        $noID = 1 if $isXMP or $short =~ /^(Shortcuts|ASF.*)$/ or $$vars{NO_ID};
-        $hexID = $$vars{HEX_ID};
+        $prtID = $$vars{ID_FMT};
+        $noID = 1 if $isXMP or $short =~ /^(Shortcuts|ASF.*)$/ or $prtID and $prtID eq 'none';
         if ($$table{WRITE_PROC} and $$table{WRITE_PROC} eq \&Image::ExifTool::WriteBinaryData
             and not $$table{CHECK_PROC})
         {
@@ -1104,7 +1105,7 @@ TagID:  foreach $tagID (@keys) {
                         $note = 'NOT a flattened tag!';
                     } else {
                         # add note about different XMP Tag ID
-                        $note = $$tagInfo{RootTagInfo} ? $tagID : "called $tagID by the spec";
+                        $note = $$tagInfo{RootTagInfo} ? $tagID : "tag ID is '${tagID}'";
                     }
                     if ($$tagInfo{Notes}) {
                         $values[-1] =~ s/^\(/($note; /;
@@ -1492,8 +1493,14 @@ TagID:  foreach $tagID (@keys) {
             if ($tagID =~ /^(-)?\d+(\.\d+)?$/) {
                 if ($1) {
                     $tagIDstr = $tagID;
-                } elsif (defined $hexID) {
-                    $tagIDstr = $hexID ? sprintf('0x%.4x',$tagID) : $tagID;
+                } elsif (defined $prtID) {
+                    if ($prtID eq 'hex') {
+                        $tagIDstr = sprintf('0x%.4x',$tagID);
+                    } elsif ($prtID eq 'str') {
+                        $tagIDstr = "'${tagID}'";
+                    } else {
+                        $tagIDstr = $tagID;
+                    }
                 } elsif (not $2 and not $binaryTable and not $isIPTC and
                          not ($short =~ /^CanonCustom/ and $tagID < 256))
                 {
@@ -1911,7 +1918,7 @@ sub SortedTagTableKeys($)
     my $table = shift;
     my $vars = $$table{VARS} || { };
     my @keys = TagTableKeys($table);
-    if ($$vars{NO_ID}) {
+    if ($$vars{ID_FMT} and $$vars{ID_FMT} eq 'none') {
         # sort by tag name if ID not shown
         my ($key, %name);
         foreach $key (@keys) {

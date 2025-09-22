@@ -87,6 +87,7 @@ html/TagNames/GM.html
 html/TagNames/GPS.html
 html/TagNames/GeoTiff.html
 html/TagNames/GoPro.html
+html/TagNames/Google.html
 html/TagNames/H264.html
 html/TagNames/HP.html
 html/TagNames/HTML.html
@@ -308,6 +309,7 @@ lib/Image/ExifTool/FujiFilm.pm
 lib/Image/ExifTool/GE.pm
 lib/Image/ExifTool/GIF.pm
 lib/Image/ExifTool/GIMP.pm
+lib/Image/ExifTool/Google.pm
 lib/Image/ExifTool/GM.pm
 lib/Image/ExifTool/GPS.pm
 lib/Image/ExifTool/GeoTiff.pm
@@ -645,6 +647,8 @@ t/Geotag_8.out
 t/Geotag_9.out
 t/GoPro.t
 t/GoPro_2.out
+t/Google.t
+t/Google_2.out
 t/HTML.t
 t/HTML_2.out
 t/ICO.t
@@ -1095,6 +1099,7 @@ t/images/Geotag2.log
 t/images/Geotag3.log
 t/images/Geotag_DJI_2020-12-02_[07-50-31].csv
 t/images/GoPro.jpg
+t/images/Google.jpg
 t/images/HTML.html
 t/images/ICC_Profile.icc
 t/images/ICO.ico

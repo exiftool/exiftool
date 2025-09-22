@@ -227,15 +227,16 @@ different from other models)</span>
   <br>0xa = Tracking
   <br>0xb = Continuous
   <br>0xc = Snap
-  <br>0x10 = AF-S (Focus-priority)</td><td>&nbsp;&nbsp;</td>
-  <td>0x11 = AF-C (Focus-priority)
-  <br>0x12 = AF-A (Focus-priority)
+  <br>0x10 = AF-S (Focus-priority)
+  <br>0x11 = AF-C (Focus-priority)</td><td>&nbsp;&nbsp;</td>
+  <td>0x12 = AF-A (Focus-priority)
   <br>0x20 = Contrast-detect (Focus-priority)
   <br>0x21 = Tracking Contrast-detect (Focus-priority)
   <br>0x110 = AF-S (Release-priority)
   <br>0x111 = AF-C (Release-priority)
   <br>0x112 = AF-A (Release-priority)
   <br>0x120 = Contrast-detect (Release-priority)
+  <br>0x8003 = Manual (Macro)
   <br>0x8006 = Auto-area (Macro)
   <br>0x8007 = Zone Select (Macro)
   <br>0x8008 = Select (Macro)
@@ -796,9 +797,9 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>&#39;1 6&#39; = Auto PICT (Landscape)
   <br>&#39;1 7&#39; = Auto PICT (Macro)
   <br>&#39;1 8&#39; = Auto PICT (Sport)
-  <br>&#39;2 0&#39; = Program (HyP)</td><td>&nbsp;&nbsp;</td>
-  <td>&#39;2 1&#39; = Hi-speed Program (HyP)
-  <br>&#39;2 2&#39; = DOF Program (HyP)
+  <br>&#39;2 0&#39; = Program (HyP)
+  <br>&#39;2 1&#39; = Hi-speed Program (HyP)</td><td>&nbsp;&nbsp;</td>
+  <td>&#39;2 2&#39; = DOF Program (HyP)
   <br>&#39;2 3&#39; = MTF Program (HyP)
   <br>&#39;2 22&#39; = Shallow DOF (HyP)
   <br>&#39;3 0&#39; = Green Mode
@@ -812,8 +813,10 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>&#39;11 0&#39; = Manual, Off-Auto-Aperture
   <br>&#39;12 0&#39; = Bulb, Off-Auto-Aperture
   <br>&#39;13 0&#39; = Shutter &amp; Aperture Priority AE
+  <br>&#39;14 0&#39; = Shutter Priority AE
   <br>&#39;15 0&#39; = Sensitivity Priority AE
   <br>&#39;16 0&#39; = Flash X-Sync Speed AE
+  <br>&#39;17 0&#39; = Flash X-Sync Speed
   <br>&#39;18 0&#39; = Auto Program (Normal)
   <br>&#39;18 1&#39; = Auto Program (Hi-speed)
   <br>&#39;18 2&#39; = Auto Program (DOF)
@@ -983,9 +986,9 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>9 = Radiant
   <br>10 = Cross Processing
   <br>11 = Flat
-  <br>256 = Standard</td><td>&nbsp;&nbsp;</td>
-  <td>257 = Vivid
-  <br>258 = Monotone
+  <br>256 = Standard
+  <br>257 = Vivid</td><td>&nbsp;&nbsp;</td>
+  <td>258 = Monotone
   <br>259 = Soft Monotone
   <br>260 = Hard Monotone
   <br>261 = Hi-contrast B&amp;W
@@ -995,7 +998,9 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>265 = HDR Tone
   <br>266 = Cross Processing 2
   <br>267 = Negative Film
-  <br>32768 = n/a</td></tr></table>
+  <br>32768 = Standard
+  <br>32769 = Hard
+  <br>32770 = Soft</td></tr></table>
 </td></tr>
 <tr class=b>
 <td title='0x0050 = 80'>0x0050</td>
@@ -2262,6 +2267,8 @@ identified by cameras running older firmware versions.</p>
 </tr><tr><td>'22 5'</td><td>= 05 Toy Lens Telephoto 18mm F8</td>
 </tr><tr><td>'31 1'</td><td>= 18.3mm F2.8</td>
 </tr><tr><td>'31 4'</td><td>= 26.1mm F2.8</td>
+</tr><tr><td>'31 5'</td><td>= 26.1mm F2.8 GT-2 TC</td>
+</tr><tr><td>'31 8'</td><td>= 18.3mm F2.8</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='SRInfo'>Pentax SRInfo Tags</a></h2>
@@ -5072,7 +5079,7 @@ facilitates the writing of the whole structure)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='AFInfoK3III'>Pentax AFInfoK3III Tags</a></h2>
-<p>AF tags written by the K-3 Mark III, GR III and GR IIIx.</p>
+<p>AF tags written by the K-3 Mark III, GR III, GR IIIx and GR IV.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -5119,23 +5126,28 @@ facilitates the writing of the whole structure)</span></span></td></tr>
   <br>0x200b = Contrast-detect Spot</td></tr></table>
 </td></tr>
 <tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>MaxNumAFPoints</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='3 = 0x3'>3</td>
 <td>NumAFPoints</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='7 = 0x7'>7</td>
 <td>AFFrameSize</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='7 = 0x7'>7.1</td>
 <td>AFAreas</td>
 <td class=c title=' + = List'>no+</td>
 <td><span class=s><span class=n>(X,Y position of each AF area, width, with &quot;in-focus&quot; for points in focus,
 &quot;central&quot; for the center of the selected area, or &quot;peripheral&quot; for points
 outside the selected area)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='11 = 0xb'>11</td>
 <td>AFAreaSize</td>
 <td class=c>no</td>
@@ -5580,7 +5592,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 6, 2025</i>
+<br><i>Last revised Sep 19, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

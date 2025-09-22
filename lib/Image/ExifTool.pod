@@ -2298,14 +2298,14 @@ identical group names unless the family string begins with a colon.
 The group family numbers are currently available:
 
     0) Information Type         (eg. EXIF, XMP, IPTC)
-    1) Specific Location        (eg. IFD0, XMP-dc)
+    1) Specific Location        (eg. IFD0, ExifIFD, XMP-dc)
     2) Category                 (eg. Author, Time)
     3) Document Number          (eg. Main, Doc1, Doc3-2)
-    4) Instance Number          (eg. Copy1, Copy2, Copy3...)
+    4) Instance Number          (eg. Copy1, Copy2, Copy3)
     5) Metadata Path            (eg. JPEG-APP1-IFD0-ExifIFD)
     6) EXIF/TIFF Format         (eg. int8u, int32u, undef, string)
     7) Tag ID                   (eg. ID-271, ID-rights, ID-a9aut)
-    8) Alternate File Number    (eg. File1, File2, File3...)
+    8) Alternate File Number    (eg. File1, File2, File3)
 
 Families 0 and 1 are based on the file structure, and are similar except
 that family 1 is more specific and sub-divides some groups to give more

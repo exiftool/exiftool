@@ -76,7 +76,7 @@ my %userTagName = (
 
 # This table is just for documentation purposes
 %Image::ExifTool::ID3::Main = (
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     PROCESS_PROC => \&ProcessID3Dir, # (used to process 'id3 ' chunk in WAV files)
     NOTES => q{
         ExifTool extracts ID3 and Lyrics3 information from MP3, MPEG, WAV, AIFF,
@@ -720,7 +720,7 @@ my %id3v2_common = (
 # Synchronized lyrics/text
 %Image::ExifTool::ID3::SynLyrics = (
     GROUPS => { 1 => 'ID3', 2 => 'Audio' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     PROCESS_PROC => \&ProcessSynText,
     NOTES => 'The following tags are extracted from synchronized lyrics/text frames.',
     desc => { Name => 'SynchronizedLyricsDescription' },
@@ -754,7 +754,7 @@ my %id3v2_common = (
 %Image::ExifTool::ID3::Private = (
     PROCESS_PROC => \&Image::ExifTool::ID3::ProcessPrivate,
     GROUPS => { 1 => 'ID3', 2 => 'Audio' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         ID3 private (PRIV) tags.  ExifTool will decode any private tags found, even
         if they do not appear in this table.

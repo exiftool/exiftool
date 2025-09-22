@@ -485,7 +485,7 @@ my %noYes = ( N => 'No', Y => 'Yes' );
 %Image::ExifTool::GoPro::GPS5 = (
     PROCESS_PROC => \&ProcessString,
     GROUPS => { 1 => 'GoPro', 2 => 'Location' },
-    VARS => { HEX_ID => 0, ID_LABEL => 'Index' },
+    VARS => { ID_FMT => 'dec', ID_LABEL => 'Index' },
     0 => { # (unit='deg')
         Name => 'GPSLatitude',
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
@@ -514,7 +514,7 @@ my %noYes = ( N => 'No', Y => 'Yes' );
 %Image::ExifTool::GoPro::GPS9 = (
     PROCESS_PROC => \&ProcessString,
     GROUPS => { 1 => 'GoPro', 2 => 'Location' },
-    VARS => { HEX_ID => 0, ID_LABEL => 'Index' },
+    VARS => { ID_FMT => 'dec', ID_LABEL => 'Index' },
     0 => { # (unit='deg')
         Name => 'GPSLatitude',
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
@@ -563,7 +563,7 @@ my %noYes = ( N => 'No', Y => 'Yes' );
 %Image::ExifTool::GoPro::GPRI = (
     PROCESS_PROC => \&ProcessString,
     GROUPS => { 1 => 'GoPro', 2 => 'Location' },
-    VARS => { HEX_ID => 0, ID_LABEL => 'Index' },
+    VARS => { ID_FMT => 'dec', ID_LABEL => 'Index' },
     0 => { # (unit='s')
         Name => 'GPSDateTimeRaw',
         Groups => { 2 => 'Time' },
@@ -595,7 +595,7 @@ my %noYes = ( N => 'No', Y => 'Yes' );
 %Image::ExifTool::GoPro::GLPI = (
     PROCESS_PROC => \&ProcessString,
     GROUPS => { 1 => 'GoPro', 2 => 'Location' },
-    VARS => { HEX_ID => 0, ID_LABEL => 'Index' },
+    VARS => { ID_FMT => 'dec', ID_LABEL => 'Index' },
     0 => { # (unit='s')
         Name => 'GPSDateTime',
         Groups => { 2 => 'Time' },
@@ -626,7 +626,7 @@ my %noYes = ( N => 'No', Y => 'Yes' );
 %Image::ExifTool::GoPro::KBAT = (
     PROCESS_PROC => \&ProcessString,
     GROUPS => { 1 => 'GoPro', 2 => 'Camera' },
-    VARS => { HEX_ID => 0, ID_LABEL => 'Index' },
+    VARS => { ID_FMT => 'dec', ID_LABEL => 'Index' },
     NOTES => 'Battery status information found in GoPro Karma videos.',
      0 => { Name => 'BatteryCurrent',  PrintConv => '"$val A"' },
      1 => { Name => 'BatteryCapacity', PrintConv => '"$val Ah"' },

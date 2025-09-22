@@ -132,7 +132,7 @@ my $knotsToKph = 1.852;     # knots --> km/h
 # information extracted from the MPEG-2 transport stream
 %Image::ExifTool::M2TS::Main = (
     GROUPS => { 2 => 'Video' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         The MPEG-2 transport stream is used as a container for many different
         audio/video formats (including AVCHD).  This table lists information
@@ -165,7 +165,7 @@ my $knotsToKph = 1.852;     # knots --> km/h
 # information extracted from AC-3 audio streams
 %Image::ExifTool::M2TS::AC3 = (
     GROUPS => { 1 => 'AC3', 2 => 'Audio' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => 'Tags extracted from AC-3 audio streams.',
     AudioSampleRate => {
         PrintConv => {

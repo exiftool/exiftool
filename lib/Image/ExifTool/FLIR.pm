@@ -476,7 +476,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     GROUPS => { 0 => 'APP1', 2 => 'Image' },
     PROCESS_PROC => \&ProcessMeasInfo,
     FORMAT => 'int16u',
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         Tags listed below are only for the first measurement tool, however multiple
         measurements may be added, and information is extracted for all of them. 
@@ -548,7 +548,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
 %Image::ExifTool::FLIR::TextInfo = (
     GROUPS => { 0 => 'APP1', 2 => 'Image' },
     PROCESS_PROC => \&ProcessFLIRText,
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     Label0 => { },
     Value0 => { },
     Label1 => { },
@@ -564,7 +564,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
 %Image::ExifTool::FLIR::ParamInfo = (
     GROUPS => { 0 => 'APP1', 2 => 'Image' },
     PROCESS_PROC => \&ProcessFLIRText,
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     Generated => {
         Name => 'DateTimeGenerated',
         Description => 'Date/Time Generated',

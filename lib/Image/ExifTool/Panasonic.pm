@@ -2553,7 +2553,7 @@ my %shootingMode = (
     NAMESPACE => 'xmpDSA',
     WRITABLE => 'string',
     AVOID => 1,
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => 'XMP Digital Shift Assistant tags written by some Leica cameras.',
     Version             => { }, # eg. "1.0.0"
     CorrectionAlreadyApplied => { Writable => 'boolean' },

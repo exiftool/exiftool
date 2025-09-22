@@ -88,7 +88,7 @@ sub ProcessAudible_cvrx($$$);
     PROCESS_PROC => \&ProcessAudible_cvrx,
     GROUPS => { 0 => 'QuickTime', 2 => 'Audio' },
     NOTES => 'Audible cover art information in M4B audio books.',
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     CoverArtType => 'CoverArtType',
     CoverArt     => {
         Name => 'CoverArt',

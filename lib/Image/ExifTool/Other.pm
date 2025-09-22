@@ -20,7 +20,7 @@ $VERSION = '1.00';
 # Other info
 %Image::ExifTool::Other::PFM = (
     GROUPS => { 0 => 'File', 1 => 'File', 2 => 'Image' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         Tags extracted from Portable FloatMap images. See
         L<http://www.pauldebevec.com/Research/HDR/PFM/> for the specification.

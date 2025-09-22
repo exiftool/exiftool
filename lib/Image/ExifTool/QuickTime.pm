@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.19';
+$VERSION = '3.21';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -2268,6 +2268,27 @@ my %userDefined = (
             Start => 10,
             Base => '$start - 10',
             ByteOrder => 'LittleEndian',
+        },
+    },{
+        Name => 'MakerNoteRicohPentax2',
+        # used by cameras such as the Ricoh GR III
+        Condition => '$$valPt=~/^RICOH\0II/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Pentax::Main',
+            ProcessProc => \&Image::ExifTool::Exif::ProcessExif, # (because ProcessMOV is default)
+            Start => 8,
+            Base => '$start - 8',
+            ByteOrder => 'LittleEndian',
+        },
+    },{
+        Name => 'MakerNoteRicohPentax3',
+        Condition => '$$valPt=~/^RICOH\0MM/', # (just in case)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Pentax::Main',
+            ProcessProc => \&Image::ExifTool::Exif::ProcessExif, # (because ProcessMOV is default)
+            Start => 8,
+            Base => '$start - 8',
+            ByteOrder => 'BigEndian',
         },
     },{
         Name => 'MakerNotePentaxUnknown',
@@ -7301,6 +7322,7 @@ my %userDefined = (
         },
         {
             Name => 'TimeToSampleTable',
+            Format => 'undef',
             Flags => ['Binary','Unknown'],
         },
     ],
@@ -10063,14 +10085,14 @@ sub ProcessMOV($$;$)
                 ProcessKenwoodTrailer($et, { RAF => $raf }, $tbl);
                 last;
             }
-            $ignore = 1;
-            if ($tagInfo and not $$tagInfo{Unknown} and not $eeTag) {
+            if (not $tagInfo or $$tagInfo{Unknown}) {
+                $ignore = 1;
+            } elsif ($size > 0x8000000) {
                 my $t = PrintableTagID($tag,2);
-                if ($size > 0x8000000) {
-                    $et->Warn("Skipping '${t}' atom > 128 MiB", 1);
-                } else {
-                    $et->Warn("Skipping '${t}' atom > 32 MiB", 2) or $ignore = 0;
-                }
+                $et->Warn("Skipping '${t}' atom > 128 MiB", $eeTag ? 2 : 1) and $ignore = 1;
+            } elsif (not $eeTag) {
+                my $t = PrintableTagID($tag,2);
+                $et->Warn("Skipping '${t}' atom > 32 MiB", 2) and $ignore = 1;
             }
         }
         if (defined $tagInfo and not $ignore and not ($tagInfo and $$tagInfo{DontRead})) {

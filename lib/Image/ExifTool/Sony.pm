@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.76';
+$VERSION = '3.77';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -319,9 +319,14 @@ sub PrintInvLensSpec($;$$);
     50549 => 'Sigma 50mm F1.2 DG DN | A', #JR (024)
     50550 => 'Sigma 28-105mm F2.8 DG DN | A', #JR (024)
     50551 => 'Sigma 28-45mm F1.8 DG DN | A', #JR (024)
+    50552 => 'Sigma 35mm F1.2 DG II | A', #github352/JR (025)',
     50553 => 'Sigma 300-600mm F4 DG OS | S', #JR (025)
     50554 => 'Sigma 16-300mm F3.5-6.7 DC OS | C', #JR (025)
-    50556 => 'Sigma 17-40mm F1.8 DC | C', #JR (025)
+    50555 => 'Sigma 12mm F1.4 DC | C', # (025)
+    50556 => 'Sigma 17-40mm F1.8 DC | A', #JR/github352 (025)
+    50557 => 'Sigma 200mm F2 DG OS | S', #github352/JR (025)
+    50558 => 'Sigma 20-200mm F3.5-6.3 DG | C', #github352/JR (025)
+    50559 => 'Sigma 135mm F1.4 DG | A', #github352/JR (025)
 
     # lenses listed in the Sigma MC-11 list, but not yet seen:
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)
@@ -367,6 +372,7 @@ sub PrintInvLensSpec($;$$);
     61569 => 'LAOWA FFII 10mm F2.8 C&D Dreamer', #JR
 
     61761 => 'Viltrox 28mm F4.5 FE', #JR
+    61767 => 'Viltrox 50mm F2.0 FE', #JR
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)
@@ -1702,6 +1708,15 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         Count => 4,
         NOTES => 'same as FocusLocation within one pixel',
     },
+    0x205c => { #JR (DSC-RX1RM3)
+        Name => 'StepCropShooting',
+        Writable => 'int8u',
+        PrintConv => {
+            0 => '35mm (Off)',
+            1 => '50mm',
+            2 => '70mm',
+        },
+    },
     0x3000 => {
         Name => 'ShotInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::ShotInfo' },
@@ -2074,7 +2089,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             '3 3 3 0' => 'ARW 2.3.3', #JR (ILCE-9)
             '3 3 5 0' => 'ARW 2.3.5', #JR (DSC-HX99)
             '4 0 0 0' => 'ARW 4.0', # (ILCE-7SM3)
-            '4 0 1 0' => 'ARW 4.0.1', #github#195 (ZV-E1)
+            '4 0 1 0' => 'ARW 4.0.1', #github195 (ZV-E1)
             '5 0 0 0' => 'ARW 5.0', # (ILCE-9M3)
             '5 0 1 0' => 'ARW 5.0.1', # (ILCE-1 with FirmWare 2.0)
             # what about cRAW images?

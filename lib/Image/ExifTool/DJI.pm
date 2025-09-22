@@ -140,7 +140,7 @@ my %convFloat2 = (
     GROUPS => { 0 => 'XMP', 1 => 'XMP-drone-dji', 2 => 'Location' },
     NAMESPACE => 'drone-dji',
     TABLE_DESC => 'XMP DJI',
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => 'XMP tags used by DJI for images from drones.',
     AbsoluteAltitude  => { Writable => 'real' },
     RelativeAltitude  => { Writable => 'real' },
@@ -530,7 +530,7 @@ my %convFloat2 = (
 %Image::ExifTool::DJI::DroneInfo = (
     GROUPS => { 0 => 'Protobuf', 1 => 'DJI', 2 => 'Camera' },
     PROCESS_PROC => \&Image::ExifTool::Protobuf::ProcessProtobuf,
-    VARS => { HEX_ID => 0, ID_LABEL => 'Field #' },
+    VARS => { ID_FMT => 'dec', ID_LABEL => 'Field #' },
     1 => { Name => 'DroneRoll',  Format => 'int64s', ValueConv => '$val / 10' },
     2 => { Name => 'DronePitch', Format => 'int64s', ValueConv => '$val / 10' },
     3 => { Name => 'DroneYaw',   Format => 'int64s', ValueConv => '$val / 10' },
@@ -539,7 +539,7 @@ my %convFloat2 = (
 %Image::ExifTool::DJI::GimbalInfo = (
     GROUPS => { 0 => 'Protobuf', 1 => 'DJI', 2 => 'Camera' },
     PROCESS_PROC => \&Image::ExifTool::Protobuf::ProcessProtobuf,
-    VARS => { HEX_ID => 0, ID_LABEL => 'Field #' },
+    VARS => { ID_FMT => 'dec', ID_LABEL => 'Field #' },
     1 => { Name => 'GimbalPitch',Format => 'int64s', ValueConv => '$val / 10' },
     2 => { Name => 'GimbalRoll', Format => 'int64s', ValueConv => '$val / 10' }, # usually 0, so missing
     3 => { Name => 'GimbalYaw',  Format => 'int64s', ValueConv => '$val / 10' },
@@ -548,7 +548,7 @@ my %convFloat2 = (
 %Image::ExifTool::DJI::FrameInfo = (
     GROUPS => { 0 => 'Protobuf', 1 => 'DJI', 2 => 'Video' },
     PROCESS_PROC => \&Image::ExifTool::Protobuf::ProcessProtobuf,
-    VARS => { HEX_ID => 0, ID_LABEL => 'Field #' },
+    VARS => { ID_FMT => 'dec', ID_LABEL => 'Field #' },
     1 => { Name => 'FrameWidth',  Format => 'unsigned' },
     2 => { Name => 'FrameHeight', Format => 'unsigned' },
     3 => { Name => 'FrameRate',   Format => 'float' },
@@ -558,7 +558,7 @@ my %convFloat2 = (
 %Image::ExifTool::DJI::GPSInfo = (
     GROUPS => { 0 => 'Protobuf', 1 => 'DJI', 2 => 'Location' },
     PROCESS_PROC => \&Image::ExifTool::Protobuf::ProcessProtobuf,
-    VARS => { HEX_ID => 0, ID_LABEL => 'Field #' },
+    VARS => { ID_FMT => 'dec', ID_LABEL => 'Field #' },
     1 => {
         Name => 'CoordinateUnits',
         Format  => 'unsigned',

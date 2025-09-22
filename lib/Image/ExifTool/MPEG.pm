@@ -322,7 +322,7 @@ $VERSION = '1.17';
 
 %Image::ExifTool::MPEG::Xing = (
     GROUPS => { 2 => 'Audio' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => 'These tags are extracted from the Xing/Info frame.',
     1 => { Name => 'VBRFrames' },
     2 => { Name => 'VBRBytes' },

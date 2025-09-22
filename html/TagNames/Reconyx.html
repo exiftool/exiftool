@@ -7,9 +7,9 @@
 <link rel=stylesheet type='text/css' href='style.css' title='Style'>
 </head>
 <body>
-<h2 class=top>Reconyx Tags</h2>
-<p>The following tags are extracted from the maker notes of Reconyx Hyperfire
-cameras such as the HC500, HC600 and PC900.</p>
+<h2 class=top><a name='HyperFire'>Reconyx HyperFire Tags</a></h2>
+<p>The following tags are extracted from the maker notes of Reconyx RapidFire
+and HyperFire models such as the HC500, HC600 and PC900.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -80,7 +80,7 @@ cameras such as the HC500, HC600 and PC900.</p>
 <tr>
 <td class=r title='21 = 0x15'>21</td>
 <td>SerialNumber</td>
-<td class=c>undef[30]</td>
+<td class=c>unicode[15]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='36 = 0x24'>36</td>
@@ -125,8 +125,8 @@ cameras such as the HC500, HC600 and PC900.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='Type2'>Reconyx Type2 Tags</a></h2>
-<p>Tags extracted from models such as the UltraFire.</p>
+<h2><a name='UltraFire'>Reconyx UltraFire Tags</a></h2>
+<p>Maker notes tags for Reconyx UltraFire models.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -234,8 +234,8 @@ cameras such as the HC500, HC600 and PC900.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='Type3'>Reconyx Type3 Tags</a></h2>
-<p>Tags extracted from models such as the HF2 PRO.</p>
+<h2><a name='HyperFire2'>Reconyx HyperFire2 Tags</a></h2>
+<p>Maker notes tags for Reconyx HyperFire 2 models.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -252,38 +252,43 @@ cameras such as the HC500, HC600 and PC900.</p>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>DirectoryCreateDate</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='42 = 0x2a'>42</td>
 <td>FirmwareVersion</td>
 <td class=c>int16u[3]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='48 = 0x30'>48</td>
 <td>FirmwareDate</td>
 <td class=c>int16u[2]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='52 = 0x34'>52</td>
 <td>TriggerMode</td>
 <td class=c>string[2]</td>
 <td><span class=s>&#39;M&#39; = Motion Detection
   <br>&#39;P&#39; = Point and Shoot
   <br>&#39;T&#39; = Time Lapse</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='54 = 0x36'>54</td>
 <td>Sequence</td>
 <td class=c>int16u[2]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='58 = 0x3a'>58</td>
 <td>EventNumber</td>
 <td class=c>int16u[2]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='62 = 0x3e'>62</td>
 <td>DateTimeOriginal</td>
 <td class=c>int16u[6]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='74 = 0x4a'>74</td>
 <td>DayOfWeek</td>
 <td class=c>int16u</td>
@@ -296,7 +301,7 @@ cameras such as the HC500, HC600 and PC900.</p>
   <br>5 = Friday
   <br>6 = Saturday</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='76 = 0x4c'>76</td>
 <td>MoonPhase</td>
 <td class=c>int16u</td>
@@ -310,87 +315,427 @@ cameras such as the HC500, HC600 and PC900.</p>
   <br>6 = Last Quarter
   <br>7 = Old Crescent</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='78 = 0x4e'>78</td>
 <td>AmbientTemperatureFahrenheit</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='80 = 0x50'>80</td>
 <td>AmbientTemperature</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='82 = 0x52'>82</td>
 <td>Contrast</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='84 = 0x54'>84</td>
 <td>Brightness</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='86 = 0x56'>86</td>
 <td>Sharpness</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='88 = 0x58'>88</td>
 <td>Saturation</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='90 = 0x5a'>90</td>
 <td>Flash</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='92 = 0x5c'>92</td>
 <td>AmbientInfrared</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='94 = 0x5e'>94</td>
 <td>AmbientLight</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='96 = 0x60'>96</td>
 <td>MotionSensitivity</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='98 = 0x62'>98</td>
 <td>BatteryVoltage</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='100 = 0x64'>100</td>
 <td>BatteryVoltageAvg</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='102 = 0x66'>102</td>
 <td>BatteryType</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='104 = 0x68'>104</td>
 <td>UserLabel</td>
 <td class=c>string[22]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='126 = 0x7e'>126</td>
 <td>SerialNumber</td>
 <td class=c>unicode[15]</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='MicroFire'>Reconyx MicroFire Tags</a></h2>
+<p>Maker notes tags for Reconyx MicroFire cameras.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>FileNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18</td>
+<td>DirectoryNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>DirectoryCreateDate</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
+<td>SDCardID</td>
+<td class=c title=' ~ = Writable only with -n'>int16u[8]~</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='42 = 0x2a'>42</td>
+<td>FirmwareVersion</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='48 = 0x30'>48</td>
+<td>FirmwareDate</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='52 = 0x34'>52</td>
+<td>BluetoothFirmwareVersion</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='58 = 0x3a'>58</td>
+<td>BluetoothFirmwareDate</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='60 = 0x3c'>60</td>
+<td>WifiFirmwareVersion</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='66 = 0x42'>66</td>
+<td>WifiFirmwareDate</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='68 = 0x44'>68</td>
+<td>TriggerMode</td>
+<td class=c>string[2]</td>
+<td><span class=s>&#39;C&#39; = CodeLoc Not Entered
+  <br>&#39;E&#39; = External Sensor
+  <br>&#39;M&#39; = Motion Sensor
+  <br>&#39;T&#39; = Time Lapse</span></td></tr>
+<tr class=b>
+<td class=r title='70 = 0x46'>70</td>
+<td>Sequence</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='74 = 0x4a'>74</td>
+<td>EventNumber</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='78 = 0x4e'>78</td>
+<td>DateTimeOriginal</td>
+<td class=c>int16u[6]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='90 = 0x5a'>90</td>
+<td>DayOfWeek</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>1 = Sunday
+  <br>2 = Monday
+  <br>3 = Tuesday
+  <br>4 = Wednesday</td><td>&nbsp;&nbsp;</td>
+  <td>5 = Thursday
+  <br>6 = Friday
+  <br>7 = Saturday</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='92 = 0x5c'>92</td>
+<td>MoonPhase</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = New
+  <br>1 = New Crescent
+  <br>2 = First Quarter
+  <br>3 = Waxing Gibbous</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Full
+  <br>5 = Waning Gibbous
+  <br>6 = Last Quarter
+  <br>7 = Old Crescent</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='94 = 0x5e'>94</td>
+<td>AmbientTemperatureFahrenheit</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='96 = 0x60'>96</td>
+<td>AmbientTemperature</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='98 = 0x62'>98</td>
+<td>Contrast</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='100 = 0x64'>100</td>
+<td>Brightness</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='102 = 0x66'>102</td>
+<td>Sharpness</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='104 = 0x68'>104</td>
+<td>Saturation</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='106 = 0x6a'>106</td>
+<td>Flash</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='108 = 0x6c'>108</td>
+<td>AmbientInfrared</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='110 = 0x6e'>110</td>
+<td>AmbientLight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='112 = 0x70'>112</td>
+<td>MotionSensitivity</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='114 = 0x72'>114</td>
+<td>BatteryVoltage</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='116 = 0x74'>116</td>
+<td>BatteryType</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Lithium
+  <br>1 = NiMH
+  <br>2 = Alkaline
+  <br>3 = Lead Acid</span></td></tr>
+<tr>
+<td class=r title='118 = 0x76'>118</td>
+<td>UserLabel</td>
+<td class=c>string[22]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='140 = 0x8c'>140</td>
+<td>SerialNumber</td>
+<td class=c>unicode[15]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='HyperFire4K'>Reconyx HyperFire4K Tags</a></h2>
+<p>Maker notes tags for Reconyx HyperFire 4K models.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='26 = 0x1a'>26</td>
+<td>FirmwareVersion</td>
+<td class=c>undef[7]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='33 = 0x21'>33</td>
+<td>UIBFirmwareVersion</td>
+<td class=c>undef[7]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='40 = 0x28'>40</td>
+<td>TriggerMode</td>
+<td class=c>undef[1]</td>
+<td><table class=cols><tr>
+  <td>&#39;C&#39; = CodeLoc Not Entered
+  <br>&#39;E&#39; = External Sensor
+  <br>&#39;L&#39; = Cell Live View
+  <br>&#39;M&#39; = Motion Sensor
+  <br>&#39;S&#39; = Cell Status
+  <br>&#39;T&#39; = Time Lapse</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='41 = 0x29'>41</td>
+<td>Sequence</td>
+<td class=c>int8u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='43 = 0x2b'>43</td>
+<td>EventNumber</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='47 = 0x2f'>47</td>
+<td>DateTimeOriginal</td>
+<td class=c>undef[7]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='54 = 0x36'>54</td>
+<td>DayOfWeek</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>1 = Sunday
+  <br>2 = Monday
+  <br>3 = Tuesday
+  <br>4 = Wednesday</td><td>&nbsp;&nbsp;</td>
+  <td>5 = Thursday
+  <br>6 = Friday
+  <br>7 = Saturday</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='55 = 0x37'>55</td>
+<td>MoonPhase</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = New
+  <br>1 = New Crescent
+  <br>2 = First Quarter
+  <br>3 = Waxing Gibbous</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Full
+  <br>5 = Waning Gibbous
+  <br>6 = Last Quarter
+  <br>7 = Old Crescent</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='56 = 0x38'>56</td>
+<td>AmbientTemperatureFahrenheit</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='58 = 0x3a'>58</td>
+<td>AmbientTemperature</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='60 = 0x3c'>60</td>
+<td>Contrast</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='62 = 0x3e'>62</td>
+<td>Brightness</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='64 = 0x40'>64</td>
+<td>Sharpness</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='66 = 0x42'>66</td>
+<td>Saturation</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='68 = 0x44'>68</td>
+<td>Flash</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='69 = 0x45'>69</td>
+<td>AmbientLight</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='73 = 0x49'>73</td>
+<td>MotionSensitivity</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='75 = 0x4b'>75</td>
+<td>BatteryVoltage</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='77 = 0x4d'>77</td>
+<td>BatteryVoltageAvg</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='79 = 0x4f'>79</td>
+<td>BatteryType</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = NiMH
+  <br>2 = Lithium
+  <br>3 = External
+  <br>4 = SC10 Solar</span></td></tr>
+<tr>
+<td class=r title='81 = 0x51'>81</td>
+<td>UserLabel</td>
+<td class=c>string[51]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='132 = 0x84'>132</td>
+<td>SerialNumber</td>
+<td class=c>string[15]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='147 = 0x93'>147</td>
+<td>DirectoryNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='149 = 0x95'>149</td>
+<td>FileNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 7, 2019</i>
+<br><i>Last revised Sep 21, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

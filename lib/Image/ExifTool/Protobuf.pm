@@ -5,9 +5,12 @@
 #
 # Revisions:    2024-12-04 - P. Harvey Created
 #
-# Notes:        Tag definitions for Protobuf tags support additional 'signed',
-#               'unsigned' and 'int64s' formats for varInt (type 0) values,
-#               and 'rational' for byte (type 2) values
+# Notes:        Tag definitions for Protobuf tags support 'signed', 'unsigned',
+#               and 'int64s' formats for VARINT (type 0) values, 'int64u',
+#               'int64s', 'rational64u', 'rational64s' and 'double' for I64
+#               (type 1), 'undef', 'string' and 'rational' for LEN (type 2),
+#               and 'int32u', 'int32s', 'rational32u', 'rational32s', 
+#               'fixed32u', 'fixed32s' and 'float' for I32 (type 5) values.
 #
 # References:   1) https://protobuf.dev/programming-guides/encoding/
 #------------------------------------------------------------------------------
@@ -18,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 sub ProcessProtobuf($$$;$);
 
@@ -128,6 +131,9 @@ sub ProcessProtobuf($$$;$)
         $$et{ProtoPrefix}{$dirName} = '' unless defined $$et{ProtoPrefix}{$dirName};
         SetByteOrder('II');
     }
+    # prefix for unknown tags
+    my $unkPre = $$tagTbl{TAG_PREFIX} ? $$tagTbl{TAG_PREFIX} . '_' : 'Protobuf ';
+    
     # loop through protobuf records
     for (;;) {
         my $pos = $$dirInfo{Pos};
@@ -195,7 +201,7 @@ sub ProcessProtobuf($$$;$)
                 # (fall through to process known SubDirectory)
             } elsif ($$tagInfo{IsProtobuf}) {
                 # process Unknown protobuf directories
-                $et->VPrint(1, "$$et{INDENT}Protobuf $tag (" . length($buff) . " bytes) -->\n");
+                $et->VPrint(1, "$$et{INDENT}${unkPre}$tag (" . length($buff) . " bytes) -->\n");
                 my $addr = $dataPos + $$dirInfo{Pos} - length($buff);
                 $et->VerboseDump(\$buff, Addr => $addr, Prefix => $$et{INDENT});
                 my %subdir = ( DataPt => \$buff, DataPos => $addr, DirName => $dirName );
@@ -212,7 +218,7 @@ sub ProcessProtobuf($$$;$)
                     my $denom = VarInt(\%dir);
                     $rat = " (rational $num/$denom)" if $denom and $dir{Pos} == length($buff);
                 }
-                if ($buff !~ /[^\x20-\x7e]/) {
+                if ($buff !~ /[^\r\n\t\x20-\x7e]/) {
                     $val = $buff;   # assume this is an ASCII string
                 } elsif (length($buff) % 4) {
                     $val = '0x' . unpack('H*', $buff);

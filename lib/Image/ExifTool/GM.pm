@@ -136,7 +136,7 @@ my %channelStruct = (
 %Image::ExifTool::GM::marl = (
     PROCESS_PROC => \&Process_marl,
     GROUPS => { 2 => 'Other' },
-    VARS => { NO_ID => 1, NO_LOOKUP => 1 },
+    VARS => { ID_FMT => 'none', NO_LOOKUP => 1 },
     NOTES => q{
         Tags extracted from the 'ctbx' 'marl' (Marlin) box of timed PDR metadata
         from GM cars.  Use the -ee (L<API ExtractEmbedded|../ExifTool.html#ExtractEmbedded>) option to extract this

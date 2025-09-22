@@ -401,11 +401,13 @@ sub GetEntry($;$$)
         my $xlat = $langLookup{$lang};
         # load language lookups if  not done already
         if (not defined $xlat) {
-            if (eval "require '$geoDir/GeoLang/$lang.pm'") {
+            unshift @INC, $geoDir;  # make sure $geoDir is first in path
+            if (eval "require 'GeoLang/$lang.pm'") {
                 my $trans = "Image::ExifTool::GeoLang::${lang}::Translate";
                 no strict 'refs';
                 $xlat = \%$trans if %$trans;
             }
+            shift @INC;
             # read user-defined language translations
             if (%Image::ExifTool::Geolocation::geoLang) {
                 my $userLang = $Image::ExifTool::Geolocation::geoLang{$lang};

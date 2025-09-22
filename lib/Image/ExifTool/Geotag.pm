@@ -34,7 +34,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.81';
+$VERSION = '1.82';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -275,6 +275,7 @@ sub LoadTrackLog($$;$)
             } elsif (((/\b(GPS)?Date/i and /\b(GPS)?(Date)?Time/i) or /\bTime\(seconds\)/i) and /\Q$csvDelim/) {
                 chomp;
                 @csvHeadings = split /\Q$csvDelim/;
+                my $isColumbus = ($csvHeadings[0] and $csvHeadings[0] eq 'INDEX'); # (Columbus GPS logger)
                 $format = 'CSV';
                 # convert recognized headings to our parameter names
                 foreach (@csvHeadings) {
@@ -306,7 +307,7 @@ sub LoadTrackLog($$;$)
                     } elsif (/^(Pos)?Lon/i) {
                         $param = 'lon';
                         /ref$/i and $param .= 'ref';
-                    } elsif (/^(Pos)?Alt/i) {
+                    } elsif (/^(Pos)?(Alt|Height)/i) {
                         $param = 'alt';
                     } elsif (/^Speed/i) {
                         $param = 'speed';
@@ -314,6 +315,9 @@ sub LoadTrackLog($$;$)
                         if (m{\((mph|km/h|m/s)\)}) {
                             $scaleSpeed = $otherConv{$1};
                             $xtra = " in $1";
+                        } elsif ($isColumbus) { # (Columbus GPS logger)
+                            $scaleSpeed = $otherConv{'km/h'};
+                            $xtra = " in km/h";
                         } else {
                             $xtra = ' in knots';
                         }
@@ -541,12 +545,16 @@ DoneFix:    $isDate = 1;
                         $date = Time::Local::timegm(0,0,0,$1,$2-1,$3);
                     } elsif ($val =~ /(\d{4}).*?(\d{2}).*?(\d{2})/) {
                         $date = Time::Local::timegm(0,0,0,$3,$2-1,$1);
+                    } elsif ($val =~ /^(\d{2})(\d{2})(\d{2})$/) { # (Columbus GPS logger)
+                        $date = Time::Local::timegm(0,0,0,$3,$2-1,$1+2000);
                     }
                 } elsif ($param eq 'time') {
                     if ($val =~ /^(\d{1,2}):(\d{2}):(\d{2}(\.\d+)?).*?(([-+])(\d{1,2}):?(\d{2}))?/) {
                         $secs = (($1 * 60) + $2) * 60 + $3;
                         # adjust for time zone if specified
                         $secs += ($7 * 60 + $8) * ($6 eq '-' ? 60 : -60) if $5;
+                    } elsif ($val =~ /^(\d{2})(\d{2})(\d{2})$/) { # (Columbus GPS logger)
+                        $secs = (($1 * 60) + $2) * 60 + $3;
                     }
                 } elsif ($param eq 'lat' or $param eq 'lon') {
                     $$fix{$param} = Image::ExifTool::GPS::ToDegrees($val, 1);

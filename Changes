@@ -7,6 +7,29 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.36. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Sept. 22, 2025 - Version 13.37
+
+  - Added support for geotagging from Columbus GPS logger CSV files
+  - Added some new Canon, Sony and Olympus lenses (thanks Hubert Figuiere,
+    github #352 and Jos Roost)
+  - Added new Canon RFLensType and CanonModelID values (thanks Norbert Wasser
+    and Hubert Figuiere, github #350)
+  - Added a new FujiFilm FaceElementType value
+  - Decode Reconyx MicroFire and Hyperfire 4K maker notes (thanks Reconyx)
+  - Decode a number of new Canon and Pentax tags and add a number of new values
+    (thanks Karsten Gieselmann)
+  - Decode maker notes from Ricoh GR III videos
+  - Decode a new Sony tag (thanks Jos Roost)
+  - Decode Google HDRP maker notes
+  - Raised size limit on QuickTime atoms extracted for the -ee option, and added
+    a minor warning and allow bypassing with the -m option if over this limit
+  - Minor change to verbose output for XMP metadata
+  - Fixed possible hang/crash when reading Windows executables (github #351)
+  - Fixed incorrect FujiFilm PanoramaDirection values
+  - API Changes:
+      - Fixed GeoDir option so alternate languages are loaded properly when a
+        relative path is used
+
 Sept. 9, 2025 - Version 13.36 (production release)
 
   - Added a new Nikon LensID (thanks Max, github #345)

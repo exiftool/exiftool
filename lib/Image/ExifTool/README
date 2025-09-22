@@ -211,12 +211,13 @@ key:
                   an ID_LABEL of "Index" is assumed for tables which use
                   ProcessBinaryData or set the IS_BINARY flag.
 
-    NO_ID         Avoid printing "Tag ID" column in tag name documentation.
-
-    HEX_ID        Print tag ID in hexadecimal (with 4 hex digits or more).  Set
-                  to 0 for string ID's that look like hex numbers to prevent
-                  them from being converted when importing an XML file for
-                  language translations in BuildLangModules().
+    ID_FMT        Format for tag ID's in the documentation.  Setting is 'hex' to
+                  print tag ID in hexadecimal (with 4 hex digits or more), 'dec'
+                  to leave as decimal, 'str' to use a quoted string, or 'none'
+                  to drop the "Tag ID" column entirely.  Any setting other than
+                  'hex' prevents hex-looking strings from being converted when
+                  importing an XML file for language translations in
+                  BuildLangModules().
 
     NO_LOOKUP     Do not add tags to TagLookup.pm lookup tables.
 

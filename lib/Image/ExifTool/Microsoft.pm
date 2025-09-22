@@ -230,7 +230,7 @@ sub CheckXtra($$$);
     GROUPS => { 0 => 'XMP', 1 => 'XMP-microsoft', 2 => 'Image' },
     NAMESPACE => 'MicrosoftPhoto',
     TABLE_DESC => 'XMP Microsoft',
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         Microsoft Photo 1.0 schema XMP tags.  This is likely not a complete list,
         but represents tags which have been observed in sample images.  The actual
@@ -263,7 +263,7 @@ sub CheckXtra($$$);
     GROUPS => { 0 => 'XMP', 1 => 'XMP-MP1', 2 => 'Image' },
     NAMESPACE => 'MP1',
     TABLE_DESC => 'XMP Microsoft Photo',
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         Microsoft Photo 1.1 schema XMP tags which have been observed.
     },
@@ -320,7 +320,7 @@ my %sRegions = (
     GROUPS => { 0 => 'XMP', 1 => 'XMP-MP', 2 => 'Image' },
     NAMESPACE => 'MP',
     TABLE_DESC => 'XMP Microsoft Photo',
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         Microsoft Photo 1.2 schema XMP tags which have been observed.
     },
@@ -361,7 +361,7 @@ my %sRegions = (
     WRITE_GROUP => 'Microsoft',
     AVOID => 1,
     GROUPS => { 0 => 'QuickTime', 2 => 'Video' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         Tags found in the Microsoft "Xtra" atom of QuickTime videos.  Tag ID's are
         not shown because some are unruly GUID's.  Currently most of these tags are

@@ -26,7 +26,7 @@ sub ProcessLinkInfo($$$);
 %Image::ExifTool::LNK::Main = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 2 => 'Other' },
-    VARS => { HEX_ID => 1 },    # print hex ID's in documentation
+    VARS => { ID_FMT => 'hex' },    # print hex ID's in documentation
     NOTES => 'Information extracted from MS Shell Link (Windows shortcut) files.',
     # maybe the Flags aren't very useful to the user (since they are
     # mainly structural), but extract them anyway for completeness
@@ -262,7 +262,7 @@ sub ProcessLinkInfo($$$);
     GROUPS => { 2 => 'Other' },
     PROCESS_PROC => \&ProcessLinkInfo,
     FORMAT => 'int32u',
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     VolumeID => { },
     DriveType => {
         PrintConv => {

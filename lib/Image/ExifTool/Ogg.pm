@@ -21,7 +21,7 @@ $VERSION = '1.04';
 
 my $MAX_PACKETS = 2;    # maximum packets to scan from each stream at start of file
 
-# Information types recognizedi in Ogg files
+# Information types recognized in Ogg files
 %Image::ExifTool::Ogg::Main = (
     NOTES => q{
         ExifTool extracts the following types of information from Ogg files.  See

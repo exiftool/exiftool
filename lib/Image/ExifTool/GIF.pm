@@ -33,7 +33,7 @@ my @appExtensions = ( 'XMP Data/XMP', 'ICCRGBG1/012' );
 
 %Image::ExifTool::GIF::Main = (
     GROUPS => { 2 => 'Image' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         This table lists information extracted from GIF images. See
         L<http://www.w3.org/Graphics/GIF/spec-gif89a.txt> for the official GIF89a

@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.96';
+$VERSION = '4.97';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -561,7 +561,8 @@ $VERSION = '4.96';
     4159 => 'Canon EF-M 32mm f/1.4 STM', #42
     4160 => 'Canon EF-S 35mm f/2.8 Macro IS STM', #42
     4208 => 'Sigma 56mm f/1.4 DC DN | C or other Sigma Lens', #forum10603
-    4208.1 => 'Sigma 30mm F1.4 DC DN | C', #git issue#83 (016)
+    4208.1 => 'Sigma 30mm F1.4 DC DN | C', #github#83 (016)
+    6512 => 'Sigma 12mm F1.4 DC | C', #github#352 (025)
     # (Nano USM lenses - 0x90xx)
     36910 => 'Canon EF 70-300mm f/4-5.6 IS II USM', #42
     36912 => 'Canon EF-S 18-135mm f/3.5-5.6 IS USM', #42
@@ -640,6 +641,7 @@ $VERSION = '4.96';
    '61182.62' => 'Canon RF 50mm F1.4 L VCM', #42
    '61182.63' => 'Canon RF 24mm F1.4 L VCM', #42
    '61182.64' => 'Canon RF 20mm F1.4 L VCM', #42
+   '61182.65' => 'Canon RF 85mm F1.4 L VCM', #github350
     65535 => 'n/a',
 );
 
@@ -892,6 +894,7 @@ $VERSION = '4.96';
 
 # (see http://cweb.canon.jp/e-support/faq/answer/digitalcamera/10447-1.html for PowerShot/IXUS/IXY names)
 
+    0x40000227 => 'EOS C50', #github350
     0x4007d673 => 'DC19/DC21/DC22',
     0x4007d674 => 'XH A1',
     0x4007d675 => 'HV10',
@@ -7048,6 +7051,7 @@ my %ciMaxFocal = (
             325 => 'Canon RF 50mm F1.4 L VCM', #42
             326 => 'Canon RF 24mm F1.4 L VCM', #42
             327 => 'Canon RF 20mm F1.4 L VCM', #42
+            328 => 'Canon RF 85mm F1.4 L VCM', #42/github350
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },
     },
@@ -9125,7 +9129,7 @@ my %filterConv = (
         RawConv => '$val == 0x7fffffff ? undef : $val',
     },
     7 => {  # -4 to 4
-        Name => 'Saturation', 
+        Name => 'Saturation',
         RawConv => '$val == 0x7fffffff ? undef : $val',
         %Image::ExifTool::Exif::printParameter,
     },
@@ -9175,6 +9179,7 @@ my %filterConv = (
         ValueConvInv => '$val - 1',
         PrintHex => 1,
         PrintConv => {
+            11 => 'Case A',  #KG instead of 'Case 11'. Canon use A for Auto
             0x80000000 => 'n/a',
             OTHER => sub { 'Case ' . shift },
         },
@@ -9184,6 +9189,7 @@ my %filterConv = (
         Name => 'AFTrackingSensitivity',
         PrintHex => 1,
         PrintConv => {
+            127 => 'Auto', #KG
             0x7fffffff => 'n/a',
             OTHER => sub { shift },
         },
@@ -9193,6 +9199,7 @@ my %filterConv = (
         Description => 'AF Accel/Decel Tracking',
         PrintHex => 1,
         PrintConv => {
+            127 => 'Auto', #KG
             0x7fffffff => 'n/a',
             OTHER => sub { shift },
         },
@@ -9353,6 +9360,7 @@ my %filterConv = (
             1 => 'People',
             2 => 'Animals',
             3 => 'Vehicles',
+            4 => 'Auto',  #KG (R1, R5m2)
         },
     },
     21 => { #github344 (R6)
@@ -9363,9 +9371,55 @@ my %filterConv = (
             2 => 'Switch Subject',
         },
     },
-    24 => { #forum16068
+    24 => { #forum16068  #KG extensions for 'left' and 'right'
         Name => 'EyeDetection',
-        PrintConv => \%offOn,
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Auto',
+            2 => 'Left Eye',
+            3 => 'Right Eye',
+         },
+    },
+    # ---------------
+    # Entries 25..31 exist for recent models only (R1, R5m2, ...)
+    # ---------------
+    26 => { #KG
+        Name => 'WholeAreaTracking',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+        },
+    },
+    27 => { #KG
+        Name => 'ServoAFCharacteristics',
+        PrintConv => {
+            0 => 'Case Auto',
+            1 => 'Case Manual',
+        },
+    },
+    28 => { #KG
+        Name => 'CaseAutoSetting',
+        PrintConv => {
+           -1 => 'Locked On',
+            0 => 'Standard',
+            1 => 'Responsive',
+            0x7fffffff => 'n/a',
+        },
+    },
+    29 => { #KG
+        Name => 'ActionPriority',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+        },
+    },
+    30 => { #KG
+        Name => 'SportEvents',
+        PrintConv => {
+            0 => 'Soccer',
+            1 => 'Basketball',
+            2 => 'Volleyball',
+        }
     },
 );
 

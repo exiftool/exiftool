@@ -62,7 +62,7 @@ my %cborType7 = (
 
 %Image::ExifTool::CBOR::Main = (
     GROUPS => { 0 => 'JUMBF', 1 => 'CBOR', 2 => 'Other' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     PROCESS_PROC => \&ProcessCBOR,
     NOTES => q{
         The tags below are extracted from CBOR (Concise Binary Object

@@ -54,7 +54,7 @@ my @vectorVals;
 %Image::ExifTool::OOXML::Main = (
     GROUPS => { 0 => 'XML', 1 => 'XML', 2 => 'Document' },
     PROCESS_PROC => \&Image::ExifTool::XMP::ProcessXMP,
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         The Office Open XML (OOXML) format was introduced with Microsoft Office 2007
         and is used by file types such as DOCX, PPTX and XLSX.  These are

@@ -947,7 +947,7 @@ my %formatMinMax = (
 #       if necessary to differentiate tags with the same ID but different names
 %Image::ExifTool::Samsung::Trailer = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Other' },
-    VARS => { NO_ID => 1, HEX_ID => 0 },
+    VARS => { ID_FMT => 'none' },
     PROCESS_PROC => \&ProcessSamsung,
     TAG_PREFIX => 'SamsungTrailer',
     PRIORITY => 0, # (first one takes priority so DepthMapWidth/Height match first DepthMapData)

@@ -59,7 +59,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.57';
+$VERSION = '3.58';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -416,6 +416,8 @@ sub AFAreasK3III($$);
 #
     '31 1' => '18.3mm F2.8', #PH (GR III built-in)
     '31 4' => '26.1mm F2.8', #PH (GR IIIx built-in)
+    '31 5' => '26.1mm F2.8 GT-2 TC', #KG (GR IIIx built-in plus GT-2 TC)
+    '31 8' => '18.3mm F2.8', #KG (GR IV built-in)
 );
 
 # Pentax model ID codes - PH
@@ -1183,7 +1185,8 @@ my %binaryDataAttrs = (
                 0x111 => 'AF-C (Release-priority)', #PH (K-5,K-3)
                 0x112 => 'AF-A (Release-priority)', #PH (K-3)
                 0x120 => 'Contrast-detect (Release-priority)', #PH (K-01)
-                # bit 15 indicates macro mode (disabled for MF, and defaults to Select for Snap, Infinity)
+                # bit 15 indicates macro mode (disabled for MF, and defaults to Select for Snap, Infinity)  #KG 'disabled for MF' - in contradiction with 0x8003 ??
+                0x8003 => 'Manual (Macro)', # (GR IV)
                 0x8006 => 'Auto-area (Macro)', # (GR III)
                 0x8007 => 'Zone Select (Macro)', # (GR III)
                 0x8008 => 'Select (Macro)', # (GR III)
@@ -1970,16 +1973,18 @@ my %binaryDataAttrs = (
             '19 0' => 'Astrotracer', #29
             # extra K10D modes (ref 16)
             '13 0' => 'Shutter & Aperture Priority AE',
+            '14 0' => 'Shutter Priority AE', #KG (K-3III))
             '15 0' => 'Sensitivity Priority AE',
             '16 0' => 'Flash X-Sync Speed AE',
+            '17 0' => 'Flash X-Sync Speed', #KG (K-3III))
             '18 0' => 'Auto Program (Normal)', #PH (K-5)
             '18 1' => 'Auto Program (Hi-speed)', #PH (NC)
             '18 2' => 'Auto Program (DOF)', #PH (K-5)
             '18 3' => 'Auto Program (MTF)', #PH (NC)
             '18 22' => 'Auto Program (Shallow DOF)', #PH (NC)
             '20 22' => 'Blur Control', #PH (Q)
-            '24 0' => 'Aperture Priority (Adv.Hyp)', #KG
-            '25 0' => 'Manual Exposure (Adv.Hyp)', #KG
+            '24 0' => 'Aperture Priority (Adv.Hyp)', #KG (K-3III)
+            '25 0' => 'Manual Exposure (Adv.Hyp)', #KG (K-3III)
             '26 0' => 'Shutter and Aperture Priority (TAv)', #PH (K-3III)
             '249 0' => 'Movie (TAv)', #31
             '250 0' => 'Movie (TAv, Auto Aperture)', #31
@@ -2209,7 +2214,9 @@ my %binaryDataAttrs = (
             # 256 - seen for GR III
             # 257 - seen for GR III
             # 262 - seen for GR III
-            32768 => 'n/a',
+            32768 => 'Standard', #KG (K-3IIIm) (was "n/a" previously - PH)
+            32769 => 'Hard', #KG (K-3IIIm)
+            32770 => 'Soft', #KG (K-3IIIm)
         },
     },
     0x0050 => { #PH
@@ -5856,8 +5863,8 @@ my %binaryDataAttrs = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     FORMAT => 'int16u',
-    DATAMEMBER => [ 3 ],
-    NOTES => 'AF tags written by the K-3 Mark III, GR III and GR IIIx.',
+    DATAMEMBER => [ 2, 3 ],
+    NOTES => 'AF tags written by the K-3 Mark III, GR III, GR IIIx and GR IV.',
     0 => {
         Name => 'AFInfo',
         Format => 'int16u[$size/2]',
@@ -5902,6 +5909,10 @@ my %binaryDataAttrs = (
             0x200a => 'Contrast-detect Zone Select', # (GR III)
             0x200b => 'Contrast-detect Spot',
         },
+    },
+    2 => {
+        Name => 'MaxNumAFPoints',
+        RawConv => '$$self{MaxNumAFPoints} = $val',
     },
     3 => {
         Name => 'NumAFPoints',

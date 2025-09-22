@@ -22,7 +22,7 @@ sub ExtractTags($$$);
 # Lytro LFP tags (ref PH)
 %Image::ExifTool::Lytro::Main = (
     GROUPS => { 2 => 'Camera' },
-    VARS => { NO_ID => 1 },
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         Tag definitions for Lytro Light Field Picture (LFP) files.  ExifTool
         extracts the full JSON metadata blocks, as well as breaking them down into

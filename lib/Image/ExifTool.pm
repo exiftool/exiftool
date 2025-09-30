@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.37';
+$VERSION = '13.38';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -148,16 +148,16 @@ sub ReadValue($$$;$$$);
     PCX PGF PSP PhotoCD Radiance Other::PFM PDF PostScript Photoshop::Header
     Photoshop::Layers Photoshop::ImageData FujiFilm::RAFHeader FujiFilm::RAF
     FujiFilm::IFD FujiFilm::MRAW Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD
-    Sony::PMP ITC ID3 ID3::Lyrics3 FLAC AAC Ogg Vorbis APE APE::NewHeader
-    APE::OldHeader Audible MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime
-    QuickTime::ImageFile QuickTime::Stream QuickTime::Tags360Fly Matroska
-    Matroska::StdTag MOI MXF DV Flash Flash::FLV Real::Media Real::Audio
-    Real::Metafile Red RIFF AIFF ASF TNEF WTV DICOM FITS XISF MIE JSON HTML
-    XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion EXE::PEString
-    EXE::DebugRSDS EXE::DebugNB10 EXE::Misc EXE::MachO EXE::PEF EXE::ELF EXE::AR
-    EXE::CHM LNK PCAP Font VCard Text VCard::VCalendar VCard::VNote RSRC Rawzor
-    ZIP ZIP::GZIP ZIP::RAR ZIP::RAR5 RTF OOXML iWork ISO FLIR::AFF FLIR::FPF
-    MacOS MacOS::MDItem FlashPix::DocTable
+    Sony::PMP ITC ID3 ID3::Lyrics3 FLAC AAC Ogg Vorbis DSF WavPack APE
+    APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio MPEG::Video MPEG::Xing
+    M2TS QuickTime QuickTime::ImageFile QuickTime::Stream QuickTime::Tags360Fly
+    Matroska Matroska::StdTag MOI MXF DV Flash Flash::FLV Real::Media
+    Real::Audio Real::Metafile Red RIFF AIFF ASF TNEF WTV DICOM FITS XISF MIE
+    JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
+    EXE::PEString EXE::DebugRSDS EXE::DebugNB10 EXE::Misc EXE::MachO EXE::PEF
+    EXE::ELF EXE::AR EXE::CHM LNK PCAP Font VCard Text VCard::VCalendar
+    VCard::VNote RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR ZIP::RAR5 RTF OOXML iWork
+    ISO FLIR::AFF FLIR::FPF MacOS MacOS::MDItem FlashPix::DocTable
 );
 
 # alphabetical list of current Lang modules
@@ -194,13 +194,13 @@ $defaultLang = 'en';    # default language
 # 3) PLIST must be in this list for the binary PLIST format, although it may
 #    cause a file to be checked twice for XML
 @fileTypes = qw(JPEG EXV CRW DR4 TIFF GIF MRW RAF X3F JP2 PNG MIE MIFF PS PDF
-                PSD XMP BMP WPG BPG PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV
-                OGG FLAC APE MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FLIF FPF
-                LFP HTML VRD RTF FITS XISF XCF DSS QTIF FPX PICT ZIP GZIP PLIST
-                RAR 7Z BZ2 CZI TAR EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font
-                JUMBF RSRC M2TS MacOS PHP PCX DCX DWF DWG DXF WTV Torrent VCard
-                LRI R3D AA PDB PFM2 MRC LIF JXL MOI ISO ALIAS PCAP JSON MP3
-                TNEF DICOM PCD NKA ICO TXT AAC);
+                PSD XMP BMP WPG BPG PPM WV RIFF AIFF ASF MOV MPEG Real SWF PSP
+                FLV OGG FLAC APE MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FLIF
+                FPF LFP HTML VRD RTF FITS XISF XCF DSF DSS QTIF FPX PICT ZIP
+                GZIP PLIST RAR 7Z BZ2 CZI TAR EXE EXR HDR CHM LNK WMF AVC DEX
+                DPX RAW Font JUMBF RSRC M2TS MacOS PHP PCX DCX DWF DWG DXF WTV
+                Torrent VCard LRI R3D AA PDB PFM2 MRC LIF JXL MOI ISO ALIAS PCAP
+                JSON MP3 TNEF DICOM PCD NKA ICO TXT AAC);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -304,6 +304,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     DPX  => ['DPX',  'Digital Picture Exchange' ],
     DR4  => ['DR4',  'Canon VRD version 4 Recipe'],
     DS2  => ['DSS',  'Digital Speech Standard 2'],
+    DSF  => ['DSF',  'DSF Stream File'],
     DSS  => ['DSS',  'Digital Speech Standard'],
     DV   => ['DV',   'Digital Video'],
     DVB  => ['MOV',  'Digital Video Broadcasting'],
@@ -556,7 +557,8 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     WMA  => ['ASF',  'Windows Media Audio'],
     WMF  => ['WMF',  'Windows Metafile Format'],
     WMV  => ['ASF',  'Windows Media Video'],
-    WV   => ['RIFF', 'WavePack lossless audio'],
+    WV   => ['WV',   'WavPack Audio'],
+    WVP  =>  'WV',
     X3F  => ['X3F',  'Sigma RAW format'],
     XCF  => ['XCF',  'GIMP native image format'],
     XHTML=> ['HTML', 'Extensible HyperText Markup Language'],
@@ -652,6 +654,7 @@ my %fileDescription = (
     DPX  => 'image/x-dpx',
     DR4  => 'application/octet-stream', #PH (NC)
     DS2  => 'audio/x-ds2',
+    DSF  => 'audio/x-dsf',
     DSS  => 'audio/x-dss',
     DV   => 'video/x-dv',
    'DVR-MS' => 'video/x-ms-dvr',
@@ -818,6 +821,7 @@ my %fileDescription = (
     WMV  => 'video/x-ms-wmv',
     WPG  => 'image/x-wpg',
     WTV  => 'video/x-ms-wtv',
+    WV   => 'audio/x-wavpack',
     X3F  => 'image/x-sigma-x3f',
     XCF  => 'image/x-xcf',
     XISF => 'image/x-xisf',
@@ -901,6 +905,7 @@ my %moduleName = (
     TXT  => 'Text',
     VRD  => 'CanonVRD',
     WMF  => 0,
+    WV   => 'WavPack',
     X3F  => 'SigmaRaw',
     XCF  => 'GIMP',
 );
@@ -933,6 +938,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     DOCX => 'PK\x03\x04',
     DPX  => '(SDPX|XPDS)',
     DR4  => 'IIII[\x04|\x05]\0\x04\0',
+    DSF  => 'DSD \x1c\0{7}.{16}fmt ',
     DSS  => '(\x02dss|\x03ds2)',
     DV   => '\x1f\x07\0[\x3f\xbf]', # (not tested if extension recognized)
     DWF  => '\(DWF V\d',
@@ -970,7 +976,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     LIF  => '\x70\0{3}.{4}\x2a.{4}<\0',
     LNK  => '.{4}\x01\x14\x02\0{5}\xc0\0{6}\x46',
     LRI  => 'LELR \0',
-    M2TS => '(....)?\x47',
+    M2TS => '.{0,191}?\x47(.{187}|.{191})\x47(.{187}|.{191})\x47',
     MacOS=> '\0\x05\x16\x07\0.\0\0Mac OS X        ',
     MIE  => '~[\x10\x18]\x04.0MIE',
     MIFF => 'id=ImageMagick',
@@ -5523,23 +5529,31 @@ sub AddCleanup($)
 #------------------------------------------------------------------------------
 # Add warning tag
 # Inputs: 0) ExifTool object reference, 1) warning message
-#         2) true if minor (2 if behaviour changes when warning is ignored,
-#            or 3 if warning shouldn't be issued when Validate option is used)
+#         2) 0=normal warning, 1=minor, 2=minor with behavioural change when
+#            ignored, 3=warning shouldn't be issued with Validate option,
+#            bit 0x04 set causes warning count to not be incremented
 # Returns: true if warning tag was added
 sub Warn($$;$)
 {
     my ($self, $str, $ignorable) = @_;
     my $noWarn = $$self{OPTIONS}{NoWarning};
-    if ($ignorable) {
+    my $noCount;
+    while ($ignorable) {
+        if ($ignorable & 0x04) {
+            $noCount = 1;
+            $ignorable &= 0x03 or last;
+        }
+        my $ignorable = $ignorable & 0x03;
         return 0 if $$self{OPTIONS}{IgnoreMinorErrors};
         return 0 if $ignorable eq '3' and $$self{OPTIONS}{Validate};
         return 1 if defined $noWarn and eval { $str =~ /$noWarn/ };
         $str = $ignorable eq '2' ? "[Minor] $str" : "[minor] $str";
+        last;
     }
     unless (defined $noWarn and eval { $str =~ /$noWarn/ }) {
         # add each warning only once but count number of occurrences
         if ($$self{WAS_WARNED}{$str}) {
-            ++$$self{WAS_WARNED}{$str};
+            ++$$self{WAS_WARNED}{$str} unless $noCount;
         } else {
             $self->FoundTag('Warning', $str);
             $$self{WAS_WARNED}{$str} = 1;
@@ -9575,6 +9589,7 @@ sub DoEscape($$)
 sub SetFileType($;$$$)
 {
     my ($self, $fileType, $mimeType, $normExt) = @_;
+    # use only the first FileType set if called again for the main document
     unless ($$self{FileType} and not $$self{DOC_NUM}) {
         my $baseType = $$self{FILE_TYPE};
         my $ext = $$self{FILE_EXT};

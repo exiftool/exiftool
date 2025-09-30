@@ -18,7 +18,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.63';
+$VERSION = '1.64';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -79,13 +79,13 @@ my %userTagName = (
     VARS => { ID_FMT => 'none' },
     PROCESS_PROC => \&ProcessID3Dir, # (used to process 'id3 ' chunk in WAV files)
     NOTES => q{
-        ExifTool extracts ID3 and Lyrics3 information from MP3, MPEG, WAV, AIFF,
-        OGG, FLAC, APE, MPC and RealAudio files.  ID3v2 tags which support multiple
-        languages (eg. Comment and Lyrics) are extracted by specifying the tag name,
-        followed by a dash ('-'), then a 3-character ISO 639-2 language code (eg.
-        "Comment-spa"). See L<https://id3.org/> for the official ID3 specification
-        and L<http://www.loc.gov/standards/iso639-2/php/code_list.php> for a list of
-        ISO 639-2 language codes.
+        ExifTool extracts ID3 and Lyrics3 information from MP3, MPEG, WAV, WV, AIFF,
+        OGG, FLAC, APE, DSF, MPC and RealAudio files.  ID3v2 tags which support
+        multiple languages (eg. Comment and Lyrics) are extracted by specifying the
+        tag name, followed by a dash ('-'), then a 3-character ISO 639-2 language
+        code (eg. "Comment-spa"). See L<https://id3.org/> for the official ID3
+        specification and L<http://www.loc.gov/standards/iso639-2/php/code_list.php>
+        for a list of ISO 639-2 language codes.
     },
     ID3v1 => {
         Name => 'ID3v1',
@@ -1437,6 +1437,7 @@ sub ProcessID3($$)
 
     # allow this to be called with either RAF or DataPt
     my $raf = $$dirInfo{RAF} || File::RandomAccess->new($$dirInfo{DataPt});
+    my $dataPos = $$dirInfo{DataPos} || 0;
     my ($buff, %id3Header, %id3Trailer, $hBuff, $tBuff, $eBuff, $tagTablePtr);
     my $rtnVal = 0;
     my $hdrEnd = 0;
@@ -1486,7 +1487,7 @@ sub ProcessID3($$)
         }
         %id3Header = (
             DataPt   => \$hBuff,
-            DataPos  => $pos,
+            DataPos  => $dataPos + $pos,
             DirStart => 0,
             DirLen   => length($hBuff),
             Version  => $vers,
@@ -1511,7 +1512,7 @@ sub ProcessID3($$)
         $trailSize = 128;
         %id3Trailer = (
             DataPt   => \$tBuff,
-            DataPos  => $raf->Tell() - 128,
+            DataPos  => $dataPos + $raf->Tell() - 128,
             DirStart => 0,
             DirLen   => length($tBuff),
         );

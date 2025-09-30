@@ -980,11 +980,12 @@ effect as a value of 0 for options with numerical values.</p>
     of some additional tags as mentioned in the <a href="TagNames/index.html">Tag Name documentation</a>.</td>
     <td align=center>0, 1, 2 or 3</td><td align=center>undef</td></tr>
 <tr id="RequestTags"><td>RequestTags</td><td>List of additional tag and/or group names
-    to request in the next call to <a href="#ExtractInfo">ExtractInfo</a>. This option is
-    useful only for tags/groups which aren't extracted unless specifically requested. Groups
-    are requested by adding a colon after the name (eg. "MacOS:"). Names are converted to lower
-    case as they are added to the list.</td><td>List reference, delimited string of names
-    (any delimiter is allowed), or undef to clear the previous RequestTags list.</td>
+    to request in subsequent calls to <a href="#ExtractInfo">ExtractInfo</a>. This option is
+    useful only for tags/groups which aren't extracted unless specifically requested, or
+    if <a href="#IgnoreTags">IgnoreTags</a> is set to "All". Groups are requested by adding
+    a colon after the name (eg. "MacOS:"). Names are converted to lower case as they are
+    added to the list.</td><td>List reference, delimited string of names (any delimiter is
+    allowed), or undef to clear the previous RequestTags list.</td>
     <td align=center>undef</td></tr>
 <tr id="SaveBin"><td>SaveBin</td><td>Flag to save binary values of tags, accessible through
     calls to <a href="#GetValue">GetValue</a> with a value type of "Bin".</td>

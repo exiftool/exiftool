@@ -512,11 +512,20 @@ my %sAppInfo = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     TAG_PREFIX => 'HDRPlusMakerNote',
     PROCESS_PROC => \&ProcessHDRP,
-    VARS => { ID_FMT => 'str' },
+    VARS => {   
+        ID_FMT => 'str',
+        SORT_PROC => sub {
+            my ($a,$b) = @_;
+            $a =~ s/(\d+)/sprintf("%.3d",$1)/eg;
+            $b =~ s/(\d+)/sprintf("%.3d",$1)/eg;
+            return $a cmp $b;
+        },
+    },
     NOTES => q{
         Google protobuf-format HDR-Plus maker notes.  Tag ID's are hierarchical
         protobuf field numbers.  Stored as base64-encoded, encrypted and gzipped
-        Protobuf data.
+        Protobuf data.  Much of this metadata is still unknown, but is extracted
+        using the Unknown option.
     },
     '1-1' => 'ImageName',
     '1-2' => { Name => 'ImageData',   Format => 'undef', Binary => 1 },
@@ -693,8 +702,8 @@ sub ProcessHDRP($$$)
     my $i = 0;
     while ($i < @words) {
         # (messy, but handle all 64-bit arithmetic with 32-bit backward
-        #  compatibility -- no bit operations on any number > 0xffffffff)
-        # rotate the key
+        #  compatibility, so no bit operations on any number > 0xffffffff)
+        # rotate the key for each new 64-bit word
         # $key ^= $key >> 12;
         $lo ^= $lo >> 12 | ($hi & 0xfff) << 20;
         $hi ^= $hi >> 12;
@@ -715,7 +724,8 @@ sub ProcessHDRP($$$)
                 $c[$j+$k] += $a[$j] * $b[$k];
             }
         }
-        # (we only care about the low 32-bits, so don't bother with the upper 32)
+        # (we will only retain the low 64-bits of the key, so
+        #  don't bother finishing the calculation of the upper bits)
         for ($j=6; $j>=3; --$j) {
             while ($c[$j] > 0xffffffff) {
                 ++$c[$j-2];
@@ -726,7 +736,7 @@ sub ProcessHDRP($$$)
         }
         $hi = ($c[3] << 16) + $c[4];
         $lo = ($c[5] << 16) + $c[6];
-        # apply the xor
+        # apply the key to this 64-bit word
         $words[$i++] ^= $lo;
         $words[$i++] ^= $hi;
     }

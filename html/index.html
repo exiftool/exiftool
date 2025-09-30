@@ -110,9 +110,9 @@ the download links now point to SourceForge)</b></i></p>
 packages</a>.</b></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="https://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.37.tar.gz/download">
-Download        Version 13.37</a> (7.6 MB) -
-<a href="history.html">Sept. 22, 2025</a></b></td></tr></table></blockquote>
+<a href="https://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.38.tar.gz/download">
+Download        Version 13.38</a> (7.6 MB) -
+<a href="history.html">Sept. 30, 2025</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -132,12 +132,14 @@ ExifTool supports many different metadata formats including
 <a href="TagNames/ID3.html">ID3</a>,
 <a href="TagNames/ID3.html#Lyrics3">Lyrics3</a>,
 as well as the maker notes of many digital cameras by
+<a href="TagNames/Apple.html">Apple</a>,
 <a href="TagNames/Canon.html">Canon</a>,
 <a href="TagNames/Casio.html">Casio</a>,
 <a href="TagNames/DJI.html">DJI</a>,
 <a href="TagNames/FLIR.html">FLIR</a>,
 <a href="TagNames/FujiFilm.html">FujiFilm</a>,
 <a href="TagNames/GE.html">GE</a>,
+<a href="TagNames/Google.html#HDRPMakerNote">Google</a>,
 <a href="TagNames/GoPro.html">GoPro</a>,
 <a href="TagNames/HP.html">HP</a>,
 <a href="TagNames/JVC.html">JVC/Victor</a>,
@@ -164,11 +166,11 @@ only, and do not include the HTML documentation or other files of the full
 distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td rowspan=2><b><a name="alone">Windows</a></b></td><td><b>
-32-bit: <a href="https://sourceforge.net/projects/exiftool/files/exiftool-13.37_32.zip/download">
-         exiftool-13.37_32.zip</a> (11.1 MB)</b></td></tr>
+32-bit: <a href="https://sourceforge.net/projects/exiftool/files/exiftool-13.38_32.zip/download">
+         exiftool-13.38_32.zip</a> (11.1 MB)</b></td></tr>
 <tr><td><b>64-bit:
-<a href="https://sourceforge.net/projects/exiftool/files/exiftool-13.37_64.zip/download">
-         exiftool-13.37_64.zip</a> (10.9 MB)</b></td></tr>
+<a href="https://sourceforge.net/projects/exiftool/files/exiftool-13.38_64.zip/download">
+         exiftool-13.38_64.zip</a> (10.9 MB)</b></td></tr>
          </table></blockquote>
 
 <p><b>The Windows executable</b> archives include Perl. Just download and un-zip
@@ -186,8 +188,8 @@ if you have any problems/comments with these versions.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
-<a href="https://sourceforge.net/projects/exiftool/files/ExifTool-13.37.pkg/download">
-         ExifTool-13.37.pkg</a> (5.5 MB)</b></td></tr></table></blockquote>
+<a href="https://sourceforge.net/projects/exiftool/files/ExifTool-13.38.pkg/download">
+         ExifTool-13.38.pkg</a> (5.5 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -373,6 +375,7 @@ metadata types for each file format.  C2PA metadata is not currently <b>W</b>rit
 <tr><td><a href="TagNames/OOXML.html">DOTX, DOTM</a></td><td>R</td><td>Office Open XML Document Template [Macro-enabled]</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/OOXML.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
 <tr><td><a href="TagNames/DPX.html">DPX</a></td><td>R</td><td>Digital Picture Exchange</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/DPX.html">DPX</a></td></tr>
 <tr><td><a href="TagNames/CanonVRD.html#DR4">DR4</a></td><td>R/W/C<span class=sup>2</span></td><td>Canon DPP version 4 Recipe</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R/W/C <a href="TagNames/CanonVRD.html">CanonVRD</a><span class=sup>2</span></td></tr>
+<tr><td><a href="TagNames/DSF.html">DSF</a></td><td>R</td><td>DSD Stream File</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/DSF.html">DSF</a> <a href="TagNames/ID3.html">ID3</a> <a href="TagNames/ID3.html#Lyrics3">Lyrics3</a></td></tr>
 <tr><td><a href="TagNames/Olympus.html#DSS">DSS, DS2</a></td><td>R</td><td>Digital Speech Standard [2]</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Olympus.html#DSS">Olympus</a></td></tr>
 <tr><td><a href="TagNames/EXE.html#MachO">DYLIB</a></td><td>R</td><td>MacOS Mach-O executable and library files</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/EXE.html#MachO">EXE</a></td></tr>
 <tr><td><a href="TagNames/DV.html">DV</a></td><td>R</td><td>Digital Video</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/DV.html">DV</a></td></tr>
@@ -531,7 +534,7 @@ metadata types for each file format.  C2PA metadata is not currently <b>W</b>rit
 <tr><td>WMA, WMV</td><td>R</td><td>Windows Media Audio/Video (<a href="TagNames/ASF.html">ASF</a>-based)</td><td>-</td><td>-</td><td>R</td><td>-</td><td>-</td><td>R <a href="TagNames/ASF.html">ASF</a></td></tr>
 <tr><td><a href="TagNames/WPG.html">WPG</a></td><td>R</td><td>WordPerfect Graphics</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/WPG.html">WPG</a></td></tr>
 <tr><td><a href="TagNames/WTV.html">WTV</a></td><td>R</td><td>Windows recorded TV show</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/WTV.html">WTV</a></td></tr>
-<tr><td>WV</td><td>R</td><td>WavePack lossless audio (<a href="TagNames/RIFF.html">RIFF</a>-based)</td><td>R<span class=sup>3</span></td><td>-</td><td>R</td><td>-</td><td>R</td><td>R <a href="TagNames/RIFF.html">RIFF</a></td></tr>
+<tr><td><a href="TagNames/WavPack.html">WV, WVP</a></td><td>R</td><td>WavPack audio</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/WavPack.html">WavPack</a> <a href="TagNames/RIFF.html">RIFF</a> <a href="TagNames/ID3.html">ID3</a> <a href="TagNames/ID3.html#Lyrics3">Lyrics3</a> <a href="TagNames/APE.html">APE</a></td></tr>
 <tr><td><a href="TagNames/SigmaRaw.html">X3F</a></td><td>R/W</td><td>Sigma/Foveon RAW</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/D</td><td>R/W <a href="TagNames/Sigma.html">Sigma</a>, R <a href="TagNames/SigmaRaw.html">SigmaRaw</a></td></tr>
 <tr><td><a href="TagNames/GIMP.html">XCF</a></td><td>R</td><td>GIMP native image format</td><td>R</td><td>R</td><td>R</td><td>R</td><td>-</td><td>R <a href="TagNames/GIMP.html">GIMP</a></td></tr>
 <tr><td><a href="TagNames/XISF.html">XISF</a></td><td>R</td><td>Extensible Image Serialization Format</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/XISF.html">XISF</a></td></tr>

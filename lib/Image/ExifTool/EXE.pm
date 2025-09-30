@@ -22,7 +22,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.24';
+$VERSION = '1.25';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -962,6 +962,7 @@ sub ProcessPEVersion($$)
         $pos = ($pos + 3) & 0xfffffffc;  # align on a 4-byte boundary
         last if $pos + 6 > $end;
         $len = Get16u($dataPt, $pos);
+        return 0 if $pos + $len > $end;
         $valLen = Get16u($dataPt, $pos + 2);
         $type = Get16u($dataPt, $pos + 4);
         return 0 unless $len or $valLen;  # prevent possible infinite loop
@@ -989,6 +990,7 @@ sub ProcessPEVersion($$)
                 $valLen = Get16u($dataPt, $pt + 2);
                 # $type = Get16u($dataPt, $pt + 4);
                 my $entryEnd = $pt + $len;
+                return 0 if $entryEnd > $end;
                 # get tag ID (converted to UTF8)
                 ($string, $pt) = ReadUnicodeStr($dataPt, $pt + 6, $entryEnd);
                 unless ($index) {

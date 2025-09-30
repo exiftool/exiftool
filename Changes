@@ -7,6 +7,21 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.36. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Sept. 30, 2025 - Version 13.38
+
+  - Added read support for DSF audio files (github #331)
+  - Decode a couple more GoPro tags
+  - Improved WavPack audio file support to recognize the WVP extension and
+    extract more than just RIFF metadata
+  - Updated Sony decoding for the ILCE-6400A (thanks Jos Roost)
+  - Set family 0 group name to "Composite" for approximated GPSDateTime in timed
+    video metadata
+  - Patched to recognize M2TS videos which begin in the middle of a packet
+  - Patched to attempt reading XMP which has an invalid encoding (github #348)
+  - Patched to avoid possible runtime warning when reading a EXE file with
+    corrupt resources (github #354)
+  - Fixed typo in a GoPro tag name
+
 Sept. 22, 2025 - Version 13.37
 
   - Added support for geotagging from Columbus GPS logger CSV files
@@ -15,12 +30,12 @@ Sept. 22, 2025 - Version 13.37
   - Added new Canon RFLensType and CanonModelID values (thanks Norbert Wasser
     and Hubert Figuiere, github #350)
   - Added a new FujiFilm FaceElementType value
+  - Decode Google HDRP maker notes (both text and Protobuf formats)
   - Decode Reconyx MicroFire and Hyperfire 4K maker notes (thanks Reconyx)
   - Decode a number of new Canon and Pentax tags and add a number of new values
     (thanks Karsten Gieselmann)
   - Decode maker notes from Ricoh GR III videos
   - Decode a new Sony tag (thanks Jos Roost)
-  - Decode Google HDRP maker notes
   - Raised size limit on QuickTime atoms extracted for the -ee option, and added
     a minor warning and allow bypassing with the -m option if over this limit
   - Minor change to verbose output for XMP metadata
@@ -28,7 +43,7 @@ Sept. 22, 2025 - Version 13.37
   - Fixed incorrect FujiFilm PanoramaDirection values
   - API Changes:
       - Fixed GeoDir option so alternate languages are loaded properly when a
-        relative path is used
+        relative path is specified
 
 Sept. 9, 2025 - Version 13.36 (production release)
 
@@ -3091,7 +3106,7 @@ Feb. 14, 2019 - Version 11.27
 Jan. 21, 2019 - Version 11.26
 
   - Added a new Nikon LensID (thanks LibRaw)
-  - Decode more tags for the Sony ICLE-6400 (thanks Jos Roost and LibRaw)
+  - Decode more tags for the Sony ILCE-6400 (thanks Jos Roost and LibRaw)
   - Enhanced -htmldump feature to highlight IFD when mousing over IFD offset
 
 Jan. 15, 2019 - Version 11.25

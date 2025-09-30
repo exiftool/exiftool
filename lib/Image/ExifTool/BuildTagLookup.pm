@@ -74,7 +74,8 @@ my %tweakOrder = (
     DJI     => 'Casio',
     FLIR    => 'DJI',
     FujiFilm => 'FLIR',
-    GoPro   => 'GE',
+    Google  => 'GE',
+    GoPro   => 'Google',
     Kodak   => 'JVC',
     Leaf    => 'Kodak',
     Lytro   => 'Leaf',
@@ -109,7 +110,6 @@ my %tweakOrder = (
     'FujiFilm::RAFData' => 'FujiFilm::RAF',
     'QuickTime::AudioKeys' => 'QuickTime::Keys',
     'QuickTime::VideoKeys' => 'QuickTime::AudioKeys',
-    'Google::HDRPText' => 'Google::HDRPlusMakerNote',
 );
 
 # list of all recognized Format strings

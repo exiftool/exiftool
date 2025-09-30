@@ -19,10 +19,15 @@ my $testnum = 1;
 # test 2: Extract information from Google.jpg
 {
     ++$testnum;
-    my $exifTool = Image::ExifTool->new;
-    my $info = $exifTool->ImageInfo('t/images/Google.jpg');
-    notOK() unless check($exifTool, $info, $testname, $testnum);
-    print "ok $testnum\n";
+    my $skip = '';
+    if (eval 'require IO::Uncompress::Gunzip') {
+        my $exifTool = Image::ExifTool->new;
+        my $info = $exifTool->ImageInfo('t/images/Google.jpg');
+        notOK() unless check($exifTool, $info, $testname, $testnum);
+    } else {
+        $skip = ' # skip Requires IO::Uncompress::Gunzip';
+    }
+    print "ok $testnum$skip\n";
 }
 
 done(); # end

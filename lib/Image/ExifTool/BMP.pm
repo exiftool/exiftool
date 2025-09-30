@@ -248,7 +248,7 @@ my %fixed2_30 = (
 );
 
 #------------------------------------------------------------------------------
-# Extract EXIF information from a BMP image
+# Extract metadata from a BMP image
 # Inputs: 0) ExifTool object reference, 1) dirInfo reference
 # Returns: 1 on success, 0 if this wasn't a valid BMP file
 sub ProcessBMP($$)

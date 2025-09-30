@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.77';
+$VERSION = '3.78';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -319,10 +319,10 @@ sub PrintInvLensSpec($;$$);
     50549 => 'Sigma 50mm F1.2 DG DN | A', #JR (024)
     50550 => 'Sigma 28-105mm F2.8 DG DN | A', #JR (024)
     50551 => 'Sigma 28-45mm F1.8 DG DN | A', #JR (024)
-    50552 => 'Sigma 35mm F1.2 DG II | A', #github352/JR (025)',
+    50552 => 'Sigma 35mm F1.2 DG II | A', #github352/JR (025)
     50553 => 'Sigma 300-600mm F4 DG OS | S', #JR (025)
     50554 => 'Sigma 16-300mm F3.5-6.7 DC OS | C', #JR (025)
-    50555 => 'Sigma 12mm F1.4 DC | C', # (025)
+    50555 => 'Sigma 12mm F1.4 DC | C', #JR (025)
     50556 => 'Sigma 17-40mm F1.8 DC | A', #JR/github352 (025)
     50557 => 'Sigma 200mm F2 DG OS | S', #github352/JR (025)
     50558 => 'Sigma 20-200mm F3.5-6.3 DG | C', #github352/JR (025)
@@ -1135,7 +1135,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010h' },
     },{
         Name => 'Tag2010i', # ?
-        Condition => '$$self{Model} =~ /^(ILCE-(6100|6400|6600|7C|7M3|7RM3A?|7RM4A?|9|9M2)|DSC-(RX10M4|RX100M6|RX100M5A|RX100M7|HX95|HX99|RX0M2)|ZV-(1F?|1M2|E10))\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6100A?|6400A?|6600|7C|7M3|7RM3A?|7RM4A?|9|9M2)|DSC-(RX10M4|RX100M6|RX100M5A|RX100M7|HX95|HX99|RX0M2)|ZV-(1F?|1M2|E10))\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010i' },
     },{
         Name => 'Tag_0x2010',
@@ -1752,7 +1752,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         },
     },{
         Name => 'Tag9050b',
-        Condition => '$$self{Model} =~ /^(ILCE-(6100|6300|6400|6500|6600|7C|7M3|7RM2|7RM3A?|7RM4A?|7SM2|9|9M2)|ILCA-99M2|ZV-E10)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6100A?|6300|6400A?|6500|6600|7C|7M3|7RM2|7RM3A?|7RM4A?|7SM2|9|9M2)|ILCA-99M2|ZV-E10)\b/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Tag9050b',
             ByteOrder => 'LittleEndian',
@@ -8022,7 +8022,7 @@ my %isoSetting2010 = (
 #
     0x019f => {
         Name => 'ShutterCount3',
-        Condition => '$$self{Model} =~ /^(ILCE-(6100|6400|6600|7C|7M3|7RM3A?|7RM4A?|9|9M2)|ZV-E10)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6100A?|6400A?|6600|7C|7M3|7RM3A?|7RM4A?|9|9M2)|ZV-E10)\b/',
         Format => 'int32u',
         RawConv => '$val == 0 ? undef : $val',
     },
@@ -8069,7 +8069,7 @@ my %isoSetting2010 = (
     },
     0x01f0 => {
         Name => 'LensSpecFeatures',
-        Condition => '$$self{Model} =~ /^(ILCE-(6100|6400|6600|7M3|7RM3A?|9))\b/ and $$self{Software} !~ /^ILCE-9 (v5.0|v6.0)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6100A?|6400A?|6600|7M3|7RM3A?|9))\b/ and $$self{Software} !~ /^ILCE-9 (v5.0|v6.0)/',
         Priority => 0,
         Format => 'undef[2]',
         ValueConv => 'join " ", unpack "H2H2", $val',

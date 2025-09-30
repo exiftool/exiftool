@@ -1179,22 +1179,13 @@ encrypted and gzipped text.</p>
 <h2><a name='HDRPlusMakerNote'>Google HDRPlusMakerNote Tags</a></h2>
 <p>Google protobuf-format HDR-Plus maker notes.  Tag ID&#39;s are hierarchical
 protobuf field numbers.  Stored as base64-encoded, encrypted and gzipped
-Protobuf data.</p>
+Protobuf data.  Much of this metadata is still unknown, but is extracted
+using the Unknown option.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>'2'</td>
-<td>TimeLogText</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'3'</td>
-<td>SummaryText</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
 <tr>
 <td>'1-1'</td>
 <td>ImageName</td>
@@ -1206,38 +1197,28 @@ Protobuf data.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'2'</td>
+<td>TimeLogText</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'3'</td>
+<td>SummaryText</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'9-3'</td>
+<td>FrameCount</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'9-36-1'</td>
+<td>CreateDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'12-1'</td>
 <td>DeviceMake</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'12-10'</td>
-<td>AppVersion</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'12-12-1'</td>
-<td>ExposureTimeMin</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'12-12-2'</td>
-<td>ExposureTimeMax</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'12-13-1'</td>
-<td>ISOMin</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'12-13-2'</td>
-<td>ISOMax</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'12-14'</td>
-<td>MaxAnalogISO</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -1276,13 +1257,33 @@ Protobuf data.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'9-3'</td>
-<td>FrameCount</td>
+<td>'12-10'</td>
+<td>AppVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'9-36-1'</td>
-<td>CreateDate</td>
+<td>'12-12-1'</td>
+<td>ExposureTimeMin</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'12-12-2'</td>
+<td>ExposureTimeMax</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'12-13-1'</td>
+<td>ISOMin</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'12-13-2'</td>
+<td>ISOMax</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'12-14'</td>
+<td>MaxAnalogISO</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>

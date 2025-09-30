@@ -984,7 +984,9 @@ sub SetGPSDateTime($$$;$)
             }
             $sampleTime -= $tzOff;  # shift from local time to UTC
         }
+        $$et{SET_GROUP0} = 'Composite';
         $et->HandleTag($tagTbl, GPSDateTime => Image::ExifTool::ConvertUnixTime($sampleTime,0,3) . 'Z');
+        delete $$et{SET_GROUP0};
     }
 }
 

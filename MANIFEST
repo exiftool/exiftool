@@ -65,6 +65,7 @@ html/TagNames/DICOM.html
 html/TagNames/DJI.html
 html/TagNames/DNG.html
 html/TagNames/DPX.html
+html/TagNames/DSF.html
 html/TagNames/DV.html
 html/TagNames/DarwinCore.html
 html/TagNames/DjVu.html
@@ -188,6 +189,7 @@ html/TagNames/VCard.html
 html/TagNames/Vorbis.html
 html/TagNames/WPG.html
 html/TagNames/WTV.html
+html/TagNames/WavPack.html
 html/TagNames/XISF.html
 html/TagNames/XMP.html
 html/TagNames/ZIP.html
@@ -291,6 +293,7 @@ lib/Image/ExifTool/DICOM.pm
 lib/Image/ExifTool/DJI.pm
 lib/Image/ExifTool/DNG.pm
 lib/Image/ExifTool/DPX.pm
+lib/Image/ExifTool/DSF.pm
 lib/Image/ExifTool/DV.pm
 lib/Image/ExifTool/DarwinCore.pm
 lib/Image/ExifTool/DjVu.pm
@@ -451,6 +454,7 @@ lib/Image/ExifTool/Validate.pm
 lib/Image/ExifTool/Vorbis.pm
 lib/Image/ExifTool/WPG.pm
 lib/Image/ExifTool/WTV.pm
+lib/Image/ExifTool/WavPack.pm
 lib/Image/ExifTool/WriteCanonRaw.pl
 lib/Image/ExifTool/WriteExif.pl
 lib/Image/ExifTool/WriteIPTC.pl

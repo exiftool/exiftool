@@ -545,7 +545,7 @@ my %convFloat2 = (
         Format => 'unsigned',
         ValueConv => '$val / 1e6',
     },
-    'dvtm_Air3_3-2-7-1' iso => { Name => 'ISO', Format => 'float' },
+    'dvtm_Air3_3-2-7-1' => { Name => 'ISO', Format => 'float' },
     'dvtm_Air3_3-2-10-1' => {
         Name => 'ShutterSpeed',
         Format => 'rational',
@@ -585,7 +585,7 @@ my %convFloat2 = (
         Format => 'unsigned',
         ValueConv => '$val / 1e6',
     },
-    'dvtm_Air3_3-2-7-1' iso => { Name => 'ISO', Format => 'float' },
+    'dvtm_Air3_3-2-7-1' => { Name => 'ISO', Format => 'float' },
     'dvtm_Air3_3-2-10-1' => {
         Name => 'ShutterSpeed',
         Format => 'rational',

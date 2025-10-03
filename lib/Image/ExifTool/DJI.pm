@@ -24,11 +24,11 @@ sub ProcessDJIInfo($$$);
 sub ProcessSettings($$$);
 
 %knownProtocol = (
-    'dvtm_ac203.proto' => 1,    # Osmo Action 4
-    'dvtm_ac204.proto' => 1,    # Osmo Action 5
-    'dvtm_AVATA2.proto' => 1,   # Avata 2
-    'dvtm_wm265e.proto' => 1,   # Mavic 3
-    'dvtm_pm320.proto' => 1,    # Matrice 30
+    'dvtm_ac203.proto' => 1,        # Osmo Action 4
+    'dvtm_ac204.proto' => 1,        # Osmo Action 5
+    'dvtm_AVATA2.proto' => 1,       # Avata 2
+    'dvtm_wm265e.proto' => 1,       # Mavic 3
+    'dvtm_pm320.proto' => 1,        # Matrice 30
     'dvtm_Mini4_Pro.proto' => 1,    # Mini 4
     'dvtm_dji_neo.proto' => 1,  # Neo
 );

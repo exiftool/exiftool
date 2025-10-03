@@ -30,8 +30,16 @@ sub ProcessSettings($$$);
     'dvtm_wm265e.proto' => 1,       # Mavic 3
     'dvtm_pm320.proto' => 1,        # Matrice 30
     'dvtm_Mini4_Pro.proto' => 1,    # Mini 4
-    'dvtm_dji_neo.proto' => 1,  # Neo
+    'dvtm_dji_neo.proto' => 1,      # Neo
+    'dvtm_Air3.proto' => 1,         # Air 3
+    'dvtm_Air3s.proto' => 1,        # Air 3s
+    'dvtm_PP-101.proto' => 1,       # Osmo Pocket 3
+    'dvtm_oq101.proto' => 1,        # Osmo 360
+    'dvtm_wa345e.proto' => 1,       # Matrice 4E
+    'dvtm_wm261.proto' => 1,        # Mavic Pro 3
 );
+
+# dvtm_wm169.proto seems to be DJI O3 but the structure is unknown
 
 my %convFloat2 = (
     PrintConv => 'sprintf("%+.2f", $val)',
@@ -524,6 +532,231 @@ my %convFloat2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
     },
     'dvtm_dji_neo_3-4-4-2' => { Name => 'AbsoluteAltitude', Format => 'int64s', ValueConv => '$val / 1000' }, # (NC)
+# Air 3
+#
+    'dvtm_Air3_1-1-5' => { Name => 'SerialNumber', Notes => 'Air 3' },
+    'dvtm_Air3_2-3' => {
+        Name => 'FrameInfo', 
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::FrameInfo' },
+    },
+    'dvtm_Air3_3-1-2' => {
+        Name => 'TimeStamp',
+        Groups => { 2 => 'Time' },
+        Format => 'unsigned',
+        ValueConv => '$val / 1e6',
+    },
+    'dvtm_Air3_3-2-7-1' iso => { Name => 'ISO', Format => 'float' },
+    'dvtm_Air3_3-2-10-1' => {
+        Name => 'ShutterSpeed',
+        Format => 'rational',
+        PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
+    },
+    'dvtm_Air3_3-2-32-1' => { Name => 'ColorTemperature', Format => 'unsigned' },
+    'dvtm_Air3_3-2-11-1' => {
+        Name => 'FNumber',
+        Format => 'rational',
+        PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
+    },
+    'dvtm_Air3_3-3-3' => {
+        Name => 'DroneInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::DroneInfo' },
+    },
+    'dvtm_Air3_3-3-4-1' => {
+        Name => 'GPSInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
+    },
+    'dvtm_Air3_3-3-4-2' => { Name => 'AbsoluteAltitude', Format => 'int64s', ValueConv => '$val / 1000' },
+    'dvtm_Air3_3-3-5-1' => { Name => 'RelativeAltitude', Format => 'float', ValueConv => '$val / 1000' },
+   'dvtm_Air3_3-4-3' => {
+        Name => 'GimbalInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GimbalInfo' },
+    },
+#
+# Air 3s (same structure as Air 3)
+#
+    'dvtm_Air3_1-1-5' => { Name => 'SerialNumber', Notes => 'Air 3s' },
+    'dvtm_Air3_2-3' => {
+        Name => 'FrameInfo', 
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::FrameInfo' },
+    },
+    'dvtm_Air3_3-1-2' => {
+        Name => 'TimeStamp',
+        Groups => { 2 => 'Time' },
+        Format => 'unsigned',
+        ValueConv => '$val / 1e6',
+    },
+    'dvtm_Air3_3-2-7-1' iso => { Name => 'ISO', Format => 'float' },
+    'dvtm_Air3_3-2-10-1' => {
+        Name => 'ShutterSpeed',
+        Format => 'rational',
+        PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
+    },
+    'dvtm_Air3_3-2-32-1' => { Name => 'ColorTemperature', Format => 'unsigned' },
+    'dvtm_Air3_3-2-11-1' => {
+        Name => 'FNumber',
+        Format => 'rational',
+        PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
+    },
+    'dvtm_Air3_3-3-3' => {
+        Name => 'DroneInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::DroneInfo' },
+    },
+    'dvtm_Air3_3-3-4-1' => {
+        Name => 'GPSInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
+    },
+    'dvtm_Air3_3-3-4-2' => { Name => 'AbsoluteAltitude', Format => 'int64s', ValueConv => '$val / 1000' },
+    'dvtm_Air3_3-3-5-1' => { Name => 'RelativeAltitude', Format => 'float', ValueConv => '$val / 1000' },
+   'dvtm_Air3_3-4-3' => {
+        Name => 'GimbalInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GimbalInfo' },
+    },
+#
+# Osmo 360 (similar to Action 4/5)
+#
+    'dvtm_oq101_1-1-5' => { Name => 'SerialNumber', Notes => 'Osmo 360' },
+    'dvtm_oq101_1-1-10' => 'Model',
+    'dvtm_oq101_3-1-2' => {
+        Name => 'TimeStamp',
+        Groups => { 2 => 'Time' },
+        Format => 'unsigned',
+        ValueConv => '$val / 1e6',
+    },
+    'dvtm_oq101_3-2-3-1' => { Name => 'ISO', Format => 'float' },
+    'dvtm_oq101_3-2-4-1' => {
+        Name => 'ShutterSpeed',
+        Format => 'rational',
+        PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
+    },
+    'dvtm_oq101_3-2-6-1' => { Name => 'ColorTemperature', Format => 'unsigned' },
+    'dvtm_oq101_1-14-1' => {
+        Name => 'FNumber',
+        Format => 'rational',
+        PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
+    },
+    'dvtm_oq101_3-4-2-1' => {
+        Name => 'GPSInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
+    },
+    'dvtm_oq101_3-4-2-2' => { Name => 'AbsoluteAltitude', Format => 'int64s', ValueConv => '$val / 1000' },
+    'dvtm_oq101_3-4-2-6-1' => {
+        Name => 'GPSDateTime',
+        Format => 'string',
+        Groups => { 2 => 'Time' },
+        RawConv => '$$self{GPSDateTime} = $val',
+        ValueConv => '$val =~ tr/-/:/; $val',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    'dvtm_oq101_3-2-10-2' => { Name => 'AccelerometerX', Format => 'float' },
+    'dvtm_oq101_3-2-10-3' => { Name => 'AccelerometerY', Format => 'float' },
+    'dvtm_oq101_3-2-10-4' => { Name => 'AccelerometerZ', Format => 'float' },
+#
+# Osmo Pocket 3
+#
+    'dvtm_PP-101_1-1-5' => { Name => 'SerialNumber', Notes => 'Osmo Pocket 3' },
+    'dvtm_PP-101_1-1-10' => 'Model',
+    'dvtm_PP-101_2-3' => {
+        Name => 'FrameInfo', 
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::FrameInfo' },
+    },
+    'dvtm_PP-101_3-1-2' => {
+        Name => 'TimeStamp',
+        Groups => { 2 => 'Time' },
+        Format => 'unsigned',
+        ValueConv => '$val / 1e6',
+    },
+    'dvtm_PP-101_3-2-9-1' => { Name => 'ISO', Format => 'float' },
+    'dvtm_PP-101_3-2-10-1' => {
+        Name => 'ShutterSpeed',
+        Format => 'rational',
+        PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
+    },
+    'dvtm_PP-101_3-2-24-1' => { Name => 'ColorTemperature', Format => 'unsigned' },
+#
+# Matrice 4E
+#
+    'dvtm_wa345e_1-1-5' => { Name => 'SerialNumber', Notes => 'Matrice 4E' },
+    'dvtm_wa345e_1-1-10' => 'Model',
+    'dvtm_wa345e_2-2' => {
+        Name => 'FrameInfo', 
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::FrameInfo' },
+    },
+    'dvtm_wa345e_3-1-2' => {
+        Name => 'TimeStamp',
+        Groups => { 2 => 'Time' },
+        Format => 'unsigned',
+        ValueConv => '$val / 1e6',
+    },
+    'dvtm_wa345e_3-3-3' => {
+        Name => 'DroneInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::DroneInfo' },
+    },
+    'dvtm_wa345e_3-3-4-1' => {
+        Name => 'GPSInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
+    },
+    'dvtm_wa345e_3-3-4-2' => { Name => 'AbsoluteAltitude', Format => 'int64s', ValueConv => '$val / 1000' },
+    'dvtm_wa345e_3-3-5-1' => { Name => 'RelativeAltitude', Format => 'float', ValueConv => '$val / 1000' },
+    'dvtm_wa345e_3-4-3' => {
+        Name => 'GimbalInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GimbalInfo' },
+    },
+    'dvtm_wa345e_3-3-4-6-1' => {
+        Name => 'GPSDateTime',
+        Format => 'string',
+        Groups => { 2 => 'Time' },
+        RawConv => '$$self{GPSDateTime} = $val',
+        ValueConv => '$val =~ tr/-/:/; $val',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+#
+# Mavic Pro 3
+#
+    'dvtm_wm261_1-1-5' => { Name => 'SerialNumber', Notes => 'Mavic Pro 3' },
+    'dvtm_wm261_1-1-10' => 'Model',
+    'dvtm_wm261_2-3' => {
+        Name => 'FrameInfo', 
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::FrameInfo' },
+    },
+    'dvtm_wm261_3-1-2' => {
+        Name => 'TimeStamp',
+        Groups => { 2 => 'Time' },
+        Format => 'unsigned',
+        ValueConv => '$val / 1e6',
+    },
+    'dvtm_wm261_3-2-9-1' => { Name => 'ISO', Format => 'float' },
+    'dvtm_wm261_3-2-10-1' => {
+        Name => 'ShutterSpeed',
+        Format => 'rational',
+        PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
+    },
+    'dvtm_wm261_3-2-11-1'=> {
+        Name => 'FNumber',
+        Format => 'rational',
+        PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
+    },
+    'dvtm_wm261_3-3-3' => {
+        Name => 'DroneInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::DroneInfo' },
+    },
+    'dvtm_wm261_3-3-4-1' => {
+        Name => 'GPSInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
+    },
+    'dvtm_wm261_3-3-4-2' => { Name => 'AbsoluteAltitude', Format => 'int64s', ValueConv => '$val / 1000' },
+    'dvtm_wm261_3-3-5-1' => { Name => 'RelativeAltitude', Format => 'float', ValueConv => '$val / 1000' },
+    'dvtm_wm261_3-4-3' => {
+        Name => 'GimbalInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::GimbalInfo' },
+    },
+    'dvtm_wm261_3-3-4-6-1' => {
+        Name => 'GPSDateTime',
+        Format => 'string',
+        Groups => { 2 => 'Time' },
+        RawConv => '$$self{GPSDateTime} = $val',
+        ValueConv => '$val =~ tr/-/:/; $val',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
 );
 
 %Image::ExifTool::DJI::DroneInfo = (

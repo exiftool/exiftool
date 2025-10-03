@@ -574,40 +574,40 @@ my %convFloat2 = (
 #
 # Air 3s (same structure as Air 3)
 #
-    'dvtm_Air3_1-1-5' => { Name => 'SerialNumber', Notes => 'Air 3s' },
-    'dvtm_Air3_2-3' => {
+    'dvtm_Air3s_1-1-5' => { Name => 'SerialNumber', Notes => 'Air 3s' },
+    'dvtm_Air3s_2-3' => {
         Name => 'FrameInfo', 
         SubDirectory => { TagTable => 'Image::ExifTool::DJI::FrameInfo' },
     },
-    'dvtm_Air3_3-1-2' => {
+    'dvtm_Air3s_3-1-2' => {
         Name => 'TimeStamp',
         Groups => { 2 => 'Time' },
         Format => 'unsigned',
         ValueConv => '$val / 1e6',
     },
-    'dvtm_Air3_3-2-7-1' => { Name => 'ISO', Format => 'float' },
-    'dvtm_Air3_3-2-10-1' => {
+    'dvtm_Air3s_3-2-7-1' => { Name => 'ISO', Format => 'float' },
+    'dvtm_Air3s_3-2-10-1' => {
         Name => 'ShutterSpeed',
         Format => 'rational',
         PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
     },
-    'dvtm_Air3_3-2-32-1' => { Name => 'ColorTemperature', Format => 'unsigned' },
-    'dvtm_Air3_3-2-11-1' => {
+    'dvtm_Air3s_3-2-32-1' => { Name => 'ColorTemperature', Format => 'unsigned' },
+    'dvtm_Air3s_3-2-11-1' => {
         Name => 'FNumber',
         Format => 'rational',
         PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
     },
-    'dvtm_Air3_3-3-3' => {
+    'dvtm_Air3s_3-3-3' => {
         Name => 'DroneInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::DJI::DroneInfo' },
     },
-    'dvtm_Air3_3-3-4-1' => {
+    'dvtm_Air3s_3-3-4-1' => {
         Name => 'GPSInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
     },
-    'dvtm_Air3_3-3-4-2' => { Name => 'AbsoluteAltitude', Format => 'int64s', ValueConv => '$val / 1000' },
-    'dvtm_Air3_3-3-5-1' => { Name => 'RelativeAltitude', Format => 'float', ValueConv => '$val / 1000' },
-   'dvtm_Air3_3-4-3' => {
+    'dvtm_Air3s_3-3-4-2' => { Name => 'AbsoluteAltitude', Format => 'int64s', ValueConv => '$val / 1000' },
+    'dvtm_Air3s_3-3-5-1' => { Name => 'RelativeAltitude', Format => 'float', ValueConv => '$val / 1000' },
+    'dvtm_Air3s_3-4-3' => {
         Name => 'GimbalInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::DJI::GimbalInfo' },
     },

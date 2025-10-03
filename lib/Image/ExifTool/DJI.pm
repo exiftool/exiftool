@@ -532,6 +532,7 @@ my %convFloat2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::DJI::GPSInfo' },
     },
     'dvtm_dji_neo_3-4-4-2' => { Name => 'AbsoluteAltitude', Format => 'int64s', ValueConv => '$val / 1000' }, # (NC)
+#
 # Air 3
 #
     'dvtm_Air3_1-1-5' => { Name => 'SerialNumber', Notes => 'Air 3' },

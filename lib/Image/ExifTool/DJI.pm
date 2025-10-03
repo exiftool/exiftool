@@ -29,8 +29,7 @@ sub ProcessSettings($$$);
     'dvtm_AVATA2.proto' => 1,   # Avata 2
     'dvtm_wm265e.proto' => 1,   # Mavic 3
     'dvtm_pm320.proto' => 1,    # Matrice 30
-    'dvtm_Mini4_Pro.proto' => 1,    # Matrice 30
-    'dvtm_Mini4_Pro.proto' => 1,    # Matrice 30
+    'dvtm_Mini4_Pro.proto' => 1,    # Mini 4
     'dvtm_dji_neo.proto' => 1,  # Neo
 );
 

@@ -111,7 +111,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 111 different types of timed GPS metadata from video files.
+        currently reads 116 different types of timed GPS metadata from video files.
     },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
     GPSLongitude => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
@@ -1007,6 +1007,28 @@ sub HandleTextTags($$$)
 }
 
 #------------------------------------------------------------------------------
+# Handle new time in NMEA stream and store queued tags if necessary
+# Inputs: 0) ExifTool ref, 1) time string, 2) tag table ref, 3) tags hash
+sub HandleNewTime($$$$)
+{
+    my ($et, $time, $tagTbl, $tags) = @_;
+    if ($$et{LastTime}) {
+        if ($$et{LastTime} eq $time) {
+            # combine with the previous NMEA sentence
+            $$et{DOC_NUM} = $$et{LastDoc};
+        } elsif (%$tags) {
+            # handle existing tags and start a new document
+            # (see https://exiftool.org/forum/index.php?msg=75422)
+            HandleTextTags($et, $tagTbl, $tags);
+            # increment document number and update document count if necessary
+            $$et{DOC_COUNT} < ++$$et{DOC_NUM} and $$et{DOC_COUNT} = $$et{DOC_NUM};
+        }
+    }
+    $$et{LastTime} = $time;
+    $$et{LastDoc} = $$et{DOC_NUM};
+}
+
+#------------------------------------------------------------------------------
 # Process subtitle 'text'
 # Inputs: 0) ExifTool ref, 1) data ref or dirInfo ref, 2) tag table ref
 #         3) flag set if text was already stored
@@ -1032,41 +1054,18 @@ sub Process_text($$$;$)
                 next;
             }
             my $time = "$1:$2:$3";
-            if ($$et{LastTime}) {
-                if ($$et{LastTime} eq $time) {
-                    # combine with the previous NMEA sentence
-                    $$et{DOC_NUM} = $$et{LastDoc};
-                } elsif (%tags) {
-                    # handle existing tags and start a new document
-                    # (see https://exiftool.org/forum/index.php?msg=75422)
-                    HandleTextTags($et, $tagTbl, \%tags);
-                    undef %tags;
-                    # increment document number and update document count if necessary
-                    $$et{DOC_COUNT} < ++$$et{DOC_NUM} and $$et{DOC_COUNT} = $$et{DOC_NUM};
-                }
-            }
-            $$et{LastTime} = $time;
-            $$et{LastDoc} = $$et{DOC_NUM};
+            HandleNewTime($et, $time, $tagTbl, \%tags);
             my $year = $14 + ($14 >= 70 ? 1900 : 2000);
-            my $dateTime = sprintf('%.4d:%.2d:%.2d %sZ', $year, $13, $12, $time);
-            $tags{GPSDateTime} = $dateTime;
+            my $date = sprintf('%.4d:%.2d:%.2d', $year, $13, $12);
+            $$et{LastDate} = $date;
+            $tags{GPSDateTime} = "$date ${time}Z";
             $tags{GPSLatitude} = (($4 || 0) + $5/60) * ($6 eq 'N' ? 1 : -1);
             $tags{GPSLongitude} = (($7 || 0) + $8/60) * ($9 eq 'E' ? 1 : -1);
             $tags{GPSSpeed} = $10 * $knotsToKph if length $10;
             $tags{GPSTrack} = $11 if length $11;
         } elsif ($tag =~ /^[A-Z]{2}GGA$/ and $dat =~ /^,(\d{2})(\d{2})(\d+(?:\.\d*)?),(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),[1-6]?,(\d+)?,(\.\d+|\d+\.?\d*)?,(-?\d+\.?\d*)?,M?/s) {
             my $time = "$1:$2:$3";
-            if ($$et{LastTime}) {
-                if ($$et{LastTime} eq $time) {
-                    $$et{DOC_NUM} = $$et{LastDoc};
-                } elsif (%tags) {
-                    HandleTextTags($et, $tagTbl, \%tags);
-                    undef %tags;
-                    $$et{DOC_COUNT} < ++$$et{DOC_NUM} and $$et{DOC_COUNT} = $$et{DOC_NUM};
-                }
-            }
-            $$et{LastTime} = $time;
-            $$et{LastDoc} = $$et{DOC_NUM};
+            HandleNewTime($et, $time, $tagTbl, \%tags);
             $tags{GPSTimeStamp} = $time;
             $tags{GPSLatitude} = (($4 || 0) + $5/60) * ($6 eq 'N' ? 1 : -1);
             $tags{GPSLongitude} = (($7 || 0) + $8/60) * ($9 eq 'E' ? 1 : -1);
@@ -1113,6 +1112,11 @@ sub Process_text($$$;$)
                     $tags{AccelerometerData} = "@acc";
                 }
             }
+        }
+        if ($tags{GPSTimeStamp} and not $tags{GPSDateTime} and $$et{LastDate}) {
+            # hack to fill in missing date for NextBase 662GW
+            # (note: this doesn't necessarily handle day rollover properly)
+            $tags{GPSDateTime} = "$$et{LastDate} $tags{GPSTimeStamp}Z";
         }
         HandleTextTags($et, $tagTbl, \%tags);
         return;
@@ -3490,14 +3494,17 @@ sub ProcessGarminGPS($$$)
     while ($pos + 20 <= $dataLen) {
         $$et{DOC_NUM} = ++$$et{DOC_COUNT};
         my $time = Image::ExifTool::ConvertUnixTime(Get32u($dataPt, $pos) - $epoch) . 'Z';
-        my $lat = Get32s($dataPt, $pos + 12) * $scl;
-        my $lon = Get32s($dataPt, $pos + 16) * $scl;
+        my $lat = Get32s($dataPt, $pos + 12);
+        my $lon = Get32s($dataPt, $pos + 16);
         my $spd = Get16u($dataPt, $pos + 4); # (in mph)
         $et->HandleTag($tagTbl, 'GPSDateTime',  $time);
-        $et->HandleTag($tagTbl, 'GPSLatitude',  $lat);
-        $et->HandleTag($tagTbl, 'GPSLongitude', $lon);
-        $et->HandleTag($tagTbl, 'GPSSpeed',     $spd);
-        $et->HandleTag($tagTbl, 'GPSSpeedRef', 'M');
+        # skip bad GPS fixes
+        if ($lat != -2147483648 or $lon != -2147483648) {
+            $et->HandleTag($tagTbl, 'GPSLatitude',  $lat * $scl);
+            $et->HandleTag($tagTbl, 'GPSLongitude', $lon * $scl);
+            $et->HandleTag($tagTbl, 'GPSSpeed',     $spd);
+            $et->HandleTag($tagTbl, 'GPSSpeedRef', 'M');
+        }
         $pos += 20;
     }
     delete $$et{DOC_NUM};

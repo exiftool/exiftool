@@ -743,6 +743,12 @@ effect as a value of 0 for options with numerical values.</p>
     geotagging.  GPS fixes are ignored if the PDOP is greater than this.</td>
     <td align=center>A floating point number, or undef</td>
     <td align=center>undef</td></tr>
+<tr id="GeoHPosErr"><td>GeoHPosErr</td>
+    <td>Expression to set GPSHPositioningError based on value of GPSDOP when
+    geotagging.  For example, use <code>'$GPSDOP * 4'</code> to set
+    GPSHPositioningError to 4 times GPSDOP.</td>
+    <td align=center>Perl expression using <code>$GPSDOP</code></td>
+    <td align=center>undef</td></tr>
 <tr id="GeoMinSats"><td>GeoMinSats</td>
     <td>Minimum number of satellites for geotagging. 
     GPS fixes are ignored if the number of acquired satellites is less than this.</td>

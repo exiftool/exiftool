@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.38';
+$VERSION = '13.39';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -573,6 +573,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     XLTM => [['ZIP','FPX'], 'Office Open XML Spreadsheet Template Macro-enabled'],
     XLTX => [['ZIP','FPX'], 'Office Open XML Spreadsheet Template'],
     XMP  => ['XMP',  'Extensible Metadata Platform'],
+    VSDX => ['ZIP',  'Visio Diagram Document'],
     WOFF => ['Font', 'Web Open Font Format'],
     WOFF2=> ['Font', 'Web Open Font Format 2'],
     WPG  => ['WPG',  'WordPerfect Graphics'],
@@ -814,6 +815,7 @@ my %fileDescription = (
     VCard=> 'text/vcard',
     VRD  => 'application/octet-stream', #PH (NC)
     VSD  => 'application/x-visio',
+    VSDX => 'application/vnd.ms-visio.drawing',
     WDP  => 'image/vnd.ms-photo',
     WEBM => 'video/webm',
     WMA  => 'audio/x-ms-wma',
@@ -1138,6 +1140,7 @@ my @availableOptions = (
     [ 'GeoMaxHDOP',       undef,  'geotag maximum HDOP' ],
     [ 'GeoMaxPDOP',       undef,  'geotag maximum PDOP' ],
     [ 'GeoMinSats',       undef,  'geotag minimum satellites' ],
+    [ 'GeoHPosErr',       undef,  'geotag GPSHPositioningError based on $GPSDOP' ],
     [ 'GeoSpeedRef',      undef,  'geotag GPSSpeedRef' ],
     [ 'GlobalTimeShift',  undef,  'apply time shift to all extracted date/time values' ],
     [ 'GPSQuadrant',      undef,  'quadrant for GPS if not otherwise known' ],
@@ -2298,7 +2301,8 @@ sub CleanWarning(;$)
         return undef unless defined $evalWarning;
         $str = $evalWarning;
     }
-    $str = $1 if $str =~ /(.*) at /s;
+    # truncate at first " at " for warnings like "syntax error at (eval 80) line 1, at EOF"
+    $str = $1 if $str =~ /(.*?) at /s;
     $str =~ s/\s+$//s;
     return $str;
 }

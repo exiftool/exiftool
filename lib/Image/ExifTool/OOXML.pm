@@ -14,7 +14,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 use Image::ExifTool::ZIP;
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 
 # test for recognized OOXML document extensions
 my %isOOXML = (
@@ -27,6 +27,7 @@ my %isOOXML = (
     XLAM => 1,
     XLSX => 1,  XLSM => 1,  XLSB => 1,
     XLTX => 1,  XLTM => 1,
+    VSDX => 1,
 );
 
 # generate reverse lookup for file type based on MIME

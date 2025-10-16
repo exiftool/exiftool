@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.21';
+$VERSION = '3.22';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -10515,9 +10515,9 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
             $et->Warn($warnStr);
         }
     }
-    # tweak file type based on track content ("iso*" and "dash" ftyp only)
+    # tweak file type based on track content ("iso*" and "dash" ftyp only ["mp42" added in 13.39])
     if ($topLevel and $$et{FileType} and $$et{FileType} eq 'MP4' and
-        $$et{save_ftyp} and $$et{HasHandler} and $$et{save_ftyp} =~ /^(iso|dash)/ and
+        $$et{save_ftyp} and $$et{HasHandler} and $$et{save_ftyp} =~ /^(iso|dash|mp42)/ and
         $$et{HasHandler}{soun} and not $$et{HasHandler}{vide})
     {
         $et->OverrideFileType('M4A', 'audio/mp4');

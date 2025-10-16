@@ -59,7 +59,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.58';
+$VERSION = '3.59';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1947,7 +1947,8 @@ my %binaryDataAttrs = (
             '0 28' => 'Quick Macro', # (Q)
             '0 29' => 'Forest', # (Q)
             '0 30' => 'Backlight Silhouette', # (Q)
-            '0 32' => 'DOF', #PH (GR III)
+            '0 31' => 'Max. Aperture Priority', #KG (Ricoh GR III)
+            '0 32' => 'DOF', #PH (GR III)       #KG ???? GR III 'DOF Priority (Deep)' is mapped to '0 2' ???
             # AUTO PICT modes (auto-selected)
             '1 4'  => 'Auto PICT (Standard)', #13
             '1 5'  => 'Auto PICT (Portrait)', #7 (K100D)
@@ -1962,7 +1963,11 @@ my %binaryDataAttrs = (
             '2 22' => 'Shallow DOF (HyP)', #PH (K-5)
             '3 0'  => 'Green Mode', #16
             '4 0'  => 'Shutter Speed Priority',
+            '4 2'  => 'Shutter Speed Priority 2', #KG  Coding error? 'DOF Priority' in Tv makes no sense
+            '4 31' => 'Shutter Speed Priority 31',#KG  Coding error? 'Max Aperture' in Tv makes no sense
             '5 0'  => 'Aperture Priority',
+            '5 2'  => 'Aperture Priority 2',      #KG  Coding error? 'DOF Priority' in Av makes no sense
+            '5 31' => 'Aperture Priority 31',     #KG  Coding error? 'DOF Priority' in Av makes no sense
             '6 0'  => 'Program Tv Shift',
             '7 0'  => 'Program Av Shift', #19
             '8 0'  => 'Manual',

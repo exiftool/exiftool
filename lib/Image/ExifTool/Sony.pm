@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.78';
+$VERSION = '3.79';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -180,6 +180,9 @@ sub PrintInvLensSpec($;$$);
     32889 => 'Sony FE 28-70mm F2 GM',
     32890 => 'Sony FE 400-800mm F6.3-8 G OSS', #JR
     32891 => 'Sony FE 50-150mm F2 GM', #github335
+    32893 => 'Sony FE 100mm F2.8 Macro GM OSS', #JR
+    33093 => 'Sony FE 100mm F2.8 Macro GM OSS + 1.4X Teleconverter', #JR (NC)
+    33094 => 'Sony FE 100mm F2.8 Macro GM OSS + 2X Teleconverter', #JR
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -1135,7 +1138,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010h' },
     },{
         Name => 'Tag2010i', # ?
-        Condition => '$$self{Model} =~ /^(ILCE-(6100A?|6400A?|6600|7C|7M3|7RM3A?|7RM4A?|9|9M2)|DSC-(RX10M4|RX100M6|RX100M5A|RX100M7|HX95|HX99|RX0M2)|ZV-(1F?|1M2|E10))\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6100A?|6400A?|6600|7C|7M3|7RM3A?|7RM4A?|9|9M2)|DSC-(RX10M4|RX100M6|RX100M5A|RX100M7A?|HX95|HX99|RX0M2)|ZV-(1[AF]?|1M2|E10))\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010i' },
     },{
         Name => 'Tag_0x2010',
@@ -2209,8 +2212,10 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             400 => 'ILCE-1M2', #PH
             401 => 'DSC-RX1RM3', #JR
             402 => 'ILCE-6400A', #github347
+            403 => 'ILCE-6100A', #JR
             404 => 'DSC-RX100M7A', #github347
             406 => 'ILME-FX2', #JR
+            408 => 'ZV-1A', #JR
         },
     },
     0xb020 => { #2
@@ -8525,7 +8530,7 @@ my %isoSetting2010 = (
     },
     0x002a => [{
         Name => 'Quality2',
-        Condition => '$$self{Model} !~ /^(DSC-RX1RM3|ILCE-(1|1M2|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX2|FX3|FX30)|ZV-(E1|E10M2))\b/',
+        Condition => '$$self{Model} !~ /^(DSC-RX1RM3|ILCE-(1|1M2|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX2|FX3A?|FX30)|ZV-(E1|E10M2))\b/',
         PrintConv => {
             0 => 'JPEG',
             1 => 'RAW',
@@ -8544,13 +8549,13 @@ my %isoSetting2010 = (
     }],
 #    0x0047 => { # often incorrect, requires 16x for some models
 #        Name => 'SonyImageHeight',
-#        Condition => '$$self{Model} !~ /^(ILCE-(1|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX3|FX30)|ZV-E1)\b/',
+#        Condition => '$$self{Model} !~ /^(ILCE-(1|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX3A?|FX30)|ZV-E1)\b/',
 #        Format => 'int16u',
 #        PrintConv => '$val > 0 ? 8*$val : "n.a."',
 #    },
     0x0053 => {
         Name => 'ModelReleaseYear',
-        Condition => '$$self{Model} !~ /^(DSC-RX1RM3|ILCE-(1|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX2|FX3|FX30)|ZV-(E1|E10M2))\b/',
+        Condition => '$$self{Model} !~ /^(DSC-RX1RM3|ILCE-(1|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX2|FX3A?|FX30)|ZV-(E1|E10M2))\b/',
         Format => 'int8u',
         PrintConv => 'sprintf("20%.2d", $val)',
     },
@@ -8572,7 +8577,7 @@ my %isoSetting2010 = (
     },
     0x013f => {
         Name => 'ShutterType',
-        Condition => '$$self{Model} =~ /^(DSC-RX100M7|ZV-(1|1F|1M2))\b/',
+        Condition => '$$self{Model} =~ /^(DSC-RX100M7A?|ZV-(1A?|1F|1M2))\b/',
         PrintConv => {
             7 => 'Electronic',
             23 => 'Mechanical',
@@ -10087,7 +10092,7 @@ my %isoSetting2010 = (
     },
     0x088f => {
         Name => 'VignettingCorrParams',
-        Condition => '$$self{Model} =~ /^(ILCE-(1|7SM3)|ILME-FX3)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(1|7SM3)|ILME-FX3A?)\b/',
         Format => 'int16s[16]',
     },
     0x0891 => {
@@ -10102,7 +10107,7 @@ my %isoSetting2010 = (
     },
     0x08b5 => {
         Name => 'APS-CSizeCapture',
-        Condition => '$$self{Model} =~ /^(ILCE-(1|7SM3)|ILME-FX3)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(1|7SM3)|ILME-FX3A?)\b/',
         PrintConv => {
             0 => 'Off',
             1 => 'On',
@@ -10126,7 +10131,7 @@ my %isoSetting2010 = (
     },
     0x0914 => {
         Name => 'ChromaticAberrationCorrParams',
-        Condition => '$$self{Model} =~ /^(ILCE-(1|7SM3)|ILME-FX3)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(1|7SM3)|ILME-FX3A?)\b/',
         Format => 'int16s[32]',
     },
     0x0916 => {

@@ -35,7 +35,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.82';
+$VERSION = '1.83';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -1345,6 +1345,23 @@ Category:       foreach $category (qw{pos track alt orient atemp err dop}) {
             if (defined $dop) {
                 $et->SetNewValue(GPSMeasureMode => $mm, %opts);
                 $et->SetNewValue(GPSDOP => $dop, %opts);
+                # also set GPSHPositioningError if specified
+                my $hposErr = $$et{OPTIONS}{GeoHPosErr};
+                if ($hposErr) {
+                    $hposErr =~ s/gpsdop/GPSDOP/i;
+                    my $GPSDOP = $dop;
+                    local $SIG{'__WARN__'} = \&Image::ExifTool::SetWarning;
+                    undef $Image::ExifTool::evalWarning;
+                    #### eval GeoHPosErr ($GPSDOP)
+                    $hposErr = eval $hposErr;
+                    my $err = Image::ExifTool::GetWarning() || $@;
+                    if ($err) {
+                        $err = Image::ExifTool::CleanWarning($err);
+                        $et->Warn("Error calculating GPSHPositioningError: $err", 1);
+                    } else {
+                        $et->SetNewValue(GPSHPositioningError => $hposErr, %opts);
+                    }
+                }
             }
         }
         unless ($xmp) {

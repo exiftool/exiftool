@@ -425,6 +425,12 @@ config file.)</p>
     ignored if the PDOP is greater than this.</td>
     <td align='center'>A&nbsp;floating&nbsp;point&nbsp;number, or undef to disable</td>
     <td align='center'>undef</td></tr>
+<tr><td>GeoHPosErr</td>
+    <td>Expression to set GPSHPositioningError based on value of GPSDOP when geotagging.
+    For example, use <code>'$GPSDOP * 4'</code> to set GPSHPositioningError to 4 times
+    GPSDOP.</td>
+    <td align=center>Perl expression using <code>$GPSDOP</code></td>
+    <td align=center>undef</td></tr>
 <tr><td>GeoMinSats</td>
     <td>Minimum number of satellites for geotagging.  GPS fixes are ignored if the
     number of acquired satellites is less than this.</td>
@@ -768,7 +774,7 @@ forum post</a> for more useful tips about creating KML files.</p>
 
 <hr>
 <i>Created Apr 2, 2009</i><br>
-<i>Last revised Jul 7, 2025</i>
+<i>Last revised Oct 7, 2025</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

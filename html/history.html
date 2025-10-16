@@ -17,6 +17,24 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.39'><b>Oct. 15, 2025 - Version 13.39</b></a>
+<ul>
+<li>Added a few new Sony lens types and improved support for a few new cameras
+    (thanks Jos Roost)
+<li>Added a new Olympus LensType (thanks Karsten Gieselmann)
+<li>Added some new Pentax PictureMode values (thanks Karsten Gieselmann)
+<li>Decode GPS from a number of new DJI protobuf formats (thanks Juan Irache,
+    <a href="https://github.com/exiftool/exiftool/pull/355">github #355</a>)
+<li>Improved identification of M4A audio files (<a href="https://github.com/exiftool/exiftool/issues/80">github #80</a>)
+<li>Properly recognize VSDX files (<a href="https://github.com/exiftool/exiftool/issues/357">github #357</a>)
+<li>Patched to use date from the previous RMC sentence when missing an RMC
+    sentence in timed GPS from the buggy NextBase 662GW
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#GeoHPosErr">GeoHPosErr</a> option to set GPSHPositioningError when geotagging
+    </ul>
+</ul>
+
 <a name='v13.38'><b>Sept. 30, 2025 - Version 13.38</b></a>
 <ul>
 <li>Added read support for DSF audio files (<a href="https://github.com/exiftool/exiftool/issues/331">github #331</a>)

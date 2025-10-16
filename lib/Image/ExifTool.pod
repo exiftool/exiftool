@@ -795,6 +795,12 @@ ignored if the HDOP is greater than this.  Default is undef.
 Maximum Position (3D) Dilution Of Precision for geotagging.  GPS fixes are
 ignored if the PDOP is greater than this.  Default is undef.
 
+=item GeoHPosErr
+
+Expression to set GPSHPositioningError based on value of GPSDOP when
+geotagging.  For example, use C<'$GPSDOP * 4'> to set GPSHPositioningError
+to 4 times GPSDOP.
+
 =item GeoMinSats
 
 Minimum number of satellites for geotagging.  GPS fixes are ignored if the

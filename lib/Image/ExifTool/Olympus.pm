@@ -31,6 +31,7 @@
 #              25) Karsten Gieselmann private communication (OM series)
 #              IB) Iliah Borg private communication (LibRaw)
 #              NJ) Niels Kristian Bech Jensen private communication
+#              KG) Karsten Gieselmann private communication
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Olympus;
@@ -41,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.91';
+$VERSION = '2.92';
 
 sub PrintLensInfo($$$);
 
@@ -201,6 +202,7 @@ my %olympusLensTypes = (
     # Other makes
     '24 01 10' => 'Venus Optics Laowa 50mm F2.8 2x Macro', #DonKomarechka
     'f7 03 10' => 'LAOWA C&D-Dreamer MFT 7.5mm F2.0', #forum3833
+    'f7 10 10' => 'LAOWA C&D-Dreamer MFT 6.0mm F2.0', #KG
 );
 
 # lookup for Olympus camera types (ref PH)

@@ -499,11 +499,12 @@ my %sImageRegion = ( # new in 1.5
     NAMESPACE   => 'Iptc4xmpExt',
     TABLE_DESC => 'XMP IPTC Extension',
     NOTES => q{
-        This table contains tags defined by the IPTC Extension schema version 1.7
-        and IPTC Video Metadata version 1.3. The actual namespace prefix is
-        "Iptc4xmpExt", but ExifTool shortens this for the family 1 group name. (See
-        L<http://www.iptc.org/standards/photo-metadata/iptc-standard/> and
-        L<https://iptc.org/standards/video-metadata-hub/>.)
+This table contains tags defined by the IPTC Extension schema version 1.7
+and IPTC Video Metadata version 1.3, plus the AI additions.  The actual
+namespace prefix is "Iptc4xmpExt", but ExifTool shortens this for the family
+1 group name. (See
+L<http://www.iptc.org/standards/photo-metadata/iptc-standard/> and
+L<https://iptc.org/standards/video-metadata-hub/>.)
     },
     AboutCvTerm => {
         Struct => \%sCVTermDetails,
@@ -769,6 +770,11 @@ my %sImageRegion = ( # new in 1.5
     ImageRegion => { Groups => { 2 => 'Image' }, List => 'Bag', Struct => \%sImageRegion },
     # new Extension 1.6 property
     EventId     => { Name => 'EventID', List => 'Bag' },
+    # new AI tags
+    AISystemUsed        => { },
+    AISystemVersionUsed => { },
+    AIPromptInformation => { },
+    AIPromptWriterName  => { },
 );
 
 #------------------------------------------------------------------------------

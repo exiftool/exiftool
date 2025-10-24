@@ -27,6 +27,7 @@ config_files/fotoware.config
 config_files/frameCount.config
 config_files/gps2utm.config
 config_files/guano.config
+config_files/local_time.config
 config_files/nksc.config
 config_files/onone.config
 config_files/photoshop_paths.config
@@ -695,6 +696,7 @@ t/KyoceraRaw.t
 t/KyoceraRaw_2.out
 t/LNK.t
 t/LNK_2.out
+t/LNK_3.out
 t/Lang.t
 t/Lang_1.out
 t/Lang_10.out
@@ -1122,6 +1124,7 @@ t/images/Jpeg2000.jp2
 t/images/Kodak.jpg
 t/images/KyoceraRaw.raw
 t/images/LNK.lnk
+t/images/LNK.url
 t/images/Lytro.lfp
 t/images/M2TS.mts
 t/images/MIE.mie

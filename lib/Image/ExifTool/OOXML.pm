@@ -58,7 +58,7 @@ my @vectorVals;
     VARS => { ID_FMT => 'none' },
     NOTES => q{
         The Office Open XML (OOXML) format was introduced with Microsoft Office 2007
-        and is used by file types such as DOCX, PPTX and XLSX.  These are
+        and is used by file types such as DOCX, PPTX, XLSX and VSDX.  These are
         essentially ZIP archives containing XML files.  The table below lists some
         tags which have been observed in OOXML documents, but ExifTool will extract
         any tags found from XML files of the OOXML document properties ("docProps")

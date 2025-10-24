@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.39';
+my $version = '13.40';
 
 $^W = 1;    # enable global warnings
 
@@ -1936,7 +1936,7 @@ if (@fileOrder) {
 # set file count for progress message
 $progressMax = scalar @files if defined $progress;
 
-# store duplicate database information under absolute path
+# store duplicate database information under absolute path and with standardized case
 my @dbKeys = keys %database;
 if (@dbKeys) {
     if (eval { require Cwd }) {
@@ -1945,6 +1945,7 @@ if (@dbKeys) {
         foreach (@dbKeys) {
             my $db = $database{$_};
             tr/\\/\// and $database{$_} = $db;  # allow for backslashes in SourceFile
+            $database{lc} = $db unless $database{lc};   # duplicate entry with lower case
             # (punt on using ConvertFileName here, so $absPath may be a mix of encodings)
             my $absPath = AbsPath($_);
             if (defined $absPath) {
@@ -1952,6 +1953,7 @@ if (@dbKeys) {
                 if ($verbose and $verbose > 1) {
                     print $vout "Imported entry for '${_}' (full path: '${absPath}')\n";
                 }
+                $database{lc $absPath} = $db unless $database{lc $absPath};
             } elsif ($verbose and $verbose > 1) {
                 print $vout "Imported entry for '${_}' (no full path)\n";
             }
@@ -3260,10 +3262,18 @@ sub SetImageInfo($$$)
                     my $csvInfo = $database{$f};
                     unless ($csvInfo) {
                         next if $f eq '*';
-                        # check absolute path
+                        # check absolute path and case-insensitive name
                         # (punt on using ConvertFileName here, so $absPath may be a mix of encodings)
                         my $absPath = AbsPath($f);
-                        next unless defined $absPath and $csvInfo = $database{$absPath};
+                        if (defined $absPath and $database{$absPath}) {
+                            $csvInfo = $database{$absPath};
+                        } elsif ($database{lc $f}) {
+                            $csvInfo = $database{lc $f};
+                        } elsif (defined $absPath and $database{lc $absPath}) {
+                            $csvInfo = $database{lc $absPath};
+                        } else {
+                            next;
+                        }
                     }
                     $found = 1;
                     if ($verbose) {

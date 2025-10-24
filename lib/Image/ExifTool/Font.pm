@@ -11,6 +11,8 @@
 #               4) http://partners.adobe.com/public/developer/en/font/5178.PFM.pdf
 #               5) http://opensource.adobe.com/svn/opensource/flex/sdk/trunk/modules/compiler/src/java/flex2/compiler/util/MimeMappings.java
 #               6) http://www.adobe.com/devnet/font/pdfs/5004.AFM_Spec.pdf
+#               7) https://www.w3.org/TR/WOFF/
+#               8) https://www.w3.org/TR/WOFF2/
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Font;
@@ -18,10 +20,14 @@ package Image::ExifTool::Font;
 use strict;
 use vars qw($VERSION %ttLang);
 use Image::ExifTool qw(:DataAccess :Utils);
+use Image::ExifTool::XMP;
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 sub ProcessOTF($$);
+
+# OTF tags to process (skip all others)
+my %processTag = ( name => 1, C2PA => 1 );
 
 # TrueType 'name' platform codes
 my %ttPlatform = (
@@ -178,13 +184,24 @@ my %ttCharset = (
   Custom  => { },
 );
 
+# codes for the 63 known WOFF2 tags
+my @knownTags = (
+    'cmap', 'head', 'hhea', 'hmtx', 'maxp', 'name', 'OS/2', 'post', 'cvt',
+    'fpgm', 'glyf', 'loca', 'prep', 'CFF',  'VORG', 'EBDT', 'EBLC', 'gasp',
+    'hdmx', 'kern', 'LTSH', 'PCLT', 'VDMX', 'vhea', 'vmtx', 'BASE', 'GDEF',
+    'GPOS', 'GSUB', 'EBSC', 'JSTF', 'MATH', 'CBDT', 'CBLC', 'COLR', 'CPAL',
+    'SVG',  'sbix', 'acnt', 'avar', 'bdat', 'bloc', 'bsln', 'cvar', 'fdsc',
+    'feat', 'fmtx', 'fvar', 'gvar', 'hsty', 'just', 'lcar', 'mort', 'morx',
+    'opbd', 'prop', 'trak', 'Zapf', 'Silf', 'Glat', 'Gloc', 'Feat', 'Sill',
+);
+
 # eclectic table of tags for various format font files
 %Image::ExifTool::Font::Main = (
     GROUPS => { 2 => 'Document' },
     NOTES => q{
         This table contains a collection of tags found in font files of various
         formats.  ExifTool current recognizes OTF, TTF, TTC, DFONT, PFA, PFB, PFM,
-        AFM, ACFM and AMFM font files.
+        AFM, ACFM, AMFM, WOFF and WOFF2 font files.
     },
     name => {
         SubDirectory => { TagTable => 'Image::ExifTool::Font::Name' },
@@ -210,6 +227,14 @@ my %ttCharset = (
         Name => 'PostScriptFontName',
         Description => 'PostScript Font Name',
     },
+    # for WOFF files
+    WOFFVersion => { },
+    XML => {
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Font::XML',
+            IgnoreProp => { metadata => 1 },
+        },
+    },
 );
 
 # TrueType name tags (ref 1/2)
@@ -217,10 +242,10 @@ my %ttCharset = (
     GROUPS => { 2 => 'Document' },
     NOTES => q{
         The following tags are extracted from the TrueType font "name" table found
-        in OTF, TTF, TTC and DFONT files.  These tags support localized languages by
-        adding a hyphen followed by a language code to the end of the tag name (eg.
-        "Copyright-fr" or "License-en-US").  Tags with no language code use the
-        default language of "en".
+        in OTF, TTF, TTC, DFONT, WOFF and WOFF2 files.  These tags support localized
+        languages by adding a hyphen followed by a language code to the end of the
+        tag name (eg. "Copyright-fr" or "License-en-US").  Tags with no language
+        code use the default language of "en".
     },
     0 => { Name => 'Copyright', Groups => { 2 => 'Author' } },
     1 => 'FontFamily',
@@ -332,6 +357,39 @@ my %ttCharset = (
     Descender   => { },
 );
 
+# WOFF XML
+%Image::ExifTool::Font::XML = (
+    GROUPS => { 1 => 'XML', 2 => 'Document' },
+    PROCESS_PROC => \&Image::ExifTool::XMP::ProcessXMP,
+    NOTES => 'Tags found in WOFF and WOFF2 XML metadata.',
+    version             => { },
+    uniqueidId          => { Name => 'UniqueID' },
+    vendorName          => { },
+    vendorUrl           => { Name => 'VendorURL' },
+    vendorDir           => { },
+    vendorClass         => { },
+    creditsCreditName   => { Name => 'CreditName' },
+    creditsCreditUrl    => { Name => 'CreditURL' },
+    creditsCreditRole   => { Name => 'CreditRole' },
+    creditsCreditDir    => { Name => 'CreditDir' },
+    creditsCreditClass  => { Name => 'CreditClass' },
+    descriptionUrl      => { },
+    descriptionText     => { Name => 'Description' },
+    licenseUrl          => { Name => 'LicenseURL' },
+    licenseId           => { Name => 'LicenseID' },
+    licenseText         => { Name => 'License' },
+    copyrightText       => { Name => 'Copyright', Groups => { 2 => 'Author' } },
+    trademarkText       => { Name => 'Trademark' },
+    licenseeDir         => { },
+    licenseeName        => { },
+    licenseeClass       => { },
+    extensionId         => { Name => 'ExtensionID' },
+    extensionName       => { },
+    extensionItemId     => { Name => 'ExtensionItemID' },
+    extensionItemName   => { },
+    extensionItemValue  => { },
+);
+
 #------------------------------------------------------------------------------
 # Read information from a TrueType font collection (TTC) (refs 2,3)
 # Inputs: 0) ExifTool ref, 1) dirInfo ref
@@ -366,6 +424,122 @@ sub ProcessTTC($$)
 }
 
 #------------------------------------------------------------------------------
+# Process an OTF tag table entry (refs 1,2)
+# Inputs: 0) ExifTool ref, 1) entry index, 2) tag, 3) data ref,
+#         4) offset if uncompressed, 5) true to skip because data is transformed
+# Returns: undef on success, 0 to stop processing table, or error string otherwise
+sub ProcessTableEntry($$$$;$$)
+{
+    my ($et, $idx, $tag, $dataPt, $offset, $transformed) = @_;
+    my $verbose = $et->Options('Verbose');
+    my $size = length $$dataPt;
+
+    $offset or $offset = 0;
+    if ($verbose) {
+        $tag =~ s/([\0-\x1f\x7f-\xff])/sprintf('\x%.2x',ord $1)/ge;
+        my $str = sprintf("%s%d) Tag '%s' (offset 0x%.4x, %d bytes)\n",
+                          $$et{INDENT}, $idx, $tag, $offset, $size);
+        $et->VPrint(0, $str);
+        $et->VerboseDump($dataPt, Addr => $offset) if $verbose > 2;
+        return undef unless $processTag{$tag};
+    }
+    return undef if $transformed or $size < 8;
+    unless ($tag eq 'name') {
+        my $tagTablePtr = GetTagTable('Image::ExifTool::Font::Main');
+        $et->HandleTag($tagTablePtr, $tag, undef, DataPt => $dataPt, Size => length($$dataPt));
+        return undef;
+    }
+    # process the 'name' tag
+    my $entries = Get16u($dataPt, 2);
+    my $recEnd = 6 + $entries * 12;
+    if ($recEnd > $size) {
+        $et->Warn('Truncated name record');
+        return 0;
+    }
+    my $strStart = Get16u($dataPt, 4);
+    if ($strStart < $recEnd or $strStart > $size) {
+        $et->Warn('Invalid string offset');
+        return 0;
+    }
+    # parse language-tag record (in format 1 Naming table only) (ref 2)
+    my ($i, %langTag);
+    if (Get16u($dataPt, 0) == 1 and $recEnd + 2 <= $size) {
+        my $langTags = Get16u($dataPt, $recEnd);
+        if ($langTags and $recEnd + 2 + $langTags * 4 < $size) {
+            for ($i=0; $i<$langTags; ++$i) {
+                my $pt = $recEnd + 2 + $i * 4;
+                my $langLen = Get16u($dataPt, $pt);
+                # make sure the language string length is reasonable (UTF-16BE)
+                last if $langLen == 0 or $langLen & 0x01 or $langLen > 40;
+                my $langPt = Get16u($dataPt, $pt + 2) + $strStart;
+                last if $langPt + $langLen > $size;
+                my $lang = substr($$dataPt, $langPt, $langLen);
+                $lang = $et->Decode($lang,'UCS2','MM','UTF8');
+                $lang =~ tr/-_a-zA-Z0-9//dc;    # remove naughty characters
+                $langTag{$i + 0x8000} = $lang;
+            }
+        }
+    }
+    my $tagTablePtr = GetTagTable('Image::ExifTool::Font::Name');
+    my $oldIndent = $$et{INDENT};
+    $$et{INDENT} .= '| ';
+    $et->VerboseDir('Name', $entries) if $verbose;
+    for ($i=0; $i<$entries; ++$i) {
+        my $pt = 6 + $i * 12;
+        my $platform = Get16u($dataPt, $pt);
+        my $encoding = Get16u($dataPt, $pt + 2);
+        my $langID   = Get16u($dataPt, $pt + 4);
+        my $nameID   = Get16u($dataPt, $pt + 6);
+        my $strLen   = Get16u($dataPt, $pt + 8);
+        my $strPt    = Get16u($dataPt, $pt + 10) + $strStart;
+        if ($strPt + $strLen <= $size) {
+            my $val = substr($$dataPt, $strPt, $strLen);
+            my ($lang, $charset, $extra);
+            my $sys = $ttPlatform{$platform};
+            # translate from specified encoding
+            if ($sys) {
+                $lang = $ttLang{$sys}{$langID} || $langTag{$langID};
+                $charset = $ttCharset{$sys}{$encoding};
+                if (not $charset) {
+                    if (not defined $charset and not $$et{FontWarn}) {
+                        $et->Warn("Unknown $sys character set ($encoding)");
+                        $$et{FontWarn} = 1;
+                    }
+                } else {
+                    # translate to ExifTool character set
+                    $val = $et->Decode($val, $charset);
+                }
+            } else {
+                $et->Warn("Unknown platform ($platform) for name $nameID");
+            }
+            # get the tagInfo for our specific language (use 'en' for default)
+            my $tagInfo = $et->GetTagInfo($tagTablePtr, $nameID);
+            if ($tagInfo and $lang and $lang ne 'en') {
+                my $langInfo = Image::ExifTool::GetLangInfo($tagInfo, $lang);
+                $tagInfo = $langInfo if $langInfo;
+            }
+            if ($verbose) {
+                $langID > 0x400 and $langID = sprintf('0x%x', $langID);
+                $extra = ", Plat=$platform/" . ($sys || 'Unknown') . ', ' .
+                           "Enc=$encoding/" . ($charset || 'Unknown') . ', ' .
+                           "Lang=$langID/" . ($lang || 'Unknown');
+            }
+            $et->HandleTag($tagTablePtr, $nameID, $val,
+                TagInfo => $tagInfo,
+                DataPt  => $dataPt,
+                DataPos => $offset,
+                Start   => $strPt,
+                Size    => $strLen,
+                Index   => $i,
+                Extra   => $extra,
+            );
+        }
+    }
+    $$et{INDENT} = $oldIndent;
+    return $verbose ? undef : 0;
+}
+
+#------------------------------------------------------------------------------
 # Read information from a TrueType font file (OTF or TTF) (refs 1,2)
 # Inputs: 0) ExifTool ref, 1) dirInfo ref
 # Returns: 1 on success, 0 if this wasn't a valid TrueType font file
@@ -388,13 +562,8 @@ sub ProcessOTF($$)
     return 0 unless $raf->Read($tbl, $len) == $len;
 
     my $verbose = $et->Options('Verbose');
-    my $oldIndent = $$et{INDENT};
-    $$et{INDENT} .= '| ';
-    $et->VerboseDir('TrueType', $numTables) if $verbose;
 
-    my %processTag = ( name => 1, C2PA => 1 );  # tags to process (skip all others)
-
-    for ($pos=0; $pos<$len; $pos+=16) {
+    for ($pos=0, $i=0; $pos<$len; $pos+=16, ++$i) {
         # look for tags to process
         my $tag = substr($tbl, $pos, 4);
         next unless $processTag{$tag} or $verbose;
@@ -404,109 +573,10 @@ sub ProcessOTF($$)
             $et->Warn("Error reading '${tag}' data");
             next;
         }
-        if ($verbose) {
-            $tag =~ s/([\0-\x1f\x7f-\xff])/sprintf('\x%.2x',ord $1)/ge;
-            my $str = sprintf("%s%d) Tag '%s' (offset 0x%.4x, %d bytes)\n",
-                              $$et{INDENT}, $pos/16, $tag, $offset, $size);
-            $et->VPrint(0, $str);
-            $et->VerboseDump(\$buff, Addr => $offset) if $verbose > 2;
-            next unless $processTag{$tag};
-        }
-        next unless $size >= 8;
-        unless ($tag eq 'name') {
-            my $tagTablePtr = GetTagTable('Image::ExifTool::Font::Main');
-            $et->HandleTag($tagTablePtr, $tag, undef, DataPt => \$buff, Size => length($buff));
-            next;
-        }
-        # process the 'name' tag
-        my $entries = Get16u(\$buff, 2);
-        my $recEnd = 6 + $entries * 12;
-        if ($recEnd > $size) {
-            $et->Warn('Truncated name record');
-            last;
-        }
-        my $strStart = Get16u(\$buff, 4);
-        if ($strStart < $recEnd or $strStart > $size) {
-            $et->Warn('Invalid string offset');
-            last;
-        }
-        # parse language-tag record (in format 1 Naming table only) (ref 2)
-        my %langTag;
-        if (Get16u(\$buff, 0) == 1 and $recEnd + 2 <= $size) {
-            my $langTags = Get16u(\$buff, $recEnd);
-            if ($langTags and $recEnd + 2 + $langTags * 4 < $size) {
-                for ($i=0; $i<$langTags; ++$i) {
-                    my $pt = $recEnd + 2 + $i * 4;
-                    my $langLen = Get16u(\$buff, $pt);
-                    # make sure the language string length is reasonable (UTF-16BE)
-                    last if $langLen == 0 or $langLen & 0x01 or $langLen > 40;
-                    my $langPt = Get16u(\$buff, $pt + 2) + $strStart;
-                    last if $langPt + $langLen > $size;
-                    my $lang = substr($buff, $langPt, $langLen);
-                    $lang = $et->Decode($lang,'UCS2','MM','UTF8');
-                    $lang =~ tr/-_a-zA-Z0-9//dc;    # remove naughty characters
-                    $langTag{$i + 0x8000} = $lang;
-                }
-            }
-        }
-        my $tagTablePtr = GetTagTable('Image::ExifTool::Font::Name');
-        $$et{INDENT} .= '| ';
-        $et->VerboseDir('Name', $entries) if $verbose;
-        for ($i=0; $i<$entries; ++$i) {
-            my $pt = 6 + $i * 12;
-            my $platform = Get16u(\$buff, $pt);
-            my $encoding = Get16u(\$buff, $pt + 2);
-            my $langID   = Get16u(\$buff, $pt + 4);
-            my $nameID   = Get16u(\$buff, $pt + 6);
-            my $strLen   = Get16u(\$buff, $pt + 8);
-            my $strPt    = Get16u(\$buff, $pt + 10) + $strStart;
-            if ($strPt + $strLen <= $size) {
-                my $val = substr($buff, $strPt, $strLen);
-                my ($lang, $charset, $extra);
-                my $sys = $ttPlatform{$platform};
-                # translate from specified encoding
-                if ($sys) {
-                    $lang = $ttLang{$sys}{$langID} || $langTag{$langID};
-                    $charset = $ttCharset{$sys}{$encoding};
-                    if (not $charset) {
-                        if (not defined $charset and not $$et{FontWarn}) {
-                            $et->Warn("Unknown $sys character set ($encoding)");
-                            $$et{FontWarn} = 1;
-                        }
-                    } else {
-                        # translate to ExifTool character set
-                        $val = $et->Decode($val, $charset);
-                    }
-                } else {
-                    $et->Warn("Unknown platform ($platform) for name $nameID");
-                }
-                # get the tagInfo for our specific language (use 'en' for default)
-                my $tagInfo = $et->GetTagInfo($tagTablePtr, $nameID);
-                if ($tagInfo and $lang and $lang ne 'en') {
-                    my $langInfo = Image::ExifTool::GetLangInfo($tagInfo, $lang);
-                    $tagInfo = $langInfo if $langInfo;
-                }
-                if ($verbose) {
-                    $langID > 0x400 and $langID = sprintf('0x%x', $langID);
-                    $extra = ", Plat=$platform/" . ($sys || 'Unknown') . ', ' .
-                               "Enc=$encoding/" . ($charset || 'Unknown') . ', ' .
-                               "Lang=$langID/" . ($lang || 'Unknown');
-                }
-                $et->HandleTag($tagTablePtr, $nameID, $val,
-                    TagInfo => $tagInfo,
-                    DataPt  => \$buff,
-                    DataPos => $offset,
-                    Start   => $strPt,
-                    Size    => $strLen,
-                    Index   => $i,
-                    Extra   => $extra,
-                );
-            }
-        }
-        $$et{INDENT} = $oldIndent . '| ';
-        last unless $verbose;
+        my $err = ProcessTableEntry($et, $i, $tag, \$buff, $offset);
+        $err and $et->Warn($err), last;
+        last if defined $err;
     }
-    $$et{INDENT} = $oldIndent;
     return 1;
 }
 
@@ -550,6 +620,203 @@ sub ProcessAFM($$)
             # end parsing if we start any subsection
             last if $tag =~ /^Start/ and $tag ne 'StartDirection';
         }
+    }
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Read WOFF2 255UInt16 integer (ref 8)
+# Inputs: 0) raf ref
+# Returns: value, or undef on error
+sub Read255UInt16($)
+{
+    my $raf = shift;
+    my $buff;
+    return undef unless $raf->Read($buff, 1);
+    my $val = unpack('C', $buff);
+    if ($val == 253) {
+        return undef unless $raf->Read($buff, 2) == 2;
+        $val = unpack('n', $buff);
+    } elsif ($val == 254) {
+        return undef unless $raf->Read($buff, 1);
+        $val = unpack('C', $buff) + 253 * 2;
+    } elsif ($val == 255) {
+        return undef unless $raf->Read($buff, 1);
+        $val = unpack('C', $buff) + 253;
+    }
+    return $val;
+}
+
+#------------------------------------------------------------------------------
+# Read WOFF2 UIntBase128 integer (ref 8)
+# Inputs: 0) raf ref
+# Returns: value, or undef on error
+sub ReadUIntBase128($)
+{
+    my $raf = shift;
+    my $buff;
+    my $val = 0;
+    foreach (0..4) {
+        return undef unless $raf->Read($buff, 1);
+        my $byte = unpack('C', $buff);
+        return undef if not $_ and $byte == 0x80;
+        return undef if $val & 0xfe000000;
+        $val = ($val << 7) | ($byte & 0x7f);
+        return $val unless $byte & 0x80;
+    }
+    return undef;   # can't be longer than 5 bytes
+}
+
+#------------------------------------------------------------------------------
+# Uncompress data
+# Inputs: 0) ExifTool ref, 1) data ref
+# Returns: true on success
+sub Uncompress($$)
+{
+    my ($et, $dataPt) = @_;
+    my $stat;
+    unless (eval { require Compress::Zlib }) {
+        $et->Warn('Install Compress::Zlib to read compressed metadata');
+        return 0;
+    }
+    my $inflate = Compress::Zlib::inflateInit();
+    $inflate and ($$dataPt, $stat) = $inflate->inflate($$dataPt);
+    unless ($inflate and $stat == Compress::Zlib::Z_STREAM_END()) {
+        $et->Warn('Error uncompressing metadata');
+        return 0;
+    }
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Brotli uncompress data
+# Inputs: 0) ExifTool ref, 1) data ref
+# Returns: true on success
+sub Unbrotli($$)
+{
+    my ($et, $dataPt) = @_;
+    unless (eval { require IO::Uncompress::Brotli }) {
+        $et->Warn('Install IO::Compress::Brotli to decode Brotli-compressed metadata');
+        return 0;
+    }
+    eval { $$dataPt = IO::Uncompress::Brotli::unbro($$dataPt, 100000000) };
+    if ($@) {
+        $et->Warn('Error decoding metadata');
+        $et->Warn('Try updating to IO::Uncompress::Brotli 0.004 or later');
+        return 0;
+    }
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Read information from WOFF/WOFF2 font files
+# Inputs: 0) ExifTool ref, 1) dirInfo ref
+# Returns: 1 on success, 0 if this wasn't a recognized WOFF file
+sub ProcessWOFF($$)
+{
+    my ($et, $dirInfo) = @_;
+    my $raf = $$dirInfo{RAF};
+    my ($buff, $tbl, $i);
+    $raf->Seek(0,0) and $raf->Read($buff,48) == 48 or return 0;
+    $buff =~ /^(wOF[F2])/ or return 0;
+    my ($type, $off) = $1 eq 'wOFF' ? ('woff' , 20) : ('woff2', 24);
+    $et->SetFileType(uc($type), "font/$type");
+    SetByteOrder('MM');
+    my $flavor = substr($buff, 4, 4);
+    my $numTables = Get16u(\$buff, 12);
+    my ($vh, $vl, $metaPos, $metaLen) = unpack("x${off}nnNN", $buff);
+    my $verbose = $et->Options('Verbose');
+    my $tagTablePtr = GetTagTable('Image::ExifTool::Font::Main');
+    $et->HandleTag($tagTablePtr, WOFFVersion => "$vh.$vl");
+#
+# read font table
+#
+    if ($type eq 'woff') {
+        unless ($raf->Seek($off+24,0) and $raf->Read($tbl,$numTables*20)==$numTables*20) {
+            $et->Warn('Error reading font table');
+            return 1;
+        }
+        for ($i=0; $i<$numTables; ++$i) {
+            my $pt = $i * 20;
+            my ($tag, $pos, $compLen, $len) = unpack("x${pt}a4N3", $tbl);
+            next unless $processTag{$tag} or $verbose;
+            $raf->Seek($pos,0) and $raf->Read($buff,$compLen)==$compLen or $et->Warn('Bad font table entry'), return 1;
+            my $dataPos;
+            if ($compLen eq $len) {
+                $dataPos = $pos;
+            } else {
+                next unless Uncompress($et, \$buff);
+            }
+            my $err = ProcessTableEntry($et, $i, $tag, \$buff, $dataPos);
+            $err and $et->Warn($err), return 1;
+            last if defined $err;
+        }
+    } else { # WOFF2
+        my $compSize = Get32u(\$buff, 20);
+        my ($err, @entry, $entry);
+        $raf->Seek($off+24,0) or $et->Warn('Error seeking to font table'), return 1;
+        for ($i=0; $i<$numTables; ++$i) {
+            $raf->Read($buff, 1) or $err = 1, last;
+            my $flags = unpack('C', $buff);
+            my $tag = $knownTags[$flags & 0x3f];
+            $tag or $raf->Read($tag, 4) == 4 or $err = 1, last;
+            my $len = ReadUIntBase128($raf);
+            defined $len or $err = 1, last;
+            my $transformed;
+            if (($tag eq 'glyf' or $tag eq 'loca') xor $flags & 0xc0) {
+                # a non-null transform was used
+                $len = ReadUIntBase128($raf);
+                $transformed = 1;
+            }
+            # save information about this entry for later
+            push @entry, [ $i, $tag, $len, $transformed ];
+        }
+        $err and $et->Warn('Error reading font table'), return 1;
+        # skip the collection table if necessary
+        if ($flavor eq 'ttcf') {
+            $raf->Seek(4, 1) or $et->Warn('Seek error'), return 1;
+            my $n = Read255UInt16($raf);
+            defined $n and $raf->Seek(4,1) or $et->Warn('Error reading collection table'), return 1;
+            $raf->Seek(4, 1) or $err = 1, last;
+            for ($i=0; $i<$n; ++$i) {
+                defined Read255UInt16($raf) or $err = 1, last;
+            }
+            $err and $et->Warn('Error reading collection directory'), return 1;
+        }
+        $raf->Read($buff,$compSize) == $compSize or $et->Warn('Error reading font data'), return 1;
+        return 1 unless Unbrotli($et, \$buff);
+        # after all that exhausting and frankly unnecessary work (poor file design),
+        # we finally have the uncompressed font data so we can process the table entries
+        my $pos = 0;
+        foreach $entry (@entry) {
+            my ($i, $tag, $len, $transformed) = @$entry;
+            if ($processTag{$tag} or $verbose) {
+                my $dat = substr($buff, $pos, $len);
+                my $err = ProcessTableEntry($et, $i, $tag, \$dat, undef, $transformed);
+                $err and $et->Warn($err), return 1;
+                last if defined $err;
+            }
+            $pos += $len;
+        }
+    }
+#
+# read compressed XML-format metadata (NC)
+#
+    if ($metaLen) {
+        unless ($raf->Seek($metaPos,0) and $raf->Read($buff,$metaLen)==$metaLen) {
+            $et->Warn('Error reading metadata');
+            return 1;
+        }
+        if ($type eq 'woff') {
+            return 1 unless Uncompress($et, \$buff);
+        } else { # WOFF2
+            return 1 unless Unbrotli($et, \$buff);
+        }
+        # (we don't properly support XML structures)
+        my $oldStruct = $et->Options('Struct');
+        $et->Options(Struct => 0);
+        $et->HandleTag($tagTablePtr, 'XML', $buff);
+        $et->Options(Struct => $oldStruct);
     }
     return 1;
 }
@@ -601,10 +868,7 @@ sub ProcessFont($$)
         }
         $rtnVal = 1;
     } elsif ($buff =~ /^(wOF[F2])/) {
-        my $type = $1 eq 'wOFF' ? 'woff' : 'woff2';
-        $et->SetFileType(uc($type), "font/$type");
-        # (don't yet extract metadata from these files)
-        $rtnVal = 1;
+        $rtnVal = ProcessWOFF($et, $dirInfo);
     } else {
         $rtnVal = 0;
     }
@@ -653,6 +917,10 @@ under the same terms as Perl itself.
 =item L<http://opensource.adobe.com/svn/opensource/flex/sdk/trunk/modules/compiler/src/java/flex2/compiler/util/MimeMappings.java>
 
 =item L<http://www.adobe.com/devnet/font/pdfs/5004.AFM_Spec.pdf>
+
+=item L<https://www.w3.org/TR/WOFF/>
+
+=item L<https://www.w3.org/TR/WOFF2/>
 
 =back
 

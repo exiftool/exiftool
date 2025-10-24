@@ -71,7 +71,7 @@ package Image::ExifTool::Geolocation;
 use strict;
 use vars qw($VERSION $geoDir $altDir $dbInfo);
 
-$VERSION = '1.09';  # (this is the module version number, not the database version)
+$VERSION = '1.10';  # (this is the module version number, not the database version)
 
 my $debug; # set to output processing time for testing
 
@@ -85,10 +85,10 @@ my (@cityList, @countryList, @regionList, @subregionList, @timezoneList);
 my (%countryNum, %regionNum, %subregionNum, %timezoneNum); # reverse lookups
 my (@sortOrder, @altNames, %langLookup, $nCity, %featureCodes, %featureTypes);
 my ($lastArgs, %lastFound, @lastByPop, @lastByLat); # cached city matches
-my $dbVer = '1.03';
+my $dbVer = '1.03';         # database version number
 my $sortedBy = 'Latitude';
 my $pi = 3.1415926536;
-my $earthRadius = 6371;    # earth radius in km
+my $earthRadius = 6371;     # earth radius in km
 # hard-coded feature codes for v1.02 database
 my @featureCodes = qw(Other PPL PPLA PPLA2 PPLA3 PPLA4 PPLA5 PPLC
                       PPLCH PPLF PPLG PPLL PPLR PPLS STLMT PPLX);
@@ -459,9 +459,9 @@ sub GetAltNames($;$)
 #         1) options hash reference (or undef for no options)
 # Options: GeolocMinPop, GeolocMaxDist, GeolocMulti, GeolocFeature, GeolocAltNames,
 #          GeolocNearby
-# Returns: List of matching city information, empty if none found.
-#          Each element in the list is an array with 0=index of city in database,
-#          1=distance in km (or undef if no distance), 2=compass bearing (or undef)
+# Returns: 0) Reference to list of indices for matching cities, or undef for no matches
+#          1) Reference to list of distance/bearing pairs, or undef if no GPS
+#          In scalar context returns list of indices only
 sub Geolocate($;$)
 {
     my ($arg, $opts) = @_;
@@ -712,7 +712,7 @@ Entry:  for (; $i<@cityList; ++$i) {
         push @dist, [ $km, $be ];
         last if $num <= 1;
     }
-    return(\@rtnList, \@dist);
+    return wantarray ? (\@rtnList, \@dist) : \@rtnList;
 }
 
 1; #end
@@ -968,6 +968,9 @@ if no matches were found.
 
 1) Reference to list of distance/bearing pairs for each matching city, or
 undef if the search didn't provide GPS coordinates.
+
+In scalar context, only the reference to the list of database entry numbers
+is returned.
 
 =back
 

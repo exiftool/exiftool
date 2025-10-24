@@ -7,6 +7,14 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.36. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Oct. 24, 2025 - Version 13.40
+
+  - Added read support for WOFF and WOFF2 font files (github #358)
+  - Added read support for Windows .URL files
+  - Added new XMP-iptcExt generative AI tags (thanks IPTC)
+  - Added config_files/local_time.config to the full distribution
+  - Enhanced CSV import allow SourceFile entries with a different case
+
 Oct. 15, 2025 - Version 13.39
 
   - Added a few new Sony lens types and improved support for a few new cameras

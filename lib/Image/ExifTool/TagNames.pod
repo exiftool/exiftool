@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28809 tags, with 17897 unique tag names.
+They contain a total of 28853 tags, with 17925 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -4711,8 +4711,9 @@ These tags belong to the ExifTool XMP-iptcCore family 1 group.
 =head3 XMP iptcExt Tags
 
 This table contains tags defined by the IPTC Extension schema version 1.7
-and IPTC Video Metadata version 1.3. The actual namespace prefix is
-"Iptc4xmpExt", but ExifTool shortens this for the family 1 group name. (See
+and IPTC Video Metadata version 1.3, plus the AI additions.  The actual
+namespace prefix is "Iptc4xmpExt", but ExifTool shortens this for the family
+1 group name. (See
 L<http://www.iptc.org/standards/photo-metadata/iptc-standard/> and
 L<https://iptc.org/standards/video-metadata-hub/>.)
 
@@ -4726,6 +4727,10 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   AboutCvTermName                               lang-alt_+
   AboutCvTermRefinedAbout                       string_+
   AdditionalModelInformation                    string
+  AIPromptInformation                           string
+  AIPromptWriterName                            string
+  AISystemUsed                                  string
+  AISystemVersionUsed                           string
   ArtworkOrObject                               ArtworkOrObjectDetails Struct+
   ArtworkCircaDateCreated                       string!_+
   ArtworkContentDescription                     lang-alt_+
@@ -40770,6 +40775,26 @@ Information extracted from MS Shell Link (Windows shortcut) files.
   ------   --------                             --------
       8    CodePage                             no
 
+=head3 LNK INI Tags
+
+Tags found in INI-format Windows .URL files.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  Author                                        no
+  Comment                                       no
+  Desc                                          no
+  HotKey                                        no
+  IDList                                        no
+  IconFile                                      no
+  IconIndex                                     no
+  Modified                                      no
+  Roamed                                        no
+  ShowCommand                                   no
+  URL                                           no
+  WhatsNew                                      no
+  WorkingDirectory                              no
+
 =head2 PCAP Tags
 
 Tags extracted from  CAP, PCAP and PCAPNG Packet Capture files.
@@ -40810,18 +40835,20 @@ Tags extracted from  CAP, PCAP and PCAPNG Packet Capture files.
 
 This table contains a collection of tags found in font files of various
 formats.  ExifTool current recognizes OTF, TTF, TTC, DFONT, PFA, PFB, PFM,
-AFM, ACFM and AMFM font files.
+AFM, ACFM, AMFM, WOFF and WOFF2 font files.
 
-  Tag ID       Tag Name                         Writable
-  ------       --------                         --------
-  'AFM'        AFM                              Font AFM
-  'C2PA'       C2PA                             Jpeg2000
-  'PFM'        PFMHeader                        Font PFM
-  'PSInfo'     PSFontInfo                       Font PSInfo
-  'fontname'   FontName                         no
-  'name'       Name                             Font Name
-  'numfonts'   NumFonts                         no
-  'postfont'   PostScriptFontName               no
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'AFM'                AFM                      Font AFM
+  'C2PA'               C2PA                     Jpeg2000
+  'PFM'                PFMHeader                Font PFM
+  'PSInfo'             PSFontInfo               Font PSInfo
+  'WOFFVersion'        WOFFVersion              no
+  'XML'                XML                      Font XML
+  'fontname'           FontName                 no
+  'name'               Name                     Font Name
+  'numfonts'           NumFonts                 no
+  'postfont'           PostScriptFontName       no
 
 =head3 Font AFM Tags
 
@@ -40899,13 +40926,46 @@ Tags extracted from PostScript font files (PFA and PFB).
   'isFixedPitch'       IsFixedPitch             no
   'version'            Version                  no
 
+=head3 Font XML Tags
+
+Tags found in WOFF and WOFF2 XML metadata.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'copyrightText'      Copyright                no
+  'creditsCreditClass' CreditClass              no
+  'creditsCreditDir'   CreditDir                no
+  'creditsCreditName'  CreditName               no
+  'creditsCreditRole'  CreditRole               no
+  'creditsCreditUrl'   CreditURL                no
+  'descriptionText'    Description              no
+  'descriptionUrl'     DescriptionUrl           no
+  'extensionId'        ExtensionID              no
+  'extensionItemId'    ExtensionItemID          no
+  'extensionItemName'  ExtensionItemName        no
+  'extensionItemValue' ExtensionItemValue       no
+  'extensionName'      ExtensionName            no
+  'licenseId'          LicenseID                no
+  'licenseText'        License                  no
+  'licenseUrl'         LicenseURL               no
+  'licenseeClass'      LicenseeClass            no
+  'licenseeDir'        LicenseeDir              no
+  'licenseeName'       LicenseeName             no
+  'trademarkText'      Trademark                no
+  'uniqueidId'         UniqueID                 no
+  'vendorClass'        VendorClass              no
+  'vendorDir'          VendorDir                no
+  'vendorName'         VendorName               no
+  'vendorUrl'          VendorURL                no
+  'version'            Version                  no
+
 =head3 Font Name Tags
 
 The following tags are extracted from the TrueType font "name" table found
-in OTF, TTF, TTC and DFONT files.  These tags support localized languages by
-adding a hyphen followed by a language code to the end of the tag name (eg.
-"Copyright-fr" or "License-en-US").  Tags with no language code use the
-default language of "en".
+in OTF, TTF, TTC, DFONT, WOFF and WOFF2 files.  These tags support localized
+languages by adding a hyphen followed by a language code to the end of the
+tag name (eg. "Copyright-fr" or "License-en-US").  Tags with no language
+code use the default language of "en".
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -41230,7 +41290,7 @@ specification.
 =head2 OOXML Tags
 
 The Office Open XML (OOXML) format was introduced with Microsoft Office 2007
-and is used by file types such as DOCX, PPTX and XLSX.  These are
+and is used by file types such as DOCX, PPTX, XLSX and VSDX.  These are
 essentially ZIP archives containing XML files.  The table below lists some
 tags which have been observed in OOXML documents, but ExifTool will extract
 any tags found from XML files of the OOXML document properties ("docProps")

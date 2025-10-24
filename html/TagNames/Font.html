@@ -10,7 +10,7 @@
 <h2 class=top>Font Tags</h2>
 <p>This table contains a collection of tags found in font files of various
 formats.  ExifTool current recognizes OTF, TTF, TTC, DFONT, PFA, PFB, PFM,
-AFM, ACFM and AMFM font files.</p>
+AFM, ACFM, AMFM, WOFF and WOFF2 font files.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -36,6 +36,16 @@ AFM, ACFM and AMFM font files.</p>
 <td>PSFontInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Font.html#PSInfo'>Font PSInfo Tags</a></td></tr>
+<tr>
+<td>'WOFFVersion'</td>
+<td>WOFFVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'XML'</td>
+<td>XML</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Font.html#XML'>Font XML Tags</a></td></tr>
 <tr>
 <td>'fontname'</td>
 <td>FontName</td>
@@ -360,12 +370,151 @@ AFM, ACFM and AMFM font files.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='XML'>Font XML Tags</a></h2>
+<p>Tags found in WOFF and WOFF2 XML metadata.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'copyrightText'</td>
+<td>Copyright</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'creditsCreditClass'</td>
+<td>CreditClass</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'creditsCreditDir'</td>
+<td>CreditDir</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'creditsCreditName'</td>
+<td>CreditName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'creditsCreditRole'</td>
+<td>CreditRole</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'creditsCreditUrl'</td>
+<td>CreditURL</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'descriptionText'</td>
+<td>Description</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'descriptionUrl'</td>
+<td>DescriptionUrl</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'extensionId'</td>
+<td>ExtensionID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'extensionItemId'</td>
+<td>ExtensionItemID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'extensionItemName'</td>
+<td>ExtensionItemName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'extensionItemValue'</td>
+<td>ExtensionItemValue</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'extensionName'</td>
+<td>ExtensionName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'licenseId'</td>
+<td>LicenseID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'licenseText'</td>
+<td>License</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'licenseUrl'</td>
+<td>LicenseURL</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'licenseeClass'</td>
+<td>LicenseeClass</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'licenseeDir'</td>
+<td>LicenseeDir</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'licenseeName'</td>
+<td>LicenseeName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'trademarkText'</td>
+<td>Trademark</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'uniqueidId'</td>
+<td>UniqueID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'vendorClass'</td>
+<td>VendorClass</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'vendorDir'</td>
+<td>VendorDir</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'vendorName'</td>
+<td>VendorName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'vendorUrl'</td>
+<td>VendorURL</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'version'</td>
+<td>Version</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='Name'>Font Name Tags</a></h2>
 <p>The following tags are extracted from the TrueType font &quot;name&quot; table found
-in OTF, TTF, TTC and DFONT files.  These tags support localized languages by
-adding a hyphen followed by a language code to the end of the tag name (eg.
-&quot;Copyright-fr&quot; or &quot;License-en-US&quot;).  Tags with no language code use the
-default language of &quot;en&quot;.</p>
+in OTF, TTF, TTC, DFONT, WOFF and WOFF2 files.  These tags support localized
+languages by adding a hyphen followed by a language code to the end of the
+tag name (eg. &quot;Copyright-fr&quot; or &quot;License-en-US&quot;).  Tags with no language
+code use the default language of &quot;en&quot;.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -485,7 +634,7 @@ default language of &quot;en&quot;.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 28, 2024</i>
+<br><i>Last revised Oct 24, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

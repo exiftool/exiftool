@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.39';
+$VERSION = '13.40';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -155,7 +155,7 @@ sub ReadValue($$$;$$$);
     Real::Audio Real::Metafile Red RIFF AIFF ASF TNEF WTV DICOM FITS XISF MIE
     JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
     EXE::PEString EXE::DebugRSDS EXE::DebugNB10 EXE::Misc EXE::MachO EXE::PEF
-    EXE::ELF EXE::AR EXE::CHM LNK PCAP Font VCard Text VCard::VCalendar
+    EXE::ELF EXE::AR EXE::CHM LNK LNK::INI PCAP Font VCard Text VCard::VCalendar
     VCard::VNote RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR ZIP::RAR5 RTF OOXML iWork
     ISO FLIR::AFF FLIR::FPF MacOS MacOS::MDItem FlashPix::DocTable
 );
@@ -544,6 +544,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     TTF  => ['Font', 'True Type Font'],
     TUB  => 'PSP',
     TXT  => ['TXT',  'Text file'],
+    URL  => ['LNK',  'Windows shortcut URL'],
     VCARD=> ['VCard','Virtual Card'],
     VCF  => 'VCARD',
     VOB  => ['MPEG', 'Video Object'],
@@ -976,7 +977,7 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
     JXL  => '(\xff\x0a|\0\0\0\x0cJXL \x0d\x0a......ftypjxl )',
     LFP  => '\x89LFP\x0d\x0a\x1a\x0a',
     LIF  => '\x70\0{3}.{4}\x2a.{4}<\0',
-    LNK  => '.{4}\x01\x14\x02\0{5}\xc0\0{6}\x46',
+    LNK  => '(.{4}\x01\x14\x02\0{5}\xc0\0{6}\x46|\[[InternetShortcut\][\x0d\x0a])',
     LRI  => 'LELR \0',
     M2TS => '.{0,191}?\x47(.{187}|.{191})\x47(.{187}|.{191})\x47',
     MacOS=> '\0\x05\x16\x07\0.\0\0Mac OS X        ',

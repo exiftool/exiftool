@@ -4,6 +4,7 @@
 # Description:  Read meta information from MS Shell Link files
 #
 # Revisions:    2009/09/19 - P. Harvey Created
+#               2025/10/20 - PH Added .URL file support
 #
 # References:   1) http://msdn.microsoft.com/en-us/library/dd871305(PROT.10).aspx
 #               2) http://www.i2s-lab.com/Papers/The_Windows_Shortcut_File_Format.pdf
@@ -17,7 +18,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Microsoft;
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 sub ProcessItemID($$$);
 sub ProcessLinkInfo($$$);
@@ -447,6 +448,39 @@ sub ProcessLinkInfo($$$);
     },
 );
 
+%Image::ExifTool::LNK::INI = (
+    GROUPS => { 2 => 'Document' },
+    VARS => { ID_FMT => 'none' },
+    NOTES => 'Tags found in INI-format Windows .URL files.',
+    URL         => { },
+    IconFile    => { },
+    IconIndex   => { },
+    WorkingDirectory => { },
+    HotKey      => { },
+    ShowCommand => { PrintConv => { 1 => 'Normal', 2 => 'Minimized', 3 => 'Maximized' } },
+    Modified    => {
+        Groups => { 2 => 'Time' },
+        Format => 'int64u',
+        Groups => { 2 => 'Time' },
+        # convert time from 100-ns intervals since Jan 1, 1601 (NC)
+        RawConv => q{
+            my $dat = pack('H*', $val);
+            return undef if length $dat < 8;
+            my ($lo, $hi) = unpack('V2', $dat);
+            return undef unless $lo or $hi;
+            return $hi * 4294967296 + $lo;
+        },
+        ValueConv => '$val=$val/1e7-11644473600; ConvertUnixTime($val,1)',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    Author      => { Groups => { 2 => 'Author' } },
+    WhatsNew    => { },
+    Comment     => { },
+    Desc        => { },
+    Roamed      => { Notes => '1 if synced across multiple devices' },
+    IDList      => { },
+);
+
 #------------------------------------------------------------------------------
 # Extract null-terminated ASCII or Unicode string from buffer
 # Inputs: 0) buffer ref, 1) start position, 2) flag for unicode string
@@ -589,6 +623,27 @@ sub ProcessLinkInfo($$$)
 }
 
 #------------------------------------------------------------------------------
+# Extract information from a INI-format file
+# Inputs: 0) ExifTool object reference, 1) dirInfo reference
+# Returns: 1 on success, 0 if this wasn't a valid INI file
+sub ProcessINI($$)
+{
+    my ($et, $dirInfo) = @_;
+    my $raf = $$dirInfo{RAF};
+    my $buff;
+    local $/ = "\x0d\x0a";
+    my $tagTablePtr = GetTagTable('Image::ExifTool::LNK::INI');
+    while ($raf->ReadLine($buff)) {
+        if ($buff =~ /^\[(.*?)\]/) {
+            $et->VPrint(0, "$1 section:\n");
+        } elsif ($buff =~ /^\s*(\w+)=(.*)\x0d\x0a$/) {
+            $et->HandleTag($tagTablePtr, $1, $2, MakeTagInfo => 1);
+        }
+    }
+    return 1;
+}
+
+#------------------------------------------------------------------------------
 # Extract information from a MS Shell Link (Windows shortcut) file
 # Inputs: 0) ExifTool object reference, 1) dirInfo reference
 # Returns: 1 on success, 0 if this wasn't a valid LNK file
@@ -600,7 +655,13 @@ sub ProcessLNK($$)
 
     # read LNK file header
     $raf->Read($buff, 0x4c) == 0x4c or return 0;
-    $buff =~ /^.{4}\x01\x14\x02\0{5}\xc0\0{6}\x46/s or return 0;
+    unless ($buff =~ /^.{4}\x01\x14\x02\0{5}\xc0\0{6}\x46/s) {
+        # check for INI-format LNK file (eg. .URL file)
+        return undef unless $buff =~ /^\[[InternetShortcut\][\x0d\x0a]/;
+        $raf->Seek(0,0) or return 0;
+        $et->SetFileType('URL', 'application/x-mswinurl');
+        return ProcessINI($et, $dirInfo);
+    };
     $len = unpack('V', $buff);
     $len >= 0x4c or return 0;
     if ($len > 0x4c) {

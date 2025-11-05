@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.92';
+$VERSION = '2.93';
 
 sub PrintLensInfo($$$);
 
@@ -201,8 +201,9 @@ my %olympusLensTypes = (
   # '65535 07 40' - Seen for LUMIX S 16-35/F4 on Panasonic DC-S1H (ref PH)
     # Other makes
     '24 01 10' => 'Venus Optics Laowa 50mm F2.8 2x Macro', #DonKomarechka
-    'f7 03 10' => 'LAOWA C&D-Dreamer MFT 7.5mm F2.0', #forum3833
-    'f7 10 10' => 'LAOWA C&D-Dreamer MFT 6.0mm F2.0', #KG
+    '247 03 10' => 'LAOWA C&D-Dreamer MFT 7.5mm F2.0', #forum3833
+    '247 10 10' => 'LAOWA C&D-Dreamer MFT 6.0mm F2.0', #KG
+    '65522 02 10' => 'Xiaoyi 42.5mm F1.8', #github363
 );
 
 # lookup for Olympus camera types (ref PH)

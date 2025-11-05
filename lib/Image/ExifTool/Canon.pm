@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.97';
+$VERSION = '4.98';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -562,6 +562,7 @@ $VERSION = '4.97';
     4160 => 'Canon EF-S 35mm f/2.8 Macro IS STM', #42
     4208 => 'Sigma 56mm f/1.4 DC DN | C or other Sigma Lens', #forum10603
     4208.1 => 'Sigma 30mm F1.4 DC DN | C', #github#83 (016)
+    4976 => 'Sigma 16-300mm F3.5-6.7 DC OS | C (025)', #50
     6512 => 'Sigma 12mm F1.4 DC | C', #github#352 (025)
     # (Nano USM lenses - 0x90xx)
     36910 => 'Canon EF 70-300mm f/4-5.6 IS II USM', #42
@@ -1995,12 +1996,12 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData10' },
         },
         {   # (int16u[3973]) - R3 ref IB
-            Condition => '$count == 3973 or $count == 3778',
+            Condition => '($count == 3973 or $count == 3778) and $$valPt !~ /^\x41\0/',
             Name => 'ColorData11',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData11' },
         },
-        {   # (int16u[4528]) - R1/R5mkII ref forum16406
-            Condition => '$count == 4528',
+        {   # (int16u[4528]) - R1/R5mkII (4528) ref forum16406, R50V (3778) ref PH
+            Condition => '$count == 4528 or $count == 3778',
             Name => 'ColorData12',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData12' },
         },
@@ -8321,8 +8322,8 @@ my %ciMaxFocal = (
         RawConv => '$$self{ColorDataVersion} = $val',
         PrintConv => {
             16 => '16 (M50)',
-            17 => '17 (EOS R)',     # (and PowerShot SX740HS)
-            18 => '18 (EOS RP/250D)',    # (and PowerShot SX70HS)
+            17 => '17 (R)',         # (and PowerShot SX740HS)
+            18 => '18 (RP/250D)',   # (and PowerShot SX70HS)
             19 => '19 (90D/850D/M6mkII/M200)',# (and PowerShot G7XmkIII)
         },
     },
@@ -8553,10 +8554,10 @@ my %ciMaxFocal = (
     },
 );
 
-# Color data (MakerNotes tag 0x4001, count=3973, ref IB)
+# Color data (MakerNotes tag 0x4001, count=3973/3778, ref IB)
 %Image::ExifTool::Canon::ColorData11 = (
     %binaryDataAttrs,
-    NOTES => 'These tags are used by the EOS R3, R7 and R6mkII',
+    NOTES => 'These tags are used by the EOS R3, R7, R50 and R6mkII',
     FORMAT => 'int16s',
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -8568,7 +8569,7 @@ my %ciMaxFocal = (
         RawConv => '$$self{ColorDataVersion} = $val',
         PrintConv => {
             34 => '34 (R3)', #IB
-            48 => '48 (R7, R10, R6 Mark II)', #IB
+            48 => '48 (R7/R10/R50/R6mkII)', #IB
         },
     },
     0x69 => { Name => 'WB_RGGBLevelsAsShot',     Format => 'int16s[4]' },
@@ -8673,10 +8674,10 @@ my %ciMaxFocal = (
     },
 );
 
-# Color data (MakerNotes tag 0x4001, count=4528, ref PH)
+# Color data (MakerNotes tag 0x4001, count=4528/3778, ref PH)
 %Image::ExifTool::Canon::ColorData12 = (
     %binaryDataAttrs,
-    NOTES => 'These tags are used by the EOS R1 and R5mkII',
+    NOTES => 'These tags are used by the EOS R1, R5mkII and R50V',
     FORMAT => 'int16s',
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -8687,7 +8688,8 @@ my %ciMaxFocal = (
         DataMember => 'ColorDataVersion',
         RawConv => '$$self{ColorDataVersion} = $val',
         PrintConv => {
-            64 => '64 (R1, R5 Mark II)',
+            64 => '64 (R1/R5mkII)',
+            65 => '65 (R50V)',
         },
     },
     0x69 => { Name => 'WB_RGGBLevelsAsShot',    Format => 'int16s[4]' }, # (NC)
@@ -8778,6 +8780,7 @@ my %ciMaxFocal = (
         Name => 'PerChannelBlackLevel',
         Format => 'int16u[4]',
     },
+    # 0x290 - PerChannelBlackLevel again
     0x294 => {
         Name => 'NormalWhiteLevel',
         Format => 'int16u',

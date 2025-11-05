@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub ProcessR3D($$);
 
@@ -45,7 +45,8 @@ my $errTrunc = 'Truncated R3D file';
     RED2 => { Name => 'Red2Header', SubDirectory => { TagTable => 'Image::ExifTool::Red::RED2' } },
 
     # (upper 4 bits of tag ID are the format code)
-    # ---- format 1 ----
+    # ---- format 0 (int8u) ----
+    # ---- format 1 (string) ----
     0x1000 => 'StartEdgeCode', #1
     0x1001 => { Name => 'StartTimecode', Groups => { 2 => 'Time' } }, #1
     0x1002 => { #1
@@ -104,6 +105,7 @@ my $errTrunc = 'Truncated R3D file';
   # 0x1041 - seen 'NA'
     0x1042 => 'Revision', # ? (seen "TODO, rev EPIC-1.0" and "MYSTERIUM X, rev EPIC-1.0")
   # 0x1051 - seen 'C', 'L'
+  # 0x1052 - seen 'E9'
     0x1056 => 'OriginalFileName',
     0x106e => 'LensMake',
     0x106f => 'LensNumber', # (last 2 hex digits are LensType)
@@ -120,7 +122,8 @@ my $errTrunc = 'Truncated R3D file';
     0x1096 => 'Filter', # optical low-pass filter
     0x10a0 => 'Brain',
     0x10a1 => 'Sensor',
-    # ---- format 2 ----
+    0x10be => 'Quality',
+    # ---- format 2 (float) ----
     0x200d => 'ColorTemperature',
   # 0x200e - (sometimes this is frame rate)
   # 0x2015 - seen '1 1 1' (RGBGain or RGBGamma?)
@@ -130,7 +133,8 @@ my $errTrunc = 'Truncated R3D file';
         Groups => { 2 => 'Video' },
         PrintConv => 'int($val * 1000 + 0.5) / 1000',
     },
-    # ---- format 4 ----
+    # ---- format 3 (int8u?) ----
+    # ---- format 4 (int16u) ----
     0x4037 => { Name => 'CropArea' }, # (NC)
     0x403b => 'ISO',
   # 0x404e - related to CropArea (or "0 0 0 0")
@@ -138,8 +142,12 @@ my $errTrunc = 'Truncated R3D file';
     0x406b => 'FocalLength',
   # 0x4084 - related to ISO?
   # 0x4087 - related to ISO?
-    # ---- format 6 ----
+    # ---- format 5 (int8s?) ----
+    # ---- format 6 (int32s) ----
     0x606c => { Name => 'FocusDistance', ValueConv => '$val/1000', PrintConv => '"$val m"' },
+    # ---- format 7 (undef? structure?) ----
+    # ---- format 8 (int32u?) ----
+    # ---- format 9 (undef?) ----
 );
 
 # RED1 file header (ref PH)
@@ -240,9 +248,11 @@ sub ProcessR3D($$)
         $pos = 0x22;    # directory starts at offset 0x22
     } else {
         # calculate position of Red directory start
-        length($buff) < 0x41 and return $et->Warn($errTrunc);
-        my $n = Get8u(\$buff, 0x40);    # number of "rdi" records
-        $pos = 0x44 + $n * 0x18;
+        $pos = 0x44;
+        length($buff) < $pos and return $et->Warn($errTrunc);
+        $pos += Get8u(\$buff, 0x40) * 0x18;   # skip "rdi" records
+        $pos += Get8u(\$buff, 0x41) * 0x14;   # skip "rda" records
+        $pos += Get8u(\$buff, 0x42) * 0x10;   # skip "rdx" records
     }
     if ($pos + 8 > length $buff) {
         $dirLen = 0;    # find directory the hard way
@@ -253,7 +263,7 @@ sub ProcessR3D($$)
     # do sanity check on the directory size (in case our assumptions were wrong)
     if ($dirLen < 300 or $dirLen >= 2048 or $pos + $dirLen > length $buff) {
         # tag 0x1000 with length 0x000f should be near the directory start
-        $buff =~ /\0\x0f\x10\0/g or return $et->Warn("Can't find Red directory");
+        $buff =~ /\0\x0f\x10[\0\x06]/g or return $et->Warn("Can't find Red directory. Please submit sample for testing");
         $pos = pos($buff) - 4;
         $dirEnd = length $buff;
         undef $dirLen;

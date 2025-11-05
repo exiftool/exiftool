@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.40';
+my $version = '13.41';
 
 $^W = 1;    # enable global warnings
 
@@ -89,6 +89,7 @@ END {
 # declare all static file-scope variables
 my @commonArgs;     # arguments common to all commands
 my @condition;      # conditional processing of files
+my @csvExclude;     # list of tags excluded from CSV import
 my @csvFiles;       # list of files when reading with CSV option (in ExifTool Charset)
 my @csvTags;        # order of tags for first file with CSV option (lower case)
 my @delFiles;       # list of files to delete
@@ -454,6 +455,7 @@ if ($stayOpen >= 2) {
 # (not done: @commonArgs, @moreArgs, $critical, $binaryStdout, $helped,
 #  $interrupted, $mt, $pause, $rtnValApp, $rtnValPrev, $stayOpen, $stayOpenBuff, $stayOpenFile)
 undef @condition;
+undef @csvExclude;
 undef @csvFiles;
 undef @csvTags;
 undef @delFiles;
@@ -591,6 +593,7 @@ my $escapeXML;      # flag to escape printed values for xml
 my $setTagsFile;    # filename for last TagsFromFile option
 my $sortOpt;        # sort option is used
 my $srcStdin;       # one of the source files is STDIN
+my $tagsFrom = '';  # tags on command line come from 'csv' or 'file'
 my $useMWG;         # flag set if we are using any MWG tag
 
 my ($argsLeft, @nextPass, $badCmd);
@@ -825,6 +828,7 @@ for (;;) {
         }
         # create necessary lists, etc for this new -tagsFromFile file
         AddSetTagsFile($setTagsFile, { Replace => ($1 and lc($1) eq 'add') ? 0 : 1 } );
+        $tagsFrom = 'file';
         next;
     }
     if ($a eq '@') {
@@ -940,6 +944,7 @@ for (;;) {
             if ($csvFile) {
                 push @newValues, { SaveCount => ++$saveCount }; # marker to save new values now
                 $csvSaveCount = $saveCount;
+                $tagsFrom = 'csv';
             }
             next;
         }
@@ -1130,6 +1135,7 @@ for (;;) {
                 push @nextPass, "-$_";
                 push @newValues, { SaveCount => ++$saveCount }; # marker to save new values now
                 $csvSaveCount = $saveCount;
+                $tagsFrom = 'csv';
                 next;
             }
             my $jsonFile = $2;
@@ -1378,10 +1384,12 @@ for (;;) {
         my $tag = shift;
         defined $tag or Error("Expecting tag name for -x option\n"), $badCmd=1, next;
         $tag =~ s/\ball\b/\*/ig;    # replace 'all' with '*' in tag names
-        if ($setTagsFile) {
-            push @{$setTags{$setTagsFile}}, "-$tag";
-        } else {
+        if (not $tagsFrom) {
             push @exclude, $tag;
+        } elsif ($tagsFrom eq 'csv') {
+            push @csvExclude, $tag;
+        } else {
+            push @{$setTags{$setTagsFile}}, "-$tag";
         }
         next;
     }
@@ -1424,9 +1432,15 @@ for (;;) {
         }
     } else {
         # assume '-tagsFromFile @' if tags are being redirected
-        # and -tagsFromFile hasn't already been specified
-        AddSetTagsFile($setTagsFile = '@') if not $setTagsFile and /(<|>)/;
-        if ($setTagsFile) {
+        # and not from CSV and -tagsFromFile hasn't already been specified
+        if (not $setTagsFile and $tagsFrom ne 'csv' and /(<|>)/) {
+            AddSetTagsFile($setTagsFile = '@');
+            $tagsFrom = 'file';
+        }
+        if ($tagsFrom eq 'csv') {
+            my $lst = s/^-// ? \@csvExclude : \@tags;
+            push @$lst, $_;
+        } elsif ($setTagsFile) {
             push @{$setTags{$setTagsFile}}, $_;
             if ($1 eq '>') {
                 $useMWG = 1 if /^(.*>\s*)?([-_0-9A-Z]+:)*1?mwg:/si;
@@ -1795,11 +1809,9 @@ if (@newValues) {
         $wrn and Warning($mt, $wrn);
     }
     # exclude specified tags
-    unless ($csv) {
-        foreach (@exclude) {
-            $mt->SetNewValue($_, undef, Replace => 2);
-            $needSave = 1;
-        }
+    foreach (@exclude) {
+        $mt->SetNewValue($_, undef, Replace => 2);
+        $needSave = 1;
     }
     unless ($isWriting or $outOpt or @tags) {
         Error "Nothing to do.\n";
@@ -3251,7 +3263,7 @@ sub SetImageInfo($$$)
                 next;
             } elsif (ref $dyFile eq 'SCALAR') {
                 # set new values from CSV or JSON database
-                my ($f, $found, $csvTag, $tryTag, $tg);
+                my ($f, $found, $csvTag, $tg, $csvExifTool);
                 undef $evalWarning;
                 local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };
                 # force UTF-8 if the database was JSON
@@ -3279,45 +3291,62 @@ sub SetImageInfo($$$)
                     if ($verbose) {
                         print $vout "Setting new values from $csv database\n";
                         print $vout 'Including tags: ',join(' ',@tags),"\n" if @tags;
-                        print $vout 'Excluding tags: ',join(' ',@exclude),"\n" if @exclude;
+                        print $vout 'Excluding tags: ',join(' ',@csvExclude),"\n" if @csvExclude;
                     }
-                    my @tryTags = (@exclude, @tags); # (exclude first because it takes priority)
-                    foreach (@tryTags) {
+                    if (@tags) {
+                        # prepare a dummy ExifTool object to hold appropriate tags from the database
+                        $csvExifTool = Image::ExifTool->new unless $csvExifTool;
+                        foreach $csvTag (OrderedKeys($csvInfo)) {
+                            next if $csvTag =~ /^([-_0-9A-Z]+:)*(SourceFile|Directory|FileName)$/i;
+                            my @grps = split /:/, $csvTag;
+                            my $name = pop @grps;
+                            unshift @grps, 'Unknown' while @grps < 2;
+                            $csvExifTool->FoundTag($name, $$csvInfo{$csvTag}, @grps);
+                        }
+                        next;
+                    }                    
+                    my @exclTags = @csvExclude;
+                    foreach (@exclTags) {
                         tr/-0-9a-zA-Z_:#?*//dc;     # remove illegal characters
                         s/(^|:)(all:)+/$1/ig;       # remove 'all' group names
                         s/(^|:)all(#?)$/$1*$2/i;    # convert 'all' tag name to '*'
                         tr/?/./;  s/\*/.*/g;        # convert wildcards for regex
                     }
+                    # run through tags in database order
                     foreach $csvTag (OrderedKeys($csvInfo)) {
                         # don't write SourceFile, Directory or FileName
                         next if $csvTag =~ /^([-_0-9A-Z]+:)*(SourceFile|Directory|FileName)$/i;
-                        if (@tryTags) {
-                            my ($i, $tryGrp, $matched);
-TryMatch:                   for ($i=0; $i<@tryTags; ++$i) {
-                                $tryTag = $tryTags[$i];
-                                if ($tryTag =~ /:/) {
+                        if (@exclTags) {
+                            my ($exclTag, $exclGrp, $excluded);
+ExclMatch:                  foreach $exclTag (@exclTags) {
+                                if ($exclTag =~ /:/) {
                                     next unless $csvTag =~ /:/;     # db entry must also specify group
                                     my @csvGrps = split /:/, $csvTag;
-                                    my @tryGrps = split /:/, $tryTag;
-                                    my $tryName = pop @tryGrps;
-                                    next unless pop(@csvGrps) =~ /^$tryName$/i; # tag name must match
-                                    foreach $tryGrp (@tryGrps) {
+                                    my @exclGrps = split /:/, $exclTag;
+                                    my $exclName = pop @exclGrps;
+                                    next unless pop(@csvGrps) =~ /^$exclName$/i; # tag name must match
+                                    foreach $exclGrp (@exclGrps) {
                                         # each specified group name must match db entry
-                                        next TryMatch unless grep /^$tryGrp$/i, @csvGrps;
+                                        next ExclMatch unless grep /^$exclGrp$/i, @csvGrps;
                                     }
-                                    $matched = 1;
+                                    $excluded = 1;
                                     last;
                                 }
                                 # no group specified, so match by tag name only
-                                $csvTag =~ /^([-_0-9A-Z]+:)*$tryTag$/i and $matched = 1, last;
+                                $csvTag =~ /^([-_0-9A-Z]+:)*$exclTag$/i and $excluded = 1, last;
                             }
-                            next if $matched ? $i < @exclude : @tags;
+                            next if $excluded;
                         }
                         my ($rtn, $wrn) = $et->SetNewValue($csvTag, $$csvInfo{$csvTag},
                                           Protected => 1, AddValue => $csvAdd,
                                           ProtectSaved => $csvSaveCount);
                         $wrn and Warn "$wrn\n" if $verbose;
                     }
+                }
+                # set specified tags now
+                if ($csvExifTool) {
+                    my @excl = map "-$_", @csvExclude;  # add back leading dashes
+                    $et->SetNewValuesFromFile($csvExifTool, @tags, @excl);
                 }
                 $et->Options(Charset => $old) if $csv eq 'JSON';
                 unless ($found) {

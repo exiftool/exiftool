@@ -26,7 +26,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.41';
+$VERSION = '1.42';
 
 sub ProcessICC($$);
 sub ProcessICC_Profile($$$);
@@ -330,6 +330,7 @@ my %manuSig = ( #6
     'WTG2' => 'Ware To Go',
     'WYSE' => 'WYSE Technology',
     'XERX' => 'Xerox Corporation',
+    'XM  ' => 'Xiaomi',
     'XRIT' => 'X-Rite',
     'yxym' => 'YxyMaster GmbH',
     'Z123' => "Lavanya's test Company",

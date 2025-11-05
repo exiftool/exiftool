@@ -7,13 +7,32 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.36. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Nov. 5, 2025 - Version 13.41
+
+  - Added a new Canon LensType
+  - Added Extra MakerNoteByteOrder tag
+  - Added byte-order indication to the -v3 output for EXIF and BinaryData
+    directories
+  - Added a new Panasonic/Olympus LensType (github #363)
+  - Added a new ProfileCMMType value (thanks Herb)
+  - Extract EnvironmentTarget from LNK files (github #362)
+  - Extract HighlightMarkers from DJI videos
+  - Decode another Red tag
+  - Recognize LRF file extension
+  - Updated CanonColorData decoding for the R50V
+  - Enhanced -csv= and -json= database import options to support full
+    redirection and advanced formatting expressions
+  - Require tags to be specified after the corresponding -csv= or -json= option
+    when importing specific tags from a database
+  - Fixed problem reading R3D images from the Red Komodo
+
 Oct. 24, 2025 - Version 13.40
 
   - Added read support for WOFF and WOFF2 font files (github #358)
   - Added read support for Windows .URL files
   - Added new XMP-iptcExt generative AI tags (thanks IPTC)
   - Added config_files/local_time.config to the full distribution
-  - Enhanced CSV import allow SourceFile entries with a different case
+  - Enhanced CSV import to allow SourceFile entries with a different case
 
 Oct. 15, 2025 - Version 13.39
 

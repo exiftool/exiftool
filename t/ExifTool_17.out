@@ -1,25 +1,25 @@
-  ExifToolVersion = 11.70
+  ExifToolVersion = 13.41
   FileName = Canon.jpg
   Directory = t/images
   FileSize = 2697
   FileModifyDate = 1159902631
-  FileAccessDate = 1570452438
-  FileInodeChangeDate = 1570016457
+  FileAccessDate = 1761850301
+  FileInodeChangeDate = 1761313845
   FilePermissions = 33188
   FileType = JPEG
   FileTypeExtension = JPG
   MIMEType = image/jpeg
 JPEG APP1 (2442 bytes):
-    0006: 45 78 69 66 00 00 49 49 2a 00 08 00 00 00 09 00 [Exif..II*.......]
-    0016: 0f 01 02 00 06 00 00 00 7a 00 00 00 10 01 02 00 [........z.......]
-    0026: 18 00 00 00 80 00 00 00 12 01 03 00 01 00 00 00 [................]
-    0036: 01 00 00 00 1a 01 05 00 01 00 00 00 98 00 00 00 [................]
-    0046: 1b 01 05 00 01 00 00 00 a0 00 00 00 28 01 03 00 [............(...]
-    0056: 01 00 00 00 02 00 00 00 32 01 02 00 14 00 00 00 [........2.......]
-    0066: a8 00 00 00 13 02 03 00 01 00 00 00 01 00 00 00 [................]
-    [snip 2330 bytes]
+      0006: 45 78 69 66 00 00 49 49 2a 00 08 00 00 00 09 00 [Exif..II*.......]
+      0016: 0f 01 02 00 06 00 00 00 7a 00 00 00 10 01 02 00 [........z.......]
+      0026: 18 00 00 00 80 00 00 00 12 01 03 00 01 00 00 00 [................]
+      0036: 01 00 00 00 1a 01 05 00 01 00 00 00 98 00 00 00 [................]
+      0046: 1b 01 05 00 01 00 00 00 a0 00 00 00 28 01 03 00 [............(...]
+      0056: 01 00 00 00 02 00 00 00 32 01 02 00 14 00 00 00 [........2.......]
+      0066: a8 00 00 00 13 02 03 00 01 00 00 00 01 00 00 00 [................]
+      [snip 2330 bytes]
   ExifByteOrder = II
-  + [IFD0 directory with 9 entries]
+  + [IFD0 directory with 9 entries, Little-endian]
   | 0)  Make = Canon
   |     - Tag 0x010f (6 bytes, string[6]):
   |         0086: 43 61 6e 6f 6e 00                               [Canon.]
@@ -49,7 +49,7 @@ JPEG APP1 (2442 bytes):
   | 8)  ExifOffset (SubDirectory) -->
   |     - Tag 0x8769 (4 bytes, int32u[1]):
   |         007e: bc 00 00 00                                     [....]
-  | + [ExifIFD directory with 31 entries]
+  | + [ExifIFD directory with 31 entries, Little-endian]
   | | 0)  ExposureTime = 4 (4/1)
   | |     - Tag 0x829a (8 bytes, rational64u[1]):
   | |         0242: 04 00 00 00 01 00 00 00                         [........]
@@ -105,7 +105,7 @@ JPEG APP1 (2442 bytes):
   | |         02da: 00 00 93 00 03 00 09 00 00 00 8a 04 00 00 06 00 [................]
   | |         02ea: 02 00 20 00 00 00 9c 04 00 00 07 00 02 00 20 00 [.. ........... .]
   | |         [snip 1352 bytes]
-  | | + [MakerNotes directory with 26 entries]
+  | | + [MakerNotes directory with 26 entries, Little-endian]
   | | | 0)  CanonCameraSettings (SubDirectory) -->
   | | |     - Tag 0x0001 (92 bytes, int16u[46] read as undef[92]):
   | | |         03e8: 5c 00 00 00 00 00 04 00 00 00 01 00 00 00 03 00 [\...............]
@@ -114,7 +114,7 @@ JPEG APP1 (2442 bytes):
   | | |         0418: 12 00 01 00 80 00 30 01 00 00 00 00 00 00 00 00 [......0.........]
   | | |         0428: ff ff ff ff ff ff 00 00 00 0c 00 0c 00 00 ff ff [................]
   | | |         0438: ff ff 00 00 00 00 ff 7f ff ff ff ff             [............]
-  | | | + [BinaryData directory, 92 bytes]
+  | | | + [BinaryData directory, 92 bytes, Little-endian]
   | | | | MacroMode = 0
   | | | | - Tag 0x0001 (2 bytes, int16s[1]):
   | | | |     03ea: 00 00                                           [..]
@@ -226,7 +226,7 @@ JPEG APP1 (2442 bytes):
   | | | 1)  CanonFocalLength (SubDirectory) -->
   | | |     - Tag 0x0002 (8 bytes, int16u[4] read as undef[8]):
   | | |         0444: 00 00 22 00 92 03 62 02                         [.."...b.]
-  | | | + [BinaryData directory, 8 bytes]
+  | | | + [BinaryData directory, 8 bytes, Little-endian]
   | | | | FocalType = 0
   | | | | - Tag 0x0000 (2 bytes, int16u[1]):
   | | | |     0444: 00 00                                           [..]
@@ -249,7 +249,7 @@ JPEG APP1 (2442 bytes):
   | | |         0474: 00 00 00 00 01 00 ff ff 22 02 f4 00 20 ff 26 00 [........"... .&.]
   | | |         0484: 28 00 00 00 fc 00 00 00 ff ff 00 00 00 00 00 00 [(...............]
   | | |         0494: 00 00                                           [..]
-  | | | + [BinaryData directory, 66 bytes]
+  | | | + [BinaryData directory, 66 bytes, Little-endian]
   | | | | AutoISO = 0
   | | | | - Tag 0x0001 (2 bytes, int16s[1]):
   | | | |     0456: 00 00                                           [..]
@@ -335,7 +335,7 @@ JPEG APP1 (2442 bytes):
   | | |     - Tag 0x0093 (18 bytes, int16u[9] read as undef[18]):
   | | |         0496: 12 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff [................]
   | | |         04a6: ff ff                                           [..]
-  | | | + [BinaryData directory, 18 bytes]
+  | | | + [BinaryData directory, 18 bytes, Little-endian]
   | | | | BracketMode = 0
   | | | | - Tag 0x0003 (2 bytes, int16s[1]):
   | | | |     049c: 00 00                                           [..]
@@ -389,7 +389,7 @@ JPEG APP1 (2442 bytes):
   | | |         0538: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
   | | |         0548: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
   | | |         [snip 432 bytes]
-  | | | + [BinaryData directory, 512 bytes]
+  | | | + [BinaryData directory, 512 bytes, Little-endian]
   | | | 14) Canon_0x0000 = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
   | | |     - Tag 0x0000 (36 bytes, int16u[18]):
   | | |         0708: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
@@ -406,7 +406,7 @@ JPEG APP1 (2442 bytes):
   | | | 17) MeasuredColor (SubDirectory) -->
   | | |     - Tag 0x00aa (10 bytes, int16u[5] read as undef[10]):
   | | |         0760: 0a 00 e6 03 fe 03 02 04 28 03                   [........(.]
-  | | | + [BinaryData directory, 10 bytes]
+  | | | + [BinaryData directory, 10 bytes, Little-endian]
   | | | | MeasuredRGGB = 998 1022 1026 808
   | | | | - Tag 0x0001 (8 bytes, int16u[4]):
   | | | |     0762: e6 03 fe 03 02 04 28 03                         [......(.]
@@ -422,7 +422,7 @@ JPEG APP1 (2442 bytes):
   | | |         07ae: 65 05 8d 07 40 03 3f 03 7f 03 ba 06 40 03 3f 03 [e...@.?.....@.?.]
   | | |         07be: dd 03 ba 06 40 03 3f 03 dc 03 7c 00 7b 00 7c 00 [....@.?...|.{.|.]
   | | |         07ce: 7b 00                                           [{.]
-  | | | + [BinaryData directory, 82 bytes]
+  | | | + [BinaryData directory, 82 bytes, Little-endian]
   | | | | WB_RGGBLevelsAuto = 1719 832 831 990
   | | | | - Tag 0x0001 (8 bytes, int16s[4]):
   | | | |     0780: b7 06 40 03 3f 03 de 03                         [..@.?...]
@@ -532,7 +532,7 @@ JPEG APP1 (2442 bytes):
   | | 21) InteropOffset (SubDirectory) -->
   | |     - Tag 0xa005 (4 bytes, int32u[1]):
   | |         01ce: 4e 09 00 00                                     [N...]
-  | | + [InteropIFD directory with 4 entries]
+  | | + [InteropIFD directory with 4 entries, Little-endian]
   | | | 0)  InteropIndex = THM
   | | |     - Tag 0x0001 (4 bytes, string[4]):
   | | |         0964: 54 48 4d 00                                     [THM.]
@@ -573,16 +573,16 @@ JPEG APP1 (2442 bytes):
   | |     - Tag 0xa406 (2 bytes, int16u[1]):
   | |         023a: 00 00                                           [..]
 JPEG DQT (130 bytes):
-    0994: 00 14 10 10 19 12 19 27 17 17 27 32 26 1f 26 32 [.......'..'2&.&2]
-    09a4: 2e 26 26 26 26 2e 3e 35 35 35 35 35 3e 44 41 41 [.&&&&.>55555>DAA]
-    09b4: 41 41 41 41 44 44 44 44 44 44 44 44 44 44 44 44 [AAAADDDDDDDDDDDD]
-    09c4: 44 44 44 44 44 44 44 44 44 44 44 44 44 44 44 44 [DDDDDDDDDDDDDDDD]
-    09d4: 44 01 15 19 19 20 1c 20 26 18 18 26 36 26 20 26 [D.... . &..&6& &]
-    09e4: 36 44 36 2b 2b 36 44 44 44 42 35 42 44 44 44 44 [6D6++6DDDB5BDDDD]
-    09f4: 44 44 44 44 44 44 44 44 44 44 44 44 44 44 44 44 [DDDDDDDDDDDDDDDD]
-    [snip 18 bytes]
+      0994: 00 14 10 10 19 12 19 27 17 17 27 32 26 1f 26 32 [.......'..'2&.&2]
+      09a4: 2e 26 26 26 26 2e 3e 35 35 35 35 35 3e 44 41 41 [.&&&&.>55555>DAA]
+      09b4: 41 41 41 41 44 44 44 44 44 44 44 44 44 44 44 44 [AAAADDDDDDDDDDDD]
+      09c4: 44 44 44 44 44 44 44 44 44 44 44 44 44 44 44 44 [DDDDDDDDDDDDDDDD]
+      09d4: 44 01 15 19 19 20 1c 20 26 18 18 26 36 26 20 26 [D.... . &..&6& &]
+      09e4: 36 44 36 2b 2b 36 44 44 44 42 35 42 44 44 44 44 [6D6++6DDDB5BDDDD]
+      09f4: 44 44 44 44 44 44 44 44 44 44 44 44 44 44 44 44 [DDDDDDDDDDDDDDDD]
+      [snip 18 bytes]
 JPEG SOF0 (15 bytes):
-    0a1a: 08 00 08 00 08 03 01 22 00 02 11 01 03 11 01    [.......".......]
+      0a1a: 08 00 08 00 08 03 01 22 00 02 11 01 03 11 01    [.......".......]
   ImageWidth = 8
   ImageHeight = 8
   EncodingProcess = 0
@@ -590,10 +590,10 @@ JPEG SOF0 (15 bytes):
   ColorComponents = 3
   YCbCrSubSampling = 2 2
 JPEG DHT (73 bytes):
-    0a2d: 00 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
-    0a3d: 00 00 06 01 01 00 00 00 00 00 00 00 00 00 00 00 [................]
-    0a4d: 00 00 00 00 00 10 01 00 00 00 00 00 00 00 00 00 [................]
-    0a5d: 00 00 00 00 00 00 00 11 01 00 00 00 00 00 00 00 [................]
-    0a6d: 00 00 00 00 00 00 00 00 00                      [.........]
+      0a2d: 00 01 01 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+      0a3d: 00 00 06 01 01 00 00 00 00 00 00 00 00 00 00 00 [................]
+      0a4d: 00 00 00 00 00 10 01 00 00 00 00 00 00 00 00 00 [................]
+      0a5d: 00 00 00 00 00 00 00 11 01 00 00 00 00 00 00 00 [................]
+      0a6d: 00 00 00 00 00 00 00 00 00                      [.........]
 JPEG SOS
 JPEG EOI

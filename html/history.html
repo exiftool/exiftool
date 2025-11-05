@@ -17,13 +17,33 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.41'><b>Nov. 5, 2025 - Version 13.41</b></a>
+<ul>
+<li>Added a new Canon LensType
+<li>Added <a href="TagNames/Extra.html">Extra</a> MakerNoteByteOrder tag
+<li>Added byte-order indication to the -v3 output for EXIF and BinaryData
+    directories
+<li>Added a new Panasonic/Olympus LensType (<a href="https://github.com/exiftool/exiftool/issues/363">github #363</a>)
+<li>Added a new ProfileCMMType value (thanks Herb)
+<li>Extract EnvironmentTarget from LNK files (<a href="https://github.com/exiftool/exiftool/issues/362">github #362</a>)
+<li>Extract HighlightMarkers from DJI videos
+<li>Decode another Red tag
+<li>Recognize LRF file extension
+<li>Updated CanonColorData decoding for the R50V
+<li>Enhanced -csv= and -json= database import options to support full
+    redirection and advanced formatting expressions
+<li>Require tags to be specified after the corresponding -csv= or -json= option
+    when importing specific tags from a database
+<li>Fixed problem reading R3D images from the Red Komodo
+</ul>
+
 <a name='v13.40'><b>Oct. 24, 2025 - Version 13.40</b></a>
 <ul>
 <li>Added read support for WOFF and WOFF2 font files (<a href="https://github.com/exiftool/exiftool/issues/358">github #358</a>)
 <li>Added read support for Windows .URL files
 <li>Added new XMP-iptcExt generative AI tags (thanks IPTC)
 <li>Added config_files/local_time.config to the full distribution
-<li>Enhanced CSV import allow SourceFile entries with a different case
+<li>Enhanced CSV import to allow SourceFile entries with a different case
 </ul>
 
 <a name='v13.39'><b>Oct. 15, 2025 - Version 13.39</b></a>

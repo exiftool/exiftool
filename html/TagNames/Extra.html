@@ -492,11 +492,18 @@ higher)</span></span></td></tr>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the MIME type of the source file)</span></span></td></tr>
 <tr class=b>
+<td>MakerNoteByteOrder</td>
+<td class=c>no</td>
+<td class=c>File</td>
+<td><span class=s><span class=n>(byte order of maker notes.  Generated only if different from ExifByteOrder)</span>
+  <br>&#39;II&#39; = Little-endian (Intel, II)
+  <br>&#39;MM&#39; = Big-endian (Motorola, MM)</span></td></tr>
+<tr>
 <td>MaxVal</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(maximum pixel value in PPM or PGM image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>NewGUID</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
@@ -505,77 +512,77 @@ YYYYmmdd-HHMM-SSNN-PPPP-RRRRRRRRRRRR, where Y=year, m=month, d=day, H=hour,
 M=minute, S=second, N=file sequence number in hex, P=process ID in hex, and
 R=random hex number; without dashes with the -n option.  Not generated
 unless specifically requested or the API <a href="../ExifTool.html#RequestAll">RequestAll</a> option is set)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>Now</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(the current date/time.  Useful when setting the tag values, eg.
 <code>&quot;-modifydate&lt;now&quot;</code>.  Not generated unless specifically requested or the
 API <a href="../ExifTool.html#RequestAll">RequestAll</a> option is set)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>NumPlanes</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(number of color planes)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>OtherImage</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(other JPEG-format embedded image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PageCount</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the number of pages in a multi-page TIFF document)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PreviewImage</td>
 <td class=c>yes</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(JPEG-format embedded preview image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PreviewJXL</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(JXL-format embedded preview image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PreviewPDF</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(PDF-format embedded preview image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PreviewPNG</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(PNG-format embedded preview image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PreviewTIFF</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(TIFF-format embedded preview image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PreviewWMF</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(WMF-format embedded preview image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ProcessingTime</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(the clock time in seconds taken by ExifTool to extract information from this
 file.  Not generated unless specifically requested or the API <a href="../ExifTool.html#RequestAll">RequestAll</a>
 option is set.  Requires Time::HiRes)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RAFCompression</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s>0 = Uncompressed
   <br>2 = Compressed</span></td></tr>
-<tr class=b>
+<tr>
 <td>RAFVersion</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(RAF file version number)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ResourceForkSize</td>
 <td class=c>no</td>
 <td class=c>System</td>
@@ -584,13 +591,13 @@ tag is generated the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded<
 resource-fork information as a sub-document.  When writing, the resource
 fork is preserved by default, but it may be deleted with <code>-rsrc:all=</code> on
 the command line)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>SphericalVideoXML</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>GSpherical</td>
 <td><span class=s><span class=n>(the SphericalVideoXML block from MP4/MOV videos.  This tag is generated only
 if specifically requested)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>SymLink</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>-</td>
@@ -603,25 +610,25 @@ symbolic links.  Note that subsequent editing of the file via the symbolic
 link by exiftool will cause the link to be replaced by the edited file
 without changing the original unless the -overwrite_original_in_place option
 is used)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>TestName</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(this write-only tag may be used instead of FileName for dry-run tests of the
 file renaming feature.  Writing this tag prints the old and new file names
 to the console, but does not affect the file itself)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ThumbnailImage</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(JPEG-format embedded thumbnail image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>Trailer</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the full JPEG trailer data block.  Extracted only if specifically requested
 or the API <a href="../ExifTool.html#RequestAll">RequestAll</a> option is set to 3 or higher)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>Validate</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
@@ -631,7 +638,7 @@ additional validation checks when extracting metadata.  Returns the number
 of errors, warnings and minor warnings encountered.  Note that the Validate
 feature focuses mainly on validation of EXIF/TIFF metadata)</span>
   <br>&#39;0 0 0&#39; = OK</span></td></tr>
-<tr class=b>
+<tr>
 <td>Warning</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
@@ -642,28 +649,28 @@ option.  Minor warnings with a capital &quot;M&quot; in the &quot;[Minor]&quot; 
 indicate that the processing is affected by ignoring the warning.  Multiple
 identical warnings are indicated by a count after the warning message, eg.
 &quot;[x2]&quot; if the same warning occurred twice)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>XML</td>
 <td class=c>no</td>
 <td class=c>XML</td>
 <td><span class=s><span class=n>(the XML data block, extracted for some file types)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>XMP</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>XMP</td>
 <td><span class=s><span class=n>(the XMP data block, but note that extended XMP in JPEG images may be split
 into multiple blocks.  This tag is generated only if specifically requested)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>XResolution</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the horizontal pixel resolution)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>YResolution</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the vertical pixel resolution)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ZoneIdentifier</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
@@ -675,7 +682,7 @@ stream.  Requires Win32API::File)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 12, 2024</i>
+<br><i>Last revised Oct 31, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -184,7 +184,7 @@ my %ttCharset = (
   Custom  => { },
 );
 
-# codes for the 63 known WOFF2 tags
+# the 63 known WOFF2 tags
 my @knownTags = (
     'cmap', 'head', 'hhea', 'hmtx', 'maxp', 'name', 'OS/2', 'post', 'cvt',
     'fpgm', 'glyf', 'loca', 'prep', 'CFF',  'VORG', 'EBDT', 'EBLC', 'gasp',
@@ -891,9 +891,8 @@ This module is used by Image::ExifTool
 
 This module contains the routines required by Image::ExifTool to read meta
 information from various format font files.  Currently recognized font file
-types are OTF, TTF, TTC, DFONT, PFA, PFB, PFM, AFM, ACFM and AMFM.  As well,
-WOFF and WOFF2 font files are identified, but metadata is not currently
-extracted from these formats.
+types are OTF, TTF, TTC, DFONT, PFA, PFB, PFM, AFM, ACFM, AMFM, WOFF and
+WOFF2.
 
 =head1 AUTHOR
 

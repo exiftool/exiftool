@@ -18,7 +18,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Microsoft;
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 sub ProcessItemID($$$);
 sub ProcessLinkInfo($$$);
@@ -191,7 +191,7 @@ sub ProcessLinkInfo($$$);
     },
     0xa0000001 => {
         Name => 'EnvVarData',
-        SubDirectory => { TagTable => 'Image::ExifTool::LNK::UnknownData' },
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::EnvVarData' },
     },
     0xa0000002 => {
         Name => 'ConsoleData',
@@ -445,6 +445,19 @@ sub ProcessLinkInfo($$$);
         Format => 'int32u',
         SeparateTable => 'Microsoft CodePage',
         PrintConv => \%Image::ExifTool::Microsoft::codePage,
+    },
+);
+
+%Image::ExifTool::LNK::EnvVarData = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Other' },
+    8 => {
+        Name => 'EnvironmentTarget',
+        Format => 'string[260]',
+    },
+    268 => {
+        Name => 'EnvironmentTargetUnicode',
+        Format => 'unicode[260]',
     },
 );
 

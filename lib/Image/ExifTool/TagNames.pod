@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28853 tags, with 17925 unique tag names.
+They contain a total of 28858 tags, with 17929 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -9541,7 +9541,7 @@ These tags are used by the R5, R5 and EOS 1DXmkIII.
 
 =head3 Canon ColorData11 Tags
 
-These tags are used by the EOS R3, R7 and R6mkII
+These tags are used by the EOS R3, R7, R50 and R6mkII
 
   Index2   Tag Name                             Writable
   ------   --------                             --------
@@ -9630,7 +9630,7 @@ These tags are used by the EOS R3, R7 and R6mkII
 
 =head3 Canon ColorData12 Tags
 
-These tags are used by the EOS R1 and R5mkII
+These tags are used by the EOS R1, R5mkII and R50V
 
   Index2   Tag Name                             Writable
   ------   --------                             --------
@@ -30720,6 +30720,7 @@ for the official QuickTime specification.
   'free'               KodakFree                Kodak Free
                        Pittasoft                QuickTime Pittasoft
                        ThumbnailImage           no
+                       HighlightMarkers         no
                        Free?                    no
   'ftyp'               FileType                 QuickTime FileType
   'gdat'               GPSData                  QuickTime Stream
@@ -36442,6 +36443,7 @@ Tags extracted from Redcode R3D video files.
   0x1096   Filter                               no
   0x10a0   Brain                                no
   0x10a1   Sensor                               no
+  0x10be   Quality                              no
   0x200d   ColorTemperature                     no
   0x204b   RGBCurves                            no
   0x2066   OriginalFrameRate                    no
@@ -40696,7 +40698,7 @@ Information extracted from MS Shell Link (Windows shortcut) files.
   0x30020      CommandLineArguments             no
   0x30040      IconFileName                     no
   0xa0000000   UnknownData                      LNK UnknownData
-  0xa0000001   EnvVarData                       LNK UnknownData
+  0xa0000001   EnvVarData                       LNK EnvVarData
   0xa0000002   ConsoleData                      LNK ConsoleData
   0xa0000003   TrackerData                      LNK TrackerData
   0xa0000004   ConsoleFEData                    LNK ConsoleFEData
@@ -40740,6 +40742,13 @@ Information extracted from MS Shell Link (Windows shortcut) files.
   Index1   Tag Name                             Writable
   ------   --------                             --------
   [no tags known]
+
+=head3 LNK EnvVarData Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      8    EnvironmentTarget                    no
+    268    EnvironmentTargetUnicode             no
 
 =head3 LNK ConsoleData Tags
 
@@ -41690,6 +41699,7 @@ FileName.
   JPEGQualityEstimate        File               no
   JUMBF                      JUMBF              no
   MIMEType                   File               no
+  MakerNoteByteOrder         File               no
   MaxVal                     File               no
   NewGUID                    ExifTool           no
   Now                        ExifTool           no

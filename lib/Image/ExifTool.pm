@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.40';
+$VERSION = '13.41';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -392,6 +392,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     LFR  =>  'LFP', # (Light Field RAW)
     LIF  => ['LIF',  'Leica Image File'],
     LNK  => ['LNK',  'Windows shortcut'],
+    LRF  => ['MOV',  'Low-Resolution video File'],
     LRI  => ['LRI',  'Light RAW'],
     LRV  => ['MOV',  'Low-Resolution Video'],
     M2T  =>  'M2TS',
@@ -1813,6 +1814,13 @@ my %systemTagsNotes = (
             represents the byte order of EXIF information.  May be written to set the
             byte order only for newly created EXIF segments
         },
+        PrintConv => {
+            II => 'Little-endian (Intel, II)',
+            MM => 'Big-endian (Motorola, MM)',
+        },
+    },
+    MakerNoteByteOrder => {
+        Notes => 'byte order of maker notes.  Generated only if different from ExifByteOrder',
         PrintConv => {
             II => 'Little-endian (Intel, II)',
             MM => 'Big-endian (Motorola, MM)',
@@ -8626,6 +8634,7 @@ sub DoProcessTIFF($$;$)
     my $ifdName = ($$dirInfo{DirName} and $$dirInfo{DirName} =~ /^(ExifIFD|GPS)$/) ? $1 : 'IFD0';
     if (not $tagTablePtr or $$tagTablePtr{GROUPS}{0} eq 'EXIF') {
         $self->FoundTag('ExifByteOrder', $byteOrder) unless $outfile;
+        $$self{ExifByteOrder} = $byteOrder;
     } elsif ($$tagTablePtr{GROUPS}{0} eq 'MakerNotes') { # (for writing CR3 maker notes)
         $ifdName = $$tagTablePtr{GROUPS}{0};
     } else {
@@ -9685,10 +9694,10 @@ sub VPrint($$@)
 # Print verbose directory information
 # Inputs: 0) ExifTool object reference, 1) directory name or dirInfo ref
 #         2) number of entries in directory (or 0 if unknown)
-#         3) optional size of directory in bytes
-sub VerboseDir($$;$$)
+#         3) optional size of directory in bytes, 4) optional byte order for -v3 output
+sub VerboseDir($$;$$$)
 {
-    my ($self, $name, $entries, $size) = @_;
+    my ($self, $name, $entries, $size, $byteOrder) = @_;
     return unless $$self{OPTIONS}{Verbose};
     if (ref $name eq 'HASH') {
         $size = $$name{DirLen} unless $size;
@@ -9698,6 +9707,9 @@ sub VerboseDir($$;$$)
     my $out = $$self{OPTIONS}{TextOut};
     my $str = ($entries or defined $entries and not $size) ? " with $entries entries" : '';
     $str .= ", $size bytes" if $size;
+    if ($byteOrder and $$self{OPTIONS}{Verbose} > 2) {
+        $str .= ', ' . (GetByteOrder() eq 'II' ? 'Little-endian' : 'Big-endian');
+    }
     print $out "$indent+ [$name directory$str]\n";
 }
 
@@ -9820,7 +9832,7 @@ sub ProcessBinaryData($$$)
         # extract known tags in numerical order
         @tags = sort { ($a < 0 ? $a + 1e9 : $a) <=> ($b < 0 ? $b + 1e9 : $b) } TagTableKeys($tagTablePtr);
     }
-    $self->VerboseDir('BinaryData', undef, $size) if $verbose;
+    $self->VerboseDir('BinaryData', undef, $size, GetByteOrder()) if $verbose;
     # avoid creating unknown tags for tags that fail condition if Unknown is 1
     $$self{NO_UNKNOWN} = 1 if $unknown < 2;
     my ($index, %val);

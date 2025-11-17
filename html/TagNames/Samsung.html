@@ -780,32 +780,37 @@ HEIC images from models such as the S10+.</p>
 <tr>
 <td>PEg_Info</td>
 <td class=c>-</td>
-<td>--&gt; <a href='JSON.html'>JSON Tags</a></td></tr>
+<td>--&gt; <a href='Samsung.html#PEgInfo'>Samsung PEgInfo Tags</a></td></tr>
 <tr class=b>
+<td>ReEditData
+  <br>OriginalPathHashKey</td>
+<td class=c>-<br>no</td>
+<td>--&gt; <a href='Samsung.html#ReEditData'>Samsung ReEditData Tags</a></td></tr>
+<tr>
 <td>RemasterInfo</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SamsungCaptureInfo</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SingleShotDepthMap</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SingleShotMeta</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Samsung.html#SingleShotMeta'>Samsung SingleShotMeta Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>SurroundShotVideo</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SurroundShotVideoName</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>TimeStamp</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
@@ -827,6 +832,429 @@ HEIC images from models such as the S10+.</p>
 <td>DepthMapHeight</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(index varies depending on model)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PEgInfo'>Samsung PEgInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'connectorType'</td>
+<td>ConnectorType</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'genImageVersion'</td>
+<td>GenImageVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ReEditData'>Samsung ReEditData Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'adjustmentValue'</td>
+<td>AdjustmentValue</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'clipInfoValue'</td>
+<td>ClipInfoValue</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Samsung.html#ClipInfo'>Samsung ClipInfo Tags</a></td></tr>
+<tr>
+<td>'effectValue'</td>
+<td>EffectValue</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Samsung.html#EffectInfo'>Samsung EffectInfo Tags</a></td></tr>
+<tr class=b>
+<td>'endMotionVideo'</td>
+<td>EndMotionVideo</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'isAIFilterReEditOnly'</td>
+<td>IsAIFilterReEditOnly</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'isApplyShapeCorrection'</td>
+<td>IsApplyShapeCorrection</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'isBlending'</td>
+<td>IsBlending</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'isDecoReEditOnly'</td>
+<td>IsDecoReEditOnly</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'isMotionVideoMute'</td>
+<td>IsMotionVideoMute</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'isNewReEditOnly'</td>
+<td>IsNewReEditOnly</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'isNotReEdit'</td>
+<td>IsNotReEdit</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'isScaleAI'</td>
+<td>IsScaleAI</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'isTrimMotionVideo'</td>
+<td>IsTrimMotionVideo</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ndeVersion'</td>
+<td>NDEVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'originalPath'</td>
+<td>OriginalPath</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'portraitEffectValue'</td>
+<td>PortraitEffectValue</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Samsung.html#PortraitEffect'>Samsung PortraitEffect Tags</a></td></tr>
+<tr>
+<td>'reSize'</td>
+<td>ReSize</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'representativeFrameLoc'</td>
+<td>RepresentativeFrameLoc</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'rotation'</td>
+<td>Rotation</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'sepVersion'</td>
+<td>SEPVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'startMotionVideo'</td>
+<td>StartMotionVideo</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'toneValue'</td>
+<td>ToneValue</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Samsung.html#ToneInfo'>Samsung ToneInfo Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ClipInfo'>Samsung ClipInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'mCenterX'</td>
+<td>ClipCenterX</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'mCenterY'</td>
+<td>ClipCenterY</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'mHFlip'</td>
+<td>ClipHFlip</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'mHFlipEffect'</td>
+<td>ClipHFlipEffect</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'mHeight'</td>
+<td>ClipHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'mHozPerspective'</td>
+<td>ClipHozPerspective</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'mRotate'</td>
+<td>ClipRotate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'mRotateEffect'</td>
+<td>ClipRotateEffect</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'mRotation'</td>
+<td>ClipRotation</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'mRotationEffect'</td>
+<td>ClipRotationEffect</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'mVFlip'</td>
+<td>ClipVFlip</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'mVFlipEffect'</td>
+<td>ClipVFlipEffect</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'mVerPerspective'</td>
+<td>ClipVerPerspective</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'mWidth'</td>
+<td>ClipWidth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='EffectInfo'>Samsung EffectInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'alphaValue'</td>
+<td>AlphaValue</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'filterIndication'</td>
+<td>FilterIndication</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'filterType'</td>
+<td>FilterType</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PortraitEffect'>Samsung PortraitEffect Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'effectId'</td>
+<td>PortraitEffectID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'effectIdOriginal'</td>
+<td>PortraitEffectIDOriginal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'effectLevel'</td>
+<td>PortraitEffectLevel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'effectLevelOriginal'</td>
+<td>EffectLevelOriginal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'exifRotation'</td>
+<td>PortraitExifRotation</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'lightLevel'</td>
+<td>PortraitLightLevel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'lightLevelOriginal'</td>
+<td>LightLevelOriginal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'refocusX'</td>
+<td>PortraitRefocusX</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'refocusXOriginal'</td>
+<td>RefocusXOriginal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'refocusY'</td>
+<td>PortraitRefocusY</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'refocusYOriginal'</td>
+<td>RefocusYOriginal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'touchX'</td>
+<td>PortraitTouchX</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'touchXOriginal'</td>
+<td>TouchXOriginal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'touchY'</td>
+<td>PortraitTouchY</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'touchYOriginal'</td>
+<td>TouchYOriginal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'waterMarkRemoved'</td>
+<td>WaterMarkRemoved</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'waterMarkRemovedOriginal'</td>
+<td>WaterMarkRemovedOriginal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ToneInfo'>Samsung ToneInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'brightness'</td>
+<td>Brightness</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'contrast'</td>
+<td>Contrast</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'definition'</td>
+<td>Definition</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'exposure'</td>
+<td>Exposure</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'highlight'</td>
+<td>Highlight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'hue'</td>
+<td>Hue</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'isBrightnessIPE'</td>
+<td>IsBrightnessIPE</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'isContrastIPE'</td>
+<td>IsContrastIPE</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'isExposureIPE'</td>
+<td>IsExposureIPE</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'isSaturationIPE'</td>
+<td>IsSaturationIPE</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'lightbalance'</td>
+<td>Lightbalance</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'saturation'</td>
+<td>Saturation</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'shadow'</td>
+<td>Shadow</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'sharpness'</td>
+<td>Sharpness</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'tint'</td>
+<td>Tint</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'wbMode'</td>
+<td>WBMode</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'wbTemperature'</td>
+<td>WBTemperature</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='SingleShotMeta'>Samsung SingleShotMeta Tags</a></h2>
@@ -1148,7 +1576,7 @@ such as the Galaxy S4.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 24, 2025</i>
+<br><i>Last revised Nov 13, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

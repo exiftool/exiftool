@@ -2833,6 +2833,7 @@ my %userDefined = (
    'xml ' => {
         Name => 'XML',
         Flags => [ 'Binary', 'Protected' ],
+        BlockExtract => 1,
         SubDirectory => {
             TagTable => 'Image::ExifTool::XMP::XML',
             IgnoreProp => { NonRealTimeMeta => 1 }, # ignore container for Sony 'nrtm'
@@ -2883,6 +2884,7 @@ my %userDefined = (
     },
     idat => {
         Name => 'MetaImageSize', #PH (NC)
+        Condition => '$$self{FileType} eq "HEIC"',
         Format => 'int16u',
         # (don't know what the first two numbers are for)
         PrintConv => '$val =~ s/^(\d+) (\d+) (\d+) (\d+)/${3}x$4/; $val',

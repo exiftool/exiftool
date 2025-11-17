@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.79';
+$VERSION = '3.80';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -10656,7 +10656,7 @@ my %isoSetting2010 = (
     0x8101 => { Name => 'Sony_rtmd_0x8101', Format => 'int8u',  %hidUnk }, # seen: 0,1,2
     0x8104 => { Name => 'Sony_rtmd_0x8104', Format => 'int16u', %hidUnk }, # seen: 35616
     0x8105 => { Name => 'Sony_rtmd_0x8105', Format => 'int16u', %hidUnk }, # seen: 20092
-    0x8106 => { Name => 'Sony_rtmd_0x8106', Format => 'int32u', %hidUnk }, # seen: "25 1","24000 1001" frame rate?
+    0x8106 => { Name => 'FrameRate', Format => 'rational64u', PrintConv => 'sprintf("%.2f",$val)' },
     0x8109 => { #forum12218
         Name => 'ExposureTime',
         Format => 'rational64u',
@@ -10674,7 +10674,9 @@ my %isoSetting2010 = (
         Format => 'int16u',
     },
     0x810d => { Name => 'Sony_rtmd_0x810d', Format => 'int8u',  %hidUnk }, # seen: 0,1
+    0x8114 => { Name => 'SerialNumber', Format => 'string' }, # (and model, eg. "ILCE-7SM3 5072108")
     0x8115 => { Name => 'Sony_rtmd_0x8115', Format => 'int16u', %hidUnk }, # seen: 100 - ISO
+  # 0x8119 - seen "P" (same as 0x811e?)
   # 0x8300 - container for other tags in this format
     0x8500 => {
         Name => 'GPSVersionID',

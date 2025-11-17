@@ -1731,7 +1731,14 @@ ItemID2:    foreach $id (reverse sort { $a <=> $b } keys %$items) {
         # (note that $tag may be a binary Keys index here)
         foreach $tag (@addTags) {
             my $tagInfo = $$dirs{$tag} || $$newTags{$tag};
-            next unless ref $tagInfo eq 'HASH'; # (shouldn't happen, but somehow there is forum17260)
+            unless (ref $tagInfo eq 'HASH') { # (shouldn't happen, but somehow there is forum17260)
+                # (also can happen if Meta exists but Keys does not since 'keys' is an array ref.
+                #  SonyPMW-EX1R.mp4 has a Movie-Meta atom with XML and no Keys that triggers this
+                #  issue.  Note that in this case the Meta HandlerType is 'meta' instead of 'mdta',
+                #  which isn't a problem for ExifTool, but may be for other software?)
+                next unless ref $tagInfo eq 'ARRAY';
+                $tagInfo = $et->GetTagInfo($tagTablePtr, $tag) or next;
+            }
             next if defined $$tagInfo{CanCreate} and not $$tagInfo{CanCreate};
             next if defined $$tagInfo{MediaType} and $$et{MediaType} ne $$tagInfo{MediaType};
             my $subdir = $$tagInfo{SubDirectory};

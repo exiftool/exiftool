@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.98';
+$VERSION = '4.99';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -643,6 +643,7 @@ $VERSION = '4.98';
    '61182.63' => 'Canon RF 24mm F1.4 L VCM', #42
    '61182.64' => 'Canon RF 20mm F1.4 L VCM', #42
    '61182.65' => 'Canon RF 85mm F1.4 L VCM', #github350
+   '61182.66' => 'Canon RF 45mm F1.2 STM', #42
     65535 => 'n/a',
 );
 
@@ -1009,10 +1010,11 @@ $VERSION = '4.98';
     0x80000487 => 'EOS R8', #42
     0x80000491 => 'PowerShot V10', #25
     0x80000495 => 'EOS R1', #PH
-    0x80000496 => 'R5 Mark II', #forum16406
+    0x80000496 => 'EOS R5 Mark II', #forum16406
     0x80000497 => 'PowerShot V1', #PH
     0x80000498 => 'EOS R100', #25
     0x80000516 => 'EOS R50 V', #42
+    0x80000518 => 'EOS R6 Mark III', #42
     0x80000520 => 'EOS D2000C', #IB
     0x80000560 => 'EOS D6000C', #PH (guess)
 );
@@ -7053,6 +7055,7 @@ my %ciMaxFocal = (
             326 => 'Canon RF 24mm F1.4 L VCM', #42
             327 => 'Canon RF 20mm F1.4 L VCM', #42
             328 => 'Canon RF 85mm F1.4 L VCM', #42/github350
+            330 => 'Canon RF 45mm F1.2 STM', #42
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },
     },

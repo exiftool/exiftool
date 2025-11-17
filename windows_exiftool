@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.41';
+my $version = '13.42';
 
 $^W = 1;    # enable global warnings
 
@@ -144,9 +144,9 @@ my $countNewDir;    # count of directories created
 my $countSameWr;    # count files written OK but not changed
 my $critical;       # flag for critical operations (disable CTRL-C)
 my $csv;            # flag for CSV option (set to "CSV", or maybe "JSON" when writing)
-my $csvAdd;         # flag to add CSV information to existing lists
 my $csvDelim;       # delimiter for CSV files
-my $csvSaveCount;   # save counter for last CSV file loaded
+my $dbAdd;          # flag to add CSV/JSON information to existing lists
+my $dbSaveCount;    # save counter for last CSV/JSON file loaded
 my $deleteOrig;     # 0=restore original files, 1=delete originals, 2=delete w/o asking
 my $diff;           # file name for comparing differences
 my $disableOutput;  # flag to disable normal output
@@ -498,7 +498,7 @@ undef $binSep;
 undef $binTerm;
 undef $comma;
 undef $csv;
-undef $csvAdd;
+undef $dbAdd;
 undef $deleteOrig;
 undef $diff;
 undef $disableOutput;
@@ -563,7 +563,7 @@ $countGoodWr = 0;
 $countNewDir = 0;
 $countSameWr = 0;
 $csvDelim = ',';
-$csvSaveCount = 0;
+$dbSaveCount = 0;
 $fileTrailer = '';
 $filterFlag = 0;
 $html = 0;
@@ -593,7 +593,7 @@ my $escapeXML;      # flag to escape printed values for xml
 my $setTagsFile;    # filename for last TagsFromFile option
 my $sortOpt;        # sort option is used
 my $srcStdin;       # one of the source files is STDIN
-my $tagsFrom = '';  # tags on command line come from 'csv' or 'file'
+my $tagsFrom = '';  # tags on command line come from 'CSV' or 'File'
 my $useMWG;         # flag set if we are using any MWG tag
 
 my ($argsLeft, @nextPass, $badCmd);
@@ -828,7 +828,7 @@ for (;;) {
         }
         # create necessary lists, etc for this new -tagsFromFile file
         AddSetTagsFile($setTagsFile, { Replace => ($1 and lc($1) eq 'add') ? 0 : 1 } );
-        $tagsFrom = 'file';
+        $tagsFrom = 'File';
         next;
     }
     if ($a eq '@') {
@@ -936,36 +936,50 @@ for (;;) {
         next;
     }
     /^config$/i and Warn("Ignored -config option (not first on command line)\n"), shift, next;
-    if (/^csv(\+?=.*)?$/i) {
-        my $csvFile = $1;
-        # must process on 2nd pass so -f and -charset options are available
-        unless ($pass) {
-            push @nextPass, "-$_";
-            if ($csvFile) {
-                push @newValues, { SaveCount => ++$saveCount }; # marker to save new values now
-                $csvSaveCount = $saveCount;
-                $tagsFrom = 'csv';
+    if (/^(csv|j(son)?)(\+?=.*)?$/i) {
+        my $dbFile = $3;
+        my $dbType = lc($1) eq 'csv' ? 'CSV' : 'JSON';
+        unless ($dbFile) {
+            if ($dbType eq 'CSV') {
+                $csv = $dbType;
+            } else {
+                $json = 1;
+                $html = $xml = 0;
+                $mt->Options(Duplicates => 1);
+                require Image::ExifTool::XMP;   # for FixUTF8()
             }
             next;
         }
-        if ($csvFile) {
-            $csvFile =~ s/^(\+?=)//;
-            $csvAdd = 2 if $1 eq '+=';
-            $vout = \*STDERR if $srcStdin;
-            $verbose and print $vout "Reading CSV file $csvFile\n";
-            my $msg;
-            if ($mt->Open(\*CSVFILE, $csvFile)) {
-                binmode CSVFILE;
-                require Image::ExifTool::Import;
-                $msg = Image::ExifTool::Import::ReadCSV(\*CSVFILE, \%database, $forcePrint, $csvDelim);
-                close(CSVFILE);
-            } else {
-                $msg = "Error opening CSV file '${csvFile}'";
-            }
-            $msg and Warn("$msg\n");
-            $isWriting = 1;
+        # must process on 2nd pass so -f and -charset options are available
+        unless ($pass) {
+            @tags and Warn("Tag arguments should come after the -$1= option\n");
+            push @nextPass, "-$_";
+            push @newValues, { SaveCount => ++$saveCount }; # marker to save new values now
+            $dbSaveCount = $saveCount;
+            $tagsFrom = 'CSV';
+            next;
         }
-        $csv = 'CSV';
+        $dbFile =~ s/^(\+?=)//;
+        $dbAdd = 2 if $1 eq '+=';
+        $vout = \*STDERR if $srcStdin;
+        $verbose and print $vout "Reading $dbType file $dbFile\n";
+        my $msg;
+        if ($mt->Open(\*CSVFILE, $dbFile)) {
+            binmode CSVFILE;
+            require Image::ExifTool::Import;
+            if ($dbType eq 'CSV') {
+                $msg = Image::ExifTool::Import::ReadCSV(\*CSVFILE, \%database, $forcePrint, $csvDelim);
+            } else {
+                my $chset = $mt->Options('Charset');
+                $msg = Image::ExifTool::Import::ReadJSON(\*CSVFILE, \%database, $forcePrint, $chset);
+            }
+            close(CSVFILE);
+        } else {
+            $msg = "Error opening $dbType file '${dbFile}'";
+        }
+        $msg and Warn("$msg\n");
+        $isWriting = 1;
+        $csv = $dbType;
         next;
     }
     if (/^csvdelim$/i) {
@@ -1126,42 +1140,6 @@ for (;;) {
         # add to list of requested tags
         push @requestTags, $cond =~ /\$\{?((?:[-_0-9A-Z]+:)*[-_0-9A-Z?*]+)/ig;
         push @condition, $cond;
-        next;
-    }
-    if (/^j(son)?(\+?=.*)?$/i) {
-        if ($2) {
-            # must process on 2nd pass because we need -f and -charset options
-            unless ($pass) {
-                push @nextPass, "-$_";
-                push @newValues, { SaveCount => ++$saveCount }; # marker to save new values now
-                $csvSaveCount = $saveCount;
-                $tagsFrom = 'csv';
-                next;
-            }
-            my $jsonFile = $2;
-            $jsonFile =~ s/^(\+?=)//;
-            $csvAdd = 2 if $1 eq '+=';
-            $vout = \*STDERR if $srcStdin;
-            $verbose and print $vout "Reading JSON file $jsonFile\n";
-            my $chset = $mt->Options('Charset');
-            my $msg;
-            if ($mt->Open(\*JSONFILE, $jsonFile)) {
-                binmode JSONFILE;
-                require Image::ExifTool::Import;
-                $msg = Image::ExifTool::Import::ReadJSON(\*JSONFILE, \%database, $forcePrint, $chset);
-                close(JSONFILE);
-            } else {
-                $msg = "Error opening JSON file '${jsonFile}'";
-            }
-            $msg and Warn("$msg\n");
-            $isWriting = 1;
-            $csv = 'JSON';
-        } else {
-            $json = 1;
-            $html = $xml = 0;
-            $mt->Options(Duplicates => 1);
-            require Image::ExifTool::XMP;   # for FixUTF8()
-        }
         next;
     }
     /^(k|pause)$/i and $pause = 1, next;
@@ -1386,7 +1364,7 @@ for (;;) {
         $tag =~ s/\ball\b/\*/ig;    # replace 'all' with '*' in tag names
         if (not $tagsFrom) {
             push @exclude, $tag;
-        } elsif ($tagsFrom eq 'csv') {
+        } elsif ($tagsFrom eq 'CSV') {
             push @csvExclude, $tag;
         } else {
             push @{$setTags{$setTagsFile}}, "-$tag";
@@ -1433,11 +1411,11 @@ for (;;) {
     } else {
         # assume '-tagsFromFile @' if tags are being redirected
         # and not from CSV and -tagsFromFile hasn't already been specified
-        if (not $setTagsFile and $tagsFrom ne 'csv' and /(<|>)/) {
+        if (not $setTagsFile and $tagsFrom ne 'CSV' and /(<|>)/) {
             AddSetTagsFile($setTagsFile = '@');
-            $tagsFrom = 'file';
+            $tagsFrom = 'File';
         }
-        if ($tagsFrom eq 'csv') {
+        if ($tagsFrom eq 'CSV') {
             my $lst = s/^-// ? \@csvExclude : \@tags;
             push @$lst, $_;
         } elsif ($setTagsFile) {
@@ -1733,7 +1711,7 @@ if (@newValues) {
                 $saveCount = $mt->SaveNewValues();
                 $needSave = 0;
                 # insert marker to load values from CSV file now if this was the CSV file
-                push @dynamicFiles, \$csv if $$_{SaveCount} == $csvSaveCount;
+                push @dynamicFiles, \$csv if $$_{SaveCount} == $dbSaveCount;
             }
             next;
         }
@@ -3263,7 +3241,7 @@ sub SetImageInfo($$$)
                 next;
             } elsif (ref $dyFile eq 'SCALAR') {
                 # set new values from CSV or JSON database
-                my ($f, $found, $csvTag, $tg, $csvExifTool);
+                my ($f, $found, $csvTag, $tg, $csvEtPrt, $csvEtVal);
                 undef $evalWarning;
                 local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };
                 # force UTF-8 if the database was JSON
@@ -3295,13 +3273,19 @@ sub SetImageInfo($$$)
                     }
                     if (@tags) {
                         # prepare a dummy ExifTool object to hold appropriate tags from the database
-                        $csvExifTool = Image::ExifTool->new unless $csvExifTool;
+                        $csvEtPrt = Image::ExifTool->new unless $csvEtPrt;
                         foreach $csvTag (OrderedKeys($csvInfo)) {
                             next if $csvTag =~ /^([-_0-9A-Z]+:)*(SourceFile|Directory|FileName)$/i;
                             my @grps = split /:/, $csvTag;
                             my $name = pop @grps;
-                            unshift @grps, 'Unknown' while @grps < 2;
-                            $csvExifTool->FoundTag($name, $$csvInfo{$csvTag}, @grps);
+                            unshift @grps, 'All' while @grps < 2;
+                            if ($name =~ s/#$//) {
+                                # handle ValueConv tags separately
+                                $csvEtVal = Image::ExifTool->new unless $csvEtVal;
+                                $csvEtVal->FoundTag($name, $$csvInfo{$csvTag}, @grps);
+                            } else {
+                                $csvEtPrt->FoundTag($name, $$csvInfo{$csvTag}, @grps);
+                            }
                         }
                         next;
                     }                    
@@ -3338,15 +3322,20 @@ ExclMatch:                  foreach $exclTag (@exclTags) {
                             next if $excluded;
                         }
                         my ($rtn, $wrn) = $et->SetNewValue($csvTag, $$csvInfo{$csvTag},
-                                          Protected => 1, AddValue => $csvAdd,
-                                          ProtectSaved => $csvSaveCount);
+                                          Protected => 1, AddValue => $dbAdd,
+                                          ProtectSaved => $dbSaveCount);
                         $wrn and Warn "$wrn\n" if $verbose;
                     }
                 }
                 # set specified tags now
-                if ($csvExifTool) {
+                if ($csvEtPrt) {
                     my @excl = map "-$_", @csvExclude;  # add back leading dashes
-                    $et->SetNewValuesFromFile($csvExifTool, @tags, @excl);
+                    my $opts = { AddValue => $dbAdd, Replace => 0 };
+                    $et->SetNewValuesFromFile($csvEtPrt, $opts, @tags, @excl);
+                    if ($csvEtVal) {
+                        $$opts{Type} = 'ValueConv';
+                        $et->SetNewValuesFromFile($csvEtVal, $opts, @tags, @excl);
+                    }
                 }
                 $et->Options(Charset => $old) if $csv eq 'JSON';
                 unless ($found) {

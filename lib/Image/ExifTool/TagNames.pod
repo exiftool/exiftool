@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28858 tags, with 17929 unique tag names.
+They contain a total of 28932 tags, with 17990 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -21924,7 +21924,9 @@ HEIC images from models such as the S10+.
   EmbeddedVideoFile                             no
   EmbeddedVideoType                             no
   MCCData                                       no
-  PEg_Info                                      JSON
+  PEg_Info                                      Samsung PEgInfo
+  ReEditData                                    Samsung ReEditData
+  OriginalPathHashKey                           no
   RemasterInfo                                  no
   SamsungCaptureInfo                            no
   SingleShotDepthMap                            no
@@ -21939,6 +21941,114 @@ HEIC images from models such as the S10+.
   ------   --------                             --------
      16    DepthMapWidth                        no
      17    DepthMapHeight                       no
+
+=head3 Samsung PEgInfo Tags
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'connectorType'      ConnectorType            no
+  'genImageVersion'    GenImageVersion          no
+
+=head3 Samsung ReEditData Tags
+
+  Tag ID                 Tag Name               Writable
+  ------                 --------               --------
+  'adjustmentValue'      AdjustmentValue        no
+  'clipInfoValue'        ClipInfoValue          Samsung ClipInfo
+  'effectValue'          EffectValue            Samsung EffectInfo
+  'endMotionVideo'       EndMotionVideo         no
+  'isAIFilterReEditOnly' IsAIFilterReEditOnly   no
+  'isApplyShapeCorrection'
+                         IsApplyShapeCorrection no
+  'isBlending'           IsBlending             no
+  'isDecoReEditOnly'     IsDecoReEditOnly       no
+  'isMotionVideoMute'    IsMotionVideoMute      no
+  'isNewReEditOnly'      IsNewReEditOnly        no
+  'isNotReEdit'          IsNotReEdit            no
+  'isScaleAI'            IsScaleAI              no
+  'isTrimMotionVideo'    IsTrimMotionVideo      no
+  'ndeVersion'           NDEVersion             no
+  'originalPath'         OriginalPath           no
+  'portraitEffectValue'  PortraitEffectValue    Samsung PortraitEffect
+  'reSize'               ReSize                 no
+  'representativeFrameLoc'
+                         RepresentativeFrameLoc no
+  'rotation'             Rotation               no
+  'sepVersion'           SEPVersion             no
+  'startMotionVideo'     StartMotionVideo       no
+  'toneValue'            ToneValue              Samsung ToneInfo
+
+=head3 Samsung ClipInfo Tags
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'mCenterX'           ClipCenterX              no
+  'mCenterY'           ClipCenterY              no
+  'mHFlip'             ClipHFlip                no
+  'mHFlipEffect'       ClipHFlipEffect          no
+  'mHeight'            ClipHeight               no
+  'mHozPerspective'    ClipHozPerspective       no
+  'mRotate'            ClipRotate               no
+  'mRotateEffect'      ClipRotateEffect         no
+  'mRotation'          ClipRotation             no
+  'mRotationEffect'    ClipRotationEffect       no
+  'mVFlip'             ClipVFlip                no
+  'mVFlipEffect'       ClipVFlipEffect          no
+  'mVerPerspective'    ClipVerPerspective       no
+  'mWidth'             ClipWidth                no
+
+=head3 Samsung EffectInfo Tags
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'alphaValue'         AlphaValue               no
+  'filterIndication'   FilterIndication         no
+  'filterType'         FilterType               no
+
+=head3 Samsung PortraitEffect Tags
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'effectId'           PortraitEffectID         no
+  'effectIdOriginal'   PortraitEffectIDOriginal no
+  'effectLevel'        PortraitEffectLevel      no
+  'effectLevelOriginal' EffectLevelOriginal     no
+  'exifRotation'       PortraitExifRotation     no
+  'lightLevel'         PortraitLightLevel       no
+  'lightLevelOriginal' LightLevelOriginal       no
+  'refocusX'           PortraitRefocusX         no
+  'refocusXOriginal'   RefocusXOriginal         no
+  'refocusY'           PortraitRefocusY         no
+  'refocusYOriginal'   RefocusYOriginal         no
+  'touchX'             PortraitTouchX           no
+  'touchXOriginal'     TouchXOriginal           no
+  'touchY'             PortraitTouchY           no
+  'touchYOriginal'     TouchYOriginal           no
+  'waterMarkRemoved'   WaterMarkRemoved         no
+  'waterMarkRemovedOriginal'
+                       WaterMarkRemovedOriginal no
+
+=head3 Samsung ToneInfo Tags
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'brightness'         Brightness               no
+  'contrast'           Contrast                 no
+  'definition'         Definition               no
+  'exposure'           Exposure                 no
+  'highlight'          Highlight                no
+  'hue'                Hue                      no
+  'isBrightnessIPE'    IsBrightnessIPE          no
+  'isContrastIPE'      IsContrastIPE            no
+  'isExposureIPE'      IsExposureIPE            no
+  'isSaturationIPE'    IsSaturationIPE          no
+  'lightbalance'       Lightbalance             no
+  'saturation'         Saturation               no
+  'shadow'             Shadow                   no
+  'sharpness'          Sharpness                no
+  'tint'               Tint                     no
+  'wbMode'             WBMode                   no
+  'wbTemperature'      WBTemperature            no
 
 =head3 Samsung SingleShotMeta Tags
 
@@ -24074,10 +24184,12 @@ some models when the ExtractEmbedded option is used.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x8000   FNumber                              no
+  0x8106   FrameRate                            no
   0x8109   ExposureTime                         no
   0x810a   MasterGainAdjustment                 no
   0x810b   ISO                                  no
   0x810c   ElectricalExtenderMagnification      no
+  0x8114   SerialNumber                         no
   0x8500   GPSVersionID                         no
   0x8501   GPSLatitudeRef                       no
   0x8502   GPSLatitude                          no

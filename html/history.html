@@ -17,6 +17,22 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.42'><b>Nov. 17, 2025 - Version 13.42</b></a>
+<ul>
+<li>Added warning if tag arguments come before -csv= or -json= in a command
+<li>Added a new CanonModelID and RFLensType (thanks Norbert Wasser)
+<li>Added ability to read XML as a block from Sony MP4 videos
+<li>Added "EOS" to the R5 Mark II CanonModelID string
+<li>Decode ReEditData in Samsung trailer
+<li>Decode a couple more Sony rtmd tags from MP4 videos
+<li>Tolerate some types of trailer corruption as caused by Samsung Gallery
+<li>Restrict decoding of MetaImageSize to HEIC files only
+<li>Fixed issue writing Keys tags to Sony PMW-EX1R videos
+<li>Fixed behaviour of CSV/JSON import when specifying tags to import into an
+    existing list, or when importing ValueConv values (ie. "TAG#"), or when
+    specifying a group name of "All"
+</ul>
+
 <a name='v13.41'><b>Nov. 5, 2025 - Version 13.41</b></a>
 <ul>
 <li>Added a new Canon LensType

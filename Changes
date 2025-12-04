@@ -7,6 +7,18 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.36. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Dec. 4, 2025 - Version 13.43
+
+  - Added support for a couple of new Android QuickTime Keys tags
+  - Added date/time formatting for RIFF DateCreated
+  - Added ability to read/write (but not create/delete) the HEIF Mirroring tag
+  - Added a new SonyModelID
+  - Added a new Canon LensType (thanks Matthias)
+  - Decode ShutterCount for the Canon EOS R6 Mark III
+  - Decode another Samsung trailer tag
+  - Convert invalid Panasonic AFPointPosition to 'n/a'
+  - Fixed issue extracting timed GPS from some Wolfbox G900 MP4 videos
+
 Nov. 17, 2025 - Version 13.42
 
   - Added warning if tag arguments come before -csv= or -json= in a command

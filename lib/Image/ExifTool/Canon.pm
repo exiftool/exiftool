@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.99';
+$VERSION = '5.00';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -492,6 +492,7 @@ $VERSION = '4.99';
    '368.12' => 'Sigma 18-35mm f/1.8 DC HSM | A', #50
    '368.13' => 'Sigma 24-105mm f/4 DG OS HSM | A', #forum3833
    '368.14' => 'Sigma 18-300mm f/3.5-6.3 DC Macro OS HSM | C', #forum15280 (014)
+   '368.15' => 'Sigma 24mm F1.4 DG HSM | A', #50 (015)
     # Note: LensType 488 (0x1e8) is reported as 232 (0xe8) in 7D CameraSettings
     488 => 'Canon EF-S 15-85mm f/3.5-5.6 IS USM', #PH
     489 => 'Canon EF 70-300mm f/4-5.6L IS USM', #Gerald Kapounek
@@ -1422,6 +1423,11 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Name => 'CanonCameraInfoR6m2',
             Condition => '$$self{Model} =~ /\bEOS (R6m2|R8|R50)$/',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR6m2' },
+        },
+        {
+            Name => 'CanonCameraInfoR6m3',
+            Condition => '$$self{Model} =~ /\bEOS R6 Mark III$/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR6m3' },
         },
         {
             Name => 'CanonCameraInfoG5XII',
@@ -4790,6 +4796,22 @@ my %ciMaxFocal = (
     0x0d29 => { #AgostonKapitany
         Name => 'ShutterCount',
         Format => 'int32u',
+        Notes => 'includes electronic + mechanical shutter',
+    },
+);
+
+%Image::ExifTool::Canon::CameraInfoR6m3 = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'CameraInfo tags for the EOS R6 Mark II.',
+    0x086d => { #forum17745
+        Name => 'ShutterCount',
+        Format => 'int32u',
+        # (upper 2 bytes are currently unknown for this tag in JPEG images --
+        #  we need samples ideally spanning the 65536 count)
+        RawConv => '$$self{PATH}[2] eq "UUID-Canon" ? $val : $val & 0xffff',
         Notes => 'includes electronic + mechanical shutter',
     },
 );

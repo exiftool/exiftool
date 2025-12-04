@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.23';
+$VERSION = '3.24';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -494,6 +494,7 @@ my %qtFlags = ( #12
     ispe => 1,  # primary item must have an ispe and pixi, so no need to inherit these
     pixi => 1,
     irot => 1,  # (tmap may have a different irot)
+    imir => 1,  # (ditto)
     pasp => 1,  # (NC)
     hvcC => 2,  # (hvcC is a property of hvc1 referred to by primary grid)
     colr => 2,  # (colr is a property of primary grid or hvc1 referred to by primary)
@@ -2970,7 +2971,6 @@ my %userDefined = (
         Condition => '$$valPt =~ /^(prof|rICC)/',
         # (don't do this because Apple Preview won't display an HEIC with a 0-length profile)
         # Permanent => 0, # (in QuickTime, this writes a zero-length box instead of deleting)
-        Permanent => 1,
         SubDirectory => {
             TagTable => 'Image::ExifTool::ICC_Profile::Main',
             Start => 4,
@@ -2989,6 +2989,22 @@ my %userDefined = (
             1 => 'Rotate 270 CW',
             2 => 'Rotate 180',
             3 => 'Rotate 90 CW',
+        },
+    },
+    imir => { # (applied before rotation)
+        Name => 'Mirroring',
+        Format => 'int8u',
+        # yes, I realize this making this writable is useless without the ability to
+        # create/delete this box because it is the existence of this box that is
+        # significant.  (The people who wrote the specification succeeded in making
+        # this as complicated as possible because creating/deleting boxes from the
+        # item property container is a real pain in the ass!)
+        Writable => 'int8u',
+        Protected => 1,
+        PrintConv => {
+            0 => 'Vertical',
+            1 => 'Horizontal',
+            # (it would have been great if the specification allowed for a "no mirroring" value)
         },
     },
     ispe => {
@@ -6622,7 +6638,7 @@ my %userDefined = (
         This directory contains a list of key names which are used to decode tags
         written by the "mdta" handler.  Also in this table are a few tags found in
         timed metadata that are not yet writable by ExifTool.  The prefix of
-        "com.apple.quicktime." has been removed from the TagID's below.  These tags
+        "com.apple.quicktime." has been removed from most TagID's below.  These tags
         support alternate languages in the same way as the
         L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> tags.  Note
         that by default,
@@ -6716,14 +6732,17 @@ my %userDefined = (
     'encoder' => { }, # forum15418 (written by ffmpeg)
 #
 # the following tags aren't in the com.apple.quicktime namespace:
+# (Note: must add any non-'com' prefix to %fullKeysID in WriteQuickTime.pl
+#  to avoid adding the 'com.apple.quicktime' prefix when writing)
 #
     'com.android.version' => 'AndroidVersion',
     'com.android.capture.fps' => { Name  => 'AndroidCaptureFPS', Writable => 'float' },
     'com.android.manufacturer' => 'AndroidMake',
     'com.android.model' => 'AndroidModel',
     'com.xiaomi.preview_video_cover' => { Name => 'XiaomiPreviewVideoCover', Writable => 'int32s' },
-    'xiaomi.exifInfo.videoinfo' => 'XiaomiExifInfo',
     'com.xiaomi.hdr10' => { Name => 'XiaomiHDR10', Writable => 'int32s' },
+    'xiaomi.exifInfo.videoinfo' => 'XiaomiExifInfo',
+    'samsung.android.utc_offset' => { Name => 'AndroidTimeZone', Groups => { 2 => 'Time' } },
 #
 # also seen
 #
@@ -9776,6 +9795,7 @@ sub ProcessKeys($$$)
             $name = "Tag_$name" if length $name < 2;
             $newInfo = { Name => $name, Groups => { 1 => 'Keys' } };
             $msg = ' (Unknown)';
+            $et->VPrint(0, $$et{INDENT}, "[adding Keys:$tag]\n");
         }
         # substitute this tag in the ItemList table with the given index
         my $id = $$et{KeysCount} . '.' . $index;

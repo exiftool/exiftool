@@ -30,7 +30,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.72';
+$VERSION = '1.73';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -851,6 +851,7 @@ my %code2charset = (
         Name => 'DateCreated',
         Groups => { 2 => 'Time' },
         ValueConv => '$_=$val; s/-/:/g; $_',
+        PrintConv => '$self->ConvertDateTime($val)',
     },
     ICRP => 'Cropped',
     IDIM => 'Dimensions',

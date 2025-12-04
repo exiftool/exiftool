@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28932 tags, with 17990 unique tag names.
+They contain a total of 28936 tags, with 17993 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -7432,6 +7432,7 @@ boot, not including standby time.
            CanonCameraInfo1200D                 Canon CameraInfo60D
            CanonCameraInfoR6                    Canon CameraInfoR6
            CanonCameraInfoR6m2                  Canon CameraInfoR6m2
+           CanonCameraInfoR6m3                  Canon CameraInfoR6m3
            CanonCameraInfoG5XII                 Canon CameraInfoG5XII
            CanonCameraInfoPowerShot             Canon CameraInfoPowerShot
            CanonCameraInfoPowerShot2            Canon CameraInfoPowerShot2
@@ -8437,6 +8438,14 @@ CameraInfo tags for the EOS R6 Mark II.
   Index1   Tag Name                             Writable
   ------   --------                             --------
    3369    ShutterCount                         int32u
+
+=head3 Canon CameraInfoR6m3 Tags
+
+CameraInfo tags for the EOS R6 Mark II.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+   2157    ShutterCount                         int32u
 
 =head3 Canon CameraInfoG5XII Tags
 
@@ -21934,6 +21943,7 @@ HEIC images from models such as the S10+.
   SurroundShotVideo                             no
   SurroundShotVideoName                         no
   TimeStamp                                     no
+  VideoEditedTimeZone                           no
 
 =head3 Samsung DualShotExtra Tags
 
@@ -31060,7 +31070,7 @@ specification.
 This directory contains a list of key names which are used to decode tags
 written by the "mdta" handler.  Also in this table are a few tags found in
 timed metadata that are not yet writable by ExifTool.  The prefix of
-"com.apple.quicktime." has been removed from the TagID's below.  These tags
+"com.apple.quicktime." has been removed from most TagID's below.  These tags
 support alternate languages in the same way as the
 L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> tags.  Note
 that by default,
@@ -31144,6 +31154,7 @@ changed via the config file.
   'producer'    Producer                        yes
   'publisher'   Publisher                       yes
   'rating.user' UserRating                      yes
+  'samsung.android.utc_offset' AndroidTimeZone  yes
   'scene-illuminance' SceneIlluminance          no
   'software'    Software                        yes
   'still-image-time' StillImageTime             no
@@ -31563,6 +31574,7 @@ and are not currently writable.
   'colr'   ICC_Profile                          ICC_Profile
            ColorRepresentation                  QuickTime ColorRep
   'hvcC'   HEVCConfiguration                    QuickTime HEVCConfig
+  'imir'   Mirroring                            int8u!
   'irot'   Rotation                             int8u!
   'ispe'   ImageSpatialExtent                   no
   'pasp'   PixelAspectRatio                     int32u[2]!

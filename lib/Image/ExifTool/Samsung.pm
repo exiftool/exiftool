@@ -23,7 +23,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::JSON;
 
-$VERSION = '1.59';
+$VERSION = '1.60';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -1314,7 +1314,17 @@ my %formatMinMax = (
    # 0x0da1-name - seen 'Captured_App_Info' #forum16086
    # 0xa050-name - seen 'Jpeg360_2D_Info' (Samsung Gear 360)
    # 0xa050 - seen 'Jpeg3602D' (Samsung Gear 360)
+   # 0x0c61-name - seen 'Camera_Capture_Mode_Info'
+   # 0x0c61 - seen '1'
    # 0x0c81-name - seen 'Watermark_Info'
+   # 0x0ce1-name - seen 'Gallery_DC_Data'
+   # 0x0ce1 - seen '0,109,2,19010102,4000,3000,0,0,0,0;116.284004;1.0'
+   # 0x0e41-name - seen 'Video_Edited_UTC_Offset'
+   # 0x0e41 - seen '+0800'
+    '0x0e41' => {
+        Name => 'VideoEditedTimeZone',
+        Groups => { 2 => 'Time' },
+    },
 );
 
 # DualShot Extra Info (ref PH)

@@ -211,7 +211,7 @@ my %insvLimit = (
         },
     },{
         Name => 'gpmd_Wolfbox', # Wolfbox G900 Dashcam and Redtiger F9 4K
-        Condition => '$$valPt =~ /^.{136}0{16}(HYTH|XXXX)/s',
+        Condition => '$$valPt =~ /^.{136}(0{16}[A-Z]{4}|https:\/\/www.redtiger\0)/s',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::Stream',
             ProcessProc => \&ProcessWolfbox,

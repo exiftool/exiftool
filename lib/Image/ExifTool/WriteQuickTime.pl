@@ -95,6 +95,11 @@ my %emptyMeta = (
     hdlr => 'Handler', 'keys' => 'Keys', lang => 'Language', ctry => 'Country', free => 'Free',
 );
 
+# starting word for Keys tags which use a full tag ID
+my %fullKeysID = (
+    com => 1,   xiaomi => 1,    samsung => 1,
+);
+
 # lookup for CTBO ID number based on uuid for Canon CR3 files
 my %ctboID = (
     "\xbe\x7a\xcf\xcb\x97\xa9\x42\xe8\x9c\x71\x99\x94\x91\xe3\xaf\xac" => 1, # XMP
@@ -461,7 +466,10 @@ sub WriteKeys($$$)
         next unless $$nvHash{IsCreating} and $et->IsOverwriting($nvHash) and
             defined $et->GetNewValue($nvHash);
         # add new entry to 'keys' data
-        my $val = $id =~ /^com\./ ? $id : "com.apple.quicktime.$id";
+        my $val = $id;
+        unless ($val =~ /^(.*?)\./ and $fullKeysID{$1}) {
+            $val = "com.apple.quicktime.$val";
+        }
         $newData .= Set32u(8 + length($val)) . 'mdta' . $val;
         $et->VPrint(1, "$$et{INDENT}\[adding $keysGrp entry $newIndex '${id}']\n");
         $add{$newIndex++} = $tagInfo;

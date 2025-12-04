@@ -880,7 +880,7 @@ specification.</p>
 <p>This directory contains a list of key names which are used to decode tags
 written by the &quot;mdta&quot; handler.  Also in this table are a few tags found in
 timed metadata that are not yet writable by ExifTool.  The prefix of
-&quot;com.apple.quicktime.&quot; has been removed from the TagID&#39;s below.  These tags
+&quot;com.apple.quicktime.&quot; has been removed from most TagID&#39;s below.  These tags
 support alternate languages in the same way as the
 <a href="QuickTime.html#ItemList">ItemList</a> tags.  Note
 that by default,
@@ -1215,32 +1215,37 @@ after the decimal)</span></span></td></tr>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'samsung.android.utc_offset'</td>
+<td>AndroidTimeZone</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'scene-illuminance'</td>
 <td>SceneIlluminance</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(milli-lux)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'software'</td>
 <td>Software</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'still-image-time'</td>
 <td>StillImageTime</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(this tag always has a value of -1; the time of the still image is obtained
 from the associated SampleTime)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'title'</td>
 <td>Title</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'version'</td>
 <td>Version</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'video-orientation'</td>
 <td>VideoOrientation</td>
 <td class=c>no</td>
@@ -1254,12 +1259,12 @@ from the associated SampleTime)</span></span></td></tr>
   <br>7 = Mirror horizontal and rotate 90 CW
   <br>8 = Rotate 270 CW</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td>'xiaomi.exifInfo.videoinfo'</td>
 <td>XiaomiExifInfo</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'year'</td>
 <td>Year</td>
 <td class=c>yes</td>
@@ -5740,6 +5745,12 @@ and are not currently writable.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#HEVCConfig'>QuickTime HEVCConfig Tags</a></td></tr>
 <tr>
+<td>'imir'</td>
+<td>Mirroring</td>
+<td class=c title=' ! = Unsafe'>int8u!</td>
+<td><span class=s>0 = Vertical
+  <br>1 = Horizontal</span></td></tr>
+<tr class=b>
 <td>'irot'</td>
 <td>Rotation</td>
 <td class=c title=' ! = Unsafe'>int8u!</td>
@@ -5747,22 +5758,22 @@ and are not currently writable.</p>
   <br>1 = Rotate 270 CW
   <br>2 = Rotate 180
   <br>3 = Rotate 90 CW</span></td></tr>
-<tr class=b>
+<tr>
 <td>'ispe'</td>
 <td>ImageSpatialExtent</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'pasp'</td>
 <td>PixelAspectRatio</td>
 <td class=c title=' ! = Unsafe'>int32u[2]!</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'pixi'</td>
 <td>ImagePixelDepth</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'rloc'</td>
 <td>RelativeLocation</td>
 <td class=c>no</td>
@@ -9993,7 +10004,7 @@ the value is set to zero if the tag is deleted individually)</span></span></td><
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 5, 2025</i>
+<br><i>Last revised Nov 21, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

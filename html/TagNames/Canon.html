@@ -99,13 +99,14 @@
   <br>CanonCameraInfo1200D
   <br>CanonCameraInfoR6
   <br>CanonCameraInfoR6m2
+  <br>CanonCameraInfoR6m3
   <br>CanonCameraInfoG5XII
   <br>CanonCameraInfoPowerShot
   <br>CanonCameraInfoPowerShot2
   <br>CanonCameraInfoUnknown32
   <br>CanonCameraInfoUnknown16
   <br>CanonCameraInfoUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Canon.html#CameraInfo1D'>Canon CameraInfo1D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo1DmkII'>Canon CameraInfo1DmkII Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo1DmkIIN'>Canon CameraInfo1DmkIIN Tags</a>
@@ -135,6 +136,7 @@
   <br>--&gt; <a href='Canon.html#CameraInfo60D'>Canon CameraInfo60D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoR6'>Canon CameraInfoR6 Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoR6m2'>Canon CameraInfoR6m2 Tags</a>
+  <br>--&gt; <a href='Canon.html#CameraInfoR6m3'>Canon CameraInfoR6m3 Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoG5XII'>Canon CameraInfoG5XII Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoPowerShot'>Canon CameraInfoPowerShot Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoPowerShot2'>Canon CameraInfoPowerShot2 Tags</a>
@@ -1810,6 +1812,7 @@ others use a range of 0 to 7 where 0 is no sharpening)</span></span></td></tr>
 </tr><tr><td>368</td><td>= Sigma 18-35mm f/1.8 DC HSM | A</td>
 </tr><tr><td>368</td><td>= Sigma 24-105mm f/4 DG OS HSM | A</td>
 </tr><tr><td>368</td><td>= Sigma 18-300mm f/3.5-6.3 DC Macro OS HSM | C</td>
+</tr><tr><td>368</td><td>= Sigma 24mm F1.4 DG HSM | A</td>
 </tr><tr><td>488</td><td>= Canon EF-S 15-85mm f/3.5-5.6 IS USM</td>
 </tr><tr><td>489</td><td>= Canon EF 70-300mm f/4-5.6L IS USM</td>
 </tr><tr><td>490</td><td>= Canon EF 8-15mm f/4L Fisheye USM</td>
@@ -5817,6 +5820,20 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td class=r title='3369 = 0xd29'>3369</td>
+<td>ShutterCount</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(includes electronic + mechanical shutter)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CameraInfoR6m3'>Canon CameraInfoR6m3 Tags</a></h2>
+<p>CameraInfo tags for the EOS R6 Mark II.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='2157 = 0x86d'>2157</td>
 <td>ShutterCount</td>
 <td class=c>int32u</td>
 <td><span class=s><span class=n>(includes electronic + mechanical shutter)</span></span></td></tr>
@@ -12389,7 +12406,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 17, 2025</i>
+<br><i>Last revised Dec 3, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

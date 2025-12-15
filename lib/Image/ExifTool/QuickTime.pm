@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.24';
+$VERSION = '3.25';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -601,7 +601,7 @@ my %userDefined = (
         #  0010: 73 6e 61 6c 00 00 00 00 00 f7 b6 d2 00 0a 46 e0 [snal..........F.]
         #  0020: 68 67 6c 67 00 00 00 00 01 02 0a a2 00 00 00 21 [hglg...........!]
         #  0030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
-        # (also Samsung WB750 uncompressed thumbnail data starting with "SDIC\0")        
+        # (also Samsung WB750 uncompressed thumbnail data starting with "SDIC\0")
     ],
     # fre1 - 4 bytes: "june" (Kodak PixPro SP360)
     frea => {
@@ -987,6 +987,25 @@ my %userDefined = (
             TagTable => 'Image::ExifTool::QuickTime::Stream',
             ProcessProc => \&ProcessInsta360,
         },
+    },
+    # Kandao tags (Kandao QooCam 3 Ultra)
+    kvar => {
+        Name => 'KVAR',
+        BlockExtract => 1,
+        Notes => q{
+            by default, data in this tag is parsed to extract some embedded metadata,
+            but it may also be extracted as a KVAR file via the "KVAR" tag or by setting
+            the API BlockExtract option
+        },
+        SubDirectory => { TagTable => 'Image::ExifTool::Kandao::Main' },
+    },
+    kfix => {
+        Name => 'KFIX',
+        SubDirectory => { TagTable => 'Image::ExifTool::Kandao::Main' },
+    },
+    kstb => { # (NC)
+        Name => 'KSTB',
+        SubDirectory => { TagTable => 'Image::ExifTool::Kandao::Main' },
     },
 );
 
@@ -2668,6 +2687,7 @@ my %userDefined = (
             ByteOrder => 'BigEndian',
         },
     },
+    # PREX - seen written by Sony ILCE-7M5 (apparently contains another video profile?)
 );
 
 # FPRF atom information (ref 11)
@@ -3421,7 +3441,7 @@ my %userDefined = (
     ssrc => { Name => 'Non-primarySourceTrack', Format => 'int32u' }, #29
     sync => { Name => 'SyncronizedTrack',       Format => 'int32u' }, #29
     # hint - Original media for hint track (ref 29)
-    # cdep (Structural Dependency QT tag?)    
+    # cdep (Structural Dependency QT tag?)
 );
 
 # track aperture mode dimensions atoms
@@ -9026,13 +9046,13 @@ sub GetString($$)
 sub PrintableTagID($;$)
 {
     my $tag = $_[0];
-    my $n = ($tag =~ s/([\x00-\x1f\x7f-\xff])/'x'.unpack('H*',$1)/eg);
+    my $n = ($tag =~ s/([^-_a-zA-Z0-9])/'x'.unpack('H*',$1)/eg);
     if ($n and $_[1]) {
         if ($n > 2 and $_[1] & 0x01) {
             $tag = '0x' . unpack('H8', $_[0]);
             $tag =~ s/^0x0000/0x/;
         } elsif ($_[1] & 0x02) {
-            ($tag = $_[0]) =~ s/([\x00-\x1f\x7f-\xff])/'\\x'.unpack('H*',$1)/eg;
+            ($tag = $_[0]) =~ s/([^-_a-zA-Z0-9])/'\\x'.unpack('H*',$1)/eg;
         }
     }
     return $tag;

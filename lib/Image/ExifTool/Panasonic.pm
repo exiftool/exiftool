@@ -37,7 +37,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.27';
+$VERSION = '2.28';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1493,6 +1493,22 @@ my %shootingMode = (
         Writable => 'int16u',
         PrintConv => { 0 => 'Off', 1 => 'On' },
     },
+    0xf1 => { #github365
+        Name => 'LUT1Name',
+        Writable => 'string',
+    },
+    0xf3 => { #github365
+        Name => 'LUT1Opacity',
+        Writable => 'int8u',    # (percent)
+    },
+    0xf4 => { #github365
+        Name => 'LUT2Name',
+        Writable => 'string',
+    },
+    0xf5 => { #github365
+        Name => 'LUT2Opacity',
+        Writable => 'int8u',    # (percent)
+    },
     0x0e00 => {
         Name => 'PrintIM',
         Description => 'Print Image Matching',
@@ -2279,7 +2295,7 @@ my %shootingMode = (
         Format => 'int16u[4]',
         RawConv => '$$self{NumFacePositions} < 1 ? undef : $val',
         Notes => q{
-            4 numbers: X/Y coordinates of the face center and width/height of face. 
+            4 numbers: X/Y coordinates of the face center and width/height of face.
             Coordinates are relative to an image twice the size of the thumbnail, or 320
             pixels wide
         },

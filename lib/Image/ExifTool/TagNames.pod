@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 28936 tags, with 17993 unique tag names.
+They contain a total of 29026 tags, with 18036 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1345,7 +1345,7 @@ or "Rights-en-US").  (See L<http://www.ietf.org/rfc/rfc3066.txt> for the RFC
 3066 specification.)  A C<lang-alt> tag with no language code accesses the
 "x-default" language, but causes other languages for this tag to be deleted
 when writing.  The "x-default" language code may be specified when writing
-to preserve other existing languages (eg. "XMP-dc:Description-x-default"). 
+to preserve other existing languages (eg. "XMP-dc:Description-x-default").
 When reading, "x-default" is not specified.
 
 The XMP tags are organized according to schema B<Namespace> in the following
@@ -2595,6 +2595,7 @@ These tags belong to the ExifTool XMP-crd family 1 group.
   PerspectiveVertical                           integer/
   PerspectiveX                                  real/
   PerspectiveY                                  real/
+  PointColors                                   string/+
   PostCropVignetteAmount                        integer/
   PostCropVignetteFeather                       integer/
   PostCropVignetteHighlightContrast             integer/
@@ -3973,6 +3974,7 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   PerspectiveVertical                           integer
   PerspectiveX                                  real
   PerspectiveY                                  real
+  PointColors                                   string+
   PostCropVignetteAmount                        integer
   PostCropVignetteFeather                       integer
   PostCropVignetteHighlightContrast             integer
@@ -20141,6 +20143,10 @@ These tags are used in Panasonic/Leica cameras.
   0x00e8   MinimumISO                           int32u
   0x00e9   AFSubjectDetection                   int16u
   0x00ee   DynamicRangeBoost                    int16u
+  0x00f1   LUT1Name                             string
+  0x00f3   LUT1Opacity                          int8u
+  0x00f4   LUT2Name                             string
+  0x00f5   LUT2Opacity                          int8u
   0x0e00   PrintIM                              PrintIM
   0x2003   TimeInfo                             Panasonic TimeInfo
   0x8000   MakerNoteVersion                     undef
@@ -21412,6 +21418,10 @@ These tags are extracted from the maker notes of Phase One images.
   0x0222   SplitColumn                          int32s
   0x0223   BlackLevelData                       int16u[n]
   0x0226   ColorMatrix2                         float[9]
+  0x0262   SequenceID                           string
+  0x0263   SequenceKind                         int32s
+  0x0264   SequenceFrameNumber                  int32s
+  0x0265   SequenceFrameCount                   int32s
   0x0267   AFAdjustment                         float
   0x0301   FirmwareVersions                     string
   0x0400   ShutterSpeedValue                    float
@@ -23487,6 +23497,7 @@ substitution cipher, but the deciphered values are listed below.
   ------   --------                             --------
       0    SonyMaxAperture                      int8u
       1    SonyMinAperture                      int8u
+     10    ShutterCount                         int32u
      32    Shutter                              int16u[3]
      49    FlashStatus                          int8u
      50    ShutterCount                         int32u
@@ -30850,6 +30861,9 @@ for the official QuickTime specification.
   'gsen'               GSensor                  QuickTime Stream
   'inst'               Insta360Info             QuickTime Stream
   'junk'               Junk?                    no
+  'kfix'               KFIX                     Kandao
+  'kstb'               KSTB                     Kandao
+  'kvar'               KVAR                     Kandao
   'mdat'               MediaData?               no
   'mdat-offset'        MediaDataOffset          no
   'mdat-size'          MediaDataSize            no
@@ -30893,7 +30907,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 116 different types of timed GPS metadata from video files.
+currently reads 117 different types of timed GPS metadata from video files.
 
   Tag ID                 Tag Name               Writable
   ------                 --------               --------
@@ -34149,6 +34163,119 @@ Other tags are extracted with the Unknown option.
   ------   --------                             --------
   [no tags known]
 
+=head2 Kandao Tags
+
+Tags extracted from Kandao KVAR files and the 'kvar', 'kfix' and 'kstb'
+atoms in Kandao MP4 videos, and have a family 1 group name of KVAR, KFIX or
+KSTB depending on their location.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'AE_METERING'        AEMetering               no
+  'AE_MODE'            AEMode                   no
+  'AF_FN'              AF_FN                    no
+  'AUDIO_GAIN'         AudioGain                no
+  'AWB_CCT'            AWB_CCT                  no
+  'AWB_MODE'           AWBMode                  no
+  'BAT_TEMP'           BatteryTemperature       no
+  'CAPTURE_MODE'       CaptureMode              no
+  'CENTER_SHIFT'       CenterShift              no
+  'COVER_MODE'         CoverMode                no
+  'CPU_TEMP'           CPUTemperature           no
+  'CUSTOMIZED'         Customized               no
+  'DASHBOARD'          Dashboard                no
+  'DISTORTION'         Distortion               no
+  'DYNAMIC_RANGE'      DynamicRange             no
+  'EV'                 EV                       no
+  'EXP'                Exp                      no
+  'FAN_LEVEL'          FanLevel                 no
+  'FAN_MODE'           FanMode                  no
+  'FOV'                FOV                      no
+  'FRAME_ISP'          FRAME_ISP                Kandao FrameISP
+  'GAINMAP0'           GainMap0                 no
+  'GAINMAP1'           GainMap1                 no
+  'GPS'                GPS                      Kandao GPS
+                                                Kandao GPS
+  'GPSX'               GPSX                     Kandao GPSX
+  'GPS_CAPTIME'        GPSCaptureTime           no
+  'HDR'                HDR                      no
+  'HW_VER'             HardwareVersion          no
+  'IMAGE_STYLE'        ImageStyle               no
+  'IMU'                IMU                      Kandao IMU
+  'INFO'               Info                     no
+  'INPUT_INSERT'       InputInsert              no
+  'INTERVAL'           Interval                 no
+  'ISO'                ISO                      no
+  'ISP'                ISP                      no
+  'ISP_VER'            ISPVersion               no
+  'LENS'               LensData                 no
+  'LENS_INDEX'         LensIndex                no
+  'LENS_OTP_ID0'       Lens0OTP_ID              no
+  'LENS_OTP_ID1'       Lens1OTP_ID              no
+  'LENS_SN0'           Lens0SerialNumber        no
+  'LENS_SN1'           Lens1SerialNumber        no
+  'NEED_LSC'           NeedLDSC                 no
+  'OUTPUT_INSERT'      OutputInsert             no
+  'PRODUCT'            Model                    no
+  'PROJECT'            Project                  no
+  'PROJECTION'         Projection               no
+  'PR_VER'             ProductVersion           no
+  'PTS'                PresentationTimeStamp    no
+  'PTS_UNIT'           TimeStampUnit            no
+  'SHUTTER'            Shutter                  no
+  'SN'                 SerialNumber             no
+  'STEREO'             Stereo                   no
+  'STITCHED'           Stitched                 no
+  'SW_VER'             SoftwareVersion          no
+  'TOTAL_FRAME'        TotalFrames              no
+  'TOTAL_TIME_MS'      TotalTime                no
+  'VIDEO_BITRATE'      VideoBitrate             no
+  'VIDEO_CAPTIME'      VideoCaptureTime         no
+  'VIDEO_CODECTYPE'    VideoCodec               no
+  'VIDEO_FORMAT'       VideoFormat              no
+  'VIDEO_RESOLUTION'   VideoResolution          no
+  'YAW'                Yaw                      no
+
+=head3 Kandao FrameISP Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    TimeStamp?                           no
+      4    FrameISP_4?                          no
+
+=head3 Kandao GPS Tags
+
+These tags are in the family 1 KVAR group instead of a GPS group to allow
+them to be distinguished from the duplicate GPS tags in the GPSX table.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    TimeStamp                            no
+      4    GPSLatitude                          no
+     12    GPSLongitude                         no
+     20    GPSAltitude                          no
+
+=head3 Kandao GPSX Tags
+
+These tags are in the family 1 GPS group.  They are duplicates of the tags
+in the Kandao GPS table with the addition of GPSDateTime.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    TimeStamp                            no
+      4    GPSDateTime                          no
+     12    GPSLatitude                          no
+     20    GPSLongitude                         no
+     28    GPSAltitude                          no
+
+=head3 Kandao IMU Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    TimeStamp                            no
+      8    Gyroscope                            no
+     14    Accelerometer                        no
+
 =head2 Matroska Tags
 
 The following tags are extracted from Matroska multimedia container files.
@@ -34391,112 +34518,120 @@ for the specification.
 Standardized Matroska tags, stored in a SimpleTag structure (see
 L<https://www.matroska.org/technical/tagging.html>).
 
-  Tag ID                  Tag Name              Writable
-  ------                  --------              --------
-  'ACCOMPANIMENT'         Accompaniment         no
-  'ACTOR'                 Actor                 no
-  'ADDRESS'               Address               no
-  'ARRANGER'              Arranger              no
-  'ARTIST'                Artist                no
-  'ART_DIRECTOR'          ArtDirector           no
-  'ASSISTANT_DIRECTOR'    AssistantDirector     no
-  'BARCODE'               Barcode               no
-  'BPM'                   BPM                   no
-  'BPS'                   BPS                   no
-  'CATALOG_NUMBER'        CatalogNumber         no
-  'CHARACTER'             Character             no
-  'CHOREGRAPHER'          Choregrapher          no
-  'COMMENT'               Comment               no
-  'COMPOSER'              Composer              no
-  'COMPOSER_NATIONALITY'  ComposerNationality   no
-  'COMPOSITION_LOCATION'  CompositionLocation   no
-  'CONDUCTOR'             Conductor             no
-  'CONTENT_TYPE'          ContentType           no
-  'COPRODUCER'            Coproducer            no
-  'COPYRIGHT'             Copyright             no
-  'COSTUME_DESIGNER'      CostumeDesigner       no
-  'COUNTRY'               Country               no
-  'DATE_DIGITIZED'        CreateDate            no
-  'DATE_ENCODED'          DateEncoded           no
-  'DATE_PURCHASED'        DatePurchased         no
-  'DATE_RECORDED'         DateTimeOriginal      no
-  'DATE_RELEASED'         DateReleased          no
-  'DATE_TAGGED'           DateTagged            no
-  'DATE_WRITTEN'          DateWritten           no
-  'DESCRIPTION'           Description           no
-  'DIRECTOR'              Director              no
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'ACCOMPANIMENT'      Accompaniment            no
+  'ACTOR'              Actor                    no
+  'ADDRESS'            Address                  no
+  'ARRANGER'           Arranger                 no
+  'ARTIST'             Artist                   no
+  'ART_DIRECTOR'       ArtDirector              no
+  'ASSISTANT_DIRECTOR' AssistantDirector        no
+  'BARCODE'            Barcode                  no
+  'BPM'                BPM                      no
+  'BPS'                BPS                      no
+  'CATALOG_NUMBER'     CatalogNumber            no
+  'CHARACTER'          Character                no
+  'CHOREGRAPHER'       Choregrapher             no
+  'COMMENT'            Comment                  no
+  'COMPOSER'           Composer                 no
+  'COMPOSER_NATIONALITY' ComposerNationality    no
+  'COMPOSITION_LOCATION' CompositionLocation    no
+  'CONDUCTOR'          Conductor                no
+  'CONTENT_TYPE'       ContentType              no
+  'COPRODUCER'         Coproducer               no
+  'COPYRIGHT'          Copyright                no
+  'COSTUME_DESIGNER'   CostumeDesigner          no
+  'COUNTRY'            Country                  no
+  'DATE_DIGITIZED'     CreateDate               no
+  'DATE_ENCODED'       DateEncoded              no
+  'DATE_PURCHASED'     DatePurchased            no
+  'DATE_RECORDED'      DateTimeOriginal         no
+  'DATE_RELEASED'      DateReleased             no
+  'DATE_TAGGED'        DateTagged               no
+  'DATE_WRITTEN'       DateWritten              no
+  'DESCRIPTION'        Description              no
+  'DIRECTOR'           Director                 no
   'DIRECTOR_OF_PHOTOGRAPHY'
-                          DirectorOfPhotography no
-  'DISTRIBUTED_BY'        DistributedBy         no
-  'EDITED_BY'             EditedBy              no
-  'EMAIL'                 Email                 no
-  'ENCODED_BY'            EncodedBy             no
-  'ENCODER'               Encoder               no
-  'ENCODER_SETTINGS'      EncoderSettings       no
-  'EXECUTIVE_PRODUCER'    ExecutiveProducer     no
-  'FAX'                   FAX                   no
-  'FPS'                   FPS                   no
-  'GENRE'                 Genre                 no
-  'IMDB'                  IMDB                  no
-  'INITIAL_KEY'           InitialKey            no
-  'INSTRUMENTS'           Instruments           no+
-  'ISBN'                  ISBN                  no
-  'ISRC'                  ISRC                  no
-  'KEYWORDS'              Keywords              no+
-  'LABEL'                 Label                 no
-  'LABEL_CODE'            LabelCode             no
-  'LAW_RATING'            LawRating             no
-  'LCCN'                  Lccn                  no
-  'LEAD_PERFORMER'        LeadPerformer         no
-  'LICENSE'               License               no
-  'LYRICIST'              Lyricist              no
-  'LYRICS'                Lyrics                no
-  'MASTERED_BY'           MasteredBy            no
-  'MCDI'                  MCDI                  no
-  'MEASURE'               Measure               no
-  'MIXED_BY'              MixedBy               no
-  'MOOD'                  Mood                  no
-  'ORIGINAL'              Original              no
-  'ORIGINAL_MEDIA_TYPE'   OriginalMediaType     no
-  'PART_NUMBER'           PartNumber            no
-  'PART_OFFSET'           PartOffset            no
-  'PERIOD'                Period                no
-  'PHONE'                 Phone                 no
-  'PLAY_COUNTER'          PlayCounter           no
-  'PRODUCER'              Producer              no
-  'PRODUCTION_COPYRIGHT'  ProductionCopyright   no
-  'PRODUCTION_DESIGNER'   ProductionDesigner    no
-  'PRODUCTION_STUDIO'     ProductionStudio      no
-  'PUBLISHER'             Publisher             no
-  'PURCHASE_CURRENCY'     PurchaseCurrency      no
-  'PURCHASE_INFO'         PurchaseInfo          no
-  'PURCHASE_ITEM'         PurchaseItem          no
-  'PURCHASE_OWNER'        PurchaseOwner         no
-  'PURCHASE_PRICE'        PurchasePrice         no
-  'RATING'                Rating                no
-  'RECORDING_LOCATION'    RecordingLocation     no
-  'REMIXED_BY'            RemixedBy             no
-  'REPLAYGAIN_GAIN'       ReplaygainGain        no
-  'REPLAYGAIN_PEAK'       ReplaygainPeak        no
-  'SAMPLE'                Sample                no
-  'SCREENPLAY_BY'         ScreenplayBy          no
-  'SORT_WITH'             SortWith              no
-  'SOUND_ENGINEER'        SoundEngineer         no
-  'SPHERICAL-VIDEO'       SphericalVideoXML     XMP
-  'SUBJECT'               Subject               no
-  'SUBTITLE'              Subtitle              no
-  'SUMMARY'               Summary               no
-  'SYNOPSIS'              Synopsis              no
-  'TERMS_OF_USE'          TermsOfUse            no
-  'THANKS_TO'             ThanksTo              no
-  'TITLE'                 Title                 no
-  'TMDB'                  TMDB                  no
-  'TOTAL_PARTS'           TotalParts            no
-  'TUNING'                Tuning                no
-  'TVDB'                  TVDB                  no
-  'URL'                   URL                   no
-  'WRITTEN_BY'            WrittenBy             no
-  'spherical-video'       SphericalVideoXML     XMP
+                       DirectorOfPhotography    no
+  'DISTRIBUTED_BY'     DistributedBy            no
+  'DURATION'           Duration                 no
+  'EDITED_BY'          EditedBy                 no
+  'EMAIL'              Email                    no
+  'ENCODED_BY'         EncodedBy                no
+  'ENCODER'            Encoder                  no
+  'ENCODER_SETTINGS'   EncoderSettings          no
+  'EXECUTIVE_PRODUCER' ExecutiveProducer        no
+  'FAX'                FAX                      no
+  'FPS'                FPS                      no
+  'GENRE'              Genre                    no
+  'IMDB'               IMDB                     no
+  'INITIAL_KEY'        InitialKey               no
+  'INSTRUMENTS'        Instruments              no+
+  'ISBN'               ISBN                     no
+  'ISRC'               ISRC                     no
+  'KEYWORDS'           Keywords                 no+
+  'LABEL'              Label                    no
+  'LABEL_CODE'         LabelCode                no
+  'LAW_RATING'         LawRating                no
+  'LCCN'               Lccn                     no
+  'LEAD_PERFORMER'     LeadPerformer            no
+  'LICENSE'            License                  no
+  'LYRICIST'           Lyricist                 no
+  'LYRICS'             Lyrics                   no
+  'MASTERED_BY'        MasteredBy               no
+  'MCDI'               MCDI                     no
+  'MEASURE'            Measure                  no
+  'MIXED_BY'           MixedBy                  no
+  'MOOD'               Mood                     no
+  'NUMBER_OF_BYTES'    NumberOfBytes            no
+  'NUMBER_OF_FRAMES'   NumberOfFrames           no
+  'ORIGINAL'           Original                 no
+  'ORIGINAL_MEDIA_TYPE' OriginalMediaType       no
+  'PART_NUMBER'        PartNumber               no
+  'PART_OFFSET'        PartOffset               no
+  'PERIOD'             Period                   no
+  'PHONE'              Phone                    no
+  'PLAY_COUNTER'       PlayCounter              no
+  'PRODUCER'           Producer                 no
+  'PRODUCTION_COPYRIGHT' ProductionCopyright    no
+  'PRODUCTION_DESIGNER' ProductionDesigner      no
+  'PRODUCTION_STUDIO'  ProductionStudio         no
+  'PUBLISHER'          Publisher                no
+  'PURCHASE_CURRENCY'  PurchaseCurrency         no
+  'PURCHASE_INFO'      PurchaseInfo             no
+  'PURCHASE_ITEM'      PurchaseItem             no
+  'PURCHASE_OWNER'     PurchaseOwner            no
+  'PURCHASE_PRICE'     PurchasePrice            no
+  'RATING'             Rating                   no
+  'RECORDING_LOCATION' RecordingLocation        no
+  'REMIXED_BY'         RemixedBy                no
+  'REPLAYGAIN_GAIN'    ReplaygainGain           no
+  'REPLAYGAIN_PEAK'    ReplaygainPeak           no
+  'SAMPLE'             Sample                   no
+  'SCREENPLAY_BY'      ScreenplayBy             no
+  'SORT_WITH'          SortWith                 no
+  'SOUND_ENGINEER'     SoundEngineer            no
+  'SPHERICAL-VIDEO'    SphericalVideoXML        XMP
+  'SUBJECT'            Subject                  no
+  'SUBTITLE'           Subtitle                 no
+  'SUMMARY'            Summary                  no
+  'SYNOPSIS'           Synopsis                 no
+  'TERMS_OF_USE'       TermsOfUse               no
+  'THANKS_TO'          ThanksTo                 no
+  'TITLE'              Title                    no
+  'TMDB'               TMDB                     no
+  'TOTAL_PARTS'        TotalParts               no
+  'TUNING'             Tuning                   no
+  'TVDB'               TVDB                     no
+  'URL'                URL                      no
+  'WRITTEN_BY'         WrittenBy                no
+  '_STATISTICS_TAGS'   StatisticsTags           no
+  '_STATISTICS_WRITING_APP'
+                       StatisticsWritingApp     no
+  '_STATISTICS_WRITING_DATE_UTC'
+                       StatisticsWritingDateUTC no
+  'spherical-video'    SphericalVideoXML        XMP
 
 =head2 MOI Tags
 
@@ -41748,7 +41883,7 @@ index the file after a metadata change.
 
 The extra tags provide extra features or extra information extracted or
 generated by ExifTool that is not directly associated with another tag
-group.  The B<Group> column lists the family 1 group name when reading. 
+group.  The B<Group> column lists the family 1 group name when reading.
 Tags with a "-" in this column are write-only.
 
 Tags in the family 1 "System" group are referred to as "pseudo" tags because

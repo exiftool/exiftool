@@ -773,7 +773,15 @@ Matroska specification.</p>
 <td title='0x28ca = 10442'>0x28ca</td>
 <td>TargetTypeValue</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td><table class=cols><tr>
+  <td>10 = Shot
+  <br>20 = Scene/Subtrack
+  <br>30 = Chapter/Track
+  <br>40 = Session</td><td>&nbsp;&nbsp;</td>
+  <td>50 = Movie/Album
+  <br>60 = Season/Edition
+  <br>70 = Collection</td></tr></table>
+</td></tr>
 <tr class=b>
 <td title='0x2911 = 10513'>0x2911</td>
 <td>ChapterProcessCommand</td>
@@ -1304,343 +1312,373 @@ for the specification.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'DURATION'</td>
+<td>Duration</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'EDITED_BY'</td>
 <td>EditedBy</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'EMAIL'</td>
 <td>Email</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'ENCODED_BY'</td>
 <td>EncodedBy</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'ENCODER'</td>
 <td>Encoder</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'ENCODER_SETTINGS'</td>
 <td>EncoderSettings</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'EXECUTIVE_PRODUCER'</td>
 <td>ExecutiveProducer</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'FAX'</td>
 <td>FAX</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'FPS'</td>
 <td>FPS</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'GENRE'</td>
 <td>Genre</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'IMDB'</td>
 <td>IMDB</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'INITIAL_KEY'</td>
 <td>InitialKey</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'INSTRUMENTS'</td>
 <td>Instruments</td>
 <td class=c title=' + = List'>no+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'ISBN'</td>
 <td>ISBN</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'ISRC'</td>
 <td>ISRC</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'KEYWORDS'</td>
 <td>Keywords</td>
 <td class=c title=' + = List'>no+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'LABEL'</td>
 <td>Label</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'LABEL_CODE'</td>
 <td>LabelCode</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'LAW_RATING'</td>
 <td>LawRating</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'LCCN'</td>
 <td>Lccn</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'LEAD_PERFORMER'</td>
 <td>LeadPerformer</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'LICENSE'</td>
 <td>License</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'LYRICIST'</td>
 <td>Lyricist</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'LYRICS'</td>
 <td>Lyrics</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'MASTERED_BY'</td>
 <td>MasteredBy</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'MCDI'</td>
 <td>MCDI</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'MEASURE'</td>
 <td>Measure</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'MIXED_BY'</td>
 <td>MixedBy</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'MOOD'</td>
 <td>Mood</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td>'NUMBER_OF_BYTES'</td>
+<td>NumberOfBytes</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr>
+<td>'NUMBER_OF_FRAMES'</td>
+<td>NumberOfFrames</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'ORIGINAL'</td>
 <td>Original</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'ORIGINAL_MEDIA_TYPE'</td>
 <td>OriginalMediaType</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'PART_NUMBER'</td>
 <td>PartNumber</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'PART_OFFSET'</td>
 <td>PartOffset</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'PERIOD'</td>
 <td>Period</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'PHONE'</td>
 <td>Phone</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'PLAY_COUNTER'</td>
 <td>PlayCounter</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'PRODUCER'</td>
 <td>Producer</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'PRODUCTION_COPYRIGHT'</td>
 <td>ProductionCopyright</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'PRODUCTION_DESIGNER'</td>
 <td>ProductionDesigner</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'PRODUCTION_STUDIO'</td>
 <td>ProductionStudio</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'PUBLISHER'</td>
 <td>Publisher</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'PURCHASE_CURRENCY'</td>
 <td>PurchaseCurrency</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'PURCHASE_INFO'</td>
 <td>PurchaseInfo</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'PURCHASE_ITEM'</td>
 <td>PurchaseItem</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'PURCHASE_OWNER'</td>
 <td>PurchaseOwner</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'PURCHASE_PRICE'</td>
 <td>PurchasePrice</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'RATING'</td>
 <td>Rating</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'RECORDING_LOCATION'</td>
 <td>RecordingLocation</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'REMIXED_BY'</td>
 <td>RemixedBy</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'REPLAYGAIN_GAIN'</td>
 <td>ReplaygainGain</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'REPLAYGAIN_PEAK'</td>
 <td>ReplaygainPeak</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'SAMPLE'</td>
 <td>Sample</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'SCREENPLAY_BY'</td>
 <td>ScreenplayBy</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'SORT_WITH'</td>
 <td>SortWith</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'SOUND_ENGINEER'</td>
 <td>SoundEngineer</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'SPHERICAL-VIDEO'</td>
 <td>SphericalVideoXML</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'SUBJECT'</td>
 <td>Subject</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'SUBTITLE'</td>
 <td>Subtitle</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'SUMMARY'</td>
 <td>Summary</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'SYNOPSIS'</td>
 <td>Synopsis</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'TERMS_OF_USE'</td>
 <td>TermsOfUse</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'THANKS_TO'</td>
 <td>ThanksTo</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'TITLE'</td>
 <td>Title</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'TMDB'</td>
 <td>TMDB</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'TOTAL_PARTS'</td>
 <td>TotalParts</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'TUNING'</td>
 <td>Tuning</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'TVDB'</td>
 <td>TVDB</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'URL'</td>
 <td>URL</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'WRITTEN_BY'</td>
 <td>WrittenBy</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'_STATISTICS_TAGS'</td>
+<td>StatisticsTags</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'_STATISTICS_WRITING_APP'</td>
+<td>StatisticsWritingApp</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'_STATISTICS_WRITING_DATE_UTC'</td>
+<td>StatisticsWritingDateUTC</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -1652,7 +1690,7 @@ for the specification.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 24, 2025</i>
+<br><i>Last revised Dec 12, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

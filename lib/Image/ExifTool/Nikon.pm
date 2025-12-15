@@ -5843,7 +5843,7 @@ my %nikonFocalConversions = (
             28 => 'Nikkor Z 100-400mm f/4.5-5.6 VR S', #28
             29 => 'Nikkor Z 28mm f/2.8', #IB
             30 => 'Nikkor Z 400mm f/2.8 TC VR S', #28
-            31 => 'Nikkor Z 24-120mm f/4 S', #github#250
+            31 => 'Nikkor Z 24-120mm f/4 S', #github250
             32 => 'Nikkor Z 800mm f/6.3 VR S', #28
             35 => 'Nikkor Z 28-75mm f/2.8', #IB
             36 => 'Nikkor Z 400mm f/4.5 VR S', #IB
@@ -9010,7 +9010,7 @@ my %nikonFocalConversions = (
         RawConv => '$$self{FocusShiftShooting} = $val',
         PrintConv => q{
             return 'Off' if $val == 0 ;
-            my $i = sprintf("Frame %.0f of %.0f",$val, $$self{FocusShiftNumberShots}); # something like Frame 1 of 100"   
+            my $i = sprintf("Frame %.0f of %.0f",$val, $$self{FocusShiftNumberShots}); # something like Frame 1 of 100"
             if ($$self{PixelShiftActive} and $$self{PixelShiftActive} eq 1) {$i = sprintf("Frame %.0f",$val);}   #for the Z8 fw3 with PixelShift Enabled, the frame count is correct, but the frame total needs to be multiplied by the number of PixelShift frames (which I cannot find)
             return "On: $i"
         },
@@ -9018,7 +9018,7 @@ my %nikonFocalConversions = (
     },
 #
 # Note: Offsets after this are shifted by +2 for Z8 firmware 3.0 (see Hook above)
-#    
+#
     0x0028 => {
         Name => 'IntervalShooting',    #will be 'On' when Interval Shooting is selected via the Photo Shooting Menu and also when a non-zero interval is specified when using Focus Shift and/or Pixel Shift Shooting
         Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
@@ -9929,14 +9929,14 @@ my %nikonFocalConversions = (
     618 => { Name => 'ToneMap',                    PrintConv => { 0 => 'SDR', 1 => 'HLG' }, Unknown => 1 },
     622 => { Name => 'PortraitImpressionBalance',  PrintConv => \%portraitImpressionBalanceZ8 },
     636 => {
-        Name => 'HighFrequencyFlickerReduction', 
+        Name => 'HighFrequencyFlickerReduction',
         PrintConv => \%offOn,
         Unknown => 1,
         Hook => '$varSize += 4 if $$self{FirmwareVersion} and $$self{FirmwareVersion} ge "03.00"',
     },
 #
 # firmware 3.00 adds 4 bytes somewhere in the range 638-730 (hence the Hook above)
-# 
+#
     730 => {
         Name => 'MovieImageArea',
         Unknown => 1,

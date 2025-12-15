@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.43';
+my $version = '13.44';
 
 $^W = 1;    # enable global warnings
 
@@ -3287,7 +3287,7 @@ sub SetImageInfo($$$)
                             }
                         }
                         next;
-                    }                    
+                    }
                     my @exclTags = @csvExclude;
                     foreach (@exclTags) {
                         tr/-0-9a-zA-Z_:#?*//dc;     # remove illegal characters
@@ -5088,7 +5088,7 @@ input.  Metadata is read from source files and printed in readable form to
 the console (or written to output text files with B<-w>).
 
 To write or delete metadata, tag values are assigned using
--I<TAG>=[I<VALUE>], and/or the B<-geotag>, B<-csv=> or B<-json=> options. 
+-I<TAG>=[I<VALUE>], and/or the B<-geotag>, B<-csv=> or B<-json=> options.
 To copy or move metadata, the B<-tagsFromFile> feature is used.  By default
 the original files are preserved with C<_original> appended to their names
 -- be sure to verify that the new files are OK before erasing the originals.
@@ -5107,52 +5107,52 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  360   r/w   | DR4   r/w/c | JP2   r/w   | ODT   r     | RWL   r/w
-  3FR   r     | DSF   r     | JPEG  r/w   | OFR   r     | RWZ   r
-  3G2   r/w   | DSS   r     | JSON  r     | OGG   r     | RM    r
-  3GP   r/w   | DV    r     | JXL   r/w   | OGV   r     | SEQ   r
-  7Z    r     | DVB   r/w   | K25   r     | ONP   r     | SKETCH r
-  A     r     | DVR-MS r    | KDC   r     | OPUS  r     | SO    r
-  AA    r     | DYLIB r     | KEY   r     | ORF   r/w   | SR2   r/w
-  AAC   r     | EIP   r     | LA    r     | ORI   r/w   | SRF   r
-  AAE   r     | EPS   r/w   | LFP   r     | OTF   r     | SRW   r/w
-  AAX   r/w   | EPUB  r     | LIF   r     | PAC   r     | SVG   r
-  ACR   r     | ERF   r/w   | LNK   r     | PAGES r     | SWF   r
-  AFM   r     | EXE   r     | LRV   r/w   | PBM   r/w   | THM   r/w
-  AI    r/w   | EXIF  r/w/c | M2TS  r     | PCAP  r     | TIFF  r/w
-  AIFF  r     | EXR   r     | M4A/V r/w   | PCAPNG r    | TNEF  r
-  APE   r     | EXV   r/w/c | MACOS r     | PCD   r     | TORRENT r
-  ARQ   r/w   | F4A/V r/w   | MAX   r     | PCX   r     | TTC   r
-  ARW   r/w   | FFF   r/w   | MEF   r/w   | PDB   r     | TTF   r
-  ASF   r     | FITS  r     | MIE   r/w/c | PDF   r/w   | TXT   r
-  AVI   r     | FLA   r     | MIFF  r     | PEF   r/w   | URL   r
-  AVIF  r/w   | FLAC  r     | MKA   r     | PFA   r     | VCF   r
-  AZW   r     | FLIF  r/w   | MKS   r     | PFB   r     | VNT   r
-  BMP   r     | FLV   r     | MKV   r     | PFM   r     | VRD   r/w/c
-  BPG   r     | FPF   r     | MNG   r/w   | PGF   r     | VSD   r
-  BTF   r     | FPX   r     | MOBI  r     | PGM   r/w   | VSDX  r
-  C2PA  r     | GIF   r/w   | MODD  r     | PLIST r     | WAV   r
-  CHM   r     | GLV   r/w   | MOI   r     | PICT  r     | WDP   r/w
-  COS   r     | GPR   r/w   | MOS   r/w   | PMP   r     | WEBP  r/w
-  CR2   r/w   | GZ    r     | MOV   r/w   | PNG   r/w   | WEBM  r
-  CR3   r/w   | HDP   r/w   | MP3   r     | PPM   r/w   | WMA   r
-  CRM   r/w   | HDR   r     | MP4   r/w   | PPT   r     | WMV   r
-  CRW   r/w   | HEIC  r/w   | MPC   r     | PPTX  r     | WOFF  r
-  CS1   r/w   | HEIF  r/w   | MPG   r     | PS    r/w   | WOFF2 r
-  CSV   r     | HTML  r     | MPO   r/w   | PSB   r/w   | WPG   r
-  CUR   r     | ICC   r/w/c | MQV   r/w   | PSD   r/w   | WTV   r
-  CZI   r     | ICO   r     | MRC   r     | PSP   r     | WV    r
-  DCM   r     | ICS   r     | MRW   r/w   | QTIF  r/w   | X3F   r/w
-  DCP   r/w   | IDML  r     | MXF   r     | R3D   r     | XCF   r
-  DCR   r     | IIQ   r/w   | NEF   r/w   | RA    r     | XISF  r
-  DFONT r     | IND   r/w   | NKA   r     | RAF   r/w   | XLS   r
-  DIVX  r     | INSP  r/w   | NKSC  r/w   | RAM   r     | XLSX  r
-  DJVU  r     | INSV  r     | NRW   r/w   | RAR   r     | XMP   r/w/c
-  DLL   r     | INX   r     | NUMBERS r   | RAW   r/w   | ZIP   r
-  DNG   r/w   | ISO   r     | NXD   r     | RIFF  r     |
-  DOC   r     | ITC   r     | O     r     | RSRC  r     |
-  DOCX  r     | J2C   r     | ODP   r     | RTF   r     |
-  DPX   r     | JNG   r/w   | ODS   r     | RW2   r/w   |
+  360   r/w   | DR4   r/w/c | JP2   r/w   | ODS   r     | RW2   r/w
+  3FR   r     | DSF   r     | JPEG  r/w   | ODT   r     | RWL   r/w
+  3G2   r/w   | DSS   r     | JSON  r     | OFR   r     | RWZ   r
+  3GP   r/w   | DV    r     | JXL   r/w   | OGG   r     | RM    r
+  7Z    r     | DVB   r/w   | K25   r     | OGV   r     | SEQ   r
+  A     r     | DVR-MS r    | KDC   r     | ONP   r     | SKETCH r
+  AA    r     | DYLIB r     | KEY   r     | OPUS  r     | SO    r
+  AAC   r     | EIP   r     | KVAR  r     | ORF   r/w   | SR2   r/w
+  AAE   r     | EPS   r/w   | LA    r     | ORI   r/w   | SRF   r
+  AAX   r/w   | EPUB  r     | LFP   r     | OTF   r     | SRW   r/w
+  ACR   r     | ERF   r/w   | LIF   r     | PAC   r     | SVG   r
+  AFM   r     | EXE   r     | LNK   r     | PAGES r     | SWF   r
+  AI    r/w   | EXIF  r/w/c | LRV   r/w   | PBM   r/w   | THM   r/w
+  AIFF  r     | EXR   r     | M2TS  r     | PCAP  r     | TIFF  r/w
+  APE   r     | EXV   r/w/c | M4A/V r/w   | PCAPNG r    | TNEF  r
+  ARQ   r/w   | F4A/V r/w   | MACOS r     | PCD   r     | TORRENT r
+  ARW   r/w   | FFF   r/w   | MAX   r     | PCX   r     | TTC   r
+  ASF   r     | FITS  r     | MEF   r/w   | PDB   r     | TTF   r
+  AVI   r     | FLA   r     | MIE   r/w/c | PDF   r/w   | TXT   r
+  AVIF  r/w   | FLAC  r     | MIFF  r     | PEF   r/w   | URL   r
+  AZW   r     | FLIF  r/w   | MKA   r     | PFA   r     | VCF   r
+  BMP   r     | FLV   r     | MKS   r     | PFB   r     | VNT   r
+  BPG   r     | FPF   r     | MKV   r     | PFM   r     | VRD   r/w/c
+  BTF   r     | FPX   r     | MNG   r/w   | PGF   r     | VSD   r
+  C2PA  r     | GIF   r/w   | MOBI  r     | PGM   r/w   | VSDX  r
+  CHM   r     | GLV   r/w   | MODD  r     | PLIST r     | WAV   r
+  COS   r     | GPR   r/w   | MOI   r     | PICT  r     | WDP   r/w
+  CR2   r/w   | GZ    r     | MOS   r/w   | PMP   r     | WEBP  r/w
+  CR3   r/w   | HDP   r/w   | MOV   r/w   | PNG   r/w   | WEBM  r
+  CRM   r/w   | HDR   r     | MP3   r     | PPM   r/w   | WMA   r
+  CRW   r/w   | HEIC  r/w   | MP4   r/w   | PPT   r     | WMV   r
+  CS1   r/w   | HEIF  r/w   | MPC   r     | PPTX  r     | WOFF  r
+  CSV   r     | HTML  r     | MPG   r     | PS    r/w   | WOFF2 r
+  CUR   r     | ICC   r/w/c | MPO   r/w   | PSB   r/w   | WPG   r
+  CZI   r     | ICO   r     | MQV   r/w   | PSD   r/w   | WTV   r
+  DCM   r     | ICS   r     | MRC   r     | PSP   r     | WV    r
+  DCP   r/w   | IDML  r     | MRW   r/w   | QTIF  r/w   | X3F   r/w
+  DCR   r     | IIQ   r/w   | MXF   r     | R3D   r     | XCF   r
+  DFONT r     | IND   r/w   | NEF   r/w   | RA    r     | XISF  r
+  DIVX  r     | INSP  r/w   | NKA   r     | RAF   r/w   | XLS   r
+  DJVU  r     | INSV  r     | NKSC  r/w   | RAM   r     | XLSX  r
+  DLL   r     | INX   r     | NRW   r/w   | RAR   r     | XMP   r/w/c
+  DNG   r/w   | ISO   r     | NUMBERS r   | RAW   r/w   | ZIP   r
+  DOC   r     | ITC   r     | NXD   r     | RIFF  r     |
+  DOCX  r     | J2C   r     | O     r     | RSRC  r     |
+  DPX   r     | JNG   r/w   | ODP   r     | RTF   r     |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -5338,7 +5338,7 @@ information.  Use the B<-s> option to see the tag names instead.
 =item B<-->I<TAG>
 
 Exclude specified tag from extracted information.  Same as the B<-x> option.
-Group names and wildcards are permitted as described above for B<->I<TAG>. 
+Group names and wildcards are permitted as described above for B<->I<TAG>.
 Once excluded from the output, a tag may not be re-included by a subsequent
 option.  May also be used following a B<-tagsFromFile> option to exclude
 tags from being copied (when redirecting to another tag, it is the source
@@ -5367,7 +5367,7 @@ add or remove existing entries from a list, or to shift date/time values
 values (or decrement if I<VALUE> is negative), and C<-=> may be used to
 conditionally delete or replace a tag (see L</WRITING EXAMPLES> for
 examples).  C<^=> is used to write an empty string instead of deleting the
-tag when no I<VALUE> is given, but otherwise it is equivalent to C<=>. 
+tag when no I<VALUE> is given, but otherwise it is equivalent to C<=>.
 (Note that the caret must be quoted on the Windows command line.)
 
 I<TAG> may contain one or more leading family 0, 1, 2 or 7 group names,
@@ -5432,7 +5432,7 @@ deleting all groups.  For example, C<-2all:all=> deletes tags individually,
 while C<-all:all=> deletes entire blocks.
 
 5) The "APP" group names ("APP0" through "APP15") are used to delete JPEG
-application segments which are not associated with another deletable group. 
+application segments which are not associated with another deletable group.
 For example, specifying C<-APP14:All=> will NOT delete the APP14 "Adobe"
 segment because this is accomplished with C<-Adobe:All>.  But note that
 these unnamed APP segments may not be excluded with C<--APPxx:all> when
@@ -5444,7 +5444,7 @@ command line.  To shift a date/time value and copy it to another tag in the
 same operation, use the B<-globalTimeShift> option.
 
 7) The C<+=> operator may not be used to shift a List-type date/time tag
-(eg. XMP-dc:Date) because C<+=> is used to add elements to the list. 
+(eg. XMP-dc:Date) because C<+=> is used to add elements to the list.
 Instead, the B<-globalTimeShift> option should be used.
 
 Special feature:  Integer values may be specified in hexadecimal with a
@@ -5459,8 +5459,8 @@ option for more details).  Note that quotes are required around this
 argument to prevent shell redirection since it contains a C<E<lt>> symbol.
 If I<DATFILE>/I<FMT> is not provided, the effect is the same as C<-TAG=>,
 and the tag is simply deleted.  C<+E<lt>=> or C<-E<lt>=> may also be used to
-add or delete specific list entries, to conditionally delete tags, or to
-shift date/time values.
+add or delete specific list entries, to conditionally delete/replace tags,
+or to shift date/time values.
 
 =item B<-tagsFromFile> I<SRCFILE> or I<FMT>
 
@@ -5515,15 +5515,15 @@ destination group is specified, the information is written to the preferred
 group.  Whitespace around the C<E<gt>> or C<E<lt>> is ignored. As a
 convenience, C<-tagsFromFile @> is assumed for any redirected tags which are
 specified without a prior B<-tagsFromFile> option.  Copied tags may also be
-added or deleted from a list, or conditionally deleted with arguments of the
-form E<quot>'-I<SRCTAG>+E<lt>I<DSTTAG>'E<quot> or
+added or deleted from a list, or conditionally deleted/replaced with
+arguments of the form E<quot>'-I<SRCTAG>+E<lt>I<DSTTAG>'E<quot> or
 E<quot>'-I<SRCTAG>-E<lt>I<DSTTAG>'E<quot> (but see Note 5 below).
 
 An extension of the redirection feature allows strings involving tag names
 to be used on the right hand side of the C<E<lt>> symbol with the syntax
 E<quot>'-I<DSTTAG>E<lt>I<STR>'E<quot>, where tag names in I<STR> are
 prefixed with a C<$> symbol.  See the B<-p> option and the
-L</Advanced formatting feature> section for more details about this syntax. 
+L</Advanced formatting feature> section for more details about this syntax.
 Strings starting with a C<=> sign must insert a single space after the
 C<E<lt>> to avoid confusion with the C<E<lt>=> operator which sets the tag
 value from the contents of a file.  A single space at the start of the
@@ -5599,7 +5599,7 @@ value in a string (with C<$>), but isn't when copying the tag directly.
 
 Finally, the behaviour is different when a destination tag or group of
 C<All> is used.  When copying directly, a destination group and/or tag name
-of C<All> writes to the same family 1 group and/or tag name as the source. 
+of C<All> writes to the same family 1 group and/or tag name as the source.
 But when interpolated in a string, the identity of the source tags are lost
 and the value is written to all possible groups/tags.  For example, the
 string form must be used in the following command since the intent is to set
@@ -5684,7 +5684,7 @@ when copying tags using the B<-tagsFromFile> option.
 
 2) If the hemisphere is known, a reference direction (N, S, E or W) is
 appended to each printed coordinate, but adding a C<+> or C<-> to the format
-specifier (eg. C<%+.6f> or C<%-.6f>) prints a signed coordinate instead. 
+specifier (eg. C<%+.6f> or C<%-.6f>) prints a signed coordinate instead.
 (C<+> adds a leading "+" for positive coordinates, but C<-> does not.)
 
 3) This print formatting may be disabled with the B<-n> option to extract
@@ -5877,7 +5877,7 @@ Force printing of tags even if they don't exist.  This option applies to
 tags specified on the command line, or with the B<-p>, B<-if> (unless the
 API UndefTags option is set), B<-fileNUM> or B<-tagsFromFile> options.  When
 B<-f> is used, the value of any missing tag is set to a dash (C<->) by
-default, but this may be configured via the API MissingTagValue option. 
+default, but this may be configured via the API MissingTagValue option.
 B<-f> is also used to add a 'flags' attribute to the B<-listx> output, or to
 allow tags to be deleted when writing with the B<-csv>=I<CSVFILE> feature.
 
@@ -5937,7 +5937,7 @@ into individual tags in the JSON output, but the original structure may be
 preserved with the B<-struct> option (this also causes all list-type XMP
 tags to be output as JSON arrays, otherwise single-item lists would be
 output as simple strings).  The B<-a> option is implied when B<-json> is
-used, but entries with identical JSON names are suppressed in the output. 
+used, but entries with identical JSON names are suppressed in the output.
 (B<-G4> may be used to ensure that all tags have unique JSON names.)
 
 Adding the B<-D> or B<-H> option changes tag values to JSON objects with
@@ -6128,7 +6128,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 13.43 --
+    -- Generated by ExifTool 13.44 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -6386,7 +6386,7 @@ example:
 A special feature allows the copy number to be incremented for each
 processed file by using %C (upper case) instead of %c.  This allows a
 sequential number to be added to output file names, even if the names are
-different.  For %C, a copy number of zero is not omitted as it is with %c. 
+different.  For %C, a copy number of zero is not omitted as it is with %c.
 A leading '-' causes the number to be reset at the start of each new
 directory (in the original directory structure if the files are being
 moved), and '+' has no effect.  The number before the decimal place gives
@@ -6448,7 +6448,7 @@ example, the following pairs of commands give the same result:
     exiftool test.jpg -W+ out.txt   # equivalent -W option
 
 4) Adding the B<-v> option to B<-W> sends a list of the tags and output file
-names to the console instead of giving a verbose dump of the entire file. 
+names to the console instead of giving a verbose dump of the entire file.
 (Unless appending all output to one file for each source file by using
 B<-W+> with an output file I<FMT> that does not contain %t, %g, %s or %o.)
 
@@ -6481,7 +6481,7 @@ are formatted as an RDF Bag, but they are combined into a single string when
 B<-s> or B<-sep> is used.  Using B<-L> changes the XML encoding from "UTF-8"
 to "windows-1252".  Other B<-charset> settings change the encoding only if
 there is a corresponding standard XML character set.  The B<-b> option
-causes binary data values to be written, encoded in base64 if necessary. 
+causes binary data values to be written, encoded in base64 if necessary.
 The B<-t> option adds tag table information to the output (see B<-t> for
 details).
 
@@ -6792,7 +6792,7 @@ superseded by any value written to the FileModifyDate tag.
 
 =item B<-password> I<PASSWD>
 
-Specify password to allow processing of password-protected PDF documents. 
+Specify password to allow processing of password-protected PDF documents.
 If a password is required but not given, a warning is issued and the
 document is not processed.  This option is ignored if a password is not
 required.
@@ -6897,7 +6897,7 @@ argument per line (NOT one option per line -- some options require
 additional arguments, and all arguments must be placed on separate lines).
 Blank lines and lines beginning with C<#> are ignored (unless they start
 with C<#[CSTR]>, in which case the rest of the line is treated as a C
-string, allowing standard C escape sequences such as "\n" for a newline). 
+string, allowing standard C escape sequences such as "\n" for a newline).
 White space at the start of a line is removed.  Normal shell processing of
 arguments is not performed, which among other things means that arguments
 should not be quoted and spaces are treated as any other character.
@@ -6942,7 +6942,7 @@ list. The B<-lang> option may be combined with B<-listx> to output
 descriptions in a single language, and the B<-sort> and/or B<-lang> options
 may be combined with B<-listgeo> (installation of the alternate database is
 required for the additional languages).  Also, the API GeolocMinPop,
-GeolocFeature and GeolocAltNames options apply to the B<-listgeo> output. 
+GeolocFeature and GeolocAltNames options apply to the B<-listgeo> output.
 Here are some examples:
 
     -list               # list all tag names
@@ -6961,7 +6961,7 @@ Here are some examples:
 When combined with B<-listx>, the B<-s> option shortens the output by
 omitting the descriptions and values (as in the last example above), and
 B<-f> adds 'flags' and 'struct' attributes if applicable.  The flags are
-formatted as a comma-separated list of the following possible values: 
+formatted as a comma-separated list of the following possible values:
 Avoid, Binary, List, Mandatory, Permanent, Protected, Unknown and Unsafe
 (see the L<Tag Name documentation|Image::ExifTool::TagNames>).  For XMP List
 tags, the list type (Alt, Bag or Seq) is also given, and flattened structure
@@ -7071,7 +7071,7 @@ See L<https://exiftool.org/geolocation.html> for details.
 
 =item B<-globalTimeShift> I<SHIFT>
 
-Shift all formatted date/time values by the specified amount when reading. 
+Shift all formatted date/time values by the specified amount when reading.
 Does not apply to unformatted (B<-n>) output.  I<SHIFT> takes the same form
 as the date/time shift when writing (see
 L<Image::ExifTool::Shift.pl|Image::ExifTool::Shift.pl> for details), with a
@@ -7297,7 +7297,7 @@ received up to this point, send a "{ready}" message to stdout when done
 (unless the B<-q> or B<-T> option is used), and continue trying to read
 arguments for the next command from I<ARGFILE>.  To aid in command/response
 synchronization, any number appended to the B<-execute> option is echoed in
-the "{ready}" message.  For example, C<-execute613> results in "{ready613}". 
+the "{ready}" message.  For example, C<-execute613> results in "{ready613}".
 When this number is added, B<-q> no longer suppresses the "{ready}" message.
 (Also, see the B<-echo3> and B<-echo4> options for additional ways to pass
 signals back to your application.)
@@ -7316,7 +7316,7 @@ writing the following lines to the currently open I<ARGFILE>:
     -@
     NEWARGFILE
 
-This causes I<ARGFILE> to be closed, and I<NEWARGFILE> to be kept open. 
+This causes I<ARGFILE> to be closed, and I<NEWARGFILE> to be kept open.
 (Without the B<-stay_open> here, exiftool would have returned to reading
 arguments from I<ARGFILE> after reaching the end of I<NEWARGFILE>.)
 
@@ -7333,7 +7333,7 @@ Set user parameter.  I<PARAM> is an arbitrary user parameter name.  This is
 an interface to the API UserParam option (see the
 L<Image::ExifTool Options|Image::ExifTool/Options> documentation), and
 provides a method to access user-defined parameters in arguments to the
-B<-if>, B<-p> and B<-fileNUM> options as if they were any other tag. 
+B<-if>, B<-p> and B<-fileNUM> options as if they were any other tag.
 Appending a hash tag (C<#>) to I<PARAM> (eg. C<-userParam MyTag#=yes>) also
 causes the parameter to be extracted as a normal tag in the UserParam group.
  Similar to the B<-api> option, the parameter value is set to 1 if I<=VAL>
@@ -7351,7 +7351,7 @@ interpolated within a B<-if>, B<-p> or B<-fileNUM> argument, or a
 B<-tagsFromFile> redirection string.  Tag names within these strings are
 prefixed by a C<$> symbol, and an arbitrary Perl expression may be applied
 to the tag value by placing braces around the tag name and inserting the
-expression after the name, separated by a semicolon (ie. C<${TAG;EXPR}>). 
+expression after the name, separated by a semicolon (ie. C<${TAG;EXPR}>).
 The expression acts on the value of the tag through the default input
 variable (C<$_>), and has access to the full ExifTool API through the
 current ExifTool object (C<$self>) and the tag key (C<$tag>).  It may
@@ -7408,7 +7408,7 @@ shift syntax.  For example, to shift a date/time value back by one year:
 B<C<NoDups>>
 
 Removes duplicate items from a list with a separator specified by the
-B<-sep> option.  This function is most useful when copying list-type tags. 
+B<-sep> option.  This function is most useful when copying list-type tags.
 For example, the following command may be used to remove duplicate Keywords:
 
     exiftool -sep '##' '-keywords<${keywords;NoDups}' a.jpg
@@ -7455,7 +7455,7 @@ ExifTool 9.79 and later allow the file name encoding to be specified with
 C<-charset filename=CHARSET>, where C<CHARSET> is the name of a valid
 ExifTool character set, preferably C<UTF8> (see the B<-charset> option for a
 complete list).  Setting this triggers the use of Windows wide-character i/o
-routines, thus providing support for most Unicode file names (see note 4). 
+routines, thus providing support for most Unicode file names (see note 4).
 But note that it is not trivial to pass properly encoded file names on the
 Windows command line (see L<https://exiftool.org/faq.html#Q18> for details),
 so placing them in a UTF-8 encoded B<-@> argfile and using
@@ -7795,14 +7795,14 @@ C<src.jpg>.
 Rebuild all EXIF meta information from scratch in an image.  This technique
 can be used in JPEG images to repair corrupted EXIF information which
 otherwise could not be written due to errors.  The C<Unsafe> tag is a
-shortcut for unsafe EXIF tags in JPEG images which are not normally copied. 
+shortcut for unsafe EXIF tags in JPEG images which are not normally copied.
 See the L<tag name documentation|Image::ExifTool::TagNames> for more details
 about unsafe tags.
 
 =item C<exiftool -Tagsfromfile a.jpg out.xmp>
 
 Copy meta information from C<a.jpg> to an XMP data file.  If the XMP data
-file C<out.xmp> already exists, it will be updated with the new information. 
+file C<out.xmp> already exists, it will be updated with the new information.
 Otherwise the XMP data file will be created.  Only metadata-only files may
 be created like this (files containing images may be edited but not
 created).  See L</WRITING EXAMPLES> above for another technique to generate
@@ -7842,7 +7842,7 @@ C<dst.jpg>.
 
 =item C<exiftool '-Description<${FileName;s/\.[^.]*$//}' dir>
 
-Set the image Description from the file name after removing the extension. 
+Set the image Description from the file name after removing the extension.
 This example uses the L</Advanced formatting feature> to perform a
 substitution operation to remove the last dot and subsequent characters from
 the file name.
@@ -8073,7 +8073,7 @@ Add an IPTC keyword in a pipeline, saving output to a new file.
 
 =item C<curl -s http://a.domain.com/bigfile.jpg | exiftool -fast ->
 
-Extract information from an image over the internet using the cURL utility. 
+Extract information from an image over the internet using the cURL utility.
 The B<-fast> option prevents exiftool from scanning for trailer information,
 so only the meta information header is transferred.
 

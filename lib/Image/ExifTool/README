@@ -348,7 +348,7 @@ numerical, and generated automatically otherwise.
                   but applied automatically to individual tags.  Value specifies
                   pattern for split, or 1 for default pattern ',?\\s+'.
 
-                  'Avoid' - avoid creating this tag when writing if possible. 
+                  'Avoid' - avoid creating this tag when writing if possible.
                   This is only effective if another tag exists with the same
                   name.  Setting this flag also sets the default Priority to 0
                   for this tag.
@@ -632,7 +632,7 @@ numerical, and generated automatically otherwise.
                   value, and $tag is the tag key.  The subroutine takes 2
                   arguments: the Raw value and a reference to the current
                   ExifTool object.  The advanced formatting expression (if any)
-                  may be accessed via the ExifTool "FMT_EXPR" member variable. 
+                  may be accessed via the ExifTool "FMT_EXPR" member variable.
                   The expression or subroutine is evaluated if and when the tag
                   value is requested (ie. only after all extraction is
                   complete), so if necessary at this time the values of all
@@ -650,7 +650,7 @@ numerical, and generated automatically otherwise.
                   enabled.  If this isn't possible (as with Composite tags where
                   the converted values of the source tags are needed), set the
                   Priority to 0 to avoid taking priority over a valid tag. If
-                  ValueConv is not specified, the Raw value is not converted. 
+                  ValueConv is not specified, the Raw value is not converted.
                   Composite tags which Require or Desire other tags may access
                   the ValueConv, PrintConv and Raw values of these tags through
                   the elements of the @val, @prt and @raw lists respectively
@@ -822,7 +822,7 @@ numerical, and generated automatically otherwise.
                   SubDirectory is writable as a block, or if the SubDirectory
                   can not be edited (in which case Writable is set to 0).  If
                   non-zero, the SubDirectory is also extracted as a block, so
-                  the Binary and Protected flags should usually set as well. 
+                  the Binary and Protected flags should usually set as well.
                   There is currently no way to specify a write format for a
                   SubDirectory that is not writable as a block (the default is
                   'int32u' for IFD-type SubDirectories, and 'undef' for all
@@ -970,7 +970,7 @@ numerical, and generated automatically otherwise.
                   data record), $dataPt (reference to the data block), and $pos
                   (position of this tag in the data block), and assign a new
                   value to $format to dynamically set the tag format, and/or
-                  increment $varSize to add a byte offset to subsequent tags. 
+                  increment $varSize to add a byte offset to subsequent tags.
                   $varSize may be set to a large number to effectively abort
                   processing of the directory after this tag.  Must have
                   corresponding DATAMEMBER entry in writable tables.  Must not

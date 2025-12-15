@@ -11,16 +11,34 @@
 
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="https://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.36.tar.gz/download">Version 13.36</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="https://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.44.tar.gz/download">Version 13.44</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">MetaCPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.44'><b>Dec. 15, 2025 - Version 13.44</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added read support for Kandao KVAR files
+<li>Added a few new Panasonic tags (<a href="https://github.com/exiftool/exiftool/issues/365">github #365</a>)
+<li>Added a new XMP-crs tag
+<li>Added a few new Matroska tags</li>
+<li>Added a few values related to the new RAW file types for the Sony ILCE-7M5
+    (thanks Milo&scaron; Komar&ccaron;evi&cacute;)
+<li>Decode a few new PhaseOne tags ( (<a href="https://github.com/exiftool/exiftool/issues/372">github #372</a>)
+<li>Decode timed GPS and other metadata from Kandao MP4 videos
+<li>Improvements to family 1 and 5 groups for tags in Matroska videos, and
+    prioritize top-level tags when duplicates exist
+<li>Assume a default TimecodeScale of 1ms for MKV videos
+<li>Patched to avoid runtime warning when parsing corrupted QuickTime data
+    (thanks Neal Krawetz)
+<li>Fixed decoding of ShutterCount for Sony ILCE-7M5  (<a href="https://github.com/exiftool/exiftool/issues/369">github #369</a>)
+</ul>
+
 <a name='v13.43'><b>Dec. 4, 2025 - Version 13.43</b></a>
 <ul>
 <li>Added support for a couple of new Android QuickTime Keys tags
-<li>Added date/time formatting for RIFF DateCreated
+<li>Added date/time conversion for RIFF DateCreated
 <li>Added ability to read/write (but not create/delete) the HEIF Mirroring tag
 <li>Added a new SonyModelID
 <li>Added a new Canon LensType (thanks Matthias)

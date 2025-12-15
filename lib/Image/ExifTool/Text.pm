@@ -23,7 +23,7 @@ $VERSION = '1.05';
     GROUPS => { 0 => 'File', 1 => 'File', 2 => 'Document' },
     NOTES => q{
         Although basic text files contain no metadata, the following tags are
-        determined from a simple analysis of the data in TXT and CSV files. 
+        determined from a simple analysis of the data in TXT and CSV files.
         Statistics are generated only for 8-bit encodings, but the L<FastScan|../ExifTool.html#FastScan> (-fast)
         option may be used to limit processing to the first 64 KiB in which case
         some tags are not produced.  To avoid long processing delays, ExifTool will

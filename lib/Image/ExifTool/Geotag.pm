@@ -1269,7 +1269,7 @@ Category:       foreach $category (qw{pos track alt orient atemp err dop}) {
             my $tag = ($$nvHash{WantGroup} ? "$$nvHash{WantGroup}:" : '') . 'Geolocate';
             # pass along any regular expressions to qualify geolocation search
             my $parms = join ',', grep m(/), split /\s*,\s*/, $geoloc;
-            $parms and $parms = ",$parms,both"; 
+            $parms and $parms = ",$parms,both";
             $et->SetNewValue($tag => "$$fix{lat},$$fix{lon}$parms");
             # (the Geolocate tag will be restored to its original value
             # by RestoreNewValues before the next file in batch processing)

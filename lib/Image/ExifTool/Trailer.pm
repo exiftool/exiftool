@@ -96,7 +96,7 @@ sub ProcessVivo($$)
         $len -= $start;
         $buff = substr($buff, $start);
     }
-    # set trailer position and length 
+    # set trailer position and length
     @$dirInfo{'DataPos','DirLen'} = ($pos, $len);
 
     # let ProcessTrailers copy or delete this trailer

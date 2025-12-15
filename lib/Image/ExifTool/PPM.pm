@@ -95,7 +95,7 @@ sub ProcessPPM($$)
         } elsif ($seal and $$et{DEL_GROUP}{SEAL}) {
             # delete SEAL comment
             $et->VerboseValue('- Comment', $oldComment);
-            ++$$et{CHANGED};            
+            ++$$et{CHANGED};
         } else {
             $newComment = $oldComment;  # use existing comment
         }

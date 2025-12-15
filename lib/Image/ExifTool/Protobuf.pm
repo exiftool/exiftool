@@ -9,7 +9,7 @@
 #               and 'int64s' formats for VARINT (type 0) values, 'int64u',
 #               'int64s', 'rational64u', 'rational64s' and 'double' for I64
 #               (type 1), 'undef', 'string' and 'rational' for LEN (type 2),
-#               and 'int32u', 'int32s', 'rational32u', 'rational32s', 
+#               and 'int32u', 'int32s', 'rational32u', 'rational32s',
 #               'fixed32u', 'fixed32s' and 'float' for I32 (type 5) values.
 #
 # References:   1) https://protobuf.dev/programming-guides/encoding/
@@ -133,7 +133,7 @@ sub ProcessProtobuf($$$;$)
     }
     # prefix for unknown tags
     my $unkPre = $$tagTbl{TAG_PREFIX} ? $$tagTbl{TAG_PREFIX} . '_' : 'Protobuf ';
-    
+
     # loop through protobuf records
     for (;;) {
         my $pos = $$dirInfo{Pos};

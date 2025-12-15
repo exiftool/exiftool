@@ -296,7 +296,7 @@ my %event = (
             taxonomicStatus             => { },
             verbatimTaxonRank           => { },
             vernacularName              => { Writable => 'lang-alt' },
-            superFamily                 => { },     # dwc.tdwg.org added 2023 
+            superFamily                 => { },     # dwc.tdwg.org added 2023
             subFamily                   => { },     # dwc.tdwg.org added 2023
             tribe                       => { },     # dwc.tdwg.org added 2023
             subTribe                    => { },     # dwc.tdwg.org added 2023
@@ -332,7 +332,7 @@ my %event = (
             georeferenceProtocol        => { },
             georeferenceRemarks         => { },
             georeferenceSources         => { },
-            georeferenceVerificationStatus => { },      # dwc.tdwg.org removed 2023    
+            georeferenceVerificationStatus => { },      # dwc.tdwg.org removed 2023
             higherGeography             => { },
             higherGeographyID           => { },
             island                      => { },

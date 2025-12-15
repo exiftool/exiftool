@@ -1113,7 +1113,7 @@ sub ProcessPEResources($$)
 #------------------------------------------------------------------------------
 # Process Windows PE file data dictionary
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref
-# Returns: true on success or if the PE resources didn't exist, or false on error 
+# Returns: true on success or if the PE resources didn't exist, or false on error
 #          processing the PE resources
 sub ProcessPEDict($$)
 {

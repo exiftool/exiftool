@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.43';
+my $version = '13.44';
 
 $^W = 1;    # enable global warnings
 
@@ -3288,7 +3288,7 @@ sub SetImageInfo($$$)
                             }
                         }
                         next;
-                    }                    
+                    }
                     my @exclTags = @csvExclude;
                     foreach (@exclTags) {
                         tr/-0-9a-zA-Z_:#?*//dc;     # remove illegal characters

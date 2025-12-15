@@ -381,7 +381,7 @@ sub ProcessRAR($$)
             # skip over all headers except file or service header
             next unless $headType == 2 or $headType == 3;
             $et->VerboseDir('RAR5 file', undef, $headSize) if $headType == 2;
-            
+
             my $headFlag = ReadULEB($rafHdr);
             ReadULEB($rafHdr);                  # skip extraSize
             my $dataSize;

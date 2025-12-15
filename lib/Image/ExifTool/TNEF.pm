@@ -345,7 +345,7 @@ sub ProcessProps($$$)
                 }
             }
             if (not defined $val) {
-                $val = ReadValue($dataPt, $pos, $fmt, $count, $size); 
+                $val = ReadValue($dataPt, $pos, $fmt, $count, $size);
                 if ($type == 0x06 or $type == 0x07 or $type == 0x0b or $type == 0x40) {
                     my @a = split ' ', $val;
                     if ($type == 0x06) {        # currency
@@ -377,7 +377,7 @@ sub ProcessProps($$$)
                 my $copy = $val;
                 $val = \$copy;  # change to a binary data reference
             }
-            $et->HandleTag($tagTbl, $tag, $val, 
+            $et->HandleTag($tagTbl, $tag, $val,
                 DataPt  => $dataPt,
                 DataPos => $dataPos,
                 Start   => $pos,

@@ -115,10 +115,10 @@ my %buttonsCommonZ8Z9 = (  #button roles shared by the Z8 & Z9.  Assigments bega
     SeparateTable => 'ButtonsZ8',
     PrintConv => {
         %buttonsCommonZ8Z9,
-        116 => 'Pixel Shift Shooting', 
+        116 => 'Pixel Shift Shooting',
         117 => 'Cycle AF-area Mode',
         119 => 'Focus Limiter',
-        120 => 'Jump to Source Image', 
+        120 => 'Jump to Source Image',
         121 => 'Raw Processing (Current)',
         122 => 'Raw Processing (Multiple)',
         123 => 'Trim',
@@ -140,7 +140,7 @@ my %buttonsCommonZ8Z9 = (  #button roles shared by the Z8 & Z9.  Assigments bega
     SeparateTable => 'ButtonsZ9',
     PrintConv => {
         %buttonsCommonZ8Z9,
-        116 => 'Save and Load Power Zoom Position', 
+        116 => 'Save and Load Power Zoom Position',
         117 => 'Cycle AF-area Mode',
         118 => 'Raw Processing (Current)',  #118-131 are Playback Retouch options
         119 => 'Raw Processing (Multiple)',
@@ -9880,11 +9880,10 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     17 => { Name => 'LimitAF-AreaModeSelPinpoint',  PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
     19 => { Name => 'LimitAF-AreaModeSelWideAF_S',  PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
     20 => { Name => 'LimitAF-AreaModeSelWideAF_L',  PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
-    21 => { Name => 'LimitAFAreaModeSelAuto',       PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8     
+    21 => { Name => 'LimitAFAreaModeSelAuto',       PrintConv => \%limitNolimit, Unknown => 1 }, # CSa8
     22 => { Name => 'FocusPointWrap',               PrintConv => { 0 => 'No Wrap', 1 => 'Wrap' }, Unknown => 1 }, # CSa10
     23 => { Name => 'ManualFocusPointIllumination', PrintConv => {0 => 'On During Focus Point Selection Only', 1 => 'On', }, Unknown => 1 },  # CSa10a
     24 => { Name => 'DynamicAreaAFAssist',     PrintConv => { 0 => 'Focus Point Only',1 => 'Focus and Surrounding Points',}, Unknown => 1 },  # CSa10b
-    
     26 => { Name => 'AF-AssistIlluminator',    PrintConv => \%offOn }, # CSa11
     27 => { Name => 'ManualFocusRingInAFMode', PrintConv => \%offOn }, # CSa14
     29 => { Name => 'ExposureControlStepSize', PrintConv => \%thirdHalfFull },     # CSb2
@@ -9999,7 +9998,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
         },
     },
     85 => { Name => 'ContinuousModeDisplay',  PrintConv => \%offOn }, # CSd14
-    87 => { # CSe1-a            Previous cameras reported this with HighSpeedSync indicator appended as '(Auto FP)'.  
+    87 => { # CSe1-a            Previous cameras reported this with HighSpeedSync indicator appended as '(Auto FP)'.
         Name => 'FlashSyncSpeed',
         ValueConv => '($val-144)/8',
         PrintConv => {

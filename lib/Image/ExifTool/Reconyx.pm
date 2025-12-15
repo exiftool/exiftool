@@ -420,7 +420,7 @@ my %convUnicode = (
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     NOTES => 'Maker notes tags for Reconyx MicroFire cameras.',
-    0x10 => { Name => 'FileNumber',         Format => 'int16u' },  
+    0x10 => { Name => 'FileNumber',         Format => 'int16u' },
     0x12 => { Name => 'DirectoryNumber',    Format => 'int16u' },
     0x14 => {
         Name => 'DirectoryCreateDate',
@@ -695,7 +695,7 @@ my %convUnicode = (
     0x51 => { Name => 'UserLabel',          Format => 'string[51]' },
     0x84 => { Name => 'SerialNumber',       Format => 'string[15]' },
     0x93 => { Name => 'DirectoryNumber',    Format => 'int16u' },
-    0x95 => { Name => 'FileNumber',         Format => 'int16u' },  
+    0x95 => { Name => 'FileNumber',         Format => 'int16u' },
 );
 
 __END__

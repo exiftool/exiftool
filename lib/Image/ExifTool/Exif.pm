@@ -1598,6 +1598,7 @@ my %opcodeInfo = (
             2 => 'Sony Compressed RAW', # (lossy, ref IB)
             3 => 'Sony Lossless Compressed RAW', #IB
             4 => 'Sony Lossless Compressed RAW 2', #JR (ILCE-1)
+            6 => 'Sony Compressed RAW HQ', # ILCE-7M5
         },
     },
     # 0x7001 - int16u[1] (in SubIFD of Sony ARW images) - values: 0,1

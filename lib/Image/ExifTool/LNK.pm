@@ -596,7 +596,7 @@ sub ProcessLinkInfo($$$)
         $off = Get32u($dataPt, 0x14);
         if ($off and $off + 0x14 <= $dataLen) {
             my $siz = Get32u($dataPt, $off);
-            return 0 if $off + $siz > $dataLen; 
+            return 0 if $off + $siz > $dataLen;
             $pos = Get32u($dataPt, $off + 0x08);
             if ($pos > 0x14 and $siz >= 0x18) {
                 $pos = Get32u($dataPt, $off + 0x14);

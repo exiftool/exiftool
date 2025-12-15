@@ -177,7 +177,7 @@ sub ConvInvISO6709($)
         # requires at least 3 digits after the decimal point
         # (and as of Apr 2021, Google Photos doesn't accept coordinats
         #  with more than 5 digits after the decimal place:
-        #  https://exiftool.org/forum/index.php?topic=11055.msg67171#msg67171 
+        #  https://exiftool.org/forum/index.php?topic=11055.msg67171#msg67171
         #  still a problem Apr 2024: https://exiftool.org/forum/index.php?msg=85761)
         my @fmt = ('%s%02d.%s%s','%s%03d.%s%s','%s%d.%s%s');
         my @limit = (90,180);

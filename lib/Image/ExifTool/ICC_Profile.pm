@@ -370,7 +370,6 @@ my %manuSig = ( #6
         Groups => { 2 => 'Time' },
         PrintConv => '$self->ConvertDateTime($val)',
     },
-    
     targ => {
         Name => 'CharTarget',
         ValueConv => '$val=~s/\0.*//; length $val > 128 ? \$val : $val',

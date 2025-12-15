@@ -461,7 +461,7 @@ sub Draw($$)
             $mark = $markerData{$m[0]};
             $mark or $markID{$mark} = '', next; # skip 'none' or unrecognized marker name
             if ($fill and $fill ne 'none') {
-                my $op = $m[3] || ($$cols[$i] eq 'none' ? 50 : 20); 
+                my $op = $m[3] || ($$cols[$i] eq 'none' ? 50 : 20);
                 $mark .= qq( fill="$fill" style="fill-opacity: $op%");
             } else {
                 $mark .= ' fill="none"';
@@ -573,7 +573,7 @@ sub Draw($$)
         $xsclr = int($xscl * 100 + 0.5) / 100;
         if ($style =~ /\bf/) {
             my @m = split /-/, $$marks[0];
-            my $op = $m[3] || ($style =~ /\bl/ ? 20 : 50); 
+            my $op = $m[3] || ($style =~ /\bl/ ? 20 : 50);
             $fill = " fill='$$cols[0]'";
             $fill .= " style='fill-opacity: $op%'" if $$cols[0] ne 'none';
         }

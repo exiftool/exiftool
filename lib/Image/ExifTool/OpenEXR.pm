@@ -53,7 +53,7 @@ my %formatType = (
         L<http://www.openexr.com/> for the official specification.
     },
     _ver => { Name => 'EXRVersion', Notes => 'low byte of Flags word' },
-    _flags => { Name => 'Flags', 
+    _flags => { Name => 'Flags',
         PrintConv => { BITMASK => {
             9 => 'Tiled',
             10 => 'Long names',

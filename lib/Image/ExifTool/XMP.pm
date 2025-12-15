@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.75';
+$VERSION = '3.76';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -1865,6 +1865,8 @@ my %sPantryItem = (
             What             => { },
         },
     },
+    # more new stuff
+    PointColors => { List => 'Seq' },
 );
 
 # Tiff namespace properties (tiff)
@@ -4256,7 +4258,7 @@ sub ProcessXMP($$;$)
         # check leading BOM (may indicate double-encoded UTF)
         pos($$dataPt) = $dirStart;
         if ($$dataPt =~ /\G((\0\0)?\xfe\xff|\xff\xfe(\0\0)?|\xef\xbb\xbf)\0*<\0*\?\0*x\0*p\0*a\0*c\0*k\0*e\0*t/g) {
-            $double = $1 
+            $double = $1;
         } else {
             # handle UTF-16/32 XML
             pos($$dataPt) = $dirStart;

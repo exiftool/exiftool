@@ -1454,7 +1454,7 @@ sub ProcessContents($$$)
         my ($w, $h) = unpack('V2',$2);
         $et->FoundTag(ImageWidth => $w);
         $et->FoundTag(ImageHeight => $h);
-        $et->HandleTag($tagTablePtr, OriginalFileName => $name);        
+        $et->HandleTag($tagTablePtr, OriginalFileName => $name);
         if ($$dataPt =~ /\G\x01\0{4}(.{12})/sg) {
             # (first 4 bytes seem to be number of objects, next 4 bytes are zero, then ICC size)
             my $size = unpack('x8V', $1);

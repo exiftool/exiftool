@@ -970,7 +970,7 @@ sub ReadXtraValue($$)
 {
     my ($et, $data) = @_;
     my ($format, $i, @vals);
-    
+
     return undef if length($data) < 10;
 
     # (version flags according to the reference, but looks more like a count - PH)

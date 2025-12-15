@@ -479,7 +479,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     VARS => { ID_FMT => 'none' },
     NOTES => q{
         Tags listed below are only for the first measurement tool, however multiple
-        measurements may be added, and information is extracted for all of them. 
+        measurements may be added, and information is extracted for all of them.
         Tags for subsequent measurements are generated as required with the prefixes
         "Meas2", "Meas3", etc.
     },

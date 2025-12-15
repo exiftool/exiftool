@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.81';
+$VERSION = '3.82';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -261,7 +261,7 @@ sub PrintInvLensSpec($;$$);
     49475 => 'Tamron 50-300mm F4.5-6.3 Di III VC VXD', #JR (Model A069)
     49476 => 'Tamron 28-300mm F4-7.1 Di III VC VXD', #JR (Model A074)
     49477 => 'Tamron 90mm F2.8 Di III Macro VXD', #JR (Model F072)
-    49478 => 'Tamron 16-30mm F2.8 Di III VXD G2', #JR (Model A064) 
+    49478 => 'Tamron 16-30mm F2.8 Di III VXD G2', #JR (Model A064)
 
     49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
     49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)
@@ -1534,6 +1534,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             0 => 'Compressed RAW',
             1 => 'Uncompressed RAW',
             2 => 'Lossless Compressed RAW', #JR (NC) seen for ILCE-1
+            3 => 'Compressed RAW (HQ)', # ILCE-7M5
            65535 => 'n/a', # seen for ILCE-7SM3 JPEG-only
         },
     },
@@ -2095,6 +2096,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             '4 0 1 0' => 'ARW 4.0.1', #github195 (ZV-E1)
             '5 0 0 0' => 'ARW 5.0', # (ILCE-9M3)
             '5 0 1 0' => 'ARW 5.0.1', # (ILCE-1 with FirmWare 2.0)
+            '6 0 0 0' => 'ARW 6.0.0', # (ILCE-7M5)
             # what about cRAW images?
         },
     },
@@ -7564,6 +7566,12 @@ my %isoSetting2010 = (
 #           appears to be difference between used FNumber and MaxAperture, 256 being +1 APEX or stop
 #           however, not always valid e.g. bracketing, Shutter-prio e.a.
 #           difference between 0x0002 and 0x0004 mostly 0.0, 0.1 or 0.2 stops.
+    0x000a => { #github369
+        Name => 'ShutterCount',
+        Format => 'int32u',
+        Condition => '$$self{Model} =~ /^ILCE-7M5$/',
+        Notes => 'ILCE-7M5',
+    },
     0x0020 => {
         Name => 'Shutter',
         Format => 'int16u[3]',
@@ -7594,6 +7602,7 @@ my %isoSetting2010 = (
         # NEX-5N/7.  For the A99V it is definitely more than 16 bits, but it wraps at
         # 65536 for the A7R.
         Format => 'int32u',
+        Condition => '$$self{Model} !~ /^ILCE-7M5$/',
         Notes => q{
             total number of image exposures made by the camera, modulo 65536 for some
             models
@@ -9988,7 +9997,7 @@ my %isoSetting2010 = (
         PrintConv => \%sonyExposureProgram3,
     },
     0x0037 => {
-        Name => 'CreativeStyle',    
+        Name => 'CreativeStyle',
         Notes => 'offsets after this are shifted by 1 for the ILME-FX2',
         Hook => '$varSize += 1 if $$self{Model} =~ /^(ILME-FX2)/',
         PrintConv => {

@@ -116,7 +116,6 @@ sub ConvertPLIST($$);
         # - changed in 12.19 to MediaGroupUUID, NealKrawetz private communication
         # - changed back to ContentIdentifier since Apple writes this to Keys content.identifier (forum14874)
         Writable => 'string',
-        
     },
     # 0x0012 - (QRMOutputType, ref 2)
     # 0x0013 - (SphereExternalForceOffset, ref 2)

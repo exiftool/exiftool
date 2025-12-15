@@ -161,73 +161,91 @@ for the official QuickTime specification.
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'kfix'</td>
+<td>KFIX</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kandao.html'>Kandao Tags</a></td></tr>
+<tr>
+<td>'kstb'</td>
+<td>KSTB</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kandao.html'>Kandao Tags</a></td></tr>
+<tr class=b>
+<td>'kvar'</td>
+<td>KVAR</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kandao.html'>Kandao Tags</a>
+  <br><span class='n s'>(by default, data in this tag is parsed to extract some embedded metadata,
+but it may also be extracted as a KVAR file via the &quot;KVAR&quot; tag or by setting
+the API BlockExtract option)</span></td></tr>
+<tr>
 <td>'mdat'</td>
 <td>MediaData?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'mdat-offset'</td>
 <td>MediaDataOffset</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'mdat-size'</td>
 <td>MediaDataSize</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(not a real tag ID, this tag represents the size of the &#39;mdat&#39; data in bytes
 and is used in the AvgBitrate calculation)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'meco'</td>
 <td>OtherMeta</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#OtherMeta'>QuickTime OtherMeta Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'meta'</td>
 <td>Meta</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Meta'>QuickTime Meta Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'moof'</td>
 <td>MovieFragment</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#MovieFragment'>QuickTime MovieFragment Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'moov'</td>
 <td>Movie</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Movie'>QuickTime Movie Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'mpvd'</td>
 <td>MotionPhotoVideo</td>
 <td class=c>undef</td>
 <td><span class=s><span class=n>(MP4-format video saved in Samsung motion-photo HEIC images.)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'nbmt'</td>
 <td>NextbaseMeta</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Stream'>QuickTime Stream Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'pict'</td>
 <td>PreviewPICT</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'pnot'</td>
 <td>Preview</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Preview'>QuickTime Preview Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'prrt'</td>
 <td>ARDroneTelemetry</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(telemetry information for each video frame: status1, status2, time, pitch,
 roll, yaw, speed, altitude)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'sefd'</td>
 <td>SamsungTrailer</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Samsung.html#Trailer'>Samsung Trailer Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'skip'</td>
 <td>CanonSkip
   <br>PreviewImage
@@ -238,22 +256,22 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td>--&gt; <a href='Canon.html#Skip'>Canon Skip Tags</a>
   <br>--&gt; <a href='QuickTime.html#SkipInfo'>QuickTime SkipInfo Tags</a>
   <br>--&gt; <a href='QuickTime.html#Stream'>QuickTime Stream Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'thm '</td>
 <td>ThumbnailImage</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'thum'</td>
 <td>ThumbnailImage</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'udat'</td>
 <td>GPSLog</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(parsed to extract GPS separately when ExtractEmbedded is used)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'udta'</td>
 <td>KenwoodData
   <br>LigoJSON
@@ -264,7 +282,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br>--&gt; <a href='QuickTime.html#Stream'>QuickTime Stream Tags</a>
   <br>--&gt; <a href='QuickTime.html#Stream'>QuickTime Stream Tags</a>
   <br>--&gt; <a href='FLIR.html#UserData'>FLIR UserData Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'uuid'</td>
 <td>XMP
   <br>UUID-PROF
@@ -286,7 +304,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br><span class=n>(raw 360Fly sensor data without ExtractEmbedded option)</span>
   <br>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a>
   <br>--&gt; <a href='CBOR.html'>CBOR Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'wide'</td>
 <td>Wide?</td>
 <td class=c>no</td>
@@ -297,7 +315,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <p>The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 116 different types of timed GPS metadata from video files.</p>
+currently reads 117 different types of timed GPS metadata from video files.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -10004,7 +10022,7 @@ the value is set to zero if the tag is deleted individually)</span></span></td><
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 21, 2025</i>
+<br><i>Last revised Dec 15, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -1362,7 +1362,7 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
         PrintConvInv => '$val=~/0x([\dA-F]+)/i ? hex($1) : undef',
     },{
         Name => 'UsableMeteringModes',
-        Count => 2, 
+        Count => 2,
         PrintConv => [
             \%disableEnable,
             'sprintf("Flags 0x%x",$val)', # (evaluative,partial,spot,center-weighted average)

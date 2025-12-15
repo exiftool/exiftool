@@ -47,7 +47,7 @@ my %sEarthPose = (
     NAMESPACE => { EarthPose => 'http://ns.google.com/photos/dd/1.0/earthpose/' },
     Latitude  => {
         Writable => 'real',
-        Groups => { 2 => 'Location' }, 
+        Groups => { 2 => 'Location' },
         ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
         ValueConvInv => '$val',
         PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
@@ -512,7 +512,7 @@ my %sAppInfo = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     TAG_PREFIX => 'HDRPlusMakerNote',
     PROCESS_PROC => \&ProcessHDRP,
-    VARS => {   
+    VARS => {
         ID_FMT => 'str',
         SORT_PROC => sub {
             my ($a,$b) = @_;

@@ -2831,8 +2831,9 @@ sub GetAllGroups($;$)
     my %allGroups;
     # add family 1 groups not in tables
     no warnings; # (avoid "possible attempt to put comments in qw()")
+    # start with family 1 groups that are missing from the tables
     $family == 1 and map { $allGroups{$_} = 1 } qw(Garmin AudioItemList AudioUserData
-        VideoItemList VideoUserData Track#Keys Track#ItemList Track#UserData);
+        VideoItemList VideoUserData Track#Keys Track#ItemList Track#UserData KFIX);
     use warnings;
     # loop through all tag tables and get all group names
     while (@tableNames) {
@@ -3792,7 +3793,7 @@ sub GetGeolocateTags($$;$)
         'xmp-exif'      => [ qw(GPSLatitude GPSLongitude) ],
         'itemlist'      => [ 'GPSCoordinates' ],
         'userdata'      => [ 'GPSCoordinates' ],
-        # more general groups not in this lookup: XMP and QuickTime 
+        # more general groups not in this lookup: XMP and QuickTime
     );
     my (@tags, $grp);
     # set specific City and GPS tags

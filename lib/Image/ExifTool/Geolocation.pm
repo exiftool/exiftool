@@ -12,7 +12,7 @@
 # Notes:        Set $Image::ExifTool::Geolocation::geoDir to override the
 #               default directory containing the database file Geolocation.dat
 #               and the GeoLang directory with the alternate language files.
-#               If set, this directory is 
+#               If set, this directory is
 #
 #               AltNames.dat may be loaded from a different directory by
 #               specifying $Image::ExifTool::Geolocation::altDir.  This

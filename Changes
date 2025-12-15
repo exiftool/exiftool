@@ -4,13 +4,30 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 13.36. (Other versions are
+Note: The most recent production release is Version 13.44. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Dec. 15, 2025 - Version 13.44 (production release)
+
+  - Added read support for Kandao KVAR files
+  - Added a few new Panasonic tags (github #365)
+  - Added a new XMP-crs tag
+  - Added a few new Matroska tags
+  - Added a few values related to the new RAW file types for the Sony ILCE-7M5
+    (thanks Milos Komarcevic)
+  - Decode a few new PhaseOne tags ( (github #372)
+  - Decode timed GPS and other metadata from Kandao MP4 videos
+  - Improvements to family 1 and 5 groups for tags in Matroska videos, and
+    prioritize top-level tags when duplicates exist
+  - Assume a default TimecodeScale of 1ms for MKV videos
+  - Patched to avoid runtime warning when parsing corrupted QuickTime data
+    (thanks Neal Krawetz)
+  - Fixed decoding of ShutterCount for Sony ILCE-7M5  (github #369)
 
 Dec. 4, 2025 - Version 13.43
 
   - Added support for a couple of new Android QuickTime Keys tags
-  - Added date/time formatting for RIFF DateCreated
+  - Added date/time conversion for RIFF DateCreated
   - Added ability to read/write (but not create/delete) the HEIF Mirroring tag
   - Added a new SonyModelID
   - Added a new Canon LensType (thanks Matthias)

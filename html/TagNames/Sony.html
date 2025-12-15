@@ -751,6 +751,7 @@ toward magenta)</span></span></td></tr>
 <td><span class=s>0 = Compressed RAW
   <br>1 = Uncompressed RAW
   <br>2 = Lossless Compressed RAW
+  <br>3 = Compressed RAW (HQ)
   <br>65535 = n/a</span></td></tr>
 <tr>
 <td title='0x202a = 8234'>0x202a</td>
@@ -974,7 +975,8 @@ toward magenta)</span></span></td></tr>
   <br>&#39;4 0 0 0&#39; = ARW 4.0
   <br>&#39;4 0 1 0&#39; = ARW 4.0.1
   <br>&#39;5 0 0 0&#39; = ARW 5.0
-  <br>&#39;5 0 1 0&#39; = ARW 5.0.1</td></tr></table>
+  <br>&#39;5 0 1 0&#39; = ARW 5.0.1
+  <br>&#39;6 0 0 0&#39; = ARW 6.0.0</td></tr></table>
 </td></tr>
 <tr>
 <td title='0xb001 = 45057'>0xb001</td>
@@ -8239,11 +8241,16 @@ substitution cipher, but the deciphered values are listed below.</p>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>ShutterCount</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(ILCE-7M5)</span></span></td></tr>
+<tr class=b>
 <td class=r title='32 = 0x20'>32</td>
 <td>Shutter</td>
 <td class=c>int16u[3]</td>
 <td><span class=s>&#39;0 0 0&#39; = Silent / Electronic (0 0 0)</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='49 = 0x31'>49</td>
 <td>FlashStatus</td>
 <td class=c>int8u</td>
@@ -8256,110 +8263,110 @@ substitution cipher, but the deciphered values are listed below.</p>
   <br>128 = External Flash present
   <br>129 = External Flash Fired</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='50 = 0x32'>50</td>
 <td>ShutterCount</td>
 <td class=c>int32u</td>
 <td><span class=s><span class=n>(total number of image exposures made by the camera, modulo 65536 for some
 models)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='58 = 0x3a'>58</td>
 <td>SonyExposureTime</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='60 = 0x3c'>60</td>
 <td>SonyFNumber</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='63 = 0x3f'>63</td>
 <td>ReleaseMode2</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Sony.html#ReleaseMode2'>Sony ReleaseMode2 Values</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='76 = 0x4c'>76</td>
 <td>ShutterCount2</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='81 = 0x51'>81</td>
 <td>SonyDateTime2</td>
 <td class=c>undef[6]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='103 = 0x67'>103</td>
 <td>ReleaseMode2</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Sony.html#ReleaseMode2'>Sony ReleaseMode2 Values</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='124 = 0x7c'>124</td>
 <td>InternalSerialNumber</td>
 <td class=c title=' ~ = Writable only with -n'>int8u[4]~</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='240 = 0xf0'>240</td>
 <td>InternalSerialNumber</td>
 <td class=c>int8u[5]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='261 = 0x105'>261</td>
 <td>LensMount</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = A-mount
   <br>2 = E-mount</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='262 = 0x106'>262</td>
 <td>LensFormat</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = APS-C
   <br>2 = Full-frame</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='263 = 0x107'>263</td>
 <td>LensType2</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType2'>Sony LensType2 Values</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='265 = 0x109'>265</td>
 <td>LensType</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a>
   <br><span class='n s'>(SLT models, and NEX with A-mount lenses)</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='267 = 0x10b'>267</td>
 <td>DistortionCorrParamsPresent</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='276 = 0x114'>276</td>
 <td>APS-CSizeCapture</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='277 = 0x115'>277</td>
 <td>LensSpecFeatures</td>
 <td class=c>undef[2]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='278 = 0x116'>278</td>
 <td>LensSpecFeatures</td>
 <td class=c>undef[2]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='416 = 0x1a0'>416</td>
 <td>ShutterCount3</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='426 = 0x1aa'>426</td>
 <td>ShutterCount3</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='445 = 0x1bd'>445</td>
 <td>ShutterCount3</td>
 <td class=c>int32u</td>
@@ -12258,7 +12265,7 @@ some models when the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded<
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 3, 2025</i>
+<br><i>Last revised Dec 11, 2025</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

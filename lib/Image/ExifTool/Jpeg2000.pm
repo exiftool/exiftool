@@ -132,7 +132,7 @@ my %j2cMarker = (
     NOTES => q{
         The tags below are found in JPEG 2000 images and the C2PA CAI JUMBF metadata
         in various file types (see below).  Note that ExifTool currently writes only
-        EXIF, IPTC and XMP tags in Jpeg2000 images, and EXIF and XMP in JXL images. 
+        EXIF, IPTC and XMP tags in Jpeg2000 images, and EXIF and XMP in JXL images.
         ExifTool will read/write Brotli-compressed EXIF and XMP in JXL images, but
         the API L<Compress|../ExifTool.html#Compress> option must be set to create new EXIF and XMP in compressed
         format.

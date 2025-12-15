@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.87
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.44
 [File, System, Other] FileName - File Name: Matroska.mkv
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 507 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2010:05:28 18:24:56-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2024:06:10 12:44:20-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2024:04:15 15:09:50-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2010:05:28 18:24:56-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:12:04 10:14:00-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: MKV
 [File, File, Other] FileTypeExtension - File Type Extension: mkv
@@ -20,12 +20,12 @@
 [Matroska, Matroska, Video] 5036 - Seek Position: 17889706
 [Matroska, Matroska, Video] 5035 - Seek ID: 0xc53bb6b (Cues)
 [Matroska, Matroska, Video] 5036 - Seek Position: 17889305
-[Matroska, Matroska, Video] 710577 - Timecode Scale: 1 ms
-[Matroska, Matroska, Video] 3456 - Muxing App: libebml v0.7.8 + libmatroska v0.8.1
-[Matroska, Matroska, Video] 5953 - Writing App: mkvmerge v2.4.0 ('Fumbling Towards Ecstasy') built on Dec  3 2008 16:22:41
-[Matroska, Matroska, Video] 1161 - Duration: 0:02:29
-[Matroska, Matroska, Time] 1121 - Date/Time Original: 2010:02:03 21:17:48Z
-[Matroska, Matroska, Video] 13220 - Segment UID: 567c66ee723eb3fb134811344da9a391
+[Matroska, Info, Video] 710577 - Timecode Scale: 1 ms
+[Matroska, Info, Video] 3456 - Muxing App: libebml v0.7.8 + libmatroska v0.8.1
+[Matroska, Info, Video] 5953 - Writing App: mkvmerge v2.4.0 ('Fumbling Towards Ecstasy') built on Dec  3 2008 16:22:41
+[Matroska, Info, Video] 1161 - Duration: 0:02:29
+[Matroska, Info, Time] 1121 - Date/Time Original: 2010:02:03 21:17:48Z
+[Matroska, Info, Video] 13220 - Segment UID: 567c66ee723eb3fb134811344da9a391
 [Matroska, Track1, Video] 87 - Track Number: 1
 [Matroska, Track1, Video] 13253 - Track UID: a169290f
 [Matroska, Track1, Video] 3 - Track Type: Video

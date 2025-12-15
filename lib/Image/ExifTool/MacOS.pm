@@ -528,7 +528,6 @@ sub ExtractMDItemTags($$)
     $$et{INDENT} =~ s/\| $//;
 }
 
-        
 #------------------------------------------------------------------------------
 # Read MacOS XAttr value
 # Inputs: 0) ExifTool object ref, 1) file name
@@ -732,7 +731,7 @@ This module is used by Image::ExifTool
 This module contains definitions required by Image::ExifTool to extract
 MDItem* and XAttr* tags on MacOS systems using the "mdls" and "xattr"
 utilities respectively.  It also reads metadata directly from the MacOS "_."
-sidecar files that are used on some filesystems to store file attributes. 
+sidecar files that are used on some filesystems to store file attributes.
 Writable tags use "xattr", "setfile" or "osascript" for writing.
 
 =head1 AUTHOR

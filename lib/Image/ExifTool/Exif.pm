@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.61';
+$VERSION = '4.63';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -213,7 +213,7 @@ $formatName[129] = 'utf8';  # (Exif 3.0)
     10 => 'JBIG Color', #3
     99 => 'JPEG', #16
     262 => 'Kodak 262', #16
-    32766 => 'Next', #3
+    32766 => 'Next or Sony ARW Compressed 2', #3/Milos
     32767 => 'Sony ARW Compressed', #16
     32769 => 'Packed RAW', #PH (used by Epson, Nikon, Samsung)
     32770 => 'Samsung SRW Compressed', #PH
@@ -1598,7 +1598,7 @@ my %opcodeInfo = (
             2 => 'Sony Compressed RAW', # (lossy, ref IB)
             3 => 'Sony Lossless Compressed RAW', #IB
             4 => 'Sony Lossless Compressed RAW 2', #JR (ILCE-1)
-            6 => 'Sony Compressed RAW HQ', # ILCE-7M5
+            6 => 'Sony Compressed RAW 2', # ILCE-7M5
         },
     },
     # 0x7001 - int16u[1] (in SubIFD of Sony ARW images) - values: 0,1
@@ -3591,6 +3591,7 @@ my %opcodeInfo = (
             Condition => '$$valPt =~ /^\[ae_dbg_info:/',
             MakerNotes => 1,
             Binary => 1,
+            NotIFD => 1,
             WriteGroup => 'IFD0', # (for Validate)
             SubDirectory => { TagTable => 'Image::ExifTool::DJI::Info' },
             Format => 'undef',

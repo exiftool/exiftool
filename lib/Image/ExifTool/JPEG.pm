@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.39';
+$VERSION = '1.40';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
@@ -211,6 +211,10 @@ sub ProcessJPEG_HDR($$$);
     APP7 => [{
         Name => 'Pentax',
         Condition => '$$valPt =~ /^PENTAX \0/',
+        SubDirectory => { TagTable => 'Image::ExifTool::Pentax::Main' },
+      }, {
+        Name => 'Ricoh',
+        Condition => '$$valPt =~ /^RICOH\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::Pentax::Main' },
       }, {
         Name => 'Huawei',

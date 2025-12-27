@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '5.00';
+$VERSION = '5.01';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -9397,6 +9397,7 @@ my %filterConv = (
             0 => 'Initial Priority',
             1 => 'On Subject',
             2 => 'Switch Subject',
+            0x7fffffff => 'n/a',
         },
     },
     24 => { #forum16068  #KG extensions for 'left' and 'right'

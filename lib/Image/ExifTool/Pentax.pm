@@ -909,10 +909,18 @@ my %binaryDataAttrs = (
         # 11.3.0.0 - K-S1
         # 11.5.0.0 - K-S2
         # 11.6.1.0 - K-3 II
-        # 11.7.5.0 - WG-M2
+        # 11.7.5.0 - Ricoh WG-M2
         # 12.0.0.0 - K-1
         # 12.1.3.0 - K-70
         # 12.1.5.0 - KP
+        # 12.3.2.0 - K-1 Mark II
+        # 12.7.5.0 - Ricoh WG-M2
+        # 13.0.0.0 - Ricoh GR III / G900SE
+        # 13.1.1.0 - Ricoh WG-70
+        # 14.0.0.0 - K-3 Mark III
+        # 14.0.1.0 - Ricoh GR IIIx
+        # 14.2.0.0 - KF
+        # 15.2.3.0 - Ricoh GR IV
     },
     0x0001 => { #PH
         Name => 'PentaxModelType',

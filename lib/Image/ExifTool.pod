@@ -1193,6 +1193,15 @@ Flag to extract the following additional File System tags:  FileAttributes,
 FileDeviceNumber, FileInodeNumber, FileHardLinks, FileUserID, FileGroupID,
 FileDeviceID, FileBlockSize and FileBlockCount.
 
+=item SystemTimeRes
+
+Number of digits in sub-seconds for system times and some other epoch times.
+A value of 0 rounds to the nearest second.  Negative values cause trailing
+zeros to be removed.  eg) A value of C<-6> returns system times to 6 decimal
+places with trailing zeros removed. Default is 0, which rounds to the
+nearest second.  Note that round-off errors may appear starting at the 6th
+decimal place for some time formats.
+
 =item TextOut
 
 Output file reference for Verbose and HtmlDump options.  Default is

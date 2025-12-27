@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.63';
+$VERSION = '3.64';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -555,7 +555,7 @@ Pentax, Ricoh, Samsung, Sanyo, SeaLife, Sony, Supra and Vivitar.
 These tags are used in Panasonic/Leica cameras.
 },
     Pentax => q{
-These tags are used in Pentax/Asahi cameras.
+These tags are used in Pentax/Asahi/Ricoh cameras.
 },
     CanonRaw => q{
 These tags apply to CRW-format Canon RAW files and information in the APP0

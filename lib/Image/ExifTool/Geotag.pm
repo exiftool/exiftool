@@ -35,7 +35,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.83';
+$VERSION = '1.84';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -1530,7 +1530,7 @@ sub PrintFixTime($)
 {
     my $time = $_[0] + 0.0005;  # round off to nearest ms
     my $fsec = int(($time - int($time)) * 1000);
-    return sprintf('%s.%.3d UTC', Image::ExifTool::ConvertUnixTime($time), $fsec);
+    return Image::ExifTool::ConvertUnixTime($time, undef, 3) . ' UTC';
 }
 
 #------------------------------------------------------------------------------

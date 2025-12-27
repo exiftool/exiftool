@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.82';
+$VERSION = '3.83';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1534,7 +1534,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             0 => 'Compressed RAW',
             1 => 'Uncompressed RAW',
             2 => 'Lossless Compressed RAW', #JR (NC) seen for ILCE-1
-            3 => 'Compressed RAW (HQ)', # ILCE-7M5
+            3 => 'Compressed RAW 2', # ILCE-7M5
            65535 => 'n/a', # seen for ILCE-7SM3 JPEG-only
         },
     },
@@ -1592,9 +1592,25 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             '1 3' => 'RAW + Extra Fine',
             '1 4' => 'RAW + Light', #JR
             '2 0' => 'S-size RAW',
+            '2 1' => 'S-size RAW + Standard', # (NC)
+            '2 2' => 'S-size RAW + Fine', # (NC)
+            '2 3' => 'S-size RAW + Extra Fine', # (NC)
+            '2 4' => 'S-size RAW + Light', # (NC)
             '3 0' => 'M-size RAW', # ILCE-1/7RM5, APS-C mode
+            '3 1' => 'M-size RAW + Standard', # (NC)
             '3 2' => 'M-size RAW + Fine',
             '3 3' => 'M-size RAW + Extra Fine',
+            '3 4' => 'M-size RAW + Light', # (NC)
+            '4 0' => 'Compressed RAW', # (NC)
+            '4 1' => 'Compressed RAW + Standard', # (NC)
+            '4 2' => 'Compressed RAW + Fine',
+            '4 3' => 'Compressed RAW + Extra Fine', # (NC)
+            '4 4' => 'Compressed RAW + Light', # (NC)
+            '5 0' => 'Compressed HQ RAW', # (NC)
+            '5 1' => 'Compressed HQ RAW + Standard', # (NC)
+            '5 2' => 'Compressed HQ RAW + Fine',
+            '5 3' => 'Compressed HQ RAW + Extra Fine', # (NC)
+            '5 4' => 'Compressed HQ RAW + Light', # (NC)
         },
     },
     0x202f => { #JR (ILCE-7RM3)

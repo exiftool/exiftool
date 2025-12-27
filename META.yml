@@ -31,5 +31,5 @@ recommends:
   Time::HiRes: '0'
 requires:
   perl: '5.004'
-version: '13.44'
+version: '13.45'
 x_serialization_backend: 'CPAN::Meta::YAML version 0.018'

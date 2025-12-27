@@ -15,7 +15,7 @@ package Image::ExifTool::NikonCustom;
 use strict;
 use vars qw($VERSION @ISA @EXPORT_OK %buttonsZ8 %buttonsZ9);
 
-$VERSION = '1.27';
+$VERSION = '1.28';
 
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(%buttonsZ8 %buttonsZ9);
@@ -142,7 +142,7 @@ my %buttonsCommonZ8Z9 = (  #button roles shared by the Z8 & Z9.  Assigments bega
         %buttonsCommonZ8Z9,
         116 => 'Save and Load Power Zoom Position',
         117 => 'Cycle AF-area Mode',
-        118 => 'Raw Processing (Current)',  #118-131 are Playback Retouch options
+        118 => 'Raw Processing (Current)',  #118-131 and 135 are Playback Retouch options
         119 => 'Raw Processing (Multiple)',
         120 => 'Trim',
         121 => 'Resize (Current)',
@@ -156,6 +156,9 @@ my %buttonsCommonZ8Z9 = (  #button roles shared by the Z8 & Z9.  Assigments bega
         129 => 'Lighten',
         130 => 'Darken',
         131 => 'Motion Blend',
+        133 => 'Focus Limiter',
+        134 => 'Cycle Subject Detection Options',
+        135 => 'Jump To Source Image',
     },
 );
 my %buttonsZ6III= (

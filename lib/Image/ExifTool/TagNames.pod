@@ -143,6 +143,7 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
                InfiRayMixMode                   InfiRay MixMode
                DJI_DTAT                         no
   'APP7'       Pentax                           Pentax
+               Ricoh                            Pentax
                Huawei                           Unknown
                Qualcomm                         Qualcomm
                InfiRayOpMode                    InfiRay OpMode
@@ -20416,7 +20417,7 @@ various Panasonic and Leica models.
 
 =head2 Pentax Tags
 
-These tags are used in Pentax/Asahi cameras.
+These tags are used in Pentax/Asahi/Ricoh cameras.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -34166,8 +34167,8 @@ Other tags are extracted with the Unknown option.
 =head2 Kandao Tags
 
 Tags extracted from Kandao KVAR files and the 'kvar', 'kfix' and 'kstb'
-atoms in Kandao MP4 videos, and have a family 1 group name of KVAR, KFIX or
-KSTB depending on their location.
+atoms in Kandao MP4 videos, with a family 1 group name of KVAR, KFIX or KSTB
+depending on their location.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------

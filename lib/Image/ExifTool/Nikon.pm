@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.51';
+$VERSION = '4.52';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1352,6 +1352,7 @@ my %subjectDetectionZ9 = (
     4 => 'Vehicles',
     5 => 'Birds',
     6 => 'Airplanes',
+    7 => 'Faces',               #introduced with Z9 firmware 5.30 as an Auto Capture option
 );
 
 my %timeZoneZ9 = (
@@ -4848,17 +4849,17 @@ my %base64coord = (
     },
     0x31 => [
     {
-        Name => 'FocusPositionVertical',   # 209/233 focus point cameras
+        Name => 'FocusPositionVertical',    # 209/233 focus point cameras
         Condition => '$$self{Model} =~ /^NIKON (Z 30|Z 50|Z fc)\b/i and $$self{AFAreaYPosition}',   #models Z30, Z50, Zfc
         ValueConv => 'int($$self{AFAreaYPosition} / 286 )',      #divisor is an estimate (chosen to cause center point to report 'C')
         PrintConv => sub { my ($val) = @_; PrintAFPointsUpDown($val, 11 ) },
     },{
-        Name => 'FocusPositionVertical',  #273/299 focus point cameras
+        Name => 'FocusPositionVertical',    # 273/299 focus point cameras
         Condition => '$$self{Model} =~ /^NIKON (Z 5|Z 6|Z 6_2|D780)\b/i and $$self{AFAreaYPosition}',   #models Z5, Z6, Z6ii, D780
         ValueConv => 'int($$self{AFAreaYPosition} / 286 )',     #divisor is an estimate (chosen to cause center point to report 'C')
         PrintConv => sub { my ($val) = @_; PrintAFPointsUpDown($val, 13 ) },
     },{
-        Name => 'FocusPositionVertical',   #405/493 focus point cameras
+        Name => 'FocusPositionVertical',    # 405/493 focus point cameras
         Condition => '$$self{Model} =~ /^NIKON (Z 7|Z 7_2)\b/i and $$self{AFAreaYPosition}',   #models Z7/Z7ii
         ValueConv => 'int($$self{AFAreaYPosition} / 292 )',     #divisor is the measured vertical pixel separation between adjacent points
         PrintConv => sub { my ($val) = @_; PrintAFPointsUpDown($val, 17 ) },
@@ -9346,12 +9347,9 @@ my %nikonFocalConversions = (
     106 => {
         Name => 'AutoCaptureCriteriaSubjectType',
         Condition => '$$self{AutoCapturedFrame} and $$self{AutoCapturedFrame} ne 0',
-        PrintConv => {
-            0 => 'Auto (all)',
-            1 => 'People',
-            2 => 'Animals',
-            3 => 'Vehicle'
-        },
+        ValueConv => '$val + 1',    # change value range to align with %subjectDetectionZ9 
+        ValueConvInv => '$val - 1',
+        PrintConv => \%subjectDetectionZ9,
     },
 );
 

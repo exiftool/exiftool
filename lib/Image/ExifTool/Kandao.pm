@@ -41,8 +41,8 @@ my %format = (
     VARS => { NO_LOOKUP => 1 },
     NOTES => q{
         Tags extracted from Kandao KVAR files and the 'kvar', 'kfix' and 'kstb'
-        atoms in Kandao MP4 videos, and have a family 1 group name of KVAR, KFIX or
-        KSTB depending on their location.
+        atoms in Kandao MP4 videos, with a family 1 group name of KVAR, KFIX or KSTB
+        depending on their location.
     },
     PROCESS_PROC => \&ProcessKandao,
 #

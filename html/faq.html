@@ -1427,7 +1427,7 @@ add the <code>-F</code> option to the command.  See <a href='#Q15'>FAQ 15</a>
 for details.  For example, to rebuild the EXIF only and fix the MakerNote
 offsets you could do this:
 
-<pre>exiftool -exif:all= -tagsfromfile @ -exif:all -unsafe -thumbnailimage -F bad.jpg
+<pre>exiftool -exif:all= -tagsfromfile @ -exif:all -unsafe -F bad.jpg
 </pre>
 
 <b>Advanced</b>: The byte order of the newly created EXIF is set by the value of
@@ -1854,7 +1854,7 @@ certain commands, but may be suppressed by adding
 <code>-api "NoWarning=No writable tags"</code> to the command if desired.</blockquote>
 
 <hr>
-<i>Last revised Jul 23, 2025</i>
+<i>Last revised Dec 25, 2025</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

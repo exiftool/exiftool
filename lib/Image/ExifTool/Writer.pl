@@ -1304,8 +1304,9 @@ sub SetNewValuesFromFile($$;@)
                     IgnoreTags ImageHashType KeepUTCTime Lang LargeFileSupport
                     LigoGPSScale ListItem ListSep MDItemTags MissingTagValue NoPDFList
                     NoWarning Password PrintConv QuickTimeUTC RequestTags SaveFormat
-                    SavePath ScanForXMP StructFormat SystemTags TimeZone Unknown UserParam
-                    Validate WindowsLongPath WindowsWideFile XAttrTags XMPAutoConv))
+                    SavePath ScanForXMP StructFormat SystemTags SystemTimeRes TimeZone
+                    Unknown UserParam Validate WindowsLongPath WindowsWideFile XAttrTags
+                    XMPAutoConv))
         {
             $srcExifTool->Options($_ => $$options{$_});
         }
@@ -3846,7 +3847,9 @@ sub GetNewValueHash($$;$$$$)
             # QuickTime and All are special cases because all group1 tags may be updated at once
             last if $$nvHash{WriteGroup} =~ /^(QuickTime|All)$/;
             # replace existing entry if WriteGroup is 'All' (avoids confusion of forum10349)
-            last if $$tagInfo{WriteGroup} and $$tagInfo{WriteGroup} eq 'All';
+            #last if $$tagInfo{WriteGroup} and $$tagInfo{WriteGroup} eq 'All'; # (didn't work for forum17770)
+            # forum17770 patch (also handles case where "EXIF" is specified as a write group)
+            last if $writeGroup eq 'All' or $$nvHash{WriteGroup} eq 'EXIF' and $writeGroup =~ /IFD/;
             $nvHash = $$nvHash{Next};
         }
     }

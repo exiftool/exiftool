@@ -1068,6 +1068,13 @@ effect as a value of 0 for options with numerical values.</p>
     FileInodeNumber, FileHardLinks, FileUserID, FileGroupID, FileDeviceID,
     FileBlockSize and FileBlockCount.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
+<tr id="SystemTimeRes"><td>SystemTimeRes</td><td>Number of digits in sub-seconds
+    for system times and some other epoch times.  A value of 0 rounds to the
+    nearest second.  Negative values cause trailing zeros to be removed.  eg) A
+    value of <code>-6</code> returns system times to 6 decimal places with
+    trailing zeros removed. Note that round-off errors may appear starting at
+    the 6th decimal place for some time formats.</td>
+    <td align=center>Any integer</td><td align=center>0</td></tr>
 <tr id="TextOut"><td>TextOut</td><td>Output file for Verbose and HtmlDump options.</td>
     <td align=center>File reference</td><td align=center>\*STDOUT</td></tr>
 <tr id="TimeZone"><td>TimeZone</td><td>Set the time zone for local date/time values. The

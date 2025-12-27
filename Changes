@@ -7,6 +7,20 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.44. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Dec. 26, 2025 - Version 13.45
+
+  - Added a number of new values for some Sony tags (thanks Milos Komarcevic)
+  - Added a few new button functions for the Nikon Z9 (thanks Warren Hatch)
+  - Added some Nikon subject detection values (thanks Warren Hatch)
+  - Added a new Canon SubjectSwitching value
+  - Decode Ricoh APP7 maker notes
+  - Patched to allow a specific PreviewImage to be written to a DNG file
+    containing multiple previews
+  - Fixed minor error when writing some DJI DNG files
+  - Fixed bug reading large Protobuf integers on 32-bit systems (github #373)
+  - API Changes:
+      - Added SystemTimeRes option
+
 Dec. 15, 2025 - Version 13.44 (production release)
 
   - Added read support for Kandao KVAR files
@@ -15,7 +29,7 @@ Dec. 15, 2025 - Version 13.44 (production release)
   - Added a few new Matroska tags
   - Added a few values related to the new RAW file types for the Sony ILCE-7M5
     (thanks Milos Komarcevic)
-  - Decode a few new PhaseOne tags ( (github #372)
+  - Decode a few new PhaseOne tags (github #372)
   - Decode timed GPS and other metadata from Kandao MP4 videos
   - Improvements to family 1 and 5 groups for tags in Matroska videos, and
     prioritize top-level tags when duplicates exist

@@ -2124,6 +2124,7 @@ sub GetImageInfo($$)
         return;
     }
     # determine the name of the source file based on the original input file name
+    my $unicodeTempPath;  # temp file path if using Unicode surrogate workaround
     if (@srcFmt) {
         my ($fmt, $first);
         foreach $fmt (@srcFmt) {
@@ -2139,6 +2140,14 @@ sub GetImageInfo($$)
         $et->Options(UserParam => "OriginalFileName#=$f");
     } else {
         $file = $orig;
+    }
+    # Handle files with problematic Unicode names on Windows (surrogate characters)
+    if ($^O eq 'MSWin32' and Image::ExifTool::HasNonASCII($file) and not $et->Exists($file)) {
+        my ($safePath, $isTempCopy) = $et->GetSafeFilePath($file);
+        if ($safePath ne $file and ($et->Exists($safePath) or $isTempCopy)) {
+            $unicodeTempPath = $safePath if $isTempCopy;
+            $file = $safePath;
+        }
     }
     # set alternate file names
     foreach $g8 (sort keys %altFile) {
@@ -2272,6 +2281,18 @@ sub GetImageInfo($$)
         SetImageInfo($et, $file, $orig);
         $info = $et->GetInfo('Warning', 'Error');
         PrintErrors($et, $info, $file);
+        # Restore temp file to original location if using Unicode workaround
+        if (defined $unicodeTempPath) {
+            if (not $info->{Error}) {
+                unless ($et->RestoreFromTempCopy($unicodeTempPath)) {
+                    Warn "Error: Failed to restore file with Unicode name\n";
+                }
+            } else {
+                # Clean up temp file on error
+                unlink $unicodeTempPath if -e $unicodeTempPath;
+                $et->CleanupTempFiles();
+            }
+        }
         # close output text file if necessary
         if (defined $outfile) {
             undef $tmpText;
@@ -3098,6 +3119,11 @@ TAG:    foreach $tag (@foundTags) {
             $et->Unlink($outfile) unless $append; # don't keep empty output files
         }
         undef $comma;
+    }
+    # Clean up temp file if used for reading (not writing)
+    if (defined $unicodeTempPath) {
+        unlink $unicodeTempPath if -e $unicodeTempPath;
+        $et->CleanupTempFiles();
     }
     ++$count;
 }
@@ -4299,8 +4325,30 @@ sub ScanDir($$;$)
                 if ($evalWarning) {
                     chomp $evalWarning;
                     $evalWarning =~ s/ at .*//s;
-                    Warning($et,"[Win32::FindFile] $evalWarning - $dir");
-                    $winSurrogate = 1 if $evalWarning =~ /surrogate/;
+                    # Try short path fallback for Unicode surrogate issues
+                    if ($evalWarning =~ /surrogate/ and Image::ExifTool::HasNonASCII($dir)) {
+                        my $shortDir = Image::ExifTool::GetShortPathW($dir);
+                        if (defined $shortDir and $shortDir ne $dir) {
+                            undef $evalWarning;
+                            undef @fileList;
+                            eval {
+                                @fileList = Win32::FindFile::ReadDir($shortDir);
+                                $_ = $_->cFileName foreach @fileList;
+                            };
+                            $@ and $evalWarning = $@;
+                            unless ($evalWarning) {
+                                $et->Options(CharsetFileName => 'UTF8');
+                                $utf8Name = 1;
+                                $done = 1;
+                            }
+                        }
+                    }
+                    if ($evalWarning) {
+                        chomp $evalWarning;
+                        $evalWarning =~ s/ at .*//s;
+                        Warning($et,"[Win32::FindFile] $evalWarning - $dir");
+                        $winSurrogate = 1 if $evalWarning =~ /surrogate/;
+                    }
                 } else {
                     $et->Options(CharsetFileName => 'UTF8');    # now using UTF8
                     $utf8Name = 1;  # ReadDir returns UTF-8 file names
@@ -4445,10 +4493,27 @@ sub FindFileWindows($$)
     if ($evalWarning) {
         chomp $evalWarning;
         $evalWarning =~ s/ at .*//s;
-        Warn "Error: [Win32::FindFile] $evalWarning - $wildfile\n";
-        undef @files;
-        EFile($wildfile);
-        ++$countBad;
+        
+        # Fallback: try 8.3 short path for files with non-ASCII characters (Unicode surrogate workaround)
+        my $usedFallback = 0;
+        if (not HasWildcards($wildfile) and Image::ExifTool::HasNonASCII($wildfile)) {
+            my ($safePath, $isTempCopy) = $et->GetSafeFilePath($wildfile);
+            if (defined $safePath and $safePath ne $wildfile) {
+                if (-e $safePath or $isTempCopy) {
+                    push @files, $safePath;
+                    $utf8FileName{$safePath} = 1;
+                    $usedFallback = 1;
+                    undef $evalWarning;
+                }
+            }
+        }
+        
+        if ($evalWarning) {
+            Warn "Error: [Win32::FindFile] $evalWarning - $wildfile\n";
+            undef @files;
+            EFile($wildfile);
+            ++$countBad;
+        }
     }
     return @files;
 }

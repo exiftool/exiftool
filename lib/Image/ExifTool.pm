@@ -137,6 +137,14 @@ sub DoEscape($$);
 sub ConvertFileSize($;$);
 sub ParseArguments($;@); #(defined in attempt to avoid mod_perl problem)
 sub ReadValue($$$;$$$);
+# Windows Unicode surrogate filename support
+sub HasNonASCII($);
+sub GetShortPathW($);
+sub GetSafeFilePath($$);
+sub CopyFileWide($$$);
+sub CreateTempCopy($$);
+sub RestoreFromTempCopy($$);
+sub CleanupTempFiles($);
 
 # list of main tag tables to load in LoadAllTables() (sub-tables are recursed
 # automatically).  Note: They will appear in this order in the documentation
@@ -2349,6 +2357,14 @@ sub new
     $self->SetNewGroups(@defaultWriteGroups);
 
     return $self;
+}
+
+#------------------------------------------------------------------------------
+# Object destructor - clean up any temporary files
+sub DESTROY
+{
+    my $self = shift;
+    $self->CleanupTempFiles() if $$self{UNICODE_TEMP_MAP};
 }
 
 #------------------------------------------------------------------------------
@@ -4737,6 +4753,8 @@ sub EncodeFileName($$;$)
 # relative path on other drives  EG: z:abc.jpg (working dir on z: z:\foto called from c:\foto)
 # Wide chars                     EG: Chars that need UTF8.
 my $k32GetFullPathName;
+# Windows API handles for Unicode surrogate filename support
+my ($k32GetShortPathNameW, $k32CopyFileW);
 sub WindowsLongPath($$)
 {
     my ($self, $path) = @_;
@@ -4800,6 +4818,196 @@ sub WindowsLongPath($$)
 }
 
 #------------------------------------------------------------------------------
+# Check if string contains non-ASCII characters (bytes >= 0x80)
+# Inputs: 0) string
+# Returns: 1 if contains non-ASCII, 0 otherwise
+sub HasNonASCII($)
+{
+    my $str = shift;
+    return 0 unless defined $str and length $str;
+    return $str =~ /[\x80-\xff]/ ? 1 : 0;
+}
+
+#------------------------------------------------------------------------------
+# Get Windows 8.3 short path using Win32 API
+# Inputs: 0) file path (CharsetFileName encoding, typically UTF-8)
+# Returns: short path on success, undef on failure
+# Note: This provides a workaround for Unicode surrogate characters that
+#       Win32::FindFile cannot handle properly
+sub GetShortPathW($)
+{
+    my $path = shift;
+    return undef unless $^O eq 'MSWin32';
+    return undef unless eval { require Win32::API };
+    return undef unless eval { require Image::ExifTool::Charset };
+
+    unless ($k32GetShortPathNameW) {
+        $k32GetShortPathNameW = Win32::API->new('KERNEL32', 'GetShortPathNameW', 'PPN', 'N');
+        return undef unless $k32GetShortPathNameW;
+    }
+
+    # Convert path to UTF-16LE for Windows API
+    my $uni = Image::ExifTool::Charset::Decompose(undef, $path, 'UTF8');
+    return undef unless $uni and @$uni;
+    my $widePath = pack('v*', @$uni, 0);  # null-terminated UTF-16LE
+
+    # First call to get required buffer size
+    my $reqSize = $k32GetShortPathNameW->Call($widePath, 0, 0);
+    return undef unless $reqSize > 0;
+
+    # Second call to get the actual short path
+    my $buffer = "\0" x ($reqSize * 2 + 2);
+    my $result = $k32GetShortPathNameW->Call($widePath, $buffer, $reqSize + 1);
+    return undef unless $result > 0 && $result <= $reqSize;
+
+    # Convert result back from UTF-16LE
+    my @chars = unpack('v*', substr($buffer, 0, $result * 2));
+    return Image::ExifTool::Charset::Recompose(undef, \@chars, 'UTF8');
+}
+
+#------------------------------------------------------------------------------
+# Copy file using Windows wide-character API (handles Unicode surrogates)
+# Inputs: 0) source path (UTF-8), 1) dest path (UTF-8), 2) fail if exists flag
+# Returns: 1 on success, 0 on failure
+sub CopyFileWide($$$)
+{
+    my ($src, $dst, $failIfExists) = @_;
+    return 0 unless $^O eq 'MSWin32';
+    return 0 unless eval { require Win32::API };
+    return 0 unless eval { require Image::ExifTool::Charset };
+
+    unless ($k32CopyFileW) {
+        $k32CopyFileW = Win32::API->new('KERNEL32', 'CopyFileW', 'PPI', 'I');
+        return 0 unless $k32CopyFileW;
+    }
+
+    my $uniSrc = Image::ExifTool::Charset::Decompose(undef, $src, 'UTF8');
+    my $uniDst = Image::ExifTool::Charset::Decompose(undef, $dst, 'UTF8');
+    return 0 unless $uniSrc and $uniDst and @$uniSrc and @$uniDst;
+
+    my $wideSrc = pack('v*', @$uniSrc, 0);
+    my $wideDst = pack('v*', @$uniDst, 0);
+
+    return $k32CopyFileW->Call($wideSrc, $wideDst, $failIfExists ? 1 : 0) ? 1 : 0;
+}
+
+#------------------------------------------------------------------------------
+# Create temporary copy of file with problematic Unicode name
+# Inputs: 0) ExifTool ref, 1) original file path (CharsetFileName encoding)
+# Returns: temp file path on success, undef on failure
+# Note: Stores mapping in $$self{UNICODE_TEMP_MAP} for restoration
+sub CreateTempCopy($$)
+{
+    my ($self, $origPath) = @_;
+    return undef unless $^O eq 'MSWin32';
+    return undef unless HasNonASCII($origPath);
+
+    # Get temp directory
+    my $tempDir = $ENV{TEMP} || $ENV{TMP} || 'C:/Windows/Temp';
+    $tempDir =~ s/\\/\//g;
+    $tempDir =~ s/\/$//;
+
+    # Create unique safe filename (ASCII only)
+    my ($ext) = ($origPath =~ /(\.[^.\/\\]+)$/);
+    $ext = '' unless defined $ext;
+    $ext =~ s/[\x80-\xff]+//g;  # Remove non-ASCII from extension
+
+    my $safeName;
+    if (eval { require Digest::MD5 }) {
+        $safeName = 'et_' . substr(Digest::MD5::md5_hex($origPath . $$ . time()), 0, 16) . $ext;
+    } else {
+        $safeName = sprintf('et_%08x%08x%s', $$, time(), $ext);
+    }
+
+    my $tempPath = "$tempDir/$safeName";
+
+    # Copy using wide API
+    if (CopyFileWide($origPath, $tempPath, 1)) {
+        $$self{UNICODE_TEMP_MAP} = {} unless $$self{UNICODE_TEMP_MAP};
+        $$self{UNICODE_TEMP_MAP}{$tempPath} = $origPath;
+        return $tempPath;
+    }
+
+    return undef;
+}
+
+#------------------------------------------------------------------------------
+# Restore file from temp copy back to original location
+# Inputs: 0) ExifTool ref, 1) temp file path
+# Returns: 1 on success, 0 on failure
+sub RestoreFromTempCopy($$)
+{
+    my ($self, $tempPath) = @_;
+    return 0 unless $$self{UNICODE_TEMP_MAP} and exists $$self{UNICODE_TEMP_MAP}{$tempPath};
+
+    my $origPath = $$self{UNICODE_TEMP_MAP}{$tempPath};
+    my $success = 0;
+
+    # Try to delete original using Win32API::File if available
+    if (eval { require Win32API::File } and eval { require Image::ExifTool::Charset }) {
+        my $uni = Image::ExifTool::Charset::Decompose(undef, $origPath, 'UTF8');
+        if ($uni and @$uni) {
+            my $widePath = pack('v*', @$uni, 0);
+            eval { Win32API::File::DeleteFileW($widePath) };
+        }
+    }
+
+    # Copy temp back to original location
+    $success = CopyFileWide($tempPath, $origPath, 0);
+
+    # Clean up temp file
+    unlink $tempPath if -e $tempPath;
+    delete $$self{UNICODE_TEMP_MAP}{$tempPath};
+
+    return $success;
+}
+
+#------------------------------------------------------------------------------
+# Clean up all remaining temp files (call on cleanup/destruction)
+# Inputs: 0) ExifTool ref
+sub CleanupTempFiles($)
+{
+    my $self = shift;
+    return unless $$self{UNICODE_TEMP_MAP};
+    foreach my $tempPath (keys %{$$self{UNICODE_TEMP_MAP}}) {
+        unlink $tempPath if -e $tempPath;
+    }
+    delete $$self{UNICODE_TEMP_MAP};
+}
+
+#------------------------------------------------------------------------------
+# Get safe file path - tries short path first, then temp copy as fallback
+# Inputs: 0) ExifTool ref, 1) original file path (CharsetFileName encoding)
+# Returns: list of (safe path, is_temp_copy flag)
+#          safe path may be: original (if accessible), short path, or temp copy path
+# Note: If temp copy is created, caller is responsible for cleanup via RestoreFromTempCopy
+#       or CleanupTempFiles
+sub GetSafeFilePath($$)
+{
+    my ($self, $path) = @_;
+    return ($path, 0) unless $^O eq 'MSWin32';
+    return ($path, 0) unless HasNonASCII($path);
+
+    # First try: 8.3 short path (fast, no copy needed)
+    my $shortPath = GetShortPathW($path);
+    if (defined $shortPath and length($shortPath) > 0 and $shortPath ne $path) {
+        # Verify the short path works
+        if (-e $shortPath or -d $shortPath) {
+            return ($shortPath, 0);
+        }
+    }
+
+    # Second try: create temp copy (slower, requires cleanup)
+    my $tempPath = $self->CreateTempCopy($path);
+    if (defined $tempPath) {
+        return ($tempPath, 1);
+    }
+
+    # Fallback: return original (may fail, but let caller handle error)
+    return ($path, 0);
+}
+
+#------------------------------------------------------------------------------
 # Modified perl open() routine to properly handle special characters in file names
 # Inputs: 0) ExifTool ref, 1) filehandle, 2) filename,
 #         3) mode: '<' or undef = read, '>' = write, '+<' = update
@@ -4809,6 +5017,7 @@ sub WindowsLongPath($$)
 sub Open($*$;$)
 {
     my ($self, $fh, $file, $mode) = @_;
+    my $origFile = $file;  # save original for fallback
 
     $file =~ s/^([\s&])/.\/$1/; # protect leading whitespace or ampersand
     # default to read mode ('<') unless input is a trusted pipe
@@ -4843,7 +5052,17 @@ sub Open($*$;$)
                 }
             };
             my $wh = eval { Win32API::File::CreateFileW($file, $access, $share, [], $create, 0, []) };
-            return undef unless $wh;
+            unless ($wh) {
+                # Fallback: try short path for Unicode surrogate filenames
+                if (HasNonASCII($origFile)) {
+                    my $shortPath = GetShortPathW($origFile);
+                    if (defined $shortPath and $shortPath ne $origFile and -e $shortPath) {
+                        # Use standard open with short path
+                        return open $fh, "$mode $shortPath\0";
+                    }
+                }
+                return undef;
+            }
             my $fd = eval { Win32API::File::OsFHandleOpenFd($wh, 0) };
             if (not defined $fd or $fd < 0) {
                 eval { Win32API::File::CloseHandle($wh) };
@@ -4866,6 +5085,7 @@ sub Open($*$;$)
 sub Exists($$;$)
 {
     my ($self, $file, $writing) = @_;
+    my $origFile = $file;  # save original for fallback
 
     if ($self->EncodeFileName($file)) {
         local $SIG{'__WARN__'} = \&SetWarning;
@@ -4873,8 +5093,18 @@ sub Exists($$;$)
                         Win32API::File::GENERIC_READ(),
                         Win32API::File::FILE_SHARE_READ(), [],
                         Win32API::File::OPEN_EXISTING(), 0, []) };
-        return 0 unless $wh;
-        eval { Win32API::File::CloseHandle($wh) };
+        if ($wh) {
+            eval { Win32API::File::CloseHandle($wh) };
+            return 1;
+        }
+        # Fallback: try short path for Unicode surrogate filenames
+        if (HasNonASCII($origFile)) {
+            my $shortPath = GetShortPathW($origFile);
+            if (defined $shortPath and $shortPath ne $origFile) {
+                return 1 if -e $shortPath;
+            }
+        }
+        return 0;
     } elsif ($writing) {
         # (named pipes already exist, but we pretend that they don't
         #  so we will be able to write them, so test with for pipe -p)
@@ -4882,7 +5112,6 @@ sub Exists($$;$)
     } else {
         return(-e $file);
     }
-    return 1;
 }
 
 #------------------------------------------------------------------------------
@@ -4892,15 +5121,26 @@ sub Exists($$;$)
 sub IsDirectory($$)
 {
     my ($et, $file) = @_;
+    my $origFile = $file;  # save original for fallback
+
     if ($et->EncodeFileName($file)) {
         local $SIG{'__WARN__'} = \&SetWarning;
         my $attrs = eval { Win32API::File::GetFileAttributesW($file) };
         my $dirBit = eval { Win32API::File::FILE_ATTRIBUTE_DIRECTORY() } || 0;
-        return 1 if $attrs and $attrs != 0xffffffff and $attrs & $dirBit;
+        if ($attrs and $attrs != 0xffffffff and $attrs & $dirBit) {
+            return 1;
+        }
+        # Fallback: try short path for Unicode surrogate filenames
+        if (HasNonASCII($origFile)) {
+            my $shortPath = GetShortPathW($origFile);
+            if (defined $shortPath and $shortPath ne $origFile) {
+                return 1 if -d $shortPath;
+            }
+        }
+        return 0;
     } else {
         return -d $file;
     }
-    return 0;
 }
 
 #------------------------------------------------------------------------------

@@ -4839,17 +4839,20 @@ sub GetShortPathW($)
     my $path = shift;
     return undef unless $^O eq 'MSWin32';
     return undef unless eval { require Win32::API };
-    return undef unless eval { require Image::ExifTool::Charset };
+    return undef unless eval { require Encode };
 
     unless ($k32GetShortPathNameW) {
         $k32GetShortPathNameW = Win32::API->new('KERNEL32', 'GetShortPathNameW', 'PPN', 'N');
         return undef unless $k32GetShortPathNameW;
     }
 
-    # Convert path to UTF-16LE for Windows API
-    my $uni = Image::ExifTool::Charset::Decompose(undef, $path, 'UTF8');
-    return undef unless $uni and @$uni;
-    my $widePath = pack('v*', @$uni, 0);  # null-terminated UTF-16LE
+    # Ensure path is decoded to Perl's internal format if it's UTF-8 bytes
+    if (!utf8::is_utf8($path) && $path =~ /[\x80-\xff]/) {
+        $path = Encode::decode('UTF-8', $path);
+    }
+
+    # Convert path to UTF-16LE for Windows API (properly handles surrogates)
+    my $widePath = Encode::encode('UTF-16LE', $path) . "\0\0";  # null-terminated
 
     # First call to get required buffer size
     my $reqSize = $k32GetShortPathNameW->Call($widePath, 0, 0);
@@ -4860,9 +4863,9 @@ sub GetShortPathW($)
     my $result = $k32GetShortPathNameW->Call($widePath, $buffer, $reqSize + 1);
     return undef unless $result > 0 && $result <= $reqSize;
 
-    # Convert result back from UTF-16LE
-    my @chars = unpack('v*', substr($buffer, 0, $result * 2));
-    return Image::ExifTool::Charset::Recompose(undef, \@chars, 'UTF8');
+    # Convert result back from UTF-16LE to UTF-8
+    my $shortPath = Encode::decode('UTF-16LE', substr($buffer, 0, $result * 2));
+    return Encode::encode('UTF-8', $shortPath);
 }
 
 #------------------------------------------------------------------------------
@@ -4874,19 +4877,24 @@ sub CopyFileWide($$$)
     my ($src, $dst, $failIfExists) = @_;
     return 0 unless $^O eq 'MSWin32';
     return 0 unless eval { require Win32::API };
-    return 0 unless eval { require Image::ExifTool::Charset };
+    return 0 unless eval { require Encode };
 
     unless ($k32CopyFileW) {
         $k32CopyFileW = Win32::API->new('KERNEL32', 'CopyFileW', 'PPI', 'I');
         return 0 unless $k32CopyFileW;
     }
 
-    my $uniSrc = Image::ExifTool::Charset::Decompose(undef, $src, 'UTF8');
-    my $uniDst = Image::ExifTool::Charset::Decompose(undef, $dst, 'UTF8');
-    return 0 unless $uniSrc and $uniDst and @$uniSrc and @$uniDst;
+    # Decode UTF-8 to Perl internal format if needed
+    if (!utf8::is_utf8($src) && $src =~ /[\x80-\xff]/) {
+        $src = Encode::decode('UTF-8', $src);
+    }
+    if (!utf8::is_utf8($dst) && $dst =~ /[\x80-\xff]/) {
+        $dst = Encode::decode('UTF-8', $dst);
+    }
 
-    my $wideSrc = pack('v*', @$uniSrc, 0);
-    my $wideDst = pack('v*', @$uniDst, 0);
+    # Convert to UTF-16LE with proper surrogate handling
+    my $wideSrc = Encode::encode('UTF-16LE', $src) . "\0\0";
+    my $wideDst = Encode::encode('UTF-16LE', $dst) . "\0\0";
 
     return $k32CopyFileW->Call($wideSrc, $wideDst, $failIfExists ? 1 : 0) ? 1 : 0;
 }
@@ -4944,12 +4952,15 @@ sub RestoreFromTempCopy($$)
     my $success = 0;
 
     # Try to delete original using Win32API::File if available
-    if (eval { require Win32API::File } and eval { require Image::ExifTool::Charset }) {
-        my $uni = Image::ExifTool::Charset::Decompose(undef, $origPath, 'UTF8');
-        if ($uni and @$uni) {
-            my $widePath = pack('v*', @$uni, 0);
-            eval { Win32API::File::DeleteFileW($widePath) };
+    if (eval { require Win32API::File } and eval { require Encode }) {
+        # Decode UTF-8 to Perl internal format if needed
+        my $pathToDelete = $origPath;
+        if (!utf8::is_utf8($pathToDelete) && $pathToDelete =~ /[\x80-\xff]/) {
+            $pathToDelete = Encode::decode('UTF-8', $pathToDelete);
         }
+        # Convert to UTF-16LE with proper surrogate handling
+        my $widePath = Encode::encode('UTF-16LE', $pathToDelete) . "\0\0";
+        eval { Win32API::File::DeleteFileW($widePath) };
     }
 
     # Copy temp back to original location
@@ -4991,8 +5002,9 @@ sub GetSafeFilePath($$)
     # First try: 8.3 short path (fast, no copy needed)
     my $shortPath = GetShortPathW($path);
     if (defined $shortPath and length($shortPath) > 0 and $shortPath ne $path) {
-        # Verify the short path works
-        if (-e $shortPath or -d $shortPath) {
+        # Verify the short path works and doesn't contain non-ASCII
+        # (if it still has non-ASCII, 8.3 generation didn't help)
+        if (not HasNonASCII($shortPath) and (-e $shortPath or -d $shortPath)) {
             return ($shortPath, 0);
         }
     }
@@ -5002,6 +5014,12 @@ sub GetSafeFilePath($$)
     if (defined $tempPath) {
         return ($tempPath, 1);
     }
+
+    # Both fallbacks failed - emit warning about 8.3 being potentially disabled
+    $self->Warn('Cannot access file with Unicode surrogate characters. ' .
+        'Windows 8.3 short name generation may be disabled for this volume. ' .
+        'Enable via "fsutil 8dot3name set <volume> 0" or check registry key ' .
+        'NtfsDisable8dot3NameCreation. See: https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file#short-vs-long-names');
 
     # Fallback: return original (may fail, but let caller handle error)
     return ($path, 0);
@@ -5056,10 +5074,17 @@ sub Open($*$;$)
                 # Fallback: try short path for Unicode surrogate filenames
                 if (HasNonASCII($origFile)) {
                     my $shortPath = GetShortPathW($origFile);
-                    if (defined $shortPath and $shortPath ne $origFile and -e $shortPath) {
+                    # Verify short path is ASCII-safe (if still non-ASCII, 8.3 didn't help)
+                    if (defined $shortPath and $shortPath ne $origFile and
+                        not HasNonASCII($shortPath) and -e $shortPath)
+                    {
                         # Use standard open with short path
                         return open $fh, "$mode $shortPath\0";
                     }
+                    # Short path fallback failed - warn about 8.3 being potentially disabled
+                    $self->Warn('Cannot access file with Unicode surrogate characters. ' .
+                        'Windows 8.3 short name generation may be disabled. ' .
+                        'Enable via "fsutil 8dot3name set <volume> 0"');
                 }
                 return undef;
             }
@@ -5100,7 +5125,8 @@ sub Exists($$;$)
         # Fallback: try short path for Unicode surrogate filenames
         if (HasNonASCII($origFile)) {
             my $shortPath = GetShortPathW($origFile);
-            if (defined $shortPath and $shortPath ne $origFile) {
+            # Verify short path is ASCII-safe (if still non-ASCII, 8.3 didn't help)
+            if (defined $shortPath and $shortPath ne $origFile and not HasNonASCII($shortPath)) {
                 return 1 if -e $shortPath;
             }
         }
@@ -5133,7 +5159,8 @@ sub IsDirectory($$)
         # Fallback: try short path for Unicode surrogate filenames
         if (HasNonASCII($origFile)) {
             my $shortPath = GetShortPathW($origFile);
-            if (defined $shortPath and $shortPath ne $origFile) {
+            # Verify short path is ASCII-safe (if still non-ASCII, 8.3 didn't help)
+            if (defined $shortPath and $shortPath ne $origFile and not HasNonASCII($shortPath)) {
                 return 1 if -d $shortPath;
             }
         }

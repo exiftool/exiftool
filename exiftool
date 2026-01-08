@@ -2142,7 +2142,9 @@ sub GetImageInfo($$)
         $file = $orig;
     }
     # Handle files with problematic Unicode names on Windows (surrogate characters)
-    if ($^O eq 'MSWin32' and Image::ExifTool::HasNonASCII($file) and not $et->Exists($file)) {
+    # Note: GetSafeFilePath handles existence checking internally, so we don't need
+    # to check Exists() here - it will try short path first, then temp copy if needed
+    if ($^O eq 'MSWin32' and Image::ExifTool::HasNonASCII($file)) {
         my $opType = $isWriting ? 'write' : 'read';
         my ($safePath, $isTempCopy) = $et->GetSafeFilePath($file, $opType);
         if ($safePath ne $file and ($et->Exists($safePath) or $isTempCopy)) {
@@ -3122,9 +3124,9 @@ TAG:    foreach $tag (@foundTags) {
         undef $comma;
     }
     # Clean up temp file if used for reading (not writing)
-    if (defined $unicodeTempPath) {
-        unlink $unicodeTempPath if -e $unicodeTempPath;
-        $et->CleanupTempFiles();
+    if (defined $unicodeTempPath and not $isWriting) {
+        $et->CleanupTempCopy($unicodeTempPath);
+        undef $unicodeTempPath;
     }
     ++$count;
 }
@@ -4498,13 +4500,15 @@ sub FindFileWindows($$)
         # Fallback: try 8.3 short path for files with non-ASCII characters (Unicode surrogate workaround)
         my $usedFallback = 0;
         if (not HasWildcards($wildfile) and Image::ExifTool::HasNonASCII($wildfile)) {
-            my ($safePath, $isTempCopy) = $et->GetSafeFilePath($wildfile);
+            my ($safePath, $isTempCopy) = $et->GetSafeFilePath($wildfile, 'read');
             if (defined $safePath and $safePath ne $wildfile) {
                 if (-e $safePath or $isTempCopy) {
                     push @files, $safePath;
                     $utf8FileName{$safePath} = 1;
                     $usedFallback = 1;
                     undef $evalWarning;
+                    # Note: Temp files created here are tracked in UNICODE_TEMP_MAP
+                    # and will be cleaned up by DESTROY or when processed in GetImageInfo
                 }
             }
         }

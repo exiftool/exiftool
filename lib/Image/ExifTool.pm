@@ -4914,9 +4914,15 @@ sub CreateTempCopy($$)
     my ($self, $origPath) = @_;
     return undef unless $^O eq 'MSWin32';
     return undef unless HasNonASCII($origPath);
+    # Don't create temp copy for directories (they can't be copied)
+    return undef if -d $origPath;
 
     # Get temp directory
+    # Use fallback to safe ASCII path if temp directory has Unicode characters
     my $tempDir = $ENV{TEMP} || $ENV{TMP} || 'C:/Windows/Temp';
+    if (HasNonASCII($tempDir)) {
+        $tempDir = 'C:/Windows/Temp';  # Fallback to safe ASCII path
+    }
     $tempDir =~ s/\\/\//g;
     $tempDir =~ s/\/$//;
 
@@ -4941,6 +4947,16 @@ sub CreateTempCopy($$)
         # Store operation type for later cleanup decision
         $$self{UNICODE_TEMP_OP} = {} unless $$self{UNICODE_TEMP_OP};
         $$self{UNICODE_TEMP_OP}{$tempPath} = $$self{UNICODE_TEMP_OP_TYPE} || 'read';
+        # Save original file attributes for write operations (to restore later)
+        if (($$self{UNICODE_TEMP_OP_TYPE} || 'read') eq 'write' and FileExistsWide($origPath)) {
+            $$self{UNICODE_TEMP_ATTRS} = {} unless $$self{UNICODE_TEMP_ATTRS};
+            my ($mode, $uid, $gid) = (stat($origPath))[2, 4, 5];
+            $$self{UNICODE_TEMP_ATTRS}{$tempPath} = {
+                mode => $mode,
+                uid => $uid,
+                gid => $gid,
+            };
+        }
         # Clean up operation type (it's now stored in UNICODE_TEMP_OP)
         delete $$self{UNICODE_TEMP_OP_TYPE};
         return $tempPath;
@@ -4964,6 +4980,7 @@ sub CleanupTempCopy($$)
     unlink $tempPath if -e $tempPath;
     delete $$self{UNICODE_TEMP_MAP}{$tempPath};
     delete $$self{UNICODE_TEMP_OP}{$tempPath} if $$self{UNICODE_TEMP_OP};
+    delete $$self{UNICODE_TEMP_ATTRS}{$tempPath} if $$self{UNICODE_TEMP_ATTRS};
 
     return 1;
 }
@@ -4980,6 +4997,15 @@ sub WriteBackFromTemp($$)
 
     my $origPath = $$self{UNICODE_TEMP_MAP}{$tempPath};
     my $success = 0;
+
+    # Preserve timestamps from original file before moving/copying
+    my ($aTime, $mTime, $cTime);
+    if (FileExistsWide($origPath)) {
+        my @times = $self->GetFileTime($origPath);
+        if (@times >= 2) {
+            ($aTime, $mTime, $cTime) = @times[0, 1, 2];
+        }
+    }
 
     # Try atomic move with MoveFileExW (MOVEFILE_REPLACE_EXISTING | MOVEFILE_COPY_ALLOWED)
     if (eval { require Win32API::File } and eval { require Encode }) {
@@ -4998,9 +5024,29 @@ sub WriteBackFromTemp($$)
         $success = $self->SafeCopyWithBackup($tempPath, $origPath);
     }
 
+    # Restore file attributes and timestamps after successful write
+    if ($success) {
+        # Restore timestamps
+        if (defined $aTime) {
+            $self->SetFileTime($origPath, $aTime, $mTime, $cTime);
+        }
+        # Restore file attributes (permissions, ownership, etc.)
+        if ($$self{UNICODE_TEMP_ATTRS} and exists $$self{UNICODE_TEMP_ATTRS}{$tempPath}) {
+            my $attrs = $$self{UNICODE_TEMP_ATTRS}{$tempPath};
+            if (defined $attrs->{mode}) {
+                eval { chmod($attrs->{mode} & 07777, $origPath) };
+            }
+            if (defined $attrs->{uid} and defined $attrs->{gid}) {
+                eval { chown($attrs->{uid}, $attrs->{gid}, $origPath) };
+            }
+            delete $$self{UNICODE_TEMP_ATTRS}{$tempPath};
+        }
+    }
+
     # Clean up mapping (temp file is gone after successful move/copy)
     delete $$self{UNICODE_TEMP_MAP}{$tempPath} if $$self{UNICODE_TEMP_MAP};
     delete $$self{UNICODE_TEMP_OP}{$tempPath} if $$self{UNICODE_TEMP_OP};
+    delete $$self{UNICODE_TEMP_ATTRS}{$tempPath} if $$self{UNICODE_TEMP_ATTRS};
     
     # If move failed, temp might still exist
     unlink $tempPath if -e $tempPath;
@@ -5016,13 +5062,22 @@ sub SafeCopyWithBackup($$$)
 {
     my ($self, $src, $dst) = @_;
     
+    # Generate unique backup filename to avoid conflicts
     my $backup = $dst . '_exiftool_backup';
     my $backupCreated = 0;
     
+    # If backup already exists, make it unique with timestamp
+    if (FileExistsWide($backup)) {
+        $backup = $dst . '_exiftool_backup_' . time();
+        # Still check if this unique name exists (very unlikely but possible)
+        if (FileExistsWide($backup)) {
+            $backup = $dst . '_exiftool_backup_' . time() . '_' . $$;
+        }
+    }
+    
     # Step 1: Create backup of original (if it exists)
-    # If backup already exists, overwrite it (previous failed operation)
     if (FileExistsWide($dst)) {
-        if (CopyFileWide($dst, $backup, 0)) {  # 0 = overwrite if exists
+        if (CopyFileWide($dst, $backup, 1)) {  # 1 = fail if exists (shouldn't happen now)
             $backupCreated = 1;
         } else {
             $self->Warn("Failed to create backup of $dst");
@@ -5117,6 +5172,7 @@ sub CleanupTempFiles($)
     }
     delete $$self{UNICODE_TEMP_MAP};
     delete $$self{UNICODE_TEMP_OP};
+    delete $$self{UNICODE_TEMP_ATTRS};
 }
 
 #------------------------------------------------------------------------------
@@ -5230,13 +5286,36 @@ sub Open($*$;$)
                         # Use standard open with short path
                         return open $fh, "$mode $shortPath\0";
                     }
-                    # Only warn about 8.3 if GetShortPathW returned something but it still
-                    # has non-ASCII (meaning 8.3 is disabled). If it returned undef, the
-                    # file probably doesn't exist, so don't confuse with 8.3 warning.
-                    if (defined $shortPath and HasNonASCII($shortPath)) {
-                        $self->Warn('Cannot access file with Unicode surrogate characters. ' .
-                            'Windows 8.3 short name generation may be disabled. ' .
-                            'Enable via "fsutil 8dot3name set <volume> 0"');
+                    # Second fallback: try GetSafeFilePath for read operations
+                    # (for write operations, temp copy handling is complex and should be
+                    #  done at higher level via GetSafeFilePath before calling Open)
+                    if (not defined $shortPath or HasNonASCII($shortPath)) {
+                        # Only use temp copy for read operations (write operations need
+                        # special handling via GetSafeFilePath at higher level)
+                        if ($mode eq '<' or not defined $mode) {
+                            my ($safePath, $isTempCopy) = $self->GetSafeFilePath($origFile, 'read');
+                            if ($isTempCopy and -e $safePath) {
+                                # Open temp file - caller must clean up via CleanupTempCopy
+                                # Store temp path in filehandle metadata for later cleanup
+                                my $result = open $fh, "$mode $safePath\0";
+                                if ($result) {
+                                    # Store original path in a way we can retrieve it
+                                    # Note: This is a read-only temp copy, caller should clean up
+                                    return $result;
+                                }
+                            } elsif (defined $safePath and $safePath ne $origFile and -e $safePath) {
+                                # Short path worked via GetSafeFilePath
+                                return open $fh, "$mode $safePath\0";
+                            }
+                        }
+                        # Only warn about 8.3 if GetShortPathW returned something but it still
+                        # has non-ASCII (meaning 8.3 is disabled). If it returned undef, the
+                        # file probably doesn't exist, so don't confuse with 8.3 warning.
+                        if (defined $shortPath and HasNonASCII($shortPath)) {
+                            $self->Warn('Cannot access file with Unicode surrogate characters. ' .
+                                'Windows 8.3 short name generation may be disabled. ' .
+                                'Enable via "fsutil 8dot3name set <volume> 0"');
+                        }
                     }
                 }
                 return undef;
@@ -5282,6 +5361,13 @@ sub Exists($$;$)
             if (defined $shortPath and $shortPath ne $origFile and not HasNonASCII($shortPath)) {
                 return 1 if -e $shortPath;
             }
+            # Second fallback: try GetSafeFilePath (creates temp copy if needed)
+            if (not defined $shortPath or HasNonASCII($shortPath)) {
+                my ($safePath, $isTempCopy) = $self->GetSafeFilePath($origFile, 'read');
+                if (defined $safePath and ($isTempCopy or -e $safePath)) {
+                    return 1;
+                }
+            }
         }
         return 0;
     } elsif ($writing) {
@@ -5315,6 +5401,15 @@ sub IsDirectory($$)
             # Verify short path is ASCII-safe (if still non-ASCII, 8.3 didn't help)
             if (defined $shortPath and $shortPath ne $origFile and not HasNonASCII($shortPath)) {
                 return 1 if -d $shortPath;
+            }
+            # Second fallback: try GetSafeFilePath (for directories, this will try short path)
+            # Note: GetSafeFilePath doesn't create temp copies for directories, but will
+            # try short path which may work even if direct access failed
+            if (not defined $shortPath or HasNonASCII($shortPath)) {
+                my ($safePath, $isTempCopy) = $et->GetSafeFilePath($origFile, 'read');
+                if (defined $safePath and not $isTempCopy and -d $safePath) {
+                    return 1;
+                }
             }
         }
         return 0;

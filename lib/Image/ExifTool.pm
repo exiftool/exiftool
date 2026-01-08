@@ -139,9 +139,9 @@ sub ParseArguments($;@); #(defined in attempt to avoid mod_perl problem)
 sub ReadValue($$$;$$$);
 # Windows Unicode surrogate filename support
 sub HasNonASCII($);
-sub GetShortPathW($);
+sub GetShortPathW($;$);
 sub GetSafeFilePath($$;$);
-sub CopyFileWide($$$);
+sub CopyFileWide($$$;$);
 sub CreateTempCopy($$);
 sub CleanupTempCopy($$);
 sub WriteBackFromTemp($$);
@@ -4835,13 +4835,14 @@ sub HasNonASCII($)
 
 #------------------------------------------------------------------------------
 # Get Windows 8.3 short path using Win32 API
-# Inputs: 0) file path (CharsetFileName encoding, typically UTF-8)
+# Inputs: 0) file path (CharsetFileName encoding)
+#         1) optional charset encoding (default: UTF8, uses CharsetFileName if available)
 # Returns: short path on success, undef on failure
 # Note: This provides a workaround for Unicode surrogate characters that
 #       Win32::FindFile cannot handle properly
-sub GetShortPathW($)
+sub GetShortPathW($;$)
 {
-    my $path = shift;
+    my ($path, $charset) = @_;
     return undef unless $^O eq 'MSWin32';
     return undef unless eval { require Win32::API };
     return undef unless eval { require Encode };
@@ -4851,9 +4852,36 @@ sub GetShortPathW($)
         return undef unless $k32GetShortPathNameW;
     }
 
-    # Ensure path is decoded to Perl's internal format if it's UTF-8 bytes
-    if (!utf8::is_utf8($path) && $path =~ /[\x80-\xff]/) {
-        $path = Encode::decode('UTF-8', $path);
+    # Use provided charset or default to UTF8
+    $charset = 'UTF8' unless defined $charset;
+    
+    # Convert from CharsetFileName encoding to Perl internal format
+    # If path is already in UTF-16LE (from EncodeFileName), detect and handle
+    if (length($path) >= 2 && substr($path, -2) eq "\0\0" && 
+        length($path) % 2 == 0 && !utf8::is_utf8($path)) {
+        # Likely already UTF-16LE from EncodeFileName - try to decode it
+        eval {
+            my $decoded = Encode::decode('UTF-16LE', substr($path, 0, -2));
+            # Verify it's valid by checking it's different from original
+            if (defined $decoded && $decoded ne substr($path, 0, -2)) {
+                $path = $decoded;  # Only use if decode succeeded and is valid
+            }
+        };
+        # If decode failed or returned same value, it's not UTF-16LE, continue with charset handling below
+    }
+    
+    # Handle charset conversion if not already decoded from UTF-16LE
+    if ($charset ne 'UTF8' || (!utf8::is_utf8($path) && $path =~ /[\x80-\xff]/)) {
+        # Need to decode from specified charset
+        require Image::ExifTool::Charset;
+        my $cs = $Image::ExifTool::Charset::csType{$charset};
+        if ($cs) {
+            my $uni = Image::ExifTool::Charset::Decompose(undef, $path, $charset, undef);
+            $path = Image::ExifTool::Charset::Recompose(undef, $uni, 'UTF8', undef);
+        } elsif (!utf8::is_utf8($path) && $path =~ /[\x80-\xff]/) {
+            # Fallback: assume UTF-8 if charset not recognized
+            $path = Encode::decode('UTF-8', $path);
+        }
     }
 
     # Convert path to UTF-16LE for Windows API (properly handles surrogates)
@@ -4875,11 +4903,14 @@ sub GetShortPathW($)
 
 #------------------------------------------------------------------------------
 # Copy file using Windows wide-character API (handles Unicode surrogates)
-# Inputs: 0) source path (UTF-8), 1) dest path (UTF-8), 2) fail if exists flag
+# Inputs: 0) source path (CharsetFileName encoding)
+#         1) dest path (CharsetFileName encoding)
+#         2) fail if exists flag
+#         3) optional charset encoding (default: UTF8)
 # Returns: 1 on success, 0 on failure
-sub CopyFileWide($$$)
+sub CopyFileWide($$$;$)
 {
-    my ($src, $dst, $failIfExists) = @_;
+    my ($src, $dst, $failIfExists, $charset) = @_;
     return 0 unless $^O eq 'MSWin32';
     return 0 unless eval { require Win32::API };
     return 0 unless eval { require Encode };
@@ -4889,13 +4920,44 @@ sub CopyFileWide($$$)
         return 0 unless $k32CopyFileW;
     }
 
-    # Decode UTF-8 to Perl internal format if needed
-    if (!utf8::is_utf8($src) && $src =~ /[\x80-\xff]/) {
-        $src = Encode::decode('UTF-8', $src);
-    }
-    if (!utf8::is_utf8($dst) && $dst =~ /[\x80-\xff]/) {
-        $dst = Encode::decode('UTF-8', $dst);
-    }
+    # Use provided charset or default to UTF8
+    $charset = 'UTF8' unless defined $charset;
+    
+    # Helper to decode path from CharsetFileName encoding
+    my $decodePath = sub {
+        my $p = shift;
+        # If path is already in UTF-16LE (from EncodeFileName), detect and handle
+        if (length($p) >= 2 && substr($p, -2) eq "\0\0" && 
+            length($p) % 2 == 0 && !utf8::is_utf8($p)) {
+            # Likely already UTF-16LE from EncodeFileName - try to decode it
+            eval {
+                my $decoded = Encode::decode('UTF-16LE', substr($p, 0, -2));
+                # Verify it's valid by checking it's different from original
+                if (defined $decoded && $decoded ne substr($p, 0, -2)) {
+                    return $decoded;  # Only return if decode succeeded and is valid
+                }
+            };
+            # If decode failed or returned same value, it's not UTF-16LE, continue with charset handling below
+        }
+        
+        # Handle charset conversion if not already decoded from UTF-16LE
+        if ($charset ne 'UTF8' || (!utf8::is_utf8($p) && $p =~ /[\x80-\xff]/)) {
+            # Need to decode from specified charset
+            require Image::ExifTool::Charset;
+            my $cs = $Image::ExifTool::Charset::csType{$charset};
+            if ($cs) {
+                my $uni = Image::ExifTool::Charset::Decompose(undef, $p, $charset, undef);
+                return Image::ExifTool::Charset::Recompose(undef, $uni, 'UTF8', undef);
+            } elsif (!utf8::is_utf8($p) && $p =~ /[\x80-\xff]/) {
+                # Fallback: assume UTF-8 if charset not recognized
+                return Encode::decode('UTF-8', $p);
+            }
+        }
+        return $p;  # Return original if no conversion needed
+    };
+    
+    $src = $decodePath->($src);
+    $dst = $decodePath->($dst);
 
     # Convert to UTF-16LE with proper surrogate handling
     my $wideSrc = Encode::encode('UTF-16LE', $src) . "\0\0";
@@ -4940,8 +5002,9 @@ sub CreateTempCopy($$)
 
     my $tempPath = "$tempDir/$safeName";
 
-    # Copy using wide API
-    if (CopyFileWide($origPath, $tempPath, 1)) {
+    # Copy using wide API (use CharsetFileName if available)
+    my $charset = $$self{OPTIONS}{CharsetFileName} || 'UTF8';
+    if (CopyFileWide($origPath, $tempPath, 1, $charset)) {
         $$self{UNICODE_TEMP_MAP} = {} unless $$self{UNICODE_TEMP_MAP};
         $$self{UNICODE_TEMP_MAP}{$tempPath} = $origPath;
         # Store operation type for later cleanup decision
@@ -5046,8 +5109,8 @@ sub WriteBackFromTemp($$)
     # Clean up mapping (temp file is gone after successful move/copy)
     delete $$self{UNICODE_TEMP_MAP}{$tempPath} if $$self{UNICODE_TEMP_MAP};
     delete $$self{UNICODE_TEMP_OP}{$tempPath} if $$self{UNICODE_TEMP_OP};
-    delete $$self{UNICODE_TEMP_ATTRS}{$tempPath} if $$self{UNICODE_TEMP_ATTRS};
-    
+    # Note: UNICODE_TEMP_ATTRS already cleaned above if it existed
+
     # If move failed, temp might still exist
     unlink $tempPath if -e $tempPath;
 
@@ -5076,8 +5139,10 @@ sub SafeCopyWithBackup($$$)
     }
     
     # Step 1: Create backup of original (if it exists)
+    # Use CharsetFileName if available
+    my $charset = $$self{OPTIONS}{CharsetFileName} || 'UTF8';
     if (FileExistsWide($dst)) {
-        if (CopyFileWide($dst, $backup, 1)) {  # 1 = fail if exists (shouldn't happen now)
+        if (CopyFileWide($dst, $backup, 1, $charset)) {  # 1 = fail if exists (shouldn't happen now)
             $backupCreated = 1;
         } else {
             $self->Warn("Failed to create backup of $dst");
@@ -5086,7 +5151,7 @@ sub SafeCopyWithBackup($$$)
     }
     
     # Step 2: Copy new content to destination
-    my $success = CopyFileWide($src, $dst, 0);  # 0 = overwrite
+    my $success = CopyFileWide($src, $dst, 0, $charset);  # 0 = overwrite
     
     if ($success) {
         # Step 3a: Success - remove backup
@@ -5094,7 +5159,7 @@ sub SafeCopyWithBackup($$$)
     } else {
         # Step 3b: Failed - restore from backup
         if ($backupCreated) {
-            CopyFileWide($backup, $dst, 0);
+            CopyFileWide($backup, $dst, 0, $charset);
             DeleteFileWide($backup);
         }
         $self->Warn("Failed to write to $dst");
@@ -5195,7 +5260,9 @@ sub GetSafeFilePath($$;$)
     return ($path, 0) unless HasNonASCII($path);
 
     # First try: 8.3 short path (fast, no copy needed)
-    my $shortPath = GetShortPathW($path);
+    # Use CharsetFileName if available to avoid re-conversion
+    my $charset = $$self{OPTIONS}{CharsetFileName} || 'UTF8';
+    my $shortPath = GetShortPathW($path, $charset);
     my $shortPathHasNonASCII = 0;
     if (defined $shortPath and length($shortPath) > 0 and $shortPath ne $path) {
         # Verify the short path works and doesn't contain non-ASCII
@@ -5277,8 +5344,11 @@ sub Open($*$;$)
             my $wh = eval { Win32API::File::CreateFileW($file, $access, $share, [], $create, 0, []) };
             unless ($wh) {
                 # Fallback: try short path for Unicode surrogate filenames
-                if (HasNonASCII($origFile)) {
-                    my $shortPath = GetShortPathW($origFile);
+                # EncodeFileName already tested for non-ASCII (returned true), so we know it has non-ASCII
+                # Use CharsetFileName if available (before EncodeFileName modified $file)
+                my $charset = $$self{OPTIONS}{CharsetFileName} || 'UTF8';
+                {
+                    my $shortPath = GetShortPathW($origFile, $charset);
                     # Verify short path is ASCII-safe (if still non-ASCII, 8.3 didn't help)
                     if (defined $shortPath and $shortPath ne $origFile and
                         not HasNonASCII($shortPath) and -e $shortPath)
@@ -5355,8 +5425,11 @@ sub Exists($$;$)
             return 1;
         }
         # Fallback: try short path for Unicode surrogate filenames
-        if (HasNonASCII($origFile)) {
-            my $shortPath = GetShortPathW($origFile);
+        # EncodeFileName already tested for non-ASCII (returned true), so we know it has non-ASCII
+        # Use CharsetFileName if available (before EncodeFileName modified $file)
+        my $charset = $$self{OPTIONS}{CharsetFileName} || 'UTF8';
+        {
+            my $shortPath = GetShortPathW($origFile, $charset);
             # Verify short path is ASCII-safe (if still non-ASCII, 8.3 didn't help)
             if (defined $shortPath and $shortPath ne $origFile and not HasNonASCII($shortPath)) {
                 return 1 if -e $shortPath;
@@ -5396,8 +5469,11 @@ sub IsDirectory($$)
             return 1;
         }
         # Fallback: try short path for Unicode surrogate filenames
-        if (HasNonASCII($origFile)) {
-            my $shortPath = GetShortPathW($origFile);
+        # EncodeFileName already tested for non-ASCII (returned true), so we know it has non-ASCII
+        # Use CharsetFileName if available (before EncodeFileName modified $file)
+        my $charset = $$et{OPTIONS}{CharsetFileName} || 'UTF8';
+        {
+            my $shortPath = GetShortPathW($origFile, $charset);
             # Verify short path is ASCII-safe (if still non-ASCII, 8.3 didn't help)
             if (defined $shortPath and $shortPath ne $origFile and not HasNonASCII($shortPath)) {
                 return 1 if -d $shortPath;

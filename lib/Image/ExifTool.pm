@@ -140,10 +140,15 @@ sub ReadValue($$$;$$$);
 # Windows Unicode surrogate filename support
 sub HasNonASCII($);
 sub GetShortPathW($);
-sub GetSafeFilePath($$);
+sub GetSafeFilePath($$;$);
 sub CopyFileWide($$$);
 sub CreateTempCopy($$);
-sub RestoreFromTempCopy($$);
+sub CleanupTempCopy($$);
+sub WriteBackFromTemp($$);
+sub SafeCopyWithBackup($$$);
+sub _ToWideString($);
+sub FileExistsWide($);
+sub DeleteFileWide($);
 sub CleanupTempFiles($);
 
 # list of main tag tables to load in LoadAllTables() (sub-tables are recursed
@@ -4933,17 +4938,42 @@ sub CreateTempCopy($$)
     if (CopyFileWide($origPath, $tempPath, 1)) {
         $$self{UNICODE_TEMP_MAP} = {} unless $$self{UNICODE_TEMP_MAP};
         $$self{UNICODE_TEMP_MAP}{$tempPath} = $origPath;
+        # Store operation type for later cleanup decision
+        $$self{UNICODE_TEMP_OP} = {} unless $$self{UNICODE_TEMP_OP};
+        $$self{UNICODE_TEMP_OP}{$tempPath} = $$self{UNICODE_TEMP_OP_TYPE} || 'read';
+        # Clean up operation type (it's now stored in UNICODE_TEMP_OP)
+        delete $$self{UNICODE_TEMP_OP_TYPE};
         return $tempPath;
     }
 
+    # Clean up operation type on failure
+    delete $$self{UNICODE_TEMP_OP_TYPE};
     return undef;
 }
 
 #------------------------------------------------------------------------------
-# Restore file from temp copy back to original location
+# Clean up temp copy after READ operation (does NOT modify original)
+# Inputs: 0) ExifTool ref, 1) temp file path
+# Returns: 1 on success, 0 if temp path not found in map
+sub CleanupTempCopy($$)
+{
+    my ($self, $tempPath) = @_;
+    return 0 unless $$self{UNICODE_TEMP_MAP} and exists $$self{UNICODE_TEMP_MAP}{$tempPath};
+
+    # Simply delete the temp file - original is untouched
+    unlink $tempPath if -e $tempPath;
+    delete $$self{UNICODE_TEMP_MAP}{$tempPath};
+    delete $$self{UNICODE_TEMP_OP}{$tempPath} if $$self{UNICODE_TEMP_OP};
+
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Write modified temp file back to original location (for WRITE operations)
 # Inputs: 0) ExifTool ref, 1) temp file path
 # Returns: 1 on success, 0 on failure
-sub RestoreFromTempCopy($$)
+# Note: Uses atomic rename when possible, falls back to safe copy
+sub WriteBackFromTemp($$)
 {
     my ($self, $tempPath) = @_;
     return 0 unless $$self{UNICODE_TEMP_MAP} and exists $$self{UNICODE_TEMP_MAP}{$tempPath};
@@ -4951,26 +4981,128 @@ sub RestoreFromTempCopy($$)
     my $origPath = $$self{UNICODE_TEMP_MAP}{$tempPath};
     my $success = 0;
 
-    # Try to delete original using Win32API::File if available
+    # Try atomic move with MoveFileExW (MOVEFILE_REPLACE_EXISTING | MOVEFILE_COPY_ALLOWED)
     if (eval { require Win32API::File } and eval { require Encode }) {
-        # Decode UTF-8 to Perl internal format if needed
-        my $pathToDelete = $origPath;
-        if (!utf8::is_utf8($pathToDelete) && $pathToDelete =~ /[\x80-\xff]/) {
-            $pathToDelete = Encode::decode('UTF-8', $pathToDelete);
-        }
-        # Convert to UTF-16LE with proper surrogate handling
-        my $widePath = Encode::encode('UTF-16LE', $pathToDelete) . "\0\0";
-        eval { Win32API::File::DeleteFileW($widePath) };
+        # Use Win32API::File's MoveFileExW which handles UTF-16LE conversion
+        # MOVEFILE_REPLACE_EXISTING | MOVEFILE_COPY_ALLOWED
+        # This is atomic on same volume, graceful cross-volume
+        eval {
+            $success = Win32API::File::MoveFileExW($tempPath, $origPath,
+                Win32API::File::MOVEFILE_REPLACE_EXISTING() |
+                Win32API::File::MOVEFILE_COPY_ALLOWED()) ? 1 : 0;
+        };
     }
 
-    # Copy temp back to original location
-    $success = CopyFileWide($tempPath, $origPath, 0);
+    # Fallback: safe copy with backup
+    unless ($success) {
+        $success = $self->SafeCopyWithBackup($tempPath, $origPath);
+    }
 
-    # Clean up temp file
+    # Clean up mapping (temp file is gone after successful move/copy)
+    delete $$self{UNICODE_TEMP_MAP}{$tempPath} if $$self{UNICODE_TEMP_MAP};
+    delete $$self{UNICODE_TEMP_OP}{$tempPath} if $$self{UNICODE_TEMP_OP};
+    
+    # If move failed, temp might still exist
     unlink $tempPath if -e $tempPath;
-    delete $$self{UNICODE_TEMP_MAP}{$tempPath};
 
     return $success;
+}
+
+#------------------------------------------------------------------------------
+# Safe copy with backup - creates .bak before overwriting
+# Inputs: 0) ExifTool ref, 1) source path, 2) destination path
+# Returns: 1 on success, 0 on failure
+sub SafeCopyWithBackup($$$)
+{
+    my ($self, $src, $dst) = @_;
+    
+    my $backup = $dst . '_exiftool_backup';
+    my $backupCreated = 0;
+    
+    # Step 1: Create backup of original (if it exists)
+    # If backup already exists, overwrite it (previous failed operation)
+    if (FileExistsWide($dst)) {
+        if (CopyFileWide($dst, $backup, 0)) {  # 0 = overwrite if exists
+            $backupCreated = 1;
+        } else {
+            $self->Warn("Failed to create backup of $dst");
+            return 0;  # Don't proceed without backup
+        }
+    }
+    
+    # Step 2: Copy new content to destination
+    my $success = CopyFileWide($src, $dst, 0);  # 0 = overwrite
+    
+    if ($success) {
+        # Step 3a: Success - remove backup
+        DeleteFileWide($backup) if $backupCreated;
+    } else {
+        # Step 3b: Failed - restore from backup
+        if ($backupCreated) {
+            CopyFileWide($backup, $dst, 0);
+            DeleteFileWide($backup);
+        }
+        $self->Warn("Failed to write to $dst");
+    }
+    
+    return $success;
+}
+
+#------------------------------------------------------------------------------
+# Helper: Convert path to UTF-16LE wide string for Win32 API
+# Inputs: 0) path string (UTF-8 or native encoding)
+# Returns: UTF-16LE encoded string with null terminator, or undef on failure
+sub _ToWideString($)
+{
+    my $path = shift;
+    return undef unless eval { require Encode };
+    
+    # Ensure we have proper Unicode string
+    if (!utf8::is_utf8($path) && $path =~ /[\x80-\xff]/) {
+        $path = Encode::decode('UTF-8', $path);
+    }
+    
+    # Convert to UTF-16LE with double-null terminator
+    return Encode::encode('UTF-16LE', $path) . "\0\0";
+}
+
+#------------------------------------------------------------------------------
+# Helper: Check if file exists using wide API
+# Inputs: 0) file path
+# Returns: 1 if exists, 0 otherwise
+sub FileExistsWide($)
+{
+    my $path = shift;
+    
+    if ($^O eq 'MSWin32' and eval { require Win32API::File }) {
+        my $widePath = _ToWideString($path);
+        if (defined $widePath) {
+            my $attrs = eval { Win32API::File::GetFileAttributesW($widePath) };
+            return (defined $attrs && $attrs != 0xFFFFFFFF) ? 1 : 0;
+        }
+    }
+    
+    # Fallback to standard Perl
+    return -e $path ? 1 : 0;
+}
+
+#------------------------------------------------------------------------------
+# Helper: Delete file using wide API
+# Inputs: 0) file path
+# Returns: 1 on success, 0 on failure
+sub DeleteFileWide($)
+{
+    my $path = shift;
+    
+    if ($^O eq 'MSWin32' and eval { require Win32API::File }) {
+        my $widePath = _ToWideString($path);
+        if (defined $widePath) {
+            return eval { Win32API::File::DeleteFileW($widePath) } ? 1 : 0;
+        }
+    }
+    
+    # Fallback to standard Perl
+    return unlink($path) ? 1 : 0;
 }
 
 #------------------------------------------------------------------------------
@@ -4984,18 +5116,25 @@ sub CleanupTempFiles($)
         unlink $tempPath if -e $tempPath;
     }
     delete $$self{UNICODE_TEMP_MAP};
+    delete $$self{UNICODE_TEMP_OP};
 }
 
 #------------------------------------------------------------------------------
 # Get safe file path - tries short path first, then temp copy as fallback
-# Inputs: 0) ExifTool ref, 1) original file path (CharsetFileName encoding)
+# Inputs: 0) ExifTool ref
+#         1) original file path (CharsetFileName encoding)
+#         2) operation type: 'read' or 'write' (default: 'read')
 # Returns: list of (safe path, is_temp_copy flag)
-#          safe path may be: original (if accessible), short path, or temp copy path
-# Note: If temp copy is created, caller is responsible for cleanup via RestoreFromTempCopy
-#       or CleanupTempFiles
-sub GetSafeFilePath($$)
+# Note: If temp copy is created for 'read', call CleanupTempCopy after use
+#       If temp copy is created for 'write', call WriteBackFromTemp after modifications
+sub GetSafeFilePath($$;$)
 {
-    my ($self, $path) = @_;
+    my ($self, $path, $operation) = @_;
+    $operation = 'read' unless defined $operation;
+    
+    # Clean up any leftover operation type from previous calls
+    delete $$self{UNICODE_TEMP_OP_TYPE};
+    
     return ($path, 0) unless $^O eq 'MSWin32';
     return ($path, 0) unless HasNonASCII($path);
 
@@ -5013,7 +5152,10 @@ sub GetSafeFilePath($$)
     }
 
     # Second try: create temp copy (slower, requires cleanup)
+    # Store operation type for later cleanup decision
+    $$self{UNICODE_TEMP_OP_TYPE} = $operation;
     my $tempPath = $self->CreateTempCopy($path);
+    delete $$self{UNICODE_TEMP_OP_TYPE};  # Clean up
     if (defined $tempPath) {
         return ($tempPath, 1);
     }

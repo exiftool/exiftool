@@ -2143,7 +2143,8 @@ sub GetImageInfo($$)
     }
     # Handle files with problematic Unicode names on Windows (surrogate characters)
     if ($^O eq 'MSWin32' and Image::ExifTool::HasNonASCII($file) and not $et->Exists($file)) {
-        my ($safePath, $isTempCopy) = $et->GetSafeFilePath($file);
+        my $opType = $isWriting ? 'write' : 'read';
+        my ($safePath, $isTempCopy) = $et->GetSafeFilePath($file, $opType);
         if ($safePath ne $file and ($et->Exists($safePath) or $isTempCopy)) {
             $unicodeTempPath = $safePath if $isTempCopy;
             $file = $safePath;
@@ -2281,14 +2282,14 @@ sub GetImageInfo($$)
         SetImageInfo($et, $file, $orig);
         $info = $et->GetInfo('Warning', 'Error');
         PrintErrors($et, $info, $file);
-        # Restore temp file to original location if using Unicode workaround
+        # Write back temp file to original location if using Unicode workaround
         if (defined $unicodeTempPath) {
             if (not $info->{Error}) {
-                unless ($et->RestoreFromTempCopy($unicodeTempPath)) {
-                    Warn "Error: Failed to restore file with Unicode name\n";
+                unless ($et->WriteBackFromTemp($unicodeTempPath)) {
+                    Warn "Error: Failed to write back file with Unicode name\n";
                 }
             } else {
-                # Clean up temp file on error
+                # Clean up temp file on error (don't write back failed changes)
                 unlink $unicodeTempPath if -e $unicodeTempPath;
                 $et->CleanupTempFiles();
             }

@@ -2164,6 +2164,13 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             TagTable => 'Image::ExifTool::Canon::RawBurstInfo',
         }
     },
+    0x4053 => {
+        Name => 'FocusBracketing',
+        SubDirectory => {
+            Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart,$size)',
+            TagTable => 'Image::ExifTool::Canon::FocusBracketingInfo',
+        }
+    },
   # 0x4049 - related to croping (forum13491) - "8 0 0 0" = no crop, "8 1 0 1" = crop enabled
     0x4059 => { #forum16111
         Name => 'LevelInfo',
@@ -9508,6 +9515,56 @@ my %filterConv = (
     },
 
 );
+
+
+
+%Image::ExifTool::Canon::FocusBracketingInfo = (
+    %binaryDataAttrs,
+    FORMAT => 'int32s',
+    FIRST_ENTRY => 1,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    1 => {
+        Name => 'FocusBracketing',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+        },
+    },
+    2 => {
+        Name => 'FocusBracketingImageCount',
+	# 1-999
+    },
+    3 => {
+        Name => 'FocusBracketingFocusIncrement',
+	# 1-10
+    },
+    4 => {
+        Name => 'FocusBracketingExposureSmoothing',
+	PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+        },
+    },
+    5 => {
+        Name => 'FocusBracketingDepthComposite',
+	PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+        },
+    },
+    6 => {
+        Name => 'FocusBracketingCropDepthComposite',
+	PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+        },
+    },
+    7 => {
+        Name => 'FocusBracketingFlashInterval',
+	# seconds
+    },
+);
+
 
 # Canon UUID atoms (ref PH, SX280)
 %Image::ExifTool::Canon::uuid = (

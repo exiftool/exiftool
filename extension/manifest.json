@@ -1,15 +1,21 @@
 {
   "manifest_version": 3,
-  "name": "ExifTool Architect: WhatsApp Bridge",
-  "version": "1.0.0",
-  "description": "Premium metadata overlay for WhatsApp Web media.",
-  "permissions": ["activeTab", "scripting"],
+  "name": "ExifTool Architect: OSINT Bridge",
+  "version": "2.0.0",
+  "description": "Realtime OSINT dashboard and metadata overlay for WhatsApp Web.",
+  "permissions": ["activeTab", "scripting", "contextMenus", "storage"],
   "content_scripts": [
     {
       "matches": ["https://web.whatsapp.com/*"],
-      "js": ["content.js"],
+      "js": ["osint_modules.js", "content.js"],
       "css": ["styles.css"]
     }
   ],
-  "host_permissions": ["http://localhost:3001/*"]
+  "host_permissions": ["http://localhost:3001/*", "*://*/*"],
+  "web_accessible_resources": [
+    {
+      "resources": ["osint_modules.js"],
+      "matches": ["https://web.whatsapp.com/*"]
+    }
+  ]
 }

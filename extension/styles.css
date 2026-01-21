@@ -1,21 +1,19 @@
+/* Base Styles */
 #architect-bridge-overlay {
   position: fixed;
   top: 20px;
   right: 20px;
   z-index: 999999;
-  font-family:
-    "Inter",
-    -apple-system,
-    sans-serif;
+  font-family: "Inter", -apple-system, sans-serif;
 }
 
 .bridge-card {
-  background: rgba(9, 9, 11, 0.85);
+  background: rgba(9, 9, 11, 0.95);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
   border-radius: 16px;
   padding: 16px;
-  width: 280px;
+  width: 320px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   color: #f4f4f5;
   animation: slideIn 0.3s ease-out;
@@ -26,6 +24,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
 }
 
 .bridge-title {
@@ -35,43 +35,107 @@
   color: #6366f1;
 }
 
-.bridge-content {
-  font-size: 12px;
+/* OSINT Elements */
+.osint-indicator {
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 14px;
+  filter: drop-shadow(0 0 5px rgba(99, 102, 241, 0.5));
+  transition: transform 0.2s;
+}
+
+.osint-indicator:hover {
+  transform: scale(1.2);
+}
+
+.osint-media-fab {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(9, 9, 11, 0.8);
+  border: 1px solid #6366f1;
+  color: #fff;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+}
+
+.osint-media-fab:hover {
+  background: #6366f1;
+  transform: scale(1.1);
+}
+
+.osint-entity-row {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.osint-entity-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.osint-type {
+  font-weight: 800;
+  color: #a1a1aa;
+}
+
+.osint-value {
+  color: #fff;
+  font-family: monospace;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.osint-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.osint-action-btn {
+  background: rgba(99, 102, 241, 0.1);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.osint-action-btn:hover {
+  background: rgba(99, 102, 241, 0.3);
+  color: #fff;
 }
 
 .metadata-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 6px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  padding-bottom: 4px;
+  margin-bottom: 4px;
+  font-size: 11px;
 }
 
-.metadata-key {
-  color: #71717a;
-  font-weight: 600;
-}
-
-.metadata-value {
-  color: #e4e4e7;
-  font-family: monospace;
-}
-
-.bridge-footer {
-  margin-top: 12px;
-  font-size: 9px;
-  color: #6366f1;
-  text-align: center;
-  font-weight: 700;
-}
+.metadata-key { color: #71717a; }
+.metadata-value { color: #e4e4e7; font-family: monospace; }
+.osint-section-title { font-size: 9px; font-weight: 800; color: #52525b; margin-bottom: 6px; letter-spacing: 0.1em; }
 
 @keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }

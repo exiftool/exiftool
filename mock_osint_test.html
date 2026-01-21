@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mock WhatsApp OSINT Test</title>
+    <link rel="stylesheet" href="./extension/styles.css" />
+    <style>
+      body {
+        background-color: #0c1317;
+        color: #e9edef;
+        font-family:
+          Segoe UI,
+          sans-serif;
+      }
+      .chat-container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background: #202c33;
+        border-radius: 8px;
+      }
+      .message {
+        margin-bottom: 10px;
+        padding: 10px;
+        background: #005c4b;
+        border-radius: 8px;
+        width: fit-content;
+      }
+      .selectable-text {
+        user-select: text;
+      }
+      .selectable-text span {
+        display: block;
+      }
+      .input-area {
+        margin-top: 20px;
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container" id="chat">
+      <div class="message">
+        <div class="selectable-text">
+          <span>Hello! Check this number +15550199888</span>
+        </div>
+      </div>
+      <div class="message">
+        <div class="selectable-text">
+          <span
+            >Also visit https://example.com for more info via
+            info@example.com</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <button onclick="addMessage()">Simulate Incoming Message</button>
+    </div>
+
+    <!-- Load OSINT Scripts Manually for Testing -->
+    <script src="./extension/osint_modules.js"></script>
+    <script src="./extension/content.js"></script>
+
+    <script>
+      function addMessage() {
+        const chat = document.getElementById("chat");
+        const div = document.createElement("div");
+        div.className = "message";
+        div.innerHTML = `
+            <div class="selectable-text">
+                <span>Suspicious link: http://phishing-test.com/login and crypto 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</span>
+            </div>
+        `;
+        chat.appendChild(div);
+      }
+    </script>
+  </body>
+</html>

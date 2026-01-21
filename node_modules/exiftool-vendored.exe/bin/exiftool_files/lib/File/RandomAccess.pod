@@ -1,0 +1,250 @@
+#------------------------------------------------------------------------------
+# File:         RandomAccess.pod -- Documentation for File::RandomAccess
+#
+# Description:  Buffer to support random access reading of sequential file
+#
+# Legal:        Copyright (c) 2003-2025, Phil Harvey (philharvey66 at gmail.com)
+#               This library is free software; you can redistribute it and/or
+#               modify it under the same terms as Perl itself.
+#------------------------------------------------------------------------------
+
+=head1 NAME
+
+File::RandomAccess - Random access reads of sequential file or scalar
+
+=head1 SYNOPSIS
+
+    use File::RandomAccess;
+
+    $raf = File::RandomAccess->new(\*FILE, $disableSeekTest);
+
+    $raf = File::RandomAccess->new(\$data);
+
+    $err = $raf->Seek($pos);
+    $num = $raf->Read($buff, $bytes);
+
+=head1 DESCRIPTION
+
+Allows random access to sequential file by buffering the file if necessary.
+Also allows access to data in memory to be accessed as if it were a file.
+
+=head1 METHODS
+
+=over 4
+
+=item B<new>
+
+Creates a new RandomAccess object given a file reference or
+reference to data in memory.
+
+    # Read from open file or pipe
+    $raf = File::RandomAccess->new(\*FILE);
+
+    # Read from data in memory
+    $raf = File::RandomAccess->new(\$data);
+
+=over 4
+
+=item Inputs:
+
+0) Reference to RandomAccess object or RandomAccess class name.
+
+1) File reference or scalar reference.
+
+2) Flag set if file is already random access (disables automatic SeekTest).
+
+=item Returns:
+
+Reference to RandomAccess object.
+
+=back
+
+=item B<SeekTest>
+
+Performs test seek() on file to determine if buffering is necessary.  If
+the seek() fails, then the file is buffered to allow random access.
+B<SeekTest>() is automatically called from B<new> unless specified.
+
+    $result = $raf->SeekTest();
+
+=over 4
+
+=item Inputs:
+
+0) Reference to RandomAccess object.
+
+=item Returns:
+
+1 if seek test passed (ie. no buffering required).
+
+=item Notes:
+
+Must be called before any other i/o.
+
+=back
+
+=item B<Tell>
+
+Get current position in file
+
+    $pos = $raf->Tell();
+
+=over 4
+
+=item Inputs:
+
+0) Reference to RandomAccess object.
+
+=item Returns:
+
+Current position in file
+
+=back
+
+=item B<Seek>
+
+Seek to specified position in file.  When buffered, this doesn't quite
+behave like seek() since it returns success even if you seek outside the
+limits of the file.
+
+    $success = $raf->Seek($pos, 0);
+
+=over 4
+
+=item Inputs:
+
+0) Reference to RandomAccess object.
+
+1) Position.
+
+2) Whence (0=from start, 1=from cur pos, 2=from end).
+
+=item Returns:
+
+1 on success, 0 otherwise
+
+=back
+
+=item B<Read>
+
+Read data from the file.
+
+    $num = $raf->Read($buff, 1024);
+
+=over 4
+
+=item Inputs:
+
+0) Reference to RandomAccess object.
+
+1) Buffer.
+
+2) Number of bytes to read.
+
+=item Returns:
+
+Number of bytes actually read.
+
+=back
+
+=item B<ReadLine>
+
+Read a line from file (end of line is $/).
+
+=over 4
+
+=item Inputs:
+
+0) Reference to RandomAccess object.
+
+1) Buffer.
+
+=item Returns:
+
+Number of bytes read.
+
+=back
+
+=item B<Slurp>
+
+Read whole file into buffer, without changing read pointer.
+
+=over 4
+
+=item Inputs:
+
+0) Reference to RandomAccess object.
+
+=item Returns:
+
+Nothing.
+
+=back
+
+=item B<BinMode>
+
+Set binary mode for file.
+
+=over 4
+
+=item Inputs:
+
+0) Reference to RandomAccess object.
+
+=item Returns:
+
+Nothing.
+
+=back
+
+=item B<Close>
+
+Close the file and free the buffer.
+
+=over 4
+
+=item Inputs:
+
+0) Reference to RandomAccess object.
+
+=item Returns:
+
+Nothing.
+
+=back
+
+=back
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<NoBuffer>
+
+Avoid buffering sequential files.
+
+    $raf->{NoBuffer} = 1;
+
+When this option is set, old data is purged from the internal buffer before
+a read operation on a sequential file.  In this mode, memory requirements
+may be significantly reduced when reading sequential files, but seeking
+backward is limited to within the size of the internal buffer (which will be
+at least as large as the last returned data block), and seeking relative to
+the end of file is not allowed.
+
+=back
+
+=head1 AUTHOR
+
+Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
+
+This library is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=head1 SEE ALSO
+
+L<Image::ExifTool(3pm)|Image::ExifTool>
+
+=cut
+
+# end

@@ -1,0 +1,1 @@
+{"version":3,"file":"noop.mjs","sources":["../../src/noop.ts"],"sourcesContent":["/*#__NO_SIDE_EFFECTS__*/\nexport const noop = <T>(any: T): T => any\n"],"names":[],"mappings":"AAAA;AACa,MAAA,IAAI,GAAG,CAAI,GAAM,KAAQ;;;;"}

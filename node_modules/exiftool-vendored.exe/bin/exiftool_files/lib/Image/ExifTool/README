@@ -1,0 +1,1178 @@
+--------------------------------------------------------------------------------
+File:         Image/ExifTool/README
+
+Description:  ExifTool support modules documentation
+
+Note:         This documentation is a reference to be used by developers when
+              adding new tags to ExifTool.
+
+The ExifTool support modules are loaded by ExifTool to allow processing of
+various meta information formats.
+
+The tables in these files are used as lookups based on the tag ID values.  The
+hash keys are the tag IDs (in decimal or hexadecimal if the ID is numerical as
+with EXIF tables, or the tag name if the ID is ASCII as with XMP tables).  In
+the case of a BinaryData table, the IDs are numerical and specify offsets into
+the binary data block (floating point IDs allow multiple tags for the same
+offset, with the integer part being used for the offset).  The corresponding
+hash value provides information about the tag (explained later).
+
+Twenty-eight special keys (TABLE_NAME, SHORT_NAME, PROCESS_PROC, WRITE_PROC,
+CHECK_PROC, INIT_TABLE, GROUPS, FORMAT, FIRST_ENTRY, TAG_PREFIX, PRINT_CONV,
+WRITABLE, TABLE_DESC, NOTES, IS_OFFSET, IS_SUBDIR, EXTRACT_UNKNOWN, NAMESPACE,
+PREFERRED, PERMANENT, SRC_TABLE, PRIORITY, AVOID, WRITE_GROUP, LANG_INFO, VARS,
+DATAMEMBER and SET_GROUP1) are used to provide additional information about a
+table.  The special keys have names that are all capitalized to avoid possible
+conflicts with tag keys.  Below is an explanation of the meaning of each special
+key:
+
+  TABLE_NAME : Name of this table (set automatically by GetTagTable()).
+
+  SHORT_NAME : Table name with leading "Image::ExifTool::" removed.
+
+  PROCESS_PROC : Reference to a function used to process the directory for this
+  table.  If PROCESS_PROC is not given, \&Image::ExifTool::Exif::ProcessExif is
+  assumed (except for QuickTime atoms for which
+  \&Image::ExifTool::QuickTime::ProcessMOV is the default).  If PROCESS_PROC is
+  set to 0, the tags are not added to the lookup. The process proc returns 1 on
+  success or 0 on failure, and takes 3 arguments: 0) reference to the ExifTool
+  object, 1) reference to a directory information hash (with the following
+  entries:), 2) reference to the tag table hash.
+
+    Name        - Tag name for this SubDirectory entry (for verbose messages)
+    Base        - Base offset for pointers from start of file
+    DataPt      - Reference to data block containing directory (may be undef)
+    DataPos     - Position of data block within file (relative to Base)
+    DataLen     - Length of data block in bytes
+    DirStart    - Offset to start of directory from start of data block
+    DirLen      - Length of directory data within block
+    DirName     - Name of this directory
+    OutFile     - Output file or scalar reference
+    Parent      - Name of parent directory
+    RAF         - Reference to File::RandomAccess object if available
+    NewDataPos  - File position of new data (write proc only)
+    Fixup       - Reference to hash of offset fixups (used in EXIF writing only)
+    FixBase     - Flag set to attempt to fix base offsets
+    FixOffsets  - Evaluated for each value pointer to patch maker note offsets
+    LastIFD     - Used by WriteExif() to return offset of last IFD written
+    ImageData   - Used by WriteExif() to avoid buffering large image data blocks
+    NoRefTest   - Flag to bypass "referenced by previous directory" test
+
+  WRITE_PROC : Function reference or name for writing this directory.  The
+  function returns the new directory data or undefined on error.  It takes the
+  same arguments as the process proc above except that the second argument
+  (reference to directory information hash) is optional, and if specified gives
+  information about the source directory for tags to be copied to the output.
+
+  CHECK_PROC : Reference to a function which validates Raw values for writing.
+  The function takes 3-4 arguments: 0) ExifTool object reference, 1) tagInfo
+  reference, 2) value reference, and 3) [optional] conversion type.  It returns
+  undefined (and possibly modifies the input value) if successful, or an error
+  message if there was a format problem.  May set ExifTool CHECK_WARN datamember
+  for success with a warning.
+
+  INIT_TABLE : Routine called to do any necessary initialization before the
+  first time the table is loaded.  Argument is a reference to the table.
+
+  GROUPS : A hash lookup for the default group names for all entries in this
+  table.  If not specified, the default Group 0 and 1 names will be set
+  automatically according to the name of the module, and the default Group 2
+  name will be set to 'Other'.
+
+  FORMAT : Specifies the default tag Format, and corresponding pointer increment
+  for entries in a BinaryData table.  Defaults to 'int8u' for BinaryData tables
+  if not specified.  The possible values of FORMAT are:
+
+    int8s       - Signed 8-bit integer                    (EXIF 'SBYTE')
+    int8u       - Unsigned 8-bit integer                  (EXIF 'BYTE')
+    int16s      - Signed 16-bit integer                   (EXIF 'SSHORT')
+    int16u      - Unsigned 16-bit integer                 (EXIF 'SHORT')
+    int16uRev   - Unsigned 16-bit integer, reversed byte order
+    int32s      - Signed 32-bit integer                   (EXIF 'SLONG')
+    int32u      - Unsigned 32-bit integer                 (EXIF 'LONG')
+    int64s      - Signed 64-bit integer                   (BigTIFF 'SLONG8')
+    int64u      - Unsigned 64-bit integer                 (BigTIFF 'LONG8')
+    rational32s - Rational consisting of 2 int16s values
+    rational32u - Rational consisting of 2 int16u values
+    rational64s - Rational consisting of 2 int32s values  (EXIF 'SRATIONAL')
+    rational64u - Rational consisting of 2 int32u values  (EXIF 'RATIONAL')
+    fixed16s    - Signed 16-bit fixed point value
+    fixed16u    - Unsigned 16-bit fixed point value
+    fixed32s    - Signed 32-bit fixed point value
+    fixed32u    - Unsigned 32-bit fixed point value
+    float       - 32-bit IEEE floating point value        (EXIF 'FLOAT')
+    double      - 64-bit IEEE floating point value        (EXIF 'DOUBLE')
+    extended    - 80-bit extended floating float
+    ifd         - Unsigned 32-bit integer sub-IFD pointer (EXIF 'IFD')
+    ifd64       - Unsigned 64-bit integer sub-IFD pointer (BigTIFF 'IFD8')
+    string      - Series of 8-bit characters              (EXIF 'ASCII')
+    undef       - Undefined-format binary data            (EXIF 'UNDEFINED')
+    binary      - Binary data (same as 'undef')
+
+  Additionally, the following variable-length Format types may be used in
+  individual tag information hashes of a BinaryData table.  The 'var_' formats
+  cause subsequent tag indices to be incremented according to the size of the
+  data, not including the terminator.  See "Format" below for more details.
+
+    pstring     - Pascal string (1-byte length followed by ASCII string)
+    var_string  - variable-length null-terminated ASCII string
+    var_ustring - variable-length null-terminated UCS-2 string
+    var_pstring - variable-length Pascal string
+    var_pstr32  - variable-length Pascal string /w 32-bit len
+    var_ustr32  - variable-length UCS-2 string /w 32-bit len
+    var_int16u  - variable-length undef data with int6u count
+    var_ue7     - variable-length 7-bit-at-a-time integer (BPG)
+
+  And the following format codes are used for string values in XMP metadata.
+  (See the XMP specification for more details.)
+
+    boolean     - "True" or "False"
+    date        - date/time string
+    integer     - integer as a string
+    lang-alt    - list of alternate-language strings
+    rational    - "N/D" where N=numerator, D=Denominator
+    real        - floating point value as a string
+    string      - unformatted string
+    struct      - structure
+
+  FIRST_ENTRY : Specifies the index for the first tag entry in a binary table.
+  This value is only used if the Unknown option is set to 2 or higher, and
+  allows the binary data to be scanned for unknown tag entries.
+
+  TAG_PREFIX : Prefix for names of unknown tags.
+
+  PRINT_CONV : Default print conversion for tags where PrintConv isn't
+  specified.  PrintConv may be set to undef for individual tags to disable print
+  conversion when PRINT_CONV is defined for a table.
+
+  WRITABLE : Indicates that all tags in this table are writable.  This is the
+  same as setting the Writable flag for each individual tag in the table, except
+  for SubDirectory tags which are not made Writable.
+
+  TABLE_DESC : Short description for this table.  Plain text only.  Used only
+  for XML tag database output.
+
+  NOTES : Notes to introduce the table in the TagNames documentation.  Pod
+  formatting codes B<>, C<> and L<> may be used in this text.
+
+  IS_OFFSET : Writable BinaryData tables only.  Reference to list of sorted
+  TagID's representing offsets.
+
+  IS_SUBDIR : Writable BinaryData tables only.  A reference to a list of sorted
+  tag ID's representing subdirectories.
+
+  EXTRACT_UNKNOWN : Used in PDF tables to specify a directory where all unknown
+  tags should be extracted.  Set to 0 to extract only unknown numbered tags for
+  which the unnumbered tag is known.
+
+  NAMESPACE : Namespace prefix for tags in the XMP table.  If this isn't a
+  standard namespace defined in %Image::ExifTool::XMP::nsURI, then the URI must
+  be defined as well (however, this is not recommended for pre-defined
+  namespaces because then non-standard namespace prefixes won't be recognized).
+  To define the URI, the NAMESPACE value is a reference to a hash where the key
+  is the namespace prefix and and the value is the URI (alternatively, a
+  reference to a 2-element array containing the prefix and URI is also allowed
+  for backward compatibility).  The NAMESPACE value may be undef for XMP tables
+  where tags have variable namespaces (in this case each tag must have a
+  Namespace entry).
+
+  PREFERRED : Set if the tags in this table should always be added when writing
+  information.  Higher number are higher precedence.  Overrides the order
+  specified by SetNewGroups().  When this feature is used, it may also be
+  desirable to specify a preferred group when calling InitWriteDirs() to write
+  these tags -- this avoids creating other directories for tags which are
+  already being creating in the preferred group.
+
+  PERMANENT : Tags in this table are Permanent, and can't be deleted.  Maker
+  notes tags are Permanent by default, without the need to set this property.
+
+  SRC_TABLE : Used internally to store the source table name of a user-defined
+  tag table so the appropriate module can be loaded as required.
+
+  PRIORITY : Default Priority for all tags in this table.
+
+  AVOID : Flag set to Avoid writing all tags in this table.
+
+  WRITE_GROUP : Default WriteGroup for all tags in the table.
+
+  LANG_INFO : Code reference to a routine which returns a reference to a
+  language-specific tag information hash.  The routine takes two arguments: a
+  reference to the non-specific tagInfo hash, and the language code. Used only
+  in tables with writable tags which support tag name language extensions (eg.
+  MIE and XMP).
+
+  VARS : Hash used to store additional parameters.  Individual modules may use
+  this to store any parameters they want.  The following additional parameters
+  have been defined, and may be used by any module:
+
+    ID_LABEL      Label to use instead of "Tag ID" for column heading in tag
+                  name documentation.  When this is set, numerical TagID's are
+                  not converted to hexadecimal notation.  Unless otherwise set,
+                  an ID_LABEL of "Index" is assumed for tables which use
+                  ProcessBinaryData or set the IS_BINARY flag.
+
+    ID_FMT        Format for tag ID's in the documentation.  Setting is 'hex' to
+                  print tag ID in hexadecimal (with 4 hex digits or more), 'dec'
+                  to leave as decimal, 'str' to use a quoted string, or 'none'
+                  to drop the "Tag ID" column entirely.  Any setting other than
+                  'hex' prevents hex-looking strings from being converted when
+                  importing an XML file for language translations in
+                  BuildLangModules().
+
+    NO_LOOKUP     Do not add tags to TagLookup.pm lookup tables.
+
+    CAPTURE       Used by PDF module to name dictionaries to capture when
+                  writing.
+
+    MINOR_ERRORS  [EXIF tables only] Flag to make errors in this IFD minor, or
+                  to downgrade already minor errors to warnings while writing.
+                  (Errors in MakerNote IFD's are already classified as minor.)
+                  Note that for certain types errors, the response is to delete
+                  the entire IFD from the image.
+
+    ALPHA_FIRST   Sort alphabetical tags before numerical in documentation.
+
+    LONG_TAGS     Suppress "Long tags" warning when generating documentation.
+                  Value is the number of long tag names to expect.
+
+    SORT_PROC     Reference to sort procedure for sorting tag ID's in the
+                  documentation.  Takes two arguments and returns -1, 0 or 1
+                  if the first argument is less than, equal to, or greater than
+                  the second argument.
+
+    ENTRY_SIZE    Used by ProcessPhaseOne to specify size of IFD entry
+
+    MAP_FORMAT    Lookup to map unknown format numbers (eg. Panasonic CameraIFD)
+
+    START_INDEX   [QuickTime tables only] Initial index for indices shown in
+                  Verbose output.  Indices are not show otherwise.
+
+    ATOM_COUNT    [QuickTime tables only] Maximum number of atoms contained in
+                  within this atom.  Currently used only for Canon CNTH atom,
+                  which contains garbage after the first contained atom.
+
+    NIKON_OFFSETS [Nikon Encrypted tables only] Pointer to int32u NumberOffsets
+                  for offset-type encrypted Nikon directories.  When set,
+                  directory and decryption lengths are calculated automatically.
+
+    ALLOW_REPROCESS Flag to allow reprocessing of another directory at this
+                  same location in the file, bypassing recursion avoidance test.
+
+    IS_BINARY     Set if this is a binary table and should show an Index in the
+                  first column instead of a Tag ID.
+
+  DATAMEMBER : BinaryData tables only.  A reference to a list of sorted tag ID's
+  which must be extracted as data members when writing.  Must also list "var_"
+  format tags and tags with Hook so offsets are properly calculated if the table
+  is writable.
+
+  SET_GROUP1 : [EXIF tables only] Flag to set group1 name to the directory name
+  for all tags in the table.
+
+The remaining entries in a tag table are the tag IDs with their associated
+information.  The information may exist in one of three forms:  1) A simple
+scalar which is the name of the tag, 2) A reference to a hash of information
+describing this tag, or 3) a reference to a list of hashes which contain
+Condition expressions allowing the appropriate hash to be selected to suit the
+conditions.  The following is a description of possible hash entries.  All
+entries are optional, except for the tag Name which is required if the tag ID is
+numerical, and generated automatically otherwise.
+
+  Name          : The tag name.  Tag names need not be unique.  If they aren't
+                  unique, then duplicate tags will hide the values of previous
+                  tags when extracting information unless the Duplicates option
+                  is set or the new tag has lower Priority.  With Duplicates
+                  set, to allow multiple tags with the same name to exist in the
+                  tag information hash, the key of the previous tag is changed
+                  to the form "TagName (N)", where N starts at 1 and increments
+                  for subsequent duplicate tags.  A tag name should start with
+                  an uppercase letter, and contain only the characters in the
+                  set [A-Za-z0-9_-].  If not given, the Name is taken from the
+                  tag ID with the first character changed to upper case.
+
+  Description   : A more readable description of tag name.  If a tag doesn't
+                  specify a Description, then the tag Name is used instead, with
+                  spaces inserted between the words.
+
+  Notes         : Notes for this tag in the HTML TagNames documentation.
+
+  Groups        : Hash lookup for group names for this tag.  If not specified,
+                  defaults to the GROUPS specified in the table definition.
+
+  Format        : Only valid for BinaryData, EXIF and IPTC tables.  For a Binary
+                  or EXIF table, this gives the format that is used to convert
+                  the binary data, and is one of the FORMAT types specified
+                  above.  If not specified, the Format of an EXIF entry is taken
+                  from the EXIF information, and the Format of a BinaryData
+                  entry is taken from the FORMAT specified for the table (or
+                  int8u if FORMAT is not specified).  Must be specified for
+                  Writable tags where the value must be converted for a
+                  Condition.  For BinaryData tables, the format may have a size
+                  in trailing brackets which is a Perl expression to be
+                  evaluated.  The expression may access any of the previous
+                  table entries through a %val hash (read-only tags), the data
+                  size via $size, or the ExifTool object via $self.  For
+                  example, 'string[$val{3}]' defines a string with length given
+                  by the table entry with tag index '3'.  An initial "var_" may
+                  be added to the Format name of any BinaryData tag with a size
+                  in brackets.  In this case, subsequent offsets are adjusted by
+                  the value length minus the size of the default table FORMAT
+                  (eg. "var_int16u[10]" causes subsequent offsets to be
+                  incremented by sizeof(int16u) * 10 - sizeof(int8u) if the
+                  default table FORMAT is "int8u").  Note that all "var_" Format
+                  tags (as well as tags with values used within "var_" Format
+                  expressions) must have corresponding DATAMEMBER entries.
+
+  Count         : Used when writing EXIF information to specify the number
+                  values to write, or the number of characters in a fixed-length
+                  string.  A value of -1 indicates that the count is variable
+                  and should be determined by the number of values provided.
+                  Defaults to 1 if not specified for non-string formats.  Note
+                  that this count corresponds to the specified Format, so if a
+                  different-sized Writable format is defined, the actual count
+                  written to the file will be different.
+
+  FixCount      : Flag set to determine correct count from offsets in IFD.  This
+                  is necessary for some Kodak tags which write an incorrect
+                  Count value.
+
+  Flags         : Flags to specify characteristics for this tag.  May be a
+                  simple scalar flag name, a reference to a list of flag names,
+                  or a reference to a hash of flag/value pairs.  If not a hash
+                  reference, the flag value is set to 1.  Flags are expanded for
+                  faster access at run time into members of the tagInfo hash,
+                  and may be written directly as members if desired.  The
+                  available flag names are:
+
+                  'AutoSplit' - [List tags only] Similar to ListSplit option,
+                  but applied automatically to individual tags.  Value specifies
+                  pattern for split, or 1 for default pattern ',?\\s+'.
+
+                  'Avoid' - avoid creating this tag when writing if possible.
+                  This is only effective if another tag exists with the same
+                  name.  Setting this flag also sets the default Priority to 0
+                  for this tag.
+
+                  'Binary' - set to 1 for binary data.  This has the same effect
+                  as setting ValueConv to '\$val', but it it a bit cleaner and
+                  avoids dummy ValueConvInv entries for writable tags.  Has no
+                  effect if ValueConv is defined for the tag.  Some values may
+                  be treated as binary data even if this flag is not set.
+
+                  'BlockExtract' - set for writable directories in EXIF
+                  information which are extracted by default.  Otherwise
+                  writable directories are only extracted as a block if
+                  specified explicitly.  Also used for Jpeg2000 and QuickTime
+                  XMP-like tags to extract as a block with a name other than
+                  'XMP'.
+
+                  'ConvertBinary' - true to apply ValueConv and/or PrintConv to
+                  Binary values (ie. SCALAR references).  (By default, these
+                  conversions are not done for Binary values.)
+
+                  'DataMember' - name of exiftool data member associated with
+                  this tag if it should be stored as a special data member when
+                  writing information.  Necessary only if the value of the tag
+                  affects other written information.  Currently only used for
+                  tags in EXIF tables where it triggers the execution of the
+                  RawConv to convert and store the value as an ExifTool data
+                  member when writing.
+
+                  'DataTag' - associated tag name containing data for offset or
+                  byte count tags.
+
+                  'DelGroup' - set if deleting this tag is the same as deleting
+                  the group of the same name.
+
+                  'Drop' - [IFD-format and PhaseOne makernote tags only] set to
+                  1 for tags that should be excluded when rebuilding maker notes
+                  when copying all tags.  Set to a number larger than 1 to drop
+                  only if data is larger than this size. Works for SubDirectory
+                  tags too.
+
+                  'EntryBased' - set to 1 if the offset for this value is based
+                  on the IFD entry position.  This allows individual values to
+                  be entry-based even though some others aren't (as with the
+                  Casio PrintIM information).
+
+                  'Flat' - [flattened XMP structure tags only] must be set for
+                  all pre-defined flattened tags (including user-defined
+                  flattened tags).  This flag is reset to 0 internally after all
+                  associated flattened tags in the structure have been
+                  generated.
+
+                  'Flattened' - [reserved] used internally to mark Struct tags
+                  which have been processed to generate flattened equivalents.
+
+                  'NotFlat' - [XMP tags only] Flag indicates that this tag ID
+                  does not represent a flattened tag.  Used to avoid a conflict
+                  if the tag ID would be the same as a generated ID for a
+                  flattened tag.  The result is that the flattened tag will not
+                  be accessible.
+
+                  'Hidden' - set to hide tag from the TagName documentation.
+                  Also suppresses verbose output of a BinaryData tag.  The
+                  RawConv of a Hidden tag should return undef so the tag value
+                  is not seen by the user.
+
+                  'IsComposite' - flag set for Composite tags
+
+                  'IsImageData' - flag set if this is an image data offset to
+                  be included in ImageDataHash calculation.  Must have an
+                  OffsetPair entry which is the ID of the corresponding size.
+
+                  'IsOffset' - flag set if the tag represents an offset to some
+                  data, and causes value will be adjusted to an absolute file
+                  offset.  If set to 2, the offset base of the parent directory
+                  is used even if the base changes for the current directory
+                  (only some maker notes are this messed up).  Set to 3 if
+                  absolute file offsets are used.  May be set to an expression
+                  to be evaluated.  Expression may access $val and $et,
+                  and is evaluated only when reading.
+
+                  'iTXt' - [PNG TextualData tags only] flag to write tag as PNG
+                  iTXt chunk even if it contains no special characters.
+
+                  'List' - flag indicating that duplicate entries of this tag
+                  are allowed, and will be accumulated in a list.  Note that for
+                  XMP information, 3 different types of lists are supported and
+                  the List value specifies the type: 'Bag', 'Seq' or 'Alt'.  As
+                  well, a value of '1' is used internally in XMP to allow list
+                  behaviour for a flattened tag which is itself not a list
+                  element (eg. a member of list of structures).  Note that in
+                  ExifTool an XMP lang-alt tag (Writable="lang-alt") is NOT a
+                  list-type tag (unless it is a list of lang-alt lists, which is
+                  uncommon).
+
+                  'IsList' - Flag to mark tag as List-type in the documentation
+                  without accumulating entries from subsequent tags.  Used when
+                  the value for a single tag is a complete list.
+
+                  'MakerNotes' - set if this tag is maker note data.
+
+                  'MakerPreview' - set in the PreviewImageStart tag information
+                  if the preview must be stored inside the maker notes.
+
+                  'Mandatory' - set for mandatory tags.  Used only by TagInfoXML
+                  and for documentation purposes.  Mandatory tags may be added
+                  automatically by ExifTool.
+
+                  'NestedHtmlDump' - flag set if value for this tag is also
+                  dumped when processing the SubDirectory.  This flag is implied
+                  if the MakerNotes flag is set.  Set to 2 if the dump should
+                  only be underlined if nested inside other maker notes.
+
+                  'NotIFD' - set for 'MakerNotes' SubDirectory tags only if the
+                  SubDirectory is not EXIF IFD format.  (Note: All SubDirectory
+                  tags in the MakerNotes table are 'MakerNotes' type by
+                  default.)
+
+                  'OffsetPair' - set if the tag represents half of an offset/
+                  byte count pair.  Data for these tags must be handled
+                  separately.  Value is the tagID for the paired tag.
+
+                  'Permanent' - flag indicates that a tag is permanent, and
+                  can't be added or deleted from the file, although a new value
+                  may be written if the tag already exists.  By default, all
+                  MakerNotes tags are permanent unless otherwise specified.
+
+                  'PreservePadding' - [QuickTime only] flag to preserve the
+                  original size of the QuickTime atom by padding with nulls when
+                  writing with the QuickTimePad option.
+
+                  'PrintHex' - specifies that unknown PrintConv values should
+                  be printed in hex (eg. 'Unknown (0x1)').  Also causes
+                  numerical tag values to be printed in hex in the HTML tag name
+                  documentation, padded to the number of digits given by the
+                  PrintHex value.
+
+                  'PrintInt' - remove decimal part of tag ID in HTML tag name
+                  documentation.  (To avoid confusing ExifTool users because
+                  the LensType decimal numbers are for internal use only.)
+
+                  'PrintSort' - causes PrintConv values to be sorted by value
+                  rather than key in the HTML tag name documentation.
+
+                  'PrintString' - flag set to force PrintConv values to be
+                  printed as strings in the documentation.
+
+                  'Priority' - gives the priority of this tag while reading.  If
+                  set to zero, this tag will not override the value of previous
+                  tags with the same name.  If the priority is greater than
+                  zero, this tag won't be overridden by subsequent tags unless
+                  their priority is equal to or greater than this priority.  A
+                  special feature is that Priority 0 tags are automatically
+                  incremented to Priority 1 if they exist in the IFD of the full
+                  resolution image (as determined by SubfileType).  If not
+                  defined, the priority defaults to 1 for all tags except except
+                  tags in IFD1 of JPEG images which default to priority 0.
+
+                  'Protected' - bit mask to protect tags from writing:
+                  Bit 0x01 indicates an 'Unsafe' tag, which is not set via
+                  SetNewValuesFromFile() unless specified explicitly.
+                  Bit 0x02 indicates a 'Protected' tag, which should not be set
+                  directly by the user.
+
+                  'PutFirst' - [EXIF only] flag to place this value before IFD0
+                  when writing (ie. immediately after TIFF header).  Only used
+                  for values in main IFD's (IFD0, IFD1, etc) and IFD's where
+                  SubIFD flag is set to 2 (currently only ExifIFD).
+
+                  'RawJoin' - [List tags only] Joins raw List-type tag values
+                  into a single string with a space separator, allowing
+                  ValueConv and PrintConv to act on the concatenated string so
+                  the tag does not exhibit list-type behaviour.  When writing,
+                  the inverse is performed and the value is split at whitespace.
+
+                  'Resource' - [XMP only] flag to write value as an rdf:resource
+                  in an empty element instead of as a normal string.
+
+                  'SeparateTable' - set to list PrintConv values in a separate
+                  table in the HTML documentation.  Value is 1 for a table name
+                  of 'Module TagName', or 'TAG' for 'Module TAG', or 'MODULE
+                  TAG' to fully specify the table name.  The table may have a
+                  'Notes' entry for a description of the table.
+
+                  'SetResourceName' - [Photoshop tags only] set to 1 to append
+                  resource name to the extracted value (eg. 'VALUE/#NAME#/').
+                  Also allows resource name to be appended when writing new
+                  values.  May be set to any value other than 1 for a default
+                  resource name to use when writing if an appended name is not
+                  provided.
+
+                  'StructType' - [reserved] used internally by XMP writer for
+                  flattened structure tags as a flag to indicate that one or
+                  more enclosing structures has a TYPE field.
+
+                  'SubDoc' - [Composite tags only] set to cause this Composite
+                  tag to also be generated for each sub-document.  To achieve
+                  this, 'Main:' and 'Doc#:' prefixes are added to all Require'd
+                  and Desire'd tag names which don't already start with 'Main:'
+                  or 'Doc#:', and the Composite tag is built once for each of
+                  the main document and all sub-documents.  May be a reference
+                  to a list of indices for Desire'd tags, one of which must
+                  exist to generate this tag for sub-documents.
+
+                  'SubIFD' - used in writing to determine that the tag specifies
+                  an offset to a sub-IFD.  When this flag is set, the Group1
+                  name gives the name of the IFD.  Must be set if and only if
+                  the tag has a SubDirectory Start that references '$val' (this
+                  is validated by BuildTagLookup).  Set to 2 for standard EXIF
+                  SubIFD's where the PutFirst flag is valid.
+
+                  'Unknown' - this is an unknown tag (only extracted when the
+                  Unknown option is set).  This is set to 2 for Unknown tags in
+                  binary tables (extracted when Unknown is 2).
+
+                  'WriteNothing' - flag indicating that nothing is actually
+                  written when this tag is set.  It is a fake writable tag that
+                  isn't actually written (eg. Geotag).  Used to avoid processing
+                  a file unnecessarily if nothing will actually be written.
+
+                  'WritePseudo' - flag indicating that this is a writable pseudo
+                  tag.  If set, this tag may be written without actually writing
+                  to the file (eg. FileName, FileModifyDate).
+
+                  'WrongBase' - ['IsOffset' tags only] An expression using $self
+                  that is evaluated to generate a base shift for 'IsOffset' tags
+                  which use a different base than the rest of the tags.
+
+  RawConv       : Used to convert the Raw value at extraction time (while the
+                  image file is still open, unlike ValueConv and PrintConv below
+                  which are done later only if the value is requested).  May be
+                  a scalar expression using $val (the Raw tag value), $self (the
+                  current ExifTool object), $tag (the tag key), $tagInfo
+                  (reference to the tag information hash), $priority (to
+                  dynamically set the priority of a tag), and @grps (to
+                  dynamically set the family and/or groups), or a code reference
+                  with $val and $self as arguments (in which case $$self{grps}
+                  may be used to set the groups).  For Composite tags, $val is a
+                  reference to a hash of source ("derived from") tag names, and
+                  @val may be used to access the Raw values of these tags.  The
+                  returned value may be a scalar which is used as the new Raw
+                  value, a scalar reference to a binary data value, a hash
+                  reference for Composite tags, an ARRAY reference for a list of
+                  values, or undefined to indicate that the tag should be
+                  ignored.  If RawConv is specified for a Composite tag, then
+                  ValueConv and PrintConv evals will no longer have access to
+                  the source @val and @prt values unless the input $val is
+                  returned.  RawConv may generate Warning or Error tags, while
+                  ValueConv and PrintConv should not (see ValueConv note below).
+                  Note: RawConv should only be used if necessary (in general,
+                  only if the conversion may return undef to ignore the tag, or
+                  if a Warning may be issued) because ValueConv is more
+                  efficient since it is only executed if the tag value is
+                  requested, while RawConv is executed for all extracted tags.
+                  Note that a tag is still writable if it has a RawConv without
+                  a RawConvInv (with the exception of QuickTime ItemList and
+                  UserData tags, which specifically require this), but this is
+                  not true for ValueConv/PrintConv.
+
+  ValueConv     : Used to convert the Raw value to a useable form. May be a hash
+                  reference to act as a lookup table, a scalar which is
+                  evaluated as a Perl expression, a code reference to a
+                  subroutine, or an ARRAY reference (in which case the value is
+                  split at whitespace into a list of items and each item is
+                  converted by the associated entry in the ValueConv list.  A
+                  special value of 'REPEAT' may be used to repeat the previous
+                  conversion for all remaining elements).  If a hash reference
+                  is used and the Raw value doesn't appear as one of the keys,
+                  then the converted value is set to "Unknown (X)", where X is
+                  the Raw value (unless either of the special keys exist:
+                  'BITMASK', a reference to a hash used to decode individual
+                  value bits; or 'OTHER', a reference to a subroutine used to
+                  convert unknown values.  The OTHER subroutine takes 3
+                  arguments: the value, a flag which is set for the inverse
+                  conversion, and a reference to the PrintConv hash, and returns
+                  the converted value or undef on error -- it may call warn() to
+                  return an error message.  The lookup hash may also contain a
+                  'Notes' entry which is used for documentation if the
+                  SeparateTable flag is set).  In an expression, $self is a
+                  reference to the current ExifTool object, $val is the Raw
+                  value, and $tag is the tag key.  The subroutine takes 2
+                  arguments: the Raw value and a reference to the current
+                  ExifTool object.  The advanced formatting expression (if any)
+                  may be accessed via the ExifTool "FMT_EXPR" member variable.
+                  The expression or subroutine is evaluated if and when the tag
+                  value is requested (ie. only after all extraction is
+                  complete), so if necessary at this time the values of all
+                  other tags are available via calls to
+                  $self->GetValue("Tag","Raw").  (Note: In theory, types other
+                  than "Raw" may be accessed, but they are slower and may lead
+                  to cyclical dependencies so they should be avoided).  When
+                  evaluated, the expression or subroutine returns a scalar for
+                  the converted value, a SCALAR reference to a binary data value
+                  (see the 'Binary' flag), or an ARRAY reference for a list of
+                  values.  The return value should always be defined -- use
+                  RawConv instead to return undef if it is necessary to test the
+                  value for validity, otherwise an undef tag may hide a
+                  previously defined value when the Duplicates option is not
+                  enabled.  If this isn't possible (as with Composite tags where
+                  the converted values of the source tags are needed), set the
+                  Priority to 0 to avoid taking priority over a valid tag. If
+                  ValueConv is not specified, the Raw value is not converted.
+                  Composite tags which Require or Desire other tags may access
+                  the ValueConv, PrintConv and Raw values of these tags through
+                  the elements of the @val, @prt and @raw lists respectively
+                  (only if there was no RawConv or it returned a hash
+                  reference).  For these tags, $val may be used in an expression
+                  to represent $val[0], and the first argument passed for a code
+                  reference is a reference to @val. Note:  Warnings issued by
+                  these conversions are intercepted by ExifTool and saved as
+                  Warning tags, but since ValueConv and PrintConv conversions
+                  are done on demand, the warnings may be generated after the
+                  list of extracted tags is returned, so may easily be missed.
+
+  PrintConv     : This entry is similar to ValueConv above, except that it is
+                  used to further convert the tag value to a human readable
+                  form.  It can be either a hash lookup, a scalar Perl
+                  expression, a code reference or a list reference.  In this
+                  expression, $self, $val and $tag may be used as with
+                  ValueConv, but if ValueConv was defined then $val is the
+                  ValueConv value instead of the Raw value.  Composite tags
+                  may also use the @val, @prt and @raw lists. The returned value
+                  should always be defined.  Note that the print conversion is
+                  only done if the PrintConv option is enabled (which it is by
+                  default), and if the result of the ValueConv is not a scalar
+                  reference.  If it is a list reference, then the converted
+                  values are joined by '; ' in the output string.
+
+  RawConvInv    : The inverse of RawConv.  This should only be used in very rare
+                  situations when the raw value can not be predetermined.
+                  Unlike the other inverse conversions which are applied in
+                  SetNewValue(), this conversion is applied in WriteInfo() as
+                  the file is being written.  This is important because it means
+                  that FILE_TYPE and any DataMember tags ocurring before this
+                  tag in the file are available.  Beware that if the return
+                  value is not defined, the tag will be deleted unless there is
+                  specific logic to avoid this (currently, only EXIF and Binary
+                  data directories handle this case).
+
+  ValueConvInv  : The inverse of ValueConv.  Only necessary for Writable tags
+                  when ValueConv is specified (except WriteAlso tags).  Note
+                  that DataMember tags may NOT be used in the inverse
+                  conversions because these conversions are done before the
+                  input file is parsed.  Instead, a Condition or RawConvInv must
+                  be used.  May return undef on conversion error and call warn()
+                  to issue a warning.  If warn() is not called, a generic
+                  warning is generated when undef is returned.  An empty warning
+                  ("\n") may be issued to suppress warning messages when undef
+                  is returned.  If a scalar, the expression may use the
+                  variables $val, $self and $wantGroup.  If a code ref, the
+                  routine is passed 2 arguments: $val and $self.  Note that this
+                  conversion is not applied for deleted tags (ie. $val is
+                  undef).
+
+  PrintConvInv  : The inverse of PrintConv.  Necessary for Writable tags
+                  when PrintConv is specified (unless WriteAlso is used), but
+                  may be used without PrintConv.  See ValueConvInv above for
+                  more details.
+
+  PrintConvColumns : Number of columns for PrintConv lookup in HTML docs. If not
+                  set, the number of columns is determined automatically
+                  according to the maximum width of the entries.
+
+  DelValue      : Raw value to be used when deleting a permanent tag.  (Note all
+                  MakerNotes tags are permanent.)  If not specified, an attempt
+                  is made to convert an empty string for the raw value.
+
+  Validate      : Scalar expression used to validate the raw value of a tag when
+                  the Validate option is set.  The expression may access $val
+                  (the Raw tag value), $tag (the tag key) and $self (the current
+                  ExifTool object), and should return a warning if any problem
+                  is found, or false if OK.  The evaluation is performed in the
+                  Image::ExifTool::Validate package namespace, so functions of
+                  this package need not be prefixed by the package name.
+
+  Relist        : [Only if ValueConv or PrintConv is a list ref] Reference to a
+                  list of original value indices used to reorganize values. Each
+                  entry in the list may be a scalar index, or a reference to a
+                  list of indices to join values.  (Currently values may be
+                  joined, but the order of writable values must not be changed
+                  until this ability is added to the writer.)
+
+  Mask          : [BinaryData tags only] Bitmask for this value.  (Multiple tags
+                  may have the same index by using floating point indices.  An
+                  unknown tag will only be generated for a certain TagID if
+                  there is no integral TagID for that tag.)  The Mask and
+                  BitShift are applied before evaluating RawConv.
+
+  BitShift      : [Mask tags only] Bit shift for Mask-ed values.  If not
+                  specified, set to the number of trailing zero bits in Mask.
+                  When reading, the value is shifted right by this number of
+                  bits after the Mask is applied.
+
+  Condition     : If given, specifies scalar which is evaluated as a Perl
+                  expression at extraction time to decide whether the tag is
+                  valid.  If used in a list of alternate tag definitions, the
+                  first list entry with a true condition is taken.  If no
+                  condition exists, then a 'true' condition is assumed.  The
+                  expression may use $self to access the ExifTool object.  The
+                  first 128 bytes of the raw data value are accessible through
+                  the reference $valPt for EXIF, Jpeg2000, QuickTime, FLAC and
+                  BinaryData tags only (note that for BinaryData tags, the raw
+                  data of $$valPt is always 'undef' type, and may not be used
+                  when writing except for SubDirectory tags).  EXIF tags (and
+                  maybe some other types) may also reference the format string
+                  and value count through $format and $count.  Note that if the
+                  value is writable and $valPt is used, the tag must have a
+                  Format (unless 'undef' or 'string'), and a Count (unless 1 or
+                  length of the 'undef' or 'string'), so the raw data may be
+                  generated for evaluating the Condition.  When writing, $valPt,
+                  $format and $count refer to the new value, except for
+                  MakerNotes tags where $format and $count refer to the old tag
+                  if it existed.
+
+  Require       : [Composite tags only] A hash reference specifying the tags
+                  required to calculate the Composite tag value.  The hash
+                  values are the names of the required tags, and the keys
+                  specify the indices where the tag values are stored in the
+                  @val list used in the ValueConv and/or PrintConv expression.
+                  The Composite value is only calculated if the values for all
+                  Require'd tags are defined.  Require, Desire and Inhibit tag
+                  names may be prefixed by an optional group family 0 or 1 name
+                  followed by a colon.  Case IS significant.  The keys used by
+                  the Require, Desire and Inhibit hashes must not overlap (since
+                  they are used as indices into the common @val, @prt and @raw
+                  lists), and together the keys must be sequential starting from
+                  0.  A special feature allows a scalar tag name to be used
+                  instead of the hash reference, in which case the next
+                  available index will be used (avoiding collisions with Desire
+                  and Inhibit hash entries).  For example, the following two
+                  definitions are equivalent:
+
+                        Require => { 0 => 'XMP:Title' },
+                        Require => 'XMP:Title',
+
+  Desire        : [Composite tags only] This is the same as Require except that
+                  the Composite value is calculated even if the specified tags
+                  don't exist.  Beware that the elements of @val, @prt and @raw
+                  may be undefined for Desire'd tags.  If no tags are Require'd,
+                  at least one of the Desire'd tags must exist for the Composite
+                  tag to be generated.  If there are no Require'd or Desire'd
+                  tags, then the Composite tag is always generated.  A scalar
+                  Desire tag name is given the next available index (after
+                  scalar Require tags are allocated).
+
+  Inhibit       : [Composite tags only] Similar to the Require and Desire
+                  hashes, except that the Composite tag is NOT built if any of
+                  the Inhibit tags exist.  A scalar tag name is given the next
+                  available index (after scalar Require and Desire tags are
+                  allocated).
+
+  Shift         : [Writable tags only] Specifies type of shift to apply if this
+                  value may be shifted.  Set to 'Time' for shifting date/time
+                  tags, or '0' to prevent tag from being shifted or
+                  conditionally deleted.  May not be used for Writable Composite
+                  tags.
+
+  Writable      : Indicates this tag can be written (or not written if Writable
+                  is set to zero), and for EXIF and QuickTime tables gives
+                  format for writing.  Writable may be set to 1 for MakerNotes
+                  information because the existing format is always used,
+                  however providing a format is desirable because it is used in
+                  validating the value.  Set to 2 for tag to show "yes" in the
+                  Writable column of the tag name documentation even when there
+                  is no WRITE_PROC defined (eg. if it is written via an Extra
+                  tag).  For EXIF and QuickTime tables, the Writable flag may be
+                  different than the Format flag, in which case Format is used
+                  for converting the binary value and Writable specifies the
+                  format code written to the EXIF IFD.  For SubDirectories in
+                  EXIF information, this flag is only defined if the
+                  SubDirectory is writable as a block, or if the SubDirectory
+                  can not be edited (in which case Writable is set to 0).  If
+                  non-zero, the SubDirectory is also extracted as a block, so
+                  the Binary and Protected flags should usually set as well.
+                  There is currently no way to specify a write format for a
+                  SubDirectory that is not writable as a block (the default is
+                  'int32u' for IFD-type SubDirectories, and 'undef' for all
+                  others).
+
+  WriteAlso     : Used for writable tag to specify other tags to write when this
+                  tag is written.  The value is a hash reference.  The hash keys
+                  are the names of the tags to write, and the values are
+                  evaluated to obtain the ValueConv values of each tag (or undef
+                  to delete the tag).  In the eval, $val is the new Raw value of
+                  the parent tag (which may be undef if the tag is being
+                  deleted, and should not be modified because it will affect
+                  subsequent WriteAlso tags), and the %opts hash may be accessed
+                  to modify SetNewValue options for each tag.  By default, Type
+                  is set to "ValueConv" and the Protected option has bit 0x02
+                  set to allow writing of Protected tags that aren't directly
+                  writable.  The AddValue, DelValue, Shift and Replace options
+                  from the parent tag are also defined, but no other options are
+                  set by default. Previous new values of WriteAlso tags have
+                  already been removed prior to the eval if the Replace option
+                  was used for the parent tag.  If an empty warning is issued
+                  ("\n"), the target tag is not written and no error is
+                  reported.
+
+  WriteCheck    : If given, specifies a scalar which is evaluated as a Perl
+                  expression for a one-time validatation the Raw value being
+                  written.  The expression has access to 3 variables: $val is
+                  the value to be written, $self is the ExifTool object, and
+                  $tagInfo is the tag information hash reference.  It returns an
+                  error string, or undef if the value is good.  If the error
+                  string is empty, the tag is not written and no warnings are
+                  issued, but WriteAlso is still evaluated if it exists.
+
+  WriteHook     : [QuickTime only] Routine to call with these arguments when tag
+                  is encountered during writing: 0) tag value, 1) ExifTool ref.
+
+  WriteOnly     : Flag set if tag is write-only.  Used for documentation only.
+
+  DelCheck      : Similar to WriteCheck, but called when the tag is deleted. The
+                  expression may access $self, $tagInfo and $wantGroup.  Returns
+                  error string, or undef on success, and may set $val to
+                  something other than undef.  May return empty string ('') to
+                  suppress warning messages but not delete tag (eg. when
+                  deleting only associated tags).
+
+  WriteCondition: [Writable EXIF tags only] Specifies a condition to be
+                  evaluated before the tag can be written to a specific file.
+                  The condition may use $self to reference the ExifTool object,
+                  and returns true if it is OK for writing.  Unlike WriteCheck
+                  which is done only once when the new value is set, this
+                  condition is evaluated just before the tag is written to the
+                  file.
+
+  WriteGroup    : [Writable EXIF and Composite tags only] Specifies the IFD
+                  where the information gets written by default.  Must be
+                  defined for writable EXIF tags if WRITE_GROUP is not specified
+                  in table.  A WriteGroup of 'All' is special:  For writable
+                  Composite tags this causes any group specified for the
+                  Composite tag to be propagated to the WriteAlso tags when
+                  writing.  For other tags this allows writing to all EXIF IFD's
+                  simultaneously (in which case the tag should have a Condition
+                  or WriteCondition to restrict the IFD's to which the tag is
+                  actually written).
+
+  IsOverwriting : [Writable EXIF tags only] Specifies reference to subroutine
+                  which determines if tag should be overwritten.  Arguments are:
+                  0) ExifTool object ref, 1) new value hash ref, 2) old value,
+                  3) new value reference.
+
+  Preferred     : This tag is always preferred when writing.
+
+  Override      : [User-defined Composite tags only] Flag to specify that the
+                  new tag definition should override the definition of existing
+                  Composite tags with the same name.  Default is 1 unless
+                  otherwise specified.
+
+  AllowGroup    : [Writable tags only] Regular expression string (case
+                  insensitive) to match group names which are allowed when
+                  writing this tag.  Only needed if tag can be written to
+                  groups other than the normal groups for this tag (very rare).
+
+  Deletable     : [Writable SubDirectory's only] Overrides internal test for
+                  metadata types with permanent directories (currently QuickTime
+                  and Jpeg2000), allowing the tag containing these directories
+                  to be deleted.  Note that either the tag's SubDirectory
+                  DirName (which defaults to the TagName if not specified) or
+                  the family 0 group name of the SubDirectory TagTable must
+                  match a deletable group name.
+
+  OffsetPair    : Used in EXIF table to specify the tagID for the corresponding
+                  offset or length tag.
+
+  DataTag       : Used in EXIF table to specify the tag name of the data
+                  associated with offset/length tags.
+
+  FixFormat     : [Writable EXIF SubIFD SubDirectory's only] Used to specify a
+                  format for writing an IFD pointer other than 'int32u'.
+
+  ChangeBase    : [EXIF tags in JPEG images only] Eval used to return new base
+                  for the offset for this tag only.  Eval may use $dirStart and
+                  $dataPos.  Note this is geared to the quirky Leica preview
+                  image offset, and is only used if the preview is outside the
+                  APP1 EXIF segment.
+
+  BitsPerWord   : [BITMASK tags only] Number of bits per decoded word.  Defaults
+                  to 32 if not specified.
+
+  BitsTotal     : [Writable BITMASK tags only] Total number of bits in bit mask.
+                  Defaults to BitsPerWord if not specified.
+
+  FixedSize     : [EXIF only] Hack to ignore value size and use this instead.
+                  Only valid if Format is also defined.
+
+  TruncateOK    : [EXIF only] Hack to demote a truncated value in an IFD to a
+                   minor error.
+
+  Struct        : [XMP tags only] Reference to structure hash for structured XMP
+                  tags.  See "STRUCTURES" section below for more details.  (For
+                  backward compatibility, this may be a name to an entry in
+                  %Image::ExifTool::UserDefined::xmpStruct, but this use is
+                  deprecated.)  Flattened tags are automatically generated for
+                  each field in the structure.  Note that Struct tags can NOT
+                  have ValueConv/PrintConv entries, because values that are HASH
+                  references are are also used by Composite tags, which use the
+                  the Conv entries to generate the Composite value.
+
+  NoSubStruct   : [XMP tags only] Flag set in flattened tag to break cyclical
+                  recursion in nested structures.
+
+  Namespace     : [XMP tags only] Gives standard XMP namespace prefix to use for
+                  this tag.  If not defined, the tag table NAMESPACE is used.
+
+  FlatName      : [Struct tags and structure fields only] Name used for
+                  automatically-generated flattened tag names, defaults to Name
+                  if not specified.  In general, this is used to remove the
+                  redundant names found in some specifications.  May be empty
+                  ('') for a Struct tag but not for a structure field.
+
+  Units         : [MIE tags only] Reference to a list of valid units strings.
+                  The default units are the first item in the list.
+
+  Hook          : [BinaryData tags only] Expression to be evaluated when
+                  extracting tag to allow dynamic Format, etc for BinaryData
+                  tags.  May access $self, $size (the full size of the binary
+                  data record), $dataPt (reference to the data block), and $pos
+                  (position of this tag in the data block), and assign a new
+                  value to $format to dynamically set the tag format, and/or
+                  increment $varSize to add a byte offset to subsequent tags.
+                  $varSize may be set to a large number to effectively abort
+                  processing of the directory after this tag.  Must have
+                  corresponding DATAMEMBER entry in writable tables.  Must not
+                  have Unknown set.
+
+  LargeTag      : [BinaryData tags only] Flag to indicate that the data for this
+                  tag is large, and that it shouldn't be stored in the %val
+                  hash, even if the tag exists as a DATAMEMBER.
+
+  SetBase       : [QuickTime and BinaryData tags only] Sets ExifTool BASE offset
+                  for use when ExtractInfo is called with the ReEntry flag from
+                  inside the RawConv of a tag.
+
+  ByteOrder     : [Non-writable tags extracted with HandleTag and writable EXIF
+                  offset-pair tags only] Specifies byte order if tag value is
+                  stored with a constant byte order that is different from that
+                  of the parent directory.
+
+  DontRead      : [QuickTime tags with compatible SubDirectory entries only]
+                  Avoid reading subdirectory data from file.  Instead, pass RAF
+                  reference (with current position at start of directory) and
+                  DirEnd.
+
+  TagID         : [reserved] Used internally to save the table key for this tag.
+                  Note: For XMP tables this corresponds to the XMP property
+                  name, but the table key may have a full XMP namespace prefix
+                  added.
+
+  NewTagID      : [reserved] Used internally to save new ID of tag in Composite
+                  table if it is different that the original TagID (happens if
+                  there was a conflict with an existing entry in the table)
+
+  Index         : [reserved] Used internally to save the index of tagInfo items
+                  which are in a conditional list.
+
+  Table         : [reserved] Reference to parent tag table.
+
+  PropertyPath  : [reserved] Used internally by XMP writer to save property path
+                  name.  Also used in structure field information hashes, but
+                  for these the full property path is not stored.
+
+  SrcTagInfo    : [reserved] Used internally to store reference to default
+                  language tagInfo hash for alternate-language tags.
+
+  OtherLang     : [reserved] Used internally by QuickTime module to store a list
+                  of tag ID's for alternate-language tags based on this one.
+
+  ParentTagInfo : [reserved] Used internally to store a reference to the tag
+                  information hash of the parent structure for flattened
+                  structure tags.
+
+  RootTagInfo   : [reserved] Used internally to store a reference to the tag
+                  information hash of the top-level structure for flattened
+                  structure tags.
+
+  Module        : [reserved] Used internally to store module name for writable
+                  Composite tags.
+
+  LangCode      : [reserved] Used internally to indicate language code for
+                  alternate language tags (eg. 'fr').  Only used with formats
+                  which support alternate languages (eg. XMP, MIE, etc).
+
+  AddedUnknown  : [reserved] Used internally to mark Unknown tags that were
+                  added to the table at run time.
+
+  SubDirectory {  If it exists, this specifies the start of a new subdirectory.
+                  It contains a collection of variables which specify the type
+                  and location of the subdirectory.  Note that ValueConv and
+                  PrintConv do not apply to SubDirectory tags, but RawConv is
+                  evaluated before the SubDirectory is processed.  The following
+                  is a list of SubDirectory variables:
+
+     TagTable   : Specifies the name of the tag table lookup for the new
+                  subdirectory.  If not specified, the parent tag table is used.
+
+     Start      : The offset to the start of the subdirectory relative to the
+                  current Base.  This is a Perl expression which may use
+                  $valuePtr to represent the location of the tag value in the
+                  file, or $val for the value itself.  If not specified, a Start
+                  of '$valuePtr' is assumed.  Subdirectories in BinaryData may
+                  also use $dirStart to represent the offset of the current
+                  directory start relative to the start of the data block.
+
+     OffsetPt   : [EXIF directories only] If specified, this is a Perl
+                  expression that gives the position of a 32-bit word in the
+                  current directory that is added to the Start position to get
+                  the position of the new subdirectory.  The expression
+                  should use the position of the current tag ($valuePtr).
+
+     Base       : This expression specifies the base offset for all pointers in
+                  the subdirectory.  This need not be specified if the offset is
+                  the same as the current directory, which is normally the case.
+                  May use $start to represent the subdirectory start location
+                  relative to the current base, and $base for the value of the
+                  current base.  If this is defined, the automatic validation of
+                  base offsets is disabled for maker notes directories.  The IFD
+                  is flagged as using relative offsets when writing if '$start'
+                  is used in this expression.
+
+     EntryBased : [EXIF directories only] Flag indicating that the offsets are
+                  based on the individual directory entry position, so offsets
+                  are incremented by 12 times the corresponding entry index.
+
+     MaxSubdirs : Maximum number of subdirectories specified by the current tag
+                  (if the tag specifies multiple values).  If not specified, the
+                  tag value ($val) is used as-is.  If MaxSubdirs is specified,
+                  then one subdirectory is parsed for each value found up to the
+                  maximum number specified.  Ignored when writing.
+
+     ByteOrder  : Specifies byte ordering if different than than the rest of the
+                  file.  Must be either BigEndian, LittleEndian or Unknown.  If
+                  Unknown is specified, the byte order will be determined from
+                  the directory count for EXIF (however, this can not be done if
+                  OffsetPt is specified).
+
+     Validate   : If given, specifies Perl expression which is used to validate
+                  the subdirectory data (regardless of Validate option setting).
+                  The following variables may be used in the expression: $val
+                  (value of the tag), $dirData (reference to directory data),
+                  $subdirStart (offset to subdirectory start) and $size (size of
+                  subdirectory).  Returns true if subdirectory is valid.
+
+     ProcessProc: If given, specifies processing procedure used to decode this
+                  subdirectory data.  This overrides the default procedure
+                  specified by PROCESS_PROC in the tag table.
+
+     WriteProc  : If given, specifies processing procedure used to write this
+                  subdirectory data.  This overrides the default procedure
+                  specified by WRITE_PROC in the tag table.
+
+     DirName    : Name of this subdirectory.  If not specified, the name is
+                  taken from the tag name.  DirName is important because it is
+                  used when writing to compare against names in the directory
+                  map to determine which directories need to be edited.
+
+     FixBase    : Flag set if base offsets should be fixed.  Used to add a
+                  constant to maker notes offsets to fix damage done by some
+                  image editing utilities. (maker notes only)  Set to 2 for
+                  unknown maker notes to be a bit more flexible in adjusting
+                  the base offset.
+
+     AutoFix    : Flag set to patch GE makernote offset quirks and apply FixBase
+                  without warnings when writing.
+
+     FixOffsets : Expression to evaluate for each value pointer to patch
+                  problems with some EXIF maker note offsets.  May access the
+                  following variables: $valuePtr, $valEnd, $size, $tagID and
+                  $wFlag.  May return undef when writing to ignore the entry.
+
+     RelativeBase:[EXIF directories only] Flag to adjust all offsets relative
+                  to the start of the IFD when writing.
+
+     Multi      : [EXIF directories only] Flag to allow multiple linked IFD's.
+                  1 is assumed if DirName is IFD0 or SubIFD unless otherwise
+                  defined.
+
+     Magic      : [TiffIFD directories only] Magic number used in TIFF-like
+                  header.
+  }
+
+STRUCTURES
+
+Structure hashes are very similar to tag tables in that their keys are structure
+field ID's and their values are structure field information hashes.  The special
+keys in structure hashes are:
+
+  NAMESPACE   : Same as in tag tables, but may be set to undef for a
+                variable-namespace structure which holds any top-level tag. This
+                is mandatory for built-in tags, but optional for user-defined
+                tags (where it defaults to the NAMESPACE of the tag table).
+
+  STRUCT_NAME : Name of structure (used in warning messages and documentation).
+                May contain leading module name separated by a space to avoid
+                name conflicts with same-named structures in other modules.
+                Default module is "XMP" unless otherwise specified.
+
+  TYPE        : rdf:type resource for structure.
+
+  NOTES       : Notes for documentation.
+
+  GROUPS      : Same as in tag table, but only the family 2 group name is used,
+                as the default for the flattened tags.
+
+  SORT_ORDER  : Order for sorting fields in documentation.
+
+The contained structure field information hashes are similar to tag information
+hashes, except that only the following elements are used:
+
+  Raw/Value/PrintConv (and their inverses), TagID (optional), Groups, List,
+  Writable, Struct, Namespace, FlatName, LangCode, PropertyPath, Notes.
+
+But note that for PropertyPath, only the element of the path corresponding to
+the specific field is stored (including any necessary list properties).  The
+full property path is obtained by walking the structure tree.
+
+Flattened tags corresponding to each field in a structure are automatically
+generated (using an on-demand approach to reduce startup overhead).  Pre-defined
+flattened tags are allowed, and are used when it is necessary to change the Name
+or Description of a flattened tag.  The flattened tag information hash entries
+are copied from the corresponding structure field definitions, even for
+pre-defined flattened tags.  The exception is that the List property is
+generated automatically unless explicitly set to 0 in a pre-defined flattened
+tag.
+
+--------------------------------------------------------------------------------

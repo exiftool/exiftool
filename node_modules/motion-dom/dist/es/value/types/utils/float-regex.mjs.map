@@ -1,0 +1,1 @@
+{"version":3,"file":"float-regex.mjs","sources":["../../../../../src/value/types/utils/float-regex.ts"],"sourcesContent":["export const floatRegex = /-?(?:\\d+(?:\\.\\d+)?|\\.\\d+)/gu\n"],"names":[],"mappings":"AAAO,MAAM,UAAU,GAAG;;;;"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"single-color-regex.mjs","sources":["../../../../../src/value/types/utils/single-color-regex.ts"],"sourcesContent":["export const singleColorRegex =\n    /^(?:#[\\da-f]{3,8}|(?:rgb|hsl)a?\\((?:-?[\\d.]+%?[,\\s]+){2}-?[\\d.]+%?\\s*(?:[,/]\\s*)?(?:\\b\\d+(?:\\.\\d+)?|\\.\\d+)?%?\\))$/iu\n"],"names":[],"mappings":"AAAO,MAAM,gBAAgB,GACzB;;;;"}

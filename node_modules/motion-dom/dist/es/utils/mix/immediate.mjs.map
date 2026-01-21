@@ -1,0 +1,1 @@
+{"version":3,"file":"immediate.mjs","sources":["../../../../src/utils/mix/immediate.ts"],"sourcesContent":["export function mixImmediate<T>(a: T, b: T) {\n    return (p: number) => (p > 0 ? b : a)\n}\n"],"names":[],"mappings":"AAAgB,SAAA,YAAY,CAAI,CAAI,EAAE,CAAI,EAAA;AACtC,IAAA,OAAO,CAAC,CAAS,MAAM,CAAC,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC,CAAA;AACzC;;;;"}

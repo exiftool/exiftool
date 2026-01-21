@@ -1,0 +1,1 @@
+{"version":3,"file":"is-motion-value.mjs","sources":["../../../../src/value/utils/is-motion-value.ts"],"sourcesContent":["import type { MotionValue } from \"..\"\n\nexport const isMotionValue = (value: any): value is MotionValue =>\n    Boolean(value && value.getVelocity)\n"],"names":[],"mappings":"AAEa,MAAA,aAAa,GAAG,CAAC,KAAU,KACpC,OAAO,CAAC,KAAK,IAAI,KAAK,CAAC,WAAW;;;;"}

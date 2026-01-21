@@ -1,0 +1,1 @@
+{"version":3,"file":"int.mjs","sources":["../../../../src/value/types/int.ts"],"sourcesContent":["import { number } from \"./numbers\"\n\nexport const int = {\n    ...number,\n    transform: Math.round,\n}\n"],"names":[],"mappings":";;AAEa,MAAA,GAAG,GAAG;AACf,IAAA,GAAG,MAAM;IACT,SAAS,EAAE,IAAI,CAAC,KAAK;;;;;"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"is-zero-value-string.mjs","sources":["../../src/is-zero-value-string.ts"],"sourcesContent":["/**\n * Check if the value is a zero value string like \"0px\" or \"0%\"\n */\nexport const isZeroValueString = (v: string) => /^0[^.\\s]+$/u.test(v)\n"],"names":[],"mappings":"AAAA;;AAEG;AACI,MAAM,iBAAiB,GAAG,CAAC,CAAS,KAAK,aAAa,CAAC,IAAI,CAAC,CAAC;;;;"}

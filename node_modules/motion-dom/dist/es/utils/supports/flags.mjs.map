@@ -1,0 +1,1 @@
+{"version":3,"file":"flags.mjs","sources":["../../../../src/utils/supports/flags.ts"],"sourcesContent":["/**\n * Add the ability for test suites to manually set support flags\n * to better test more environments.\n */\nexport const supportsFlags: Record<string, boolean | undefined> = {}\n"],"names":[],"mappings":"AAAA;;;AAGG;AACI,MAAM,aAAa,GAAwC;;;;"}

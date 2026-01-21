@@ -1,0 +1,1 @@
+{"version":3,"file":"is-nullish.mjs","sources":["../../../../../src/value/types/utils/is-nullish.ts"],"sourcesContent":["export function isNullish(v: any): v is null | undefined {\n    return v == null\n}\n"],"names":[],"mappings":"AAAM,SAAU,SAAS,CAAC,CAAM,EAAA;IAC5B,OAAO,CAAC,IAAI,IAAI,CAAA;AACpB;;;;"}

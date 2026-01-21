@@ -1,0 +1,77 @@
+#architect-bridge-overlay {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999999;
+  font-family:
+    "Inter",
+    -apple-system,
+    sans-serif;
+}
+
+.bridge-card {
+  background: rgba(9, 9, 11, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px;
+  width: 280px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  color: #f4f4f5;
+  animation: slideIn 0.3s ease-out;
+}
+
+.bridge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.bridge-title {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: #6366f1;
+}
+
+.bridge-content {
+  font-size: 12px;
+}
+
+.metadata-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 4px;
+}
+
+.metadata-key {
+  color: #71717a;
+  font-weight: 600;
+}
+
+.metadata-value {
+  color: #e4e4e7;
+  font-family: monospace;
+}
+
+.bridge-footer {
+  margin-top: 12px;
+  font-size: 9px;
+  color: #6366f1;
+  text-align: center;
+  font-weight: 700;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"global-config.mjs","sources":["../../src/global-config.ts"],"sourcesContent":["export const MotionGlobalConfig: {\n    skipAnimations?: boolean\n    instantAnimations?: boolean\n    useManualTiming?: boolean\n    WillChange?: any\n    mix?: <T>(a: T, b: T) => (p: number) => T\n} = {}\n"],"names":[],"mappings":"AAAO,MAAM,kBAAkB,GAM3B;;;;"}

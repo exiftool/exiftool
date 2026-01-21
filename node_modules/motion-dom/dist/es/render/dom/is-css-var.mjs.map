@@ -1,0 +1,1 @@
+{"version":3,"file":"is-css-var.mjs","sources":["../../../../src/render/dom/is-css-var.ts"],"sourcesContent":["export const isCSSVar = (name: string) => name.startsWith(\"--\")\n"],"names":[],"mappings":"AAAO,MAAM,QAAQ,GAAG,CAAC,IAAY,KAAK,IAAI,CAAC,UAAU,CAAC,IAAI;;;;"}

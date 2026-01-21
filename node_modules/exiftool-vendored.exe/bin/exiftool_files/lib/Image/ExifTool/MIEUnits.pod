@@ -1,0 +1,377 @@
+
+=head1 NAME
+
+Image::ExifTool::MIEUnits - MIE units documentation
+
+=head1 DESCRIPTION
+
+The MIE format allows units of measurement to be specified in brackets at
+the end of a MIE tag name (eg. "Volume(m3)"). This document describes the
+standard MIE units abbreviations.
+
+=head1 SYNTAX
+
+The units string may contain any ASCII characters in the range 0x21 ('!') to
+0x7d ('}'), excepting the bracket characters (0x28 and 0x29).  An empty
+string is allowed, and indicates a dimensionless value.  L<Standard
+units|/STANDARD UNITS> should be used where possible.  In the standard
+units, an underline ('_') is used to indicate a subscript, and multiple
+words may be separated with a hyphen ('-').
+
+Exponents should be positive, and require no separator (eg. "m2" for square
+meters).  L<Prefixes|/PREFIXES> may be added to the standard units (eg.
+"cm") except when the resulting name conflicts with another standard unit.
+
+Multiplication is indicated by '.', and division by '/'.  Reciprocal units
+(ie. the multiplicative inverse) are obtained through division rather than
+the use of negative exponents (eg. "/in", not "in-1").  In MIE units,
+multiplication has precedence over division, so everything to the right of a
+'/' is in the denominator.  (See L</EXAMPLES> for a few examples.)
+
+Below is a table summarizing the special characters used in MIE units
+strings.
+
+  .           multiplication
+  /           division (used for negative exponents)
+  -           word separator
+  _           subscript
+  {}          annotation
+  []          used to avoid name conflicts if necessary
+  0-9         exponentiation
+
+=head1 STANDARD UNITS
+
+              dimensionless
+  [G]         Newtonian constant of gravitation (unclassified)
+  [g]         standard acceleration of free fall (acceleration)
+  [h]         Planck constant (action)
+  [k]         Boltzmann constant (unclassified)
+  {cfu}       colony forming units (number)
+  {rbc}       red blood cell count (number)
+  {tbl}       tablets (number)
+  {tot}       particles total count (number)
+  %           percent (fraction)
+  10^N        the number ten for arbitrary powers (number)
+  A           Ampere (electric current)
+  a           year (time)
+  a_g         mean Gregorian year (time)
+  a_j         mean Julian year (time)
+  a_t         tropical year (time)
+  acr         acre, U.S. (area)
+  acr_br      acre, British (area)
+  Ao          Angstrom (length)
+  APL-U       APL unit (biologic activity of anticardiolipin IgA)
+  ar          are (area)
+  arb-U       arbitrary unit (arbitrary)
+  arcmin      minute of arc (plane angle)
+  arcsec      second of arc (plane angle)
+  atm         standard atmosphere (pressure)
+  att         technical atmosphere (pressure)
+  AU          astronomic unit (length)
+  b           barn (action area)
+  B           bel (level)
+  B-kW        bel kilowatt (power level)
+  B-mV        bel millivolt (electric potential level)
+  B-SPL       bel sound pressure (pressure level)
+  B-uV        bel microvolt (electric potential level)
+  B-V         bel volt (electric potential level)
+  B-W         bel watt (power level)
+  bar         bar (pressure)
+  bbl         barrel (fluid volume)
+  Bd          baud (signal transmission rate)
+  bdsk-U      Bodansky unit (biologic activity of phosphatase)
+  beth-U      Bethesda unit (biologic activity of factor VIII inhibitor)
+  bf          board foot (volume)
+  Bi          Biot (electric current)
+  bit         bit (amount of information)
+  Bq          Becquerel (radioactivity)
+  Btu         British thermal unit (energy)
+  Btu_39      British thermal unit at 39 degF (energy)
+  Btu_59      British thermal unit at 59 degF (energy)
+  Btu_60      British thermal unit at 60 degF (energy)
+  Btu_IT      international table British thermal unit (energy)
+  Btu_m       mean British thermal unit (energy)
+  Btu_th      thermochemical British thermal unit (energy)
+  bu          bushel, U.S. (dry volume)
+  bu_br       bushel, British (volume)
+  By          byte (amount of information)
+  C           Coulomb (electric charge)
+  c           velocity of light (velocity)
+  cal         calorie (energy)
+  Cal         nutrition label Calories (energy)
+  cal_15      calorie at 15 degC (energy)
+  cal_20      calorie at 20 degC (energy)
+  cal_IT      international table calorie (energy)
+  cal_m       mean calorie (energy)
+  cal_th      thermochemical calorie (energy)
+  car_Au      carat of gold alloys (mass fraction)
+  car_m       metric carat (mass)
+  cd          candela (luminous intensity)
+  Cel         degree Celsius (temperature)
+  Ch          Charriere (gauge of catheters)
+  ch          Gunter's chain, U.S. (length)
+  ch_br       Gunter's chain, British (length)
+  Ci          Curie (radioactivity)
+  cicero      cicero (length)
+  circ        circle (plane angle)
+  cml         circular mil, international (area)
+  cr          cord, international (volume)
+  crd_us      cord, U.S. (fluid volume)
+  cup_us      cup (volume)
+  d           day (time)
+  deg         degree (plane angle)
+  deg{mag}    degree from magnetic north (plane angle)
+  degF        degree Fahrenheit (temperature)
+  didot       didot (length)
+  diop        diopter (refraction of a lens)
+  dpt         dry pint, U.S. (dry volume)
+  dqt         dry quart, U.S. (dry volume)
+  dr          dram (mass)
+  dr_ap       dram, apothecary (mass)
+  drp         drop (volume)
+  dye-U       Dye unit (biologic activity of amylase)
+  dyn         dyne (force)
+  e           elementary charge (electric charge)
+  eps_0       permittivity of vacuum (electric permittivity)
+  eq          equivalents (amount of substance)
+  erg         erg (energy)
+  eV          electronvolt (energy)
+  F           Farad (electric capacitance)
+  fdr         fluid dram, U.S. (fluid volume)
+  fdr_br      fluid dram, British (volume)
+  foz         fluid ounce, U.S. (fluid volume)
+  foz_br      fluid ounce, British (volume)
+  ft          foot, international (length)
+  ft_br       foot, British (length)
+  ft_us       foot, U.S. (length)
+  fth         fathom, international (length)
+  fth_br      fathom, British (length)
+  fth_us      fathom, U.S. (length)
+  fur         furlong, U.S. (length)
+  G           Gauss (magnetic flux density)
+  g           gram (mass)
+  g.m/{H-B}   gram meter per heartbeat (prop. to ventricular stroke work)
+  g%          gram percent (mass fraction)
+  Gal         Gal (acceleration)
+  gal         gallon, U.S. (fluid volume)
+  gal_br      gallon, British (volume)
+  gal_wi      historical winchester gallon (dry volume)
+  Gb          Gilbert (magnetic tension)
+  gf          gram-force (force)
+  gil         gill, U.S. (fluid volume)
+  gil_br      gill, British (volume)
+  gon         gon (plane angle)
+  GPL-U       GPL unit (biologic activity of anticardiolipin IgG)
+  gr          grain (mass)
+  Gy          Gray (energy dose)
+  H           Henry (inductance)
+  h           hour (time)
+  hd          hand, international (height of horses)
+  hnsf-U      Hounsfield unit (x-ray attenuation)
+  HP          horsepower (power)
+  hp_C        homeopathic potency of centesimal series (homeopathic potency)
+  hp_X        homeopathic potency of decimal series (homeopathic potency)
+  HPF         high power field (view area in microscope)
+  Hz          Hertz (frequency)
+  in          inch, international (length)
+  in_br       inch, British (length)
+  in_us       inch, U.S. (length)
+  in-H2O      inch of water column (pressure)
+  in-Hg       inch of mercury column (pressure)
+  iU          international unit (arbitrary)
+  J           Joule (energy)
+  K           Kelvin (temperature)
+  ka-U        King-Armstrong unit (biologic activity of phosphatase)
+  kat         katal (catalytic activity)
+  kg{wet-tis} kilogram of wet tissue (mass)
+  kn          knot, international (velocity)
+  kn_br       knot, British (velocity)
+  knk-U       Kunkel unit (arbitrary biologic activity)
+  Ky          Kayser (lineic number)
+  l           liter (volume)
+  L           liter (volume)
+  lb          pound (mass)
+  lb_ap       pound, apothecary (mass)
+  lb_tr       pound, troy (mass)
+  lbf         pound force (force)
+  lcwt        long hunderdweight (mass)
+  ligne       ligne (length)
+  lk          link for Gunter's chain, U.S. (length)
+  lk_br       link for Gunter's chain, British (length)
+  lm          lumen (luminous flux)
+  Lmb         Lambert (brightness)
+  lne         line (length)
+  LPF         low power field (view area in microscope)
+  lton        long ton (mass)
+  lx          lux (illuminance)
+  ly          light-year (length)
+  m           meter (length)
+  m_e         electron mass (mass)
+  m_p         proton mass (mass)
+  m-H2O       meter of water column (pressure)
+  m-Hg        meter of mercury column (pressure)
+  mclg-U      Mac Lagan unit (arbitrary biologic activity)
+  mesh        mesh, international (lineic number)
+  MET         metabolic equivalent (metabolic cost of physical activity)
+  mg{creat}   milligram of creatinine (mass)
+  mho         mho (electric conductance)
+  mi          mile, international (statute mile) (length)
+  mi_br       mile, British (length)
+  mi_us       mile, U.S. (length)
+  mil         mil, international (length)
+  mil_us      mil, U.S. (length)
+  min         minute (time)
+  min_br      minim, British (volume)
+  min_us      minim, U.S. (fluid volume)
+  mo          month (time)
+  mo_g        mean Gregorian month (time)
+  mo_j        mean Julian month (time)
+  mo_s        synodal month (time)
+  mol         mole (amount of substance)
+  MPL-U       MPL unit (biologic activity of anticardiolipin IgM)
+  mu_0        permeability of vacuum (magnetic permeability)
+  Mx          Maxwell (flux of magnetic induction)
+  N           Newton (force)
+  nmi         nautical mile, international (length)
+  nmi_br      nautical mile, British (length)
+  Np          neper (level)
+  Oe          Oersted (magnetic field intensity)
+  Ohm         Ohm (electric resistance)
+  osm         osmole of dissolved particles (amount of substance)
+  oz          ounce (mass)
+  oz_ap       ounce, apothecary (mass)
+  oz_tr       ounce, troy (mass)
+  P           Poise (dynamic viscosity)
+  Pa          Pascal (pressure)
+  pc          parsec (length)
+  pc_br       pace (length)
+  pca         pica (length)
+  pca_pr      Printer's pica (length)
+  pH          pH (acidity)
+  ph          phot (illuminance)
+  pi          the number pi (number)
+  pied        pied (length)
+  pk          peck, U.S. (dry volume)
+  pk_br       peck, British (volume)
+  pnt         point (length)
+  pnt_pr      Printer's point (length)
+  pouce       pouce (length)
+  ppb         parts per billion (fraction)
+  ppm         parts per million (fraction)
+  ppth        parts per thousand (fraction)
+  pptr        parts per trillion (fraction)
+  PRU         peripheral vascular resistance unit (fluid resistance)
+  psi         pound per square inch (pressure)
+  pt          pint, U.S. (fluid volume)
+  pt_br       pint, British (volume)
+  pwt_tr      pennyweight (mass)
+  qt          quart, U.S. (fluid volume)
+  qt_br       quart, British (volume)
+  R           Roentgen (ion dose)
+  rad         radian (plane angle)
+  RAD         radiation absorbed dose (energy dose)
+  rch         Ramden's chain, U.S. (length)
+  rd          rod, U.S. (length)
+  rd_br       rod, British (length)
+  REM         radiation equivalent man (dose equivalent)
+  rlk_us      link for Ramden's chain (length)
+  s           second (time)
+  S           Siemens (electric conductance)
+  sb          stilb (lum. intensity density)
+  sc_ap       scruple, apothecary (mass)
+  sct         section (area)
+  scwt        short hundredweight (mass)
+  smgy-U      Somogyi unit (biologic activity of amylase)
+  sph         spere (solid angle)
+  sr          streadian (solid angle)
+  st          stere (volume)
+  St          Stokes (kinematic viscosity)
+  ston        short ton (mass)
+  stone       stone (mass)
+  Sv          Sievert (dose equivalent)
+  Sv-U        Svedberg unit (sedimentation coefficient)
+  T           Tesla (magnetic flux density)
+  t           tonne (mass)
+  tb-U        tuberculin unit (biologic activity of tuberculin)
+  tbs         tablespoon, U.S. (volume)
+  todd-U      Todd unit (biologic activity antistreptolysin O)
+  tsp         teaspoon, U.S. (volume)
+  twp         township (area)
+  u           unified atomic mass unit (mass)
+  U           Unit (catalytic activity)
+  USP-U       U.S. Pharmacopeia unit (arbitrary)
+  V           Volt (electric potential)
+  W           Watt (power)
+  Wb          Weber (magnetic flux)
+  wk          week (time)
+  yd          yard, international (length)
+  yd_br       yard, British (length)
+  yd_us       yard, U.S. (length)
+
+=head1 PREFIXES
+
+Standard SI prefixes:
+
+  y           yocto (10^-24)
+  z           zepto (10^-21)
+  a           atto  (10^-18)
+  f           femto (10^-15)
+  p           pico  (10^-12)
+  n           nano  (10^-9)
+  u           micro (10^-6)
+  m           milli (10^-3)
+  c           centi (10^-2)
+  d           deci  (10^-1)
+  da          deka  (10)
+  h           hecto (10^2)
+  k           kilo  (10^3)
+  G           giga  (10^9)
+  M           mega  (10^6)
+  T           tera  (10^12)
+  P           peta  (10^15)
+  E           exa   (10^18)
+  Z           zetta (10^21)
+  Y           yotta (10^24)
+
+Binary power prefixes:
+
+  Ki          kibi  (2^10)
+  Mi          mebi  (2^20)
+  Gi          gibi  (2^30)
+  Ti          tebi  (2^40)
+
+=head1 EXAMPLES
+
+A few examples of combined units strings:
+
+  /cm3        per cubic centimeter
+  in2         square inches
+  kg.m/s2     Newtons (N)
+  m3/kg.s2    units of [G]
+  10^100      googols
+
+=head1 HISTORY
+
+  2006-12-14 - PH Created
+
+=head1 AUTHOR
+
+Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
+
+This library is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=head1 REFERENCES
+
+=over 4
+
+=item L<http://aurora.regenstrief.org/UCUM/>
+
+=back
+
+=head1 SEE ALSO
+
+L<Image::ExifTool::MIE(3pm)|Image::ExifTool::MIE>,
+L<Image::ExifTool(3pm)|Image::ExifTool>
+
+=cut

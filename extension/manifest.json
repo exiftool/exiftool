@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "ExifTool Architect: WhatsApp Bridge",
+  "version": "1.0.0",
+  "description": "Premium metadata overlay for WhatsApp Web media.",
+  "permissions": ["activeTab", "scripting"],
+  "content_scripts": [
+    {
+      "matches": ["https://web.whatsapp.com/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ],
+  "host_permissions": ["http://localhost:3001/*"]
+}

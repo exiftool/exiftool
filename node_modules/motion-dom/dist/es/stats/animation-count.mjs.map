@@ -1,0 +1,1 @@
+{"version":3,"file":"animation-count.mjs","sources":["../../../src/stats/animation-count.ts"],"sourcesContent":["export const activeAnimations = {\n    layout: 0,\n    mainThread: 0,\n    waapi: 0,\n}\n"],"names":[],"mappings":"AAAa,MAAA,gBAAgB,GAAG;AAC5B,IAAA,MAAM,EAAE,CAAC;AACT,IAAA,UAAU,EAAE,CAAC;AACb,IAAA,KAAK,EAAE,CAAC;;;;;"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"is-object.mjs","sources":["../../src/is-object.ts"],"sourcesContent":["export function isObject(value: unknown): value is object {\n    return typeof value === \"object\" && value !== null\n}\n"],"names":[],"mappings":"AAAM,SAAU,QAAQ,CAAC,KAAc,EAAA;IACnC,OAAO,OAAO,KAAK,KAAK,QAAQ,IAAI,KAAK,KAAK,IAAI,CAAA;AACtD;;;;"}

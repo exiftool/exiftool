@@ -1,0 +1,1 @@
+{"version":3,"file":"color-regex.mjs","sources":["../../../../../src/value/types/utils/color-regex.ts"],"sourcesContent":["export const colorRegex =\n    /(?:#[\\da-f]{3,8}|(?:rgb|hsl)a?\\((?:-?[\\d.]+%?[,\\s]+){2}-?[\\d.]+%?\\s*(?:[,/]\\s*)?(?:\\b\\d+(?:\\.\\d+)?|\\.\\d+)?%?\\))/giu\n"],"names":[],"mappings":"AAAO,MAAM,UAAU,GACnB;;;;"}

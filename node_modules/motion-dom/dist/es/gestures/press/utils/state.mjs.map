@@ -1,0 +1,1 @@
+{"version":3,"file":"state.mjs","sources":["../../../../../src/gestures/press/utils/state.ts"],"sourcesContent":["export const isPressing = new WeakSet<EventTarget>()\n"],"names":[],"mappings":"AAAa,MAAA,UAAU,GAAG,IAAI,OAAO;;;;"}

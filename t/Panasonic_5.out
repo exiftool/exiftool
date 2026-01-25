@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: Panasonic_5_failed.rw2
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 15 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:45-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:45-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:45-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2026:01:22 11:27:18-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:01:22 11:27:18-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:01:22 11:27:18-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: RW2
 [File, File, Other] FileTypeExtension - File Type Extension: rw2
@@ -223,7 +223,7 @@
 [PrintIM, PrintIM, Printing] 256 - Print IM 0x0100: 0x00000005
 [PrintIM, PrintIM, Printing] 257 - Print IM 0x0101: 0x00000001
 [PrintIM, PrintIM, Printing] 272 - Print IM 0x0110: 0x00000080
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.42
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.46
 [XMP, XMP-dc, Image] title - Title: new title
 [IPTC, IPTC, Other] 25 - Keywords: a keyword
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
@@ -240,5 +240,5 @@
 [Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 4.7
 [Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.006 mm
 [Composite, Composite, Image] Exif-FOV - Field Of View: 73.7 deg
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 5.1 mm (35 mm equivalent: 24.0 mm)
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 5.1 mm (35 mm equivalent: 24.0 mm)
 [Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 1.02 m

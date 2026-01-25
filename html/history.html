@@ -17,6 +17,27 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.46'><b>Jan. 25, 2026 - Version 13.46</b></a>
+<ul>
+<li>Added a new Pentax LensType
+<li>Decode some new Canon tags (<a href="https://github.com/exiftool/exiftool/issues/380">github #380</a>)
+<li>Renamed a newly added Canon tag (thanks Martin Chv&aacute;tal)
+<li>Improved identification of Canon RF lenses in edited images when an extender
+    was used
+<li>Changed description of FocalLength35efl to add "35mm Equiv"
+<li>Patched -validate option to recognize DNG 1.7.1 tags
+<li>Patched to remove maker note error/warning when writing files from some
+    Google phones (<a href="https://github.com/exiftool/exiftool/issues/377">github #377</a>)
+<li>Patched to improve warning for corrupted HEIC files downloaded from
+    heic.digital, and added ability to delete this garbage when writing
+    (<a href="https://github.com/exiftool/exiftool/issues/361">github #361</a> and <a href="https://github.com/exiftool/exiftool/issues/378">#378</a>)
+<li>Fixed minor error when writing some DJI DNG files
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#GeoUserTag">GeoUserTag</a> option
+    </ul>
+</ul>
+
 <a name='v13.45'><b>Dec. 26, 2025 - Version 13.45</b></a>
 <ul>
 <li>Added a number of new values for some Sony tags (thanks Milo&scaron; Komar&ccaron;evi&cacute;)
@@ -26,8 +47,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Decode Ricoh APP7 maker notes
 <li>Patched to allow a specific PreviewImage to be written to a DNG file
     containing multiple previews
-<li>Fixed minor error when writing some DJI DNG files
 <li>Fixed bug reading large Protobuf integers on 32-bit systems (<a href="https://github.com/exiftool/exiftool/issues/373">github #373</a>)
+<li>Fixed minor error when writing some DJI DNG files
 <li>API Changes:
     <ul>
     <li>Added <a href="ExifTool.html#SystemTimeRes">SystemTimeRes</a> option

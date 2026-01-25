@@ -1104,13 +1104,17 @@ sub WriteQuickTime($$$)
         }
         if ($got != $size) {
             # ignore up to 256 bytes of garbage at end of file
-            if ($got <= 256 and $size >= 1024 and $tag ne 'mdat') {
+            my $type;
+            if ($got <= 256 and $size >= 1024 and $tag ne 'mdat' or
+                $got < 3000 and pack('N',$size) =~ /^<b[r>]/ and $type = 'extraneous HTML')
+            {
                 my $bytes = $got + length $hdr;
+                $type or $type = 'garbage';
                 if ($$et{OPTIONS}{IgnoreMinorErrors}) {
-                    $et->Warn("Deleted garbage at end of file ($bytes bytes)");
+                    $et->Warn("Deleted $type at end of file ($bytes bytes)");
                     $buff = $hdr = '';
                 } else {
-                    $et->Error("Possible garbage at end of file ($bytes bytes)", 1);
+                    $et->Error("Possible $type at end of file ($bytes bytes)", 1);
                     return $rtnVal;
                 }
             } else {
@@ -2262,7 +2266,7 @@ QuickTime-based file formats like MOV and MP4.
 
 =head1 AUTHOR
 
-Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2026, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

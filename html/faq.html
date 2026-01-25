@@ -1233,30 +1233,42 @@ tag in the command.  For instance, this command:
 
 writes only the value from the Comment tag.  This may seem strange, but it prevents
 duplicate items from being added to a list when copying a group of tags from a
-file containing duplicate information.  Alternatively, a leading <code>+</code>
-may be added to accumulate queued items when
-copying from multiple tags to a single list:
+file containing duplicate information.  Alternatively, multiple tags may be copied to a
+single list either by adding a leading <code>+</code> or by using the
+<code>-addTagsFromFile</code> option:
 
 <pre>exiftool "-keywords&lt;filename" "-+keywords&lt;comment" DIR
 </pre>
 
-Note that as with "<code>=</code>" in the first three examples above, the
-"<code>&lt;</code>" operation of this command overwrites any Keywords that
-existed previously in the original file.  To add to or remove from the existing
+or
+
+<pre>exiftool -addTagsFromFile @ "-keywords&lt;filename" "-keywords&lt;comment" DIR
+</pre>
+
+Except for adding instead of replacing queued list values, the <code>-addTagsFromFile</code>
+option is identical to <code>-tagsFromFile</code>, but using <code>"-+TAG&lt;SRCTAG"</code>
+is more flexible because it may be applied on a per-tag basis.</blockquote>
+
+<blockquote>But note that the "<code>&lt;</code>" operation still overwrites any Keywords
+that existed previously in the original file.  To add to or remove from the existing
 keywords, use "<code>+&lt;</code>" or "<code>-&lt;</code>".
 </blockquote>
 
-<blockquote>One final note:  In rare cases when copying the contents of two other
-tags into a single list, the resulting queued list values may contain duplicates
-that would be written to the target file.  There is an
-<a href="ExifTool.html#NoDups">API NoDups option</a> which removes duplicates items
-from list values that are queued for writing.  For example,
+<blockquote>One final note:  When copying the contents of two other
+tags into a single list, or if one of the source lists may already contain
+duplicates, the <a href="ExifTool.html#NoDups">API NoDups option</a> may be
+used to remove duplicate items from list values that are queued for writing.
+For example,
 
 <pre>exiftool -tagsfromfile a.jpg -subject -tagsfromfile b.jpg -+subject -api nodups c.jpg
 </pre>
 
 combines Subject items from a.jpg and b.jpg and writes them without duplicates
-to c.jpg (overwriting any previous Subject in c.jpg).</blockquote>
+to c.jpg (overwriting any previous Subject in c.jpg).  Or to remove duplicates that
+may already exist in the target file when adding new items:
+
+<pre>exiftool -tagsfromfile @ -subject -subject="new item" -api nodups target.jpg</pre>
+</blockquote>
 
 <a name="Q18"></a>
 <p>18a. <b>"Special characters don't display properly in my Windows console"</b>, or
@@ -1854,7 +1866,7 @@ certain commands, but may be suppressed by adding
 <code>-api "NoWarning=No writable tags"</code> to the command if desired.</blockquote>
 
 <hr>
-<i>Last revised Dec 25, 2025</i>
+<i>Last revised Jan 4, 2026</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

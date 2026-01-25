@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: FLIR.jpg
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 7.3 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2013:04:02 13:11:16-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:36-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:10:31 20:34:50-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:01:17 06:56:19-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:12:26 20:35:32-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -118,4 +118,4 @@
 [Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
 [Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/32
 [Composite, FLIR, Camera] FLIR-PeakSpectralSensitivity - Peak Spectral Sensitivity: 10.5 um
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 6.7 mm
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 6.7 mm

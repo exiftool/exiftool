@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: GPS.jpg
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 2.1 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2008:10:14 11:39:46-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:38-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:10:31 20:34:50-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:01:17 06:10:46-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:12:26 20:35:31-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -92,5 +92,5 @@
 [Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/724
 [Composite, Composite, Location] GPS-GPSLatitude - GPS Latitude: 54 degrees 59.38 minutes N
 [Composite, Composite, Location] GPS-GPSLongitude - GPS Longitude: 1 degrees 54.85 minutes W
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 0.0 mm
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 0.0 mm
 [Composite, Composite, Location] Exif-GPSPosition - GPS Position: 54 degrees 59.38 minutes N, 1 degrees 54.85 minutes W

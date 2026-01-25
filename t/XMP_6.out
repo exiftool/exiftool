@@ -1,15 +1,15 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: XMP_6_failed.xmp
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 5.8 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:58-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:58-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:58-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2026:01:22 11:27:24-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:01:22 11:27:24-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:01:22 11:27:24-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: XMP
 [File, File, Other] FileTypeExtension - File Type Extension: xmp
 [File, File, Other] MIMEType - MIME Type: application/rdf+xml
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.42
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.46
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [XMP, XMP-dc, Image] description - Description: UTF-16 (big-endian) encoded XMP
 [XMP, XMP-dc, Author] rights - Rights: Copyright 2004 Phil Harvey
@@ -86,4 +86,4 @@
 [Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
 [Composite, Composite, Image] Exif-LightValue - Light Value: 9.6
 [Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 6.0 mm
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 6.0 mm

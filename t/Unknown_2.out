@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: Unknown.jpg
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 7.2 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:06:16 10:57:05-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:53-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2021:10:31 20:34:50-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:01:17 05:12:36-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:12:26 20:35:31-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -88,5 +88,5 @@
 [Composite, Composite, Time] Exif-SubSecCreateDate - Create Date: 2005:08:10 06:24:38.331
 [Composite, Composite, Time] Exif-SubSecDateTimeOriginal - Date/Time Original: 2005:08:10 06:24:38.331
 [Composite, Composite, Time] Exif-SubSecModifyDate - Modify Date: 2005:08:10 06:24:38.331
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 57.0 mm
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 57.0 mm
 [Composite, Composite, Image] Exif-LightValue - Light Value: 10.1

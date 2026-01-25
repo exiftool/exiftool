@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: Writer_10_failed.jpg
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 7.1 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:54-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:54-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:54-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2026:01:22 11:27:22-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:01:22 11:27:22-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:01:22 11:27:22-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -217,7 +217,7 @@
 [MakerNotes, Pentax, Image] 16 - WB Shift AB: 0
 [MakerNotes, Pentax, Image] 17 - WB Shift GM: 0
 [PrintIM, PrintIM, Printing] PrintIMVersion - PrintIM Version: 0300
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.42
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.46
 [XMP, XMP-dc, Time] date - Date: 2008:03:02
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: Y, Cb, Cr, -
 [XMP, XMP-exif, Camera] FlashFired - Flash Fired: False
@@ -242,5 +242,5 @@
 [Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.5
 [Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.020 mm
 [Composite, Composite, Image] Exif-FOV - Field Of View: 100.4 deg
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 10.0 mm (35 mm equivalent: 15.0 mm)
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 10.0 mm (35 mm equivalent: 15.0 mm)
 [Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 0.38 m

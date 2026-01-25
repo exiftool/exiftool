@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 29026 tags, with 18036 unique tag names.
+They contain a total of 29034 tags, with 18043 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -7539,6 +7539,7 @@ boot, not including standby time.
   0x4026   LogInfo                              Canon LogInfo
   0x4028   AFConfig                             Canon AFConfig
   0x403f   RawBurstModeRoll                     Canon RawBurstInfo
+  0x4053   FocusBracketingInfo                  Canon FocusBracketingInfo
   0x4059   LevelInfo                            Canon LevelInfo
 
 =head3 Canon CameraSettings Tags
@@ -8448,7 +8449,7 @@ CameraInfo tags for the EOS R6 Mark II.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-   2157    ShutterCount                         int32u
+   2157    ImageCount                           int16u
 
 =head3 Canon CameraInfoG5XII Tags
 
@@ -9893,6 +9894,18 @@ Information about creative filter settings.
   ------   --------                             --------
       1    RawBurstImageNum                     int32u
       2    RawBurstImageCount                   int32u
+
+=head3 Canon FocusBracketingInfo Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      1    FocusBracketing                      int32s
+      2    FocusBracketingImageCount            int32s
+      3    FocusBracketingFocusIncrement        int32s
+      4    FocusBracketingExposureSmoothing     int32s
+      5    FocusBracketingDepthComposite        int32s
+      6    FocusBracketingCropDepthComposite    int32s
+      7    FocusBracketingFlashInterval         int32s
 
 =head3 Canon LevelInfo Tags
 
@@ -12508,7 +12521,8 @@ These tags belong to the ExifTool XMP-GImage family 1 group.
 =head3 Google GPano Tags
 
 Panorama tags written by Google Photosphere. See
-L<https://developers.google.com/panorama/metadata/> for the specification.
+L<https://developers.google.com/streetview/spherical-metadata> for the
+specification.
 
 These tags belong to the ExifTool XMP-GPano family 1 group.
 
@@ -20138,6 +20152,7 @@ These tags are used in Panasonic/Leica cameras.
   0x00ca   SensorType                           int16u
   0x00d1   ISO                                  int32u
   0x00d2   MonochromeGrainEffect                int16u
+  0x00d4   HybridLogGamma                       int16u
   0x00d6   NoiseReductionStrength               rational64s
   0x00de   AFAreaSize                           rational64u[2]
   0x00e4   LensTypeModel                        int16u
@@ -42839,7 +42854,7 @@ L<Image::ExifTool::BuildTagLookup|Image::ExifTool::BuildTagLookup>.
 
 =head1 AUTHOR
 
-Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2026, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

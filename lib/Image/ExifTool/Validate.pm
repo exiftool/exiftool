@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.24';
+$VERSION = '1.25';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -144,9 +144,9 @@ my %stdFormat = (
         0x830e => 'double',     0x8482 => 'double',     0x87af => 'int16u',     0x87b1 => 'string',
         0x8480 => 'double',     0x85d8 => 'double',     0x87b0 => 'double',
         # DNG tags: (use '' for non-DNG tags in the range 0xc612-0xcd48)
-        0xc615 => '(string|int8u)',              0xc6f4 => '(string|int8u)',
-        0xc61a => '(int16u|int32u|rational64u)', 0xc6f6 => '(string|int8u)',
-        0xc61d => 'int(16|32)u',                 0xc6f8 => '(string|int8u)',
+        0xc615 => '(string|int8u)',              0xc6f4 => '(string|int8u)',    0xcd49 => 'float',
+        0xc61a => '(int16u|int32u|rational64u)', 0xc6f6 => '(string|int8u)',    0xcd4a => 'int32u',
+        0xc61d => 'int(16|32)u',                 0xc6f8 => '(string|int8u)',    0xcd4b => 'int32u',
         0xc61f => '(int16u|int32u|rational64u)', 0xc6fe => '(string|int8u)',
         0xc620 => '(int16u|int32u|rational64u)', 0xc716 => '(string|int8u)',
         0xc628 => '(int16u|rational64u)',        0xc717 => '(string|int8u)',
@@ -678,7 +678,7 @@ ExifTool Validate option is enabled.
 
 =head1 AUTHOR
 
-Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2026, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

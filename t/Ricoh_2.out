@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.03
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: Ricoh.jpg
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 1903 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:01:04 14:02:27-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2020:07:29 09:04:20-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
-[File, System, Other] FilePermissions - File Permissions: rw-r--r--
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:01:17 05:12:36-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:12:26 20:35:32-05:00
+[File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
 [File, File, Other] MIMEType - MIME Type: image/jpeg
@@ -68,5 +68,5 @@
 [Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
 [Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
 [Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/274
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 7.5 mm
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 7.5 mm
 [Composite, Composite, Image] Exif-LightValue - Light Value: 10.3

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: Writer_9_failed.jpg
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 10 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:54-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:54-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:54-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2026:01:22 11:27:22-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:01:22 11:27:22-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:01:22 11:27:22-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -164,7 +164,7 @@
 [MakerNotes, Canon, Camera] 9 - AF Area Y Positions: 0 0 -506 0 506 0 0
 [MakerNotes, Canon, Camera] 10 - AF Points In Focus: (none)
 [MakerNotes, Canon, Camera] 19 - Thumbnail Image Valid Area: 0 159 7 112
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.42
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.46
 [XMP, XMP-aux, Camera] Lens - Lens: 18.0 - 55.0 mm
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: Y, Cb, Cr, -
 [XMP, XMP-exif, Image] CompressedBitsPerPixel - Compressed Bits Per Pixel: 9
@@ -239,5 +239,5 @@
 [Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.019 mm
 [Composite, Composite, Image] Exif-DOF - Depth Of Field: inf (4.21 m - inf)
 [Composite, Composite, Image] Exif-FOV - Field Of View: 37.7 deg
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 34.0 mm (35 mm equivalent: 52.7 mm)
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 34.0 mm (35 mm equivalent: 52.7 mm)
 [Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 4.26 m

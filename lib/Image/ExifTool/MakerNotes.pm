@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '2.18';
+$VERSION = '2.19';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -31,6 +31,7 @@ my $debug;          # set to 1 to enable debugging code
 # - All byte orders are now specified because we can now
 #   write maker notes into a file with different byte ordering!
 # - Put these in alphabetical order to make TagNames documentation nicer.
+# - don't forget to set "NotIFD => 1" if the directory is not in EXIF IFD format
 @Image::ExifTool::MakerNotes::Main = (
     # decide which MakerNotes to use (based on makernote header and camera make/model)
     {
@@ -160,6 +161,7 @@ my $debug;          # set to 1 to enable debugging code
     {
         Name => 'MakerNoteGoogle',
         Condition => '$$valPt =~ /^HDRP[\x02\x03]/',
+        NotIFD => 1,
         SubDirectory => {
             TagTable => 'Image::ExifTool::Google::HDRPlusMakerNote',
         },
@@ -1854,7 +1856,7 @@ maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2026, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

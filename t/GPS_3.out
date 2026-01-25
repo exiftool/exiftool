@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: GPS_3_failed.jpg
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 2.2 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:38-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:38-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:38-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2026:01:22 11:27:14-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:01:22 11:27:14-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:01:22 11:27:14-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -94,5 +94,5 @@
 [Composite, Composite, Time] GPS-GPSDateTime - GPS Date/Time: 2007:03:03 00:16:10.55Z
 [Composite, Composite, Location] GPS-GPSLatitude - GPS Latitude: 12 deg 21' 23.34" S
 [Composite, Composite, Location] GPS-GPSLongitude - GPS Longitude: 1 deg 54' 51.00" W
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 0.0 mm
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 0.0 mm
 [Composite, Composite, Location] Exif-GPSPosition - GPS Position: 12 deg 21' 23.34" S, 1 deg 54' 51.00" W

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.90
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: CanonRaw.cr3
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 53 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:26 22:05:16-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2024:07:24 15:39:35-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2024:07:24 09:42:40-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2025:12:26 20:37:44-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:12:26 20:35:32-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: CR3
 [File, File, Other] FileTypeExtension - File Type Extension: cr3
@@ -513,5 +513,5 @@
 [Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.019 mm
 [Composite, Composite, Image] Exif-DOF - Depth Of Field: 0.03 m (0.22 - 0.25 m)
 [Composite, Composite, Image] Exif-FOV - Field Of View: 75.3 deg
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 15.0 mm (35 mm equivalent: 23.3 mm)
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 15.0 mm (35 mm equivalent: 23.3 mm)
 [Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 3.33 m

@@ -7,6 +7,24 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.44. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 25, 2026 - Version 13.46
+
+  - Added a new Pentax LensType
+  - Decode some new Canon tags (github #380)
+  - Renamed a newly added Canon tag (thanks Martin Chvatal)
+  - Improved identification of Canon RF lenses in edited images when an extender
+    was used
+  - Changed description of FocalLength35efl to add "35mm Equiv"
+  - Patched -validate option to recognize DNG 1.7.1 tags
+  - Patched to remove maker note error/warning when writing files from some
+    Google phones (github #377)
+  - Patched to improve warning for corrupted HEIC files downloaded from
+    heic.digital, and added ability to delete this garbage when writing
+    (github #361 and #378)
+  - Fixed minor error when writing some DJI DNG files
+  - API Changes:
+      - Added GeoUserTag option
+
 Dec. 26, 2025 - Version 13.45
 
   - Added a number of new values for some Sony tags (thanks Milos Komarcevic)
@@ -16,8 +34,8 @@ Dec. 26, 2025 - Version 13.45
   - Decode Ricoh APP7 maker notes
   - Patched to allow a specific PreviewImage to be written to a DNG file
     containing multiple previews
-  - Fixed minor error when writing some DJI DNG files
   - Fixed bug reading large Protobuf integers on 32-bit systems (github #373)
+  - Fixed minor error when writing some DJI DNG files
   - API Changes:
       - Added SystemTimeRes option
 

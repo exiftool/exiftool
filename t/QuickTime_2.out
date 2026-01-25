@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.33
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: QuickTime.mov
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 3.9 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:22 19:58:22-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:03:22 19:58:22-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:07:02 20:56:41-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2025:07:23 16:10:59-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2025:07:23 16:11:03-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:12:26 20:35:31-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: MOV
 [File, File, Other] FileTypeExtension - File Type Extension: mov
@@ -129,5 +129,5 @@
 [Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/38
 [Composite, Composite, Video] QuickTime-AvgBitrate - Avg Bitrate: 0 bps
 [Composite, Composite, Video] QuickTime-Rotation - Rotation: 0
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 18.9 mm
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 18.9 mm
 [Composite, Composite, Image] Exif-LightValue - Light Value: 10.3

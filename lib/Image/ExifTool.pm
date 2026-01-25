@@ -8,7 +8,7 @@
 # Revisions:    Nov. 12/2003 - P. Harvey Created
 #               (See html/history.html for revision history)
 #
-# Legal:        Copyright (c) 2003-2025, Phil Harvey (philharvey66 at gmail.com)
+# Legal:        Copyright (c) 2003-2026, Phil Harvey (philharvey66 at gmail.com)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.45';
+$VERSION = '13.46';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1147,6 +1147,7 @@ my @availableOptions = (
     [ 'GeoMinSats',       undef,  'geotag minimum satellites' ],
     [ 'GeoHPosErr',       undef,  'geotag GPSHPositioningError based on $GPSDOP' ],
     [ 'GeoSpeedRef',      undef,  'geotag GPSSpeedRef' ],
+    [ 'GeoUserTag',       undef,  'user-defined GPX tags for geotagging' ],
     [ 'GlobalTimeShift',  undef,  'apply time shift to all extracted date/time values' ],
     [ 'GPSQuadrant',      undef,  'quadrant for GPS if not otherwise known' ],
     [ 'Group#',           undef,  'return tags for specified groups in family #' ],
@@ -4681,7 +4682,8 @@ sub SplitFileName($)
 
 #------------------------------------------------------------------------------
 # Encode file name for calls to system i/o routines
-# Inputs: 0) ExifTool ref, 1) file name in CharsetFileName encoding, 2) flag to force conversion
+# Inputs: 0) ExifTool ref, 1) file name in CharsetFileName encoding,
+#         2) flag to force conversion even if no special characters
 # Returns: true if Windows Unicode routines should be used (in which case
 #          the file name will be encoded as a null-terminated UTF-16LE string)
 sub EncodeFileName($$;$)
@@ -4877,7 +4879,7 @@ sub Exists($$;$)
         eval { Win32API::File::CloseHandle($wh) };
     } elsif ($writing) {
         # (named pipes already exist, but we pretend that they don't
-        #  so we will be able to write them, so test with for pipe -p)
+        #  so we will be able to write them, so test for pipe with -p)
         return(-e $file and not -p $file);
     } else {
         return(-e $file);
@@ -6787,7 +6789,7 @@ sub GetUnixTime($;$)
 
 #------------------------------------------------------------------------------
 # Print conversion for file size
-# Inputs: 0) file size in bytes
+# Inputs: 0) file size in bytes, 1) optional ExifTool ref
 # Returns: converted file size
 sub ConvertFileSize($;$)
 {

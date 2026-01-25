@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.48
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: Sigma_5_failed.x3f
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 7.3 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:10:13 10:00:31-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:10:13 10:00:31-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:10:13 10:00:31-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2026:01:22 11:27:21-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:01:22 11:27:21-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:01:22 11:27:21-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: X3F
 [File, File, Other] FileTypeExtension - File Type Extension: x3f
@@ -179,7 +179,7 @@
 [MakerNotes, Sigma, Preview] Exif-PreviewImage - Preview Image: (Binary data 26 bytes)
 [IPTC, IPTC, Other] 25 - Keywords: one, two
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.48
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.46
 [XMP, XMP-dc, Image] title - Title: A title
 [Composite, Composite, Image] Exif-Aperture - Aperture: 2.8
 [Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/10
@@ -190,5 +190,5 @@
 [Composite, Composite, Camera] Exif-ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.7
 [Composite, Composite, Camera] Exif-CircleOfConfusion - Circle Of Confusion: 0.018 mm
 [Composite, Composite, Image] Exif-FOV - Field Of View: 47.4 deg
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 24.2 mm (35 mm equivalent: 41.0 mm)
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 24.2 mm (35 mm equivalent: 41.0 mm)
 [Composite, Composite, Camera] Exif-HyperfocalDistance - Hyperfocal Distance: 11.79 m

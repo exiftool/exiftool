@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.42
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: Sony_3_failed.jpg
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 5.6 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2022:06:01 14:16:52-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2022:06:01 14:16:52-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2022:06:01 14:16:52-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2026:01:22 11:27:21-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:01:22 11:27:21-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:01:22 11:27:21-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -77,11 +77,11 @@
 [PrintIM, PrintIM, Printing] PrintIMVersion - PrintIM Version: 0250
 [PrintIM, PrintIM, Printing] 2 - Print IM 0x0002: 0x00000001
 [PrintIM, PrintIM, Printing] 257 - Print IM 0x0101: 0x00000000
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 12.42
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.46
 [XMP, XMP-exif, Camera] FlashFired - Flash Fired: True
 [Composite, Composite, Image] Exif-Aperture - Aperture: 7.1
 [Composite, Composite, Image] Exif-ShutterSpeed - Shutter Speed: 1/250
 [Composite, Composite, Camera] XMP-Flash - Flash: Fired
 [Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
 [Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 12.5 mm
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 12.5 mm

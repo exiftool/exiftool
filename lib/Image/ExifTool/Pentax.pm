@@ -59,7 +59,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.59';
+$VERSION = '3.60';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -401,7 +401,8 @@ sub AFAreasK3III($$);
 #
 # Q-mount lenses (21=auto focus lens, 22=manual focus)
 #
-    '21 0' => 'Pentax Q Manual Lens', #PH
+    '20 0' => 'Pentax Q Manual Lens (Q, Q10)', #27
+    '21 0' => 'Pentax Q Manual Lens', #PH (Q7, Q-S1)
     '21 1' => '01 Standard Prime 8.5mm F1.9', #PH
     '21 2' => '02 Standard Zoom 5-15mm F2.8-4.5', #PH
     '22 3' => '03 Fish-eye 3.2mm F5.6', #PH
@@ -6924,7 +6925,7 @@ tags, and everyone who helped contribute to the LensType values.
 
 =head1 AUTHOR
 
-Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2026, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.20
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
 [File, System, Other] FileName - File Name: XMP.xml
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 6.6 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2023:04:22 14:07:47-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2025:02:19 12:20:00-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:02:10 11:10:30-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2023:04:22 14:07:47-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:12:26 20:35:32-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: XMP
 [File, File, Other] FileTypeExtension - File Type Extension: xmp
@@ -99,4 +99,4 @@
 [Composite, Composite, Camera] Nikon-AutoFocus - Auto Focus: On
 [Composite, Composite, Image] Exif-ImageSize - Image Size: 8x8
 [Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length: 8.6 mm
+[Composite, Composite, Camera] Exif-FocalLength35efl - Focal Length 35mm Equiv: 8.6 mm

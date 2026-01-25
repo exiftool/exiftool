@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.25';
+$VERSION = '3.26';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -10546,8 +10546,12 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
                 $raf->Seek($seekTo);
             }
             unless ($raf->Seek($seekTo-1) and $raf->Read($buff, 1) == 1) {
-                my $t = PrintableTagID($tag,2);
-                $warnStr = sprintf("Truncated '${t}' data at offset 0x%x", $lastPos);
+                if (pack('N',$size) =~ /^<b[r>]/) { # check for corrupted HEIC file downloaded from heic.digital
+                    $warnStr = sprintf('Extraneous HTML text appended to file at offset 0x%x', $lastPos);
+                } else {
+                    my $t = PrintableTagID($tag,2);
+                    $warnStr = sprintf("Truncated '${t}' data at offset 0x%x", $lastPos);
+                }
                 last;
             }
         }
@@ -10689,7 +10693,7 @@ information from QuickTime and MP4 video, M4A audio, and HEIC image files.
 
 =head1 AUTHOR
 
-Copyright 2003-2025, Phil Harvey (philharvey66 at gmail.com)
+Copyright 2003-2026, Phil Harvey (philharvey66 at gmail.com)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -817,12 +817,13 @@ Reference units for writing GPSSpeed when geotagging:
 
 =item GeoUserTag
 
-Additional user-defined tags to write when geotagging from GPX files. 
+Additional user-defined tags to write when geotagging from GPX or CSV files.
 Format is 'I<TAG>=I<TOKEN>,...' where I<TAG> is an ExifTool tag name (with
-optional group name), and I<TOKEN> is is the property name in the GPX file. 
-eg) C<Location=desc> will write the Location tag based on the GPX 'desc'
-property.  The tag value is taken from the nearest fix in time.  Multiple
-tags may be specified using comma separators. Default is undef.
+optional group name), and I<TOKEN> is is the property name in the GPX file
+or the column name in the CSV file.  eg) C<Location=desc> will write the
+Location tag based on the value of 'desc' in the GPS log file.  The tag
+value is taken from the nearest fix in time.  Multiple tags may be specified
+using comma separators. Default is undef.
 
 =item GlobalTimeShift
 

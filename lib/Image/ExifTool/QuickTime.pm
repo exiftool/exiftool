@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.26';
+$VERSION = '3.27';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -10638,7 +10638,7 @@ QTLang: foreach $tag (@{$$et{QTLang}}) {
     }
     # brute force scan for metadata embedded in media data
     # (and process Insta360 trailer if it exists)
-    ScanMediaData($et) if $ee and $topLevel;
+    ScanMediaData($et) if $ee and $topLevel and not $$et{OPTIONS}{FastScan};
 
     # restore any changed options
     $et->Options($_ => $saveOptions{$_}) foreach keys %saveOptions;

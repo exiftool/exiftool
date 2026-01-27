@@ -36,7 +36,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.85';
+$VERSION = '1.86';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -336,6 +336,8 @@ sub LoadTrackLog($$;$)
                         $param = 'roll';
                     } elsif (/^Img ?Dir/i) {
                         $param = 'dir';
+                    } elsif ($userTag{lc $_}) {
+                        $param = $userTag{lc $_};
                     }
                     if ($param) {
                         $et->VPrint(2, "CSV column '${head}' is $param$xtra\n");
@@ -581,6 +583,8 @@ DoneFix:    $isDate = 1;
                 } elsif ($param eq 'runtime') {
                     $date = $trackTime;
                     $secs = $val;
+                } elsif ($param =~ /^_/) {
+                    $$fix{$param} = $val;
                 } else {
                     $val /= $scaleSpeed if $scaleSpeed and $param eq 'speed';
                     $$fix{$param} = $val;

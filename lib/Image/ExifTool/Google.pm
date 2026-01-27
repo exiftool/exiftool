@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 sub ProcessHDRP($$$);
 
@@ -672,7 +672,10 @@ sub ProcessHDRP($$$)
     my $tagInfo = $$dirInfo{TagInfo};
     my $tagName = $tagInfo ? $$tagInfo{Name} : '';
     my $verbose = $et->Options('Verbose');
+    my $fast = $et->Options('FastScan') || 0;
     my ($ver, $valPt);
+
+    return undef if $fast > 1;
 
     if ($$dirInfo{DirStart}) {
         my $dat = substr($$dataPt, $$dirInfo{DirStart}, $$dirInfo{DirLen});

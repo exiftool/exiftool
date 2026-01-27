@@ -7,6 +7,14 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.44. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 27, 2026 - Version 13.47
+
+  - Enhanced -fast option to avoid scanning QuickTime MediaData for metadata
+    (improves performance when reading CR3 files from slow media, github #384)
+    and -fast2 to avoid reading HDRP maker notes
+  - API Changes:
+      - Added CSV support to GeoUserTag option
+
 Jan. 25, 2026 - Version 13.46
 
   - Added a new Pentax LensType

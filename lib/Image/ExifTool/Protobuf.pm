@@ -21,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 sub ProcessProtobuf($$$;$);
 
@@ -59,12 +59,14 @@ sub VarInt($)
     my $val = ord($buff) & 0x7f;
     $$dirInfo{Bit0} = $val & 0x01;
     my $mult = 128;
+    my $i = 0;
     for (;;) {
         last unless ord($buff) & 0x80;
         $buff = GetBytes($dirInfo, 1);
         return undef unless defined $buff;
         $val += (ord($buff) & 0x7f) * $mult;
         last unless ord($buff) & 0x80;
+        return undef if ++$i > 32;    # set a reasonable limit
         $mult *= 128;   # (Note: don't use integer bit shift to avoid integer overflow)
     }
     return $val;
@@ -73,7 +75,7 @@ sub VarInt($)
 #------------------------------------------------------------------------------
 # Read protobuf record
 # Inputs: 0) dirInfo ref
-# Returns: 0) record payload (plus tag id and format type in list context)
+# Returns: 0) record payload (plus tag id and format type in list context) or undef on error
 # Notes: Updates $$dirInfo{Pos} to start of next record, and sets $$dirInfo{Bit0}
 #        according to the least significant bit of type 0 (varInt) records
 sub ReadRecord($)
@@ -138,7 +140,6 @@ sub ProcessProtobuf($$$;$)
 
     $$dirInfo{Pos} = $$dirInfo{DirStart} || 0; # initialize buffer Pos
     $et->VerboseDir('Protobuf', undef, $dirLen);
-
     unless ($prefix) {
         $prefix = '';
         $$et{ProtoPrefix}{$dirName} = '' unless defined $$et{ProtoPrefix}{$dirName};

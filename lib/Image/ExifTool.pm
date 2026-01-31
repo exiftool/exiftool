@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.47';
+$VERSION = '13.48';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1045,8 +1045,8 @@ $testLen = 1024;    # number of bytes to read when testing for magic number
 # file types with weak magic number recognition
 my %weakMagic = ( MP3 => 1 );
 
-# file types that are determined by the process proc when FastScan == 3
-# (when done, the process proc must exit after SetFileType if FastScan is 3)
+# file types that are determined by the process proc when FastScan > 2
+# (when done, the process proc must exit after SetFileType if FastScan is > 2)
 my %processType = map { $_ => 1 } qw(JPEG TIFF XMP AIFF EXE Font PS Real VCard TXT);
 
 # Compact/XMPShorthand option settings
@@ -3015,8 +3015,8 @@ sub ExtractInfo($;@)
             # save file type in member variable
             $$self{FILE_TYPE} = $type;
             $dirInfo{Parent} = ($type eq 'TIFF') ? $tiffType : $type;
-            # don't process the file when FastScan == 3
-            if ($fast == 3 and not $processType{$type}) {
+            # don't process the file when FastScan > 2
+            if ($fast > 2 and not $processType{$type}) {
                 unless ($weakMagic{$type} and (not $ext or $ext ne $type)) {
                     $self->SetFileType($dirInfo{Parent});
                 }
@@ -7256,7 +7256,7 @@ sub ProcessJPEG($$;$)
     }
     if (not $$self{VALUE}{FileType} or ($$self{DOC_NUM} and $$options{ExtractEmbedded})) {
         $self->SetFileType();               # set FileType tag
-        return 1 if $fast == 3;             # don't process file when FastScan == 3
+        return 1 if $fast > 2;              # don't process file when FastScan > 2
         $$self{LOW_PRIORITY_DIR}{IFD1} = 1; # lower priority of IFD1 tags
     }
     $$raf{NoBuffer} = 1 if $self->Options('FastScan'); # disable buffering in FastScan mode
@@ -8636,8 +8636,8 @@ sub DoProcessTIFF($$;$)
             my $t = ($baseType eq 'TIFF' or $fileType =~ /RAW/) ? $fileType : undef;
             $self->SetFileType($t);
         }
-        # don't process file if FastScan == 3
-        return 1 if not $outfile and $$self{OPTIONS}{FastScan} and $$self{OPTIONS}{FastScan} == 3;
+        # don't process file if FastScan > 2
+        return 1 if not $outfile and $$self{OPTIONS}{FastScan} and $$self{OPTIONS}{FastScan} > 2;
     }
     # (accommodate CR3 images which have a TIFF directory with ExifIFD at the top level)
     my $ifdName = ($$dirInfo{DirName} and $$dirInfo{DirName} =~ /^(ExifIFD|GPS)$/) ? $1 : 'IFD0';
@@ -9288,6 +9288,9 @@ sub HandleTag($$$$;%)
     }
     if ($tagInfo) {
         if ($subdir) {
+            if ($$tagInfo{MakerNotes} and $$self{OPTIONS}{FastScan} and $$self{OPTIONS}{FastScan} > 1) {
+                return undef;   # don't process maker note directories when FastScan > 1
+            }
             my $subdirStart = $parms{Start};
             my $subdirLen = $parms{Size};
             if ($$tagInfo{RawConv} and not $$tagInfo{Writable}) {

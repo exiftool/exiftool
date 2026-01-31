@@ -7,11 +7,21 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.44. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Jan. 31, 2026 - Version 13.48
+
+  - Added a new Nikon LensID (github #385)
+  - Added support for quoted entries in input -geotag CSV files
+  - Fixed decoding of Nikon Z6III menu settings for firmware 2.0 update
+  - Fixed -fast2 to avoid processing maker notes in some QuickTime-based files
+  - Fixed bug introduced in version 13.46 where some tags may be associated with
+    the next fix when geotagging from GPX files
+
 Jan. 27, 2026 - Version 13.47
 
   - Enhanced -fast option to avoid scanning QuickTime MediaData for metadata
     (improves performance when reading CR3 files from slow media, github #384)
     and -fast2 to avoid reading HDRP maker notes
+  - Fixed hang problem when reading HDRPMakerNotes from some Pixel models
   - API Changes:
       - Added CSV support to GeoUserTag option
 

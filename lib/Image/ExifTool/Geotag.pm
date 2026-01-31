@@ -36,7 +36,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.86';
+$VERSION = '1.87';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -136,6 +136,31 @@ my %otherConv = (
 );
 
 my $secPerDay = 24 * 3600;  # a useful constant
+
+#------------------------------------------------------------------------------
+# Split a line of CSV
+# Inputs: 0) line to split, 1) delimiter
+# Returns: list of items
+sub SplitCSV($$)
+{
+    my ($line, $delim) = @_;
+    my @toks = split /\Q$delim/, $line;
+    my (@vals, $v);
+    while (@toks) {
+        ($v = shift @toks) =~ s/^ +//;  # remove leading spaces
+        if ($v =~ s/^"//) {
+            # quoted value must end in an odd number of quotes
+            while ($v !~ /("+)\s*$/ or not length($1) & 1) {
+                last unless @toks;
+                $v .= $delim . shift @toks;
+            }
+            $v =~ s/"\s*$//;    # remove trailing quote and whitespace
+            $v =~ s/""/"/g;     # un-escape quotes
+        }
+        push @vals, $v;
+    }
+    return @vals;
+}
 
 #------------------------------------------------------------------------------
 # Load GPS track log file
@@ -281,7 +306,7 @@ sub LoadTrackLog($$;$)
                 $format = 'Bramor';
             } elsif (((/\b(GPS)?Date/i and /\b(GPS)?(Date)?Time/i) or /\bTime\(seconds\)/i) and /\Q$csvDelim/) {
                 chomp;
-                @csvHeadings = split /\Q$csvDelim/;
+                @csvHeadings = SplitCSV($_, $csvDelim);
                 my $isColumbus = ($csvHeadings[0] and $csvHeadings[0] eq 'INDEX'); # (Columbus GPS logger)
                 $format = 'CSV';
                 # convert recognized headings to our parameter names
@@ -382,7 +407,8 @@ sub LoadTrackLog($$;$)
                 # parse attributes (eg. GPX 'lat' and 'lon')
                 # (note: ignore namespace prefixes if they exist)
                 if ($arg =~ /^(\w+:)?(\w+)=(['"])(.*?)\3/g) {
-                    my $tag = $xmlTag{lc $2} || $userTag{lc $2};
+                    my $tag = $xmlTag{lc $2};
+                    $tag = $userTag{lc $2} unless defined $tag;
                     if ($tag) {
                         $$fix{$tag} = $4;
                         if ($keyCategory{$tag}) {
@@ -399,7 +425,8 @@ sub LoadTrackLog($$;$)
                 # loop through XML elements
                 while ($arg =~ m{([^<>]*)<(/)?(\w+:)?(\w+)(>|$)}g) {
                     $tok = lc $4;
-                    my $tag = $xmlTag{$tok} || $userTag{$tok};
+                    my $tag = $xmlTag{$tok};
+                    $tag = $userTag{$tok} unless defined $tag;
                     # parse as a simple property if this element has a value
                     if (defined $tag and not $tag) {
                         # a containing property was opened or closed
@@ -530,7 +557,7 @@ DoneFix:    $isDate = 1;
             goto DoneFix;   # save this fix
         } elsif ($format eq 'CSV') {
             chomp;
-            my @vals = split /\Q$csvDelim/;
+            my @vals = SplitCSV($_, $csvDelim);
 #
 # CSV format output of GPS/IMU POS system
 #   Date*           - date in DD/MM/YYYY format
@@ -1557,8 +1584,7 @@ sub ConvertGeosync($$)
 # Returns: UTC time string with fractional seconds
 sub PrintFixTime($)
 {
-    my $time = $_[0] + 0.0005;  # round off to nearest ms
-    my $fsec = int(($time - int($time)) * 1000);
+    my $time = shift;
     return Image::ExifTool::ConvertUnixTime($time, undef, 3) . ' UTC';
 }
 

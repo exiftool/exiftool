@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.52';
+$VERSION = '4.53';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -576,6 +576,7 @@ sub GetAFPointGrid($$;$);
     '00 40 2D 88 2C 40 00 06' => 'Tamron AF 18-250mm f/3.5-6.3 Di II LD Aspherical (IF) Macro (A18NII)', #JD
     'F5 40 2C 8A 2C 40 40 0E' => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC LD Aspherical (IF) Macro (B003)',
     'F0 3F 2D 8A 2C 40 DF 0E' => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC PZD (B008)',
+    'E0 40 2D 98 2C 41 DF 0E' => 'Tamron 18-400mm f/3.5-6.3 Di II VC HLD (B028)', #github385 (D90)
     'E0 40 2D 98 2C 41 DF 4E' => 'Tamron 18-400mm f/3.5-6.3 Di II VC HLD (B028)', # (removed AF designation, ref 37)
     '07 40 2F 44 2C 34 03 02' => 'Tamron AF 19-35mm f/3.5-4.5 (A10)',
     '07 40 30 45 2D 35 03 02.1' => 'Tamron AF 19-35mm f/3.5-4.5 (A10)',
@@ -9389,7 +9390,7 @@ my %nikonFocalConversions = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'These tags are used by the Z6III.',
-    DATAMEMBER => [ 360, 444, 492, 496, 724, 748, 832, 838, 852, 880, 904, 1050 ],
+    DATAMEMBER => [ 360, 364, 444, 492, 496, 724, 748, 832, 838, 852, 880, 904, 1050 ],
     IS_SUBDIR => [ 1255 ],
     360 => {
         Name => 'SingleFrame',    #0=> Single Frame 1=> one of the continuous modes
@@ -9399,6 +9400,7 @@ my %nikonFocalConversions = (
     364 => {
         Name => 'HighFrameRate',        #CH and C30/C60/C120 but not CL
         PrintConv => \%highFrameRateZ9,
+        Hook => '$varSize += 4 if $$self{FirmwareVersion} and $$self{FirmwareVersion} ge "02.00"',
     },
     444 => {
         Name => 'MultipleExposureMode',

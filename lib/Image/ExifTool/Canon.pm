@@ -9728,6 +9728,7 @@ my %filterConv = (
     },
     0x927c => {
         Name => 'MakerNoteCanon',
+        MakerNotes => 1,
         SubDirectory => {
             TagTable => 'Image::ExifTool::Canon::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,

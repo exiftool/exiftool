@@ -10325,7 +10325,7 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
                         if ($tag eq 'ipco' and not $$et{IsItemProperty}) {
                             $$et{ItemPropertyContainer} = [ \%dirInfo, $subTable, $proc ];
                             $et->VPrint(0,"$$et{INDENT}\[Process ipco box later]");
-                        } else {
+                        } elsif ($fast < 2 or not $$tagInfo{MakerNotes}) {
                             $et->ProcessDirectory(\%dirInfo, $subTable, $proc);
                         }
                     }

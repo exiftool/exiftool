@@ -17,11 +17,22 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.48'><b>Jan. 31, 2026 - Version 13.48</b></a>
+<ul>
+<li>Added a new Nikon LensID (<a href="https://github.com/exiftool/exiftool/issues/385">github #385</a>)
+<li>Added support for quoted entries in input -geotag CSV files
+<li>Fixed decoding of Nikon Z6III menu settings for firmware 2.0 update
+<li>Fixed -fast2 to avoid processing maker notes in some QuickTime-based files
+<li>Fixed bug introduced in version 13.46 where some tags may be associated with
+    the next fix when geotagging from GPX files
+</ul>
+
 <a name='v13.47'><b>Jan. 27, 2026 - Version 13.47</b></a>
 <ul>
 <li>Enhanced -fast option to avoid scanning QuickTime MediaData for metadata
     (improves performance when reading CR3 files from slow media, <a href="https://github.com/exiftool/exiftool/issues/384">github #384</a>)
     and -fast2 to avoid reading HDRP maker notes
+<li>Fixed hang problem when reading HDRPMakerNotes from some Pixel models
 <li>API Changes:
     <ul>
     <li>Added CSV support to <a href="ExifTool.html#GeoUserTag">GeoUserTag</a> option

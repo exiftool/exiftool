@@ -17,6 +17,16 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.49'><b>Feb. 3, 2026 - Version 13.49</b></a>
+<ul>
+<li>Decode a couple of new Samsung trailer tags
+<li>Fixed problem where Google Photos had problems displaying ExifTool-edited
+    HEIC MotionPhoto images.  Files written by older versions of ExifTool may be
+    repaired by re-writing with 13.49 or later
+<li>Disable decoding of MenuSettings for the Nikon Z6III firmware 2.0 until the
+    changes can be worked through in detail
+</ul>
+
 <a name='v13.48'><b>Jan. 31, 2026 - Version 13.48</b></a>
 <ul>
 <li>Added a new Nikon LensID (<a href="https://github.com/exiftool/exiftool/issues/385">github #385</a>)
@@ -32,7 +42,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Enhanced -fast option to avoid scanning QuickTime MediaData for metadata
     (improves performance when reading CR3 files from slow media, <a href="https://github.com/exiftool/exiftool/issues/384">github #384</a>)
     and -fast2 to avoid reading HDRP maker notes
-<li>Fixed hang problem when reading HDRPMakerNotes from some Pixel models
+<li>Fixed hang problem when reading HDRPMakerNotes from some Google phones
 <li>API Changes:
     <ul>
     <li>Added CSV support to <a href="ExifTool.html#GeoUserTag">GeoUserTag</a> option

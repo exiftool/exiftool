@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 29034 tags, with 18043 unique tag names.
+They contain a total of 29036 tags, with 18045 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -21956,9 +21956,11 @@ HEIC images from models such as the S10+.
   EmbeddedImage                                 no
   EmbeddedImage2                                no
   EmbeddedImageName                             no
+  EmbeddedVideoOffsetSize                       no
   EmbeddedVideoFile                             no
   EmbeddedVideoType                             no
   MCCData                                       no
+  MotionPhotoAutoPlayVideo                      no
   PEg_Info                                      Samsung PEgInfo
   ReEditData                                    Samsung ReEditData
   OriginalPathHashKey                           no

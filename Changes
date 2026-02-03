@@ -7,6 +7,15 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.44. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 3, 2026 - Version 13.49
+
+  - Decode a couple of new Samsung trailer tags
+  - Fixed problem where Google Photos had problems displaying ExifTool-edited
+    HEIC MotionPhoto images.  Files written by older versions of ExifTool may be
+    repaired by re-writing with 13.49 or later
+  - Disable decoding of MenuSettings for the Nikon Z6III firmware 2.0 until the
+    changes can be worked through in detail
+
 Jan. 31, 2026 - Version 13.48
 
   - Added a new Nikon LensID (github #385)
@@ -21,7 +30,7 @@ Jan. 27, 2026 - Version 13.47
   - Enhanced -fast option to avoid scanning QuickTime MediaData for metadata
     (improves performance when reading CR3 files from slow media, github #384)
     and -fast2 to avoid reading HDRP maker notes
-  - Fixed hang problem when reading HDRPMakerNotes from some Pixel models
+  - Fixed hang problem when reading HDRPMakerNotes from some Google phones
   - API Changes:
       - Added CSV support to GeoUserTag option
 

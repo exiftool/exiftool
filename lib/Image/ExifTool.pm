@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.48';
+$VERSION = '13.49';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -9229,12 +9229,22 @@ sub HandleTag($$$$;%)
     my ($self, $tagTablePtr, $tag, $val, %parms) = @_;
     my $verbose = $$self{OPTIONS}{Verbose};
     my $pfmt = $parms{Format};
-    my $tagInfo = $parms{TagInfo} || $self->GetTagInfo($tagTablePtr, $tag, \$val, $pfmt, $parms{Count});
+    my $valPt = defined $val ? \$val : undef;
+    my $tagInfo = $parms{TagInfo} || $self->GetTagInfo($tagTablePtr, $tag, $valPt, $pfmt, $parms{Count});
     my $dataPt = $parms{DataPt};
     my ($subdir, $format, $noTagInfo, $rational, $binVal);
 
     if ($tagInfo) {
         $subdir = $$tagInfo{SubDirectory};
+    } elsif (defined $tagInfo and $dataPt) {
+        my $start = $parms{Start} || 0;
+        my $size = $parms{Size};
+        $size = length($$dataPt) - $start unless defined $size;
+        return undef if $start + $size > length($$dataPt);
+        $size = 1024 if $size > 1024;   # max 1024 bytes available for the Condition
+        my $dat = substr($$dataPt, $start, $size);
+        $tagInfo = $self->GetTagInfo($tagTablePtr, $tag, \$dat, $pfmt, $parms{Count});
+        return undef unless $tagInfo;
     } elsif ($parms{MakeTagInfo}) {
         $self->VPrint(0, $$self{INDENT}, "[adding $tag]\n") if $verbose;
         my $name = $tag;

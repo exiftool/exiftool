@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.27';
+$VERSION = '3.28';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -972,6 +972,7 @@ my %userDefined = (
         Binary => 1,
         # note that this may be written and/or deleted, but can't currently be added back again
         Writable => 'undef',
+        WriteLast => 1, # (must come after mdat according to https://developer.android.com/media/platform/motion-photo-format)
     },
     # '35AX'? - seen "AT" (Yada RoadCam Pro 4K dashcam)
     cust => 'CustomInfo', # 70mai A810

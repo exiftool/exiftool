@@ -23,7 +23,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::JSON;
 
-$VERSION = '1.61';
+$VERSION = '1.62';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -1019,6 +1019,7 @@ my %formatMinMax = (
         Binary => 1,
     }],
    # 0x0a31-name - seen MotionPhoto_Version
+    '0x0a31' => 'SamsungMotionPhotoVersion', # (to distinguish from XMP-GCamera:MotionPhotoVersion)
     '0x0a33' => { # seen MotionPhoto_AutoPlay
         Name => 'MotionPhotoAutoPlayVideo',
         Groups => { 2 => 'Video' },

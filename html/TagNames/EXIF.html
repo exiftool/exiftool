@@ -1919,8 +1919,16 @@ automatically when copying between TIFF images with different byte order)</span>
 <td><u>ISO</u></td>
 <td class=c>int16u[n]</td>
 <td class=c>ExifIFD</td>
-<td><span class=s><span class=n>(called ISOSpeedRatings by EXIF 2.2, then PhotographicSensitivity by the EXIF
-2.3 spec.)</span></span></td></tr>
+<td><span class=s><span class=n>(called ISOSpeedRatings by EXIF 2.2, then PhotographicSensitivity by EXIF
+2.3.  This tag has a maximum value of 65535 because the brain-dead EXIF
+specification limits it to a short integer, and while they can change the
+name of the tag in an updated EXIF specification, they can&#39;t allow a larger
+storage format for some reason.  For higher ISO settings, see the other
+ISO-related tags StandardOutputSensitivity, RecommendedExposureIndex,
+ISOSpeed, ISOSpeedLatitudeyyy and ISOSpeedLatitudezzz.  But the meanings of
+these new tags are anyone&#39;s guess since the defining specification, ISO
+12232, is imprisoned by the ISO organization who extort a ransom for the
+release of this information)</span></span></td></tr>
 <tr>
 <td title='0x8828 = 34856'>0x8828</td>
 <td><u>Opto-ElectricConvFactor</u></td>
@@ -4404,7 +4412,7 @@ these unless they already exist in the file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 22, 2026</i>
+<br><i>Last revised Feb 6, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -4,17 +4,28 @@ ExifTool Version History
 
 RSS feed: https://exiftool.org/rss.xml
 
-Note: The most recent production release is Version 13.44. (Other versions are
+Note: The most recent production release is Version 13.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
+
+Feb. 7, 2026 - Version 13.50 (production release)
+
+  - Added a few new Sony lenses (thanks Jos Roost)
+  - Added a couple of new Canon lenses (thanks Norbert Wasser)
+  - Decode another Samsung trailer tag
+  - Decode BlackLevels from some Canon CRW files (github #387)
+  - Updated Sony maker note decoding for the ILCE-7M5 (thanks Jos Roost)
+  - Patched potential MacOS security issue (thanks Tay Kiat Loong)
+  - Fixed -list options so reading image files beforehand doesn't add tags to
+    the output when running multiple commands using the -execute feature
 
 Feb. 3, 2026 - Version 13.49
 
   - Decode a couple of new Samsung trailer tags
+  - Disabled decoding of MenuSettings for the Nikon Z6III firmware 2.0 until the
+    changes can be worked through in detail
   - Fixed problem where Google Photos had problems displaying ExifTool-edited
     HEIC MotionPhoto images.  Files written by older versions of ExifTool may be
     repaired by re-writing with 13.49 or later
-  - Disable decoding of MenuSettings for the Nikon Z6III firmware 2.0 until the
-    changes can be worked through in detail
 
 Jan. 31, 2026 - Version 13.48
 

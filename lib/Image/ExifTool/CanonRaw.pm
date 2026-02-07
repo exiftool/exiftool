@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Canon;
 
-$VERSION = '1.61';
+$VERSION = '1.62';
 
 sub WriteCRW($$);
 sub ProcessCanonRaw($$$);
@@ -595,7 +595,9 @@ sub BuildMakerNotes($$$$$$);
     3 => 'WhiteSampleLeftBorder',
     4 => 'WhiteSampleTopBorder',
     5 => 'WhiteSampleBits',
-    # this is followed by the encrypted white sample values (ref 1)
+    # (followed by the encrypted white sample values, ref 1)
+    # BlackLevels seem valid for D30 and D60, but not sure about PowerShot models
+    0x37 => { Name => 'BlackLevels', Format => 'int16u[4]' }, #github387
 );
 
 #------------------------------------------------------------------------------

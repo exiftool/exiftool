@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.25';
+$VERSION = '1.26';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -320,6 +320,7 @@ my %validateInfo = (
             return join(' and ', @rtn);
         },
     },
+    Hidden => 0,
 );
 
 # add "Validate" tag to Extra table

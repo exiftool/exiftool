@@ -15,7 +15,7 @@ use vars qw($VERSION @ISA $makeMissing);
 use Image::ExifTool qw(:Utils :Vars);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.37';
+$VERSION = '1.38';
 @ISA = qw(Exporter);
 
 # set this to a language code to generate Lang module with 'MISSING' entries
@@ -126,6 +126,7 @@ PTILoop:    for ($index=0; $index<@infoArray; ++$index) {
                 my $tagInfo = $infoArray[$index];
                 # don't list subdirectories unless they are writable
                 next unless $$tagInfo{Writable} or not $$tagInfo{SubDirectory};
+                next if $$tagInfo{Hidden};
                 if (@groups) {
                     my @tg = $et->GetGroup($tagInfo);
                     foreach $group (@groups) {
@@ -242,6 +243,8 @@ PTILoop:    for ($index=0; $index<@infoArray; ++$index) {
                 print $fp "$altDescr\n";
                 for (my $i=0; ; ++$i) {
                     my $conv = $$tagInfo{PrintConv};
+                    # (hidden = '' disables PrintConv in -listx output)
+                    last if defined $$tagInfo{Hidden} and $$tagInfo{Hidden} eq '';
                     my $idx = '';
                     if (ref $conv eq 'ARRAY') {
                         last unless $i < @$conv;

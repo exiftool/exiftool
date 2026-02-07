@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.76';
+$VERSION = '3.77';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -65,7 +65,7 @@ sub ProcessBlankInfo($$$;$);
 sub ValidateXMP($;$);
 sub ValidateProperty($$;$);
 sub UnescapeChar($$;$);
-sub AddFlattenedTags($;$$);
+sub AddFlattenedTags($;$$$);
 sub FormatXMPDate($);
 sub ConvertRational($);
 sub ConvertRationalList($);
@@ -3076,14 +3076,14 @@ sub RegisterNamespace($)
 #------------------------------------------------------------------------------
 # Generate flattened tags and add to table
 # Inputs: 0) tag table ref, 1) tag ID for Struct tag (if not defined, whole table is done),
-#         2) flag to not expand sub-structures
+#         2) flag to not expand sub-structures, 3) Hidden flag
 # Returns: number of tags added (not counting those just initialized)
 # Notes: Must have verified that $$tagTablePtr{$tagID}{Struct} exists before calling this routine
 # - makes sure that the tagInfo Struct is a HASH reference
-sub AddFlattenedTags($;$$)
+sub AddFlattenedTags($;$$$)
 {
     local $_;
-    my ($tagTablePtr, $tagID, $noSubStruct) = @_;
+    my ($tagTablePtr, $tagID, $noSubStruct, $hidden) = @_;
     my $count = 0;
     my @tagIDs;
 
@@ -3155,6 +3155,7 @@ sub AddFlattenedTags($;$$)
                 # generate new flattened tag information based on structure field
                 my $flatName = $flat . $flatField;
                 $flatInfo = { %$fieldInfo, Name => $flatName, Flat => 0 };
+                $$flatInfo{Hidden} = 0 unless $hidden;
                 $$flatInfo{FlatName} = $flatName if $$fieldInfo{FlatName};
                 # make a copy of the Groups hash if necessary
                 $$flatInfo{Groups} = { %{$$fieldInfo{Groups}} } if $$fieldInfo{Groups};
@@ -3607,6 +3608,7 @@ NoLoop:
             if (not length $val and $$attrs{'rdf:parseType'} and $$attrs{'rdf:parseType'} eq 'Resource') {
                 $$tagInfo{Struct} = { STRUCT_NAME => 'XMP Unknown' } unless $$tagInfo{Struct};
             }
+            $$tagInfo{Hidden} = 2;  # (don't show in -list outputs)
             AddTagToTable($tagTablePtr, $tagID, $tagInfo);
         }
         last;

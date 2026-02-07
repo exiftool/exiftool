@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 29036 tags, with 18045 unique tag names.
+They contain a total of 29067 tags, with 18053 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -14956,6 +14956,8 @@ DiMAGE X and Xt.
   0x0045   CropArea                             int16u[4]
   0x004e   NikonSettings                        NikonSettings
   0x004f   ColorTemperatureAuto                 int16u
+  0x0051   MakerNotes0x51                       Nikon MakerNotes0x51
+  0x0056   MakerNotes0x56                       Nikon MakerNotes0x56
   0x0080   ImageAdjustment                      string
   0x0081   ToneComp                             string
   0x0082   AuxiliaryLens                        string
@@ -15370,6 +15372,7 @@ Tags written by some Nikon GPS-equipped cameras like the AW100.
   ------   --------                             --------
       0    FirmwareVersion56                    no
       4    BurstGroupID                         int16u
+     12    PixelShiftID                         int8u
 
 =head3 Nikon AFInfo Tags
 
@@ -15783,6 +15786,7 @@ These tags are extracted from encrypted data in images from the D6.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
+     36    NumberOffsets                        no
      48    SequenceOffset                       Nikon SeqInfoD6
     156    OrientationOffset                    Nikon OrientationInfo
     164    IntervalOffset                       Nikon IntervalInfoD6
@@ -15792,6 +15796,7 @@ These tags are extracted from encrypted data in images from the D6.
   Index1   Tag Name                             Writable
   ------   --------                             --------
      36    IntervalShooting                     int16u~
+     40    IntervalFrame                        int16u
      43    ImageArea                            int8u
 
 =head3 Nikon IntervalInfoD6 Tags
@@ -15835,6 +15840,9 @@ These tags are extracted from encrypted data in images from the Z6III.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
+     14    FirmwareVersion2                     no
+     24    FirmwareVersion3                     no
+     36    NumberOffsets                        no
     136    OrientationOffset                    Nikon OrientationInfo
     144    MenuOffset                           Nikon MenuSettingsZ6III
 
@@ -15844,6 +15852,7 @@ These tags are used by the Z6III.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+    360    SingleFrame                          int8u
     364    HighFrameRate                        int8u
     444    MultipleExposureMode                 int8u
     446    MultiExposureShots                   int8u
@@ -15915,6 +15924,9 @@ These tags are extracted from encrypted data in images from the Z7II.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
+     14    FirmwareVersion2                     no
+     24    FirmwareVersion3                     no
+     36    NumberOffsets                        no
      48    IntervalOffset                       Nikon IntervalInfoZ7II
      56    PortraitOffset                       Nikon PortraitInfoZ7II
     136    OrientationOffset                    Nikon OrientationInfo
@@ -15926,6 +15938,7 @@ These tags are extracted from encrypted data in images from the Z7II.
   Index1   Tag Name                             Writable
   ------   --------                             --------
      36    IntervalShooting                     int16u~
+     40    IntervalFrame                        int16u
      43    ImageArea                            int8u
 
 =head3 Nikon PortraitInfoZ7II Tags
@@ -15946,6 +15959,7 @@ These tags are used by the Z5, Z6, Z7, Z6II, Z7II, Z50, Zfc and Zf.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+     90    SingleFrame                          int8u
      92    ReleaseMode                          no
     160    IntervalDurationHours                int32u
     164    IntervalDurationMinutes              int32u
@@ -15993,6 +16007,9 @@ These tags are extracted from encrypted data in images from the Z8.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
+     14    FirmwareVersion2                     no
+     24    FirmwareVersion3                     no
+     36    NumberOffsets                        no
      48    SequenceOffset                       Nikon SeqInfoZ9
     128    AutoCaptureOffset                    Nikon AutoCaptureInfo
     132    OrientOffset                         Nikon OrientationInfo
@@ -16004,6 +16021,7 @@ These tags are extracted from encrypted data in images from the Z8.
   ------   --------                             --------
      32    FocusShiftShooting                   int8u~
      40    IntervalShooting                     int16u~
+     42    IntervalFrame                        int16u
 
 =head3 Nikon AutoCaptureInfo Tags
 
@@ -16239,6 +16257,9 @@ These tags are extracted from encrypted data in images from the Z9.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
+     14    FirmwareVersion2                     no
+     24    FirmwareVersion3                     no
+     36    NumberOffsets                        no
      48    SequenceOffset                       Nikon SeqInfoZ9
      88    Offset13                             Nikon Offset13InfoZ9
     128    AutoCaptureOffset                    Nikon AutoCaptureInfo
@@ -16716,6 +16737,7 @@ Tags found in the encrypted LensData from cameras such as the Z6 and Z7.
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    LensDataVersion                      no
+      3    OldLensData                          undef[17]
       4    ExitPupilPosition                    int8u
       5    AFAperture                           int8u
      11    FocusDistance                        int8u
@@ -16956,6 +16978,7 @@ D5000-D5600, D6x0, D700, D7000, D7100, D810
       0    AFInfo2Version                       no
       4    AFDetectionMethod                    int8u
       5    AFAreaMode                           int8u
+      6    FocusPointSchema                     int8u
       7    PrimaryAFPoint                       int8u
       8    AFPointsUsed                         undef[7]
            AFPointsUsed                         undef[2]
@@ -16979,6 +17002,7 @@ AF information for Nikon cameras D5, D500, D850, D3400, D3500 and D7500
       0    AFInfo2Version                       no
       4    AFDetectionMethod                    int8u
       5    AFAreaMode                           int8u
+      6    FocusPointSchema                     int8u
       8    AFPointsUsed                         undef[7]
            AFPointsUsed                         undef[2]
            AFPointsUsed                         undef[20]
@@ -17022,6 +17046,7 @@ Z6, Z6ii, Z7, Z7ii, Z50 and Zfc.
       0    AFInfo2Version                       no
       4    AFDetectionMethod                    int8u
       5    AFAreaMode                           int8u
+      6    FocusPointSchema                     int8u
       7    AFCoordinatesAvailable               int8u
      10    AFPointsUsed                         undef[7]
            AFPointsUsed                         undef[11]
@@ -18642,6 +18667,7 @@ Custom settings for the Z6III.
     183    MultiSelectorPlaybackMode            int8u
     187    ShutterSpeedLock                     int8u
     188    ApertureLock                         int8u
+    189    CmdDialsReverseRotExposureComp       int8u
     190    CmdDialsReverseRotation              int8u
     195    UseDialWithoutHold?                  int8u
     197    ReverseIndicators?                   int8u
@@ -18745,6 +18771,7 @@ Custom settings for the Z8.
     179    MultiSelectorPlaybackMode            int8u
     183    ShutterSpeedLock                     int8u
     184    ApertureLock                         int8u
+    185    CmdDialsReverseRotExposureComp       int8u
     186    CmdDialsReverseRotation              int8u
     191    UseDialWithoutHold?                  int8u
     193    ReverseIndicators?                   int8u
@@ -18877,6 +18904,7 @@ Custom settings for the Z9.
     179    MultiSelectorPlaybackMode            int8u
     183    ShutterSpeedLock                     int8u
     184    ApertureLock                         int8u
+    185    CmdDialsReverseRotExposureComp       int8u
     186    CmdDialsReverseRotation              int8u
     191    UseDialWithoutHold?                  int8u
     193    ReverseIndicators?                   int8u
@@ -19024,6 +19052,7 @@ Custom settings for the Z9.
     179    MultiSelectorPlaybackMode            int8u
     183    ShutterSpeedLock                     int8u
     184    ApertureLock                         int8u
+    185    CmdDialsReverseRotExposureComp       int8u
     186    CmdDialsReverseRotation              int8u
     191    UseDialWithoutHold?                  int8u
     193    ReverseIndicators?                   int8u
@@ -21966,6 +21995,7 @@ HEIC images from models such as the S10+.
   OriginalPathHashKey                           no
   RemasterInfo                                  no
   SamsungCaptureInfo                            no
+  SamsungMotionPhotoVersion                     no
   SingleShotDepthMap                            no
   SingleShotMeta                                Samsung SingleShotMeta
   SurroundShotVideo                             no
@@ -23515,7 +23545,6 @@ substitution cipher, but the deciphered values are listed below.
   ------   --------                             --------
       0    SonyMaxAperture                      int8u
       1    SonyMinAperture                      int8u
-     10    ShutterCount                         int32u
      32    Shutter                              int16u[3]
      49    FlashStatus                          int8u
      50    ShutterCount                         int32u
@@ -23589,7 +23618,7 @@ Valid from July 2020 for ILCE-1/7SM3, ILME-FX3.
   ------   --------                             --------
      38    Shutter                              int16u[3]
      57    FlashStatus                          int8u
-     58    ShutterCount                         int32u~
+     58    ShutterCount                         int32u
      70    SonyExposureTime                     int16u
      72    SonyFNumber                          int16u
      75    ReleaseMode2                         int8u
@@ -23602,7 +23631,7 @@ Valid from July 2020 for ILCE-1/7SM3, ILME-FX3.
 
 =head3 Sony Tag9050d Tags
 
-Valid for ILCE-6700/7CM2/7CR/ZV-E1. Also for ILCE-1M2 when using mechanical
+Valid for ILCE-6700/7CM2/7CR/ZV-E1. Also for ILCE-1M2/7M5 when using mechanical
 shutter.
 
   Index1   Tag Name                             Writable
@@ -23677,6 +23706,7 @@ WX350/WX500, ILCE-1/7/7C/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/7SM3/9/9M2/5000/
     994    ISOInfo                              Sony ISOInfo
    1012    ISOInfo                              Sony ISOInfo
    1102    ISOInfo                              Sony ISOInfo
+   1107    ISOInfo                              Sony ISOInfo
    1176    ISOInfo                              Sony ISOInfo
    1181    ISOInfo                              Sony ISOInfo
    1182    ISOInfo                              Sony ISOInfo
@@ -24018,8 +24048,8 @@ E-mount models.
 
 =head3 Sony Tag9416 Tags
 
-Valid for the ILCE-1/6700/7CM2/7CR/7M4/7RM5/7SM3/9M3, ILME-FX2/FX3/FX30,
-ZV-E1/E10M2.
+Valid for the ILCE-1/6700/7CM2/7CR/7M4/7M5/7RM5/7SM3/9M3, ILME-FX2/FX3/FX30,
+ZV-E1/E10M2, but ILCE-7M5 has different offsets.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -24043,6 +24073,9 @@ ZV-E1/E10M2.
     113    FocalLength                          no
     115    MinFocalLength                       no
     117    MaxFocalLength                       no
+   1794    VignettingCorrParams                 no
+   1866    APS-CSizeCapture                     no
+   2107    ChromaticAberrationCorrParams        no
    2191    VignettingCorrParams                 no
    2193    VignettingCorrParams                 no
    2205    VignettingCorrParams                 no
@@ -24650,6 +24683,7 @@ ExifTool is used to write XMP to a CRW image.
       3    WhiteSampleLeftBorder                no
       4    WhiteSampleTopBorder                 no
       5    WhiteSampleBits                      no
+     55    BlackLevels                          no
 
 =head3 CanonRaw RawJpgInfo Tags
 

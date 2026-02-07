@@ -410,10 +410,16 @@ numerical, and generated automatically otherwise.
                   flattened tag.  The result is that the flattened tag will not
                   be accessible.
 
-                  'Hidden' - set to hide tag from the TagName documentation.
-                  Also suppresses verbose output of a BinaryData tag.  The
-                  RawConv of a Hidden tag should return undef so the tag value
-                  is not seen by the user.
+                  'Hidden' - set to hide tag from the TagName documentation and
+                  -list* command output. Also suppresses verbose output of a
+                  BinaryData tag.  A Hidden tag should also be marked as Unknown
+                  or the RawConv should return undef so the tag is not normally
+                  seen by the user. Set to 2 to bypass BuildTagLookup() warning
+                  about violating these guidelines, or 0 to avoid being hidden
+                  automaticallly when added at runtime with AddTagToTable(). 
+                  Finally, setting to '' disables inclusion of the PrintConv
+                  lookup in the documentation (for dynamically-added lookups,
+                  eg. DICOM).
 
                   'IsComposite' - flag set for Composite tags
 
@@ -747,19 +753,19 @@ numerical, and generated automatically otherwise.
                   valid.  If used in a list of alternate tag definitions, the
                   first list entry with a true condition is taken.  If no
                   condition exists, then a 'true' condition is assumed.  The
-                  expression may use $self to access the ExifTool object.  The
-                  first 128 bytes of the raw data value are accessible through
-                  the reference $valPt for EXIF, Jpeg2000, QuickTime, FLAC and
-                  BinaryData tags only (note that for BinaryData tags, the raw
-                  data of $$valPt is always 'undef' type, and may not be used
-                  when writing except for SubDirectory tags).  EXIF tags (and
-                  maybe some other types) may also reference the format string
-                  and value count through $format and $count.  Note that if the
-                  value is writable and $valPt is used, the tag must have a
-                  Format (unless 'undef' or 'string'), and a Count (unless 1 or
-                  length of the 'undef' or 'string'), so the raw data may be
-                  generated for evaluating the Condition.  When writing, $valPt,
-                  $format and $count refer to the new value, except for
+                  expression may use $self to access the ExifTool object. The
+                  first 128 bytes of the binary data value are accessible
+                  through the reference $valPt for EXIF, Jpeg2000, QuickTime,
+                  FLAC and BinaryData tags only (note that for BinaryData tags,
+                  the binary data of $$valPt is always 'undef' type, and may not
+                  be used when writing except for SubDirectory tags).  EXIF tags
+                  (and maybe some other types) may also reference the format
+                  string and value count through $format and $count.  Note that
+                  if the value is writable and $valPt is used, the tag must have
+                  a Format (unless 'undef' or 'string'), and a Count (unless 1
+                  or length of the 'undef' or 'string'), so the binary data may
+                  be generated for evaluating the Condition.  When writing,
+                  $valPt, $format and $count refer to the new value, except for
                   MakerNotes tags where $format and $count refer to the old tag
                   if it existed.
 

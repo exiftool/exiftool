@@ -15,7 +15,7 @@ package Image::ExifTool::NikonCustom;
 use strict;
 use vars qw($VERSION @ISA @EXPORT_OK %buttonsZ8 %buttonsZ9);
 
-$VERSION = '1.28';
+$VERSION = '1.29';
 
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(%buttonsZ8 %buttonsZ9);
@@ -10070,7 +10070,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     189 => { # CSf6-a Previous cameras reported this tag as part of CmdDialsReverseRotation.  Blend with CSf5-b separate settings together to match extant tag name and values
         Name => 'CmdDialsReverseRotExposureComp',
         RawConv => '$$self{CmdDialsReverseRotExposureComp} = $val',
-        Hidden => 1,
+        #Hidden => 1,
     },
     190 => [{ # CSf6-b  (continued from above)
         Name => 'CmdDialsReverseRotation',
@@ -10382,7 +10382,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     185 => { # CSf5-a Previous cameras reported this tag as part of CmdDialsReverseRotation.  Blend with CSf5-b separate settings together to match extant tag name and values
         Name => 'CmdDialsReverseRotExposureComp',
         RawConv => '$$self{CmdDialsReverseRotExposureComp} = $val',
-        Hidden => 1,
+        #Hidden => 1,
     },
     186 => [{ # CSf5-a  (continued from above)
         Name => 'CmdDialsReverseRotation',
@@ -10792,7 +10792,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     185 => { # CSf5-a Previous cameras reported this tag as part of CmdDialsReverseRotation.  Blend with CSf5-b separate settings together to match extant tag name and values
         Name => 'CmdDialsReverseRotExposureComp',
         RawConv => '$$self{CmdDialsReverseRotExposureComp} = $val',
-        Hidden => 1,
+        #Hidden => 1,
     },
     186 => [{ # CSf5-a  (continued from above)
         Name => 'CmdDialsReverseRotation',
@@ -11202,7 +11202,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     185 => { # CSf5-a Previous cameras reported this tag as part of CmdDialsReverseRotation.  Blend with CSf5-b separate settings together to match extant tag name and values
         Name => 'CmdDialsReverseRotExposureComp',
         RawConv => '$$self{CmdDialsReverseRotExposureComp} = $val',
-        Hidden => 1,
+        #Hidden => 1,
     },
     186 => [{ # CSf5-a  (continued from above)
         Name => 'CmdDialsReverseRotation',

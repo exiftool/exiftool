@@ -11,20 +11,32 @@
 
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="https://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.44.tar.gz/download">Version 13.44</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="https://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.50.tar.gz/download">Version 13.50</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">MetaCPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.50'><b>Feb. 7, 2026 - Version 13.50</b> (production release)</a>
+<ul>
+<li>Added a few new Sony lenses (thanks Jos Roost)
+<li>Added a couple of new Canon lenses (thanks Norbert Wasser)
+<li>Decode another Samsung trailer tag
+<li>Decode BlackLevels from some Canon CRW files (<a href="https://github.com/exiftool/exiftool/issues/387">github #387</a>)
+<li>Updated Sony maker note decoding for the ILCE-7M5 (thanks Jos Roost)
+<li>Patched potential MacOS security issue (thanks Tay Kiat Loong)
+<li>Fixed -list options so reading image files beforehand doesn't add tags to
+    the output when running multiple commands using the -execute feature
+</ul>
+
 <a name='v13.49'><b>Feb. 3, 2026 - Version 13.49</b></a>
 <ul>
 <li>Decode a couple of new Samsung trailer tags
+<li>Disabled decoding of MenuSettings for the Nikon Z6III firmware 2.0 until the
+    changes can be worked through in detail
 <li>Fixed problem where Google Photos had problems displaying ExifTool-edited
     HEIC MotionPhoto images.  Files written by older versions of ExifTool may be
     repaired by re-writing with 13.49 or later
-<li>Disable decoding of MenuSettings for the Nikon Z6III firmware 2.0 until the
-    changes can be worked through in detail
 </ul>
 
 <a name='v13.48'><b>Jan. 31, 2026 - Version 13.48</b></a>

@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub Process_marl($$$);
 sub Process_mrld($$$);
@@ -344,7 +344,7 @@ sub Process_mrld($$$)
 
     $et->VerboseDir('mrld', undef, $dirLen);
     require 'Image/ExifTool/XMPStruct.pl';
-    Image::ExifTool::XMP::AddFlattenedTags($tagTablePtr);
+    Image::ExifTool::XMP::AddFlattenedTags($tagTablePtr, undef, undef, 1);
     $csv = [ ] if $et->Options('PrintCSV');
 
     for ($pos=0; $pos+448<=$dirLen; $pos+=448) {
@@ -375,7 +375,7 @@ sub Process_mrld($$$)
         my $hash = { map { $channel[$_] => $a[$_] } 1..$#a };
         unless ($tagInfo) {
             $tagInfo = AddTagToTable($tagTablePtr, $tag, { Name => $tag, Struct => \%channelStruct });
-            Image::ExifTool::XMP::AddFlattenedTags($tagTablePtr, $tag);
+            Image::ExifTool::XMP::AddFlattenedTags($tagTablePtr, $tag, undef, 1);
         }
         # extract channel structure if specified
         if ($struct) {

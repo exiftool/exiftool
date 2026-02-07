@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '5.02';
+$VERSION = '5.03';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -645,6 +645,8 @@ $VERSION = '5.02';
    '61182.64' => 'Canon RF 20mm F1.4 L VCM', #42
    '61182.65' => 'Canon RF 85mm F1.4 L VCM', #github350
    '61182.66' => 'Canon RF 45mm F1.2 STM', #42
+   '61182.67' => 'Canon RF 7-14mm F2.8-3.5 L FISHEYE STM', #42
+   '61182.68' => 'Canon RF 14mm F1.4 L VCM', #42
     65535 => 'n/a',
 );
 
@@ -7081,6 +7083,8 @@ my %ciMaxFocal = (
             327 => 'Canon RF 20mm F1.4 L VCM', #42
             328 => 'Canon RF 85mm F1.4 L VCM', #42/github350
             330 => 'Canon RF 45mm F1.2 STM', #42
+            331 => 'Canon RF 7-14mm F2.8-3.5 L FISHEYE STM', #42
+            332 => 'Canon RF 14mm F1.4 L VCM', #42
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },
     },

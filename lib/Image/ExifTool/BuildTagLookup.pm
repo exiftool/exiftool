@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.64';
+$VERSION = '3.65';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -71,6 +71,7 @@ my %tweakOrder = (
     CBOR    => 'JSON',
     GeoTiff => 'GPS',
     CanonVRD=> 'CanonCustom',
+    CaptureOne => 'CanonVRD',
     DJI     => 'Casio',
     FLIR    => 'DJI',
     FujiFilm => 'FLIR',
@@ -977,7 +978,7 @@ TagID:  foreach $tagID (@keys) {
                     if ($format and $format =~ /^var_/) {
                         $datamember{$tagID} = $name;
                         unless (defined $$tagInfo{Writable} and not $$tagInfo{Writable}) {
-                            warn "Warning: Var-format tag is writable - $short $name\n"
+                            warn "Warning: Var-format tag is writable - $short $name\n";
                         }
                         # also need DATAMEMBER for tags used in length of var-sized value
                         while ($format =~ /\$val\{(.*?)\}/g) {
@@ -996,10 +997,15 @@ TagID:  foreach $tagID (@keys) {
                     if ($format and $format =~ /\$val\{/ and
                         ($$tagInfo{Writable} or not defined $$tagInfo{Writable}))
                     {
-                        warn "Warning: \$val{} used in Format of writable tag - $short $name\n"
+                        warn "Warning: \$val{} used in Format of writable tag - $short $name\n";
                     }
                 }
                 if ($$tagInfo{Hidden}) {
+                    if ($$tagInfo{Hidden} ne '2' and not $$tagInfo{Unknown} and
+                        (not $$tagInfo{RawConv} or $$tagInfo{RawConv} !~ /Unknown|undef/))
+                    {
+                        warn "Warning: $short $name is Hidden contrary to guidelines\n";
+                    }
                     if ($tagInfo == $infoArray[0]) {
                         next TagID; # hide all tags with this ID if first tag in list is hidden
                     } else {
@@ -1011,7 +1017,7 @@ TagID:  foreach $tagID (@keys) {
                     $writable = $$tagInfo{Writable};
                     # validate Writable
                     unless ($formatOK{$writable} or  ($writable =~ /(.*)\[/ and $formatOK{$1})) {
-                        warn "Warning: Unknown Writable ($writable) - $short $name\n",
+                        warn "Warning: Unknown Writable ($writable) - $short $name\n";
                     }
                 } elsif (not $$tagInfo{SubDirectory}) {
                     $writable = $$table{WRITABLE};
@@ -1021,7 +1027,7 @@ TagID:  foreach $tagID (@keys) {
                     undef $writable;
                 }
                 #if ($writable and $$tagInfo{Unknown} and $$table{GROUPS}{0} ne 'MakerNotes') {
-                #    warn "Warning: Writable Unknown tag - $short $name\n",
+                #    warn "Warning: Writable Unknown tag - $short $name\n";
                 #}
                 # validate some characteristics of obvious date/time tags
                 my @g = $et->GetGroup($tagInfo);
@@ -2096,7 +2102,7 @@ sub CloseHtmlFiles($)
         if ($htmlFile =~ /index\.html$/) {
             print HTMLFILE "'../index.html'>&lt;-- Back to ExifTool home page</a></p>\n";
         } else {
-            print HTMLFILE "'index.html'>&lt;-- ExifTool Tag Names</a></p>\n"
+            print HTMLFILE "'index.html'>&lt;-- ExifTool Tag Names</a></p>\n";
         }
         print HTMLFILE "</body>\n</html>\n" or $success = 0;
         close HTMLFILE or $success = 0;

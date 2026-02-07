@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.83';
+$VERSION = '3.84';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -207,6 +207,8 @@ sub PrintInvLensSpec($;$$);
     33090 => 'Sony FE 300mm F2.8 GM OSS + 2X Teleconverter', #JR
     33091 => 'Sony FE 400-800mm F6.3-8 G OSS + 1.4X Teleconverter', #JR
     33092 => 'Sony FE 400-800mm F6.3-8 G OSS + 2X Teleconverter', #JR
+    33093 => 'Sony FE 100mm F2.8 Macro GM OSS + 1.4X Teleconverter', #JR (NC)
+    33094 => 'Sony FE 100mm F2.8 Macro GM OSS + 2X Teleconverter', #JR
 
     49201 => 'Zeiss Touit 12mm F2.8 or other Touit lens', #JR (lens firmware Ver.02) / github342 (firmware Ver.02.001)
     49201.1 => 'Zeiss Touit 32mm F1.8', #github342 (firmware Ver.02.001)
@@ -262,6 +264,7 @@ sub PrintInvLensSpec($;$$);
     49476 => 'Tamron 28-300mm F4-7.1 Di III VC VXD', #JR (Model A074)
     49477 => 'Tamron 90mm F2.8 Di III Macro VXD', #JR (Model F072)
     49478 => 'Tamron 16-30mm F2.8 Di III VXD G2', #JR (Model A064)
+    49479 => 'Tamron 25-200mm F2.8-5.6 Di III VXD G2', #JR (Model A075 E)
 
     49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
     49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)
@@ -373,6 +376,7 @@ sub PrintInvLensSpec($;$$);
     51518 => 'Samyang AF 135mm F1.8', #JR
 
     61569 => 'LAOWA FFII 10mm F2.8 C&D Dreamer', #JR
+    61572 => 'LAOWA FFII 12mm F2.8 C&D Dreamer', #JR
 
     61761 => 'Viltrox 28mm F4.5 FE', #JR
     61767 => 'Viltrox 50mm F2.0 FE', #JR
@@ -1534,7 +1538,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             0 => 'Compressed RAW',
             1 => 'Uncompressed RAW',
             2 => 'Lossless Compressed RAW', #JR (NC) seen for ILCE-1
-            3 => 'Compressed RAW 2', # ILCE-7M5
+            3 => 'Compressed RAW 2', # ILCE-7M5 for both "Compressed RAW" and "Compressed (HQ) RAW"
            65535 => 'n/a', # seen for ILCE-7SM3 JPEG-only
         },
     },
@@ -1601,16 +1605,16 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             '3 2' => 'M-size RAW + Fine',
             '3 3' => 'M-size RAW + Extra Fine',
             '3 4' => 'M-size RAW + Light', # (NC)
-            '4 0' => 'Compressed RAW', # (NC)
-            '4 1' => 'Compressed RAW + Standard', # (NC)
+            '4 0' => 'Compressed RAW', # https://github.com/darktable-org/darktable/issues/19917
+            '4 1' => 'Compressed RAW + Standard',
             '4 2' => 'Compressed RAW + Fine',
-            '4 3' => 'Compressed RAW + Extra Fine', # (NC)
-            '4 4' => 'Compressed RAW + Light', # (NC)
-            '5 0' => 'Compressed HQ RAW', # (NC)
-            '5 1' => 'Compressed HQ RAW + Standard', # (NC)
-            '5 2' => 'Compressed HQ RAW + Fine',
-            '5 3' => 'Compressed HQ RAW + Extra Fine', # (NC)
-            '5 4' => 'Compressed HQ RAW + Light', # (NC)
+            '4 3' => 'Compressed RAW + Extra Fine',
+            '4 4' => 'Compressed RAW + Light',
+            '5 0' => 'Compressed (HQ) RAW',
+            '5 1' => 'Compressed (HQ) RAW + Standard',
+            '5 2' => 'Compressed (HQ) RAW + Fine',
+            '5 3' => 'Compressed (HQ) RAW + Extra Fine',
+            '5 4' => 'Compressed (HQ) RAW + Light',
         },
     },
     0x202f => { #JR (ILCE-7RM3)
@@ -1731,6 +1735,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     0x205c => { #JR (DSC-RX1RM3)
         Name => 'StepCropShooting',
         Writable => 'int8u',
+        Condition => '$$self{Model} =~ /^(DSC-RX1RM3)\b/',
         PrintConv => {
             0 => '35mm (Off)',
             1 => '50mm',
@@ -1765,7 +1770,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     # from mid-2015: ILCE-7RM2/7SM2/6300 and newer models use different offsets
     {
         Name => 'Tag9050a',
-        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-(1|6100|6300|6400|6500|6600|6700|7C|7M3|7M4|7RM2|7RM3A?|7RM4A?|7RM5|7SM2|7SM3|9|9M2)|ILCA-99M2|ILME-(FX2|FX3)|ZV-)/',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-(1|6100|6300|6400|6500|6600|6700|7C|7M3|7M4|7M5|7RM2|7RM3A?|7RM4A?|7RM5|7SM2|7SM3|9|9M2)|ILCA-99M2|ILME-(FX2|FX3)|ZV-)/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Tag9050a',
             ByteOrder => 'LittleEndian',
@@ -1786,7 +1791,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         },
     },{
         Name => 'Tag9050d',
-        Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR)|ILME-FX2|ZV-(E1|E10M2))\b/ or ($$self{Model} =~ /^(ILCE-1M2)/ and $$valPt =~ /^\x00/)',
+        Condition => '$$self{Model} =~ /^(ILCE-(6700|7CM2|7CR)|ILME-FX2|ZV-(E1|E10M2))\b/ or ($$self{Model} =~ /^(ILCE-(1M2|7M5))/ and $$valPt =~ /^\x00\x00\x00\x00\x00/)',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Tag9050d',
             ByteOrder => 'LittleEndian',
@@ -1809,7 +1814,8 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     # 0x31 (e) for ILCE-1/7M4/7SM3, ILME-FX3
     # 0x32 (e) for ILCE-7RM5, ILME-FX30
     # 0x33 (e) for ILCE-6700/7CM2/7CR/9M3, ZV-E1
-    # first byte decoded: 40, 204, 202, 27, 58, 62, 48, 215, 28, 106, 89, 63 respectively
+    # 0x41 (e) for ILCE-7M5
+    # first byte decoded: 40, 204, 202, 27, 58, 62, 48, 215, 28, 106, 89, 63, 92 respectively
     {
         Name => 'Tag9400a',
         Condition => q{
@@ -1823,7 +1829,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9400b' },
     },{
         Name => 'Tag9400c',
-        Condition => '$$valPt =~ /^[\x23\x24\x26\x28\x31\x32\x33]/',
+        Condition => '$$valPt =~ /^[\x23\x24\x26\x28\x31\x32\x33\x41]/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9400c' },
     },{
         Name => 'Sony_0x9400',
@@ -2112,7 +2118,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             '4 0 1 0' => 'ARW 4.0.1', #github195 (ZV-E1)
             '5 0 0 0' => 'ARW 5.0', # (ILCE-9M3)
             '5 0 1 0' => 'ARW 5.0.1', # (ILCE-1 with FirmWare 2.0)
-            '6 0 0 0' => 'ARW 6.0.0', # (ILCE-7M5)
+            '6 0 0 0' => 'ARW 6.0', # (ILCE-7M5)
             # what about cRAW images?
         },
     },
@@ -7582,12 +7588,6 @@ my %isoSetting2010 = (
 #           appears to be difference between used FNumber and MaxAperture, 256 being +1 APEX or stop
 #           however, not always valid e.g. bracketing, Shutter-prio e.a.
 #           difference between 0x0002 and 0x0004 mostly 0.0, 0.1 or 0.2 stops.
-    0x000a => { #github369
-        Name => 'ShutterCount',
-        Format => 'int32u',
-        Condition => '$$self{Model} =~ /^ILCE-7M5$/',
-        Notes => 'ILCE-7M5',
-    },
     0x0020 => {
         Name => 'Shutter',
         Format => 'int16u[3]',
@@ -7618,7 +7618,6 @@ my %isoSetting2010 = (
         # NEX-5N/7.  For the A99V it is definitely more than 16 bits, but it wraps at
         # 65536 for the A7R.
         Format => 'int32u',
-        Condition => '$$self{Model} !~ /^ILCE-7M5$/',
         Notes => q{
             total number of image exposures made by the camera, modulo 65536 for some
             models
@@ -8218,7 +8217,6 @@ my %isoSetting2010 = (
         Format => 'int32u',
         Notes => 'total number of image exposures made by the camera',
         RawConv => '$val & 0x00ffffff',
-        PrintConv => 'sprintf("%6d",$val)',
     },
     0x0046 => { # appr. same value as Exif ExposureTime, but longer in HDR-modes
         Name => 'SonyExposureTime',
@@ -8286,7 +8284,7 @@ my %isoSetting2010 = (
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     FORMAT => 'int8u',
     NOTES => q{
-        Valid for ILCE-6700/7CM2/7CR/ZV-E1. Also for ILCE-1M2 when using mechanical
+        Valid for ILCE-6700/7CM2/7CR/ZV-E1. Also for ILCE-1M2/7M5 when using mechanical
         shutter.
     },
     WRITABLE => 1,
@@ -8295,12 +8293,10 @@ my %isoSetting2010 = (
     0x000a => {
         Name => 'ShutterCount',
         # number of mechanical shutter actuations, does not increase during electronic shutter / Silent Shooting
-        Condition => '$$self{Model} =~ /^(ILCE-(1M2|6700|7CM2|7CR)|ILME-FX2)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(1M2|6700|7CM2|7CR|7M5)|ILME-FX2)/',
         Format => 'int32u',
         Notes => 'total number of mechanical shutter actuations',
         RawConv => '$val & 0x00ffffff',
-        PrintConv => 'sprintf("%6d",$val)',
-        PrintConvInv => '$val',
     },
     0x001a => { # appr. same value as Exif ExposureTime, but not valid in HDR-modes
         Name => 'SonyExposureTime',
@@ -8312,6 +8308,7 @@ my %isoSetting2010 = (
     },
     0x001c => { # appr. same value as Exif ExposureTime, but not valid in HDR-modes
         Name => 'SonyFNumber',
+        Condition => '$$self{Model} !~ /^(ILCE-7M5)/',
         Format => 'int16u',
         ValueConv => '2 ** (($val/256 - 16) / 2)',
         ValueConvInv => '(log($val)*2/log(2)+16)*256',
@@ -8496,6 +8493,9 @@ my %isoSetting2010 = (
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     FORMAT => 'int8u',
     WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    DATAMEMBER => [ 0x1e ],
     NOTES => q{
         Valid for DSC-HX60V/HX80/HX90V/HX99/HX350/HX400V/QX30/RX0/RX1RM2/RX10/
         RX10M2/RX10M3/RX10M4/RX100M3/RX100M4/RX100M5/RX100M5A/RX100M6/RX100M7/WX220/
@@ -8534,6 +8534,8 @@ my %isoSetting2010 = (
     0x001a => { %sequenceFileNumber }, # ILCE-9M3/1M2 have sometimes deviating values.
     0x001e => {
         Name => 'SequenceLength',
+        Notes => 'offsets after this are shifted by -1 for the ILCE-7M5',
+        Hook => '$varSize -= 1 if $$self{Model} =~ /^(ILCE-7M5)/',
         PrintConv => {
             0 => 'Continuous',
             1 => '1 file',
@@ -8556,7 +8558,7 @@ my %isoSetting2010 = (
     },
     0x002a => [{
         Name => 'Quality2',
-        Condition => '$$self{Model} !~ /^(DSC-RX1RM3|ILCE-(1|1M2|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX2|FX3A?|FX30)|ZV-(E1|E10M2))\b/',
+        Condition => '$$self{Model} !~ /^(DSC-RX1RM3|ILCE-(1|1M2|6700|7CM2|7CR|7M4|7M5|7RM5|7SM3|9M3)|ILME-(FX2|FX3A?|FX30)|ZV-(E1|E10M2))\b/',
         PrintConv => {
             0 => 'JPEG',
             1 => 'RAW',
@@ -8581,7 +8583,7 @@ my %isoSetting2010 = (
 #    },
     0x0053 => {
         Name => 'ModelReleaseYear',
-        Condition => '$$self{Model} !~ /^(DSC-RX1RM3|ILCE-(1|6700|7CM2|7CR|7M4|7RM5|7SM3|9M3)|ILME-(FX2|FX3A?|FX30)|ZV-(E1|E10M2))\b/',
+        Condition => '$$self{Model} !~ /^(DSC-RX1RM3|ILCE-(1|6700|7CM2|7CR|7M4|7M5|7RM5|7SM3|9M3)|ILME-(FX2|FX3A?|FX30)|ZV-(E1|E10M2))\b/',
         Format => 'int8u',
         PrintConv => 'sprintf("20%.2d", $val)',
     },
@@ -8620,12 +8622,13 @@ my %isoSetting2010 = (
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     DATAMEMBER => [ 0 ],
-    IS_SUBDIR => [ 0x03e2, 0x03f4, 0x044e, 0x0498, 0x049d, 0x049e, 0x04a1, 0x04a2, 0x04ba, 0x059d, 0x0634, 0x0636, 0x064c, 0x0653, 0x0678, 0x06b8, 0x06de, 0x06e7 ],
+    IS_SUBDIR => [ 0x03e2, 0x03f4, 0x044e, 0x0453, 0x0498, 0x049d, 0x049e, 0x04a1, 0x04a2, 0x04ba, 0x059d, 0x0634, 0x0636, 0x064c, 0x0653, 0x0678, 0x06b8, 0x06de, 0x06e7 ],
     0x0000 => { Name => 'Ver9401', Hidden => 1, RawConv => '$$self{Ver9401} = $val; $$self{OPTIONS}{Unknown}<2 ? undef : $val' },
 
     0x03e2 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 181',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x03f4 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} =~ /^(185|186|187)/', Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x044e => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 178',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
+    0x0453 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 198',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x0498 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 148',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x049d => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 167 and $$self{Software} !~ /^ILCE-7M4 (v2|v3)/', Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x049e => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 167 and $$self{Software} =~ /^ILCE-7M4 (v2|v3)/', Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
@@ -9954,14 +9957,16 @@ my %isoSetting2010 = (
     FORMAT => 'int8u',
     DATAMEMBER => [ 0x00, 0x37 ],
     NOTES => q{
-        Valid for the ILCE-1/6700/7CM2/7CR/7M4/7RM5/7SM3/9M3, ILME-FX2/FX3/FX30,
-        ZV-E1/E10M2.
+        Valid for the ILCE-1/6700/7CM2/7CR/7M4/7M5/7RM5/7SM3/9M3, ILME-FX2/FX3/FX30,
+        ZV-E1/E10M2, but ILCE-7M5 has different offsets.
     },
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     0x0000 => {
         Name => 'Tag9416_0000',
         Hidden => 1, # (hide from documentation)
+        Notes => 'offsets after this are shifted by +4 for the ILCE-7M5',
+        Hook => '$varSize += 4 if $$self{Model} =~ /^(ILCE-7M5)/',
         PrintConv => 'sprintf("%3d",$val)',
         RawConv => '$$self{TagVersion} = $val; undef', # (used only to set TagVersion)
     },
@@ -10005,7 +10010,11 @@ my %isoSetting2010 = (
         PrintConvInv => '$val',
     },
     0x001d => { %sequenceImageNumber },
-    0x002b => { %releaseMode2 },
+    0x002b => {
+        Notes => 'offsets after this are shifted by -2 for the ILCE-7M5',
+        Hook => '$varSize -= 2 if $$self{Model} =~ /^(ILCE-7M5)/',
+        %releaseMode2,
+    },
     0x0035 => {
         Name => 'ExposureProgram',
         Priority => 0,
@@ -10014,8 +10023,8 @@ my %isoSetting2010 = (
     },
     0x0037 => {
         Name => 'CreativeStyle',
-        Notes => 'offsets after this are shifted by 1 for the ILME-FX2',
-        Hook => '$varSize += 1 if $$self{Model} =~ /^(ILME-FX2)/',
+        Notes => 'offsets after this are shifted by 1 for the ILME-FX2 and ILCE-7M5',
+        Hook => '$varSize += 1 if $$self{Model} =~ /^(ILME-FX2|ILCE-7M5)/',
         PrintConv => {
             0 => 'Standard',
             1 => 'Vivid',
@@ -10115,6 +10124,24 @@ my %isoSetting2010 = (
         ValueConvInv => '$val * 10',
         PrintConv => 'sprintf("%.1f mm",$val)',
         PrintConvInv => '$val =~ s/ ?mm//; $val',
+    },
+    0x0702 => {
+        Name => 'VignettingCorrParams',
+        Condition => '$$self{Model} =~ /^(ILCE-7M5)\b/',
+        Format => 'int16s[32]',
+    },
+    0x074a => {
+        Name => 'APS-CSizeCapture',
+        Condition => '$$self{Model} =~ /^(ILCE-7M5)/',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+        },
+    },
+    0x083b => {
+        Name => 'ChromaticAberrationCorrParams',
+        Condition => '$$self{Model} =~ /^(ILCE-7M5)/',
+        Format => 'int16s[32]',
     },
     0x088f => {
         Name => 'VignettingCorrParams',

@@ -32,7 +32,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.31';
+$VERSION = '1.32';
 
 # program map table "stream_type" lookup (ref 6/1/9)
 my %streamType = (
@@ -306,11 +306,13 @@ sub ParsePID($$$$$)
         require Image::ExifTool::MPEG;
         Image::ExifTool::MPEG::ParseMPEGAudio($et, $dataPt);
     } elsif ($type == 6 and $pid == 0x0300) {
-        # LIGOGPSINFO from unknown dashcam (../testpics/gps_video/Wrong Way pass.ts)
+        # LIGOGPSINFO
+        # unknown dashcam (../testpics/gps_video/Wrong Way pass.ts, 160 bytes, not fuzzed)
+        # Pruveeo D90 dashcam (../testpics/gps_video/20260216_101326F.ts, 200 bytes, fuzzed)
         if ($$dataPt =~ /^LIGOGPSINFO/s) {
             my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
             my %dirInfo = ( DataPt => $dataPt, DirName => 'Ligo0x0300' );
-            Image::ExifTool::LigoGPS::ProcessLigoGPS($et, \%dirInfo, $tbl, 1);
+            Image::ExifTool::LigoGPS::ProcessLigoGPS($et, \%dirInfo, $tbl, length($$dataPt)==160);
             $$et{FoundGoodGPS} = 1;
             $more = 1;
         }

@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.55';
+$VERSION = '4.56';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -683,7 +683,8 @@ sub GetAFPointGrid($$;$);
     'FD 00 44 44 18 18 DF 00' => 'Voigtlander APO-Lanthar 35mm F2', #30
     'FD 00 59 59 18 18 DF 00' => 'Voigtlander Macro APO-Lanthar 65mm F2', #30
     'FD 00 48 48 07 07 DF 00' => 'Voigtlander Nokton 40mm F1.2 Aspherical', #30
-#
+    'FD 00 3C 3C 18 18 DF 00' => 'Voigtlander APO-Lanthar 28mm F2 Aspherical', #30
+
     '00 40 2D 2D 2C 2C 00 00' => 'Carl Zeiss Distagon T* 3.5/18 ZF.2',
     '00 48 27 27 24 24 00 00' => 'Carl Zeiss Distagon T* 2.8/15 ZF.2', #MykytaKozlov
     '00 48 32 32 24 24 00 00' => 'Carl Zeiss Distagon T* 2.8/21 ZF.2',
@@ -12086,7 +12087,7 @@ my %nikonFocalConversions = (
 %Image::ExifTool::Nikon::MakerNotes0x56 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes' },
-    DATAMEMBER => [ 12 ],
+    DATAMEMBER => [ 4, 12 ],
     0 => {
         Name => 'FirmwareVersion56',
         Format => 'string[4]',
@@ -12094,12 +12095,56 @@ my %nikonFocalConversions = (
         ValueConv => '$val =~ s/(\d{2})/$1./; $val',
     },
     4 => {
-        Name => 'BurstGroupID',    #all frames shot within a burst (using CL/CH/C30/C60/C120) will share the same BurstGroupID.  Value will be > 0 for all images shot in continuous modes (or via Pixel Shift).  0 for single-frame.
-        Format => 'int16u'
+        Name => 'BurstFlag',
+        RawConv => '$$self{BurstFlag} = $val; undef',
+        Hidden => 1,
+    },
+    # decoding of Burst tags ref forum17835 and
+    # https://www.dpreview.com/forums/threads/nc_fllst-dat-for-the-z9-figured-out-what-its-for-and-deciphered-it.4757978/
+    4.1 => {
+        Name => 'BurstStartSlotNumber',
+        Format => 'int32u',
+        Condition => '$$self{BurstFlag}',
+        Mask => 0x20000000,
+        ValueConv => '$val + 1',
+        ValueConvInv => '$val - 1',
+    },
+    4.2 => {
+        Name => 'BurstStartFolderNumber',
+        Format => 'int32u',
+        Condition => '$$self{BurstFlag}',
+        Mask => 0x1ff80000,
+    },
+    4.3 => {
+        Name => 'BurstStartImageNumber',
+        Format => 'int32u',
+        Condition => '$$self{BurstFlag}',
+        Mask => 0x0007ffe0,
+    },
+    4.4 => {
+        Name => 'BurstStartImageType',
+        Format => 'int32u',
+        Condition => '$$self{BurstFlag}',
+        Mask => 0x0000001f,
+        PrintConv => {
+            0 => 'JPG',
+            2 => 'NEF',
+            3 => 'TIF',
+            4 => 'NDF',
+            5 => 'MOV',
+            6 => 'NEV',
+            7 => 'MP4',
+        },
+    },
+    8 => {
+        Name => 'BurstShotNumber',
+        Format => 'int32u',
+        Condition => '$$self{BurstFlag}',
     },
     12 => {
-        Name => 'PixelShiftID',    # 1 => Pixel shift enabled (either directly or thru Focus Shift Shooting with Z8 fw 3.0)
+        Name => 'PixelShiftActive',    # 1 => Pixel shift enabled (either directly or thru Focus Shift Shooting with Z8 fw 3.0)
         RawConv => '$$self{PixelShiftActive} = $val',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
         #Hidden => 1
     },
 );

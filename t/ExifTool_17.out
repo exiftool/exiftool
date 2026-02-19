@@ -1,10 +1,10 @@
-  ExifToolVersion = 13.41
+  ExifToolVersion = 13.51
   FileName = Canon.jpg
   Directory = t/images
   FileSize = 2697
   FileModifyDate = 1159902631
-  FileAccessDate = 1761850301
-  FileInodeChangeDate = 1761313845
+  FileAccessDate = 1770489903
+  FileInodeChangeDate = 1770489785
   FilePermissions = 33188
   FileType = JPEG
   FileTypeExtension = JPG
@@ -187,8 +187,8 @@ JPEG APP1 (2442 bytes):
   | | | | MinAperture = 304
   | | | | - Tag 0x001b (2 bytes, int16s[1]):
   | | | |     041e: 30 01                                           [0.]
-  | | | | FlashActivity = 0
-  | | | | - Tag 0x001c (2 bytes, int16s[1]):
+  | | | | FlashModel = 0
+  | | | | - Tag 0x001c, mask 0x7f (2 bytes, int16s[1]):
   | | | |     0420: 00 00                                           [..]
   | | | | FlashBits = 0
   | | | | - Tag 0x001d (2 bytes, int16s[1]):

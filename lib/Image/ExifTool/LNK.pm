@@ -18,10 +18,150 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Microsoft;
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub ProcessItemID($$$);
 sub ProcessLinkInfo($$$);
+
+my %guidLookup = (
+    # ref https://learn.microsoft.com/en-us/windows/win32/shell/knownfolderid
+    '008CA0B1-55B4-4C56-B8A8-4DE4B299D3BE' => 'Account Pictures (per-user)',
+    'DE61D971-5EBC-4F02-A3A9-6C82895E5C04' => 'Get Programs (virtual)',
+    '724EF170-A42D-4FEF-9F26-B60E846FBA4F' => 'Administrative Tools (per-user)',
+    'B2C5E279-7ADD-439F-B28C-C41FE1BBF672' => 'AppDataDesktop (per-user)',
+    '7BE16610-1F7F-44AC-BFF0-83E15F2FFCA1' => 'AppDataDocuments (per-user)',
+    '7CFBEFBC-DE1F-45AA-B843-A542AC536CC9' => 'AppDataFavorites (per-user)',
+    '559D40A3-A036-40FA-AF61-84CB430A4D34' => 'AppDataProgramData (per-user)',
+    'A3918781-E5F2-4890-B3D9-A7E54332328C' => 'Application Shortcuts (per-user)',
+    '1E87508D-89C2-42F0-8A7E-645A0F50CA58' => 'Applications (virtual)',
+    'A305CE99-F527-492B-8B1A-7E76FA98D6E4' => 'Installed Updates (virtual)',
+    'AB5FB87B-7CE2-4F83-915D-550846C9537B' => 'Camera Roll (per-user)',
+    '9E52AB10-F80D-49DF-ACB8-4330F5687855' => 'Temporary Burn Folder (per-user)',
+    'DF7266AC-9274-4867-8D55-3BD661DE872D' => 'Programs and Features (virtual)',
+    'D0384E7D-BAC3-4797-8F14-CBA229B392B5' => 'Administrative Tools (common)',
+    'C1BAE2D0-10DF-4334-BEDD-7AA20B227A9D' => 'OEM Links (common)',
+    '0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8' => 'Programs (common)',
+    'A4115719-D62E-491D-AA7C-E74B8BE3B067' => 'Start Menu (common)',
+    '82A5EA35-D9CD-47C5-9629-E15D2F714E6E' => 'Startup (common)',
+    'B94237E7-57AC-4347-9151-B08C6C32D1F7' => 'Templates (common)',
+    '0AC0837C-BBF8-452A-850D-79D08E667CA7' => 'Computer (virtual)',
+    '4BFEFB45-347D-4006-A5BE-AC0CB0567192' => 'Conflicts (virtual)',
+    '6F0CD92B-2E97-45D1-88FF-B0D186B8DEDD' => 'Network Connections (virtual)',
+    '56784854-C6CB-462B-8169-88E350ACB882' => 'Contacts (per-user)',
+    '82A74AEB-AEB4-465C-A014-D097EE346D63' => 'Control Panel (virtual)',
+    '2B0F765D-C0E9-4171-908E-08A611B84FF6' => 'Cookies (per-user)',
+    'B4BFCC3A-DB2C-424C-B029-7FE99A87C641' => 'Desktop (per-user)',
+    '5CE4A5E9-E4EB-479D-B89F-130C02886155' => 'DeviceMetadataStore (common)',
+    'FDD39AD0-238F-46AF-ADB4-6C85480369C7' => 'Documents (per-user)',
+    '7B0DB17D-9CD2-4A93-9733-46CC89022E7C' => 'Documents (per-user)',
+    '374DE290-123F-4565-9164-39C4925E467B' => 'Downloads (per-user)',
+    '1777F761-68AD-4D8A-87BD-30B759FA33DD' => 'Favorites (per-user)',
+    'FD228CB7-AE11-4AE3-864C-16F3910AB8FE' => 'Fonts (fixed)',
+    'CAC52C1A-B53D-4EDC-92D7-6B2E8AC19434' => 'Games (virtual)',
+    '054FAE61-4DD8-4787-80B6-090220C4B700' => 'GameExplorer (per-user)',
+    'D9DC8A3B-B784-432E-A781-5A1130A75963' => 'History (per-user)',
+    '52528A6B-B9E3-4ADD-B60D-588C2DBA842D' => 'Homegroup (virtual)',
+    '9B74B6A3-0DFD-4F11-9E78-5F7800F2E772' => 'User name (%USERNAME%) (virtual)',
+    'BCB5256F-79F6-4CEE-B725-DC34E402FD46' => 'ImplicitAppShortcuts (per-user)',
+    '352481E8-33BE-4251-BA85-6007CAEDCF9D' => 'Temporary Internet Files (per-user)',
+    '4D9F7874-4E0C-4904-967B-40B0D20C3E4B' => 'The Internet (virtual)',
+    '1B3EA5DC-B587-4786-B4EF-BD1DC332AEAE' => 'Libraries (per-user)',
+    'BFB9D5E0-C6A9-404C-B2B2-AE6DB6AF4968' => 'Links (per-user)',
+    'F1B32785-6FBA-4FCF-9D55-7B8E7F157091' => 'Local (per-user)',
+    'A520A1A4-1780-4FF6-BD18-167343C5AF16' => 'LocalLow (per-user)',
+    '2A00375E-224C-49DE-B8D1-440DF7EF3DDC' => 'None (fixed)',
+    '4BD8D571-6D19-48D3-BE97-422220080E43' => 'Music (per-user)',
+    '2112AB0A-C86A-4FFE-A368-0DE96E47012E' => 'Music (per-user)',
+    'C5ABBF53-E17F-4121-8900-86626FC2C973' => 'Network Shortcuts (per-user)',
+    'D20BEEC4-5CA8-4905-AE3B-BF251EA09B53' => 'Network (virtual)',
+    '31C0DD25-9439-4F12-BF41-7FF4EDA38722' => '3D Objects (per-user)',
+    '2C36C0AA-5812-4B87-BFD0-4CD0DFB19B39' => 'Original Images (per-user)',
+    '69D2CF90-FC33-4FB7-9A0C-EBB0F0FCB43C' => 'Slide Shows (per-user)',
+    'A990AE9F-A03B-4E80-94BC-9912D7504104' => 'Pictures (per-user)',
+    '33E28130-4E1E-4676-835A-98395C3BC3BB' => 'Pictures (per-user)',
+    'DE92C1C7-837F-4F69-A3BB-86E631204A23' => 'Playlists (per-user)',
+    '76FC4E2D-D6AD-4519-A663-37BD56068185' => 'Printers (virtual)',
+    '9274BD8D-CFD1-41C3-B35E-B13F55A758F4' => 'Printer Shortcuts (per-user)',
+    '5E6C858F-0E22-4760-9AFE-EA3317B67173' => 'User Name (%USERNAME%) (fixed)',
+    '62AB5D82-FDC1-4DC3-A9DD-070D1D495D97' => 'ProgramData (fixed)',
+    '905E63B6-C1BF-494E-B29C-65B732D3D21A' => 'Program Files (fixed)',
+    '6D809377-6AF0-444B-8957-A3773F02200E' => 'Program Files (fixed)',
+    '7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E' => 'Program Files (fixed)',
+    'F7F1ED05-9F6D-47A2-AAAE-29D317C6F066' => 'Common Files (fixed)',
+    '6365D5A7-0F0D-45E5-87F6-0DA56B6A4F7D' => 'Common Files (fixed)',
+    'DE974D24-D9C6-4D3E-BF91-F4455120B917' => 'Common Files (fixed)',
+    'A77F5D77-2E2B-44C3-A6A2-ABA601054A51' => 'Programs (per-user)',
+    'DFDF76A2-C82A-4D63-906A-5644AC457385' => 'Public (fixed)',
+    'C4AA340D-F20F-4863-AFEF-F87EF2E6BA25' => 'Public Desktop (common)',
+    'ED4824AF-DCE4-45A8-81E2-FC7965083634' => 'Public Documents (common)',
+    '3D644C9B-1FB8-4F30-9B45-F670235F79C0' => 'Public Downloads (common)',
+    'DEBF2536-E1A8-4C59-B6A2-414586476AEA' => 'GameExplorer (common)',
+    '48DAF80B-E6CF-4F4E-B800-0E69D84EE384' => 'Libraries (common)',
+    '3214FAB5-9757-4298-BB61-92A9DEAA44FF' => 'Public Music (common)',
+    'B6EBFB86-6907-413C-9AF7-4FC2ABF07CC5' => 'Public Pictures (common)',
+    'E555AB60-153B-4D17-9F04-A5FE99FC15EC' => 'Ringtones (common)',
+    '0482AF6C-08F1-4C34-8C90-E17EC98B1E17' => 'Public Account Pictures (common)',
+    '2400183A-6185-49FB-A2D8-4A392A602BA3' => 'Public Videos (common)',
+    '52A4F021-7B75-48A9-9F6B-4B87A210BC8F' => 'Quick Launch (per-user)',
+    'AE50C081-EBD2-438A-8655-8A092E34987A' => 'Recent Items (per-user)',
+    '1A6FDBA2-F42D-4358-A798-B74D745926C5' => 'Recorded TV (common)',
+    'B7534046-3ECB-4C18-BE4E-64CD4CB7D6AC' => 'Recycle Bin (virtual)',
+    '8AD10C31-2ADB-4296-A8F7-E4701232C972' => 'Resources (fixed)',
+    'C870044B-F49E-4126-A9C3-B52A1FF411E8' => 'Ringtones (per-user)',
+    '3EB685DB-65F9-4CF6-A03A-E3EF65729F3D' => 'Roaming (per-user)',
+    'AAA8D5A5-F1D6-4259-BAA8-78E7EF60835E' => 'RoamedTileImages (per-user)',
+    '00BCFC5A-ED94-4E48-96A1-3F6217F21990' => 'RoamingTiles (per-user)',
+    'B250C668-F57D-4EE1-A63C-290EE7D1AA1F' => 'Sample Music (common)',
+    'C4900540-2379-4C75-844B-64E6FAF8716B' => 'Sample Pictures (common)',
+    '15CA69B3-30EE-49C1-ACE1-6B5EC372AFB5' => 'Sample Playlists (common)',
+    '859EAD94-2E85-48AD-A71A-0969CB56A6CD' => 'Sample Videos (common)',
+    '4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4' => 'Saved Games (per-user)',
+    '3B193882-D3AD-4EAB-965A-69829D1FB59F' => 'Saved Pictures (per-user)',
+    'E25B5812-BE88-4BD9-94B0-29233477B6C3' => 'Saved Pictures Library (per-user)',
+    '7D1D3A04-DEBB-4115-95CF-2F29DA2920DA' => 'Searches (per-user)',
+    'B7BEDE81-DF94-4682-A7D8-57A52620B86F' => 'Screenshots (per-user)',
+    'EE32E446-31CA-4ABA-814F-A5EBD2FD6D5E' => 'Offline Files (virtual)',
+    '0D4C3DB6-03A3-462F-A0E6-08924C41B5D4' => 'History (per-user)',
+    '190337D1-B8CA-4121-A639-6D472D16972A' => 'Search Results (virtual)',
+    '98EC0E18-2098-4D44-8644-66979315A281' => 'Microsoft Office Outlook (virtual)',
+    '7E636BFE-DFA9-4D5E-B456-D7B39851D8A9' => 'Templates (per-user)',
+    '8983036C-27C0-404B-8F08-102D10DCFD74' => 'SendTo (per-user)',
+    '7B396E54-9EC5-4300-BE0A-2482EBAE1A26' => 'Gadgets (common)',
+    'A75D362E-50FC-4FB7-AC2C-A8BEAA314493' => 'Gadgets (per-user)',
+    'A52BBA46-E9E1-435F-B3D9-28DAA648C0F6' => 'OneDrive (per-user)',
+    '767E6811-49CB-4273-87C2-20F355E1085B' => 'Camera Roll (per-user)',
+    '24D89E24-2F19-4534-9DDE-6A6671FBB8FE' => 'Documents (per-user)',
+    '339719B5-8C47-4894-94C2-D8F77ADD44A6' => 'Pictures (per-user)',
+    '625B53C3-AB48-4EC1-BA1F-A1EF4146FC19' => 'Start Menu (per-user)',
+    'B97D20BB-F46A-4C97-BA10-5E3608430854' => 'Startup (per-user)',
+    '43668BF8-C14E-49B2-97C9-747784D784B7' => 'Sync Center (virtual)',
+    '289A9A43-BE44-4057-A41B-587A76D7E7F9' => 'Sync Results (virtual)',
+    '0F214138-B1D3-4A90-BBA9-27CBC0C5389A' => 'Sync Setup (virtual)',
+    '1AC14E77-02E7-4E5D-B744-2EB1AE5198B7' => 'System32 (fixed)',
+    'D65231B0-B2F1-4857-A4CE-A8E7C6EA7D27' => 'System32 (fixed)',
+    'A63293E8-664E-48DB-A079-DF759E0509F7' => 'Templates (per-user)',
+    '9E3995AB-1F9C-4F13-B827-48B24B6C7174' => 'User Pinned (per-user)',
+    '0762D272-C50A-4BB0-A382-697DCD729B80' => 'Users (fixed)',
+    '5CD7AEE2-2219-4A67-B85D-6C9CE15660CB' => 'Programs (per-user)',
+    'BCBD3057-CA5C-4622-B42D-BC56DB0AE516' => 'Programs (per-user)',
+    'F3CE0F7C-4901-4ACC-8648-D5D44B04EF8F' => 'Users Full Name (virtual)',
+    'A302545D-DEFF-464B-ABE8-61C8648D939B' => 'Libraries (virtual)',
+    '18989B1D-99B5-455B-841C-AB7C74E4DDFC' => 'MyVideos (per-user)',
+    '491E922F-5643-4AF4-A7EB-4E7A138D8174' => 'Videos (per-user)',
+    # ref Google AI
+    '00021401-0000-0000-C000-000000000046' => 'Shell Link Class Identifier',
+    '20D04FE0-3AEA-1069-A2D8-08002B30309D' => 'My Computer',
+    '450D8FBA-AD25-11D0-A2A8-0800361B3003' => 'My Documents',
+    'B4BFCC3A-DB2C-424C-B029-7FE99A87C641' => 'Desktop',
+    'F3364BA0-65B9-11CE-A9BA-00AA004AE661' => 'Search Results Folder',
+    '04731B67-D933-450A-90E6-4ACD2E9408FE' => 'CLSID_SearchFolder (Windows Search)',
+    '53F5630D-B6BF-11D0-94F2-00A0C91EFB8B' => 'Device Class GUID for a volume',
+    'F42EE2D3-909F-4907-8871-4C22FC0BF756' => 'Documents',
+    '17789161-0268-45B3-8557-013009765873' => 'Local AppData',
+    '9E395ED8-512D-4315-9960-9110B74616C8' => 'Recent Items',
+    '21EC2020-3AEA-1069-A2DD-08002B30309D' => 'Control Panel Items',
+    '7007ACC7-3202-11D1-AAD2-00805FC1270E' => 'Network Connections',
+);
 
 # Information extracted from LNK (Windows Shortcut) files
 %Image::ExifTool::LNK::Main = (
@@ -170,7 +310,7 @@ sub ProcessLinkInfo($$$);
            0x400 => 'Alt',
         },
     },
-    # note: tags 0x10xx are synthesized tag ID's
+    # note: tags 0x100xx-0x300xx are synthesized tag ID's
     0x10000 => {
         Name => 'ItemID',
         SubDirectory => { TagTable => 'Image::ExifTool::LNK::ItemID' },
@@ -235,28 +375,204 @@ sub ProcessLinkInfo($$$);
     },
 );
 
+# ref: https://helgeklein.com/blog/dissecting-a-shortcut/
 %Image::ExifTool::LNK::ItemID = (
     GROUPS => { 2 => 'Other' },
     PROCESS_PROC => \&ProcessItemID,
-    # (can't find any documentation on these items)
-    0x0032 => {
-        Name => 'Item0032',
-        SubDirectory => { TagTable => 'Image::ExifTool::LNK::Item0032' },
+    # can't find any documentation on these items, but AI gives this:
+    # 0x1f - root folder
+    # 0x2e/0x2f - volume item
+    # 0x31 - directory
+    # 0x32 - file entry
+    # 0x35/0x36 directory/file (Unicode)
+    # 0x41-0x4c - network items
+    # 0x61 - URI/URL
+    # 0x71 - control panel
+    0x1f => {
+        Name => 'FolderInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::FolderInfo' },
+    },
+    0x2e => {
+        Name => 'VolumeGUID',
+        ValueConv => 'require Image::ExifTool::ASF; Image::ExifTool::ASF::GetGUID(substr($val,4))',
+        SeparateTable => 'GUID',
+        PrintConv => \%guidLookup,
+    },
+    0x2f => {
+        Name => 'VolumeName',
+        ValueConv => '$_ = substr($val, 3); s/\0+$//; $_',
+    },
+    0x31 => {
+        Name => 'FileInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::FileInfo' },
+    },
+    0x32 => {
+        Name => 'TargetInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::TargetInfo' },
+    },
+    0x35 => {
+        Name => 'DirInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::DirInfo' },
+    },
+    0x36 => {
+        Name => 'FileInfo2',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::FileInfo2' },
+    },
+    0x71 => {
+        Name => 'ControlPanelShellItem',
+        ValueConv => 'require Image::ExifTool::ASF; Image::ExifTool::ASF::GetGUID(substr($val,14))',
+        SeparateTable => 'GUID',
+        PrintConv => \%guidLookup,
+    },
+    0xff => { #PH
+        Name => 'VendorData',
+        # extract Unicode and ASCII strings from vendor data (min length 3 chars, null terminated)
+        # or return binary data if no strings
+        ValueConv => q{
+            my @strs = $val =~ /([\x21-\x7f]\0[\x20-\x7f]\0(?:[\x20-\x7f]\0)+\0|[\x21-\x7f][\x20-\x7f][\x20-\x7f]+)\0/g;
+            tr/\0//d foreach @strs; # convert all to ASCII
+            return @strs ? (@strs == 1 ? $strs[0] : \@strs) : \$val;
+        },
     },
 );
 
-%Image::ExifTool::LNK::Item0032 = (
+%Image::ExifTool::LNK::FolderInfo = (
     GROUPS => { 2 => 'Other' },
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
-    0x0e => {
-        Name => 'TargetFileDOSName',
-        Format => 'var_string',
+    # (is this useful?) 0x03 => 'FolderID',
+    0x04 => {
+        Name => 'FolderGUID',
+        Format => 'undef[16]',
+        ValueConv => 'require Image::ExifTool::ASF; Image::ExifTool::ASF::GetGUID($val)',
+        SeparateTable => 'GUID',
+        PrintConv => \%guidLookup,
     },
-    #not at a fixed offset -- offset is given by last 2 bytes of the item + 0x14
-    #0x22 => {
-    #    Name => 'TargetFileName',
-    #    Format => 'var_ustring',
-    #},
+);
+
+# ref https://helgeklein.com/blog/dissecting-a-shortcut/
+%Image::ExifTool::LNK::FileInfo = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    # (always 0?) 3 => 'FileEntryFlags',
+    # (always 0?) 4 => { Name => 'FileEntrySize', Format => 'int32u' },
+    8 => {
+        Name => 'FileEntryModifyDate',
+        Groups => { 2 => 'Time' },
+        Format => 'int32u',
+        ValueConv => 'Image::ExifTool::LNK::DOSTime($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    12 => {
+        Name => 'FileEntryAttributes',
+        PrintConv => { BITMASK => {
+            0 => 'Read-only',
+            1 => 'Hidden',
+            2 => 'System',
+            3 => 'Volume Label',
+            4 => 'Directory',
+            5 => 'Archive',
+        }},
+    },
+    14 => {
+        Name => 'FileEntryDOSName',
+        Format => 'string[$size-14]',
+        # Hook based on minimum length of 2
+        Hook => '$$dataPt =~ /^.{$pos}(.*?)\0/s and $varSize += length($1) & 0xfffe',
+    },
+    # 16 - int16u ExtensionSize
+    # 18 - int16u ExtensionVersion
+    # 20 - int16u unknown
+    # 22 - int16u 0xbeef
+    24 => {
+        Name => 'FileEntryCreateDate',
+        Groups => { 2 => 'Time' },
+        Format => 'int32u',
+        ValueConv => 'Image::ExifTool::LNK::DOSTime($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    28 => {
+        Name => 'FileEntryAccessDate',
+        Groups => { 2 => 'Time' },
+        Format => 'int32u',
+        ValueConv => 'Image::ExifTool::LNK::DOSTime($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    36 => {
+        Name => 'FileEntryName',
+        Format => 'unicode[int(($size-$varSize-36)/2)-1]',
+    },
+);
+
+# (same structure as above)
+%Image::ExifTool::LNK::TargetInfo = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    # (always 0?) 3 => 'TargetFileFlags',
+    # (duplicate tag name) 4 => { Name => 'TargetFileSize', Format => 'int32u' },
+    8 => {
+        Name => 'TargetFileModifyDate',
+        Groups => { 2 => 'Time' },
+        Format => 'int32u',
+        ValueConv => 'Image::ExifTool::LNK::DOSTime($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    12 => {
+        Name => 'TargetFileAttributes',
+        PrintConv => { BITMASK => {
+            0 => 'Read-only',
+            1 => 'Hidden',
+            2 => 'System',
+            3 => 'Volume Label',
+            4 => 'Directory',
+            5 => 'Archive',
+        }},
+    },
+    14 => {
+        Name => 'TargetFileDOSName',
+        Format => 'string[$size-14]',
+        # Hook based on minimum length of 2
+        Hook => '$$dataPt =~ /^.{$pos}(.*?)\0/s and $varSize += length($1) & 0xfffe',
+    },
+    # 16 - int16u ExtensionSize
+    # 18 - int16u ExtensionVersion
+    # 20 - int16u unknown
+    # 22 - int16u 0xbeef
+    24 => {
+        Name => 'TargetFileCreateDate',
+        Groups => { 2 => 'Time' },
+        Format => 'int32u',
+        ValueConv => 'Image::ExifTool::LNK::DOSTime($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    28 => {
+        Name => 'TargetFileAccessDate',
+        Groups => { 2 => 'Time' },
+        Format => 'int32u',
+        ValueConv => 'Image::ExifTool::LNK::DOSTime($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    36 => {
+        Name => 'TargetFileName',
+        Format => 'unicode[int(($size-$varSize-36)/2)-1]',
+    },
+);
+
+%Image::ExifTool::LNK::DirInfo = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    14 => {
+        Name => 'LinkedDirectoryName',
+        Format => 'unicode[int(($size-14)/2)-1]',
+    },
+);
+
+%Image::ExifTool::LNK::FileInfo2 = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    14 => {
+        Name => 'LinkedFileName',
+        Format => 'unicode[int(($size-14)/2)-1]',
+    },
 );
 
 %Image::ExifTool::LNK::LinkInfo = (
@@ -283,6 +599,7 @@ sub ProcessLinkInfo($$$);
     LocalBasePath => { },
     CommonNetworkRelLink => { },
     CommonPathSuffix => { },
+    CommonPathSuffixUnicode => { },
     NetName => { },
     DeviceName => { },
     NetProviderType => {
@@ -495,6 +812,23 @@ sub ProcessLinkInfo($$$);
 );
 
 #------------------------------------------------------------------------------
+# Get DOS date/time
+# Inputs: 0) date/time integer value (date in low word)
+# Returns: EXIF-format date/time string
+sub DOSTime($)
+{
+    my $val = shift;
+    return sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d',
+       (($val >> 9)  & 0x7f) + 1980, # year
+        ($val >> 5)  & 0x0f, # month
+        ($val >> 0)  & 0x1f, # day
+        ($val >> 27) & 0x1f, # hour
+        ($val >> 21) & 0x3f, # minute
+        ($val >> 15) & 0x3e  # second (2 sec resolution)
+    );
+}
+
+#------------------------------------------------------------------------------
 # Extract null-terminated ASCII or Unicode string from buffer
 # Inputs: 0) buffer ref, 1) start position, 2) flag for unicode string
 # Return: string or undef if start position is outside bounds
@@ -523,12 +857,12 @@ sub ProcessItemID($$$)
     );
     $et->VerboseDir('ItemID', undef, $dataLen);
     for (;;) {
-        last if $pos + 4 >= $dataLen;
+        last if $pos + 3 >= $dataLen;
         my $size = Get16u($dataPt, $pos);
-        last if $size < 2 or $pos + $size > $dataLen;
-        my $tag = Get16u($dataPt, $pos+2); # (just a guess -- may not be a tag at all)
+        last if $size < 3 or $pos + $size > $dataLen;
+        my $tag = Get8u($dataPt, $pos+2); # (just a guess -- may not be a tag at all)
         AddTagToTable($tagTablePtr, $tag, {
-            Name => sprintf('Item%.4x', $tag),
+            Name => sprintf('Item_%.2x', $tag),
             SubDirectory => { TagTable => 'Image::ExifTool::LNK::UnknownData' },
         }) unless $$tagTablePtr{$tag};
         $et->HandleTag($tagTablePtr, $tag, undef, %opts, Start => $pos, Size => $size);
@@ -545,7 +879,7 @@ sub ProcessLinkInfo($$$)
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my $dataPt = $$dirInfo{DataPt};
     my $dataLen = length $$dataPt;
-    return 0 if $dataLen < 0x20;
+    return 0 if $dataLen < 0x24;
     my $hdrLen = Get32u($dataPt, 4);
     my $lif = Get32u($dataPt, 8);   # link info flags
     my %opts = (
@@ -630,6 +964,18 @@ sub ProcessLinkInfo($$$)
                 $val = Get32u($dataPt, $off + 0x10);
                 $et->HandleTag($tagTablePtr, 'NetProviderType', $val, %opts, Start=>$off + 0x10);
             }
+        }
+    }
+    $off = Get32u($dataPt, 0x18);
+    if ($off and $off < $dataLen) {
+        $val = GetString($dataPt, $off);
+        $et->HandleTag($tagTablePtr, 'CommonPathSuffix', $val, %opts, Start=>$off, Size=>length($val)+1);
+    }
+    if ($hdrLen >= 0x24) {
+        $off = Get32u($dataPt, 0x20);
+        if ($off and $off < $dataLen) {
+            $val = GetString($dataPt, $off, 1);
+            $et->HandleTag($tagTablePtr, 'CommonPathSuffixUnicode', $val, %opts, Start=>$off, Size=>length($val)+1);
         }
     }
     return 1;

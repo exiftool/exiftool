@@ -1299,9 +1299,21 @@ others use a range of 0 to 7 where 0 is no sharpening)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='28 = 0x1c'>28</td>
-<td>FlashActivity</td>
+<td>FlashModel</td>
 <td class=c>int16s</td>
-<td>&nbsp;</td></tr>
+<td><span class=s>[val &amp; 0x7f]</span><table class=cols><tr>
+  <td>0 = n/a
+  <br>4 = Speedlite 540EZ
+  <br>5 = Speedlite 380EX
+  <br>6 = Speedlite 550EX
+  <br>8 = Speedlite ST-E2
+  <br>9 = Speedlite MR-14EX</td><td>&nbsp;&nbsp;</td>
+  <td>12 = Speedlite 580EX
+  <br>13 = Speedlite 430EX
+  <br>17 = Speedlite 580EX II
+  <br>18 = Speedlite 430EX II
+  <br>24 = Speedlite 90EX</td></tr></table>
+</td></tr>
 <tr class=b>
 <td class=r title='29 = 0x1d'>29</td>
 <td>FlashBits</td>
@@ -5712,6 +5724,23 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='19 = 0x13'>19</td>
+<td>FlashModel</td>
+<td class=c>int8u</td>
+<td><span class=s>[val &amp; 0x7f]</span><table class=cols><tr>
+  <td>0 = n/a
+  <br>4 = Speedlite 540EZ
+  <br>5 = Speedlite 380EX
+  <br>6 = Speedlite 550EX
+  <br>8 = Speedlite ST-E2
+  <br>9 = Speedlite MR-14EX</td><td>&nbsp;&nbsp;</td>
+  <td>12 = Speedlite 580EX
+  <br>13 = Speedlite 430EX
+  <br>17 = Speedlite 580EX II
+  <br>18 = Speedlite 430EX II
+  <br>24 = Speedlite 90EX</td></tr></table>
+</td></tr>
+<tr>
 <td class=r title='21 = 0x15'>21</td>
 <td>FlashMeteringMode</td>
 <td class=c>int8u</td>
@@ -5720,84 +5749,84 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
   <br>4 = External Auto
   <br>5 = External Manual
   <br>6 = Off</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='24 = 0x18'>24</td>
 <td>CameraTemperature</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='27 = 0x1b'>27</td>
 <td>MacroMagnification</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(currently decoded only for the MP-E 65mm f/2.8 1-5x Macro Photo)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='29 = 0x1d'>29</td>
 <td>FocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='48 = 0x30'>48</td>
 <td>CameraOrientation</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Horizontal (normal)
   <br>1 = Rotate 90 CW
   <br>2 = Rotate 270 CW</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='67 = 0x43'>67</td>
 <td>FocusDistanceUpper</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='69 = 0x45'>69</td>
 <td>FocusDistanceLower</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='111 = 0x6f'>111</td>
 <td>WhiteBalance</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Canon.html#WhiteBalance'>Canon WhiteBalance Values</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='115 = 0x73'>115</td>
 <td>ColorTemperature</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='226 = 0xe2'>226</td>
 <td>LensType</td>
 <td class=c>int16uRev</td>
 <td>--&gt; <a href='Canon.html#LensType'>Canon LensType Values</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='228 = 0xe4'>228</td>
 <td>MinFocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='230 = 0xe6'>230</td>
 <td>MaxFocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='267 = 0x10b'>267</td>
 <td>FirmwareVersion</td>
 <td class=c>string[6]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='311 = 0x137'>311</td>
 <td>DirectoryIndex</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='323 = 0x143'>323</td>
 <td>FileIndex</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='615 = 0x267'>615</td>
 <td>PictureStyleInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#PSInfo'>Canon PSInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='2359 = 0x937'>2359</td>
 <td>LensModel</td>
 <td class=c>string[64]</td>
@@ -5812,6 +5841,11 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='2522 = 0x9da'>2522</td>
+<td>CameraTemperature</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='2801 = 0xaf1'>2801</td>
 <td>ShutterCount</td>
 <td class=c>int32u</td>
@@ -7946,6 +7980,16 @@ option is used.</p>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='619 = 0x26b'>619</td>
+<td>FlashOutput</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='620 = 0x26c'>620</td>
+<td>FlashBatteryLevel</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='640 = 0x280'>640</td>
 <td>RawMeasuredRGGB</td>
 <td class=c>int32u[4]</td>
@@ -9249,6 +9293,16 @@ option is used.</p>
 <td class=r title='276 = 0x114'>276</td>
 <td>AverageBlackLevel</td>
 <td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='408 = 0x198'>408</td>
+<td>FlashOutput</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='409 = 0x199'>409</td>
+<td>FlashBatteryLevel</td>
+<td class=c>int16s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='429 = 0x1ad'>429</td>
@@ -10617,6 +10671,16 @@ option is used.</p>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='665 = 0x299'>665</td>
+<td>FlashOutput</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='666 = 0x29a'>666</td>
+<td>FlashBatteryLevel</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='810 = 0x32a'>810</td>
 <td>NormalWhiteLevel</td>
 <td class=c>int16u</td>
@@ -11465,6 +11529,16 @@ option is used.</p>
 <td class=r title='383 = 0x17f'>383</td>
 <td>PerChannelBlackLevel</td>
 <td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='515 = 0x203'>515</td>
+<td>FlashOutput</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='516 = 0x204'>516</td>
+<td>FlashBatteryLevel</td>
+<td class=c>int16s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='660 = 0x294'>660</td>
@@ -12463,7 +12537,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 6, 2026</i>
+<br><i>Last revised Feb 19, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

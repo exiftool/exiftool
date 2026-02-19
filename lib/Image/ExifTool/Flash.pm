@@ -26,7 +26,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::FLAC;
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 sub ProcessMeta($$$;$);
 
@@ -308,18 +308,12 @@ Record: for ($rec=0; ; ++$rec) {
             $pos += 8;
             if ($type == 0x0b) {    # date
                 $val /= 1000;       # convert to seconds
-                my $frac = $val - int($val);    # fractional seconds
                 # get time zone
                 last if $pos + 2 > $dirLen;
                 my $tz = Get16s($dataPt, $pos);
                 $pos += 2;
                 # construct date/time string
-                $val = Image::ExifTool::ConvertUnixTime(int($val));
-                if ($frac) {
-                    $frac = sprintf('%.6f', $frac);
-                    $frac =~ s/(^0|0+$)//g;
-                    $val .= $frac;
-                }
+                $val = Image::ExifTool::ConvertUnixTime($val, 0, 6);
                 # add timezone
                 if ($tz < 0) {
                     $val .= '-';

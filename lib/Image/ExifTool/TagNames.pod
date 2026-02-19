@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 29067 tags, with 18053 unique tag names.
+They contain a total of 29100 tags, with 18073 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -7570,7 +7570,7 @@ boot, not including standby time.
      25    FocalUnits                           int16s
      26    MaxAperture                          int16s
      27    MinAperture                          int16s
-     28    FlashActivity                        int16s
+     28    FlashModel                           int16s & 0x7f
      29    FlashBits                            int16s
      32    FocusContinuous                      int16s
      33    AESetting                            int16s
@@ -8409,6 +8409,7 @@ CameraInfo tags for the EOS 1000D.
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
+     19    FlashModel                           int8u & 0x7f
      21    FlashMeteringMode                    int8u
      24    CameraTemperature                    int8u
      27    MacroMagnification                   int8u
@@ -8433,6 +8434,7 @@ CameraInfo tags for the EOS R5 and R6.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+   2522    CameraTemperature                    int8u
    2801    ShutterCount                         int32u
 
 =head3 Canon CameraInfoR6m2 Tags
@@ -8970,6 +8972,8 @@ These tags are used by the 1DmkIII, 1DSmkIII, 1DmkIV, 5DmkII, 7D, 40D, 50D,
      63    ColorCoefs                           Canon ColorCoefs
     168    ColorCalib?                          Canon ColorCalib
     231    AverageBlackLevel                    int16u[4]
+    619    FlashOutput                          int16s
+    620    FlashBatteryLevel                    int16s
     640    RawMeasuredRGGB                      int32u[4]
     692    PerChannelBlackLevel                 int16u[4]
     696    NormalWhiteLevel                     int16u
@@ -9260,6 +9264,8 @@ These tags are used by the EOS 1DX, 5DmkIII, 6D, 7DmkII, 100D, 650D, 700D,
     212    ColorTempUnknown20?                  int16s
     213    ColorCalib?                          Canon ColorCalib
     276    AverageBlackLevel                    int16u[4]
+    408    FlashOutput                          int16s
+    409    FlashBatteryLevel                    int16s
     429    RawMeasuredRGGB                      int32u[4]
     504    PerChannelBlackLevel                 int16u[4]
     508    NormalWhiteLevel                     int16u
@@ -9548,6 +9554,8 @@ These tags are used by the R5, R5 and EOS 1DXmkIII.
     279    ColorTempUnknown29?                  int16s
     280    ColorCalib?                          Canon ColorCalib
     343    PerChannelBlackLevel                 int16u[4]
+    665    FlashOutput                          int16s
+    666    FlashBatteryLevel                    int16s
     810    NormalWhiteLevel                     int16u
     811    SpecularWhiteLevel                   int16u
     812    LinearityUpperMargin                 int16u
@@ -9728,6 +9736,8 @@ These tags are used by the EOS R1, R5mkII and R50V
     299    ColorTempUnknown33?                  int16s
     320    ColorCalib?                          Canon ColorCalib
     383    PerChannelBlackLevel                 int16u[4]
+    515    FlashOutput                          int16s
+    516    FlashBatteryLevel                    int16s
     660    NormalWhiteLevel                     int16u
     661    SpecularWhiteLevel                   int16u
     662    LinearityUpperMargin                 int16u
@@ -15371,8 +15381,12 @@ Tags written by some Nikon GPS-equipped cameras like the AW100.
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    FirmwareVersion56                    no
-      4    BurstGroupID                         int16u
-     12    PixelShiftID                         int8u
+    4.1    BurstStartSlotNumber                 int32u & 0x20000000
+    4.2    BurstStartFolderNumber               int32u & 0x1ff80000
+    4.3    BurstStartImageNumber                int32u & 0x7ffe0
+    4.4    BurstStartImageType                  int32u & 0x1f
+      8    BurstShotNumber                      int32u
+     12    PixelShiftActive                     int8u
 
 =head3 Nikon AFInfo Tags
 
@@ -30959,7 +30973,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 117 different types of timed GPS metadata from video files.
+currently reads 118 different types of timed GPS metadata from video files.
 
   Tag ID                 Tag Name               Writable
   ------                 --------               --------
@@ -41025,13 +41039,55 @@ Information extracted from MS Shell Link (Windows shortcut) files.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  0x0032   Item0032                             LNK Item0032
+  0x001f   FolderInfo                           LNK FolderInfo
+  0x002e   VolumeGUID                           no
+  0x002f   VolumeName                           no
+  0x0031   FileInfo                             LNK FileInfo
+  0x0032   TargetInfo                           LNK TargetInfo
+  0x0035   DirInfo                              LNK DirInfo
+  0x0036   FileInfo2                            LNK FileInfo2
+  0x0071   ControlPanelShellItem                no
+  0x00ff   VendorData                           no
 
-=head3 LNK Item0032 Tags
+=head3 LNK FolderInfo Tags
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      4    FolderGUID                           no
+
+=head3 LNK FileInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      8    FileEntryModifyDate                  no
+     12    FileEntryAttributes                  no
+     14    FileEntryDOSName                     no
+     24    FileEntryCreateDate                  no
+     28    FileEntryAccessDate                  no
+     36    FileEntryName                        no
+
+=head3 LNK TargetInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      8    TargetFileModifyDate                 no
+     12    TargetFileAttributes                 no
      14    TargetFileDOSName                    no
+     24    TargetFileCreateDate                 no
+     28    TargetFileAccessDate                 no
+     36    TargetFileName                       no
+
+=head3 LNK DirInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     14    LinkedDirectoryName                  no
+
+=head3 LNK FileInfo2 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     14    LinkedFileName                       no
 
 =head3 LNK LinkInfo Tags
 
@@ -41039,6 +41095,7 @@ Information extracted from MS Shell Link (Windows shortcut) files.
   --------                                      --------
   CommonNetworkRelLink                          no
   CommonPathSuffix                              no
+  CommonPathSuffixUnicode                       no
   DeviceName                                    no
   DriveSerialNumber                             no
   DriveType                                     no

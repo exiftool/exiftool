@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '5.03';
+$VERSION = '5.04';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -1020,6 +1020,24 @@ $VERSION = '5.03';
     0x80000518 => 'EOS R6 Mark III', #42
     0x80000520 => 'EOS D2000C', #IB
     0x80000560 => 'EOS D6000C', #PH (guess)
+);
+
+# flash models (github390)
+my %flashModel = (
+    0 => 'n/a',
+  # 1 - seen this for various PowerShot/IXUS
+    4 => 'Speedlite 540EZ',
+    5 => 'Speedlite 380EX',
+    6 => 'Speedlite 550EX',
+    8 => 'Speedlite ST-E2',
+    9 => 'Speedlite MR-14EX',
+    12 => 'Speedlite 580EX',
+    13 => 'Speedlite 430EX',
+    17 => 'Speedlite 580EX II',
+    18 => 'Speedlite 430EX II',
+  # 23 - seen this for PowerShot G5X
+    24 => 'Speedlite 90EX',
+  # 127 - seen a lot, currently ignored
 );
 
 my %canonQuality = (
@@ -2526,8 +2544,11 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         PrintConvInv => '$val',
     },
     28 => {
-        Name => 'FlashActivity',
-        RawConv => '$val==-1 ? undef : $val',
+        Name => 'FlashModel', #github390
+        # (don't know what bit 7 is for, but it is set for most models except 1Ds)
+        Mask => 0x7f,
+        RawConv => '$val == 127 ? undef : $val',
+        PrintConv => \%flashModel,
     },
     29 => {
         Name => 'FlashBits',
@@ -4787,6 +4808,14 @@ my %ciMaxFocal = (
     NOTES => 'CameraInfo tags for the EOS R5 and R6.',
     # (see forum16111 for more notes on these tags)
     # 0x0a5d - some sort of sequence number starting from 1 (ref forum16111)
+    0x09da => { #github393
+        Name => 'CameraTemperature',
+        Groups => { 2 => 'Camera' },
+        ValueConv => '$val - 128',
+        ValueConvInv => '$val + 128',
+        PrintConv => '"$val C"',
+        PrintConvInv => '$val=~s/ ?C//; $val',
+    },
     0x0af1 => { #forum15210/15579
         Name => 'ShutterCount',
         Format => 'int32u',
@@ -5588,6 +5617,7 @@ my %ciMaxFocal = (
     0x03 => { %ciFNumber }, #PH
     0x04 => { %ciExposureTime }, #PH
     0x06 => { %ciISO }, #PH
+    0x13 => { Name => 'FlashModel', Mask => 0x7f, PrintConv => \%flashModel }, #github390
     0x15 => { #PH (580 EX II)
         Name => 'FlashMeteringMode',
         PrintConv => {
@@ -7626,6 +7656,19 @@ my %ciMaxFocal = (
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCalib' }
     },
     0x0e7 => { Name => 'AverageBlackLevel',     Format => 'int16u[4]' }, #IB
+    0x26b => { #github389
+        Name => 'FlashOutput',
+        ValueConv => '$val >= 255 ? 255 : exp(($val-200)/16*log(2))',
+        ValueConvInv => '$val == 255 ? 255 : 200 + log($val)*16/log(2)',
+        PrintConv => '$val == 255 ? "Strobe or Misfire" : sprintf("%.0f%%", $val * 100)',
+        PrintConvInv => '$val =~ /^(\d(\.?\d*))/ ? $1 / 100 : 255',
+    },
+    0x26c => { #github389
+        Name => 'FlashBatteryLevel',
+        # calibration taken from ColorData3
+        PrintConv => '$val ? sprintf("%.2fV", $val * 5 / 186) : "n/a"',
+        PrintConvInv => '$val=~/^(\d+\.\d+)\s*V?$/i ? int($val*186/5+0.5) : 0',
+    },
     0x280 => { #PH
         Name => 'RawMeasuredRGGB',
         Format => 'int32u[4]',
@@ -8115,6 +8158,19 @@ my %ciMaxFocal = (
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCalib' }
     },
     0x114 => { Name => 'AverageBlackLevel',     Format => 'int16u[4]' }, #IB
+    0x198 => { #github389
+        Name => 'FlashOutput',
+        ValueConv => '$val >= 255 ? 255 : exp(($val-200)/16*log(2))',
+        ValueConvInv => '$val == 255 ? 255 : 200 + log($val)*16/log(2)',
+        PrintConv => '$val == 255 ? "Strobe or Misfire" : sprintf("%.0f%%", $val * 100)',
+        PrintConvInv => '$val =~ /^(\d(\.?\d*))/ ? $1 / 100 : 255',
+    },
+    0x199 => { #github389
+        Name => 'FlashBatteryLevel',
+        # calibration taken from ColorData3
+        PrintConv => '$val ? sprintf("%.2fV", $val * 5 / 186) : "n/a"',
+        PrintConvInv => '$val=~/^(\d+\.\d+)\s*V?$/i ? int($val*186/5+0.5) : 0',
+    },
     0x1ad => {
         Name => 'RawMeasuredRGGB',
         Condition => '$$self{ColorDataVersion} == 10',
@@ -8570,6 +8626,19 @@ my %ciMaxFocal = (
         Name => 'PerChannelBlackLevel',
         Format => 'int16u[4]',
     },
+    0x299 => { #github389
+        Name => 'FlashOutput',
+        ValueConv => '$val >= 255 ? 255 : exp(($val-200)/16*log(2))',
+        ValueConvInv => '$val == 255 ? 255 : 200 + log($val)*16/log(2)',
+        PrintConv => '$val == 255 ? "Strobe or Misfire" : sprintf("%.0f%%", $val * 100)',
+        PrintConvInv => '$val =~ /^(\d(\.?\d*))/ ? $1 / 100 : 255',
+    },
+    0x29a => { #github389
+        Name => 'FlashBatteryLevel',
+        # calibration taken from ColorData3
+        PrintConv => '$val ? sprintf("%.2fV", $val * 5 / 186) : "n/a"',
+        PrintConvInv => '$val=~/^(\d+\.\d+)\s*V?$/i ? int($val*186/5+0.5) : 0',
+    },
     # 0x326 - PerChannelBlackLevel again
     0x32a => {
         Name => 'NormalWhiteLevel',
@@ -8811,6 +8880,19 @@ my %ciMaxFocal = (
     0x17f => {
         Name => 'PerChannelBlackLevel',
         Format => 'int16u[4]',
+    },
+    0x203 => { #github389
+        Name => 'FlashOutput',
+        ValueConv => '$val >= 255 ? 255 : exp(($val-200)/16*log(2))',
+        ValueConvInv => '$val == 255 ? 255 : 200 + log($val)*16/log(2)',
+        PrintConv => '$val == 255 ? "Strobe or Misfire" : sprintf("%.0f%%", $val * 100)',
+        PrintConvInv => '$val =~ /^(\d(\.?\d*))/ ? $1 / 100 : 255',
+    },
+    0x204 => { #github389
+        Name => 'FlashBatteryLevel',
+        # calibration taken from ColorData3
+        PrintConv => '$val ? sprintf("%.2fV", $val * 5 / 186) : "n/a"',
+        PrintConvInv => '$val=~/^(\d+\.\d+)\s*V?$/i ? int($val*186/5+0.5) : 0',
     },
     # 0x290 - PerChannelBlackLevel again
     0x294 => {

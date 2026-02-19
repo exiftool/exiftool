@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.51
 [File, System, Other] FileName - File Name: CanonRaw_9_failed.cr3
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 53 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2026:01:22 11:27:11-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2026:01:22 11:27:11-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:01:22 11:27:11-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2026:02:19 07:56:46-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:02:19 07:56:46-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:02:19 07:56:46-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: CR3
 [File, File, Other] FileTypeExtension - File Type Extension: cr3
@@ -184,7 +184,7 @@
 [MakerNotes, Canon, Camera] 25 - Focal Units: 1/mm
 [MakerNotes, Canon, Camera] 26 - Max Aperture: 3.6
 [MakerNotes, Canon, Camera] 27 - Min Aperture: 23
-[MakerNotes, Canon, Camera] 28 - Flash Activity: 0
+[MakerNotes, Canon, Camera] 28 - Flash Model: n/a
 [MakerNotes, Canon, Camera] 29 - Flash Bits: E-TTL
 [MakerNotes, Canon, Camera] 36 - Zoom Source Width: 0
 [MakerNotes, Canon, Camera] 37 - Zoom Target Width: 0
@@ -373,7 +373,7 @@
 [MakerNotes, Track4, Camera] 25 - Focal Units: 1/mm
 [MakerNotes, Track4, Camera] 26 - Max Aperture: 3.6
 [MakerNotes, Track4, Camera] 27 - Min Aperture: 23
-[MakerNotes, Track4, Camera] 28 - Flash Activity: 0
+[MakerNotes, Track4, Camera] 28 - Flash Model: n/a
 [MakerNotes, Track4, Camera] 29 - Flash Bits: E-TTL
 [MakerNotes, Track4, Camera] 36 - Zoom Source Width: 0
 [MakerNotes, Track4, Camera] 37 - Zoom Target Width: 0
@@ -606,7 +606,7 @@
 [EXIF, ExifIFD, Image] 42037 - Lens Serial Number: 0000000000
 [EXIF, GPS, Location] 0 - GPS Version ID: 2.3.0.0
 [EXIF, ExifIFD, Camera] 41990 - Scene Capture Type: Standard
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.46
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.51
 [XMP, XMP-dc, Image] subject - Subject: CR3 test
 [XMP, XMP-exif, Image] ExposureBiasValue - Exposure Compensation: -1.3
 [XMP, XMP-xmp, Image] Rating - Rating: 0

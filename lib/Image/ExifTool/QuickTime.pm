@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.29';
+$VERSION = '3.30';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -8664,28 +8664,28 @@ my %userDefined = (
         Name => 'GPSLatitude',
         Require => 'QuickTime:LocationInformation',
         Groups => { 2 => 'Location' },
-        ValueConv => '$val =~ /Lat=([-+.\d]+)/; $1',
+        ValueConv => '$val =~ /Lat=([-+.\d]+)/ ? $1 : undef',
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
     },
     GPSLongitude2 => {
         Name => 'GPSLongitude',
         Require => 'QuickTime:LocationInformation',
         Groups => { 2 => 'Location' },
-        ValueConv => '$val =~ /Lon=([-+.\d]+)/; $1',
+        ValueConv => '$val =~ /Lon=([-+.\d]+)/ ? $1 : undef',
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
     },
     GPSAltitude2 => {
         Name => 'GPSAltitude',
         Require => 'QuickTime:LocationInformation',
         Groups => { 2 => 'Location' },
-        ValueConv => '$val =~ /Alt=([-+.\d]+)/; abs($1)',
+        ValueConv => '$val =~ /Alt=([-+.\d]+)/ ? abs($1) : undef',
         PrintConv => '"$val m"',
     },
     GPSAltitudeRef2  => {
         Name => 'GPSAltitudeRef',
         Require => 'QuickTime:LocationInformation',
         Groups => { 2 => 'Location' },
-        ValueConv => '$val =~ /Alt=([-+.\d]+)/; $1 < 0 ? 1 : 0',
+        ValueConv => '$val =~ /Alt=([-+.\d]+)/ ? ($1 < 0 ? 1 : 0) : undef',
         PrintConv => {
             0 => 'Above Sea Level',
             1 => 'Below Sea Level',
@@ -10602,7 +10602,10 @@ QTLang: foreach $tag (@{$$et{QTLang}}) {
             for ($i=0, $key=$name; $$infoHash{$key}; ++$i, $key="$name ($i)") {
                 next QTLang if $et->GetGroup($key, 0) eq 'QuickTime';
             }
+            my $oldRawConv = $$tagInfo{RawConv};
+            delete $$tagInfo{RawConv} if defined $oldRawConv; # (avoid doing RawConv twice)
             $key = $et->FoundTag($tagInfo, $$et{VALUE}{$tag});
+            $$tagInfo{RawConv} = $oldRawConv if defined $oldRawConv;
             # copy extra tag information (groups, etc) to the synthetic tag
             $$et{TAG_EXTRA}{$key} = $$et{TAG_EXTRA}{$tag};
             $et->VPrint(0, "(synthesized default-language tag for QuickTime:$$tagInfo{Name})");

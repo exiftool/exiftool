@@ -64,9 +64,9 @@ web hosting which disables an "unlimited traffic" web site if a single bot hamme
 the site with a moderate load.  An alternate ExifTool homepage is available at
 <a href="http://exiftool.sourceforge.net/">http://exiftool.sourceforge.net/</a></i></p> -->
 
-<p><i class=orng><b>Note:</b> IP's that access web pages too quickly will be
-blocked, and I have had to get even more strict about blocking access to the
-forum to help deal with a plague of badly-behaving AI bots.  Send an email to
+<p><i class=orng><b>Note:</b> IP's that access web pages too quickly will be blocked,
+and I have had to get even more strict about blocking access to the forum to help
+deal with a plague of badly-behaving AI bots.  Send an email with your IP address to
 exiftool@gmail.com if you think you have been wrongly denied access.</i></p>
 
 <div class=wide><table class=links><tr>
@@ -106,13 +106,13 @@ exiftool@gmail.com if you think you have been wrongly denied access.</i></p>
 <p><i class=red><b>(To reduce load on the exiftool.org server,
 the download links now point to SourceForge)</b></i></p>
 
-<p><b>--&gt; <a href="http://sourceforge.net/projects/exiftool/files/checksums-13.50.txt/download">Click here for the checksums of all distribution
+<p><b>--&gt; <a href="http://sourceforge.net/projects/exiftool/files/checksums-13.51.txt/download">Click here for the checksums of all distribution
 packages</a>.</b></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="https://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.50.tar.gz/download">
-Download        Version 13.50</a> (7.6 MB) -
-<a href="history.html">Feb. 7, 2026</a></b></td></tr></table></blockquote>
+<a href="https://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.51.tar.gz/download">
+Download        Version 13.51</a> (7.7 MB) -
+<a href="history.html">Feb. 19, 2026</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -166,11 +166,11 @@ only, and do not include the HTML documentation or other files of the full
 distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td rowspan=2><b><a name="alone">Windows</a></b></td><td><b>
-32-bit: <a href="https://sourceforge.net/projects/exiftool/files/exiftool-13.50_32.zip/download">
-         exiftool-13.50_32.zip</a> (11.2 MB)</b></td></tr>
+32-bit: <a href="https://sourceforge.net/projects/exiftool/files/exiftool-13.51_32.zip/download">
+         exiftool-13.51_32.zip</a> (11.2 MB)</b></td></tr>
 <tr><td><b>64-bit:
-<a href="https://sourceforge.net/projects/exiftool/files/exiftool-13.50_64.zip/download">
-         exiftool-13.50_64.zip</a> (11.0 MB)</b></td></tr>
+<a href="https://sourceforge.net/projects/exiftool/files/exiftool-13.51_64.zip/download">
+         exiftool-13.51_64.zip</a> (11.0 MB)</b></td></tr>
          </table></blockquote>
 
 <p><b>The Windows executable</b> archives include Perl. Just download and un-zip
@@ -188,8 +188,8 @@ if you have any problems/comments with these versions.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
-<a href="https://sourceforge.net/projects/exiftool/files/ExifTool-13.50.pkg/download">
-         ExifTool-13.50.pkg</a> (5.5 MB)</b></td></tr></table></blockquote>
+<a href="https://sourceforge.net/projects/exiftool/files/ExifTool-13.51.pkg/download">
+         ExifTool-13.51.pkg</a> (5.5 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -653,7 +653,7 @@ details, see the DEPENDENCIES section of the README file included in the full
 distribution).</p>
 
 <p><b>Windows users:</b> A <a href="#alone">Windows executable</a>
-version of ExifTool is available which doesn't require Perl.  You can also use
+package is available which includes Strawberry Perl.  You can also use
 the pure Perl version if you already have Perl installed. (You can get a good,
 free Perl interpreter from
 <a href="http://www.activestate.com/activeperl/">activeperl.com</a> or
@@ -1152,11 +1152,15 @@ for proper rendering of the image.</li>
 
 <h2><font color='#cc6600'><a name="problems">Known Problems</a></font></h2>
 <ul>
+<li><span class=grn>[2026-01-23]</span>
+<b>Motion-photo HEIC images</b> don't display in Google Photos after being
+edited by ExifTool. <i class=grn>[Fixed in ExifTool 13.49 by writing the
+'mpvd' box immediately after 'idat'.]</i></li>
 <li><span class=grn>[2024-12-16]</span>
 <b>HEIC images with an HDR gain map</b> may not show the gain map image in
 Apple Preview after being edited by ExifTool to add new XMP.
-<i class=grn>[ExifTool 13.09 fixes this by adding the new XMP with an
-item ID greater than existing items.]</i></li>
+<i class=grn>[Fixed in ExifTool 13.09, and was due to out-of-order item info
+entries.]</i></li>
 <li><span class=grn>[2024-08-01]</span>
 <b>ExifTool for Windows</b> supports a maximum path length of 246 characters
 for files.  Longer path lengths give an "Error opening file" message.

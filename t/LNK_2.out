@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.45
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.51
 [File, System, Other] FileName - File Name: LNK.lnk
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 876 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2009:09:19 23:38:35-04:00
 [File, System, Time] FileAccessDate - File Access Date/Time: 2009:09:19 23:38:35-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2025:12:15 14:58:58-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:02:07 13:43:05-05:00
 [File, System, Other] FilePermissions - File Permissions: -rwxr-xr-x
 [File, File, Other] FileType - File Type: LNK
 [File, File, Other] FileTypeExtension - File Type Extension: lnk
@@ -18,11 +18,17 @@
 [LNK, LNK, Other] 56 - Icon Index: (none)
 [LNK, LNK, Other] 60 - Run Window: Normal
 [LNK, LNK, Other] 64 - Hot Key: (none)
+[LNK, LNK, Time] 8 - Target File Modify Date: 2009:09:11 10:38:00
+[LNK, LNK, Other] 12 - Target File Attributes: [7]
 [LNK, LNK, Other] 14 - Target File DOS Name: EXIFTO~2.EXE
+[LNK, LNK, Time] 24 - Target File Create Date: 2009:09:05 10:18:50
+[LNK, LNK, Time] 28 - Target File Access Date: 2009:09:20 03:00:10
+[LNK, LNK, Other] 36 - Target File Name: exiftool(-k).exe
 [LNK, LNK, Other] DriveType - Drive Type: Fixed Disk
 [LNK, LNK, Other] DriveSerialNumber - Drive Serial Number: C8F0-D326
 [LNK, LNK, Other] VolumeLabel - Volume Label: 
 [LNK, LNK, Other] LocalBasePath - Local Base Path: C:\Documents and Settings\Phil\Desktop\exiftool(-k).exe
+[LNK, LNK, Other] CommonPathSuffix - Common Path Suffix: 
 [LNK, LNK, Other] 196612 - Description: Rename file name with image date and time
 [LNK, LNK, Other] 196616 - Relative Path: .\exiftool(-k).exe
 [LNK, LNK, Other] 196624 - Working Directory: C:\Documents and Settings\Phil\Desktop

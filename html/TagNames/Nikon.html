@@ -1977,15 +1977,44 @@ FaceDetectFrameSize)</span></span></td></tr>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='4 = 0x4'>4</td>
-<td>BurstGroupID</td>
-<td class=c>int16u</td>
+<td class=r title='4 = 0x4'>4.1</td>
+<td>BurstStartSlotNumber</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &gt;&gt; 29 &amp; 0x1]</span></td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4.2</td>
+<td>BurstStartFolderNumber</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &gt;&gt; 19 &amp; 0x3ff]</span></td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4.3</td>
+<td>BurstStartImageNumber</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &gt;&gt; 5 &amp; 0x3fff]</span></td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4.4</td>
+<td>BurstStartImageType</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &amp; 0x1f]</span><table class=cols><tr>
+  <td>0 = JPG
+  <br>2 = NEF
+  <br>3 = TIF
+  <br>4 = NDF</td><td>&nbsp;&nbsp;</td>
+  <td>5 = MOV
+  <br>6 = NEV
+  <br>7 = MP4</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>BurstShotNumber</td>
+<td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='12 = 0xc'>12</td>
-<td>PixelShiftID</td>
+<td>PixelShiftActive</td>
 <td class=c>int8u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='AFInfo'>Nikon AFInfo Tags</a></h2>
@@ -13904,6 +13933,7 @@ for ExifTool to choose in these cases (see the
 </tr><tr><td>'FB 54 2B 50 24 24 84 06'</td><td>= Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16NII)</td>
 </tr><tr><td>'FB 54 8E 8E 24 24 4B 02'</td><td>= Sigma APO 300mm F2.8 EX DG HSM</td>
 </tr><tr><td>'FC 40 2D 80 2C 40 DF 06'</td><td>= Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14NII)</td>
+</tr><tr><td>'FD 00 3C 3C 18 18 DF 00'</td><td>= Voigtlander APO-Lanthar 28mm F2 Aspherical</td>
 </tr><tr><td>'FD 00 44 44 18 18 DF 00'</td><td>= Voigtlander APO-Lanthar 35mm F2</td>
 </tr><tr><td>'FD 00 48 48 07 07 DF 00'</td><td>= Voigtlander Nokton 40mm F1.2 Aspherical</td>
 </tr><tr><td>'FD 00 50 50 18 18 DF 00'</td><td>= Voigtlander APO-Lanthar 50mm F2 Aspherical</td>
@@ -13919,7 +13949,7 @@ for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 6, 2026</i>
+<br><i>Last revised Feb 18, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

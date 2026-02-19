@@ -111,7 +111,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 117 different types of timed GPS metadata from video files.
+        currently reads 118 different types of timed GPS metadata from video files.
     },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
     GPSLongitude => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
@@ -164,17 +164,7 @@ my %insvLimit = (
     KiloCalories => { Groups => { 2 => 'Other' } },
     SampleDateTime => {
         Groups => { 2 => 'Time' },
-        ValueConv => q{
-            my $str = ConvertUnixTime($val);
-            my $frac = $val - int($val);
-            if ($frac != 0) {
-                $frac = sprintf('%.6f', $frac);
-                $frac =~ s/^0//;
-                $frac =~ s/0+$//;
-                $str .= $frac;
-            }
-            return $str;
-        },
+        ValueConv => 'ConvertUnixTime($val, 0, -6)',
         PrintConv => '$self->ConvertDateTime($val)',
     },
 #
@@ -529,14 +519,7 @@ my %insvLimit = (
             if ($$self{CreateDate} and $$self{CreateDate} - $val > 24 * 3600 * 365 * 5) {
                 $val += $offset;
             }
-            my $str = ConvertUnixTime($val);
-            my $frac = $val - int($val);
-            if ($frac != 0) {
-                $frac = sprintf('%.6f', $frac);
-                $frac =~ s/^0//;
-                $frac =~ s/0+$//;
-                $str .= $frac;
-            }
+            my $str = ConvertUnixTime($val, 0, -6);
             return $str . 'Z';
         },
         PrintConv => '$self->ConvertDateTime($val)',

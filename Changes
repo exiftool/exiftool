@@ -7,6 +7,19 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 19, 2026 - Version 13.51
+
+  - Added a new Nikon LensID (thanks Johan)
+  - Decode more tags from Windows LNK files
+  - Decode another LIGOGPSINFO variant (github #394)
+  - Decode some new Canon tags (thanks Peter Wem, github #389, #390,  #393)
+  - Decode some new Nikon tags
+  - Split decoding on Nikon BurstGroupID into separate tags
+  - Fixed round-off error in GPSDateTime seconds for camm6 metadata in MP4
+    videos introduced in 13.45
+  - Fixed bug generating the default-language version of
+    QuickTime:LocationInformation (github #391)
+
 Feb. 7, 2026 - Version 13.50 (production release)
 
   - Added a few new Sony lenses (thanks Jos Roost)

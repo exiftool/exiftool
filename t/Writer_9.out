@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.46
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.51
 [File, System, Other] FileName - File Name: Writer_9_failed.jpg
 [File, System, Other] Directory - Directory: t
 [File, System, Other] FileSize - File Size: 10 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2026:01:22 11:27:22-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2026:01:22 11:27:22-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:01:22 11:27:22-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2026:02:19 07:56:58-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:02:19 07:56:58-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:02:19 07:56:58-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: JPEG
 [File, File, Other] FileTypeExtension - File Type Extension: jpg
@@ -95,7 +95,7 @@
 [MakerNotes, Canon, Camera] 25 - Focal Units: 1/mm
 [MakerNotes, Canon, Camera] 26 - Max Aperture: 4
 [MakerNotes, Canon, Camera] 27 - Min Aperture: 27
-[MakerNotes, Canon, Camera] 28 - Flash Activity: 0
+[MakerNotes, Canon, Camera] 28 - Flash Model: n/a
 [MakerNotes, Canon, Camera] 29 - Flash Bits: (none)
 [MakerNotes, Canon, Camera] 36 - Zoom Source Width: 3072
 [MakerNotes, Canon, Camera] 37 - Zoom Target Width: 3072
@@ -164,7 +164,8 @@
 [MakerNotes, Canon, Camera] 9 - AF Area Y Positions: 0 0 -506 0 506 0 0
 [MakerNotes, Canon, Camera] 10 - AF Points In Focus: (none)
 [MakerNotes, Canon, Camera] 19 - Thumbnail Image Valid Area: 0 159 7 112
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.46
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 13.51
+[XMP, XMP-microsoft, Image] FlashModel - Flash Model: n/a
 [XMP, XMP-aux, Camera] Lens - Lens: 18.0 - 55.0 mm
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: Y, Cb, Cr, -
 [XMP, XMP-exif, Image] CompressedBitsPerPixel - Compressed Bits Per Pixel: 9

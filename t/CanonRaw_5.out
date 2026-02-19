@@ -1,10 +1,10 @@
-  ExifToolVersion = 10.12
+  ExifToolVersion = 13.51
   FileName = CanonRaw.crw
   Directory = t/images
   FileSize = 6816
   FileModifyDate = 1327257119
-  FileAccessDate = 1457094142
-  FileInodeChangeDate = 1455728654
+  FileAccessDate = 1771296616
+  FileInodeChangeDate = 1770489785
   FilePermissions = 33188
   FileType = CRW
   FileTypeExtension = CRW
@@ -130,7 +130,7 @@
   | | | | FocalUnits = 1
   | | | | MaxAperture = 116
   | | | | MinAperture = 285
-  | | | | FlashActivity = 0
+  | | | | FlashModel = 0
   | | | | FlashBits = 8200
   | | | | FocusContinuous = -1
   | | | | AESetting = -1

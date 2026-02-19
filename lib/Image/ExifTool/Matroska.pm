@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.19';
+$VERSION = '1.20';
 
 sub HandleStruct($$;$$$$);
 
@@ -1192,11 +1192,9 @@ sub ProcessMKV($$)
                     # convert dates (nanoseconds since 2001:01:01)
                     if ($fmt eq 'date') {
                         my $t = $val / 1e9;
-                        my $f = $t - int($t);   # fractional seconds
-                        $f =~ s/^\d+//;         # remove leading zero
                         # (8 leap days between 1970 and 2001)
                         $t += (((2001-1970)*365+8)*24*3600);
-                        $val = Image::ExifTool::ConvertUnixTime($t) . $f . 'Z';
+                        $val = Image::ExifTool::ConvertUnixTime($t, undef, -9) . 'Z';
                     }
                 } else { # must be unsigned
                     $val = $val * 256 + $_ foreach @vals;

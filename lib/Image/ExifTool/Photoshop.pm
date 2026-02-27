@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo %printFlags);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.72';
+$VERSION = '1.73';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -88,11 +88,11 @@ my %unicodeString = (
         return '<err>' if length($val) < 4;
         my $len = unpack('N', $val) * 2;
         return '<err>' if length($val) < 4 + $len;
-        return $et->Decode(substr($val, 4, $len), 'UCS2', 'MM');
+        return $et->Decode(substr($val, 4, $len), 'UTF16', 'MM');
     },
     ValueConvInv => sub {
         my ($val, $et) = @_;
-        return pack('N', length $val) . $et->Encode($val, 'UCS2', 'MM');
+        return pack('N', length $val) . $et->Encode($val, 'UTF16', 'MM');
     },
 );
 
@@ -238,7 +238,7 @@ my %unicodeString = (
                 last if length($val) < $pos + 4;
                 my $len = unpack("x${pos}N", $val) * 2;
                 last if length($val) < $pos + 4 + $len;
-                push @vals, $et->Decode(substr($val,$pos+4,$len), 'UCS2', 'MM');
+                push @vals, $et->Decode(substr($val,$pos+4,$len), 'UTF16', 'MM');
                 $pos += 4 + $len;
             }
             return \@vals;
@@ -628,7 +628,7 @@ my %unicodeString = (
         RawConv => q{
             return '' if length($val) < 4;
             my $len = Get32u(\$val, 0);
-            return $self->Decode(substr($val, 4, $len * 2), 'UCS2');
+            return $self->Decode(substr($val, 4, $len * 2), 'UTF16');
         },
     },
     lyid => {

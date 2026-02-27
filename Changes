@@ -7,6 +7,21 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Feb. 27, 2026 - Version 13.52
+
+  - Added a number of new XMP tags written by Adobe software
+  - Added UTF-16 support for a few different metadata types in which only UCS-2
+    was previously implemented (github #396)
+  - Added a few more Canon FlashModel values and decode FlashModel for the
+    5DmkII (thanks Peter Wem, github #390)
+  - Added a new Canon LensType (github #395)
+  - Added some missing file attribute bits to two of the new LNK tags
+  - Decode internal serial number for the 5DmkII (thanks Peter Wem, github #398)
+  - Decode another OwnerName for the 5DmkII (thanks Peter Wem, github #397)
+  - Decode some timed GPS for a couple of new DJI drones
+  - Enable WindowsLongPath by default only if Win32::API is available
+  - Renamed the Pentax K3III AFInfo tag to AFInfoK3III
+
 Feb. 19, 2026 - Version 13.51
 
   - Added a new Nikon LensID (thanks Johan)

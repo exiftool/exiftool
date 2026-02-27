@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 sub ProcessMetadata($$$);
 
@@ -190,7 +190,7 @@ sub ProcessMetadata($$$)
             $str .= $ch;
         }
         last if $pos + $len > $end;
-        my $tag = $et->Decode($str, 'UCS2', undef, 'UTF8');
+        my $tag = $et->Decode($str, 'UTF16', undef, 'UTF8');
         my $dat = substr($$dataPt, $pos, $len);
         # add tag if not already there
         unless ($$tagTablePtr{$tag}) {
@@ -203,7 +203,7 @@ sub ProcessMetadata($$$)
         if ($fmt==0 or $fmt==3) {   # int32u or boolean32
             $val = Get32s(\$dat, 0);
         } elsif ($fmt == 1) {       # string
-            $val = $et->Decode($dat, 'UCS2');
+            $val = $et->Decode($dat, 'UTF16');
         } elsif ($fmt == 6) {       # GUID
             $val = unpack('H*', $dat);
         } elsif ($fmt == 4) {       # int64u (date/time values use this)
@@ -258,7 +258,7 @@ sub ProcessWTV($$)
         last if $pos + $len > length($buff);
         my $n = Get32u(\$buff, $pos + 0x20);
         0x28 + $n*2 + 8 > $len and $et->Warn('WTV directory error'), last;
-        my $tag = $et->Decode(substr($buff,$pos+0x28,$n*2), 'UCS2', undef, 'UTF8');
+        my $tag = $et->Decode(substr($buff,$pos+0x28,$n*2), 'UTF16', undef, 'UTF8');
         my $ptr = $pos + 0x28 + $n * 2;
         my $flg = Get32u(\$buff, $ptr + 4);
         if ($verbose) {

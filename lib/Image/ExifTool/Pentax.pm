@@ -59,7 +59,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.60';
+$VERSION = '3.61';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -5880,7 +5880,7 @@ my %binaryDataAttrs = (
     DATAMEMBER => [ 2, 3 ],
     NOTES => 'AF tags written by the K-3 Mark III, GR III, GR IIIx and GR IV.',
     0 => {
-        Name => 'AFInfo',
+        Name => 'AFInfoK3III',
         Format => 'int16u[$size/2]',
         Notes => q{
             entire AFInfoK3III structure. Provides access to raw numerical values and

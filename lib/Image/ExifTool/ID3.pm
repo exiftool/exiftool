@@ -18,7 +18,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.64';
+$VERSION = '1.65';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -791,7 +791,7 @@ my %id3v2_common = (
         ValueConv => 'require Image::ExifTool::ASF; Image::ExifTool::ASF::GetGUID($val)',
     },
     WM_Provider => {
-        ValueConv => '$self->Decode($val,"UCS2","II")', #PH (NC)
+        ValueConv => '$self->Decode($val,"UTF16","II")', #PH (NC)
     },
     # there are lots more WM tags that could be decoded if I had samples or documentation - PH
     # WM/AlbumArtist
@@ -1081,7 +1081,7 @@ sub DecodeString($$;$)
                 $val = '';
             }
             $bom = $1 if $v =~ s/^(\xfe\xff|\xff\xfe)//;
-            push @vals, $et->Decode($v, 'UCS2', $order{$bom});
+            push @vals, $et->Decode($v, 'UTF16', $order{$bom});
         }
     } else {
         $val =~ s/\0+$//;

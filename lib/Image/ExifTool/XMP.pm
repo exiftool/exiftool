@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.77';
+$VERSION = '3.78';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -1377,10 +1377,30 @@ my %sPantryItem = (
                     RadialDistortParam1  => { Writable => 'real' },
                     RadialDistortParam2  => { Writable => 'real' },
                     RadialDistortParam3  => { Writable => 'real' },
+                    VignetteModel => {
+                        Namespace       => 'crlcp',
+                        Struct => {
+                            NAMESPACE   => 'stCamera',
+                            STRUCT_NAME => 'VignetteModel',
+                            ImageXCenter         => { Writable => 'real' },
+                            ImageYCenter         => { Writable => 'real' },
+                            VignetteModelParam1    => { Writable => 'real' },
+                            VignetteModelPiecewiseParam => { List => 'Seq' },
+                        },
+                    },
                 },
             },
         },
     },
+    CameraProfilesPerspectiveModelVignetteModelVignetteModelPiecewiseParam => {
+        Name => 'CameraProfilesPerspectiveModelVignetteModelPiecewiseParam',
+        Flat => 1,
+    },
+    CameraProfilesPerspectiveModelVignetteModelVignetteModelParam1 => {
+        Name => 'CameraProfilesPerspectiveModelVignetteModelParam1',
+        Flat => 1,
+    },
+    LabelColor => { },
 );
 
 # Photoshop Camera Raw namespace properties (crs) - (ref 8,PH)
@@ -1867,6 +1887,9 @@ my %sPantryItem = (
     },
     # more new stuff
     PointColors => { List => 'Seq' },
+    ColorVariance             => { Writable => 'real', List => 'Seq' },
+    CropConstrainToUnitSquare => { Writable => 'integer' },
+    HDRMaxValue               => { Writable => 'real' },
 );
 
 # Tiff namespace properties (tiff)
@@ -2419,13 +2442,16 @@ my %sPantryItem = (
         PrintConvInv => '$val=~s/\s*m$//; $val',
     },
     NativeDigest => { }, #PH
-    # the following written incorrectly by ACR 15.1
+    # --- the following written incorrectly by ACR 15.1
     # SubSecTime (should not be written according to Exif4XMP 2.32 specification)
     # SubSecTimeOriginal (should not be written according to Exif4XMP 2.32 specification)
     # SubSecTimeDigitized (should not be written according to Exif4XMP 2.32 specification)
     # SerialNumber (should be BodySerialNumber)
     # Lens (should be XMP-aux)
     # LensInfo (should be XMP-aux)
+    # --- these written incorrectly by Adobe too:
+    # LensMake (should be XMP-exifEX)
+    # SensitivityType (should be XMP-exifEX)
 );
 
 # Exif extended properties (exifEX, ref 12)
@@ -2629,7 +2655,7 @@ my %sPantryItem = (
     EnhanceDenoiseAlreadyApplied    => { Writable => 'boolean' }, #forum14760
     EnhanceDenoiseVersion           => { }, #forum14760 integer?
     EnhanceDenoiseLumaAmount        => { }, #forum14760 integer?
-    # FujiRatingAlreadyApplied - boolean written by LR classic 13.2 (forum15815)
+    FujiRatingAlreadyApplied        => { Writable => 'boolean' }, #forum15815 (LR classic 13.2)
 );
 
 # IPTC Core namespace properties (Iptc4xmpCore) (ref 4)

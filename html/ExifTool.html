@@ -503,8 +503,7 @@ effect as a value of 0 for options with numerical values.</p>
     <a href="#WindowsWideFile">WindowsWideFile</a> or
     <a href="#WindowsLongPath">WindowsLongPath</a> option causes CharsetFileName to
     default to 'UTF8' in Windows if not defined, and that
-    <a href="#WindowsLongPath">WindowsLongPath</a> is set by default in
-    ExifTool 13.07 and later.</td>
+    <a href="#WindowsLongPath">WindowsLongPath</a> is set by default if Win32::API is available.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or undef</td><td align=center>undef</td></tr>
 <tr id="CharsetID3"><td>CharsetID3</td><td>Internal encoding to assume for ID3v1 strings.  By
     the specification ID3v1 strings should be encoded in ISO 8859-1 (essentially
@@ -1139,7 +1138,7 @@ effect as a value of 0 for options with numerical values.</p>
     </table></td><td align=center>0</td></tr>
 <tr id="WindowsLongPath"><td>WindowsLongPath</td><td>Support long path names in Windows.
     Enabling this option automatically enables the WindowsWideFile feature.</td>
-    <td align=center>0 or 1</td><td align=center>1</td></tr>
+    <td align=center>0 or 1</td><td align=center>1 if Win32::API is available, 0 otherwise</td></tr>
 <tr id="WindowsWideFile"><td>WindowsWideFile</td><td>Force the use of wide-character
     Windows I/O functions.  This may be necessary when files are on a network drive and the
     current directory name contains Unicode characters.  Without this option the wide-character

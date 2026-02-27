@@ -17,7 +17,7 @@ use vars qw($VERSION %codePage);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.23';
+$VERSION = '1.24';
 
 sub ProcessXtra($$$);
 sub WriteXtra($$$);
@@ -987,7 +987,7 @@ sub ReadXtraValue($$)
         SetByteOrder('II');
         if ($valType == 8) {
             $format = 'Unicode';
-            $val = $et->Decode($val, 'UCS2');
+            $val = $et->Decode($val, 'UTF16');
         } elsif ($valType == 19 and $valLen == 8) {
             $format = 'int64u';
             $val = Get64u(\$val, 0);
@@ -1036,7 +1036,7 @@ sub WriteXtraValue($$$)
         SetByteOrder('II');
         my ($type, $dat);
         if ($format eq 'Unicode') {
-            $dat = $et->Encode($val,'UCS2','II') . "\0\0";  # (must be null terminated)
+            $dat = $et->Encode($val,'UTF16','II') . "\0\0";  # (must be null terminated)
             $type = 8;
         } elsif ($format eq 'int64u') {
             if (Image::ExifTool::IsInt($val)) {

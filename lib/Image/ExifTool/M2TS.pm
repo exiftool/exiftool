@@ -32,7 +32,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.32';
+$VERSION = '1.33';
 
 # program map table "stream_type" lookup (ref 6/1/9)
 my %streamType = (
@@ -312,7 +312,7 @@ sub ParsePID($$$$$)
         if ($$dataPt =~ /^LIGOGPSINFO/s) {
             my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
             my %dirInfo = ( DataPt => $dataPt, DirName => 'Ligo0x0300' );
-            Image::ExifTool::LigoGPS::ProcessLigoGPS($et, \%dirInfo, $tbl, length($$dataPt)==160);
+            Image::ExifTool::LigoGPS::ProcessLigoGPS($et, \%dirInfo, $tbl, length($$dataPt)!=200);
             $$et{FoundGoodGPS} = 1;
             $more = 1;
         }

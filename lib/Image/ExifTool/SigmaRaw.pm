@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Sigma;
 
-$VERSION = '1.32';
+$VERSION = '1.33';
 
 sub ProcessX3FHeader($$$);
 sub ProcessX3FDirectory($$$);
@@ -279,7 +279,7 @@ sub ExtractUnicodeString($$$)
         last unless $$chars[$i];
     }
     my $buff = pack('v*', @$chars[$pos..$i-1]);
-    return $et->Decode($buff, 'UCS2', 'II');
+    return $et->Decode($buff, 'UTF16', 'II');
 }
 
 #------------------------------------------------------------------------------

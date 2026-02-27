@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 %Image::ExifTool::LIF::Main = (
     GROUPS => { 0 => 'XML', 1 => 'XML', 2 => 'Image' },
@@ -115,8 +115,8 @@ sub ProcessLIF($$)
 
     my $tagTablePtr = GetTagTable('Image::ExifTool::LIF::Main');
 
-    # convert from UCS2 to UTF8
-    my $xml = Image::ExifTool::Decode($et, $buff, 'UCS2', 'II', 'UTF8');
+    # convert from UTF16 to UTF8
+    my $xml = Image::ExifTool::Decode($et, $buff, 'UTF16', 'II', 'UTF8');
 
     my %dirInfo = ( DataPt => \$xml );
 

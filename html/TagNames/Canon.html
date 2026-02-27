@@ -1307,12 +1307,18 @@ others use a range of 0 to 7 where 0 is no sharpening)</span></span></td></tr>
   <br>5 = Speedlite 380EX
   <br>6 = Speedlite 550EX
   <br>8 = Speedlite ST-E2
-  <br>9 = Speedlite MR-14EX</td><td>&nbsp;&nbsp;</td>
-  <td>12 = Speedlite 580EX
+  <br>9 = Speedlite MR-14EX
+  <br>12 = Speedlite 580EX
   <br>13 = Speedlite 430EX
   <br>17 = Speedlite 580EX II
   <br>18 = Speedlite 430EX II
-  <br>24 = Speedlite 90EX</td></tr></table>
+  <br>22 = Speedlite 600EX-RT
+  <br>23 = Speedlite 600EX II-RT
+  <br>24 = Speedlite 90EX
+  <br>25 = Speedlite 430EX III-RT
+  <br>31 = Speedlite EL-1 ver2
+  <br>33 = Speedlite EL-5
+  <br>34 = Speedlite EL-10</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='29 = 0x1d'>29</td>
@@ -1875,6 +1881,7 @@ others use a range of 0 to 7 where 0 is no sharpening)</span></span></td></tr>
 </tr><tr><td>754</td><td>= Canon EF 70-200mm f/4L IS II USM</td>
 </tr><tr><td>757</td><td>= Canon EF 400mm f/2.8L IS III USM</td>
 </tr><tr><td>758</td><td>= Canon EF 600mm f/4L IS III USM</td>
+</tr><tr><td>923</td><td>= Meike/SKY 85mm f/1.8 DCM</td>
 </tr><tr><td>1136</td><td>= Sigma 24-70mm f/2.8 DG OS HSM | A</td>
 </tr><tr><td>4142</td><td>= Canon EF-S 18-135mm f/3.5-5.6 IS STM</td>
 </tr><tr><td>4143</td><td>= Canon EF-M 18-55mm f/3.5-5.6 IS STM or Tamron Lens</td>
@@ -4017,6 +4024,29 @@ version 1.0.6, but they may be different for other firmware versions.</p>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
 <tr>
+<td class=r title='19 = 0x13'>19</td>
+<td>FlashModel</td>
+<td class=c>int8u</td>
+<td><span class=s>[val &amp; 0x7f]</span><table class=cols><tr>
+  <td>0 = n/a
+  <br>4 = Speedlite 540EZ
+  <br>5 = Speedlite 380EX
+  <br>6 = Speedlite 550EX
+  <br>8 = Speedlite ST-E2
+  <br>9 = Speedlite MR-14EX
+  <br>12 = Speedlite 580EX
+  <br>13 = Speedlite 430EX
+  <br>17 = Speedlite 580EX II
+  <br>18 = Speedlite 430EX II
+  <br>22 = Speedlite 600EX-RT
+  <br>23 = Speedlite 600EX II-RT
+  <br>24 = Speedlite 90EX
+  <br>25 = Speedlite 430EX III-RT
+  <br>31 = Speedlite EL-1 ver2
+  <br>33 = Speedlite EL-5
+  <br>34 = Speedlite EL-10</td></tr></table>
+</td></tr>
+<tr class=b>
 <td class=r title='21 = 0x15'>21</td>
 <td>FlashMeteringMode</td>
 <td class=c>int8u</td>
@@ -4025,54 +4055,54 @@ version 1.0.6, but they may be different for other firmware versions.</p>
   <br>4 = External Auto
   <br>5 = External Manual
   <br>6 = Off</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='25 = 0x19'>25</td>
 <td>CameraTemperature</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='27 = 0x1b'>27</td>
 <td>MacroMagnification</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(currently decoded only for the MP-E 65mm f/2.8 1-5x Macro Photo)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='30 = 0x1e'>30</td>
 <td>FocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='49 = 0x31'>49</td>
 <td>CameraOrientation</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Horizontal (normal)
   <br>1 = Rotate 90 CW
   <br>2 = Rotate 270 CW</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='80 = 0x50'>80</td>
 <td>FocusDistanceUpper</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='82 = 0x52'>82</td>
 <td>FocusDistanceLower</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='111 = 0x6f'>111</td>
 <td>WhiteBalance</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Canon.html#WhiteBalance'>Canon WhiteBalance Values</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='115 = 0x73'>115</td>
 <td>ColorTemperature</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='167 = 0xa7'>167</td>
 <td>PictureStyle</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Canon.html#PictureStyle'>Canon PictureStyle Values</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='189 = 0xbd'>189</td>
 <td>HighISONoiseReduction</td>
 <td class=c>int8u</td>
@@ -4080,7 +4110,7 @@ version 1.0.6, but they may be different for other firmware versions.</p>
   <br>1 = Low
   <br>2 = Strong
   <br>3 = Off</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='191 = 0xbf'>191</td>
 <td>AutoLightingOptimizer</td>
 <td class=c>int8u</td>
@@ -4088,25 +4118,30 @@ version 1.0.6, but they may be different for other firmware versions.</p>
   <br>1 = Low
   <br>2 = Strong
   <br>3 = Off</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='230 = 0xe6'>230</td>
 <td>LensType</td>
 <td class=c>int16uRev</td>
 <td>--&gt; <a href='Canon.html#LensType'>Canon LensType Values</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='232 = 0xe8'>232</td>
 <td>MinFocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='234 = 0xea'>234</td>
 <td>MaxFocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='382 = 0x17e'>382</td>
 <td>FirmwareVersion</td>
 <td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='398 = 0x18e'>398</td>
+<td>OwnerName</td>
+<td class=c>string[32]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='443 = 0x1bb'>443</td>
@@ -5733,12 +5768,18 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
   <br>5 = Speedlite 380EX
   <br>6 = Speedlite 550EX
   <br>8 = Speedlite ST-E2
-  <br>9 = Speedlite MR-14EX</td><td>&nbsp;&nbsp;</td>
-  <td>12 = Speedlite 580EX
+  <br>9 = Speedlite MR-14EX
+  <br>12 = Speedlite 580EX
   <br>13 = Speedlite 430EX
   <br>17 = Speedlite 580EX II
   <br>18 = Speedlite 430EX II
-  <br>24 = Speedlite 90EX</td></tr></table>
+  <br>22 = Speedlite 600EX-RT
+  <br>23 = Speedlite 600EX II-RT
+  <br>24 = Speedlite 90EX
+  <br>25 = Speedlite 430EX III-RT
+  <br>31 = Speedlite EL-1 ver2
+  <br>33 = Speedlite EL-5
+  <br>34 = Speedlite EL-10</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='21 = 0x15'>21</td>
@@ -6827,6 +6868,11 @@ valid for all camera models)</span></span></td></tr>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>InternalSerialNumber2</td>
+<td class=c>string[9]</td>
+<td><span class=s><span class=n>(could be the number on a barcode sticker of the main circuit board)</span></span></td></tr>
+<tr class=b>
 <td class=r title='9 = 0x9'>9</td>
 <td>InternalSerialNumber</td>
 <td class=c>string</td>
@@ -12537,7 +12583,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 19, 2026</i>
+<br><i>Last revised Feb 24, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

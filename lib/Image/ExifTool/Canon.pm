@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '5.04';
+$VERSION = '5.05';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -539,6 +539,8 @@ $VERSION = '5.04';
     754 => 'Canon EF 70-200mm f/4L IS II USM', #IB
     757 => 'Canon EF 400mm f/2.8L IS III USM', #IB
     758 => 'Canon EF 600mm f/4L IS III USM', #IB
+
+    923 => 'Meike/SKY 85mm f/1.8 DCM', #github395
 
     1136 => 'Sigma 24-70mm f/2.8 DG OS HSM | A', #IB (017)
     # (STM lenses - 0x10xx)
@@ -1025,7 +1027,7 @@ $VERSION = '5.04';
 # flash models (github390)
 my %flashModel = (
     0 => 'n/a',
-  # 1 - seen this for various PowerShot/IXUS
+  # 1 - seen this for various PowerShot/IXUS models
     4 => 'Speedlite 540EZ',
     5 => 'Speedlite 380EX',
     6 => 'Speedlite 550EX',
@@ -1035,8 +1037,13 @@ my %flashModel = (
     13 => 'Speedlite 430EX',
     17 => 'Speedlite 580EX II',
     18 => 'Speedlite 430EX II',
-  # 23 - seen this for PowerShot G5X
+    22 => 'Speedlite 600EX-RT',
+    23 => 'Speedlite 600EX II-RT',
     24 => 'Speedlite 90EX',
+    25 => 'Speedlite 430EX III-RT',
+    31 => 'Speedlite EL-1 ver2',
+    33 => 'Speedlite EL-5',
+    34 => 'Speedlite EL-10',
   # 127 - seen a lot, currently ignored
 );
 
@@ -3990,6 +3997,7 @@ my %ciMaxFocal = (
         Name => 'HighlightTonePriority',
         PrintConv => \%offOn,
     },
+    0x13 => { Name => 'FlashModel', Mask => 0x7f, PrintConv => \%flashModel }, #github390
     0x1b => { %ciMacroMagnification }, #PH
     0x15 => { #PH (580 EX II)
         Name => 'FlashMeteringMode',
@@ -4073,6 +4081,11 @@ my %ciMaxFocal = (
         Writable => 0, # not writable for logic reasons
         # some firmwares have a null instead of a space after the version number
         RawConv => '$val=~/^\d+\.\d+\.\d+\s*$/ ? $val : undef',
+    },
+    0x18e => { #github397
+        Name => 'OwnerName',
+        Priority => 0,
+        Format => 'string[32]',
     },
     0x1bb => {
         Name => 'FileIndex',
@@ -7125,9 +7138,17 @@ my %ciMaxFocal = (
     %binaryDataAttrs,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    9 => {
+    0 => { #github398 (5DmkII,5DmkIII,5DmkIV,5DS,5DSR)
+        Name => 'InternalSerialNumber2',
+        Format => 'string[9]',
+        Notes => 'could be the number on a barcode sticker of the main circuit board',
+        RawConv => '$val =~ /^\w{6}/ ? $val : undef',
+
+    },
+    9 => { # (other models)
         Name => 'InternalSerialNumber',
         Format => 'string',
+        RawConv => '$val =~ /^\w{6}/ ? $val : undef',
     },
 );
 

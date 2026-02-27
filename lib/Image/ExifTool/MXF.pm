@@ -38,7 +38,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.08';
+$VERSION = '1.09';
 
 sub ProcessPrimer($$$);
 sub ProcessLocalSet($$$);
@@ -2481,7 +2481,7 @@ sub ReadMXFValue($$$)
     local $_;
 
     if ($type eq 'UTF-16') {
-        $val = $et->Decode($val, 'UCS2'); # (until we handle UTF-16 properly)
+        $val = $et->Decode($val, 'UTF16');
     } elsif ($type eq 'ProductVersion') {
         my @a = unpack('n*', $val);
         push @a, 0 while @a < 5;

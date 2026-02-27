@@ -49,23 +49,7 @@
 <td title='0x0018 = 24'>0x0018</td>
 <td>FileAttributes</td>
 <td class=c>no</td>
-<td><table class=cols><tr>
-  <td>Bit 0 = Read-only
-  <br>Bit 1 = Hidden
-  <br>Bit 2 = System
-  <br>Bit 3 = Volume
-  <br>Bit 4 = Directory
-  <br>Bit 5 = Archive
-  <br>Bit 6 = Encrypted?
-  <br>Bit 7 = Normal</td><td>&nbsp;&nbsp;</td>
-  <td>Bit 8 = Temporary
-  <br>Bit 9 = Sparse
-  <br>Bit 10 = Reparse point
-  <br>Bit 11 = Compressed
-  <br>Bit 12 = Offline
-  <br>Bit 13 = Not indexed
-  <br>Bit 14 = Encrypted</td></tr></table>
-</td></tr>
+<td>--&gt; <a href='LNK.html#FileAttributes'>LNK FileAttributes Values</a></td></tr>
 <tr>
 <td title='0x001c = 28'>0x001c</td>
 <td>CreateDate</td>
@@ -219,6 +203,28 @@
 <td class=c>-</td>
 <td>--&gt; <a href='LNK.html#UnknownData'>LNK UnknownData Tags</a></td></tr>
 </table></td></tr></table></blockquote>
+
+<h2><a name='FileAttributes'>LNK FileAttributes Values</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>FileAttributes</th><th>Value</th><th>FileAttributes</th><th>Value</th><th>FileAttributes</th></tr>
+<tr><td>'Bit 0'</td><td>= Read-only</td>
+<td class=b>'Bit 5'</td><td class=b>= Archive</td>
+<td>'Bit 10'</td><td>= Reparse point</td>
+</tr><tr><td>'Bit 1'</td><td>= Hidden</td>
+<td class=b>'Bit 6'</td><td class=b>= Encrypted?</td>
+<td>'Bit 11'</td><td>= Compressed</td>
+</tr><tr><td>'Bit 2'</td><td>= System</td>
+<td class=b>'Bit 7'</td><td class=b>= Normal</td>
+<td>'Bit 12'</td><td>= Offline</td>
+</tr><tr><td>'Bit 3'</td><td>= Volume</td>
+<td class=b>'Bit 8'</td><td class=b>= Temporary</td>
+<td>'Bit 13'</td><td>= Not indexed</td>
+</tr><tr><td>'Bit 4'</td><td>= Directory</td>
+<td class=b>'Bit 9'</td><td class=b>= Sparse</td>
+<td>'Bit 14'</td><td>= Encrypted</td>
+</tr></table></td></tr></table></blockquote>
 
 <h2><a name='ItemID'>LNK ItemID Tags</a></h2>
 <blockquote>
@@ -442,14 +448,7 @@
 <td class=r title='12 = 0xc'>12</td>
 <td>FileEntryAttributes</td>
 <td class=c>no</td>
-<td><table class=cols><tr>
-  <td>Bit 0 = Read-only
-  <br>Bit 1 = Hidden
-  <br>Bit 2 = System</td><td>&nbsp;&nbsp;</td>
-  <td>Bit 3 = Volume Label
-  <br>Bit 4 = Directory
-  <br>Bit 5 = Archive</td></tr></table>
-</td></tr>
+<td>--&gt; <a href='LNK.html#FileAttributes'>LNK FileAttributes Values</a></td></tr>
 <tr>
 <td class=r title='14 = 0xe'>14</td>
 <td>FileEntryDOSName</td>
@@ -487,14 +486,7 @@
 <td class=r title='12 = 0xc'>12</td>
 <td>TargetFileAttributes</td>
 <td class=c>no</td>
-<td><table class=cols><tr>
-  <td>Bit 0 = Read-only
-  <br>Bit 1 = Hidden
-  <br>Bit 2 = System</td><td>&nbsp;&nbsp;</td>
-  <td>Bit 3 = Volume Label
-  <br>Bit 4 = Directory
-  <br>Bit 5 = Archive</td></tr></table>
-</td></tr>
+<td>--&gt; <a href='LNK.html#FileAttributes'>LNK FileAttributes Values</a></td></tr>
 <tr>
 <td class=r title='14 = 0xe'>14</td>
 <td>TargetFileDOSName</td>
@@ -855,7 +847,7 @@
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 19, 2026</i>
+<br><i>Last revised Feb 20, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

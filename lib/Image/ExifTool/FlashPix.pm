@@ -23,7 +23,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 use Image::ExifTool::Microsoft; # for %codePage
 
-$VERSION = '1.51';
+$VERSION = '1.52';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -520,7 +520,7 @@ my %fpxFileType = (
   # 0x22 ? seen 0
    '_PID_LINKBASE' => {
         Name => 'HyperlinkBase',
-        ValueConv => '$self->Decode($val, "UCS2","II")',
+        ValueConv => '$self->Decode($val, "UTF16","II")',
     },
    '_PID_HLINKS' => {
         Name => 'Hyperlinks',
@@ -1379,13 +1379,13 @@ sub ReadFPXValue($$$$$;$$)
                 $val = substr($$dataPt, $valPos + 4, $len);
                 if ($format eq 'VT_LPWSTR') {
                     # convert wide string from Unicode
-                    $val = $et->Decode($val, 'UCS2');
+                    $val = $et->Decode($val, 'UTF16');
                 } elsif ($codePage) {
                     my $charset = $Image::ExifTool::charsetName{"cp$codePage"};
                     if ($charset) {
                         $val = $et->Decode($val, $charset);
                     } elsif ($codePage == 1200) {   # UTF-16, little endian
-                        $val = $et->Decode($val, 'UCS2', 'II');
+                        $val = $et->Decode($val, 'UTF16', 'II');
                     }
                 }
                 $val =~ s/\0.*//s;  # truncate at null terminator
@@ -1630,7 +1630,7 @@ sub ProcessCommentBy($$$)
         my $len = Get16u($dataPt, $pos);
         $pos += 2;
         last if $pos + $len * 2 > $end;
-        my $author = $et->Decode(substr($$dataPt, $pos, $len*2), 'UCS2');
+        my $author = $et->Decode(substr($$dataPt, $pos, $len*2), 'UTF16');
         $pos += $len * 2;
         $et->HandleTag($tagTablePtr, CommentBy => $author);
     }
@@ -1656,13 +1656,13 @@ sub ProcessLastSavedBy($$$)
         my $len = Get16u($dataPt, $pos);
         $pos += 2;
         last if $pos + $len * 2 > $end;
-        my $author = $et->Decode(substr($$dataPt, $pos, $len*2), 'UCS2');
+        my $author = $et->Decode(substr($$dataPt, $pos, $len*2), 'UTF16');
         $pos += $len * 2;
         last if $pos + 2 > $end;
         $len = Get16u($dataPt, $pos);
         $pos += 2;
         last if $pos + $len * 2 > $end;
-        my $path = $et->Decode(substr($$dataPt, $pos, $len*2), 'UCS2');
+        my $path = $et->Decode(substr($$dataPt, $pos, $len*2), 'UTF16');
         $pos += $len * 2;
         $et->HandleTag($tagTablePtr, LastSavedBy => "$author ($path)");
         $num -= 2;
@@ -1886,7 +1886,7 @@ sub ProcessFPXR($$$)
                 return 0;
             }
             # convert stream pathname to ascii
-            my $name = Image::ExifTool::Decode(undef, $1, 'UCS2', 'II', 'Latin');
+            my $name = Image::ExifTool::Decode(undef, $1, 'UTF16', 'II', 'Latin');
             if ($verbose) {
                 my $psize = ($size == 0xffffffff) ? 'storage' : "$size bytes";
                 $et->VPrint(0,"  |  $entry) Name: '${name}' [$psize]\n");
@@ -2179,7 +2179,7 @@ sub ProcessFPX($$)
         # be very tolerant of this count -- it's null terminated anyway)
         my $len = Get16u(\$dir, $pos + 0x40);
         $len > 32 and $len = 32;
-        $tag = Image::ExifTool::Decode(undef, substr($dir,$pos,$len*2), 'UCS2', 'II', 'Latin');
+        $tag = Image::ExifTool::Decode(undef, substr($dir,$pos,$len*2), 'UTF16', 'II', 'Latin');
         $tag =~ s/\0.*//s;  # truncate at null (in case length was wrong)
 
         if ($tag eq '0' and not defined $ee) {

@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.61';
+$VERSION = '1.62';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -2090,7 +2090,7 @@ sub ProcessDict($$$$;$$)
                 if (not $$tagInfo{Binary} and $val =~ /[\x18-\x1f\x80-\xff]/) {
                     # text string is already in Unicode if it starts with "\xfe\xff",
                     # otherwise we must first convert from PDFDocEncoding
-                    $val = $et->Decode($val, ($val=~s/^\xfe\xff// ? 'UCS2' : 'PDFDoc'), 'MM');
+                    $val = $et->Decode($val, ($val=~s/^\xfe\xff// ? 'UTF16' : 'PDFDoc'), 'MM');
                 }
                 if ($$tagInfo{List} and not $$et{OPTIONS}{NoPDFList}) {
                     # separate tokens in comma or whitespace delimited lists

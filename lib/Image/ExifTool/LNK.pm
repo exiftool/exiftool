@@ -6,7 +6,7 @@
 # Revisions:    2009/09/19 - P. Harvey Created
 #               2025/10/20 - PH Added .URL file support
 #
-# References:   1) http://msdn.microsoft.com/en-us/library/dd871305(PROT.10).aspx
+# References:   1) http://msdn.microsoft.com/en-us/library/dd871305(PROT.10).aspx ([MS-SHLLINK].pdf)
 #               2) http://www.i2s-lab.com/Papers/The_Windows_Shortcut_File_Format.pdf
 #               3) https://harfanglab.io/insidethelab/sadfuture-xdspy-latest-evolution/#tid_specifications_ignored
 #------------------------------------------------------------------------------
@@ -18,10 +18,30 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Microsoft;
 
-$VERSION = '1.14';
+$VERSION = '1.16';
 
 sub ProcessItemID($$$);
 sub ProcessLinkInfo($$$);
+
+my %fileAttributes = (
+    BITMASK => {
+        0 => 'Read-only',
+        1 => 'Hidden',
+        2 => 'System',
+        3 => 'Volume', #(not used)
+        4 => 'Directory',
+        5 => 'Archive',
+        6 => 'Encrypted?', #(ref 2, not used in XP)
+        7 => 'Normal',
+        8 => 'Temporary',
+        9 => 'Sparse',
+        10 => 'Reparse point',
+        11 => 'Compressed',
+        12 => 'Offline',
+        13 => 'Not indexed',
+        14 => 'Encrypted',
+    },
+);
 
 my %guidLookup = (
     # ref https://learn.microsoft.com/en-us/windows/win32/shell/knownfolderid
@@ -205,23 +225,8 @@ my %guidLookup = (
     0x18 => {
         Name => 'FileAttributes',
         Format => 'int32u',
-        PrintConv => { BITMASK => {
-            0 => 'Read-only',
-            1 => 'Hidden',
-            2 => 'System',
-            3 => 'Volume', #(not used)
-            4 => 'Directory',
-            5 => 'Archive',
-            6 => 'Encrypted?', #(ref 2, not used in XP)
-            7 => 'Normal',
-            8 => 'Temporary',
-            9 => 'Sparse',
-            10 => 'Reparse point',
-            11 => 'Compressed',
-            12 => 'Offline',
-            13 => 'Not indexed',
-            14 => 'Encrypted',
-        }},
+        SeparateTable => 'FileAttributes',
+        PrintConv => \%fileAttributes,
     },
     0x1c => {
         Name => 'CreateDate',
@@ -464,14 +469,8 @@ my %guidLookup = (
     },
     12 => {
         Name => 'FileEntryAttributes',
-        PrintConv => { BITMASK => {
-            0 => 'Read-only',
-            1 => 'Hidden',
-            2 => 'System',
-            3 => 'Volume Label',
-            4 => 'Directory',
-            5 => 'Archive',
-        }},
+        SeparateTable => 'FileAttributes',
+        PrintConv => \%fileAttributes,
     },
     14 => {
         Name => 'FileEntryDOSName',
@@ -518,14 +517,8 @@ my %guidLookup = (
     },
     12 => {
         Name => 'TargetFileAttributes',
-        PrintConv => { BITMASK => {
-            0 => 'Read-only',
-            1 => 'Hidden',
-            2 => 'System',
-            3 => 'Volume Label',
-            4 => 'Directory',
-            5 => 'Archive',
-        }},
+        SeparateTable => 'FileAttributes',
+        PrintConv => \%fileAttributes,
     },
     14 => {
         Name => 'TargetFileDOSName',
@@ -701,7 +694,7 @@ my %guidLookup = (
         Name => 'FontName',
         Format => 'undef[64]',
         RawConv => q{
-            $val = $self->Decode($val, 'UCS2');
+            $val = $self->Decode($val, 'UTF16');
             $val =~ s/\0.*//s;
             return length($val) ? $val : undef;
         },
@@ -906,7 +899,7 @@ sub ProcessLinkInfo($$$)
             $val = GetString($dataPt, $pos, $unicode);
             if (defined $val) {
                 $size = length $val;
-                $val = $et->Decode($val, 'UCS2') if $unicode;
+                $val = $et->Decode($val, 'UTF16') if $unicode;
                 $et->HandleTag($tagTablePtr, 'VolumeLabel', $val, %opts, Start=>$pos, Size=>$size);
             }
         }
@@ -921,7 +914,7 @@ sub ProcessLinkInfo($$$)
         $val = GetString($dataPt, $pos, $unicode);
         if (defined $val) {
             $size = length $val;
-            $val = $et->Decode($val, 'UCS2') if $unicode;
+            $val = $et->Decode($val, 'UTF16') if $unicode;
             $et->HandleTag($tagTablePtr, 'LocalBasePath', $val, %opts, Start=>$pos, Size=>$size);
         }
     }
@@ -941,7 +934,7 @@ sub ProcessLinkInfo($$$)
             $val = GetString($dataPt, $off + $pos, $unicode);
             if (defined $val) {
                 $size = length $val;
-                $val = $et->Decode($val, 'UCS2') if $unicode;
+                $val = $et->Decode($val, 'UTF16') if $unicode;
                 $et->HandleTag($tagTablePtr, 'NetName', $val, %opts, Start=>$pos, Size=>$size);
             }
             my $flg = Get32u($dataPt, $off + 0x04);
@@ -956,7 +949,7 @@ sub ProcessLinkInfo($$$)
                 $val = GetString($dataPt, $off + $pos, $unicode);
                 if (defined $val) {
                     $size = length $val;
-                    $val = $et->Decode($val, 'UCS2') if $unicode;
+                    $val = $et->Decode($val, 'UTF16') if $unicode;
                     $et->HandleTag($tagTablePtr, 'DeviceName', $val, %opts, Start=>$pos, Size=>$size);
                 }
             }
@@ -1093,7 +1086,7 @@ sub ProcessLNK($$)
             $len -= $flags & 0x80 ? 2 : 1;
             $buff = substr($buff, 0, $len);
         }
-        $val = $et->Decode($buff, 'UCS2') if $flags & 0x80;
+        $val = $et->Decode($buff, 'UTF16') if $flags & 0x80;
         $et->HandleTag($tagTablePtr, 0x30000 | $mask, $val,
             DataPt  => \$buff,
             DataPos => $pos,

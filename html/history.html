@@ -17,6 +17,22 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.52'><b>Feb. 27, 2026 - Version 13.52</b></a>
+<ul>
+<li>Added a number of new XMP tags written by Adobe software
+<li>Added UTF-16 support for a few different metadata types in which only UCS-2
+    was previously implemented (<a href="https://github.com/exiftool/exiftool/issues/396">github #396</a>)
+<li>Added a few more Canon FlashModel values and decode FlashModel for the
+    5DmkII (thanks Peter Wem, <a href="https://github.com/exiftool/exiftool/issues/390">github #390</a>)
+<li>Added a new Canon LensType (<a href="https://github.com/exiftool/exiftool/issues/395">github #395</a>)
+<li>Added some missing file attribute bits to two of the new LNK tags
+<li>Decode internal serial number for the 5DmkII (thanks Peter Wem, <a href="https://github.com/exiftool/exiftool/issues/398">github #398</a>)
+<li>Decode another OwnerName for the 5DmkII (thanks Peter Wem, <a href="https://github.com/exiftool/exiftool/issues/397">github #397</a>)
+<li>Decode some timed GPS for a couple of new DJI drones
+<li>Enable WindowsLongPath by default only if Win32::API is available
+<li>Renamed the Pentax K3III AFInfo tag to AFInfoK3III
+</ul>
+
 <a name='v13.51'><b>Feb. 19, 2026 - Version 13.51</b></a>
 <ul>
 <li>Added a new Nikon LensID (thanks Johan)

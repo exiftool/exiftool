@@ -14,7 +14,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.56';
+$VERSION = '1.57';
 
 sub ProcessMIE($$);
 sub ProcessMIEGroup($$$);
@@ -1264,7 +1264,7 @@ sub WriteMIEGroup($$$)
                     if ($isUTF8 > 0) {
                         $writable = 'utf8';
                         # write UTF-16 or UTF-32 if it is more compact
-                        my $to = $isUTF8 > 1 ? 'UCS4' : 'UCS2';
+                        my $to = $isUTF8 > 1 ? 'UCS4' : 'UTF16';
                         my $tmp = Image::ExifTool::Decode(undef,$newVal,'UTF8',undef,$to);
                         if (length $tmp < length $newVal) {
                             $newVal = $tmp;

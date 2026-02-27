@@ -1278,7 +1278,8 @@ on tag values and JPEG segment data respectively.
 =item WindowsLongPath
 
 Support long path names in Windows.  Enabling this option automatically
-enables the WindowsWideFile feature.  Default is 1.
+enables the WindowsWideFile feature.  Default is 1 if Win32::API is
+available, or 0 otherwise.
 
 =item WindowsWideFile
 
@@ -2879,7 +2880,7 @@ Win32API::File is available.
 
 Note that setting the L</WindowsWideFile> or L</WindowsLongPath> option
 causes L</CharsetFileName> to default to 'UTF8' in Windows if not defined,
-and L</WindowsLongPath> is set by default in ExifTool 13.07 and later.
+and L</WindowsLongPath> is set by default if Win32::API is available.
 
 =item Internal Character Sets:
 

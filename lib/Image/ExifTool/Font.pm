@@ -22,7 +22,7 @@ use vars qw($VERSION %ttLang);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 sub ProcessOTF($$);
 
@@ -71,7 +71,7 @@ my %ttCharset = (
     1 => 'UCS2', # Unicode 1.1 semantics
     2 => 'UCS2', # ISO 10646 semantics
     3 => 'UCS2', # Unicode 2.0 and onwards semantics, Unicode BMP only.
-    4 => 'UCS2', # Unicode 2.0 and onwards semantics, Unicode full repertoire.
+    4 => 'UTF16',# Unicode 2.0 and onwards semantics, Unicode full repertoire.
     # 5 => Unicode Variation Sequences (not used in Naming table)
   },
   ISO => { # (deprecated)

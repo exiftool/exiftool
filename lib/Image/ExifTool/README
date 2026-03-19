@@ -313,15 +313,16 @@ numerical, and generated automatically otherwise.
                   table entries through a %val hash (read-only tags), the data
                   size via $size, or the ExifTool object via $self.  For
                   example, 'string[$val{3}]' defines a string with length given
-                  by the table entry with tag index '3'.  An initial "var_" may
-                  be added to the Format name of any BinaryData tag with a size
-                  in brackets.  In this case, subsequent offsets are adjusted by
-                  the value length minus the size of the default table FORMAT
-                  (eg. "var_int16u[10]" causes subsequent offsets to be
-                  incremented by sizeof(int16u) * 10 - sizeof(int8u) if the
-                  default table FORMAT is "int8u").  Note that all "var_" Format
-                  tags (as well as tags with values used within "var_" Format
-                  expressions) must have corresponding DATAMEMBER entries.
+                  by the table entry with tag index '3' (which may be a Hidden
+                  tag). An initial "var_" may be added to the Format name of any
+                  BinaryData tag with a size in brackets.  In this case,
+                  subsequent offsets are adjusted by the value length minus the
+                  size of the default table FORMAT (eg. "var_int16u[10]" causes
+                  subsequent offsets to be incremented by sizeof(int16u) * 10 -
+                  sizeof(int8u) if the default table FORMAT is "int8u").  Note
+                  that all "var_" Format tags (as well as tags with values used
+                  within "var_" Format expressions) must have corresponding
+                  DATAMEMBER entries.
 
   Count         : Used when writing EXIF information to specify the number
                   values to write, or the number of characters in a fixed-length

@@ -111,7 +111,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 120 different types of timed GPS metadata from video files.
+        currently reads 121 different types of timed GPS metadata from video files.
     },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
     GPSLongitude => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
@@ -1714,9 +1714,21 @@ sub ProcessFreeGPS($$$)
             @acc = map { SignedInt32 / 256 } unpack('x68V3', $$dataPt);
         }
 
-    } elsif ($$dataPt =~ /^.{37}\0\0\0A([NS])([EW])\0/s) {
+    } elsif ($$dataPt =~ /^(.{37}|.{85})\0\0\0A([NS])([EW])\0/s) {
 
-        ($latRef, $lonRef) = ($1, $2);
+        if (length($1) == 85) {
+            # Kenwood DRV-A510W (header is 48 bytes longer)
+            # 0000: 00 00 40 00 66 72 65 65 47 50 53 20 f0 03 00 00 [..@.freeGPS ....]
+            # 0010: 4d 4e 3a 44 52 56 2d 41 35 31 30 57 40 56 31 2e [MN:DRV-A510W@V1.]
+            # 0020: 37 5f 42 44 5a 49 43 5a 5f 43 00 00 00 00 00 00 [7_BDZICZ_C......]
+            # 0030: 00 00 00 00 00 00 00 00 3a 3a 73 74 61 72 74 40 [........::start@]
+            # 0040: 0c 00 00 00 10 00 00 00 16 00 00 00 ea 07 00 00 [................]
+            # 0050: 02 00 00 00 1c 00 00 00 41 4e 57 00 55 e7 a5 45 [........ANW.U..E]
+            # 0060: d7 84 52 43 52 b8 d8 41 48 21 9a 43 f9 ff ff ff [..RCR..AH!.C....]
+            # 0070: ff ff ff ff 01 00 00 00 00 00 00 00 00 00 00 00 [................]
+            $$dataPt = substr($$dataPt, 48);
+        }
+        ($latRef, $lonRef) = ($2, $3);
         ($hr,$min,$sec,$yr,$mon,$day) = unpack('x16V6', $$dataPt);
         # test for base64-encoded and encrypted lucky gps strings
         my ($notEnc, $notStr, $lt, $ln);

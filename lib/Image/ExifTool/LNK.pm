@@ -9,6 +9,8 @@
 # References:   1) http://msdn.microsoft.com/en-us/library/dd871305(PROT.10).aspx ([MS-SHLLINK].pdf)
 #               2) http://www.i2s-lab.com/Papers/The_Windows_Shortcut_File_Format.pdf
 #               3) https://harfanglab.io/insidethelab/sadfuture-xdspy-latest-evolution/#tid_specifications_ignored
+#               4) https://github.com/libyal/libfwsi/blob/main/documentation/Windows%20Shell%20Item%20format.asciidoc
+#               5) https://github.com/EricZimmerman/Lnk/blob/master/Lnk/ShellItems/ShellBag0x00.cs
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::LNK;
@@ -17,11 +19,13 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Microsoft;
+use Image::ExifTool::ASF;   # (for GetGUID)
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 sub ProcessItemID($$$);
 sub ProcessLinkInfo($$$);
+sub ProcessURI($$$);
 
 my %fileAttributes = (
     BITMASK => {
@@ -41,6 +45,14 @@ my %fileAttributes = (
         13 => 'Not indexed',
         14 => 'Encrypted',
     },
+);
+
+my %fileTime = (
+    Format => 'int64u',
+    # convert time from 100-ns intervals since Jan 1, 1601
+    RawConv => '$val ? $val : undef',
+    ValueConv => '$val=$val/1e7-11644473600; ConvertUnixTime($val,1)',
+    PrintConv => '$self->ConvertDateTime($val)',
 );
 
 my %guidLookup = (
@@ -168,7 +180,7 @@ my %guidLookup = (
     'A302545D-DEFF-464B-ABE8-61C8648D939B' => 'Libraries (virtual)',
     '18989B1D-99B5-455B-841C-AB7C74E4DDFC' => 'MyVideos (per-user)',
     '491E922F-5643-4AF4-A7EB-4E7A138D8174' => 'Videos (per-user)',
-    # ref Google AI
+    # ref Google AI and from my samples
     '00021401-0000-0000-C000-000000000046' => 'Shell Link Class Identifier',
     '20D04FE0-3AEA-1069-A2D8-08002B30309D' => 'My Computer',
     '450D8FBA-AD25-11D0-A2A8-0800361B3003' => 'My Documents',
@@ -181,6 +193,79 @@ my %guidLookup = (
     '9E395ED8-512D-4315-9960-9110B74616C8' => 'Recent Items',
     '21EC2020-3AEA-1069-A2DD-08002B30309D' => 'Control Panel Items',
     '7007ACC7-3202-11D1-AAD2-00805FC1270E' => 'Network Connections',
+    '26EE0668-A00A-44D7-9371-BEB064C98683' => 'Control Panel',
+    '2559A1F1-21D7-11D4-BDAF-00C04F60B9F0' => 'Windows Help and Support',
+    '031E4825-7B94-4DC3-B131-E946B44C8DD5' => 'Libraries',
+    '22877A6D-37A1-461A-91B0-DBDA5AAEBC99' => 'Recent Items',
+    '2559A1F3-21D7-11D4-BDAF-00C04F60B9F0' => 'Run Dialog Box',
+    '3080F90D-D7AD-11D9-BD98-0000947B0257' => 'Desktop',
+    '3080F90E-D7AD-11D9-BD98-0000947B0257' => 'Task View',
+    '4336A54D-038B-4685-AB02-99BB52D3FB8B' => 'Public User Root Folder',
+    '5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0' => 'Control Panel',
+    '59031A47-3F72-44A7-89C5-5595FE6B30EE' => 'User Profile',
+    '871C5380-42A0-1069-A2EA-08002B30309D' => 'Internet',
+    'ED228FDF-9EA8-4870-83B1-96B02CFE0D52' => 'Game Explorer',
+    'A8CDFF1C-4878-43BE-B5FD-F8091C1C60D0' => 'Documents',
+    '3ADD1653-EB32-4CB0-BBD7-DFA0ABB5ACCA' => 'My Pictures',
+    # ref https://github.com/EricZimmerman/GuidMapping/blob/master/Resources/GuidToName.txt
+    '0C39A5CF-1A7A-40C8-BA74-8900E6DF5FCD' => 'Recent Items',
+    # ref https://github.com/libyal/libfwsi/blob/main/documentation/Windows%20Shell%20Item%20format.asciidoc
+    '5E591A74-DF96-48D3-8D67-1733BCEE28BA' => 'Delegate GUID',
+    '04731b67-d933-450a-90e6-4acd2e9408fe' => 'Search Folder',
+    'DFFACDC5-679F-4156-8947-C5C76BC0B67F' => 'Users Files',
+    '289af617-1cc3-42a6-926c-e6a863f0e3ba' => 'My Computer',
+    '3134ef9c-6b18-4996-ad04-ed5912e00eb5' => 'Recent Files',
+    '35786d3c-b075-49b9-88dd-029876e11c01' => 'Portable Devices',
+    '3936e9e4-d92c-4eee-a85a-bc16d5ea0819' => 'Frequent Places',
+    '59031a47-3f72-44a7-89c5-5595fe6b30ee' => 'Shared Documents',
+    '640167b4-59b0-47a6-b335-a6b3c0695aea' => 'Portable Media Devices',
+    '896664f7-12e1-490f-8782-c0835afd98fc' => 'Libraries',
+    '9113a02d-00a3-46b9-bc5f-9c04daddd5d7' => 'Enhanced Storage Data Source',
+    '9db7a13c-f208-4981-8353-73cc61ae2783' => 'Previous Versions',
+    'b155bdf8-02f0-451e-9a26-ae317cfd7779' => 'NetHood',
+    'c2b136e2-d50e-405c-8784-363c582bf43e' => 'Wireless Devices',
+    'd34a6ca6-62c2-4c34-8a7c-14709c1ad938' => 'Common Places',
+    'dffacdc5-679f-4156-8947-c5c76bc0b67f' => 'Profile',
+    'ed50fc29-b964-48a9-afb3-15ebb9b97f36' => 'PrintHood',
+    'f5fb2c77-0e2f-4a16-a381-3e560c68bc83' => 'Removable Drives',
+    # ref https://learn.microsoft.com/en-us/windows/win32/wpd_sdk/supporting-autoplay
+    '80E170D2-1055-4A3E-B952-82CC4F8A8689' => 'Content Type All',
+    '0FED060E-8793-4B1E-90C9-48AC389AC631' => 'Content Type Appointment',
+    '4AD2C85E-5E2D-45E5-8864-4F229E3C6CF0' => 'Content Type Audio',
+    'AA18737E-5009-48FA-AE21-85F24383B4E6' => 'Content Type Audio Album',
+    'A1FD5967-6023-49A0-9DF1-F8060BE751B0' => 'Content Type Calendar',
+    'DC3876E8-A948-4060-9050-CBD77E8A3D87' => 'Content Type Certificate',
+    'EABA8313-4525-4707-9F0E-87C6808E9435' => 'Content Type Contact',
+    '346B8932-4C36-40D8-9415-1828291F9DE9' => 'Content Type Contact Group',
+    '680ADF52-950A-4041-9B41-65E393648155' => 'Content Type Document',
+    '8038044A-7E51-4F8F-883D-1D0623D14533' => 'Content Type Email',
+    '27E2E392-A111-48E0-AB0C-E17705A05F85' => 'Content Type Folder',
+    '99ED0160-17FF-4C44-9D98-1D7A6F941921' => 'Content Type Functional Object',
+    '0085E0A6-8D34-45D7-BC5C-447E59C73D48' => 'Content Type Generic File',
+    'E80EAAF8-B2DB-4133-B67E-1BEF4B4A6E5F' => 'Content Type Generic Message',
+    'EF2107D5-A52A-4243-A26B-62D4176D7603' => 'Content Type Image',
+    '75793148-15F5-4A30-A813-54ED8A37E226' => 'Content Type Image Album',
+    '5E88B3CC-3E65-4E62-BFFF-229495253AB0' => 'Content Type Media Cast',
+    '9CD20ECF-3B50-414F-A641-E473FFE45751' => 'Content Type Memo',
+    '00F0C3AC-A593-49AC-9219-24ABCA5A2563' => 'Content Type Mixed Content Album',
+    '031DA7EE-18C8-4205-847E-89A11261D0F3' => 'Content Type Network Association',
+    '1A33F7E4-AF13-48F5-994E-77369DFE04A3' => 'Content Type Playlist',
+    'D269F96A-247C-4BFF-98FB-97F3C49220E6' => 'Content Type Program',
+    '821089F5-1D91-4DC9-BE3C-BBB1B35B18CE' => 'Content Type Section',
+    '63252F2C-887F-4CB6-B1AC-D29855DCEF6C' => 'Content Type Task',
+    '60A169CF-F2AE-4E21-9375-9677F11C1C6E' => 'Content Type Television',
+    '28D8D31E-249C-454E-AABC-34883168E634' => 'Content Type Unspecified',
+    '9261B03C-3D78-4519-85E3-02C5E1F50BB9' => 'Content Type Video',
+    '012B0DB7-D4C1-45D6-B081-94B87779614F' => 'Content Type Video Album',
+    '0BAC070A-9F5F-4DA4-A8F6-3DE44D68FD6C' => 'Content Type Wireless Profile',
+);
+
+# common tag information for MTP GUID tags
+my %mtpGUID = (
+    Format => 'undef[72]',
+    ValueConv => '$self->Decode($val, "UTF16")',
+    SeparateTable => 'GUID',
+    PrintConv => \%guidLookup,
 );
 
 # Information extracted from LNK (Windows Shortcut) files
@@ -230,28 +315,18 @@ my %guidLookup = (
     },
     0x1c => {
         Name => 'CreateDate',
-        Format => 'int64u',
         Groups => { 2 => 'Time' },
-        # convert time from 100-ns intervals since Jan 1, 1601
-        RawConv => '$val ? $val : undef',
-        ValueConv => '$val=$val/1e7-11644473600; ConvertUnixTime($val,1)',
-        PrintConv => '$self->ConvertDateTime($val)',
+        %fileTime,
     },
     0x24 => {
         Name => 'AccessDate',
-        Format => 'int64u',
         Groups => { 2 => 'Time' },
-        RawConv => '$val ? $val : undef',
-        ValueConv => '$val=$val/1e7-11644473600; ConvertUnixTime($val,1)',
-        PrintConv => '$self->ConvertDateTime($val)',
+        %fileTime,
     },
     0x2c => {
         Name => 'ModifyDate',
-        Format => 'int64u',
         Groups => { 2 => 'Time' },
-        RawConv => '$val ? $val : undef',
-        ValueConv => '$val=$val/1e7-11644473600; ConvertUnixTime($val,1)',
-        PrintConv => '$self->ConvertDateTime($val)',
+        %fileTime,
     },
     0x34 => {
         Name => 'TargetFileSize',
@@ -261,6 +336,7 @@ my %guidLookup = (
         Name => 'IconIndex',
         Format => 'int32u',
         PrintConv => '$val ? $val : "(none)"',
+        # (seen 0xffffffff)
     },
     0x3c => {
         Name => 'RunWindow',
@@ -381,25 +457,49 @@ my %guidLookup = (
 );
 
 # ref: https://helgeklein.com/blog/dissecting-a-shortcut/
+# ref: https://github.com/Matmaus/LnkParse3/blob/master/LnkParse3/target_factory.py
+# Note: The ItemID raw data includes the leading 2-byte size word
 %Image::ExifTool::LNK::ItemID = (
     GROUPS => { 2 => 'Other' },
     PROCESS_PROC => \&ProcessItemID,
-    # can't find any documentation on these items, but AI gives this:
-    # 0x1f - root folder
-    # 0x2e/0x2f - volume item
-    # 0x31 - directory
-    # 0x32 - file entry
-    # 0x35/0x36 directory/file (Unicode)
-    # 0x41-0x4c - network items
-    # 0x61 - URI/URL
-    # 0x71 - control panel
-    0x1f => {
-        Name => 'FolderInfo',
-        SubDirectory => { TagTable => 'Image::ExifTool::LNK::FolderInfo' },
+    0x00 => [{
+        Name => 'ControlPanelCPL',  # special ID 0xffffffxx
+        Condition => '$$valPt =~ /^.{5}\xff{3}/s',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::ControlPanelCPL' },
+    },{
+        Name => 'GameFolderInfo',   # special ID 0x49534647
+        Condition => '$$valPt =~ /^.{4}GFSI/s',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::GameFolderInfo' },
+    },{
+        Name => 'PropertyStore',    # ID 0x23febbee
+        Condition => '$$valPt =~ /^.{6}\xee\xbb\xfe\x23/',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::PropertyStore' },
+    },{
+        Name => 'MTPType2',         # ID 0x10312005
+        Condition => '$$valPt =~ /^.{6}\\x05\x20\x31\x10/',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::MTPType2' },
+    },{
+        Name => 'Item00Info',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::Item00Info' },
+    }],
+    0x01 => {
+        Name => 'ControlPanelInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::ControlPanelInfo' },
     },
-    0x2e => {
+    0x1e => { # (seems to be decoding the same as 0x1f)
+        Name => 'RootFolder',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::RootFolder' },
+    },
+    0x1f => {
+        Name => 'RootFolder',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::RootFolder' },
+    },
+    # 0x20-0x2f MyComputer (even ID's have GUID, odd have name)
+    0x2e => { # (have only seen 0x2e so far)
         Name => 'VolumeGUID',
-        ValueConv => 'require Image::ExifTool::ASF; Image::ExifTool::ASF::GetGUID(substr($val,4))',
+        RawConv => 'length($val) >= 20 ? $val : undef',
+        # seen 0x14 and 0x32 bytes long, but GUID was last 16 bytes in both cases
+        ValueConv => 'Image::ExifTool::ASF::GetGUID(substr($val,-16))',
         SeparateTable => 'GUID',
         PrintConv => \%guidLookup,
     },
@@ -407,27 +507,46 @@ my %guidLookup = (
         Name => 'VolumeName',
         ValueConv => '$_ = substr($val, 3); s/\0+$//; $_',
     },
+    # 0x30-0x3f ShellFSFolder
     0x31 => {
-        Name => 'FileInfo',
-        SubDirectory => { TagTable => 'Image::ExifTool::LNK::FileInfo' },
-    },
-    0x32 => {
         Name => 'TargetInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::LNK::TargetInfo' },
     },
-    0x35 => {
-        Name => 'DirInfo',
-        SubDirectory => { TagTable => 'Image::ExifTool::LNK::DirInfo' },
+    # 0x40-0x4f NetworkLocation
+    0x40 => {
+        Name => 'NetworkLocation',
+        # extract ASCII strings (Location + optional Description and Comments)
+        ValueConv => q{
+            $val = substr($val, 6);
+            my @strs = $val =~ /([\x20-\x7f]+)/g;
+            return @strs ? (@strs == 1 ? $strs[0] : \@strs) : \$val;
+        },
     },
-    0x36 => {
-        Name => 'FileInfo2',
-        SubDirectory => { TagTable => 'Image::ExifTool::LNK::FileInfo2' },
+    0x52 => {
+        Name => 'CompressedFolder',
+        Binary => 1, # (not implemented)
+    },
+    0x61 => {
+        Name => 'URI',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::URI' },
+    },
+    0x70 => {
+        Name => 'ControlPanelShellItem',
+        ValueConv => 'Image::ExifTool::ASF::GetGUID(substr($val,14))',
+        SeparateTable => 'GUID',
+        PrintConv => \%guidLookup,
     },
     0x71 => {
         Name => 'ControlPanelShellItem',
-        ValueConv => 'require Image::ExifTool::ASF; Image::ExifTool::ASF::GetGUID(substr($val,14))',
+        ValueConv => 'Image::ExifTool::ASF::GetGUID(substr($val,14))',
         SeparateTable => 'GUID',
         PrintConv => \%guidLookup,
+    },
+    0x72 => { Name => 'Printers', Binary => 1 },
+    0x73 => { Name => 'CommonPlacesFolder', Binary => 1 },
+    0x74 => {
+        Name => 'UsersFilesFolder',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::UsersFilesFolder' },
     },
     0xff => { #PH
         Name => 'VendorData',
@@ -439,70 +558,69 @@ my %guidLookup = (
             return @strs ? (@strs == 1 ? $strs[0] : \@strs) : \$val;
         },
     },
+#
+# extension blocks
+#
+    0xbeef0003 => {
+        Name => 'Beef0003',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::Beef0003' },
+    },
+    0xbeef0004 => {
+        Name => 'Beef0004',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::Beef0004' },
+    },
+    0xbeef0014 => {
+        Name => 'Beef0014',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::Beef0014' },
+    },
+    0xbeef0025 => {
+        Name => 'Beef0025',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::Beef0025' },
+    },
+    0xbeef0026 => [{
+        Name => 'Beef0026a',
+        Condition => '$$valPt =~ /^.{8}[\x11\x10\x12\x34\x31]/',
+        SubDirectory => { TagTable => 'Image::ExifTool::LNK::Beef0026a' },
+    },{
+        Name => 'Unknown_beef0026',
+        Binary => 1,
+    }],
 );
 
-%Image::ExifTool::LNK::FolderInfo = (
+%Image::ExifTool::LNK::RootFolder = (
     GROUPS => { 2 => 'Other' },
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     # (is this useful?) 0x03 => 'FolderID',
+    0x03 => {
+        Name => 'SortIndex',
+        PrintHex => 1,
+        PrintConv => { #https://github.com/Matmaus/LnkParse3/blob/master/LnkParse3/target/root_folder.py
+            0x00 => 'Internet Explorer',
+            0x42 => 'Libraries',
+            0x44 => 'Users',
+            0x48 => 'My Documents',
+            0x4c => 'Public Folder',
+            0x50 => 'My Computer',
+            0x54 => 'Users Libraries',
+            0x58 => 'My Network Places/Network',
+            # 0x5b - ChatGPT thinks this is for the user home folder
+            0x60 => 'Recycle Bin',
+            0x68 => 'Internet Explorer',
+            0x70 => 'Control Panel',
+            0x78 => 'Recycle Bin',
+            0x80 => 'My Games',
+        },
+    },
     0x04 => {
-        Name => 'FolderGUID',
+        Name => 'RootFolderGUID',
         Format => 'undef[16]',
-        ValueConv => 'require Image::ExifTool::ASF; Image::ExifTool::ASF::GetGUID($val)',
+        ValueConv => 'Image::ExifTool::ASF::GetGUID($val)',
         SeparateTable => 'GUID',
         PrintConv => \%guidLookup,
     },
 );
 
 # ref https://helgeklein.com/blog/dissecting-a-shortcut/
-%Image::ExifTool::LNK::FileInfo = (
-    GROUPS => { 2 => 'Other' },
-    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
-    # (always 0?) 3 => 'FileEntryFlags',
-    # (always 0?) 4 => { Name => 'FileEntrySize', Format => 'int32u' },
-    8 => {
-        Name => 'FileEntryModifyDate',
-        Groups => { 2 => 'Time' },
-        Format => 'int32u',
-        ValueConv => 'Image::ExifTool::LNK::DOSTime($val)',
-        PrintConv => '$self->ConvertDateTime($val)',
-    },
-    12 => {
-        Name => 'FileEntryAttributes',
-        SeparateTable => 'FileAttributes',
-        PrintConv => \%fileAttributes,
-    },
-    14 => {
-        Name => 'FileEntryDOSName',
-        Format => 'string[$size-14]',
-        # Hook based on minimum length of 2
-        Hook => '$$dataPt =~ /^.{$pos}(.*?)\0/s and $varSize += length($1) & 0xfffe',
-    },
-    # 16 - int16u ExtensionSize
-    # 18 - int16u ExtensionVersion
-    # 20 - int16u unknown
-    # 22 - int16u 0xbeef
-    24 => {
-        Name => 'FileEntryCreateDate',
-        Groups => { 2 => 'Time' },
-        Format => 'int32u',
-        ValueConv => 'Image::ExifTool::LNK::DOSTime($val)',
-        PrintConv => '$self->ConvertDateTime($val)',
-    },
-    28 => {
-        Name => 'FileEntryAccessDate',
-        Groups => { 2 => 'Time' },
-        Format => 'int32u',
-        ValueConv => 'Image::ExifTool::LNK::DOSTime($val)',
-        PrintConv => '$self->ConvertDateTime($val)',
-    },
-    36 => {
-        Name => 'FileEntryName',
-        Format => 'unicode[int(($size-$varSize-36)/2)-1]',
-    },
-);
-
-# (same structure as above)
 %Image::ExifTool::LNK::TargetInfo = (
     GROUPS => { 2 => 'Other' },
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
@@ -512,6 +630,7 @@ my %guidLookup = (
         Name => 'TargetFileModifyDate',
         Groups => { 2 => 'Time' },
         Format => 'int32u',
+        RawConv => '$val || undef', # (ignore zero dates)
         ValueConv => 'Image::ExifTool::LNK::DOSTime($val)',
         PrintConv => '$self->ConvertDateTime($val)',
     },
@@ -522,49 +641,498 @@ my %guidLookup = (
     },
     14 => {
         Name => 'TargetFileDOSName',
-        Format => 'string[$size-14]',
-        # Hook based on minimum length of 2
-        Hook => '$$dataPt =~ /^.{$pos}(.*?)\0/s and $varSize += length($1) & 0xfffe',
+        Format => 'undef[$size-14]',
+        RawConv => q{
+            # allow for the possibility of Unicode here
+            if ($val =~ /^[\x20-\x7f]\0[\x20-\x7f]/) {
+                $val = $1 if $val =~ /^((.{2})*?)\0\0/s;
+                $val = $self->Decode($val, 'UTF16', 'II');
+            } else {
+                $val = $1 if $val =~ /^(.*?)\0/s;
+            }
+        },
     },
-    # 16 - int16u ExtensionSize
-    # 18 - int16u ExtensionVersion
-    # 20 - int16u unknown
-    # 22 - int16u 0xbeef
+);
+
+# https://github.com/Matmaus/LnkParse3/blob/master/LnkParse3/target/control_panel_cpl.py
+%Image::ExifTool::LNK::ControlPanelCPL = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    4 => {
+        Name => 'Item00SpecialType',
+        Format => 'int32u',
+        PrintConv => 'sprintf("0x%.8x (ControlPanelCPL)", $val)',
+        # seen 0xffffff37
+    },
+    12 => {
+        Name => 'CPLFilePath',
+        Condition => '$$valPt !~ /^\0/',
+        Format => 'undef[$size-12]',
+        # pull out all valid ASCII strings
+        RawConv => q{
+            $$self{CPLIsASCII} = 1;
+            my @strs = $val =~ /[^\0]+/g;
+            return(@strs <= 1 ? $strs[0] : \@strs);
+        },
+    },
     24 => {
+        Name => 'CPLFilePath',
+        Condition => 'not $$self{CPLIsASCII}',
+        Format => 'undef[$size-24]',
+        # pull out all valid Unicode strings
+        RawConv => q{
+            my @strs;
+            $val .= "\0\0"; # allow for missing terminator
+            while ($val =~ /^((?:..)*?)\0\0/s) {
+                my $uni = $1;
+                $val = substr($val, length($uni) + 2);
+                if ($uni =~ /^[\x20-\x7f]+$/) {
+                    # also extract random ASCII data
+                    push @strs, $uni;
+                } else {
+                    my $str = $self->Decode($uni, 'UTF16');
+                    push @strs, $str if length $str;
+                }
+            }
+            return(@strs <= 1 ? $strs[0] : \@strs);
+        },
+    },
+);
+
+# ref 5
+%Image::ExifTool::LNK::GameFolderInfo = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    4 => {
+        Name => 'Item00SpecialType',
+        Format => 'int32u',
+        PrintConv => 'sprintf("0x%.8x (GameFolder)", $val)',
+        # val = 0x49534647
+    },
+    # (nothing else known)
+);
+
+# ref 5
+%Image::ExifTool::LNK::PropertyStore = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    12 => {
+        Name => 'PropertyStoreGUID',
+        Format => 'undef[18]',
+        ValueConv => 'Image::ExifTool::ASF::GetGUID(substr($val,2))',
+        SeparateTable => 'GUID',
+        PrintConv => \%guidLookup,
+    },
+);
+
+# ref 5
+%Image::ExifTool::LNK::MTPType2 = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    38 => {
+        Name => 'StorageNameLen',
+        Format => 'int32u',
+        RawConv => '$$self{StorageNameLen} = $val; undef',
+        Hidden => 1,
+    },
+    42 => {
+        Name => 'StorageIDLen',
+        Format => 'int32u',
+        RawConv => '$$self{StorageIDLen} = $val; undef',
+        Hidden => 1,
+    },
+    46 => {
+        Name => 'FileSystemNameLen',
+        Format => 'int32u',
+        RawConv => '$$self{FileSystemNameLen} = $val; undef',
+        Hidden => 1,
+    },
+    50 => {
+        Name => 'NumGUIDs',
+        Format => 'int32u',
+        RawConv => '$$self{NumGUIDs} = $val; undef',
+        Hidden => 1,
+    },
+    54 => {
+        Name => 'MTPStorageName',
+        Format => 'undef[$$self{StorageNameLen} * 2]',
+        ValueConv => '$self->Decode($val, "UTF16")',
+        Hook => '$varSize += $$self{StorageNameLen} * 2',
+    },
+    54.1 => {
+        Name => 'MTPStorageID',
+        Format => 'undef[$$self{StorageIDLen} * 2]',
+        ValueConv => '$self->Decode($val, "UTF16")',
+        Hook => '$varSize += $$self{StorageIDLen} * 2',
+    },
+    54.2 => {
+        Name => 'MTPFileSystem',
+        Format => 'undef[$$self{FileSystemNameLen} * 2]',
+        ValueConv => '$self->Decode($val, "UTF16")',
+        Hook => '$varSize += $$self{FileSystemNameLen} * 2',
+    },
+    56 => {
+        Name => 'MTP_GUID1',
+        Condition => '$$self{NumGUIDs} >= 1',
+        %mtpGUID,
+    },
+    134 => {
+        Name => 'MTP_GUID2',
+        Condition => '$$self{NumGUIDs} >= 2',
+        %mtpGUID,
+    },
+    212 => {
+        Name => 'MTP_GUID3',
+        Condition => '$$self{NumGUIDs} >= 3',
+        %mtpGUID,
+    },
+    290 => {
+        Name => 'MTP_GUID4',
+        Condition => '$$self{NumGUIDs} >= 4',
+        %mtpGUID,
+    },
+    368 => {
+        Name => 'MTP_GUID5',
+        Condition => '$$self{NumGUIDs} >= 5',
+        %mtpGUID,
+    },
+    446 => {
+        Name => 'MTP_GUID6',
+        Condition => '$$self{NumGUIDs} >= 6',
+        %mtpGUID,
+    },
+    524 => {
+        Name => 'MTP_GUID7',
+        Condition => '$$self{NumGUIDs} >= 7',
+        %mtpGUID,
+    },
+    602 => {
+        Name => 'MTP_GUID8',
+        Condition => '$$self{NumGUIDs} >= 8',
+        %mtpGUID,
+    },
+    # (arbitrarily decode only the first 8 MTP GUID's)
+);
+
+# ref PH
+%Image::ExifTool::LNK::Item00Info = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    # 4 - int16u data size
+    6 => {
+        Name => 'Item00Type',
+        Format => 'int32u',
+        PrintHex => 1,
+        PrintConv => {
+            # (never used because these are handled separately,
+            #  but included here for documentation)
+            0x23febbee => 'PropertyStoreGUID',
+            0x10312005 => 'MTPType2',
+            # 0x00000000 ?
+            # 0x07192006 ?
+        },
+    },
+    # extract property strings (seen with Item00Type == 0x0)
+    20 => {
+        Name => 'Prop1Len',
+        Format => 'int16u',
+        RawConv => '$$self{Prop1Len} = $val; undef',
+        Hidden => 1,
+    },
+    22 => {
+        Name => 'Prop2Len',
+        Format => 'int16u',
+        RawConv => '$$self{Prop2Len} = $val; undef',
+        Hidden => 1,
+    },
+    23 => {
+        Name => 'Dummy',
+        RawConv => 'undef',
+        Hidden => 1,
+        # decide whether or not this looks like property strings
+        Hook => q{
+            if (24 + 2 * ($$self{Prop1Len} + $$self{Prop2Len}) != $size) {
+                # doesn't look like property strings
+                delete $$self{Prop1Len};
+                delete $$self{Prop2Len};
+            }
+        },
+    },
+    24 => {
+        Name => 'PropertyString1',
+        Condition => '$$self{Prop1Len}',
+        Format => 'undef[$$self{Prop1Len} * 2]',
+        RawConv => '$self->Decode($val, "UTF16")',
+        Hook => '$varSize += $$self{Prop1Len} * 2',
+    },
+    24.1 => {
+        Name => 'PropertyString2',
+        Condition => '$$self{Prop2Len}',
+        Format => 'undef[$$self{Prop2Len} * 2]',
+        RawConv => '$self->Decode($val, "UTF16")',
+    },
+);
+
+# ref https://github.com/Matmaus/LnkParse3/blob/master/LnkParse3/target/control_panel_category.py
+%Image::ExifTool::LNK::ControlPanelInfo = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    8 => {
+        Name => 'ControlPanelCategory',
+        Format => 'int32u',
+        PrintConv => {
+            0 => 'All Control Panel Items',
+            1 => 'Appearance and Personalization',
+            2 => 'Hardware and Sound',
+            3 => 'Network and Internet',
+            4 => 'Sounds, Speech, and Audio Devices',
+            5 => 'System and Security',
+            6 => 'Clock, Language, and Region',
+            7 => 'Ease of Access',
+            8 => 'Programs',
+            9 => 'User Accounts',
+            10 => 'Security Center',
+            11 => 'Mobile PC',
+        },
+    },
+);
+
+%Image::ExifTool::LNK::URI = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    # 3 - flags: 0x80 set if URI is in Unicode
+    3 => {
+        Name => 'URIFlags',
+        Hidden => 1,
+        RawConv => '$$self{URIFlags} = $val; undef',
+    },
+    4 => {
+        Name => 'URIDataSize',
+        Format => 'int16u',
+        Hidden => 1,
+        RawConv => '$$self{URIDataSize} = $val; undef',
+    },
+    8 => {
+        Name => 'URI',
+        Condition => '$$self{URIDataSize} == 0',
+        Format => 'undef[$size-8]',
+        RawConv => '$self->Decode($val, ($$self{URIFlags} & 0x80) ? "UTF16" : "Latin")',
+    },
+# all of the following tags are NC because a sample wasn't available
+    14 => {
+        Name => 'TimeStamp',
+        Condition => '$$self{URIDataSize} > 0',
+        Groups => { 2 => 'Time' },
+        %fileTime,
+    },
+    42 => {
+        Name => 'FTPHostLen',
+        Condition => '$$self{URIDataSize} > 0',
+        Hidden => 1,
+        Format => 'int32u',
+        RawConv => '$$self{FTPHostLen} = $val; undef',
+    },
+    46 => {
+        Name => 'FTPHost',
+        Condition => '$$self{URIDataSize} > 0',
+        Format => 'undef[$$self{FTPHostLen}]',
+        RawConv => '$self->Decode($val, ($$self{URIFlags} & 0x80) ? "UTF16" : "Latin"',
+        Hook => '$varSize += $$self{FTPHostLen} - 1', # (subtract 1 so offset 47 becomes 46)
+    },
+    47 => {
+        Name => 'FTPUserNameLen',
+        Condition => '$$self{URIDataSize} > 0',
+        Hidden => 1,
+        Format => 'int32u',
+        RawConv => '$$self{FTPUserNameLen} = $val; undef',
+    },
+    51 => {
+        Name => 'FTPUserName',
+        Condition => '$$self{URIDataSize} > 0',
+        Format => 'undef[$$self{FTPUserNameLen}]',
+        RawConv => '$self->Decode($val, ($$self{URIFlags} & 0x80) ? "UTF16" : "Latin"',
+        Hook => '$varSize += $$self{URIUserNameLen} - 1',
+    },
+    52 => {
+        Name => 'FTPPasswordLen',
+        Condition => '$$self{URIDataSize} > 0',
+        Hidden => 1,
+        Format => 'int32u',
+        RawConv => '$$self{FTPPasswordLen} = $val; undef',
+    },
+    56 => {
+        Name => 'FTPPassword',
+        Condition => '$$self{URIDataSize} > 0',
+        Format => 'undef[$$self{FTPPasswordLen}]',
+        RawConv => '$self->Decode($val, ($$self{URIFlags} & 0x80) ? "UTF16" : "Latin"',
+        Hook => '$varSize += $$self{FTPPasswordLen} - 1',
+    },
+    57 => {
+        Name => 'URI',
+        Condition => '$$self{URIDataSize} > 0',
+        Format => 'undef[$size-57-$varSize]',
+        RawConv => '$self->Decode($val, ($$self{URIFlags} & 0x80) ? "UTF16" : "Latin"',
+    },
+);
+
+# ref https://github.com/EricZimmerman/ExtensionBlocks/blob/master/ExtensionBlocks/Beef0003.cs
+%Image::ExifTool::LNK::Beef0003 = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    8 => {
+        Name => 'UnknownGUID',
+        Format => 'undef[16]',
+        ValueConv => 'Image::ExifTool::ASF::GetGUID($val)',
+        SeparateTable => 'GUID',
+        PrintConv => \%guidLookup,
+    },
+);
+
+# ref https://github.com/EricZimmerman/ExtensionBlocks/blob/master/ExtensionBlocks/Beef0004.cs
+%Image::ExifTool::LNK::Beef0004 = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    NOTES => 'TargetInfo extensions.',
+    # 0 - int16u ExtensionSize
+    2 => {
+        Name => 'Beef0004Ver',
+        Format => 'int16u',
+        Hidden => 1,
+        RawConv => '$$self{Beef0004Ver} = $val; undef',
+    },
+    # 2 - int16u ExtensionVersion
+    # 4 - int16u ExtensionType = 0x0004
+    # 6 - int16u ExtensionMagic = 0xbeef
+    8 => {
         Name => 'TargetFileCreateDate',
         Groups => { 2 => 'Time' },
         Format => 'int32u',
         ValueConv => 'Image::ExifTool::LNK::DOSTime($val)',
         PrintConv => '$self->ConvertDateTime($val)',
     },
-    28 => {
+    12 => {
         Name => 'TargetFileAccessDate',
         Groups => { 2 => 'Time' },
         Format => 'int32u',
         ValueConv => 'Image::ExifTool::LNK::DOSTime($val)',
         PrintConv => '$self->ConvertDateTime($val)',
     },
-    36 => {
+    16 => {
+        Name => 'OperatingSystem',
+        Format => 'int16u',
+        PrintHex => 1,
+        PrintConv => {
+            0x14 => 'Windows XP, 2003',
+            0x26 => 'Windows Vista',
+            0x2a => 'Windows 2008, 7, 8',
+            0x2e => 'Windows 8.1, 10',
+        },
+        Hook => q{
+            $varSize += 18 if $$self{Beef0004Ver} >= 7;
+            $varSize += 2 if $$self{Beef0004Ver} >= 3;
+            $varSize += 4 if $$self{Beef0004Ver} >= 9;
+            $varSize += 4 if $$self{Beef0004Ver} >= 8;
+        },
+    },
+    18 => {
         Name => 'TargetFileName',
-        Format => 'unicode[int(($size-$varSize-36)/2)-1]',
+        Format => 'undef[$size - 20 - $varSize]',    # (drop offset word after name)
+        # extract two strings if they exist
+        RawConv => q{
+            my @a = $val =~ /((?:..)*?)\0\0/sg;
+            $_ = $self->Decode($_, "UTF16") foreach @a;
+            return @a > 1 ? \@a : $a[0];
+        },
     },
 );
 
-%Image::ExifTool::LNK::DirInfo = (
+# ref 4
+%Image::ExifTool::LNK::Beef0014 = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&ProcessURI,
+    NOTES => 'URI extensions.',
+    0 => 'AbsoluteURI',
+    1 => 'URIAuthority',
+    2 => 'DisplayURI',
+    3 => 'URIDomain',
+    4 => 'URIExtension',
+    5 => 'URIFragment',
+    6 => 'URIHost',
+    7 => 'URIPassword',
+    8 => 'URIPath',
+    9 => 'URIPathAndQuery',
+    10 => 'URIQuery',
+    11 => 'RawURI',
+    12 => 'URISchemeName',
+    13 => 'URIUserInfo',
+    14 => 'URIUserName',
+    15 => 'URIHostType',
+    16 => 'URIPort',
+    17 => 'URIScheme',
+    18 => 'URIZone',
+);
+
+# ref https://github.com/EricZimmerman/ExtensionBlocks/blob/master/ExtensionBlocks/Beef0025.cs
+%Image::ExifTool::LNK::Beef0025 = (
     GROUPS => { 2 => 'Other' },
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
-    14 => {
-        Name => 'LinkedDirectoryName',
-        Format => 'unicode[int(($size-14)/2)-1]',
+    0x0c => {
+        Name => 'FileTime1',
+        Groups => { 2 => 'Time' },
+        %fileTime,
+    },
+    0x14 => {
+        Name => 'FileTime2',
+        Groups => { 2 => 'Time' },
+        %fileTime,
     },
 );
 
-%Image::ExifTool::LNK::FileInfo2 = (
+# ref https://github.com/EricZimmerman/ExtensionBlocks/blob/master/ExtensionBlocks/Beef0026.cs
+%Image::ExifTool::LNK::Beef0026a = (
     GROUPS => { 2 => 'Other' },
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
-    14 => {
-        Name => 'LinkedFileName',
-        Format => 'unicode[int(($size-14)/2)-1]',
+    0x0c => {
+        Name => 'CreateDate',
+        Groups => { 2 => 'Time' },
+        %fileTime,
+    },
+    0x14 => {
+        Name => 'ModifyDate',
+        Groups => { 2 => 'Time' },
+        %fileTime,
+    },
+    0x1c => {
+        Name => 'LastAccessDate',
+        Groups => { 2 => 'Time' },
+        %fileTime,
+    },
+);
+
+# ref https://github.com/Matmaus/LnkParse3/blob/master/LnkParse3/target/users_files_folder.py
+%Image::ExifTool::LNK::UsersFilesFolder = (
+    GROUPS => { 2 => 'Other' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    0x04 => {
+        Name => 'IgnoreThis',
+        Hidden => 1,
+        Format => 'int16u',
+        RawConv => 'undef',
+        Hook => '$varSize += Get16u($dataPt, $pos)', # skip inner data
+    },
+    0x06 => {
+        Name => 'DelegateClassGUID',
+        Format => 'undef[16]',
+        ValueConv => 'Image::ExifTool::ASF::GetGUID($val)',
+        SeparateTable => 'GUID',
+        PrintConv => \%guidLookup,
+    },
+    0x16 => {
+        Name => 'DelegateFolderGUID',
+        Format => 'undef[16]',
+        ValueConv => 'Image::ExifTool::ASF::GetGUID($val)',
+        SeparateTable => 'GUID',
+        PrintConv => \%guidLookup,
     },
 );
 
@@ -598,6 +1166,32 @@ my %guidLookup = (
     NetProviderType => {
         PrintHex => 1,
         PrintConv => {
+            # https://github.com/tpn/winsdk-10/blob/master/Include/10.0.14393.0/shared/wnnc.h
+            0x010000 => 'MSNET',
+            0x020000 => 'SMB',
+            0x030000 => 'NETWARE',
+            0x040000 => 'VINES',
+            0x050000 => '10NET',
+            0x060000 => 'LOCUS',
+            0x070000 => 'SUN_PC_NFS',
+            0x080000 => 'LANSTEP',
+            0x090000 => '9TILES',
+            0x0A0000 => 'LANTASTIC',
+            0x0B0000 => 'AS400',
+            0x0C0000 => 'FTP_NFS',
+            0x0D0000 => 'PATHWORKS',
+            0x0E0000 => 'LIFENET',
+            0x0F0000 => 'POWERLAN',
+            0x100000 => 'BWNFS',
+            0x110000 => 'COGENT',
+            0x120000 => 'FARALLON',
+            0x130000 => 'APPLETALK',
+            0x140000 => 'INTERGRAPH',
+            0x150000 => 'SYMFONET',
+            0x160000 => 'CLEARCASE',
+            0x170000 => 'FRONTIER',
+            0x180000 => 'BMC',
+            0x190000 => 'DCE',
             0x1a0000 => 'AVID',
             0x1b0000 => 'DOCUSPACE',
             0x1c0000 => 'MANGOSOFT',
@@ -631,6 +1225,16 @@ my %guidLookup = (
             0x390000 => 'OPENAFS',
             0x3a0000 => 'AVID1',
             0x3b0000 => 'DFS',
+            0x3c0000 => 'KWNP',
+            0x3d0000 => 'ZENWORKS',
+            0x3e0000 => 'DRIVEONWEB',
+            0x3f0000 => 'VMWARE',
+            0x400000 => 'RSFX',
+            0x410000 => 'MFILES',
+            0x420000 => 'MS_NFS',
+            0x430000 => 'GOOGLE',
+            0x440000 => 'NDFS',
+            0x450000 => 'DOCUSHARE',
         },
     },
 );
@@ -677,13 +1281,14 @@ my %guidLookup = (
         Name => 'FontFamily',
         Format => 'int32u',
         PrintHex => 1,
+        Mask => 0xf0,
         PrintConv => {
             0 => "Don't Care",
-            0x10 => 'Roman',
-            0x20 => 'Swiss',
-            0x30 => 'Modern',
-            0x40 => 'Script',
-            0x50 => 'Decorative',
+            0x1 => 'Roman',
+            0x2 => 'Swiss',
+            0x3 => 'Modern',
+            0x4 => 'Script',
+            0x5 => 'Decorative',
         },
     },
     0x28 => {
@@ -768,6 +1373,7 @@ my %guidLookup = (
     268 => {
         Name => 'EnvironmentTargetUnicode',
         Format => 'unicode[260]',
+        ValueConv => '$self->Decode($val, "UTF16", "II")',
     },
 );
 
@@ -784,8 +1390,7 @@ my %guidLookup = (
     Modified    => {
         Groups => { 2 => 'Time' },
         Format => 'int64u',
-        Groups => { 2 => 'Time' },
-        # convert time from 100-ns intervals since Jan 1, 1601 (NC)
+        # convert time from hex 100-ns intervals since Jan 1, 1601 (NC)
         RawConv => q{
             my $dat = pack('H*', $val);
             return undef if length $dat < 8;
@@ -835,12 +1440,13 @@ sub GetString($$;$)
 }
 
 #------------------------------------------------------------------------------
-# Process item ID data
+# Process item ID data (ref 4)
 # Inputs: 0) ExifTool object reference, 1) dirInfo reference, 2) tag table ref
 # Returns: 1 on success
 sub ProcessItemID($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $verbose = $et->Options('Verbose');
     my $dataPt = $$dirInfo{DataPt};
     my $dataLen = length $$dataPt;
     my $pos = 0;
@@ -850,17 +1456,127 @@ sub ProcessItemID($$$)
     );
     $et->VerboseDir('ItemID', undef, $dataLen);
     for (;;) {
-        last if $pos + 3 >= $dataLen;
+        $pos + 2 > $dataLen and $et->Warn('Missing item ID list terminator'), last;
         my $size = Get16u($dataPt, $pos);
-        last if $size < 3 or $pos + $size > $dataLen;
-        my $tag = Get8u($dataPt, $pos+2); # (just a guess -- may not be a tag at all)
+        if ($size == 0) {
+            my $more = $dataLen - $pos - 2;
+            $more and $et->Warn("Unknown $more bytes after item ID list");
+            last;
+        } elsif ($size < 4) {
+            $et->Warn('Invalid item ID entry size');
+            last;
+        }
+        my $tag = Get8u($dataPt, $pos+2); # get item ID
+        if ($pos + $size > $dataLen) {
+            $et->Warn(sprintf('Truncated item with ID 0x%.2x', $tag));
+            $size = $dataLen - $pos;
+        }
+        # 0x20-0x2f, 0x30-0x3f and 0x40-0x4f are ID ranges for the same tags
+        if (not $$tagTablePtr{$tag}) {
+            my %lkup = ( 0x20=>0x2e, 0x21=>0x2f, 0x30=>0x31, 0x40=>0x40 );
+            my $srcTag = $lkup{$tag & 0x71} || $lkup{$tag & 0x70};  # (keep bit 0 of MyComputer ID)
+            # make a clone of the existing tag definition
+            if (ref $$tagTablePtr{$srcTag} eq 'HASH') {
+                my %clone = %{$$tagTablePtr{$srcTag}};
+                $clone{TagID} = $tag;
+                $$tagTablePtr{$tag} = \%clone;
+            }
+        }
         AddTagToTable($tagTablePtr, $tag, {
             Name => sprintf('Item_%.2x', $tag),
             SubDirectory => { TagTable => 'Image::ExifTool::LNK::UnknownData' },
         }) unless $$tagTablePtr{$tag};
-        $et->HandleTag($tagTablePtr, $tag, undef, %opts, Start => $pos, Size => $size);
+        # isolate this itemID data
+        my $dat = substr($$dataPt, $pos, $size);
+        # look for 0xbeef extension blocks
+        # (don't know what the first 2 bytes are, but I've seen 0x0003, 0x0007, 0x0008
+        #  and 0x0009 for 0xbeef0004, and 0x0000 for 0xbeef0014 and 0xbeef0025)
+        # List of observed 0xbeef blocks (0xbeef ID - ItemID):
+        #  0xbeef0003 - 0xb1
+        #  0xbeef0004 - 0x31,0x32
+        #  0xbeef0014 - 0x61
+        #  0xbeef0025 - 0x2e
+        #  0xbeef0026 - 0x1f,0x2e
+        my $beefStart;
+        if ($dat =~ /.{5}\0\xef\xbe/sg) {
+            my $off = pos($dat) - 8;
+            my $off2 = Get16u(\$dat, length($dat) - 2);
+            if ($off == $off2) {
+                $beefStart = $pos + $off;
+            } else {
+                $et->Warn('Unexpected 0xbeef extension offset');
+            }
+        }
+        $et->HandleTag($tagTablePtr, $tag, undef, %opts,
+            Start => $pos,
+            Size  => $beefStart ? $beefStart - $pos : $size,
+        );
+        if ($verbose > 1 and $beefStart) {
+            my $len = $size - $beefStart + $pos;
+            $et->VPrint(1, sprintf("$$et{INDENT}- Tag 0x%.4x Extension (%d bytes)\n",$tag,$len));
+            $et->VerboseDump($dataPt, %opts, Start => $beefStart, Len => $len);
+        }
+        # process 0xbeef extension blocks
+        while ($beefStart) {
+            my $end = $pos + $size; # end if itemID entry
+            if ($beefStart + 8 > $end) {
+                $et->Warn('Garbage data in 0xbeef extension') unless $beefStart == $end;
+                last;
+            }
+            my $len = Get16u($dataPt, $beefStart);
+            my $beefID = Get32u($dataPt, $beefStart + 4);
+            ($beefID & 0xffff0000) == 0xbeef0000 or $et->Warn('Invalid 0xbeef extension'), last;
+            $beefStart + $len <= $end or $et->Warn('Truncated 0xbeef extension'), last;
+            AddTagToTable($tagTablePtr, $beefID, {
+                Name => sprintf('Unknown_beef%.4x', $beefID & 0xffff),
+                Binary => 1,
+            }) unless $$tagTablePtr{$beefID};
+            $et->HandleTag($tagTablePtr, $beefID, undef, %opts,
+                Start => $beefStart,
+                Size  => $len,
+            );
+            ++$len if $len & 0x01;  # assume they start on 2-byte boundaries (NC)
+            $beefStart += $len;     # step to next extension block
+        }
         $pos += $size;
     }
+}
+
+#------------------------------------------------------------------------------
+# Process URI 0xbeef0014 extension (ref 4)
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessURI($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $pos = $$dirInfo{DirStart} || 0;
+    my $dirLen = $$dirInfo{DirLen};
+    my $end = $pos + $dirLen;
+    return 0 if $dirLen < 56;
+    $et->VerboseDir('URI', undef, $dirLen);
+    # offset 8 - GUID df2fce13-25ec-45bb-9d4c-cecd47c2430c
+    my $num = Get32u($dataPt, $pos + 52);
+    my $i;
+    $pos += 56;
+    for ($i=0; $i<$num; ++$i) {
+        $pos + 8 > $end and $et->Warn('Truncated URI extension'), last;
+        my $tag = Get32u($dataPt, $pos);
+        my $size = Get32u($dataPt, $pos + 4);
+        $pos += 8;
+        next unless $size;
+        $pos + $size > $end and $et->Warn('Truncated URI string'), last;
+        # (many tags are untested -- some may not be Unicode strings?)
+        my $val = $et->Decode(substr($$dataPt, $pos, $size), 'UTF16');
+        $et->HandleTag($tagTablePtr, $tag, $val,
+            DataPt  => $dataPt,
+            DataPos => $$dirInfo{DataPos},
+            Start   => $pos,
+            Size    => $size,
+        );
+        $pos += $size;
+    }
+    return 1;
 }
 
 #------------------------------------------------------------------------------
@@ -1003,13 +1719,13 @@ sub ProcessLNK($$)
 {
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
-    my ($buff, $buf2, $len, $i);
+    my ($buff, $buf2, $len, $i, $bad, $isUnicode);
 
     # read LNK file header
     $raf->Read($buff, 0x4c) == 0x4c or return 0;
     unless ($buff =~ /^.{4}\x01\x14\x02\0{5}\xc0\0{6}\x46/s) {
         # check for INI-format LNK file (eg. .URL file)
-        return undef unless $buff =~ /^\[[InternetShortcut\][\x0d\x0a]/;
+        return 0 unless $buff =~ /^\[[InternetShortcut\][\x0d\x0a]/;
         $raf->Seek(0,0) or return 0;
         $et->SetFileType('URL', 'application/x-mswinurl');
         return ProcessINI($et, $dirInfo);
@@ -1034,11 +1750,14 @@ sub ProcessLNK($$)
 
     my $flags = Get32u(\$buff, 0x14);
 
+    # save Unicode flag for strings
+    $isUnicode = 1 if $flags & 0x80;
+
     # read link target ID list
     if ($flags & 0x01) {
-        $raf->Read($buff, 2) or return 1;
+        $raf->Read($buff, 2) == 2 or $et->Warn('Missing target ID list'), return 1;
         $len = unpack('v', $buff);
-        $raf->Read($buff, $len) == $len or return 1;
+        $raf->Read($buff, $len) == $len or $et->Warn('Truncated target ID list'), $len = length($buff);
         $et->HandleTag($tagTablePtr, 0x10000, undef,
             DataPt  => \$buff,
             DataPos => $raf->Tell() - $len,
@@ -1048,10 +1767,10 @@ sub ProcessLNK($$)
 
     # read link information
     if ($flags & 0x02) {
-        $raf->Read($buff, 4) or return 1;
+        $raf->Read($buff, 4) == 4 or $et->Warn('Missing link information'), return 1;
         $len = unpack('V', $buff);
-        return 1 if $len < 4;
-        $raf->Read($buf2, $len - 4) == $len - 4 or return 1;
+        $len < 4 and $et->Warn('Invalid link information'), return 1;
+        $raf->Read($buf2, $len-4) == $len-4 or $et->Warn('Truncated link information'), $len = length($buf2);
         $buff .= $buf2;
         $et->HandleTag($tagTablePtr, 0x20000, undef,
             DataPt  => \$buff,
@@ -1059,7 +1778,7 @@ sub ProcessLNK($$)
             Size    => $len,
         );
     }
-
+    
     # read string data
     my @strings = qw(Description RelativePath WorkingDirectory
                      CommandLineArguments IconFileName);
@@ -1067,7 +1786,7 @@ sub ProcessLNK($$)
         my ($val, $limit);
         my $mask = 0x04 << $i;
         next unless $flags & $mask;
-        $raf->Read($buff, 2) or return 1;
+        $raf->Read($buff, 2) == 2 or $et->Warn("Invalid $strings[$i] string"), return 1;
         my $pos = $raf->Tell();
         $len = unpack('v', $buff) or next;
         # Windows doesn't follow their own specification and limits the length
@@ -1079,14 +1798,15 @@ sub ProcessLNK($$)
                 $et->Warn('LNK string data overrun! Possible security issue');
             }
         }
-        $len *= 2 if $flags & 0x80;  # characters are 2 bytes if Unicode flag is set
-        $raf->Read($buff, $len) or return 1;
+        # characters are 2 bytes if Unicode flag is set
+        $len *= 2 if $isUnicode;
+        $raf->Read($buff, $len) or $et->Warn("Truncated $strings[$i] string"), return 1;
         # remove last character if string is at length limit (Windows treats this as a null)
         if ($limit) {
-            $len -= $flags & 0x80 ? 2 : 1;
+            $len -= $isUnicode ? 2 : 1;
             $buff = substr($buff, 0, $len);
         }
-        $val = $et->Decode($buff, 'UTF16') if $flags & 0x80;
+        $val = $et->Decode($buff, 'UTF16') if $isUnicode;
         $et->HandleTag($tagTablePtr, 0x30000 | $mask, $val,
             DataPt  => \$buff,
             DataPos => $pos,
@@ -1099,7 +1819,7 @@ sub ProcessLNK($$)
         $len = unpack('V', $buff);
         last if $len < 4;
         $len -= 4;
-        $raf->Read($buf2, $len) == $len or last;
+        $raf->Read($buf2, $len) == $len or $et->Warn('Truncated extra data'), last;
         next unless $len > 4;
         $buff .= $buf2;
         my $tag = Get32u(\$buff, 4);
@@ -1112,6 +1832,20 @@ sub ProcessLNK($$)
             DataPos => $raf->Tell() - $len - 4,
             TagInfo => $tagInfo,
         );
+    }
+    # check for an overlay
+    my $pos = $raf->Tell();
+    $len = 0;
+    for (;;) {
+        $i = $raf->Read($buff, 65536);
+        last unless $i;
+        $len += $i;
+        $bad = 1 if not $bad and $buff =~ /[^\0]/;
+    }
+    if ($bad) {
+        $et->Warn(sprintf('Unknown %d-byte overlay at offset 0x%x', $len, $pos));
+    } elsif ($len) {
+        $et->Warn("$len bytes of null padding at end of file");
     }
     return 1;
 }
@@ -1149,6 +1883,10 @@ under the same terms as Perl itself.
 =item L<http://www.i2s-lab.com/Papers/The_Windows_Shortcut_File_Format.pdf>
 
 =item L<https://harfanglab.io/insidethelab/sadfuture-xdspy-latest-evolution/#tid_specifications_ignored>
+
+=item L<https://github.com/libyal/libfwsi/blob/main/documentation/Windows%20Shell%20Item%20format.asciidoc>
+
+=item L<https://github.com/EricZimmerman/Lnk/blob/master/Lnk/ShellItems/ShellBag0x00.cs>
 
 =back
 

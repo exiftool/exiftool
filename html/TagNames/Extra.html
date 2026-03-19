@@ -182,12 +182,15 @@ option is set)</span></span></td></tr>
 <td>FileCreateDate</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
-<td><span class=s><span class=n>(the filesystem creation date/time.  Windows/Mac only.  In Windows, the file
-creation date/time is preserved by default when writing if Win32API::File
-and Win32::API are available.  On Mac, this tag is extracted only if it or
-the MacOS group is specifically requested or the API <a href="../ExifTool.html#RequestAll">RequestAll</a> option is
-set to 2 or higher.  Requires &quot;setfile&quot; for writing on Mac, which may be
-installed by typing <code>xcode-select --install</code> in the Terminal)</span></span></td></tr>
+<td><span class=s><span class=n>(the filesystem creation date/time.  Windows/Mac/Linux only.  In Windows, the
+file creation date/time is preserved by default when writing if
+Win32API::File and Win32::API are available.  On Mac, this tag is extracted
+only if it or the MacOS group is specifically requested or the API
+<a href="../ExifTool.html#RequestAll">RequestAll</a> option is set to 2 or higher.  On
+Linux, this tag is read-only and extracted only if the filesystem supports
+btime and &quot;File::StatX&quot; is available.  Requires &quot;setfile&quot; for writing on
+Mac, which may be installed by typing <code>xcode-select --install</code> in the
+Terminal)</span></span></td></tr>
 <tr>
 <td>FileDeviceID</td>
 <td class=c>no</td>
@@ -682,7 +685,7 @@ stream.  Requires Win32API::File)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 15, 2025</i>
+<br><i>Last revised Mar 19, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

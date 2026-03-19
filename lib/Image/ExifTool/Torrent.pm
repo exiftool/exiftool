@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 sub ReadBencode($$$);
 sub ExtractTags($$$;$$@);
@@ -214,6 +214,7 @@ sub ExtractTags($$$;$$@)
                 if ($$tagInfo{JoinPath}) {
                     $val = join '/', map { ref $_ ? '(Binary data)' : $_ } @$val;
                 } else {
+                    next unless @$val;  # ignore empty arrays
                     push @more, @$val;
                     next if ref $more[0] eq 'ARRAY'; # continue expanding nested lists
                     $val = shift @more;

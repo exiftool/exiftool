@@ -6166,6 +6166,11 @@ my %ciMaxFocal = (
         SeparateTable => 'UserDefStyle',
         PrintConv => \%userDefStyles,
     },
+    # location of time stamp (github400)
+    # 0x00ec - 1000D firmware 1.0.7, 40D firmware 1.0.8
+    # 0x01b4 - 5D II firmware 1.0.6 and 1.1.0
+    # 0x01b8 - 5D II firmware 2.1.2
+    # 0x01bc - 7D firmware 2.0.3
 );
 
 # Picture Style information for the 60D, etc (ref 48)
@@ -6345,6 +6350,8 @@ my %ciMaxFocal = (
         SeparateTable => 'UserDefStyle',
         PrintConv => \%userDefStyles,
     },
+    # location of time stamp (github400)
+    # 0x01d0 - 6D firmware 1.1.6, 1D X firmware 2.1.0
 );
 
 # Movie information (MakerNotes tag 0x11) (ref PH)

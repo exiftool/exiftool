@@ -7,6 +7,21 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Mar. 19, 2026 - Version 13.53
+
+  - Added ability to read FileCreateDate (btime) on Linux systems
+  - Added a bunch more Sony lenses (thanks Jos Roost)
+  - Added warnings for possibly malicious or corrupted LNK files (github #401)
+  - Decode timed GPS from Kenwood DRV-A510W MP4 videos
+  - Decode more information from LNK files
+  - Reduced memory requirements when running on a large number of files,
+    particularly when the -U option is used
+  - Patched a potential security issue in Windows version
+  - Fixed possible "undefined value" runtime warnings when reading torrent and
+    WPG files (thanks Raf)
+  - Fixed issue which could result in an "uninitialized value" runtime error
+    when parsing corrupted CBOR information
+
 Feb. 27, 2026 - Version 13.52
 
   - Added a number of new XMP tags written by Adobe software
@@ -27,7 +42,7 @@ Feb. 19, 2026 - Version 13.51
   - Added a new Nikon LensID (thanks Johan)
   - Decode more tags from Windows LNK files
   - Decode another LIGOGPSINFO variant (github #394)
-  - Decode some new Canon tags (thanks Peter Wem, github #389, #390,  #393)
+  - Decode some new Canon tags (thanks Peter Wem, github #389, #390, #393)
   - Decode some new Nikon tags
   - Split decoding on Nikon BurstGroupID into separate tags
   - Fixed round-off error in GPSDateTime seconds for camm6 metadata in MP4

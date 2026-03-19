@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.56';
+$VERSION = '4.57';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -9932,7 +9932,7 @@ my %nikonFocalConversions = (
     636 => {
         Name => 'HighFrequencyFlickerReduction',
         PrintConv => \%offOn,
-        Unknown => 1,
+        # Unknown => 1, (can't have Unknown tag with a Hook)
         Hook => '$varSize += 4 if $$self{FirmwareVersion} and $$self{FirmwareVersion} ge "03.00"',
     },
 #

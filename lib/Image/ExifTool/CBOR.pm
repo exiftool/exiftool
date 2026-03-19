@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::JSON;
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub ProcessCBOR($$$);
 sub ReadCBORValue($$$$);
@@ -207,6 +207,7 @@ sub ReadCBORValue($$$$)
         # read next value (note: in the case of multiple tags,
         # this nesting will apply the tags in the correct order)
         ($val, $err, $pos) = ReadCBORValue($et, $dataPt, $pos, $end);
+        return(undef, $err, $pos) if $err;
         $dumpStart = $pos;
         # convert some values according to the optional tag number (untested)
         if ($num == 0 and not ref $val) {       # date/time string

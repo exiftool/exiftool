@@ -6178,9 +6178,7 @@ sub NextOffsetName($;$)
 
 #------------------------------------------------------------------------------
 # Process EXIF directory
-# Inputs: 0) ExifTool object reference
-#         1) Reference to directory information hash
-#         2) Pointer to tag table for this directory
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success, otherwise returns 0 and sets a Warning
 sub ProcessExif($$$)
 {

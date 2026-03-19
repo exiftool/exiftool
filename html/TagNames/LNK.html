@@ -233,50 +233,119 @@
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td title='0x001f = 31'>0x001f</td>
-<td>FolderInfo</td>
-<td class=c>-</td>
-<td>--&gt; <a href='LNK.html#FolderInfo'>LNK FolderInfo Tags</a></td></tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>ControlPanelCPL
+  <br>GameFolderInfo
+  <br>PropertyStore
+  <br>MTPType2
+  <br>Item00Info</td>
+<td class=c>-<br>-<br>-<br>-<br>-</td>
+<td>--&gt; <a href='LNK.html#ControlPanelCPL'>LNK ControlPanelCPL Tags</a>
+  <br>--&gt; <a href='LNK.html#GameFolderInfo'>LNK GameFolderInfo Tags</a>
+  <br>--&gt; <a href='LNK.html#PropertyStore'>LNK PropertyStore Tags</a>
+  <br>--&gt; <a href='LNK.html#MTPType2'>LNK MTPType2 Tags</a>
+  <br>--&gt; <a href='LNK.html#Item00Info'>LNK Item00Info Tags</a></td></tr>
 <tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>ControlPanelInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#ControlPanelInfo'>LNK ControlPanelInfo Tags</a></td></tr>
+<tr>
+<td title='0x001e = 30'>0x001e</td>
+<td>RootFolder</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#RootFolder'>LNK RootFolder Tags</a></td></tr>
+<tr class=b>
+<td title='0x001f = 31'>0x001f</td>
+<td>RootFolder</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#RootFolder'>LNK RootFolder Tags</a></td></tr>
+<tr>
 <td title='0x002e = 46'>0x002e</td>
 <td>VolumeGUID</td>
 <td class=c>no</td>
 <td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x002f = 47'>0x002f</td>
 <td>VolumeName</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x0031 = 49'>0x0031</td>
-<td>FileInfo</td>
-<td class=c>-</td>
-<td>--&gt; <a href='LNK.html#FileInfo'>LNK FileInfo Tags</a></td></tr>
 <tr>
-<td title='0x0032 = 50'>0x0032</td>
+<td title='0x0031 = 49'>0x0031</td>
 <td>TargetInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='LNK.html#TargetInfo'>LNK TargetInfo Tags</a></td></tr>
 <tr class=b>
-<td title='0x0035 = 53'>0x0035</td>
-<td>DirInfo</td>
-<td class=c>-</td>
-<td>--&gt; <a href='LNK.html#DirInfo'>LNK DirInfo Tags</a></td></tr>
+<td title='0x0040 = 64'>0x0040</td>
+<td>NetworkLocation</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr>
-<td title='0x0036 = 54'>0x0036</td>
-<td>FileInfo2</td>
+<td title='0x0052 = 82'>0x0052</td>
+<td>CompressedFolder</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0061 = 97'>0x0061</td>
+<td>URI</td>
 <td class=c>-</td>
-<td>--&gt; <a href='LNK.html#FileInfo2'>LNK FileInfo2 Tags</a></td></tr>
+<td>--&gt; <a href='LNK.html#URI'>LNK URI Tags</a></td></tr>
+<tr>
+<td title='0x0070 = 112'>0x0070</td>
+<td>ControlPanelShellItem</td>
+<td class=c>no</td>
+<td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
 <tr class=b>
 <td title='0x0071 = 113'>0x0071</td>
 <td>ControlPanelShellItem</td>
 <td class=c>no</td>
 <td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
 <tr>
+<td title='0x0072 = 114'>0x0072</td>
+<td>Printers</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0073 = 115'>0x0073</td>
+<td>CommonPlacesFolder</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0074 = 116'>0x0074</td>
+<td>UsersFilesFolder</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#UsersFilesFolder'>LNK UsersFilesFolder Tags</a></td></tr>
+<tr class=b>
 <td title='0x00ff = 255'>0x00ff</td>
 <td>VendorData</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0xbeef0003 = 3203334147'>0xbeef0003</td>
+<td>Beef0003</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#Beef0003'>LNK Beef0003 Tags</a></td></tr>
+<tr class=b>
+<td title='0xbeef0004 = 3203334148'>0xbeef0004</td>
+<td>Beef0004</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#Beef0004'>LNK Beef0004 Tags</a></td></tr>
+<tr>
+<td title='0xbeef0014 = 3203334164'>0xbeef0014</td>
+<td>Beef0014</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#Beef0014'>LNK Beef0014 Tags</a></td></tr>
+<tr class=b>
+<td title='0xbeef0025 = 3203334181'>0xbeef0025</td>
+<td>Beef0025</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#Beef0025'>LNK Beef0025 Tags</a></td></tr>
+<tr>
+<td title='0xbeef0026 = 3203334182'>0xbeef0026</td>
+<td>Beef0026a
+  <br>Unknown_beef0026</td>
+<td class=c>-<br>no</td>
+<td>--&gt; <a href='LNK.html#Beef0026a'>LNK Beef0026a Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='GUID'>LNK GUID Values</a></h2>
@@ -285,21 +354,31 @@
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>GUID</th></tr>
 <tr><td>'00021401-0000-0000-C000-000000000046'</td><td>= Shell Link Class Identifier</td>
+</tr><tr><td>'0085E0A6-8D34-45D7-BC5C-447E59C73D48'</td><td>= Content Type Generic File</td>
 </tr><tr><td>'008CA0B1-55B4-4C56-B8A8-4DE4B299D3BE'</td><td>= Account Pictures (per-user)</td>
 </tr><tr><td>'00BCFC5A-ED94-4E48-96A1-3F6217F21990'</td><td>= RoamingTiles (per-user)</td>
+</tr><tr><td>'00F0C3AC-A593-49AC-9219-24ABCA5A2563'</td><td>= Content Type Mixed Content Album</td>
+</tr><tr><td>'012B0DB7-D4C1-45D6-B081-94B87779614F'</td><td>= Content Type Video Album</td>
 </tr><tr><td>'0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8'</td><td>= Programs (common)</td>
+</tr><tr><td>'031DA7EE-18C8-4205-847E-89A11261D0F3'</td><td>= Content Type Network Association</td>
+</tr><tr><td>'031E4825-7B94-4DC3-B131-E946B44C8DD5'</td><td>= Libraries</td>
 </tr><tr><td>'04731B67-D933-450A-90E6-4ACD2E9408FE'</td><td>= CLSID_SearchFolder (Windows Search)</td>
+</tr><tr><td>'04731b67-d933-450a-90e6-4acd2e9408fe'</td><td>= Search Folder</td>
 </tr><tr><td>'0482AF6C-08F1-4C34-8C90-E17EC98B1E17'</td><td>= Public Account Pictures (common)</td>
 </tr><tr><td>'054FAE61-4DD8-4787-80B6-090220C4B700'</td><td>= GameExplorer (per-user)</td>
 </tr><tr><td>'0762D272-C50A-4BB0-A382-697DCD729B80'</td><td>= Users (fixed)</td>
 </tr><tr><td>'0AC0837C-BBF8-452A-850D-79D08E667CA7'</td><td>= Computer (virtual)</td>
+</tr><tr><td>'0BAC070A-9F5F-4DA4-A8F6-3DE44D68FD6C'</td><td>= Content Type Wireless Profile</td>
+</tr><tr><td>'0C39A5CF-1A7A-40C8-BA74-8900E6DF5FCD'</td><td>= Recent Items</td>
 </tr><tr><td>'0D4C3DB6-03A3-462F-A0E6-08924C41B5D4'</td><td>= History (per-user)</td>
 </tr><tr><td>'0F214138-B1D3-4A90-BBA9-27CBC0C5389A'</td><td>= Sync Setup (virtual)</td>
+</tr><tr><td>'0FED060E-8793-4B1E-90C9-48AC389AC631'</td><td>= Content Type Appointment</td>
 </tr><tr><td>'15CA69B3-30EE-49C1-ACE1-6B5EC372AFB5'</td><td>= Sample Playlists (common)</td>
 </tr><tr><td>'1777F761-68AD-4D8A-87BD-30B759FA33DD'</td><td>= Favorites (per-user)</td>
 </tr><tr><td>'17789161-0268-45B3-8557-013009765873'</td><td>= Local AppData</td>
 </tr><tr><td>'18989B1D-99B5-455B-841C-AB7C74E4DDFC'</td><td>= MyVideos (per-user)</td>
 </tr><tr><td>'190337D1-B8CA-4121-A639-6D472D16972A'</td><td>= Search Results (virtual)</td>
+</tr><tr><td>'1A33F7E4-AF13-48F5-994E-77369DFE04A3'</td><td>= Content Type Playlist</td>
 </tr><tr><td>'1A6FDBA2-F42D-4358-A798-B74D745926C5'</td><td>= Recorded TV (common)</td>
 </tr><tr><td>'1AC14E77-02E7-4E5D-B744-2EB1AE5198B7'</td><td>= System32 (fixed)</td>
 </tr><tr><td>'1B3EA5DC-B587-4786-B4EF-BD1DC332AEAE'</td><td>= Libraries (per-user)</td>
@@ -307,45 +386,71 @@
 </tr><tr><td>'20D04FE0-3AEA-1069-A2D8-08002B30309D'</td><td>= My Computer</td>
 </tr><tr><td>'2112AB0A-C86A-4FFE-A368-0DE96E47012E'</td><td>= Music (per-user)</td>
 </tr><tr><td>'21EC2020-3AEA-1069-A2DD-08002B30309D'</td><td>= Control Panel Items</td>
+</tr><tr><td>'22877A6D-37A1-461A-91B0-DBDA5AAEBC99'</td><td>= Recent Items</td>
 </tr><tr><td>'2400183A-6185-49FB-A2D8-4A392A602BA3'</td><td>= Public Videos (common)</td>
 </tr><tr><td>'24D89E24-2F19-4534-9DDE-6A6671FBB8FE'</td><td>= Documents (per-user)</td>
+</tr><tr><td>'2559A1F1-21D7-11D4-BDAF-00C04F60B9F0'</td><td>= Windows Help and Support</td>
+</tr><tr><td>'2559A1F3-21D7-11D4-BDAF-00C04F60B9F0'</td><td>= Run Dialog Box</td>
+</tr><tr><td>'26EE0668-A00A-44D7-9371-BEB064C98683'</td><td>= Control Panel</td>
+</tr><tr><td>'27E2E392-A111-48E0-AB0C-E17705A05F85'</td><td>= Content Type Folder</td>
 </tr><tr><td>'289A9A43-BE44-4057-A41B-587A76D7E7F9'</td><td>= Sync Results (virtual)</td>
+</tr><tr><td>'289af617-1cc3-42a6-926c-e6a863f0e3ba'</td><td>= My Computer</td>
+</tr><tr><td>'28D8D31E-249C-454E-AABC-34883168E634'</td><td>= Content Type Unspecified</td>
 </tr><tr><td>'2A00375E-224C-49DE-B8D1-440DF7EF3DDC'</td><td>= None (fixed)</td>
 </tr><tr><td>'2B0F765D-C0E9-4171-908E-08A611B84FF6'</td><td>= Cookies (per-user)</td>
 </tr><tr><td>'2C36C0AA-5812-4B87-BFD0-4CD0DFB19B39'</td><td>= Original Images (per-user)</td>
+</tr><tr><td>'3080F90D-D7AD-11D9-BD98-0000947B0257'</td><td>= Desktop</td>
+</tr><tr><td>'3080F90E-D7AD-11D9-BD98-0000947B0257'</td><td>= Task View</td>
+</tr><tr><td>'3134ef9c-6b18-4996-ad04-ed5912e00eb5'</td><td>= Recent Files</td>
 </tr><tr><td>'31C0DD25-9439-4F12-BF41-7FF4EDA38722'</td><td>= 3D Objects (per-user)</td>
 </tr><tr><td>'3214FAB5-9757-4298-BB61-92A9DEAA44FF'</td><td>= Public Music (common)</td>
 </tr><tr><td>'339719B5-8C47-4894-94C2-D8F77ADD44A6'</td><td>= Pictures (per-user)</td>
 </tr><tr><td>'33E28130-4E1E-4676-835A-98395C3BC3BB'</td><td>= Pictures (per-user)</td>
+</tr><tr><td>'346B8932-4C36-40D8-9415-1828291F9DE9'</td><td>= Content Type Contact Group</td>
 </tr><tr><td>'352481E8-33BE-4251-BA85-6007CAEDCF9D'</td><td>= Temporary Internet Files (per-user)</td>
+</tr><tr><td>'35786d3c-b075-49b9-88dd-029876e11c01'</td><td>= Portable Devices</td>
 </tr><tr><td>'374DE290-123F-4565-9164-39C4925E467B'</td><td>= Downloads (per-user)</td>
+</tr><tr><td>'3936e9e4-d92c-4eee-a85a-bc16d5ea0819'</td><td>= Frequent Places</td>
+</tr><tr><td>'3ADD1653-EB32-4CB0-BBD7-DFA0ABB5ACCA'</td><td>= My Pictures</td>
 </tr><tr><td>'3B193882-D3AD-4EAB-965A-69829D1FB59F'</td><td>= Saved Pictures (per-user)</td>
 </tr><tr><td>'3D644C9B-1FB8-4F30-9B45-F670235F79C0'</td><td>= Public Downloads (common)</td>
 </tr><tr><td>'3EB685DB-65F9-4CF6-A03A-E3EF65729F3D'</td><td>= Roaming (per-user)</td>
+</tr><tr><td>'4336A54D-038B-4685-AB02-99BB52D3FB8B'</td><td>= Public User Root Folder</td>
 </tr><tr><td>'43668BF8-C14E-49B2-97C9-747784D784B7'</td><td>= Sync Center (virtual)</td>
 </tr><tr><td>'450D8FBA-AD25-11D0-A2A8-0800361B3003'</td><td>= My Documents</td>
 </tr><tr><td>'48DAF80B-E6CF-4F4E-B800-0E69D84EE384'</td><td>= Libraries (common)</td>
 </tr><tr><td>'491E922F-5643-4AF4-A7EB-4E7A138D8174'</td><td>= Videos (per-user)</td>
+</tr><tr><td>'4AD2C85E-5E2D-45E5-8864-4F229E3C6CF0'</td><td>= Content Type Audio</td>
 </tr><tr><td>'4BD8D571-6D19-48D3-BE97-422220080E43'</td><td>= Music (per-user)</td>
 </tr><tr><td>'4BFEFB45-347D-4006-A5BE-AC0CB0567192'</td><td>= Conflicts (virtual)</td>
 </tr><tr><td>'4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4'</td><td>= Saved Games (per-user)</td>
 </tr><tr><td>'4D9F7874-4E0C-4904-967B-40B0D20C3E4B'</td><td>= The Internet (virtual)</td>
 </tr><tr><td>'52528A6B-B9E3-4ADD-B60D-588C2DBA842D'</td><td>= Homegroup (virtual)</td>
 </tr><tr><td>'52A4F021-7B75-48A9-9F6B-4B87A210BC8F'</td><td>= Quick Launch (per-user)</td>
+</tr><tr><td>'5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0'</td><td>= Control Panel</td>
 </tr><tr><td>'53F5630D-B6BF-11D0-94F2-00A0C91EFB8B'</td><td>= Device Class GUID for a volume</td>
 </tr><tr><td>'559D40A3-A036-40FA-AF61-84CB430A4D34'</td><td>= AppDataProgramData (per-user)</td>
 </tr><tr><td>'56784854-C6CB-462B-8169-88E350ACB882'</td><td>= Contacts (per-user)</td>
+</tr><tr><td>'59031A47-3F72-44A7-89C5-5595FE6B30EE'</td><td>= User Profile</td>
+</tr><tr><td>'59031a47-3f72-44a7-89c5-5595fe6b30ee'</td><td>= Shared Documents</td>
 </tr><tr><td>'5CD7AEE2-2219-4A67-B85D-6C9CE15660CB'</td><td>= Programs (per-user)</td>
 </tr><tr><td>'5CE4A5E9-E4EB-479D-B89F-130C02886155'</td><td>= DeviceMetadataStore (common)</td>
+</tr><tr><td>'5E591A74-DF96-48D3-8D67-1733BCEE28BA'</td><td>= Delegate GUID</td>
 </tr><tr><td>'5E6C858F-0E22-4760-9AFE-EA3317B67173'</td><td>= User Name (%USERNAME%) (fixed)</td>
+</tr><tr><td>'5E88B3CC-3E65-4E62-BFFF-229495253AB0'</td><td>= Content Type Media Cast</td>
+</tr><tr><td>'60A169CF-F2AE-4E21-9375-9677F11C1C6E'</td><td>= Content Type Television</td>
 </tr><tr><td>'625B53C3-AB48-4EC1-BA1F-A1EF4146FC19'</td><td>= Start Menu (per-user)</td>
 </tr><tr><td>'62AB5D82-FDC1-4DC3-A9DD-070D1D495D97'</td><td>= ProgramData (fixed)</td>
+</tr><tr><td>'63252F2C-887F-4CB6-B1AC-D29855DCEF6C'</td><td>= Content Type Task</td>
 </tr><tr><td>'6365D5A7-0F0D-45E5-87F6-0DA56B6A4F7D'</td><td>= Common Files (fixed)</td>
+</tr><tr><td>'640167b4-59b0-47a6-b335-a6b3c0695aea'</td><td>= Portable Media Devices</td>
+</tr><tr><td>'680ADF52-950A-4041-9B41-65E393648155'</td><td>= Content Type Document</td>
 </tr><tr><td>'69D2CF90-FC33-4FB7-9A0C-EBB0F0FCB43C'</td><td>= Slide Shows (per-user)</td>
 </tr><tr><td>'6D809377-6AF0-444B-8957-A3773F02200E'</td><td>= Program Files (fixed)</td>
 </tr><tr><td>'6F0CD92B-2E97-45D1-88FF-B0D186B8DEDD'</td><td>= Network Connections (virtual)</td>
 </tr><tr><td>'7007ACC7-3202-11D1-AAD2-00805FC1270E'</td><td>= Network Connections</td>
 </tr><tr><td>'724EF170-A42D-4FEF-9F26-B60E846FBA4F'</td><td>= Administrative Tools (per-user)</td>
+</tr><tr><td>'75793148-15F5-4A30-A813-54ED8A37E226'</td><td>= Content Type Image Album</td>
 </tr><tr><td>'767E6811-49CB-4273-87C2-20F355E1085B'</td><td>= Camera Roll (per-user)</td>
 </tr><tr><td>'76FC4E2D-D6AD-4519-A663-37BD56068185'</td><td>= Printers (virtual)</td>
 </tr><tr><td>'7B0DB17D-9CD2-4A93-9733-46CC89022E7C'</td><td>= Documents (per-user)</td>
@@ -355,18 +460,29 @@
 </tr><tr><td>'7CFBEFBC-DE1F-45AA-B843-A542AC536CC9'</td><td>= AppDataFavorites (per-user)</td>
 </tr><tr><td>'7D1D3A04-DEBB-4115-95CF-2F29DA2920DA'</td><td>= Searches (per-user)</td>
 </tr><tr><td>'7E636BFE-DFA9-4D5E-B456-D7B39851D8A9'</td><td>= Templates (per-user)</td>
+</tr><tr><td>'8038044A-7E51-4F8F-883D-1D0623D14533'</td><td>= Content Type Email</td>
+</tr><tr><td>'80E170D2-1055-4A3E-B952-82CC4F8A8689'</td><td>= Content Type All</td>
+</tr><tr><td>'821089F5-1D91-4DC9-BE3C-BBB1B35B18CE'</td><td>= Content Type Section</td>
 </tr><tr><td>'82A5EA35-D9CD-47C5-9629-E15D2F714E6E'</td><td>= Startup (common)</td>
 </tr><tr><td>'82A74AEB-AEB4-465C-A014-D097EE346D63'</td><td>= Control Panel (virtual)</td>
 </tr><tr><td>'859EAD94-2E85-48AD-A71A-0969CB56A6CD'</td><td>= Sample Videos (common)</td>
+</tr><tr><td>'871C5380-42A0-1069-A2EA-08002B30309D'</td><td>= Internet</td>
+</tr><tr><td>'896664f7-12e1-490f-8782-c0835afd98fc'</td><td>= Libraries</td>
 </tr><tr><td>'8983036C-27C0-404B-8F08-102D10DCFD74'</td><td>= SendTo (per-user)</td>
 </tr><tr><td>'8AD10C31-2ADB-4296-A8F7-E4701232C972'</td><td>= Resources (fixed)</td>
 </tr><tr><td>'905E63B6-C1BF-494E-B29C-65B732D3D21A'</td><td>= Program Files (fixed)</td>
+</tr><tr><td>'9113a02d-00a3-46b9-bc5f-9c04daddd5d7'</td><td>= Enhanced Storage Data Source</td>
+</tr><tr><td>'9261B03C-3D78-4519-85E3-02C5E1F50BB9'</td><td>= Content Type Video</td>
 </tr><tr><td>'9274BD8D-CFD1-41C3-B35E-B13F55A758F4'</td><td>= Printer Shortcuts (per-user)</td>
 </tr><tr><td>'98EC0E18-2098-4D44-8644-66979315A281'</td><td>= Microsoft Office Outlook (virtual)</td>
+</tr><tr><td>'99ED0160-17FF-4C44-9D98-1D7A6F941921'</td><td>= Content Type Functional Object</td>
 </tr><tr><td>'9B74B6A3-0DFD-4F11-9E78-5F7800F2E772'</td><td>= User name (%USERNAME%) (virtual)</td>
+</tr><tr><td>'9CD20ECF-3B50-414F-A641-E473FFE45751'</td><td>= Content Type Memo</td>
 </tr><tr><td>'9E395ED8-512D-4315-9960-9110B74616C8'</td><td>= Recent Items</td>
 </tr><tr><td>'9E3995AB-1F9C-4F13-B827-48B24B6C7174'</td><td>= User Pinned (per-user)</td>
 </tr><tr><td>'9E52AB10-F80D-49DF-ACB8-4330F5687855'</td><td>= Temporary Burn Folder (per-user)</td>
+</tr><tr><td>'9db7a13c-f208-4981-8353-73cc61ae2783'</td><td>= Previous Versions</td>
+</tr><tr><td>'A1FD5967-6023-49A0-9DF1-F8060BE751B0'</td><td>= Content Type Calendar</td>
 </tr><tr><td>'A302545D-DEFF-464B-ABE8-61C8648D939B'</td><td>= Libraries (virtual)</td>
 </tr><tr><td>'A305CE99-F527-492B-8B1A-7E76FA98D6E4'</td><td>= Installed Updates (virtual)</td>
 </tr><tr><td>'A3918781-E5F2-4890-B3D9-A7E54332328C'</td><td>= Application Shortcuts (per-user)</td>
@@ -376,7 +492,9 @@
 </tr><tr><td>'A63293E8-664E-48DB-A079-DF759E0509F7'</td><td>= Templates (per-user)</td>
 </tr><tr><td>'A75D362E-50FC-4FB7-AC2C-A8BEAA314493'</td><td>= Gadgets (per-user)</td>
 </tr><tr><td>'A77F5D77-2E2B-44C3-A6A2-ABA601054A51'</td><td>= Programs (per-user)</td>
+</tr><tr><td>'A8CDFF1C-4878-43BE-B5FD-F8091C1C60D0'</td><td>= Documents</td>
 </tr><tr><td>'A990AE9F-A03B-4E80-94BC-9912D7504104'</td><td>= Pictures (per-user)</td>
+</tr><tr><td>'AA18737E-5009-48FA-AE21-85F24383B4E6'</td><td>= Content Type Audio Album</td>
 </tr><tr><td>'AAA8D5A5-F1D6-4259-BAA8-78E7EF60835E'</td><td>= RoamedTileImages (per-user)</td>
 </tr><tr><td>'AB5FB87B-7CE2-4F83-915D-550846C9537B'</td><td>= Camera Roll (per-user)</td>
 </tr><tr><td>'AE50C081-EBD2-438A-8655-8A092E34987A'</td><td>= Recent Items (per-user)</td>
@@ -399,18 +517,25 @@
 </tr><tr><td>'CAC52C1A-B53D-4EDC-92D7-6B2E8AC19434'</td><td>= Games (virtual)</td>
 </tr><tr><td>'D0384E7D-BAC3-4797-8F14-CBA229B392B5'</td><td>= Administrative Tools (common)</td>
 </tr><tr><td>'D20BEEC4-5CA8-4905-AE3B-BF251EA09B53'</td><td>= Network (virtual)</td>
+</tr><tr><td>'D269F96A-247C-4BFF-98FB-97F3C49220E6'</td><td>= Content Type Program</td>
 </tr><tr><td>'D65231B0-B2F1-4857-A4CE-A8E7C6EA7D27'</td><td>= System32 (fixed)</td>
 </tr><tr><td>'D9DC8A3B-B784-432E-A781-5A1130A75963'</td><td>= History (per-user)</td>
+</tr><tr><td>'DC3876E8-A948-4060-9050-CBD77E8A3D87'</td><td>= Content Type Certificate</td>
 </tr><tr><td>'DE61D971-5EBC-4F02-A3A9-6C82895E5C04'</td><td>= Get Programs (virtual)</td>
 </tr><tr><td>'DE92C1C7-837F-4F69-A3BB-86E631204A23'</td><td>= Playlists (per-user)</td>
 </tr><tr><td>'DE974D24-D9C6-4D3E-BF91-F4455120B917'</td><td>= Common Files (fixed)</td>
 </tr><tr><td>'DEBF2536-E1A8-4C59-B6A2-414586476AEA'</td><td>= GameExplorer (common)</td>
 </tr><tr><td>'DF7266AC-9274-4867-8D55-3BD661DE872D'</td><td>= Programs and Features (virtual)</td>
 </tr><tr><td>'DFDF76A2-C82A-4D63-906A-5644AC457385'</td><td>= Public (fixed)</td>
+</tr><tr><td>'DFFACDC5-679F-4156-8947-C5C76BC0B67F'</td><td>= Users Files</td>
 </tr><tr><td>'E25B5812-BE88-4BD9-94B0-29233477B6C3'</td><td>= Saved Pictures Library (per-user)</td>
 </tr><tr><td>'E555AB60-153B-4D17-9F04-A5FE99FC15EC'</td><td>= Ringtones (common)</td>
+</tr><tr><td>'E80EAAF8-B2DB-4133-B67E-1BEF4B4A6E5F'</td><td>= Content Type Generic Message</td>
+</tr><tr><td>'EABA8313-4525-4707-9F0E-87C6808E9435'</td><td>= Content Type Contact</td>
+</tr><tr><td>'ED228FDF-9EA8-4870-83B1-96B02CFE0D52'</td><td>= Game Explorer</td>
 </tr><tr><td>'ED4824AF-DCE4-45A8-81E2-FC7965083634'</td><td>= Public Documents (common)</td>
 </tr><tr><td>'EE32E446-31CA-4ABA-814F-A5EBD2FD6D5E'</td><td>= Offline Files (virtual)</td>
+</tr><tr><td>'EF2107D5-A52A-4243-A26B-62D4176D7603'</td><td>= Content Type Image</td>
 </tr><tr><td>'F1B32785-6FBA-4FCF-9D55-7B8E7F157091'</td><td>= Local (per-user)</td>
 </tr><tr><td>'F3364BA0-65B9-11CE-A9BA-00AA004AE661'</td><td>= Search Results Folder</td>
 </tr><tr><td>'F3CE0F7C-4901-4ACC-8648-D5D44B04EF8F'</td><td>= Users Full Name (virtual)</td>
@@ -418,9 +543,15 @@
 </tr><tr><td>'F7F1ED05-9F6D-47A2-AAAE-29D317C6F066'</td><td>= Common Files (fixed)</td>
 </tr><tr><td>'FD228CB7-AE11-4AE3-864C-16F3910AB8FE'</td><td>= Fonts (fixed)</td>
 </tr><tr><td>'FDD39AD0-238F-46AF-ADB4-6C85480369C7'</td><td>= Documents (per-user)</td>
+</tr><tr><td>'b155bdf8-02f0-451e-9a26-ae317cfd7779'</td><td>= NetHood</td>
+</tr><tr><td>'c2b136e2-d50e-405c-8784-363c582bf43e'</td><td>= Wireless Devices</td>
+</tr><tr><td>'d34a6ca6-62c2-4c34-8a7c-14709c1ad938'</td><td>= Common Places</td>
+</tr><tr><td>'dffacdc5-679f-4156-8947-c5c76bc0b67f'</td><td>= Profile</td>
+</tr><tr><td>'ed50fc29-b964-48a9-afb3-15ebb9b97f36'</td><td>= PrintHood</td>
+</tr><tr><td>'f5fb2c77-0e2f-4a16-a381-3e560c68bc83'</td><td>= Removable Drives</td>
 </tr></table></td></tr></table></blockquote>
 
-<h2><a name='FolderInfo'>LNK FolderInfo Tags</a></h2>
+<h2><a name='ControlPanelCPL'>LNK ControlPanelCPL Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -428,12 +559,135 @@
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td class=r title='4 = 0x4'>4</td>
-<td>FolderGUID</td>
+<td>Item00SpecialType</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='12 = 0xc'>12</td>
+<td>CPLFilePath</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>CPLFilePath</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='GameFolderInfo'>LNK GameFolderInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>Item00SpecialType</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PropertyStore'>LNK PropertyStore Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>PropertyStoreGUID</td>
 <td class=c>no</td>
 <td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='FileInfo'>LNK FileInfo Tags</a></h2>
+<h2><a name='MTPType2'>LNK MTPType2 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='54 = 0x36'>54</td>
+<td>MTPStorageName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='54 = 0x36'>54.1</td>
+<td>MTPStorageID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='54 = 0x36'>54.2</td>
+<td>MTPFileSystem</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='56 = 0x38'>56</td>
+<td>MTP_GUID1</td>
+<td class=c>no</td>
+<td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
+<tr>
+<td class=r title='134 = 0x86'>134</td>
+<td>MTP_GUID2</td>
+<td class=c>no</td>
+<td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
+<tr class=b>
+<td class=r title='212 = 0xd4'>212</td>
+<td>MTP_GUID3</td>
+<td class=c>no</td>
+<td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
+<tr>
+<td class=r title='290 = 0x122'>290</td>
+<td>MTP_GUID4</td>
+<td class=c>no</td>
+<td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
+<tr class=b>
+<td class=r title='368 = 0x170'>368</td>
+<td>MTP_GUID5</td>
+<td class=c>no</td>
+<td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
+<tr>
+<td class=r title='446 = 0x1be'>446</td>
+<td>MTP_GUID6</td>
+<td class=c>no</td>
+<td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
+<tr class=b>
+<td class=r title='524 = 0x20c'>524</td>
+<td>MTP_GUID7</td>
+<td class=c>no</td>
+<td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
+<tr>
+<td class=r title='602 = 0x25a'>602</td>
+<td>MTP_GUID8</td>
+<td class=c>no</td>
+<td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Item00Info'>LNK Item00Info Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>Item00Type</td>
+<td class=c>no</td>
+<td><span class=s>0x10312005 = MTPType2
+  <br>0x23febbee = PropertyStoreGUID</span></td></tr>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
+<td>PropertyString1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24.1</td>
+<td>PropertyString2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ControlPanelInfo'>LNK ControlPanelInfo Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -441,34 +695,54 @@
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td class=r title='8 = 0x8'>8</td>
-<td>FileEntryModifyDate</td>
+<td>ControlPanelCategory</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='12 = 0xc'>12</td>
-<td>FileEntryAttributes</td>
-<td class=c>no</td>
-<td>--&gt; <a href='LNK.html#FileAttributes'>LNK FileAttributes Values</a></td></tr>
+<td><table class=cols><tr>
+  <td>0 = All Control Panel Items
+  <br>1 = Appearance and Personalization
+  <br>2 = Hardware and Sound
+  <br>3 = Network and Internet
+  <br>4 = Sounds, Speech, and Audio Devices
+  <br>5 = System and Security
+  <br>6 = Clock, Language, and Region
+  <br>7 = Ease of Access
+  <br>8 = Programs
+  <br>9 = User Accounts
+  <br>10 = Security Center
+  <br>11 = Mobile PC</td></tr></table>
+</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='RootFolder'>LNK RootFolder Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='14 = 0xe'>14</td>
-<td>FileEntryDOSName</td>
+<td class=r title='3 = 0x3'>3</td>
+<td>SortIndex</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td><table class=cols><tr>
+  <td>0x0 = Internet Explorer
+  <br>0x42 = Libraries
+  <br>0x44 = Users
+  <br>0x48 = My Documents
+  <br>0x4c = Public Folder
+  <br>0x50 = My Computer
+  <br>0x54 = Users Libraries
+  <br>0x58 = My Network Places/Network
+  <br>0x60 = Recycle Bin
+  <br>0x68 = Internet Explorer
+  <br>0x70 = Control Panel
+  <br>0x78 = Recycle Bin
+  <br>0x80 = My Games</td></tr></table>
+</td></tr>
 <tr class=b>
-<td class=r title='24 = 0x18'>24</td>
-<td>FileEntryCreateDate</td>
+<td class=r title='4 = 0x4'>4</td>
+<td>RootFolderGUID</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='28 = 0x1c'>28</td>
-<td>FileEntryAccessDate</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='36 = 0x24'>36</td>
-<td>FileEntryName</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='TargetInfo'>LNK TargetInfo Tags</a></h2>
@@ -492,45 +766,250 @@
 <td>TargetFileDOSName</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='URI'>LNK URI Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>URI</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='24 = 0x18'>24</td>
-<td>TargetFileCreateDate</td>
+<td class=r title='14 = 0xe'>14</td>
+<td>TimeStamp</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='28 = 0x1c'>28</td>
-<td>TargetFileAccessDate</td>
+<td class=r title='46 = 0x2e'>46</td>
+<td>FTPHost</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='36 = 0x24'>36</td>
+<td class=r title='51 = 0x33'>51</td>
+<td>FTPUserName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='56 = 0x38'>56</td>
+<td>FTPPassword</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='57 = 0x39'>57</td>
+<td>URI</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='UsersFilesFolder'>LNK UsersFilesFolder Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>DelegateClassGUID</td>
+<td class=c>no</td>
+<td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
+<tr class=b>
+<td class=r title='22 = 0x16'>22</td>
+<td>DelegateFolderGUID</td>
+<td class=c>no</td>
+<td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Beef0003'>LNK Beef0003 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>UnknownGUID</td>
+<td class=c>no</td>
+<td>--&gt; <a href='LNK.html#GUID'>LNK GUID Values</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Beef0004'>LNK Beef0004 Tags</a></h2>
+<p>TargetInfo extensions.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>TargetFileCreateDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='12 = 0xc'>12</td>
+<td>TargetFileAccessDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>OperatingSystem</td>
+<td class=c>no</td>
+<td><span class=s>0x14 = Windows XP, 2003
+  <br>0x26 = Windows Vista
+  <br>0x2a = Windows 2008, 7, 8
+  <br>0x2e = Windows 8.1, 10</span></td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18</td>
 <td>TargetFileName</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='DirInfo'>LNK DirInfo Tags</a></h2>
+<h2><a name='Beef0014'>LNK Beef0014 Tags</a></h2>
+<p>URI extensions.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
-<tr class=h><th>Index1</th><th>Tag Name</th>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='14 = 0xe'>14</td>
-<td>LinkedDirectoryName</td>
+<td title='0x0000 = 0'>0x0000</td>
+<td>AbsoluteURI</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>URIAuthority</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>DisplayURI</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>URIDomain</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0004 = 4'>0x0004</td>
+<td>URIExtension</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0005 = 5'>0x0005</td>
+<td>URIFragment</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0006 = 6'>0x0006</td>
+<td>URIHost</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0007 = 7'>0x0007</td>
+<td>URIPassword</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0008 = 8'>0x0008</td>
+<td>URIPath</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0009 = 9'>0x0009</td>
+<td>URIPathAndQuery</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000a = 10'>0x000a</td>
+<td>URIQuery</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000b = 11'>0x000b</td>
+<td>RawURI</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000c = 12'>0x000c</td>
+<td>URISchemeName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000d = 13'>0x000d</td>
+<td>URIUserInfo</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000e = 14'>0x000e</td>
+<td>URIUserName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000f = 15'>0x000f</td>
+<td>URIHostType</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0010 = 16'>0x0010</td>
+<td>URIPort</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0011 = 17'>0x0011</td>
+<td>URIScheme</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0012 = 18'>0x0012</td>
+<td>URIZone</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='FileInfo2'>LNK FileInfo2 Tags</a></h2>
+<h2><a name='Beef0025'>LNK Beef0025 Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='14 = 0xe'>14</td>
-<td>LinkedFileName</td>
+<td class=r title='12 = 0xc'>12</td>
+<td>FileTime1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='20 = 0x14'>20</td>
+<td>FileTime2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Beef0026a'>LNK Beef0026a Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>CreateDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='20 = 0x14'>20</td>
+<td>ModifyDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='28 = 0x1c'>28</td>
+<td>LastAccessDate</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -585,7 +1064,32 @@
 <td>NetProviderType</td>
 <td class=c>no</td>
 <td><table class=cols><tr>
-  <td>0x1a0000 = AVID
+  <td>0x10000 = MSNET
+  <br>0x20000 = SMB
+  <br>0x30000 = NETWARE
+  <br>0x40000 = VINES
+  <br>0x50000 = 10NET
+  <br>0x60000 = LOCUS
+  <br>0x70000 = SUN_PC_NFS
+  <br>0x80000 = LANSTEP
+  <br>0x90000 = 9TILES
+  <br>0xa0000 = LANTASTIC
+  <br>0xb0000 = AS400
+  <br>0xc0000 = FTP_NFS
+  <br>0xd0000 = PATHWORKS
+  <br>0xe0000 = LIFENET
+  <br>0xf0000 = POWERLAN
+  <br>0x100000 = BWNFS
+  <br>0x110000 = COGENT
+  <br>0x120000 = FARALLON
+  <br>0x130000 = APPLETALK
+  <br>0x140000 = INTERGRAPH
+  <br>0x150000 = SYMFONET
+  <br>0x160000 = CLEARCASE
+  <br>0x170000 = FRONTIER
+  <br>0x180000 = BMC
+  <br>0x190000 = DCE
+  <br>0x1a0000 = AVID
   <br>0x1b0000 = DOCUSPACE
   <br>0x1c0000 = MANGOSOFT
   <br>0x1d0000 = SERNET
@@ -593,16 +1097,16 @@
   <br>0x1f0000 = RIVERFRONT2
   <br>0x200000 = DECORB
   <br>0x210000 = PROTSTOR
-  <br>0x220000 = FJ_REDIR
-  <br>0x230000 = DISTINCT
+  <br>0x220000 = FJ_REDIR</td><td>&nbsp;&nbsp;</td>
+  <td>0x230000 = DISTINCT
   <br>0x240000 = TWINS
   <br>0x250000 = RDR2SAMPLE
   <br>0x260000 = CSC
   <br>0x270000 = 3IN1
   <br>0x290000 = EXTENDNET
   <br>0x2a0000 = STAC
-  <br>0x2b0000 = FOXBAT</td><td>&nbsp;&nbsp;</td>
-  <td>0x2c0000 = YAHOO
+  <br>0x2b0000 = FOXBAT
+  <br>0x2c0000 = YAHOO
   <br>0x2d0000 = EXIFS
   <br>0x2e0000 = DAV
   <br>0x2f0000 = KNOWARE
@@ -617,7 +1121,17 @@
   <br>0x380000 = QUINCY
   <br>0x390000 = OPENAFS
   <br>0x3a0000 = AVID1
-  <br>0x3b0000 = DFS</td></tr></table>
+  <br>0x3b0000 = DFS
+  <br>0x3c0000 = KWNP
+  <br>0x3d0000 = ZENWORKS
+  <br>0x3e0000 = DRIVEONWEB
+  <br>0x3f0000 = VMWARE
+  <br>0x400000 = RSFX
+  <br>0x410000 = MFILES
+  <br>0x420000 = MS_NFS
+  <br>0x430000 = GOOGLE
+  <br>0x440000 = NDFS
+  <br>0x450000 = DOCUSHARE</td></tr></table>
 </td></tr>
 <tr class=b>
 <td>VolumeID</td>
@@ -696,13 +1210,13 @@
 <td class=r title='36 = 0x24'>36</td>
 <td>FontFamily</td>
 <td class=c>no</td>
-<td><table class=cols><tr>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]</span><table class=cols><tr>
   <td>0x0 = Don&#39;t Care
-  <br>0x10 = Roman
-  <br>0x20 = Swiss</td><td>&nbsp;&nbsp;</td>
-  <td>0x30 = Modern
-  <br>0x40 = Script
-  <br>0x50 = Decorative</td></tr></table>
+  <br>0x1 = Roman
+  <br>0x2 = Swiss</td><td>&nbsp;&nbsp;</td>
+  <td>0x3 = Modern
+  <br>0x4 = Script
+  <br>0x5 = Decorative</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='40 = 0x28'>40</td>
@@ -847,7 +1361,7 @@
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 20, 2026</i>
+<br><i>Last revised Mar 19, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

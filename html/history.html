@@ -17,6 +17,22 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.53'><b>Mar. 19, 2026 - Version 13.53</b></a>
+<ul>
+<li>Added ability to read FileCreateDate (btime) on Linux systems
+<li>Added a bunch more Sony lenses (thanks Jos Roost)
+<li>Added warnings for possibly malicious or corrupted LNK files (<a href="https://github.com/exiftool/exiftool/issues/401">github #401</a>)
+<li>Decode timed GPS from Kenwood DRV-A510W MP4 videos
+<li>Decode more information from LNK files
+<li>Reduced memory requirements when running on a large number of files,
+    particularly when the -U option is used
+<li>Patched a potential security issue in Windows version
+<li>Fixed possible "undefined value" runtime warnings when reading torrent and
+    WPG files (thanks Raf)
+<li>Fixed issue which could result in an "uninitialized value" runtime error
+    when parsing corrupted CBOR information
+</ul>
+
 <a name='v13.52'><b>Feb. 27, 2026 - Version 13.52</b></a>
 <ul>
 <li>Added a number of new XMP tags written by Adobe software
@@ -38,7 +54,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added a new Nikon LensID (thanks Johan)
 <li>Decode more tags from Windows LNK files
 <li>Decode another LIGOGPSINFO variant (<a href="https://github.com/exiftool/exiftool/issues/394">github #394</a>)
-<li>Decode some new Canon tags (thanks Peter Wem, <a href="https://github.com/exiftool/exiftool/issues/389">github #389</a>, <a href="https://github.com/exiftool/exiftool/issues/390">#390</a>,  <a href="https://github.com/exiftool/exiftool/issues/393">#393</a>)
+<li>Decode some new Canon tags (thanks Peter Wem, <a href="https://github.com/exiftool/exiftool/issues/389">github #389</a>, <a href="https://github.com/exiftool/exiftool/issues/390">#390</a>, <a href="https://github.com/exiftool/exiftool/issues/393">#393</a>)
 <li>Decode some new Nikon tags
 <li>Split decoding on Nikon BurstGroupID into separate tags
 <li>Fixed round-off error in GPSDateTime seconds for camm6 metadata in MP4

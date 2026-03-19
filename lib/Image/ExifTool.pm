@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.52';
+$VERSION = '13.53';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1247,6 +1247,10 @@ sub DummyWriteProc { return 1; }
 @Image::ExifTool::pluginTags = ( );
 %Image::ExifTool::pluginTags = ( );
 
+# memory purge variables
+my $purgeFlag = 0;
+my @purgeTags;
+
 my %systemTagsNotes = (
     Notes => q{
         extracted only if specifically requested or the API L<SystemTags|../ExifTool.html#SystemTags> or L<RequestAll|../ExifTool.html#RequestAll>
@@ -1457,12 +1461,15 @@ my %systemTagsNotes = (
     FileCreateDate => {
         Description => 'File Creation Date/Time',
         Notes => q{
-            the filesystem creation date/time.  Windows/Mac only.  In Windows, the file
-            creation date/time is preserved by default when writing if Win32API::File
-            and Win32::API are available.  On Mac, this tag is extracted only if it or
-            the MacOS group is specifically requested or the API L<RequestAll|../ExifTool.html#RequestAll> option is
-            set to 2 or higher.  Requires "setfile" for writing on Mac, which may be
-            installed by typing C<xcode-select --install> in the Terminal
+            the filesystem creation date/time.  Windows/Mac/Linux only.  In Windows, the
+            file creation date/time is preserved by default when writing if
+            Win32API::File and Win32::API are available.  On Mac, this tag is extracted
+            only if it or the MacOS group is specifically requested or the API
+            L<RequestAll|../ExifTool.html#RequestAll> option is set to 2 or higher.  On
+            Linux, this tag is read-only and extracted only if the filesystem supports
+            btime and "File::StatX" is available.  Requires "setfile" for writing on
+            Mac, which may be installed by typing C<xcode-select --install> in the
+            Terminal
         },
         Groups => { 1 => 'System', 2 => 'Time' },
         Writable => 1,
@@ -2888,6 +2895,16 @@ sub ExtractInfo($;@)
         $self->FoundTag('FileAccessDate', $stat[8]) if defined $stat[8];
         my $cTag = $^O eq 'MSWin32' ? 'FileCreateDate' : 'FileInodeChangeDate';
         $self->FoundTag($cTag, $stat[10]) if defined $stat[10];
+        if ($^O eq 'linux' and @stat and eval { require File::StatX }) {
+            my $stat;
+            local $SIG{'__WARN__'} = \&SetWarning;
+            if ($raf) {
+                eval { $stat=File::StatX::fstatx($$raf{FILE_PT}, 0, File::StatX::STATX_BTIME()) };
+            } else {
+                eval { $stat=File::StatX::statx($filename, 0, File::StatX::STATX_BTIME()) };
+            }
+            $self->FoundTag('FileCreateDate', $stat->btime) if $stat and $stat->btime;
+        }
         $self->FoundTag('FilePermissions', $stat[2]) if defined $stat[2];
         # extract more system info if SystemTags option is set
         if (@stat) {
@@ -3585,7 +3602,7 @@ sub GetValue($$;$)
                                 $self->Warn("$convType $tag: " . CleanWarning()) if $evalWarning;
                             }
                             if (not defined $value) {
-                                if ($$tagInfo{PrintHex} and $val and IsInt($val) and
+                                if ($$tagInfo{PrintHex} and defined $val and IsInt($val) and
                                     $convType eq 'PrintConv')
                                 {
                                     $value = sprintf('Unknown (0x%x)',$val);
@@ -4339,6 +4356,21 @@ sub Init($)
     }
     # make sure our TextOut is a file reference
     $$self{OPTIONS}{TextOut} = \*STDOUT unless ref $$self{OPTIONS}{TextOut};
+}
+
+#------------------------------------------------------------------------------
+# Purge temporary tags from memory and set purge flag for next time
+# Inputs: 0) false=disable purging, true=enable purging, and
+#            purge now if number of digits in tags to purge >= flag
+sub Purge(;$)
+{
+    $purgeFlag = shift || 0;
+    if (@purgeTags and length(scalar @purgeTags) >= $purgeFlag) {
+        foreach (@purgeTags) {
+            delete $$_{Table}{$$_{TagID}} unless defined $$_{IsProtobuf};
+        }
+        undef @purgeTags;
+    }
 }
 
 #------------------------------------------------------------------------------
@@ -9214,6 +9246,9 @@ sub AddTagToTable($$;$$)
     # if someone thinks there isn't any tagInfo because a condition wasn't satisfied)
     unless (defined $$tagTablePtr{$tagID} or $specialTags{$tagID}) {
         $$tagTablePtr{$tagID} = $tagInfo;
+        if ($purgeFlag and $$tagInfo{Unknown} and not $$tagInfo{SubDirectory}) {
+            push @purgeTags, $tagInfo;
+        }
     }
     $$tagInfo{AddedUnknown} = 1 if $$tagInfo{Unknown};
     return $tagInfo;
@@ -9269,7 +9304,7 @@ sub HandleTag($$$$;%)
         my $start = $parms{Start} || 0;
         my $dLen = $dataPt ? length($$dataPt) : -1;
         my $size = $parms{Size};
-        $size = $dLen unless defined $size;
+        defined $size or $size = ($dLen > 0 ? $dLen : 0);
         # read from data in memory if possible
         if ($start >= 0 and $start + $size <= $dLen) {
             $format = $$tagInfo{Format} || $$tagTablePtr{FORMAT};
@@ -9921,7 +9956,7 @@ sub ProcessBinaryData($$$)
                 $format = $1;
                 $count = $2;
                 # evaluate count to allow count to be based on previous values
-                #### eval Format size (%val, $size, $self)
+                #### eval Format size (%val, $size, $varSize, $self)
                 $count = eval $count;
                 $@ and warn("Format $$tagInfo{Name}: $@"), next;
                 next if $count < 0;

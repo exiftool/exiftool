@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.84';
+$VERSION = '3.86';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -53,7 +53,6 @@ sub PrintInvLensSpec($;$$);
 # (%sonyLensTypes is filled in based on Minolta LensType's)
 
 # Sony E-mount lenses
-# (NOTE: these should be kept in sync with the 65535 entries in %minoltaLensTypes)
 %sonyLensTypes2 = (
     Notes => 'Lens type numbers for Sony E-mount lenses used by NEX/ILCE models.',
     0 => 'Unknown E-mount lens or other lens',
@@ -69,7 +68,7 @@ sub PrintInvLensSpec($;$$);
    '0.10' => 'Zeiss Touit 50mm F2.8 Macro',         # (firmware Ver.00)
    '0.11' => 'Zeiss Loxia 50mm F2',                 # (firmware Ver.01)
    '0.12' => 'Zeiss Loxia 35mm F2',                 # (firmware Ver.01)
-   '0.13' => 'Viltrox 85mm F1.8',  # original AF version; Mark II version is at 47473
+   '0.13' => 'Viltrox 85mm F1.8', # original AF version; Mark II version is at 49473
     1 => 'Sony LA-EA1 or Sigma MC-11 Adapter', # MC-11 with not-supported lenses
     2 => 'Sony LA-EA2 Adapter',
     3 => 'Sony LA-EA3 Adapter',
@@ -81,6 +80,7 @@ sub PrintInvLensSpec($;$$);
     19 => 'Samyang RS 32mm F2.8', #JR
     20 => 'Samyang AF 35mm F1.4 P FE', #JR
     21 => 'Samyang AF 14-24mm F2.8', #JR
+    22 => 'Samyang AF 24-60mm F2.8', #JR
   # 27 => Venus Optics Laowa 12mm f2.8 Zero-D or 105mm f2 (T3.2) Smooth Trans Focus (ref IB)
     44 => 'Metabones Canon EF Smart Adapter', #JR
     78 => 'Metabones Canon EF Smart Adapter Mark III or Other Adapter', #PH/JR (also Mark IV, Fotodiox and Viltrox)
@@ -181,8 +181,6 @@ sub PrintInvLensSpec($;$$);
     32890 => 'Sony FE 400-800mm F6.3-8 G OSS', #JR
     32891 => 'Sony FE 50-150mm F2 GM', #github335
     32893 => 'Sony FE 100mm F2.8 Macro GM OSS', #JR
-    33093 => 'Sony FE 100mm F2.8 Macro GM OSS + 1.4X Teleconverter', #JR (NC)
-    33094 => 'Sony FE 100mm F2.8 Macro GM OSS + 2X Teleconverter', #JR
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -265,6 +263,7 @@ sub PrintInvLensSpec($;$$);
     49477 => 'Tamron 90mm F2.8 Di III Macro VXD', #JR (Model F072)
     49478 => 'Tamron 16-30mm F2.8 Di III VXD G2', #JR (Model A064)
     49479 => 'Tamron 25-200mm F2.8-5.6 Di III VXD G2', #JR (Model A075 E)
+    49480 => 'Tamron 35-100mm F2.8 Di III VXD', #JR (Model A078 E)
 
     49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
     49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)
@@ -378,8 +377,13 @@ sub PrintInvLensSpec($;$$);
     61569 => 'LAOWA FFII 10mm F2.8 C&D Dreamer', #JR
     61572 => 'LAOWA FFII 12mm F2.8 C&D Dreamer', #JR
 
+    61760 => 'Viltrox 135mm F1.8 FE LAB', #JR
     61761 => 'Viltrox 28mm F4.5 FE', #JR
-    61767 => 'Viltrox 50mm F2.0 FE', #JR
+    61762 => 'Viltrox 35mm F1.2 FE LAB', #JR
+    61763 => 'Viltrox 85mm F1.4 FE PRO', #JR
+    61767 => 'Viltrox 50mm F2.0 FE AIR', #JR
+    61776 => 'Viltrox 50mm F1.4 FE PRO', #JR
+    61780 => 'Viltrox 85mm F2.0 FE EVO', #JR
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)
@@ -11298,6 +11302,9 @@ sub ProcessMoreInfo($$$)
             my %tagInfo = (
                 Name => $name,
                 SubDirectory => { TagTable => $table },
+                # tag must not be deleted because new table will be created
+                #  but the old table was already loaded
+                NeverDelete => 1,
             );
             AddTagToTable($tagTablePtr, $tag, \%tagInfo);
         }

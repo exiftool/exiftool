@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 sub PrintRecord($$$);
 
@@ -214,28 +214,40 @@ sub ProcessWPG($$)
             if ($getSize) {
                 # read Start record to obtain image size
                 $raf->Read($buff, $len) == $len or $et->Warn('File format error'), last;
-                my ($w, $h, $xres, $yres);
+                my ($w, $h, $xres, $yres, $err);
                 if ($ver == 1) {
-                    ($w, $h) = unpack('x2vv', $buff);
+                    if ($len < 6) {
+                        $err = '';
+                    } else {
+                        ($w, $h) = unpack('x2vv', $buff);
+                    }
                 } else {
                     my ($precision, $format);
                     ($xres, $yres, $precision) = unpack('vvC', $buff);
                     if ($precision == 0 and $len >= 21) {
+                        $len >= 13+2*4 or $err = '';
                         $format = 'int16s';
                     } elsif ($precision == 1 and $len >= 29) {
+                        $len >= 13+4*4 or $err = '';
                         $format = 'int32s';
                     } else {
-                        $et->Warn('Invalid integer precision');
-                        next;
+                        $err = 'Invalid integer precision';
                     }
-                    my ($x1,$y1,$x2,$y2) = ReadValue(\$buff, 13, $format, 4, $len-13);
-                    $w = abs($x2 - $x1);
-                    $h = abs($y2 - $y1);
+                    unless (defined $err) {
+                        my ($x1,$y1,$x2,$y2) = ReadValue(\$buff, 13, $format, 4, $len-13);
+                        $w = abs($x2 - $x1);
+                        $h = abs($y2 - $y1);
+                    }
                 }
-                $et->HandleTag($tagTablePtr, ImageWidthInches  => $w / ($xres || 1200));
-                $et->HandleTag($tagTablePtr, ImageHeightInches => $h / ($yres || 1200));
+                if (defined $err) {
+                    $et->Warn($err || 'Truncated start record');
+                } else {
+                    $et->HandleTag($tagTablePtr, ImageWidthInches  => $w / ($xres || 1200));
+                    $et->HandleTag($tagTablePtr, ImageHeightInches => $h / ($yres || 1200));
+                }
             } else {
-                $raf->Seek($len, 1) or last; # skip to the next record
+                # skip to the next record
+                $raf->Seek($len, 1) or $et->Warn('Truncated record'), last;
             }
         }
         # go to some trouble to collapse identical sequential entries in record list

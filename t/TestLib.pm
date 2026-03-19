@@ -103,6 +103,12 @@ sub testCompare($$$;$)
                         $skip = 1;
                         next;
                     }
+                    # FileCreateDate may be extracted on Linux if File::StatX is available
+                    if ($line1 =~ /File\s?Creat.*Date/) {
+                        $line2 =~ /File\s?Creat.*Date/ or $skip = 2, next;
+                    } elsif ($line2 =~ /File\s?Creat.*Date/) {
+                        $skip = 1, next;
+                    }
                 }
                 $success = 0;
                 last;
@@ -149,8 +155,9 @@ sub nearEnough($$)
                 $line2 eq "$1$Image::ExifTool::VERSION$2");
 
     # allow different FileModifyDate, FileAccessDate, FileCreateDate/FileInodeChangeDate and FilePermissions
+    # (note that FileInodeChangeDate is FileCreateDate on Windows)
     return 1 if $line1 =~ /(File\s?(Modif.*Date|Access\s?Date|Inode\s?Change\s?Date|Permissions))/ and
-               ($line2 =~ /$1/ or $line2 =~ /File\s?Creat.*Date/);
+               ($line2 =~ /$1/ or $line2 =~ /File\s?Creat.*Date/ and $line1 =~ /File\s?Inode\s?Change\sDate/);
 
     # allow CurrentIPTCDigest to be zero if Digest::MD5 isn't installed
     return 1 if $line1 =~ /Current IPTC Digest/ and

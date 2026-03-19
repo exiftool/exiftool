@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 29130 tags, with 18086 unique tag names.
+They contain a total of 29183 tags, with 18132 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -16210,7 +16210,7 @@ These tags are common to all Z8 firmware versions.
     596    DynamicAFAreaSize                    int8u
     618    ToneMap?                             int8u
     622    PortraitImpressionBalance            int8u
-    636    HighFrequencyFlickerReduction?       int8u
+    636    HighFrequencyFlickerReduction        int8u
     730    MovieImageArea?                      int8u & 0x01
     740    MovieType?                           int8u
     742    MovieISOAutoHiLimit?                 int16u
@@ -31018,7 +31018,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 120 different types of timed GPS metadata from video files.
+currently reads 121 different types of timed GPS metadata from video files.
 
   Tag ID                 Tag Name               Writable
   ------                 --------               --------
@@ -41082,34 +41082,91 @@ Information extracted from MS Shell Link (Windows shortcut) files.
 
 =head3 LNK ItemID Tags
 
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x001f   FolderInfo                           LNK FolderInfo
-  0x002e   VolumeGUID                           no
-  0x002f   VolumeName                           no
-  0x0031   FileInfo                             LNK FileInfo
-  0x0032   TargetInfo                           LNK TargetInfo
-  0x0035   DirInfo                              LNK DirInfo
-  0x0036   FileInfo2                            LNK FileInfo2
-  0x0071   ControlPanelShellItem                no
-  0x00ff   VendorData                           no
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  0x0000       ControlPanelCPL                  LNK ControlPanelCPL
+               GameFolderInfo                   LNK GameFolderInfo
+               PropertyStore                    LNK PropertyStore
+               MTPType2                         LNK MTPType2
+               Item00Info                       LNK Item00Info
+  0x0001       ControlPanelInfo                 LNK ControlPanelInfo
+  0x001e       RootFolder                       LNK RootFolder
+  0x001f       RootFolder                       LNK RootFolder
+  0x002e       VolumeGUID                       no
+  0x002f       VolumeName                       no
+  0x0031       TargetInfo                       LNK TargetInfo
+  0x0040       NetworkLocation                  no
+  0x0052       CompressedFolder                 no
+  0x0061       URI                              LNK URI
+  0x0070       ControlPanelShellItem            no
+  0x0071       ControlPanelShellItem            no
+  0x0072       Printers                         no
+  0x0073       CommonPlacesFolder               no
+  0x0074       UsersFilesFolder                 LNK UsersFilesFolder
+  0x00ff       VendorData                       no
+  0xbeef0003   Beef0003                         LNK Beef0003
+  0xbeef0004   Beef0004                         LNK Beef0004
+  0xbeef0014   Beef0014                         LNK Beef0014
+  0xbeef0025   Beef0025                         LNK Beef0025
+  0xbeef0026   Beef0026a                        LNK Beef0026a
+               Unknown_beef0026                 no
 
-=head3 LNK FolderInfo Tags
+=head3 LNK ControlPanelCPL Tags
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-      4    FolderGUID                           no
+      4    Item00SpecialType                    no
+     12    CPLFilePath                          no
+     24    CPLFilePath                          no
 
-=head3 LNK FileInfo Tags
+=head3 LNK GameFolderInfo Tags
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-      8    FileEntryModifyDate                  no
-     12    FileEntryAttributes                  no
-     14    FileEntryDOSName                     no
-     24    FileEntryCreateDate                  no
-     28    FileEntryAccessDate                  no
-     36    FileEntryName                        no
+      4    Item00SpecialType                    no
+
+=head3 LNK PropertyStore Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     12    PropertyStoreGUID                    no
+
+=head3 LNK MTPType2 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     54    MTPStorageName                       no
+   54.1    MTPStorageID                         no
+   54.2    MTPFileSystem                        no
+     56    MTP_GUID1                            no
+    134    MTP_GUID2                            no
+    212    MTP_GUID3                            no
+    290    MTP_GUID4                            no
+    368    MTP_GUID5                            no
+    446    MTP_GUID6                            no
+    524    MTP_GUID7                            no
+    602    MTP_GUID8                            no
+
+=head3 LNK Item00Info Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      6    Item00Type                           no
+     24    PropertyString1                      no
+   24.1    PropertyString2                      no
+
+=head3 LNK ControlPanelInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      8    ControlPanelCategory                 no
+
+=head3 LNK RootFolder Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      3    SortIndex                            no
+      4    RootFolderGUID                       no
 
 =head3 LNK TargetInfo Tags
 
@@ -41118,21 +41175,82 @@ Information extracted from MS Shell Link (Windows shortcut) files.
       8    TargetFileModifyDate                 no
      12    TargetFileAttributes                 no
      14    TargetFileDOSName                    no
-     24    TargetFileCreateDate                 no
-     28    TargetFileAccessDate                 no
-     36    TargetFileName                       no
 
-=head3 LNK DirInfo Tags
+=head3 LNK URI Tags
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-     14    LinkedDirectoryName                  no
+      8    URI                                  no
+     14    TimeStamp                            no
+     46    FTPHost                              no
+     51    FTPUserName                          no
+     56    FTPPassword                          no
+     57    URI                                  no
 
-=head3 LNK FileInfo2 Tags
+=head3 LNK UsersFilesFolder Tags
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-     14    LinkedFileName                       no
+      6    DelegateClassGUID                    no
+     22    DelegateFolderGUID                   no
+
+=head3 LNK Beef0003 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      8    UnknownGUID                          no
+
+=head3 LNK Beef0004 Tags
+
+TargetInfo extensions.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      8    TargetFileCreateDate                 no
+     12    TargetFileAccessDate                 no
+     16    OperatingSystem                      no
+     18    TargetFileName                       no
+
+=head3 LNK Beef0014 Tags
+
+URI extensions.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0000   AbsoluteURI                          no
+  0x0001   URIAuthority                         no
+  0x0002   DisplayURI                           no
+  0x0003   URIDomain                            no
+  0x0004   URIExtension                         no
+  0x0005   URIFragment                          no
+  0x0006   URIHost                              no
+  0x0007   URIPassword                          no
+  0x0008   URIPath                              no
+  0x0009   URIPathAndQuery                      no
+  0x000a   URIQuery                             no
+  0x000b   RawURI                               no
+  0x000c   URISchemeName                        no
+  0x000d   URIUserInfo                          no
+  0x000e   URIUserName                          no
+  0x000f   URIHostType                          no
+  0x0010   URIPort                              no
+  0x0011   URIScheme                            no
+  0x0012   URIZone                              no
+
+=head3 LNK Beef0025 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     12    FileTime1                            no
+     20    FileTime2                            no
+
+=head3 LNK Beef0026a Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     12    CreateDate                           no
+     20    ModifyDate                           no
+     28    LastAccessDate                       no
 
 =head3 LNK LinkInfo Tags
 

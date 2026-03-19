@@ -111,8 +111,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-13.52.tar.gz | tar -xf -
-  cd Image-ExifTool-13.52
+  gzip -dc Image-ExifTool-13.53.tar.gz | tar -xf -
+  cd Image-ExifTool-13.53
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -162,6 +162,7 @@ for calculating digest values and providing other features listed below:
   Win32::FindFile      (for Windows Unicode directory support, app only)
   Win32API::File       (for Windows Unicode file names and file times)
   Compress::Raw::Lzma  (for reading encoded 7z files)
+  File::StatX          (for reading FileCreateDate on Linux systems)
   IO::Compress::RawDeflate   (for writing FLIF images)
   IO::Uncompress::RawInflate (for reading FLIF images)
   IO::Compress::Brotli       (for writing compressed JXL metadata)

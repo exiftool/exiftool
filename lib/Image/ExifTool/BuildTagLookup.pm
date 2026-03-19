@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.66';
+$VERSION = '3.67';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -962,6 +962,9 @@ TagID:  foreach $tagID (@keys) {
                 # validate list type
                 if ($$tagInfo{List} and $$tagInfo{List} !~ /^(1|Alt|Bag|Seq|array|string)$/) {
                     warn "Warning: Unknown List type ($$tagInfo{List}) for $name in $tableName\n";
+                }
+                if ($$tagInfo{Hook} and $$tagInfo{Unknown}) {
+                    warn "Warning: Unknown tag with Hook - $short $name\n"
                 }
                 # accumulate information for consistency check of BinaryData tables
                 if ($processBinaryData and $$table{WRITABLE}) {

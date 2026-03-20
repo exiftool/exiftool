@@ -81,13 +81,13 @@ sub testCompare($$$;$)
             $success = 1;
             my ($line1, $line2);
             my $linenum = 0;
-            my $skip = 0;
+            my $retry = 0;
             for (;;) {
-                $line1 = <FILE1> unless $skip == 1;
+                $line1 = <FILE1> unless $retry == 1;
                 last unless defined $line1;
                 ++$linenum;
-                $line2 = <FILE2> unless $skip == 2;
-                $skip = 0;
+                $line2 = <FILE2> unless $retry == 2;
+                $retry = 0;
                 if (defined $line2) {
                     next if $line1 eq $line2;
                     next if nearEnough($line1, $line2);
@@ -95,21 +95,19 @@ sub testCompare($$$;$)
                     if ($line1 =~ /Warning: IPTCDigest is not current/ and
                         not eval 'require Digest::MD5')
                     {
-                        $skip = 2; 
+                        $retry = 2; 
                         next;
                     } elsif ($line2 =~ /Warning: IPTCDigest is not current/ and
                         not eval 'require Digest::MD5')
                     {
-                        $skip = 1;
+                        $retry = 1;
                         next;
                     }
                     # FileCreateDate may be extracted on Linux if File::StatX is available
-                    if ($^O eq 'linux') {
-                        if ($line1 =~ /File\s?Creat.*Date/) {
-                            $line2 =~ /File\s?Creat.*Date/ or $skip = 2, next;
-                        } elsif ($line2 =~ /File\s?Creat.*Date/) {
-                            $skip = 1, next;
-                        }
+                    if ($line1 =~ /File\s?Creat.*Date/) {
+                        $line2 =~ /File\s?Creat.*Date/ or $retry = 2, next;
+                    } elsif ($line2 =~ /File\s?Creat.*Date/) {
+                        $retry = 1, next;
                     }
                 }
                 $success = 0;
@@ -159,7 +157,7 @@ sub nearEnough($$)
     # allow different FileModifyDate, FileAccessDate, FileCreateDate/FileInodeChangeDate and FilePermissions
     # (note that FileInodeChangeDate is FileCreateDate on Windows)
     return 1 if $line1 =~ /(File\s?(Modif.*Date|Access\s?Date|Inode\s?Change\s?Date|Permissions))/ and
-               ($line2 =~ /$1/ or $line2 =~ /File\s?Creat.*Date/ and $line1 =~ /File\s?Inode\s?Change\sDate/);
+               ($line2 =~ /$1/ or $line2 =~ /File\s?Creat.*Date/ and $line1 =~ /File\s?Inode\s?Change\s?Date/);
 
     # allow CurrentIPTCDigest to be zero if Digest::MD5 isn't installed
     return 1 if $line1 =~ /Current IPTC Digest/ and

@@ -104,10 +104,12 @@ sub testCompare($$$;$)
                         next;
                     }
                     # FileCreateDate may be extracted on Linux if File::StatX is available
-                    if ($line1 =~ /File\s?Creat.*Date/) {
-                        $line2 =~ /File\s?Creat.*Date/ or $skip = 2, next;
-                    } elsif ($line2 =~ /File\s?Creat.*Date/) {
-                        $skip = 1, next;
+                    if ($^O eq 'linux') {
+                        if ($line1 =~ /File\s?Creat.*Date/) {
+                            $line2 =~ /File\s?Creat.*Date/ or $skip = 2, next;
+                        } elsif ($line2 =~ /File\s?Creat.*Date/) {
+                            $skip = 1, next;
+                        }
                     }
                 }
                 $success = 0;

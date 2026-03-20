@@ -157,7 +157,8 @@ sub nearEnough($$)
     # allow different FileModifyDate, FileAccessDate, FileCreateDate/FileInodeChangeDate and FilePermissions
     # (note that FileInodeChangeDate is FileCreateDate on Windows)
     return 1 if $line1 =~ /(File\s?(Modif.*Date|Access\s?Date|Inode\s?Change\s?Date|Permissions))/ and
-               ($line2 =~ /$1/ or $line2 =~ /File\s?Creat.*Date/ and $line1 =~ /File\s?Inode\s?Change\s?Date/);
+               ($line2 =~ /$1/ or $line2 =~ /File\s?Creat.*Date/ and 
+               ($^O ne 'linux' or $line1 =~ /File Inode Change Date/));
 
     # allow CurrentIPTCDigest to be zero if Digest::MD5 isn't installed
     return 1 if $line1 =~ /Current IPTC Digest/ and

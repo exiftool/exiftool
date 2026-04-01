@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 sub Process_marl($$$);
 sub Process_mrld($$$);
@@ -396,8 +396,7 @@ sub Process_mrld($$$)
         $$tagInfo{Description} = $a[13] unless $$tagInfo{Description};
         unless ($$tagInfo{PrintConv}) {
             # add a default print conversion
-            $units =~ tr/"\\//d; # (just to be safe, probably never happen)
-            $$tagInfo{PrintConv} = $printConv{$units} || qq("\$val $units");
+            $$tagInfo{PrintConv} = $printConv{$units} || qq("\$val \Q$units\E");
         }
         # adjust multiplier/offset as necessary to scale to more appropriate units
         # (ie. to the units actually specified in this dictionary -- d'oh)

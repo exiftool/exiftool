@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.53';
+my $version = '13.54';
 
 $^W = 1;    # enable global warnings
 
@@ -300,6 +300,7 @@ my @recommends = qw(
     POSIX::strptime
     Time::Local
     Unicode::LineBreak
+    File::StatX
     Compress::Raw::Lzma
     IO::Compress::RawDeflate
     IO::Uncompress::RawInflate
@@ -805,6 +806,7 @@ for (;;) {
             print "Optional libraries:\n";
             foreach (@recommends) {
                 next if /^Win32/ and $^O ne 'MSWin32';
+                next if /StatX/ and $^O ne 'linux';
                 my $ver = eval "require $_ and \$${_}::VERSION";
                 my $alt = $altRecommends{$_};
                 # check for alternative if primary not available
@@ -890,6 +892,11 @@ for (;;) {
             $val = undef unless $opt =~ s/\^$// or length $val;
             $mt->Options($opt => $val);
         } else {
+            unless ($pass) {
+                push @nextPass, '-api';
+                push @nextPass, $opt if defined $opt;
+                next;
+            }
             print "Available API Options:\n";
             my $availableOptions = Image::ExifTool::AvailableOptions();
             $$_[3] or printf("  %-17s - %s\n", $$_[0], $$_[2]) foreach @$availableOptions;
@@ -912,7 +919,11 @@ for (;;) {
     if ($a eq 'charset') {
         my $charset = (@ARGV and $ARGV[0] !~ /^(-|\xe2\x88\x92)/) ? shift : undef;
         if (not $charset) {
-            $pass or push(@nextPass, '-charset'), next;
+            unless ($pass) {
+                push @nextPass, '-charset' ;
+                push @nextPass, $charset if defined $charset;
+                next;
+            }
             my %charsets;
             $charsets{$_} = 1 foreach values %Image::ExifTool::charsetName;
             PrintTagList('Available character sets', sort keys %charsets);
@@ -1154,8 +1165,10 @@ for (;;) {
             $langOpt =~ tr/-A-Z/_a-z/;
             $mt->Options(Lang => $langOpt);
             next if $langOpt eq $mt->Options('Lang');
-        } else {
-            $pass or push(@nextPass, '-lang'), next;
+        } elsif (not $pass) {
+            push @nextPass, '-lang';
+            push @nextPass, $langOpt if defined $langOpt;
+            next;
         }
         my $langs = $quiet ? '' : "Available languages:\n";
         $langs .= "  $_ - $Image::ExifTool::langName{$_}\n" foreach @Image::ExifTool::langs;
@@ -4203,7 +4216,7 @@ sub SetWindowTitle($)
     if ($curTitle ne $title) {
         $curTitle = $title;
         if ($^O eq 'MSWin32') {
-            $title =~ tr(-_a-zA-Z0-9%.+/:=?*@~)()dc;  # allow only safe characters
+            $title =~ tr(-_a-zA-Z0-9%.+/:=?*@~ )()dc;  # allow only safe characters
             $title =~ s/([\/?:%])/^$1/g;   # escape remaing questionable chars
             eval { system qq{title $title} };
         } else {

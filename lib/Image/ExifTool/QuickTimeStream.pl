@@ -111,7 +111,7 @@ my %insvLimit = (
         The tags below are extracted from timed metadata in QuickTime and other
         formats of video files when the ExtractEmbedded option is used.  Although
         most of these tags are combined into the single table below, ExifTool
-        currently reads 121 different types of timed GPS metadata from video files.
+        currently reads 122 different types of timed GPS metadata from video files.
     },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")', RawConv => '$$self{FoundGPSLatitude} = 1; $val' },
     GPSLongitude => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
@@ -830,6 +830,24 @@ my %insvLimit = (
     10 => { Name => 'FusionYPR', Format => 'float[3]' },
 );
 
+# found in live photo .mov files
+%Image::ExifTool::QuickTime::setu = (
+    PROCESS_PROC => \&Image::ExifTool::QuickTime::ProcessMOV,
+    cfgv => {
+        Name => 'CFGV',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::PLIST::Main',
+            ProcessProc => 'Image::ExifTool::PLIST::ProcessBinaryPLIST',
+        },
+    },
+    dims => {
+        Name => 'Dimensions',
+        Format => 'int32u',
+        Count => 2,
+        PrintConv => '$val =~ tr/ /x/; $val',
+    },
+);
+
 #------------------------------------------------------------------------------
 # Convert unsigned 32-bit integer to signed
 # Inputs: <none> (uses value in $_)
@@ -902,7 +920,14 @@ sub SaveMetaKeys($$$)
                     }
                     $str .= " ($format)" if $verbose and defined $str;
                 }
+            } elsif ($tag eq 'setu') {
+                $et->HandleTag($tagTbl, $tag, undef,
+                    DataPt => \$val,
+                    Base => $$dirInfo{Base} + $pos - $len,
+                );
             }
+            # also seen:
+            # 'sdpd' - box containing 'sdpi' atom with value 4 zeros
             if ($verbose > 1) {
                 if (defined $str) {
                     $str =~ tr/\x00-\x1f\x7f-\xff/./;

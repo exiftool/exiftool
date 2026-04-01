@@ -17,15 +17,25 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.54'><b>Apr. 1, 2026 - Version 13.54</b></a>
+<ul>
+<li>Added a new PentaxModelID
+<li>Decode timed GPS from another DJI model
+<li>Decode more information from Apple live photo videos
+<li>Updated DICOM tags to 2026b specification
+<li>Patched potential security issue
+<li>Patched to fix failed tests on Windows (was a bug in the tests)
+<li>Patched to allow spaces in Windows title strings
+</ul>
+
 <a name='v13.53'><b>Mar. 19, 2026 - Version 13.53</b></a>
 <ul>
-<li>Added ability to read FileCreateDate (btime) on Linux systems
+<li>Added ability to read FileCreateDate (btime) on Linux systems (requires
+    File::StatX)
 <li>Added a bunch more Sony lenses (thanks Jos Roost)
 <li>Added warnings for possibly malicious or corrupted LNK files (<a href="https://github.com/exiftool/exiftool/issues/401">github #401</a>)
-<li>Decode timed GPS from Kenwood DRV-A510W MP4 videos
 <li>Decode more information from LNK files
-<li>Reduced memory requirements when running on a large number of files,
-    particularly when the -U option is used
+<li>Decode timed GPS from Kenwood DRV-A510W MP4 videos
 <li>Patched a potential security issue in Windows version
 <li>Fixed possible "undefined value" runtime warnings when reading torrent and
     WPG files (thanks Raf)

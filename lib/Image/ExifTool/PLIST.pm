@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 sub ExtractObject($$;$);
 sub Get24u($$);
@@ -46,7 +46,7 @@ my %plistType = (
 %Image::ExifTool::PLIST::Main = (
     PROCESS_PROC => \&ProcessPLIST,
     GROUPS => { 0 => 'PLIST', 1 => 'XML', 2 => 'Document' },
-    VARS => { LONG_TAGS => 12 },
+    VARS => { LONG_TAGS => 18 },
     NOTES => q{
         Apple Property List tags.  ExifTool reads both XML and binary-format PLIST
         files, and will extract any existing tags even if they aren't listed below.
@@ -121,6 +121,15 @@ my %plistType = (
     'slowMotion/regions/timeRange/duration/epoch'     => 'SlowMotionRegionsDurationEpoch',
     'slowMotion/regions' => 'SlowMotionRegions',
     'slowMotion/rate' => 'SlowMotionRate',
+    # buried deep in live photo .mov file
+    'LivePhotoMetadataSetupDataVersion' => { },
+    'SystemVersion/ProductBuildVersion' => 'ProductBuildVersion',
+    'SystemVersion/ProductName'         => 'ProductName',
+    'SystemVersion/ProductVersion'      => 'ProductVersion',
+    'FrameworkVersions/CoreMotion'      => 'CoreMotionVersion',
+    'FrameworkVersions/CMCaptureCore'   => 'CMCaptureCoreVersion',
+    'FrameworkVersions/H16ISPServices'  => 'H16ISPServicesVersion',
+    'FrameworkVersions/CoreMedia'       => 'CoreMediaVersion',
     XMLFileType => {
         # recognize MODD files by their content
         RawConv => q{
@@ -445,10 +454,11 @@ sub ProcessPLIST($$;$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my $dataPt = $$dirInfo{DataPt};
+    my $start = $$dirInfo{DirStart} || 0;
     my ($result, $notXML);
 
     if ($dataPt) {
-        pos($$dataPt) = $$dirInfo{DirStart} || 0;
+        pos($$dataPt) = $start;
         $notXML = 1 unless $$dataPt =~ /\G</g;
     }
     unless ($notXML) {
@@ -466,7 +476,8 @@ sub ProcessPLIST($$;$)
     } else {
         return 0 unless $dataPt;
     }
-    if ($$dataPt =~ /^bplist0/) {  # binary PLIST
+    pos($$dataPt) = $start;
+    if ($$dataPt =~ /\Gbplist0/) {  # binary PLIST
         # binary PLIST file
         my $tagTablePtr = GetTagTable('Image::ExifTool::PLIST::Main');
         $et->SetFileType('PLIST', 'application/x-plist');

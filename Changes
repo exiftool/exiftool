@@ -7,15 +7,24 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.50. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Apr. 1, 2026 - Version 13.54
+
+  - Added a new PentaxModelID
+  - Decode timed GPS from another DJI model
+  - Decode more information from Apple live photo videos
+  - Updated DICOM tags to 2026b specification
+  - Patched potential security issue
+  - Patched to fix failed tests on Windows (was a bug in the tests)
+  - Patched to allow spaces in Windows title strings
+
 Mar. 19, 2026 - Version 13.53
 
-  - Added ability to read FileCreateDate (btime) on Linux systems
+  - Added ability to read FileCreateDate (btime) on Linux systems (requires
+    File::StatX)
   - Added a bunch more Sony lenses (thanks Jos Roost)
   - Added warnings for possibly malicious or corrupted LNK files (github #401)
-  - Decode timed GPS from Kenwood DRV-A510W MP4 videos
   - Decode more information from LNK files
-  - Reduced memory requirements when running on a large number of files,
-    particularly when the -U option is used
+  - Decode timed GPS from Kenwood DRV-A510W MP4 videos
   - Patched a potential security issue in Windows version
   - Fixed possible "undefined value" runtime warnings when reading torrent and
     WPG files (thanks Raf)

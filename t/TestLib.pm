@@ -154,11 +154,11 @@ sub nearEnough($$)
                ($line2 eq "$1$Image::ExifTool::VERSION$Image::ExifTool::RELEASE$2" or
                 $line2 eq "$1$Image::ExifTool::VERSION$2");
 
-    # allow different FileModifyDate, FileAccessDate, FileCreateDate/FileInodeChangeDate and FilePermissions
-    # (note that FileInodeChangeDate is FileCreateDate on Windows)
+    # allow different FileModifyDate, FileAccessDate, FileCreateDate/FileInodeChangeDate
+    # and FilePermissions (note that FileInodeChangeDate is FileCreateDate on Windows,
+    # and FileCreateDate may or may not be extracted on Linux)
     return 1 if $line1 =~ /(File\s?(Modif.*Date|Access\s?Date|Inode\s?Change\s?Date|Permissions))/ and
-               ($line2 =~ /$1/ or $line2 =~ /File\s?Creat.*Date/ and 
-               ($^O ne 'linux' or $line1 =~ /File Inode Change Date/));
+               ($line2 =~ /$1/ or $line2 =~ /File\s?Creat.*Date/ and $^O ne 'linux');
 
     # allow CurrentIPTCDigest to be zero if Digest::MD5 isn't installed
     return 1 if $line1 =~ /Current IPTC Digest/ and

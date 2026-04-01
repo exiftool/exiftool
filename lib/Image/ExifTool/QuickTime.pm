@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.31';
+$VERSION = '3.32';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -6649,7 +6649,7 @@ my %userDefined = (
     PROCESS_PROC => \&ProcessKeys,
     WRITE_PROC => \&WriteKeys,
     CHECK_PROC => \&CheckQTValue,
-    VARS => { LONG_TAGS => 8 },
+    VARS => { LONG_TAGS => 9 },
     WRITABLE => 1,
     # (not PREFERRED when writing)
     GROUPS => { 1 => 'Keys' },
@@ -6790,6 +6790,8 @@ my %userDefined = (
         # (ignore the fact that the "f" and "l" unpacks won't work on a big-endian machine)
         ValueConv => 'join " ",unpack "VfVVf6c4lCCcclf4Vvv", $val',
     },
+    # (mdta)live-photo-still-image-transform mdta (dtyp=com.apple.quicktime.live-photo-still-image-transform)
+    # (mdta)live-photo-still-image-transform-reference-dimensions (dtyp=com.apple.quicktime.live-photo-still-image-transform-reference-dimensions)
     # (mdta)com.apple.quicktime.still-image-time (dtyp=65, int8s)
     'still-image-time' => { # (found in live photo)
         Name => 'StillImageTime',
@@ -6839,6 +6841,29 @@ my %userDefined = (
         Writable => 0, # (don't make this writable because it is found in timed metadata)
     },
     'full-frame-rate-playback-intent' => 'FullFrameRatePlaybackIntent', #forum16824
+    'smartstyle-info' => {
+        Name => 'SmartStyleInfo',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::PLIST::Main',
+            ProcessProc => 'Image::ExifTool::PLIST::ProcessBinaryPLIST',
+        },
+    },
+    # (mdta) com.apple.quicktime.smartstyle.rendering-version
+    'smartstyle.rendering-version' => { Name => 'SmartstyleRenderingVersion', Writable => 0 },
+    # (mdta) com.apple.quicktime.smartstyle.tone
+    'smartstyle.tone'       => { Name => 'SmartstyleTone',      Writable => 0 },
+    # (mdta) com.apple.quicktime.smartstyle.color
+    'smartstyle.color'      => { Name => 'SmartstyleColor',     Writable => 0 },
+    # (mdta) com.apple.quicktime.smartstyle.intensity
+    'smartstyle.intensity'  => { Name => 'SmartstyleIntensity', Writable => 0 },
+    # (mdta) com.apple.quicktime.smartstyle.bypassed
+    'smartstyle.bypassed'   => { Name => 'SmartstyleBypassed',  Writable => 0 },
+    # (mdta) com.apple.quicktime.smartstyle.cast
+    'smartstyle.cast'       => { Name => 'SmartstyleCast',      Writable => 0 },
+    setu => {
+        Name => 'SETU',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::setu' },
+    },
 #
 # seen in Apple ProRes RAW file
 #

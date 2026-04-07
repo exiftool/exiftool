@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Microsoft;
 use Image::ExifTool::ASF;   # (for GetGUID)
 
-$VERSION = '1.17';
+$VERSION = '1.18';
 
 sub ProcessItemID($$$);
 sub ProcessLinkInfo($$$);
@@ -207,6 +207,9 @@ my %guidLookup = (
     'ED228FDF-9EA8-4870-83B1-96B02CFE0D52' => 'Game Explorer',
     'A8CDFF1C-4878-43BE-B5FD-F8091C1C60D0' => 'Documents',
     '3ADD1653-EB32-4CB0-BBD7-DFA0ABB5ACCA' => 'My Pictures',
+    '52205FD8-5DFB-447D-801A-D0B52F2E83E1' => "User Files",
+    'D3162B92-9365-467A-956B-92703ACA08AF' => 'User Documents',
+    '4234D49B-0245-4DF3-B780-3893943456E1' => 'User Music',
     # ref https://github.com/EricZimmerman/GuidMapping/blob/master/Resources/GuidToName.txt
     '0C39A5CF-1A7A-40C8-BA74-8900E6DF5FCD' => 'Recent Items',
     # ref https://github.com/libyal/libfwsi/blob/main/documentation/Windows%20Shell%20Item%20format.asciidoc

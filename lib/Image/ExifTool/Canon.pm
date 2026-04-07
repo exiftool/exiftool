@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '5.05';
+$VERSION = '5.06';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -10267,6 +10267,19 @@ sub PrintLensID(@)
         }
         @matches = @likely unless @matches;
         @matches = @maybe unless @matches;
+        # use LensModel focal length and aperture if necessary and available
+        if (@matches > 1 and $lensModel and 
+            $lensModel =~ /(\d+(?:\.\d+)?(?:-\d+(?:\.\d+)?)?) ?mm ?f\/?(\d+(?:\.\d+)?(?:-\d+(?:\.\d+)?)?)/i)
+        {
+            my ($mm, $fstop) = ($1, $2);
+            my @best;
+            foreach $lens (@matches) {
+                next unless $lens =~ /(\d+(?:\.\d+)?(?:-\d+(?:\.\d+)?)?) ?mm ?f\/?(\d+(?:\.\d+)?(?:-\d+(?:\.\d+)?)?)/i;
+                push @best, $lens if $mm eq $1 and $fstop eq $2;
+            }
+            @matches = @best if @best;
+        }
+        
         Image::ExifTool::Exif::MatchLensModel(\@matches, $lensModel);
         return join(' or ', @matches) if @matches;
     } elsif ($lensModel and $lensModel =~ /\d/) {

@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.32';
+$VERSION = '3.33';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -503,8 +503,8 @@ my %qtFlags = ( #12
 # tags that may be duplicated and directories that may contain duplicate tags
 # (used only to avoid warnings when Validate-ing)
 my %dupTagOK = ( mdat => 1, trak => 1, free => 1, infe => 1, sgpd => 1, dimg => 1, CCDT => 1,
-                 sbgp => 1, csgm => 1, uuid => 1, cdsc => 1, maxr => 1, '----' => 1 );
-my %dupDirOK = ( ipco => 1, iref => 1, '----' => 1 );
+                 sbgp => 1, csgm => 1, uuid => 1, cdsc => 1, maxr => 1, moof => 1, '----' => 1 );
+my %dupDirOK = ( ipco => 1, iref => 1, sdpd => 1, moof => 1, traf => 1, '----' => 1 );
 
 # the usual atoms required to decode timed metadata with the ExtractEmbedded option
 my %eeStd = ( stco => 'stbl', co64 => 'stbl', stsz => 'stbl', stz2 => 'stbl',
@@ -6860,9 +6860,16 @@ my %userDefined = (
     'smartstyle.bypassed'   => { Name => 'SmartstyleBypassed',  Writable => 0 },
     # (mdta) com.apple.quicktime.smartstyle.cast
     'smartstyle.cast'       => { Name => 'SmartstyleCast',      Writable => 0 },
+#
+# tags stored directly in the mdta Keys atom
+#
     setu => {
         Name => 'SETU',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::setu' },
+    },
+    sdpd => {
+        Name => 'SDPD',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::sdpd' },
     },
 #
 # seen in Apple ProRes RAW file
@@ -10074,7 +10081,8 @@ sub ProcessMOV($$;$)
             if ($$et{ValidatePath}{$path} and not $dupTagOK{$tag} and not $dupDirOK{$dirID}) {
                 my $i = Get32u(\$tag,0);
                 my $str = $i < 255 ? "index $i" : "tag '" . PrintableTagID($tag,2) . "'";
-                $et->Warn("Duplicate $str at " . join('-', @{$$et{PATH}}));
+                $path =~ s/-[^-+]$//;   # remove tag name
+                $et->Warn("Duplicate $str at $path");
                 $$et{ValidatePath} = { } if $path eq 'MOV-moov'; # avoid warnings for all contained dups
             }
             $$et{ValidatePath}{$path} = 1;

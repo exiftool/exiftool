@@ -1789,10 +1789,10 @@
 
 <a name='v12.38'><b>Dec. 20, 2021 - Version 12.38</b></a>
 <ul>
+<li>Security update (thanks Joe Lothan)
 <li>Decode a number of new tags for the Nikon Z9 (thanks Warren Hatch)
 <li>Patched incorrect decoding of AEBShotCount for the Canon EOS 90D
 <li>Patched EXR reader to support long tag names
-<li>Patched security issue (thanks Joe Lothan)
 <li>Fixed an incorrect tag ID for a new Nikon MakerNote tag (<a href="https://github.com/exiftool/exiftool/issues/108">github #108</a>)
 <li>Fixed XMP-exif:GPSMeasureMode conversions to match EXIF
 <li>Fixed problem where some namespaces may be undeclared in the -X output when
@@ -1956,13 +1956,13 @@
 
 <a name='v12.29'><b>July 9, 2021 - Version 12.29</b></a>
 <ul>
+<li>Security update
 <li>Added a few new Nikon and Olympus lenses (thanks LibRaw)
 <li>Improved a QuickTime "File format error" message to be more meaningful, and
     made it a minor error
 <li>Changed PNG writer to add EXIF before IDAT
 <li>Some changes the way CAI JUMBF metadata is handled
 <li>Patched to read timed GPS from a different type of INSV videos
-<li>Patched a security issue
 <li>Fixed problem where ExifTool could hang when processing mebx timed metadata
 </ul>
 
@@ -2000,6 +2000,7 @@
 
 <a name='v12.26'><b>May 20, 2021 - Version 12.26</b></a> <span class=grn>(production release)</span>
 <ul>
+<li>Security update (for vulnerability in argument of -lang option)
 <li>Added support for JPEG Stereo (JPS) images
 <li>Added a new Sony LensType (thanks LibRaw)
 <li>Added a new PentaxModelID (thanks LibRaw)
@@ -2007,7 +2008,6 @@
     the -X option output (exiftool.ca is still recognized when reading XML)
 <li>Improved handling of large-array warnings in -htmldump output
 <li>Changed handling of escaped characters in #[CSTR] lines of -@ argfile
-<li>Patched security vulnerability in argument of -lang option
 <li>Fixed problem which could cause a "Wide character" warning and generate a
     corrupted output file when writing some illegal values
 </ul>
@@ -2036,6 +2036,7 @@
 
 <a name='v12.24'><b>Apr. 13, 2021 - Version 12.24</b></a>
 <ul>
+<li>Security update (vulnerability in DjVu reader)
 <li>Added a new PhaseOne RawFormat value (thanks LibRaw)
 <li>Decode a new Sony tag (thanks Jos Roost)
 <li>Decode a few new Panasonic and FujiFilm tags (thanks LibRaw and Greybeard)
@@ -2043,7 +2044,6 @@
 <li>Recognize AutoCAD DXF files
 <li>More work on experimental CAI JUMBF read support
 <li>More work on experimental JPEG XL read/write support
-<li>Patched security vulnerability in DjVu reader
 </ul>
 
 <a name='v12.23'><b>Apr. 1, 2021 - Version 12.23</b></a>
@@ -7804,6 +7804,7 @@
 
 <a name='v8.18'><b>Apr. 16, 2010 - Version 8.18</b></a>
 <ul>
+<li>Security update (when writing)
 <li>Added read support for Sony DSC-F1 PMP images
 <li>Added a new Nikon LensID (thanks Jeffrey Friedl)
 <li>Decode a number of new Sony tags (thanks Michael Reitinger)
@@ -7811,7 +7812,6 @@
 <li>Preserve original file permissions and ownership when writing
 <li>Made Canon DustRemovalData writable
 <li>Changed some Pentax WhiteBalance strings for consistency
-<li>Patched potential security problem when writing values
 <li>Fixed bug extracting unsynchronized ID3v2.4 information
 </ul>
 

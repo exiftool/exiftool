@@ -11,32 +11,41 @@
 
 <p>RSS feed: <a href="https://exiftool.org/rss.xml">https://exiftool.org/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="https://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.50.tar.gz/download">Version 13.50</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="https://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.55.tar.gz/download">Version 13.55</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">MetaCPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.55'><b>Apr. 7, 2026 - Version 13.55</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a few new Windows LNK GUID values
+<li>Extract more unknown information from QuickTime metadata tracks
+<li>Improved config_files/local_time.config to preserve sub seconds
+<li>Improved lens identification logic for Canon cameras in the case where the
+    maker notes are missing
+</ul>
+
 <a name='v13.54'><b>Apr. 1, 2026 - Version 13.54</b></a>
 <ul>
+<li>Security update
 <li>Added a new PentaxModelID
 <li>Decode timed GPS from another DJI model
 <li>Decode more information from Apple live photo videos
 <li>Updated DICOM tags to 2026b specification
-<li>Patched potential security issue
 <li>Patched to fix failed tests on Windows (was a bug in the tests)
 <li>Patched to allow spaces in Windows title strings
 </ul>
 
 <a name='v13.53'><b>Mar. 19, 2026 - Version 13.53</b></a>
 <ul>
+<li>Security update (Windows only)
 <li>Added ability to read FileCreateDate (btime) on Linux systems (requires
     File::StatX)
 <li>Added a bunch more Sony lenses (thanks Jos Roost)
 <li>Added warnings for possibly malicious or corrupted LNK files (<a href="https://github.com/exiftool/exiftool/issues/401">github #401</a>)
 <li>Decode more information from LNK files
 <li>Decode timed GPS from Kenwood DRV-A510W MP4 videos
-<li>Patched a potential security issue in Windows version
 <li>Fixed possible "undefined value" runtime warnings when reading torrent and
     WPG files (thanks Raf)
 <li>Fixed issue which could result in an "uninitialized value" runtime error
@@ -75,12 +84,12 @@ considered development releases, and are not uploaded to <a href="https://metacp
 
 <a name='v13.50'><b>Feb. 7, 2026 - Version 13.50</b></a> <span class=grn>(production release)</span>
 <ul>
+<li>Security update (MacOS only, thanks Tay Kiat Loong)
 <li>Added a few new Sony lenses (thanks Jos Roost)
 <li>Added a couple of new Canon lenses (thanks Norbert Wasser)
 <li>Decode another Samsung trailer tag
 <li>Decode BlackLevels from some Canon CRW files (<a href="https://github.com/exiftool/exiftool/issues/387">github #387</a>)
 <li>Updated Sony maker note decoding for the ILCE-7M5 (thanks Jos Roost)
-<li>Patched potential MacOS security issue (thanks Tay Kiat Loong)
 <li>Fixed -list options so reading image files beforehand doesn't add tags to
     the output when running multiple commands using the -execute feature
 </ul>

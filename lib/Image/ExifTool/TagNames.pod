@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 31730 tags, with 20520 unique tag names.
+They contain a total of 31731 tags, with 20521 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -31306,6 +31306,7 @@ changed via the config file.
   'rating.user' UserRating                      yes
   'samsung.android.utc_offset' AndroidTimeZone  yes
   'scene-illuminance' SceneIlluminance          no
+  'sdpd'        SDPD                            QuickTime sdpd
   'setu'        SETU                            QuickTime setu
   'smartstyle-info' SmartStyleInfo              PLIST
   'smartstyle.bypassed' SmartstyleBypassed      no
@@ -31363,6 +31364,12 @@ VideoKeys family 1 gorup.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'cits'   FaceItem                             QuickTime Keys
+
+=head3 QuickTime sdpd Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'sdpi'   SDPI?                                no
 
 =head3 QuickTime setu Tags
 

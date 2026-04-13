@@ -37,6 +37,7 @@ sub ProcessSettings($$$);
     'dvtm_PP-101.proto' => 1,       # Osmo Pocket 3
     'dvtm_oq101.proto' => 1,        # Osmo 360
     'dvtm_wa345e.proto' => 1,       # Matrice 4E
+    'dvtm_wm260.proto' => 1,        # Mavic 3 Cine
     'dvtm_wm261.proto' => 1,        # Mavic 3 Pro
     'dvtm_Mavic4.proto' => 1,       # Mavic 4 Pro
     'dvtm_Mini5Pro.proto' => 1,     # Mini 5 Pro
@@ -919,6 +920,16 @@ my %convFloat2 = (
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
     },
 );
+
+# dvtm_wm260 streams are structurally close to dvtm_wm261 in tested samples,
+# so reuse the wm261 field map until differences are identified.
+foreach my $tag (keys %Image::ExifTool::DJI::Protobuf) {
+    next unless $tag =~ /^dvtm_wm261_(.+)/;
+    my $val = $Image::ExifTool::DJI::Protobuf{$tag};
+    $Image::ExifTool::DJI::Protobuf{"dvtm_wm260_$1"} =
+        ref $val eq 'HASH' ? { %$val } : $val;
+}
+1;
 
 #------------------------------------------------------------------------------
 # Process DJI beauty settings (ref PH)

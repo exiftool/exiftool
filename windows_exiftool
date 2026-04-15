@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.55';
+my $version = '13.56';
 
 $^W = 1;    # enable global warnings
 
@@ -4216,8 +4216,8 @@ sub SetWindowTitle($)
     if ($curTitle ne $title) {
         $curTitle = $title;
         if ($^O eq 'MSWin32') {
-            $title =~ tr(-_a-zA-Z0-9%.+/:=?*@~ )()dc;  # allow only safe characters
-            $title =~ s/([\/?:%])/^$1/g;   # escape remaing questionable chars
+            # allow only safe characters
+            $title =~ tr(-_a-zA-Z0-9 \(\)[]{}%.+/:;,=?*!@#$~')()dc;
             eval { system qq{title $title} };
         } else {
             # (this only works for XTerm terminals, and STDERR must go to the console)

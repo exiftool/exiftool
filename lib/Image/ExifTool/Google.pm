@@ -33,6 +33,7 @@ my %sPose = (
     RotationZ => { Writable => 'real', Groups => { 2 => 'Location' } },
     RotationW => { Writable => 'real', Groups => { 2 => 'Location' } },
     Timestamp => {
+        Name => 'TimeStamp',
         Writable => 'integer',
         Shift => 'Time',
         Groups => { 2 => 'Time' },
@@ -72,6 +73,7 @@ my %sEarthPose = (
     RotationZ => { Writable => 'real', Groups => { 2 => 'Location' } },
     RotationW => { Writable => 'real', Groups => { 2 => 'Location' } },
     Timestamp => {
+        Name => 'TimeStamp',
         Writable => 'integer',
         Shift => 'Time',
         Groups => { 2 => 'Time' },

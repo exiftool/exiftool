@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.63';
+$VERSION = '4.64';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -158,6 +158,16 @@ $formatName[129] = 'utf8';  # (Exif 3.0)
     22 => 'D75',
     23 => 'D50',
     24 => 'ISO Studio Tungsten',
+    25 =>  'Daylight', # Exif3.1
+    26 =>  'Day White', # Exif3.1
+    27 =>  'Cool White', # Exif3.1
+    28 =>  'White', # Exif3.1
+    29 =>  'Warm White', # Exif3.1
+    30 =>  'Daylight LED',  # Exif3.1 (D 5700-7100K)
+    31 =>  'Day White LED', # Exif3.1 (N 4600-5500K)
+    32 =>  'Cool White LED',# Exif3.1 (W 3800-4500K)
+    33 =>  'White LED',     # Exif3.1 (WW 3250-3800K)
+    34 =>  'Warm White LED',# Exif3.1 (L 2600-3250K)
     255 => 'Other',
 );
 
@@ -209,7 +219,7 @@ $formatName[129] = 'utf8';  # (Exif 3.0)
     6 => 'JPEG (old-style)', #3
     7 => 'JPEG', #4
     8 => 'Adobe Deflate', #3
-    9 => 'JBIG B&W', #3
+    9 => 'JBIG B&W or VC-5', #3 / github411
     10 => 'JBIG Color', #3
     99 => 'JPEG', #16
     262 => 'Kodak 262', #16
@@ -381,6 +391,20 @@ my %opcodeInfo = (
         14 => 'WarpRectilinear2', # (DNG 1.6)
     },
     PrintConvInv => undef,  # (so the inverse conversion is not performed)
+);
+
+# lookups for LearningOptOutIn tag
+my %use = (
+    0 => 'All / Individual Usage Not Specified',
+    1 => 'Non-Generative AI/ML Training',
+    2 => 'Generative AI/ML Training',
+    3 => 'Data Mining',
+    4 => 'Input to Foundation Model (Trained AI/ML Model)',
+);
+my %ind = (
+    0 => 'Opt-out',
+    1 => 'Opt-in',
+    2 => 'Unspecified',
 );
 
 # main EXIF tag table
@@ -2481,6 +2505,36 @@ my %opcodeInfo = (
         # SHOULD ADD SPECIAL LOGIC TO ALLOW CONDITIONAL OVERWRITE OF
         # "UNKNOWN" VALUES FILLED WITH SPACES
     },
+    0x9287 => { #Exif3.1
+        Name => 'LearningOptOutIn',
+        Writable => 'undef',
+        Format => 'int16u',
+        Notes => 'multiple values: 0. "'.join('","',@use{0..4}).'
+                                ", 1. "'.join('","',@ind{0..2}).'"',
+        Count => -1,
+        PrintConv => sub {
+            my @a = split ' ', shift;
+            my ($i, @rtn);
+            for ($i=1; $i<@a; ++$i) {
+                push @rtn, (($i & 1) ? $use{$a[$i]} : $ind{$a[$i]}) || "Unknown($a[$i])";
+            }
+            return join('; ', @rtn);
+        },
+        PrintConvInv => sub {
+            my @a = split /; ?/, shift;
+            my ($i, @rtn);
+            for ($i=0; $i<@a; ++$i) {
+                my ($v, $multi) = Image::ExifTool::ReverseLookup($a[$i], ($i & 1) ? \%ind : \%use);
+                if (not defined $v) {
+                    $Image::ExifTool::evalWarning = qq{Can't convert "$a[$i]" (} .
+                        ($multi ? 'multiple' : 'no') . " matches)";
+                    return undef;
+                }
+                push @rtn, $v;
+            }
+            return join(' ', int(@rtn / 2), @rtn);
+        },
+    },
     0x9290 => {
         Name => 'SubSecTime',
         Groups => { 2 => 'Time' },
@@ -2917,7 +2971,48 @@ my %opcodeInfo = (
         },
     },
     # 0xa40d - int16u: 0 (GE E1486 TW)
+    0xa40d => { #Exif3.1
+        Name => 'DevelopmentType',
+        Writable => 'int16u',
+        ValueConv => '($val >> 8) . " " . ($val & 0xff)',
+        ValueConvInv => 'my @a=split " ",$val; (($a[0] & 0xff) << 8) + ($a[1] & 0xff)',
+        PrintConv => [{
+            1 => 'Accurate Reproduction',
+            2 => 'Small Differences',
+            4 => 'Extreme Differences',
+        },{
+            1 => 'Factory Default Settings',
+            2 => 'Not Default Settings',
+            4 => 'Unknown Settings',
+        }],
+    },
     # 0xa40e - int16u: 1 (GE E1486 TW)
+    0xa40e => { #Exif3.1
+        Name => 'DevelopmentTypeDescription',
+        Writable => 'string',
+        ValueConv => '$self->Decode($val, "UTF8")',
+        ValueConvInv => '$self->Encode($val,"UTF8")',
+    },
+    0xa40f => { #Exif3.1
+        Name => 'DistortionCorrection',
+        Writable => 'int16u',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
+    0xa410 => { #Exif3.1
+        Name => 'ChromaticAberrationCorrection',
+        Writable => 'int16u',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
+    0xa411 => { #Exif3.1
+        Name => 'ShadingCorrection',
+        Writable => 'int16u',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
+    0xa412 => { #Exif3.1
+        Name => 'NoiseReduction',
+        Writable => 'int16u',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
     0xa420 => { Name => 'ImageUniqueID', Writable => 'string' },
     0xa430 => { #24
         Name => 'OwnerName',

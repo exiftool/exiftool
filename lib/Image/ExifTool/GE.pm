@@ -51,6 +51,8 @@ sub ProcessGE2($$$);
     # 0x0600 - int32u: 0
 );
 
+1; # end
+
 __END__
 
 =head1 NAME

@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.78';
+$VERSION = '3.79';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -4620,7 +4620,7 @@ sub ProcessXMP($$;$)
 
     # restore structures if necessary
     if ($$et{IsStruct}) {
-        unless ($$dirInfo{NoStruct}) {
+        unless ($$dirInfo{NoStruct} or $isXML) {
             require 'Image/ExifTool/XMPStruct.pl';
             RestoreStruct($et, $keepFlat);
         }

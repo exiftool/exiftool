@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.67';
+$VERSION = '3.68';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -273,11 +273,11 @@ tags remain.
 
 The table below lists all EXIF tags.  Also listed are TIFF, DNG, HDP and
 other tags which are not part of the EXIF specification, but may co-exist
-with EXIF tags in some images.  Tags which are part of the EXIF 3.0
+with EXIF tags in some images.  Tags which are part of the EXIF 3.1
 specification have an underlined B<Tag Name> in the HTML version of this
 documentation.  See
-L<https://www.cipa.jp/std/documents/download_e.html?CIPA_DC-008-2024-E>
-for the official EXIF 3.0 specification.
+L<https://www.cipa.jp/std/documents/download_e.html?CIPA_DC-008-2026-E>
+for the official EXIF 3.1 specification.
 },
     GPS => q{
 These GPS tags are part of the EXIF standard, and are stored in a separate

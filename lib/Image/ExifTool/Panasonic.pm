@@ -361,6 +361,7 @@ my %shootingMode = (
                 '16 0'  => '1-area', # (FZ8)
                 '16 16' => '1-area (high speed)', # (FZ8)
                 '16 32' => '1-area +', #forum16903 (G9M2)
+                '16 225'=> '225-area 2', #forum16903 (S5D)
                 '17 0'  => 'Full Area', #forum16903 (G9M2)
                 # '32 0' is Face Detect for FS7, and Face Detect or Focus Tracking
                 # for the DMC-FZ200 (ref 17), and Auto is DMC-L1 guess,

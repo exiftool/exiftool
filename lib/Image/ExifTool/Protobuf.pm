@@ -279,6 +279,8 @@ sub ProcessProtobuf($$$;$)
     return 1;
 }
 
+1; # end
+
 __END__
 
 =head1 NAME

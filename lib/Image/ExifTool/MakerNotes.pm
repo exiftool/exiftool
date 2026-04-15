@@ -108,7 +108,7 @@ my $debug;          # set to 1 to enable debugging code
     {
         Name => 'MakerNoteFLIR',
         # (starts with IFD, Make is 'FLIR Systems AB' or 'FLIR Systems')
-        Condition => '$$self{Make} =~ /^FLIR Systems/',
+        Condition => '$$self{Make} =~ /^(FLIR Systems|Teledyne FLIR)/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::FLIR::Main',
             Start => '$valuePtr',

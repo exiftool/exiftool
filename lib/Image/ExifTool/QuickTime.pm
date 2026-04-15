@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.33';
+$VERSION = '3.34';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -9588,7 +9588,7 @@ sub ProcessMetaData($$$)
         my $tag  = Get32u($dataPt, $pos + 2);
         my $lang = Get16u($dataPt, $pos + 6);
         my $enc  = Get16u($dataPt, $pos + 8);
-        my $val  = substr($$dataPt, $pos + 10, $size);
+        my $val  = substr($$dataPt, $pos + 10, $size - 10);
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
         if ($tagInfo) {
             # convert language code to ASCII (ignore read-only bit)

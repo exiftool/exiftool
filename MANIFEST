@@ -87,6 +87,7 @@ html/TagNames/GIF.html
 html/TagNames/GIMP.html
 html/TagNames/GM.html
 html/TagNames/GPS.html
+html/TagNames/Garmin.html
 html/TagNames/GeoTiff.html
 html/TagNames/GoPro.html
 html/TagNames/Google.html
@@ -314,14 +315,15 @@ lib/Image/ExifTool/FujiFilm.pm
 lib/Image/ExifTool/GE.pm
 lib/Image/ExifTool/GIF.pm
 lib/Image/ExifTool/GIMP.pm
-lib/Image/ExifTool/Google.pm
 lib/Image/ExifTool/GM.pm
 lib/Image/ExifTool/GPS.pm
+lib/Image/ExifTool/Garmin.pm
 lib/Image/ExifTool/GeoTiff.pm
 lib/Image/ExifTool/Geolocation.dat
 lib/Image/ExifTool/Geolocation.pm
 lib/Image/ExifTool/Geotag.pm
 lib/Image/ExifTool/GoPro.pm
+lib/Image/ExifTool/Google.pm
 lib/Image/ExifTool/H264.pm
 lib/Image/ExifTool/HP.pm
 lib/Image/ExifTool/HTML.pm
@@ -629,6 +631,8 @@ t/GIMP_2.out
 t/GPS.t
 t/GPS_2.out
 t/GPS_3.out
+t/Garmin.t
+t/Garmin_2.out
 t/GeoTiff.t
 t/GeoTiff_2.out
 t/GeoTiff_3.out
@@ -645,6 +649,7 @@ t/Geotag.t
 t/Geotag_10.out
 t/Geotag_11.out
 t/Geotag_12.out
+t/Geotag_13.out
 t/Geotag_2.out
 t/Geotag_3.out
 t/Geotag_5.out
@@ -1097,6 +1102,7 @@ t/images/GE.jpg
 t/images/GIF.gif
 t/images/GIMP.xcf
 t/images/GPS.jpg
+t/images/Garmin.fit
 t/images/GeoTiff.tif
 t/images/Geotag.gpx
 t/images/Geotag.igc

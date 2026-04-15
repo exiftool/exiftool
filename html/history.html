@@ -17,6 +17,24 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.56'><b>Apr. 15, 2026 - Version 13.56</b> - "Exif 3.1"</a>
+<ul>
+<li>Added new tags of the Exif 3.1 specification
+<li>Added ability to geotag directly from any supported file(s) containing GPS
+<li>Added read support for extracting timed GPS from Garmin FIT files
+<li>Added a new Panasonic AFAreaMode (thanks Andrew)
+<li>Decode maker notes from newer FLIR cameras (<a href="https://github.com/exiftool/exiftool/issues/408">github #408</a>)
+<li>Improved config_files/local_time.config to add LocalTag UserParam feature
+<li>Updated Compression value re-purposed by GoPro (<a href="https://github.com/exiftool/exiftool/issues/411">github #411</a>)
+<li>Allow a few more different characters in the Windows -progress title string
+<li>Avoid trying to return structured information from XML files
+<li>Patched bug when reading QuickTime MTDT metadata (thanks Thurein Oo)
+<li>API Changes:
+    <ul>
+    <li>Enhanced GetValue so input tag name is now case insensitive
+    </ul>
+</ul>
+
 <a name='v13.55'><b>Apr. 7, 2026 - Version 13.55</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added a few new Windows LNK GUID values

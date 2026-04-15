@@ -965,6 +965,8 @@ sub ProcessDJIInfo($$$)
     return 1;
 }
 
+1; # end
+
 __END__
 
 =head1 NAME

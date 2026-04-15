@@ -698,6 +698,8 @@ my %convUnicode = (
     0x95 => { Name => 'FileNumber',         Format => 'int16u' },
 );
 
+1; # end
+
 __END__
 
 =head1 NAME

@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.26';
+$VERSION = '1.27';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -65,6 +65,15 @@ use Image::ExifTool::Exif;
     0xa43a => 300,
     0xa43b => 300,
     0xa43c => 300,
+
+    # new Exif 3.1 tags
+    0x9287 => 310,
+    0xa40d => 310,
+    0xa40e => 310,
+    0xa40f => 310,
+    0xa410 => 310,
+    0xa411 => 310,
+    0xa412 => 310,
 );
 
 # GPSVersionID numbers when each tag was introduced

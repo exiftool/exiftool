@@ -34,10 +34,10 @@ pre   { color: #800; margin-left: 4em }
 </div>
 <h1 class='up'>Geotagging with ExifTool</h1>
 <p>The ExifTool geotagging feature adds GPS tags to images based on data from a
-GPS track log file.  The GPS track log file is loaded, and linear interpolation
-is used to determine the GPS position at the time of the image, then the
-following tags are written to the image (if the corresponding information
-is available):</p>
+GPS track log file or any supported file(s) containing GPS information.  The GPS
+track log is loaded, and linear interpolation is used to determine the GPS
+position at the time of the image, then the following tags are written to the
+image (if the corresponding information is available):</p>
 
 <center><table>
 <tr><td>GPSLatitude</td><td>GPSLongitude</td><td>GPSAltitude</td><td>CameraElevationAngle</td><td>GPSPitch</td></tr>
@@ -63,11 +63,13 @@ the preferred QuickTime group when writing QuickTime-format files.</i></blockquo
 <li>Honeywell PTNTHPR (see <a href="#Orient">Orientation</a>)</li>
 <li>Bramor gEO log</li>
 <li>Winplus Beacon .TXT</li>
+<li><a href="TagNames/Garmin.html#FIT">Garmin .FIT</a></li>
 <li>Google Takeout .JSON</li>
 <li>GPS/IMU .CSV</li>
 <li>DJI .CSV</li>
 <li>Columbus .CSV</li>
 <li><a href="#CSVFormat">ExifTool .CSV file</a></li>
+<li>Plus any supported file(s) containing GPS metadata!</li>
 </ul>
 
 <a name="Implementation"></a>
@@ -81,10 +83,11 @@ write-only <a href="TagNames/Extra.html">Extra tags</a>:
 <h4>Geotag</h4>
 
 <p>The <code>Geotag</code> tag is used to define the GPS track log data. The
-geotagging feature is activated by assigning the name of a track log file to
-this tag.  As an example, the following command line adds GPS tags to all images
-in the "/Users/Phil/Pictures" directory based on GPS positions stored in the
-track log file "track.log" in the current directory:</p>
+geotagging feature is activated by assigning the name of a track log file
+or any file(s) containing GPS to this tag.  As an example, the following
+command line adds GPS tags to all images in the "/Users/Phil/Pictures"
+directory based on GPS positions stored in the track log file "track.log" in
+the current directory:</p>
 
 <pre>exiftool -geotag=track.log /Users/Phil/Pictures
 </pre>
@@ -99,11 +102,18 @@ option, so this command is equivalent to the one above:</p>
 <p>Multiple GPS log files may be loaded simultaneously by using more than one
 <code>-geotag</code> option or <code>-geotag=</code> assignment in the same
 command, and/or by using wildcards in the filename argument of the
-<code>-geotag</code> option.  This allows batch processing of images spanning
-different tracks with a single command.  When using wildcards the argument may
-need to be quoted on some systems to prevent shell globbing, but note that
-wildcards are not supported with the <code>-geotag=</code> syntax.  See the
-<a href="#Examples">examples</a> below.</p>
+<code>-geotag</code> option (note that wildcards are not supported with the
+<code>-geotag=</code> syntax).  This allows batch processing of images
+spanning different tracks or geotagging from a set of already-geotagged
+files with a single command.  When using wildcards the argument may need to
+be quoted on some systems to prevent shell globbing.  For example, to geotag
+images in an "inbox" directory from a set of already-geotagged images in the
+current directory:</p>
+
+<pre>exiftool -geotag "*.jpg" inbox
+</pre>
+
+<p>See the <a href="#Examples">examples</a> below for more examples.</p>
 
 <p>Deleting the <code>Geotag</code> tag (with <code>-geotag=</code>) causes the
 GPS tags written by the <code>-geotag</code> feature to be deleted.</p>
@@ -384,6 +394,15 @@ videos is UTC):</p>
 by CreateDate:</p>
 
 <pre>exiftool -geotag a.log "-exif:geotime&lt;datetimeoriginal" "-userdata:geotime&lt;createdate" dir
+</pre>
+
+<a name="E16"></a>
+<p>15. Geotag images from timed GPS metadata in a video file (internally, ExifTool
+uses the <a href="ExifTool.html#ExtractEmbedded">API ExtractEmbedded option</a>
+to extract the timed GPS from the video, then uses this as the track for
+geotagging the image files):</p>
+
+<pre>exiftool -geotag video.mp4 c:\images
 </pre>
 
 <a name="Options"></a>
@@ -783,7 +802,7 @@ forum post</a> for more useful tips about creating KML files.</p>
 
 <hr>
 <i>Created Apr 2, 2009</i><br>
-<i>Last revised Jan 26, 2026</i>
+<i>Last revised Apr 14, 2026</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

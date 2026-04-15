@@ -188,6 +188,8 @@ my %convCelsius = ( PrintConv => 'sprintf("%.2f C", $val)' );
     0x2c4 => { Name => 'VisibleFocalLength',        Format => 'float' },
 );
 
+1; # end
+
 __END__
 
 =head1 NAME

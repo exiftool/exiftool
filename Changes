@@ -7,6 +7,21 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.55. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Apr. 15, 2026 - Version 13.56 - "Exif 3.1"
+
+  - Added new tags of the Exif 3.1 specification
+  - Added ability to geotag directly from any supported file(s) containing GPS
+  - Added read support for extracting timed GPS from Garmin FIT files
+  - Added a new Panasonic AFAreaMode (thanks Andrew)
+  - Decode maker notes from newer FLIR cameras (github #408)
+  - Improved config_files/local_time.config to add LocalTag UserParam feature
+  - Updated Compression value re-purposed by GoPro (github #411)
+  - Allow a few more different characters in the Windows -progress title string
+  - Avoid trying to return structured information from XML files
+  - Patched bug when reading QuickTime MTDT metadata (thanks Thurein Oo)
+  - API Changes:
+      - Enhanced GetValue so input tag name is now case insensitive
+
 Apr. 7, 2026 - Version 13.55 (production release)
 
   - Added a few new Windows LNK GUID values
@@ -1381,7 +1396,7 @@ June 28, 2023 - Version 12.64
       - Added NoDups option to eliminate duplicate items from queued values when
         writing List-type tags
 
-June 8, 2023 - Version 12.63
+June 8, 2023 - Version 12.63 - "Exif 3.0"
 
   - Added ability to read/write/create Brotli-compressed metadata in JXL images
     (requires IO::Compress::Brotli)

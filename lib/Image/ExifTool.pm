@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.56';
+$VERSION = '13.57';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -153,12 +153,12 @@ sub ReadValue($$$;$$$);
     M2TS QuickTime QuickTime::ImageFile QuickTime::Stream QuickTime::Tags360Fly
     Matroska Matroska::StdTag MOI MXF DV Flash Flash::FLV Real::Media
     Real::Audio Real::Metafile Red RIFF AIFF ASF TNEF WTV DICOM Garmin::FIT
-    Garmin::Common FITS XISF MIE JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH
-    Torrent EXE EXE::PEVersion EXE::PEString EXE::DebugRSDS EXE::DebugNB10
-    EXE::Misc EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK LNK::INI PCAP
-    Font VCard Text VCard::VCalendar VCard::VNote RSRC Rawzor ZIP ZIP::GZIP
-    ZIP::RAR ZIP::RAR5 RTF OOXML iWork ISO FLIR::AFF FLIR::FPF MacOS
-    MacOS::MDItem FlashPix::DocTable
+    FITS XISF MIE JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
+    EXE::PEVersion EXE::PEString EXE::DebugRSDS EXE::DebugNB10 EXE::Misc
+    EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK LNK::INI PCAP Font VCard
+    Text VCard::VCalendar VCard::VNote RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR
+    ZIP::RAR5 RTF OOXML iWork ISO FLIR::AFF FLIR::FPF MacOS MacOS::MDItem
+    FlashPix::DocTable
 );
 
 # alphabetical list of current Lang modules

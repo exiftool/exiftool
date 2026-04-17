@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.56';
+my $version = '13.57';
 
 $^W = 1;    # enable global warnings
 

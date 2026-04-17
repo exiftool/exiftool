@@ -660,7 +660,7 @@ my %fpxFileType = (
         },
     },
     0x2500000E => {
-        Name => 'BackLight',
+        Name => 'Backlight',
         PrintConv => {
             1 => 'Front Lit',
             2 => 'Back Lit 1',

@@ -17,11 +17,19 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.57'><b>Apr. 17, 2026 - Version 13.57</b></a>
+<ul>
+<li>Added print conversions for Garmin FIT enum tags
+<li>Decode a number of undocumented Garmin FIT tags
+<li>Reverted XML patch of 13.56 which broke structured JSON output
+</ul>
+
 <a name='v13.56'><b>Apr. 15, 2026 - Version 13.56</b> - "Exif 3.1"</a>
 <ul>
 <li>Added new tags of the Exif 3.1 specification
 <li>Added ability to geotag directly from any supported file(s) containing GPS
-<li>Added read support for extracting timed GPS from Garmin FIT files
+<li>Added read support for <a href="TagNames/Garmin.html">Garmin FIT files</a>, and the ability to use them with
+    the -geotag option
 <li>Added a new Panasonic AFAreaMode (thanks Andrew)
 <li>Decode maker notes from newer FLIR cameras (<a href="https://github.com/exiftool/exiftool/issues/408">github #408</a>)
 <li>Improved config_files/local_time.config to add LocalTag UserParam feature
@@ -31,7 +39,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Patched bug when reading QuickTime MTDT metadata (thanks Thurein Oo)
 <li>API Changes:
     <ul>
-    <li>Enhanced GetValue so input tag name is now case insensitive
+    <li>Enhanced GetValue so input tag name is no longer case sensitive
     </ul>
 </ul>
 

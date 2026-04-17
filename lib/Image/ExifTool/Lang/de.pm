@@ -1299,7 +1299,7 @@ $VERSION = '1.38';
     },
    'BabyAge' => 'Kindesalter',
    'BabyName' => 'Kindesname',
-   'BackLight' => 'Hintergrundbeleuchtung',
+   'Backlight' => 'Hintergrundbeleuchtung',
    'BackgroundColor' => 'Hintergrundfarbe',
    'BackgroundColorIndicator' => 'Indikator Hintergrundfarbe',
    'BackgroundColorValue' => 'Hintergrundfarbwert',

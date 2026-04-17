@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 33038 tags, with 21180 unique tag names.
+They contain a total of 33465 tags, with 21435 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -25411,7 +25411,7 @@ UserDefined properties.
   0x2500000b   Flash                            no
   0x2500000c   FlashEnergy                      no
   0x2500000d   FlashReturn                      no
-  0x2500000e   BackLight                        no
+  0x2500000e   Backlight                        no
   0x2500000f   SubjectLocation                  no
   0x25000010   ExposureIndex                    no
   0x25000011   SpecialEffectsOpticalFilter      no
@@ -43124,139 +43124,196 @@ the extracted tags correspond to the FIT message names. The first table
 below lists the FIT messages, and subsequent tables list the extracted tags.
 See L<https://developer.garmin.com/fit/> for the specification.
 
-  Tag ID      Tag Name                          Writable
-  ------      --------                          --------
-         0    FileID?                           Garmin FileID
-         1    Capabilities?                     Garmin Capabilities
-         2    DeviceSettings?                   Garmin DeviceSettings
-         3    UserProfile?                      Garmin UserProfile
-         4    HRMProfile?                       Garmin HRMProfile
-         5    SDMProfile?                       Garmin SDMProfile
-         6    BikeProfile?                      Garmin BikeProfile
-         7    ZonesTarget?                      Garmin ZonesTarget
-         8    HRZone?                           Garmin HRZone
-         9    PowerZone?                        Garmin PowerZone
-        10    MetZone?                          Garmin MetZone
-        12    Sport?                            Garmin Sport
-        13    TrainingSettings?                 Garmin TrainingSettings
-        15    Goal?                             Garmin Goal
-        18    Session                           Garmin Session
-        19    Lap                               Garmin Lap
-        20    Record                            Garmin Record
-        21    Event?                            Garmin Event
-        23    DeviceInfo?                       Garmin DeviceInfo
-        26    Workout?                          Garmin Workout
-        27    WorkoutStep?                      Garmin WorkoutStep
-        28    Schedule?                         Garmin Schedule
-        30    WeightScale?                      Garmin WeightScale
-        31    Course?                           Garmin Course
-        32    CoursePoint                       Garmin CoursePoint
-        33    Totals?                           Garmin Totals
-        34    Activity?                         Garmin Activity
-        35    Software?                         Garmin Software
-        37    FileCapabilities?                 Garmin FileCapabilities
-        38    MesgCapabilities?                 Garmin MesgCapabilities
-        39    FieldCapabilities?                Garmin FieldCapabilities
-        49    FileCreator?                      Garmin FileCreator
-        51    BloodPressure?                    Garmin BloodPressure
-        53    SpeedZone?                        Garmin SpeedZone
-        55    Monitoring?                       Garmin Monitoring
-        72    TrainingFile?                     Garmin TrainingFile
-        78    HRV?                              Garmin HRV
-        80    AntRx?                            Garmin AntRx
-        81    AntTx?                            Garmin AntTx
-        82    AntChannelID?                     Garmin AntChannelID
-       101    Length?                           Garmin Length
-       103    MonitoringInfo?                   Garmin MonitoringInfo
-       105    Pad?                              no
-       106    SlaveDevice?                      Garmin SlaveDevice
-       127    Connectivity?                     Garmin Connectivity
-       128    WeatherConditions?                Garmin WeatherConditions
-       129    WeatherAlert?                     Garmin WeatherAlert
-       131    CadenceZone?                      Garmin CadenceZone
-       132    HR?                               Garmin HR
-       142    SegmentLap                        Garmin SegmentLap
-       145    MemoGlob?                         Garmin MemoGlob
-       148    SegmentID?                        Garmin SegmentID
-       149    SegmentLeaderboardEntry?          Garmin SegmentLeaderboardEntry
-       150    SegmentPoint                      Garmin SegmentPoint
-       151    SegmentFile?                      Garmin SegmentFile
-       158    WorkoutSession?                   Garmin WorkoutSession
-       159    WatchfaceSettings?                Garmin WatchfaceSettings
-       160    GPS                               Garmin GPS
-       161    CameraEvent?                      Garmin CameraEvent
-       162    TimeStampCorrelation?             Garmin TimeStampCorrelation
-       164    GyroscopeData?                    Garmin GyroscopeData
-       165    AccelerometerData?                Garmin AccelerometerData
-       167    ThreeDSensorCalibration?          Garmin ThreeDSensorCalibration
-       169    VideoFrame?                       Garmin VideoFrame
-       174    OBDIIData?                        Garmin OBDIIData
-       177    NMEASentence?                     Garmin NMEASentence
-       178    AviationAttitude?                 Garmin AviationAttitude
-       184    Video?                            Garmin Video
-       185    VideoTitle?                       Garmin VideoTitle
-       186    VideoDescription?                 Garmin VideoDescription
-       187    VideoClip?                        Garmin VideoClip
-       188    OHRSettings?                      Garmin OHRSettings
-       200    ExdScreenConfiguration?           Garmin ExdScreenConfiguration
-       201    ExdDataFieldConfiguration?        Garmin ExdDataFieldConfiguration
-       202    ExdDataConceptConfiguration?      Garmin ExdDataConceptConfiguration
-       206    FieldDescription?                 Garmin FieldDescription
-       207    DeveloperDataID?                  Garmin DeveloperDataID
-       208    MagnetometerData?                 Garmin MagnetometerData
-       209    BarometerData?                    Garmin BarometerData
-       210    OneDSensorCalibration?            Garmin OneDSensorCalibration
-       211    MonitoringHRData?                 Garmin MonitoringHRData
-       216    TimeInZone?                       Garmin TimeInZone
-       225    Set?                              Garmin Set
-       227    StressLevel?                      Garmin StressLevel
-       229    MaxMetData?                       Garmin MaxMetData
-       258    DiveSettings?                     Garmin DiveSettings
-       259    DiveGas?                          Garmin DiveGas
-       262    DiveAlarm?                        Garmin DiveAlarm
-       264    ExerciseTitle?                    Garmin ExerciseTitle
-       268    DiveSummary?                      Garmin DiveSummary
-       269    SPO2Data?                         Garmin SPO2Data
-       275    SleepLevel?                       Garmin SleepLevel
-       285    Jump                              Garmin Jump
-       289    AADAccelFeatures?                 Garmin AADAccelFeatures
-       290    BeatIntervals?                    Garmin BeatIntervals
-       297    RespirationRate?                  Garmin RespirationRate
-       302    HSAAccelerometerData?             Garmin HSAAccelerometerData
-       304    HSAStepData?                      Garmin HSAStepData
-       305    HSA_SPO2Data?                     Garmin HSA_SPO2Data
-       306    HSAStressData?                    Garmin HSAStressData
-       307    HSARespirationData?               Garmin HSARespirationData
-       308    HSAHeartRateData?                 Garmin HSAHeartRateData
-       312    Split                             Garmin Split
-       313    SplitSummary?                     Garmin SplitSummary
-       314    HSABodyBatteryData?               Garmin HSABodyBatteryData
-       315    HSAEvent?                         Garmin HSAEvent
-       317    ClimbPro                          Garmin ClimbPro
-       319    TankUpdate?                       Garmin TankUpdate
-       323    TankSummary?                      Garmin TankSummary
-       346    SleepAssessment?                  Garmin SleepAssessment
-       370    HRVStatusSummary?                 Garmin HRVStatusSummary
-       371    HRVValue?                         Garmin HRVValue
-       372    RawBBI?                           Garmin RawBBI
-       375    DeviceAuxBatteryInfo?             Garmin DeviceAuxBatteryInfo
-       376    HSAGyroscopeData?                 Garmin HSAGyroscopeData
-       387    ChronoShotSession?                Garmin ChronoShotSession
-       388    ChronoShotData?                   Garmin ChronoShotData
-       389    HSAConfigurationData?             Garmin HSAConfigurationData
-       393    DiveApneaAlarm?                   Garmin DiveApneaAlarm
-       398    SkinTempOvernight?                Garmin SkinTempOvernight
-       409    HSAWristTemperatureData?          Garmin HSAWristTemperatureData
-       412    NapEvent?                         Garmin NapEvent
-       470  SleepDisruptionSeverityPeriod?    Garmin SleepDisruptionSeverityPeriod
-       471    SleepDisruptionOvernightSeverity? Garmin SleepDisruptionOvernightSeverity
-  'ProtocolVersion' ProtocolVersion             no
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'vers'   ProtocolVersion                      no
+      0    FileID?                              Garmin FileID
+      1    Capabilities?                        Garmin Capabilities
+      2    DeviceSettings?                      Garmin DeviceSettings
+      3    UserProfile?                         Garmin UserProfile
+      4    HRMProfile?                          Garmin HRMProfile
+      5    SDMProfile?                          Garmin SDMProfile
+      6    BikeProfile?                         Garmin BikeProfile
+      7    ZonesTarget?                         Garmin ZonesTarget
+      8    HRZone?                              Garmin HRZone
+      9    PowerZone?                           Garmin PowerZone
+     10    MetZone?                             Garmin MetZone
+     12    Sport?                               Garmin Sport
+     13    TrainingSettings?                    Garmin TrainingSettings
+     14    DataScreen?                          Garmin DataScreen
+     15    Goal?                                Garmin Goal
+     16    Alert?                               Garmin Alert
+     17    RangeAlert?                          Garmin RangeAlert
+     18    Session                              Garmin Session
+     19    Lap                                  Garmin Lap
+     20    Record                               Garmin Record
+     21    Event?                               Garmin Event
+     22    DeviceUsed?                          Garmin DeviceUsed
+     23    DeviceInfo?                          Garmin DeviceInfo
+     26    Workout?                             Garmin Workout
+     27    WorkoutStep?                         Garmin WorkoutStep
+     28    Schedule?                            Garmin Schedule
+     29    Location?                            Garmin Location
+     30    WeightScale?                         Garmin WeightScale
+     31    Course?                              Garmin Course
+     32    CoursePoint                          Garmin CoursePoint
+     33    Totals?                              Garmin Totals
+     34    Activity?                            Garmin Activity
+     35    Software?                            Garmin Software
+     37    FileCapabilities?                    Garmin FileCapabilities
+     38    MesgCapabilities?                    Garmin MesgCapabilities
+     39    FieldCapabilities?                   Garmin FieldCapabilities
+     49    FileCreator?                         Garmin FileCreator
+     51    BloodPressure?                       Garmin BloodPressure
+     53    SpeedZone?                           Garmin SpeedZone
+     55    Monitoring?                          Garmin Monitoring
+     70    MapLayer?                            Garmin MapLayer
+     71    Routing?                             Garmin Routing
+     72    TrainingFile?                        Garmin TrainingFile
+     78    HRV?                                 Garmin HRV
+     79    UserMetrics?                         Garmin UserMetrics
+     80    AntRx?                               Garmin AntRx
+     81    AntTx?                               Garmin AntTx
+     82    AntChannelID?                        Garmin AntChannelID
+     89    OpenWaterEvent?                      Garmin OpenWaterEvent
+    101    Length?                              Garmin Length
+    103    MonitoringInfo?                      Garmin MonitoringInfo
+    104    DeviceStatus?                        Garmin DeviceStatus
+    105    Pad?                                 no
+    106    SlaveDevice?                         Garmin SlaveDevice
+    113    BestEffort?                          Garmin BestEffort
+    114    PersonalRecord?                      Garmin PersonalRecord
+    127    Connectivity?                        Garmin Connectivity
+    128    WeatherConditions                    Garmin WeatherConditions
+    129    WeatherAlert?                        Garmin WeatherAlert
+    131    CadenceZone?                         Garmin CadenceZone
+    132    HR?                                  Garmin HR
+    140    ActivityMetrics?                     Garmin ActivityMetrics
+    141    EPOStatus?                           Garmin EPOStatus
+    142    SegmentLap                           Garmin SegmentLap
+    143    MultisportSettings?                  Garmin MultisportSettings
+    144    MultisportActivity?                  Garmin MultisportActivity
+    145    MemoGlob?                            Garmin MemoGlob
+    147    SensorSettings?                      Garmin SensorSettings
+    148    SegmentID?                           Garmin SegmentID
+    149    SegmentLeaderboardEntry?             Garmin SegmentLeaderboardEntry
+    150    SegmentPoint                         Garmin SegmentPoint
+    151    SegmentFile?                         Garmin SegmentFile
+    152    Metronome?                           Garmin Metronome
+    158    WorkoutSession?                      Garmin WorkoutSession
+    159    WatchfaceSettings?                   Garmin WatchfaceSettings
+    160    GPS                                  Garmin GPS
+    161    CameraEvent?                         Garmin CameraEvent
+    162    TimeStampCorrelation?                Garmin TimeStampCorrelation
+    164    GyroscopeData?                       Garmin GyroscopeData
+    165    AccelerometerData?                   Garmin AccelerometerData
+    167    ThreeDSensorCalibration?             Garmin ThreeDSensorCalibration
+    169    VideoFrame?                          Garmin VideoFrame
+    170    ConnectIQField?                      Garmin ConnectIQField
+    173    Clubs?                               Garmin Clubs
+    174    OBDIIData?                           Garmin OBDIIData
+    177    NMEASentence?                        Garmin NMEASentence
+    178    AviationAttitude?                    Garmin AviationAttitude
+    184    Video?                               Garmin Video
+    185    VideoTitle?                          Garmin VideoTitle
+    186    VideoDescription?                    Garmin VideoDescription
+    187    VideoClip?                           Garmin VideoClip
+    188    OHRSettings?                         Garmin OHRSettings
+    189    WaypointHandling?                    Garmin WaypointHandling
+    190    GolfCourse?                          Garmin GolfCourse
+    191    GolfStats?                           Garmin GolfStats
+    192    Score?                               Garmin Score
+    193    Hole?                                Garmin Hole
+    194    Shot?                                Garmin Shot
+    200    ExdScreenConfiguration?              Garmin ExdScreenConfiguration
+    201    ExdDataFieldConfiguration?           Garmin ExdDataFieldConfiguration
+    202    ExdDataConceptConfiguration?         Garmin ExdDataConceptConfiguration
+    206    FieldDescription?                    Garmin FieldDescription
+    207    DeveloperDataID?                     Garmin DeveloperDataID
+    208    MagnetometerData?                    Garmin MagnetometerData
+    209    BarometerData?                       Garmin BarometerData
+    210    OneDSensorCalibration?               Garmin OneDSensorCalibration
+    211    MonitoringHRData?                    Garmin MonitoringHRData
+    216    TimeInZone?                          Garmin TimeInZone
+    222    AlarmSettings?                       Garmin AlarmSettings
+    225    Set?                                 Garmin Set
+    227    StressLevel?                         Garmin StressLevel
+    229    MaxMetData?                          Garmin MaxMetData
+    243    MusicInfo?                           Garmin MusicInfo
+    258    DiveSettings?                        Garmin DiveSettings
+    259    DiveGas?                             Garmin DiveGas
+    262    DiveAlarm?                           Garmin DiveAlarm
+    264    ExerciseTitle?                       Garmin ExerciseTitle
+    268    DiveSummary?                         Garmin DiveSummary
+    269    SPO2Data?                            Garmin SPO2Data
+    273    SleepDataInfo?                       Garmin SleepDataInfo
+    275    SleepLevel?                          Garmin SleepLevel
+    285    Jump                                 Garmin Jump
+    289    AADAccelFeatures?                    Garmin AADAccelFeatures
+    290    BeatIntervals?                       Garmin BeatIntervals
+    297    RespirationRate?                     Garmin RespirationRate
+    302    HSAAccelerometerData?                Garmin HSAAccelerometerData
+    304    HSAStepData?                         Garmin HSAStepData
+    305    HSA_SPO2Data?                        Garmin HSA_SPO2Data
+    306    HSAStressData?                       Garmin HSAStressData
+    307    HSARespirationData?                  Garmin HSARespirationData
+    308    HSAHeartRateData?                    Garmin HSAHeartRateData
+    309    MtbCx?                               Garmin MtbCx
+    310    Race?                                Garmin Race
+    311    SplitTime?                           Garmin SplitTime
+    312    Split                                Garmin Split
+    313    SplitSummary?                        Garmin SplitSummary
+    314    HSABodyBatteryData?                  Garmin HSABodyBatteryData
+    315    HSAEvent?                            Garmin HSAEvent
+    317    ClimbPro                             Garmin ClimbPro
+    319    TankUpdate?                          Garmin TankUpdate
+    321    PowerMode?                           Garmin PowerMode
+    323    TankSummary?                         Garmin TankSummary
+    326    GPSEvent?                            Garmin GPSEvent
+    336    ECGSummary?                          Garmin ECGSummary
+    337    ECGRawSample?                        Garmin ECGRawSample
+    338    ECGSmoothSample?                     Garmin ECGSmoothSample
+    346    SleepAssessment?                     Garmin SleepAssessment
+    356    FunctionalMetrics?                   Garmin FunctionalMetrics
+    358    RaceEvent?                           Garmin RaceEvent
+    369    TrainingReadiness?                   Garmin TrainingReadiness
+    370    HRVStatusSummary?                    Garmin HRVStatusSummary
+    371    HRVValue?                            Garmin HRVValue
+    372    RawBBI?                              Garmin RawBBI
+    375    DeviceAuxBatteryInfo?                Garmin DeviceAuxBatteryInfo
+    376    HSAGyroscopeData?                    Garmin HSAGyroscopeData
+    378    TrainingLoad?                        Garmin TrainingLoad
+    379    SleepSchedule?                       Garmin SleepSchedule
+    382    SleepRestlessMoments?                Garmin SleepRestlessMoments
+    387    ChronoShotSession?                   Garmin ChronoShotSession
+    388    ChronoShotData?                      Garmin ChronoShotData
+    389    HSAConfigurationData?                Garmin HSAConfigurationData
+    393    DiveApneaAlarm?                      Garmin DiveApneaAlarm
+    394    CPEStatus?                           Garmin CPEStatus
+    398    SkinTempOvernight?                   Garmin SkinTempOvernight
+    402    HillScore?                           Garmin HillScore
+    403    EnduranceScore?                      Garmin EnduranceScore
+    409    HSAWristTemperatureData?             Garmin HSAWristTemperatureData
+    412    NapEvent?                            Garmin NapEvent
+    428    WorkoutSchedule?                     Garmin WorkoutSchedule
+    470  SleepDisruptionSeverityPeriod?       Garmin SleepDisruptionSeverityPeriod
+    471    SleepDisruptionOvernightSeverity?    Garmin SleepDisruptionOvernightSeverity
+
+=head3 Garmin Common Tags
+
+Tags listed here are common to all FIT messages (ie. all tag tables below).
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+    250    PartIndex                            no
+    253    TimeStamp                            no
+    254    MessageIndex                         no
 
 =head3 Garmin FileID Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      0    Type                                 no
+      0    FITFileType                          no
       1    Manufacturer                         no
       2    Product                              no
       3    SerialNumber                         no
@@ -43282,7 +43339,9 @@ See L<https://developer.garmin.com/fit/> for the specification.
       2    TimeOffset                           no
       4    TimeMode                             no
       5    TimeZoneOffset                       no
+      8    AlarmsTime                           no
      12    BacklightMode                        no
+     28    AlarmsEnabled                        no
      36    ActivityTrackerEnabled               no
      39    ClockTime                            no
      40    PagesEnabled                         no
@@ -43297,6 +43356,7 @@ See L<https://developer.garmin.com/fit/> for the specification.
      86    BleAutoUploadEnabled                 no
      89    AutoSyncFrequency                    no
      90    AutoActivityDetect                   no
+     92    AlarmsRepeat                         no
      94    NumberOfScreens                      no
      95    SmartNotificationDisplayOrientation  no
     134    TapInterface                         no
@@ -43327,13 +43387,17 @@ See L<https://developer.garmin.com/fit/> for the specification.
      21    TemperatureSetting                   no
      22    LocalID                              no
      23    GlobalID                             no
+     24    YearOfBirth                          no
      28    WakeTime                             no
      29    SleepTime                            no
      30    HeightSetting                        no
      31    UserRunningStepLength                no
      32    UserWalkingStepLength                no
+     37    Ltspeed                              no
+     41    TimeLast-LthrUpdate                  no
      47    DepthSetting                         no
      49    DiveCount                            no
+     62    GenderX                              no
 
 =head3 Garmin HRMProfile Tags
 
@@ -43360,7 +43424,7 @@ See L<https://developer.garmin.com/fit/> for the specification.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      0    Name                                 no
+      0    BikeProfileName                      no
       1    Sport                                no
       2    SubSport                             no
       3    Odometer                             no
@@ -43407,14 +43471,14 @@ See L<https://developer.garmin.com/fit/> for the specification.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
       1    HighBpm                              no
-      2    Name                                 no
+      2    HRZoneName                           no
 
 =head3 Garmin PowerZone Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
       1    HighValue                            no
-      2    Name                                 no
+      2    PowerZoneName                        no
 
 =head3 Garmin MetZone Tags
 
@@ -43430,16 +43494,76 @@ See L<https://developer.garmin.com/fit/> for the specification.
   ------   --------                             --------
       0    Sport                                no
       1    SubSport                             no
-      3    Name                                 no
+      3    SportName                            no
+     15    PopularityRouting                    no
+     17    NavigationPrompt                     no
+     18    SharpBendWarnings                    no
+     21    WorkoutVideos                        no
+     22    HighTrafficRoadWarnings              no
+     23    RoadHazardWarnings                   no
+     24    UnpavedRoadWarnings                  no
 
 =head3 Garmin TrainingSettings Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+      2    VirtualPartnerPace                   no
+      3    AutoLapMode                          no
+      4    AutoLapDistance                      no
+      7    AutoPause                            no
+      8    AutoPauseThreshold                   no
+     12    PowerAveraging                       no
+     15    AutoScroll                           no
+     18    TimerStartPrompt                     no
+     22    PoolLength                           no
+     25    AutoSleep                            no
+     27    Satellites                           no
      31    TargetDistance                       no
      32    TargetSpeed                          no
      33    TargetTime                           no
+     35    ThreeDSpeed                          no
+     36    ThreeDDistance                       no
+     37    AutoClimb                            no
+     40    AutoClimbInvertColors                no
+     41    AutoClimbVerticalSpeed               no
+     42    AutoClimbModeSwitch                  no
+     46    LapKey                               no
+     50    WorkoutTargetAlerts                  no
+     51    TimerStartAuto                       no
+     52    TimerStartSpeed                      no
+     53    SegmentAlerts                        no
+     57    CountdownStart                       no
+     63    ClimbPro                             no
+     67    TrackConsumption                     no
+     69    BottleSize                           no
+     70    Volume                               no
+     80    MinimumRideDuration                  no
+     86    LaneNumber                           no
+     87    BroadcastHeartRate                   no
+     93    SelfEvaluation                       no
+    102    SpeedPro                             no
+    103    Touch                                no
+    106    RecordTemperature                    no
+    109    RunningPowerMode                     no
+    110    AccountForWind                       no
+    111    ClimbProMode                         no
+    117    ClimbDetection                       no
+    119    ClimbProTerrain                      no
     153    PreciseTargetSpeed                   no
+   1001    GPS                                  no
+   1002    Glonass                              no
+   1003    Galileo                              no
+   1004    Beidou                               no
+
+=head3 Garmin DataScreen Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      3    NrFields                             no
+      7    DataFields                           no
+      8    Layout                               no
+      9    Position                             no
+     10    ScreenType                           no
 
 =head3 Garmin Goal Tags
 
@@ -43449,7 +43573,7 @@ See L<https://developer.garmin.com/fit/> for the specification.
       1    SubSport                             no
       2    StartDate                            no
       3    EndDate                              no
-      4    Type                                 no
+      4    GoalType                             no
       5    Value                                no
       6    Repeat                               no
       7    TargetValue                          no
@@ -43457,6 +43581,26 @@ See L<https://developer.garmin.com/fit/> for the specification.
       9    RecurrenceValue                      no
      10    Enabled                              no
      11    Source                               no
+
+=head3 Garmin Alert Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      1    Metric                               no
+      2    Value                                no
+      3    Status                               no
+      4    Message                              no
+      5    Repeat                               no
+
+=head3 Garmin RangeAlert Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      1    Metric                               no
+      2    LowStatus                            no
+      3    LowValue                             no
+      4    HighStatus                           no
+      5    HighValue                            no
 
 =head3 Garmin Session Tags
 
@@ -43490,10 +43634,10 @@ See L<https://developer.garmin.com/fit/> for the specification.
      26    NumLaps                              no
      27    EventGroup                           no
      28    Trigger                              no
-     29    NecLat                               no
-     30    NecLong                              no
-     31    SWCLat                               no
-     32    SWCLong                              no
+     29    NECLatitude                          no
+     30    NECLongitude                         no
+     31    SWCLatitude                          no
+     32    SWCLongitude                         no
      33    NumLengths                           no
      34    NormalizedPower                      no
      35    TrainingStressScore                  no
@@ -43532,6 +43676,9 @@ See L<https://developer.garmin.com/fit/> for the specification.
      69    AvgLapTime                           no
      70    BestLapIndex                         no
      71    MinAltitude                          no
+     78    WorkTime                             no
+     79    AvgSwimCadence                       no
+     80    AvgSwolf                             no
      82    PlayerScore                          no
      83    OpponentScore                        no
      84    OpponentName                         no
@@ -43594,29 +43741,50 @@ See L<https://developer.garmin.com/fit/> for the specification.
     148    MaxRespirationRate                   no
     149    MinRespirationRate                   no
     150    MinTemperature                       no
+    151    TotalSets                            no
+    152    Volume                               no
     155    O2Toxicity                           no
     156    DiveNumber                           no
     168    TrainingLoadPeak                     no
     169    EnhancedAvgRespirationRate           no
     170    EnhancedMaxRespirationRate           no
+    177    CaloriesConsumed                     no
+    178    EstSweatLoss                         no
+    179    FluidConsumed                        no
     180    EnhancedMinRespirationRate           no
     181    TotalGrit                            no
     182    TotalFlow                            no
     183    JumpCount                            no
+    185    ExecutionScore                       no
     186    AvgGrit                              no
     187    AvgFlow                              no
+    188    PrimaryBenefit                       no
     192    WorkoutFeel                          no
     193    WorkoutRpe                           no
     194    AvgSPO2                              no
     195    AvgStress                            no
     196    MetabolicCalories                    no
-    197    SdrrHRV                              no
-    198    RmssdHRV                             no
+    197    SDRRHRV                              no
+    198    RMSSD_HRV                            no
     199    TotalFractionalAscent                no
     200    TotalFractionalDescent               no
+    202    RecoveryHeartRate                    no
+    205    BeginningPotential                   no
+    206    EndingPotential                      no
+    207    MinStamina                           no
     208    AvgCoreTemperature                   no
     209    MinCoreTemperature                   no
     210    MaxCoreTemperature                   no
+    211    GradeAdjustedSpeed                   no
+    212    WindData                             no
+    215    BeginningBodyBattery                 no
+    216    EndingBodyBattery                    no
+    220    PackWeight                           no
+    222    StepSpeedLossDistance                no
+    223    StepSpeedLossPercent                 no
+    224    AvgForce                             no
+    225    MaxForce                             no
+    226    NormalizedForce                      no
 
 =head3 Garmin Lap Tags
 
@@ -43649,6 +43817,10 @@ See L<https://developer.garmin.com/fit/> for the specification.
      24    LapTrigger                           no
      25    Sport                                no
      26    EventGroup                           no
+     27    NECLatitude                          no
+     28    NECLongitude                         no
+     29    SWCLatitude                          no
+     30    SWCLongitude                         no
      32    NumLengths                           no
      33    NormalizedPower                      no
      34    LeftRightBalance                     no
@@ -43681,6 +43853,7 @@ See L<https://developer.garmin.com/fit/> for the specification.
      62    MinAltitude                          no
      63    MinHeartRate                         no
      71    WktStepIndex                         no
+     73    AvgSwolf                             no
      74    OpponentScore                        no
      75    StrokeCount                          no
      76    ZoneCount                            no
@@ -43731,18 +43904,28 @@ See L<https://developer.garmin.com/fit/> for the specification.
     124    MinTemperature                       no
     136    EnhancedAvgRespirationRate           no
     137    EnhancedMaxRespirationRate           no
+    145    EstSweatLoss                         no
     147    AvgRespirationRate                   no
     148    MaxRespirationRate                   no
     149    TotalGrit                            no
     150    TotalFlow                            no
     151    JumpCount                            no
+    152    ExecutionScore                       no
     153    AvgGrit                              no
     154    AvgFlow                              no
+    155    RestingCalories                      no
     156    TotalFractionalAscent                no
     157    TotalFractionalDescent               no
     158    AvgCoreTemperature                   no
     159    MinCoreTemperature                   no
     160    MaxCoreTemperature                   no
+    161    GradeAdjustedSpeed                   no
+    163    Unpaved                              no
+    164    StepSpeedLossDistance                no
+    165    StepSpeedLossPercentage              no
+    166    AvgForce                             no
+    167    MaxForce                             no
+    168    NormalizedForce                      no
 
 =head3 Garmin Record Tags
 
@@ -43807,6 +43990,7 @@ See L<https://developer.garmin.com/fit/> for the specification.
      84    StanceTimeBalance                    no
      85    StepLength                           no
      87    CycleLength16                        no
+     90    PerformanceCondition                 no
      91    AbsolutePressure                     no
      92    Depth                                no
      93    NextStopDepth                        no
@@ -43824,13 +44008,23 @@ See L<https://developer.garmin.com/fit/> for the specification.
     118    EbikeBatteryLevel                    no
     119    EbikeAssistMode                      no
     120    EbikeAssistLevelPercent              no
+    121    TotalAscent                          no
     123    AirTimeRemaining                     no
     124    PressureSac                          no
     125    VolumeSac                            no
     126    Rmv                                  no
     127    AscentRate                           no
-    129    Po2                                  no
+    129    PO2                                  no
+    136    WristHeartRate                       no
+    137    StaminaPotential                     no
+    138    Stamina                              no
     139    CoreTemperature                      no
+    140    GradeAdjustedSpeed                   no
+    143    BodyBattery                          no
+    144    ExternalHeartRate                    no
+    146    StepSpeedLossDistance                no
+    147    StepSpeedLossPercentage              no
+    148    Force                                no
 
 =head3 Garmin Event Tags
 
@@ -43855,6 +44049,17 @@ See L<https://developer.garmin.com/fit/> for the specification.
      23    RadarThreatAvgApproachSpeed          no
      24    RadarThreatMaxApproachSpeed          no
 
+=head3 Garmin DeviceUsed Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    DevSpeed                             no
+      1    DevDistance                          no
+      2    DevCadence                           no
+      3    DevElevation                         no
+      4    DevHeartRate                         no
+      6    DevPower                             no
+
 =head3 Garmin DeviceInfo Tags
 
   Tag ID   Tag Name                             Writable
@@ -43874,6 +44079,7 @@ See L<https://developer.garmin.com/fit/> for the specification.
      20    AntTransmissionType                  no
      21    AntDeviceNumber                      no
      22    AntNetwork                           no
+     24    AntID                                no
      25    SourceType                           no
      27    ProductName                          no
      32    BatteryLevel                         no
@@ -43885,11 +44091,16 @@ See L<https://developer.garmin.com/fit/> for the specification.
       4    Sport                                no
       5    Capabilities                         no
       6    NumValidSteps                        no
-      8    WktName                              no
+      8    WorkoutName                          no
+      9    DurationType                         no
+     10    DurationValue                        no
      11    SubSport                             no
      14    PoolLength                           no
      15    PoolLengthUnit                       no
-     17    WktDescription                       no
+     17    WorkoutDescription                   no
+     20    WorkoutIndex                         no
+     21    Time                                 no
+     22    Distance                             no
 
 =head3 Garmin WorkoutStep Tags
 
@@ -43909,10 +44120,12 @@ See L<https://developer.garmin.com/fit/> for the specification.
      11    ExerciseName                         no
      12    ExerciseWeight                       no
      13    WeightDisplayUnit                    no
+     18    SkipLastRecover                      no
      19    SecondaryTargetType                  no
      20    SecondaryTargetValue                 no
      21    SecondaryCustomTargetValueLow        no
      22    SecondaryCustomTargetValueHigh       no
+     31    WorkoutIndex                         no
 
 =head3 Garmin Schedule Tags
 
@@ -43923,8 +44136,20 @@ See L<https://developer.garmin.com/fit/> for the specification.
       2    SerialNumber                         no
       3    TimeCreated                          no
       4    Completed                            no
-      5    Type                                 no
+      5    ScheduleType                         no
       6    ScheduledTime                        no
+
+=head3 Garmin Location Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    LocationName                         no
+      1    GPSLatitude                          no
+      2    GPSLongitude                         no
+      3    LocationSymbol                       no
+      4    GPSAltitude                          no
+      5    EnhancedAltitude                     no
+      6    LocationDescription                  no
 
 =head3 Garmin WeightScale Tags
 
@@ -43949,7 +44174,7 @@ See L<https://developer.garmin.com/fit/> for the specification.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
       4    Sport                                no
-      5    Name                                 no
+      5    CourseName                           no
       6    Capabilities                         no
       7    SubSport                             no
 
@@ -43961,8 +44186,8 @@ See L<https://developer.garmin.com/fit/> for the specification.
       2    GPSLatitude                          no
       3    GPSLongitude                         no
       4    Distance                             no
-      5    Type                                 no
-      6    Name                                 no
+      5    CoursePointType                      no
+      6    CoursePointName                      no
       8    Favorite                             no
 
 =head3 Garmin Totals Tags
@@ -43977,6 +44202,7 @@ See L<https://developer.garmin.com/fit/> for the specification.
       5    Sessions                             no
       6    ActiveTime                           no
       9    SportIndex                           no
+     10    ActivityProfile                      no
 
 =head3 Garmin Activity Tags
 
@@ -43984,7 +44210,7 @@ See L<https://developer.garmin.com/fit/> for the specification.
   ------   --------                             --------
       0    TotalTimerTime                       no
       1    NumSessions                          no
-      2    Type                                 no
+      2    ActivityType                         no
       3    Event                                no
       4    EventType                            no
       5    LocalTimeStamp                       no
@@ -44001,7 +44227,7 @@ See L<https://developer.garmin.com/fit/> for the specification.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      0    Type                                 no
+      0    FileCapabilitiesType                 no
       1    Flags                                no
       2    Directory                            no
       3    MaxCount                             no
@@ -44052,7 +44278,7 @@ See L<https://developer.garmin.com/fit/> for the specification.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
       0    HighValue                            no
-      1    Name                                 no
+      1    SpeedZoneName                        no
 
 =head3 Garmin Monitoring Tags
 
@@ -44087,11 +44313,41 @@ See L<https://developer.garmin.com/fit/> for the specification.
      33    ModerateActivityMinutes              no
      34    VigorousActivityMinutes              no
 
+=head3 Garmin MapLayer Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      2    ReliefShading                        no
+     11    Orientation                          no
+     13    UserLocations                        no
+     14    AutoZoom                             no
+     15    GuideText                            no
+     16    TrackLog                             no
+     20    Courses                              no
+     23    SpotSoundings                        no
+     24    LightSectors                         no
+     27    Segments                             no
+     28    Contours                             no
+     29    SomeLabel                            no
+     31    Popularity                           no
+
+=head3 Garmin Routing Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    RoutingMode                          no
+      1    CalculationMethod                    no
+      2    LockOnRoad                           no
+      3    Avoidances                           no
+      4    RouteRecalculation                   no
+      5    RoutingType                          no
+      7    CourseRecalculation                  no
+
 =head3 Garmin TrainingFile Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      0    Type                                 no
+      0    TrainingFileType                     no
       1    Manufacturer                         no
       2    Product                              no
       3    SerialNumber                         no
@@ -44102,6 +44358,27 @@ See L<https://developer.garmin.com/fit/> for the specification.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
       0    Time                                 no
+
+=head3 Garmin UserMetrics Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    VO2Max                               no
+      1    Age                                  no
+      2    Height                               no
+      3    Weight                               no
+      4    Gender                               no
+      6    MaxHR                                no
+      8    RemainingRecoveryTime                no
+     11    Lthr                                 no
+     12    Ltpower                              no
+     13    Ltspeed                              no
+     15    BeginningBodyBattery                 no
+     16    StartOfActivity                      no
+     19    FirstVO2Max                          no
+     32    BeginningPotential                   no
+     35    EndOfPreviousActivity                no
+     39    WakeUpTime                           no
 
 =head3 Garmin AntRx Tags
 
@@ -44132,6 +44409,13 @@ See L<https://developer.garmin.com/fit/> for the specification.
       2    DeviceNumber                         no
       3    TransmissionType                     no
       4    DeviceIndex                          no
+
+=head3 Garmin OpenWaterEvent Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    EventType                            no
+      5    SwimStroke                           no
 
 =head3 Garmin Length Tags
 
@@ -44168,12 +44452,39 @@ See L<https://developer.garmin.com/fit/> for the specification.
       4    CyclesToCalories                     no
       5    RestingMetabolicRate                 no
 
+=head3 Garmin DeviceStatus Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    BatteryVoltage                       no
+      2    BatteryLevel                         no
+      3    Temperature                          no
+
 =head3 Garmin SlaveDevice Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
       0    Manufacturer                         no
       1    Product                              no
+
+=head3 Garmin BestEffort Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      1    Sport                                no
+      2    Distance                             no
+      3    Time                                 no
+      4    StartTime                            no
+      5    PersonalRecord                       no
+
+=head3 Garmin PersonalRecord Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    Metric                               no
+      1    Sport                                no
+      2    Distance                             no
+      5    Record                               no
 
 =head3 Garmin Connectivity Tags
 
@@ -44182,7 +44493,7 @@ See L<https://developer.garmin.com/fit/> for the specification.
       0    BluetoothEnabled                     no
       1    BluetoothLeEnabled                   no
       2    AntEnabled                           no
-      3    Name                                 no
+      3    ConnectivityName                     no
       4    LiveTrackingEnabled                  no
       5    WeatherConditionsEnabled             no
       6    WeatherAlertsEnabled                 no
@@ -44206,9 +44517,9 @@ See L<https://developer.garmin.com/fit/> for the specification.
       6    TemperatureFeelsLike                 no
       7    RelativeHumidity                     no
       8    Location                             no
-      9    ObservedAtTime                       no
-     10    ObservedLocationLat                  no
-     11    ObservedLocationLong                 no
+      9    GPSDateTime                          no
+     10    GPSLatitude                          no
+     11    GPSLongitude                         no
      12    DayOfWeek                            no
      13    HighTemperature                      no
      14    LowTemperature                       no
@@ -44221,14 +44532,14 @@ See L<https://developer.garmin.com/fit/> for the specification.
       1    IssueTime                            no
       2    ExpireTime                           no
       3    Severity                             no
-      4    Type                                 no
+      4    WeatherAlertType                     no
 
 =head3 Garmin CadenceZone Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
       0    HighValue                            no
-      1    Name                                 no
+      1    CadenceZoneName                      no
 
 =head3 Garmin HR Tags
 
@@ -44239,6 +44550,38 @@ See L<https://developer.garmin.com/fit/> for the specification.
       6    FilteredBpm                          no
       9    EventTimeStamp                       no
      10    EventTimeStamp_12                    no
+
+=head3 Garmin ActivityMetrics Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      1    NewHRMax                             no
+      4    AerobicTrainingEffect                no
+      7    VO2Max                               no
+      9    RecoveryTime                         no
+     11    Sport                                no
+     14    Lthr                                 no
+     15    Ltpower                              no
+     16    Ltspeed                              no
+     17    EndingPerformanceCondition           no
+     20    AnaerobicTrainingEffect              no
+     25    EndingBodyBattery                    no
+     29    FirstVO2Max                          no
+     41    PrimaryBenefit                       no
+     48    LocalTimeStamp                       no
+     50    EndingPotential                      no
+     60    TotalAscent                          no
+     61    TotalDescent                         no
+     62    AveragePower                         no
+     63    AverageHeartRate                     no
+
+=head3 Garmin EPOStatus Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    Status                               no
+      1    StartTime                            no
+      2    EndTime                              no
 
 =head3 Garmin SegmentLap Tags
 
@@ -44269,11 +44612,11 @@ See L<https://developer.garmin.com/fit/> for the specification.
      22    TotalDescent                         no
      23    Sport                                no
      24    EventGroup                           no
-     25    NecLat                               no
-     26    NecLong                              no
-     27    SWCLat                               no
-     28    SWCLong                              no
-     29    Name                                 no
+     25    NECLatitude                          no
+     26    NECLongitude                         no
+     27    SWCLatitude                          no
+     28    SWCLongitude                         no
+     29    SegmentLapName                       no
      30    NormalizedPower                      no
      31    LeftRightBalance                     no
      32    SubSport                             no
@@ -44338,6 +44681,30 @@ See L<https://developer.garmin.com/fit/> for the specification.
      92    EnhancedMaxAltitude                  no
      93    EnhancedMinAltitude                  no
 
+=head3 Garmin MultisportSettings Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    MultisportSettingsName               no
+      1    Transitions                          no
+      2    NumberOfActivities                   no
+      3    AutoPause                            no
+      4    Alerts                               no
+      5    AutoLap                              no
+      6    PowerSaveTimeout                     no
+      7    AutoScroll                           no
+      8    Repeat                               no
+     10    SportChange                          no
+
+=head3 Garmin MultisportActivity Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    Sport                                no
+      1    SubSport                             no
+      2    LockDevice                           no
+      3    MultisportActivityName               no
+
 =head3 Garmin MemoGlob Tags
 
   Tag ID   Tag Name                             Writable
@@ -44348,11 +44715,28 @@ See L<https://developer.garmin.com/fit/> for the specification.
       3    FieldNum                             no
       4    Data                                 no
 
+=head3 Garmin SensorSettings Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    AntID                                no
+      2    SensorSettingsName                   no
+     10    WheelSizeManual                      no
+     11    CalibrationFactor                    no
+     21    WheelSizeAuto                        no
+     32    Product                              no
+     33    Manufacturer                         no
+     45    UseForSpeed                          no
+     46    UseForDistance                       no
+     51    ConnectionType                       no
+     52    SensorType                           no
+     91    ProductName                          no
+
 =head3 Garmin SegmentID Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      0    Name                                 no
+      0    SegmentIDName                        no
       1    UUID                                 no
       2    Sport                                no
       3    Enabled                              no
@@ -44366,8 +44750,8 @@ See L<https://developer.garmin.com/fit/> for the specification.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      0    Name                                 no
-      1    Type                                 no
+      0    SegmentLeaderboardName               no
+      1    SegLeaderboardType                   no
       2    GroupPrimaryKey                      no
       3    ActivityID                           no
       4    SegmentTime                          no
@@ -44396,6 +44780,15 @@ See L<https://developer.garmin.com/fit/> for the specification.
       9    LeaderActivityID                     no
      10    LeaderActivityIDString               no
      11    DefaultRaceLeader                    no
+
+=head3 Garmin Metronome Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    Enabled                              no
+      1    BeatsPerMinute                       no
+      2    AlertFrequency                       no
+      3    SoundAndVibe                         no
 
 =head3 Garmin WorkoutSession Tags
 
@@ -44495,6 +44888,22 @@ See L<https://developer.garmin.com/fit/> for the specification.
       0    TimeStamp_ms                         no
       1    FrameNumber                          no
 
+=head3 Garmin ConnectIQField Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      1    AppID                                no
+      2    DataField                            no
+    100    ScreenID                             no
+    101    FieldBits                            no
+
+=head3 Garmin Clubs Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      6    AverageDistance                      no
+     19    MaxDistance                          no
+
 =head3 Garmin OBDIIData Tags
 
   Tag ID   Tag Name                             Writable
@@ -44570,6 +44979,71 @@ See L<https://developer.garmin.com/fit/> for the specification.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
       0    Enabled                              no
+
+=head3 Garmin WaypointHandling Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    Action                               no
+
+=head3 Garmin GolfCourse Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    CourseID                             no
+      1    GolfCourseName                       no
+      2    LocalTime                            no
+      3    StartTime                            no
+      4    EndTime                              no
+      8    Out                                  no
+      9    In                                   no
+     10    Total                                no
+     11    Tee                                  no
+     12    Slope                                no
+     21    Rating                               no
+
+=head3 Garmin GolfStats Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    GolfStatsName                        no
+      2    Out                                  no
+      3    In                                   no
+      4    Total                                no
+      7    FairwayHit                           no
+      8    Gir                                  no
+      9    Putts                                no
+
+=head3 Garmin Score Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      1    HoleNumber                           no
+      2    Score                                no
+      5    Putts                                no
+      6    Fairway                              no
+
+=head3 Garmin Hole Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    HoleNumber                           no
+      1    Distance                             no
+      2    Par                                  no
+      3    Handicap                             no
+      4    PositionLat                          no
+      5    PositionLong                         no
+
+=head3 Garmin Shot Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      1    HoleNumber                           no
+      2    StartPositionLat                     no
+      3    StartPositionLong                    no
+      4    EndPositionLat                       no
+      5    EndPositionLong                      no
+      7    ClubType                             no
 
 =head3 Garmin ExdScreenConfiguration Tags
 
@@ -44699,6 +45173,19 @@ Developer identification tags.
      14    PwrCalcType                          no
      15    FunctionalThresholdPower             no
 
+=head3 Garmin AlarmSettings Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    Time                                 no
+      1    Repeat                               no
+      2    Enabled                              no
+      3    Sound                                no
+      4    Backlight                            no
+      5    TimeCreated                          no
+      8    Label                                no
+     11    TimeUpdated                          no
+
 =head3 Garmin Set Tags
 
   Tag ID   Tag Name                             Writable
@@ -44720,13 +45207,14 @@ Developer identification tags.
   ------   --------                             --------
       0    StressLevelValue                     no
       1    StressLevelTime                      no
+      3    BodyBattery                          no
 
 =head3 Garmin MaxMetData Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
       0    UpdateTime                           no
-      2    Vo2Max                               no
+      2    VO2Max                               no
       5    Sport                                no
       6    SubSport                             no
       8    MaxMetCategory                       no
@@ -44734,19 +45222,29 @@ Developer identification tags.
      12    HRSource                             no
      13    SpeedSource                          no
 
+=head3 Garmin MusicInfo Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    StartTime                            no
+      2    Title                                no
+      3    Artist                               no
+      4    Genre                                no
+      5    Duration                             no
+
 =head3 Garmin DiveSettings Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      0    Name                                 no
+      0    DiveSettingsName                     no
       1    Model                                no
       2    GfLow                                no
       3    GfHigh                               no
       4    WaterType                            no
       5    WaterDensity                         no
-      6    Po2Warn                              no
-      7    Po2Critical                          no
-      8    Po2Deco                              no
+      6    PO2Warn                              no
+      7    PO2Critical                          no
+      8    PO2Deco                              no
       9    SafetyStopEnabled                    no
      10    BottomDepth                          no
      11    BottomTime                           no
@@ -44760,12 +45258,12 @@ Developer identification tags.
      19    HeartRateSourceType                  no
      20    HeartRateSource                      no
      21    TravelGas                            no
-     22    CcrLowSetpointSwitchMode             no
-     23    CcrLowSetpoint                       no
-     24    CcrLowSetpointDepth                  no
-     25    CcrHighSetpointSwitchMode            no
-     26    CcrHighSetpoint                      no
-     27    CcrHighSetpointDepth                 no
+     22    CCRLowSetpointSwitchMode             no
+     23    CCRLowSetpoint                       no
+     24    CCRLowSetpointDepth                  no
+     25    CCRHighSetpointSwitchMode            no
+     26    CCRHighSetpoint                      no
+     27    CCRHighSetpointDepth                 no
      29    GasConsumptionDisplay                no
      30    UpKeyEnabled                         no
      35    DiveSounds                           no
@@ -44840,6 +45338,14 @@ Developer identification tags.
       0    ReadingSPO2                          no
       1    ReadingConfidence                    no
       2    Mode                                 no
+
+=head3 Garmin SleepDataInfo Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      1    SampleLength                         no
+      2    LocalTimeStamp                       no
+      4    Version                              no
 
 =head3 Garmin SleepLevel Tags
 
@@ -44932,6 +45438,38 @@ Developer identification tags.
       1    Status                               no
       2    HeartRate                            no
 
+=head3 Garmin MtbCx Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      1    GritFlowJumpRecording                no
+      2    JumpAlerts                           no
+
+=head3 Garmin Race Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      3    GoalTime                             no
+      4    GoalSpeed                            no
+      5    Distance                             no
+      7    SplitDistance                        no
+
+=head3 Garmin SplitTime Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    Time                                 no
+      1    Distance                             no
+      2    SplitTime                            no
+      3    SplitDistance                        no
+      4    SplitSpeeds                          no
+      9    StartPositionLat                     no
+     10    StartPositionLong                    no
+     11    EndPositionLat                       no
+     12    EndPositionLong                      no
+     13    StartAltitude                        no
+     14    EndAltitude                          no
+
 =head3 Garmin Split Tags
 
   Tag ID   Tag Name                             Writable
@@ -44941,9 +45479,14 @@ Developer identification tags.
       2    TotalTimerTime                       no
       3    TotalDistance                        no
       4    AvgSpeed                             no
+      7    StartDistance                        no
       9    GPSDateTime                          no
+     11    Sport                                no
+     12    SubSport                             no
      13    TotalAscent                          no
      14    TotalDescent                         no
+     15    AvgHeartRate                         no
+     16    MaxHeartRate                         no
      21    GPSLatitude                          no
      22    GPSLongitude                         no
      23    GPSDestLatitude                      no
@@ -44952,8 +45495,27 @@ Developer identification tags.
      26    AvgVertSpeed                         no
      27    EndTime                              no
      28    TotalCalories                        no
+     32    AvgTemperature                       no
+     33    MaxTemperature                       no
+     34    MinTemperature                       no
+     35    AvgVerticalOscillation               no
+     36    AvgVerticalRatio                     no
+     37    AvgStanceTime                        no
+     38    AvgStanceTimeBalance                 no
+     39    AvgStepLength                        no
+     40    AvgPower                             no
+     41    MaxPower                             no
+     42    NormalizedPower                      no
+     67    LapIndex                             no
      74    StartElevation                       no
+     79    RestingCalories                      no
+     93    GradeAdjustedSpeed                   no
+    107    BeginningPotential                   no
+    108    EndingPotential                      no
+    109    MinStamina                           no
     110    TotalMovingTime                      no
+    130    StepSpeedLossDistance                no
+    131    StepSpeedLossPercentage              no
 
 =head3 Garmin SplitSummary Tags
 
@@ -44971,7 +45533,19 @@ Developer identification tags.
      11    MaxHeartRate                         no
      12    AvgVertSpeed                         no
      13    TotalCalories                        no
+     20    AvgVerticalOscillation               no
+     21    AvgVerticalRatio                     no
+     22    AvgStanceTime                        no
+     24    AvgStepLength                        no
+     25    AvgPower                             no
+     26    MaxPower                             no
+     27    NormalizedPower                      no
+     60    MaxSplitDistance                     no
+     64    RestingCalories                      no
      77    TotalMovingTime                      no
+     79    FirstStartTime                       no
+     83    StepSpeedLossDistance                no
+     84    StepSpeedLossPercentage              no
 
 =head3 Garmin HSABodyBatteryData Tags
 
@@ -45006,6 +45580,14 @@ Developer identification tags.
       0    Sensor                               no
       1    Pressure                             no
 
+=head3 Garmin PowerMode Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    LowBatteryAlert                      no
+      1    DefaultMode                          no
+      3    AutoEnableTime                       no
+
 =head3 Garmin TankSummary Tags
 
   Tag ID   Tag Name                             Writable
@@ -45014,6 +45596,48 @@ Developer identification tags.
       1    StartPressure                        no
       2    EndPressure                          no
       3    VolumeUsed                           no
+
+=head3 Garmin GPSEvent Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    EventType                            no
+      1    Data                                 no
+    100    GPS_1                                no
+    101    Glonass                              no
+    102    Unknown_1                            no
+    104    Qzss_1                               no
+    105    Unknown_2                            no
+    106    Galileo_1                            no
+    107    Beidou_1                             no
+    108    AutoSelect                           no
+    109    Unknown_3                            no
+    110    GPSgalileobeidou_5                   no
+    113    Qzss_5                               no
+
+=head3 Garmin ECGSummary Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      2    RawSampleRate                        no
+      3    SmoothSampleRate                     no
+      4    ECGTimeStamp                         no
+      5    LocalTimeStamp                       no
+      7    AverageHeartRate                     no
+     11    SampleTime                           no
+     12    SDRRHRV                              no
+
+=head3 Garmin ECGRawSample Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    Value                                no
+
+=head3 Garmin ECGSmoothSample Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    Value                                no
 
 =head3 Garmin SleepAssessment Tags
 
@@ -45033,6 +45657,39 @@ Developer identification tags.
      11    AwakeningsCount                      no
      14    InterruptionsScore                   no
      15    AverageStressDuringSleep             no
+
+=head3 Garmin FunctionalMetrics Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      4    FunctionalThresholdPower             no
+      7    RunningLactateThresholdPower         no
+      8    RunningLactateThresholdHR            no
+      9    CyclingLactaceThresholdHR            no
+
+=head3 Garmin RaceEvent Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      1    EventID                              no
+      2    StartTime                            no
+      3    LocalTimeStamp                       no
+      4    RaceEventName                        no
+      5    Location                             no
+      6    StartPointLat                        no
+      7    StartPointLong                       no
+     10    Distance                             no
+     12    TargetTime                           no
+     24    City                                 no
+     26    Country                              no
+
+=head3 Garmin TrainingReadiness Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    TrainingReadiness                    no
+      1    Level                                no
+     20    LocalTimeStamp                       no
 
 =head3 Garmin HRVStatusSummary Tags
 
@@ -45082,6 +45739,27 @@ Developer identification tags.
       4    GyroZ                                no
       5    TimeStamp_32k                        no
 
+=head3 Garmin TrainingLoad Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      3    AcuteTrainingLoad                    no
+      4    ChronicTrainingLoad                  no
+
+=head3 Garmin SleepSchedule Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    BedTime                              no
+      1    WakeTime                             no
+
+=head3 Garmin SleepRestlessMoments Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      1    RestlessMomentsCount                 no
+      2    Durations                            no
+
 =head3 Garmin ChronoShotSession Tags
 
   Tag ID   Tag Name                             Writable
@@ -45125,6 +45803,14 @@ Developer identification tags.
      10    Repeating                            no
      11    Speed                                no
 
+=head3 Garmin CPEStatus Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    Status                               no
+      1    StartTime                            no
+      2    EndTime                              no
+
 =head3 Garmin SkinTempOvernight Tags
 
   Tag ID   Tag Name                             Writable
@@ -45133,6 +45819,28 @@ Developer identification tags.
       1    AverageDeviation                     no
       2    Average_7DayDeviation                no
       4    NightlyValue                         no
+
+=head3 Garmin HillScore Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    HillScore                            no
+      1    HillStrength                         no
+      2    HillEndurance                        no
+      4    Level                                no
+
+=head3 Garmin EnduranceScore Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    EnduranceScore                       no
+      1    Level                                no
+      3    LowerBoundIntermediate               no
+      4    LowerBoundTrained                    no
+      5    LowerBoundWellTrained                no
+      6    LowerBoundExpert                     no
+      7    LowerBoundSuperior                   no
+      8    LowerBoundElite                      no
 
 =head3 Garmin HSAWristTemperatureData Tags
 
@@ -45154,6 +45862,17 @@ Developer identification tags.
       6    Source                               no
       7    UpdateTimeStamp                      no
 
+=head3 Garmin WorkoutSchedule Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      1    WorkoutIndex                         no
+      3    EstBenefit                           no
+      5    EstAerobicTe                         no
+      6    EstAnaerTe                           no
+      7    Sport                                no
+      9    Duration                             no
+
 =head3 Garmin SleepDisruptionSeverityPeriod Tags
 
   Tag ID   Tag Name                             Writable
@@ -45165,16 +45884,6 @@ Developer identification tags.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
       0    Severity                             no
-
-=head3 Garmin Common Tags
-
-Tags listed here are common to all FIT messages.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-    250    PartIndex                            no
-    253    TimeStamp                            no
-    254    MessageIndex                         no
 
 =head2 FITS Tags
 

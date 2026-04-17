@@ -1654,6 +1654,7 @@ sub CalcDuration($@)
         # FujiFilm REAL 3D AVI's), but the video stream information isn't reliable for
         # some cameras (eg. Olympus FE models), so use the video stream information
         # only if the RIFF header duration is 2 to 3 times longer
+        # (also see https://github.com/exiftool/exiftool/issues/371)
         my $dur1;
         $dur1 = $val[1] / $val[0] if $val[0];
         if ($val[2] and $val[3]) {

@@ -1234,7 +1234,7 @@ $VERSION = '1.37';
     },
    'BabyAge' => 'Âge du bébé',
    'BabyName' => 'Nom du bébé',
-   'BackLight' => {
+   'Backlight' => {
       Description => 'Contre-jour',
       PrintConv => {
         'Back Lit 1' => 'Rétroéclairage 1',

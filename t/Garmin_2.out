@@ -1,28 +1,28 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.56
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.57
 [File, System, Other] FileName - File Name: Garmin.fit
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 3.0 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2026:04:14 12:13:14-04:00
 [File, System, Time] FileAccessDate - File Access Date/Time: 2026:04:14 12:13:21-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:04:14 12:14:35-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:04:15 11:37:40-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: FIT
 [File, File, Other] FileTypeExtension - File Type Extension: fit
 [File, File, Other] MIMEType - MIME Type: application/fit
-[Garmin, File, Other] ProtocolVersion - Protocol Version: 16
+[Garmin, File, Other] vers - Protocol Version: 16
 [Garmin, FileID, Other] 3 - Serial Number: 3499711370
 [Garmin, FileID, Time] 4 - Time Created: 2026:04:01 10:00:24-04:00
-[Garmin, FileID, Other] 1 - Manufacturer: 1
+[Garmin, FileID, Other] 1 - Manufacturer: Garmin
 [Garmin, FileID, Other] 2 - Product: 4536
-[Garmin, FileID, Other] 0 - Type: 4
+[Garmin, FileID, Other] 0 - FIT File Type: Activity
 [Garmin, FileCreator, Other] 0 - Software Version: 2139
 [Garmin, Activity, Time] 253 - Time Stamp: 2026:04:01 10:00:24-04:00
 [Garmin, Activity, Other] 0 - Total Timer Time: 3564.089 s
-[Garmin, Activity, Other] 5 - Local Time Stamp: 1143961224
+[Garmin, Activity, Time] 5 - Local Time Stamp: 2026:04:01 07:00:24
 [Garmin, Activity, Other] 1 - Num Sessions: 1
-[Garmin, Activity, Other] 2 - Type: 0
-[Garmin, Activity, Other] 3 - Event: 26
-[Garmin, Activity, Other] 4 - Event Type: 1
+[Garmin, Activity, Other] 2 - Activity Type: Manual
+[Garmin, Activity, Other] 3 - Event: Activity
+[Garmin, Activity, Other] 4 - Event Type: Stop
 [Garmin, Session, Time] 253 - Time Stamp: 2026:04:01 10:00:24-04:00
 [Garmin, Session, Time] 2 - GPS Date Time: 2026:04:01 10:00:24-04:00
 [Garmin, Session, Location] 3 - GPS Latitude: 32 deg 43' 57.97" N
@@ -31,10 +31,10 @@
 [Garmin, Session, Other] 8 - Total Timer Time: 3564.089 s
 [Garmin, Session, Other] 9 - Total Distance: 1345.5 m
 [Garmin, Session, Other] 10 - Total Cycles: 1174 cycles
-[Garmin, Session, Location] 29 - Nec Lat: 32 deg 43' 59.98" N
-[Garmin, Session, Location] 30 - Nec Long: 117 deg 9' 7.56" W
-[Garmin, Session, Location] 31 - SWC Lat: 32 deg 43' 57.49" N
-[Garmin, Session, Location] 32 - SWC Long: 117 deg 9' 15.63" W
+[Garmin, Session, Location] 29 - NEC Latitude: 32 deg 43' 59.98" N
+[Garmin, Session, Location] 30 - NEC Longitude: 117 deg 9' 7.56" W
+[Garmin, Session, Location] 31 - SWC Latitude: 32 deg 43' 57.49" N
+[Garmin, Session, Location] 32 - SWC Longitude: 117 deg 9' 15.63" W
 [Garmin, Session, Location] 38 - GPS Dest Latitude: 32 deg 43' 58.12" N
 [Garmin, Session, Location] 39 - GPS Dest Longitude: 117 deg 9' 14.85" W
 [Garmin, Session, Other] 110 - Sport Profile Name: Birding
@@ -49,7 +49,7 @@
 [Garmin, Session, Other] 126 - Enhanced Avg Altitude: 71.6 m
 [Garmin, Session, Other] 127 - Enhanced Min Altitude: 53.4 m
 [Garmin, Session, Other] 128 - Enhanced Max Altitude: 86.8 m
-[Garmin, Session, Other] 152 - Session 152: 0
+[Garmin, Session, Other] 152 - Volume: 0 kg
 [Garmin, Session, Other] 168 - Training Load Peak: 3.70919799804688
 [Garmin, Session, Unknown] 254 - Message Index: 0
 [Garmin, Session, Other] 11 - Total Calories: 233 kcal
@@ -58,19 +58,19 @@
 [Garmin, Session, Other] 25 - First Lap Index: 0
 [Garmin, Session, Other] 26 - Num Laps: 1
 [Garmin, Session, Other] 106 - Session 106: 0
-[Garmin, Session, Other] 151 - Session 151: 0
-[Garmin, Session, Other] 178 - Session 178: 591
+[Garmin, Session, Other] 151 - Total Sets: 0
+[Garmin, Session, Other] 178 - Est Sweat Loss: 591 ml
 [Garmin, Session, Other] 196 - Metabolic Calories: 87 kcal
-[Garmin, Session, Other] 0 - Event: 8
-[Garmin, Session, Other] 1 - Event Type: 1
-[Garmin, Session, Other] 5 - Sport: 16
-[Garmin, Session, Other] 6 - Sub Sport: 0
+[Garmin, Session, Other] 0 - Event: Session
+[Garmin, Session, Other] 1 - Event Type: Stop
+[Garmin, Session, Other] 5 - Sport: Mountaineering
+[Garmin, Session, Other] 6 - Sub Sport: Generic
 [Garmin, Session, Other] 16 - Avg Heart Rate: 87 bpm
 [Garmin, Session, Other] 17 - Max Heart Rate: 108 bpm
 [Garmin, Session, Other] 18 - Avg Cadence: 13 rpm
 [Garmin, Session, Other] 19 - Max Cadence: 88 rpm
 [Garmin, Session, Other] 24 - Total Training Effect: 0.5
-[Garmin, Session, Other] 28 - Trigger: 0
+[Garmin, Session, Other] 28 - Trigger: Activity End
 [Garmin, Session, Other] 57 - Avg Temperature: 28 C
 [Garmin, Session, Other] 58 - Max Temperature: 29 C
 [Garmin, Session, Other] 64 - Min Heart Rate: 66 bpm
@@ -84,17 +84,17 @@
 [Garmin, Session, Other] 138 - Session 138: 5 0
 [Garmin, Session, Other] 150 - Min Temperature: 27 C
 [Garmin, Session, Other] 184 - Session 184: 0
-[Garmin, Session, Other] 188 - Session 188: 1
-[Garmin, Session, Other] 215 - Session 215: 75
-[Garmin, Session, Other] 216 - Session 216: 68
+[Garmin, Session, Other] 188 - Primary Benefit: Recovery
+[Garmin, Session, Other] 215 - Beginning Body Battery: 75
+[Garmin, Session, Other] 216 - Ending Body Battery: 68
 [Garmin, TimeInZone, Time] 253 - Time Stamp: 2026:04:01 10:00:24-04:00
-[Garmin, TimeInZone, Time] 2 - Time In HR Zone: 1757921 1747158 59010 0 0 0 0 ms
-[Garmin, TimeInZone, Time] 5 - Time In Power Zone: 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 ms
+[Garmin, TimeInZone, Other] 2 - Time In HR Zone: 1757921 1747158 59010 0 0 0 0
+[Garmin, TimeInZone, Other] 5 - Time In Power Zone: 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295
 [Garmin, TimeInZone, Other] 9 - Power Zone High Boundary: 65535 65535 65535 65535 65535 65535 65535 65535
-[Garmin, TimeInZone, Other] 0 - Reference Mesg: 18
+[Garmin, TimeInZone, Other] 0 - Reference Mesg: Session
 [Garmin, TimeInZone, Other] 1 - Reference Index: 0
 [Garmin, TimeInZone, Other] 6 - HR Zone High Boundary: 88 105 123 140 158 175
-[Garmin, TimeInZone, Other] 10 - HR Calc Type: 1
+[Garmin, TimeInZone, Other] 10 - HR Calc Type: Percent Max HR
 [Garmin, TimeInZone, Other] 11 - Max Heart Rate: 175
 [Garmin, TimeInZone, Other] 12 - Resting Heart Rate: 0
 [Garmin, TimeInZone, Other] 13 - Threshold Heart Rate: 0
@@ -108,10 +108,10 @@
 [Garmin, Lap, Other] 8 - Total Timer Time: 3564.089 s
 [Garmin, Lap, Other] 9 - Total Distance: 1345.5 m
 [Garmin, Lap, Other] 10 - Total Cycles: 1174 cycles
-[Garmin, Lap, Other] 27 - Lap 27: 390523813
-[Garmin, Lap, Other] 28 - Lap 28: -1397679008
-[Garmin, Lap, Other] 29 - Lap 29: 390515568
-[Garmin, Lap, Other] 30 - Lap 30: -1397705728
+[Garmin, Lap, Location] 27 - NEC Latitude: 32 deg 43' 59.98" N
+[Garmin, Lap, Location] 28 - NEC Longitude: 117 deg 9' 7.56" W
+[Garmin, Lap, Location] 29 - SWC Latitude: 32 deg 43' 57.49" N
+[Garmin, Lap, Location] 30 - SWC Longitude: 117 deg 9' 15.63" W
 [Garmin, Lap, Other] 102 - Avg Left Power Phase: 255 255 255 255
 [Garmin, Lap, Other] 103 - Avg Left Power Phase Peak: 255 255 255 255
 [Garmin, Lap, Other] 104 - Avg Right Power Phase: 255 255 255 255
@@ -126,18 +126,18 @@
 [Garmin, Lap, Other] 11 - Total Calories: 233 kcal
 [Garmin, Lap, Other] 21 - Total Ascent: 29 m
 [Garmin, Lap, Other] 22 - Total Descent: 34 m
-[Garmin, Lap, Other] 145 - Lap 145: 591
-[Garmin, Lap, Other] 155 - Lap 155: 87
-[Garmin, Lap, Other] 0 - Event: 9
-[Garmin, Lap, Other] 1 - Event Type: 1
+[Garmin, Lap, Other] 145 - Est Sweat Loss: 591
+[Garmin, Lap, Other] 155 - Resting Calories: 87 kcal
+[Garmin, Lap, Other] 0 - Event: Lap
+[Garmin, Lap, Other] 1 - Event Type: Stop
 [Garmin, Lap, Other] 15 - Avg Heart Rate: 87 bpm
 [Garmin, Lap, Other] 16 - Max Heart Rate: 108 bpm
 [Garmin, Lap, Other] 17 - Avg Cadence: 13 rpm
 [Garmin, Lap, Other] 18 - Max Cadence: 88 rpm
-[Garmin, Lap, Other] 23 - Intensity: 0
-[Garmin, Lap, Other] 24 - Lap Trigger: 7
-[Garmin, Lap, Other] 25 - Sport: 16
-[Garmin, Lap, Other] 39 - Sub Sport: 0
+[Garmin, Lap, Other] 23 - Intensity: Active
+[Garmin, Lap, Other] 24 - Lap Trigger: Session End
+[Garmin, Lap, Other] 25 - Sport: Mountaineering
+[Garmin, Lap, Other] 39 - Sub Sport: Generic
 [Garmin, Lap, Other] 50 - Avg Temperature: 28 C
 [Garmin, Lap, Other] 51 - Max Temperature: 29 C
 [Garmin, Lap, Other] 80 - Avg Fractional Cadence: 0.53125 rpm
@@ -146,31 +146,31 @@
 [Garmin, Lap, Other] 109 - Max Cadence Position: 255 255
 [Garmin, Lap, Other] 124 - Min Temperature: 27 C
 [Garmin, TimeInZone, Time] 253 - Time Stamp: 2026:04:01 10:00:24-04:00
-[Garmin, TimeInZone, Time] 2 - Time In HR Zone: 1757921 1747158 59010 0 0 0 0 ms
-[Garmin, TimeInZone, Time] 5 - Time In Power Zone: 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 ms
+[Garmin, TimeInZone, Other] 2 - Time In HR Zone: 1757921 1747158 59010 0 0 0 0
+[Garmin, TimeInZone, Other] 5 - Time In Power Zone: 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295 4294967295
 [Garmin, TimeInZone, Other] 9 - Power Zone High Boundary: 65535 65535 65535 65535 65535 65535 65535 65535
-[Garmin, TimeInZone, Other] 0 - Reference Mesg: 19
+[Garmin, TimeInZone, Other] 0 - Reference Mesg: Lap
 [Garmin, TimeInZone, Other] 1 - Reference Index: 0
 [Garmin, TimeInZone, Other] 6 - HR Zone High Boundary: 88 105 123 140 158 175
-[Garmin, TimeInZone, Other] 10 - HR Calc Type: 1
+[Garmin, TimeInZone, Other] 10 - HR Calc Type: Percent Max HR
 [Garmin, TimeInZone, Other] 11 - Max Heart Rate: 175
 [Garmin, TimeInZone, Other] 12 - Resting Heart Rate: 0
 [Garmin, TimeInZone, Other] 13 - Threshold Heart Rate: 0
 [Garmin, TSCorrelation, Time] 253 - Time Stamp: 2026:04:01 10:00:24-04:00
 [Garmin, TSCorrelation, Time] 1 - System Time Stamp: 2026:04:01 10:00:24-04:00
-[Garmin, TSCorrelation, Time] 3 - Local Time Stamp: 1143961224 s
+[Garmin, TSCorrelation, Time] 3 - Local Time Stamp: 2026:04:01 07:00:24
 [Garmin, Event, Time] 253 - Time Stamp: 2026:04:01 10:00:24-04:00
 [Garmin, Event, Other] 3 - Data: 0
-[Garmin, Event, Other] 0 - Event: 0
-[Garmin, Event, Other] 1 - Event Type: 0
+[Garmin, Event, Other] 0 - Event: Timer
+[Garmin, Event, Other] 1 - Event Type: Start
 [Garmin, Event, Other] 4 - Event Group: 0
 [Garmin, DeviceInfo, Time] 253 - Time Stamp: 2026:04:01 10:00:24-04:00
 [Garmin, DeviceInfo, Device] 3 - Serial Number: 3499711370
-[Garmin, DeviceInfo, Device] 2 - Manufacturer: 1
+[Garmin, DeviceInfo, Device] 2 - Manufacturer: Garmin
 [Garmin, DeviceInfo, Device] 4 - Product: 4536
 [Garmin, DeviceInfo, Device] 5 - Software Version: 21.39
-[Garmin, DeviceInfo, Device] 0 - Device Index: 0
-[Garmin, DeviceInfo, Device] 25 - Source Type: 5
+[Garmin, DeviceInfo, Device] 0 - Device Index: Creator
+[Garmin, DeviceInfo, Device] 25 - Source Type: Local
 [Garmin, DeviceInfo, Device] 29 - Device Info 29: 255 255 255 255 255 255
 [Garmin, GPS, Location] 3 - GPS Altitude: 88.4 m
 [Garmin, GPS, Location] 4 - GPS Speed: 3.2508 km/h
@@ -184,8 +184,8 @@
 [Garmin, Record, Other] 53 - Fractional Cadence: 0 rpm
 [Garmin, Record, Other] 107 - Record 107: 0
 [Garmin, Record, Other] 135 - Record 135: 63
-[Garmin, Record, Other] 136 - Record 136: 69
-[Garmin, Record, Other] 143 - Record 143: 75
+[Garmin, Record, Other] 136 - Wrist Heart Rate: 69 bpm
+[Garmin, Record, Other] 143 - Body Battery: 75
 [Garmin, Record, Time] 253 - Time Stamp: 2026:04:01 10:00:34-04:00
 [Garmin, Record, Location] 0 - GPS Latitude: 32 deg 43' 58.03" N
 [Garmin, Record, Location] 1 - GPS Longitude: 117 deg 9' 14.97" W
@@ -199,8 +199,8 @@
 [Garmin, Record, Other] 53 - Fractional Cadence: 0 rpm
 [Garmin, Record, Other] 107 - Record 107: 1
 [Garmin, Record, Other] 135 - Record 135: 5
-[Garmin, Record, Other] 136 - Record 136: 69
-[Garmin, Record, Other] 143 - Record 143: 75
+[Garmin, Record, Other] 136 - Wrist Heart Rate: 69 bpm
+[Garmin, Record, Other] 143 - Body Battery: 75
 [Garmin, Record, Time] 253 - Time Stamp: 2026:04:01 10:00:44-04:00
 [Garmin, Record, Location] 0 - GPS Latitude: 32 deg 43' 57.99" N
 [Garmin, Record, Location] 1 - GPS Longitude: 117 deg 9' 14.63" W
@@ -214,8 +214,8 @@
 [Garmin, Record, Other] 53 - Fractional Cadence: 0 rpm
 [Garmin, Record, Other] 107 - Record 107: 1
 [Garmin, Record, Other] 135 - Record 135: 2
-[Garmin, Record, Other] 136 - Record 136: 67
-[Garmin, Record, Other] 143 - Record 143: 75
+[Garmin, Record, Other] 136 - Wrist Heart Rate: 67 bpm
+[Garmin, Record, Other] 143 - Body Battery: 75
 [Garmin, Record, Time] 253 - Time Stamp: 2026:04:01 10:00:54-04:00
 [Garmin, Record, Location] 0 - GPS Latitude: 32 deg 43' 57.65" N
 [Garmin, Record, Location] 1 - GPS Longitude: 117 deg 9' 14.38" W
@@ -229,39 +229,39 @@
 [Garmin, Record, Other] 53 - Fractional Cadence: 0.5 rpm
 [Garmin, Record, Other] 107 - Record 107: 1
 [Garmin, Record, Other] 135 - Record 135: 43
-[Garmin, Record, Other] 136 - Record 136: 69
-[Garmin, Record, Other] 143 - Record 143: 75
+[Garmin, Record, Other] 136 - Wrist Heart Rate: 69 bpm
+[Garmin, Record, Other] 143 - Body Battery: 75
 [Garmin, DevDataID, Other] 0 - Developer ID: (Binary data 16 bytes)
 [Garmin, DevDataID, Other] 1 - Application ID: (Binary data 16 bytes)
 [Garmin, DevDataID, Other] 4 - Application Version: 68
 [Garmin, DevDataID, Other] 3 - Developer Data Index: 0
 [Garmin, FieldDescr, Other] 3 - Field Name: Power
 [Garmin, FieldDescr, Other] 8 - Units: Watts
-[Garmin, FieldDescr, Other] 14 - Native Mesg Num: 20
+[Garmin, FieldDescr, Other] 14 - Native Mesg Num: Record
 [Garmin, FieldDescr, Other] 0 - Developer Data Index: 0
 [Garmin, FieldDescr, Other] 1 - Field Definition Number: 0
-[Garmin, FieldDescr, Other] 2 - Fit Base Type ID: 132
+[Garmin, FieldDescr, Other] 2 - Fit Base Type ID: uint16
 [Garmin, FieldDescr, Other] 15 - Native Field Num: 7
 [Garmin, FieldDescr, Other] 3 - Field Name: Cadence
 [Garmin, FieldDescr, Other] 8 - Units: RPM
-[Garmin, FieldDescr, Other] 14 - Native Mesg Num: 20
+[Garmin, FieldDescr, Other] 14 - Native Mesg Num: Record
 [Garmin, FieldDescr, Other] 0 - Developer Data Index: 0
 [Garmin, FieldDescr, Other] 1 - Field Definition Number: 2
-[Garmin, FieldDescr, Other] 2 - Fit Base Type ID: 2
+[Garmin, FieldDescr, Other] 2 - Fit Base Type ID: uint8
 [Garmin, FieldDescr, Other] 15 - Native Field Num: 4
 [Garmin, FieldDescr, Other] 3 - Field Name: Ground Time
 [Garmin, FieldDescr, Other] 8 - Units: Milliseconds
-[Garmin, FieldDescr, Other] 14 - Native Mesg Num: 20
+[Garmin, FieldDescr, Other] 14 - Native Mesg Num: Record
 [Garmin, FieldDescr, Other] 0 - Developer Data Index: 0
 [Garmin, FieldDescr, Other] 1 - Field Definition Number: 3
-[Garmin, FieldDescr, Other] 2 - Fit Base Type ID: 132
+[Garmin, FieldDescr, Other] 2 - Fit Base Type ID: uint16
 [Garmin, FieldDescr, Other] 15 - Native Field Num: 41
 [Garmin, FieldDescr, Other] 3 - Field Name: Vertical Oscillation
 [Garmin, FieldDescr, Other] 8 - Units: Centimeters
-[Garmin, FieldDescr, Other] 14 - Native Mesg Num: 20
+[Garmin, FieldDescr, Other] 14 - Native Mesg Num: Record
 [Garmin, FieldDescr, Other] 0 - Developer Data Index: 0
 [Garmin, FieldDescr, Other] 1 - Field Definition Number: 4
-[Garmin, FieldDescr, Other] 2 - Fit Base Type ID: 136
+[Garmin, FieldDescr, Other] 2 - Fit Base Type ID: float32
 [Garmin, FieldDescr, Other] 15 - Native Field Num: 39
 [Garmin, Record, Time] 253 - Time Stamp: 2019:11:24 16:28:43-05:00
 [Garmin, Record, Location] 0 - GPS Latitude: 20 deg 30' 16.51" N

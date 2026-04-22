@@ -421,6 +421,7 @@ $VERSION = '5.06';
     213.2 => 'Tamron 16-300mm f/3.5-6.3 Di II VC PZD Macro (B016)', #PH
     213.3 => 'Tamron SP 35mm f/1.8 Di VC USD (F012)', #PH
     213.4 => 'Tamron SP 45mm f/1.8 Di VC USD (F013)', #PH
+    213.5 => 'Tamron SP 85mm f/1.8 Di VC USD (F012)',
     214 => 'Canon EF-S 18-55mm f/3.5-5.6 USM', #PH/34
     215 => 'Canon EF 55-200mm f/4.5-5.6 II USM',
     217 => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC PZD', #47
@@ -493,6 +494,8 @@ $VERSION = '5.06';
    '368.13' => 'Sigma 24-105mm f/4 DG OS HSM | A', #forum3833
    '368.14' => 'Sigma 18-300mm f/3.5-6.3 DC Macro OS HSM | C', #forum15280 (014)
    '368.15' => 'Sigma 24mm F1.4 DG HSM | A', #50 (015)
+   '368.16' => 'Sigma 100-400mm f/5-6.3 DG OS HSM | C',
+   '368.17' => 'Sigma 100-400mm f/5-6.3 DG OS HSM | C + 1.4x',
     # Note: LensType 488 (0x1e8) is reported as 232 (0xe8) in 7D CameraSettings
     488 => 'Canon EF-S 15-85mm f/3.5-5.6 IS USM', #PH
     489 => 'Canon EF 70-300mm f/4-5.6L IS USM', #Gerald Kapounek

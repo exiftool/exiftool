@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 33465 tags, with 21435 unique tag names.
+They contain a total of 33463 tags, with 21434 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -9628,18 +9628,18 @@ These tags are used by the EOS R3, R7, R50 and R6mkII
     169    ColorTempUnknown10?                  int16s
     170    WB_RGGBLevelsUnknown11?              int16s[4]
     174    ColorTempUnknown11?                  int16s
-    175    WB_RGGBLevelsUnknown11?              int16s[4]
-    179    ColorTempUnknown11?                  int16s
-    180    WB_RGGBLevelsUnknown12?              int16s[4]
-    184    ColorTempUnknown12?                  int16s
-    185    WB_RGGBLevelsUnknown13?              int16s[4]
-    189    ColorTempUnknown13?                  int16s
-    190    WB_RGGBLevelsUnknown14?              int16s[4]
-    194    ColorTempUnknown14?                  int16s
-    195    WB_RGGBLevelsUnknown15?              int16s[4]
-    199    ColorTempUnknown15?                  int16s
-    200    WB_RGGBLevelsUnknown16?              int16s[4]
-    204    ColorTempUnknown16?                  int16s
+    175    WB_RGGBLevelsUnknown12?              int16s[4]
+    179    ColorTempUnknown12?                  int16s
+    180    WB_RGGBLevelsUnknown13?              int16s[4]
+    184    ColorTempUnknown13?                  int16s
+    185    WB_RGGBLevelsUnknown14?              int16s[4]
+    189    ColorTempUnknown14?                  int16s
+    190    WB_RGGBLevelsUnknown15?              int16s[4]
+    194    ColorTempUnknown15?                  int16s
+    195    WB_RGGBLevelsUnknown16?              int16s[4]
+    199    ColorTempUnknown16?                  int16s
+    200    WB_RGGBLevelsUnknown17?              int16s[4]
+    204    ColorTempUnknown17?                  int16s
     205    WB_RGGBLevelsDaylight                int16s[4]
     209    ColorTempDaylight                    int16s
     210    WB_RGGBLevelsShade                   int16s[4]
@@ -9654,28 +9654,28 @@ These tags are used by the EOS R3, R7, R50 and R6mkII
     234    ColorTempKelvin                      int16s
     235    WB_RGGBLevelsFlash                   int16s[4]
     239    ColorTempFlash                       int16s
-    240    WB_RGGBLevelsUnknown17?              int16s[4]
-    244    ColorTempUnknown17?                  int16s
-    245    WB_RGGBLevelsUnknown18?              int16s[4]
-    249    ColorTempUnknown18?                  int16s
-    250    WB_RGGBLevelsUnknown19?              int16s[4]
-    254    ColorTempUnknown19?                  int16s
-    255    WB_RGGBLevelsUnknown20?              int16s[4]
-    259    ColorTempUnknown20?                  int16s
-    260    WB_RGGBLevelsUnknown21?              int16s[4]
-    264    ColorTempUnknown21?                  int16s
-    265    WB_RGGBLevelsUnknown22?              int16s[4]
-    269    ColorTempUnknown22?                  int16s
-    270    WB_RGGBLevelsUnknown23?              int16s[4]
-    274    ColorTempUnknown23?                  int16s
-    275    WB_RGGBLevelsUnknown24?              int16s[4]
-    279    ColorTempUnknown24?                  int16s
-    280    WB_RGGBLevelsUnknown25?              int16s[4]
-    284    ColorTempUnknown25?                  int16s
-    285    WB_RGGBLevelsUnknown26?              int16s[4]
-    289    ColorTempUnknown26?                  int16s
-    290    WB_RGGBLevelsUnknown27?              int16s[4]
-    294    ColorTempUnknown27?                  int16s
+    240    WB_RGGBLevelsUnknown18?              int16s[4]
+    244    ColorTempUnknown18?                  int16s
+    245    WB_RGGBLevelsUnknown19?              int16s[4]
+    249    ColorTempUnknown19?                  int16s
+    250    WB_RGGBLevelsUnknown20?              int16s[4]
+    254    ColorTempUnknown20?                  int16s
+    255    WB_RGGBLevelsUnknown21?              int16s[4]
+    259    ColorTempUnknown21?                  int16s
+    260    WB_RGGBLevelsUnknown22?              int16s[4]
+    264    ColorTempUnknown22?                  int16s
+    265    WB_RGGBLevelsUnknown23?              int16s[4]
+    269    ColorTempUnknown23?                  int16s
+    270    WB_RGGBLevelsUnknown24?              int16s[4]
+    274    ColorTempUnknown24?                  int16s
+    275    WB_RGGBLevelsUnknown25?              int16s[4]
+    279    ColorTempUnknown25?                  int16s
+    280    WB_RGGBLevelsUnknown26?              int16s[4]
+    284    ColorTempUnknown26?                  int16s
+    285    WB_RGGBLevelsUnknown27?              int16s[4]
+    289    ColorTempUnknown27?                  int16s
+    290    WB_RGGBLevelsUnknown28?              int16s[4]
+    294    ColorTempUnknown28?                  int16s
     300    ColorCalib?                          Canon ColorCalib
     363    PerChannelBlackLevel                 int16u[4]
     640    NormalWhiteLevel                     int16u
@@ -12001,7 +12001,7 @@ Tags extracted from the header of RAF images.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-     60    RAFVersion                           no
+     60    FirmwareVersion                      no
     108    RAFCompression                       no
 
 =head3 FujiFilm RAF Tags
@@ -31050,7 +31050,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 123 different types of timed GPS metadata.
+currently reads 124 different types of timed GPS metadata.
 
   Tag ID                 Tag Name               Writable
   ------                 --------               --------
@@ -43114,15 +43114,17 @@ L<XMP DICOM Tags|Image::ExifTool::TagNames/XMP DICOM Tags>.
 =head3 Garmin FIT Tags
 
 Information extracted from Garmin FIT (Flexible and Interoperable data
-Transfer) files. By default, only timestamps and GPS-related FIT messages
-are decoded, and the rest are marked as Unknown to be extracted only if the
-Unknown (-u) option is used. And unless the ExtractEmbedded (-ee) option is
-used, only the first FIT message of each type is extracted. When both of
-these options are used, a significant amount of information may be
-extracted, and processing times may be lengthy. The family 1 group names of
-the extracted tags correspond to the FIT message names. The first table
-below lists the FIT messages, and subsequent tables list the extracted tags.
-See L<https://developer.garmin.com/fit/> for the specification.
+Transfer) files.  The main reason for adding FIT support was to allow
+geotagging directly from FIT files using the -geotag option.  For this
+reason, only timestamps and GPS-related FIT messages are decoded by default,
+and the rest are marked as Unknown to be extracted only if the Unknown
+(-u) option is used. And unless the ExtractEmbedded (-ee) option is used,
+only the first FIT message of each type is extracted. When both of these
+options are used, a significant amount of information may be extracted, and
+processing times may be lengthy. The family 1 group names of the extracted
+tags correspond to the FIT message names. The first table below lists the
+FIT messages, and subsequent tables list the extracted tags. See
+L<https://developer.garmin.com/fit/> for the specification.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -47600,8 +47602,6 @@ FileName.
   PreviewTIFF                File               no
   PreviewWMF                 File               no
   ProcessingTime             ExifTool           no
-  RAFCompression             File               no
-  RAFVersion                 File               no
   ResourceForkSize           System             no
   SphericalVideoXML          GSpherical         yes!
   SymLink                    -                  yes!

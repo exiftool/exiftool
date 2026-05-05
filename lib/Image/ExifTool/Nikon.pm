@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.57';
+$VERSION = '4.58';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -5863,8 +5863,11 @@ my %nikonFocalConversions = (
             47 => 'Nikkor Z 35mm f/1.2 S', #28
             48 => 'Nikkor Z 28-400mm f/4-8 VR', #30
             49 => 'Nikkor Z 28-135mm f/4 PZ', #28
+            50 => 'Nikkor Z 24-70mm f/2.8 S II', #28
             51 => 'Nikkor Z 35mm f/1.4', #28
             52 => 'Nikkor Z 50mm f/1.4', #28
+            54 => 'Nikkor Z 70-200mm f/2.8 VR S II', #28
+            57 => 'Nikkor Z 24-105mm f/4-7.1', #28
             2305 => 'Laowa FFII 10mm F2.8 C&D Dreamer', #30
             32768 => 'Nikkor Z 400mm f/2.8 TC VR S TC-1.4x', #28
             32769 => 'Nikkor Z 600mm f/4 TC VR S TC-1.4x', #28

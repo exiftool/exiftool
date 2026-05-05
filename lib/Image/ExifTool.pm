@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.57';
+$VERSION = '13.58';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1873,8 +1873,6 @@ my %systemTagsNotes = (
         },
         PrintConv => 'sprintf("%.3g s", $val)',
     },
-    RAFVersion => { Notes => 'RAF file version number' },
-    RAFCompression => { PrintConv => { 0 => 'Uncompressed', 2 => 'Compressed' } }, # 1 maybe lossy?
     JPEGDigest => {
         Notes => q{
             an MD5 digest of the JPEG quantization tables is combined with the component

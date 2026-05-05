@@ -9,15 +9,17 @@
 <body>
 <h2 class=top><a name='FIT'>Garmin FIT Tags</a></h2>
 <p>Information extracted from Garmin FIT (Flexible and Interoperable data
-Transfer) files. By default, only timestamps and GPS-related FIT messages
-are decoded, and the rest are marked as Unknown to be extracted only if the
-Unknown (-u) option is used. And unless the ExtractEmbedded (-ee) option is
-used, only the first FIT message of each type is extracted. When both of
-these options are used, a significant amount of information may be
-extracted, and processing times may be lengthy. The family 1 group names of
-the extracted tags correspond to the FIT message names. The first table
-below lists the FIT messages, and subsequent tables list the extracted tags.
-See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit/</a> for the specification.</p>
+Transfer) files.  The main reason for adding FIT support was to allow
+geotagging directly from FIT files using the -geotag option.  For this
+reason, only timestamps and GPS-related FIT messages are decoded by default,
+and the rest are marked as Unknown to be extracted only if the <a href="../ExifTool.html#Unknown">Unknown</a>
+(-u) option is used. And unless the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded</a> (-ee) option is used,
+only the first FIT message of each type is extracted. When both of these
+options are used, a significant amount of information may be extracted, and
+processing times may be lengthy. The family 1 group names of the extracted
+tags correspond to the FIT message names. The first table below lists the
+FIT messages, and subsequent tables list the extracted tags. See
+<a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit/</a> for the specification.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -1003,7 +1005,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <tr><td class=r>1</td><td>= Garmin</td>
 <td class='r b'>84</td><td class=b>= Magura</td>
 <td class=r>267</td><td>= Bryton</td>
-</tr><tr><td class=r>2</td><td>= Garmin Fr405 Antfs</td>
+</tr><tr><td class=r>2</td><td>= Garmin FR405 ANTFS</td>
 <td class='r b'>85</td><td class=b>= Woodway</td>
 <td class=r>268</td><td>= Sram</td>
 </tr><tr><td class=r>3</td><td>= Zephyr</td>
@@ -1012,10 +1014,10 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 </tr><tr><td class=r>4</td><td>= Dayton</td>
 <td class='r b'>87</td><td class=b>= Nielsen Kellerman</td>
 <td class=r>270</td><td>= Cobi</td>
-</tr><tr><td class=r>5</td><td>= Idt</td>
+</tr><tr><td class=r>5</td><td>= IDT</td>
 <td class='r b'>88</td><td class=b>= Dk City</td>
 <td class=r>271</td><td>= Spivi</td>
-</tr><tr><td class=r>6</td><td>= Srm</td>
+</tr><tr><td class=r>6</td><td>= SRM</td>
 <td class='r b'>89</td><td class=b>= Tacx</td>
 <td class=r>272</td><td>= Mio Magellan</td>
 </tr><tr><td class=r>7</td><td>= Quarq</td>
@@ -1037,13 +1039,13 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class='r b'>95</td><td class=b>= Stryd</td>
 <td class=r>278</td><td>= Minoura</td>
 </tr><tr><td class=r>13</td><td>= Dynastream Oem</td>
-<td class='r b'>96</td><td class=b>= Icg</td>
+<td class='r b'>96</td><td class=b>= ICG</td>
 <td class=r>279</td><td>= Cycliq</td>
 </tr><tr><td class=r>14</td><td>= Nautilus</td>
 <td class='r b'>97</td><td class=b>= MiPulse</td>
 <td class=r>280</td><td>= Luxottica</td>
 </tr><tr><td class=r>15</td><td>= Dynastream</td>
-<td class='r b'>98</td><td class=b>= Bsx Athletics</td>
+<td class='r b'>98</td><td class=b>= BSX Athletics</td>
 <td class=r>281</td><td>= Trainer Road</td>
 </tr><tr><td class=r>16</td><td>= Timex</td>
 <td class='r b'>99</td><td class=b>= Look</td>
@@ -1062,7 +1064,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class=r>286</td><td>= Omata</td>
 </tr><tr><td class=r>21</td><td>= A And D</td>
 <td class='r b'>104</td><td class=b>= Topaction Technology</td>
-<td class=r>287</td><td>= Vdo</td>
+<td class=r>287</td><td>= VDO</td>
 </tr><tr><td class=r>22</td><td>= Hmm</td>
 <td class='r b'>105</td><td class=b>= Cosinuss</td>
 <td class=r>288</td><td>= Magneticdays</td>
@@ -1094,7 +1096,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class='r b'>114</td><td class=b>= Soaring Technology</td>
 <td class=r>297</td><td>= Cycligentinc</td>
 </tr><tr><td class=r>32</td><td>= Wahoo Fitness</td>
-<td class='r b'>115</td><td class=b>= Igpsport</td>
+<td class='r b'>115</td><td class=b>= iGPSPORT</td>
 <td class=r>298</td><td>= Trailforks</td>
 </tr><tr><td class=r>33</td><td>= Octane Fitness</td>
 <td class='r b'>116</td><td class=b>= Thinkrider</td>
@@ -1161,7 +1163,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class=r>319</td><td>= Oreka Training</td>
 </tr><tr><td class=r>54</td><td>= Ifor Powell</td>
 <td class='r b'>137</td><td class=b>= Bosch</td>
-<td class=r>320</td><td>= Lsec</td>
+<td class=r>320</td><td>= LSEC</td>
 </tr><tr><td class=r>55</td><td>= Maxwell Guider</td>
 <td class='r b'>138</td><td class=b>= Kyto</td>
 <td class=r>321</td><td>= Lululemon Studio</td>
@@ -1170,7 +1172,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class=r>322</td><td>= Shanyue</td>
 </tr><tr><td class=r>57</td><td>= Breakaway</td>
 <td class='r b'>140</td><td class=b>= Decathlon Byte</td>
-<td class=r>323</td><td>= Spinning Mda</td>
+<td class=r>323</td><td>= Spinning MDA</td>
 </tr><tr><td class=r>58</td><td>= Alatech Technology Ltd</td>
 <td class='r b'>141</td><td class=b>= Tq Systems</td>
 <td class=r>324</td><td>= Hilldating</td>
@@ -1183,8 +1185,8 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 </tr><tr><td class=r>61</td><td>= Geonaute</td>
 <td class='r b'>144</td><td class=b>= Zwift Byte</td>
 <td class=r>327</td><td>= Magicshine</td>
-</tr><tr><td class=r>62</td><td>= Id Bike</td>
-<td class='r b'>145</td><td class=b>= Porsche Ep</td>
+</tr><tr><td class=r>62</td><td>= ID Bike</td>
+<td class='r b'>145</td><td class=b>= Porsche EP</td>
 <td class=r>328</td><td>= Ictrainer</td>
 </tr><tr><td class=r>63</td><td>= Specialized</td>
 <td class='r b'>146</td><td class=b>= Blackbird</td>
@@ -1239,7 +1241,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class=r>349</td><td>= Gotoes</td>
 </tr><tr><td class=r>82</td><td>= Wellgo</td>
 <td class='r b'>265</td><td class=b>= Strava</td>
-<td class=r>5759</td><td>= Actigraphcorp</td>
+<td class=r>5759</td><td>= ActiGraph Corp</td>
 </tr><tr><td class=r>83</td><td>= Scosche</td>
 <td class='r b'>266</td><td class=b>= Precor</td>
 <td class=r>&nbsp;</td><td>&nbsp;</td>
@@ -1311,20 +1313,20 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <table class=frame><tr><td>
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>WorkoutCapabilities</th><th>Value</th><th>WorkoutCapabilities</th></tr>
-<tr><td>'Bit 0'</td><td>= Interval</td>
-<td class=b>'Bit 8'</td><td class=b>= Heart Rate</td>
-</tr><tr><td>'Bit 1'</td><td>= Custom</td>
-<td class=b>'Bit 9'</td><td class=b>= Distance</td>
-</tr><tr><td>'Bit 2'</td><td>= Fitness Equipment</td>
-<td class=b>'Bit 10'</td><td class=b>= Cadence</td>
-</tr><tr><td>'Bit 3'</td><td>= Firstbeat</td>
-<td class=b>'Bit 11'</td><td class=b>= Power</td>
-</tr><tr><td>'Bit 4'</td><td>= New Leaf</td>
-<td class=b>'Bit 12'</td><td class=b>= Grade</td>
-</tr><tr><td>'Bit 5'</td><td>= Tcx</td>
-<td class=b>'Bit 13'</td><td class=b>= Resistance</td>
-</tr><tr><td>'Bit 7'</td><td>= Speed</td>
-<td class=b>'Bit 14'</td><td class=b>= Protected</td>
+<tr><td>Bit 0</td><td>= Interval</td>
+<td class=b>Bit 8</td><td class=b>= Heart Rate</td>
+</tr><tr><td>Bit 1</td><td>= Custom</td>
+<td class=b>Bit 9</td><td class=b>= Distance</td>
+</tr><tr><td>Bit 2</td><td>= Fitness Equipment</td>
+<td class=b>Bit 10</td><td class=b>= Cadence</td>
+</tr><tr><td>Bit 3</td><td>= Firstbeat</td>
+<td class=b>Bit 11</td><td class=b>= Power</td>
+</tr><tr><td>Bit 4</td><td>= New Leaf</td>
+<td class=b>Bit 12</td><td class=b>= Grade</td>
+</tr><tr><td>Bit 5</td><td>= Tcx</td>
+<td class=b>Bit 13</td><td class=b>= Resistance</td>
+</tr><tr><td>Bit 7</td><td>= Speed</td>
+<td class=b>Bit 14</td><td class=b>= Protected</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='DeviceSettings'>Garmin DeviceSettings Tags</a></h2>
@@ -2823,7 +2825,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
   <br>315 = Lap Stride Len
   <br>320 = Perform Cond
   <br>395 = Battery Hours
-  <br>423 = Muscle O 2 Sat
+  <br>423 = Muscle O2 Sat
   <br>424 = Total Hemaglobin
   <br>433 = Anaerobic Te
   <br>452 = Resp Rate
@@ -5037,7 +5039,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class=r title='62 = 0x3e'>62</td>
 <td>DeviceIndex</td>
 <td class=c>no</td>
-<td>--&gt; <a href='Garmin.html#DeviceIndex'>Garmin DeviceIndex Values</a></td></tr>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='67 = 0x43'>67</td>
 <td>LeftPco</td>
@@ -5301,14 +5303,6 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class=r>254</td><td>= All</td>
 </tr></table></td></tr></table></blockquote>
 
-<h2><a name='DeviceIndex'>Garmin DeviceIndex Values</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class='inner sep' cellspacing=1>
-<tr class=h><th>Value</th><th>DeviceIndex</th></tr>
-<tr><td class=r>0</td><td>= Creator</td>
-</tr></table></td></tr></table></blockquote>
-
 <h2><a name='Event'>Garmin Event Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -5374,7 +5368,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class=r title='13 = 0xd'>13</td>
 <td>DeviceIndex</td>
 <td class=c>no</td>
-<td>--&gt; <a href='Garmin.html#DeviceIndex'>Garmin DeviceIndex Values</a></td></tr>
+<td>&nbsp;</td></tr>
 <tr>
 <td class=r title='14 = 0xe'>14</td>
 <td>ActivityType</td>
@@ -5420,32 +5414,32 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class=r title='0 = 0x0'>0</td>
 <td>DevSpeed</td>
 <td class=c>no</td>
-<td>--&gt; <a href='Garmin.html#DeviceIndex'>Garmin DeviceIndex Values</a></td></tr>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>DevDistance</td>
 <td class=c>no</td>
-<td>--&gt; <a href='Garmin.html#DeviceIndex'>Garmin DeviceIndex Values</a></td></tr>
+<td>&nbsp;</td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>DevCadence</td>
 <td class=c>no</td>
-<td>--&gt; <a href='Garmin.html#DeviceIndex'>Garmin DeviceIndex Values</a></td></tr>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='3 = 0x3'>3</td>
 <td>DevElevation</td>
 <td class=c>no</td>
-<td>--&gt; <a href='Garmin.html#DeviceIndex'>Garmin DeviceIndex Values</a></td></tr>
+<td>&nbsp;</td></tr>
 <tr>
 <td class=r title='4 = 0x4'>4</td>
 <td>DevHeartRate</td>
 <td class=c>no</td>
-<td>--&gt; <a href='Garmin.html#DeviceIndex'>Garmin DeviceIndex Values</a></td></tr>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='6 = 0x6'>6</td>
 <td>DevPower</td>
 <td class=c>no</td>
-<td>--&gt; <a href='Garmin.html#DeviceIndex'>Garmin DeviceIndex Values</a></td></tr>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='DeviceInfo'>Garmin DeviceInfo Tags</a></h2>
@@ -5458,7 +5452,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class=r title='0 = 0x0'>0</td>
 <td>DeviceIndex</td>
 <td class=c>no</td>
-<td>--&gt; <a href='Garmin.html#DeviceIndex'>Garmin DeviceIndex Values</a></td></tr>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>DeviceType</td>
@@ -6566,177 +6560,177 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <table class=frame><tr><td>
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>MesgNum</th><th>Value</th><th>MesgNum</th></tr>
-<tr><td class=r>0</td><td>= File ID</td>
-<td class='r b'>178</td><td class=b>= Aviation Attitude</td>
+<tr><td class=r>0</td><td>= FileID</td>
+<td class='r b'>178</td><td class=b>= AviationAttitude</td>
 </tr><tr><td class=r>1</td><td>= Capabilities</td>
 <td class='r b'>184</td><td class=b>= Video</td>
-</tr><tr><td class=r>2</td><td>= Device Settings</td>
-<td class='r b'>185</td><td class=b>= Video Title</td>
-</tr><tr><td class=r>3</td><td>= User Profile</td>
-<td class='r b'>186</td><td class=b>= Video Description</td>
-</tr><tr><td class=r>4</td><td>= HRM Profile</td>
-<td class='r b'>187</td><td class=b>= Video Clip</td>
-</tr><tr><td class=r>5</td><td>= SDM Profile</td>
-<td class='r b'>188</td><td class=b>= OHR Settings</td>
-</tr><tr><td class=r>6</td><td>= Bike Profile</td>
-<td class='r b'>189</td><td class=b>= Waypoint Handling</td>
-</tr><tr><td class=r>7</td><td>= Zones Target</td>
-<td class='r b'>190</td><td class=b>= Golf Course</td>
-</tr><tr><td class=r>8</td><td>= HR Zone</td>
-<td class='r b'>191</td><td class=b>= Golf Stats</td>
-</tr><tr><td class=r>9</td><td>= Power Zone</td>
+</tr><tr><td class=r>2</td><td>= DeviceSettings</td>
+<td class='r b'>185</td><td class=b>= VideoTitle</td>
+</tr><tr><td class=r>3</td><td>= UserProfile</td>
+<td class='r b'>186</td><td class=b>= VideoDescription</td>
+</tr><tr><td class=r>4</td><td>= HRMProfile</td>
+<td class='r b'>187</td><td class=b>= VideoClip</td>
+</tr><tr><td class=r>5</td><td>= SDMProfile</td>
+<td class='r b'>188</td><td class=b>= OHRSettings</td>
+</tr><tr><td class=r>6</td><td>= BikeProfile</td>
+<td class='r b'>189</td><td class=b>= WaypointHandling</td>
+</tr><tr><td class=r>7</td><td>= ZonesTarget</td>
+<td class='r b'>190</td><td class=b>= GolfCourse</td>
+</tr><tr><td class=r>8</td><td>= HRZone</td>
+<td class='r b'>191</td><td class=b>= GolfStats</td>
+</tr><tr><td class=r>9</td><td>= PowerZone</td>
 <td class='r b'>192</td><td class=b>= Score</td>
-</tr><tr><td class=r>10</td><td>= Met Zone</td>
+</tr><tr><td class=r>10</td><td>= MetZone</td>
 <td class='r b'>193</td><td class=b>= Hole</td>
 </tr><tr><td class=r>12</td><td>= Sport</td>
 <td class='r b'>194</td><td class=b>= Shot</td>
-</tr><tr><td class=r>13</td><td>= Training Settings</td>
-<td class='r b'>200</td><td class=b>= Exd Screen Configuration</td>
-</tr><tr><td class=r>14</td><td>= Data Screen</td>
-<td class='r b'>201</td><td class=b>= Exd Data Field Configuration</td>
+</tr><tr><td class=r>13</td><td>= TrainingSettings</td>
+<td class='r b'>200</td><td class=b>= ExdScreenConfiguration</td>
+</tr><tr><td class=r>14</td><td>= DataScreen</td>
+<td class='r b'>201</td><td class=b>= ExdDataFieldConfiguration</td>
 </tr><tr><td class=r>15</td><td>= Goal</td>
-<td class='r b'>202</td><td class=b>= Exd Data Concept Configuration</td>
+<td class='r b'>202</td><td class=b>= ExdDataConceptConfiguration</td>
 </tr><tr><td class=r>16</td><td>= Alert</td>
-<td class='r b'>206</td><td class=b>= Field Description</td>
-</tr><tr><td class=r>17</td><td>= Range Alert</td>
-<td class='r b'>207</td><td class=b>= Developer Data ID</td>
+<td class='r b'>206</td><td class=b>= FieldDescription</td>
+</tr><tr><td class=r>17</td><td>= RangeAlert</td>
+<td class='r b'>207</td><td class=b>= DeveloperDataID</td>
 </tr><tr><td class=r>18</td><td>= Session</td>
-<td class='r b'>208</td><td class=b>= Magnetometer Data</td>
+<td class='r b'>208</td><td class=b>= MagnetometerData</td>
 </tr><tr><td class=r>19</td><td>= Lap</td>
-<td class='r b'>209</td><td class=b>= Barometer Data</td>
+<td class='r b'>209</td><td class=b>= BarometerData</td>
 </tr><tr><td class=r>20</td><td>= Record</td>
-<td class='r b'>210</td><td class=b>= One D Sensor Calibration</td>
+<td class='r b'>210</td><td class=b>= OneDSensorCalibration</td>
 </tr><tr><td class=r>21</td><td>= Event</td>
-<td class='r b'>211</td><td class=b>= Monitoring HR Data</td>
-</tr><tr><td class=r>22</td><td>= Device Used</td>
-<td class='r b'>216</td><td class=b>= Time In Zone</td>
-</tr><tr><td class=r>23</td><td>= Device Info</td>
-<td class='r b'>222</td><td class=b>= Alarm Settings</td>
+<td class='r b'>211</td><td class=b>= MonitoringHRData</td>
+</tr><tr><td class=r>22</td><td>= DeviceUsed</td>
+<td class='r b'>216</td><td class=b>= TimeInZone</td>
+</tr><tr><td class=r>23</td><td>= DeviceInfo</td>
+<td class='r b'>222</td><td class=b>= AlarmSettings</td>
 </tr><tr><td class=r>26</td><td>= Workout</td>
 <td class='r b'>225</td><td class=b>= Set</td>
-</tr><tr><td class=r>27</td><td>= Workout Step</td>
-<td class='r b'>227</td><td class=b>= Stress Level</td>
+</tr><tr><td class=r>27</td><td>= WorkoutStep</td>
+<td class='r b'>227</td><td class=b>= StressLevel</td>
 </tr><tr><td class=r>28</td><td>= Schedule</td>
-<td class='r b'>229</td><td class=b>= Max Met Data</td>
+<td class='r b'>229</td><td class=b>= MaxMetData</td>
 </tr><tr><td class=r>29</td><td>= Location</td>
-<td class='r b'>243</td><td class=b>= Music Info</td>
-</tr><tr><td class=r>30</td><td>= Weight Scale</td>
-<td class='r b'>258</td><td class=b>= Dive Settings</td>
+<td class='r b'>243</td><td class=b>= MusicInfo</td>
+</tr><tr><td class=r>30</td><td>= WeightScale</td>
+<td class='r b'>258</td><td class=b>= DiveSettings</td>
 </tr><tr><td class=r>31</td><td>= Course</td>
-<td class='r b'>259</td><td class=b>= Dive Gas</td>
-</tr><tr><td class=r>32</td><td>= Course Point</td>
-<td class='r b'>262</td><td class=b>= Dive Alarm</td>
+<td class='r b'>259</td><td class=b>= DiveGas</td>
+</tr><tr><td class=r>32</td><td>= CoursePoint</td>
+<td class='r b'>262</td><td class=b>= DiveAlarm</td>
 </tr><tr><td class=r>33</td><td>= Totals</td>
-<td class='r b'>264</td><td class=b>= Exercise Title</td>
+<td class='r b'>264</td><td class=b>= ExerciseTitle</td>
 </tr><tr><td class=r>34</td><td>= Activity</td>
-<td class='r b'>268</td><td class=b>= Dive Summary</td>
+<td class='r b'>268</td><td class=b>= DiveSummary</td>
 </tr><tr><td class=r>35</td><td>= Software</td>
-<td class='r b'>269</td><td class=b>= SPO2 Data</td>
-</tr><tr><td class=r>37</td><td>= File Capabilities</td>
-<td class='r b'>273</td><td class=b>= Sleep Data Info</td>
-</tr><tr><td class=r>38</td><td>= Mesg Capabilities</td>
-<td class='r b'>275</td><td class=b>= Sleep Level</td>
-</tr><tr><td class=r>39</td><td>= Field Capabilities</td>
+<td class='r b'>269</td><td class=b>= SPO2Data</td>
+</tr><tr><td class=r>37</td><td>= FileCapabilities</td>
+<td class='r b'>273</td><td class=b>= SleepDataInfo</td>
+</tr><tr><td class=r>38</td><td>= MesgCapabilities</td>
+<td class='r b'>275</td><td class=b>= SleepLevel</td>
+</tr><tr><td class=r>39</td><td>= FieldCapabilities</td>
 <td class='r b'>285</td><td class=b>= Jump</td>
-</tr><tr><td class=r>49</td><td>= File Creator</td>
-<td class='r b'>289</td><td class=b>= AAD Accel Features</td>
-</tr><tr><td class=r>51</td><td>= Blood Pressure</td>
-<td class='r b'>290</td><td class=b>= Beat Intervals</td>
-</tr><tr><td class=r>53</td><td>= Speed Zone</td>
-<td class='r b'>297</td><td class=b>= Respiration Rate</td>
+</tr><tr><td class=r>49</td><td>= FileCreator</td>
+<td class='r b'>289</td><td class=b>= AADAccelFeatures</td>
+</tr><tr><td class=r>51</td><td>= BloodPressure</td>
+<td class='r b'>290</td><td class=b>= BeatIntervals</td>
+</tr><tr><td class=r>53</td><td>= SpeedZone</td>
+<td class='r b'>297</td><td class=b>= RespirationRate</td>
 </tr><tr><td class=r>55</td><td>= Monitoring</td>
-<td class='r b'>302</td><td class=b>= HSA Accelerometer Data</td>
-</tr><tr><td class=r>70</td><td>= Map Layer</td>
-<td class='r b'>304</td><td class=b>= HSA Step Data</td>
+<td class='r b'>302</td><td class=b>= HSAAccelerometerData</td>
+</tr><tr><td class=r>70</td><td>= MapLayer</td>
+<td class='r b'>304</td><td class=b>= HSAStepData</td>
 </tr><tr><td class=r>71</td><td>= Routing</td>
-<td class='r b'>305</td><td class=b>= HSA SPO2 Data</td>
-</tr><tr><td class=r>72</td><td>= Training File</td>
-<td class='r b'>306</td><td class=b>= HSA Stress Data</td>
+<td class='r b'>305</td><td class=b>= HSA_SPO2Data</td>
+</tr><tr><td class=r>72</td><td>= TrainingFile</td>
+<td class='r b'>306</td><td class=b>= HSAStressData</td>
 </tr><tr><td class=r>78</td><td>= HRV</td>
-<td class='r b'>307</td><td class=b>= HSA Respiration Data</td>
-</tr><tr><td class=r>79</td><td>= User Metrics</td>
-<td class='r b'>308</td><td class=b>= HSA Heart Rate Data</td>
-</tr><tr><td class=r>80</td><td>= Ant Rx</td>
-<td class='r b'>309</td><td class=b>= Mtb Cx</td>
-</tr><tr><td class=r>81</td><td>= Ant Tx</td>
+<td class='r b'>307</td><td class=b>= HSARespirationData</td>
+</tr><tr><td class=r>79</td><td>= UserMetrics</td>
+<td class='r b'>308</td><td class=b>= HSAHeartRateData</td>
+</tr><tr><td class=r>80</td><td>= AntRx</td>
+<td class='r b'>309</td><td class=b>= MtbCx</td>
+</tr><tr><td class=r>81</td><td>= AntTx</td>
 <td class='r b'>310</td><td class=b>= Race</td>
-</tr><tr><td class=r>82</td><td>= Ant Channel ID</td>
-<td class='r b'>311</td><td class=b>= Split Time</td>
-</tr><tr><td class=r>89</td><td>= Open Water Event</td>
+</tr><tr><td class=r>82</td><td>= AntChannelID</td>
+<td class='r b'>311</td><td class=b>= SplitTime</td>
+</tr><tr><td class=r>89</td><td>= OpenWaterEvent</td>
 <td class='r b'>312</td><td class=b>= Split</td>
 </tr><tr><td class=r>101</td><td>= Length</td>
-<td class='r b'>313</td><td class=b>= Split Summary</td>
-</tr><tr><td class=r>103</td><td>= Monitoring Info</td>
-<td class='r b'>314</td><td class=b>= HSA Body Battery Data</td>
-</tr><tr><td class=r>104</td><td>= Device Status</td>
-<td class='r b'>315</td><td class=b>= HSA Event</td>
+<td class='r b'>313</td><td class=b>= SplitSummary</td>
+</tr><tr><td class=r>103</td><td>= MonitoringInfo</td>
+<td class='r b'>314</td><td class=b>= HSABodyBatteryData</td>
+</tr><tr><td class=r>104</td><td>= DeviceStatus</td>
+<td class='r b'>315</td><td class=b>= HSAEvent</td>
 </tr><tr><td class=r>105</td><td>= Pad</td>
-<td class='r b'>317</td><td class=b>= Climb Pro</td>
-</tr><tr><td class=r>106</td><td>= Slave Device</td>
-<td class='r b'>319</td><td class=b>= Tank Update</td>
-</tr><tr><td class=r>113</td><td>= Best Effort</td>
-<td class='r b'>321</td><td class=b>= Power Mode</td>
-</tr><tr><td class=r>114</td><td>= Personal Record</td>
-<td class='r b'>323</td><td class=b>= Tank Summary</td>
+<td class='r b'>317</td><td class=b>= ClimbPro</td>
+</tr><tr><td class=r>106</td><td>= SlaveDevice</td>
+<td class='r b'>319</td><td class=b>= TankUpdate</td>
+</tr><tr><td class=r>113</td><td>= BestEffort</td>
+<td class='r b'>321</td><td class=b>= PowerMode</td>
+</tr><tr><td class=r>114</td><td>= PersonalRecord</td>
+<td class='r b'>323</td><td class=b>= TankSummary</td>
 </tr><tr><td class=r>127</td><td>= Connectivity</td>
-<td class='r b'>326</td><td class=b>= GPS Event</td>
-</tr><tr><td class=r>128</td><td>= Weather Conditions</td>
-<td class='r b'>336</td><td class=b>= ECG Summary</td>
-</tr><tr><td class=r>129</td><td>= Weather Alert</td>
-<td class='r b'>337</td><td class=b>= ECG Raw Sample</td>
-</tr><tr><td class=r>131</td><td>= Cadence Zone</td>
-<td class='r b'>338</td><td class=b>= ECG Smooth Sample</td>
+<td class='r b'>326</td><td class=b>= GPSEvent</td>
+</tr><tr><td class=r>128</td><td>= WeatherConditions</td>
+<td class='r b'>336</td><td class=b>= ECGSummary</td>
+</tr><tr><td class=r>129</td><td>= WeatherAlert</td>
+<td class='r b'>337</td><td class=b>= ECGRawSample</td>
+</tr><tr><td class=r>131</td><td>= CadenceZone</td>
+<td class='r b'>338</td><td class=b>= ECGSmoothSample</td>
 </tr><tr><td class=r>132</td><td>= HR</td>
-<td class='r b'>346</td><td class=b>= Sleep Assessment</td>
-</tr><tr><td class=r>140</td><td>= Activity Metrics</td>
-<td class='r b'>356</td><td class=b>= Functional Metrics</td>
-</tr><tr><td class=r>141</td><td>= EPO Status</td>
-<td class='r b'>358</td><td class=b>= Race Event</td>
-</tr><tr><td class=r>142</td><td>= Segment Lap</td>
-<td class='r b'>369</td><td class=b>= Training Readiness</td>
-</tr><tr><td class=r>143</td><td>= Multisport Settings</td>
-<td class='r b'>370</td><td class=b>= HRV Status Summary</td>
-</tr><tr><td class=r>144</td><td>= Multisport Activity</td>
-<td class='r b'>371</td><td class=b>= HRV Value</td>
-</tr><tr><td class=r>145</td><td>= Memo Glob</td>
-<td class='r b'>372</td><td class=b>= Raw BBI</td>
-</tr><tr><td class=r>147</td><td>= Sensor Settings</td>
-<td class='r b'>375</td><td class=b>= Device Aux Battery Info</td>
-</tr><tr><td class=r>148</td><td>= Segment ID</td>
-<td class='r b'>376</td><td class=b>= HSA Gyroscope Data</td>
-</tr><tr><td class=r>149</td><td>= Segment Leaderboard Entry</td>
-<td class='r b'>378</td><td class=b>= Training Load</td>
-</tr><tr><td class=r>150</td><td>= Segment Point</td>
-<td class='r b'>379</td><td class=b>= Sleep Schedule</td>
-</tr><tr><td class=r>151</td><td>= Segment File</td>
-<td class='r b'>382</td><td class=b>= Sleep Restless Moments</td>
+<td class='r b'>346</td><td class=b>= SleepAssessment</td>
+</tr><tr><td class=r>140</td><td>= ActivityMetrics</td>
+<td class='r b'>356</td><td class=b>= FunctionalMetrics</td>
+</tr><tr><td class=r>141</td><td>= EPOStatus</td>
+<td class='r b'>358</td><td class=b>= RaceEvent</td>
+</tr><tr><td class=r>142</td><td>= SegmentLap</td>
+<td class='r b'>369</td><td class=b>= TrainingReadiness</td>
+</tr><tr><td class=r>143</td><td>= MultisportSettings</td>
+<td class='r b'>370</td><td class=b>= HRVStatusSummary</td>
+</tr><tr><td class=r>144</td><td>= MultisportActivity</td>
+<td class='r b'>371</td><td class=b>= HRVValue</td>
+</tr><tr><td class=r>145</td><td>= MemoGlob</td>
+<td class='r b'>372</td><td class=b>= RawBBI</td>
+</tr><tr><td class=r>147</td><td>= SensorSettings</td>
+<td class='r b'>375</td><td class=b>= DeviceAuxBatteryInfo</td>
+</tr><tr><td class=r>148</td><td>= SegmentID</td>
+<td class='r b'>376</td><td class=b>= HSAGyroscopeData</td>
+</tr><tr><td class=r>149</td><td>= SegmentLeaderboardEntry</td>
+<td class='r b'>378</td><td class=b>= TrainingLoad</td>
+</tr><tr><td class=r>150</td><td>= SegmentPoint</td>
+<td class='r b'>379</td><td class=b>= SleepSchedule</td>
+</tr><tr><td class=r>151</td><td>= SegmentFile</td>
+<td class='r b'>382</td><td class=b>= SleepRestlessMoments</td>
 </tr><tr><td class=r>152</td><td>= Metronome</td>
-<td class='r b'>387</td><td class=b>= Chrono Shot Session</td>
-</tr><tr><td class=r>158</td><td>= Workout Session</td>
-<td class='r b'>388</td><td class=b>= Chrono Shot Data</td>
-</tr><tr><td class=r>159</td><td>= Watchface Settings</td>
-<td class='r b'>389</td><td class=b>= HSA Configuration Data</td>
-</tr><tr><td class=r>160</td><td>= GPS Metadata</td>
-<td class='r b'>393</td><td class=b>= Dive Apnea Alarm</td>
-</tr><tr><td class=r>161</td><td>= Camera Event</td>
-<td class='r b'>394</td><td class=b>= CPE Status</td>
-</tr><tr><td class=r>162</td><td>= Time Stamp Correlation</td>
-<td class='r b'>398</td><td class=b>= Skin Temp Overnight</td>
-</tr><tr><td class=r>164</td><td>= Gyroscope Data</td>
-<td class='r b'>402</td><td class=b>= Hill Score</td>
-</tr><tr><td class=r>165</td><td>= Accelerometer Data</td>
-<td class='r b'>403</td><td class=b>= Endurance Score</td>
-</tr><tr><td class=r>167</td><td>= Three D Sensor Calibration</td>
-<td class='r b'>409</td><td class=b>= HSA Wrist Temperature Data</td>
-</tr><tr><td class=r>169</td><td>= Video Frame</td>
-<td class='r b'>412</td><td class=b>= Nap Event</td>
-</tr><tr><td class=r>170</td><td>= Connect IQ Field</td>
-<td class='r b'>428</td><td class=b>= Workout Schedule</td>
+<td class='r b'>387</td><td class=b>= ChronoShotSession</td>
+</tr><tr><td class=r>158</td><td>= WorkoutSession</td>
+<td class='r b'>388</td><td class=b>= ChronoShotData</td>
+</tr><tr><td class=r>159</td><td>= WatchfaceSettings</td>
+<td class='r b'>389</td><td class=b>= HSAConfigurationData</td>
+</tr><tr><td class=r>160</td><td>= GPSMetadata</td>
+<td class='r b'>393</td><td class=b>= DiveApneaAlarm</td>
+</tr><tr><td class=r>161</td><td>= CameraEvent</td>
+<td class='r b'>394</td><td class=b>= CPEStatus</td>
+</tr><tr><td class=r>162</td><td>= TimeStampCorrelation</td>
+<td class='r b'>398</td><td class=b>= SkinTempOvernight</td>
+</tr><tr><td class=r>164</td><td>= GyroscopeData</td>
+<td class='r b'>402</td><td class=b>= HillScore</td>
+</tr><tr><td class=r>165</td><td>= AccelerometerData</td>
+<td class='r b'>403</td><td class=b>= EnduranceScore</td>
+</tr><tr><td class=r>167</td><td>= ThreeDSensorCalibration</td>
+<td class='r b'>409</td><td class=b>= HSAWristTemperatureData</td>
+</tr><tr><td class=r>169</td><td>= VideoFrame</td>
+<td class='r b'>412</td><td class=b>= NapEvent</td>
+</tr><tr><td class=r>170</td><td>= ConnectIQField</td>
+<td class='r b'>428</td><td class=b>= WorkoutSchedule</td>
 </tr><tr><td class=r>173</td><td>= Clubs</td>
-<td class='r b'>470</td><td class=b>= Sleep Disruption Severity Period</td>
-</tr><tr><td class=r>174</td><td>= OBDII Data</td>
-<td class='r b'>471</td><td class=b>= Sleep Disruption Overnight Severity</td>
-</tr><tr><td class=r>177</td><td>= NMEA Sentence</td>
+<td class='r b'>470</td><td class=b>= SleepDisruptionSeverityPeriod</td>
+</tr><tr><td class=r>174</td><td>= OBDIIData</td>
+<td class='r b'>471</td><td class=b>= SleepDisruptionOvernightSeverity</td>
+</tr><tr><td class=r>177</td><td>= NMEASentence</td>
 <td class='r b'>&nbsp;</td><td class=b>&nbsp;</td>
 </tr></table></td></tr></table></blockquote>
 
@@ -6877,7 +6871,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class=r title='0 = 0x0'>0</td>
 <td>DeviceIndex</td>
 <td class=c>no</td>
-<td>--&gt; <a href='Garmin.html#DeviceIndex'>Garmin DeviceIndex Values</a></td></tr>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>Calories</td>
@@ -7428,7 +7422,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class=r title='4 = 0x4'>4</td>
 <td>DeviceIndex</td>
 <td class=c>no</td>
-<td>--&gt; <a href='Garmin.html#DeviceIndex'>Garmin DeviceIndex Values</a></td></tr>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='OpenWaterEvent'>Garmin OpenWaterEvent Tags</a></h2>
@@ -12804,7 +12798,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 <td class=r title='0 = 0x0'>0</td>
 <td>DeviceIndex</td>
 <td class=c>no</td>
-<td>--&gt; <a href='Garmin.html#DeviceIndex'>Garmin DeviceIndex Values</a></td></tr>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>BatteryVoltage</td>
@@ -13374,7 +13368,7 @@ See <a href="https://developer.garmin.com/fit/">https://developer.garmin.com/fit
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 17, 2026</i>
+<br><i>Last revised May 1, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

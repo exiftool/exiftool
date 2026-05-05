@@ -17,11 +17,26 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.58'><b>May 5, 2026 - Version 13.58</b></a>
+<ul>
+<li>Added a few new Nikon Z lenses (thanks Warren Hatch)
+<li>Added a few new QuickTime MajorBrand values (thanks Herb)
+<li>Added a new RAFCompression value
+<li>Added undocumented -eh option (alias for -E/-escapeHTML)
+<li>Decode timed GPS from INNOVV N2 TS videos
+<li>Improved decoding of Canon ColorData for some models (thanks Iliah Borg)
+<li>Changed the name of the RAFVersion tag to FirmwareVersion
+<li>Removed conversion for Garmin FIT DeviceIndex values
+<li>Properly parse XML CDATA and comment sections
+<li>Fixed issue which could cause failed Garmin test on some systems
+</ul>
+
 <a name='v13.57'><b>Apr. 17, 2026 - Version 13.57</b></a>
 <ul>
 <li>Added print conversions for Garmin FIT enum tags
 <li>Decode a number of undocumented Garmin FIT tags
-<li>Reverted XML patch of 13.56 which broke structured JSON output
+<li>Reverted XML patch of 13.56 which broke structured output for XMP files with
+    an XML header
 </ul>
 
 <a name='v13.56'><b>Apr. 15, 2026 - Version 13.56</b> - "Exif 3.1"</a>

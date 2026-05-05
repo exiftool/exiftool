@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.78';
+$VERSION = '3.79';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3661,7 +3661,7 @@ NoLoop:
         my $v = UnescapeXML(substr($val, 0, $p - length($1) - 12)) . $1;
         while ($val =~ /<!\[CDATA\[(.*?)\]\]>/sg) {
             my $p1 = pos $val;
-            $v .= UnescapeXML(substr($val, $p, $p1 - length($1) - 12)) . $1;
+            $v .= UnescapeXML(substr($val, $p, $p1 - $p - length($1) - 12)) . $1;
             $p = $p1;
         }
         $val = $v . UnescapeXML(substr($val, $p));
@@ -3803,11 +3803,16 @@ sub ParseXMPElement($$$;$$$$)
         last if pos($$dataPt) > $end - 4;
         # reset nodeID before processing each element
         my $nodeID = $$blankInfo{NodeID} = $oldNodeID;
-        # get next element
-        last if $$dataPt !~ m{<([?/]?)([-\w:.\x80-\xff]+|!--)([^>]*)>}sg or pos($$dataPt) > $end;
+        # find start of next element, skipping over "<![CDATA[xxx]]>" sections
+        last if $$dataPt !~ m{<([?/]?)([-\w:.\x80-\xff]+|!--)([^>]*)>|(<!\[CDATA\[)}sg or pos($$dataPt) > $end;
         # (the only reason we match '<[?/]' is to keep from scanning past the
         #  "<?xpacket end..." terminator or other closing token, so
         next if $1;
+        if ($4) { # skip CDATA
+            next if $$dataPt =~ /\]\]>/sg and pos($$dataPt) <= $end;
+            $et->Warn("Missing CDATA terminator");
+            last Element;
+        }
         my ($prop, $attrs) = ($2, $3);
         # skip comments
         if ($prop eq '!--') {
@@ -3815,7 +3820,7 @@ sub ParseXMPElement($$$;$$$$)
             last;
         }
         my $valStart = pos($$dataPt);
-        my $valEnd;
+        my ($valEnd, $wasComment);
         # only look for closing token if this is not an empty element
         # (empty elements end with '/', eg. <a:b/>)
         if ($attrs !~ s/\/$//) {
@@ -3827,11 +3832,22 @@ sub ParseXMPElement($$$;$$$$)
 #                my $val2 = $1;
                 # find next matching closing token, or the next opening token
                 # of a nested same-named element
-                if ($$dataPt !~ m{<(/?)$prop([-\w:.\x80-\xff]*)(.*?(/?))>}sg or
+                if ($$dataPt !~ m{<(?:(/?)\Q$prop\E([-\w:.\x80-\xff]*)(.*?(/?))>|(!\[CDATA\[|!--))}sg or
                     pos($$dataPt) > $end)
                 {
                     $et->Warn("XMP format error (no closing tag for $prop)");
                     last Element;
+                }
+                if ($5) { # find end of CDATA or comment section
+                    if ($5 eq '![CDATA[') {
+                        next if $$dataPt =~ /\]\]>/sg and pos($$dataPt) <= $end;
+                        $et->Warn('Missing CDATA terminator');
+                        last Element;
+                    } else {
+                        $$dataPt =~ /-->/sg and pos($$dataPt) <= $end and $wasComment = 1, next;
+                        $et->Warn('Missing comment terminator');
+                        last Element;
+                    }
                 }
                 next if $2; # ignore opening properties with different names
                 if ($1) {
@@ -4161,6 +4177,8 @@ sub ParseXMPElement($$$;$$$$)
                     # remove comments and whitespace from rdf:Description only
                     if ($prop eq 'rdf:Description' and $val) {
                         $val =~ s/<!--.*?-->//g; $val =~ s/^\s+//; $val =~ s/\s+$//;
+                    } elsif ($wasComment and $val) {
+                        $val =~ s/<!--.*?-->//g;
                     }
                     # if element value is empty, take value from RDF 'value' or 'resource' attribute
                     # (preferentially) or 'about' attribute (if no 'value' or 'resource')

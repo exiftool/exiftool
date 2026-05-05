@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.34';
+$VERSION = '3.35';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -230,6 +230,9 @@ my %ftypLookup = (
     'msf1' => 'High Efficiency Image Format sequence (.HEIFS)', # image/heif-sequence
     'heix' => 'High Efficiency Image Format still image (.HEIF)', # image/heif (ref PH, Canon 1DXmkIII)
     'avif' => 'AV1 Image File Format (.AVIF)', # image/avif
+    'avis' => 'AV1 Image Sequence (.AVIF)', # image/avif
+    'avio' => 'AV1 Intra-Only Image (.AVIF)', # image/avif
+    'miaf' => 'Multi-Image Application Format (.AVIF)', # image/avif
     'crx ' => 'Canon Raw (.CRX)', #PH (CR3 or CRM; use Canon CompressorVersion to decide)
 );
 

@@ -7,11 +7,25 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.55. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+May 5, 2026 - Version 13.58
+
+  - Added a few new Nikon Z lenses (thanks Warren Hatch)
+  - Added a few new QuickTime MajorBrand values (thanks Herb)
+  - Added a new RAFCompression value
+  - Added undocumented -eh option (alias for -E/-escapeHTML)
+  - Decode timed GPS from INNOVV N2 TS videos
+  - Improved decoding of Canon ColorData for some models (thanks Iliah Borg)
+  - Changed the name of the RAFVersion tag to FirmwareVersion
+  - Removed conversion for Garmin FIT DeviceIndex values
+  - Properly parse XML CDATA and comment sections
+  - Fixed issue which could cause failed Garmin test on some systems
+
 Apr. 17, 2026 - Version 13.57
 
   - Added print conversions for Garmin FIT enum tags
   - Decode a number of undocumented Garmin FIT tags
-  - Reverted XML patch of 13.56 which broke structured JSON output
+  - Reverted XML patch of 13.56 which broke structured output for XMP files with
+    an XML header
 
 Apr. 15, 2026 - Version 13.56 - "Exif 3.1"
 

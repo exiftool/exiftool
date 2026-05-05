@@ -32,7 +32,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.33';
+$VERSION = '1.34';
 
 # program map table "stream_type" lookup (ref 6/1/9)
 my %streamType = (
@@ -315,6 +315,29 @@ sub ParsePID($$$$$)
             Image::ExifTool::LigoGPS::ProcessLigoGPS($et, \%dirInfo, $tbl, length($$dataPt)!=200);
             $$et{FoundGoodGPS} = 1;
             $more = 1;
+        } elsif ($$dataPt =~ m(^Viidure(20\d{2})/(\d{2})/(\d{2}) (\d{2}:\d{2}:\d{2}) ([NS]):(\S+) ([EW]):(\S+) (\S+) km/h (\S+) (\S+) (\S+) x:(\S+) y:(\S+) z:(\S+))s) {
+            # (Innovv N2 dashcam)
+            # 0000: 56 69 69 64 75 72 65 32 30 32 36 2f 30 34 2f 31 [Viidure2026/04/1]
+            # 0010: 36 20 30 31 3a 30 31 3a 30 32 20 4e 3a 34 32 2e [6 01:01:02 N:42.]
+            # 0020: 32 31 31 34 32 34 20 57 3a 38 38 2e 33 32 30 39 [211424 W:88.3209]
+            # 0030: 37 35 20 38 39 2e 31 20 6b 6d 2f 68 20 32 36 37 [75 89.1 km/h 267]
+            # 0040: 2e 33 38 20 32 33 37 2e 38 30 20 31 30 20 78 3a [.38 237.80 10 x:]
+            # 0050: 2d 30 2e 30 30 31 20 79 3a 2d 30 2e 30 30 31 20 [-0.001 y:-0.001 ]
+            # 0060: 7a 3a 2d 30 2e 30 30 31 00 00 00 00 00 00 00 00 [z:-0.001........]
+            my $tbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+            $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+            my $time = "$1:$2:$3 $4Z";
+            $et->HandleTag($tbl, 'GPSDateTime',  $time);
+            $et->HandleTag($tbl, 'GPSLatitude',  $6 * (($5 eq 'S') ? -1 : 1));
+            $et->HandleTag($tbl, 'GPSLongitude', $8 * (($7 eq 'W') ? -1 : 1));
+            $et->HandleTag($tbl, 'GPSSpeed',     $9);
+            $et->HandleTag($tbl, 'GPSTrack',     $10);
+            $et->HandleTag($tbl, 'GPSAltitude',  $11);
+            # (not sure what $12 is -- was a constant "10" in my sample)
+            $et->HandleTag($tbl, 'Accelerometer',"$13 $14 $15");
+            $$et{FoundGoodGPS} = 1;
+            $more = 1;
+            delete $$et{DOC_NUM};
         }
     } elsif ($type == 0x1b) {
         # H.264 Video

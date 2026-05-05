@@ -31,13 +31,13 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.00';
+$VERSION = '2.01';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
 sub ProcessMRAW($$$);
 
-# the following RAF version numbers have been tested for writing:
+# the following firmware version numbers have been tested for writing:
 # (as of ExifTool 11.70, this lookup is no longer used if the version number is numerical)
 my %testedRAF = (
     '0100' => 'E550, E900, F770, S5600, S6000fd, S6500fd, HS10/HS11, HS30, S200EXR, X100, XF1, X-Pro1, X-S1, XQ2 Ver1.00, X-T100, GFX 50R, XF10',
@@ -67,7 +67,7 @@ my %testedRAF = (
    # 0400  - expect to see this for X-T1
     '0540' => 'X-T1 Ver5.40',
     '0712' => 'S5000 Ver3.00',
-    '0716' => 'S5000 Ver3.00', # (yes, 2 RAF versions with the same Software version)
+    '0716' => 'S5000 Ver3.00', # (yes, 2 firmware versions with the same Software version)
     '0Dgi' => 'X-A10 Ver1.01 and X-A3 Ver1.02', # (yes, non-digits in the firmware number)
 );
 
@@ -1226,7 +1226,7 @@ my %faceCategories = (
     NOTES => 'Tags extracted from the header of RAF images.',
   # 0x00 - eg. "FUJIFILMCCD-RAW 0201FA392001FinePix S3Pro"
     0x3c => { #PH
-        Name => 'RAFVersion',
+        Name => 'FirmwareVersion', #forum17969
         Format => 'undef[4]',
     },
     # (all int32u values)

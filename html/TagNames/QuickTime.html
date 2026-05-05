@@ -61,7 +61,7 @@ assume these values are properly stored as UTC, and will convert them to
 local time when extracting.</p>
 
 <p>When writing string-based date/time tags, the system time zone is added if
-the PrintConv option is enabled and no time zone is specified.  This is
+the <a href="../ExifTool.html#PrintConv">PrintConv</a> option is enabled and no time zone is specified.  This is
 because Apple software may display crazy values if the time zone is missing
 for some tags.</p>
 
@@ -315,7 +315,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <p>The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 123 different types of timed GPS metadata.</p>
+currently reads 124 different types of timed GPS metadata.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -1723,6 +1723,8 @@ and subtitle text in some other videos.</p>
   <br>&#39;aax &#39; = Audible Enhanced Audiobook (.AAX)
   <br>&#39;avc1&#39; = MP4 Base w/ AVC ext [ISO 14496-12:2005]
   <br>&#39;avif&#39; = AV1 Image File Format (.AVIF)
+  <br>&#39;avio&#39; = AV1 Intra-Only Image (.AVIF)
+  <br>&#39;avis&#39; = AV1 Image Sequence (.AVIF)
   <br>&#39;caqv&#39; = Casio Digital Camera
   <br>&#39;crx &#39; = Canon Raw (.CRX)
   <br>&#39;da0a&#39; = DMB MAF w/ MPEG Layer II aud, MOT slides, DLS, JPG/PNG/MNG images
@@ -1759,6 +1761,7 @@ and subtitle text in some other videos.</p>
   <br>&#39;isom&#39; = MP4 Base Media v1 [IS0 14496-12:2003]
   <br>&#39;jpm &#39; = JPEG 2000 Compound Image (.JPM) [ISO 15444-6]
   <br>&#39;jpx &#39; = JPEG 2000 with extensions (.JPX) [ISO 15444-2]
+  <br>&#39;miaf&#39; = Multi-Image Application Format (.AVIF)
   <br>&#39;mif1&#39; = High Efficiency Image Format still image (.HEIF)
   <br>&#39;mj2s&#39; = Motion JPEG 2000 [ISO 15444-3] Simple Profile
   <br>&#39;mjp2&#39; = Motion JPEG 2000 [ISO 15444-3] General Profile
@@ -10098,7 +10101,7 @@ the value is set to zero if the tag is deleted individually)</span></span></td><
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 14, 2026</i>
+<br><i>Last revised May 1, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

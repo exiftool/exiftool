@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.68';
+$VERSION = '3.69';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -481,7 +481,7 @@ assume these values are properly stored as UTC, and will convert them to
 local time when extracting.
 
 When writing string-based date/time tags, the system time zone is added if
-the PrintConv option is enabled and no time zone is specified.  This is
+the L<PrintConv|../ExifTool.html#PrintConv> option is enabled and no time zone is specified.  This is
 because Apple software may display crazy values if the time zone is missing
 for some tags.
 
@@ -2301,12 +2301,13 @@ sub WriteTagNames($$)
                 for ($r=0; $r<$rows; ++$r) {
                     print HTMLFILE '<tr>';
                     for ($c=0; $c<$cols; ++$c) {
-                        my ($key, $val, $index, $prt);
+                        my ($key, $val, $index, $prt, $bit);
                         my $n = $r + $c * $rows;
                         if ($n < @keys) {
                             $key = $keys[$n];
                             $val = $$printConv{$key};
                         } elsif ($n < $items) {
+                            $bit = 1;
                             $key = 'Bit ' . $bits[$n - @keys];
                             $val = $$bits{$bits[$n - @keys]};
                         }
@@ -2321,7 +2322,8 @@ sub WriteTagNames($$)
                             } elsif ($$printConv{PrintString} or
                                 $index !~ /^[+-]?(?=\d|\.\d)\d*(\.\d*)?$/)
                             {
-                                $index = "'" . EscapeHTML($index) . "'";
+                                $index = EscapeHTML($index);
+                                $index = "'${index}'" unless $bit;
                             }
                         } else {
                             $index = $prt = '&nbsp;';

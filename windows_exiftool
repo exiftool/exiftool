@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.57';
+my $version = '13.58';
 
 $^W = 1;    # enable global warnings
 
@@ -1021,7 +1021,8 @@ for (;;) {
     /^list_dir$/i and $listDir = 1, next;
     (/^e$/ or $a eq '-composite') and $mt->Options(Composite => 0), next;
     (/^-e$/ or $a eq 'composite') and $mt->Options(Composite => 1), next;
-    (/^E$/ or $a eq 'escapehtml') and require Image::ExifTool::HTML and $escapeHTML = 1, next;
+    # (-eh is undocumented)
+    (/^E$/ or $a eq 'escapehtml' or $a eq 'eh') and require Image::ExifTool::HTML and $escapeHTML = 1, next;
     ($a eq 'ec' or $a eq 'escapec') and $escapeC = 1, next;
     ($a eq 'ex' or $a eq 'escapexml') and $escapeXML = 1, next;
     if (/^echo(\d)?$/i) {

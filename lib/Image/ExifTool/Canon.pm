@@ -649,6 +649,9 @@ $VERSION = '5.07';
    '61182.66' => 'Canon RF 45mm F1.2 STM', #42
    '61182.67' => 'Canon RF 7-14mm F2.8-3.5 L FISHEYE STM', #42
    '61182.68' => 'Canon RF 14mm F1.4 L VCM', #42
+   '61182.69' => 'Canon RF 200-800mm F6.3-9 IS USM', #github414
+   '61182.70' => 'Canon RF 200-800mm F6.3-9 IS USM + RF1.4x', #github414
+   '61182.71' => 'Canon RF 200-800mm F6.3-9 IS USM + RF2x', #github414
     65535 => 'n/a',
 );
 

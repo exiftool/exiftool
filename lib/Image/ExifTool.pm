@@ -121,6 +121,7 @@ sub CopyFileAttrs($$$);
 sub TimeNow(;$$);
 sub InverseDateTime($$;$$);
 sub NewGUID();
+sub NewUUID();
 sub MakeTiffHeader($$$$;$$);
 
 # other subroutine definitions
@@ -1919,6 +1920,16 @@ my %systemTagsNotes = (
         },
         PrintConv => '$val =~ s/(.{8})(.{4})(.{4})(.{4})/$1-$2-$3-$4-/; $val',
     },
+    NewUUID => {
+        Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'Other' },
+        Notes => q{
+            generates a version 4 ("random"), variant 1 UUID as per RFC 9562, Section 5.4
+            with format xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx, where M=4 and N=8, 9, a, or b;
+            without dashes with the -n option.  Not generated unless specifically requested
+            or the API L<RequestAll|../ExifTool.html#RequestAll> option is set
+        },
+        PrintConv => '$val =~ s/(.{8})(.{4})(.{4})(.{4})/$1-$2-$3-$4-/; $val',
+    },
     ID3Size     => { Notes => 'size of the ID3 data block' },
     Geotag => {
         Writable => 1,
@@ -2769,6 +2780,7 @@ sub ExtractInfo($;@)
         $self->FoundTag('ExifToolVersion', "$VERSION$RELEASE");
         $self->FoundTag('Now', $self->TimeNow()) if $$req{now} or $reqAll;
         $self->FoundTag('NewGUID', NewGUID()) if $$req{newguid} or $reqAll;
+        $self->FoundTag('NewUUID', NewUUID()) if $$req{newuuid} or $reqAll;
         # generate sequence number if necessary
         $self->FoundTag('FileSequence', $$self{FILE_SEQUENCE}) if $$req{filesequence} or $reqAll;
 

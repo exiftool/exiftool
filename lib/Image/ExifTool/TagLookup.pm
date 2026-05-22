@@ -11431,6 +11431,7 @@ my %tagExists = (
 	'newcolortype' => 1,
 	'newguid' => 1,
 	'newlines' => 1,
+	'newuuid' => 1,
 	'nextbasemeta' => 1,
 	'nexttrackid' => 1,
 	'nifnonlinearity' => 1,

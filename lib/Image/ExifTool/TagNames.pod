@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 33463 tags, with 21434 unique tag names.
+They contain a total of 33481 tags, with 21449 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1445,6 +1445,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   mwg-kw                                        MWG Keywords
   mwg-rs                                        MWG Regions
   nine                                          Nikon nine
+  novelty                                       XMP novelty
   panorama                                      XMP panorama
   pdf                                           XMP pdf
   pdfx                                          XMP pdfx
@@ -5267,6 +5268,37 @@ These tags belong to the ExifTool XMP-mediapro family 1 group.
   People                                        string+
   Status                                        string
   UserFields                                    string+
+
+=head3 XMP novelty Tags
+
+Tags for annotating timestamped media (video, photo, audio) with
+metadata in the context of Terence McKenna's Novelty Theory framework
+(see I<The Invisible Landscape>, 1975).  Published and maintained at
+L<http://hexart.pl/novelty/1.0/> for use by archival projects
+documenting media against the McKenna timewave.
+
+These tags belong to the ExifTool XMP-novelty family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  Concrescence                                  string
+  CosmicSign                                    string
+  Dimension                                     string
+  EschatonCoordinates                           string
+  Frequency                                     string
+  HabitNoveltyRatio                             string
+  Intent                                        string
+  Lineage                                       string
+  Mantra                                        string
+  NoveltyIndex                                  real
+  Operator                                      string
+  Protocol                                      string
+  SacredGeometry                                string
+  Seal                                          string/
+  StrangeAttractor                              string
+  TimewavePosition                              string
+  WaveformType                                  string
+  Witness                                       string
 
 =head3 XMP panorama Tags
 

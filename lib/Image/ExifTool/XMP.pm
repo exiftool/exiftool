@@ -204,6 +204,7 @@ my %xmpNS = (
     hdrgm     => 'http://ns.adobe.com/hdr-gain-map/1.0/',
     xmpDSA    => 'http://leica-camera.com/digital-shift-assistant/1.0/',
     seal      => 'http://ns.seal/2024/1.0/',
+    novelty   => 'http://hexart.pl/novelty/1.0/',
     # Note: Google uses a prefix of 'Container', but this conflicts with the
     # Device Container namespace, also by Google.  So call this one GContainer
     GContainer=> 'http://ns.google.com/photos/1.0/container/',
@@ -951,6 +952,10 @@ my %sRangeMask = (
     seal => {
         Name => 'seal',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::seal' },
+    },
+    novelty => {
+        Name => 'novelty',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::novelty' },
     },
 );
 

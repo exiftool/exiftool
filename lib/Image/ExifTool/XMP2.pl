@@ -1899,6 +1899,38 @@ my %sACDSeeRegionStruct = (
     copyright => { Name => 'Copyright', Groups => { 2 => 'Author' } },
 );
 
+# Novelty Theory XMP namespace (http://hexart.pl/novelty/1.0/)
+%Image::ExifTool::XMP::novelty = (
+    %xmpTableDefaults,
+    GROUPS => { 0 => 'XMP', 1 => 'XMP-novelty', 2 => 'Other' },
+    NAMESPACE => 'novelty',
+    NOTES => q{
+        Tags for annotating timestamped media (video, photo, audio) with
+        metadata in the context of Terence McKenna's Novelty Theory framework
+        (see I<The Invisible Landscape>, 1975).  Published and maintained at
+        L<http://hexart.pl/novelty/1.0/> for use by archival projects
+        documenting media against the McKenna timewave.
+    },
+    NoveltyIndex        => { Writable => 'real' },
+    TimewavePosition    => { },
+    Concrescence        => { },
+    EschatonCoordinates => { },
+    StrangeAttractor    => { },
+    HabitNoveltyRatio   => { },
+    WaveformType        => { },
+    Protocol            => { },
+    Operator            => { },
+    Intent              => { },
+    Witness             => { },
+    CosmicSign          => { },
+    Frequency           => { },
+    SacredGeometry      => { },
+    Dimension           => { },
+    Lineage             => { },
+    Mantra              => { },
+    Seal                => { Avoid => 1 }, # avoid conflict with XMP-seal:Seal
+);
+
 #------------------------------------------------------------------------------
 # We found a SEAL property name/value
 # Inputs: 0) ExifTool ref, 1) tag table ref, 2) xmp property list ref

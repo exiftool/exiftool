@@ -388,6 +388,7 @@ sub GetAFPointGrid($$;$);
     'BE 54 6A 6A 0C 0C 4B 46' => 'Sigma 105mm F1.4 DG HSM | A', #30
     '48 48 76 76 24 24 4B 06' => 'Sigma APO Macro 150mm F2.8 EX DG HSM',
     'F5 48 76 76 24 24 4B 06' => 'Sigma APO Macro 150mm F2.8 EX DG HSM', #24
+    'F5 48 76 76 24 24 F1 06' => 'Sigma APO Macro 150mm F2.8 EX DG HSM + 1.4x TC',
     '99 48 76 76 24 24 4B 0E' => 'Sigma APO Macro 150mm F2.8 EX DG OS HSM', #(Christian Hesse)
     '48 4C 7C 7C 2C 2C 4B 02' => 'Sigma APO Macro 180mm F3.5 EX DG HSM',
     '48 4C 7D 7D 2C 2C 4B 02' => 'Sigma APO Macro 180mm F3.5 EX DG HSM',

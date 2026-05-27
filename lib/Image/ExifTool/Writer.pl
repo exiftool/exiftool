@@ -4938,8 +4938,7 @@ sub NewUUID()
     my @rnd = map {int(rand(256))} 1 .. 16;
     $rnd[6] = ($rnd[6] & 0x0f) | 0x40;
     $rnd[8] = ($rnd[8] & 0x3f) | 0x80;
-    my $uuid = join '', map {chr} @rnd;
-    return join '', unpack('H8 H4 H4 H4 H12', $uuid);
+    return scalar unpack('H32', join '', map {chr} @rnd);
 }
 
 #------------------------------------------------------------------------------

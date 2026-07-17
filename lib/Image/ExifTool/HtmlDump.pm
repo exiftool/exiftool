@@ -469,7 +469,8 @@ sub Print($$;$$$$$)
     $raf->Seek($tell,0);
 
     # write output HTML file
-    Write($outfile, $htmlHeader1, $title);
+    my $htmlTitle = EscapeHTML($title);
+    Write($outfile, $htmlHeader1, $htmlTitle);
     if ($self->{Cols}->[0]) {
         Write($outfile, $htmlHeader2);
         my $mspan = \@{$$self{MSpanList}};
@@ -493,7 +494,7 @@ sub Print($$;$$$$$)
         $rtnVal = 1;
     } else {
         my $err = $$self{Error} || 'No EXIF or TIFF information found in image';
-        Write($outfile, "$title</title></head><body>\n$err\n");
+        Write($outfile, "$htmlTitle</title></head><body>\n$err\n");
         $rtnVal = 0;
     }
     Write($outfile, "</body></html>\n");
@@ -930,4 +931,3 @@ under the same terms as Perl itself.
 L<Image::ExifTool(3pm)|Image::ExifTool>
 
 =cut
-

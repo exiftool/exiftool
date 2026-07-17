@@ -29,6 +29,9 @@ sub ProcessOTF($$);
 # OTF tags to process (skip all others)
 my %processTag = ( name => 1, C2PA => 1 );
 
+# maximum size of font data to read or uncompress (100 MB)
+my $maxFontDataSize = 100000000;
+
 # TrueType 'name' platform codes
 my %ttPlatform = (
     0 => 'Unicode',
@@ -669,22 +672,44 @@ sub ReadUIntBase128($)
 
 #------------------------------------------------------------------------------
 # Uncompress data
-# Inputs: 0) ExifTool ref, 1) data ref
+# Inputs: 0) ExifTool ref, 1) data ref, 2) maximum output size (optional)
 # Returns: true on success
-sub Uncompress($$)
+sub Uncompress($$;$)
 {
-    my ($et, $dataPt) = @_;
-    my $stat;
+    my ($et, $dataPt, $maxLen) = @_;
+    my ($data, $stat);
+    $maxLen = $maxFontDataSize unless defined $maxLen;
     unless (eval { require Compress::Zlib }) {
         $et->Warn('Install Compress::Zlib to read compressed metadata');
         return 0;
     }
     my $inflate = Compress::Zlib::inflateInit();
-    $inflate and ($$dataPt, $stat) = $inflate->inflate($$dataPt);
-    unless ($inflate and $stat == Compress::Zlib::Z_STREAM_END()) {
+    unless ($inflate) {
         $et->Warn('Error uncompressing metadata');
         return 0;
     }
+    while (length $$dataPt) {
+        my $input = substr($$dataPt, 0, 4096, '');
+        my ($out, $status) = $inflate->inflate($input);
+        unless ($status == Compress::Zlib::Z_OK() or
+                $status == Compress::Zlib::Z_STREAM_END())
+        {
+            $et->Warn('Error uncompressing metadata');
+            return 0;
+        }
+        if (length($out) > $maxLen - length($data)) {
+            $et->Warn('Uncompressed metadata is too large');
+            return 0;
+        }
+        $data .= $out;
+        $stat = $status;
+        last if $stat == Compress::Zlib::Z_STREAM_END();
+    }
+    unless ($stat and $stat == Compress::Zlib::Z_STREAM_END()) {
+        $et->Warn('Error uncompressing metadata');
+        return 0;
+    }
+    $$dataPt = $data;
     return 1;
 }
 
@@ -740,6 +765,8 @@ sub ProcessWOFF($$)
             my $pt = $i * 20;
             my ($tag, $pos, $compLen, $len) = unpack("x${pt}a4N3", $tbl);
             next unless $processTag{$tag} or $verbose;
+            $compLen <= $maxFontDataSize and $len <= $maxFontDataSize or
+                $et->Warn('Font table too large'), next;
             $raf->Seek($pos,0) and $raf->Read($buff,$compLen)==$compLen or $et->Warn('Bad font table entry'), return 1;
             my $dataPos;
             if ($compLen eq $len) {
@@ -783,6 +810,7 @@ sub ProcessWOFF($$)
             }
             $err and $et->Warn('Error reading collection directory'), return 1;
         }
+        $compSize <= $maxFontDataSize or $et->Warn('Font data too large'), return 1;
         $raf->Read($buff,$compSize) == $compSize or $et->Warn('Error reading font data'), return 1;
         return 1 unless Unbrotli($et, \$buff);
         # after all that exhausting and frankly unnecessary work (poor file design),
@@ -803,6 +831,7 @@ sub ProcessWOFF($$)
 # read compressed XML-format metadata (NC)
 #
     if ($metaLen) {
+        $metaLen <= $maxFontDataSize or $et->Warn('Font metadata too large'), return 1;
         unless ($raf->Seek($metaPos,0) and $raf->Read($buff,$metaLen)==$metaLen) {
             $et->Warn('Error reading metadata');
             return 1;
@@ -929,4 +958,3 @@ L<Image::ExifTool::TagNames/Font Tags>,
 L<Image::ExifTool(3pm)|Image::ExifTool>
 
 =cut
-

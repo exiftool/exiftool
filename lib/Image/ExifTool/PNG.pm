@@ -1023,6 +1023,8 @@ sub FoundPNG($$$$;$$$$)
                     }
                     DoneDir($et, $dirName, $outBuff, $$tagInfo{NonStandard});
                 } else {
+                    # embedded directories use offsets relative to their own PNG chunk
+                    local $$et{PROCESSED} = { };
                     $processed = $et->ProcessDirectory(\%subdirInfo, $subTable, $processProc);
                 }
                 $compressed = 1;    # pretend this is compressed since it is binary data
@@ -1730,4 +1732,3 @@ L<Image::ExifTool::TagNames/MNG Tags>,
 L<Image::ExifTool(3pm)|Image::ExifTool>
 
 =cut
-

@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/PNG.t".
 
 BEGIN {
-    $| = 1; print "1..7\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..8\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -136,6 +136,37 @@ my $testnum = 1;
         $skip = ' # skip Requires Compress::Zlib';
     }
     print "ok $testnum$skip\n";
+}
+
+# test 8: Read EXIF when an independent C2PA JUMBF chunk uses the same offsets
+{
+    ++$testnum;
+    my $exifTool = Image::ExifTool->new;
+    $exifTool->SetNewValue('EXIF:UserComment' => 'Test: test123');
+    my $image;
+    my $rtnVal = $exifTool->WriteInfo('t/images/PNG.png', \$image);
+    my $success = $rtnVal;
+
+    my $jumdData = "c2pa\0\x11\0\x10\x80\0\0\xaa\0\x38\x9b\x71" .
+                   pack('C', 3) . "c2pa\0";
+    my $jumd = pack('Na4', length($jumdData) + 8, 'jumd') . $jumdData;
+    my $jumb = pack('Na4', length($jumd) + 8, 'jumb') . $jumd;
+    my $crcData = 'caBX' . $jumb;
+    my $caBX = pack('Na4', length($jumb), 'caBX') . $jumb .
+               pack('N', Image::ExifTool::PNG::CalculateCRC(\$crcData));
+    my ($pos, %chunkEnd) = (8);
+    while ($pos + 12 <= length $image) {
+        my ($len, $id) = unpack('Na4', substr($image, $pos, 8));
+        $pos += $len + 12;
+        $chunkEnd{$id} = $pos;
+    }
+    foreach $pos ($chunkEnd{IHDR}, $chunkEnd{eXIf}) {
+        my $testImage = substr($image, 0, $pos) . $caBX . substr($image, $pos);
+        my $info = $exifTool->ImageInfo(\$testImage, 'UserComment', 'Warning');
+        $success = 0 if $$info{UserComment} ne 'Test: test123' or $$info{Warning};
+    }
+    notOK() unless $success;
+    print "ok $testnum\n";
 }
 
 done(); # end

@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/Writer.t".
 
 BEGIN {
-    $| = 1; print "1..61\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..62\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -1138,6 +1138,30 @@ my $testOK;
         $skip = ' # POSIX::strptime or Time::Piece not installed';
     }
     print "ok $testnum$skip\n";
+}
+
+# test 62: Write Orientation as a plain integer (regression test for issue #459)
+#          (writing "-Orientation=1" used to silently persist 3 due to a
+#           substring match against the "Rotate 180" PrintConv value)
+{
+    ++$testnum;
+    my $exifTool = Image::ExifTool->new;
+    my $ok = 1;
+    my $v;
+    for $v (1..8) {
+        $exifTool->SetNewValue();
+        $exifTool->SetNewValue('IFD0:Orientation' => $v);
+        my $image;
+        writeInfo($exifTool, 't/images/Writer.jpg', \$image);
+        my $info = $exifTool->ImageInfo(\$image, 'IFD0:Orientation', { PrintConv => 0 });
+        my $wrote = $$info{'Orientation'} || '';
+        unless ($wrote eq "$v") {
+            warn "\n  Orientation=$v wrote '$wrote'\n";
+            $ok = 0;
+        }
+    }
+    notOK() unless $ok;
+    print "ok $testnum\n";
 }
 
 done(); # end

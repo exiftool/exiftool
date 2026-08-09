@@ -3619,6 +3619,8 @@ sub ReverseLookup($$)
             $val = hex($val);   # convert hex value
         }
     } else {
+        # accept a raw value if it matches a hash key directly (eg. -Orientation=1)
+        return $val if exists $$conv{$val} and not $ignorePrintConv{$val};
         my $qval = $val;
         $qval =~ s/\s+$//;      # remove trailing whitespace
         $qval = quotemeta $qval;

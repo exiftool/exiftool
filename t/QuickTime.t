@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/QuickTime.t".
 
 BEGIN {
-    $| = 1; print "1..22\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..23\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -333,6 +333,23 @@ my $testnum = 1;
     } else {
         notOK();
     }
+    print "ok $testnum\n";
+}
+
+# test 23: Read from non-seekable stream in FastScan mode with a zero-size atom
+{
+    ++$testnum;
+    my $exifTool = Image::ExifTool->new;
+    my $data;
+    open(TESTFILE, 't/images/QuickTime.mov') or die;
+    binmode(TESTFILE);
+    read(TESTFILE, $data, 100000);
+    close(TESTFILE);
+    # prepend a zero-size 'wide' atom (as written by Apple devices before 'mdat')
+    $data = "\0\0\0\x08wide" . $data;
+    my $info = $exifTool->ImageInfo(\$data, {FastScan => 1},
+               'Warning', 'Duration', 'ImageWidth', 'ImageHeight');
+    notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 

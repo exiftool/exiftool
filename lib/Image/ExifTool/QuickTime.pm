@@ -10582,7 +10582,8 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
                 $et->ProcessDirectory(\%dirInfo, $subTable, $proc);
                 $raf->Seek($seekTo);
             }
-            unless ($raf->Seek($seekTo-1) and $raf->Read($buff, 1) == 1) {
+            # (don't check zero-size atoms because a backward seek may not be possible)
+            if ($size and not ($raf->Seek($seekTo-1) and $raf->Read($buff, 1) == 1)) {
                 if (pack('N',$size) =~ /^<b[r>]/) { # check for corrupted HEIC file downloaded from heic.digital
                     $warnStr = sprintf('Extraneous HTML text appended to file at offset 0x%x', $lastPos);
                 } else {

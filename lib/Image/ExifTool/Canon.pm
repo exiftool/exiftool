@@ -3963,6 +3963,34 @@ my %ciMaxFocal = (
     },
 );
 
+# 5D Mark II time stamp: local time stored as a Unix time value (int32u),
+# followed by int16u milliseconds (ref github400).  Its position moved by 4
+# bytes between firmware 1.x and 2.x, so the milliseconds are also used as a
+# sanity check
+my %timeStamp5DmkII = (
+    Format => 'int16u[3]',
+    Groups => { 2 => 'Time' },
+    Shift => 'Time',
+    RawConv => q{
+        my @a = split " ", $val;
+        return(($a[0] or $a[1]) && $a[2] < 1000 ? $val : undef);
+    },
+    ValueConv => q{
+        my @a = split " ", $val;
+        return ConvertUnixTime($a[0] + $a[1] * 65536 + $a[2] / 1000, 0, 3);
+    },
+    ValueConvInv => q{
+        my $t = GetUnixTime($val);
+        return undef unless defined $t;
+        my $s = int($t);
+        my $ms = int(($t - $s) * 1000 + 0.5);
+        $ms = 999 if $ms > 999;
+        return join ' ', $s & 0xffff, $s >> 16, $ms;
+    },
+    PrintConv => '$self->ConvertDateTime($val)',
+    PrintConvInv => '$self->InverseDateTime($val)',
+);
+
 # Camera information for 5D Mark II (MakerNotes tag 0x0d) (ref PH)
 %Image::ExifTool::Canon::CameraInfo5DmkII = (
     %binaryDataAttrs,
@@ -3984,8 +4012,9 @@ my %ciMaxFocal = (
         RawConv => q{
             my $t = substr($val, 0x15a, 6); # 1 = firmware 3.4.6/3.6.1
             $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 1, return undef;
-            $t = substr($val, 0x17e, 6);    # 2 = firmware 4.1.1/1.0.6
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 2, return undef;
+            $t = substr($val, 0x17e, 6);    # 2 = firmware 4.1.1/1.0.6/2.1.2
+            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 2,
+                $$self{CanonFirmVer} = $t, return undef;
             $self->Warn('Unrecognized CameraInfo5DmkII firmware version');
             $$self{CanonFirm} = 0;
             return undef;   # not a real tag
@@ -4105,6 +4134,18 @@ my %ciMaxFocal = (
     0x2f7 => { #48
         Name => 'PictureStyleInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo' },
+    },
+    0x4ab => {
+        Name => 'TimeStamp',
+        Condition => '$$self{CanonFirmVer} and $$self{CanonFirmVer} =~ /^1\./',
+        Notes => 'firmware 1.x',
+        %timeStamp5DmkII,
+    },
+    0x4af => {
+        Name => 'TimeStamp',
+        Condition => '$$self{CanonFirmVer} and $$self{CanonFirmVer} =~ /^2\./',
+        Notes => 'firmware 2.x',
+        %timeStamp5DmkII,
     },
 );
 

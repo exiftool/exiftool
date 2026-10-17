@@ -2177,6 +2177,14 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             TagTable => 'Image::ExifTool::Canon::LogInfo',
         }
     },
+    0x4027 => {
+        Name => 'FirmwareInfo',
+        # (the EOS M50 writes this too, but element 5 doesn't look like a version)
+        Condition => '$$self{Model} !~ /\bEOS M/ and $$valPt =~ /^\x18\0\0\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Canon::FirmwareInfo',
+        }
+    },
     0x4028 => { #PH
         Name => 'AFConfig', # (AFTabInfo)
         SubDirectory => {
@@ -9263,6 +9271,28 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
         RawConv => '$val eq "\0\0\0" ? undef : $val',
         ValueConv => 'unpack("N","\0$val")',
         PrintConv => $lensCountPrint,
+    },
+);
+
+# Firmware information (MakerNotes tag 0x4027).  Element 0 is the size in bytes and
+# elements 1 and 2 change with the camera firmware
+%Image::ExifTool::Canon::FirmwareInfo = (
+    %binaryDataAttrs,
+    FORMAT => 'int32u',
+    FIRST_ENTRY => 1,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    5 => {
+        Name => 'LensFirmwareVersion',
+        Notes => q{
+            Matches the lens firmware versions published by Canon, eg. 1.1.0 for the RF
+            100-500mm and 1.1.1 for the RF 70-200mm F4 after their updates.  Also
+            written for some EF lenses (eg. 1.0.6 for the EF 16-35mm f/4L IS USM on
+            the EOS R8 and 5DS).  Not written by older bodies such as the EOS 6D and
+            7D
+        },
+        RawConv => '$val ? $val : undef',
+        ValueConv => 'sprintf("%d.%d.%d", ($val >> 16) & 0xff, ($val >> 8) & 0xff, $val & 0xff)',
+        ValueConvInv => 'my @v = split /\./, $val; ($v[0] << 16) | ($v[1] << 8) | $v[2]',
     },
 );
 

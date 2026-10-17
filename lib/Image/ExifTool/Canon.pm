@@ -5147,6 +5147,34 @@ my %ciMaxFocal = (
     },
 );
 
+# CameraInfo time stamp: local time stored as a Unix time value (int32u),
+# followed by int16u milliseconds (ref github400).  The position can depend on
+# the firmware version, so values before 2000 or with 1000 or more milliseconds
+# are rejected
+my %ciTimeStamp = (
+    Format => 'int16u[3]',
+    Groups => { 2 => 'Time' },
+    Shift => 'Time',
+    RawConv => q{
+        my @a = split " ", $val;
+        return($a[0] + $a[1] * 65536 >= 946684800 && $a[2] < 1000 ? $val : undef);
+    },
+    ValueConv => q{
+        my @a = split " ", $val;
+        return ConvertUnixTime($a[0] + $a[1] * 65536 + $a[2] / 1000, 0, 3);
+    },
+    ValueConvInv => q{
+        my $t = GetUnixTime($val);
+        return undef unless defined $t;
+        my $s = int($t);
+        my $ms = int(($t - $s) * 1000 + 0.5);
+        $ms = 999 if $ms > 999;
+        return join ' ', $s & 0xffff, $s >> 16, $ms;
+    },
+    PrintConv => '$self->ConvertDateTime($val)',
+    PrintConvInv => '$self->InverseDateTime($val)',
+);
+
 # Canon camera information for 70D (MakerNotes tag 0x0d) (ref PH)
 %Image::ExifTool::Canon::CameraInfo70D = (
     %binaryDataAttrs,
@@ -5214,6 +5242,10 @@ my %ciMaxFocal = (
     0x3cf => { #48
         Name => 'PictureStyleInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo2' },
+    },
+    0x59f => { # (firmware 1.1.1)
+        Name => 'TimeStamp',
+        %ciTimeStamp,
     },
 );
 

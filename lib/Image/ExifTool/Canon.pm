@@ -7053,6 +7053,21 @@ my %ciMaxFocal = (
         Name => 'FlashExposureLock',
         PrintConv => \%offOn,
     },
+    26 => {
+        Name => 'Extender',
+        # (-1 with no extender on the EOS R5m2, R8, RP and M50; RF1.4x and RF2x
+        #  verified on the R5m2 only)
+        Condition => '$$self{Model} =~ /\bEOS R(P|\d+)?(m\d)?\b/',
+        Notes => q{
+            RF-mount models.  Also set for adapted 3rd-party EF lenses, where
+            RFLensType is 0 and FocalLength may not be scaled for the extender
+        },
+        PrintConv => {
+            -1 => 'None',
+            5 => 'Extender RF1.4x',
+            6 => 'Extender RF2x',
+        },
+    },
     32 => { #forum16257
         Name => 'AntiFlicker',
         PrintConv => \%offOn,
@@ -10201,7 +10216,15 @@ sub PrintLensID(@)
             push @user, $lens if $Image::ExifTool::userLens{$lens};
         }
         my @tcs = (1, 1.4, 2, 2.8);
-        @tcs = ( $3 ) if $lensModel =~ / \+ ((EXTENDER )?RF)?(\d+(\.\d*)?)x\b/;
+        my ($modelTC, $modelTCName);
+        if ($lensModel =~ / \+ ((EXTENDER )?RF)?(\d+(\.\d*)?)x\b/) {
+            # the EOS R5m2 doesn't scale FocalLength or MaxAperture for some adapted
+            # 3rd-party EF lenses with an RF extender (eg. Sigma 85mm F1.4 DG HSM | Art
+            # + RF1.4x reports 85 mm f/1.4), so also try without scaling
+            $modelTC = $3;
+            $modelTCName = ($1 ? 'RF' : '') . "${3}x";   # (Canon RF extender)
+            @tcs = ( $modelTC, 1 );
+        }
         # attempt to determine actual lens
         foreach $tc (@tcs) {  # loop through teleconverter scaling factors
             foreach $lens (@lenses) {
@@ -10227,6 +10250,8 @@ sub PrintLensID(@)
                     pop @matches if @matches and $matches[-1] =~ /^$lns/;
                 } elsif ($tc > 1) {
                     $tclens .= " + ${tc}x";
+                } elsif ($modelTC) {
+                    $tclens .= " + $modelTCName";
                 }
                 push @maybe, $tclens;
                 next if abs($longFocal  - $lf * $tc) > 0.9;

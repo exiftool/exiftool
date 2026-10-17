@@ -7075,6 +7075,7 @@ my %ciMaxFocal = (
     0x3d => { #IB
         Name => 'RFLensType',
         Format => 'int16u',
+        RawConv => '$$self{RFLensType} = $val', # (used by LensInfo)
         PrintConv => {
             0 => 'n/a',
             257 => 'Canon RF 50mm F1.2L USM',
@@ -9143,6 +9144,24 @@ my %ciMaxFocal = (
     },
 );
 
+# RFLensType values of the lenses that use the second LensInfo layout
+my $lensInfoLayout2 = '318|323|324|329|330|331';
+
+# LensInfo counters are only valid when the lens serial number is present.
+# Without it the camera writes zeros or unrelated values (EOS 550D with
+# firmware 1.0.6, 60D with firmware 2.8.1)
+my $lensSerial = '$$self{LensInfoSerial}';
+my $lensLayout1 = "(\$\$self{RFLensType} || 0) !~ /^($lensInfoLayout2)\$/";
+my $lensLayout2 = "(\$\$self{RFLensType} || 0) =~ /^($lensInfoLayout2)\$/";
+
+# the AF and IS counters of the EOS R6 Mark III and C50 don't follow the R5m2
+# layout (eg. 00 80 80 in the IS counter of the RF 28-70mm F2L, which has no IS)
+my $lensAFIS = '$$self{Model} !~ /\b(R6 Mark III|C50)$/';
+
+# LensInfo counters with the high bit set (0x800000) are not supported by the lens
+# (seen in the AF counter of the TS-E 24mm f/3.5L II)
+my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
+
 # Lens information (MakerNotes tag 0x4019) (ref 20)
 %Image::ExifTool::Canon::LensInfo = (
     %binaryDataAttrs,
@@ -9157,8 +9176,93 @@ my %ciMaxFocal = (
         Format => 'undef[5]',
         Priority => 0,
         RawConv => '$val=~/^\0\0\0\0/ ? undef : $val', # (rules out 550D and older lenses)
+        Hook => '$$self{LensInfoSerial} = substr($$dataPt,$pos,4) ne "\0" x 4',
         ValueConv => 'unpack("H*", $val)',
         ValueConvInv => 'length($val) < 10 and $val = 0 x (10-length($val)) . $val; pack("H*",$val)',
+    },
+    # lens actuation counters (24-bit big-endian), matching the diaphragm, AF and IS
+    # unit counts shown by lens service software.  The values are read from the
+    # lens at power-on (including a battery swap and a wake from auto power off, but
+    # not a wake from the "screen off" power saving mode), so they don't change
+    # between shots of the same session.  A flip of the IS switch re-reads them with
+    # some lenses but not with others (eg. not the RF 100-400mm F5.6-8 IS USM on the
+    # EOS R7), so only a power cycle is a reliable re-read.  Each lens start-up adds
+    # a few counts to each counter.  Studied on the EOS R5m2 and R8,
+    # and the same layout was seen in samples from 13 other R-series bodies, the R6
+    # with adapted EF lenses among them, and from the EOS 6D, 7D and 5DS, where the
+    # same EF lens continued the same counts.  The EOS M5 and M100 don't write
+    # this tag, and the EOS M50 and M6 Mark II write zeros, with EF-M and adapted EF-S
+    # lenses.  The original EOS R writes zeros with firmware 1.0.0 and fills the
+    # counters with 1.2.0 (1.1.0 was not tested).  The newer lenses in
+    # $lensInfoLayout2 (RFLensType, set by FileInfo before this directory is read)
+    # use a different layout: offsets 6-11 are not counters, and LensDriveCount3 at
+    # offset 15 is filled only by these lenses.  Their LensISCount at offset 12 is
+    # valid.  Lenses that don't report a counter (eg. RF 50mm F1.8 STM, RF 16mm F2.8
+    # STM, older EF lenses) leave it 0, and a counter that is 0 is not extracted,
+    # since any lens that reports one has added counts at its first start-up
+    6 => {
+        Name => 'LensDiaphragmCount',
+        Condition => "$lensSerial and $lensLayout1",
+        Notes => q{
+            Not valid for the newer lenses listed under LensDriveCount3.  Counts
+            diaphragm drive commands:  each exposure stopped down from the maximum
+            aperture adds 2 (close and reopen), while exposures at the maximum aperture
+            add none, and so do the frames of a focus-bracketing run, during which the
+            diaphragm stays closed.  Each lens start-up opens the diaphragm fully and
+            returns it to the set aperture, adding a varying number of counts.  Long
+            focus moves add a few counts too
+        },
+        Format => 'undef[3]',
+        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        ValueConv => 'unpack("N","\0$val")',
+        PrintConv => $lensCountPrint,
+    },
+    9 => {
+        Name => 'LensAFCount',
+        Condition => "$lensSerial and $lensAFIS and $lensLayout1",
+        Notes => q{
+            Not valid for the newer lenses listed under LensDriveCount3.  Counts focus
+            drive commands, not the distance moved:  each focus-bracketing step adds 1
+            at any step size or aperture, an AF operation or a manual focus move by wire
+            adds about 2, each lens start-up adds about 3, and stopped-down exposures
+            add none.  Manual-focus lenses (eg. TS-E 24mm f/3.5L II) set the high bit
+            (0x800000), shown as "Not supported".  Not decoded for the EOS R6 Mark III
+            and C50
+        },
+        Format => 'undef[3]',
+        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        ValueConv => 'unpack("N","\0$val")',
+        PrintConv => $lensCountPrint,
+    },
+    12 => {
+        Name => 'LensISCount',
+        Condition => "$lensSerial and $lensAFIS",
+        Notes => q{
+            Appears to count IS unit start-ups:  each lens power-on adds 1, even with
+            the IS switch off, each flip of the IS switch adds 1 or 2, and shooting,
+            focus bracketing included, adds none.  Not extracted for lenses without
+            IS, nor for some lenses with IS (eg. RF 600mm F11 and RF 800mm F11).  Not
+            decoded for the EOS R6 Mark III and C50
+        },
+        Format => 'undef[3]',
+        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        ValueConv => 'unpack("N","\0$val")',
+        PrintConv => $lensCountPrint,
+    },
+    15 => {
+        Name => 'LensDriveCount3',
+        Condition => "$lensSerial and $lensLayout2",
+        Notes => q{
+            Only for the RF 28-70mm F2.8 IS STM, RF 16-28mm F2.8 IS STM, RF-S 14-30mm
+            F4-6.3 IS STM PZ, RF 20-50mm F4 L IS USM PZ, RF 45mm F1.2 STM and RF
+            7-14mm F2.8-3.5 L FISHEYE STM.  A lifetime counter that increases by about
+            3-4 per power-on and does not follow the number of shots.
+            What it counts is unconfirmed
+        },
+        Format => 'undef[3]',
+        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        ValueConv => 'unpack("N","\0$val")',
+        PrintConv => $lensCountPrint,
     },
 );
 

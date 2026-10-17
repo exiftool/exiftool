@@ -2706,6 +2706,15 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         Name  => 'HDR-PQ',
         PrintConv => { %offOn, -1 => 'n/a' },
     },
+    69 => {
+        Name => 'BlackoutFreeShooting',
+        Condition => '$$self{Model} =~ /\bEOS R5m2$/',
+        Notes => q{
+            EOS R5m2 only.  The menu setting is stored even with the mechanical or
+            electronic first-curtain shutter, where it has no effect
+        },
+        PrintConv => { 0 => 'On', 1 => 'Off' },
+    },
 );
 
 # focal length information (MakerNotes tag 0x02)
@@ -7229,7 +7238,7 @@ my %ciMaxFocal = (
             4 => 'Green',
         },
     },
-    16 => { #PH
+    16 => [{ #PH
         %ciMacroMagnification,
         # MP-E 65mm on 5DmkII: 44=5x,52~=3.9x,56~=3.3x,62~=2.6x,75=1x
         # ME-E 65mm on 40D/450D: 72 for all samples (not valid)
@@ -7241,7 +7250,22 @@ my %ciMaxFocal = (
             currently decoded only for the MP-E 65mm f/2.8 1-5x Macro Photo, and not
             valid for all camera models
         },
-    },
+    },{
+        # value supplied by the lens: an EF-S 18-55mm gives 153 both on a 90D and
+        # adapted to an R50, so the 24mm of the mount adapter is not included
+        # (EF lenses report it too, but EF zooms give the same value at all focal
+        #  lengths, so it is decoded only for RF lenses, which have LensType 61182)
+        Name => 'ExitPupilCode',
+        Condition => '$$self{Model} =~ /\bEOS R(\d|P\b|a\b|\b)/ and ($$self{LensType} || 0) == 61182',
+        Notes => q{
+            EOS R-series bodies with RF lenses.  Appears to be an inverse measure of the lens exit
+            pupil distance:  the reciprocal is linear with focal length on the
+            RF100-500mm (134 at 100mm, 82 at 500mm), and it decreases with an extender
+            fitted and increases at close focus.  Not affected by aperture, and does
+            not follow the position of the rear lens element.  0 in some continuous
+            shooting frames with the mechanical shutter
+        },
+    }],
     # 17 - values: 0, 3, 4
     # 18 - same as LiveViewShooting for all my samples (5DmkII, 50D) - PH
     19 => { #PH
@@ -7389,6 +7413,28 @@ my %ciMaxFocal = (
             332 => 'Canon RF 14mm F1.4 L VCM', #42
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },
+    },
+    # 87-90 - EOS R1 and R5m2 temperatures, stored as degrees C + 128.  87 and 88 follow
+    #         CameraTemperature (correlation 0.85 and 0.77, on average 5 and 10 C
+    #         lower).  89 (22-36 C) does not correlate with CameraTemperature, and
+    #         90 is either 20 or 24 for a whole power-on session
+    87 => {
+        Name => 'CameraTemperature2',
+        Condition => '$$self{Model} =~ /\bEOS (R1|R5m2)$/',
+        Notes => 'EOS R1 and R5m2 only',
+        ValueConv => '$val - 128',
+        ValueConvInv => '$val + 128',
+        PrintConv => '"$val C"',
+        PrintConvInv => '$val=~s/ ?C//; $val',
+    },
+    88 => {
+        Name => 'CameraTemperature3',
+        Condition => '$$self{Model} =~ /\bEOS (R1|R5m2)$/',
+        Notes => 'EOS R1 and R5m2 only',
+        ValueConv => '$val - 128',
+        ValueConvInv => '$val + 128',
+        PrintConv => '"$val C"',
+        PrintConvInv => '$val=~s/ ?C//; $val',
     },
 );
 

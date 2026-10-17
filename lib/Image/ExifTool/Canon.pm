@@ -1453,9 +1453,19 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR6m2' },
         },
         {
+            Name => 'CanonCameraInfoR5m2',
+            Condition => '$$self{Model} =~ /\bEOS (R1|R5m2)$/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR5m2' },
+        },
+        {
             Name => 'CanonCameraInfoR6m3',
-            Condition => '$$self{Model} =~ /\bEOS R6 Mark III$/',
+            Condition => '$$self{Model} =~ /\bEOS R6 (Mark III|V)$/',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR6m3' },
+        },
+        {
+            Name => 'CanonCameraInfoR50V',
+            Condition => '$$self{Model} =~ /\bEOS R50 V$/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR50V' },
         },
         {
             Name => 'CanonCameraInfoG5XII',
@@ -4860,15 +4870,231 @@ my %ciMaxFocal = (
     },
 );
 
+%Image::ExifTool::Canon::CameraInfoR5m2 = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'CameraInfo tags for the EOS R1 and R5 Mark II.',
+    # 0x0000 - int16u 0xbbbb, then a ring of 12 AF tracking records, newest first.
+    #          Records are 168 bytes (112 bytes with firmware 1.0.0 and with some
+    #          frames where the AF area did not move, which have a different layout)
+    0x0002 => {
+        Name => 'AFTrackingInfo',
+        Condition => q{
+            $$valPt =~ /^\x15\0/ and substr($$valPt, 0x57, 1) eq "\0" and
+            substr($$valPt, 0x78, 1) eq "\0"
+        },
+        Format => 'undef[168]',
+        Notes => 'most recent AF tracking record',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::AFTrackingR5m2' },
+    },
+    # 0x084f - int32u capture time, same encoding as PowerOnTime
+    0x084b => {
+        Name => 'PowerOnTime',
+        Groups => { 2 => 'Time' },
+        Format => 'int32u',
+        Notes => 'time the camera was switched on',
+        # (local time stored as a Unix time value, so no time zone conversion)
+        # (zero for every image of some power-on sessions)
+        RawConv => '$val || undef',
+        ValueConv => 'ConvertUnixTime($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    0x0861 => {
+        Name => 'FormatFileNumber',
+        Format => 'int16u',
+        Notes => q{
+            number of the last image file when the camera was switched on, stored here
+            instead of PowerOnFileNumber when the card was formatted after power-on
+        },
+        RawConv => '$val || undef',
+    },
+    # 0x0863 - int16u directory number that goes with FormatFileNumber (set even when
+    #          FormatFileNumber is zero)
+    0x0865 => {
+        Name => 'PowerOnFileNumber',
+        Format => 'int16u',
+        Notes => q{
+            number of the last image file when the camera was switched on.  The same
+            for every image of a power-on session.  Zero when the card was formatted
+            after power-on (see FormatFileNumber), and in some other sessions
+        },
+        RawConv => '$val || undef',
+    },
+    0x0867 => {
+        Name => 'PowerOnDirectoryNumber',
+        Format => 'int16u',
+        Notes => q{
+            number of the DCIM directory when the camera was switched on, so it can
+            differ from the directory of the image if a new one was started since
+        },
+    },
+    0x0869 => {
+        Name => 'WakeFileNumber',
+        Format => 'int16u',
+        Notes => q{
+            number of the last image file when the camera last woke from auto power
+            off, or PowerOnFileNumber if it has not slept since being switched on
+        },
+        RawConv => '$val || undef',
+    },
+    0x0f70 => {
+        Name => 'BurstShotNumber',
+        Description => 'Shot Number In Continuous Burst',
+        Notes => q{
+            1 for single shots and the first frame of a burst, then increments by 1 for
+            each frame.  Unlike SequenceNumber, which is always 0 for these models
+        },
+        Format => 'undef[4]',
+        ValueConv => 'unpack("N",$val)', # (big-endian)
+    },
+    0x1122 => {
+        Name => 'ImageStabilizationMode',
+        Format => 'int8s',
+        Notes => q{
+            mode selected on the lens.  Retains the setting while IS is switched off.
+            Verified with the RF100-500mm F4.5-7.1L IS USM and RF70-200mm F2.8 L IS
+            USM Z.  -1 for lenses without an IS mode switch, including the RF28-70mm
+            F2.8 IS STM which has IS
+        },
+        PrintConv => {
+            -1 => 'n/a', # (lens without an IS mode switch)
+            0 => 'Mode 1',
+            1 => 'Mode 2',
+            2 => 'Mode 3',
+        },
+    },
+);
+
+# most recent AF tracking record in the EOS R1 and R5 Mark II CameraInfo
+%Image::ExifTool::Canon::AFTrackingR5m2 = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => q{
+        Most recent record from the ring of AF tracking records in the EOS R1 and R5
+        Mark II CameraInfo.
+    },
+    # 0x00 - int16u 0x0015 (record header)
+    # 0x08 - int32u timestamp in microseconds
+    # 0x18 - live view rate: 120, dropping to 60 once continuous shooting is running
+    0x1a => {
+        Name => 'AFSamplingRate',
+        Notes => q{
+            rate of the AF tracking records, confirmed by their timestamps.  Usually 60,
+            but drops to 30, 15 or 8 when the live view image is dark
+        },
+        PrintConv => '$val ? "$val Hz" : "n/a"',
+        PrintConvInv => '$val =~ /(\d+)/ ? $1 : 0',
+    },
+    0x8b => {
+        Name => 'AFDetectedSubject',
+        Notes => q{
+            class of the subject found by subject detection.  The animal classes were
+            identified by photographing a cat, a dog, a bird and a horse.  The camera
+            often gets the class wrong for birds, which have been seen with all three
+        },
+        PrintConv => {
+            0 => 'n/a',
+            1 => 'None',
+            2 => 'None',
+            3 => 'None',
+            4 => 'None',
+            5 => 'Person',
+            6 => 'Animal (cat)',
+            7 => 'Animal (dog or bird)',
+            8 => 'Animal (horse)',
+            9 => 'Vehicle',
+        },
+    },
+    0x8f => {
+        Name => 'AFTrackingTarget',
+        Mask => 0x0f,
+        Notes => 'part of the detected subject that AF was tracking',
+        PrintConv => {
+            0 => 'n/a',
+            1 => 'None',
+            2 => 'Head',
+            3 => 'Body',
+            4 => 'Face',
+            5 => 'Eye',
+        },
+    },
+    0x92 => {
+        Name => 'AFDetectedParts',
+        Format => 'int16u',
+        Mask => 0x7c, # (bit 0x02 is set in most images, meaning unknown)
+        PrintConv => { BITMASK => {
+            0 => 'Head',
+            1 => 'Body',
+            2 => 'Face',
+            3 => 'Eye',
+            4 => 'Both Eyes',
+        }},
+    },
+    0x94 => {
+        Name => 'AFTrackingArea',
+        Format => 'int16u[4]',
+        Notes => q{
+            centre X, centre Y, width and height of the tracked area, in AF image
+            coordinates with the origin at the top left
+        },
+    },
+    0x9d => {
+        Name => 'AFEyeUsed',
+        Mask => 0x03,
+        Notes => q{
+            "Left" and "Right" match the Left Eye and Right Eye settings of
+            EyeDetection.  "Unresolved" when only one eye was found
+        },
+        PrintConv => {
+            0 => 'n/a',
+            1 => 'Left',
+            2 => 'Right',
+            3 => 'Unresolved',
+        },
+    },
+);
+
 %Image::ExifTool::Canon::CameraInfoR6m3 = (
     %binaryDataAttrs,
     FIRST_ENTRY => 0,
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => 'CameraInfo tags for the EOS R6 Mark II.',
+    NOTES => 'CameraInfo tags for the EOS R6 Mark III and R6 V.',
+    0x084b => {
+        Name => 'PowerOnTime',
+        Groups => { 2 => 'Time' },
+        Format => 'int32u',
+        Notes => 'time the camera was switched on',
+        RawConv => '$val || undef',
+        ValueConv => 'ConvertUnixTime($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    # 0x085f-0x086c - 4 pairs of int16u directory and file numbers.  The first 3
+    #                 were always equal in the samples, so their meaning is unknown
     0x086d => { #forum17745 (+ private email)
         Name => 'ImageCount', # (resets to 0 when SD card is formatted)
         Format => 'int16u',
+    },
+);
+
+%Image::ExifTool::Canon::CameraInfoR50V = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'CameraInfo tags for the EOS R50 V.',
+    0x084b => {
+        Name => 'PowerOnTime',
+        Groups => { 2 => 'Time' },
+        Format => 'int32u',
+        Notes => 'time the camera was switched on',
+        RawConv => '$val || undef',
+        ValueConv => 'ConvertUnixTime($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
     },
 );
 

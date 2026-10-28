@@ -1892,6 +1892,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     0x95 => { #PH (observed in 5D sample image)
         Name => 'LensModel', # (LensName)
         Writable => 'string',
+        RawConv => '$$self{LensModel} = $val', # (used by LensInfo)
     },
     0x96 => [ #PH (CMOSNumber)
         {
@@ -9681,14 +9682,23 @@ my $lensInfoLayout2 = '318|323|324|329|330|331';
 
 # LensInfo counters are only valid when the lens serial number is present.
 # Without it the camera writes zeros or unrelated values (EOS 550D with
-# firmware 1.0.6, 60D with firmware 2.8.1)
-my $lensSerial = '$$self{LensInfoSerial}';
+# firmware 1.0.6, 60D with firmware 2.8.1).  RF lenses are the exception: the
+# RF 35mm F1.8 MACRO IS STM on the EOS R8 Mark II writes no serial number but
+# valid counters
+my $lensSerial = '($$self{LensInfoSerial} or $$self{RFLensType})';
 my $lensLayout1 = "(\$\$self{RFLensType} || 0) !~ /^($lensInfoLayout2)\$/";
 my $lensLayout2 = "(\$\$self{RFLensType} || 0) =~ /^($lensInfoLayout2)\$/";
 
 # the AF and IS counters of the EOS R6 Mark III and C50 don't follow the R5m2
 # layout (eg. 00 80 80 in the IS counter of the RF 28-70mm F2L, which has no IS)
 my $lensAFIS = '$$self{Model} !~ /\b(R6 Mark III|C50)$/';
+
+# some lenses without IS fill the LensISCount position anyway (eg. 00 80 80, a
+# constant 00 01 00, or a rising count with the second layout), so this counter
+# is only extracted when the lens model name from MakerNotes tag 0x0095 says IS
+# (Canon puts IS in the name of every lens with image stabilization), or when
+# there is no lens model name
+my $lensNoIS = '(not defined $$self{LensModel} or $$self{LensModel} =~ /\bIS\b/)';
 
 # LensInfo counters with the high bit set (0x800000) are not supported by the lens
 # (seen in the AF counter of the TS-E 24mm f/3.5L II) (github488)
@@ -9730,7 +9740,7 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
     # $lensInfoLayout2 (RFLensType, set by FileInfo before this directory is read)
     # use a different layout: offsets 6-11 are not counters, and LensDriveCount3 at
     # offset 15 is filled only by these lenses.  Their LensISCount at offset 12 is
-    # valid.  Lenses that don't report a counter (eg. RF 50mm F1.8 STM, RF 16mm F2.8
+    # valid for the lenses with IS.  Lenses that don't report a counter (eg. RF 50mm F1.8 STM, RF 16mm F2.8
     # STM, older EF lenses) leave it 0, and a counter that is 0 is not extracted,
     # since any lens that reports one has added counts at its first start-up
     6 => {
@@ -9769,13 +9779,15 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
     },
     12 => {
         Name => 'LensISCount',
-        Condition => "$lensSerial and $lensAFIS",
+        Condition => "$lensSerial and $lensAFIS and $lensNoIS",
         Notes => q{
             Appears to count IS unit start-ups:  each lens power-on adds 1, even with
             the IS switch off, each flip of the IS switch adds 1 or 2, and shooting,
-            focus bracketing included, adds none.  Not extracted for lenses without
-            IS, nor for some lenses with IS (eg. RF 600mm F11 and RF 800mm F11).  Not
-            decoded for the EOS R6 Mark III and C50
+            focus bracketing included, adds none.  Only extracted when the LensModel
+            name contains IS, since some lenses without IS fill this position with
+            other values.  Not written by some lenses with IS (eg. RF 600mm F11 and
+            RF 800mm F11).  Not decoded for the EOS R6 Mark
+            III and C50
         },
         Format => 'undef[3]',
         RawConv => '$val eq "\0\0\0" ? undef : $val',

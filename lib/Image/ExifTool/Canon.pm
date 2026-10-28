@@ -1031,6 +1031,7 @@ $VERSION = '5.08';
     0x80000516 => 'EOS R50 V', #42
     0x80000518 => 'EOS R6 Mark III', #42
     0x80000520 => 'EOS D2000C', #IB
+    0x80000543 => 'EOS R8 Mark II',
     0x80000560 => 'EOS D6000C', #PH (guess)
 );
 
@@ -1498,7 +1499,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         },
         {
             Name => 'CanonCameraInfoR6m3',
-            Condition => '$$self{Model} =~ /\bEOS R6 (Mark III|V)$/',
+            Condition => '$$self{Model} =~ /\bEOS R(6 Mark III|6 V|8 Mark II)$/',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR6m3' },
         },
         {
@@ -2097,8 +2098,9 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Name => 'ColorData11',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData11' },
         },
-        {   # (int16u[4528]) - R1/R5mkII (4528) ref forum16406, R50V (3778) ref PH
-            Condition => '$count == 4528 or $count == 3778',
+        {   # (int16u[4528]) - R1/R5mkII (4528) ref forum16406, R50V (3778) ref PH,
+            # R8mkII (3447)
+            Condition => '$count == 4528 or $count == 3778 or $count == 3447',
             Name => 'ColorData12',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData12' },
         },
@@ -5162,7 +5164,7 @@ my %ciMaxFocal = (
     FIRST_ENTRY => 0,
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => 'CameraInfo tags for the EOS R6 Mark III and R6 V.',
+    NOTES => 'CameraInfo tags for the EOS R6 Mark III, R6 V and R8 Mark II.',
     0x084b => { #github488
         Name => 'PowerOnTime',
         Groups => { 2 => 'Time' },
@@ -9350,10 +9352,10 @@ my %ciMaxFocal = (
     },
 );
 
-# Color data (MakerNotes tag 0x4001, count=4528/3778, ref PH)
+# Color data (MakerNotes tag 0x4001, count=4528/3778/3447, ref PH)
 %Image::ExifTool::Canon::ColorData12 = (
     %binaryDataAttrs,
-    NOTES => 'These tags are used by the EOS R1, R5mkII and R50V',
+    NOTES => 'These tags are used by the EOS R1, R5mkII, R50V and R8mkII',
     FORMAT => 'int16s',
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -9366,6 +9368,7 @@ my %ciMaxFocal = (
         PrintConv => {
             64 => '64 (R1/R5mkII)',
             65 => '65 (R50V)',
+            67 => '67 (R8mkII)',
         },
     },
     0x69 => { Name => 'WB_RGGBLevelsAsShot',    Format => 'int16s[4]' }, # (NC)

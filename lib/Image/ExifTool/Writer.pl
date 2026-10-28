@@ -4716,7 +4716,7 @@ sub DumpTrailer($$)
             last;
         }
         my $out = $$self{OPTIONS}{TextOut};
-        printf $out "$trailer trailer (%d bytes at offset 0x%.4x):\n", $size, $pos;
+        printf $out "$$self{INDENT}$trailer trailer (%d bytes at offset 0x%.4x):\n", $size, $pos;
         last unless $verbose > 2;
         my $num = $size;    # number of bytes to read
         # limit size if not very verbose
@@ -4735,10 +4735,10 @@ sub DumpTrailer($$)
             $buff .= $buf2;
             undef $buf2;
         }
-        HexDump(\$buff, undef, Addr => $pos, Out => $out);
+        HexDump(\$buff, undef, Addr => $pos, Out => $out, Prefix => $$self{INDENT});
         if (defined $buf2) {
-            print $out "    [snip ", $size - $num * 2, " bytes]\n";
-            HexDump(\$buf2, undef, Addr => $pos + $size - $num, Out => $out);
+            print $out "$$self{INDENT}    [snip ", $size - $num * 2, " bytes]\n";
+            HexDump(\$buf2, undef, Addr => $pos + $size - $num, Out => $out, Prefix => $$self{INDENT});
         }
         last;
     }
@@ -5667,7 +5667,7 @@ sub WriteMultiXMP($$$$$)
 # Inputs: 0) ExifTool object reference, 1) dirInfo reference
 # Returns: 1 on success, 0 if this wasn't a valid JPEG file, or -1 if
 #          an output file was specified and a write error occurred
-sub WriteJPEG($$)
+sub WriteJPEG($$;)
 {
     my ($self, $dirInfo) = @_;
     my $outfile = $$dirInfo{OutFile};
@@ -5680,15 +5680,19 @@ sub WriteJPEG($$)
 
     # check to be sure this is a valid JPG or EXV file
     unless ($raf->Read($s,2) == 2 and $s eq "\xff\xd8") {
-        if (defined $s and length $s) {
-            return 0 unless $s eq "\xff\x01" and $raf->Read($s,5) == 5 and $s eq 'Exiv2';
+        if ($$dirInfo{XiaomiMess} and $s eq "\0\0" and $raf->Read($s,2) == 2 and $s eq "\0\x0a") {
+            Write($outfile,"\0\0") or $err = 1; # (starts with header length "\0\0\0\x0a")
         } else {
-            return 0 unless $$self{FILE_TYPE} eq 'EXV';
-            $s = 'Exiv2';
-            $creatingEXV = 1;
+            if (defined $s and length $s) {
+                return 0 unless $s eq "\xff\x01" and $raf->Read($s,5) == 5 and $s eq 'Exiv2';
+            } else {
+                return 0 unless $$self{FILE_TYPE} eq 'EXV';
+                $s = 'Exiv2';
+                $creatingEXV = 1;
+            }
+            Write($outfile,"\xff\x01") or $err = 1;
+            $isEXV = 1;
         }
-        Write($outfile,"\xff\x01") or $err = 1;
-        $isEXV = 1;
     }
 
     delete $$self{PREVIEW_INFO};   # reset preview information
@@ -5721,10 +5725,17 @@ sub WriteJPEG($$)
         my $dirName;
         # stop pre-scan at SOS (end of meta information) or EOI (end of image)
         if ($marker == 0xda or $marker == 0xd9) {
-            $dirName = $jpegMarker{$marker};
-            push(@dirOrder, $dirName);
-            $dirCount{$dirName} = 1;
-            last;
+            if ($$dirInfo{XiaomiMess}) {
+                $dirName = JpegMarkerName($marker);
+                $dirCount{$dirName} = ($dirCount{$dirName} || 0) + 1;
+                push @dirOrder, $dirName;
+                next;
+            } else {
+                $dirName = $jpegMarker{$marker};
+                push(@dirOrder, $dirName);
+                $dirCount{$dirName} = 1;
+                last;
+            }
         }
         # handle SOF markers: SOF0-SOF15, except DHT(0xc4), JPGA(0xc8) and DAC(0xcc)
         if (($marker & 0xf0) == 0xc0 and ($marker == 0xc0 or $marker & 0x03)) {
@@ -5789,7 +5800,7 @@ sub WriteJPEG($$)
         $dirCount{$dirName} = ($dirCount{$dirName} || 0) + 1;
         push @dirOrder, $dirName;
     }
-    unless ($marker and $marker == 0xda) {
+    unless ($marker and $marker == 0xda or $$dirInfo{XiaomiMess}) {
         $isEXV or $self->Error('Corrupted JPEG image'), return 1;
         $marker and $marker != 0xd9 and $self->Error('Corrupted EXV file'), return 1;
     }
@@ -5820,6 +5831,9 @@ sub WriteJPEG($$)
                 push @dirOrder, 'EOI';
                 $dirCount{EOI} = 1;
                 last;
+            } elsif ($$dirInfo{XiaomiMess}) {
+                $rtnVal = 1;
+                last Marker;   # (ends with APP segment)
             } else {
                 $self->Error('Format error');
                 return 1;
@@ -6275,11 +6289,12 @@ sub WriteJPEG($$)
             }
             last;   # all done parsing file
 
-        } elsif ($marker==0xd9 and $isEXV) {
+        } elsif ($marker==0xd9 and ($isEXV or $$dirInfo{XiaomiMess})) {
             # write EXV EOI (any trailer will be lost)
             Write($outfile, "\xff\xd9") or $err = 1;
             $rtnVal = 1;
-            last;
+            last unless $$dirInfo{XiaomiMess};
+            $segData = '';
 
         } elsif ($marker==0x00 or $marker==0x01 or ($marker>=0xd0 and $marker<=0xd7)) {
             $verbose and $marker and print $out "JPEG $markerName:\n";

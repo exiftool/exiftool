@@ -17,6 +17,57 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.60'><b>Oct. 28, 2026 - Version 13.60</b></a>
+<ul>
+<li>Added definitions for the new Exif for XMP tags
+<li>Added support for the Pentax KF (thanks Karsten Geiselmann)
+<li>Added warning for possibly corrupted IFD if the first entry has a bad format
+<li>Added a few new FujiFilm AdvancedFilter values (<a href="https://github.com/exiftool/exiftool/issues/454">github #454</a>)
+<li>Added some new FujiFilm GrainEffectRoughness values (<a href="https://github.com/exiftool/exiftool/issues/455">github #455</a>)
+<li>Added missing values for EXIF NoiseReduction (<a href="https://github.com/exiftool/exiftool/issues/416">github #416</a>)
+<li>Added some new Canon and Nikon LensIDs (<a href="https://github.com/exiftool/exiftool/issues/415">github #415</a>, <a href="https://github.com/exiftool/exiftool/issues/418">#418</a>, <a href="https://github.com/exiftool/exiftool/issues/486">#486</a>)
+<li>Added support for reading RED XE R3D files (<a href="https://github.com/exiftool/exiftool/issues/443">github #443</a>)
+<li>Decode some new Canon tags (<a href="https://github.com/exiftool/exiftool/issues/400">github #400</a>, <a href="https://github.com/exiftool/exiftool/issues/464">#464</a>, <a href="https://github.com/exiftool/exiftool/issues/488">#488</a>, <a href="https://github.com/exiftool/exiftool/issues/490">#490</a>)
+<li>Decode a new tag for the Ricoh GR IV Monochrome, and add a few other values
+<li>Decode a few new Garmin FIT tags
+<li>Decode a new Nikon NCTG tag (thanks Wade Tregaskis)
+<li>Decode more DJI protobuf tags (thanks Alexey Dogaev)
+<li>Decode timed GPS for more DJI models (<a href="https://github.com/exiftool/exiftool/issues/412">github #412</a>, <a href="https://github.com/exiftool/exiftool/issues/436">#436</a>, <a href="https://github.com/exiftool/exiftool/issues/440">#440</a>)
+<li>Decode HEIC stereo image information (<a href="https://github.com/exiftool/exiftool/issues/480">github #480</a>)
+<li>Decode timed GPS for another dashcam (<a href="https://github.com/exiftool/exiftool/issues/487">github #487</a>)
+<li>Decode more tags for the Ricoh GR IV Monochrome (<a href="https://github.com/exiftool/exiftool/issues/461">github #461</a>)
+<li>Decode Olympus WhiteBalanceFineTune (<a href="https://github.com/exiftool/exiftool/issues/462">github #462</a>)
+<li>Decode ShutterCount for some firmware versions of the Canon EOS RP
+<li>Extract APP2 PreviewImage from EXIF data of Xiaomi HEIC files
+<li>Improved handling of Canon CameraInfo firmware versions
+<li>Relaxed PDF parsing to accept some questionable XREF tables (<a href="https://github.com/exiftool/exiftool/issues/481">github #481</a>)
+<li>Disambiguate Garmin FIT developer messages which result in the same tag name
+    (<a href="https://github.com/exiftool/exiftool/issues/463">github #463</a>)
+<li>Update for Nikon Z6iii firmware 2.0 (thanks Warren Hatch)
+<li>Lowered priority of Composite:ISO for Canon MP4 videos (<a href="https://github.com/exiftool/exiftool/issues/431">github #431</a>)
+<li>Removed goto statements from Geotag.pm to make JavaScript translation easier
+<li>Patched to fix html injection issue in -htmlDump feature (<a href="https://github.com/exiftool/exiftool/issues/444">github #444</a>)
+<li>Patched to recognized LigoGPS trailer with different marker (<a href="https://github.com/exiftool/exiftool/issues/470">github #470</a>)
+<li>Patched to avoid hang when using -stay_open and piping arguments from stdin
+    if the pipe is closed (<a href="https://github.com/exiftool/exiftool/issues/458">github #458</a>)
+<li>Patched to fix conversion of ModelReleaseYear for new Sony ILCE-1M2 firmware
+<li>Patched potential deep recursion when reading malformed PGF file
+<li>Patched potential crash issue when reading GM PDR metadata
+<li>Fixed issue where extraneous non-EXIF APP segments weren't handled properly
+    in the EXIF data of Xiaomi HEIC files (<a href="https://github.com/exiftool/exiftool/issues/485">github #485</a>)
+<li>Fixed potential "pointer references previous directory" error when
+    processing some PNG images (<a href="https://github.com/exiftool/exiftool/issues/453">github #453</a>)
+<li>Fixed problem where Samsung HEIC motion-photo images weren't recognized as
+    motion photo after editing with ExifTool ('sefd' atom must come last). 
+    Re-editing with this version of ExifTool will repair any damaged files
+<li>Fixed failed Garmin test on some systems (<a href="https://github.com/exiftool/exiftool/issues/423">github #423</a>)
+<li>Fixed hang issue when reading truncated Geolocation database (<a href="https://github.com/exiftool/exiftool/issues/495">github #495</a>)
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#QuickTimeUndLang">QuickTimeUndLang</a> option (<a href="https://github.com/exiftool/exiftool/issues/451">github #451</a>)
+    </ul>
+</ul>
+
 <a name='v13.59'><b>May 27, 2026 - Version 13.59</b></a>
 <ul>
 <li>Security update

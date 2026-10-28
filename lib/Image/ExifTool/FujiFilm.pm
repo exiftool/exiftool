@@ -31,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.02';
+$VERSION = '2.03';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -494,8 +494,10 @@ my %faceCategories = (
         Writable => 'int32s',
         PrintConv => {
             0 => 'Off',
-            32 => 'Weak',
-            64 => 'Strong',
+            16 => 'Weak/Small', #github455 (X-HF1)
+            32 => 'Weak', # (X-HF1 Weak/Large)
+            48 => 'Strong/Small', #github455 (X-HF1)
+            64 => 'Strong', # (X-HF1 Strong/Large)
         },
     },
     0x1048 => { #12
@@ -667,9 +669,18 @@ my %faceCategories = (
             0x70000 => 'Soft Focus',
             0x90000 => 'Low Key',
             0x100000 => 'Light Leak', #forum17392
+            0x110000 => 'Halation', #github454
             0x130000 => 'Expired Film Green', #forum17392
             0x130001 => 'Expired Film Red', #forum17392 (NC)
             0x130002 => 'Expired Film Neutral', #forum17392
+            0x140000 => 'Canvas', #github454
+            0x150000 => 'Retro', #github454
+            0x160000 => 'Vignette', #github454
+            0x170000 => 'Blur', #github454
+            0x180000 => 'Fisheye', #github454
+            0x190000 => 'Color Shift', #github454
+            0x1a0000 => 'Mirror', #github454
+            0x1b0000 => 'Double Exposure', #github454
         },
     },
     0x1210 => { #2
@@ -780,7 +791,7 @@ my %faceCategories = (
     },
     # 0x1408 - values: '0100', 'S100', 'VQ10'
     # 0x1409 - values: same as 0x1408
-    # 0x140a - values: 0, 1, 3, 5, 7 (bit 2=red-eye detection, ref 11/13)
+    # 0x140a - values: 0, 1, 3, 5, 7 (bit 2=red-eye detection, ref 11/13; 0x13=face/subject detection, github439)
     0x140b => { #6
         Name => 'AutoDynamicRange',
         Writable => 'int16u',
@@ -804,6 +815,7 @@ my %faceCategories = (
             2 => 'On (mode 2, shooting only)',
         }],
     },
+  # 0x1424 - in16u: FilmSimulation 0x1000=Provia, 0x1120=Velvia or 0x1200=Astia (see github456)
     0x1425 => { # if present and 0x1031 PictureMode is zero, then PictureMode is SR+, not Auto (ref 11)
         Name => 'SceneRecognition',
         Writable => 'int16u',
@@ -981,7 +993,7 @@ my %faceCategories = (
             29 => 'Animal Body (29)', #forum15192
         },'REPEAT'],
     },
-    # 0x4202 int8u[-1] - number of cooredinates in each rectangle? (ref 11)
+    # 0x4202 int8u[-1] - number of coordinates in each rectangle? (ref 11)
     0x4203 => { #11
         Name => 'FaceElementPositions',
         Writable => 'int16u',

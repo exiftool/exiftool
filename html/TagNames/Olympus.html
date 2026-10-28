@@ -1639,9 +1639,11 @@ the Make and Model are used to identify the extender)</span>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0502 = 1282'>0x0502</td>
-<td>WhiteBalanceBracket</td>
-<td class=c>int16s</td>
-<td>&nbsp;</td></tr>
+<td>WhiteBalanceBracket
+  <br>WhiteBalanceFineTune</td>
+<td class=c>int16s<br>int16s[2]</td>
+<td><span class=s><span class=n>(older models)</span>
+  <br><span class=n>(2 values in the range -4 to +4 for blue to amber and magenta to green)</span></span></td></tr>
 <tr>
 <td title='0x0503 = 1283'>0x0503</td>
 <td>CustomSaturation</td>
@@ -4016,7 +4018,7 @@ such as the OM E-M5.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 5, 2025</i>
+<br><i>Last revised Oct 20, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

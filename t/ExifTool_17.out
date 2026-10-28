@@ -1,10 +1,10 @@
-  ExifToolVersion = 13.51
+  ExifToolVersion = 13.60
   FileName = Canon.jpg
   Directory = t/images
   FileSize = 2697
   FileModifyDate = 1159902631
-  FileAccessDate = 1770489903
-  FileInodeChangeDate = 1770489785
+  FileAccessDate = 1792262326
+  FileInodeChangeDate = 1779900245
   FilePermissions = 33188
   FileType = JPEG
   FileTypeExtension = JPG
@@ -390,6 +390,14 @@ JPEG APP1 (2442 bytes):
   | | |         0548: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
   | | |         [snip 432 bytes]
   | | | + [BinaryData directory, 512 bytes, Little-endian]
+  | | | | FirmwareInfo = 
+  | | | | - Tag 0x0000 (512 bytes, undef[512]):
+  | | | |     0508: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+  | | | |     0518: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+  | | | |     0528: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+  | | | |     0538: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+  | | | |     0548: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]
+  | | | |     [snip 432 bytes]
   | | | 14) Canon_0x0000 = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
   | | |     - Tag 0x0000 (36 bytes, int16u[18]):
   | | |         0708: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [................]

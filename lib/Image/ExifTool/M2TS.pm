@@ -32,7 +32,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.34';
+$VERSION = '1.35';
 
 # program map table "stream_type" lookup (ref 6/1/9)
 my %streamType = (
@@ -1015,7 +1015,7 @@ Try: for (;;) {
     # look for LIGOGPSINFO trailer
     if ($et->Options('ExtractEmbedded') and
         $raf->Seek(-8, 2) and $raf->Read($buff, 8) == 8 and
-        $buff =~ /^&&&&/)
+        $buff =~ /^(&&&&|####)/)
     {
         my $len = unpack('x4N', $buff);
         if ($len < $raf->Tell() and $raf->Seek(-$len, 2) and $raf->Read($buff,$len) == $len) {

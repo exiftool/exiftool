@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.51
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.60
 [File, System, Other] FileName - File Name: CanonRaw.cr3
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 53 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:26 22:05:16-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2026:02:16 21:50:16-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:02:07 13:43:05-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:09:09 10:23:06-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:05:27 12:44:05-04:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: CR3
 [File, File, Other] FileTypeExtension - File Type Extension: cr3
@@ -429,6 +429,7 @@
 [MakerNotes, Track4, Camera] 796 - Normal White Level: 13035
 [MakerNotes, Track4, Camera] 797 - Specular White Level: 14338
 [MakerNotes, Track4, Camera] 798 - Linearity Upper Margin: 10025
+[MakerNotes, Track4, Camera] 0 - Firmware Info: 1.0.0 34(00) at offset 0x5c1
 [MakerNotes, Track4, Camera] 1473 - Firmware Version: 1.0.0
 [MakerNotes, Track4, Camera] 0 - Vignetting Corr Version: 32
 [EXIF, IFD0, Image] 256 - Image Width: 6000

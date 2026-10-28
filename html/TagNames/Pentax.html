@@ -992,11 +992,11 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>10 = Cross Processing
   <br>11 = Flat
   <br>256 = Standard
-  <br>257 = Vivid</td><td>&nbsp;&nbsp;</td>
-  <td>258 = Monotone
+  <br>257 = Vivid
+  <br>258 = Monotone
   <br>259 = Soft Monotone
-  <br>260 = Hard Monotone
-  <br>261 = Hi-contrast B&amp;W
+  <br>260 = Hard Monotone</td><td>&nbsp;&nbsp;</td>
+  <td>261 = Hi-contrast B&amp;W
   <br>262 = Positive Film
   <br>263 = Bleach Bypass 2
   <br>264 = Retro
@@ -1006,7 +1006,12 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>32768 = Standard
   <br>32769 = Hard
   <br>32770 = Soft
-  <br>33024 = Monochrome</td></tr></table>
+  <br>33024 = Custom 3
+  <br>33025 = Solid
+  <br>33026 = Soft
+  <br>33027 = High Contrast
+  <br>33028 = Grainy
+  <br>33029 = HDR tone</td></tr></table>
 </td></tr>
 <tr class=b>
 <td title='0x0050 = 80'>0x0050</td>
@@ -1407,39 +1412,57 @@ other models)</span>
 <td class=c>int8s[2]</td>
 <td><span class=s>&#39;0 0&#39; = Off</span></td></tr>
 <tr>
+<td title='0x0099 = 153'>0x0099</td>
+<td>SnapFocusDistance</td>
+<td class=c>int8u[3]</td>
+<td><span class=s><span class=n>(the DOF settings occur in Snap Distance Priority AE or Sn mode)</span></span><table class=cols><tr>
+  <td>&#39;1 0 0&#39; = 1 m
+  <br>&#39;2 0 0&#39; = 1.5 m
+  <br>&#39;3 0 0&#39; = 2 m
+  <br>&#39;3 0 1&#39; = 2 m - DOF3
+  <br>&#39;3 0 2&#39; = 2 m - DOF2
+  <br>&#39;3 0 3&#39; = 2 m - DOF1</td><td>&nbsp;&nbsp;</td>
+  <td>&#39;4 0 0&#39; = 2.5 m
+  <br>&#39;5 0 0&#39; = 5 m
+  <br>&#39;6 0 0&#39; = 3.5 m
+  <br>&#39;7 0 0&#39; = 0.3 m
+  <br>&#39;255 0 0&#39; = inf</td></tr></table>
+</td></tr>
+<tr class=b>
 <td title='0x009e = 158'>0x009e</td>
 <td>HDF</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
-  <br>1 = On</span></td></tr>
-<tr class=b>
+  <br>1 = On
+  <br>2 = Red Filter</span></td></tr>
+<tr>
 <td title='0x0200 = 512'>0x0200</td>
 <td>BlackPoint</td>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0201 = 513'>0x0201</td>
 <td>WhitePoint</td>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0203 = 515'>0x0203</td>
 <td>ColorMatrixA</td>
 <td class=c>int16s[9]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0204 = 516'>0x0204</td>
 <td>ColorMatrixB</td>
 <td class=c>int16s[9]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0205 = 517'>0x0205</td>
 <td>CameraSettings
   <br>CameraSettingsUnknown</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Pentax.html#CameraSettings'>Pentax CameraSettings Tags</a>
   <br>--&gt; <a href='Pentax.html#CameraSettingsUnknown'>Pentax CameraSettingsUnknown Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0206 = 518'>0x0206</td>
 <td>AEInfo
   <br>AEInfo2
@@ -1450,7 +1473,7 @@ other models)</span>
   <br>--&gt; <a href='Pentax.html#AEInfo2'>Pentax AEInfo2 Tags</a>
   <br>--&gt; <a href='Pentax.html#AEInfo3'>Pentax AEInfo3 Tags</a>
   <br>--&gt; <a href='Pentax.html#AEInfoUnknown'>Pentax AEInfoUnknown Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0207 = 519'>0x0207</td>
 <td>LensInfo</td>
 <td class=c>-</td>
@@ -1459,247 +1482,247 @@ other models)</span>
   <br>--&gt; <a href='Pentax.html#LensInfo3'>Pentax LensInfo3 Tags</a>
   <br>--&gt; <a href='Pentax.html#LensInfo4'>Pentax LensInfo4 Tags</a>
   <br>--&gt; <a href='Pentax.html#LensInfo5'>Pentax LensInfo5 Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0208 = 520'>0x0208</td>
 <td>FlashInfo
   <br>FlashInfoUnknown</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Pentax.html#FlashInfo'>Pentax FlashInfo Tags</a>
   <br>--&gt; <a href='Pentax.html#FlashInfoUnknown'>Pentax FlashInfoUnknown Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0209 = 521'>0x0209</td>
 <td>AEMeteringSegments</td>
 <td class=c>int8u[n]</td>
 <td><span class=s><span class=n>(measurements from each of the 16 AE metering segments for models such as the
 K10D, 77 metering segments for models such as the K-5, and 4050 metering
 segments for the K-3, converted to LV)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x020a = 522'>0x020a</td>
 <td>FlashMeteringSegments</td>
 <td class=c>int8u[n]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x020b = 523'>0x020b</td>
 <td>SlaveFlashMeteringSegments</td>
 <td class=c>int8u[n]</td>
 <td><span class=s><span class=n>(used in wireless control mode)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x020d = 525'>0x020d</td>
 <td>WB_RGGBLevelsDaylight</td>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x020e = 526'>0x020e</td>
 <td>WB_RGGBLevelsShade</td>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x020f = 527'>0x020f</td>
 <td>WB_RGGBLevelsCloudy</td>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0210 = 528'>0x0210</td>
 <td>WB_RGGBLevelsTungsten</td>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0211 = 529'>0x0211</td>
 <td>WB_RGGBLevelsFluorescentD</td>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0212 = 530'>0x0212</td>
 <td>WB_RGGBLevelsFluorescentN</td>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0213 = 531'>0x0213</td>
 <td>WB_RGGBLevelsFluorescentW</td>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0214 = 532'>0x0214</td>
 <td>WB_RGGBLevelsFlash</td>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0215 = 533'>0x0215</td>
 <td>CameraInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#CameraInfo'>Pentax CameraInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0216 = 534'>0x0216</td>
 <td>BatteryInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#BatteryInfo'>Pentax BatteryInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x021b = 539'>0x021b</td>
 <td>SaturationInfo?</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(only in PEF and DNG images)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x021c = 540'>0x021c</td>
 <td>ColorMatrixA2</td>
 <td class=c>undef[18]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x021d = 541'>0x021d</td>
 <td>ColorMatrixB2</td>
 <td class=c>undef[18]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x021f = 543'>0x021f</td>
 <td>AFInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#AFInfo'>Pentax AFInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0220 = 544'>0x0220</td>
 <td>HuffmanTable?</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(found in K10D, K20D and K2000 PEF images)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0221 = 545'>0x0221</td>
 <td>KelvinWB</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#KelvinWB'>Pentax KelvinWB Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0222 = 546'>0x0222</td>
 <td>ColorInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#ColorInfo'>Pentax ColorInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0224 = 548'>0x0224</td>
 <td>EVStepInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#EVStepInfo'>Pentax EVStepInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0226 = 550'>0x0226</td>
 <td>ShotInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#ShotInfo'>Pentax ShotInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0227 = 551'>0x0227</td>
 <td>FacePos</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#FacePos'>Pentax FacePos Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0228 = 552'>0x0228</td>
 <td>FaceSize</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#FaceSize'>Pentax FaceSize Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0229 = 553'>0x0229</td>
 <td>SerialNumber</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(left blank by some cameras)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x022a = 554'>0x022a</td>
 <td>FilterInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#FilterInfo'>Pentax FilterInfo Tags</a>
   <br>--&gt; <a href='Pentax.html#FilterInfo'>Pentax FilterInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x022b = 555'>0x022b</td>
 <td>LevelInfoK3III
   <br>LevelInfo</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Pentax.html#LevelInfoK3III'>Pentax LevelInfoK3III Tags</a>
   <br>--&gt; <a href='Pentax.html#LevelInfo'>Pentax LevelInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x022d = 557'>0x022d</td>
 <td>WBLevels</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#WBLevels'>Pentax WBLevels Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x022e = 558'>0x022e</td>
 <td>Artist</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x022f = 559'>0x022f</td>
 <td>Copyright</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0230 = 560'>0x0230</td>
 <td>FirmwareVersion</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(only in videos)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0231 = 561'>0x0231</td>
 <td>ContrastDetectAFArea</td>
 <td class=c>int16u[4]</td>
 <td><span class=s><span class=n>(AF area of the most recent contrast-detect focus operation. Coordinates
 are left, top, width and height in a 720x480 frame, with Y downwards)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0235 = 565'>0x0235</td>
 <td>CrossProcessParams</td>
 <td class=c>undef[10]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0238 = 568'>0x0238</td>
 <td>CAFPointInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#CAFPointInfo'>Pentax CAFPointInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0239 = 569'>0x0239</td>
 <td>LensInfoQ</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#LensInfoQ'>Pentax LensInfoQ Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x023f = 575'>0x023f</td>
 <td>Model</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0243 = 579'>0x0243</td>
 <td>PixelShiftInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#PixelShiftInfo'>Pentax PixelShiftInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0245 = 581'>0x0245</td>
 <td>AFPointInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#AFPointInfo'>Pentax AFPointInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x03fe = 1022'>0x03fe</td>
 <td>DataDump</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x03ff = 1023'>0x03ff</td>
 <td>TempInfo
   <br>UnknownInfo</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Pentax.html#TempInfo'>Pentax TempInfo Tags</a>
   <br>--&gt; <a href='Pentax.html#UnknownInfo'>Pentax UnknownInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0402 = 1026'>0x0402</td>
 <td>ToneCurve</td>
 <td class=c title=' ~ = Writable only with -n'>yes~</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0403 = 1027'>0x0403</td>
 <td>ToneCurves</td>
 <td class=c title=' ~ = Writable only with -n'>yes~</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0405 = 1029'>0x0405</td>
 <td>UnknownBlock?</td>
 <td class=c>undef</td>
 <td><span class=s><span class=n>(large unknown data block in PEF/DNG images but not JPG images)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x040b = 1035'>0x040b</td>
 <td>FaceInfoK3III</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#FaceInfoK3III'>Pentax FaceInfoK3III Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x040c = 1036'>0x040c</td>
 <td>AFInfoK3III</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#AFInfoK3III'>Pentax AFInfoK3III Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0e00 = 3584'>0x0e00</td>
 <td>PrintIM</td>
 <td class=c>-</td>
@@ -5605,7 +5628,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 27, 2026</i>
+<br><i>Last revised Jun 2, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

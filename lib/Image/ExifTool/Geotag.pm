@@ -36,7 +36,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.88';
+$VERSION = '1.89';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -290,8 +290,17 @@ sub LoadTrackLog($$;$)
     my $fix = { };
     my $csvDelim = $et->Options('CSVDelim');
     $csvDelim = ',' unless defined $csvDelim;
-    my (@saveFix, @saveTime, $timeSpan);
+    my (@saveFix, @saveTime, $timeSpan, $doneFix);
     for (;;) {
+        # store our fix if complete
+        if ($doneFix) {
+            $isDate = 1;
+            $$points{$time} = $fix;
+            push @fixTimes, $time;
+            $fix = { };
+            ++$numPoints;
+            undef $doneFix;
+        }
         $raf->ReadLine($_) or last;
         # determine file format
         if (not $format) {
@@ -553,11 +562,7 @@ sub LoadTrackLog($$;$)
             $$fix{lat} = $1;
             $$fix{lon} = $2;
             $time = Time::Local::timegm($8,$7,$6,$4,$3-1,$5);
-DoneFix:    $isDate = 1;
-            $$points{$time} = $fix;
-            push @fixTimes, $time;
-            $fix = { };
-            ++$numPoints;
+            $doneFix = 1;
             next;
 #
 # Bramor gEO log file
@@ -575,7 +580,8 @@ DoneFix:    $isDate = 1;
             $time = Time::Local::timegm(0,$t[1],$t[0],$d[0],$d[1]-1,$d[2]) + $t[2];
             # set necessary flags for extra available information
             @$has{qw(alt track orient)} = (1,1,1);
-            goto DoneFix;   # save this fix
+            $doneFix = 1;   # save this fix
+            next;
         } elsif ($format eq 'CSV') {
             chomp;
             my @vals = SplitCSV($_, $csvDelim);
@@ -649,7 +655,8 @@ DoneFix:    $isDate = 1;
                 $$has{alt} = 1 if defined $$fix{alt};
                 $$has{track} = 1 if defined $$fix{track};
                 $$has{orient} = 1 if defined $$fix{pitch};
-                goto DoneFix;
+                $doneFix = 1;
+                next;
             }
             next;
         } elsif ($format eq 'JSON') {
@@ -657,7 +664,7 @@ DoneFix:    $isDate = 1;
             if (/"(latitudeE7|longitudeE7|latE7|lngE7|timestamp|startTime|point|durationMinutesOffsetFromStartTime|time)"\s*:\s*"?(.*?)"?,?\s*[\x0d\x0a]/) {
                 if ($1 eq 'timestamp' or $1 eq 'time') {
                     $time = GetTime($2);
-                    goto DoneFix if $time and $$fix{lat} and $$fix{lon};
+                    $time and $$fix{lat} and $$fix{lon} and $doneFix = 1, next;
                 } elsif ($1 eq 'startTime') { # (new format)
                     $startTime = GetTime($2);
                 } elsif ($1 eq 'latitudeE7' or $1 eq 'latE7') {
@@ -671,7 +678,7 @@ DoneFix:    $isDate = 1;
                 } elsif ($1 eq 'durationMinutesOffsetFromStartTime' and defined $startTime) { # (new format)
                     $time = $startTime + $2 * 60;
                     # note: this assumes that "point" comes first, which it does in my sample
-                    goto DoneFix if $time and $$fix{lat} and $$fix{lon};
+                    $time and $$fix{lat} and $$fix{lon} and $doneFix = 1, next;
                 }
             }
             next;

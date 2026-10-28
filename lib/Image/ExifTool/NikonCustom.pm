@@ -15,7 +15,7 @@ package Image::ExifTool::NikonCustom;
 use strict;
 use vars qw($VERSION @ISA @EXPORT_OK %buttonsZ8 %buttonsZ9);
 
-$VERSION = '1.29';
+$VERSION = '1.30';
 
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(%buttonsZ8 %buttonsZ9);
@@ -9840,7 +9840,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     },
 );
 
-# Z6III custom settings (ref 1)   #base at offset27 + 1255 (firmware 1.0.0)
+# Z6III custom settings (ref 1)   #base at offset27 + 1255 (firmware 1.0.0)  #base at offset27 + 1167 (firmware 2.0.0)
 %Image::ExifTool::NikonCustom::SettingsZ6III = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
@@ -9854,8 +9854,8 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
         Name => 'AF-CPrioritySelection',
         PrintConv => {
             0 => 'Release',
-            1 => 'Release + Focus',
-            3 => 'Focus',
+            1 => 'Focus',
+            3 => 'Release + Focus',
         },
     },
     5 => { Name => 'AF-SPrioritySelection', PrintConv => {0 => 'Release',1 => 'Focus'}},  #CSa2
@@ -9901,8 +9901,8 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     33 => { # CSb5
         Name => 'CenterWeightedAreaSize',
         PrintConv => {
-            0 => 'Standard',
-            1 => 'Small',
+            0 => 'Small',
+            1 => 'Standard',
             4 => 'Average',
         },
     },
@@ -9963,6 +9963,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
             1 => '1 s',
             2 => '2 s',
             3 => '3 s',
+            4 => 'Min',
         },
     },
     55 => { Name => 'PlaybackMonitorOffTime',    %powerOffDelayTimesZ9 }, # CSc3-a
@@ -10140,6 +10141,26 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     463 => { Name => 'ControlRingResponse',            PrintConv => { 0 => 'High', 1 => 'Low' } }, # CSf11
     559 => { Name => 'FocusPeakingDisplay', PrintConv => \%offOn, Unknown => 1}, # CSa12a
 );
+
+# Z6III custom settings (ref 1)   #base at offset27 + 1167 (firmware 2.0.0)
+%Image::ExifTool::NikonCustom::SettingsZ6IIIv2 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'Custom settings for the Z6III.',
+    3 => { # CSa1
+        Name => 'AF-CPrioritySelection',
+        PrintConv => {
+            0 => 'Release',
+            1 => 'Focus',
+            3 => 'Release + Focus',
+        },
+    },
+);
+
 
 # Z8 custom settings (ref 1)   #base at offset26 + 1195 (firmware 1.0.0)
 %Image::ExifTool::NikonCustom::SettingsZ8 = (

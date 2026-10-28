@@ -267,8 +267,13 @@ same way. So following two commands have exactly the same effect as above:
 <pre>exiftool -gpsaltituderef=0 -n image.jpg
 exiftool -gpsaltituderef#=0 image.jpg
 </pre>
-Integer values may also be specified in hexadecimal (with a leading '0x').  For
-example, the following commands are all equivalent:
+<i class=lt>[Note that as of ExifTool 11.54, ExifTool accepts a signed number
+for GPSAltitudeRef, with positive values for above sea level and negative for
+below, so the "not in PrintConv" error will no longer occur when writing this
+tag with a number.]</i></blockquote>
+
+<blockquote>Integer values may also be specified in hexadecimal (with a leading '0x').
+For example, the following commands are all equivalent:
 <pre>exiftool -flash=1 -n image.jpg
 exiftool -flash=0x1 -n image.jpg
 exiftool -flash#=1 image.jpg
@@ -1866,7 +1871,7 @@ certain commands, but may be suppressed by adding
 <code>-api "NoWarning=No writable tags"</code> to the command if desired.</blockquote>
 
 <hr>
-<i>Last revised Jan 4, 2026</i>
+<i>Last revised Jun 10, 2026</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

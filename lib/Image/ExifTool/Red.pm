@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 sub ProcessR3D($$);
 
@@ -261,9 +261,10 @@ sub ProcessR3D($$)
         $pos += 2;      # skip length word
     }
     # do sanity check on the directory size (in case our assumptions were wrong)
-    if ($dirLen < 300 or $dirLen >= 2048 or $pos + $dirLen > length $buff) {
+    if ($dirLen < 300 or $dirLen >= 10000 or $pos + $dirLen > length $buff) {
         # tag 0x1000 with length 0x000f should be near the directory start
-        $buff =~ /\0\x0f\x10[\0\x06]/g or return $et->Warn("Can't find Red directory. Please submit sample for testing");
+        # (0xad sample is from github443)
+        $buff =~ /\0\x0f\x10[\0\x06\xad]/g or return $et->Warn("Can't find Red directory. Please submit sample for testing");
         $pos = pos($buff) - 4;
         $dirEnd = length $buff;
         undef $dirLen;

@@ -19,7 +19,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 # ExifTool and FIT format names and invalid values for each FIT base type
 my %baseType = (
@@ -31,8 +31,8 @@ my %baseType = (
     0x85 => [ qw(int32s sint32), 0x7fffffff ],
     0x86 => [ qw(int32u unit32), 0xffffffff ],
     0x07 => [ qw(string string), '' ],
-    0x88 => [ qw(float float32), 'nan' ],
-    0x89 => [ qw(double float64),'nan' ],
+    0x88 => [ qw(float float32), 'NaN' ],
+    0x89 => [ qw(double float64),'NaN' ],
     0x0a => [ qw(int8u uint8z),   0 ],
     0x8b => [ qw(int16u uint16z), 0 ],
     0x8c => [ qw(int32u uint32z), 0 ],
@@ -1597,20 +1597,6 @@ my %sensorType = (
     1 => 'Gyroscope',
     2 => 'Compass',
     3 => 'Barometer',
-    4 => 'Speed', #4
-    5 => 'Speed Cadence', #4
-    6 => 'Tempe', #4
-    8 => 'Shimano Di2', #4
-    10 => 'Edge Remote', #4
-    12 => 'Smart Trainer', #4
-    13 => 'Lights', #4
-    14 => 'Radar', #4
-    15 => 'Extended Display', #4
-    16 => 'Shifting', #4
-    17 => 'Muscle O2', #4
-    18 => 'Rd Pod', #4
-    22 => 'Headphones', #4
-    28 => 'Tank Pressure', #4
 );
 
 my %cameraOrientationType = (
@@ -2449,6 +2435,7 @@ my %genderX = (
 );
 
 my %gPSType = (
+    3 => 'Signal Lost',
     11 => 'Ultra Trac Trigger',
     49 => 'Mode Change',
 );
@@ -2708,6 +2695,27 @@ my %selfEvaluationStatus = (
     0 => 'Off',
     1 => 'Workouts Only',
     2 => 'Always',
+);
+
+my %sensorDeviceType = (
+    0 => 'External Heart Rate',
+    1 => 'Cadence',
+    2 => 'Foot Pod',
+    3 => 'Power',
+    4 => 'Speed',
+    5 => 'Speed Cadence',
+    6 => 'Tempe',
+    8 => 'Shimano Di2',
+    10 => 'Edge Remote',
+    12 => 'Smart Trainer',
+    13 => 'Lights',
+    14 => 'Radar',
+    15 => 'Extended Display',
+    16 => 'Shifting',
+    17 => 'Muscle O2',
+    18 => 'Rd Pod',
+    22 => 'Headphones',
+    28 => 'Tank Pressure',
 );
 
 my %soundAndVibe = (
@@ -4921,6 +4929,8 @@ my %zoneMetric = (
     26 => { Name => 'AvgVertSpeed', ValueConv => '$val / 1000', PrintConv => '"$val m/s"' },
     27 => { Name => 'EndTime', %timeInfo, Groups => { 2 => 'Time' } },
     28 => { Name => 'TotalCalories', PrintConv => '"$val kcal"' },
+    29 => { Name => 'AvgCadence', ValueConv => '$val / 128', PrintConv => '"$val rpm"' }, #4
+    30 => { Name => 'MaxCadence', ValueConv => '$val / 128', PrintConv => '"$val rpm"' }, #4
     32 => { Name => 'AvgTemperature', PrintConv => '"$val C"' }, #4
     33 => { Name => 'MaxTemperature', PrintConv => '"$val C"' }, #4
     34 => { Name => 'MinTemperature', PrintConv => '"$val C"' }, #4
@@ -4936,6 +4946,10 @@ my %zoneMetric = (
     74 => { Name => 'StartElevation', ValueConv => '$val / 5 - 500', PrintConv => '"$val m"' },
     79 => { Name => 'RestingCalories', PrintConv => '"$val kcal"' }, #4
     93 => { Name => 'GradeAdjustedSpeed', ValueConv => '$val / 1000', PrintConv => '"$val m/s"' }, #4
+    94 => 'AvgHRV', #4
+    95 => 'MaxHRV', #4
+    105 => { Name => 'PedalingTime', ValueConv => '$val / 1000', PrintConv => '"$val s"' }, #4
+    106 => { Name => 'CruisingTime', ValueConv => '$val / 1000', PrintConv => '"$val s"' }, #4
     107 => 'BeginningPotential', #4
     108 => 'EndingPotential', #4
     109 => 'MinStamina', #4
@@ -4959,6 +4973,10 @@ my %zoneMetric = (
     11 => { Name => 'MaxHeartRate', PrintConv => '"$val bpm"' },
     12 => { Name => 'AvgVertSpeed', ValueConv => '$val / 1000', PrintConv => '"$val m/s"' },
     13 => { Name => 'TotalCalories', PrintConv => '"$val kcal"' },
+    14 => { Name => 'AvgCadence', ValueConv => '$val / 128', PrintConv => '"$val rpm"' }, #4
+    15 => { Name => 'MaxCadence', ValueConv => '$val / 128', PrintConv => '"$val rpm"' }, #4
+    17 => { Name => 'AvgTemperature', PrintConv => '"$val C"' }, #4
+    19 => { Name => 'MinTemperature', PrintConv => '"$val C"' }, #4
     20 => { Name => 'AvgVerticalOscillation', ValueConv => '$val / 10', PrintConv => '"$val mm"' }, #4
     21 => { Name => 'AvgVerticalRatio', ValueConv => '$val / 100', PrintConv => '"$val %"' }, #4
     22 => { Name => 'AvgStanceTime', ValueConv => '$val / 10', PrintConv => '"$val ms"' }, #4
@@ -4966,8 +4984,12 @@ my %zoneMetric = (
     25 => { Name => 'AvgPower', PrintConv => '"$val watts"' }, #4
     26 => { Name => 'MaxPower', PrintConv => '"$val watts"' }, #4
     27 => { Name => 'NormalizedPower', PrintConv => '"$val watts"' }, #4
+    52 => { Name => 'AvgSplitAscent', PrintConv => '"$val m"' }, #4
+    53 => { Name => 'MaxSplitAscent', PrintConv => '"$val m"' }, #4
     60 => { Name => 'MaxSplitDistance', ValueConv => '$val / 100', PrintConv => '"$val m"' }, #4
     64 => { Name => 'RestingCalories', PrintConv => '"$val kcal"' }, #4
+    72 => 'AvgHRV', #4
+    73 => 'MaxHRV', #4
     77 => { Name => 'TotalMovingTime', ValueConv => '$val / 1000', PrintConv => '"$val s"' },
     79 => { Name => 'FirstStartTime', %timeInfo, Groups => { 2 => 'Time' } }, #4
     83 => { Name => 'StepSpeedLossDistance', ValueConv => '$val / 100', PrintConv => '"$val cm/s"' }, #4
@@ -5035,6 +5057,9 @@ my %zoneMetric = (
     5 => { Name => 'CoursePointType', PrintConv => \%coursePointEnum },
     6 => 'CoursePointName',
     8 => 'Favorite',
+    13 => { Name => 'Cutoff', ValueConv => '$val / 1000', PrintConv => '"$val s"' }, #4
+    14 => 'Notes', #4
+    15 => { Name => 'Rest', ValueConv => '$val / 1000', PrintConv => '"$val s"' }, #4
 );
 
 %Image::ExifTool::Garmin::SegmentID = (
@@ -5932,7 +5957,7 @@ my %zoneMetric = (
     45 => { Name => 'UseForSpeed', PrintConv => \%useStatus, SeparateTable => 'UseStatus' },
     46 => { Name => 'UseForDistance', PrintConv => \%useStatus, SeparateTable => 'UseStatus' },
     51 => { Name => 'ConnectionType', PrintConv => \%connectionType },
-    52 => { Name => 'SensorType', PrintConv => \%sensorType, SeparateTable => 'SensorType' },
+    52 => { Name => 'SensorDeviceType', PrintConv => \%sensorDeviceType },
     91 => 'ProductName',
 );
 
@@ -6531,6 +6556,14 @@ sub ProcessFIT($$$)
                         my $name = $$dev{$num}{3};
                         $name =~ s/($|_)([a-z])/\U$2/g;
                         $name = Image::ExifTool::MakeTagName($name);
+                        # make sure name is unique
+                        foreach (Image::ExifTool::TagTableKeys($tbl)) {
+                            next unless ref($$tbl{$_}) eq 'HASH';
+                            my $existing = $$tbl{$_}{Name};
+                            next unless $existing and $existing eq $name;
+                            $name = "$name-$idx";   # add developer data index
+                            last;
+                        }
                         my $tagInfo = { Name  => $name },
                         my $units = $$dev{$num}{8};
                         if ($units) {
@@ -6553,8 +6586,11 @@ sub ProcessFIT($$$)
                 if (int($count) == $count) {
                     my $val = ReadValue(\$buff, $pos, $fmt, $count, $size);
                     # ignore invalid values
-                    # (NAN may be 'NaN' or 'nan' on different systems, so 'lc' is required)
-                    unless (lc $val eq $baseType{$type}[2]) {
+                    # (the string representation of NaN maybe 'nan', '-NaN' or according
+                    # to ChatGPT other junk such as '1.#QNAN' on some systems, so use a
+                    # numerical test for this since NaN is not equal to itself numerically)
+                    my $invalid = $baseType{$type}[2];
+                    unless ($invalid eq 'NaN' ? $val != $val : $val eq $invalid) {
                         $fieldValue{$num} = $val unless $$field[3];
                         my $str = qq($fmt "$baseType{$type}[1]");
                         $str .= ", devIdx=$$field[2]" if $$field[3];

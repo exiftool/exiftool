@@ -71,7 +71,7 @@ package Image::ExifTool::Geolocation;
 use strict;
 use vars qw($VERSION $geoDir $altDir $dbInfo);
 
-$VERSION = '1.10';  # (this is the module version number, not the database version)
+$VERSION = '1.11';  # (this is the module version number, not the database version)
 
 my $debug; # set to output processing time for testing
 
@@ -132,7 +132,7 @@ sub ReadDatabase($)
     open DATFILE, "< $datfile" or warn("Error reading $datfile\n"), return 0;
     binmode DATFILE;
     my $line = <DATFILE>;
-    unless ($line =~ /^Geolocation(\d+\.\d+)\t(\d+)/) {
+    unless ($line and $line =~ /^Geolocation(\d+\.\d+)\t(\d+)/) {
         warn("Bad format Geolocation database\n");
         close(DATFILE);
         return 0;
@@ -152,12 +152,17 @@ sub ReadDatabase($)
     undef @altNames;    # reset altNames
 
     # read city database
+    my $err;
     undef @cityList;
-    my $i = 0;
     for (;;) {
         $line = <DATFILE>;
+        defined $line or $err = 1, last;
         last if length($line) == 6 and $line =~ /\0\0\0\0/;
-        $line .= <DATFILE> while length($line) < 14;
+        while (length($line) < 14) {
+            my $more = <DATFILE>;
+            defined $more or $err = 1, last;
+            $line .= $more;
+        }
         chomp $line;
         push @cityList, $line;
     }
@@ -165,6 +170,7 @@ sub ReadDatabase($)
     # read countries
     for (;;) {
         $line = <DATFILE>;
+        defined $line or $err = 1, last;
         last if length($line) == 6 and $line =~ /\0\0\0\0/;
         chomp $line;
         push @countryList, $line;
@@ -173,6 +179,7 @@ sub ReadDatabase($)
     # read regions
     for (;;) {
         $line = <DATFILE>;
+        defined $line or $err = 1, last;
         last if length($line) == 6 and $line =~ /\0\0\0\0/;
         chomp $line;
         push @regionList, $line;
@@ -181,6 +188,7 @@ sub ReadDatabase($)
     # read subregions
     for (;;) {
         $line = <DATFILE>;
+        defined $line or $err = 1, last;
         last if length($line) == 6 and $line =~ /\0\0\0\0/;
         chomp $line;
         push @subregionList, $line;
@@ -189,16 +197,18 @@ sub ReadDatabase($)
     # read time zones
     for (;;) {
         $line = <DATFILE>;
+        defined $line or $err = 1, last;
         last if length($line) == 6 and $line =~ /\0\0\0\0/;
         chomp $line;
         push @timezoneList, $line;
         $timezoneNum{lc $line} = $#timezoneList if $isUserDefined;
     }
     # read feature codes if available
-    if ($line eq "\0\0\0\0\x05\n") {
+    if (defined $line and $line eq "\0\0\0\0\x05\n") {
         undef @featureCodes;
         for (;;) {
             $line = <DATFILE>;
+            defined $line or $err = 1, last;
             last if length($line) == 6 and $line =~ /\0\0\0\0/;
             chomp $line;
             $featureTypes{$line} = $1 if $line =~ s/ (.*)//;
@@ -206,10 +216,15 @@ sub ReadDatabase($)
         }
     }
     close DATFILE;
-    # initialize featureCodes lookup
-    $i = 0;
-    %featureCodes = map { lc($_) => $i++ } @featureCodes;
-    return 1;
+    if ($err) {
+        warn("Error reading $datfile (truncated file?)");
+        return 0;
+    } else {
+        # initialize featureCodes lookup
+        my $i = 0;
+        %featureCodes = map { lc($_) => $i++ } @featureCodes;
+        return 1;
+    }
 }
 
 #------------------------------------------------------------------------------

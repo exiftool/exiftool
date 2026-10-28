@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.79';
+$VERSION = '3.80';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2541,7 +2541,8 @@ my %sPantryItem = (
     # new in Exif 2.32 (according to the spec, these should use a different namespace
     # URI, but the same namespace prefix... Exactly how is that supposed to work?!!
     # -- I'll just stick with the same URI)
-    CompositeImage => { Writable => 'integer',
+    CompositeImage => {
+        Writable => 'integer',
         PrintConv => {
             0 => 'Unknown',
             1 => 'Not a Composite Image',
@@ -2576,6 +2577,85 @@ my %sPantryItem = (
     RAWDevelopingSoftware   => { },
     ImageEditingSoftware    => { },
     MetadataEditingSoftware => { },
+    GPSAltitudeRef  => {
+        Groups => { 2 => 'Location' },
+        Writable => 'integer',
+        Notes => 'avoided to prioritize the original version of this tag in the exif namespace',
+        Avoid => 1,
+        PrintConv => {
+            OTHER => sub {
+                my ($val, $inv) = @_;
+                return undef unless $inv and $val =~ /^([-+0-9])/;
+                return($1 eq '-' ? 1 : 0);
+            },
+            0 => 'Above Sea Level',
+            1 => 'Below Sea Level',
+            2 => 'Positive Sea Level (sea-level ref)', # sea-level reference, Exif 3.0
+            3 => 'Negative Sea Level (sea-level ref)', # sea-level reference, Exif 3.0
+        },
+    },
+    # new in Exif 3.1
+    LightSource => {
+        Groups => { 2 => 'Camera' },
+        SeparateTable => 'EXIF LightSource',
+        Notes => 'avoided to prioritize the original version of this tag in the exif namespace',
+        Avoid => 1,
+        PrintConv =>  \%Image::ExifTool::Exif::lightSource,
+    },
+    LearningOptOutIn => {
+        Struct => {
+            STRUCT_NAME => 'LearningOptOutIn',
+            NAMESPACE => 'exifEX',
+            # this is a stupid way to do this...
+            # Do the CIPA idiots have nobody that understands XMP?
+            # This should be an ordered list of structures, with no "NumberOfSets".
+            # As it stands, converting this would be a pain in the ass requiring
+            # dedicated code, so I'm punting on this one and leaving it unconverted.
+            NumberOfSets => { Writable => 'integer' },
+            Values => { List => 'Seq', Writable => 'integer' },
+        },
+    },
+    DevelopmentType => {
+        Struct => {
+            STRUCT_NAME => 'DevelopmentType',
+            NAMESPACE => 'exifEX',
+            DevelopmentCharacteristic => {
+                Writable => 'integer',
+                PrintConv => {
+                    1 => 'Accurate Reproduction',
+                    2 => 'Small Differences',
+                    4 => 'Extreme Differences',
+                },
+            },
+            FactoryDefault => {
+                Writable => 'integer',
+                PrintConv => {
+                    1 => 'Factory Default Settings',
+                    2 => 'Not Default Settings',
+                    4 => 'Unknown Settings',
+                },
+            },
+        },
+    },
+    DevelopmentTypeDevelopmentCharacteristic => { Flat => 1, Name => 'DevelopmentTypeCharacteristic' },
+    DevelopmentTypeDescription => { },
+    DistortionCorrection => {
+        Writable => 'integer',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
+    ChromaticAberrationCorrection => {
+        Name => 'ChromaticAberrationCorrection',
+        Writable => 'integer',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
+    ShadingCorrection => {
+        Writable => 'integer',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
+    NoiseReduction => {
+        Writable => 'integer',
+        PrintConv => { 0 => 'No', 1 => 'Low', 2 => 'Normal', 3 => 'High' },
+    },
 );
 
 # Auxiliary namespace properties (aux) - not fully documented (ref PH)

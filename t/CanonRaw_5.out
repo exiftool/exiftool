@@ -1,10 +1,10 @@
-  ExifToolVersion = 13.51
+  ExifToolVersion = 13.60
   FileName = CanonRaw.crw
   Directory = t/images
   FileSize = 6816
   FileModifyDate = 1327257119
-  FileAccessDate = 1771296616
-  FileInodeChangeDate = 1770489785
+  FileAccessDate = 1792798256
+  FileInodeChangeDate = 1792798257
   FilePermissions = 33188
   FileType = CRW
   FileTypeExtension = CRW
@@ -203,7 +203,7 @@
   | | | | RawJpgHeight = 1360
   | | | 21) CanonRaw_0x1039 = 0 159 7 112
   | | | 22) SerialNumberFormat = 2415919104
-CanonVRD trailer (560 bytes at offset 0x1870):
+  CanonVRD trailer (560 bytes at offset 0x1870):
   + [XMP directory, 460 bytes]
   | XMPToolkit = Image::ExifTool 8.31
   | Description = CRW with embedded XMP

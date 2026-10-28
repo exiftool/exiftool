@@ -2080,10 +2080,17 @@ my %indexInfo = (
         PrintConv => '$val ? $val : "Auto"',
         PrintConvInv => '$val=~/^\d+$/ ? $val : 0',
     },
-    0x502 => {  #PH/4
+    0x502 => [{  #PH/4
         Name => 'WhiteBalanceBracket',
+        Notes => 'older models',
+        Condition => '$count eq 1',
         Writable => 'int16s',
-    },
+    },{  #github462
+        Name => 'WhiteBalanceFineTune',
+        Notes => '2 values in the range -4 to +4 for blue to amber and magenta to green',
+        Writable => 'int16s',
+        Count => 2,
+    }],
     0x503 => { #PH/4/6
         Name => 'CustomSaturation',
         Writable => 'int16s',

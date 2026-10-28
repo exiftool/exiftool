@@ -21,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 sub ProcessProtobuf($$$;$);
 
@@ -30,6 +30,9 @@ my $intMax = ~0;
 
 # smallest unsigned integer that we interpret as int64s (0xffffffff00000000)
 my $int64sMin = 18446744069414584320;
+
+# formats that are protobuf only
+my %protoOnly = ( 'signed' => 1, 'unsigned' => 1 );
 
 #------------------------------------------------------------------------------
 # Read bytes from dirInfo object
@@ -180,10 +183,11 @@ sub ProcessProtobuf($$$;$)
         }
         # format binary payload into a useful value
         my $val;
-        if ($$tagInfo{Format}) {
+        my $format = $$tagInfo{Format};
+        if ($format) {
             if ($type == 0) {
                 $val = $buff;
-                if ($$tagInfo{Format} eq 'signed') {
+                if ($format eq 'signed') {
                     if ($val > $intMax) {
                         # use double math (15 decimal digits precision)
                         $val = $$dirInfo{Bit0} ? -int($val / 2) - 1 : $val / 2;
@@ -191,20 +195,21 @@ sub ProcessProtobuf($$$;$)
                         # use integer math
                         $val = ($val & 1) ? -($val >> 1)-1 : ($val >> 1);
                     }
-                } elsif ($$tagInfo{Format} eq 'int64s' and $val >= $int64sMin) {
+                } elsif ($format eq 'int64s' and $val >= $int64sMin) {
                     # hack for DJI drones which store 64-bit signed integers improperly
                     # (just toss upper 32 bits which should be all 1's anyway)
                     # Note: do the two subtractions because $int64sMin + 4294967296
                     # is too large for a 64-bit integer
                     $val = $val - $int64sMin - 4294967296;
                 }
-            } elsif ($type == 2 and $$tagInfo{Format} eq 'rational') {
+            } elsif ($type == 2 and $format eq 'rational') {
                 my $dir = { DataPt => \$buff, Pos => 0 };
                 my $num = VarInt($dir);
                 my $den = VarInt($dir);
                 $val = (defined $num and $den) ? $num/$den : 'err';
             } else {
-                $val = ReadValue(\$buff, 0, $$tagInfo{Format}, undef, length($buff));
+                $format = 'undef' if $protoOnly{$format}; # (just in case)
+                $val = ReadValue(\$buff, 0, $format, undef, length($buff));
             }
         } elsif ($type == 0) { # varInt
             $val = $buff;
@@ -271,7 +276,7 @@ sub ProcessProtobuf($$$;$)
             Start  => $start,
             Size   => $$dirInfo{Pos} - $start,
             Extra  => ", type=$type",
-            Format => $$tagInfo{Format},
+            Format => $format,
         );
     }
     # warn if we didn't finish exactly at the end of the buffer

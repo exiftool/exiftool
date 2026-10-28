@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.65';
+$VERSION = '4.66';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -3011,7 +3011,7 @@ my %ind = (
     0xa412 => { #Exif3.1
         Name => 'NoiseReduction',
         Writable => 'int16u',
-        PrintConv => { 0 => 'No', 1 => 'Yes' },
+        PrintConv => { 0 => 'No', 1 => 'Low', 2 => 'Normal', 3 => 'High' },
     },
     0xa420 => { Name => 'ImageUniqueID', Writable => 'string' },
     0xa430 => { #24
@@ -6473,7 +6473,7 @@ sub ProcessExif($$$)
                 }
                 # assume corrupted IFD if this is our first entry (except Sony ILCE which have an empty first entry)
                 next if $index or $$et{Model} =~ /^ILCE/;
-                # $et->Warn(sprintf('Format code 0x%x encountered -- Possibly corrupted IFD'));
+                $et->Warn("First entry for $dir has an invalid format. Ignoring possibly corrupted IFD", $inMakerNotes);
                 return 0;
             }
         }
@@ -7028,7 +7028,7 @@ sub ProcessExif($$$)
                                 $msg .= " (directory start $subdirStart is before EXIF start)";
                             } else {
                                 my $end = $subdirStart + $size;
-                                $msg .= " (directory end is $end but EXIF size is only $subdirDataLen)";
+                                $msg .= " (end is $end but EXIF size is only $subdirDataLen)";
                             }
                         }
                         $et->Warn($msg, $inMakerNotes);

@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.62';
+$VERSION = '1.63';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -2322,7 +2322,7 @@ XRef:
                 my $i;
                 for ($i=0; $i<$num; ++$i) {
                     $raf->Read($buff, 20) == 20 or return -6;
-                    $buff =~ /^\s*(\d{10}) (\d{5}) (f|n)/s or return -4;
+                    $buff =~ /^\s*(\d+)\s+(\d+)\s+(f|n)\s*$/s or return -4;
                     my $num = $start + $i;
                     $xrefSize = $num if $num > $xrefSize;
                     # locate object to generate entry from stream if necessary

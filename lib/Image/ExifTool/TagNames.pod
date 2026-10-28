@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 33487 tags, with 21437 unique tag names.
+They contain a total of 33685 tags, with 21499 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -4457,6 +4457,7 @@ These tags belong to the ExifTool XMP-exifEX family 1 group.
   CameraElevationAngle                          rational
   CameraFirmware                                string
   OwnerName                                     string
+  ChromaticAberrationCorrection                 integer
   CompositeImage                                integer
   CompositeImageCount                           integer+
   CompositeImageExposureTimes                   CompImageExp Struct
@@ -4470,7 +4471,13 @@ These tags belong to the ExifTool XMP-exifEX family 1 group.
   CompImageSumExposureUsed                      rational_
   CompImageTotalExposurePeriod                  rational_
   CompImageValues                               rational_+
+  DevelopmentType                               DevelopmentType Struct
+  DevelopmentTypeDescription                    string
+  DevelopmentTypeCharacteristic                 integer_
+  DevelopmentTypeFactoryDefault                 integer_
+  DistortionCorrection                          integer
   Gamma                                         rational
+  GPSAltitudeRef                                integer/
   Humidity                                      rational
   ImageEditingSoftware                          string
   ImageEditor                                   string
@@ -4480,17 +4487,23 @@ These tags belong to the ExifTool XMP-exifEX family 1 group.
   ISOSpeed                                      integer
   ISOSpeedLatitudeyyy                           integer
   ISOSpeedLatitudezzz                           integer
+  LearningOptOutIn                              LearningOptOutIn Struct
+  LearningOptOutInNumberOfSets                  integer_
+  LearningOptOutInValues                        integer_+
   LensMake                                      string
   LensModel                                     string
   LensSerialNumber                              string
   LensInfo                                      rational+
+  LightSource                                   string/
   MetadataEditingSoftware                       string
+  NoiseReduction                                integer
   Photographer                                  string
   PhotographicSensitivity                       integer
   Pressure                                      rational
   RAWDevelopingSoftware                         string
   RecommendedExposureIndex                      integer
   SensitivityType                               integer
+  ShadingCorrection                             integer
   StandardOutputSensitivity                     integer
   AmbientTemperature                            rational
   WaterDepth                                    rational
@@ -4509,6 +4522,20 @@ These tags belong to the ExifTool XMP-exifEX family 1 group.
   SumOfExposureTimesOfUsed                      rational
   TotalExposurePeriod                           rational
   Values                                        rational+
+
+=head3 XMP DevelopmentType Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  DevelopmentCharacteristic                     integer
+  FactoryDefault                                integer
+
+=head3 XMP LearningOptOutIn Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  NumberOfSets                                  integer
+  Values                                        integer+
 
 =head3 XMP ExpressionMedia Tags
 
@@ -7463,9 +7490,12 @@ boot, not including standby time.
            CanonCameraInfo1000D                 Canon CameraInfo1000D
            CanonCameraInfo1100D                 Canon CameraInfo600D
            CanonCameraInfo1200D                 Canon CameraInfo60D
+           CanonCameraInfoR5m2                  Canon CameraInfoR5m2
            CanonCameraInfoR6                    Canon CameraInfoR6
            CanonCameraInfoR6m2                  Canon CameraInfoR6m2
            CanonCameraInfoR6m3                  Canon CameraInfoR6m3
+           CanonCameraInfoR50V                  Canon CameraInfoR50V
+           CanonCameraInfoRP                    Canon CameraInfoRP
            CanonCameraInfoG5XII                 Canon CameraInfoG5XII
            CanonCameraInfoPowerShot             Canon CameraInfoPowerShot
            CanonCameraInfoPowerShot2            Canon CameraInfoPowerShot2
@@ -7500,6 +7530,7 @@ boot, not including standby time.
   0x0028   ImageUniqueID                        int8u
   0x0029   WBInfo                               Canon WBInfo
   0x002f   FaceDetect3                          Canon FaceDetect3
+  0x0031   SmartAutoScene                       Canon SmartAutoScene
   0x0035   TimeInfo                             Canon TimeInfo
   0x0038   BatteryType                          undef
   0x003c   AFInfo3                              Canon AFInfo2
@@ -7567,6 +7598,7 @@ boot, not including standby time.
   0x4024   FilterInfo                           Canon FilterInfo
   0x4025   HDRInfo                              Canon HDRInfo
   0x4026   LogInfo                              Canon LogInfo
+  0x4027   FirmwareInfo                         Canon FirmwareInfo
   0x4028   AFConfig                             Canon AFConfig
   0x403f   RawBurstModeRoll                     Canon RawBurstInfo
   0x4053   FocusBracketingInfo                  Canon FocusBracketingInfo
@@ -7616,6 +7648,7 @@ boot, not including standby time.
      50    FocusBracketing                      int16s
      51    Clarity                              int16s
      52    HDR-PQ                               int16s
+     69    BlackoutFreeShooting                 int16s
 
 =head3 Canon FocalLength Tags
 
@@ -7843,6 +7876,7 @@ versions 1.0.x, but they may be different for other firmware versions.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -7872,6 +7906,7 @@ CameraInfo tags for the EOS 1D X.  Indices shown are for firmware version
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -7890,6 +7925,7 @@ CameraInfo tags for the EOS 1D X.  Indices shown are for firmware version
     720    FileIndex                            int32u
     732    DirectoryIndex                       int32u
    1012    PictureStyleInfo                     Canon PSInfo2
+   1476    TimeStamp                            int16u[3]
 
 =head3 Canon PSInfo2 Tags
 
@@ -8034,6 +8070,7 @@ version 1.0.6, but they may be different for other firmware versions.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8059,6 +8096,8 @@ version 1.0.6, but they may be different for other firmware versions.
     443    FileIndex                            int32u
     455    DirectoryIndex                       int32u
     759    PictureStyleInfo                     Canon PSInfo
+   1195    TimeStamp                            int16u[3]
+   1199    TimeStamp                            int16u[3]
 
 =head3 Canon CameraInfo5DmkIII Tags
 
@@ -8067,6 +8106,7 @@ versions 1.0.x, but they may be different for other firmware versions.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8095,6 +8135,7 @@ CameraInfo tags for the EOS 6D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8113,6 +8154,7 @@ CameraInfo tags for the EOS 6D.
     682    FileIndex                            int32u
     694    DirectoryIndex                       int32u
     966    PictureStyleInfo                     Canon PSInfo2
+   1430    TimeStamp                            int16u[3]
 
 =head3 Canon CameraInfo7D Tags
 
@@ -8121,6 +8163,7 @@ CameraInfo tags for the EOS 7D.  Indices shown are for firmware versions
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8144,6 +8187,8 @@ CameraInfo tags for the EOS 7D.  Indices shown are for firmware versions
     491    FileIndex                            int32u
     503    DirectoryIndex                       int32u
     807    PictureStyleInfo                     Canon PSInfo
+   1247    TimeStamp                            int16u[3]
+   1251    TimeStamp                            int16u[3]
 
 =head3 Canon CameraInfo40D Tags
 
@@ -8151,6 +8196,7 @@ CameraInfo tags for the EOS 40D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8170,6 +8216,7 @@ CameraInfo tags for the EOS 40D.
     307    FileIndex                            int32u
     319    DirectoryIndex                       int32u
     603    PictureStyleInfo                     Canon PSInfo
+    839    TimeStamp                            int16u[3]
    2347    LensModel                            string[64]
 
 =head3 Canon CameraInfo50D Tags
@@ -8179,6 +8226,7 @@ CameraInfo tags for the EOS 50D.  Indices shown are for firmware versions
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8208,6 +8256,7 @@ CameraInfo tags for the EOS 60D and 1200D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8233,6 +8282,7 @@ CameraInfo tags for the EOS 70D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8249,6 +8299,7 @@ CameraInfo tags for the EOS 70D.
     691    FileIndex                            int32u
     703    DirectoryIndex                       int32u
     975    PictureStyleInfo                     Canon PSInfo2
+   1439    TimeStamp                            int16u[3]
 
 =head3 Canon CameraInfo80D Tags
 
@@ -8256,6 +8307,7 @@ CameraInfo tags for the EOS 80D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8278,6 +8330,7 @@ CameraInfo tags for the EOS 450D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8304,6 +8357,7 @@ CameraInfo tags for the EOS 500D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8333,6 +8387,7 @@ CameraInfo tags for the EOS 550D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8360,6 +8415,7 @@ CameraInfo tags for the EOS 600D and 1100D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8387,6 +8443,7 @@ CameraInfo tags for the EOS 650D and 700D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8415,6 +8472,7 @@ CameraInfo tags for the EOS 750D and 760D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8438,6 +8496,7 @@ CameraInfo tags for the EOS 1000D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
       3    FNumber                              int8u
       4    ExposureTime                         int8u
       6    ISO                                  int8u
@@ -8458,7 +8517,37 @@ CameraInfo tags for the EOS 1000D.
     311    DirectoryIndex                       int32u
     323    FileIndex                            int32u
     615    PictureStyleInfo                     Canon PSInfo
+    851    TimeStamp                            int16u[3]
    2359    LensModel                            string[64]
+
+=head3 Canon CameraInfoR5m2 Tags
+
+CameraInfo tags for the EOS R1 and R5 Mark II.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      2    AFTrackingInfo                       Canon AFTrackingR5m2
+   2123    PowerOnTime                          int32u
+   2145    FormatFileNumber                     int16u
+   2149    PowerOnFileNumber                    int16u
+   2151    PowerOnDirectoryNumber               int16u
+   2153    WakeFileNumber                       int16u
+   3952    BurstShotNumber                      no
+   4386    ImageStabilizationMode               int8s
+
+=head3 Canon AFTrackingR5m2 Tags
+
+Most recent record from the ring of AF tracking records in the EOS R1 and R5
+Mark II CameraInfo.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     26    AFSamplingRate                       int8u
+    139    AFDetectedSubject                    int8u
+    143    AFTrackingTarget                     int8u & 0x0f
+    146    AFDetectedParts                      int16u & 0x7c
+    148    AFTrackingArea                       int16u[4]
+    157    AFEyeUsed                            int8u & 0x03
 
 =head3 Canon CameraInfoR6 Tags
 
@@ -8479,11 +8568,29 @@ CameraInfo tags for the EOS R6 Mark II.
 
 =head3 Canon CameraInfoR6m3 Tags
 
-CameraInfo tags for the EOS R6 Mark II.
+CameraInfo tags for the EOS R6 Mark III and R6 V.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+   2123    PowerOnTime                          int32u
    2157    ImageCount                           int16u
+
+=head3 Canon CameraInfoR50V Tags
+
+CameraInfo tags for the EOS R50 V.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+   2123    PowerOnTime                          int32u
+
+=head3 Canon CameraInfoRP Tags
+
+CameraInfo tags for the EOS R50 V.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+   2396    ShutterCount                         int32u
+   2400    ShutterCount                         int32u
 
 =head3 Canon CameraInfoG5XII Tags
 
@@ -8554,6 +8661,7 @@ Unknown CameraInfo tags are divided into 3 tables based on format size.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    FirmwareInfo                         no
     363    LensSerialNumber                     undef[5]
    1473    FirmwareVersion                      no
 
@@ -8683,6 +8791,14 @@ WB tags for the Canon G9.
   ------   --------                             --------
       3    FacesDetected                        int16u
 
+=head3 Canon SmartAutoScene Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      2    AutoSceneMode                        int16u
+      3    AutoSceneSubject                     int16u
+      4    AutoSceneLighting                    int16u
+
 =head3 Canon TimeInfo Tags
 
   Index4   Tag Name                             Writable
@@ -8709,13 +8825,17 @@ WB tags for the Canon G9.
      14    FilterEffect                         int16s
      15    ToningEffect                         int16s
      16    MacroMagnification                   int16s
+           ExitPupilCode                        int16s
      19    LiveViewShooting                     int16s
      20    FocusDistanceUpper                   int16u
      21    FocusDistanceLower                   int16u
      23    ShutterMode                          int16s
      25    FlashExposureLock                    int16s
+     26    Extender                             int16s
      32    AntiFlicker                          int16s
      61    RFLensType                           int16u
+     87    CameraTemperature2                   int16s
+     88    CameraTemperature3                   int16s
 
 =head3 Canon SerialInfo Tags
 
@@ -9848,6 +9968,10 @@ This information is new in images from the EOS 7D.
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    LensSerialNumber                     undef[5]
+      6    LensDiaphragmCount                   no
+      9    LensAFCount                          no
+     12    LensISCount                          no
+     15    LensDriveCount3                      no
 
 =head3 Canon Ambience Tags
 
@@ -9898,6 +10022,12 @@ Information about creative filter settings.
       9    ColorSpace2                          int32s
      10    ColorMatrix                          int32s
      11    CanonLogVersion                      int32s
+
+=head3 Canon FirmwareInfo Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      5    LensFirmwareVersion                  int32u
 
 =head3 Canon AFConfig Tags
 
@@ -11134,18 +11264,9 @@ Thermal parameters extracted from APP4 of some DJI RJPEG files.
 Tags found in protobuf-format DJI djmd and dbgi timed metadata.  The known
 tags listed below are extracted by default, but unknown djmd tags may be
 extracted as well by setting the Unknown option to 1, or 2 to also extract
-unknown dbgi debug tags.  Tag ID's are composed of the corresponding .proto
-file name combined with the hierarchical protobuf field numbers.
-
-ExifTool currently extracts timed GPS plus a few other tags from DJI devices
-which use the following protocols:  dvtm_AVATA2.proto (Avata 2),
-dvtm_ac203.proto (Osmo Action 4), dvtm_ac204.proto (Osmo Action 5),
-dvtm_ac206.proto (Osmo Action 6),dvtm_wm265e.proto (Mavic 3),
-dvtm_pm320.proto (Matrice 30), dvtm_Mini4_Pro.proto (Mini 4 Pro),
-dvtm_dji_neo.proto (DJI Neo), dvtm_Air3.proto (Air 3), dvtm_Air3s.proto (Air
-3s), dvtm_PP-101.proto (Osmo Pocket 3), dvtm_oq101.proto (Osmo 360),
-dvtm_wa345e.proto (Matrice 4E), dvtm_wm261.proto (Mavic 3 Pro),
-dvtm_Mavic4.proto (Mavic 4 Pro) and dvtm_Mini5Pro.proto (Mini 5 Pro).
+unknown dbgi debug tags. Please report any discoveries so they may be added
+to ExifTool. Tag ID's are composed of the corresponding .proto file name
+combined with the hierarchical protobuf field numbers.
 
 Note that with the protobuf format, numerical tags missing from the output
 for a given protocol should be considered to have the default value of 0.
@@ -11193,6 +11314,20 @@ for a given protocol should be considered to have the default value of 0.
   'dvtm_Air3s_3-3-4-2'      AbsoluteAltitude    no
   'dvtm_Air3s_3-3-5-1'      RelativeAltitude    no
   'dvtm_Air3s_3-4-3'        GimbalInfo          DJI GimbalInfo
+  'dvtm_Lito_X1_1-1-5'      SerialNumber        no
+  'dvtm_Lito_X1_1-1-10'     Model               no
+  'dvtm_Lito_X1_2-3'        FrameInfo           DJI FrameInfo
+  'dvtm_Lito_X1_3-1-1'      FrameNumber         no
+  'dvtm_Lito_X1_3-1-2'      TimeStamp           no
+  'dvtm_Lito_X1_3-2-7-1'    ISO                 no
+  'dvtm_Lito_X1_3-2-10-1'   ShutterSpeed        no
+  'dvtm_Lito_X1_3-2-11-1'   FNumber             no
+  'dvtm_Lito_X1_3-2-32-1'   ColorTemperature    no
+  'dvtm_Lito_X1_3-3-3'      DroneInfo           DJI DroneInfo
+  'dvtm_Lito_X1_3-3-4-1'    GPSInfo             DJI GPSInfo
+  'dvtm_Lito_X1_3-3-4-2'    AbsoluteAltitude    no
+  'dvtm_Lito_X1_3-3-5-1'    RelativeAltitude    no
+  'dvtm_Lito_X1_3-4-3'      GimbalInfo          DJI GimbalInfo
   'dvtm_Mavic4_1-1-5'       SerialNumber        no
   'dvtm_Mavic4_1-1-10'      Model               no
   'dvtm_Mavic4_2-3'         FrameInfo           DJI FrameInfo
@@ -11226,6 +11361,19 @@ for a given protocol should be considered to have the default value of 0.
   'dvtm_Mini4_Pro_3-2-11-1' FNumber             no
   'dvtm_Mini4_Pro_3-2-32-1' ColorTemperature    no
   'dvtm_Mini4_Pro_3-2-37-1' Temperature         no
+  'dvtm_NEO2_1-1-5'         SerialNumber        no
+  'dvtm_NEO2_1-1-10'        Model               no
+  'dvtm_NEO2_2-2-3-1'       SerialNumber2       no
+  'dvtm_NEO2_2-3'           FrameInfo           DJI FrameInfo
+  'dvtm_NEO2_3-1-1'         FrameNumber         no
+  'dvtm_NEO2_3-1-2'         TimeStamp           no
+  'dvtm_NEO2_3-2-2-1'       ISO                 no
+  'dvtm_NEO2_3-2-4-1'       ShutterSpeed        no
+  'dvtm_NEO2_3-2-6-1'       ColorTemperature    no
+  'dvtm_NEO2_3-2-10-1'      FNumber             no
+  'dvtm_NEO2_3-4-3'         DroneInfo           DJI DroneInfo
+  'dvtm_NEO2_3-4-4-1'       GPSInfo             DJI GPSInfo
+  'dvtm_NEO2_3-4-4-2'       AbsoluteAltitude    no
   'dvtm_PP-101_1-1-5'       SerialNumber        no
   'dvtm_PP-101_1-1-10'      Model               no
   'dvtm_PP-101_2-3'         FrameInfo           DJI FrameInfo
@@ -11235,41 +11383,68 @@ for a given protocol should be considered to have the default value of 0.
   'dvtm_PP-101_3-2-10-1'    ShutterSpeed        no
   'dvtm_PP-101_3-2-24-1'    ColorTemperature    no
   'dvtm_ac203_1-1-5'        SerialNumber        no
+  'dvtm_ac203_1-1-6'        FirmwareVersion     no
   'dvtm_ac203_1-1-10'       Model               no
   'dvtm_ac203_2-3'          FrameInfo           DJI FrameInfo
   'dvtm_ac203_3-1-1'        FrameNumber         no
   'dvtm_ac203_3-2-3-1'      ISO                 no
   'dvtm_ac203_3-2-4-1'      ShutterSpeed        no
+  'dvtm_ac203_3-2-5-1'      Zoom                no
   'dvtm_ac203_3-2-6-1'      ColorTemperature    no
+  'dvtm_ac203_3-2-9-1'      Quaternion1         no
+  'dvtm_ac203_3-2-9-2'      Quaternion2         no
+  'dvtm_ac203_3-2-9-3'      Quaternion3         no
+  'dvtm_ac203_3-2-9-4'      Quaternion4         no
   'dvtm_ac203_3-2-10-2'     AccelerometerX      no
   'dvtm_ac203_3-2-10-3'     AccelerometerY      no
   'dvtm_ac203_3-2-10-4'     AccelerometerZ      no
+  'dvtm_ac203_3-2-11-1'     TextureSetting      no
+  'dvtm_ac203_3-2-12-1'     NRSetting           no
   'dvtm_ac203_3-4-2-1'      GPSInfo             DJI GPSInfo
   'dvtm_ac203_3-4-2-2'      GPSAltitude         no
   'dvtm_ac203_3-4-2-6-1'    GPSDateTime         no
   'dvtm_ac204_1-1-5'        SerialNumber        no
+  'dvtm_ac204_1-1-6'        FirmwareVersion     no
   'dvtm_ac204_1-1-10'       Model               no
   'dvtm_ac204_2-3'          FrameInfo           DJI FrameInfo
   'dvtm_ac204_3-1-1'        FrameNumber         no
   'dvtm_ac204_3-2-3-1'      ISO                 no
   'dvtm_ac204_3-2-4-1'      ShutterSpeed        no
+  'dvtm_ac204_3-2-5-1'      Zoom                no
   'dvtm_ac204_3-2-6-1'      ColorTemperature    no
+  'dvtm_ac204_3-2-9-1'      Quaternion1         no
+  'dvtm_ac204_3-2-9-2'      Quaternion2         no
+  'dvtm_ac204_3-2-9-3'      Quaternion3         no
+  'dvtm_ac204_3-2-9-4'      Quaternion4         no
   'dvtm_ac204_3-2-10-2'     AccelerometerX      no
   'dvtm_ac204_3-2-10-3'     AccelerometerY      no
   'dvtm_ac204_3-2-10-4'     AccelerometerZ      no
+  'dvtm_ac204_3-2-11-1'     TextureSetting      no
+  'dvtm_ac204_3-2-12-1'     NRSetting           no
   'dvtm_ac204_3-4-2-1'      GPSInfo             DJI GPSInfo
   'dvtm_ac204_3-4-2-2'      GPSAltitude         no
   'dvtm_ac204_3-4-2-6-1'    GPSDateTime         no
   'dvtm_ac206_1-1-5'        SerialNumber        no
+  'dvtm_ac206_1-1-6'        FirmwareVersion     no
   'dvtm_ac206_1-1-10'       Model               no
+  'dvtm_ac206_1-9-1'        EIS                 no
+  'dvtm_ac206_1-15-1'       FilmToneColorFilter no
   'dvtm_ac206_2-3'          FrameInfo           DJI FrameInfo
+  'dvtm_ac206_2-5-1'        FOV                 no
   'dvtm_ac206_3-1-1'        FrameNumber         no
   'dvtm_ac206_3-2-3-1'      ISO                 no
   'dvtm_ac206_3-2-4-1'      ShutterSpeed        no
+  'dvtm_ac206_3-2-5-1'      Zoom                no
   'dvtm_ac206_3-2-6-1'      ColorTemperature    no
+  'dvtm_ac206_3-2-9-1'      Quaternion1         no
+  'dvtm_ac206_3-2-9-2'      Quaternion2         no
+  'dvtm_ac206_3-2-9-3'      Quaternion3         no
+  'dvtm_ac206_3-2-9-4'      Quaternion4         no
   'dvtm_ac206_3-2-10-2'     AccelerometerX      no
   'dvtm_ac206_3-2-10-3'     AccelerometerY      no
   'dvtm_ac206_3-2-10-4'     AccelerometerZ      no
+  'dvtm_ac206_3-2-11-1'     TextureSetting      no
+  'dvtm_ac206_3-2-12-1'     NoiseReduction      no
   'dvtm_ac206_3-4-2-1'      GPSInfo             DJI GPSInfo
   'dvtm_ac206_3-4-2-2'      GPSAltitude         no
   'dvtm_ac206_3-4-2-6-1'    GPSDateTime         no
@@ -11324,6 +11499,20 @@ for a given protocol should be considered to have the default value of 0.
   'dvtm_wa345e_3-3-4-6-1'   GPSDateTime         no
   'dvtm_wa345e_3-3-5-1'     RelativeAltitude    no
   'dvtm_wa345e_3-4-3'       GimbalInfo          DJI GimbalInfo
+  'dvtm_wm260_1-1-5'        SerialNumber        no
+  'dvtm_wm260_1-1-10'       Model               no
+  'dvtm_wm260_2-3'          FrameInfo           DJI FrameInfo
+  'dvtm_wm260_3-1-1'        FrameNumber         no
+  'dvtm_wm260_3-1-2'        TimeStamp           no
+  'dvtm_wm260_3-2-9-1'      ISO                 no
+  'dvtm_wm260_3-2-10-1'     ShutterSpeed        no
+  'dvtm_wm260_3-2-11-1'     FNumber             no
+  'dvtm_wm260_3-3-3'        DroneInfo           DJI DroneInfo
+  'dvtm_wm260_3-3-4-1'      GPSInfo             DJI GPSInfo
+  'dvtm_wm260_3-3-4-2'      AbsoluteAltitude    no
+  'dvtm_wm260_3-3-4-6-1'    GPSDateTime         no
+  'dvtm_wm260_3-3-5-1'      RelativeAltitude    no
+  'dvtm_wm260_3-4-3'        GimbalInfo          DJI GimbalInfo
   'dvtm_wm261_1-1-5'        SerialNumber        no
   'dvtm_wm261_1-1-10'       Model               no
   'dvtm_wm261_2-3'          FrameInfo           DJI FrameInfo
@@ -15939,8 +16128,27 @@ These tags are extracted from encrypted data in images from the Z6III.
      14    FirmwareVersion2                     no
      24    FirmwareVersion3                     no
      36    NumberOffsets                        no
+     48    SequenceOffset                       Nikon SeqInfoZ9
+                                                Nikon SeqInfoZ6iiiv2
     136    OrientationOffset                    Nikon OrientationInfo
     144    MenuOffset                           Nikon MenuSettingsZ6III
+                                                Nikon MenuSettingsZ6IIIv2
+
+=head3 Nikon SeqInfoZ9 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     32    FocusShiftShooting                   int8u~
+     40    IntervalShooting                     int16u~
+     42    IntervalFrame                        int16u
+
+=head3 Nikon SeqInfoZ6iiiv2 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     32    FocusShiftShooting                   int8u~
+     42    IntervalShooting                     int16u~
+     44    IntervalFrame                        int16u
 
 =head3 Nikon MenuSettingsZ6III Tags
 
@@ -16011,6 +16219,49 @@ These tags are used by the Z6III.
    2480    SaveFocusPosition?                   int8u
    2487    SilentPhotography?                   int8u
    2496    AirplaneMode?                        int8u
+
+=head3 Nikon MenuSettingsZ6IIIv2 Tags
+
+These tags are used by the Z6III.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+    360    SingleFrame                          int8u
+    364    HighFrameRate                        int8u
+    448    MultipleExposureMode                 int8u
+    450    MultiExposureShots                   int8u
+    480    IntervalDurationHours                int32u
+    484    IntervalDurationMinutes              int32u
+    488    IntervalDurationSeconds              int32u
+    496    Intervals                            int32u
+    500    ShotsPerInterval                     int32u
+    504    IntervalExposureSmoothing            int8u
+    506    IntervalPriority                     int8u
+    540    FocusShiftNumberShots                int8u
+    544    FocusShiftStepWidth                  int8u
+    548    FocusShiftInterval                   int8u~
+    552    FocusShiftExposureLock               int8u
+    618    PhotoShootingMenuBankImageArea       int8u
+    634    AutoISO                              int8u
+    636    ISOAutoHiLimit?                      int16u
+    706    DiffractionCompensation              int8u
+    710    NikonMeteringMode                    int8u
+    712    FlashControlMode                     int8u
+    718    FlashGNDistance?                     no
+    722    FlashOutput?                         int8u
+    730    FlashWirelessOption?                 int8u
+    732    FlashRemoteControl?                  int8u
+    736    FlashMasterControlMode               int8u
+    738    FlashMasterCompensation?             int8s
+    742    FlashMasterOutput?                   int8u
+    822    VRMode                               int8u
+    832    AFAreaMode                           int8u
+    866    SubjectDetection                     int8u
+    912    LinkVRToFocusPoint?                  int8u
+   1167    CustomSettingsZ6III                  NikonCustom SettingsZ6III
+   2212    Language?                            int8u
+   2214    TimeZone                             int8u
+   2220    MonitorBrightness?                   int8u
 
 =head3 Nikon ShotInfoZ7II Tags
 
@@ -16110,14 +16361,6 @@ These tags are extracted from encrypted data in images from the Z8.
     128    AutoCaptureOffset                    Nikon AutoCaptureInfo
     132    OrientOffset                         Nikon OrientationInfo
     140    MenuOffset                           Nikon MenuInfoZ8
-
-=head3 Nikon SeqInfoZ9 Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-     32    FocusShiftShooting                   int8u~
-     40    IntervalShooting                     int16u~
-     42    IntervalFrame                        int16u
 
 =head3 Nikon AutoCaptureInfo Tags
 
@@ -17392,6 +17635,7 @@ videos from some Nikon cameras.
   0x0032       AudioChannels                    no
   0x0033       AudioBitsPerSample               no
   0x0034       AudioSampleRate                  no
+  0x1001       Rating                           no
   0x1002       NikonDateTime                    no
   0x1013       ElectronicVR                     no
   0x110829a    ExposureTime                     no
@@ -19681,6 +19925,7 @@ any information found here will be extracted, even if the tag is not listed.
   0x0500   WhiteBalance2                        int16u
   0x0501   WhiteBalanceTemperature              int16u
   0x0502   WhiteBalanceBracket                  int16s
+           WhiteBalanceFineTune                 int16s[2]
   0x0503   CustomSaturation                     int16s[3]~
   0x0504   ModifiedSaturation                   int16u
   0x0505   ContrastSetting                      int16s[3]
@@ -20669,6 +20914,7 @@ These tags are used in Pentax/Asahi/Ricoh cameras.
   0x0095   SkinToneCorrection                   int8s[2]
            SkinToneCorrection                   int8s[3]
   0x0096   ClarityControl                       int8s[2]
+  0x0099   SnapFocusDistance                    int8u[3]
   0x009e   HDF                                  int8u
   0x0200   BlackPoint                           int16u[4]
   0x0201   WhitePoint                           int16u[4]
@@ -30229,8 +30475,8 @@ L<http://www.pauldebevec.com/Research/HDR/PFM/> for the specification.
 The tags listed in the PDF tables below are those which are used by ExifTool
 to extract meta information, but they are only a small fraction of the total
 number of available PDF tags.  See
-L<http://www.adobe.com/devnet/pdf/pdf_reference.html> for the official PDF
-specification.
+L<https://web.archive.org/web/20210125064408/https://www.adobe.com/devnet/pdf/pdf_reference.html>
+for the official PDF specification.
 
 ExifTool supports reading and writing PDF documents up to version 2.0,
 including support for RC4, AES-128 and AES-256 encryption.  A
@@ -31073,7 +31319,7 @@ for the official QuickTime specification.
 The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 124 different types of timed GPS metadata.
+currently reads 128 different types of timed GPS metadata.
 
   Tag ID                 Tag Name               Writable
   ------                 --------               --------
@@ -31347,6 +31593,9 @@ changed via the config file.
                 SmartstyleRenderingVersion      no
   'smartstyle.tone' SmartstyleTone              no
   'software'    Software                        yes
+  'spatial.aggressors-seen'
+                SpatialAggressorsSeen           yes
+  'spatial.format-version' SpatialFormatVersion yes
   'still-image-time' StillImageTime             no
   'title'       Title                           yes
   'version'     Version                         yes
@@ -31380,6 +31629,7 @@ VideoKeys family 1 gorup.
   'camera.framereadouttimeinmicroseconds'
                         FrameReadoutTime        yes
   'camera.identifier'   CameraIdentifier        yes
+  'camera.lens_irisfnumber' LensIrisFNumber     yes
   'camera.lens_model'   LensModel               yes
   'com.apple.photos.captureMode' CaptureMode    yes
 
@@ -31501,7 +31751,7 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
   'bxml'   BinaryXML?                           no
   'dinf'   DataInfo                             QuickTime DataInfo
   'free'   Free?                                no
-  'grpl'   Unknown_grpl                         QuickTime grpl
+  'grpl'   GroupsList                           QuickTime GroupsList
   'hdlr'   Handler                              QuickTime Handler
   'idat'   MetaImageSize                        no
   'iinf'   ItemInformation                      QuickTime ItemInfo
@@ -31538,11 +31788,20 @@ MP4 data reference box.
   'url '   URL                                  no
   'urn '   URN                                  no
 
-=head3 QuickTime grpl Tags
+=head3 QuickTime GroupsList Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  [no tags known]
+  'ster'   StereoImage                          QuickTime StereoImage
+
+=head3 QuickTime StereoImage Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      1    StereoImageGroupID                   no
+      2    StereoImageEntities                  no
+      3    StereoImageLeftID                    no
+      4    StereoImageRightID                   no
 
 =head3 QuickTime Handler Tags
 
@@ -32185,9 +32444,11 @@ Child atoms found in "sinf" and/or "pinf" atoms.
   'colr'   ColorRepresentation                  QuickTime ColorRep
   'fiel'   VideoFieldOrder                      no
   'gama'   Gamma                                no
+  'hfov'   HorizontalFieldOfView                no
   'pasp'   PixelAspectRatio                     no
   'st3d'   Stereoscopic3D                       no
   'sv3d'   SphericalVideo                       QuickTime sv3d
+  'vexu'   VideoExtendedUsage                   QuickTime vexu
 
 =head3 QuickTime CleanAperture Tags
 
@@ -32216,6 +32477,7 @@ for the specification.
   'cbmp'   CubemapProj                          QuickTime cbmp
   'equi'   EquirectangularProj                  QuickTime equi
   'prhd'   ProjectionHeader                     QuickTime prhd
+  'prji'   ProjectionInfo                       no
 
 =head3 QuickTime cbmp Tags
 
@@ -32240,6 +32502,33 @@ for the specification.
       1    PoseYawDegrees                       no
       2    PosePitchDegrees                     no
       3    PoseRollDegrees                      no
+
+=head3 QuickTime vexu Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'eyes'   Eyes                                 QuickTime eyes
+  'proj'   Projection                           QuickTime proj
+
+=head3 QuickTime eyes Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'cams'   StereoCameraSystem                   QuickTime cams
+  'cmfy'   StereoComfort                        QuickTime cmfy
+  'stri'   StereoInfo                           no
+
+=head3 QuickTime cams Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'blin'   Baseline                             no
+
+=head3 QuickTime cmfy Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'dadj'   DisparityAdjustment                  no
 
 =head3 QuickTime HintSampleDesc Tags
 
@@ -44214,6 +44503,9 @@ Tags listed here are common to all FIT messages (ie. all tag tables below).
       5    CoursePointType                      no
       6    CoursePointName                      no
       8    Favorite                             no
+     13    Cutoff                               no
+     14    Notes                                no
+     15    Rest                                 no
 
 =head3 Garmin Totals Tags
 
@@ -44754,7 +45046,7 @@ Tags listed here are common to all FIT messages (ie. all tag tables below).
      45    UseForSpeed                          no
      46    UseForDistance                       no
      51    ConnectionType                       no
-     52    SensorType                           no
+     52    SensorDeviceType                     no
      91    ProductName                          no
 
 =head3 Garmin SegmentID Tags
@@ -45520,6 +45812,8 @@ Developer identification tags.
      26    AvgVertSpeed                         no
      27    EndTime                              no
      28    TotalCalories                        no
+     29    AvgCadence                           no
+     30    MaxCadence                           no
      32    AvgTemperature                       no
      33    MaxTemperature                       no
      34    MinTemperature                       no
@@ -45535,6 +45829,10 @@ Developer identification tags.
      74    StartElevation                       no
      79    RestingCalories                      no
      93    GradeAdjustedSpeed                   no
+     94    AvgHRV                               no
+     95    MaxHRV                               no
+    105    PedalingTime                         no
+    106    CruisingTime                         no
     107    BeginningPotential                   no
     108    EndingPotential                      no
     109    MinStamina                           no
@@ -45558,6 +45856,10 @@ Developer identification tags.
      11    MaxHeartRate                         no
      12    AvgVertSpeed                         no
      13    TotalCalories                        no
+     14    AvgCadence                           no
+     15    MaxCadence                           no
+     17    AvgTemperature                       no
+     19    MinTemperature                       no
      20    AvgVerticalOscillation               no
      21    AvgVerticalRatio                     no
      22    AvgStanceTime                        no
@@ -45565,8 +45867,12 @@ Developer identification tags.
      25    AvgPower                             no
      26    MaxPower                             no
      27    NormalizedPower                      no
+     52    AvgSplitAscent                       no
+     53    MaxSplitAscent                       no
      60    MaxSplitDistance                     no
      64    RestingCalories                      no
+     72    AvgHRV                               no
+     73    MaxHRV                               no
      77    TotalMovingTime                      no
      79    FirstStartTime                       no
      83    StepSpeedLossDistance                no

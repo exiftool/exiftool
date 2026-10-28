@@ -6373,6 +6373,21 @@ FIT messages, and subsequent tables list the extracted tags. See
 <td>Favorite</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='13 = 0xd'>13</td>
+<td>Cutoff</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='14 = 0xe'>14</td>
+<td>Notes</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='15 = 0xf'>15</td>
+<td>Rest</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Totals'>Garmin Totals Tags</a></h2>
@@ -8861,9 +8876,28 @@ FIT messages, and subsequent tables list the extracted tags. See
   <br>2 = Bluetooth</span></td></tr>
 <tr>
 <td class=r title='52 = 0x34'>52</td>
-<td>SensorType</td>
+<td>SensorDeviceType</td>
 <td class=c>no</td>
-<td>--&gt; <a href='Garmin.html#SensorType'>Garmin SensorType Values</a></td></tr>
+<td><table class=cols><tr>
+  <td>0 = External Heart Rate
+  <br>1 = Cadence
+  <br>2 = Foot Pod
+  <br>3 = Power
+  <br>4 = Speed
+  <br>5 = Speed Cadence
+  <br>6 = Tempe
+  <br>8 = Shimano Di2
+  <br>10 = Edge Remote</td><td>&nbsp;&nbsp;</td>
+  <td>12 = Smart Trainer
+  <br>13 = Lights
+  <br>14 = Radar
+  <br>15 = Extended Display
+  <br>16 = Shifting
+  <br>17 = Muscle O2
+  <br>18 = Rd Pod
+  <br>22 = Headphones
+  <br>28 = Tank Pressure</td></tr></table>
+</td></tr>
 <tr class=b>
 <td class=r title='91 = 0x5b'>91</td>
 <td>ProductName</td>
@@ -8879,31 +8913,6 @@ FIT messages, and subsequent tables list the extracted tags. See
 <tr><td class=r>0</td><td>= Off</td>
 </tr><tr><td class=r>1</td><td>= Indoor</td>
 </tr><tr><td class=r>2</td><td>= Always</td>
-</tr></table></td></tr></table></blockquote>
-
-<h2><a name='SensorType'>Garmin SensorType Values</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class='inner sep' cellspacing=1>
-<tr class=h><th>Value</th><th>SensorType</th><th>Value</th><th>SensorType</th><th>Value</th><th>SensorType</th></tr>
-<tr><td class=r>0</td><td>= Accelerometer</td>
-<td class='r b'>6</td><td class=b>= Tempe</td>
-<td class=r>15</td><td>= Extended Display</td>
-</tr><tr><td class=r>1</td><td>= Gyroscope</td>
-<td class='r b'>8</td><td class=b>= Shimano Di2</td>
-<td class=r>16</td><td>= Shifting</td>
-</tr><tr><td class=r>2</td><td>= Compass</td>
-<td class='r b'>10</td><td class=b>= Edge Remote</td>
-<td class=r>17</td><td>= Muscle O2</td>
-</tr><tr><td class=r>3</td><td>= Barometer</td>
-<td class='r b'>12</td><td class=b>= Smart Trainer</td>
-<td class=r>18</td><td>= Rd Pod</td>
-</tr><tr><td class=r>4</td><td>= Speed</td>
-<td class='r b'>13</td><td class=b>= Lights</td>
-<td class=r>22</td><td>= Headphones</td>
-</tr><tr><td class=r>5</td><td>= Speed Cadence</td>
-<td class='r b'>14</td><td class=b>= Radar</td>
-<td class=r>28</td><td>= Tank Pressure</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='SegmentID'>Garmin SegmentID Tags</a></h2>
@@ -9488,6 +9497,19 @@ FIT messages, and subsequent tables list the extracted tags. See
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
+
+<h2><a name='SensorType'>Garmin SensorType Values</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>SensorType</th><th>Value</th><th>SensorType</th><th>Value</th><th>SensorType</th></tr>
+<tr><td class=r>0</td><td>= Accelerometer</td>
+<td class='r b'>2</td><td class=b>= Compass</td>
+<td class=r>&nbsp;</td><td>&nbsp;</td>
+</tr><tr><td class=r>1</td><td>= Gyroscope</td>
+<td class='r b'>3</td><td class=b>= Barometer</td>
+<td class=r>&nbsp;</td><td>&nbsp;</td>
+</tr></table></td></tr></table></blockquote>
 
 <h2><a name='VideoFrame'>Garmin VideoFrame Tags</a></h2>
 <blockquote>
@@ -11936,6 +11958,16 @@ FIT messages, and subsequent tables list the extracted tags. See
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='29 = 0x1d'>29</td>
+<td>AvgCadence</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='30 = 0x1e'>30</td>
+<td>MaxCadence</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='32 = 0x20'>32</td>
 <td>AvgTemperature</td>
 <td class=c>no</td>
@@ -12008,6 +12040,26 @@ FIT messages, and subsequent tables list the extracted tags. See
 <tr class=b>
 <td class=r title='93 = 0x5d'>93</td>
 <td>GradeAdjustedSpeed</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='94 = 0x5e'>94</td>
+<td>AvgHRV</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='95 = 0x5f'>95</td>
+<td>MaxHRV</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='105 = 0x69'>105</td>
+<td>PedalingTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='106 = 0x6a'>106</td>
+<td>CruisingTime</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -12140,6 +12192,26 @@ FIT messages, and subsequent tables list the extracted tags. See
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='14 = 0xe'>14</td>
+<td>AvgCadence</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='15 = 0xf'>15</td>
+<td>MaxCadence</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='17 = 0x11'>17</td>
+<td>AvgTemperature</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='19 = 0x13'>19</td>
+<td>MinTemperature</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='20 = 0x14'>20</td>
 <td>AvgVerticalOscillation</td>
 <td class=c>no</td>
@@ -12175,6 +12247,16 @@ FIT messages, and subsequent tables list the extracted tags. See
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='52 = 0x34'>52</td>
+<td>AvgSplitAscent</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='53 = 0x35'>53</td>
+<td>MaxSplitAscent</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='60 = 0x3c'>60</td>
 <td>MaxSplitDistance</td>
 <td class=c>no</td>
@@ -12182,6 +12264,16 @@ FIT messages, and subsequent tables list the extracted tags. See
 <tr>
 <td class=r title='64 = 0x40'>64</td>
 <td>RestingCalories</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='72 = 0x48'>72</td>
+<td>AvgHRV</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='73 = 0x49'>73</td>
+<td>MaxHRV</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -12366,7 +12458,8 @@ FIT messages, and subsequent tables list the extracted tags. See
 <td class=r title='0 = 0x0'>0</td>
 <td>EventType</td>
 <td class=c>no</td>
-<td><span class=s>11 = Ultra Trac Trigger
+<td><span class=s>3 = Signal Lost
+  <br>11 = Ultra Trac Trigger
   <br>49 = Mode Change</span></td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
@@ -13368,7 +13461,7 @@ FIT messages, and subsequent tables list the extracted tags. See
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 1, 2026</i>
+<br><i>Last revised May 31, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

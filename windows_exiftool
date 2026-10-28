@@ -11,7 +11,7 @@ use strict;
 use warnings;
 require 5.004;
 
-my $version = '13.59';
+my $version = '13.60';
 
 $^W = 1;    # enable global warnings
 
@@ -210,6 +210,7 @@ my $showGroup;      # number of group to show (may be zero or '')
 my $showTagID;      # non-zero to show tag ID's
 my $stayOpenBuff='';# buffer for -stay_open file
 my $stayOpenFile;   # name of the current -stay_open argfile
+my $stayOpenStdin;  # true if stay-open input is piped stdin
 my $structOpt;      # output structured XMP information (JSON and XML output only)
 my $tabFormat;      # non-zero for tab output format
 my $tagOut;         # flag for separate text output file for each tag
@@ -455,7 +456,8 @@ if ($stayOpen >= 2) {
 
 # initialize necessary static file-scope variables
 # (not done: @commonArgs, @moreArgs, $critical, $binaryStdout, $helped,
-#  $interrupted, $mt, $pause, $rtnValApp, $rtnValPrev, $stayOpen, $stayOpenBuff, $stayOpenFile)
+#  $interrupted, $mt, $pause, $rtnValApp, $rtnValPrev, $stayOpen, $stayOpenBuff,
+#  $stayOpenFile, $stayOpenStdin)
 undef @condition;
 undef @csvExclude;
 undef @csvFiles;
@@ -863,6 +865,7 @@ for (;;) {
         }
         if ($stayOpen == 1) {
             $stayOpenFile = $argFile;   # remember the name of the file we have open
+            $stayOpenStdin = ($argFile eq '-' and (-p $fp or -S $fp));
             $stayOpenBuff = '';         # initialize buffer for reading this file
             $stayOpen = 2;
             $helped = 1;
@@ -4973,7 +4976,12 @@ sub ReadStayOpen($)
                 last;
             }
         } elsif ($result == 0) {
-            # sysread() didn't block (eg. when reading from a file),
+            if ($stayOpenStdin) {
+                # EOF on piped stdin means the parent closed its input channel
+                close STAYOPEN;
+                $stayOpen = 0;
+                last;
+            }            # sysread() didn't block (eg. when reading from a file),
             # so wait for a short time (1/100 sec) then try again
             # Note: may break out of this early if SIGCONT is received
             select(undef,undef,undef,0.01);

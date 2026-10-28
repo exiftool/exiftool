@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '5.07';
+$VERSION = '5.08';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -421,6 +421,7 @@ $VERSION = '5.07';
     213.2 => 'Tamron 16-300mm f/3.5-6.3 Di II VC PZD Macro (B016)', #PH
     213.3 => 'Tamron SP 35mm f/1.8 Di VC USD (F012)', #PH
     213.4 => 'Tamron SP 45mm f/1.8 Di VC USD (F013)', #PH
+    213.5 => 'Tamron SP 85mm f/1.8 Di VC USD (F012)', #github418
     214 => 'Canon EF-S 18-55mm f/3.5-5.6 USM', #PH/34
     215 => 'Canon EF 55-200mm f/4.5-5.6 II USM',
     217 => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC PZD', #47
@@ -493,6 +494,8 @@ $VERSION = '5.07';
    '368.13' => 'Sigma 24-105mm f/4 DG OS HSM | A', #forum3833
    '368.14' => 'Sigma 18-300mm f/3.5-6.3 DC Macro OS HSM | C', #forum15280 (014)
    '368.15' => 'Sigma 24mm F1.4 DG HSM | A', #50 (015)
+   '368.16' => 'Sigma 100-400mm f/5-6.3 DG OS HSM | C', #github 418
+   '368.17' => 'Sigma 100-400mm f/5-6.3 DG OS HSM | C + 1.4x', #github 418
     # Note: LensType 488 (0x1e8) is reported as 232 (0xe8) in 7D CameraSettings
     488 => 'Canon EF-S 15-85mm f/3.5-5.6 IS USM', #PH
     489 => 'Canon EF 70-300mm f/4-5.6L IS USM', #Gerald Kapounek
@@ -565,7 +568,8 @@ $VERSION = '5.07';
     4160 => 'Canon EF-S 35mm f/2.8 Macro IS STM', #42
     4208 => 'Sigma 56mm f/1.4 DC DN | C or other Sigma Lens', #forum10603
     4208.1 => 'Sigma 30mm F1.4 DC DN | C', #github#83 (016)
-    4976 => 'Sigma 16-300mm F3.5-6.7 DC OS | C (025)', #50
+    4464 => 'Sigma 18-50mm F2.8 DC DN | C', #github486 (021)
+    4976 => 'Sigma 16-300mm F3.5-6.7 DC OS | C', #50 (025)
     6512 => 'Sigma 12mm F1.4 DC | C', #github#352 (025)
     # (Nano USM lenses - 0x90xx)
     36910 => 'Canon EF 70-300mm f/4-5.6 IS II USM', #42
@@ -632,24 +636,29 @@ $VERSION = '5.07';
    '61182.49' => 'Canon RF 100-300mm F2.8L IS USM', #42
    '61182.50' => 'Canon RF 100-300mm F2.8L IS USM + RF1.4x', #42
    '61182.51' => 'Canon RF 100-300mm F2.8L IS USM + RF2x', #42
-   '61182.52' => 'Canon RF 10-20mm F4 L IS STM', #42
-   '61182.53' => 'Canon RF 28mm F2.8 STM', #42
-   '61182.54' => 'Canon RF 24-105mm F2.8 L IS USM Z', #42
-   '61182.55' => 'Canon RF-S 10-18mm F4.5-6.3 IS STM', #42
-   '61182.56' => 'Canon RF 35mm F1.4 L VCM', #42
-   '61182.57' => 'Canon RF 70-200mm F2.8 L IS USM Z', #42
-   '61182.58' => 'Canon RF 70-200mm F2.8 L IS USM Z + RF1.4x', #42
-   '61182.59' => 'Canon RF 70-200mm F2.8 L IS USM Z + RF2x', #42
-   '61182.60' => 'Canon RF 16-28mm F2.8 IS STM', #42
-   '61182.61' => 'Canon RF-S 14-30mm F4-6.3 IS STM PZ', #42
-   '61182.62' => 'Canon RF 50mm F1.4 L VCM', #42
-   '61182.63' => 'Canon RF 24mm F1.4 L VCM', #42
-   '61182.64' => 'Canon RF 20mm F1.4 L VCM', #42
-   '61182.65' => 'Canon RF 85mm F1.4 L VCM', #github350
-   '61182.66' => 'Canon RF 20-50mm F4 L IS USM PZ', #42
-   '61182.67' => 'Canon RF 45mm F1.2 STM', #42
-   '61182.68' => 'Canon RF 7-14mm F2.8-3.5 L FISHEYE STM', #42
-   '61182.69' => 'Canon RF 14mm F1.4 L VCM', #42
+   '61182.52' => 'Canon RF 200-800mm F6.3-9 IS USM', #42
+   '61182.53' => 'Canon RF 200-800mm F6.3-9 IS USM + RF1.4x', #42
+   '61182.54' => 'Canon RF 200-800mm F6.3-9 IS USM + RF2x', #42
+   '61182.55' => 'Canon RF 10-20mm F4 L IS STM', #42
+   '61182.56' => 'Canon RF 28mm F2.8 STM', #42
+   '61182.57' => 'Canon RF 24-105mm F2.8 L IS USM Z', #42
+   '61182.58' => 'Canon RF-S 10-18mm F4.5-6.3 IS STM', #42
+   '61182.59' => 'Canon RF 35mm F1.4 L VCM', #42
+   '61182.60' => 'Canon RF-S 3.9mm F3.5 STM DUAL FISHEYE', #42
+   '61182.61' => 'Canon RF 28-70mm F2.8 IS STM', #42
+   '61182.62' => 'Canon RF 70-200mm F2.8 L IS USM Z', #42
+   '61182.63' => 'Canon RF 70-200mm F2.8 L IS USM Z + RF1.4x', #42
+   '61182.64' => 'Canon RF 70-200mm F2.8 L IS USM Z + RF2x', #42
+   '61182.65' => 'Canon RF 16-28mm F2.8 IS STM', #42
+   '61182.66' => 'Canon RF-S 14-30mm F4-6.3 IS STM PZ', #42
+   '61182.67' => 'Canon RF 50mm F1.4 L VCM', #42
+   '61182.68' => 'Canon RF 24mm F1.4 L VCM', #42
+   '61182.69' => 'Canon RF 20mm F1.4 L VCM', #42
+   '61182.70' => 'Canon RF 85mm F1.4 L VCM', #github350
+   '61182.71' => 'Canon RF 20-50mm F4 L IS USM PZ', #42
+   '61182.72' => 'Canon RF 45mm F1.2 STM', #42
+   '61182.73' => 'Canon RF 7-14mm F2.8-3.5 L FISHEYE STM', #42
+   '61182.74' => 'Canon RF 14mm F1.4 L VCM', #42
     65535 => 'n/a',
 );
 
@@ -1215,6 +1224,34 @@ my %binaryDataAttrs = (
     WRITABLE => 1,
 );
 
+# CameraInfo time stamp: local time stored as a Unix time value (int32u),
+# followed by int16u milliseconds (ref github400).  Its position moved by 4
+# bytes between firmware 1.x and 2.x, so the milliseconds are also used as a
+# sanity check (github490)
+my %cameraInfoTimeStamp = (
+    Format => 'int16u[3]',
+    Groups => { 2 => 'Time' },
+    Shift => 'Time',
+    RawConv => q{
+        my @a = split " ", $val;
+        return(($a[0] or $a[1]) && $a[2] < 1000 ? $val : undef);
+    },
+    ValueConv => q{
+        my @a = split " ", $val;
+        return ConvertUnixTime($a[0] + $a[1] * 65536 + $a[2] / 1000, 0, 3);
+    },
+    ValueConvInv => q{
+        my $t = GetUnixTime($val);
+        return undef unless defined $t;
+        my $s = int($t);
+        my $ms = int(($t - $s) * 1000 + 0.5);
+        $ms = 999 if $ms > 999;
+        return join ' ', $s & 0xffff, $s >> 16, $ms;
+    },
+    PrintConv => '$self->ConvertDateTime($val)',
+    PrintConvInv => '$self->InverseDateTime($val)',
+);
+
 my %offOn = ( 0 => 'Off', 1 => 'On' );
 
 #------------------------------------------------------------------------------
@@ -1223,6 +1260,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     WRITE_PROC => \&WriteCanon,
     CHECK_PROC => \&Image::ExifTool::Exif::CheckExif,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 7 ],
     0x1 => {
         Name => 'CanonCameraSettings',
         SubDirectory => {
@@ -1257,6 +1295,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     0x7 => {
         Name => 'CanonFirmwareVersion',
         Writable => 'string',
+        RawConv => '$val =~ /(\d+\.\d+\.\d+)/ and $$self{CanonFirmVer} = $1; $val',
     },
     0x8 => {
         Name => 'FileNumber',
@@ -1443,6 +1482,11 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfo60D' },
         },
         {
+            Name => 'CanonCameraInfoR5m2',
+            Condition => '$$self{Model} =~ /\bEOS (R1|R5m2)$/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR5m2' },
+        },
+        {
             Name => 'CanonCameraInfoR6',
             Condition => '$$self{Model} =~ /\bEOS R[56]$/',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR6' },
@@ -1454,8 +1498,18 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         },
         {
             Name => 'CanonCameraInfoR6m3',
-            Condition => '$$self{Model} =~ /\bEOS R6 Mark III$/',
+            Condition => '$$self{Model} =~ /\bEOS R6 (Mark III|V)$/',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR6m3' },
+        },
+        {
+            Name => 'CanonCameraInfoR50V',
+            Condition => '$$self{Model} =~ /\bEOS R50 V$/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR50V' },
+        },
+        {
+            Name => 'CanonCameraInfoRP',
+            Condition => '$$self{Model} =~ /\bEOS RP$/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoRP' },
         },
         {
             Name => 'CanonCameraInfoG5XII',
@@ -1743,6 +1797,13 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         SubDirectory => {
             Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart,$size)',
             TagTable => 'Image::ExifTool::Canon::FaceDetect3',
+        },
+    },
+    0x31 => {
+        Name => 'SmartAutoScene',
+        SubDirectory => {
+            Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart,$size)',
+            TagTable => 'Image::ExifTool::Canon::SmartAutoScene',
         },
     },
     # 0x32 - if length is 768, starting at offset 4 there are 6 RGGB 1/val int16 records:
@@ -2175,6 +2236,14 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         SubDirectory => {
             Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart,$size)',
             TagTable => 'Image::ExifTool::Canon::LogInfo',
+        }
+    },
+    0x4027 => { #github488
+        Name => 'FirmwareInfo',
+        # (the EOS M50 writes this too, but element 5 doesn't look like a version)
+        Condition => '$$self{Model} !~ /\bEOS M/ and $$valPt =~ /^\x18\0\0\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Canon::FirmwareInfo',
         }
     },
     0x4028 => { #PH
@@ -2687,6 +2756,15 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     52 => { #github336
         Name  => 'HDR-PQ',
         PrintConv => { %offOn, -1 => 'n/a' },
+    },
+    69 => { #github488
+        Name => 'BlackoutFreeShooting',
+        Condition => '$$self{Model} =~ /\bEOS R5m2$/',
+        Notes => q{
+            EOS R5m2 only.  The menu setting is stored even with the mechanical or
+            electronic first-curtain shutter, where it has no effect
+        },
+        PrintConv => { 0 => 'On', 1 => 'Off' },
     },
 );
 
@@ -3505,6 +3583,7 @@ my %ciMaxFocal = (
     },
     0x2aa => { #48
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xde]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo' },
     },
     0x45a => { #29
@@ -3550,18 +3629,14 @@ my %ciMaxFocal = (
         versions 1.0.x, but they may be different for other firmware versions.
     },
     0x00 => {
-        Name => 'FirmwareVersionLookAhead',
-        Hidden => 1,
-        # look ahead to check location of FirmwareVersion string
-        Format => 'undef[0x1fd]',
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
         RawConv => q{
-            my $t = substr($val, 0x1e8, 6); # 1 = firmware 4.2.1
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 1, return undef;
-            $t = substr($val, 0x1ed, 6);    # 2 = firmware 1.0.4
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 2, return undef;
-            $self->Warn('Unrecognized CameraInfo1DmkIV firmware version');
-            $$self{CanonFirm} = 0;
-            return undef;   # not a real tag
+            my $lkup = { 0x1e8 => 1, 0x1ed => 2 };
+            return Image::ExifTool::Canon::FindFirmVer($self, \$val, $lkup);
         },
     },
     0x03 => { %ciFNumber },
@@ -3657,6 +3732,7 @@ my %ciMaxFocal = (
     },
     0x368 => {
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xde]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo' },
     },
 );
@@ -3675,22 +3751,14 @@ my %ciMaxFocal = (
         1.0.2, but they may be different for other firmware versions.
     },
     0x00 => {
-        Name => 'FirmwareVersionLookAhead',
-        Hidden => 1,
-        # look ahead to check location of FirmwareVersion string
-        Format => 'undef[0x28b]',
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
         RawConv => q{
-            my $t = substr($val, 0x271, 6); # 1 = firmware 5.7.1
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 1, return undef;
-            $t = substr($val, 0x279, 6);    # 2 = firmware 6.5.1
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 2, return undef;
-            $t = substr($val, 0x280, 6);    # 3 = firmware 0.0.8/1.0.2/1.1.1
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 3, return undef;
-            $t = substr($val, 0x285, 6);    # 4 = firmware 2.1.0
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 4, return undef;
-            $self->Warn('Unrecognized CameraInfo1DX firmware version');
-            $$self{CanonFirm} = 0;
-            return undef;   # not a real tag
+            my $lkup = { 0x271=>1, 0x279=>2, 0x280=>3, 0x285=>4 };
+            return Image::ExifTool::Canon::FindFirmVer($self, \$val, $lkup);
         },
     },
     0x03 => { %ciFNumber },
@@ -3768,7 +3836,12 @@ my %ciMaxFocal = (
     },
     0x3f4 => {
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xf6]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo2' },
+    },
+    0x5c4 => { #github490
+        Name => 'TimeStamp',
+        %cameraInfoTimeStamp,
     },
 );
 
@@ -3977,18 +4050,14 @@ my %ciMaxFocal = (
         version 1.0.6, but they may be different for other firmware versions.
     },
     0x00 => {
-        Name => 'FirmwareVersionLookAhead',
-        Hidden => 1,
-        # look ahead to check location of FirmwareVersion string
-        Format => 'undef[0x184]',
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
         RawConv => q{
-            my $t = substr($val, 0x15a, 6); # 1 = firmware 3.4.6/3.6.1
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 1, return undef;
-            $t = substr($val, 0x17e, 6);    # 2 = firmware 4.1.1/1.0.6
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 2, return undef;
-            $self->Warn('Unrecognized CameraInfo5DmkII firmware version');
-            $$self{CanonFirm} = 0;
-            return undef;   # not a real tag
+            my $lkup = { 0x15a => 1, 0x17e => 2 };
+            return Image::ExifTool::Canon::FindFirmVer($self, \$val, $lkup);
         },
     },
     0x03 => { %ciFNumber },
@@ -4104,7 +4173,20 @@ my %ciMaxFocal = (
     },
     0x2f7 => { #48
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xde]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo' },
+    },
+    0x4ab => { #github490
+        Name => 'TimeStamp',
+        Condition => '$$self{CanonFirmVer} and $$self{CanonFirmVer} =~ /^1\./',
+        Notes => 'firmware 1.x',
+        %cameraInfoTimeStamp,
+    },
+    0x4af => { #github490
+        Name => 'TimeStamp',
+        Condition => '$$self{CanonFirmVer} and $$self{CanonFirmVer} =~ /^2\./',
+        Notes => 'firmware 2.x',
+        %cameraInfoTimeStamp,
     },
 );
 
@@ -4122,24 +4204,14 @@ my %ciMaxFocal = (
         versions 1.0.x, but they may be different for other firmware versions.
     },
     0x00 => {
-        Name => 'FirmwareVersionLookAhead',
-        Hidden => 1,
-        # look ahead to check location of FirmwareVersion string
-        Format => 'undef[0x24d]',
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
         RawConv => q{
-            my $t = substr($val, 0x22c, 6); # 1 = firmware 4.5.4/4.5.6
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 1, return undef;
-            $t = substr($val, 0x22d, 6);    # 2 = firmware 5.2.2/5.3.1/5.4.2
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 2, return undef;
-            $t = substr($val, 0x23c, 6);    # 3 = firmware 1.0.3/1.0.7
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 3, return undef;
-            $t = substr($val, 0x242, 6);    # 4 = firmware 1.2.1
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 4, return undef;
-            $t = substr($val, 0x247, 6);    # 5 = firmware 1.3.5
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 5, return undef;
-            $self->Warn('Unrecognized CameraInfo5DmkIII firmware version');
-            $$self{CanonFirm} = 0;
-            return undef;   # not a real tag
+            my $lkup = { 0x22c => 1, 0x22d => 2, 0x23c => 3, 0x242 => 4, 0x247 => 5 };
+            return Image::ExifTool::Canon::FindFirmVer($self, \$val, $lkup);
         },
     },
     0x03 => { %ciFNumber },
@@ -4253,6 +4325,7 @@ my %ciMaxFocal = (
     },
     0x3b0 => {
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xf6]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo2' },
     },
 );
@@ -4266,6 +4339,14 @@ my %ciMaxFocal = (
     IS_SUBDIR => [ 0x3c6 ],
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS 6D.',
+    0x00 => {
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
+        RawConv => 'Image::ExifTool::Canon::FindFirmVer($self, \$val)',
+    },
     0x03 => { %ciFNumber },
     0x04 => { %ciExposureTime },
     0x06 => { %ciISO },
@@ -4334,7 +4415,12 @@ my %ciMaxFocal = (
     },
     0x3c6 => { # (5DmkIII + 0x16)
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xf6]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo2' },
+    },
+    0x596 => { #github400
+        Name => 'TimeStamp',
+        %cameraInfoTimeStamp,
     },
 );
 
@@ -4352,18 +4438,14 @@ my %ciMaxFocal = (
         1.0.x, but they may be different for other firmware versions.
     },
     0x00 => {
-        Name => 'FirmwareVersionLookAhead',
-        Hidden => 1,
-        # look ahead to check location of FirmwareVersion string
-        Format => 'undef[0x1b2]',
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
         RawConv => q{
-            my $t = substr($val, 0x1a8, 6); # 1 = firmware 3.7.5
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 1, return undef;
-            $t = substr($val, 0x1ac, 6);    # 2 = firmware 1.0.7/1.0.8/1.1.0/1.2.1/1.2.2
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 2, return undef;
-            $self->Warn('Unrecognized CameraInfo7D firmware version');
-            $$self{CanonFirm} = 0;
-            return undef;   # not a real tag
+            my $lkup = { 0x1a8 => 1, 0x1ac => 2 };
+            return Image::ExifTool::Canon::FindFirmVer($self, \$val, $lkup);
         },
     },
     0x03 => { %ciFNumber },
@@ -4484,7 +4566,20 @@ my %ciMaxFocal = (
     },
     0x327 => { #48
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xde]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo' },
+    },
+    0x4df => { #github400
+        Name => 'TimeStamp',
+        Condition => '$$self{CanonFirmVer} and $$self{CanonFirmVer} =~ /^1\./',
+        Notes => 'firmware 1.x',
+        %cameraInfoTimeStamp,
+    },
+    0x4e3 => { #github400
+        Name => 'TimeStamp',
+        Condition => '$$self{CanonFirmVer} and $$self{CanonFirmVer} =~ /^2\./',
+        Notes => 'firmware 2.x',
+        %cameraInfoTimeStamp,
     },
 );
 
@@ -4497,6 +4592,14 @@ my %ciMaxFocal = (
     IS_SUBDIR => [ 0x25b ],
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS 40D.',
+    0x00 => {
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
+        RawConv => 'Image::ExifTool::Canon::FindFirmVer($self, \$val)',
+    },
     0x03 => { %ciFNumber }, #PH
     0x04 => { %ciExposureTime }, #PH
     0x06 => { %ciISO }, #PH
@@ -4572,7 +4675,12 @@ my %ciMaxFocal = (
     },
     0x25b => {
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xde]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo' },
+    },
+    0x347 => { #github400
+        Name => 'TimeStamp',
+        %cameraInfoTimeStamp,
     },
     0x92b => { #33
         Name => 'LensModel',
@@ -4594,18 +4702,14 @@ my %ciMaxFocal = (
         1.0.x, but they may be different for other firmware versions.
     },
     0x00 => {
-        Name => 'FirmwareVersionLookAhead',
-        Hidden => 1,
-        # look ahead to check location of FirmwareVersion string
-        Format => 'undef[0x164]',
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
         RawConv => q{
-            my $t = substr($val, 0x15a, 6); # 1 = firmware 2.6.1
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 1, return undef;
-            $t = substr($val, 0x15e, 6);    # 2 = firmware 2.9.1/3.1.1/1.0.2/1.0.3
-            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 2, return undef;
-            $self->Warn('Unrecognized CameraInfo50D firmware version');
-            $$self{CanonFirm} = 0;
-            return undef;   # not a real tag
+            my $lkup = { 0x15a => 1, 0x15e => 2 };
+            return Image::ExifTool::Canon::FindFirmVer($self, \$val, $lkup);
         },
     },
     0x03 => { %ciFNumber },
@@ -4710,6 +4814,7 @@ my %ciMaxFocal = (
     },
     0x2d7 => {
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xde]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo' },
     },
 );
@@ -4724,6 +4829,14 @@ my %ciMaxFocal = (
     IS_SUBDIR => [ 0x2f9, 0x321 ],
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS 60D and 1200D.',
+    0x00 => {
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
+        RawConv => 'Image::ExifTool::Canon::FindFirmVer($self, \$val)',
+    },
     0x03 => { %ciFNumber },
     0x04 => { %ciExposureTime },
     0x06 => { %ciISO },
@@ -4852,15 +4965,262 @@ my %ciMaxFocal = (
     },
 );
 
+%Image::ExifTool::Canon::CameraInfoR5m2 = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    IS_SUBDIR => [ 0x0002 ],
+    NOTES => 'CameraInfo tags for the EOS R1 and R5 Mark II.',
+    # 0x0000 - int16u 0xbbbb, then a ring of 12 AF tracking records, newest first.
+    #          Records are 168 bytes (112 bytes with firmware 1.0.0 and with some
+    #          frames where the AF area did not move, which have a different layout)
+    0x0002 => {
+        Name => 'AFTrackingInfo',
+        Condition => q{
+            $$valPt =~ /^\x15\0/ and substr($$valPt, 0x57, 1) eq "\0" and
+            substr($$valPt, 0x78, 1) eq "\0"
+        },
+        Format => 'undef[168]',
+        Notes => 'most recent AF tracking record',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::AFTrackingR5m2' },
+    },
+    # 0x084f - int32u capture time, same encoding as PowerOnTime
+    0x084b => {
+        Name => 'PowerOnTime',
+        Groups => { 2 => 'Time' },
+        Format => 'int32u',
+        Shift => 'Time',
+        Notes => 'time the camera was switched on',
+        # (local time stored as a Unix time value, so no time zone conversion)
+        # (zero for every image of some power-on sessions)
+        RawConv => '$val || undef',
+        ValueConv => 'ConvertUnixTime($val)',
+        ValueConvInv => 'GetUnixTime($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
+    },
+    0x0861 => {
+        Name => 'FormatFileNumber',
+        Format => 'int16u',
+        Notes => q{
+            number of the last image file when the camera was switched on, stored here
+            instead of PowerOnFileNumber when the card was formatted after power-on
+        },
+        RawConv => '$val || undef',
+    },
+    # 0x0863 - int16u directory number that goes with FormatFileNumber (set even when
+    #          FormatFileNumber is zero)
+    0x0865 => {
+        Name => 'PowerOnFileNumber',
+        Format => 'int16u',
+        Notes => q{
+            number of the last image file when the camera was switched on.  The same
+            for every image of a power-on session.  Zero when the card was formatted
+            after power-on (see FormatFileNumber), and in some other sessions
+        },
+        RawConv => '$val || undef',
+    },
+    0x0867 => {
+        Name => 'PowerOnDirectoryNumber',
+        Format => 'int16u',
+        Notes => q{
+            number of the DCIM directory when the camera was switched on, so it can
+            differ from the directory of the image if a new one was started since
+        },
+    },
+    0x0869 => {
+        Name => 'WakeFileNumber',
+        Format => 'int16u',
+        Notes => q{
+            number of the last image file when the camera last woke from auto power
+            off, or PowerOnFileNumber if it has not slept since being switched on
+        },
+        RawConv => '$val || undef',
+    },
+    0x0f70 => {
+        Name => 'BurstShotNumber',
+        Description => 'Shot Number In Continuous Burst',
+        Notes => q{
+            1 for single shots and the first frame of a burst, then increments by 1 for
+            each frame.  Unlike SequenceNumber, which is always 0 for these models
+        },
+        Format => 'undef[4]',
+        ValueConv => 'unpack("N",$val)', # (big-endian)
+    },
+    0x1122 => {
+        Name => 'ImageStabilizationMode',
+        Format => 'int8s',
+        Notes => q{
+            mode selected on the lens.  Retains the setting while IS is switched off.
+            Verified with the RF100-500mm F4.5-7.1L IS USM and RF70-200mm F2.8 L IS
+            USM Z.  -1 for lenses without an IS mode switch, including the RF28-70mm
+            F2.8 IS STM which has IS
+        },
+        PrintConv => {
+            -1 => 'n/a', # (lens without an IS mode switch)
+            0 => 'Mode 1',
+            1 => 'Mode 2',
+            2 => 'Mode 3',
+        },
+    },
+);
+
+# most recent AF tracking record in the EOS R1 and R5 Mark II CameraInfo (github488)
+%Image::ExifTool::Canon::AFTrackingR5m2 = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => q{
+        Most recent record from the ring of AF tracking records in the EOS R1 and R5
+        Mark II CameraInfo.
+    },
+    # 0x00 - int16u 0x0015 (record header)
+    # 0x08 - int32u timestamp in microseconds
+    # 0x18 - live view rate: 120, dropping to 60 once continuous shooting is running
+    0x1a => {
+        Name => 'AFSamplingRate',
+        Notes => q{
+            rate of the AF tracking records, confirmed by their timestamps.  Usually 60,
+            but drops to 30, 15 or 8 when the live view image is dark
+        },
+        PrintConv => '$val ? "$val Hz" : "n/a"',
+        PrintConvInv => '$val =~ /(\d+)/ ? $1 : 0',
+    },
+    0x8b => {
+        Name => 'AFDetectedSubject',
+        Notes => q{
+            class of the subject found by subject detection.  The animal classes were
+            identified by photographing a cat, a dog, a bird and a horse.  The camera
+            often gets the class wrong for birds, which have been seen with all three
+        },
+        PrintConv => {
+            0 => 'n/a',
+            1 => 'None',
+            2 => 'None',
+            3 => 'None',
+            4 => 'None',
+            5 => 'Person',
+            6 => 'Animal (cat)',
+            7 => 'Animal (dog or bird)',
+            8 => 'Animal (horse)',
+            9 => 'Vehicle',
+        },
+    },
+    0x8f => {
+        Name => 'AFTrackingTarget',
+        Mask => 0x0f,
+        Notes => 'part of the detected subject that AF was tracking',
+        PrintConv => {
+            0 => 'n/a',
+            1 => 'None',
+            2 => 'Head',
+            3 => 'Body',
+            4 => 'Face',
+            5 => 'Eye',
+        },
+    },
+    0x92 => {
+        Name => 'AFDetectedParts',
+        Format => 'int16u',
+        Mask => 0x7c, # (bit 0x02 is set in most images, meaning unknown)
+        PrintConv => { BITMASK => {
+            0 => 'Head',
+            1 => 'Body',
+            2 => 'Face',
+            3 => 'Eye',
+            4 => 'Both Eyes',
+        }},
+    },
+    0x94 => {
+        Name => 'AFTrackingArea',
+        Format => 'int16u[4]',
+        Notes => q{
+            centre X, centre Y, width and height of the tracked area, in AF image
+            coordinates with the origin at the top left
+        },
+    },
+    0x9d => {
+        Name => 'AFEyeUsed',
+        Mask => 0x03,
+        Notes => q{
+            "Left" and "Right" match the Left Eye and Right Eye settings of
+            EyeDetection.  "Unresolved" when only one eye was found
+        },
+        PrintConv => {
+            0 => 'n/a',
+            1 => 'Left',
+            2 => 'Right',
+            3 => 'Unresolved',
+        },
+    },
+);
+
 %Image::ExifTool::Canon::CameraInfoR6m3 = (
     %binaryDataAttrs,
     FIRST_ENTRY => 0,
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => 'CameraInfo tags for the EOS R6 Mark II.',
+    NOTES => 'CameraInfo tags for the EOS R6 Mark III and R6 V.',
+    0x084b => { #github488
+        Name => 'PowerOnTime',
+        Groups => { 2 => 'Time' },
+        Format => 'int32u',
+        Shift => 'Time',
+        Notes => 'time the camera was switched on',
+        RawConv => '$val || undef',
+        ValueConv => 'ConvertUnixTime($val)',
+        ValueConvInv => 'GetUnixTime($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
+    },
+    # 0x085f-0x086c - 4 pairs of int16u directory and file numbers.  The first 3
+    #                 were always equal in the samples, so their meaning is unknown
     0x086d => { #forum17745 (+ private email)
         Name => 'ImageCount', # (resets to 0 when SD card is formatted)
         Format => 'int16u',
+    },
+);
+
+# ref github488
+%Image::ExifTool::Canon::CameraInfoR50V = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'CameraInfo tags for the EOS R50 V.',
+    0x084b => {
+        Name => 'PowerOnTime',
+        Groups => { 2 => 'Time' },
+        Format => 'int32u',
+        Shift => 'Time',
+        Notes => 'time the camera was switched on',
+        RawConv => '$val || undef',
+        ValueConv => 'ConvertUnixTime($val)',
+        ValueConvInv => 'GetUnixTime($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
+    },
+);
+
+%Image::ExifTool::Canon::CameraInfoRP = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'CameraInfo tags for the EOS R50 V.',
+    0x095c => {
+        Name => 'ShutterCount',
+        Condition => '$$self{CanonFirmVer} and $$self{CanonFirmVer} eq "1.0.1"',
+        Format => 'int32u',
+        Notes => 'includes electronic + mechanical shutter',
+    },
+    0x0960 => {
+        Name => 'ShutterCount', # tested with 1.6.0 and 1.7.0
+        Condition => '$$self{CanonFirmVer} and $$self{CanonFirmVer} ge "1.6.0"',
+        Format => 'int32u',
+        Notes => 'includes electronic + mechanical shutter',
     },
 );
 
@@ -4913,6 +5273,14 @@ my %ciMaxFocal = (
     IS_SUBDIR => [ 0x3cf ],
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS 70D.',
+    0x00 => {
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
+        RawConv => 'Image::ExifTool::Canon::FindFirmVer($self, \$val)',
+    },
     0x03 => { %ciFNumber },
     0x04 => { %ciExposureTime },
     0x06 => { %ciISO },
@@ -4970,7 +5338,12 @@ my %ciMaxFocal = (
     },
     0x3cf => { #48
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xf6]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo2' },
+    },
+    0x59f => { # (firmware 1.1.1)
+        Name => 'TimeStamp',
+        %cameraInfoTimeStamp,
     },
 );
 
@@ -4982,6 +5355,14 @@ my %ciMaxFocal = (
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS 80D.',
+    0x00 => {
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
+        RawConv => 'Image::ExifTool::Canon::FindFirmVer($self, \$val)',
+    },
     0x03 => { %ciFNumber },
     0x04 => { %ciExposureTime },
     0x06 => { %ciISO },
@@ -5047,6 +5428,14 @@ my %ciMaxFocal = (
     IS_SUBDIR => [ 0x263 ],
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS 450D.',
+    0x00 => {
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
+        RawConv => 'Image::ExifTool::Canon::FindFirmVer($self, \$val)',
+    },
     0x03 => { %ciFNumber }, #PH
     0x04 => { %ciExposureTime }, #PH
     0x06 => { %ciISO }, #PH
@@ -5121,6 +5510,7 @@ my %ciMaxFocal = (
     },
     0x263 => { #PH
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xde]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo' },
     },
     0x933 => { #33
@@ -5138,6 +5528,14 @@ my %ciMaxFocal = (
     IS_SUBDIR => [ 0x30b ],
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS 500D.',
+    0x00 => {
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
+        RawConv => 'Image::ExifTool::Canon::FindFirmVer($self, \$val)',
+    },
     0x03 => { %ciFNumber },
     0x04 => { %ciExposureTime },
     0x06 => { %ciISO },
@@ -5239,6 +5637,7 @@ my %ciMaxFocal = (
     },
     0x30b => {
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xde]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo' },
     },
 );
@@ -5252,6 +5651,14 @@ my %ciMaxFocal = (
     IS_SUBDIR => [ 0x31c ],
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS 550D.',
+    0x00 => {
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
+        RawConv => 'Image::ExifTool::Canon::FindFirmVer($self, \$val)',
+    },
     0x03 => { %ciFNumber },
     0x04 => { %ciExposureTime },
     0x06 => { %ciISO },
@@ -5335,6 +5742,7 @@ my %ciMaxFocal = (
     },
     0x31c => { #48
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xde]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo' },
     },
 );
@@ -5348,6 +5756,14 @@ my %ciMaxFocal = (
     IS_SUBDIR => [ 0x2fb ],
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS 600D and 1100D.',
+    0x00 => {
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
+        RawConv => 'Image::ExifTool::Canon::FindFirmVer($self, \$val)',
+    },
     0x03 => { %ciFNumber },
     0x04 => { %ciExposureTime },
     0x06 => { %ciISO },
@@ -5431,6 +5847,7 @@ my %ciMaxFocal = (
     },
     0x2fb => {
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xf6]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo2' },
     },
 );
@@ -5444,6 +5861,14 @@ my %ciMaxFocal = (
     IS_SUBDIR => [ 0x390 ],
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS 650D and 700D.',
+    0x00 => {
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
+        RawConv => 'Image::ExifTool::Canon::FindFirmVer($self, \$val)',
+    },
     0x03 => { %ciFNumber },
     0x04 => { %ciExposureTime },
     0x06 => { %ciISO },
@@ -5546,6 +5971,7 @@ my %ciMaxFocal = (
     },
     0x390 => {
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xf6]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo2' },
     },
 );
@@ -5558,6 +5984,14 @@ my %ciMaxFocal = (
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS 750D and 760D.',
+    0x00 => {
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
+        RawConv => 'Image::ExifTool::Canon::FindFirmVer($self, \$val)',
+    },
     0x03 => { %ciFNumber },
     0x04 => { %ciExposureTime },
     0x06 => { %ciISO },
@@ -5628,6 +6062,14 @@ my %ciMaxFocal = (
     IS_SUBDIR => [ 0x267 ],
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS 1000D.',
+    0x00 => {
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
+        RawConv => 'Image::ExifTool::Canon::FindFirmVer($self, \$val)',
+    },
     0x03 => { %ciFNumber }, #PH
     0x04 => { %ciExposureTime }, #PH
     0x06 => { %ciISO }, #PH
@@ -5699,7 +6141,12 @@ my %ciMaxFocal = (
     },
     0x267 => { #PH
         Name => 'PictureStyleInfo',
+        Format => 'undef[0xde]',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::PSInfo' },
+    },
+    0x353 => { #github400
+        Name => 'TimeStamp',
+        %cameraInfoTimeStamp,
     },
     0x937 => { #PH
         Name => 'LensModel',
@@ -5997,6 +6444,14 @@ my %ciMaxFocal = (
     FIRST_ENTRY => 0,
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0x00 => {
+        Name => 'FirmwareInfo',
+        Format => 'undef[$size]',
+        Writable => 0,
+        LookAhead => 1,
+        Notes => 'firmware version, MPU version, and offset in CameraInfo',
+        RawConv => 'Image::ExifTool::Canon::FindFirmVer($self, \$val)',
+    },
     0x16b => {
         Name => 'LensSerialNumber',
         Condition => '$$self{Model} =~ /^Canon EOS 5DS/', # (good for 5DS and 5DSR)
@@ -6839,13 +7294,49 @@ my %ciMaxFocal = (
     # 4 - 240=4:3/4:5/1:1,180=16:9,212=3:2
 );
 
+# ref github464
+%Image::ExifTool::Canon::SmartAutoScene = (
+    %binaryDataAttrs,
+    FORMAT => 'int16u',
+    FIRST_ENTRY => 1,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    2 => {
+        Name => 'AutoSceneMode',
+        PrintConv => {
+            0 => 'Default',
+            1 => 'Macro',
+            2 => 'Person/Face',
+            4 => 'Motion',
+            65535 => 'n/a',
+        },
+    },
+    3 => {
+        Name => 'AutoSceneSubject',
+        PrintConv => {
+            0 => 'Default',
+            1 => 'Motion',
+            3 => 'Smiling Face',
+            65535 => 'n/a',
+        },
+    },
+    4 => {
+        Name => 'AutoSceneLighting',
+        PrintConv => {
+            0 => 'Default',
+            1 => 'Bright', # (sunny outdoors)
+            3 => 'Low Light',
+            65535 => 'n/a',
+        },
+    },
+);
+
 # File number information (MakerNotes tag 0x93)
 %Image::ExifTool::Canon::FileInfo = (
     %binaryDataAttrs,
     FORMAT => 'int16s',
     FIRST_ENTRY => 1,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
-    DATAMEMBER => [ 20 ],
+    DATAMEMBER => [ 20, 0x3d ],
     1 => [
         { #5
             Name => 'FileNumber',
@@ -6995,7 +7486,7 @@ my %ciMaxFocal = (
             4 => 'Green',
         },
     },
-    16 => { #PH
+    16 => [{ #PH
         %ciMacroMagnification,
         # MP-E 65mm on 5DmkII: 44=5x,52~=3.9x,56~=3.3x,62~=2.6x,75=1x
         # ME-E 65mm on 40D/450D: 72 for all samples (not valid)
@@ -7007,7 +7498,23 @@ my %ciMaxFocal = (
             currently decoded only for the MP-E 65mm f/2.8 1-5x Macro Photo, and not
             valid for all camera models
         },
-    },
+    },{
+        # value supplied by the lens: an EF-S 18-55mm gives 153 both on a 90D and
+        # adapted to an R50, so the 24mm of the mount adapter is not included
+        # (EF lenses report it too, but EF zooms give the same value at all focal
+        #  lengths, so it is decoded only for RF lenses, which have LensType 61182)
+        # (ref github488)
+        Name => 'ExitPupilCode',
+        Condition => '$$self{Model} =~ /\bEOS R(\d|P\b|a\b|\b)/ and ($$self{LensType} || 0) == 61182',
+        Notes => q{
+            EOS R-series bodies with RF lenses.  Appears to be an inverse measure of the lens exit
+            pupil distance:  the reciprocal is linear with focal length on the
+            RF100-500mm (134 at 100mm, 82 at 500mm), and it decreases with an extender
+            fitted and increases at close focus.  Not affected by aperture, and does
+            not follow the position of the rear lens element.  0 in some continuous
+            shooting frames with the mechanical shutter
+        },
+    }],
     # 17 - values: 0, 3, 4
     # 18 - same as LiveViewShooting for all my samples (5DmkII, 50D) - PH
     19 => { #PH
@@ -7053,6 +7560,21 @@ my %ciMaxFocal = (
         Name => 'FlashExposureLock',
         PrintConv => \%offOn,
     },
+    26 => { #github488
+        Name => 'Extender',
+        # (-1 with no extender on the EOS R5m2, R8, RP and M50; RF1.4x and RF2x
+        #  verified on the R5m2 only)
+        Condition => '$$self{Model} =~ /\bEOS R(P|\d+)?(m\d)?\b/',
+        Notes => q{
+            RF-mount models.  Also set for adapted 3rd-party EF lenses, where
+            RFLensType is 0 and FocalLength may not be scaled for the extender
+        },
+        PrintConv => {
+            -1 => 'None',
+            5 => 'Extender RF1.4x',
+            6 => 'Extender RF2x',
+        },
+    },
     32 => { #forum16257
         Name => 'AntiFlicker',
         PrintConv => \%offOn,
@@ -7060,6 +7582,7 @@ my %ciMaxFocal = (
     0x3d => { #IB
         Name => 'RFLensType',
         Format => 'int16u',
+        RawConv => '$$self{RFLensType} = $val', # (used by LensInfo)
         PrintConv => {
             0 => 'n/a',
             257 => 'Canon RF 50mm F1.2L USM',
@@ -7139,6 +7662,28 @@ my %ciMaxFocal = (
             332 => 'Canon RF 14mm F1.4 L VCM', #42
             # Note: add new RF lenses to %canonLensTypes with ID 61182
         },
+    },
+    # 87-90 - EOS R1 and R5m2 temperatures, stored as degrees C + 128.  87 and 88 follow
+    #         CameraTemperature (correlation 0.85 and 0.77, on average 5 and 10 C
+    #         lower).  89 (22-36 C) does not correlate with CameraTemperature, and
+    #         90 is either 20 or 24 for a whole power-on session (ref github488)
+    87 => {
+        Name => 'CameraTemperature2',
+        Condition => '$$self{Model} =~ /\bEOS (R1|R5m2)$/',
+        Notes => 'EOS R1 and R5m2 only',
+        ValueConv => '$val - 128',
+        ValueConvInv => '$val + 128',
+        PrintConv => '"$val C"',
+        PrintConvInv => '$val=~s/ ?C//; $val',
+    },
+    88 => {
+        Name => 'CameraTemperature3',
+        Condition => '$$self{Model} =~ /\bEOS (R1|R5m2)$/',
+        Notes => 'EOS R1 and R5m2 only',
+        ValueConv => '$val - 128',
+        ValueConvInv => '$val + 128',
+        PrintConv => '"$val C"',
+        PrintConvInv => '$val=~s/ ?C//; $val',
     },
 );
 
@@ -9128,11 +9673,30 @@ my %ciMaxFocal = (
     },
 );
 
+# RFLensType values of the lenses that use the second LensInfo layout (github488)
+my $lensInfoLayout2 = '318|323|324|329|330|331';
+
+# LensInfo counters are only valid when the lens serial number is present.
+# Without it the camera writes zeros or unrelated values (EOS 550D with
+# firmware 1.0.6, 60D with firmware 2.8.1)
+my $lensSerial = '$$self{LensInfoSerial}';
+my $lensLayout1 = "(\$\$self{RFLensType} || 0) !~ /^($lensInfoLayout2)\$/";
+my $lensLayout2 = "(\$\$self{RFLensType} || 0) =~ /^($lensInfoLayout2)\$/";
+
+# the AF and IS counters of the EOS R6 Mark III and C50 don't follow the R5m2
+# layout (eg. 00 80 80 in the IS counter of the RF 28-70mm F2L, which has no IS)
+my $lensAFIS = '$$self{Model} !~ /\b(R6 Mark III|C50)$/';
+
+# LensInfo counters with the high bit set (0x800000) are not supported by the lens
+# (seen in the AF counter of the TS-E 24mm f/3.5L II) (github488)
+my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
+
 # Lens information (MakerNotes tag 0x4019) (ref 20)
 %Image::ExifTool::Canon::LensInfo = (
     %binaryDataAttrs,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0 ],
     0 => { # this doesn't seem to be valid for some models (eg. 550D, 7D?, 1DmkIV?)
         Name => 'LensSerialNumber',
         Notes => q{
@@ -9142,8 +9706,115 @@ my %ciMaxFocal = (
         Format => 'undef[5]',
         Priority => 0,
         RawConv => '$val=~/^\0\0\0\0/ ? undef : $val', # (rules out 550D and older lenses)
+        Hook => '$$self{LensInfoSerial} = substr($$dataPt,$pos,4) ne "\0" x 4',
         ValueConv => 'unpack("H*", $val)',
         ValueConvInv => 'length($val) < 10 and $val = 0 x (10-length($val)) . $val; pack("H*",$val)',
+    },
+    # lens actuation counters (24-bit big-endian), matching the diaphragm, AF and IS
+    # unit counts shown by lens service software.  The values are read from the
+    # lens at power-on (including a battery swap and a wake from auto power off, but
+    # not a wake from the "screen off" power saving mode), so they don't change
+    # between shots of the same session.  A flip of the IS switch re-reads them with
+    # some lenses but not with others (eg. not the RF 100-400mm F5.6-8 IS USM on the
+    # EOS R7), so only a power cycle is a reliable re-read.  Each lens start-up adds
+    # a few counts to each counter.  Studied on the EOS R5m2 and R8,
+    # and the same layout was seen in samples from 13 other R-series bodies, the R6
+    # with adapted EF lenses among them, and from the EOS 6D, 7D and 5DS, where the
+    # same EF lens continued the same counts.  The EOS M5 and M100 don't write
+    # this tag, and the EOS M50 and M6 Mark II write zeros, with EF-M and adapted EF-S
+    # lenses.  The original EOS R writes zeros with firmware 1.0.0 and fills the
+    # counters with 1.2.0 (1.1.0 was not tested).  The newer lenses in
+    # $lensInfoLayout2 (RFLensType, set by FileInfo before this directory is read)
+    # use a different layout: offsets 6-11 are not counters, and LensDriveCount3 at
+    # offset 15 is filled only by these lenses.  Their LensISCount at offset 12 is
+    # valid.  Lenses that don't report a counter (eg. RF 50mm F1.8 STM, RF 16mm F2.8
+    # STM, older EF lenses) leave it 0, and a counter that is 0 is not extracted,
+    # since any lens that reports one has added counts at its first start-up
+    6 => {
+        Name => 'LensDiaphragmCount',
+        Condition => "$lensSerial and $lensLayout1",
+        Notes => q{
+            Not valid for the newer lenses listed under LensDriveCount3.  Counts
+            diaphragm drive commands:  each exposure stopped down from the maximum
+            aperture adds 2 (close and reopen), while exposures at the maximum aperture
+            add none, and so do the frames of a focus-bracketing run, during which the
+            diaphragm stays closed.  Each lens start-up opens the diaphragm fully and
+            returns it to the set aperture, adding a varying number of counts.  Long
+            focus moves add a few counts too
+        },
+        Format => 'undef[3]',
+        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        ValueConv => 'unpack("N","\0$val")',
+        PrintConv => $lensCountPrint,
+    },
+    9 => {
+        Name => 'LensAFCount',
+        Condition => "$lensSerial and $lensAFIS and $lensLayout1",
+        Notes => q{
+            Not valid for the newer lenses listed under LensDriveCount3.  Counts focus
+            drive commands, not the distance moved:  each focus-bracketing step adds 1
+            at any step size or aperture, an AF operation or a manual focus move by wire
+            adds about 2, each lens start-up adds about 3, and stopped-down exposures
+            add none.  Manual-focus lenses (eg. TS-E 24mm f/3.5L II) set the high bit
+            (0x800000), shown as "Not supported".  Not decoded for the EOS R6 Mark III
+            and C50
+        },
+        Format => 'undef[3]',
+        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        ValueConv => 'unpack("N","\0$val")',
+        PrintConv => $lensCountPrint,
+    },
+    12 => {
+        Name => 'LensISCount',
+        Condition => "$lensSerial and $lensAFIS",
+        Notes => q{
+            Appears to count IS unit start-ups:  each lens power-on adds 1, even with
+            the IS switch off, each flip of the IS switch adds 1 or 2, and shooting,
+            focus bracketing included, adds none.  Not extracted for lenses without
+            IS, nor for some lenses with IS (eg. RF 600mm F11 and RF 800mm F11).  Not
+            decoded for the EOS R6 Mark III and C50
+        },
+        Format => 'undef[3]',
+        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        ValueConv => 'unpack("N","\0$val")',
+        PrintConv => $lensCountPrint,
+    },
+    15 => {
+        Name => 'LensDriveCount3',
+        Condition => "$lensSerial and $lensLayout2",
+        Notes => q{
+            Only for the RF 28-70mm F2.8 IS STM, RF 16-28mm F2.8 IS STM, RF-S 14-30mm
+            F4-6.3 IS STM PZ, RF 20-50mm F4 L IS USM PZ, RF 45mm F1.2 STM and RF
+            7-14mm F2.8-3.5 L FISHEYE STM.  A lifetime counter that increases by about
+            3-4 per power-on and does not follow the number of shots.
+            What it counts is unconfirmed
+        },
+        Format => 'undef[3]',
+        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        ValueConv => 'unpack("N","\0$val")',
+        PrintConv => $lensCountPrint,
+    },
+);
+
+# Firmware information (MakerNotes tag 0x4027).  Element 0 is the size in bytes and
+# elements 1 and 2 change with the camera firmware
+%Image::ExifTool::Canon::FirmwareInfo = (
+    %binaryDataAttrs,
+    FORMAT => 'int32u',
+    FIRST_ENTRY => 1,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    5 => {
+        Name => 'LensFirmwareVersion',
+        Notes => q{
+            Matches the lens firmware versions published by Canon, eg. 1.1.0 for the RF
+            100-500mm and 1.1.1 for the RF 70-200mm F4 after their updates.  Also
+            written for some EF lenses (eg. 1.0.6 for the EF 16-35mm f/4L IS USM on
+            the EOS R8 and 5DS).  Not written by older bodies such as the EOS 6D and
+            7D
+        },
+        RawConv => '$val ? $val : undef',
+        ValueConv => 'sprintf("%d.%d.%d", ($val >> 16) & 0xff, ($val >> 8) & 0xff, $val & 0xff)',
+        ValueConvInv => 'my @v = split /\./, $val; ($v[0] << 16) | ($v[1] << 8) | $v[2]',
     },
 );
 
@@ -10052,7 +10723,7 @@ my %filterConv = (
         ValueConv => '$val[1] ? $val[1] : $val[($val[0] || 0) + 2]',
     },
     ISO => {
-        Priority => 0,  # let EXIF:ISO take priority
+        Priority => -1,  # let EXIF:ISO take priority (setting to 0 didn't work for MP4's)
         Desire => {
             0 => 'Canon:CameraISO',
             1 => 'Canon:BaseISO',
@@ -10112,6 +10783,30 @@ my %filterConv = (
 
 # add our composite tags
 Image::ExifTool::AddCompositeTags('Image::ExifTool::Canon');
+
+#------------------------------------------------------------------------------
+# Recognize various firmware versions in Canon CameraInfo
+# Inputs: 0) ExifTool ref, 1) CameraInfo ref, 2) lookup ref for firmware index
+# Returns: firmware and MPU version numbers and their offset in CameraInfo
+#          and sets CanonFirm and CanonFirmVer ExifTool member variables
+sub FindFirmVer($$;$)
+{
+    my ($et, $valPt, $lkup) = @_;
+    my $val;
+    if ($$valPt =~ /(\d+\.\d+\.\d+)[ \0]([0-9A-F]{2}([.(][.)a-zA-Z0-9]+)?)/g) {
+        my $off = pos($$valPt) - length($1) - length($2) - 1;
+        $val = sprintf "%s %s at offset 0x%x", $1, $2, $off;
+        if ($lkup) {
+            $$et{CanonFirmVer} = $1;
+            $$et{CanonFirm} = $$lkup{$off};
+            unless ($$et{CanonFirm}) {
+                $et->Warn('Unrecognized CameraInfo firmware version');
+                $$et{CanonFirm} = 0;
+            }
+        }
+    }
+    return $val;
+}
 
 #------------------------------------------------------------------------------
 # Return lens name with teleconverter if applicable
@@ -10201,7 +10896,15 @@ sub PrintLensID(@)
             push @user, $lens if $Image::ExifTool::userLens{$lens};
         }
         my @tcs = (1, 1.4, 2, 2.8);
-        @tcs = ( $3 ) if $lensModel =~ / \+ ((EXTENDER )?RF)?(\d+(\.\d*)?)x\b/;
+        my ($modelTC, $modelTCName);
+        if ($lensModel =~ / \+ ((EXTENDER )?RF)?(\d+(\.\d*)?)x\b/) {
+            # the EOS R5m2 doesn't scale FocalLength or MaxAperture for some adapted
+            # 3rd-party EF lenses with an RF extender (eg. Sigma 85mm F1.4 DG HSM | Art
+            # + RF1.4x reports 85 mm f/1.4), so also try without scaling (github488)
+            $modelTC = $3;
+            $modelTCName = ($1 ? 'RF' : '') . "${3}x";   # (Canon RF extender)
+            @tcs = ( $modelTC, 1 );
+        }
         # attempt to determine actual lens
         foreach $tc (@tcs) {  # loop through teleconverter scaling factors
             foreach $lens (@lenses) {
@@ -10227,6 +10930,8 @@ sub PrintLensID(@)
                     pop @matches if @matches and $matches[-1] =~ /^$lns/;
                 } elsif ($tc > 1) {
                     $tclens .= " + ${tc}x";
+                } elsif ($modelTC) {
+                    $tclens .= " + $modelTCName";
                 }
                 push @maybe, $tclens;
                 next if abs($longFocal  - $lf * $tc) > 0.9;

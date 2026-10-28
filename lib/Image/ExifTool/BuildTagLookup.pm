@@ -587,8 +587,8 @@ The following tags are decoded in unsupported maker notes.  Use the L<Unknown|..
 The tags listed in the PDF tables below are those which are used by ExifTool
 to extract meta information, but they are only a small fraction of the total
 number of available PDF tags.  See
-L<http://www.adobe.com/devnet/pdf/pdf_reference.html> for the official PDF
-specification.
+L<https://web.archive.org/web/20210125064408/https://www.adobe.com/devnet/pdf/pdf_reference.html>
+for the official PDF specification.
 
 ExifTool supports reading and writing PDF documents up to version 2.0,
 including support for RC4, AES-128 and AES-256 encryption.  A
@@ -993,7 +993,8 @@ TagID:  foreach $tagID (@keys) {
                             }
                         }
                     } elsif ($$tagInfo{Hook} or ($$tagInfo{RawConv} and
-                             $$tagInfo{RawConv} =~ /\$self(->)?\{\w+\}\s*=(?!~)/))
+                            # (special case for Canon::FindFirmVer() function when a $lkup is used)
+                             $$tagInfo{RawConv} =~ /\$self(->)?\{\w+\}\s*=(?!~)|FindFirmVer.*\$lkup/))
                     {
                         $datamember{$tagID} = $name;
                     }

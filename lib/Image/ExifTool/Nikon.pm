@@ -65,7 +65,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::XMP;
 
-$VERSION = '4.58';
+$VERSION = '4.59';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -388,6 +388,7 @@ sub GetAFPointGrid($$;$);
     'BE 54 6A 6A 0C 0C 4B 46' => 'Sigma 105mm F1.4 DG HSM | A', #30
     '48 48 76 76 24 24 4B 06' => 'Sigma APO Macro 150mm F2.8 EX DG HSM',
     'F5 48 76 76 24 24 4B 06' => 'Sigma APO Macro 150mm F2.8 EX DG HSM', #24
+    'F5 48 76 76 24 24 F1 06' => 'Sigma APO Macro 150mm F2.8 EX DG HSM + 1.4x TC', #github418
     '99 48 76 76 24 24 4B 0E' => 'Sigma APO Macro 150mm F2.8 EX DG OS HSM', #(Christian Hesse)
     '48 4C 7C 7C 2C 2C 4B 02' => 'Sigma APO Macro 180mm F3.5 EX DG HSM',
     '48 4C 7D 7D 2C 2C 4B 02' => 'Sigma APO Macro 180mm F3.5 EX DG HSM',
@@ -2603,7 +2604,7 @@ my %base64coord = (
             },
         },
         { # (Z6_3 firmware version 1.00, ref 28)
-        Condition => '$$valPt =~ /^08(09|10|11)/',   #0809=Z6iii  0810=Z50ii  #0811=Z5ii
+            Condition => '$$valPt =~ /^08(09|10|11)/',   #0809=Z6iii  0810=Z50ii  #0811=Z5ii
             Name => 'ShotInfoZ6III',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoZ6III',
@@ -8622,14 +8623,14 @@ my %nikonFocalConversions = (
     },
 );
 
-# shot information for the Z6III firmware 1.00 (encrypted) - ref 28
+# shot information for the Z6III firmware 1.00 and firmware 2.0 (encrypted) - ref 28
 %Image::ExifTool::Nikon::ShotInfoZ6III = (
     PROCESS_PROC => \&ProcessNikonEncrypted,
     WRITE_PROC => \&ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index', NIKON_OFFSETS => 0x24 },
     DATAMEMBER => [ 0x04 ],
-    IS_SUBDIR => [ 0x88, 0x90 ],
+    IS_SUBDIR => [ 0x30, 0x88, 0x90 ],
     WRITABLE => 1,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'These tags are extracted from encrypted data in images from the Z6III.',
@@ -8665,6 +8666,23 @@ my %nikonFocalConversions = (
     },
     #0x28 Offset1 - non-zero for NEF only
     #0x2c Offset2 - non-zero for NEF only
+    0x30 => [{
+        Name => 'SequenceOffset',
+        Condition => '$$self{Model} =~ /^NIKON Z6_3\b/i and $$self{FirmwareVersion} and $$self{FirmwareVersion} lt "02.00"',
+        Format => 'int32u',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::SeqInfoZ9',
+            Start => '$val',
+        },
+    },{
+        Name => 'SequenceOffset',
+        Condition => '$$self{Model} =~ /^NIKON Z6_3\b/i and $$self{FirmwareVersion} and $$self{FirmwareVersion} ge "02.00"',
+        Format => 'int32u',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::SeqInfoZ6iiiv2',
+            Start => '$val',
+        },
+    }],
     #0x38 Offset5 - contains SkinSoftening at 0x2d1 - mapping is %offLowNormalHighZ7
     0x88 => {
         Name => 'OrientationOffset',
@@ -8675,16 +8693,23 @@ my %nikonFocalConversions = (
             Start => '$val',
         }
     },
-    0x90 => {
+    0x90 => [{
         Name => 'MenuOffset',
         Condition => '$$self{Model} =~ /^NIKON Z6_3\b/i and $$self{FirmwareVersion} and $$self{FirmwareVersion} lt "02.00"',
         Format => 'int32u',
-        AlwaysDecrypt => 1, # (necessary because FirmwareVersion is extracted after decryption time)
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ6III',
             Start => '$val',
         },
-    },
+    },{
+        Name => 'MenuOffset',
+        Condition => '$$self{Model} =~ /^NIKON Z6_3\b/i and $$self{FirmwareVersion} and $$self{FirmwareVersion} ge "02.00"',
+        Format => 'int32u',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::MenuSettingsZ6IIIv2',
+            Start => '$val',
+        },
+    }],
 );
 
 # shot information for the Z7II firmware 1.00 (encrypted) - ref 28
@@ -8890,7 +8915,6 @@ my %nikonFocalConversions = (
         Name => 'AutoCaptureOffset',
         Condition => '$$self{FirmwareVersion} and $$self{FirmwareVersion} ge "02.00"',
         Format => 'int32u',
-        AlwaysDecrypt => 1, # (necessary because FirmwareVersion is extracted after decryption time)
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::AutoCaptureInfo',
             Start => '$val',
@@ -8969,7 +8993,6 @@ my %nikonFocalConversions = (
         Name => 'Offset13',   #offset13 - length x'8f80 (Z9 firmware 3.01 NEF), using currently for a few focus related tags.  Might be premature to give the offset a more meaningful name at this point.
         Condition => '$$self{FirmwareVersion} and $$self{FirmwareVersion} ge "03.01"',
         Format => 'int32u',
-        AlwaysDecrypt => 1, # (necessary because FirmwareVersion is extracted after decryption time)
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::Offset13InfoZ9',
             Start => '$val',
@@ -8979,7 +9002,6 @@ my %nikonFocalConversions = (
         Name => 'AutoCaptureOffset',
         Condition => '$$self{FirmwareVersion} and $$self{FirmwareVersion} ge "04.00"',
         Format => 'int32u',
-        AlwaysDecrypt => 1, # (necessary because FirmwareVersion is extracted after decryption time)
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::AutoCaptureInfo',
             Start => '$val',
@@ -9001,6 +9023,46 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::Nikon::MenuInfoZ9',
             Start => '$val',
         },
+    },
+);
+
+# ref 28
+%Image::ExifTool::Nikon::SeqInfoZ6iiiv2 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0x20, 0x2a, 0x2c ],
+    #0x0019 => HDRFrame                # For JPG 0=> Not HDR; 1=> file is the blended exposure.  For raw files: 0=> Not from an HDR capture sequence; otherwise frame number in the HDR capture sequence -- 'Save Individual Pictures (RAW)' must be enabled.
+    #0x001A => MultipleExposureFrame   # For JPG 0=> Not a multiple exposure; 1=> file is the blended exposure.  For raw files: 0=> Not a multiple exposure capture; otherwise frame number in the capture sequence -- 'Save Individual Pictures (RAW)' must be enabled.
+    0x0020 => {
+        Name => 'FocusShiftShooting',
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
+        RawConv => '$$self{FocusShiftShooting} = $val',
+        PrintConv => q{
+            return 'Off' if $val == 0 ;
+            my $i = sprintf("Frame %.0f of %.0f",$val, $$self{FocusShiftNumberShots}); # something like Frame 1 of 100"
+            if ($$self{PixelShiftActive} and $$self{PixelShiftActive} eq 1) {$i = sprintf("Frame %.0f",$val);}   #for the Z8 fw3 with PixelShift Enabled, the frame count is correct, but the frame total needs to be multiplied by the number of PixelShift frames (which I cannot find)
+            return "On: $i"
+        },
+    },
+    0x002a => {
+        Name => 'IntervalShooting',    #will be 'On' when Interval Shooting is selected via the Photo Shooting Menu and also when a non-zero interval is specified when using Focus Shift and/or Pixel Shift Shooting
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96',    #not valid for C30/C60/C120
+        RawConv => '$$self{IntervalShooting} = $val',
+        Format => 'int16u',
+        PrintConv => q{
+            return 'Off' if $val == 0 ;
+            my $i = sprintf("Interval %.0f of %.0f",$val, $$self{IntervalShootingIntervals}||0); # something like "Interval 1 of 3"
+            my $f = ($$self{IntervalShootingShotsPerInterval}||0) > 1 ? sprintf(" Frame %.0f of %.0f",$$self{IntervalFrame}||0, $$self{IntervalShootingShotsPerInterval}||0): '' ;  # something like "Frame 1 of 3" or blank
+            return "On: $i$f"
+            #$val == 0 ? 'Off' : sprintf("On: Interval %.0f of %.0f Frame %.0f of %.0f",$val, $$self{IntervalShootingIntervals}||0, $$self{IntervalFrame}||0, $$self{IntervalShootingShotsPerInterval}||0),
+        },
+    },
+    0x002c => {
+        Name => 'IntervalFrame',
+        RawConv => '$$self{IntervalFrame} = $val',
+        Condition => '$$self{ShutterMode} and $$self{ShutterMode} ne 96 and $$self{IntervalShooting} > 0',     #not valid for C30/C60/C120
+        Format => 'int16u',
+        #Hidden => 1,
     },
 );
 
@@ -9395,7 +9457,7 @@ my %nikonFocalConversions = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'These tags are used by the Z6III.',
-    DATAMEMBER => [ 360, 444, 492, 496, 724, 748, 832, 838, 852, 880, 904, 1050 ],
+    DATAMEMBER => [ 360, 444, 492, 496, 536, 724, 748, 832, 838, 852, 880, 904, 1050 ],
     IS_SUBDIR => [ 1255 ],
     360 => {
         Name => 'SingleFrame',    #0=> Single Frame 1=> one of the continuous modes
@@ -9446,6 +9508,7 @@ my %nikonFocalConversions = (
     },
     536 => {
         Name => 'FocusShiftNumberShots',
+        RawConv => '$$self{FocusShiftNumberShots} = $val',
     },
     540 => {
         Name => 'FocusShiftStepWidth',
@@ -9586,6 +9649,151 @@ my %nikonFocalConversions = (
     2480 => { Name => 'SaveFocusPosition',  PrintConv => \%offOn, Unknown => 1 },
     2487 => { Name => 'SilentPhotography',  PrintConv => \%offOn, Unknown => 1 },
     2496 => { Name => 'AirplaneMode',       PrintConv => \%offOn, Unknown => 1 },
+),
+
+%Image::ExifTool::Nikon::MenuSettingsZ6IIIv2 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'These tags are used by the Z6III.',
+    DATAMEMBER => [ 360, 448, 496, 500, 540, 712, 736, 832 ],
+    IS_SUBDIR => [ 1167 ],
+    360 => {
+        Name => 'SingleFrame',    #0=> Single Frame 1=> one of the continuous modes
+        #Hidden => 1,
+        RawConv => '$$self{SingleFrame} = $val',
+    },
+    364 => {
+        Name => 'HighFrameRate',        #CH and C30/C60/C120 but not CL
+        PrintConv => \%highFrameRateZ9,
+    },
+    448 => {
+        Name => 'MultipleExposureMode',
+        RawConv => '$$self{MultipleExposureMode} = $val',
+        PrintConv => \%multipleExposureModeZ9,
+    },
+    450 => {Name => 'MultiExposureShots', Condition => '$$self{MultipleExposureMode} != 0'},  #range 2-9
+    480 => {
+        Name => 'IntervalDurationHours',
+        Format => 'int32u',
+    },
+    484 => {
+        Name => 'IntervalDurationMinutes',
+        Format => 'int32u',
+    },
+    488 => {
+        Name => 'IntervalDurationSeconds',
+        Format => 'int32u',
+    },
+    496 => {
+        Name => 'Intervals',
+        Format => 'int32u',
+        RawConv => '$$self{IntervalShootingIntervals} = $val',
+    },
+    500 => {
+        Name => 'ShotsPerInterval',
+        Format => 'int32u',
+        RawConv => '$$self{IntervalShootingShotsPerInterval} = $val',
+    },
+    504 => {
+        Name => 'IntervalExposureSmoothing',
+        Format => 'int8u',
+        PrintConv => \%offOn,
+    },
+    506 => {
+        Name => 'IntervalPriority',
+        Format => 'int8u',
+        PrintConv => \%offOn,
+    },
+    540 => {
+        Name => 'FocusShiftNumberShots',
+        RawConv => '$$self{FocusShiftNumberShots} = $val',
+    },
+    544 => {
+        Name => 'FocusShiftStepWidth',
+    },
+    548 => {
+        Name => 'FocusShiftInterval',
+        PrintConv => '$val == 1? "1 Second" : sprintf("%.0f Seconds",$val)',
+    },
+    552 => {
+        Name => 'FocusShiftExposureLock',
+        PrintConv => \%offOn,
+    },
+    618 => { Name => 'PhotoShootingMenuBankImageArea', PrintConv => \%imageAreaZ9 },  
+    634 => { Name => 'AutoISO', PrintConv => \%offOn },
+    636 => {
+        Name => 'ISOAutoHiLimit',
+        Format => 'int16u',
+        Unknown => 1,
+        ValueConv => '($val-104)/8',
+        ValueConvInv => '8 * ($val + 104)',
+        PrintConv => \%iSOAutoHiLimitZ6III,
+    },
+    706 => {
+        Name => 'DiffractionCompensation',
+        Format => 'int8u',
+        PrintConv => \%offOn,
+    },
+    710 => { Name => 'NikonMeteringMode',   PrintConv => \%meteringModeZ7},
+    712 => {
+        Name => 'FlashControlMode',
+        RawConv => '$$self{FlashControlMode} = $val',
+        PrintConv => \%flashControlModeZ7,
+    },
+    718 => {
+        Name => 'FlashGNDistance',
+        Condition => '$$self{FlashControlMode} == 2',
+        Unknown => 1,
+        ValueConv => '$val + 3',
+        PrintConv => \%flashGNDistance,
+    },
+    722 => {
+        Name => 'FlashOutput',   # range[0,24]  with 0=>Full; 1=>50%; then decreasing flash power in 1/3 stops to 0.39% (1/256 full power). also found in FlashInfoUnknown at offset 0x0a (with different mappings)
+        Condition => '$$self{FlashControlMode} >= 3',
+        Unknown => 1,
+        ValueConv => '2 ** (-$val/3)',
+        ValueConvInv => '$val>0 ? -3*log($val)/log(2) : 0',
+        PrintConv => '$val>0.99 ? "Full" : sprintf("%.1f%%",$val*100)',
+        PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
+    },
+    730 => { Name => 'FlashWirelessOption',  PrintConv => \%flashWirelessOptionZ7, Unknown => 1 },
+    732 => { Name => 'FlashRemoteControl',   PrintConv => \%flashRemoteControlZ7,  Unknown => 1 },
+    736 => {
+        Name => 'FlashMasterControlMode', # tag name chosen for compatibility with those found in FlashInfo0102 & FlashInfo0103
+        RawConv => '$$self{FlashGroupOptionsMasterMode} = $val',
+        PrintConv => \%flashGroupOptionsMode,
+    },
+    738 => {
+        Name => 'FlashMasterCompensation',
+        Format => 'int8s',
+        Condition => '$$self{FlashGroupOptionsMasterMode}  != 3',   # other than 'Off'
+        Unknown => 1,
+        ValueConv => '$val/6',
+        ValueConvInv => '6 * $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
+        PrintConvInv => '$val',
+    },
+    742 => {
+        Name => 'FlashMasterOutput',
+        Unknown => 1,
+        Condition => '$$self{FlashGroupOptionsMasterMode}  == 1',   # only for Mode=M
+        ValueConv => '2 ** (-$val/3)',
+        ValueConvInv => '$val>0 ? -3*log($val)/log(2) : 0',
+        PrintConv => '$val>0.99 ? "Full" : sprintf("%.1f%%",$val*100)',
+        PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
+    },
+    822 => { Name => 'VRMode',   PrintConv => \%vRModeZ9},
+    832 => { Name => 'AFAreaMode', RawConv => '$$self{AFAreaMode} = $val', PrintConv => \%aFAreaModeZ9},
+    866 => { Name => 'SubjectDetection',      PrintConv => \%subjectDetectionZ9 },
+    912 => { Name => 'LinkVRToFocusPoint',       PrintConv => \%offOn, Unknown => 1 },
+    1167 => {
+        Name => 'CustomSettingsZ6III',
+        Format => 'undef[700]',
+        SubDirectory => { TagTable => 'Image::ExifTool::NikonCustom::SettingsZ6III' },
+    },
+    2212 => { Name => 'Language',           PrintConv => \%languageZ9, Unknown => 1 },
+    2214 => { Name => 'TimeZone',           PrintConv => \%timeZoneZ9, SeparateTable => 'TimeZone' },
+    2220 => { Name => 'MonitorBrightness',  PrintConv => \%monitorBrightnessZ9, Unknown => 1 },        # settings: -5 to +5 and Lo1, Lo2, Hi1, Hi2
 ),
 
 %Image::ExifTool::Nikon::MenuSettingsZ7II = (
@@ -12618,7 +12826,10 @@ my %nikonFocalConversions = (
     },
     # 0x101 - int16u[4]: "160 120 1280 720", "160 120 3840 2160"
     # 0x102 - int16u[8]: "640 360 0 0 0 0 0 0", "640 360 1920 1080 0 0 0 0"
-    # 0x1001 - int16s: 0
+    0x1001 => { #forum18025
+        Name => 'Rating',
+        Notes => '0 to 5 stars',
+    },
     0x1002 => {
         Name => 'NikonDateTime', #?
         Groups => { 2 => 'Time' },
@@ -13906,8 +14117,9 @@ sub PrepareNikonOffsets($$$$$)
         my $pos = $sorted[$i][0];
         my $len = $sorted[$i+1][1] - $sorted[$i][1];
         my $tagInfo = $$tagTablePtr{$pos};
-        $tagInfo = $et->GetTagInfo($tagTablePtr, $pos) if $tagInfo and
-                   not (ref $tagInfo eq 'HASH' and $$tagInfo{AlwaysDecrypt});
+        # just take the first tag ignoring the condition because we can't
+        # necessarily evaluate the Condition before the data has been decrypted
+        $tagInfo = $$tagInfo[0] if ref $tagInfo eq 'ARRAY';
         # set DirLen in SubDirectory entry
         my $subdir;
         $$subdir{DirLen} = $len if ref $tagInfo eq 'HASH' and defined($subdir=$$tagInfo{SubDirectory});
@@ -13920,7 +14132,7 @@ sub PrepareNikonOffsets($$$$$)
             if ($subdir and $$subdir{KnownEnd}) {
                 $n = $$subdir{KnownEnd};
                 if ($n > $len) {
-                    $et->Warn("Data too short for $$tagInfo{Name}",1) unless $$tagInfo{AlwaysDecrypt};
+                    $et->Warn("Data too short for $$tagInfo{Name}",1);
                     $n = $len;
                 }
             }

@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::GPS;
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub Process_marl($$$);
 sub Process_mrld($$$);
@@ -369,7 +369,7 @@ sub Process_mrld($$$)
         $_ & 0x8000000 and $_ -= 4294967296 foreach @a[6,7]; # convert signed ints
         map { $_ = GetDouble(\$_,0) } @a[8,9,10,11];         # convert doubles
         $a[5] = Get64u(\$a[5],0);                            # convert 64-bit int
-        my $chan = $a[0];
+        my $chan = $a[0] & 0x0fffffff;
         my $tag = sprintf('Channel%.2d', $chan);
         my $tagInfo = $$tagTablePtr{$tag};
         my $hash = { map { $channel[$_] => $a[$_] } 1..$#a };

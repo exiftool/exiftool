@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.40';
+$VERSION = '1.41';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
@@ -89,13 +89,16 @@ sub ProcessJPEG_HDR($$$);
         SubDirectory => { TagTable => 'Image::ExifTool::InfiRay::Version' },
       }, {
         Name => 'UniformResourceName',
-        Groups => { 1 => 'APP2' },
         Condition => '$$valPt =~ /^urn:/',
+        Groups => { 1 => 'APP2' },
         Notes => 'used in Apple HDR images',
       }, {
         Name => 'PreviewImage',
-        Condition => '$$valPt =~ /^(|QVGA\0|BGTH)\xff\xd8\xff\xdb/',
-        Notes => 'Samsung APP2 preview image', # (Samsung/GoPro="", BenQ="QVGA\0", Digilife="BGTH")
+        Condition => '$$valPt =~ /^(|QVGA\0|BGTH|XMTH.{5})\xff\xd8/s',
+        # (Samsung/GoPro="", BenQ="QVGA\0", Digilife="BGTH", Xiaomi="XMTH.{5})
+        # (Xiaomi preview is in APP2 of Xiaomi HEIC EXIF data)
+        Groups => { 1 => 'APP2', 2 => 'Preview' },
+        Notes => 'APP2 preview image',
     }],
     APP3 => [{
         Name => 'Meta',

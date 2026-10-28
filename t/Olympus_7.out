@@ -1,10 +1,10 @@
-  ExifToolVersion = 13.33
+  ExifToolVersion = 13.60
   FileName = Olympus_7_failed.jpg
   Directory = t
   FileSize = 7335
-  FileModifyDate = 1752672219
-  FileAccessDate = 1752672219
-  FileInodeChangeDate = 1752672219
+  FileModifyDate = 1792587702
+  FileAccessDate = 1792587702
+  FileInodeChangeDate = 1792587702
   FilePermissions = 33188
   FileType = JPEG
   FileTypeExtension = JPG
@@ -136,7 +136,7 @@ JPEG APP1 (7080 bytes):
   | | | |     - Tag 0x0500 (2 bytes, int16u[1])
   | | | | 16) WhiteBalanceTemperature = 0
   | | | |     - Tag 0x0501 (2 bytes, int16u[1])
-  | | | | 17) WhiteBalanceBracket = 0 0
+  | | | | 17) WhiteBalanceFineTune = 0 0
   | | | |     - Tag 0x0502 (4 bytes, int16s[2])
   | | | | 18) CustomSaturation = 0 -2 2
   | | | |     - Tag 0x0503 (6 bytes, int16s[3])

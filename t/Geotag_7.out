@@ -27,6 +27,7 @@ Writing MIE-GPS:GPSAltitude
 Writing XMP-exif:GPSAltitude if tag exists
 Writing GPS:GPSAltitude
 Writing XMP-exif:GPSAltitudeRef if tag exists
+Writing XMP-exifEX:GPSAltitudeRef if tag exists
 Writing GPS:GPSAltitudeRef
 Writing GPS:GPSLatitudeRef
 Writing GPS:GPSLongitudeRef

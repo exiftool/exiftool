@@ -7,6 +7,54 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.55. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Oct. 28, 2026 - Version 13.60
+
+  - Added definitions for the new Exif for XMP tags
+  - Added support for the Pentax KF (thanks Karsten Geiselmann)
+  - Added warning for possibly corrupted IFD if the first entry has a bad format
+  - Added a few new FujiFilm AdvancedFilter values (github #454)
+  - Added some new FujiFilm GrainEffectRoughness values (github #455)
+  - Added missing values for EXIF NoiseReduction (github #416)
+  - Added some new Canon and Nikon LensIDs (github #415, #418, #486)
+  - Added support for reading RED XE R3D files (github #443)
+  - Decode some new Canon tags (github #400, #464, #488, #490)
+  - Decode a new tag for the Ricoh GR IV Monochrome, and add a few other values
+  - Decode a few new Garmin FIT tags
+  - Decode a new Nikon NCTG tag (thanks Wade Tregaskis)
+  - Decode more DJI protobuf tags (thanks Alexey Dogaev)
+  - Decode timed GPS for more DJI models (github #412, #436, #440)
+  - Decode HEIC stereo image information (github #480)
+  - Decode timed GPS for another dashcam (github #487)
+  - Decode more tags for the Ricoh GR IV Monochrome (github #461)
+  - Decode Olympus WhiteBalanceFineTune (github #462)
+  - Decode ShutterCount for some firmware versions of the Canon EOS RP
+  - Extract APP2 PreviewImage from EXIF data of Xiaomi HEIC files
+  - Improved handling of Canon CameraInfo firmware versions
+  - Relaxed PDF parsing to accept some questionable XREF tables (github #481)
+  - Disambiguate Garmin FIT developer messages which result in the same tag name
+    (github #463)
+  - Update for Nikon Z6iii firmware 2.0 (thanks Warren Hatch)
+  - Lowered priority of Composite:ISO for Canon MP4 videos (github #431)
+  - Removed goto statements from Geotag.pm to make JavaScript translation easier
+  - Patched to fix html injection issue in -htmlDump feature (github #444)
+  - Patched to recognized LigoGPS trailer with different marker (github #470)
+  - Patched to avoid hang when using -stay_open and piping arguments from stdin
+    if the pipe is closed (github #458)
+  - Patched to fix conversion of ModelReleaseYear for new Sony ILCE-1M2 firmware
+  - Patched potential deep recursion when reading malformed PGF file
+  - Patched potential crash issue when reading GM PDR metadata
+  - Fixed issue where extraneous non-EXIF APP segments weren't handled properly
+    in the EXIF data of Xiaomi HEIC files (github #485)
+  - Fixed potential "pointer references previous directory" error when
+    processing some PNG images (github #453)
+  - Fixed problem where Samsung HEIC motion-photo images weren't recognized as
+    motion photo after editing with ExifTool ('sefd' atom must come last). 
+    Re-editing with this version of ExifTool will repair any damaged files
+  - Fixed failed Garmin test on some systems (github #423)
+  - Fixed hang issue when reading truncated Geolocation database (github #495)
+  - API Changes:
+      - Added QuickTimeUndLang option (github #451)
+
 May 27, 2026 - Version 13.59
 
   - Security update

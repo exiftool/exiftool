@@ -405,12 +405,6 @@ numerical, and generated automatically otherwise.
                   'Flattened' - [reserved] used internally to mark Struct tags
                   which have been processed to generate flattened equivalents.
 
-                  'NotFlat' - [XMP tags only] Flag indicates that this tag ID
-                  does not represent a flattened tag.  Used to avoid a conflict
-                  if the tag ID would be the same as a generated ID for a
-                  flattened tag.  The result is that the flattened tag will not
-                  be accessible.
-
                   'Hidden' - set to hide tag from the TagName documentation and
                   -list* command output. Also suppresses verbose output of a
                   BinaryData tag.  A Hidden tag should also be marked as Unknown
@@ -455,6 +449,10 @@ numerical, and generated automatically otherwise.
                   without accumulating entries from subsequent tags.  Used when
                   the value for a single tag is a complete list.
 
+                  'LookAhead' - [BinaryData tags only] set to generate Unknown=2
+                  tags which would otherwise be skipped because they overlap
+                  with the size of this tag.
+
                   'MakerNotes' - set if this tag is maker note data.
 
                   'MakerPreview' - set in the PreviewImageStart tag information
@@ -468,6 +466,12 @@ numerical, and generated automatically otherwise.
                   dumped when processing the SubDirectory.  This flag is implied
                   if the MakerNotes flag is set.  Set to 2 if the dump should
                   only be underlined if nested inside other maker notes.
+
+                  'NotFlat' - [XMP tags only] Flag indicates that this tag ID
+                  does not represent a flattened tag.  Used to avoid a conflict
+                  if the tag ID would be the same as a generated ID for a
+                  flattened tag.  The result is that the flattened tag will not
+                  be accessible.
 
                   'NotIFD' - set for 'MakerNotes' SubDirectory tags only if the
                   SubDirectory is not EXIF IFD format.  (Note: All SubDirectory

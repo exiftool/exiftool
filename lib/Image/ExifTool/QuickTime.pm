@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.35';
+$VERSION = '3.36';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -966,6 +966,7 @@ my %userDefined = (
     },
     sefd => {
         Name => 'SamsungTrailer',
+        WriteLast => 2, # must come after mdat _and_ mpvd
         SubDirectory => { TagTable => 'Image::ExifTool::Samsung::Trailer' },
     },
     # 'samn'? - seen in Vantrue N2S sample video
@@ -1102,6 +1103,69 @@ my %userDefined = (
     },
 );
 
+# 'vexu' atom information
+%Image::ExifTool::QuickTime::vexu = (
+    PROCESS_PROC => \&ProcessMOV,
+    GROUPS => { 2 => 'Video' },
+    eyes => {
+        Name => 'Eyes',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::eyes' },
+    },
+    proj => {
+        Name => 'Projection',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::proj' },
+    },
+);
+
+# 'eyes' atom information
+%Image::ExifTool::QuickTime::eyes = (
+    PROCESS_PROC => \&ProcessMOV,
+    GROUPS => { 2 => 'Video' },
+    stri => {
+        Name => 'StereoInfo',
+        Format => 'undef',
+        RawConv => '$val =~ /^.{4}(.)$/ ? ord($1) : undef', # (skip version number)
+        PrintConv => { BITMASK => {
+            0 => 'Has left eye',
+            1 => 'Has right eye',
+            2 => 'Has additional views',
+            3 => 'Eye views reversed',
+        }},
+    },
+    cams => {
+        Name => 'StereoCameraSystem',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::cams' },
+    },
+    cmfy => {
+        Name => 'StereoComfort',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::cmfy' },
+    },
+);
+
+# 'cams' atom information
+%Image::ExifTool::QuickTime::cams = (
+    PROCESS_PROC => \&ProcessMOV,
+    GROUPS => { 2 => 'Video' },
+    blin => {
+        Name => 'Baseline',
+        Notes => 'distance between stereo eyes',
+        RawConv => 'length($val) == 8 ? Get32u(\$val, 4) : undef',
+        ValueConv => '$val / 1000',
+        PrintConv => '"$val mm"',
+    },
+);
+
+# 'cmfy' atom information
+%Image::ExifTool::QuickTime::cmfy = (
+    PROCESS_PROC => \&ProcessMOV,
+    GROUPS => { 2 => 'Video' },
+    dadj => {
+        Name => 'DisparityAdjustment',
+        RawConv => 'length($val) == 8 ? Get32s(\$val, 4) : undef',
+        ValueConv => '$val / 10000',
+    },
+);
+
 # 'proj' atom information (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md)
 %Image::ExifTool::QuickTime::proj = (
     PROCESS_PROC => \&ProcessMOV,
@@ -1119,6 +1183,17 @@ my %userDefined = (
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::equi' },
     },
     # mshp - MeshProjection (P.I.T.A. to decode, for not much reward, see ref)
+    prji => {
+        Name => 'ProjectionInfo',
+        ValueConv => 'length($val) == 8 ? substr($val,4) : undef',
+        PrintConv => {
+            rect => 'Rectilinear',
+            equi => 'Equirectangular',
+            hequ => 'Half Equirectangular',
+            fish => 'Fisheye Lens',
+            prim => 'Parametric Immersive',
+        },
+    },
 );
 
 # 'prhd' atom information (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md)
@@ -2926,18 +3001,34 @@ my %userDefined = (
         },
     ],
     grpl => {
-        Name => 'Unknown_grpl',
-        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::grpl' },
+        Name => 'GroupsList',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::GroupsList' },
     },
     # ctry - country list (ref 29)
     # lang - language list (ref 29)
 );
 
-# unknown grpl container
-%Image::ExifTool::QuickTime::grpl = (
+# Groups List container
+%Image::ExifTool::QuickTime::GroupsList = (
     PROCESS_PROC => \&ProcessMOV,
     GROUPS => { 2 => 'Video' },
     # altr - seen "00 00 00 00 00 00 00 41 00 00 00 02 00 00 00 42 00 00 00 2e"
+    ster => {
+        Name => 'StereoImage',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::StereoImage' },
+    }
+    # altr - alternative entity grouping (1.group id, 2.# entities, 3-N.entity ID's)
+);
+
+# Stereo image info
+%Image::ExifTool::QuickTime::StereoImage = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Video' },
+    FORMAT => 'int32u',
+    1 => 'StereoImageGroupID',
+    2 => 'StereoImageEntities',
+    3 => 'StereoImageLeftID',
+    4 => 'StereoImageRightID',
 );
 
 # additional metadata container (ref ISO14496-12:2015)
@@ -6652,7 +6743,7 @@ my %userDefined = (
     PROCESS_PROC => \&ProcessKeys,
     WRITE_PROC => \&WriteKeys,
     CHECK_PROC => \&CheckQTValue,
-    VARS => { LONG_TAGS => 9 },
+    VARS => { LONG_TAGS => 10 },
     WRITABLE => 1,
     # (not PREFERRED when writing)
     GROUPS => { 1 => 'Keys' },
@@ -6754,6 +6845,8 @@ my %userDefined = (
     'Encoded_With' => 'EncodedWith',
     'content.identifier' => 'ContentIdentifier', #forum14874
     'encoder' => { }, # forum15418 (written by ffmpeg)
+    'spatial.format-version' => 'SpatialFormatVersion',
+    'spatial.aggressors-seen' => 'SpatialAggressorsSeen',
 #
 # the following tags aren't in the com.apple.quicktime namespace:
 # (Note: must add any non-'com' prefix to %fullKeysID in WriteQuickTime.pl
@@ -6940,7 +7033,10 @@ my %userDefined = (
         PrintConv => '$val * 1e6 . " microseconds"',
         PrintConvInv => '$val =~ s/ .*//; $val * 1e-6',
     },
+    'camera.lens_irisfnumber' => 'LensIrisFNumber',
     'com.apple.photos.captureMode' => 'CaptureMode',
+    # apple-maker-note.74 ?
+    # apple-maker-note.97 ?
 );
 
 # iTunes info ('----') atoms
@@ -7578,7 +7674,8 @@ my %userDefined = (
     # alac - 28 bytes
     # adrm - AAX DRM atom? 148 bytes
     # aabd - AAX unknown 17kB (contains 'aavd' strings)
-    # dapa - ? 203 bytes
+    # dapa - APAC decoder configuration, 203 bytes
+    # ngst - ? seen "cina\0\x01\0\x02\0\0\0\x01" - some sort of channel layout
 );
 
 # video and image sample description data block
@@ -7650,7 +7747,7 @@ my %userDefined = (
 #
 #   CompressorID  Offset  Child atoms
 #   -----------   ------  ----------------
-#   avc1          86      avcC, btrt, colr, pasp, fiel, clap, svcC
+#   avc1          86      avcC, lhvC, btrt, colr, pasp, fiel, clap, svcC, vexu, hfov
 #   mp4v          86      esds, pasp
 #   s263          86      d263
 #
@@ -7731,6 +7828,15 @@ my %userDefined = (
     sv3d => {
         Name => 'SphericalVideo',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::sv3d' },
+    },
+    vexu => {
+        Name => 'VideoExtendedUsage',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::vexu' },
+    },    
+    hfov => {
+        Name => 'HorizontalFieldOfView',
+        Format => 'int32u',
+        ValueConv => '$val / 1000', # convert to degrees
     },
 );
 
@@ -9457,7 +9563,7 @@ sub HandleItemInfo($)
                     next;
                 }
             }
-            my ($start, $subTable, $proc);
+            my ($start, $subTable, $proc, %moreDirInfo);
             my $pos = $$item{Extents}[0][1] + $base;
             if ($name eq 'EXIF' and length $buff >= 4) {
                 if ($buff =~ /^(MM\0\x2a|II\x2a\0)/) {
@@ -9467,20 +9573,27 @@ sub HandleItemInfo($)
                     #  until someone screws it up like this)
                     $et->Warn('Missing Exif header size');
                     $start = 6;
-                } else {
+                } elsif (length($buff) > 4) {
                     my $n = unpack('N', $buff);
                     $start = 4 + $n; # skip "Exif\0\0" header if it exists
                     if ($start > length($buff)) {
                         $et->Warn('Invalid EXIF header');
                         next;
                     }
+                    if ($n == 10 and substr($buff, 4, 2) eq "\xff\xe1") {
+                        # (see https://source.android.com/docs/core/camera/heif)
+                        $proc = \&Image::ExifTool::ProcessJPEG;
+                        # ($subTable isn't necessary for ProcessJPEG)
+                        $moreDirInfo{XiaomiMess} = 1;
+                        $start = 4; # start of JPEG-like data
+                    }
                     if ($$et{HTML_DUMP}) {
                         $et->HDump($pos, 4, 'Exif header length', "Value: $n");
-                        $et->HDump($pos+4, $start-4, 'Exif header') if $n;
+                        $et->HDump($pos+4, $start-4, 'Exif header') if $n and not $proc;
                     }
                 }
-                $subTable = GetTagTable('Image::ExifTool::Exif::Main');
-                $proc = \&Image::ExifTool::ProcessTIFF;
+                $subTable = GetTagTable('Image::ExifTool::Exif::Main') unless $subTable;
+                $proc = \&Image::ExifTool::ProcessTIFF unless $proc;
             } elsif ($name eq 'PreviewImage') {
                 # take a quick stab at determining the size of the image
                 # (based on JPEG previews found in Fuji X-H2S HIF images)
@@ -9511,6 +9624,7 @@ sub HandleItemInfo($)
                 DirLen   => length($buff) - $start,
                 DataPos  => $pos,
                 Base     => $pos + $start, # (needed for HtmlDump and IsOffset tags in binary data)
+                %moreDirInfo,
             );
             # handle processing of metadata for sub-documents
             if (defined $primary and $$item{RefersTo} and not $$item{RefersTo}{$primary}) {
@@ -9520,7 +9634,10 @@ sub HandleItemInfo($)
                 my ($lowest) = sort { $a <=> $b } keys %{$$item{RefersTo}};
                 $$items{$lowest}{DocNum} = $$et{DOC_NUM};
             }
+            my $oldBase = $$et{BASE};
+            $$et{BASE} += $dirInfo{DataPos};
             $et->ProcessDirectory(\%dirInfo, $subTable, $proc);
+            $$et{BASE} = $oldBase;
             delete $$et{DOC_NUM};
         }
         $raf->Seek($curPos, 0) or $et->Warn('Seek error');  # seek back to original position
@@ -9674,7 +9791,7 @@ sub ProcessHybrid($$$)
         # look only for well-behaved tag ID's
         $tag =~ /[^\w ]/ and $try = ++$pos, next;
         my $size = Get32u($dataPt, $try);
-        if ($size + $try == $end) {
+        if ($size + $try == $end or $size + $try == $end - 4) {
             # the atom ends exactly at the end of the parent -- this must be it
             $childPos = $pos;
             $$dirInfo{DirLen} = $pos;   # the binary data ends at the first child atom

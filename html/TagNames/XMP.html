@@ -13013,103 +13013,155 @@ Composite:GPSDateTime when copying from EXIF)</span></span></td></tr>
 <td class=c>string</td>
 <td><span class=s><span class=n>(tag ID is &#39;CameraOwnerName&#39;)</span></span></td></tr>
 <tr class=b>
+<td>ChromaticAberrationCorrection</td>
+<td class=c>integer</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
 <td>CompositeImage</td>
 <td class=c>integer</td>
 <td><span class=s>0 = Unknown
   <br>1 = Not a Composite Image
   <br>2 = General Composite Image
   <br>3 = Composite Image Captured While Shooting</span></td></tr>
-<tr>
+<tr class=b>
 <td>CompositeImageCount</td>
 <td class=c title=' + = List'>integer+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>CompositeImageExposureTimes</td>
 <td class=c>struct</td>
 <td>--&gt; <a href='XMP.html#CompImageExp'>CompImageExp Struct</a></td></tr>
-<tr>
+<tr class=b>
 <td>CompImageMaxExposureAll</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesMaxExposureTimesOfAll)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>CompImageMaxExposureUsed</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesMaxExposureTimesOfUsed)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>CompImageMinExposureAll</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesMinExposureTimesOfAll)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>CompImageMinExposureUsed</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesMinExposureTimesOfUsed)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>CompImageImagesPerSequence</td>
 <td class=c title=' _ = Flattened'>integer_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesNumberOfImagesInSequences)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>CompImageNumSequences</td>
 <td class=c title=' _ = Flattened'>integer_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesNumberOfSequences)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>CompImageSumExposureAll</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesSumOfExposureTimesOfAll)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>CompImageSumExposureUsed</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesSumOfExposureTimesOfUsed)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>CompImageTotalExposurePeriod</td>
 <td class=c title=' _ = Flattened'>rational_</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesTotalExposurePeriod)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>CompImageValues</td>
 <td class=c title=' _ = Flattened
  + = List'>rational_+</td>
 <td><span class=s><span class=n>(CompositeImageExposureTimesValues)</span></span></td></tr>
+<tr class=b>
+<td>DevelopmentType</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='XMP.html#DevelopmentType'>DevelopmentType Struct</a></td></tr>
+<tr>
+<td>DevelopmentTypeDescription</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DevelopmentTypeCharacteristic</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td><span class=s><span class=n>(DevelopmentTypeDevelopmentCharacteristic)</span>
+  <br>1 = Accurate Reproduction
+  <br>2 = Small Differences
+  <br>4 = Extreme Differences</span></td></tr>
+<tr>
+<td>DevelopmentTypeFactoryDefault</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td><span class=s>1 = Factory Default Settings
+  <br>2 = Not Default Settings
+  <br>4 = Unknown Settings</span></td></tr>
+<tr class=b>
+<td>DistortionCorrection</td>
+<td class=c>integer</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
 <tr>
 <td>Gamma</td>
 <td class=c>rational</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>GPSAltitudeRef</td>
+<td class=c title=' / = Avoid'>integer/</td>
+<td><span class=s><span class=n>(avoided to prioritize the original version of this tag in the exif namespace)</span>
+  <br>0 = Above Sea Level
+  <br>1 = Below Sea Level
+  <br>2 = Positive Sea Level (sea-level ref)
+  <br>3 = Negative Sea Level (sea-level ref)</span></td></tr>
+<tr>
 <td>Humidity</td>
 <td class=c>rational</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ImageEditingSoftware</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ImageEditor</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ImageTitle</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ImageUniqueID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>InteropIndex</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(tag ID is &#39;InteroperabilityIndex&#39;)</span>
   <br>&#39;R03&#39; = R03 - DCF option file (Adobe RGB)
   <br>&#39;R98&#39; = R98 - DCF basic file (sRGB)
   <br>&#39;THM&#39; = THM - DCF thumbnail file</span></td></tr>
-<tr class=b>
+<tr>
 <td>ISOSpeed</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ISOSpeedLatitudeyyy</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ISOSpeedLatitudezzz</td>
 <td class=c>integer</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LearningOptOutIn</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='XMP.html#LearningOptOutIn'>LearningOptOutIn Struct</a></td></tr>
+<tr>
+<td>LearningOptOutInNumberOfSets</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LearningOptOutInValues</td>
+<td class=c title=' _ = Flattened
+ + = List'>integer_+</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>LensMake</td>
@@ -13129,9 +13181,21 @@ Composite:GPSDateTime when copying from EXIF)</span></span></td></tr>
 <td><span class=s><span class=n>(tag ID is &#39;LensSpecification&#39;; unfortunately the EXIF 2.3 for XMP specification defined this new tag
 instead of using the existing XMP-aux:LensInfo)</span></span></td></tr>
 <tr>
+<td>LightSource</td>
+<td class=c title=' / = Avoid'>string/</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a>
+  <br><span class='n s'>(avoided to prioritize the original version of this tag in the exif namespace)</span></td></tr>
+<tr class=b>
 <td>MetadataEditingSoftware</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td>NoiseReduction</td>
+<td class=c>integer</td>
+<td><span class=s>0 = No
+  <br>1 = Low
+  <br>2 = Normal
+  <br>3 = High</span></td></tr>
 <tr class=b>
 <td>Photographer</td>
 <td class=c>string</td>
@@ -13164,14 +13228,19 @@ instead of using the existing XMP-aux:LensInfo)</span></span></td></tr>
   <br>6 = Recommended Exposure Index and ISO Speed
   <br>7 = Standard Output Sensitivity, Recommended Exposure Index and ISO Speed</span></td></tr>
 <tr class=b>
+<td>ShadingCorrection</td>
+<td class=c>integer</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
 <td>StandardOutputSensitivity</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>AmbientTemperature</td>
 <td class=c>rational</td>
 <td><span class=s><span class=n>(tag ID is &#39;Temperature&#39;)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>WaterDepth</td>
 <td class=c>rational</td>
 <td>&nbsp;</td></tr>
@@ -13222,6 +13291,42 @@ instead of using the existing XMP-aux:LensInfo)</span></span></td></tr>
 <tr class=b>
 <td>Values</td>
 <td class=c title=' + = List'>rational+</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DevelopmentType'>XMP DevelopmentType Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>DevelopmentCharacteristic</td>
+<td class=c>integer</td>
+<td><span class=s>1 = Accurate Reproduction
+  <br>2 = Small Differences
+  <br>4 = Extreme Differences</span></td></tr>
+<tr class=b>
+<td>FactoryDefault</td>
+<td class=c>integer</td>
+<td><span class=s>1 = Factory Default Settings
+  <br>2 = Not Default Settings
+  <br>4 = Unknown Settings</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LearningOptOutIn'>XMP LearningOptOutIn Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>NumberOfSets</td>
+<td class=c>integer</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Values</td>
+<td class=c title=' + = List'>integer+</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -20587,7 +20692,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 24, 2026</i>
+<br><i>Last revised Oct 28, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

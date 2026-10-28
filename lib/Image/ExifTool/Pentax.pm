@@ -2232,7 +2232,16 @@ my %binaryDataAttrs = (
             32768 => 'Standard', #KG (K-3IIIm) (was "n/a" previously - PH)
             32769 => 'Hard', #KG (K-3IIIm)
             32770 => 'Soft', #KG (K-3IIIm)
-            33024 => 'Monochrome', #forum17904 (GR IV Monochrome)
+            #the following from forum17904 (GR IV Monochrome)
+            33024 => 'Standard', 
+            33025 => 'Solid',
+            33026 => 'Soft',
+            33027 => 'High Contrast',
+            33028 => 'Grainy',
+            33029 => 'HDR tone',
+            33024 => 'Custom 1',
+            33024 => 'Custom 2',
+            33024 => 'Custom 3',
         },
     },
     0x0050 => { #PH
@@ -2743,10 +2752,33 @@ my %binaryDataAttrs = (
             },
         },
     },
+    0x0099 => { #forum17904
+        Name => 'SnapFocusDistance',
+        Writable => 'int8u',
+        Count => 3,
+        Notes => 'the DOF settings occur in Snap Distance Priority AE or Sn mode',
+        PrintConv => {
+            '1 0 0' => '1 m',
+            '2 0 0' => '1.5 m',
+            '3 0 0' => '2 m',
+            '3 0 1' => '2 m - DOF3',
+            '3 0 2' => '2 m - DOF2',
+            '3 0 3' => '2 m - DOF1',
+            '4 0 0' => '2.5 m',
+            '5 0 0' => '5 m',
+            '6 0 0' => '3.5 m',
+            '7 0 0' => '0.3 m',
+            '255 0 0' => 'inf',
+        },
+    },
     0x009e => { #https://www.dpreview.com/forums/threads/gr-iv-hdf-dng-exif-data.4837151/#post-68693164
         Name => 'HDF', # (Highlight Diffusion Filter)
         Writable => 'int8u',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+            2 => 'Red Filter', #forum17904 (GR IV Monochrome)
+        },
     },
     0x0200 => { #5
         Name => 'BlackPoint',
@@ -4861,7 +4893,7 @@ my %binaryDataAttrs = (
         },
         {
             Name => 'BodyBatteryVoltage1', # (static?)
-            Condition => '$$self{Model} =~ /(645D|645Z|K-(1|01|3|5|7|30|50|70|500|r|x|S[12])|KP)\b/ and $$self{Model} !~ /III/',
+            Condition => '$$self{Model} =~ /(645D|645Z|K-(1|01|3|5|7|30|50|70|500|r|x|S[12])|KF|KP)\b/ and $$self{Model} !~ /III/',   #KG: also for K-70 and KF
             Format => 'int16u',
             ValueConv => '$val / 100',
             ValueConvInv => '$val * 100',
@@ -4916,7 +4948,7 @@ my %binaryDataAttrs = (
         },
         {
             Name => 'BodyBatteryVoltage2', # (less than BodyBatteryVoltage1 -- under load?)
-            Condition => '$$self{Model} =~ /(645D|645Z|K-(1|01|3|5|7|30|50|70|500|r|x|S[12])|KP)\b/ and $$self{Model} !~ /III/',
+            Condition => '$$self{Model} =~ /(645D|645Z|K-(1|01|3|5|7|30|50|70|500|r|x|S[12])|KF|KP)\b/ and $$self{Model} !~ /III/',   #KG: also for K-70 and KF
             Format => 'int16u',
             ValueConv => '$val / 100',
             ValueConvInv => '$val * 100',
@@ -5067,7 +5099,7 @@ my %binaryDataAttrs = (
     # 0x0a - values: 00,05,0d,15,86,8e,a6,ae
     0x0b => { #JD
         Name => 'AFPointsInFocus',
-        Condition => '$$self{Model} !~ /(K-(1|3|70|S1|S2)|KP)\b/',  #KG: valid also for K-S1/S2
+        Condition => '$$self{Model} !~ /(K-(1|3|70|S1|S2)|KF|KP)\b/',  #KG: valid also for K-S1/S2 and KF
         Notes => q{
             models other than the K-1, K-3, K-70, KP and K-S1/S2. May report two points
             in focus even though a single AFPoint has been selected, in which case the
@@ -6078,21 +6110,21 @@ my %binaryDataAttrs = (
     },
     4 => {
         Name => 'AFPointsInFocus',
-        Condition => '$$self{Model} =~ /K(P|-1|-70)\b/',
+        Condition => '$$self{Model} =~ /K(F|P|-1|-70)\b/',     #KG: also for K-70
         Format => 'int8u[int(($val{2}+3)/4)]',
         Writable => 0,
         PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,$$self{NumAFPoints},2,0x02)',
     },
     4.1 => {
         Name => 'AFPointsSelected',
-        Condition => '$$self{Model} =~ /K(P|-1|-70)\b/',
+        Condition => '$$self{Model} =~ /K(F|P|-1|-70)\b/',     #KG: also for K-70
         Format => 'int8u[int(($val{2}+3)/4)]',
         Writable => 0,
         PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,$$self{NumAFPoints},2,0x03)',
     },
     4.2 => {
         Name => 'AFPointsSpecial',
-        Condition => '$$self{Model} =~ /K(P|-1|-70)\b/',
+        Condition => '$$self{Model} =~ /K(F|P|-1|-70)\b/',     #KG: also for K-70
         Format => 'int8u[int(($val{2}+3)/4)]',
         Writable => 0,
         PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,$$self{NumAFPoints},2,0x03,0x03)',

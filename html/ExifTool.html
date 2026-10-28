@@ -976,6 +976,12 @@ effect as a value of 0 for options with numerical values.</p>
     than the original.</td>
     <td align=center>0 or 1</td>
     <td align=center>undef</td></tr>
+<tr id="QuickTimeUndLang"><td>QuickTimeUndLang</td><td>Flag to use 0x55c5
+    ('und') instead of 0x0000 for an undefined language code.  This is a
+    work-around because it has been reported that Apple Photos may sometimes not
+    recognize the zero language code.</td>
+    <td align=center>0 or 1</td>
+    <td align=center>undef</td></tr>
 <tr id="QuickTimeUTC"><td>QuickTimeUTC</td><td>Flag set to assume that integer-valued
     QuickTime date/time values are stored as UTC, causing conversion to local
     time when they are extracted and from local time when written. According to

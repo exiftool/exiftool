@@ -1077,6 +1077,12 @@ bytes.  This padding is removed by default when the file is rewritten, but
 setting this option to 1 adds padding to preserve the original atom size if
 the new atom would be smaller than the original.  Default is undef.
 
+=item QuickTimeUndLang
+
+Flag to use 0x55c5 ('und') instead of 0x0000 for an undefined language code.
+This is a work-around because it has been reported that Apple Photos
+may sometimes not recognize the zero language code.
+
 =item QuickTimeUTC
 
 Flag set to assume that QuickTime date/time values are stored as UTC,

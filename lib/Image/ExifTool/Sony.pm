@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.87';
+$VERSION = '3.88';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -8611,7 +8611,7 @@ my %isoSetting2010 = (
         Name => 'ModelReleaseYear',
         Condition => '$$self{Model} !~ /^(DSC-RX1RM3|ILCE-(1|6700|7CM2|7CR|7M4|7M5|7RM5|7RM6|7SM3|9M3)|ILME-(FX2|FX3A?|FX30)|ZV-(E1|E10M2))\b/',
         Format => 'int8u',
-        PrintConv => 'sprintf("20%.2d", $val)',
+        PrintConv => '$val == 255 ? "n/a" : sprintf("20%.2d", $val)',
     },
     0x0133 => {
         Name => 'ShutterType',

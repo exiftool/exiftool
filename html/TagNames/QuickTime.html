@@ -315,7 +315,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <p>The tags below are extracted from timed metadata in QuickTime and other
 formats of video files when the ExtractEmbedded option is used.  Although
 most of these tags are combined into the single table below, ExifTool
-currently reads 124 different types of timed GPS metadata.</p>
+currently reads 128 different types of timed GPS metadata.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -1293,6 +1293,16 @@ after the decimal)</span></span></td></tr>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'spatial.aggressors-seen'</td>
+<td>SpatialAggressorsSeen</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'spatial.format-version'</td>
+<td>SpatialFormatVersion</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'still-image-time'</td>
 <td>StillImageTime</td>
 <td class=c>no</td>
@@ -1399,11 +1409,16 @@ VideoKeys family 1 gorup.</p>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'camera.lens_irisfnumber'</td>
+<td>LensIrisFNumber</td>
+<td class=c>yes</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'camera.lens_model'</td>
 <td>LensModel</td>
 <td class=c>yes</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'com.apple.photos.captureMode'</td>
 <td>CaptureMode</td>
 <td class=c>yes</td>
@@ -1842,9 +1857,9 @@ and subtitle text in some other videos.</p>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'grpl'</td>
-<td>Unknown_grpl</td>
+<td>GroupsList</td>
 <td class=c>-</td>
-<td>--&gt; <a href='QuickTime.html#grpl'>QuickTime grpl Tags</a></td></tr>
+<td>--&gt; <a href='QuickTime.html#GroupsList'>QuickTime GroupsList Tags</a></td></tr>
 <tr>
 <td>'hdlr'</td>
 <td>Handler</td>
@@ -1956,13 +1971,45 @@ and subtitle text in some other videos.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='grpl'>QuickTime grpl Tags</a></h2>
+<h2><a name='GroupsList'>QuickTime GroupsList Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+<tr>
+<td>'ster'</td>
+<td>StereoImage</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#StereoImage'>QuickTime StereoImage Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='StereoImage'>QuickTime StereoImage Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>StereoImageGroupID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>StereoImageEntities</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>StereoImageLeftID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>StereoImageRightID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Handler'>QuickTime Handler Tags</a></h2>
@@ -7549,11 +7596,16 @@ spherical coordinates left/right degrees, down/up degrees, distance)</span></spa
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'hfov'</td>
+<td>HorizontalFieldOfView</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'pasp'</td>
 <td>PixelAspectRatio</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'st3d'</td>
 <td>Stereoscopic3D</td>
 <td class=c>no</td>
@@ -7562,11 +7614,16 @@ spherical coordinates left/right degrees, down/up degrees, distance)</span></spa
   <br>2 = Stereoscopic Left-Right
   <br>3 = Stereoscopic Stereo-Custom
   <br>4 = Stereoscopic Right-Left</span></td></tr>
-<tr class=b>
+<tr>
 <td>'sv3d'</td>
 <td>SphericalVideo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#sv3d'>QuickTime sv3d Tags</a></td></tr>
+<tr class=b>
+<td>'vexu'</td>
+<td>VideoExtendedUsage</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#vexu'>QuickTime vexu Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CleanAperture'>QuickTime CleanAperture Tags</a></h2>
@@ -7639,6 +7696,15 @@ for the specification.</p>
 <td>ProjectionHeader</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#prhd'>QuickTime prhd Tags</a></td></tr>
+<tr class=b>
+<td>'prji'</td>
+<td>ProjectionInfo</td>
+<td class=c>no</td>
+<td><span class=s>&#39;equi&#39; = Equirectangular
+  <br>&#39;fish&#39; = Fisheye Lens
+  <br>&#39;hequ&#39; = Half Equirectangular
+  <br>&#39;prim&#39; = Parametric Immersive
+  <br>&#39;rect&#39; = Rectilinear</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='cbmp'>QuickTime cbmp Tags</a></h2>
@@ -7706,6 +7772,76 @@ for the specification.</p>
 <tr>
 <td class=r title='3 = 0x3'>3</td>
 <td>PoseRollDegrees</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='vexu'>QuickTime vexu Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'eyes'</td>
+<td>Eyes</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#eyes'>QuickTime eyes Tags</a></td></tr>
+<tr class=b>
+<td>'proj'</td>
+<td>Projection</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#proj'>QuickTime proj Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='eyes'>QuickTime eyes Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'cams'</td>
+<td>StereoCameraSystem</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#cams'>QuickTime cams Tags</a></td></tr>
+<tr class=b>
+<td>'cmfy'</td>
+<td>StereoComfort</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#cmfy'>QuickTime cmfy Tags</a></td></tr>
+<tr>
+<td>'stri'</td>
+<td>StereoInfo</td>
+<td class=c>no</td>
+<td><span class=s>Bit 0 = Has left eye
+  <br>Bit 1 = Has right eye
+  <br>Bit 2 = Has additional views
+  <br>Bit 3 = Eye views reversed</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='cams'>QuickTime cams Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'blin'</td>
+<td>Baseline</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(distance between stereo eyes)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='cmfy'>QuickTime cmfy Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'dadj'</td>
+<td>DisparityAdjustment</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -10101,7 +10237,7 @@ the value is set to zero if the tag is deleted individually)</span></span></td><
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 1, 2026</i>
+<br><i>Last revised Oct 27, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

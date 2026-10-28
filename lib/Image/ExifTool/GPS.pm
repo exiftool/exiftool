@@ -101,8 +101,9 @@ my %printConvLonRef = (
         Name => 'GPSAltitudeRef',
         Writable => 'int8u',
         Notes => q{
-            ExifTool will also accept number when writing this tag, with negative
-            numbers indicating below sea level
+            ExifTool will also accept number when writing this tag with the print
+            conversion enabled, with positive numbers indicating "Above Sea Level" and
+            negative numbers giving "Below Sea Level"
         },
         PrintConv => {
             OTHER => sub {

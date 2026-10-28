@@ -2099,7 +2099,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Name => 'ColorData11',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData11' },
         },
-        {   # (int16u[4528]) - R1/R5mkII (4528) ref forum16406, R50V (3778) ref PH,
+        {   # (int16u[4528]) - R1/R5mkII (4528) ref forum16406, R50V and R6mkIII (3778) ref PH,
             # R8mkII (3447)
             Condition => '$count == 4528 or $count == 3778 or $count == 3447',
             Name => 'ColorData12',
@@ -9356,7 +9356,7 @@ my %ciMaxFocal = (
 # Color data (MakerNotes tag 0x4001, count=4528/3778/3447, ref PH)
 %Image::ExifTool::Canon::ColorData12 = (
     %binaryDataAttrs,
-    NOTES => 'These tags are used by the EOS R1, R5mkII, R50V and R8mkII',
+    NOTES => 'These tags are used by the EOS R1, R5mkII, R50V, R6mkIII and R8mkII',
     FORMAT => 'int16s',
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -9369,6 +9369,7 @@ my %ciMaxFocal = (
         PrintConv => {
             64 => '64 (R1/R5mkII)',
             65 => '65 (R50V)',
+            66 => '66 (R6mkIII)',
             67 => '67 (R8mkII)',
         },
     },
@@ -9689,9 +9690,11 @@ my $lensSerial = '($$self{LensInfoSerial} or $$self{RFLensType})';
 my $lensLayout1 = "(\$\$self{RFLensType} || 0) !~ /^($lensInfoLayout2)\$/";
 my $lensLayout2 = "(\$\$self{RFLensType} || 0) =~ /^($lensInfoLayout2)\$/";
 
-# the AF and IS counters of the EOS R6 Mark III and C50 don't follow the R5m2
-# layout (eg. 00 80 80 in the IS counter of the RF 28-70mm F2L, which has no IS)
-my $lensAFIS = '$$self{Model} !~ /\b(R6 Mark III|C50)$/';
+# the AF and IS counters of the EOS C50 don't follow the R5m2 layout (ff ff ff
+# in the AF counter with the RF 85mm F1.4 L VCM, the only sample).  The R6 Mark
+# III does follow it: 47 samples with 4 RF lenses with IS had AF and IS counts that rise
+# from one power-on to the next
+my $lensAFIS = '$$self{Model} !~ /\bC50$/';
 
 # some lenses without IS fill the LensISCount position anyway (eg. 00 80 80, a
 # constant 00 01 00, or a rising count with the second layout), so this counter
@@ -9769,8 +9772,7 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
             at any step size or aperture, an AF operation or a manual focus move by wire
             adds about 2, each lens start-up adds about 3, and stopped-down exposures
             add none.  Manual-focus lenses (eg. TS-E 24mm f/3.5L II) set the high bit
-            (0x800000), shown as "Not supported".  Not decoded for the EOS R6 Mark III
-            and C50
+            (0x800000), shown as "Not supported".  Not decoded for the EOS C50
         },
         Format => 'undef[3]',
         RawConv => '$val eq "\0\0\0" ? undef : $val',
@@ -9786,8 +9788,7 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
             focus bracketing included, adds none.  Only extracted when the LensModel
             name contains IS, since some lenses without IS fill this position with
             other values.  Not written by some lenses with IS (eg. RF 600mm F11 and
-            RF 800mm F11).  Not decoded for the EOS R6 Mark
-            III and C50
+            RF 800mm F11).  Not decoded for the EOS C50
         },
         Format => 'undef[3]',
         RawConv => '$val eq "\0\0\0" ? undef : $val',

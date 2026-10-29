@@ -9691,12 +9691,6 @@ my $lensSerial = '($$self{LensInfoSerial} or $$self{RFLensType})';
 my $lensLayout1 = 'not $$self{LensInfoLayout2}';
 my $lensLayout2 = '$$self{LensInfoLayout2}';
 
-# the AF and IS counters of the EOS C50 don't follow the R5m2 layout (ff ff ff
-# in the AF counter with the RF 85mm F1.4 L VCM, the only sample).  The R6 Mark
-# III does follow it: 47 samples with 4 RF lenses with IS had AF and IS counts that rise
-# from one power-on to the next
-my $lensAFIS = '$$self{Model} !~ /\bC50$/';
-
 # some lenses without IS fill the LensISCount position anyway (eg. 00 80 80, a
 # constant 00 01 00, or a rising count with the second layout), so this counter
 # is only extracted when the lens model name from MakerNotes tag 0x0095 says IS
@@ -9707,6 +9701,10 @@ my $lensNoIS = '(not defined $$self{LensModel} or $$self{LensModel} =~ /\bIS\b/)
 # LensInfo counters with the high bit set (0x800000) are not supported by the lens
 # (seen in the AF counter of the TS-E 24mm f/3.5L II) (github488)
 my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
+
+# a counter that is 0 is not reported by the lens, and ff ff ff is filler (eg. in
+# the AF counter of some lenses without IS, which write 00 00 00 in other frames)
+my $lensCountRaw = '$val eq "\0\0\0" || $val eq "\xff\xff\xff" ? undef : $val';
 
 # Lens information (MakerNotes tag 0x4019) (ref 20)
 %Image::ExifTool::Canon::LensInfo = (
@@ -9764,39 +9762,39 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
             Long focus moves add a few counts too
         },
         Format => 'undef[3]',
-        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        RawConv => $lensCountRaw,
         ValueConv => 'unpack("N","\0$val")',
         PrintConv => $lensCountPrint,
     },
     9 => {
         Name => 'LensAFCount',
-        Condition => "$lensSerial and $lensAFIS and $lensLayout1",
+        Condition => "$lensSerial and $lensLayout1",
         Notes => q{
             Not valid for the lenses with the second layout (see LensDriveCount3).
             Counts focus drive commands, not the distance moved:  each focus-bracketing
             step adds 1 at any step size or aperture, an AF operation or a manual focus
             move by wire adds about 2, each lens start-up adds about 3, and stopped-down
             exposures add none.  Manual-focus lenses (eg. TS-E 24mm f/3.5L II) set the
-            high bit (0x800000), shown as "Not supported".  Not decoded for the EOS C50
+            high bit (0x800000), shown as "Not supported"
         },
         Format => 'undef[3]',
-        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        RawConv => $lensCountRaw,
         ValueConv => 'unpack("N","\0$val")',
         PrintConv => $lensCountPrint,
     },
     12 => {
         Name => 'LensISCount',
-        Condition => "$lensSerial and $lensAFIS and $lensNoIS",
+        Condition => "$lensSerial and $lensNoIS",
         Notes => q{
             Appears to count IS unit start-ups:  each lens power-on adds 1, even with
             the IS switch off, each flip of the IS switch adds 1 or 2, and shooting,
             focus bracketing included, adds none.  Only extracted when the LensModel
             name contains IS, since some lenses without IS fill this position with
             other values.  Not written by some lenses with IS (eg. RF 600mm F11 and
-            RF 800mm F11).  Not decoded for the EOS C50
+            RF 800mm F11)
         },
         Format => 'undef[3]',
-        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        RawConv => $lensCountRaw,
         ValueConv => 'unpack("N","\0$val")',
         PrintConv => $lensCountPrint,
     },
@@ -9810,7 +9808,7 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
             shots.  What it counts is unconfirmed
         },
         Format => 'undef[3]',
-        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        RawConv => $lensCountRaw,
         ValueConv => 'unpack("N","\0$val")',
         PrintConv => $lensCountPrint,
     },

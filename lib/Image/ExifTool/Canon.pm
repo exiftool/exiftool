@@ -9678,17 +9678,18 @@ my %ciMaxFocal = (
     },
 );
 
-# RFLensType values of the lenses that use the second LensInfo layout (github488)
-my $lensInfoLayout2 = '318|323|324|329|330|331';
-
 # LensInfo counters are only valid when the lens serial number is present.
 # Without it the camera writes zeros or unrelated values (EOS 550D with
-# firmware 1.0.6, 60D with firmware 2.8.1).  RF lenses are the exception: the
-# RF 35mm F1.8 MACRO IS STM on the EOS R8 Mark II writes no serial number but
-# valid counters
+# firmware 1.0.6, 60D with firmware 2.8.1).  RF lenses are the exception:
+# some write no serial number but valid counters (eg. on the EOS R8 Mark II)
 my $lensSerial = '($$self{LensInfoSerial} or $$self{RFLensType})';
-my $lensLayout1 = "(\$\$self{RFLensType} || 0) !~ /^($lensInfoLayout2)\$/";
-my $lensLayout2 = "(\$\$self{RFLensType} || 0) =~ /^($lensInfoLayout2)\$/";
+
+# newer lenses use a second layout (github488), recognized by the data: offsets
+# 7-8 are zero and offset 12 or 15 holds a count.  With the first layout the low
+# bytes of the diaphragm count at offset 6 are never zero once the IS or a later
+# counter is filled, since each lens start-up adds diaphragm counts
+my $lensLayout1 = 'not $$self{LensInfoLayout2}';
+my $lensLayout2 = '$$self{LensInfoLayout2}';
 
 # the AF and IS counters of the EOS C50 don't follow the R5m2 layout (ff ff ff
 # in the AF counter with the RF 85mm F1.4 L VCM, the only sample).  The R6 Mark
@@ -9722,7 +9723,11 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
         Format => 'undef[5]',
         Priority => 0,
         RawConv => '$val=~/^\0\0\0\0/ ? undef : $val', # (rules out 550D and older lenses)
-        Hook => '$$self{LensInfoSerial} = substr($$dataPt,$pos,4) ne "\0" x 4',
+        Hook => q{
+            $$self{LensInfoSerial} = substr($$dataPt,$pos,4) ne "\0" x 4;
+            $$self{LensInfoLayout2} = length($$dataPt) >= $pos + 18 &&
+                substr($$dataPt,$pos+7,2) eq "\0\0" && substr($$dataPt,$pos+12,6) ne "\0" x 6;
+        },
         ValueConv => 'unpack("H*", $val)',
         ValueConvInv => 'length($val) < 10 and $val = 0 x (10-length($val)) . $val; pack("H*",$val)',
     },
@@ -9739,24 +9744,24 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
     # same EF lens continued the same counts.  The EOS M5 and M100 don't write
     # this tag, and the EOS M50 and M6 Mark II write zeros, with EF-M and adapted EF-S
     # lenses.  The original EOS R writes zeros with firmware 1.0.0 and fills the
-    # counters with 1.2.0 (1.1.0 was not tested).  The newer lenses in
-    # $lensInfoLayout2 (RFLensType, set by FileInfo before this directory is read)
-    # use a different layout: offsets 6-11 are not counters, and LensDriveCount3 at
+    # counters with 1.2.0 (1.1.0 was not tested).  Some newer lenses use a second
+    # layout ($lensLayout2): offsets 6-11 are not counters, and LensDriveCount3 at
     # offset 15 is filled only by these lenses.  Their LensISCount at offset 12 is
-    # valid for the lenses with IS.  Lenses that don't report a counter (eg. RF 50mm F1.8 STM, RF 16mm F2.8
-    # STM, older EF lenses) leave it 0, and a counter that is 0 is not extracted,
-    # since any lens that reports one has added counts at its first start-up
+    # valid for the lenses with IS.  Lenses that don't report a counter (eg. RF
+    # 50mm F1.8 STM, RF 16mm F2.8 STM, older EF lenses) leave it 0, and a counter
+    # that is 0 is not extracted, since any lens that reports one has added counts
+    # at its first start-up
     6 => {
         Name => 'LensDiaphragmCount',
         Condition => "$lensSerial and $lensLayout1",
         Notes => q{
-            Not valid for the newer lenses listed under LensDriveCount3.  Counts
-            diaphragm drive commands:  each exposure stopped down from the maximum
-            aperture adds 2 (close and reopen), while exposures at the maximum aperture
-            add none, and so do the frames of a focus-bracketing run, during which the
-            diaphragm stays closed.  Each lens start-up opens the diaphragm fully and
-            returns it to the set aperture, adding a varying number of counts.  Long
-            focus moves add a few counts too
+            Not valid for the lenses with the second layout (see LensDriveCount3).
+            Counts diaphragm drive commands:  each exposure stopped down from the
+            maximum aperture adds 2 (close and reopen), while exposures at the maximum
+            aperture add none, and so do the frames of a focus-bracketing run, during
+            which the diaphragm stays closed.  Each lens start-up opens the diaphragm
+            fully and returns it to the set aperture, adding a varying number of counts.
+            Long focus moves add a few counts too
         },
         Format => 'undef[3]',
         RawConv => '$val eq "\0\0\0" ? undef : $val',
@@ -9767,12 +9772,12 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
         Name => 'LensAFCount',
         Condition => "$lensSerial and $lensAFIS and $lensLayout1",
         Notes => q{
-            Not valid for the newer lenses listed under LensDriveCount3.  Counts focus
-            drive commands, not the distance moved:  each focus-bracketing step adds 1
-            at any step size or aperture, an AF operation or a manual focus move by wire
-            adds about 2, each lens start-up adds about 3, and stopped-down exposures
-            add none.  Manual-focus lenses (eg. TS-E 24mm f/3.5L II) set the high bit
-            (0x800000), shown as "Not supported".  Not decoded for the EOS C50
+            Not valid for the lenses with the second layout (see LensDriveCount3).
+            Counts focus drive commands, not the distance moved:  each focus-bracketing
+            step adds 1 at any step size or aperture, an AF operation or a manual focus
+            move by wire adds about 2, each lens start-up adds about 3, and stopped-down
+            exposures add none.  Manual-focus lenses (eg. TS-E 24mm f/3.5L II) set the
+            high bit (0x800000), shown as "Not supported".  Not decoded for the EOS C50
         },
         Format => 'undef[3]',
         RawConv => '$val eq "\0\0\0" ? undef : $val',
@@ -9799,11 +9804,10 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
         Name => 'LensDriveCount3',
         Condition => "$lensSerial and $lensLayout2",
         Notes => q{
-            Only for the RF 28-70mm F2.8 IS STM, RF 16-28mm F2.8 IS STM, RF-S 14-30mm
-            F4-6.3 IS STM PZ, RF 20-50mm F4 L IS USM PZ, RF 45mm F1.2 STM and RF
-            7-14mm F2.8-3.5 L FISHEYE STM.  A lifetime counter that increases by about
-            3-4 per power-on and does not follow the number of shots.
-            What it counts is unconfirmed
+            Only for the lenses with the second LensInfo layout, where offsets 7-8 are
+            zero (eg. RF 28-70mm F2.8 IS STM and RF 45mm F1.2 STM).  A lifetime counter
+            that increases by about 3-4 per power-on and does not follow the number of
+            shots.  What it counts is unconfirmed
         },
         Format => 'undef[3]',
         RawConv => '$val eq "\0\0\0" ? undef : $val',

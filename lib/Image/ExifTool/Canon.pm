@@ -1512,6 +1512,21 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoRP' },
         },
         {
+            Name => 'CanonCameraInfoR7',
+            Condition => '$$self{Model} =~ /\bEOS R(7|10)$/ and $count == 4608 and $$valPt =~ /^\xbb\xcc/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR7' },
+        },
+        {
+            Name => 'CanonCameraInfoR3',
+            Condition => '$$self{Model} =~ /\bEOS R3$/ and $count == 4608 and $$valPt =~ /^\xbb\xcc/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR3' },
+        },
+        {
+            Name => 'CanonCameraInfoR100',
+            Condition => '$$self{Model} =~ /\bEOS R100$/ and $count == 4608 and $$valPt =~ /^\xbb\xbb/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR100' },
+        },
+        {
             Name => 'CanonCameraInfoG5XII',
             Condition => '$$self{Model} =~ /\bG5 X Mark II$/',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoG5XII' },
@@ -4961,7 +4976,10 @@ my %ciMaxFocal = (
     0x0d29 => { #AgostonKapitany
         Name => 'ShutterCount',
         Format => 'int32u',
-        Notes => 'includes electronic + mechanical shutter',
+        Notes => q{
+            includes electronic + mechanical shutter.  The R8 and R50 have no fully
+            mechanical shutter, so for them it counts electronic + EFCS exposures
+        },
     },
 );
 
@@ -5221,6 +5239,73 @@ my %ciMaxFocal = (
         Condition => '$$self{CanonFirmVer} and $$self{CanonFirmVer} ge "1.6.0"',
         Format => 'int32u',
         Notes => 'includes electronic + mechanical shutter',
+    },
+);
+
+# ref https://github.com/4eloveek/canon-r-shutter-checker (MIT), confirmed on 10 R7 CR3/JPEG
+# files and 45 R10 CR3 files: the value rises by 1 per exposure,
+# the CR3 and JPEG of one shot agree, and it never decreased in time order
+%Image::ExifTool::Canon::CameraInfoR7 = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => q{
+        CameraInfo tags for the EOS R7 and R10 (4608-byte block starting with
+        bb cc).
+    },
+    0x0c93 => {
+        Name => 'ShutterCount',
+        Format => 'int32u',
+        Notes => q{
+            includes electronic + mechanical shutter.  Composite images (for example
+            panorama JPEGs) store 0 or 65535 here instead of a count, and these are
+            not extracted.  The upper two bytes have not been seen non-zero in any
+            sample, so the 32-bit interpretation is not confirmed above 65535
+        },
+        RawConv => '($val == 0 or $val == 65535 or $val == 0xffffffff) ? undef : $val',
+    },
+);
+
+# ref https://github.com/4eloveek/canon-r-shutter-checker (MIT), seen rising without a
+# decrease over 35 R100 CR3 files
+%Image::ExifTool::Canon::CameraInfoR100 = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => q{
+        CameraInfo tags for the EOS R100 (4608-byte block starting with bb bb).
+    },
+    0x0acf => {
+        Name => 'ShutterCount',
+        Format => 'int32u',
+        Notes => q{
+            includes electronic + EFCS shutter (the R100 has no fully mechanical
+            shutter).  Values of 0, 65535 and 0xffffffff are not extracted
+        },
+        RawConv => '($val == 0 or $val == 65535 or $val == 0xffffffff) ? undef : $val',
+    },
+);
+
+# found by looking for a 32-bit value that rises with each exposure in 58 R3 CR3 files
+# (the R7/R10 block layout): +1 between consecutive frames, never repeated or decreased
+%Image::ExifTool::Canon::CameraInfoR3 = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => q{
+        CameraInfo tags for the EOS R3 (4608-byte block starting with bb cc).
+    },
+    0x0fa9 => {
+        Name => 'ShutterCount',
+        Format => 'int32u',
+        Notes => q{
+            includes electronic + mechanical shutter.  Not compared with the number
+            shown by the camera.  Values of 0, 65535 and 0xffffffff are not extracted
+        },
+        RawConv => '($val == 0 or $val == 65535 or $val == 0xffffffff) ? undef : $val',
     },
 );
 

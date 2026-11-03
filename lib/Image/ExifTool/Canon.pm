@@ -85,6 +85,8 @@ sub WriteCanon($$$);
 sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub ProcessCTMD($$$);
+sub AFTrackingHistory($);
+sub AFTrackingHistory128($;$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
@@ -1515,6 +1517,17 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Name => 'CanonCameraInfoG5XII',
             Condition => '$$self{Model} =~ /\bG5 X Mark II$/',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoG5XII' },
+        },
+        {
+            Name => 'CanonCameraInfoAFRing',
+            # any other body that writes a ring of AF tracking records (168-byte
+            # records with header bbbb15, or 128-byte records with header bbcc and
+            # a record marker of 05 or 0d), recognised by the block and not by the model
+            Condition => q{
+                $$valPt =~ /^\xbb\xbb\x15[\0\1]/ or
+                ($$valPt =~ /^\xbb\xcc/ and substr($$valPt, 0x24, 1) =~ /^[\x05\x07\x0d]/)
+            },
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoAFRing' },
         },
         {
             Name => 'CanonCameraInfoPowerShot',
@@ -4956,6 +4969,20 @@ my %ciMaxFocal = (
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS R5 and R6.',
+    # 0x0000 - int16u 0xbbcc, then at 0x24 a ring of 16 AF tracking records of 128
+    #          bytes, newest first (a variant of the ring of the EOS R3)
+    0x0024 => {
+        Name => 'AFTrackingHistory',
+        Format => 'undef[2048]',
+        Notes => q{
+            the ring of AF tracking records, newest first; one entry per record: time
+            before the newest record and the tracked area (width, height, centre X, centre
+            Y), the other fields of the records not decoded.  See the notes of the other
+            AFTrackingHistory for the sampling rate (AFSamplingRate) and the overlap of
+            the rings of consecutive frames
+        },
+        ValueConv => 'Image::ExifTool::Canon::AFTrackingHistory128($val, 1)',
+    },
     # (see forum16111 for more notes on these tags)
     # 0x0a5d - some sort of sequence number starting from 1 (ref forum16111)
     0x09da => { #github393
@@ -4980,7 +5007,25 @@ my %ciMaxFocal = (
     FIRST_ENTRY => 0,
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => 'CameraInfo tags for the EOS R6 Mark II.',
+    NOTES => 'CameraInfo tags for the EOS R6 Mark II, R8 and R50.',
+    # 0x0000 - int16u 0xbbcc, then at 0x24 a ring of 16 AF tracking records of 128
+    #          bytes, newest first (the same ring as the EOS R3, see AFTrackingHistory)
+    0x0024 => {
+        Name => 'AFTrackingHistory',
+        Condition => '$$valPt =~ /^[\x05\x0d]/',
+        Format => 'undef[2048]',
+        Notes => q{
+            the ring of 16 AF tracking records, newest first, in the bodies that
+            write them as 128-byte records; one entry per record: time before the
+            newest record, tracking target, tracked area (centre X, centre Y,
+            width, height) and the unsmoothed centre of the tracked area (X, Y
+            relative to the image centre), the last two not fully decoded.
+            Records with another layout, without a tracked area, are skipped.  See the notes of the
+            other AFTrackingHistory for the sampling rate (AFSamplingRate) and the
+            overlap of the rings of consecutive frames
+        },
+        ValueConv => 'Image::ExifTool::Canon::AFTrackingHistory128($val)',
+    },
     0x0d29 => { #AgostonKapitany
         Name => 'ShutterCount',
         Format => 'int32u',
@@ -4994,19 +5039,49 @@ my %ciMaxFocal = (
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     IS_SUBDIR => [ 0x0002 ],
-    NOTES => 'CameraInfo tags for the EOS R1 and R5 Mark II.',
+    NOTES => 'CameraInfo tags for the EOS R1 and R5 Mark II (the R6 Mark III and R8 Mark II share the AF tracking records).',
     # 0x0000 - int16u 0xbbbb, then a ring of 12 AF tracking records, newest first.
     #          Records are 168 bytes (112 bytes with firmware 1.0.0 and with some
     #          frames where the AF area did not move, which have a different layout)
     0x0002 => {
         Name => 'AFTrackingInfo',
         Condition => q{
-            $$valPt =~ /^\x15\0/ and substr($$valPt, 0x57, 1) eq "\0" and
+            $$valPt =~ /^\x15[\0\1]/ and substr($$valPt, 0x57, 1) eq "\0" and
             substr($$valPt, 0x78, 1) eq "\0"
         },
         Format => 'undef[168]',
         Notes => 'most recent AF tracking record',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::AFTrackingR5m2' },
+    },
+    2.1 => {
+        Name => 'AFTrackingHistory',
+        Condition => q{
+            $$valPt =~ /^\x15[\0\1]/ and substr($$valPt, 0x57, 1) eq "\0" and
+            substr($$valPt, 0x78, 1) eq "\0"
+        },
+        Format => 'undef[2016]',
+        Notes => q{
+            the whole ring of 12 AF tracking records, newest first, one entry per
+            record: time before the newest record, tracking target, detected parts,
+            eye used, tracked area (centre X, centre Y, width, height), the
+            unsmoothed centre of the tracked area (X, Y relative to the image
+            centre, not fully decoded), and the AF focus distance step and focus
+            position (see AFFocusDistance and AFFocusPosition), three raw focus
+            error samples, and two millisecond timers (since the start of AF, and since the shutter release of the
+            latest frame, not fully decoded).  Each record holds a single box (the tracked part), so
+            the boxes of the other detected parts are not available.  Records with
+            another layout are skipped.  The records are samples of the AF tracking
+            taken at the AF rate (AFSamplingRate, usually 60 Hz, lower when the live
+            view image is dark), not the shooting rate, and each sample has a
+            time stamp, so the rings of the frames of a burst overlap and can be
+            joined by that time stamp into one continuous history (at 30 fps a
+            sample is stored in up to 7 frames).  Copies of a sample are identical
+            except for the newest samples of the first frames of a burst, where the
+            same time stamp can appear in several slots with different bytes that
+            are not decoded; the decoded values do not change, and the newest slot
+            is the latest revision
+        },
+        ValueConv => 'Image::ExifTool::Canon::AFTrackingHistory($val)',
     },
     # 0x084f - int32u capture time, same encoding as PowerOnTime
     0x084b => {
@@ -5089,7 +5164,7 @@ my %ciMaxFocal = (
     },
 );
 
-# most recent AF tracking record in the EOS R1 and R5 Mark II CameraInfo (github488)
+# most recent AF tracking record in the EOS R1, R5 Mark II, R6 Mark III and R8 Mark II CameraInfo (github488)
 %Image::ExifTool::Canon::AFTrackingR5m2 = (
     %binaryDataAttrs,
     FIRST_ENTRY => 0,
@@ -5102,6 +5177,47 @@ my %ciMaxFocal = (
     # 0x00 - int16u 0x0015 (record header)
     # 0x08 - int32u timestamp in microseconds
     # 0x18 - live view rate: 120, dropping to 60 once continuous shooting is running
+    # 0x0e - int16s AFFocusPosition (below)
+    0x0e => {
+        Name => 'AFFocusPosition',
+        Format => 'int16s',
+        Notes => q{
+            lens focus position in arbitrary units, NOT fully decoded.  It is measured
+            from the focus position of the previous AF lock, not from a fixed point, so
+            it is 0 for a new AF cycle on a subject at the same distance as the last
+            lock and the number alone is not a distance.  The scale is a negative
+            constant k in units per diopter (1/metres) that depends on the lens, and
+            nothing in the record gives it:  about -8950 with the RF70-200mm F2.8 and
+            the 2x extender (the same at 140 and 400 mm) and about -33000 with the
+            RF100-500mm F4.5-7.1 (the same, within 5%, at 100, 200, 300 and 500 mm, so
+            it does not scale with the focal length; single shots refocused between a
+            target at about 40 m and targets from 1.8 to 7 m, distances measured to the
+            sensor plane).  A very large value, with a previous lock that would have to
+            be nearer than the lens can focus, means the lens hunted to its near end
+            before the lock, so the reference was lost.  With the
+            previous lock distance D0 (m), the distance D now is 1/D = 1/D0 - value/k',
+            where k' = -k (more focus towards the camera gives a lower value).
+            Example with the 70-200 and the extender (k' = 8950):  the previous lock
+            was at 6.6 m, this record reads -4526 and AFFocusDistance is 1380 mm, so
+            1/D = 0.1515 + 0.5057 = 0.657 and D = 1.52 m, inside the 1380 mm step.
+            The previous lock is the last AF lock, which may not be a saved frame (a
+            half-press without a shot moves it).  Before AF has locked on a new shot
+            the value is a stale one, so check AFFocusDistance changed
+        },
+    },
+    0x58 => {
+        Name => 'AFFocusDistance',
+        Format => 'int16u',
+        Notes => q{
+            focus distance from AF as the lower edge of a table step (the next step up
+            is the upper limit), same as the FocusDistanceLower of the lens data.
+            0 before AF reports a distance, "inf" for 65526.  It is a coarse step
+            (for example 1380, 1550, 1750, 1970, 2220, 2510, 2850 ... mm), the finer
+            value is in AFFocusPosition
+        },
+        PrintConv => '$val ? ($val >= 65500 ? "inf" : "$val mm") : "n/a"',
+        PrintConvInv => '$val =~ /(\d+)/ ? $1 : ($val =~ /inf/i ? 65526 : 0)',
+    },
     0x1a => {
         Name => 'AFSamplingRate',
         Notes => q{
@@ -5186,6 +5302,10 @@ my %ciMaxFocal = (
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS R6 Mark III and R6 V.',
+    IS_SUBDIR => [ 0x0002 ],
+    # the ring of AF tracking records is the one of the EOS R1 and R5 Mark II (marker byte 0x01)
+    0x0002 => { %{$Image::ExifTool::Canon::CameraInfoR5m2{0x0002}} },
+    2.1    => { %{$Image::ExifTool::Canon::CameraInfoR5m2{2.1}} },
     0x084b => { #github488
         Name => 'PowerOnTime',
         Groups => { 2 => 'Time' },
@@ -5204,6 +5324,32 @@ my %ciMaxFocal = (
         Name => 'ImageCount', # (resets to 0 when SD card is formatted)
         Format => 'int16u',
     },
+);
+
+%Image::ExifTool::Canon::CameraInfoAFRing = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    IS_SUBDIR => [ 0x0002 ],
+    NOTES => 'CameraInfo tags of bodies that write the AF tracking records but have no table of their own.',
+    # the ring of AF tracking records is the one of the EOS R1 and R5 Mark II
+    0x0002 => { %{$Image::ExifTool::Canon::CameraInfoR5m2{0x0002}} },
+    2.1    => { %{$Image::ExifTool::Canon::CameraInfoR5m2{2.1}} },
+    0x0024 => [
+        { %{$Image::ExifTool::Canon::CameraInfoR6m2{0x0024}} },
+        {   # records of 64 bytes, with the unsmoothed centre only
+            Name => 'AFTrackingHistory',
+            Condition => '$$valPt =~ /^\x07/',
+            Format => 'undef[2048]',
+            Notes => q{
+                the ring of AF tracking records, newest first, here with the time before
+                the newest record and the unsmoothed centre of the tracked area (X, Y
+                relative to the image centre); the other fields of the records not decoded
+            },
+            ValueConv => 'Image::ExifTool::Canon::AFTrackingHistory128($val, 2)',
+        },
+    ],
 );
 
 # ref github488
@@ -11504,6 +11650,110 @@ sub ProcessCMT3($$$)
 }
 
 #------------------------------------------------------------------------------
+# Decode the ring of AF tracking records in the EOS R1, R5 Mark II, R6 Mark III and R8 Mark II CameraInfo
+# Inputs: 0) 2016-byte ring (12 records of 168 bytes)
+# Returns: reference to a list of strings, one per record with the usual layout
+sub AFTrackingHistory($)
+{
+    my $dat = shift;
+    my @target = ('n/a', 'None', 'Head', 'Body', 'Face', 'Eye');
+    my @eye = ('n/a', 'Left', 'Right', 'Unresolved');
+    my @parts = ('Head', 'Body', 'Face', 'Eye', 'Both Eyes');
+    my ($t0, @list);
+    for (my $i=0; $i + 168 <= length $dat; $i += 168) {
+        my $rec = substr($dat, $i, 168);
+        # (same test as for the newest record)
+        next unless $rec =~ /^\x15[\0\1]/ and substr($rec,0x57,1) eq "\0" and
+                    substr($rec,0x78,1) eq "\0";
+        my $t = unpack('l<', substr($rec, 8, 4));
+        $t0 = $t unless defined $t0;
+        my $tgt = ord(substr($rec, 0x8f, 1)) & 0x0f;
+        my $mask = (unpack('v', substr($rec, 0x92, 2)) & 0x7c) >> 2;
+        my @p = map { $parts[$_] } grep { $mask & (1 << $_) } 0..4;
+        my @area = unpack('v4', substr($rec, 0x94, 8));
+        my $eyeUsed = $eye[ord(substr($rec, 0x9d, 1)) & 0x03];
+        # (not fully decoded) signed centre relative to the image centre, in the
+        # same units as the area.  It follows the centre of the area one to one
+        # when the area moves (slope 0.9 to 1.05, correlation 0.75 to 0.97) with
+        # a scatter of 100 to 140 px that does not depend on the stabilizer (it
+        # does not move when the stabilizer shifts the image by 300 px), so it
+        # looks like the unsmoothed centre of which the area is the smoothed
+        # version; when the area hardly moves the fitted slope is much lower
+        my @pt = unpack('s< s<', substr($rec, 0x70, 4));
+        # (not fully decoded) distance step in mm and the lens position, see
+        # AFFocusDistance and AFFocusPosition
+        my $dist = unpack('v', substr($rec, 0x58, 2));
+        my $pos = unpack('s<', substr($rec, 0x0e, 2));
+        # (not fully decoded) three signed focus error samples that move with
+        # the focus position (correlation 0.6 to 0.9 within a burst, about 10
+        # times its scale); the position looks like their smoothed sum
+        my @fe = unpack('s< s< s<', substr($rec, 0x60, 4) . substr($rec, 0x68, 2));
+        # (not fully decoded) two millisecond counters (65535 = saturated).  The
+        # first runs on the clock of the time stamp, apparently from the start of
+        # AF; the second steps once per frame, apparently from the shutter release
+        # (it keeps its last value until the first frame of the next burst)
+        my ($afT, $frT) = unpack('v v', substr($rec, 0x6e, 2) . substr($rec, 0x6c, 2));
+        $dist = $dist ? ($dist >= 65500 ? 'inf' : "$dist mm") : 'n/a';
+        push @list, sprintf('%+.1f ms: %s %dx%d at (%d %d)%s; parts %s; raw centre %+d %+d; focus %s %+d; samples %+d %+d %+d; timers %d %d ms',
+            ($t - $t0) / 1000,
+            $target[$tgt] || "Unknown ($tgt)",
+            $area[2], $area[3], $area[0], $area[1],
+            $eyeUsed eq 'n/a' ? '' : "; $eyeUsed eye",
+            @p ? join('+', @p) : 'none', @pt, $dist, $pos, @fe, $afT, $frT);
+    }
+    return @list ? \@list : undef;
+}
+
+#------------------------------------------------------------------------------
+# Decode the ring of AF tracking records of the bodies with 128-byte records
+# Inputs: 0) 2048-byte ring (16 records of 128 bytes)
+# Returns: reference to a list of strings, one per record
+sub AFTrackingHistory128($;$)
+{
+    my ($dat, $lay) = @_;
+    $lay ||= 0;
+    my @target = ('n/a', 'None', 'Head', 'Body', 'Face', 'Eye');
+    # layouts: 0 = EOS R3 (128-byte records with a fixed first byte), 1 = EOS R5 and
+    # R6 (128 bytes, no fixed first byte), 2 = EOS R10 (64 bytes, no tracked area)
+    my $size = $lay == 2 ? 64 : 128;
+    my ($t0, $tPrev, @list);
+    for (my $i=0; $i + $size <= length $dat; $i += $size) {
+        my $rec = substr($dat, $i, $size);
+        last if $lay == 0 and $rec !~ /^[\x05\x0d]/;
+        my $t = unpack('V', substr($rec, $lay == 1 ? 0x0c : 8, 4));
+        # (the ring is newest first, so the time must not increase)
+        last if defined $tPrev and ($t > $tPrev or $tPrev - $t > 1e6);
+        if ($lay == 2) {
+            my @pt = unpack('s< s<', substr($rec, 0x30, 4));
+            next if grep { abs($_) > 4000 } @pt;
+            $t0 = $t unless defined $t0;
+            $tPrev = $t;
+            push @list, sprintf('%+.1f ms: raw centre %+d %+d', ($t - $t0) / 1000, @pt);
+            next;
+        }
+        # (the area is in pixels of the AF image, the smoothed version of the raw centre)
+        my @area = unpack('v4', substr($rec, $lay ? 0x46 : 0x4e, 8));
+        # (some records of the R50 and R8 have another layout, with 0xcccc in the
+        # place of the height; skip anything that cannot be an area of the image)
+        next if grep { $_ >= 8192 } @area;
+        next unless $area[2] and $area[3];
+        $tPrev = $t;
+        $t0 = $t unless defined $t0;
+        if ($lay) {
+            push @list, sprintf('%+.1f ms: %dx%d at (%d %d)',
+                ($t - $t0) / 1000, $area[2], $area[3], $area[0], $area[1]);
+            next;
+        }
+        # (not fully decoded) the values 0 to 5 are those of the 168-byte records
+        my $tgt = ord(substr($rec, 0x42, 1));
+        my @pt = unpack('s< s<', substr($rec, 0x70, 4));
+        push @list, sprintf('%+.1f ms: %s %dx%d at (%d %d); raw centre %+d %+d',
+            ($t - $t0) / 1000, $target[$tgt] || "Unknown ($tgt)",
+            $area[2], $area[3], $area[0], $area[1], @pt);
+    }
+    return @list ? \@list : undef;
+}
+
 # Process CTMD EXIF information
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success

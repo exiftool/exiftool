@@ -2254,6 +2254,28 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         }
     },
   # 0x402b - crop information (forum14904)
+    # The four blocks below are int16s arrays whose meaning is mostly NOT decoded.
+    # They are lens correction data in the family of the CTMD type 14 record
+    # (LensCorrectionInfo), 500 to 1000 bytes each in the CTMD ExifInfo9 record of
+    # the EOS R5 Mark II.  What the values of the R5 Mark II samples show:
+    # 0x4033 (500 values) starts with 16384 (unity) and 10000 10000 10000, is mostly
+    #   zeros, and the part from value 100 on changes with the focal length.
+    # 0x402e (250 values) has Q14 style entries (16382, 16372) between small signed
+    #   numbers and changes with the aperture.
+    # 0x4035 (278 values) is rows of 10 smooth curve points (for example 3843 3485
+    #   3038 ... 210, or 771 846 ... 16649) that change with the aperture.
+    # 0x4045 (350 values) is a lens state record:  values 34 and 35 (counting from
+    #   0) are the focal length as shown with the extender, 65 is ten times that,
+    #   76 is the focal length without the extender, and 37 and 38 are the focus
+    #   distance step in cm, the AFFocusDistance step divided by 10 (581 for the
+    #   5810 mm step; 138 at 1.55 m, 718 at 8.4 m, 2353 at 45 m, 4540 at infinity
+    #   with the RF70-200mm and extender, 5578 at infinity with the RF100-500mm).
+    #   Value 4 rises with the aperture (3255 at f/4, 3915 at f/5.6, 5412 at
+    #   f/11) and a little with the focus distance (4287 at 2.8 m, 4368 at
+    #   infinity, RF100-500mm at 500 mm f/6.7).
+    0x402e => { Name => 'LensCorrectionData2', Format => 'int16s' },
+    0x4033 => { Name => 'LensCorrectionData1', Format => 'int16s' },
+    0x4035 => { Name => 'LensCorrectionData3', Format => 'int16s' },
     0x403f => { #25
         Name => 'RawBurstModeRoll',
         SubDirectory => {
@@ -2261,6 +2283,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             TagTable => 'Image::ExifTool::Canon::RawBurstInfo',
         }
     },
+    0x4045 => { Name => 'LensCorrectionData4', Format => 'int16s' }, # (not decoded, see 0x4033)
   # 0x4049 - related to croping (forum13491) - "8 0 0 0" = no crop, "8 1 0 1" = crop enabled
     0x4053 => { #github380
         Name => 'FocusBracketingInfo',
@@ -10498,6 +10521,12 @@ my %filterConv = (
         Name => 'ExifInfo9',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::ExifInfo' },
     },
+    14 => {
+        Name => 'LensCorrectionInfo',
+        # 328 bytes on the EOS R5 Mark II, R6 Mark III and R8 Mark II
+        Condition => 'length($$valPt) == 328',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::LensCorrectionInfo' },
+    },
   # 10 - 60 bytes: all zeros with a pair of 0xff's at offset 0x02 (C200 CRM)
   # 11 - 612 bytes: all zero with pairs of 0xff's at offset 0x6e and 0x116 (C200 CRM)
 );
@@ -10520,6 +10549,52 @@ my %filterConv = (
             TagTable => 'Image::ExifTool::Canon::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
         },
+    },
+);
+
+# CTMD type 14: per-frame lens correction curves (CR3 files; EOS R5 Mark II, R6 Mark III, R8 Mark II)
+# The record is 328 bytes (164 int16 values) with fixed offsets.  The first
+# three values are the number of points N of the curves (15, 16 or 17 with
+# different lenses).  Each curve is N values, the first being unity (8191 for
+# the first curve and 16384 for the others), at 0x06, 0x62, 0x90 and 0xec.
+# The N-1 positions at which the curves are sampled (always ending at 4543) are
+# stored three times, at 0x36, 0xc0 and 0x11c; they are constant for a lens,
+# also with an extender.  The curves change with focal length and aperture; the
+# meaning of the three 16384-based curves is not known.
+%Image::ExifTool::Canon::LensCorrectionInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Image' },
+    FORMAT => 'int16u',
+    FIRST_ENTRY => 0,
+    NOTES => q{
+        Lens correction curves from CTMD type 14 in CR3 images from the EOS R5 Mark
+        II, R6 Mark III and R8 Mark II.  The values are raw fixed-point numbers.
+    },
+    0 => 'LensCorrectionPoints',
+    3 => {
+        Name => 'PeripheralIlluminationCurve',
+        Format => 'int16u[$val{0}]',
+        Notes => '8191 is unity; rises as the lens is stopped down',
+    },
+    27 => {
+        Name => 'LensCorrectionPositions',
+        Format => 'int16u[$val{0}-1]',
+        Notes => 'sample positions of the curves, constant for a lens',
+    },
+    49 => {
+        Name => 'LensCorrectionCurve1',
+        Format => 'int16u[$val{0}]',
+        Notes => '16384 is unity; changes with focal length',
+    },
+    72 => {
+        Name => 'LensCorrectionCurve2',
+        Format => 'int16u[$val{0}]',
+        Notes => '16384 is unity; changes with focal length',
+    },
+    118 => {
+        Name => 'LensCorrectionCurve3',
+        Format => 'int16u[$val{0}]',
+        Notes => '16384 is unity; changes with focal length',
     },
 );
 

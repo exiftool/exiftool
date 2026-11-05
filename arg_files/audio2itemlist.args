@@ -1,0 +1,54 @@
+#------------------------------------------------------------------------------
+# File:         audio2itemlist.args
+#
+# Description:  Tag name translations for copying ID3, Vorbis and Matroska
+#               audio tags to QuickTime ItemList (M4A/MP4)
+#
+# Usage:        exiftool -tagsFromFile SRCFILE -@ audio2itemlist.args DSTFILE
+#
+# Requires:     ExifTool version 11.39 or later
+#
+# Revisions:    2026-10-30 - Original code from github #497
+#
+# References:   https://github.com/exiftool/exiftool/issues/497
+#
+# Notes:     1) The first argument copies the tags whose names are the same
+#               in both formats (Title, Artist, Album, Genre, Composer,
+#               Comment...), and the others copy the year, track number,
+#               disc number and album artist, which have different names, to
+#               the atoms that music players read (\xa9day, trkn, disk, aART).
+#
+#            2) When the source has several of the tags translated to the
+#               same destination tag, the last one listed wins.  A number
+#               and its total are joined when the source has both.
+#
+#            3) These arguments will not delete existing tags which are
+#               missing from the source.
+#------------------------------------------------------------------------------
+-all
+
+# year or date
+-ItemList:ContentCreateDate#<ID3:Year#
+-ItemList:ContentCreateDate#<ID3:RecordingTime#
+-ItemList:ContentCreateDate#<Vorbis:Date#
+-ItemList:ContentCreateDate#<Matroska:DateReleased#
+
+# track number (and total)
+-ItemList:TrackNumber<ID3:Track
+-ItemList:TrackNumber<Vorbis:TrackNumber
+-ItemList:TrackNumber<$Vorbis:TrackNumber of $Vorbis:Tracktotal
+-ItemList:TrackNumber<$Vorbis:TrackNumber of $Vorbis:Totaltracks
+-ItemList:TrackNumber<Matroska:PartNumber
+-ItemList:TrackNumber<$Matroska:PartNumber of $Matroska:TotalParts
+
+# disc number (and total)
+-ItemList:DiskNumber<ID3:PartOfSet
+-ItemList:DiskNumber<Vorbis:Discnumber
+-ItemList:DiskNumber<$Vorbis:Discnumber of $Vorbis:Disctotal
+-ItemList:DiskNumber<$Vorbis:Discnumber of $Vorbis:Totaldiscs
+
+# album artist
+-ItemList:AlbumArtist<ID3:Band
+-ItemList:AlbumArtist<Vorbis:Albumartist
+
+# end

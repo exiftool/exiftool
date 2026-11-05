@@ -85,6 +85,8 @@ sub WriteCanon($$$);
 sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub ProcessCTMD($$$);
+sub AFTrackingHistory($);
+sub AFTrackingHistory128($;$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
@@ -1031,6 +1033,7 @@ $VERSION = '5.08';
     0x80000516 => 'EOS R50 V', #42
     0x80000518 => 'EOS R6 Mark III', #42
     0x80000520 => 'EOS D2000C', #IB
+    0x80000543 => 'EOS R8 Mark II', #github505
     0x80000560 => 'EOS D6000C', #PH (guess)
 );
 
@@ -1482,6 +1485,11 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfo60D' },
         },
         {
+            Name => 'CanonCameraInfoR3',
+            Condition => '$$self{Model} =~ /\bEOS R3$/ and $count == 4608 and $$valPt =~ /^\xbb\xcc/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR3' },
+        },
+        {
             Name => 'CanonCameraInfoR5m2',
             Condition => '$$self{Model} =~ /\bEOS (R1|R5m2)$/',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR5m2' },
@@ -1498,13 +1506,23 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         },
         {
             Name => 'CanonCameraInfoR6m3',
-            Condition => '$$self{Model} =~ /\bEOS R6 (Mark III|V)$/',
+            Condition => '$$self{Model} =~ /\bEOS R(6 Mark III|6 V|8 Mark II)$/',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR6m3' },
+        },
+        {
+            Name => 'CanonCameraInfoR7',
+            Condition => '$$self{Model} =~ /\bEOS R(7|10)$/ and $count == 4608 and $$valPt =~ /^\xbb\xcc/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR7' },
         },
         {
             Name => 'CanonCameraInfoR50V',
             Condition => '$$self{Model} =~ /\bEOS R50 V$/',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR50V' },
+        },
+        {
+            Name => 'CanonCameraInfoR100',
+            Condition => '$$self{Model} =~ /\bEOS R100$/ and $count == 4608 and $$valPt =~ /^\xbb\xbb/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Canon::CameraInfoR100' },
         },
         {
             Name => 'CanonCameraInfoRP',
@@ -1891,6 +1909,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     0x95 => { #PH (observed in 5D sample image)
         Name => 'LensModel', # (LensName)
         Writable => 'string',
+        RawConv => '$$self{LensModel} = $val', # (used by LensInfo)
     },
     0x96 => [ #PH (CMOSNumber)
         {
@@ -2097,8 +2116,9 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Name => 'ColorData11',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData11' },
         },
-        {   # (int16u[4528]) - R1/R5mkII (4528) ref forum16406, R50V (3778) ref PH
-            Condition => '$count == 4528 or $count == 3778',
+        {   # (int16u[4528]) - R1/R5mkII (4528) ref forum16406, R50V and R6mkIII (3778) ref PH,
+            # R8mkII (3447)
+            Condition => '$count == 4528 or $count == 3778 or $count == 3447',
             Name => 'ColorData12',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData12' },
         },
@@ -2254,6 +2274,28 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         }
     },
   # 0x402b - crop information (forum14904)
+    # The four blocks below are int16s arrays whose meaning is mostly NOT decoded.
+    # They are lens correction data in the family of the CTMD type 14 record (github507)
+    # (LensCorrectionInfo), 500 to 1000 bytes each in the CTMD ExifInfo9 record of
+    # the EOS R5 Mark II.  What the values of the R5 Mark II samples show:
+    # 0x4033 (500 values) starts with 16384 (unity) and 10000 10000 10000, is mostly
+    #   zeros, and the part from value 100 on changes with the focal length.
+    # 0x402e (250 values) has Q14 style entries (16382, 16372) between small signed
+    #   numbers and changes with the aperture.
+    # 0x4035 (278 values) is rows of 10 smooth curve points (for example 3843 3485
+    #   3038 ... 210, or 771 846 ... 16649) that change with the aperture.
+    # 0x4045 (350 values) is a lens state record:  values 34 and 35 (counting from
+    #   0) are the focal length as shown with the extender, 65 is ten times that,
+    #   76 is the focal length without the extender, and 37 and 38 are the focus
+    #   distance step in cm, the AFFocusDistance step divided by 10 (581 for the
+    #   5810 mm step; 138 at 1.55 m, 718 at 8.4 m, 2353 at 45 m, 4540 at infinity
+    #   with the RF70-200mm and extender, 5578 at infinity with the RF100-500mm).
+    #   Value 4 rises with the aperture (3255 at f/4, 3915 at f/5.6, 5412 at
+    #   f/11) and a little with the focus distance (4287 at 2.8 m, 4368 at
+    #   infinity, RF100-500mm at 500 mm f/6.7).
+    0x402e => { Name => 'LensCorrectionData2', Format => 'int16s', Unknown => 1 },
+    0x4033 => { Name => 'LensCorrectionData1', Format => 'int16s', Unknown => 1 },
+    0x4035 => { Name => 'LensCorrectionData3', Format => 'int16s', Unknown => 1 },
     0x403f => { #25
         Name => 'RawBurstModeRoll',
         SubDirectory => {
@@ -2261,6 +2303,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             TagTable => 'Image::ExifTool::Canon::RawBurstInfo',
         }
     },
+    0x4045 => { Name => 'LensCorrectionData4', Format => 'int16s',Unknown => 1 }, # (not decoded, see 0x4033)
   # 0x4049 - related to croping (forum13491) - "8 0 0 0" = no crop, "8 1 0 1" = crop enabled
     0x4053 => { #github380
         Name => 'FocusBracketingInfo',
@@ -4933,6 +4976,21 @@ my %ciMaxFocal = (
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'CameraInfo tags for the EOS R5 and R6.',
+    # 0x0000 - int16u 0xbbcc, then at 0x24 a ring of 16 AF tracking records of 128
+    #          bytes, newest first (a variant of the ring of the EOS R3)
+    0x0024 => { # github507
+        Name => 'AFTrackingHistory',
+        Format => 'undef[2048]',
+        Writable => 0,
+        Notes => q{
+            the ring of AF tracking records, newest first; one entry per record: time
+            before the newest record and the tracked area (width, height, centre X,
+            centre Y), the other fields of the records not decoded.  See the notes of
+            CameraInfoR5m2 AFTrackingHistory for the sampling rate (AFSamplingRate) and
+            the overlap of the rings of consecutive frames
+        },
+        ValueConv => 'Image::ExifTool::Canon::AFTrackingHistory128($val, 1)',
+    },
     # (see forum16111 for more notes on these tags)
     # 0x0a5d - some sort of sequence number starting from 1 (ref forum16111)
     0x09da => { #github393
@@ -4957,11 +5015,33 @@ my %ciMaxFocal = (
     FIRST_ENTRY => 0,
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => 'CameraInfo tags for the EOS R6 Mark II.',
+    NOTES => 'CameraInfo tags for the EOS R6 Mark II, R8 and R50.',
+    # 0x0000 - int16u 0xbbcc, then at 0x24 a ring of 16 AF tracking records of 128
+    #          bytes, newest first (the same ring as the EOS R3, see AFTrackingHistory)
+    0x0024 => { # github507
+        Name => 'AFTrackingHistory',
+        Condition => '$$valPt =~ /^[\x05\x0d]/',
+        Format => 'undef[2048]',
+        Writable => 0,
+        Notes => q{
+            the ring of 16 AF tracking records, newest first, in the bodies that write
+            them as 128-byte records; one entry per record: time before the newest
+            record, tracking target, tracked area (centre X, centre Y, width, height)
+            and the unsmoothed centre of the tracked area (X, Y relative to the image
+            centre), the last two not fully decoded. Records with another layout,
+            without a tracked area, are skipped.  See the notes of the CameraInfoR5m2
+            AFTrackingHistory for the sampling rate (AFSamplingRate) and the overlap of
+            the rings of consecutive frames
+        },
+        ValueConv => 'Image::ExifTool::Canon::AFTrackingHistory128($val)',
+    },
     0x0d29 => { #AgostonKapitany
         Name => 'ShutterCount',
         Format => 'int32u',
-        Notes => 'includes electronic + mechanical shutter',
+        Notes => q{
+            includes electronic + mechanical shutter.  The R8 and R50 have no fully
+            mechanical shutter, so for them it counts electronic + EFCS exposures
+        },
     },
 );
 
@@ -4971,19 +5051,52 @@ my %ciMaxFocal = (
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     IS_SUBDIR => [ 0x0002 ],
-    NOTES => 'CameraInfo tags for the EOS R1 and R5 Mark II.',
+    NOTES => q{
+        CameraInfo tags for the EOS R1 and R5 Mark II (the R6 Mark III and R8 Mark II share
+        the AF tracking records).
+    },
     # 0x0000 - int16u 0xbbbb, then a ring of 12 AF tracking records, newest first.
     #          Records are 168 bytes (112 bytes with firmware 1.0.0 and with some
     #          frames where the AF area did not move, which have a different layout)
     0x0002 => {
         Name => 'AFTrackingInfo',
         Condition => q{
-            $$valPt =~ /^\x15\0/ and substr($$valPt, 0x57, 1) eq "\0" and
+            $$valPt =~ /^\x15[\0\1]/ and substr($$valPt, 0x57, 1) eq "\0" and
             substr($$valPt, 0x78, 1) eq "\0"
         },
         Format => 'undef[168]',
         Notes => 'most recent AF tracking record',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::AFTrackingR5m2' },
+    },
+    2.1 => { # github507
+        Name => 'AFTrackingHistory',
+        Condition => q{
+            $$valPt =~ /^\x15[\0\1]/ and substr($$valPt, 0x57, 1) eq "\0" and
+            substr($$valPt, 0x78, 1) eq "\0"
+        },
+        Format => 'undef[2016]',
+        Writable => 0,
+        Notes => q{
+            the whole ring of 12 AF tracking records, newest first, one entry per
+            record: time before the newest record, tracking target, detected parts, eye
+            used, tracked area (centre X, centre Y, width, height), the unsmoothed
+            centre of the tracked area (X, Y relative to the image centre, not fully
+            decoded), and the AF focus distance step and focus position (see
+            AFFocusDistance and AFFocusPosition), three raw focus error samples, and two
+            millisecond timers (since the start of AF, and since the shutter release of
+            the latest frame, not fully decoded). Each record holds a single box (the
+            tracked part), so the boxes of the other detected parts are not available.
+            Records with another layout are skipped. The records are samples of the AF
+            tracking taken at the AF rate (AFSamplingRate, usually 60 Hz, lower when the
+            live view image is dark), not the shooting rate, and each sample has a time
+            stamp, so the rings of the frames of a burst overlap and can be joined by
+            that time stamp into one continuous history (at 30 fps a sample is stored in
+            up to 7 frames).  opies of a sample are identical except for the newest
+            samples of the first frames of a burst, where the same time stamp can appear
+            in several slots with different bytes that are not decoded; the decoded
+            values do not change, and the newest slot is the latest revision
+        },
+        ValueConv => 'Image::ExifTool::Canon::AFTrackingHistory($val)',
     },
     # 0x084f - int32u capture time, same encoding as PowerOnTime
     0x084b => {
@@ -5066,7 +5179,7 @@ my %ciMaxFocal = (
     },
 );
 
-# most recent AF tracking record in the EOS R1 and R5 Mark II CameraInfo (github488)
+# most recent AF tracking record in the EOS R1, R5 Mark II, R6 Mark III and R8 Mark II CameraInfo (github488)
 %Image::ExifTool::Canon::AFTrackingR5m2 = (
     %binaryDataAttrs,
     FIRST_ENTRY => 0,
@@ -5079,6 +5192,45 @@ my %ciMaxFocal = (
     # 0x00 - int16u 0x0015 (record header)
     # 0x08 - int32u timestamp in microseconds
     # 0x18 - live view rate: 120, dropping to 60 once continuous shooting is running
+    # 0x0e - int16s AFFocusPosition (below)
+    0x0e => { # github507
+        Name => 'AFFocusPosition',
+        Format => 'int16s',
+        Notes => 'lens focus position in arbitrary units',
+        # NOT fully decoded.  It is measured from the focus position of the previous
+        # AF lock, not from a fixed point, so it is 0 for a new AF cycle on a subject
+        # at the same distance as the last lock and the number alone is not a
+        # distance.  The scale is a negative constant k in units per diopter
+        # (1/metres) that depends on the lens, and nothing in the record gives it: 
+        # about -8950 with the RF70-200mm F2.8 and the 2x extender (the same at 140
+        # and 400 mm) and about -33000 with the RF100-500mm F4.5-7.1 (the same, within
+        # 5%, at 100, 200, 300 and 500 mm, so it does not scale with the focal length;
+        # single shots refocused between a target at about 40 m and targets from 1.8
+        # to 7 m, distances measured to the sensor plane).  A very large value, with a
+        # previous lock that would have to be nearer than the lens can focus, means
+        # the lens hunted to its near end before the lock, so the reference was lost. 
+        # With the previous lock distance D0 (m), the distance D now is 1/D = 1/D0 -
+        # value/k', where k' = -k (more focus towards the camera gives a lower value).
+        # Example with the 70-200 and the extender (k' = 8950):  the previous lock was
+        # at 6.6 m, this record reads -4526 and AFFocusDistance is 1380 mm, so 1/D =
+        # 0.1515 + 0.5057 = 0.657 and D = 1.52 m, inside the 1380 mm step. The
+        # previous lock is the last AF lock, which may not be a saved frame (a
+        # half-press without a shot moves it).  Before AF has locked on a new shot the
+        # value is a stale one, so check AFFocusDistance changed
+    },
+    0x58 => {
+        Name => 'AFFocusDistance',
+        Format => 'int16u',
+        Notes => q{
+            focus distance from AF as the lower edge of a table step (the next step up
+            is the upper limit), same as the FocusDistanceLower of the lens data.
+            0 before AF reports a distance, "inf" for 65526.  It is a coarse step
+            (for example 1380, 1550, 1750, 1970, 2220, 2510, 2850 ... mm), the finer
+            value is in AFFocusPosition
+        },
+        PrintConv => '$val ? ($val >= 65500 ? "inf" : "$val mm") : "n/a"',
+        PrintConvInv => '$val =~ /(\d+)/ ? $1 : ($val =~ /inf/i ? 65526 : 0)',
+    },
     0x1a => {
         Name => 'AFSamplingRate',
         Notes => q{
@@ -5162,7 +5314,14 @@ my %ciMaxFocal = (
     FIRST_ENTRY => 0,
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    IS_SUBDIR => [ 0x0002 ],
     NOTES => 'CameraInfo tags for the EOS R6 Mark III and R6 V.',
+    # the ring of AF tracking records is the one of the EOS R1 and R5 Mark II (marker byte 0x01)
+    0x0002 => { %{$Image::ExifTool::Canon::CameraInfoR5m2{0x0002}} }, # github507
+    2.1    => { # github507
+        %{$Image::ExifTool::Canon::CameraInfoR5m2{2.1}},
+        Notes => 'see CameraInfoR5m2 AFTrackingHistory',
+    },
     0x084b => { #github488
         Name => 'PowerOnTime',
         Groups => { 2 => 'Time' },
@@ -5209,7 +5368,7 @@ my %ciMaxFocal = (
     FIRST_ENTRY => 0,
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => 'CameraInfo tags for the EOS R50 V.',
+    NOTES => 'CameraInfo tags for the EOS RP.',
     0x095c => {
         Name => 'ShutterCount',
         Condition => '$$self{CanonFirmVer} and $$self{CanonFirmVer} eq "1.0.1"',
@@ -5221,6 +5380,85 @@ my %ciMaxFocal = (
         Condition => '$$self{CanonFirmVer} and $$self{CanonFirmVer} ge "1.6.0"',
         Format => 'int32u',
         Notes => 'includes electronic + mechanical shutter',
+    },
+);
+
+%Image::ExifTool::Canon::CameraInfoR7 = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'CameraInfo tags for the EOS R7 and R10',
+    0x0024 => { #github507
+        # records of 64 bytes, with the unsmoothed centre only
+        Name => 'AFTrackingHistory',
+        Condition => '$$valPt =~ /^\x07/',
+        Format => 'undef[2048]',
+        Writable => 0,
+        Notes => q{
+            the ring of AF tracking records, newest first, here with the time before the
+            newest record and the unsmoothed centre of the tracked area (X, Y relative
+            to the image centre); the other fields of the records not decoded
+        },
+        ValueConv => 'Image::ExifTool::Canon::AFTrackingHistory128($val, 2)',
+    },
+    0x0c93 => { #github506
+        Name => 'ShutterCount',
+        Format => 'int32u',
+        # ref https://github.com/4eloveek/canon-r-shutter-checker (MIT), confirmed on
+        # 10 R7 CR3/JPEG files and 45 R10 CR3 files: the value rises by 1 per exposure,
+        # the CR3 and JPEG of one shot agree, and it never decreased in time order
+        Notes => q{
+            includes electronic + mechanical shutter.  Composite images (for example
+            panorama JPEGs) store 0 or 65535 here instead of a count, and these are
+            not extracted.  The upper two bytes have not been seen non-zero in any
+            sample, so the 32-bit interpretation is not confirmed above 65535
+        },
+        RawConv => '($val == 0 or $val == 65535 or $val == 0xffffffff) ? undef : $val',
+    },
+);
+
+%Image::ExifTool::Canon::CameraInfoR100 = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'CameraInfo tags for the EOS R100.',
+    0x0acf => { #github506
+        Name => 'ShutterCount',
+        Format => 'int32u',
+        # ref https://github.com/4eloveek/canon-r-shutter-checker (MIT), seen rising
+        # without a decrease over 35 R100 CR3 files
+        Notes => q{
+            includes electronic + EFCS shutter (the R100 has no fully mechanical
+            shutter).  Values of 0, 65535 and 0xffffffff are not extracted
+        },
+        RawConv => '($val == 0 or $val == 65535 or $val == 0xffffffff) ? undef : $val',
+    },
+);
+
+%Image::ExifTool::Canon::CameraInfoR3 = (
+    %binaryDataAttrs,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => q{
+        CameraInfo tags for the EOS R3 (4608-byte block starting with bb cc).
+    },
+    0x0024 => { #github507
+        %{$Image::ExifTool::Canon::CameraInfoR6m2{0x0024}},
+        Notes => 'see CameraInfoR6m2 AFTrackingHistory for details',
+    },
+    0x0fa9 => { #github506
+        Name => 'ShutterCount',
+        Format => 'int32u',
+        # found by looking for a 32-bit value that rises with each exposure in 58 R3 CR3 files
+        # (the R7/R10 block layout): +1 between consecutive frames, never repeated or decreased
+        Notes => q{
+            includes electronic + mechanical shutter.  Not compared with the number
+            shown by the camera.  Values of 0, 65535 and 0xffffffff are not extracted
+        },
+        RawConv => '($val == 0 or $val == 65535 or $val == 0xffffffff) ? undef : $val',
     },
 );
 
@@ -9350,10 +9588,10 @@ my %ciMaxFocal = (
     },
 );
 
-# Color data (MakerNotes tag 0x4001, count=4528/3778, ref PH)
+# Color data (MakerNotes tag 0x4001, count=4528/3778/3447, ref PH)
 %Image::ExifTool::Canon::ColorData12 = (
     %binaryDataAttrs,
-    NOTES => 'These tags are used by the EOS R1, R5mkII and R50V',
+    NOTES => 'These tags are used by the EOS R1, R5mkII, R50V, R6mkIII and R8mkII',
     FORMAT => 'int16s',
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -9366,6 +9604,8 @@ my %ciMaxFocal = (
         PrintConv => {
             64 => '64 (R1/R5mkII)',
             65 => '65 (R50V)',
+            66 => '66 (R6mkIII)', #github505
+            67 => '67 (R8mkII)', #github505
         },
     },
     0x69 => { Name => 'WB_RGGBLevelsAsShot',    Format => 'int16s[4]' }, # (NC)
@@ -9673,23 +9913,34 @@ my %ciMaxFocal = (
     },
 );
 
-# RFLensType values of the lenses that use the second LensInfo layout (github488)
-my $lensInfoLayout2 = '318|323|324|329|330|331';
-
+#github505
 # LensInfo counters are only valid when the lens serial number is present.
 # Without it the camera writes zeros or unrelated values (EOS 550D with
-# firmware 1.0.6, 60D with firmware 2.8.1)
-my $lensSerial = '$$self{LensInfoSerial}';
-my $lensLayout1 = "(\$\$self{RFLensType} || 0) !~ /^($lensInfoLayout2)\$/";
-my $lensLayout2 = "(\$\$self{RFLensType} || 0) =~ /^($lensInfoLayout2)\$/";
+# firmware 1.0.6, 60D with firmware 2.8.1).  RF lenses are the exception:
+# some write no serial number but valid counters (eg. on the EOS R8 Mark II)
+my $lensSerial = '($$self{LensInfoSerial} or $$self{RFLensType})';
 
-# the AF and IS counters of the EOS R6 Mark III and C50 don't follow the R5m2
-# layout (eg. 00 80 80 in the IS counter of the RF 28-70mm F2L, which has no IS)
-my $lensAFIS = '$$self{Model} !~ /\b(R6 Mark III|C50)$/';
+# newer lenses use a second layout (github488), recognized by the data: offsets
+# 7-8 are zero and offset 12 or 15 holds a count.  With the first layout the low
+# bytes of the diaphragm count at offset 6 are never zero once the IS or a later
+# counter is filled, since each lens start-up adds diaphragm counts
+my $lensLayout1 = 'not $$self{LensInfoLayout2}';
+my $lensLayout2 = '$$self{LensInfoLayout2}';
+
+# some lenses without IS fill the LensISCount position anyway (eg. 00 80 80, a
+# constant 00 01 00, or a rising count with the second layout), so this counter
+# is only extracted when the lens model name from MakerNotes tag 0x0095 says IS
+# (Canon puts IS in the name of every lens with image stabilization), or when
+# there is no lens model name
+my $lensNoIS = '(not defined $$self{LensModel} or $$self{LensModel} =~ /\bIS\b/)';
 
 # LensInfo counters with the high bit set (0x800000) are not supported by the lens
 # (seen in the AF counter of the TS-E 24mm f/3.5L II) (github488)
 my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
+
+# a counter that is 0 is not reported by the lens, and ff ff ff is filler (eg. in
+# the AF counter of some lenses without IS, which write 00 00 00 in other frames)
+my $lensCountRaw = '$val eq "\0\0\0" || $val eq "\xff\xff\xff" ? undef : $val';
 
 # Lens information (MakerNotes tag 0x4019) (ref 20)
 %Image::ExifTool::Canon::LensInfo = (
@@ -9706,7 +9957,11 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
         Format => 'undef[5]',
         Priority => 0,
         RawConv => '$val=~/^\0\0\0\0/ ? undef : $val', # (rules out 550D and older lenses)
-        Hook => '$$self{LensInfoSerial} = substr($$dataPt,$pos,4) ne "\0" x 4',
+        Hook => q{
+            $$self{LensInfoSerial} = substr($$dataPt,$pos,4) ne "\0" x 4;
+            $$self{LensInfoLayout2} = length($$dataPt) >= $pos + 18 &&
+                substr($$dataPt,$pos+7,2) eq "\0\0" && substr($$dataPt,$pos+12,6) ne "\0" x 6;
+        },
         ValueConv => 'unpack("H*", $val)',
         ValueConvInv => 'length($val) < 10 and $val = 0 x (10-length($val)) . $val; pack("H*",$val)',
     },
@@ -9723,59 +9978,59 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
     # same EF lens continued the same counts.  The EOS M5 and M100 don't write
     # this tag, and the EOS M50 and M6 Mark II write zeros, with EF-M and adapted EF-S
     # lenses.  The original EOS R writes zeros with firmware 1.0.0 and fills the
-    # counters with 1.2.0 (1.1.0 was not tested).  The newer lenses in
-    # $lensInfoLayout2 (RFLensType, set by FileInfo before this directory is read)
-    # use a different layout: offsets 6-11 are not counters, and LensDriveCount3 at
+    # counters with 1.2.0 (1.1.0 was not tested).  Some newer lenses use a second
+    # layout ($lensLayout2): offsets 6-11 are not counters, and LensDriveCount3 at
     # offset 15 is filled only by these lenses.  Their LensISCount at offset 12 is
-    # valid.  Lenses that don't report a counter (eg. RF 50mm F1.8 STM, RF 16mm F2.8
-    # STM, older EF lenses) leave it 0, and a counter that is 0 is not extracted,
-    # since any lens that reports one has added counts at its first start-up
+    # valid for the lenses with IS.  Lenses that don't report a counter (eg. RF
+    # 50mm F1.8 STM, RF 16mm F2.8 STM, older EF lenses) leave it 0, and a counter
+    # that is 0 is not extracted, since any lens that reports one has added counts
+    # at its first start-up
     6 => {
         Name => 'LensDiaphragmCount',
         Condition => "$lensSerial and $lensLayout1",
         Notes => q{
-            Not valid for the newer lenses listed under LensDriveCount3.  Counts
-            diaphragm drive commands:  each exposure stopped down from the maximum
-            aperture adds 2 (close and reopen), while exposures at the maximum aperture
-            add none, and so do the frames of a focus-bracketing run, during which the
-            diaphragm stays closed.  Each lens start-up opens the diaphragm fully and
-            returns it to the set aperture, adding a varying number of counts.  Long
-            focus moves add a few counts too
+            Not valid for the lenses with the second layout (see LensDriveCount3).
+            Counts diaphragm drive commands:  each exposure stopped down from the
+            maximum aperture adds 2 (close and reopen), while exposures at the maximum
+            aperture add none, and so do the frames of a focus-bracketing run, during
+            which the diaphragm stays closed.  Each lens start-up opens the diaphragm
+            fully and returns it to the set aperture, adding a varying number of counts.
+            Long focus moves add a few counts too
         },
         Format => 'undef[3]',
-        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        RawConv => $lensCountRaw,
         ValueConv => 'unpack("N","\0$val")',
         PrintConv => $lensCountPrint,
     },
     9 => {
         Name => 'LensAFCount',
-        Condition => "$lensSerial and $lensAFIS and $lensLayout1",
+        Condition => "$lensSerial and $lensLayout1",
         Notes => q{
-            Not valid for the newer lenses listed under LensDriveCount3.  Counts focus
-            drive commands, not the distance moved:  each focus-bracketing step adds 1
-            at any step size or aperture, an AF operation or a manual focus move by wire
-            adds about 2, each lens start-up adds about 3, and stopped-down exposures
-            add none.  Manual-focus lenses (eg. TS-E 24mm f/3.5L II) set the high bit
-            (0x800000), shown as "Not supported".  Not decoded for the EOS R6 Mark III
-            and C50
+            Not valid for the lenses with the second layout (see LensDriveCount3).
+            Counts focus drive commands, not the distance moved:  each focus-bracketing
+            step adds 1 at any step size or aperture, an AF operation or a manual focus
+            move by wire adds about 2, each lens start-up adds about 3, and stopped-down
+            exposures add none.  Manual-focus lenses (eg. TS-E 24mm f/3.5L II) set the
+            high bit (0x800000), shown as "Not supported"
         },
         Format => 'undef[3]',
-        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        RawConv => $lensCountRaw,
         ValueConv => 'unpack("N","\0$val")',
         PrintConv => $lensCountPrint,
     },
     12 => {
         Name => 'LensISCount',
-        Condition => "$lensSerial and $lensAFIS",
+        Condition => "$lensSerial and $lensNoIS",
         Notes => q{
             Appears to count IS unit start-ups:  each lens power-on adds 1, even with
             the IS switch off, each flip of the IS switch adds 1 or 2, and shooting,
-            focus bracketing included, adds none.  Not extracted for lenses without
-            IS, nor for some lenses with IS (eg. RF 600mm F11 and RF 800mm F11).  Not
-            decoded for the EOS R6 Mark III and C50
+            focus bracketing included, adds none.  Only extracted when the LensModel
+            name contains IS, since some lenses without IS fill this position with
+            other values.  Not written by some lenses with IS (eg. RF 600mm F11 and
+            RF 800mm F11)
         },
         Format => 'undef[3]',
-        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        RawConv => $lensCountRaw,
         ValueConv => 'unpack("N","\0$val")',
         PrintConv => $lensCountPrint,
     },
@@ -9783,14 +10038,13 @@ my $lensCountPrint = '$val & 0x800000 ? "Not supported" : $val';
         Name => 'LensDriveCount3',
         Condition => "$lensSerial and $lensLayout2",
         Notes => q{
-            Only for the RF 28-70mm F2.8 IS STM, RF 16-28mm F2.8 IS STM, RF-S 14-30mm
-            F4-6.3 IS STM PZ, RF 20-50mm F4 L IS USM PZ, RF 45mm F1.2 STM and RF
-            7-14mm F2.8-3.5 L FISHEYE STM.  A lifetime counter that increases by about
-            3-4 per power-on and does not follow the number of shots.
-            What it counts is unconfirmed
+            Only for the lenses with the second LensInfo layout, where offsets 7-8 are
+            zero (eg. RF 28-70mm F2.8 IS STM and RF 45mm F1.2 STM).  A lifetime counter
+            that increases by about 3-4 per power-on and does not follow the number of
+            shots.  What it counts is unconfirmed
         },
         Format => 'undef[3]',
-        RawConv => '$val eq "\0\0\0" ? undef : $val',
+        RawConv => $lensCountRaw,
         ValueConv => 'unpack("N","\0$val")',
         PrintConv => $lensCountPrint,
     },
@@ -10498,6 +10752,12 @@ my %filterConv = (
         Name => 'ExifInfo9',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::ExifInfo' },
     },
+    14 => { # github507
+        Name => 'LensCorrectionInfo',
+        # 328 bytes on the EOS R5 Mark II, R6 Mark III and R8 Mark II
+        Condition => 'length($$valPt) == 328',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::LensCorrectionInfo' },
+    },
   # 10 - 60 bytes: all zeros with a pair of 0xff's at offset 0x02 (C200 CRM)
   # 11 - 612 bytes: all zero with pairs of 0xff's at offset 0x6e and 0x116 (C200 CRM)
 );
@@ -10520,6 +10780,50 @@ my %filterConv = (
             TagTable => 'Image::ExifTool::Canon::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
         },
+    },
+);
+
+# CTMD type 14: per-frame lens correction curves (CR3 files; EOS R5 Mark II, R6 Mark III, R8 Mark II)
+# The record is 328 bytes (164 int16 values) with fixed offsets.  The first
+# three values are the number of points N of the curves (15, 16 or 17 with
+# different lenses).  Each curve is N values, the first being unity (8191 for
+# the first curve and 16384 for the others), at 0x06, 0x62, 0x90 and 0xec.
+# The N-1 positions at which the curves are sampled (always ending at 4543) are
+# stored three times, at 0x36, 0xc0 and 0x11c; they are constant for a lens,
+# also with an extender.  The curves change with focal length and aperture; the
+# meaning of the three 16384-based curves is not known. (github507)
+%Image::ExifTool::Canon::LensCorrectionInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Image' },
+    FORMAT => 'int16u',
+    FIRST_ENTRY => 0,
+    NOTES => q{
+        Lens correction curves from CTMD type 14 in CR3 images from the EOS R5 Mark
+        II, R6 Mark III and R8 Mark II.  The values are raw fixed-point numbers.
+    },
+    0 => 'LensCorrectionPoints',
+    3 => {
+        Name => 'PeripheralIlluminationCurve',
+        Format => 'int16u[$val{0}]',
+        Notes => '8191 is unity; rises as the lens is stopped down',
+    },
+    27 => {
+        Name => 'LensCorrectionPositions',
+        Format => 'int16u[$val{0}-1]',
+        Notes => 'sample positions of the curves, constant for a lens',
+    },
+    49 => {
+        Name => 'LensCorrectionCurve1',
+        Format => 'int16u[$val{0}]',
+        Notes => '16384 is unity; changes with focal length',
+    },
+    72 => {
+        Name => 'LensCorrectionCurve2',
+        Format => 'int16u[$val{0}]',
+    },
+    118 => {
+        Name => 'LensCorrectionCurve3',
+        Format => 'int16u[$val{0}]',
     },
 );
 
@@ -11429,6 +11733,117 @@ sub ProcessCMT3($$$)
 }
 
 #------------------------------------------------------------------------------
+# Decode the ring of AF tracking records in the EOS R1, R5 Mark II, R6 Mark III and
+# R8 Mark II CameraInfo (github507)
+# Inputs: 0) 2016-byte ring (12 records of 168 bytes)
+# Returns: reference to a list of strings, one per record with the usual layout
+sub AFTrackingHistory($)
+{
+    my $dat = shift;
+    my @target = ('n/a', 'None', 'Head', 'Body', 'Face', 'Eye');
+    my @eye = ('n/a', 'Left', 'Right', 'Unresolved');
+    my @parts = ('Head', 'Body', 'Face', 'Eye', 'Both Eyes');
+    my ($t0, @list);
+    my $oldOrder = GetByteOrder();
+    SetByteOrder('II');
+    for (my $i=0; $i + 168 <= length $dat; $i += 168) {
+        my $rec = substr($dat, $i, 168);
+        # (same test as for the newest record)
+        next unless $rec =~ /^\x15[\0\1]/ and substr($rec,0x57,1) eq "\0" and
+                    substr($rec,0x78,1) eq "\0";
+        my $t = Get32s(\$rec, 8);
+        $t0 = $t unless defined $t0;
+        my $tgt = ord(substr($rec, 0x8f, 1)) & 0x0f;
+        my $mask = (unpack('v', substr($rec, 0x92, 2)) & 0x7c) >> 2;
+        my @p = map { $parts[$_] } grep { $mask & (1 << $_) } 0..4;
+        my @area = unpack('v4', substr($rec, 0x94, 8));
+        my $eyeUsed = $eye[ord(substr($rec, 0x9d, 1)) & 0x03];
+        # (not fully decoded) signed centre relative to the image centre, in the
+        # same units as the area.  It follows the centre of the area one to one
+        # when the area moves (slope 0.9 to 1.05, correlation 0.75 to 0.97) with
+        # a scatter of 100 to 140 px that does not depend on the stabilizer (it
+        # does not move when the stabilizer shifts the image by 300 px), so it
+        # looks like the unsmoothed centre of which the area is the smoothed
+        # version; when the area hardly moves the fitted slope is much lower
+        my @pt = (Get16s(\$rec,0x70), Get16s(\$rec,0x72));
+        # (not fully decoded) distance step in mm and the lens position, see
+        # AFFocusDistance and AFFocusPosition
+        my $dist = unpack('v', substr($rec, 0x58, 2));
+        my $pos = Get16s(\$rec,0x0e);
+        # (not fully decoded) three signed focus error samples that move with
+        # the focus position (correlation 0.6 to 0.9 within a burst, about 10
+        # times its scale); the position looks like their smoothed sum
+        my @fe = (Get16s(\$rec,0x60),Get16s(\$rec,0x62),Get16s(\$rec,0x68));
+        # (not fully decoded) two millisecond counters (65535 = saturated).  The
+        # first runs on the clock of the time stamp, apparently from the start of
+        # AF; the second steps once per frame, apparently from the shutter release
+        # (it keeps its last value until the first frame of the next burst)
+        my ($afT, $frT) = unpack('v2', substr($rec, 0x6e, 2) . substr($rec, 0x6c, 2));
+        $dist = $dist ? ($dist >= 65500 ? 'inf' : "$dist mm") : 'n/a';
+        push @list, sprintf('%+.1f ms: %s %dx%d at (%d %d)%s; parts %s; raw centre %+d %+d; focus %s %+d; samples %+d %+d %+d; timers %d %d ms',
+            ($t - $t0) / 1000,
+            $target[$tgt] || "Unknown ($tgt)",
+            $area[2], $area[3], $area[0], $area[1],
+            $eyeUsed eq 'n/a' ? '' : "; $eyeUsed eye",
+            @p ? join('+', @p) : 'none', @pt, $dist, $pos, @fe, $afT, $frT);
+    }
+    SetByteOrder($oldOrder);
+    return @list ? \@list : undef;
+}
+
+#------------------------------------------------------------------------------
+# Decode the ring of AF tracking records of the bodies with 128-byte records
+# Inputs: 0) 2048-byte ring (16 records of 128 bytes), 1) layout (0=R3,1=R5/6,2=R10)
+# Returns: reference to a list of strings, one per record
+sub AFTrackingHistory128($;$)
+{
+    my ($dat, $lay) = @_;
+    $lay ||= 0;
+    my @target = ('n/a', 'None', 'Head', 'Body', 'Face', 'Eye');
+    # layouts: 0 = EOS R3 (128-byte records with a fixed first byte), 1 = EOS R5 and
+    # R6 (128 bytes, no fixed first byte), 2 = EOS R10 (64 bytes, no tracked area)
+    my $size = $lay == 2 ? 64 : 128;
+    my ($t0, $tPrev, @list);
+    my $oldOrder = GetByteOrder();
+    SetByteOrder('II');
+    for (my $i=0; $i + $size <= length $dat; $i += $size) {
+        my $rec = substr($dat, $i, $size);
+        last if $lay == 0 and $rec !~ /^[\x05\x0d]/;
+        my $t = unpack('V', substr($rec, $lay == 1 ? 0x0c : 8, 4));
+        # (the ring is newest first, so the time must not increase)
+        last if defined $tPrev and ($t > $tPrev or $tPrev - $t > 1e6);
+        if ($lay == 2) {
+            my @pt = (Get16s(\$rec,0x30),Get16s(\$rec,0x32));
+            next if grep { abs($_) > 4000 } @pt;
+            $t0 = $t unless defined $t0;
+            $tPrev = $t;
+            push @list, sprintf('%+.1f ms: raw centre %+d %+d', ($t - $t0) / 1000, @pt);
+            next;
+        }
+        # (the area is in pixels of the AF image, the smoothed version of the raw centre)
+        my @area = unpack('v4', substr($rec, $lay ? 0x46 : 0x4e, 8));
+        # (some records of the R50 and R8 have another layout, with 0xcccc in the
+        # place of the height; skip anything that cannot be an area of the image)
+        next if grep { $_ >= 8192 } @area;
+        next unless $area[2] and $area[3];
+        $tPrev = $t;
+        $t0 = $t unless defined $t0;
+        if ($lay) {
+            push @list, sprintf('%+.1f ms: %dx%d at (%d %d)',
+                ($t - $t0) / 1000, $area[2], $area[3], $area[0], $area[1]);
+            next;
+        }
+        # (not fully decoded) the values 0 to 5 are those of the 168-byte records
+        my $tgt = ord(substr($rec, 0x42, 1));
+        my @pt = (Get16s(\$rec,0x70),Get16s(\$rec,0x72));
+        push @list, sprintf('%+.1f ms: %s %dx%d at (%d %d); raw centre %+d %+d',
+            ($t - $t0) / 1000, $target[$tgt] || "Unknown ($tgt)",
+            $area[2], $area[3], $area[0], $area[1], @pt);
+    }
+    SetByteOrder($oldOrder);
+    return @list ? \@list : undef;
+}
+
 # Process CTMD EXIF information
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success

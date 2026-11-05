@@ -7,6 +7,22 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.55. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Nov. 5, 2026 - Version 13.61
+
+  - Added a new Olympus CameraType (thanks Herb, github #502)
+  - Added arg_files/audio2itemlist.args to the distribution (github #497)
+  - Recognize the SlimHEIF mif3 file type (github #503
+  - Decode some more Canon tags (github #505, #506, #507)
+  - Changed DJI NRSetting tag name to NoiseReduction for consistency
+  - Patched issue where a corrupted FLIF file could cause a hang (github #500)
+  - Patched to avoid backward seek on empty QuickTime atom (github #482)
+  - Patched compatibility issue with Sony Imaging Edge applications when writing
+    ARW files (github #465)
+  - Patched a few places where corrupt metadata could result in excessive memory
+    usage
+  - Fixed performance issue when using -j on a file with large binary tag values
+(github #496)
+
 Oct. 28, 2026 - Version 13.60
 
   - Added definitions for the new Exif for XMP tags

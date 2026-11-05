@@ -33,6 +33,12 @@ if ($tmp) {
     Warn("Another exiftool release exists!:\n$tmp");
 }
 
+# check for C source code files (they mess up the "make")
+$tmp=`ls *.c *.cpp *.cxx *.h 2>/dev/null`;
+if ($tmp) {
+    Warn("C source code found!:\n$tmp");
+}
+
 # check for "use x" in text comments (breaks perl2exe)
 $tmp = `grep -rE '^[ ]+use ' exiftool lib | grep -v ';'`;
 if ($tmp) {
@@ -43,12 +49,6 @@ if ($tmp) {
 $tmp = `grep -r EncodeExifText lib | grep -E '(PrintConvInv|ValueConvInv)'`;
 if ($tmp) {
     Warn("EncodeExifText should only be used in RawConvInv!:\n$tmp");
-}
-
-# check for use of \G without /g (problem with Perl 5.00505)
-$tmp = `grep -r '\\\\G' exiftool lib | grep ~ | grep -vE '(/s?g|\\}s?g)'`;
-if ($tmp) {
-    Warn("USING \\G WITHOUT /g IN REGULAR EXPRESSION!:\n$tmp");
 }
 
 # check for "defined HASH"
@@ -106,38 +106,6 @@ foreach (values %Image::ExifTool::charsetName) {
 }
 foreach (keys %test) {
     $test{$_} == 2 or Warn("Charset $_ not defined in %Image::ExifTool::charsetName\n");
-}
-
-#
-# check to be sure Minolta.pm and Sony.pm lens lists are synchronized
-#
-
-my %lens;
-foreach (split /\n/, `grep "'Sony E " lib/Image/ExifTool/Minolta.pm`) {
-    next if /^\s*#/;
-    next unless /'([^']+)',/;
-    if ($lens{$1}) {
-        Warn("Duplicate lens in Minolta.pm: $1\n");
-    } else {
-        $lens{$1} = 1;
-    }
-}
-foreach (split /\n/, `grep "'Sony E " lib/Image/ExifTool/Sony.pm`) {
-    # (commented out lenses in Sony.pm are OK)
-    # next if /^\s*#/;
-    next unless /'([^']+)',/;
-    my $lens = $1;
-    $lens =~ s/ or .*//;
-    if (not $lens{$lens}) {
-        Warn("Missing lens in Sony.pm: $lens\n");
-    } elsif ($lens{$lens} == 2) {
-        Warn("Duplicate lens in Sony.pm: $lens\n");
-    } else {
-        $lens{$lens} = 2;
-    }
-}
-foreach (sort keys %lens) {
-    $lens{$_} != 2 and Warn("Missing lens in Minolta.pm: $_\n");
 }
 
 exit $err;

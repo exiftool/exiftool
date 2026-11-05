@@ -1350,7 +1350,8 @@ option values from the %Image::ExifTool::UserDefined::Options hash in the
 
 =head2 ExtractInfo
 
-Extract all meta information from an image.
+Extract all meta information from an image.  Need not be called when
+L</ImageInfo> is used.
 
     $success = $exifTool->ExtractInfo('image.jpg', \%options);
 

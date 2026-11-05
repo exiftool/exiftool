@@ -2496,6 +2496,10 @@ sub ParseTag($$$)
         # read the sample sizes
         my ($sz, $num) = unpack('x4N2', $$dataPt);
         my $size = $$et{ee}{size} = [ ];
+        if ($num > 100000000) {
+            $et->Warn('Maximum sample count exceeded. Not extracting timed metadata');
+            return;
+        }
         if ($tag eq 'stsz') {
             if ($sz == 0) {
                 @$size = ReadValue($dataPt, 12, 'int32u', $num, $dataLen-12);

@@ -50,7 +50,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.80';
+$VERSION = '3.81';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2129,7 +2129,7 @@ my %sPantryItem = (
     LightSource => {
         Groups => { 2 => 'Camera' },
         SeparateTable => 'EXIF LightSource',
-        PrintConv =>  \%Image::ExifTool::Exif::lightSource,
+        PrintConv => \%Image::ExifTool::Exif::lightSource,
     },
     Flash => {
         Groups => { 2 => 'Camera' },
@@ -2600,7 +2600,7 @@ my %sPantryItem = (
         SeparateTable => 'EXIF LightSource',
         Notes => 'avoided to prioritize the original version of this tag in the exif namespace',
         Avoid => 1,
-        PrintConv =>  \%Image::ExifTool::Exif::lightSource,
+        PrintConv => \%Image::ExifTool::Exif::lightSource,
     },
     LearningOptOutIn => {
         Struct => {
@@ -3023,7 +3023,7 @@ sub UnescapeChar($$;$)
 sub FixUTF8($;$)
 {
     my ($strPt, $bad) = @_;
-    my $fixed;
+    my ($fixed, $out, $last) = (undef, '', 0);
     pos($$strPt) = 0; # start at beginning of string
     for (;;) {
         last unless $$strPt =~ /([\x80-\xff])/g;
@@ -3047,10 +3047,11 @@ sub FixUTF8($;$)
         }
         # replace bad character
         $bad = '?' unless defined $bad;
-        substr($$strPt, $pos-1, 1) = $bad;
-        pos($$strPt) = $pos-1 + length $bad;
+        $out .= substr($$strPt, $last, $pos - 1 - $last) . $bad;
+        $last = pos($$strPt) = $pos;
         $fixed = 1;
     }
+    $$strPt = $out . substr($$strPt, $last) if $fixed;
     return $fixed;
 }
 

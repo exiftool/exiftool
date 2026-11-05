@@ -64,10 +64,9 @@ web hosting which disables an "unlimited traffic" web site if a single bot hamme
 the site with a moderate load.  An alternate ExifTool homepage is available at
 <a href="http://exiftool.sourceforge.net/">http://exiftool.sourceforge.net/</a></i></p> -->
 
-<p><i class=orng><b>Note:</b> IP's that access web pages too quickly will be blocked,
-and I have had to get even more strict about blocking access to the forum to help
-deal with a plague of badly-behaving AI bots.  Send an email with your IP address to
-exiftool@gmail.com if you think you have been wrongly denied access.</i></p>
+<p><i class=orng><b>Note:</b> The forum is currently disabled due excessive
+traffic by badly behaving AI scraping bots and will remain down indefinitely
+until I can find a solution to this issue.</i></p>
 
 <div class=wide><table class=links><tr>
 <th><a href="install.html" class=wt>&nbsp;Installing&nbsp;</a></th>
@@ -106,13 +105,13 @@ exiftool@gmail.com if you think you have been wrongly denied access.</i></p>
 <p><i class=red><b>(To reduce load on the exiftool.org server,
 the download links now point to SourceForge)</b></i></p>
 
-<p><b>--&gt; <a href="http://sourceforge.net/projects/exiftool/files/checksums-13.60.txt/download">Click here for the checksums of all distribution
+<p><b>--&gt; <a href="http://sourceforge.net/projects/exiftool/files/checksums-13.61.txt/download">Click here for the checksums of all distribution
 packages</a>.</b></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="https://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.60.tar.gz/download">
-Download        Version 13.60</a> (7.9 MB) -
-<a href="history.html">Oct. 28, 2026</a></b></td></tr></table></blockquote>
+<a href="https://sourceforge.net/projects/exiftool/files/Image-ExifTool-13.61.tar.gz/download">
+Download        Version 13.61</a> (8.0 MB) -
+<a href="history.html">Nov. 5, 2026</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -166,11 +165,11 @@ only, and do not include the HTML documentation or other files of the full
 distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td rowspan=2><b><a name="alone">Windows</a></b></td><td><b>
-32-bit: <a href="https://sourceforge.net/projects/exiftool/files/exiftool-13.60_32.zip/download">
-         exiftool-13.60_32.zip</a> (11.4 MB)</b></td></tr>
+32-bit: <a href="https://sourceforge.net/projects/exiftool/files/exiftool-13.61_32.zip/download">
+         exiftool-13.61_32.zip</a> (11.4 MB)</b></td></tr>
 <tr><td><b>64-bit:
-<a href="https://sourceforge.net/projects/exiftool/files/exiftool-13.60_64.zip/download">
-         exiftool-13.60_64.zip</a> (11.2 MB)</b></td></tr>
+<a href="https://sourceforge.net/projects/exiftool/files/exiftool-13.61_64.zip/download">
+         exiftool-13.61_64.zip</a> (11.2 MB)</b></td></tr>
          </table></blockquote>
 
 <p><b>The Windows executable</b> archives include Perl. Just download and un-zip
@@ -188,8 +187,8 @@ if you have any problems/comments with these versions.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
-<a href="https://sourceforge.net/projects/exiftool/files/ExifTool-13.60.pkg/download">
-         ExifTool-13.60.pkg</a> (5.7 MB)</b></td></tr></table></blockquote>
+<a href="https://sourceforge.net/projects/exiftool/files/ExifTool-13.61.pkg/download">
+         ExifTool-13.61.pkg</a> (5.7 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
@@ -1209,12 +1208,14 @@ when editing if it had previously been edited by DPP4 followed by ExifTool.
 <i class=grn>[ExifTool 11.45 fixes this by structuring the CR3 to make it safe
 for editing with DPP4, and may be used to restructure files written by older
 ExifTool versions.]</i></li>
-<li><span class=red>[2018-09-27]</span>
+<li><span class=grn>[2018-09-27]</span>
 The <b>Sony Imaging Edge applications</b> give an error when trying to open
 <b>ARW</b> or <b>ARQ</b> images edited by ExifTool, although other RAW image
 utilities including Sony IDC (Sony's older RAW image converter), Adobe
 Photoshop, Lightroom and DNG Converter, Apple Preview, dcraw, Capture One,
-Affinity Photo, and LibRaw's SonyPixelShift2DNG have no problems with these.</li>
+Affinity Photo, and LibRaw's SonyPixelShift2DNG have no problems with these.
+<i class=grn>[ExifTool 13.61 patches this issue to sort IFD entries in an
+order that makes Sony's software happy (<a href="https://github.com/exiftool/exiftool/issues/465">github #465</a>).]</i></li>
 <li><span class=grn>[2016-08-03]</span>
 Some antivirus software has been known to cause problems for the <b>Windows</b>
 version of ExifTool. <b>Norton Antivirus</b> may delete ExifTool when it is run,

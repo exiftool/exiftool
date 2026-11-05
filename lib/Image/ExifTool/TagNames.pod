@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 33685 tags, with 21499 unique tag names.
+They contain a total of 33706 tags, with 21511 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -7490,11 +7490,14 @@ boot, not including standby time.
            CanonCameraInfo1000D                 Canon CameraInfo1000D
            CanonCameraInfo1100D                 Canon CameraInfo600D
            CanonCameraInfo1200D                 Canon CameraInfo60D
+           CanonCameraInfoR3                    Canon CameraInfoR3
            CanonCameraInfoR5m2                  Canon CameraInfoR5m2
            CanonCameraInfoR6                    Canon CameraInfoR6
            CanonCameraInfoR6m2                  Canon CameraInfoR6m2
            CanonCameraInfoR6m3                  Canon CameraInfoR6m3
+           CanonCameraInfoR7                    Canon CameraInfoR7
            CanonCameraInfoR50V                  Canon CameraInfoR50V
+           CanonCameraInfoR100                  Canon CameraInfoR100
            CanonCameraInfoRP                    Canon CameraInfoRP
            CanonCameraInfoG5XII                 Canon CameraInfoG5XII
            CanonCameraInfoPowerShot             Canon CameraInfoPowerShot
@@ -7600,7 +7603,11 @@ boot, not including standby time.
   0x4026   LogInfo                              Canon LogInfo
   0x4027   FirmwareInfo                         Canon FirmwareInfo
   0x4028   AFConfig                             Canon AFConfig
+  0x402e   LensCorrectionData2?                 no
+  0x4033   LensCorrectionData1?                 no
+  0x4035   LensCorrectionData3?                 no
   0x403f   RawBurstModeRoll                     Canon RawBurstInfo
+  0x4045   LensCorrectionData4?                 no
   0x4053   FocusBracketingInfo                  Canon FocusBracketingInfo
   0x4059   LevelInfo                            Canon LevelInfo
 
@@ -8520,13 +8527,24 @@ CameraInfo tags for the EOS 1000D.
     851    TimeStamp                            int16u[3]
    2359    LensModel                            string[64]
 
+=head3 Canon CameraInfoR3 Tags
+
+CameraInfo tags for the EOS R3 (4608-byte block starting with bb cc).
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     36    AFTrackingHistory                    no
+   4009    ShutterCount                         int32u
+
 =head3 Canon CameraInfoR5m2 Tags
 
-CameraInfo tags for the EOS R1 and R5 Mark II.
+CameraInfo tags for the EOS R1 and R5 Mark II (the R6 Mark III and R8 Mark II share
+the AF tracking records).
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
       2    AFTrackingInfo                       Canon AFTrackingR5m2
+    2.1    AFTrackingHistory                    no
    2123    PowerOnTime                          int32u
    2145    FormatFileNumber                     int16u
    2149    PowerOnFileNumber                    int16u
@@ -8542,7 +8560,9 @@ Mark II CameraInfo.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+     14    AFFocusPosition                      int16s
      26    AFSamplingRate                       int8u
+     88    AFFocusDistance                      int16u
     139    AFDetectedSubject                    int8u
     143    AFTrackingTarget                     int8u & 0x0f
     146    AFDetectedParts                      int16u & 0x7c
@@ -8555,15 +8575,17 @@ CameraInfo tags for the EOS R5 and R6.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+     36    AFTrackingHistory                    no
    2522    CameraTemperature                    int8u
    2801    ShutterCount                         int32u
 
 =head3 Canon CameraInfoR6m2 Tags
 
-CameraInfo tags for the EOS R6 Mark II.
+CameraInfo tags for the EOS R6 Mark II, R8 and R50.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+     36    AFTrackingHistory                    no
    3369    ShutterCount                         int32u
 
 =head3 Canon CameraInfoR6m3 Tags
@@ -8572,8 +8594,19 @@ CameraInfo tags for the EOS R6 Mark III and R6 V.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      2    AFTrackingInfo                       Canon AFTrackingR5m2
+    2.1    AFTrackingHistory                    no
    2123    PowerOnTime                          int32u
    2157    ImageCount                           int16u
+
+=head3 Canon CameraInfoR7 Tags
+
+CameraInfo tags for the EOS R7 and R10
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     36    AFTrackingHistory                    no
+   3219    ShutterCount                         int32u
 
 =head3 Canon CameraInfoR50V Tags
 
@@ -8583,9 +8616,17 @@ CameraInfo tags for the EOS R50 V.
   ------   --------                             --------
    2123    PowerOnTime                          int32u
 
+=head3 Canon CameraInfoR100 Tags
+
+CameraInfo tags for the EOS R100.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+   2767    ShutterCount                         int32u
+
 =head3 Canon CameraInfoRP Tags
 
-CameraInfo tags for the EOS R50 V.
+CameraInfo tags for the EOS RP.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -9804,7 +9845,7 @@ These tags are used by the EOS R3, R7, R50 and R6mkII
 
 =head3 Canon ColorData12 Tags
 
-These tags are used by the EOS R1, R5mkII and R50V
+These tags are used by the EOS R1, R5mkII, R50V, R6mkIII and R8mkII
 
   Index2   Tag Name                             Writable
   ------   --------                             --------
@@ -10104,6 +10145,7 @@ information.
   0x0007   ExifInfo7                            Canon ExifInfo
   0x0008   ExifInfo8                            Canon ExifInfo
   0x0009   ExifInfo9                            Canon ExifInfo
+  0x000e   LensCorrectionInfo                   Canon LensCorrectionInfo
 
 =head3 Canon FocalInfo Tags
 
@@ -10125,6 +10167,20 @@ information.
   ------   --------                             --------
   0x8769   ExifIFD                              EXIF
   0x927c   MakerNoteCanon                       Canon
+
+=head3 Canon LensCorrectionInfo Tags
+
+Lens correction curves from CTMD type 14 in CR3 images from the EOS R5 Mark
+II, R6 Mark III and R8 Mark II.  The values are raw fixed-point numbers.
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    LensCorrectionPoints                 no
+      3    PeripheralIlluminationCurve          no
+     27    LensCorrectionPositions              no
+     49    LensCorrectionCurve1                 no
+     72    LensCorrectionCurve2                 no
+    118    LensCorrectionCurve3                 no
 
 =head3 Canon CDI1 Tags
 
@@ -11399,7 +11455,7 @@ for a given protocol should be considered to have the default value of 0.
   'dvtm_ac203_3-2-10-3'     AccelerometerY      no
   'dvtm_ac203_3-2-10-4'     AccelerometerZ      no
   'dvtm_ac203_3-2-11-1'     TextureSetting      no
-  'dvtm_ac203_3-2-12-1'     NRSetting           no
+  'dvtm_ac203_3-2-12-1'     NoiseReduction      no
   'dvtm_ac203_3-4-2-1'      GPSInfo             DJI GPSInfo
   'dvtm_ac203_3-4-2-2'      GPSAltitude         no
   'dvtm_ac203_3-4-2-6-1'    GPSDateTime         no
@@ -11420,7 +11476,7 @@ for a given protocol should be considered to have the default value of 0.
   'dvtm_ac204_3-2-10-3'     AccelerometerY      no
   'dvtm_ac204_3-2-10-4'     AccelerometerZ      no
   'dvtm_ac204_3-2-11-1'     TextureSetting      no
-  'dvtm_ac204_3-2-12-1'     NRSetting           no
+  'dvtm_ac204_3-2-12-1'     NoiseReduction      no
   'dvtm_ac204_3-4-2-1'      GPSInfo             DJI GPSInfo
   'dvtm_ac204_3-4-2-2'      GPSAltitude         no
   'dvtm_ac204_3-4-2-6-1'    GPSDateTime         no

@@ -372,6 +372,14 @@ sub ValidateImageData($$$;$)
         $$vInfo{0x100} and $$vInfo{0x101} and ($$vInfo{0x117} or $$vInfo{0x145}))
     {
         my $samplesPerPix = $$vInfo{0x115} || 1;
+        if ($samplesPerPix > 1000) {
+            if ($errFlag) {
+                $et->Error('Invalid SamplesPerPixel');
+            } else {
+                $et->Warn('Invalid SamplesPerPixel');
+            }
+            return;
+        }
         my @bitsPerSample = $$vInfo{0x102} ? split(' ',$$vInfo{0x102}) : (1) x $samplesPerPix;
         my $byteCountInfo = $$vInfo{0x117} || $$vInfo{0x145};
         my $byteCounts = $$byteCountInfo[1];
@@ -1746,6 +1754,7 @@ NoOverwrite:            next if $isNew > 0;
                                 Offset    => $offset,
                                 Where     => $where,
                                 ImageData => $subdirInfo{ImageData},
+                                TagID     => $newID, #github465
                             };
                             ++$writeCount;  # count number of subdirs written
                         }
@@ -2121,6 +2130,24 @@ NoOverwrite:            next if $isNew > 0;
 #
 # add any subdirectories, adding fixup information
 #
+        # The Sony Imaging Edge applications refuse to open an ARW/ARQ image whose
+        # SubIFD comes before the ExifIFD in the file.  Sub-directories are generated
+        # in tag order, and SubIFD (0x014a) sorts before ExifIFD (0x8769), so every
+        # ExifTool edit inverted Sony's order.  Write the ExifIFD first for Sony RAW
+        # images to avoid this.  Each sub-directory carries its own pointer offset
+        # and fixups, so appending them in a different order is safe. (github465)
+        if (@subdirs > 1 and $$et{FileType} and $$et{FileType} =~ /^(ARW|ARQ|SR2)$/) {
+            my (@exifIFD, @otherIFD);
+            foreach (@subdirs) {
+                # (don't reorder a directory with image data blocks to transfer)
+                if ($$_{TagID} and $$_{TagID} == 0x8769 and not ref $$_{ImageData}) {
+                    push @exifIFD, $_;
+                } else {
+                    push @otherIFD, $_;
+                }
+            }
+            @subdirs = (@exifIFD, @otherIFD) if @exifIFD;
+        }
         if (@subdirs) {
             my $subdir;
             foreach $subdir (@subdirs) {

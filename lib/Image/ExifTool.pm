@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.60';
+$VERSION = '13.61';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -8386,8 +8386,10 @@ sub ProcessJPEG($$;$)
                     $self->Warn('Invalid JUMBF segment');
                 } elsif (defined $jumbfChunk{$type}[$seq] and length $jumbfChunk{$type}[$seq]) {
                     $self->Warn('Duplicate JUMBF sequence number');
+                } elsif ($seq > 10000) {
+                    $self->Warn('Invalid JUMBF sequence number');
                 } else {
-                    $seq or $self->Warn('Incorrect JUMBF sequence numbering (should start from 0, not 1)');
+                    $seq or $self->Warn('Incorrect JUMBF sequence numbering (should start from 1, not 0)');
                     # add to list of JUMBF chunks
                     $jumbfChunk{$type}[$seq] = substr($$segDataPt, 8 + $hdrLen);
                     # check to see if we have a complete JUMBF box

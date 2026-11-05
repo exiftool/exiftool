@@ -111,8 +111,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-13.60.tar.gz | tar -xf -
-  cd Image-ExifTool-13.60
+  gzip -dc Image-ExifTool-13.61.tar.gz | tar -xf -
+  cd Image-ExifTool-13.61
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -187,6 +187,7 @@ distribution package:
   Makefile.PL               - Makefile for installation
   README                    - This file
   arg_files/                - Argument files to convert metadata formats:
+    audio2itemlist.args       - Convert audio tags to QuickTime ItemList
     exif2iptc.args            - Arguments for converting EXIF to IPTC
     exif2xmp.args             - Arguments for converting EXIF to XMP
     gps2xmp.args              - Arguments for converting GPS to XMP

@@ -97,11 +97,14 @@
   <br>CanonCameraInfo1000D
   <br>CanonCameraInfo1100D
   <br>CanonCameraInfo1200D
+  <br>CanonCameraInfoR3
   <br>CanonCameraInfoR5m2
   <br>CanonCameraInfoR6
   <br>CanonCameraInfoR6m2
   <br>CanonCameraInfoR6m3
+  <br>CanonCameraInfoR7
   <br>CanonCameraInfoR50V
+  <br>CanonCameraInfoR100
   <br>CanonCameraInfoRP
   <br>CanonCameraInfoG5XII
   <br>CanonCameraInfoPowerShot
@@ -109,7 +112,7 @@
   <br>CanonCameraInfoUnknown32
   <br>CanonCameraInfoUnknown16
   <br>CanonCameraInfoUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Canon.html#CameraInfo1D'>Canon CameraInfo1D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo1DmkII'>Canon CameraInfo1DmkII Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo1DmkIIN'>Canon CameraInfo1DmkIIN Tags</a>
@@ -137,11 +140,14 @@
   <br>--&gt; <a href='Canon.html#CameraInfo1000D'>Canon CameraInfo1000D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo600D'>Canon CameraInfo600D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo60D'>Canon CameraInfo60D Tags</a>
+  <br>--&gt; <a href='Canon.html#CameraInfoR3'>Canon CameraInfoR3 Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoR5m2'>Canon CameraInfoR5m2 Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoR6'>Canon CameraInfoR6 Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoR6m2'>Canon CameraInfoR6m2 Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoR6m3'>Canon CameraInfoR6m3 Tags</a>
+  <br>--&gt; <a href='Canon.html#CameraInfoR7'>Canon CameraInfoR7 Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoR50V'>Canon CameraInfoR50V Tags</a>
+  <br>--&gt; <a href='Canon.html#CameraInfoR100'>Canon CameraInfoR100 Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoRP'>Canon CameraInfoRP Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoG5XII'>Canon CameraInfoG5XII Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoPowerShot'>Canon CameraInfoPowerShot Tags</a>
@@ -576,10 +582,30 @@
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#AFConfig'>Canon AFConfig Tags</a></td></tr>
 <tr>
+<td title='0x402e = 16430'>0x402e</td>
+<td>LensCorrectionData2?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x4033 = 16435'>0x4033</td>
+<td>LensCorrectionData1?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x4035 = 16437'>0x4035</td>
+<td>LensCorrectionData3?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x403f = 16447'>0x403f</td>
 <td>RawBurstModeRoll</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#RawBurstInfo'>Canon RawBurstInfo Tags</a></td></tr>
+<tr>
+<td title='0x4045 = 16453'>0x4045</td>
+<td>LensCorrectionData4?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x4053 = 16467'>0x4053</td>
 <td>FocusBracketingInfo</td>
@@ -953,6 +979,7 @@
 </tr><tr><td class=r>0x80000516</td><td>= EOS R50 V</td>
 </tr><tr><td class=r>0x80000518</td><td>= EOS R6 Mark III</td>
 </tr><tr><td class=r>0x80000520</td><td>= EOS D2000C</td>
+</tr><tr><td class=r>0x80000543</td><td>= EOS R8 Mark II</td>
 </tr><tr><td class=r>0x80000560</td><td>= EOS D6000C</td>
 </tr></table></td></tr></table></blockquote>
 
@@ -6043,8 +6070,29 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='CameraInfoR3'>Canon CameraInfoR3 Tags</a></h2>
+<p>CameraInfo tags for the EOS R3 (4608-byte block starting with bb cc).</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='36 = 0x24'>36</td>
+<td>AFTrackingHistory</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(see CameraInfoR6m2 AFTrackingHistory for details)</span></span></td></tr>
+<tr class=b>
+<td class=r title='4009 = 0xfa9'>4009</td>
+<td>ShutterCount</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(includes electronic + mechanical shutter.  Not compared with the number
+shown by the camera.  Values of 0, 65535 and 0xffffffff are not extracted)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='CameraInfoR5m2'>Canon CameraInfoR5m2 Tags</a></h2>
-<p>CameraInfo tags for the EOS R1 and R5 Mark II.</p>
+<p>CameraInfo tags for the EOS R1 and R5 Mark II (the R6 Mark III and R8 Mark II share
+the AF tracking records).</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -6057,42 +6105,64 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 <td>--&gt; <a href='Canon.html#AFTrackingR5m2'>Canon AFTrackingR5m2 Tags</a>
   <br><span class='n s'>(most recent AF tracking record)</span></td></tr>
 <tr class=b>
+<td class=r title='2 = 0x2'>2.1</td>
+<td>AFTrackingHistory</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(the whole ring of 12 AF tracking records, newest first, one entry per
+record: time before the newest record, tracking target, detected parts, eye
+used, tracked area (centre X, centre Y, width, height), the unsmoothed
+centre of the tracked area (X, Y relative to the image centre, not fully
+decoded), and the AF focus distance step and focus position (see
+AFFocusDistance and AFFocusPosition), three raw focus error samples, and two
+millisecond timers (since the start of AF, and since the shutter release of
+the latest frame, not fully decoded). Each record holds a single box (the
+tracked part), so the boxes of the other detected parts are not available.
+Records with another layout are skipped. The records are samples of the AF
+tracking taken at the AF rate (AFSamplingRate, usually 60 Hz, lower when the
+live view image is dark), not the shooting rate, and each sample has a time
+stamp, so the rings of the frames of a burst overlap and can be joined by
+that time stamp into one continuous history (at 30 fps a sample is stored in
+up to 7 frames).  opies of a sample are identical except for the newest
+samples of the first frames of a burst, where the same time stamp can appear
+in several slots with different bytes that are not decoded; the decoded
+values do not change, and the newest slot is the latest revision)</span></span></td></tr>
+<tr>
 <td class=r title='2123 = 0x84b'>2123</td>
 <td>PowerOnTime</td>
 <td class=c>int32u</td>
 <td><span class=s><span class=n>(time the camera was switched on)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='2145 = 0x861'>2145</td>
 <td>FormatFileNumber</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(number of the last image file when the camera was switched on, stored here
 instead of PowerOnFileNumber when the card was formatted after power-on)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='2149 = 0x865'>2149</td>
 <td>PowerOnFileNumber</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(number of the last image file when the camera was switched on.  The same
 for every image of a power-on session.  Zero when the card was formatted
 after power-on (see FormatFileNumber), and in some other sessions)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='2151 = 0x867'>2151</td>
 <td>PowerOnDirectoryNumber</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(number of the DCIM directory when the camera was switched on, so it can
 differ from the directory of the image if a new one was started since)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='2153 = 0x869'>2153</td>
 <td>WakeFileNumber</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(number of the last image file when the camera last woke from auto power
 off, or PowerOnFileNumber if it has not slept since being switched on)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='3952 = 0xf70'>3952</td>
 <td>BurstShotNumber</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(1 for single shots and the first frame of a burst, then increments by 1 for
 each frame.  Unlike SequenceNumber, which is always 0 for these models)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='4386 = 0x1122'>4386</td>
 <td>ImageStabilizationMode</td>
 <td class=c>int8s</td>
@@ -6115,11 +6185,25 @@ Mark II CameraInfo.</p>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='14 = 0xe'>14</td>
+<td>AFFocusPosition</td>
+<td class=c>int16s</td>
+<td><span class=s><span class=n>(lens focus position in arbitrary units)</span></span></td></tr>
+<tr class=b>
 <td class=r title='26 = 0x1a'>26</td>
 <td>AFSamplingRate</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(rate of the AF tracking records, confirmed by their timestamps.  Usually 60,
 but drops to 30, 15 or 8 when the live view image is dark)</span></span></td></tr>
+<tr>
+<td class=r title='88 = 0x58'>88</td>
+<td>AFFocusDistance</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(focus distance from AF as the lower edge of a table step (the next step up
+is the upper limit), same as the FocusDistanceLower of the lens data.
+0 before AF reports a distance, &quot;inf&quot; for 65526.  It is a coarse step
+(for example 1380, 1550, 1750, 1970, 2220, 2510, 2850 ... mm), the finer
+value is in AFFocusPosition)</span></span></td></tr>
 <tr class=b>
 <td class=r title='139 = 0x8b'>139</td>
 <td>AFDetectedSubject</td>
@@ -6188,11 +6272,20 @@ EyeDetection.  &quot;Unresolved&quot; when only one eye was found)</span>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='36 = 0x24'>36</td>
+<td>AFTrackingHistory</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(the ring of AF tracking records, newest first; one entry per record: time
+before the newest record and the tracked area (width, height, centre X,
+centre Y), the other fields of the records not decoded.  See the notes of
+CameraInfoR5m2 AFTrackingHistory for the sampling rate (AFSamplingRate) and
+the overlap of the rings of consecutive frames)</span></span></td></tr>
+<tr class=b>
 <td class=r title='2522 = 0x9da'>2522</td>
 <td>CameraTemperature</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='2801 = 0xaf1'>2801</td>
 <td>ShutterCount</td>
 <td class=c>int32u</td>
@@ -6200,17 +6293,30 @@ EyeDetection.  &quot;Unresolved&quot; when only one eye was found)</span>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfoR6m2'>Canon CameraInfoR6m2 Tags</a></h2>
-<p>CameraInfo tags for the EOS R6 Mark II.</p>
+<p>CameraInfo tags for the EOS R6 Mark II, R8 and R50.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='36 = 0x24'>36</td>
+<td>AFTrackingHistory</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(the ring of 16 AF tracking records, newest first, in the bodies that write
+them as 128-byte records; one entry per record: time before the newest
+record, tracking target, tracked area (centre X, centre Y, width, height)
+and the unsmoothed centre of the tracked area (X, Y relative to the image
+centre), the last two not fully decoded. Records with another layout,
+without a tracked area, are skipped.  See the notes of the CameraInfoR5m2
+AFTrackingHistory for the sampling rate (AFSamplingRate) and the overlap of
+the rings of consecutive frames)</span></span></td></tr>
+<tr class=b>
 <td class=r title='3369 = 0xd29'>3369</td>
 <td>ShutterCount</td>
 <td class=c>int32u</td>
-<td><span class=s><span class=n>(includes electronic + mechanical shutter)</span></span></td></tr>
+<td><span class=s><span class=n>(includes electronic + mechanical shutter.  The R8 and R50 have no fully
+mechanical shutter, so for them it counts electronic + EFCS exposures)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfoR6m3'>Canon CameraInfoR6m3 Tags</a></h2>
@@ -6221,6 +6327,17 @@ EyeDetection.  &quot;Unresolved&quot; when only one eye was found)</span>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>AFTrackingInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#AFTrackingR5m2'>Canon AFTrackingR5m2 Tags</a>
+  <br><span class='n s'>(most recent AF tracking record)</span></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2.1</td>
+<td>AFTrackingHistory</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(see CameraInfoR5m2 AFTrackingHistory)</span></span></td></tr>
+<tr>
 <td class=r title='2123 = 0x84b'>2123</td>
 <td>PowerOnTime</td>
 <td class=c>int32u</td>
@@ -6230,6 +6347,30 @@ EyeDetection.  &quot;Unresolved&quot; when only one eye was found)</span>
 <td>ImageCount</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CameraInfoR7'>Canon CameraInfoR7 Tags</a></h2>
+<p>CameraInfo tags for the EOS R7 and R10</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='36 = 0x24'>36</td>
+<td>AFTrackingHistory</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(the ring of AF tracking records, newest first, here with the time before the
+newest record and the unsmoothed centre of the tracked area (X, Y relative
+to the image centre); the other fields of the records not decoded)</span></span></td></tr>
+<tr class=b>
+<td class=r title='3219 = 0xc93'>3219</td>
+<td>ShutterCount</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(includes electronic + mechanical shutter.  Composite images (for example
+panorama JPEGs) store 0 or 65535 here instead of a count, and these are
+not extracted.  The upper two bytes have not been seen non-zero in any
+sample, so the 32-bit interpretation is not confirmed above 65535)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfoR50V'>Canon CameraInfoR50V Tags</a></h2>
@@ -6246,8 +6387,23 @@ EyeDetection.  &quot;Unresolved&quot; when only one eye was found)</span>
 <td><span class=s><span class=n>(time the camera was switched on)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='CameraInfoR100'>Canon CameraInfoR100 Tags</a></h2>
+<p>CameraInfo tags for the EOS R100.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='2767 = 0xacf'>2767</td>
+<td>ShutterCount</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(includes electronic + EFCS shutter (the R100 has no fully mechanical
+shutter).  Values of 0, 65535 and 0xffffffff are not extracted)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='CameraInfoRP'>Canon CameraInfoRP Tags</a></h2>
-<p>CameraInfo tags for the EOS R50 V.</p>
+<p>CameraInfo tags for the EOS RP.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -11573,7 +11729,7 @@ option is used.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorData12'>Canon ColorData12 Tags</a></h2>
-<p>These tags are used by the EOS R1, R5mkII and R50V</p>
+<p>These tags are used by the EOS R1, R5mkII, R50V, R6mkIII and R8mkII</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -11584,7 +11740,9 @@ option is used.</p>
 <td>ColorDataVersion</td>
 <td class=c>int16s</td>
 <td><span class=s>64 = 64 (R1/R5mkII)
-  <br>65 = 65 (R50V)</span></td></tr>
+  <br>65 = 65 (R50V)
+  <br>66 = 66 (R6mkIII)
+  <br>67 = 67 (R8mkII)</span></td></tr>
 <tr class=b>
 <td class=r title='105 = 0x69'>105</td>
 <td>WB_RGGBLevelsAsShot</td>
@@ -12247,42 +12405,41 @@ to the one printed on the lens)</span></span></td></tr>
 <td class=r title='6 = 0x6'>6</td>
 <td>LensDiaphragmCount</td>
 <td class=c>no</td>
-<td><span class=s><span class=n>(Not valid for the newer lenses listed under LensDriveCount3.  Counts
-diaphragm drive commands:  each exposure stopped down from the maximum
-aperture adds 2 (close and reopen), while exposures at the maximum aperture
-add none, and so do the frames of a focus-bracketing run, during which the
-diaphragm stays closed.  Each lens start-up opens the diaphragm fully and
-returns it to the set aperture, adding a varying number of counts.  Long
-focus moves add a few counts too)</span></span></td></tr>
+<td><span class=s><span class=n>(Not valid for the lenses with the second layout (see LensDriveCount3).
+Counts diaphragm drive commands:  each exposure stopped down from the
+maximum aperture adds 2 (close and reopen), while exposures at the maximum
+aperture add none, and so do the frames of a focus-bracketing run, during
+which the diaphragm stays closed.  Each lens start-up opens the diaphragm
+fully and returns it to the set aperture, adding a varying number of counts.
+Long focus moves add a few counts too)</span></span></td></tr>
 <tr>
 <td class=r title='9 = 0x9'>9</td>
 <td>LensAFCount</td>
 <td class=c>no</td>
-<td><span class=s><span class=n>(Not valid for the newer lenses listed under LensDriveCount3.  Counts focus
-drive commands, not the distance moved:  each focus-bracketing step adds 1
-at any step size or aperture, an AF operation or a manual focus move by wire
-adds about 2, each lens start-up adds about 3, and stopped-down exposures
-add none.  Manual-focus lenses (eg. TS-E 24mm f/3.5L II) set the high bit
-(0x800000), shown as &quot;Not supported&quot;.  Not decoded for the EOS R6 Mark III
-and C50)</span></span></td></tr>
+<td><span class=s><span class=n>(Not valid for the lenses with the second layout (see LensDriveCount3).
+Counts focus drive commands, not the distance moved:  each focus-bracketing
+step adds 1 at any step size or aperture, an AF operation or a manual focus
+move by wire adds about 2, each lens start-up adds about 3, and stopped-down
+exposures add none.  Manual-focus lenses (eg. TS-E 24mm f/3.5L II) set the
+high bit (0x800000), shown as &quot;Not supported&quot;)</span></span></td></tr>
 <tr class=b>
 <td class=r title='12 = 0xc'>12</td>
 <td>LensISCount</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(Appears to count IS unit start-ups:  each lens power-on adds 1, even with
 the IS switch off, each flip of the IS switch adds 1 or 2, and shooting,
-focus bracketing included, adds none.  Not extracted for lenses without
-IS, nor for some lenses with IS (eg. RF 600mm F11 and RF 800mm F11).  Not
-decoded for the EOS R6 Mark III and C50)</span></span></td></tr>
+focus bracketing included, adds none.  Only extracted when the LensModel
+name contains IS, since some lenses without IS fill this position with
+other values.  Not written by some lenses with IS (eg. RF 600mm F11 and
+RF 800mm F11))</span></span></td></tr>
 <tr>
 <td class=r title='15 = 0xf'>15</td>
 <td>LensDriveCount3</td>
 <td class=c>no</td>
-<td><span class=s><span class=n>(Only for the RF 28-70mm F2.8 IS STM, RF 16-28mm F2.8 IS STM, RF-S 14-30mm
-F4-6.3 IS STM PZ, RF 20-50mm F4 L IS USM PZ, RF 45mm F1.2 STM and RF
-7-14mm F2.8-3.5 L FISHEYE STM.  A lifetime counter that increases by about
-3-4 per power-on and does not follow the number of shots.
-What it counts is unconfirmed)</span></span></td></tr>
+<td><span class=s><span class=n>(Only for the lenses with the second LensInfo layout, where offsets 7-8 are
+zero (eg. RF 28-70mm F2.8 IS STM and RF 45mm F1.2 STM).  A lifetime counter
+that increases by about 3-4 per power-on and does not follow the number of
+shots.  What it counts is unconfirmed)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Ambience'>Canon Ambience Tags</a></h2>
@@ -12836,6 +12993,11 @@ information.</p>
 <td>ExifInfo9</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#ExifInfo'>Canon ExifInfo Tags</a></td></tr>
+<tr>
+<td title='0x000e = 14'>0x000e</td>
+<td>LensCorrectionInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#LensCorrectionInfo'>Canon LensCorrectionInfo Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='FocalInfo'>Canon FocalInfo Tags</a></h2>
@@ -12890,6 +13052,46 @@ information.</p>
 <td>MakerNoteCanon</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html'>Canon Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LensCorrectionInfo'>Canon LensCorrectionInfo Tags</a></h2>
+<p>Lens correction curves from CTMD type 14 in CR3 images from the EOS R5 Mark
+II, R6 Mark III and R8 Mark II.  The values are raw fixed-point numbers.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>LensCorrectionPoints</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>PeripheralIlluminationCurve</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(8191 is unity; rises as the lens is stopped down)</span></span></td></tr>
+<tr>
+<td class=r title='27 = 0x1b'>27</td>
+<td>LensCorrectionPositions</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(sample positions of the curves, constant for a lens)</span></span></td></tr>
+<tr class=b>
+<td class=r title='49 = 0x31'>49</td>
+<td>LensCorrectionCurve1</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(16384 is unity; changes with focal length)</span></span></td></tr>
+<tr>
+<td class=r title='72 = 0x48'>72</td>
+<td>LensCorrectionCurve2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='118 = 0x76'>118</td>
+<td>LensCorrectionCurve3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CDI1'>Canon CDI1 Tags</a></h2>
@@ -13049,7 +13251,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 28, 2026</i>
+<br><i>Last revised Nov 5, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

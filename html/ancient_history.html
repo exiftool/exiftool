@@ -13,6 +13,221 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v13.49'><b>Feb. 3, 2026 - Version 13.49</b></a>
+<ul>
+<li>Decode a couple of new Samsung trailer tags
+<li>Disabled decoding of MenuSettings for the Nikon Z6III firmware 2.0 until the
+    changes can be worked through in detail
+<li>Fixed problem where Google Photos had problems displaying ExifTool-edited
+    HEIC MotionPhoto images.  Files written by older versions of ExifTool may be
+    repaired by re-writing with 13.49 or later
+</ul>
+
+<a name='v13.48'><b>Jan. 31, 2026 - Version 13.48</b></a>
+<ul>
+<li>Added a new Nikon LensID (<a href="https://github.com/exiftool/exiftool/issues/385">github #385</a>)
+<li>Added support for quoted entries in input -geotag CSV files
+<li>Fixed decoding of Nikon Z6III menu settings for firmware 2.0 update
+<li>Fixed -fast2 to avoid processing maker notes in some QuickTime-based files
+<li>Fixed bug introduced in version 13.46 where some tags may be associated with
+    the next fix when geotagging from GPX files
+</ul>
+
+<a name='v13.47'><b>Jan. 27, 2026 - Version 13.47</b></a>
+<ul>
+<li>Enhanced -fast option to avoid scanning QuickTime MediaData for metadata
+    (improves performance when reading CR3 files from slow media, <a href="https://github.com/exiftool/exiftool/issues/384">github #384</a>)
+    and -fast2 to avoid reading HDRP maker notes
+<li>Fixed hang problem when reading HDRPMakerNotes from some Google phones
+<li>API Changes:
+    <ul>
+    <li>Added CSV support to <a href="ExifTool.html#GeoUserTag">GeoUserTag</a> option
+    </ul>
+</ul>
+
+<a name='v13.46'><b>Jan. 25, 2026 - Version 13.46</b></a>
+<ul>
+<li>Added a new Pentax LensType
+<li>Decode some new Canon tags (<a href="https://github.com/exiftool/exiftool/issues/380">github #380</a>)
+<li>Renamed a newly added Canon tag (thanks Martin Chv&aacute;tal)
+<li>Improved identification of Canon RF lenses in edited images when an extender
+    was used
+<li>Changed description of FocalLength35efl to add "35mm Equiv"
+<li>Patched -validate option to recognize DNG 1.7.1 tags
+<li>Patched to remove maker note error/warning when writing files from some
+    Google phones (<a href="https://github.com/exiftool/exiftool/issues/377">github #377</a>)
+<li>Patched to improve warning for corrupted HEIC files downloaded from
+    heic.digital, and added ability to delete this garbage when writing
+    (<a href="https://github.com/exiftool/exiftool/issues/361">github #361</a> and <a href="https://github.com/exiftool/exiftool/issues/378">#378</a>)
+<li>Fixed minor error when writing some DJI DNG files
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#GeoUserTag">GeoUserTag</a> option
+    </ul>
+</ul>
+
+<a name='v13.45'><b>Dec. 26, 2025 - Version 13.45</b></a>
+<ul>
+<li>Added a number of new values for some Sony tags (thanks Milo&scaron; Komar&ccaron;evi&cacute;)
+<li>Added a few new button functions for the Nikon Z9 (thanks Warren Hatch)
+<li>Added some Nikon subject detection values (thanks Warren Hatch)
+<li>Added a new Canon SubjectSwitching value
+<li>Decode Ricoh APP7 maker notes
+<li>Patched to allow a specific PreviewImage to be written to a DNG file
+    containing multiple previews
+<li>Fixed bug reading large Protobuf integers on 32-bit systems (<a href="https://github.com/exiftool/exiftool/issues/373">github #373</a>)
+<li>Fixed minor error when writing some DJI DNG files
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#SystemTimeRes">SystemTimeRes</a> option
+    </ul>
+</ul>
+
+<a name='v13.44'><b>Dec. 15, 2025 - Version 13.44</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added read support for <a href="TagNames/Kandao.html">Kandao KVAR</a> files
+<li>Added a few new Panasonic tags (<a href="https://github.com/exiftool/exiftool/issues/365">github #365</a>)
+<li>Added a new XMP-crs tag
+<li>Added a few new Matroska tags</li>
+<li>Added a few values related to the new RAW file types for the Sony ILCE-7M5
+    (thanks Milo&scaron; Komar&ccaron;evi&cacute;)
+<li>Decode a few new PhaseOne tags (<a href="https://github.com/exiftool/exiftool/issues/372">github #372</a>)
+<li>Decode timed GPS and other metadata from Kandao MP4 videos
+<li>Improvements to family 1 and 5 groups for tags in Matroska videos, and
+    prioritize top-level tags when duplicates exist
+<li>Assume a default TimecodeScale of 1ms for MKV videos
+<li>Patched to avoid runtime warning when parsing corrupted QuickTime data
+    (thanks Neal Krawetz)
+<li>Fixed decoding of ShutterCount for Sony ILCE-7M5  (<a href="https://github.com/exiftool/exiftool/issues/369">github #369</a>)
+</ul>
+
+<a name='v13.43'><b>Dec. 4, 2025 - Version 13.43</b></a>
+<ul>
+<li>Added support for a couple of new Android QuickTime Keys tags
+<li>Added date/time conversion for RIFF DateCreated
+<li>Added ability to read/write (but not create/delete) the HEIF Mirroring tag
+<li>Added a new SonyModelID
+<li>Added a new Canon LensType (thanks Matthias)
+<li>Decode ShutterCount for the Canon EOS R6 Mark III
+<li>Decode another Samsung trailer tag
+<li>Convert invalid Panasonic AFPointPosition to 'n/a'
+<li>Fixed issue extracting timed GPS from some Wolfbox G900 MP4 videos
+</ul>
+
+<a name='v13.42'><b>Nov. 17, 2025 - Version 13.42</b></a>
+<ul>
+<li>Added warning if tag arguments come before -csv= or -json= in a command
+<li>Added a new CanonModelID and RFLensType (thanks Norbert Wasser)
+<li>Added ability to read XML as a block from Sony MP4 videos
+<li>Added "EOS" to the R5 Mark II CanonModelID string
+<li>Decode ReEditData in Samsung trailer
+<li>Decode a couple more Sony rtmd tags from MP4 videos
+<li>Tolerate some types of trailer corruption as caused by Samsung Gallery
+<li>Restrict decoding of MetaImageSize to HEIC files only
+<li>Fixed issue writing Keys tags to Sony PMW-EX1R videos
+<li>Fixed behaviour of CSV/JSON import when specifying tags to import into an
+    existing list, or when importing ValueConv values (ie. "TAG#"), or when
+    specifying a group name of "All"
+</ul>
+
+<a name='v13.41'><b>Nov. 5, 2025 - Version 13.41</b></a>
+<ul>
+<li>Added a new Canon LensType
+<li>Added <a href="TagNames/Extra.html">Extra</a> MakerNoteByteOrder tag
+<li>Added byte-order indication to the -v3 output for EXIF and BinaryData
+    directories
+<li>Added a new Panasonic/Olympus LensType (<a href="https://github.com/exiftool/exiftool/issues/363">github #363</a>)
+<li>Added a new ProfileCMMType value (thanks Herb)
+<li>Extract EnvironmentTarget from LNK files (<a href="https://github.com/exiftool/exiftool/issues/362">github #362</a>)
+<li>Extract HighlightMarkers from DJI videos
+<li>Decode another Red tag
+<li>Recognize LRF file extension
+<li>Updated CanonColorData decoding for the R50V
+<li>Enhanced -csv= and -json= database import options to support full
+    redirection and advanced formatting expressions
+<li>Require tags to be specified after the corresponding -csv= or -json= option
+    when importing specific tags from a database
+<li>Fixed problem reading R3D images from the Red Komodo
+</ul>
+
+<a name='v13.40'><b>Oct. 24, 2025 - Version 13.40</b></a>
+<ul>
+<li>Added read support for WOFF and WOFF2 font files (<a href="https://github.com/exiftool/exiftool/issues/358">github #358</a>)
+<li>Added read support for Windows .URL files
+<li>Added new XMP-iptcExt generative AI tags (thanks IPTC)
+<li>Added config_files/local_time.config to the full distribution
+<li>Enhanced CSV import to allow SourceFile entries with a different case
+</ul>
+
+<a name='v13.39'><b>Oct. 15, 2025 - Version 13.39</b></a>
+<ul>
+<li>Added a few new Sony lens types and improved support for a few new cameras
+    (thanks Jos Roost)
+<li>Added a new Olympus LensType (thanks Karsten Gieselmann)
+<li>Added some new Pentax PictureMode values (thanks Karsten Gieselmann)
+<li>Decode GPS from a number of new DJI protobuf formats (thanks Juan Irache,
+    <a href="https://github.com/exiftool/exiftool/pull/355">github #355</a>)
+<li>Improved identification of M4A audio files (<a href="https://github.com/exiftool/exiftool/issues/80">github #80</a>)
+<li>Properly recognize VSDX files (<a href="https://github.com/exiftool/exiftool/issues/357">github #357</a>)
+<li>Patched to use date from the previous RMC sentence when missing an RMC
+    sentence in timed GPS from the buggy NextBase 662GW
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#GeoHPosErr">GeoHPosErr</a> option to set GPSHPositioningError when geotagging
+    </ul>
+</ul>
+
+<a name='v13.38'><b>Sept. 30, 2025 - Version 13.38</b></a>
+<ul>
+<li>Added read support for DSF audio files (<a href="https://github.com/exiftool/exiftool/issues/331">github #331</a>)
+<li>Decode a couple more GoPro tags
+<li>Improved WavPack audio file support to recognize the WVP extension and
+    extract more than just RIFF metadata
+<li>Updated Sony decoding for the ILCE-6400A (thanks Jos Roost)
+<li>Set family 0 group name to "Composite" for approximated GPSDateTime in timed
+    video metadata
+<li>Patched to recognize M2TS videos which begin in the middle of a packet
+<li>Patched to attempt reading XMP which has an invalid encoding (<a href="https://github.com/exiftool/exiftool/issues/348">github #348</a>)
+<li>Patched to avoid possible runtime warning when reading a EXE file with
+    corrupt resources (<a href="https://github.com/exiftool/exiftool/issues/354">github #354</a>)
+<li>Fixed typo in a GoPro tag name
+</ul>
+
+<a name='v13.37'><b>Sept. 22, 2025 - Version 13.37</b></a>
+<ul>
+<li>Added support for geotagging from Columbus GPS logger CSV files
+<li>Added some new Canon, Sony and Olympus lenses (thanks Hubert Figui&egrave;re,
+    <a href="https://github.com/exiftool/exiftool/issues/352">github #352</a> and Jos Roost)
+<li>Added new Canon RFLensType and CanonModelID values (thanks Norbert Wasser
+    and Hubert Figui&egrave;re, <a href="https://github.com/exiftool/exiftool/issues/350">github #350</a>)
+<li>Added a new FujiFilm FaceElementType value
+<li>Decode <a href="TagNames/Google.html#HDRPMakerNote">Google HDRP maker notes</a> (both text and Protobuf formats)
+<li>Decode Reconyx MicroFire and Hyperfire 4K maker notes (thanks Reconyx)
+<li>Decode a number of new Canon and Pentax tags and add a number of new values
+    (thanks Karsten Gieselmann)
+<li>Decode maker notes from Ricoh GR III videos
+<li>Decode a new Sony tag (thanks Jos Roost)
+<li>Raised size limit on QuickTime atoms extracted for the -ee option, and added
+    a minor warning and allow bypassing with the -m option if over this limit
+<li>Minor change to verbose output for XMP metadata
+<li>Fixed possible hang/crash when reading Windows executables (<a href="https://github.com/exiftool/exiftool/issues/351">github #351</a>)
+<li>Fixed incorrect FujiFilm PanoramaDirection values
+<li>API Changes:
+    <ul>
+    <li>Fixed <a href="ExifTool.html#GeoDir">GeoDir</a> option so alternate languages are loaded properly when a
+        relative path is specified
+    </ul>
+</ul>
+
+<a name='v13.36'><b>Sept. 9, 2025 - Version 13.36</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a new Nikon LensID (thanks Max, <a href="https://github.com/exiftool/exiftool/issues/345">github #345</a>)
+<li>Added new Sony and Pentax camera ID's (thanks Hubert Figui&egrave;re, <a href="https://github.com/exiftool/exiftool/issues/347">github #347</a>)
+<li>Tolerate 'junk' after 'WAVE' chunk in LA, PAC, OFR and WV audio files
+<li>Use gnu tar 1.35 to build the .tar.gz distribution package (versions
+    13.31-13.35 used bsdtar 3.5.3, and earlier versions used bsdtar 2.8.3)
+</ul>
+
 <a name='v13.35'><b>Sept. 6, 2025 - Version 13.35</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added a new CanonModelID

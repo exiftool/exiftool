@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 my %flifMap = (
     EXIF         => 'FLIF',
@@ -115,11 +115,13 @@ sub GetVarInt($;$)
 {
     my ($raf, $add) = @_;
     my ($val, $buff);
+    my $n = 0;
     for ($val=0; ; $val<<=7) {
         $raf->Read($buff, 1) or return undef;
         my $byte = ord($buff);
         $val |= ($byte & 0x7f);
         last unless $byte & 0x80;
+        ++$n > 9 and return undef;
     }
     return $val + ($add || 0);
 }

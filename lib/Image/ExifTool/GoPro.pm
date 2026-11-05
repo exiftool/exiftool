@@ -830,6 +830,10 @@ sub ProcessGoPro($$$)
 
     for (; $pos+8<=$dirEnd; $pos+=($size+3)&0xfffffffc) {
         my ($tag,$fmt,$len,$count) = unpack("x${pos}a4CCn", $$dataPt);
+        if ($count > 100000000) {
+            $et->Warn('Invalid GoPro record count');
+            last;
+        }
         if ($tag =~ /[^-_a-zA-Z0-9 ]/) {
             $et->Warn('Unrecognized GoPro record') unless $tag eq "\0\0\0\0";
             last;

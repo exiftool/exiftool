@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.36';
+$VERSION = '3.37';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -227,6 +227,7 @@ my %ftypLookup = (
     'heic' => 'High Efficiency Image Format HEVC still image (.HEIC)', # image/heic
     'hevc' => 'High Efficiency Image Format HEVC sequence (.HEICS)', # image/heic-sequence
     'mif1' => 'High Efficiency Image Format still image (.HEIF)', # image/heif
+    'mif3' => 'Low-overhead SlimHEIF (.HEIF)', # image/heif
     'msf1' => 'High Efficiency Image Format sequence (.HEIFS)', # image/heif-sequence
     'heix' => 'High Efficiency Image Format still image (.HEIF)', # image/heif (ref PH, Canon 1DXmkIII)
     'avif' => 'AV1 Image File Format (.AVIF)', # image/avif
@@ -10699,7 +10700,7 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
                 $et->ProcessDirectory(\%dirInfo, $subTable, $proc);
                 $raf->Seek($seekTo);
             }
-            unless ($raf->Seek($seekTo-1) and $raf->Read($buff, 1) == 1) {
+            if ($size and not ($raf->Seek($seekTo-1) and $raf->Read($buff, 1) == 1)) {
                 if (pack('N',$size) =~ /^<b[r>]/) { # check for corrupted HEIC file downloaded from heic.digital
                     $warnStr = sprintf('Extraneous HTML text appended to file at offset 0x%x', $lastPos);
                 } else {

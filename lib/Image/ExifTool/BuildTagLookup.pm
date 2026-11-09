@@ -1176,7 +1176,7 @@ TagID:  foreach $tagID (@keys) {
                         foreach (keys %$printConv) {
                             next if $_ !~ /^\d+$/ or ($_ & $val) == $_;
                             my $hex = sprintf '0x%.2x', $_;
-                            warn "$short $name PrintConv value $hex is not in Mask!\n";
+                            warn "$short $name PrintConv value $hex is not in Mask!\n" unless $$tagInfo{ValueConv};
                         }
                     }
                 }

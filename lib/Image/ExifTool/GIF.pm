@@ -20,7 +20,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.21';
+$VERSION = '1.22';
 
 # road map of directory locations in GIF images
 my %gifMap = (
@@ -97,6 +97,7 @@ my @appExtensions = ( 'XMP Data/XMP', 'ICCRGBG1/012' );
     },
     'C2PA_GIF/' => { #https://c2pa.org/specifications/ (NC) (authentication code is 0x010000 binary, so removed from tag ID)
         Name => 'JUMBF',
+        Deletable => 1,
         SubDirectory => { TagTable => 'Image::ExifTool::Jpeg2000::Main' },
     },
 );
@@ -431,7 +432,11 @@ Block:
                 $inclLen = $$extInfo{IncludeLengthBytes};
                 $name = $$extInfo{Name};
                 # rewrite as-is unless this is a writable
-                $justCopy = 1 if $outfile and not $$extInfo{Writable};
+                if ($$extInfo{Deletable} and $$et{DEL_GROUP}{$$extInfo{Name}}) {
+                    $justCopy = 0;  # delete this
+                } elsif (not $$extInfo{Writable}) {
+                    $justCopy = 1;
+                }
             } else {
                 $justCopy = 1 if $outfile;
             }
@@ -449,6 +454,10 @@ Block:
             if ($justCopy) {
                 Write($outfile, "\0") or $err = 1;
                 next;
+            } elsif (defined $justCopy) {
+                $et->VPrint(0, "  Deleting $$extInfo{Name}\n");
+                ++$$et{CHANGED};
+                next;   # we're deleting this extension
             } elsif ($inclLen) {
                 # remove landing zone or padding
                 if ($$extInfo{Terminator} and $dat =~ /$$extInfo{Terminator}/g) {

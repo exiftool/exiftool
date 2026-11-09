@@ -205,47 +205,52 @@ and is used in the AvgBitrate calculation)</span></span></td></tr>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Meta'>QuickTime Meta Tags</a></td></tr>
 <tr class=b>
+<td>'mini'</td>
+<td>Mini</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Mini.html'>Mini Tags</a></td></tr>
+<tr>
 <td>'moof'</td>
 <td>MovieFragment</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#MovieFragment'>QuickTime MovieFragment Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'moov'</td>
 <td>Movie</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Movie'>QuickTime Movie Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'mpvd'</td>
 <td>MotionPhotoVideo</td>
 <td class=c>undef</td>
 <td><span class=s><span class=n>(MP4-format video saved in Samsung motion-photo HEIC images.)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'nbmt'</td>
 <td>NextbaseMeta</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Stream'>QuickTime Stream Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'pict'</td>
 <td>PreviewPICT</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'pnot'</td>
 <td>Preview</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Preview'>QuickTime Preview Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'prrt'</td>
 <td>ARDroneTelemetry</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(telemetry information for each video frame: status1, status2, time, pitch,
 roll, yaw, speed, altitude)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'sefd'</td>
 <td>SamsungTrailer</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Samsung.html#Trailer'>Samsung Trailer Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'skip'</td>
 <td>CanonSkip
   <br>PreviewImage
@@ -256,22 +261,22 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td>--&gt; <a href='Canon.html#Skip'>Canon Skip Tags</a>
   <br>--&gt; <a href='QuickTime.html#SkipInfo'>QuickTime SkipInfo Tags</a>
   <br>--&gt; <a href='QuickTime.html#Stream'>QuickTime Stream Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'thm '</td>
 <td>ThumbnailImage</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'thum'</td>
 <td>ThumbnailImage</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'udat'</td>
 <td>GPSLog</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(parsed to extract GPS separately when ExtractEmbedded is used)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'udta'</td>
 <td>KenwoodData
   <br>LigoJSON
@@ -282,7 +287,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br>--&gt; <a href='QuickTime.html#Stream'>QuickTime Stream Tags</a>
   <br>--&gt; <a href='QuickTime.html#Stream'>QuickTime Stream Tags</a>
   <br>--&gt; <a href='FLIR.html#UserData'>FLIR UserData Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'uuid'</td>
 <td>XMP
   <br>UUID-PROF
@@ -304,7 +309,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br><span class=n>(raw 360Fly sensor data without ExtractEmbedded option)</span>
   <br>--&gt; <a href='Jpeg2000.html'>Jpeg2000 Tags</a>
   <br>--&gt; <a href='CBOR.html'>CBOR Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'wide'</td>
 <td>Wide?</td>
 <td class=c>no</td>
@@ -1778,7 +1783,7 @@ and subtitle text in some other videos.</p>
   <br>&#39;jpx &#39; = JPEG 2000 with extensions (.JPX) [ISO 15444-2]
   <br>&#39;miaf&#39; = Multi-Image Application Format (.AVIF)
   <br>&#39;mif1&#39; = High Efficiency Image Format still image (.HEIF)
-  <br>&#39;mif3&#39; = Low-overhead SlimHEIF (.HEIF)
+  <br>&#39;mif3&#39; = Multi-Image Format v3
   <br>&#39;mj2s&#39; = Motion JPEG 2000 [ISO 15444-3] Simple Profile
   <br>&#39;mjp2&#39; = Motion JPEG 2000 [ISO 15444-3] General Profile
   <br>&#39;mmp4&#39; = MPEG-4/3GPP Mobile Profile (.MP4/3GP) (for NTT)
@@ -1788,6 +1793,7 @@ and subtitle text in some other videos.</p>
   <br>&#39;mp71&#39; = MP4 w/ MPEG-7 Metadata [per ISO 14496-12]
   <br>&#39;mqt &#39; = Sony / Mobile QuickTime (.MQV) US Patent 7,477,830 (Sony Corp)
   <br>&#39;msf1&#39; = High Efficiency Image Format sequence (.HEIFS)
+  <br>&#39;msf3&#39; = Multi-Sequence Format v3
   <br>&#39;odcf&#39; = OMA DCF DRM Format 2.0 (OMA-TS-DRM-DCF-V2_0-20060303-A)
   <br>&#39;opf2&#39; = OMA PDCF DRM Format 2.1 (OMA-TS-DRM-DCF-V2_1-20070724-C)
   <br>&#39;opx2&#39; = OMA PDCF DRM + XBS extensions (OMA-TS-DRM_XBS-V1_0-20070529-C)
@@ -1798,8 +1804,9 @@ and subtitle text in some other videos.</p>
   <br>&#39;ssc2&#39; = Samsung stereoscopic, dual stream</span></td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
-<td>MinorVersion</td>
-<td class=c>no</td>
+<td>MinorVersion
+  <br>CompatibleBrand</td>
+<td class=c>no<br>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
@@ -10238,7 +10245,7 @@ the value is set to zero if the tag is deleted individually)</span></span></td><
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 5, 2026</i>
+<br><i>Last revised Nov 7, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

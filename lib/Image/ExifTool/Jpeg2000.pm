@@ -144,7 +144,7 @@ my %j2cMarker = (
         PDF, SVG and GIF files, and ID3v2 metadata.  The suggested ExifTool
         command-line arguments for reading C2PA metadata are C<-jumbf:all -G3 -b -j
         -u -struct>.  This metadata may be deleted from writable JPEG, PNG, WebP,
-        TIFF-based, and QuickTime-based files by deleting the JUMBF group with
+        GIF, TIFF-based, and QuickTime-based files by deleting the JUMBF group with
         C<-jumbf:all=>.  The C2PA JUMBF metadata may be extracted as a block via the
         JUMBF tag.  See L<https://c2pa.org/specifications/> for the C2PA
         specification.

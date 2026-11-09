@@ -7,12 +7,22 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.55. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Nov. 9, 2026 - Version 13.62
+
+  - Added read/write support for low-overhead mif3 SlimHEIF 'mini' metadata,
+    including support for compressed EXIF and XMP (github #503)
+  - Added ability to delete C2PA metadata from GIF images (github #515)
+  - Decode more Canon tags (thanks Peter Wem github #510, #511, #512)
+  - Decode more Red tags (github #443)
+  - Fixed crash introduced in 13.60 when trying to delete then recreate EXIF in
+    a Xiaomi HEIC file (github #485)
+
 Nov. 5, 2026 - Version 13.61
 
-  - Added a new Olympus CameraType (thanks Herb, github #502)
+  - Added a new Olympus CameraType (thanks Herb github #502)
   - Added arg_files/audio2itemlist.args to the distribution (github #497)
-  - Recognize the SlimHEIF mif3 file type (github #503
   - Decode some more Canon tags (github #505, #506, #507)
+  - Recognize the SlimHEIF mif3 file type (github #503)
   - Changed DJI NRSetting tag name to NoiseReduction for consistency
   - Patched issue where a corrupted FLIF file could cause a hang (github #500)
   - Patched to avoid backward seek on empty QuickTime atom (github #482)

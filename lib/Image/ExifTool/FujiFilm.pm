@@ -1515,6 +1515,8 @@ my %faceCategories = (
         Format => 'int32u',
         ValueConv => '$$self{FujiLayout} ? ($val * 2) : $val',
     },
+    # 0x20e4 - related to focus distance for X-T2 (github504)
+    # 0x2550 - related to focus distance for X-T2 (github504)
 );
 
 # TIFF IFD-format information stored in FujiFilm RAF images (ref 5)

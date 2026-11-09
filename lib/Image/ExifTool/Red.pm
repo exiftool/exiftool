@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub ProcessR3D($$);
 
@@ -104,8 +104,8 @@ my $errTrunc = 'Truncated R3D file';
     0x1036 => 'AspectRatio', #1
   # 0x1041 - seen 'NA'
     0x1042 => 'Revision', # ? (seen "TODO, rev EPIC-1.0" and "MYSTERIUM X, rev EPIC-1.0")
-  # 0x1051 - seen 'C', 'L'
-  # 0x1052 - seen 'E9'
+    0x1051 => 'CameraPosition', #github443 - seen 'C', 'L'
+    0x1052 => 'ClipID', #github443 - seen 'E9','BM','CY' (last 2 characters of original file name)
     0x1056 => 'OriginalFileName',
     0x106e => 'LensMake',
     0x106f => 'LensNumber', # (last 2 hex digits are LensType)
@@ -122,10 +122,21 @@ my $errTrunc = 'Truncated R3D file';
     0x1096 => 'Filter', # optical low-pass filter
     0x10a0 => 'Brain',
     0x10a1 => 'Sensor',
+    0x10ad => 'StartEdgeCode', #github443
+    0x10ae => 'StartTimeCode', #github443
     0x10be => 'Quality',
+    0x10c1 => 'Camera3D_LUT', #github443
+    0x10c4 => 'AudioFileName', #github443
+    0x10c7 => 'NDFilterType', #github443
     # ---- format 2 (float) ----
+    0x2008 => { #github443
+        Name => 'ExposureTime',
+        ValueConv => '$val / 1e6',
+        PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
+    },
     0x200d => 'ColorTemperature',
-  # 0x200e - (sometimes this is frame rate)
+    0x200e => 'Tint', #github443 (maybe not for all models? - PH)
+    0x2013 => 'Contrast', #github443
   # 0x2015 - seen '1 1 1' (RGBGain or RGBGamma?)
     0x204b => 'RGBCurves', # (blackx/y,toex/y,midx/y,kneex/y,whitex/y)
     0x2066 => {
@@ -133,18 +144,32 @@ my $errTrunc = 'Truncated R3D file';
         Groups => { 2 => 'Video' },
         PrintConv => 'int($val * 1000 + 0.5) / 1000',
     },
+    0x20ac => 'OutputToneMap', #github443
     # ---- format 3 (int8u?) ----
+    0x3055 => 'LensMount', #github443
+    0x3094 => 'ImagePipeline', #github443
+    0x30a3 => 'HighlightRollOff', #github443
+    0x30a8 => 'OutputToneMap', #github443
+    0x30af => 'SensorSensitivityID', #github443
     # ---- format 4 (int16u) ----
     0x4037 => { Name => 'CropArea' }, # (NC)
     0x403b => 'ISO',
   # 0x404e - related to CropArea (or "0 0 0 0")
+    0x4069 => { Name  => 'NDStops', ValueConv => '$val / 100' },
     0x406a => { Name => 'FNumber', ValueConv => '$val / 10' },
     0x406b => 'FocalLength',
+    0x409b => 'SensorSize',
   # 0x4084 - related to ISO?
   # 0x4087 - related to ISO?
     # ---- format 5 (int8s?) ----
     # ---- format 6 (int32s) ----
-    0x606c => { Name => 'FocusDistance', ValueConv => '$val/1000', PrintConv => '"$val m"' },
+    0x6065 => { Name => 'FirmwareRevision', PrintConv => 'sprintf("%x",$val)' },
+    0x606c => { Name => 'FocusDistance', ValueConv => '$val/1000', PrintConv => '$val > 0 ? "$val m" : "inf"' },
+    0x6074 => { Name => 'FocusDistanceNear', ValueConv => '$val/1000', PrintConv => '$val > 0 ? "$val m" : "inf"' },
+    0x6075 => { Name => 'FocusDistanceFar', ValueConv => '$val/1000', PrintConv => '$val > 0 ? "$val m" : "inf"' },
+    0x60b0 => { Name => 'FrameRate', ValueConv => '$val / 1001' },
+    0x60bf => { Name => 'RecordFrameRate', ValueConv => '$val / 1001' },
+    0x60d0 => { Name => 'FocalLength', ValueConv => '$val / 1000', PrintConv => '"$val mm"' },
     # ---- format 7 (undef? structure?) ----
     # ---- format 8 (int32u?) ----
     # ---- format 9 (undef?) ----

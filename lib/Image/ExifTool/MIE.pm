@@ -1408,8 +1408,7 @@ sub WriteMIEGroup($$$)
                 Parent  => $dirName,
                 IsCompressed => $$dirInfo{IsCompressed},
             );
-            my $oldOrder = GetByteOrder();
-            SetByteOrder($format & 0x08 ? 'II' : 'MM');
+            my $oldOrder = SetByteOrder($format & 0x08 ? 'II' : 'MM');
             $msg = WriteMIEGroup($et, \%subdirInfo, $subTablePtr);
             SetByteOrder($oldOrder);
             last if $msg;
@@ -1588,8 +1587,7 @@ sub ProcessMIEGroup($$$)
             # read from uncompressed data instead if necessary
             $subdirInfo{RAF} = File::RandomAccess->new(\$value) if $valLen;
 
-            my $oldOrder = GetByteOrder();
-            SetByteOrder($format & 0x08 ? 'II' : 'MM');
+            my $oldOrder = SetByteOrder($format & 0x08 ? 'II' : 'MM');
             $msg = ProcessMIEGroup($et, \%subdirInfo, $subTablePtr);
             SetByteOrder($oldOrder);
             $$et{SET_GROUP1} = $grp1;    # restore this group1 name

@@ -1645,8 +1645,7 @@ sub ProcessFreeGPS($$$)
     return 0 if $dirLen < 82;
 
     my $debug = $et->Options('Debug');
-    my $oldOrder = GetByteOrder();
-    SetByteOrder('II');
+    my $oldOrder = SetByteOrder('II');
     $$et{FoundEmbedded} = 1;
 
     if (substr($$dataPt,18,8) eq "\xaa\xaa\xf2\xe1\xf0\xee\x54\x54") {

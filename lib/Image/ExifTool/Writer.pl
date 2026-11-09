@@ -5361,8 +5361,7 @@ my %writeValueProc = (
         double => [ -3.14159, 'c00921f9f01b866e' ],
     );
     my $format;
-    my $oldOrder = GetByteOrder();
-    SetByteOrder('MM');
+    my $oldOrder = SetByteOrder('MM');
     foreach $format (keys %writeTest) {
         my ($val, $hex) = @{$writeTest{$format}};
         # add floating point entries if we can write them

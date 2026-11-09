@@ -17,12 +17,23 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.62'><b>Nov. 9, 2026 - Version 13.62</b></a>
+<ul>
+<li>Added read/write support for <a href="TagNames/Mini.html">low-overhead mif3 SlimHEIF 'mini' metadata</a>,
+    including support for compressed EXIF and XMP (<a href="https://github.com/exiftool/exiftool/issues/503">github #503</a>)
+<li>Added ability to delete C2PA metadata from GIF images (<a href="https://github.com/exiftool/exiftool/issues/515">github #515</a>)
+<li>Decode more Canon tags (thanks Peter Wem <a href="https://github.com/exiftool/exiftool/issues/510">github #510</a>, <a href="https://github.com/exiftool/exiftool/issues/511">#511</a>, <a href="https://github.com/exiftool/exiftool/issues/512">#512</a>)
+<li>Decode more Red tags (<a href="https://github.com/exiftool/exiftool/issues/443">github #443</a>)
+<li>Fixed crash introduced in 13.60 when trying to delete then recreate EXIF in
+    a Xiaomi HEIC file (<a href="https://github.com/exiftool/exiftool/issues/485">github #485</a>)
+</ul>
+
 <a name='v13.61'><b>Nov. 5, 2026 - Version 13.61</b></a>
 <ul>
-<li>Added a new Olympus CameraType (thanks Herb, <a href="https://github.com/exiftool/exiftool/issues/502">github #502</a>)
+<li>Added a new Olympus CameraType (thanks Herb <a href="https://github.com/exiftool/exiftool/issues/502">github #502</a>)
 <li>Added arg_files/audio2itemlist.args to the distribution (<a href="https://github.com/exiftool/exiftool/issues/497">github #497</a>)
-<li>Recognize the SlimHEIF mif3 file type (<a href="https://github.com/exiftool/exiftool/issues/503">github #503</a>
 <li>Decode some more Canon tags (<a href="https://github.com/exiftool/exiftool/issues/505">github #505</a>, <a href="https://github.com/exiftool/exiftool/issues/506">#506</a>, <a href="https://github.com/exiftool/exiftool/issues/507">#507</a>)
+<li>Recognize the SlimHEIF mif3 file type (<a href="https://github.com/exiftool/exiftool/issues/503">github #503</a>)
 <li>Changed DJI NRSetting tag name to NoiseReduction for consistency
 <li>Patched issue where a corrupted FLIF file could cause a hang (<a href="https://github.com/exiftool/exiftool/issues/500">github #500</a>)
 <li>Patched to avoid backward seek on empty QuickTime atom (<a href="https://github.com/exiftool/exiftool/issues/482">github #482</a>)

@@ -29,7 +29,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %jpegMarker %specialTags %fileTypeLookup $testLen $exeDir
             %static_vars $advFmtSelf $configFile @configFiles $noConfig);
 
-$VERSION = '13.61';
+$VERSION = '13.62';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -410,6 +410,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     MEF  => ['TIFF', 'Mamiya (RAW) Electronic Format'],
     MIE  => ['MIE',  'Meta Information Encapsulation format'],
     MIF  =>  'MIFF',
+    MIF3 => ['MOV',  'Multi-Image Format v3'], # (not an actual extension)
     MIFF => ['MIFF', 'Magick Image File Format'],
     MKA  => ['MKV',  'Matroska Audio'],
     MKS  => ['MKV',  'Matroska Subtitle'],
@@ -429,6 +430,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     MQV  => ['MOV',  'Sony Mobile Quicktime Video'],
     MRC  => ['MRC',  'Medical Research Council image'],
     MRW  => ['MRW',  'Minolta RAW format'],
+    MSF3 => ['MOV',  'Multi-Sequence Format v3'], # (not an actual extension)
     MTS  =>  'M2TS',
     MXF  => ['MXF',  'Material Exchange Format'],
   # NDPI => ['TIFF', 'Hamamatsu NanoZoomer Digital Pathology Image'],
@@ -6157,7 +6159,7 @@ sub GetByteOrder() { return $currentByteOrder; }
 #------------------------------------------------------------------------------
 # Set byte ordering
 # Inputs: 0) 'MM'=motorola, 'II'=intel (will translate 'BigEndian', 'LittleEndian')
-# Returns: 1 on success
+# Returns: previous byte-order setting on success, or false ("0") on failure
 sub SetByteOrder($)
 {
     my $order = shift;
@@ -6185,6 +6187,7 @@ sub SetByteOrder($)
         warn sprintf("Unknown native byte order! (pattern %x)\n",$val);
         return 0;
     }
+    my $oldOrder = $currentByteOrder;
     $currentByteOrder = $order;  # save current byte order
 
     # swap bytes if our native CPU byte ordering is not the same as the EXIF
@@ -6196,7 +6199,7 @@ sub SetByteOrder($)
     my $pack1d = pack('d', 1);
     $swapWords = ($pack1d eq "\0\0\x0f\xf3\0\0\0\0" or
                   $pack1d eq "\0\0\xf0\x3f\0\0\0\0");
-    return 1;
+    return $oldOrder;
 }
 
 #------------------------------------------------------------------------------
@@ -9336,7 +9339,9 @@ sub AddTagToTable($$;$$)
 # Returns: tag key or undef if tag not found
 # Notes: if value is not defined, it is extracted from DataPt using TagInfo
 #        Format and Count if provided
-# - set MakeTagInfo to add tag info for unknown tags with name made from tag ID
+# - set MakeTagInfo to 1 to add tag info for new tags with name made from tag ID,
+#   or 2 to add only if Unknown option is set
+# 
 sub HandleTag($$$$;%)
 {
     my ($self, $tagTablePtr, $tag, $val, %parms) = @_;
@@ -9359,14 +9364,16 @@ sub HandleTag($$$$;%)
     }
     if ($tagInfo) {
         $subdir = $$tagInfo{SubDirectory};
-    } elsif ($parms{MakeTagInfo}) {
-        $self->VPrint(0, $$self{INDENT}, "[adding $tag]\n") if $verbose;
+    } elsif ($parms{MakeTagInfo} and ($parms{MakeTagInfo} eq '1' or $verbose or $$self{OPTIONS}{Unknown})) {
+        $self->VPrint(0, $$self{INDENT}, "[adding $tag]\n") if $verbose and $parms{MakeTagInfo} eq '1';
         my $name = $tag;
         $name =~ s/([A-Z]) ([A-Z][ A-Z])/${1}_$2/g; # underline between acronyms
         $name =~ s/([^A-Za-z])([a-z])/$1\u$2/g;     # capitalize words
+        $name =~ s/([a-z])_([A-Z])/$1$2/g;          # remove unnecessary underlines
         $name =~ tr/-_a-zA-Z0-9//dc;                # remove illegal characters
         $name = "Tag$name" if length($name) < 2 or $name =~ /^[-0-9]/;
         $tagInfo = { Name => ucfirst($name) };
+        $$tagInfo{Unknown} = 1 unless $parms{MakeTagInfo} eq '1';
         AddTagToTable($tagTablePtr, $tag, $tagInfo);
     } else {
         return undef unless $verbose;
@@ -9388,7 +9395,7 @@ sub HandleTag($$$$;%)
             } elsif (not $$tagInfo{ByteOrder}) {
                 $val = ReadValue($dataPt, $start, $format, $$tagInfo{Count}, $size, \$rational);
             } else {
-                my $oldOrder = GetByteOrder(), SetByteOrder($$tagInfo{ByteOrder});
+                my $oldOrder = SetByteOrder($$tagInfo{ByteOrder});
                 $val = ReadValue($dataPt, $start, $format, $$tagInfo{Count}, $size, \$rational);
                 SetByteOrder($oldOrder);
             }

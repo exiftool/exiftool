@@ -1716,8 +1716,7 @@ sub WrapDR4($)
 {
     my $val = shift;
     my $n = length $val;
-    my $oldOrder = GetByteOrder();
-    SetByteOrder('MM');
+    my $oldOrder = SetByteOrder('MM');
     $val = $blankHeader . "\xff\xff\0\xf7" . Set32u($n+8) . Set32u($n) .
                 $val . "\0\0\0\0" . $blankFooter;
     # update the new VRD length in the header/footer

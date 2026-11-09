@@ -60,6 +60,22 @@ my %heicMap = (
     InteropIFD   => 'ExifIFD',
     MakerNotes   => 'ExifIFD',
 );
+my %mif3Map = (
+    # HEIC/HEIF/AVIF ('ftyp' major brand 'mif3') -> XMP/EXIF in top-level 'mini' box
+    Mini         => 'MOV',
+    XMP          => 'Mini',
+    EXIF         => 'Mini',
+    ICC_Profile  => 'Mini',
+    IFD0         => 'EXIF',
+    IFD1         => 'IFD0',
+    ExifIFD      => 'IFD0',
+    GPS          => 'IFD0',
+    SubIFD       => 'IFD0',
+    GlobParamIFD => 'IFD0',
+    PrintIM      => 'IFD0',
+    InteropIFD   => 'ExifIFD',
+    MakerNotes   => 'ExifIFD',
+);
 my %cr3Map = (
     # CR3 ('ftyp' compatible brand 'crx ') -> XMP at top level
     Movie     => 'MOV',
@@ -77,6 +93,7 @@ my %dirMap = (
     MP4  => \%mp4Map,
     CR3  => \%cr3Map,
     HEIC => \%heicMap,
+    MIF3 => \%mif3Map,
 );
 
 # convert ExifTool Format to QuickTime type
@@ -584,15 +601,20 @@ sub WriteItemInfo($$$)
                 $hdr = substr($buff, 0, 4 + unpack('N',$buff));
                 $strt = length $hdr;
                 if (length($hdr) == 14 and substr($hdr, 4, 2) eq "\xff\xe1") {
-                    $proc = \&Image::ExifTool::WriteJPEG;
-                    # (use EXIF table so the group names will be correct for deleting as a group)
-                    $moreDirInfo{XiaomiMess} = 1;
-                    $moreDirInfo{OutFile} = \$newVal2;
-                    $moreDirInfo{RAF} =  File::RandomAccess->new(\$buff);
-                    $newVal2 = '';
-                    $$et{EDIT_DIRS}{APP1} = 'JPEG';    # must parse into JPEG APP1
-                    $raf->Seek(4, 0); # (skip size)
-                    $hdr = '';
+                    if ($$et{DEL_GROUP}{EXIF} or $$et{DEL_GROUP}{IFD0}) {
+                        # recreate EXIF in the usual format (no Xiaomi mess)
+                        ($hdr, $strt, $buff) = ("\0\0\0\x06Exif\0\0", 0, '');
+                    } else {
+                        $proc = \&Image::ExifTool::WriteJPEG;
+                        # (use EXIF table so the group names will be correct for deleting as a group)
+                        $moreDirInfo{XiaomiMess} = 1;
+                        $moreDirInfo{OutFile} = \$newVal2;
+                        $moreDirInfo{RAF} =  File::RandomAccess->new(\$buff);
+                        $newVal2 = '';
+                        $$et{EDIT_DIRS}{APP1} = 'JPEG';    # must parse into JPEG APP1
+                        $raf->Seek(4, 0); # (skip size)
+                        $hdr = '';
+                    }
                 }
             } else {
                 $et->Warn('Invalid Exif header');
@@ -1950,7 +1972,7 @@ ItemID2:    foreach $id (reverse sort { $a <=> $b } keys %$items) {
             $et->Error('Media data referenced but not found');
             return $rtnVal;
         }
-        $et->Warn('No media data', 1);
+        $et->Warn('No media data', 1) unless $$et{FileType} eq 'MIF3';
     }
 
     # edit mdat blocks as required
@@ -2252,10 +2274,20 @@ sub WriteMOV($$)
         $raf->Read($buff, $size-8) == $size-8 and
         $buff !~ /^(....)+(qt  )/s)
     {
+        # (these FileType's may differ when reading, but we need only
+        #  differentiate the different structural types here for purposes
+        #  of deciding where the metadata is written)
         if ($buff =~ /^crx /) {
             $ftype = 'CR3',
         } elsif ($buff =~ /^(heic|mif1|msf1|heix|hevc|hevx|avif)/) {
             $ftype = 'HEIC';
+        } elsif ($buff =~ /^(mif3|msf3)/) {
+            if ($1 eq 'msf3') {
+                # need documentation for this format
+                $et->Error("Can't currently write msf3 files");
+                return 1;
+            }
+            $ftype = 'MIF3';
         } else {
             $ftype = 'MP4';
         }
@@ -2263,8 +2295,8 @@ sub WriteMOV($$)
         $ftype = 'MOV';
     }
     $et->SetFileType($ftype); # need to set "FileType" tag for a Condition
-    if ($ftype eq 'HEIC') {
-        # EXIF is preferred in HEIC files
+    if ($ftype eq 'HEIC' or $ftype eq 'MIF3') {
+        # EXIF is preferred in HEIC files (also prefer in MIF3 for now)
         $et->InitWriteDirs($dirMap{$ftype}, 'EXIF', 'QuickTime');
     } else {
         $et->InitWriteDirs($dirMap{$ftype}, 'XMP', 'QuickTime');

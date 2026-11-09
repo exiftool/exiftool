@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 33706 tags, with 21511 unique tag names.
+They contain a total of 33768 tags, with 21530 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -8090,11 +8090,39 @@ version 1.0.6, but they may be different for other firmware versions.
      49    CameraOrientation                    int8u
      80    FocusDistanceUpper                   int16uRev
      82    FocusDistanceLower                   int16uRev
+     91    MeteringMode                         int8u
+     95    DriveMode2                           int8u
+     99    ISO                                  int8u
+    103    FlashExposureComp                    int8u
     111    WhiteBalance                         int16u
     115    ColorTemperature                     int16u
     167    PictureStyle                         int8u
+    180    ExposureLevelIncrements              int8u
+    181    SpeedIncrements                      int8u
+    182    ISOExpansion                         int8u
+    183    AEBAutoCancel                        int8u
+    184    AEBSequence                          int8u
+    185    SafetyShift                          int8u
+    186    FlashSyncSpeedAv                     int8u
+    188    LongExposureNoiseReduction           int8u
     189    HighISONoiseReduction                int8u
+    190    HighlightTonePriority                int8u
     191    AutoLightingOptimizer                int8u
+    196    LensDriveNoAF                        int8u
+    197    LensAFStopButton                     int8u
+    198    AFPointSelectionMethod               int8u
+    199    SuperimposedDisplay                  int8u
+    200    AFAssistBeam                         int8u
+    201    MirrorLockup                         int8u
+    202    AFPointAreaExpansion                 int8u
+    203    AFMicroAdjMode                       int8u
+    209    AFMicroAdjValue                      int8u
+    212    ShutterButtonAFOn                    int8u
+    213    AFOnAELockButtonSwitch               int8u
+    214    SetButtonWhenShooting                int8u
+    215    DialDirectionTvAv                    int8u
+    216    FocusingScreen                       int8u
+    217    AddOriginalDescisionData             int8u
     230    LensType                             int16uRev
     232    MinFocalLength                       int16uRev
     234    MaxFocalLength                       int16uRev
@@ -8102,6 +8130,8 @@ version 1.0.6, but they may be different for other firmware versions.
     398    OwnerName                            string[32]
     443    FileIndex                            int32u
     455    DirectoryIndex                       int32u
+    747    PeripheralIlluminationCorr           int8u
+    755    ColorSpace                           int8u
     759    PictureStyleInfo                     Canon PSInfo
    1195    TimeStamp                            int16u[3]
    1199    TimeStamp                            int16u[3]
@@ -8191,6 +8221,7 @@ CameraInfo tags for the EOS 7D.  Indices shown are for firmware versions
     276    MinFocalLength                       int16uRev
     278    MaxFocalLength                       int16uRev
     428    FirmwareVersion                      no
+    444    OwnerName                            string[32]
     491    FileIndex                            int32u
     503    DirectoryIndex                       int32u
     807    PictureStyleInfo                     Canon PSInfo
@@ -10068,6 +10099,8 @@ Information about creative filter settings.
 
   Index4   Tag Name                             Writable
   ------   --------                             --------
+      1    InternalFirmwareVersion              int32u
+      2    MPUVersion                           int32u
       5    LensFirmwareVersion                  int32u
 
 =head3 Canon AFConfig Tags
@@ -27404,7 +27437,7 @@ QuickTime-based (eg. MP4, MOV, HEIF, AVIF), RIFF-based (eg. WAV, AVI, WebP),
 PDF, SVG and GIF files, and ID3v2 metadata.  The suggested ExifTool
 command-line arguments for reading C2PA metadata are C<-jumbf:all -G3 -b -j
 -u -struct>.  This metadata may be deleted from writable JPEG, PNG, WebP,
-TIFF-based, and QuickTime-based files by deleting the JUMBF group with
+GIF, TIFF-based, and QuickTime-based files by deleting the JUMBF group with
 C<-jumbf:all=>.  The C2PA JUMBF metadata may be extracted as a block via the
 JUMBF tag.  See L<https://c2pa.org/specifications/> for the C2PA
 specification.
@@ -31337,6 +31370,7 @@ for the official QuickTime specification.
   'mdat-size'          MediaDataSize            no
   'meco'               OtherMeta                QuickTime OtherMeta
   'meta'               Meta                     QuickTime Meta
+  'mini'               Mini                     Mini
   'moof'               MovieFragment            QuickTime MovieFragment
   'moov'               Movie                    QuickTime Movie
   'mpvd'               MotionPhotoVideo         undef
@@ -31785,6 +31819,7 @@ Tags found in Pittasoft Blackvue dashcam "free" data.
   ------   --------                             --------
       0    MajorBrand                           no
       1    MinorVersion                         no
+           CompatibleBrand                      no
       2    CompatibleBrands                     no+
 
 =head3 QuickTime OtherMeta Tags
@@ -34810,6 +34845,27 @@ in the Kandao GPS table with the addition of GPSDateTime.
       8    Gyroscope                            no
      14    Accelerometer                        no
 
+=head2 Mini Tags
+
+Tags extracted by default from a mif3 low-overhead SlimHEIF 'mini' box. More
+tags (flags, etc.) are extracted from the mini header when the Unknown
+option is used. The family 1 group name for these tags is "Mini".
+
+When writing, by default new EXIF and XMP blocks are not compressed unless
+compressed data already exists, but EXIF and XMP are compressed if the API
+Compress option is set to 1, or uncompressed if set to 0. Compress::Zlib
+is required to enable this feature.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  ChromaSubampling                              no
+  EXIF                                          EXIF
+  ICC_Profile                                   ICC_Profile
+  ImageHeight                                   no
+  ImageWidth                                    no
+  Orientation                                   yes
+  XMP                                           XMP
+
 =head2 Matroska Tags
 
 The following tags are extracted from Matroska multimedia container files.
@@ -37226,6 +37282,8 @@ Tags extracted from Redcode R3D video files.
   0x1033   StorageModel                         no
   0x1036   AspectRatio                          no
   0x1042   Revision                             no
+  0x1051   CameraPosition                       no
+  0x1052   ClipID                               no
   0x1056   OriginalFileName                     no
   0x106e   LensMake                             no
   0x106f   LensNumber                           no
@@ -37236,15 +37294,37 @@ Tags extracted from Redcode R3D video files.
   0x1096   Filter                               no
   0x10a0   Brain                                no
   0x10a1   Sensor                               no
+  0x10ad   StartEdgeCode                        no
+  0x10ae   StartTimeCode                        no
   0x10be   Quality                              no
+  0x10c1   Camera3D_LUT                         no
+  0x10c4   AudioFileName                        no
+  0x10c7   NDFilterType                         no
+  0x2008   ExposureTime                         no
   0x200d   ColorTemperature                     no
+  0x200e   Tint                                 no
+  0x2013   Contrast                             no
   0x204b   RGBCurves                            no
   0x2066   OriginalFrameRate                    no
+  0x20ac   OutputToneMap                        no
+  0x3055   LensMount                            no
+  0x3094   ImagePipeline                        no
+  0x30a3   HighlightRollOff                     no
+  0x30a8   OutputToneMap                        no
+  0x30af   SensorSensitivityID                  no
   0x4037   CropArea                             no
   0x403b   ISO                                  no
+  0x4069   NDStops                              no
   0x406a   FNumber                              no
   0x406b   FocalLength                          no
+  0x409b   SensorSize                           no
+  0x6065   FirmwareRevision                     no
   0x606c   FocusDistance                        no
+  0x6074   FocusDistanceNear                    no
+  0x6075   FocusDistanceFar                     no
+  0x60b0   FrameRate                            no
+  0x60bf   RecordFrameRate                      no
+  0x60d0   FocalLength                          no
 
 =head3 Red RED1 Tags
 

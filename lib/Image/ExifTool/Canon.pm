@@ -1256,6 +1256,7 @@ my %cameraInfoTimeStamp = (
 );
 
 my %offOn = ( 0 => 'Off', 1 => 'On' );
+my %onOff = ( 0 => 'On',  1 => 'Off' );
 
 #------------------------------------------------------------------------------
 # Canon EXIF Maker Notes
@@ -4141,6 +4142,33 @@ my %ciMaxFocal = (
         Name => 'FocusDistanceLower',
         %focusDistanceByteSwap,
     },
+    0x5b => { #github510
+        Name => 'MeteringMode',
+        PrintConv => {
+            1 => 'Spot',
+            3 => 'Evaluative',
+            4 => 'Partial',
+            5 => 'Center-weighted average',
+        },
+    },
+    0x5f => { #github510
+        Name => 'DriveMode2',
+        PrintConv => {
+            0 => 'Single',
+            1 => 'Continuous',
+            16 => 'Self-timer: 10 s',
+            17 => 'Self-timer: 2 s',
+        },
+    },
+    0x63 => { %ciISO }, #github510
+    0x67 => { #github510
+        Name => 'FlashExposureComp',
+        Description => 'Flash Exposure Compensation',
+        ValueConv => 'Image::ExifTool::Canon::CanonEv($val * 4)',
+        ValueConvInv => 'int(Image::ExifTool::Canon::CanonEvInv($val) / 4 + 0.5)',
+        PrintConv => 'Image::ExifTool::Exif::PrintFraction($val)',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
     0x6f => {
         Name => 'WhiteBalance',
         Format => 'int16u',
@@ -4157,6 +4185,44 @@ my %ciMaxFocal = (
         Flags => ['PrintHex','SeparateTable'],
         PrintConv => \%pictureStyles,
     },
+    0xb4 => { #github510
+        Name => 'ExposureLevelIncrements',
+        PrintConv => {
+            0 => '1/3 stop',
+            1 => '1 stop',
+        },
+    },
+    0xb5 => { #github510
+        Name => 'SpeedIncrements',
+        PrintConv => {
+            0 => '1/3 stop',
+            1 => '1 stop',
+        },
+    },
+    0xb6 => { #github510
+        Name => 'ISOExpansion',
+        PrintConv => \%offOn,
+    },
+    0xb7 => { #github510
+        Name => 'AEBAutoCancel',
+        PrintConv => \%onOff,
+    },
+    0xb8 => { #github510
+        Name => 'AEBSequence',
+        PrintConv => { 0 => '0,-,+', 1 => '-,0,+' },
+    },
+    0xb9 => { #github510
+        Name => 'SafetyShift',
+        PrintConv => { 0 => 'Disabled', 1 => 'Enabled' },
+    },
+    0xba => { #github510
+        Name => 'FlashSyncSpeedAv',
+        PrintConv => { 0 => 'Auto', 1 => '1/200-1/60 Auto', 2 => '1/200 Fixed' },
+    },
+    0xbc => { #github510
+        Name => 'LongExposureNoiseReduction',
+        PrintConv => { 0 => 'Off', 1 => 'Auto', 2 => 'On' },
+    },
     0xbd => {
         Name => 'HighISONoiseReduction',
         PrintConv => {
@@ -4166,6 +4232,10 @@ my %ciMaxFocal = (
             3 => 'Off',
         },
     },
+    0xbe => { #github510
+        Name => 'HighlightTonePriority',
+        PrintConv => { 0 => 'Disable', 1 => 'Enable' },
+    },
     0xbf => {
         Name => 'AutoLightingOptimizer',
         PrintConv => {
@@ -4174,6 +4244,96 @@ my %ciMaxFocal = (
             2 => 'Strong',
             3 => 'Off',
         },
+    },
+    0xc4 => { #github510
+        Name => 'LensDriveNoAF',
+        PrintConv => { 0 => 'Focus Search On', 1 => 'Focus Search Off' },
+    },
+    0xc5 => { #github510
+        Name => 'LensAFStopButton',
+        PrintConv => {
+            0 => 'AF Stop',
+            1 => 'AF Start',
+            2 => 'AE Lock',
+            3 => 'AF Point: M->Auto/Auto->ctr',
+            4 => 'One Shot <-> AI Servo',
+            5 => 'IS Start',
+        },
+    },
+    0xc6 => { #github510
+        Name => 'AFPointSelectionMethod',
+        PrintConv => {
+            0 => 'Normal',
+            1 => 'Multi-controller Direct',
+            2 => 'Quick Control Dial Direct',
+        },
+    },
+    0xc7 => { #github510
+        Name => 'SuperimposedDisplay',
+        PrintConv => \%onOff,
+    },
+    0xc8 => { #github510
+        Name => 'AFAssistBeam',
+        PrintConv => \%onOff,
+    },
+    0xc9 => { #github510
+        Name => 'MirrorLockup',
+        PrintConv => { 0 => 'Disable', 1 => 'Enable' },
+    },
+    0xca => { #github510
+        Name => 'AFPointAreaExpansion',
+        PrintConv => { 0 => 'Disable', 1 => 'Enable' },
+    },
+    0xcb => { #github510
+        Name => 'AFMicroAdjMode',
+        PrintConv => {
+            0 => 'Disable',
+            1 => 'Adjust all by the same amount',
+            2 => 'Adjust by lens',
+        },
+    },
+    0xd1 => { #github510
+        Name => 'AFMicroAdjValue',
+        ValueConv => '$val < 128 ? $val : $val - 256',
+        ValueConvInv => '$val >= 0 ? $val : $val + 256',
+    },
+    0xd4 => { #github510
+        Name => 'ShutterButtonAFOn',
+        PrintConv => {
+            0 => 'Metering + AF start',
+            1 => 'Metering + AF start/AF stop',
+            2 => 'Metering start/Meter + AF start',
+            3 => 'AD lock/Metering + AF start',
+            4 => 'Metering + AF start/disable',
+        },
+    },
+    0xd5 => { #github510
+        Name => 'AFOnAELockButtonSwitch',
+        PrintConv => { 0 => 'Disable', 1 => 'Enable' },
+    },
+    0xd6 => { #github510
+        Name => 'SetButtonWhenShooting',
+        PrintConv => {
+            0 => 'Normal (disabled)',
+            1 => 'Image Quality',
+            2 => 'Picture Style',
+            3 => 'Menu Display',
+            4 => 'Image Playback',
+            5 => 'Quick Control Screen',
+            6 => 'Record Movie (Live View)',
+        },
+    },
+    0xd7 => { #github510
+        Name => 'DialDirectionTvAv',
+        PrintConv => { 0 => 'Normal', 1 => 'Reversed' },
+    },
+    0xd8 => { #github510
+        Name => 'FocusingScreen',
+        PrintConv => { 0 => 'Eg-A', 1 => 'Eg-D', 2 => 'Eg-S' },
+    },
+    0xd9 => { #github510
+        Name => 'AddOriginalDescisionData',
+        PrintConv => \%offOn,
     },
     0xe6 => {
         Name => 'LensType',
@@ -4214,6 +4374,14 @@ my %ciMaxFocal = (
         ValueConv => '$val - 1',
         ValueConvInv => '$val + 1',
     },
+    0x2eb => { #github510
+        Name => 'PeripheralIlluminationCorr',
+        PrintConv => { 0 => 'Enable', 1 => 'Disable' },
+    },
+    0x2f3 => { #github510
+        Name => 'ColorSpace',
+        PrintConv => { 1 => 'sRGB', 2 => 'Adobe RGB' },
+    },
     0x2f7 => { #48
         Name => 'PictureStyleInfo',
         Format => 'undef[0xde]',
@@ -4231,6 +4399,7 @@ my %ciMaxFocal = (
         Notes => 'firmware 2.x',
         %cameraInfoTimeStamp,
     },
+    # 0x4017 - InternalFirmwareVersion #github510 (seems firmware dependent)
 );
 
 # Camera information for 5D Mark III (MakerNotes tag 0x0d) (ref PH)
@@ -4592,6 +4761,11 @@ my %ciMaxFocal = (
         Writable => 0, # not writable for logic reasons
         # some firmwares have a null instead of a space after the version number
         RawConv => '$val=~/^\d+\.\d+\.\d+\s*$/ ? $val : undef',
+    },
+    0x1bc => { #github512
+        Name => 'OwnerName',
+        Priority => 0,
+        Format => 'string[32]',
     },
     0x1eb => {
         Name => 'FileIndex',
@@ -10057,14 +10231,25 @@ my $lensCountRaw = '$val eq "\0\0\0" || $val eq "\xff\xff\xff" ? undef : $val';
     FORMAT => 'int32u',
     FIRST_ENTRY => 1,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    1 => { #github511
+        Name => 'InternalFirmwareVersion',
+        RawConv => '$val ? $val : undef',
+        ValueConv => 'sprintf("%d.%d.%d", ($val >> 16) & 0xff, ($val >> 8) & 0xff, $val & 0xff)',
+        ValueConvInv => 'my @v = split /\./, $val; ($v[0] << 16) | ($v[1] << 8) | $v[2]',
+    },
+    2 => { #github511
+        Name => 'MPUVersion',
+        RawConv => '$val=$val>>24; $val ? $val : undef',
+        ValueConv => 'sprintf("%x", $val)',
+        ValueConvInv => 'hex($val)',
+    },
     5 => {
         Name => 'LensFirmwareVersion',
         Notes => q{
             Matches the lens firmware versions published by Canon, eg. 1.1.0 for the RF
             100-500mm and 1.1.1 for the RF 70-200mm F4 after their updates.  Also
             written for some EF lenses (eg. 1.0.6 for the EF 16-35mm f/4L IS USM on
-            the EOS R8 and 5DS).  Not written by older bodies such as the EOS 6D and
-            7D
+            the EOS R8 and 5DS).  Not written by older bodies such as the EOS 6D and 7D
         },
         RawConv => '$val ? $val : undef',
         ValueConv => 'sprintf("%d.%d.%d", ($val >> 16) & 0xff, ($val >> 8) & 0xff, $val & 0xff)',
@@ -11744,8 +11929,7 @@ sub AFTrackingHistory($)
     my @eye = ('n/a', 'Left', 'Right', 'Unresolved');
     my @parts = ('Head', 'Body', 'Face', 'Eye', 'Both Eyes');
     my ($t0, @list);
-    my $oldOrder = GetByteOrder();
-    SetByteOrder('II');
+    my $oldOrder = SetByteOrder('II');
     for (my $i=0; $i + 168 <= length $dat; $i += 168) {
         my $rec = substr($dat, $i, 168);
         # (same test as for the newest record)
@@ -11804,8 +11988,7 @@ sub AFTrackingHistory128($;$)
     # R6 (128 bytes, no fixed first byte), 2 = EOS R10 (64 bytes, no tracked area)
     my $size = $lay == 2 ? 64 : 128;
     my ($t0, $tPrev, @list);
-    my $oldOrder = GetByteOrder();
-    SetByteOrder('II');
+    my $oldOrder = SetByteOrder('II');
     for (my $i=0; $i + $size <= length $dat; $i += $size) {
         my $rec = substr($dat, $i, $size);
         last if $lay == 0 and $rec !~ /^[\x05\x0d]/;

@@ -4169,6 +4169,32 @@ version 1.0.6, but they may be different for other firmware versions.</p>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='91 = 0x5b'>91</td>
+<td>MeteringMode</td>
+<td class=c>int8u</td>
+<td><span class=s>1 = Spot
+  <br>3 = Evaluative
+  <br>4 = Partial
+  <br>5 = Center-weighted average</span></td></tr>
+<tr>
+<td class=r title='95 = 0x5f'>95</td>
+<td>DriveMode2</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Single
+  <br>1 = Continuous
+  <br>16 = Self-timer: 10 s
+  <br>17 = Self-timer: 2 s</span></td></tr>
+<tr class=b>
+<td class=r title='99 = 0x63'>99</td>
+<td>ISO</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='103 = 0x67'>103</td>
+<td>FlashExposureComp</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='111 = 0x6f'>111</td>
 <td>WhiteBalance</td>
 <td class=c>int16u</td>
@@ -4184,6 +4210,56 @@ version 1.0.6, but they may be different for other firmware versions.</p>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Canon.html#PictureStyle'>Canon PictureStyle Values</a></td></tr>
 <tr>
+<td class=r title='180 = 0xb4'>180</td>
+<td>ExposureLevelIncrements</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = 1/3 stop
+  <br>1 = 1 stop</span></td></tr>
+<tr class=b>
+<td class=r title='181 = 0xb5'>181</td>
+<td>SpeedIncrements</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = 1/3 stop
+  <br>1 = 1 stop</span></td></tr>
+<tr>
+<td class=r title='182 = 0xb6'>182</td>
+<td>ISOExpansion</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='183 = 0xb7'>183</td>
+<td>AEBAutoCancel</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = On
+  <br>1 = Off</span></td></tr>
+<tr>
+<td class=r title='184 = 0xb8'>184</td>
+<td>AEBSequence</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = 0,-,+
+  <br>1 = -,0,+</span></td></tr>
+<tr class=b>
+<td class=r title='185 = 0xb9'>185</td>
+<td>SafetyShift</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Disabled
+  <br>1 = Enabled</span></td></tr>
+<tr>
+<td class=r title='186 = 0xba'>186</td>
+<td>FlashSyncSpeedAv</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Auto
+  <br>1 = 1/200-1/60 Auto
+  <br>2 = 1/200 Fixed</span></td></tr>
+<tr class=b>
+<td class=r title='188 = 0xbc'>188</td>
+<td>LongExposureNoiseReduction</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = Auto
+  <br>2 = On</span></td></tr>
+<tr>
 <td class=r title='189 = 0xbd'>189</td>
 <td>HighISONoiseReduction</td>
 <td class=c>int8u</td>
@@ -4192,6 +4268,12 @@ version 1.0.6, but they may be different for other firmware versions.</p>
   <br>2 = Strong
   <br>3 = Off</span></td></tr>
 <tr class=b>
+<td class=r title='190 = 0xbe'>190</td>
+<td>HighlightTonePriority</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Disable
+  <br>1 = Enable</span></td></tr>
+<tr>
 <td class=r title='191 = 0xbf'>191</td>
 <td>AutoLightingOptimizer</td>
 <td class=c>int8u</td>
@@ -4199,6 +4281,114 @@ version 1.0.6, but they may be different for other firmware versions.</p>
   <br>1 = Low
   <br>2 = Strong
   <br>3 = Off</span></td></tr>
+<tr class=b>
+<td class=r title='196 = 0xc4'>196</td>
+<td>LensDriveNoAF</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Focus Search On
+  <br>1 = Focus Search Off</span></td></tr>
+<tr>
+<td class=r title='197 = 0xc5'>197</td>
+<td>LensAFStopButton</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = AF Stop
+  <br>1 = AF Start
+  <br>2 = AE Lock
+  <br>3 = AF Point: M-&gt;Auto/Auto-&gt;ctr
+  <br>4 = One Shot &lt;-&gt; AI Servo
+  <br>5 = IS Start</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='198 = 0xc6'>198</td>
+<td>AFPointSelectionMethod</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Normal
+  <br>1 = Multi-controller Direct
+  <br>2 = Quick Control Dial Direct</span></td></tr>
+<tr>
+<td class=r title='199 = 0xc7'>199</td>
+<td>SuperimposedDisplay</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = On
+  <br>1 = Off</span></td></tr>
+<tr class=b>
+<td class=r title='200 = 0xc8'>200</td>
+<td>AFAssistBeam</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = On
+  <br>1 = Off</span></td></tr>
+<tr>
+<td class=r title='201 = 0xc9'>201</td>
+<td>MirrorLockup</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Disable
+  <br>1 = Enable</span></td></tr>
+<tr class=b>
+<td class=r title='202 = 0xca'>202</td>
+<td>AFPointAreaExpansion</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Disable
+  <br>1 = Enable</span></td></tr>
+<tr>
+<td class=r title='203 = 0xcb'>203</td>
+<td>AFMicroAdjMode</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Disable
+  <br>1 = Adjust all by the same amount
+  <br>2 = Adjust by lens</span></td></tr>
+<tr class=b>
+<td class=r title='209 = 0xd1'>209</td>
+<td>AFMicroAdjValue</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='212 = 0xd4'>212</td>
+<td>ShutterButtonAFOn</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Metering + AF start
+  <br>1 = Metering + AF start/AF stop
+  <br>2 = Metering start/Meter + AF start
+  <br>3 = AD lock/Metering + AF start
+  <br>4 = Metering + AF start/disable</span></td></tr>
+<tr class=b>
+<td class=r title='213 = 0xd5'>213</td>
+<td>AFOnAELockButtonSwitch</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Disable
+  <br>1 = Enable</span></td></tr>
+<tr>
+<td class=r title='214 = 0xd6'>214</td>
+<td>SetButtonWhenShooting</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Normal (disabled)
+  <br>1 = Image Quality
+  <br>2 = Picture Style
+  <br>3 = Menu Display
+  <br>4 = Image Playback
+  <br>5 = Quick Control Screen
+  <br>6 = Record Movie (Live View)</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='215 = 0xd7'>215</td>
+<td>DialDirectionTvAv</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Normal
+  <br>1 = Reversed</span></td></tr>
+<tr>
+<td class=r title='216 = 0xd8'>216</td>
+<td>FocusingScreen</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Eg-A
+  <br>1 = Eg-D
+  <br>2 = Eg-S</span></td></tr>
+<tr class=b>
+<td class=r title='217 = 0xd9'>217</td>
+<td>AddOriginalDescisionData</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
 <tr>
 <td class=r title='230 = 0xe6'>230</td>
 <td>LensType</td>
@@ -4234,6 +4424,18 @@ version 1.0.6, but they may be different for other firmware versions.</p>
 <td>DirectoryIndex</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='747 = 0x2eb'>747</td>
+<td>PeripheralIlluminationCorr</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Enable
+  <br>1 = Disable</span></td></tr>
+<tr>
+<td class=r title='755 = 0x2f3'>755</td>
+<td>ColorSpace</td>
+<td class=c>int8u</td>
+<td><span class=s>1 = sRGB
+  <br>2 = Adobe RGB</span></td></tr>
 <tr class=b>
 <td class=r title='759 = 0x2f7'>759</td>
 <td>PictureStyleInfo</td>
@@ -4618,26 +4820,31 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='444 = 0x1bc'>444</td>
+<td>OwnerName</td>
+<td class=c>string[32]</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='491 = 0x1eb'>491</td>
 <td>FileIndex</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='503 = 0x1f7'>503</td>
 <td>DirectoryIndex</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='807 = 0x327'>807</td>
 <td>PictureStyleInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#PSInfo'>Canon PSInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1247 = 0x4df'>1247</td>
 <td>TimeStamp</td>
 <td class=c>int16u[3]</td>
 <td><span class=s><span class=n>(firmware 1.x)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1251 = 0x4e3'>1251</td>
 <td>TimeStamp</td>
 <td class=c>int16u[3]</td>
@@ -12637,14 +12844,23 @@ shots.  What it counts is unconfirmed)</span></span></td></tr>
 <tr class=h><th>Index4</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>InternalFirmwareVersion</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>MPUVersion</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='5 = 0x5'>5</td>
 <td>LensFirmwareVersion</td>
 <td class=c>int32u</td>
 <td><span class=s><span class=n>(Matches the lens firmware versions published by Canon, eg. 1.1.0 for the RF
 100-500mm and 1.1.1 for the RF 70-200mm F4 after their updates.  Also
 written for some EF lenses (eg. 1.0.6 for the EF 16-35mm f/4L IS USM on
-the EOS R8 and 5DS).  Not written by older bodies such as the EOS 6D and
-7D)</span></span></td></tr>
+the EOS R8 and 5DS).  Not written by older bodies such as the EOS 6D and 7D)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='AFConfig'>Canon AFConfig Tags</a></h2>
@@ -13251,7 +13467,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 5, 2026</i>
+<br><i>Last revised Nov 9, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

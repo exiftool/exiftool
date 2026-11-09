@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.37';
+$VERSION = '3.38';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -60,9 +60,9 @@ sub ProcessSampleDesc($$$);
 sub ProcessHybrid($$$);
 sub ProcessRights($$$);
 sub ProcessNextbase($$$);
-sub Process_mrlh($$$);
-sub Process_mrlv($$$);
-sub Process_mrld($$$);
+sub Process_mrlh($$$); # (in GM.pm)
+sub Process_mrlv($$$); # (in GM.pm)
+sub Process_mrld($$$); # (in GM.pm)
 # ++vvvvvvvvvvvv++ (in QuickTimeStream.pl)
 sub Process_mebx($$$);
 sub Process_3gf($$$);
@@ -227,8 +227,9 @@ my %ftypLookup = (
     'heic' => 'High Efficiency Image Format HEVC still image (.HEIC)', # image/heic
     'hevc' => 'High Efficiency Image Format HEVC sequence (.HEICS)', # image/heic-sequence
     'mif1' => 'High Efficiency Image Format still image (.HEIF)', # image/heif
-    'mif3' => 'Low-overhead SlimHEIF (.HEIF)', # image/heif
+    'mif3' => 'Multi-Image Format v3', # image/heif or image/avif
     'msf1' => 'High Efficiency Image Format sequence (.HEIFS)', # image/heif-sequence
+    'msf3' => 'Multi-Sequence Format v3', # AVIF,AVIFS,HEIF,HEIFS
     'heix' => 'High Efficiency Image Format still image (.HEIF)', # image/heif (ref PH, Canon 1DXmkIII)
     'avif' => 'AV1 Image File Format (.AVIF)', # image/avif
     'avis' => 'AV1 Image Sequence (.AVIF)', # image/avif
@@ -699,6 +700,10 @@ my %userDefined = (
         Name  => 'MediaDataOffset',
         RawConv => '$$self{MediaDataOffset} = $val',
     },
+    mini => {
+        Name => 'Mini',
+        SubDirectory => { TagTable => 'Image::ExifTool::Mini::Main' },
+    },
     junk => { Unknown => 1, Binary => 1 }, #8
     uuid => [
         { #9 (MP4 files)
@@ -1037,13 +1042,21 @@ my %userDefined = (
     0 => {
         Name => 'MajorBrand',
         Format => 'undef[4]',
+        RawConv => '$$self{MajorBrand} = $val',
         PrintConv => \%ftypLookup,
     },
-    1 => {
+    1 => [{
         Name => 'MinorVersion',
+        Condition => '$$self{MajorBrand} !~ /^(mif3|msf3)$/ or $$valPt !~ /^[a-z0-9]{4}$/i',
         Format => 'undef[4]',
         ValueConv => 'sprintf("%x.%x.%x", unpack("nCC", $val))',
-    },
+    },{
+        # mif3/msf3 puts CompatibleBrand in the place of MinorVersion! (grrr)
+        Name => 'CompatibleBrand',
+        Format => 'undef[4]',
+        # "MIF3/MSF3" aren't extensions, but use as a file type anyway
+        RawConv => '$self->OverrideFileType(uc($$self{MajorBrand}),"image/$val",uc($val)); $val',
+    }],
     2 => {
         Name => 'CompatibleBrands',
         Format => 'undef[$size-8]',
@@ -10026,8 +10039,7 @@ sub IdentifyTrailers($)
         } elsif ($buff =~ /~\0\x04\0zmie~\0\0\x06.{4}([\x10\x18])(\x04)$/s or
                  $buff =~ /~\0\x04\0zmie~\0\0\x0a.{8}([\x10\x18])(\x08)$/s)
         {
-            my $oldOrder = GetByteOrder();
-            SetByteOrder($1 eq "\x10" ? 'MM' : 'II');
+            my $oldOrder = SetByteOrder($1 eq "\x10" ? 'MM' : 'II');
             $type = 'MIE';
             $len = ($2 eq "\x04") ? Get32u(\$buff, 34) : Get64u(\$buff, 30);
             SetByteOrder($oldOrder);
@@ -10108,6 +10120,11 @@ sub ProcessMOV($$;$)
                 my $type = substr($buff, 0, 4);
                 $$et{save_ftyp} = $type;
                 # see if we know the extension for this file type
+                if ($type =~ /^(mif3|msf3)$/ and $size >= 16) {
+                    # mif3 puts CompatibleBrand in the place of MinorVersion (grrr)
+                    $type = substr($buff, 4, 4);
+                    $type = 'HEIF' unless $ftypLookup{$type};
+                }
                 if ($ftypLookup{$type} and $ftypLookup{$type} =~ /\(\.(\w+)/) {
                     $fileType = $1;
                 # check compatible brands

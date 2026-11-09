@@ -130,6 +130,7 @@ html/TagNames/MXF.html
 html/TagNames/MacOS.html
 html/TagNames/Matroska.html
 html/TagNames/Microsoft.html
+html/TagNames/Mini.html
 html/TagNames/Minolta.html
 html/TagNames/MinoltaRaw.html
 html/TagNames/Motorola.html
@@ -387,6 +388,7 @@ lib/Image/ExifTool/MacOS.pm
 lib/Image/ExifTool/MakerNotes.pm
 lib/Image/ExifTool/Matroska.pm
 lib/Image/ExifTool/Microsoft.pm
+lib/Image/ExifTool/Mini.pm
 lib/Image/ExifTool/Minolta.pm
 lib/Image/ExifTool/MinoltaRaw.pm
 lib/Image/ExifTool/Motorola.pm
@@ -757,6 +759,10 @@ t/MacOS_2.out
 t/Matroska.t
 t/Matroska_2.out
 t/Minolta.t
+t/Mini.t
+t/Mini_2.out
+t/Mini_3.out
+t/Mini_4.out
 t/Minolta_2.out
 t/Minolta_3.out
 t/Minolta_4.out
@@ -1146,6 +1152,7 @@ t/images/MWG.jpg
 t/images/MXF.mxf
 t/images/MacOS.macos
 t/images/Matroska.mkv
+t/images/Mini.avif
 t/images/Minolta.jpg
 t/images/Minolta.mrw
 t/images/Motorola.jpg

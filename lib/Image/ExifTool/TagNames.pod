@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 33768 tags, with 21530 unique tag names.
+They contain a total of 33786 tags, with 21538 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -8581,7 +8581,7 @@ the AF tracking records).
    2149    PowerOnFileNumber                    int16u
    2151    PowerOnDirectoryNumber               int16u
    2153    WakeFileNumber                       int16u
-   3952    BurstShotNumber                      no
+   3952    SequenceNumber                       no
    4386    ImageStabilizationMode               int8s
 
 =head3 Canon AFTrackingR5m2 Tags
@@ -21003,6 +21003,7 @@ These tags are used in Pentax/Asahi/Ricoh cameras.
   0x0095   SkinToneCorrection                   int8s[2]
            SkinToneCorrection                   int8s[3]
   0x0096   ClarityControl                       int8s[2]
+  0x0098   CropMode                             int8u[3]
   0x0099   SnapFocusDistance                    int8u[3]
   0x009e   HDF                                  int8u
   0x0200   BlackPoint                           int16u[4]
@@ -21062,6 +21063,7 @@ These tags are used in Pentax/Asahi/Ricoh cameras.
   0x023f   Model                                string
   0x0243   PixelShiftInfo                       Pentax PixelShiftInfo
   0x0245   AFPointInfo                          Pentax AFPointInfo
+  0x0247   ImageControl                         Pentax ImageControl
   0x03fe   DataDump                             no
   0x03ff   TempInfo                             Pentax TempInfo
            UnknownInfo                          Pentax UnknownInfo
@@ -21628,6 +21630,28 @@ AF point information written by the K-1.
       4    AFPointsInFocus                      no
     4.1    AFPointsSelected                     no
     4.2    AFPointsSpecial                      no
+
+=head3 Pentax ImageControl Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    Saturation                           int16s
+      1    Hue                                  int16s
+      2    HighLowKey                           int16s
+      3    Contrast                             int16s
+      4    ContrastHighlight                    int16s
+      5    ContrastShadow                       int16s
+      6    Sharpness                            int16s
+      8    RetroToning                          int16s
+      9    Shading                              int16s
+     10    Clarity                              int16s
+     13    BWToning                             int16s
+     14    BleachBypassToning                   int16s
+     15    HDRToning                            int16s
+     16    HDRToneLevel                         int16s
+     17    BWFilter                             int8u[4]~
+     19    BWGrainEffect                        int16s
+     21    CrossProcessingColorTone             int16s
 
 =head3 Pentax TempInfo Tags
 
@@ -34858,7 +34882,7 @@ is required to enable this feature.
 
   Tag Name                                      Writable
   --------                                      --------
-  ChromaSubampling                              no
+  ChromaSubsampling                             no
   EXIF                                          EXIF
   ICC_Profile                                   ICC_Profile
   ImageHeight                                   no

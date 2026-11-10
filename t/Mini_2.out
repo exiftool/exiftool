@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.62
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.63
 [File, System, Other] FileName - File Name: Mini.avif
 [File, System, Other] Directory - Directory: t/images
 [File, System, Other] FileSize - File Size: 1063 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2026:11:08 18:36:52-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2026:11:08 19:24:22-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:11:08 18:36:52-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2026:11:09 06:22:11-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2026:11:09 14:21:51-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2026:11:09 14:20:27-05:00
 [File, System, Other] FilePermissions - File Permissions: -rw-r--r--
 [File, File, Other] FileType - File Type: MIF3
 [File, File, Other] FileTypeExtension - File Type Extension: avif
@@ -12,10 +12,31 @@
 [File, File, Image] ExifByteOrder - Exif Byte Order: Big-endian (Motorola, MM)
 [QuickTime, QuickTime, Video] 0 - Major Brand: Multi-Image Format v3
 [QuickTime, QuickTime, Video] 1 - Compatible Brand: avif
-[QuickTime, Mini, Image] chroma_subsampling - Chroma Subampling: 4:2:0
+[QuickTime, Mini, Image] mini_version - Mini Version: 0
+[QuickTime, Mini, Image] explicit_codec_types_flag - Explicit Codec Types Flag: 0
+[QuickTime, Mini, Image] float_flag - Float Flag: 0
+[QuickTime, Mini, Image] full_range_flag - Full Range Flag: 1
+[QuickTime, Mini, Image] alpha_flag - Alpha Flag: 0
+[QuickTime, Mini, Image] explicit_cicp_flag - Explicit Cicp Flag: 0
+[QuickTime, Mini, Image] hdr_flag - Hdr Flag: 0
+[QuickTime, Mini, Image] icc_flag - Icc Flag: 1
+[QuickTime, Mini, Image] exif_flag - Exif Flag: 1
+[QuickTime, Mini, Image] xmp_flag - Xmp Flag: 1
+[QuickTime, Mini, Image] chroma_subsampling - Chroma Subsampling: 4:2:0
 [QuickTime, Mini, Image] orientation_minus1 - Orientation: Horizontal (normal)
+[QuickTime, Mini, Image] large_dimensions_flag - Large Dimensions Flag: 0
 [QuickTime, Mini, Image] width_minus1 - Image Width: 8
 [QuickTime, Mini, Image] height_minus1 - Image Height: 8
+[QuickTime, Mini, Image] high_bit_depth_flag - High Bit Depth Flag: 0
+[QuickTime, Mini, Image] large_metadata_flag - Large Metadata Flag: 0
+[QuickTime, Mini, Image] large_codec_config_flag - Large Codec Config Flag: 0
+[QuickTime, Mini, Image] large_item_data_flag - Large Item Data Flag: 0
+[QuickTime, Mini, Image] icc_data_size_minus1 - Icc Data Size Minus 1: 491
+[QuickTime, Mini, Image] main_item_codec_config_size - Main Item Codec Config Size: 4
+[QuickTime, Mini, Image] main_item_data_size_minus1 - Main Item Data Size Minus 1: 33
+[QuickTime, Mini, Image] exif_xmp_compressed_flag - Exif Xmp Compressed Flag: 0
+[QuickTime, Mini, Image] exif_data_size_minus1 - Exif Data Size Minus 1: 103
+[QuickTime, Mini, Image] xmp_data_size_minus1 - Xmp Data Size Minus 1: 393
 [ICC_Profile, ICC-header, Image] 4 - Profile CMM Type: Nikon Corporation
 [ICC_Profile, ICC-header, Image] 8 - Profile Version: 2.2.0
 [ICC_Profile, ICC-header, Image] 12 - Profile Class: Display Device Profile

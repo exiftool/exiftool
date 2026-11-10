@@ -59,7 +59,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.63';
+$VERSION = '3.64';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -2752,6 +2752,17 @@ my %binaryDataAttrs = (
             },
         },
     },
+    0x0098 => { # https://github.com/richadams/ricoh-gr3-metadata/blob/master/Pentax_0x0098.md
+        Name => 'CropMode',
+        Writable => 'int8u',
+        Count => 3,
+        PrintConv => {
+            '0 0 0' => 'Full',   # (28mm on GRIII)
+            '0 5 0' => 'Medium', # (35mm on GRIII)
+            '0 6 0' => 'Small',  # (50mm on GRIII)
+          # '1 1 0' - seen for Pentax K-1
+        },
+    },
     0x0099 => { #forum17904
         Name => 'SnapFocusDistance',
         Writable => 'int8u',
@@ -3149,6 +3160,10 @@ my %binaryDataAttrs = (
     0x0245 => { #29
         Name => 'AFPointInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Pentax::AFPointInfo' },
+    },
+    0x0247 => {
+        Name => 'ImageControl',
+        SubDirectory => { TagTable => 'Image::ExifTool::Pentax::ImageControl' },
     },
     0x03fe => { #PH
         Name => 'DataDump',
@@ -6128,6 +6143,87 @@ my %binaryDataAttrs = (
         Format => 'int8u[int(($val{2}+3)/4)]',
         Writable => 0,
         PrintConv => 'Image::ExifTool::Pentax::DecodeAFPoints($val,$$self{NumAFPoints},2,0x03,0x03)',
+    },
+);
+
+# image control settings (https://github.com/richadams/ricoh-gr3-metadata/blob/master/Pentax_0x0247.md)
+%Image::ExifTool::Pentax::ImageControl = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    FORMAT => 'int16s',
+    0 => { Name => 'Saturation', RawConv => '$val == -32768 ? undef : $val' },,
+    1 => { Name => 'Hue', RawConv => '$val == -32768 ? undef : $val' },,
+    2 => { Name => 'HighLowKey', RawConv => '$val == -32768 ? undef : $val' },,
+    3 => { Name => 'Contrast', RawConv => '$val == -32768 ? undef : $val' },,
+    4 => { Name => 'ContrastHighlight', RawConv => '$val == -32768 ? undef : $val' },,
+    5 => { Name => 'ContrastShadow', RawConv => '$val == -32768 ? undef : $val' },,
+    6 => { Name => 'Sharpness', RawConv => '$val == -32768 ? undef : $val' },,
+    8 => { Name => 'RetroToning', RawConv => '$val == -32768 ? undef : $val' },
+    9 => { Name => 'Shading', RawConv => '$val == -32768 ? undef : $val' },,
+    10 => { Name => 'Clarity', RawConv => '$val == -32768 ? undef : $val' },,
+    13 => {
+        Name => 'BWToning',
+        RawConv => '$val == -1 ? undef : $val',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Sepia',
+            2 => 'Red',
+            3 => 'Green',
+            4 => 'Blue',
+            5 => 'Purple',
+        },
+    },
+    14 => {
+        Name => 'BleachBypassToning',
+        RawConv => '$val == -1 ? undef : $val',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Cold',
+            2 => 'Warm',
+        },
+    },
+    15 => {
+        Name => 'HDRToning',
+        RawConv => '$val == -1 ? undef : $val',
+        PrintConv => { 0 => 'Off', 1 => 'B&W', 2 => 'Sepia' },
+    },
+    16 => {
+        Name => 'HDRToneLevel',
+        RawConv => '$val == -1 ? undef : $val',
+        PrintConv => { 0 => 'Low', 1 => 'Med', 2 => 'High' },
+    },
+    17 => {
+        Name => 'BWFilter',
+        Format => 'int8u[4]',
+        PrintConv => q{
+            my @a = split ' ', $val;
+            my $f = shift @a;
+            return 'Off' unless $f;
+            return 'n/a' if $f & 0x08;
+            my $mask = 0x10;
+            my @rtn;
+            foreach ('R','G','B') {
+                my $b = shift @a;
+                $b = -$b if $f & $mask;
+                $mask <<= 1;
+                push @rtn, sprintf("$_%+d%%", $b);
+            }
+            return \@rtn;
+        },
+    },
+    19 => {
+        Name => 'BWGrainEffect',
+        PrintConv => {
+            0 => 'Off',
+            1 => '3 (strong)',
+            3 => '2 (medium)',
+            5 => '1 (weak)',
+            8 => 'n/a',
+        },
+    },
+    21 => {
+        Name => 'CrossProcessingColorTone',
+        PrintConv => { -1 => 'n/a', 1 => 'Blue', 2 => 'Magenta', 3 => 'Yellow' },
     },
 );
 

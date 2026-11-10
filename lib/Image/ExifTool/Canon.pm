@@ -5326,7 +5326,7 @@ my %ciMaxFocal = (
         RawConv => '$val || undef',
     },
     0x0f70 => {
-        Name => 'BurstShotNumber',
+        Name => 'SequenceNumber',
         Description => 'Shot Number In Continuous Burst',
         Notes => q{
             1 for single shots and the first frame of a burst, then increments by 1 for

@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stringEncoding %avType %dontInherit %eeBox);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 sub Process_mini($$$);
 sub Write_mini($$$);
@@ -24,6 +24,9 @@ sub Write_mini($$$);
     PROCESS_PROC => \&Process_mini,
     WRITE_PROC => \&Write_mini,
     WRITE_GROUP => 'Mini',
+    GROUPS => { 0 => 'QuickTime', 1 => 'Mini', 2 => 'Image' },
+    TAG_PREFIX => '',
+    VARS => { ID_FMT => 'none' },
     NOTES => q{
         Tags extracted by default from a mif3 low-overhead SlimHEIF 'mini' box. More
         tags (flags, etc.) are extracted from the mini header when the Unknown
@@ -34,9 +37,6 @@ sub Write_mini($$$);
         Compress option is set to 1, or uncompressed if set to 0. Compress::Zlib
         is required to enable this feature.
     },
-    GROUPS => { 0 => 'QuickTime', 1 => 'Mini', 2 => 'Image' },
-    TAG_PREFIX => '',
-    VARS => { ID_FMT => 'none' },
     width_minus1 => { Name => 'ImageWidth', ValueConv => '$val + 1' },
     height_minus1 => { Name => 'ImageHeight', ValueConv => '$val + 1' },
     orientation_minus1 => {
@@ -48,7 +48,7 @@ sub Write_mini($$$);
         SeparateTable => 'EXIF Orientation',
     },
     chroma_subsampling => {
-        Name => 'ChromaSubampling',
+        Name => 'ChromaSubsampling',
         PrintConv => {
             0 => '4:0:0',
             1 => '4:2:0',
@@ -58,10 +58,13 @@ sub Write_mini($$$);
     },
     icc => {
         Name => 'ICC_Profile',
+        Index => 4, # (chunk number in 'mini' box)
         SubDirectory => { TagTable => 'Image::ExifTool::ICC_Profile::Main' },
     },
     exif => {
         Name => 'EXIF',
+        Index => 10, # (chunk number in 'mini' box)
+        Compressible => 1,
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
@@ -70,6 +73,8 @@ sub Write_mini($$$);
     },
     xmp => {
         Name => 'XMP',
+        Index => 11, # (chunk number in 'mini' box)
+        Compressible => 1,
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::Main' },
     },
 );
@@ -344,7 +349,7 @@ sub Process_mini($$$)
         defined($$vars{xmp_data_size_minus1}) ? $$vars{xmp_data_size_minus1} + 1 : 0, # 11) xmp chunk
     );
     # calculate chunk offsets
-    my ($i, @offsets);
+    my ($i, @offsets, $tagID);
     my $offset = 0;
     for ($i=0; $i<@sizes; ++$i) {
         $offsets[$i] = $offset;
@@ -364,27 +369,21 @@ sub Process_mini($$$)
 #
 # process the metadata chunks (icc, exif and xmp)
 #
-    my %parms = ( DataPt => $dataPt );
-    if ($sizes[4]) {                                   # 4) icc profile chunk
-        if ($offsets[4] + $sizes[4] <= length($$dataPt)) {
-            $parms{Start} = $offsets[4];
-            $parms{Size} = $sizes[4];
-            $et->HandleTag($tagTbl, 'icc', undef, %parms);
+    foreach $tagID ('icc', 'exif', 'xmp') {
+        my $tagInfo = $$tagTbl{$tagID};
+        $i = $$tagInfo{Index};  # get chunk number in 'mini' box
+        next unless $sizes[$i] and $offsets[$i] + $sizes[$i] <= length($$dataPt);
+        my %parms = (
+            Name   => $$tagInfo{Name},
+            DataPt => $dataPt,
+            Start  => $offsets[$i],
+            Size   => $sizes[$i],
+        );
+        if ($$tagInfo{Compressible} and $$vars{exif_xmp_compressed_flag}) {
+            Inflate($et, \%parms) or next;
         }
-    }
-    my $type;
-    foreach $type ('exif', 'xmp') {
-        $i = $type eq 'exif' ? 10 : 11;                 # 10/11) exif/xmp chunk
-        next unless $sizes[$i];
-        if ($offsets[$i] + $sizes[$i] <= length($$dataPt)) {
-            $parms{Name} = uc $type;
-            $parms{DataPt} = $dataPt;
-            $parms{Start} = $offsets[$i];
-            $parms{Size} = $sizes[$i];
-            Inflate($et, \%parms) or next if $$vars{exif_xmp_compressed_flag};
-            $$et{PROCESSED} = { }; # (bypass recursion protection)
-            $et->HandleTag($tagTbl, $type, undef, %parms) if $parms{Size};
-        }
+        $$et{PROCESSED} = { }; # (bypass recursion protection)
+        $et->HandleTag($tagTbl, $tagID, undef, %parms);
     }
     $et->Warn('Unexpected mini box size') if $offset != length $$dataPt;
     return 1;
@@ -410,7 +409,7 @@ sub Write_mini($$$)
     my $vars = $$dirInfo{Vars};         # header variable values
     my $offsets = $$dirInfo{Offsets};   # metadata chunk offsets
     my $sizes = $$dirInfo{Sizes};       # metadata chunk sizes
-    my ($i, $nvHash, $isCompressed, $chunk, %has);
+    my ($i, $nvHash, $isCompressed, $tagID, %has);
     my $wasCompressed = $isCompressed = $$vars{exif_xmp_compressed_flag};
     # set compressed flag according to Compress option setting
     if (defined $$et{OPTIONS}{Compress}) {
@@ -426,59 +425,42 @@ sub Write_mini($$$)
         }
     }
     my $maxSize = $$vars{large_metadata_flag} ? 0x100000 : 0x400;
-    # rewrite ICC, EXIF and XMP chunks
-    my @chunk = ({
-        Index => 4,
-        Name  => 'ICC_Profile',
-        Table => 'ICC_Profile::Main',
-        Flag  => 'icc',
-    },{
-        Index => 10,
-        Name  => 'EXIF',
-        Table => 'Exif::Main',
-        Flag  => 'exif',
-        Compressible => 1,
-        WriteProc => \&Image::ExifTool::WriteTIFF,
-    },{
-        Index => 11,
-        Name  => 'XMP',
-        Table => 'XMP::Main',
-        Flag  => 'xmp',
-        Compressible => 1,
-    });
-    # (this is fairly straighforward, but dealing with changing the compression
+    # edit ICC, EXIF and XMP chunks
+    # (this is fairly straightforward, but dealing with changing the compression
     #  flag and/or compression/decompression failures complicates things somewhat)
-    foreach $chunk (@chunk) {
-        my $i = $$chunk{Index};
-        my $name = $$chunk{Name};
+    foreach $tagID ('icc', 'exif', 'xmp') {
+        my $tagInfo = $$tagTbl{$tagID};
+        my $subdir = $$tagInfo{SubDirectory};
+        my $name = $$tagInfo{Name};
+        $i = $$tagInfo{Index};
         my $editDir = $$editDirs{$name};
         # edit this chunk if compressible and the compression changed
-        $editDir = 1 if $$chunk{Compressible} and $isCompressed ne $wasCompressed;
+        $editDir = 1 if $$tagInfo{Compressible} and $isCompressed ne $wasCompressed;
         next unless $$addDirs{$name} or ($$sizes[$i] and $editDir);
         my ($old, $oldPt, $new, $newPt);
         $old = $$sizes[$i] ? substr($$dataPt, $$offsets[$i], $$sizes[$i]) : '';
-        if ($$chunk{Compressible} and $wasCompressed and length $old) {
+        if ($$tagInfo{Compressible} and $wasCompressed and length $old) {
             my %block = ( Name => $name, DataPt => \$old );
             Inflate($et, \%block) or next;
             $oldPt = $block{DataPt};
         } else {
             $oldPt = \$old;
         }
-        my $tbl = GetTagTable("Image::ExifTool::$$chunk{Table}");
+        my $tbl = GetTagTable($$subdir{TagTable});
         my %dirInfo = ( DataPt => $oldPt );
         my $oldChanged = $$et{CHANGED};
-        $new = $et->WriteDirectory(\%dirInfo, $tbl, $$chunk{WriteProc}) if $$editDirs{$name};
+        $new = $et->WriteDirectory(\%dirInfo, $tbl, $$subdir{WriteProc}) if $$editDirs{$name};
         # re-use original data if nothing changed (eg. avoid unnecessary restructuring)
         $new = $$oldPt if $$et{CHANGED} eq $oldChanged;
         $$et{CHANGED} = $oldChanged; # (we'll handle this later)
         if (not defined $new or $new eq $$oldPt) {
             # the data for this chunk didn't change, so unless the
             # compression changed, just rewrite the original data
-            next unless $$chunk{Compressible} and $isCompressed ne $wasCompressed;
+            next unless $$tagInfo{Compressible} and $isCompressed ne $wasCompressed;
             # fall through using old data if necessary to change compression
             $new = $old unless defined $new;
         }
-        if ($$chunk{Compressible} and $isCompressed and length $new) {
+        if ($$tagInfo{Compressible} and $isCompressed and length $new) {
             my %block = ( DataPt => \$new, Name => $name );
             if (Deflate($et, \%block)) {
                 $newPt = $block{DataPt};
@@ -498,20 +480,21 @@ sub Write_mini($$$)
             }
             $et->VPrint(0, "$$et{INDENT}\[Setting large_metadata_flag due to $name]\n");
             $$vars{large_metadata_flag} = 1;
+            $maxSize = 0x100000;
         }
         if (length $$newPt) {
-            $$vars{"$$chunk{Flag}_flag"} = 1;
-            $$vars{"$$chunk{Flag}_data_size_minus1"} = length($$newPt) - 1;
+            $$vars{"${tagID}_flag"} = 1;
+            $$vars{"${tagID}_data_size_minus1"} = length($$newPt) - 1;
             $$sizes[$i] = $newPt;   # set size to new data ref
-            $has{$isCompressed ? 'Compressed' : 'Uncompressed'} = 1 if $$chunk{Compressible};
+            $has{$isCompressed ? 'Compressed' : 'Uncompressed'} = 1 if $$tagInfo{Compressible};
         } else {
-            $$vars{"$$chunk{Flag}_flag"} = 0;
+            $$vars{"${tagID}_flag"} = 0;
             $$sizes[$i] = 0;
         }
         ++$$et{CHANGED};    # success!
     }
     return undef unless $$et{CHANGED};  # rewrite original data if nothing changed
-    # update $has compression flags for unedited EXIF or XMP
+    # account for unedited EXIF or XMP in $has compression flags
     foreach $i (10,11) {
         next if ref $$sizes[$i] or not $$sizes[$i];
         # this chunk wasn't changed, so the compression state is same as original

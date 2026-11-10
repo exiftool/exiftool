@@ -20,6 +20,7 @@ my $testnum = 1;
 {
     ++$testnum;
     my $exifTool = Image::ExifTool->new;
+    $exifTool->Options(Unknown => 1);
     my $info = $exifTool->ImageInfo('t/images/Mini.avif');
     notOK() unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
@@ -56,7 +57,7 @@ my $testnum = 1;
         unlink $testfile;
         my $rtnVal = $exifTool->WriteInfo('t/images/Mini.avif', $testfile);
         $exifTool->Options(Unknown => 1);
-        my $info = $exifTool->ImageInfo($testfile, 'EXIF:*', 'XMP:*', 'Mini:*');
+        my $info = $exifTool->ImageInfo($testfile, 'ExifXmpCompressedFlag', 'EXIF:*', 'XMP:*');
         if (check($exifTool, $info, $testname, $testnum)) {
             unlink $testfile;
         } else {

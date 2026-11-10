@@ -7,6 +7,13 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.55. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Nov. 10, 2026 - Version 13.63
+
+  - Decode more Pentax tags (thanks Rich Adams)
+  - Changed name of one of the new Canon tags
+  - Fixed typo in new Mini tag name
+  - Fixed bug introduced in 13.62 when reading GIF extensions
+
 Nov. 9, 2026 - Version 13.62
 
   - Added read/write support for low-overhead mif3 SlimHEIF 'mini' metadata,

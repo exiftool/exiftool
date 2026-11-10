@@ -20,7 +20,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.22';
+$VERSION = '1.23';
 
 # road map of directory locations in GIF images
 my %gifMap = (
@@ -432,10 +432,12 @@ Block:
                 $inclLen = $$extInfo{IncludeLengthBytes};
                 $name = $$extInfo{Name};
                 # rewrite as-is unless this is a writable
-                if ($$extInfo{Deletable} and $$et{DEL_GROUP}{$$extInfo{Name}}) {
-                    $justCopy = 0;  # delete this
-                } elsif (not $$extInfo{Writable}) {
-                    $justCopy = 1;
+                if ($outfile) {
+                    if ($$extInfo{Deletable} and $$et{DEL_GROUP}{$$extInfo{Name}}) {
+                        $justCopy = 0;  # delete this
+                    } elsif (not $$extInfo{Writable}) {
+                        $justCopy = 1;
+                    }
                 }
             } else {
                 $justCopy = 1 if $outfile;

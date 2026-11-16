@@ -30,7 +30,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.73';
+$VERSION = '1.74';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -1794,6 +1794,8 @@ sub ProcessChunks($$$)
     while ($start + 8 < $end) {
         my $tag = substr($$dataPt, $start, 4);
         my $len = Get32u($dataPt, $start + 4);
+        # end processing on null tag (70Mai SkipInfoLE)
+        last if $len == 0 and $tag eq "\0\0\0\0";
         $start += 8;
         if ($start + $len > $end) {
             $et->Warn("Bad $tag chunk");

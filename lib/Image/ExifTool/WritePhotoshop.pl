@@ -151,7 +151,7 @@ sub WritePhotoshop($$$)
                     }
                 }
             }
-            if ($tagInfo) {
+            if ($tagInfo and $$tagInfo{SubDirectory}) {
                 $$addDirs{$tagID} and delete $$addDirs{$tagID};
                 my %subdirInfo = (
                     DataPt => $dataPt,

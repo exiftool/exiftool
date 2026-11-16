@@ -32,7 +32,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.35';
+$VERSION = '1.36';
 
 # program map table "stream_type" lookup (ref 6/1/9)
 my %streamType = (
@@ -582,37 +582,32 @@ sub ProcessM2TS($$)
 {
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
-    my ($buff, $j, $eof, $pLen, $readSize);
+    my ($buff, $start, $tcLen, $j, $eof, $pLen, $readSize);
     my (%pmt, %pidType, %data, %sectLen, %packLen, %fromStart);
     my ($startTime, $endTime, $fwdTime, $backScan, $maxBack);
     my $verbose = $et->Options('Verbose');
     my $out = $et->Options('TextOut');
 
-    # read enough to guarantee 2 sync bytes
-    return 0 unless $raf->Read($buff, 383) == 383;
-    # test for magic number (sync byte is the only thing we can safely check)
-    return 0 unless $buff =~ /^(.{0,190}?)\x47(.{187}|.{191})\x47/s;
-    my $tcLen = length($2) - 187; # (length of timecode = 0 or 4 bytes)
-    my $start = length($1) - $tcLen;
-    # we may need to try the validation twice to handle the edge case
-    # where the first byte of a timecode is 0x47 and we were fooled
-    # into thinking there was no timecode
-Try: for (;;) {
-        $start += 192 if $start < 0; # (if all or part of first timecode was missing)
-        $pLen = 188 + $tcLen;
-        $readSize = 64 * $pLen;      # size of our read buffer
-        $raf->Seek($start, 0);       # rewind to start
-        $raf->Read($buff, $readSize) >= $pLen * 4 or return 0;  # require at least 4 packets
-        # validate the sync byte in the next 3 packets
-        for ($j=1; $j<4; ++$j) {
-            next if substr($buff, $tcLen + $pLen * $j, 1) eq 'G'; # (0x47)
-            return 0 if $tcLen;
-            $tcLen = 4;
-            $start -= 4;
-            next Try;
-        }
-        last;   # success!
+    # read enough to guarantee 4 full packets
+    return 0 unless $raf->Read($buff, 768) == 768;
+    # validate the first 4 packet sync bytes
+    my $tmp = substr($buff, 0, 192);
+    for (;;) {
+        $tmp =~ /\x47/g or return 0;
+        $start = pos($tmp) - 1;
+        $buff =~ /^.{$start}\x47.{191}\x47.{191}\x47.{191}\x47/s and $tcLen = 4, last;
+        $buff =~ /^.{$start}\x47.{187}\x47.{187}\x47.{187}\x47/s and $tcLen = 0, last;
     }
+    # handle the case where all 4 of the first timecodes contained 0x47 in the same location
+    if ($tcLen == 4 and $buff =~ /^.{$start}(.{1,4})\x47.{191}\x47.{191}\x47.{191}\x47/s) {
+        $start += length $1;
+    }
+    $start -= $tcLen;
+    $start += 192 if $start < 0; # (if all or part of first timecode was missing)
+    $pLen = 188 + $tcLen;
+    $readSize = 64 * $pLen;      # size of our read buffer
+    $raf->Seek($start, 0);       # rewind to start
+    $raf->Read($buff, $readSize) >= $pLen * 4 or return 0;  # require at least 4 packets
     # (use M2T instead of M2TS just as an indicator that there is no timecode)
     $et->SetFileType($tcLen ? 'M2TS' : 'M2T');
     $et->Warn("File doesn't begin with the start of a packet") if $start;

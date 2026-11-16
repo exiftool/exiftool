@@ -1,8 +1,9 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 12.25
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 13.64
 [File, File, Other] FileType - File Type: JXL Codestream
 [File, File, Other] FileTypeExtension - File Type Extension: jxl
 [File, File, Other] MIMEType - MIME Type: image/jxl
-[File, File, Image] ImageWidth - Image Width: 200
-[File, File, Image] ImageHeight - Image Height: 130
+[Jpeg2000, JXL, Image] ImageWidth - Image Width: 200
+[Jpeg2000, JXL, Image] ImageHeight - Image Height: 130
+[Jpeg2000, JXL, Image] Orientation - Orientation: Horizontal (normal)
 [Composite, Composite, Image] Exif-ImageSize - Image Size: 200x130
 [Composite, Composite, Image] Exif-Megapixels - Megapixels: 0.026

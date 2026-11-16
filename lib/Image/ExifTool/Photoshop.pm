@@ -709,7 +709,6 @@ my %unicodeString = (
 # define reference to IPTCDigest tagInfo hash for convenience
 $iptcDigestInfo = $Image::ExifTool::Photoshop::Main{0x0425};
 
-
 #------------------------------------------------------------------------------
 # AutoLoad our writer routines when necessary
 #

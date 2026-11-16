@@ -4338,11 +4338,16 @@ version 1.0.6, but they may be different for other firmware versions.</p>
   <br>1 = Adjust all by the same amount
   <br>2 = Adjust by lens</span></td></tr>
 <tr class=b>
-<td class=r title='209 = 0xd1'>209</td>
-<td>AFMicroAdjValue</td>
+<td class=r title='207 = 0xcf'>207</td>
+<td>AFMicroAdjByLensValue</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='209 = 0xd1'>209</td>
+<td>AFMicroAdjAllValue</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='212 = 0xd4'>212</td>
 <td>ShutterButtonAFOn</td>
 <td class=c>int8u</td>
@@ -4351,13 +4356,13 @@ version 1.0.6, but they may be different for other firmware versions.</p>
   <br>2 = Metering start/Meter + AF start
   <br>3 = AD lock/Metering + AF start
   <br>4 = Metering + AF start/disable</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='213 = 0xd5'>213</td>
 <td>AFOnAELockButtonSwitch</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Disable
   <br>1 = Enable</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='214 = 0xd6'>214</td>
 <td>SetButtonWhenShooting</td>
 <td class=c>int8u</td>
@@ -4370,83 +4375,83 @@ version 1.0.6, but they may be different for other firmware versions.</p>
   <br>5 = Quick Control Screen
   <br>6 = Record Movie (Live View)</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='215 = 0xd7'>215</td>
 <td>DialDirectionTvAv</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Normal
   <br>1 = Reversed</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='216 = 0xd8'>216</td>
 <td>FocusingScreen</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Eg-A
   <br>1 = Eg-D
   <br>2 = Eg-S</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='217 = 0xd9'>217</td>
 <td>AddOriginalDescisionData</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='230 = 0xe6'>230</td>
 <td>LensType</td>
 <td class=c>int16uRev</td>
 <td>--&gt; <a href='Canon.html#LensType'>Canon LensType Values</a></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='232 = 0xe8'>232</td>
 <td>MinFocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='234 = 0xea'>234</td>
 <td>MaxFocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='382 = 0x17e'>382</td>
 <td>FirmwareVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='398 = 0x18e'>398</td>
 <td>OwnerName</td>
 <td class=c>string[32]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='443 = 0x1bb'>443</td>
 <td>FileIndex</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='455 = 0x1c7'>455</td>
 <td>DirectoryIndex</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='747 = 0x2eb'>747</td>
 <td>PeripheralIlluminationCorr</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Enable
   <br>1 = Disable</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='755 = 0x2f3'>755</td>
 <td>ColorSpace</td>
 <td class=c>int8u</td>
 <td><span class=s>1 = sRGB
   <br>2 = Adobe RGB</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='759 = 0x2f7'>759</td>
 <td>PictureStyleInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#PSInfo'>Canon PSInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='1195 = 0x4ab'>1195</td>
 <td>TimeStamp</td>
 <td class=c>int16u[3]</td>
 <td><span class=s><span class=n>(firmware 1.x)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1199 = 0x4af'>1199</td>
 <td>TimeStamp</td>
 <td class=c>int16u[3]</td>
@@ -6365,7 +6370,7 @@ differ from the directory of the image if a new one was started since)</span></s
 off, or PowerOnFileNumber if it has not slept since being switched on)</span></span></td></tr>
 <tr class=b>
 <td class=r title='3952 = 0xf70'>3952</td>
-<td>SequenceNumber</td>
+<td>BurstShotNumber</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(1 for single shots and the first frame of a burst, then increments by 1 for
 each frame.  Unlike SequenceNumber, which is always 0 for these models)</span></span></td></tr>
@@ -13467,7 +13472,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 10, 2026</i>
+<br><i>Last revised Nov 12, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

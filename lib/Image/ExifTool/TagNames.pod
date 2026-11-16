@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 33786 tags, with 21538 unique tag names.
+They contain a total of 33790 tags, with 21538 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -8116,7 +8116,8 @@ version 1.0.6, but they may be different for other firmware versions.
     201    MirrorLockup                         int8u
     202    AFPointAreaExpansion                 int8u
     203    AFMicroAdjMode                       int8u
-    209    AFMicroAdjValue                      int8u
+    207    AFMicroAdjByLensValue                int8u
+    209    AFMicroAdjAllValue                   int8u
     212    ShutterButtonAFOn                    int8u
     213    AFOnAELockButtonSwitch               int8u
     214    SetButtonWhenShooting                int8u
@@ -8581,7 +8582,7 @@ the AF tracking records).
    2149    PowerOnFileNumber                    int16u
    2151    PowerOnDirectoryNumber               int16u
    2153    WakeFileNumber                       int16u
-   3952    SequenceNumber                       no
+   3952    BurstShotNumber                      no
    4386    ImageStabilizationMode               int8s
 
 =head3 Canon AFTrackingR5m2 Tags
@@ -27508,8 +27509,8 @@ specification.
   'json'   JSONData                             JSON
   'jumb'   JUMBFBox                             Jpeg2000
   'jumd'   JUMBFDescr                           Jpeg2000 JUMD
-  'jxlc'   JXLCodestream                        no
-  'jxlp'   PartialJXLCodestream                 no
+  'jxlc'   JXLCodestream                        Jpeg2000 JXL
+  'jxlp'   PartialJXLCodestream                 Jpeg2000 JXL
   'lbl '   Label                                no
   'mdat'   MediaData                            no
   'mp7b'   MPEG7Binary                          no
@@ -27589,6 +27590,16 @@ Information extracted from the JUMBF description box.
   'sig'        JUMDSignature                    no
   'toggles'    JUMDToggles?                     no
   'type'       JUMDType                         no
+
+=head3 Jpeg2000 JXL Tags
+
+Information extracted from a JPEG XL codestream.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  ImageHeight                                   no
+  ImageWidth                                    no
+  Orientation                                   no
 
 =head3 Jpeg2000 CaptureResolution Tags
 
@@ -31404,10 +31415,11 @@ for the official QuickTime specification.
   'prrt'               ARDroneTelemetry         no
   'sefd'               SamsungTrailer           Samsung Trailer
   'skip'               CanonSkip                Canon Skip
-                       PreviewImage             no
-                       SkipInfo                 QuickTime Stream
-                       LigoGPSInfo              -
+                       SkipInfoBE               QuickTime SkipInfo
+                       SkipInfoLE               QuickTime SkipInfo
+                       LigoGPSInfo              QuickTime Stream
                        Skip?                    no
+                       PreviewImage             no
   'thm '               ThumbnailImage           no
   'thum'               ThumbnailImage           no
   'udat'               GPSLog                   no
@@ -31968,6 +31980,7 @@ QuickTimeHandler option may be set to 0 to avoid this.
   'covr'       CoverArt                         string
   'cpil'       Compilation                      int8s
   'cprt'       Copyright                        string
+  'cust'       CameraInfo                       string
   'desc'       Description                      string/
   'disk'       DiskNumber                       undef
   'dscp'       Description                      string/
@@ -33134,6 +33147,7 @@ writable but they may all be removed by deleting the Nextbase group.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'thma'   ThumbnailImage                       no
+  'tima'   Duration                             no
   'ver '   Version                              no
 
 =head3 QuickTime Profile Tags
@@ -37333,7 +37347,7 @@ Tags extracted from Redcode R3D video files.
   0x20ac   OutputToneMap                        no
   0x3055   LensMount                            no
   0x3094   ImagePipeline                        no
-  0x30a3   HighlightRollOff                     no
+  0x30a5   HighlightRollOff                     no
   0x30a8   OutputToneMap                        no
   0x30af   SensorSensitivityID                  no
   0x4037   CropArea                             no

@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 sub ProcessR3D($$);
 
@@ -148,14 +148,18 @@ my $errTrunc = 'Truncated R3D file';
     # ---- format 3 (int8u?) ----
     0x3055 => 'LensMount', #github443
     0x3094 => 'ImagePipeline', #github443
-    0x30a3 => 'HighlightRollOff', #github443
+    0x30a5 => 'HighlightRollOff', #github443
     0x30a8 => 'OutputToneMap', #github443
     0x30af => 'SensorSensitivityID', #github443
     # ---- format 4 (int16u) ----
     0x4037 => { Name => 'CropArea' }, # (NC)
     0x403b => 'ISO',
   # 0x404e - related to CropArea (or "0 0 0 0")
-    0x4069 => { Name  => 'NDStops', ValueConv => '$val / 100' },
+    0x4069 => {
+        Name  => 'NDStops',
+        # (ignore 2nd value if it exists, github443)
+        ValueConv => '$val =~ s/ .*//; $val / 100',
+    },
     0x406a => { Name => 'FNumber', ValueConv => '$val / 10' },
     0x406b => 'FocalLength',
     0x409b => 'SensorSize',

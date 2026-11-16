@@ -57,7 +57,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.66';
+$VERSION = '4.67';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -960,7 +960,7 @@ my %ind = (
     },
     0x140 => {
         Name => 'ColorMap',
-        Format => 'binary',
+        Format => 'undef',
         Binary => 1,
     },
     0x141 => {
@@ -1996,7 +1996,8 @@ my %ind = (
     },
     0x8649 => { #19
         Name => 'PhotoshopSettings',
-        Format => 'binary',
+        Format => 'undef',
+        Writable => 'int8u',
         WriteGroup => 'IFD0', # (only for Validate)
         SubDirectory => {
             DirName => 'Photoshop',

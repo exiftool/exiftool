@@ -35,11 +35,14 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.69';
+$VERSION = '3.70';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
 sub SortedTagTablekeys($);
+
+# set this flag to check for 1:1 correspondence between tag name and description
+my $checkNameDesc;
 
 my $createDate = 'Feb 15, 2005';
 
@@ -788,7 +791,7 @@ sub new
     my (%tagNameInfo, %id, %longID, %longName, %shortName, %tableNum,
         %tagLookup, %tagExists, %noLookup, %tableWritable, %sepTable, %case,
         %structs, %compositeModules, %isPlugin, %flattened, %structLookup,
-        @writePseudo, %dupXmpTag);
+        @writePseudo, %dupXmpTag, %descLookup, %nameLookup);
     $self->{TAG_NAME_INFO} = \%tagNameInfo;
     $self->{ID_LOOKUP} = \%id;
     $self->{LONG_ID} = \%longID;
@@ -1061,12 +1064,32 @@ TagID:  foreach $tagID (@keys) {
                     warn "Need Description for $short DateTimeOriginal\n";
                 }
                 # validate Description (can't contain special characters)
-                if ($$tagInfo{Description} and
-                    $$tagInfo{Description} ne EscapeHTML($$tagInfo{Description}))
-                {
-                    # this is a problem because the Escape option currently only
-                    # escapes descriptions if the default Lang option isn't default
-                    warn "$name description contains special characters!\n";
+                my $desc = $$tagInfo{Description};
+                if ($desc) {
+                    if ($desc ne EscapeHTML($$tagInfo{Description})) {
+                        # this is a problem because the Escape option currently only
+                        # escapes descriptions if the default Lang option isn't default
+                        warn "$name description contains special characters!\n";
+                    }
+                } else {
+                    $desc = Image::ExifTool::MakeDescription($name);
+                }
+                # check for a 1:1 correspondence between tag name and description
+                if ($checkNameDesc) {
+                    if ($descLookup{$name}) {
+                        if ($descLookup{$name} ne $desc) {
+                            warn "$name has inconsistent descriptions ($desc vs. $descLookup{$name})\n";
+                        }
+                    } else {
+                        $descLookup{$name} = $desc;
+                    }
+                    if ($nameLookup{$desc}) {
+                        if ($nameLookup{$desc} ne $name) {
+                            warn "$desc has inconsistent tag names ($name vs. $nameLookup{$desc})\n";
+                        }
+                    } else {
+                        $nameLookup{$desc} = $name;
+                    }
                 }
                 # generate structure lookup
                 my $struct = $$tagInfo{Struct};

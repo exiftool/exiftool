@@ -9,6 +9,7 @@
 package Image::ExifTool::IPTC;
 
 use strict;
+use Image::ExifTool::Photoshop;
 
 # mandatory IPTC tags for each record
 my %mandatory = (
@@ -670,7 +671,13 @@ sub WriteIPTC($$$)
                 }
             }
             # set NewIPTCDigest data member unless IPTC is being deleted
-            $$et{NewIPTCDigest} = Digest::MD5::md5($$dataPt) if length $$dataPt;
+            if (length $$dataPt) {
+                # hack: must pad to an even 4 bytes if writing in IFD0 as int32u (augh!!)
+                if ($$dirInfo{Parent} and $$dirInfo{Parent} eq 'IFD0' and length($$dataPt) & 3) {
+                    $$dataPt .= "\0" x (4 - (length($$dataPt) & 3));
+                }
+                $$et{NewIPTCDigest} = Digest::MD5::md5($$dataPt);
+            }
         }
         if ($old) {
             if ($new and not defined $newData) {

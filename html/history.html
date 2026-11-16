@@ -17,6 +17,31 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v13.64'><b>Nov. 16, 2026 - Version 13.64</b></a>
+<ul>
+<li>Added a couple of new Nikon LensID's (thanks Warren Hatch)
+<li>Decode Orientation from JXL codestream (thanks Jan Wagner)
+<li>Decode another Canon tag (thanks Peter Wem <a href="https://github.com/exiftool/exiftool/issues/510">github #510</a>)
+<li>Decode a couple more tags from 70Mai videos
+<li>More tweaks to the new Canon tag names/descriptions
+<li>Patched to deal with improperly written Insta360 X6 Meta box and empty
+    ItemList boxes in MP4 videos
+<li>Patched "Corrupted Insta360 trailer" error when writing Insta360 X6 MP4
+    videos
+<li>Fixed problem reading some M2TS videos (<a href="https://github.com/exiftool/exiftool/issues/420">github #420</a>)
+<li>Fixed ValueConv warning that may occur when using the -v option while
+    reading R3D images from newer RED models (<a href="https://github.com/exiftool/exiftool/issues/443">github #443</a>)
+<li>Fixed a couple of minor issues with the new Red tags added in 13.62
+<li>Fixed bug where reading back a file contaning IPTCDigest using the
+    -stay_open feature after writing a file with IPTCDigest would result in an
+    erroneous "Bad Photoshop IRB resource" warning (<a href="https://github.com/exiftool/exiftool/issues/516">github #516</a>)
+<li>Fixed bug where new PhotoshopSettings were created in TIFF-format files with
+    an appropriate format code instead of the improper code used by Adobe
+<li>Fixed bug where -IPTCDigest=new could generate an incorrect digest when
+    writing new IPTC to TIFF-format files (due to the padding which may be
+    required due to the improper TIFF format used by Adobe for IPTC-NAA)
+</ul>
+
 <a name='v13.63'><b>Nov. 10, 2026 - Version 13.63</b></a>
 <ul>
 <li>Decode more Pentax tags (thanks Rich Adams)

@@ -4404,6 +4404,13 @@ sub WriteDirectory($$$;$)
         }
         $$dirInfo{BlockWrite} = 1;  # set flag indicating we did a block write
         $out and print $out "  $verb $blockName as a block\n";
+        # hack to pad if necessary and calculate NewIPTCDigest when writing IPTC
+        if ($blockName eq 'IPTC' and eval { require Digest::MD5 }) {
+            if ($$dirInfo{Parent} and $$dirInfo{Parent} eq 'IFD0' and length($newVal) & 3) {
+                $newVal .= "\0" x (4 - (length($newVal) & 3));
+            }
+            $$self{NewIPTCDigest} = Digest::MD5::md5($newVal);
+        }
         ++$$self{CHANGED};
         return $newVal;
     }

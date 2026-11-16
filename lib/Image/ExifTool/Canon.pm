@@ -90,7 +90,7 @@ sub AFTrackingHistory128($;$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '5.08';
+$VERSION = '5.09';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -4292,8 +4292,13 @@ my %ciMaxFocal = (
             2 => 'Adjust by lens',
         },
     },
+    0xcf => { #github510
+        Name => 'AFMicroAdjByLensValue',
+        ValueConv => '$val < 128 ? $val : $val - 256',
+        ValueConvInv => '$val >= 0 ? $val : $val + 256',
+    },
     0xd1 => { #github510
-        Name => 'AFMicroAdjValue',
+        Name => 'AFMicroAdjAllValue',
         ValueConv => '$val < 128 ? $val : $val - 256',
         ValueConvInv => '$val >= 0 ? $val : $val + 256',
     },
@@ -5326,8 +5331,7 @@ my %ciMaxFocal = (
         RawConv => '$val || undef',
     },
     0x0f70 => {
-        Name => 'SequenceNumber',
-        Description => 'Shot Number In Continuous Burst',
+        Name => 'BurstShotNumber',
         Notes => q{
             1 for single shots and the first frame of a burst, then increments by 1 for
             each frame.  Unlike SequenceNumber, which is always 0 for these models

@@ -6195,11 +6195,14 @@ my %binaryDataAttrs = (
     17 => {
         Name => 'BWFilter',
         Format => 'int8u[4]',
+        RawConv => q{
+            my @a = split '', $val;
+            return $a[0] & 0x08 ? undef : $val;
+        },
         PrintConv => q{
             my @a = split ' ', $val;
             my $f = shift @a;
             return 'Off' unless $f;
-            return 'n/a' if $f & 0x08;
             my $mask = 0x10;
             my @rtn;
             foreach ('R','G','B') {
@@ -6213,17 +6216,18 @@ my %binaryDataAttrs = (
     },
     19 => {
         Name => 'BWGrainEffect',
+        RawConv => '$val == 8 ? undef : $val',
         PrintConv => {
             0 => 'Off',
             1 => '3 (strong)',
             3 => '2 (medium)',
             5 => '1 (weak)',
-            8 => 'n/a',
         },
     },
     21 => {
         Name => 'CrossProcessingColorTone',
-        PrintConv => { -1 => 'n/a', 1 => 'Blue', 2 => 'Magenta', 3 => 'Yellow' },
+        RawConv => '$val == -1 ? undef : $val',
+        PrintConv => { 1 => 'Blue', 2 => 'Magenta', 3 => 'Yellow' },
     },
 );
 

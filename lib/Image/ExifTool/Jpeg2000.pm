@@ -16,10 +16,11 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.43';
+$VERSION = '1.44';
 
 sub ProcessJpeg2000Box($$$);
 sub ProcessJUMD($$$);
+sub ProcessJXLCodestream($$;$);
 
 my %resolutionUnit = (
     -3 => 'km',
@@ -450,21 +451,11 @@ my %j2cMarker = (
   # jbrd - JPEG Bitstream Reconstruction Data (allows lossless conversion back to original JPG)
     jxlc => {
         Name => 'JXLCodestream',
-        Format => 'undef',
-        Notes => q{
-            Codestream in JPEG XL image.  Currently processed only to determine
-            ImageSize
-        },
-        RawConv => 'Image::ExifTool::Jpeg2000::ProcessJXLCodestream($self,\$val); undef',
+        SubDirectory => { TagTable => 'Image::ExifTool::Jpeg2000::JXL' },
     },
     jxlp => {
         Name => 'PartialJXLCodestream',
-        Format => 'undef',
-        Notes => q{
-            Partial codestreams in JPEG XL image.  Currently processed only to determine
-            ImageSize
-        },
-        RawConv => 'Image::ExifTool::Jpeg2000::ProcessJXLCodestream($self,\$val); undef',
+        SubDirectory => { TagTable => 'Image::ExifTool::Jpeg2000::JXL' },
     },
     Exif => {
         Name => 'EXIF',
@@ -768,6 +759,28 @@ my %j2cMarker = (
     },
     'id'    => { Name => 'JUMDID', Description => 'JUMD ID' },
     'sig'   => { Name => 'JUMDSignature', PrintConv => 'unpack "H*", $val' },
+);
+
+%Image::ExifTool::Jpeg2000::JXL = (
+    GROUPS => { 1 => 'JXL', 2 => 'Image' },
+    NOTES => 'Information extracted from a JPEG XL codestream.',
+    VARS => { ID_FMT => 'none' },
+    PROCESS_PROC => \&ProcessJXLCodestream,
+    ImageWidth => { },
+    ImageHeight => { },
+    Orientation => {
+        Name => 'Orientation',
+        PrintConv => {
+            1 => 'Horizontal (normal)',
+            2 => 'Mirror horizontal',
+            3 => 'Rotate 180',
+            4 => 'Mirror vertical',
+            5 => 'Mirror horizontal and rotate 270 CW',
+            6 => 'Rotate 90 CW',
+            7 => 'Mirror horizontal and rotate 90 CW',
+            8 => 'Rotate 270 CW',
+        },
+    },
 );
 
 #------------------------------------------------------------------------------
@@ -1463,16 +1476,19 @@ sub ProcessBrotli($$$)
 }
 
 #------------------------------------------------------------------------------
-# Extract parameters from JPEG XL codestream [unverified!]
-# Inputs: 0) ExifTool ref, 1) codestream ref
+# Extract parameters from JPEG XL codestream
+# Inputs: 0) ExifTool ref, 1) dirInfo ref (with DataPt), 2) optional tag table ref
 # Returns: 1 on success
-sub ProcessJXLCodestream($$)
+sub ProcessJXLCodestream($$;$)
 {
-    my ($et, $dataPt) = @_;
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
 
-    return 0 unless $$dataPt =~ /^(\0\0\0\0)?\xff\x0a/; # validate codestream
+    unless ($$dataPt =~ /^(\0\0\0\0)?\xff\x0a/) { # validate codestream
+        return $tagTbl ? 1 : 0; # fail if it was a JXL codestream file
+    }
     # ignore if already extracted (ie. subsequent jxlp boxes)
-    return 0 if $$et{ProcessedJXLCodestream};
+    return 1 if $$et{ProcessedJXLCodestream};
     $$et{ProcessedJXLCodestream} = 1;
     # work with first 64 bytes of codestream data
     # (and add padding if necessary to avoid unpacking past end of data)
@@ -1504,8 +1520,12 @@ sub ProcessJXLCodestream($$)
         my $r = [[1,1],[12,10],[4,3],[3,2],[16,9],[5,4],[2,1]]->[$ratio-1];
         $x = int($y * $$r[0] / $$r[1]);
     }
-    $et->FoundTag(ImageWidth => $x);
-    $et->FoundTag(ImageHeight => $y);
+    $tagTbl or $tagTbl = GetTagTable('Image::ExifTool::Jpeg2000::JXL');
+    $et->HandleTag($tagTbl, ImageWidth => $x);
+    $et->HandleTag($tagTbl, ImageHeight => $y);
+    my $orientation = 1;
+    $orientation = GetBits(\@a, 3) + 1 if not GetBits(\@a, 1) and GetBits(\@a, 1);
+    $et->HandleTag($tagTbl, Orientation => $orientation);
     return 1;
 }
 
@@ -1629,7 +1649,7 @@ sub ProcessJXL($$)
             if ($$et{ImageDataHash} and $raf->Seek(0,0)) {
                 $et->ImageDataHash($raf, undef, 'JXL');
             }
-            return ProcessJXLCodestream($et, \$hdr);
+            return ProcessJXLCodestream($et, { DataPt => \$hdr });
         }
     } else {
         return 0;

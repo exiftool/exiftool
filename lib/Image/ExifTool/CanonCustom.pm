@@ -19,7 +19,7 @@ use Image::ExifTool qw(:DataAccess);
 use Image::ExifTool::Canon;
 use Image::ExifTool::Exif;
 
-$VERSION = '1.58';
+$VERSION = '1.59';
 
 sub ProcessCanonCustom($$$);
 sub ProcessCanonCustom2($$$);
@@ -425,7 +425,6 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
     },
     5 => {
         Name => 'AFAssist',
-        Description => 'AF Assist/Flash Firing',
         PrintConv => {
             0 => 'Emits/Fires',
             1 => 'Does not emit/Fires',

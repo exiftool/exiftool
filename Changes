@@ -7,6 +7,30 @@ RSS feed: https://exiftool.org/rss.xml
 Note: The most recent production release is Version 13.55. (Other versions are
 considered development releases, and are not uploaded to MetaCPAN.)
 
+Nov. 16, 2026 - Version 13.64
+
+  - Added a couple of new Nikon LensID's (thanks Warren Hatch)
+  - Decode Orientation from JXL codestream (thanks Jan Wagner)
+  - Decode another Canon tag (thanks Peter Wem github #510)
+  - Decode a couple more tags from 70Mai videos
+  - More tweaks to the new Canon tag names/descriptions
+  - Patched to deal with improperly written Insta360 X6 Meta box and empty
+    ItemList boxes in MP4 videos
+  - Patched "Corrupted Insta360 trailer" error when writing Insta360 X6 MP4
+    videos
+  - Fixed problem reading some M2TS videos (github #420)
+  - Fixed ValueConv warning that may occur when using the -v option while
+    reading R3D images from newer RED models (github #443)
+  - Fixed a couple of minor issues with the new Red tags added in 13.62
+  - Fixed bug where reading back a file contaning IPTCDigest using the
+    -stay_open feature after writing a file with IPTCDigest would result in an
+    erroneous "Bad Photoshop IRB resource" warning (github #516)
+  - Fixed bug where new PhotoshopSettings were created in TIFF-format files with
+    an appropriate format code instead of the improper code used by Adobe
+  - Fixed bug where -IPTCDigest=new could generate an incorrect digest when
+    writing new IPTC to TIFF-format files (due to the padding which may be
+    required due to the improper TIFF format used by Adobe for IPTC-NAA)
+
 Nov. 10, 2026 - Version 13.63
 
   - Decode more Pentax tags (thanks Rich Adams)

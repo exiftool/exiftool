@@ -253,12 +253,14 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <tr>
 <td>'skip'</td>
 <td>CanonSkip
-  <br>PreviewImage
-  <br>SkipInfo
+  <br>SkipInfoBE
+  <br>SkipInfoLE
   <br>LigoGPSInfo
-  <br>Skip?</td>
-<td class=c>-<br>no<br>-<br>-<br>no</td>
+  <br>Skip?
+  <br>PreviewImage</td>
+<td class=c>-<br>-<br>-<br>-<br>no<br>no</td>
 <td>--&gt; <a href='Canon.html#Skip'>Canon Skip Tags</a>
+  <br>--&gt; <a href='QuickTime.html#SkipInfo'>QuickTime SkipInfo Tags</a>
   <br>--&gt; <a href='QuickTime.html#SkipInfo'>QuickTime SkipInfo Tags</a>
   <br>--&gt; <a href='QuickTime.html#Stream'>QuickTime Stream Tags</a></td></tr>
 <tr class=b>
@@ -2243,145 +2245,150 @@ box because Apple software may ignore ItemList tags otherwise, but the API
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'cust'</td>
+<td>CameraInfo</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'desc'</td>
 <td>Description</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'disk'</td>
 <td>DiskNumber</td>
 <td class=c>undef</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'dscp'</td>
 <td>Description</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'egid'</td>
 <td>EpisodeGlobalUniqueID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'geID'</td>
 <td>GenreID</td>
 <td class=c>int32s</td>
 <td>--&gt; <a href='QuickTime.html#GenreID'>QuickTime GenreID Values</a></td></tr>
-<tr class=b>
+<tr>
 <td>'gnre'</td>
 <td>Genre</td>
 <td class=c title=' / = Avoid'>undef/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'grup'</td>
 <td>Grouping</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'gshh'</td>
 <td>GoogleHostHeader</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'gspm'</td>
 <td>GooglePingMessage</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'gspu'</td>
 <td>GooglePingURL</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'gssd'</td>
 <td>GoogleSourceData</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'gsst'</td>
 <td>GoogleStartTime</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'gstd'</td>
 <td>GoogleTrackDuration</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'hdvd'</td>
 <td>HDVideo</td>
 <td class=c>int8s</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr>
+<tr class=b>
 <td>'itnu'</td>
 <td>iTunesU</td>
 <td class=c>int8s</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr class=b>
+<tr>
 <td>'keyw'</td>
 <td>Keyword</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'ldes'</td>
 <td>LongDescription</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'ownr'</td>
 <td>Owner</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'pcst'</td>
 <td>Podcast</td>
 <td class=c>int8s</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr class=b>
+<tr>
 <td>'perf'</td>
 <td>Performer</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'pgap'</td>
 <td>PlayGap</td>
 <td class=c>int8s</td>
 <td><span class=s>0 = Insert Gap
   <br>1 = No Gap</span></td></tr>
-<tr class=b>
+<tr>
 <td>'plID'</td>
 <td>AlbumID</td>
 <td class=c>int32s[2]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'prID'</td>
 <td>ProductID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'purd'</td>
 <td>PurchaseDate</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'purl'</td>
 <td>PodcastURL</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'rate'</td>
 <td>RatingPercent</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'rldt'</td>
 <td>ReleaseDate</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'rtng'</td>
 <td>Rating</td>
 <td class=c>int8s</td>
@@ -2389,58 +2396,58 @@ box because Apple software may ignore ItemList tags otherwise, but the API
   <br>1 = Explicit
   <br>2 = Clean
   <br>4 = Explicit (old)</span></td></tr>
-<tr>
+<tr class=b>
 <td>'sdes'</td>
 <td>StoreDescription</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'sfID'</td>
 <td>AppleStoreCountry</td>
 <td class=c>int32s</td>
 <td>--&gt; <a href='QuickTime.html#AppleStoreCountry'>QuickTime AppleStoreCountry Values</a></td></tr>
-<tr>
+<tr class=b>
 <td>'shwm'</td>
 <td>ShowMovement</td>
 <td class=c>int8s</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr class=b>
+<tr>
 <td>'snal'</td>
 <td>PreviewImage</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'soaa'</td>
 <td>SortAlbumArtist</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'soal'</td>
 <td>SortAlbum</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'soar'</td>
 <td>SortArtist</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'soco'</td>
 <td>SortComposer</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'sonm'</td>
 <td>SortName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'sosn'</td>
 <td>SortShow</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'stik'</td>
 <td>MediaType</td>
 <td class=c>int8s</td>
@@ -2457,222 +2464,222 @@ box because Apple software may ignore ItemList tags otherwise, but the API
   <br>21 = Podcast
   <br>23 = iTunes U</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td>'titl'</td>
 <td>Title</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tmpo'</td>
 <td>BeatsPerMinute</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tnal'</td>
 <td>ThumbnailImage</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'trkn'</td>
 <td>TrackNumber</td>
 <td class=c>undef</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tven'</td>
 <td>TVEpisodeID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tves'</td>
 <td>TVEpisode</td>
 <td class=c>int32s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tvnn'</td>
 <td>TVNetworkName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tvsh'</td>
 <td>TVShow</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tvsn'</td>
 <td>TVSeason</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'xid '</td>
 <td>ISRC</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'yrrc'</td>
 <td>Year</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ART"</td>
 <td>Artist</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;alb"</td>
 <td>Album</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ard"</td>
 <td>ArtDirector</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;arg"</td>
 <td>Arranger</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;aut"</td>
 <td>Author</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;cmt"</td>
 <td>Comment</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;com"</td>
 <td>Composer</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;con"</td>
 <td>Conductor</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;cpy"</td>
 <td>Copyright</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;day"</td>
 <td>ContentCreateDate</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;des"</td>
 <td>Description</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;dir"</td>
 <td>Director</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;enc"</td>
 <td>EncodedBy</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;gen"</td>
 <td>Genre</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;grp"</td>
 <td>Grouping</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;lyr"</td>
 <td>Lyrics</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;mvc"</td>
 <td>MovementCount</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;mvi"</td>
 <td>MovementNumber</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;mvn"</td>
 <td>MovementName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;nam"</td>
 <td>Title</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;nrt"</td>
 <td>Narrator</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ope"</td>
 <td>OriginalArtist</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;prd"</td>
 <td>Producer</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;pub"</td>
 <td>Publisher</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;sne"</td>
 <td>SoundEngineer</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;sol"</td>
 <td>Soloist</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;st3"</td>
 <td>Subtitle</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;too"</td>
 <td>Encoder</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;trk"</td>
 <td>Track</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;wrk"</td>
 <td>Work</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;wrt"</td>
 <td>Composer</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;xpd"</td>
 <td>ExecutiveProducer</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;xyz"</td>
 <td>GPSCoordinates</td>
 <td class=c>string</td>
@@ -9808,6 +9815,11 @@ the value is set to zero if the tag is deleted individually)</span></span></td><
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'tima'</td>
+<td>Duration</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'ver '</td>
 <td>Version</td>
 <td class=c>no</td>
@@ -10245,7 +10257,7 @@ the value is set to zero if the tag is deleted individually)</span></span></td><
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 7, 2026</i>
+<br><i>Last revised Nov 16, 2026</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

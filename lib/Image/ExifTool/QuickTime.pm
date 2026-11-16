@@ -49,7 +49,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.38';
+$VERSION = '3.39';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -618,33 +618,32 @@ my %userDefined = (
             Name => 'CanonSkip',
             Condition => '$$valPt =~ /^\0.{3}(CNDB|CNCV|CNMN|CNFV|CNTH|CNDM)/s',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::Skip' },
-        },
-        {
-            Name => 'PreviewImage', # (found in  DuDuBell M1 dashcam MOV files)
-            Groups => { 2 => 'Preview' },
-            Condition => '$$valPt =~ /^.{12}\xff\xd8\xff/',
-            Binary => 1,
-            RawConv => q{
-                my $len = Get32u(\$val, 8);
-                return undef unless length($val) >= $len + 12;
-                return substr($val, 12, $len);
-            },
-        },
-        {
-            Name => 'SkipInfo', # (found in 70mai Pro Plus+ MP4 videos)
+        },{
+            Name => 'SkipInfoBE', # (found in 70mai Pro Plus+ MP4 videos)
             # (look for something that looks like a QuickTime atom header)
-            Condition => '$$valPt =~ /^\0[\0-\x04]..[a-zA-Z ]{4}/s',
+            Condition => '$$valPt =~ /^\0[\0-\x08]..[a-zA-Z ]{4}/s',
             SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::SkipInfo' },
-        },
-        {
+        },{
+            Name => 'SkipInfoLE', # (found in some other 70mai videos)
+            # (look for RIFF-format chunks starting at offset 32)
+            Condition => q{
+                $$valPt =~ /^.{32}[a-zA-Z ]{4}..[\0-\x08]\0/s and
+                require Image::ExifTool::RIFF
+            },
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::QuickTime::SkipInfo',
+                ProcessProc => 'Image::ExifTool::RIFF::ProcessChunks',
+                Start => 32,
+                ByteOrder => 'Little-endian',
+            },
+        },{
             Name => 'LigoGPSInfo',
             Condition => '$$valPt =~ /^LIGOGPSINFO\0/ and $$self{OPTIONS}{ExtractEmbedded}',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::QuickTime::Stream',
                 ProcessProc => 'Image::ExifTool::LigoGPS::ProcessLigoGPS',
             },
-        },
-        {
+        },{
             Name => 'Skip',
             RawConv => q{
                 if ($val =~ /^LIGOGPSINFO\0/) {
@@ -655,6 +654,16 @@ my %userDefined = (
             },
             Unknown => 1,
             Binary => 1,
+        },{
+            Name => 'PreviewImage', # (found in  DuDuBell M1 dashcam MOV files)
+            Groups => { 2 => 'Preview' },
+            Condition => '$$valPt =~ /^.{12}\xff\xd8\xff/',
+            Binary => 1,
+            RawConv => q{
+                my $len = Get32u(\$val, 8);
+                return undef unless length($val) >= $len + 12;
+                return substr($val, 12, $len);
+            },
         },
     ],
     wide => { Unknown => 1, Binary => 1 },
@@ -1020,7 +1029,7 @@ my %userDefined = (
     },
 );
 
-# stuff seen in 'skip' atom (70mai Pro Plus+ MP4 videos)
+# stuff seen in 'skip' atom (70mai Pro Plus+ MP4 videos, and other models)
 %Image::ExifTool::QuickTime::SkipInfo = (
     PROCESS_PROC => \&ProcessMOV,
     GROUPS => { 2 => 'Video' },
@@ -1030,6 +1039,12 @@ my %userDefined = (
         Name => 'ThumbnailImage',
         Groups => { 2 => 'Preview' },
         Binary => 1,
+    },
+    tima => {
+        Name => 'Duration',
+        Format => 'int32u',
+        Priority => 0,
+        PrintConv => 'ConvertDuration($val)',
     },
 );
 
@@ -2594,6 +2609,7 @@ my %userDefined = (
         },
         Binary => 1,
     },
+    # mcrc - 12 bytes "e7 bb 0c a9 00 00 00 00 07 86 66 a4" (Insta360 X6)
     # ---- Nextbase ----
     info => 'FirmwareVersion',
    'time' => {
@@ -6725,6 +6741,7 @@ my %userDefined = (
     # found in DJI Osmo Action4 video
     tnal => { Name => 'ThumbnailImage',  Binary => 1, Groups => { 2 => 'Preview' } },
     snal => { Name => 'PreviewImage',    Binary => 1, Groups => { 2 => 'Preview' } },
+    cust => { Name => 'CameraInfo', Groups => { 2 => 'Camera' } }, #github517 (70mai video)
 );
 
 # tag decoded from timed face records
@@ -10109,6 +10126,17 @@ sub ProcessMOV($$;$)
     }
     if ($dataPt) {
         $verbose and $et->VerboseDir($$dirInfo{DirName});
+        # (hack for the Insta360 X6)
+        unless ($size or $$dirInfo{DirStart}) {
+            my $sz = unpack('N', $tag);
+            if ($sz >= 8 and $sz + 4 <= length($$dataPt) and
+                substr($$dataPt, 8, 4) =~ /^[a-zA-Z]{4}$/)
+            {
+                $et->Warn("$$dirInfo{DirName} fullbox found when a simple box was expected");
+                $size = $sz;
+                $raf->Read($tag,4);
+            }
+        }
     } else {
         # check on file type if called with a RAF
         $$tagTablePtr{$tag} or return 0;
@@ -10732,7 +10760,11 @@ ItemID:         foreach $id (reverse sort { $a <=> $b } keys %$items) {
         last if $dirEnd and $dataPos >= $dirEnd; # (note: ignores last value if 0 bytes)
         $lastPos = $raf->Tell() + $dirBase;
         if ($trailer and $lastPos >= $$trailer[1]) {
-            $et->Warn(sprintf('%s trailer at offset 0x%x (%d bytes)', @$trailer[0..2]), 1);
+            if ($tag eq 'inst' and $$trailer[0] eq 'Insta360' and $lastPos = $$trailer[1] + $$trailer[2]) {
+                undef $trailer;
+            } else {
+                $et->Warn(sprintf('%s trailer at offset 0x%x (%d bytes)', @$trailer[0..2]), 1);
+            }
             last;
         }
         $raf->Read($buff, 8) == 8 or last;

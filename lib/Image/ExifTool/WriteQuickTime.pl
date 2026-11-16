@@ -9,6 +9,12 @@ package Image::ExifTool::QuickTime;
 
 use strict;
 
+# (Note: If this was re-done, the map values below should be a metadata
+# paths separated by dashes instead of this linked list style.  The linked-list
+# idea worked well until write support was added for the messy MOV/MP4/HEIF
+# file structure.  Also note that the linked list was developed before the
+# idea of the metadata path idea was conceived.)
+
 # maps for adding metadata to various QuickTime-based file types
 my %movMap = (
     # MOV (no 'ftyp', or 'ftyp'='qt  ') -> XMP in 'moov'-'udta'-'XMP_'
@@ -1060,8 +1066,13 @@ sub WriteQuickTime($$$)
         $lastPos = $raf->Tell();
         # stop processing if we reached a known trailer
         if ($trailer and $lastPos >= $$trailer[1]) {
-            $errStr = "Corrupted $$trailer[0] trailer" if $lastPos != $$trailer[1];
-            last;
+            # account for 'inst' atom at end of file that looks like an Insta260 trailer
+            if ($tag eq 'inst' and $$trailer[0] eq 'Insta360' and $lastPos = $$trailer[1] + $$trailer[2]) {
+                undef $trailer;
+            } else {
+                $errStr = "Corrupted $$trailer[0] trailer" if $lastPos != $$trailer[1];
+                last;
+            }
         }
         $lastTag = $tag if $$tagTablePtr{$tag};    # keep track of last known tag
         if (defined $atomCount and --$atomCount < 0 and $dataPt) {
@@ -1103,22 +1114,43 @@ sub WriteQuickTime($$$)
             $size = $hi * 4294967296 + $lo - 16;
             $size < 0 and $errStr = 'Invalid extended atom size', last;
         } elsif ($size == -8) {
+            my $keepGoing;
             if ($dataPt) {
                 last if $$dirInfo{DirName} eq 'CanonCNTH';  # (this is normal for Canon CNTH atom)
                 my $pos = $raf->Tell() - 4;
-                $raf->Seek(0,2);
-                my $str = $$dirInfo{DirName} . ' with ' . ($raf->Tell() - $pos) . ' bytes';
-                $et->Error("Terminator found in $str remaining", 1);
+                # (this hack is for the Insta360 X6 which writes Movie-Meta as a fullbox)
+                $size = Get32u(\$tag, 0) - 8;
+                if ($pos == 4 and $size >= 0 and $size + 12 <= length($$dataPt) and
+                    $raf->Read($buff,4) == 4 and $buff =~ /^[a-zA-Z]{4}$/)
+                {
+                    # re-make header without erroneous version/flags word ($tag is the size word)
+                    $hdr = $tag . $buff;
+                    $tag = $buff;
+                    if ($$et{OPTIONS}{IgnoreMinorErrors}) {
+                        $et->Warn("Fixed $$dirInfo{Parent}-$$dirInfo{DirName} box format");
+                    } else {
+                        $et->Error("$$dirInfo{Parent}-$$dirInfo{DirName} appears to be a fullbox, not a simple box", 1);
+                    }
+                    $keepGoing = 1;
+                } else {
+                    $raf->Seek(0,2);
+                    my $str = $$dirInfo{DirName} . ' with ' . ($raf->Tell() - $pos) . ' bytes';
+                    $et->Error("Terminator found in $str remaining", 1);
+                }
             } else {
                 # size of zero is only valid for top-level atom, and
                 # indicates the atom extends to the end of file
                 # (save in mdat list to write later; with zero end position to copy rest of file)
                 push @mdat, [ $raf->Tell(), 0, $hdr ];
             }
-            last;
+            last unless $keepGoing;
         } elsif ($size < 0) {
             $errStr = 'Invalid atom size';
             last;
+        } elsif ($size == 0 and $tag eq 'ilst') {
+            # (hack to ignore empty 'ilst' written by Insta360 X6)
+            $et->VPrint(0,'  Ignoring empty ItemList');
+            next;
         }
 
         # keep track of 'mdat' atom locations for writing later

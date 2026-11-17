@@ -342,10 +342,26 @@
 [MakerNotes, Canon, Camera] 16441 - Canon 0x4039: 59 127 103 159 107 245 213 225 182 12 162 178 240 81 160 41
 [MakerNotes, Canon, Camera] 16444 - Canon 0x403c: 12 1 24
 [MakerNotes, Canon, Preview] THMB - Thumbnail Image: (Binary data 28 bytes)
-[MakerNotes, Track2, Image] 8 - Image Width: 1624
-[MakerNotes, Track2, Image] 10 - Image Height: 1080
-[MakerNotes, Track3, Image] 8 - Image Width: 3144
-[MakerNotes, Track3, Image] 10 - Image Height: 4056
+[MakerNotes, Track2, Image] 2 - CMP1 Version: 0x0100
+[MakerNotes, Track2, Image] 4 - Image Width: 1624
+[MakerNotes, Track2, Image] 6 - Image Height: 1080
+[MakerNotes, Track2, Image] 8 - Tile Width: 1624
+[MakerNotes, Track2, Image] 10 - Tile Height: 1080
+[MakerNotes, Track2, Image] 12 - Stored Bit Depth: 14
+[MakerNotes, Track2, Image] 12.1 - Num Planes: 4
+[MakerNotes, Track2, Image] 12.2 - CFA Layout: GRBG
+[MakerNotes, Track2, Image] 13 - Encoding Type: 0
+[MakerNotes, Track2, Image] 13.1 - Wavelet Levels: 0
+[MakerNotes, Track3, Image] 2 - CMP1 Version: 0x0100
+[MakerNotes, Track3, Image] 4 - Image Width: 6288
+[MakerNotes, Track3, Image] 6 - Image Height: 4056
+[MakerNotes, Track3, Image] 8 - Tile Width: 3144
+[MakerNotes, Track3, Image] 10 - Tile Height: 4056
+[MakerNotes, Track3, Image] 12 - Stored Bit Depth: 14
+[MakerNotes, Track3, Image] 12.1 - Num Planes: 4
+[MakerNotes, Track3, Image] 12.2 - CFA Layout: RGGB
+[MakerNotes, Track3, Image] 13 - Encoding Type: 0
+[MakerNotes, Track3, Image] 13.1 - Wavelet Levels: 0
 [MakerNotes, Track4, Time] 1 - Time Stamp: 2018:02:21 12:08:56.21
 [MakerNotes, Track4, Image] 0 - Focal Length: 15.0 mm
 [MakerNotes, Track4, Image] 0 - F Number: 3.5

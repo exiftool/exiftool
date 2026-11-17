@@ -10877,15 +10877,35 @@ my %filterConv = (
 );
 
 # 'CMP1' atom information (ref 54, CR3 files)
+# (ref 54 gives offsets from the start of the atom header, 8 bytes before the data here.
+#  Field layout as parsed by crxParseImageHeader() in LibRaw src/decoders/crx.cpp)
 %Image::ExifTool::Canon::CMP1 = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Image' },
     FORMAT => 'int16u',
     FIRST_ENTRY => 0,
     PRIORITY => 0,
-    8  => { Name => 'ImageWidth',  Format => 'int32u' },
-    10 => { Name => 'ImageHeight', Format => 'int32u' },
-    # (the rest of the documented tags don't seem to produced good values with my samples - PH)
+    2  => { Name => 'CMP1Version', PrintConv => 'sprintf("0x%.4x",$val)' },
+    4  => { Name => 'ImageWidth',  Format => 'int32u' },
+    6  => { Name => 'ImageHeight', Format => 'int32u' },
+    8  => { Name => 'TileWidth',   Format => 'int32u' },
+    10 => { Name => 'TileHeight',  Format => 'int32u' },
+    12 => {
+        Name => 'StoredBitDepth',
+        Mask => 0xff00,
+        Notes => q{
+            bits per stored sample.  This may be greater than the A/D conversion
+            precision, which for some models is reduced in some shooting modes
+        },
+    },
+    12.1 => { Name => 'NumPlanes', Mask => 0x00f0 },
+    12.2 => {
+        Name => 'CFALayout',
+        Mask => 0x000f,
+        PrintConv => { 0 => 'RGGB', 1 => 'GRBG', 2 => 'GBRG', 3 => 'BGGR' },
+    },
+    13 => { Name => 'EncodingType', Mask => 0xf000 },
+    13.1 => { Name => 'WaveletLevels', Mask => 0x0f00 },
 );
 
 # 'CDI1' atom information (ref PH, CR3 files)

@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/Writer.t".
 
 BEGIN {
-    $| = 1; print "1..61\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..62\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -1138,6 +1138,51 @@ my $testOK;
         $skip = ' # POSIX::strptime or Time::Piece not installed';
     }
     print "ok $testnum$skip\n";
+}
+
+# test 62: Write a binary data block containing a subdirectory pointer which
+# is valid relative to the parent data but outside the block itself
+{
+    ++$testnum;
+    my $exifTool = Image::ExifTool->new;
+    my %parent = (
+        PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+        WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+        CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+        GROUPS => { 0 => 'Test', 1 => 'Test' },
+        FORMAT => 'int32u',
+        IS_SUBDIR => [ 0 ],
+        0 => {
+            Name => 'TestOffset',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::TestChild',
+                Start => '$dirStart + $val',
+            },
+        },
+    );
+    %Image::ExifTool::TestChild = (
+        PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+        WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+        CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+        GROUPS => { 0 => 'Test', 1 => 'Test' },
+    );
+    Image::ExifTool::SetupTagTable(\%parent);
+    # 16-byte block at offset 16 of a 32-byte buffer, with a pointer to
+    # offset 20 of the block (beyond the block, but not beyond the buffer)
+    Image::ExifTool::SetByteOrder('MM');
+    my $data = ("\0" x 16) . pack('N', 20) . ("\0" x 12);
+    my %dirInfo = ( DataPt => \$data, DirStart => 16, DirLen => 16 );
+    my @warnings;
+    my $newData = do {
+        local $^W = 1;  # (warnings are enabled by -w in the exiftool script)
+        local $SIG{__WARN__} = sub { push @warnings, $_[0] };
+        $exifTool->WriteBinaryData(\%dirInfo, \%parent);
+    };
+    unless (defined $newData and $newData eq substr($data, 16) and not @warnings) {
+        warn "\n  Warning: $_" foreach @warnings;
+        notOK();
+    }
+    print "ok $testnum\n";
 }
 
 done(); # end

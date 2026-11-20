@@ -7393,9 +7393,9 @@ sub WriteBinaryData($$$)
                 my $dirStart = 0;
                 #### eval Start ($val, $dirStart)
                 $start = eval($start);
-                next if $start < $dirStart or $start > $dataLen;
+                next if $start < $dirStart or $start > $dirLen;
                 $len = $$subdir{DirLen};
-                $len = $dataLen - $start unless $len and $len <= $dataLen - $start;
+                $len = $dirLen - $start unless $len and $len <= $dirLen - $start;
             }
             my %subdirInfo = (
                 DataPt   => \$newData,
